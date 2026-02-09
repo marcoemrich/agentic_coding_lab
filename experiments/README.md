@@ -9,10 +9,35 @@ This experiment framework evaluates different approaches to AI-assisted Test-Dri
 **How does the architecture of TDD workflow automation affect code quality, efficiency, and discipline adherence?**
 
 Specifically, we compare:
-- **v-1-oneshot**: No TDD - direct implementation ("vibe coding")
-- **v0-baseline**: Minimal guidance - just "use TDD" with no detailed rules
-- **v1-subagents**: Each TDD phase runs in a separate, specialized agent with isolated context
-- **v2-single-context**: All TDD phases run within one continuous conversation context using inline skills
+- **v1-oneshot**: No TDD - direct implementation ("vibe coding")
+- **v2-iterative**: No TDD - iterative prompting with plan/checklist
+- **v3-basic-tdd**: Minimal TDD guidance - just "use TDD" with no detailed rules
+- **v4-subagents**: Each TDD phase runs in a separate, specialized agent with isolated context
+- **v5-single-context**: All TDD phases run within one continuous conversation context using inline skills
+
+### Known Limitation: Training Data Contamination
+
+The classic katas used in this experiment (String Calculator, Game of Life, Diamond, Mars Rover) are extremely common in:
+- Coding Dojo materials and TDD tutorials
+- Books, blog posts, and YouTube videos
+- Thousands of GitHub repositories with solutions
+
+**This means Claude likely has seen dozens of solutions during training**, which may affect results:
+
+| Metric | Potential Bias |
+|--------|----------------|
+| **Mass/Complexity** | May reproduce "known good solutions" instead of developing incrementally |
+| **Prediction Accuracy** | Artificially high because the model already "knows" the outcome |
+| **Tests Immed** | Over-implementation more likely (knows what's coming) |
+| **Refactorings** | Fewer needed because implementation is "correct" from the start |
+
+**Implications**: Results may not generalize to novel, real-world tasks where the model has no prior exposure. The experiment primarily measures workflow overhead and discipline enforcement rather than genuine TDD learning effects.
+
+**Possible mitigations for future work**:
+- Create novel, unpublished katas
+- Add unusual constraints to known katas
+- Use domain-specific tasks from real projects
+- Generate randomized requirement variations
 
 ### Why This Matters
 
@@ -71,8 +96,8 @@ The analyzer extracts metrics from two sources:
 **Why these matter:**
 - **Tokens** measures efficiency - lower is better for cost and speed
 - **Ctx Util** shows how much of the context window was used
-  - v1-subagents: Each agent has fresh context, so main context stays low
-  - v2-single-context: Tokens accumulate, higher utilization expected
+  - v4-subagents: Each agent has fresh context, so main context stays low
+  - v5-single-context: Tokens accumulate, higher utilization expected
 - **Cycles** should match test count for proper TDD discipline
 
 #### TDD Discipline Metrics
@@ -130,13 +155,13 @@ A workflow is considered **better** if it produces:
 
 ## Workflow Variants
 
-### v-1-oneshot (No TDD Baseline)
+### v1-oneshot (No TDD Baseline)
 
 **Architecture**: No TDD - direct implementation ("vibe coding")
 
 ```
 Single Agent
-    └── Read requirements → Write code → Add tests (optional)
+    └── Read requirements → Write code → Add tests after
 ```
 
 **Purpose**: Baseline to measure the value of TDD itself (any TDD variant vs no TDD).
@@ -146,17 +171,43 @@ Single Agent
 - No Red-Green-Refactor cycle
 - No incremental steps or predictions
 - Implementation written in one shot based on requirements
-- Tests added after (if at all) for verification only
+- Tests added **after implementation** based on Example Mapping (for fair comparison)
 - Represents "normal coding" without TDD discipline
 
 **Structure**:
 ```
-v-1-oneshot/.claude/
+v1-oneshot/.claude/
 └── rules/
     └── experiment-mode.md     # Non-TDD approach + output format
 ```
 
-### v0-baseline (TDD Control)
+### v2-iterative (No TDD, Iterative)
+
+**Architecture**: No TDD - iterative prompting with plan/checklist
+
+```
+Single Agent
+    └── Read requirements → Create checklist → Implement step-by-step → Add tests after
+```
+
+**Purpose**: Measure whether structured iteration (without TDD) improves over one-shot.
+
+**Characteristics**:
+- No test-first approach
+- No Red-Green-Refactor cycle
+- Incremental implementation via explicit checklist
+- Plan-driven development with task tracking
+- Tests added **after implementation** based on Example Mapping
+- Represents "structured coding" without TDD discipline
+
+**Structure**:
+```
+v2-iterative/.claude/
+└── rules/
+    └── experiment-mode.md     # Iterative approach + output format
+```
+
+### v3-basic-tdd (TDD Control)
 
 **Architecture**: Minimal TDD rules, no specialized agents or skills
 
@@ -175,12 +226,12 @@ Single Agent
 
 **Structure**:
 ```
-v0-baseline/.claude/
+v3-basic-tdd/.claude/
 └── rules/
     └── experiment-mode.md     # Minimal TDD guidance + output format
 ```
 
-### v1-subagents
+### v4-subagents
 
 **Architecture**: Separate agent for each TDD phase
 
@@ -202,7 +253,7 @@ Main Agent
 
 **Structure**:
 ```
-v1-subagents/.claude/
+v4-subagents/.claude/
 ├── agents/                    # Subagent definitions
 │   ├── test-list.md
 │   ├── red.md
@@ -214,7 +265,7 @@ v1-subagents/.claude/
     └── tdd-experiment-mode.md # Autonomous mode for experiments
 ```
 
-### v2-single-context
+### v5-single-context
 
 **Architecture**: All phases in one continuous context using inline skills
 
@@ -236,7 +287,7 @@ Single Agent
 
 **Structure**:
 ```
-v2-single-context/.claude/
+v5-single-context/.claude/
 ├── commands/                  # Skill definitions (inline execution)
 │   ├── test-list.md
 │   ├── red.md
@@ -250,14 +301,14 @@ v2-single-context/.claude/
 
 ## Key Differences
 
-| Aspect | v-1-oneshot | v0-baseline | v1-subagents | v2-single-context |
-|--------|-------------|-------------|--------------|-------------------|
-| **TDD** | ❌ No | ✅ Yes (minimal) | ✅ Yes (strict) | ✅ Yes (strict) |
-| **Mechanism** | Direct code | None | `Task(subagent_type: "red")` | `Skill(skill: "red")` |
-| **Context** | Single | Single | Isolated per phase | Shared across phases |
-| **Guidance** | None | Minimal TDD | Specialized agents | Inline skills |
-| **Definitions** | None | None | `agents/*.md` | `commands/*.md` |
-| **Overhead** | None | None | Agent spawning | None |
+| Aspect | v1-oneshot | v2-iterative | v3-basic-tdd | v4-subagents | v5-single-context |
+|--------|------------|--------------|--------------|--------------|-------------------|
+| **TDD** | ❌ No | ❌ No | ✅ Yes (minimal) | ✅ Yes (strict) | ✅ Yes (strict) |
+| **Mechanism** | Direct code | Checklist | None | `Task(subagent_type: "red")` | `Skill(skill: "red")` |
+| **Context** | Single | Single | Single | Isolated per phase | Shared across phases |
+| **Guidance** | None | Plan/checklist | Minimal TDD | Specialized agents | Inline skills |
+| **Definitions** | None | None | None | `agents/*.md` | `commands/*.md` |
+| **Overhead** | None | None | None | Agent spawning | None |
 
 ## Available Katas
 
@@ -284,6 +335,17 @@ Tests TDD with:
 - Pattern generation
 - Symmetry (horizontal and vertical)
 - Spacing calculations
+
+### pixel-art-scaler (Novel)
+**Complexity**: Medium
+**Purpose**: Novel kata to avoid training data contamination
+Tests TDD with:
+- 2D grid transformation
+- Horizontal and vertical pixel replication
+- Edge cases (empty, single pixel, scale 1)
+- Pattern preservation
+
+**Note**: This kata was specifically created for this experiment and is unlikely to exist in training data, providing a fairer comparison between workflows.
 
 ### game-of-life
 **Complexity**: Complex
@@ -324,11 +386,15 @@ experiments/
 │       └── prompt.md
 │
 ├── workflows/                    # Workflow variants to test
-│   ├── v0-baseline/
+│   ├── v1-oneshot/
 │   │   └── .claude/rules/
-│   ├── v1-subagents/
+│   ├── v2-iterative/
+│   │   └── .claude/rules/
+│   ├── v3-basic-tdd/
+│   │   └── .claude/rules/
+│   ├── v4-subagents/
 │   │   └── .claude/{agents,rules}/
-│   └── v2-single-context/
+│   └── v5-single-context/
 │       └── .claude/{commands,rules}/
 │
 ├── runs/                         # Experiment results
@@ -363,7 +429,7 @@ cd experiments
 
 Select:
 1. A Kata (e.g., `string-calculator`, `game-of-life`)
-2. A Workflow variant (e.g., `v0-baseline`, `v1-subagents`, `v2-single-context`)
+2. A Workflow variant (e.g., `v1-oneshot`, `v2-iterative`, `v3-basic-tdd`, `v4-subagents`, `v5-single-context`)
 
 The script will:
 - Create a run directory under `runs/`
@@ -423,49 +489,49 @@ The analyzer generates grouped reports with multiple metric tables per kata:
 
 | Workflow | Run | Duration | Tests | Mass | Passed |
 |----------|-----|----------|-------|------|--------|
-| v0-baseline | 2026-02-09_05-34-30_... | 233s | 4 | 29 | ✅ |
-| v1-subagents | 2026-02-09_05-38-31_... | 511s | 4 | 21 | ✅ |
-| v2-single-context | 2026-02-09_05-47-09_... | 434s | 4 | 33 | ✅ |
+| v3-basic-tdd | 2026-02-09_05-34-30_... | 233s | 4 | 29 | ✅ |
+| v4-subagents | 2026-02-09_05-38-31_... | 511s | 4 | 21 | ✅ |
+| v5-single-context | 2026-02-09_05-47-09_... | 434s | 4 | 33 | ✅ |
 
 ### Token Usage & Context
 
 | Workflow | Run | Tokens | Ctx Util | Cycles |
 |----------|-----|--------|----------|--------|
-| v0-baseline | 2026-02-09_05-34-30_... | 13611 | 6% | 4 |
-| v1-subagents | 2026-02-09_05-38-31_... | 259352 | 17% | 8 |
-| v2-single-context | 2026-02-09_05-47-09_... | 320000 | 29% | 4 |
+| v3-basic-tdd | 2026-02-09_05-34-30_... | 13611 | 6% | 4 |
+| v4-subagents | 2026-02-09_05-38-31_... | 259352 | 17% | 8 |
+| v5-single-context | 2026-02-09_05-47-09_... | 320000 | 29% | 4 |
 
 ### TDD Discipline
 
 | Workflow | Run | Refactorings | Pred Accuracy | Tests Immed |
 |----------|-----|--------------|---------------|-------------|
-| v0-baseline | 2026-02-09_05-34-30_... | 1 | N/A | 1 |
-| v1-subagents | 2026-02-09_05-38-31_... | 1 | 4/4 | 2 |
-| v2-single-context | 2026-02-09_05-47-09_... | 2 | 3/4 | 0 |
+| v3-basic-tdd | 2026-02-09_05-34-30_... | 1 | N/A | 1 |
+| v4-subagents | 2026-02-09_05-38-31_... | 1 | 4/4 | 2 |
+| v5-single-context | 2026-02-09_05-47-09_... | 2 | 3/4 | 0 |
 
 ### Statistics: Core Metrics
 
 | Workflow | Runs | Avg Duration | σ Duration | Avg Mass | σ Mass | Success Rate |
 |----------|------|--------------|------------|----------|--------|-------------|
-| v0-baseline | 3 | 204s | ±42s | 31 | ±2 | 100% |
-| v1-subagents | 3 | 566s | ±42s | 23 | ±3 | 100% |
-| v2-single-context | 3 | 431s | ±18s | 32 | ±1 | 100% |
+| v3-basic-tdd | 3 | 204s | ±42s | 31 | ±2 | 100% |
+| v4-subagents | 3 | 566s | ±42s | 23 | ±3 | 100% |
+| v5-single-context | 3 | 431s | ±18s | 32 | ±1 | 100% |
 
 ### Statistics: Token Usage & Context
 
 | Workflow | Runs | Avg Tokens | σ Tokens | Avg Ctx Util | σ Ctx Util | Avg Cycles | σ Cycles |
 |----------|------|------------|----------|--------------|------------|------------|----------|
-| v0-baseline | 3 | 17303 | ±11600 | 12% | ±4% | 4 | ±0 |
-| v1-subagents | 3 | 262428 | ±2000 | 17% | ±0% | 8 | ±0 |
-| v2-single-context | 3 | 207553 | ±109000 | 28% | ±0% | 4 | ±0 |
+| v3-basic-tdd | 3 | 17303 | ±11600 | 12% | ±4% | 4 | ±0 |
+| v4-subagents | 3 | 262428 | ±2000 | 17% | ±0% | 8 | ±0 |
+| v5-single-context | 3 | 207553 | ±109000 | 28% | ±0% | 4 | ±0 |
 
 ### Statistics: TDD Discipline
 
 | Workflow | Runs | Avg Refactorings | σ Refactorings | Pred Accuracy | Avg Tests Immed | σ Tests Immed |
 |----------|------|------------------|----------------|---------------|-----------------|---------------|
-| v0-baseline | 3 | 0 | ±0 | N/A | 1 | ±0 |
-| v1-subagents | 3 | 2 | ±1 | 12/12 (100%) | 0 | ±1 |
-| v2-single-context | 3 | 2 | ±0 | 9/12 (75%) | 0 | ±0 |
+| v3-basic-tdd | 3 | 0 | ±0 | N/A | 1 | ±0 |
+| v4-subagents | 3 | 2 | ±1 | 12/12 (100%) | 0 | ±1 |
+| v5-single-context | 3 | 2 | ±0 | 9/12 (75%) | 0 | ±0 |
 ```
 
 ### Report Features
@@ -512,11 +578,12 @@ If you are a Claude instance reading this to run an experiment:
 3. **Record everything**: Output a structured summary at the end
 4. **Use correct test commands**: `pnpm test` (never `npm` or `npx vitest`)
 5. **Workflow determines approach**:
-   - **v-1-oneshot**: NO TDD - just read requirements and implement directly, add tests after
-   - **v0-baseline**: Follow minimal TDD rules directly (no tools)
-   - **v1-subagents**: Use `Task` tool with `subagent_type` parameter
-   - **v2-single-context**: Use `Skill` tool with skill name
-6. **For TDD workflows** (v0, v1, v2), follow TDD strictly:
+   - **v1-oneshot**: NO TDD - just read requirements and implement directly, add tests after
+   - **v2-iterative**: NO TDD - use plan/checklist for iterative implementation, add tests after
+   - **v3-basic-tdd**: Follow minimal TDD rules directly (no tools)
+   - **v4-subagents**: Use `Task` tool with `subagent_type` parameter
+   - **v5-single-context**: Use `Skill` tool with skill name
+6. **For TDD workflows** (v3, v4, v5), follow TDD strictly:
    - Test List: Only base functionality, `it.todo()` format
    - Red: One test at a time, make predictions, verify failure
    - Green: Minimal code only, simplest solution

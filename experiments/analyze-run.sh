@@ -212,6 +212,10 @@ analyze_single_run() {
     local test_output=""
     local tests_passed=false
 
+    # Coverage metrics (statements and branches only)
+    local cov_statements=0
+    local cov_branches=0
+
     if [ -f "$run_dir/package.json" ] && [ -d "$run_dir/node_modules" ]; then
         test_output=$(cd "$run_dir" && pnpm test 2>&1) || true
         echo "$test_output"
@@ -226,6 +230,34 @@ analyze_single_run() {
         fi
 
         report_content+="\`\`\`\n$test_output\n\`\`\`\n\n"
+
+        # Run coverage if tests passed
+        if [ "$tests_passed" = true ]; then
+            echo -e "\n${YELLOW}Running Coverage Analysis...${NC}"
+            (cd "$run_dir" && pnpm test:coverage 2>&1) > /dev/null || true
+
+            # Extract coverage from json-summary (statements and branches only)
+            if [ -f "$run_dir/coverage/coverage-summary.json" ] && command -v jq &> /dev/null; then
+                cov_statements=$(jq -r '.total.statements.pct // 0' "$run_dir/coverage/coverage-summary.json" 2>/dev/null | cut -d'.' -f1)
+                cov_branches=$(jq -r '.total.branches.pct // 0' "$run_dir/coverage/coverage-summary.json" 2>/dev/null | cut -d'.' -f1)
+
+                # Ensure valid integers
+                [[ "$cov_statements" =~ ^[0-9]+$ ]] || cov_statements=0
+                [[ "$cov_branches" =~ ^[0-9]+$ ]] || cov_branches=0
+
+                echo -e "  ${CYAN}Coverage:${NC}"
+                echo -e "    Statements: ${cov_statements}%"
+                echo -e "    Branches: ${cov_branches}%"
+
+                report_content+="## Coverage\n\n"
+                report_content+="| Metric | Coverage |\n"
+                report_content+="|--------|----------|\n"
+                report_content+="| Statements | ${cov_statements}% |\n"
+                report_content+="| Branches | ${cov_branches}% |\n\n"
+            else
+                echo -e "  ${YELLOW}Coverage data not available${NC}"
+            fi
+        fi
     else
         echo -e "  ${YELLOW}Run 'pnpm install' in $run_dir to enable test execution${NC}"
         report_content+="Tests not runnable (dependencies not installed)\n\n"
@@ -407,6 +439,8 @@ analyze_single_run() {
         [[ "$test_count" =~ ^[0-9]+$ ]] || test_count=0
         [[ "$todo_count" =~ ^[0-9]+$ ]] || todo_count=0
         [[ "$total_mass" =~ ^[0-9]+$ ]] || total_mass=0
+        [[ "$cov_statements" =~ ^[0-9]+$ ]] || cov_statements=0
+        [[ "$cov_branches" =~ ^[0-9]+$ ]] || cov_branches=0
 
         jq --argjson impl_loc "$impl_loc" \
            --argjson test_loc "$test_loc" \
@@ -421,12 +455,16 @@ analyze_single_run() {
            --argjson pred_correct "$summary_pred_correct" \
            --argjson pred_total "$summary_pred_total" \
            --argjson tests_passed_immediately "$summary_tests_passed_immediately" \
+           --argjson cov_statements "$cov_statements" \
+           --argjson cov_branches "$cov_branches" \
            '.final_metrics.lines_of_code = $impl_loc |
             .final_metrics.test_lines = $test_loc |
             .final_metrics.tests_total = $test_count |
             .final_metrics.todos_remaining = $todo_count |
             .final_metrics.code_mass = $total_mass |
             .final_metrics.tests_passing = $tests_passed |
+            .coverage.statements_pct = $cov_statements |
+            .coverage.branches_pct = $cov_branches |
             .summary_metrics.total_tokens = $total_tokens |
             .summary_metrics.context_utilization_pct = $context_util |
             .summary_metrics.cycle_count = $cycle_count |
@@ -509,9 +547,12 @@ compare_runs() {
                 local pred_c=$(jq -r '.summary_metrics.predictions_correct // 0' "$run_dir/metrics.json")
                 local pred_t=$(jq -r '.summary_metrics.predictions_total // 0' "$run_dir/metrics.json")
                 local immed=$(jq -r '.summary_metrics.tests_passed_immediately // 0' "$run_dir/metrics.json")
+                # Coverage metrics (statements and branches only)
+                local cov_statements=$(jq -r '.coverage.statements_pct // 0' "$run_dir/metrics.json")
+                local cov_branches=$(jq -r '.coverage.branches_pct // 0' "$run_dir/metrics.json")
 
-                # Store as: kata|workflow|run_name|duration|tests|todos|mass|passed|started|tokens|ctx_util|cycles|refacts|pred_c|pred_t|immed
-                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}|${tokens}|${ctx_util}|${cycles}|${refacts}|${pred_c}|${pred_t}|${immed}")
+                # Store as: kata|workflow|run_name|duration|tests|todos|mass|passed|started|tokens|ctx_util|cycles|refacts|pred_c|pred_t|immed|cov_statements|cov_branches
+                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}|${tokens}|${ctx_util}|${cycles}|${refacts}|${pred_c}|${pred_t}|${immed}|${cov_statements}|${cov_branches}")
             fi
         fi
     done
@@ -691,6 +732,23 @@ generate_grouped_report() {
             report_content+="| ${workflow} | ${run_name} | ${refacts} | ${pred_str} | ${immed} |\n"
         done
 
+        # Coverage table
+        report_content+="\n### Coverage\n\n"
+        report_content+="| Workflow | Run | Statements | Branches |\n"
+        report_content+="|----------|-----|------------|----------|\n"
+
+        for entry in "${sorted_entries[@]}"; do
+            local workflow=$(echo "$entry" | cut -d'|' -f2)
+            local run_name=$(echo "$entry" | cut -d'|' -f3)
+            local cov_statements=$(echo "$entry" | cut -d'|' -f17)
+            local cov_branches=$(echo "$entry" | cut -d'|' -f18)
+
+            [[ "$cov_statements" =~ ^[0-9]+$ ]] || cov_statements=0
+            [[ "$cov_branches" =~ ^[0-9]+$ ]] || cov_branches=0
+
+            report_content+="| ${workflow} | ${run_name} | ${cov_statements}% | ${cov_branches}% |\n"
+        done
+
         # Get unique workflows for this kata
         local workflows=()
         for entry in "${kata_entries[@]}"; do
@@ -717,6 +775,8 @@ generate_grouped_report() {
             wf_pred_c[$workflow]=0
             wf_pred_t[$workflow]=0
             wf_immeds[$workflow]=""
+            wf_cov_statements[$workflow]=""
+            wf_cov_branches[$workflow]=""
         done
 
         for entry in "${kata_entries[@]}"; do
@@ -731,6 +791,8 @@ generate_grouped_report() {
             local pc=$(echo "$entry" | cut -d'|' -f14)
             local pt=$(echo "$entry" | cut -d'|' -f15)
             local imm=$(echo "$entry" | cut -d'|' -f16)
+            local covs=$(echo "$entry" | cut -d'|' -f17)
+            local covb=$(echo "$entry" | cut -d'|' -f18)
 
             wf_count[$wf]=$((${wf_count[$wf]} + 1))
             [ "$psd" = "true" ] && wf_passed_count[$wf]=$((${wf_passed_count[$wf]} + 1))
@@ -742,6 +804,8 @@ generate_grouped_report() {
             [[ "$cyc" =~ ^[0-9]+$ ]] && wf_cycles[$wf]="${wf_cycles[$wf]} $cyc"
             [[ "$ref" =~ ^[0-9]+$ ]] && wf_refacts[$wf]="${wf_refacts[$wf]} $ref"
             [[ "$pc" =~ ^[0-9]+$ ]] && wf_pred_c[$wf]=$((${wf_pred_c[$wf]} + pc))
+            [[ "$covs" =~ ^[0-9]+$ ]] && wf_cov_statements[$wf]="${wf_cov_statements[$wf]} $covs"
+            [[ "$covb" =~ ^[0-9]+$ ]] && wf_cov_branches[$wf]="${wf_cov_branches[$wf]} $covb"
             [[ "$pt" =~ ^[0-9]+$ ]] && wf_pred_t[$wf]=$((${wf_pred_t[$wf]} + pt))
             [[ "$imm" =~ ^[0-9]+$ ]] && wf_immeds[$wf]="${wf_immeds[$wf]} $imm"
         done
@@ -831,6 +895,30 @@ generate_grouped_report() {
             fi
         done
 
+        # Statistics Table 4: Coverage
+        report_content+="\n### Statistics: Coverage\n\n"
+        report_content+="| Workflow | Runs | Avg Statements | σ Statements | Avg Branches | σ Branches |\n"
+        report_content+="|----------|------|----------------|--------------|--------------|------------|\n"
+
+        for workflow in "${workflows[@]}"; do
+            local cnt=${wf_count[$workflow]}
+            if [ $cnt -gt 0 ]; then
+                local covss=(${wf_cov_statements[$workflow]})
+                local covbs=(${wf_cov_branches[$workflow]})
+
+                local sum_covs=0; for v in "${covss[@]}"; do sum_covs=$((sum_covs + v)); done
+                local sum_covb=0; for v in "${covbs[@]}"; do sum_covb=$((sum_covb + v)); done
+
+                local avg_covs=0; [ ${#covss[@]} -gt 0 ] && avg_covs=$((sum_covs / ${#covss[@]}))
+                local avg_covb=0; [ ${#covbs[@]} -gt 0 ] && avg_covb=$((sum_covb / ${#covbs[@]}))
+
+                local stddev_covs=$(calc_stddev "${covss[@]}")
+                local stddev_covb=$(calc_stddev "${covbs[@]}")
+
+                report_content+="| ${workflow} | ${cnt} | ${avg_covs}% | ±${stddev_covs}% | ${avg_covb}% | ±${stddev_covb}% |\n"
+            fi
+        done
+
         report_content+="\n"
     done
 
@@ -845,6 +933,8 @@ generate_grouped_report() {
     report_content+="| Refactorings | Number of refactorings applied |\n"
     report_content+="| Pred Accuracy | Prediction accuracy in Red phase (correct/total) |\n"
     report_content+="| Tests Immed | Tests that passed immediately (indicates over-implementation) |\n"
+    report_content+="| Statements | Statement coverage percentage |\n"
+    report_content+="| Branches | Branch coverage percentage |\n"
     report_content+="| σ (Sigma) | Standard deviation - lower = more consistent |\n\n"
 
     report_content+="## Notes\n\n"
@@ -885,8 +975,11 @@ analyze_all() {
                 local pred_c=$(jq -r '.summary_metrics.predictions_correct // 0' "$run/metrics.json")
                 local pred_t=$(jq -r '.summary_metrics.predictions_total // 0' "$run/metrics.json")
                 local immed=$(jq -r '.summary_metrics.tests_passed_immediately // 0' "$run/metrics.json")
+                # Coverage metrics (statements and branches only)
+                local cov_statements=$(jq -r '.coverage.statements_pct // 0' "$run/metrics.json")
+                local cov_branches=$(jq -r '.coverage.branches_pct // 0' "$run/metrics.json")
 
-                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}|${tokens}|${ctx_util}|${cycles}|${refacts}|${pred_c}|${pred_t}|${immed}")
+                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}|${tokens}|${ctx_util}|${cycles}|${refacts}|${pred_c}|${pred_t}|${immed}|${cov_statements}|${cov_branches}")
             fi
 
             echo ""
@@ -983,6 +1076,23 @@ analyze_all() {
             report_content+="| ${workflow} | ${run_name} | ${refacts} | ${pred_str} | ${immed} |\n"
         done
 
+        # Coverage table
+        report_content+="\n### Coverage\n\n"
+        report_content+="| Workflow | Run | Statements | Branches |\n"
+        report_content+="|----------|-----|------------|----------|\n"
+
+        for entry in "${sorted_entries[@]}"; do
+            local workflow=$(echo "$entry" | cut -d'|' -f2)
+            local run_name=$(echo "$entry" | cut -d'|' -f3)
+            local cov_statements=$(echo "$entry" | cut -d'|' -f17)
+            local cov_branches=$(echo "$entry" | cut -d'|' -f18)
+
+            [[ "$cov_statements" =~ ^[0-9]+$ ]] || cov_statements=0
+            [[ "$cov_branches" =~ ^[0-9]+$ ]] || cov_branches=0
+
+            report_content+="| ${workflow} | ${run_name} | ${cov_statements}% | ${cov_branches}% |\n"
+        done
+
         # Get unique workflows for this kata
         local workflows=()
         for entry in "${kata_entries[@]}"; do
@@ -1009,6 +1119,8 @@ analyze_all() {
             wf_pred_c[$workflow]=0
             wf_pred_t[$workflow]=0
             wf_immeds[$workflow]=""
+            wf_cov_statements[$workflow]=""
+            wf_cov_branches[$workflow]=""
         done
 
         for entry in "${kata_entries[@]}"; do
@@ -1023,6 +1135,8 @@ analyze_all() {
             local pc=$(echo "$entry" | cut -d'|' -f14)
             local pt=$(echo "$entry" | cut -d'|' -f15)
             local imm=$(echo "$entry" | cut -d'|' -f16)
+            local covs=$(echo "$entry" | cut -d'|' -f17)
+            local covb=$(echo "$entry" | cut -d'|' -f18)
 
             wf_count[$wf]=$((${wf_count[$wf]} + 1))
             [ "$psd" = "true" ] && wf_passed_count[$wf]=$((${wf_passed_count[$wf]} + 1))
@@ -1034,6 +1148,8 @@ analyze_all() {
             [[ "$cyc" =~ ^[0-9]+$ ]] && wf_cycles[$wf]="${wf_cycles[$wf]} $cyc"
             [[ "$ref" =~ ^[0-9]+$ ]] && wf_refacts[$wf]="${wf_refacts[$wf]} $ref"
             [[ "$pc" =~ ^[0-9]+$ ]] && wf_pred_c[$wf]=$((${wf_pred_c[$wf]} + pc))
+            [[ "$covs" =~ ^[0-9]+$ ]] && wf_cov_statements[$wf]="${wf_cov_statements[$wf]} $covs"
+            [[ "$covb" =~ ^[0-9]+$ ]] && wf_cov_branches[$wf]="${wf_cov_branches[$wf]} $covb"
             [[ "$pt" =~ ^[0-9]+$ ]] && wf_pred_t[$wf]=$((${wf_pred_t[$wf]} + pt))
             [[ "$imm" =~ ^[0-9]+$ ]] && wf_immeds[$wf]="${wf_immeds[$wf]} $imm"
         done
@@ -1123,6 +1239,30 @@ analyze_all() {
             fi
         done
 
+        # Statistics Table 4: Coverage
+        report_content+="\n### Statistics: Coverage\n\n"
+        report_content+="| Workflow | Runs | Avg Statements | σ Statements | Avg Branches | σ Branches |\n"
+        report_content+="|----------|------|----------------|--------------|--------------|------------|\n"
+
+        for workflow in "${workflows[@]}"; do
+            local cnt=${wf_count[$workflow]}
+            if [ $cnt -gt 0 ]; then
+                local covss=(${wf_cov_statements[$workflow]})
+                local covbs=(${wf_cov_branches[$workflow]})
+
+                local sum_covs=0; for v in "${covss[@]}"; do sum_covs=$((sum_covs + v)); done
+                local sum_covb=0; for v in "${covbs[@]}"; do sum_covb=$((sum_covb + v)); done
+
+                local avg_covs=0; [ ${#covss[@]} -gt 0 ] && avg_covs=$((sum_covs / ${#covss[@]}))
+                local avg_covb=0; [ ${#covbs[@]} -gt 0 ] && avg_covb=$((sum_covb / ${#covbs[@]}))
+
+                local stddev_covs=$(calc_stddev "${covss[@]}")
+                local stddev_covb=$(calc_stddev "${covbs[@]}")
+
+                report_content+="| ${workflow} | ${cnt} | ${avg_covs}% | ±${stddev_covs}% | ${avg_covb}% | ±${stddev_covb}% |\n"
+            fi
+        done
+
         report_content+="\n"
     done
 
@@ -1137,6 +1277,8 @@ analyze_all() {
     report_content+="| Refactorings | Number of refactorings applied |\n"
     report_content+="| Pred Accuracy | Prediction accuracy in Red phase (correct/total) |\n"
     report_content+="| Tests Immed | Tests that passed immediately (indicates over-implementation) |\n"
+    report_content+="| Statements | Statement coverage percentage |\n"
+    report_content+="| Branches | Branch coverage percentage |\n"
     report_content+="| σ (Sigma) | Standard deviation - lower = more consistent |\n\n"
 
     report_content+="## Notes\n\n"

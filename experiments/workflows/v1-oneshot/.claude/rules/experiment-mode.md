@@ -4,27 +4,38 @@
 
 Complete the coding exercise **without using TDD** - just implement the solution directly.
 
-- Read the kata requirements
-- Write the implementation code first
-- Add tests after implementation (if you want)
+- Read the kata requirements and Example Mapping
+- Write the implementation code first (based on your understanding)
+- **THEN add tests after implementation** based on the Example Mapping
 - Do NOT follow the Red-Green-Refactor cycle
 - Do NOT wait for human approval
 - "Vibe code" the solution based on the requirements
 
 ## Approach
 
-1. **Read the requirements** from the kata prompt
-2. **Implement the solution** directly in one go
-3. **Optionally add tests** after implementation to verify it works
+1. **Read the requirements** from the kata prompt and Example Mapping
+2. **Implement the solution** directly in one go (code-first, not test-first)
+3. **Add tests after implementation** - create test cases based on the Example Mapping rules and examples
 4. **Run tests** to confirm correctness: `pnpm test`
+5. **Fix any issues** if tests fail (iterate until passing)
 
 ## Philosophy
 
 This is "regular coding" without TDD discipline:
-- No test-first approach
-- No incremental steps
-- Just read requirements and write code
-- Tests are verification, not drivers
+- No test-first approach (implementation comes before tests)
+- No incremental steps (write full solution at once)
+- Just read requirements and write code based on understanding
+- Tests are written **after** to verify correctness (not to drive design)
+- Tests should cover the Example Mapping cases for fair comparison with TDD workflows
+
+## IMPORTANT: Test Coverage
+
+**You MUST add comprehensive tests after implementation** to enable fair comparison with TDD workflows.
+
+- Base your tests on the Example Mapping (rules + examples)
+- Cover the same scenarios that TDD workflows would test
+- This ensures we can compare code mass, test count, and other metrics fairly
+- Without tests, we cannot measure whether the implementation is correct
 
 ## Running Tests
 
@@ -54,7 +65,8 @@ After completing the implementation, write `experiment-summary.md` with this str
 |-------|---------------|--------------|
 | Requirements Analysis | X | X.X |
 | Implementation | X | X.X |
-| Testing (if added) | X | X.X |
+| Test Writing | X | X.X |
+| Verification & Fixes | X | X.X |
 | **Total** | **X** | **X.X** |
 
 ### Token Usage
@@ -63,7 +75,8 @@ After completing the implementation, write `experiment-summary.md` with this str
 |-------|-------------|
 | Requirements Analysis | X |
 | Implementation | X |
-| Testing | X |
+| Test Writing | X |
+| Verification & Fixes | X |
 | **Total** | **X** |
 
 ### Context Utilization
@@ -74,7 +87,8 @@ After completing the implementation, write `experiment-summary.md` with this str
 |-------|-------------------|-------------------|-------------|
 | After Requirements | X | X | X% |
 | After Implementation | X | X | X% |
-| After Testing | X | X | X% |
+| After Test Writing | X | X | X% |
+| After Verification | X | X | X% |
 | **Final** | X | X | X% |
 
 ## Implementation Approach

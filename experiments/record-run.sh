@@ -93,11 +93,13 @@ setup_run() {
   "scripts": {
     "test": "vitest run",
     "test:unit:basic": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage --coverage.reporter=json-summary"
   },
   "devDependencies": {
     "typescript": "^5.3.0",
-    "vitest": "^1.0.0"
+    "vitest": "^1.0.0",
+    "@vitest/coverage-v8": "^1.0.0"
   }
 }
 EOF
@@ -126,6 +128,12 @@ export default defineConfig({
   test: {
     include: ['src/**/*.spec.ts'],
     globals: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['json-summary', 'text'],
+      include: ['src/**/*.ts'],
+      exclude: ['src/**/*.spec.ts'],
+    },
   },
 });
 EOF
