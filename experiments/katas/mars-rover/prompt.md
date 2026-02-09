@@ -76,14 +76,7 @@ Explanation: Rover traces 3 sides of a 1x1 square
 
 ## Task
 
-Using TDD, implement the Mars Rover with the following API:
-
-```typescript
-type Direction = 'N' | 'E' | 'S' | 'W';
-type Position = { x: number; y: number; direction: Direction };
-
-function execute(position: Position, commands: string): Position;
-```
+Using TDD, implement the Mars Rover based on the rules and examples above.
 
 ## Expected Output Files
 

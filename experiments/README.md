@@ -555,6 +555,25 @@ Create `katas/<kata-name>/prompt.md` with:
 - Expected file paths
 - Constraints
 
+#### API Specification Guidelines
+
+**Do NOT specify the API** in kata prompts unless the original kata definition includes a canonical API.
+
+| Kata | API in Prompt? | Rationale |
+|------|----------------|-----------|
+| **String Calculator** | ✅ Yes | [Roy Osherove's original](https://osherove.com/tdd-kata-1) defines `int add(String numbers)` |
+| **Mars Rover** | ❌ No | [kata-log.rocks](https://kata-log.rocks/mars-rover-kata) - no canonical signature |
+| **Diamond** | ❌ No | [Various implementations](http://natpryce.com/articles/000807.html) use different signatures |
+| **Game of Life** | ❌ No | [codingdojo.org](https://codingdojo.org/kata/GameOfLife/) - just describes input/output |
+| **Novel katas** | ❌ No | Let TDD drive the design |
+
+**Why avoid pre-specified APIs:**
+1. **TDD philosophy**: Design should emerge from tests, not be dictated upfront
+2. **Real-world simulation**: Actual TDD starts with requirements, not function signatures
+3. **Workflow differentiation**: Better workflows might produce better APIs - pre-specification hides this
+
+The examples in the prompt already make input/output clear enough for the AI to infer an appropriate API.
+
 ### New Workflow Variant
 
 Create `workflows/<variant-name>/.claude/` with:

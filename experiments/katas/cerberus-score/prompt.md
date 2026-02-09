@@ -54,11 +54,7 @@ Output: 26  (2 sets of 3 = 24, plus 1 × 2 = 26)
 
 ## Task
 
-Using TDD, implement the Cerberus Score Calculator with the following API:
-
-```typescript
-function scoreCerberus(cardCount: number): number;
-```
+Using TDD, implement the Cerberus Score Calculator based on the rules and examples above.
 
 ## Expected Output Files
 

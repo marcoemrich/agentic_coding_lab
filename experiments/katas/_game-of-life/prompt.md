@@ -50,14 +50,9 @@ Coordinates Gen 1: `[]` (empty)
 
 ## Task
 
-Using TDD, implement the Game of Life with the following API:
+Using TDD, implement the Game of Life based on the rules and examples above.
 
-```typescript
-type Cell = { x: number; y: number };
-type Grid = Cell[];
-
-function nextGeneration(livingCells: Grid): Grid;
-```
+The implementation should accept an arbitrary grid of living cells and output the next generation.
 
 ## Expected Output Files
 

@@ -115,15 +115,9 @@ Output:
 
 ## Task
 
-Using TDD, implement the Pixel Art Scaler with the following API:
+Using TDD, implement the Pixel Art Scaler based on the rules and examples above.
 
-```typescript
-type PixelGrid = string[];
-
-function scalePixelArt(image: PixelGrid, scale: number): PixelGrid;
-```
-
-Where each string in the array represents one row of pixels.
+Each string in the input/output array represents one row of pixels.
 
 ## Expected Output Files
 

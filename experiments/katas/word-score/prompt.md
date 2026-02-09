@@ -54,11 +54,7 @@ Output: 52  (H=8 + e=5 + L=12 + L=12 + o=15)
 
 ## Task
 
-Using TDD, implement the Word Score Calculator with the following API:
-
-```typescript
-function wordScore(word: string): number;
-```
+Using TDD, implement the Word Score Calculator based on the rules and examples above.
 
 ## Expected Output Files
 

@@ -74,13 +74,9 @@ For a letter at position `n` (A=1, B=2, C=3...):
 
 ## Task
 
-Using TDD, implement the Diamond Generator with the following API:
+Using TDD, implement the Diamond Generator based on the rules and examples above.
 
-```typescript
-function makeDiamond(letter: string): string;
-```
-
-The function should:
+The output should:
 - Accept a single uppercase letter ('A' to 'Z')
 - Return a string with newline characters (`\n`) separating rows
 - Each row should be exactly `width` characters (padded with spaces)
