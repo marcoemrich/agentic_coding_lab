@@ -249,5 +249,9 @@ run_claude "$run_dir" "$selected_kata"
 # Record end metrics
 record_end "$run_dir" "$start_time"
 
+# Run analysis automatically
+echo -e "\n${YELLOW}Running analysis...${NC}"
+"$EXPERIMENTS_DIR/analyze-run.sh" "$run_dir"
+
 # Print completion message
 print_completion "$run_dir"

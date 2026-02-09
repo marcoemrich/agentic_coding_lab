@@ -9,8 +9,9 @@ This experiment framework evaluates different approaches to AI-assisted Test-Dri
 **How does the architecture of TDD workflow automation affect code quality, efficiency, and discipline adherence?**
 
 Specifically, we compare:
-- **Subagent-based workflows**: Each TDD phase (Test List, Red, Green, Refactor) runs in a separate, specialized agent with isolated context
-- **Single-context workflows**: All TDD phases run within one continuous conversation context using inline skills
+- **v0-baseline**: Minimal guidance - just "use TDD" with no detailed rules
+- **v1-subagents**: Each TDD phase runs in a separate, specialized agent with isolated context
+- **v2-single-context**: All TDD phases run within one continuous conversation context using inline skills
 
 ### Why This Matters
 
@@ -33,14 +34,14 @@ Each experiment run uses:
 1. A **Kata** (coding exercise) with a standardized prompt
 2. A **Workflow** variant (set of rules and agents/skills)
 
-The Kata provides a consistent task (e.g., String Calculator) so results are comparable across workflow variants.
+The Kata provides a consistent task (e.g., String Calculator, Game of Life) so results are comparable across workflow variants.
 
 ### Process
 1. Claude receives the Kata prompt and Example Mapping
 2. Claude follows the workflow rules to complete TDD:
    - Create test list (`it.todo()` entries)
    - For each test: Red → Green → Refactor cycle
-3. No human intervention during the run (HITL disabled)
+3. No human intervention during the run (HITL disabled for experiments)
 4. Claude records decisions and metrics throughout
 
 ### Output / Metrics
@@ -54,6 +55,7 @@ The Kata provides a consistent task (e.g., String Calculator) so results are com
 | **Lines of Code** | Size of implementation + tests |
 | **Prediction Accuracy** | Red phase: correct predictions / total predictions |
 | **Refactoring Count** | Number of improvements applied |
+| **Standard Deviation (σ)** | Stability/consistency across multiple runs |
 
 ### Evaluation Criteria
 
@@ -63,10 +65,36 @@ A workflow is considered **better** if it produces:
 - ✅ Higher prediction accuracy (better understanding)
 - ✅ More refactorings applied (cleaner code)
 - ✅ All tests passing (correct implementation)
+- ✅ Lower standard deviation (more consistent results)
 
 ## Workflow Variants
 
-### v1-subagents (Baseline)
+### v0-baseline (Control)
+
+**Architecture**: Minimal rules, no specialized agents or skills
+
+```
+Single Agent
+    └── Just "use TDD" with basic guidance
+```
+
+**Purpose**: Control group to measure the value added by structured workflows.
+
+**Characteristics**:
+- Minimal TDD rules (no phase-specific guidance)
+- No agent spawning, no skill invocation
+- Claude decides how to structure its TDD process
+- Lowest overhead, maximum flexibility
+
+**Structure**:
+```
+v0-baseline/.claude/
+└── rules/
+    ├── experiment-mode.md     # Minimal TDD guidance + output format
+    └── tdd_with_ts_and_vitest.md
+```
+
+### v1-subagents
 
 **Architecture**: Separate agent for each TDD phase
 
@@ -96,12 +124,11 @@ v1-subagents/.claude/
 │   └── refactor.md
 └── rules/                     # Workflow rules
     ├── tdd.md                 # Main TDD rules (uses Task tool)
-    ├── human-in-the-loop.md
     ├── tdd_with_ts_and_vitest.md
-    └── tdd-experiment-mode.md # Disables HITL for experiments
+    └── tdd-experiment-mode.md # Autonomous mode for experiments
 ```
 
-### v2-single-context (Alternative)
+### v2-single-context
 
 **Architecture**: All phases in one continuous context using inline skills
 
@@ -131,50 +158,65 @@ v2-single-context/.claude/
 │   └── refactor.md
 └── rules/                     # Workflow rules
     ├── tdd.md                 # Main TDD rules (uses Skill tool)
-    ├── human-in-the-loop.md
     ├── tdd_with_ts_and_vitest.md
-    └── tdd-experiment-mode.md # Disables HITL for experiments
+    └── tdd-experiment-mode.md # Autonomous mode for experiments
 ```
 
-## Key Difference
+## Key Differences
 
-| Aspect | v1-subagents | v2-single-context |
-|--------|--------------|-------------------|
-| **Mechanism** | `Task(subagent_type: "red")` | `Skill(skill: "red")` |
-| **Context** | Isolated per phase | Shared across all phases |
-| **State transfer** | Via prompt parameters | In-memory (conversation) |
-| **Definitions** | `agents/*.md` | `commands/*.md` |
-| **Overhead** | Agent spawning | None |
+| Aspect | v0-baseline | v1-subagents | v2-single-context |
+|--------|-------------|--------------|-------------------|
+| **Mechanism** | None | `Task(subagent_type: "red")` | `Skill(skill: "red")` |
+| **Context** | Single | Isolated per phase | Shared across phases |
+| **Guidance** | Minimal | Specialized agents | Inline skills |
+| **Definitions** | None | `agents/*.md` | `commands/*.md` |
+| **Overhead** | None | Agent spawning | None |
+
+## Available Katas
+
+### string-calculator
+Simple kata for validating workflow mechanics. Tests basic TDD cycle with:
+- Empty input handling
+- Single value parsing
+- Multiple value summation
+
+### game-of-life
+More complex kata with algorithmic challenges:
+- Infinite grid (sparse representation)
+- 4 Game of Life rules (underpopulation, survival, overpopulation, reproduction)
+- Coordinate-based neighbor calculations
 
 ## Directory Structure
 
 ```
 experiments/
 ├── katas/                        # Standardized coding exercises
-│   └── string-calculator/
-│       ├── prompt.md             # Task description for Claude
-│       └── example-mapping.png   # (Optional) Visual input
+│   ├── string-calculator/
+│   │   └── prompt.md
+│   └── game-of-life/
+│       └── prompt.md
 │
 ├── workflows/                    # Workflow variants to test
+│   ├── v0-baseline/
+│   │   └── .claude/rules/
 │   ├── v1-subagents/
-│   │   └── .claude/
-│   │       ├── agents/           # test-list.md, red.md, green.md, refactor.md
-│   │       └── rules/            # tdd.md, human-in-the-loop.md, etc.
-│   │
+│   │   └── .claude/{agents,rules}/
 │   └── v2-single-context/
-│       └── .claude/
-│           ├── commands/         # test-list.md, red.md, green.md, refactor.md
-│           └── rules/            # tdd.md, human-in-the-loop.md, etc.
+│       └── .claude/{commands,rules}/
 │
 ├── runs/                         # Experiment results
 │   └── YYYY-MM-DD_HH-MM-SS_kata_workflow/
-│       ├── .claude/              # Workflow config used for this run
+│       ├── .claude/              # Workflow config used
 │       ├── src/                  # Generated code
-│       │   ├── string-calculator.ts
-│       │   └── string-calculator.spec.ts
 │       ├── metrics.json          # Recorded metrics
-│       ├── prompt.md             # Kata prompt used
-│       └── package.json          # Test runner config
+│       ├── analysis-report.md    # Generated by analyzer
+│       └── prompt.md             # Kata prompt used
+│
+├── docker/                       # Containerized experiment environment
+│   ├── Dockerfile
+│   ├── docker-compose.yml
+│   ├── run-batch.sh              # Batch runner for all combinations
+│   └── README.md
 │
 ├── record-run.sh                 # Interactive: create new experiment run
 ├── analyze-run.sh                # Analyze and compare completed runs
@@ -183,7 +225,9 @@ experiments/
 
 ## Running Experiments
 
-### Step 1: Create a new run
+### Option A: Local Execution
+
+#### Step 1: Create a new run
 
 ```bash
 cd experiments
@@ -191,159 +235,85 @@ cd experiments
 ```
 
 Select:
-1. A Kata (e.g., `string-calculator`)
-2. A Workflow variant (e.g., `v1-subagents` or `v2-single-context`)
+1. A Kata (e.g., `string-calculator`, `game-of-life`)
+2. A Workflow variant (e.g., `v0-baseline`, `v1-subagents`, `v2-single-context`)
 
-This creates a new directory under `runs/` with all necessary configuration.
+The script will:
+- Create a run directory under `runs/`
+- Copy workflow configuration
+- Install dependencies
+- Start Claude Code automatically
+- Run analysis after completion
 
-### Step 2: Execute the experiment
-
-```bash
-cd runs/<created-run-directory>/
-pnpm install
-
-# Start Claude Code in this directory
-claude
-
-# Then give Claude the prompt:
-# "Read prompt.md and complete the TDD exercise following the workflow rules."
-```
-
-Claude will:
-1. Read the Kata prompt
-2. Follow the workflow rules (from `.claude/`)
-3. Complete the full TDD cycle autonomously
-4. Output a structured summary
-
-### Step 3: Analyze results
+#### Step 2: Analyze results
 
 ```bash
 # Analyze a single run
 ./analyze-run.sh runs/<run-name>/
 
-# Or compare multiple runs interactively
+# Analyze all runs
+./analyze-run.sh --all
+
+# Or compare interactively
 ./analyze-run.sh
+# Select option 2 (Compare runs), then 'all'
 ```
 
-The analyzer reports:
-- Code metrics (LOC, test count)
-- APP mass calculation
-- Test pass/fail status
-- Comparison tables (when comparing runs)
+### Option B: Docker Execution (Recommended)
 
-## Expected Output from Claude
+For isolated, reproducible experiments:
 
-After completing a run, Claude should write `experiment-summary.md` with this structure:
+```bash
+cd experiments/docker
+
+# Setup
+cp .env.example .env
+# Edit .env with your ANTHROPIC_API_KEY
+
+# Build
+docker compose build
+
+# Run interactive experiment
+docker compose run -it --rm experiment bash
+./record-run.sh
+
+# Or run all combinations automatically
+docker compose --profile batch run --rm batch
+```
+
+See `docker/README.md` for full documentation.
+
+## Analysis Reports
+
+The analyzer generates grouped reports with statistics:
+
+### Sample Output
 
 ```markdown
-# TDD Experiment Summary
+## Kata: string-calculator
 
-## Configuration
-- **Workflow**: v1-subagents
-- **Kata**: String Calculator
-- **Timestamp**: 2026-02-09
-- **Start time**: 2026-02-09T01:07:00+01:00
+| Workflow | Run | Duration | Tests | Todos | Mass | Passed |
+|----------|-----|----------|-------|-------|------|--------|
+| v0-baseline | 2026-02-09_02-08-03_... | 165s | 4 | 0 | 36 | ✅ |
+| v1-subagents | 2026-02-09_01-47-38_... | 210s | 4 | 0 | 38 | ✅ |
+| v1-subagents | 2026-02-09_02-32-40_... | 195s | 4 | 0 | 40 | ✅ |
+| v2-single-context | 2026-02-09_01-36-53_... | 175s | 4 | 0 | 35 | ✅ |
 
-## Duration & Timings
+### Statistics for string-calculator
 
-### Total Duration
-- **Total experiment time**: ~5 minutes 9 seconds (309,418 ms)
-
-### Phase Timings
-
-| Phase | Agent | Duration (ms) | Duration (s) |
-|-------|-------|---------------|--------------|
-| Test List | test-list | 30,875 | 30.9 |
-| Cycle 1 - Red | red | 30,922 | 30.9 |
-| Cycle 1 - Green | green | 19,163 | 19.2 |
-| Cycle 1 - Refactor | refactor | 30,920 | 30.9 |
-| ... | ... | ... | ... |
-| **Total** | | **389,388** | **389.4** |
-
-### Token Usage by Phase
-
-| Phase | Tokens Used |
-|-------|-------------|
-| Test List | 20,905 |
-| Cycle 1 (R/G/R) | 21,507 + 20,529 + 21,863 = 63,899 |
-| ... | ... |
-| **Total** | **277,106** |
-
-### Context Utilization
-
-**Context window size**: 200,000 tokens (Opus 4.6)
-
-| Phase | Tokens Used | Context Remaining | Utilization |
-|-------|-------------|-------------------|-------------|
-| Test List | 20,905 | 179,095 | 10.5% |
-| Cycle 1 - Red | 21,507 | 178,493 | 10.8% |
-| Cycle 1 - Green | 20,529 | 179,471 | 10.3% |
-| Cycle 1 - Refactor | 21,863 | 178,137 | 10.9% |
-| ... | ... | ... | ... |
-| **Main Context (end)** | ~15,000 | ~185,000 | ~7.5% |
-
-**Note**: For v1-subagents, each agent starts with fresh context. Main context accumulates orchestration overhead only.
-
-### Average Cycle Time
-- **Average per TDD cycle**: ~65.1 seconds (Red + Green + Refactor)
-- **Average Red phase**: 27.9 seconds
-- **Average Green phase**: 18.5 seconds
-- **Average Refactor phase**: 43.3 seconds
-
-## Test List
-1. should return 0 for empty string
-2. should return the number for a single number
-3. should return sum for two comma-separated numbers
-4. should return sum for multiple comma-separated numbers
-
-## Cycle Details
-
-| # | Test | Red Prediction | Green Approach | Refactor | Mass |
-|---|------|----------------|----------------|----------|------|
-| 1 | Empty string → 0 | ✅ Expected 0, Received undefined | Hardcoded `return 0` | No changes needed | 2 |
-| 2 | Single number → number | ✅ Expected 5, Received 0 | Added if/return | No changes | 9 |
-| 3 | Two numbers → sum | ✅ Expected 3, Received NaN | Added split/reduce | Renamed variables | 33 |
-| 4 | Multiple numbers → sum | ✅ Predicted pass | No changes needed | No changes needed | 33 |
-
-## Final Metrics
-- **Total tests**: 4
-- **All passing**: ✅
-- **Final code mass**: 33
-- **Refactorings applied**: 1 (naming improvement in cycle 3)
-- **Prediction accuracy**: 4/4 = 100%
-
-## Code
-
-### Implementation (`src/string-calculator.ts`)
-```typescript
-export function add(numbers: string): number {
-  if (numbers === "") return 0;
-  const numberStrings = numbers.split(",");
-  return numberStrings.reduce((sum, numStr) => sum + Number(numStr), 0);
-}
+| Workflow | Runs | Avg Duration | σ Duration | Avg Mass | σ Mass | Success Rate |
+|----------|------|--------------|------------|----------|--------|-------------|
+| v0-baseline | 1 | 165s | ±0s | 36 | ±0 | 100% |
+| v1-subagents | 2 | 202s | ±7s | 39 | ±1 | 100% |
+| v2-single-context | 1 | 175s | ±0s | 35 | ±0 | 100% |
 ```
 
-### Tests (`src/string-calculator.spec.ts`)
-```typescript
-import { describe, it, expect } from "vitest";
-import { add } from "./string-calculator.js";
+### Report Features
 
-describe("String Calculator", () => {
-  it("should return 0 for empty string", () => {
-    expect(add("")).toBe(0);
-  });
-  // ... more tests
-});
-```
-
-## Observations
-
-1. **Test 4 passed immediately** - The split/reduce implementation naturally generalized.
-
-2. **Prediction accuracy was 100%** - Good understanding of codebase evolution.
-
-3. **Single refactoring applied** - Variable naming improvement in cycle 3.
-```
+- **Grouped by Kata**: Separate tables per kata (values only comparable within same kata)
+- **Sorted by Workflow**: Same workflow types appear together for easy comparison
+- **Standard Deviation (σ)**: Shows consistency across multiple runs
+- **Success Rate**: Percentage of runs with all tests passing
 
 ## Adding New Experiments
 
@@ -362,6 +332,13 @@ Create `workflows/<variant-name>/.claude/` with:
 - `agents/*.md` - Agent definitions (if using subagents)
 - `commands/*.md` - Skill definitions (if using inline skills)
 
+## Human-in-the-Loop (HITL)
+
+HITL checkpoints are **disabled** for automated experiments. To re-enable HITL for interactive development, see `/HUMAN-IN-THE-LOOP.md` in the project root for:
+- Phase-specific HITL instructions
+- Checkpoint templates
+- Recovery procedures
+
 ## Context for AI Assistants
 
 If you are a Claude instance reading this to run an experiment:
@@ -376,5 +353,6 @@ If you are a Claude instance reading this to run an experiment:
    - Refactor: Evaluate naming first, calculate APP mass
 5. **Use correct test commands**: `pnpm test:unit:basic` (never `npm` or `npx vitest`)
 6. **Workflow determines mechanism**:
+   - v0-baseline: Follow minimal TDD rules directly
    - v1-subagents: Use `Task` tool with `subagent_type` parameter
    - v2-single-context: Use `Skill` tool with skill name

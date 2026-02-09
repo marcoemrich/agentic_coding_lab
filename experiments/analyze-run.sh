@@ -293,23 +293,25 @@ compare_runs() {
         return
     fi
 
-    echo -e "\n${YELLOW}Select runs to compare (e.g., 1,2,3):${NC} "
+    echo -e "\n${YELLOW}Select runs to compare (e.g., 1,2,3 or 'all'):${NC} "
     read -r selection
 
-    IFS=',' read -ra indices <<< "$selection"
-
-    # Generate comparison report
-    local comparison_file="$RUNS_DIR/comparison-$(date +%Y%m%d-%H%M%S).md"
-    local comparison_content="# Experiment Comparison Report\n\n"
-    comparison_content+="Generated: $(date -Iseconds)\n\n"
-    comparison_content+="## Summary Table\n\n"
-    comparison_content+="| Run | Kata | Workflow | Duration | Tests | Mass |\n"
-    comparison_content+="|-----|------|----------|----------|-------|------|\n"
+    local indices=()
+    if [ "$selection" = "all" ]; then
+        # Select all runs
+        for i in $(seq 1 ${#runs[@]}); do
+            indices+=("$i")
+        done
+    else
+        IFS=',' read -ra indices <<< "$selection"
+    fi
 
     echo -e "\n${BLUE}═══════════════════════════════════════════════════════════${NC}"
     echo -e "${BLUE}  Comparison Report${NC}"
     echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
 
+    # Collect all run data first
+    local run_data=()
     for idx in "${indices[@]}"; do
         idx=$((idx - 1))
         if [ $idx -ge 0 ] && [ $idx -lt ${#runs[@]} ]; then
@@ -319,64 +321,361 @@ compare_runs() {
             # Analyze (also saves individual report)
             analyze_single_run "$run_dir"
 
-            # Extract data for comparison table
+            # Extract data
             if [ -f "$run_dir/metrics.json" ] && command -v jq &> /dev/null; then
-                local kata=$(jq -r '.kata' "$run_dir/metrics.json")
-                local workflow=$(jq -r '.workflow' "$run_dir/metrics.json")
-                local duration=$(jq -r '.duration_seconds // "N/A"' "$run_dir/metrics.json")
-                local tests=$(jq -r '.final_metrics.tests_total // "N/A"' "$run_dir/metrics.json")
-                local mass=$(jq -r '.final_metrics.code_mass // "N/A"' "$run_dir/metrics.json")
+                local kata=$(jq -r '.kata // "unknown"' "$run_dir/metrics.json")
+                local workflow=$(jq -r '.workflow // "unknown"' "$run_dir/metrics.json")
+                local duration=$(jq -r '.duration_seconds // 0' "$run_dir/metrics.json")
+                local tests=$(jq -r '.final_metrics.tests_total // 0' "$run_dir/metrics.json")
+                local todos=$(jq -r '.final_metrics.todos_remaining // 0' "$run_dir/metrics.json")
+                local mass=$(jq -r '.final_metrics.code_mass // 0' "$run_dir/metrics.json")
+                local passed=$(jq -r '.final_metrics.tests_passing // false' "$run_dir/metrics.json")
+                local started=$(jq -r '.started_at // ""' "$run_dir/metrics.json")
 
-                comparison_content+="| $run_name | $kata | $workflow | ${duration}s | $tests | $mass |\n"
+                # Store as: kata|workflow|run_name|duration|tests|todos|mass|passed|started
+                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}")
             fi
         fi
     done
 
-    comparison_content+="\n## Detailed Reports\n\n"
-    comparison_content+="Individual analysis reports saved in each run directory.\n"
+    # Generate comparison report with grouped tables
+    generate_grouped_report "${run_data[@]}"
+}
 
-    echo -e "$comparison_content" > "$comparison_file"
+# Calculate standard deviation (integer approximation)
+# Usage: calc_stddev value1 value2 value3 ...
+calc_stddev() {
+    local values=("$@")
+    local count=${#values[@]}
+
+    if [ $count -lt 2 ]; then
+        echo "0"
+        return
+    fi
+
+    # Calculate mean
+    local sum=0
+    local valid_count=0
+    for val in "${values[@]}"; do
+        if [[ "$val" =~ ^[0-9]+$ ]]; then
+            sum=$((sum + val))
+            valid_count=$((valid_count + 1))
+        fi
+    done
+
+    if [ $valid_count -lt 2 ]; then
+        echo "0"
+        return
+    fi
+
+    local mean=$((sum / valid_count))
+
+    # Calculate sum of squared differences
+    local sq_diff_sum=0
+    for val in "${values[@]}"; do
+        if [[ "$val" =~ ^[0-9]+$ ]]; then
+            local diff=$((val - mean))
+            sq_diff_sum=$((sq_diff_sum + diff * diff))
+        fi
+    done
+
+    # Variance
+    local variance=$((sq_diff_sum / valid_count))
+
+    if [ $variance -eq 0 ]; then
+        echo "0"
+        return
+    fi
+
+    # Integer square root using binary search (safer than Newton's method)
+    local low=0
+    local high=$variance
+    local mid=0
+    local result=0
+
+    while [ $low -le $high ]; do
+        mid=$(( (low + high) / 2 ))
+        local sq=$((mid * mid))
+        if [ $sq -eq $variance ]; then
+            echo "$mid"
+            return
+        elif [ $sq -lt $variance ]; then
+            result=$mid
+            low=$((mid + 1))
+        else
+            high=$((mid - 1))
+        fi
+    done
+
+    echo "$result"
+}
+
+# Generate report with separate tables per kata, sorted by workflow
+generate_grouped_report() {
+    local run_data=("$@")
+    local comparison_file="$RUNS_DIR/comparison-$(date +%Y%m%d-%H%M%S).md"
+
+    local report_content="# Experiment Comparison Report\n\n"
+    report_content+="Generated: $(date -Iseconds)\n\n"
+
+    # Get unique katas (sorted)
+    local katas=()
+    for entry in "${run_data[@]}"; do
+        local kata=$(echo "$entry" | cut -d'|' -f1)
+        if [[ ! " ${katas[*]} " =~ " ${kata} " ]]; then
+            katas+=("$kata")
+        fi
+    done
+    IFS=$'\n' katas=($(sort <<< "${katas[*]}")); unset IFS
+
+    # Generate table for each kata
+    for kata in "${katas[@]}"; do
+        report_content+="## Kata: ${kata}\n\n"
+        report_content+="| Workflow | Run | Duration | Tests | Todos | Mass | Passed |\n"
+        report_content+="|----------|-----|----------|-------|-------|------|--------|\n"
+
+        # Filter and sort entries for this kata by workflow, then by timestamp
+        local kata_entries=()
+        for entry in "${run_data[@]}"; do
+            local entry_kata=$(echo "$entry" | cut -d'|' -f1)
+            if [ "$entry_kata" = "$kata" ]; then
+                kata_entries+=("$entry")
+            fi
+        done
+
+        # Sort by workflow (field 2), then by started timestamp (field 9)
+        IFS=$'\n' sorted_entries=($(for e in "${kata_entries[@]}"; do echo "$e"; done | sort -t'|' -k2,2 -k9,9)); unset IFS
+
+        for entry in "${sorted_entries[@]}"; do
+            local workflow=$(echo "$entry" | cut -d'|' -f2)
+            local run_name=$(echo "$entry" | cut -d'|' -f3)
+            local duration=$(echo "$entry" | cut -d'|' -f4)
+            local tests=$(echo "$entry" | cut -d'|' -f5)
+            local todos=$(echo "$entry" | cut -d'|' -f6)
+            local mass=$(echo "$entry" | cut -d'|' -f7)
+            local passed=$(echo "$entry" | cut -d'|' -f8)
+
+            local passed_icon="❌"
+            if [ "$passed" = "true" ]; then
+                passed_icon="✅"
+            fi
+
+            report_content+="| ${workflow} | ${run_name} | ${duration}s | ${tests} | ${todos} | ${mass} | ${passed_icon} |\n"
+        done
+
+        # Calculate averages and stddev for this kata
+        report_content+="\n### Statistics for ${kata}\n\n"
+        report_content+="| Workflow | Runs | Avg Duration | σ Duration | Avg Mass | σ Mass | Success Rate |\n"
+        report_content+="|----------|------|--------------|------------|----------|--------|-------------|\n"
+
+        # Get unique workflows for this kata
+        local workflows=()
+        for entry in "${kata_entries[@]}"; do
+            local wf=$(echo "$entry" | cut -d'|' -f2)
+            if [[ ! " ${workflows[*]} " =~ " ${wf} " ]]; then
+                workflows+=("$wf")
+            fi
+        done
+        IFS=$'\n' workflows=($(sort <<< "${workflows[*]}")); unset IFS
+
+        for workflow in "${workflows[@]}"; do
+            local count=0
+            local total_duration=0
+            local total_mass=0
+            local passed_count=0
+            local durations=()
+            local masses=()
+
+            for entry in "${kata_entries[@]}"; do
+                local entry_wf=$(echo "$entry" | cut -d'|' -f2)
+                if [ "$entry_wf" = "$workflow" ]; then
+                    local dur=$(echo "$entry" | cut -d'|' -f4)
+                    local mss=$(echo "$entry" | cut -d'|' -f7)
+                    local psd=$(echo "$entry" | cut -d'|' -f8)
+
+                    if [[ "$dur" =~ ^[0-9]+$ ]]; then
+                        total_duration=$((total_duration + dur))
+                        durations+=("$dur")
+                    fi
+                    if [[ "$mss" =~ ^[0-9]+$ ]]; then
+                        total_mass=$((total_mass + mss))
+                        masses+=("$mss")
+                    fi
+                    [ "$psd" = "true" ] && passed_count=$((passed_count + 1))
+                    count=$((count + 1))
+                fi
+            done
+
+            if [ $count -gt 0 ]; then
+                local avg_duration=$((total_duration / count))
+                local avg_mass=$((total_mass / count))
+                local success_rate=$((passed_count * 100 / count))
+
+                local stddev_duration=$(calc_stddev "${durations[@]}")
+                local stddev_mass=$(calc_stddev "${masses[@]}")
+
+                report_content+="| ${workflow} | ${count} | ${avg_duration}s | ±${stddev_duration}s | ${avg_mass} | ±${stddev_mass} | ${success_rate}% |\n"
+            fi
+        done
+
+        report_content+="\n"
+    done
+
+    report_content+="## Notes\n\n"
+    report_content+="- Tables are grouped by **Kata** (experiments are only comparable within the same kata)\n"
+    report_content+="- Within each kata, runs are sorted by **Workflow**, then by **timestamp**\n"
+    report_content+="- **σ (Sigma)** = Standard deviation - lower values indicate more consistent/stable results\n"
+    report_content+="- Individual analysis reports are saved in each run directory\n"
+
+    echo -e "$report_content" > "$comparison_file"
     echo -e "\n${GREEN}Saved comparison report to: $comparison_file${NC}"
 }
 
 analyze_all() {
     echo -e "\n${CYAN}Analyzing all runs...${NC}"
 
-    local all_report="$RUNS_DIR/all-runs-analysis-$(date +%Y%m%d-%H%M%S).md"
-    local all_content="# All Experiments Analysis\n\n"
-    all_content+="Generated: $(date -Iseconds)\n\n"
-    all_content+="## Summary\n\n"
-    all_content+="| Run | Kata | Workflow | Duration | Tests | Todos | Mass | Passed |\n"
-    all_content+="|-----|------|----------|----------|-------|-------|------|--------|\n"
+    # Collect all run data
+    local run_data=()
 
     for run in "$RUNS_DIR"/*/; do
         if [ -d "$run" ]; then
             analyze_single_run "$run"
 
-            # Add to summary
+            # Collect data
             if [ -f "$run/metrics.json" ] && command -v jq &> /dev/null; then
                 local run_name=$(basename "$run")
-                local kata=$(jq -r '.kata' "$run/metrics.json")
-                local workflow=$(jq -r '.workflow' "$run/metrics.json")
-                local duration=$(jq -r '.duration_seconds // "N/A"' "$run/metrics.json")
-                local tests=$(jq -r '.final_metrics.tests_total // "N/A"' "$run/metrics.json")
-                local todos=$(jq -r '.final_metrics.todos_remaining // "N/A"' "$run/metrics.json")
-                local mass=$(jq -r '.final_metrics.code_mass // "N/A"' "$run/metrics.json")
+                local kata=$(jq -r '.kata // "unknown"' "$run/metrics.json")
+                local workflow=$(jq -r '.workflow // "unknown"' "$run/metrics.json")
+                local duration=$(jq -r '.duration_seconds // 0' "$run/metrics.json")
+                local tests=$(jq -r '.final_metrics.tests_total // 0' "$run/metrics.json")
+                local todos=$(jq -r '.final_metrics.todos_remaining // 0' "$run/metrics.json")
+                local mass=$(jq -r '.final_metrics.code_mass // 0' "$run/metrics.json")
                 local passed=$(jq -r '.final_metrics.tests_passing // false' "$run/metrics.json")
+                local started=$(jq -r '.started_at // ""' "$run/metrics.json")
 
-                local passed_icon="❌"
-                if [ "$passed" = "true" ]; then
-                    passed_icon="✅"
-                fi
-
-                all_content+="| $run_name | $kata | $workflow | ${duration}s | $tests | $todos | $mass | $passed_icon |\n"
+                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}")
             fi
 
             echo ""
         fi
     done
 
-    echo -e "$all_content" > "$all_report"
+    # Generate grouped report
+    local all_report="$RUNS_DIR/all-runs-analysis-$(date +%Y%m%d-%H%M%S).md"
+
+    local report_content="# All Experiments Analysis\n\n"
+    report_content+="Generated: $(date -Iseconds)\n\n"
+    report_content+="Total runs analyzed: ${#run_data[@]}\n\n"
+
+    # Get unique katas (sorted)
+    local katas=()
+    for entry in "${run_data[@]}"; do
+        local kata=$(echo "$entry" | cut -d'|' -f1)
+        if [[ ! " ${katas[*]} " =~ " ${kata} " ]]; then
+            katas+=("$kata")
+        fi
+    done
+    IFS=$'\n' katas=($(sort <<< "${katas[*]}")); unset IFS
+
+    # Generate table for each kata
+    for kata in "${katas[@]}"; do
+        report_content+="## Kata: ${kata}\n\n"
+        report_content+="| Workflow | Run | Duration | Tests | Todos | Mass | Passed |\n"
+        report_content+="|----------|-----|----------|-------|-------|------|--------|\n"
+
+        # Filter entries for this kata
+        local kata_entries=()
+        for entry in "${run_data[@]}"; do
+            local entry_kata=$(echo "$entry" | cut -d'|' -f1)
+            if [ "$entry_kata" = "$kata" ]; then
+                kata_entries+=("$entry")
+            fi
+        done
+
+        # Sort by workflow, then by timestamp
+        IFS=$'\n' sorted_entries=($(for e in "${kata_entries[@]}"; do echo "$e"; done | sort -t'|' -k2,2 -k9,9)); unset IFS
+
+        for entry in "${sorted_entries[@]}"; do
+            local workflow=$(echo "$entry" | cut -d'|' -f2)
+            local run_name=$(echo "$entry" | cut -d'|' -f3)
+            local duration=$(echo "$entry" | cut -d'|' -f4)
+            local tests=$(echo "$entry" | cut -d'|' -f5)
+            local todos=$(echo "$entry" | cut -d'|' -f6)
+            local mass=$(echo "$entry" | cut -d'|' -f7)
+            local passed=$(echo "$entry" | cut -d'|' -f8)
+
+            local passed_icon="❌"
+            if [ "$passed" = "true" ]; then
+                passed_icon="✅"
+            fi
+
+            report_content+="| ${workflow} | ${run_name} | ${duration}s | ${tests} | ${todos} | ${mass} | ${passed_icon} |\n"
+        done
+
+        # Statistics per workflow
+        report_content+="\n### Statistics for ${kata}\n\n"
+        report_content+="| Workflow | Runs | Avg Duration | σ Duration | Avg Mass | σ Mass | Success Rate |\n"
+        report_content+="|----------|------|--------------|------------|----------|--------|-------------|\n"
+
+        # Get unique workflows for this kata
+        local workflows=()
+        for entry in "${kata_entries[@]}"; do
+            local wf=$(echo "$entry" | cut -d'|' -f2)
+            if [[ ! " ${workflows[*]} " =~ " ${wf} " ]]; then
+                workflows+=("$wf")
+            fi
+        done
+        IFS=$'\n' workflows=($(sort <<< "${workflows[*]}")); unset IFS
+
+        for workflow in "${workflows[@]}"; do
+            local count=0
+            local total_duration=0
+            local total_mass=0
+            local passed_count=0
+            local durations=()
+            local masses=()
+
+            for entry in "${kata_entries[@]}"; do
+                local entry_wf=$(echo "$entry" | cut -d'|' -f2)
+                if [ "$entry_wf" = "$workflow" ]; then
+                    local dur=$(echo "$entry" | cut -d'|' -f4)
+                    local mss=$(echo "$entry" | cut -d'|' -f7)
+                    local psd=$(echo "$entry" | cut -d'|' -f8)
+
+                    if [[ "$dur" =~ ^[0-9]+$ ]]; then
+                        total_duration=$((total_duration + dur))
+                        durations+=("$dur")
+                    fi
+                    if [[ "$mss" =~ ^[0-9]+$ ]]; then
+                        total_mass=$((total_mass + mss))
+                        masses+=("$mss")
+                    fi
+                    [ "$psd" = "true" ] && passed_count=$((passed_count + 1))
+                    count=$((count + 1))
+                fi
+            done
+
+            if [ $count -gt 0 ]; then
+                local avg_duration=$((total_duration / count))
+                local avg_mass=$((total_mass / count))
+                local success_rate=$((passed_count * 100 / count))
+
+                local stddev_duration=$(calc_stddev "${durations[@]}")
+                local stddev_mass=$(calc_stddev "${masses[@]}")
+
+                report_content+="| ${workflow} | ${count} | ${avg_duration}s | ±${stddev_duration}s | ${avg_mass} | ±${stddev_mass} | ${success_rate}% |\n"
+            fi
+        done
+
+        report_content+="\n"
+    done
+
+    report_content+="## Notes\n\n"
+    report_content+="- Tables are grouped by **Kata** (experiments are only comparable within the same kata)\n"
+    report_content+="- Within each kata, runs are sorted by **Workflow**, then by **timestamp**\n"
+    report_content+="- **σ (Sigma)** = Standard deviation - lower values indicate more consistent/stable results\n"
+
+    echo -e "$report_content" > "$all_report"
     echo -e "\n${GREEN}Saved all-runs analysis to: $all_report${NC}"
 }
 

@@ -37,7 +37,7 @@ echo -e "\n${BLUE}Running $total experiments...${NC}\n"
 # Run each combination
 for kata in "${katas[@]}"; do
     for workflow in "${workflows[@]}"; do
-        ((current++))
+        current=$((current + 1))
         echo -e "${YELLOW}[$current/$total] Running: $kata + $workflow${NC}"
 
         # Create run directory
@@ -118,15 +118,17 @@ EOF
         echo -e "  Installing dependencies..."
         (cd "$run_dir" && pnpm install --silent 2>/dev/null) || true
 
-        # Run Claude
+        # Run Claude (using --print for non-interactive mode)
         echo -e "  Running Claude Code..."
         start_time=$(date +%s)
 
-        (cd "$run_dir" && timeout 1800 claude --dangerously-skip-permissions --print \
+        cd "$run_dir"
+        claude --dangerously-skip-permissions --print \
             "Read prompt.md and complete the TDD exercise following the workflow rules." \
-            2>&1 | tee "$run_dir/claude-output.log") || {
-            echo -e "  ${RED}Run failed or timed out${NC}"
+            2>&1 | tee "$run_dir/claude-output.log" || {
+            echo -e "  ${RED}Run failed${NC}"
         }
+        cd "$EXPERIMENTS_DIR"
 
         # Record end
         end_time=$(date +%s)
@@ -139,6 +141,10 @@ EOF
                "$run_dir/metrics.json" > "$run_dir/metrics.tmp" && \
             mv "$run_dir/metrics.tmp" "$run_dir/metrics.json"
         fi
+
+        # Run analysis
+        echo -e "  Analyzing results..."
+        "$EXPERIMENTS_DIR/analyze-run.sh" "$run_dir" > /dev/null 2>&1 || true
 
         echo -e "  ${GREEN}Completed in ${duration}s${NC}\n"
 
