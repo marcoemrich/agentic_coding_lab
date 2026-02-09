@@ -21,12 +21,40 @@ echo -e "${BLUE}═════════════════════�
 echo -e "${BLUE}  TDD Experiment Batch Runner${NC}"
 echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
 
-# Get all katas and workflows
-katas=($(ls -d "$KATAS_DIR"/*/ 2>/dev/null | xargs -n1 basename))
-workflows=($(ls -d "$WORKFLOWS_DIR"/*/ 2>/dev/null | xargs -n1 basename))
+# Get all katas and workflows (skip those starting with _)
+all_katas=($(ls -d "$KATAS_DIR"/*/ 2>/dev/null | xargs -n1 basename))
+all_workflows=($(ls -d "$WORKFLOWS_DIR"/*/ 2>/dev/null | xargs -n1 basename))
+
+# Filter out disabled items (starting with _)
+katas=()
+skipped_katas=()
+for k in "${all_katas[@]}"; do
+    if [[ "$k" == _* ]]; then
+        skipped_katas+=("$k")
+    else
+        katas+=("$k")
+    fi
+done
+
+workflows=()
+skipped_workflows=()
+for w in "${all_workflows[@]}"; do
+    if [[ "$w" == _* ]]; then
+        skipped_workflows+=("$w")
+    else
+        workflows+=("$w")
+    fi
+done
 
 echo -e "\n${YELLOW}Found ${#katas[@]} katas: ${katas[*]}${NC}"
 echo -e "${YELLOW}Found ${#workflows[@]} workflows: ${workflows[*]}${NC}"
+
+if [ ${#skipped_katas[@]} -gt 0 ]; then
+    echo -e "${YELLOW}Skipped katas (disabled with _ prefix): ${skipped_katas[*]}${NC}"
+fi
+if [ ${#skipped_workflows[@]} -gt 0 ]; then
+    echo -e "${YELLOW}Skipped workflows (disabled with _ prefix): ${skipped_workflows[*]}${NC}"
+fi
 
 # Calculate total runs
 total=$((${#katas[@]} * ${#workflows[@]}))

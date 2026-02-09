@@ -64,6 +64,53 @@ find_test_file() {
     echo "$test_file"
 }
 
+# Extract metrics from experiment-summary.md
+extract_summary_metrics() {
+    local summary_file=$1
+
+    if [ ! -f "$summary_file" ]; then
+        echo ""
+        return
+    fi
+
+    local content=$(cat "$summary_file")
+
+    # Token Usage - extract total tokens
+    local total_tokens=$(echo "$content" | grep -oE '\*\*Total\*\*.*\*\*[0-9,]+\*\*' | grep -oE '[0-9,]+' | tail -1 | tr -d ',')
+    [ -z "$total_tokens" ] && total_tokens=$(echo "$content" | grep -E '^\| \*\*Total\*\*' | grep -oE '[0-9,]+' | head -1 | tr -d ',')
+
+    # Context utilization - final percentage (extract integer part)
+    local context_util_raw=$(echo "$content" | grep -E 'Main Context.*\|.*%|Final.*\|.*%' | grep -oE '[0-9]+\.?[0-9]*%' | tail -1 | tr -d '%')
+    local context_util=$(echo "$context_util_raw" | cut -d'.' -f1)
+
+    # Cycle count - count "Cycle X -" patterns
+    local cycle_count=$(echo "$content" | grep -cE 'Cycle [0-9]+ - Red' || echo "0")
+
+    # Average cycle time
+    local avg_cycle_time=$(echo "$content" | grep -E 'Average per TDD cycle' | grep -oE '[0-9]+\.?[0-9]*' | head -1)
+    local avg_red=$(echo "$content" | grep -E 'Average Red phase' | grep -oE '[0-9]+\.?[0-9]*' | head -1)
+    local avg_green=$(echo "$content" | grep -E 'Average Green phase' | grep -oE '[0-9]+\.?[0-9]*' | head -1)
+    local avg_refactor=$(echo "$content" | grep -E 'Average Refactor phase' | grep -oE '[0-9]+\.?[0-9]*' | head -1)
+
+    # Prediction accuracy - look for X/X pattern or percentage
+    local prediction_line=$(echo "$content" | grep -E 'Prediction accuracy')
+    local predictions_correct=$(echo "$prediction_line" | grep -oE '[0-9]+/[0-9]+' | cut -d'/' -f1)
+    local predictions_total=$(echo "$prediction_line" | grep -oE '[0-9]+/[0-9]+' | cut -d'/' -f2)
+    local prediction_pct=$(echo "$prediction_line" | grep -oE '[0-9]+%' | tr -d '%')
+
+    # Refactorings applied
+    local refactorings=$(echo "$content" | grep -E 'Refactorings applied' | grep -oE ': [0-9]+' | grep -oE '[0-9]+' | head -1)
+
+    # Final code mass from summary
+    local final_mass=$(echo "$content" | grep -E 'Final code mass' | grep -oE '[0-9]+' | head -1)
+
+    # Tests that passed immediately (count of "Test passed" or similar in Red Prediction column)
+    local tests_passed_immediately=$(echo "$content" | grep -E '✅ Test passed|❌ Test passed|passed immediately|already satisfied' | wc -l | tr -d '[:space:]')
+
+    # Output as pipe-separated values
+    echo "${total_tokens:-0}|${context_util:-0}|${cycle_count:-0}|${avg_cycle_time:-0}|${avg_red:-0}|${avg_green:-0}|${avg_refactor:-0}|${predictions_correct:-0}|${predictions_total:-0}|${prediction_pct:-0}|${refactorings:-0}|${final_mass:-0}|${tests_passed_immediately:-0}"
+}
+
 analyze_single_run() {
     local run_dir=$1
     local save_report=${2:-false}
@@ -228,6 +275,115 @@ analyze_single_run() {
         report_content+="| **Total Mass** | | | **$total_mass** |\n\n"
     fi
 
+    # Extract metrics from experiment-summary.md
+    local summary_metrics=""
+    local summary_total_tokens=0
+    local summary_context_util=0
+    local summary_cycle_count=0
+    local summary_avg_cycle=0
+    local summary_avg_red=0
+    local summary_avg_green=0
+    local summary_avg_refactor=0
+    local summary_pred_correct=0
+    local summary_pred_total=0
+    local summary_pred_pct=0
+    local summary_refactorings=0
+    local summary_final_mass=0
+    local summary_tests_passed_immediately=0
+
+    if [ -f "$run_dir/experiment-summary.md" ]; then
+        echo -e "\n${YELLOW}Experiment Summary Metrics:${NC}"
+        report_content+="## Experiment Summary Metrics\n\n"
+
+        summary_metrics=$(extract_summary_metrics "$run_dir/experiment-summary.md")
+
+        # Parse the pipe-separated values
+        summary_total_tokens=$(echo "$summary_metrics" | cut -d'|' -f1)
+        summary_context_util=$(echo "$summary_metrics" | cut -d'|' -f2)
+        summary_cycle_count=$(echo "$summary_metrics" | cut -d'|' -f3)
+        summary_avg_cycle=$(echo "$summary_metrics" | cut -d'|' -f4)
+        summary_avg_red=$(echo "$summary_metrics" | cut -d'|' -f5)
+        summary_avg_green=$(echo "$summary_metrics" | cut -d'|' -f6)
+        summary_avg_refactor=$(echo "$summary_metrics" | cut -d'|' -f7)
+        summary_pred_correct=$(echo "$summary_metrics" | cut -d'|' -f8)
+        summary_pred_total=$(echo "$summary_metrics" | cut -d'|' -f9)
+        summary_pred_pct=$(echo "$summary_metrics" | cut -d'|' -f10)
+        summary_refactorings=$(echo "$summary_metrics" | cut -d'|' -f11)
+        summary_final_mass=$(echo "$summary_metrics" | cut -d'|' -f12)
+        summary_tests_passed_immediately=$(echo "$summary_metrics" | cut -d'|' -f13)
+
+        # Ensure valid integers
+        [[ "$summary_total_tokens" =~ ^[0-9]+$ ]] || summary_total_tokens=0
+        [[ "$summary_context_util" =~ ^[0-9]+$ ]] || summary_context_util=0
+        [[ "$summary_cycle_count" =~ ^[0-9]+$ ]] || summary_cycle_count=0
+        [[ "$summary_refactorings" =~ ^[0-9]+$ ]] || summary_refactorings=0
+        [[ "$summary_pred_correct" =~ ^[0-9]+$ ]] || summary_pred_correct=0
+        [[ "$summary_pred_total" =~ ^[0-9]+$ ]] || summary_pred_total=0
+        [[ "$summary_tests_passed_immediately" =~ ^[0-9]+$ ]] || summary_tests_passed_immediately=0
+
+        # Token Usage
+        echo -e "  ${CYAN}Token Usage:${NC}"
+        echo -e "    Total tokens: $summary_total_tokens"
+        echo -e "    Context utilization: ${summary_context_util}%"
+
+        report_content+="### Token Usage\n\n"
+        report_content+="| Metric | Value |\n"
+        report_content+="|--------|-------|\n"
+        report_content+="| Total Tokens | $summary_total_tokens |\n"
+        report_content+="| Context Utilization | ${summary_context_util}% |\n\n"
+
+        # TDD Cycle Metrics
+        echo -e "  ${CYAN}TDD Cycles:${NC}"
+        echo -e "    Cycle count: $summary_cycle_count"
+        echo -e "    Avg cycle time: ${summary_avg_cycle}s"
+        echo -e "    Avg Red: ${summary_avg_red}s | Green: ${summary_avg_green}s | Refactor: ${summary_avg_refactor}s"
+
+        report_content+="### TDD Cycle Metrics\n\n"
+        report_content+="| Metric | Value |\n"
+        report_content+="|--------|-------|\n"
+        report_content+="| Cycle Count | $summary_cycle_count |\n"
+        report_content+="| Avg Cycle Time | ${summary_avg_cycle}s |\n"
+        report_content+="| Avg Red Phase | ${summary_avg_red}s |\n"
+        report_content+="| Avg Green Phase | ${summary_avg_green}s |\n"
+        report_content+="| Avg Refactor Phase | ${summary_avg_refactor}s |\n\n"
+
+        # Prediction Accuracy
+        echo -e "  ${CYAN}Prediction Accuracy:${NC}"
+        if [ "$summary_pred_total" -gt 0 ]; then
+            echo -e "    Predictions: ${summary_pred_correct}/${summary_pred_total}"
+        fi
+
+        report_content+="### Prediction Accuracy (Guessing Game)\n\n"
+        report_content+="| Metric | Value |\n"
+        report_content+="|--------|-------|\n"
+        report_content+="| Predictions Correct | $summary_pred_correct |\n"
+        report_content+="| Predictions Total | $summary_pred_total |\n"
+        if [ "$summary_pred_total" -gt 0 ]; then
+            local calc_pct=$((summary_pred_correct * 100 / summary_pred_total))
+            report_content+="| Accuracy | ${calc_pct}% |\n\n"
+        else
+            report_content+="| Accuracy | N/A |\n\n"
+        fi
+
+        # Refactoring Metrics
+        echo -e "  ${CYAN}Refactoring:${NC}"
+        echo -e "    Refactorings applied: $summary_refactorings"
+
+        report_content+="### Refactoring Metrics\n\n"
+        report_content+="| Metric | Value |\n"
+        report_content+="|--------|-------|\n"
+        report_content+="| Refactorings Applied | $summary_refactorings |\n\n"
+
+        # TDD Discipline
+        echo -e "  ${CYAN}TDD Discipline:${NC}"
+        echo -e "    Tests passed immediately (no Green needed): $summary_tests_passed_immediately"
+
+        report_content+="### TDD Discipline\n\n"
+        report_content+="| Metric | Value |\n"
+        report_content+="|--------|-------|\n"
+        report_content+="| Tests Passed Immediately | $summary_tests_passed_immediately |\n\n"
+    fi
+
     # Include source code in report
     if [ -n "$impl_file" ] && [ -f "$impl_file" ]; then
         report_content+="## Implementation Code\n\n"
@@ -258,12 +414,26 @@ analyze_single_run() {
            --argjson todo_count "$todo_count" \
            --argjson total_mass "$total_mass" \
            --argjson tests_passed "$tests_passed" \
+           --argjson total_tokens "$summary_total_tokens" \
+           --argjson context_util "$summary_context_util" \
+           --argjson cycle_count "$summary_cycle_count" \
+           --argjson refactorings "$summary_refactorings" \
+           --argjson pred_correct "$summary_pred_correct" \
+           --argjson pred_total "$summary_pred_total" \
+           --argjson tests_passed_immediately "$summary_tests_passed_immediately" \
            '.final_metrics.lines_of_code = $impl_loc |
             .final_metrics.test_lines = $test_loc |
             .final_metrics.tests_total = $test_count |
             .final_metrics.todos_remaining = $todo_count |
             .final_metrics.code_mass = $total_mass |
-            .final_metrics.tests_passing = $tests_passed' \
+            .final_metrics.tests_passing = $tests_passed |
+            .summary_metrics.total_tokens = $total_tokens |
+            .summary_metrics.context_utilization_pct = $context_util |
+            .summary_metrics.cycle_count = $cycle_count |
+            .summary_metrics.refactorings_applied = $refactorings |
+            .summary_metrics.predictions_correct = $pred_correct |
+            .summary_metrics.predictions_total = $pred_total |
+            .summary_metrics.tests_passed_immediately = $tests_passed_immediately' \
            "$run_dir/metrics.json" > "$run_dir/metrics.tmp" && \
         mv "$run_dir/metrics.tmp" "$run_dir/metrics.json"
 
@@ -331,9 +501,17 @@ compare_runs() {
                 local mass=$(jq -r '.final_metrics.code_mass // 0' "$run_dir/metrics.json")
                 local passed=$(jq -r '.final_metrics.tests_passing // false' "$run_dir/metrics.json")
                 local started=$(jq -r '.started_at // ""' "$run_dir/metrics.json")
+                # New metrics
+                local tokens=$(jq -r '.summary_metrics.total_tokens // 0' "$run_dir/metrics.json")
+                local ctx_util=$(jq -r '.summary_metrics.context_utilization_pct // 0' "$run_dir/metrics.json")
+                local cycles=$(jq -r '.summary_metrics.cycle_count // 0' "$run_dir/metrics.json")
+                local refacts=$(jq -r '.summary_metrics.refactorings_applied // 0' "$run_dir/metrics.json")
+                local pred_c=$(jq -r '.summary_metrics.predictions_correct // 0' "$run_dir/metrics.json")
+                local pred_t=$(jq -r '.summary_metrics.predictions_total // 0' "$run_dir/metrics.json")
+                local immed=$(jq -r '.summary_metrics.tests_passed_immediately // 0' "$run_dir/metrics.json")
 
-                # Store as: kata|workflow|run_name|duration|tests|todos|mass|passed|started
-                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}")
+                # Store as: kata|workflow|run_name|duration|tests|todos|mass|passed|started|tokens|ctx_util|cycles|refacts|pred_c|pred_t|immed
+                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}|${tokens}|${ctx_util}|${cycles}|${refacts}|${pred_c}|${pred_t}|${immed}")
             fi
         fi
     done
@@ -344,6 +522,7 @@ compare_runs() {
 
 # Calculate standard deviation (integer approximation)
 # Usage: calc_stddev value1 value2 value3 ...
+# For large numbers (tokens), uses scaling to avoid integer overflow
 calc_stddev() {
     local values=("$@")
     local count=${#values[@]}
@@ -370,16 +549,26 @@ calc_stddev() {
 
     local mean=$((sum / valid_count))
 
-    # Calculate sum of squared differences
+    # Check if values are large (> 100000) - use scaling to avoid overflow
+    local scale=1
+    if [ $mean -gt 100000 ]; then
+        scale=1000
+    elif [ $mean -gt 10000 ]; then
+        scale=100
+    elif [ $mean -gt 1000 ]; then
+        scale=10
+    fi
+
+    # Calculate sum of squared differences (with scaling for large numbers)
     local sq_diff_sum=0
     for val in "${values[@]}"; do
         if [[ "$val" =~ ^[0-9]+$ ]]; then
-            local diff=$((val - mean))
+            local diff=$(( (val - mean) / scale ))
             sq_diff_sum=$((sq_diff_sum + diff * diff))
         fi
     done
 
-    # Variance
+    # Variance (scaled)
     local variance=$((sq_diff_sum / valid_count))
 
     if [ $variance -eq 0 ]; then
@@ -397,8 +586,8 @@ calc_stddev() {
         mid=$(( (low + high) / 2 ))
         local sq=$((mid * mid))
         if [ $sq -eq $variance ]; then
-            echo "$mid"
-            return
+            result=$mid
+            break
         elif [ $sq -lt $variance ]; then
             result=$mid
             low=$((mid + 1))
@@ -407,7 +596,8 @@ calc_stddev() {
         fi
     done
 
-    echo "$result"
+    # Unscale the result
+    echo $((result * scale))
 }
 
 # Generate report with separate tables per kata, sorted by workflow
@@ -431,8 +621,11 @@ generate_grouped_report() {
     # Generate table for each kata
     for kata in "${katas[@]}"; do
         report_content+="## Kata: ${kata}\n\n"
-        report_content+="| Workflow | Run | Duration | Tests | Todos | Mass | Passed |\n"
-        report_content+="|----------|-----|----------|-------|-------|------|--------|\n"
+
+        # Main metrics table
+        report_content+="### Core Metrics\n\n"
+        report_content+="| Workflow | Run | Duration | Tests | Mass | Passed |\n"
+        report_content+="|----------|-----|----------|-------|------|--------|\n"
 
         # Filter and sort entries for this kata by workflow, then by timestamp
         local kata_entries=()
@@ -451,7 +644,6 @@ generate_grouped_report() {
             local run_name=$(echo "$entry" | cut -d'|' -f3)
             local duration=$(echo "$entry" | cut -d'|' -f4)
             local tests=$(echo "$entry" | cut -d'|' -f5)
-            local todos=$(echo "$entry" | cut -d'|' -f6)
             local mass=$(echo "$entry" | cut -d'|' -f7)
             local passed=$(echo "$entry" | cut -d'|' -f8)
 
@@ -460,13 +652,44 @@ generate_grouped_report() {
                 passed_icon="✅"
             fi
 
-            report_content+="| ${workflow} | ${run_name} | ${duration}s | ${tests} | ${todos} | ${mass} | ${passed_icon} |\n"
+            report_content+="| ${workflow} | ${run_name} | ${duration}s | ${tests} | ${mass} | ${passed_icon} |\n"
         done
 
-        # Calculate averages and stddev for this kata
-        report_content+="\n### Statistics for ${kata}\n\n"
-        report_content+="| Workflow | Runs | Avg Duration | σ Duration | Avg Mass | σ Mass | Success Rate |\n"
-        report_content+="|----------|------|--------------|------------|----------|--------|-------------|\n"
+        # Token & Context table
+        report_content+="\n### Token Usage & Context\n\n"
+        report_content+="| Workflow | Run | Tokens | Ctx Util | Cycles |\n"
+        report_content+="|----------|-----|--------|----------|--------|\n"
+
+        for entry in "${sorted_entries[@]}"; do
+            local workflow=$(echo "$entry" | cut -d'|' -f2)
+            local run_name=$(echo "$entry" | cut -d'|' -f3)
+            local tokens=$(echo "$entry" | cut -d'|' -f10)
+            local ctx_util=$(echo "$entry" | cut -d'|' -f11)
+            local cycles=$(echo "$entry" | cut -d'|' -f12)
+
+            report_content+="| ${workflow} | ${run_name} | ${tokens} | ${ctx_util}% | ${cycles} |\n"
+        done
+
+        # TDD Discipline table
+        report_content+="\n### TDD Discipline\n\n"
+        report_content+="| Workflow | Run | Refactorings | Pred Accuracy | Tests Immed |\n"
+        report_content+="|----------|-----|--------------|---------------|-------------|\n"
+
+        for entry in "${sorted_entries[@]}"; do
+            local workflow=$(echo "$entry" | cut -d'|' -f2)
+            local run_name=$(echo "$entry" | cut -d'|' -f3)
+            local refacts=$(echo "$entry" | cut -d'|' -f13)
+            local pred_c=$(echo "$entry" | cut -d'|' -f14)
+            local pred_t=$(echo "$entry" | cut -d'|' -f15)
+            local immed=$(echo "$entry" | cut -d'|' -f16)
+
+            local pred_str="N/A"
+            if [[ "$pred_t" =~ ^[0-9]+$ ]] && [ "$pred_t" -gt 0 ]; then
+                pred_str="${pred_c}/${pred_t}"
+            fi
+
+            report_content+="| ${workflow} | ${run_name} | ${refacts} | ${pred_str} | ${immed} |\n"
+        done
 
         # Get unique workflows for this kata
         local workflows=()
@@ -478,53 +701,155 @@ generate_grouped_report() {
         done
         IFS=$'\n' workflows=($(sort <<< "${workflows[*]}")); unset IFS
 
+        # Collect all metrics per workflow for statistics
+        declare -A wf_count wf_passed_count
+        declare -A wf_durations wf_masses wf_tokens wf_ctx_utils wf_cycles wf_refacts wf_pred_c wf_pred_t wf_immeds
+
         for workflow in "${workflows[@]}"; do
-            local count=0
-            local total_duration=0
-            local total_mass=0
-            local passed_count=0
-            local durations=()
-            local masses=()
+            wf_count[$workflow]=0
+            wf_passed_count[$workflow]=0
+            wf_durations[$workflow]=""
+            wf_masses[$workflow]=""
+            wf_tokens[$workflow]=""
+            wf_ctx_utils[$workflow]=""
+            wf_cycles[$workflow]=""
+            wf_refacts[$workflow]=""
+            wf_pred_c[$workflow]=0
+            wf_pred_t[$workflow]=0
+            wf_immeds[$workflow]=""
+        done
 
-            for entry in "${kata_entries[@]}"; do
-                local entry_wf=$(echo "$entry" | cut -d'|' -f2)
-                if [ "$entry_wf" = "$workflow" ]; then
-                    local dur=$(echo "$entry" | cut -d'|' -f4)
-                    local mss=$(echo "$entry" | cut -d'|' -f7)
-                    local psd=$(echo "$entry" | cut -d'|' -f8)
+        for entry in "${kata_entries[@]}"; do
+            local wf=$(echo "$entry" | cut -d'|' -f2)
+            local dur=$(echo "$entry" | cut -d'|' -f4)
+            local mss=$(echo "$entry" | cut -d'|' -f7)
+            local psd=$(echo "$entry" | cut -d'|' -f8)
+            local tok=$(echo "$entry" | cut -d'|' -f10)
+            local ctx=$(echo "$entry" | cut -d'|' -f11)
+            local cyc=$(echo "$entry" | cut -d'|' -f12)
+            local ref=$(echo "$entry" | cut -d'|' -f13)
+            local pc=$(echo "$entry" | cut -d'|' -f14)
+            local pt=$(echo "$entry" | cut -d'|' -f15)
+            local imm=$(echo "$entry" | cut -d'|' -f16)
 
-                    if [[ "$dur" =~ ^[0-9]+$ ]]; then
-                        total_duration=$((total_duration + dur))
-                        durations+=("$dur")
-                    fi
-                    if [[ "$mss" =~ ^[0-9]+$ ]]; then
-                        total_mass=$((total_mass + mss))
-                        masses+=("$mss")
-                    fi
-                    [ "$psd" = "true" ] && passed_count=$((passed_count + 1))
-                    count=$((count + 1))
+            wf_count[$wf]=$((${wf_count[$wf]} + 1))
+            [ "$psd" = "true" ] && wf_passed_count[$wf]=$((${wf_passed_count[$wf]} + 1))
+
+            [[ "$dur" =~ ^[0-9]+$ ]] && wf_durations[$wf]="${wf_durations[$wf]} $dur"
+            [[ "$mss" =~ ^[0-9]+$ ]] && wf_masses[$wf]="${wf_masses[$wf]} $mss"
+            [[ "$tok" =~ ^[0-9]+$ ]] && wf_tokens[$wf]="${wf_tokens[$wf]} $tok"
+            [[ "$ctx" =~ ^[0-9]+$ ]] && wf_ctx_utils[$wf]="${wf_ctx_utils[$wf]} $ctx"
+            [[ "$cyc" =~ ^[0-9]+$ ]] && wf_cycles[$wf]="${wf_cycles[$wf]} $cyc"
+            [[ "$ref" =~ ^[0-9]+$ ]] && wf_refacts[$wf]="${wf_refacts[$wf]} $ref"
+            [[ "$pc" =~ ^[0-9]+$ ]] && wf_pred_c[$wf]=$((${wf_pred_c[$wf]} + pc))
+            [[ "$pt" =~ ^[0-9]+$ ]] && wf_pred_t[$wf]=$((${wf_pred_t[$wf]} + pt))
+            [[ "$imm" =~ ^[0-9]+$ ]] && wf_immeds[$wf]="${wf_immeds[$wf]} $imm"
+        done
+
+        # Statistics Table 1: Core Metrics
+        report_content+="\n### Statistics: Core Metrics\n\n"
+        report_content+="| Workflow | Runs | Avg Duration | σ Duration | Avg Mass | σ Mass | Success Rate |\n"
+        report_content+="|----------|------|--------------|------------|----------|--------|-------------|\n"
+
+        for workflow in "${workflows[@]}"; do
+            local cnt=${wf_count[$workflow]}
+            if [ $cnt -gt 0 ]; then
+                local durs=(${wf_durations[$workflow]})
+                local msss=(${wf_masses[$workflow]})
+
+                local sum_dur=0; for v in "${durs[@]}"; do sum_dur=$((sum_dur + v)); done
+                local sum_mss=0; for v in "${msss[@]}"; do sum_mss=$((sum_mss + v)); done
+
+                local avg_dur=$((sum_dur / cnt))
+                local avg_mss=$((sum_mss / cnt))
+                local success_rate=$((${wf_passed_count[$workflow]} * 100 / cnt))
+
+                local stddev_dur=$(calc_stddev "${durs[@]}")
+                local stddev_mss=$(calc_stddev "${msss[@]}")
+
+                report_content+="| ${workflow} | ${cnt} | ${avg_dur}s | ±${stddev_dur}s | ${avg_mss} | ±${stddev_mss} | ${success_rate}% |\n"
+            fi
+        done
+
+        # Statistics Table 2: Token Usage & Context
+        report_content+="\n### Statistics: Token Usage & Context\n\n"
+        report_content+="| Workflow | Runs | Avg Tokens | σ Tokens | Avg Ctx Util | σ Ctx Util | Avg Cycles | σ Cycles |\n"
+        report_content+="|----------|------|------------|----------|--------------|------------|------------|----------|\n"
+
+        for workflow in "${workflows[@]}"; do
+            local cnt=${wf_count[$workflow]}
+            if [ $cnt -gt 0 ]; then
+                local toks=(${wf_tokens[$workflow]})
+                local ctxs=(${wf_ctx_utils[$workflow]})
+                local cycs=(${wf_cycles[$workflow]})
+
+                local sum_tok=0; for v in "${toks[@]}"; do sum_tok=$((sum_tok + v)); done
+                local sum_ctx=0; for v in "${ctxs[@]}"; do sum_ctx=$((sum_ctx + v)); done
+                local sum_cyc=0; for v in "${cycs[@]}"; do sum_cyc=$((sum_cyc + v)); done
+
+                local avg_tok=0; [ ${#toks[@]} -gt 0 ] && avg_tok=$((sum_tok / ${#toks[@]}))
+                local avg_ctx=0; [ ${#ctxs[@]} -gt 0 ] && avg_ctx=$((sum_ctx / ${#ctxs[@]}))
+                local avg_cyc=0; [ ${#cycs[@]} -gt 0 ] && avg_cyc=$((sum_cyc / ${#cycs[@]}))
+
+                local stddev_tok=$(calc_stddev "${toks[@]}")
+                local stddev_ctx=$(calc_stddev "${ctxs[@]}")
+                local stddev_cyc=$(calc_stddev "${cycs[@]}")
+
+                report_content+="| ${workflow} | ${cnt} | ${avg_tok} | ±${stddev_tok} | ${avg_ctx}% | ±${stddev_ctx}% | ${avg_cyc} | ±${stddev_cyc} |\n"
+            fi
+        done
+
+        # Statistics Table 3: TDD Discipline
+        report_content+="\n### Statistics: TDD Discipline\n\n"
+        report_content+="| Workflow | Runs | Avg Refactorings | σ Refactorings | Pred Accuracy | Avg Tests Immed | σ Tests Immed |\n"
+        report_content+="|----------|------|------------------|----------------|---------------|-----------------|---------------|\n"
+
+        for workflow in "${workflows[@]}"; do
+            local cnt=${wf_count[$workflow]}
+            if [ $cnt -gt 0 ]; then
+                local refs=(${wf_refacts[$workflow]})
+                local imms=(${wf_immeds[$workflow]})
+                local pred_c_total=${wf_pred_c[$workflow]}
+                local pred_t_total=${wf_pred_t[$workflow]}
+
+                local sum_ref=0; for v in "${refs[@]}"; do sum_ref=$((sum_ref + v)); done
+                local sum_imm=0; for v in "${imms[@]}"; do sum_imm=$((sum_imm + v)); done
+
+                local avg_ref=0; [ ${#refs[@]} -gt 0 ] && avg_ref=$((sum_ref / ${#refs[@]}))
+                local avg_imm=0; [ ${#imms[@]} -gt 0 ] && avg_imm=$((sum_imm / ${#imms[@]}))
+
+                local stddev_ref=$(calc_stddev "${refs[@]}")
+                local stddev_imm=$(calc_stddev "${imms[@]}")
+
+                local pred_str="N/A"
+                if [ $pred_t_total -gt 0 ]; then
+                    local pred_pct=$((pred_c_total * 100 / pred_t_total))
+                    pred_str="${pred_c_total}/${pred_t_total} (${pred_pct}%)"
                 fi
-            done
 
-            if [ $count -gt 0 ]; then
-                local avg_duration=$((total_duration / count))
-                local avg_mass=$((total_mass / count))
-                local success_rate=$((passed_count * 100 / count))
-
-                local stddev_duration=$(calc_stddev "${durations[@]}")
-                local stddev_mass=$(calc_stddev "${masses[@]}")
-
-                report_content+="| ${workflow} | ${count} | ${avg_duration}s | ±${stddev_duration}s | ${avg_mass} | ±${stddev_mass} | ${success_rate}% |\n"
+                report_content+="| ${workflow} | ${cnt} | ${avg_ref} | ±${stddev_ref} | ${pred_str} | ${avg_imm} | ±${stddev_imm} |\n"
             fi
         done
 
         report_content+="\n"
     done
 
+    report_content+="## Metrics Legend\n\n"
+    report_content+="| Metric | Description |\n"
+    report_content+="|--------|-------------|\n"
+    report_content+="| Duration | Total experiment time in seconds |\n"
+    report_content+="| Mass | APP (Absolute Priority Premise) code complexity score |\n"
+    report_content+="| Tokens | Total tokens consumed by the AI |\n"
+    report_content+="| Ctx Util | Final context window utilization percentage |\n"
+    report_content+="| Cycles | Number of TDD Red-Green-Refactor cycles |\n"
+    report_content+="| Refactorings | Number of refactorings applied |\n"
+    report_content+="| Pred Accuracy | Prediction accuracy in Red phase (correct/total) |\n"
+    report_content+="| Tests Immed | Tests that passed immediately (indicates over-implementation) |\n"
+    report_content+="| σ (Sigma) | Standard deviation - lower = more consistent |\n\n"
+
     report_content+="## Notes\n\n"
     report_content+="- Tables are grouped by **Kata** (experiments are only comparable within the same kata)\n"
     report_content+="- Within each kata, runs are sorted by **Workflow**, then by **timestamp**\n"
-    report_content+="- **σ (Sigma)** = Standard deviation - lower values indicate more consistent/stable results\n"
     report_content+="- Individual analysis reports are saved in each run directory\n"
 
     echo -e "$report_content" > "$comparison_file"
@@ -552,8 +877,16 @@ analyze_all() {
                 local mass=$(jq -r '.final_metrics.code_mass // 0' "$run/metrics.json")
                 local passed=$(jq -r '.final_metrics.tests_passing // false' "$run/metrics.json")
                 local started=$(jq -r '.started_at // ""' "$run/metrics.json")
+                # New metrics
+                local tokens=$(jq -r '.summary_metrics.total_tokens // 0' "$run/metrics.json")
+                local ctx_util=$(jq -r '.summary_metrics.context_utilization_pct // 0' "$run/metrics.json")
+                local cycles=$(jq -r '.summary_metrics.cycle_count // 0' "$run/metrics.json")
+                local refacts=$(jq -r '.summary_metrics.refactorings_applied // 0' "$run/metrics.json")
+                local pred_c=$(jq -r '.summary_metrics.predictions_correct // 0' "$run/metrics.json")
+                local pred_t=$(jq -r '.summary_metrics.predictions_total // 0' "$run/metrics.json")
+                local immed=$(jq -r '.summary_metrics.tests_passed_immediately // 0' "$run/metrics.json")
 
-                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}")
+                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}|${tokens}|${ctx_util}|${cycles}|${refacts}|${pred_c}|${pred_t}|${immed}")
             fi
 
             echo ""
@@ -580,8 +913,6 @@ analyze_all() {
     # Generate table for each kata
     for kata in "${katas[@]}"; do
         report_content+="## Kata: ${kata}\n\n"
-        report_content+="| Workflow | Run | Duration | Tests | Todos | Mass | Passed |\n"
-        report_content+="|----------|-----|----------|-------|-------|------|--------|\n"
 
         # Filter entries for this kata
         local kata_entries=()
@@ -595,12 +926,16 @@ analyze_all() {
         # Sort by workflow, then by timestamp
         IFS=$'\n' sorted_entries=($(for e in "${kata_entries[@]}"; do echo "$e"; done | sort -t'|' -k2,2 -k9,9)); unset IFS
 
+        # Main metrics table
+        report_content+="### Core Metrics\n\n"
+        report_content+="| Workflow | Run | Duration | Tests | Mass | Passed |\n"
+        report_content+="|----------|-----|----------|-------|------|--------|\n"
+
         for entry in "${sorted_entries[@]}"; do
             local workflow=$(echo "$entry" | cut -d'|' -f2)
             local run_name=$(echo "$entry" | cut -d'|' -f3)
             local duration=$(echo "$entry" | cut -d'|' -f4)
             local tests=$(echo "$entry" | cut -d'|' -f5)
-            local todos=$(echo "$entry" | cut -d'|' -f6)
             local mass=$(echo "$entry" | cut -d'|' -f7)
             local passed=$(echo "$entry" | cut -d'|' -f8)
 
@@ -609,13 +944,44 @@ analyze_all() {
                 passed_icon="✅"
             fi
 
-            report_content+="| ${workflow} | ${run_name} | ${duration}s | ${tests} | ${todos} | ${mass} | ${passed_icon} |\n"
+            report_content+="| ${workflow} | ${run_name} | ${duration}s | ${tests} | ${mass} | ${passed_icon} |\n"
         done
 
-        # Statistics per workflow
-        report_content+="\n### Statistics for ${kata}\n\n"
-        report_content+="| Workflow | Runs | Avg Duration | σ Duration | Avg Mass | σ Mass | Success Rate |\n"
-        report_content+="|----------|------|--------------|------------|----------|--------|-------------|\n"
+        # Token & Context table
+        report_content+="\n### Token Usage & Context\n\n"
+        report_content+="| Workflow | Run | Tokens | Ctx Util | Cycles |\n"
+        report_content+="|----------|-----|--------|----------|--------|\n"
+
+        for entry in "${sorted_entries[@]}"; do
+            local workflow=$(echo "$entry" | cut -d'|' -f2)
+            local run_name=$(echo "$entry" | cut -d'|' -f3)
+            local tokens=$(echo "$entry" | cut -d'|' -f10)
+            local ctx_util=$(echo "$entry" | cut -d'|' -f11)
+            local cycles=$(echo "$entry" | cut -d'|' -f12)
+
+            report_content+="| ${workflow} | ${run_name} | ${tokens} | ${ctx_util}% | ${cycles} |\n"
+        done
+
+        # TDD Discipline table
+        report_content+="\n### TDD Discipline\n\n"
+        report_content+="| Workflow | Run | Refactorings | Pred Accuracy | Tests Immed |\n"
+        report_content+="|----------|-----|--------------|---------------|-------------|\n"
+
+        for entry in "${sorted_entries[@]}"; do
+            local workflow=$(echo "$entry" | cut -d'|' -f2)
+            local run_name=$(echo "$entry" | cut -d'|' -f3)
+            local refacts=$(echo "$entry" | cut -d'|' -f13)
+            local pred_c=$(echo "$entry" | cut -d'|' -f14)
+            local pred_t=$(echo "$entry" | cut -d'|' -f15)
+            local immed=$(echo "$entry" | cut -d'|' -f16)
+
+            local pred_str="N/A"
+            if [[ "$pred_t" =~ ^[0-9]+$ ]] && [ "$pred_t" -gt 0 ]; then
+                pred_str="${pred_c}/${pred_t}"
+            fi
+
+            report_content+="| ${workflow} | ${run_name} | ${refacts} | ${pred_str} | ${immed} |\n"
+        done
 
         # Get unique workflows for this kata
         local workflows=()
@@ -627,53 +993,155 @@ analyze_all() {
         done
         IFS=$'\n' workflows=($(sort <<< "${workflows[*]}")); unset IFS
 
+        # Collect all metrics per workflow for statistics
+        declare -A wf_count wf_passed_count
+        declare -A wf_durations wf_masses wf_tokens wf_ctx_utils wf_cycles wf_refacts wf_pred_c wf_pred_t wf_immeds
+
         for workflow in "${workflows[@]}"; do
-            local count=0
-            local total_duration=0
-            local total_mass=0
-            local passed_count=0
-            local durations=()
-            local masses=()
+            wf_count[$workflow]=0
+            wf_passed_count[$workflow]=0
+            wf_durations[$workflow]=""
+            wf_masses[$workflow]=""
+            wf_tokens[$workflow]=""
+            wf_ctx_utils[$workflow]=""
+            wf_cycles[$workflow]=""
+            wf_refacts[$workflow]=""
+            wf_pred_c[$workflow]=0
+            wf_pred_t[$workflow]=0
+            wf_immeds[$workflow]=""
+        done
 
-            for entry in "${kata_entries[@]}"; do
-                local entry_wf=$(echo "$entry" | cut -d'|' -f2)
-                if [ "$entry_wf" = "$workflow" ]; then
-                    local dur=$(echo "$entry" | cut -d'|' -f4)
-                    local mss=$(echo "$entry" | cut -d'|' -f7)
-                    local psd=$(echo "$entry" | cut -d'|' -f8)
+        for entry in "${kata_entries[@]}"; do
+            local wf=$(echo "$entry" | cut -d'|' -f2)
+            local dur=$(echo "$entry" | cut -d'|' -f4)
+            local mss=$(echo "$entry" | cut -d'|' -f7)
+            local psd=$(echo "$entry" | cut -d'|' -f8)
+            local tok=$(echo "$entry" | cut -d'|' -f10)
+            local ctx=$(echo "$entry" | cut -d'|' -f11)
+            local cyc=$(echo "$entry" | cut -d'|' -f12)
+            local ref=$(echo "$entry" | cut -d'|' -f13)
+            local pc=$(echo "$entry" | cut -d'|' -f14)
+            local pt=$(echo "$entry" | cut -d'|' -f15)
+            local imm=$(echo "$entry" | cut -d'|' -f16)
 
-                    if [[ "$dur" =~ ^[0-9]+$ ]]; then
-                        total_duration=$((total_duration + dur))
-                        durations+=("$dur")
-                    fi
-                    if [[ "$mss" =~ ^[0-9]+$ ]]; then
-                        total_mass=$((total_mass + mss))
-                        masses+=("$mss")
-                    fi
-                    [ "$psd" = "true" ] && passed_count=$((passed_count + 1))
-                    count=$((count + 1))
+            wf_count[$wf]=$((${wf_count[$wf]} + 1))
+            [ "$psd" = "true" ] && wf_passed_count[$wf]=$((${wf_passed_count[$wf]} + 1))
+
+            [[ "$dur" =~ ^[0-9]+$ ]] && wf_durations[$wf]="${wf_durations[$wf]} $dur"
+            [[ "$mss" =~ ^[0-9]+$ ]] && wf_masses[$wf]="${wf_masses[$wf]} $mss"
+            [[ "$tok" =~ ^[0-9]+$ ]] && wf_tokens[$wf]="${wf_tokens[$wf]} $tok"
+            [[ "$ctx" =~ ^[0-9]+$ ]] && wf_ctx_utils[$wf]="${wf_ctx_utils[$wf]} $ctx"
+            [[ "$cyc" =~ ^[0-9]+$ ]] && wf_cycles[$wf]="${wf_cycles[$wf]} $cyc"
+            [[ "$ref" =~ ^[0-9]+$ ]] && wf_refacts[$wf]="${wf_refacts[$wf]} $ref"
+            [[ "$pc" =~ ^[0-9]+$ ]] && wf_pred_c[$wf]=$((${wf_pred_c[$wf]} + pc))
+            [[ "$pt" =~ ^[0-9]+$ ]] && wf_pred_t[$wf]=$((${wf_pred_t[$wf]} + pt))
+            [[ "$imm" =~ ^[0-9]+$ ]] && wf_immeds[$wf]="${wf_immeds[$wf]} $imm"
+        done
+
+        # Statistics Table 1: Core Metrics
+        report_content+="\n### Statistics: Core Metrics\n\n"
+        report_content+="| Workflow | Runs | Avg Duration | σ Duration | Avg Mass | σ Mass | Success Rate |\n"
+        report_content+="|----------|------|--------------|------------|----------|--------|-------------|\n"
+
+        for workflow in "${workflows[@]}"; do
+            local cnt=${wf_count[$workflow]}
+            if [ $cnt -gt 0 ]; then
+                local durs=(${wf_durations[$workflow]})
+                local msss=(${wf_masses[$workflow]})
+
+                local sum_dur=0; for v in "${durs[@]}"; do sum_dur=$((sum_dur + v)); done
+                local sum_mss=0; for v in "${msss[@]}"; do sum_mss=$((sum_mss + v)); done
+
+                local avg_dur=$((sum_dur / cnt))
+                local avg_mss=$((sum_mss / cnt))
+                local success_rate=$((${wf_passed_count[$workflow]} * 100 / cnt))
+
+                local stddev_dur=$(calc_stddev "${durs[@]}")
+                local stddev_mss=$(calc_stddev "${msss[@]}")
+
+                report_content+="| ${workflow} | ${cnt} | ${avg_dur}s | ±${stddev_dur}s | ${avg_mss} | ±${stddev_mss} | ${success_rate}% |\n"
+            fi
+        done
+
+        # Statistics Table 2: Token Usage & Context
+        report_content+="\n### Statistics: Token Usage & Context\n\n"
+        report_content+="| Workflow | Runs | Avg Tokens | σ Tokens | Avg Ctx Util | σ Ctx Util | Avg Cycles | σ Cycles |\n"
+        report_content+="|----------|------|------------|----------|--------------|------------|------------|----------|\n"
+
+        for workflow in "${workflows[@]}"; do
+            local cnt=${wf_count[$workflow]}
+            if [ $cnt -gt 0 ]; then
+                local toks=(${wf_tokens[$workflow]})
+                local ctxs=(${wf_ctx_utils[$workflow]})
+                local cycs=(${wf_cycles[$workflow]})
+
+                local sum_tok=0; for v in "${toks[@]}"; do sum_tok=$((sum_tok + v)); done
+                local sum_ctx=0; for v in "${ctxs[@]}"; do sum_ctx=$((sum_ctx + v)); done
+                local sum_cyc=0; for v in "${cycs[@]}"; do sum_cyc=$((sum_cyc + v)); done
+
+                local avg_tok=0; [ ${#toks[@]} -gt 0 ] && avg_tok=$((sum_tok / ${#toks[@]}))
+                local avg_ctx=0; [ ${#ctxs[@]} -gt 0 ] && avg_ctx=$((sum_ctx / ${#ctxs[@]}))
+                local avg_cyc=0; [ ${#cycs[@]} -gt 0 ] && avg_cyc=$((sum_cyc / ${#cycs[@]}))
+
+                local stddev_tok=$(calc_stddev "${toks[@]}")
+                local stddev_ctx=$(calc_stddev "${ctxs[@]}")
+                local stddev_cyc=$(calc_stddev "${cycs[@]}")
+
+                report_content+="| ${workflow} | ${cnt} | ${avg_tok} | ±${stddev_tok} | ${avg_ctx}% | ±${stddev_ctx}% | ${avg_cyc} | ±${stddev_cyc} |\n"
+            fi
+        done
+
+        # Statistics Table 3: TDD Discipline
+        report_content+="\n### Statistics: TDD Discipline\n\n"
+        report_content+="| Workflow | Runs | Avg Refactorings | σ Refactorings | Pred Accuracy | Avg Tests Immed | σ Tests Immed |\n"
+        report_content+="|----------|------|------------------|----------------|---------------|-----------------|---------------|\n"
+
+        for workflow in "${workflows[@]}"; do
+            local cnt=${wf_count[$workflow]}
+            if [ $cnt -gt 0 ]; then
+                local refs=(${wf_refacts[$workflow]})
+                local imms=(${wf_immeds[$workflow]})
+                local pred_c_total=${wf_pred_c[$workflow]}
+                local pred_t_total=${wf_pred_t[$workflow]}
+
+                local sum_ref=0; for v in "${refs[@]}"; do sum_ref=$((sum_ref + v)); done
+                local sum_imm=0; for v in "${imms[@]}"; do sum_imm=$((sum_imm + v)); done
+
+                local avg_ref=0; [ ${#refs[@]} -gt 0 ] && avg_ref=$((sum_ref / ${#refs[@]}))
+                local avg_imm=0; [ ${#imms[@]} -gt 0 ] && avg_imm=$((sum_imm / ${#imms[@]}))
+
+                local stddev_ref=$(calc_stddev "${refs[@]}")
+                local stddev_imm=$(calc_stddev "${imms[@]}")
+
+                local pred_str="N/A"
+                if [ $pred_t_total -gt 0 ]; then
+                    local pred_pct=$((pred_c_total * 100 / pred_t_total))
+                    pred_str="${pred_c_total}/${pred_t_total} (${pred_pct}%)"
                 fi
-            done
 
-            if [ $count -gt 0 ]; then
-                local avg_duration=$((total_duration / count))
-                local avg_mass=$((total_mass / count))
-                local success_rate=$((passed_count * 100 / count))
-
-                local stddev_duration=$(calc_stddev "${durations[@]}")
-                local stddev_mass=$(calc_stddev "${masses[@]}")
-
-                report_content+="| ${workflow} | ${count} | ${avg_duration}s | ±${stddev_duration}s | ${avg_mass} | ±${stddev_mass} | ${success_rate}% |\n"
+                report_content+="| ${workflow} | ${cnt} | ${avg_ref} | ±${stddev_ref} | ${pred_str} | ${avg_imm} | ±${stddev_imm} |\n"
             fi
         done
 
         report_content+="\n"
     done
 
+    report_content+="## Metrics Legend\n\n"
+    report_content+="| Metric | Description |\n"
+    report_content+="|--------|-------------|\n"
+    report_content+="| Duration | Total experiment time in seconds |\n"
+    report_content+="| Mass | APP (Absolute Priority Premise) code complexity score |\n"
+    report_content+="| Tokens | Total tokens consumed by the AI |\n"
+    report_content+="| Ctx Util | Final context window utilization percentage |\n"
+    report_content+="| Cycles | Number of TDD Red-Green-Refactor cycles |\n"
+    report_content+="| Refactorings | Number of refactorings applied |\n"
+    report_content+="| Pred Accuracy | Prediction accuracy in Red phase (correct/total) |\n"
+    report_content+="| Tests Immed | Tests that passed immediately (indicates over-implementation) |\n"
+    report_content+="| σ (Sigma) | Standard deviation - lower = more consistent |\n\n"
+
     report_content+="## Notes\n\n"
     report_content+="- Tables are grouped by **Kata** (experiments are only comparable within the same kata)\n"
     report_content+="- Within each kata, runs are sorted by **Workflow**, then by **timestamp**\n"
-    report_content+="- **σ (Sigma)** = Standard deviation - lower values indicate more consistent/stable results\n"
 
     echo -e "$report_content" > "$all_report"
     echo -e "\n${GREEN}Saved all-runs analysis to: $all_report${NC}"

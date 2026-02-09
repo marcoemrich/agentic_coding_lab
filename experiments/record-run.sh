@@ -30,7 +30,13 @@ list_katas() {
     local i=1
     for kata in "$KATAS_DIR"/*/; do
         if [ -d "$kata" ]; then
-            echo "  $i) $(basename "$kata")"
+            local name=$(basename "$kata")
+            # Skip disabled katas (starting with _)
+            if [[ "$name" == _* ]]; then
+                echo -e "  ${RED}$i) $name (disabled)${NC}"
+            else
+                echo "  $i) $name"
+            fi
             ((i++))
         fi
     done
@@ -41,7 +47,13 @@ list_workflows() {
     local i=1
     for workflow in "$WORKFLOWS_DIR"/*/; do
         if [ -d "$workflow" ]; then
-            echo "  $i) $(basename "$workflow")"
+            local name=$(basename "$workflow")
+            # Skip disabled workflows (starting with _)
+            if [[ "$name" == _* ]]; then
+                echo -e "  ${RED}$i) $name (disabled)${NC}"
+            else
+                echo "  $i) $name"
+            fi
             ((i++))
         fi
     done
