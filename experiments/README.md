@@ -10,7 +10,7 @@ This experiment framework evaluates different approaches to AI-assisted Test-Dri
 
 Specifically, we compare:
 - **Subagent-based workflows**: Each TDD phase (Test List, Red, Green, Refactor) runs in a separate, specialized agent with isolated context
-- **Single-context workflows**: All TDD phases run within one continuous conversation context
+- **Single-context workflows**: All TDD phases run within one continuous conversation context using inline skills
 
 ### Why This Matters
 
@@ -31,7 +31,7 @@ By systematically comparing workflow variants, we can identify which architectur
 ### Input
 Each experiment run uses:
 1. A **Kata** (coding exercise) with a standardized prompt
-2. A **Workflow** variant (set of rules and agents)
+2. A **Workflow** variant (set of rules and agents/skills)
 
 The Kata provides a consistent task (e.g., String Calculator) so results are comparable across workflow variants.
 
@@ -72,40 +72,79 @@ A workflow is considered **better** if it produces:
 
 ```
 Main Agent
-    ├── Task(test-list) → Creates test list
-    ├── Task(red)       → Activates test, makes predictions
-    ├── Task(green)     → Minimal implementation
-    └── Task(refactor)  → Improves code
+    ├── Task(test-list) → Creates test list      [isolated context]
+    ├── Task(red)       → Activates test         [isolated context]
+    ├── Task(green)     → Minimal implementation [isolated context]
+    └── Task(refactor)  → Improves code          [isolated context]
 ```
 
 **Hypothesis**: Isolated contexts enforce discipline but may lose state between phases.
 
 **Characteristics**:
-- Each phase has specialized system prompt
+- Each phase has specialized system prompt (in `agents/*.md`)
 - Context passed explicitly via Task prompt parameters
 - Fresh context per phase (no accumulated noise)
 - Overhead from agent spawning
 
+**Structure**:
+```
+v1-subagents/.claude/
+├── agents/                    # Subagent definitions
+│   ├── test-list.md
+│   ├── red.md
+│   ├── green.md
+│   └── refactor.md
+└── rules/                     # Workflow rules
+    ├── tdd.md                 # Main TDD rules (uses Task tool)
+    ├── human-in-the-loop.md
+    ├── tdd_with_ts_and_vitest.md
+    └── tdd-experiment-mode.md # Disables HITL for experiments
+```
+
 ### v2-single-context (Alternative)
 
-**Architecture**: All phases in one continuous context
+**Architecture**: All phases in one continuous context using inline skills
 
 ```
 Single Agent
-    └── Follows TDD rules inline
-        ├── Test List phase
-        ├── Red phase
-        ├── Green phase
-        └── Refactor phase
+    ├── Skill(/test-list) → Creates test list    [same context]
+    ├── Skill(/red)       → Activates test       [same context]
+    ├── Skill(/green)     → Minimal implementation [same context]
+    └── Skill(/refactor)  → Improves code        [same context]
 ```
 
 **Hypothesis**: Shared context maintains state but may lead to less discipline.
 
 **Characteristics**:
-- One continuous conversation
-- All state in working memory
+- Skills provide phase-specific guidance (in `commands/*.md`)
+- All state remains in working memory
 - No agent spawning overhead
 - Risk of context pollution / over-implementation
+
+**Structure**:
+```
+v2-single-context/.claude/
+├── commands/                  # Skill definitions (inline execution)
+│   ├── test-list.md
+│   ├── red.md
+│   ├── green.md
+│   └── refactor.md
+└── rules/                     # Workflow rules
+    ├── tdd.md                 # Main TDD rules (uses Skill tool)
+    ├── human-in-the-loop.md
+    ├── tdd_with_ts_and_vitest.md
+    └── tdd-experiment-mode.md # Disables HITL for experiments
+```
+
+## Key Difference
+
+| Aspect | v1-subagents | v2-single-context |
+|--------|--------------|-------------------|
+| **Mechanism** | `Task(subagent_type: "red")` | `Skill(skill: "red")` |
+| **Context** | Isolated per phase | Shared across all phases |
+| **State transfer** | Via prompt parameters | In-memory (conversation) |
+| **Definitions** | `agents/*.md` | `commands/*.md` |
+| **Overhead** | Agent spawning | None |
 
 ## Directory Structure
 
@@ -120,14 +159,12 @@ experiments/
 │   ├── v1-subagents/
 │   │   └── .claude/
 │   │       ├── agents/           # test-list.md, red.md, green.md, refactor.md
-│   │       └── rules/
-│   │           ├── tdd.md
-│   │           └── tdd-experiment-mode.md  # Disables HITL
+│   │       └── rules/            # tdd.md, human-in-the-loop.md, etc.
 │   │
 │   └── v2-single-context/
 │       └── .claude/
-│           └── rules/
-│               └── tdd-single-context.md   # All-in-one TDD rules
+│           ├── commands/         # test-list.md, red.md, green.md, refactor.md
+│           └── rules/            # tdd.md, human-in-the-loop.md, etc.
 │
 ├── runs/                         # Experiment results
 │   └── YYYY-MM-DD_HH-MM-SS_kata_workflow/
@@ -155,7 +192,7 @@ cd experiments
 
 Select:
 1. A Kata (e.g., `string-calculator`)
-2. A Workflow variant (e.g., `v1-subagents`)
+2. A Workflow variant (e.g., `v1-subagents` or `v2-single-context`)
 
 This creates a new directory under `runs/` with all necessary configuration.
 
@@ -243,6 +280,7 @@ Create `katas/<kata-name>/prompt.md` with:
 Create `workflows/<variant-name>/.claude/` with:
 - `rules/*.md` - TDD rules for this variant
 - `agents/*.md` - Agent definitions (if using subagents)
+- `commands/*.md` - Skill definitions (if using inline skills)
 
 ## Context for AI Assistants
 
@@ -257,3 +295,6 @@ If you are a Claude instance reading this to run an experiment:
    - Green: Minimal code only, simplest solution
    - Refactor: Evaluate naming first, calculate APP mass
 5. **Use correct test commands**: `pnpm test:unit:basic` (never `npm` or `npx vitest`)
+6. **Workflow determines mechanism**:
+   - v1-subagents: Use `Task` tool with `subagent_type` parameter
+   - v2-single-context: Use `Skill` tool with skill name
