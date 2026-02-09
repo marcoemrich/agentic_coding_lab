@@ -186,10 +186,10 @@ run_claude() {
     echo -e "\n${YELLOW}Starting Claude Code...${NC}"
     echo -e "${BLUE}Prompt: Read prompt.md and complete the TDD exercise following the workflow rules.${NC}\n"
 
-    # Start Claude Code interactively with the prompt as argument
+    # Start Claude Code in non-interactive mode
     # --dangerously-skip-permissions: Skip all permission prompts
-    # The prompt is passed as positional argument (not -p flag)
-    (cd "$run_dir" && claude --dangerously-skip-permissions "Read prompt.md and complete the TDD exercise following the workflow rules.")
+    # --print: Print response and exit (non-interactive mode)
+    (cd "$run_dir" && claude --dangerously-skip-permissions --print "Read prompt.md and complete the TDD exercise following the workflow rules.")
 }
 
 print_completion() {

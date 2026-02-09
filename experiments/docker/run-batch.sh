@@ -122,7 +122,7 @@ EOF
         echo -e "  Running Claude Code..."
         start_time=$(date +%s)
 
-        (cd "$run_dir" && timeout 1800 claude --dangerously-skip-permissions \
+        (cd "$run_dir" && timeout 1800 claude --dangerously-skip-permissions --print \
             "Read prompt.md and complete the TDD exercise following the workflow rules." \
             2>&1 | tee "$run_dir/claude-output.log") || {
             echo -e "  ${RED}Run failed or timed out${NC}"

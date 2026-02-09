@@ -16,7 +16,12 @@ cd experiments/docker
 
 # Copy and edit environment file
 cp .env.example .env
-# Edit .env with your ANTHROPIC_API_KEY
+
+# Set your user/group IDs (fixes volume permissions)
+echo "USER_ID=$(id -u)" >> .env
+echo "GROUP_ID=$(id -g)" >> .env
+
+# Edit .env with your API credentials (direct or Portkey)
 ```
 
 ### 2. Build Image
@@ -25,10 +30,16 @@ cp .env.example .env
 docker compose build
 ```
 
+Or with explicit UID/GID:
+
+```bash
+USER_ID=$(id -u) GROUP_ID=$(id -g) docker compose build
+```
+
 ### 3. Run Interactive Experiment
 
 ```bash
-docker compose run --rm experiment
+docker compose run -it --rm experiment bash
 ```
 
 This drops you into the experiment container. From there:
@@ -92,12 +103,29 @@ docker/
 
 ## Environment Variables
 
+### Direct Anthropic API
+
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `ANTHROPIC_API_KEY` | API key for Claude | (required) |
 | `ANTHROPIC_API_KEY_FILE` | Path to file with API key | `~/.anthropic/api_key` |
 | `CLAUDE_MODEL` | Model to use | `claude-opus-4-6` |
 | `CLAUDE_CONFIG_DIR` | Claude config directory | `~/.claude` |
+
+### Portkey Gateway (or other proxy)
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `ANTHROPIC_BASE_URL` | Proxy URL | `https://api.portkey.ai` |
+| `ANTHROPIC_AUTH_TOKEN` | Auth token (can be dummy for Portkey) | `dummy` |
+| `ANTHROPIC_CUSTOM_HEADERS` | Custom headers for proxy | `x-portkey-api-key: your-key` |
+
+### Container User (volume permissions)
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `USER_ID` | Container user UID (run `id -u`) | `1000` |
+| `GROUP_ID` | Container user GID (run `id -g`) | `1000` |
 
 ## Batch Mode
 
@@ -151,8 +179,17 @@ docker compose run --rm experiment cat /home/experimenter/.anthropic/api_key
 
 ### Permission Errors
 
+The container user must match your host user. Ensure `USER_ID` and `GROUP_ID` in `.env` match your system:
+
 ```bash
-# Fix runs directory permissions
+# Check your IDs
+id -u  # USER_ID
+id -g  # GROUP_ID
+
+# Rebuild with correct IDs
+docker compose build --no-cache
+
+# Or fix existing runs directory
 sudo chown -R $(id -u):$(id -g) ../runs
 ```
 

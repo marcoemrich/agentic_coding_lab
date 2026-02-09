@@ -129,7 +129,7 @@ analyze_single_run() {
 
     # Implementation file
     if [ -n "$impl_file" ] && [ -f "$impl_file" ]; then
-        impl_loc=$(wc -l < "$impl_file")
+        impl_loc=$(wc -l < "$impl_file" | tr -d '[:space:]')
         echo -e "  Implementation LOC: $impl_loc"
         echo -e "  File: $(basename "$impl_file")"
         report_content+="- **Implementation file**: $(basename "$impl_file")\n"
@@ -141,9 +141,9 @@ analyze_single_run() {
 
     # Test file
     if [ -n "$test_file" ] && [ -f "$test_file" ]; then
-        test_loc=$(wc -l < "$test_file")
-        test_count=$(grep -c "it(" "$test_file" 2>/dev/null || echo "0")
-        todo_count=$(grep -c "it.todo" "$test_file" 2>/dev/null || echo "0")
+        test_loc=$(wc -l < "$test_file" | tr -d '[:space:]')
+        test_count=$(grep -c "it(" "$test_file" 2>/dev/null | tr -d '[:space:]' || echo "0")
+        todo_count=$(grep -c "it.todo" "$test_file" 2>/dev/null | tr -d '[:space:]' || echo "0")
 
         echo -e "  Test file LOC: $test_loc"
         echo -e "  Active tests: $test_count"
@@ -196,11 +196,18 @@ analyze_single_run() {
         echo -e "\n${YELLOW}APP Mass Estimation:${NC}"
         report_content+="## APP Mass Estimation\n\n"
 
-        constants=$(grep -oE '\b[0-9]+\b|"[^"]*"|'\''[^'\'']*'\''' "$impl_file" 2>/dev/null | wc -l || echo 0)
-        invocations=$(grep -oE '\w+\s*\(' "$impl_file" 2>/dev/null | wc -l || echo 0)
-        conditionals=$(grep -cE '\bif\b|\bswitch\b|\?.*:' "$impl_file" 2>/dev/null || echo 0)
-        loops=$(grep -cE '\bfor\b|\bwhile\b|\.map\(|\.reduce\(|\.forEach\(' "$impl_file" 2>/dev/null || echo 0)
-        assignments=$(grep -cE '[^=!<>]=[^=]|\+\+|--' "$impl_file" 2>/dev/null || echo 0)
+        constants=$(grep -oE '\b[0-9]+\b|"[^"]*"|'\''[^'\'']*'\''' "$impl_file" 2>/dev/null | wc -l | tr -d '[:space:]')
+        invocations=$(grep -oE '\w+\s*\(' "$impl_file" 2>/dev/null | wc -l | tr -d '[:space:]')
+        conditionals=$(grep -cE '\bif\b|\bswitch\b|\?.*:' "$impl_file" 2>/dev/null | tr -d '[:space:]')
+        loops=$(grep -cE '\bfor\b|\bwhile\b|\.map\(|\.reduce\(|\.forEach\(' "$impl_file" 2>/dev/null | tr -d '[:space:]')
+        assignments=$(grep -cE '[^=!<>]=[^=]|\+\+|--' "$impl_file" 2>/dev/null | tr -d '[:space:]')
+
+        # Ensure all variables are valid integers (default to 0 if empty or non-numeric)
+        [[ "$constants" =~ ^[0-9]+$ ]] || constants=0
+        [[ "$invocations" =~ ^[0-9]+$ ]] || invocations=0
+        [[ "$conditionals" =~ ^[0-9]+$ ]] || conditionals=0
+        [[ "$loops" =~ ^[0-9]+$ ]] || loops=0
+        [[ "$assignments" =~ ^[0-9]+$ ]] || assignments=0
 
         total_mass=$((constants * 1 + invocations * 2 + conditionals * 4 + loops * 5 + assignments * 6))
 
@@ -238,6 +245,13 @@ analyze_single_run() {
 
     # Update metrics.json with analysis results
     if [ -f "$run_dir/metrics.json" ] && command -v jq &> /dev/null; then
+        # Ensure all values are valid integers, default to 0
+        [[ "$impl_loc" =~ ^[0-9]+$ ]] || impl_loc=0
+        [[ "$test_loc" =~ ^[0-9]+$ ]] || test_loc=0
+        [[ "$test_count" =~ ^[0-9]+$ ]] || test_count=0
+        [[ "$todo_count" =~ ^[0-9]+$ ]] || todo_count=0
+        [[ "$total_mass" =~ ^[0-9]+$ ]] || total_mass=0
+
         jq --argjson impl_loc "$impl_loc" \
            --argjson test_loc "$test_loc" \
            --argjson test_count "$test_count" \

@@ -30,6 +30,9 @@ services:
     # Environment
     environment:
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-}
+      - ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN:-}
+      - ANTHROPIC_CUSTOM_HEADERS=${ANTHROPIC_CUSTOM_HEADERS:-}
       - CLAUDE_MODEL=${CLAUDE_MODEL:-claude-opus-4-6}
       - NODE_ENV=production
 
@@ -69,6 +72,9 @@ services:
 
     environment:
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-}
+      - ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN:-}
+      - ANTHROPIC_CUSTOM_HEADERS=${ANTHROPIC_CUSTOM_HEADERS:-}
       - CLAUDE_MODEL=${CLAUDE_MODEL:-claude-opus-4-6}
       - NODE_ENV=production
 
