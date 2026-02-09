@@ -1,0 +1,75 @@
+# Cerberus Score Kata - Experiment Prompt
+
+## Feature: Cerberus Card Scoring
+
+A card game "Myth Collector" needs to calculate scores for Cerberus cards in a player's pile. Cerberus cards score bonus points when collected in sets of 3.
+
+## Rules
+
+1. **No Cards**: 0 cards returns 0 points
+2. **Individual Cards**: Each card scores 2 points
+3. **Set Bonus**: A set of 3 cards scores 12 points (instead of 6)
+4. **Multiple Sets**: Multiple complete sets each score 12 points, remaining cards score 2 each
+
+## Examples
+
+**No Cards**:
+```
+Input: 0
+Output: 0
+```
+
+**Individual Cards (no complete set)**:
+```
+Input: 1
+Output: 2  (1 × 2 points)
+
+Input: 2
+Output: 4  (2 × 2 points)
+```
+
+**Complete Set**:
+```
+Input: 3
+Output: 12  (1 set of 3 = 12 points)
+```
+
+**Set Plus Remainder**:
+```
+Input: 4
+Output: 14  (1 set of 3 = 12, plus 1 × 2 = 14)
+
+Input: 5
+Output: 16  (1 set of 3 = 12, plus 2 × 2 = 16)
+```
+
+**Multiple Sets**:
+```
+Input: 6
+Output: 24  (2 sets of 3 = 24)
+
+Input: 7
+Output: 26  (2 sets of 3 = 24, plus 1 × 2 = 26)
+```
+
+## Task
+
+Using TDD, implement the Cerberus Score Calculator with the following API:
+
+```typescript
+function scoreCerberus(cardCount: number): number;
+```
+
+## Expected Output Files
+
+- `src/cerberus-score.ts` - Implementation
+- `src/cerberus-score.spec.ts` - Tests
+
+## Constraints
+
+- Use Vitest for testing
+- Use TypeScript
+- Follow TDD strictly (no implementation before tests)
+- Input is always a non-negative integer (>= 0)
+
+The test-list agent should create the actual test list based on TDD principles (simple -> complex).
