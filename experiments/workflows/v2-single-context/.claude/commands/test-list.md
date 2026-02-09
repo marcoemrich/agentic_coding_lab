@@ -101,14 +101,10 @@ After creating the test list, output:
 - ❌ Include edge cases
 - ❌ Order randomly
 
-## Human Checkpoint
+## Completion
 
-After completing the test list:
+After completing the test list, proceed to Red phase:
 
 ```
-📋 Test List Phase Complete.
-
-Should I proceed to Red phase with the first test?
+📋 Test List Phase Complete. Proceeding to Red phase with the first test.
 ```
-
-Wait for explicit approval before continuing.

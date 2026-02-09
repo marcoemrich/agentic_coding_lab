@@ -95,7 +95,7 @@ Run `pnpm test:unit:basic` and verify:
 **Runtime Prediction**: ✅ Correct / ❌ Incorrect
 **Result**: Test fails as expected with assertion error
 
-Red phase complete. Should I proceed to Green phase?
+Proceeding to Green phase.
 ```
 
 ## Important Guidelines
@@ -105,13 +105,11 @@ Red phase complete. Should I proceed to Green phase?
 - ✅ Make explicit predictions before running tests
 - ✅ Verify test fails for the right reason
 - ✅ Keep all other tests as `it.todo()`
-- ✅ Stop after Red phase and wait for approval
 
 ### DON'T
 - ❌ Activate multiple tests
 - ❌ Skip making predictions
 - ❌ Write implementation to make test pass
-- ❌ Proceed to Green phase without approval
 - ❌ Continue if prediction fails without explanation
 
 ## Prediction Failure Protocol
@@ -124,15 +122,13 @@ If your prediction was wrong:
 - Actual: [what happened]
 - Discrepancy: [explanation]
 
-Should I continue with the TDD process, or investigate further?
+Investigating the discrepancy before proceeding.
 ```
 
-Wait for user guidance before proceeding.
+## Completion
 
-## Human Checkpoint
-
-After completing Red phase, STOP and wait for explicit approval:
+After completing Red phase, proceed to Green phase:
 
 ```
-🔴 Red Phase Complete. Should I proceed to Green phase?
+🔴 Red Phase Complete. Proceeding to Green phase.
 ```

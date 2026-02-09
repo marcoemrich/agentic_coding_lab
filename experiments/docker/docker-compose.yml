@@ -1,0 +1,87 @@
+# TDD Experiment Docker Compose Configuration
+# Run experiments in isolated containers
+
+services:
+  experiment:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tdd-experiment
+
+    # Mount experiment files
+    volumes:
+      # Experiment definitions (read-only)
+      - ../katas:/home/experimenter/experiments/katas:ro
+      - ../workflows:/home/experimenter/experiments/workflows:ro
+
+      # Run output (read-write)
+      - ../runs:/home/experimenter/experiments/runs:rw
+
+      # Scripts
+      - ../record-run.sh:/home/experimenter/experiments/record-run.sh:ro
+      - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
+
+      # Claude API key (required)
+      - ${ANTHROPIC_API_KEY_FILE:-~/.anthropic/api_key}:/home/experimenter/.anthropic/api_key:ro
+
+      # Claude settings (optional)
+      - ${CLAUDE_CONFIG_DIR:-~/.claude}:/home/experimenter/.claude:rw
+
+    # Environment
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - CLAUDE_MODEL=${CLAUDE_MODEL:-claude-opus-4-6}
+      - NODE_ENV=production
+
+    # Resource limits for safety
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+
+    # Interactive mode for experiment runner
+    stdin_open: true
+    tty: true
+
+    # Working directory
+    working_dir: /home/experimenter/experiments
+
+  # Batch runner for automated experiments
+  batch:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tdd-experiment-batch
+
+    volumes:
+      - ../katas:/home/experimenter/experiments/katas:ro
+      - ../workflows:/home/experimenter/experiments/workflows:ro
+      - ../runs:/home/experimenter/experiments/runs:rw
+      - ../record-run.sh:/home/experimenter/experiments/record-run.sh:ro
+      - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
+      - ./run-batch.sh:/home/experimenter/experiments/run-batch.sh:ro
+      - ${ANTHROPIC_API_KEY_FILE:-~/.anthropic/api_key}:/home/experimenter/.anthropic/api_key:ro
+      - ${CLAUDE_CONFIG_DIR:-~/.claude}:/home/experimenter/.claude:rw
+
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - CLAUDE_MODEL=${CLAUDE_MODEL:-claude-opus-4-6}
+      - NODE_ENV=production
+
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+
+    working_dir: /home/experimenter/experiments
+
+    # Batch runs non-interactively
+    command: ["bash", "run-batch.sh"]
+
+    profiles:
+      - batch

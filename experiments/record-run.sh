@@ -171,16 +171,36 @@ record_end() {
     fi
 }
 
-print_instructions() {
+install_dependencies() {
     local run_dir=$1
 
-    echo -e "\n${GREEN}Run directory created:${NC}"
-    echo "  $run_dir"
-    echo -e "\n${YELLOW}Next steps:${NC}"
-    echo "  1. cd $run_dir"
-    echo "  2. pnpm install"
-    echo "  3. Start Claude Code and run the kata"
-    echo "  4. When done, run: $EXPERIMENTS_DIR/analyze-run.sh $run_dir"
+    echo -e "\n${YELLOW}Installing dependencies...${NC}"
+    (cd "$run_dir" && pnpm install --silent)
+    echo -e "${GREEN}Dependencies installed.${NC}"
+}
+
+run_claude() {
+    local run_dir=$1
+    local kata=$2
+
+    echo -e "\n${YELLOW}Starting Claude Code...${NC}"
+    echo -e "${BLUE}Prompt: Read prompt.md and complete the TDD exercise following the workflow rules.${NC}\n"
+
+    # Start Claude Code interactively with the prompt as argument
+    # --dangerously-skip-permissions: Skip all permission prompts
+    # The prompt is passed as positional argument (not -p flag)
+    (cd "$run_dir" && claude --dangerously-skip-permissions "Read prompt.md and complete the TDD exercise following the workflow rules.")
+}
+
+print_completion() {
+    local run_dir=$1
+
+    echo -e "\n${GREEN}═══════════════════════════════════════════════════════════${NC}"
+    echo -e "${GREEN}  Experiment Complete${NC}"
+    echo -e "${GREEN}═══════════════════════════════════════════════════════════${NC}"
+    echo -e "\n${YELLOW}Run directory:${NC} $run_dir"
+    echo -e "\n${YELLOW}To analyze results:${NC}"
+    echo "  $EXPERIMENTS_DIR/analyze-run.sh $run_dir"
 }
 
 # Main
@@ -219,6 +239,15 @@ run_dir=$(create_run_dir "$selected_kata" "$selected_workflow")
 setup_run "$run_dir" "$selected_workflow" "$selected_kata"
 record_start "$run_dir" "$selected_kata" "$selected_workflow"
 
-print_instructions "$run_dir"
+# Install dependencies
+install_dependencies "$run_dir"
 
-echo -e "\n${GREEN}Done!${NC}"
+# Run Claude Code
+start_time=$(date +%s)
+run_claude "$run_dir" "$selected_kata"
+
+# Record end metrics
+record_end "$run_dir" "$start_time"
+
+# Print completion message
+print_completion "$run_dir"

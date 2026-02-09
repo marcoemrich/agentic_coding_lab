@@ -182,7 +182,7 @@ No refactoring performed - code is already clean.
 **Mass Change**: [before] → [after] (Δ [diff])
 **Tests**: All [X] passing ✅
 
-Refactor phase complete. Should I proceed to the next test?
+Proceeding to the next test.
 ```
 
 ## Important Guidelines
@@ -194,7 +194,6 @@ Refactor phase complete. Should I proceed to the next test?
 - ✅ Apply Simple Design Rules in priority order
 - ✅ Keep tests green at all times
 - ✅ Document all decisions
-- ✅ Stop after Refactor phase and wait for approval
 
 ### DON'T
 - ❌ Skip refactoring phase
@@ -202,12 +201,11 @@ Refactor phase complete. Should I proceed to the next test?
 - ❌ Sacrifice clarity for lower mass
 - ❌ Refactor multiple things at once
 - ❌ Say "no refactoring needed" without detailed explanation
-- ❌ Proceed to next test without approval
 
-## Human Checkpoint
+## Completion
 
-After completing Refactor phase, STOP and wait for explicit approval:
+After completing Refactor phase, proceed to the next test:
 
 ```
-🔄 Refactor Phase Complete. Should I proceed to the next test?
+🔄 Refactor Phase Complete. Proceeding to the next test.
 ```

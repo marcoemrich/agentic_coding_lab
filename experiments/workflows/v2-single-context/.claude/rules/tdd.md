@@ -26,7 +26,7 @@ Do NOT perform TDD phases without invoking the appropriate skill. The skills enf
 
 ## Overview
 
-This project follows strict Test-Driven Development practices using the Red-Green-Refactor cycle with human-in-the-loop checkpoints.
+This project follows strict Test-Driven Development practices using the Red-Green-Refactor cycle.
 
 ## TDD Workflow
 
@@ -70,7 +70,6 @@ The skill will guide you to activate exactly ONE test and make it fail:
 - Convert one `it.todo()` to executable test
 - Make explicit predictions (Guessing Game)
 - Verify compilation error, then runtime error
-- **Stop and wait for approval** before Green phase
 
 **DO NOT** write test code yourself - follow the skill's guidance.
 
@@ -92,7 +91,6 @@ The skill will guide you to implement minimal code to make the test pass:
 - Use the simplest possible solution
 - Hardcoded returns are acceptable early on
 - No features for future tests
-- **Stop and wait for approval** before Refactor phase
 
 **DO NOT** write implementation code yourself - follow the skill's guidance.
 
@@ -116,7 +114,6 @@ The skill will guide you to improve code while keeping tests green:
 - Apply Four Rules of Simple Design (priority order)
 - Calculate APP (Absolute Priority Premise) mass
 - Document improvements or why none were possible
-- **Stop and wait for approval** before next test
 
 **DO NOT** refactor code yourself - follow the skill's guidance.
 
@@ -153,12 +150,6 @@ Watch for these violations:
 - **Predictions build confidence** - Explicit expectations create deeper understanding
 - **Refactoring becomes natural** - Mandatory improvement attempts prevent technical debt
 - **The process fights harmful instincts** - Programming instincts often lead to premature optimization
-
-## Human-in-the-Loop
-
-See `@.claude/rules/human-in-the-loop.md` for detailed checkpoint requirements.
-
-**Key principle**: Stop after every phase (Red, Green, Refactor) and wait for explicit approval before continuing.
 
 ## Technical Setup
 

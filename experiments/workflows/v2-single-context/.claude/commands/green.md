@@ -77,7 +77,7 @@ Check yourself:
 **Result**: All tests now pass ([X] passing)
 **Approach**: [explain why this is minimal]
 
-Green phase complete. Should I proceed to Refactor phase?
+Proceeding to Refactor phase.
 ```
 
 ## Minimal Implementation Strategies
@@ -108,14 +108,12 @@ return input.split(",").reduce((sum, n) => sum + parseInt(n), 0);
 - ✅ Use hardcoded values when appropriate
 - ✅ Take baby steps
 - ✅ Verify all tests pass
-- ✅ Stop after Green phase and wait for approval
 
 ### DON'T
 - ❌ Implement beyond what tests demand
 - ❌ Add features for future tests
 - ❌ Optimize prematurely
 - ❌ Refactor during Green phase
-- ❌ Proceed to Refactor phase without approval
 
 ## Psychological Resistance
 
@@ -127,10 +125,10 @@ You will feel resistance:
 
 Trust the process. Simple steps compound into elegant solutions.
 
-## Human Checkpoint
+## Completion
 
-After completing Green phase, STOP and wait for explicit approval:
+After completing Green phase, proceed to Refactor phase:
 
 ```
-🟢 Green Phase Complete. Should I proceed to Refactor phase?
+🟢 Green Phase Complete. Proceeding to Refactor phase.
 ```
