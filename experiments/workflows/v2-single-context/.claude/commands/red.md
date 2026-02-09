@@ -1,0 +1,138 @@
+# TDD Red Phase
+
+You are now in the **Red Phase** of TDD. Follow these instructions to activate ONE test and make it fail.
+
+## Your Mission
+
+1. Activate exactly ONE test from the test list
+2. Make explicit predictions about how it will fail
+3. Verify the test fails for the right reason
+4. Maintain strict discipline - NO implementation during Red phase
+
+## Context: $ARGUMENTS
+
+## Red Phase Rules
+
+- **One test at a time**: Convert exactly ONE `it.todo()` to executable test
+- **All other tests remain as `it.todo()`**: Never have more than one failing test
+- **Two-stage failure**: First compilation error, then runtime/assertion error
+- **Make predictions**: Explicitly state expected failures before running tests
+- **No implementation**: Don't write code to make test pass yet
+
+## Process
+
+### Step 1: Activate One Test
+
+Identify the next `it.todo()` and convert it to executable test code:
+
+```typescript
+// Convert from:
+it.todo("should return 0 for empty input");
+
+// To:
+it("should return 0 for empty input", () => {
+  expect(calculate("")).toBe(0);
+});
+```
+
+Leave all other tests as `it.todo()`.
+
+### Step 2: Predict Compilation Error
+
+Before running the test, state your prediction:
+
+```
+🔴 Red Phase - Compilation Error Prediction:
+- Test: "should return 0 for empty input"
+- Expected: Compilation error
+- Reason: Function `calculate` doesn't exist yet
+- Error: "Cannot find name 'calculate'"
+```
+
+### Step 3: Run Test - Verify Compilation Error
+
+Run `pnpm test:unit:basic` and verify:
+- ✅ Compilation error as predicted, OR
+- ❌ Prediction wrong → STOP and explain discrepancy
+
+### Step 4: Create Empty Function
+
+Create minimal function stub (no logic):
+
+```typescript
+export const calculate = (input: string): number => {
+  return undefined as unknown as number; // Intentionally wrong
+};
+```
+
+### Step 5: Predict Runtime Error
+
+Before running again, state your prediction:
+
+```
+🔴 Red Phase - Runtime Error Prediction:
+- Test: "should return 0 for empty input"
+- Expected: Runtime assertion error
+- Expected value: 0
+- Actual value: undefined
+- Diff:
+  Expected: 0
+  Received: undefined
+```
+
+### Step 6: Run Test - Verify Runtime Error
+
+Run `pnpm test:unit:basic` and verify:
+- ✅ Assertion error as predicted, OR
+- ❌ Prediction wrong → STOP and explain discrepancy
+
+### Step 7: Report Completion
+
+```
+🔴 Red Phase Complete:
+**Test Activated**: "should return 0 for empty input"
+**Compilation Prediction**: ✅ Correct / ❌ Incorrect
+**Runtime Prediction**: ✅ Correct / ❌ Incorrect
+**Result**: Test fails as expected with assertion error
+
+Red phase complete. Should I proceed to Green phase?
+```
+
+## Important Guidelines
+
+### DO
+- ✅ Activate exactly ONE test at a time
+- ✅ Make explicit predictions before running tests
+- ✅ Verify test fails for the right reason
+- ✅ Keep all other tests as `it.todo()`
+- ✅ Stop after Red phase and wait for approval
+
+### DON'T
+- ❌ Activate multiple tests
+- ❌ Skip making predictions
+- ❌ Write implementation to make test pass
+- ❌ Proceed to Green phase without approval
+- ❌ Continue if prediction fails without explanation
+
+## Prediction Failure Protocol
+
+If your prediction was wrong:
+
+```
+❌ Prediction Failed:
+- Predicted: [what you expected]
+- Actual: [what happened]
+- Discrepancy: [explanation]
+
+Should I continue with the TDD process, or investigate further?
+```
+
+Wait for user guidance before proceeding.
+
+## Human Checkpoint
+
+After completing Red phase, STOP and wait for explicit approval:
+
+```
+🔴 Red Phase Complete. Should I proceed to Green phase?
+```
