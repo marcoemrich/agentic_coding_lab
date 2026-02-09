@@ -233,36 +233,116 @@ The analyzer reports:
 
 ## Expected Output from Claude
 
-After completing a run, Claude should output a summary like:
+After completing a run, Claude should write `experiment-summary.md` with this structure:
 
 ```markdown
-## TDD Experiment Summary
+# TDD Experiment Summary
 
-### Configuration
-- Workflow: v1-subagents
-- Kata: string-calculator
-- Timestamp: 2026-02-09T15:30:00Z
+## Configuration
+- **Workflow**: v1-subagents
+- **Kata**: String Calculator
+- **Timestamp**: 2026-02-09
+- **Start time**: 2026-02-09T01:07:00+01:00
 
-### Test List
+## Duration & Timings
+
+### Total Duration
+- **Total experiment time**: ~5 minutes 9 seconds (309,418 ms)
+
+### Phase Timings
+
+| Phase | Agent | Duration (ms) | Duration (s) |
+|-------|-------|---------------|--------------|
+| Test List | test-list | 30,875 | 30.9 |
+| Cycle 1 - Red | red | 30,922 | 30.9 |
+| Cycle 1 - Green | green | 19,163 | 19.2 |
+| Cycle 1 - Refactor | refactor | 30,920 | 30.9 |
+| ... | ... | ... | ... |
+| **Total** | | **389,388** | **389.4** |
+
+### Token Usage by Phase
+
+| Phase | Tokens Used |
+|-------|-------------|
+| Test List | 20,905 |
+| Cycle 1 (R/G/R) | 21,507 + 20,529 + 21,863 = 63,899 |
+| ... | ... |
+| **Total** | **277,106** |
+
+### Context Utilization
+
+**Context window size**: 200,000 tokens (Opus 4.6)
+
+| Phase | Tokens Used | Context Remaining | Utilization |
+|-------|-------------|-------------------|-------------|
+| Test List | 20,905 | 179,095 | 10.5% |
+| Cycle 1 - Red | 21,507 | 178,493 | 10.8% |
+| Cycle 1 - Green | 20,529 | 179,471 | 10.3% |
+| Cycle 1 - Refactor | 21,863 | 178,137 | 10.9% |
+| ... | ... | ... | ... |
+| **Main Context (end)** | ~15,000 | ~185,000 | ~7.5% |
+
+**Note**: For v1-subagents, each agent starts with fresh context. Main context accumulates orchestration overhead only.
+
+### Average Cycle Time
+- **Average per TDD cycle**: ~65.1 seconds (Red + Green + Refactor)
+- **Average Red phase**: 27.9 seconds
+- **Average Green phase**: 18.5 seconds
+- **Average Refactor phase**: 43.3 seconds
+
+## Test List
 1. should return 0 for empty string
-2. should return number for single number
-3. should return sum for two numbers
-4. should return sum for multiple numbers
+2. should return the number for a single number
+3. should return sum for two comma-separated numbers
+4. should return sum for multiple comma-separated numbers
 
-### Cycle Details
+## Cycle Details
+
 | # | Test | Red Prediction | Green Approach | Refactor | Mass |
 |---|------|----------------|----------------|----------|------|
-| 1 | empty string → 0 | ✅ Correct | return 0 | naming OK | 8 |
-| 2 | single number | ✅ Correct | parseInt | none needed | 12 |
-| 3 | two numbers | ✅ Correct | split + sum | extracted helper | 15 |
-| 4 | multiple numbers | ✅ Correct | reduce | renamed function | 13 |
+| 1 | Empty string → 0 | ✅ Expected 0, Received undefined | Hardcoded `return 0` | No changes needed | 2 |
+| 2 | Single number → number | ✅ Expected 5, Received 0 | Added if/return | No changes | 9 |
+| 3 | Two numbers → sum | ✅ Expected 3, Received NaN | Added split/reduce | Renamed variables | 33 |
+| 4 | Multiple numbers → sum | ✅ Predicted pass | No changes needed | No changes needed | 33 |
 
-### Final Metrics
-- Total tests: 4
-- All passing: ✅
-- Final code mass: 13
-- Refactorings applied: 2
-- Prediction accuracy: 4/4 = 100%
+## Final Metrics
+- **Total tests**: 4
+- **All passing**: ✅
+- **Final code mass**: 33
+- **Refactorings applied**: 1 (naming improvement in cycle 3)
+- **Prediction accuracy**: 4/4 = 100%
+
+## Code
+
+### Implementation (`src/string-calculator.ts`)
+```typescript
+export function add(numbers: string): number {
+  if (numbers === "") return 0;
+  const numberStrings = numbers.split(",");
+  return numberStrings.reduce((sum, numStr) => sum + Number(numStr), 0);
+}
+```
+
+### Tests (`src/string-calculator.spec.ts`)
+```typescript
+import { describe, it, expect } from "vitest";
+import { add } from "./string-calculator.js";
+
+describe("String Calculator", () => {
+  it("should return 0 for empty string", () => {
+    expect(add("")).toBe(0);
+  });
+  // ... more tests
+});
+```
+
+## Observations
+
+1. **Test 4 passed immediately** - The split/reduce implementation naturally generalized.
+
+2. **Prediction accuracy was 100%** - Good understanding of codebase evolution.
+
+3. **Single refactoring applied** - Variable naming improvement in cycle 3.
 ```
 
 ## Adding New Experiments

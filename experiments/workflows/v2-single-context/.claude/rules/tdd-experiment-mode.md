@@ -32,50 +32,105 @@ During each phase, track:
 
 ## Final Summary Format
 
-After completing all tests, output:
+After completing all tests, write `experiment-summary.md` with this exact structure:
 
 ```markdown
-## TDD Experiment Summary
+# TDD Experiment Summary
 
-### Configuration
-- Workflow: v2-single-context
-- Kata: [kata name]
-- Timestamp: [ISO date]
+## Configuration
+- **Workflow**: v2-single-context
+- **Kata**: [kata name]
+- **Timestamp**: [YYYY-MM-DD]
+- **Start time**: [ISO timestamp with timezone]
 
-### Test List
-1. [test 1 description]
-2. [test 2 description]
-...
+## Duration & Timings
 
-### Cycle Details
+### Total Duration
+- **Total experiment time**: ~X minutes Y seconds (Z ms)
+
+### Phase Timings
+
+| Phase | Skill | Duration (ms) | Duration (s) |
+|-------|-------|---------------|--------------|
+| Test List | /test-list | X | X.X |
+| Cycle 1 - Red | /red | X | X.X |
+| Cycle 1 - Green | /green | X | X.X |
+| Cycle 1 - Refactor | /refactor | X | X.X |
+| Cycle 2 - Red | /red | X | X.X |
+| ... | ... | ... | ... |
+| **Total** | | **X** | **X.X** |
+
+### Token Usage by Phase
+
+| Phase | Tokens Used |
+|-------|-------------|
+| Test List | X |
+| Cycle 1 (R/G/R) | X + X + X = X |
+| Cycle 2 (R/G/R) | X + X + X = X |
+| ... | ... |
+| **Total** | **X** |
+
+### Context Utilization
+
+**Context window size**: 200,000 tokens (Opus 4.6)
+
+| Phase | Cumulative Tokens | Context Remaining | Utilization |
+|-------|-------------------|-------------------|-------------|
+| Test List | X | X | X% |
+| After Cycle 1 | X | X | X% |
+| After Cycle 2 | X | X | X% |
+| After Cycle 3 | X | X | X% |
+| After Cycle 4 | X | X | X% |
+| **Final** | X | X | X% |
+
+**Note**: For v2-single-context, tokens accumulate in a single context throughout the experiment.
+
+### Average Cycle Time
+- **Average per TDD cycle**: ~X seconds (Red + Green + Refactor)
+- **Average Red phase**: X seconds
+- **Average Green phase**: X seconds
+- **Average Refactor phase**: X seconds
+
+## Test List
+1. [test description 1]
+2. [test description 2]
+3. [test description 3]
+4. [test description 4]
+
+## Cycle Details
+
 | # | Test | Red Prediction | Green Approach | Refactor | Mass |
 |---|------|----------------|----------------|----------|------|
-| 1 | ... | ✅/❌ [details] | [approach] | [changes] | [N] |
-| 2 | ... | ✅/❌ [details] | [approach] | [changes] | [N] |
-...
+| 1 | [test name] | ✅ Expected X, Received Y | [approach] | [changes or "No changes needed"] | X |
+| 2 | [test name] | ✅ Expected X, Received Y | [approach] | [changes or "No changes needed"] | X |
+| ... | ... | ... | ... | ... | ... |
 
-### Final Metrics
-- Total tests: [count]
-- All passing: ✅/❌
-- Final code mass: [number]
-- Refactorings applied: [count]
-- Prediction accuracy: [X/Y = %]
+## Final Metrics
+- **Total tests**: X
+- **All passing**: ✅
+- **Final code mass**: X
+- **Refactorings applied**: X ([brief description])
+- **Prediction accuracy**: X/X = 100%
 
-### Code
+## Code
 
-**Implementation** (`src/[name].ts`):
+### Implementation (`src/[filename].ts`)
 ```typescript
 [final implementation code]
 ```
 
-**Tests** (`src/[name].spec.ts`):
+### Tests (`src/[filename].spec.ts`)
 ```typescript
 [final test code]
 ```
 
-### Observations
-- [Notable observation 1]
-- [Notable observation 2]
+## Observations
+
+1. **[Observation title]** - [Description of notable behavior or insight]
+
+2. **[Observation title]** - [Description]
+
+3. **[Observation title]** - [Description]
 ```
 
 ## Key Differences from v1-subagents
