@@ -307,6 +307,157 @@ analyze_single_run() {
         report_content+="| **Total Mass** | | | **$total_mass** |\n\n"
     fi
 
+    # Clean Code Metrics
+    local cc_loc=0
+    local cc_functions=0
+    local cc_longest_func=0
+    local cc_avg_loc_func=0
+    local cc_imports=0
+
+    if [ -n "$impl_file" ] && [ -f "$impl_file" ]; then
+        echo -e "\n${YELLOW}Clean Code Metrics:${NC}"
+        report_content+="## Clean Code Metrics\n\n"
+
+        # LOC (non-blank, non-comment lines)
+        cc_loc=$(grep -vE '^\s*$|^\s*//|^\s*/\*|\^\s*\*' "$impl_file" 2>/dev/null | wc -l | tr -d '[:space:]')
+
+        # Count functions (function declarations, arrow functions, methods)
+        cc_functions=$(grep -cE '^\s*(export\s+)?(async\s+)?function\s+\w+|^\s*(export\s+)?(const|let|var)\s+\w+\s*=\s*(async\s+)?\(' "$impl_file" 2>/dev/null) || cc_functions=0
+
+        # Count imports
+        cc_imports=$(grep -cE '^\s*import\s+' "$impl_file" 2>/dev/null) || cc_imports=0
+
+        # Calculate longest function and avg LOC/function using awk
+        # This counts lines between function starts and closing braces at the same level
+        local func_analysis
+        func_analysis=$(awk '
+            /^\s*(export\s+)?(async\s+)?function\s+\w+|^\s*(export\s+)?(const|let|var)\s+\w+\s*=\s*(async\s+)?\(/ {
+                if (in_func && func_lines > 0) {
+                    total_lines += func_lines
+                    func_count++
+                    if (func_lines > max_lines) max_lines = func_lines
+                }
+                in_func = 1
+                func_lines = 0
+                brace_count = 0
+            }
+            in_func {
+                func_lines++
+                # Count braces to detect function end
+                gsub(/[^{}]/, "")
+                for (i = 1; i <= length($0); i++) {
+                    c = substr($0, i, 1)
+                    if (c == "{") brace_count++
+                    else if (c == "}") brace_count--
+                }
+                if (brace_count <= 0 && func_lines > 1) {
+                    total_lines += func_lines
+                    func_count++
+                    if (func_lines > max_lines) max_lines = func_lines
+                    in_func = 0
+                    func_lines = 0
+                }
+            }
+            END {
+                if (in_func && func_lines > 0) {
+                    total_lines += func_lines
+                    func_count++
+                    if (func_lines > max_lines) max_lines = func_lines
+                }
+                if (func_count > 0) {
+                    avg = int(total_lines / func_count)
+                } else {
+                    avg = 0
+                }
+                print func_count " " max_lines " " avg
+            }
+        ' "$impl_file" 2>/dev/null)
+
+        if [ -n "$func_analysis" ]; then
+            cc_functions=$(echo "$func_analysis" | cut -d' ' -f1)
+            cc_longest_func=$(echo "$func_analysis" | cut -d' ' -f2)
+            cc_avg_loc_func=$(echo "$func_analysis" | cut -d' ' -f3)
+        fi
+
+        # Ensure valid integers
+        [[ "$cc_loc" =~ ^[0-9]+$ ]] || cc_loc=0
+        [[ "$cc_functions" =~ ^[0-9]+$ ]] || cc_functions=0
+        [[ "$cc_longest_func" =~ ^[0-9]+$ ]] || cc_longest_func=0
+        [[ "$cc_avg_loc_func" =~ ^[0-9]+$ ]] || cc_avg_loc_func=0
+        [[ "$cc_imports" =~ ^[0-9]+$ ]] || cc_imports=0
+
+        echo -e "  ${CYAN}LOC (non-blank):${NC} $cc_loc"
+        echo -e "  ${CYAN}Functions:${NC} $cc_functions"
+        echo -e "  ${CYAN}Longest Function:${NC} $cc_longest_func lines"
+        echo -e "  ${CYAN}Avg LOC/Function:${NC} $cc_avg_loc_func"
+        echo -e "  ${CYAN}Imports:${NC} $cc_imports"
+
+        report_content+="| Metric | Value |\n"
+        report_content+="|--------|-------|\n"
+        report_content+="| LOC (non-blank) | $cc_loc |\n"
+        report_content+="| Functions | $cc_functions |\n"
+        report_content+="| Longest Function | $cc_longest_func lines |\n"
+        report_content+="| Avg LOC/Function | $cc_avg_loc_func |\n"
+        report_content+="| Imports | $cc_imports |\n\n"
+    fi
+
+    # Code Smell Detection using ESLint
+    local smell_total=0
+    local smell_complexity=0
+    local smell_duplication=0
+    local smell_magic_numbers=0
+    local smell_code_quality=0
+
+    if [ -n "$impl_file" ] && [ -f "$impl_file" ] && [ -f "$run_dir/eslint.config.mjs" ] && [ -d "$run_dir/node_modules" ]; then
+        echo -e "\n${YELLOW}Code Smell Detection:${NC}"
+        report_content+="## Code Smells\n\n"
+
+        # Run ESLint and capture JSON output
+        local eslint_output
+        eslint_output=$(cd "$run_dir" && npx eslint src/*.ts --ignore-pattern "*.spec.ts" --config eslint.config.mjs --format json 2>/dev/null) || true
+
+        if [ -n "$eslint_output" ] && command -v jq &> /dev/null; then
+            # Parse ESLint JSON output to count violations by rule category
+            local all_rules
+            all_rules=$(echo "$eslint_output" | jq -r '.[].messages[].ruleId // empty' 2>/dev/null)
+
+            if [ -n "$all_rules" ]; then
+                # Count by category (grep -c returns 1 on no match, so use || true)
+                smell_complexity=$(echo "$all_rules" | grep -cE 'cognitive-complexity|max-depth|max-lines-per-function|max-params|no-nested-switch' 2>/dev/null) || smell_complexity=0
+                smell_duplication=$(echo "$all_rules" | grep -cE 'no-duplicate-string|no-duplicated-branches|no-identical-functions' 2>/dev/null) || smell_duplication=0
+                smell_magic_numbers=$(echo "$all_rules" | grep -cE 'no-magic-numbers' 2>/dev/null) || smell_magic_numbers=0
+                smell_code_quality=$(echo "$all_rules" | grep -cE 'no-collapsible-if|no-redundant-jump|no-useless-catch|prefer-immediate-return|prefer-single-boolean-return|no-redundant-boolean|no-gratuitous-expressions|no-unused-collection|no-unreachable' 2>/dev/null) || smell_code_quality=0
+            fi
+
+            # Calculate total (ensure values are integers first)
+            [[ "$smell_complexity" =~ ^[0-9]+$ ]] || smell_complexity=0
+            [[ "$smell_duplication" =~ ^[0-9]+$ ]] || smell_duplication=0
+            [[ "$smell_magic_numbers" =~ ^[0-9]+$ ]] || smell_magic_numbers=0
+            [[ "$smell_code_quality" =~ ^[0-9]+$ ]] || smell_code_quality=0
+            smell_total=$((smell_complexity + smell_duplication + smell_magic_numbers + smell_code_quality))
+
+            if [ $smell_total -eq 0 ]; then
+                echo -e "  ${GREEN}No code smells detected${NC}"
+            else
+                echo -e "  ${CYAN}Complexity:${NC} $smell_complexity"
+                echo -e "  ${CYAN}Duplication:${NC} $smell_duplication"
+                echo -e "  ${CYAN}Magic Numbers:${NC} $smell_magic_numbers"
+                echo -e "  ${CYAN}Code Quality:${NC} $smell_code_quality"
+                echo -e "  ${YELLOW}Total Smells: $smell_total${NC}"
+            fi
+
+            report_content+="| Category | Count |\n"
+            report_content+="|----------|-------|\n"
+            report_content+="| Complexity | $smell_complexity |\n"
+            report_content+="| Duplication | $smell_duplication |\n"
+            report_content+="| Magic Numbers | $smell_magic_numbers |\n"
+            report_content+="| Code Quality | $smell_code_quality |\n"
+            report_content+="| **Total** | **$smell_total** |\n\n"
+        else
+            echo -e "  ${YELLOW}ESLint analysis not available${NC}"
+        fi
+    fi
+
     # Extract metrics from experiment-summary.md
     local summary_metrics=""
     local summary_total_tokens=0
@@ -441,6 +592,16 @@ analyze_single_run() {
         [[ "$total_mass" =~ ^[0-9]+$ ]] || total_mass=0
         [[ "$cov_statements" =~ ^[0-9]+$ ]] || cov_statements=0
         [[ "$cov_branches" =~ ^[0-9]+$ ]] || cov_branches=0
+        [[ "$smell_total" =~ ^[0-9]+$ ]] || smell_total=0
+        [[ "$smell_complexity" =~ ^[0-9]+$ ]] || smell_complexity=0
+        [[ "$smell_duplication" =~ ^[0-9]+$ ]] || smell_duplication=0
+        [[ "$smell_magic_numbers" =~ ^[0-9]+$ ]] || smell_magic_numbers=0
+        [[ "$smell_code_quality" =~ ^[0-9]+$ ]] || smell_code_quality=0
+        [[ "$cc_loc" =~ ^[0-9]+$ ]] || cc_loc=0
+        [[ "$cc_functions" =~ ^[0-9]+$ ]] || cc_functions=0
+        [[ "$cc_longest_func" =~ ^[0-9]+$ ]] || cc_longest_func=0
+        [[ "$cc_avg_loc_func" =~ ^[0-9]+$ ]] || cc_avg_loc_func=0
+        [[ "$cc_imports" =~ ^[0-9]+$ ]] || cc_imports=0
 
         jq --argjson impl_loc "$impl_loc" \
            --argjson test_loc "$test_loc" \
@@ -457,6 +618,16 @@ analyze_single_run() {
            --argjson tests_passed_immediately "$summary_tests_passed_immediately" \
            --argjson cov_statements "$cov_statements" \
            --argjson cov_branches "$cov_branches" \
+           --argjson smell_total "$smell_total" \
+           --argjson smell_complexity "$smell_complexity" \
+           --argjson smell_duplication "$smell_duplication" \
+           --argjson smell_magic_numbers "$smell_magic_numbers" \
+           --argjson smell_code_quality "$smell_code_quality" \
+           --argjson cc_loc "$cc_loc" \
+           --argjson cc_functions "$cc_functions" \
+           --argjson cc_longest_func "$cc_longest_func" \
+           --argjson cc_avg_loc_func "$cc_avg_loc_func" \
+           --argjson cc_imports "$cc_imports" \
            '.final_metrics.lines_of_code = $impl_loc |
             .final_metrics.test_lines = $test_loc |
             .final_metrics.tests_total = $test_count |
@@ -465,6 +636,16 @@ analyze_single_run() {
             .final_metrics.tests_passing = $tests_passed |
             .coverage.statements_pct = $cov_statements |
             .coverage.branches_pct = $cov_branches |
+            .code_smells.total = $smell_total |
+            .code_smells.complexity = $smell_complexity |
+            .code_smells.duplication = $smell_duplication |
+            .code_smells.magic_numbers = $smell_magic_numbers |
+            .code_smells.code_quality = $smell_code_quality |
+            .clean_code.loc = $cc_loc |
+            .clean_code.functions = $cc_functions |
+            .clean_code.longest_function = $cc_longest_func |
+            .clean_code.avg_loc_per_function = $cc_avg_loc_func |
+            .clean_code.imports = $cc_imports |
             .summary_metrics.total_tokens = $total_tokens |
             .summary_metrics.context_utilization_pct = $context_util |
             .summary_metrics.cycle_count = $cycle_count |
@@ -550,9 +731,15 @@ compare_runs() {
                 # Coverage metrics (statements and branches only)
                 local cov_statements=$(jq -r '.coverage.statements_pct // 0' "$run_dir/metrics.json")
                 local cov_branches=$(jq -r '.coverage.branches_pct // 0' "$run_dir/metrics.json")
+                # Code smell metrics
+                local smell_total=$(jq -r '.code_smells.total // 0' "$run_dir/metrics.json")
+                # Clean code metrics
+                local cc_loc=$(jq -r '.clean_code.loc // 0' "$run_dir/metrics.json")
+                local cc_functions=$(jq -r '.clean_code.functions // 0' "$run_dir/metrics.json")
+                local cc_longest=$(jq -r '.clean_code.longest_function // 0' "$run_dir/metrics.json")
 
-                # Store as: kata|workflow|run_name|duration|tests|todos|mass|passed|started|tokens|ctx_util|cycles|refacts|pred_c|pred_t|immed|cov_statements|cov_branches
-                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}|${tokens}|${ctx_util}|${cycles}|${refacts}|${pred_c}|${pred_t}|${immed}|${cov_statements}|${cov_branches}")
+                # Store as: kata|workflow|run_name|duration|tests|todos|mass|passed|started|tokens|ctx_util|cycles|refacts|pred_c|pred_t|immed|cov_statements|cov_branches|smell_total|cc_loc|cc_functions|cc_longest
+                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}|${tokens}|${ctx_util}|${cycles}|${refacts}|${pred_c}|${pred_t}|${immed}|${cov_statements}|${cov_branches}|${smell_total}|${cc_loc}|${cc_functions}|${cc_longest}")
             fi
         fi
     done
@@ -749,6 +936,43 @@ generate_grouped_report() {
             report_content+="| ${workflow} | ${run_name} | ${cov_statements}% | ${cov_branches}% |\n"
         done
 
+        # Code Smells table
+        report_content+="\n### Code Smells\n\n"
+        report_content+="| Workflow | Run | Total Smells |\n"
+        report_content+="|----------|-----|-------------|\n"
+
+        for entry in "${sorted_entries[@]}"; do
+            local workflow=$(echo "$entry" | cut -d'|' -f2)
+            local run_name=$(echo "$entry" | cut -d'|' -f3)
+            local smell_total=$(echo "$entry" | cut -d'|' -f19)
+
+            [[ "$smell_total" =~ ^[0-9]+$ ]] || smell_total=0
+
+            report_content+="| ${workflow} | ${run_name} | ${smell_total} |\n"
+        done
+
+        # Clean Code table
+        report_content+="\n### Clean Code Metrics\n\n"
+        report_content+="| Workflow | Run | LOC | Functions | LOC/Func | Longest Func |\n"
+        report_content+="|----------|-----|-----|-----------|----------|-------------|\n"
+
+        for entry in "${sorted_entries[@]}"; do
+            local workflow=$(echo "$entry" | cut -d'|' -f2)
+            local run_name=$(echo "$entry" | cut -d'|' -f3)
+            local cc_loc=$(echo "$entry" | cut -d'|' -f20)
+            local cc_funcs=$(echo "$entry" | cut -d'|' -f21)
+            local cc_longest=$(echo "$entry" | cut -d'|' -f22)
+
+            [[ "$cc_loc" =~ ^[0-9]+$ ]] || cc_loc=0
+            [[ "$cc_funcs" =~ ^[0-9]+$ ]] || cc_funcs=0
+            [[ "$cc_longest" =~ ^[0-9]+$ ]] || cc_longest=0
+
+            local cc_loc_per_func=0
+            [ "$cc_funcs" -gt 0 ] && cc_loc_per_func=$((cc_loc / cc_funcs))
+
+            report_content+="| ${workflow} | ${run_name} | ${cc_loc} | ${cc_funcs} | ${cc_loc_per_func} | ${cc_longest} |\n"
+        done
+
         # Get unique workflows for this kata
         local workflows=()
         for entry in "${kata_entries[@]}"; do
@@ -761,7 +985,7 @@ generate_grouped_report() {
 
         # Collect all metrics per workflow for statistics
         declare -A wf_count wf_passed_count
-        declare -A wf_durations wf_masses wf_tokens wf_ctx_utils wf_cycles wf_refacts wf_pred_c wf_pred_t wf_immeds
+        declare -A wf_durations wf_masses wf_tokens wf_ctx_utils wf_cycles wf_refacts wf_pred_c wf_pred_t wf_immeds wf_smells
 
         for workflow in "${workflows[@]}"; do
             wf_count[$workflow]=0
@@ -777,6 +1001,10 @@ generate_grouped_report() {
             wf_immeds[$workflow]=""
             wf_cov_statements[$workflow]=""
             wf_cov_branches[$workflow]=""
+            wf_smells[$workflow]=""
+            wf_cc_loc[$workflow]=""
+            wf_cc_funcs[$workflow]=""
+            wf_cc_longest[$workflow]=""
         done
 
         for entry in "${kata_entries[@]}"; do
@@ -793,6 +1021,10 @@ generate_grouped_report() {
             local imm=$(echo "$entry" | cut -d'|' -f16)
             local covs=$(echo "$entry" | cut -d'|' -f17)
             local covb=$(echo "$entry" | cut -d'|' -f18)
+            local sml=$(echo "$entry" | cut -d'|' -f19)
+            local ccloc=$(echo "$entry" | cut -d'|' -f20)
+            local ccfunc=$(echo "$entry" | cut -d'|' -f21)
+            local cclongest=$(echo "$entry" | cut -d'|' -f22)
 
             wf_count[$wf]=$((${wf_count[$wf]} + 1))
             [ "$psd" = "true" ] && wf_passed_count[$wf]=$((${wf_passed_count[$wf]} + 1))
@@ -808,6 +1040,10 @@ generate_grouped_report() {
             [[ "$covb" =~ ^[0-9]+$ ]] && wf_cov_branches[$wf]="${wf_cov_branches[$wf]} $covb"
             [[ "$pt" =~ ^[0-9]+$ ]] && wf_pred_t[$wf]=$((${wf_pred_t[$wf]} + pt))
             [[ "$imm" =~ ^[0-9]+$ ]] && wf_immeds[$wf]="${wf_immeds[$wf]} $imm"
+            [[ "$sml" =~ ^[0-9]+$ ]] && wf_smells[$wf]="${wf_smells[$wf]} $sml"
+            [[ "$ccloc" =~ ^[0-9]+$ ]] && wf_cc_loc[$wf]="${wf_cc_loc[$wf]} $ccloc"
+            [[ "$ccfunc" =~ ^[0-9]+$ ]] && wf_cc_funcs[$wf]="${wf_cc_funcs[$wf]} $ccfunc"
+            [[ "$cclongest" =~ ^[0-9]+$ ]] && wf_cc_longest[$wf]="${wf_cc_longest[$wf]} $cclongest"
         done
 
         # Statistics Table 1: Core Metrics
@@ -919,6 +1155,55 @@ generate_grouped_report() {
             fi
         done
 
+        # Statistics Table 5: Code Smells
+        report_content+="\n### Statistics: Code Smells\n\n"
+        report_content+="| Workflow | Runs | Avg Smells | σ Smells |\n"
+        report_content+="|----------|------|------------|----------|\n"
+
+        for workflow in "${workflows[@]}"; do
+            local cnt=${wf_count[$workflow]}
+            if [ $cnt -gt 0 ]; then
+                local smls=(${wf_smells[$workflow]})
+
+                local sum_sml=0; for v in "${smls[@]}"; do sum_sml=$((sum_sml + v)); done
+
+                local avg_sml=0; [ ${#smls[@]} -gt 0 ] && avg_sml=$((sum_sml / ${#smls[@]}))
+
+                local stddev_sml=$(calc_stddev "${smls[@]}")
+
+                report_content+="| ${workflow} | ${cnt} | ${avg_sml} | ±${stddev_sml} |\n"
+            fi
+        done
+
+        # Statistics Table 6: Clean Code
+        report_content+="\n### Statistics: Clean Code\n\n"
+        report_content+="| Workflow | Runs | Avg LOC | σ LOC | Avg Functions | Avg LOC/Func | Avg Longest Func |\n"
+        report_content+="|----------|------|---------|-------|---------------|--------------|------------------|\n"
+
+        for workflow in "${workflows[@]}"; do
+            local cnt=${wf_count[$workflow]}
+            if [ $cnt -gt 0 ]; then
+                local cclocs=(${wf_cc_loc[$workflow]})
+                local ccfuncs=(${wf_cc_funcs[$workflow]})
+                local cclongests=(${wf_cc_longest[$workflow]})
+
+                local sum_ccloc=0; for v in "${cclocs[@]}"; do sum_ccloc=$((sum_ccloc + v)); done
+                local sum_ccfunc=0; for v in "${ccfuncs[@]}"; do sum_ccfunc=$((sum_ccfunc + v)); done
+                local sum_cclongest=0; for v in "${cclongests[@]}"; do sum_cclongest=$((sum_cclongest + v)); done
+
+                local avg_ccloc=0; [ ${#cclocs[@]} -gt 0 ] && avg_ccloc=$((sum_ccloc / ${#cclocs[@]}))
+                local avg_ccfunc=0; [ ${#ccfuncs[@]} -gt 0 ] && avg_ccfunc=$((sum_ccfunc / ${#ccfuncs[@]}))
+                local avg_cclongest=0; [ ${#cclongests[@]} -gt 0 ] && avg_cclongest=$((sum_cclongest / ${#cclongests[@]}))
+
+                local avg_loc_per_func=0
+                [ "$avg_ccfunc" -gt 0 ] && avg_loc_per_func=$((avg_ccloc / avg_ccfunc))
+
+                local stddev_ccloc=$(calc_stddev "${cclocs[@]}")
+
+                report_content+="| ${workflow} | ${cnt} | ${avg_ccloc} | ±${stddev_ccloc} | ${avg_ccfunc} | ${avg_loc_per_func} | ${avg_cclongest} |\n"
+            fi
+        done
+
         report_content+="\n"
     done
 
@@ -935,6 +1220,11 @@ generate_grouped_report() {
     report_content+="| Tests Immed | Tests that passed immediately (indicates over-implementation) |\n"
     report_content+="| Statements | Statement coverage percentage |\n"
     report_content+="| Branches | Branch coverage percentage |\n"
+    report_content+="| Smells | Total code smells detected by ESLint (complexity, duplication, magic numbers, code quality) |\n"
+    report_content+="| LOC | Lines of code (non-blank, non-comment) |\n"
+    report_content+="| Functions | Number of functions in implementation |\n"
+    report_content+="| LOC/Func | Average lines of code per function |\n"
+    report_content+="| Longest Func | Lines of code in longest function |\n"
     report_content+="| σ (Sigma) | Standard deviation - lower = more consistent |\n\n"
 
     report_content+="## Notes\n\n"
@@ -978,8 +1268,14 @@ analyze_all() {
                 # Coverage metrics (statements and branches only)
                 local cov_statements=$(jq -r '.coverage.statements_pct // 0' "$run/metrics.json")
                 local cov_branches=$(jq -r '.coverage.branches_pct // 0' "$run/metrics.json")
+                # Code smell metrics
+                local smell_total=$(jq -r '.code_smells.total // 0' "$run/metrics.json")
+                # Clean code metrics
+                local cc_loc=$(jq -r '.clean_code.loc // 0' "$run/metrics.json")
+                local cc_functions=$(jq -r '.clean_code.functions // 0' "$run/metrics.json")
+                local cc_longest=$(jq -r '.clean_code.longest_function // 0' "$run/metrics.json")
 
-                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}|${tokens}|${ctx_util}|${cycles}|${refacts}|${pred_c}|${pred_t}|${immed}|${cov_statements}|${cov_branches}")
+                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}|${tokens}|${ctx_util}|${cycles}|${refacts}|${pred_c}|${pred_t}|${immed}|${cov_statements}|${cov_branches}|${smell_total}|${cc_loc}|${cc_functions}|${cc_longest}")
             fi
 
             echo ""
@@ -1093,6 +1389,43 @@ analyze_all() {
             report_content+="| ${workflow} | ${run_name} | ${cov_statements}% | ${cov_branches}% |\n"
         done
 
+        # Code Smells table
+        report_content+="\n### Code Smells\n\n"
+        report_content+="| Workflow | Run | Total Smells |\n"
+        report_content+="|----------|-----|-------------|\n"
+
+        for entry in "${sorted_entries[@]}"; do
+            local workflow=$(echo "$entry" | cut -d'|' -f2)
+            local run_name=$(echo "$entry" | cut -d'|' -f3)
+            local smell_total=$(echo "$entry" | cut -d'|' -f19)
+
+            [[ "$smell_total" =~ ^[0-9]+$ ]] || smell_total=0
+
+            report_content+="| ${workflow} | ${run_name} | ${smell_total} |\n"
+        done
+
+        # Clean Code table
+        report_content+="\n### Clean Code Metrics\n\n"
+        report_content+="| Workflow | Run | LOC | Functions | LOC/Func | Longest Func |\n"
+        report_content+="|----------|-----|-----|-----------|----------|-------------|\n"
+
+        for entry in "${sorted_entries[@]}"; do
+            local workflow=$(echo "$entry" | cut -d'|' -f2)
+            local run_name=$(echo "$entry" | cut -d'|' -f3)
+            local cc_loc=$(echo "$entry" | cut -d'|' -f20)
+            local cc_funcs=$(echo "$entry" | cut -d'|' -f21)
+            local cc_longest=$(echo "$entry" | cut -d'|' -f22)
+
+            [[ "$cc_loc" =~ ^[0-9]+$ ]] || cc_loc=0
+            [[ "$cc_funcs" =~ ^[0-9]+$ ]] || cc_funcs=0
+            [[ "$cc_longest" =~ ^[0-9]+$ ]] || cc_longest=0
+
+            local cc_loc_per_func=0
+            [ "$cc_funcs" -gt 0 ] && cc_loc_per_func=$((cc_loc / cc_funcs))
+
+            report_content+="| ${workflow} | ${run_name} | ${cc_loc} | ${cc_funcs} | ${cc_loc_per_func} | ${cc_longest} |\n"
+        done
+
         # Get unique workflows for this kata
         local workflows=()
         for entry in "${kata_entries[@]}"; do
@@ -1105,7 +1438,7 @@ analyze_all() {
 
         # Collect all metrics per workflow for statistics
         declare -A wf_count wf_passed_count
-        declare -A wf_durations wf_masses wf_tokens wf_ctx_utils wf_cycles wf_refacts wf_pred_c wf_pred_t wf_immeds
+        declare -A wf_durations wf_masses wf_tokens wf_ctx_utils wf_cycles wf_refacts wf_pred_c wf_pred_t wf_immeds wf_smells
 
         for workflow in "${workflows[@]}"; do
             wf_count[$workflow]=0
@@ -1121,6 +1454,10 @@ analyze_all() {
             wf_immeds[$workflow]=""
             wf_cov_statements[$workflow]=""
             wf_cov_branches[$workflow]=""
+            wf_smells[$workflow]=""
+            wf_cc_loc[$workflow]=""
+            wf_cc_funcs[$workflow]=""
+            wf_cc_longest[$workflow]=""
         done
 
         for entry in "${kata_entries[@]}"; do
@@ -1137,6 +1474,10 @@ analyze_all() {
             local imm=$(echo "$entry" | cut -d'|' -f16)
             local covs=$(echo "$entry" | cut -d'|' -f17)
             local covb=$(echo "$entry" | cut -d'|' -f18)
+            local sml=$(echo "$entry" | cut -d'|' -f19)
+            local ccloc=$(echo "$entry" | cut -d'|' -f20)
+            local ccfunc=$(echo "$entry" | cut -d'|' -f21)
+            local cclongest=$(echo "$entry" | cut -d'|' -f22)
 
             wf_count[$wf]=$((${wf_count[$wf]} + 1))
             [ "$psd" = "true" ] && wf_passed_count[$wf]=$((${wf_passed_count[$wf]} + 1))
@@ -1152,6 +1493,10 @@ analyze_all() {
             [[ "$covb" =~ ^[0-9]+$ ]] && wf_cov_branches[$wf]="${wf_cov_branches[$wf]} $covb"
             [[ "$pt" =~ ^[0-9]+$ ]] && wf_pred_t[$wf]=$((${wf_pred_t[$wf]} + pt))
             [[ "$imm" =~ ^[0-9]+$ ]] && wf_immeds[$wf]="${wf_immeds[$wf]} $imm"
+            [[ "$sml" =~ ^[0-9]+$ ]] && wf_smells[$wf]="${wf_smells[$wf]} $sml"
+            [[ "$ccloc" =~ ^[0-9]+$ ]] && wf_cc_loc[$wf]="${wf_cc_loc[$wf]} $ccloc"
+            [[ "$ccfunc" =~ ^[0-9]+$ ]] && wf_cc_funcs[$wf]="${wf_cc_funcs[$wf]} $ccfunc"
+            [[ "$cclongest" =~ ^[0-9]+$ ]] && wf_cc_longest[$wf]="${wf_cc_longest[$wf]} $cclongest"
         done
 
         # Statistics Table 1: Core Metrics
@@ -1263,6 +1608,55 @@ analyze_all() {
             fi
         done
 
+        # Statistics Table 5: Code Smells
+        report_content+="\n### Statistics: Code Smells\n\n"
+        report_content+="| Workflow | Runs | Avg Smells | σ Smells |\n"
+        report_content+="|----------|------|------------|----------|\n"
+
+        for workflow in "${workflows[@]}"; do
+            local cnt=${wf_count[$workflow]}
+            if [ $cnt -gt 0 ]; then
+                local smls=(${wf_smells[$workflow]})
+
+                local sum_sml=0; for v in "${smls[@]}"; do sum_sml=$((sum_sml + v)); done
+
+                local avg_sml=0; [ ${#smls[@]} -gt 0 ] && avg_sml=$((sum_sml / ${#smls[@]}))
+
+                local stddev_sml=$(calc_stddev "${smls[@]}")
+
+                report_content+="| ${workflow} | ${cnt} | ${avg_sml} | ±${stddev_sml} |\n"
+            fi
+        done
+
+        # Statistics Table 6: Clean Code
+        report_content+="\n### Statistics: Clean Code\n\n"
+        report_content+="| Workflow | Runs | Avg LOC | σ LOC | Avg Functions | Avg LOC/Func | Avg Longest Func |\n"
+        report_content+="|----------|------|---------|-------|---------------|--------------|------------------|\n"
+
+        for workflow in "${workflows[@]}"; do
+            local cnt=${wf_count[$workflow]}
+            if [ $cnt -gt 0 ]; then
+                local cclocs=(${wf_cc_loc[$workflow]})
+                local ccfuncs=(${wf_cc_funcs[$workflow]})
+                local cclongests=(${wf_cc_longest[$workflow]})
+
+                local sum_ccloc=0; for v in "${cclocs[@]}"; do sum_ccloc=$((sum_ccloc + v)); done
+                local sum_ccfunc=0; for v in "${ccfuncs[@]}"; do sum_ccfunc=$((sum_ccfunc + v)); done
+                local sum_cclongest=0; for v in "${cclongests[@]}"; do sum_cclongest=$((sum_cclongest + v)); done
+
+                local avg_ccloc=0; [ ${#cclocs[@]} -gt 0 ] && avg_ccloc=$((sum_ccloc / ${#cclocs[@]}))
+                local avg_ccfunc=0; [ ${#ccfuncs[@]} -gt 0 ] && avg_ccfunc=$((sum_ccfunc / ${#ccfuncs[@]}))
+                local avg_cclongest=0; [ ${#cclongests[@]} -gt 0 ] && avg_cclongest=$((sum_cclongest / ${#cclongests[@]}))
+
+                local avg_loc_per_func=0
+                [ "$avg_ccfunc" -gt 0 ] && avg_loc_per_func=$((avg_ccloc / avg_ccfunc))
+
+                local stddev_ccloc=$(calc_stddev "${cclocs[@]}")
+
+                report_content+="| ${workflow} | ${cnt} | ${avg_ccloc} | ±${stddev_ccloc} | ${avg_ccfunc} | ${avg_loc_per_func} | ${avg_cclongest} |\n"
+            fi
+        done
+
         report_content+="\n"
     done
 
@@ -1279,6 +1673,11 @@ analyze_all() {
     report_content+="| Tests Immed | Tests that passed immediately (indicates over-implementation) |\n"
     report_content+="| Statements | Statement coverage percentage |\n"
     report_content+="| Branches | Branch coverage percentage |\n"
+    report_content+="| Smells | Total code smells detected by ESLint (complexity, duplication, magic numbers, code quality) |\n"
+    report_content+="| LOC | Lines of code (non-blank, non-comment) |\n"
+    report_content+="| Functions | Number of functions in implementation |\n"
+    report_content+="| LOC/Func | Average lines of code per function |\n"
+    report_content+="| Longest Func | Lines of code in longest function |\n"
     report_content+="| σ (Sigma) | Standard deviation - lower = more consistent |\n\n"
 
     report_content+="## Notes\n\n"
