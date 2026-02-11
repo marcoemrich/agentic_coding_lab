@@ -59,11 +59,49 @@ list_workflows() {
     done
 }
 
+# Model configurations: name|cli_model|thinking_enabled
+MODEL_CONFIGS=(
+    "opus|opus|true"
+    "opus-no-thinking|opus|false"
+    "sonnet|sonnet|true"
+    "sonnet-no-thinking|sonnet|false"
+)
+
+list_models() {
+    echo -e "\n${YELLOW}Available Models:${NC}"
+    local i=1
+    for config in "${MODEL_CONFIGS[@]}"; do
+        local name=$(echo "$config" | cut -d'|' -f1)
+        local cli_model=$(echo "$config" | cut -d'|' -f2)
+        local thinking=$(echo "$config" | cut -d'|' -f3)
+        local thinking_label="with thinking"
+        [ "$thinking" = "false" ] && thinking_label="without thinking"
+        echo "  $i) $name ($cli_model, $thinking_label)"
+        ((i++))
+    done
+}
+
+get_model_cli_name() {
+    local config=$1
+    echo "$config" | cut -d'|' -f2
+}
+
+get_model_thinking() {
+    local config=$1
+    echo "$config" | cut -d'|' -f3
+}
+
+get_model_name() {
+    local config=$1
+    echo "$config" | cut -d'|' -f1
+}
+
 create_run_dir() {
     local kata=$1
     local workflow=$2
+    local model=$3
     local timestamp=$(date +%Y-%m-%d_%H-%M-%S)
-    local run_name="${timestamp}_${kata}_${workflow}"
+    local run_name="${timestamp}_${kata}_${workflow}_${model}"
     local run_dir="$RUNS_DIR/$run_name"
 
     mkdir -p "$run_dir/src"
@@ -204,11 +242,15 @@ record_start() {
     local run_dir=$1
     local kata=$2
     local workflow=$3
+    local model_name=$4
+    local thinking=$5
 
     cat > "$run_dir/metrics.json" << EOF
 {
   "kata": "$kata",
   "workflow": "$workflow",
+  "model": "$model_name",
+  "thinking": $thinking,
   "started_at": "$(date -Iseconds)",
   "ended_at": null,
   "duration_seconds": null,
@@ -263,14 +305,23 @@ install_dependencies() {
 run_claude() {
     local run_dir=$1
     local kata=$2
+    local cli_model=$3
+    local thinking=$4
 
     echo -e "\n${YELLOW}Starting Claude Code...${NC}"
+    echo -e "${BLUE}Model: $cli_model | Thinking: $thinking${NC}"
     echo -e "${BLUE}Prompt: Read prompt.md and complete the TDD exercise following the workflow rules.${NC}\n"
 
     # Start Claude Code in non-interactive mode
     # --dangerously-skip-permissions: Skip all permission prompts
     # --print: Print response and exit (non-interactive mode)
-    (cd "$run_dir" && claude --dangerously-skip-permissions --print "Read prompt.md and complete the TDD exercise following the workflow rules.")
+    # --model: Select the model (opus or sonnet)
+    # MAX_THINKING_TOKENS=0: Disable extended thinking when thinking=false
+    if [ "$thinking" = "false" ]; then
+        (cd "$run_dir" && MAX_THINKING_TOKENS=0 claude --dangerously-skip-permissions --model "$cli_model" --print "Read prompt.md and complete the TDD exercise following the workflow rules.")
+    else
+        (cd "$run_dir" && claude --dangerously-skip-permissions --model "$cli_model" --print "Read prompt.md and complete the TDD exercise following the workflow rules.")
+    fi
 }
 
 print_completion() {
@@ -313,19 +364,34 @@ if [ $workflow_idx -lt 0 ] || [ $workflow_idx -ge ${#workflows[@]} ]; then
 fi
 selected_workflow=$(basename "${workflows[$workflow_idx]}")
 
-echo -e "\n${BLUE}Creating run: $selected_kata + $selected_workflow${NC}"
+# Select model
+list_models
+echo -e "\n${YELLOW}Select model (number):${NC} "
+read -r model_num
+
+model_idx=$((model_num - 1))
+if [ $model_idx -lt 0 ] || [ $model_idx -ge ${#MODEL_CONFIGS[@]} ]; then
+    echo -e "${RED}Invalid selection${NC}"
+    exit 1
+fi
+selected_model_config="${MODEL_CONFIGS[$model_idx]}"
+selected_model=$(get_model_name "$selected_model_config")
+selected_cli_model=$(get_model_cli_name "$selected_model_config")
+selected_thinking=$(get_model_thinking "$selected_model_config")
+
+echo -e "\n${BLUE}Creating run: $selected_kata + $selected_workflow + $selected_model${NC}"
 
 # Create and setup run
-run_dir=$(create_run_dir "$selected_kata" "$selected_workflow")
+run_dir=$(create_run_dir "$selected_kata" "$selected_workflow" "$selected_model")
 setup_run "$run_dir" "$selected_workflow" "$selected_kata"
-record_start "$run_dir" "$selected_kata" "$selected_workflow"
+record_start "$run_dir" "$selected_kata" "$selected_workflow" "$selected_model" "$selected_thinking"
 
 # Install dependencies
 install_dependencies "$run_dir"
 
 # Run Claude Code
 start_time=$(date +%s)
-run_claude "$run_dir" "$selected_kata"
+run_claude "$run_dir" "$selected_kata" "$selected_cli_model" "$selected_thinking"
 
 # Record end metrics
 record_end "$run_dir" "$start_time"

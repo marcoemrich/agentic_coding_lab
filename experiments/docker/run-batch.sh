@@ -46,8 +46,17 @@ for w in "${all_workflows[@]}"; do
     fi
 done
 
+# Model configurations: name|cli_model|thinking_enabled
+MODEL_CONFIGS=(
+    "opus|opus|true"
+    "opus-no-thinking|opus|false"
+    "sonnet|sonnet|true"
+    "sonnet-no-thinking|sonnet|false"
+)
+
 echo -e "\n${YELLOW}Found ${#katas[@]} katas: ${katas[*]}${NC}"
 echo -e "${YELLOW}Found ${#workflows[@]} workflows: ${workflows[*]}${NC}"
+echo -e "${YELLOW}Found ${#MODEL_CONFIGS[@]} model configs: $(printf '%s ' "${MODEL_CONFIGS[@]}" | sed 's/|[^|]*|[^ ]* */ /g')${NC}"
 
 if [ ${#skipped_katas[@]} -gt 0 ]; then
     echo -e "${YELLOW}Skipped katas (disabled with _ prefix): ${skipped_katas[*]}${NC}"
@@ -57,7 +66,7 @@ if [ ${#skipped_workflows[@]} -gt 0 ]; then
 fi
 
 # Calculate total runs
-total=$((${#katas[@]} * ${#workflows[@]}))
+total=$((${#katas[@]} * ${#workflows[@]} * ${#MODEL_CONFIGS[@]}))
 current=0
 
 echo -e "\n${BLUE}Running $total experiments...${NC}\n"
@@ -65,12 +74,17 @@ echo -e "\n${BLUE}Running $total experiments...${NC}\n"
 # Run each combination
 for kata in "${katas[@]}"; do
     for workflow in "${workflows[@]}"; do
+        for model_config in "${MODEL_CONFIGS[@]}"; do
+        model_name=$(echo "$model_config" | cut -d'|' -f1)
+        cli_model=$(echo "$model_config" | cut -d'|' -f2)
+        thinking=$(echo "$model_config" | cut -d'|' -f3)
+
         current=$((current + 1))
-        echo -e "${YELLOW}[$current/$total] Running: $kata + $workflow${NC}"
+        echo -e "${YELLOW}[$current/$total] Running: $kata + $workflow + $model_name${NC}"
 
         # Create run directory
         timestamp=$(date +%Y-%m-%d_%H-%M-%S)
-        run_name="${timestamp}_${kata}_${workflow}"
+        run_name="${timestamp}_${kata}_${workflow}_${model_name}"
         run_dir="$RUNS_DIR/$run_name"
 
         mkdir -p "$run_dir/src"
@@ -143,6 +157,8 @@ EOF
 {
   "kata": "$kata",
   "workflow": "$workflow",
+  "model": "$model_name",
+  "thinking": $thinking,
   "started_at": "$(date -Iseconds)",
   "ended_at": null,
   "duration_seconds": null,
@@ -155,15 +171,23 @@ EOF
         (cd "$run_dir" && pnpm install --silent 2>/dev/null) || true
 
         # Run Claude (using --print for non-interactive mode)
-        echo -e "  Running Claude Code..."
+        echo -e "  Running Claude Code... (model: $cli_model, thinking: $thinking)"
         start_time=$(date +%s)
 
         cd "$run_dir"
-        claude --dangerously-skip-permissions --print \
-            "Read prompt.md and complete the TDD exercise following the workflow rules." \
-            2>&1 | tee "$run_dir/claude-output.log" || {
-            echo -e "  ${RED}Run failed${NC}"
-        }
+        if [ "$thinking" = "false" ]; then
+            MAX_THINKING_TOKENS=0 claude --dangerously-skip-permissions --model "$cli_model" --print \
+                "Read prompt.md and complete the TDD exercise following the workflow rules." \
+                2>&1 | tee "$run_dir/claude-output.log" || {
+                echo -e "  ${RED}Run failed${NC}"
+            }
+        else
+            claude --dangerously-skip-permissions --model "$cli_model" --print \
+                "Read prompt.md and complete the TDD exercise following the workflow rules." \
+                2>&1 | tee "$run_dir/claude-output.log" || {
+                echo -e "  ${RED}Run failed${NC}"
+            }
+        fi
         cd "$EXPERIMENTS_DIR"
 
         # Record end
@@ -186,6 +210,7 @@ EOF
 
         # Brief pause between runs
         sleep 5
+        done
     done
 done
 

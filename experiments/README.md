@@ -8,12 +8,20 @@ This experiment framework evaluates different approaches to AI-assisted Test-Dri
 
 **How does the architecture of TDD workflow automation affect code quality, efficiency, and discipline adherence?**
 
-Specifically, we compare:
+Specifically, we compare across three dimensions:
+
+**Workflow variants:**
 - **v1-oneshot**: No TDD - direct implementation ("vibe coding")
 - **v2-iterative**: No TDD - iterative prompting with plan/checklist
 - **v3-basic-tdd**: Minimal TDD guidance - just "use TDD" with no detailed rules
 - **v4-exact-subagents**: EXACT-Coding TDD - each phase runs in a separate, specialized agent with isolated context
 - **v5-exact-single-context**: EXACT-Coding TDD - all phases run within one continuous conversation context using inline skills
+
+**Model configurations:**
+- **opus**: Opus 4.6 with extended thinking enabled
+- **opus-no-thinking**: Opus 4.6 with extended thinking disabled
+- **sonnet**: Sonnet 4.5 with extended thinking enabled
+- **sonnet-no-thinking**: Sonnet 4.5 with extended thinking disabled
 
 ### Known Limitation: Training Data Contamination
 
@@ -59,8 +67,9 @@ By systematically comparing workflow variants, we can identify which architectur
 Each experiment run uses:
 1. A **Kata** (coding exercise) with a standardized prompt
 2. A **Workflow** variant (set of rules and agents/skills)
+3. A **Model** configuration (model + thinking mode)
 
-The Kata provides a consistent task (e.g., String Calculator, Game of Life) so results are comparable across workflow variants.
+The Kata provides a consistent task (e.g., String Calculator, Game of Life) so results are comparable across workflow and model variants.
 
 ### Process
 1. Claude receives the Kata prompt and Example Mapping
@@ -301,6 +310,8 @@ v5-exact-single-context/.claude/
 
 ## Key Differences
 
+### Workflow Variants
+
 | Aspect | v1-oneshot | v2-iterative | v3-basic-tdd | v4-exact-subagents | v5-exact-single-context |
 |--------|------------|--------------|--------------|--------------|-------------------|
 | **TDD** | ❌ No | ❌ No | ✅ Yes (minimal) | ✅ Yes (strict) | ✅ Yes (strict) |
@@ -309,6 +320,15 @@ v5-exact-single-context/.claude/
 | **Guidance** | None | Plan/checklist | Minimal TDD | Specialized agents | Inline skills |
 | **Definitions** | None | None | None | `agents/*.md` | `commands/*.md` |
 | **Overhead** | None | None | None | Agent spawning | None |
+
+### Model Configurations
+
+| Config | Model | CLI Flag | Thinking | Mechanism |
+|--------|-------|----------|----------|-----------|
+| `opus` | Opus 4.6 | `--model opus` | Enabled | Default behavior |
+| `opus-no-thinking` | Opus 4.6 | `--model opus` | Disabled | `MAX_THINKING_TOKENS=0` |
+| `sonnet` | Sonnet 4.5 | `--model sonnet` | Enabled | Default behavior |
+| `sonnet-no-thinking` | Sonnet 4.5 | `--model sonnet` | Disabled | `MAX_THINKING_TOKENS=0` |
 
 ## Available Katas
 
@@ -398,7 +418,7 @@ experiments/
 │       └── .claude/{commands,rules}/
 │
 ├── runs/                         # Experiment results
-│   └── YYYY-MM-DD_HH-MM-SS_kata_workflow/
+│   └── YYYY-MM-DD_HH-MM-SS_kata_workflow_model/
 │       ├── .claude/              # Workflow config used
 │       ├── src/                  # Generated code
 │       ├── metrics.json          # Recorded metrics
@@ -487,57 +507,45 @@ The analyzer generates grouped reports with multiple metric tables per kata:
 
 ### Core Metrics
 
-| Workflow | Run | Duration | Tests | Mass | Passed |
-|----------|-----|----------|-------|------|--------|
-| v3-basic-tdd | 2026-02-09_05-34-30_... | 233s | 4 | 29 | ✅ |
-| v4-exact-subagents | 2026-02-09_05-38-31_... | 511s | 4 | 21 | ✅ |
-| v5-exact-single-context | 2026-02-09_05-47-09_... | 434s | 4 | 33 | ✅ |
+| Workflow | Model | Run | Duration | Tests | Mass | Passed |
+|----------|-------|-----|----------|-------|------|--------|
+| v3-basic-tdd | opus | 2026-02-09_05-34-30_... | 233s | 4 | 29 | ✅ |
+| v4-exact-subagents | opus | 2026-02-09_05-38-31_... | 511s | 4 | 21 | ✅ |
+| v4-exact-subagents | sonnet | 2026-02-09_06-12-00_... | 312s | 4 | 25 | ✅ |
+| v5-exact-single-context | opus | 2026-02-09_05-47-09_... | 434s | 4 | 33 | ✅ |
 
 ### Token Usage & Context
 
-| Workflow | Run | Tokens | Ctx Util | Cycles |
-|----------|-----|--------|----------|--------|
-| v3-basic-tdd | 2026-02-09_05-34-30_... | 13611 | 6% | 4 |
-| v4-exact-subagents | 2026-02-09_05-38-31_... | 259352 | 17% | 8 |
-| v5-exact-single-context | 2026-02-09_05-47-09_... | 320000 | 29% | 4 |
-
-### TDD Discipline
-
-| Workflow | Run | Refactorings | Pred Accuracy | Tests Immed |
-|----------|-----|--------------|---------------|-------------|
-| v3-basic-tdd | 2026-02-09_05-34-30_... | 1 | N/A | 1 |
-| v4-exact-subagents | 2026-02-09_05-38-31_... | 1 | 4/4 | 2 |
-| v5-exact-single-context | 2026-02-09_05-47-09_... | 2 | 3/4 | 0 |
+| Workflow | Model | Run | Tokens | Ctx Util | Cycles |
+|----------|-------|-----|--------|----------|--------|
+| v3-basic-tdd | opus | 2026-02-09_05-34-30_... | 13611 | 6% | 4 |
+| v4-exact-subagents | opus | 2026-02-09_05-38-31_... | 259352 | 17% | 8 |
+| v4-exact-subagents | sonnet | 2026-02-09_06-12-00_... | 185000 | 12% | 6 |
+| v5-exact-single-context | opus | 2026-02-09_05-47-09_... | 320000 | 29% | 4 |
 
 ### Statistics: Core Metrics
 
-| Workflow | Runs | Avg Duration | σ Duration | Avg Mass | σ Mass | Success Rate |
-|----------|------|--------------|------------|----------|--------|-------------|
-| v3-basic-tdd | 3 | 204s | ±42s | 31 | ±2 | 100% |
-| v4-exact-subagents | 3 | 566s | ±42s | 23 | ±3 | 100% |
-| v5-exact-single-context | 3 | 431s | ±18s | 32 | ±1 | 100% |
+| Workflow | Model | Runs | Avg Duration | σ Duration | Avg Mass | σ Mass | Success Rate |
+|----------|-------|------|--------------|------------|----------|--------|-------------|
+| v3-basic-tdd | opus | 3 | 204s | ±42s | 31 | ±2 | 100% |
+| v4-exact-subagents | opus | 3 | 566s | ±42s | 23 | ±3 | 100% |
+| v4-exact-subagents | sonnet | 3 | 320s | ±30s | 26 | ±2 | 100% |
+| v5-exact-single-context | opus | 3 | 431s | ±18s | 32 | ±1 | 100% |
 
 ### Statistics: Token Usage & Context
 
-| Workflow | Runs | Avg Tokens | σ Tokens | Avg Ctx Util | σ Ctx Util | Avg Cycles | σ Cycles |
-|----------|------|------------|----------|--------------|------------|------------|----------|
-| v3-basic-tdd | 3 | 17303 | ±11600 | 12% | ±4% | 4 | ±0 |
-| v4-exact-subagents | 3 | 262428 | ±2000 | 17% | ±0% | 8 | ±0 |
-| v5-exact-single-context | 3 | 207553 | ±109000 | 28% | ±0% | 4 | ±0 |
-
-### Statistics: TDD Discipline
-
-| Workflow | Runs | Avg Refactorings | σ Refactorings | Pred Accuracy | Avg Tests Immed | σ Tests Immed |
-|----------|------|------------------|----------------|---------------|-----------------|---------------|
-| v3-basic-tdd | 3 | 0 | ±0 | N/A | 1 | ±0 |
-| v4-exact-subagents | 3 | 2 | ±1 | 12/12 (100%) | 0 | ±1 |
-| v5-exact-single-context | 3 | 2 | ±0 | 9/12 (75%) | 0 | ±0 |
+| Workflow | Model | Runs | Avg Tokens | σ Tokens | Avg Ctx Util | σ Ctx Util | Avg Cycles | σ Cycles |
+|----------|-------|------|------------|----------|--------------|------------|------------|----------|
+| v3-basic-tdd | opus | 3 | 17303 | ±11600 | 12% | ±4% | 4 | ±0 |
+| v4-exact-subagents | opus | 3 | 262428 | ±2000 | 17% | ±0% | 8 | ±0 |
+| v4-exact-subagents | sonnet | 3 | 185000 | ±5000 | 12% | ±1% | 6 | ±0 |
+| v5-exact-single-context | opus | 3 | 207553 | ±109000 | 28% | ±0% | 4 | ±0 |
 ```
 
 ### Report Features
 
 - **Grouped by Kata**: Separate tables per kata (values only comparable within same kata)
-- **Sorted by Workflow**: Same workflow types appear together for easy comparison
+- **Sorted by Workflow + Model**: Same workflow types and model configurations appear together for easy comparison
 - **Three Metric Categories**:
   - Core Metrics: Duration, Tests, Mass, Pass/Fail
   - Token Usage: Tokens, Context Utilization, TDD Cycles
@@ -595,7 +603,8 @@ If you are a Claude instance reading this to run an experiment:
 1. **Your task**: Complete a coding exercise following the workflow rules
 2. **No human approval needed**: Run autonomously through all phases
 3. **Record everything**: Output a structured summary at the end
-4. **Use correct test commands**: `pnpm test` (never `npm` or `npx vitest`)
+4. **Model is pre-configured**: The model and thinking mode are set by the runner scripts
+5. **Use correct test commands**: `pnpm test` (never `npm` or `npx vitest`)
 5. **Workflow determines approach**:
    - **v1-oneshot**: NO TDD - just read requirements and implement directly, add tests after
    - **v2-iterative**: NO TDD - use plan/checklist for iterative implementation, add tests after

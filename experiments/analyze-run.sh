@@ -146,8 +146,12 @@ analyze_single_run() {
             started_at=$(jq -r '.started_at // "N/A"' "$run_dir/metrics.json")
             ended_at=$(jq -r '.ended_at // "N/A"' "$run_dir/metrics.json")
 
+            local model=$(jq -r '.model // "unknown"' "$run_dir/metrics.json")
+            local thinking=$(jq -r '.thinking // "unknown"' "$run_dir/metrics.json")
+
             echo -e "${YELLOW}Kata:${NC} $kata"
             echo -e "${YELLOW}Workflow:${NC} $workflow"
+            echo -e "${YELLOW}Model:${NC} $model (thinking: $thinking)"
             echo -e "${YELLOW}Duration:${NC} ${duration}s"
 
             report_content+="## Configuration\n\n"
@@ -155,6 +159,8 @@ analyze_single_run() {
             report_content+="|----------|-------|\n"
             report_content+="| Kata | $kata |\n"
             report_content+="| Workflow | $workflow |\n"
+            report_content+="| Model | $model |\n"
+            report_content+="| Thinking | $thinking |\n"
             report_content+="| Duration | ${duration}s |\n"
             report_content+="| Started | $started_at |\n"
             report_content+="| Ended | $ended_at |\n\n"
@@ -714,6 +720,7 @@ compare_runs() {
             if [ -f "$run_dir/metrics.json" ] && command -v jq &> /dev/null; then
                 local kata=$(jq -r '.kata // "unknown"' "$run_dir/metrics.json")
                 local workflow=$(jq -r '.workflow // "unknown"' "$run_dir/metrics.json")
+                local model=$(jq -r '.model // "unknown"' "$run_dir/metrics.json")
                 local duration=$(jq -r '.duration_seconds // 0' "$run_dir/metrics.json")
                 local tests=$(jq -r '.final_metrics.tests_total // 0' "$run_dir/metrics.json")
                 local todos=$(jq -r '.final_metrics.todos_remaining // 0' "$run_dir/metrics.json")
@@ -738,8 +745,8 @@ compare_runs() {
                 local cc_functions=$(jq -r '.clean_code.functions // 0' "$run_dir/metrics.json")
                 local cc_longest=$(jq -r '.clean_code.longest_function // 0' "$run_dir/metrics.json")
 
-                # Store as: kata|workflow|run_name|duration|tests|todos|mass|passed|started|tokens|ctx_util|cycles|refacts|pred_c|pred_t|immed|cov_statements|cov_branches|smell_total|cc_loc|cc_functions|cc_longest
-                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}|${tokens}|${ctx_util}|${cycles}|${refacts}|${pred_c}|${pred_t}|${immed}|${cov_statements}|${cov_branches}|${smell_total}|${cc_loc}|${cc_functions}|${cc_longest}")
+                # Store as: kata|workflow|run_name|duration|tests|todos|mass|passed|started|tokens|ctx_util|cycles|refacts|pred_c|pred_t|immed|cov_statements|cov_branches|smell_total|cc_loc|cc_functions|cc_longest|model
+                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}|${tokens}|${ctx_util}|${cycles}|${refacts}|${pred_c}|${pred_t}|${immed}|${cov_statements}|${cov_branches}|${smell_total}|${cc_loc}|${cc_functions}|${cc_longest}|${model}")
             fi
         fi
     done
@@ -852,10 +859,10 @@ generate_grouped_report() {
 
         # Main metrics table
         report_content+="### Core Metrics\n\n"
-        report_content+="| Workflow | Run | Duration | Tests | Mass | Passed |\n"
-        report_content+="|----------|-----|----------|-------|------|--------|\n"
+        report_content+="| Workflow | Model | Run | Duration | Tests | Mass | Passed |\n"
+        report_content+="|----------|-------|-----|----------|-------|------|--------|\n"
 
-        # Filter and sort entries for this kata by workflow, then by timestamp
+        # Filter and sort entries for this kata by workflow, then by model, then by timestamp
         local kata_entries=()
         for entry in "${run_data[@]}"; do
             local entry_kata=$(echo "$entry" | cut -d'|' -f1)
@@ -864,8 +871,8 @@ generate_grouped_report() {
             fi
         done
 
-        # Sort by workflow (field 2), then by started timestamp (field 9)
-        IFS=$'\n' sorted_entries=($(for e in "${kata_entries[@]}"; do echo "$e"; done | sort -t'|' -k2,2 -k9,9)); unset IFS
+        # Sort by workflow (field 2), then by model (field 23), then by started timestamp (field 9)
+        IFS=$'\n' sorted_entries=($(for e in "${kata_entries[@]}"; do echo "$e"; done | sort -t'|' -k2,2 -k23,23 -k9,9)); unset IFS
 
         for entry in "${sorted_entries[@]}"; do
             local workflow=$(echo "$entry" | cut -d'|' -f2)
@@ -874,19 +881,20 @@ generate_grouped_report() {
             local tests=$(echo "$entry" | cut -d'|' -f5)
             local mass=$(echo "$entry" | cut -d'|' -f7)
             local passed=$(echo "$entry" | cut -d'|' -f8)
+            local model=$(echo "$entry" | cut -d'|' -f23)
 
             local passed_icon="❌"
             if [ "$passed" = "true" ]; then
                 passed_icon="✅"
             fi
 
-            report_content+="| ${workflow} | ${run_name} | ${duration}s | ${tests} | ${mass} | ${passed_icon} |\n"
+            report_content+="| ${workflow} | ${model} | ${run_name} | ${duration}s | ${tests} | ${mass} | ${passed_icon} |\n"
         done
 
         # Token & Context table
         report_content+="\n### Token Usage & Context\n\n"
-        report_content+="| Workflow | Run | Tokens | Ctx Util | Cycles |\n"
-        report_content+="|----------|-----|--------|----------|--------|\n"
+        report_content+="| Workflow | Model | Run | Tokens | Ctx Util | Cycles |\n"
+        report_content+="|----------|-------|-----|--------|----------|--------|\n"
 
         for entry in "${sorted_entries[@]}"; do
             local workflow=$(echo "$entry" | cut -d'|' -f2)
@@ -894,14 +902,15 @@ generate_grouped_report() {
             local tokens=$(echo "$entry" | cut -d'|' -f10)
             local ctx_util=$(echo "$entry" | cut -d'|' -f11)
             local cycles=$(echo "$entry" | cut -d'|' -f12)
+            local model=$(echo "$entry" | cut -d'|' -f23)
 
-            report_content+="| ${workflow} | ${run_name} | ${tokens} | ${ctx_util}% | ${cycles} |\n"
+            report_content+="| ${workflow} | ${model} | ${run_name} | ${tokens} | ${ctx_util}% | ${cycles} |\n"
         done
 
         # TDD Discipline table
         report_content+="\n### TDD Discipline\n\n"
-        report_content+="| Workflow | Run | Refactorings | Pred Accuracy | Tests Immed |\n"
-        report_content+="|----------|-----|--------------|---------------|-------------|\n"
+        report_content+="| Workflow | Model | Run | Refactorings | Pred Accuracy | Tests Immed |\n"
+        report_content+="|----------|-------|-----|--------------|---------------|-------------|\n"
 
         for entry in "${sorted_entries[@]}"; do
             local workflow=$(echo "$entry" | cut -d'|' -f2)
@@ -910,51 +919,54 @@ generate_grouped_report() {
             local pred_c=$(echo "$entry" | cut -d'|' -f14)
             local pred_t=$(echo "$entry" | cut -d'|' -f15)
             local immed=$(echo "$entry" | cut -d'|' -f16)
+            local model=$(echo "$entry" | cut -d'|' -f23)
 
             local pred_str="N/A"
             if [[ "$pred_t" =~ ^[0-9]+$ ]] && [ "$pred_t" -gt 0 ]; then
                 pred_str="${pred_c}/${pred_t}"
             fi
 
-            report_content+="| ${workflow} | ${run_name} | ${refacts} | ${pred_str} | ${immed} |\n"
+            report_content+="| ${workflow} | ${model} | ${run_name} | ${refacts} | ${pred_str} | ${immed} |\n"
         done
 
         # Coverage table
         report_content+="\n### Coverage\n\n"
-        report_content+="| Workflow | Run | Statements | Branches |\n"
-        report_content+="|----------|-----|------------|----------|\n"
+        report_content+="| Workflow | Model | Run | Statements | Branches |\n"
+        report_content+="|----------|-------|-----|------------|----------|\n"
 
         for entry in "${sorted_entries[@]}"; do
             local workflow=$(echo "$entry" | cut -d'|' -f2)
             local run_name=$(echo "$entry" | cut -d'|' -f3)
             local cov_statements=$(echo "$entry" | cut -d'|' -f17)
             local cov_branches=$(echo "$entry" | cut -d'|' -f18)
+            local model=$(echo "$entry" | cut -d'|' -f23)
 
             [[ "$cov_statements" =~ ^[0-9]+$ ]] || cov_statements=0
             [[ "$cov_branches" =~ ^[0-9]+$ ]] || cov_branches=0
 
-            report_content+="| ${workflow} | ${run_name} | ${cov_statements}% | ${cov_branches}% |\n"
+            report_content+="| ${workflow} | ${model} | ${run_name} | ${cov_statements}% | ${cov_branches}% |\n"
         done
 
         # Code Smells table
         report_content+="\n### Code Smells\n\n"
-        report_content+="| Workflow | Run | Total Smells |\n"
-        report_content+="|----------|-----|-------------|\n"
+        report_content+="| Workflow | Model | Run | Total Smells |\n"
+        report_content+="|----------|-------|-----|-------------|\n"
 
         for entry in "${sorted_entries[@]}"; do
             local workflow=$(echo "$entry" | cut -d'|' -f2)
             local run_name=$(echo "$entry" | cut -d'|' -f3)
             local smell_total=$(echo "$entry" | cut -d'|' -f19)
+            local model=$(echo "$entry" | cut -d'|' -f23)
 
             [[ "$smell_total" =~ ^[0-9]+$ ]] || smell_total=0
 
-            report_content+="| ${workflow} | ${run_name} | ${smell_total} |\n"
+            report_content+="| ${workflow} | ${model} | ${run_name} | ${smell_total} |\n"
         done
 
         # Clean Code table
         report_content+="\n### Clean Code Metrics\n\n"
-        report_content+="| Workflow | Run | LOC | Functions | LOC/Func | Longest Func |\n"
-        report_content+="|----------|-----|-----|-----------|----------|-------------|\n"
+        report_content+="| Workflow | Model | Run | LOC | Functions | LOC/Func | Longest Func |\n"
+        report_content+="|----------|-------|-----|-----|-----------|----------|-------------|\n"
 
         for entry in "${sorted_entries[@]}"; do
             local workflow=$(echo "$entry" | cut -d'|' -f2)
@@ -962,6 +974,7 @@ generate_grouped_report() {
             local cc_loc=$(echo "$entry" | cut -d'|' -f20)
             local cc_funcs=$(echo "$entry" | cut -d'|' -f21)
             local cc_longest=$(echo "$entry" | cut -d'|' -f22)
+            local model=$(echo "$entry" | cut -d'|' -f23)
 
             [[ "$cc_loc" =~ ^[0-9]+$ ]] || cc_loc=0
             [[ "$cc_funcs" =~ ^[0-9]+$ ]] || cc_funcs=0
@@ -970,45 +983,49 @@ generate_grouped_report() {
             local cc_loc_per_func=0
             [ "$cc_funcs" -gt 0 ] && cc_loc_per_func=$((cc_loc / cc_funcs))
 
-            report_content+="| ${workflow} | ${run_name} | ${cc_loc} | ${cc_funcs} | ${cc_loc_per_func} | ${cc_longest} |\n"
+            report_content+="| ${workflow} | ${model} | ${run_name} | ${cc_loc} | ${cc_funcs} | ${cc_loc_per_func} | ${cc_longest} |\n"
         done
 
-        # Get unique workflows for this kata
-        local workflows=()
+        # Get unique workflow+model combinations for this kata (used as grouping key for statistics)
+        local wf_models=()
         for entry in "${kata_entries[@]}"; do
             local wf=$(echo "$entry" | cut -d'|' -f2)
-            if [[ ! " ${workflows[*]} " =~ " ${wf} " ]]; then
-                workflows+=("$wf")
+            local mdl=$(echo "$entry" | cut -d'|' -f23)
+            local wfm="${wf}|${mdl}"
+            if [[ ! " ${wf_models[*]} " =~ " ${wfm} " ]]; then
+                wf_models+=("$wfm")
             fi
         done
-        IFS=$'\n' workflows=($(sort <<< "${workflows[*]}")); unset IFS
+        IFS=$'\n' wf_models=($(sort <<< "${wf_models[*]}")); unset IFS
 
-        # Collect all metrics per workflow for statistics
+        # Collect all metrics per workflow+model for statistics
         declare -A wf_count wf_passed_count
         declare -A wf_durations wf_masses wf_tokens wf_ctx_utils wf_cycles wf_refacts wf_pred_c wf_pred_t wf_immeds wf_smells
 
-        for workflow in "${workflows[@]}"; do
-            wf_count[$workflow]=0
-            wf_passed_count[$workflow]=0
-            wf_durations[$workflow]=""
-            wf_masses[$workflow]=""
-            wf_tokens[$workflow]=""
-            wf_ctx_utils[$workflow]=""
-            wf_cycles[$workflow]=""
-            wf_refacts[$workflow]=""
-            wf_pred_c[$workflow]=0
-            wf_pred_t[$workflow]=0
-            wf_immeds[$workflow]=""
-            wf_cov_statements[$workflow]=""
-            wf_cov_branches[$workflow]=""
-            wf_smells[$workflow]=""
-            wf_cc_loc[$workflow]=""
-            wf_cc_funcs[$workflow]=""
-            wf_cc_longest[$workflow]=""
+        for wfm in "${wf_models[@]}"; do
+            wf_count[$wfm]=0
+            wf_passed_count[$wfm]=0
+            wf_durations[$wfm]=""
+            wf_masses[$wfm]=""
+            wf_tokens[$wfm]=""
+            wf_ctx_utils[$wfm]=""
+            wf_cycles[$wfm]=""
+            wf_refacts[$wfm]=""
+            wf_pred_c[$wfm]=0
+            wf_pred_t[$wfm]=0
+            wf_immeds[$wfm]=""
+            wf_cov_statements[$wfm]=""
+            wf_cov_branches[$wfm]=""
+            wf_smells[$wfm]=""
+            wf_cc_loc[$wfm]=""
+            wf_cc_funcs[$wfm]=""
+            wf_cc_longest[$wfm]=""
         done
 
         for entry in "${kata_entries[@]}"; do
             local wf=$(echo "$entry" | cut -d'|' -f2)
+            local mdl=$(echo "$entry" | cut -d'|' -f23)
+            local wfm="${wf}|${mdl}"
             local dur=$(echo "$entry" | cut -d'|' -f4)
             local mss=$(echo "$entry" | cut -d'|' -f7)
             local psd=$(echo "$entry" | cut -d'|' -f8)
@@ -1026,62 +1043,66 @@ generate_grouped_report() {
             local ccfunc=$(echo "$entry" | cut -d'|' -f21)
             local cclongest=$(echo "$entry" | cut -d'|' -f22)
 
-            wf_count[$wf]=$((${wf_count[$wf]} + 1))
-            [ "$psd" = "true" ] && wf_passed_count[$wf]=$((${wf_passed_count[$wf]} + 1))
+            wf_count[$wfm]=$((${wf_count[$wfm]} + 1))
+            [ "$psd" = "true" ] && wf_passed_count[$wfm]=$((${wf_passed_count[$wfm]} + 1))
 
-            [[ "$dur" =~ ^[0-9]+$ ]] && wf_durations[$wf]="${wf_durations[$wf]} $dur"
-            [[ "$mss" =~ ^[0-9]+$ ]] && wf_masses[$wf]="${wf_masses[$wf]} $mss"
-            [[ "$tok" =~ ^[0-9]+$ ]] && wf_tokens[$wf]="${wf_tokens[$wf]} $tok"
-            [[ "$ctx" =~ ^[0-9]+$ ]] && wf_ctx_utils[$wf]="${wf_ctx_utils[$wf]} $ctx"
-            [[ "$cyc" =~ ^[0-9]+$ ]] && wf_cycles[$wf]="${wf_cycles[$wf]} $cyc"
-            [[ "$ref" =~ ^[0-9]+$ ]] && wf_refacts[$wf]="${wf_refacts[$wf]} $ref"
-            [[ "$pc" =~ ^[0-9]+$ ]] && wf_pred_c[$wf]=$((${wf_pred_c[$wf]} + pc))
-            [[ "$covs" =~ ^[0-9]+$ ]] && wf_cov_statements[$wf]="${wf_cov_statements[$wf]} $covs"
-            [[ "$covb" =~ ^[0-9]+$ ]] && wf_cov_branches[$wf]="${wf_cov_branches[$wf]} $covb"
-            [[ "$pt" =~ ^[0-9]+$ ]] && wf_pred_t[$wf]=$((${wf_pred_t[$wf]} + pt))
-            [[ "$imm" =~ ^[0-9]+$ ]] && wf_immeds[$wf]="${wf_immeds[$wf]} $imm"
-            [[ "$sml" =~ ^[0-9]+$ ]] && wf_smells[$wf]="${wf_smells[$wf]} $sml"
-            [[ "$ccloc" =~ ^[0-9]+$ ]] && wf_cc_loc[$wf]="${wf_cc_loc[$wf]} $ccloc"
-            [[ "$ccfunc" =~ ^[0-9]+$ ]] && wf_cc_funcs[$wf]="${wf_cc_funcs[$wf]} $ccfunc"
-            [[ "$cclongest" =~ ^[0-9]+$ ]] && wf_cc_longest[$wf]="${wf_cc_longest[$wf]} $cclongest"
+            [[ "$dur" =~ ^[0-9]+$ ]] && wf_durations[$wfm]="${wf_durations[$wfm]} $dur"
+            [[ "$mss" =~ ^[0-9]+$ ]] && wf_masses[$wfm]="${wf_masses[$wfm]} $mss"
+            [[ "$tok" =~ ^[0-9]+$ ]] && wf_tokens[$wfm]="${wf_tokens[$wfm]} $tok"
+            [[ "$ctx" =~ ^[0-9]+$ ]] && wf_ctx_utils[$wfm]="${wf_ctx_utils[$wfm]} $ctx"
+            [[ "$cyc" =~ ^[0-9]+$ ]] && wf_cycles[$wfm]="${wf_cycles[$wfm]} $cyc"
+            [[ "$ref" =~ ^[0-9]+$ ]] && wf_refacts[$wfm]="${wf_refacts[$wfm]} $ref"
+            [[ "$pc" =~ ^[0-9]+$ ]] && wf_pred_c[$wfm]=$((${wf_pred_c[$wfm]} + pc))
+            [[ "$covs" =~ ^[0-9]+$ ]] && wf_cov_statements[$wfm]="${wf_cov_statements[$wfm]} $covs"
+            [[ "$covb" =~ ^[0-9]+$ ]] && wf_cov_branches[$wfm]="${wf_cov_branches[$wfm]} $covb"
+            [[ "$pt" =~ ^[0-9]+$ ]] && wf_pred_t[$wfm]=$((${wf_pred_t[$wfm]} + pt))
+            [[ "$imm" =~ ^[0-9]+$ ]] && wf_immeds[$wfm]="${wf_immeds[$wfm]} $imm"
+            [[ "$sml" =~ ^[0-9]+$ ]] && wf_smells[$wfm]="${wf_smells[$wfm]} $sml"
+            [[ "$ccloc" =~ ^[0-9]+$ ]] && wf_cc_loc[$wfm]="${wf_cc_loc[$wfm]} $ccloc"
+            [[ "$ccfunc" =~ ^[0-9]+$ ]] && wf_cc_funcs[$wfm]="${wf_cc_funcs[$wfm]} $ccfunc"
+            [[ "$cclongest" =~ ^[0-9]+$ ]] && wf_cc_longest[$wfm]="${wf_cc_longest[$wfm]} $cclongest"
         done
 
         # Statistics Table 1: Core Metrics
         report_content+="\n### Statistics: Core Metrics\n\n"
-        report_content+="| Workflow | Runs | Avg Duration | σ Duration | Avg Mass | σ Mass | Success Rate |\n"
-        report_content+="|----------|------|--------------|------------|----------|--------|-------------|\n"
+        report_content+="| Workflow | Model | Runs | Avg Duration | σ Duration | Avg Mass | σ Mass | Success Rate |\n"
+        report_content+="|----------|-------|------|--------------|------------|----------|--------|-------------|\n"
 
-        for workflow in "${workflows[@]}"; do
-            local cnt=${wf_count[$workflow]}
+        for wfm in "${wf_models[@]}"; do
+            local cnt=${wf_count[$wfm]}
             if [ $cnt -gt 0 ]; then
-                local durs=(${wf_durations[$workflow]})
-                local msss=(${wf_masses[$workflow]})
+                local wf_name=$(echo "$wfm" | cut -d'|' -f1)
+                local mdl_name=$(echo "$wfm" | cut -d'|' -f2)
+                local durs=(${wf_durations[$wfm]})
+                local msss=(${wf_masses[$wfm]})
 
                 local sum_dur=0; for v in "${durs[@]}"; do sum_dur=$((sum_dur + v)); done
                 local sum_mss=0; for v in "${msss[@]}"; do sum_mss=$((sum_mss + v)); done
 
                 local avg_dur=$((sum_dur / cnt))
                 local avg_mss=$((sum_mss / cnt))
-                local success_rate=$((${wf_passed_count[$workflow]} * 100 / cnt))
+                local success_rate=$((${wf_passed_count[$wfm]} * 100 / cnt))
 
                 local stddev_dur=$(calc_stddev "${durs[@]}")
                 local stddev_mss=$(calc_stddev "${msss[@]}")
 
-                report_content+="| ${workflow} | ${cnt} | ${avg_dur}s | ±${stddev_dur}s | ${avg_mss} | ±${stddev_mss} | ${success_rate}% |\n"
+                report_content+="| ${wf_name} | ${mdl_name} | ${cnt} | ${avg_dur}s | ±${stddev_dur}s | ${avg_mss} | ±${stddev_mss} | ${success_rate}% |\n"
             fi
         done
 
         # Statistics Table 2: Token Usage & Context
         report_content+="\n### Statistics: Token Usage & Context\n\n"
-        report_content+="| Workflow | Runs | Avg Tokens | σ Tokens | Avg Ctx Util | σ Ctx Util | Avg Cycles | σ Cycles |\n"
-        report_content+="|----------|------|------------|----------|--------------|------------|------------|----------|\n"
+        report_content+="| Workflow | Model | Runs | Avg Tokens | σ Tokens | Avg Ctx Util | σ Ctx Util | Avg Cycles | σ Cycles |\n"
+        report_content+="|----------|-------|------|------------|----------|--------------|------------|------------|----------|\n"
 
-        for workflow in "${workflows[@]}"; do
-            local cnt=${wf_count[$workflow]}
+        for wfm in "${wf_models[@]}"; do
+            local cnt=${wf_count[$wfm]}
             if [ $cnt -gt 0 ]; then
-                local toks=(${wf_tokens[$workflow]})
-                local ctxs=(${wf_ctx_utils[$workflow]})
-                local cycs=(${wf_cycles[$workflow]})
+                local wf_name=$(echo "$wfm" | cut -d'|' -f1)
+                local mdl_name=$(echo "$wfm" | cut -d'|' -f2)
+                local toks=(${wf_tokens[$wfm]})
+                local ctxs=(${wf_ctx_utils[$wfm]})
+                local cycs=(${wf_cycles[$wfm]})
 
                 local sum_tok=0; for v in "${toks[@]}"; do sum_tok=$((sum_tok + v)); done
                 local sum_ctx=0; for v in "${ctxs[@]}"; do sum_ctx=$((sum_ctx + v)); done
@@ -1095,22 +1116,24 @@ generate_grouped_report() {
                 local stddev_ctx=$(calc_stddev "${ctxs[@]}")
                 local stddev_cyc=$(calc_stddev "${cycs[@]}")
 
-                report_content+="| ${workflow} | ${cnt} | ${avg_tok} | ±${stddev_tok} | ${avg_ctx}% | ±${stddev_ctx}% | ${avg_cyc} | ±${stddev_cyc} |\n"
+                report_content+="| ${wf_name} | ${mdl_name} | ${cnt} | ${avg_tok} | ±${stddev_tok} | ${avg_ctx}% | ±${stddev_ctx}% | ${avg_cyc} | ±${stddev_cyc} |\n"
             fi
         done
 
         # Statistics Table 3: TDD Discipline
         report_content+="\n### Statistics: TDD Discipline\n\n"
-        report_content+="| Workflow | Runs | Avg Refactorings | σ Refactorings | Pred Accuracy | Avg Tests Immed | σ Tests Immed |\n"
-        report_content+="|----------|------|------------------|----------------|---------------|-----------------|---------------|\n"
+        report_content+="| Workflow | Model | Runs | Avg Refactorings | σ Refactorings | Pred Accuracy | Avg Tests Immed | σ Tests Immed |\n"
+        report_content+="|----------|-------|------|------------------|----------------|---------------|-----------------|---------------|\n"
 
-        for workflow in "${workflows[@]}"; do
-            local cnt=${wf_count[$workflow]}
+        for wfm in "${wf_models[@]}"; do
+            local cnt=${wf_count[$wfm]}
             if [ $cnt -gt 0 ]; then
-                local refs=(${wf_refacts[$workflow]})
-                local imms=(${wf_immeds[$workflow]})
-                local pred_c_total=${wf_pred_c[$workflow]}
-                local pred_t_total=${wf_pred_t[$workflow]}
+                local wf_name=$(echo "$wfm" | cut -d'|' -f1)
+                local mdl_name=$(echo "$wfm" | cut -d'|' -f2)
+                local refs=(${wf_refacts[$wfm]})
+                local imms=(${wf_immeds[$wfm]})
+                local pred_c_total=${wf_pred_c[$wfm]}
+                local pred_t_total=${wf_pred_t[$wfm]}
 
                 local sum_ref=0; for v in "${refs[@]}"; do sum_ref=$((sum_ref + v)); done
                 local sum_imm=0; for v in "${imms[@]}"; do sum_imm=$((sum_imm + v)); done
@@ -1127,20 +1150,22 @@ generate_grouped_report() {
                     pred_str="${pred_c_total}/${pred_t_total} (${pred_pct}%)"
                 fi
 
-                report_content+="| ${workflow} | ${cnt} | ${avg_ref} | ±${stddev_ref} | ${pred_str} | ${avg_imm} | ±${stddev_imm} |\n"
+                report_content+="| ${wf_name} | ${mdl_name} | ${cnt} | ${avg_ref} | ±${stddev_ref} | ${pred_str} | ${avg_imm} | ±${stddev_imm} |\n"
             fi
         done
 
         # Statistics Table 4: Coverage
         report_content+="\n### Statistics: Coverage\n\n"
-        report_content+="| Workflow | Runs | Avg Statements | σ Statements | Avg Branches | σ Branches |\n"
-        report_content+="|----------|------|----------------|--------------|--------------|------------|\n"
+        report_content+="| Workflow | Model | Runs | Avg Statements | σ Statements | Avg Branches | σ Branches |\n"
+        report_content+="|----------|-------|------|----------------|--------------|--------------|------------|\n"
 
-        for workflow in "${workflows[@]}"; do
-            local cnt=${wf_count[$workflow]}
+        for wfm in "${wf_models[@]}"; do
+            local cnt=${wf_count[$wfm]}
             if [ $cnt -gt 0 ]; then
-                local covss=(${wf_cov_statements[$workflow]})
-                local covbs=(${wf_cov_branches[$workflow]})
+                local wf_name=$(echo "$wfm" | cut -d'|' -f1)
+                local mdl_name=$(echo "$wfm" | cut -d'|' -f2)
+                local covss=(${wf_cov_statements[$wfm]})
+                local covbs=(${wf_cov_branches[$wfm]})
 
                 local sum_covs=0; for v in "${covss[@]}"; do sum_covs=$((sum_covs + v)); done
                 local sum_covb=0; for v in "${covbs[@]}"; do sum_covb=$((sum_covb + v)); done
@@ -1151,19 +1176,21 @@ generate_grouped_report() {
                 local stddev_covs=$(calc_stddev "${covss[@]}")
                 local stddev_covb=$(calc_stddev "${covbs[@]}")
 
-                report_content+="| ${workflow} | ${cnt} | ${avg_covs}% | ±${stddev_covs}% | ${avg_covb}% | ±${stddev_covb}% |\n"
+                report_content+="| ${wf_name} | ${mdl_name} | ${cnt} | ${avg_covs}% | ±${stddev_covs}% | ${avg_covb}% | ±${stddev_covb}% |\n"
             fi
         done
 
         # Statistics Table 5: Code Smells
         report_content+="\n### Statistics: Code Smells\n\n"
-        report_content+="| Workflow | Runs | Avg Smells | σ Smells |\n"
-        report_content+="|----------|------|------------|----------|\n"
+        report_content+="| Workflow | Model | Runs | Avg Smells | σ Smells |\n"
+        report_content+="|----------|-------|------|------------|----------|\n"
 
-        for workflow in "${workflows[@]}"; do
-            local cnt=${wf_count[$workflow]}
+        for wfm in "${wf_models[@]}"; do
+            local cnt=${wf_count[$wfm]}
             if [ $cnt -gt 0 ]; then
-                local smls=(${wf_smells[$workflow]})
+                local wf_name=$(echo "$wfm" | cut -d'|' -f1)
+                local mdl_name=$(echo "$wfm" | cut -d'|' -f2)
+                local smls=(${wf_smells[$wfm]})
 
                 local sum_sml=0; for v in "${smls[@]}"; do sum_sml=$((sum_sml + v)); done
 
@@ -1171,21 +1198,23 @@ generate_grouped_report() {
 
                 local stddev_sml=$(calc_stddev "${smls[@]}")
 
-                report_content+="| ${workflow} | ${cnt} | ${avg_sml} | ±${stddev_sml} |\n"
+                report_content+="| ${wf_name} | ${mdl_name} | ${cnt} | ${avg_sml} | ±${stddev_sml} |\n"
             fi
         done
 
         # Statistics Table 6: Clean Code
         report_content+="\n### Statistics: Clean Code\n\n"
-        report_content+="| Workflow | Runs | Avg LOC | σ LOC | Avg Functions | Avg LOC/Func | Avg Longest Func |\n"
-        report_content+="|----------|------|---------|-------|---------------|--------------|------------------|\n"
+        report_content+="| Workflow | Model | Runs | Avg LOC | σ LOC | Avg Functions | Avg LOC/Func | Avg Longest Func |\n"
+        report_content+="|----------|-------|------|---------|-------|---------------|--------------|------------------|\n"
 
-        for workflow in "${workflows[@]}"; do
-            local cnt=${wf_count[$workflow]}
+        for wfm in "${wf_models[@]}"; do
+            local cnt=${wf_count[$wfm]}
             if [ $cnt -gt 0 ]; then
-                local cclocs=(${wf_cc_loc[$workflow]})
-                local ccfuncs=(${wf_cc_funcs[$workflow]})
-                local cclongests=(${wf_cc_longest[$workflow]})
+                local wf_name=$(echo "$wfm" | cut -d'|' -f1)
+                local mdl_name=$(echo "$wfm" | cut -d'|' -f2)
+                local cclocs=(${wf_cc_loc[$wfm]})
+                local ccfuncs=(${wf_cc_funcs[$wfm]})
+                local cclongests=(${wf_cc_longest[$wfm]})
 
                 local sum_ccloc=0; for v in "${cclocs[@]}"; do sum_ccloc=$((sum_ccloc + v)); done
                 local sum_ccfunc=0; for v in "${ccfuncs[@]}"; do sum_ccfunc=$((sum_ccfunc + v)); done
@@ -1200,7 +1229,7 @@ generate_grouped_report() {
 
                 local stddev_ccloc=$(calc_stddev "${cclocs[@]}")
 
-                report_content+="| ${workflow} | ${cnt} | ${avg_ccloc} | ±${stddev_ccloc} | ${avg_ccfunc} | ${avg_loc_per_func} | ${avg_cclongest} |\n"
+                report_content+="| ${wf_name} | ${mdl_name} | ${cnt} | ${avg_ccloc} | ±${stddev_ccloc} | ${avg_ccfunc} | ${avg_loc_per_func} | ${avg_cclongest} |\n"
             fi
         done
 
@@ -1210,6 +1239,7 @@ generate_grouped_report() {
     report_content+="## Metrics Legend\n\n"
     report_content+="| Metric | Description |\n"
     report_content+="|--------|-------------|\n"
+    report_content+="| Model | Model configuration (opus, opus-no-thinking, sonnet, sonnet-no-thinking) |\n"
     report_content+="| Duration | Total experiment time in seconds |\n"
     report_content+="| Mass | APP (Absolute Priority Premise) code complexity score |\n"
     report_content+="| Tokens | Total tokens consumed by the AI |\n"
@@ -1229,7 +1259,8 @@ generate_grouped_report() {
 
     report_content+="## Notes\n\n"
     report_content+="- Tables are grouped by **Kata** (experiments are only comparable within the same kata)\n"
-    report_content+="- Within each kata, runs are sorted by **Workflow**, then by **timestamp**\n"
+    report_content+="- Within each kata, runs are sorted by **Workflow**, then by **Model**, then by **timestamp**\n"
+    report_content+="- Statistics are grouped by **Workflow + Model** combination\n"
     report_content+="- Individual analysis reports are saved in each run directory\n"
 
     echo -e "$report_content" > "$comparison_file"
@@ -1251,6 +1282,7 @@ analyze_all() {
                 local run_name=$(basename "$run")
                 local kata=$(jq -r '.kata // "unknown"' "$run/metrics.json")
                 local workflow=$(jq -r '.workflow // "unknown"' "$run/metrics.json")
+                local model=$(jq -r '.model // "unknown"' "$run/metrics.json")
                 local duration=$(jq -r '.duration_seconds // 0' "$run/metrics.json")
                 local tests=$(jq -r '.final_metrics.tests_total // 0' "$run/metrics.json")
                 local todos=$(jq -r '.final_metrics.todos_remaining // 0' "$run/metrics.json")
@@ -1275,7 +1307,7 @@ analyze_all() {
                 local cc_functions=$(jq -r '.clean_code.functions // 0' "$run/metrics.json")
                 local cc_longest=$(jq -r '.clean_code.longest_function // 0' "$run/metrics.json")
 
-                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}|${tokens}|${ctx_util}|${cycles}|${refacts}|${pred_c}|${pred_t}|${immed}|${cov_statements}|${cov_branches}|${smell_total}|${cc_loc}|${cc_functions}|${cc_longest}")
+                run_data+=("${kata}|${workflow}|${run_name}|${duration}|${tests}|${todos}|${mass}|${passed}|${started}|${tokens}|${ctx_util}|${cycles}|${refacts}|${pred_c}|${pred_t}|${immed}|${cov_statements}|${cov_branches}|${smell_total}|${cc_loc}|${cc_functions}|${cc_longest}|${model}")
             fi
 
             echo ""
@@ -1312,13 +1344,13 @@ analyze_all() {
             fi
         done
 
-        # Sort by workflow, then by timestamp
-        IFS=$'\n' sorted_entries=($(for e in "${kata_entries[@]}"; do echo "$e"; done | sort -t'|' -k2,2 -k9,9)); unset IFS
+        # Sort by workflow, then by model, then by timestamp
+        IFS=$'\n' sorted_entries=($(for e in "${kata_entries[@]}"; do echo "$e"; done | sort -t'|' -k2,2 -k23,23 -k9,9)); unset IFS
 
         # Main metrics table
         report_content+="### Core Metrics\n\n"
-        report_content+="| Workflow | Run | Duration | Tests | Mass | Passed |\n"
-        report_content+="|----------|-----|----------|-------|------|--------|\n"
+        report_content+="| Workflow | Model | Run | Duration | Tests | Mass | Passed |\n"
+        report_content+="|----------|-------|-----|----------|-------|------|--------|\n"
 
         for entry in "${sorted_entries[@]}"; do
             local workflow=$(echo "$entry" | cut -d'|' -f2)
@@ -1327,19 +1359,20 @@ analyze_all() {
             local tests=$(echo "$entry" | cut -d'|' -f5)
             local mass=$(echo "$entry" | cut -d'|' -f7)
             local passed=$(echo "$entry" | cut -d'|' -f8)
+            local model=$(echo "$entry" | cut -d'|' -f23)
 
             local passed_icon="❌"
             if [ "$passed" = "true" ]; then
                 passed_icon="✅"
             fi
 
-            report_content+="| ${workflow} | ${run_name} | ${duration}s | ${tests} | ${mass} | ${passed_icon} |\n"
+            report_content+="| ${workflow} | ${model} | ${run_name} | ${duration}s | ${tests} | ${mass} | ${passed_icon} |\n"
         done
 
         # Token & Context table
         report_content+="\n### Token Usage & Context\n\n"
-        report_content+="| Workflow | Run | Tokens | Ctx Util | Cycles |\n"
-        report_content+="|----------|-----|--------|----------|--------|\n"
+        report_content+="| Workflow | Model | Run | Tokens | Ctx Util | Cycles |\n"
+        report_content+="|----------|-------|-----|--------|----------|--------|\n"
 
         for entry in "${sorted_entries[@]}"; do
             local workflow=$(echo "$entry" | cut -d'|' -f2)
@@ -1347,14 +1380,15 @@ analyze_all() {
             local tokens=$(echo "$entry" | cut -d'|' -f10)
             local ctx_util=$(echo "$entry" | cut -d'|' -f11)
             local cycles=$(echo "$entry" | cut -d'|' -f12)
+            local model=$(echo "$entry" | cut -d'|' -f23)
 
-            report_content+="| ${workflow} | ${run_name} | ${tokens} | ${ctx_util}% | ${cycles} |\n"
+            report_content+="| ${workflow} | ${model} | ${run_name} | ${tokens} | ${ctx_util}% | ${cycles} |\n"
         done
 
         # TDD Discipline table
         report_content+="\n### TDD Discipline\n\n"
-        report_content+="| Workflow | Run | Refactorings | Pred Accuracy | Tests Immed |\n"
-        report_content+="|----------|-----|--------------|---------------|-------------|\n"
+        report_content+="| Workflow | Model | Run | Refactorings | Pred Accuracy | Tests Immed |\n"
+        report_content+="|----------|-------|-----|--------------|---------------|-------------|\n"
 
         for entry in "${sorted_entries[@]}"; do
             local workflow=$(echo "$entry" | cut -d'|' -f2)
@@ -1363,51 +1397,54 @@ analyze_all() {
             local pred_c=$(echo "$entry" | cut -d'|' -f14)
             local pred_t=$(echo "$entry" | cut -d'|' -f15)
             local immed=$(echo "$entry" | cut -d'|' -f16)
+            local model=$(echo "$entry" | cut -d'|' -f23)
 
             local pred_str="N/A"
             if [[ "$pred_t" =~ ^[0-9]+$ ]] && [ "$pred_t" -gt 0 ]; then
                 pred_str="${pred_c}/${pred_t}"
             fi
 
-            report_content+="| ${workflow} | ${run_name} | ${refacts} | ${pred_str} | ${immed} |\n"
+            report_content+="| ${workflow} | ${model} | ${run_name} | ${refacts} | ${pred_str} | ${immed} |\n"
         done
 
         # Coverage table
         report_content+="\n### Coverage\n\n"
-        report_content+="| Workflow | Run | Statements | Branches |\n"
-        report_content+="|----------|-----|------------|----------|\n"
+        report_content+="| Workflow | Model | Run | Statements | Branches |\n"
+        report_content+="|----------|-------|-----|------------|----------|\n"
 
         for entry in "${sorted_entries[@]}"; do
             local workflow=$(echo "$entry" | cut -d'|' -f2)
             local run_name=$(echo "$entry" | cut -d'|' -f3)
             local cov_statements=$(echo "$entry" | cut -d'|' -f17)
             local cov_branches=$(echo "$entry" | cut -d'|' -f18)
+            local model=$(echo "$entry" | cut -d'|' -f23)
 
             [[ "$cov_statements" =~ ^[0-9]+$ ]] || cov_statements=0
             [[ "$cov_branches" =~ ^[0-9]+$ ]] || cov_branches=0
 
-            report_content+="| ${workflow} | ${run_name} | ${cov_statements}% | ${cov_branches}% |\n"
+            report_content+="| ${workflow} | ${model} | ${run_name} | ${cov_statements}% | ${cov_branches}% |\n"
         done
 
         # Code Smells table
         report_content+="\n### Code Smells\n\n"
-        report_content+="| Workflow | Run | Total Smells |\n"
-        report_content+="|----------|-----|-------------|\n"
+        report_content+="| Workflow | Model | Run | Total Smells |\n"
+        report_content+="|----------|-------|-----|-------------|\n"
 
         for entry in "${sorted_entries[@]}"; do
             local workflow=$(echo "$entry" | cut -d'|' -f2)
             local run_name=$(echo "$entry" | cut -d'|' -f3)
             local smell_total=$(echo "$entry" | cut -d'|' -f19)
+            local model=$(echo "$entry" | cut -d'|' -f23)
 
             [[ "$smell_total" =~ ^[0-9]+$ ]] || smell_total=0
 
-            report_content+="| ${workflow} | ${run_name} | ${smell_total} |\n"
+            report_content+="| ${workflow} | ${model} | ${run_name} | ${smell_total} |\n"
         done
 
         # Clean Code table
         report_content+="\n### Clean Code Metrics\n\n"
-        report_content+="| Workflow | Run | LOC | Functions | LOC/Func | Longest Func |\n"
-        report_content+="|----------|-----|-----|-----------|----------|-------------|\n"
+        report_content+="| Workflow | Model | Run | LOC | Functions | LOC/Func | Longest Func |\n"
+        report_content+="|----------|-------|-----|-----|-----------|----------|-------------|\n"
 
         for entry in "${sorted_entries[@]}"; do
             local workflow=$(echo "$entry" | cut -d'|' -f2)
@@ -1415,6 +1452,7 @@ analyze_all() {
             local cc_loc=$(echo "$entry" | cut -d'|' -f20)
             local cc_funcs=$(echo "$entry" | cut -d'|' -f21)
             local cc_longest=$(echo "$entry" | cut -d'|' -f22)
+            local model=$(echo "$entry" | cut -d'|' -f23)
 
             [[ "$cc_loc" =~ ^[0-9]+$ ]] || cc_loc=0
             [[ "$cc_funcs" =~ ^[0-9]+$ ]] || cc_funcs=0
@@ -1423,45 +1461,49 @@ analyze_all() {
             local cc_loc_per_func=0
             [ "$cc_funcs" -gt 0 ] && cc_loc_per_func=$((cc_loc / cc_funcs))
 
-            report_content+="| ${workflow} | ${run_name} | ${cc_loc} | ${cc_funcs} | ${cc_loc_per_func} | ${cc_longest} |\n"
+            report_content+="| ${workflow} | ${model} | ${run_name} | ${cc_loc} | ${cc_funcs} | ${cc_loc_per_func} | ${cc_longest} |\n"
         done
 
-        # Get unique workflows for this kata
-        local workflows=()
+        # Get unique workflow+model combinations for this kata
+        local wf_models=()
         for entry in "${kata_entries[@]}"; do
             local wf=$(echo "$entry" | cut -d'|' -f2)
-            if [[ ! " ${workflows[*]} " =~ " ${wf} " ]]; then
-                workflows+=("$wf")
+            local mdl=$(echo "$entry" | cut -d'|' -f23)
+            local wfm="${wf}|${mdl}"
+            if [[ ! " ${wf_models[*]} " =~ " ${wfm} " ]]; then
+                wf_models+=("$wfm")
             fi
         done
-        IFS=$'\n' workflows=($(sort <<< "${workflows[*]}")); unset IFS
+        IFS=$'\n' wf_models=($(sort <<< "${wf_models[*]}")); unset IFS
 
-        # Collect all metrics per workflow for statistics
+        # Collect all metrics per workflow+model for statistics
         declare -A wf_count wf_passed_count
         declare -A wf_durations wf_masses wf_tokens wf_ctx_utils wf_cycles wf_refacts wf_pred_c wf_pred_t wf_immeds wf_smells
 
-        for workflow in "${workflows[@]}"; do
-            wf_count[$workflow]=0
-            wf_passed_count[$workflow]=0
-            wf_durations[$workflow]=""
-            wf_masses[$workflow]=""
-            wf_tokens[$workflow]=""
-            wf_ctx_utils[$workflow]=""
-            wf_cycles[$workflow]=""
-            wf_refacts[$workflow]=""
-            wf_pred_c[$workflow]=0
-            wf_pred_t[$workflow]=0
-            wf_immeds[$workflow]=""
-            wf_cov_statements[$workflow]=""
-            wf_cov_branches[$workflow]=""
-            wf_smells[$workflow]=""
-            wf_cc_loc[$workflow]=""
-            wf_cc_funcs[$workflow]=""
-            wf_cc_longest[$workflow]=""
+        for wfm in "${wf_models[@]}"; do
+            wf_count[$wfm]=0
+            wf_passed_count[$wfm]=0
+            wf_durations[$wfm]=""
+            wf_masses[$wfm]=""
+            wf_tokens[$wfm]=""
+            wf_ctx_utils[$wfm]=""
+            wf_cycles[$wfm]=""
+            wf_refacts[$wfm]=""
+            wf_pred_c[$wfm]=0
+            wf_pred_t[$wfm]=0
+            wf_immeds[$wfm]=""
+            wf_cov_statements[$wfm]=""
+            wf_cov_branches[$wfm]=""
+            wf_smells[$wfm]=""
+            wf_cc_loc[$wfm]=""
+            wf_cc_funcs[$wfm]=""
+            wf_cc_longest[$wfm]=""
         done
 
         for entry in "${kata_entries[@]}"; do
             local wf=$(echo "$entry" | cut -d'|' -f2)
+            local mdl=$(echo "$entry" | cut -d'|' -f23)
+            local wfm="${wf}|${mdl}"
             local dur=$(echo "$entry" | cut -d'|' -f4)
             local mss=$(echo "$entry" | cut -d'|' -f7)
             local psd=$(echo "$entry" | cut -d'|' -f8)
@@ -1479,62 +1521,66 @@ analyze_all() {
             local ccfunc=$(echo "$entry" | cut -d'|' -f21)
             local cclongest=$(echo "$entry" | cut -d'|' -f22)
 
-            wf_count[$wf]=$((${wf_count[$wf]} + 1))
-            [ "$psd" = "true" ] && wf_passed_count[$wf]=$((${wf_passed_count[$wf]} + 1))
+            wf_count[$wfm]=$((${wf_count[$wfm]} + 1))
+            [ "$psd" = "true" ] && wf_passed_count[$wfm]=$((${wf_passed_count[$wfm]} + 1))
 
-            [[ "$dur" =~ ^[0-9]+$ ]] && wf_durations[$wf]="${wf_durations[$wf]} $dur"
-            [[ "$mss" =~ ^[0-9]+$ ]] && wf_masses[$wf]="${wf_masses[$wf]} $mss"
-            [[ "$tok" =~ ^[0-9]+$ ]] && wf_tokens[$wf]="${wf_tokens[$wf]} $tok"
-            [[ "$ctx" =~ ^[0-9]+$ ]] && wf_ctx_utils[$wf]="${wf_ctx_utils[$wf]} $ctx"
-            [[ "$cyc" =~ ^[0-9]+$ ]] && wf_cycles[$wf]="${wf_cycles[$wf]} $cyc"
-            [[ "$ref" =~ ^[0-9]+$ ]] && wf_refacts[$wf]="${wf_refacts[$wf]} $ref"
-            [[ "$pc" =~ ^[0-9]+$ ]] && wf_pred_c[$wf]=$((${wf_pred_c[$wf]} + pc))
-            [[ "$covs" =~ ^[0-9]+$ ]] && wf_cov_statements[$wf]="${wf_cov_statements[$wf]} $covs"
-            [[ "$covb" =~ ^[0-9]+$ ]] && wf_cov_branches[$wf]="${wf_cov_branches[$wf]} $covb"
-            [[ "$pt" =~ ^[0-9]+$ ]] && wf_pred_t[$wf]=$((${wf_pred_t[$wf]} + pt))
-            [[ "$imm" =~ ^[0-9]+$ ]] && wf_immeds[$wf]="${wf_immeds[$wf]} $imm"
-            [[ "$sml" =~ ^[0-9]+$ ]] && wf_smells[$wf]="${wf_smells[$wf]} $sml"
-            [[ "$ccloc" =~ ^[0-9]+$ ]] && wf_cc_loc[$wf]="${wf_cc_loc[$wf]} $ccloc"
-            [[ "$ccfunc" =~ ^[0-9]+$ ]] && wf_cc_funcs[$wf]="${wf_cc_funcs[$wf]} $ccfunc"
-            [[ "$cclongest" =~ ^[0-9]+$ ]] && wf_cc_longest[$wf]="${wf_cc_longest[$wf]} $cclongest"
+            [[ "$dur" =~ ^[0-9]+$ ]] && wf_durations[$wfm]="${wf_durations[$wfm]} $dur"
+            [[ "$mss" =~ ^[0-9]+$ ]] && wf_masses[$wfm]="${wf_masses[$wfm]} $mss"
+            [[ "$tok" =~ ^[0-9]+$ ]] && wf_tokens[$wfm]="${wf_tokens[$wfm]} $tok"
+            [[ "$ctx" =~ ^[0-9]+$ ]] && wf_ctx_utils[$wfm]="${wf_ctx_utils[$wfm]} $ctx"
+            [[ "$cyc" =~ ^[0-9]+$ ]] && wf_cycles[$wfm]="${wf_cycles[$wfm]} $cyc"
+            [[ "$ref" =~ ^[0-9]+$ ]] && wf_refacts[$wfm]="${wf_refacts[$wfm]} $ref"
+            [[ "$pc" =~ ^[0-9]+$ ]] && wf_pred_c[$wfm]=$((${wf_pred_c[$wfm]} + pc))
+            [[ "$covs" =~ ^[0-9]+$ ]] && wf_cov_statements[$wfm]="${wf_cov_statements[$wfm]} $covs"
+            [[ "$covb" =~ ^[0-9]+$ ]] && wf_cov_branches[$wfm]="${wf_cov_branches[$wfm]} $covb"
+            [[ "$pt" =~ ^[0-9]+$ ]] && wf_pred_t[$wfm]=$((${wf_pred_t[$wfm]} + pt))
+            [[ "$imm" =~ ^[0-9]+$ ]] && wf_immeds[$wfm]="${wf_immeds[$wfm]} $imm"
+            [[ "$sml" =~ ^[0-9]+$ ]] && wf_smells[$wfm]="${wf_smells[$wfm]} $sml"
+            [[ "$ccloc" =~ ^[0-9]+$ ]] && wf_cc_loc[$wfm]="${wf_cc_loc[$wfm]} $ccloc"
+            [[ "$ccfunc" =~ ^[0-9]+$ ]] && wf_cc_funcs[$wfm]="${wf_cc_funcs[$wfm]} $ccfunc"
+            [[ "$cclongest" =~ ^[0-9]+$ ]] && wf_cc_longest[$wfm]="${wf_cc_longest[$wfm]} $cclongest"
         done
 
         # Statistics Table 1: Core Metrics
         report_content+="\n### Statistics: Core Metrics\n\n"
-        report_content+="| Workflow | Runs | Avg Duration | σ Duration | Avg Mass | σ Mass | Success Rate |\n"
-        report_content+="|----------|------|--------------|------------|----------|--------|-------------|\n"
+        report_content+="| Workflow | Model | Runs | Avg Duration | σ Duration | Avg Mass | σ Mass | Success Rate |\n"
+        report_content+="|----------|-------|------|--------------|------------|----------|--------|-------------|\n"
 
-        for workflow in "${workflows[@]}"; do
-            local cnt=${wf_count[$workflow]}
+        for wfm in "${wf_models[@]}"; do
+            local cnt=${wf_count[$wfm]}
             if [ $cnt -gt 0 ]; then
-                local durs=(${wf_durations[$workflow]})
-                local msss=(${wf_masses[$workflow]})
+                local wf_name=$(echo "$wfm" | cut -d'|' -f1)
+                local mdl_name=$(echo "$wfm" | cut -d'|' -f2)
+                local durs=(${wf_durations[$wfm]})
+                local msss=(${wf_masses[$wfm]})
 
                 local sum_dur=0; for v in "${durs[@]}"; do sum_dur=$((sum_dur + v)); done
                 local sum_mss=0; for v in "${msss[@]}"; do sum_mss=$((sum_mss + v)); done
 
                 local avg_dur=$((sum_dur / cnt))
                 local avg_mss=$((sum_mss / cnt))
-                local success_rate=$((${wf_passed_count[$workflow]} * 100 / cnt))
+                local success_rate=$((${wf_passed_count[$wfm]} * 100 / cnt))
 
                 local stddev_dur=$(calc_stddev "${durs[@]}")
                 local stddev_mss=$(calc_stddev "${msss[@]}")
 
-                report_content+="| ${workflow} | ${cnt} | ${avg_dur}s | ±${stddev_dur}s | ${avg_mss} | ±${stddev_mss} | ${success_rate}% |\n"
+                report_content+="| ${wf_name} | ${mdl_name} | ${cnt} | ${avg_dur}s | ±${stddev_dur}s | ${avg_mss} | ±${stddev_mss} | ${success_rate}% |\n"
             fi
         done
 
         # Statistics Table 2: Token Usage & Context
         report_content+="\n### Statistics: Token Usage & Context\n\n"
-        report_content+="| Workflow | Runs | Avg Tokens | σ Tokens | Avg Ctx Util | σ Ctx Util | Avg Cycles | σ Cycles |\n"
-        report_content+="|----------|------|------------|----------|--------------|------------|------------|----------|\n"
+        report_content+="| Workflow | Model | Runs | Avg Tokens | σ Tokens | Avg Ctx Util | σ Ctx Util | Avg Cycles | σ Cycles |\n"
+        report_content+="|----------|-------|------|------------|----------|--------------|------------|------------|----------|\n"
 
-        for workflow in "${workflows[@]}"; do
-            local cnt=${wf_count[$workflow]}
+        for wfm in "${wf_models[@]}"; do
+            local cnt=${wf_count[$wfm]}
             if [ $cnt -gt 0 ]; then
-                local toks=(${wf_tokens[$workflow]})
-                local ctxs=(${wf_ctx_utils[$workflow]})
-                local cycs=(${wf_cycles[$workflow]})
+                local wf_name=$(echo "$wfm" | cut -d'|' -f1)
+                local mdl_name=$(echo "$wfm" | cut -d'|' -f2)
+                local toks=(${wf_tokens[$wfm]})
+                local ctxs=(${wf_ctx_utils[$wfm]})
+                local cycs=(${wf_cycles[$wfm]})
 
                 local sum_tok=0; for v in "${toks[@]}"; do sum_tok=$((sum_tok + v)); done
                 local sum_ctx=0; for v in "${ctxs[@]}"; do sum_ctx=$((sum_ctx + v)); done
@@ -1548,22 +1594,24 @@ analyze_all() {
                 local stddev_ctx=$(calc_stddev "${ctxs[@]}")
                 local stddev_cyc=$(calc_stddev "${cycs[@]}")
 
-                report_content+="| ${workflow} | ${cnt} | ${avg_tok} | ±${stddev_tok} | ${avg_ctx}% | ±${stddev_ctx}% | ${avg_cyc} | ±${stddev_cyc} |\n"
+                report_content+="| ${wf_name} | ${mdl_name} | ${cnt} | ${avg_tok} | ±${stddev_tok} | ${avg_ctx}% | ±${stddev_ctx}% | ${avg_cyc} | ±${stddev_cyc} |\n"
             fi
         done
 
         # Statistics Table 3: TDD Discipline
         report_content+="\n### Statistics: TDD Discipline\n\n"
-        report_content+="| Workflow | Runs | Avg Refactorings | σ Refactorings | Pred Accuracy | Avg Tests Immed | σ Tests Immed |\n"
-        report_content+="|----------|------|------------------|----------------|---------------|-----------------|---------------|\n"
+        report_content+="| Workflow | Model | Runs | Avg Refactorings | σ Refactorings | Pred Accuracy | Avg Tests Immed | σ Tests Immed |\n"
+        report_content+="|----------|-------|------|------------------|----------------|---------------|-----------------|---------------|\n"
 
-        for workflow in "${workflows[@]}"; do
-            local cnt=${wf_count[$workflow]}
+        for wfm in "${wf_models[@]}"; do
+            local cnt=${wf_count[$wfm]}
             if [ $cnt -gt 0 ]; then
-                local refs=(${wf_refacts[$workflow]})
-                local imms=(${wf_immeds[$workflow]})
-                local pred_c_total=${wf_pred_c[$workflow]}
-                local pred_t_total=${wf_pred_t[$workflow]}
+                local wf_name=$(echo "$wfm" | cut -d'|' -f1)
+                local mdl_name=$(echo "$wfm" | cut -d'|' -f2)
+                local refs=(${wf_refacts[$wfm]})
+                local imms=(${wf_immeds[$wfm]})
+                local pred_c_total=${wf_pred_c[$wfm]}
+                local pred_t_total=${wf_pred_t[$wfm]}
 
                 local sum_ref=0; for v in "${refs[@]}"; do sum_ref=$((sum_ref + v)); done
                 local sum_imm=0; for v in "${imms[@]}"; do sum_imm=$((sum_imm + v)); done
@@ -1580,20 +1628,22 @@ analyze_all() {
                     pred_str="${pred_c_total}/${pred_t_total} (${pred_pct}%)"
                 fi
 
-                report_content+="| ${workflow} | ${cnt} | ${avg_ref} | ±${stddev_ref} | ${pred_str} | ${avg_imm} | ±${stddev_imm} |\n"
+                report_content+="| ${wf_name} | ${mdl_name} | ${cnt} | ${avg_ref} | ±${stddev_ref} | ${pred_str} | ${avg_imm} | ±${stddev_imm} |\n"
             fi
         done
 
         # Statistics Table 4: Coverage
         report_content+="\n### Statistics: Coverage\n\n"
-        report_content+="| Workflow | Runs | Avg Statements | σ Statements | Avg Branches | σ Branches |\n"
-        report_content+="|----------|------|----------------|--------------|--------------|------------|\n"
+        report_content+="| Workflow | Model | Runs | Avg Statements | σ Statements | Avg Branches | σ Branches |\n"
+        report_content+="|----------|-------|------|----------------|--------------|--------------|------------|\n"
 
-        for workflow in "${workflows[@]}"; do
-            local cnt=${wf_count[$workflow]}
+        for wfm in "${wf_models[@]}"; do
+            local cnt=${wf_count[$wfm]}
             if [ $cnt -gt 0 ]; then
-                local covss=(${wf_cov_statements[$workflow]})
-                local covbs=(${wf_cov_branches[$workflow]})
+                local wf_name=$(echo "$wfm" | cut -d'|' -f1)
+                local mdl_name=$(echo "$wfm" | cut -d'|' -f2)
+                local covss=(${wf_cov_statements[$wfm]})
+                local covbs=(${wf_cov_branches[$wfm]})
 
                 local sum_covs=0; for v in "${covss[@]}"; do sum_covs=$((sum_covs + v)); done
                 local sum_covb=0; for v in "${covbs[@]}"; do sum_covb=$((sum_covb + v)); done
@@ -1604,19 +1654,21 @@ analyze_all() {
                 local stddev_covs=$(calc_stddev "${covss[@]}")
                 local stddev_covb=$(calc_stddev "${covbs[@]}")
 
-                report_content+="| ${workflow} | ${cnt} | ${avg_covs}% | ±${stddev_covs}% | ${avg_covb}% | ±${stddev_covb}% |\n"
+                report_content+="| ${wf_name} | ${mdl_name} | ${cnt} | ${avg_covs}% | ±${stddev_covs}% | ${avg_covb}% | ±${stddev_covb}% |\n"
             fi
         done
 
         # Statistics Table 5: Code Smells
         report_content+="\n### Statistics: Code Smells\n\n"
-        report_content+="| Workflow | Runs | Avg Smells | σ Smells |\n"
-        report_content+="|----------|------|------------|----------|\n"
+        report_content+="| Workflow | Model | Runs | Avg Smells | σ Smells |\n"
+        report_content+="|----------|-------|------|------------|----------|\n"
 
-        for workflow in "${workflows[@]}"; do
-            local cnt=${wf_count[$workflow]}
+        for wfm in "${wf_models[@]}"; do
+            local cnt=${wf_count[$wfm]}
             if [ $cnt -gt 0 ]; then
-                local smls=(${wf_smells[$workflow]})
+                local wf_name=$(echo "$wfm" | cut -d'|' -f1)
+                local mdl_name=$(echo "$wfm" | cut -d'|' -f2)
+                local smls=(${wf_smells[$wfm]})
 
                 local sum_sml=0; for v in "${smls[@]}"; do sum_sml=$((sum_sml + v)); done
 
@@ -1624,21 +1676,23 @@ analyze_all() {
 
                 local stddev_sml=$(calc_stddev "${smls[@]}")
 
-                report_content+="| ${workflow} | ${cnt} | ${avg_sml} | ±${stddev_sml} |\n"
+                report_content+="| ${wf_name} | ${mdl_name} | ${cnt} | ${avg_sml} | ±${stddev_sml} |\n"
             fi
         done
 
         # Statistics Table 6: Clean Code
         report_content+="\n### Statistics: Clean Code\n\n"
-        report_content+="| Workflow | Runs | Avg LOC | σ LOC | Avg Functions | Avg LOC/Func | Avg Longest Func |\n"
-        report_content+="|----------|------|---------|-------|---------------|--------------|------------------|\n"
+        report_content+="| Workflow | Model | Runs | Avg LOC | σ LOC | Avg Functions | Avg LOC/Func | Avg Longest Func |\n"
+        report_content+="|----------|-------|------|---------|-------|---------------|--------------|------------------|\n"
 
-        for workflow in "${workflows[@]}"; do
-            local cnt=${wf_count[$workflow]}
+        for wfm in "${wf_models[@]}"; do
+            local cnt=${wf_count[$wfm]}
             if [ $cnt -gt 0 ]; then
-                local cclocs=(${wf_cc_loc[$workflow]})
-                local ccfuncs=(${wf_cc_funcs[$workflow]})
-                local cclongests=(${wf_cc_longest[$workflow]})
+                local wf_name=$(echo "$wfm" | cut -d'|' -f1)
+                local mdl_name=$(echo "$wfm" | cut -d'|' -f2)
+                local cclocs=(${wf_cc_loc[$wfm]})
+                local ccfuncs=(${wf_cc_funcs[$wfm]})
+                local cclongests=(${wf_cc_longest[$wfm]})
 
                 local sum_ccloc=0; for v in "${cclocs[@]}"; do sum_ccloc=$((sum_ccloc + v)); done
                 local sum_ccfunc=0; for v in "${ccfuncs[@]}"; do sum_ccfunc=$((sum_ccfunc + v)); done
@@ -1653,7 +1707,7 @@ analyze_all() {
 
                 local stddev_ccloc=$(calc_stddev "${cclocs[@]}")
 
-                report_content+="| ${workflow} | ${cnt} | ${avg_ccloc} | ±${stddev_ccloc} | ${avg_ccfunc} | ${avg_loc_per_func} | ${avg_cclongest} |\n"
+                report_content+="| ${wf_name} | ${mdl_name} | ${cnt} | ${avg_ccloc} | ±${stddev_ccloc} | ${avg_ccfunc} | ${avg_loc_per_func} | ${avg_cclongest} |\n"
             fi
         done
 
@@ -1663,6 +1717,7 @@ analyze_all() {
     report_content+="## Metrics Legend\n\n"
     report_content+="| Metric | Description |\n"
     report_content+="|--------|-------------|\n"
+    report_content+="| Model | Model configuration (opus, opus-no-thinking, sonnet, sonnet-no-thinking) |\n"
     report_content+="| Duration | Total experiment time in seconds |\n"
     report_content+="| Mass | APP (Absolute Priority Premise) code complexity score |\n"
     report_content+="| Tokens | Total tokens consumed by the AI |\n"
@@ -1682,7 +1737,8 @@ analyze_all() {
 
     report_content+="## Notes\n\n"
     report_content+="- Tables are grouped by **Kata** (experiments are only comparable within the same kata)\n"
-    report_content+="- Within each kata, runs are sorted by **Workflow**, then by **timestamp**\n"
+    report_content+="- Within each kata, runs are sorted by **Workflow**, then by **Model**, then by **timestamp**\n"
+    report_content+="- Statistics are grouped by **Workflow + Model** combination\n"
 
     echo -e "$report_content" > "$all_report"
     echo -e "\n${GREEN}Saved all-runs analysis to: $all_report${NC}"
