@@ -1,4 +1,4 @@
-# Mars Rover Kata - Experiment Prompt
+# Mars Rover Kata
 
 ## Feature: Mars Rover Navigation
 
@@ -76,7 +76,7 @@ Explanation: Rover traces 3 sides of a 1x1 square
 
 ## Task
 
-Using TDD, implement the Mars Rover based on the rules and examples above.
+Implement the Mars Rover based on the rules and examples above.
 
 ## Expected Output Files
 
@@ -87,10 +87,8 @@ Using TDD, implement the Mars Rover based on the rules and examples above.
 
 - Use Vitest for testing
 - Use TypeScript
-- Follow TDD strictly (no implementation before tests)
 - Each command character is one of: 'F', 'L', 'R'
 - Position coordinates can be negative
 - Commands are case-sensitive (uppercase only)
 - Focus on core rover movement (no obstacles or grid boundaries for base kata)
 
-The test-list agent should create the actual test list based on TDD principles (simple → complex).

@@ -1,15 +1,11 @@
-# String Calculator Kata - Experiment Prompt
+# String Calculator Kata
 
 ## Input
 You are given an Example Mapping image that describes the String Calculator feature.
 
 ## Task
-Using TDD, implement the String Calculator based on the Example Mapping.
+Implement the String Calculator based on this Example Mapping.
 
-1. Create a test list from the Example Mapping
-2. Complete the full TDD cycle (Red → Green → Refactor) for each test
-3. Do NOT wait for human approval between phases - run autonomously
-4. Record your progress and decisions
 
 ## Example Mapping Summary
 (Use this if no image is provided)
@@ -35,4 +31,3 @@ Using TDD, implement the String Calculator based on the Example Mapping.
 ## Constraints
 - Use Vitest for testing
 - Use TypeScript
-- Follow TDD strictly (no implementation before tests)

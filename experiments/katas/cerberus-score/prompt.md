@@ -54,7 +54,7 @@ Output: 26  (2 sets of 3 = 24, plus 1 × 2 = 26)
 
 ## Task
 
-Using TDD, implement the Cerberus Score Calculator based on the rules and examples above.
+Implement the Cerberus Score Calculator based on the rules and examples above.
 
 ## Expected Output Files
 
@@ -65,7 +65,4 @@ Using TDD, implement the Cerberus Score Calculator based on the rules and exampl
 
 - Use Vitest for testing
 - Use TypeScript
-- Follow TDD strictly (no implementation before tests)
 - Input is always a non-negative integer (>= 0)
-
-The test-list agent should create the actual test list based on TDD principles (simple -> complex).

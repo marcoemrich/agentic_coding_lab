@@ -115,7 +115,7 @@ Output:
 
 ## Task
 
-Using TDD, implement the Pixel Art Scaler based on the rules and examples above.
+Implement the Pixel Art Scaler based on the rules and examples above.
 
 Each string in the input/output array represents one row of pixels.
 
@@ -128,10 +128,7 @@ Each string in the input/output array represents one row of pixels.
 
 - Use Vitest for testing
 - Use TypeScript
-- Follow TDD strictly (no implementation before tests)
 - Scale factor is always a positive integer (>= 1)
 - All rows in input have the same length
 - Pixels are single characters (any printable ASCII character)
 - Preserve exact character values (no interpolation or blending)
-
-The test-list agent should create the actual test list based on TDD principles (simple -> complex).

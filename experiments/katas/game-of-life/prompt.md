@@ -50,7 +50,7 @@ Coordinates Gen 1: `[]` (empty)
 
 ## Task
 
-Using TDD, implement the Game of Life based on the rules and examples above.
+Implement the Game of Life based on the rules and examples above.
 
 The implementation should accept an arbitrary grid of living cells and output the next generation.
 
@@ -63,8 +63,6 @@ The implementation should accept an arbitrary grid of living cells and output th
 
 - Use Vitest for testing
 - Use TypeScript
-- Follow TDD strictly (no implementation before tests)
 - Use sparse representation (only store living cells)
 - Handle negative coordinates
 
-the test-list agent should create the actual test list based on TDD principles (simple → complex).

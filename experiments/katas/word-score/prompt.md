@@ -1,4 +1,4 @@
-# Word Score Kata - Experiment Prompt
+# Word Score Kata
 
 ## Feature: Word Score Calculator
 
@@ -54,7 +54,7 @@ Output: 52  (H=8 + e=5 + L=12 + L=12 + o=15)
 
 ## Task
 
-Using TDD, implement the Word Score Calculator based on the rules and examples above.
+Implement the Word Score Calculator based on the rules and examples above.
 
 ## Expected Output Files
 
@@ -65,8 +65,6 @@ Using TDD, implement the Word Score Calculator based on the rules and examples a
 
 - Use Vitest for testing
 - Use TypeScript
-- Follow TDD strictly (no implementation before tests)
 - Input contains only letters (A-Z, a-z) or empty string
 - No spaces, numbers, or special characters in input
 
-The test-list agent should create the actual test list based on TDD principles (simple -> complex).
