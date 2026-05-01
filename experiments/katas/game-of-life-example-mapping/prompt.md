@@ -22,6 +22,46 @@ Implement Conway's Game of Life with an **infinite grid** (theoretically unlimit
 
 ### Examples
 
+#### Examples per Rule
+
+**Rule 1 – Underpopulation** (live cell with < 2 neighbors dies):
+```
+Gen 0:       Gen 1:
+ ##           ..
+ ..     →     ..
+```
+Coordinates Gen 0: `[(0,1), (1,1)]` (each has 1 neighbor)
+Coordinates Gen 1: `[]`
+
+**Rule 2 – Survival** (live cell with 2 or 3 neighbors lives on):
+```
+Gen 0:       Gen 1:
+ ###          .#.
+ ...    →     .#.
+ .#.          ...
+```
+The center cell `(1,1)` has 3 live neighbors → survives.
+
+**Rule 3 – Overpopulation** (live cell with > 3 neighbors dies):
+```
+Gen 0:       Gen 1:
+ ###          #.#
+ .#.    →     #.#
+ ###          #.#
+```
+Center cell `(1,1)` has 4 live neighbors → dies.
+
+**Rule 4 – Reproduction** (dead cell with exactly 3 neighbors becomes alive):
+```
+Gen 0:       Gen 1:
+ ##.          ##.
+ #..    →     ##.
+ ...          ...
+```
+Dead cell `(1,1)` has exactly 3 live neighbors → becomes alive.
+
+#### Pattern Examples
+
 **Blinker (oscillator)**:
 ```
 Gen 0:       Gen 1:       Gen 2:

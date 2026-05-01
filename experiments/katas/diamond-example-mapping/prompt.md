@@ -18,24 +18,71 @@ Generate a diamond shape with letters from 'A' to a given letter. The diamond ha
 
 ## Examples
 
-**Diamond 'A'**:
+### Examples per Rule
+
+**Rule 1 – Single Letter 'A'**:
 ```
 A
 ```
-(1 row, width 1)
+Input `'A'` → just `"A"` (1 row, width 1).
 
-**Diamond 'B'**:
+**Rule 2 – Top Half (letter appears twice, except 'A')**:
+Diamond `'B'` top half:
+```
+ A   ← only one 'A'
+B B  ← 'B' appears twice
+```
+
+**Rule 3 – Middle Row (widest row, contains target letter)**:
+Diamond `'C'`, middle row (row 3):
+```
+C   C
+```
+Contains target letter 'C', width 5.
+
+**Rule 4 – Bottom Half (mirror of top half, excluding middle)**:
+Diamond `'C'` full output:
+```
+  A   ← top
+ B B  ← top
+C   C ← middle
+ B B  ← mirror of row 2
+  A   ← mirror of row 1
+```
+
+**Rule 5 – Spacing (centered with leading spaces)**:
+Diamond `'D'`, leading spaces per row:
+```
+   A    ← 3 leading spaces
+  B B   ← 2 leading spaces
+ C   C  ← 1 leading space
+D     D ← 0 leading spaces
+ C   C  ← 1
+  B B   ← 2
+   A    ← 3
+```
+
+**Rule 6 – Width = `2 * position - 1`**:
+- Diamond `'A'` (pos 1): width 1
+- Diamond `'B'` (pos 2): width 3
+- Diamond `'C'` (pos 3): width 5
+- Diamond `'D'` (pos 4): width 7
+
+### Full Diamond Examples
+
+**Diamond 'A'** (1 row, width 1):
+```
+A
+```
+
+**Diamond 'B'** (3 rows, width 3):
 ```
  A
 B B
  A
 ```
-(3 rows, width 3)
-- Row 1: 1 space, "A", 1 space
-- Row 2: "B", 1 space, "B"
-- Row 3: 1 space, "A", 1 space
 
-**Diamond 'C'**:
+**Diamond 'C'** (5 rows, width 5):
 ```
   A
  B B
@@ -43,14 +90,8 @@ C   C
  B B
   A
 ```
-(5 rows, width 5)
-- Row 1: 2 spaces, "A", 2 spaces
-- Row 2: 1 space, "B", 1 space, "B", 1 space
-- Row 3: "C", 3 spaces, "C"
-- Row 4: 1 space, "B", 1 space, "B", 1 space
-- Row 5: 2 spaces, "A", 2 spaces
 
-**Diamond 'D'**:
+**Diamond 'D'** (7 rows, width 7):
 ```
    A
   B B
@@ -60,7 +101,6 @@ D     D
   B B
    A
 ```
-(7 rows, width 7)
 
 ## Pattern Details
 
