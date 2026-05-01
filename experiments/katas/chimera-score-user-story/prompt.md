@@ -21,6 +21,5 @@
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript
 - Input is always a non-negative integer (>= 0)

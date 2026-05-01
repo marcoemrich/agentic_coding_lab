@@ -15,5 +15,4 @@ Implement the `add` function according to the description above.
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript

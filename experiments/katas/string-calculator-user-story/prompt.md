@@ -20,5 +20,4 @@
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript

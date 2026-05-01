@@ -101,7 +101,6 @@ The implementation should accept an arbitrary grid of living cells and output th
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript
 - Use sparse representation (only store living cells)
 - Handle negative coordinates

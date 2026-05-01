@@ -15,6 +15,5 @@ Implement a function that, given the number of Chimera cards a player holds, ret
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript
 - Input is always a non-negative integer (>= 0)

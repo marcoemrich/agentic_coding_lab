@@ -23,7 +23,6 @@
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript
 - Each command character is one of: 'F', 'L', 'R'
 - Position coordinates can be negative

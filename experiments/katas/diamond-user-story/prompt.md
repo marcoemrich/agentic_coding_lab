@@ -2,7 +2,7 @@
 
 ## User Story
 
-**As a** developer practicing TDD
+**As a** developer
 **I want** a function that generates an ASCII letter diamond for any uppercase letter
 **so that** I can render symmetric letter shapes for typography demos and code katas.
 
@@ -23,7 +23,6 @@
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript
 - Input is always a single uppercase letter (A-Z)
 - Rows are separated by newline characters (`\n`)

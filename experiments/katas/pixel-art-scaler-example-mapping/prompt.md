@@ -126,7 +126,6 @@ Each string in the input/output array represents one row of pixels.
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript
 - Scale factor is always a positive integer (>= 1)
 - All rows in input have the same length

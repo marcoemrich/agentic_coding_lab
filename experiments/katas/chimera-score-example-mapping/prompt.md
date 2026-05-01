@@ -63,6 +63,5 @@ Implement the Chimera Score Calculator based on the rules and examples above.
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript
 - Input is always a non-negative integer (>= 0)

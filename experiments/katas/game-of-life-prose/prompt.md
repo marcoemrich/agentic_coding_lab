@@ -15,7 +15,6 @@ Implement a function that takes the set of currently living cells and returns th
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript
 - Use sparse representation (only store living cells)
 - Handle negative coordinates

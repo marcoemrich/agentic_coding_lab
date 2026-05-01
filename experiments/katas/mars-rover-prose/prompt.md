@@ -15,7 +15,6 @@ Implement the rover so that, given an initial position and heading and a command
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript
 - Each command character is one of: 'F', 'L', 'R'
 - Position coordinates can be negative

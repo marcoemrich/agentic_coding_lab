@@ -29,5 +29,4 @@ Implement the String Calculator based on this Example Mapping.
 - `src/string-calculator.spec.ts` - Tests
 
 ## Constraints
-- Use Vitest for testing
 - Use TypeScript

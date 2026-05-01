@@ -85,7 +85,6 @@ Implement the Mars Rover based on the rules and examples above.
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript
 - Each command character is one of: 'F', 'L', 'R'
 - Position coordinates can be negative

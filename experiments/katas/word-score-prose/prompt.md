@@ -15,7 +15,6 @@ Implement the word score function according to the description above.
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript
 - Input contains only letters (A-Z, a-z) or empty string
 - No spaces, numbers, or special characters in input

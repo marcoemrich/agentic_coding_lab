@@ -15,7 +15,6 @@ Implement a function that returns the diamond as a string with rows separated by
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript
 - Input is always a single uppercase letter (A-Z)
 - Rows are separated by newline characters (`\n`)

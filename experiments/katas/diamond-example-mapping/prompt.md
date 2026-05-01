@@ -114,7 +114,7 @@ For a letter at position `n` (A=1, B=2, C=3...):
 
 ## Task
 
-Using TDD, implement the Diamond Generator based on the rules and examples above.
+Implement the Diamond Generator based on the rules and examples above.
 
 The output should:
 - Accept a single uppercase letter ('A' to 'Z')
@@ -128,11 +128,7 @@ The output should:
 
 ## Constraints
 
-- Use Vitest for testing
 - Use TypeScript
-- Follow TDD strictly (no implementation before tests)
 - Input is always a single uppercase letter (A-Z)
 - Output rows are trimmed to exact width (no trailing spaces beyond width)
 - Rows are separated by newline characters (`\n`)
-
-The test-list agent should create the actual test list based on TDD principles (simple → complex).
