@@ -1,8 +1,8 @@
-# Cerberus Score Kata - Experiment Prompt
+# Chimera Score Kata - Experiment Prompt
 
-## Feature: Cerberus Card Scoring
+## Feature: Chimera Card Scoring
 
-A card game "Myth Collector" needs to calculate scores for Cerberus cards in a player's pile. Cerberus cards score bonus points when collected in sets of 3.
+A card game "Overlords" needs to calculate scores for Chimera cards in a player's pile. Chimera cards score bonus points when collected in sets of 3.
 
 ## Rules
 
@@ -54,12 +54,12 @@ Output: 26  (2 sets of 3 = 24, plus 1 × 2 = 26)
 
 ## Task
 
-Implement the Cerberus Score Calculator based on the rules and examples above.
+Implement the Chimera Score Calculator based on the rules and examples above.
 
 ## Expected Output Files
 
-- `src/cerberus-score.ts` - Implementation
-- `src/cerberus-score.spec.ts` - Tests
+- `src/chimera-score.ts` - Implementation
+- `src/chimera-score.spec.ts` - Tests
 
 ## Constraints
 
