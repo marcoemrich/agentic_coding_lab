@@ -47,11 +47,17 @@ for w in "${all_workflows[@]}"; do
 done
 
 # Model configurations: name|cli_model|thinking_enabled
+# cli_model is the explicit Claude API ID (not the short alias like
+# `opus`/`sonnet`), since the short aliases currently resolve to legacy
+# versions (`opus` -> claude-opus-4-6, not 4.7). Pinning the full ID
+# guarantees we run the model we mean to run.
 MODEL_CONFIGS=(
-    "opus|opus|true"
-    "opus-no-thinking|opus|false"
-    "sonnet|sonnet|true"
-    "sonnet-no-thinking|sonnet|false"
+    "opus-4-7|claude-opus-4-7|true"
+    "opus-4-7-no-thinking|claude-opus-4-7|false"
+    "sonnet-4-6|claude-sonnet-4-6|true"
+    "sonnet-4-6-no-thinking|claude-sonnet-4-6|false"
+    "haiku-4-5|claude-haiku-4-5-20251001|true"
+    "haiku-4-5-no-thinking|claude-haiku-4-5-20251001|false"
 )
 
 echo -e "\n${YELLOW}Found ${#katas[@]} katas: ${katas[*]}${NC}"

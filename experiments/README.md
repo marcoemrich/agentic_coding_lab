@@ -323,15 +323,19 @@ v5-exact-single-context/.claude/
 
 ### Model Configurations
 
-The `--model` flag uses the CLI aliases `opus` / `sonnet`, which always
-resolve to the latest available model in that family.
+The runner pins the full Claude API model ID per config. The short
+aliases `opus` / `sonnet` are intentionally avoided because they
+currently resolve to legacy versions (e.g. `opus` -> `claude-opus-4-6`,
+not Opus 4.7). Bump these entries when new model versions ship.
 
-| Config | CLI Flag | Thinking | Mechanism |
-|--------|----------|----------|-----------|
-| `opus` | `--model opus` | Enabled | Default behavior |
-| `opus-no-thinking` | `--model opus` | Disabled | `MAX_THINKING_TOKENS=0` |
-| `sonnet` | `--model sonnet` | Enabled | Default behavior |
-| `sonnet-no-thinking` | `--model sonnet` | Disabled | `MAX_THINKING_TOKENS=0` |
+| Config | API Model ID | Thinking | Mechanism |
+|--------|--------------|----------|-----------|
+| `opus-4-7` | `claude-opus-4-7` | Enabled | Default behavior |
+| `opus-4-7-no-thinking` | `claude-opus-4-7` | Disabled | `MAX_THINKING_TOKENS=0` |
+| `sonnet-4-6` | `claude-sonnet-4-6` | Enabled | Default behavior |
+| `sonnet-4-6-no-thinking` | `claude-sonnet-4-6` | Disabled | `MAX_THINKING_TOKENS=0` |
+| `haiku-4-5` | `claude-haiku-4-5-20251001` | Enabled | Default behavior |
+| `haiku-4-5-no-thinking` | `claude-haiku-4-5-20251001` | Disabled | `MAX_THINKING_TOKENS=0` |
 
 ## Available Katas
 
