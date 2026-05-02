@@ -64,51 +64,31 @@ find_test_file() {
     echo "$test_file"
 }
 
-# Extract metrics from experiment-summary.md
-extract_summary_metrics() {
-    local summary_file=$1
+# Extract metrics from transcript-metrics.json (post-hoc transcript analysis).
+#
+# Pipe-separated output schema (kept stable so downstream code does not break):
+#   total_tokens | context_util | cycle_count | avg_cycle | avg_red | avg_green |
+#   avg_refactor | predictions_correct | predictions_total | prediction_pct |
+#   refactorings | final_mass | tests_passed_immediately
+#
+# Fields with no transcript-derivable equivalent (avg_*, prediction_*,
+# refactorings, final_mass, tests_passed_immediately) are emitted as 0.
+extract_transcript_metrics() {
+    local metrics_file=$1
 
-    if [ ! -f "$summary_file" ]; then
-        echo ""
+    if [ ! -f "$metrics_file" ] || ! command -v jq &> /dev/null; then
+        echo "0|0|0|0|0|0|0|0|0|0|0|0|0"
         return
     fi
 
-    local content=$(cat "$summary_file")
+    local total_tokens
+    total_tokens=$(jq -r '.total_tokens.total // 0' "$metrics_file")
+    local context_util
+    context_util=$(jq -r '.context_utilization_pct // 0' "$metrics_file")
+    local cycle_count
+    cycle_count=$(jq -r '.cycle_count // 0' "$metrics_file")
 
-    # Token Usage - extract total tokens
-    local total_tokens=$(echo "$content" | grep -oE '\*\*Total\*\*.*\*\*[0-9,]+\*\*' | grep -oE '[0-9,]+' | tail -1 | tr -d ',')
-    [ -z "$total_tokens" ] && total_tokens=$(echo "$content" | grep -E '^\| \*\*Total\*\*' | grep -oE '[0-9,]+' | head -1 | tr -d ',')
-
-    # Context utilization - final percentage (extract integer part)
-    local context_util_raw=$(echo "$content" | grep -E 'Main Context.*\|.*%|Final.*\|.*%' | grep -oE '[0-9]+\.?[0-9]*%' | tail -1 | tr -d '%')
-    local context_util=$(echo "$context_util_raw" | cut -d'.' -f1)
-
-    # Cycle count - count "Cycle X -" patterns
-    local cycle_count=$(echo "$content" | grep -cE 'Cycle [0-9]+ - Red' || echo "0")
-
-    # Average cycle time
-    local avg_cycle_time=$(echo "$content" | grep -E 'Average per TDD cycle' | grep -oE '[0-9]+\.?[0-9]*' | head -1)
-    local avg_red=$(echo "$content" | grep -E 'Average Red phase' | grep -oE '[0-9]+\.?[0-9]*' | head -1)
-    local avg_green=$(echo "$content" | grep -E 'Average Green phase' | grep -oE '[0-9]+\.?[0-9]*' | head -1)
-    local avg_refactor=$(echo "$content" | grep -E 'Average Refactor phase' | grep -oE '[0-9]+\.?[0-9]*' | head -1)
-
-    # Prediction accuracy - look for X/X pattern or percentage
-    local prediction_line=$(echo "$content" | grep -E 'Prediction accuracy')
-    local predictions_correct=$(echo "$prediction_line" | grep -oE '[0-9]+/[0-9]+' | cut -d'/' -f1)
-    local predictions_total=$(echo "$prediction_line" | grep -oE '[0-9]+/[0-9]+' | cut -d'/' -f2)
-    local prediction_pct=$(echo "$prediction_line" | grep -oE '[0-9]+%' | tr -d '%')
-
-    # Refactorings applied
-    local refactorings=$(echo "$content" | grep -E 'Refactorings applied' | grep -oE ': [0-9]+' | grep -oE '[0-9]+' | head -1)
-
-    # Final code mass from summary
-    local final_mass=$(echo "$content" | grep -E 'Final code mass' | grep -oE '[0-9]+' | head -1)
-
-    # Tests that passed immediately (count of "Test passed" or similar in Red Prediction column)
-    local tests_passed_immediately=$(echo "$content" | grep -E '✅ Test passed|❌ Test passed|passed immediately|already satisfied' | wc -l | tr -d '[:space:]')
-
-    # Output as pipe-separated values
-    echo "${total_tokens:-0}|${context_util:-0}|${cycle_count:-0}|${avg_cycle_time:-0}|${avg_red:-0}|${avg_green:-0}|${avg_refactor:-0}|${predictions_correct:-0}|${predictions_total:-0}|${prediction_pct:-0}|${refactorings:-0}|${final_mass:-0}|${tests_passed_immediately:-0}"
+    echo "${total_tokens}|${context_util}|${cycle_count}|0|0|0|0|0|0|0|0|0|0"
 }
 
 analyze_single_run() {
@@ -464,7 +444,8 @@ analyze_single_run() {
         fi
     fi
 
-    # Extract metrics from experiment-summary.md
+    # Extract metrics from transcript-metrics.json (post-hoc transcript analysis).
+    # Variables keep the `summary_*` prefix for downstream stability.
     local summary_metrics=""
     local summary_total_tokens=0
     local summary_context_util=0
@@ -480,11 +461,20 @@ analyze_single_run() {
     local summary_final_mass=0
     local summary_tests_passed_immediately=0
 
-    if [ -f "$run_dir/experiment-summary.md" ]; then
-        echo -e "\n${YELLOW}Experiment Summary Metrics:${NC}"
-        report_content+="## Experiment Summary Metrics\n\n"
+    # Run transcript analyzer to (re)generate transcript-metrics.json
+    if [ -f "$run_dir/transcript.jsonl" ]; then
+        local analyzer="$EXPERIMENTS_DIR/analyze_transcript.py"
+        if [ -x "$analyzer" ] || [ -f "$analyzer" ]; then
+            python3 "$analyzer" "$run_dir" >/dev/null 2>&1 || \
+                echo -e "${YELLOW}analyze_transcript.py failed for $run_dir${NC}"
+        fi
+    fi
 
-        summary_metrics=$(extract_summary_metrics "$run_dir/experiment-summary.md")
+    if [ -f "$run_dir/transcript-metrics.json" ]; then
+        echo -e "\n${YELLOW}Transcript Metrics:${NC}"
+        report_content+="## Transcript Metrics\n\n"
+
+        summary_metrics=$(extract_transcript_metrics "$run_dir/transcript-metrics.json")
 
         # Parse the pipe-separated values
         summary_total_tokens=$(echo "$summary_metrics" | cut -d'|' -f1)

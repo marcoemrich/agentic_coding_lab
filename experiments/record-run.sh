@@ -324,6 +324,46 @@ run_claude() {
     fi
 }
 
+save_transcript() {
+    local run_dir=$1
+
+    # Map run_dir to Claude project dir name: replace all "/" with "-".
+    # Claude Code writes session JSONLs to ~/.claude/projects/<dashed-path>/<uuid>.jsonl
+    local dashed_path
+    dashed_path=$(echo "$run_dir" | sed 's|/|-|g')
+    local home_dir="${HOME:-/root}"
+    local project_dir="$home_dir/.claude/projects/$dashed_path"
+
+    if [ ! -d "$project_dir" ]; then
+        echo -e "${YELLOW}Transcript project dir not found: $project_dir${NC}"
+        return
+    fi
+
+    # Pick the most recently modified <uuid>.jsonl as the main session transcript.
+    local newest_jsonl
+    newest_jsonl=$(ls -t "$project_dir"/*.jsonl 2>/dev/null | head -1)
+
+    if [ -z "$newest_jsonl" ] || [ ! -f "$newest_jsonl" ]; then
+        echo -e "${YELLOW}No transcript JSONL found in $project_dir${NC}"
+        return
+    fi
+
+    cp "$newest_jsonl" "$run_dir/transcript.jsonl"
+    echo -e "${GREEN}Saved transcript: $run_dir/transcript.jsonl${NC}"
+
+    # Subagent transcripts (v4): subagents/agent-*.jsonl
+    local subagent_src="$project_dir/subagents"
+    if [ -d "$subagent_src" ]; then
+        local count
+        count=$(ls -1 "$subagent_src"/agent-*.jsonl 2>/dev/null | wc -l | tr -d '[:space:]')
+        if [ "$count" -gt 0 ]; then
+            mkdir -p "$run_dir/transcript-subagents"
+            cp "$subagent_src"/agent-*.jsonl "$run_dir/transcript-subagents/"
+            echo -e "${GREEN}Saved $count subagent transcripts${NC}"
+        fi
+    fi
+}
+
 print_completion() {
     local run_dir=$1
 
@@ -392,6 +432,9 @@ install_dependencies "$run_dir"
 # Run Claude Code
 start_time=$(date +%s)
 run_claude "$run_dir" "$selected_kata" "$selected_cli_model" "$selected_thinking"
+
+# Save Claude Code transcript before any further bookkeeping
+save_transcript "$run_dir"
 
 # Record end metrics
 record_end "$run_dir" "$start_time"
