@@ -50,11 +50,73 @@ This drops you into the experiment container. From there:
 
 ### 4. Run Batch Experiments
 
-Run all kata/workflow combinations automatically:
+#### Convenience scripts
+
+```bash
+# List all available plans with description and run count
+./list-plans.sh
+
+# Run a plan (extension and full path optional)
+./batch.sh smoke-test
+./batch.sh workflow-comparison-string-calculator.json
+
+# Run the full cross-product (no plan)
+./batch.sh
+```
+
+The two scripts are thin wrappers around the `docker compose` invocations
+described below — pick whichever style is more convenient.
+
+#### Option A: Run a specific plan file
+
+Plan files live in `../batch-plans/*.json` and list explicit
+`{kata, workflow, model}` triples. Pass the plan name (or absolute path) via
+the `BATCH_PLAN` env var:
+
+```bash
+# Single smoke run to verify the pipeline
+BATCH_PLAN=smoke-test.json docker compose --profile batch run --rm batch
+
+# Compare all 5 workflows on string-calculator with Sonnet 4.6
+BATCH_PLAN=workflow-comparison-string-calculator.json \
+  docker compose --profile batch run --rm batch
+```
+
+The plan is validated fail-fast against available katas, workflows, and the
+hard-coded `MODEL_CONFIGS` list — typos abort before any Claude call.
+
+Plan file schema:
+
+```json
+{
+  "name": "Optional plan name",
+  "description": "Optional description",
+  "runs": [
+    { "kata": "string-calculator-prose", "workflow": "v3-basic-tdd", "model": "sonnet-4-6" }
+  ]
+}
+```
+
+`model` is the model **name** from `MODEL_CONFIGS` in `run-batch.sh`
+(e.g. `sonnet-4-6`, `opus-4-7-no-thinking`, `haiku-4-5`), not the full API ID.
+
+#### Option B: Run the full cross-product
+
+Without `BATCH_PLAN`, every enabled kata × workflow × model is executed —
+this can be hundreds of runs and will hit Claude Max rate limits.
 
 ```bash
 docker compose --profile batch run --rm batch
 ```
+
+#### Per-run hardening
+
+Each run is wrapped with a 30-minute timeout (override via
+`CLAUDE_TIMEOUT_SECONDS=...`). Stdout/stderr is captured to
+`runs/<run>/run.log`. If the log mentions a rate limit / 429 / overloaded
+state, the batch aborts immediately to avoid burning further requests, and
+the partial state is preserved in the run directory. Each `metrics.json`
+gets a `run_status` block with `exit_code`, `exit_reason`, and `rate_limited`.
 
 ## Container Details
 

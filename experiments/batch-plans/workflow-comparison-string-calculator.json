@@ -1,0 +1,11 @@
+{
+  "name": "Workflow comparison on string-calculator (Sonnet)",
+  "description": "Compare all five workflows on the same kata using Sonnet 4.6 with thinking. Roughly 1 5h-window of usage.",
+  "runs": [
+    { "kata": "string-calculator-prose", "workflow": "v1-oneshot",              "model": "sonnet-4-6" },
+    { "kata": "string-calculator-prose", "workflow": "v2-iterative",            "model": "sonnet-4-6" },
+    { "kata": "string-calculator-prose", "workflow": "v3-basic-tdd",            "model": "sonnet-4-6" },
+    { "kata": "string-calculator-prose", "workflow": "v4-exact-subagents",      "model": "sonnet-4-6" },
+    { "kata": "string-calculator-prose", "workflow": "v5-exact-single-context", "model": "sonnet-4-6" }
+  ]
+}

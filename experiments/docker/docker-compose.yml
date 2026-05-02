@@ -64,6 +64,8 @@ services:
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
       - ../analyze_transcript.py:/home/experimenter/experiments/analyze_transcript.py:ro
       - ./run-batch.sh:/home/experimenter/experiments/run-batch.sh:ro
+      # Batch plan files (e.g. smoke-test.json, hybrid-matrix.json)
+      - ../batch-plans:/home/experimenter/experiments/batch-plans:ro
       # Claude config (active settings.json provides auth + base URL + custom headers)
       - ${CLAUDE_CONFIG_DIR:-~/.claude}:/home/experimenter/.claude:rw
 
@@ -72,6 +74,11 @@ services:
     environment:
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
       - NODE_ENV=production
+      # Optional: name (or path) of a batch plan file. If set, only the
+      # listed runs are executed; otherwise the full cross-product is run.
+      - BATCH_PLAN=${BATCH_PLAN:-}
+      # Per-run hard timeout (seconds). Forwarded to run-batch.sh.
+      - CLAUDE_TIMEOUT_SECONDS=${CLAUDE_TIMEOUT_SECONDS:-1800}
 
     deploy:
       resources:
@@ -81,8 +88,17 @@ services:
 
     working_dir: /home/experimenter/experiments
 
-    # Batch runs non-interactively
-    command: ["bash", "run-batch.sh"]
+    # Batch runs non-interactively. If $BATCH_PLAN is set we forward it
+    # to run-batch.sh as --plan.
+    command:
+      - bash
+      - -c
+      - |
+        if [ -n "$$BATCH_PLAN" ]; then
+          exec bash run-batch.sh --plan "$$BATCH_PLAN"
+        else
+          exec bash run-batch.sh
+        fi
 
     profiles:
       - batch

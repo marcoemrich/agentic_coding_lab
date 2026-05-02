@@ -1,0 +1,7 @@
+{
+  "name": "Smoke test",
+  "description": "Single run to verify container, auth, and the hardened run-batch pipeline. ~3 min, ~100k tokens.",
+  "runs": [
+    { "kata": "string-calculator-prose", "workflow": "v3-basic-tdd", "model": "sonnet-4-6" }
+  ]
+}
