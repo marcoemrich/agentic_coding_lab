@@ -107,6 +107,10 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
     task_invocations: Counter[str] = Counter()
     bash_commands: list[str] = []
 
+    # Distinct model IDs reported on assistant messages, in first-seen order.
+    model_versions: list[str] = []
+    model_seen: set[str] = set()
+
     # For v5 inline-skill phase tracking: capture each tool_use of Skill in
     # order with timestamp + cumulative-token marker, so we can attribute the
     # follow-up assistant turns to that phase.
@@ -142,6 +146,10 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
             continue
 
         message_count += 1
+        model_id = msg.get("model")
+        if isinstance(model_id, str) and model_id and model_id not in model_seen:
+            model_seen.add(model_id)
+            model_versions.append(model_id)
         usage = msg.get("usage") or {}
         in_tok = int(usage.get("input_tokens") or 0)
         out_tok = int(usage.get("output_tokens") or 0)
@@ -239,6 +247,7 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
         "cycle_count": cycle_count,
         "predictions_correct": predictions_correct,
         "predictions_total": predictions_total,
+        "model_versions": model_versions,
         "_internal": {
             "skill_phases": skill_phases,
             "task_order": task_order,
@@ -308,19 +317,22 @@ def derive_cycle_count(
 
 def aggregate_subagent_phases(
     subagent_dir: Path, task_order: list[str]
-) -> tuple[int, list[dict[str, Any]], int, int]:
+) -> tuple[int, list[dict[str, Any]], int, int, list[str]]:
     """Aggregate per-subagent metrics.
 
-    Returns (total_tokens, phase_list, predictions_correct, predictions_total).
-    Predictions are only counted from red-phase agents.
+    Returns (total_tokens, phase_list, predictions_correct, predictions_total,
+    subagent_model_versions). Predictions are only counted from red-phase
+    agents. Subagent models are returned in first-seen order.
     """
     if not subagent_dir.is_dir():
-        return 0, [], 0, 0
+        return 0, [], 0, 0, []
 
     total = 0
     pred_correct = 0
     pred_total = 0
     phase_records: list[tuple[float, dict[str, Any]]] = []
+    sub_model_versions: list[str] = []
+    sub_model_seen: set[str] = set()
     # Collect agent files with their phase type (from meta.json) and stats
     for jsonl_path in sorted(subagent_dir.glob("agent-*.jsonl")):
         meta_path = jsonl_path.with_suffix(".meta.json")
@@ -346,6 +358,14 @@ def aggregate_subagent_phases(
             if msg is None:
                 continue
             agent_tokens += message_token_total(msg)
+            model_id = msg.get("model")
+            if (
+                isinstance(model_id, str)
+                and model_id
+                and model_id not in sub_model_seen
+            ):
+                sub_model_seen.add(model_id)
+                sub_model_versions.append(model_id)
 
             if agent_type == "red":
                 content = msg.get("content")
@@ -389,7 +409,7 @@ def aggregate_subagent_phases(
                 p["phase"] = task_order[idx]
             idx += 1
 
-    return total, phases, pred_correct, pred_total
+    return total, phases, pred_correct, pred_total, sub_model_versions
 
 
 def summarize_phases(phases: list[dict[str, Any]]) -> dict[str, Any]:
@@ -460,7 +480,13 @@ def main(argv: list[str]) -> int:
     internal = metrics.pop("_internal")
 
     # v4: subagent transcripts give us per-phase tokens/timings
-    subagent_total, subagent_phases, sub_pred_c, sub_pred_t = aggregate_subagent_phases(
+    (
+        subagent_total,
+        subagent_phases,
+        sub_pred_c,
+        sub_pred_t,
+        sub_model_versions,
+    ) = aggregate_subagent_phases(
         run_dir / "transcript-subagents", internal["task_order"]
     )
     metrics["subagent_token_total"] = subagent_total
@@ -469,6 +495,15 @@ def main(argv: list[str]) -> int:
     # captured from the main session.
     metrics["predictions_correct"] += sub_pred_c
     metrics["predictions_total"] += sub_pred_t
+
+    # Merge subagent model versions into the main list (first-seen order).
+    main_models: list[str] = list(metrics.get("model_versions") or [])
+    seen = set(main_models)
+    for m in sub_model_versions:
+        if m not in seen:
+            seen.add(m)
+            main_models.append(m)
+    metrics["model_versions"] = main_models
 
     # Pick the phase source: subagents (v4) have authoritative timings;
     # otherwise fall back to inline skill markers (v5). v1/v2/v3 have no

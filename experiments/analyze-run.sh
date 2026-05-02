@@ -134,6 +134,16 @@ analyze_single_run() {
     report_content="# Analysis Report: $run_name\n\n"
     report_content+="Generated: $(date -Iseconds)\n\n"
 
+    # (Re)generate transcript-metrics.json early so we can pull the actual
+    # model version(s) into the Configuration section.
+    if [ -f "$run_dir/transcript.jsonl" ]; then
+        local analyzer="$EXPERIMENTS_DIR/analyze_transcript.py"
+        if [ -x "$analyzer" ] || [ -f "$analyzer" ]; then
+            python3 "$analyzer" "$run_dir" >/dev/null 2>&1 || \
+                echo -e "${YELLOW}analyze_transcript.py failed for $run_dir${NC}"
+        fi
+    fi
+
     # Basic info from metrics.json
     local kata=""
     local workflow=""
@@ -152,9 +162,23 @@ analyze_single_run() {
             local model=$(jq -r '.model // "unknown"' "$run_dir/metrics.json")
             local thinking=$(jq -r '.thinking // "unknown"' "$run_dir/metrics.json")
 
+            # Actual model version(s) reported by Claude on assistant messages
+            # (extracted from transcript-metrics.json). Falls back to N/A
+            # if the transcript hasn't been analyzed yet.
+            local model_versions="N/A"
+            if [ -f "$run_dir/transcript-metrics.json" ]; then
+                model_versions=$(jq -r '
+                    (.model_versions // []) | if length == 0
+                        then "N/A"
+                        else join(", ")
+                    end
+                ' "$run_dir/transcript-metrics.json")
+            fi
+
             echo -e "${YELLOW}Kata:${NC} $kata"
             echo -e "${YELLOW}Workflow:${NC} $workflow"
             echo -e "${YELLOW}Model:${NC} $model (thinking: $thinking)"
+            echo -e "${YELLOW}Model Version(s):${NC} $model_versions"
             echo -e "${YELLOW}Duration:${NC} ${duration}s"
 
             report_content+="## Configuration\n\n"
@@ -163,6 +187,7 @@ analyze_single_run() {
             report_content+="| Kata | $kata |\n"
             report_content+="| Workflow | $workflow |\n"
             report_content+="| Model | $model |\n"
+            report_content+="| Model Version(s) | $model_versions |\n"
             report_content+="| Thinking | $thinking |\n"
             report_content+="| Duration | ${duration}s |\n"
             report_content+="| Started | $started_at |\n"
@@ -484,15 +509,8 @@ analyze_single_run() {
     local summary_final_mass=0
     local summary_tests_passed_immediately=0
 
-    # Run transcript analyzer to (re)generate transcript-metrics.json
-    if [ -f "$run_dir/transcript.jsonl" ]; then
-        local analyzer="$EXPERIMENTS_DIR/analyze_transcript.py"
-        if [ -x "$analyzer" ] || [ -f "$analyzer" ]; then
-            python3 "$analyzer" "$run_dir" >/dev/null 2>&1 || \
-                echo -e "${YELLOW}analyze_transcript.py failed for $run_dir${NC}"
-        fi
-    fi
-
+    # Note: transcript-metrics.json was already (re)generated above, before
+    # the Configuration section, so the model version(s) could be displayed.
     if [ -f "$run_dir/transcript-metrics.json" ]; then
         echo -e "\n${YELLOW}Transcript Metrics:${NC}"
         report_content+="## Transcript Metrics\n\n"
