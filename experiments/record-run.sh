@@ -5,6 +5,11 @@
 
 set -e
 
+# Hard timeout for the Claude Code call (seconds). Override via env var.
+# 1800s = 30 min — long enough for most TDD runs, short enough to avoid
+# hanging indefinitely on rate-limit waits or stuck sessions.
+CLAUDE_TIMEOUT_SECONDS="${CLAUDE_TIMEOUT_SECONDS:-1800}"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -278,11 +283,28 @@ record_end() {
     local end_time=$(date +%s)
     local duration=$((end_time - start_time))
 
-    # Update metrics with end time and duration
-    if command -v jq &> /dev/null; then
+    # Pull the exit info that run_claude stashed (if any).
+    local exit_code="null"
+    local exit_reason="unknown"
+    local rate_limited="false"
+    [ -f "$run_dir/.claude_exit_code" ]    && exit_code=$(cat "$run_dir/.claude_exit_code")
+    [ -f "$run_dir/.claude_exit_reason" ]  && exit_reason=$(cat "$run_dir/.claude_exit_reason")
+    [ -f "$run_dir/.claude_rate_limited" ] && rate_limited=$(cat "$run_dir/.claude_rate_limited")
+
+    # Update metrics with end time, duration, and run status.
+    if command -v jq &> /dev/null && [ -f "$run_dir/metrics.json" ]; then
         jq --arg ended "$(date -Iseconds)" \
            --argjson duration "$duration" \
-           '.ended_at = $ended | .duration_seconds = $duration' \
+           --argjson exit_code "$exit_code" \
+           --arg exit_reason "$exit_reason" \
+           --argjson rate_limited "$rate_limited" \
+           '.ended_at = $ended
+            | .duration_seconds = $duration
+            | .run_status = {
+                exit_code: $exit_code,
+                exit_reason: $exit_reason,
+                rate_limited: $rate_limited
+              }' \
            "$run_dir/metrics.json" > "$run_dir/metrics.tmp" && \
         mv "$run_dir/metrics.tmp" "$run_dir/metrics.json"
     fi
@@ -316,18 +338,64 @@ run_claude() {
 
     echo -e "\n${YELLOW}Starting Claude Code...${NC}"
     echo -e "${BLUE}Model: $cli_model | Thinking: $thinking${NC}"
+    echo -e "${BLUE}Timeout: ${CLAUDE_TIMEOUT_SECONDS}s${NC}"
     echo -e "${BLUE}Prompt: Read prompt.md and complete the TDD exercise following the workflow rules.${NC}\n"
+
+    local run_log="$run_dir/run.log"
+    local claude_exit=0
 
     # Start Claude Code in non-interactive mode
     # --dangerously-skip-permissions: Skip all permission prompts
     # --print: Print response and exit (non-interactive mode)
-    # --model: Select the model (opus or sonnet)
+    # --model: Select the model (opus, sonnet, or full ID)
     # MAX_THINKING_TOKENS=0: Disable extended thinking when thinking=false
+    #
+    # Wrap with `timeout` so a stuck or rate-limited session can't hang the
+    # whole pipeline indefinitely. Disable `set -e` around the call so a
+    # non-zero exit (timeout, rate limit, crash) still lets us save the
+    # transcript and analyze whatever was produced.
+    set +e
     if [ "$thinking" = "false" ]; then
-        (cd "$run_dir" && MAX_THINKING_TOKENS=0 claude --dangerously-skip-permissions --model "$cli_model" --print "Read prompt.md and complete the TDD exercise following the workflow rules.")
+        (cd "$run_dir" && MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
+            claude --dangerously-skip-permissions --model "$cli_model" --print \
+            "Read prompt.md and complete the TDD exercise following the workflow rules.") \
+            2>&1 | tee "$run_log"
+        claude_exit=${PIPESTATUS[0]}
     else
-        (cd "$run_dir" && claude --dangerously-skip-permissions --model "$cli_model" --print "Read prompt.md and complete the TDD exercise following the workflow rules.")
+        (cd "$run_dir" && timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
+            claude --dangerously-skip-permissions --model "$cli_model" --print \
+            "Read prompt.md and complete the TDD exercise following the workflow rules.") \
+            2>&1 | tee "$run_log"
+        claude_exit=${PIPESTATUS[0]}
     fi
+    set -e
+
+    # Annotate exit reason for later inspection. `timeout` exits 124 on
+    # signal, 137 if the process had to be SIGKILL'd. Anything else is the
+    # tool's own exit code (0 = success, non-zero = error/rate-limit).
+    local exit_reason="ok"
+    case "$claude_exit" in
+        0)   exit_reason="ok" ;;
+        124) exit_reason="timeout" ;;
+        137) exit_reason="timeout-killed" ;;
+        *)   exit_reason="error-$claude_exit" ;;
+    esac
+
+    # Heuristic: detect rate-limit / overload mentions in the run log.
+    # We don't try to be exhaustive — the log is also kept on disk for
+    # manual inspection.
+    local rate_limited="false"
+    if grep -qiE "rate.?limit|429|usage limit|overloaded" "$run_log" 2>/dev/null; then
+        rate_limited="true"
+        exit_reason="rate-limited"
+    fi
+
+    echo -e "\n${YELLOW}Claude exited with code $claude_exit ($exit_reason)${NC}"
+
+    # Stash the result so record_end can fold it into metrics.json.
+    echo "$claude_exit" > "$run_dir/.claude_exit_code"
+    echo "$exit_reason" > "$run_dir/.claude_exit_reason"
+    echo "$rate_limited" > "$run_dir/.claude_rate_limited"
 }
 
 save_transcript() {
@@ -438,11 +506,34 @@ run_dir=$(create_run_dir "$selected_kata" "$selected_workflow" "$selected_model"
 setup_run "$run_dir" "$selected_workflow" "$selected_kata"
 record_start "$run_dir" "$selected_kata" "$selected_workflow" "$selected_model" "$selected_thinking"
 
+# Capture run state for the cleanup trap. If the script aborts (Ctrl-C,
+# `set -e` failure, parent SIGTERM) we still want the transcript copied
+# and metrics finalised so the partial run is debuggable.
+start_time=$(date +%s)
+RUN_DIR_FOR_TRAP="$run_dir"
+RUN_START_FOR_TRAP="$start_time"
+RUN_FINALIZED=0
+
+cleanup_on_exit() {
+    # Idempotent: only run finalisation once, even if the trap fires
+    # multiple times (EXIT after INT etc.).
+    if [ "$RUN_FINALIZED" = "1" ]; then
+        return
+    fi
+    RUN_FINALIZED=1
+
+    if [ -n "$RUN_DIR_FOR_TRAP" ] && [ -d "$RUN_DIR_FOR_TRAP" ]; then
+        echo -e "\n${YELLOW}Finalising run (trap)...${NC}"
+        save_transcript "$RUN_DIR_FOR_TRAP" || true
+        record_end "$RUN_DIR_FOR_TRAP" "$RUN_START_FOR_TRAP" || true
+    fi
+}
+trap cleanup_on_exit EXIT INT TERM
+
 # Install dependencies
 install_dependencies "$run_dir"
 
 # Run Claude Code
-start_time=$(date +%s)
 run_claude "$run_dir" "$selected_kata" "$selected_cli_model" "$selected_thinking"
 
 # Save Claude Code transcript before any further bookkeeping
@@ -451,9 +542,20 @@ save_transcript "$run_dir"
 # Record end metrics
 record_end "$run_dir" "$start_time"
 
-# Run analysis automatically
-echo -e "\n${YELLOW}Running analysis...${NC}"
-"$EXPERIMENTS_DIR/analyze-run.sh" "$run_dir"
+# Mark finalisation done so the EXIT trap doesn't redo the work.
+RUN_FINALIZED=1
+
+# Run analysis automatically (skip if Claude was rate-limited or timed out
+# and produced no source files — analyze-run would just error out).
+if [ -f "$run_dir/.claude_rate_limited" ] && [ "$(cat "$run_dir/.claude_rate_limited")" = "true" ]; then
+    echo -e "\n${RED}Claude appears to have been rate-limited.${NC}"
+    echo -e "${YELLOW}Run log: $run_dir/run.log${NC}"
+    echo -e "${YELLOW}Skipping automatic analysis. Re-run analyze-run.sh manually if desired.${NC}"
+else
+    echo -e "\n${YELLOW}Running analysis...${NC}"
+    "$EXPERIMENTS_DIR/analyze-run.sh" "$run_dir" || \
+        echo -e "${YELLOW}Analysis failed; run dir preserved at $run_dir${NC}"
+fi
 
 # Print completion message
 print_completion "$run_dir"
