@@ -81,7 +81,7 @@ After completing all tests, write `experiment-summary.md` with this exact struct
 # TDD Experiment Summary
 
 ## Configuration
-- **Workflow**: v1-subagents
+- **Workflow**: v4-exact-subagents
 - **Kata**: [kata name]
 - **Timestamp**: [YYYY-MM-DD]
 - **Start time**: [ISO timestamp with timezone]
@@ -144,16 +144,16 @@ After completing all tests, write `experiment-summary.md` with this exact struct
 
 | # | Test | Red Prediction | Green Approach | Refactor | Mass |
 |---|------|----------------|----------------|----------|------|
-| 1 | [test name] | ✅ Expected X, Received Y | [approach] | [changes or "No changes needed"] | X |
-| 2 | [test name] | ✅ Expected X, Received Y | [approach] | [changes or "No changes needed"] | X |
+| 1 | [test name] | Expected X, Received Y (✅/❌) | [approach] | [changes or "No changes needed"] | X |
+| 2 | [test name] | Expected X, Received Y (✅/❌) | [approach] | [changes or "No changes needed"] | X |
 | ... | ... | ... | ... | ... | ... |
 
 ## Final Metrics
 - **Total tests**: X
-- **All passing**: ✅
+- **All passing**: ✅/❌
 - **Final code mass**: X
-- **Refactorings applied**: X ([brief description])
-- **Prediction accuracy**: X/X = 100%
+- **Refactorings applied**: X (or "none — no opportunity identified")
+- **Prediction accuracy**: X/X (correct / total predictions)
 
 ## Code
 

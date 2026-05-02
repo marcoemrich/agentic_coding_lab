@@ -144,11 +144,10 @@ Task({
 ```
 
 The agent will improve code while keeping tests green:
-- **MUST attempt at least one refactoring**
-- Evaluate naming FIRST
+- Evaluate naming first
 - Apply Four Rules of Simple Design (priority order)
+- If a refactoring opportunity is identified, apply it; if none is needed, document why
 - Calculate APP (Absolute Priority Premise) mass
-- Document improvements or why none were possible
 
 **DO NOT** refactor code yourself - let the agent do it.
 
@@ -190,25 +189,11 @@ Watch for these violations:
 
 See `@.claude/rules/tdd_with_ts_and_vitest.md` for TypeScript and Vitest configuration.
 
-## Running Tests - CRITICAL
+## Running Tests
 
-**🚨 TDD agents MUST use pnpm with npm scripts from `app/package.json`**
+Run tests with `pnpm test`.
 
-### Correct Test Execution:
-- ✅ `pnpm test` - Run all tests
-- ✅ `pnpm test:unit` - Run unit tests
-- ✅ `pnpm test:unit:basic` - Run basic unit tests
-- ✅ `pnpm run build` - Build project
-
-### NEVER use:
-- ❌ `npm test` - Wrong package manager
-- ❌ `npx vitest` - Don't call vitest directly
-- ❌ `vitest --run SomeFile.spec.tsx` - Don't call test files directly
-- ❌ Individual test file execution - Always use npm scripts
-
-**Why**: npm scripts orchestrate TypeScript compilation, configuration, and test execution. Direct tool calls skip critical setup steps.
-
-See `@.claude/rules/tdd_with_ts_and_vitest.md` for complete details.
+See `@.claude/rules/tdd_with_ts_and_vitest.md` for the test-file template.
 
 ## Remember
 

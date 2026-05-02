@@ -20,7 +20,7 @@ After completing all tests, write `experiment-summary.md` with this structure:
 # TDD Experiment Summary
 
 ## Configuration
-- **Workflow**: v0-baseline
+- **Workflow**: v3-basic-tdd
 - **Kata**: [kata name]
 - **Timestamp**: [YYYY-MM-DD]
 - **Start time**: [ISO timestamp with timezone]
@@ -79,7 +79,7 @@ After completing all tests, write `experiment-summary.md` with this structure:
 ## Final Metrics
 - **Total tests**: X
 - **All passing**: ✅/❌
-- **Refactorings applied**: X
+- **Refactorings applied**: X (or "none — no opportunity identified")
 
 ## Code
 
