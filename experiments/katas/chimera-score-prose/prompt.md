@@ -2,11 +2,13 @@
 
 ## Feature
 
-In the card game "Overlords", players collect Chimera cards into their pile. At the end of the game these cards need to be scored. Normally a single Chimera card is worth two points. However, players are rewarded for collecting full sets: whenever three Chimera cards form a complete set, that set is worth twelve points instead of the six points the cards would otherwise have scored individually. Any cards that do not form a complete set of three are scored at the regular two points each. A player who has no Chimera cards at all scores zero points.
+In the card game "Overlords", each card contains scoring rules. Players collect cards into their pile, and at the end of the game each player receives a score based on the cards in their pile.
+
+For Chimera cards: a set of 3 is worth 12 points, otherwise 2 points each.
 
 ## Task
 
-Implement a function that, given the number of Chimera cards a player holds, returns the total score according to the rules above.
+Implement scoring for Chimera cards.
 
 ## Expected Output Files
 
@@ -16,4 +18,3 @@ Implement a function that, given the number of Chimera cards a player holds, ret
 ## Constraints
 
 - Use TypeScript
-- Input is always a non-negative integer (>= 0)

@@ -1,18 +1,17 @@
 # Chimera Score Kata
 
-## User Story
+## Overlords Card Game
 
-**As a** player of the card game "Overlords"
-**I want** my Chimera cards to be scored automatically at the end of the game
-**so that** I am rewarded for collecting complete sets and don't have to calculate the score manually.
+**Overlords** is a card game in which each card contains scoring rules. Players have a number of cards in their pile, and at the end of the game each player receives a score based on the cards in their pile.
 
-## Acceptance Criteria
+### Rules for Chimeras
 
-- A player with no Chimera cards receives zero points.
-- Individual Chimera cards that are not part of a complete set are worth two points each.
-- A complete set consists of exactly three Chimera cards and is worth twelve points.
-- When a player has more cards than fit into complete sets, the leftover cards are scored individually at two points each.
-- The scoring works for any non-negative number of cards.
+- Set of 3 = 12 points
+- otherwise 2 points each
+
+## Story
+
+Score Card: Chimera
 
 ## Expected Output Files
 
@@ -22,4 +21,3 @@
 ## Constraints
 
 - Use TypeScript
-- Input is always a non-negative integer (>= 0)
