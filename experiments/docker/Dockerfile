@@ -23,29 +23,34 @@ RUN npm install -g @anthropic-ai/claude-code
 RUN usermod -l experimenter -d /home/experimenter -m node \
     && groupmod -n experimenter node
 
-# Create directory structure
+# Create directory structure (incl. the pnpm store path, so the named
+# volume mount inherits experimenter ownership instead of root)
 RUN mkdir -p \
     /home/experimenter/experiments/katas \
     /home/experimenter/experiments/workflows \
     /home/experimenter/experiments/runs \
     /home/experimenter/.claude \
     /home/experimenter/.anthropic \
+    /home/experimenter/.local/share/pnpm/store \
     && chown -R experimenter:experimenter /home/experimenter
 
 # Switch to non-root user
 USER experimenter
 WORKDIR /home/experimenter
 
-# Pre-cache common dependencies
-WORKDIR /tmp/cache
-COPY --chown=experimenter:experimenter package.cache.json ./package.json
-RUN pnpm install --silent 2>/dev/null || true
-WORKDIR /home/experimenter/experiments
-
 # Set environment variables
 ENV NODE_ENV=production
 ENV PNPM_HOME=/home/experimenter/.local/share/pnpm
 ENV PATH="$PNPM_HOME:$PATH"
+
+# Pre-cache common dependencies into the default pnpm store
+# (/home/experimenter/.local/share/pnpm/store). At runtime this path is
+# backed by a docker volume so subsequent runs resolve from the store
+# instead of refetching from the network.
+WORKDIR /tmp/cache
+COPY --chown=experimenter:experimenter package.cache.json ./package.json
+RUN pnpm install --silent 2>/dev/null || true
+WORKDIR /home/experimenter/experiments
 
 # Default command
 CMD ["bash"]

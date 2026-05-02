@@ -334,9 +334,10 @@ EOF
 }
 EOF
 
-    # Install dependencies
+    # Install dependencies (--prefer-offline reuses the persistent store
+    # volume; falls back to network only for genuinely missing packages)
     echo -e "  Installing dependencies..."
-    (cd "$run_dir" && pnpm install --silent 2>/dev/null) || true
+    (cd "$run_dir" && pnpm install --silent --prefer-offline 2>/dev/null) || true
 
     # Run Claude Code with timeout + capture log + tolerate non-zero exit.
     echo -e "  Running Claude Code... (model: $cli_model, thinking: $thinking)"
