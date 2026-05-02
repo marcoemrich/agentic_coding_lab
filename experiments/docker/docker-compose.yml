@@ -20,6 +20,7 @@ services:
       # Scripts
       - ../record-run.sh:/home/experimenter/experiments/record-run.sh:ro
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
+      - ../analyze_transcript.py:/home/experimenter/experiments/analyze_transcript.py:ro
 
       # Claude config (active settings.json provides auth + base URL + custom headers)
       - ${CLAUDE_CONFIG_DIR:-~/.claude}:/home/experimenter/.claude:rw
@@ -61,6 +62,7 @@ services:
       - ../runs:/home/experimenter/experiments/runs:rw
       - ../record-run.sh:/home/experimenter/experiments/record-run.sh:ro
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
+      - ../analyze_transcript.py:/home/experimenter/experiments/analyze_transcript.py:ro
       - ./run-batch.sh:/home/experimenter/experiments/run-batch.sh:ro
       # Claude config (active settings.json provides auth + base URL + custom headers)
       - ${CLAUDE_CONFIG_DIR:-~/.claude}:/home/experimenter/.claude:rw
@@ -98,6 +100,7 @@ services:
       - ../runs:/home/experimenter/experiments/runs:rw
       - ../record-run.sh:/home/experimenter/experiments/record-run.sh:ro
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
+      - ../analyze_transcript.py:/home/experimenter/experiments/analyze_transcript.py:ro
       - ./run-batch-retry.sh:/home/experimenter/experiments/run-batch-retry.sh:ro
       # Claude config (active settings.json provides auth + base URL + custom headers)
       - ${CLAUDE_CONFIG_DIR:-~/.claude}:/home/experimenter/.claude:rw
