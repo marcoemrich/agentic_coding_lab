@@ -351,8 +351,10 @@ save_transcript() {
     cp "$newest_jsonl" "$run_dir/transcript.jsonl"
     echo -e "${GREEN}Saved transcript: $run_dir/transcript.jsonl${NC}"
 
-    # Subagent transcripts (v4): subagents/agent-*.jsonl
-    local subagent_src="$project_dir/subagents"
+    # Subagent transcripts (v4) live under <project_dir>/<uuid>/subagents/agent-*.jsonl
+    local session_uuid
+    session_uuid=$(basename "$newest_jsonl" .jsonl)
+    local subagent_src="$project_dir/$session_uuid/subagents"
     if [ -d "$subagent_src" ]; then
         local count
         count=$(ls -1 "$subagent_src"/agent-*.jsonl 2>/dev/null | wc -l | tr -d '[:space:]')

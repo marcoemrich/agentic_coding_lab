@@ -117,7 +117,9 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
             if tool_name == "Skill":
                 skill = tool_input.get("skill") or tool_input.get("name") or "unknown"
                 skill_invocations[str(skill)] += 1
-            elif tool_name == "Task":
+            elif tool_name in ("Task", "Agent"):
+                # Claude Code emits the subagent launcher under either name
+                # depending on version.
                 subtype = (
                     tool_input.get("subagent_type")
                     or tool_input.get("agent_type")
