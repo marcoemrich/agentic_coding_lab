@@ -22,15 +22,17 @@ services:
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
       - ../analyze_transcript.py:/home/experimenter/experiments/analyze_transcript.py:ro
 
-      # Claude config (active settings.json provides auth + base URL + custom headers)
-      - ${CLAUDE_CONFIG_DIR:-~/.claude}:/home/experimenter/.claude:rw
+      # Claude config — schlankes Container-Profil (./claude-config), kein
+      # MCP, keine Host-Pfade. Override via CLAUDE_CONFIG_DIR=~/.claude.
+      - ${CLAUDE_CONFIG_DIR:-./claude-config}:/home/experimenter/.claude:rw
+      # OAuth-Token aus dem Host bind-mounten (separat, weil Symlinks im
+      # Bind-Mount-Verzeichnis im Container ins Leere zeigen würden).
+      - ${CLAUDE_CREDENTIALS_FILE:-~/.claude/.credentials.json}:/home/experimenter/.claude/.credentials.json:rw
 
       # Persistent pnpm store shared across runs (avoids re-downloading deps)
       - pnpm-store:/home/experimenter/.local/share/pnpm/store:rw
 
     # Environment
-    # Auth + backend selection comes from the mounted ~/.claude/settings.json
-    # (switched on the host via claude-native / claude-portkey / claude-elflein).
     environment:
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
       - NODE_ENV=production
@@ -69,14 +71,16 @@ services:
       - ./run-batch.sh:/home/experimenter/experiments/run-batch.sh:ro
       # Batch plan files (e.g. smoke-test.json, hybrid-matrix.json)
       - ../batch-plans:/home/experimenter/experiments/batch-plans:ro
-      # Claude config (active settings.json provides auth + base URL + custom headers)
-      - ${CLAUDE_CONFIG_DIR:-~/.claude}:/home/experimenter/.claude:rw
+      # Claude config — schlankes Container-Profil (./claude-config), kein
+      # MCP, keine Host-Pfade. Override via CLAUDE_CONFIG_DIR=~/.claude.
+      - ${CLAUDE_CONFIG_DIR:-./claude-config}:/home/experimenter/.claude:rw
+      # OAuth-Token aus dem Host bind-mounten (separat, weil Symlinks im
+      # Bind-Mount-Verzeichnis im Container ins Leere zeigen würden).
+      - ${CLAUDE_CREDENTIALS_FILE:-~/.claude/.credentials.json}:/home/experimenter/.claude/.credentials.json:rw
 
       # Persistent pnpm store shared across runs (avoids re-downloading deps)
       - pnpm-store:/home/experimenter/.local/share/pnpm/store:rw
 
-    # Auth + backend selection comes from the mounted ~/.claude/settings.json
-    # (switched on the host via claude-native / claude-portkey / claude-elflein).
     environment:
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
       - NODE_ENV=production
@@ -124,14 +128,16 @@ services:
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
       - ../analyze_transcript.py:/home/experimenter/experiments/analyze_transcript.py:ro
       - ./run-batch-retry.sh:/home/experimenter/experiments/run-batch-retry.sh:ro
-      # Claude config (active settings.json provides auth + base URL + custom headers)
-      - ${CLAUDE_CONFIG_DIR:-~/.claude}:/home/experimenter/.claude:rw
+      # Claude config — schlankes Container-Profil (./claude-config), kein
+      # MCP, keine Host-Pfade. Override via CLAUDE_CONFIG_DIR=~/.claude.
+      - ${CLAUDE_CONFIG_DIR:-./claude-config}:/home/experimenter/.claude:rw
+      # OAuth-Token aus dem Host bind-mounten (separat, weil Symlinks im
+      # Bind-Mount-Verzeichnis im Container ins Leere zeigen würden).
+      - ${CLAUDE_CREDENTIALS_FILE:-~/.claude/.credentials.json}:/home/experimenter/.claude/.credentials.json:rw
 
       # Persistent pnpm store shared across runs (avoids re-downloading deps)
       - pnpm-store:/home/experimenter/.local/share/pnpm/store:rw
 
-    # Auth + backend selection comes from the mounted ~/.claude/settings.json
-    # (switched on the host via claude-native / claude-portkey / claude-elflein).
     environment:
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
       - NODE_ENV=production
