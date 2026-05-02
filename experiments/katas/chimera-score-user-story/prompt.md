@@ -1,17 +1,19 @@
 # Chimera Score Kata
 
-## Overlords Card Game
+## Context
 
-**Overlords** is a card game in which each card contains scoring rules. Players have a number of cards in their pile, and at the end of the game each player receives a score based on the cards in their pile.
+In the card game "Overlords", each card contains scoring rules. Players collect cards into their pile, and at the end of the game each player receives a score based on the cards in their pile.
 
-### Rules for Chimeras
+## User Story
 
-- Set of 3 = 12 points
-- otherwise 2 points each
+**As a** player of "Overlords"
+**I want** my Chimera cards to be scored automatically
+**so that** I am rewarded for collecting complete sets.
 
-## Story
+## Acceptance Criteria
 
-Score Card: Chimera
+- A complete set consists of exactly 3 Chimera cards and is worth 12 points.
+- Chimera cards that are not part of a complete set are worth 2 points each.
 
 ## Expected Output Files
 
