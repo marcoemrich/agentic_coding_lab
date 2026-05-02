@@ -577,20 +577,7 @@ analyze_single_run() {
         report_content+="| Tests Passed Immediately | $summary_tests_passed_immediately |\n\n"
     fi
 
-    # Include source code in report
-    if [ -n "$impl_file" ] && [ -f "$impl_file" ]; then
-        report_content+="## Implementation Code\n\n"
-        report_content+="\`\`\`typescript\n"
-        report_content+="$(cat "$impl_file")\n"
-        report_content+="\`\`\`\n\n"
-    fi
-
-    if [ -n "$test_file" ] && [ -f "$test_file" ]; then
-        report_content+="## Test Code\n\n"
-        report_content+="\`\`\`typescript\n"
-        report_content+="$(cat "$test_file")\n"
-        report_content+="\`\`\`\n\n"
-    fi
+    # Source code lives next to the report in src/; no need to inline it here.
 
     # Update metrics.json with analysis results
     if [ -f "$run_dir/metrics.json" ] && command -v jq &> /dev/null; then
