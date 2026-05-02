@@ -144,10 +144,11 @@ Task({
 ```
 
 The agent will improve code while keeping tests green:
-- Evaluate naming first
+- **MUST attempt at least one refactoring**
+- Evaluate naming FIRST
 - Apply Four Rules of Simple Design (priority order)
-- If a refactoring opportunity is identified, apply it; if none is needed, document why
 - Calculate APP (Absolute Priority Premise) mass
+- Document improvements or why none were possible
 
 **DO NOT** refactor code yourself - let the agent do it.
 
