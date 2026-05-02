@@ -21,18 +21,13 @@ services:
       - ../record-run.sh:/home/experimenter/experiments/record-run.sh:ro
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
 
-      # Claude API key (required)
-      - ${ANTHROPIC_API_KEY_FILE:-~/.anthropic/api_key}:/home/experimenter/.anthropic/api_key:ro
-
-      # Claude settings (optional)
+      # Claude config (active settings.json provides auth + base URL + custom headers)
       - ${CLAUDE_CONFIG_DIR:-~/.claude}:/home/experimenter/.claude:rw
 
     # Environment
+    # Auth + backend selection comes from the mounted ~/.claude/settings.json
+    # (switched on the host via claude-native / claude-portkey / claude-elflein).
     environment:
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
-      - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-}
-      - ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN:-}
-      - ANTHROPIC_CUSTOM_HEADERS=${ANTHROPIC_CUSTOM_HEADERS:-}
       - CLAUDE_MODEL=${CLAUDE_MODEL:-claude-opus-4-6}
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
       - NODE_ENV=production
@@ -68,14 +63,12 @@ services:
       - ../record-run.sh:/home/experimenter/experiments/record-run.sh:ro
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
       - ./run-batch.sh:/home/experimenter/experiments/run-batch.sh:ro
-      - ${ANTHROPIC_API_KEY_FILE:-~/.anthropic/api_key}:/home/experimenter/.anthropic/api_key:ro
+      # Claude config (active settings.json provides auth + base URL + custom headers)
       - ${CLAUDE_CONFIG_DIR:-~/.claude}:/home/experimenter/.claude:rw
 
+    # Auth + backend selection comes from the mounted ~/.claude/settings.json
+    # (switched on the host via claude-native / claude-portkey / claude-elflein).
     environment:
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
-      - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-}
-      - ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN:-}
-      - ANTHROPIC_CUSTOM_HEADERS=${ANTHROPIC_CUSTOM_HEADERS:-}
       - CLAUDE_MODEL=${CLAUDE_MODEL:-claude-opus-4-6}
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
       - NODE_ENV=production
@@ -108,14 +101,12 @@ services:
       - ../record-run.sh:/home/experimenter/experiments/record-run.sh:ro
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
       - ./run-batch-retry.sh:/home/experimenter/experiments/run-batch-retry.sh:ro
-      - ${ANTHROPIC_API_KEY_FILE:-~/.anthropic/api_key}:/home/experimenter/.anthropic/api_key:ro
+      # Claude config (active settings.json provides auth + base URL + custom headers)
       - ${CLAUDE_CONFIG_DIR:-~/.claude}:/home/experimenter/.claude:rw
 
+    # Auth + backend selection comes from the mounted ~/.claude/settings.json
+    # (switched on the host via claude-native / claude-portkey / claude-elflein).
     environment:
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
-      - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-}
-      - ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN:-}
-      - ANTHROPIC_CUSTOM_HEADERS=${ANTHROPIC_CUSTOM_HEADERS:-}
       - CLAUDE_MODEL=${CLAUDE_MODEL:-claude-opus-4-6}
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
       - NODE_ENV=production
