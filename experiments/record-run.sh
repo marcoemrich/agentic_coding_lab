@@ -327,10 +327,11 @@ run_claude() {
 save_transcript() {
     local run_dir=$1
 
-    # Map run_dir to Claude project dir name: replace all "/" with "-".
+    # Map run_dir to Claude project dir name: Claude Code replaces all
+    # non-alphanumeric characters (slashes, underscores, colons, etc.) with "-".
     # Claude Code writes session JSONLs to ~/.claude/projects/<dashed-path>/<uuid>.jsonl
     local dashed_path
-    dashed_path=$(echo "$run_dir" | sed 's|/|-|g')
+    dashed_path=$(echo "$run_dir" | sed 's|[^a-zA-Z0-9]|-|g')
     local home_dir="${HOME:-/root}"
     local project_dir="$home_dir/.claude/projects/$dashed_path"
 
