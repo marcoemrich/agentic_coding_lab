@@ -73,7 +73,11 @@ find_test_file() {
 #
 # Phase-derivable fields (avg_*, refactorings, tests_passed_immediately) are
 # only meaningful for v4/v5 (TDD with subagents/skills); for v1/v2/v3 they are 0.
-# `predictions_*` is no longer captured (was self-report only) and stays 0.
+# `predictions_*` is self-reported by the red-phase agent (Correct/Incorrect
+# markers in its "Red Phase Complete:" block); the analyzer counts these from
+# the main-session transcript (v3/v5 inline) plus red subagent JSONLs (v4).
+# Workflows without a Guessing-Game red phase (v1, v2) report 0 here, which
+# the caller maps to `null` in metrics.json so the report can show "N/A".
 extract_transcript_metrics() {
     local metrics_file=$1
 
@@ -98,7 +102,16 @@ extract_transcript_metrics() {
     refactorings=$(jq -r '.phase_summary.refactorings_applied // 0' "$metrics_file")
     tests_passed_immediately=$(jq -r '.phase_summary.tests_passed_immediately // 0' "$metrics_file")
 
-    echo "${total_tokens}|${context_util}|${cycle_count}|${avg_cycle}|${avg_red}|${avg_green}|${avg_refactor}|0|0|0|${refactorings}|0|${tests_passed_immediately}"
+    local pred_correct pred_total pred_pct
+    pred_correct=$(jq -r '.predictions_correct // 0' "$metrics_file")
+    pred_total=$(jq -r '.predictions_total // 0' "$metrics_file")
+    if [ "$pred_total" -gt 0 ] 2>/dev/null; then
+        pred_pct=$((pred_correct * 100 / pred_total))
+    else
+        pred_pct=0
+    fi
+
+    echo "${total_tokens}|${context_util}|${cycle_count}|${avg_cycle}|${avg_red}|${avg_green}|${avg_refactor}|${pred_correct}|${pred_total}|${pred_pct}|${refactorings}|0|${tests_passed_immediately}"
 }
 
 analyze_single_run() {
@@ -540,23 +553,41 @@ analyze_single_run() {
         report_content+="| Avg Green Phase | ${summary_avg_green}s |\n"
         report_content+="| Avg Refactor Phase | ${summary_avg_refactor}s |\n\n"
 
-        # Prediction Accuracy
-        echo -e "  ${CYAN}Prediction Accuracy:${NC}"
-        if [ "$summary_pred_total" -gt 0 ]; then
+        # Prediction Accuracy (self-reported by red-phase agent).
+        # Workflows without a Guessing-Game red phase (v1, v2) emit no markers
+        # and are reported as N/A.
+        local pred_supported=true
+        case "$workflow" in
+            v1*|v2*)
+                pred_supported=false
+                ;;
+        esac
+
+        echo -e "  ${CYAN}Prediction Accuracy (self-reported):${NC}"
+        if [ "$pred_supported" = "true" ] && [ "$summary_pred_total" -gt 0 ]; then
             echo -e "    Predictions: ${summary_pred_correct}/${summary_pred_total}"
+        elif [ "$pred_supported" = "false" ]; then
+            echo -e "    N/A (workflow does not require predictions)"
         fi
 
-        report_content+="### Prediction Accuracy (Guessing Game)\n\n"
+        report_content+="### Prediction Accuracy (Guessing Game) — Self-Reported\n\n"
         report_content+="| Metric | Value |\n"
         report_content+="|--------|-------|\n"
-        report_content+="| Predictions Correct | $summary_pred_correct |\n"
-        report_content+="| Predictions Total | $summary_pred_total |\n"
-        if [ "$summary_pred_total" -gt 0 ]; then
-            local calc_pct=$((summary_pred_correct * 100 / summary_pred_total))
-            report_content+="| Accuracy | ${calc_pct}% |\n\n"
-        else
+        if [ "$pred_supported" = "false" ]; then
+            report_content+="| Predictions Correct | N/A |\n"
+            report_content+="| Predictions Total | N/A |\n"
             report_content+="| Accuracy | N/A |\n\n"
+        else
+            report_content+="| Predictions Correct | $summary_pred_correct |\n"
+            report_content+="| Predictions Total | $summary_pred_total |\n"
+            if [ "$summary_pred_total" -gt 0 ]; then
+                local calc_pct=$((summary_pred_correct * 100 / summary_pred_total))
+                report_content+="| Accuracy | ${calc_pct}% |\n\n"
+            else
+                report_content+="| Accuracy | N/A |\n\n"
+            fi
         fi
+        report_content+="_Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._\n\n"
 
         # Refactoring Metrics
         echo -e "  ${CYAN}Refactoring:${NC}"
@@ -600,6 +631,17 @@ analyze_single_run() {
         [[ "$cc_avg_loc_func" =~ ^[0-9]+$ ]] || cc_avg_loc_func=0
         [[ "$cc_imports" =~ ^[0-9]+$ ]] || cc_imports=0
 
+        # Map predictions to JSON null when the workflow does not support
+        # the Guessing Game (v1/v2). Otherwise emit numeric counts.
+        local pred_correct_json="$summary_pred_correct"
+        local pred_total_json="$summary_pred_total"
+        case "$workflow" in
+            v1*|v2*)
+                pred_correct_json="null"
+                pred_total_json="null"
+                ;;
+        esac
+
         jq --argjson impl_loc "$impl_loc" \
            --argjson test_loc "$test_loc" \
            --argjson test_count "$test_count" \
@@ -610,8 +652,8 @@ analyze_single_run() {
            --argjson context_util "$summary_context_util" \
            --argjson cycle_count "$summary_cycle_count" \
            --argjson refactorings "$summary_refactorings" \
-           --argjson pred_correct "$summary_pred_correct" \
-           --argjson pred_total "$summary_pred_total" \
+           --argjson pred_correct "$pred_correct_json" \
+           --argjson pred_total "$pred_total_json" \
            --argjson tests_passed_immediately "$summary_tests_passed_immediately" \
            --argjson avg_cycle "$summary_avg_cycle" \
            --argjson avg_red "$summary_avg_red" \

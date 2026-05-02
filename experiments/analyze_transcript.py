@@ -10,6 +10,7 @@ Usage: analyze_transcript.py <run_dir>
 from __future__ import annotations
 
 import json
+import re
 import sys
 from collections import Counter, defaultdict
 from datetime import datetime
@@ -19,6 +20,33 @@ from typing import Any, Iterable
 OPUS_CONTEXT_WINDOW = 200_000
 
 TDD_PHASES = ("test-list", "red", "green", "refactor")
+
+# Matches the self-reported prediction outcome marker emitted by the red-phase
+# agent inside its "Red Phase Complete:" block (see workflows/.../red.md).
+# Tolerates optional markdown bold/italic decoration around "Correct"/"Incorrect".
+_PREDICTION_OUTCOME_RE = re.compile(
+    r"-\s*[*_]{0,2}(Correct|Incorrect)[*_]{0,2}\b",
+    re.IGNORECASE,
+)
+
+
+def extract_predictions_from_text(text: str) -> tuple[int, int]:
+    """Count self-reported prediction outcomes in a single assistant text block.
+
+    Only counts when the block contains a "Red Phase Complete" marker, to avoid
+    false positives from prose discussing predictions elsewhere.
+
+    Returns (correct_count, total_count).
+    """
+    if not text or "Red Phase Complete" not in text:
+        return 0, 0
+    correct = 0
+    total = 0
+    for match in _PREDICTION_OUTCOME_RE.finditer(text):
+        total += 1
+        if match.group(1).lower() == "correct":
+            correct += 1
+    return correct, total
 
 
 def parse_jsonl(path: Path) -> Iterable[dict[str, Any]]:
@@ -96,6 +124,11 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
     # already green, no green follow-up).
     red_tool_use_ids: list[str] = []
 
+    # Self-reported prediction outcomes from inline red-phase blocks
+    # (relevant for v3/v5 where the red phase runs in the main session).
+    predictions_correct = 0
+    predictions_total = 0
+
     for event in parse_jsonl(jsonl_path):
         ts = parse_timestamp(event.get("timestamp"))
         if ts:
@@ -134,6 +167,13 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
 
         for block in content:
             if not isinstance(block, dict):
+                continue
+            if block.get("type") == "text":
+                text = block.get("text")
+                if isinstance(text, str):
+                    c, t = extract_predictions_from_text(text)
+                    predictions_correct += c
+                    predictions_total += t
                 continue
             if block.get("type") != "tool_use":
                 continue
@@ -197,6 +237,8 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
         "skill_invocations": dict(skill_invocations),
         "task_invocations": dict(task_invocations),
         "cycle_count": cycle_count,
+        "predictions_correct": predictions_correct,
+        "predictions_total": predictions_total,
         "_internal": {
             "skill_phases": skill_phases,
             "task_order": task_order,
@@ -266,12 +308,18 @@ def derive_cycle_count(
 
 def aggregate_subagent_phases(
     subagent_dir: Path, task_order: list[str]
-) -> tuple[int, list[dict[str, Any]]]:
-    """Aggregate per-subagent metrics. Returns (total_tokens, phase_list)."""
+) -> tuple[int, list[dict[str, Any]], int, int]:
+    """Aggregate per-subagent metrics.
+
+    Returns (total_tokens, phase_list, predictions_correct, predictions_total).
+    Predictions are only counted from red-phase agents.
+    """
     if not subagent_dir.is_dir():
-        return 0, []
+        return 0, [], 0, 0
 
     total = 0
+    pred_correct = 0
+    pred_total = 0
     phase_records: list[tuple[float, dict[str, Any]]] = []
     # Collect agent files with their phase type (from meta.json) and stats
     for jsonl_path in sorted(subagent_dir.glob("agent-*.jsonl")):
@@ -298,6 +346,19 @@ def aggregate_subagent_phases(
             if msg is None:
                 continue
             agent_tokens += message_token_total(msg)
+
+            if agent_type == "red":
+                content = msg.get("content")
+                if isinstance(content, list):
+                    for block in content:
+                        if (
+                            isinstance(block, dict)
+                            and block.get("type") == "text"
+                            and isinstance(block.get("text"), str)
+                        ):
+                            c, t = extract_predictions_from_text(block["text"])
+                            pred_correct += c
+                            pred_total += t
 
         total += agent_tokens
         duration = 0.0
@@ -328,7 +389,7 @@ def aggregate_subagent_phases(
                 p["phase"] = task_order[idx]
             idx += 1
 
-    return total, phases
+    return total, phases, pred_correct, pred_total
 
 
 def summarize_phases(phases: list[dict[str, Any]]) -> dict[str, Any]:
@@ -399,10 +460,15 @@ def main(argv: list[str]) -> int:
     internal = metrics.pop("_internal")
 
     # v4: subagent transcripts give us per-phase tokens/timings
-    subagent_total, subagent_phases = aggregate_subagent_phases(
+    subagent_total, subagent_phases, sub_pred_c, sub_pred_t = aggregate_subagent_phases(
         run_dir / "transcript-subagents", internal["task_order"]
     )
     metrics["subagent_token_total"] = subagent_total
+
+    # Add predictions reported by red-phase subagents to inline predictions
+    # captured from the main session.
+    metrics["predictions_correct"] += sub_pred_c
+    metrics["predictions_total"] += sub_pred_t
 
     # Pick the phase source: subagents (v4) have authoritative timings;
     # otherwise fall back to inline skill markers (v5). v1/v2/v3 have no

@@ -362,6 +362,9 @@ save_transcript() {
         if [ "$count" -gt 0 ]; then
             mkdir -p "$run_dir/transcript-subagents"
             cp "$subagent_src"/agent-*.jsonl "$run_dir/transcript-subagents/"
+            # Also copy per-agent meta files; analyze_transcript.py uses the
+            # agentType field to identify red-phase agents for prediction counts.
+            cp "$subagent_src"/agent-*.meta.json "$run_dir/transcript-subagents/" 2>/dev/null || true
             echo -e "${GREEN}Saved $count subagent transcripts${NC}"
         fi
     fi
