@@ -323,12 +323,15 @@ v5-exact-single-context/.claude/
 
 ### Model Configurations
 
-| Config | Model | CLI Flag | Thinking | Mechanism |
-|--------|-------|----------|----------|-----------|
-| `opus` | Opus 4.6 | `--model opus` | Enabled | Default behavior |
-| `opus-no-thinking` | Opus 4.6 | `--model opus` | Disabled | `MAX_THINKING_TOKENS=0` |
-| `sonnet` | Sonnet 4.5 | `--model sonnet` | Enabled | Default behavior |
-| `sonnet-no-thinking` | Sonnet 4.5 | `--model sonnet` | Disabled | `MAX_THINKING_TOKENS=0` |
+The `--model` flag uses the CLI aliases `opus` / `sonnet`, which always
+resolve to the latest available model in that family.
+
+| Config | CLI Flag | Thinking | Mechanism |
+|--------|----------|----------|-----------|
+| `opus` | `--model opus` | Enabled | Default behavior |
+| `opus-no-thinking` | `--model opus` | Disabled | `MAX_THINKING_TOKENS=0` |
+| `sonnet` | `--model sonnet` | Enabled | Default behavior |
+| `sonnet-no-thinking` | `--model sonnet` | Disabled | `MAX_THINKING_TOKENS=0` |
 
 ## Available Katas
 

@@ -28,7 +28,6 @@ services:
     # Auth + backend selection comes from the mounted ~/.claude/settings.json
     # (switched on the host via claude-native / claude-portkey / claude-elflein).
     environment:
-      - CLAUDE_MODEL=${CLAUDE_MODEL:-claude-opus-4-6}
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
       - NODE_ENV=production
 
@@ -69,7 +68,6 @@ services:
     # Auth + backend selection comes from the mounted ~/.claude/settings.json
     # (switched on the host via claude-native / claude-portkey / claude-elflein).
     environment:
-      - CLAUDE_MODEL=${CLAUDE_MODEL:-claude-opus-4-6}
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
       - NODE_ENV=production
 
@@ -107,7 +105,6 @@ services:
     # Auth + backend selection comes from the mounted ~/.claude/settings.json
     # (switched on the host via claude-native / claude-portkey / claude-elflein).
     environment:
-      - CLAUDE_MODEL=${CLAUDE_MODEL:-claude-opus-4-6}
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
       - NODE_ENV=production
 

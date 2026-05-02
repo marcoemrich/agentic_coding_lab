@@ -109,7 +109,6 @@ docker/
 |----------|-------------|---------|
 | `ANTHROPIC_API_KEY` | API key for Claude | (required) |
 | `ANTHROPIC_API_KEY_FILE` | Path to file with API key | `~/.anthropic/api_key` |
-| `CLAUDE_MODEL` | Model to use | `claude-opus-4-6` |
 | `CLAUDE_CONFIG_DIR` | Claude config directory | `~/.claude` |
 
 ### Portkey Gateway (or other proxy)
