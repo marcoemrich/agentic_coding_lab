@@ -16,7 +16,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Install Claude Code CLI
-RUN npm install -g @anthropic-ai/claude-code
+# Pinned to 2.1.107 (mid-April 2026): older versions like 2.1.37 hang
+# indefinitely on `--print` runs whose cwd contains a `.claude/agents/`
+# directory (v4-exact-subagents workflow). Newer versions (2.1.126) regressed
+# and require a `~/.claude.json` config file we do not provision in the
+# container. 2.1.107 was verified end-to-end with the v4 workflow on Haiku.
+RUN npm install -g @anthropic-ai/claude-code@2.1.107
 
 # Reuse existing node user (UID 1000) - rename and adjust if needed
 # This avoids conflicts with node:22-slim's built-in user
