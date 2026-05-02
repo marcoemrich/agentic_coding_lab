@@ -47,6 +47,44 @@ The classic katas used in this experiment (String Calculator, Game of Life, Diam
 - Use domain-specific tasks from real projects
 - Generate randomized requirement variations
 
+### Findings From the First 235 Runs
+
+A first batch of 235 runs across 7 katas, 5 workflows, and 4 model
+configurations has been analysed. The summary lives in
+[`old_runs/experiment-overview.md`](../old_runs/experiment-overview.md)
+(and the matching PDF in `old_runs/results/`). Highlights used to plan
+the next batch:
+
+- **v2-iterative is consistently the worst.** It loses on every single
+  one of the 7 katas (mass, token cost, refactoring discipline). It is
+  kept only as a sanity-check baseline in future runs.
+- **v4-exact-subagents wins 5 of 7 katas — but only with thinking
+  enabled.** Without extended thinking, v4 collapses (subagents lose
+  the structured reasoning the architecture relies on). This
+  thinking-interaction is the single strongest signal in the data.
+- **v5-exact-single-context wins 5 of 7 katas without thinking.** The
+  shared context partly compensates for the missing thinking budget.
+  v4 vs v5 is therefore not "one is better" but "they trade places
+  depending on whether thinking is on".
+- **v3-basic-tdd often fakes TDD.** Tests get added after the fact or
+  in larger batches; "Tests Immediately" is high. v3 looks
+  competitive on raw mass/tokens but fails the discipline metrics.
+- **v1-oneshot is a fast baseline.** No TDD, no surprises — useful as
+  a floor for code mass but uninformative for workflow comparison.
+- **Training-data contamination dominates the classic katas.** On
+  string-calculator, diamond, etc. all workflows produce similar
+  "known good" solutions. The novel `pixel-art-scaler` kata is where
+  workflow differences actually show up clearly.
+- **Prompt style matters but was undertested.** The old auswertung
+  used only one prompt-style per kata (e.g. only `-prose`). The smart
+  subset adds `-example-mapping` and `-user-story` on two katas to
+  isolate style from training-data effects.
+
+These findings drove the design of `batch-plans/smart-subset.json`
+(see `batch-plans/generators/smart-subset.py`): full coverage on
+v4/v5, a tiny v2 sanity check, single-model coverage on v1/v3, and
+replicates only on the v4/v5 × opus+thinking × prose hero cells.
+
 ### Why This Matters
 
 TDD with AI assistants can fail in several ways:
