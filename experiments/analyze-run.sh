@@ -71,8 +71,9 @@ find_test_file() {
 #   avg_refactor | predictions_correct | predictions_total | prediction_pct |
 #   refactorings | final_mass | tests_passed_immediately
 #
-# Fields with no transcript-derivable equivalent (avg_*, prediction_*,
-# refactorings, final_mass, tests_passed_immediately) are emitted as 0.
+# Phase-derivable fields (avg_*, refactorings, tests_passed_immediately) are
+# only meaningful for v4/v5 (TDD with subagents/skills); for v1/v2/v3 they are 0.
+# `predictions_*` is no longer captured (was self-report only) and stays 0.
 extract_transcript_metrics() {
     local metrics_file=$1
 
@@ -81,14 +82,23 @@ extract_transcript_metrics() {
         return
     fi
 
-    local total_tokens
+    local total_tokens context_util cycle_count
     total_tokens=$(jq -r '.total_tokens.total // 0' "$metrics_file")
-    local context_util
     context_util=$(jq -r '.context_utilization_pct // 0' "$metrics_file")
-    local cycle_count
     cycle_count=$(jq -r '.cycle_count // 0' "$metrics_file")
 
-    echo "${total_tokens}|${context_util}|${cycle_count}|0|0|0|0|0|0|0|0|0|0"
+    local avg_red avg_green avg_refactor avg_cycle
+    avg_red=$(jq -r '.phase_summary.averages.red.avg_duration_seconds // 0' "$metrics_file")
+    avg_green=$(jq -r '.phase_summary.averages.green.avg_duration_seconds // 0' "$metrics_file")
+    avg_refactor=$(jq -r '.phase_summary.averages.refactor.avg_duration_seconds // 0' "$metrics_file")
+    # avg_cycle = sum of avg_red + avg_green + avg_refactor (rough)
+    avg_cycle=$(awk -v r="$avg_red" -v g="$avg_green" -v f="$avg_refactor" 'BEGIN { printf "%.2f", r+g+f }')
+
+    local refactorings tests_passed_immediately
+    refactorings=$(jq -r '.phase_summary.refactorings_applied // 0' "$metrics_file")
+    tests_passed_immediately=$(jq -r '.phase_summary.tests_passed_immediately // 0' "$metrics_file")
+
+    echo "${total_tokens}|${context_util}|${cycle_count}|${avg_cycle}|${avg_red}|${avg_green}|${avg_refactor}|0|0|0|${refactorings}|0|${tests_passed_immediately}"
 }
 
 analyze_single_run() {
@@ -491,7 +501,7 @@ analyze_single_run() {
         summary_final_mass=$(echo "$summary_metrics" | cut -d'|' -f12)
         summary_tests_passed_immediately=$(echo "$summary_metrics" | cut -d'|' -f13)
 
-        # Ensure valid integers
+        # Ensure valid numbers (int for counts, float allowed for averages)
         [[ "$summary_total_tokens" =~ ^[0-9]+$ ]] || summary_total_tokens=0
         [[ "$summary_context_util" =~ ^[0-9]+$ ]] || summary_context_util=0
         [[ "$summary_cycle_count" =~ ^[0-9]+$ ]] || summary_cycle_count=0
@@ -499,6 +509,10 @@ analyze_single_run() {
         [[ "$summary_pred_correct" =~ ^[0-9]+$ ]] || summary_pred_correct=0
         [[ "$summary_pred_total" =~ ^[0-9]+$ ]] || summary_pred_total=0
         [[ "$summary_tests_passed_immediately" =~ ^[0-9]+$ ]] || summary_tests_passed_immediately=0
+        [[ "$summary_avg_cycle" =~ ^[0-9]+(\.[0-9]+)?$ ]] || summary_avg_cycle=0
+        [[ "$summary_avg_red" =~ ^[0-9]+(\.[0-9]+)?$ ]] || summary_avg_red=0
+        [[ "$summary_avg_green" =~ ^[0-9]+(\.[0-9]+)?$ ]] || summary_avg_green=0
+        [[ "$summary_avg_refactor" =~ ^[0-9]+(\.[0-9]+)?$ ]] || summary_avg_refactor=0
 
         # Token Usage
         echo -e "  ${CYAN}Token Usage:${NC}"
@@ -612,6 +626,10 @@ analyze_single_run() {
            --argjson pred_correct "$summary_pred_correct" \
            --argjson pred_total "$summary_pred_total" \
            --argjson tests_passed_immediately "$summary_tests_passed_immediately" \
+           --argjson avg_cycle "$summary_avg_cycle" \
+           --argjson avg_red "$summary_avg_red" \
+           --argjson avg_green "$summary_avg_green" \
+           --argjson avg_refactor "$summary_avg_refactor" \
            --argjson cov_statements "$cov_statements" \
            --argjson cov_branches "$cov_branches" \
            --argjson smell_total "$smell_total" \
@@ -648,7 +666,11 @@ analyze_single_run() {
             .summary_metrics.refactorings_applied = $refactorings |
             .summary_metrics.predictions_correct = $pred_correct |
             .summary_metrics.predictions_total = $pred_total |
-            .summary_metrics.tests_passed_immediately = $tests_passed_immediately' \
+            .summary_metrics.tests_passed_immediately = $tests_passed_immediately |
+            .summary_metrics.avg_cycle_seconds = $avg_cycle |
+            .summary_metrics.avg_red_seconds = $avg_red |
+            .summary_metrics.avg_green_seconds = $avg_green |
+            .summary_metrics.avg_refactor_seconds = $avg_refactor' \
            "$run_dir/metrics.json" > "$run_dir/metrics.tmp" && \
         mv "$run_dir/metrics.tmp" "$run_dir/metrics.json"
 

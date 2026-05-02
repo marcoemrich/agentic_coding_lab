@@ -11,12 +11,14 @@ from __future__ import annotations
 
 import json
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterable
 
 OPUS_CONTEXT_WINDOW = 200_000
+
+TDD_PHASES = ("test-list", "red", "green", "refactor")
 
 
 def parse_jsonl(path: Path) -> Iterable[dict[str, Any]]:
@@ -35,7 +37,6 @@ def parse_jsonl(path: Path) -> Iterable[dict[str, Any]]:
 def parse_timestamp(ts: str | None) -> datetime | None:
     if not ts:
         return None
-    # Claude Code timestamps look like "2025-05-02T10:23:45.123Z"
     try:
         if ts.endswith("Z"):
             return datetime.fromisoformat(ts[:-1] + "+00:00")
@@ -45,13 +46,22 @@ def parse_timestamp(ts: str | None) -> datetime | None:
 
 
 def extract_assistant_message(event: dict[str, Any]) -> dict[str, Any] | None:
-    """Return the embedded assistant `message` dict if present."""
     if event.get("type") != "assistant":
         return None
     msg = event.get("message")
     if isinstance(msg, dict):
         return msg
     return None
+
+
+def message_token_total(msg: dict[str, Any]) -> int:
+    usage = msg.get("usage") or {}
+    return (
+        int(usage.get("input_tokens") or 0)
+        + int(usage.get("output_tokens") or 0)
+        + int(usage.get("cache_read_input_tokens") or 0)
+        + int(usage.get("cache_creation_input_tokens") or 0)
+    )
 
 
 def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
@@ -68,6 +78,23 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
     skill_invocations: Counter[str] = Counter()
     task_invocations: Counter[str] = Counter()
     bash_commands: list[str] = []
+
+    # For v5 inline-skill phase tracking: capture each tool_use of Skill in
+    # order with timestamp + cumulative-token marker, so we can attribute the
+    # follow-up assistant turns to that phase.
+    skill_phase_markers: list[tuple[datetime | None, str, int]] = []
+    cumulative_token_running = 0
+    # Per-message stream so we can slice tokens between skill markers
+    message_stream: list[tuple[datetime | None, int]] = []
+
+    # Order in which Agent (Task) tool_uses appeared - used to align with
+    # subagent-*.jsonl files when meta.json is missing.
+    task_order: list[str] = []
+
+    # Track which tool_use_ids correspond to red-phase skills/tasks, so we
+    # can detect "passed immediately" (skill/task whose result reports tests
+    # already green, no green follow-up).
+    red_tool_use_ids: list[str] = []
 
     for event in parse_jsonl(jsonl_path):
         ts = parse_timestamp(event.get("timestamp"))
@@ -93,11 +120,13 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
         total_cache_read += cache_read
         total_cache_creation += cache_create
 
-        # Approximation of "context utilization": input + cache contributions
-        # represent how much of the prompt window was filled at this turn.
         cumulative = in_tok + cache_read + cache_create
         if cumulative > max_cumulative:
             max_cumulative = cumulative
+
+        msg_total = in_tok + out_tok + cache_read + cache_create
+        cumulative_token_running += msg_total
+        message_stream.append((ts, cumulative_token_running))
 
         content = msg.get("content")
         if not isinstance(content, list):
@@ -117,15 +146,26 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
             if tool_name == "Skill":
                 skill = tool_input.get("skill") or tool_input.get("name") or "unknown"
                 skill_invocations[str(skill)] += 1
+                if skill in TDD_PHASES:
+                    skill_phase_markers.append(
+                        (ts, str(skill), cumulative_token_running)
+                    )
+                    if skill == "red":
+                        tu_id = block.get("id")
+                        if isinstance(tu_id, str):
+                            red_tool_use_ids.append(tu_id)
             elif tool_name in ("Task", "Agent"):
-                # Claude Code emits the subagent launcher under either name
-                # depending on version.
                 subtype = (
                     tool_input.get("subagent_type")
                     or tool_input.get("agent_type")
                     or "unknown"
                 )
                 task_invocations[str(subtype)] += 1
+                task_order.append(str(subtype))
+                if subtype == "red":
+                    tu_id = block.get("id")
+                    if isinstance(tu_id, str):
+                        red_tool_use_ids.append(tu_id)
             elif tool_name == "Bash":
                 cmd = tool_input.get("command")
                 if isinstance(cmd, str):
@@ -139,6 +179,8 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
     ctx_util_pct = int(round(100 * max_cumulative / OPUS_CONTEXT_WINDOW))
 
     cycle_count = derive_cycle_count(skill_invocations, task_invocations, bash_commands)
+
+    skill_phases = aggregate_skill_phases(skill_phase_markers, message_stream, last_ts)
 
     return {
         "wall_clock_seconds": round(wall_clock, 2),
@@ -155,7 +197,53 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
         "skill_invocations": dict(skill_invocations),
         "task_invocations": dict(task_invocations),
         "cycle_count": cycle_count,
+        "_internal": {
+            "skill_phases": skill_phases,
+            "task_order": task_order,
+            "red_tool_use_ids": red_tool_use_ids,
+        },
     }
+
+
+def aggregate_skill_phases(
+    markers: list[tuple[datetime | None, str, int]],
+    stream: list[tuple[datetime | None, int]],
+    final_ts: datetime | None,
+) -> list[dict[str, Any]]:
+    """For v5 inline-skill workflow: turn skill-tool-use markers into phases.
+
+    Each phase spans from its skill marker to the next skill marker.
+    Tokens are the delta in cumulative tokens within the span; duration is
+    the timestamp delta.
+    """
+    if not markers:
+        return []
+
+    phases: list[dict[str, Any]] = []
+    for i, (ts, skill, cum_at_call) in enumerate(markers):
+        if i + 1 < len(markers):
+            next_ts, _, cum_next = markers[i + 1]
+            tokens = max(0, cum_next - cum_at_call)
+            duration = (
+                (next_ts - ts).total_seconds()
+                if (next_ts and ts)
+                else 0.0
+            )
+        else:
+            tokens = max(
+                0, (stream[-1][1] if stream else cum_at_call) - cum_at_call
+            )
+            duration = (
+                (final_ts - ts).total_seconds() if (final_ts and ts) else 0.0
+            )
+        phases.append(
+            {
+                "phase": skill,
+                "tokens": tokens,
+                "duration_seconds": round(duration, 2),
+            }
+        )
+    return phases
 
 
 def derive_cycle_count(
@@ -163,13 +251,6 @@ def derive_cycle_count(
     tasks: Counter[str],
     bash_commands: list[str],
 ) -> int:
-    """Best-effort cycle count.
-
-    - v5 (skills): count `red` skill invocations
-    - v4 (subagents): count `red` task invocations
-    - v3 (basic-tdd, no skills/tasks): count `pnpm test` shell calls as proxy
-    - v1/v2: returns 0
-    """
     if skills.get("red", 0) > 0:
         return skills["red"]
     if tasks.get("red", 0) > 0:
@@ -183,21 +264,124 @@ def derive_cycle_count(
     return 0
 
 
-def aggregate_subagent_tokens(subagent_dir: Path) -> int:
+def aggregate_subagent_phases(
+    subagent_dir: Path, task_order: list[str]
+) -> tuple[int, list[dict[str, Any]]]:
+    """Aggregate per-subagent metrics. Returns (total_tokens, phase_list)."""
     if not subagent_dir.is_dir():
-        return 0
+        return 0, []
+
     total = 0
+    phase_records: list[tuple[float, dict[str, Any]]] = []
+    # Collect agent files with their phase type (from meta.json) and stats
     for jsonl_path in sorted(subagent_dir.glob("agent-*.jsonl")):
+        meta_path = jsonl_path.with_suffix(".meta.json")
+        agent_type: str | None = None
+        if meta_path.is_file():
+            try:
+                meta = json.loads(meta_path.read_text(encoding="utf-8"))
+                agent_type = meta.get("agentType") or meta.get("agent_type")
+            except (json.JSONDecodeError, OSError):
+                agent_type = None
+
+        first_ts: datetime | None = None
+        last_ts: datetime | None = None
+        agent_tokens = 0
         for event in parse_jsonl(jsonl_path):
+            ts = parse_timestamp(event.get("timestamp"))
+            if ts:
+                if first_ts is None or ts < first_ts:
+                    first_ts = ts
+                if last_ts is None or ts > last_ts:
+                    last_ts = ts
             msg = extract_assistant_message(event)
             if msg is None:
                 continue
-            usage = msg.get("usage") or {}
-            total += int(usage.get("input_tokens") or 0)
-            total += int(usage.get("output_tokens") or 0)
-            total += int(usage.get("cache_read_input_tokens") or 0)
-            total += int(usage.get("cache_creation_input_tokens") or 0)
-    return total
+            agent_tokens += message_token_total(msg)
+
+        total += agent_tokens
+        duration = 0.0
+        if first_ts and last_ts:
+            duration = (last_ts - first_ts).total_seconds()
+        sort_key = first_ts.timestamp() if first_ts else 0.0
+        phase_records.append(
+            (
+                sort_key,
+                {
+                    "phase": agent_type or "unknown",
+                    "tokens": agent_tokens,
+                    "duration_seconds": round(duration, 2),
+                    "transcript": jsonl_path.name,
+                },
+            )
+        )
+
+    # Sort by start time, fall back to filename
+    phase_records.sort(key=lambda x: x[0])
+    phases = [rec for _, rec in phase_records]
+
+    # Backfill missing phase types from main-session task_order if needed
+    if any(p["phase"] == "unknown" for p in phases) and task_order:
+        idx = 0
+        for p in phases:
+            if p["phase"] == "unknown" and idx < len(task_order):
+                p["phase"] = task_order[idx]
+            idx += 1
+
+    return total, phases
+
+
+def summarize_phases(phases: list[dict[str, Any]]) -> dict[str, Any]:
+    """Group phases by name → totals + averages."""
+    if not phases:
+        return {
+            "by_phase": {},
+            "averages": {},
+            "refactorings_applied": 0,
+            "tests_passed_immediately": 0,
+        }
+
+    by_phase: dict[str, dict[str, float]] = defaultdict(
+        lambda: {"count": 0, "tokens": 0, "duration_seconds": 0.0}
+    )
+    for p in phases:
+        bucket = by_phase[p["phase"]]
+        bucket["count"] += 1
+        bucket["tokens"] += p["tokens"]
+        bucket["duration_seconds"] += p["duration_seconds"]
+
+    averages: dict[str, dict[str, float]] = {}
+    for name, b in by_phase.items():
+        c = b["count"] or 1
+        averages[name] = {
+            "avg_tokens": round(b["tokens"] / c, 2),
+            "avg_duration_seconds": round(b["duration_seconds"] / c, 2),
+        }
+
+    refactorings = int(by_phase.get("refactor", {}).get("count", 0))
+
+    # tests_passed_immediately: red phases not followed by a green phase.
+    tests_passed_immediately = 0
+    for i, p in enumerate(phases):
+        if p["phase"] != "red":
+            continue
+        next_phase = phases[i + 1]["phase"] if i + 1 < len(phases) else None
+        if next_phase != "green":
+            tests_passed_immediately += 1
+
+    return {
+        "by_phase": {
+            name: {
+                "count": int(b["count"]),
+                "tokens": int(b["tokens"]),
+                "duration_seconds": round(b["duration_seconds"], 2),
+            }
+            for name, b in by_phase.items()
+        },
+        "averages": averages,
+        "refactorings_applied": refactorings,
+        "tests_passed_immediately": tests_passed_immediately,
+    }
 
 
 def main(argv: list[str]) -> int:
@@ -212,9 +396,30 @@ def main(argv: list[str]) -> int:
         return 1
 
     metrics = aggregate_main_session(transcript)
-    metrics["subagent_token_total"] = aggregate_subagent_tokens(
-        run_dir / "transcript-subagents"
+    internal = metrics.pop("_internal")
+
+    # v4: subagent transcripts give us per-phase tokens/timings
+    subagent_total, subagent_phases = aggregate_subagent_phases(
+        run_dir / "transcript-subagents", internal["task_order"]
     )
+    metrics["subagent_token_total"] = subagent_total
+
+    # Pick the phase source: subagents (v4) have authoritative timings;
+    # otherwise fall back to inline skill markers (v5). v1/v2/v3 have no
+    # phase structure.
+    if subagent_phases:
+        phases = subagent_phases
+        phase_source = "subagents"
+    elif internal["skill_phases"]:
+        phases = internal["skill_phases"]
+        phase_source = "skills"
+    else:
+        phases = []
+        phase_source = "none"
+
+    metrics["phases"] = phases
+    metrics["phase_source"] = phase_source
+    metrics["phase_summary"] = summarize_phases(phases)
 
     out_path = run_dir / "transcript-metrics.json"
     out_path.write_text(json.dumps(metrics, indent=2) + "\n", encoding="utf-8")
