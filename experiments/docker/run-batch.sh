@@ -369,8 +369,14 @@ EOF
         *)   exit_reason="error-$claude_exit" ;;
     esac
 
+    # Rate-limit detection. We only flag a run as rate-limited if it ALSO
+    # exited non-zero — a successful run (exit 0, tests green) cannot
+    # legitimately be rate-limited regardless of any string matches.
+    # Pattern uses word-boundaries on numeric codes so paths containing
+    # digits like ".../backup.1777786429234.json" do not falsely trigger.
     rate_limited="false"
-    if grep -qiE "rate.?limit|429|usage limit|overloaded" "$run_log" 2>/dev/null; then
+    if [ "$claude_exit" -ne 0 ] && \
+       grep -qiE "rate.?limit|\b429\b|usage limit|overloaded" "$run_log" 2>/dev/null; then
         rate_limited="true"
         exit_reason="rate-limited"
     fi
