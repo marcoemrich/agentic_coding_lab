@@ -216,20 +216,23 @@ END {
 # ---------------------------------------------------------------------
 
 # avg helper: sums numeric column, divides by count of non-empty rows.
+# Optional 5th arg filter_kata restricts rows to that kata (col 1).
+# Optional 6th arg heading_level overrides the default "##" heading.
 avg_pivot() {
     local title="$1" group_col1="$2" group_col2="$3" value_col="$4"
+    local filter_kata="${5:-}" heading="${6:-##}"
     local col1_name col2_name
     col1_name=$(head -1 "$CSV" | awk -F',' -v c="$group_col1" '{print $c}')
     col2_name=$(head -1 "$CSV" | awk -F',' -v c="$group_col2" '{print $c}')
     {
         echo
-        echo "## $title"
+        echo "$heading $title"
         echo
         echo "| $col1_name | $col2_name | n | avg | min | max |"
         echo "|---|---|---:|---:|---:|---:|"
     } >> "$MD"
 
-    awk -F',' -v g1="$group_col1" -v g2="$group_col2" -v v="$value_col" '
+    awk -F',' -v g1="$group_col1" -v g2="$group_col2" -v v="$value_col" -v fk="$filter_kata" '
     function unq(s) {
         if (length(s) >= 2 && substr(s,1,1) == "\"" && substr(s,length(s),1) == "\"") {
             return substr(s, 2, length(s)-2)
@@ -237,6 +240,7 @@ avg_pivot() {
         return s
     }
     NR>1 && $v != "" {
+        if (fk != "" && unq($1) != fk) next
         key = unq($g1) "\t" unq($g2)
         val = $v + 0
         n[key]++
@@ -253,20 +257,23 @@ avg_pivot() {
 }
 
 # rate helper: percentage of rows where value_col equals match_value, by group.
+# Optional 6th arg filter_kata restricts rows to that kata (col 1).
+# Optional 7th arg heading_level overrides the default "##" heading.
 rate_pivot() {
     local title="$1" group_col1="$2" group_col2="$3" value_col="$4" match_value="$5"
+    local filter_kata="${6:-}" heading="${7:-##}"
     local col1_name col2_name
     col1_name=$(head -1 "$CSV" | awk -F',' -v c="$group_col1" '{print $c}')
     col2_name=$(head -1 "$CSV" | awk -F',' -v c="$group_col2" '{print $c}')
     {
         echo
-        echo "## $title"
+        echo "$heading $title"
         echo
         echo "| $col1_name | $col2_name | n | match | rate |"
         echo "|---|---|---:|---:|---:|"
     } >> "$MD"
 
-    awk -F',' -v g1="$group_col1" -v g2="$group_col2" -v v="$value_col" -v mv="$match_value" '
+    awk -F',' -v g1="$group_col1" -v g2="$group_col2" -v v="$value_col" -v mv="$match_value" -v fk="$filter_kata" '
     function unq(s) {
         # strip surrounding double quotes if present (@csv-quoted strings)
         if (length(s) >= 2 && substr(s,1,1) == "\"" && substr(s,length(s),1) == "\"") {
@@ -275,6 +282,7 @@ rate_pivot() {
         return s
     }
     NR>1 {
+        if (fk != "" && unq($1) != fk) next
         key = unq($g1) "\t" unq($g2)
         n[key]++
         if (unq($v) == mv) m[key]++
@@ -288,27 +296,132 @@ rate_pivot() {
     }' "$CSV" | sort >> "$MD"
 }
 
-# Note: summary_metrics.* (total_tokens, cycle_count, predictions, etc.)
-# require post-hoc transcript-metrics.json which is only available when
-# claude was run with --output-format=json AND analyze-run.sh executed
-# the transcript pipeline. The smart-subset batch ran with plain --print
-# so those columns are 0 for almost all rows; we omit pivots over them.
-# Smells are 0 across the board (ESLint not present in container) → omit.
+# ratio helper: aggregate sum(numerator)/sum(denominator) per (g1,g2) group.
+# Useful for predictions_correct/predictions_total, where the ratio is more
+# informative than per-run averages.
+# Optional 6th arg filter_kata restricts rows to that kata (col 1).
+# Optional 7th arg heading_level overrides the default "##" heading.
+ratio_pivot() {
+    local title="$1" group_col1="$2" group_col2="$3" num_col="$4" den_col="$5"
+    local filter_kata="${6:-}" heading="${7:-##}"
+    local col1_name col2_name num_name den_name
+    col1_name=$(head -1 "$CSV" | awk -F',' -v c="$group_col1" '{print $c}')
+    col2_name=$(head -1 "$CSV" | awk -F',' -v c="$group_col2" '{print $c}')
+    num_name=$(head -1 "$CSV" | awk -F',' -v c="$num_col" '{print $c}')
+    den_name=$(head -1 "$CSV" | awk -F',' -v c="$den_col" '{print $c}')
+    {
+        echo
+        echo "$heading $title"
+        echo
+        echo "| $col1_name | $col2_name | n | $num_name | $den_name | rate |"
+        echo "|---|---|---:|---:|---:|---:|"
+    } >> "$MD"
 
-rate_pivot   "Tests passing rate (workflow × model)"      2 3 21 "true"
-avg_pivot    "Duration seconds (workflow × model)"        2 3 9
-avg_pivot    "Lines of code (workflow × model)"           2 3 24
-avg_pivot    "Code mass (workflow × model)"               2 3 26
-avg_pivot    "Coverage statements % (workflow × model)"   2 3 27
-avg_pivot    "Coverage branches % (workflow × model)"     2 3 28
-avg_pivot    "Test lines (workflow × model)"              2 3 25
-avg_pivot    "Tests total (workflow × model)"             2 3 22
-avg_pivot    "Todos remaining (workflow × model)"         2 3 23
+    awk -F',' -v g1="$group_col1" -v g2="$group_col2" -v nc="$num_col" -v dc="$den_col" -v fk="$filter_kata" '
+    function unq(s) {
+        if (length(s) >= 2 && substr(s,1,1) == "\"" && substr(s,length(s),1) == "\"") {
+            return substr(s, 2, length(s)-2)
+        }
+        return s
+    }
+    NR>1 {
+        if (fk != "" && unq($1) != fk) next
+        if ($nc == "" || $dc == "") next
+        key = unq($g1) "\t" unq($g2)
+        n[key]++
+        sn[key] += $nc + 0
+        sd[key] += $dc + 0
+    }
+    END {
+        for (k in n) {
+            split(k, a, "\t")
+            rate = (sd[k] > 0) ? 100*sn[k]/sd[k] : 0
+            printf "| %s | %s | %d | %d | %d | %.0f%% |\n", a[1], a[2], n[k], sn[k], sd[k], rate
+        }
+    }' "$CSV" | sort >> "$MD"
+}
+
+# ---------------------------------------------------------------------
+# Per-kata blocks: every workflow×model pivot below scopes to ONE kata.
+# Cross-kata aggregation is appended at the end as a sanity-check only.
+# ---------------------------------------------------------------------
+
+# Discover katas present in the CSV (skip header, deduplicate, sort).
+KATAS=$(awk -F',' 'NR>1 {
+    s=$1
+    if (length(s) >= 2 && substr(s,1,1) == "\"" && substr(s,length(s),1) == "\"") {
+        s = substr(s, 2, length(s)-2)
+    }
+    print s
+}' "$CSV" | sort -u)
+
+for kata in $KATAS; do
+    {
+        echo
+        echo "## Kata: $kata"
+    } >> "$MD"
+
+    # --- Core metrics ---
+    rate_pivot   "Core metrics — Tests passing rate (workflow × model)"      2 3 21 "true"  "$kata" "###"
+    avg_pivot    "Core metrics — Duration seconds (workflow × model)"        2 3 9   "$kata" "###"
+    avg_pivot    "Core metrics — Lines of code (workflow × model)"           2 3 24  "$kata" "###"
+    avg_pivot    "Core metrics — Code mass (workflow × model)"               2 3 26  "$kata" "###"
+    avg_pivot    "Core metrics — Test lines (workflow × model)"              2 3 25  "$kata" "###"
+    avg_pivot    "Core metrics — Tests total (workflow × model)"             2 3 22  "$kata" "###"
+
+    # --- TDD discipline ---
+    avg_pivot    "TDD discipline — Cycle count (workflow × model)"           2 3 12  "$kata" "###"
+    avg_pivot    "TDD discipline — Refactorings applied (workflow × model)"  2 3 17  "$kata" "###"
+    ratio_pivot  "TDD discipline — Predictions correct / total (workflow × model)" 2 3 18 19 "$kata" "###"
+    avg_pivot    "TDD discipline — Tests passed immediately (workflow × model)" 2 3 20 "$kata" "###"
+    avg_pivot    "TDD discipline — Avg red seconds (workflow × model)"       2 3 14  "$kata" "###"
+    avg_pivot    "TDD discipline — Avg green seconds (workflow × model)"     2 3 15  "$kata" "###"
+    avg_pivot    "TDD discipline — Avg refactor seconds (workflow × model)"  2 3 16  "$kata" "###"
+
+    # --- Code quality ---
+    avg_pivot    "Code quality — cc_loc (workflow × model)"                  2 3 29  "$kata" "###"
+    avg_pivot    "Code quality — cc_functions (workflow × model)"            2 3 30  "$kata" "###"
+    avg_pivot    "Code quality — cc_longest_function (workflow × model)"     2 3 31  "$kata" "###"
+    avg_pivot    "Code quality — cc_avg_loc_per_function (workflow × model)" 2 3 32  "$kata" "###"
+    avg_pivot    "Code quality — smell_total (workflow × model)"             2 3 34  "$kata" "###"
+    avg_pivot    "Code quality — smell_magic_numbers (workflow × model)"     2 3 37  "$kata" "###"
+    avg_pivot    "Code quality — smell_complexity (workflow × model)"        2 3 35  "$kata" "###"
+
+    # --- Coverage ---
+    avg_pivot    "Coverage — statements % (workflow × model)"                2 3 27  "$kata" "###"
+    avg_pivot    "Coverage — branches % (workflow × model)"                  2 3 28  "$kata" "###"
+done
+
+# ---------------------------------------------------------------------
+# Cross-kata sanity-check appendix.
+# These tables average over katas with very different complexity (LoC
+# 3–40+) and should NOT be used for workflow×model comparisons.
+# ---------------------------------------------------------------------
+{
+    echo
+    echo "## Cross-kata averages (sanity check only — do NOT compare across katas with different complexity)"
+    echo
+    echo "> The tables below mix katas of very different size and structure"
+    echo "> (string-calculator: ~3 LoC, no smell room; game-of-life: ~40 LoC,"
+    echo "> high smell room). Means here can swing wildly when the kata mix"
+    echo "> changes. For workflow×model comparisons, use the per-kata blocks"
+    echo "> above."
+} >> "$MD"
+
+rate_pivot   "Tests passing rate (workflow × model, all katas)"      2 3 21 "true"
+avg_pivot    "Duration seconds (workflow × model, all katas)"        2 3 9
+avg_pivot    "Lines of code (workflow × model, all katas)"           2 3 24
+avg_pivot    "Code mass (workflow × model, all katas)"               2 3 26
+avg_pivot    "Coverage statements % (workflow × model, all katas)"   2 3 27
+avg_pivot    "Coverage branches % (workflow × model, all katas)"     2 3 28
+avg_pivot    "Test lines (workflow × model, all katas)"              2 3 25
+avg_pivot    "Tests total (workflow × model, all katas)"             2 3 22
+avg_pivot    "Todos remaining (workflow × model, all katas)"         2 3 23
 
 # Per-kata breakdown (workflow × kata, average across models)
-rate_pivot   "Tests passing rate (workflow × kata)"       2 1 21 "true"
-avg_pivot    "Duration seconds (workflow × kata)"         2 1 9
-avg_pivot    "Lines of code (workflow × kata)"            2 1 24
+rate_pivot   "Tests passing rate (workflow × kata, all models)"      2 1 21 "true"
+avg_pivot    "Duration seconds (workflow × kata, all models)"        2 1 9
+avg_pivot    "Lines of code (workflow × kata, all models)"           2 1 24
 
 {
     echo
