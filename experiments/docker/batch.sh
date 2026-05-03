@@ -50,8 +50,12 @@ if [ $# -eq 1 ]; then
     plan_basename="$(basename "$plan_file")"
 
     echo "Running batch with plan: $plan_basename"
-    BATCH_PLAN="$plan_basename" exec docker compose --profile batch run --rm batch
+    echo "Logging to: $SCRIPT_DIR/batch.log"
+    BATCH_PLAN="$plan_basename" docker compose --profile batch run --rm batch 2>&1 | tee batch.log
+    exit "${PIPESTATUS[0]}"
 else
     echo "Running full cross-product (no plan)"
-    exec docker compose --profile batch run --rm batch
+    echo "Logging to: $SCRIPT_DIR/batch.log"
+    docker compose --profile batch run --rm batch 2>&1 | tee batch.log
+    exit "${PIPESTATUS[0]}"
 fi

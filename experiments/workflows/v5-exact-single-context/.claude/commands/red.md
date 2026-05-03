@@ -88,11 +88,15 @@ Run `pnpm test:unit:basic` and verify:
 
 ### Step 7: Report Completion
 
+You MUST output the full Step 7 block verbatim with `Correct` or `Incorrect`
+chosen for each prediction. Do not abbreviate. Do not collapse the two
+prediction lines into one.
+
 ```
 🔴 Red Phase Complete:
 **Test Activated**: "should return 0 for empty input"
-**Compilation Prediction**: ✅ Correct / ❌ Incorrect
-**Runtime Prediction**: ✅ Correct / ❌ Incorrect
+**Compilation Prediction**: Cannot find name 'calculate' ✅ Correct
+**Runtime Prediction**: Expected 0, received undefined ✅ Correct
 **Result**: Test fails as expected with assertion error
 
 Proceeding to Green phase.

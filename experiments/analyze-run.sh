@@ -362,7 +362,7 @@ analyze_single_run() {
         cc_loc=$(grep -vE '^\s*$|^\s*//|^\s*/\*|\^\s*\*' "$impl_file" 2>/dev/null | wc -l | tr -d '[:space:]')
 
         # Count functions (function declarations, arrow functions, methods)
-        cc_functions=$(grep -cE '^\s*(export\s+)?(async\s+)?function\s+\w+|^\s*(export\s+)?(const|let|var)\s+\w+\s*=\s*(async\s+)?\(' "$impl_file" 2>/dev/null) || cc_functions=0
+        cc_functions=$(grep -cE '^[ \t]*(export[ \t]+)?(async[ \t]+)?function[ \t]+[A-Za-z_]|^[ \t]*(export[ \t]+)?(const|let|var)[ \t]+[A-Za-z_][A-Za-z0-9_]*[ \t]*=[ \t]*(async[ \t]+)?\(' "$impl_file" 2>/dev/null) || cc_functions=0
 
         # Count imports
         cc_imports=$(grep -cE '^\s*import\s+' "$impl_file" 2>/dev/null) || cc_imports=0
@@ -371,7 +371,7 @@ analyze_single_run() {
         # This counts lines between function starts and closing braces at the same level
         local func_analysis
         func_analysis=$(awk '
-            /^\s*(export\s+)?(async\s+)?function\s+\w+|^\s*(export\s+)?(const|let|var)\s+\w+\s*=\s*(async\s+)?\(/ {
+            /^[ \t]*(export[ \t]+)?(async[ \t]+)?function[ \t]+[A-Za-z_]|^[ \t]*(export[ \t]+)?(const|let|var)[ \t]+[A-Za-z_][A-Za-z0-9_]*[ \t]*=[ \t]*(async[ \t]+)?\(/ {
                 if (in_func && func_lines > 0) {
                     total_lines += func_lines
                     func_count++
