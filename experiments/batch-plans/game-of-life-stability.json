@@ -1,6 +1,6 @@
 {
-  "name": "Game-of-life stability (45 runs)",
-  "description": "Stabilit\u00e4ts-Experiment: nur game-of-life (einzige Kata mit echtem Code-Quality-Signal laut smart-subset findings). Alle 5 Workflows \u00d7 3 Prompt-Stile \u00d7 Opus-4.7-no-thinking \u00d7 3 Replikate. Opus-no-thinking weil smart-subset zeigte: opus > sonnet > haiku, thinking irrelevant. Generiert von batch-plans/generators/game-of-life-stability.py.",
+  "name": "Game-of-life stability (33 runs)",
+  "description": "Game-of-life stability (post-Bereinigung 2026-05-03): nur game-of-life. v3/v4/v5 × 3 Prompt-Stile + v1/v2 nur prose (v1/v2 mit example-mapping/user-story als kontaminiert entfernt: Test-Beispiel-Hints im Prompt verzerren Non-TDD-Workflow-Vergleich). Opus-4.7-no-thinking × 3 Replikate. Generiert von batch-plans/generators/game-of-life-stability.py + post-hoc gefiltert.",
   "runs": [
     {
       "kata": "game-of-life-prose",
@@ -79,36 +79,6 @@
     },
     {
       "kata": "game-of-life-example-mapping",
-      "workflow": "v1-oneshot",
-      "model": "opus-4-7-no-thinking"
-    },
-    {
-      "kata": "game-of-life-example-mapping",
-      "workflow": "v1-oneshot",
-      "model": "opus-4-7-no-thinking"
-    },
-    {
-      "kata": "game-of-life-example-mapping",
-      "workflow": "v1-oneshot",
-      "model": "opus-4-7-no-thinking"
-    },
-    {
-      "kata": "game-of-life-example-mapping",
-      "workflow": "v2-iterative",
-      "model": "opus-4-7-no-thinking"
-    },
-    {
-      "kata": "game-of-life-example-mapping",
-      "workflow": "v2-iterative",
-      "model": "opus-4-7-no-thinking"
-    },
-    {
-      "kata": "game-of-life-example-mapping",
-      "workflow": "v2-iterative",
-      "model": "opus-4-7-no-thinking"
-    },
-    {
-      "kata": "game-of-life-example-mapping",
       "workflow": "v3-basic-tdd",
       "model": "opus-4-7-no-thinking"
     },
@@ -150,36 +120,6 @@
     {
       "kata": "game-of-life-example-mapping",
       "workflow": "v5-exact-single-context",
-      "model": "opus-4-7-no-thinking"
-    },
-    {
-      "kata": "game-of-life-user-story",
-      "workflow": "v1-oneshot",
-      "model": "opus-4-7-no-thinking"
-    },
-    {
-      "kata": "game-of-life-user-story",
-      "workflow": "v1-oneshot",
-      "model": "opus-4-7-no-thinking"
-    },
-    {
-      "kata": "game-of-life-user-story",
-      "workflow": "v1-oneshot",
-      "model": "opus-4-7-no-thinking"
-    },
-    {
-      "kata": "game-of-life-user-story",
-      "workflow": "v2-iterative",
-      "model": "opus-4-7-no-thinking"
-    },
-    {
-      "kata": "game-of-life-user-story",
-      "workflow": "v2-iterative",
-      "model": "opus-4-7-no-thinking"
-    },
-    {
-      "kata": "game-of-life-user-story",
-      "workflow": "v2-iterative",
       "model": "opus-4-7-no-thinking"
     },
     {
