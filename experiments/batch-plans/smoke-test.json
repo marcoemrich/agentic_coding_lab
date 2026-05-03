@@ -1,7 +1,7 @@
 {
   "name": "Smoke test",
-  "description": "Single run to verify container, auth, and the hardened run-batch pipeline. ~3 min, ~100k tokens.",
+  "description": "Single run to verify container, auth, and the hardened run-batch pipeline. ~5-8 min, ~300k tokens (game-of-life-prose with v3-basic-tdd on sonnet-4-6).",
   "runs": [
-    { "kata": "string-calculator-prose", "workflow": "v3-basic-tdd", "model": "sonnet-4-6" }
+    { "kata": "game-of-life-prose", "workflow": "v3-basic-tdd", "model": "sonnet-4-6" }
   ]
 }
