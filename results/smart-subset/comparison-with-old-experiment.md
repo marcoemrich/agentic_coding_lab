@@ -22,11 +22,27 @@ Der Vergleich ist **nicht apples-to-apples**:
 | Katas | 7 (cerberus-score, string-calculator, word-score, pixel-art-scaler, diamond, mars-rover, game-of-life) | 4 (string-calculator, pixel-art-scaler, mars-rover, game-of-life) — jeweils mit Prompt-Stil-Varianten (prose / example-mapping / user-story) |
 | Modelle | Opus 4.6, Sonnet 4.5 | Opus 4.7 (Adaptive Thinking), Sonnet 4.6, Haiku 4.5 |
 | Replikate pro Zelle | ~1 (235 / (7×5×4) ≈ 1.7) | 1–3 |
-| Transcript-Metriken | vorhanden (cycles, tokens, predictions, refactorings) | **fehlen** (`claude --print` ohne `--output-format json`) |
-| ESLint / Smell-Detection | aktiviert | **deaktiviert** im Container |
+| Transcript-Metriken | vorhanden (cycles, tokens, predictions, refactorings) | post-hoc nachgerüstet (siehe Pipeline-Update) |
+| ESLint / Smell-Detection | aktiviert | post-hoc nachgerüstet |
 
-→ Befunde, die auf transcript-Metriken oder Smells basieren, sind 🚫.
-→ Befunde mit n=1 pro Zelle haben in beiden Experimenten ähnlich hohe Varianz.
+→ **Quantitative Vergleiche nur auf identischer Kata-Basis** — von den
+4 neuen Katas existieren `mars-rover` und `game-of-life` im alten
+Datensatz in vergleichbarer Form (alte: ohne `-prose`-Suffix, aber
+denselbe Aufgabe). `string-calculator` und `pixel-art-scaler` sind
+zwar namensgleich, aber im Mai-Batch deutlich ausgesplittet
+(prose / example-mapping / user-story). Aussagen, die das alte
+Aggregat über 7 Katas mit dem neuen Aggregat über 4–8 Kata-Varianten
+vergleichen, sind methodisch zweifelhaft und werden hier explizit
+markiert.
+
+→ Befunde mit n=1 pro Zelle haben in beiden Experimenten ähnlich hohe
+Varianz.
+
+> **Quellverweis:** Smart-subset-Werte stammen aus `summary.md`. Dort
+> sind die Workflow×Modell-Pivots seit Mai 2026 **pro Kata** strukturiert
+> (Block `## Kata: <name>` → Sub-Sektionen Core/TDD/Code-Quality/Coverage).
+> Cross-kata-Mittel stehen separat im Anhang `## Cross-kata averages`
+> und sind dort als Sanity-Check markiert.
 
 ---
 
@@ -35,19 +51,12 @@ Der Vergleich ist **nicht apples-to-apples**:
 **Alt:** v4 + Opus + Thinking gewinnt auf allen 7 Katas im Code-Mass-Ranking
 (19–82 % weniger Mass als die schlechteste Konfiguration desselben Katas).
 
-**Neu (Aggregat über alle Katas, Opus 4.7):**
-
-| Workflow | Variante | n | Avg Mass | Avg LoC |
-|---|---|---:|---:|---:|
-| v4-exact-subagents | thinking | 11 | 50.3 | (≈10) |
-| v4-exact-subagents | no-thinking | 8 | 56.1 | (≈13) |
-| v5-exact-single-context | thinking | 12 | **41.2** | (≈9) |
-| v5-exact-single-context | no-thinking | 8 | 54.0 | (≈13) |
-
-→ Auf Aggregatebene **bleibt der Thinking-Vorteil bestehen** (v4: −10 %,
-v5: −24 %). Aber: **v5 schlägt v4** bei thinking sowohl auf Mass (41 vs 50)
-als auch auf Dauer (245 s vs 549 s, siehe §3). Die Speerspitze ist in dieser
-Replikation eher **v5 + Opus + Thinking**, nicht v4.
+**Neu — die Aggregat-Tabelle (workflow × thinking-flag, gemittelt über
+alle Katas) wäre hier irreführend**, weil string-calculator (≈ 3 LoC,
+21–28 mass) mit game-of-life (≈ 30 LoC, 95–157 mass) gemittelt würde.
+Cross-Kata-Mittel stehen in `summary.md` unter
+`## Cross-kata averages` und sind dort ausdrücklich als Sanity-Check
+gekennzeichnet. Für den Vergleich nutzen wir die pro-Kata-Tabelle direkt:
 
 **Pro Kata (Opus 4.7, v4 thinking vs no-thinking):**
 
@@ -76,8 +85,9 @@ und ein paar gleichstandige Mini-Katas.
 **Alt:** v5-exact-single-context (single context window, skills statt
 subagents) ist auf 5/7 Katas ohne Thinking führend in Code-Mass.
 
-**Neu:** v5 schlägt v4 auf Code-Mass und Dauer **konsistent** auf
-Aggregatebene (siehe §1) und auf 6/8 Kata-Zellen für Opus 4.7 thinking.
+**Neu:** v5 schlägt v4 auf Code-Mass und Dauer **konsistent**: auf 6/8
+Kata-Zellen für Opus 4.7 thinking (Vergleich auf identischer Kata, daher
+methodisch sauber).
 
 | Kata | v4 thinking mass | v5 thinking mass | v5 gewinnt? |
 |---|---:|---:|---|
@@ -173,21 +183,32 @@ Test-Lines, nicht durch mehr Refactor-Disziplin.
 
 **Alt:** Opus < Sonnet in Code-Mass quer durch alle Workflows.
 
-**Neu:**
+**Neu — Vergleich pro Kata (Code-Mass, v4-exact-subagents, n=1 pro Zelle):**
 
-| Modell | n | Avg Mass | Avg LoC |
-|---|---:|---:|---:|
-| opus-4-7 (thinking) | 23 | **45.6** | 9.8 |
-| opus-4-7-no-thinking | 16 | 55.1 | 12.8 |
-| sonnet-4-6 | 34 | 53.5 | 11.6 |
-| haiku-4-5 | 10 | 74.7 | 22.6 |
+| Kata | Opus thinking | Opus no-thinking | Sonnet | Haiku |
+|---|---:|---:|---:|---:|
+| game-of-life-prose | 137 | 157 | 169 | 250 |
+| mars-rover-prose | 121 | 110 | 127 | 162 |
+| pixel-art-scaler-prose | 48 | 30 | 75 | (kein run) |
+| string-calculator-prose | 25 | 21 | 25 | 21 |
 
-→ Opus 4.7 (thinking) ist klar das simpelste Modell. Sonnet 4.6 ≈ Opus
-ohne Thinking. Haiku ist deutlich verboser (auch teilweise verschuldet
-durch failende Runs mit Half-Implementation).
+→ Auf game-of-life zieht sich Opus-thinking knapp besser durch
+(137 vs. 169 für Sonnet); auf mars-rover-prose ist Opus-no-thinking
+sogar minimal schlechter als Opus-thinking, beide unter Sonnet. Auf
+den kleinen Katas (pixel-art-scaler, string-calculator) ist der
+Modell-Effekt klein, weil das Volumen begrenzt ist (Mass-Bandbreite
+21–75 statt 110–250).
 
-**Verdict:** ✅ reproduziert — und Opus-4.7-thinking schlägt Sonnet-4.6
-ähnlich deutlich wie Opus-4.6 vs Sonnet-4.5 alt.
+→ Haiku ist auf v4 deutlich verboser (250 mass auf game-of-life), was
+teilweise durch die gefailten Runs mit Half-Implementation kommt.
+
+> Eine cross-kata-Modell-Mittelung gibt es in `summary.md` unter
+> `## Cross-kata averages` als Sanity-Check; für die Aussage "Opus
+> simpler als Sonnet" sind die obigen Pro-Kata-Werte aussagekräftiger.
+
+**Verdict:** ✅ reproduziert — auf den großen Katas (game-of-life,
+mars-rover, pixel-art-scaler-prose) liefert Opus-4.7 (thinking)
+konsistent das niedrigste Mass; Sonnet 4.6 liegt knapp darüber.
 
 ---
 
@@ -302,8 +323,11 @@ ist nur eine Achse mit n=12, nicht statistisch belastbar.
 
 **Verdict:** ⚠️ Pipeline reproduziert, aber Modell-Generation Mai 2026
 schreibt zu sauber, um den alten Code-Quality-Befund klar nachzubilden.
-Die "v4 produziert simpleren Code als v1"-Aussage gilt aggregat über
-Code-Mass (siehe §1, §7), nur nicht über SonarJS-Smell-Counts.
+Die "v4 produziert simpleren Code als v1"-Aussage gilt für Code-Mass
+auf den großen Katas (siehe §1, §7) und ganz besonders für
+`cc_longest_function` auf game-of-life-prose (4 Zeilen v4+Opus+Thinking
+vs. 28 v3-basic-tdd, siehe `findings.md` §8) — nur nicht aggregat über
+SonarJS-Smell-Counts auf den kleinen Katas.
 
 ---
 

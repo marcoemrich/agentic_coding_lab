@@ -10,6 +10,172 @@ Generiert: 2026-05-03.
 
 ---
 
+## 0. Methoden-Überblick
+
+### 0.1 Forschungsfrage
+
+**Replikation und Erweiterung der 235-Run-Studie aus Februar 2026 mit
+neuen Modellen, neuen Promptformaten und einem geprüften Toolchain-Pin.**
+
+Konkret:
+
+- Reproduzieren sich die Headline-Befunde der alten Studie (v4+Opus
+  ist Spitze, v5 schneller, Thinking-Bonus klein) mit der aktuellen
+  Modell-Generation (Opus 4.7, Sonnet 4.6, Haiku 4.5)?
+- Macht das **Format der Aufgabenstellung** (prose / example-mapping /
+  user-story) einen Unterschied auf Code-Qualität, Mass und TDD-Disziplin?
+- Wie verhält sich Haiku 4.5 in den anspruchsvollen Multi-Step-Workflows
+  v4/v5?
+
+### 0.2 Experiment-Design
+
+**Variablen**:
+
+| Achse | Stufen | n |
+|---|---|---:|
+| Workflow | v1-oneshot, v2-iterative, v3-basic-tdd, v4-exact-subagents, v5-exact-single-context | 5 |
+| Modell × Thinking | opus-4-7, opus-4-7-no-thinking, sonnet-4-6, haiku-4-5 | 4 |
+| Kata × Promptformat | game-of-life-prose, mars-rover-prose, pixel-art-scaler-{prose, example-mapping, user-story}, string-calculator-{prose, example-mapping, user-story} | 8 |
+| Replikate | i.d.R. 1; auf 4 Headline-Zellen 3 (v4/v5 × pixel-art-scaler-prose/string-calculator-prose × Opus+thinking) | 1–3 |
+
+**Verteilung der 89 Runs** (von 90 geplant; 1 Failure-only-Test-Run unten zählt mit):
+
+| Workflow | Runs |
+|---|---:|
+| v1-oneshot | 8 |
+| v2-iterative | 2 |
+| v3-basic-tdd | 8 |
+| v4-exact-subagents | 35 |
+| v5-exact-single-context | 36 |
+
+| Modell | Runs |
+|---|---:|
+| opus-4-7 (Adaptive Thinking) | 23 |
+| opus-4-7-no-thinking | 16 |
+| sonnet-4-6 | 34 |
+| haiku-4-5 | 16 |
+
+### 0.3 Ablauf eines Runs
+
+1. Container-Image `docker-batch` mit gepinnter `claude-code@2.1.107`
+   wird gestartet (Image-Build über `experiments/docker/Dockerfile`).
+2. Run-Verzeichnis `runs/<timestamp>_<kata>_<workflow>_<model>/` wird
+   im Container angelegt; Workflow-Konfig (`.claude/agents/`,
+   `.claude/rules/`) und Kata-Prompt (`prompt.md`) hinein kopiert.
+3. pnpm-Workspace mit TypeScript, Vitest, ESLint+SonarJS aufgesetzt
+   (Cache via `experiments/docker/package.cache.json`).
+4. `claude --print "$(< prompt.md)"` läuft headless, ohne HITL.
+5. Nach Abschluss: `analyze-run.sh` schreibt `metrics.json` und
+   `analysis-report.md`. Smell-Detection via ESLint+SonarJS, TDD-Metriken
+   aus dem Transcript (`transcript.jsonl`, plus subagent-Transcripts
+   bei v4).
+6. `aggregate-runs.sh smart-subset` baut `runs.csv` und `summary.md`
+   für den gesamten Plan.
+
+### 0.4 Erfasste Metriken
+
+**Korrektheit**:
+- `tests_passing` (boolean) — Vitest-Summary "passed" und nicht "failed".
+  Pass-Rate als Aggregat.
+
+**Effizienz**:
+- `duration_seconds` — Wallclock von `claude --print`-Start bis Exit.
+- `total_tokens` — Tokens des Hauptkontexts (bei v4 ohne Subagent-Tokens).
+
+**Code-Volumen**:
+- `lines_of_code` — Summe LoC der `src/`-Dateien.
+- `test_lines` — Summe LoC der `*.spec.ts`-Dateien.
+- `tests_total` — Anzahl `it(...)`-Calls (ohne `it.todo`).
+- `code_mass` — Verbund aus `lines_of_code` + `test_lines`.
+
+**Code-Qualität (ESLint + SonarJS)**:
+- `cc_longest_function` — höchste cyclomatic-complexity einer Funktion.
+- `cc_avg_loc_per_function` — durchschnittliche LoC pro Funktion.
+- `smell_total` — Summe aller SonarJS-Findings.
+- `smell_magic_numbers` — `no-magic-numbers`-Findings.
+- `smell_complexity` — `sonarjs/cognitive-complexity`-Findings.
+- `coverage_statements_pct`, `coverage_branches_pct` — Vitest-Coverage.
+
+**TDD-Disziplin (aus Transcript)**:
+- `cycle_count` — abgeschlossene Red-Green-Refactor-Zyklen.
+- `refactorings_applied` — gezählte explizite Refactoring-Schritte.
+- `predictions_correct / predictions_total` — Genauigkeit der TDD-
+  Prediction-Pflicht (nur v4/v5; in v1–v3 nicht gefordert).
+- `tests_passed_immediately` — Tests, die in der Red-Phase **direkt**
+  grün sind (Indikator für Über-Implementierung).
+- `avg_red_seconds`, `avg_green_seconds`, `avg_refactor_seconds` —
+  durchschnittliche Phasen-Dauer.
+
+### 0.5 Bewertungsgrundsätze
+
+- **Korrektheit zuerst**: ein Run mit `tests_passing=false` zählt nicht
+  als gleichwertige Lösung, auch wenn andere Metriken günstig sind.
+- **Pro Kata aggregieren**: `string-calculator` mit ~3 LoC und
+  `game-of-life` mit 30+ LoC sind nicht vergleichbar — Mittel über
+  Katas verschmieren Signal. Workflow×Modell-Tabellen werden in
+  `summary.md` ausschließlich pro Kata gebildet; Cross-Kata-Mittel
+  stehen separat im Anhang als Sanity-Check.
+- **Replikationssparsam**: nur die Headline-Zellen mit n=3, der Rest
+  mit n=1 — entsprechend nur große Effekte (Faktor 2+) als belastbar
+  zu betrachten.
+
+### 0.6 Trainingsdaten-Kontamination
+
+- `string-calculator` und `game-of-life` sind etablierte TDD-Katas
+  und mit Sicherheit in den Trainingsdaten. Niedrige Mass-Werte können
+  Memorisation widerspiegeln, nicht echte Code-Qualität.
+- `pixel-art-scaler` ist Eigenentwicklung — kein klares Training-Leak.
+- `mars-rover` ist verbreitet, aber weniger als string-calculator.
+- Promptformat-Variation (prose/example-mapping/user-story) ändert die
+  Oberfläche, nicht den semantischen Kern — Memorisation-Risiko bleibt.
+
+### 0.7 Technische Infrastruktur
+
+- **Container**: `node:22-slim`-basiert, claude-code 2.1.107 gepinnt
+  (2.1.37 hängt auf cwd mit `.claude/agents/`; 2.1.126 sucht
+  `~/.claude.json` als Datei und exit-tet still).
+- **Mounts**: `experiments/docker/claude-config/` als `~/.claude/`
+  (NICHT Host-`~/.claude` — fish-MCP-Spawns würden den Init blockieren);
+  `~/.claude/.credentials.json` als separater Bind-Mount.
+- **Pipeline-Integration**: Transcript-Save und ESLint-Setup sind in
+  `run-batch.sh` integriert (`save_transcript()` vor `analyze-run.sh`,
+  ESLint-Config per Heredoc). Frühere Runs ohne diese Pipeline wurden
+  per `enrich-runs.sh` post-hoc nachgerüstet.
+- **False-Positive-Schutz**: `run-batch.sh` flaggt Runs nur als
+  rate-limited, wenn exit ≠ 0 UND `\b429\b` in den Logs (nicht jede
+  Backup-Datei mit "429" im ms-Timestamp).
+- **Tests-passing-Bug** (gefixt): `analyze-run.sh` hatte vorher bei
+  "X failed | Y passed" fälschlich `tests_passing=true` gesetzt; der
+  Match prüft jetzt explizit auf "passed" UND fehlendes "failed" in
+  der Vitest-Summary-Zeile.
+
+### 0.8 Workflow-Architekturen (Kurzform)
+
+| Workflow | Aufbau | TDD-Strenge |
+|---|---|---|
+| v1-oneshot | "Implementiere X." | keine |
+| v2-iterative | "Plane Schritt für Schritt, dann implementiere." | keine |
+| v3-basic-tdd | "Verwende TDD." | minimal |
+| v4-exact-subagents | Eigener Subagent pro Phase (Red/Green/Refactor + Predictor) | strikt |
+| v5-exact-single-context | Alle Phasen in einer Konversation, gleiches Phasen-Skript wie v4 | strikt |
+
+Konfigurationen liegen in `experiments/workflows/v{1..5}-*/.claude/`
+(agents/, rules/). Deaktivierungsmechanismus: Verzeichnis-Präfix `_`
+schließt einzelne Agenten aus, ohne sie zu löschen.
+
+### 0.9 Was diese Studie NICHT leistet
+
+- **Kein statistischer Hypothesentest**. n=1 für die meisten Zellen,
+  Effekte werden qualitativ und nur bei Faktor-2+-Diskrepanzen als
+  belastbar interpretiert.
+- **Keine Generalisierung über die 8 Kata-Varianten hinaus**. Aussagen
+  wie "v5 ist schneller als v4" gelten für diese Stichprobe.
+- **Keine direkte Vergleichbarkeit zur Februar-Studie** außer auf den
+  zwei gemeinsamen Katas game-of-life und mars-rover (siehe
+  `comparison-with-old-experiment.md`).
+
+---
+
 ## Top-Befunde
 
 ### 1. Failure-Konzentration auf Haiku 4.5 in v4/v5
@@ -78,54 +244,101 @@ und kosten 10–20× mehr Zeit. Ihr Mehrwert müsste sich auf
 Code-Qualitäts-Metriken (Coverage, Smells, LoC, Modularität) zeigen — nicht
 auf Korrektheit.
 
-### 5. Coverage und LoC: v4/v5 bringen messbar mehr Tests
+### 5. Coverage und LoC: v4/v5 bringen messbar mehr Tests (pro Kata)
 
-| Workflow | Avg test_lines | Avg tests_total | Coverage stmt |
+> **Hinweis:** Cross-Kata-Mittel über Workflow×Modell sind aufgrund
+> der heterogenen Kata-Größen (string-calculator ≈ 3 LoC vs.
+> game-of-life ≈ 30+ LoC) verzerrt. Die folgenden Tabellen zeigen
+> den Effekt auf der größten Kata; pixel-art-scaler und
+> string-calculator skalieren analog mit kleineren Absolutwerten.
+> Vollständige Pivots stehen pro Kata in `summary.md`.
+
+**game-of-life-prose** (n=1 pro Zelle):
+
+| Workflow × Modell | test_lines | tests_total | LoC |
 |---|---:|---:|---:|
-| v1-oneshot | 40.4 | 6.9 | 100 % |
-| v3-basic-tdd | 54.4 | 7.6 | 100 % |
-| v4 (avg über Modelle, n=35) | 30.8 | 6.7 | 94.3 % |
-| v5 (avg über Modelle, n=36) | 27.6 | 5.2 | 88.8 % |
+| v1-oneshot × sonnet-4-6 | 72 | 10 | 30 |
+| v3-basic-tdd × sonnet-4-6 | 81 | 10 | 30 |
+| v4 × opus-4-7 | 39 | 8 | 32 |
+| v4 × opus-4-7-no-thinking | 35 | 8 | 41 |
+| v4 × sonnet-4-6 | 41 | 10 | 42 |
+| v4 × haiku-4-5 | 108 | 12 | 59 |
+| v5 × opus-4-7 | 46 | 9 | 25 |
+| v5 × sonnet-4-6 | 32 | 7 | 30 |
 
-Überraschend: v3-basic-tdd hat die höchsten test_lines (54.4) und
-tests_total (7.6) — die strikteren Workflows v4/v5 produzieren *weniger*
-Tests, vermutlich weil ihr engerer Cycle weniger Beispielskanten
-abdeckt. Coverage bleibt für Sonnet/Opus auf v4/v5 weiterhin bei
-99–100 % — die Tests die geschrieben werden, decken alles ab.
+**mars-rover-prose** (n=1 pro Zelle):
 
-LoC pro Lösung schwankt wenig (4–14 für funktionierende Runs); v4 +
-haiku ist mit 24 LoC der Ausreißer, was auf weniger refaktorierten Code
-in den haiku-Failures hindeutet (Implementation-Versuche, die nicht
-abgeschlossen wurden).
+| Workflow × Modell | test_lines | tests_total | LoC |
+|---|---:|---:|---:|
+| v1-oneshot × sonnet-4-6 | 64 | 14 | 34 |
+| v3-basic-tdd × sonnet-4-6 | 127 | 17 | 27 |
+| v4 × opus-4-7 | 35 | 10 | 52 |
+| v4 × opus-4-7-no-thinking | 35 | 10 | 30 |
+| v4 × sonnet-4-6 | 29 | 8 | 39 |
+| v5 × opus-4-7 | 29 | 8 | 32 |
+| v5 × sonnet-4-6 | 29 | 8 | 21 |
 
-### 6. TDD-Disziplin: v4 macht echtes TDD, v3 fakest es weiterhin
+→ Auf der großen Kata schreibt **v3** überraschend mehr Tests
+(z.B. mars-rover: 127 test_lines vs. 29–35 bei v4/v5) — sein eng
+geführter Single-Step-Cycle deckt Beispielskanten breiter ab. v4/v5
+sparen Test-Volumen, halten Coverage aber für Sonnet/Opus bei
+99–100 % (siehe `summary.md` Pro-Kata-Coverage-Sektionen).
 
-Mit der nachträglich angereicherten Transcript-Pipeline lassen sich Cycle-
-und Refactoring-Counts pro Run rekonstruieren. Aggregat über alle Katas:
+LoC pro Lösung skaliert mit Kata-Größe (string-calculator: 3–8 LoC,
+pixel-art-scaler: 4–10 LoC, mars-rover/game-of-life: 25–60 LoC). Die
+Haiku-Zellen auf v4/v5 sind die LoC-Ausreißer (59 / 63), weil
+gefailte Implementierungs-Versuche unrefaktoriert verbleiben.
 
-| Workflow × Modell | n | avg cycles | avg refactorings | predictions correct/total | tests_passed_immediately |
-|---|---:|---:|---:|---:|---:|
-| v1-oneshot × sonnet-4-6 | 7 | 1.1 | 0.0 | – | – |
-| v3-basic-tdd × sonnet-4-6 | 8 | **1.2** | **0.0** | – | – |
-| v4-exact-subagents × opus-4-7 | 11 | 6.2 | 4.7 | 4.6/4.6 (100 %) | 2.0 |
-| v4-exact-subagents × opus-4-7-no-thinking | 8 | 6.8 | 5.4 | 5.2/5.2 (100 %) | 3.2 |
-| v4-exact-subagents × sonnet-4-6 | 8 | 6.8 | 5.8 | 5.8/6.4 (91 %) | 2.5 |
-| v4-exact-subagents × haiku-4-5 | 8 | 5.8 | 5.2 | 2.1/2.2 (95 %) | 0.9 |
-| v5-exact-single-context × opus-4-7 | 12 | 5.5 | 4.2 | – (v5 macht keine) | 1.5 |
-| v5-exact-single-context × sonnet-4-6 | 8 | 5.5 | 5.5 | – | 1.9 |
+### 6. TDD-Disziplin: v4 macht echtes TDD, v3 fakest es weiterhin (pro Kata)
 
-Wichtigste Befunde:
+Cycle- und Refactoring-Counts pro Run aus der Transcript-Pipeline.
+Da Aufgaben-Größe die absoluten Zahlen mitbestimmt (game-of-life
+braucht mehr Cycles als string-calculator), zeigen wir das Muster
+auf den beiden großen Katas. Vollständige Pivots in
+`summary.md`-Sektionen `### TDD discipline` pro Kata.
 
-- **v3-basic-tdd reproduziert das alte "Fake-TDD"-Muster**: 1.2 Cycles im
-  Schnitt, 0 Refactorings — v3 schreibt Tests + Implementation oft in
-  einem Schritt, ohne ehrlichen Red→Green→Refactor-Zyklus.
-- **v4 macht echtes TDD**: 5.8–6.8 Cycles, 4.7–5.8 Refactorings — die
+**game-of-life-prose** (n=1 pro Zelle):
+
+| Workflow × Modell | cycles | refactorings | tests_immediately | predictions |
+|---|---:|---:|---:|---|
+| v1-oneshot × sonnet-4-6 | 1 | 0 | 0 | – |
+| v3-basic-tdd × sonnet-4-6 | **1** | **0** | 0 | – |
+| v4 × opus-4-7 | 8 | 8 | 0 | 4/4 (100 %) |
+| v4 × opus-4-7-no-thinking | 8 | 8 | 6 | 5/5 (100 %) |
+| v4 × sonnet-4-6 | 10 | 5 | 6 | 6/7 (86 %) |
+| v4 × haiku-4-5 | 1 | 1 | 0 | – (gefailt) |
+| v5 × opus-4-7 | 9 | 3 | 7 | – (v5 macht keine) |
+| v5 × sonnet-4-6 | 7 | 7 | 5 | – |
+
+**mars-rover-prose** (n=1 pro Zelle):
+
+| Workflow × Modell | cycles | refactorings | tests_immediately | predictions |
+|---|---:|---:|---:|---|
+| v1-oneshot × sonnet-4-6 | 2 | 0 | 0 | – |
+| v3-basic-tdd × sonnet-4-6 | **1** | **0** | 0 | – |
+| v4 × opus-4-7 | 10 | 6 | 5 | 9/9 (100 %) |
+| v4 × opus-4-7-no-thinking | 10 | 10 | 5 | 8/8 (100 %) |
+| v4 × sonnet-4-6 | 8 | 8 | 0 | 9/9 (100 %) |
+| v4 × haiku-4-5 | 8 | 7 | 1 | 4/4 (100 %) |
+| v5 × opus-4-7 | 8 | 8 | 0 | – |
+| v5 × sonnet-4-6 | 8 | 8 | 0 | – |
+
+Wichtigste Befunde (auf beiden Katas konsistent):
+
+- **v3-basic-tdd reproduziert das alte "Fake-TDD"-Muster**: 1 Cycle,
+  0 Refactorings — v3 schreibt Tests + Implementation in einem Schritt,
+  ohne ehrlichen Red→Green→Refactor-Zyklus.
+- **v4 macht echtes TDD**: 8–10 Cycles, 5–10 Refactorings — die
   Disziplin steckt im Workflow, nicht im Modell.
-- **Predictions auf v4 sind nahezu perfekt**: Opus 4.7 ohne Thinking
-  schlägt mit 100 %/5.2-Vorhersagen sogar minimal Opus mit Thinking
-  (100 %/4.6) — Adaptive Thinking bringt hier kein Plus.
+- **Predictions auf v4 sind nahezu perfekt**: 86–100 %, fast immer
+  alle Vorhersagen korrekt. Adaptive Thinking bringt hier kein Plus.
 - **v5 macht keine Predictions** (das Workflow-Design verlangt sie nicht),
   hat aber ähnliche Cycle-/Refactoring-Counts wie v4.
+
+Auf den kleinen Katas (string-calculator, pixel-art-scaler) sind die
+Absolutwerte niedriger (2–6 Cycles), das **Muster** v3=Fake-TDD vs.
+v4=Cycles+Refactorings bleibt aber identisch — siehe pro-Kata-Blöcke
+in `summary.md`.
 
 ### 7. Code-Smells: nur große Katas haben Spielraum
 
@@ -148,63 +361,87 @@ Magic Numbers dominieren. Nur ein Run (v5+opus-no-thinking auf
 game-of-life) bricht die cognitive-complexity-Schwelle 3×. Duplication
 und Code-Quality-Smells praktisch null.
 
-### 8. Code-Qualität: v4+Opus ist die klare Spitze
+### 8. Code-Qualität: v4+Opus ist die klare Spitze (auf den großen Katas)
 
-Aggregiert über alle Katas (nur grüne Runs), drei Indikatoren für
-Qualität:
+> **Methodischer Hinweis:** Code-Quality-Vergleiche müssen pro Kata
+> erfolgen — eine 3-LoC-Lösung kann gar keinen `cc_longest_function ≥ 5`
+> haben, ein 40-LoC-Game-of-Life schon. Cross-Kata-Mittel verschmieren
+> dieses Signal. Pixel-art-scaler und string-calculator sind in dieser
+> Stichprobe zu klein für Smell-Differenzierung (siehe §7); die folgenden
+> Tabellen zeigen die beiden Katas mit Spielraum.
 
-| Workflow × Modell | n | smell_avg | cc_longest_fn | loc | cc_avg_loc/fn |
-|---|---:|---:|---:|---:|---:|
-| v4 + opus-4-7 (Thinking) | 11 | **0.18** | **3.6** | 11 | 4.7 |
-| v4 + opus-4-7-no-thinking | 8 | 0.25 | 4.4 | 13 | 5.5 |
-| v5 + opus-4-7 (Thinking) | 12 | 0.17 | 5.5 | 9 | 5.8 |
-| v5 + sonnet-4-6 | 8 | 0.25 | 5.0 | 10 | 5.9 |
-| v4 + sonnet-4-6 | 8 | 0.38 | 6.1 | 14 | 5.7 |
-| v5 + opus-4-7-no-thinking | 8 | 0.62 | 7.6 | 13 | 8.7 |
-| v4 + haiku-4-5 | 6 | 0.67 | 8.0 | 26 | 11.4 |
-| v3-basic-tdd + sonnet | 8 | 0.75 | **9.0** | 13 | 11.8 |
-| v1-oneshot + sonnet | 8 | 0.88 | 9.0 | 12 | 9.6 |
+**game-of-life-prose** (n=1 pro Zelle):
 
-`cc_longest_fn` ist der Diskriminator: v4+Opus hat 3.6 Zeilen, v3/v1
-mit Sonnet liegen bei 9.0 — eine **2.5×-Differenz** in der maximalen
-Funktionsgröße. Das bestätigt die TDD-Theorie: viele kleine
-Refactoring-Schritte → kleine Funktionen.
+| Workflow × Modell | cc_longest | smell_total | LoC |
+|---|---:|---:|---:|
+| v4 × opus-4-7 (Thinking) | **4** | 2 | 32 |
+| v4 × opus-4-7-no-thinking | 10 | 2 | 41 |
+| v5 × sonnet-4-6 | 15 | 2 | 30 |
+| v4 × sonnet-4-6 | 18 | 3 | 42 |
+| v5 × opus-4-7 (Thinking) | 19 | 2 | 25 |
+| v4 × haiku-4-5 | 22 | 4 | 59 |
+| v1-oneshot × sonnet | 24 | 4 | 30 |
+| v3-basic-tdd × sonnet | **28** | 5 | 30 |
+| v5 × opus-4-7-no-thinking | 29 | 5 | 33 |
+
+**mars-rover-prose** (n=1 pro Zelle):
+
+| Workflow × Modell | cc_longest | smell_total | LoC |
+|---|---:|---:|---:|
+| v4 × sonnet-4-6 | **6** | 0 | 39 |
+| v4 × opus-4-7 | 6 | 0 | 52 |
+| v4 × opus-4-7-no-thinking | 7 | 0 | 30 |
+| v5 × opus-4-7 (Thinking) | 2 | 0 | 32 |
+| v5 × sonnet-4-6 | 2 | 0 | 21 |
+| v5 × haiku-4-5 | 2 | 0 | 49 |
+| v5 × opus-4-7-no-thinking | 9 | 0 | 41 |
+| v4 × haiku-4-5 | 0 | 0 | 63 |
+| v3-basic-tdd × sonnet | 0 | 1 | 27 |
+| v1-oneshot × sonnet | 17 | 3 | 34 |
+
+→ **game-of-life zeigt das klare Workflow-Signal**: v4+Opus+Thinking
+liegt bei `cc_longest_function = 4`, v3-basic-tdd bei 28 — eine **7×-Differenz** auf
+derselben Aufgabe. Magic-Numbers + Complexity-Smells konzentrieren
+sich bei v1/v3+Sonnet (4–5) gegen 2–3 für v4/v5.
+
+→ **mars-rover ist sauber für die meisten Konfigurationen** (smell=0,
+cc_longest 2–9), nur v1-oneshot+Sonnet hat sichtbar längere Funktionen
+(17) und 3 Smells. Differenzierung schwächer als auf game-of-life.
+
+→ **pixel-art-scaler und string-calculator** liefern in dieser
+Stichprobe **kein Smell-Signal** (alle 65 Runs: smell=0). Vollständige
+pro-Kata-Pivots stehen in `summary.md`-Sektionen `### Code quality`.
 
 ### 9. game-of-life ist der Code-Quality-Diskriminator
 
-Auf der größten Kata (loc 25–59) zeigt sich der Workflow-Effekt
-deutlich (n=1 pro Zelle, also Trend, nicht Beweis):
+Die game-of-life-prose-Tabelle in §8 ist der Beleg: cc_longest_function
+schwankt von 4 (v4+Opus+Thinking) bis 29 (v5+Opus-no-thinking) — eine
+**7×-Differenz** auf derselben Aufgabe, n=1 pro Zelle. Auf der größten
+Kata schlägt TDD-Disziplin die Modellstärke. Vollständige pro-Kata-
+Pivots stehen in `summary.md` (Sektion `## Kata: game-of-life-prose`,
+Untersektion `### Code quality — cc_longest_function`).
 
-| Workflow × Modell | loc | cc_longest | smell |
-|---|---:|---:|---:|
-| v4 + opus-4-7 | 32 | **4** | 2 |
-| v4 + opus-4-7-no-thinking | 41 | 10 | 2 |
-| v5 + sonnet-4-6 | 30 | 15 | 2 |
-| v4 + sonnet-4-6 | 42 | 18 | 3 |
-| v5 + opus-4-7 | 25 | 19 | 2 |
-| v4 + haiku-4-5 | 59 | 22 | 4 |
-| v1-oneshot + sonnet | 30 | 24 | 4 |
-| v3-basic-tdd + sonnet | 30 | **28** | 5 |
-| v5 + opus-4-7-no-thinking | 33 | **29** | 5 |
+### 10. Adaptive Thinking hilft fast nur auf v5 (game-of-life-prose)
 
-Eine längste Funktion von 4 Zeilen (v4+Opus+Thinking) gegenüber 28
-(v3-basic-tdd) auf derselben Aufgabe ist eine Größenordnung
-Unterschied — TDD-Disziplin schlägt Modellstärke.
+Auf game-of-life-prose (siehe §8) liegt v4+Opus mit Thinking bei
+cc_longest = 4, ohne Thinking bei 10 — Thinking hilft, aber beide sind
+in derselben Größenordnung wie der Rest von v4/v5. Auf v5 ist der
+Unterschied dramatischer: opus-4-7-Thinking erreicht cc_longest = 19,
+opus-4-7-no-thinking 29. Auf mars-rover-prose verschwindet der Effekt
+(Thinking 6 vs. no-thinking 7 für v4; 2 vs. 9 für v5 — letzteres
+Trend, n=1).
 
-### 10. Adaptive Thinking hilft fast nur auf v5
-
-Auf v4 sind Opus mit/ohne Thinking praktisch identisch (smell 0.18 vs.
-0.25, cc_longest 3.6 vs. 4.4). Auf v5 macht Thinking dagegen einen
-großen Unterschied (smell 0.17 vs. 0.62, cc_longest 5.5 vs. 7.6). Lesart:
+Lesart:
 
 - v4 erzwingt Refactoring durch den Subagent-Cycle — der Workflow
-  schiebt das Modell zur Qualität, Reasoning-Bonus bringt nichts mehr.
+  schiebt das Modell zur Qualität, Reasoning-Bonus ist klein.
 - v5 (single-context) ist nachsichtiger — ohne Thinking knausert das
-  Modell beim Refactoring-Schritt; mit Thinking wird er ehrlich
+  Modell beim Refactoring-Schritt; mit Thinking wird er ehrlicher
   ausgeführt.
 
-Pragmatisch: wer auf v4 unterwegs ist, kann den Thinking-Aufschlag
-sparen. Auf v5 lohnt er sich.
+Pragmatisch: auf v4 ist der Thinking-Aufschlag sparbar (kleine
+Quality-Differenz, gleiche Pass-Rate); auf v5 lohnt er sich auf großen
+Katas.
 
 ### 11. Magic Numbers sind das Hauptproblem aller Setups
 
@@ -220,6 +457,13 @@ Konstanten" würde hier sichtbaren Hebel geben.
 
 ## Caveats
 
+- **Aggregation respektiert Kata-Grenzen** — alle Workflow×Modell-Tabellen
+  in `summary.md` beziehen sich auf eine einzelne Kata (Block-Struktur
+  `## Kata: <name>` → `### …`). Cross-Kata-Mittel stehen separat im
+  Anhang `## Cross-kata averages` und sind ausdrücklich **nicht** für
+  Workflow×Modell-Vergleiche zu benutzen, weil string-calculator
+  (≈ 3 LoC, kein Smell-Spielraum) und game-of-life (≈ 30 LoC, viel
+  Spielraum) im Mittel zu inhomogen sind.
 - **n pro Zelle ist klein** (2–12). Pass-Rate-Differenzen unter ~20 % sind
   nicht signifikant.
 - **6 Runs ohne transcript** (von 89): Bei diesen ist `cycle_count=0` weil
