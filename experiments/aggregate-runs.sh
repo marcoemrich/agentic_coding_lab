@@ -364,6 +364,8 @@ for kata in $KATAS; do
     # --- Core metrics ---
     rate_pivot   "Core metrics — Tests passing rate (workflow × model)"      2 3 21 "true"  "$kata" "###"
     avg_pivot    "Core metrics — Duration seconds (workflow × model)"        2 3 9   "$kata" "###"
+    avg_pivot    "Core metrics — Total tokens (workflow × model)"             2 3 10  "$kata" "###"
+    avg_pivot    "Core metrics — Context utilization % (workflow × model)"    2 3 11  "$kata" "###"
     avg_pivot    "Core metrics — Lines of code (workflow × model)"           2 3 24  "$kata" "###"
     avg_pivot    "Core metrics — Code mass (workflow × model)"               2 3 26  "$kata" "###"
     avg_pivot    "Core metrics — Test lines (workflow × model)"              2 3 25  "$kata" "###"

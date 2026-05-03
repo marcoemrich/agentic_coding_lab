@@ -17,15 +17,49 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterable
 
-OPUS_CONTEXT_WINDOW = 200_000
+# Context-window sizes per model. Used to compute context_utilization_pct
+# from the observed peak cumulative input+cache token count.
+# Source: docs.claude.com/en/docs/about-claude/models (as of 2026-05).
+MODEL_CONTEXT_WINDOWS = {
+    # Claude 4.x family
+    "claude-opus-4-7": 1_000_000,
+    "claude-opus-4-6": 200_000,
+    "claude-sonnet-4-6": 1_000_000,
+    "claude-sonnet-4-5": 1_000_000,
+    "claude-haiku-4-5": 200_000,
+    # Legacy 3.x (kept for old transcripts)
+    "claude-3-5-sonnet": 200_000,
+    "claude-3-5-haiku": 200_000,
+    "claude-3-opus": 200_000,
+}
+DEFAULT_CONTEXT_WINDOW = 200_000
+
+
+def resolve_context_window(model_versions: list[str]) -> int:
+    """Look up context-window size for the model used in this run.
+
+    Matches by prefix so that dated suffixes ("claude-haiku-4-5-20251001")
+    or "-thinking" variants resolve to the same family entry. Falls back to
+    DEFAULT_CONTEXT_WINDOW if no model id is recognised (e.g. transcript
+    predates model-id reporting).
+    """
+    for model_id in model_versions:
+        if not isinstance(model_id, str):
+            continue
+        for prefix, window in MODEL_CONTEXT_WINDOWS.items():
+            if model_id.startswith(prefix):
+                return window
+    return DEFAULT_CONTEXT_WINDOW
 
 TDD_PHASES = ("test-list", "red", "green", "refactor")
 
 # Matches the self-reported prediction outcome marker emitted by the red-phase
 # agent inside its "Red Phase Complete:" block (see workflows/.../red.md).
-# Tolerates optional markdown bold/italic decoration around "Correct"/"Incorrect".
+# Accepts either a leading dash (v4-style: "... - Correct") or an emoji
+# checkmark/cross (v5-style: "... ✅ Correct"). Tolerates optional markdown
+# bold/italic decoration around "Correct"/"Incorrect".
 _PREDICTION_OUTCOME_RE = re.compile(
-    r"-\s*[*_]{0,2}(Correct|Incorrect)[*_]{0,2}\b",
+    r"(?:-|✅|❌)\s*[*_]{0,2}(Correct|Incorrect)[*_]{0,2}\b",
     re.IGNORECASE,
 )
 
@@ -123,6 +157,11 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
     # subagent-*.jsonl files when meta.json is missing.
     task_order: list[str] = []
 
+    # Inline tool-event stream for v3 phase inference (no skills, no subagents).
+    # Each entry: (timestamp, kind, cumulative_tokens_after_message). Kind is
+    # one of: "write_test", "edit_test", "write_impl", "edit_impl", "test_run".
+    inline_tool_events: list[tuple[datetime | None, str, int]] = []
+
     # Track which tool_use_ids correspond to red-phase skills/tasks, so we
     # can detect "passed immediately" (skill/task whose result reports tests
     # already green, no green follow-up).
@@ -218,17 +257,46 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
                 cmd = tool_input.get("command")
                 if isinstance(cmd, str):
                     bash_commands.append(cmd)
+                    if "pnpm test" in cmd or "pnpm run test" in cmd:
+                        inline_tool_events.append(
+                            (ts, "test_run", cumulative_token_running)
+                        )
+
+            # Classify file edits/writes by path for inline phase inference.
+            if tool_name in ("Write", "Edit", "MultiEdit", "NotebookEdit"):
+                path = (
+                    tool_input.get("file_path")
+                    or tool_input.get("path")
+                    or tool_input.get("notebook_path")
+                    or ""
+                )
+                if isinstance(path, str) and path:
+                    is_test = bool(
+                        re.search(r"\.(spec|test)\.(ts|tsx|js|jsx|mjs|cjs)$", path)
+                    )
+                    is_src = ("/src/" in path) or path.startswith("src/")
+                    verb = "write" if tool_name == "Write" else "edit"
+                    if is_test:
+                        inline_tool_events.append(
+                            (ts, f"{verb}_test", cumulative_token_running)
+                        )
+                    elif is_src:
+                        inline_tool_events.append(
+                            (ts, f"{verb}_impl", cumulative_token_running)
+                        )
 
     wall_clock = 0.0
     if first_ts and last_ts:
         wall_clock = (last_ts - first_ts).total_seconds()
 
     total_tokens = total_input + total_output + total_cache_read + total_cache_creation
-    ctx_util_pct = int(round(100 * max_cumulative / OPUS_CONTEXT_WINDOW))
+    context_window = resolve_context_window(model_versions)
+    ctx_util_pct = int(round(100 * max_cumulative / context_window))
 
     cycle_count = derive_cycle_count(skill_invocations, task_invocations, bash_commands)
 
     skill_phases = aggregate_skill_phases(skill_phase_markers, message_stream, last_ts)
+    inline_tool_phases = infer_phases_from_tool_sequence(inline_tool_events)
 
     return {
         "wall_clock_seconds": round(wall_clock, 2),
@@ -240,6 +308,8 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
             "total": total_tokens,
         },
         "context_utilization_pct": ctx_util_pct,
+        "context_window_tokens": context_window,
+        "context_peak_tokens": max_cumulative,
         "message_count": message_count,
         "tool_calls": dict(tool_calls),
         "skill_invocations": dict(skill_invocations),
@@ -250,10 +320,96 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
         "model_versions": model_versions,
         "_internal": {
             "skill_phases": skill_phases,
+            "inline_tool_phases": inline_tool_phases,
             "task_order": task_order,
             "red_tool_use_ids": red_tool_use_ids,
         },
     }
+
+
+def infer_phases_from_tool_sequence(
+    events: list[tuple[datetime | None, str, int]],
+) -> list[dict[str, Any]]:
+    """Infer TDD phases from inline tool-event sequence (no skill/subagent).
+
+    Heuristic for v3 (basic-tdd, inline):
+      - Red:      [write_test|edit_test ...] up to and including the next test_run
+      - Green:    [write_impl|edit_impl ...] up to and including the next test_run
+      - Refactor: edit_impl-sequence with no intervening write_test/edit_test
+                  (i.e. impl edits after a green phase, not preceded by a new test)
+
+    Returns a list of phase dicts: [{"phase", "tokens", "duration_seconds"}].
+    """
+    if not events:
+        return []
+
+    phases: list[dict[str, Any]] = []
+    i = 0
+    n = len(events)
+    last_phase: str | None = None
+
+    while i < n:
+        ts_start, kind, cum_start = events[i]
+
+        if kind in ("write_test", "edit_test"):
+            # Consume contiguous test edits + look forward to next test_run.
+            j = i
+            while j < n and events[j][1] in ("write_test", "edit_test"):
+                j += 1
+            # Include trailing test_run if present.
+            end_idx = j - 1
+            if j < n and events[j][1] == "test_run":
+                end_idx = j
+                j += 1
+            ts_end, _, cum_end = events[end_idx]
+            duration = (
+                (ts_end - ts_start).total_seconds()
+                if (ts_end and ts_start)
+                else 0.0
+            )
+            phases.append(
+                {
+                    "phase": "red",
+                    "tokens": max(0, cum_end - cum_start),
+                    "duration_seconds": round(duration, 2),
+                }
+            )
+            last_phase = "red"
+            i = j
+            continue
+
+        if kind in ("write_impl", "edit_impl"):
+            # Consume contiguous impl edits + trailing test_run.
+            j = i
+            while j < n and events[j][1] in ("write_impl", "edit_impl"):
+                j += 1
+            end_idx = j - 1
+            if j < n and events[j][1] == "test_run":
+                end_idx = j
+                j += 1
+            ts_end, _, cum_end = events[end_idx]
+            duration = (
+                (ts_end - ts_start).total_seconds()
+                if (ts_end and ts_start)
+                else 0.0
+            )
+            # Refactor if this impl-block was not preceded by a fresh red.
+            phase_name = "refactor" if last_phase in ("green", "refactor") else "green"
+            phases.append(
+                {
+                    "phase": phase_name,
+                    "tokens": max(0, cum_end - cum_start),
+                    "duration_seconds": round(duration, 2),
+                }
+            )
+            last_phase = phase_name
+            i = j
+            continue
+
+        # Stray test_run (no preceding edits in this loop) — skip.
+        i += 1
+
+    return phases
 
 
 def aggregate_skill_phases(
@@ -514,6 +670,9 @@ def main(argv: list[str]) -> int:
     elif internal["skill_phases"]:
         phases = internal["skill_phases"]
         phase_source = "skills"
+    elif internal["inline_tool_phases"]:
+        phases = internal["inline_tool_phases"]
+        phase_source = "inline-tool"
     else:
         phases = []
         phase_source = "none"
@@ -521,6 +680,13 @@ def main(argv: list[str]) -> int:
     metrics["phases"] = phases
     metrics["phase_source"] = phase_source
     metrics["phase_summary"] = summarize_phases(phases)
+
+    # If we inferred phases (any source), cycle_count = number of red phases.
+    # Otherwise keep the derive_cycle_count fallback (skill/task/bash-based).
+    if phases:
+        red_phase_count = sum(1 for p in phases if p["phase"] == "red")
+        if red_phase_count > 0:
+            metrics["cycle_count"] = red_phase_count
 
     out_path = run_dir / "transcript-metrics.json"
     out_path.write_text(json.dumps(metrics, indent=2) + "\n", encoding="utf-8")
