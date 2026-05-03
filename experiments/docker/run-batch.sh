@@ -233,6 +233,55 @@ echo -e "${BLUE}Per-run timeout:${NC} ${CLAUDE_TIMEOUT_SECONDS}s"
 echo
 
 # ---------------------------------------------------------------------------
+# save_transcript: copy Claude session JSONL + subagent transcripts into
+# the run dir so analyze-run.sh / analyze_transcript.py can pick them up.
+# Ported from experiments/record-run.sh:401-445.
+# ---------------------------------------------------------------------------
+save_transcript() {
+    local run_dir=$1
+
+    # Claude Code stores session JSONLs under
+    # ~/.claude/projects/<dashed-path>/<uuid>.jsonl, where dashed-path is
+    # the absolute run dir with every non-alphanumeric char replaced by "-".
+    local dashed_path
+    dashed_path=$(echo "$run_dir" | sed 's|[^a-zA-Z0-9]|-|g')
+    local home_dir="${HOME:-/home/experimenter}"
+    local project_dir="$home_dir/.claude/projects/$dashed_path"
+
+    if [ ! -d "$project_dir" ]; then
+        echo -e "  ${YELLOW}Transcript project dir not found: $project_dir${NC}"
+        return
+    fi
+
+    # Pick the most recently modified <uuid>.jsonl as the main session.
+    local newest_jsonl
+    newest_jsonl=$(ls -t "$project_dir"/*.jsonl 2>/dev/null | head -1)
+
+    if [ -z "$newest_jsonl" ] || [ ! -f "$newest_jsonl" ]; then
+        echo -e "  ${YELLOW}No transcript JSONL found in $project_dir${NC}"
+        return
+    fi
+
+    cp "$newest_jsonl" "$run_dir/transcript.jsonl"
+
+    # Subagent transcripts (v4) live under <project_dir>/<uuid>/subagents/.
+    local session_uuid
+    session_uuid=$(basename "$newest_jsonl" .jsonl)
+    local subagent_src="$project_dir/$session_uuid/subagents"
+    if [ -d "$subagent_src" ]; then
+        local count
+        count=$(ls -1 "$subagent_src"/agent-*.jsonl 2>/dev/null | wc -l | tr -d '[:space:]')
+        if [ "$count" -gt 0 ]; then
+            mkdir -p "$run_dir/transcript-subagents"
+            cp "$subagent_src"/agent-*.jsonl "$run_dir/transcript-subagents/"
+            # Meta files carry agentType used by analyze_transcript.py to
+            # identify red-phase agents for prediction counts.
+            cp "$subagent_src"/agent-*.meta.json "$run_dir/transcript-subagents/" 2>/dev/null || true
+        fi
+    fi
+}
+
+# ---------------------------------------------------------------------------
 # Run loop
 # ---------------------------------------------------------------------------
 
@@ -282,7 +331,10 @@ for entry in "${RUN_LIST[@]}"; do
   "devDependencies": {
     "typescript": "^5.3.0",
     "vitest": "^1.0.0",
-    "@vitest/coverage-v8": "^1.0.0"
+    "@vitest/coverage-v8": "^1.0.0",
+    "eslint": "^9.0.0",
+    "eslint-plugin-sonarjs": "^1.0.0",
+    "typescript-eslint": "^8.0.0"
   }
 }
 EOF
@@ -317,6 +369,62 @@ export default defineConfig({
     },
   },
 });
+EOF
+
+    cat > "$run_dir/eslint.config.mjs" << 'EOF'
+import sonarjs from "eslint-plugin-sonarjs";
+import tseslint from "typescript-eslint";
+
+export default [
+  {
+    files: ["src/**/*.ts"],
+    ignores: ["src/**/*.spec.ts"],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        projectService: true,
+      },
+    },
+    plugins: {
+      sonarjs,
+    },
+    rules: {
+      // Complexity smells
+      "sonarjs/cognitive-complexity": ["error", 10],
+      "max-depth": ["error", 3],
+      "max-lines-per-function": ["error", { max: 30, skipBlankLines: true, skipComments: true }],
+      "max-params": ["error", 4],
+
+      // Duplication smells
+      "sonarjs/no-duplicate-string": ["error", { threshold: 3 }],
+      "sonarjs/no-duplicated-branches": "error",
+      "sonarjs/no-identical-functions": "error",
+
+      // Dead code smells
+      "no-unused-vars": "off",
+      "sonarjs/no-unused-collection": "error",
+      "no-unreachable": "error",
+
+      // Magic numbers
+      "no-magic-numbers": ["error", { ignore: [0, 1, -1], ignoreArrayIndexes: true }],
+
+      // Boolean/logic smells
+      "sonarjs/no-redundant-boolean": "error",
+      "sonarjs/no-gratuitous-expressions": "error",
+
+      // Code quality smells
+      "sonarjs/no-collapsible-if": "error",
+      "sonarjs/no-redundant-jump": "error",
+      "sonarjs/no-useless-catch": "error",
+      "sonarjs/prefer-immediate-return": "error",
+      "sonarjs/prefer-single-boolean-return": "error",
+
+      // Nested complexity
+      "sonarjs/no-nested-switch": "error",
+      "sonarjs/no-nested-template-literals": "error",
+    },
+  },
+];
 EOF
 
     # Record start
@@ -417,6 +525,10 @@ EOF
         ok_count=$((ok_count + 1))
         echo -e "  ${GREEN}OK (${duration}s)${NC}"
     fi
+
+    # Save Claude transcript + subagent transcripts before analysis so
+    # analyze_transcript.py (called from analyze-run.sh) has its inputs.
+    save_transcript "$run_dir"
 
     # Run analysis (best-effort)
     echo -e "  Analyzing results..."
