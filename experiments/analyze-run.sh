@@ -254,10 +254,16 @@ analyze_single_run() {
         test_output=$(cd "$run_dir" && pnpm test 2>&1) || true
         echo "$test_output"
 
-        # Check if tests passed
-        if echo "$test_output" | grep -q "passed"; then
+        # Check if tests passed. Vitest summary line:
+        #   "Tests  N passed (N)"             -> all green
+        #   "Tests  X failed | Y passed ..."  -> at least one failure
+        # We require BOTH "passed" present AND "failed" absent in the
+        # Tests summary line to flag green. Anything else => not passing.
+        local tests_summary
+        tests_summary=$(echo "$test_output" | grep -E '^[[:space:]]*Tests[[:space:]]+' | head -1)
+        if [ -n "$tests_summary" ] && echo "$tests_summary" | grep -q "passed" && ! echo "$tests_summary" | grep -q "failed"; then
             tests_passed=true
-            local passed_count=$(echo "$test_output" | grep -oE "[0-9]+ passed" | head -1)
+            local passed_count=$(echo "$tests_summary" | grep -oE "[0-9]+ passed" | head -1)
             report_content+="**Status**: ✅ All tests passing ($passed_count)\n\n"
         else
             report_content+="**Status**: ❌ Tests failed or not runnable\n\n"
