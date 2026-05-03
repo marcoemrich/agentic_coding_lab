@@ -148,6 +148,74 @@ Magic Numbers dominieren. Nur ein Run (v5+opus-no-thinking auf
 game-of-life) bricht die cognitive-complexity-Schwelle 3×. Duplication
 und Code-Quality-Smells praktisch null.
 
+### 8. Code-Qualität: v4+Opus ist die klare Spitze
+
+Aggregiert über alle Katas (nur grüne Runs), drei Indikatoren für
+Qualität:
+
+| Workflow × Modell | n | smell_avg | cc_longest_fn | loc | cc_avg_loc/fn |
+|---|---:|---:|---:|---:|---:|
+| v4 + opus-4-7 (Thinking) | 11 | **0.18** | **3.6** | 11 | 4.7 |
+| v4 + opus-4-7-no-thinking | 8 | 0.25 | 4.4 | 13 | 5.5 |
+| v5 + opus-4-7 (Thinking) | 12 | 0.17 | 5.5 | 9 | 5.8 |
+| v5 + sonnet-4-6 | 8 | 0.25 | 5.0 | 10 | 5.9 |
+| v4 + sonnet-4-6 | 8 | 0.38 | 6.1 | 14 | 5.7 |
+| v5 + opus-4-7-no-thinking | 8 | 0.62 | 7.6 | 13 | 8.7 |
+| v4 + haiku-4-5 | 6 | 0.67 | 8.0 | 26 | 11.4 |
+| v3-basic-tdd + sonnet | 8 | 0.75 | **9.0** | 13 | 11.8 |
+| v1-oneshot + sonnet | 8 | 0.88 | 9.0 | 12 | 9.6 |
+
+`cc_longest_fn` ist der Diskriminator: v4+Opus hat 3.6 Zeilen, v3/v1
+mit Sonnet liegen bei 9.0 — eine **2.5×-Differenz** in der maximalen
+Funktionsgröße. Das bestätigt die TDD-Theorie: viele kleine
+Refactoring-Schritte → kleine Funktionen.
+
+### 9. game-of-life ist der Code-Quality-Diskriminator
+
+Auf der größten Kata (loc 25–59) zeigt sich der Workflow-Effekt
+deutlich (n=1 pro Zelle, also Trend, nicht Beweis):
+
+| Workflow × Modell | loc | cc_longest | smell |
+|---|---:|---:|---:|
+| v4 + opus-4-7 | 32 | **4** | 2 |
+| v4 + opus-4-7-no-thinking | 41 | 10 | 2 |
+| v5 + sonnet-4-6 | 30 | 15 | 2 |
+| v4 + sonnet-4-6 | 42 | 18 | 3 |
+| v5 + opus-4-7 | 25 | 19 | 2 |
+| v4 + haiku-4-5 | 59 | 22 | 4 |
+| v1-oneshot + sonnet | 30 | 24 | 4 |
+| v3-basic-tdd + sonnet | 30 | **28** | 5 |
+| v5 + opus-4-7-no-thinking | 33 | **29** | 5 |
+
+Eine längste Funktion von 4 Zeilen (v4+Opus+Thinking) gegenüber 28
+(v3-basic-tdd) auf derselben Aufgabe ist eine Größenordnung
+Unterschied — TDD-Disziplin schlägt Modellstärke.
+
+### 10. Adaptive Thinking hilft fast nur auf v5
+
+Auf v4 sind Opus mit/ohne Thinking praktisch identisch (smell 0.18 vs.
+0.25, cc_longest 3.6 vs. 4.4). Auf v5 macht Thinking dagegen einen
+großen Unterschied (smell 0.17 vs. 0.62, cc_longest 5.5 vs. 7.6). Lesart:
+
+- v4 erzwingt Refactoring durch den Subagent-Cycle — der Workflow
+  schiebt das Modell zur Qualität, Reasoning-Bonus bringt nichts mehr.
+- v5 (single-context) ist nachsichtiger — ohne Thinking knausert das
+  Modell beim Refactoring-Schritt; mit Thinking wird er ehrlich
+  ausgeführt.
+
+Pragmatisch: wer auf v4 unterwegs ist, kann den Thinking-Aufschlag
+sparen. Auf v5 lohnt er sich.
+
+### 11. Magic Numbers sind das Hauptproblem aller Setups
+
+24 von 30 Smells in den 89 Runs sind Magic Numbers (`no-magic-numbers`).
+Cognitive Complexity (8), Duplication (1) und Code-Quality (0) spielen
+fast keine Rolle. Auch Opus + v4 + Thinking lässt unbenannte Konstanten
+(`0.5`, `2`, `8`) im Code stehen. Das ist **kein** Workflow-Effekt — es
+ist eine Modell-übergreifende Schwäche der Mai-2026-Modelle bei
+TypeScript-Refactoring. Ein Workflow-Schritt "extrahiere benannte
+Konstanten" würde hier sichtbaren Hebel geben.
+
 ---
 
 ## Caveats
@@ -171,22 +239,31 @@ und Code-Quality-Smells praktisch null.
 
 ## Empfehlungen für die nächste Iteration
 
-1. **Transcript-Pipeline ist jetzt im Batch eingebaut** (run-batch.sh's
-   `save_transcript()`); für künftige Batches automatisch aktiv. Kein
-   Action-Item mehr, nur dokumentiert.
-2. **ESLint+SonarJS jetzt nachträglich verfügbar**, aber für Batch-Runs
-   sollte das ins Run-Template + pnpm-Cache verlegt werden, damit es
-   nicht jedes Mal ad-hoc installiert wird.
-3. **Mehr Replikate auf den Failure-Cells**: v5+haiku mit 8 Runs hatte
+1. **Pipeline ist vollständig im Batch eingebaut** (commit `236e5e0`):
+   `save_transcript()` + `eslint.config.mjs` + eslint/sonarjs als devDeps
+   + im Docker-Image vorgewärmter pnpm-Store. Künftige Batches liefern
+   TDD-Metriken und Smells ohne Nacharbeit. `enrich-runs.sh` wurde nach
+   einmaliger Anwendung gelöscht.
+2. **Mehr Replikate auf den Failure-Cells**: v5+haiku mit 8 Runs hatte
    nur 50 % — entweder n erhöhen (16+) oder die 4 Failure-Runs
    investigieren, um zu klären ob es Workflow-Limit oder Modell-Limit ist.
-4. **Smell-Differenzierung braucht größere Katas**: pixel-art-scaler und
-   string-calculator sind zu trivial. Nächster Batch sollte den Anteil
-   game-of-life/mars-rover erhöhen oder zusätzliche schwere Katas
-   einführen.
-5. **Headline-Befund nachschärfen**: v4-exact-subagents mit
-   Opus-4-7-Thinking als "Speerspitze" hält in dieser Replikation nicht
-   stand — Pass-Rate ist gleich gut wie viele billigere Setups, Dauer
-   ist 10× höher. Mit den neuen TDD-Disziplin-Daten zeigt sich aber: v4
-   liefert die einzigen Runs mit echter Cycle-Disziplin. v5 ist
-   "Disziplin light", v1/v3 keine.
+3. **Code-Quality-Differenzierung braucht große Katas**: pixel-art-scaler
+   und string-calculator sind zu trivial (3–10 LoC, kein Smell-Signal).
+   Nächster Batch sollte ausschließlich oder dominant
+   `game-of-life-prose` und `mars-rover-prose` fahren — dort
+   differenzieren sich Workflow×Modell sichtbar (cc_longest_function
+   3.6 vs. 28).
+4. **Magic-Numbers sind die niedrig-hängende Frucht**: 24/30 Smells sind
+   `no-magic-numbers`. Ein Workflow-Schritt "benannte Konstanten
+   extrahieren" oder ein Refactoring-Subagent mit dieser Regel würde
+   sichtbaren Hebel haben.
+5. **Headline-Befund nachgeschärft**: Mit den neuen Code-Quality-Daten
+   gilt v4 + Opus-4-7 als "Speerspitze" wieder — aber für Code-Qualität,
+   nicht Pass-Rate. Pass-Rate ist 100 % bei vielen billigeren Setups.
+   v4 + Opus liefert die kürzesten Funktionen (cc_longest 3.6) und
+   wenigsten Smells (0.18) — Aufpreis 10× Wallclock zahlt sich nur aus,
+   wenn man auf großen Katas Code-Qualität priorisiert.
+6. **Adaptive Thinking gezielt einsetzen**: auf v4 sparbar (kein
+   Qualitäts-Vorteil), auf v5 wertvoll (smell 0.17 mit Thinking vs.
+   0.62 ohne). v1–v3 vermutlich auch profitabel, aber nicht
+   gegen-getestet.
