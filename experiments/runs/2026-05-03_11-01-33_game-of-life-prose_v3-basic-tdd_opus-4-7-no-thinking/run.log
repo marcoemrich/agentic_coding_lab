@@ -1,0 +1,4 @@
+All 11 tests pass. Implementation complete:
+
+- `src/game-of-life.spec.ts` — 11 tests covering empty grid, underpopulation, survival (block still life), birth, overpopulation, blinker oscillation (period 2), negative coordinates, input non-mutation, and duplicate input handling.
+- `src/game-of-life.ts` — sparse implementation using a `Set` of living-cell keys and a `Map` of neighbor counts, only iterating over cells adjacent to living cells (no whole-plane allocation).

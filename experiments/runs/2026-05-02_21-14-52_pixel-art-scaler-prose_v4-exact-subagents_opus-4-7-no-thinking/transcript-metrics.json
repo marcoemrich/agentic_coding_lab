@@ -1,0 +1,175 @@
+{
+  "wall_clock_seconds": 562.19,
+  "total_tokens": {
+    "input": 54,
+    "output": 15453,
+    "cache_read": 2112057,
+    "cache_creation": 121666,
+    "total": 2249230
+  },
+  "context_utilization_pct": 35,
+  "message_count": 39,
+  "tool_calls": {
+    "Read": 2,
+    "Bash": 4,
+    "Agent": 16,
+    "TodoWrite": 10
+  },
+  "skill_invocations": {},
+  "task_invocations": {
+    "test-list": 1,
+    "red": 9,
+    "green": 3,
+    "refactor": 3
+  },
+  "cycle_count": 9,
+  "predictions_correct": 8,
+  "predictions_total": 8,
+  "model_versions": [
+    "claude-opus-4-7"
+  ],
+  "subagent_token_total": 4016311,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 195914,
+      "duration_seconds": 24.55,
+      "transcript": "agent-ac12d34c658d04e3e.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 384566,
+      "duration_seconds": 26.84,
+      "transcript": "agent-ae6816377fa0a80fc.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 189370,
+      "duration_seconds": 15.45,
+      "transcript": "agent-a11ae756d171d5a29.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 131506,
+      "duration_seconds": 28.33,
+      "transcript": "agent-afa31b1d73f345bba.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 251521,
+      "duration_seconds": 21.03,
+      "transcript": "agent-a384ad7cc4f6db86d.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 189188,
+      "duration_seconds": 16.71,
+      "transcript": "agent-afa9056f5fc229a1e.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 374836,
+      "duration_seconds": 41.15,
+      "transcript": "agent-ab231e2f887d62790.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 252524,
+      "duration_seconds": 26.5,
+      "transcript": "agent-a628dba1d7bc1c4cd.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 251001,
+      "duration_seconds": 19.43,
+      "transcript": "agent-a1e6a29a8944aa768.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 223255,
+      "duration_seconds": 21.62,
+      "transcript": "agent-a596c6d61cad76b98.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 235190,
+      "duration_seconds": 34.83,
+      "transcript": "agent-a3557d50bedb8f8e5.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 252858,
+      "duration_seconds": 26.45,
+      "transcript": "agent-a1ada87315f9301c8.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 253569,
+      "duration_seconds": 27.21,
+      "transcript": "agent-a422c0eef03cf0292.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 254391,
+      "duration_seconds": 28.23,
+      "transcript": "agent-a929ddf898c164cc0.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 254673,
+      "duration_seconds": 25.47,
+      "transcript": "agent-ab1774e7895dd6ed0.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 321949,
+      "duration_seconds": 32.71,
+      "transcript": "agent-a08fd819f0e6b5179.jsonl"
+    }
+  ],
+  "phase_source": "subagents",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 195914,
+        "duration_seconds": 24.55
+      },
+      "red": {
+        "count": 9,
+        "tokens": 2477052,
+        "duration_seconds": 233.87
+      },
+      "green": {
+        "count": 3,
+        "tokens": 601813,
+        "duration_seconds": 53.78
+      },
+      "refactor": {
+        "count": 3,
+        "tokens": 741532,
+        "duration_seconds": 104.31
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 195914.0,
+        "avg_duration_seconds": 24.55
+      },
+      "red": {
+        "avg_tokens": 275228.0,
+        "avg_duration_seconds": 25.99
+      },
+      "green": {
+        "avg_tokens": 200604.33,
+        "avg_duration_seconds": 17.93
+      },
+      "refactor": {
+        "avg_tokens": 247177.33,
+        "avg_duration_seconds": 34.77
+      }
+    },
+    "refactorings_applied": 3,
+    "tests_passed_immediately": 6
+  }
+}

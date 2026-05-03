@@ -1,0 +1,23 @@
+📋 **Test List Created**
+
+**Feature**: Pixel Art Scaler
+**Test File**: src/pixel-art-scaler.spec.ts
+**Base Functionality Tests**: 8
+
+**Test Cases** (ordered simple → complex):
+1. ✅ Should return empty grid when input is empty
+2. ✅ Should return single pixel unchanged with scale factor 1
+3. ✅ Should replicate single pixel into 2x2 grid with scale factor 2
+4. ✅ Should return single row unchanged with scale factor 1
+5. ✅ Should replicate pixels horizontally and row vertically with scale factor 2 for single row
+6. ✅ Should return multiple rows unchanged with scale factor 1
+7. ✅ Should scale multiple rows both horizontally and vertically with scale factor 2
+8. ✅ Should scale image correctly with scale factor 3
+
+**Advanced Features** (NOT included):
+- Error handling for invalid scale factors
+- Non-rectangular grids
+- Unicode/special character handling (beyond basic ASCII)
+- Performance optimization for large grids
+
+**Next Step**: Invoke `/red` to activate the first test.

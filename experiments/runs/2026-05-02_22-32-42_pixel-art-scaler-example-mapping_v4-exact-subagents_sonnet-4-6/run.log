@@ -1,0 +1,11 @@
+The TDD exercise is complete. All 7 tests pass:
+
+1. Empty array for empty input
+2. Identical copy for scale 1 with single row
+3. Identical copy for scale 1 with multiple rows
+4. Horizontal pixel repetition by scale factor
+5. Vertical row repetition by scale factor
+6. Full 2D scaling for multi-character row
+7. Full 2D scaling for multi-row image
+
+The final implementation uses a `repeat` helper and a two-step approach: scale each pixel horizontally with `flatMap`, then repeat each scaled row vertically.

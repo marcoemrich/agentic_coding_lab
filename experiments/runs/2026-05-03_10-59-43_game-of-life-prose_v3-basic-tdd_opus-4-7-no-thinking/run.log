@@ -1,0 +1,6 @@
+Complete. Implemented Conway's Game of Life with sparse representation:
+
+- `src/game-of-life.spec.ts` — 11 tests covering empty input, underpopulation, survival (block still life), oscillation (blinker), reproduction, overpopulation, negative coordinates, input immutability, and uniqueness.
+- `src/game-of-life.ts` — Sparse implementation that counts neighbor contributions only for cells adjacent to live ones, then applies the four rules.
+
+All 11 tests pass.

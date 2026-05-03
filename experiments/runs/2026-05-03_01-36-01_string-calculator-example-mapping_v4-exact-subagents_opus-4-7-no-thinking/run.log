@@ -1,0 +1,14 @@
+TDD exercise complete. All 4 tests pass:
+- `""` → 0
+- `"1"` → 1
+- `"1,2"` → 3
+- `"1,2,3"` → 6
+
+Final implementation:
+```typescript
+export function add(numbers: string): number {
+  return numbers.split(",").reduce((sum, part) => sum + Number(part), 0);
+}
+```
+
+`experiment-done.txt` written with `DONE`.

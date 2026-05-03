@@ -1,0 +1,4 @@
+Implementation complete. All 10 tests pass:
+- Empty set, underpopulation, stable block, blinker oscillation, reproduction, overpopulation, negative coordinates, glider motion, and uniqueness.
+
+The sparse `nextGeneration` function in `src/game-of-life.ts` only iterates over living cells and their neighbors, so it scales with population rather than grid size.

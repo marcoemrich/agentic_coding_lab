@@ -1,0 +1,16 @@
+TDD exercise complete. All 4 tests from the spec are implemented and passing:
+
+**Final implementation** (`src/string-calculator.ts`):
+```typescript
+export const add = (input: string): number => {
+  return input.split(",").reduce((sum, numberStr) => sum + Number(numberStr), 0);
+};
+```
+
+**Test results**: 4 passed (4)
+- ✅ should return 0 for an empty string
+- ✅ should return the number for a single number string
+- ✅ should return the sum for two comma-separated numbers
+- ✅ should return the sum for any number of comma-separated numbers
+
+`experiment-done.txt` has been created.

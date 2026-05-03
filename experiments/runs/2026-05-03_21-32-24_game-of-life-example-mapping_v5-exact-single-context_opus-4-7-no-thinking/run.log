@@ -1,0 +1,12 @@
+TDD exercise complete. All 8 tests for Conway's Game of Life are implemented and passing:
+
+1. ✅ Empty input → empty output
+2. ✅ Single cell dies (underpopulation)
+3. ✅ Two cells both die (underpopulation)
+4. ✅ Block remains unchanged (still life)
+5. ✅ Vertical blinker → horizontal blinker (oscillator)
+6. ✅ Live cell with 4 neighbors dies (overpopulation)
+7. ✅ Dead cell with 3 neighbors births (reproduction)
+8. ✅ Negative coordinates handled correctly
+
+Implementation uses sparse representation (Map keyed by `"x,y"` string) and counts neighbor contributions from live cells.

@@ -1,0 +1,6 @@
+Implemented Conway's Game of Life with sparse representation:
+
+- `src/game-of-life.ts` — `nextGeneration()` tracks only living cells using a `Set<string>` keyed by `"x,y"` coordinates. Counts neighbors via a single pass that increments every cell adjacent to a live cell, then applies B3/S23 rules.
+- `src/game-of-life.spec.ts` — 12 tests covering empty grid, underpopulation, overpopulation, stable block, blinker oscillation, glider translation, negative/large coordinates, and input non-mutation.
+
+All tests pass and TypeScript type-checks clean.

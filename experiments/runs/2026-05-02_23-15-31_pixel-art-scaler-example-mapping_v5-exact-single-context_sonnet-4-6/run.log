@@ -1,0 +1,17 @@
+The TDD exercise is complete. All 6 tests pass and `experiment-done.txt` has been written.
+
+**Summary of what was built:**
+
+```typescript
+// src/pixel-art-scaler.ts
+const scaleRow = (row: string, scale: number): string =>
+  row.split("").map(pixel => pixel.repeat(scale)).join("");
+
+export const scalePixelArt = (image: string[], scale: number): string[] =>
+  image.flatMap(row => Array.from({ length: scale }, () => scaleRow(row, scale)));
+```
+
+The implementation emerged through 6 Red-Green-Refactor cycles:
+- Tests 1-2 (empty, scale-1) drove the basic structure
+- Test 3 (single pixel block) forced both horizontal and vertical scaling
+- Tests 4-6 passed immediately — confirming the implementation was already fully general

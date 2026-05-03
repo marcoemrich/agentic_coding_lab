@@ -1,0 +1,5 @@
+Implementation complete. Summary:
+
+- **`src/game-of-life.ts`** — `nextGeneration(livingCells)` using sparse representation. Counts neighbor occurrences in a Map (only for cells adjacent to live cells), then applies B3/S23 rules. Handles negative and large coordinates, doesn't mutate input.
+- **`src/game-of-life.spec.ts`** — 14 tests covering empty grid, underpopulation, overpopulation, birth, still-life (block), oscillator (blinker), spaceship (glider), negative coordinates, large coordinates, and immutability.
+- All 14 tests pass; `tsc --noEmit` clean.

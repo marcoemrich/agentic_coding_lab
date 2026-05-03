@@ -1,0 +1,6 @@
+Implemented Conway's Game of Life with TDD:
+
+- `src/game-of-life.spec.ts` — 10 tests covering all 4 rules, blinker oscillator, block still-life, negative coordinates, and edge cases
+- `src/game-of-life.ts` — Sparse implementation using a neighbor-count map; iterates only over cells adjacent to live cells, supporting the infinite grid
+
+All 10 tests pass.

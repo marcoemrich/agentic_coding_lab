@@ -1,0 +1,6 @@
+All 10 tests pass. The implementation:
+
+- Uses a sparse `Set<string>` to track living cells by coordinate key
+- Iterates over all living cells, counting neighbors for every adjacent candidate cell
+- Applies the standard Game of Life rules: survive with 2-3 neighbors, born with exactly 3
+- Handles negative coordinates naturally via string keys like `-1,-2`

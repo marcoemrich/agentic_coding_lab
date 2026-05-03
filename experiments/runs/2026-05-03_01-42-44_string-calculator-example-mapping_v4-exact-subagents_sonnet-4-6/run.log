@@ -1,0 +1,16 @@
+The TDD exercise is complete. All 4 tests implemented and passing:
+
+**Implementation** (`src/string-calculator.ts`):
+```typescript
+export function add(numbers: string): number {
+  return numbers.split(",").reduce((sum, num) => sum + Number(num), 0);
+}
+```
+
+**Test results**: 4/4 passing
+- `add("")` → 0
+- `add("5")` → 5
+- `add("1,2")` → 3
+- `add("1,2,3")` → 6
+
+The refactor phase for the final test eliminated the redundant empty-string guard, since `"".split(",").reduce(...)` with `Number("")` naturally produces 0, leaving a clean single-expression implementation.

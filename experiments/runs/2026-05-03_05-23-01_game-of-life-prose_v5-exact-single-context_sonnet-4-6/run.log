@@ -1,0 +1,16 @@
+The TDD exercise is complete. Here's a summary of what was built:
+
+**`src/game-of-life.ts`** — Conway's Game of Life implementation:
+- `Cell = string` type alias with `"x,y"` coordinate encoding
+- `neighbors(cell)` — returns the 8 surrounding cells
+- `livesOn(cell, count, cells)` — named predicate encoding the survival/birth rule
+- `nextGeneration(cells)` — sparse implementation using neighbor counting; only tracks living cells
+
+**`src/game-of-life.spec.ts`** — 7 tests covering:
+1. Empty grid → empty
+2. Single cell (no neighbors) → dies
+3. Cell with 1 neighbor → dies (underpopulation)
+4. Cell with 2 neighbors → survives (horizontal blinker)
+5. Cell with 3 neighbors → survives (2×2 stable block)
+6. Cell with 4+ neighbors → dies (plus-sign pattern)
+7. Dead cell with 3 neighbors → born (L-shape)

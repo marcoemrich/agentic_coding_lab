@@ -1,0 +1,16 @@
+The TDD exercise is complete. Here's a summary of what was implemented:
+
+**Final implementation** (`src/string-calculator.ts`):
+```typescript
+export const add = (input: string): number => {
+  return input.split(",").reduce((sum, n) => sum + Number(n), 0);
+};
+```
+
+**4 tests passing** (`src/string-calculator.spec.ts`):
+1. `""` → `0` (empty string)
+2. `"1"` → `1` (single number)
+3. `"1,2"` → `3` (two numbers)
+4. `"1,2,3"` → `6` (multiple numbers)
+
+The `reduce`-based solution emerged naturally through the TDD cycle — the third test forced the generalization, and the fourth test was free.

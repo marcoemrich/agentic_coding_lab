@@ -1,0 +1,15 @@
+The TDD exercise is complete. All 4 tests pass:
+
+1. `should return 0 for an empty string` ✅
+2. `should return the number itself for a single number` ✅
+3. `should return the sum of two numbers separated by a comma` ✅
+4. `should return the sum of multiple numbers separated by commas` ✅
+
+Final implementation (`src/string-calculator.ts`):
+```typescript
+export const add = (input: string): number => {
+  return input.split(",").reduce((sum, n) => sum + Number(n), 0);
+};
+```
+
+APP mass evolution: 2 → 9 → 8 → 29 → 21 → 21 → 16 — progressively simplified through each refactor phase to a clean single-expression solution.

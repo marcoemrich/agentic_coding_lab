@@ -1,0 +1,5 @@
+Completed the Game of Life TDD exercise:
+
+- **src/game-of-life.spec.ts**: 11 tests covering empty grid, underpopulation, survival, overpopulation, reproduction, stable patterns, negative coordinates, blinker oscillation, no duplicates, and glider.
+- **src/game-of-life.ts**: Sparse implementation using a `Set` of living cells and a `Map` of neighbor counts. For each living cell, increments counts for all 8 neighbors. A cell lives next generation if count is 3, or count is 2 and currently alive.
+- All 11 tests pass.

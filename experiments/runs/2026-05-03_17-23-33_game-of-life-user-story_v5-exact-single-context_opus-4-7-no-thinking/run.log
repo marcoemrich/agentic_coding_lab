@@ -1,0 +1,12 @@
+All 8 tests pass. The TDD cycle is complete:
+
+- ✅ Empty input returns empty
+- ✅ Lone cell dies (underpopulation, 0 neighbors)
+- ✅ Cell with 1 neighbor dies (underpopulation)
+- ✅ Cell with 2 neighbors survives
+- ✅ Cell with 3 neighbors survives
+- ✅ Cell with >3 neighbors dies (overpopulation)
+- ✅ Dead cell with exactly 3 neighbors becomes alive (reproduction)
+- ✅ Negative coordinates handled correctly
+
+The implementation in `src/game-of-life.ts` uses sparse representation (only living cells stored), supports infinite grid via integer coordinates including negatives, and applies all 4 Conway rules through a single-pass `candidateCells → survivesOrIsBorn` filter pipeline. Done marker written.

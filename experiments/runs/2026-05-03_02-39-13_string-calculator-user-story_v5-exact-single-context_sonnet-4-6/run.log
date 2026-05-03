@@ -1,0 +1,17 @@
+The TDD exercise is complete. Here's a summary of what was built:
+
+**Final implementation** (`src/string-calculator.ts`):
+```typescript
+export const add = (input: string): number => {
+  if (input === "") return 0;
+  return input.split(",").reduce((sum, num) => sum + parseInt(num), 0);
+};
+```
+
+**4 tests passing** (`src/string-calculator.spec.ts`):
+1. Empty string returns 0
+2. Single number string returns that number
+3. Two comma-separated numbers returns their sum
+4. Multiple comma-separated numbers returns their sum
+
+The `reduce` generalization introduced during the refactor of test 3 meant test 4 passed immediately without any implementation changes — a natural outcome of following the discipline.

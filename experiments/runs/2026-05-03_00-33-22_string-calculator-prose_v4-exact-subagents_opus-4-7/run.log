@@ -1,0 +1,9 @@
+TDD exercise complete. All 4 tests pass:
+
+- `src/string-calculator.ts` — final implementation:
+  ```typescript
+  export const add = (numbers: string): number =>
+    numbers.split(",").reduce((sum, numberStr) => sum + Number(numberStr), 0);
+  ```
+- `src/string-calculator.spec.ts` — 4 tests covering empty string, single number, two numbers, multiple numbers
+- `experiment-done.txt` — written with `DONE`

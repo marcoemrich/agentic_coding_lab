@@ -1,0 +1,12 @@
+TDD cycle complete. All 4 tests pass:
+- empty string → 0
+- single number → that number
+- two numbers → sum
+- multiple numbers → sum
+
+Final implementation (`src/string-calculator.ts`):
+```typescript
+export const add = (numbers: string): number => {
+  return numbers.split(",").reduce((sum, n) => sum + Number(n), 0);
+};
+```

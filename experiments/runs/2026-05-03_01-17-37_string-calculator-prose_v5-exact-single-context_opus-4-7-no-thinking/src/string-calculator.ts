@@ -1,0 +1,4 @@
+export const add = (input: string): number => {
+  if (input === "") return 0;
+  return input.split(",").reduce((sum, num) => sum + parseInt(num), 0);
+};

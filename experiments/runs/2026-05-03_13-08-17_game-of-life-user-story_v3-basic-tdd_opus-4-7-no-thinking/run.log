@@ -1,0 +1,12 @@
+Task complete. All 12 tests pass:
+- Empty grid
+- Underpopulation (lone cell, 1 neighbor)
+- Survival (2 and 3 neighbors)
+- Overpopulation (4+ neighbors)
+- Reproduction (dead cell with exactly 3 neighbors)
+- Negative coordinates
+- Still life (block)
+- Blinker oscillation
+- Glider pattern
+
+Implementation uses sparse representation: only living cells stored as `[x, y]` tuples; neighbor counting via a `Map` keyed by string coordinates.

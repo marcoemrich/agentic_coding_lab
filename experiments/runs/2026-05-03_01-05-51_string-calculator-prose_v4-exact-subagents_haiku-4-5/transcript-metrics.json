@@ -1,0 +1,70 @@
+{
+  "wall_clock_seconds": 88.21,
+  "total_tokens": {
+    "input": 224,
+    "output": 4348,
+    "cache_read": 669948,
+    "cache_creation": 28568,
+    "total": 703088
+  },
+  "context_utilization_pct": 18,
+  "message_count": 20,
+  "tool_calls": {
+    "Read": 5,
+    "Agent": 2,
+    "Bash": 2
+  },
+  "skill_invocations": {},
+  "task_invocations": {
+    "test-list": 1,
+    "red": 1
+  },
+  "cycle_count": 1,
+  "predictions_correct": 0,
+  "predictions_total": 0,
+  "model_versions": [
+    "claude-haiku-4-5-20251001"
+  ],
+  "subagent_token_total": 1219753,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 69583,
+      "duration_seconds": 7.25,
+      "transcript": "agent-a748c5f3754d20cdd.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 1150170,
+      "duration_seconds": 54.45,
+      "transcript": "agent-a87d2b8fd7edd393c.jsonl"
+    }
+  ],
+  "phase_source": "subagents",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 69583,
+        "duration_seconds": 7.25
+      },
+      "red": {
+        "count": 1,
+        "tokens": 1150170,
+        "duration_seconds": 54.45
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 69583.0,
+        "avg_duration_seconds": 7.25
+      },
+      "red": {
+        "avg_tokens": 1150170.0,
+        "avg_duration_seconds": 54.45
+      }
+    },
+    "refactorings_applied": 0,
+    "tests_passed_immediately": 1
+  }
+}

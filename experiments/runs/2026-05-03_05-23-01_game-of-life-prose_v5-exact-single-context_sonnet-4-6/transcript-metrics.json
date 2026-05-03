@@ -1,0 +1,165 @@
+{
+  "wall_clock_seconds": 630.17,
+  "total_tokens": {
+    "input": 171,
+    "output": 81326,
+    "cache_read": 7120899,
+    "cache_creation": 210581,
+    "total": 7412977
+  },
+  "context_utilization_pct": 48,
+  "message_count": 123,
+  "tool_calls": {
+    "Read": 8,
+    "Skill": 17,
+    "Bash": 19,
+    "Write": 4,
+    "Edit": 13
+  },
+  "skill_invocations": {
+    "test-list": 1,
+    "red": 7,
+    "green": 2,
+    "refactor": 7
+  },
+  "task_invocations": {},
+  "cycle_count": 7,
+  "predictions_correct": 0,
+  "predictions_total": 0,
+  "model_versions": [
+    "claude-sonnet-4-6"
+  ],
+  "subagent_token_total": 0,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 199503,
+      "duration_seconds": 22.33
+    },
+    {
+      "phase": "red",
+      "tokens": 395804,
+      "duration_seconds": 24.77
+    },
+    {
+      "phase": "green",
+      "tokens": 272269,
+      "duration_seconds": 15.75
+    },
+    {
+      "phase": "refactor",
+      "tokens": 298890,
+      "duration_seconds": 38.79
+    },
+    {
+      "phase": "red",
+      "tokens": 367911,
+      "duration_seconds": 39.23
+    },
+    {
+      "phase": "refactor",
+      "tokens": 346087,
+      "duration_seconds": 32.26
+    },
+    {
+      "phase": "red",
+      "tokens": 367313,
+      "duration_seconds": 30.46
+    },
+    {
+      "phase": "refactor",
+      "tokens": 333568,
+      "duration_seconds": 26.68
+    },
+    {
+      "phase": "red",
+      "tokens": 423802,
+      "duration_seconds": 51.54
+    },
+    {
+      "phase": "green",
+      "tokens": 457711,
+      "duration_seconds": 48.82
+    },
+    {
+      "phase": "refactor",
+      "tokens": 484942,
+      "duration_seconds": 36.84
+    },
+    {
+      "phase": "red",
+      "tokens": 513761,
+      "duration_seconds": 36.18
+    },
+    {
+      "phase": "refactor",
+      "tokens": 538780,
+      "duration_seconds": 29.86
+    },
+    {
+      "phase": "red",
+      "tokens": 499259,
+      "duration_seconds": 63.66
+    },
+    {
+      "phase": "refactor",
+      "tokens": 608551,
+      "duration_seconds": 39.56
+    },
+    {
+      "phase": "red",
+      "tokens": 546471,
+      "duration_seconds": 37.88
+    },
+    {
+      "phase": "refactor",
+      "tokens": 664665,
+      "duration_seconds": 46.62
+    }
+  ],
+  "phase_source": "skills",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 199503,
+        "duration_seconds": 22.33
+      },
+      "red": {
+        "count": 7,
+        "tokens": 3114321,
+        "duration_seconds": 283.72
+      },
+      "green": {
+        "count": 2,
+        "tokens": 729980,
+        "duration_seconds": 64.57
+      },
+      "refactor": {
+        "count": 7,
+        "tokens": 3275483,
+        "duration_seconds": 250.61
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 199503.0,
+        "avg_duration_seconds": 22.33
+      },
+      "red": {
+        "avg_tokens": 444903.0,
+        "avg_duration_seconds": 40.53
+      },
+      "green": {
+        "avg_tokens": 364990.0,
+        "avg_duration_seconds": 32.28
+      },
+      "refactor": {
+        "avg_tokens": 467926.14,
+        "avg_duration_seconds": 35.8
+      }
+    },
+    "refactorings_applied": 7,
+    "tests_passed_immediately": 5
+  }
+}
