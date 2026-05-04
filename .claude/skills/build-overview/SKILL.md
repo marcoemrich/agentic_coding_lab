@@ -1,11 +1,11 @@
 ---
-name: snapshot
+name: build-overview
 description: Generiert einen experiment-overview-Snapshot aller Forschungsfragen unter research/_archive/. Aufzurufen wenn ein neuer Stichtag-Bericht über alle RQs erzeugt werden soll.
 disable-model-invocation: false
 allowed-tools: Bash(./experiments/generate-snapshot-skeleton.py:*) Read Write Glob
 ---
 
-# /snapshot — Experiment-Overview-Snapshot erzeugen
+# /build-overview — Experiment-Overview-Snapshot erzeugen
 
 Du erzeugst einen eingefrorenen, publizierbaren Forschungsbericht aus dem
 aktuellen Stand der `research/RQ-*/findings.md`. Der Snapshot landet als

@@ -1,15 +1,15 @@
 ---
-name: research-rq
+name: run-rq
 description: |
   Use this skill to drive a research question (RQ) end-to-end: validate the
   RQ README, generate a fill batch-plan, start the Docker batch in the
   background, monitor progress, run aggregation, and propose findings updates.
-  Trigger when the user says "RQ-N voranbringen", "research-rq", "fill RQ-N",
+  Trigger when the user says "RQ-N voranbringen", "run-rq", "fill RQ-N",
   "run RQ-N", "Forschungsfrage N starten", or names a specific RQ-N directory
   in research/.
 ---
 
-# Skill: research-rq
+# Skill: run-rq
 
 End-to-end orchestration for advancing a single research question (RQ) in
 this lab repo. **Reine Orchestrierung** — alle Operationen rufen bestehende

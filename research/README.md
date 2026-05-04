@@ -141,14 +141,29 @@ aus dem `workflow_x_prompt`-Pairing, oder aus `factors.prompt`.
 - `❌ verworfen` — Daten widersprechen dem Befund klar
 - `🚫 nicht prüfbar` — Datenbasis fehlt; Status offen
 
-## Snapshots
+## Skills
+
+Zwei Skills automatisieren den RQ-Workflow:
+
+| Skill | Zweck |
+|---|---|
+| [`/run-rq`](../.claude/skills/run-rq/SKILL.md) | Treibt eine einzelne RQ end-to-end voran: README validieren, Fill-Batch-Plan generieren, Docker-Batch im Hintergrund starten, Fortschritt monitoren, Aggregation laufen lassen, Findings-Updates vorschlagen. |
+| [`/build-overview`](../.claude/skills/build-overview/SKILL.md) | Erzeugt einen Cross-RQ-Snapshot unter `_archive/experiment-overview-YYYY-MM-DD.md`. Reproduzierbar, weil Daten-Sektionen aus `findings.md` generiert und nur die Synthese-Texte vom Modell geschrieben werden. |
+
+### `/run-rq RQ-N`
+
+End-to-End-Loop für eine RQ. Reine Orchestrierung — alle Schritte rufen
+bestehende Repo-Skripte auf (`batch-plan-from-rq.py`, `batch.sh`,
+`aggregate-by-query.py`). Aufzurufen mit z.B. `/run-rq RQ-3`.
+
+### `/build-overview`
 
 `findings.md` ist **lebend** — Befunde wachsen, Status-Tags werden
 aktualisiert, einzelne Findings können revidiert oder verworfen werden.
 Für publizierbare Stichtag-Berichte (Tabellen-lastig, Cross-RQ-Synthese)
 gibt es **Snapshots** unter `_archive/experiment-overview-YYYY-MM-DD.md`.
 
-Erzeugung via `/snapshot`-Skill:
+Lifecycle:
 
 1. `experiments/generate-snapshot-skeleton.py` baut ein Skelett mit allen
    Daten-Sektionen (Datenbasis-Zahlen, Coverage, Befund-Rohlisten pro RQ,

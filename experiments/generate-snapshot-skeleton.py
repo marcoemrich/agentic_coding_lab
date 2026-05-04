@@ -5,7 +5,7 @@ Reads research/RQ-*/README.md (frontmatter) and findings.md, counts runs in
 experiments/runs/ per RQ, and emits a Markdown skeleton with all data-driven
 sections pre-filled. Synthesis sections (RQ paragraphs, cross-RQ synthesis,
 limitations narrative) are left as <!-- TODO Claude: ... --> markers for the
-/snapshot skill to fill in.
+/build-overview skill to fill in.
 
 Output: /tmp/snapshot-skeleton-YYYY-MM-DD.md (override with --out PATH).
 
