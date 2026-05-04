@@ -433,6 +433,7 @@ EOF
   "kata": "$kata",
   "workflow": "$workflow",
   "model": "$model_name",
+  "cli_model": "$cli_model",
   "thinking": $thinking,
   "started_at": "$(date -Iseconds)",
   "ended_at": null,

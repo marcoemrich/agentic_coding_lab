@@ -255,12 +255,14 @@ record_start() {
     local workflow=$3
     local model_name=$4
     local thinking=$5
+    local cli_model=$6
 
     cat > "$run_dir/metrics.json" << EOF
 {
   "kata": "$kata",
   "workflow": "$workflow",
   "model": "$model_name",
+  "cli_model": "$cli_model",
   "thinking": $thinking,
   "started_at": "$(date -Iseconds)",
   "ended_at": null,
@@ -504,7 +506,7 @@ echo -e "\n${BLUE}Creating run: $selected_kata + $selected_workflow + $selected_
 # Create and setup run
 run_dir=$(create_run_dir "$selected_kata" "$selected_workflow" "$selected_model")
 setup_run "$run_dir" "$selected_workflow" "$selected_kata"
-record_start "$run_dir" "$selected_kata" "$selected_workflow" "$selected_model" "$selected_thinking"
+record_start "$run_dir" "$selected_kata" "$selected_workflow" "$selected_model" "$selected_thinking" "$selected_cli_model"
 
 # Capture run state for the cleanup trap. If the script aborts (Ctrl-C,
 # `set -e` failure, parent SIGTERM) we still want the transcript copied
