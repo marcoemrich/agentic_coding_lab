@@ -141,8 +141,28 @@ aus dem `workflow_x_prompt`-Pairing, oder aus `factors.prompt`.
 - `❌ verworfen` — Daten widersprechen dem Befund klar
 - `🚫 nicht prüfbar` — Datenbasis fehlt; Status offen
 
+## Snapshots
+
+`findings.md` ist **lebend** — Befunde wachsen, Status-Tags werden
+aktualisiert, einzelne Findings können revidiert oder verworfen werden.
+Für publizierbare Stichtag-Berichte (Tabellen-lastig, Cross-RQ-Synthese)
+gibt es **Snapshots** unter `_archive/experiment-overview-YYYY-MM-DD.md`.
+
+Erzeugung via `/snapshot`-Skill:
+
+1. `experiments/generate-snapshot-skeleton.py` baut ein Skelett mit allen
+   Daten-Sektionen (Datenbasis-Zahlen, Coverage, Befund-Rohlisten pro RQ,
+   Caveats-Sektion über alle ⚠️/❌/🚫-Findings).
+2. Der Skill füllt die Synthese-Sektionen (RQ-Absätze, Cross-RQ-Synthese,
+   Schlussfolgerungen) aus den `findings.md` und schreibt nach
+   `research/_archive/`.
+
+So bleibt die `findings.md` einzige Quelle der Wahrheit, und der Snapshot
+ist **reproduzierbar** statt aus dem Modellgedächtnis geschrieben.
+
 ## Archiv
 
 `_archive/` enthält eingefrorene Wissensstände (z.B. Findings-Validation
-2026-05-04), die durch die aktuellen RQs reproduziert werden, aber als
-historischer Snapshot erhalten bleiben.
+2026-05-04 und alle generierten Experiment-Overview-Snapshots), die durch
+die aktuellen RQs reproduziert werden, aber als historischer Snapshot
+erhalten bleiben.
