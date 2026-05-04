@@ -5,8 +5,8 @@ factors:
   prompt: [prose, example-mapping, user-story]
 controls:
   workflow: v4-exact-subagents
-  kata: game-of-life
-  model: claude-opus-4-7-no-thinking
+  kata_base: game-of-life
+  model: opus-4-7-no-thinking
 outcomes:
   - tests_passing
   - code_mass
@@ -62,7 +62,7 @@ Siehe [findings.md](findings.md).
 ## Datenquelle
 
 Alle Runs in `experiments/runs/` mit
-`workflow=v4-exact-subagents`, `model=claude-opus-4-7-no-thinking`,
+`workflow=v4-exact-subagents`, `model=opus-4-7-no-thinking`,
 `kata=game-of-life-{prose|example-mapping|user-story}`.
 
 Aktuelle Datenbasis: 9 Runs aus dem ehemaligen

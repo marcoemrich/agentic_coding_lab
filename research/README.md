@@ -64,13 +64,46 @@ und mars-rover-prose ab. mars-rover-{example-mapping, user-story}
 wurden noch kaum erhoben — wenn eine RQ sie braucht, liefert die
 Selektor-Query erstmal eine kleine Stichprobe.
 
+### Kata-Constraint: Code-Quality-Signal nur auf game-of-life
+
+Aus der Re-Evaluation der alten 235-Run-Studie (siehe
+`_archive/findings-validation-2026-05-04/`) sind drei Constraints stabil:
+
+1. **Klassische Katas sind in Trainingsdaten** (string-calculator,
+   pixel-art-scaler, etc.). Modelle lösen sie zu trivial — `smell_total = 0`
+   in 65/65 smart-subset-Runs.
+2. **Pixel-art-scaler ist nicht als Novel-Kata-Sanity-Check brauchbar**
+   (30/30 smart-subset-Runs `cc_longest ≤ 6`, keine Workflow- oder
+   Modell-Differenzierung).
+3. **Code-Qualitäts-Signal ist ausschließlich auf game-of-life und
+   mars-rover sichtbar.** Aussagen über `smell_total`,
+   `cc_longest_function` etc. müssen auf diesen Katas basieren —
+   Cross-Kata-Mittel über Trivial-Katas verwässert das Signal
+   (s. `experiments/aggregate-runs.sh`-Hinweis).
+
+**Konsequenz für RQs**: Alle aktuellen RQs nutzen `kata_base: game-of-life`
+als Default. mars-rover bleibt für Cross-Kata-Validierung verfügbar,
+sobald genug Replikate erhoben sind. Generalisierbarkeits-Aussagen über
+beliebige Katas sind 🚫 nicht prüfbar mit dem aktuellen Design.
+
 ### Modell-Aliase
 
-Volle API-IDs in RQ-Frontmatter pinnen, nicht Kurz-Aliase:
-- `claude-opus-4-7` (Adaptive Thinking)
-- `claude-opus-4-7-no-thinking`
-- `claude-sonnet-4-6` (Extended Thinking)
-- `claude-haiku-4-5-20251001` (Extended Thinking)
+In RQ-Frontmatter werden die **Lab-Varianten-IDs** gepinnt — nicht die
+Claude-API-IDs (`claude-opus-4-7`), nicht die Kurz-Aliase (`opus`).
+Eine Lab-Varianten-ID kombiniert Modell und Thinking-Modus eindeutig:
+
+| Lab-Varianten-ID | API-ID | Thinking |
+|---|---|---|
+| `opus-4-7`               | `claude-opus-4-7`            | Adaptive |
+| `opus-4-7-no-thinking`   | `claude-opus-4-7`            | aus |
+| `sonnet-4-6`             | `claude-sonnet-4-6`          | Extended |
+| `sonnet-4-6-no-thinking` | `claude-sonnet-4-6`          | aus |
+| `haiku-4-5`              | `claude-haiku-4-5-20251001`  | Extended |
+| `haiku-4-5-no-thinking`  | `claude-haiku-4-5-20251001`  | aus |
+
+Die ID matcht exakt das `model`-Feld in `metrics.json` und das Suffix
+im Run-Dir-Namen. Quelle: `MODEL_CONFIGS` in
+`experiments/record-run.sh`.
 
 `opus`/`sonnet` als Alias lösen NICHT zur jeweils neuesten Version auf.
 
@@ -87,12 +120,19 @@ factors:                          # was variiert wird
     - {workflow: v1-oneshot, prompt: prose}
     - ...
 controls:                         # was konstant gehalten wird
-  <var>: <value>
+  kata_base: game-of-life         # Kata-Basis ohne Prompt-Suffix
+  workflow: v4-exact-subagents    # nur wenn kein workflow_x_prompt-Faktor
+  prompt: example-mapping         # nur wenn kein prompt-Faktor / Pairing
+  model: <lab-variant-id>         # z.B. opus-4-7-no-thinking (siehe Tabelle)
 outcomes: [<metric>, ...]         # welche Metriken gemessen werden
 min_replicates: N                 # pro Zelle
 status: aktiv | partiell | abgeschlossen
 ---
 ```
+
+**Selektor-Auflösung**: Die Selektor-Query bildet die effektive Kata-ID
+als `<kata_base>-<prompt>`. `prompt` kommt entweder aus `controls.prompt`,
+aus dem `workflow_x_prompt`-Pairing, oder aus `factors.prompt`.
 
 ## Findings-Status-Legende
 

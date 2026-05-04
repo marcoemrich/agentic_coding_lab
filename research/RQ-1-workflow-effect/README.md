@@ -9,8 +9,8 @@ factors:
     - {workflow: v4-exact-subagents,      prompt: example-mapping}
     - {workflow: v5-exact-single-context, prompt: example-mapping}
 controls:
-  kata: game-of-life
-  model: claude-opus-4-7-no-thinking
+  kata_base: game-of-life
+  model: opus-4-7-no-thinking
 outcomes:
   - tests_passing            # Korrektheit
   - code_mass                # LoC + test_lines (Volumen)
@@ -90,7 +90,7 @@ Siehe [findings.md](findings.md).
 Aggregation läuft über alle Runs in `experiments/runs/`, die zu
 einem `(workflow, prompt)`-Paar aus dem Faktor-Pairing gehören und
 mit `kata=game-of-life-{prompt}` und
-`model=claude-opus-4-7-no-thinking` matchen.
+`model=opus-4-7-no-thinking` matchen.
 
 Aktuelle Datenbasis (Stand der Findings):
 

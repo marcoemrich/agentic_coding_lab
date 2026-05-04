@@ -15,8 +15,8 @@ factors:
     - {workflow: v5-exact-single-context, prompt: example-mapping}
     - {workflow: v5-exact-single-context, prompt: user-story}
 controls:
-  kata: game-of-life
-  model: claude-opus-4-7-no-thinking
+  kata_base: game-of-life
+  model: opus-4-7-no-thinking
 outcomes:
   - tests_passing            # σ ≈ 0 erwartet (binär, meist 100%)
   - code_mass                # primäres σ-Signal
@@ -80,7 +80,7 @@ Siehe [findings.md](findings.md).
 ## Datenquelle
 
 Alle Runs mit
-`model=claude-opus-4-7-no-thinking`, `kata=game-of-life-{prompt}` und
+`model=opus-4-7-no-thinking`, `kata=game-of-life-{prompt}` und
 `(workflow, prompt)` aus dem Faktor-Pairing.
 
 Aktuelle Datenbasis: 33 Runs aus dem ehemaligen

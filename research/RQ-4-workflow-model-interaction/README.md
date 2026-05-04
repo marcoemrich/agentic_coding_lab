@@ -8,11 +8,11 @@ factors:
     - {workflow: v4-exact-subagents,      prompt: example-mapping}
     - {workflow: v5-exact-single-context, prompt: example-mapping}
   model:
-    - claude-opus-4-7-no-thinking
-    - claude-sonnet-4-6
-    - claude-haiku-4-5-20251001
+    - opus-4-7-no-thinking
+    - sonnet-4-6
+    - haiku-4-5
 controls:
-  kata: game-of-life
+  kata_base: game-of-life
 outcomes:
   - tests_passing
   - code_mass

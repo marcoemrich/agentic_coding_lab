@@ -3,15 +3,15 @@ id: RQ-3
 question: "Wirken Modell-Klasse (Opus / Sonnet / Haiku) und Thinking-Mode auf Output-Qualität und Effizienz?"
 factors:
   model:
-    - claude-opus-4-7
-    - claude-opus-4-7-no-thinking
-    - claude-sonnet-4-6
-    - claude-sonnet-4-6-no-thinking
-    - claude-haiku-4-5-20251001
+    - opus-4-7
+    - opus-4-7-no-thinking
+    - sonnet-4-6
+    - sonnet-4-6-no-thinking
+    - haiku-4-5
 controls:
   workflow: v4-exact-subagents
   prompt: example-mapping
-  kata: game-of-life
+  kata_base: game-of-life
 outcomes:
   - tests_passing
   - code_mass
@@ -32,20 +32,22 @@ Prompt-Stil und Kata konstant gehalten werden?
 
 ## Modell-Spektrum
 
-| API-ID | Klasse | Thinking |
+| Lab-Varianten-ID | Klasse | Thinking |
 |---|---|---|
-| `claude-opus-4-7`               | Opus 4.7 | Adaptive |
-| `claude-opus-4-7-no-thinking`   | Opus 4.7 | aus |
-| `claude-sonnet-4-6`             | Sonnet 4.6 | Extended |
-| `claude-sonnet-4-6-no-thinking` | Sonnet 4.6 | aus |
-| `claude-haiku-4-5-20251001`     | Haiku 4.5 | Extended |
+| `opus-4-7`               | Opus 4.7 | Adaptive |
+| `opus-4-7-no-thinking`   | Opus 4.7 | aus |
+| `sonnet-4-6`             | Sonnet 4.6 | Extended |
+| `sonnet-4-6-no-thinking` | Sonnet 4.6 | aus |
+| `haiku-4-5`              | Haiku 4.5 | Extended |
 
-Hinweis: Thinking-Mode ist hier in die Modell-ID kodiert, weil das
-Run-Setup ihn so behandelt (siehe `experiments/record-run.sh`). Der
-Faktor heißt `model` und enthält die Thinking-Variante als Suffix.
+Hinweis: Thinking-Mode ist hier in die Lab-Varianten-ID kodiert, weil
+das Run-Setup ihn so behandelt (siehe `experiments/record-run.sh`,
+`MODEL_CONFIGS`). Der Faktor heißt `model` und enthält die
+Thinking-Variante als Suffix. Mapping zu API-IDs siehe
+[`research/README.md`](../README.md#modell-aliase).
 
 Haiku ohne Thinking wird derzeit nicht erhoben — falls relevant, müsste
-`claude-haiku-4-5-no-thinking` ergänzt werden.
+`haiku-4-5-no-thinking` ergänzt werden.
 
 ## Design-Begründung
 
@@ -80,6 +82,6 @@ Alle Runs mit
 `workflow=v4-exact-subagents`,
 `prompt=example-mapping`,
 `kata=game-of-life-example-mapping` und
-`model ∈ {opus-4-7, opus-4-7-no-thinking, sonnet-4-6, sonnet-4-6-no-thinking, haiku-4-5-20251001}`.
+`model ∈ {opus-4-7, opus-4-7-no-thinking, sonnet-4-6, sonnet-4-6-no-thinking, haiku-4-5}`.
 
 Aktuelle Datenbasis aus den 68 verbliebenen Runs entsprechend filtern.

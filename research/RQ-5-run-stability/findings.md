@@ -1,0 +1,129 @@
+# RQ-5 Findings
+
+Persistente Sammlung der Erkenntnisse zur Frage:
+**Wie groß ist die Run-zu-Run-Varianz innerhalb identischer Zellen?**
+
+Findings entstehen aus `summary.md` dieser RQ via
+`experiments/aggregate-by-query.py`. Diese RQ liefert die methodische
+Basis für `min_replicates`-Entscheidungen in allen anderen RQs.
+
+Status-Legende siehe [`research/README.md`](../README.md#findings-status-legende).
+
+---
+
+## F-5.1 — `tests_passing` ist deterministisch (σ ≈ 0) · ✅ haltbar
+
+**Aussage**: Auf game-of-life × Opus-no-thinking ist `tests_passing` über
+alle 11 Workflow×Prompt-Zellen 100 %. **n=1 reicht für diese Metrik**
+auf dieser Datenbasis.
+
+50/50 Runs grün. H1 bestätigt.
+
+**Caveat**: Auf schwächeren Modellen (Haiku, s. RQ-4 F-4.1) versagt
+diese Aussage — dort ist `tests_passing` nicht stabil.
+
+---
+
+## F-5.2 — `code_mass` zeigt mittleres Rauschen, σ ~7–26 · ✅ haltbar (H2 bestätigt)
+
+**Aussage**: `code_mass` ist die rauschigste der robusten Metriken.
+σ liegt bei 7–26 (μ ~150–180), also relative Streuung ~5–15 %.
+
+| Workflow / Stil | μ | σ |
+|---|---:|---:|
+| v1-oneshot / prose | 164 | **7** (am stabilsten) |
+| v2-iterative / prose | 163 | 11 |
+| v5 / example-mapping | 157 | 14 |
+| v3 / example-mapping | 157 | 20 |
+| v4 / prose | 168 | 20 |
+| v4 / example-mapping | 169 | **24** |
+| v4 / user-story | 149 | **26** (am unruhigsten) |
+
+Tendenz: **v4 hat die höchste `code_mass`-Streuung** — H4 (mehr
+Subagent-Übergänge → mehr Variabilität) wird qualitativ gestützt.
+v1/v2 sind am stabilsten, weil sie ein single-shot bzw. fest iteriertes
+Verfahren nutzen.
+
+→ **Empfehlung**: Für `code_mass`-Vergleiche zwischen Workflows
+mindestens **n=3** pro Zelle, besser n=6.
+
+---
+
+## F-5.3 — `cc_longest_function` σ ~3–8, mit hohen Outliers · ✅ haltbar
+
+**Aussage**: σ liegt zwischen 3.6 (v1/prose) und 8.4 (v5/prose). Bei
+TDD-Workflows mit Refactor-Phasen (v4, v5) sind Min-Werte sehr niedrig
+(2 = trivial), Max-Werte aber teilweise > 25 — also bimodale Verteilung
+("manchmal sehr aufgeräumt, manchmal nicht").
+
+Beispiel v5 / example-mapping (n=6): min=2, max=25, σ=8 — Range 23.
+
+→ **Empfehlung**: n≥6 für `cc_longest_function`-Vergleiche, sonst kann ein
+einzelner Outlier den Mittelwert kippen.
+
+---
+
+## F-5.4 — `smell_total` σ ~0.5–2, korreliert mit μ · ⚠️ vorläufig (H3 teilweise)
+
+**Aussage**: σ liegt zwischen 0.55 (v4/example-mapping, μ=2.5) und 2.0
+(v3/prose und v3/user-story, μ≈4.3). Tendenz: höherer μ → höhere σ
+(Heteroskedastizität, H3).
+
+Aber: v2/prose hat μ=4.7, σ=1.4 — etwas niedriger als erwartet. H3
+qualitativ ja, aber kein klares Skalierungsgesetz.
+
+→ **Empfehlung**: n≥3 ausreichend für `smell_total` (relative σ ~20–50 %).
+
+---
+
+## F-5.5 — `duration_seconds` ist hochstabil bei v1/v2/v3, sehr unruhig bei v4 · ✅ haltbar
+
+**Aussage**: σ skaliert ungefähr proportional zu μ — kleine Workflows
+sind absolut stabil, lange Workflows haben hohe absolute Streuung.
+
+| Workflow | μ (s) | σ (s) | σ/μ |
+|---|---:|---:|---:|
+| v1 / prose | 50 | 4 | 8 % |
+| v3 / prose | 47 | 4 | 7 % |
+| v2 / prose | 52 | 7 | 13 % |
+| v3 / example-mapping | 56 | 14 | 25 % |
+| v5 / example-mapping | 350 | 17 | 5 % |
+| v5 / prose | 354 | 81 | 23 % |
+| v4 / example-mapping | 779 | 152 | 19 % |
+| v4 / user-story | 761 | 167 | 22 % |
+| v4 / prose | 802 | **198** | 25 % |
+
+v4/prose hat Range 533–995 — fast Faktor 2× zwischen schnellstem und
+langsamstem Run. Tokens-Variation der Subagent-Calls treibt das.
+
+→ **Empfehlung**: Für Speed-Vergleiche zwischen Workflows reicht n=3,
+weil der Effekt-Größenordnungs-Unterschied (v1 vs. v4: 16×) jede
+Streuung deutlich überschreitet.
+
+---
+
+## F-5.6 — Konsequenzen für andere RQs
+
+Aus F-5.1 bis F-5.5:
+
+- `tests_passing` auf Opus + game-of-life: n=1 reicht.
+- `code_mass`, `smell_total`, `cc_longest_function`: **n≥3 nötig**, für
+  v4 (höchste σ) eher n=6.
+- `duration_seconds`: n=3 reicht für Workflow-Vergleiche.
+- **v4 ist die varianz-anfälligste Zelle** — wer v4 exakt schätzen will,
+  braucht mehr Replikate als für v1/v2/v3/v5.
+
+`min_replicates: 3` in allen RQ-Frontmattern ist als Mindest-Schwelle
+sinnvoll. Für RQ-3 (Modell-Vergleich auf v4 + cc_longest) wäre eine
+Erhöhung auf n=6 begründbar.
+
+---
+
+## Offene Hypothesen aus RQ-5-README
+
+- **H1** (σ tests_passing ≈ 0): ✅ bestätigt für Opus.
+- **H2** (σ code_mass ist größtes Rauschen): ✅ bestätigt.
+- **H3** (σ smell_total ~ μ smell_total): ⚠️ qualitativ ja, kein Gesetz.
+- **H4** (σ auf v4 > v5 wegen Subagent-Übergängen): ✅ qualitativ
+  bestätigt für `code_mass` und `duration_seconds`, gemischt für
+  `cc_longest_function` (v5 ähnlich rauschig).
