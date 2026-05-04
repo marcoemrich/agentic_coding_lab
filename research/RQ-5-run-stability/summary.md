@@ -2,7 +2,7 @@
 
 _Wie groß ist die Run-zu-Run-Varianz innerhalb identischer Zellen?_
 
-Generated: 2026-05-03T23:54:58Z
+Generated: 2026-05-04T01:20:09Z
 
 Cells declared: 11 · matched runs: 50 · min_replicates: 3
 

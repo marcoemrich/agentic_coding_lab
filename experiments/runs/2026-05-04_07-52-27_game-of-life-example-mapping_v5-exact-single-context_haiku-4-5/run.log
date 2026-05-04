@@ -1,0 +1,24 @@
+📋 Test List Created:
+
+**Feature**: Conway's Game of Life - Next Generation
+**Test File**: src/game-of-life.spec.ts
+**Base Functionality Tests**: 9
+
+**Test Cases** (ordered simple → complex):
+1. ✅ Should return empty grid when given empty grid
+2. ✅ Should kill single live cell (underpopulation)
+3. ✅ Should kill two adjacent cells (underpopulation)
+4. ✅ Should keep live cell with exactly 2 neighbors alive (survival)
+5. ✅ Should keep live cell with exactly 3 neighbors alive (survival)
+6. ✅ Should kill live cell with 4 or more neighbors (overpopulation)
+7. ✅ Should create live cell at dead position with exactly 3 neighbors (reproduction)
+8. ✅ Should keep block pattern stable (2x2 square still life)
+9. ✅ Should rotate blinker pattern 90 degrees
+
+**Advanced Features** (NOT included):
+- Edge detection optimizations - save for later
+- Performance optimizations for large grids - save for later
+- Configurable rules - save for later
+- Generation tracking/history - save for later
+
+**Next Step**: Invoke `/red` to activate the first test.

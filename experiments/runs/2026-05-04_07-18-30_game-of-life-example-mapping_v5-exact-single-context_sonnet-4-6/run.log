@@ -1,0 +1,10 @@
+The TDD exercise is complete. Here's a summary of what was implemented:
+
+**`src/game-of-life.ts`** — Conway's Game of Life with infinite grid, sparse representation:
+- `Cell` type: labeled tuple `[x: number, y: number]`
+- `isNeighbor` — checks if two cells are within distance 1 in both axes
+- `countLiveNeighbors` — counts live neighbors of a cell
+- `deadNeighborCandidates` — generates unique dead cells adjacent to any live cell
+- `nextGeneration` — combines survivors (live cells with 2-3 neighbors) and born cells (dead cells with exactly 3 neighbors)
+
+**`src/game-of-life.spec.ts`** — 9 tests covering all four Game of Life rules plus pattern examples (blinker oscillator, block still life).

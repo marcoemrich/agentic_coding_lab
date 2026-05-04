@@ -1,0 +1,11 @@
+The TDD exercise is complete. All 8 tests pass and `experiment-done.txt` has been written.
+
+**Summary of what was built:**
+
+`src/game-of-life.ts` — Conway's Game of Life with infinite sparse grid:
+- `Cell` type alias for coordinate tuples
+- `toKey` — serializes a Cell to a string map key
+- `getNeighbors` — returns the 8 Moore-neighborhood cells
+- `nextGeneration` — computes next generation using neighbor-count accumulation: live cells survive with 2–3 neighbors, dead cells are born with exactly 3
+
+`src/game-of-life.spec.ts` — 8 tests covering: empty grid, underpopulation (1 and 2 cells), survival with 2 neighbors, survival with 3 neighbors, reproduction, overpopulation, and the blinker oscillator pattern.

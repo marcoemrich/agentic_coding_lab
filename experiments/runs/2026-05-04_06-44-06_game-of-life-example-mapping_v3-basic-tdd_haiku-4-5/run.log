@@ -1,0 +1,19 @@
+Completed! I've successfully implemented Conway's Game of Life with an infinite grid using Test-Driven Development:
+
+**Summary of the implementation:**
+
+1. **Tests** (`src/game-of-life.spec.ts`): Created 15 comprehensive tests covering:
+   - All 4 Game of Life rules (underpopulation, survival, overpopulation, reproduction)
+   - Pattern examples (Blinker oscillator, Block still life, single cell death)
+   - Negative coordinates (both x and y)
+   - Edge cases (empty grid, sparse patterns)
+
+2. **Implementation** (`src/game-of-life.ts`): 
+   - Uses sparse representation (only stores living cells)
+   - Efficiently handles infinite grid using Set-based storage for O(1) coordinate lookups
+   - Implements the algorithm by checking each living cell and its neighbors
+   - Correctly applies all Game of Life rules
+
+**Test Results**: ✓ All 15 tests pass
+
+The experiment is complete and marked with `experiment-done.txt`.

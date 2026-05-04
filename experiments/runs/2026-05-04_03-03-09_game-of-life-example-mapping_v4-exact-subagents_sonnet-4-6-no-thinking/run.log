@@ -1,0 +1,18 @@
+The TDD exercise is complete. Here's a summary of what was accomplished:
+
+**Game of Life - TDD Cycle Complete**
+
+- 9 tests implemented across Red/Green/Refactor cycles
+- All 9 tests passing
+- Implementation in `src/game-of-life.ts` with `nextGeneration` function
+
+**Test progression:**
+- Tests 1-3 (empty, single cell, two cells): Passed immediately with hardcoded `return []`
+- Test 4 (reproduction): First truly failing test — drove the full Game of Life neighbor-counting implementation
+- Tests 5-8 (survival rules, still life): Passed immediately since the implementation was complete
+- Test 9 (blinker oscillator): Revealed an ordering issue — fixed by sorting all output cells consistently by x then y coordinate
+
+**Key refactorings applied:**
+- Extracted `neighborPositions` helper to eliminate duplicate 8-neighbor iteration logic
+- Renamed variables for clarity (`neighborCount` → `liveNeighborCount`, `candidates` → `deadNeighborCandidates`)
+- Extracted `cellKey` and `fromKey` helpers to centralize coordinate serialization

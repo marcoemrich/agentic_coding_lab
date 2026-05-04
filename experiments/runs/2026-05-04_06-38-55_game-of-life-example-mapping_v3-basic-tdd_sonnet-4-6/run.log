@@ -1,0 +1,4 @@
+All 10 tests pass. The implementation:
+
+- **`src/game-of-life.spec.ts`** - Tests covering all 4 rules (underpopulation, survival, overpopulation, reproduction), pattern examples (blinker, block, empty grid), and negative coordinates
+- **`src/game-of-life.ts`** - Sparse representation using a `Set` for live cells; counts neighbor occurrences by iterating over each live cell's 8 neighbors, then applies the survival/reproduction rules

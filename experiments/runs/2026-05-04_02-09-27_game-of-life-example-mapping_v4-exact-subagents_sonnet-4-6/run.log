@@ -1,0 +1,11 @@
+The TDD exercise is complete. All 7 tests for Conway's Game of Life have been implemented and are passing:
+
+1. **Empty grid → empty grid** - trivial base case
+2. **Single live cell dies** - underpopulation (0 neighbors)
+3. **Two live cells die** - underpopulation (1 neighbor each)
+4. **Block survives unchanged** - still life (each cell has 3 neighbors)
+5. **Vertical blinker → horizontal blinker** - required implementing reproduction rule
+6. **Dead cell with 3 neighbors revives** - reproduction (passed free after blinker)
+7. **Live cell with 4+ neighbors dies** - overpopulation (passed free, already excluded by survival rule)
+
+The implementation in `src/game-of-life.ts` uses a sparse representation tracking only live cells as `[x, y]` coordinate pairs, handles infinite grids and negative coordinates, and implements all four Game of Life rules.

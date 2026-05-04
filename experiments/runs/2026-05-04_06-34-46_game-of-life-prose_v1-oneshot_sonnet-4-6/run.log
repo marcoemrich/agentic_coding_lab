@@ -1,0 +1,6 @@
+All 10 tests pass. The implementation:
+
+- Uses a sparse `Set<string>` to track only living cells
+- Counts neighbor occurrences for all candidate cells (neighbors of living cells)
+- Applies the 4 rules: a cell survives with 2 or 3 neighbors, a dead cell is born with exactly 3 neighbors
+- Handles negative coordinates naturally via string keys like `"-1,-2"`

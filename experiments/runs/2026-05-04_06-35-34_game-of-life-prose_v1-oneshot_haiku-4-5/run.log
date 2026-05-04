@@ -1,0 +1,21 @@
+## Summary
+
+I've successfully completed the Game of Life kata:
+
+**Implementation (`src/game-of-life.ts`):**
+- Implements `nextGeneration()` function that takes a Set of living cells and returns the next generation
+- Uses sparse representation with cell coordinates as "x,y" strings
+- Handles negative coordinates correctly
+
+**Tests (`src/game-of-life.spec.ts`):**
+- 17 comprehensive test cases covering:
+  - Empty grid
+  - Underpopulation (cells with <2 neighbors die)
+  - Survival (cells with 2-3 neighbors survive)
+  - Overpopulation (cells with 4+ neighbors die)
+  - Reproduction (dead cells with exactly 3 neighbors become alive)
+  - Negative coordinates
+  - Classic stable patterns (block, blinker, tub)
+  - Cell coordinate format validation
+
+**All tests passing** ✓
