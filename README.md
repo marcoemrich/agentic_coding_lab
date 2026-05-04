@@ -112,18 +112,23 @@ This decoupling has costs and benefits:
 
 ```
 .
+├── .claude/
+│   └── skills/                   # Claude Code skills for repo workflows
+│       ├── run-rq/               #   /run-rq RQ-N — drive an RQ end-to-end
+│       └── build-overview/       #   /build-overview — generate cross-RQ snapshot
 ├── experiments/
-│   ├── katas/                    # Coding exercises (problem definitions)
-│   ├── workflows/                # 5 workflow variants (v1-v5)
-│   ├── runs/                     # Recorded experiment results (68 runs)
-│   ├── batch-plans/              # JSON batch specs (auto-generated per RQ)
-│   ├── docker/                   # Containerized batch execution
-│   ├── record-run.sh             # Run a single experiment interactively
-│   ├── analyze-run.sh            # Generate analysis-report.md + metrics.json for a run
-│   ├── aggregate-by-query.py     # RQ frontmatter → runs.csv + summary.md
-│   └── batch-plan-from-rq.py     # RQ frontmatter → batch plan filling missing cells
+│   ├── katas/                            # Coding exercises (problem definitions)
+│   ├── workflows/                        # 5 workflow variants (v1-v5)
+│   ├── runs/                             # Recorded experiment results (68 runs)
+│   ├── batch-plans/                      # JSON batch specs (auto-generated per RQ)
+│   ├── docker/                           # Containerized batch execution
+│   ├── record-run.sh                     # Run a single experiment interactively
+│   ├── analyze-run.sh                    # Generate analysis-report.md + metrics.json for a run
+│   ├── aggregate-by-query.py             # RQ frontmatter → runs.csv + summary.md
+│   ├── batch-plan-from-rq.py             # RQ frontmatter → batch plan filling missing cells
+│   └── generate-snapshot-skeleton.py     # Cross-RQ snapshot skeleton (used by /build-overview)
 ├── research/
-│   ├── README.md                 # RQ concept, methodology constraints, model aliases
+│   ├── README.md                 # RQ concept, methodology constraints, model aliases, skills
 │   ├── RQ-1-workflow-effect/     # Per-RQ:
 │   │   ├── README.md             #   frontmatter selector + question + hypotheses
 │   │   ├── findings.md           #   curated, growing list of numbered findings
@@ -133,7 +138,7 @@ This decoupling has costs and benefits:
 │   ├── RQ-3-model-and-thinking/
 │   ├── RQ-4-workflow-model-interaction/
 │   ├── RQ-5-run-stability/
-│   └── _archive/                 # Frozen snapshots of past analyses
+│   └── _archive/                 # Frozen snapshots of past analyses + experiment-overview snapshots
 ├── reference/                    # Reference configurations
 ├── HUMAN-IN-THE-LOOP.md          # Optional HITL checkpoint guide
 ├── WORKTREE-WORKFLOW.md          # Persistent agent-worktree convention
@@ -220,6 +225,31 @@ This reads the RQ frontmatter, selects all matching runs from `experiments/runs/
 # 4. Curate: update findings.md with new evidence and status flags
 ```
 
+## Skills
+
+Two Claude Code skills automate the repetitive parts of the loop above. They live in `.claude/skills/` and are invoked as slash commands inside Claude Code.
+
+| Skill | Invocation | Purpose |
+|-------|------------|---------|
+| [`run-rq`](.claude/skills/run-rq/SKILL.md) | `/run-rq RQ-N` | Drives a single RQ end-to-end: validates the README, generates a fill batch-plan, starts the Docker batch in the background, monitors progress, runs aggregation, proposes findings updates. Pure orchestration — every step calls existing repo scripts. |
+| [`build-overview`](.claude/skills/build-overview/SKILL.md) | `/build-overview` | Generates a cross-RQ snapshot under `research/_archive/experiment-overview-YYYY-MM-DD.md`. Step 1 runs `experiments/generate-snapshot-skeleton.py` (data sections, finding lists, caveats). Step 2 fills synthesis sections (RQ paragraphs, cross-RQ synthesis, limitations) from the current `findings.md`. Reproducible because numbers come from the skeleton, not from model memory. |
+
+The skills replace the manual end-to-end loop in routine usage:
+
+```
+   manual                   ⇒    skill
+   ------------------------       ----------------
+   batch-plan-from-rq.py
+   batch.sh                  ⇒    /run-rq RQ-N
+   watch-batch.sh
+   aggregate-by-query.py
+
+   read all findings.md
+   write overview.md         ⇒    /build-overview
+```
+
+See [research/README.md](research/README.md#skills) for the full skill descriptions and the snapshot lifecycle.
+
 ## Script Reference
 
 All scripts are designed to be run from the repo root unless noted otherwise. `.py` scripts use Python 3 with PyYAML + pandas; `.sh` scripts are bash.
@@ -238,6 +268,7 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 |--------|---------|
 | `experiments/aggregate-by-query.py` | Reads an RQ frontmatter, selects matching runs from the pool, writes `runs.csv` + `summary.md` into the RQ directory. The canonical aggregator for current research. |
 | `experiments/batch-plan-from-rq.py` | Reads an RQ frontmatter, computes missing cells against `min_replicates`, writes `experiments/batch-plans/<rq-id>-fill.json`. Idempotent — empty plan if everything is covered. |
+| `experiments/generate-snapshot-skeleton.py` | Reads all `research/RQ-*/README.md` + `findings.md`, emits a Markdown skeleton to `/tmp/snapshot-skeleton-YYYY-MM-DD.md` with data sections (run counts, coverage per RQ, finding lists sorted by status, cross-RQ caveats) pre-filled and synthesis sections marked with `<!-- TODO Claude -->`. Consumed by the `/build-overview` skill. |
 
 ### Aggregation (batch-driven, legacy)
 
