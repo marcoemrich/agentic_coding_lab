@@ -12,16 +12,19 @@ controls:
   kata_base: game-of-life
   model: opus-4-7-no-thinking
 outcomes:
-  - tests_passing            # Korrektheit
-  - code_mass                # LoC + test_lines (Volumen)
-  - smell_total              # SonarJS-Smell-Summe
-  - smell_complexity         # cognitive-complexity-Findings
-  - cc_longest_function      # Spitzen-Komplexität
-  - cycle_count              # TDD-Disziplin: Anzahl Red-Green-Refactor-Zyklen
-  - refactorings_applied     # TDD-Disziplin: explizite Refactor-Phasen
-  - predictions_correct      # TDD-Disziplin: korrekte Test-Outcome-Vorhersagen
-  - tests_passed_immediately # TDD-Anti-Signal: Tests gleich grün
-  - duration_seconds         # Effizienz
+  - tests_passing              # Korrektheit
+  - cc_loc                     # produktiver Code-LoC (clean-code, ohne Tests)
+  - code_mass                  # LoC + test_lines (Volumen inkl. Tests)
+  - cc_avg_loc_per_function    # Clean-Code: mittlere Funktionslänge
+  - cc_longest_function        # Spitzen-Komplexität (längste Funktion)
+  - smell_total                # SonarJS-Smell-Summe
+  - smell_complexity           # cognitive-complexity-Findings
+  - cycle_count                # TDD-Disziplin: Anzahl Red-Green-Refactor-Zyklen
+  - refactorings_applied       # TDD-Disziplin: explizite Refactor-Phasen
+  - predictions_correct        # TDD-Disziplin: korrekte Test-Outcome-Vorhersagen (absolut)
+  - predictions_correct_rate   # TDD-Disziplin: Vorhersage-Trefferquote (pooled %)
+  - tests_passed_immediately   # TDD-Anti-Signal: Tests gleich grün
+  - duration_seconds           # Effizienz
 min_replicates: 3
 status: aktiv
 ---

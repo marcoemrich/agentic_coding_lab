@@ -259,13 +259,52 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
         md_path.write_text("\n".join(lines))
         return
 
-    # Per-outcome pivots: numeric → mean/min/max, boolean → rate.
+    # Per-outcome pivots: numeric → mean/min/max, boolean → rate,
+    # pooled rate (suffix _rate with matching _correct/_total cols) → Σ/Σ.
     L("## Outcome-Pivots (pro Zelle)")
     L("")
 
     group_cols = ["kata", "workflow", "model"]
 
     for outcome in outcomes:
+        # Pooled rate: outcome name ends with "_correct_rate" → derive
+        # numerator/denominator column names.
+        if outcome.endswith("_correct_rate"):
+            stem = outcome[: -len("_correct_rate")]
+            num_col = f"{stem}_correct"
+            den_col = f"{stem}_total"
+            if num_col not in df.columns or den_col not in df.columns:
+                L(f"### {outcome}")
+                L("")
+                L(f"_Spalten `{num_col}` und/oder `{den_col}` nicht in CSV._")
+                L("")
+                continue
+            df_r = df.assign(
+                _num=pd.to_numeric(df[num_col], errors="coerce"),
+                _den=pd.to_numeric(df[den_col], errors="coerce"),
+            )
+            df_r = df_r.dropna(subset=["_den"])
+            df_r = df_r[df_r["_den"] > 0]
+            if df_r.empty:
+                L(f"### {outcome} (pooled %)")
+                L("")
+                L(f"_Keine Runs mit `{den_col} > 0`._")
+                L("")
+                continue
+            grouped = (df_r.groupby(group_cols)
+                            .agg(n=("_num", "size"),
+                                 correct=("_num", "sum"),
+                                 total=("_den", "sum"))
+                            .reset_index())
+            grouped["rate_%"] = (
+                100 * grouped["correct"] / grouped["total"]
+            ).round(1)
+            L(f"### {outcome} (pooled %)")
+            L("")
+            L(grouped.to_markdown(index=False))
+            L("")
+            continue
+
         if outcome not in df.columns:
             L(f"### {outcome}")
             L("")

@@ -134,6 +134,38 @@ status: aktiv | partiell | abgeschlossen
 als `<kata_base>-<prompt>`. `prompt` kommt entweder aus `controls.prompt`,
 aus dem `workflow_x_prompt`-Pairing, oder aus `factors.prompt`.
 
+## Outcome-Konventionen
+
+`outcomes` im Frontmatter sind CSV-Spaltennamen aus `runs.csv`
+(siehe `CSV_COLUMNS` in `experiments/aggregate-by-query.py`).
+`aggregate-by-query.py` wählt den Pivot-Typ automatisch:
+
+| Wertetyp / Naming                | Pivot-Form                                                     |
+|----------------------------------|----------------------------------------------------------------|
+| Boolean                          | rate_% (Anteil `true`)                                         |
+| Numerisch                        | mean / min / max / std über die Zelle                          |
+| Suffix `<X>_correct_rate`        | **pooled** rate aus `<X>_correct` und `<X>_total`: Σ/Σ × 100   |
+
+**Pooled rate**: Wird genutzt für Erfolgsquoten mit Zähler/Nenner pro
+Run, z.B. `predictions_correct_rate` → Σ`predictions_correct` /
+Σ`predictions_total`. Bevorzugt gegenüber dem Mittelwert pro-Run-
+berechneter Raten, weil Runs mit kleinen Nennern sonst überproportional
+gewichtet würden.
+
+Beispiel:
+
+```yaml
+outcomes:
+  - tests_passing              # Boolean → rate_%
+  - cc_loc                     # Numeric → mean/min/max/std
+  - cc_avg_loc_per_function    # Numeric
+  - predictions_correct_rate   # pooled rate aus predictions_correct/_total
+```
+
+Damit eine `<X>_correct_rate`-Outcome funktioniert, müssen die Spalten
+`<X>_correct` und `<X>_total` in `CSV_COLUMNS` (also in der
+metrics.json-Struktur) vorhanden sein.
+
 ## Findings-Status-Legende
 
 - `✅ haltbar` — Daten stützen den Befund robust (n≥3, klares Signal)
