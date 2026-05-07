@@ -1,0 +1,151 @@
+# Vortest: Mehrdeutigkeits-Probe für die Versicherungs-Kata-Mehrdeutigkeiten
+#
+# Pro Mehrdeutigkeit: Regeltext (so wie er in der Kata stehen würde, OHNE Beispiele)
+# plus eine konkrete Eingabe-Frage. Erwartung: ohne Beispiele streuen die
+# Modell-Antworten zwischen den Lesarten. Konvergenz auf eine Lesart =
+# kein guter Example-Mapping-Effekt zu erwarten.
+#
+# Bezug: ../kata-mehrdeutigkeiten.md, ../kata-construction.md
+
+mehrdeutigkeiten:
+  - id: A
+    titel: Set-Wertung mit Überzähligen
+    regeln: |
+      Regeln zur Bewertung magischer Komponenten:
+      - Ein Bauteil-Block aus 3 gleichartigen Komponenten desselben Typs
+        wird mit einem Bonuspreis von 60 G bewertet.
+      - Einzelne Komponenten zählen je 25 G.
+    frage: |
+      Ein Kunde besitzt 7 Feuer-Runen (alle vom selben Typ).
+      Wie hoch ist der Gesamtwert in G? Antworte mit einer einzelnen Zahl
+      und einer kurzen Begründung.
+    lesarten:
+      L1_strikt: "7 × 25 = 175 G (Block nur bei genau 3, alles einzeln gezählt)"
+      L2_max_block: "2×60 + 1×25 = 145 G (greedy: 2 Blöcke + 1 Einzel)"
+      L3_einmal_block: "60 + 4×25 = 160 G (höchstens 1 Block, Rest einzeln)"
+
+  - id: B
+    titel: "Police als Begriff"
+    regeln: |
+      Regeln zur Versicherungssumme und Cap:
+      - Pro Police ist der Gesamt-Payout auf das Doppelte der
+        Versicherungssumme begrenzt.
+      - Wird ein Vertrag verlängert, übernimmt die neue Police die
+        Konditionen der alten.
+    frage: |
+      Ein Kunde hat einen Vertrag mit Versicherungssumme 1000 G abgeschlossen.
+      Im ersten Vertragsjahr wurde ein Schaden von 1500 G ausgezahlt.
+      Der Vertrag wurde am Ende des Jahres verlängert.
+      Im zweiten Vertragsjahr meldet der Kunde einen neuen Schaden von 1500 G.
+      Wie hoch ist der Payout für den zweiten Schaden? Antworte mit einer
+      einzelnen Zahl in G und einer kurzen Begründung.
+    lesarten:
+      L1_reset: "1500 G (Verlängerung = neue Police, Cap-Zähler resettet)"
+      L2_uebergreifend: "500 G (Cap police-übergreifend, schon 1500 von 2000 verbraucht)"
+
+  - id: B2
+    titel: "Schadensereignis als Begriff"
+    regeln: |
+      Regeln zur Schadensregulierung:
+      - Pro Schadensereignis greift eine Selbstbeteiligung von 100 G.
+    frage: |
+      Ein einzelner Drachenangriff beschädigt zwei versicherte Gegenstände
+      gleichzeitig: ein Schwert (Schaden 500 G) und ein Amulett (Schaden 300 G).
+      Wie hoch ist der Gesamt-Payout an den Kunden? Antworte mit einer
+      einzelnen Zahl in G und einer kurzen Begründung.
+    lesarten:
+      L1_einmal_sb: "700 G (1 Ereignis = 1 SB: 500+300−100)"
+      L2_pro_item: "600 G (2 Schäden = 2 SB: 500+300−2×100)"
+
+  - id: C
+    titel: Erstversicherung
+    regeln: |
+      Regeln zur Prämienberechnung:
+      - Bei einer Erstversicherung wird ein Erst-Bewertungs-Aufschlag von
+        10 % auf die Prämie erhoben.
+      - Ab dem zweiten Vertrag erhalten Versicherungsnehmer einen
+        Treuerabatt von 15 % auf die Prämie.
+    frage: |
+      Berechne die Prämie für folgenden Fall:
+      - Kunde: hat bereits einen aktiven Vertrag bei der Versicherung
+      - Aktion: schließt nun einen zweiten Vertrag für ein neues
+        magisches Schwert ab
+      - Grundpreis: 100 G
+      Wie hoch ist die Prämie in G? Antworte mit einer einzelnen Zahl
+      und einer kurzen Begründung.
+    lesarten:
+      L1_kundenbezogen: "85 G (Kunde nicht mehr Erstvers., nur Treuerabatt: 100 − 15)"
+      L2_sachbezogen: "95 G (Schwert ist Erstvers., beides greift: 100 + 10 − 15 = 95, oder 100×1.10×0.85 ≈ 93.5)"
+
+  - id: D
+    titel: Faktor-Reihenfolge bei Prämienmodifikatoren
+    regeln: |
+      Regeln zur Prämienberechnung:
+      - Verfluchte Gegenstände: +50 % Risikozuschlag.
+      - Hochverzauberte Gegenstände (Verzauberungsstufe ≥ 5): +30 % Risikozuschlag.
+      - Stammkunden (≥ 2 Jahre Kundenbeziehung): 20 % Treuerabatt.
+    frage: |
+      Berechne die Prämie für folgenden Fall:
+      - Gegenstand: verfluchtes Schwert mit Verzauberungsstufe 7
+      - Kunde: 3 Jahre Stammkunde
+      - Grundpreis: 100 G
+      Wie hoch ist die Prämie in G? Antworte mit einer einzelnen Zahl
+      und einer kurzen Begründung.
+    lesarten:
+      L1_additiv: "160 G (alle Prozentsätze additiv: 100×(1+0.5+0.3−0.2))"
+      L2_mult_rabatt_grund: "175 G (Zuschläge multiplikativ, Rabatt nur auf Grundpreis: 100×1.5×1.3 − 100×0.2)"
+      L3_alles_mult: "156 G (alle multiplikativ: 100×1.5×1.3×0.8)"
+
+  - id: F
+    titel: "Annahme/Sonderbegutachtung — Konkurrenz neutral"
+    regeln: |
+      Regeln zur Antragsprüfung:
+      - Items mit Verzauberungsstufe ≥ 8 werden zur Sonderbegutachtung
+        weitergeleitet.
+      - Items aus Drachenmaterial werden direkt angenommen.
+    frage: |
+      Ein Schwert aus Drachenmaterial mit Verzauberungsstufe 9 wird
+      zur Versicherung angemeldet. Welcher Status ergibt sich aus den
+      Regeln? Antworte entweder mit "Direkt angenommen" oder
+      "Sonderbegutachtung" und einer kurzen Begründung.
+    lesarten:
+      L1_reihenfolge: "Sonderbegutachtung (Stufe-Regel zuerst genannt, schlägt zu)"
+      L2_spezifisch: "Direkt angenommen (Material ist spezifischer / seltener)"
+      L3_strenger: "Sonderbegutachtung (bei Konflikt vorsichtiger Pfad)"
+
+  - id: G
+    titel: "Sturm vom Wettermagier — Ursache vs. Erscheinungsform"
+    regeln: |
+      Regeln zur Schadensdeckung:
+      - Schäden durch magische Einwirkung sind voll abgedeckt.
+      - Schäden durch Naturgewalten sind nur bei Premium-Tarif abgedeckt;
+        im Standard-Tarif greift keine Deckung.
+    frage: |
+      Ein Standard-Tarif-Kunde meldet folgenden Schaden:
+      Sein Haus wurde durch einen Sturm beschädigt (Schaden 1000 G).
+      Der Sturm wurde durch einen Wettermagier ausgelöst.
+      Wie hoch ist der Payout in G? Antworte mit einer einzelnen Zahl
+      und einer kurzen Begründung.
+    lesarten:
+      L1_ursache: "1000 G (Auslöser Magie → magische Einwirkung → voll gedeckt)"
+      L2_erscheinung: "0 G (Manifestation Sturm → Naturgewalt → im Standard nicht gedeckt)"
+
+modelle:
+  - id: opus-think
+    model: claude-opus-4-7
+    effort: high
+    label: "Opus 4.7 (mit thinking)"
+  - id: opus
+    model: claude-opus-4-7
+    effort: low
+    label: "Opus 4.7 (ohne thinking)"
+  - id: sonnet-think
+    model: claude-sonnet-4-6
+    effort: high
+    label: "Sonnet 4.6 (mit thinking)"
+  - id: haiku
+    model: claude-haiku-4-5-20251001
+    effort: low
+    label: "Haiku 4.5 (ohne thinking)"
+
+n_repeats: 5
