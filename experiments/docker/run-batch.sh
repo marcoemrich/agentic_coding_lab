@@ -15,6 +15,15 @@ BATCH_PLANS_DIR="$EXPERIMENTS_DIR/batch-plans"
 # Hard timeout for a single Claude Code call (seconds). Override via env.
 CLAUDE_TIMEOUT_SECONDS="${CLAUDE_TIMEOUT_SECONDS:-1800}"
 
+# Rate-limit / API-overload behaviour. Tunable via env.
+#   BATCH_RATELIMIT_RETRIES   per-run retries on rate-limit/overload (default 5).
+#                             Backoff doubles each attempt starting at 60s
+#                             (60, 120, 240, 480, 960 ≈ 30 min total).
+#   BATCH_CONSECUTIVE_GIVEUP  consecutive runs that exhausted retries before
+#                             aborting the whole batch (default 10).
+BATCH_RATELIMIT_RETRIES="${BATCH_RATELIMIT_RETRIES:-5}"
+BATCH_CONSECUTIVE_GIVEUP="${BATCH_CONSECUTIVE_GIVEUP:-10}"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -230,6 +239,7 @@ fi
 total=${#RUN_LIST[@]}
 echo -e "${BLUE}Total runs:${NC} $total"
 echo -e "${BLUE}Per-run timeout:${NC} ${CLAUDE_TIMEOUT_SECONDS}s"
+echo -e "${BLUE}Rate-limit retries:${NC} ${BATCH_RATELIMIT_RETRIES} per run, abort after ${BATCH_CONSECUTIVE_GIVEUP} consecutive failures"
 echo
 
 # ---------------------------------------------------------------------------
@@ -289,6 +299,7 @@ current=0
 ok_count=0
 failed_count=0
 ratelimited_count=0
+consecutive_ratelimited=0
 
 for entry in "${RUN_LIST[@]}"; do
     kata=$(echo "$entry" | cut -d'|' -f1)
@@ -454,22 +465,57 @@ EOF
     start_time=$(date +%s)
     run_log="$run_dir/run.log"
     claude_exit=0
+    rate_limited="false"
+    rate_limit_attempts=0
 
-    set +e
-    if [ "$thinking" = "false" ]; then
-        (cd "$run_dir" && MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
-            claude --dangerously-skip-permissions --model "$cli_model" --print \
-            "Read prompt.md and complete the TDD exercise following the workflow rules.") \
-            2>&1 | tee "$run_log"
-        claude_exit=${PIPESTATUS[0]}
-    else
-        (cd "$run_dir" && timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
-            claude --dangerously-skip-permissions --model "$cli_model" --print \
-            "Read prompt.md and complete the TDD exercise following the workflow rules.") \
-            2>&1 | tee "$run_log"
-        claude_exit=${PIPESTATUS[0]}
-    fi
-    set -e
+    # Retry loop: repeats only on rate-limit/overload. Other outcomes (OK,
+    # timeout, generic error) leave the loop immediately. Backoff doubles
+    # from 60s. The whole loop reuses the same run_dir and run_log; the
+    # log is overwritten on each attempt.
+    for attempt in $(seq 0 "$BATCH_RATELIMIT_RETRIES"); do
+        if [ "$attempt" -gt 0 ]; then
+            backoff=$(( 60 * (1 << (attempt - 1)) ))
+            echo -e "  ${YELLOW}Rate-limit detected; retry $attempt/$BATCH_RATELIMIT_RETRIES after ${backoff}s backoff...${NC}"
+            sleep "$backoff"
+            : > "$run_log"
+        fi
+
+        set +e
+        if [ "$thinking" = "false" ]; then
+            (cd "$run_dir" && MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
+                claude --dangerously-skip-permissions --model "$cli_model" --print \
+                "Read prompt.md and complete the TDD exercise following the workflow rules.") \
+                2>&1 | tee "$run_log"
+            claude_exit=${PIPESTATUS[0]}
+        else
+            (cd "$run_dir" && timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
+                claude --dangerously-skip-permissions --model "$cli_model" --print \
+                "Read prompt.md and complete the TDD exercise following the workflow rules.") \
+                2>&1 | tee "$run_log"
+            claude_exit=${PIPESTATUS[0]}
+        fi
+        set -e
+
+        # Rate-limit detection. We only flag a run as rate-limited if it
+        # ALSO exited non-zero — a successful run (exit 0, tests green)
+        # cannot legitimately be rate-limited regardless of any string
+        # matches. Pattern uses word-boundaries on numeric codes so paths
+        # containing digits like ".../backup.1777786429234.json" do not
+        # falsely trigger.
+        rate_limited="false"
+        if [ "$claude_exit" -ne 0 ] && \
+           grep -qiE "rate.?limit|\b429\b|\b529\b|usage limit|overloaded" "$run_log" 2>/dev/null; then
+            rate_limited="true"
+        fi
+
+        # Stop retrying as soon as the call did not hit a rate-limit.
+        # That includes success (exit 0) and non-rate-limit failures
+        # (timeout, generic error) — those are not transient API issues.
+        if [ "$rate_limited" = "false" ]; then
+            break
+        fi
+        rate_limit_attempts=$attempt
+    done
 
     # Map exit code to a human-readable reason.
     case "$claude_exit" in
@@ -478,18 +524,7 @@ EOF
         137) exit_reason="timeout-killed" ;;
         *)   exit_reason="error-$claude_exit" ;;
     esac
-
-    # Rate-limit detection. We only flag a run as rate-limited if it ALSO
-    # exited non-zero — a successful run (exit 0, tests green) cannot
-    # legitimately be rate-limited regardless of any string matches.
-    # Pattern uses word-boundaries on numeric codes so paths containing
-    # digits like ".../backup.1777786429234.json" do not falsely trigger.
-    rate_limited="false"
-    if [ "$claude_exit" -ne 0 ] && \
-       grep -qiE "rate.?limit|\b429\b|usage limit|overloaded" "$run_log" 2>/dev/null; then
-        rate_limited="true"
-        exit_reason="rate-limited"
-    fi
+    [ "$rate_limited" = "true" ] && exit_reason="rate-limited"
 
     end_time=$(date +%s)
     duration=$((end_time - start_time))
@@ -513,18 +548,29 @@ EOF
     fi
 
     # Tally + skip analysis on rate-limit (no source produced anyway).
+    # On rate-limit: count it, move on to the next run (we've already
+    # retried up to $BATCH_RATELIMIT_RETRIES times). Abort the whole
+    # batch only after $BATCH_CONSECUTIVE_GIVEUP runs in a row have all
+    # exhausted their retries — that signals a sustained API outage,
+    # not a transient overload wave.
     if [ "$rate_limited" = "true" ]; then
         ratelimited_count=$((ratelimited_count + 1))
-        echo -e "  ${RED}Rate-limited (${duration}s). Skipping analysis.${NC}"
-        echo -e "  ${YELLOW}Aborting batch to avoid burning more requests.${NC}"
-        echo -e "  ${YELLOW}Resume later by editing the plan file or using batch-retry.${NC}"
-        echo
-        break
+        consecutive_ratelimited=$((consecutive_ratelimited + 1))
+        echo -e "  ${RED}Rate-limited after $rate_limit_attempts retries (${duration}s). Skipping analysis.${NC}"
+        if [ "$consecutive_ratelimited" -ge "$BATCH_CONSECUTIVE_GIVEUP" ]; then
+            echo -e "  ${RED}$consecutive_ratelimited consecutive rate-limited runs — API appears down. Aborting.${NC}"
+            echo -e "  ${YELLOW}Resume later by re-running ./batch.sh with the same plan file.${NC}"
+            echo
+            break
+        fi
+        echo -e "  ${YELLOW}Continuing with next run (consecutive rate-limits: $consecutive_ratelimited/$BATCH_CONSECUTIVE_GIVEUP).${NC}"
     elif [ "$claude_exit" -ne 0 ]; then
         failed_count=$((failed_count + 1))
+        consecutive_ratelimited=0
         echo -e "  ${RED}Failed: $exit_reason (${duration}s)${NC}"
     else
         ok_count=$((ok_count + 1))
+        consecutive_ratelimited=0
         echo -e "  ${GREEN}OK (${duration}s)${NC}"
     fi
 

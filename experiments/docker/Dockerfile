@@ -40,6 +40,15 @@ RUN mkdir -p \
     /home/experimenter/.local/share/pnpm/store \
     && chown -R experimenter:experimenter /home/experimenter
 
+# Provision an empty Claude config file. The CLI 2.1.107 logs a noisy
+# "Claude configuration file not found at: /home/experimenter/.claude.json"
+# warning multiple times per run if this is missing (once per subagent
+# spawn, so v4-exact-subagents floods the log). It otherwise functions
+# fine, but the warning crowds out the real output. An empty JSON is
+# sufficient — the CLI fills in its own fields on first use.
+RUN echo '{}' > /home/experimenter/.claude.json \
+    && chown experimenter:experimenter /home/experimenter/.claude.json
+
 # Switch to non-root user
 USER experimenter
 WORKDIR /home/experimenter
