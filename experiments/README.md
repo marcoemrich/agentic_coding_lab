@@ -208,7 +208,8 @@ The analyzer extracts metrics from two sources:
 | **Duration** | metrics.json | Total time (seconds) for complete TDD cycle |
 | **Tests** | Code analysis | Number of active test cases (non-todo) |
 | **Mass** | Code analysis | APP complexity score (see below) |
-| **Passed** | Test runner | Whether all tests pass (✅/❌) |
+| **Passed** | Test runner | Whether the implementer's own Vitest tests pass (✅/❌) — the "inside view" of correctness |
+| **Verification Total / Passed / Pct** | External acceptance suite | For CLI katas with a sibling `<basename>-verification/` directory: count of acceptance scenarios run, passed, and the resulting fraction (0.0–1.0). The "outside view" of correctness — measured against scenarios the implementer did not see during the run. `0/0/null` for katas without a verification suite. See [Adding New Experiments → New Kata](#new-kata) for the convention. |
 
 #### Token Usage & Context Metrics
 
