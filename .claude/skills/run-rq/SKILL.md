@@ -203,6 +203,15 @@ patchen.
      Vorschlag mit Diff alt/neu.
 3. Format der Vorschläge: Repo-Stil aus `research/RQ-1-workflow-effect/findings.md`
    übernehmen — Aussage / Datenbasis-Tabelle / Begründung / Status-Marker.
+   **Glossar-Pflicht**: Begriffe wie `code_mass`, `cc_loc`, `cc_longest_function`,
+   `smell_total`, `verification_pct` ausschließlich in der Form aus dem
+   Glossar in `research/README.md` ("Code-Mass (APP)", "Produktiv-LoC",
+   "Spitzen-Komplexität", "Smell-Summe", "Korrektheit (außen)") oder direkt
+   per Metrik-ID in Backticks verwenden. Synonyme wie "Code-Volumen",
+   "Code-Gesamtvolumen", "LoC-Größe" sind verboten — sie sind mehrdeutig
+   bzw. kollidieren mit etablierten Definitionen (APP). Vor dem Vorschlag-
+   Patch das Glossar einmal lesen und die im Block verwendeten Begriffe
+   gegen die Tabelle prüfen.
 4. User-Entscheidung pro Vorschlag einholen. Bei "ja" mit `Edit`:
    - Neue F-Blöcke ans Ende von `findings.md`.
    - Status-Updates inline in der entsprechenden `## F-x.y`-Zeile.

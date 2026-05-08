@@ -59,6 +59,14 @@ Ersetze jeden `<!-- TODO Claude: ... -->`-Marker durch echten Inhalt.
 Stil-Vorgaben:
 
 - **Sprache: Deutsch.** Wie in `findings.md`.
+- **Glossar-Pflicht:** Vor Schritt 3 das Glossar in `research/README.md`
+  lesen. Begriffe wie `code_mass`, `cc_loc`, `cc_longest_function`,
+  `smell_total`, `verification_pct` ausschließlich in der dort definierten
+  Form ("Code-Mass (APP)", "Produktiv-LoC", "Spitzen-Komplexität",
+  "Smell-Summe", "Korrektheit (außen)") oder direkt per Metrik-ID in
+  Backticks verwenden. Synonyme wie "Code-Volumen", "Code-Gesamtvolumen",
+  "LoC-Größe" sind verboten — sie sind mehrdeutig bzw. kollidieren mit
+  etablierten Definitionen (APP).
 - **Einleitung (Abschnitt vor 1.):** 2–3 Sätze. Was ist die Studie, was
   deckt dieser Snapshot ab.
 - **Methodik (Abschnitt 3):** Inhalt im Skelett ist statisch. Verifiziere
