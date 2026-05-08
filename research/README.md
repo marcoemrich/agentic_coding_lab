@@ -168,6 +168,28 @@ Damit eine `<X>_correct_rate`-Outcome funktioniert, müssen die Spalten
 `<X>_correct` und `<X>_total` in `CSV_COLUMNS` (also in der
 metrics.json-Struktur) vorhanden sein.
 
+## Glossar (verbindlich für Findings-Texte)
+
+Diese Begriffe sind in allen `findings.md`, `summary.md` und Snapshots
+ausschließlich in der hier definierten Form zu verwenden. Synonyme
+(insbesondere "Code-Volumen") sind verboten — sie sind mehrdeutig oder
+kollidieren mit etablierten Definitionen aus der Software-Craftsmanship-
+Literatur.
+
+| Begriff | Definition | Wo verwenden |
+|---|---|---|
+| **Code-Mass (APP)** | `code_mass` = `lines_of_code` + `test_lines`, im Sinne der *Absolute Priority Premise* (Robert C. Martin). | Wenn von `code_mass`-Werten oder dem Volumen von Produktiv- + Testcode die Rede ist. |
+| **Produktiv-LoC** | `cc_loc` aus dem clean-code-Reporter (nur Source, ohne Tests). | Wenn ausschließlich Produktivcode gemeint ist. |
+| **Test-LoC** | `test_lines` (Vitest-Test-Code). | Wenn ausschließlich Testcode gemeint ist. |
+| **Smell-Summe** | `smell_total` (SonarJS + Custom-Rules). | Code-Smells aggregiert. |
+| **Spitzen-Komplexität** | `cc_longest_function` (längste Funktion in Zeilen). | Komplexitäts-Spitze pro Run. |
+| **Korrektheit (innen)** | `tests_passing` (Vitest grün/rot). | Innen-Sicht der Tests. |
+| **Korrektheit (außen)** | `verification_pct` (Akzeptanz-Suite, externer CLI-Vergleich). | Außen-Sicht via Verification-Suite. |
+
+**Verbotene Synonyme**: "Code-Volumen", "Code-Gesamtvolumen", "LoC-Größe"
+für `code_mass`. Wenn unsicher: verlinke das Glossar oder zitiere die
+Metrik-ID (`code_mass`).
+
 ## Findings-Status-Legende
 
 - `✅ haltbar` — Daten stützen den Befund robust (n≥3, klares Signal)

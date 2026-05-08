@@ -17,7 +17,7 @@ outcomes:
   - verification_passed        # Anzahl bestandene Akzeptanz-Szenarien
   - verification_total         # Anzahl Akzeptanz-Szenarien insgesamt
   - cc_loc                     # produktiver Code-LoC (clean-code, ohne Tests)
-  - code_mass                  # LoC + test_lines (Volumen inkl. Tests)
+  - code_mass                  # Code-Mass (APP): LoC + test_lines
   - cc_avg_loc_per_function    # Clean-Code: mittlere Funktionslänge
   - cc_longest_function        # Spitzen-Komplexität (längste Funktion)
   - smell_total                # SonarJS-Smell-Summe
