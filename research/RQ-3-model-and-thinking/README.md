@@ -8,12 +8,15 @@ factors:
     - sonnet-4-6
     - sonnet-4-6-no-thinking
     - haiku-4-5
+  kata_base: [game-of-life, claim-office]
 controls:
   workflow: v4-exact-subagents
   prompt: example-mapping
-  kata_base: game-of-life
 outcomes:
   - tests_passing
+  - verification_pct
+  - verification_passed
+  - verification_total
   - code_mass
   - smell_total
   - cc_longest_function

@@ -686,6 +686,48 @@ Create `katas/<kata-name>/prompt.md` with:
 - Expected file paths
 - Constraints
 
+The directory name typically ends with one of `-prose`, `-user-story`,
+or `-example-mapping` (the prompt style); the part before is the
+**basename**.
+
+#### CLI Katas with External Acceptance Suite
+
+For katas where correctness should be measured against a fixed
+acceptance suite the implementer does not see (e.g. `claim-office`),
+add a sibling directory `katas/<basename>-verification/` with:
+
+- `runner.json` — `{"command": "...", "timeout_seconds": 30}` where
+  `command` is the shell command that runs the implementation's CLI.
+  For TypeScript CLIs: `pnpm exec tsx src/cli.ts` (assumes `tsx` is in
+  the run's devDependencies; the standard pnpm template includes it).
+- `scenarios/NN-name.input.json` — JSON document piped as stdin.
+- `scenarios/NN-name.expected.json` — expected JSON on stdout
+  (compared canonically via `jq -S .`).
+- Optional `scenarios/NN-name.story.md` for narrative scenarios used
+  in workshop reuse.
+
+Conventions for CLI katas:
+- The implementation's CLI entry point must be at `src/cli.ts`.
+- The prompt must specify "CLI executable that reads JSON from stdin
+  and writes JSON to stdout" (no need to expose the implementation
+  details beyond that).
+- The kata's prompt does **not** include the verification scenarios
+  — they are private acceptance tests measured by `analyze-run.sh`
+  after the run completes.
+
+After each run, `analyze-run.sh` automatically detects the
+`<basename>-verification/` directory, pipes each scenario input into
+the CLI (in the run directory), and compares the canonical JSON
+output against the expected JSON. Per-scenario results land in
+`verification.log`; counts are written to `metrics.json` as
+`final_metrics.verification_total`, `verification_passed`, and
+`verification_pct` (a fraction 0.0–1.0). For non-CLI katas without a
+verification directory, these fields are 0/null.
+
+For deeper guidance on building good katas (ambiguity construction,
+ruling strategies, test-suite distribution, anti-patterns), see
+`research/kata-design/kata-construction.md`.
+
 #### API Specification Guidelines
 
 **Do NOT specify the API** in kata prompts unless the original kata definition includes a canonical API.

@@ -655,6 +655,61 @@ analyze_single_run() {
         [[ "$cc_avg_loc_func" =~ ^[0-9]+$ ]] || cc_avg_loc_func=0
         [[ "$cc_imports" =~ ^[0-9]+$ ]] || cc_imports=0
 
+        # Verification block (for CLI katas with <basename>-verification/)
+        # Runs each *.input.json scenario through the CLI defined in
+        # runner.json, compares stdout against *.expected.json (canonical
+        # JSON via jq -S). Skipped silently for katas without a
+        # verification suite.
+        local verification_total=0
+        local verification_passed=0
+        local verification_pct="null"
+
+        local kata_basename="$kata"
+        for suffix in -prose -user-story -example-mapping; do
+            if [[ "$kata_basename" == *"$suffix" ]]; then
+                kata_basename="${kata_basename%$suffix}"
+                break
+            fi
+        done
+
+        local verification_dir="$EXPERIMENTS_DIR/katas/${kata_basename}-verification"
+        if [ -d "$verification_dir" ] && [ -f "$verification_dir/runner.json" ] && command -v jq &> /dev/null; then
+            local v_command
+            local v_timeout
+            v_command=$(jq -r '.command' "$verification_dir/runner.json")
+            v_timeout=$(jq -r '.timeout_seconds // 30' "$verification_dir/runner.json")
+
+            : > "$run_dir/verification.log"
+            for input_file in "$verification_dir"/scenarios/*.input.json; do
+                [ -e "$input_file" ] || break
+                verification_total=$((verification_total + 1))
+                local expected_file="${input_file%.input.json}.expected.json"
+                local scenario_name
+                scenario_name=$(basename "$input_file" .input.json)
+
+                local actual
+                actual=$(cd "$run_dir" && timeout "$v_timeout" bash -c "$v_command" < "$input_file" 2>>"$run_dir/verification.log")
+                local exit_code=$?
+
+                if [ $exit_code -eq 0 ]; then
+                    if diff <(echo "$actual" | jq -S .) <(jq -S . "$expected_file") > /dev/null 2>&1; then
+                        verification_passed=$((verification_passed + 1))
+                        echo "PASS: $scenario_name" >> "$run_dir/verification.log"
+                    else
+                        echo "FAIL (mismatch): $scenario_name" >> "$run_dir/verification.log"
+                    fi
+                else
+                    echo "FAIL (exit $exit_code): $scenario_name" >> "$run_dir/verification.log"
+                fi
+            done
+
+            if [ $verification_total -gt 0 ]; then
+                verification_pct=$(awk "BEGIN {printf \"%.4f\", $verification_passed / $verification_total}")
+            fi
+
+            echo -e "${YELLOW}Verification: ${verification_passed}/${verification_total} scenarios passed${NC}"
+        fi
+
         # Map predictions to JSON null when the workflow does not support
         # the Guessing Game (v1/v2). Otherwise emit numeric counts.
         local pred_correct_json="$summary_pred_correct"
@@ -695,12 +750,18 @@ analyze_single_run() {
            --argjson cc_longest_func "$cc_longest_func" \
            --argjson cc_avg_loc_func "$cc_avg_loc_func" \
            --argjson cc_imports "$cc_imports" \
+           --argjson verification_total "$verification_total" \
+           --argjson verification_passed "$verification_passed" \
+           --argjson verification_pct "$verification_pct" \
            '.final_metrics.lines_of_code = $impl_loc |
             .final_metrics.test_lines = $test_loc |
             .final_metrics.tests_total = $test_count |
             .final_metrics.todos_remaining = $todo_count |
             .final_metrics.code_mass = $total_mass |
             .final_metrics.tests_passing = $tests_passed |
+            .final_metrics.verification_total = $verification_total |
+            .final_metrics.verification_passed = $verification_passed |
+            .final_metrics.verification_pct = $verification_pct |
             .coverage.statements_pct = $cov_statements |
             .coverage.branches_pct = $cov_branches |
             .code_smells.total = $smell_total |

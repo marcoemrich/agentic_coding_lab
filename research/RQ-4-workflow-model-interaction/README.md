@@ -11,10 +11,13 @@ factors:
     - opus-4-7-no-thinking
     - sonnet-4-6
     - haiku-4-5
-controls:
-  kata_base: game-of-life
+  kata_base: [game-of-life, claim-office]
+controls: {}
 outcomes:
   - tests_passing
+  - verification_pct
+  - verification_passed
+  - verification_total
   - code_mass
   - smell_total
   - cc_longest_function

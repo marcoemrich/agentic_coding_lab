@@ -330,6 +330,7 @@ for entry in "${RUN_LIST[@]}"; do
   },
   "devDependencies": {
     "typescript": "^5.3.0",
+    "tsx": "^4.7.0",
     "vitest": "^1.0.0",
     "@vitest/coverage-v8": "^1.0.0",
     "eslint": "^9.0.0",

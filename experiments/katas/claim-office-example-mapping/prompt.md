@@ -278,4 +278,5 @@ Stdout shape:
 
 - Use TypeScript for the implementation
 - The CLI must read JSON from stdin and write JSON to stdout
+- The CLI entry point must be at `src/cli.ts`
 - Internal data structures and module organization are free

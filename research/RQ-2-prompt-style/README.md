@@ -3,12 +3,15 @@ id: RQ-2
 question: "Wirkt Prompt-Stil (prose / example-mapping / user-story) auf Code-Qualität und Korrektheit?"
 factors:
   prompt: [prose, example-mapping, user-story]
+  kata_base: [game-of-life, claim-office]
 controls:
   workflow: v4-exact-subagents
-  kata_base: game-of-life
   model: opus-4-7-no-thinking
 outcomes:
   - tests_passing
+  - verification_pct
+  - verification_passed
+  - verification_total
   - code_mass
   - smell_total
   - cc_longest_function

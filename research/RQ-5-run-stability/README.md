@@ -14,11 +14,14 @@ factors:
     - {workflow: v5-exact-single-context, prompt: prose}
     - {workflow: v5-exact-single-context, prompt: example-mapping}
     - {workflow: v5-exact-single-context, prompt: user-story}
+  kata_base: [game-of-life, claim-office]
 controls:
-  kata_base: game-of-life
   model: opus-4-7-no-thinking
 outcomes:
   - tests_passing            # σ ≈ 0 erwartet (binär, meist 100%)
+  - verification_pct         # Akzeptanz-Suite-Stabilität (claim-office); null bei Vitest-Katas
+  - verification_passed
+  - verification_total
   - code_mass                # primäres σ-Signal
   - smell_total
   - cc_longest_function

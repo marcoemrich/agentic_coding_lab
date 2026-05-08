@@ -8,11 +8,14 @@ factors:
     - {workflow: v3-basic-tdd,            prompt: example-mapping}
     - {workflow: v4-exact-subagents,      prompt: example-mapping}
     - {workflow: v5-exact-single-context, prompt: example-mapping}
+  kata_base: [game-of-life, claim-office]
 controls:
-  kata_base: game-of-life
   model: opus-4-7-no-thinking
 outcomes:
-  - tests_passing              # Korrektheit
+  - tests_passing              # Korrektheit (Vitest, Innen-Sicht)
+  - verification_pct           # Korrektheit (Akzeptanz-Suite, Außen-Sicht; null bei Vitest-Katas)
+  - verification_passed        # Anzahl bestandene Akzeptanz-Szenarien
+  - verification_total         # Anzahl Akzeptanz-Szenarien insgesamt
   - cc_loc                     # produktiver Code-LoC (clean-code, ohne Tests)
   - code_mass                  # LoC + test_lines (Volumen inkl. Tests)
   - cc_avg_loc_per_function    # Clean-Code: mittlere Funktionslänge
