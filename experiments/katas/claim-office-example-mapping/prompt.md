@@ -5,8 +5,8 @@
 You are building the policy management system for the **Most Honorable
 Privileged Claims Office for Magical Risks and Cursed Items** (MHPCO),
 an old-fashioned insurance institution that covers magical items —
-swords, amulets, staves, potions, and crafting components such as runes
-and gemstones. The MHPCO is bureaucratic, slightly stingy, and proud of
+swords, amulets, staves, potions, and components such as runes and
+moonstones. The MHPCO is bureaucratic, slightly stingy, and proud of
 its venerable traditions.
 
 ## Feature
@@ -27,9 +27,9 @@ the MHPCO price list:
 - Staff: 800 G / 80 G
 - Potion: 400 G / 40 G
 
-Components such as runes and gemstones are insured at 250 G each, with
-a base premium of 25 G per component. A building block of 3 alike
-components is offered at a special base premium of 60 G.
+Components — for example runes and moonstones — are insured at 250 G
+each, with a base premium of 25 G per component. A building block of
+3 alike components is offered at a special base premium of 60 G.
 
 ### Premium modifiers
 
@@ -61,15 +61,28 @@ modifiers, unless stated otherwise.
 
 ### Building block of 3 alike components
 
-- 2 fire runes → 50 G base premium
-- 3 fire runes → 60 G base premium (block applies)
-- 4 fire runes → 100 G base premium (no block — block requires exactly 3)
-- 7 fire runes → 175 G base premium
+- 2 runes → 50 G base premium
+- 3 runes → 60 G base premium (block applies)
+- 4 runes → 100 G base premium (no block — block requires exactly 3)
+- 7 runes → 175 G base premium
 
 ### "Alike" components
 
-- 2 fire runes + 1 ice rune → 75 G base premium (no block: different types)
-- 3 fire runes + 3 ice runes → 120 G base premium (two separate blocks)
+> ❓ Hmm — "alike" components: does that mean exactly the same type,
+> or just the same family (rune-y, gemstone-y)?
+
+- 2 runes + 1 moonstone → 75 G base premium (no block: different types)
+- 3 runes + 3 moonstones → 120 G base premium (two separate blocks)
+
+### Modifier thresholds
+
+- customer with exactly 2 years with MHPCO → loyalty discount applies
+- sword with exactly enchantment 5 → high-enchantment surcharge
+  applies; if cursed, both surcharges apply
+- sword with enchantment 4 → no high-enchantment surcharge; curse
+  surcharge applies only if cursed
+- dragon-material sword with exactly enchantment 8, damage 1000 G →
+  payout 400 G (high-enchantment clause applies, then deductible)
 
 ### Deductible per damage event
 
@@ -77,17 +90,51 @@ modifiers, unless stated otherwise.
   amulet (300 G); payout = 600 G (the 100 G deductible applies once
   per damaged item)
 
+### Standard reimbursement (no special clauses)
+
+- regular sword (steel, enchantment 3), damage 500 G → payout 400 G
+  (full reimbursement minus 100 G deductible; no special clause applies)
+- damage to a rune (insurance value 250 G), damage 200 G → payout
+  100 G (full reimbursement minus 100 G deductible; runes have no
+  enchantment level or material, so no special clause applies)
+
 ### Enchantment threshold vs. dragon material
 
 - dragon-material sword, enchantment 9, damage 1000 G → payout 400 G
-  (50 % reimbursement applies)
+  (both clauses apply; the 50 % rule wins, then deductible: 500 − 100)
 - dragon-material sword, enchantment 5, damage 800 G → payout 700 G
-  (full reimbursement applies)
+  (only the dragon-material clause applies: full reimbursement,
+  then deductible: 800 − 100)
 - steel sword, enchantment 9, damage 1000 G → payout 400 G
-  (50 % reimbursement applies)
+  (only the high-enchantment clause applies: 50 % first, then
+  deductible: 500 − 100)
+
+### Multiple items of the same type
+
+> ❓ What if a customer brings two of the same item — one in hand,
+> one in the backpack? Or just two swords because they fight with
+> two?
+
+- a policy covers two swords → insurance sum 2000 G (= 2×1000),
+  cap 4000 G
+- a dragon attack damages both swords; `damages` contains two
+  `{itemType: "sword", ...}` entries → each entry is treated as a
+  separate damage with its own deductible
+- if the `damages` array contains more entries of a given type than
+  the policy actually covers (e.g. two sword damages but only one
+  sword insured) → the CLI exits with a non-zero status code; the
+  whole claim is rejected
 
 ### Cap exhaustion
 
+- a policy covers a sword and an amulet → insurance sum 1600 G
+  (= 1000 + 600, the sum of the items' insurance values), cap 3200 G
+- a cursed sword (insurance value 1000 G, premium with modifiers
+  165 G) → cap 2000 G (based on the unmodified insurance value;
+  premium modifiers do not raise the cap)
+- a policy covers a sword and 3 runes (a block) → insurance sum
+  1750 G (= 1000 + 3×250); the block discount affects the premium
+  only, not the insurance sum
 - a sword is insured (insurance sum 1000 G, cap 2000 G); two successive
   claims of 1500 G each
 - first claim → payout 1400 G, cap remaining 600 G
@@ -106,12 +153,17 @@ modifiers, unless stated otherwise.
 ### Edge cases
 
 - empty item list → premium 5 G (only the processing fee)
-- claim mentions an insured sword (damage 500 G) and a dining table
-  (damage 300 G, not insured) → payout 400 G (the dining table is
-  silently ignored)
+- quote includes an item with an unknown type (e.g.
+  `{type: "broomstick"}`) → the CLI exits with a non-zero status code
+  and writes an error description to stderr; no `results` are written
+  to stdout
+- claim references a damage entry whose item is not part of the policy
+  (e.g. an amulet damaged when only a sword is insured, or an item
+  with an unknown type) → the CLI exits with a non-zero status code
+  and writes an error description to stderr
 - claim contains a damage entry with `amount: -200` → the CLI exits
   with a non-zero status code and writes an error description to
-  stderr; no `results` are written to stdout
+  stderr
 
 ## Integration examples
 
@@ -127,6 +179,11 @@ modifiers stack and how customer history affects the premium.
 
 ### Long-standing customer's second contract
 
+> ❓ Wait — does "first insurance" mean the customer's first ever
+> contract, or the first time we see this particular item? A
+> long-standing customer with a brand-new sword: does the first
+> insurance surcharge still apply?
+
 - customer: 3 years with MHPCO; this is the customer's second `quote`
   in the scenario
 - item: a cursed sword (steel, enchantment 7)
@@ -135,8 +192,9 @@ modifiers stack and how customer history affects the premium.
   + 10 G first insurance − 15 G follow-up contract = 155 G + 5 G fee
   = 160 G)
 - The first insurance surcharge still applies to the new sword, even
-  though the customer is on a follow-up contract — each newly insured
-  item is treated as a first insurance for itself.
+  though the customer is on a follow-up contract — each item in a
+  `quote` is treated as a first insurance, regardless of customer
+  history.
 
 ## CLI input/output format
 

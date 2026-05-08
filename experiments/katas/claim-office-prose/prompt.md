@@ -5,8 +5,8 @@
 You are building the policy management system for the **Most Honorable
 Privileged Claims Office for Magical Risks and Cursed Items** (MHPCO),
 an old-fashioned insurance institution that covers magical items —
-swords, amulets, staves, potions, and crafting components such as runes
-and gemstones. The MHPCO is bureaucratic, slightly stingy, and proud of
+swords, amulets, staves, potions, and components such as runes and
+moonstones. The MHPCO is bureaucratic, slightly stingy, and proud of
 its venerable traditions.
 
 ## Feature
@@ -20,15 +20,15 @@ When a customer wants to insure a list of items, the system computes the
 premium. Each main item has an insurance value and a base premium
 according to the MHPCO price list: a sword is insured at 1000 G with a
 base premium of 100 G, an amulet at 600 G / 60 G, a staff at 800 G /
-80 G, a potion at 400 G / 40 G. Components such as runes or gemstones
-are insured at 250 G each, with a base premium of 25 G. A building
-block of 3 alike components is offered at a special base premium of
-60 G.
+80 G, a potion at 400 G / 40 G. Components — for example runes and
+moonstones — are insured at 250 G each, with a base premium of 25 G.
+A building block of 3 alike components is offered at a special base
+premium of 60 G.
 
 Several modifiers apply to the premium:
 
-- Cursed items carry a 50 % risk surcharge.
-- Highly enchanted items (enchantment level ≥ 5) carry a 30 % risk
+- Cursed items add a 50 % risk surcharge.
+- Highly enchanted items (enchantment level ≥ 5) add a 30 % risk
   surcharge.
 - Long-standing customers (≥ 2 years of business with MHPCO) receive a
   20 % loyalty discount.
