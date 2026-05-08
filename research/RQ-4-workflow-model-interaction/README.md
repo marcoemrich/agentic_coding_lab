@@ -9,8 +9,8 @@ factors:
     - {workflow: v5-exact-single-context, prompt: example-mapping}
   model:
     - opus-4-7-no-thinking
-    - sonnet-4-6
-    - haiku-4-5
+    - sonnet-4-6-no-thinking
+    - haiku-4-5-no-thinking
   kata_base: [game-of-life, claim-office]
 controls: {}
 outcomes:
@@ -44,8 +44,11 @@ Reduziert auf 4 × 3 = 12 Zellen × n=3 = **36 Runs**:
   TDD), v5 (single-context TDD). Lässt v2 weg, weil es nah an v1 liegt.
   v4 und v5 beide drin, weil sich gerade hier interessante
   Modell-Unterschiede zeigen könnten (single- vs. multi-context).
-- **Modell**: opus-4-7-no-thinking, sonnet-4-6, haiku-4-5. Lässt
-  Thinking-Varianten weg (orthogonal zu RQ-3).
+- **Modell**: alle drei Klassen ohne Thinking
+  (opus-4-7-no-thinking, sonnet-4-6-no-thinking,
+  haiku-4-5-no-thinking). Einheitlicher Thinking-Modus, damit der
+  Modell-Effekt nicht mit dem Thinking-Effekt vermischt wird;
+  Thinking-Variation ist Gegenstand von RQ-3.
 
 ## Design-Begründung
 
