@@ -62,7 +62,7 @@ fragen**, nicht zur nächsten Phase überspringen.
    - `controls.kata_base ∈ {game-of-life, mars-rover}`.
    - Modell-Werte (in `controls.model` und/oder `factors.model`) müssen
      in der Lab-Varianten-Tabelle stehen.
-5. `findings.md` lesen (wird in Phase 6 als Vorher-Stand gebraucht).
+5. `findings.md` lesen (wird in Phase 6 als Bestand gebraucht).
 6. Soll-Berechnung: aus `factors` × `controls` die Zahl der Zellen ableiten
    (jeder Faktor multipliziert; gepaarte Faktoren wie `workflow_x_prompt`
    zählen als ein Faktor mit `len(pairing)` Werten). Soll-Runs = Zellen ×
@@ -187,22 +187,33 @@ status: <status>
 ausgeben, dann auf explizites "ja, übernehmen" warten, dann via `Edit`
 patchen.
 
+`findings.md` zeigt **nur den aktuellen Stand**. Keine Status-Tags
+(`✅`/`⚠️`/`🚫`/`❌`), keine Vergleiche mit Archiv-Snapshots oder älteren
+Studien, keine "ehemals X, revidiert"-Hinweise im Fließtext. Header-Form:
+`## F-x.y — Titel` (kein `· …`-Suffix).
+
 1. Diff-Quellen:
-   - **Vorher**: `findings.md` aus Phase 1.
+   - **Bestand**: `findings.md` aus Phase 1.
    - **Neu**: `summary.md` aus Phase 5.
-2. Heuristische Vorschläge generieren:
+2. Drei mögliche Aktionen pro Effekt:
    - **Neuer Befund**: Zelle/Faktor-Gruppe mit Δ ≥ 1σ über die anderen
      Gruppen UND der Effekt ist in `findings.md` noch nicht behandelt →
      neuer `F-{N}.{M+1}`-Block (M = höchste bestehende Findung-Nummer).
-   - **Status-Update**: Bestehender Finding mit `🚫 nicht prüfbar`,
-     dessen Zelle jetzt `n ≥ min_replicates` hat → Status-Vorschlag
-     `✅ haltbar` / `⚠️ revidiert` / `❌ verworfen` je nach
-     Datenlage.
-   - **Revision**: Bestehender Finding mit Datenbasis-Tabelle, deren
-     Zellwerte in `summary.md` jetzt anders sind → `⚠️ revidiert`-
-     Vorschlag mit Diff alt/neu.
-3. Format der Vorschläge: Repo-Stil aus `research/RQ-1-workflow-effect/findings.md`
-   übernehmen — Aussage / Datenbasis-Tabelle / Begründung / Status-Marker.
+   - **Update**: Bestehender Befund deckt denselben Effekt ab, aber
+     Zellwerte oder Interpretation haben sich verschoben → `Edit` auf
+     bestehenden Block. Tabelle und Begründung neu schreiben, **ohne**
+     alt/neu-Diff, **ohne** "ehemals X", **ohne** Verweis auf
+     Archiv-Snapshots.
+   - **Löschung**: Daten widerlegen den Befund → User-Bestätigung
+     einholen, dann Block samt Trenner-`---` entfernen. Nicht als
+     "verworfen" markieren.
+3. Datenlücke: Wenn ein Effekt vermutet wird, aber Coverage zu klein für
+   `n ≥ min_replicates` ist → Notiz in `todos_and_ideas.txt` (Sektion
+   "Re-Check ungeprüfter Hypothesen aus alten findings.md") als Bullet
+   mit konkretem Re-Check-Ziel. **Nicht** als Finding in `findings.md`
+   anlegen.
+4. Format pro Vorschlag: Aussage / Datenbasis-Tabelle / Begründung. Header
+   `## F-x.y — Titel` ohne Suffix.
    **Glossar-Pflicht**: Begriffe wie `code_mass`, `cc_loc`, `cc_longest_function`,
    `smell_total`, `verification_pct` ausschließlich in der Form aus dem
    Glossar in `research/README.md` ("Code-Mass (APP)", "Produktiv-LoC",
@@ -212,10 +223,12 @@ patchen.
    bzw. kollidieren mit etablierten Definitionen (APP). Vor dem Vorschlag-
    Patch das Glossar einmal lesen und die im Block verwendeten Begriffe
    gegen die Tabelle prüfen.
-4. User-Entscheidung pro Vorschlag einholen. Bei "ja" mit `Edit`:
-   - Neue F-Blöcke ans Ende von `findings.md`.
-   - Status-Updates inline in der entsprechenden `## F-x.y`-Zeile.
-5. Bei "nein": Vorschlag bleibt nur im Chat, `findings.md` bleibt unverändert.
+5. User-Entscheidung pro Vorschlag einholen. Bei "ja" mit `Edit`:
+   - Neuer Befund: Block ans Ende von `findings.md`.
+   - Update: bestehenden `## F-x.y`-Block ersetzen, Header-Suffix `· …`
+     dabei entfernen falls noch vorhanden.
+   - Löschung: Block samt nachfolgendem `---`-Trenner entfernen.
+6. Bei "nein": Vorschlag bleibt nur im Chat, `findings.md` bleibt unverändert.
 
 ---
 

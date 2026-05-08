@@ -36,8 +36,7 @@ auto:
 - Forschungsfragen-Übersichtstabelle mit Coverage je RQ
 - Experiment-Design-Tabellen (Workflow, Modell, Kata, Workflow→Prompt-Mapping)
 - Methodik-Block (statisch, mit Marker zum Aktualitäts-Check)
-- Pro RQ: Befund-Rohliste sortiert nach Status (haltbar zuerst)
-- Caveats-Sektion: alle ⚠️/❌/🚫-Findings cross-RQ
+- Pro RQ: Befund-Rohliste (aktueller Stand, ohne Status-Tags)
 - Reproduzierbarkeit + Files-Tabelle
 
 An jeder Stelle, an der Synthese fehlt, steht ein
@@ -46,10 +45,12 @@ An jeder Stelle, an der Synthese fehlt, steht ein
 ### Schritt 2 — Skelett lesen + alle findings.md lesen
 
 Lies das Skelett (`/tmp/snapshot-skeleton-YYYY-MM-DD.md`) und **alle**
-`research/RQ-*/findings.md`. Notiere für jede RQ:
+`research/RQ-*/findings.md`. Notiere für jede RQ die aktuellen Befunde
+mit Aussage + Datenbasis-Werten.
 
-- die ✅-Befunde im Detail (Aussage + Datenbasis-Werte)
-- die ⚠️/🚫/❌-Befunde, weil sie als Caveats in deine RQ-Synthese gehören
+`open-questions.md` (falls vorhanden) **nicht** in den Snapshot
+übernehmen — das sind interne Backlog-Items für künftige Batches, kein
+publizierbarer Stand.
 
 ### Schritt 3 — Synthese-Sektionen füllen
 
@@ -77,25 +78,30 @@ Stil-Vorgaben:
   durch eine kurze Bestätigung („Pipeline unverändert seit ...") oder
   durch die korrigierten Schritte.
 - **RQ-Sektionen (4.X):** Pro RQ 60–100 Wörter Prosa nach der
-  Befund-Rohliste. Top-Befund (1 ✅) ausführlich + 1 Caveat aus den
-  ⚠️/🚫-Befunden + expliziter Verweis auf `research/RQ-N-.../findings.md`.
-  Keine Tabellen aus findings.md duplizieren — die stehen in der
-  findings.md. Wo Coverage < 100 % ist, das in der Synthese benennen
-  („Bei aktuell N Runs in M von K Zellen ...").
+  Befund-Rohliste. Top-Befund ausführlich + bei Bedarf 1 Caveat aus dem
+  Befund selbst (z.B. enge Datenbasis, nur eine Kata) + expliziter
+  Verweis auf `research/RQ-N-.../findings.md`. Keine Tabellen aus
+  findings.md duplizieren. Wo Coverage < 100 % ist, das in der Synthese
+  benennen („Bei aktuell N Runs in M von K Zellen ...").
+- **Findings-Konvention:** Snapshot zeigt **nur den aktuellen Stand**.
+  Keine Status-Tags wie „⚠️ revidiert" / „✅ haltbar", keine Vergleiche
+  mit Archiv-Snapshots oder älteren Studien (z.B. 235-Run-Studie). Falls
+  die findings.md noch solche Status-Tags trägt: in der Snapshot-Synthese
+  weglassen, nur die aktuelle Aussage übernehmen. Begründung: alte Runs
+  hatten Pipeline-Biases (siehe Memory), Vergleiche sind methodisch nicht
+  haltbar.
 - **Cross-RQ-Synthese (5):** 3–5 nummerierte Punkte. Jeder Punkt verbindet
   mindestens **zwei** RQs und steht so **nicht** in einer einzelnen
-  findings.md. Beispiele aus dem v2-Snapshot: „Workflow-Wahl ist
-  bedeutsamer als Modell-Wahl auf großen Katas" (kombiniert RQ-1 + RQ-3),
-  „v5 ist der praktische Sweet Spot" (RQ-1 + Token-Effizienz-Daten aus
-  RQ-3), „Magic Numbers dominieren das Smell-Signal" (RQ-1-Smell-Klassen).
+  findings.md.
 - **Limitierungen (7):** 5–8 Stichpunkte. Pflicht: nur Anthropic-Modelle,
   nur synthetische Katas, nur TypeScript, headless ohne HITL, n ≤ 3 pro
   Zelle. Optional: konkrete Coverage-Lücken aus den RQ-Coverage-Werten
   oben (z.B. „RQ-3 nur 1/5 Zellen voll besetzt").
 
-Ehrlichkeits-Regel: Falls eine RQ keine ✅-Befunde hat, **nicht** etwas
-erfinden — sage stattdessen klar „Aktuelle Datenbasis liefert keinen
-robusten Befund" und nutze die Synthese, um zu erklären, was fehlt.
+Ehrlichkeits-Regel: Falls eine RQ keine belastbaren Befunde im aktuellen
+Setup hat, **nicht** etwas erfinden — sage stattdessen klar „Aktuelle
+Datenbasis liefert keinen robusten Befund" und nutze die Synthese, um zu
+erklären, was fehlt.
 
 ### Schritt 4 — Datei schreiben
 
@@ -110,8 +116,8 @@ Verifiziere danach mit Glob bzw. Read, dass:
 
 1. Datei existiert
 2. Keine `<!-- TODO -->`-Marker mehr drin sind
-3. Alle ⚠️/❌/🚫-Befunde aus den findings.md in der Caveats-Sektion auftauchen
-4. Alle ✅-Befunde irgendwo in den RQ-Sektionen referenziert sind (Nummer + Aussage)
+3. Alle aktuellen Befunde aus den findings.md irgendwo in den RQ-Sektionen referenziert sind (Nummer + Aussage)
+4. Keine Status-Tags („⚠️ revidiert", „✅ haltbar") und keine Verweise auf alte Studien / Archiv-Snapshots im publizierten Snapshot
 
 Berichte am Ende in 1–2 Sätzen den Output-Pfad und auffällige Coverage-Lücken
 („RQ-X ist aktuell unter min_replicates").

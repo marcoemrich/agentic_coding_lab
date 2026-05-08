@@ -44,27 +44,13 @@ _spec2.loader.exec_module(bpl)  # type: ignore[union-attr]
 # Findings parsing
 # -----------------------------------------------------------------------
 
-STATUS_MAP = [
-    ("✅", "haltbar"),
-    ("⚠️", "revidiert"),
-    ("❌", "verworfen"),
-    ("🚫", "nicht-prüfbar"),
-]
-
 FINDING_HEADER_RE = re.compile(
     r"^##\s+(F-\d+\.\d+)\s+—\s+(.+?)\s*$"
 )
 
 
-def classify_status(header_line: str) -> str:
-    for emoji, status in STATUS_MAP:
-        if emoji in header_line:
-            return status
-    return "ohne-status"
-
-
 def parse_findings(findings_md: Path) -> list[dict]:
-    """Return list of {id, title, status, status_emoji, status_text}."""
+    """Return list of {id, title} sorted by ID."""
     if not findings_md.is_file():
         return []
     findings = []
@@ -74,34 +60,18 @@ def parse_findings(findings_md: Path) -> list[dict]:
             continue
         fid = m.group(1)
         rest = m.group(2)
-        status = classify_status(line)
 
-        # Strip trailing status fragment (after last "·") for clean title.
+        # Defensive: strip trailing status suffix `· …` if any old file still has it.
         if "·" in rest:
             title_part = rest.rsplit("·", 1)[0].strip()
         else:
             title_part = rest.strip()
 
-        findings.append({
-            "id": fid,
-            "title": title_part,
-            "status": status,
-            "raw_header": rest,
-        })
+        findings.append({"id": fid, "title": title_part})
+    findings.sort(
+        key=lambda f: tuple(int(p) for p in f["id"].split("-")[1].split("."))
+    )
     return findings
-
-
-STATUS_ORDER = {
-    "haltbar": 0,
-    "revidiert": 1,
-    "verworfen": 2,
-    "nicht-prüfbar": 3,
-    "ohne-status": 4,
-}
-
-
-def sort_findings(findings: list[dict]) -> list[dict]:
-    return sorted(findings, key=lambda f: (STATUS_ORDER[f["status"]], f["id"]))
 
 
 # -----------------------------------------------------------------------
@@ -126,7 +96,7 @@ def collect_rqs() -> list[dict]:
         n_full = sum(1 for v in counts.values() if v >= min_rep)
         coverage_pct = round(100 * n_full / n_cells) if n_cells else 0
 
-        findings = sort_findings(parse_findings(rq_dir / "findings.md"))
+        findings = parse_findings(rq_dir / "findings.md")
 
         rqs.append({
             "dir": rq_dir,
@@ -287,26 +257,16 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
           f"({rq['coverage_pct']} %) bei min_replicates={rq['min_replicates']}._")
         p("")
 
-        haltbar = [f for f in rq["findings"] if f["status"] == "haltbar"]
-        revidiert = [f for f in rq["findings"] if f["status"] == "revidiert"]
-        verworfen = [f for f in rq["findings"] if f["status"] == "verworfen"]
-        nicht_pruefbar = [f for f in rq["findings"] if f["status"] == "nicht-prüfbar"]
-        ohne = [f for f in rq["findings"] if f["status"] == "ohne-status"]
-
-        p("**Befunde** (sortiert: haltbar → revidiert → verworfen → nicht-prüfbar):")
+        p("**Befunde**:")
         p("")
-        for f in haltbar + revidiert + verworfen + nicht_pruefbar + ohne:
-            label = {
-                "haltbar": "✅", "revidiert": "⚠️",
-                "verworfen": "❌", "nicht-prüfbar": "🚫",
-                "ohne-status": "·",
-            }[f["status"]]
-            p(f"- {label} **{f['id']}** — {f['title']}")
+        for f in rq["findings"]:
+            p(f"- **{f['id']}** — {f['title']}")
         if not rq["findings"]:
             p("- _Keine Findings dokumentiert._")
         p("")
-        p(f"<!-- TODO Claude: 60–100 Wörter Synthese der ✅-Befunde dieser RQ. "
-          f"Top-Befund + 1 Caveat aus den ⚠️/🚫-Befunden + Verweis auf "
+        p(f"<!-- TODO Claude: 60–100 Wörter Synthese der Befunde dieser RQ. "
+          f"Top-Befund ausführlich + ggf. 1 Caveat aus dem Befund selbst "
+          f"(z.B. enge Datenbasis, nur eine Kata) + Verweis auf "
           f"`{rel}/findings.md`. Tabellen aus findings.md NICHT duplizieren. -->")
         p("")
 
@@ -326,39 +286,8 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("---")
     p("")
 
-    # 6. Caveats — alle ⚠️/❌/🚫-Findings
-    p("## 6. Caveats — revidierte / verworfene / nicht-prüfbare Befunde")
-    p("")
-    any_caveat = False
-    for status_key, label, emoji in [
-        ("revidiert", "Revidiert", "⚠️"),
-        ("verworfen", "Verworfen", "❌"),
-        ("nicht-prüfbar", "Nicht prüfbar", "🚫"),
-    ]:
-        items = []
-        for rq in rqs:
-            for f in rq["findings"]:
-                if f["status"] == status_key:
-                    items.append((rq["id"], f))
-        if not items:
-            continue
-        any_caveat = True
-        p(f"### {emoji} {label}")
-        p("")
-        for rq_id, f in items:
-            rq_dir = next(rq["dir"] for rq in rqs if rq["id"] == rq_id)
-            rel = rq_dir.relative_to(REPO_ROOT)
-            p(f"- **{f['id']}** ({rq_id}) — {f['title']} "
-              f"· [findings]({rel}/findings.md)")
-        p("")
-    if not any_caveat:
-        p("_Keine revidierten / verworfenen / nicht-prüfbaren Befunde._")
-        p("")
-    p("---")
-    p("")
-
-    # 7. Limitierungen
-    p("## 7. Limitierungen")
+    # 6. Limitierungen
+    p("## 6. Limitierungen")
     p("")
     p("<!-- TODO Claude: 5–8 Stichpunkte. Pflicht-Items: nur Anthropic-Modelle, "
       "nur synthetische Katas, nur TypeScript, headless ohne HITL, n ≤ 3 pro "
@@ -368,8 +297,8 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("---")
     p("")
 
-    # 8. Reproduzierbarkeit
-    p("## 8. Reproduzierbarkeit")
+    # 7. Reproduzierbarkeit
+    p("## 7. Reproduzierbarkeit")
     p("")
     p("Alle Daten und Analyse-Skripte liegen im Repo:")
     p("")
@@ -386,8 +315,8 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("---")
     p("")
 
-    # 9. Files
-    p("## 9. Files")
+    # 8. Files
+    p("## 8. Files")
     p("")
     p("| Pfad | Inhalt |")
     p("|---|---|")
@@ -432,11 +361,9 @@ def main(argv: list[str]) -> int:
     print(f"  Runs total: {total}", file=sys.stderr)
     for rq in rqs:
         n_findings = len(rq["findings"])
-        n_caveat = sum(1 for f in rq["findings"]
-                       if f["status"] in ("revidiert", "verworfen", "nicht-prüfbar"))
         print(f"  {rq['id']}: {rq['n_runs']} runs, "
               f"{rq['n_full']}/{rq['n_cells']} cells, "
-              f"{n_findings} findings ({n_caveat} caveats)",
+              f"{n_findings} findings",
               file=sys.stderr)
 
     return 0
