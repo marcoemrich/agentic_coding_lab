@@ -30,6 +30,8 @@ Replikate sammeln = mehr Daten ohne Plan-Pflege.
 | [RQ-3](RQ-3-model-and-thinking/) | Wirken Modell-Klasse (Opus / Sonnet / Haiku) und Thinking-Mode auf Output-Qualität und Effizienz? | aktiv |
 | [RQ-4](RQ-4-workflow-model-interaction/) | Profitieren schwächere Modelle stärker von strikteren Workflows als starke? | aktiv |
 | [RQ-5](RQ-5-run-stability/) | Wie groß ist die Run-zu-Run-Varianz innerhalb identischer Zellen? | aktiv |
+| [RQ-6](RQ-6-prompt-style-x-workflow/) | Verbessern user-story oder example-mapping die Korrektheit gegenüber prose, und hängt der Effekt vom Workflow ab? | aktiv |
+| [RQ-7](RQ-7-subagents-effect/) | Wirkt Subagents-pro-Phase (v4) gegenüber Single-Context (v5) auf Code-Qualität und TDD-Disziplin? | aktiv |
 
 ## Methoden-Constraints
 
