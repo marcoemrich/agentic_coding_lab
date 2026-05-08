@@ -96,7 +96,7 @@ Quelle: ehemals A5.
 
 **Aussage**: TDD-Workflows (v3/v4/v5) nivellieren Korrektheit
 (`tests_passing` 100 % außer v5+haiku) und reduzieren bei Haiku die
-Code-Volumen-Inflation deutlich, aber Smell-Unterschiede zwischen den
+Code-Mass-Inflation (APP) deutlich, aber Smell-Unterschiede zwischen den
 Modellen bleiben mit oder ohne TDD bestehen.
 
 **Datenbasis** (RQ-4, game-of-life-example-mapping, n≥3):
@@ -163,9 +163,10 @@ für stärkere Modelle, scheitert aber bei Haiku am Run-Stability-Problem.
 
 ---
 
-## F-4.6 — Modell-spezifisches Code-Volumen-Profil unter TDD · ✅ haltbar
+## F-4.6 — Modell-spezifisches Code-Mass-Profil (APP) unter TDD · ✅ haltbar
 
-**Aussage**: Code-Volumen (`code_mass`) variiert deutlich zwischen den
+**Aussage**: Code-Mass im Sinne der Absolute Priority Premise
+(`code_mass` = `lines_of_code` + `test_lines`) variiert deutlich zwischen den
 Modellen unter identischem Workflow — Haiku produziert systematisch
 mehr Code als Opus oder Sonnet, außer in v5 (single-context), wo das
 Muster bricht.
@@ -184,32 +185,30 @@ Muster bricht.
   aber bei kleinerer Datenbasis (n=2 Pass) und höchster Streuung
   (std=133, weil ein Run code_mass=0 ergab — Haiku gab in v5 teilweise
   auf statt zu komprimieren).
-- Opus-Volumen ist über v3/v4/v5 hinweg fast konstant (157–169) —
+- Opus-`code_mass` ist über v3/v4/v5 hinweg fast konstant (157–169) —
   workflow-invariant.
 
-**Interpretation**: Workflow-Wirkung auf Code-Volumen ist
-modellabhängig: Opus ist bezüglich Volumen workflow-invariant,
+**Interpretation**: Workflow-Wirkung auf Code-Mass (APP) ist
+modellabhängig: Opus ist bezüglich Code-Mass workflow-invariant,
 Haiku reagiert stark auf den Workflow (v4: aufgebläht; v5: kollabiert
 oder kompakt). Single-Context-Workflows (v5) sind für schwächere
 Modelle riskanter, weil die fehlende Subagent-Reset-Schiene Fehler
 nicht abpuffert.
 
 **Verhältnis zu F-4.5**: cc_longest ist universell durch v4 minimiert,
-aber code_mass ist modellabhängig. Code-Komplexität pro Funktion und
-Code-Gesamtvolumen entkoppeln also unter TDD.
+aber `code_mass` (APP) ist modellabhängig. Code-Komplexität pro Funktion
+und Code-Mass entkoppeln also unter TDD.
 
 ---
 
-## Offene Hypothesen aus RQ-4-README
+## Hypothesen-Status (aus RQ-4-README)
 
-- **H1**: Striktere Workflows verbessern Haikus `tests_passing` deutlich,
-  Opus' nur marginal. (F-4.1 stützt das qualitativ — Haiku scheitert
-  ausgerechnet bei v4/v5.)
-- **H2**: Smells reduzieren sich bei schwachen Modellen durch v4/v5
-  stärker als bei starken.
-- **H3**: Opus erreicht mit v3 schon Quality-Niveau, das v4/v5 nur noch
-  marginal verbessert.
-- **H4**: v5 (single-context) hilft schwachen Modellen anders als v4.
+Coverage in `summary.md`: 12/12 Zellen mit n≥3 abgedeckt
+(Stand 2026-05-04).
 
-Coverage in `summary.md`: 25 Runs auf 12 Zellen — viele Zellen unter
-n=3. Datenerhebung über RQ-4-Batch erforderlich.
+| H | Aussage | Status | Befund |
+|---|---|---|---|
+| H1 | Striktere Workflows verbessern Haikus `tests_passing` deutlich, Opus' nur marginal. | ❌ widerlegt | F-4.1: Haiku 100 % in v1 und v3/v4, nur v5 fällt auf 67 %. Strikte Workflows verbessern `tests_passing` nicht — v5 verschlechtert es sogar. |
+| H2 | Smells reduzieren sich bei schwachen Modellen durch v4/v5 stärker als bei starken. | ❌ widerlegt | F-4.4: TDD vergrößert den Smell-Vorsprung von Opus (2.5 in v4 vs Haiku 5.3), nicht umgekehrt. |
+| H3 | Opus erreicht mit v3 schon Quality-Niveau, das v4/v5 nur noch marginal verbessert. | ⚠️ gemischt | F-4.5: Opus `cc_longest` fällt v3→v4 um −49 % (nicht marginal). F-4.6: Opus `code_mass` ist workflow-invariant (157–169). Hängt von Quality-Dimension ab. |
+| H4 | v5 (single-context) hilft schwachen Modellen anders als v4. | ✅ gestützt | F-4.1, F-4.5, F-4.6: v5 für Haiku riskant (67 % pass, `code_mass`-Kollaps auf 143), v4 robust (100 %, `cc_longest` minimiert). |
