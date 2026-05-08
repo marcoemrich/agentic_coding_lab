@@ -1,0 +1,40 @@
+{
+  "customer": {"yearsWithMHPCO": 5},
+  "steps": [
+    {
+      "op": "quote",
+      "items": [
+        {"type": "sword", "material": "steel", "enchantment": 5, "cursed": true},
+        {"type": "amulet", "material": "silver", "enchantment": 2, "cursed": false},
+        {"type": "potion", "material": "glass", "enchantment": 0, "cursed": false}
+      ]
+    },
+    {
+      "op": "quote",
+      "items": [
+        {"type": "staff", "material": "dragon", "enchantment": 7, "cursed": false}
+      ]
+    },
+    {
+      "op": "claim",
+      "policy": 0,
+      "incident": {
+        "cause": "dragon attack",
+        "damages": [
+          {"itemType": "sword", "amount": 1500},
+          {"itemType": "amulet", "amount": 400}
+        ]
+      }
+    },
+    {
+      "op": "claim",
+      "policy": 1,
+      "incident": {
+        "cause": "spell mishap",
+        "damages": [
+          {"itemType": "staff", "amount": 500}
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "customer": {"yearsWithMHPCO": 4},
+  "steps": [
+    {
+      "op": "quote",
+      "items": [
+        {"type": "sword", "material": "steel", "enchantment": 3, "cursed": false},
+        {"type": "potion", "material": "glass", "enchantment": 0, "cursed": false}
+      ]
+    },
+    {
+      "op": "claim",
+      "policy": 0,
+      "incident": {
+        "cause": "stumble on the stairs",
+        "damages": [
+          {"itemType": "sword", "amount": 800}
+        ]
+      }
+    },
+    {
+      "op": "claim",
+      "policy": 0,
+      "incident": {
+        "cause": "spilled potion",
+        "damages": [
+          {"itemType": "potion", "amount": 300}
+        ]
+      }
+    },
+    {
+      "op": "claim",
+      "policy": 0,
+      "incident": {
+        "cause": "another fall",
+        "damages": [
+          {"itemType": "sword", "amount": 1500}
+        ]
+      }
+    },
+    {
+      "op": "claim",
+      "policy": 0,
+      "incident": {
+        "cause": "yet another fall",
+        "damages": [
+          {"itemType": "sword", "amount": 1000}
+        ]
+      }
+    }
+  ]
+}

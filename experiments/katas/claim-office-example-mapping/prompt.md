@@ -74,6 +74,21 @@ modifiers, unless stated otherwise.
 - 2 runes + 1 moonstone → 75 G base premium (no block: different types)
 - 3 runes + 3 moonstones → 120 G base premium (two separate blocks)
 
+### Modifier scope on multi-item policies
+
+> ❓ A policy with several items: does the cursed surcharge apply to
+> the whole policy, or just to the cursed item?
+
+- a policy covers a cursed sword (base premium 100 G) and a plain
+  amulet (base premium 60 G) → policy base premium 160 G; the cursed
+  surcharge adds 50 G (50 % of the cursed sword's base premium, not
+  of the policy total) → 210 G before further modifiers and fee
+- item-specific modifiers (cursed, high enchantment) apply to the
+  base premium of the affected item; policy-wide modifiers (loyalty,
+  first insurance, follow-up contract) apply to the policy base
+  premium (the sum of all item base premiums); the processing fee is
+  added at the very end
+
 ### Modifier thresholds
 
 - customer with exactly 2 years with MHPCO → loyalty discount applies

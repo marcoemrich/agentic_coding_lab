@@ -1,0 +1,47 @@
+{
+  "customer": {"yearsWithMHPCO": 1},
+  "steps": [
+    {
+      "op": "quote",
+      "items": [
+        {"type": "staff", "material": "oak", "enchantment": 5, "cursed": false},
+        {"type": "amulet", "material": "silver", "enchantment": 6, "cursed": false},
+        {"type": "rune"},
+        {"type": "rune"},
+        {"type": "rune"}
+      ]
+    },
+    {
+      "op": "quote",
+      "items": [
+        {"type": "rune"},
+        {"type": "rune"},
+        {"type": "rune"},
+        {"type": "rune"},
+        {"type": "rune"},
+        {"type": "rune"},
+        {"type": "rune"}
+      ]
+    },
+    {
+      "op": "claim",
+      "policy": 0,
+      "incident": {
+        "cause": "library cat",
+        "damages": [
+          {"itemType": "staff", "amount": 200}
+        ]
+      }
+    },
+    {
+      "op": "claim",
+      "policy": 0,
+      "incident": {
+        "cause": "spell backfire",
+        "damages": [
+          {"itemType": "amulet", "amount": 300}
+        ]
+      }
+    }
+  ]
+}

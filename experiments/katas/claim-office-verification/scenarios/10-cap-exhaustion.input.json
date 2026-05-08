@@ -1,0 +1,31 @@
+{
+  "customer": {"yearsWithMHPCO": 0},
+  "steps": [
+    {
+      "op": "quote",
+      "items": [
+        {"type": "sword", "material": "steel", "enchantment": 3, "cursed": false}
+      ]
+    },
+    {
+      "op": "claim",
+      "policy": 0,
+      "incident": {
+        "cause": "fall",
+        "damages": [
+          {"itemType": "sword", "amount": 1500}
+        ]
+      }
+    },
+    {
+      "op": "claim",
+      "policy": 0,
+      "incident": {
+        "cause": "second fall",
+        "damages": [
+          {"itemType": "sword", "amount": 1500}
+        ]
+      }
+    }
+  ]
+}
