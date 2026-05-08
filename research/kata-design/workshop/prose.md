@@ -1,16 +1,13 @@
 # Die Hochwohllöbliche Privilegierte Schadenskasse für Magische Risiken und Verfluchte Gegenstände
 
-— oder, wie man sie im Volksmund bei den vier Briefkästen vor dem
-Kontor zu nennen pflegt: die HPSMV.
+— oder, weil das selbst Sachverständigen Mühe bereitet: die HPSMV.
 
 ## Eine kleine Vorstellung
 
-Die HPSMV ist, das wird Ihnen jeder Aktuar bestätigen, der seinen
-Kalender geöffnet hat, eine der ältesten Versicherungsanstalten der
-zwölf Königreiche. Ihre Privilegierung geht auf eine Urkunde des
-Großherzogs Emrich des Sechsten zurück, die zwar in einem Krieg im
-sechzehnten Jahrhundert verloren ging, deren *Inhalt* aber im Kontor
-zuverlässig erinnert und auf jedem Briefkopf wiederholt wird.
+Die HPSMV ist eine der ältesten Versicherungsanstalten der zwölf
+Königreiche und hält ein Privileg, das niemand mehr im Original
+gesehen hat — was sie nicht hindert, es auf jedem Briefkopf zu
+zitieren.
 
 Ihre Geschäftstätigkeit besteht im Wesentlichen darin, magische
 Gegenstände zu versichern. Dazu zählen Schwerter, Amulette, Stäbe,
@@ -27,16 +24,11 @@ Geschäftsführung im Sinne der Versicherten" beschreibt, beschreibt
 der Volksmund mit unfreundlicheren Worten. Beide Sichten sind nicht
 gänzlich unberechtigt.
 
-Im Folgenden finden Sie die Regeln, nach denen das Kontor seit
-Generationen arbeitet. Sie wurden nicht geschrieben — sie sind
-gewachsen, manche aus traurigem Anlass.
-
 ## Was die Schadenskasse versichert
 
 Die HPSMV unterscheidet zwischen *Hauptgegenständen* und
-*Komponenten*. Die Hauptgegenstände, also Schwerter und ihre näheren
-Verwandten, sind seit Großherzog Emrichs Zeit in der amtlichen
-Preisliste verzeichnet:
+*Komponenten*. Die Hauptgegenstände — Schwerter und ihre näheren Verwandten —
+stehen in der amtlichen Preisliste:
 
 - ein Schwert wird zum Versicherungswert von 1000 G geführt, mit
   einer Grundprämie von 100 G;
@@ -44,12 +36,10 @@ Preisliste verzeichnet:
 - ein Stab zu 800 G und 80 G;
 - ein Trank zu 400 G und 40 G.
 
-Diese Werte stehen so im großen Buch des Kontors. Der Sachverständige
-prüft auf Begehren auch ungewöhnliche Stücke — etwa einen
-*siebenarmigen* Stab —, kommt aber in zweiundneunzig von hundert
-Fällen zu dem Schluss, dass es sich um einen *Stab* handelt und der
-amtliche Preis Anwendung findet. Das vereinfacht die Aktenführung
-und nimmt nichts vom Charme.
+Der Sachverständige prüft auf Begehren auch ungewöhnliche Stücke —
+etwa einen *siebenarmigen* Stab —, kommt aber in zweiundneunzig von
+hundert Fällen zu dem Schluss, dass es sich um einen *Stab* handelt
+und der amtliche Preis Anwendung findet.
 
 Komponenten — also Runen, Mondsteine und Verwandtes — werden zu je
 250 G versichert, mit einer Grundprämie von 25 G pro Stück. Es gibt
@@ -59,10 +49,6 @@ gleichartigen Komponenten kostet pauschal 60 G Grundprämie. Das ist
 fünfzehn Goldstücke unter dem Einzelpreis und gilt im Kontor
 weithin als das großzügigste Entgegenkommen, das die HPSMV jemals
 gewährt hat.
-
-> *Aus der Hausordnung, Abschnitt 4.b:*
-> "Drei gleichartige Komponenten gelten als Block. Die Bewertung
-> erfolgt nach Eintragung in das Hauptbuch."
 
 ## Die Berechnung der Prämie
 
@@ -102,12 +88,10 @@ Art, wie das Kontor seine Stammkunden bei der Stange hält, ohne sie
 mit echter Großzügigkeit zu verstören.
 
 Schließlich wird auf jede Prämie eine **Bearbeitungsgebühr** von
-5 G aufgeschlagen. Diese wird, wie die Hausordnung mit etwas zu
-gewählten Worten festhält, "von keinem Rabatt erfasst und auf jede
-Berechnung gleichmäßig angewandt". Im Volksmund nennt man sie *die
-Stempelgebühr*, was auch nicht ganz unzutreffend ist; im Kontor
-existieren tatsächlich zwei sehr alte Stempel, deren Bedienung das
-fragliche Personal mehrere Sekunden in Anspruch nimmt.
+5 G aufgeschlagen. Im Volksmund nennt man sie *die Stempelgebühr*,
+was auch nicht ganz unzutreffend ist; im Kontor existieren
+tatsächlich zwei sehr alte Stempel, deren Bedienung das fragliche
+Personal mehrere Sekunden in Anspruch nimmt.
 
 > *Anmerkung des Aktuars (handschriftlich, nicht offiziell):*
 > "Sämtliche Beträge werden zu Gunsten des Kontors auf ganze
@@ -132,10 +116,8 @@ Goldstücke einbehält, wo immer sie kann.
 Der **Gesamtbetrag**, den die HPSMV für eine einzelne Police über
 die Jahre auszahlt, ist auf das *Doppelte der Versicherungssumme*
 gedeckelt. Die Versicherungssumme ist dabei die Summe der
-Versicherungswerte aller in der Police geführten Stücke. Wenn ein
-Schwert versichert ist, beläuft sich die Höchstauszahlung also auf
-2000 G über die gesamte Lebenszeit der Police; was darüber hinausginge,
-wird nicht ausgezahlt.
+Versicherungswerte aller in der Police geführten Stücke. Was über
+den Deckel hinausginge, wird nicht ausgezahlt.
 
 Bei besonders auffälligen Stücken kennt das Kontor zwei
 Sonderklauseln:
@@ -162,13 +144,3 @@ Auftrag ist überschaubar:
   *Prämie* berechnet (im Kontor heißt das schlicht *quote*).
 - Eine Funktion, die einen *Schadensfall reguliert* gegen eine
   bestehende Police und die Auszahlungssumme bestimmt (das *claim*).
-
-Den genauen Schnitt, die Datenstruktur und die Sprache wählen Sie
-nach Belieben. Die Aktuare des Kontors sind in dieser Frage
-auffallend großzügig — eine Eigenschaft, die ihnen sonst selten
-nachgesagt wird.
-
-> *Ein letzter Hinweis aus der Hausordnung:*
-> "Die ordnungsgemäße Anwendung der Bestimmungen obliegt dem
-> Sachverständigen vom Dienst. Seine Auskunft ist verbindlich,
-> sofern sie schriftlich erfolgt; sie erfolgt selten schriftlich."
