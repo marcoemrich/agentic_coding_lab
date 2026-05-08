@@ -3,7 +3,7 @@ id: RQ-6
 question: "Verbessern user-story oder example-mapping die Korrektheit gegenüber prose — und hängt der Effekt vom Workflow ab?"
 factors:
   prompt: [prose, example-mapping, user-story]
-  workflow_tdd: [v3-basic-tdd, v4-exact-subagents, v5-exact-single-context]
+  workflow: [v3-basic-tdd, v4-exact-subagents, v5-exact-single-context]
   kata_base: [claim-office]
 controls:
   model: opus-4-7-no-thinking
@@ -53,7 +53,7 @@ prose ist Baseline. Die Praxis-Frage ist:
 | Faktor | Werte |
 |---|---|
 | `prompt` | prose, example-mapping, user-story |
-| `workflow_tdd` | v3-basic-tdd, v4-exact-subagents, v5-exact-single-context |
+| `workflow` | v3-basic-tdd, v4-exact-subagents, v5-exact-single-context (nur TDD-Workflows) |
 
 3 × 3 = 9 Zellen × n=3 Replikate = 27 Runs.
 
