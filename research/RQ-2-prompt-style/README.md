@@ -3,7 +3,7 @@ id: RQ-2
 question: "Wirkt Prompt-Stil (prose / example-mapping / user-story) auf Code-Qualität und Korrektheit?"
 factors:
   prompt: [prose, example-mapping, user-story]
-  kata_base: [game-of-life, claim-office]
+  kata_base: [claim-office]
 controls:
   workflow: v4-exact-subagents
   model: opus-4-7-no-thinking
@@ -35,26 +35,36 @@ konstant gehalten werden?
 | **example-mapping** | Regel + 1–3 konkrete Input/Output-Beispiele pro Regel. |
 | **user-story** | "Als X möchte ich Y, damit Z" — Beschreibung ohne Beispiele. |
 
-Konfiguration: `experiments/katas/game-of-life-{prose, example-mapping, user-story}/prompt.md`.
+Konfiguration: `experiments/katas/claim-office-{prose, example-mapping, user-story}/prompt.md`.
 
 ## Design-Begründung
 
 **Workflow-Constraint**: Diese RQ ist nur auf TDD-Workflows (v3/v4/v5)
 sinnvoll, weil v1/v2 nur prose erlauben (siehe Methoden-Constraint im
 [`research/README.md`](../README.md#workflow--erlaubte-prompt-stile)).
-Default: `v4-exact-subagents` als der angestrebte Lab-Workflow. Falls der
-Prompt-Stil-Effekt workflow-abhängig vermutet wird, kann die RQ später
-auf v3/v5 erweitert werden.
+Default: `v4-exact-subagents` als der angestrebte Lab-Workflow. Die
+Frage, ob der Prompt-Stil-Effekt workflow-abhängig ist, behandelt
+[RQ-6](../RQ-6-prompt-style-x-workflow/) als eigene Interaktions-RQ.
 
-**Kontrolle auf game-of-life**: Einzige Kata mit verlässlichem
-Code-Quality-Signal in allen drei Prompt-Stilen verfügbar.
+**Kontrolle ausschließlich auf claim-office**: game-of-life ist als
+Mehrdeutigkeits-Aufdecker für Prompt-Stile **nicht brauchbar**. Die Spec
+inkl. Beispiele ist in den Trainingsdaten der Modelle — Modelle "kennen"
+die korrekte Lösung bereits, unabhängig davon, ob der Prompt Beispiele
+mitliefert oder nicht. claim-office ist eigens als Novel-Kata mit
+konstruierten Mehrdeutigkeiten (HPSMV-Domäne) entwickelt; nur hier
+unterscheiden sich die Stile messbar in Korrektheit
+(`verification_pct`).
+
+**Single Model (opus-4-7-no-thinking)**: eliminiert
+Modell-Konfundierung. Modell-Effekte sind Gegenstand von
+[RQ-3](../RQ-3-model-and-thinking/).
 
 ## Untersuchte Hypothesen
 
-- H1: example-mapping erhöht `tests_passing` (Beispiele machen Tests
-  ableitbar).
-- H2: user-story erzeugt mehr `code_mass` (mehr Interpretations-Spielraum
-  → defensivere Implementierung).
+- H1: example-mapping erhöht `verification_pct` deutlich gegenüber prose
+  und user-story (Beispiele lösen Mehrdeutigkeiten direkt auf).
+- H2: user-story erzeugt mehr `code_mass` als prose (mehr
+  Interpretations-Spielraum → defensivere Implementierung).
 - H3: prose und example-mapping liefern vergleichbare `smell_total`,
   user-story tendenziell schlechter.
 
@@ -66,7 +76,7 @@ Siehe [findings.md](findings.md).
 
 Alle Runs in `experiments/runs/` mit
 `workflow=v4-exact-subagents`, `model=opus-4-7-no-thinking`,
-`kata=game-of-life-{prose|example-mapping|user-story}`.
+`kata=claim-office-{prose|example-mapping|user-story}`.
 
-Aktuelle Datenbasis: 9 Runs aus dem ehemaligen
-`game-of-life-stability`-Batch (n=3 pro Stil).
+Aktuelle Datenbasis (Stand 2026-05-09): laufender
+`claim-office-fill`-Batch füllt die drei Zellen auf je n=3.
