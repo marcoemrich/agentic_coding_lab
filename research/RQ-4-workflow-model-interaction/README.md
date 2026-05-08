@@ -65,13 +65,20 @@ Thinking ist Gegenstand von RQ-3.
 
 - H1 (Schwach-stark-Asymmetrie): Striktere Workflows verbessern Haikus
   `tests_passing` deutlich, Opus' nur marginal.
-- H2 (TDD-Floor-Lifting): Smells reduzieren sich bei schwachen Modellen
-  durch v4/v5 stärker als bei starken (= TDD hebt das Mindest-Niveau).
+- H2 (Smell-Floor-Lifting): `smell_total` reduziert sich bei schwachen
+  Modellen durch v4/v5 stärker als bei starken — TDD hebt das
+  Smell-Mindest-Niveau gerade dort, wo es nötig ist.
 - H3 (Diminishing-returns für Opus): Opus erreicht mit v3 schon
   Code-Quality-Niveau, das v4/v5 nur noch wenig verbessert.
 - H4 (v4-vs-v5 modellabhängig): v5 (single-context) hilft schwachen
   Modellen mehr als v4, weil weniger Subagent-Übergänge zu
   Kontext-Verlust führen — oder umgekehrt.
+- H5 (Komplexitäts-Konvergenz): TDD-Workflows mit Refactor-Schritt
+  (v4/v5) verkleinern den Modell-Abstand bei `cc_longest_function`
+  deutlich (Haiku rückt nahe an Opus heran), während v3 (TDD ohne
+  Refactor) den Abstand erhält. Metrik-Aufspaltung gegenüber H2:
+  TDD wirkt bei Komplexität konvergierend, bei Smells aber nicht
+  zwingend.
 
 ## Findings
 
