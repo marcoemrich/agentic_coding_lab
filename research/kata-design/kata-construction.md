@@ -45,7 +45,9 @@ Diese Reihenfolge hat sich bewährt:
 8. **Drei Prompt-Stile** schreiben, inhaltlich äquivalent. Siehe
    [Drei Prompt-Stile](#drei-prompt-stile).
 9. **Verifikations-Szenarien** schreiben (separat von der
-   Aufgabenstellung). Siehe
+   Aufgabenstellung). Drei-Stufen-Modell mit ~15 Szenarien,
+   Stage-1 isoliert pro Mehrdeutigkeit, Stage-2 kombiniert, Stage-3
+   als Stories mit Workshop-Tauglichkeit. Siehe
    [Verifikations-Architektur](#verifikations-architektur).
 10. **Pre-Publish-Checkliste** durchgehen. Siehe
     [Checkliste](#checkliste-vor-dem-veröffentlichen).
@@ -489,8 +491,125 @@ for scenario in scenarios/*.input.json; do
 done
 ```
 
-Score: X von Y Szenarien bestanden. Pro Szenario ggf. teilweise
-Punkte (welche Steps korrekt waren).
+### Aufbau der Test-Suite — Ziele und Verteilung
+
+**Mess-Ziel:** Die einfache Metrik *Prozent der bestandenen Szenarien*
+soll aussagekräftig sein. Das stellt drei Anforderungen an die
+Verteilung der Szenarien:
+
+1. **Granularität.** Genug Szenarien, dass Lösungen unterschiedlicher
+   Qualität verschiedene Scores erreichen können. Eine Suite mit 3
+   Szenarien ergibt nur die Werte 0/33/66/100 % — zu grob. Erfahrungs-
+   wert: 12–18 Szenarien geben eine ausreichend feine Skala.
+2. **Diagnostik.** Aus dem Fehlerbild ableitbar, *welche* Mehrdeutigkeit
+   die Implementation übersehen hat. Erreicht durch isolierte Stage-1-
+   Szenarien, die je *eine* Mehrdeutigkeit prüfen.
+3. **Realismus.** Die Lösung muss auch im Verbund funktionieren, nicht
+   nur in isolierten Tests. Erreicht durch Stage-3-Szenarien mit
+   mehreren Steps und mehreren gleichzeitig wirksamen Mehrdeutigkeiten.
+
+### Drei-Stufen-Modell
+
+Die Test-Suite hat drei Stufen mit *steigender* Komplexität, *gleicher*
+Punkt-Wertung pro Szenario (kein Stage-Gating):
+
+| Stufe | Zweck | Inhalt | Anzahl |
+|---|---|---|---|
+| 1 — Isoliert | Diagnostik pro Regel | Pro Mehrdeutigkeit ein Szenario, das genau diese Regel testet | ≈ 7 |
+| 2 — Kombiniert | Wechselwirkungen | Zwei oder mehr Regeln kombiniert (z.B. Modifikator-Stack, Cap-Erschöpfung über mehrere Schäden) | ≈ 4 |
+| 3 — Stories | Realismus, Workshop-Tauglichkeit | Multi-Step-Erzählungen mit mehreren wirkenden Regeln | ≈ 4 |
+
+**Empfohlene Verteilung:** ~7 + 4 + 4 = ~15 Szenarien. Damit ergeben
+sich Score-Bänder, die aussagekräftig sind:
+
+- 0 % — Lösung versteht die Aufgabe nicht
+- ~50 % — Grundregeln okay, scheitert an mehreren Mehrdeutigkeiten
+- ~75 % — kennt die meisten Mehrdeutigkeits-Auflösungen, schwächelt
+  in Stories
+- ~95 % — fast vollständig
+- 100 % — vollständig
+
+### Verteilungs-Regeln
+
+- **Stufe 1 darf nicht überdominieren.** Wenn die Hälfte der Szenarien
+  trivial-isolierte Tests sind, kann eine Lösung schon bei ~50 % landen,
+  ohne irgendeine Mehrdeutigkeit korrekt zu treffen. Die obere Hälfte
+  der Skala (50–100 %) sollte den Stages 2 und 3 vorbehalten bleiben.
+- **Mehrere Stories statt einer großen.** Bei *einer* Stage-3-Story ist
+  das Ergebnis 0/1 oder 1/1 — zu grobes Signal. Bei 3–4 Stories wird
+  die Bandbreite feiner. Jede Story sollte einen anderen
+  Mehrdeutigkeits-Cluster im Schwerpunkt haben.
+- **Keine Story darf alle Stage-1-Tests dublizieren.** Stories sollen
+  *kombinieren*, nicht jedes Stage-1-Detail nochmal abprüfen. Wenn
+  Story A schon Cap-Erschöpfung testet, braucht Story B das nicht
+  ebenfalls.
+- **Schwierigkeit innerhalb einer Stufe variieren.** Einige isolierte
+  Tests sind trivial (Block-Bonus bei genau 3), andere zielen auf
+  schwer-zu-treffende Mehrdeutigkeiten (Begriffs-Doppeldeutigkeiten,
+  Konflikt-Auflösung). Streut die Erfolgsrate.
+
+### Story-Stil (Stufe 3)
+
+Stories sind multi-step Erzählungen mit Workshop-Wiederverwendungs-
+Charakter. Pro Story drei Dateien:
+
+- `<NN>-<name>.input.json` — die CLI-Eingabe
+- `<NN>-<name>.expected.json` — die erwartete Ausgabe
+- `<NN>-<name>.story.md` — kurze Erzählung (1–2 Absätze) plus eine
+  Auflistung der berührten Regeln
+
+Story-Charaktere bekommen Namen und Rollen, die sich für Workshop-
+Vorstellung eignen ("Krieger Garras", "Magus Velorin"). Die Erzählung
+verbindet die Steps narrativ — der Drachenangriff trifft die zuvor
+versicherte Ausrüstung, später kommt eine Verlängerung mit zusätzlichem
+Item, dann ein weiterer Schaden.
+
+### Schwerpunkt-Verteilung der Stories
+
+Damit Stories sich nicht überschneiden, sollte jede einen anderen
+Schwerpunkt haben. Beispielhafte Cluster aus der HPSMV-Kata:
+
+- **Kämpfer-Story:** Modifikator-Stapel, Item-Mods (curse, high ench),
+  Police-Mods (loyalty, first ins), Drachenangriff mit mehreren Items
+- **Magier-Story:** Komponenten-Aggregation (Block-Bildung, "alike"),
+  mehrere Policen unter einem Customer, Folgevertrag
+- **Familie-Story:** mehrere Items desselben Typs, Schaden trifft
+  Subset der versicherten Items
+- **Pechvogel-Story:** Cap-Erschöpfung über viele aufeinanderfolgende
+  Schäden auf derselben Police
+
+### Vorgehen beim Bauen einer Test-Suite
+
+1. **Mehrdeutigkeits-Liste durchgehen.** Pro Mehrdeutigkeit aus
+   `kata-mehrdeutigkeiten.md` ein Stage-1-Szenario entwerfen. Klein,
+   isoliert, nur die Regel-Auflösung pinnend.
+2. **Versteckte Regeln explizit machen.** Auch implizite Regeln
+   (Bearbeitungsgebühr-Reihenfolge, Rundungs-Richtung,
+   Cap-Definition, Modifier-Scope) brauchen Stage-1-Szenarien — sonst
+   sind sie nicht messbar.
+3. **Wechselwirkungen identifizieren.** Welche Regeln wirken plausibel
+   zusammen? Pro Cluster ein Stage-2-Szenario.
+4. **Story-Cluster wählen.** 3–4 unterschiedliche Schwerpunkte für
+   Stage 3. Pro Cluster eine Story-Erzählung entwerfen, die die
+   Schwerpunkt-Mehrdeutigkeiten *natürlich* berührt — nicht
+   konstruiert wirken.
+5. **Werte durchrechnen.** Sehr sorgfältig, weil Stage-3-Szenarien
+   leicht 4–5 Steps haben. Ein einziger Rechenfehler im
+   Modifikator-Stack macht das ganze Szenario unbrauchbar.
+6. **JSON-Syntax-Check.** Jede `*.json`-Datei muss parsen.
+7. **README schreiben.** Stufen, Score-Logik, Lauf-Anleitung.
+
+### Aufgabenstellung-Bezug
+
+Die *Test-Suite* gehört nicht in die Aufgabenstellung. Sie liegt
+parallel zu den drei Prompt-Stilen (z.B. `<kata>-verification/`) und
+wird vom Research-Framework genutzt, *nachdem* der Implementierer die
+Aufgabe gelöst hat. Der Implementierer sieht die Test-Szenarien nicht
+während der Implementierung.
+
+Begründung: würden die Implementierer die Erwartungs-Werte sehen,
+wäre der Anreiz, sie auswendig zu lernen statt aus den Regeln
+abzuleiten — die Mess-Aussage wäre verfälscht.
 
 ### Was die Aufgabenstellung sagt
 
@@ -529,6 +648,16 @@ Kurz-Liste für Nachschlagen.
   Cross-Check aller drei Stile
 - **Vorrang-Signale in Konkurrenz-Regeln** ("in jedem Fall
   mindestens", "ausschließlich") → neutralisieren
+- **Test-Suite zu klein** (≤ 6 Szenarien) → grobe Score-Stufen, keine
+  Diagnostik möglich
+- **Test-Suite stage-1-lastig** (z.B. 12 isolierte Tests, 1 Story) →
+  schon mit reinem Regel-Auswendiglernen erreichbar; fehlt Realismus
+- **Eine einzige große Story** statt mehrerer mittlerer → Score
+  springt 0/100, keine Bandbreite
+- **Stage-Gating** ("Stufe 2 nur, wenn Stufe 1 voll") → verzerrt die
+  einfache Prozent-Metrik; gleiche Wertung pro Szenario beibehalten
+- **Erwartungswerte in der CLI-Eingabe** → sauber trennen in
+  `*.input.json` und `*.expected.json`
 
 ## Checkliste vor dem Veröffentlichen
 
@@ -548,5 +677,14 @@ Pro Kata abhaken:
 - [ ] Aufgabenstellung enthält keine Lösungswerte
 - [ ] Schema-Beispiele zeigen Form ohne Werte
 - [ ] Verifikations-Szenarien als getrennte Input/Expected-Dateien
+- [ ] Test-Suite hat mindestens 12–18 Szenarien (Granularität)
+- [ ] Drei Stufen vertreten: isoliert / kombiniert / Story
+- [ ] Pro Mehrdeutigkeit ein Stage-1-Szenario
+- [ ] 3–4 Stories mit verschiedenen Schwerpunkt-Clustern
+- [ ] Pro Story eine `*.story.md` mit Erzählung + berührten Regeln
+- [ ] Alle Szenario-Werte sorgfältig durchgerechnet
+- [ ] JSON-Syntax-Check auf alle `*.json`-Dateien
+- [ ] README in `<kata>-verification/` mit Stufen, Score-Logik,
+  Lauf-Anleitung
 - [ ] Edge Cases nur im `example-mapping`-Stil, nicht in
   `prose`/`user-story`
