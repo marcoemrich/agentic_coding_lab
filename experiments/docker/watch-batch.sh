@@ -67,6 +67,52 @@ render_snapshot() {
     local fresh_runs
     fresh_runs=$(find "$RUNS_DIR" -maxdepth 1 -mindepth 1 -type d -newermt "@$ref_ts" 2>/dev/null | wc -l)
 
+    # Aggregate metrics from this batch's log section.
+    # We only count entries that follow the most recent "Total runs: N"
+    # banner so a single batch.log shared across runs is sliced correctly.
+    local log_section
+    log_section=$(echo "$log_text" | awk '/Total runs:/ {buf=""} {buf = buf $0 "\n"} END {printf "%s", buf}')
+    log_section=$(echo "$log_section" | sed 's/\x1b\[[0-9;]*m//g')
+    # Strip any \r so awk on duration sums sees clean numbers.
+    log_section=$(echo "$log_section" | tr -d '\r')
+
+    local ok_count timeout_count ratelimit_count fail_count avg_seconds avg_minutes
+    # `grep -c` exits 1 with 0 matches; the `|| echo 0` then APPENDS a stray
+    # "0" to grep's already-printed "0", giving two-line output. Use `|| true`
+    # and rely on grep's "0" being the only number on stdout.
+    ok_count=$(echo "$log_section" | grep -cE 'OK \([0-9]+s\)' || true)
+    timeout_count=$(echo "$log_section" | grep -cE 'timeout \([0-9]+s\)' || true)
+    ratelimit_count=$(echo "$log_section" | grep -cE 'Rate-limited' || true)
+    # "Failed: error-..." but NOT "Failed: timeout" (already counted above)
+    fail_count=$(echo "$log_section" | grep -E 'Failed:' | grep -vcE 'Failed: timeout' || true)
+    : "${ok_count:=0}" "${timeout_count:=0}" "${ratelimit_count:=0}" "${fail_count:=0}"
+
+    # Avg over OK runs only (timeouts are budget hits, not informative for ETA).
+    avg_seconds=$(echo "$log_section" \
+        | grep -oE 'OK \([0-9]+s\)' \
+        | grep -oE '[0-9]+' \
+        | awk '{s+=$1; n++} END {if(n>0) printf "%d", s/n; else print "0"}')
+    if [ "$avg_seconds" -gt 0 ]; then
+        avg_minutes=$(awk -v s="$avg_seconds" 'BEGIN {printf "%.1f", s/60}')
+    else
+        avg_minutes="—"
+    fi
+
+    # ETA = remaining_runs × avg_seconds, only if we have a counter and a sample.
+    local eta_str="—"
+    local cur_idx
+    cur_idx=$(echo "$current" | cut -d/ -f1)
+    if [[ "$cur_idx" =~ ^[0-9]+$ ]] && [ "$avg_seconds" -gt 0 ]; then
+        # Runs not yet done = total - (cur_idx - 1). The current run isn't OK yet.
+        local remaining=$(( total - cur_idx + 1 ))
+        if [ "$remaining" -lt 0 ]; then remaining=0; fi
+        local eta_seconds=$(( remaining * avg_seconds ))
+        local eta_min=$(( eta_seconds / 60 ))
+        local eta_clock
+        eta_clock=$(date -d "+${eta_seconds} seconds" '+%H:%M' 2>/dev/null || echo "?")
+        eta_str="~${eta_min} min (≈${eta_clock})"
+    fi
+
     echo "═══════════════════════════════════════════════════"
     echo "  Batch status: $plan_name"
     echo "═══════════════════════════════════════════════════"
@@ -75,6 +121,13 @@ render_snapshot() {
     echo "  Run dirs created:  $fresh_runs (since start)"
     echo "  Container:         $container_state"
     echo "  Log source:        $log_source"
+    echo
+    echo "  Aggregate (this batch):"
+    echo "    OK:           $ok_count   avg ${avg_minutes} min/run"
+    echo "    Timeout:      $timeout_count"
+    echo "    Rate-limit:   $ratelimit_count"
+    echo "    Other fail:   $fail_count"
+    echo "    ETA:          $eta_str"
     echo
     echo "─── last 10 log lines ──────────────────────────────"
     echo "$log_text" | tail -n 10 | sed 's/\x1b\[[0-9;]*m//g'
