@@ -2,7 +2,7 @@
 
 _Wirkt sich dedizierte Subagents-pro-Phase (v4) gegenüber Single-Context (v5) auf Code-Qualität und TDD-Disziplin aus, bei sonst identischem Phasen-Skript?_
 
-Generated: 2026-05-09T08:17:48Z
+Generated: 2026-05-09T09:36:28Z
 
 Cells declared: 4 · matched runs: 18 · min_replicates: 3
 
@@ -39,6 +39,8 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 3
 |:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |  14.67 |    14 |    15 |  0.58 |
 | claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |  15    |    15 |    15 |  0    |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   0    |     0 |     0 |  0    |
 
 ### verification_total
 
@@ -46,6 +48,8 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 3
 |:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
 | claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |      0 |     0 |     0 |     0 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |      0 |     0 |     0 |     0 |
 
 ### cc_loc
 
@@ -101,6 +105,42 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 3
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   0    |     0 |     0 |  0    |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   1    |     0 |     3 |  1.55 |
 
+### mccabe_max
+
+| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   8    |     4 |    16 |  6.93 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |   8.67 |     6 |    11 |  2.52 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   4.5  |     2 |     6 |  1.52 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   6.33 |     3 |    11 |  2.66 |
+
+### mccabe_avg
+
+| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   2.81 |  1.61 |  5.22 |  2.08 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |   2.7  |  2.43 |  3.11 |  0.36 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   2.62 |  1.08 |  4.25 |  1.22 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   2.96 |  1.25 |  6    |  1.62 |
+
+### cognitive_max
+
+| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |  10.67 |     3 |    25 | 12.42 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |  10.67 |     8 |    12 |  2.31 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   5.67 |     1 |    10 |  3.2  |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |  10.17 |     2 |    21 |  7.11 |
+
+### cognitive_avg
+
+| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   4.89 |  1.47 | 11.5  |  5.72 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |   3.78 |  3.08 |  4.33 |  0.64 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   3.72 |  1    |  6.67 |  2.1  |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   7.33 |  2    | 21    |  6.92 |
+
 ### cycle_count
 
 | kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
@@ -125,7 +165,7 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 3
 |:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |  21.33 |    15 |    25 |  5.51 |
 | claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |   6    |     4 |     8 |  2    |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   5.67 |     5 |     7 |  0.82 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   5.83 |     5 |     7 |  0.75 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |  15.17 |    12 |    16 |  1.6  |
 
 ### predictions_correct_rate (pooled %)
@@ -134,7 +174,7 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 3
 |:-----------------------------|:------------------------|:---------------------|----:|----------:|--------:|---------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |        64 |      64 |    100   |
 | claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |        18 |      18 |    100   |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |        34 |      35 |     97.1 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |        35 |      36 |     97.2 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |        91 |      92 |     98.9 |
 
 ### tests_passed_immediately

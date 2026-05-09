@@ -2,7 +2,7 @@
 
 _Wie groß ist die Run-zu-Run-Varianz innerhalb identischer Zellen?_
 
-Generated: 2026-05-09T08:17:47Z
+Generated: 2026-05-09T09:36:28Z
 
 Cells declared: 22 · matched runs: 71 · min_replicates: 3
 
@@ -81,6 +81,17 @@ Cells declared: 22 · matched runs: 71 · min_replicates: 3
 | claim-office-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |   4    |     4 |     4 |  0    |
 | claim-office-prose           | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   4.33 |     3 |     6 |  1.53 |
 | claim-office-user-story      | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   4.67 |     2 |     7 |  2.52 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-prose           | v3-basic-tdd            | opus-4-7-no-thinking |   3 |   0    |     0 |     0 |  0    |
+| game-of-life-prose           | v4-exact-subagents      | opus-4-7-no-thinking |   4 |   0    |     0 |     0 |  0    |
+| game-of-life-prose           | v5-exact-single-context | opus-4-7-no-thinking |   4 |   0    |     0 |     0 |  0    |
+| game-of-life-user-story      | v3-basic-tdd            | opus-4-7-no-thinking |   3 |   0    |     0 |     0 |  0    |
+| game-of-life-user-story      | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   0    |     0 |     0 |  0    |
+| game-of-life-user-story      | v5-exact-single-context | opus-4-7-no-thinking |   3 |   0    |     0 |     0 |  0    |
 
 ### verification_total
 
@@ -93,6 +104,17 @@ Cells declared: 22 · matched runs: 71 · min_replicates: 3
 | claim-office-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
 | claim-office-prose           | v4-exact-subagents      | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
 | claim-office-user-story      | v4-exact-subagents      | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |      0 |     0 |     0 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |      0 |     0 |     0 |     0 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |      0 |     0 |     0 |     0 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   6 |      0 |     0 |     0 |     0 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   6 |      0 |     0 |     0 |     0 |
+| game-of-life-prose           | v3-basic-tdd            | opus-4-7-no-thinking |   3 |      0 |     0 |     0 |     0 |
+| game-of-life-prose           | v4-exact-subagents      | opus-4-7-no-thinking |   4 |      0 |     0 |     0 |     0 |
+| game-of-life-prose           | v5-exact-single-context | opus-4-7-no-thinking |   4 |      0 |     0 |     0 |     0 |
+| game-of-life-user-story      | v3-basic-tdd            | opus-4-7-no-thinking |   3 |      0 |     0 |     0 |     0 |
+| game-of-life-user-story      | v4-exact-subagents      | opus-4-7-no-thinking |   3 |      0 |     0 |     0 |     0 |
+| game-of-life-user-story      | v5-exact-single-context | opus-4-7-no-thinking |   3 |      0 |     0 |     0 |     0 |
 
 ### code_mass
 
@@ -162,6 +184,52 @@ Cells declared: 22 · matched runs: 71 · min_replicates: 3
 | game-of-life-user-story      | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  26.33 |    21 |    31 |  5.03 |
 | game-of-life-user-story      | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   8    |     2 |    11 |  5.2  |
 | game-of-life-user-story      | v5-exact-single-context | opus-4-7-no-thinking |   3 |  13    |    10 |    17 |  3.61 |
+
+### mccabe_max
+
+| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  12.67 |     8 |    16 |  4.16 |
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   8    |     4 |    16 |  6.93 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |   8.67 |     6 |    11 |  2.52 |
+| claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |   7    |     5 |     8 |  1.73 |
+| claim-office-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |   7.33 |     5 |    10 |  2.52 |
+| claim-office-prose           | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   4.33 |     3 |     6 |  1.53 |
+| claim-office-user-story      | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   4.67 |     3 |     6 |  1.53 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |  11.83 |     8 |    15 |  2.48 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   4.5  |     2 |     6 |  1.52 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   6.33 |     3 |    11 |  2.66 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   6 |  11.17 |     8 |    14 |  2.23 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   6 |  11.67 |     9 |    14 |  1.97 |
+| game-of-life-prose           | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  11    |     8 |    14 |  3    |
+| game-of-life-prose           | v4-exact-subagents      | opus-4-7-no-thinking |   4 |   4.75 |     3 |     7 |  1.71 |
+| game-of-life-prose           | v5-exact-single-context | opus-4-7-no-thinking |   4 |   7    |     5 |    11 |  2.71 |
+| game-of-life-user-story      | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  11    |     8 |    14 |  3    |
+| game-of-life-user-story      | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   3.33 |     3 |     4 |  0.58 |
+| game-of-life-user-story      | v5-exact-single-context | opus-4-7-no-thinking |   3 |   4    |     3 |     5 |  1    |
+
+### cognitive_max
+
+| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  17.33 |    12 |    22 |  5.03 |
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |  10.67 |     3 |    25 | 12.42 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |  10.67 |     8 |    12 |  2.31 |
+| claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |  10.67 |     9 |    12 |  1.53 |
+| claim-office-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |  10.67 |     7 |    14 |  3.51 |
+| claim-office-prose           | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   4    |     4 |     4 |  0    |
+| claim-office-user-story      | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   4    |     2 |     6 |  2    |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |  16.67 |     9 |    21 |  4.08 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   5.67 |     1 |    10 |  3.2  |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |  10.17 |     2 |    21 |  7.11 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   6 |  15.5  |     9 |    20 |  4.72 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   6 |  14.67 |    10 |    20 |  4.08 |
+| game-of-life-prose           | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  13.67 |     9 |    20 |  5.69 |
+| game-of-life-prose           | v4-exact-subagents      | opus-4-7-no-thinking |   4 |   7.25 |     3 |    15 |  5.44 |
+| game-of-life-prose           | v5-exact-single-context | opus-4-7-no-thinking |   4 |  10    |     5 |    21 |  7.39 |
+| game-of-life-user-story      | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  14    |     9 |    20 |  5.57 |
+| game-of-life-user-story      | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   3.33 |     3 |     4 |  0.58 |
+| game-of-life-user-story      | v5-exact-single-context | opus-4-7-no-thinking |   3 |   5.33 |     3 |     7 |  2.08 |
 
 ### duration_seconds
 

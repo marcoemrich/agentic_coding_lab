@@ -68,42 +68,53 @@ für v4 indiziert ein hoher Wert eher Generalisierung als Disziplinverlust.
 
 ---
 
-## F-1.9 — cc_longest_function trennt TDD-mit-Refactor scharf vom Rest
+## F-1.9 — Refactor-Workflows (v4/v5) halbieren Spitzen-Komplexität
 
-**Aussage**: Workflows mit explizitem Refactor-Schritt (v4, v5) halten die
-Spitzen-Komplexität auf ~15–17, während alle anderen (v1, v2, v3) bei
-~27–31 liegen — Δ ≈ 11–14 Punkte. v3 (TDD ohne Refactor) liegt klar im
-Non-Refactor-Cluster und bestätigt damit F-1.3.
+**Aussage**: Workflows mit explizitem Refactor-Schritt (v4, v5) halten
+sowohl die längste Funktion (in LoC) als auch die McCabe- und
+Cognitive-Spitzenwerte auf etwa der Hälfte des Niveaus von v1/v2/v3.
+v3 (TDD ohne Refactor) liegt klar im Non-Refactor-Cluster und bestätigt
+damit F-1.3.
 
-| Workflow | cc_longest_function μ | range |
-|---|---:|---|
-| v4-exact-subagents | **15.2** | 8–23 |
-| v5-exact-single-context | **16.8** | 2–25 |
-| v1-oneshot | 26.8 | 21–31 |
-| v3-basic-tdd | 29.8 | 24–44 |
-| v2-iterative | 31.0 | 25–41 |
+| Workflow | cc_longest μ | mccabe_max μ | cognitive_max μ |
+|---|---:|---:|---:|
+| v4-exact-subagents      | **15.2** | **4.5** | **5.7** |
+| v5-exact-single-context | **16.8** | **6.3** | **10.2** |
+| v1-oneshot              | 26.8     | 11.2    | 15.5    |
+| v2-iterative            | 31.0     | 11.7    | 14.7    |
+| v3-basic-tdd            | 29.8     | 11.8    | 16.7    |
+
+Bei der Cognitive Complexity ist v3 sogar das **schlechteste** Workflow
+(16.7 > 14.7 v2 > 15.5 v1) — TDD ohne Refactor erzeugt nicht nur lange
+Funktionen (F-1.10), sondern auch verschachtelt-komplizierte. Der
+Refactor-Schritt in v4/v5 ist also nicht nur ein LoC-Reduzierer,
+sondern senkt strukturelle Komplexität substantiell (v4: McCabe −62 %,
+Cognitive −66 % gegenüber v3).
 
 Datenbasis: game-of-life RQ-1, Opus-no-thinking, n=6 pro Workflow.
 
 ---
 
-## F-1.10 — Funktionslänge bestätigt v3-Phantom-TDD
+## F-1.10 — Funktionslänge und mittlere Komplexität bestätigen v3-Phantom-TDD
 
-**Aussage**: Mittlere Funktionslänge (`cc_avg_loc_per_function`) trennt
-Refactor-Workflows scharf vom Rest:
+**Aussage**: Mittlere Funktionslänge (`cc_avg_loc_per_function`) und
+mittlere McCabe-Komplexität (`mccabe_avg`) trennen Refactor-Workflows
+scharf vom Rest. v3 (TDD ohne Refactor) liegt jeweils im Cluster der
+Non-Refactor-Workflows.
 
-| Workflow | avg_loc_per_function μ | range |
-|---|---:|---|
-| v4-exact-subagents | **5.8** | 2–9 |
-| v5-exact-single-context | **7.2** | 2–13 |
-| v1-oneshot | 10.3 | 8–12 |
-| v3-basic-tdd | 13.2 | 10–16 |
-| v2-iterative | 13.2 | 10–22 |
+| Workflow | avg_loc/func μ | mccabe_avg μ |
+|---|---:|---:|
+| v4-exact-subagents      | **5.8** | **2.6** |
+| v5-exact-single-context | **7.2** | **3.0** |
+| v1-oneshot              | 10.3    | 4.2     |
+| v3-basic-tdd            | 13.2    | 4.8     |
+| v2-iterative            | 13.2    | 4.8     |
 
-v3 schreibt im Mittel **gleich lange Funktionen wie v2** (kein TDD) — TDD-
-Etikett ohne Refactor-Schritt führt nicht zu kleineren Funktionen.
-Verstärkt F-1.3 (v3 macht kein echtes TDD) und F-1.9 (Refactor-Schritt
-trennt `cc_longest_function`).
+v3 schreibt im Mittel gleich lange und gleich komplexe Funktionen wie
+v2 (kein TDD) — das TDD-Etikett ohne Refactor-Schritt führt weder zu
+kürzeren noch zu logisch einfacheren Funktionen. Verstärkt F-1.3 (v3
+macht kein echtes TDD) und F-1.9 (Refactor-Schritt trennt sowohl LoC-
+als auch numerische Komplexität).
 
 Datenbasis: game-of-life RQ-1, Opus-no-thinking, n=6 pro Workflow.
 

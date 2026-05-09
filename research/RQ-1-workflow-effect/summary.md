@@ -2,7 +2,7 @@
 
 _Wirkt der gewählte Workflow auf Code-Qualität, Korrektheit und TDD-Disziplin?_
 
-Generated: 2026-05-09T09:13:46Z
+Generated: 2026-05-09T09:36:27Z
 
 Cells declared: 10 · matched runs: 45 · min_replicates: 3
 
@@ -167,6 +167,66 @@ Cells declared: 10 · matched runs: 45 · min_replicates: 3
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   1    |     0 |     3 |  1.55 |
 | game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   6 |   1.33 |     0 |     2 |  1.03 |
 | game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   6 |   1.17 |     0 |     2 |  0.75 |
+
+### mccabe_max
+
+| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  12.67 |     8 |    16 |  4.16 |
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   8    |     4 |    16 |  6.93 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |   8.67 |     6 |    11 |  2.52 |
+| claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |   7    |     5 |     8 |  1.73 |
+| claim-office-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |   7.33 |     5 |    10 |  2.52 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |  11.83 |     8 |    15 |  2.48 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   4.5  |     2 |     6 |  1.52 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   6.33 |     3 |    11 |  2.66 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   6 |  11.17 |     8 |    14 |  2.23 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   6 |  11.67 |     9 |    14 |  1.97 |
+
+### mccabe_avg
+
+| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |   3.27 |  2.91 |  3.69 |  0.39 |
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   2.81 |  1.61 |  5.22 |  2.08 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |   2.7  |  2.43 |  3.11 |  0.36 |
+| claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |   2.25 |  2.21 |  2.3  |  0.05 |
+| claim-office-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |   2.31 |  2.09 |  2.72 |  0.36 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |   4.75 |  3.33 |  6.5  |  1.19 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   2.62 |  1.08 |  4.25 |  1.22 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   2.96 |  1.25 |  6    |  1.62 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   6 |   4.21 |  2.6  |  5.33 |  0.93 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   6 |   4.83 |  3.67 |  6    |  0.86 |
+
+### cognitive_max
+
+| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  17.33 |    12 |    22 |  5.03 |
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |  10.67 |     3 |    25 | 12.42 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |  10.67 |     8 |    12 |  2.31 |
+| claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |  10.67 |     9 |    12 |  1.53 |
+| claim-office-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |  10.67 |     7 |    14 |  3.51 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |  16.67 |     9 |    21 |  4.08 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   5.67 |     1 |    10 |  3.2  |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |  10.17 |     2 |    21 |  7.11 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   6 |  15.5  |     9 |    20 |  4.72 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   6 |  14.67 |    10 |    20 |  4.08 |
+
+### cognitive_avg
+
+| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |   6.14 |  5.73 |  6.7  |  0.5  |
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |   4.89 |  1.47 | 11.5  |  5.72 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |   3.78 |  3.08 |  4.33 |  0.64 |
+| claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |   3.65 |  3    |  4.5  |  0.77 |
+| claim-office-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |   3.76 |  3.5  |  4.11 |  0.31 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |  16.67 |  9    | 21    |  4.08 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   3.72 |  1    |  6.67 |  2.1  |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   7.33 |  2    | 21    |  6.92 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   6 |  13.17 |  5    | 20    |  6.25 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   6 |  14.67 | 10    | 20    |  4.08 |
 
 ### cycle_count
 

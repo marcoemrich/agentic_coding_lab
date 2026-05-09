@@ -17,36 +17,43 @@ n=3–6 pro Zelle. Ranking robust über Thinking-Modus.
 
 **Datenbasis** (game-of-life-example-mapping × v4-exact-subagents):
 
-| Modell | n | LoC mean (std) | smell mean | cc_long mean |
-|---|---:|---:|---:|---:|
-| opus-4-7              | 3 | 178 (14)  | 3.0 | 8.7  |
-| opus-4-7-no-thinking  | 6 | 169 (24)  | 2.5 | 15.2 |
-| sonnet-4-6            | 3 | 210 (73)  | 4.7 | 14.0 |
-| sonnet-4-6-no-thinking| 3 | 272 (125) | 3.0 | 19.0 |
-| haiku-4-5             | 3 | 273 (28)  | 5.3 | 19.7 |
+| Modell | n | LoC mean (std) | smell | cc_long | mccabe_max | cognitive_max |
+|---|---:|---:|---:|---:|---:|---:|
+| opus-4-7              | 3 | 178 (14)  | 3.0 | 8.7  | **3.0** | **3.3** |
+| opus-4-7-no-thinking  | 6 | 169 (24)  | 2.5 | 15.2 | 4.5     | 5.7     |
+| sonnet-4-6            | 3 | 210 (73)  | 4.7 | 14.0 | 7.0     | 9.7     |
+| sonnet-4-6-no-thinking| 3 | 272 (125) | 3.0 | 19.0 | 6.0     | 8.0     |
+| haiku-4-5             | 3 | 273 (28)  | 5.3 | 19.7 | 9.3     | 13.0    |
 
 **Begründung**: Opus liefert ~37 % weniger LoC als Haiku (169–178 vs. 273)
-bei deutlich besserem cc_longest (8.7 vs. 19.7).
+bei deutlich besserem cc_longest (8.7 vs. 19.7). Das Modell-Ranking
+**Opus < Sonnet < Haiku** ist auf den numerischen Komplexitäts-Scores
+sogar **schärfer** als auf cc_longest: Haiku hat 3× höhere McCabe und
+4× höhere Cognitive Complexity als Opus-thinking (9.3 vs. 3.0; 13.0 vs.
+3.3).
 
 **Caveats**:
 - Sonnet-no-thinking hat hohe Varianz (LoC std=125 → min 180, max 414).
 
 ---
 
-## F-3.2 — Extended Thinking hilft bei cc_longest, nicht bei Pass-Rate
+## F-3.2 — Extended Thinking hilft bei Komplexität, nicht bei Pass-Rate
 
 **Aussage**: Thinking hat **keinen Pass-Rate-Effekt** auf game-of-life × v4
-(100 % beide Modi), reduziert aber `cc_longest_function` bei Opus
-deutlich (8.7 vs. 15.2). Sonnet-Effekt schwächer (14.0 vs. 19.0).
+(100 % beide Modi), senkt aber bei Opus alle drei Komplexitäts-Maße
+deutlich (`cc_longest`: 15.2 → 8.7; `mccabe_max`: 4.5 → 3.0;
+`cognitive_max`: 5.7 → 3.3). Bei Sonnet ist der Effekt auf cc_longest
+sichtbar, aber auf McCabe/Cognitive richtungs-uneinheitlich
+(no-thinking sogar leicht besser bei n=3).
 
 **Datenbasis** (game-of-life-example-mapping × v4-exact-subagents):
 
-| Modell | thinking | n | pass | dauer | LoC | cc_long |
-|---|---|---:|---:|---:|---:|---:|
-| opus-4-7    | ja  | 3 | 100% | 815  | 178 | **8.7** |
-| opus-4-7    | nein| 6 | 100% | 779  | 169 | 15.2 |
-| sonnet-4-6  | ja  | 3 | 100% | 989  | 210 | 14.0 |
-| sonnet-4-6  | nein| 3 | 100% | 1092 | 272 | 19.0 |
+| Modell | thinking | n | pass | dauer | LoC | cc_long | mccabe_max | cognitive_max |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| opus-4-7    | ja  | 3 | 100% | 815  | 178 | **8.7** | **3.0** | **3.3** |
+| opus-4-7    | nein| 6 | 100% | 779  | 169 | 15.2    | 4.5     | 5.7     |
+| sonnet-4-6  | ja  | 3 | 100% | 989  | 210 | 14.0    | 7.0     | 9.7     |
+| sonnet-4-6  | nein| 3 | 100% | 1092 | 272 | 19.0    | 6.0     | 8.0     |
 
 **Caveats**:
 - Pass-Rate-Effekt = 0 — H4 (thinking erhöht Dauer ohne
@@ -96,13 +103,3 @@ Auslastung).
 Haiku skaliert weder Tokens noch Dauer besser als Opus → Effizienz-
 Argument für Haiku auf v4-Workflows brüchig. H3 (schwächere Modelle
 defensiver/größere code_mass) **bestätigt** mit code_mass und tokens.
-
----
-
-## Offene Hypothesen aus RQ-3-README
-
-- **H1**: Pass-Rate-Differenzierung — auf v4 nicht prüfbar (Sättigung,
-  siehe F-3.3). Replikation auf v3 oder mars-rover ausstehend.
-- **H4**: Thinking erhöht Dauer ohne Korrektheits-Verbesserung — auf
-  v4 nicht prüfbar (Pass-Rate gesättigt; Dauer-Effekt richtungs-
-  uneinheitlich, siehe F-3.2).

@@ -2,7 +2,7 @@
 
 _Wirkt Prompt-Stil (prose / example-mapping / user-story) auf Code-Qualität und Korrektheit?_
 
-Generated: 2026-05-09T08:17:46Z
+Generated: 2026-05-09T09:36:27Z
 
 Cells declared: 3 · matched runs: 9 · min_replicates: 3
 
@@ -71,6 +71,22 @@ Cells declared: 3 · matched runs: 9 · min_replicates: 3
 | claim-office-example-mapping | v4-exact-subagents | opus-4-7-no-thinking |   3 |  13.67 |    12 |    17 |  2.89 |
 | claim-office-prose           | v4-exact-subagents | opus-4-7-no-thinking |   3 |  24.67 |     8 |    36 | 14.74 |
 | claim-office-user-story      | v4-exact-subagents | opus-4-7-no-thinking |   3 |   9    |     7 |    13 |  3.46 |
+
+### mccabe_max
+
+| kata                         | workflow           | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------|:---------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v4-exact-subagents | opus-4-7-no-thinking |   3 |   8    |     4 |    16 |  6.93 |
+| claim-office-prose           | v4-exact-subagents | opus-4-7-no-thinking |   3 |   4.33 |     3 |     6 |  1.53 |
+| claim-office-user-story      | v4-exact-subagents | opus-4-7-no-thinking |   3 |   4.67 |     3 |     6 |  1.53 |
+
+### cognitive_max
+
+| kata                         | workflow           | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------|:---------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v4-exact-subagents | opus-4-7-no-thinking |   3 |  10.67 |     3 |    25 | 12.42 |
+| claim-office-prose           | v4-exact-subagents | opus-4-7-no-thinking |   3 |   4    |     4 |     4 |  0    |
+| claim-office-user-story      | v4-exact-subagents | opus-4-7-no-thinking |   3 |   4    |     2 |     6 |  2    |
 
 ### predictions_correct
 

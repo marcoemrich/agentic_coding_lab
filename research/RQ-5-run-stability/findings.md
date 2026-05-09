@@ -47,17 +47,30 @@ mindestens **n=3** pro Zelle, besser n=6.
 
 ---
 
-## F-5.3 — `cc_longest_function` σ ~3–8, mit hohen Outliers
+## F-5.3 — Komplexitäts-Metriken streuen mit hohen Outliers
 
-**Aussage**: σ liegt zwischen 3.6 (v1/prose) und 8.4 (v5/prose). Bei
-TDD-Workflows mit Refactor-Phasen (v4, v5) sind Min-Werte sehr niedrig
-(2 = trivial), Max-Werte aber teilweise > 25 — also bimodale Verteilung
-("manchmal sehr aufgeräumt, manchmal nicht").
+**Aussage**: `cc_longest_function`-σ liegt zwischen 3.6 (v1/prose) und
+8.4 (v5/prose). Bei TDD-Workflows mit Refactor-Phasen (v4, v5) sind
+Min-Werte sehr niedrig (2 = trivial), Max-Werte aber teilweise > 25 —
+also bimodale Verteilung ("manchmal sehr aufgeräumt, manchmal nicht").
 
-Beispiel v5 / example-mapping (n=6): min=2, max=25, σ=8 — Range 23.
+Die numerischen Komplexitäts-Scores zeigen das **gleiche bimodale
+Muster, sogar verstärkt**:
 
-→ **Empfehlung**: n≥6 für `cc_longest_function`-Vergleiche, sonst kann ein
-einzelner Outlier den Mittelwert kippen.
+| Zelle (game-of-life, opus-no-thinking, n=6) | cc_long σ | mccabe σ | cognitive σ | cognitive range |
+|---|---:|---:|---:|---|
+| v5 / example-mapping | 8 | 2.7 | **7.1** | 2–21 |
+| v4 / example-mapping | 4.4 | 1.5 | 3.2 | 1–10 |
+| v3 / example-mapping | 5.0 | 2.5 | 4.1 | 9–21 |
+| v1 / prose | 3.6 | 2.2 | 4.7 | 9–20 |
+
+Bei v5 reicht die Cognitive-Spanne über den Faktor 10 (2 vs. 21) — ein
+einzelner Outlier verschiebt den Mittelwert massiv.
+
+→ **Empfehlung**: n≥6 für alle Komplexitäts-Maße
+(`cc_longest_function`, `mccabe_max`, `cognitive_max`), sonst kann ein
+einzelner Outlier den Mittelwert kippen. Cognitive ist die unruhigste
+der drei.
 
 ---
 
@@ -101,13 +114,3 @@ Aus F-5.1 bis F-5.5:
 `min_replicates: 3` in allen RQ-Frontmattern ist als Mindest-Schwelle
 sinnvoll. Für RQ-3 (Modell-Vergleich auf v4 + cc_longest) wäre eine
 Erhöhung auf n=6 begründbar.
-
----
-
-## Offene Hypothesen aus RQ-5-README
-
-- **H1** (σ tests_passing ≈ 0): bestätigt für Opus.
-- **H2** (σ code_mass ist größtes Rauschen): bestätigt.
-- **H4** (σ auf v4 > v5 wegen Subagent-Übergängen): qualitativ
-  bestätigt für `code_mass` und `duration_seconds`, gemischt für
-  `cc_longest_function` (v5 ähnlich rauschig).

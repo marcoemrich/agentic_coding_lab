@@ -22,14 +22,3 @@ liefern alle drei Prompt-Stile 100 % `tests_passing`.
 
 H1 ("example-mapping erhöht tests_passing") ist auf v4 + Opus nicht
 nachweisbar — Pass-Rate ist gesättigt.
-
----
-
-## Offene Hypothesen aus RQ-2-README
-
-- **H1**: example-mapping erhöht `tests_passing` → vorerst widerlegt (alle 100 %).
-- **H2**: user-story erzeugt mehr `code_mass` → noch nicht robust prüfbar.
-- **H3**: user-story tendenziell höhere smell_total → noch nicht robust prüfbar.
-
-H2 und H3 brauchen größere Stichproben oder Workflow-Variation, bevor
-robuste Aussagen möglich sind.

@@ -2,7 +2,7 @@
 
 _Profitieren schwächere Modelle stärker von strikteren Workflows als starke?_
 
-Generated: 2026-05-09T08:17:47Z
+Generated: 2026-05-09T09:36:28Z
 
 Cells declared: 24 · matched runs: 39 · min_replicates: 3
 
@@ -62,21 +62,31 @@ Cells declared: 24 · matched runs: 39 · min_replicates: 3
 
 ### verification_passed
 
-| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
-|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  15    |    15 |    15 |  0    |
-| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |  14.67 |    14 |    15 |  0.58 |
-| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |  15    |    15 |    15 |  0    |
-| claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |   3.33 |     3 |     4 |  0.58 |
+| kata                         | workflow                | model                  |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:-----------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking   |   3 |  15    |    15 |    15 |  0    |
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking   |   3 |  14.67 |    14 |    15 |  0.58 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking   |   3 |  15    |    15 |    15 |  0    |
+| claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking   |   3 |   3.33 |     3 |     4 |  0.58 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking   |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking   |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-example-mapping | v4-exact-subagents      | sonnet-4-6-no-thinking |   3 |   0    |     0 |     0 |  0    |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking   |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking   |   6 |   0    |     0 |     0 |  0    |
 
 ### verification_total
 
-| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
-|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
-| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
-| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
-| claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
+| kata                         | workflow                | model                  |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:-----------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking   |   3 |     15 |    15 |    15 |     0 |
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking   |   3 |     15 |    15 |    15 |     0 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking   |   3 |     15 |    15 |    15 |     0 |
+| claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking   |   3 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking   |   6 |      0 |     0 |     0 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking   |   6 |      0 |     0 |     0 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents      | sonnet-4-6-no-thinking |   3 |      0 |     0 |     0 |     0 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking   |   6 |      0 |     0 |     0 |     0 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking   |   6 |      0 |     0 |     0 |     0 |
 
 ### code_mass
 
@@ -119,6 +129,34 @@ Cells declared: 24 · matched runs: 39 · min_replicates: 3
 | game-of-life-example-mapping | v4-exact-subagents      | sonnet-4-6-no-thinking |   3 |  19    |    10 |    26 |  8.19 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking   |   6 |  16.83 |     2 |    25 |  7.99 |
 | game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking   |   6 |  26.83 |    21 |    31 |  3.6  |
+
+### mccabe_max
+
+| kata                         | workflow                | model                  |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:-----------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking   |   3 |  12.67 |     8 |    16 |  4.16 |
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking   |   3 |   8    |     4 |    16 |  6.93 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking   |   3 |   8.67 |     6 |    11 |  2.52 |
+| claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking   |   3 |   7    |     5 |     8 |  1.73 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking   |   6 |  11.83 |     8 |    15 |  2.48 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking   |   6 |   4.5  |     2 |     6 |  1.52 |
+| game-of-life-example-mapping | v4-exact-subagents      | sonnet-4-6-no-thinking |   3 |   6    |     5 |     7 |  1    |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking   |   6 |   6.33 |     3 |    11 |  2.66 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking   |   6 |  11.17 |     8 |    14 |  2.23 |
+
+### cognitive_max
+
+| kata                         | workflow                | model                  |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:-----------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking   |   3 |  17.33 |    12 |    22 |  5.03 |
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking   |   3 |  10.67 |     3 |    25 | 12.42 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking   |   3 |  10.67 |     8 |    12 |  2.31 |
+| claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking   |   3 |  10.67 |     9 |    12 |  1.53 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking   |   6 |  16.67 |     9 |    21 |  4.08 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking   |   6 |   5.67 |     1 |    10 |  3.2  |
+| game-of-life-example-mapping | v4-exact-subagents      | sonnet-4-6-no-thinking |   3 |   8    |     7 |     9 |  1    |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking   |   6 |  10.17 |     2 |    21 |  7.11 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking   |   6 |  15.5  |     9 |    20 |  4.72 |
 
 ### completed_within_budget (rate %)
 

@@ -2,7 +2,7 @@
 
 _Wirken Modell-Klasse (Opus / Sonnet / Haiku) und Thinking-Mode auf Output-Qualität und Effizienz?_
 
-Generated: 2026-05-09T08:17:47Z
+Generated: 2026-05-09T09:36:27Z
 
 Cells declared: 10 · matched runs: 23 · min_replicates: 3
 
@@ -44,17 +44,27 @@ Cells declared: 10 · matched runs: 23 · min_replicates: 3
 
 ### verification_passed
 
-| kata                         | workflow           | model                |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | v4-exact-subagents | opus-4-7             |   2 |  15    |    15 |    15 |  0    |
-| claim-office-example-mapping | v4-exact-subagents | opus-4-7-no-thinking |   3 |  14.67 |    14 |    15 |  0.58 |
+| kata                         | workflow           | model                  |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------|:-----------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v4-exact-subagents | opus-4-7               |   2 |  15    |    15 |    15 |  0    |
+| claim-office-example-mapping | v4-exact-subagents | opus-4-7-no-thinking   |   3 |  14.67 |    14 |    15 |  0.58 |
+| game-of-life-example-mapping | v4-exact-subagents | haiku-4-5              |   3 |   0    |     0 |     0 |  0    |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7               |   3 |   0    |     0 |     0 |  0    |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7-no-thinking   |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6             |   3 |   0    |     0 |     0 |  0    |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6-no-thinking |   3 |   0    |     0 |     0 |  0    |
 
 ### verification_total
 
-| kata                         | workflow           | model                |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | v4-exact-subagents | opus-4-7             |   2 |     15 |    15 |    15 |     0 |
-| claim-office-example-mapping | v4-exact-subagents | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
+| kata                         | workflow           | model                  |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------|:-----------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v4-exact-subagents | opus-4-7               |   2 |     15 |    15 |    15 |     0 |
+| claim-office-example-mapping | v4-exact-subagents | opus-4-7-no-thinking   |   3 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents | haiku-4-5              |   3 |      0 |     0 |     0 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7               |   3 |      0 |     0 |     0 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7-no-thinking   |   6 |      0 |     0 |     0 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6             |   3 |      0 |     0 |     0 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6-no-thinking |   3 |      0 |     0 |     0 |     0 |
 
 ### code_mass
 
@@ -92,6 +102,30 @@ Cells declared: 10 · matched runs: 23 · min_replicates: 3
 | game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6             |   3 |  14    |    12 |    16 |  2    |
 | game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6-no-thinking |   3 |  19    |    10 |    26 |  8.19 |
 
+### mccabe_max
+
+| kata                         | workflow           | model                  |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------|:-----------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v4-exact-subagents | opus-4-7               |   2 |  11    |     7 |    15 |  5.66 |
+| claim-office-example-mapping | v4-exact-subagents | opus-4-7-no-thinking   |   3 |   8    |     4 |    16 |  6.93 |
+| game-of-life-example-mapping | v4-exact-subagents | haiku-4-5              |   3 |   9.33 |     7 |    12 |  2.52 |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7               |   3 |   3    |     2 |     4 |  1    |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7-no-thinking   |   6 |   4.5  |     2 |     6 |  1.52 |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6             |   3 |   7    |     4 |     9 |  2.65 |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6-no-thinking |   3 |   6    |     5 |     7 |  1    |
+
+### cognitive_max
+
+| kata                         | workflow           | model                  |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------|:-----------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v4-exact-subagents | opus-4-7               |   2 |  15.5  |     9 |    22 |  9.19 |
+| claim-office-example-mapping | v4-exact-subagents | opus-4-7-no-thinking   |   3 |  10.67 |     3 |    25 | 12.42 |
+| game-of-life-example-mapping | v4-exact-subagents | haiku-4-5              |   3 |  13    |    11 |    15 |  2    |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7               |   3 |   3.33 |     1 |     6 |  2.52 |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7-no-thinking   |   6 |   5.67 |     1 |    10 |  3.2  |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6             |   3 |   9.67 |     2 |    16 |  7.09 |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6-no-thinking |   3 |   8    |     7 |     9 |  1    |
+
 ### duration_seconds
 
 | kata                         | workflow           | model                  |   n |    mean |   min |   max |     std |
@@ -124,7 +158,7 @@ Cells declared: 10 · matched runs: 23 · min_replicates: 3
 | claim-office-example-mapping | v4-exact-subagents | opus-4-7-no-thinking   |   3 |  15.33 |    15 |    16 |  0.58 |
 | game-of-life-example-mapping | v4-exact-subagents | haiku-4-5              |   3 |  28.67 |    25 |    33 |  4.04 |
 | game-of-life-example-mapping | v4-exact-subagents | opus-4-7               |   3 |   7.67 |     7 |     9 |  1.15 |
-| game-of-life-example-mapping | v4-exact-subagents | opus-4-7-no-thinking   |   6 |  22.17 |     7 |    37 | 15.89 |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7-no-thinking   |   6 |   7.33 |     7 |     8 |  0.52 |
 | game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6             |   3 |   5    |     5 |     5 |  0    |
 | game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6-no-thinking |   3 |   5.67 |     5 |     7 |  1.15 |
 
