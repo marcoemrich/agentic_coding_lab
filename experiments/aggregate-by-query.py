@@ -31,6 +31,7 @@ RUNS_DIR = REPO_ROOT / "experiments" / "runs"
 CSV_COLUMNS = [
     "kata", "workflow", "model", "cli_model", "thinking", "run_id",
     "exit_code", "exit_reason", "rate_limited", "completed_within_budget",
+    "analyze_status",
     "duration_seconds", "total_tokens", "context_utilization_pct",
     "cycle_count", "avg_cycle_seconds", "avg_red_seconds",
     "avg_green_seconds", "avg_refactor_seconds", "refactorings_applied",
@@ -189,6 +190,7 @@ def metrics_to_row(metrics: dict, run_id: str) -> dict:
         "exit_reason":                exit_reason,
         "rate_limited":               rs.get("rate_limited", False),
         "completed_within_budget":    completed,
+        "analyze_status":             metrics.get("analyze_status", ""),
         "duration_seconds":           metrics.get("duration_seconds"),
         "total_tokens":               sm.get("total_tokens"),
         "context_utilization_pct":    sm.get("context_utilization_pct"),

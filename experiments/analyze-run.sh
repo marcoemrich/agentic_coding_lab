@@ -902,6 +902,18 @@ EOF
     # Save report
     echo -e "$report_content" > "$report_file"
     echo -e "${GREEN}Saved report to: $report_file${NC}"
+
+    # Mark the analysis as successfully completed. Reaching this line
+    # means every preceding step ran without `set -e` aborting us. If
+    # the function exits earlier (jq error, missing tool, ...) this
+    # field is not written and the run shows up as analyze_status=null
+    # in aggregations — exactly the signal cleanup scripts need to
+    # distinguish "analysis ran, no findings" from "analysis crashed".
+    if command -v jq &>/dev/null && [ -f "$run_dir/metrics.json" ]; then
+        jq '.analyze_status = "ok"' \
+           "$run_dir/metrics.json" > "$run_dir/metrics.tmp" && \
+        mv "$run_dir/metrics.tmp" "$run_dir/metrics.json"
+    fi
 }
 
 compare_runs() {

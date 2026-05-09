@@ -605,8 +605,13 @@ EOF
 
     # Run analysis (best-effort)
     echo -e "  Analyzing results..."
-    "$EXPERIMENTS_DIR/analyze-run.sh" "$run_dir" >/dev/null 2>&1 || \
-        echo -e "  ${YELLOW}Analysis failed; run dir preserved.${NC}"
+    # Capture stderr to <run_dir>/analyze.err so post-mortem is possible
+    # without spamming batch.log. Stdout stays suppressed because
+    # analyze-run.sh prints its own banner/progress that we don't need.
+    "$EXPERIMENTS_DIR/analyze-run.sh" "$run_dir" >/dev/null 2>"$run_dir/analyze.err" || \
+        echo -e "  ${YELLOW}Analysis failed; run dir preserved (see analyze.err).${NC}"
+    # Drop empty error log to keep run dirs tidy.
+    [ -s "$run_dir/analyze.err" ] || rm -f "$run_dir/analyze.err"
 
     echo
 
