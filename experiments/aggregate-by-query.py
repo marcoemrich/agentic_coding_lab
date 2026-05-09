@@ -165,13 +165,18 @@ def metrics_to_row(metrics: dict, run_id: str) -> dict:
     cc = metrics.get("clean_code") or {}
     cs = metrics.get("code_smells") or {}
 
-    # A run "completed within budget" iff it neither timed out nor hit
-    # the rate-limit retry ceiling. Both are legitimate research findings
-    # about practicality — they signal a (workflow, model, kata) cell
-    # whose cost exceeds the per-run wallclock budget. The metric is a
-    # bool so RQ outcome-pivots can compute a per-cell completion rate.
+    # A run "completed within budget" iff it neither timed out nor
+    # exhausted its retry budget for transient API issues (rate-limit
+    # / 529 overload / "API Error: terminated"). All three are
+    # legitimate research findings about practicality — they signal a
+    # (workflow, model, kata) cell whose cost or fragility exceeds the
+    # per-run budget. The metric is a bool so RQ outcome-pivots can
+    # compute a per-cell completion rate.
     exit_reason = rs.get("exit_reason", "")
-    completed = exit_reason not in {"timeout", "timeout-killed", "rate-limited"}
+    completed = exit_reason not in {
+        "timeout", "timeout-killed",
+        "rate-limited", "transient-api-error",
+    }
 
     return {
         "kata":                       metrics.get("kata", ""),
@@ -279,7 +284,10 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
             except json.JSONDecodeError:
                 continue
             reason = (metrics.get("run_status") or {}).get("exit_reason", "")
-            if reason not in {"timeout", "timeout-killed", "rate-limited"}:
+            if reason not in {
+                "timeout", "timeout-killed",
+                "rate-limited", "transient-api-error",
+            }:
                 n_ok += 1
         if n == 0:
             status = "❌ keine Runs"

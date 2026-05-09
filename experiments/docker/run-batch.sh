@@ -466,16 +466,20 @@ EOF
     run_log="$run_dir/run.log"
     claude_exit=0
     rate_limited="false"
-    rate_limit_attempts=0
+    transient_api_error="false"
+    retry_attempts=0
+    transient_reason=""
 
-    # Retry loop: repeats only on rate-limit/overload. Other outcomes (OK,
-    # timeout, generic error) leave the loop immediately. Backoff doubles
-    # from 60s. The whole loop reuses the same run_dir and run_log; the
-    # log is overwritten on each attempt.
+    # Retry loop: repeats only on rate-limit/overload OR a transient
+    # Anthropic-side API failure (e.g. "API Error: terminated", connection
+    # reset). Other outcomes — success, timeout, or a generic error that
+    # does not match the transient signatures — leave the loop immediately.
+    # Backoff doubles from 60s. The loop reuses the same run_dir and
+    # run_log; the log is overwritten on each attempt.
     for attempt in $(seq 0 "$BATCH_RATELIMIT_RETRIES"); do
         if [ "$attempt" -gt 0 ]; then
             backoff=$(( 60 * (1 << (attempt - 1)) ))
-            echo -e "  ${YELLOW}Rate-limit detected; retry $attempt/$BATCH_RATELIMIT_RETRIES after ${backoff}s backoff...${NC}"
+            echo -e "  ${YELLOW}${transient_reason} detected; retry $attempt/$BATCH_RATELIMIT_RETRIES after ${backoff}s backoff...${NC}"
             sleep "$backoff"
             : > "$run_log"
         fi
@@ -496,25 +500,35 @@ EOF
         fi
         set -e
 
-        # Rate-limit detection. We only flag a run as rate-limited if it
+        # Classify the failure. We only treat a run as transient if it
         # ALSO exited non-zero — a successful run (exit 0, tests green)
-        # cannot legitimately be rate-limited regardless of any string
-        # matches. Pattern uses word-boundaries on numeric codes so paths
-        # containing digits like ".../backup.1777786429234.json" do not
-        # falsely trigger.
+        # cannot legitimately be transient regardless of string matches.
+        # Pattern uses word-boundaries on numeric codes so paths containing
+        # digits like ".../backup.1777786429234.json" do not falsely trigger.
         rate_limited="false"
-        if [ "$claude_exit" -ne 0 ] && \
-           grep -qiE "rate.?limit|\b429\b|\b529\b|usage limit|overloaded" "$run_log" 2>/dev/null; then
-            rate_limited="true"
+        transient_api_error="false"
+        transient_reason=""
+        if [ "$claude_exit" -ne 0 ]; then
+            if grep -qiE "rate.?limit|\b429\b|\b529\b|usage limit|overloaded" "$run_log" 2>/dev/null; then
+                rate_limited="true"
+                transient_reason="Rate-limit"
+            # "API Error: terminated" is the Anthropic CLI's signature for
+            # an upstream connection drop. ECONN/EAI/socket errors are the
+            # underlying network-stack equivalents. None of these come
+            # from model output, so substring matching is safe.
+            elif grep -qiE "API Error: terminated|API Error: Connection error|ECONNRESET|ECONNREFUSED|EAI_AGAIN|socket hang up" "$run_log" 2>/dev/null; then
+                transient_api_error="true"
+                transient_reason="Transient API error"
+            fi
         fi
 
-        # Stop retrying as soon as the call did not hit a rate-limit.
-        # That includes success (exit 0) and non-rate-limit failures
-        # (timeout, generic error) — those are not transient API issues.
-        if [ "$rate_limited" = "false" ]; then
+        # Leave the loop unless we hit a known transient signature.
+        # Non-matching failures (timeout, real bugs) and successes both
+        # exit immediately — only transient API issues warrant a retry.
+        if [ "$rate_limited" = "false" ] && [ "$transient_api_error" = "false" ]; then
             break
         fi
-        rate_limit_attempts=$attempt
+        retry_attempts=$attempt
     done
 
     # Map exit code to a human-readable reason.
@@ -524,7 +538,11 @@ EOF
         137) exit_reason="timeout-killed" ;;
         *)   exit_reason="error-$claude_exit" ;;
     esac
-    [ "$rate_limited" = "true" ] && exit_reason="rate-limited"
+    [ "$rate_limited" = "true" ]        && exit_reason="rate-limited"
+    [ "$transient_api_error" = "true" ] && exit_reason="transient-api-error"
+    # Backwards compat for downstream consumers that still reference
+    # rate_limit_attempts in the old single-class retry log line.
+    rate_limit_attempts=$retry_attempts
 
     end_time=$(date +%s)
     duration=$((end_time - start_time))
@@ -547,23 +565,24 @@ EOF
         mv "$run_dir/metrics.tmp" "$run_dir/metrics.json"
     fi
 
-    # Tally + skip analysis on rate-limit (no source produced anyway).
-    # On rate-limit: count it, move on to the next run (we've already
-    # retried up to $BATCH_RATELIMIT_RETRIES times). Abort the whole
-    # batch only after $BATCH_CONSECUTIVE_GIVEUP runs in a row have all
-    # exhausted their retries — that signals a sustained API outage,
-    # not a transient overload wave.
-    if [ "$rate_limited" = "true" ]; then
+    # Tally. Both rate-limited and transient-api-error runs reach this
+    # block only after the per-run retry budget was exhausted — they
+    # are treated equivalently for the consecutive-failure circuit
+    # breaker, because both signal a degraded upstream API rather than
+    # a problem with the run itself. Abort the whole batch only after
+    # $BATCH_CONSECUTIVE_GIVEUP runs in a row have all exhausted their
+    # retries.
+    if [ "$rate_limited" = "true" ] || [ "$transient_api_error" = "true" ]; then
         ratelimited_count=$((ratelimited_count + 1))
         consecutive_ratelimited=$((consecutive_ratelimited + 1))
-        echo -e "  ${RED}Rate-limited after $rate_limit_attempts retries (${duration}s). Skipping analysis.${NC}"
+        echo -e "  ${RED}${exit_reason} after $retry_attempts retries (${duration}s). Skipping analysis.${NC}"
         if [ "$consecutive_ratelimited" -ge "$BATCH_CONSECUTIVE_GIVEUP" ]; then
-            echo -e "  ${RED}$consecutive_ratelimited consecutive rate-limited runs — API appears down. Aborting.${NC}"
+            echo -e "  ${RED}$consecutive_ratelimited consecutive transient failures — API appears down. Aborting.${NC}"
             echo -e "  ${YELLOW}Resume later by re-running ./batch.sh with the same plan file.${NC}"
             echo
             break
         fi
-        echo -e "  ${YELLOW}Continuing with next run (consecutive rate-limits: $consecutive_ratelimited/$BATCH_CONSECUTIVE_GIVEUP).${NC}"
+        echo -e "  ${YELLOW}Continuing with next run (consecutive transient failures: $consecutive_ratelimited/$BATCH_CONSECUTIVE_GIVEUP).${NC}"
     elif [ "$claude_exit" -ne 0 ]; then
         failed_count=$((failed_count + 1))
         consecutive_ratelimited=0

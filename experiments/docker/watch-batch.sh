@@ -76,16 +76,22 @@ render_snapshot() {
     # Strip any \r so awk on duration sums sees clean numbers.
     log_section=$(echo "$log_section" | tr -d '\r')
 
-    local ok_count timeout_count ratelimit_count fail_count avg_seconds avg_minutes
+    local ok_count timeout_count ratelimit_count transient_count fail_count avg_seconds avg_minutes
     # `grep -c` exits 1 with 0 matches; the `|| echo 0` then APPENDS a stray
     # "0" to grep's already-printed "0", giving two-line output. Use `|| true`
     # and rely on grep's "0" being the only number on stdout.
     ok_count=$(echo "$log_section" | grep -cE 'OK \([0-9]+s\)' || true)
     timeout_count=$(echo "$log_section" | grep -cE 'timeout \([0-9]+s\)' || true)
-    ratelimit_count=$(echo "$log_section" | grep -cE 'Rate-limited' || true)
+    # run-batch.sh emits "rate-limited after N retries" (lowercase) for
+    # the rate-limit/529 class and "transient-api-error after N retries"
+    # for "API Error: terminated" and friends. Both classes are tallied
+    # together in run-batch.sh's "Rate-limited" summary counter, but here
+    # we split them so the user sees what kind of upstream trouble hit.
+    ratelimit_count=$(echo "$log_section" | grep -cE 'rate-limited after [0-9]+ retries' || true)
+    transient_count=$(echo "$log_section" | grep -cE 'transient-api-error after [0-9]+ retries' || true)
     # "Failed: error-..." but NOT "Failed: timeout" (already counted above)
     fail_count=$(echo "$log_section" | grep -E 'Failed:' | grep -vcE 'Failed: timeout' || true)
-    : "${ok_count:=0}" "${timeout_count:=0}" "${ratelimit_count:=0}" "${fail_count:=0}"
+    : "${ok_count:=0}" "${timeout_count:=0}" "${ratelimit_count:=0}" "${transient_count:=0}" "${fail_count:=0}"
 
     # Avg over OK runs only (timeouts are budget hits, not informative for ETA).
     avg_seconds=$(echo "$log_section" \
@@ -126,6 +132,7 @@ render_snapshot() {
     echo "    OK:           $ok_count   avg ${avg_minutes} min/run"
     echo "    Timeout:      $timeout_count"
     echo "    Rate-limit:   $ratelimit_count"
+    echo "    Transient API: $transient_count"
     echo "    Other fail:   $fail_count"
     echo "    ETA:          $eta_str"
     echo

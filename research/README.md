@@ -181,6 +181,10 @@ Konsequenzen für Auswertung und Daten-Sammlung:
 - **Timeout-Runs werden nicht gelöscht.** Ihre `metrics.json` bleibt
   erhalten mit `run_status.exit_reason = "timeout"`. `tests_passing`,
   `verification_pct`, `code_mass` etc. sind dort `null`.
+- **Erschöpfte Retry-Budgets** (`exit_reason = "rate-limited"` oder
+  `"transient-api-error"`) werden gleich behandelt: ein Run, der nach
+  5 Backoff-Versuchen kein Modell-Output produziert hat, gilt
+  ebenfalls als legitimer Datenpunkt "im Budget nicht abgeschlossen".
 - **Sie zählen für `min_replicates`.** `batch-plan-from-rq.py` betrachtet
   einen Timeout als legitimen Datenpunkt — es wird kein Refill für
   Timeout-Cells generiert.
