@@ -2,38 +2,38 @@
 
 _Profitieren schwächere Modelle stärker von strikteren Workflows als starke?_
 
-Generated: 2026-05-08T23:06:26Z
+Generated: 2026-05-09T08:17:47Z
 
 Cells declared: 24 · matched runs: 39 · min_replicates: 3
 
 ## Zell-Coverage
 
-| kata | workflow | model | n | status |
-|---|---|---|---:|---|
-| game-of-life-prose | v1-oneshot | opus-4-7-no-thinking | 6 | ✅ |
-| claim-office-prose | v1-oneshot | opus-4-7-no-thinking | 3 | ✅ |
-| game-of-life-prose | v1-oneshot | sonnet-4-6-no-thinking | 0 | ❌ keine Runs |
-| claim-office-prose | v1-oneshot | sonnet-4-6-no-thinking | 0 | ❌ keine Runs |
-| game-of-life-prose | v1-oneshot | haiku-4-5-no-thinking | 0 | ❌ keine Runs |
-| claim-office-prose | v1-oneshot | haiku-4-5-no-thinking | 0 | ❌ keine Runs |
-| game-of-life-example-mapping | v3-basic-tdd | opus-4-7-no-thinking | 6 | ✅ |
-| claim-office-example-mapping | v3-basic-tdd | opus-4-7-no-thinking | 3 | ✅ |
-| game-of-life-example-mapping | v3-basic-tdd | sonnet-4-6-no-thinking | 0 | ❌ keine Runs |
-| claim-office-example-mapping | v3-basic-tdd | sonnet-4-6-no-thinking | 0 | ❌ keine Runs |
-| game-of-life-example-mapping | v3-basic-tdd | haiku-4-5-no-thinking | 0 | ❌ keine Runs |
-| claim-office-example-mapping | v3-basic-tdd | haiku-4-5-no-thinking | 0 | ❌ keine Runs |
-| game-of-life-example-mapping | v4-exact-subagents | opus-4-7-no-thinking | 6 | ✅ |
-| claim-office-example-mapping | v4-exact-subagents | opus-4-7-no-thinking | 3 | ✅ |
-| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6-no-thinking | 3 | ✅ |
-| claim-office-example-mapping | v4-exact-subagents | sonnet-4-6-no-thinking | 0 | ❌ keine Runs |
-| game-of-life-example-mapping | v4-exact-subagents | haiku-4-5-no-thinking | 0 | ❌ keine Runs |
-| claim-office-example-mapping | v4-exact-subagents | haiku-4-5-no-thinking | 0 | ❌ keine Runs |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking | 6 | ✅ |
-| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking | 3 | ✅ |
-| game-of-life-example-mapping | v5-exact-single-context | sonnet-4-6-no-thinking | 0 | ❌ keine Runs |
-| claim-office-example-mapping | v5-exact-single-context | sonnet-4-6-no-thinking | 0 | ❌ keine Runs |
-| game-of-life-example-mapping | v5-exact-single-context | haiku-4-5-no-thinking | 0 | ❌ keine Runs |
-| claim-office-example-mapping | v5-exact-single-context | haiku-4-5-no-thinking | 0 | ❌ keine Runs |
+| kata | workflow | model | n | n_ok | status |
+|---|---|---|---:|---:|---|
+| game-of-life-prose | v1-oneshot | opus-4-7-no-thinking | 6 | 6 | ✅ |
+| claim-office-prose | v1-oneshot | opus-4-7-no-thinking | 3 | 3 | ✅ |
+| game-of-life-prose | v1-oneshot | sonnet-4-6-no-thinking | 0 | 0 | ❌ keine Runs |
+| claim-office-prose | v1-oneshot | sonnet-4-6-no-thinking | 0 | 0 | ❌ keine Runs |
+| game-of-life-prose | v1-oneshot | haiku-4-5-no-thinking | 0 | 0 | ❌ keine Runs |
+| claim-office-prose | v1-oneshot | haiku-4-5-no-thinking | 0 | 0 | ❌ keine Runs |
+| game-of-life-example-mapping | v3-basic-tdd | opus-4-7-no-thinking | 6 | 6 | ✅ |
+| claim-office-example-mapping | v3-basic-tdd | opus-4-7-no-thinking | 3 | 3 | ✅ |
+| game-of-life-example-mapping | v3-basic-tdd | sonnet-4-6-no-thinking | 0 | 0 | ❌ keine Runs |
+| claim-office-example-mapping | v3-basic-tdd | sonnet-4-6-no-thinking | 0 | 0 | ❌ keine Runs |
+| game-of-life-example-mapping | v3-basic-tdd | haiku-4-5-no-thinking | 0 | 0 | ❌ keine Runs |
+| claim-office-example-mapping | v3-basic-tdd | haiku-4-5-no-thinking | 0 | 0 | ❌ keine Runs |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7-no-thinking | 6 | 6 | ✅ |
+| claim-office-example-mapping | v4-exact-subagents | opus-4-7-no-thinking | 3 | 3 | ✅ |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6-no-thinking | 3 | 3 | ✅ |
+| claim-office-example-mapping | v4-exact-subagents | sonnet-4-6-no-thinking | 0 | 0 | ❌ keine Runs |
+| game-of-life-example-mapping | v4-exact-subagents | haiku-4-5-no-thinking | 0 | 0 | ❌ keine Runs |
+| claim-office-example-mapping | v4-exact-subagents | haiku-4-5-no-thinking | 0 | 0 | ❌ keine Runs |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking | 6 | 6 | ✅ |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking | 3 | 3 | ✅ |
+| game-of-life-example-mapping | v5-exact-single-context | sonnet-4-6-no-thinking | 0 | 0 | ❌ keine Runs |
+| claim-office-example-mapping | v5-exact-single-context | sonnet-4-6-no-thinking | 0 | 0 | ❌ keine Runs |
+| game-of-life-example-mapping | v5-exact-single-context | haiku-4-5-no-thinking | 0 | 0 | ❌ keine Runs |
+| claim-office-example-mapping | v5-exact-single-context | haiku-4-5-no-thinking | 0 | 0 | ❌ keine Runs |
 
 ## Outcome-Pivots (pro Zelle)
 
@@ -119,3 +119,17 @@ Cells declared: 24 · matched runs: 39 · min_replicates: 3
 | game-of-life-example-mapping | v4-exact-subagents      | sonnet-4-6-no-thinking |   3 |  19    |    10 |    26 |  8.19 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking   |   6 |  16.83 |     2 |    25 |  7.99 |
 | game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking   |   6 |  26.83 |    21 |    31 |  3.6  |
+
+### completed_within_budget (rate %)
+
+| kata                         | workflow                | model                  |   n |   match |   rate_% |
+|:-----------------------------|:------------------------|:-----------------------|----:|--------:|---------:|
+| claim-office-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking   |   3 |       3 |      100 |
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking   |   3 |       3 |      100 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking   |   3 |       3 |      100 |
+| claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking   |   3 |       3 |      100 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking   |   6 |       6 |      100 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking   |   6 |       6 |      100 |
+| game-of-life-example-mapping | v4-exact-subagents      | sonnet-4-6-no-thinking |   3 |       3 |      100 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking   |   6 |       6 |      100 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking   |   6 |       6 |      100 |
