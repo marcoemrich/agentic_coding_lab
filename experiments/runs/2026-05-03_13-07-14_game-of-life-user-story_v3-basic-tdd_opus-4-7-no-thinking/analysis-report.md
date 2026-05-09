@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_13-07-14_game-of-life-user-story_v3-basic-tdd_opus-4-7-no-thinking
 
-Generated: 2026-05-03T17:15:49+02:00
+Generated: 2026-05-09T11:04:24+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-03T17:15:49+02:00
 
  Test Files  1 passed (1)
       Tests  13 passed (13)
-   Start at  17:15:49
-   Duration  324ms (transform 24ms, setup 0ms, collect 23ms, tests 5ms, environment 0ms, prepare 56ms)
+   Start at  11:04:24
+   Duration  359ms (transform 31ms, setup 1ms, collect 23ms, tests 5ms, environment 0ms, prepare 90ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T17:15:49+02:00
 | Code Quality | 0 |
 | **Total** | **6** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 14 | 5.33 | 1 |
+| Cognitive (SonarJS) | 20 | 20.00 | 1 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,7 +96,7 @@ Generated: 2026-05-03T17:15:49+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 643517 |
-| Context Utilization | 23% |
+| Context Utilization | 5% |
 
 ### TDD Cycle Metrics
 

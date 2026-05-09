@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-04_07-52-27_game-of-life-example-mapping_v5-exact-single-context_haiku-4-5
 
-Generated: 2026-05-04T07:52:57+00:00
+Generated: 2026-05-09T11:09:22+02:00
 
 ## Configuration
 
@@ -29,18 +29,18 @@ Generated: 2026-05-04T07:52:57+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-04_07-52-27_game-of-life-example-mapping_v5-exact-single-context_haiku-4-5
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-04_07-52-27_game-of-life-example-mapping_v5-exact-single-context_haiku-4-5
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-04_07-52-27_game-of-life-example-mapping_v5-exact-single-context_haiku-4-5
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-04_07-52-27_game-of-life-example-mapping_v5-exact-single-context_haiku-4-5
 
  ↓ src/game-of-life.spec.ts  (9 tests | 9 skipped)
 
  Test Files  1 skipped (1)
       Tests  9 todo (9)
-   Start at  07:52:58
-   Duration  142ms (transform 17ms, setup 0ms, collect 13ms, tests 0ms, environment 0ms, prepare 44ms)
+   Start at  11:09:23
+   Duration  358ms (transform 18ms, setup 0ms, collect 14ms, tests 0ms, environment 0ms, prepare 70ms)
 ```
 
 ## Transcript Metrics

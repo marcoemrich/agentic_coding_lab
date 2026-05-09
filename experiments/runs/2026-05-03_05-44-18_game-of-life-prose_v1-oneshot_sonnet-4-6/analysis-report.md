@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_05-44-18_game-of-life-prose_v1-oneshot_sonnet-4-6
 
-Generated: 2026-05-03T11:10:46+02:00
+Generated: 2026-05-09T11:02:27+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-03T11:10:46+02:00
 
  Test Files  1 passed (1)
       Tests  10 passed (10)
-   Start at  11:10:46
-   Duration  350ms (transform 23ms, setup 0ms, collect 20ms, tests 3ms, environment 0ms, prepare 57ms)
+   Start at  11:02:27
+   Duration  321ms (transform 44ms, setup 0ms, collect 23ms, tests 3ms, environment 0ms, prepare 147ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T11:10:46+02:00
 | Code Quality | 0 |
 | **Total** | **4** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 11 | 4.33 | 1 |
+| Cognitive (SonarJS) | 17 | 17.00 | 1 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,15 +96,15 @@ Generated: 2026-05-03T11:10:46+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 333652 |
-| Context Utilization | 16% |
+| Context Utilization | 3% |
 
 ### TDD Cycle Metrics
 
 | Metric | Value |
 |--------|-------|
 | Cycle Count | 1 |
-| Avg Cycle Time | 0.00s |
-| Avg Red Phase | 0s |
+| Avg Cycle Time | 2.79s |
+| Avg Red Phase | 2.79s |
 | Avg Green Phase | 0s |
 | Avg Refactor Phase | 0s |
 
@@ -121,6 +128,6 @@ _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and ma
 
 | Metric | Value |
 |--------|-------|
-| Tests Passed Immediately | 0 |
+| Tests Passed Immediately | 1 |
 
 

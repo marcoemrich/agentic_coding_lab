@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_03-22-04_mars-rover-prose_v4-exact-subagents_sonnet-4-6
 
-Generated: 2026-05-03T11:08:34+02:00
+Generated: 2026-05-09T11:00:58+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-03T11:08:34+02:00
 
  Test Files  1 passed (1)
       Tests  8 passed (8)
-   Start at  11:08:34
-   Duration  369ms (transform 25ms, setup 0ms, collect 20ms, tests 3ms, environment 0ms, prepare 78ms)
+   Start at  11:00:58
+   Duration  378ms (transform 22ms, setup 0ms, collect 19ms, tests 3ms, environment 0ms, prepare 61ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T11:08:34+02:00
 | Code Quality | 0 |
 | **Total** | **0** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 2 | 1.20 | 0 |
+| Cognitive (SonarJS) | 1 | 1.00 | 0 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,7 +96,7 @@ Generated: 2026-05-03T11:08:34+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 1393437 |
-| Context Utilization | 25% |
+| Context Utilization | 5% |
 
 ### TDD Cycle Metrics
 

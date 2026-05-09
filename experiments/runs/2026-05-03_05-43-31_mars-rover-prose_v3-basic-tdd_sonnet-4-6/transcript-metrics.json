@@ -7,7 +7,9 @@
     "cache_creation": 18621,
     "total": 334711
   },
-  "context_utilization_pct": 16,
+  "context_utilization_pct": 3,
+  "context_window_tokens": 1000000,
+  "context_peak_tokens": 31842,
   "message_count": 11,
   "tool_calls": {
     "Read": 1,
@@ -23,11 +25,42 @@
     "claude-sonnet-4-6"
   ],
   "subagent_token_total": 0,
-  "phases": [],
-  "phase_source": "none",
+  "phases": [
+    {
+      "phase": "red",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "green",
+      "tokens": 31481,
+      "duration_seconds": 5.58
+    }
+  ],
+  "phase_source": "inline-tool",
   "phase_summary": {
-    "by_phase": {},
-    "averages": {},
+    "by_phase": {
+      "red": {
+        "count": 1,
+        "tokens": 0,
+        "duration_seconds": 0.0
+      },
+      "green": {
+        "count": 1,
+        "tokens": 31481,
+        "duration_seconds": 5.58
+      }
+    },
+    "averages": {
+      "red": {
+        "avg_tokens": 0.0,
+        "avg_duration_seconds": 0.0
+      },
+      "green": {
+        "avg_tokens": 31481.0,
+        "avg_duration_seconds": 5.58
+      }
+    },
     "refactorings_applied": 0,
     "tests_passed_immediately": 0
   }

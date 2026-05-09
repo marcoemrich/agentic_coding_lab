@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_05-23-01_game-of-life-prose_v5-exact-single-context_sonnet-4-6
 
-Generated: 2026-05-03T11:09:31+02:00
+Generated: 2026-05-09T11:02:07+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-03T11:09:31+02:00
 
  Test Files  1 passed (1)
       Tests  7 passed (7)
-   Start at  11:09:32
-   Duration  342ms (transform 24ms, setup 0ms, collect 20ms, tests 2ms, environment 0ms, prepare 51ms)
+   Start at  11:02:08
+   Duration  357ms (transform 29ms, setup 0ms, collect 19ms, tests 2ms, environment 0ms, prepare 69ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T11:09:31+02:00
 | Code Quality | 0 |
 | **Total** | **2** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 6 | 3.33 | 0 |
+| Cognitive (SonarJS) | 7 | 4.50 | 0 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,7 +96,7 @@ Generated: 2026-05-03T11:09:31+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 7412977 |
-| Context Utilization | 48% |
+| Context Utilization | 10% |
 
 ### TDD Cycle Metrics
 
@@ -105,9 +112,9 @@ Generated: 2026-05-03T11:09:31+02:00
 
 | Metric | Value |
 |--------|-------|
-| Predictions Correct | 0 |
-| Predictions Total | 0 |
-| Accuracy | N/A |
+| Predictions Correct | 13 |
+| Predictions Total | 14 |
+| Accuracy | 92% |
 
 _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._
 

@@ -20,6 +20,8 @@ outcomes:
   - code_mass
   - smell_total
   - cc_longest_function
+  - mccabe_max
+  - cognitive_max
   - duration_seconds
   - total_tokens
   - context_utilization_pct
@@ -69,8 +71,9 @@ sichtbar zu machen.
 
 - H1: Opus liefert robustere `tests_passing` als Sonnet, Sonnet als
   Haiku.
-- H2: Adaptive/Extended Thinking reduziert `smell_total` und
-  `cc_longest_function` (mehr Reflexion → bessere Designs).
+- H2: Adaptive/Extended Thinking reduziert `smell_total`,
+  `cc_longest_function` und `mccabe_max`/`cognitive_max` (mehr
+  Reflexion → bessere Designs, simplere Funktionen).
 - H3: Schwächere Modelle erzeugen größere `code_mass` (defensivere
   Implementierungen).
 - H4: Thinking erhöht `duration_seconds` ohne proportionale

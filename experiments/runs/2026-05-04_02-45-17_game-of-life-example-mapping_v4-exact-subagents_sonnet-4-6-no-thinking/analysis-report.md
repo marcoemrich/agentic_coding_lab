@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-04_02-45-17_game-of-life-example-mapping_v4-exact-subagents_sonnet-4-6-no-thinking
 
-Generated: 2026-05-04T03:03:01+00:00
+Generated: 2026-05-09T11:07:42+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-04T03:03:01+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-04_02-45-17_game-of-life-example-mapping_v4-exact-subagents_sonnet-4-6-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-04_02-45-17_game-of-life-example-mapping_v4-exact-subagents_sonnet-4-6-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-04_02-45-17_game-of-life-example-mapping_v4-exact-subagents_sonnet-4-6-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-04_02-45-17_game-of-life-example-mapping_v4-exact-subagents_sonnet-4-6-no-thinking
 
  ✓ src/game-of-life.spec.ts  (10 tests) 4ms
 
  Test Files  1 passed (1)
       Tests  10 passed (10)
-   Start at  03:03:01
-   Duration  150ms (transform 24ms, setup 0ms, collect 23ms, tests 4ms, environment 0ms, prepare 41ms)
+   Start at  11:07:42
+   Duration  343ms (transform 24ms, setup 0ms, collect 24ms, tests 4ms, environment 0ms, prepare 67ms)
 ```
 
 ## Coverage
@@ -81,6 +81,13 @@ Generated: 2026-05-04T03:03:01+00:00
 | Magic Numbers | 3 |
 | Code Quality | 0 |
 | **Total** | **3** |
+
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 7 | 2.77 | 0 |
+| Cognitive (SonarJS) | 8 | 6.40 | 0 |
 
 ## Transcript Metrics
 

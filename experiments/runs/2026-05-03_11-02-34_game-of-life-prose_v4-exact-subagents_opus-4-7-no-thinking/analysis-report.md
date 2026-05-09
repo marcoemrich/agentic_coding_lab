@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_11-02-34_game-of-life-prose_v4-exact-subagents_opus-4-7-no-thinking
 
-Generated: 2026-05-03T17:14:41+02:00
+Generated: 2026-05-09T11:03:31+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-03T17:14:41+02:00
 
  Test Files  1 passed (1)
       Tests  9 passed (9)
-   Start at  17:14:41
-   Duration  336ms (transform 24ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 52ms)
+   Start at  11:03:32
+   Duration  353ms (transform 24ms, setup 0ms, collect 20ms, tests 3ms, environment 0ms, prepare 92ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T17:14:41+02:00
 | Code Quality | 0 |
 | **Total** | **6** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 7 | 2.00 | 0 |
+| Cognitive (SonarJS) | 15 | 6.00 | 1 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,7 +96,7 @@ Generated: 2026-05-03T17:14:41+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 2349120 |
-| Context Utilization | 37% |
+| Context Utilization | 7% |
 
 ### TDD Cycle Metrics
 

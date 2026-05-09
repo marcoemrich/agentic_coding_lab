@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_05-42-34_mars-rover-prose_v1-oneshot_sonnet-4-6
 
-Generated: 2026-05-03T11:10:36+02:00
+Generated: 2026-05-09T11:02:15+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-03T11:10:36+02:00
 
  Test Files  1 passed (1)
       Tests  14 passed (14)
-   Start at  11:10:36
-   Duration  387ms (transform 25ms, setup 1ms, collect 20ms, tests 3ms, environment 0ms, prepare 54ms)
+   Start at  11:02:16
+   Duration  373ms (transform 25ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 63ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T11:10:36+02:00
 | Code Quality | 0 |
 | **Total** | **3** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 5 | 5.00 | 0 |
+| Cognitive (SonarJS) | 5 | 5.00 | 0 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,15 +96,15 @@ Generated: 2026-05-03T11:10:36+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 468443 |
-| Context Utilization | 17% |
+| Context Utilization | 3% |
 
 ### TDD Cycle Metrics
 
 | Metric | Value |
 |--------|-------|
 | Cycle Count | 2 |
-| Avg Cycle Time | 0.00s |
-| Avg Red Phase | 0s |
+| Avg Cycle Time | 3.24s |
+| Avg Red Phase | 3.24s |
 | Avg Green Phase | 0s |
 | Avg Refactor Phase | 0s |
 
@@ -121,6 +128,6 @@ _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and ma
 
 | Metric | Value |
 |--------|-------|
-| Tests Passed Immediately | 0 |
+| Tests Passed Immediately | 2 |
 
 

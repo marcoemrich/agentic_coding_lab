@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_05-45-04_game-of-life-prose_v3-basic-tdd_sonnet-4-6
 
-Generated: 2026-05-03T11:10:50+02:00
+Generated: 2026-05-09T11:02:33+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-03T11:10:50+02:00
 
  Test Files  1 passed (1)
       Tests  10 passed (10)
-   Start at  11:10:51
-   Duration  410ms (transform 26ms, setup 0ms, collect 23ms, tests 3ms, environment 0ms, prepare 56ms)
+   Start at  11:02:33
+   Duration  354ms (transform 23ms, setup 0ms, collect 19ms, tests 3ms, environment 0ms, prepare 66ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T11:10:50+02:00
 | Code Quality | 0 |
 | **Total** | **5** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 13 | 7.00 | 1 |
+| Cognitive (SonarJS) | 18 | 18.00 | 1 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,16 +96,16 @@ Generated: 2026-05-03T11:10:50+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 429040 |
-| Context Utilization | 18% |
+| Context Utilization | 4% |
 
 ### TDD Cycle Metrics
 
 | Metric | Value |
 |--------|-------|
 | Cycle Count | 1 |
-| Avg Cycle Time | 0.00s |
+| Avg Cycle Time | 2.09s |
 | Avg Red Phase | 0s |
-| Avg Green Phase | 0s |
+| Avg Green Phase | 2.09s |
 | Avg Refactor Phase | 0s |
 
 ### Prediction Accuracy (Guessing Game) — Self-Reported

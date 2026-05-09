@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_05-19-00_game-of-life-prose_v5-exact-single-context_opus-4-7-no-thinking
 
-Generated: 2026-05-03T11:09:26+02:00
+Generated: 2026-05-09T11:02:01+02:00
 
 ## Configuration
 
@@ -36,12 +36,12 @@ Generated: 2026-05-03T11:09:26+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-03_05-19-00_game-of-life-prose_v5-exact-single-context_opus-4-7-no-thinking
 
- ✓ src/game-of-life.spec.ts  (9 tests) 4ms
+ ✓ src/game-of-life.spec.ts  (9 tests) 3ms
 
  Test Files  1 passed (1)
       Tests  9 passed (9)
-   Start at  11:09:27
-   Duration  392ms (transform 26ms, setup 0ms, collect 22ms, tests 4ms, environment 0ms, prepare 78ms)
+   Start at  11:02:02
+   Duration  332ms (transform 24ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 64ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T11:09:26+02:00
 | Code Quality | 0 |
 | **Total** | **5** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 11 | 4.33 | 1 |
+| Cognitive (SonarJS) | 21 | 21.00 | 1 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,7 +96,7 @@ Generated: 2026-05-03T11:09:26+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 5529623 |
-| Context Utilization | 44% |
+| Context Utilization | 9% |
 
 ### TDD Cycle Metrics
 

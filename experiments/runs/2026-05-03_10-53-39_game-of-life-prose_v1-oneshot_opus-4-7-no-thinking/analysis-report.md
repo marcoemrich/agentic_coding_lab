@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_10-53-39_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking
 
-Generated: 2026-05-03T17:14:10+02:00
+Generated: 2026-05-09T11:02:39+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-03T17:14:10+02:00
 
  Test Files  1 passed (1)
       Tests  12 passed (12)
-   Start at  17:14:10
-   Duration  312ms (transform 25ms, setup 0ms, collect 23ms, tests 4ms, environment 0ms, prepare 54ms)
+   Start at  11:02:39
+   Duration  413ms (transform 26ms, setup 1ms, collect 22ms, tests 4ms, environment 0ms, prepare 66ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T17:14:10+02:00
 | Code Quality | 0 |
 | **Total** | **6** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 14 | 5.33 | 1 |
+| Cognitive (SonarJS) | 20 | 20.00 | 1 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,7 +96,7 @@ Generated: 2026-05-03T17:14:10+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 553660 |
-| Context Utilization | 22% |
+| Context Utilization | 4% |
 
 ### TDD Cycle Metrics
 

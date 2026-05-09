@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_03-03-28_mars-rover-prose_v4-exact-subagents_opus-4-7-no-thinking
 
-Generated: 2026-05-03T11:08:29+02:00
+Generated: 2026-05-09T11:18:50+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-03T11:08:29+02:00
 
  Test Files  1 passed (1)
       Tests  10 passed (10)
-   Start at  11:08:29
-   Duration  368ms (transform 23ms, setup 0ms, collect 21ms, tests 2ms, environment 0ms, prepare 68ms)
+   Start at  11:18:51
+   Duration  338ms (transform 22ms, setup 0ms, collect 19ms, tests 2ms, environment 0ms, prepare 63ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T11:08:29+02:00
 | Code Quality | 0 |
 | **Total** | **0** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 1 | 1.00 | 0 |
+| Cognitive (SonarJS) | 0 | 0 | 0 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,7 +96,7 @@ Generated: 2026-05-03T11:08:29+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 3139046 |
-| Context Utilization | 39% |
+| Context Utilization | 8% |
 
 ### TDD Cycle Metrics
 

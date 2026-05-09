@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_05-43-31_mars-rover-prose_v3-basic-tdd_sonnet-4-6
 
-Generated: 2026-05-03T11:10:41+02:00
+Generated: 2026-05-09T11:02:21+02:00
 
 ## Configuration
 
@@ -36,12 +36,12 @@ Generated: 2026-05-03T11:10:41+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-03_05-43-31_mars-rover-prose_v3-basic-tdd_sonnet-4-6
 
- ✓ src/mars-rover.spec.ts  (17 tests) 4ms
+ ✓ src/mars-rover.spec.ts  (17 tests) 3ms
 
  Test Files  1 passed (1)
       Tests  17 passed (17)
-   Start at  11:10:41
-   Duration  401ms (transform 28ms, setup 0ms, collect 25ms, tests 4ms, environment 0ms, prepare 59ms)
+   Start at  11:02:22
+   Duration  353ms (transform 26ms, setup 0ms, collect 22ms, tests 3ms, environment 0ms, prepare 62ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T11:10:41+02:00
 | Code Quality | 0 |
 | **Total** | **1** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 9 | 5.00 | 0 |
+| Cognitive (SonarJS) | 11 | 11.00 | 1 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,16 +96,16 @@ Generated: 2026-05-03T11:10:41+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 334711 |
-| Context Utilization | 16% |
+| Context Utilization | 3% |
 
 ### TDD Cycle Metrics
 
 | Metric | Value |
 |--------|-------|
 | Cycle Count | 1 |
-| Avg Cycle Time | 0.00s |
+| Avg Cycle Time | 5.58s |
 | Avg Red Phase | 0s |
-| Avg Green Phase | 0s |
+| Avg Green Phase | 5.58s |
 | Avg Refactor Phase | 0s |
 
 ### Prediction Accuracy (Guessing Game) — Self-Reported

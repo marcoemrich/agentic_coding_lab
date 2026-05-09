@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_03-38-03_mars-rover-prose_v4-exact-subagents_haiku-4-5
 
-Generated: 2026-05-03T11:08:38+02:00
+Generated: 2026-05-09T11:01:03+02:00
 
 ## Configuration
 
@@ -36,12 +36,12 @@ Generated: 2026-05-03T11:08:38+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-03_03-38-03_mars-rover-prose_v4-exact-subagents_haiku-4-5
 
- ✓ src/mars-rover.spec.ts  (18 tests | 10 skipped) 4ms
+ ✓ src/mars-rover.spec.ts  (18 tests | 10 skipped) 3ms
 
  Test Files  1 passed (1)
       Tests  8 passed | 10 todo (18)
-   Start at  11:08:39
-   Duration  397ms (transform 31ms, setup 0ms, collect 31ms, tests 4ms, environment 0ms, prepare 59ms)
+   Start at  11:01:04
+   Duration  352ms (transform 27ms, setup 0ms, collect 22ms, tests 3ms, environment 0ms, prepare 63ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T11:08:38+02:00
 | Code Quality | 0 |
 | **Total** | **0** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 2 | 1.33 | 0 |
+| Cognitive (SonarJS) | 1 | 1.00 | 0 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -105,8 +112,8 @@ Generated: 2026-05-03T11:08:38+02:00
 
 | Metric | Value |
 |--------|-------|
-| Predictions Correct | 4 |
-| Predictions Total | 4 |
+| Predictions Correct | 6 |
+| Predictions Total | 6 |
 | Accuracy | 100% |
 
 _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._

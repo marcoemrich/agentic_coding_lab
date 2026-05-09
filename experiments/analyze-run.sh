@@ -544,7 +544,7 @@ EOF
             mccabe_scores=$(echo "$complexity_output" \
                 | jq -r '.[].messages[] | select(.ruleId == "complexity") | .message' 2>/dev/null \
                 | grep -oE 'complexity of [0-9]+' \
-                | grep -oE '[0-9]+')
+                | grep -oE '[0-9]+' || true)
 
             # Pull out Cognitive scores. Message format:
             # "Refactor this function to reduce its Cognitive Complexity from 12 to the 0 allowed."
@@ -552,7 +552,7 @@ EOF
             cognitive_scores=$(echo "$complexity_output" \
                 | jq -r '.[].messages[] | select(.ruleId == "sonarjs/cognitive-complexity") | .message' 2>/dev/null \
                 | grep -oE 'Complexity from [0-9]+' \
-                | grep -oE '[0-9]+')
+                | grep -oE '[0-9]+' || true)
 
             if [ -n "$mccabe_scores" ]; then
                 mccabe_max=$(echo "$mccabe_scores" | sort -n | tail -1)

@@ -25,6 +25,8 @@ outcomes:
   - code_mass                # primäres σ-Signal
   - smell_total
   - cc_longest_function
+  - mccabe_max          # zusätzliches σ-Signal: Streut Komplexität über Replikate?
+  - cognitive_max
   - duration_seconds
 min_replicates: 3
 status: aktiv

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_11-24-56_game-of-life-prose_v4-exact-subagents_opus-4-7-no-thinking
 
-Generated: 2026-05-03T17:14:47+02:00
+Generated: 2026-05-09T11:03:43+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-03T17:14:47+02:00
 
  Test Files  1 passed (1)
       Tests  8 passed (8)
-   Start at  17:14:48
-   Duration  325ms (transform 22ms, setup 0ms, collect 19ms, tests 3ms, environment 1ms, prepare 49ms)
+   Start at  11:03:43
+   Duration  355ms (transform 25ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 74ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T17:14:47+02:00
 | Code Quality | 0 |
 | **Total** | **2** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 3 | 1.44 | 0 |
+| Cognitive (SonarJS) | 3 | 2.50 | 0 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,7 +96,7 @@ Generated: 2026-05-03T17:14:47+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 2839426 |
-| Context Utilization | 38% |
+| Context Utilization | 8% |
 
 ### TDD Cycle Metrics
 
@@ -105,8 +112,8 @@ Generated: 2026-05-03T17:14:47+02:00
 
 | Metric | Value |
 |--------|-------|
-| Predictions Correct | 5 |
-| Predictions Total | 5 |
+| Predictions Correct | 7 |
+| Predictions Total | 7 |
 | Accuracy | 100% |
 
 _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._

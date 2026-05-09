@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-04_04-10-24_game-of-life-example-mapping_v4-exact-subagents_haiku-4-5
 
-Generated: 2026-05-04T04:34:14+00:00
+Generated: 2026-05-09T11:08:05+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-04T04:34:14+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-04_04-10-24_game-of-life-example-mapping_v4-exact-subagents_haiku-4-5
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-04_04-10-24_game-of-life-example-mapping_v4-exact-subagents_haiku-4-5
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-04_04-10-24_game-of-life-example-mapping_v4-exact-subagents_haiku-4-5
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-04_04-10-24_game-of-life-example-mapping_v4-exact-subagents_haiku-4-5
 
- ✓ src/game-of-life.spec.ts  (13 tests) 5ms
+ ✓ src/game-of-life.spec.ts  (13 tests) 4ms
 
  Test Files  1 passed (1)
       Tests  13 passed (13)
-   Start at  04:34:14
-   Duration  192ms (transform 30ms, setup 0ms, collect 28ms, tests 5ms, environment 0ms, prepare 55ms)
+   Start at  11:08:06
+   Duration  329ms (transform 29ms, setup 0ms, collect 26ms, tests 4ms, environment 0ms, prepare 95ms)
 ```
 
 ## Coverage
@@ -81,6 +81,13 @@ Generated: 2026-05-04T04:34:14+00:00
 | Magic Numbers | 4 |
 | Code Quality | 0 |
 | **Total** | **6** |
+
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 9 | 2.31 | 0 |
+| Cognitive (SonarJS) | 13 | 5.00 | 1 |
 
 ## Transcript Metrics
 

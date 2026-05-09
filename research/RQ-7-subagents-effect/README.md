@@ -18,6 +18,10 @@ outcomes:
   - cc_longest_function
   - smell_total
   - smell_complexity
+  - mccabe_max
+  - mccabe_avg
+  - cognitive_max
+  - cognitive_avg
   - cycle_count
   - refactorings_applied
   - predictions_correct

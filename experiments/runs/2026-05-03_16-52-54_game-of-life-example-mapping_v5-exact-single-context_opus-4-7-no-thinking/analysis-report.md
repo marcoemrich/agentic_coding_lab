@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_16-52-54_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
-Generated: 2026-05-03T16:58:33+00:00
+Generated: 2026-05-09T11:05:15+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-03T16:58:33+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-03_16-52-54_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-03_16-52-54_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-03_16-52-54_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-03_16-52-54_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
  ✓ src/game-of-life.spec.ts  (8 tests) 3ms
 
  Test Files  1 passed (1)
       Tests  8 passed (8)
-   Start at  16:58:33
-   Duration  157ms (transform 26ms, setup 0ms, collect 24ms, tests 3ms, environment 0ms, prepare 43ms)
+   Start at  11:05:15
+   Duration  337ms (transform 24ms, setup 1ms, collect 20ms, tests 3ms, environment 0ms, prepare 85ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T16:58:33+00:00
 | Code Quality | 0 |
 | **Total** | **3** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 3 | 1.25 | 0 |
+| Cognitive (SonarJS) | 2 | 2.00 | 0 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,7 +96,7 @@ Generated: 2026-05-03T16:58:33+00:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 7803774 |
-| Context Utilization | 51% |
+| Context Utilization | 10% |
 
 ### TDD Cycle Metrics
 

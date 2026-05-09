@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_04-15-52_mars-rover-prose_v5-exact-single-context_haiku-4-5
 
-Generated: 2026-05-03T11:08:58+02:00
+Generated: 2026-05-09T11:01:27+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-03T11:08:58+02:00
 
  Test Files  1 passed (1)
       Tests  10 passed (10)
-   Start at  11:08:58
-   Duration  344ms (transform 25ms, setup 0ms, collect 22ms, tests 2ms, environment 0ms, prepare 54ms)
+   Start at  11:01:28
+   Duration  336ms (transform 29ms, setup 0ms, collect 22ms, tests 2ms, environment 0ms, prepare 88ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T11:08:58+02:00
 | Code Quality | 0 |
 | **Total** | **0** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 5 | 5.00 | 0 |
+| Cognitive (SonarJS) | 7 | 7.00 | 0 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -105,9 +112,9 @@ Generated: 2026-05-03T11:08:58+02:00
 
 | Metric | Value |
 |--------|-------|
-| Predictions Correct | 0 |
-| Predictions Total | 0 |
-| Accuracy | N/A |
+| Predictions Correct | 5 |
+| Predictions Total | 5 |
+| Accuracy | 100% |
 
 _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._
 

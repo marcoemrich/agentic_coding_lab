@@ -21,6 +21,8 @@ outcomes:
   - code_mass
   - smell_total
   - cc_longest_function
+  - mccabe_max          # numerische McCabe-Komplexität (höchste Funktion)
+  - cognitive_max       # numerische Cognitive Complexity (höchste Funktion)
   - completed_within_budget    # Praktikabilität: Anteil Runs, die im 60-min-Budget fertig wurden
 min_replicates: 3
 status: aktiv
@@ -75,11 +77,13 @@ Thinking ist Gegenstand von RQ-3.
   Modellen mehr als v4, weil weniger Subagent-Übergänge zu
   Kontext-Verlust führen — oder umgekehrt.
 - H5 (Komplexitäts-Konvergenz): TDD-Workflows mit Refactor-Schritt
-  (v4/v5) verkleinern den Modell-Abstand bei `cc_longest_function`
-  deutlich (Haiku rückt nahe an Opus heran), während v3 (TDD ohne
-  Refactor) den Abstand erhält. Metrik-Aufspaltung gegenüber H2:
-  TDD wirkt bei Komplexität konvergierend, bei Smells aber nicht
-  zwingend.
+  (v4/v5) verkleinern den Modell-Abstand bei `mccabe_max` /
+  `cognitive_max` deutlich (Haiku rückt nahe an Opus heran), während
+  v3 (TDD ohne Refactor) den Abstand erhält. Metrik-Aufspaltung
+  gegenüber H2: TDD wirkt bei Komplexität konvergierend, bei Smells
+  aber nicht zwingend. (`cc_longest_function` ist nur ein
+  LoC-basierter Proxy; `mccabe_max`/`cognitive_max` sind die direkte
+  Operationalisierung.)
 
 ## Findings
 

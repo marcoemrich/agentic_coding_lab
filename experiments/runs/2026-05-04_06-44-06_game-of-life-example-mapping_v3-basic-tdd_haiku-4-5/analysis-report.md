@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-04_06-44-06_game-of-life-example-mapping_v3-basic-tdd_haiku-4-5
 
-Generated: 2026-05-04T06:44:49+00:00
+Generated: 2026-05-09T11:08:55+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-04T06:44:49+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-04_06-44-06_game-of-life-example-mapping_v3-basic-tdd_haiku-4-5
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-04_06-44-06_game-of-life-example-mapping_v3-basic-tdd_haiku-4-5
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-04_06-44-06_game-of-life-example-mapping_v3-basic-tdd_haiku-4-5
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-04_06-44-06_game-of-life-example-mapping_v3-basic-tdd_haiku-4-5
 
- ✓ src/game-of-life.spec.ts  (15 tests) 5ms
+ ✓ src/game-of-life.spec.ts  (15 tests) 4ms
 
  Test Files  1 passed (1)
       Tests  15 passed (15)
-   Start at  06:44:50
-   Duration  161ms (transform 28ms, setup 0ms, collect 28ms, tests 5ms, environment 0ms, prepare 43ms)
+   Start at  11:08:56
+   Duration  361ms (transform 25ms, setup 0ms, collect 23ms, tests 4ms, environment 0ms, prepare 63ms)
 ```
 
 ## Coverage
@@ -81,6 +81,13 @@ Generated: 2026-05-04T06:44:49+00:00
 | Magic Numbers | 3 |
 | Code Quality | 0 |
 | **Total** | **3** |
+
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 5 | 1.44 | 0 |
+| Cognitive (SonarJS) | 7 | 7.00 | 0 |
 
 ## Transcript Metrics
 

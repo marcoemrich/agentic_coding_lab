@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_05-09-08_game-of-life-prose_v4-exact-subagents_haiku-4-5
 
-Generated: 2026-05-03T11:09:17+02:00
+Generated: 2026-05-09T11:01:50+02:00
 
 ## Configuration
 
@@ -36,12 +36,12 @@ Generated: 2026-05-03T11:09:17+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-03_05-09-08_game-of-life-prose_v4-exact-subagents_haiku-4-5
 
- ✓ src/game-of-life.spec.ts  (12 tests) 4ms
+ ✓ src/game-of-life.spec.ts  (12 tests) 3ms
 
  Test Files  1 passed (1)
       Tests  12 passed (12)
-   Start at  11:09:17
-   Duration  395ms (transform 27ms, setup 1ms, collect 24ms, tests 4ms, environment 0ms, prepare 69ms)
+   Start at  11:01:50
+   Duration  383ms (transform 27ms, setup 0ms, collect 22ms, tests 3ms, environment 0ms, prepare 63ms)
 ```
 
 ## Coverage
@@ -81,6 +81,13 @@ Generated: 2026-05-03T11:09:17+02:00
 | Magic Numbers | 3 |
 | Code Quality | 0 |
 | **Total** | **4** |
+
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 8 | 4.50 | 0 |
+| Cognitive (SonarJS) | 8 | 4.50 | 0 |
 
 ## Transcript Metrics
 

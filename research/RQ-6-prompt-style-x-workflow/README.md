@@ -15,6 +15,8 @@ outcomes:
   - code_mass
   - smell_total
   - cc_longest_function
+  - mccabe_max
+  - cognitive_max
   - cycle_count
   - predictions_correct
   - duration_seconds

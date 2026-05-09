@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_10-57-28_game-of-life-prose_v2-iterative_opus-4-7-no-thinking
 
-Generated: 2026-05-03T17:14:24+02:00
+Generated: 2026-05-09T11:03:02+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-03T17:14:24+02:00
 
  Test Files  1 passed (1)
       Tests  13 passed (13)
-   Start at  17:14:24
-   Duration  306ms (transform 25ms, setup 0ms, collect 24ms, tests 3ms, environment 0ms, prepare 48ms)
+   Start at  11:03:03
+   Duration  375ms (transform 25ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 76ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T17:14:24+02:00
 | Code Quality | 0 |
 | **Total** | **5** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 11 | 4.33 | 1 |
+| Cognitive (SonarJS) | 12 | 12.00 | 1 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,7 +96,7 @@ Generated: 2026-05-03T17:14:24+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 640668 |
-| Context Utilization | 23% |
+| Context Utilization | 5% |
 
 ### TDD Cycle Metrics
 

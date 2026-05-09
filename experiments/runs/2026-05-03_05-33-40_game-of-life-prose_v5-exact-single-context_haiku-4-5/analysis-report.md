@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_05-33-40_game-of-life-prose_v5-exact-single-context_haiku-4-5
 
-Generated: 2026-05-03T11:09:36+02:00
+Generated: 2026-05-09T11:02:13+02:00
 
 ## Configuration
 
@@ -39,8 +39,8 @@ Generated: 2026-05-03T11:09:36+02:00
 
  Test Files  1 skipped (1)
       Tests  6 todo (6)
-   Start at  11:09:36
-   Duration  360ms (transform 21ms, setup 0ms, collect 17ms, tests 0ms, environment 0ms, prepare 81ms)
+   Start at  11:02:13
+   Duration  353ms (transform 18ms, setup 0ms, collect 13ms, tests 0ms, environment 0ms, prepare 64ms)
 ```
 
 ## Transcript Metrics

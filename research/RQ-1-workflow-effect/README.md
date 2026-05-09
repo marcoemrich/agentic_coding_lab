@@ -21,7 +21,11 @@ outcomes:
   - cc_avg_loc_per_function    # Clean-Code: mittlere Funktionslänge
   - cc_longest_function        # Spitzen-Komplexität (längste Funktion)
   - smell_total                # SonarJS-Smell-Summe
-  - smell_complexity           # cognitive-complexity-Findings
+  - smell_complexity           # cognitive-complexity-Findings (Anzahl Schwellwert-Verstöße)
+  - mccabe_max                 # numerische McCabe-Komplexität (höchste Funktion)
+  - mccabe_avg                 # numerische McCabe-Komplexität (Mittelwert)
+  - cognitive_max              # numerische Cognitive Complexity (höchste Funktion)
+  - cognitive_avg              # numerische Cognitive Complexity (Mittelwert)
   - cycle_count                # TDD-Disziplin: Anzahl Red-Green-Refactor-Zyklen
   - refactorings_applied       # TDD-Disziplin: explizite Refactor-Phasen
   - predictions_correct        # TDD-Disziplin: korrekte Test-Outcome-Vorhersagen (absolut)

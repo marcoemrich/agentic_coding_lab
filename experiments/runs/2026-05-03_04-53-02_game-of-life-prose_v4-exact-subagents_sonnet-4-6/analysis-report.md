@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_04-53-02_game-of-life-prose_v4-exact-subagents_sonnet-4-6
 
-Generated: 2026-05-03T11:09:12+02:00
+Generated: 2026-05-09T11:01:44+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-03T11:09:12+02:00
 
  Test Files  1 passed (1)
       Tests  10 passed (10)
-   Start at  11:09:13
-   Duration  327ms (transform 27ms, setup 0ms, collect 23ms, tests 3ms, environment 0ms, prepare 55ms)
+   Start at  11:01:45
+   Duration  362ms (transform 26ms, setup 0ms, collect 22ms, tests 3ms, environment 0ms, prepare 87ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T11:09:12+02:00
 | Code Quality | 0 |
 | **Total** | **3** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 6 | 2.60 | 0 |
+| Cognitive (SonarJS) | 7 | 6.50 | 0 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,7 +96,7 @@ Generated: 2026-05-03T11:09:12+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 1554004 |
-| Context Utilization | 25% |
+| Context Utilization | 5% |
 
 ### TDD Cycle Metrics
 

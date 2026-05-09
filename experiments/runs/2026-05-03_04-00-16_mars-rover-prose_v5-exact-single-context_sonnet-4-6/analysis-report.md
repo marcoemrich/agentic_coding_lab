@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_04-00-16_mars-rover-prose_v5-exact-single-context_sonnet-4-6
 
-Generated: 2026-05-03T11:08:53+02:00
+Generated: 2026-05-09T11:01:21+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-03T11:08:53+02:00
 
  Test Files  1 passed (1)
       Tests  8 passed (8)
-   Start at  11:08:54
-   Duration  368ms (transform 28ms, setup 0ms, collect 22ms, tests 2ms, environment 0ms, prepare 69ms)
+   Start at  11:01:22
+   Duration  377ms (transform 23ms, setup 0ms, collect 20ms, tests 2ms, environment 0ms, prepare 69ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T11:08:53+02:00
 | Code Quality | 0 |
 | **Total** | **0** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 5 | 3.33 | 0 |
+| Cognitive (SonarJS) | 6 | 5.50 | 0 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,7 +96,7 @@ Generated: 2026-05-03T11:08:53+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 13570571 |
-| Context Utilization | 64% |
+| Context Utilization | 13% |
 
 ### TDD Cycle Metrics
 
@@ -105,9 +112,9 @@ Generated: 2026-05-03T11:08:53+02:00
 
 | Metric | Value |
 |--------|-------|
-| Predictions Correct | 0 |
-| Predictions Total | 0 |
-| Accuracy | N/A |
+| Predictions Correct | 16 |
+| Predictions Total | 16 |
+| Accuracy | 100% |
 
 _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._
 

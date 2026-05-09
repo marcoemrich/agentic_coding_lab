@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_13-10-14_game-of-life-user-story_v4-exact-subagents_opus-4-7-no-thinking
 
-Generated: 2026-05-03T17:15:59+02:00
+Generated: 2026-05-09T11:04:41+02:00
 
 ## Configuration
 
@@ -36,12 +36,12 @@ Generated: 2026-05-03T17:15:59+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-03_13-10-14_game-of-life-user-story_v4-exact-subagents_opus-4-7-no-thinking
 
- ✓ src/game-of-life.spec.ts  (8 tests) 3ms
+ ✓ src/game-of-life.spec.ts  (8 tests) 4ms
 
  Test Files  1 passed (1)
       Tests  8 passed (8)
-   Start at  17:15:59
-   Duration  282ms (transform 31ms, setup 0ms, collect 19ms, tests 3ms, environment 0ms, prepare 128ms)
+   Start at  11:04:41
+   Duration  376ms (transform 25ms, setup 0ms, collect 25ms, tests 4ms, environment 0ms, prepare 59ms)
 ```
 
 ## Coverage
@@ -82,6 +82,13 @@ Generated: 2026-05-03T17:15:59+02:00
 | Code Quality | 0 |
 | **Total** | **3** |
 
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 3 | 1.30 | 0 |
+| Cognitive (SonarJS) | 3 | 2.00 | 0 |
+
 ## Transcript Metrics
 
 ### Token Usage
@@ -89,7 +96,7 @@ Generated: 2026-05-03T17:15:59+02:00
 | Metric | Value |
 |--------|-------|
 | Total Tokens | 2835557 |
-| Context Utilization | 40% |
+| Context Utilization | 8% |
 
 ### TDD Cycle Metrics
 

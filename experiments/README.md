@@ -557,6 +557,10 @@ experiments/
 │
 ├── record-run.sh                 # Interactive: create new experiment run
 ├── analyze-run.sh                # Analyze and compare completed runs
+├── reanalyze-all-runs.sh         # Re-run analyze-run.sh on every existing run
+│                                  #   (use after analyze-run.sh changes that add metrics;
+│                                  #    auto-installs node_modules via shared pnpm-store
+│                                  #    for runs that don't have it)
 └── README.md                     # This file
 ```
 
@@ -595,6 +599,22 @@ The script will:
 ./analyze-run.sh
 # Select option 2 (Compare runs), then 'all'
 ```
+
+#### Step 2b: Re-analyze every existing run after adding new metrics
+
+When `analyze-run.sh` is extended with new fields (e.g. `mccabe_*` /
+`cognitive_*` added 2026-05-09), existing runs still hold the old
+`metrics.json`. To backfill:
+
+```bash
+./reanalyze-all-runs.sh
+```
+
+This iterates over every `runs/<run>/`, runs `pnpm install` against
+the shared `runs/.pnpm-store` for any run missing `node_modules/`,
+and re-invokes `analyze-run.sh` so new metrics are populated.
+`node_modules/` is left in place (shared store keeps disk usage
+bounded). Output goes to `experiments/reanalyze.log` (gitignored).
 
 ### Option B: Docker Execution (Recommended)
 

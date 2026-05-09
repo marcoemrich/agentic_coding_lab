@@ -2,7 +2,7 @@
 
 _Wirkt der gewählte Workflow auf Code-Qualität, Korrektheit und TDD-Disziplin?_
 
-Generated: 2026-05-09T08:17:40Z
+Generated: 2026-05-09T09:13:46Z
 
 Cells declared: 10 · matched runs: 45 · min_replicates: 3
 
@@ -57,6 +57,11 @@ Cells declared: 10 · matched runs: 45 · min_replicates: 3
 | claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |  15    |    15 |    15 |  0    |
 | claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |   3.33 |     3 |     4 |  0.58 |
 | claim-office-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |   4    |     4 |     4 |  0    |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   6 |   0    |     0 |     0 |  0    |
 
 ### verification_total
 
@@ -67,6 +72,11 @@ Cells declared: 10 · matched runs: 45 · min_replicates: 3
 | claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
 | claim-office-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
 | claim-office-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |      0 |     0 |     0 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |      0 |     0 |     0 |     0 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |      0 |     0 |     0 |     0 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   6 |      0 |     0 |     0 |     0 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   6 |      0 |     0 |     0 |     0 |
 
 ### cc_loc
 
@@ -196,7 +206,7 @@ Cells declared: 10 · matched runs: 45 · min_replicates: 3
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |  21.33 |    15 |    25 |  5.51 |
 | claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |   6    |     4 |     8 |  2    |
 | game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |   0    |     0 |     0 |  0    |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   5.67 |     5 |     7 |  0.82 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   5.83 |     5 |     7 |  0.75 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |  15.17 |    12 |    16 |  1.6  |
 
 ### predictions_correct_rate (pooled %)
@@ -205,7 +215,7 @@ Cells declared: 10 · matched runs: 45 · min_replicates: 3
 |:-----------------------------|:------------------------|:---------------------|----:|----------:|--------:|---------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   3 |        64 |      64 |    100   |
 | claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |        18 |      18 |    100   |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |        34 |      35 |     97.1 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |        35 |      36 |     97.2 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |        91 |      92 |     98.9 |
 
 ### tests_passed_immediately
