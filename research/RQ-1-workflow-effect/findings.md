@@ -127,22 +127,81 @@ Datenbasis: game-of-life RQ-1, Opus-no-thinking, n=6 pro Workflow.
 
 ---
 
-## F-1.11 — Prediction-Trefferquote bei v4 und v5 vergleichbar hoch
+## F-1.12 — v4 vs. v5: Trade-off Qualität/Stabilität gegen Geschwindigkeit/Kompaktheit
 
-**Aussage**: Pooled `predictions_correct / predictions_total` liegt bei
-beiden Phasen-Workflows nah an 100 %. Δ < 2 pp.
+**Aussage**: v4 und v5 erreichen beide 100 % Pass-Rate (12/12 auf
+game-of-life-em + claim-office-em mit Opus-no-thinking), trennen sich
+aber auf den Qualitäts- und Effizienz-Achsen klar:
 
-| Workflow | correct | total | rate |
-|---|---:|---:|---:|
-| v4-exact-subagents | 34 | 35 | 97.1 % |
-| v5-exact-single-context | 91 | 92 | **98.9 %** |
+| Achse                     | Sieger | Daten (game-of-life-em, n=6) |
+|---|---|---|
+| Pass-Rate                 | Gleichstand | 100 % / 100 % |
+| Strukturelle Komplexität  | **v4** | mccabe 4.5 vs. 6.3 (−29 %); cognitive 5.7 vs. 10.2 (**−44 %**) |
+| Stabilität (σ Cognitive)  | **v4** | σ=3.2 vs. 7.1 (Range bei v5: 2–21) |
+| Code-Kompaktheit (LoC)    | v5     | 33 vs. 45 LoC (−25 %) |
+| Geschwindigkeit           | **v5** | 350 s vs. 780 s (2.2× schneller, F-1.4) |
+| Predictions-Anzahl        | (kein Qualitäts-Signal) | siehe F-1.11 |
 
-v5 macht ~2.6× so viele Predictions wie v4 (92 vs. 35), weil es mehr
-Cycles im single-context durchläuft — **nicht** weil v4 weniger genau
-wäre. Verfeinert F-1.8: Predictions-Anzahl unterscheidet die Workflows,
-Predictions-Qualität nicht.
+v4 erzeugt strukturell deutlich saubereren Code (Cognitive fast
+halbiert) und ist über Replikate hinweg vorhersagbarer (σ Cognitive
+halbiert). v5 ist dafür kompakter und mehr als doppelt so schnell.
 
-v3 produziert keine Predictions und ist daher in der Tabelle nicht
-enthalten (s. F-1.3).
+**Implikation für Workflow-Wahl**: Wer Code-Qualität (insbesondere
+Cognitive Complexity) und Reproduzierbarkeit priorisiert, sollte v4
+wählen. Wer Geschwindigkeit braucht und mit höherer Run-zu-Run-Streuung
+leben kann, ist mit v5 schneller am Ergebnis.
 
-Datenbasis: game-of-life RQ-1, Opus-no-thinking, n=6 pro Workflow.
+Datenbasis: game-of-life-example-mapping × Opus-no-thinking, n=6
+(Komplexität/Stabilität/Kompaktheit) bzw. n=12 inkl. claim-office-em
+(Pass-Rate). Speed-Zahlen aus F-1.4, Predictions aus F-1.11.
+
+**Caveat**: Auf schwächeren Modellen könnte sich der v4-Vorteil noch
+vergrößern — Memory bestätigt, dass v5 bei Haiku gelegentlich gar nicht
+fertig wird (single-context fängt Modell-Fehler nicht ab). Robuste
+Modell-Quervergleich-Aussage liegt bei RQ-4, sobald
+Haiku-no-thinking-Runs vorliegen.
+
+---
+
+## F-1.11 — Predictions-Anzahl misst Workflow-Compliance, nicht TDD-Disziplin
+
+**Aussage**: v4 und v5 erreichen beide ≥97 % Trefferquote auf den
+"Guessing-Game"-Predictions. v5 markiert allerdings ~2.6× so viele
+Predictions wie v4 (92 vs. 35), trotz **vergleichbarer Cycle-Anzahl**
+(v4: 8.5 Cycles/Run, v5: 7.7) — der Unterschied liegt nicht in
+TDD-Disziplin, sondern in der Strenge des Markup-Zwangs.
+
+| Workflow | cycles/run | predictions/run | predictions/cycle | rate |
+|---|---:|---:|---:|---:|
+| v4-exact-subagents      | 8.5 | 5.8  | 0.7 | 97.1 % |
+| v5-exact-single-context | 7.7 | 15.2 | 2.0 | 98.9 % |
+
+**Mechanik des Unterschieds**:
+- Beide Workflows verlangen pro Cycle **2 Predictions** (Compilation +
+  Runtime, je `red.md`).
+- v5 hat den expliziten Zusatz: *"You MUST output the full Step 7 block
+  verbatim with `Correct` or `Incorrect` chosen for each prediction.
+  Do not abbreviate. Do not collapse the two prediction lines into
+  one."* — daher fast genau 2.0 markierte Predictions/Cycle.
+- v4-Subagents arbeiten ohne diesen Zwang. Plus: jeder Phase-Wechsel
+  ist ein Subagent-Spawn mit fresh context — der nächste red-Agent
+  sieht die vorherige Step-7-Ausgabe nicht und reproduziert das Format
+  weniger zuverlässig. Resultat: ~0.7 markierte Predictions/Cycle.
+- Detektion in `analyze_transcript.py` zählt nur die explizit
+  markierten `Correct`/`Incorrect`-Zeilen — implizite Predictions
+  ohne Marker fallen durchs Raster.
+
+`predictions_total` misst also **"wie viele Vorhersagen wurden im
+erwarteten Format markiert"**, nicht "wie viele Vorhersagen wurden
+gemacht". Das ist ein Mess-Artefakt aus Workflow-Compliance, kein
+TDD-Disziplin-Signal.
+
+Verfeinert F-1.8: Refactorings (`refactorings_applied`) bleibt das
+verlässlichere Disziplin-Signal (v4: 5.3, v5: 7.0), Predictions-Anzahl
+ist als Aktivitäts-Metrik zu lesen.
+
+v3 produziert keine Predictions (s. F-1.3) und ist daher nicht
+enthalten.
+
+Datenbasis: game-of-life-example-mapping × Opus-no-thinking, n=6 pro
+Workflow.
