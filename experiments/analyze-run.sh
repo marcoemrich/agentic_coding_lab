@@ -498,6 +498,96 @@ analyze_single_run() {
         fi
     fi
 
+    # Numeric Complexity Scores (McCabe + Cognitive)
+    # Second ESLint pass with thresholds=0 forces a message for every function,
+    # from which we parse the actual numeric score.
+    local mccabe_max=0
+    local mccabe_avg=0
+    local mccabe_high_count=0
+    local cognitive_max=0
+    local cognitive_avg=0
+    local cognitive_high_count=0
+    local complexity_threshold=10
+
+    if [ -n "$impl_file" ] && [ -f "$impl_file" ] && [ -f "$run_dir/eslint.config.mjs" ] && [ -d "$run_dir/node_modules" ]; then
+        # Write a temporary override config that re-exports the project config
+        # but cranks complexity rules down to 0 so every function reports.
+        local override_config="$run_dir/.eslint.complexity.mjs"
+        cat > "$override_config" <<'EOF'
+import sonarjs from "eslint-plugin-sonarjs";
+import tseslint from "typescript-eslint";
+
+export default [
+  {
+    files: ["src/**/*.ts"],
+    ignores: ["src/**/*.spec.ts"],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: { projectService: true },
+    },
+    plugins: { sonarjs },
+    rules: {
+      "complexity": ["warn", 0],
+      "sonarjs/cognitive-complexity": ["warn", 0],
+    },
+  },
+];
+EOF
+
+        local complexity_output
+        complexity_output=$(cd "$run_dir" && npx eslint src/*.ts --ignore-pattern "*.spec.ts" --config .eslint.complexity.mjs --format json 2>/dev/null) || true
+
+        if [ -n "$complexity_output" ] && command -v jq &> /dev/null; then
+            # Pull out McCabe scores. ESLint message format is stable:
+            # "Function 'foo' has a complexity of 7. Maximum allowed is 0."
+            local mccabe_scores
+            mccabe_scores=$(echo "$complexity_output" \
+                | jq -r '.[].messages[] | select(.ruleId == "complexity") | .message' 2>/dev/null \
+                | grep -oE 'complexity of [0-9]+' \
+                | grep -oE '[0-9]+')
+
+            # Pull out Cognitive scores. Message format:
+            # "Refactor this function to reduce its Cognitive Complexity from 12 to the 0 allowed."
+            local cognitive_scores
+            cognitive_scores=$(echo "$complexity_output" \
+                | jq -r '.[].messages[] | select(.ruleId == "sonarjs/cognitive-complexity") | .message' 2>/dev/null \
+                | grep -oE 'Complexity from [0-9]+' \
+                | grep -oE '[0-9]+')
+
+            if [ -n "$mccabe_scores" ]; then
+                mccabe_max=$(echo "$mccabe_scores" | sort -n | tail -1)
+                mccabe_avg=$(echo "$mccabe_scores" | awk '{sum+=$1; n++} END {if (n>0) printf "%.2f", sum/n; else print "0"}')
+                mccabe_high_count=$(echo "$mccabe_scores" | awk -v t="$complexity_threshold" '$1 > t' | wc -l | tr -d '[:space:]')
+            fi
+
+            if [ -n "$cognitive_scores" ]; then
+                cognitive_max=$(echo "$cognitive_scores" | sort -n | tail -1)
+                cognitive_avg=$(echo "$cognitive_scores" | awk '{sum+=$1; n++} END {if (n>0) printf "%.2f", sum/n; else print "0"}')
+                cognitive_high_count=$(echo "$cognitive_scores" | awk -v t="$complexity_threshold" '$1 > t' | wc -l | tr -d '[:space:]')
+            fi
+        fi
+
+        # Validate (max/high_count are int; avg may be float)
+        [[ "$mccabe_max" =~ ^[0-9]+$ ]] || mccabe_max=0
+        [[ "$mccabe_high_count" =~ ^[0-9]+$ ]] || mccabe_high_count=0
+        [[ "$mccabe_avg" =~ ^[0-9]+(\.[0-9]+)?$ ]] || mccabe_avg=0
+        [[ "$cognitive_max" =~ ^[0-9]+$ ]] || cognitive_max=0
+        [[ "$cognitive_high_count" =~ ^[0-9]+$ ]] || cognitive_high_count=0
+        [[ "$cognitive_avg" =~ ^[0-9]+(\.[0-9]+)?$ ]] || cognitive_avg=0
+
+        rm -f "$override_config"
+
+        echo -e "\n${YELLOW}Complexity Scores (per function):${NC}"
+        echo -e "  ${CYAN}McCabe (cyclomatic):${NC} max=$mccabe_max avg=$mccabe_avg high(>$complexity_threshold)=$mccabe_high_count"
+        echo -e "  ${CYAN}Cognitive (sonarjs):${NC} max=$cognitive_max avg=$cognitive_avg high(>$complexity_threshold)=$cognitive_high_count"
+
+        report_content+="## Complexity Scores\n\n"
+        report_content+="| Metric | Max | Avg | High (>$complexity_threshold) |\n"
+        report_content+="|--------|-----|-----|---------------------------|\n"
+        report_content+="| McCabe (Cyclomatic) | $mccabe_max | $mccabe_avg | $mccabe_high_count |\n"
+        report_content+="| Cognitive (SonarJS) | $cognitive_max | $cognitive_avg | $cognitive_high_count |\n\n"
+    fi
+
     # Extract metrics from transcript-metrics.json (post-hoc transcript analysis).
     # Variables keep the `summary_*` prefix for downstream stability.
     local summary_metrics=""
@@ -654,6 +744,12 @@ analyze_single_run() {
         [[ "$cc_longest_func" =~ ^[0-9]+$ ]] || cc_longest_func=0
         [[ "$cc_avg_loc_func" =~ ^[0-9]+$ ]] || cc_avg_loc_func=0
         [[ "$cc_imports" =~ ^[0-9]+$ ]] || cc_imports=0
+        [[ "$mccabe_max" =~ ^[0-9]+$ ]] || mccabe_max=0
+        [[ "$mccabe_high_count" =~ ^[0-9]+$ ]] || mccabe_high_count=0
+        [[ "$mccabe_avg" =~ ^[0-9]+(\.[0-9]+)?$ ]] || mccabe_avg=0
+        [[ "$cognitive_max" =~ ^[0-9]+$ ]] || cognitive_max=0
+        [[ "$cognitive_high_count" =~ ^[0-9]+$ ]] || cognitive_high_count=0
+        [[ "$cognitive_avg" =~ ^[0-9]+(\.[0-9]+)?$ ]] || cognitive_avg=0
 
         # Verification block (for CLI katas with <basename>-verification/)
         # Runs each *.input.json scenario through the CLI defined in
@@ -750,6 +846,12 @@ analyze_single_run() {
            --argjson cc_longest_func "$cc_longest_func" \
            --argjson cc_avg_loc_func "$cc_avg_loc_func" \
            --argjson cc_imports "$cc_imports" \
+           --argjson mccabe_max "$mccabe_max" \
+           --argjson mccabe_avg "$mccabe_avg" \
+           --argjson mccabe_high_count "$mccabe_high_count" \
+           --argjson cognitive_max "$cognitive_max" \
+           --argjson cognitive_avg "$cognitive_avg" \
+           --argjson cognitive_high_count "$cognitive_high_count" \
            --argjson verification_total "$verification_total" \
            --argjson verification_passed "$verification_passed" \
            --argjson verification_pct "$verification_pct" \
@@ -774,6 +876,12 @@ analyze_single_run() {
             .clean_code.longest_function = $cc_longest_func |
             .clean_code.avg_loc_per_function = $cc_avg_loc_func |
             .clean_code.imports = $cc_imports |
+            .final_metrics.mccabe_max = $mccabe_max |
+            .final_metrics.mccabe_avg = $mccabe_avg |
+            .final_metrics.mccabe_high_count = $mccabe_high_count |
+            .final_metrics.cognitive_max = $cognitive_max |
+            .final_metrics.cognitive_avg = $cognitive_avg |
+            .final_metrics.cognitive_high_count = $cognitive_high_count |
             .summary_metrics.total_tokens = $total_tokens |
             .summary_metrics.context_utilization_pct = $context_util |
             .summary_metrics.cycle_count = $cycle_count |

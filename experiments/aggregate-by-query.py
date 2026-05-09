@@ -42,6 +42,8 @@ CSV_COLUMNS = [
     "cc_avg_loc_per_function", "cc_imports",
     "smell_total", "smell_complexity", "smell_duplication",
     "smell_magic_numbers", "smell_code_quality",
+    "mccabe_max", "mccabe_avg", "mccabe_high_count",
+    "cognitive_max", "cognitive_avg", "cognitive_high_count",
     "verification_total", "verification_passed", "verification_pct",
 ]
 
@@ -203,6 +205,12 @@ def metrics_to_row(metrics: dict, run_id: str) -> dict:
         "smell_duplication":          cs.get("duplication"),
         "smell_magic_numbers":        cs.get("magic_numbers"),
         "smell_code_quality":         cs.get("code_quality"),
+        "mccabe_max":                 fm.get("mccabe_max"),
+        "mccabe_avg":                 fm.get("mccabe_avg"),
+        "mccabe_high_count":          fm.get("mccabe_high_count"),
+        "cognitive_max":              fm.get("cognitive_max"),
+        "cognitive_avg":              fm.get("cognitive_avg"),
+        "cognitive_high_count":       fm.get("cognitive_high_count"),
         "verification_total":         fm.get("verification_total"),
         "verification_passed":        fm.get("verification_passed"),
         "verification_pct":           fm.get("verification_pct"),
