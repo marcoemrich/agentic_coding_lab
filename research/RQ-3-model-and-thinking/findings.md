@@ -41,10 +41,12 @@ sogar **schärfer** als auf cc_longest: Haiku hat 3× höhere McCabe und
 
 **Aussage**: Thinking hat **keinen Pass-Rate-Effekt** auf game-of-life × v4
 (100 % beide Modi), senkt aber bei Opus alle drei Komplexitäts-Maße
-deutlich (`cc_longest`: 15.2 → 8.7; `mccabe_max`: 4.5 → 3.0;
-`cognitive_max`: 5.7 → 3.3). Bei Sonnet ist der Effekt auf cc_longest
-sichtbar, aber auf McCabe/Cognitive richtungs-uneinheitlich
-(no-thinking sogar leicht besser bei n=3).
+deutlich: `cc_longest` 15.2 → 8.7 (−43 %), `mccabe_max` 4.5 → 3.0
+(−33 %), `cognitive_max` 5.7 → 3.3 (**−42 %**). Cognitive bestätigt
+also: Thinking kürzt nicht nur, sondern bewirkt echte strukturelle
+Vereinfachung. Bei Sonnet ist der Effekt auf cc_longest sichtbar, aber
+auf McCabe/Cognitive richtungs-uneinheitlich (no-thinking sogar leicht
+besser bei n=3).
 
 **Datenbasis** (game-of-life-example-mapping × v4-exact-subagents):
 

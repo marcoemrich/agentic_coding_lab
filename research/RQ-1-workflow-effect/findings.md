@@ -89,9 +89,16 @@ Bei der Cognitive Complexity ist v3 sogar das **schlechteste** Workflow
 Funktionen (F-1.10), sondern auch verschachtelt-komplizierte. Der
 Refactor-Schritt in v4/v5 ist also nicht nur ein LoC-Reduzierer,
 sondern senkt strukturelle Komplexität substantiell (v4: McCabe −62 %,
-Cognitive −66 % gegenüber v3).
+Cognitive −66 % gegenüber v3). v4/v5 produzieren damit Code mit etwa
+**3× weniger logischen Pfaden und 3× weniger kognitivem Aufwand pro
+Funktion** als v1/v2/v3.
 
 Datenbasis: game-of-life RQ-1, Opus-no-thinking, n=6 pro Workflow.
+
+**Interpretation** (nicht aus den Daten ableitbar): Der Test-First-
+Druck ohne Refactor-Phase (v3) könnte zu defensivem, ad-hoc gewachsenem
+Code führen, den im Workflow niemand aufräumt — daher v3 schlechter als
+v1/v2 auf Cognitive trotz nominell strengerer Vorgabe.
 
 ---
 

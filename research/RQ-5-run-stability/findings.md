@@ -47,15 +47,12 @@ mindestens **n=3** pro Zelle, besser n=6.
 
 ---
 
-## F-5.3 — Komplexitäts-Metriken streuen mit hohen Outliers
+## F-5.3 — Komplexitäts-Metriken streuen, Cognitive am unruhigsten
 
-**Aussage**: `cc_longest_function`-σ liegt zwischen 3.6 (v1/prose) und
-8.4 (v5/prose). Bei TDD-Workflows mit Refactor-Phasen (v4, v5) sind
-Min-Werte sehr niedrig (2 = trivial), Max-Werte aber teilweise > 25 —
-also bimodale Verteilung ("manchmal sehr aufgeräumt, manchmal nicht").
-
-Die numerischen Komplexitäts-Scores zeigen das **gleiche bimodale
-Muster, sogar verstärkt**:
+**Aussage**: Alle drei Komplexitäts-Maße zeigen bimodale Verteilungen
+("manchmal sehr aufgeräumt, manchmal nicht"). **Cognitive Complexity
+ist die unruhigste der drei** — bei v5/example-mapping σ=7.1, Range
+2–21 (Faktor 10×). McCabe und cc_longest streuen schwächer.
 
 | Zelle (game-of-life, opus-no-thinking, n=6) | cc_long σ | mccabe σ | cognitive σ | cognitive range |
 |---|---:|---:|---:|---|
@@ -64,13 +61,9 @@ Muster, sogar verstärkt**:
 | v3 / example-mapping | 5.0 | 2.5 | 4.1 | 9–21 |
 | v1 / prose | 3.6 | 2.2 | 4.7 | 9–20 |
 
-Bei v5 reicht die Cognitive-Spanne über den Faktor 10 (2 vs. 21) — ein
-einzelner Outlier verschiebt den Mittelwert massiv.
-
 → **Empfehlung**: n≥6 für alle Komplexitäts-Maße
 (`cc_longest_function`, `mccabe_max`, `cognitive_max`), sonst kann ein
-einzelner Outlier den Mittelwert kippen. Cognitive ist die unruhigste
-der drei.
+einzelner Outlier den Mittelwert kippen. Bei Cognitive eher noch mehr.
 
 ---
 
