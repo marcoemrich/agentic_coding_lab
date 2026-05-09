@@ -1,0 +1,53 @@
+📋 **Test List Created:**
+
+**Feature**: MHPCO Claim Office Insurance System
+**Test File**: src/index.spec.ts
+**Base Functionality Tests**: 36
+
+**Test Cases** (ordered simple → complex):
+
+1. ✅ Quote: Single sword with no modifiers - base premium + fee
+2. ✅ Quote: Single amulet with no modifiers
+3. ✅ Quote: Single staff with no modifiers
+4. ✅ Quote: Single potion with no modifiers
+5. ✅ Quote: Add 5 G processing fee to any premium
+6. ✅ Quote: Add processing fee to empty item list
+7. ✅ Quote: Single component (rune) base premium
+8. ✅ Quote: Two alike components
+9. ✅ Quote: Three alike components (block discount applies)
+10. ✅ Quote: Four alike components (no block, 4 separate)
+11. ✅ Quote: Different component types (separate blocks)
+12. ✅ Quote: Apply curse surcharge (50%)
+13. ✅ Quote: Apply high enchantment surcharge (30%) for enchantment ≥ 5
+14. ✅ Quote: Apply both curse and high enchantment surcharges
+15. ✅ Quote: No high enchantment surcharge for enchantment < 5
+16. ✅ Quote: Sum base premiums for multiple different items
+17. ✅ Quote: Apply modifiers only to affected items
+18. ✅ Quote: Cursed and non-cursed items in one policy
+19. ✅ Quote: Apply first insurance surcharge (10%)
+20. ✅ Quote: Apply loyalty discount (20%) for ≥ 2 years
+21. ✅ Quote: Apply follow-up contract discount (15%)
+22. ✅ Quote: Combine multiple policy-wide modifiers
+23. ✅ Quote: Round premium up in MHPCO's favor
+24. ✅ Claim: Apply 100 G deductible per damage event
+25. ✅ Claim: Calculate cap as 2× policy insurance sum
+26. ✅ Claim: Enforce cap as maximum total payout
+27. ✅ Claim: Track remaining cap across multiple claims
+28. ✅ Claim: Full reimbursement minus deductible (standard items)
+29. ✅ Claim: 50% reimbursement for enchantment ≥ 8
+30. ✅ Claim: 100% reimbursement for dragon material
+31. ✅ Claim: Choose higher reimbursement when multiple rules apply
+32. ✅ Claim: Apply deductible to each damage event separately
+33. ✅ Claim: Reject claim if damages exceed insured items
+34. ✅ Claim: Round payout down in MHPCO's favor
+35. ✅ Integration: Complete quote and claim scenario
+
+**Advanced Features** (NOT included yet):
+- Unknown item type error handling - save for later
+- Negative damage amount validation - save for later
+- Full CLI integration with stdin/stdout - save for later
+- Error messages and stderr output - save for later
+
+---
+
+📋 **Test List Phase Complete.** Proceeding to Red phase with the first test.

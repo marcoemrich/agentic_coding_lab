@@ -1,0 +1,24 @@
+
+Claude configuration file not found at: /home/experimenter/.claude.json
+A backup file exists at: /home/experimenter/.claude/backups/.claude.json.backup.1777881115152
+You can manually restore it by running: cp "/home/experimenter/.claude/backups/.claude.json.backup.1777881115152" "/home/experimenter/.claude.json"
+
+
+Claude configuration file not found at: /home/experimenter/.claude.json
+A backup file exists at: /home/experimenter/.claude/backups/.claude.json.backup.1777881115152
+You can manually restore it by running: cp "/home/experimenter/.claude/backups/.claude.json.backup.1777881115152" "/home/experimenter/.claude.json"
+
+
+Claude configuration file not found at: /home/experimenter/.claude.json
+A backup file exists at: /home/experimenter/.claude/backups/.claude.json.backup.1777881115152
+You can manually restore it by running: cp "/home/experimenter/.claude/backups/.claude.json.backup.1777881115152" "/home/experimenter/.claude.json"
+
+Implementation complete. Summary:
+
+- `src/types.ts` — TypeScript types for scenario inputs/outputs
+- `src/pricing.ts` — Premium computation with item-level surcharges (cursed, enchantment), component bundling (3 alike → 60 G), customer modifiers (loyalty, first/subsequent contract), processing fee, rounding up in MHPCO's favor
+- `src/claims.ts` — Claim processing with 100 G deductible, 50% reimbursement for enchantment ≥ 8, 100% for dragon material, 2× insurance sum cap
+- `src/engine.ts` — Sequential scenario runner that tracks policies and prior contract count
+- `src/cli.ts` — CLI reading JSON from stdin and writing JSON to stdout
+- `bin/claim-office.mjs` — wrapper executable, also exposed via `pnpm exec claim-office`
+- 20 tests across pricing, claims, and engine modules — all passing

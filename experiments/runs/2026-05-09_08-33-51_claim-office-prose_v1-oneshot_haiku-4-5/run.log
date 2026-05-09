@@ -1,0 +1,30 @@
+## Summary
+
+I've successfully completed the MHPCO Claim Office TDD exercise. Here's what was implemented:
+
+### Core Components
+
+1. **Types** (`src/types.ts`) - TypeScript interfaces for the entire system
+2. **Business Logic** (`src/mhpco.ts`) - Three main functions:
+   - `calculatePremium()` - Premium calculation with modifiers (cursed +50%, enchanted ≥5 +30%, loyalty -20%, first policy +10%, subsequent -15%, +5 G processing fee)
+   - `processClaim()` - Claim processing with 100 G deductible and 2x insurance sum cap
+   - `createPolicy()` - Policy creation with insurance sum and remaining cap
+3. **CLI** (`src/cli.ts`) - JSON stdin/stdout interface as specified
+4. **Tests** (`src/mhpco.spec.ts`) - 18 passing tests covering all functionality
+5. **Wrapper** (`claim-office`) - Executable entry point
+
+### Key Features
+
+- **Premium Calculation**: Properly applies item-specific modifiers (cursed, enchanted), then global modifiers (loyalty, first/subsequent), adds processing fee, and rounds in MHPCO's favor
+- **Damage Reimbursement**: Dragon material (100%) takes precedence over high enchantment (50%)
+- **Component Bundling**: 3 identical components get bundled at special rate
+- **Sequential Claims**: Properly tracks remaining cap across multiple claims on same policy
+
+### Usage
+
+```bash
+npm exec claim-office < input.json > output.json
+npm test
+```
+
+All tests pass and the CLI correctly processes complex scenarios including multiple items, modifiers, and sequential claims.

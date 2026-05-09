@@ -1,0 +1,15 @@
+All 45 tests pass. Here's a summary of what was implemented:
+
+**Files created:**
+- `src/types.ts` — TypeScript interfaces for items, scenarios, policies, and results
+- `src/engine.ts` — Core logic with `computeQuotePremium`, `computeClaimPayout`, and `processScenario`
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+- `src/engine.spec.ts` — 45 tests covering all spec examples
+- `claim-office.mjs` — Executable wrapper
+
+**Key rules implemented:**
+- Component block discount (60 G for groups divisible by 3, 25 G/item otherwise)
+- Item-specific modifiers: cursed (+50%), high enchantment ≥5 (+30%) applied to each item's base premium
+- Policy-wide modifiers: loyalty ≥2 years (−20%), first insurance (+10% always), follow-up contract (−15% from 2nd quote onward)
+- Claim: 50% reimbursement for enchantment ≥8 (wins over dragon material), full reimbursement for dragon material, 100 G deductible per damage, cumulative cap = 2× insurance sum
+- Rounding: ceiling for premiums, floor for payouts (MHPCO's favor)

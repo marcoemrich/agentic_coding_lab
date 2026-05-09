@@ -1,0 +1,10 @@
+Task complete. The implementation:
+
+- `src/types.ts` — domain types (Customer, Item, Damage, Step, Policy, etc.)
+- `src/pricing.ts` — premium calculation: per-item base prices, block-of-3 component discount, cursed/enchantment surcharges (multiplicative), customer modifiers (loyalty, first-vs-subsequent), 5G fee, round-up in MHPCO favor
+- `src/claims.ts` — deductible (100G/incident), enchantment≥8 → 50% reimbursement, dragon material → 100%, payout capped at 2× insurance sum across multiple claims
+- `src/scenario.ts` — sequential step processor tracking contract index and policies by step index
+- `src/cli.ts` — reads JSON stdin, writes JSON stdout
+- `bin/claim-office.mjs` — wrapper for `pnpm exec claim-office`
+
+Both prompt examples produce sensible output (115G premium for the cheap sword, 58/100/150 payouts for the amulet scenario). 24 tests pass covering pricing, claims, and end-to-end scenarios.

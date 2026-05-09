@@ -1,0 +1,5 @@
+All 39 tests pass. The MHPCO Claim Office implementation is complete:
+
+- **`src/claim-office.ts`**: Core scenario runner with quote/claim logic. Handles item base premiums (sword/amulet/staff/potion), components with 3-block discount (rune/moonstone), per-item modifiers (curse 50%, high-ench ≥5 30%), policy-wide modifiers (loyalty ≥2yr 20%, first-insurance 10%, follow-up 15%), processing fee 5G, ceiling rounding for premiums; claim processing with 100G deductible per damage, 50% reimbursement for ench ≥8, cap at 2× insurance sum, floor rounding for payouts; validation for unknown items, mismatched damage entries, and negative damages.
+- **`src/cli.ts`**: stdin/stdout JSON CLI exiting non-zero on errors.
+- **`src/claim-office.spec.ts`**: 39 passing tests covering all rules from the prompt.

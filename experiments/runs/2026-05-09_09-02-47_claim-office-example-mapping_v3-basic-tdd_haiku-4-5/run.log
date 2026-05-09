@@ -1,0 +1,36 @@
+## TDD Exercise Complete! ✓
+
+I have successfully completed the MHPCO (Most Honorable Privileged Claims Office for Magical Risks and Cursed Items) Claim Office TDD exercise.
+
+### Summary of Implementation:
+
+**Engine (`src/engine.ts`)**:
+- Premium calculation with complex modifiers (cursed items, enchantment levels, loyalty discounts, first insurance, follow-up contracts)
+- Component block handling (groups of exactly 3 alike components get special pricing)
+- Claim processing with deductibles, reimbursement rates, and policy caps
+- Proper rounding (up for premiums, down for payouts)
+
+**CLI (`src/cli.ts`)**:
+- Reads JSON from stdin, processes quote and claim operations
+- Writes results to stdout as JSON
+- Proper error handling with non-zero exit codes for invalid inputs
+- Validates policy coverage and damage amounts
+
+**Tests** (34 tests, all passing):
+- 29 comprehensive engine tests covering all business rules
+- 5 CLI integration tests validating end-to-end functionality
+- All rules from the prompt correctly implemented
+
+### Key Rules Implemented:
+- Item base premiums and component pricing with block discounts
+- Curse surcharge: 50% of item base
+- High enchantment surcharge (>=5): 30% of item base
+- Loyalty discount (>=2 years): 20% of policy base
+- First insurance: flat +10G per policy
+- Follow-up contract: flat -15G
+- Claim deductible: 100G per event
+- High enchantment reimbursement (>=8): 50%
+- Dragon material: full reimbursement
+- Policy cap: 2× insurance sum
+
+The CLI can be invoked with: `echo '{"customer":{"yearsWithMHPCO":0},"steps":[...]}' | npx tsx src/cli.ts`

@@ -1,0 +1,22 @@
+## TDD Exercise Complete ✓
+
+I've successfully completed the MHPCO Claim Office TDD exercise. Here's what was implemented:
+
+### Test Suite (41 tests, all passing)
+- **Base premiums**: All item types (sword, amulet, staff, potion, rune, moonstone)
+- **Component logic**: Block discounts for exactly 3 components, proper premium calculations
+- **Premium modifiers**: Cursed items (50% surcharge), high enchantment (30% surcharge), loyalty discount (20%), first insurance (10%), follow-up contract discount (15%)
+- **Processing fee**: 5 G added to all premiums
+- **Claim processing**: Deductible (100 G per item), cap tracking, special clauses for high enchantment (50% reimbursement) and dragon material
+- **Error handling**: Invalid item types, negative damages, over-claimed items
+
+### Implementation
+1. **core.ts**: Premium calculation and claim processing logic
+2. **types.ts**: TypeScript type definitions for all data structures
+3. **cli.ts**: Command-line interface that reads JSON from stdin and outputs JSON to stdout
+4. **bin/claim-office**: Executable wrapper script
+
+### Verification
+- All 41 tests pass
+- CLI works correctly with sample scenarios from the prompt
+- Error cases handled properly with appropriate exit codes

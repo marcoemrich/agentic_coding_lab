@@ -1,0 +1,6 @@
+All 34 tests pass. The TDD exercise is complete:
+
+- **Implementation**: `src/claim-office.ts` — `runScenario` handles quote (base premium + item-specific surcharges + policy-wide modifiers + fee, rounded up) and claim (deductible per damage, special clauses for high enchantment / dragon material, cap exhaustion).
+- **CLI**: `src/cli.ts` reads JSON from stdin, writes JSON to stdout, exits non-zero on error.
+- **Tests**: `src/claim-office.spec.ts` — 34 tests covering empty quotes, base premiums, components and blocks, modifiers (curse, high enchantment), policy-wide modifiers (loyalty, follow-up, first-insurance), claims with deductible, special-clause interactions, cap exhaustion, error cases, and rounding.
+- **Done marker**: `experiment-done.txt` written with `DONE`.

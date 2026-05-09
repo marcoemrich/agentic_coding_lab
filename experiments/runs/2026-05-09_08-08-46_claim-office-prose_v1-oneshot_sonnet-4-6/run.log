@@ -1,0 +1,15 @@
+Implementation complete. Here's a summary of what was built:
+
+**Files created:**
+- `src/types.ts` — TypeScript interfaces for the domain model
+- `src/engine.ts` — Core logic for `quote` and `claim` operations
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing to stdout
+- `src/engine.spec.ts` — 31 tests covering all rules
+- `run-cli.mjs` — Wrapper script (`node run-cli.mjs`)
+
+**Key design decisions:**
+- **Quote premiums:** Item base premiums × item surcharges (cursed ×1.5, enchantment≥5 ×1.3), then customer factors (loyalty ×0.8, first insurance ×1.1 or subsequent ×0.85), then +5 G processing fee, ceiling rounded
+- **Components:** Groups of 3 alike = 60 G bundle (20 G/item effective base); remainder at 25 G/item
+- **First vs. subsequent:** A customer is "first insurance" only if both `yearsWithMHPCO=0` and it's their first quote step in the scenario
+- **Claims:** 100% reimbursement by default; dragon material → 100% (overrides all); enchantment≥8 (non-dragon) → 50%; 100 G deductible per incident; cap = 2× insurance sum across all claims on a policy
+- **Floating point:** Used `Math.ceil(Math.round(x * 1e9) / 1e9)` to eliminate FP noise before ceiling

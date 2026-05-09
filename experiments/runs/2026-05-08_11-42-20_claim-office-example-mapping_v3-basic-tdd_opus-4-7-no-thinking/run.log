@@ -1,0 +1,11 @@
+TDD exercise complete. Summary:
+
+- **38 tests passing** across `premium.spec.ts`, `claim.spec.ts`, and `scenario.spec.ts`
+- **Modules**:
+  - `src/types.ts` — item types, insurance values, base premiums
+  - `src/premium.ts` — quote computation (item-specific + policy-wide modifiers, processing fee, ceil rounding)
+  - `src/claim.ts` — payout with deductibles, high-enchantment 50% rule, dragon material full reimbursement, cap tracking, floor rounding
+  - `src/scenario.ts` — orchestrates `quote`/`claim` steps with policy lookup and validation
+  - `src/cli.ts` — reads JSON from stdin, writes JSON to stdout, non-zero exit on errors
+- CLI runnable via `pnpm exec tsx src/cli.ts` (or `pnpm claim-office`)
+- `experiment-done.txt` written

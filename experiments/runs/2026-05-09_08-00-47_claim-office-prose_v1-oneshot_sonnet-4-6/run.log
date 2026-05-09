@@ -1,0 +1,15 @@
+32/32 tests pass. Here's a summary of what was implemented:
+
+**Files created:**
+- `src/types.ts` — shared type definitions (Item, Customer, Policy, Step types, etc.)
+- `src/quote.ts` — premium calculation using exact integer arithmetic (all multipliers expressed as 20ths to avoid floating-point errors; `Math.ceil` applied once at the end in MHPCO's favor)
+- `src/claim.ts` — claim processing (deductible, reimbursement rates for dragon/high-enchantment items, cap tracking; `Math.floor` for payouts)
+- `src/cli.ts` — stdin→stdout JSON processor that runs steps sequentially, tracking policies by step index
+- `src/quote.spec.ts` / `src/claim.spec.ts` — 32 tests covering all rules
+- `bin/claim-office.js` — Node.js wrapper that invokes `tsx src/cli.ts`
+
+**Key design decisions:**
+- Integer arithmetic throughout the quote calculation (denominators of 20) prevents `Math.ceil(115.00000000000001) = 116` style bugs
+- Dragon material takes precedence over enchantment ≥ 8 for reimbursement rate
+- The deductible applies once per incident (not per damage line item)
+- Policy `remainingCap` is mutated in-place so sequential claims on the same policy see the updated cap

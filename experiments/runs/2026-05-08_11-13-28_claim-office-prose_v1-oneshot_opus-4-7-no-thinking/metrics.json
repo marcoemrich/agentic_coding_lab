@@ -1,0 +1,65 @@
+{
+  "kata": "claim-office-prose",
+  "workflow": "v1-oneshot",
+  "model": "opus-4-7-no-thinking",
+  "cli_model": "claude-opus-4-7",
+  "thinking": false,
+  "started_at": "2026-05-08T11:13:28+00:00",
+  "ended_at": "2026-05-08T11:17:11+00:00",
+  "duration_seconds": 220,
+  "batch_run": true,
+  "plan_file": "/home/experimenter/experiments/batch-plans/claim-office-fill.json",
+  "run_status": {
+    "exit_code": 0,
+    "exit_reason": "ok",
+    "rate_limited": false
+  },
+  "final_metrics": {
+    "lines_of_code": 48,
+    "test_lines": 80,
+    "tests_total": 5,
+    "todos_remaining": 0,
+    "code_mass": 116,
+    "tests_passing": true,
+    "verification_total": 15,
+    "verification_passed": 3,
+    "verification_pct": 0.2,
+    "mccabe_max": 8,
+    "mccabe_avg": 2.3,
+    "mccabe_high_count": 0,
+    "cognitive_max": 12,
+    "cognitive_avg": 4.5,
+    "cognitive_high_count": 1
+  },
+  "coverage": {
+    "statements_pct": 89,
+    "branches_pct": 86
+  },
+  "code_smells": {
+    "total": 18,
+    "complexity": 2,
+    "duplication": 0,
+    "magic_numbers": 16,
+    "code_quality": 0
+  },
+  "clean_code": {
+    "loc": 45,
+    "functions": 1,
+    "longest_function": 37,
+    "avg_loc_per_function": 37,
+    "imports": 3
+  },
+  "summary_metrics": {
+    "total_tokens": 1755131,
+    "context_utilization_pct": 6,
+    "cycle_count": 1,
+    "refactorings_applied": 0,
+    "predictions_correct": null,
+    "predictions_total": null,
+    "tests_passed_immediately": 1,
+    "avg_cycle_seconds": 88.93,
+    "avg_red_seconds": 26.3,
+    "avg_green_seconds": 62.63,
+    "avg_refactor_seconds": 0
+  }
+}

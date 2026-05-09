@@ -1,0 +1,15 @@
+Exercise complete. Summary:
+
+- **40 tests pass** across `premium.spec.ts`, `claim.spec.ts`, `scenario.spec.ts`
+- **Source files**: `src/types.ts`, `src/premium.ts`, `src/claim.ts`, `src/scenario.ts`, `src/cli.ts`
+- **CLI**: `bin/claim-office.mjs` wrapper invokes `src/cli.ts` via tsx; reads JSON from stdin, writes results to stdout, exits non-zero on errors
+- **TDD cycle**: tests first, then implementation, fixing test expectations against the prompt's worked examples
+- **Done marker** written to `experiment-done.txt`
+
+Key implementation decisions verified against prompt examples:
+- First-insurance surcharge always applies (per integration example: "each item in a `quote` is treated as a first insurance, regardless of customer history")
+- Policy-wide modifiers (loyalty, first-ins, follow-up) compute from policy base; item-specific surcharges (cursed, high-ench) compute from individual item base
+- Component blocks apply only at exactly count of 3 alike (4 runes → no block, 7 runes → no block)
+- High-enchantment 50% clause takes precedence over dragon-material when both apply (verified by ench-9 dragon sword example)
+- Premium rounded up, payout rounded down (MHPCO's favor)
+- Cap based on unmodified insurance values; block discount affects premium only

@@ -1,0 +1,17 @@
+Implementation complete.
+
+## Summary
+
+Implemented the MHPCO Claim Office kata with:
+
+**Source files** (`src/`)
+- `types.ts` — domain interfaces (Customer, Item, Step, Policy, results)
+- `pricing.ts` — premium calculation with all rules: per-item base prices, cursed (+50%), high-enchantment (+30%), 3-alike-component bundle (60G), loyalty (-20%), first-insurance (+10%), per-contract discount (-15%), 5G processing fee, round-up in MHPCO favor
+- `claims.ts` — deductible (100G/event), 2× insurance-sum cap, 50% reimbursement for ench≥8, full reimbursement for dragon material
+- `scenario.ts` — sequential step runner tracking policies and contract count
+- `cli.ts` — stdin→stdout JSON CLI
+- `cli-bin.mjs` — bin wrapper invoking `tsx`
+
+**Tests** (`*.spec.ts`) — 25 tests, all passing, covering pricing rules, claim rules, and end-to-end scenarios including both schema examples.
+
+**Run options**: `pnpm exec tsx src/cli.ts`, `pnpm claim-office`, or `node src/cli-bin.mjs`.

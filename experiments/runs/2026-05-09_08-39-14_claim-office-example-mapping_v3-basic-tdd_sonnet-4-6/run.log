@@ -1,0 +1,19 @@
+The TDD exercise is complete. Here's what was implemented:
+
+**Files created:**
+- `src/types.ts` — TypeScript types, item constants, and helper predicates
+- `src/quote.ts` — Quote premium computation (component blocks, item surcharges, policy-wide modifiers)
+- `src/claim.ts` — Claim processing (deductible, enchantment/dragon rules, cap)
+- `src/scenario.ts` — Sequential scenario processor tracking policy state
+- `src/cli.ts` — CLI entry point (stdin → JSON → stdout)
+- `src/quote.spec.ts` — 26 tests for quote logic
+- `src/claim.spec.ts` — 16 tests for claim logic
+
+**Key rules implemented:**
+- Component blocks: exactly 3 of same type = 60G (vs 25G each)
+- Item-specific modifiers: cursed (+50%) and high enchantment ≥5 (+30%) apply to the item's base premium
+- Policy-wide modifiers: loyalty ≥2 years (−20%), first insurance (+10%), follow-up (−15%) apply to the sum of unmodified base premiums
+- Rounding: premiums ceil (MHPCO's favor), payouts floor
+- Claims: 100G deductible per damage event, cap at 2× insurance sum, enchantment ≥8 → 50% payout, dragon material → full payout (50% wins when both apply)
+
+**All 42 tests pass.**

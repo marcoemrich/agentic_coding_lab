@@ -1,0 +1,11 @@
+Implementation complete. Summary:
+
+- **`src/types.ts`** — TypeScript interfaces for items, customers, steps, policies, results
+- **`src/pricing.ts`** — Premium computation with main item pricing, component block discounts (3-alike → 60G), cursed/enchantment surcharges, loyalty discount, first-contract surcharge, repeat-contract discount, processing fee, and rounding in MHPCO's favor
+- **`src/claim.ts`** — Claim processing with 100G deductible per incident, 50% reimbursement for ench≥8 (overridden by dragon material → 100%), cap at 2× insurance sum
+- **`src/scenario.ts`** — Sequences quotes/claims with policy state and contract counter
+- **`src/cli.ts`** — CLI reading JSON from stdin, writing JSON to stdout
+- **3 spec files** with 24 passing tests
+- **Run via** `pnpm run claim-office` or `npx tsx src/cli.ts`
+
+Both schema examples produce well-formed output: example 1 → `{"premium":115}`, example 2 → quote 58, claim 100/1100, claim 150/950.

@@ -1,0 +1,18 @@
+Implementation complete. Here's a summary of what was built:
+
+**Files created:**
+- `src/types.ts` — shared TypeScript interfaces (Customer, ItemSpec, Policy, Step, etc.)
+- `src/quote.ts` — premium quoting logic with all MHPCO rules
+- `src/claim.ts` — claim processing with deductible, reimbursement rates, and cap
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+- `src/quote.spec.ts` — 20 tests covering base premiums, bundles, surcharges, discounts
+- `src/claim.spec.ts` — 14 tests covering deductible, reimbursement rates, cap logic
+- `bin/claim-office.js` — executable wrapper using `tsx`
+
+**Key implementation decisions:**
+- Components are grouped by (type, material, enchantment, cursed) for "alike" bundle detection; 3 per group = building block at 60 G vs 25 G each
+- First insurance surcharge (+10%) applies only when `quoteCount === 0 && yearsWithMHPCO === 0`; all other policies get the subsequent discount (−15%)
+- Dragon material takes priority over high-enchantment (≥8) reduction
+- Floating-point noise eliminated by snapping to 4 decimal places before `Math.ceil` for premiums, `Math.floor` for payouts
+
+**All 34 tests pass.**

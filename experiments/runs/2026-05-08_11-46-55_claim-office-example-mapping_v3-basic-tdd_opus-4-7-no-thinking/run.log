@@ -1,0 +1,12 @@
+Completed the TDD exercise:
+
+**Implementation:**
+- `src/types.ts` — item/customer/incident types, pricelist, validation helpers
+- `src/premium.ts` — premium computation with item-specific (curse, high enchantment) and policy-wide (loyalty, first insurance, follow-up) modifiers, component blocks, and round-up
+- `src/claim.ts` — policy creation, claim processing with dragon/high-ench clauses, per-damage deductible, payout cap tracking, validation, and round-down
+- `src/scenario.ts` — orchestrates a quote/claim sequence with shared customer state
+- `src/cli.ts` — reads JSON from stdin, writes results to stdout, exits non-zero with stderr on errors
+
+**Tests:** 39 passing across 3 spec files covering all examples and edge cases from the prompt — base premiums, building blocks (alike-only, exact 3), modifier scope on multi-item policies, threshold edges (ench 5/8), dragon material precedence, deductible per damage, cap exhaustion across claims, multiple-of-same-type handling, rounding direction, and all error cases (unknown item, item not in policy, negative damage, too many damages).
+
+CLI usage: `pnpm claim-office < input.json` or `pnpm exec tsx src/cli.ts`. `experiment-done.txt` written.

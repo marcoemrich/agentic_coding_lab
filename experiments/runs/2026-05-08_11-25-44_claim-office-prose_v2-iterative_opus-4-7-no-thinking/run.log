@@ -1,0 +1,13 @@
+## Implementation Checklist
+
+- [x] Step 1: Analyze rules and design data model (`src/types.ts`)
+- [x] Step 2: Implement quote logic (`src/pricing.ts`) — main items, components with 3-of-a-kind building blocks, cursed/enchantment/loyalty/first-or-subsequent modifiers, processing fee, round-up
+- [x] Step 3: Implement claim logic (`src/claims.ts`) — 100G deductible, 2× insurance cap, dragon material full reimbursement, ench≥8 50%
+- [x] Step 4: Implement scenario runner (`src/scenario.ts`) — sequential steps, policy registry, contract index
+- [x] Step 5: CLI entry point (`src/cli.ts`) reading stdin / writing stdout
+- [x] Step 6: Tests (`*.spec.ts`) — 20 tests covering pricing, claims, scenario examples
+- [x] Step 7: Run tests — all 20 pass
+- [x] Step 8: `claim-office` bin wrapper (`bin/claim-office.mjs`) and `pnpm claim-office` script
+- [x] Step 9: Write `experiment-done.txt`
+
+Both schema examples produce well-formed output via the CLI wrapper.

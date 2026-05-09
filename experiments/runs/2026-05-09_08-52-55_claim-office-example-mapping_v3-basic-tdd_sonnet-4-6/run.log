@@ -1,0 +1,12 @@
+All done. Here's a summary of what was implemented:
+
+**Files created:**
+- `src/types.ts` — TypeScript type definitions for all input/output structures
+- `src/pricing.ts` — Quote/premium calculation with all rules (item base premiums, component block discounts, item-specific surcharges for cursed/high-enchantment, policy-wide modifiers for loyalty/first-insurance/follow-up, fee, ceiling rounding)
+- `src/claims.ts` — Claim processing (deductible per damage event, 50% rule for enchantment ≥8, full reimbursement for dragon material, cap enforcement, floor rounding for payouts)
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+- `src/pricing.spec.ts` — 26 tests covering all pricing rules and edge cases
+- `src/claims.spec.ts` — 16 tests covering all claim rules and error cases
+- `claim-office.js` — Wrapper script for `pnpm exec claim-office`
+
+**Results:** 42/42 tests passing.
