@@ -23,6 +23,7 @@ outcomes:
   - duration_seconds
   - total_tokens
   - context_utilization_pct
+  - completed_within_budget    # Praktikabilität: Anteil Runs, die im 60-min-Budget fertig wurden
 min_replicates: 3
 status: aktiv
 ---

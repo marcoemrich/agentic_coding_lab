@@ -30,7 +30,7 @@ RUNS_DIR = REPO_ROOT / "experiments" / "runs"
 
 CSV_COLUMNS = [
     "kata", "workflow", "model", "cli_model", "thinking", "run_id",
-    "exit_code", "exit_reason", "rate_limited",
+    "exit_code", "exit_reason", "rate_limited", "completed_within_budget",
     "duration_seconds", "total_tokens", "context_utilization_pct",
     "cycle_count", "avg_cycle_seconds", "avg_red_seconds",
     "avg_green_seconds", "avg_refactor_seconds", "refactorings_applied",
@@ -165,6 +165,14 @@ def metrics_to_row(metrics: dict, run_id: str) -> dict:
     cc = metrics.get("clean_code") or {}
     cs = metrics.get("code_smells") or {}
 
+    # A run "completed within budget" iff it neither timed out nor hit
+    # the rate-limit retry ceiling. Both are legitimate research findings
+    # about practicality — they signal a (workflow, model, kata) cell
+    # whose cost exceeds the per-run wallclock budget. The metric is a
+    # bool so RQ outcome-pivots can compute a per-cell completion rate.
+    exit_reason = rs.get("exit_reason", "")
+    completed = exit_reason not in {"timeout", "timeout-killed", "rate-limited"}
+
     return {
         "kata":                       metrics.get("kata", ""),
         "workflow":                   metrics.get("workflow", ""),
@@ -173,8 +181,9 @@ def metrics_to_row(metrics: dict, run_id: str) -> dict:
         "thinking":                   metrics.get("thinking"),
         "run_id":                     run_id,
         "exit_code":                  rs.get("exit_code"),
-        "exit_reason":                rs.get("exit_reason", ""),
+        "exit_reason":                exit_reason,
         "rate_limited":               rs.get("rate_limited", False),
+        "completed_within_budget":    completed,
         "duration_seconds":           metrics.get("duration_seconds"),
         "total_tokens":               sm.get("total_tokens"),
         "context_utilization_pct":    sm.get("context_utilization_pct"),
@@ -249,21 +258,40 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
       f"min_replicates: {min_rep}")
     L("")
 
-    # Cell coverage table
+    # Cell coverage table.
+    # n counts every run with metrics.json; n_ok excludes timeouts and
+    # rate-limit-exhausted runs. Timeouts still count toward
+    # min_replicates (they are legitimate "ran but didn't finish" data
+    # points), but the n_ok column makes it visible when a cell has e.g.
+    # 3 timeouts and 0 successful completions.
     L("## Zell-Coverage")
     L("")
-    L("| kata | workflow | model | n | status |")
-    L("|---|---|---|---:|---|")
+    L("| kata | workflow | model | n | n_ok | status |")
+    L("|---|---|---|---:|---:|---|")
     for cell in cells:
         key = (kata_for_cell(cell), cell["workflow"], cell["model"])
-        n = len(by_cell.get(key, []))
+        run_files = by_cell.get(key, [])
+        n = len(run_files)
+        n_ok = 0
+        for m_file in run_files:
+            try:
+                metrics = json.loads(m_file.read_text())
+            except json.JSONDecodeError:
+                continue
+            reason = (metrics.get("run_status") or {}).get("exit_reason", "")
+            if reason not in {"timeout", "timeout-killed", "rate-limited"}:
+                n_ok += 1
         if n == 0:
             status = "❌ keine Runs"
         elif n < min_rep:
             status = f"⚠️ unter min_replicates ({n}/{min_rep})"
+        elif n_ok == 0:
+            status = f"⚠️ alle {n} Runs Timeout/rate-limited"
+        elif n_ok < min_rep:
+            status = f"⚠️ nur {n_ok}/{min_rep} ohne Timeout"
         else:
             status = "✅"
-        L(f"| {key[0]} | {key[1]} | {key[2]} | {n} | {status} |")
+        L(f"| {key[0]} | {key[1]} | {key[2]} | {n} | {n_ok} | {status} |")
     L("")
 
     if df.empty:

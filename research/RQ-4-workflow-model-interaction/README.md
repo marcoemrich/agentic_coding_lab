@@ -21,6 +21,7 @@ outcomes:
   - code_mass
   - smell_total
   - cc_longest_function
+  - completed_within_budget    # Praktikabilität: Anteil Runs, die im 60-min-Budget fertig wurden
 min_replicates: 3
 status: aktiv
 ---

@@ -168,6 +168,30 @@ Damit eine `<X>_correct_rate`-Outcome funktioniert, müssen die Spalten
 `<X>_correct` und `<X>_total` in `CSV_COLUMNS` (also in der
 metrics.json-Struktur) vorhanden sein.
 
+### Timeouts als Forschungsbefund
+
+Pro Run gilt ein hartes Wallclock-Budget (Default 60 min, gesetzt durch
+`CLAUDE_TIMEOUT_SECONDS=3600` in `run-batch.sh`). Läuft eine
+(workflow, model, kata)-Zelle systematisch in dieses Limit, ist das
+**kein Datenfehler**, sondern selbst der Befund: die Variante ist im
+gewählten Kostenrahmen praktisch unbrauchbar.
+
+Konsequenzen für Auswertung und Daten-Sammlung:
+
+- **Timeout-Runs werden nicht gelöscht.** Ihre `metrics.json` bleibt
+  erhalten mit `run_status.exit_reason = "timeout"`. `tests_passing`,
+  `verification_pct`, `code_mass` etc. sind dort `null`.
+- **Sie zählen für `min_replicates`.** `batch-plan-from-rq.py` betrachtet
+  einen Timeout als legitimen Datenpunkt — es wird kein Refill für
+  Timeout-Cells generiert.
+- **`completed_within_budget`** (Boolean, abgeleitet aus `exit_reason`)
+  ist als Outcome verfügbar und liefert den Anteil "im Budget fertig
+  geworden" pro Zelle. Sinnvoll als Outcome in jeder RQ, deren Faktoren
+  Workflow oder Modell variieren.
+- **n_ok-Spalte** in der Zell-Coverage-Tabelle der `summary.md` zählt
+  nur erfolgreiche Runs; eine Zelle "3 Timeouts, 0 OK" wird als
+  ⚠️ markiert, auch wenn `min_replicates` formell erfüllt ist.
+
 ## Glossar (verbindlich für Findings-Texte)
 
 Diese Begriffe sind in allen `findings.md`, `summary.md` und Snapshots
