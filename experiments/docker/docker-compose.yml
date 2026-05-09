@@ -88,7 +88,9 @@ services:
       # listed runs are executed; otherwise the full cross-product is run.
       - BATCH_PLAN=${BATCH_PLAN:-}
       # Per-run hard timeout (seconds). Forwarded to run-batch.sh.
-      - CLAUDE_TIMEOUT_SECONDS=${CLAUDE_TIMEOUT_SECONDS:-1800}
+      # Default 3600s (60 min) — methodological budget, see
+      # research/README.md → "Timeouts als Forschungsbefund".
+      - CLAUDE_TIMEOUT_SECONDS=${CLAUDE_TIMEOUT_SECONDS:-3600}
 
     deploy:
       resources:
