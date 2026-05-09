@@ -85,10 +85,16 @@ Example prediction:
 - If prediction was wrong, STOP and explain discrepancy
 
 ### Step 7: Report Completion
+
+You MUST output the full Step 7 block verbatim with `Correct` or `Incorrect`
+chosen for each prediction. Do not abbreviate. Do not collapse the two
+prediction lines into one.
+
 ```
 🔴 Red Phase Complete:
 **Test Activated**: "should return 0 for empty input"
-**Prediction**: Runtime assertion error (Expected: 0, Received: undefined) ✅ Correct
+**Compilation Prediction**: Cannot find name 'calculate' ✅ Correct
+**Runtime Prediction**: Expected 0, received undefined ✅ Correct
 **Result**: Test fails as expected with assertion error
 
 Proceeding to Green phase.
@@ -163,7 +169,8 @@ it("should return 0 for empty input", () => {
 ```
 🔴 Red Phase Complete:
 **Test Activated**: [test name]
-**Prediction**: [type of error] ✅ Correct / ❌ Incorrect
+**Compilation Prediction**: [error message] ✅ Correct / ❌ Incorrect
+**Runtime Prediction**: [error message] ✅ Correct / ❌ Incorrect
 **Result**: [actual result]
 
 Proceeding to Green phase.

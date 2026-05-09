@@ -37,6 +37,10 @@ Current state: [X tests passing]
 Implementation file: [path]
 
 EXPERIMENT MODE: Run autonomously, proceed to Green after completion.
+You MUST output the full Step 7 block verbatim (both Compilation
+Prediction and Runtime Prediction lines, each with Correct or
+Incorrect). Do not abbreviate. Do not collapse the two prediction
+lines into one.
 ```
 
 ### green agent:
