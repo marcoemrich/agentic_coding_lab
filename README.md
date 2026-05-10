@@ -75,6 +75,14 @@ status: active
 
 The cartesian product of `factors × controls` produces **cells** — each cell is one `(kata, workflow, model)` combination that needs `min_replicates` runs.
 
+**Terminology**:
+
+- **Factor** — a variable that is *deliberately varied* across runs. The effect of a factor is what the RQ measures.
+- **Control** — a variable that is *held constant* so it cannot confound the factor effect. A finding under `model: opus-4-7-no-thinking` is a finding *for that model*; transfer to other models is an open question, not an established result.
+- **Outcome** — a metric that is *observed* per run.
+
+Mixing values into a control (e.g. running additional `opus-4-6` replicates into an RQ controlled on `opus-4-7`) collapses the control into an uncontrolled factor and invalidates the comparison. To study a different model variant, open a new RQ — either with `model` as a factor (model-comparison RQ) or with the new value pinned as the control (separate finding, scoped to that model).
+
 ### Two tools, one frontmatter
 
 - **`aggregate-by-query.py`** reads the frontmatter, selects every matching run from `experiments/runs/`, and writes `runs.csv` (raw data) + `summary.md` (pivots per outcome) into the RQ directory. Re-runs the moment new replicates land — no plan editing required.
