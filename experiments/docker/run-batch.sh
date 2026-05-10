@@ -21,10 +21,12 @@ BATCH_PLANS_DIR="$EXPERIMENTS_DIR/batch-plans"
 # timeouts and break cross-batch comparability.
 CLAUDE_TIMEOUT_SECONDS="${CLAUDE_TIMEOUT_SECONDS:-5400}"
 
-# Rate-limit / API-overload behaviour. Tunable via env.
-#   BATCH_RATELIMIT_RETRIES   per-run retries on rate-limit/overload (default 5).
-#                             Backoff doubles each attempt starting at 60s
-#                             (60, 120, 240, 480, 960 ≈ 30 min total).
+# Rate-limit / API-overload / subscription-quota behaviour. Tunable via env.
+#   BATCH_RATELIMIT_RETRIES   per-run retries on rate-limit/overload/quota
+#                             (default 5). Staged backoff: 60s, 5min, 30min,
+#                             1h, 2h (≈ 3.7h total). Covers both transient
+#                             API errors (529, terminated) and Anthropic
+#                             subscription-quota resets ("hit your limit").
 #   BATCH_CONSECUTIVE_GIVEUP  consecutive runs that exhausted retries before
 #                             aborting the whole batch (default 10).
 BATCH_RATELIMIT_RETRIES="${BATCH_RATELIMIT_RETRIES:-5}"
@@ -487,7 +489,17 @@ EOF
     # run_log; the log is overwritten on each attempt.
     for attempt in $(seq 0 "$BATCH_RATELIMIT_RETRIES"); do
         if [ "$attempt" -gt 0 ]; then
-            backoff=$(( 60 * (1 << (attempt - 1)) ))
+            # Staged backoff: short for API hiccups, long for quota resets.
+            # Subscription-quota windows ("hit your limit") typically reset
+            # at the next hour boundary, so the schedule jumps from 5min to
+            # 30min after the second attempt.
+            case "$attempt" in
+                1) backoff=60   ;;
+                2) backoff=300  ;;
+                3) backoff=1800 ;;
+                4) backoff=3600 ;;
+                *) backoff=7200 ;;
+            esac
             echo -e "  ${YELLOW}${transient_reason} detected; retry $attempt/$BATCH_RATELIMIT_RETRIES after ${backoff}s backoff...${NC}"
             sleep "$backoff"
             : > "$run_log"
@@ -518,7 +530,12 @@ EOF
         transient_api_error="false"
         transient_reason=""
         if [ "$claude_exit" -ne 0 ]; then
-            if grep -qiE "rate.?limit|\b429\b|\b529\b|usage limit|overloaded" "$run_log" 2>/dev/null; then
+            # "hit your limit" / "resets <time>" is the Anthropic
+            # subscription-quota signature shown by the Claude CLI when
+            # the daily/weekly cap is reached (different from API
+            # 429/529). Treated as rate-limit so the retry/backoff path
+            # waits it out instead of failing the batch.
+            if grep -qiE "rate.?limit|\b429\b|\b529\b|usage limit|overloaded|hit your limit|resets [0-9]+(:[0-9]+)?\s*[ap]m" "$run_log" 2>/dev/null; then
                 rate_limited="true"
                 transient_reason="Rate-limit"
             # "API Error: terminated" is the Anthropic CLI's signature for
