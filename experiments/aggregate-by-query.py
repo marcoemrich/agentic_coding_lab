@@ -154,7 +154,7 @@ def collect_runs(cells: list[dict]) -> tuple[list[Path], dict[tuple, list[Path]]
 
 
 # -----------------------------------------------------------------------
-# CSV emission (mirrors aggregate-runs.sh JQ_ROW)
+# CSV emission
 # -----------------------------------------------------------------------
 
 def metrics_to_row(metrics: dict, run_id: str) -> dict:
