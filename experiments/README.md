@@ -638,6 +638,23 @@ docker compose run -it --rm experiment bash
 docker compose --profile batch run --rm batch
 ```
 
+#### Parallel runs with shards
+
+For large refills (>30 runs), `./batch.sh` accepts `--shards N` to
+split the plan and run shards in parallel:
+
+```bash
+# Foreground: blocks until all shards finish
+./batch.sh rq-fill-consolidated --shards 2
+
+# Background: returns immediately, watch with ./watch-batch.sh
+./batch.sh rq-fill-consolidated --shards 2 --detach
+```
+
+Round-robin splitting (`runs[i::N]`) distributes expensive runs evenly.
+Each shard logs to `batch.<plan>.shard<i>.log`. Default is 2; do not
+exceed 3 (memory + API rate-limit pressure).
+
 See `docker/README.md` for full documentation.
 
 ## Analysis Reports
