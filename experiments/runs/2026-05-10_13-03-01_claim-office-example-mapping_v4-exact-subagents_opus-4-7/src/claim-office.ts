@@ -33,8 +33,13 @@ const BASE_PREMIUM_BY_ITEM_TYPE: Record<string, number> = {
   component: COMPONENT_BASE_PREMIUM,
 };
 
-const basePremiumForItem = (item: Item): number =>
-  BASE_PREMIUM_BY_ITEM_TYPE[item.type as string] ?? 0;
+const basePremiumForItem = (item: Item): number => {
+  const base = BASE_PREMIUM_BY_ITEM_TYPE[item.type as string];
+  if (base === undefined) {
+    throw new Error(`Unknown item type: ${String(item.type)}`);
+  }
+  return base;
+};
 
 const isComponent = (item: Item): boolean => item.type === "component";
 
@@ -234,6 +239,7 @@ export function claim(policy: { items: Item[]; remainingCap?: number }, event: C
     0,
   );
   const cap = policy.remainingCap ?? initialCapFor(policy.items);
-  const payout = Math.floor(Math.min(uncappedPayout, cap));
+  const cappedPayout = Math.min(uncappedPayout, cap);
+  const payout = Math.floor(cappedPayout);
   return { payout, remainingCap: cap - payout };
 }

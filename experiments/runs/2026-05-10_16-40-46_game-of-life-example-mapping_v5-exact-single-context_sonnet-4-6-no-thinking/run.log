@@ -1,0 +1,10 @@
+The TDD exercise is complete. All 6 tests pass:
+
+1. Empty grid → empty grid
+2. Single cell dies (underpopulation)
+3. Two cells with 1 neighbor each die (underpopulation)
+4. 2×2 block survives unchanged (still life)
+5. Blinker oscillates vertical → horizontal
+6. Dead cell with 3 live neighbors is born (reproduction)
+
+The final implementation in `src/game-of-life.ts` has four focused functions: `isAlive`, `neighborCount`, `deadNeighbors`, and `nextGeneration`, using a sparse cell representation with `[number, number]` coordinates supporting infinite/negative grids.

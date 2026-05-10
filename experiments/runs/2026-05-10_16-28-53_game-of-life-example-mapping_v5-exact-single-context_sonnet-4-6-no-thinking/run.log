@@ -1,0 +1,13 @@
+The TDD exercise is complete. Here's a summary of what was accomplished:
+
+**Implementation**: `src/game-of-life.ts` — Conway's Game of Life with sparse cell representation using coordinate tuples. The final implementation includes:
+- `neighborsOf` — computes 8 neighbors of a cell
+- `sameCell` — coordinate equality check
+- `isAlive` — checks if a cell is in the live set
+- `liveNeighborCount` — counts live neighbors
+- `unique` — deduplicates candidate cells
+- `nextGeneration` — applies Game of Life rules to produce the next generation
+
+**Tests**: `src/game-of-life.spec.ts` — 6 tests covering empty grid, underpopulation (single cell, two cells), reproduction, survival, and blinker oscillator pattern. Tests use `arrayContaining` for order-independent assertions.
+
+**Key insight during refactoring**: The initial test list had tests with incorrect expectations (matching hardcoded stubs rather than real Game of Life rules). The final refactor phase corrected both the implementation and the test expectations to reflect the actual rules.

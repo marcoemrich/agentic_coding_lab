@@ -1,0 +1,9 @@
+The TDD exercise is complete. All 9 tests pass and `experiment-done.txt` has been written.
+
+**Summary of what was implemented:**
+
+- `src/game-of-life.spec.ts` — 9 tests covering all Game of Life rules
+- `src/game-of-life.ts` — Implementation with:
+  - `nextGeneration(cells)` — computes survivors + born cells
+  - `neighborsOf(cell)` — Moore neighborhood (single source of truth for adjacency)
+  - `countNeighbors(cells, cell)` — counts live neighbors using `neighborsOf`

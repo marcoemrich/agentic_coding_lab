@@ -14,18 +14,22 @@ export function nextGeneration(grid: boolean[][]): boolean[][] {
     r >= 0 && r < rows && c >= 0 && c < cols;
 
   const countNeighbors = (r: number, c: number): number =>
-    NEIGHBOR_OFFSETS.filter(([dr, dc]) => isInBounds(r + dr, c + dc) && grid[r + dr][c + dc]).length;
+    NEIGHBOR_OFFSETS.filter(([dr, dc]) => {
+      const nr = r + dr;
+      const nc = c + dc;
+      return isInBounds(nr, nc) && grid[nr][nc];
+    }).length;
 
   const survives = (neighbors: number): boolean => neighbors === 2 || neighbors === 3;
-  const isReborn = (neighbors: number): boolean => neighbors === 3;
+  const spawns = (neighbors: number): boolean => neighbors === 3;
 
-  const next = grid.map((row, r) =>
+  const nextGrid = grid.map((row, r) =>
     row.map((cell, c) => {
       const neighbors = countNeighbors(r, c);
-      return cell ? survives(neighbors) : isReborn(neighbors);
+      return cell ? survives(neighbors) : spawns(neighbors);
     })
   );
 
-  const hasLiveCell = next.some(row => row.some(cell => cell));
-  return hasLiveCell ? next : [];
+  const anyAlive = (g: boolean[][]): boolean => g.some(row => row.some(cell => cell));
+  return anyAlive(nextGrid) ? nextGrid : [];
 }

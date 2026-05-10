@@ -1,0 +1,5 @@
+All 11 tests pass. The implementation:
+
+- Uses a sparse `Set<string>` to track only living cells (handles infinite grid and negative coordinates)
+- `nextGeneration` counts neighbors for all candidates by iterating living cells' 8 neighbors
+- Applies the four rules: underpopulation (<2 neighbors dies), survival (2-3 survives), overpopulation (>3 dies), reproduction (dead + exactly 3 becomes alive)

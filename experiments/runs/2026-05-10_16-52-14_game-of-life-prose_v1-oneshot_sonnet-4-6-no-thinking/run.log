@@ -1,0 +1,6 @@
+All 10 tests pass. The implementation:
+
+- Uses a sparse `Set<string>` to track only living cells
+- Counts neighbor occurrences by iterating over each live cell's 8 neighbors
+- Applies Conway's rules: survive with 2-3 neighbors, born with exactly 3
+- Handles negative coordinates natively via string keys like `"x,y"`

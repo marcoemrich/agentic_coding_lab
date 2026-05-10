@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { spawnSync } from "node:child_process";
 import { quote, claim } from "./claim-office.js";
 
 describe("MHPCO Claim Office", () => {
@@ -444,14 +445,204 @@ describe("MHPCO Claim Office", () => {
   });
 
   describe("CLI - JSON in/out", () => {
-    it.todo("should read scenario JSON from stdin and write results JSON to stdout");
-    it.todo("should produce a quote result with {premium} for a quote step");
-    it.todo("should produce a claim result with {payout, remainingCap} for a claim step");
-    it.todo("should process steps sequentially and reference policies by step index");
-    it.todo("should track customer history (yearsWithMHPCO, follow-up contract) across scenario steps");
-    it.todo("should exit non-zero and write to stderr for an unknown item type in a quote");
-    it.todo("should exit non-zero and write to stderr for a claim referencing an item not in the policy");
-    it.todo("should exit non-zero and write to stderr for a claim with negative damage amount");
-    it.todo("should exit non-zero when claim has more damages of a type than insured");
+    it("should read scenario JSON from stdin and write results JSON to stdout", () => {
+      const cliPath = new URL("./cli.ts", import.meta.url).pathname;
+      const input = JSON.stringify({
+        customer: { yearsWithMHPCO: 0, priorContracts: 0 },
+        steps: [],
+      });
+      const result = spawnSync("npx", ["tsx", cliPath], { input, encoding: "utf8" });
+      expect(result.status).toBe(0);
+      const output = JSON.parse(result.stdout);
+      expect(output).toEqual({ results: [] });
+    });
+    it("should produce a quote result with {premium} for a quote step", () => {
+      const cliPath = new URL("./cli.ts", import.meta.url).pathname;
+      const input = JSON.stringify({
+        customer: { yearsWithMHPCO: 0, priorContracts: 0 },
+        steps: [
+          {
+            type: "quote",
+            policy: {
+              items: [{ type: "sword", material: "steel", enchantment: 0, cursed: false }],
+            },
+          },
+        ],
+      });
+      const result = spawnSync("npx", ["tsx", cliPath], { input, encoding: "utf8" });
+      expect(result.status).toBe(0);
+      const output = JSON.parse(result.stdout);
+      expect(output).toEqual({ results: [{ premium: 105 }] });
+    });
+    it("should produce a claim result with {payout, remainingCap} for a claim step", () => {
+      const cliPath = new URL("./cli.ts", import.meta.url).pathname;
+      const input = JSON.stringify({
+        customer: { yearsWithMHPCO: 0, priorContracts: 0 },
+        steps: [
+          {
+            type: "quote",
+            policy: {
+              items: [{ type: "sword", material: "steel", enchantment: 0, cursed: false }],
+            },
+          },
+          {
+            type: "claim",
+            policy: 0,
+            incident: { cause: "fire", damages: [{ itemType: "sword", amount: 500 }] },
+          },
+        ],
+      });
+      const result = spawnSync("npx", ["tsx", cliPath], { input, encoding: "utf8" });
+      expect(result.status).toBe(0);
+      const output = JSON.parse(result.stdout);
+      expect(output).toEqual({ results: [{ premium: 105 }, { payout: 400, remainingCap: 1600 }] });
+    });
+    it("should process steps sequentially and reference policies by step index", () => {
+      const cliPath = new URL("./cli.ts", import.meta.url).pathname;
+      const input = JSON.stringify({
+        customer: { yearsWithMHPCO: 0, priorContracts: 0 },
+        steps: [
+          {
+            type: "quote",
+            policy: {
+              items: [{ type: "sword", material: "steel", enchantment: 0, cursed: false }],
+            },
+          },
+          {
+            type: "claim",
+            policy: 0,
+            incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1500 }] },
+          },
+          {
+            type: "claim",
+            policy: 0,
+            incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1500 }] },
+          },
+        ],
+      });
+      const result = spawnSync("npx", ["tsx", cliPath], { input, encoding: "utf8" });
+      expect(result.status).toBe(0);
+      const output = JSON.parse(result.stdout);
+      expect(output).toEqual({
+        results: [
+          { premium: 105 },
+          { payout: 1400, remainingCap: 600 },
+          { payout: 600, remainingCap: 0 },
+        ],
+      });
+    });
+    it("should track customer history (yearsWithMHPCO, follow-up contract) across scenario steps", () => {
+      const cliPath = new URL("./cli.ts", import.meta.url).pathname;
+      const input = JSON.stringify({
+        customer: { yearsWithMHPCO: 3, priorContracts: 0 },
+        steps: [
+          {
+            type: "quote",
+            policy: {
+              items: [{ type: "sword", material: "steel", enchantment: 0, cursed: false }],
+            },
+          },
+          {
+            type: "quote",
+            policy: {
+              items: [{ type: "sword", material: "steel", enchantment: 0, cursed: false }],
+            },
+          },
+        ],
+      });
+      const result = spawnSync("npx", ["tsx", cliPath], { input, encoding: "utf8" });
+      expect(result.status).toBe(0);
+      const output = JSON.parse(result.stdout);
+      expect(output).toEqual({ results: [{ premium: 85 }, { premium: 70 }] });
+    });
+    it("should exit non-zero and write to stderr for an unknown item type in a quote", () => {
+      const cliPath = new URL("./cli.ts", import.meta.url).pathname;
+      const input = JSON.stringify({
+        customer: { yearsWithMHPCO: 0, priorContracts: 0 },
+        steps: [
+          {
+            type: "quote",
+            policy: {
+              items: [{ type: "broomstick", material: "steel", enchantment: 0, cursed: false }],
+            },
+          },
+        ],
+      });
+      const result = spawnSync("npx", ["tsx", cliPath], { input, encoding: "utf8" });
+      expect(result.status).not.toBe(0);
+      expect(result.stderr.length).toBeGreaterThan(0);
+    });
+    it("should exit non-zero and write to stderr for a claim referencing an item not in the policy", () => {
+      const cliPath = new URL("./cli.ts", import.meta.url).pathname;
+      const input = JSON.stringify({
+        customer: { yearsWithMHPCO: 0, priorContracts: 0 },
+        steps: [
+          {
+            type: "quote",
+            policy: {
+              items: [{ type: "sword", material: "steel", enchantment: 0, cursed: false }],
+            },
+          },
+          {
+            type: "claim",
+            policy: 0,
+            incident: { cause: "fire", damages: [{ itemType: "amulet", amount: 100 }] },
+          },
+        ],
+      });
+      const result = spawnSync("npx", ["tsx", cliPath], { input, encoding: "utf8" });
+      expect(result.status).not.toBe(0);
+      expect(result.stderr.length).toBeGreaterThan(0);
+    });
+    it("should exit non-zero and write to stderr for a claim with negative damage amount", () => {
+      const cliPath = new URL("./cli.ts", import.meta.url).pathname;
+      const input = JSON.stringify({
+        customer: { yearsWithMHPCO: 0, priorContracts: 0 },
+        steps: [
+          {
+            type: "quote",
+            policy: {
+              items: [{ type: "sword", material: "steel", enchantment: 0, cursed: false }],
+            },
+          },
+          {
+            type: "claim",
+            policy: 0,
+            incident: { cause: "fire", damages: [{ itemType: "sword", amount: -200 }] },
+          },
+        ],
+      });
+      const result = spawnSync("npx", ["tsx", cliPath], { input, encoding: "utf8" });
+      expect(result.status).not.toBe(0);
+      expect(result.stderr.length).toBeGreaterThan(0);
+    });
+    it("should exit non-zero when claim has more damages of a type than insured", () => {
+      const cliPath = new URL("./cli.ts", import.meta.url).pathname;
+      const input = JSON.stringify({
+        customer: { yearsWithMHPCO: 0, priorContracts: 0 },
+        steps: [
+          {
+            type: "quote",
+            policy: {
+              items: [{ type: "sword", material: "steel", enchantment: 0, cursed: false }],
+            },
+          },
+          {
+            type: "claim",
+            policy: 0,
+            incident: {
+              cause: "fire",
+              damages: [
+                { itemType: "sword", amount: 200 },
+                { itemType: "sword", amount: 200 },
+              ],
+            },
+          },
+        ],
+      });
+      const result = spawnSync("npx", ["tsx", cliPath], { input, encoding: "utf8" });
+      expect(result.status).not.toBe(0);
+      expect(result.stderr.length).toBeGreaterThan(0);
+    });
   });
 });
