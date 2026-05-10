@@ -11,66 +11,45 @@ description: |
 
 # Skill: run-rq
 
-End-to-end orchestration for advancing a single research question (RQ) in
-this lab repo. **Reine Orchestrierung** — alle Operationen rufen bestehende
-Repo-Skripte auf, es wird kein neuer Python-/Bash-Code geschrieben.
+End-to-end orchestration for advancing a single research question (RQ) in this lab repo. **Pure orchestration** — every operation calls existing repo scripts; no new Python or Bash code is written.
 
 ## Argument
 
-- `RQ-N` (z.B. `RQ-3`) oder `research/RQ-N-*/` (Pfad).
-- Wenn nicht gegeben: aus dem letzten User-Turn erschließen, sonst zurückfragen
-  ("Welche RQ? z.B. RQ-3").
+- `RQ-N` (e.g. `RQ-3`) or `research/RQ-N-*/` (path).
+- If not given: infer from the last user turn, otherwise ask back ("Which RQ? e.g. RQ-3").
 
-## Repo-Konventionen (aus Top-`README.md` und memory)
+## Repo conventions (from the top-level `README.md` and memory)
 
-- RQ-Verzeichnis: `research/RQ-{N}-*/` mit `README.md`, `findings.md`,
-  `runs.csv`, `summary.md`.
-- Frontmatter-Pflichtfelder: `id, question, factors, controls, outcomes,
-  min_replicates, status`.
-- Methoden-Constraint: v1/v2 nur mit `prompt: prose`; v3/v4/v5 mit allen drei
-  Stilen. Wenn `factors.workflow_x_prompt` existiert, gibt es kein
-  zusätzliches `factors.workflow` / `controls.workflow`.
-- Aktive Katas: nur `game-of-life`, `mars-rover`. `controls.kata_base`
-  muss aus dieser Menge sein.
-- Modell-IDs sind **Lab-Varianten-IDs** (`opus-4-7`, `opus-4-7-no-thinking`,
-  `sonnet-4-6`, `sonnet-4-6-no-thinking`, `haiku-4-5`, `haiku-4-5-no-thinking`).
-- Aggregation ist query-basiert: ALLE Runs in `experiments/runs/`, die zur
-  Selektor-Query passen, zählen — egal aus welchem Batch.
-- Batch-Plan ist idempotent: zählt bestehende Matches und füllt nur fehlende
-  bis `min_replicates`.
+- RQ directory: `research/RQ-{N}-*/` with `README.md`, `findings.md`, `runs.csv`, `summary.md`.
+- Mandatory frontmatter fields: `id, question, factors, controls, outcomes, min_replicates, status`.
+- Methodology constraint: v1/v2 only with `prompt: prose`; v3/v4/v5 with all three styles. If `factors.workflow_x_prompt` exists, no additional `factors.workflow` / `controls.workflow` is allowed.
+- Active katas: only `game-of-life`, `mars-rover`. `controls.kata_base` must be from this set.
+- Model IDs are **lab-variant IDs** (`opus-4-7`, `opus-4-7-no-thinking`, `sonnet-4-6`, `sonnet-4-6-no-thinking`, `haiku-4-5`, `haiku-4-5-no-thinking`).
+- Aggregation is query-based: ALL runs in `experiments/runs/` matching the selector query count — regardless of which batch produced them.
+- Batch plan is idempotent: counts existing matches and only fills missing replicates up to `min_replicates`.
 
-## Phasen
+## Phases
 
-Sequenziell ausführen. Bei Fehlern in einer Phase **stoppen und den User
-fragen**, nicht zur nächsten Phase überspringen.
+Run sequentially. On errors in any phase, **stop and ask the user**, do not skip ahead.
 
 ---
 
 ### Phase 1 — Validate
 
-1. RQ-Pfad auflösen mit Glob: `research/RQ-{N}-*/`. Bei mehreren Treffern
-   den ersten nehmen und den User informieren.
-2. `README.md` lesen.
-3. Frontmatter-Block (zwischen den ersten beiden `---`-Zeilen) parsen.
-   Pflichtfelder prüfen: `id, question, factors, controls, outcomes,
-   min_replicates, status`. Fehlende Felder → Phase abbrechen, User informieren.
-4. Methoden-Constraints prüfen:
-   - Wenn `factors.workflow_x_prompt` gesetzt: darf KEIN `factors.workflow`
-     und KEIN `controls.workflow` zusätzlich gesetzt sein.
-   - In jedem `workflow_x_prompt`-Eintrag: wenn `workflow ∈ {v1-oneshot,
-     v2-iterative}`, muss `prompt == prose` sein.
+1. Resolve the RQ path with Glob: `research/RQ-{N}-*/`. On multiple matches, take the first and inform the user.
+2. Read `README.md`.
+3. Parse the frontmatter block (between the first two `---` lines). Check mandatory fields: `id, question, factors, controls, outcomes, min_replicates, status`. Missing fields → abort phase, inform user.
+4. Check methodology constraints:
+   - If `factors.workflow_x_prompt` is set: no additional `factors.workflow` and no `controls.workflow` may be set.
+   - In every `workflow_x_prompt` entry: if `workflow ∈ {v1-oneshot, v2-iterative}`, then `prompt == prose` is required.
    - `controls.kata_base ∈ {game-of-life, mars-rover}`.
-   - Modell-Werte (in `controls.model` und/oder `factors.model`) müssen
-     in der Lab-Varianten-Tabelle stehen.
-5. `findings.md` lesen (wird in Phase 6 als Bestand gebraucht).
-6. Soll-Berechnung: aus `factors` × `controls` die Zahl der Zellen ableiten
-   (jeder Faktor multipliziert; gepaarte Faktoren wie `workflow_x_prompt`
-   zählen als ein Faktor mit `len(pairing)` Werten). Soll-Runs = Zellen ×
-   `min_replicates`. Diese Zahl dem User mitteilen.
+   - Model values (in `controls.model` and/or `factors.model`) must appear in the lab-variant table.
+5. Read `findings.md` (needed in phase 6 as the existing baseline).
+6. Target computation: from `factors` × `controls` derive the cell count (every factor multiplies; paired factors like `workflow_x_prompt` count as a single factor with `len(pairing)` values). Target runs = cells × `min_replicates`. Report this number to the user.
 
-Output an User (kompakt):
+Output to user (compact):
 ```
-RQ-N validiert: <id>, <#cells> Zellen × min_replicates=<n> = <soll> Soll-Runs.
+RQ-N validated: <id>, <#cells> cells × min_replicates=<n> = <target> target runs.
 status: <status>
 ```
 
@@ -78,177 +57,127 @@ status: <status>
 
 ### Phase 2 — Plan
 
-1. Dry-Run aufrufen:
+1. Run dry-run:
    ```
    experiments/batch-plan-from-rq.py research/RQ-{N}-*/ --dry-run
    ```
-2. Output enthält die Anzahl fehlender Runs. User informieren:
+2. Output contains the count of missing runs. Inform user:
    ```
-   Cells: X, missing runs: Y → würde experiments/batch-plans/rq-{n}-fill.json schreiben
+   Cells: X, missing runs: Y → would write experiments/batch-plans/rq-{n}-fill.json
    ```
-3. Wenn `Y == 0`: keine neuen Runs nötig — direkt zu Phase 5 springen.
-4. Sonst: User-Bestätigung einholen ("Plan mit Y Runs jetzt schreiben?").
-   Erst nach explizitem "ja" weitermachen.
-5. Plan ohne `--dry-run` schreiben:
+3. If `Y == 0`: no new runs needed — jump straight to phase 5.
+4. Otherwise: get user confirmation ("Write the plan with Y runs now?"). Only proceed after explicit "yes".
+5. Write the plan without `--dry-run`:
    ```
    experiments/batch-plan-from-rq.py research/RQ-{N}-*/
    ```
-6. Generierten Plan kurz inspizieren (Read auf
-   `experiments/batch-plans/rq-{n}-fill.json`) und die Zellverteilung
-   (`{kata, workflow, model}`-Häufigkeiten) dem User zusammenfassen.
+6. Briefly inspect the generated plan (Read on `experiments/batch-plans/rq-{n}-fill.json`) and summarize the cell distribution (`{kata, workflow, model}` frequencies) to the user.
 
 ---
 
 ### Phase 3 — Run
 
-1. **Pre-Check**:
-   - `docker ps --filter name=docker-batch-run --format '{{.Names}}'` —
-     wenn ein Container läuft: STOPPEN und beim User nachfragen, ob der
-     bestehende Batch erst beendet werden soll.
-   - Wenn `experiments/docker/batch.log` aus früherem Lauf existiert und
-     >0 bytes hat: User fragen, ob es als
-     `experiments/docker/batch.<plan>.log` gesichert werden soll
-     (`mv`, kein Löschen).
-2. **User-Bestätigung** vor Start: "Starte Batch `rq-{n}-fill` mit Y Runs
-   im Hintergrund? Erwartete Wallclock ≈ Y × 6 min ≈ Z min." (6 min/Run
-   gemäß memory smart-subset-Erfahrung.)
-3. Hintergrund-Start (gemäß memory: KEIN `nohup ... &`):
+1. **Pre-check**:
+   - `docker ps --filter name=docker-batch-run --format '{{.Names}}'` — if a container is running: STOP and ask the user whether the existing batch should finish first.
+   - If `experiments/docker/batch.log` from an earlier run exists and is >0 bytes: ask the user whether to back it up as `experiments/docker/batch.<plan>.log` (`mv`, no deletion).
+2. **User confirmation** before start: "Start batch `rq-{n}-fill` with Y runs in the background? Expected wallclock ≈ Y × 6 min ≈ Z min." (6 min/run per memory, smart-subset experience.)
+3. Background start (per memory: NO `nohup ... &`):
    ```bash
    cd experiments/docker && ./batch.sh rq-{n}-fill
    ```
-   mit `run_in_background: true` im Bash-Tool. Task-ID merken.
-4. Container-Name nach ein paar Sekunden via
-   `docker ps --filter name=docker-batch-run --format '{{.Names}}'` ermitteln
-   und dem User melden.
+   with `run_in_background: true` in the Bash tool. Remember the task ID.
+4. After a few seconds, determine the container name via `docker ps --filter name=docker-batch-run --format '{{.Names}}'` and report it to the user.
 
 ---
 
 ### Phase 4 — Monitor
 
-1. Polling-Schleife mit `experiments/docker/watch-batch.sh rq-{n}-fill`:
-   - Erste 5 min: alle 60 s ein Snapshot.
-   - Danach: alle 5 min.
-   - Bei jedem Poll Counter `[N/total]` und Container-Status berichten.
-2. Beendigungs-Bedingungen:
-   - `Container STOPPED` UND Counter = `[total/total]` → erfolgreich,
-     weiter zu Phase 5.
-   - `Container STOPPED` UND Counter < total → Resume (Phase 4b).
-   - User signalisiert Abbruch → `docker stop <container>` → Resume
-     (Phase 4b).
-3. **Wichtig**: Memory-Patterns ernst nehmen:
-   - `\b429\b` mit `claude_exit != 0` = echtes Rate-Limit; Backup-Warnung
-     mit `backup.<ms>.json` (kann zufällig `429` enthalten) IGNORIEREN.
-   - "Claude configuration file not found at: …" beim Container-Start ist
-     harmlos.
-   - Nicht panikartig retryen, wenn `watch-batch.sh` einmal verzögert
-     antwortet.
-4. **Mid-execution-Cleanup nach Stop**: das jüngste Run-Dir in
-   `experiments/runs/`, dem `analysis-report.md` ODER `transcript.jsonl`
-   fehlt, ist mid-execution unterbrochen worden. User fragen:
-   "Lösche unterbrochenes Run-Dir `<run-dir>` (kein analysis-report.md)?"
-   Erst nach explizitem "ja" mit `rm -rf` löschen.
+1. Polling loop with `experiments/docker/watch-batch.sh rq-{n}-fill`:
+   - First 5 min: snapshot every 60 s.
+   - After that: every 5 min.
+   - On every poll, report the counter `[N/total]` and container status.
+2. Termination conditions:
+   - `Container STOPPED` AND counter = `[total/total]` → success, continue to phase 5.
+   - `Container STOPPED` AND counter < total → resume (phase 4b).
+   - User signals abort → `docker stop <container>` → resume (phase 4b).
+3. **Important**: Take memory patterns seriously:
+   - `\b429\b` with `claude_exit != 0` = real rate limit; backup-warning with `backup.<ms>.json` (which can incidentally contain `429`) is to be IGNORED.
+   - "Claude configuration file not found at: …" at container start is harmless.
+   - Do not panic-retry when `watch-batch.sh` is once slow to respond.
+4. **Mid-execution cleanup after stop**: the youngest run dir in `experiments/runs/` that lacks `analysis-report.md` OR `transcript.jsonl` was interrupted mid-execution. Ask the user: "Delete interrupted run dir `<run-dir>` (no analysis-report.md)?" Only delete with `rm -rf` after explicit "yes".
 
 #### Phase 4b — Resume
 
-1. Resume-Plan generieren:
+1. Generate a resume plan:
    ```
    experiments/docker/resume-plan.sh rq-{n}-fill
    ```
-   → schreibt `/tmp/rq-{n}-fill-resume.json`.
-2. Größe dem User zeigen (`jq '.runs | length' /tmp/rq-{n}-fill-resume.json`).
-3. User-Bestätigung einholen: "Restart mit `<m>` verbleibenden Runs?"
-4. Nach "ja":
+   → writes `/tmp/rq-{n}-fill-resume.json`.
+2. Show the size to the user (`jq '.runs | length' /tmp/rq-{n}-fill-resume.json`).
+3. Get user confirmation: "Restart with `<m>` remaining runs?"
+4. After "yes":
    ```bash
    cd experiments/docker && ./batch.sh /tmp/rq-{n}-fill-resume.json
    ```
-   im Hintergrund. Zurück zu Phase 4.
+   in the background. Back to phase 4.
 
 ---
 
 ### Phase 5 — Aggregate
 
-1. Aufrufen:
+1. **Pipeline sanity check before aggregating** — pipeline bugs masquerade as research findings. Spot-check 2–3 of the matched runs (covering the workflow × model cells most central to the RQ) for divergence between `run.log` and `metrics.json`:
+   - In `run.log` the agent typically reports a final test status (e.g. "All N tests pass", "experiment-done.txt written"). Compare this against `final_metrics.tests_passing` in `metrics.json`. If the agent reports green but `tests_passing` is `false`, that's a pipeline issue, not a workflow effect.
+   - Grep `analysis-report.md` for known infrastructure failure patterns: `IGNORED_BUILDS`, `approve-builds`, `corepack`, `ENOENT`, `Cannot find module`, `tsc.*error`. These typically come from container/tooling drift (e.g. pnpm version bumps, missing deps), not from agent code.
+   - For CLI-katas (`<basename>-verification/` exists): check `cli_built` in `metrics.json`. If `cli_built: false` for a run whose `src/cli.ts` exists and runs manually (`pnpm exec tsx src/cli.ts < scenario.input.json`), the verification stage misfired — re-run `analyze-run.sh <run_dir>` on the host (with absolute path).
+   - If any of these checks fail: stop, report the suspected pipeline bug to the user, do NOT aggregate. Fixing buggy data after a finding has been drawn from it is much more expensive than spending two minutes on the spot-check.
+2. Invoke:
    ```
    experiments/aggregate-by-query.py research/RQ-{N}-*/
    ```
-2. Erwartete Outputs:
-   - `research/RQ-{N}-*/runs.csv` (eine Zeile pro matched Run)
-   - `research/RQ-{N}-*/summary.md` (per-Zelle-Pivots für jeden `outcome`)
-3. `summary.md` komplett lesen und dem User zusammenfassen — die
-   Zellen-Pivot-Tabellen einzeln zeigen.
-4. Sanity-Check: hat jede Zelle ≥ `min_replicates`? Wenn nicht: warnen und
-   anbieten, zu Phase 2 zurückzuspringen (ggf. neue Runs).
+3. Expected outputs:
+   - `research/RQ-{N}-*/runs.csv` (one line per matched run)
+   - `research/RQ-{N}-*/summary.md` (per-cell pivots for each `outcome`)
+4. Read `summary.md` in full and summarize to the user — show the per-cell pivot tables individually.
+5. Sanity check: does every cell have ≥ `min_replicates`? If not: warn and offer to jump back to phase 2 (additional runs).
+6. **Plausibility cross-check before phase 6** — if any cell value contradicts a previously-stable finding by a large margin (e.g. a workflow that was 100% green is suddenly 0%), do NOT treat that as a new finding without first running the spot-check from step 1 against that exact cell. A "v4 is suddenly broken on game-of-life" type observation is more often a pipeline regression than a real shift.
 
 ---
 
-### Phase 6 — Findings-Vorschlag
+### Phase 6 — Findings proposal
 
-**Niemals automatisch in `findings.md` schreiben.** Nur Vorschlag im Chat
-ausgeben, dann auf explizites "ja, übernehmen" warten, dann via `Edit`
-patchen.
+**Never write to `findings.md` automatically.** Only present a proposal in chat, then wait for explicit "yes, apply", then patch via `Edit`.
 
-`findings.md` zeigt **nur den aktuellen Stand**. Keine Status-Tags
-(`✅ stabil` / `⚠️ bedingt` / `🚫 offen` / `❌ widerlegt`), keine Vergleiche
-mit Archiv-Snapshots oder älteren Studien, keine "ehemals X, korrigiert"-
-Hinweise im Fließtext. Header-Form: `## F-x.y — Titel` (kein `· …`-Suffix).
+`findings.md` shows **only the current state**. No status tags (`✅ stabil` / `⚠️ bedingt` / `🚫 offen` / `❌ widerlegt`), no comparisons with archive snapshots or older studies, no "previously X, corrected" hints in the prose. Header form: `## F-x.y — title` (no `· …` suffix).
 
-1. Diff-Quellen:
-   - **Bestand**: `findings.md` aus Phase 1.
-   - **Neu**: `summary.md` aus Phase 5.
-2. Drei mögliche Aktionen pro Effekt:
-   - **Neuer Befund**: Zelle/Faktor-Gruppe mit Δ ≥ 1σ über die anderen
-     Gruppen UND der Effekt ist in `findings.md` noch nicht behandelt →
-     neuer `F-{N}.{M+1}`-Block (M = höchste bestehende Findung-Nummer).
-   - **Update**: Bestehender Befund deckt denselben Effekt ab, aber
-     Zellwerte oder Interpretation haben sich verschoben → `Edit` auf
-     bestehenden Block. Tabelle und Begründung neu schreiben, **ohne**
-     alt/neu-Diff, **ohne** "ehemals X", **ohne** Verweis auf
-     Archiv-Snapshots.
-   - **Löschung**: Daten widerlegen den Befund → User-Bestätigung
-     einholen, dann Block samt Trenner-`---` entfernen. Nicht als
-     "widerlegt" markieren.
-3. Datenlücke: Wenn ein Effekt vermutet wird, aber Coverage zu klein für
-   `n ≥ min_replicates` ist → Notiz in `todos_and_ideas.txt` (Sektion
-   "Re-Check ungeprüfter Hypothesen aus alten findings.md") als Bullet
-   mit konkretem Re-Check-Ziel. **Nicht** als Finding in `findings.md`
-   anlegen.
-4. Format pro Vorschlag: Aussage / Datenbasis-Tabelle / Begründung. Header
-   `## F-x.y — Titel` ohne Suffix.
-   **Glossar-Pflicht**: Begriffe wie `code_mass`, `cc_loc`, `cc_longest_function`,
-   `smell_total`, `verification_pct` ausschließlich in der Form aus dem
-   Glossar der Top-`README.md` ("Code-Mass (APP)", "Produktiv-LoC",
-   "Spitzen-Komplexität", "Smell-Summe", "Korrektheit (außen)") oder direkt
-   per Metrik-ID in Backticks verwenden. Synonyme wie "Code-Volumen",
-   "Code-Gesamtvolumen", "LoC-Größe" sind verboten — sie sind mehrdeutig
-   bzw. kollidieren mit etablierten Definitionen (APP). Vor dem Vorschlag-
-   Patch das Glossar einmal lesen und die im Block verwendeten Begriffe
-   gegen die Tabelle prüfen.
-5. User-Entscheidung pro Vorschlag einholen. Bei "ja" mit `Edit`:
-   - Neuer Befund: Block ans Ende von `findings.md`.
-   - Update: bestehenden `## F-x.y`-Block ersetzen, Header-Suffix `· …`
-     dabei entfernen falls noch vorhanden.
-   - Löschung: Block samt nachfolgendem `---`-Trenner entfernen.
-6. Bei "nein": Vorschlag bleibt nur im Chat, `findings.md` bleibt unverändert.
+1. Diff sources:
+   - **Existing**: `findings.md` from phase 1.
+   - **New**: `summary.md` from phase 5.
+2. Three possible actions per effect:
+   - **New finding**: cell/factor group with Δ ≥ 1σ over the other groups AND the effect is not yet covered in `findings.md` → new `F-{N}.{M+1}` block (M = highest existing finding number).
+   - **Update**: an existing finding covers the same effect, but cell values or interpretation have shifted → `Edit` on the existing block. Rewrite table and rationale, **without** old/new diff, **without** "previously X", **without** reference to archive snapshots.
+   - **Deletion**: data contradicts the finding → get user confirmation, then remove the block including its `---` separator. Do not mark as "widerlegt".
+3. Data gap: if an effect is suspected but coverage is too small for `n ≥ min_replicates` → note in `todos_and_ideas.txt` (section "Re-Check ungeprüfter Hypothesen aus alten findings.md") as a bullet with a concrete re-check target. **Do not** create as a finding in `findings.md`.
+4. Format per proposal: statement / data-base table / rationale. Header `## F-x.y — title` with no suffix.
+   **Glossary discipline**: terms like `code_mass`, `cc_loc`, `cc_longest_function`, `smell_total`, `verification_pct` are to be used only in the form from the glossary in the top-level `README.md` ("Code-Mass (APP)", "Produktiv-LoC", "Spitzen-Komplexität", "Smell-Summe", "Korrektheit (außen)") or directly via the metric ID in backticks. Synonyms like "Code-Volumen", "Code-Gesamtvolumen", "LoC-Größe" are forbidden — they are ambiguous or collide with established definitions (APP). Before patching the proposal, read the glossary once and check every term used in the block against the table.
+5. Get user decision per proposal. On "yes", apply with `Edit`:
+   - New finding: block at the end of `findings.md`.
+   - Update: replace the existing `## F-x.y` block, removing any `· …` header suffix still in place.
+   - Deletion: remove the block including the trailing `---` separator.
+6. On "no": proposal stays in chat only, `findings.md` is unchanged.
 
 ---
 
-## Out-of-Scope (bewusst NICHT im Skill)
+## Out of scope (deliberately NOT in the skill)
 
-- Eigentliche Batch-Ausführung im Container (`run-batch.sh` läuft im Container).
-- ESLint/Smell-Detection (läuft pro Run in `analyze-run.sh`).
-- Cross-RQ-Aggregation oder Erstellung neuer RQs.
-- Automatisches Commit/Push von `runs.csv` / `summary.md` / `findings.md` —
-  bleibt User-Entscheidung.
-- Worktree-Wechsel oder Merge nach `main`.
+- The actual batch execution inside the container (`run-batch.sh` runs in the container).
+- ESLint / smell detection (runs per run inside `analyze-run.sh`).
+- Cross-RQ aggregation or creation of new RQs.
+- Auto-commit/push of `runs.csv` / `summary.md` / `findings.md` — stays a user decision.
+- Worktree switching or merging into `main`.
 
-## Verhalten bei Fehlern
+## Behavior on errors
 
-- **Phase 1 schlägt fehl**: nicht weiterfahren, klaren Constraint-Hinweis
-  geben (z.B. "v1-oneshot mit prompt=example-mapping verstößt gegen
-  Methoden-Constraint in der Top-README, Abschnitt 'Methodology constraints').
-- **Phase 2/3-Skripte mit Non-Zero-Exit**: Output dem User zeigen, NICHT
-  blind retryen.
-- **Phase 4 verliert Container**: `docker ps -a` zeigen, dann Resume
-  anbieten.
-- **Phase 5 erzeugt leere `runs.csv`**: prüfen, ob `experiments/runs/`
-  überhaupt matchende Runs hat (Selektor zu eng?). User informieren.
+- **Phase 1 fails**: do not continue; give a clear constraint hint (e.g. "v1-oneshot with prompt=example-mapping violates the methodology constraint in the top-level README, section 'Methodology constraints'").
+- **Phase 2/3 scripts with non-zero exit**: show output to the user; do NOT blindly retry.
+- **Phase 4 loses the container**: show `docker ps -a`, then offer resume.
+- **Phase 5 produces an empty `runs.csv`**: check whether `experiments/runs/` actually contains matching runs (selector too narrow?). Inform the user.

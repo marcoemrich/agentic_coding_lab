@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-10_13-22-54_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking
 
-Generated: 2026-05-10T13:37:06+00:00
+Generated: 2026-05-10T19:12:58+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-10T13:37:06+00:00
 
 ## Code Metrics
 
-- **Implementation file**: game-of-life.ts
-- **Implementation LOC**: 42
+- **Implementation files**: game-of-life.ts
+- **Implementation LOC** (total): 42
 - **Test file**: game-of-life.spec.ts
 - **Test file LOC**: 33
 - **Active tests**: 8
@@ -26,29 +26,30 @@ Generated: 2026-05-10T13:37:06+00:00
 
 ## Test Results
 
-**Status**: ❌ Tests failed or not runnable
+**Status**: ✅ All tests passing (8 passed)
 
 ```
-Lockfile is up to date, resolution step is skipped
-Already up to date
 
-[ERR_PNPM_IGNORED_BUILDS] Ignored build scripts: esbuild@0.21.5, esbuild@0.27.7
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-10_13-22-54_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking
+> vitest run
 
-Run "pnpm approve-builds" to pick which dependencies should be allowed to run scripts.
-[ERROR] Command failed with exit code 1: /usr/local/bin/node /home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/bin/pnpm.mjs install
 
-pnpm: Command failed with exit code 1: /usr/local/bin/node /home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/bin/pnpm.mjs install
-    at getFinalError (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:28550:14)
-    at makeError (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:30857:21)
-    at getSyncResult (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:32701:10)
-    at spawnSubprocessSync (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:32661:14)
-    at execaCoreSync (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:32591:23)
-    at callBoundExeca (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:35119:23)
-    at boundExeca (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:35096:49)
-    at sync (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:35255:10)
-    at runPnpmCli (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:208877:5)
-    at runDepsStatusCheck (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:210581:7)
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-10_13-22-54_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking
+
+ ✓ src/game-of-life.spec.ts  (8 tests) 4ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  19:12:59
+   Duration  364ms (transform 28ms, setup 0ms, collect 22ms, tests 4ms, environment 0ms, prepare 96ms)
 ```
+
+## Coverage
+
+| Metric | Coverage |
+|--------|----------|
+| Statements | 100% |
+| Branches | 100% |
 
 ## APP Mass Estimation
 
@@ -68,7 +69,8 @@ pnpm: Command failed with exit code 1: /usr/local/bin/node /home/experimenter/.c
 | LOC (non-blank) | 35 |
 | Functions | 5 |
 | Longest Function | 10 lines |
-| Avg LOC/Function | 3 |
+| Avg LOC/Function | 3.40 |
+| Median LOC/Function | 2.00 |
 | Imports | 0 |
 
 ## Code Smells

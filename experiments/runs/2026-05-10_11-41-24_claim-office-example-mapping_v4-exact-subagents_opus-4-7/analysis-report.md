@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-10_11-41-24_claim-office-example-mapping_v4-exact-subagents_opus-4-7
 
-Generated: 2026-05-10T13:02:39+00:00
+Generated: 2026-05-10T19:11:37+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-10T13:02:39+00:00
 
 ## Code Metrics
 
-- **Implementation file**: cli.ts
-- **Implementation LOC**: 81
+- **Implementation files**: claim-office.ts, cli.ts
+- **Implementation LOC** (total): 260
 - **Test file**: claim-office.spec.ts
 - **Test file LOC**: 267
 - **Active tests**: 25
@@ -26,49 +26,51 @@ Generated: 2026-05-10T13:02:39+00:00
 
 ## Test Results
 
-**Status**: ❌ Tests failed or not runnable
+**Status**: ✅ All tests passing (25 passed)
 
 ```
-Lockfile is up to date, resolution step is skipped
-Already up to date
 
-[ERR_PNPM_IGNORED_BUILDS] Ignored build scripts: esbuild@0.21.5, esbuild@0.27.7
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-10_11-41-24_claim-office-example-mapping_v4-exact-subagents_opus-4-7
+> vitest run
 
-Run "pnpm approve-builds" to pick which dependencies should be allowed to run scripts.
-[ERROR] Command failed with exit code 1: /usr/local/bin/node /home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/bin/pnpm.mjs install
 
-pnpm: Command failed with exit code 1: /usr/local/bin/node /home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/bin/pnpm.mjs install
-    at getFinalError (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:28550:14)
-    at makeError (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:30857:21)
-    at getSyncResult (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:32701:10)
-    at spawnSubprocessSync (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:32661:14)
-    at execaCoreSync (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:32591:23)
-    at callBoundExeca (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:35119:23)
-    at boundExeca (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:35096:49)
-    at sync (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:35255:10)
-    at runPnpmCli (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:208877:5)
-    at runDepsStatusCheck (file:///home/experimenter/.cache/node/corepack/v1/pnpm/11.0.8/dist/pnpm.mjs:210581:7)
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-10_11-41-24_claim-office-example-mapping_v4-exact-subagents_opus-4-7
+
+ ✓ src/claim-office.spec.ts  (25 tests) 6ms
+
+ Test Files  1 passed (1)
+      Tests  25 passed (25)
+   Start at  19:11:37
+   Duration  410ms (transform 32ms, setup 0ms, collect 33ms, tests 6ms, environment 0ms, prepare 68ms)
 ```
+
+## Coverage
+
+| Metric | Coverage |
+|--------|----------|
+| Statements | 68% |
+| Branches | 98% |
 
 ## APP Mass Estimation
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 21 | ×1 | 21 |
-| Invocations | 28 | ×2 | 56 |
-| Conditionals | 3 | ×4 | 12 |
-| Loops | 3 | ×5 | 15 |
-| Assignments | 18 | ×6 | 108 |
-| **Total Mass** | | | **212** |
+| Constants | 73 | ×1 | 73 |
+| Invocations | 83 | ×2 | 166 |
+| Conditionals | 10 | ×4 | 40 |
+| Loops | 9 | ×5 | 45 |
+| Assignments | 96 | ×6 | 576 |
+| **Total Mass** | | | **900** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 71 |
-| Functions | 7 |
+| LOC (non-blank) | 215 |
+| Functions | 33 |
 | Longest Function | 19 lines |
-| Avg LOC/Function | 8 |
+| Avg LOC/Function | 4.58 |
+| Median LOC/Function | 2.00 |
 | Imports | 1 |
 
 ## Code Smells

@@ -353,6 +353,9 @@ for entry in "${RUN_LIST[@]}"; do
     "eslint": "^9.0.0",
     "eslint-plugin-sonarjs": "^1.0.0",
     "typescript-eslint": "^8.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
   }
 }
 EOF
