@@ -1,27 +1,24 @@
 ---
 name: build-overview
-description: Generiert einen experiment-overview-Snapshot aller Forschungsfragen unter research/_archive/. Aufzurufen wenn ein neuer Stichtag-Bericht über alle RQs erzeugt werden soll.
+description: Generates an experiment-overview snapshot of all research questions under research/_archive/. Invoke when a new point-in-time report across all RQs should be produced.
 disable-model-invocation: false
 allowed-tools: Bash(./experiments/generate-snapshot-skeleton.py:*) Read Write Glob
 ---
 
-# /build-overview — Experiment-Overview-Snapshot erzeugen
+# /build-overview — produce an experiment-overview snapshot
 
-Du erzeugst einen eingefrorenen, publizierbaren Forschungsbericht aus dem
-aktuellen Stand der `research/RQ-*/findings.md`. Der Snapshot landet als
-neue Datei unter `research/_archive/experiment-overview-YYYY-MM-DD.md`.
+You produce a frozen, publishable research report from the current state of `research/RQ-*/findings.md`. The snapshot lands as a new file under `research/_archive/experiment-overview-YYYY-MM-DD.md`.
 
-## Grundprinzip
+## Core principle
 
-`findings.md` = lebendes Dokument, wachsende Status-getaggte Befund-Liste.
-Snapshot = eingefrorener Tabellen-lastiger Bericht zu einem Stichtag.
+`findings.md` = living document, growing list of status-tagged findings.
+Snapshot = frozen, table-heavy report at a point in time.
 
-Beide existieren parallel. Der Snapshot wird **nicht aus der Erinnerung**
-geschrieben, sondern aus einem auto-generierten Skelett befüllt.
+Both exist in parallel. The snapshot is **not written from memory** — it is filled in from an auto-generated skeleton.
 
-## Lifecycle (4 Schritte)
+## Lifecycle (4 steps)
 
-### Schritt 1 — Skelett generieren
+### Step 1 — generate the skeleton
 
 Bash:
 
@@ -29,112 +26,63 @@ Bash:
 ./experiments/generate-snapshot-skeleton.py
 ```
 
-Das Skript schreibt nach `/tmp/snapshot-skeleton-YYYY-MM-DD.md`. Es füllt
-auto:
+The script writes to `/tmp/snapshot-skeleton-YYYY-MM-DD.md`. It auto-fills:
 
-- Datenbasis-Zahl (`experiments/runs/`-Count)
-- Forschungsfragen-Übersichtstabelle mit Coverage je RQ
-- Experiment-Design-Tabellen (Workflow, Modell, Kata, Workflow→Prompt-Mapping)
-- Methodik-Block (statisch, mit Marker zum Aktualitäts-Check)
-- Pro RQ: Befund-Rohliste (aktueller Stand, ohne Status-Tags)
-- Reproduzierbarkeit + Files-Tabelle
+- Data-base count (from `experiments/runs/`)
+- Research-question overview table with per-RQ coverage
+- Experiment-design tables (workflow, model, kata, workflow→prompt mapping)
+- Methodology block (static, with a freshness-check marker)
+- Per RQ: raw finding list (current state, no status tags)
+- Reproducibility + files table
 
-An jeder Stelle, an der Synthese fehlt, steht ein
-`<!-- TODO Claude: ... -->`-Marker.
+Wherever synthesis is missing, a `<!-- TODO Claude: ... -->` marker is left in place.
 
-### Schritt 2 — Skelett lesen + alle findings.md lesen
+### Step 2 — read the skeleton + every findings.md
 
-Lies das Skelett (`/tmp/snapshot-skeleton-YYYY-MM-DD.md`) und **alle**
-`research/RQ-*/findings.md`. Notiere für jede RQ die aktuellen Befunde
-mit Aussage + Datenbasis-Werten.
+Read the skeleton (`/tmp/snapshot-skeleton-YYYY-MM-DD.md`) and **every** `research/RQ-*/findings.md`. Note for each RQ the current findings with their statement and data values.
 
-`open-questions.md` (falls vorhanden) **nicht** in den Snapshot
-übernehmen — das sind interne Backlog-Items für künftige Batches, kein
-publizierbarer Stand.
+`open-questions.md` (when present) does **not** go into the snapshot — those are internal backlog items for future batches, not publishable state.
 
-### Schritt 3 — Synthese-Sektionen füllen
+### Step 3 — fill in the synthesis sections
 
-Ersetze jeden `<!-- TODO Claude: ... -->`-Marker durch echten Inhalt.
-**Niemals einen TODO-Marker stehen lassen.**
+Replace every `<!-- TODO Claude: ... -->` marker with real content. **Never leave a TODO marker in place.**
 
-Stil-Vorgaben:
+Style requirements:
 
-- **Sprache: Deutsch.** Wie in `findings.md`.
-- **Glossar-Pflicht:** Vor Schritt 3 das Glossar in der Top-`README.md`
-  lesen. Begriffe wie `code_mass`, `cc_loc`, `cc_longest_function`,
-  `smell_total`, `verification_pct` ausschließlich in der dort definierten
-  Form ("Code-Mass (APP)", "Produktiv-LoC", "Spitzen-Komplexität",
-  "Smell-Summe", "Korrektheit (außen)") oder direkt per Metrik-ID in
-  Backticks verwenden. Synonyme wie "Code-Volumen", "Code-Gesamtvolumen",
-  "LoC-Größe" sind verboten — sie sind mehrdeutig bzw. kollidieren mit
-  etablierten Definitionen (APP).
-- **Einleitung (Abschnitt vor 1.):** 2–3 Sätze. Was ist die Studie, was
-  deckt dieser Snapshot ab.
-- **Methodik (Abschnitt 3):** Inhalt im Skelett ist statisch. Verifiziere
-  gegen `experiments/docker/Dockerfile`, `experiments/analyze-run.sh`,
-  `experiments/aggregate-by-query.py`, ob Pipeline-Beschreibung noch
-  aktuell ist. Bei Abweichungen korrigiere im Snapshot. Entferne den
-  `<!-- TODO Claude: prüfen ob noch aktuell ... -->`-Marker entweder
-  durch eine kurze Bestätigung („Pipeline unverändert seit ...") oder
-  durch die korrigierten Schritte.
-- **RQ-Sektionen (4.X):** Pro RQ 60–100 Wörter Prosa nach der
-  Befund-Rohliste. Top-Befund ausführlich + bei Bedarf 1 Caveat aus dem
-  Befund selbst (z.B. enge Datenbasis, nur eine Kata) + expliziter
-  Verweis auf `research/RQ-N-.../findings.md`. Keine Tabellen aus
-  findings.md duplizieren. Wo Coverage < 100 % ist, das in der Synthese
-  benennen („Bei aktuell N Runs in M von K Zellen ...").
-- **Findings-Konvention:** Snapshot zeigt **nur den aktuellen Stand**.
-  Keine Status-Tags wie „⚠️ bedingt" / „✅ stabil", keine Vergleiche
-  mit Archiv-Snapshots oder älteren Studien (z.B. 235-Run-Studie). Falls
-  die findings.md noch solche Status-Tags trägt: in der Snapshot-Synthese
-  weglassen, nur die aktuelle Aussage übernehmen. Begründung: alte Runs
-  hatten Pipeline-Biases (siehe Memory), Vergleiche sind methodisch nicht
-  belastbar.
-- **Cross-RQ-Synthese (5):** 3–5 nummerierte Punkte. Jeder Punkt verbindet
-  mindestens **zwei** RQs und steht so **nicht** in einer einzelnen
-  findings.md.
-- **Limitierungen (7):** 5–8 Stichpunkte. Pflicht: nur Anthropic-Modelle,
-  nur synthetische Katas, nur TypeScript, headless ohne HITL, n ≤ 3 pro
-  Zelle. Optional: konkrete Coverage-Lücken aus den RQ-Coverage-Werten
-  oben (z.B. „RQ-3 nur 1/5 Zellen voll besetzt").
+- **Glossary discipline:** Before step 3, read the glossary in the top-level `README.md`. Use terms like `code_mass`, `cc_loc`, `cc_longest_function`, `smell_total`, `verification_pct` only in the binding form defined there ("Code-Mass (APP)", "Produktiv-LoC", "Spitzen-Komplexität", "Smell-Summe", "Korrektheit (außen)") or directly via the metric ID in backticks. Synonyms like "Code-Volumen", "Code-Gesamtvolumen", "LoC-Größe" are forbidden — they are ambiguous or collide with established definitions (APP).
+- **Intro (section before 1.):** 2–3 sentences. What is the study, what does this snapshot cover.
+- **Methodology (section 3):** Skeleton content is static. Verify against `experiments/docker/Dockerfile`, `experiments/analyze-run.sh`, `experiments/aggregate-by-query.py` whether the pipeline description is still accurate. On drift, correct in the snapshot. Replace the `<!-- TODO Claude: check whether still current ... -->` marker with either a brief confirmation ("pipeline unchanged since ...") or the corrected steps.
+- **RQ sections (4.X):** Per RQ 60–100 words of prose after the raw finding list. Top finding in detail + at most one caveat from the finding itself (e.g. narrow data base, only one kata) + an explicit reference to `research/RQ-N-.../findings.md`. Do not duplicate tables from findings.md. Where coverage < 100 %, name it in the synthesis ("with currently N runs in M of K cells ...").
+- **Findings convention:** Snapshot shows **only the current state**. No status tags like `⚠️ bedingt` / `✅ stabil`, no comparisons with archive snapshots or older studies (e.g. the 235-run study). If findings.md still carries such status tags, drop them in the snapshot synthesis and only carry over the current statement. Reason: older runs had pipeline biases (see memory), comparisons are methodologically not robust.
+- **Cross-RQ synthesis (5):** 3–5 numbered points. Each point connects at least **two** RQs and would therefore not stand in any single findings.md.
+- **Limitations (7):** 5–8 bullets. Mandatory: only Anthropic models, only synthetic katas, only TypeScript, headless without HITL, n ≤ 3 per cell. Optional: concrete coverage gaps from the per-RQ coverage values above (e.g. "RQ-3 only 1/5 cells fully populated").
 
-Ehrlichkeits-Regel: Falls eine RQ keine belastbaren Befunde im aktuellen
-Setup hat, **nicht** etwas erfinden — sage stattdessen klar „Aktuelle
-Datenbasis liefert keinen robusten Befund" und nutze die Synthese, um zu
-erklären, was fehlt.
+Honesty rule: If an RQ has no robust findings in the current setup, **do not invent** something — say plainly "the current data base does not yield a robust finding" and use the synthesis to explain what is missing.
 
-### Schritt 4 — Datei schreiben
+### Step 4 — write the file
 
-Nimm das Datum aus dem Skelett-Header (Zeile 3: `Stand: YYYY-MM-DD.`)
-und schreibe nach:
+Take the date from the skeleton header (line 3: `Stand: YYYY-MM-DD.`) and write to:
 
 ```
 research/_archive/experiment-overview-YYYY-MM-DD.md
 ```
 
-Verifiziere danach mit Glob bzw. Read, dass:
+Then verify with Glob or Read that:
 
-1. Datei existiert
-2. Keine `<!-- TODO -->`-Marker mehr drin sind
-3. Alle aktuellen Befunde aus den findings.md irgendwo in den RQ-Sektionen referenziert sind (Nummer + Aussage)
-4. Keine Status-Tags („⚠️ bedingt", „✅ stabil") und keine Verweise auf alte Studien / Archiv-Snapshots im publizierten Snapshot
+1. The file exists
+2. No `<!-- TODO -->` markers remain
+3. All current findings from the findings.md files are referenced somewhere in the RQ sections (number + statement)
+4. No status tags (`⚠️ bedingt`, `✅ stabil`) and no references to old studies / archive snapshots in the published snapshot
 
-Berichte am Ende in 1–2 Sätzen den Output-Pfad und auffällige Coverage-Lücken
-(„RQ-X ist aktuell unter min_replicates").
+Report at the end in 1–2 sentences the output path and any notable coverage gaps ("RQ-X is currently below min_replicates").
 
-## Stilvorlage
+## Style template
 
-`research/_archive/findings-validation-2026-05-04/experiment-overview-v2.md`
-zeigt die Ziel-Tabellen-Dichte und Sektion-Reihenfolge. Lies sie zur
-Orientierung, **bevor** du Schritt 3 startest. Übernimm Tabellen-Stil und
-Befund-Sprachfärbung — nicht die konkreten Zahlen (die kommen aus den
-aktuellen findings.md).
+`research/_archive/findings-validation-2026-05-04/experiment-overview-v2.md` shows the target table density and section ordering. Read it for orientation **before** starting step 3. Adopt the table style and tone — not the specific numbers (those come from the current findings.md).
 
-## Was bewusst NICHT zu deinem Output gehört
+## What is deliberately NOT part of your output
 
-- Keine Tabellen mit konkreten metrics.json-Werten neu berechnen — die
-  Zahlen stehen schon in den findings.md und werden dort gepflegt.
-- Kein Auto-Commit. Der Snapshot wird vom User reviewed, bevor er ins
-  Repo geht.
-- Kein Diff zum letzten Snapshot — das wäre ein eigener Skill.
-- Keine Subagent-Auslagerung; alles im Hauptkontext.
+- Do not recompute tables with concrete metrics.json values — the numbers are already in findings.md and maintained there.
+- No auto-commit. The snapshot is reviewed by the user before it goes into the repo.
+- No diff against the previous snapshot — that would be a separate skill.
+- No subagent delegation; everything in the main context.

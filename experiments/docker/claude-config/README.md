@@ -1,20 +1,20 @@
 # Container Claude config
 
-Schlankes `~/.claude`-Äquivalent für den Batch-Container.
-Bewusst **ohne** MCP-Server, `additionalDirectories`, `statusLine` und alles
-andere, was im Host-Setup hängt aber im `node:22-slim`-Container fehlt
-(z.B. `fish`, `nvm`, Host-Pfade unter `/home/memrich/...`).
+Slim `~/.claude` equivalent for the batch container.
+Deliberately **without** MCP servers, `additionalDirectories`, `statusLine`,
+and anything else that depends on the host setup but is missing inside the
+`node:22-slim` container (e.g. `fish`, `nvm`, host paths under `/home/memrich/...`).
 
-## Inhalt
+## Contents
 
-- `settings.json` — eingecheckt, native OAuth-Backend, leeres `mcpServers`
-- `.credentials.json` — Symlink auf `~/.claude/.credentials.json` (gitignored).
-  Erst-Setup: `ln -sf ~/.claude/.credentials.json .credentials.json`
+- `settings.json` — checked in, native OAuth backend, empty `mcpServers`
+- `.credentials.json` — symlink to `~/.claude/.credentials.json` (gitignored).
+  First-time setup: `ln -sf ~/.claude/.credentials.json .credentials.json`
 
-Der OAuth-Token wird durch den Symlink automatisch frisch gehalten, wenn der
-Host ihn refresht.
+The OAuth token stays fresh automatically through the symlink whenever the
+host refreshes it.
 
-## Aktivierung
+## Activation
 
-`docker-compose.yml` mountet dieses Verzeichnis nach `/home/experimenter/.claude`.
-Override via `CLAUDE_CONFIG_DIR=/anderer/pfad ./batch.sh ...`.
+`docker-compose.yml` mounts this directory at `/home/experimenter/.claude`.
+Override with `CLAUDE_CONFIG_DIR=/other/path ./batch.sh ...`.

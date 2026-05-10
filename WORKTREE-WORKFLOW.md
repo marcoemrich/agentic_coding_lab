@@ -1,22 +1,22 @@
-# Worktree-Workflow für Agents
+# Worktree workflow for agents
 
-Ziel: Mehrere Agents arbeiten parallel auf eigenen Worktrees, integrieren aber häufig nach `main` (Continuous Integration statt langlebige Feature-Branches).
+Goal: multiple agents work in parallel on their own worktrees but integrate frequently into `main` (continuous integration rather than long-lived feature branches).
 
-## Struktur
+## Layout
 
 ```
 agentic_coding_lab_project/
-├── main/      # Worktree auf Branch `main` (Integrations-Punkt)
-├── agent-1/   # Worktree auf Branch `agent-1` (lokal-only)
-├── agent-2/   # Worktree auf Branch `agent-2` (lokal-only)
+├── main/      # worktree on branch `main` (integration point)
+├── agent-1/   # worktree on branch `agent-1` (local-only)
+├── agent-2/   # worktree on branch `agent-2` (local-only)
 └── ...
 ```
 
-- Branch-Name = Worktree-Identität (kein Feature-Name)
-- Agent-Branches existieren **dauerhaft** und werden wiederverwendet
-- Nur `main` wird gepusht; Agent-Branches sind lokal
+- Branch name = worktree identity (not a feature name)
+- Agent branches are **persistent** and reused across tasks
+- Only `main` is pushed; agent branches stay local
 
-## Vor jedem neuen Task (im Agent-Worktree)
+## Before starting a new task (inside the agent worktree)
 
 ```bash
 cd agent-1
@@ -24,13 +24,13 @@ git fetch origin
 git rebase origin/main
 ```
 
-→ Agent-Branch ist auf neuestem Stand.
+→ The agent branch is up to date.
 
-## Während des Tasks
+## During the task
 
-Normal auf `agent-1` arbeiten, klein und häufig committen.
+Work normally on `agent-1`, commit small and often.
 
-## Nach Task-Abschluss (Tests grün)
+## After the task is done (tests green)
 
 ```bash
 cd ../main
@@ -39,37 +39,37 @@ git merge --ff-only agent-1
 git push
 ```
 
-`--ff-only` schlägt fehl, wenn `main` zwischenzeitlich weitergewandert ist (z.B. weil ein anderer Agent integriert hat). Dann:
+`--ff-only` fails if `main` moved forward in the meantime (e.g. because another agent integrated). In that case:
 
 ```bash
 cd ../agent-1
 git fetch origin
 git rebase origin/main
-# ggf. Konflikte lösen, siehe unten
+# resolve conflicts if needed (see below)
 cd ../main
 git merge --ff-only agent-1
 git push
 ```
 
-## Bei Rebase-Konflikt
+## On a rebase conflict
 
 ```bash
-git status              # zeigt betroffene Dateien
-# Konflikte manuell lösen
-git add <gelöste-dateien>
+git status              # shows affected files
+# resolve conflicts manually
+git add <resolved-files>
 git rebase --continue
 ```
 
-Bei Bedarf `git rebase --abort` und überlegen.
+If needed, `git rebase --abort` and reconsider.
 
-## Neuen Agent-Worktree anlegen
+## Create a new agent worktree
 
 ```bash
 cd main
 git worktree add ../agent-2 -b agent-2
 ```
 
-## Agent-Worktree entfernen (selten nötig)
+## Remove an agent worktree (rarely needed)
 
 ```bash
 cd main
@@ -77,9 +77,9 @@ git worktree remove ../agent-2
 git branch -D agent-2
 ```
 
-## Faustregeln
+## Rules of thumb
 
-- **Häufig integrieren** — kleine Diffs, kleine Konflikte
-- **Vor Task-Start immer rebasen** — sonst wachsen Drifts
-- **Nie `agent-N` pushen** — nur `main` geht nach origin
-- **Tests müssen grün sein** vor dem Merge nach main
+- **Integrate often** — small diffs, small conflicts
+- **Always rebase before starting a task** — otherwise drift accumulates
+- **Never push `agent-N`** — only `main` goes to origin
+- **Tests must be green** before merging into main
