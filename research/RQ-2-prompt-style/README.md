@@ -43,7 +43,7 @@ Konfiguration: `experiments/katas/claim-office-{prose, example-mapping, user-sto
 
 **Workflow-Constraint**: Diese RQ ist nur auf TDD-Workflows (v3/v4/v5)
 sinnvoll, weil v1/v2 nur prose erlauben (siehe Methoden-Constraint im
-[`research/README.md`](../README.md#workflow--erlaubte-prompt-stile)).
+Top-README, Abschnitt [Methodology constraints](../../README.md#methodology-constraints)).
 Default: `v4-exact-subagents` als der angestrebte Lab-Workflow. Die
 Frage, ob der Prompt-Stil-Effekt workflow-abhängig ist, behandelt
 [RQ-6](../RQ-6-prompt-style-x-workflow/) als eigene Interaktions-RQ.

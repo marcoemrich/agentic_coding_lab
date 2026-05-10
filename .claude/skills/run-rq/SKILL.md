@@ -21,7 +21,7 @@ Repo-Skripte auf, es wird kein neuer Python-/Bash-Code geschrieben.
 - Wenn nicht gegeben: aus dem letzten User-Turn erschließen, sonst zurückfragen
   ("Welche RQ? z.B. RQ-3").
 
-## Repo-Konventionen (aus `research/README.md` und memory)
+## Repo-Konventionen (aus Top-`README.md` und memory)
 
 - RQ-Verzeichnis: `research/RQ-{N}-*/` mit `README.md`, `findings.md`,
   `runs.csv`, `summary.md`.
@@ -216,7 +216,7 @@ Studien, keine "ehemals X, revidiert"-Hinweise im Fließtext. Header-Form:
    `## F-x.y — Titel` ohne Suffix.
    **Glossar-Pflicht**: Begriffe wie `code_mass`, `cc_loc`, `cc_longest_function`,
    `smell_total`, `verification_pct` ausschließlich in der Form aus dem
-   Glossar in `research/README.md` ("Code-Mass (APP)", "Produktiv-LoC",
+   Glossar der Top-`README.md` ("Code-Mass (APP)", "Produktiv-LoC",
    "Spitzen-Komplexität", "Smell-Summe", "Korrektheit (außen)") oder direkt
    per Metrik-ID in Backticks verwenden. Synonyme wie "Code-Volumen",
    "Code-Gesamtvolumen", "LoC-Größe" sind verboten — sie sind mehrdeutig
@@ -245,7 +245,7 @@ Studien, keine "ehemals X, revidiert"-Hinweise im Fließtext. Header-Form:
 
 - **Phase 1 schlägt fehl**: nicht weiterfahren, klaren Constraint-Hinweis
   geben (z.B. "v1-oneshot mit prompt=example-mapping verstößt gegen
-  Methoden-Constraint in research/README.md").
+  Methoden-Constraint in der Top-README, Abschnitt 'Methodology constraints').
 - **Phase 2/3-Skripte mit Non-Zero-Exit**: Output dem User zeigen, NICHT
   blind retryen.
 - **Phase 4 verliert Container**: `docker ps -a` zeigen, dann Resume

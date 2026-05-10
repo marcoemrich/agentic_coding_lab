@@ -62,7 +62,7 @@ prose ist Baseline. Die Praxis-Frage ist:
 ## Design-Begründung
 
 **Nur TDD-Workflows**: v1/v2 sind durch das Methoden-Constraint
-(`research/README.md`) auf prose festgelegt. Eine 3×5-Matrix mit leeren
+(Top-README, Abschnitt [Methodology constraints](../../README.md#methodology-constraints)) auf prose festgelegt. Eine 3×5-Matrix mit leeren
 Zellen für v1/v2 × {example-mapping, user-story} würde das Design
 verfälschen.
 

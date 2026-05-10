@@ -60,7 +60,7 @@ Ersetze jeden `<!-- TODO Claude: ... -->`-Marker durch echten Inhalt.
 Stil-Vorgaben:
 
 - **Sprache: Deutsch.** Wie in `findings.md`.
-- **Glossar-Pflicht:** Vor Schritt 3 das Glossar in `research/README.md`
+- **Glossar-Pflicht:** Vor Schritt 3 das Glossar in der Top-`README.md`
   lesen. Begriffe wie `code_mass`, `cc_loc`, `cc_longest_function`,
   `smell_total`, `verification_pct` ausschließlich in der dort definierten
   Form ("Code-Mass (APP)", "Produktiv-LoC", "Spitzen-Komplexität",

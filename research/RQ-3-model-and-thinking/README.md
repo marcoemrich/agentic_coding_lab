@@ -50,7 +50,7 @@ Hinweis: Thinking-Mode ist hier in die Lab-Varianten-ID kodiert, weil
 das Run-Setup ihn so behandelt (siehe `experiments/record-run.sh`,
 `MODEL_CONFIGS`). Der Faktor heißt `model` und enthält die
 Thinking-Variante als Suffix. Mapping zu API-IDs siehe
-[`research/README.md`](../README.md#modell-aliase).
+Top-README, Abschnitt [Model Configurations](../../README.md#model-configurations).
 
 Haiku ohne Thinking wird derzeit nicht erhoben — falls relevant, müsste
 `haiku-4-5-no-thinking` ergänzt werden.

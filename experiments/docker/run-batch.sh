@@ -15,8 +15,8 @@ BATCH_PLANS_DIR="$EXPERIMENTS_DIR/batch-plans"
 # Hard timeout for a single Claude Code call (seconds). Override via env.
 # Default 3600s (60 min). This is the methodological budget — runs that
 # hit it are not data errors but legitimate "did not complete within
-# practical budget" findings (see research/README.md → "Timeouts als
-# Forschungsbefund"). Do NOT lower this without coordinating across the
+# practical budget" findings (see top-level README.md → "Timeouts as a
+# research finding"). Do NOT lower this without coordinating across the
 # RQ data set: shorter budgets re-classify previously OK runs as
 # timeouts and break cross-batch comparability.
 CLAUDE_TIMEOUT_SECONDS="${CLAUDE_TIMEOUT_SECONDS:-3600}"

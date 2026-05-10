@@ -67,7 +67,7 @@ Konfiguration: `experiments/workflows/v{1..5}-*/.claude/agents/` und
 **Faires Workflow→Prompt-Pairing**: v1/v2 bekommen prose (kein
 Test-Hint), v3/v4/v5 bekommen example-mapping (Beispiele = natürliche
 Test-Cases für TDD). Siehe Methoden-Constraint im
-[`research/README.md`](../README.md#workflow--erlaubte-prompt-stile).
+Top-README, Abschnitt [Methodology constraints](../../README.md#methodology-constraints).
 
 **Kontrolle auf game-of-life**: Einzige Kata mit verlässlichem
 Code-Quality-Signal (mars-rover hat zu wenig Smells, string-calculator

@@ -56,7 +56,7 @@ Reduziert auf 4 × 3 = 12 Zellen × n=3 = **36 Runs**:
 ## Design-Begründung
 
 **Workflow-Constraint** beachtet: v1 → prose, v3/v4/v5 → example-mapping
-(siehe [`research/README.md`](../README.md#workflow--erlaubte-prompt-stile)).
+(siehe Top-README, Abschnitt [Methodology constraints](../../README.md#methodology-constraints)).
 
 **Kein v2**: Reduziert Run-Aufwand. v2 ist v1 zu ähnlich, um zusätzliches
 Interaktions-Signal zu liefern.

@@ -198,7 +198,7 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p("### 2.2 Workflow → Prompt-Mapping")
     p("")
-    p("Aus methodischer Symmetrie (siehe `research/README.md`):")
+    p("Aus methodischer Symmetrie (siehe Top-`README.md`, Abschnitt 'Methodology constraints'):")
     p("")
     p("| Workflow | erlaubte Prompt-Stile | Begründung |")
     p("|---|---|---|")
