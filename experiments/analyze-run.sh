@@ -759,6 +759,11 @@ EOF
         local verification_total=0
         local verification_passed=0
         local verification_invoke_failed=0
+        # cli_built starts as null (no verification suite present means
+        # we have no signal). The block below sets it to true as soon
+        # as the suite is detected, and may flip it back to false if
+        # every scenario fails to invoke the command.
+        local cli_built=null
         local verification_pct="null"
 
         local kata_basename="$kata"
@@ -775,6 +780,9 @@ EOF
             local v_timeout
             v_command=$(jq -r '.command' "$verification_dir/runner.json")
             v_timeout=$(jq -r '.timeout_seconds // 30' "$verification_dir/runner.json")
+            # Verification suite is present, so we'll have a defined
+            # cli_built signal once the loop has run at least once.
+            cli_built=true
 
             : > "$run_dir/verification.log"
             for input_file in "$verification_dir"/scenarios/*.input.json; do
@@ -820,16 +828,18 @@ EOF
                 verification_pct=$(awk "BEGIN {printf \"%.4f\", $verification_passed / $verification_total}")
             fi
 
-            # If every scenario failed to even invoke the CLI, the agent
-            # never produced the entry point demanded by the prompt. The
-            # vitest spec may still pass internally, but the run as a
-            # whole has not satisfied the kata's contract — report it
-            # as a hard test failure so downstream RQ outcomes
-            # (tests_passing) reflect the missing artifact.
+            # cli_built is true iff at least one verification scenario
+            # got the CLI to produce stdout (whether the output matched
+            # or not). When every scenario failed to invoke the command,
+            # the agent never wrote the entry point demanded by the
+            # prompt — a separate finding from "vitest is red", and we
+            # keep them as two orthogonal fields so RQs can distinguish
+            # internal correctness (tests_passing) from contract
+            # fulfilment (cli_built).
             if [ "$verification_total" -gt 0 ] && \
                [ "$verification_invoke_failed" -eq "$verification_total" ]; then
-                tests_passed=false
-                echo -e "${RED}CLI entry point missing — overriding tests_passing=false${NC}"
+                cli_built=false
+                echo -e "${RED}CLI entry point missing (no scenario invoked the command)${NC}"
             fi
 
             echo -e "${YELLOW}Verification: ${verification_passed}/${verification_total} scenarios passed${NC}"
@@ -884,6 +894,7 @@ EOF
            --argjson verification_total "$verification_total" \
            --argjson verification_passed "$verification_passed" \
            --argjson verification_pct "$verification_pct" \
+           --argjson cli_built "$cli_built" \
            '.final_metrics.lines_of_code = $impl_loc |
             .final_metrics.test_lines = $test_loc |
             .final_metrics.tests_total = $test_count |
@@ -893,6 +904,7 @@ EOF
             .final_metrics.verification_total = $verification_total |
             .final_metrics.verification_passed = $verification_passed |
             .final_metrics.verification_pct = $verification_pct |
+            .final_metrics.cli_built = $cli_built |
             .coverage.statements_pct = $cov_statements |
             .coverage.branches_pct = $cov_branches |
             .code_smells.total = $smell_total |

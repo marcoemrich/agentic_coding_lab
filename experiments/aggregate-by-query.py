@@ -46,6 +46,7 @@ CSV_COLUMNS = [
     "mccabe_max", "mccabe_avg", "mccabe_high_count",
     "cognitive_max", "cognitive_avg", "cognitive_high_count",
     "verification_total", "verification_passed", "verification_pct",
+    "cli_built",
 ]
 
 # -----------------------------------------------------------------------
@@ -230,6 +231,7 @@ def metrics_to_row(metrics: dict, run_id: str) -> dict:
         "verification_total":         fm.get("verification_total"),
         "verification_passed":        fm.get("verification_passed"),
         "verification_pct":           fm.get("verification_pct"),
+        "cli_built":                  fm.get("cli_built"),
     }
 
 
