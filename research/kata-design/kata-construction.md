@@ -79,6 +79,33 @@ die Kata ohne sie genug Komplexität hatte.
 in die Kata, auch wenn sie methodisch (für eine Mehrdeutigkeit) "praktisch"
 wäre.
 
+## API-Vorgabe
+
+**Keine API in den Kata-Prompt schreiben**, außer die Original-Definition
+der Kata enthält eine kanonische Signatur.
+
+| Kata | API im Prompt? | Begründung |
+|------|----------------|------------|
+| **String Calculator** | ✅ ja | [Roy Osheroves Original](https://osherove.com/tdd-kata-1) definiert `int add(String numbers)` |
+| **Mars Rover** | ❌ nein | [kata-log.rocks](https://kata-log.rocks/mars-rover-kata) — keine kanonische Signatur |
+| **Diamond** | ❌ nein | Verschiedene Implementierungen verwenden unterschiedliche Signaturen |
+| **Game of Life** | ❌ nein | [codingdojo.org](https://codingdojo.org/kata/GameOfLife/) — beschreibt nur Input/Output |
+| **Neue Katas** | ❌ nein | Design soll aus den Tests entstehen |
+
+**Warum vorgegebene APIs vermeiden:**
+
+1. **TDD-Philosophie:** Design entsteht aus Tests, nicht aus vorgegebenen Signaturen.
+2. **Real-World-Simulation:** Echtes TDD startet mit Anforderungen, nicht mit Funktionssignaturen.
+3. **Workflow-Differenzierung:** Bessere Workflows könnten bessere APIs hervorbringen — eine Vorgabe verdeckt das.
+
+Die Beispiele im Prompt machen Input/Output bereits klar genug, damit
+das Modell eine passende API ableiten kann.
+
+CLI-Katas sind eine Ausnahme dieser Regel auf einer höheren Schicht:
+Sie schreiben das *äußere* Interface fest (`src/cli.ts`, JSON-stdin/stdout)
+für die Verifikations-Suite, lassen aber das *innere* API-Design des
+Modells frei (siehe [Verifikations-Architektur](#verifikations-architektur)).
+
 ## Domänen-Modellierung
 
 ### Tonalitäts-Linie

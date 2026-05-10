@@ -23,7 +23,7 @@ outcomes:
   - cc_longest_function
   - mccabe_max          # numerische McCabe-Komplexität (höchste Funktion)
   - cognitive_max       # numerische Cognitive Complexity (höchste Funktion)
-  - completed_within_budget    # Praktikabilität: Anteil Runs, die im 60-min-Budget fertig wurden
+  - completed_within_budget    # Praktikabilität: Anteil Runs, die im 90-min-Budget fertig wurden
 min_replicates: 3
 status: aktiv
 ---

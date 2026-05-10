@@ -32,7 +32,7 @@ outcomes:
   - predictions_correct_rate   # TDD-Disziplin: Vorhersage-Trefferquote (pooled %)
   - tests_passed_immediately   # TDD-Anti-Signal: Tests gleich grün
   - duration_seconds           # Effizienz
-  - completed_within_budget    # Praktikabilität: Anteil Runs, die im 60-min-Budget fertig wurden
+  - completed_within_budget    # Praktikabilität: Anteil Runs, die im 90-min-Budget fertig wurden
 min_replicates: 3
 status: aktiv
 ---

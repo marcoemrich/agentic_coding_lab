@@ -129,7 +129,7 @@ For methodological symmetry:
 
 | Workflow | Permitted prompt styles | Rationale |
 |---|---|---|
-| v1-oneshot, v2-iterative | only **prose** | Test examples from example-mapping/user-story would be a hidden test gift to non-TDD workflows → unfair to TDD workflows. |
+| v1-oneshot, v2-iterative | only **prose** | Concrete examples in the prompt nudge the agent toward starting with tests, which contaminates the non-TDD condition — the whole point of v1/v2 is to observe what happens when the agent is *not* steered into test-first. |
 | v3-basic-tdd, v4-exact-subagents, v5-exact-single-context | **prose, example-mapping, user-story** | Examples serve as natural test cases — for TDD workflows this is the ideal task shape. |
 
 Consequences for RQ design:
@@ -147,56 +147,26 @@ From the re-evaluation of an earlier 235-run study, three constraints are stable
 
 **Consequence for RQs**: All current RQs use `kata_base: game-of-life` as the default. mars-rover stays available for cross-kata validation once enough replicates exist. Generalizability claims about arbitrary katas are 🚫 not testable with the current design.
 
+**New novel kata**: `claim-office` was added as a fresh, non-classic kata with enough complexity to differentiate workflows and models. It is not in training data and ships with an external acceptance suite (see [CLI katas](#cli-katas-with-external-acceptance-suite)), so correctness is measured from the outside via `verification_pct`. Once enough replicates land, it becomes the second carrier of the code-quality signal alongside game-of-life.
+
 ### Timeouts as a research finding
 
-Each run has a hard wallclock budget (default 60 min, set via `CLAUDE_TIMEOUT_SECONDS=3600` in `run-batch.sh`). When a `(workflow, model, kata)` cell systematically hits this limit, that's **not a data error** — it is itself the finding: the variant is impractical within the chosen cost frame.
+Each run has a hard wallclock budget (default 90 min, set via `CLAUDE_TIMEOUT_SECONDS=5400` in `run-batch.sh`). When a `(workflow, model, kata)` cell systematically hits this limit, that's **not a data error** — it is itself the finding: the variant is impractical within the chosen cost frame.
 
 Consequences for analysis and data collection:
 
 - **Timeout runs are not deleted.** Their `metrics.json` is preserved with `run_status.exit_reason = "timeout"`. `tests_passing`, `verification_pct`, `code_mass`, etc. are `null`.
-- **Exhausted retry budgets** (`exit_reason = "rate-limited"` or `"transient-api-error"`) are treated the same way: a run that produced no model output after 5 backoff attempts also counts as a legitimate "did not complete in budget" data point.
+- **Exhausted retry budgets** (`exit_reason = "rate-limited"` or `"transient-api-error"`) are also folded into `completed_within_budget = false` — not because the wallclock ran out, but because a (workflow, model, kata) cell that repeatedly trips rate limits or transient API errors is *practically* unusable inside the lab's cost/availability envelope. Configurable via `BATCH_RATELIMIT_RETRIES` (default 5).
 - **They count toward `min_replicates`.** `batch-plan-from-rq.py` treats a timeout as a legitimate data point — no refill is generated for timeout cells.
 - **`completed_within_budget`** (Boolean, derived from `exit_reason`) is available as an outcome and reports the share of "finished within budget" per cell. Sensible as an outcome in any RQ whose factors vary workflow or model.
 - **`n_ok` column** in the cell coverage table of `summary.md` only counts successful runs; a "3 timeouts, 0 OK" cell is flagged ⚠️ even when `min_replicates` is formally met.
 
 ### Findings status legend
 
-- `✅ haltbar` — data robustly supports the finding (n≥3, clear signal)
-- `⚠️ revidiert` — partially supported; statement must be qualified
-- `❌ verworfen` — data clearly contradicts the finding
-- `🚫 nicht prüfbar` — data basis missing; status open
-
-### Glossary (binding for findings text)
-
-These terms are to be used only in the form defined here in all `findings.md`, `summary.md`, and snapshots. Synonyms (especially "code volume") are forbidden — they are ambiguous or collide with established definitions from the software-craftsmanship literature.
-
-| Term | Definition | Where to use |
-|---|---|---|
-| **Code-Mass (APP)** | `code_mass` = `lines_of_code` + `test_lines`, in the sense of the *Absolute Priority Premise* (Robert C. Martin). | When discussing `code_mass` values or the volume of production + test code. |
-| **Produktiv-LoC** | `cc_loc` from the clean-code reporter (source only, no tests). | When referring exclusively to production code. |
-| **Test-LoC** | `test_lines` (Vitest test code). | When referring exclusively to test code. |
-| **Smell-Summe** | `smell_total` (SonarJS + custom rules). | Aggregated code smells. |
-| **Spitzen-Komplexität** | `cc_longest_function` (longest function in lines). | Complexity peak per run. |
-| **Korrektheit (innen)** | `tests_passing` (Vitest green/red). | Inside view of tests. |
-| **Korrektheit (außen)** | `verification_pct` (acceptance suite, external CLI comparison). | Outside view via verification suite. |
-
-**Forbidden synonyms**: "Code-Volumen", "Code-Gesamtvolumen", "LoC-Größe" for `code_mass`. When in doubt: link the glossary or cite the metric ID (`code_mass`).
-
-### The trade-off
-
-This decoupling has costs and benefits.
-
-**Wins**
-
-- *Cumulative evidence*: every new run benefits every RQ whose selector matches it. No re-running batches when the question evolves.
-- *Cheap exploration*: drafting an RQ is just writing a frontmatter; tooling tells you immediately how much data already exists.
-- *Reproducibility*: `runs.csv` and `summary.md` are derivations; the canonical artefacts are the runs themselves.
-
-**Costs**
-
-- *No isolation*: a run produced for batch X might be silently picked up by RQ Y. If the run conditions drift (e.g. an analysis-pipeline bugfix), older matching runs become a hidden source of variance. Mitigation: re-run analysis on all runs after pipeline changes; status flags in findings (`✅ haltbar / ⚠️ revidiert / ❌ verworfen / 🚫 nicht prüfbar`) track such drift.
-- *Selector drift*: when a frontmatter changes (new factor value, different model), previously aggregated findings may no longer be reproducible without re-deriving — hence the `_archive/` snapshots for frozen analyses.
-- *Coupling via convention*: matching depends on the `model` field in `metrics.json` exactly equalling the lab-variant ID in the frontmatter. The model-alias table below is the contract.
+- `✅ stabil` — data robustly supports the finding (n≥3, clear signal)
+- `⚠️ bedingt` — only holds under a qualifying condition (named in the finding)
+- `❌ widerlegt` — data clearly contradicts the finding
+- `🚫 offen` — data basis missing; status open
 
 ### Key files and their meaning
 
@@ -393,26 +363,6 @@ Conventions:
 
 After each run, `analyze-run.sh` automatically detects the `<basename>-verification/` directory, pipes each scenario input into the CLI (in the run directory), and compares canonical JSON output against the expected JSON. Per-scenario results land in `verification.log`; counts go into `metrics.json` as `final_metrics.verification_total`, `verification_passed`, and `verification_pct` (a fraction 0.0–1.0). For non-CLI katas without a verification directory, these fields are 0/null.
 
-### API specification guidelines
-
-**Do NOT specify the API** in kata prompts unless the original kata definition includes a canonical API.
-
-| Kata | API in prompt? | Rationale |
-|------|----------------|-----------|
-| **String Calculator** | ✅ Yes | [Roy Osherove's original](https://osherove.com/tdd-kata-1) defines `int add(String numbers)` |
-| **Mars Rover** | ❌ No | [kata-log.rocks](https://kata-log.rocks/mars-rover-kata) — no canonical signature |
-| **Diamond** | ❌ No | Various implementations use different signatures |
-| **Game of Life** | ❌ No | [codingdojo.org](https://codingdojo.org/kata/GameOfLife/) — just describes input/output |
-| **Novel katas** | ❌ No | Let TDD drive the design |
-
-**Why avoid pre-specified APIs:**
-
-1. **TDD philosophy**: design should emerge from tests, not be dictated upfront.
-2. **Real-world simulation**: actual TDD starts with requirements, not function signatures.
-3. **Workflow differentiation**: better workflows might produce better APIs — pre-specification hides this.
-
-The examples in the prompt already make input/output clear enough for the AI to infer an appropriate API.
-
 ## Quick Start
 
 ### Prerequisites
@@ -453,7 +403,7 @@ Then either run an existing batch plan or generate one for a research question:
 ./experiments/aggregate-by-query.py research/RQ-1-workflow-effect/
 ```
 
-This reads the RQ frontmatter, selects all matching runs from `experiments/runs/`, and writes `runs.csv` + `summary.md` into the RQ directory. Findings are then curated by hand into `findings.md` with status flags (`✅ haltbar`, `⚠️ revidiert`, `❌ verworfen`, `🚫 nicht prüfbar`).
+This reads the RQ frontmatter, selects all matching runs from `experiments/runs/`, and writes `runs.csv` + `summary.md` into the RQ directory. Findings are then curated by hand into `findings.md` with status flags (`✅ stabil`, `⚠️ bedingt`, `❌ widerlegt`, `🚫 offen`).
 
 ### End-to-end loop
 
@@ -609,7 +559,7 @@ Plan file schema:
 
 ### Per-run hardening
 
-Each run is wrapped with a 60-minute timeout (override via `CLAUDE_TIMEOUT_SECONDS=...`). Stdout/stderr is captured to `runs/<run>/run.log`. Transient API errors (rate limits, 429, overloaded) are retried with backoff up to 5 times; if they persist, the run is recorded with `exit_reason = "rate-limited"` or `"transient-api-error"` and the batch continues. Each `metrics.json` gets a `run_status` block with `exit_code`, `exit_reason`, and `rate_limited`.
+Each run is wrapped with a 90-minute timeout (override via `CLAUDE_TIMEOUT_SECONDS=...`). Stdout/stderr is captured to `runs/<run>/run.log`. Transient API errors (rate limits, 429, overloaded) are retried with backoff up to 5 times; if they persist, the run is recorded with `exit_reason = "rate-limited"` or `"transient-api-error"` and the batch continues. Each `metrics.json` gets a `run_status` block with `exit_code`, `exit_reason`, and `rate_limited`.
 
 ### Container details
 
@@ -637,7 +587,7 @@ Each run is wrapped with a 60-minute timeout (override via `CLAUDE_TIMEOUT_SECON
 | `ANTHROPIC_API_KEY` | API key for Claude | (required) |
 | `ANTHROPIC_API_KEY_FILE` | Path to file with API key | `~/.anthropic/api_key` |
 | `CLAUDE_CONFIG_DIR` | Claude config directory | `~/.claude` |
-| `CLAUDE_TIMEOUT_SECONDS` | Per-run wallclock budget | `3600` (60 min) |
+| `CLAUDE_TIMEOUT_SECONDS` | Per-run wallclock budget | `5400` (90 min) |
 
 **Portkey gateway (or other proxy)**
 
@@ -678,19 +628,29 @@ sudo chown -R $(id -u):$(id -g) ../runs
 
 Each run is evaluated on metrics extracted from two sources: direct code analysis of generated files, and the AI-generated `experiment-summary.md`. All metrics live in `metrics.json` per run; the analysis pipeline (ESLint with `sonarjs/cognitive-complexity`, `max-depth`, etc.) runs inside the Docker batch container.
 
-### Core metrics
+The **Term (binding)** column gives the canonical name to use in `findings.md`, `summary.md`, and snapshots. These terms are binding — alternatives like "Code-Volumen", "Code-Gesamtvolumen", or "LoC-Größe" for `code_mass` are forbidden because they are ambiguous or collide with established definitions from the software-craftsmanship literature. When in doubt, cite the metric ID in backticks.
 
-| Metric | Source | Description |
-|--------|--------|-------------|
-| `duration_seconds` | metrics.json | Wall-clock time for the complete task |
-| `tests_passing` | test runner | Whether the implementer's own Vitest tests pass — the "inside view" of correctness |
-| `verification_pct` | external acceptance suite | For CLI katas with a sibling `<basename>-verification/` directory: fraction of acceptance scenarios passed (0.0–1.0). The "outside view" of correctness — measured against scenarios the implementer did not see during the run. `null` for katas without a verification suite. |
-| `code_mass` | code analysis | `lines_of_code` + `test_lines`, in the sense of the *Absolute Priority Premise* (lower = simpler) |
-| `cc_loc` | code analysis | Production LoC only (no tests) |
-| `test_lines` | code analysis | Vitest test code |
-| `smell_total` | ESLint+SonarJS | Aggregated code-smell count |
-| `cc_longest_function` | code analysis | Longest function in lines (complexity peak per run) |
-| `mccabe_*`, `cognitive_*` | code analysis | McCabe and cognitive-complexity scores |
+### Run outcomes
+
+| Metric | Term (binding) | Source | Description |
+|--------|----------------|--------|-------------|
+| `duration_seconds` | — | metrics.json | Wall-clock time for the complete task |
+| `tests_passing` | **Korrektheit (innen)** | test runner | Whether the implementer's own Vitest tests pass — the "inside view" of correctness |
+| `verification_pct` | **Korrektheit (außen)** | external acceptance suite | For CLI katas with a sibling `<basename>-verification/` directory: fraction of acceptance scenarios passed (0.0–1.0). The "outside view" of correctness — measured against scenarios the implementer did not see during the run. `null` for katas without a verification suite. |
+
+### Code-quality metrics
+
+| Metric | Term (binding) | Source | Description |
+|--------|----------------|--------|-------------|
+| `code_mass` | **Code-Mass (APP)** | code analysis | Weighted sum of code constructs (constants, invocations, conditionals, loops, assignments — heavier weights for higher-complexity constructs) following the *Absolute Priority Premise* by Micah Martin. Aims to compare implementations objectively beyond raw LoC. Lower = simpler. See [Code Cop blog](http://blog.code-cop.org/2016/08/absolute-priority-premise-example.html). |
+| `cc_loc` | **Produktiv-LoC** | code analysis | Production LoC only, from the clean-code reporter (no tests) |
+| `test_lines` | **Test-LoC** | code analysis | Vitest test code |
+| `smell_total` | **Smell-Summe** | [ESLint](https://eslint.org/) + [`eslint-plugin-sonarjs`](https://github.com/SonarSource/eslint-plugin-sonarjs) | Aggregated code-smell count. Sub-counters `smell_complexity`, `smell_duplication`, `smell_magic_numbers`, `smell_code_quality` group SonarJS rules (e.g. `no-duplicate-string`, `no-collapsible-if`) plus a few ESLint built-ins (`max-depth`, `max-lines-per-function`, `max-params`, `no-magic-numbers`, `no-unreachable`). |
+| `cc_longest_function` | **Spitzen-Komplexität** | code analysis | Longest function in lines (complexity peak per run) |
+| `cc_avg_loc_per_function` | — | code analysis | Mean function length in lines |
+| `cc_median_loc_per_function` | — | code analysis | Median function length in lines (robust against single long outliers) |
+| `mccabe_max`, `mccabe_avg`, `mccabe_high_count` | — | ESLint [`complexity`](https://eslint.org/docs/latest/rules/complexity) rule | McCabe cyclomatic complexity per function — max, mean, and count of functions above the threshold |
+| `cognitive_max`, `cognitive_avg`, `cognitive_high_count` | — | ESLint [`sonarjs/cognitive-complexity`](https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/cognitive-complexity.md) | Cognitive complexity per function (SonarSource metric, weights nesting and control-flow breaks heavier than McCabe) — max, mean, and count above threshold |
 
 ### Token & context metrics
 

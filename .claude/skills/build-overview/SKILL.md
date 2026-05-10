@@ -84,12 +84,12 @@ Stil-Vorgaben:
   findings.md duplizieren. Wo Coverage < 100 % ist, das in der Synthese
   benennen („Bei aktuell N Runs in M von K Zellen ...").
 - **Findings-Konvention:** Snapshot zeigt **nur den aktuellen Stand**.
-  Keine Status-Tags wie „⚠️ revidiert" / „✅ haltbar", keine Vergleiche
+  Keine Status-Tags wie „⚠️ bedingt" / „✅ stabil", keine Vergleiche
   mit Archiv-Snapshots oder älteren Studien (z.B. 235-Run-Studie). Falls
   die findings.md noch solche Status-Tags trägt: in der Snapshot-Synthese
   weglassen, nur die aktuelle Aussage übernehmen. Begründung: alte Runs
   hatten Pipeline-Biases (siehe Memory), Vergleiche sind methodisch nicht
-  haltbar.
+  belastbar.
 - **Cross-RQ-Synthese (5):** 3–5 nummerierte Punkte. Jeder Punkt verbindet
   mindestens **zwei** RQs und steht so **nicht** in einer einzelnen
   findings.md.
@@ -117,7 +117,7 @@ Verifiziere danach mit Glob bzw. Read, dass:
 1. Datei existiert
 2. Keine `<!-- TODO -->`-Marker mehr drin sind
 3. Alle aktuellen Befunde aus den findings.md irgendwo in den RQ-Sektionen referenziert sind (Nummer + Aussage)
-4. Keine Status-Tags („⚠️ revidiert", „✅ haltbar") und keine Verweise auf alte Studien / Archiv-Snapshots im publizierten Snapshot
+4. Keine Status-Tags („⚠️ bedingt", „✅ stabil") und keine Verweise auf alte Studien / Archiv-Snapshots im publizierten Snapshot
 
 Berichte am Ende in 1–2 Sätzen den Output-Pfad und auffällige Coverage-Lücken
 („RQ-X ist aktuell unter min_replicates").

@@ -13,13 +13,13 @@ RUNS_DIR="$EXPERIMENTS_DIR/runs"
 BATCH_PLANS_DIR="$EXPERIMENTS_DIR/batch-plans"
 
 # Hard timeout for a single Claude Code call (seconds). Override via env.
-# Default 3600s (60 min). This is the methodological budget — runs that
+# Default 5400s (90 min). This is the methodological budget — runs that
 # hit it are not data errors but legitimate "did not complete within
 # practical budget" findings (see top-level README.md → "Timeouts as a
 # research finding"). Do NOT lower this without coordinating across the
 # RQ data set: shorter budgets re-classify previously OK runs as
 # timeouts and break cross-batch comparability.
-CLAUDE_TIMEOUT_SECONDS="${CLAUDE_TIMEOUT_SECONDS:-3600}"
+CLAUDE_TIMEOUT_SECONDS="${CLAUDE_TIMEOUT_SECONDS:-5400}"
 
 # Rate-limit / API-overload behaviour. Tunable via env.
 #   BATCH_RATELIMIT_RETRIES   per-run retries on rate-limit/overload (default 5).

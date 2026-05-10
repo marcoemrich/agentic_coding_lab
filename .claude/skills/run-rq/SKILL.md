@@ -188,9 +188,9 @@ ausgeben, dann auf explizites "ja, übernehmen" warten, dann via `Edit`
 patchen.
 
 `findings.md` zeigt **nur den aktuellen Stand**. Keine Status-Tags
-(`✅`/`⚠️`/`🚫`/`❌`), keine Vergleiche mit Archiv-Snapshots oder älteren
-Studien, keine "ehemals X, revidiert"-Hinweise im Fließtext. Header-Form:
-`## F-x.y — Titel` (kein `· …`-Suffix).
+(`✅ stabil` / `⚠️ bedingt` / `🚫 offen` / `❌ widerlegt`), keine Vergleiche
+mit Archiv-Snapshots oder älteren Studien, keine "ehemals X, korrigiert"-
+Hinweise im Fließtext. Header-Form: `## F-x.y — Titel` (kein `· …`-Suffix).
 
 1. Diff-Quellen:
    - **Bestand**: `findings.md` aus Phase 1.
@@ -206,7 +206,7 @@ Studien, keine "ehemals X, revidiert"-Hinweise im Fließtext. Header-Form:
      Archiv-Snapshots.
    - **Löschung**: Daten widerlegen den Befund → User-Bestätigung
      einholen, dann Block samt Trenner-`---` entfernen. Nicht als
-     "verworfen" markieren.
+     "widerlegt" markieren.
 3. Datenlücke: Wenn ein Effekt vermutet wird, aber Coverage zu klein für
    `n ≥ min_replicates` ist → Notiz in `todos_and_ideas.txt` (Sektion
    "Re-Check ungeprüfter Hypothesen aus alten findings.md") als Bullet

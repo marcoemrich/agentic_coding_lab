@@ -36,9 +36,10 @@ für stärkere Modelle, scheitert aber bei Haiku am Run-Stability-Problem.
 
 ## F-4.6 — Modell-spezifisches Code-Mass-Profil (APP) unter TDD
 
-**Aussage**: Code-Mass im Sinne der Absolute Priority Premise
-(`code_mass` = `lines_of_code` + `test_lines`) variiert deutlich zwischen den
-Modellen unter identischem Workflow — Haiku produziert systematisch
+**Aussage**: Code-Mass (`code_mass`) im Sinne der *Absolute Priority Premise*
+(Micah Martin, gewichtete Summe von Code-Konstrukten — siehe Top-README,
+Abschnitt [Metrics](../../README.md#code-quality-metrics)) variiert
+deutlich zwischen den Modellen unter identischem Workflow — Haiku produziert systematisch
 mehr Code als Opus oder Sonnet, außer in v5 (single-context), wo das
 Muster bricht.
 
