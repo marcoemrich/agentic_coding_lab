@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-08_16-04-50_claim-office-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
-Generated: 2026-05-09T11:11:47+02:00
+Generated: 2026-05-10T14:54:51+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:11:47+02:00
 
 ## Code Metrics
 
-- **Implementation file**: cli.ts
-- **Implementation LOC**: 31
+- **Implementation files**: claim-office.ts, cli.ts
+- **Implementation LOC** (total): 286
 - **Test file**: claim-office.spec.ts
 - **Test file LOC**: 581
 - **Active tests**: 39
@@ -36,12 +36,12 @@ Generated: 2026-05-09T11:11:47+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-08_16-04-50_claim-office-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
- ✓ src/claim-office.spec.ts  (39 tests) 7ms
+ ✓ src/claim-office.spec.ts  (39 tests) 6ms
 
  Test Files  1 passed (1)
       Tests  39 passed (39)
-   Start at  11:11:48
-   Duration  376ms (transform 45ms, setup 0ms, collect 39ms, tests 7ms, environment 0ms, prepare 99ms)
+   Start at  14:54:52
+   Duration  361ms (transform 38ms, setup 0ms, collect 36ms, tests 6ms, environment 0ms, prepare 70ms)
 ```
 
 ## Coverage
@@ -55,21 +55,22 @@ Generated: 2026-05-09T11:11:47+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 6 | ×1 | 6 |
-| Invocations | 19 | ×2 | 38 |
-| Conditionals | 1 | ×4 | 4 |
-| Loops | 1 | ×5 | 5 |
-| Assignments | 6 | ×6 | 36 |
-| **Total Mass** | | | **89** |
+| Constants | 75 | ×1 | 75 |
+| Invocations | 87 | ×2 | 174 |
+| Conditionals | 18 | ×4 | 72 |
+| Loops | 20 | ×5 | 100 |
+| Assignments | 77 | ×6 | 462 |
+| **Total Mass** | | | **883** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 27 |
-| Functions | 2 |
-| Longest Function | 18 lines |
-| Avg LOC/Function | 12 |
+| LOC (non-blank) | 246 |
+| Functions | 13 |
+| Longest Function | 39 lines |
+| Avg LOC/Function | 11.77 |
+| Median LOC/Function | 7.00 |
 | Imports | 1 |
 
 ## Code Smells

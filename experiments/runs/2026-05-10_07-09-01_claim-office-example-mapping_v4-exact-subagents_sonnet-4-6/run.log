@@ -1,0 +1,14 @@
+All 26 tests are implemented and passing. The experiment is complete.
+
+**Summary:**
+
+The MHPCO Claim Office kata was implemented using full TDD (Red-Green-Refactor) with specialized agents for each phase:
+
+- **26 tests** implemented covering:
+  - Quote: base premiums (sword, amulet, staff, potion, components), block discount for 3 alike components, cursed surcharge (50%), high enchantment surcharge (30%), loyalty discount (20%), first insurance surcharge (10%), follow-up contract discount (15%), processing fee (5G), ceiling rounding
+  - Claim: basic payout (damage - deductible), zero payout when damage ≤ deductible, 50% rule for enchantment ≥ 8, dragon material full reimbursement, combined rules (50% wins), remaining cap tracking, cap exhaustion, floor rounding
+  - Error conditions: unknown item type, item not in policy, negative damage, excess damage entries
+
+- **Key implementation files:**
+  - `src/claim-office.ts` - core logic with `generateQuote` and `processClaim` functions
+  - `src/claim-office.spec.ts` - 26 passing tests

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_10-59-43_game-of-life-prose_v3-basic-tdd_opus-4-7-no-thinking
 
-Generated: 2026-05-09T11:03:14+02:00
+Generated: 2026-05-10T14:51:05+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:03:14+02:00
 
 ## Code Metrics
 
-- **Implementation file**: game-of-life.ts
-- **Implementation LOC**: 37
+- **Implementation files**: game-of-life.ts
+- **Implementation LOC** (total): 37
 - **Test file**: game-of-life.spec.ts
 - **Test file LOC**: 73
 - **Active tests**: 11
@@ -40,8 +40,8 @@ Generated: 2026-05-09T11:03:14+02:00
 
  Test Files  1 passed (1)
       Tests  11 passed (11)
-   Start at  11:03:14
-   Duration  337ms (transform 25ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 85ms)
+   Start at  14:51:05
+   Duration  374ms (transform 25ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 86ms)
 ```
 
 ## Coverage
@@ -69,7 +69,8 @@ Generated: 2026-05-09T11:03:14+02:00
 | LOC (non-blank) | 30 |
 | Functions | 3 |
 | Longest Function | 22 lines |
-| Avg LOC/Function | 9 |
+| Avg LOC/Function | 9.33 |
+| Median LOC/Function | 4.00 |
 | Imports | 0 |
 
 ## Code Smells

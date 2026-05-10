@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-08_15-54-26_claim-office-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
-Generated: 2026-05-09T11:11:37+02:00
+Generated: 2026-05-10T14:54:41+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:11:37+02:00
 
 ## Code Metrics
 
-- **Implementation file**: cli.ts
-- **Implementation LOC**: 28
+- **Implementation files**: claim-office.ts, cli.ts
+- **Implementation LOC** (total): 220
 - **Test file**: claim-office.spec.ts
 - **Test file LOC**: 431
 - **Active tests**: 34
@@ -36,12 +36,12 @@ Generated: 2026-05-09T11:11:37+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-08_15-54-26_claim-office-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
- ✓ src/claim-office.spec.ts  (34 tests) 6ms
+ ✓ src/claim-office.spec.ts  (34 tests) 7ms
 
  Test Files  1 passed (1)
       Tests  34 passed (34)
-   Start at  11:11:37
-   Duration  361ms (transform 36ms, setup 0ms, collect 34ms, tests 6ms, environment 0ms, prepare 94ms)
+   Start at  14:54:41
+   Duration  414ms (transform 36ms, setup 0ms, collect 35ms, tests 7ms, environment 0ms, prepare 63ms)
 ```
 
 ## Coverage
@@ -55,21 +55,22 @@ Generated: 2026-05-09T11:11:37+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 8 | ×1 | 8 |
-| Invocations | 17 | ×2 | 34 |
-| Conditionals | 1 | ×4 | 4 |
-| Loops | 0 | ×5 | 0 |
-| Assignments | 11 | ×6 | 66 |
-| **Total Mass** | | | **112** |
+| Constants | 66 | ×1 | 66 |
+| Invocations | 71 | ×2 | 142 |
+| Conditionals | 24 | ×4 | 96 |
+| Loops | 7 | ×5 | 35 |
+| Assignments | 70 | ×6 | 420 |
+| **Total Mass** | | | **759** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 25 |
-| Functions | 2 |
-| Longest Function | 12 lines |
-| Avg LOC/Function | 11 |
+| LOC (non-blank) | 188 |
+| Functions | 13 |
+| Longest Function | 24 lines |
+| Avg LOC/Function | 9.15 |
+| Median LOC/Function | 7.00 |
 | Imports | 1 |
 
 ## Code Smells

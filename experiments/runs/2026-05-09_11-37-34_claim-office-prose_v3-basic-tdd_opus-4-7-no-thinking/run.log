@@ -1,0 +1,12 @@
+All 27 tests pass. The implementation includes:
+
+- `src/types.ts` — type definitions
+- `src/items.ts` — item pricing catalog and insurance-sum calculation
+- `src/quote.ts` — premium calculation (base, modifiers, component bundles, rounding up)
+- `src/claim.ts` — claim processing (deductible, dragon/enchantment reimbursement, cap)
+- `src/scenario.ts` — sequential step processor maintaining policy state and contract count
+- `src/cli.ts` — CLI entry reading JSON from stdin, writing JSON to stdout
+- `bin/claim-office.mjs` — wrapper executable for `claim-office`
+- Test files for quote, claim, and scenario logic
+
+CLI runnable via `pnpm claim-office`, `./bin/claim-office.mjs`, or `pnpm exec claim-office` (after install).

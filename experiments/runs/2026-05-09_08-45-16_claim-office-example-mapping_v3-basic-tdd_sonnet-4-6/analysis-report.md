@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-09_08-45-16_claim-office-example-mapping_v3-basic-tdd_sonnet-4-6
 
-Generated: 2026-05-09T11:14:39+02:00
+Generated: 2026-05-10T14:56:15+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:14:39+02:00
 
 ## Code Metrics
 
-- **Implementation file**: engine.ts
-- **Implementation LOC**: 246
+- **Implementation files**: cli.ts, engine.ts, types.ts
+- **Implementation LOC** (total): 337
 - **Test file**: engine.spec.ts
 - **Test file LOC**: 602
 - **Active tests**: 45
@@ -36,12 +36,12 @@ Generated: 2026-05-09T11:14:39+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-09_08-45-16_claim-office-example-mapping_v3-basic-tdd_sonnet-4-6
 
- ✓ src/engine.spec.ts  (45 tests) 7ms
+ ✓ src/engine.spec.ts  (45 tests) 8ms
 
  Test Files  1 passed (1)
       Tests  45 passed (45)
-   Start at  11:14:40
-   Duration  399ms (transform 39ms, setup 0ms, collect 39ms, tests 7ms, environment 0ms, prepare 78ms)
+   Start at  14:56:16
+   Duration  358ms (transform 39ms, setup 0ms, collect 41ms, tests 8ms, environment 0ms, prepare 58ms)
 ```
 
 ## Coverage
@@ -55,22 +55,23 @@ Generated: 2026-05-09T11:14:39+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 59 | ×1 | 59 |
-| Invocations | 82 | ×2 | 164 |
-| Conditionals | 17 | ×4 | 68 |
-| Loops | 15 | ×5 | 75 |
-| Assignments | 61 | ×6 | 366 |
-| **Total Mass** | | | **732** |
+| Constants | 68 | ×1 | 68 |
+| Invocations | 102 | ×2 | 204 |
+| Conditionals | 21 | ×4 | 84 |
+| Loops | 16 | ×5 | 80 |
+| Assignments | 68 | ×6 | 408 |
+| **Total Mass** | | | **844** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 188 |
-| Functions | 8 |
+| LOC (non-blank) | 263 |
+| Functions | 9 |
 | Longest Function | 35 lines |
-| Avg LOC/Function | 8 |
-| Imports | 1 |
+| Avg LOC/Function | 10.33 |
+| Median LOC/Function | 3.00 |
+| Imports | 3 |
 
 ## Code Smells
 

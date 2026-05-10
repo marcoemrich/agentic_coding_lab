@@ -1,0 +1,8 @@
+All 48 tests pass. The TDD exercise is complete:
+
+- **`src/items.ts`** — item type definitions, insurance values, base premiums
+- **`src/quote.ts`** — `computePremium` with correct modifier layering: item-level surcharges (cursed, high enchantment) applied to item raw base, policy-wide modifiers (loyalty, first insurance, follow-up) applied to policy base premium sum, processing fee added last, rounded up
+- **`src/claim.ts`** — `processClaim` with per-item deductible, high-enchantment 50% rule, dragon material full reimbursement, cap enforcement, rounded down
+- **`src/scenario.ts`** — `runScenario` orchestrating sequential steps, tracking policies and quote count for first/follow-up contract determination
+- **`src/cli.ts`** — reads JSON from stdin, writes JSON to stdout, exits non-zero on error
+- **`src/quote.spec.ts`**, **`src/claim.spec.ts`**, **`src/cli.spec.ts`** — 48 tests covering all rules from the prompt

@@ -1,0 +1,40 @@
+Perfect! Let me create a brief summary of what was implemented:
+
+## TDD Exercise Complete ✅
+
+I've successfully completed the MHPCO Claim Office kata using Test-Driven Development. Here's what was implemented:
+
+### Project Structure
+- **src/types.ts** - Type definitions for all domain objects
+- **src/pricing.ts** - Premium calculation logic with all modifiers
+- **src/claims.ts** - Damage payout and claim processing logic
+- **src/cli.ts** - CLI entry point that reads JSON from stdin and writes to stdout
+
+### Test Coverage: 65 Tests (All Passing)
+- **src/pricing.test.ts** (28 tests) - Base premiums, components, modifiers, integration examples
+- **src/claims.test.ts** (19 tests) - Damage payouts, deductibles, caps, special clauses
+- **src/cli.test.ts** (18 tests) - Integration tests for all examples from the prompt
+
+### Key Features Implemented
+✅ **Item Pricing**: Sword (1000G/100G), Amulet (600G/60G), Staff (800G/80G), Potion (400G/40G), Components (250G/25G each)
+✅ **Component Blocks**: Exactly 3 alike components get special 60G premium rate
+✅ **Modifiers**:
+  - Cursed items: +50% surcharge on item's base premium
+  - High enchantment (≥5): +30% surcharge on item's base premium
+  - Loyalty (≥2 years): -20% discount on policy premium
+  - First insurance: +10% surcharge on policy premium
+  - Follow-up contract: -15% discount on policy premium
+  - Processing fee: +5G always
+
+✅ **Claims Processing**:
+  - 100G deductible per damage event
+  - Cap: 2× insurance sum per policy
+  - High enchantment (≥8): 50% damage reduction
+  - Dragon material: Full reimbursement
+  - Both clauses: 50% rule takes precedence
+
+✅ **CLI**: Reads JSON from stdin, processes quote/claim steps sequentially, outputs JSON with results or error messages
+
+✅ **Error Handling**: Unknown item types, invalid damages, policy mismatches, negative amounts
+
+All tests pass and the CLI correctly handles all integration examples from the prompt.

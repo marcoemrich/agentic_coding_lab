@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-08_11-25-44_claim-office-prose_v2-iterative_opus-4-7-no-thinking
 
-Generated: 2026-05-09T11:09:54+02:00
+Generated: 2026-05-10T14:53:28+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:09:54+02:00
 
 ## Code Metrics
 
-- **Implementation file**: claims.ts
-- **Implementation LOC**: 62
+- **Implementation files**: claims.ts, cli.ts, pricing.ts, scenario.ts, types.ts
+- **Implementation LOC** (total): 323
 - **Test file**: claims.spec.ts
 - **Test file LOC**: 70
 - **Active tests**: 6
@@ -37,13 +37,13 @@ Generated: 2026-05-09T11:09:54+02:00
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-08_11-25-44_claim-office-prose_v2-iterative_opus-4-7-no-thinking
 
  ✓ src/claims.spec.ts  (6 tests) 2ms
- ✓ src/scenario.spec.ts  (3 tests) 3ms
- ✓ src/pricing.spec.ts  (11 tests) 3ms
+ ✓ src/pricing.spec.ts  (11 tests) 2ms
+ ✓ src/scenario.spec.ts  (3 tests) 2ms
 
  Test Files  3 passed (3)
       Tests  20 passed (20)
-   Start at  11:09:55
-   Duration  335ms (transform 56ms, setup 0ms, collect 71ms, tests 8ms, environment 0ms, prepare 258ms)
+   Start at  14:53:28
+   Duration  346ms (transform 51ms, setup 0ms, collect 79ms, tests 6ms, environment 0ms, prepare 195ms)
 ```
 
 ## Coverage
@@ -57,22 +57,23 @@ Generated: 2026-05-09T11:09:54+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 13 | ×1 | 13 |
-| Invocations | 22 | ×2 | 44 |
-| Conditionals | 4 | ×4 | 16 |
-| Loops | 3 | ×5 | 15 |
-| Assignments | 12 | ×6 | 72 |
-| **Total Mass** | | | **160** |
+| Constants | 80 | ×1 | 80 |
+| Invocations | 103 | ×2 | 206 |
+| Conditionals | 21 | ×4 | 84 |
+| Loops | 14 | ×5 | 70 |
+| Assignments | 64 | ×6 | 384 |
+| **Total Mass** | | | **824** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 49 |
-| Functions | 5 |
-| Longest Function | 15 lines |
-| Avg LOC/Function | 7 |
-| Imports | 1 |
+| LOC (non-blank) | 265 |
+| Functions | 17 |
+| Longest Function | 36 lines |
+| Avg LOC/Function | 10.41 |
+| Median LOC/Function | 6.00 |
+| Imports | 7 |
 
 ## Code Smells
 

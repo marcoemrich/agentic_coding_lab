@@ -1,0 +1,45 @@
+## Summary
+
+I have successfully completed the MHPCO Claim Office TDD exercise. Here's what was implemented:
+
+### Core Modules
+
+1. **quote.ts** - Implements premium calculation with:
+   - Base premiums for all item types (sword, amulet, staff, potion, rune, moonstone)
+   - Component block discounts (exactly 3 alike components get reduced premium)
+   - Item-specific modifiers (cursed items +50%, enchantment ≥5 +30%)
+   - Policy-wide modifiers (loyalty discount -20% for customers with ≥2 years, first insurance +10%, follow-up contract -15%)
+   - Processing fee (5G)
+   - Proper rounding in MHPCO's favor (ceiling)
+
+2. **claim.ts** - Implements damage claim processing with:
+   - Deductible of 100G per damage event
+   - High enchantment clause (enchantment ≥8 reduces payout to 50%)
+   - Dragon material clause (full reimbursement)
+   - Cap enforcement (total payout limited to 2x insurance sum)
+   - Remaining cap tracking across claims
+   - Proper validation (negative amounts, uninsured items, count mismatches)
+
+3. **cli.ts** - Command-line interface that:
+   - Reads JSON scenarios from stdin
+   - Processes multiple quote and claim steps sequentially
+   - Writes results as JSON to stdout
+   - Handles errors with appropriate exit codes
+   - Validates all inputs
+
+### Test Coverage
+
+- **35 tests** across quote and claim modules
+- All tests pass successfully
+- Coverage includes:
+  - Single items and multiple items
+  - All modifier combinations
+  - Edge cases (empty lists, component blocks, claim caps)
+  - Integration examples from the prompt
+
+### Execution
+
+The CLI can be run via:
+- `pnpm start` (runs compiled JavaScript)
+- `pnpm exec tsx src/cli.ts` (runs TypeScript directly)
+- Build with `pnpm build` to generate dist/ files

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-09_08-52-55_claim-office-example-mapping_v3-basic-tdd_sonnet-4-6
 
-Generated: 2026-05-09T11:14:49+02:00
+Generated: 2026-05-10T14:56:25+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:14:49+02:00
 
 ## Code Metrics
 
-- **Implementation file**: claims.ts
-- **Implementation LOC**: 125
+- **Implementation files**: claims.ts, cli.ts, pricing.ts, types.ts
+- **Implementation LOC** (total): 409
 - **Test file**: claims.spec.ts
 - **Test file LOC**: 213
 - **Active tests**: 16
@@ -36,13 +36,13 @@ Generated: 2026-05-09T11:14:49+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-09_08-52-55_claim-office-example-mapping_v3-basic-tdd_sonnet-4-6
 
- ✓ src/pricing.spec.ts  (26 tests) 5ms
+ ✓ src/pricing.spec.ts  (26 tests) 4ms
  ✓ src/claims.spec.ts  (16 tests) 4ms
 
  Test Files  2 passed (2)
       Tests  42 passed (42)
-   Start at  11:14:50
-   Duration  343ms (transform 50ms, setup 0ms, collect 65ms, tests 9ms, environment 0ms, prepare 146ms)
+   Start at  14:56:26
+   Duration  354ms (transform 50ms, setup 0ms, collect 61ms, tests 8ms, environment 0ms, prepare 156ms)
 ```
 
 ## Coverage
@@ -56,22 +56,23 @@ Generated: 2026-05-09T11:14:49+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 33 | ×1 | 33 |
-| Invocations | 48 | ×2 | 96 |
-| Conditionals | 8 | ×4 | 32 |
-| Loops | 10 | ×5 | 50 |
-| Assignments | 24 | ×6 | 144 |
-| **Total Mass** | | | **355** |
+| Constants | 93 | ×1 | 93 |
+| Invocations | 123 | ×2 | 246 |
+| Conditionals | 23 | ×4 | 92 |
+| Loops | 18 | ×5 | 90 |
+| Assignments | 77 | ×6 | 462 |
+| **Total Mass** | | | **983** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 94 |
-| Functions | 4 |
-| Longest Function | 67 lines |
-| Avg LOC/Function | 26 |
-| Imports | 1 |
+| LOC (non-blank) | 317 |
+| Functions | 9 |
+| Longest Function | 81 lines |
+| Avg LOC/Function | 28.33 |
+| Median LOC/Function | 15.00 |
+| Imports | 5 |
 
 ## Code Smells
 

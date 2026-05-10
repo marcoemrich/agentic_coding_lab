@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-09_08-33-51_claim-office-prose_v1-oneshot_haiku-4-5
 
-Generated: 2026-05-09T11:14:18+02:00
+Generated: 2026-05-10T14:55:54+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:14:18+02:00
 
 ## Code Metrics
 
-- **Implementation file**: mhpco.ts
-- **Implementation LOC**: 207
+- **Implementation files**: cli.ts, mhpco.ts, types.ts
+- **Implementation LOC** (total): 342
 - **Test file**: mhpco.spec.ts
 - **Test file LOC**: 255
 - **Active tests**: 18
@@ -36,12 +36,12 @@ Generated: 2026-05-09T11:14:18+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-09_08-33-51_claim-office-prose_v1-oneshot_haiku-4-5
 
- ✓ src/mhpco.spec.ts  (18 tests) 4ms
+ ✓ src/mhpco.spec.ts  (18 tests) 3ms
 
  Test Files  1 passed (1)
       Tests  18 passed (18)
-   Start at  11:14:19
-   Duration  408ms (transform 33ms, setup 0ms, collect 31ms, tests 4ms, environment 0ms, prepare 79ms)
+   Start at  14:55:55
+   Duration  373ms (transform 29ms, setup 0ms, collect 27ms, tests 3ms, environment 0ms, prepare 94ms)
 ```
 
 ## Coverage
@@ -55,22 +55,23 @@ Generated: 2026-05-09T11:14:18+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 66 | ×1 | 66 |
-| Invocations | 56 | ×2 | 112 |
-| Conditionals | 14 | ×4 | 56 |
-| Loops | 15 | ×5 | 75 |
-| Assignments | 50 | ×6 | 300 |
-| **Total Mass** | | | **609** |
+| Constants | 83 | ×1 | 83 |
+| Invocations | 82 | ×2 | 164 |
+| Conditionals | 17 | ×4 | 68 |
+| Loops | 19 | ×5 | 95 |
+| Assignments | 66 | ×6 | 396 |
+| **Total Mass** | | | **806** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 149 |
-| Functions | 6 |
-| Longest Function | 32 lines |
-| Avg LOC/Function | 9 |
-| Imports | 1 |
+| LOC (non-blank) | 256 |
+| Functions | 7 |
+| Longest Function | 60 lines |
+| Avg LOC/Function | 17.00 |
+| Median LOC/Function | 9.00 |
+| Imports | 4 |
 
 ## Code Smells
 

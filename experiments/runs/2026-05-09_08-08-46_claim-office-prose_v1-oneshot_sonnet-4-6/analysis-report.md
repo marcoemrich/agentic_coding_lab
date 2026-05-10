@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-09_08-08-46_claim-office-prose_v1-oneshot_sonnet-4-6
 
-Generated: 2026-05-09T11:13:34+02:00
+Generated: 2026-05-10T14:55:12+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:13:34+02:00
 
 ## Code Metrics
 
-- **Implementation file**: engine.ts
-- **Implementation LOC**: 153
+- **Implementation files**: cli.ts, engine.ts, types.ts
+- **Implementation LOC** (total): 228
 - **Test file**: engine.spec.ts
 - **Test file LOC**: 376
 - **Active tests**: 31
@@ -36,12 +36,12 @@ Generated: 2026-05-09T11:13:34+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-09_08-08-46_claim-office-prose_v1-oneshot_sonnet-4-6
 
- ✓ src/engine.spec.ts  (31 tests) 8ms
+ ✓ src/engine.spec.ts  (31 tests) 5ms
 
  Test Files  1 passed (1)
       Tests  31 passed (31)
-   Start at  11:13:35
-   Duration  398ms (transform 64ms, setup 0ms, collect 38ms, tests 8ms, environment 0ms, prepare 179ms)
+   Start at  14:55:12
+   Duration  361ms (transform 34ms, setup 0ms, collect 32ms, tests 5ms, environment 0ms, prepare 60ms)
 ```
 
 ## Coverage
@@ -55,22 +55,23 @@ Generated: 2026-05-09T11:13:34+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 60 | ×1 | 60 |
-| Invocations | 57 | ×2 | 114 |
+| Constants | 66 | ×1 | 66 |
+| Invocations | 70 | ×2 | 140 |
 | Conditionals | 14 | ×4 | 56 |
-| Loops | 10 | ×5 | 50 |
-| Assignments | 45 | ×6 | 270 |
-| **Total Mass** | | | **550** |
+| Loops | 11 | ×5 | 55 |
+| Assignments | 51 | ×6 | 306 |
+| **Total Mass** | | | **623** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 122 |
-| Functions | 8 |
+| LOC (non-blank) | 183 |
+| Functions | 9 |
 | Longest Function | 29 lines |
-| Avg LOC/Function | 8 |
-| Imports | 1 |
+| Avg LOC/Function | 8.89 |
+| Median LOC/Function | 5.00 |
+| Imports | 2 |
 
 ## Code Smells
 

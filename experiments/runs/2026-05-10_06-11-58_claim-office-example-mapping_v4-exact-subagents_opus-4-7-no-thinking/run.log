@@ -1,0 +1,6 @@
+All 43 tests pass and the experiment is complete:
+
+- **Implementation**: `src/claim-office.ts` — implements `runScenario` with quote and claim logic per the MHPCO kata spec (base premiums, components/blocks, cursed/high-enchantment surcharges, loyalty/follow-up/first-insurance modifiers, rounding, deductibles, cap tracking, dragon material handling, and validation rejections).
+- **CLI**: `src/cli.ts` — reads JSON from stdin, calls `runScenario`, writes JSON to stdout, exits non-zero on errors.
+- **Tests**: `src/claim-office.spec.ts` — 43 passing tests covering all spec rules.
+- **Done marker**: `experiment-done.txt` containing `DONE`.

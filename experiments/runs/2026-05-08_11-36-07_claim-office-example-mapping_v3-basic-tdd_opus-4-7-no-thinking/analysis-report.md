@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-08_11-36-07_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking
 
-Generated: 2026-05-09T11:10:25+02:00
+Generated: 2026-05-10T14:53:59+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:10:25+02:00
 
 ## Code Metrics
 
-- **Implementation file**: premium.ts
-- **Implementation LOC**: 99
+- **Implementation files**: claim.ts, cli.ts, premium.ts, scenario.ts, types.ts
+- **Implementation LOC** (total): 400
 - **Test file**: premium.spec.ts
 - **Test file LOC**: 221
 - **Active tests**: 18
@@ -36,14 +36,14 @@ Generated: 2026-05-09T11:10:25+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-08_11-36-07_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking
 
- ✓ src/premium.spec.ts  (18 tests) 3ms
- ✓ src/scenario.spec.ts  (5 tests) 4ms
- ✓ src/claim.spec.ts  (17 tests) 4ms
+ ✓ src/scenario.spec.ts  (5 tests) 3ms
+ ✓ src/premium.spec.ts  (18 tests) 4ms
+ ✓ src/claim.spec.ts  (17 tests) 5ms
 
  Test Files  3 passed (3)
       Tests  40 passed (40)
-   Start at  11:10:26
-   Duration  353ms (transform 74ms, setup 0ms, collect 99ms, tests 11ms, environment 1ms, prepare 268ms)
+   Start at  14:54:00
+   Duration  381ms (transform 77ms, setup 0ms, collect 109ms, tests 12ms, environment 0ms, prepare 326ms)
 ```
 
 ## Coverage
@@ -57,22 +57,23 @@ Generated: 2026-05-09T11:10:25+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 37 | ×1 | 37 |
-| Invocations | 33 | ×2 | 66 |
-| Conditionals | 10 | ×4 | 40 |
-| Loops | 5 | ×5 | 25 |
-| Assignments | 18 | ×6 | 108 |
-| **Total Mass** | | | **276** |
+| Constants | 96 | ×1 | 96 |
+| Invocations | 123 | ×2 | 246 |
+| Conditionals | 30 | ×4 | 120 |
+| Loops | 15 | ×5 | 75 |
+| Assignments | 66 | ×6 | 396 |
+| **Total Mass** | | | **933** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 78 |
-| Functions | 4 |
+| LOC (non-blank) | 330 |
+| Functions | 14 |
 | Longest Function | 34 lines |
-| Avg LOC/Function | 17 |
-| Imports | 1 |
+| Avg LOC/Function | 16.57 |
+| Median LOC/Function | 17.00 |
+| Imports | 6 |
 
 ## Code Smells
 

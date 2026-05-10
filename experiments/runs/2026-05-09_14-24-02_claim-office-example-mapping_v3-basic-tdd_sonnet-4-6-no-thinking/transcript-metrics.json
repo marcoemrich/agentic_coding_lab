@@ -1,0 +1,84 @@
+{
+  "wall_clock_seconds": 400.79,
+  "total_tokens": {
+    "input": 76,
+    "output": 34136,
+    "cache_read": 3722061,
+    "cache_creation": 68582,
+    "total": 3824855
+  },
+  "context_utilization_pct": 7,
+  "context_window_tokens": 1000000,
+  "context_peak_tokens": 65310,
+  "message_count": 72,
+  "tool_calls": {
+    "Read": 7,
+    "Bash": 19,
+    "TodoWrite": 5,
+    "Write": 8,
+    "Edit": 9
+  },
+  "skill_invocations": {},
+  "task_invocations": {},
+  "cycle_count": 2,
+  "predictions_correct": 0,
+  "predictions_total": 0,
+  "model_versions": [
+    "claude-sonnet-4-6"
+  ],
+  "subagent_token_total": 0,
+  "phases": [
+    {
+      "phase": "green",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "red",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "green",
+      "tokens": 178672,
+      "duration_seconds": 15.43
+    },
+    {
+      "phase": "red",
+      "tokens": 689515,
+      "duration_seconds": 53.21
+    },
+    {
+      "phase": "green",
+      "tokens": 880174,
+      "duration_seconds": 38.1
+    }
+  ],
+  "phase_source": "inline-tool",
+  "phase_summary": {
+    "by_phase": {
+      "green": {
+        "count": 3,
+        "tokens": 1058846,
+        "duration_seconds": 53.53
+      },
+      "red": {
+        "count": 2,
+        "tokens": 689515,
+        "duration_seconds": 53.21
+      }
+    },
+    "averages": {
+      "green": {
+        "avg_tokens": 352948.67,
+        "avg_duration_seconds": 17.84
+      },
+      "red": {
+        "avg_tokens": 344757.5,
+        "avg_duration_seconds": 26.61
+      }
+    },
+    "refactorings_applied": 0,
+    "tests_passed_immediately": 0
+  }
+}

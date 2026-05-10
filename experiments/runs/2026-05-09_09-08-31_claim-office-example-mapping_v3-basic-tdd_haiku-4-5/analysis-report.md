@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-09_09-08-31_claim-office-example-mapping_v3-basic-tdd_haiku-4-5
 
-Generated: 2026-05-09T09:13:44+00:00
+Generated: 2026-05-10T14:56:50+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T09:13:44+00:00
 
 ## Code Metrics
 
-- **Implementation file**: types.ts
-- **Implementation LOC**: 61
+- **Implementation files**: cli.ts, core.ts, types.ts
+- **Implementation LOC** (total): 327
 - **Test file**: core.spec.ts
 - **Test file LOC**: 534
 - **Active tests**: 41
@@ -29,20 +29,19 @@ Generated: 2026-05-09T09:13:44+00:00
 **Status**: ✅ All tests passing (41 passed)
 
 ```
-Lockfile is up to date, resolution step is skipped
-Already up to date
 
-Done in 360ms using pnpm v11.0.8
-$ vitest run
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-09_09-08-31_claim-office-example-mapping_v3-basic-tdd_haiku-4-5
+> vitest run
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-09_09-08-31_claim-office-example-mapping_v3-basic-tdd_haiku-4-5
 
- ✓ src/core.spec.ts  (41 tests) 9ms
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-09_09-08-31_claim-office-example-mapping_v3-basic-tdd_haiku-4-5
+
+ ✓ src/core.spec.ts  (41 tests) 7ms
 
  Test Files  1 passed (1)
       Tests  41 passed (41)
-   Start at  09:13:46
-   Duration  306ms (transform 67ms, setup 0ms, collect 60ms, tests 9ms, environment 0ms, prepare 84ms)
+   Start at  14:56:50
+   Duration  365ms (transform 36ms, setup 0ms, collect 33ms, tests 7ms, environment 0ms, prepare 91ms)
 ```
 
 ## Coverage
@@ -56,22 +55,23 @@ $ vitest run
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 8 | ×1 | 8 |
-| Invocations | 0 | ×2 | 0 |
-| Conditionals | 1 | ×4 | 4 |
-| Loops | 0 | ×5 | 0 |
-| Assignments | 2 | ×6 | 12 |
-| **Total Mass** | | | **24** |
+| Constants | 78 | ×1 | 78 |
+| Invocations | 80 | ×2 | 160 |
+| Conditionals | 24 | ×4 | 96 |
+| Loops | 15 | ×5 | 75 |
+| Assignments | 70 | ×6 | 420 |
+| **Total Mass** | | | **829** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 49 |
-| Functions | 0 |
-| Longest Function | 0 lines |
-| Avg LOC/Function | 0 |
-| Imports | 0 |
+| LOC (non-blank) | 251 |
+| Functions | 8 |
+| Longest Function | 63 lines |
+| Avg LOC/Function | 22.75 |
+| Median LOC/Function | 12.50 |
+| Imports | 3 |
 
 ## Code Smells
 

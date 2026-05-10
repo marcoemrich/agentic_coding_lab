@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-09_08-00-47_claim-office-prose_v1-oneshot_sonnet-4-6
 
-Generated: 2026-05-09T11:13:24+02:00
+Generated: 2026-05-10T14:55:01+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:13:24+02:00
 
 ## Code Metrics
 
-- **Implementation file**: claim.ts
-- **Implementation LOC**: 37
+- **Implementation files**: claim.ts, cli.ts, quote.ts, types.ts
+- **Implementation LOC** (total): 234
 - **Test file**: claim.spec.ts
 - **Test file LOC**: 138
 - **Active tests**: 13
@@ -36,13 +36,13 @@ Generated: 2026-05-09T11:13:24+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-09_08-00-47_claim-office-prose_v1-oneshot_sonnet-4-6
 
- ✓ src/claim.spec.ts  (13 tests) 2ms
- ✓ src/quote.spec.ts  (19 tests) 3ms
+ ✓ src/claim.spec.ts  (13 tests) 3ms
+ ✓ src/quote.spec.ts  (19 tests) 4ms
 
  Test Files  2 passed (2)
       Tests  32 passed (32)
-   Start at  11:13:24
-   Duration  352ms (transform 51ms, setup 0ms, collect 59ms, tests 5ms, environment 0ms, prepare 135ms)
+   Start at  14:55:02
+   Duration  347ms (transform 51ms, setup 0ms, collect 60ms, tests 7ms, environment 0ms, prepare 206ms)
 ```
 
 ## Coverage
@@ -56,22 +56,23 @@ Generated: 2026-05-09T11:13:24+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 15 | ×1 | 15 |
-| Invocations | 13 | ×2 | 26 |
-| Conditionals | 3 | ×4 | 12 |
-| Loops | 1 | ×5 | 5 |
-| Assignments | 7 | ×6 | 42 |
-| **Total Mass** | | | **100** |
+| Constants | 94 | ×1 | 94 |
+| Invocations | 80 | ×2 | 160 |
+| Conditionals | 12 | ×4 | 48 |
+| Loops | 11 | ×5 | 55 |
+| Assignments | 58 | ×6 | 348 |
+| **Total Mass** | | | **705** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 22 |
-| Functions | 2 |
-| Longest Function | 13 lines |
-| Avg LOC/Function | 7 |
-| Imports | 1 |
+| LOC (non-blank) | 173 |
+| Functions | 8 |
+| Longest Function | 34 lines |
+| Avg LOC/Function | 8.88 |
+| Median LOC/Function | 5.50 |
+| Imports | 5 |
 
 ## Code Smells
 

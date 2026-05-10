@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-08_15-43-45_claim-office-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
-Generated: 2026-05-09T11:11:26+02:00
+Generated: 2026-05-10T14:54:30+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:11:26+02:00
 
 ## Code Metrics
 
-- **Implementation file**: cli.ts
-- **Implementation LOC**: 25
+- **Implementation files**: claim-office.ts, cli.ts
+- **Implementation LOC** (total): 236
 - **Test file**: claim-office.spec.ts
 - **Test file LOC**: 610
 - **Active tests**: 35
@@ -36,12 +36,12 @@ Generated: 2026-05-09T11:11:26+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-08_15-43-45_claim-office-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
- ✓ src/claim-office.spec.ts  (35 tests) 7ms
+ ✓ src/claim-office.spec.ts  (35 tests) 6ms
 
  Test Files  1 passed (1)
       Tests  35 passed (35)
-   Start at  11:11:27
-   Duration  413ms (transform 47ms, setup 0ms, collect 47ms, tests 7ms, environment 0ms, prepare 60ms)
+   Start at  14:54:31
+   Duration  382ms (transform 37ms, setup 1ms, collect 34ms, tests 6ms, environment 0ms, prepare 82ms)
 ```
 
 ## Coverage
@@ -55,21 +55,22 @@ Generated: 2026-05-09T11:11:26+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 3 | ×1 | 3 |
-| Invocations | 16 | ×2 | 32 |
-| Conditionals | 1 | ×4 | 4 |
-| Loops | 1 | ×5 | 5 |
-| Assignments | 7 | ×6 | 42 |
-| **Total Mass** | | | **86** |
+| Constants | 63 | ×1 | 63 |
+| Invocations | 83 | ×2 | 166 |
+| Conditionals | 19 | ×4 | 76 |
+| Loops | 12 | ×5 | 60 |
+| Assignments | 83 | ×6 | 498 |
+| **Total Mass** | | | **863** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 22 |
-| Functions | 2 |
-| Longest Function | 12 lines |
-| Avg LOC/Function | 9 |
+| LOC (non-blank) | 205 |
+| Functions | 14 |
+| Longest Function | 24 lines |
+| Avg LOC/Function | 9.29 |
+| Median LOC/Function | 6.50 |
 | Imports | 1 |
 
 ## Code Smells

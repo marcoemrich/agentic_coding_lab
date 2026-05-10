@@ -1,0 +1,16 @@
+All 47 tests pass. Here's a summary of what was implemented:
+
+**Files created:**
+- `src/types.ts` — TypeScript types (`Item`, `Customer`, `Policy`, `Incident`, `ClaimResult`)
+- `src/claim-office.ts` — Core domain logic (`computePremium`, `computeInsuranceSum`, `processClaim`)
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+- `src/claim-office.spec.ts` — 40 unit tests covering all rules
+- `src/cli.spec.ts` — 7 integration tests for the CLI
+- `claim-office-wrapper.js` — Wrapper script for `pnpm exec claim-office`
+
+**Key implementation decisions:**
+- Component block discount (60G) applies only when total count of that component type is **exactly 3** (per the spec examples showing 4→100G, 7→175G)
+- Item-level modifiers (cursed +50%, high enchantment ≥5 +30%) apply to raw item base premium
+- Policy-wide modifiers (loyalty, first insurance +10%, follow-up -15%) apply to `policyBase` (sum of raw item base premiums)
+- Claim: high enchantment (≥8) at 50% wins over dragon material full reimbursement
+- Rounding: premiums ceiling (MHPCO's favor), payouts floor (also MHPCO's favor)

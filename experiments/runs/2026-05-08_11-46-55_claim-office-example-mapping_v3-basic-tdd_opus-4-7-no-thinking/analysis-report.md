@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-08_11-46-55_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking
 
-Generated: 2026-05-09T11:10:45+02:00
+Generated: 2026-05-10T14:54:20+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:10:45+02:00
 
 ## Code Metrics
 
-- **Implementation file**: premium.ts
-- **Implementation LOC**: 125
+- **Implementation files**: claim.ts, cli.ts, premium.ts, scenario.ts, types.ts
+- **Implementation LOC** (total): 422
 - **Test file**: premium.spec.ts
 - **Test file LOC**: 115
 - **Active tests**: 15
@@ -37,13 +37,13 @@ Generated: 2026-05-09T11:10:45+02:00
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-08_11-46-55_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking
 
  ✓ src/premium.spec.ts  (15 tests) 3ms
- ✓ src/scenario.spec.ts  (6 tests) 4ms
- ✓ src/claim.spec.ts  (18 tests) 5ms
+ ✓ src/scenario.spec.ts  (6 tests) 3ms
+ ✓ src/claim.spec.ts  (18 tests) 4ms
 
  Test Files  3 passed (3)
       Tests  39 passed (39)
-   Start at  11:10:46
-   Duration  370ms (transform 84ms, setup 0ms, collect 115ms, tests 12ms, environment 0ms, prepare 289ms)
+   Start at  14:54:21
+   Duration  359ms (transform 66ms, setup 0ms, collect 86ms, tests 10ms, environment 0ms, prepare 240ms)
 ```
 
 ## Coverage
@@ -57,22 +57,23 @@ Generated: 2026-05-09T11:10:45+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 29 | ×1 | 29 |
-| Invocations | 37 | ×2 | 74 |
-| Conditionals | 8 | ×4 | 32 |
-| Loops | 10 | ×5 | 50 |
-| Assignments | 23 | ×6 | 138 |
-| **Total Mass** | | | **323** |
+| Constants | 87 | ×1 | 87 |
+| Invocations | 123 | ×2 | 246 |
+| Conditionals | 32 | ×4 | 128 |
+| Loops | 21 | ×5 | 105 |
+| Assignments | 82 | ×6 | 492 |
+| **Total Mass** | | | **1058** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 87 |
-| Functions | 5 |
-| Longest Function | 10 lines |
-| Avg LOC/Function | 4 |
-| Imports | 1 |
+| LOC (non-blank) | 321 |
+| Functions | 17 |
+| Longest Function | 72 lines |
+| Avg LOC/Function | 11.24 |
+| Median LOC/Function | 4.00 |
+| Imports | 6 |
 
 ## Code Smells
 

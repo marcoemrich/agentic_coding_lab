@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-09_08-30-28_claim-office-prose_v1-oneshot_haiku-4-5
 
-Generated: 2026-05-09T11:14:08+02:00
+Generated: 2026-05-10T14:55:44+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:14:08+02:00
 
 ## Code Metrics
 
-- **Implementation file**: claims.ts
-- **Implementation LOC**: 55
+- **Implementation files**: claims.ts, cli.ts, pricing.ts, types.ts
+- **Implementation LOC** (total): 279
 - **Test file**: claims.spec.ts
 - **Test file LOC**: 198
 - **Active tests**: 9
@@ -36,14 +36,14 @@ Generated: 2026-05-09T11:14:08+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-09_08-30-28_claim-office-prose_v1-oneshot_haiku-4-5
 
- ✓ src/pricing.spec.ts  (18 tests) 4ms
- ✓ src/claims.spec.ts  (9 tests) 3ms
+ ✓ src/pricing.spec.ts  (18 tests) 3ms
  ✓ src/cli.spec.ts  (5 tests) 3ms
+ ✓ src/claims.spec.ts  (9 tests) 3ms
 
  Test Files  3 passed (3)
       Tests  32 passed (32)
-   Start at  11:14:08
-   Duration  402ms (transform 73ms, setup 0ms, collect 97ms, tests 10ms, environment 1ms, prepare 295ms)
+   Start at  14:55:44
+   Duration  362ms (transform 62ms, setup 0ms, collect 77ms, tests 9ms, environment 0ms, prepare 278ms)
 ```
 
 ## Coverage
@@ -57,22 +57,23 @@ Generated: 2026-05-09T11:14:08+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 10 | ×1 | 10 |
-| Invocations | 11 | ×2 | 22 |
-| Conditionals | 4 | ×4 | 16 |
-| Loops | 2 | ×5 | 10 |
-| Assignments | 14 | ×6 | 84 |
-| **Total Mass** | | | **142** |
+| Constants | 82 | ×1 | 82 |
+| Invocations | 65 | ×2 | 130 |
+| Conditionals | 19 | ×4 | 76 |
+| Loops | 8 | ×5 | 40 |
+| Assignments | 57 | ×6 | 342 |
+| **Total Mass** | | | **670** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 37 |
-| Functions | 1 |
-| Longest Function | 2 lines |
-| Avg LOC/Function | 2 |
-| Imports | 1 |
+| LOC (non-blank) | 209 |
+| Functions | 7 |
+| Longest Function | 51 lines |
+| Avg LOC/Function | 14.43 |
+| Median LOC/Function | 7.00 |
+| Imports | 5 |
 
 ## Code Smells
 

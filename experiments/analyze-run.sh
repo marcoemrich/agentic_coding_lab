@@ -22,25 +22,12 @@ print_header() {
     echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
 }
 
-# Find implementation file (supports multiple katas)
-find_impl_file() {
+# Find implementation files (all non-spec .ts in src/, newline-separated).
+# Returns ALL implementation files so multi-file katas (e.g. claim-office:
+# cli.ts + claim-office.ts) get aggregated correctly.
+find_impl_files() {
     local run_dir=$1
-    local impl_file=""
-
-    # Try common patterns
-    for pattern in "string-calculator" "game-of-life" "game_of_life" "gameOfLife"; do
-        if [ -f "$run_dir/src/${pattern}.ts" ]; then
-            impl_file="$run_dir/src/${pattern}.ts"
-            break
-        fi
-    done
-
-    # Fallback: find any .ts file that's not a spec
-    if [ -z "$impl_file" ]; then
-        impl_file=$(find "$run_dir/src" -name "*.ts" ! -name "*.spec.ts" 2>/dev/null | head -1)
-    fi
-
-    echo "$impl_file"
+    find "$run_dir/src" -name "*.ts" ! -name "*.spec.ts" 2>/dev/null | sort
 }
 
 # Find test file
@@ -123,6 +110,13 @@ analyze_single_run() {
         exit 1
     fi
 
+    # Normalize to absolute path. Several downstream blocks (notably the
+    # verification loop) `cd "$run_dir"` and then redirect to
+    # "$run_dir/verification.log" — with a relative input path that
+    # redirect resolves under the new cwd and silently fails, killing
+    # verification entirely.
+    run_dir=$(realpath "$run_dir")
+
     local run_name=$(basename "$run_dir")
     local report_file="$run_dir/analysis-report.md"
     local report_content=""
@@ -196,8 +190,16 @@ analyze_single_run() {
     fi
 
     # Find implementation and test files
-    local impl_file=$(find_impl_file "$run_dir")
+    local impl_files_list=$(find_impl_files "$run_dir")
     local test_file=$(find_test_file "$run_dir")
+
+    # Build bash array of impl files (handles spaces in paths and multi-file katas)
+    local impl_files=()
+    if [ -n "$impl_files_list" ]; then
+        while IFS= read -r f; do
+            impl_files+=("$f")
+        done <<< "$impl_files_list"
+    fi
 
     # Code metrics
     echo -e "\n${YELLOW}Code Metrics:${NC}"
@@ -208,13 +210,19 @@ analyze_single_run() {
     local test_count=0
     local todo_count=0
 
-    # Implementation file
-    if [ -n "$impl_file" ] && [ -f "$impl_file" ]; then
-        impl_loc=$(wc -l < "$impl_file" | tr -d '[:space:]')
-        echo -e "  Implementation LOC: $impl_loc"
-        echo -e "  File: $(basename "$impl_file")"
-        report_content+="- **Implementation file**: $(basename "$impl_file")\n"
-        report_content+="- **Implementation LOC**: $impl_loc\n"
+    # Implementation files (aggregate across all non-spec .ts in src/)
+    if [ ${#impl_files[@]} -gt 0 ]; then
+        local impl_basenames=""
+        for f in "${impl_files[@]}"; do
+            local f_loc=$(wc -l < "$f" | tr -d '[:space:]')
+            impl_loc=$((impl_loc + f_loc))
+            [ -n "$impl_basenames" ] && impl_basenames+=", "
+            impl_basenames+="$(basename "$f")"
+        done
+        echo -e "  Implementation LOC: $impl_loc (across ${#impl_files[@]} file(s))"
+        echo -e "  Files: $impl_basenames"
+        report_content+="- **Implementation files**: $impl_basenames\n"
+        report_content+="- **Implementation LOC** (total): $impl_loc\n"
     else
         echo -e "  Implementation: ${RED}Not found${NC}"
         report_content+="- **Implementation**: Not found\n"
@@ -311,15 +319,15 @@ analyze_single_run() {
     local loops=0
     local assignments=0
 
-    if [ -n "$impl_file" ] && [ -f "$impl_file" ]; then
+    if [ ${#impl_files[@]} -gt 0 ]; then
         echo -e "\n${YELLOW}APP Mass Estimation:${NC}"
         report_content+="## APP Mass Estimation\n\n"
 
-        constants=$(grep -oE '\b[0-9]+\b|"[^"]*"|'\''[^'\'']*'\''' "$impl_file" 2>/dev/null | wc -l | tr -d '[:space:]')
-        invocations=$(grep -oE '\w+\s*\(' "$impl_file" 2>/dev/null | wc -l | tr -d '[:space:]')
-        conditionals=$(grep -cE '\bif\b|\bswitch\b|\?.*:' "$impl_file" 2>/dev/null | tr -d '[:space:]')
-        loops=$(grep -cE '\bfor\b|\bwhile\b|\.map\(|\.reduce\(|\.forEach\(' "$impl_file" 2>/dev/null | tr -d '[:space:]')
-        assignments=$(grep -cE '[^=!<>]=[^=]|\+\+|--' "$impl_file" 2>/dev/null | tr -d '[:space:]')
+        constants=$(grep -hoE '\b[0-9]+\b|"[^"]*"|'\''[^'\'']*'\''' "${impl_files[@]}" 2>/dev/null | wc -l | tr -d '[:space:]')
+        invocations=$(grep -hoE '\w+\s*\(' "${impl_files[@]}" 2>/dev/null | wc -l | tr -d '[:space:]')
+        conditionals=$(grep -chE '\bif\b|\bswitch\b|\?.*:' "${impl_files[@]}" 2>/dev/null | awk '{s+=$1} END {print s+0}')
+        loops=$(grep -chE '\bfor\b|\bwhile\b|\.map\(|\.reduce\(|\.forEach\(' "${impl_files[@]}" 2>/dev/null | awk '{s+=$1} END {print s+0}')
+        assignments=$(grep -chE '[^=!<>]=[^=]|\+\+|--' "${impl_files[@]}" 2>/dev/null | awk '{s+=$1} END {print s+0}')
 
         # Ensure all variables are valid integers (default to 0 if empty or non-numeric)
         [[ "$constants" =~ ^[0-9]+$ ]] || constants=0
@@ -351,39 +359,37 @@ analyze_single_run() {
     local cc_loc=0
     local cc_functions=0
     local cc_longest_func=0
-    local cc_avg_loc_func=0
+    local cc_avg_loc_func="0.00"
+    local cc_median_loc_func="0.00"
     local cc_imports=0
 
-    if [ -n "$impl_file" ] && [ -f "$impl_file" ]; then
+    if [ ${#impl_files[@]} -gt 0 ]; then
         echo -e "\n${YELLOW}Clean Code Metrics:${NC}"
         report_content+="## Clean Code Metrics\n\n"
 
-        # LOC (non-blank, non-comment lines)
-        cc_loc=$(grep -vE '^\s*$|^\s*//|^\s*/\*|\^\s*\*' "$impl_file" 2>/dev/null | wc -l | tr -d '[:space:]')
+        # LOC (non-blank, non-comment lines) — sum across all impl files
+        cc_loc=$(grep -hvE '^\s*$|^\s*//|^\s*/\*|\^\s*\*' "${impl_files[@]}" 2>/dev/null | wc -l | tr -d '[:space:]')
 
-        # Count functions (function declarations, arrow functions, methods)
-        cc_functions=$(grep -cE '^[ \t]*(export[ \t]+)?(async[ \t]+)?function[ \t]+[A-Za-z_]|^[ \t]*(export[ \t]+)?(const|let|var)[ \t]+[A-Za-z_][A-Za-z0-9_]*[ \t]*=[ \t]*(async[ \t]+)?\(' "$impl_file" 2>/dev/null) || cc_functions=0
+        # Count imports — sum across all impl files
+        cc_imports=$(grep -chE '^\s*import\s+' "${impl_files[@]}" 2>/dev/null | awk '{s+=$1} END {print s+0}')
 
-        # Count imports
-        cc_imports=$(grep -cE '^\s*import\s+' "$impl_file" 2>/dev/null) || cc_imports=0
-
-        # Calculate longest function and avg LOC/function using awk
-        # This counts lines between function starts and closing braces at the same level
-        local func_analysis
-        func_analysis=$(awk '
+        # AWK over all impl files: emits one line per function (its length).
+        # We then aggregate (count, max, avg, median) in shell+awk.
+        local func_lengths
+        func_lengths=$(awk '
+            FNR == 1 {
+                # New file: flush any function still open from previous file
+                if (in_func && func_lines > 0) print func_lines
+                in_func = 0; func_lines = 0; brace_count = 0
+            }
             /^[ \t]*(export[ \t]+)?(async[ \t]+)?function[ \t]+[A-Za-z_]|^[ \t]*(export[ \t]+)?(const|let|var)[ \t]+[A-Za-z_][A-Za-z0-9_]*[ \t]*=[ \t]*(async[ \t]+)?\(/ {
-                if (in_func && func_lines > 0) {
-                    total_lines += func_lines
-                    func_count++
-                    if (func_lines > max_lines) max_lines = func_lines
-                }
+                if (in_func && func_lines > 0) print func_lines
                 in_func = 1
                 func_lines = 0
                 brace_count = 0
             }
             in_func {
                 func_lines++
-                # Count braces to detect function end
                 gsub(/[^{}]/, "")
                 for (i = 1; i <= length($0); i++) {
                     c = substr($0, i, 1)
@@ -391,45 +397,42 @@ analyze_single_run() {
                     else if (c == "}") brace_count--
                 }
                 if (brace_count <= 0 && func_lines > 1) {
-                    total_lines += func_lines
-                    func_count++
-                    if (func_lines > max_lines) max_lines = func_lines
+                    print func_lines
                     in_func = 0
                     func_lines = 0
                 }
             }
             END {
-                if (in_func && func_lines > 0) {
-                    total_lines += func_lines
-                    func_count++
-                    if (func_lines > max_lines) max_lines = func_lines
-                }
-                if (func_count > 0) {
-                    avg = int(total_lines / func_count)
-                } else {
-                    avg = 0
-                }
-                print func_count " " max_lines " " avg
+                if (in_func && func_lines > 0) print func_lines
             }
-        ' "$impl_file" 2>/dev/null)
+        ' "${impl_files[@]}" 2>/dev/null)
 
-        if [ -n "$func_analysis" ]; then
-            cc_functions=$(echo "$func_analysis" | cut -d' ' -f1)
-            cc_longest_func=$(echo "$func_analysis" | cut -d' ' -f2)
-            cc_avg_loc_func=$(echo "$func_analysis" | cut -d' ' -f3)
+        if [ -n "$func_lengths" ]; then
+            cc_functions=$(echo "$func_lengths" | wc -l | tr -d '[:space:]')
+            cc_longest_func=$(echo "$func_lengths" | sort -n | tail -1)
+            cc_avg_loc_func=$(echo "$func_lengths" | awk '{s+=$1; n++} END {if (n>0) printf "%.2f", s/n; else print "0.00"}')
+            cc_median_loc_func=$(echo "$func_lengths" | sort -n | awk '
+                { a[NR] = $1 }
+                END {
+                    if (NR == 0) { print "0.00"; exit }
+                    if (NR % 2 == 1) printf "%.2f", a[(NR+1)/2]
+                    else printf "%.2f", (a[NR/2] + a[NR/2+1]) / 2
+                }')
         fi
 
-        # Ensure valid integers
+        # Ensure valid values
         [[ "$cc_loc" =~ ^[0-9]+$ ]] || cc_loc=0
         [[ "$cc_functions" =~ ^[0-9]+$ ]] || cc_functions=0
         [[ "$cc_longest_func" =~ ^[0-9]+$ ]] || cc_longest_func=0
-        [[ "$cc_avg_loc_func" =~ ^[0-9]+$ ]] || cc_avg_loc_func=0
+        [[ "$cc_avg_loc_func" =~ ^[0-9]+(\.[0-9]+)?$ ]] || cc_avg_loc_func="0.00"
+        [[ "$cc_median_loc_func" =~ ^[0-9]+(\.[0-9]+)?$ ]] || cc_median_loc_func="0.00"
         [[ "$cc_imports" =~ ^[0-9]+$ ]] || cc_imports=0
 
         echo -e "  ${CYAN}LOC (non-blank):${NC} $cc_loc"
         echo -e "  ${CYAN}Functions:${NC} $cc_functions"
         echo -e "  ${CYAN}Longest Function:${NC} $cc_longest_func lines"
         echo -e "  ${CYAN}Avg LOC/Function:${NC} $cc_avg_loc_func"
+        echo -e "  ${CYAN}Median LOC/Function:${NC} $cc_median_loc_func"
         echo -e "  ${CYAN}Imports:${NC} $cc_imports"
 
         report_content+="| Metric | Value |\n"
@@ -438,6 +441,7 @@ analyze_single_run() {
         report_content+="| Functions | $cc_functions |\n"
         report_content+="| Longest Function | $cc_longest_func lines |\n"
         report_content+="| Avg LOC/Function | $cc_avg_loc_func |\n"
+        report_content+="| Median LOC/Function | $cc_median_loc_func |\n"
         report_content+="| Imports | $cc_imports |\n\n"
     fi
 
@@ -448,7 +452,7 @@ analyze_single_run() {
     local smell_magic_numbers=0
     local smell_code_quality=0
 
-    if [ -n "$impl_file" ] && [ -f "$impl_file" ] && [ -f "$run_dir/eslint.config.mjs" ] && [ -d "$run_dir/node_modules" ]; then
+    if [ ${#impl_files[@]} -gt 0 ] && [ -f "$run_dir/eslint.config.mjs" ] && [ -d "$run_dir/node_modules" ]; then
         echo -e "\n${YELLOW}Code Smell Detection:${NC}"
         report_content+="## Code Smells\n\n"
 
@@ -509,7 +513,7 @@ analyze_single_run() {
     local cognitive_high_count=0
     local complexity_threshold=10
 
-    if [ -n "$impl_file" ] && [ -f "$impl_file" ] && [ -f "$run_dir/eslint.config.mjs" ] && [ -d "$run_dir/node_modules" ]; then
+    if [ ${#impl_files[@]} -gt 0 ] && [ -f "$run_dir/eslint.config.mjs" ] && [ -d "$run_dir/node_modules" ]; then
         # Write a temporary override config that re-exports the project config
         # but cranks complexity rules down to 0 so every function reports.
         local override_config="$run_dir/.eslint.complexity.mjs"
@@ -742,7 +746,8 @@ EOF
         [[ "$cc_loc" =~ ^[0-9]+$ ]] || cc_loc=0
         [[ "$cc_functions" =~ ^[0-9]+$ ]] || cc_functions=0
         [[ "$cc_longest_func" =~ ^[0-9]+$ ]] || cc_longest_func=0
-        [[ "$cc_avg_loc_func" =~ ^[0-9]+$ ]] || cc_avg_loc_func=0
+        [[ "$cc_avg_loc_func" =~ ^[0-9]+(\.[0-9]+)?$ ]] || cc_avg_loc_func="0.00"
+        [[ "$cc_median_loc_func" =~ ^[0-9]+(\.[0-9]+)?$ ]] || cc_median_loc_func="0.00"
         [[ "$cc_imports" =~ ^[0-9]+$ ]] || cc_imports=0
         [[ "$mccabe_max" =~ ^[0-9]+$ ]] || mccabe_max=0
         [[ "$mccabe_high_count" =~ ^[0-9]+$ ]] || mccabe_high_count=0
@@ -884,6 +889,7 @@ EOF
            --argjson cc_functions "$cc_functions" \
            --argjson cc_longest_func "$cc_longest_func" \
            --argjson cc_avg_loc_func "$cc_avg_loc_func" \
+           --argjson cc_median_loc_func "$cc_median_loc_func" \
            --argjson cc_imports "$cc_imports" \
            --argjson mccabe_max "$mccabe_max" \
            --argjson mccabe_avg "$mccabe_avg" \
@@ -916,6 +922,7 @@ EOF
             .clean_code.functions = $cc_functions |
             .clean_code.longest_function = $cc_longest_func |
             .clean_code.avg_loc_per_function = $cc_avg_loc_func |
+            .clean_code.median_loc_per_function = $cc_median_loc_func |
             .clean_code.imports = $cc_imports |
             .final_metrics.mccabe_max = $mccabe_max |
             .final_metrics.mccabe_avg = $mccabe_avg |

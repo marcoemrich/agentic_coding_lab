@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-09_08-15-32_claim-office-prose_v1-oneshot_sonnet-4-6
 
-Generated: 2026-05-09T11:13:45+02:00
+Generated: 2026-05-10T14:55:22+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:13:45+02:00
 
 ## Code Metrics
 
-- **Implementation file**: claim.ts
-- **Implementation LOC**: 31
+- **Implementation files**: claim.ts, cli.ts, quote.ts, types.ts
+- **Implementation LOC** (total): 230
 - **Test file**: claim.spec.ts
 - **Test file LOC**: 182
 - **Active tests**: 14
@@ -36,13 +36,13 @@ Generated: 2026-05-09T11:13:45+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-09_08-15-32_claim-office-prose_v1-oneshot_sonnet-4-6
 
+ ✓ src/quote.spec.ts  (20 tests) 6ms
  ✓ src/claim.spec.ts  (14 tests) 4ms
- ✓ src/quote.spec.ts  (20 tests) 5ms
 
  Test Files  2 passed (2)
       Tests  34 passed (34)
-   Start at  11:13:46
-   Duration  478ms (transform 59ms, setup 0ms, collect 82ms, tests 9ms, environment 0ms, prepare 189ms)
+   Start at  14:55:23
+   Duration  359ms (transform 43ms, setup 1ms, collect 52ms, tests 10ms, environment 0ms, prepare 198ms)
 ```
 
 ## Coverage
@@ -56,22 +56,23 @@ Generated: 2026-05-09T11:13:45+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 14 | ×1 | 14 |
-| Invocations | 11 | ×2 | 22 |
-| Conditionals | 2 | ×4 | 8 |
-| Loops | 1 | ×5 | 5 |
-| Assignments | 12 | ×6 | 72 |
-| **Total Mass** | | | **121** |
+| Constants | 64 | ×1 | 64 |
+| Invocations | 58 | ×2 | 116 |
+| Conditionals | 13 | ×4 | 52 |
+| Loops | 6 | ×5 | 30 |
+| Assignments | 65 | ×6 | 390 |
+| **Total Mass** | | | **652** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 23 |
-| Functions | 2 |
-| Longest Function | 18 lines |
-| Avg LOC/Function | 11 |
-| Imports | 1 |
+| LOC (non-blank) | 186 |
+| Functions | 7 |
+| Longest Function | 27 lines |
+| Avg LOC/Function | 9.14 |
+| Median LOC/Function | 5.00 |
+| Imports | 5 |
 
 ## Code Smells
 

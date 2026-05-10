@@ -94,6 +94,26 @@ Modell-Dimension.
   als v5 (mehrfaches Kontext-Re-Establishment).
 - H4: `verification_pct` ist zwischen v4 und v5 vergleichbar — das
   Skript bestimmt die Korrektheit, nicht die Subagent-Topologie.
+- H5 (Kata-Komplexität moderiert Struktur-Vorteil): Der Vorteil von v4
+  in Funktions-Zerlegung (kürzere `cc_longest_function`, höhere
+  Funktions-Anzahl) zeigt sich nur auf Katas oberhalb einer
+  Komplexitäts-Schwelle. Auf game-of-life (~30 src-LoC) sind v4 und v5
+  strukturell ebenbürtig; auf claim-office (~210 src-LoC) divergieren
+  sie deutlich.
+  **Operationalisierung:** Differenz `Δ cc_longest_function = v5 − v4`
+  als Funktion von src-LoC der erfolgreichen Implementierung.
+- H6 (v4-Korrektheit fällt mit Kata-Komplexität): v4 verliert an
+  `verification_pct` / `tests_passing`, je mehr State der Subagent
+  zwischen Phasen rekonstruieren muss. Auf game-of-life (kleiner State)
+  erreicht v4 öfter 100%, auf claim-office (zwei Operationen, Shared
+  State) bricht v4 häufiger ein. Falsifiziert H4 in Richtung
+  Kata-Abhängigkeit.
+- H7 (v4 inflationiert code_mass pro bestandenen Test): Frischer
+  Subagent pro Phase liest Test-Datei neu und neigt dazu, Test-Cases
+  ohne Übersicht über bereits abgedeckte Fälle hinzuzufügen.
+  Erwartung: `code_mass / verification_passed` ist bei v4 systematisch
+  höher als bei v5.
+  **Operationalisierung:** Ratio pro Run, dann Workflow-Mittel.
 
 ## Findings
 

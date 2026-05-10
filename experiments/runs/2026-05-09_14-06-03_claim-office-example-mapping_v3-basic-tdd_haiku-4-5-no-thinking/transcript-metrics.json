@@ -1,0 +1,104 @@
+{
+  "wall_clock_seconds": 348.4,
+  "total_tokens": {
+    "input": 226,
+    "output": 73171,
+    "cache_read": 9933167,
+    "cache_creation": 172597,
+    "total": 10179161
+  },
+  "context_utilization_pct": 51,
+  "context_window_tokens": 200000,
+  "context_peak_tokens": 102630,
+  "message_count": 129,
+  "tool_calls": {
+    "Read": 9,
+    "Glob": 4,
+    "Bash": 26,
+    "Write": 11,
+    "Edit": 18
+  },
+  "skill_invocations": {},
+  "task_invocations": {},
+  "cycle_count": 5,
+  "predictions_correct": 0,
+  "predictions_total": 0,
+  "model_versions": [
+    "claude-haiku-4-5-20251001"
+  ],
+  "subagent_token_total": 0,
+  "phases": [
+    {
+      "phase": "red",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "green",
+      "tokens": 107398,
+      "duration_seconds": 1.48
+    },
+    {
+      "phase": "red",
+      "tokens": 387528,
+      "duration_seconds": 33.72
+    },
+    {
+      "phase": "green",
+      "tokens": 1329516,
+      "duration_seconds": 58.41
+    },
+    {
+      "phase": "red",
+      "tokens": 841914,
+      "duration_seconds": 32.49
+    },
+    {
+      "phase": "green",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "red",
+      "tokens": 183714,
+      "duration_seconds": 9.0
+    },
+    {
+      "phase": "green",
+      "tokens": 2502043,
+      "duration_seconds": 39.01
+    },
+    {
+      "phase": "red",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    }
+  ],
+  "phase_source": "inline-tool",
+  "phase_summary": {
+    "by_phase": {
+      "red": {
+        "count": 5,
+        "tokens": 1413156,
+        "duration_seconds": 75.21
+      },
+      "green": {
+        "count": 4,
+        "tokens": 3938957,
+        "duration_seconds": 98.9
+      }
+    },
+    "averages": {
+      "red": {
+        "avg_tokens": 282631.2,
+        "avg_duration_seconds": 15.04
+      },
+      "green": {
+        "avg_tokens": 984739.25,
+        "avg_duration_seconds": 24.72
+      }
+    },
+    "refactorings_applied": 0,
+    "tests_passed_immediately": 1
+  }
+}

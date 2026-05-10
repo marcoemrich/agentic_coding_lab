@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-08_11-42-20_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking
 
-Generated: 2026-05-09T11:10:35+02:00
+Generated: 2026-05-10T14:54:10+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:10:35+02:00
 
 ## Code Metrics
 
-- **Implementation file**: premium.ts
-- **Implementation LOC**: 120
+- **Implementation files**: claim.ts, cli.ts, premium.ts, scenario.ts, types.ts
+- **Implementation LOC** (total): 386
 - **Test file**: premium.spec.ts
 - **Test file LOC**: 243
 - **Active tests**: 17
@@ -42,8 +42,8 @@ Generated: 2026-05-09T11:10:35+02:00
 
  Test Files  3 passed (3)
       Tests  38 passed (38)
-   Start at  11:10:36
-   Duration  366ms (transform 67ms, setup 2ms, collect 91ms, tests 15ms, environment 1ms, prepare 269ms)
+   Start at  14:54:10
+   Duration  360ms (transform 74ms, setup 0ms, collect 101ms, tests 15ms, environment 1ms, prepare 263ms)
 ```
 
 ## Coverage
@@ -57,22 +57,23 @@ Generated: 2026-05-09T11:10:35+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 31 | ×1 | 31 |
-| Invocations | 40 | ×2 | 80 |
-| Conditionals | 10 | ×4 | 40 |
-| Loops | 9 | ×5 | 45 |
-| Assignments | 22 | ×6 | 132 |
-| **Total Mass** | | | **328** |
+| Constants | 88 | ×1 | 88 |
+| Invocations | 127 | ×2 | 254 |
+| Conditionals | 30 | ×4 | 120 |
+| Loops | 22 | ×5 | 110 |
+| Assignments | 73 | ×6 | 438 |
+| **Total Mass** | | | **1010** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 97 |
-| Functions | 6 |
-| Longest Function | 14 lines |
-| Avg LOC/Function | 8 |
-| Imports | 1 |
+| LOC (non-blank) | 315 |
+| Functions | 15 |
+| Longest Function | 55 lines |
+| Avg LOC/Function | 13.40 |
+| Median LOC/Function | 10.00 |
+| Imports | 7 |
 
 ## Code Smells
 

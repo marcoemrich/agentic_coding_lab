@@ -1,0 +1,18 @@
+All done. Here's a summary of what was implemented:
+
+**Files created:**
+- `src/types.ts` - TypeScript type definitions
+- `src/claim-office.ts` - Core business logic (`computeQuote`, `processClaim`, `createPolicy`)
+- `src/claim-office.spec.ts` - 34 tests covering all rules
+- `src/cli.ts` - CLI entry point reading JSON from stdin, writing JSON to stdout
+- `src/cli-runner.mjs` - Node.js runner wrapper
+- `claim-office` - Shell wrapper script for the CLI
+
+**Key implementation decisions:**
+- Policy-wide modifiers (loyalty, first insurance, follow-up) apply to the **raw policy base** (sum of item base premiums without surcharges)
+- Item-specific surcharges (cursed 50%, enchantment ≥5 30%) are calculated on individual item base premiums
+- First insurance surcharge **always** applies; follow-up discount also applies when `isFirstContract=false`
+- Component block-of-3 discount (60 G vs 75 G) only applies when **exactly** 3 of the same type
+- High-enchantment (≥8) clause wins over dragon-material for payouts (50% then deductible)
+- Premiums round up (ceiling), payouts round down (floor)
+- All 34 tests pass

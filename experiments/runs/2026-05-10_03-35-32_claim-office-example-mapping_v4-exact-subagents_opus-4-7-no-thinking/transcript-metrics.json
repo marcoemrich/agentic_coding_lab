@@ -1,0 +1,653 @@
+{
+  "wall_clock_seconds": 4556.62,
+  "total_tokens": {
+    "input": 255,
+    "output": 73859,
+    "cache_read": 16184135,
+    "cache_creation": 289816,
+    "total": 16548065
+  },
+  "context_utilization_pct": 17,
+  "context_window_tokens": 1000000,
+  "context_peak_tokens": 166348,
+  "message_count": 165,
+  "tool_calls": {
+    "Read": 12,
+    "Bash": 9,
+    "Agent": 95,
+    "TodoWrite": 14,
+    "Grep": 1,
+    "Edit": 7
+  },
+  "skill_invocations": {},
+  "task_invocations": {
+    "test-list": 1,
+    "red": 49,
+    "green": 26,
+    "refactor": 19
+  },
+  "cycle_count": 49,
+  "predictions_correct": 65,
+  "predictions_total": 68,
+  "model_versions": [
+    "claude-opus-4-7"
+  ],
+  "subagent_token_total": 27951353,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 252457,
+      "duration_seconds": 54.14,
+      "transcript": "agent-ab72e2e8762d389ee.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 370873,
+      "duration_seconds": 31.36,
+      "transcript": "agent-aa2ee615f18c3c0c9.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 232312,
+      "duration_seconds": 21.18,
+      "transcript": "agent-aea418234af58afe3.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 242729,
+      "duration_seconds": 45.42,
+      "transcript": "agent-af0b8026f98ca9829.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 261902,
+      "duration_seconds": 25.6,
+      "transcript": "agent-a878dd13de164d061.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 233744,
+      "duration_seconds": 25.36,
+      "transcript": "agent-a2328da681cb0ab85.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 242198,
+      "duration_seconds": 37.28,
+      "transcript": "agent-ae210f0c368f135d2.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 262439,
+      "duration_seconds": 28.39,
+      "transcript": "agent-aa656c44d6f5cf606.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 234613,
+      "duration_seconds": 33.2,
+      "transcript": "agent-a57f9667df43d53bf.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 244013,
+      "duration_seconds": 42.7,
+      "transcript": "agent-ad6c5c2359b519339.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 264089,
+      "duration_seconds": 34.24,
+      "transcript": "agent-a64c6e37a66f0656e.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 231062,
+      "duration_seconds": 21.34,
+      "transcript": "agent-a529d8d780b86dead.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 441402,
+      "duration_seconds": 59.27,
+      "transcript": "agent-a46cdccc18aac6cbe.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 264054,
+      "duration_seconds": 25.52,
+      "transcript": "agent-a7b95ee1dae452082.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 231790,
+      "duration_seconds": 20.38,
+      "transcript": "agent-af5a2197dcad0d702.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 282268,
+      "duration_seconds": 48.66,
+      "transcript": "agent-ad2eb8474cf2ae966.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 265428,
+      "duration_seconds": 25.72,
+      "transcript": "agent-ab111e6b6142a29f3.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 267412,
+      "duration_seconds": 19.35,
+      "transcript": "agent-a9c14a71764f36c06.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 440861,
+      "duration_seconds": 61.68,
+      "transcript": "agent-a5e4ec9ba5d7bd433.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 264827,
+      "duration_seconds": 31.16,
+      "transcript": "agent-ae509b129736b4b36.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 268796,
+      "duration_seconds": 31.07,
+      "transcript": "agent-a5239d4c13cb3084d.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 190946,
+      "duration_seconds": 20.2,
+      "transcript": "agent-ae216398d331093d1.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 246676,
+      "duration_seconds": 48.94,
+      "transcript": "agent-afa2469623eb26921.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 269519,
+      "duration_seconds": 30.89,
+      "transcript": "agent-ade1b81f40f5b53ee.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 270024,
+      "duration_seconds": 36.11,
+      "transcript": "agent-a867c6785bc44caf7.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 268137,
+      "duration_seconds": 29.13,
+      "transcript": "agent-a0646d2b2c4a3a3fc.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 234206,
+      "duration_seconds": 23.57,
+      "transcript": "agent-a84a1d20cecb3658c.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 248103,
+      "duration_seconds": 47.6,
+      "transcript": "agent-a194034bcb038c10a.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 273154,
+      "duration_seconds": 35.27,
+      "transcript": "agent-a3bfc1f3003a958b7.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 237809,
+      "duration_seconds": 26.37,
+      "transcript": "agent-a08b5f99d48556bf5.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 328883,
+      "duration_seconds": 49.29,
+      "transcript": "agent-a84be2d95a8773a53.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 269829,
+      "duration_seconds": 31.53,
+      "transcript": "agent-a08ba109710cbe1c2.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 235987,
+      "duration_seconds": 24.41,
+      "transcript": "agent-a8ee5c21994696bf6.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 251382,
+      "duration_seconds": 55.29,
+      "transcript": "agent-a7ffb18dfeb04f96e.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 345810,
+      "duration_seconds": 36.67,
+      "transcript": "agent-a7b60420d622a20cf.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 274507,
+      "duration_seconds": 25.59,
+      "transcript": "agent-a03e917ab4854557f.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 250200,
+      "duration_seconds": 45.26,
+      "transcript": "agent-ab54fb144d8d826ea.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 270488,
+      "duration_seconds": 29.94,
+      "transcript": "agent-afd176de5d53d4ea5.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 272223,
+      "duration_seconds": 31.58,
+      "transcript": "agent-a0c3895723babce02.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 604688,
+      "duration_seconds": 110.41,
+      "transcript": "agent-a51c6564afa868a52.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 731037,
+      "duration_seconds": 82.22,
+      "transcript": "agent-a79b7a72ae4496744.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 273665,
+      "duration_seconds": 27.77,
+      "transcript": "agent-a4f82f60cb71b79fc.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 239622,
+      "duration_seconds": 30.45,
+      "transcript": "agent-a1786e471c06d6ac1.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 416725,
+      "duration_seconds": 65.76,
+      "transcript": "agent-afb212de8160e0725.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 279781,
+      "duration_seconds": 31.07,
+      "transcript": "agent-a879c2da717a17f69.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 279154,
+      "duration_seconds": 27.75,
+      "transcript": "agent-ac801007a3de4bf6d.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 254051,
+      "duration_seconds": 38.93,
+      "transcript": "agent-ad5aaecde29bb08fa.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 276291,
+      "duration_seconds": 32.33,
+      "transcript": "agent-a241f3c2f47b038b5.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 283231,
+      "duration_seconds": 32.15,
+      "transcript": "agent-a1f45464bc903494a.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 336209,
+      "duration_seconds": 83.92,
+      "transcript": "agent-adccf7e22b2cf3935.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 205322,
+      "duration_seconds": 21.92,
+      "transcript": "agent-a0fa9f8ab732feec3.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 361941,
+      "duration_seconds": 45.67,
+      "transcript": "agent-ae70f0bb04831adb6.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 285074,
+      "duration_seconds": 26.41,
+      "transcript": "agent-a6a734988d47b03ba.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 511212,
+      "duration_seconds": 79.29,
+      "transcript": "agent-a204e28d8aea854d5.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 288787,
+      "duration_seconds": 34.03,
+      "transcript": "agent-a46f7886a66140995.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 247805,
+      "duration_seconds": 25.42,
+      "transcript": "agent-a1fedb6c8e196f16c.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 282523,
+      "duration_seconds": 32.27,
+      "transcript": "agent-a260e9d03a6c05352.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 289246,
+      "duration_seconds": 33.28,
+      "transcript": "agent-a04e1689618441594.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 290022,
+      "duration_seconds": 31.42,
+      "transcript": "agent-a9633a1af11d59642.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 249727,
+      "duration_seconds": 28.86,
+      "transcript": "agent-aa1c789d35572372d.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 286050,
+      "duration_seconds": 27.12,
+      "transcript": "agent-aae8cec3c3069d5ba.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 293167,
+      "duration_seconds": 35.69,
+      "transcript": "agent-abda1b3eb4a4091fa.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 287750,
+      "duration_seconds": 31.27,
+      "transcript": "agent-a34f696189c3a7b36.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 286510,
+      "duration_seconds": 29.16,
+      "transcript": "agent-a4d53db56c3dd48f0.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 296036,
+      "duration_seconds": 35.61,
+      "transcript": "agent-a38b35954dd4274e4.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 295276,
+      "duration_seconds": 35.2,
+      "transcript": "agent-a5d9ab849c76fca11.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 288766,
+      "duration_seconds": 28.22,
+      "transcript": "agent-a7b509625f2075645.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 289968,
+      "duration_seconds": 30.84,
+      "transcript": "agent-ac8f5e59d01d08205.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 294336,
+      "duration_seconds": 35.56,
+      "transcript": "agent-a5f65c45f558bc16d.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 254815,
+      "duration_seconds": 27.65,
+      "transcript": "agent-ac5615634edfda935.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 293739,
+      "duration_seconds": 26.77,
+      "transcript": "agent-a0c0e44e1766cd8f5.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 254309,
+      "duration_seconds": 20.39,
+      "transcript": "agent-aac779cd6550c6418.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 299792,
+      "duration_seconds": 31.09,
+      "transcript": "agent-a62decdf868f8e890.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 303097,
+      "duration_seconds": 35.02,
+      "transcript": "agent-afa5c6dfa3b571aa6.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 689778,
+      "duration_seconds": 60.84,
+      "transcript": "agent-a279ed7731ff7e328.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 342822,
+      "duration_seconds": 26.19,
+      "transcript": "agent-ac9894af317d4163c.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 279826,
+      "duration_seconds": 40.42,
+      "transcript": "agent-af211ee9271a01dfb.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 225390,
+      "duration_seconds": 28.97,
+      "transcript": "agent-a64c603bfd3430028.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 302326,
+      "duration_seconds": 32.16,
+      "transcript": "agent-a671af76c7ae26ca0.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 400846,
+      "duration_seconds": 50.01,
+      "transcript": "agent-ab846aa264b0432dc.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 193188,
+      "duration_seconds": 23.86,
+      "transcript": "agent-a31dd5149a6c1e05d.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 259727,
+      "duration_seconds": 29.55,
+      "transcript": "agent-ab8afece59d6bbb65.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 303377,
+      "duration_seconds": 33.27,
+      "transcript": "agent-a099df1f592a0382b.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 215683,
+      "duration_seconds": 25.88,
+      "transcript": "agent-abe53842923a21275.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 312521,
+      "duration_seconds": 41.07,
+      "transcript": "agent-ad329405c37fbd10d.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 296640,
+      "duration_seconds": 33.69,
+      "transcript": "agent-aa934aeda39c7cdd5.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 160205,
+      "duration_seconds": 20.53,
+      "transcript": "agent-a36ce467e27eefd48.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 240298,
+      "duration_seconds": 41.36,
+      "transcript": "agent-a80abe00cd14afb2b.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 298515,
+      "duration_seconds": 40.21,
+      "transcript": "agent-ababd5fceccbae709.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 364995,
+      "duration_seconds": 35.04,
+      "transcript": "agent-ae3882fe73c812162.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 218197,
+      "duration_seconds": 23.45,
+      "transcript": "agent-a330f20813cbbbebb.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 240752,
+      "duration_seconds": 39.27,
+      "transcript": "agent-a976c09b016ecee81.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 415625,
+      "duration_seconds": 40.99,
+      "transcript": "agent-a49e09a0d7f2f78c5.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 161858,
+      "duration_seconds": 23.8,
+      "transcript": "agent-a61d6230c08a9854f.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 481908,
+      "duration_seconds": 65.53,
+      "transcript": "agent-a779bb23c8eb63371.jsonl"
+    }
+  ],
+  "phase_source": "subagents",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 252457,
+        "duration_seconds": 54.14
+      },
+      "red": {
+        "count": 49,
+        "tokens": 14874772,
+        "duration_seconds": 1722.88
+      },
+      "green": {
+        "count": 26,
+        "tokens": 6978482,
+        "duration_seconds": 756.91
+      },
+      "refactor": {
+        "count": 19,
+        "tokens": 5845642,
+        "duration_seconds": 923.74
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 252457.0,
+        "avg_duration_seconds": 54.14
+      },
+      "red": {
+        "avg_tokens": 303566.78,
+        "avg_duration_seconds": 35.16
+      },
+      "green": {
+        "avg_tokens": 268403.15,
+        "avg_duration_seconds": 29.11
+      },
+      "refactor": {
+        "avg_tokens": 307665.37,
+        "avg_duration_seconds": 48.62
+      }
+    },
+    "refactorings_applied": 19,
+    "tests_passed_immediately": 23
+  }
+}

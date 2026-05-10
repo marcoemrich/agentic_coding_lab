@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-09_08-21-54_claim-office-prose_v1-oneshot_haiku-4-5
 
-Generated: 2026-05-09T11:13:56+02:00
+Generated: 2026-05-10T14:55:33+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:13:56+02:00
 
 ## Code Metrics
 
-- **Implementation file**: mhpco.ts
-- **Implementation LOC**: 185
+- **Implementation files**: cli.ts, mhpco.ts, types.ts
+- **Implementation LOC** (total): 303
 - **Test file**: mhpco.spec.ts
 - **Test file LOC**: 268
 - **Active tests**: 17
@@ -40,8 +40,8 @@ Generated: 2026-05-09T11:13:56+02:00
 
  Test Files  1 passed (1)
       Tests  17 passed (17)
-   Start at  11:13:57
-   Duration  352ms (transform 52ms, setup 0ms, collect 39ms, tests 3ms, environment 0ms, prepare 157ms)
+   Start at  14:55:33
+   Duration  350ms (transform 30ms, setup 0ms, collect 28ms, tests 3ms, environment 0ms, prepare 64ms)
 ```
 
 ## Coverage
@@ -55,22 +55,23 @@ Generated: 2026-05-09T11:13:56+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 57 | ×1 | 57 |
-| Invocations | 39 | ×2 | 78 |
-| Conditionals | 11 | ×4 | 44 |
-| Loops | 9 | ×5 | 45 |
-| Assignments | 48 | ×6 | 288 |
-| **Total Mass** | | | **512** |
+| Constants | 81 | ×1 | 81 |
+| Invocations | 66 | ×2 | 132 |
+| Conditionals | 13 | ×4 | 52 |
+| Loops | 11 | ×5 | 55 |
+| Assignments | 66 | ×6 | 396 |
+| **Total Mass** | | | **716** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 125 |
-| Functions | 0 |
-| Longest Function | 0 lines |
-| Avg LOC/Function | 0 |
-| Imports | 1 |
+| LOC (non-blank) | 221 |
+| Functions | 2 |
+| Longest Function | 28 lines |
+| Avg LOC/Function | 24.50 |
+| Median LOC/Function | 24.50 |
+| Imports | 3 |
 
 ## Code Smells
 

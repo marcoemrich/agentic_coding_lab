@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-09_08-39-14_claim-office-example-mapping_v3-basic-tdd_sonnet-4-6
 
-Generated: 2026-05-09T11:14:29+02:00
+Generated: 2026-05-10T14:56:05+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:14:29+02:00
 
 ## Code Metrics
 
-- **Implementation file**: claim.ts
-- **Implementation LOC**: 119
+- **Implementation files**: claim.ts, cli.ts, quote.ts, scenario.ts, types.ts
+- **Implementation LOC** (total): 450
 - **Test file**: claim.spec.ts
 - **Test file LOC**: 175
 - **Active tests**: 16
@@ -37,12 +37,12 @@ Generated: 2026-05-09T11:14:29+02:00
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-09_08-39-14_claim-office-example-mapping_v3-basic-tdd_sonnet-4-6
 
  ✓ src/claim.spec.ts  (16 tests) 4ms
- ✓ src/quote.spec.ts  (26 tests) 3ms
+ ✓ src/quote.spec.ts  (26 tests) 4ms
 
  Test Files  2 passed (2)
       Tests  42 passed (42)
-   Start at  11:14:29
-   Duration  355ms (transform 54ms, setup 0ms, collect 57ms, tests 7ms, environment 0ms, prepare 225ms)
+   Start at  14:56:05
+   Duration  361ms (transform 41ms, setup 0ms, collect 57ms, tests 8ms, environment 0ms, prepare 137ms)
 ```
 
 ## Coverage
@@ -56,22 +56,23 @@ Generated: 2026-05-09T11:14:29+02:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 31 | ×1 | 31 |
-| Invocations | 39 | ×2 | 78 |
-| Conditionals | 10 | ×4 | 40 |
-| Loops | 9 | ×5 | 45 |
-| Assignments | 23 | ×6 | 138 |
-| **Total Mass** | | | **332** |
+| Constants | 106 | ×1 | 106 |
+| Invocations | 131 | ×2 | 262 |
+| Conditionals | 32 | ×4 | 128 |
+| Loops | 28 | ×5 | 140 |
+| Assignments | 80 | ×6 | 480 |
+| **Total Mass** | | | **1116** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 88 |
-| Functions | 4 |
+| LOC (non-blank) | 351 |
+| Functions | 14 |
 | Longest Function | 80 lines |
-| Avg LOC/Function | 25 |
-| Imports | 1 |
+| Avg LOC/Function | 17.57 |
+| Median LOC/Function | 6.50 |
+| Imports | 7 |
 
 ## Code Smells
 

@@ -1,0 +1,224 @@
+$ vitest run
+
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-09_15-46-10_claim-office-example-mapping_v4-exact-subagents_haiku-4-5
+
+ ❯ src/claim-office.spec.ts  (23 tests | 10 failed | 7 skipped) 9ms
+   ❯ src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should calculate premium for single sword without modifiers
+     → expected 200 to be 100 // Object.is equality
+   ❯ src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should calculate premium for single amulet without modifiers
+     → expected 300 to be 150 // Object.is equality
+   ❯ src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should calculate premium for single staff without modifiers
+     → expected 400 to be 200 // Object.is equality
+   ❯ src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should calculate premium for multiple different items
+     → expected 385.05 to be 450 // Object.is equality
+   ❯ src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should apply cursed item surcharge
+     → expected 128 to be 110 // Object.is equality
+   ❯ src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should apply high enchantment surcharge for enchantment level >= 5
+     → expected 139 to be 120 // Object.is equality
+   ❯ src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should apply first insurance surcharge
+     → expected 200 to be 111 // Object.is equality
+   ❯ src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should add processing fee of 5G
+     → expected 200 to be 116 // Object.is equality
+   ❯ src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should round premiums up in MHPCO's favor
+     → expected 201 to be 117 // Object.is equality
+   ❯ src/claim-office.spec.ts > MHPCO Claim Office - Process Claim > should process reimbursement for standard item damage
+     → expected 50 to be +0 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should calculate premium for single sword without modifiers
+AssertionError: expected 200 to be 100 // Object.is equality
+
+- Expected
++ Received
+
+- 100
++ 200
+
+ ❯ src/claim-office.spec.ts:7:32
+      5|   it("should calculate premium for single sword without modifiers", ()…
+      6|     const items = [{ type: "sword", baseCost: 100 }];
+      7|     expect(quotePolicy(items)).toBe(100);
+       |                                ^
+      8|   });
+      9|   it("should calculate premium for single amulet without modifiers", (…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should calculate premium for single amulet without modifiers
+AssertionError: expected 300 to be 150 // Object.is equality
+
+- Expected
++ Received
+
+- 150
++ 300
+
+ ❯ src/claim-office.spec.ts:11:32
+      9|   it("should calculate premium for single amulet without modifiers", (…
+     10|     const items = [{ type: "amulet", baseCost: 150 }];
+     11|     expect(quotePolicy(items)).toBe(150);
+       |                                ^
+     12|   });
+     13|   it("should calculate premium for single staff without modifiers", ()…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should calculate premium for single staff without modifiers
+AssertionError: expected 400 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 400
+
+ ❯ src/claim-office.spec.ts:15:32
+     13|   it("should calculate premium for single staff without modifiers", ()…
+     14|     const items = [{ type: "staff", baseCost: 200 }];
+     15|     expect(quotePolicy(items)).toBe(200);
+       |                                ^
+     16|   });
+     17|   it("should calculate premium for multiple different items", () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should calculate premium for multiple different items
+AssertionError: expected 385.05 to be 450 // Object.is equality
+
+- Expected
++ Received
+
+- 450
++ 385.05
+
+ ❯ src/claim-office.spec.ts:23:32
+     21|       { type: "staff", baseCost: 200 }
+     22|     ];
+     23|     expect(quotePolicy(items)).toBe(450);
+       |                                ^
+     24|   });
+     25|   it("should apply cursed item surcharge", () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should apply cursed item surcharge
+AssertionError: expected 128 to be 110 // Object.is equality
+
+- Expected
++ Received
+
+- 110
++ 128
+
+ ❯ src/claim-office.spec.ts:27:32
+     25|   it("should apply cursed item surcharge", () => {
+     26|     const items = [{ type: "sword", baseCost: 100, cursed: true }];
+     27|     expect(quotePolicy(items)).toBe(110);
+       |                                ^
+     28|   });
+     29|   it("should apply high enchantment surcharge for enchantment level >=…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should apply high enchantment surcharge for enchantment level >= 5
+AssertionError: expected 139 to be 120 // Object.is equality
+
+- Expected
++ Received
+
+- 120
++ 139
+
+ ❯ src/claim-office.spec.ts:31:32
+     29|   it("should apply high enchantment surcharge for enchantment level >=…
+     30|     const items = [{ type: "sword", baseCost: 100, enchantment: 5 }];
+     31|     expect(quotePolicy(items)).toBe(120);
+       |                                ^
+     32|   });
+     33|   it("should apply loyalty discount for loyalty >= 2 years", () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should apply first insurance surcharge
+AssertionError: expected 200 to be 111 // Object.is equality
+
+- Expected
++ Received
+
+- 111
++ 200
+
+ ❯ src/claim-office.spec.ts:39:32
+     37|   it("should apply first insurance surcharge", () => {
+     38|     const items = [{ type: "sword", baseCost: 100 }];
+     39|     expect(quotePolicy(items)).toBe(111);
+       |                                ^
+     40|   });
+     41|   it("should apply follow-up contract discount", () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should add processing fee of 5G
+AssertionError: expected 200 to be 116 // Object.is equality
+
+- Expected
++ Received
+
+- 116
++ 200
+
+ ❯ src/claim-office.spec.ts:47:32
+     45|   it("should add processing fee of 5G", () => {
+     46|     const items = [{ type: "sword", baseCost: 100 }];
+     47|     expect(quotePolicy(items)).toBe(116);
+       |                                ^
+     48|   });
+     49|   it("should round premiums up in MHPCO's favor", () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+ FAIL  src/claim-office.spec.ts > MHPCO Claim Office - Quote Policy > should round premiums up in MHPCO's favor
+AssertionError: expected 201 to be 117 // Object.is equality
+
+- Expected
++ Received
+
+- 117
++ 201
+
+ ❯ src/claim-office.spec.ts:51:32
+     49|   it("should round premiums up in MHPCO's favor", () => {
+     50|     const items = [{ type: "sword", baseCost: 100.5 }];
+     51|     expect(quotePolicy(items)).toBe(117);
+       |                                ^
+     52|   });
+     53|   it("should bundle 3 components into block at discounted rate", () =>…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯
+
+ FAIL  src/claim-office.spec.ts > MHPCO Claim Office - Process Claim > should process reimbursement for standard item damage
+AssertionError: expected 50 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 50
+
+ ❯ src/claim-office.spec.ts:81:42
+     79|     const policy = [{ type: "sword", baseCost: 100 }];
+     80|     const claims = [{ itemIndex: 0, damageAmount: 50 }];
+     81|     expect(processClaim(policy, claims)).toBe(0);
+       |                                          ^
+     82|   });
+     83|   it.todo("should apply 50% reimbursement for high enchantment >= 8");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/10]⎯
+
+ Test Files  1 failed (1)
+      Tests  10 failed | 6 passed | 7 todo (23)
+   Start at  16:18:30
+   Duration  171ms (transform 31ms, setup 0ms, collect 26ms, tests 9ms, environment 0ms, prepare 52ms)
+
+[ELIFECYCLE] Test failed. See above for more details.

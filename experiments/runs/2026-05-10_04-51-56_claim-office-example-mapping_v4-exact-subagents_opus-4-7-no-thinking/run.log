@@ -1,0 +1,8 @@
+All 44 tests pass and `experiment-done.txt` contains "DONE". The TDD exercise is complete:
+
+- 44/44 tests passing
+- Quote logic with all premium modifiers (cursed, high enchantment, loyalty, first-insurance, follow-up, processing fee, rounding up)
+- Component block discount (3 alike → 60 G)
+- Claim logic with deductible, special clauses (high enchantment 50%, dragon material full), per-event deductible, cap exhaustion across successive claims, payout rounding down
+- CLI at `src/cli.ts` reading JSON scenarios from stdin, writing JSON results to stdout
+- Error handling for unknown item types, items not in policy, excess damages, negative amounts (non-zero exit + stderr message)
