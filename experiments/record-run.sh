@@ -76,6 +76,11 @@ MODEL_CONFIGS=(
     "sonnet-4-6-no-thinking|claude-sonnet-4-6|false"
     "haiku-4-5|claude-haiku-4-5-20251001|true"
     "haiku-4-5-no-thinking|claude-haiku-4-5-20251001|false"
+    # Portkey routing for opus-4-6: requires ANTHROPIC_BASE_URL +
+    # ANTHROPIC_CUSTOM_HEADERS (see experiments/docker/.env.example).
+    # The -portkey suffix labels runs that were routed via Portkey, so
+    # they remain distinguishable from any future direct-API opus-4-6 runs.
+    "opus-4-6-portkey|@vertex-ai/anthropic.claude-opus-4-6|true"
 )
 
 list_models() {

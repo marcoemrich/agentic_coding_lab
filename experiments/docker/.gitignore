@@ -1,5 +1,12 @@
 # Environment file with secrets
 .env
 
+# Defence-in-depth: the Portkey host profile lives in ~/.claude.portkey/
+# outside the repo by design (see claude-config-portkey.README.md). These
+# patterns block accidental copies of the profile into the worktree.
+claude-config-portkey/
+*.settings.portkey.json
+*portkey*.credentials.json
+
 # Logs
 *.log
