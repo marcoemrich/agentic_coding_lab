@@ -7,3 +7,7 @@ experiments/reanalyze.log
 .claude/scheduled_tasks.lock
 .claude/settings.local.json
 experiments/batch-plans/*.shard*.json
+# Batch fill plans are temporary snapshots — recomputable from RQ READMEs
+# via batch-plan-from-rq.py. Only the smoke-test plan stays tracked.
+experiments/batch-plans/*-fill*.json
+experiments/batch-plans/rq-*.json
