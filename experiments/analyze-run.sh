@@ -758,6 +758,7 @@ EOF
         # verification suite.
         local verification_total=0
         local verification_passed=0
+        local verification_invoke_failed=0
         local verification_pct="null"
 
         local kata_basename="$kata"
@@ -784,8 +785,17 @@ EOF
                 scenario_name=$(basename "$input_file" .input.json)
 
                 local actual
+                # `set -e` is global; a non-zero exit from the CLI here
+                # would abort the whole analyze run. But a failing CLI
+                # is itself a legitimate verification result (e.g. the
+                # agent never wrote src/cli.ts) — capture it as
+                # exit_code != 0, don't propagate. Disable `set -e`
+                # locally so we keep both `actual` and the exit code.
+                local exit_code=0
+                set +e
                 actual=$(cd "$run_dir" && timeout "$v_timeout" bash -c "$v_command" < "$input_file" 2>>"$run_dir/verification.log")
-                local exit_code=$?
+                exit_code=$?
+                set -e
 
                 if [ $exit_code -eq 0 ]; then
                     if diff <(echo "$actual" | jq -S .) <(jq -S . "$expected_file") > /dev/null 2>&1; then
@@ -796,11 +806,30 @@ EOF
                     fi
                 else
                     echo "FAIL (exit $exit_code): $scenario_name" >> "$run_dir/verification.log"
+                    # Distinguish "CLI never started" (no output at all)
+                    # from "CLI ran but threw" (some output captured).
+                    # The former usually means the entry point doesn't
+                    # exist — a hard correctness failure.
+                    if [ -z "$actual" ]; then
+                        verification_invoke_failed=$((verification_invoke_failed + 1))
+                    fi
                 fi
             done
 
             if [ $verification_total -gt 0 ]; then
                 verification_pct=$(awk "BEGIN {printf \"%.4f\", $verification_passed / $verification_total}")
+            fi
+
+            # If every scenario failed to even invoke the CLI, the agent
+            # never produced the entry point demanded by the prompt. The
+            # vitest spec may still pass internally, but the run as a
+            # whole has not satisfied the kata's contract — report it
+            # as a hard test failure so downstream RQ outcomes
+            # (tests_passing) reflect the missing artifact.
+            if [ "$verification_total" -gt 0 ] && \
+               [ "$verification_invoke_failed" -eq "$verification_total" ]; then
+                tests_passed=false
+                echo -e "${RED}CLI entry point missing — overriding tests_passing=false${NC}"
             fi
 
             echo -e "${YELLOW}Verification: ${verification_passed}/${verification_total} scenarios passed${NC}"
