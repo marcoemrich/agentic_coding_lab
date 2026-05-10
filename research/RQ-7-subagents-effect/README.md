@@ -67,6 +67,29 @@ verification_pct, aber sehr niedrigerem `smell_total` (2 vs ~17–20)
 und kompakterem `cc_loc` (28 vs ~100–125). Diese RQ verifiziert das
 Muster gegen den methodisch sauberen Vergleichspartner v5.
 
+### Trade-off-Lesart
+
+H1, H3 und H4/H6 sind keine unabhängigen Hypothesen — sie spannen
+zusammen einen Trade-off-Raum auf, in dem v4 nur dann sinnvoll
+einsetzbar ist, wenn der Struktur-Gewinn nicht durch Korrektheits- und
+Zeit-Kosten aufgefressen wird:
+
+- **Struktur-Achse** (H1): liefert v4 messbar besseren Code als v5?
+  Outcomes: `cc_longest_function`, `cc_functions`, `cc_avg_loc_per_function`,
+  `mccabe_max`, `cognitive_max`, `smell_total`, `code_mass`.
+- **Korrektheits-Achse** (H4/H6): bezahlt v4 für die bessere Struktur
+  mit niedrigerer oder instabilerer Korrektheit?
+  Outcomes: `verification_pct`, `tests_passing` (Rate über Replikate).
+- **Zeit-Achse** (H3): wie teuer ist der Struktur-Gewinn pro Run?
+  Outcomes: `duration_seconds`, `total_tokens`.
+
+Eine v4-Konfiguration ist nur dann **strikt besser** als v5, wenn sie
+auf der Struktur-Achse gewinnt UND auf den anderen beiden Achsen nicht
+verliert. Verliert sie auf einer Achse, wird die Bewertung
+kontextabhängig — und genau diese Kontext-Abhängigkeit ist H5/H6:
+Kata-Komplexität moderiert, ob der Trade-off positiv oder negativ
+ausfällt.
+
 ## Design-Begründung
 
 **Single-factor Workflow (v4 vs v5)**: alle anderen Workflow-Aspekte
@@ -114,6 +137,28 @@ Modell-Dimension.
   Erwartung: `code_mass / verification_passed` ist bei v4 systematisch
   höher als bei v5.
   **Operationalisierung:** Ratio pro Run, dann Workflow-Mittel.
+- H8 (Trade-off-Profil): Pro Zelle (kata × model) lassen sich v4 und
+  v5 als Tripel (Struktur, Korrektheit, Zeit) charakterisieren, und
+  die Vorzeichen der drei Differenzen bestimmen, ob eine Konfiguration
+  v4-dominiert ist (alle drei Differenzen sprechen für v4),
+  v5-dominiert ist (alle drei für v5) oder einen echten Trade-off
+  darstellt (gemischte Vorzeichen).
+  **Operationalisierung:** pro Zelle drei Differenzen ausrechnen:
+  - Struktur: `cc_longest_function`(v5) − (v4) — positiv heißt v4 hat
+    kürzere Spitzen-Funktion.
+  - Korrektheit: `verification_pct`(v4) − (v5) — positiv heißt v4 ist
+    korrekter (bei Vitest-only-Katas: `tests_passing`-Rate).
+  - Zeit: `duration_seconds`(v5) − (v4) — positiv heißt v4 ist
+    schneller.
+  Berichten als Tabelle Zelle × Differenz-Tripel. Aus den Vorzeichen
+  ergibt sich automatisch "v4-dominiert / v5-dominiert / Trade-off"
+  ohne willkürliche Schwellwerte.
+  Erwartet (basierend auf bisherigen Daten): game-of-life × Opus zeigt
+  Trade-off (Struktur und Korrektheit für v4, Zeit gegen v4),
+  claim-office × Opus zeigt Trade-off mit anderem Profil (Struktur
+  für v4, Korrektheit gegen v4, Zeit deutlich gegen v4). Welche der
+  beiden "lohnender" ist, hängt vom Gewicht ab, das ein Anwender den
+  drei Achsen gibt — diese Bewertung gehört nicht in die Hypothese.
 
 ## Findings
 
