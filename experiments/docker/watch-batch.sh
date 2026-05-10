@@ -14,6 +14,18 @@ LOG_FILE="batch.log"
 RUNS_DIR="../runs"
 PLANS_DIR="../batch-plans"
 
+# Per-plan log file convention: batch.<plan-stem>.log. Falls back to
+# legacy batch.log so reports for older runs still work.
+log_file_for_plan() {
+    local plan="$1"
+    plan="${plan%.json}"
+    if [ -f "batch.${plan}.log" ]; then
+        echo "batch.${plan}.log"
+    else
+        echo "$LOG_FILE"
+    fi
+}
+
 # Render one snapshot for a (plan_name, container_name_or_empty, log_source) triple.
 # log_source can be a file path or "docker:<container_name>" for live container logs.
 render_snapshot() {
@@ -182,14 +194,15 @@ if [ $# -ge 1 ]; then
         fi
     done < <(docker ps --filter "name=docker-batch-run" --format '{{.Names}}')
 
+    plan_log=$(log_file_for_plan "$plan")
     if [ -n "$found" ]; then
         started=$(container_started_at_epoch "$found")
         render_snapshot "$plan" "$found" "docker:$found" "$started"
     else
-        render_snapshot "$plan" "" "$LOG_FILE" ""
+        render_snapshot "$plan" "" "$plan_log" ""
     fi
     echo "Live tail (running): docker logs -f <container>"
-    echo "Live tail (file):    tail -f $SCRIPT_DIR/$LOG_FILE"
+    echo "Live tail (file):    tail -f $SCRIPT_DIR/$plan_log"
     exit 0
 fi
 
@@ -209,12 +222,14 @@ if [ "${#containers[@]}" -gt 0 ]; then
 fi
 
 # No running container — show last finished batch from batch.log.
+# (batch.log is a symlink to the most recent batch.<plan>.log)
 last_plan=$(plan_from_logfile)
 if [ -n "$last_plan" ]; then
-    echo "(no running batch — showing last entry from $LOG_FILE)"
+    last_log=$(log_file_for_plan "$last_plan")
+    echo "(no running batch — showing last entry from $last_log)"
     echo
-    render_snapshot "$last_plan" "" "$LOG_FILE" ""
-    echo "Live tail (file): tail -f $SCRIPT_DIR/$LOG_FILE"
+    render_snapshot "$last_plan" "" "$last_log" ""
+    echo "Live tail (file): tail -f $SCRIPT_DIR/$last_log"
 else
     echo "No running batch and no plan found in $LOG_FILE." >&2
     echo "Pass a plan name explicitly: $0 PLAN_NAME" >&2

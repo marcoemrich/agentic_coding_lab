@@ -48,10 +48,17 @@ if [ $# -eq 1 ]; then
     # absolute path inside the container. We pass just the basename so the
     # script's own resolution logic handles it.
     plan_basename="$(basename "$plan_file")"
+    plan_stem="${plan_basename%.json}"
+
+    # Per-plan log file so parallel batches don't overwrite each
+    # other. Plain `batch.log` is kept as a symlink to the most
+    # recent run for tools that haven't been updated yet.
+    log_file="batch.${plan_stem}.log"
 
     echo "Running batch with plan: $plan_basename"
-    echo "Logging to: $SCRIPT_DIR/batch.log"
-    BATCH_PLAN="$plan_basename" docker compose --profile batch run --rm batch 2>&1 | tee batch.log
+    echo "Logging to: $SCRIPT_DIR/$log_file"
+    ln -sfn "$log_file" batch.log
+    BATCH_PLAN="$plan_basename" docker compose --profile batch run --rm batch 2>&1 | tee "$log_file"
     exit "${PIPESTATUS[0]}"
 else
     echo "Running full cross-product (no plan)"
