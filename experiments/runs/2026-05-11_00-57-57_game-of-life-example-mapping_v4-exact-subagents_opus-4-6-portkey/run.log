@@ -1,0 +1,15 @@
+TDD exercise complete. All 7 tests passing, `experiment-done.txt` written.
+
+**Summary of the TDD cycle:**
+
+| Test | Description | Red | Green | Refactor |
+|------|-------------|-----|-------|----------|
+| 1 | Empty grid → empty | Failed (undefined) | `return []` | Extracted `Cell` type |
+| 2 | Single cell dies | Passed immediately | N/A | Arrow function style |
+| 3 | Two adjacent cells die | Passed immediately | N/A | Concise arrow body |
+| 4 | Block pattern survives | Failed ([] vs 4 cells) | Neighbor counting + filter | Extracted `isNeighbor`, `countNeighbors` |
+| 5 | Overpopulation kills | Passed immediately | N/A | Restructured `isNeighbor` with dx/dy |
+| 6 | Reproduction births | Failed (missing [1,1]) | Dead candidate discovery + birth rule | Extracted `neighborPositions`, `findDeadNeighbors`, `cellKey` |
+| 7 | Blinker oscillates | Passed immediately | N/A | Declarative `neighborPositions`, consistent destructuring |
+
+**Final implementation**: `nextGeneration` computes survivors (live cells with 2-3 neighbors) and born cells (dead cells adjacent to live cells with exactly 3 neighbors), using a sparse representation with `Cell` tuples.

@@ -1,0 +1,15 @@
+The Game of Life TDD exercise is complete. Here's a summary:
+
+**Implementation** (`src/game-of-life.ts`): A `nextGeneration` function that uses sparse representation with string-keyed maps. It counts neighbors for all cells adjacent to living cells, then applies the Game of Life rules in a single condition: `count === 3 || (count === 2 && alive.has(key))`.
+
+**Tests** (`src/game-of-life.spec.ts`): 8 tests covering all four rules plus integration:
+1. Empty grid → empty grid
+2. Single cell dies (underpopulation, 0 neighbors)
+3. Two adjacent cells die (underpopulation, 1 neighbor each)
+4. Cell with 2 neighbors survives (survival)
+5. Cell with 3 neighbors survives (survival)
+6. Cell with 4 neighbors dies (overpopulation)
+7. Dead cell with 3 neighbors becomes alive (reproduction)
+8. Block pattern stays stable (still life integration test)
+
+**Refactorings applied**: Merged duplicate if/else branches, renamed `result` → `nextCells`, extracted `sorted` test helper, extracted `toKey`/`fromKey` symmetric serialization helpers.

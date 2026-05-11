@@ -1,0 +1,12 @@
+The TDD exercise is complete. Here's a summary of what was built:
+
+**Implementation** (`src/game-of-life.ts`): Conway's Game of Life `nextGeneration` function using sparse representation with string-key serialization (`toKey`/`fromKey`), neighbor counting via a Map, and the unified Game of Life rule: a cell lives in the next generation if it has exactly 3 neighbors, or exactly 2 neighbors and is already alive.
+
+**Tests** (`src/game-of-life.spec.ts`): 7 tests covering:
+1. Empty grid → empty
+2. Single cell dies (underpopulation, 0 neighbors)
+3. Two adjacent cells die (underpopulation, 1 neighbor each)
+4. Reproduction (dead cell with 3 neighbors becomes alive — L-shape → block)
+5. Survival (block still life — each cell has 3 neighbors)
+6. Overpopulation (center of plus pattern dies with 4 neighbors)
+7. Blinker oscillator (combines underpopulation, survival, and reproduction)

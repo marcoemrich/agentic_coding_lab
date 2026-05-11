@@ -1,0 +1,11 @@
+All 9 tests implemented and passing. The TDD exercise is complete.
+
+**Summary of the TDD cycle:**
+
+- **Test 1** (empty grid): Full red/green/refactor cycle — drove the initial stub creation
+- **Test 2** (single cell dies): Passed immediately (returns `[]`)
+- **Test 3** (two adjacent cells die): Passed immediately (returns `[]`)
+- **Test 4** (reproduction): Full red/green/refactor cycle — drove the core Game of Life logic (neighbor counting, survival/reproduction rules)
+- **Tests 5-9** (survival with 2/3 neighbors, overpopulation, block, blinker): All passed immediately since the full logic was already in place from test 4
+
+**Final implementation** (`src/game-of-life.ts`): A concise function that counts neighbors for all cells adjacent to live cells, then applies the rule `count === 3 || (count === 2 && alive)` to determine the next generation.

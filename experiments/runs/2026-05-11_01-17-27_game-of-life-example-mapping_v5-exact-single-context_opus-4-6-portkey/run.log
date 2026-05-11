@@ -1,0 +1,11 @@
+The TDD exercise is complete. Here's a summary:
+
+**6 tests, all passing:**
+1. Empty grid → empty
+2. Single cell dies (underpopulation)
+3. Dead cell with 3 neighbors becomes alive (reproduction)
+4. Live cell with 2 neighbors survives (survival)
+5. Live cell with >3 neighbors dies (overpopulation)
+6. Blinker oscillates (integration)
+
+**Final implementation** (`src/game-of-life.ts`): A sparse Game of Life using string-keyed Sets and Maps. The core logic is a single, canonical condition: `count === 3 || (count === 2 && alive.has(key))`.

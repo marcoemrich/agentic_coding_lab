@@ -1,0 +1,12 @@
+The TDD exercise is complete. Here's a summary:
+
+**7 tests implemented and passing:**
+1. Empty grid → empty grid
+2. Single cell dies (underpopulation, 0 neighbors)
+3. Two adjacent cells die (underpopulation, 1 neighbor each)
+4. Cell with 2 neighbors survives (L-shape → block)
+5. Dead cell with 3 neighbors becomes alive (reproduction, horizontal line)
+6. Cell with 4+ neighbors dies (overpopulation, plus shape)
+7. Blinker oscillator (vertical → horizontal)
+
+**Implementation** (`src/game-of-life.ts`): Sparse representation using a `Set` for alive cells and a `Map` for neighbor counts. For each live cell, increments neighbor counts for all 8 adjacent positions. Then filters: a cell lives in the next generation if it has exactly 3 neighbors, or has exactly 2 neighbors and is currently alive.

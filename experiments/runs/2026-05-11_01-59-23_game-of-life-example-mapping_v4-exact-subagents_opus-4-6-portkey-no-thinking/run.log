@@ -1,0 +1,16 @@
+TDD exercise complete. Here's a summary:
+
+**Game of Life - TDD Implementation Complete**
+
+- **6 tests**, all passing
+- **Test list** → **Red-Green-Refactor** cycle for each test using specialized TDD agents
+
+**Tests implemented:**
+1. Empty grid → empty grid
+2. Single cell dies (underpopulation, 0 neighbors)
+3. Two adjacent cells die (underpopulation, 1 neighbor each)
+4. Block pattern unchanged (still life, 2-3 neighbors) — *this test drove the real implementation*
+5. Blinker vertical → horizontal (reproduction + underpopulation)
+6. Blinker horizontal → vertical (symmetry confirmation)
+
+**Implementation** (`src/game-of-life.ts`): Sparse representation using a `Set<string>` for O(1) alive-cell lookup, candidate generation (live cells + their neighbors), and unified Game of Life rule: `neighbors === 3 || (neighbors === 2 && alive)`.

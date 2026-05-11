@@ -1,0 +1,16 @@
+All done. Here's a summary of the completed TDD exercise:
+
+**Game of Life** — 9 tests, all passing, implemented through strict Red-Green-Refactor TDD.
+
+**Final implementation** (`src/game-of-life.ts`): A clean ~40-line solution using sparse representation with:
+- `toKey`/`fromKey` for coordinate encoding
+- `neighbors` helper for the 8-cell Moore neighborhood
+- `countAliveNeighbors` for neighbor counting
+- Survival: filter live cells with 2-3 neighbors
+- Reproduction: collect dead neighbor candidates, birth those with exactly 3 neighbors
+
+**Key refactorings** applied across cycles:
+1. Extracted `toKey` to centralize string key format
+2. Extracted `fromKey` as inverse of `toKey`
+3. Extracted `neighbors` helper to eliminate duplicate dx/dy loops
+4. Converted imperative births loop to declarative `map`/`filter` style

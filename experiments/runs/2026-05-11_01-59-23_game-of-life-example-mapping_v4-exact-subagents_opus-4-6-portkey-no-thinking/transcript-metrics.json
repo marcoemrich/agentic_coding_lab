@@ -1,0 +1,173 @@
+{
+  "wall_clock_seconds": 874.76,
+  "total_tokens": {
+    "input": 71,
+    "output": 18423,
+    "cache_read": 3458752,
+    "cache_creation": 137416,
+    "total": 3614662
+  },
+  "context_utilization_pct": 34,
+  "context_window_tokens": 200000,
+  "context_peak_tokens": 67426,
+  "message_count": 67,
+  "tool_calls": {
+    "Read": 11,
+    "Glob": 3,
+    "TodoWrite": 8,
+    "Bash": 2,
+    "Agent": 15,
+    "Write": 1
+  },
+  "skill_invocations": {},
+  "task_invocations": {
+    "test-list": 1,
+    "red": 6,
+    "green": 2,
+    "refactor": 6
+  },
+  "cycle_count": 6,
+  "predictions_correct": 12,
+  "predictions_total": 12,
+  "model_versions": [
+    "claude-opus-4-6"
+  ],
+  "subagent_token_total": 5164906,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 486900,
+      "duration_seconds": 44.02,
+      "transcript": "agent-a3284b02f9366cf98.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 370703,
+      "duration_seconds": 30.89,
+      "transcript": "agent-af5e3087d204f2542.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 307141,
+      "duration_seconds": 21.09,
+      "transcript": "agent-aac959c5d9d792819.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 320023,
+      "duration_seconds": 44.59,
+      "transcript": "agent-ab710627075a75a5d.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 244196,
+      "duration_seconds": 31.83,
+      "transcript": "agent-ac89c522b6e3cf9d5.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 319483,
+      "duration_seconds": 36.89,
+      "transcript": "agent-a0b165e24258302cb.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 307629,
+      "duration_seconds": 34.98,
+      "transcript": "agent-a54dae10854cc8017.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 352972,
+      "duration_seconds": 42.5,
+      "transcript": "agent-a2841c95ba9cdeeff.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 245154,
+      "duration_seconds": 29.67,
+      "transcript": "agent-a698458e71488c036.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 314797,
+      "duration_seconds": 41.13,
+      "transcript": "agent-a706ecd12d171050b.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 406741,
+      "duration_seconds": 72.26,
+      "transcript": "agent-ab4ccba2a5d3375f9.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 312017,
+      "duration_seconds": 40.08,
+      "transcript": "agent-a214556b025b2744c.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 556448,
+      "duration_seconds": 96.2,
+      "transcript": "agent-aea02151d124dc8b2.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 247849,
+      "duration_seconds": 38.12,
+      "transcript": "agent-a6d5d562c66083408.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 372853,
+      "duration_seconds": 79.34,
+      "transcript": "agent-a2c082acfc559aac9.jsonl"
+    }
+  ],
+  "phase_source": "subagents",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 486900,
+        "duration_seconds": 44.02
+      },
+      "red": {
+        "count": 6,
+        "tokens": 1727548,
+        "duration_seconds": 205.57
+      },
+      "green": {
+        "count": 2,
+        "tokens": 621938,
+        "duration_seconds": 62.22
+      },
+      "refactor": {
+        "count": 6,
+        "tokens": 2328520,
+        "duration_seconds": 371.78
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 486900.0,
+        "avg_duration_seconds": 44.02
+      },
+      "red": {
+        "avg_tokens": 287924.67,
+        "avg_duration_seconds": 34.26
+      },
+      "green": {
+        "avg_tokens": 310969.0,
+        "avg_duration_seconds": 31.11
+      },
+      "refactor": {
+        "avg_tokens": 388086.67,
+        "avg_duration_seconds": 61.96
+      }
+    },
+    "refactorings_applied": 6,
+    "tests_passed_immediately": 4
+  }
+}

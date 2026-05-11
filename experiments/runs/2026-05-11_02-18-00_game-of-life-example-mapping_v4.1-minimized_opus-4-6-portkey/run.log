@@ -1,0 +1,17 @@
+TDD exercise complete. Here's a summary:
+
+**Implementation**: `src/game-of-life.ts` — sparse Game of Life using string-keyed neighbor counting. 34 lines.
+
+**Tests**: `src/game-of-life.spec.ts` — 10 tests, all passing:
+1. Empty grid → empty
+2. Single cell dies (underpopulation)
+3. Two adjacent cells die (underpopulation)
+4. Survival with 2 neighbors
+5. Survival with 3 neighbors
+6. Overpopulation (> 3 neighbors)
+7. Reproduction (dead cell with 3 neighbors)
+8. Block still life
+9. Blinker oscillator
+10. Negative coordinates
+
+**TDD cycle**: The first 3 tests passed with the degenerate `return []`. Test 4 (survival with 2 neighbors) forced the real implementation. Tests 5-10 all passed immediately since the full logic was already in place. Refactoring extracted `toKey`/`fromKey` helpers and a `sortedKeys` test utility.

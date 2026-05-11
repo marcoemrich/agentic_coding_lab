@@ -1,0 +1,7 @@
+TDD exercise complete. All 9 tests pass and `experiment-done.txt` has been written.
+
+**Final state:**
+- `src/game-of-life.spec.ts` — 9 tests covering empty grid, underpopulation (0, 1 neighbor), survival (2, 3 neighbors), reproduction, overpopulation, block (still life), and blinker (oscillator)
+- `src/game-of-life.ts` — implementation with `nextGeneration`, `countNeighbors`, `isAlive`, and `deadNeighbors` functions using sparse cell representation
+)
+3. **Tests 2, 3, 7, 8, 9** passed immediately with existing implementation — demonstrating how the rules naturally compose

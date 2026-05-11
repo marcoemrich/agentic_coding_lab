@@ -1,0 +1,14 @@
+TDD exercise complete. All 9 tests pass across the full Game of Life implementation:
+
+**Tests implemented (Red-Green-Refactor cycle):**
+1. Empty grid → no cells (coincidental green)
+2. Single cell dies — underpopulation (coincidental green)
+3. Two adjacent cells die — underpopulation (coincidental green)
+4. Live cell with 2 neighbors survives — **first real red/green** (added survival logic)
+5. Live cell with 3 neighbors survives (coincidental green, already covered)
+6. Live cell with 4 neighbors dies — overpopulation (coincidental green, already covered)
+7. Dead cell with 3 neighbors becomes alive — **second real red/green** (added reproduction logic)
+8. Block pattern stays unchanged — still life (coincidental green)
+9. Blinker oscillates — period-2 oscillator (coincidental green)
+
+**Final implementation** (`src/game-of-life.ts`): Uses a unified neighbor-counting approach with a `Map<string, number>` to count how many live neighbors each cell position has, then applies the rules in a single pass: cells with count 3 always live, cells with count 2 survive only if already alive.
