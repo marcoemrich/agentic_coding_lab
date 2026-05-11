@@ -8,10 +8,10 @@ factors:
     - opus-4-7-no-thinking
     - opus-4-6-portkey
     - opus-4-6-portkey-no-thinking
-    - sonnet-4-6
-    - sonnet-4-6-no-thinking
-    - haiku-4-5
-    - haiku-4-5-no-thinking
+    - sonnet-4-6-portkey
+    - sonnet-4-6-portkey-no-thinking
+    - haiku-4-5-portkey
+    - haiku-4-5-portkey-no-thinking
 controls:
   workflow: v5-exact-single-context
   kata_base: claim-office
@@ -60,13 +60,14 @@ Konfiguration: `experiments/katas/claim-office-{prose, example-mapping, user-sto
 | opus-4-7-no-thinking | Aus | Anthropic direct |
 | opus-4-6-portkey | Thinking | Portkey Gateway |
 | opus-4-6-portkey-no-thinking | Aus | Portkey Gateway |
-| sonnet-4-6 | Extended Thinking | Anthropic direct |
-| sonnet-4-6-no-thinking | Aus | Anthropic direct |
-| haiku-4-5 | Extended Thinking | Anthropic direct |
-| haiku-4-5-no-thinking | Aus | Anthropic direct |
+| sonnet-4-6-portkey | Extended Thinking | Portkey Gateway |
+| sonnet-4-6-portkey-no-thinking | Aus | Portkey Gateway |
+| haiku-4-5-portkey | Extended Thinking | Portkey Gateway |
+| haiku-4-5-portkey-no-thinking | Aus | Portkey Gateway |
 
-Portkey-Varianten sind rate-limit-frei; Anthropic-direct-Varianten
-unterliegen dem API-Rate-Limit.
+Opus 4.7 läuft über die Anthropic-direct-API (Rate-Limit). Alle anderen
+Modelle laufen über das Portkey-Gateway (rate-limit-frei) und können in
+einem einzigen Batch erhoben werden.
 
 ## Warum v5 als Kontroll-Workflow?
 
@@ -201,11 +202,9 @@ ob Reasoning-Kapazität den Prompt-Stil-Effekt abschwächt.
 
 ## Batch-Strategie
 
-1. **Phase 1** (rate-limit-frei): Opus 4.6 Portkey-Varianten —
-   6 Zellen × n=3 = 18 Runs.
-2. **Phase 2** (parallel): Sonnet + Haiku —
-   12 Zellen × n=3 = 36 Runs.
-3. **Phase 3** (zeitversetzt): Opus 4.7 —
+1. **Phase 1** (rate-limit-frei): Opus 4.6 + Sonnet + Haiku via
+   Portkey — 18 Zellen × n=3 = 54 Runs in einem Batch.
+2. **Phase 2** (zeitversetzt): Opus 4.7 via Anthropic direct —
    6 Zellen × n=3 = 18 Runs (strenges Rate-Limit).
 
 ## Findings
@@ -218,5 +217,6 @@ Alle Runs in `experiments/runs/` mit
 `workflow=v5-exact-single-context`,
 `kata=claim-office-{prose|example-mapping|user-story}`,
 Modell ∈ {opus-4-7, opus-4-7-no-thinking, opus-4-6-portkey,
-opus-4-6-portkey-no-thinking, sonnet-4-6, sonnet-4-6-no-thinking,
-haiku-4-5, haiku-4-5-no-thinking}.
+opus-4-6-portkey-no-thinking, sonnet-4-6-portkey,
+sonnet-4-6-portkey-no-thinking, haiku-4-5-portkey,
+haiku-4-5-portkey-no-thinking}.
