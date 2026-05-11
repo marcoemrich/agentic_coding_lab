@@ -3,8 +3,10 @@ id: RQ-9
 question: "Trägt der verbose Instruktions-Inhalt eines TDD-Workflows zur Code-Qualität und TDD-Disziplin bei, oder ist er entbehrlich?"
 factors:
   workflow_x_prompt:
-    - {workflow: v5-exact-single-context, prompt: example-mapping}
-    - {workflow: v5.1-minimized,          prompt: example-mapping}
+    - {workflow: v4-exact-subagents,       prompt: example-mapping}
+    - {workflow: v4.1-minimized,           prompt: example-mapping}
+    - {workflow: v5-exact-single-context,  prompt: example-mapping}
+    - {workflow: v5.1-minimized,           prompt: example-mapping}
   kata_base: [game-of-life]
 controls:
   model: opus-4-6-portkey
@@ -26,7 +28,7 @@ outcomes:
   - duration_seconds
   - total_tokens
   - completed_within_budget
-min_replicates: 3
+min_replicates: 4
 status: aktiv
 ---
 
