@@ -126,15 +126,52 @@ Replikate: n = 3
 Runs:      72 total
 ```
 
-### Warum claim-office und nicht game-of-life?
+### Warum claim-office?
+
+#### Die Kata als Enterprise-Simulation
+
+claim-office (*Most Honorable Privileged Claims Office for Magical
+Risks and Cursed Items*, MHPCO) ist eine eigens für dieses Lab
+entwickelte Kata, die **nicht** in den Trainingsdaten der Modelle
+vorkommt. Sie modelliert eine an Versicherungen angelehnte Domäne mit
+bürokratisch-spezifischer Business-Logik: Risikokategorien,
+Rabattstaffeln, Erstversicherungs-Bedingungen, kumulative
+Schadensbewertung.
+
+Die Formulierung ist bewusst **realistisch im Sinne von
+Enterprise-Software**: Die Regeln enthalten die Art von
+Mehrdeutigkeiten, die in realen Versicherungs-, Finanz- oder
+Verwaltungsdomänen typisch sind — Begriffe mit mehreren plausiblen
+Lesarten ("Erstversicherung": erster Vertrag des Kunden oder erster
+Vertrag für ein Risiko?), implizite Berechnungsreihenfolgen und
+Grenzfälle, die der Regeltext nicht explizit adressiert. Diese
+Mehrdeutigkeiten sind nicht als Fallen konstruiert, sondern spiegeln
+wider, wie fachliche Anforderungen in der Praxis formuliert werden:
+unvollständig, kontextabhängig, und mit Wissen beladen, das der
+Autor für selbstverständlich hält.
+
+#### Externe Verifikations-Suite
+
+Die Korrektheit wird **nicht** durch die vom Agenten geschriebenen
+Unit-Tests gemessen (diese prüfen nur, ob der Agent seine eigene
+Interpretation konsistent umsetzt), sondern durch eine **externe
+Verifikations-Suite** aus 15 Szenarien
+(`experiments/katas/claim-office-verification/`). Die Suite deckt
+drei Stufen ab: 7 isolierte Regelprüfungen, 4 kombinierte Szenarien
+und 4 Story-basierte End-to-End-Fälle. Der Agent sieht diese Suite
+nie — sie läuft nach dem Container-Run auf dem Host.
+
+`verification_pct` (0.0–1.0) misst den Anteil bestandener Szenarien
+und ist damit ein **objektives Korrektheitsmaß**, unabhängig von der
+Selbsteinschätzung des Agenten.
+
+#### Warum nicht game-of-life?
 
 game-of-life ist als Mehrdeutigkeits-Aufdecker für Prompt-Stile
 **nicht brauchbar**. Die Spec inkl. Beispiele ist in den Trainingsdaten
 der Modelle — Modelle "kennen" die korrekte Lösung bereits, unabhängig
-davon, ob der Prompt Beispiele mitliefert. claim-office ist eigens als
-Novel-Kata mit konstruierten Mehrdeutigkeiten (HPSMV-Domäne) entwickelt;
-nur hier unterscheiden sich die Stile messbar in Korrektheit
-(`verification_pct`).
+davon, ob der Prompt Beispiele mitliefert. Die Stile differenzieren
+auf game-of-life nicht messbar in Korrektheit.
 
 ### Warum voller Modell-Mix?
 
