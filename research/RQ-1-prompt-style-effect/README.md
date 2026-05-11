@@ -195,6 +195,10 @@ ob Reasoning-Kapazität den Prompt-Stil-Effekt abschwächt.
 - **H4**: Thinking-Mode verbessert `verification_pct` unabhängig vom
   Prompt-Stil, aber der Zugewinn ist kleiner als der
   Example-Mapping-Effekt.
+- **H5**: Schwächere Modelle (Haiku) erreichen auch mit
+  example-mapping keine volle Korrektheit — die Beispiele
+  entschärfen die Mehrdeutigkeiten nur, wenn das Modell genug
+  Reasoning-Kapazität hat, sie auf neue Eingaben zu generalisieren.
 
 ## Batch-Strategie
 
