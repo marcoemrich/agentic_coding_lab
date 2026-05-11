@@ -10,6 +10,8 @@
 #
 # Pass through extra env vars as needed:
 #   CLAUDE_TIMEOUT_SECONDS=600 ./batch.sh smoke-test
+#   CLAUDE_CONFIG_DIR=~/.claude.portkey ./batch.sh plan  # manual override
+#   (Portkey config is auto-detected from plan content)
 
 set -e
 
@@ -106,6 +108,28 @@ plan_basename="$(basename "$plan_file")"
 plan_stem="${plan_basename%.json}"
 
 # ---------------------------------------------------------------------------
+# Auto-detect Portkey routing
+# ---------------------------------------------------------------------------
+
+if [ -z "${CLAUDE_CONFIG_DIR:-}" ]; then
+    if python3 -c "
+import json, sys
+runs = json.load(open(sys.argv[1])).get('runs', [])
+sys.exit(0 if any('portkey' in r.get('model','') for r in runs) else 1)
+" "$plan_file" 2>/dev/null; then
+        portkey_config="$HOME/.claude.portkey"
+        if [ -d "$portkey_config" ]; then
+            export CLAUDE_CONFIG_DIR="$portkey_config"
+            echo "Auto-detected Portkey models → CLAUDE_CONFIG_DIR=$portkey_config"
+        else
+            echo "WARNING: Plan contains -portkey models but $portkey_config not found." >&2
+            echo "Set CLAUDE_CONFIG_DIR manually or create $portkey_config" >&2
+            exit 2
+        fi
+    fi
+fi
+
+# ---------------------------------------------------------------------------
 # Single-shard mode (sequential, backward-compat)
 # ---------------------------------------------------------------------------
 
@@ -118,6 +142,7 @@ if [ "$shards" -eq 1 ]; then
         BATCH_PLAN="$plan_basename" docker compose --profile batch run --rm batch \
             > "$log_file" 2>&1 &
         pid=$!
+        disown "$pid"
         echo "Started in background. PID: $pid"
         echo "Tail: tail -f $SCRIPT_DIR/$log_file"
         exit 0
@@ -192,6 +217,7 @@ first_log=$(ls -1 "batch.${plan_stem}.shard"*.log 2>/dev/null | head -1)
 [ -n "$first_log" ] && ln -sfn "$first_log" batch.log
 
 if [ "$detach" = "true" ]; then
+    disown "${pids[@]}"
     echo "Started ${#pids[@]} shards in background. PIDs: ${pids[*]}"
     echo "Logs: $SCRIPT_DIR/batch.${plan_stem}.shard*.log"
     echo "Watch: $SCRIPT_DIR/watch-batch.sh"
