@@ -23,8 +23,8 @@ End-to-end orchestration for advancing a single research question (RQ) in this l
 - RQ directory: `research/RQ-{N}-*/` with `README.md`, `findings.md`, `runs.csv`, `summary.md`.
 - Mandatory frontmatter fields: `id, question, factors, controls, outcomes, min_replicates, status`.
 - Methodology constraint: v1/v2 only with `prompt: prose`; v3/v4/v5 with all three styles. If `factors.workflow_x_prompt` exists, no additional `factors.workflow` / `controls.workflow` is allowed.
-- Active katas: only `game-of-life`, `mars-rover`. `controls.kata_base` must be from this set.
-- Model IDs are **lab-variant IDs** (`opus-4-7`, `opus-4-7-no-thinking`, `sonnet-4-6`, `sonnet-4-6-no-thinking`, `haiku-4-5`, `haiku-4-5-no-thinking`).
+- Active katas: `game-of-life`, `mars-rover`, `claim-office`. `controls.kata_base` must be from this set.
+- Model IDs are **lab-variant IDs** (`opus-4-7`, `opus-4-7-no-thinking`, `opus-4-6-portkey`, `opus-4-6-portkey-no-thinking`, `sonnet-4-6`, `sonnet-4-6-no-thinking`, `sonnet-4-6-portkey`, `sonnet-4-6-portkey-no-thinking`, `haiku-4-5`, `haiku-4-5-no-thinking`, `haiku-4-5-portkey`, `haiku-4-5-portkey-no-thinking`). The `-portkey` suffix marks models routed via the Portkey gateway.
 - Aggregation is query-based: ALL runs in `experiments/runs/` matching the selector query count — regardless of which batch produced them.
 - Batch plan is idempotent: counts existing matches and only fills missing replicates up to `min_replicates`.
 
@@ -46,9 +46,9 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
    - Model values (in `controls.model` and/or `factors.model`) must appear in the lab-variant table.
 5. Read `findings.md` (needed in phase 6 as the existing baseline).
 6. Target computation: from `factors` × `controls` derive the cell count (every factor multiplies; paired factors like `workflow_x_prompt` count as a single factor with `len(pairing)` values). Target runs = cells × `min_replicates`. Report this number to the user.
-7. **Portkey routing detection**: scan model values (in `controls.model` plus every `factors.model` entry) for a `-portkey` suffix. Set a flag `portkey_required = true` if any match. If true:
-   - Check `~/.claude.portkey/settings.json` exists. If missing: STOP, instruct the user to follow `experiments/docker/claude-config-portkey.README.md`. Do **not** start the batch.
-   - Remember the flag for phase 3.
+7. **Portkey routing detection**: scan model values (in `controls.model` plus every `factors.model` entry) for a `-portkey` suffix. If any match:
+   - Check `~/.claude.portkey/` directory exists. If missing: STOP, instruct the user to follow `experiments/docker/claude-config-portkey.README.md`. Do **not** start the batch.
+   - Note: `batch.sh` auto-detects Portkey models from the plan JSON and sets `CLAUDE_CONFIG_DIR` automatically. No manual env-var needed in phase 3.
 
 Output to user (compact):
 ```
@@ -84,17 +84,15 @@ status: <status>
 1. **Pre-check**:
    - `docker ps --filter name=docker-batch-run --format '{{.Names}}'` — if a container is running: STOP and ask the user whether the existing batch should finish first.
    - If `experiments/docker/batch.log` from an earlier run exists and is >0 bytes: ask the user whether to back it up as `experiments/docker/batch.<plan>.log` (`mv`, no deletion).
-2. **User confirmation** before start: "Start batch `rq-{n}-fill` with Y runs in the background? Expected wallclock ≈ Y × 6 min ≈ Z min." (6 min/run per memory, smart-subset experience.) For Portkey RQs (flag from phase 1.7), append: "via Portkey gateway (uses `~/.claude.portkey/` profile)".
-3. Background start (per memory: NO `nohup ... &`).
-   Standard RQ:
+2. **User confirmation** before start: "Start batch `rq-{n}-fill` with Y runs in the background? Expected wallclock ≈ Y × 6 min ≈ Z min." (6 min/run per memory, smart-subset experience.) For Portkey RQs (flag from phase 1.7), append: "via Portkey gateway (auto-detected)".
+3. Start with `--detach` (backgrounds the batch and disowns the process so the terminal can be closed safely):
    ```bash
-   cd experiments/docker && ./batch.sh rq-{n}-fill
+   cd experiments/docker && ./batch.sh rq-{n}-fill --detach
    ```
-   Portkey RQ (`portkey_required` flag set in phase 1.7):
+   Portkey routing is **auto-detected** by `batch.sh`: it scans the plan JSON for `-portkey` model names and sets `CLAUDE_CONFIG_DIR=~/.claude.portkey` automatically. No manual env-var override needed. For sharded runs (>30 runs), add `--shards N` (max 6):
    ```bash
-   cd experiments/docker && CLAUDE_CONFIG_DIR=~/.claude.portkey ./batch.sh rq-{n}-fill
+   cd experiments/docker && ./batch.sh rq-{n}-fill --shards 4 --detach
    ```
-   Use `run_in_background: true` in the Bash tool. Remember the task ID.
 4. After a few seconds, determine the container name via `docker ps --filter name=docker-batch-run --format '{{.Names}}'` and report it to the user.
 
 ---
@@ -124,16 +122,11 @@ status: <status>
    → writes `/tmp/rq-{n}-fill-resume.json`.
 2. Show the size to the user (`jq '.runs | length' /tmp/rq-{n}-fill-resume.json`).
 3. Get user confirmation: "Restart with `<m>` remaining runs?"
-4. After "yes" — use the same routing as phase 3 (preserve the `portkey_required` flag across resume).
-   Standard RQ:
+4. After "yes" — resume with `--detach` (Portkey auto-detected from plan content):
    ```bash
-   cd experiments/docker && ./batch.sh /tmp/rq-{n}-fill-resume.json
+   cd experiments/docker && ./batch.sh /tmp/rq-{n}-fill-resume.json --detach
    ```
-   Portkey RQ:
-   ```bash
-   cd experiments/docker && CLAUDE_CONFIG_DIR=~/.claude.portkey ./batch.sh /tmp/rq-{n}-fill-resume.json
-   ```
-   In the background. Back to phase 4.
+   Back to phase 4.
 
 ---
 
