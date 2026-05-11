@@ -128,3 +128,35 @@ Drei Metriken, drei Empfindlichkeiten:
 Für zukünftige Workflow-Optimierungen: Refactoring-Beispiele sind die
 höchstwertigen Prompt-Inhalte im Subagent-Kontext. Sie sollten zuletzt
 gekürzt werden.
+
+---
+
+## F-9.1.5 — Die Wirkung der Prompt-Reduktion hängt vom Modell ab
+
+Unter Opus 4.6 sind v4 und v4.2 bei `cognitive_max` gleichwertig. Unter
+Opus 4.7 verschlechtert v4.2 die Code-Qualität drastisch.
+
+| Metrik | v4 × 4.7 (n=10) | v4.2 × 4.7 (n=4) | v4 × 4.6 (n=6) | v4.2 × 4.6 (n=8) |
+|---|---|---|---|---|
+| `cognitive_max` | **4.1 ± 1.8** | 17.8 ± 4.9 | 13.2 ± 5.0 | **13.2 ± 4.1** |
+| `mccabe_max` | **4.9 ± 2.0** | 11.0 ± 2.9 | 8.5 ± 2.7 | **8.5 ± 1.9** |
+| `smell_total` (Smell-Summe) | **1.1 ± 0.9** | 5.5 ± 1.7 | 3.8 ± 1.7 | **3.3 ± 1.5** |
+| `refactorings_applied` | **13.5 ± 5.5** | 3.0 ± 1.2 | 4.8 ± 2.7 | **2.8 ± 0.5** |
+
+Kata `game-of-life-example-mapping`.
+
+Der Effekt ist asymmetrisch: Opus 4.7 profitiert massiv von den
+verbose Anweisungen (13.5 Refactorings vs. 3.0 bei v4.2, `cognitive_max`
+4.1 vs. 17.8). Opus 4.6 kann mit dem gleichen Material weniger anfangen
+(4.8 Refactorings vs. 2.8, `cognitive_max` stabil bei 13.2).
+
+Erklärung: ein stärkeres Modell **extrahiert mehr** aus detaillierten
+Prompt-Inhalten — die Refactoring-Beispiele, APP-Berechnungs-Templates
+und Checklisten werden von 4.7 aktiv genutzt (13.5 Refactorings pro
+Run!), während 4.6 sie großteils ignoriert. Die Reduktion entfernt
+Material, das nur das stärkere Modell nutzen konnte.
+
+Konsequenz: **Prompt-Reduktion muss modell-spezifisch dosiert werden.**
+Was für Opus 4.6 neutral ist (v4.2), ist für Opus 4.7 destruktiv. Ein
+für 4.6 optimierter Workflow ist nicht auf 4.7 übertragbar — und
+umgekehrt.
