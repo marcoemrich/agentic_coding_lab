@@ -56,6 +56,7 @@ MODEL_CONFIGS=(
     # labels runs that were routed via Portkey, so they remain
     # distinguishable from any future direct-API opus-4-6 runs.
     "opus-4-6-portkey|@vertex-ai/anthropic.claude-opus-4-6|true"
+    "opus-4-6-portkey-no-thinking|@vertex-ai/anthropic.claude-opus-4-6|false"
 )
 
 # ---------------------------------------------------------------------------
