@@ -1,0 +1,17 @@
+TDD exercise complete. Here's a summary:
+
+**9/9 tests passing** across the full Game of Life implementation.
+
+**TDD Cycle Summary:**
+- **Test List**: 9 tests generated from the spec (empty grid, underpopulation x2, survival x2, overpopulation, reproduction, block still life, blinker oscillator)
+- **Test 1** (empty grid): Red/Green/Refactor — drove initial stub returning `[]`
+- **Tests 2-3** (underpopulation): Passed trivially with the empty-return stub
+- **Test 4** (survival with 2 neighbors): Red/Green/Refactor — drove survival logic (filter live cells by neighbor count 2 or 3)
+- **Tests 5-6** (survival with 3, overpopulation): Passed trivially — already covered by the survival filter
+- **Test 7** (reproduction): Red/Green/Refactor — drove reproduction logic (dead cells with exactly 3 live neighbors become alive)
+- **Tests 8-9** (block, blinker): Passed trivially — all 4 rules already implemented
+
+**Key refactorings applied:**
+- Extracted `NEIGHBOR_OFFSETS` constant for clarity
+- Extracted `toKey` helper to eliminate coordinate-to-string duplication
+- Replaced O(n) `isAlive` scan with O(1) `Set.has()` lookup

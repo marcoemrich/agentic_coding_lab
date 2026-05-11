@@ -1,0 +1,7 @@
+TDD exercise complete. All 9 tests pass, implementation is done.
+
+**Summary:**
+- **9 tests**, all passing
+- **Test 4** (reproduction) was the key test that drove the real Game of Life implementation — neighbor counting via a Map with string keys, then applying the unified rule `count === 3 || (count === 2 && alive.has(key))`
+- Tests 1-3, 5-9 were all trivially green since the implementation from test 4 already covered all four Game of Life rules
+- One refactoring was applied after test 4: merged two conditional branches into a single unified condition that better expresses the Game of Life rules

@@ -1,0 +1,16 @@
+TDD exercise complete. Here's a summary of the full cycle:
+
+**Game of Life — TDD Implementation Complete**
+
+- **5 tests**, all passing
+- **Full Red-Green-Refactor cycle** for each test using specialized TDD agents
+
+| # | Test | Outcome |
+|---|------|---------|
+| 1 | Empty grid → empty grid | R-G-R cycle |
+| 2 | Single cell dies (0 neighbors) | Passed immediately (return [] sufficed) |
+| 3 | Two adjacent cells die (1 neighbor each) | Passed immediately |
+| 4 | Block pattern survives (3 neighbors each) | First real implementation — survival logic |
+| 5 | Blinker oscillates (reproduction + death) | Added reproduction rule |
+
+**Final implementation** (`src/game-of-life.ts`): Sparse representation using `Set`/`Map` with string keys. Extracted `toKey`, `fromKey` helpers and `NEIGHBOR_OFFSETS` constant during refactoring. Handles survival (2-3 neighbors) and reproduction (dead cell with exactly 3 neighbors).

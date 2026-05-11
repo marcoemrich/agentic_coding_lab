@@ -28,7 +28,7 @@ outcomes:
   - duration_seconds
   - total_tokens
   - completed_within_budget
-min_replicates: 4
+min_replicates: 8
 status: aktiv
 ---
 

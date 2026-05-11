@@ -1,0 +1,19 @@
+TDD exercise complete. Here's a summary:
+
+**8/8 tests passing** across the full Game of Life spec:
+
+1. Empty input → empty output
+2. Single cell dies (underpopulation)
+3. Two adjacent cells die (underpopulation)
+4. Reproduction (dead cell with 3 neighbors born)
+5. Survival (live cell with 2-3 neighbors)
+6. Overpopulation (live cell with 4+ neighbors dies)
+7. Block still life (stable pattern)
+8. Blinker oscillator (period-2 pattern)
+
+**Implementation** (`src/game-of-life.ts`): A clean sparse-grid algorithm that:
+- Builds a `Set` of living cell keys for O(1) lookup
+- Counts neighbors using a `Map` over all 8-directional adjacencies
+- Applies the unified Game of Life rule: `count === 3 || (alive.has(key) && count === 2)`
+
+**Refactoring applied**: Eliminated duplicate coordinate parsing by merging two conditional branches into the single canonical Game of Life survival condition.

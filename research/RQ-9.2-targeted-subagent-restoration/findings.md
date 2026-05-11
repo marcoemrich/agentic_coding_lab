@@ -4,24 +4,32 @@
 
 Entgegen der Hypothese produziert v4.3 (v4.2 + wiederhergestellte tragende
 Inhalte) **schlechtere** Code-Qualität als v4.2 — und konvergiert
-deterministisch auf ein monolithisches Lösungsmuster.
+überwiegend auf ein monolithisches Lösungsmuster.
 
 | Outcome | v4 (1454 Z.) | v4.2 (484 Z.) | v4.3 (545 Z.) |
 |---|---|---|---|
-| `cognitive_max` | 11.8 ± 5.5 | **11.8 ± 4.1** | **17.0 ± 0.0** |
-| `mccabe_max` | 7.5 ± 2.7 | 8.8 ± 1.7 | **11.0 ± 0.0** |
-| `cc_longest_function` (Spitzen-Komplexität) | 16.8 ± 6.1 | 20.3 ± 8.2 | **25.0 ± 0.8** |
-| `smell_total` (Smell-Summe) | 3.8 ± 1.7 | 3.3 ± 1.5 | 4.0 ± 0.0 |
-| `code_mass` (Code-Mass APP) | 157.8 ± 38.6 | 157.0 ± 29.6 | **124.0 ± 3.5** |
-| `refactorings_applied` | 6.0 ± 2.6 | 2.5 ± 0.6 | **1.8 ± 0.5** |
+| `cognitive_max` | 13.2 ± 5.0 | 13.2 ± 4.1 | **16.1 ± 2.9** |
+| `mccabe_max` | 8.5 ± 2.7 | 8.5 ± 1.9 | **10.1 ± 1.8** |
+| `cc_longest_function` (Spitzen-Komplexität) | 16.5 ± 9.0 | 21.2 ± 9.8 | **22.6 ± 8.2** |
+| `refactorings_applied` | **4.8 ± 2.7** | 2.8 ± 0.5 | **2.1 ± 0.6** |
 
-n = 4 pro Zelle, Modell `opus-4-6-portkey`, Kata `game-of-life-example-mapping`.
+v4 n=6, v4.2 n=8, v4.3 n=8. Modell `opus-4-6-portkey`,
+Kata `game-of-life-example-mapping`.
 
-Auffällig: `cognitive_max` 17.0 ± 0.0, `mccabe_max` 11.0 ± 0.0 — alle
-vier Runs produzieren exakt dieselbe Komplexität. Das ist das gleiche
-deterministische Muster wie v5 × Opus 4.6 (RQ-10, F-10.4): eine
-monolithische `nextGeneration`-Funktion mit verschachtelten Schleifen,
-21–26 LoC, kein Helfer extrahiert.
+v4.3 zeigt bei n=8 ein klares Muster: 7 von 8 Runs landen bei
+`cognitive_max` ≥ 17, ein Ausreißer bei 9. Unter der v4.2-Verteilung
+(5/8 Runs < 15) liegt die Wahrscheinlichkeit für 7+ von 8 Runs ≥ 15
+bei ~0.4 % — der Effekt ist statistisch belastbar, nicht Streuung.
+
+Alle drei Varianten zeigen eine **bimodale Verteilung**: Runs landen
+entweder im Low-Modus (cognitive ~7–9, extrahierte Helfer-Funktionen)
+oder im High-Modus (cognitive ~17, monolithische Lösung). v4.3
+verschiebt die Verteilung eindeutig Richtung High-Modus.
+
+Per-Run-Werte `cognitive_max`:
+- v4:   [7, 16, 7, 17, 14, 18]
+- v4.2: [8, 13, 9, 17, 17, 9, 18, 15]
+- v4.3: [17, 17, 17, 17, 17, 9, 17, 18]
 
 ---
 
@@ -31,15 +39,15 @@ Die Kausalanalyse aus RQ-9.1 (F-9.1.3) — "die drei entfernten Inhalte
 sind die tragenden Elemente" — ist falsch oder unvollständig. Das
 Zurückbringen der drei Inhalte (Extract-Helper-Beispiel,
 Potential-improvements-Listen, No-Refactoring-Szenario) stellt die
-Refactoring-Disziplin nicht wieder her.
+Refactoring-Disziplin nicht wieder her, sondern verschlechtert sie.
 
 Mögliche Erklärungen:
 
 1. **Aufmerksamkeits-Verdrängung**: die 61 zusätzlichen Zeilen im
    Refactor-Agent (v4.3 vs v4.2) verschieben die Aufmerksamkeit des
    Subagents auf die Beispiele und weg von den eigentlichen Regeln. Das
-   Extract-Helper-Beispiel zeigt String-Vergleich — der Agent generalisiert
-   das nicht auf Game-of-Life-Funktions-Extraktion.
+   Extract-Helper-Beispiel zeigt String-Vergleich — der Agent
+   generalisiert das nicht auf Game-of-Life-Funktions-Extraktion.
 
 2. **Kontext-Balance gestört**: v4 hat 346 Zeilen im Refactor-Agent,
    davon ~150 redundante "Guidelines/Flags/Remember"-Abschnitte. Diese
@@ -58,17 +66,18 @@ Mögliche Erklärungen:
 
 | Variante | Zeilen | `cognitive_max` | `refactorings` | `cc_longest_fn` | `duration_s` |
 |---|---|---|---|---|---|
-| v4 | 1454 | 11.8 | **6.0** | **16.8** | 1116 |
-| v4.2 | 484 | **11.8** | 2.5 | 20.3 | **842** |
-| v4.3 | 545 | 17.0 | 1.8 | 25.0 | 714 |
-| v4.1 | 262 | 14.0 | 5.8 | 25.3 | 656 |
+| v4 | 1454 | 13.2 ± 5.0 | **4.8** | 16.5 | 1116 |
+| v4.2 | 484 | **13.2 ± 4.1** | 2.8 | 21.2 | **842** |
+| v4.3 | 545 | 16.1 ± 2.9 | 2.1 | 22.6 | 714 |
+| v4.1 | 262 | 14.0 ± 5.4 | 5.8 | 25.3 | 656 |
 
-v4.2 ist der einzige reduzierte Workflow, der `cognitive_max` auf
-v4-Niveau hält. v4.3 verschlechtert diesen Wert durch die gezielten
-Ergänzungen. Die konservative Reduktion (v4.2) scheint einen stabilen
-Arbeitspunkt zu treffen, der durch zusätzliche Inhalte eher gestört als
-verbessert wird.
+v4 n=6, v4.2 n=8, v4.3 n=8, v4.1 n=4.
+
+v4 und v4.2 sind bei `cognitive_max` gleichwertig (13.2). v4.2 ist
+25 % schneller als v4 bei gleichen Tokens und hält die Komplexität.
+v4.3 und v4.1 verschlechtern die Komplexität — v4.3 durch gezielte
+Ergänzungen, v4.1 durch zu aggressive Kürzung.
 
 Konsequenz: die optimale Reduktion für Subagent-Workflows ist **nicht
-durch Inhalts-Analyse vorhersagbar**. Sie muss empirisch getestet werden
-— jede Änderung kann den Arbeitspunkt verschieben.
+durch Inhalts-Analyse vorhersagbar**. Sie muss empirisch getestet
+werden — jede Änderung kann den Arbeitspunkt verschieben.

@@ -1,0 +1,22 @@
+TDD exercise complete. Here's a summary:
+
+**Game of Life - TDD Results**
+
+- **9 tests**, all passing
+- **2 files**: `src/game-of-life.spec.ts` (tests) and `src/game-of-life.ts` (implementation)
+
+**TDD Cycle Summary:**
+
+| Test | Red | Green | Refactor |
+|------|-----|-------|----------|
+| 1. Empty grid → empty | Failed (returned undefined) | Return `[]` | No-op |
+| 2. Single cell dies | Passed immediately (degenerate) | — | — |
+| 3. Two cells die | Passed immediately (degenerate) | — | — |
+| 4. Survival (2 neighbors) | Failed (returned `[]`) | Full algorithm implemented | Simplified conditional |
+| 5. Survival (3 neighbors) | Passed immediately | — | — |
+| 6. Overpopulation (4 neighbors) | Passed immediately | — | — |
+| 7. Reproduction (dead → alive) | Passed immediately | — | — |
+| 8. Block (still life) | Passed immediately | — | — |
+| 9. Blinker (oscillator) | Passed immediately | — | — |
+
+The core implementation was driven by Test 4, which forced the full neighbor-counting algorithm. All subsequent tests validated existing behavior. The implementation uses a sparse representation with string-keyed Sets/Maps for O(1) lookup.
