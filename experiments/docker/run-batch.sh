@@ -329,6 +329,14 @@ for entry in "${RUN_LIST[@]}"; do
     timestamp=$(date +%Y-%m-%d_%H-%M-%S)
     run_name="${timestamp}_${kata}_${workflow}_${model_name}"
     run_dir="$RUNS_DIR/$run_name"
+    # Avoid collision when parallel shards start the same cell in the same second.
+    if [ -d "$run_dir" ]; then
+        suffix=2
+        while [ -d "${run_dir}-${suffix}" ]; do
+            suffix=$((suffix + 1))
+        done
+        run_dir="${run_dir}-${suffix}"
+    fi
     mkdir -p "$run_dir/src"
 
     # Copy workflow config

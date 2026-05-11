@@ -311,6 +311,16 @@ analyze_single_run() {
         report_content+="Tests not runnable (dependencies not installed)\n\n"
     fi
 
+    # Sanity check: if the agent reports success (experiment-done.txt exists)
+    # but our analysis says tests_passed=false, warn about a likely pipeline
+    # issue (e.g. pnpm install failure) rather than silently recording a
+    # false negative.
+    if [ "$tests_passed" = false ] && [ -f "$run_dir/experiment-done.txt" ]; then
+        echo -e "  ${RED}WARNING: tests_passed=false but experiment-done.txt exists.${NC}"
+        echo -e "  ${RED}This is likely a pipeline issue (pnpm install failure?), not a real test failure.${NC}"
+        echo -e "  ${RED}Re-run: analyze-run.sh $run_dir${NC}"
+    fi
+
     # Calculate APP mass if implementation exists
     local total_mass=0
     local constants=0

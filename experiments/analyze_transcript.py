@@ -56,10 +56,11 @@ TDD_PHASES = ("test-list", "red", "green", "refactor")
 # Matches the self-reported prediction outcome marker emitted by the red-phase
 # agent inside its "Red Phase Complete:" block (see workflows/.../red.md).
 # Accepts either a leading dash (v4-style: "... - Correct") or an emoji
-# checkmark/cross (v5-style: "... ✅ Correct"). Tolerates optional markdown
-# bold/italic decoration around "Correct"/"Incorrect".
+# checkmark/cross (v5-style: "... ✅ Correct") or a sentence-final period/colon
+# before "Correct"/"Incorrect" (compliance variant seen in some Opus 4.6 runs).
+# Tolerates optional markdown bold/italic decoration.
 _PREDICTION_OUTCOME_RE = re.compile(
-    r"(?:-|✅|❌)\s*[*_]{0,2}(Correct|Incorrect)[*_]{0,2}\b",
+    r"(?:-|✅|❌|[.:])[\s]*[*_]{0,2}(Correct|Incorrect)[*_]{0,2}\b",
     re.IGNORECASE,
 )
 
@@ -687,6 +688,18 @@ def main(argv: list[str]) -> int:
         red_phase_count = sum(1 for p in phases if p["phase"] == "red")
         if red_phase_count > 0:
             metrics["cycle_count"] = red_phase_count
+
+    # Sanity checks — warn about suspicious metric combinations that may
+    # indicate parser gaps rather than real agent behavior.
+    cc = metrics.get("cycle_count", 0)
+    pt = metrics.get("predictions_total", 0)
+    if cc and cc > 0 and pt == 0:
+        print(
+            f"WARNING: cycle_count={cc} but predictions_total=0 — "
+            "the prediction regex may not match this agent's output format. "
+            "Inspect the transcript manually.",
+            file=sys.stderr,
+        )
 
     out_path = run_dir / "transcript-metrics.json"
     out_path.write_text(json.dumps(metrics, indent=2) + "\n", encoding="utf-8")
