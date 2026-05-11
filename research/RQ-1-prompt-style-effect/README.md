@@ -1,0 +1,182 @@
+---
+id: RQ-1
+question: "Steigert Example-Mapping die Korrektheit gegenüber Prose und User-Story — und ist der Effekt modellabhängig?"
+factors:
+  prompt: [prose, example-mapping, user-story]
+  model:
+    - opus-4-7
+    - opus-4-7-no-thinking
+    - opus-4-6-portkey
+    - opus-4-6-portkey-no-thinking
+    - sonnet-4-6
+    - sonnet-4-6-no-thinking
+    - haiku-4-5
+    - haiku-4-5-no-thinking
+controls:
+  workflow: v5-exact-single-context
+  kata_base: claim-office
+outcomes:
+  - verification_pct
+  - verification_passed
+  - verification_total
+  - code_mass
+  - duration_seconds
+  - total_tokens
+  - completed_within_budget
+min_replicates: 3
+status: aktiv
+---
+
+# RQ-1: Prompt-Stil-Effekt auf Korrektheit
+
+Steigert Example-Mapping die Korrektheit gegenüber Prose und User-Story
+— und ist der Effekt modellabhängig?
+
+## Motivation: Korrektheit vor Code-Qualität
+
+Code-Qualität (Smells, Komplexität, Funktionslänge) ist wertlos, wenn
+das Programm die falsche Sache tut. Ein eleganter, gut strukturierter
+Algorithmus, der die Domänenregeln falsch umsetzt, hat keinen
+Produktionswert. Deshalb muss die erste Forschungsfrage klären, **unter
+welchen Bedingungen der Agent korrekte Lösungen produziert** — bevor
+wir die Qualität dieser Lösungen untersuchen. Alle nachfolgenden
+Code-Qualitäts-RQs können dann auf Konfigurationen einschränken, von
+denen bekannt ist, dass sie korrekte Ergebnisse liefern.
+
+## Prompt-Stile
+
+| Stil | Beschreibung |
+|---|---|
+| **prose** | Beschreibung der Regeln in Fließtext, keine Beispiele. |
+| **example-mapping** | Regel + 1–3 konkrete Input/Output-Beispiele pro Regel. |
+| **user-story** | "Als X möchte ich Y, damit Z" — Stakeholder-Perspektive ohne Beispiele. |
+
+Konfiguration: `experiments/katas/claim-office-{prose, example-mapping, user-story}/prompt.md`.
+
+## Modelle
+
+| Modell | Thinking | API-Route |
+|---|---|---|
+| opus-4-7 | Adaptive Thinking | Anthropic direct |
+| opus-4-7-no-thinking | Aus | Anthropic direct |
+| opus-4-6-portkey | Thinking | Portkey Gateway |
+| opus-4-6-portkey-no-thinking | Aus | Portkey Gateway |
+| sonnet-4-6 | Extended Thinking | Anthropic direct |
+| sonnet-4-6-no-thinking | Aus | Anthropic direct |
+| haiku-4-5 | Extended Thinking | Anthropic direct |
+| haiku-4-5-no-thinking | Aus | Anthropic direct |
+
+Portkey-Varianten sind rate-limit-frei; Anthropic-direct-Varianten
+unterliegen dem API-Rate-Limit.
+
+## Warum v5 als Kontroll-Workflow?
+
+Diese RQ misst den Effekt des **Prompt-Stils** auf **Korrektheit**. Der
+Workflow darf daher kein eigenes Rauschen in die Korrektheits-Metrik
+einbringen. Die drei TDD-Workflow-Kandidaten unterscheiden sich auf
+claim-office erheblich (alle Werte: claim-office × example-mapping,
+modellübergreifend, Stand 2026-05-11):
+
+| Workflow | mean(verification_pct) | σ | n | Spread |
+|---|---:|---:|---:|---|
+| **v5** (single-context) | **1.000** | **0.000** | 3 | 1.0–1.0 |
+| v3 (basic TDD) | 0.844 | 0.275 | 15 | 0.0–1.0 |
+| v4 (subagents) | 0.340 | 0.419 | 20 | 0.0–1.0 |
+
+### v4 scheidet aus (σ = 0.42)
+
+Das Subagent-Lotterie-Problem (State-Rekonstruktion scheitert beim
+Phase-Wechsel) verschluckt den Prompt-Stil-Effekt. Einzelne Runs
+landen bei 0 % obwohl das Modell die Aufgabe beherrscht — ein
+Workflow-Artefakt, kein Prompt-Signal. Beispiel: Opus-4.7 × v4 ×
+example-mapping zeigt Runs mit 0 %, 0.27 %, 0.73 %, 1.00 % — der
+Workflow dominiert die Varianz.
+
+### v3 ist suboptimal (σ = 0.28)
+
+v3 hat keine expliziten Phasen-Skripte; das Modell entscheidet selbst
+über TDD-Disziplin. Auf schwächeren Modellen zeigt v3 Ausreißer, die
+nicht prompt-bedingt, sondern workflow-bedingt sind (Haiku × v3 ×
+example-mapping: 0.0, 0.4, 0.8). Dieses Rauschen würde den
+Prompt-Effekt konfundieren.
+
+### v5 liefert das sauberste Signal (σ = 0)
+
+v5 hält den gesamten Kontext in einer Konversation — kein
+Phase-Handoff, kein State-Verlust. Damit ist jede beobachtete Varianz
+im `verification_pct` auf den Prompt-Stil und/oder das Modell
+zurückführbar, nicht auf den Workflow.
+
+**Einschränkung**: Die v5-Daten stammen bisher nur aus
+Opus-4.7-no-thinking (n=3, alle 100 %). Ob v5 auch auf schwächeren
+Modellen stabil bleibt, wird diese RQ selbst zeigen. Falls Haiku ×
+v5 × example-mapping streut, wäre das ein Modell-Effekt — und genau
+das will diese RQ messen.
+
+## Design
+
+```
+Faktor 1:  prompt        — 3 Stufen (prose, example-mapping, user-story)
+Faktor 2:  model         — 8 Stufen (4 Modell-Tiers × ±Thinking)
+Kontrolle: workflow      — v5-exact-single-context
+Kontrolle: kata_base     — claim-office
+
+Zellen:    3 × 8 = 24
+Replikate: n = 3
+Runs:      72 total
+```
+
+### Warum claim-office und nicht game-of-life?
+
+game-of-life ist als Mehrdeutigkeits-Aufdecker für Prompt-Stile
+**nicht brauchbar**. Die Spec inkl. Beispiele ist in den Trainingsdaten
+der Modelle — Modelle "kennen" die korrekte Lösung bereits, unabhängig
+davon, ob der Prompt Beispiele mitliefert. claim-office ist eigens als
+Novel-Kata mit konstruierten Mehrdeutigkeiten (HPSMV-Domäne) entwickelt;
+nur hier unterscheiden sich die Stile messbar in Korrektheit
+(`verification_pct`).
+
+### Warum voller Modell-Mix?
+
+Die Kernfrage ist, ob stärkere Modelle den Example-Mapping-Vorteil
+**kompensieren** können — ob also ein Opus mit Prose die gleiche
+Korrektheit erreicht wie ein Haiku mit Example-Mapping. Dafür braucht
+es die volle Modell-Variation. Die Thinking-Dimension klärt zusätzlich,
+ob Reasoning-Kapazität den Prompt-Stil-Effekt abschwächt.
+
+## Hypothesen
+
+- **H1**: Example-mapping erhöht `verification_pct` deutlich gegenüber
+  prose (>30 pp Differenz), modellübergreifend.
+- **H2**: User-story erhöht `verification_pct` gegenüber prose nur
+  geringfügig — Stakeholder-Perspektive löst keine domänen-internen
+  Mehrdeutigkeiten auf.
+- **H3**: Stärkere Modelle (Opus) erreichen mit prose höhere
+  `verification_pct` als schwächere (Haiku), aber der Abstand zu
+  example-mapping bleibt — Modell-Stärke kompensiert fehlende
+  Beispiele nicht vollständig.
+- **H4**: Thinking-Mode verbessert `verification_pct` unabhängig vom
+  Prompt-Stil, aber der Zugewinn ist kleiner als der
+  Example-Mapping-Effekt.
+
+## Batch-Strategie
+
+1. **Phase 1** (rate-limit-frei): Opus 4.6 Portkey-Varianten —
+   6 Zellen × n=3 = 18 Runs.
+2. **Phase 2** (parallel): Sonnet + Haiku —
+   12 Zellen × n=3 = 36 Runs.
+3. **Phase 3** (zeitversetzt): Opus 4.7 —
+   6 Zellen × n=3 = 18 Runs (strenges Rate-Limit).
+
+## Findings
+
+Siehe [findings.md](findings.md).
+
+## Datenquelle
+
+Alle Runs in `experiments/runs/` mit
+`workflow=v5-exact-single-context`,
+`kata=claim-office-{prose|example-mapping|user-story}`,
+Modell ∈ {opus-4-7, opus-4-7-no-thinking, opus-4-6-portkey,
+opus-4-6-portkey-no-thinking, sonnet-4-6, sonnet-4-6-no-thinking,
+haiku-4-5, haiku-4-5-no-thinking}.
