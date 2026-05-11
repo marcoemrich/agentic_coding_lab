@@ -19,7 +19,6 @@ outcomes:
   - verification_pct
   - verification_passed
   - verification_total
-  - code_mass
   - duration_seconds
   - total_tokens
   - completed_within_budget
