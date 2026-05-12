@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN npm install -g pnpm@9.15.9
 
 # Install Claude Code CLI
 # Pinned to 2.1.107 (mid-April 2026): older versions like 2.1.37 hang
