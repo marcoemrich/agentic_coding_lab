@@ -112,4 +112,3 @@ Multiple agents work in parallel worktrees under `agentic_coding_lab_project/`. 
 - Branch = worktree identity, not feature name. Only `main` is pushed to remote.
 - Before starting: `git fetch origin && git rebase origin/main`
 - After finishing: merge to main with `git -C ../main merge --ff-only agent-N`, then push.
-- Full protocol: `WORKTREE-WORKFLOW.md`
