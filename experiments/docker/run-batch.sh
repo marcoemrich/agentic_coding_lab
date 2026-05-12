@@ -57,10 +57,10 @@ MODEL_CONFIGS=(
     # distinguishable from any future direct-API opus-4-6 runs.
     "opus-4-6-portkey|@vertex-ai/anthropic.claude-opus-4-6|true"
     "opus-4-6-portkey-no-thinking|@vertex-ai/anthropic.claude-opus-4-6|false"
-    "sonnet-4-6-portkey|claude-sonnet-4-6|true"
-    "sonnet-4-6-portkey-no-thinking|claude-sonnet-4-6|false"
-    "haiku-4-5-portkey|claude-haiku-4-5-20251001|true"
-    "haiku-4-5-portkey-no-thinking|claude-haiku-4-5-20251001|false"
+    "sonnet-4-6-portkey|@vertex-ai/anthropic.claude-sonnet-4-6|true"
+    "sonnet-4-6-portkey-no-thinking|@vertex-ai/anthropic.claude-sonnet-4-6|false"
+    "haiku-4-5-portkey|@vertex-ai/anthropic.claude-haiku-4-5@20251001|true"
+    "haiku-4-5-portkey-no-thinking|@vertex-ai/anthropic.claude-haiku-4-5@20251001|false"
 )
 
 # ---------------------------------------------------------------------------
