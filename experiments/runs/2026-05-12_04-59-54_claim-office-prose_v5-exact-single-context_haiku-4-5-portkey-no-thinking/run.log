@@ -1,0 +1,44 @@
+## Step 5: Summary
+
+```
+📋 Test List Created:
+**Feature**: MHPCO Claims Office Policy Management System
+**Test File**: mhpco.spec.ts
+**Base Functionality Tests**: 20
+
+**Test Cases** (ordered simple → complex):
+
+**Quote Operation (12 tests)**:
+1. ✅ should quote a single sword without modifiers
+2. ✅ should quote a single amulet without modifiers
+3. ✅ should quote a single staff without modifiers
+4. ✅ should quote a single potion without modifiers
+5. ✅ should quote three components (rune/moonstone) at special bundle rate
+6. ✅ should add 5 G processing fee to premium
+7. ✅ should apply 10% initial assessment surcharge for first insurance
+8. ✅ should apply 50% cursed item surcharge
+9. ✅ should apply 30% highly enchanted surcharge for enchantment >= 5
+10. ✅ should apply 20% loyalty discount for customer with >= 2 years
+11. ✅ should quote multiple different items together
+12. ✅ should round premium in MHPCO's favor (up)
+
+**Claim Operation (8 tests)**:
+13. ✅ should process claim with deductible of 100 G
+14. ✅ should process claim for normal item (standard reimbursement)
+15. ✅ should process claim for item with enchantment >= 8 at 50% reimbursement
+16. ✅ should process claim for dragon material item at 100% reimbursement
+17. ✅ should cap total payout at twice the insurance sum
+18. ✅ should track remaining cap after first claim
+19. ✅ should apply remaining cap to subsequent claims
+
+**Advanced Features** (NOT included - save for later):
+- 15% contract discount after first (complex sequencing)
+- Multiple components bundles (>3 items)
+- Complex multi-damage incidents
+- Error handling and validation
+- CLI integration and JSON parsing
+
+**Next Step**: Invoke `/red` to activate the first test.
+```
+
+📋 Test List Phase Complete. Proceeding to Red phase with the first test.

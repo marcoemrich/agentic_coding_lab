@@ -1,0 +1,22 @@
+The TDD exercise is complete. Here's a summary of what was built:
+
+**All 11 tests implemented and passing** via the full Red→Green→Refactor cycle:
+
+**Quote (6 tests):**
+- Base premium + processing fee for a sword
+- Cursed surcharge (+50%)
+- High enchantment surcharge (+30% for ≥5)
+- Loyalty discount (-20% for ≥2 years)
+- First insurance surcharge (+10%) / subsequent discount (-15%)
+- Building block rate (60 G for 3 alike components)
+
+**Claim (5 tests):**
+- Zero payout when damage ≤ deductible (100 G)
+- Standard payout = damage − deductible
+- Dragon material = full reimbursement
+- High enchantment (≥8) = 50% reimbursement
+- `remainingCap` decreases correctly across sequential claims
+
+**Final refactor** generalized `quote` from 6 hardcoded guard branches into actual premium formula arithmetic, revealing the business rules directly in code.
+
+**CLI** at `src/cli.ts` reads JSON from stdin, writes JSON to stdout via `node --import tsx/esm src/cli.ts`.

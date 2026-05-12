@@ -1,0 +1,18 @@
+All 11 passing. Now let me check — do any future claim tests need `policyInsuranceSums`? Looking at the test list: "should track remaining payout cap at 2x insurance sum" — the cap is already stored in `policyRemainingCaps` at initialization. No test reads the raw insurance sum separately. Good.
+
+### Step 5-6: Document
+
+**Refactoring Applied**:
+- ✅ Naming: `processScenario` — still appropriate for processing multi-step scenarios
+- ✅ Rule 4 (Fewest Elements): Removed unused `policyInsuranceSums` map — it was written but never read. The cap is computed directly as `insuranceSum * 2` into `policyRemainingCaps`.
+- Mass reduction: removed 1 binding, 1 constant (`{}`), 1 assignment for declaration, and 1 assignment for write = ~14 mass units saved
+
+### Step 7: Report Completion
+
+🔄 Refactor Phase Complete:
+**Naming**: `processScenario` — evaluated, still accurate
+**Refactoring**: Removed dead `policyInsuranceSums` binding (Rule 4 - Fewest Elements)
+**Mass Change**: ~290 → ~276 (Δ -14)
+**Tests**: All 11 passing ✅
+
+Proceeding to the next test.

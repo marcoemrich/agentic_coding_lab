@@ -1,0 +1,7 @@
+🔄 Refactor Phase Complete:
+**Naming**: All names clear — no renaming needed
+**Refactoring**: Replaced map re-read `cap - totalPaidPerPolicy[step.policy]` with `cap - (alreadyPaid + payout)` — clearer, no implicit dependency on side-effect
+**Mass Change**: 58 → 56 (Δ -2)
+**Tests**: All 17 passing ✅
+
+All tests implemented and passing. CLI created at `src/cli.ts`. `experiment-done.txt` written.

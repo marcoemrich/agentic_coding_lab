@@ -1,0 +1,101 @@
+# Analysis Report: 2026-05-12_01-37-28_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
+
+Generated: 2026-05-12T02:11:56+00:00
+
+## Code Metrics
+
+- **Implementation files**: claim-office.ts
+- **Implementation LOC** (total): 79
+- **Test file**: claim-office.spec.ts
+- **Test file LOC**: 353
+- **Active tests**: 18
+- **Remaining todos**: 0
+
+## Test Results
+
+**Status**: ✅ All tests passing (18 passed)
+
+```
+$ vitest run
+
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_01-37-28_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
+
+ ✓ src/claim-office.spec.ts  (18 tests) 6ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  02:11:56
+   Duration  186ms (transform 42ms, setup 0ms, collect 40ms, tests 6ms, environment 0ms, prepare 49ms)
+```
+
+## Coverage
+
+| Metric | Coverage |
+|--------|----------|
+| Statements | 98% |
+| Branches | 84% |
+
+## APP Mass Estimation
+
+| Component | Count | Weight | Score |
+|-----------|-------|--------|-------|
+| Constants | 43 | ×1 | 43 |
+| Invocations | 19 | ×2 | 38 |
+| Conditionals | 12 | ×4 | 48 |
+| Loops | 3 | ×5 | 15 |
+| Assignments | 32 | ×6 | 192 |
+| **Total Mass** | | | **336** |
+
+## Clean Code Metrics
+
+| Metric | Value |
+|--------|-------|
+| LOC (non-blank) | 73 |
+| Functions | 5 |
+| Longest Function | 19 lines |
+| Avg LOC/Function | 7.40 |
+| Median LOC/Function | 4.00 |
+| Imports | 0 |
+
+## Transcript Metrics
+
+### Token Usage
+
+| Metric | Value |
+|--------|-------|
+| Total Tokens | 44454640 |
+| Context Utilization | 83% |
+
+### TDD Cycle Metrics
+
+| Metric | Value |
+|--------|-------|
+| Cycle Count | 18 |
+| Avg Cycle Time | 130.60s |
+| Avg Red Phase | 39.61s |
+| Avg Green Phase | 33.88s |
+| Avg Refactor Phase | 57.11s |
+
+### Prediction Accuracy (Guessing Game) — Self-Reported
+
+| Metric | Value |
+|--------|-------|
+| Predictions Correct | 36 |
+| Predictions Total | 36 |
+| Accuracy | 100% |
+
+_Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._
+
+### Refactoring Metrics
+
+| Metric | Value |
+|--------|-------|
+| Refactorings Applied | 14 |
+
+### TDD Discipline
+
+| Metric | Value |
+|--------|-------|
+| Tests Passed Immediately | 4 |
+
+

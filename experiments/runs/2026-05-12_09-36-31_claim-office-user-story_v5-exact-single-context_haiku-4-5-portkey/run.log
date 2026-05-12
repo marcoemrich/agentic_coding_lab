@@ -1,0 +1,40 @@
+📋 Test List Created:
+
+**Feature**: MHPCO Claim Office - Premium Quoting and Claims Processing
+
+**Test File**: src/claim-office.spec.ts
+
+**Base Functionality Tests**: 27
+
+**Test Cases** (ordered simple → complex):
+
+1. ✅ Premium calculation for single sword (simplest main item)
+2. ✅ Premium calculation for amulet, staff, potion (other main items)
+3. ✅ Premium calculation for single component
+4. ✅ Premium calculation for three alike components at special rate
+5. ✅ Premium calculation for multiple different items
+6. ✅ Cursed item surcharge (50%)
+7. ✅ Highly enchanted item surcharge (30%, enchantment ≥5)
+8. ✅ Multiple surcharges on single item
+9. ✅ Loyalty discount for long-standing customers (20%, ≥2 years)
+10. ✅ Repeat customer discount (15%, not first policy)
+11. ✅ Initial assessment surcharge (10%, first policy)
+12. ✅ Processing fee (5 G, always)
+13. ✅ Rounding to whole G in MHPCO's favor
+14. ✅ Claim payout with deductible (100 G)
+15. ✅ Claim payout cap (2x insurance sum)
+16. ✅ High enchantment damage reduction (50%, enchantment ≥8)
+17. ✅ Dragon material full reimbursement
+18. ✅ Multiple damages in single claim
+19. ✅ Remaining cap tracking after claim
+20. ✅ Cap enforcement preventing overpayout
+21. ✅ JSON quote processing round-trip
+22. ✅ JSON quote + claim processing round-trip
+23. ✅ Results array matching input order
+
+**Advanced Features** (NOT included):
+- Specific CLI argument parsing edge cases - save for later
+- Error handling for invalid JSON - save for later
+- Edge case combinations of multiple discounts - save for later
+
+**Next Step**: Invoke `/red` to activate the first test.

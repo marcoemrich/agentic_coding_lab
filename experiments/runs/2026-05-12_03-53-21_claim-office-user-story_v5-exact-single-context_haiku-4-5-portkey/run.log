@@ -1,0 +1,33 @@
+## TDD Exercise Complete! ✅
+
+I've successfully completed the MHPCO Claim Office kata using strict Test-Driven Development practices. Here's what was accomplished:
+
+### Test Results
+**All 15 tests passing:**
+- ✅ 10 tests covering Premium Quoting (User Story 1)
+- ✅ 5 tests covering Claims Processing (User Story 2)
+
+### Implementation Features
+
+**Premium Quoting:**
+- Base premiums for item types (sword: 100G, amulet: 60G, rune: 25G)
+- Special 60G premium for 3 alike components
+- Surcharges: 50% for cursed items, 30% for enchanted (level >= 5)
+- Initial assessment: 10% surcharge for first insurance (yearsWithMHPCO = 0)
+- Repeat discount: 15% for yearsWithMHPCO > 0 and < 2
+- Loyalty discount: 20% for yearsWithMHPCO >= 2
+- Fixed 5G processing fee
+
+**Claims Processing:**
+- 100G deductible per claim
+- 50% reimbursement for highly enchanted items (level >= 8)
+- Full reimbursement for dragon material items
+- 2x insurance sum cap tracked across multiple claims
+
+### Code Quality
+- All magic numbers extracted as named constants
+- Clean separation of concerns (base premium, surcharges, discounts, claims)
+- Minimal, focused implementation following TDD discipline
+- CLI entry point at `src/cli.ts` for JSON stdin/stdout processing
+
+The experiment-done.txt marker file has been created, signaling successful completion of the TDD exercise.

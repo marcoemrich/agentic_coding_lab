@@ -1,0 +1,5 @@
+All 20 tests pass and the experiment is complete. The TDD exercise implemented:
+
+- **Quoting premiums** (12 tests): base premiums for all item types, component bundling, cursed/enchantment surcharges, loyalty discount, first insurance surcharge, multi-contract discount, ceiling rounding, combined modifiers
+- **Processing claims** (7 tests): 100G deductible, no payout below deductible, full reimbursement for normal and dragon material items, 50% reimbursement for high enchantment (>=8), payout cap at 2× insurance sum, cap tracking across multiple claims
+- **CLI integration** (1 test): `src/cli.ts` reads JSON from stdin, processes via `processScenario`, writes JSON to stdout

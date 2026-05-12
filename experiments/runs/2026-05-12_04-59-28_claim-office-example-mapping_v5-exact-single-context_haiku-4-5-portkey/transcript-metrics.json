@@ -1,0 +1,55 @@
+{
+  "wall_clock_seconds": 31.08,
+  "total_tokens": {
+    "input": 120,
+    "output": 10031,
+    "cache_read": 416779,
+    "cache_creation": 61045,
+    "total": 487975
+  },
+  "context_utilization_pct": 23,
+  "context_window_tokens": 200000,
+  "context_peak_tokens": 46981,
+  "message_count": 11,
+  "tool_calls": {
+    "Read": 1,
+    "Skill": 1,
+    "Write": 1
+  },
+  "skill_invocations": {
+    "test-list": 1
+  },
+  "task_invocations": {},
+  "cycle_count": 0,
+  "predictions_correct": 0,
+  "predictions_total": 0,
+  "model_versions": [
+    "claude-haiku-4-5-20251001"
+  ],
+  "subagent_token_total": 0,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 235846,
+      "duration_seconds": 23.35
+    }
+  ],
+  "phase_source": "skills",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 235846,
+        "duration_seconds": 23.35
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 235846.0,
+        "avg_duration_seconds": 23.35
+      }
+    },
+    "refactorings_applied": 0,
+    "tests_passed_immediately": 0
+  }
+}

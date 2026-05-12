@@ -1,0 +1,42 @@
+```
+📋 Test List Created:
+
+**Feature**: MHPCO Claim Office - Premium Quoting and Claims Processing
+**Test File**: src/quote.spec.ts
+**Base Functionality Tests**: 20
+
+**Test Cases** (ordered simple → complex):
+
+**Quote Premium Tests:**
+1. ✅ should calculate base premium for a sword
+2. ✅ should calculate base premium for an amulet
+3. ✅ should calculate base premium for a staff
+4. ✅ should calculate base premium for a potion
+5. ✅ should calculate base premium for a single component
+6. ✅ should apply cursed item 50% surcharge
+7. ✅ should apply enchanted item 30% surcharge for level >= 5
+8. ✅ should apply loyalty discount 20% for customers with >= 2 years
+9. ✅ should apply initial assessment 10% surcharge for first contract
+10. ✅ should apply repeat contract 15% discount for contracts after first
+11. ✅ should apply special base premium of 60G for 3 alike components
+12. ✅ should add 5G processing fee
+13. ✅ should round premium up in MHPCO's favor
+14. ✅ should calculate premium for multiple different items
+15. ✅ should combine all modifiers correctly in one premium
+
+**Process Claim Tests:**
+16. ✅ should apply 100G deductible to claim
+17. ✅ should enforce policy cap at 2x the insurance sum
+18. ✅ should reimburse damage to high enchantment items (level >= 8) at 50%
+19. ✅ should fully reimburse damage to dragon material items
+20. ✅ should track remaining cap after multiple claims on same policy
+
+**Advanced Features** (NOT included):
+- Edge cases for invalid inputs
+- Error handling and validation
+- Multiple damage incidents in single claim
+- Claim rejection scenarios
+- Complex multi-policy scenarios
+
+**Next Step**: Invoke `/red` to activate the first test.
+```

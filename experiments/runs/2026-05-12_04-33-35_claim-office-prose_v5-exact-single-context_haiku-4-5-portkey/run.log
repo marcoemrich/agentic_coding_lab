@@ -1,0 +1,48 @@
+📋 Test List Created:
+
+**Feature**: MHPCO Claims Office System (Quote and Claim Operations)
+
+**Test File**: src/claim-office.spec.ts
+
+**Base Functionality Tests**: 23
+
+**Test Cases** (ordered simple → complex):
+
+**Quote Tests (15 tests):**
+1. ✅ Single sword premium (simplest item type)
+2. ✅ Single amulet premium (different item type)
+3. ✅ Single staff premium (another item type)
+4. ✅ Single potion premium (another item type)
+5. ✅ Cursed item surcharge (50% modifier)
+6. ✅ High enchantment surcharge (30% for enchantment >= 5)
+7. ✅ Combined cursed + enchantment surcharges
+8. ✅ Loyalty discount (20% for 2+ years)
+9. ✅ First-time contract surcharge (10%)
+10. ✅ Repeat contract discount (15% after first)
+11. ✅ Processing fee (5 G flat)
+12. ✅ Rounding to whole G in MHPCO's favor
+13. ✅ Multiple different items together
+14. ✅ Component bundle pricing (3 alike at special rate)
+15. ✅ Components mixed with main items
+
+**Claim Tests (8 tests):**
+1. ✅ Deductible application (100 G per event)
+2. ✅ Cap at 2x insurance sum
+3. ✅ Basic claim on standard item (100% payout after deductible)
+4. ✅ High enchantment reimbursement (50% of damage)
+5. ✅ Dragon material full reimbursement (100%)
+6. ✅ Remaining cap after first claim
+7. ✅ Remaining cap tracking across multiple claims
+8. ✅ Cap enforcement across multiple claims
+
+**Advanced Features** (NOT included):
+- Input validation and error handling - save for later
+- Multiple customers - system handles one customer per scenario
+- Complex component combinations - covered by basic component tests
+- Concurrent/asynchronous operations - not in scope
+- Detailed audit logging - not required
+- Edge cases (zero damage, extremely high values, etc.) - save for later
+
+**Next Step**: Invoke `/red` to activate the first test.
+
+📋 Test List Phase Complete. Proceeding to Red phase with the first test.

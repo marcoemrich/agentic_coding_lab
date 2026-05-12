@@ -1,0 +1,47 @@
+📋 **Test List Created:**
+
+**Feature**: MHPCO Claim Office Policy System  
+**Test File**: src/claim-office.spec.ts  
+**Base Functionality Tests**: 24
+
+**Test Cases** (ordered simple → complex):
+
+**Quote Premium** (13 tests):
+1. ✅ Single sword quote (no modifiers) - simplest case
+2. ✅ Single amulet quote (no modifiers)
+3. ✅ Processing fee included in premium
+4. ✅ Rounding in MHPCO's favor
+5. ✅ Cursed item modifier (+50%)
+6. ✅ High enchantment modifier (+30%, level ≥5)
+7. ✅ Loyalty discount (-20%, ≥2 years)
+8. ✅ First insurance surcharge (+10%)
+9. ✅ Subsequent contract discount (-15%)
+10. ✅ Multiple items combined
+11. ✅ Component bundling (3 alike = special rate)
+12. ✅ Multiple modifiers combined
+13. ✅ All modifiers together (full complexity)
+
+**Claims Processing** (7 tests):
+14. ✅ Deductible applied (100 G per incident)
+15. ✅ Payout cap enforced (2x insurance sum)
+16. ✅ High enchantment reimbursement (50%, level ≥8)
+17. ✅ Dragon material reimbursement (100%)
+18. ✅ Multiple damages in single claim
+19. ✅ Remaining cap tracked after first claim
+20. ✅ Cap constraint enforced on second claim
+
+**CLI Integration** (4 tests):
+21. ✅ Quote operation JSON processing
+22. ✅ Claim operation JSON processing
+23. ✅ Sequential steps (quote + claims)
+24. ✅ Output format validation
+
+**Advanced Features** (NOT included - save for later):
+- Error handling and validation (invalid inputs)
+- Multiple customers or policies
+- Complex edge case interactions
+- Performance optimizations
+
+**Next Step**: Invoke `/red` to activate the first test and make it fail.
+
+📋 Test List Phase Complete. Proceeding to Red phase with the first test.

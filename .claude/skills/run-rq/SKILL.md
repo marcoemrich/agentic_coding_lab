@@ -156,6 +156,8 @@ status: <status>
 
 `findings.md` shows **only the current state**. No status tags (`✅ stabil` / `⚠️ bedingt` / `🚫 offen` / `❌ widerlegt`), no comparisons with archive snapshots or older studies, no "previously X, corrected" hints in the prose. Header form: `## F-x.y — title` (no `· …` suffix).
 
+**Overview table**: `findings.md` starts with a `## Übersicht` section containing a pivot table of the primary outcome across all factor levels (all models, all prompt styles, etc.) — before the individual `F-x.y` blocks. This table gives readers the full picture at a glance; individual findings then zoom in on specific effects. Update this table whenever findings are added or updated.
+
 1. Diff sources:
    - **Existing**: `findings.md` from phase 1.
    - **New**: `summary.md` from phase 5.

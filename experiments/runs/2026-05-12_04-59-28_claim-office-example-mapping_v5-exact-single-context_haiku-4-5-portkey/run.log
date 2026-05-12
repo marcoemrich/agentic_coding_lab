@@ -1,0 +1,39 @@
+📋 **Test List Created:**
+
+**Feature**: MHPCO Claim Office - Insurance Quote and Claim Processing  
+**Test File**: `src/mhpco.spec.ts`  
+**Base Functionality Tests**: 18
+
+**Test Cases** (ordered simple → complex):
+
+### Quote Operation (13 tests):
+1. ✅ Empty items list → 5 G (processing fee only)
+2. ✅ Single sword → 105 G
+3. ✅ Single amulet → 65 G
+4. ✅ Single staff → 85 G
+5. ✅ Single potion → 45 G
+6. ✅ Single component → 30 G
+7. ✅ Multiple items → sum premiums
+8. ✅ Cursed item → adds 50% surcharge
+9. ✅ High enchantment (≥5) → adds 30% surcharge
+10. ✅ Loyalty discount (≥2 years) → 20% off
+11. ✅ First insurance surcharge → 10% on new items
+12. ✅ Follow-up contract discount → 15% off
+13. ✅ Rounding → MHPCO's favor (up for premiums)
+
+### Claim Operation (5 tests):
+14. ✅ Basic damage claim → damage minus 100 G deductible
+15. ✅ Dragon material → full reimbursement
+16. ✅ High enchantment damage (≥8) → 50% reimbursement
+17. ✅ Cap remaining → track after each claim
+18. ✅ Cap exhaustion → 2× insurance value limit
+
+**Advanced Features** (NOT included - save for later):
+- Component building block (3 identical components at special rate)
+- Multiple damage events per claim
+- Error handling and validation
+- Edge cases (negative amounts, unknown item types, mismatched claim items)
+- CLI integration and JSON I/O
+- Rounding for claim payouts (down in MHPCO's favor)
+
+**Next Step**: Invoke `/red` to activate the first test.

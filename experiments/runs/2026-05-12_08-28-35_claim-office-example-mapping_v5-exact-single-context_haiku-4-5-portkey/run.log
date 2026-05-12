@@ -1,0 +1,48 @@
+📋 **Test List Created:**
+
+**Feature:** MHPCO Claim Office Policy Management System
+
+**Test File:** src/claim-office.spec.ts
+
+**Base Functionality Tests:** 24 total
+- Quote operation: 16 tests
+- Claim operation: 8 tests
+
+**Test Cases (ordered simple → complex):**
+
+**Quote Tests:**
+1. ✅ Should return 5 G (processing fee only) for empty items list
+2. ✅ Should calculate base premium for a single sword
+3. ✅ Should calculate base premium for a single amulet
+4. ✅ Should calculate base premium for a single staff
+5. ✅ Should calculate base premium for a single potion
+6. ✅ Should calculate base premium for a single component (rune/moonstone)
+7. ✅ Should sum base premiums for multiple different items
+8. ✅ Should apply cursed surcharge (50%) to cursed items only
+9. ✅ Should apply high-enchantment surcharge (30%) for enchantment >= 5
+10. ✅ Should apply first-insurance surcharge (10%) for new customer
+11. ✅ Should apply loyalty discount (20%) for customer >= 2 years
+12. ✅ Should apply follow-up contract discount (15%) for second+ contract
+13. ✅ Should apply special block discount for exactly 3 alike components
+14. ✅ Should include 5 G processing fee in final premium
+15. ✅ Should round final premium up in MHPCO's favor
+16. ✅ Should stack item-specific and policy-wide modifiers correctly
+
+**Claim Tests:**
+17. ✅ Should calculate payout with 100 G deductible per damage event
+18. ✅ Should apply 50% reimbursement for enchantment >= 8
+19. ✅ Should apply 100% reimbursement for dragon-material items
+20. ✅ Should cap total claim payout at 2x policy insurance sum
+21. ✅ Should reject claim if damage exceeds policy coverage
+22. ✅ Should reject claim with invalid item type
+23. ✅ Should reject claim with negative damage amount
+24. ✅ Should round payout down in MHPCO's favor
+
+**Advanced Features (NOT included yet):**
+- CLI integration with JSON stdin/stdout
+- Multiple damage items in single claim
+- Sequential claims with cap exhaustion
+- Complex interactions between all modifiers
+- Specific error message formatting
+
+**Next Step:** Invoke `/red` to activate the first test.

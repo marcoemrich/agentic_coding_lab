@@ -22,7 +22,7 @@ outcomes:
   - duration_seconds
   - total_tokens
   - completed_within_budget
-min_replicates: 3
+min_replicates: 5
 status: aktiv
 ---
 
@@ -122,8 +122,8 @@ Kontrolle: workflow      — v5-exact-single-context
 Kontrolle: kata_base     — claim-office
 
 Zellen:    3 × 8 = 24
-Replikate: n = 3
-Runs:      72 total
+Replikate: n = 5
+Runs:      120 total
 ```
 
 ### Warum claim-office?

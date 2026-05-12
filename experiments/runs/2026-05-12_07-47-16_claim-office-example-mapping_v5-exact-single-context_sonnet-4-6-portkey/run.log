@@ -1,0 +1,6 @@
+The TDD exercise is complete:
+
+- **10 tests passing** — all Red/Green/Refactor cycles done
+- **`src/claim-office.ts`** — core logic with `quote`, `createPolicy`, `claim`; final refactor merged two `reduce` loops into one (mass 112 → 105)
+- **`src/cli.ts`** — CLI at `src/cli.ts` reading JSON from stdin, writing JSON to stdout, with proper validation and error handling (non-zero exit for unknown item types, negative damage amounts, items not in policy, more claims than insured items)
+- **`experiment-done.txt`** — written with `DONE`

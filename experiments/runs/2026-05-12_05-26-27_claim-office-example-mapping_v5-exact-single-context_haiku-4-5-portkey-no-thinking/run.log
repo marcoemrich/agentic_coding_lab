@@ -1,0 +1,55 @@
+📋 **Test List Created**
+
+**Feature**: MHPCO Claim Office Insurance System
+
+**Test File**: `src/claim-office.spec.ts`
+
+**Base Functionality Tests**: 20 tests organized in 3 groups
+
+**Test Cases** (ordered simple → complex):
+
+### Quote Operation (15 tests)
+1. ✅ Empty item list (processing fee only)
+2. ✅ Single plain sword
+3. ✅ Single plain amulet
+4. ✅ Single plain staff
+5. ✅ Single plain potion
+6. ✅ 3 components with building block
+7. ✅ 2 components without building block
+8. ✅ Cursed item surcharge
+9. ✅ High enchantment surcharge (≥5)
+10. ✅ First insurance surcharge for newcomer
+11. ✅ Loyalty discount for 2+ year customer
+12. ✅ Follow-up contract discount
+13. ✅ Multiple items on one policy
+14. ✅ Item-specific modifiers per item
+15. ✅ Unknown item type rejection
+
+### Claim Operation (8 tests)
+1. ✅ Simple claim with deductible
+2. ✅ 100G deductible per event
+3. ✅ Payout capped at 2× insurance
+4. ✅ Negative damage rejection
+5. ✅ Invalid policy reference rejection
+6. ✅ Damage to non-covered item rejection
+7. ✅ Remaining cap calculation
+8. ✅ Multiple damages in one claim
+
+### Integration (2 tests)
+1. ✅ Complete scenario: quote → claim
+2. ✅ Claim validation errors
+
+**Advanced Features** (NOT included - save for later):
+- Dragon material full reimbursement
+- High enchantment (≥8) 50% reimbursement
+- Rounding rules (in MHPCO's favor)
+- Component type differentiation (runes vs moonstones)
+- CLI executable implementation
+- Multiple successive claims exhausting cap
+- Policy cap exhaustion across multiple claims
+
+**Next Step**: Invoke `/red` to activate the first test.
+
+---
+
+**Test List Phase Complete. Proceeding to Red phase with the first test.**

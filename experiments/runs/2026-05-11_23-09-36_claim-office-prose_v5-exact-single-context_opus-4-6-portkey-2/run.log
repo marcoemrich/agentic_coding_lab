@@ -1,0 +1,5 @@
+All 14 tests passing, all TDD cycles complete, `experiment-done.txt` written. The MHPCO Claim Office implementation is complete with:
+
+- **Quote premium**: base premiums, cursed/enchantment surcharges, loyalty discount, first/subsequent contract modifiers, component block pricing, processing fee, ceiling rounding
+- **Process claims**: deductible, payout cap at 2x insurance sum, 50% reimbursement for high enchantment (>=8), full reimbursement for dragon material
+- **CLI**: reads JSON from stdin, writes results JSON to stdout via `src/cli.ts`

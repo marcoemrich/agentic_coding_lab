@@ -1,0 +1,54 @@
+📋 **Test List Created:**
+
+**Feature**: MHPCO Claim Office Kata - Quote and Claim Processing
+**Test File**: src/mhpco.spec.ts
+**Base Functionality Tests**: 33
+
+**Test Cases** (ordered simple → complex):
+
+**Quote Operations**:
+1. ✅ Empty item list (processing fee only)
+2. ✅ Single sword premium calculation
+3. ✅ Single amulet premium calculation
+4. ✅ Single staff premium calculation
+5. ✅ Single potion premium calculation
+6. ✅ Single component (rune) premium calculation
+7. ✅ Multiple different items (sum base premiums)
+8. ✅ Cursed item surcharge (item-specific modifier)
+9. ✅ High enchantment surcharge (item-specific modifier)
+10. ✅ First insurance surcharge (policy-wide modifier)
+11. ✅ Loyalty discount for long-standing customers
+12. ✅ Follow-up contract discount for repeat customers
+13. ✅ Stacking multiple modifiers in correct order
+14. ✅ Rounding premiums up in MHPCO's favor
+15. ✅ Reject unknown item type
+
+**Component Bundling** (3-alike discount):
+16. ✅ Exactly 3 alike components get block discount
+17. ✅ 2 components (no block)
+18. ✅ 4 components (no block)
+19. ✅ Different component types treated separately
+
+**Claim Operations**:
+20. ✅ Single damage claim with deductible
+21. ✅ 100 G deductible per damage event
+22. ✅ Cap at twice insurance sum
+23. ✅ Multiple damages with separate deductibles
+24. ✅ Remaining cap reduction after claims
+25. ✅ Reject claim for uninsured item
+26. ✅ Reject negative damage amount
+27. ✅ Reject when more items damaged than insured
+
+**Claim Special Clauses**:
+28. ✅ High-enchantment damage (≥8) at 50% reimbursement
+29. ✅ Dragon material damage fully reimbursed
+30. ✅ Apply 50% clause before deductible
+31. ✅ Use 50% clause when both high-enchantment and dragon apply
+
+**Advanced Features** (NOT included - save for later):
+- CLI stdin/stdout integration
+- Complex scenario sequences
+- Error message formatting details
+- Performance optimizations
+
+**Next Step**: Invoke `/red` to activate the first test.

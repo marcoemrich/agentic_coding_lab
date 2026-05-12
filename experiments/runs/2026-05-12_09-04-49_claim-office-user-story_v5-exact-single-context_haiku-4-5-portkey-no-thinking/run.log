@@ -1,0 +1,56 @@
+## Step 4: Summary
+
+```
+📋 Test List Created:
+
+**Feature**: MHPCO Claim Office - Premium Quoting and Claim Processing
+**Test File**: src/claim-office.spec.ts
+**Base Functionality Tests**: 27
+
+**Test Cases** (ordered simple → complex):
+
+### Premium Calculation (14 tests)
+1. ✅ should calculate premium for a single sword
+2. ✅ should calculate premium for a single amulet
+3. ✅ should calculate premium for a single staff
+4. ✅ should calculate premium for a single potion
+5. ✅ should calculate premium for a single component
+6. ✅ should calculate premium for multiple different main items
+7. ✅ should apply cursed item surcharge (50%)
+8. ✅ should apply enchanted item surcharge (30%) for enchantment level >= 5
+9. ✅ should apply loyalty discount (20%) for customers with >= 2 years
+10. ✅ should apply initial assessment surcharge (10%) for first policy
+11. ✅ should apply repeat contract discount (15%) for policies after first
+12. ✅ should add 5 G processing fee to every premium
+13. ✅ should calculate premium for a bundle of 3 identical components
+14. ✅ should round amounts to whole G in MHPCO's favor (always round up)
+
+### Claim Processing (8 tests)
+15. ✅ should calculate payout with deductible (100 G) applied per damage event
+16. ✅ should enforce policy cap at twice the insurance sum
+17. ✅ should apply 50% reduction for damage on high enchantment items (level >= 8)
+18. ✅ should fully reimburse damage to dragon material items
+19. ✅ should track remaining cap after first claim
+20. ✅ should apply deductible only once per damage event (not per item)
+21. ✅ should process multiple claims against the same policy sequentially
+22. ✅ should reduce remaining cap after each claim
+
+### CLI Integration (5 tests)
+23. ✅ should read JSON from stdin describing a quote operation
+24. ✅ should read JSON from stdin describing a claim operation
+25. ✅ should process multiple sequential operations
+26. ✅ should output JSON with results array matching input steps
+27. ✅ should include premium in quote result
+28. ✅ should include payout and remainingCap in claim result
+
+**Advanced Features** (NOT included - save for later):
+- Edge case handling (invalid inputs, malformed JSON)
+- Error messages and user feedback
+- Optimization of calculation algorithms
+- Caching or memoization
+- Batch processing optimizations
+
+**Next Step**: Invoke `/red` to activate the first test.
+```
+
+📋 Test List Phase Complete. Ready to proceed to Red phase with the first test.

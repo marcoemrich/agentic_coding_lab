@@ -1,0 +1,51 @@
+📋 **Test List Created:**
+
+**Feature**: MHPCO Claim Office - Premium quoting and claim processing
+
+**Test File**: `src/mhpco.spec.ts`
+
+**Base Functionality Tests**: 33
+
+**Test Cases** (ordered simple → complex):
+
+### Premium Quoting (15 tests)
+1. ✅ Single sword premium (no modifiers)
+2. ✅ Single amulet premium (no modifiers)
+3. ✅ Single staff premium (no modifiers)
+4. ✅ Single potion premium (no modifiers)
+5. ✅ Single component premium (no modifiers)
+6. ✅ Special 3-component bundle pricing
+7. ✅ Cursed item 50% surcharge
+8. ✅ Highly enchanted (≥5) 30% surcharge
+9. ✅ Combined cursed + enchantment surcharges
+10. ✅ New customer 10% initial assessment surcharge
+11. ✅ Long-standing customer (≥2 years) 20% loyalty discount
+12. ✅ Subsequent contract 15% discount
+13. ✅ 5G processing fee on every premium
+14. ✅ Multiple different items premium calculation
+15. ✅ Rounding to whole G in MHPCO's favor
+
+### Claim Processing (9 tests)
+16. ✅ Simple claim with 100G deductible
+17. ✅ Zero payout when damage < deductible
+18. ✅ High enchantment (≥8) at 50% reimbursement
+19. ✅ Dragon material at 100% reimbursement
+20. ✅ Cap total payout at 2x insurance sum
+21. ✅ Track remaining cap after claim
+22. ✅ Reduce remaining cap with subsequent claims
+23. ✅ Multiple claims on same policy sequentially
+24. ✅ Apply deductible to each damage event
+
+### CLI Integration (4 tests)
+25. ✅ Parse JSON scenario with customer and steps
+26. ✅ Output premium for quote operations
+27. ✅ Output payout and remainingCap for claim operations
+28. ✅ Process sequence of quotes and claims in order
+
+**Advanced Features** (NOT included - save for later):
+- Complex multi-item interactions with interdependent modifiers
+- Extensive edge cases and error handling
+- Performance optimization
+- Input validation and error messages
+
+**Next Step**: Invoke `/red` to activate the first test.

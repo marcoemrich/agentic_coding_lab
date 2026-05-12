@@ -1,0 +1,32 @@
+```
+📋 Test List Created:
+**Feature**: MHPCO Claim Office - quote and claim operations
+**Test File**: claim-office.spec.ts
+**Base Functionality Tests**: 10
+
+**Test Cases** (ordered simple → complex):
+
+**Quote Operation:**
+1. ✅ Empty item list returns 5G (processing fee only)
+2. ✅ Single sword calculates correct base premium (100G + 5G fee)
+3. ✅ Single amulet calculates correct base premium (60G + 5G fee)
+4. ✅ Multiple different items sum base premiums correctly
+5. ✅ Exactly 3 alike components apply building block discount (60G per block)
+6. ✅ Non-matching components do not trigger building block
+
+**Claim Operation:**
+7. ✅ Single damage applies 100G deductible
+8. ✅ Full reimbursement of damage minus deductible
+9. ✅ Insurance cap (2x insurance value) limits total payout
+10. ✅ Multiple damages on different items each get own deductible
+
+**Advanced Features** (NOT included yet):
+- Premium modifiers (cursed +50%, high enchantment ≥5 +30%, loyalty -20%, first insurance +10%, follow-up -15%)
+- Claim special reimbursement rules (enchantment ≥8 → 50%, dragon material → 100%)
+- Customer history and contract types
+- CLI JSON input/output interface
+- Error handling and validation
+- Rounding rules (up for premiums, down for payouts)
+
+**Next Step**: Invoke `/red` to activate the first test.
+```

@@ -1,0 +1,35 @@
+## 📋 Test List Created
+
+**Feature**: MHPCO Premium Calculation (User Story 1 - Quoting)
+
+**Test File**: src/mhpco.spec.ts
+
+**Base Functionality Tests**: 15
+
+**Test Cases** (ordered simple → complex):
+1. ✅ Should calculate premium for a single sword without modifiers
+2. ✅ Should calculate premium for a single amulet
+3. ✅ Should calculate premium for a single staff
+4. ✅ Should calculate premium for a single potion
+5. ✅ Should calculate premium for a single component
+6. ✅ Should calculate premium for 3 matching components (building block)
+7. ✅ Should add 50% cursed item surcharge
+8. ✅ Should add 30% enchantment surcharge for level >= 5
+9. ✅ Should apply 20% loyalty discount for customers with >= 2 years
+10. ✅ Should apply 10% initial assessment surcharge for first contract
+11. ✅ Should apply 15% discount for second contract
+12. ✅ Should apply 15% discount for third and later contracts
+13. ✅ Should add 5 G processing fee
+14. ✅ Should calculate premium for multiple items with mixed types
+15. ✅ Should round all amounts up to whole G in MHPCO's favor
+
+**Advanced Features** (NOT included, save for later):
+- User Story 2 (claims processing)
+- Error handling and validation
+- Edge cases (negative values, extremely large values)
+- CLI integration
+- JSON stdin/stdout processing
+
+**Next Step**: Invoke `/red` to activate the first test.
+
+Proceeding to Red phase with the first test.

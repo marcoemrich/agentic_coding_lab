@@ -1,0 +1,57 @@
+```
+📋 Test List Created:
+**Feature**: MHPCO Claim Office (Quote and Claim operations)
+**Test File**: src/claim-office.spec.ts
+**Base Functionality Tests**: 33
+
+**Test Cases** (ordered simple → complex):
+
+### Quote Operation (18 tests):
+1. ✅ Empty quote (5G fee only)
+2. ✅ Sword base premium (100G)
+3. ✅ Amulet base premium (60G)
+4. ✅ Staff base premium (80G)
+5. ✅ Potion base premium (40G)
+6. ✅ Single component premium (25G)
+7. ✅ Sum base premiums for multiple items
+8. ✅ Block discount for exactly 3 alike components
+9. ✅ No block for 2 components
+10. ✅ No block for 4 components
+11. ✅ Multiple blocks separately
+12. ✅ Cursed item 50% surcharge
+13. ✅ Enchantment ≥5: 30% surcharge
+14. ✅ Both cursed + high enchantment surcharges
+15. ✅ First insurance 10% surcharge
+16. ✅ Follow-up contract 15% discount
+17. ✅ Loyalty discount 20% for ≥2 years
+18. ✅ Processing fee (5G) + round up
+
+### Claim Operation (12 tests):
+19. ✅ Basic payout: damage minus 100G deductible
+20. ✅ Deductible per damage event
+21. ✅ Round payout down
+22. ✅ Enchantment ≥8: reduce to 50%
+23. ✅ Dragon material: full reimbursement
+24. ✅ Both clauses: 50% wins
+25. ✅ Policy cap at 2x insurance sum
+26. ✅ Track cap across multiple claims
+27. ✅ Reduce payout when cap exhausted
+28. ✅ Multiple damage entries
+29. ✅ Reject if damages exceed policy items
+
+### Error Handling (3 tests):
+30. ✅ Reject unknown item type
+31. ✅ Reject negative damage
+32. ✅ Reject damage to item not in policy
+
+**Advanced Features** (NOT included - save for later):
+- CLI integration and JSON I/O
+- Full schema validation
+- Customer history tracking beyond years
+- Incident details (cause, etc.)
+- Comprehensive error messages
+
+**Next Step**: Invoke `/red` to activate the first test.
+```
+
+📋 Test List Phase Complete. Proceeding to Red phase with the first test.

@@ -1,0 +1,16 @@
+All 6 tests implemented and passing. The TDD cycle is complete:
+
+**Tests implemented:**
+1. Quote single sword for new customer (initial assessment + processing fee) → 115 G
+2. Quote multiple items summing base premiums → 181 G
+3. Quote component items at 25 G each → 60 G
+4. Apply 50% cursed item surcharge → 170 G
+5. Process basic claim deducting 100 G deductible → payout + remainingCap
+6. Track remaining cap across multiple claims
+
+**Deliverables:**
+- `src/claim-office.ts` — business logic (`processScenario`)
+- `src/claim-office.spec.ts` — 6 passing tests
+- `src/cli.ts` — reads JSON from stdin, writes JSON to stdout
+- CLI runnable via `node --import tsx/esm src/cli.ts` or `pnpm exec claim-office`
+- `experiment-done.txt` — done marker
