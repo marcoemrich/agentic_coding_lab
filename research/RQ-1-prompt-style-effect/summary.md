@@ -2,7 +2,7 @@
 
 _Steigert Example-Mapping die Korrektheit gegenüber Prose und User-Story — und ist der Effekt modellabhängig?_
 
-Generated: 2026-05-12T10:25:08Z
+Generated: 2026-05-12T20:39:21Z
 
 Cells declared: 24 · matched runs: 93 · min_replicates: 5
 
@@ -43,8 +43,8 @@ Cells declared: 24 · matched runs: 93 · min_replicates: 5
 |:-----------------------------|:------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | v5-exact-single-context | haiku-4-5-portkey              |   5 |   0    |  0    |  0    |  0    |
 | claim-office-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |   0    |  0    |  0    |  0    |
-| claim-office-example-mapping | v5-exact-single-context | opus-4-6-portkey               |   5 |   0.37 |  0    |  1    |  0.44 |
-| claim-office-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |   0.6  |  0    |  1    |  0.55 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-6-portkey               |   5 |   0.77 |  0.2  |  1    |  0.35 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |   0.87 |  0.33 |  1    |  0.3  |
 | claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking           |   3 |   1    |  1    |  1    |  0    |
 | claim-office-example-mapping | v5-exact-single-context | sonnet-4-6-portkey             |   5 |   0.35 |  0    |  1    |  0.41 |
 | claim-office-example-mapping | v5-exact-single-context | sonnet-4-6-portkey-no-thinking |   5 |   0.71 |  0.4  |  0.87 |  0.18 |
@@ -67,8 +67,8 @@ Cells declared: 24 · matched runs: 93 · min_replicates: 5
 |:-----------------------------|:------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | v5-exact-single-context | haiku-4-5-portkey              |   5 |    0   |     0 |     0 |  0    |
 | claim-office-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |    0   |     0 |     0 |  0    |
-| claim-office-example-mapping | v5-exact-single-context | opus-4-6-portkey               |   5 |    5.6 |     0 |    15 |  6.66 |
-| claim-office-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |    9   |     0 |    15 |  8.22 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-6-portkey               |   5 |   11.6 |     3 |    15 |  5.27 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |   13   |     5 |    15 |  4.47 |
 | claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking           |   3 |   15   |    15 |    15 |  0    |
 | claim-office-example-mapping | v5-exact-single-context | sonnet-4-6-portkey             |   5 |    5.2 |     0 |    15 |  6.22 |
 | claim-office-example-mapping | v5-exact-single-context | sonnet-4-6-portkey-no-thinking |   5 |   10.6 |     6 |    13 |  2.7  |

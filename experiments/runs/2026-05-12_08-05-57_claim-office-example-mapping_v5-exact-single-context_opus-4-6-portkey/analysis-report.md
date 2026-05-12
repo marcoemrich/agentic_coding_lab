@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_08-05-57_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey
 
-Generated: 2026-05-12T08:51:53+00:00
+Generated: 2026-05-12T22:38:42+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-12T08:51:53+00:00
 
 ## Code Metrics
 
-- **Implementation files**: claim-office.ts
-- **Implementation LOC** (total): 99
+- **Implementation files**: claim-office.ts, cli.ts
+- **Implementation LOC** (total): 114
 - **Test file**: claim-office.spec.ts
 - **Test file LOC**: 608
 - **Active tests**: 30
@@ -30,48 +30,48 @@ Generated: 2026-05-12T08:51:53+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_08-05-57_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_08-05-57_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_08-05-57_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_08-05-57_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey
 
- ✓ src/claim-office.spec.ts  (30 tests) 7ms
+ ✓ src/claim-office.spec.ts  (30 tests) 6ms
 
  Test Files  1 passed (1)
       Tests  30 passed (30)
-   Start at  08:51:54
-   Duration  214ms (transform 59ms, setup 0ms, collect 59ms, tests 7ms, environment 0ms, prepare 49ms)
+   Start at  22:38:43
+   Duration  362ms (transform 37ms, setup 0ms, collect 33ms, tests 6ms, environment 0ms, prepare 89ms)
 ```
 
 ## Coverage
 
 | Metric | Coverage |
 |--------|----------|
-| Statements | 100% |
-| Branches | 100% |
+| Statements | 86% |
+| Branches | 97% |
 
 ## APP Mass Estimation
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 39 | ×1 | 39 |
-| Invocations | 29 | ×2 | 58 |
+| Constants | 47 | ×1 | 47 |
+| Invocations | 39 | ×2 | 78 |
 | Conditionals | 10 | ×4 | 40 |
 | Loops | 6 | ×5 | 30 |
-| Assignments | 37 | ×6 | 222 |
-| **Total Mass** | | | **389** |
+| Assignments | 42 | ×6 | 252 |
+| **Total Mass** | | | **447** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 86 |
+| LOC (non-blank) | 100 |
 | Functions | 3 |
 | Longest Function | 40 lines |
 | Avg LOC/Function | 26.67 |
 | Median LOC/Function | 27.00 |
-| Imports | 0 |
+| Imports | 1 |
 
 ## Code Smells
 
@@ -87,8 +87,8 @@ Generated: 2026-05-12T08:51:53+00:00
 
 | Metric | Max | Avg | High (>10) |
 |--------|-----|-----|---------------------------|
-| McCabe (Cyclomatic) | 11 | 4.40 | 1 |
-| Cognitive (SonarJS) | 17 | 9.33 | 1 |
+| McCabe (Cyclomatic) | 11 | 3.57 | 1 |
+| Cognitive (SonarJS) | 17 | 7.25 | 1 |
 
 ## Transcript Metrics
 

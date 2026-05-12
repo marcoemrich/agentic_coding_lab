@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_08-25-24_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
-Generated: 2026-05-12T08:47:28+00:00
+Generated: 2026-05-12T22:38:53+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-12T08:47:28+00:00
 
 ## Code Metrics
 
-- **Implementation files**: claim-office.ts
-- **Implementation LOC** (total): 55
+- **Implementation files**: claim-office.ts, cli.ts
+- **Implementation LOC** (total): 65
 - **Test file**: claim-office.spec.ts
 - **Test file LOC**: 250
 - **Active tests**: 10
@@ -30,13 +30,13 @@ Generated: 2026-05-12T08:47:28+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_08-25-24_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_08-25-24_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_08-25-24_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_08-25-24_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
- ❯ src/claim-office.spec.ts  (17 tests | 1 failed | 7 skipped) 9ms
+ ❯ src/claim-office.spec.ts  (17 tests | 1 failed | 7 skipped) 8ms
    ❯ src/claim-office.spec.ts > MHPCO Claim Office > Quoting a premium > should apply 15% discount on each contract after the first
      → expected { premium: 105 } to deeply equal { premium: 90 }
 
@@ -65,8 +65,8 @@ AssertionError: expected { premium: 105 } to deeply equal { premium: 90 }
 
  Test Files  1 failed (1)
       Tests  1 failed | 9 passed | 7 todo (17)
-   Start at  08:47:28
-   Duration  211ms (transform 32ms, setup 0ms, collect 33ms, tests 9ms, environment 0ms, prepare 58ms)
+   Start at  22:38:54
+   Duration  366ms (transform 29ms, setup 0ms, collect 26ms, tests 8ms, environment 0ms, prepare 89ms)
 
  ELIFECYCLE  Test failed. See above for more details.
 ```
@@ -75,23 +75,23 @@ AssertionError: expected { premium: 105 } to deeply equal { premium: 90 }
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 25 | ×1 | 25 |
-| Invocations | 11 | ×2 | 22 |
+| Constants | 31 | ×1 | 31 |
+| Invocations | 18 | ×2 | 36 |
 | Conditionals | 5 | ×4 | 20 |
 | Loops | 3 | ×5 | 15 |
-| Assignments | 27 | ×6 | 162 |
-| **Total Mass** | | | **244** |
+| Assignments | 32 | ×6 | 192 |
+| **Total Mass** | | | **294** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 53 |
+| LOC (non-blank) | 62 |
 | Functions | 1 |
 | Longest Function | 37 lines |
 | Avg LOC/Function | 37.00 |
 | Median LOC/Function | 37.00 |
-| Imports | 0 |
+| Imports | 1 |
 
 ## Code Smells
 
@@ -107,7 +107,7 @@ AssertionError: expected { premium: 105 } to deeply equal { premium: 90 }
 
 | Metric | Max | Avg | High (>10) |
 |--------|-----|-----|---------------------------|
-| McCabe (Cyclomatic) | 9 | 5.00 | 0 |
+| McCabe (Cyclomatic) | 9 | 3.00 | 0 |
 | Cognitive (SonarJS) | 14 | 14.00 | 1 |
 
 ## Transcript Metrics

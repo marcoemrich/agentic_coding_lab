@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-11_23-09-36_claim-office-prose_v5-exact-single-context_opus-4-6-portkey-3
 
-Generated: 2026-05-11T23:32:49+00:00
+Generated: 2026-05-12T22:37:48+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-11T23:32:49+00:00
 
 ## Code Metrics
 
-- **Implementation files**: claim-office.ts
-- **Implementation LOC** (total): 118
+- **Implementation files**: claim-office.ts, cli.ts
+- **Implementation LOC** (total): 128
 - **Test file**: claim-office.spec.ts
 - **Test file LOC**: 309
 - **Active tests**: 14
@@ -26,66 +26,29 @@ Generated: 2026-05-11T23:32:49+00:00
 
 ## Test Results
 
-**Status**: ✅ All tests passing (14 passed)
-
-```
-$ vitest run
-
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-11_23-09-36_claim-office-prose_v5-exact-single-context_opus-4-6-portkey-3
-
- ✓ src/claim-office.spec.ts  (14 tests) 4ms
-
- Test Files  1 passed (1)
-      Tests  14 passed (14)
-   Start at  23:32:49
-   Duration  169ms (transform 32ms, setup 0ms, collect 31ms, tests 4ms, environment 0ms, prepare 45ms)
-```
-
-## Coverage
-
-| Metric | Coverage |
-|--------|----------|
-| Statements | 100% |
-| Branches | 100% |
+Tests not runnable (dependencies not installed)
 
 ## APP Mass Estimation
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 35 | ×1 | 35 |
-| Invocations | 38 | ×2 | 76 |
+| Constants | 41 | ×1 | 41 |
+| Invocations | 45 | ×2 | 90 |
 | Conditionals | 6 | ×4 | 24 |
 | Loops | 4 | ×5 | 20 |
-| Assignments | 45 | ×6 | 270 |
-| **Total Mass** | | | **425** |
+| Assignments | 50 | ×6 | 300 |
+| **Total Mass** | | | **475** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 104 |
+| LOC (non-blank) | 113 |
 | Functions | 9 |
 | Longest Function | 17 lines |
 | Avg LOC/Function | 8.67 |
 | Median LOC/Function | 8.00 |
-| Imports | 0 |
-
-## Code Smells
-
-| Category | Count |
-|----------|-------|
-| Complexity | 0 |
-| Duplication | 0 |
-| Magic Numbers | 3 |
-| Code Quality | 0 |
-| **Total** | **3** |
-
-## Complexity Scores
-
-| Metric | Max | Avg | High (>10) |
-|--------|-----|-----|---------------------------|
-| McCabe (Cyclomatic) | 3 | 1.57 | 0 |
-| Cognitive (SonarJS) | 2 | 1.80 | 0 |
+| Imports | 1 |
 
 ## Transcript Metrics
 

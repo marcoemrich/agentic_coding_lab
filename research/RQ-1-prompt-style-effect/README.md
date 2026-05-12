@@ -183,8 +183,8 @@ ob Reasoning-Kapazität den Prompt-Stil-Effekt abschwächt.
 
 ## Hypothesen
 
-- **H1**: Example-mapping erhöht `verification_pct` deutlich gegenüber
-  prose (>30 pp Differenz), modellübergreifend.
+- **H1**: Example-mapping erhöht `verification_pct` gegenüber
+  prose bei Modellen mit ausreichender Reasoning-Kapazität.
 - **H2**: User-story erhöht `verification_pct` gegenüber prose nur
   geringfügig — Stakeholder-Perspektive löst keine domänen-internen
   Mehrdeutigkeiten auf.

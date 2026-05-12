@@ -575,6 +575,33 @@ EOF
         retry_attempts=$attempt
     done
 
+    # --- cli.ts nudge ---------------------------------------------------
+    # If the agent finished successfully but forgot to create src/cli.ts,
+    # nudge it once with a short follow-up prompt. This fixes a recurring
+    # measurement artefact where verification scores 0/15 because the
+    # entry point is missing, not because the domain logic is wrong.
+    if [ "$claude_exit" -eq 0 ] && [ ! -f "$run_dir/src/cli.ts" ] && [ -f "$run_dir/src/claim-office.ts" ]; then
+        echo -e "  ${YELLOW}src/cli.ts missing — nudging agent to create it...${NC}"
+        set +e
+        if [ "$thinking" = "false" ]; then
+            (cd "$run_dir" && MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s 120 \
+                claude --dangerously-skip-permissions --model "$cli_model" --print \
+                "The file src/cli.ts is missing. The prompt requires a CLI entry point at src/cli.ts that reads JSON from stdin and writes JSON to stdout. Create src/cli.ts now. It should import from your existing module and wire up stdin reading, processing, and stdout output.") \
+                2>&1 | tee -a "$run_log"
+        else
+            (cd "$run_dir" && timeout --signal=TERM --kill-after=30s 120 \
+                claude --dangerously-skip-permissions --model "$cli_model" --print \
+                "The file src/cli.ts is missing. The prompt requires a CLI entry point at src/cli.ts that reads JSON from stdin and writes JSON to stdout. Create src/cli.ts now. It should import from your existing module and wire up stdin reading, processing, and stdout output.") \
+                2>&1 | tee -a "$run_log"
+        fi
+        set -e
+        if [ -f "$run_dir/src/cli.ts" ]; then
+            echo -e "  ${GREEN}cli.ts created by nudge.${NC}"
+        else
+            echo -e "  ${RED}cli.ts still missing after nudge.${NC}"
+        fi
+    fi
+
     # Map exit code to a human-readable reason.
     case "$claude_exit" in
         0)   exit_reason="ok" ;;

@@ -271,8 +271,7 @@ Stdout shape:
 
 - Source files implementing the logic and the `claim-office` CLI
 - Test files
-- A way to run the CLI executable (e.g. `pnpm exec claim-office`,
-  `node dist/cli.js`, or a wrapper script)
+- CLI entry point at `src/cli.ts` (reads JSON from stdin, writes JSON to stdout)
 
 ## Constraints
 
