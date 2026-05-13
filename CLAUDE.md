@@ -67,6 +67,7 @@ research/
 - Start with `./batch.sh <plan>` using Bash tool `run_in_background: true`. Do NOT combine with `nohup` or `&` — that breaks tool tracking.
 - `--shards N` for parallel containers (default 2, max 3; each needs ~4 GB RAM).
 - Rate-limit resilience is built in: 5 retries with backoff (60s → 5min → 30min → 1h → 2h). Do not add manual retry logic.
+- **Never mix Portkey-routed (`*-portkey*`) and Direct-API models in one plan.** They need different config dirs / routing; `batch.sh` auto-selects per plan, not per run. Split such plans into two files and run them sequentially.
 - **Run completion signal:** `metrics.json | jq .run_status.exit_reason` — NOT presence of `analysis-report.md`.
 - **Timeouts are findings, not errors.** They count toward `min_replicates` and are not refilled. `completed_within_budget` captures this.
 
