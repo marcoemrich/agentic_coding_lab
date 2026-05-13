@@ -26,7 +26,7 @@ outcomes:
   - completed_within_budget
   # Kontext
   - duration_seconds
-  - tokens_total
+  - total_tokens
 min_replicates: 3
 status: aktiv
 ---

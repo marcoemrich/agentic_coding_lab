@@ -258,6 +258,12 @@ analyze_single_run() {
     local cov_statements=0
     local cov_branches=0
 
+    if [ -f "$run_dir/package.json" ] && [ ! -d "$run_dir/node_modules" ]; then
+        echo -e "  ${YELLOW}node_modules missing — running 'pnpm install' (shared store)${NC}"
+        local store_dir="$(cd "$run_dir/.." && pwd)/.pnpm-store"
+        (cd "$run_dir" && pnpm install --store-dir "$store_dir" --prefer-offline --silent 2>&1 | tail -3) || true
+    fi
+
     if [ -f "$run_dir/package.json" ] && [ -d "$run_dir/node_modules" ]; then
         test_output=$(cd "$run_dir" && pnpm test 2>&1) || true
         echo "$test_output"
