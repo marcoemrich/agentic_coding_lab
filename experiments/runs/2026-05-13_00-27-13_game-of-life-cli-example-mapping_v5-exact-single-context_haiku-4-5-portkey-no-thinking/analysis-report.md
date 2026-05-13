@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-13_00-27-13_game-of-life-cli-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 
-Generated: 2026-05-13T11:02:56+02:00
+Generated: 2026-05-13T11:35:20+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-13T11:02:56+02:00
 
  Test Files  1 passed (1)
       Tests  8 passed (8)
-   Start at  11:02:57
-   Duration  345ms (transform 24ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 68ms)
+   Start at  11:35:20
+   Duration  341ms (transform 26ms, setup 0ms, collect 22ms, tests 3ms, environment 0ms, prepare 82ms)
 ```
 
 ## Coverage

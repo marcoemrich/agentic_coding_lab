@@ -1,6 +1,19 @@
 # Analysis Report: 2026-05-12_01-37-27_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
-Generated: 2026-05-12T02:14:31+00:00
+Generated: 2026-05-13T07:48:38+02:00
+
+## Configuration
+
+| Property | Value |
+|----------|-------|
+| Kata | claim-office-user-story |
+| Workflow | v5-exact-single-context |
+| Model | opus-4-6-portkey-no-thinking |
+| Model Version(s) | claude-opus-4-6 |
+| Thinking | unknown |
+| Duration | N/As |
+| Started | 2026-05-12T01:37:27+00:00 |
+| Ended | N/A |
 
 ## Code Metrics
 
@@ -16,16 +29,25 @@ Generated: 2026-05-12T02:14:31+00:00
 **Status**: ✅ All tests passing (19 passed)
 
 ```
-$ vitest run
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_01-37-27_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_01-37-27_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
+> vitest run
 
- ✓ src/claim-office.spec.ts  (19 tests) 787ms
+
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_01-37-27_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
+
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+ ✓ src/claim-office.spec.ts  (19 tests) 675ms
 
  Test Files  1 passed (1)
       Tests  19 passed (19)
-   Start at  02:14:32
-   Duration  985ms (transform 51ms, setup 0ms, collect 51ms, tests 787ms, environment 0ms, prepare 53ms)
+   Start at  07:48:39
+   Duration  1.05s (transform 43ms, setup 0ms, collect 38ms, tests 675ms, environment 0ms, prepare 112ms)
 ```
 
 ## Coverage

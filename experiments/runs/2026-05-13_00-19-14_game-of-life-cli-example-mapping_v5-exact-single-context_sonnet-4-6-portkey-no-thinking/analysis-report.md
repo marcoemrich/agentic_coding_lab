@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-13_00-19-14_game-of-life-cli-example-mapping_v5-exact-single-context_sonnet-4-6-portkey-no-thinking
 
-Generated: 2026-05-13T11:02:37+02:00
+Generated: 2026-05-13T11:34:59+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-13T11:02:37+02:00
 
  Test Files  1 passed (1)
       Tests  5 passed (5)
-   Start at  11:02:37
-   Duration  369ms (transform 23ms, setup 0ms, collect 18ms, tests 2ms, environment 0ms, prepare 93ms)
+   Start at  11:35:00
+   Duration  342ms (transform 28ms, setup 1ms, collect 18ms, tests 2ms, environment 0ms, prepare 63ms)
 ```
 
 ## Coverage

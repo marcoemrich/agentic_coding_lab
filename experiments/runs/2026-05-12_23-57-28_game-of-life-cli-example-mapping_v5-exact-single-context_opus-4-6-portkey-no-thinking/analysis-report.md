@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_23-57-28_game-of-life-cli-example-mapping_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
-Generated: 2026-05-13T11:01:57+02:00
+Generated: 2026-05-13T11:34:19+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-13T11:01:57+02:00
 
  Test Files  1 passed (1)
       Tests  8 passed | 1 todo (9)
-   Start at  11:01:58
-   Duration  345ms (transform 30ms, setup 0ms, collect 27ms, tests 3ms, environment 0ms, prepare 67ms)
+   Start at  11:34:19
+   Duration  339ms (transform 24ms, setup 0ms, collect 20ms, tests 3ms, environment 0ms, prepare 59ms)
 ```
 
 ## Coverage

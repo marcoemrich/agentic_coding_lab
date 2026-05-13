@@ -120,8 +120,8 @@ mit vpct > 0 aussagekräftig. Bei Haiku fallen 7/15 Runs aus
 
 | Modell | prose mass | user-story mass | ex-mapping mass |
 |---|---:|---:|---:|
-| opus-4-6 | 249 (σ=56) | 230 (σ=30) | 241 (σ=36) |
-| sonnet-4-6 | 238 (σ=10) | 250 (σ=37) | 223 (σ=26) |
+| opus-4-6 | 249 (σ=61) | 230 (σ=32) | 222 (σ=49) |
+| sonnet-4-6 | 238 (σ=9) | 250 (σ=35) | 223 (σ=27) |
 
 Kein konsistentes Stil-Ranking: Opus hat die höchste Mass bei
 prose, Sonnet bei user-story. Unterschiede liegen im Bereich

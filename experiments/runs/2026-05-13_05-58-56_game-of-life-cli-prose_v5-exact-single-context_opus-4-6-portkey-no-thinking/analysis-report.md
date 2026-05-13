@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-13_05-58-56_game-of-life-cli-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
-Generated: 2026-05-13T11:04:10+02:00
+Generated: 2026-05-13T11:36:35+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-13T11:04:10+02:00
 
  Test Files  1 passed (1)
       Tests  10 passed (10)
-   Start at  11:04:10
-   Duration  341ms (transform 24ms, setup 0ms, collect 20ms, tests 3ms, environment 0ms, prepare 60ms)
+   Start at  11:36:35
+   Duration  387ms (transform 28ms, setup 0ms, collect 22ms, tests 3ms, environment 0ms, prepare 101ms)
 ```
 
 ## Coverage

@@ -2,7 +2,7 @@
 
 _Beeinflusst der Prompt-Stil (prose/user-story/example-mapping) bei einer trainingsbekannten Kata (Game of Life) Korrektheit und Code-Qualität — und ist dieser Effekt modellabhängig?_
 
-Generated: 2026-05-13T09:05:44Z
+Generated: 2026-05-13T09:38:14Z
 
 Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
