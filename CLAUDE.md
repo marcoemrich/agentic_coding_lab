@@ -11,6 +11,11 @@ End-to-end RQ orchestration: validate README → generate fill plan → start Do
 - Triggers: "run-rq", "fill RQ-N", "RQ-N voranbringen", "Forschungsfrage N starten"
 - Details: `.claude/skills/run-rq/SKILL.md`
 
+### `/reanalyze RQ-N`
+Re-run analysis pipeline on all runs matching an RQ, reaggregate metrics, and propose findings updates. No new runs — only refreshes existing data after pipeline changes.
+- Triggers: "reanalyze RQ-N", "reanalyse", "Runs neu analysieren"
+- Details: `.claude/skills/reanalyze/SKILL.md`
+
 ### `/build-overview`
 Generates a frozen experiment-overview snapshot across all RQs under `research/_archive/`. Runs `generate-snapshot-skeleton.py`, then fills synthesis sections from `findings.md` files.
 - Details: `.claude/skills/build-overview/SKILL.md`

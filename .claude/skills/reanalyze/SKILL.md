@@ -1,0 +1,147 @@
+---
+name: reanalyze
+description: |
+  Re-run the analysis pipeline on all runs matching an RQ, reaggregate
+  metrics, and propose findings updates against the fresh data.
+  Trigger when the user says "reanalyze RQ-N", "reanalyse RQ-N",
+  "Runs neu analysieren", or wants to refresh metrics/findings after
+  a pipeline change (analyze-run.sh fix, adapter added, ESLint config).
+---
+
+# Skill: reanalyze
+
+Re-run `analyze-run.sh` on every run matching an RQ selector, reaggregate via `aggregate-by-query.py`, and propose findings updates. **No new runs are started** — this skill only refreshes existing data.
+
+Typical use cases:
+- Pipeline fix (analyze-run.sh changed, verification adapter added)
+- Manual run cleanup (crash runs deleted, runs re-added)
+- ESLint/SonarJS config change affecting smell metrics
+- New fields added to metrics.json
+
+## Argument
+
+- `RQ-N` (e.g. `RQ-2`) or `research/RQ-N-*/` (path).
+- If not given: ask back ("Which RQ? e.g. RQ-2").
+
+## Phases
+
+Run sequentially. On errors in any phase, **stop and ask the user**, do not skip ahead.
+
+---
+
+### Phase 1 — Resolve & Match
+
+1. Resolve the RQ path with Glob: `research/RQ-{N}-*/`. On multiple matches, take the first and inform the user.
+2. Read `README.md` — parse frontmatter for `controls` and `factors` (needed to build the selector).
+3. Find all matching runs in `experiments/runs/`:
+   ```bash
+   for d in experiments/runs/*/; do
+       jq -e 'select(
+           .kata == "<expected>" and
+           .workflow == "<expected>" and
+           (.model | test("<model-pattern>"))
+       )' "$d/metrics.json" > /dev/null 2>&1 && echo "$d"
+   done
+   ```
+   The selector logic mirrors `aggregate-by-query.py`: `kata = kata_base + "-" + prompt` for each prompt value (from factors or controls), model from factors or controls, workflow from controls. Match against `.kata`, `.workflow`, `.model` in each run's `metrics.json`.
+4. Report: "Found N runs matching RQ-X selector."
+5. If N == 0: STOP — "No matching runs found. Check that experiments/runs/ contains runs with the expected kata/workflow/model."
+
+---
+
+### Phase 2 — Reanalyse
+
+1. Get user confirmation: "Reanalyze N runs? This re-runs analyze-run.sh on each (ESLint, verification, metrics extraction). Estimated time: ~N × 10s."
+2. After "yes": iterate over all matched run dirs:
+   ```bash
+   count=0; total=N
+   for d in <matched_dirs>; do
+       count=$((count+1))
+       echo "[${count}/${total}] $(basename $d)"
+       ./experiments/analyze-run.sh "$d" > /dev/null 2>&1
+   done
+   ```
+3. Report: "Reanalyzed N runs."
+
+---
+
+### Phase 3 — Reaggregate
+
+1. Run:
+   ```bash
+   ./experiments/aggregate-by-query.py research/RQ-{N}-*/
+   ```
+2. Read the generated `summary.md`.
+3. Show the cell coverage table to the user.
+4. Show the primary outcome pivot table (typically `verification_pct` or the first outcome in the frontmatter).
+
+---
+
+### Phase 4 — Findings update proposal
+
+**Never write to `findings.md` automatically.** Only present a proposal in chat, then wait for explicit "yes, apply", then patch via `Edit`.
+
+`findings.md` shows **only the current state**. No legacy comparisons, no "previously X" references, no "revised"/"confirmed" tags. Header form: `## F-x.y — Title` (no trailing suffix).
+
+1. Read current `findings.md` and fresh `summary.md`.
+2. For each existing finding (`## F-x.y`):
+   - Extract the numbers referenced in the finding (mean, σ, n, rates, spreads).
+   - Look up the corresponding cell(s) in the fresh `summary.md` pivot tables.
+   - Classify:
+     - **OK** — numbers match (within rounding tolerance of 0.01).
+     - **STALE** — numbers have changed. Show: `F-x.y: <metric> was <old>, now <new>`.
+     - **STATUS CHANGE** — the status tag should change based on new data (e.g. n grew from 3 to 5 → "⚠️ bedingt" can become "✅ stabil"; or a previously stable pattern broke).
+3. Check for **NEW patterns** not yet captured in findings:
+   - Scan the pivot tables for cells with notable deviations (σ > 0.3, mean < 0.5 on verification_pct, or cross-cell spreads > 20 pp).
+   - If a pattern is new and not covered by any existing finding, propose a new `F-x.y` block.
+4. Present the full proposal to the user:
+   ```
+   === Findings Update Proposal for RQ-N ===
+
+   STALE (numbers changed):
+   - F-2.1: verification_pct Opus×prose was 0.75, now 1.00
+   - F-2.3: Haiku spread was "0–25 pp", now "0–63 pp"
+
+   STATUS CHANGES:
+   - F-2.3: ⚠️ bedingt → ✅ stabil (n grew from 3 to 5, pattern holds)
+
+   NEW FINDINGS:
+   - [proposed] F-2.8: <title> — <brief description>
+
+   OK (unchanged): F-2.4, F-2.5, F-2.6
+
+   Apply? (yes/no, or "yes except F-2.8" to cherry-pick)
+   ```
+5. On "yes" (or partial accept):
+   - **STALE**: replace the affected numbers in the existing finding block via `Edit`. Rewrite the Datenbasis table and any prose that references the changed numbers. Do NOT add "previously X" or "corrected from" — just write the current state.
+   - **STATUS CHANGE**: update the status tag inline.
+   - **NEW**: append at end of findings.md, after the last `---` separator.
+   - **Update the overview table** at the top of findings.md to reflect any changed numbers.
+6. On "no": proposal stays in chat only, `findings.md` is unchanged.
+
+**Glossary discipline**: use terms from the README glossary ("Code-Mass (APP)", "Produktiv-LoC", "Korrektheit (außen)", etc.) or metric IDs in backticks. Synonyms like "Code-Volumen" or "LoC-Größe" are forbidden.
+
+---
+
+## Abgrenzung zu /run-rq
+
+| Aspect | `/run-rq` | `/reanalyze` |
+|---|---|---|
+| Starts new runs | Yes (Docker batch) | No |
+| Calls analyze-run.sh | Only on new runs (inside container) | On ALL matching runs |
+| Aggregates | Yes | Yes |
+| Proposes findings | Yes (Phase 6) | Yes (Phase 4) |
+| Use case | Fill missing replicates | Refresh metrics after pipeline fix |
+
+## Out of scope
+
+- Starting new experiment runs (use `/run-rq` for that).
+- Cross-RQ aggregation or overview snapshots (use `/build-overview`).
+- Editing prompts, workflows, or verification suites.
+- Auto-commit/push — stays a user decision.
+
+## Behavior on errors
+
+- **Phase 1 no matches**: suggest checking the frontmatter selector against actual run metadata.
+- **Phase 2 analyze-run.sh fails on a run**: report the specific run dir and error, continue with remaining runs (do not abort the whole batch).
+- **Phase 3 aggregate fails**: show output, do not proceed to Phase 4.
