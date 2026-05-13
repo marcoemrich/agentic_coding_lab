@@ -21,8 +21,11 @@ outcomes:
   - cc_loc
   - mccabe_max
   - cognitive_max
-  # sekundär: Korrektheit (Sanity-Check, Erwartung ≈ 100 %)
+  # sekundär: Korrektheit (innen + außen)
   - tests_passing
+  - verification_pct
+  - verification_passed
+  - verification_total
   - completed_within_budget
   # Kontext
   - duration_seconds
@@ -82,7 +85,7 @@ Runs:      18 total
 
 ## Hypothesen
 
-- **H1** (Korrektheit-Sanity): `tests_passing` liegt für alle sechs Modelle bei 100 % (3/3 pro Zelle). Eine Zelle mit < 100 % entwertet den Code-Qualitäts-Vergleich für dieses Modell.
+- **H1** (Korrektheit-Sanity): `tests_passing` *und* `verification_pct` liegen für alle sechs Modelle bei 100 % (3/3 pro Zelle). Eine Zelle mit < 100 % entwertet den Code-Qualitäts-Vergleich für dieses Modell oder weist auf eine Repräsentations-Adhärenz-Lücke hin.
 - **H2** (Modell-Ranking Code-Qualität): Auf `code_mass`, `smell_total`, `cc_longest_function`, `mccabe_max`, `cognitive_max` zeigt sich ein konsistentes Ranking Opus 4.7 ≤ Opus 4.6 ≤ Sonnet 4.6 (kleiner = besser).
 - **H3** (Thinking-Effekt): Innerhalb jedes Modells verbessert Thinking die Code-Qualität (niedrigeres `code_mass`, `cognitive_max`); der Effekt ist bei Opus stärker als bei Sonnet (vgl. F-3.x aus `_archive/rqs-v1/RQ-3-model-and-thinking/`).
 
@@ -95,7 +98,7 @@ Runs:      18 total
 - **(a) Single workflow point**: Nur v4-exact-subagents. Keine Workflow-Generalisierung — Modell-Ranking könnte auf anderen Workflows abweichen.
 - **(b) Single kata**: Nur Game of Life (Library-Form, example-mapping). Mars-rover als zweiter Code-Qualitäts-Carrier wäre eine sinnvolle Erweiterung, ist hier aber nicht enthalten.
 - **(c) Opus 4.6 via Portkey, nicht Direct-API**: Die `opus-4-6-portkey*`-Varianten routen über Portkey. Findings sind nicht automatisch auf Direct-API-Opus-4.6 übertragbar (sollte dieser je verfügbar werden).
-- **(d) Korrektheits-Innensicht**: `tests_passing` misst die vom Agenten selbst geschriebenen Vitest-Tests. Keine externe Verifikations-Suite (Library-Kata). Für strenge Außensicht müsste auf `game-of-life-cli` gewechselt werden — was aber CLI-Overhead in die Qualitätsmetriken einbringt (vgl. RQ-2 Caveat c).
+- **(d) Außen-Korrektheit via Modul-Import-Adapter**: `verification_pct` wird über `experiments/katas/game-of-life-verification/` gemessen — der Adapter importiert die `evolve`-Funktion direkt aus `src/game-of-life.{ts,…}` und ruft sie pro Szenario `steps` mal auf. Kein CLI-Vertrag nötig, daher keine CLI-Overhead-Anteile in den Code-Qualitäts-Metriken. Der Adapter erwartet allerdings die Repräsentation `Cell[]` mit `Cell = [number, number]` (Tupel-Array). Andere reasonable Repräsentationen (`boolean[][]`, `Set<string>`, `{x,y}[]`) sind durch die Kata nicht ausgeschlossen, scheitern aber an dieser Adapter-Konvention — das ist als Repräsentations-Adhärenz-Signal beabsichtigt.
 
 ## Findings
 

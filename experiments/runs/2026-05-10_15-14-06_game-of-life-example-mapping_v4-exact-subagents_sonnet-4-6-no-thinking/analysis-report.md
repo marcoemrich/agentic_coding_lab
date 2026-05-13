@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-10_15-14-06_game-of-life-example-mapping_v4-exact-subagents_sonnet-4-6-no-thinking
 
-Generated: 2026-05-10T19:11:56+02:00
+Generated: 2026-05-14T01:30:33+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-10T19:11:56+02:00
 
  Test Files  1 passed (1)
       Tests  9 passed (9)
-   Start at  19:11:57
-   Duration  360ms (transform 29ms, setup 0ms, collect 21ms, tests 2ms, environment 0ms, prepare 67ms)
+   Start at  01:30:34
+   Duration  346ms (transform 23ms, setup 0ms, collect 20ms, tests 2ms, environment 0ms, prepare 63ms)
 ```
 
 ## Coverage

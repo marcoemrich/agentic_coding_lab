@@ -2,7 +2,7 @@
 
 _Wie stark unterscheiden sich die verfügbaren Modelle (Sonnet 4.6, Opus 4.6, Opus 4.7 — jeweils mit/ohne Thinking) in der Code-Qualität auf einer trainingsbekannten Kata bei stärkstem Workflow?_
 
-Generated: 2026-05-13T23:16:52Z
+Generated: 2026-05-13T23:34:33Z
 
 Cells declared: 6 · matched runs: 24 · min_replicates: 3
 
@@ -95,6 +95,39 @@ Cells declared: 6 · matched runs: 24 · min_replicates: 3
 | game-of-life-example-mapping | v4-exact-subagents | opus-4-7-no-thinking         |   4 |       4 |      100 |
 | game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6                   |   3 |       3 |      100 |
 | game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6-no-thinking       |   3 |       3 |      100 |
+
+### verification_pct
+
+| kata                         | workflow           | model                        |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------|:-----------------------------|----:|-------:|------:|------:|------:|
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-6-portkey             |   6 |   0.84 |  0.07 |   1   |  0.38 |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-6-portkey-no-thinking |   4 |   1    |  1    |   1   |  0    |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7                     |   4 |   1    |  1    |   1   |  0    |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7-no-thinking         |   4 |   0.8  |  0.2  |   1   |  0.4  |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6                   |   3 |   0.18 |  0.13 |   0.2 |  0.04 |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6-no-thinking       |   3 |   0.16 |  0.13 |   0.2 |  0.04 |
+
+### verification_passed
+
+| kata                         | workflow           | model                        |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------|:-----------------------------|----:|-------:|------:|------:|------:|
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-6-portkey             |   6 |  12.67 |     1 |    15 |  5.72 |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-6-portkey-no-thinking |   4 |  15    |    15 |    15 |  0    |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7                     |   4 |  15    |    15 |    15 |  0    |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7-no-thinking         |   4 |  12    |     3 |    15 |  6    |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6                   |   3 |   2.67 |     2 |     3 |  0.58 |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6-no-thinking       |   3 |   2.33 |     2 |     3 |  0.58 |
+
+### verification_total
+
+| kata                         | workflow           | model                        |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------|:-----------------------------|----:|-------:|------:|------:|------:|
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-6-portkey             |   6 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-6-portkey-no-thinking |   4 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7                     |   4 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7-no-thinking         |   4 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6                   |   3 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents | sonnet-4-6-no-thinking       |   3 |     15 |    15 |    15 |     0 |
 
 ### completed_within_budget (rate %)
 

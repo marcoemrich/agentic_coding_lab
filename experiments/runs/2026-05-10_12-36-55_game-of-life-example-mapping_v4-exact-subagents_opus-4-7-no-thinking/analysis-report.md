@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-10_12-36-55_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking
 
-Generated: 2026-05-10T19:12:44+02:00
+Generated: 2026-05-14T01:29:23+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-10T19:12:44+02:00
 
  Test Files  1 passed (1)
       Tests  8 passed (8)
-   Start at  19:12:45
-   Duration  369ms (transform 24ms, setup 0ms, collect 20ms, tests 4ms, environment 0ms, prepare 60ms)
+   Start at  01:29:24
+   Duration  333ms (transform 23ms, setup 1ms, collect 19ms, tests 4ms, environment 0ms, prepare 59ms)
 ```
 
 ## Coverage
