@@ -799,6 +799,13 @@ EOF
             # cli_built signal once the loop has run at least once.
             cli_built=true
 
+            # Copy adapter script into run dir if the suite provides one.
+            local adapter_file
+            adapter_file=$(jq -r '.adapter // empty' "$verification_dir/runner.json")
+            if [ -n "$adapter_file" ] && [ -f "$verification_dir/$adapter_file" ]; then
+                cp "$verification_dir/$adapter_file" "$run_dir/.verification-adapter.ts"
+            fi
+
             : > "$run_dir/verification.log"
             for input_file in "$verification_dir"/scenarios/*.input.json; do
                 [ -e "$input_file" ] || break
