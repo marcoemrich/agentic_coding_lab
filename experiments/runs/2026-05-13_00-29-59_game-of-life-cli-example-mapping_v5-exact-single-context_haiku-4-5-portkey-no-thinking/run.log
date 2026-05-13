@@ -1,0 +1,32 @@
+Excellent! ✅ All tests pass. The TDD exercise is complete!
+
+## Summary
+
+I have successfully completed the Game of Life CLI kata using Test-Driven Development (TDD). Here's what was accomplished:
+
+### Tests Implemented (6 total):
+1. ✅ Zero steps returns input unchanged
+2. ✅ Empty grid stays empty
+3. ✅ Single cell dies (underpopulation rule)
+4. ✅ Three cells in a row evolve to vertical line (survival + reproduction)
+5. ✅ Block pattern remains stable (still life)
+6. ✅ Blinker pattern oscillates correctly
+
+### Implementation Features:
+- **Sparse representation**: Only stores living cells using `Set<string>`
+- **Infinite grid support**: Works with negative and positive coordinates
+- **Conway's Game of Life rules**:
+  - **Underpopulation**: Cells with < 2 neighbors die
+  - **Survival**: Cells with 2-3 neighbors survive
+  - **Overpopulation**: Cells with > 3 neighbors die
+  - **Reproduction**: Dead cells with exactly 3 neighbors become alive
+- **Lexicographic sorting**: Output sorted by x ascending, then y ascending
+- **Generalized stepping**: Supports advancing N generations (N ≥ 0)
+
+### Code Quality:
+- Clear, self-documenting function and variable names
+- Eliminated duplication through helper functions (`coordToString`, `stringToCoord`, `getNeighborCoords`)
+- Proper separation of concerns
+- All tests passing with clean, maintainable code
+
+The `experiment-done.txt` file has been created, marking the completion of the automated TDD experiment.

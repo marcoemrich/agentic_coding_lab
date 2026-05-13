@@ -1,0 +1,29 @@
+📋 **Test List Created:**
+
+**Feature**: Game of Life Simulator
+**Test File**: src/game-of-life.spec.ts
+**Base Functionality Tests**: 12
+
+**Test Cases** (ordered simple → complex):
+1. ✅ Should kill a lone cell (fewer than 2 neighbors)
+2. ✅ Should kill two cells (each has 1 neighbor)
+3. ✅ Should keep three cells in a line (center cell has 2 neighbors)
+4. ✅ Should create a fourth cell in a 2x2 square (dead cell has 3 neighbors)
+5. ✅ Should return empty for empty input
+6. ✅ Should return empty after one step from single cell
+7. ✅ Should oscillate vertical blinker to horizontal after one step
+8. ✅ Should keep a 2x2 square stable across steps
+9. ✅ Should advance by multiple steps correctly
+10. ✅ Should handle negative coordinates
+11. ✅ Should return alive cells in lexicographic order (x ascending, y ascending)
+12. ✅ Should return configuration unchanged for zero steps
+
+**Advanced Features** (NOT included):
+- CLI stdin/stdout handling - test in integration phase
+- Complex pattern behaviors (gliders, etc.) - save for later
+- Performance optimization - save for later
+- Detailed error messages - save for later
+
+**Next Step**: Invoke `/red` to activate the first test.
+
+📋 Test List Phase Complete. Proceeding to Red phase with the first test.

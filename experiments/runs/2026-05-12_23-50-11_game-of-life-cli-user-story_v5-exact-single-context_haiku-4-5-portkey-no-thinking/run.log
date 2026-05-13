@@ -1,0 +1,28 @@
+## Step 5: Summary
+
+```
+📋 Test List Created:
+**Feature**: Game of Life CLI
+**Test File**: src/game-of-life.spec.ts
+**Base Functionality Tests**: 8
+
+**Test Cases** (ordered simple → complex):
+1. ✅ should return empty array when starting with no cells
+2. ✅ should return empty array for zero steps
+3. ✅ should kill a single cell (dies without neighbors)
+4. ✅ should kill two isolated cells
+5. ✅ should create blinker pattern from three cells in a line
+6. ✅ should keep block pattern (2x2) stable across generations
+7. ✅ should handle negative coordinates
+8. ✅ should return lexicographically sorted result (x ascending, then y ascending)
+
+**Advanced Features** (NOT included):
+- CLI JSON input/output handling - implement after core logic
+- Glider patterns and complex oscillators - save for later
+- Performance optimizations - save for later
+- Extensive edge case handling - save for later
+
+**Next Step**: Invoke `/red` to activate the first test.
+```
+
+📋 Test List Phase Complete. Ready to proceed to Red phase with the first test.

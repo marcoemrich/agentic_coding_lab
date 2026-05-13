@@ -1,0 +1,15 @@
+All done. Here's a summary of the TDD exercise:
+
+**Game of Life — TDD Complete**
+
+- **9 tests**, all passing
+- **Test List → Red → Green → Refactor** cycle followed for each test
+- Key implementation milestones:
+  - Tests 1-3: Hardcoded `return []` was sufficient (underpopulation cases)
+  - Test 4 (survival): Forced real neighbor-counting logic with Set-based lookup
+  - Test 5 (survival with 3 neighbors): Passed with existing code
+  - Test 6 (reproduction): Added dead-cell candidate scanning and birth logic
+  - Tests 7-9 (overpopulation, block, blinker): All passed with existing implementation
+- **Refactorings applied**:
+  - Renamed `count` → `neighborCount` (Rule 2: Reveals Intent)
+  - Extracted `countLiveNeighbors` helper to eliminate duplication (Rule 3: No Duplication)

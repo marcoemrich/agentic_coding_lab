@@ -1,0 +1,199 @@
+{
+  "wall_clock_seconds": 894.92,
+  "total_tokens": {
+    "input": 582,
+    "output": 78741,
+    "cache_read": 19281936,
+    "cache_creation": 269902,
+    "total": 19631161
+  },
+  "context_utilization_pct": 72,
+  "context_window_tokens": 200000,
+  "context_peak_tokens": 144149,
+  "message_count": 212,
+  "tool_calls": {
+    "Read": 27,
+    "Glob": 1,
+    "Skill": 23,
+    "Bash": 32,
+    "Write": 9,
+    "TodoWrite": 12,
+    "Edit": 15
+  },
+  "skill_invocations": {
+    "test-list": 1,
+    "red": 8,
+    "green": 6,
+    "refactor": 8
+  },
+  "task_invocations": {},
+  "cycle_count": 8,
+  "predictions_correct": 16,
+  "predictions_total": 16,
+  "model_versions": [
+    "claude-opus-4-6"
+  ],
+  "subagent_token_total": 0,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 523265,
+      "duration_seconds": 40.98
+    },
+    {
+      "phase": "red",
+      "tokens": 702223,
+      "duration_seconds": 36.45
+    },
+    {
+      "phase": "green",
+      "tokens": 464777,
+      "duration_seconds": 25.56
+    },
+    {
+      "phase": "refactor",
+      "tokens": 495966,
+      "duration_seconds": 36.39
+    },
+    {
+      "phase": "red",
+      "tokens": 453804,
+      "duration_seconds": 21.52
+    },
+    {
+      "phase": "green",
+      "tokens": 542946,
+      "duration_seconds": 22.39
+    },
+    {
+      "phase": "refactor",
+      "tokens": 719828,
+      "duration_seconds": 35.55
+    },
+    {
+      "phase": "red",
+      "tokens": 525721,
+      "duration_seconds": 24.78
+    },
+    {
+      "phase": "green",
+      "tokens": 627920,
+      "duration_seconds": 31.08
+    },
+    {
+      "phase": "refactor",
+      "tokens": 752547,
+      "duration_seconds": 62.41
+    },
+    {
+      "phase": "red",
+      "tokens": 613082,
+      "duration_seconds": 28.77
+    },
+    {
+      "phase": "refactor",
+      "tokens": 833332,
+      "duration_seconds": 62.33
+    },
+    {
+      "phase": "red",
+      "tokens": 677887,
+      "duration_seconds": 29.84
+    },
+    {
+      "phase": "green",
+      "tokens": 806058,
+      "duration_seconds": 29.45
+    },
+    {
+      "phase": "refactor",
+      "tokens": 961445,
+      "duration_seconds": 74.68
+    },
+    {
+      "phase": "red",
+      "tokens": 778527,
+      "duration_seconds": 25.41
+    },
+    {
+      "phase": "green",
+      "tokens": 923200,
+      "duration_seconds": 29.94
+    },
+    {
+      "phase": "refactor",
+      "tokens": 1085861,
+      "duration_seconds": 53.91
+    },
+    {
+      "phase": "red",
+      "tokens": 872046,
+      "duration_seconds": 30.21
+    },
+    {
+      "phase": "refactor",
+      "tokens": 1165074,
+      "duration_seconds": 55.61
+    },
+    {
+      "phase": "red",
+      "tokens": 933213,
+      "duration_seconds": 26.42
+    },
+    {
+      "phase": "green",
+      "tokens": 1095708,
+      "duration_seconds": 22.69
+    },
+    {
+      "phase": "refactor",
+      "tokens": 2708282,
+      "duration_seconds": 71.11
+    }
+  ],
+  "phase_source": "skills",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 523265,
+        "duration_seconds": 40.98
+      },
+      "red": {
+        "count": 8,
+        "tokens": 5556503,
+        "duration_seconds": 223.4
+      },
+      "green": {
+        "count": 6,
+        "tokens": 4460609,
+        "duration_seconds": 161.11
+      },
+      "refactor": {
+        "count": 8,
+        "tokens": 8722335,
+        "duration_seconds": 451.99
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 523265.0,
+        "avg_duration_seconds": 40.98
+      },
+      "red": {
+        "avg_tokens": 694562.88,
+        "avg_duration_seconds": 27.92
+      },
+      "green": {
+        "avg_tokens": 743434.83,
+        "avg_duration_seconds": 26.85
+      },
+      "refactor": {
+        "avg_tokens": 1090291.88,
+        "avg_duration_seconds": 56.5
+      }
+    },
+    "refactorings_applied": 8,
+    "tests_passed_immediately": 2
+  }
+}

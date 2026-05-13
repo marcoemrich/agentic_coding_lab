@@ -1,0 +1,23 @@
+```
+📋 Test List Created:
+**Feature**: Game of Life CLI
+**Test File**: game-of-life.spec.ts
+**Base Functionality Tests**: 8
+
+**Test Cases** (ordered simple → complex):
+1. ✅ Empty configuration returns empty array
+2. ✅ Single isolated cell dies (underpopulation)
+3. ✅ Two adjacent cells form stable pair (with neighbors)
+4. ✅ Underpopulation rule: living cells with < 2 neighbors die
+5. ✅ Resurrection rule: dead cells with exactly 3 neighbors become alive
+6. ✅ Multiple steps advance correctly
+7. ✅ Output is lexicographically sorted (x ascending, y ascending)
+8. ✅ Negative coordinates are handled
+
+**Advanced Features** (NOT included):
+- Full CLI integration with stdin/stdout - save for after core logic
+- Overpopulation rule edge cases - covered by underpopulation foundation
+- Complex stable patterns (gliders, blinkers) - emerge from base rules
+
+**Next Step**: Invoke `/red` to activate the first test.
+```

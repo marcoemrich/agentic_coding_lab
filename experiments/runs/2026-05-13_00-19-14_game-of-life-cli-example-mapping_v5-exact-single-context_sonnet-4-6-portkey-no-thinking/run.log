@@ -1,0 +1,15 @@
+The TDD exercise is complete. Here's a summary of what was built:
+
+**Files created:**
+- `src/game-of-life.spec.ts` — 5 tests, all passing
+- `src/game-of-life.ts` — Game of Life logic with `advance(cells, steps)`
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+
+**TDD cycle completed:**
+1. Empty grid → empty (hardcoded `[]`)
+2. steps=0 → return unchanged (ternary conditional)
+3. Single isolated cell dies (passed free from existing `[]` return)
+4. Still life (tub) survives (forced full neighbor-counting implementation)
+5. Dead cell with 3 neighbors born (passed free from existing logic)
+
+**Refactoring applied across cycles:** `Cell` type alias scoped to module, ternary consolidation, `toKey`/`fromKey` extracted, `byXThenY` comparator named.

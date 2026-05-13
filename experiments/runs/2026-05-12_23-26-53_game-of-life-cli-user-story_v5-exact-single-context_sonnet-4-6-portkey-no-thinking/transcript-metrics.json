@@ -1,0 +1,202 @@
+{
+  "wall_clock_seconds": 817.34,
+  "total_tokens": {
+    "input": 232,
+    "output": 74817,
+    "cache_read": 14381201,
+    "cache_creation": 241393,
+    "total": 14697643
+  },
+  "context_utilization_pct": 13,
+  "context_window_tokens": 1000000,
+  "context_peak_tokens": 129529,
+  "message_count": 180,
+  "tool_calls": {
+    "Read": 11,
+    "Skill": 24,
+    "Bash": 37,
+    "Write": 5,
+    "Edit": 26
+  },
+  "skill_invocations": {
+    "test-list": 1,
+    "red": 9,
+    "green": 5,
+    "refactor": 9
+  },
+  "task_invocations": {},
+  "cycle_count": 9,
+  "predictions_correct": 18,
+  "predictions_total": 18,
+  "model_versions": [
+    "claude-sonnet-4-6"
+  ],
+  "subagent_token_total": 0,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 335897,
+      "duration_seconds": 23.36
+    },
+    {
+      "phase": "red",
+      "tokens": 772410,
+      "duration_seconds": 43.32
+    },
+    {
+      "phase": "green",
+      "tokens": 294686,
+      "duration_seconds": 19.93
+    },
+    {
+      "phase": "refactor",
+      "tokens": 263054,
+      "duration_seconds": 29.3
+    },
+    {
+      "phase": "red",
+      "tokens": 386921,
+      "duration_seconds": 19.26
+    },
+    {
+      "phase": "green",
+      "tokens": 289938,
+      "duration_seconds": 22.86
+    },
+    {
+      "phase": "refactor",
+      "tokens": 370116,
+      "duration_seconds": 38.6
+    },
+    {
+      "phase": "red",
+      "tokens": 384912,
+      "duration_seconds": 22.18
+    },
+    {
+      "phase": "refactor",
+      "tokens": 339729,
+      "duration_seconds": 32.07
+    },
+    {
+      "phase": "red",
+      "tokens": 568636,
+      "duration_seconds": 37.28
+    },
+    {
+      "phase": "green",
+      "tokens": 752456,
+      "duration_seconds": 38.86
+    },
+    {
+      "phase": "refactor",
+      "tokens": 401180,
+      "duration_seconds": 37.45
+    },
+    {
+      "phase": "red",
+      "tokens": 498604,
+      "duration_seconds": 22.87
+    },
+    {
+      "phase": "green",
+      "tokens": 518568,
+      "duration_seconds": 27.12
+    },
+    {
+      "phase": "refactor",
+      "tokens": 913004,
+      "duration_seconds": 55.14
+    },
+    {
+      "phase": "red",
+      "tokens": 571582,
+      "duration_seconds": 31.02
+    },
+    {
+      "phase": "refactor",
+      "tokens": 596960,
+      "duration_seconds": 41.93
+    },
+    {
+      "phase": "red",
+      "tokens": 613020,
+      "duration_seconds": 24.76
+    },
+    {
+      "phase": "refactor",
+      "tokens": 640709,
+      "duration_seconds": 43.19
+    },
+    {
+      "phase": "red",
+      "tokens": 658814,
+      "duration_seconds": 26.31
+    },
+    {
+      "phase": "green",
+      "tokens": 791313,
+      "duration_seconds": 20.73
+    },
+    {
+      "phase": "refactor",
+      "tokens": 1426861,
+      "duration_seconds": 72.04
+    },
+    {
+      "phase": "red",
+      "tokens": 737342,
+      "duration_seconds": 24.5
+    },
+    {
+      "phase": "refactor",
+      "tokens": 1411803,
+      "duration_seconds": 54.27
+    }
+  ],
+  "phase_source": "skills",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 335897,
+        "duration_seconds": 23.36
+      },
+      "red": {
+        "count": 9,
+        "tokens": 5192241,
+        "duration_seconds": 251.5
+      },
+      "green": {
+        "count": 5,
+        "tokens": 2646961,
+        "duration_seconds": 129.5
+      },
+      "refactor": {
+        "count": 9,
+        "tokens": 6363416,
+        "duration_seconds": 403.99
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 335897.0,
+        "avg_duration_seconds": 23.36
+      },
+      "red": {
+        "avg_tokens": 576915.67,
+        "avg_duration_seconds": 27.94
+      },
+      "green": {
+        "avg_tokens": 529392.2,
+        "avg_duration_seconds": 25.9
+      },
+      "refactor": {
+        "avg_tokens": 707046.22,
+        "avg_duration_seconds": 44.89
+      }
+    },
+    "refactorings_applied": 9,
+    "tests_passed_immediately": 4
+  }
+}

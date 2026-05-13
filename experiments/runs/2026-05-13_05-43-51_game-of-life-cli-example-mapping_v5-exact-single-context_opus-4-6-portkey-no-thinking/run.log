@@ -1,0 +1,14 @@
+All tasks complete. Here's a summary of what was built:
+
+**Files created:**
+- `src/game-of-life.ts` — Core Game of Life logic with `nextGeneration` (neighbor counting + rule application) and `advanceGame` (multi-step loop)
+- `src/game-of-life.spec.ts` — 7 tests covering: empty grid, steps=0, underpopulation, survival (block), oscillation (blinker), lexicographic sort, and multiple steps
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+- `experiment-done.txt` — Done marker
+
+**TDD cycle summary:**
+- 7 tests, all passing
+- Tests 3 (underpopulation), 5 (blinker), and 6 (sort) passed immediately — the implementation already covered those behaviors
+- Test 4 (block) drove the core Game of Life logic
+- Test 7 (multiple steps) drove the multi-step loop
+- Refactoring: collapsed duplicate conditionals into canonical GoL rule, renamed `result` → `nextAliveCells`, converted imperative loop to functional filter→map→sort pipeline

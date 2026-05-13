@@ -1,0 +1,31 @@
+## Summary
+
+```
+📋 Test List Created:
+**Feature**: Conway's Game of Life
+**Test File**: src/game-of-life.spec.ts
+**Implementation File**: src/game-of-life.ts
+**Base Functionality Tests**: 10
+
+**Test Cases** (ordered simple → complex):
+1. ✅ should return empty array when given empty starting configuration
+2. ✅ should return input unchanged when steps is 0
+3. ✅ should kill a single cell (underpopulation)
+4. ✅ should kill two isolated cells
+5. ✅ should keep a cell alive with 2 live neighbors
+6. ✅ should keep a cell alive with 3 live neighbors
+7. ✅ should birth a dead cell with exactly 3 live neighbors
+8. ✅ should advance one generation correctly with multiple cells
+9. ✅ should advance multiple generations
+10. ✅ should handle negative coordinates
+
+**Advanced Features** (NOT included - save for later):
+- CLI parsing and JSON I/O - will implement after core logic tests
+- Output sorting - will add when core is working
+- Complex patterns (blinkers, blocks, gliders) - will emerge from base tests
+- Performance optimization - premature at this stage
+
+**Next Step**: Invoke `/red` to activate the first test.
+```
+
+📋 Test List Phase Complete. Ready to proceed to Red phase.

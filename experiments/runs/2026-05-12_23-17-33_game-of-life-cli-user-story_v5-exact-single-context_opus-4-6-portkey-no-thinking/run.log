@@ -1,0 +1,14 @@
+The TDD exercise is complete. Here's a summary of what was built:
+
+**Files created:**
+- `src/game-of-life.ts` — Core logic with `nextGeneration` (computes one step) and `evolve` (applies N steps with sorted output)
+- `src/game-of-life.spec.ts` — 8 tests covering all Game of Life rules
+- `src/cli.ts` — CLI entry point that reads JSON from stdin, runs the simulation, and writes JSON to stdout
+- `experiment-done.txt` — Done marker
+
+**TDD cycle summary:**
+- 8 tests total, all passing
+- Tests 1 & 3 drove the implementation (empty case, then full Game of Life logic)
+- Tests 2, 4, 5, 6, 7 passed immediately as regression guards
+- Test 8 (sorted output) caught a bug: `steps: 0` returned unsorted input
+- Two refactorings applied: merged duplicate conditionals (Δ-12 mass), removed duplicate sort (Δ-6 mass)

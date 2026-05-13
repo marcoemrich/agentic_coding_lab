@@ -1,0 +1,202 @@
+{
+  "wall_clock_seconds": 522.43,
+  "total_tokens": {
+    "input": 368,
+    "output": 58562,
+    "cache_read": 16959350,
+    "cache_creation": 169025,
+    "total": 17187305
+  },
+  "context_utilization_pct": 14,
+  "context_window_tokens": 1000000,
+  "context_peak_tokens": 140053,
+  "message_count": 170,
+  "tool_calls": {
+    "Bash": 41,
+    "Read": 2,
+    "Skill": 24,
+    "Write": 4,
+    "Edit": 31
+  },
+  "skill_invocations": {
+    "test-list": 1,
+    "red": 16,
+    "green": 5,
+    "refactor": 2
+  },
+  "task_invocations": {},
+  "cycle_count": 16,
+  "predictions_correct": 6,
+  "predictions_total": 6,
+  "model_versions": [
+    "claude-opus-4-7"
+  ],
+  "subagent_token_total": 0,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 247568,
+      "duration_seconds": 13.61
+    },
+    {
+      "phase": "red",
+      "tokens": 923412,
+      "duration_seconds": 37.27
+    },
+    {
+      "phase": "green",
+      "tokens": 351560,
+      "duration_seconds": 11.59
+    },
+    {
+      "phase": "refactor",
+      "tokens": 146854,
+      "duration_seconds": 4.37
+    },
+    {
+      "phase": "red",
+      "tokens": 455766,
+      "duration_seconds": 15.34
+    },
+    {
+      "phase": "green",
+      "tokens": 962592,
+      "duration_seconds": 39.74
+    },
+    {
+      "phase": "refactor",
+      "tokens": 426181,
+      "duration_seconds": 16.43
+    },
+    {
+      "phase": "red",
+      "tokens": 526258,
+      "duration_seconds": 15.78
+    },
+    {
+      "phase": "green",
+      "tokens": 361142,
+      "duration_seconds": 12.17
+    },
+    {
+      "phase": "red",
+      "tokens": 556996,
+      "duration_seconds": 16.52
+    },
+    {
+      "phase": "green",
+      "tokens": 480572,
+      "duration_seconds": 19.38
+    },
+    {
+      "phase": "red",
+      "tokens": 593096,
+      "duration_seconds": 15.92
+    },
+    {
+      "phase": "green",
+      "tokens": 514131,
+      "duration_seconds": 25.41
+    },
+    {
+      "phase": "red",
+      "tokens": 845799,
+      "duration_seconds": 23.73
+    },
+    {
+      "phase": "red",
+      "tokens": 873073,
+      "duration_seconds": 23.29
+    },
+    {
+      "phase": "red",
+      "tokens": 565319,
+      "duration_seconds": 23.53
+    },
+    {
+      "phase": "red",
+      "tokens": 928964,
+      "duration_seconds": 24.36
+    },
+    {
+      "phase": "red",
+      "tokens": 595789,
+      "duration_seconds": 12.79
+    },
+    {
+      "phase": "red",
+      "tokens": 607400,
+      "duration_seconds": 15.2
+    },
+    {
+      "phase": "red",
+      "tokens": 1121495,
+      "duration_seconds": 26.24
+    },
+    {
+      "phase": "red",
+      "tokens": 638227,
+      "duration_seconds": 14.02
+    },
+    {
+      "phase": "red",
+      "tokens": 1045848,
+      "duration_seconds": 25.95
+    },
+    {
+      "phase": "red",
+      "tokens": 1072770,
+      "duration_seconds": 23.91
+    },
+    {
+      "phase": "red",
+      "tokens": 1939677,
+      "duration_seconds": 48.49
+    }
+  ],
+  "phase_source": "skills",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 247568,
+        "duration_seconds": 13.61
+      },
+      "red": {
+        "count": 16,
+        "tokens": 13289889,
+        "duration_seconds": 362.34
+      },
+      "green": {
+        "count": 5,
+        "tokens": 2669997,
+        "duration_seconds": 108.29
+      },
+      "refactor": {
+        "count": 2,
+        "tokens": 573035,
+        "duration_seconds": 20.8
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 247568.0,
+        "avg_duration_seconds": 13.61
+      },
+      "red": {
+        "avg_tokens": 830618.06,
+        "avg_duration_seconds": 22.65
+      },
+      "green": {
+        "avg_tokens": 533999.4,
+        "avg_duration_seconds": 21.66
+      },
+      "refactor": {
+        "avg_tokens": 286517.5,
+        "avg_duration_seconds": 10.4
+      }
+    },
+    "refactorings_applied": 2,
+    "tests_passed_immediately": 11
+  }
+}

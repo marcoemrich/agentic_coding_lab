@@ -1,0 +1,10 @@
+The TDD exercise is complete. Here's a summary:
+
+**Files created:**
+- `src/game-of-life.ts` — Core Game of Life logic with `nextGeneration` (single step) and `advanceGameOfLife` (N steps with sorting)
+- `src/game-of-life.spec.ts` — 9 tests covering all Game of Life rules
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+- `src/cli.spec.ts` — 1 integration test for the CLI
+- `experiment-done.txt` — Done marker
+
+**All 10 tests passing**, covering: empty grid, steps=0 passthrough, underpopulation, still life (block), birth rule, overpopulation, multi-step (blinker), lexicographic sorting, negative coordinates, and CLI stdin/stdout integration.

@@ -1,0 +1,7 @@
+Experiment complete. All 13 tests pass:
+- 8 quote scenarios (base, cursed, enchantment≥5, loyalty, returning-contract, multi-item, component block, claim-on-ordinary)
+- 3 claim scenarios (dragon material, enchantment≥8, cap across successive claims)
+- 1 empty-steps base case
+- 1 CLI roundtrip test
+
+`src/scenario.ts` implements the policy logic; `src/cli.ts` is the stdin→stdout CLI entry point. `experiment-done.txt` written with `DONE`.

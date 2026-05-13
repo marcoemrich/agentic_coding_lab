@@ -1,0 +1,28 @@
+```
+📋 Test List Created:
+
+**Feature**: Conway's Game of Life CLI
+**Test File**: src/gameOfLife.spec.ts
+**Base Functionality Tests**: 8
+
+**Test Cases** (ordered simple → complex):
+1. ✅ Empty set returns empty set (base case: zero cells)
+2. ✅ Single cell dies of underpopulation (base case: one cell)
+3. ✅ Three cells in a line evolve correctly (simple interaction)
+4. ✅ Three cells with block form stable pattern (stable configuration)
+5. ✅ Blinker pattern oscillates correctly (periodic behavior)
+6. ✅ Multiple step evolution works (iteration)
+7. ✅ Negative coordinates handled correctly (arbitrary integer support)
+8. ✅ Output is lexicographically sorted (output contract)
+
+**Advanced Features** (NOT included):
+- Glider pattern detection - save for later
+- Performance optimization for sparse grids - save for later
+- CLI argument parsing beyond stdin/stdout - save for later
+- Error handling for malformed JSON - save for later
+- Large grid simulations - save for later
+
+**Next Step**: Invoke `/red` to activate the first test.
+```
+
+Proceeding to Red phase with the first test.

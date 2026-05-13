@@ -1,0 +1,12 @@
+All tasks complete. Here's a summary of what was built:
+
+**Files created:**
+- `src/game-of-life.ts` — Core Game of Life logic with `nextGeneration(aliveCells, steps)` function
+- `src/game-of-life.spec.ts` — 8 tests covering all Game of Life rules
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+
+**TDD cycle summary:**
+- 8 tests total, all passing
+- Tests cover: empty input, underpopulation, survival with 2 neighbors, survival with 3 neighbors, overpopulation, reproduction, multi-step evolution, and lexicographic sorting
+- The core algorithm was implemented during the Green phase for test 3 (blinker), with subsequent tests passing immediately since the algorithm is general
+- Key refactorings: introduced `Cell` type alias, merged duplicate conditional branches into unified survival rule, removed duplicate sort from `step()`

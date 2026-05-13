@@ -1,0 +1,28 @@
+## Summary
+
+📋 **Test List Created:**
+
+**Feature**: Game of Life CLI Kata
+**Test File**: src/game-of-life.spec.ts
+**Base Functionality Tests**: 10
+
+**Test Cases** (ordered simple → complex):
+1. ✅ Empty configuration returns no living cells
+2. ✅ Zero steps returns configuration unchanged
+3. ✅ Single lonely cell dies after 1 step
+4. ✅ Two isolated cells die after 1 step
+5. ✅ Cell with 2-3 neighbors survives (basic survival)
+6. ✅ Dead cell with exactly 3 neighbors becomes alive (birth rule)
+7. ✅ Stable block pattern (2x2) remains unchanged
+8. ✅ Output is lexicographically sorted (x ascending, y ascending)
+9. ✅ Negative coordinates are handled correctly
+10. ✅ Rules apply iteratively across multiple steps
+
+**Advanced Features** (NOT included - save for later):
+- Error handling for invalid input
+- Performance optimization
+- Edge cases with very large grids
+- Patterns like gliders, oscillators, still lifes
+- CLI integration and JSON I/O
+
+**Next Step**: Invoke `/red` to activate the first test.

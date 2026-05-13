@@ -1,0 +1,18 @@
+All tasks complete. Here's a summary of what was built:
+
+**Files created:**
+- `src/game-of-life.ts` — Core Game of Life logic with `tick()` (single generation) and `nextGeneration()` (multi-step with sorting)
+- `src/game-of-life.spec.ts` — 10 passing tests covering all Game of Life rules
+- `src/cli.ts` — CLI entry point that reads JSON from stdin, runs the simulation, and writes JSON to stdout
+
+**Tests (10/10 passing):**
+1. Empty grid with zero steps
+2. Same cells returned when steps is zero
+3. Single cell dies (underpopulation)
+4. Cell with 2 neighbors survives
+5. Cell with 3 neighbors survives
+6. Cell with >3 neighbors dies (overpopulation)
+7. Dead cell with 3 neighbors born (reproduction)
+8. Output sorted lexicographically
+9. Multiple generation steps (blinker period-2)
+10. Negative coordinates handled correctly

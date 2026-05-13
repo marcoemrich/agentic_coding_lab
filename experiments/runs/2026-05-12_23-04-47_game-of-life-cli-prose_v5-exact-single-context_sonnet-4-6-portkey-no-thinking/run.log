@@ -1,0 +1,13 @@
+The TDD exercise is complete. Here's a summary of what was built:
+
+**`src/game-of-life.ts`** — Core logic:
+- `neighbors(cell)` — returns the 8 surrounding cells
+- `cellKey(cell)` — serializes a cell to a string for Map/Set lookup  
+- `nextGeneration(aliveCells)` — implements Game of Life rules using sparse neighbor counting, then lexicographic sort
+
+**`src/cli.ts`** — CLI entry point:
+- Reads JSON from stdin (`{ aliveCells, steps }`)
+- Runs `nextGeneration` for `steps` iterations
+- Writes `{ aliveCells }` JSON to stdout
+
+**6 tests, all passing**: empty grid, single cell death, two isolated cells death, blinker evolution, 2×2 block stability, lexicographic sort.

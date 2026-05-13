@@ -1,0 +1,16 @@
+All tasks complete. Here's a summary of what was built:
+
+**Files created:**
+- `src/game-of-life.ts` — Core Game of Life logic with `nextGeneration` and `advance` functions
+- `src/game-of-life.spec.ts` — 8 tests covering all Game of Life rules
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+
+**TDD cycle completed:**
+1. Empty grid → empty grid
+2. Single cell dies (underpopulation) — passed immediately
+3. Cell with 2 neighbors survives — drove the core algorithm implementation
+4. Cell with 3 neighbors survives — passed immediately
+5. Cell with 4 neighbors dies (overpopulation) — passed immediately
+6. Dead cell with 3 neighbors born (reproduction) — passed immediately
+7. Multiple steps via `advance` function
+8. Lexicographic sorting of output

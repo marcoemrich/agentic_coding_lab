@@ -1,0 +1,13 @@
+The TDD exercise is complete. Here's a summary of what was built:
+
+**`src/game-of-life.ts`** — Core logic:
+- `neighbors(cell)` — returns the 8 neighboring cells
+- `countLiveNeighbors(cell, alive)` — counts live neighbors using a Set for O(1) lookup
+- `nextGeneration(cells)` — applies all four Game of Life rules, returns lexicographically sorted result
+
+**`src/cli.ts`** — CLI entry point:
+- Reads JSON from stdin (`{ aliveCells, steps }`)
+- Applies `nextGeneration` for `steps` iterations
+- Writes JSON to stdout (`{ aliveCells }`)
+
+**5 tests passing** covering: empty grid, underpopulation (1 cell), underpopulation (2 cells), reproduction (blinker), and survival (2x2 stable block).

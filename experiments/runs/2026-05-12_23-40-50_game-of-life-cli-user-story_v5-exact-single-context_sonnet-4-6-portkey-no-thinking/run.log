@@ -1,0 +1,17 @@
+The TDD exercise is complete. Here's a summary of what was implemented:
+
+**7 tests implemented and passing** via full Red-Green-Refactor cycles:
+1. Empty cells + steps=0 → `[]`
+2. Non-empty cells + steps=0 → unchanged
+3. Single cell (no neighbors) dies after 1 step
+4. Cell with 2 neighbors survives
+5. Cell with 3 neighbors survives
+6. Dead cell with 3 neighbors is born
+7. Output is sorted lexicographically by x then y
+
+**Key implementation decisions through refactoring:**
+- `Cell` type alias introduced for domain clarity
+- `survives` predicate renamed to `isAliveNextGen` to cover both survival and birth
+- `sortCells` unified to a single return point covering all branches
+- Multi-step loop added to handle `steps > 1`
+- CLI at `src/cli.ts` reads JSON from stdin, writes JSON to stdout

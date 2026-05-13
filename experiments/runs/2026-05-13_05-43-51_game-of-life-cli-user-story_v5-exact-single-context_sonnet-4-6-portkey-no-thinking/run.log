@@ -1,0 +1,15 @@
+The TDD exercise is complete. Here's a summary of what was built:
+
+**Files created:**
+- `src/gameOfLife.ts` — Core Game of Life logic with `step(aliveCells, stepCount)` function
+- `src/gameOfLife.spec.ts` — 6 tests covering all base functionality
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+- `experiment-done.txt` — Done marker
+
+**All 6 tests passing:**
+1. Empty cells + 0 steps → empty
+2. Non-empty cells + 0 steps → unchanged
+3. Lone cell + 1 step → dies (underpopulation)
+4. Two isolated cells + 1 step → both die
+5. 2x2 block + 1 step → stays stable (still life)
+6. Blinker + 1 step → oscillates to vertical orientation

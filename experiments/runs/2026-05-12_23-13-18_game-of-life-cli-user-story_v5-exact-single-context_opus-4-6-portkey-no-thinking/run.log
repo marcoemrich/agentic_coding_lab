@@ -1,0 +1,20 @@
+All 8 tests implemented and passing. The TDD exercise is complete.
+
+**Summary of what was built:**
+
+- **`src/game-of-life.ts`** — Core Game of Life engine with:
+  - `toKey`/`fromKey` helpers for coordinate encoding
+  - `nextGeneration` — computes one step using neighbor counting via Map
+  - `simulate` — applies N generations and returns sorted results
+
+- **`src/cli.ts`** — CLI entry point that reads JSON from stdin, calls `simulate`, and writes JSON to stdout
+
+- **`src/game-of-life.spec.ts`** — 8 tests covering:
+  1. Empty grid
+  2. Underpopulation (single cell dies)
+  3. Identity (steps=0)
+  4. Still life (block pattern)
+  5. Reproduction (dead cell with 3 neighbors)
+  6. Oscillator (blinker over multiple steps)
+  7. Lexicographic sorting
+  8. CLI integration (stdin/stdout JSON)

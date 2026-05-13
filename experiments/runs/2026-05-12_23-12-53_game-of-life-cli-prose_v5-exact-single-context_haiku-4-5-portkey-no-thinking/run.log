@@ -1,0 +1,24 @@
+📋 **Test List Created:**
+
+**Feature**: Conway's Game of Life CLI
+**Test File**: src/gameOfLife.spec.ts
+**Base Functionality Tests**: 9
+
+**Test Cases** (ordered simple → complex):
+1. ✅ Empty grid with 0 steps returns empty grid
+2. ✅ Non-zero steps but input unchanged with 0 steps
+3. ✅ Single cell dies from underpopulation
+4. ✅ Two cells die from underpopulation
+5. ✅ 2x2 block remains stable (4 cells with 3 neighbors each)
+6. ✅ Blinker oscillates vertical→horizontal in 1 step
+7. ✅ Blinker oscillates back horizontal→vertical in 2 steps
+8. ✅ Negative coordinates handled correctly
+9. ✅ Multiple generation advancement works correctly
+
+**Advanced Features** (NOT included):
+- CLI JSON I/O - will add after core logic tests pass
+- Error handling - save for refinement
+- Large grid performance - save for optimization
+- Other oscillators/patterns - save for exploration
+
+**Next Step**: Invoke `/red` to activate the first test.

@@ -1,0 +1,16 @@
+All tasks complete. Here's a summary of what was built:
+
+**Implementation files:**
+- `src/game-of-life.ts` — Core logic with `nextGeneration` and `simulate` functions, using sparse cell representation
+- `src/game-of-life.spec.ts` — 8 tests covering all Game of Life rules
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+
+**TDD cycle completed:**
+1. Empty grid → empty grid
+2. Single cell dies (underpopulation)
+3. Cell with 2 neighbors survives
+4. Cell with 3 neighbors survives
+5. Cell with 4+ neighbors dies (overpopulation)
+6. Dead cell with 3 neighbors is born (reproduction)
+7. Multiple steps via simulate
+8. Output sorted lexicographically by x then y

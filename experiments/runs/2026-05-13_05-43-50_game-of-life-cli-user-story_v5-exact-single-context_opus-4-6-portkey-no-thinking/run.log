@@ -1,0 +1,25 @@
+All tasks complete. Here's a summary:
+
+## TDD Exercise Complete
+
+**9 tests passing** across 2 test files:
+
+**`src/game-of-life.spec.ts`** (8 tests):
+1. Empty alive cells with 0 steps → returns empty
+2. Single alive cell dies after one step (underpopulation)
+3. Cell with 2 neighbors survives (blinker)
+4. Cell with 3 neighbors survives (block still life)
+5. Cell with 4 neighbors dies (plus shape, overpopulation)
+6. Dead cell with 3 neighbors becomes alive (L-shape → block)
+7. Multiple generations (blinker period-2 oscillation)
+8. Output sorted lexicographically with negative coordinates
+
+**`src/cli.spec.ts`** (1 test):
+9. CLI reads JSON from stdin, writes JSON to stdout
+
+**Files created:**
+- `src/game-of-life.ts` — `simulate()` and `nextGeneration()` functions with sparse GoL logic
+- `src/cli.ts` — CLI entry point reading stdin JSON, calling simulate, writing result
+- `src/game-of-life.spec.ts` — 8 unit tests
+- `src/cli.spec.ts` — 1 integration test
+- `experiment-done.txt` — done marker

@@ -1,0 +1,11 @@
+The TDD exercise is complete. All 7 tests pass:
+
+1. Empty grid → empty grid
+2. Live cell with no neighbors dies (underpopulation)
+3. Live cell with 1 neighbor dies (underpopulation)
+4. Live cell with 2 neighbors survives (survival)
+5. Live cell with 3 neighbors survives (survival)
+6. Dead cell with exactly 3 live neighbors becomes alive (reproduction)
+7. Blinker advances one generation correctly
+
+The final implementation in `src/game-of-life.ts` has five well-named functions: `isNeighbor`, `neighborCount`, `cellKey`, `deadNeighbors`, and `evolve` — each with a clear, single responsibility.

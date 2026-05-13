@@ -1,0 +1,13 @@
+The TDD exercise is complete. Here's a summary of what was implemented:
+
+**Files created:**
+- `src/game-of-life.spec.ts` — 5 tests covering empty grid, steps=0 passthrough, underpopulation, still-life survival, and reproduction
+- `src/game-of-life.ts` — Core Game of Life logic with `toKey`/`fromKey` coordinate helpers, `neighbors`, `step`, and `advance`
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+
+**TDD cycle completed:**
+1. Empty grid → `[]` (hardcoded)
+2. steps=0 → return input unchanged (conditional)
+3. Isolated cell dies → already satisfied by stub
+4. Tub still-life → forced full Game of Life implementation
+5. Reproduction rule → already satisfied by full implementation

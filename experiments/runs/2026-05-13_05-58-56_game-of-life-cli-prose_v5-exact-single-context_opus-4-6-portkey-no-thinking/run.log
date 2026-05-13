@@ -1,0 +1,13 @@
+All done. Here's a summary of what was built:
+
+**Files created:**
+- `src/game-of-life.ts` — Core logic with `simulate()` (multi-step loop) and `nextGeneration()` (neighbor counting, birth/survival rules, sorting)
+- `src/game-of-life.spec.ts` — 10 tests covering all Game of Life rules
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+
+**TDD cycle completed:**
+- 10 tests, all passing
+- Full Red-Green-Refactor cycle for the first 3 tests (empty grid, underpopulation, reproduction)
+- Tests 4-10 passed immediately after the core implementation was written in the Green phase for test 3
+- Refactored to extract `cellKey` helper and improve variable naming
+- CLI verified end-to-end with blinker, empty grid, and steps=0 inputs

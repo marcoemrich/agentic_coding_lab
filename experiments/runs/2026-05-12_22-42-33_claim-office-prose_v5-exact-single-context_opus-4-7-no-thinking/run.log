@@ -1,0 +1,6 @@
+All 15 tests pass, the CLI works against both schema examples from the prompt, and `experiment-done.txt` is written.
+
+Summary:
+- `src/claim-office.spec.ts` — 15 tests covering quote variations (5 item types, bundle, surcharges, discounts, rounding) and claims (deductible, 50% high-enchantment, dragon material, payout cap)
+- `src/claim-office.ts` — implementation with `runScenario` orchestrating quotes and claims with policy tracking
+- `src/cli.ts` — stdin/stdout JSON CLI entry point

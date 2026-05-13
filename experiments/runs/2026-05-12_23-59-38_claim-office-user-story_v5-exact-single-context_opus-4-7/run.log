@@ -1,0 +1,10 @@
+All 20 tests pass. CLI at `src/cli.ts` reads JSON from stdin and writes JSON results to stdout. Implementation covers:
+- Quotes for sword/amulet/staff/potion with base premiums
+- Components (25G each, 60G for blocks of 3 alike)
+- Cursed +50% and enchantment ≥5 +30% per-item surcharges
+- Loyalty -20%, first insurance +10%, subsequent contract -15%
+- 5G processing fee, rounding up in MHPCO's favor
+- Claims with 100G deductible, 2× insurance cap, ench≥8 50%, dragon material full reimbursement
+- Cap tracking across multiple claims
+
+`experiment-done.txt` written.

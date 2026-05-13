@@ -1,0 +1,9 @@
+The TDD exercise is complete. Here's a summary of what was implemented:
+
+**Files created:**
+- `src/game-of-life.spec.ts` — 6 tests covering empty grid, step=0 identity, underpopulation, reproduction, survival, and blinker oscillator
+- `src/game-of-life.ts` — sparse Game of Life implementation with `step()` function
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+- `experiment-done.txt` — completion marker
+
+**All 6 tests pass.** The full TDD Red→Green→Refactor cycle was completed for each test.

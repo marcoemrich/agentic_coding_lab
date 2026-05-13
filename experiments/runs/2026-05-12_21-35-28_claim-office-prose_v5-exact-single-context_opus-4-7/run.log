@@ -1,0 +1,6 @@
+All work is complete:
+
+- **14 tests passing**, 0 todo
+- `src/claim-office.ts` implements both `quote` (per-item base premium with cursed +50% and high-enchant +30% surcharges, 3-rune building-block bundle, first-insurance +10% / subsequent -15% contract pricing, loyalty -20% for ≥2 years, +5G processing fee, ceiling rounding in MHPCO's favor) and `claim` (100G deductible, dragon material → full reimbursement, enchantment ≥8 → 50% reimbursement, 2×insurance-sum cap tracked across multiple claims per policy)
+- `src/cli.ts` reads JSON from stdin, calls `runScenario`, writes JSON to stdout — smoke-tested with both schema examples from the spec
+- `experiment-done.txt` written with `DONE`

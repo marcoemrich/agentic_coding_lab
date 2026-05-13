@@ -1,0 +1,14 @@
+The TDD exercise is complete. Here's a summary of what was built:
+
+**Game of Life CLI** — fully TDD'd through 10 tests:
+
+- `src/game-of-life.ts` — core logic:
+  - `cellKey(x,y)` — encodes cell as string key
+  - `compareCell` — lexicographic cell comparator
+  - `forEachNeighbor(x,y,fn)` — iterates 8 Moore neighbors
+  - `step(cells)` — applies Conway's rules (survival + birth) and returns sorted result
+  - `simulate(cells, steps)` — runs N generations
+
+- `src/cli.ts` — reads JSON from stdin, calls `simulate`, writes JSON to stdout
+
+- `src/game-of-life.spec.ts` — 10 tests covering: empty set, underpopulation, 2-neighbor survival, 3-neighbor survival, birth, overpopulation, zero steps, blinker 1 step, blinker 2 steps, and sorted output

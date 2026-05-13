@@ -1,0 +1,17 @@
+The TDD exercise is complete. Here's a summary of what was built:
+
+**`src/game-of-life.ts`** — Core logic:
+- `Cell` type alias for `[number, number]`
+- `cellKey(x, y)` — encodes a cell as a string key
+- `parseKey(key)` — decodes a string key back to a Cell
+- `nextGeneration(cells)` — applies one Game of Life generation using sparse neighbor-counting
+
+**`src/game-of-life.spec.ts`** — 6 tests covering:
+1. Empty grid → empty grid
+2. Single isolated cell dies (underpopulation)
+3. Two isolated cells die (underpopulation)
+4. Blinker oscillation (3-in-a-row → 3-in-a-column)
+5. 2×2 block stability
+6. Multi-step iteration (blinker period-2 return)
+
+**`src/cli.ts`** — CLI entry point reading JSON from stdin, advancing `steps` generations, writing sorted JSON to stdout.

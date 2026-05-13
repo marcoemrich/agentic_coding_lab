@@ -1,0 +1,9 @@
+The TDD exercise is complete. Here's a summary of what was built:
+
+**Files created:**
+- `src/game-of-life.ts` — Core Game of Life logic with `advanceGameOfLife` (public API), `stepOnce`, `countLiveNeighbors`, `neighborKeys`, and `cellKey` helpers
+- `src/game-of-life.spec.ts` — 8 tests covering empty grid, identity (0 steps), underpopulation, survival (block), reproduction (blinker), multi-step (blinker period-2), negative coordinates, and lexicographic sorting
+- `src/cli.ts` — CLI entry point that reads JSON from stdin and writes JSON to stdout
+- `experiment-done.txt` — Done marker
+
+**TDD cycles completed:** 8 Red-Green-Refactor cycles, with key refactorings including extracting `cellKey`, `neighborKeys`, `countLiveNeighbors`, and `stepOnce` helpers, converting imperative patterns to functional pipelines, and consolidating sorting at the output boundary.

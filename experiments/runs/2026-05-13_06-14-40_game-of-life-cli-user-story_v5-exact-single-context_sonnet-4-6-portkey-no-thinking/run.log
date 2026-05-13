@@ -1,0 +1,14 @@
+The TDD exercise is complete. Here's a summary of what was built:
+
+**Files created:**
+- `src/game-of-life.ts` — Core Game of Life logic with sparse representation
+- `src/game-of-life.spec.ts` — 7 tests covering all base functionality
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+
+**Key design decisions through TDD:**
+- `Cell = [number, number]` type alias (extracted during refactor)
+- `cellKey` helper for position string encoding (DRY refactor)
+- `byPosition` comparator (DRY refactor — was duplicated)
+- `livesOn` predicate naming Conway's survival rules (intent refactor)
+- Sparse neighbor counting via `Map<string, number>` — only tracks candidate positions, handles negative coordinates naturally
+- Lexicographic sort applied to all output paths (zero-steps and N-steps)

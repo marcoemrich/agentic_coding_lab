@@ -1,0 +1,5 @@
+All 6 tests implemented and passing. The TDD cycle is complete:
+
+- `src/game-of-life.ts` — core Game of Life logic with sparse cell representation, neighbor counting, survival/birth rules, and lexicographic sorting
+- `src/game-of-life.spec.ts` — 6 tests covering empty world, steps=0, lone cell death, stable block, blinker evolution, and sort order
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
