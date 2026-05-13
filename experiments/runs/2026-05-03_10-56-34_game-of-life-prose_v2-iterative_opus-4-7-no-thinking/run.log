@@ -1,8 +1,0 @@
-## Implementation Checklist
-
-- [x] Step 1: Write tests for game-of-life
-- [x] Step 2: Implement game-of-life
-- [x] Step 3: Run tests to verify (12/12 passed)
-- [x] Step 4: Write done marker
-
-The Game of Life implementation is complete. The solution uses sparse representation by storing only living cells as `[x, y]` tuples in a `Set` (keyed by `"x,y"` strings), and computes the next generation by iterating only over cells adjacent to living ones — supporting the theoretically infinite grid with negative coordinates.

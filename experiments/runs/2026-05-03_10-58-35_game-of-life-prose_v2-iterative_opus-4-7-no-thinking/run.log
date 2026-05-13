@@ -1,6 +1,0 @@
-Implemented Conway's Game of Life with sparse representation:
-
-- `src/game-of-life.ts` — `nextGeneration` accepts an iterable of `[x, y]` cells, counts neighbors only around living cells (so the grid is effectively infinite), and applies the four rules.
-- `src/game-of-life.spec.ts` — 10 tests covering empty input, underpopulation, survival, overpopulation, reproduction, the block (still life), the blinker (oscillator), the glider, negative coordinates, and order-independence.
-
-All 10 tests pass; `tsc --noEmit` is clean.

@@ -1,7 +1,0 @@
-All 10 tests pass. The implementation:
-
-- Uses a sparse `Set` to track living cells by string keys (`"x,y"`)
-- For each generation, counts neighbor occurrences by iterating all living cells and incrementing counts for all 8 neighbors
-- Applies Conway's rules: a cell survives with 2-3 neighbors, a dead cell births with exactly 3 neighbors
-- Handles negative coordinates naturally since keys are strings
-- Never allocates memory for the full infinite grid

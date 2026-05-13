@@ -526,14 +526,14 @@ EOF
         set +e
         if [ "$thinking" = "false" ]; then
             (cd "$run_dir" && MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
-                claude --dangerously-skip-permissions --model "$cli_model" --print \
-                "Read prompt.md and complete the TDD exercise following the workflow rules.") \
+                claude --dangerously-skip-permissions --strict-mcp-config --model "$cli_model" --print \
+                "Read prompt.md and complete the exercise following the workflow rules.") \
                 2>&1 | tee "$run_log"
             claude_exit=${PIPESTATUS[0]}
         else
             (cd "$run_dir" && timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
-                claude --dangerously-skip-permissions --model "$cli_model" --print \
-                "Read prompt.md and complete the TDD exercise following the workflow rules.") \
+                claude --dangerously-skip-permissions --strict-mcp-config --model "$cli_model" --print \
+                "Read prompt.md and complete the exercise following the workflow rules.") \
                 2>&1 | tee "$run_log"
             claude_exit=${PIPESTATUS[0]}
         fi
@@ -585,12 +585,12 @@ EOF
         set +e
         if [ "$thinking" = "false" ]; then
             (cd "$run_dir" && MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s 120 \
-                claude --dangerously-skip-permissions --model "$cli_model" --print \
+                claude --dangerously-skip-permissions --strict-mcp-config --model "$cli_model" --print \
                 "The file src/cli.ts is missing. The prompt requires a CLI entry point at src/cli.ts that reads JSON from stdin and writes JSON to stdout. Create src/cli.ts now. It should import from your existing module and wire up stdin reading, processing, and stdout output.") \
                 2>&1 | tee -a "$run_log"
         else
             (cd "$run_dir" && timeout --signal=TERM --kill-after=30s 120 \
-                claude --dangerously-skip-permissions --model "$cli_model" --print \
+                claude --dangerously-skip-permissions --strict-mcp-config --model "$cli_model" --print \
                 "The file src/cli.ts is missing. The prompt requires a CLI entry point at src/cli.ts that reads JSON from stdin and writes JSON to stdout. Create src/cli.ts now. It should import from your existing module and wire up stdin reading, processing, and stdout output.") \
                 2>&1 | tee -a "$run_log"
         fi
