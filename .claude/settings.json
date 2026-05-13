@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -n --arg ctx \"$(cat /home/memrich/sync/workspace/agentic_coding_lab_project/main/README.md)\" '{hookSpecificOutput: {hookEventName: \"SessionStart\", additionalContext: $ctx}}'"
+          }
+        ]
+      }
+    ]
+  }
+}
