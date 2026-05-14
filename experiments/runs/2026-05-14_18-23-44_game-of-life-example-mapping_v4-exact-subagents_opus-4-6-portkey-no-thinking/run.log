@@ -1,0 +1,25 @@
+Conway's Game of Life implementation is complete. Here's a summary of the TDD cycle:
+
+**9 tests, all passing:**
+1. Empty grid returns empty array
+2. Single cell dies (underpopulation)
+3. Two adjacent cells die (underpopulation)
+4. Cell with 2 neighbors survives
+5. Cell with 3 neighbors survives
+6. Cell with 4 neighbors dies (overpopulation)
+7. Dead cell with 3 neighbors becomes alive (reproduction)
+8. Block pattern stays unchanged (still life)
+9. Blinker pattern oscillates
+
+**Key implementation moments:**
+- Tests 1-3 all passed with the initial `return []` — underpopulation cases are satisfied by returning nothing
+- Test 4 drove the first real implementation: neighbor counting + survival logic (`neighbors === 2 || neighbors === 3`)
+- Tests 5-6 passed immediately since survival/overpopulation were already handled
+- Test 7 drove reproduction logic: finding dead neighbor candidates and birthing those with exactly 3 living neighbors
+- Tests 8-9 (block, blinker) passed immediately as integration tests confirming all rules work together
+
+**Refactorings applied:**
+- Extracted `isNeighbor`, `countNeighbors` helpers for intent revelation
+- Extracted `cellKey` for DRY cell-to-string conversion
+- Extracted `findDeadNeighbors` to separate reproduction candidate finding
+- Eliminated duplicate `sortCells` test helper

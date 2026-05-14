@@ -1,0 +1,10 @@
+Exercise complete. All 9 tests pass and `experiment-done.txt` is written with `DONE`.
+
+Summary of TDD cycle:
+- **Test list**: 9 tests created from the spec examples (rules + patterns + negative coords)
+- **Tests 1-3**: Trivially passed by hardcoded `return []`
+- **Test 4 (Survival)**: Drove the neighbor-counting filter implementation
+- **Test 5 (Overpopulation)**: Passed via the general filter (>3 excluded automatically)
+- **Test 6 (Reproduction)**: Drove the dead-cell revival logic
+- **Tests 7-9 (Blinker, Block, Negative coords)**: Passed via the general algorithm
+- **Final refactor**: Replaced O(n²) lookups with `Set`/`Map`-based O(n) cell identity using `cellKey`

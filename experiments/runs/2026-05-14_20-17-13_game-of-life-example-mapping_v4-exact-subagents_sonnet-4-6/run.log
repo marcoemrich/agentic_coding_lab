@@ -1,0 +1,9 @@
+All 7 tests pass and the experiment is complete. The final implementation in `src/game-of-life.ts`:
+
+- **`countNeighbors`** - counts live cells within the Moore neighborhood of a given cell
+- **`neighborPositions`** - returns the 8 neighboring positions for a cell (functional style)
+- **`isDeadCell`** - checks if a position is unoccupied
+- **`deduplicate`** - removes duplicate cells using a coordinate-keyed Map
+- **`nextGeneration`** - computes the next generation via survival (2-3 neighbors) + birth (exactly 3 neighbors)
+
+The TDD cycle completed all 7 tests across the full Red-Green-Refactor workflow.

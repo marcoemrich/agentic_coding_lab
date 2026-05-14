@@ -1,0 +1,14 @@
+All 8 base-functionality tests pass; the TDD cycle is complete:
+
+- **Test 1**: empty input → drove initial stub  
+- **Test 4**: block (2x2 still life) → forced full neighbor-counting algorithm  
+- **Tests 2, 3, 5, 6, 7, 8** (underpopulation, two-cell pair, blinker, reproduction, overpopulation, negative coords): characterization tests — all passed against the general implementation
+
+Refactorings applied across the cycle:
+1. Extracted `cellKey`/`keyToCell` helpers
+2. Merged duplicated push branches with `survives`/`born` named bindings  
+3. Replaced nested neighbor loops + skip-center with explicit `NEIGHBOR_OFFSETS`
+4. Extracted duplicated `alive.has(key)` lookup as `isAlive`
+5. Extracted `asCellSet` helper in test file
+
+`experiment-done.txt` written.

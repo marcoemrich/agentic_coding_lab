@@ -1,0 +1,176 @@
+{
+  "wall_clock_seconds": 892.38,
+  "total_tokens": {
+    "input": 66,
+    "output": 20206,
+    "cache_read": 1859083,
+    "cache_creation": 105407,
+    "total": 1984762
+  },
+  "context_utilization_pct": 6,
+  "context_window_tokens": 1000000,
+  "context_peak_tokens": 56118,
+  "message_count": 46,
+  "tool_calls": {
+    "Read": 9,
+    "Agent": 16,
+    "Write": 1
+  },
+  "skill_invocations": {},
+  "task_invocations": {
+    "test-list": 1,
+    "red": 7,
+    "green": 3,
+    "refactor": 5
+  },
+  "cycle_count": 7,
+  "predictions_correct": 8,
+  "predictions_total": 10,
+  "model_versions": [
+    "claude-sonnet-4-6"
+  ],
+  "subagent_token_total": 4160726,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 160122,
+      "duration_seconds": 21.84,
+      "transcript": "agent-a9edd12116e3a826c.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 488594,
+      "duration_seconds": 51.19,
+      "transcript": "agent-abc9a7a49061bc45e.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 153452,
+      "duration_seconds": 15.73,
+      "transcript": "agent-a3885124aecf77758.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 235744,
+      "duration_seconds": 38.5,
+      "transcript": "agent-a020114ff36cecc1e.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 174688,
+      "duration_seconds": 30.14,
+      "transcript": "agent-a4e6516ea414f25bf.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 211781,
+      "duration_seconds": 39.01,
+      "transcript": "agent-a75092b8795700d24.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 223464,
+      "duration_seconds": 37.92,
+      "transcript": "agent-a5c024d55237757f3.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 176514,
+      "duration_seconds": 23.19,
+      "transcript": "agent-a3e627653c8a7ae82.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 180596,
+      "duration_seconds": 25.12,
+      "transcript": "agent-a729ad1a132246f83.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 215812,
+      "duration_seconds": 45.97,
+      "transcript": "agent-aacdc77be00c2cbb3.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 402233,
+      "duration_seconds": 93.28,
+      "transcript": "agent-a29eb987d9c5a95cf.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 178390,
+      "duration_seconds": 27.0,
+      "transcript": "agent-af55886408f627510.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 262094,
+      "duration_seconds": 53.6,
+      "transcript": "agent-a7a57b48a3d44a9df.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 341241,
+      "duration_seconds": 71.72,
+      "transcript": "agent-aa0cd0934edacd129.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 229294,
+      "duration_seconds": 40.46,
+      "transcript": "agent-a8f22a175658f66f0.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 526707,
+      "duration_seconds": 99.17,
+      "transcript": "agent-a4647c98b56ed0769.jsonl"
+    }
+  ],
+  "phase_source": "subagents",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 160122,
+        "duration_seconds": 21.84
+      },
+      "red": {
+        "count": 7,
+        "tokens": 1873177,
+        "duration_seconds": 303.18
+      },
+      "green": {
+        "count": 3,
+        "tokens": 596142,
+        "duration_seconds": 94.45
+      },
+      "refactor": {
+        "count": 5,
+        "tokens": 1531285,
+        "duration_seconds": 294.37
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 160122.0,
+        "avg_duration_seconds": 21.84
+      },
+      "red": {
+        "avg_tokens": 267596.71,
+        "avg_duration_seconds": 43.31
+      },
+      "green": {
+        "avg_tokens": 198714.0,
+        "avg_duration_seconds": 31.48
+      },
+      "refactor": {
+        "avg_tokens": 306257.0,
+        "avg_duration_seconds": 58.87
+      }
+    },
+    "refactorings_applied": 5,
+    "tests_passed_immediately": 4
+  }
+}

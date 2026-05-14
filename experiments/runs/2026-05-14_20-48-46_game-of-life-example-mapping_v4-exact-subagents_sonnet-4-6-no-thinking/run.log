@@ -1,0 +1,21 @@
+The experiment is complete. All 9 tests pass and `experiment-done.txt` contains `DONE`.
+
+Here's a summary of what was accomplished:
+
+**Final implementation** (`src/game-of-life.ts`):
+- `countLiveNeighbors` - counts live neighbors using coordinate proximity
+- `survives` - named predicate for the survival rule (2 or 3 neighbors)
+- `getNeighborPositions` - generates 8 surrounding positions using a functional `flatMap` pipeline
+- `isAlive` - checks cell membership in the live set
+- `nextGeneration` - combines survivors and newly-born cells
+
+**Test progression**:
+1. Empty grid → `[]` (stub, trivially green)
+2. Single cell dies → `[]` (trivially green with stub)
+3. Two cells die → `[]` (trivially green with stub)
+4. Survival with 2 neighbors → forced real implementation (neighbor counting + survival filter)
+5. Survival with 3 neighbors → immediately green (already covered by `neighbors === 3`)
+6. Overpopulation → immediately green (excluded by `survives` predicate)
+7. Reproduction → forced new logic (dead neighbor candidates + birth rule)
+8. Blinker oscillator → immediately green (combined logic already correct)
+9. Block still life → immediately green (combined logic already correct)

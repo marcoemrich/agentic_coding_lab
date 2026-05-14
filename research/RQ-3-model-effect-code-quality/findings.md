@@ -5,196 +5,181 @@ Persistente Sammlung der Erkenntnisse zur Frage:
 Opus 4.7 — jeweils mit/ohne Thinking) in der Code-Qualität auf einer
 trainingsbekannten Kata bei stärkstem Workflow?**
 
-Datenbasis: 24 Runs (6 Zellen × n=3–6), Stand 2026-05-14. Workflow
-v4-exact-subagents, Kata game-of-life-example-mapping. Korrektheits-Innensicht
-via vom Agenten geschriebene Vitest-Tests, Außensicht via Modul-Import-Adapter
-`game-of-life-verification/` (15 Szenarien, Adapter erwartet
-Repräsentation `[number, number][]`).
+Datenbasis: 21 Runs (6 Zellen × n=3, plus 3 zusätzliche
+opus-4-7-no-thinking-Replikate aus dem RQ-4-Batch), Stand 2026-05-15.
+Workflow v4-exact-subagents, Kata game-of-life-example-mapping mit
+explizitem API-Vertrag (`nextGeneration(cells: Cell[]): Cell[]`).
+Korrektheits-Innensicht via vom Agenten geschriebene Vitest-Tests,
+Außensicht via Modul-Import-Adapter `game-of-life-verification/`
+(15 Szenarien).
 
 ---
 
 ## Übersicht: Code-Qualität nach Modell (Mittelwerte)
 
-| Modell | `code_mass` | `smell_total` | `mccabe_max` | `cognitive_max` | n |
-|---|---:|---:|---:|---:|---:|
-| opus-4-7 | 162.75 | **2.00** | **4.25** | **4.75** | 4 |
-| opus-4-7-no-thinking | 155.00 | 2.50 | 5.25 | 5.25 | 4 |
-| opus-4-6-portkey | **153.83** | 3.83 | 8.50 | 13.17 | 6 |
-| opus-4-6-portkey-no-thinking | 155.75 | 3.00 | 5.75 | 7.75 | 4 |
-| sonnet-4-6 | 183.00 | 4.00 | 7.33 | 8.00 | 3 |
-| sonnet-4-6-no-thinking | 188.67 | 5.67 | 9.00 | 15.00 | 3 |
+| Modell | `code_mass` | `smell_total` | `mccabe_max` | `cognitive_max` | `cc_longest_function` | `verification_pct` | n |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| opus-4-7 | 159.00 | 2.33 | **3.33** | 3.00 | **7.00** | 1.00 | 3 |
+| opus-4-7-no-thinking | 167.67 | **2.50** | 4.00 | **2.83** | 9.33 | 1.00 | 6 |
+| opus-4-6-portkey | 173.00 | 4.33 | 6.67 | 12.00 | 19.33 | 1.00 | 3 |
+| opus-4-6-portkey-no-thinking | 175.67 | 4.33 | 7.67 | 13.00 | 18.67 | 1.00 | 3 |
+| sonnet-4-6 | 178.00 | 5.67 | 6.33 | 11.00 | 21.67 | 1.00 | 3 |
+| sonnet-4-6-no-thinking | **166.67** | 3.33 | 6.00 | 5.00 | 15.00 | 0.73 | 3 |
 
-Bester Wert pro Spalte fett. Kleiner = besser.
+Bester Wert pro Spalte fett. Kleiner = besser (außer `verification_pct`: größer = besser).
 
 ---
 
-## F-3.1 — Innere Korrektheit modellunabhängig perfekt, äußere stark modellabhängig ✅ stabil
+## F-3.1 — Korrektheit (innen + außen) auf v4 ist nahezu modellunabhängig perfekt ✅ stabil
 
-**Aussage**: `tests_passing` liegt für alle sechs Modelle bei 100 % (24/24
-Runs), `completed_within_budget` ebenfalls 100 %. Die äußere Korrektheit
-(`verification_pct`, über einen Modul-Import-Adapter mit 15 Szenarien) zerfällt
-dagegen scharf:
+**Aussage**: `tests_passing` liegt für alle sechs Modelle bei 100 % (21/21
+Runs). `verification_pct` liegt in fünf von sechs Zellen ebenfalls bei
+1.00 — der explizite API-Vertrag (`Cell = [number, number]`,
+`nextGeneration(cells: Cell[]): Cell[]`) eliminiert die zuvor beobachteten
+Repräsentations-Mismatches fast vollständig.
 
-| Modell | `tests_passing` | `verification_pct` (Mittel) | min |
+Einzige Ausnahme: **sonnet-4-6-no-thinking** mit `verification_pct = 0.73`
+— 2/3 Runs perfekt (15/15), ein Run mit 3/15 (siehe F-3.5).
+
+**Datenbasis**: 21 Runs, 15 Verifikations-Szenarien pro Run.
+
+**Konsequenz**: Auf v4 + game-of-life + Direct-API/Portkey-Opus + Sonnet ist
+Korrektheit kein differenzierendes Merkmal mehr. Code-Qualitäts-Ranking-Aussagen
+sind auf korrektem Code basiert.
+
+---
+
+## F-3.2 — Modell-Ranking: Opus-4.7 deutlich vor Sonnet-4.6 und Opus-4.6; Sonnet jetzt vor Opus-4.6 ✅ stabil
+
+**Aussage**: Im no-thinking-Vergleich (apples-to-apples) liefert
+**Opus 4.7** den deutlich besten Code; **Sonnet 4.6** liegt davor, was Opus 4.6
+betrifft, und Opus 4.6 ist das schwächste der drei Modelle auf v4:
+
+| Metrik (no-thinking) | opus-4-7 | sonnet-4-6 | opus-4-6-portkey |
 |---|---:|---:|---:|
-| opus-4-7 | 100 % | **1.00** | 1.00 |
-| opus-4-6-portkey-no-thinking | 100 % | **1.00** | 1.00 |
-| opus-4-6-portkey | 100 % | 0.84 | 0.07 |
-| opus-4-7-no-thinking | 100 % | 0.80 | 0.20 |
-| sonnet-4-6 | 100 % | **0.18** | 0.13 |
-| sonnet-4-6-no-thinking | 100 % | **0.16** | 0.13 |
+| `cognitive_max` | **2.83** | 5.00 | 13.00 |
+| `mccabe_max` | **4.00** | 6.00 | 7.67 |
+| `cc_longest_function` | **9.33** | 15.00 | 18.67 |
+| `smell_total` | **2.50** | 3.33 | 4.33 |
+| `code_mass` | 167.67 | **166.67** | 175.67 |
 
-Die Differenz `tests_passing − verification_pct` ist nicht Algorithmus-Fehler,
-sondern Repräsentations-Adhärenz — siehe F-3.5 für die mechanistische
-Erklärung.
+Ranking opus-4-7 < sonnet-4-6 < opus-4-6 ist über vier der fünf
+Code-Qualitäts-Metriken vorzeichen-konsistent (bei `code_mass` liegen
+opus-4-7 und sonnet-4-6 effektiv gleichauf, ~1 % auseinander). Die
+Spannweite zwischen Bester (opus-4-7) und Schlechtester (opus-4-6) ist auf
+`cognitive_max` mit Faktor 4.6× substanziell.
 
-**Datenbasis**: 24 Runs, Verifikation gegen 15 fixierte Szenarien (Stills,
-Oscillators, Glider mit negativen Koordinaten, 0-Step-Identität, leeres Grid).
+**Datenbasis**: opus-4-7-no-thinking n=6 (RQ-3 + RQ-4-Pool), sonnet-4-6-no-thinking n=3,
+opus-4-6-portkey-no-thinking n=3.
 
-**Konsequenz**: H1 in der ursprünglichen Form (Innensicht-only) erfüllt; die
-erweiterte Form mit `verification_pct = 100 %` ist für Sonnet (und einzelne
-Opus-Runs) verletzt. Die Code-Qualitäts-Befunde F-3.2/F-3.3 bleiben gültig,
-weil sie strikt mengenintern interpretiert werden; eine "Sonnet liefert
-schlechteren Code als Opus"-Aussage muss aber zusammen mit F-3.5 gelesen
-werden — Sonnet wählt nicht nur quantitativ schlechteren Code, sondern eine
-andere Datenrepräsentation.
-
----
-
-## F-3.2 — Opus < Sonnet bei Code-Qualität, Opus-4.7 marginal vor Opus-4.6 ✅ stabil
-
-**Aussage**: Im no-thinking-Vergleich (apples-to-apples) liefert Opus
-konsistent kompakteren, weniger smelly und weniger komplexen Code als Sonnet;
-Opus-4.7 liegt knapp vor Opus-4.6:
-
-| Metrik (no-thinking) | opus-4-7 | opus-4-6-portkey | sonnet-4-6 |
-|---|---:|---:|---:|
-| `code_mass` | 155.00 | 155.75 | 188.67 |
-| `smell_total` | 2.50 | 3.00 | 5.67 |
-| `mccabe_max` | 5.25 | 5.75 | 9.00 |
-| `cognitive_max` | 5.25 | 7.75 | 15.00 |
-
-Ranking opus-4-7 < opus-4-6 < sonnet-4-6 ist über alle vier
-Code-Qualitäts-Metriken vorzeichen-konsistent. Der Sonnet-Abstand zu beiden
-Opus-Varianten ist substanziell (`cognitive_max` fast 3×); der Abstand zwischen
-Opus-4.7 und Opus-4.6 ist klein und innerhalb von σ, aber das Vorzeichen
-stabil. H2 bestätigt.
-
-**Datenbasis**: opus-4-7-no-thinking n=4, opus-4-6-portkey-no-thinking n=4,
-sonnet-4-6-no-thinking n=3.
+**Bemerkung zur Reihenfolge**: Sonnet vor Opus 4.6 ist eine Umkehr gegenüber
+naiver Modell-Tier-Intuition ("Opus > Sonnet"). Eine plausible Erklärung:
+Sonnet (no-thinking) erzeugt schlicht *kürzeren, weniger generalisierten*
+Code, während Opus 4.6 dazu neigt, eine vollständigere Abstraktion zu
+bauen (vgl. F-3.3 — Opus 4.6 + Thinking degradiert sogar).
 
 ---
 
-## F-3.3 — Thinking wirkt nicht uniform positiv; Opus-4.6 + Thinking degradiert Code-Qualität ⚠️ bedingt
+## F-3.3 — Thinking wirkt nicht uniform; Opus-4.6 + Thinking ohne Vorteil, Sonnet + Thinking sogar negativ auf cognitive_max ⚠️ bedingt
 
-**Aussage**: Die Hypothese "Thinking verbessert Code-Qualität" hält *nicht*
-universell. Within-model-Deltas (thinking vs. no-thinking, ∆ negativ = besser
+**Aussage**: Within-model-Deltas (thinking vs. no-thinking, ∆ negativ = besser
 mit Thinking):
 
 | Modell | ∆ `code_mass` | ∆ `smell_total` | ∆ `mccabe_max` | ∆ `cognitive_max` | ∆ `cc_longest_function` |
 |---|---:|---:|---:|---:|---:|
-| opus-4-7 | +7.75 | −0.50 | −1.00 | −0.50 | +2.00 |
-| opus-4-6-portkey | −1.92 | **+0.83** | **+2.75** | **+5.42** | **+7.50** |
-| sonnet-4-6 | −5.67 | −1.67 | −1.67 | −7.00 | +3.33 |
+| opus-4-7 | −8.67 | −0.17 | −0.67 | +0.17 | −2.33 |
+| opus-4-6-portkey | −2.67 | 0.00 | −1.00 | −1.00 | +0.66 |
+| sonnet-4-6 | +11.33 | +2.34 | +0.33 | **+6.00** | +6.67 |
 
-- **Sonnet 4.6**: Thinking verbessert deutlich (`cognitive_max` 15.0 → 8.0).
-- **Opus 4.7**: Thinking-Effekt klein und gemischt — `cognitive_max` sinkt
-  leicht, `code_mass` und `cc_longest_function` steigen leicht.
-- **Opus 4.6**: Thinking **verschlechtert** über vier Qualitäts-Metriken
-  (`cognitive_max` 7.75 → 13.17, `mccabe_max` 5.75 → 8.50,
-  `cc_longest_function` 9.00 → 16.50, `smell_total` 3.00 → 3.83).
+- **Opus 4.7**: Thinking-Effekt klein, im wesentlichen neutral mit leichter
+  Tendenz zu kompakterem Code und kürzeren Funktionen. Die Cognitive-Komplexität
+  steigt minimal (+0.17).
+- **Opus 4.6**: Thinking-Effekt klein und uneinheitlich — leicht besser auf
+  Komplexität, leicht schlechter auf längster Funktion. Effektiv neutral.
+- **Sonnet 4.6**: Thinking **verschlechtert** über alle fünf Outcomes,
+  besonders `cognitive_max` (5.00 → 11.00, mehr als Verdopplung).
 
-Damit ist die H3-Variante "Thinking-Effekt bei Opus stärker als bei Sonnet"
-falsifiziert: bei Opus-4.6 ist der Effekt sogar negativ, bei Sonnet am
-deutlichsten positiv.
+H3 (Thinking-Effekt bei Opus stärker als Sonnet, beide positiv) ist
+falsifiziert: bei Sonnet ist der Effekt deutlich negativ. Eine plausible
+Mechanik: Sonnet nutzt Thinking, um eine elegantere/vollständigere Abstraktion
+zu konstruieren, die aber mehr Verzweigungen und Helfer-Logik einführt
+(höhere Cognitive-Komplexität).
 
-**Bedingung**: n_opus-4-6-portkey = 6, n_opus-4-6-portkey-no-thinking = 4 mit
-substanzieller σ in beiden Zellen. Vorzeichen über vier unabhängige Metriken
-konsistent → der Befund ist belastbarer als jeder Einzelwert, bleibt aber bei
-diesem n als ⚠️ bedingt klassifiziert. Replikation mit höherem n und ggf.
-zweiter Kata (mars-rover) wäre wünschenswert.
+**Bedingung**: n_sonnet = 3 in beiden Zellen, σ_cognitive bei sonnet-4-6 mit
+7.81 sehr hoch (range 2–16). Der Mittelwertsprung ist stabil über vier von
+fünf Metriken vorzeichen-konsistent, aber bei n=3 ist Replikation
+wünschenswert → ⚠️ bedingt.
 
 ---
 
-## F-3.4 — Sonnet ist token-billiger, aber nicht wall-clock-schneller, und liefert die schlechteste Code-Qualität ✅ stabil
+## F-3.4 — Token-Kosten und Wallclock nivellieren sich auf v4 weitgehend ✅ stabil
 
-**Aussage**: Token- und Zeit-Vergleich:
+**Aussage**: Token-Verbrauch (Mittel) und Wallclock-Zeit nach Modell:
 
 | Modell | `total_tokens` (Mittel) | `duration_seconds` (Mittel) |
 |---|---:|---:|
-| sonnet-4-6 | 2 094 870 | 1 418.7 |
-| sonnet-4-6-no-thinking | 1 991 200 | 1 395.0 |
-| opus-4-7 | 3 681 570 | 1 322.3 |
-| opus-4-7-no-thinking | 3 059 620 | 1 087.0 |
-| opus-4-6-portkey | 4 379 140 | 1 008.5 |
-| opus-4-6-portkey-no-thinking | 4 275 800 | 866.3 |
+| sonnet-4-6-no-thinking | 2.21 M | 1116.7 |
+| sonnet-4-6 | 2.41 M | 846.3 |
+| opus-4-7 | 2.49 M | 827.7 |
+| opus-4-7-no-thinking | 2.58 M | 865.2 |
+| opus-4-6-portkey | 2.93 M | 956.3 |
+| opus-4-6-portkey-no-thinking | 3.87 M | 1160.7 |
 
-Sonnet verbraucht 43–48 % der Tokens eines Opus-Runs, läuft aber **länger** in
-Wallclock-Zeit (≈1400 s vs. 870–1320 s bei Opus). Kombiniert mit F-3.2 (Sonnet
-schlechteste Code-Qualität) gilt: Sonnet ist Token-billiger, aber weder
-schneller noch in der Qualität konkurrenzfähig auf diesem v4-Game-of-Life-Setup.
+Spread zwischen günstigstem (sonnet-no-thinking ~2.2 M) und teuerstem
+(opus-4-6-no-thinking ~3.9 M) ist Faktor ~1.75× — deutlich kleiner als das
+in früheren Runs beobachtete ~2× (vermutlich weil der API-Vertrag den
+Lösungsraum einengt, sodass alle Modelle ähnlich strukturierte Implementationen
+liefern).
 
-**Hinweis zur Streuung**: σ_duration ist bei sonnet-4-6 mit 537 s sehr hoch
-(min 924, max 1990) — bei n=3 ein einzelner Ausreißer dominiert. Der
-Token-Befund ist trotzdem klar, da der Faktor ~2× zwischen Sonnet und Opus
-deutlich über der Streuung liegt.
+Wallclock liegt einheitlich bei ~14–20 min/Run. Sonnet ist nicht mehr
+zeitlich auffällig billig oder teuer.
 
----
-
-## F-3.5 — Sonnet wählt durchgehend eine inkompatible Datenrepräsentation, Opus folgt der Kata-Konvention ✅ stabil
-
-**Aussage**: Die niedrigen `verification_pct`-Werte aus F-3.1 sind keine
-Algorithmus-Fehler. Sie entstehen, weil Modelle die durch die Kata
-underspezifizierte Datenrepräsentation unterschiedlich wählen:
-
-| Repräsentation in `nextGeneration(…)` | Modelle | n | Adapter-Ergebnis |
-|---|---|---:|---:|
-| `Cell[]` mit `Cell = [number, number]` (Tupel-Array, Kata-Konvention) | alle Opus-Varianten (Mehrheit) | 16 | 15/15 |
-| `boolean[][]` (2D-Matrix, Kata-Constraint "sparse" verletzt) | **alle 6 Sonnet-Runs** | 6 | 2–3/15 |
-| `Set<string>` (serialisierte Koordinaten) | 1 opus-4-6-portkey-Run | 1 | 1/15 |
-| `Cell[]` mit `Cell = {x, y}` (Objekt statt Tupel) | 1 opus-4-7-no-thinking-Run | 1 | 3/15 |
-
-Die Kata fordert explizit **"sparse representation, nur lebende Zellen tracken"**
-und nutzt in den Beispielen Koordinaten-Tupel `(x, y)`. Eine `boolean[][]`-Matrix
-verletzt die Sparse-Anforderung. Die anderen beiden Repräsentationen
-(`Set<string>`, `{x, y}`-Objekt) sind sparse-konform, aber syntaktisch nicht das
-naheliegende Tupel — der Adapter (der die Kata-Konvention spiegelt) kann sie
-ohne Übersetzung nicht aufrufen.
-
-**Modell-Muster**:
-- **Opus 4.7 + Opus 4.6 (no-thinking)**: 100 % Tupel-Wahl, 100 %
-  Adapter-Kompatibilität.
-- **Opus mit Thinking**: 1 Ausreißer pro Modell, jeweils mit "saubererer"
-  Repräsentation, die aber die Kata-Konvention verlässt.
-- **Sonnet**: 6/6 Runs wählen 2D-Matrix — die intuitivste
-  Lehrbuch-Repräsentation, aber explizit von der Kata ausgeschlossen.
-
-**Datenbasis**: 24 Runs, manuelle Inspektion der `nextGeneration`-Signatur in
-`src/game-of-life.ts` pro Run.
-
-**Bedeutung**: Im no-thinking-Direktvergleich ist der Sonnet-Unterschied keine
-"Sonnet kann Game of Life nicht" — sondern "Sonnet liest 'sparse representation'
-nicht als bindenden Constraint". Das ist konsistent mit F-3.2 (Sonnet erzeugt
-auch in den Code-Qualitäts-Metriken den schwächsten Code) und ergänzt es um eine
-Spec-Compliance-Dimension. Bei Extended-Thinking taucht in Opus-Runs ein
-ähnliches, aber viel selteneres Muster auf — Thinking experimentiert mit
-alternativen Repräsentationen, die zwar legitim wären, hier aber die
-Adapter-Konvention verletzen.
+**Konsequenz**: Auf v4 ist Modell-Wahl primär eine Code-Qualitätsentscheidung
+(F-3.2), nicht eine Token-Effizienz-Entscheidung. Opus 4.7 liefert die beste
+Qualität bei mittlerem Token-Budget; Sonnet liegt qualitativ dahinter, ist
+aber nicht signifikant günstiger.
 
 ---
 
-## Caveats (aus README übernommen)
+## F-3.5 — Vertrags-Konformität unter explizitem API-Vertrag fast vollständig erreicht; ein Sonnet-Ausreißer redefiniert `Cell` als Objekt ⚠️ bedingt
 
-- **Single workflow**: Nur v4-exact-subagents. Andere Workflows könnten andere
-  Modell-Rankings produzieren.
+**Aussage**: Mit explizitem API-Vertrag in der Kata-Prompt
+(`type Cell = [number, number]; export function nextGeneration(cells: Cell[]): Cell[]`)
+verschwinden 5 von 6 zuvor beobachteten Repräsentations-Mismatches. Verbleibend:
+
+| Run | Modell | Gewählte Signatur | `verification_pct` |
+|---|---|---|---:|
+| `2026-05-14_21-09-13_…_sonnet-4-6-no-thinking` | sonnet-4-6-no-thinking | `Cell = { x: number; y: number }` (Objekt) | 0.20 |
+
+Alle anderen 20 Runs halten sich an die `[number, number]`-Tupel-Form und
+erreichen 15/15. Die Sonnet-Abweichung zeigt: der explizite Prompt-Vertrag
+reduziert Repräsentations-Drift drastisch (Sonnet zuvor 6/6 Runs `boolean[][]`
+→ jetzt 5/6 Runs Tupel), eliminiert ihn aber nicht in allen Fällen.
+
+**Datenbasis**: 21 Runs, manuelle Inspektion der `nextGeneration`-Signaturen
+in `src/game-of-life.ts`.
+
+**Mechanik-Vermutung**: Sonnet (no-thinking) interpretiert `type Cell = [number, number]`
+gelegentlich als "irgendein Cell-Typ" und ersetzt ihn durch eine vermeintlich
+ausdrucksstärkere Objektform. Bei n=3 ist ein Ausreißer 33 % der Zelle —
+größeres n nötig zur stabilen Frequenz-Schätzung.
+
+**Bedingung**: ⚠️ bedingt wegen n=3.
+
+---
+
+## Caveats
+
+- **Single workflow**: Nur v4-exact-subagents. Andere Workflows könnten
+  andere Modell-Rankings produzieren (vgl. RQ-4 F-4.1).
 - **Single kata**: Nur Game of Life (Library-Form, example-mapping).
   Mars-rover als zweiter Code-Qualitäts-Carrier offen.
 - **Opus 4.6 via Portkey**: Findings über `opus-4-6-portkey*` nicht
   automatisch auf Direct-API-Opus-4.6 übertragbar.
-- **Außen-Korrektheit hängt an Adapter-Konvention**: `verification_pct` misst
-  Adhärenz an die vom Adapter gewählte Tupel-Repräsentation. Algorithmisch
-  korrekte Implementierungen mit anderer Repräsentation (Matrix, Set, Objekt)
-  zählen als Fehler — siehe F-3.5.
-- **n_sonnet = 3**: Sonnet-Zellen am unteren Rand von `min_replicates`. σ in
-  einzelnen Outcomes hoch (z. B. `code_mass` σ=117 bei sonnet-4-6-no-thinking
-  wegen Ausreißer 324). Größeres n würde F-3.2 und F-3.4 stabiler stützen.
+- **n = 3 pro Zelle** (außer opus-4-7-no-thinking mit n=6 dank
+  RQ-4-Pooling): σ in einzelnen Outcomes hoch — F-3.3 und F-3.5 daher
+  ⚠️ bedingt.
+- **API-Vertrag eingeführt**: Alle Runs in dieser Datenbasis nutzen den
+  expliziten API-Vertrag in der Prompt (commit `0902a4f`). Frühere Findings
+  über Repräsentations-Wahl ohne expliziten Vertrag sind nicht direkt
+  vergleichbar.

@@ -1,0 +1,22 @@
+Exercise complete. Here's a summary of the TDD cycle:
+
+**8 tests implemented**, all passing:
+
+1. Empty grid → [] (degenerate)
+2. Single cell dies — underpopulation (degenerate)
+3. Two adjacent cells die — underpopulation (degenerate)
+4. Survival with 3 neighbors — drove initial neighbor-counting logic
+5. Overpopulation with 4+ neighbors — degenerate (already handled by `=== 3`)
+6. Reproduction — drove dead-cell candidate enumeration
+7. Block still life — degenerate (each cell has exactly 3 neighbors)
+8. Blinker oscillator — drove adding 2-neighbor survival rule
+
+**Key implementation milestones:**
+- Test 4: Introduced `isNeighbor`, `countNeighbors`, and filtering
+- Test 6: Added `deadNeighbors` for reproduction
+- Test 8: Expanded survival from `=== 3` to `n === 2 || n === 3`
+
+**Refactorings applied:**
+- Extracted `isNeighbor` and `countNeighbors` helpers (Rule 2: Reveals Intent)
+- Extracted `hasThreeNeighbors` predicate to eliminate duplication (Rule 3)
+- Renamed predicates to domain terms: `survives` and `reproduces` (Rule 2)

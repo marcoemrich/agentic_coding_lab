@@ -1,0 +1,16 @@
+All done. Here's a summary of the completed TDD cycle:
+
+**Game of Life - Next Generation** implemented via 5 Red-Green-Refactor cycles:
+
+1. **Empty grid** → returns `[]` (hardcoded return)
+2. **Single cell dies** → passed trivially with existing `return []`
+3. **Two adjacent cells die** → passed trivially with existing `return []`
+4. **Block survival** → implemented neighbor counting + survival rule (live cells with 2-3 neighbors survive)
+5. **Blinker oscillator** → implemented reproduction rule (dead cells with exactly 3 neighbors become alive)
+
+**Final implementation** (`src/game-of-life.ts`):
+- `neighborsOf(x, y)` — returns 8 neighbor coordinates
+- `countLiveNeighbors(x, y, alive)` — counts how many neighbors are in the alive set
+- `nextGeneration(liveCells)` — filters survivors (2-3 neighbors) and finds born cells (dead cells with exactly 3 neighbors)
+
+**All 5 tests passing**, sparse representation, handles negative coordinates, infinite grid.

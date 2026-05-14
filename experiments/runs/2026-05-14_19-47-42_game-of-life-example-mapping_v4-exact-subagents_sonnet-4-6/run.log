@@ -1,0 +1,9 @@
+The TDD cycle is complete. All 7 tests pass:
+
+1. Empty grid → `[]`
+2. Single live cell dies (underpopulation) → `[]`
+3. Two live cells die (underpopulation) → `[]`
+4. Block of four stays alive (still life) — drove the first real implementation
+5. Overpopulation kills center cell → `[]`
+6. Dead cell with 3 neighbors revives (reproduction) — drove the revival logic
+7. Blinker oscillates correctly — passed for free

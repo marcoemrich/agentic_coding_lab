@@ -1,0 +1,8 @@
+All done. Here's the summary:
+
+**Conway's Game of Life — TDD Implementation Complete**
+
+- **6 tests**, all passing
+- **Test List**: empty grid, single cell dies, two adjacent cells die, block still life, blinker oscillation, negative coordinates
+- **Implementation**: Sparse representation using `Set`/`Map` with string keys, neighbor counting, and the canonical Game of Life condition: `count === 3 || (alive && count === 2)`
+- **Refactorings applied**: extracted `toKey`/`fromKey` helpers, merged duplicate conditionals, replaced imperative loop with declarative `filter`/`map`

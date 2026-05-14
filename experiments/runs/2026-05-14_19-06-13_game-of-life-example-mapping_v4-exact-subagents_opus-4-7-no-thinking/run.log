@@ -1,0 +1,11 @@
+Experiment complete. All 8 tests pass:
+1. Empty grid returns empty grid
+2. Single live cell dies (underpopulation)
+3. Two adjacent live cells both die (underpopulation)
+4. 2x2 block still life unchanged
+5. Horizontal blinker rotates to vertical
+6. Live cell with >3 neighbors dies (overpopulation)
+7. Dead cell with exactly 3 neighbors becomes alive (reproduction)
+8. Negative coordinates work correctly
+
+The TDD cycle was followed using the specialized agents (test-list → red → green → refactor) for each test. `experiment-done.txt` written with `DONE`.

@@ -1,9 +1,0 @@
-TDD exercise complete. All 11 tests pass:
-- Empty grid handling
-- Rule 1 (Underpopulation): single cell + two adjacent cells die
-- Rule 2 (Survival): cells with 2 or 3 neighbors survive
-- Rule 3 (Overpopulation): center of full 3x3 dies
-- Rule 4 (Reproduction): dead cell with 3 neighbors becomes alive
-- Patterns: blinker oscillates, block stable, negative coordinates, single cell
-
-Implementation uses sparse representation with a Set of `"x,y"` keys, counting neighbors only for cells adjacent to live cells.

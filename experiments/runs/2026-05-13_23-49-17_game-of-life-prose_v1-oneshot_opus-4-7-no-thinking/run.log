@@ -1,6 +1,0 @@
-Implemented Conway's Game of Life with a sparse representation:
-
-- `src/game-of-life.ts` — uses a `Set<string>` of `"x,y"` keys to track only living cells. `nextGeneration` counts neighbor contributions in a `Map`, then applies B3/S23 rules. Handles arbitrary positive/negative integer coordinates.
-- `src/game-of-life.spec.ts` — 20 tests covering the four rules, classic patterns (block, blinker, beehive, toad, glider translation), negative/large-negative coordinates, and the `Cell[]`-based wrapper.
-
-All 20 tests pass; `tsc --noEmit` is clean.

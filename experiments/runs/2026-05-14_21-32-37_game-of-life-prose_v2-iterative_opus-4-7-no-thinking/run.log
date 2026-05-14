@@ -1,0 +1,8 @@
+## Implementation Checklist
+
+- [x] Step 1: Create `src/game-of-life.ts` with the `nextGeneration` function
+- [x] Step 2: Create `src/game-of-life.spec.ts` with tests covering all rules
+- [x] Step 3: Run tests to verify everything works
+- [x] Step 4: Write `experiment-done.txt`
+
+Complete. The Game of Life implementation uses a sparse representation: only living cells are stored, and the next generation is computed by counting neighbor contributions from each live cell (so dead cells with no live neighbors are never visited). All 10 tests pass, including a block (still life), blinker (oscillator), glider (spaceship), negative coordinates, overpopulation, underpopulation, and birth rules.

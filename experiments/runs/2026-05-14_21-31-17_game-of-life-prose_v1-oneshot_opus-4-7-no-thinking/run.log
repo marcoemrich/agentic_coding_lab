@@ -1,0 +1,6 @@
+Implementation complete:
+
+- `src/game-of-life.ts` — sparse `nextGeneration` using a Set of `"x,y"` keys and a neighbor-count Map. For each live cell, increment counts for its 8 neighbors; then a cell survives if count is 3, or 2 and currently alive.
+- `src/game-of-life.spec.ts` — 11 tests covering empty input, underpopulation, overpopulation, reproduction, blinker oscillation, block still-life, glider movement, negative coordinates, and duplicate input handling.
+
+All 11 tests pass.

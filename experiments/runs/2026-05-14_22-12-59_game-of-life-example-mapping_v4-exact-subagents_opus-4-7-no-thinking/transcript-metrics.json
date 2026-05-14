@@ -1,0 +1,231 @@
+{
+  "wall_clock_seconds": 920.92,
+  "total_tokens": {
+    "input": 65,
+    "output": 21989,
+    "cache_read": 3103370,
+    "cache_creation": 76274,
+    "total": 3201698
+  },
+  "context_utilization_pct": 8,
+  "context_window_tokens": 1000000,
+  "context_peak_tokens": 84939,
+  "message_count": 50,
+  "tool_calls": {
+    "Read": 3,
+    "Bash": 3,
+    "Agent": 25,
+    "TodoWrite": 9
+  },
+  "skill_invocations": {},
+  "task_invocations": {
+    "test-list": 1,
+    "red": 8,
+    "green": 8,
+    "refactor": 8
+  },
+  "cycle_count": 8,
+  "predictions_correct": 12,
+  "predictions_total": 12,
+  "model_versions": [
+    "claude-opus-4-7"
+  ],
+  "subagent_token_total": 5767955,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 126680,
+      "duration_seconds": 17.1,
+      "transcript": "agent-a4c1f8d49fd15ee23.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 440274,
+      "duration_seconds": 42.48,
+      "transcript": "agent-ab379854ebd093129.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 151925,
+      "duration_seconds": 18.22,
+      "transcript": "agent-a30fd8f10c37a38a9.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 126272,
+      "duration_seconds": 23.09,
+      "transcript": "agent-a1f8c45943a5deef6.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 243115,
+      "duration_seconds": 28.45,
+      "transcript": "agent-a7fe018518ee2e4a4.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 182185,
+      "duration_seconds": 14.13,
+      "transcript": "agent-a631c1d706d14ea7e.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 94552,
+      "duration_seconds": 17.8,
+      "transcript": "agent-a4a021374529cda97.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 244368,
+      "duration_seconds": 24.61,
+      "transcript": "agent-a0abd78379824fe38.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 183916,
+      "duration_seconds": 17.45,
+      "transcript": "agent-aa9f1902085fca1db.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 94775,
+      "duration_seconds": 19.94,
+      "transcript": "agent-ac1388e479fca9b91.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 245346,
+      "duration_seconds": 24.93,
+      "transcript": "agent-ac36478d8ba2773ac.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 217231,
+      "duration_seconds": 21.85,
+      "transcript": "agent-a3215f4346a0e136f.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 230681,
+      "duration_seconds": 40.56,
+      "transcript": "agent-a809105e6a78c74e4.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 249224,
+      "duration_seconds": 25.52,
+      "transcript": "agent-ac38ba9aa97de03da.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 153081,
+      "duration_seconds": 16.38,
+      "transcript": "agent-add2d30b552d2dbdf.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 267639,
+      "duration_seconds": 37.49,
+      "transcript": "agent-a2757a75c55cf412e.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 252104,
+      "duration_seconds": 28.54,
+      "transcript": "agent-add76c884f96a59a8.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 185172,
+      "duration_seconds": 17.55,
+      "transcript": "agent-a71386d84b0078bd6.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 379466,
+      "duration_seconds": 55.29,
+      "transcript": "agent-ace9f4c5e37729df5.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 219582,
+      "duration_seconds": 28.27,
+      "transcript": "agent-a04b4f3dde6976493.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 188066,
+      "duration_seconds": 16.98,
+      "transcript": "agent-a972a9ed85b55be38.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 268853,
+      "duration_seconds": 36.93,
+      "transcript": "agent-aa854c61e5ecb9768.jsonl"
+    },
+    {
+      "phase": "red",
+      "tokens": 250374,
+      "duration_seconds": 29.74,
+      "transcript": "agent-abb21c9e73ccd834f.jsonl"
+    },
+    {
+      "phase": "green",
+      "tokens": 156052,
+      "duration_seconds": 17.43,
+      "transcript": "agent-ab72ed505560f3482.jsonl"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 617022,
+      "duration_seconds": 65.92,
+      "transcript": "agent-a468148e21fd734bc.jsonl"
+    }
+  ],
+  "phase_source": "subagents",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 126680,
+        "duration_seconds": 17.1
+      },
+      "red": {
+        "count": 8,
+        "tokens": 2144387,
+        "duration_seconds": 232.54
+      },
+      "green": {
+        "count": 8,
+        "tokens": 1417628,
+        "duration_seconds": 139.99
+      },
+      "refactor": {
+        "count": 8,
+        "tokens": 2079260,
+        "duration_seconds": 297.02
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 126680.0,
+        "avg_duration_seconds": 17.1
+      },
+      "red": {
+        "avg_tokens": 268048.38,
+        "avg_duration_seconds": 29.07
+      },
+      "green": {
+        "avg_tokens": 177203.5,
+        "avg_duration_seconds": 17.5
+      },
+      "refactor": {
+        "avg_tokens": 259907.5,
+        "avg_duration_seconds": 37.13
+      }
+    },
+    "refactorings_applied": 8,
+    "tests_passed_immediately": 0
+  }
+}

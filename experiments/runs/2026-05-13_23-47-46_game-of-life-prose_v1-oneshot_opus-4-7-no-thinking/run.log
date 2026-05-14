@@ -1,5 +1,0 @@
-Complete. Implementation summary:
-
-- `src/game-of-life.ts` — Sparse Game of Life using a `Set<string>` of `"x,y"` keys. `nextGeneration` works by tallying neighbor counts for every cell adjacent to a living one, then applying B3/S23 rules. Handles negative coordinates trivially since coordinates are arbitrary integers.
-- `src/game-of-life.spec.ts` — 12 tests covering empty grid, underpopulation, overpopulation, reproduction, still life (block), oscillator (blinker), spaceship (glider over 1 and 4 generations), negative coordinates, and input immutability.
-- All 12 tests pass; `tsc --noEmit` is clean.

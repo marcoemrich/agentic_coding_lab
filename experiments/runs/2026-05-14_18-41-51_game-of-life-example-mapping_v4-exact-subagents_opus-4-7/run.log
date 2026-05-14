@@ -1,0 +1,7 @@
+All 7 tests passing. The TDD cycle is complete:
+
+- `src/game-of-life.ts` — implementation with `nextGeneration(cells: Cell[])` using sparse representation (Map keyed on coordinate strings, neighbor enumeration via offsets)
+- `src/game-of-life.spec.ts` — 7 tests covering empty grid, underpopulation (single + adjacent), survival (2x2 block), blinker oscillator, reproduction, and overpopulation
+- `experiment-done.txt` — `DONE` marker written
+
+Note: One spec correction was needed — prompt.md's Rule 3 diagram showed a 3x3 wrapped result, but on an infinite grid the correct gen 1 of that input is 8 cells (center dies from overpopulation, plus births at (1,-1) and (1,3)). Test 7's expected was updated accordingly.

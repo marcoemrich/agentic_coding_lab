@@ -1,0 +1,5 @@
+Implementation complete. Summary:
+
+- **TDD cycle**: Wrote 12 tests covering all 4 rules, blinker, block, negative coordinates, empty input, and duplicate-free output. Verified red phase with stub, then implemented and went green.
+- **Implementation** (`src/game-of-life.ts`): Sparse Set-based representation. Iterates each live cell once, incrementing neighbor counts in a Map for all 8 adjacent positions. Applies B3/S23 rules in a single pass over the neighbor map.
+- **Result**: All 12 tests pass. `experiment-done.txt` written.

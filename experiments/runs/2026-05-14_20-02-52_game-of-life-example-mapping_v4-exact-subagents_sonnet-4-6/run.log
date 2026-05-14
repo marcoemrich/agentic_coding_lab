@@ -1,0 +1,6 @@
+All 8 tests pass and the experiment is complete. The implementation in `src/game-of-life.ts` handles all four Game of Life rules:
+
+1. **Underpopulation** - cells with < 2 neighbors die
+2. **Survival** - cells with 2 or 3 neighbors live
+3. **Overpopulation** - cells with > 3 neighbors die
+4. **Reproduction** - dead cells with exactly 3 neighbors become alive

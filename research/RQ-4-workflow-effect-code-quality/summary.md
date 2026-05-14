@@ -2,9 +2,9 @@
 
 _Wie wirkt sich die Workflow-Struktur (von oneshot ueber iterativ bis zu striktem TDD mit Subagents) auf die Code-Qualitaet aus, und macht die TDD-Striktheit einen Unterschied?_
 
-Generated: 2026-05-14T00:03:33Z
+Generated: 2026-05-14T22:44:51Z
 
-Cells declared: 5 · matched runs: 22 · min_replicates: 3
+Cells declared: 5 · matched runs: 18 · min_replicates: 3
 
 ## Zell-Coverage
 
@@ -12,9 +12,9 @@ Cells declared: 5 · matched runs: 22 · min_replicates: 3
 |---|---|---|---:|---:|---|
 | game-of-life-prose | v1-oneshot | opus-4-7-no-thinking | 3 | 3 | ✅ |
 | game-of-life-prose | v2-iterative | opus-4-7-no-thinking | 3 | 3 | ✅ |
-| game-of-life-example-mapping | v3-basic-tdd | opus-4-7-no-thinking | 6 | 6 | ✅ |
-| game-of-life-example-mapping | v4-exact-subagents | opus-4-7-no-thinking | 4 | 4 | ✅ |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking | 6 | 6 | ✅ |
+| game-of-life-example-mapping | v3-basic-tdd | opus-4-7-no-thinking | 3 | 3 | ✅ |
+| game-of-life-example-mapping | v4-exact-subagents | opus-4-7-no-thinking | 6 | 6 | ✅ |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking | 3 | 3 | ✅ |
 
 ## Outcome-Pivots (pro Zelle)
 
@@ -22,99 +22,99 @@ Cells declared: 5 · matched runs: 22 · min_replicates: 3
 
 | kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 | 156.83 |   139 |   185 | 20.11 |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   4 | 155    |   137 |   184 | 20.54 |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 | 157    |   146 |   184 | 13.56 |
-| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 | 191.33 |   159 |   210 | 28.11 |
-| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 | 169.33 |   155 |   197 | 23.97 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 | 164.33 |   154 |   180 | 13.8  |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 | 167.67 |   154 |   193 | 13.95 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 | 161.67 |   153 |   169 |  8.08 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 | 160    |   154 |   167 |  6.56 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 | 154.67 |   145 |   161 |  8.5  |
 
 ### smell_total
 
 | kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |   4.33 |     2 |     5 |  1.21 |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   4 |   2.5  |     2 |     3 |  0.58 |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   3.17 |     2 |     5 |  1.47 |
-| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |   2.33 |     2 |     3 |  0.58 |
-| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |   2.33 |     2 |     3 |  0.58 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |   5.67 |     5 |     6 |  0.58 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   2.5  |     2 |     3 |  0.55 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |   5.67 |     4 |     7 |  1.53 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |   5    |     4 |     6 |  1    |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |   4.33 |     4 |     5 |  0.58 |
 
 ### cc_longest_function
 
 | kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |  29.83 |    24 |    44 |  8.28 |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   4 |  12.25 |    10 |    14 |  1.71 |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |  16.83 |     2 |    25 |  7.99 |
-| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |  21.33 |    19 |    24 |  2.52 |
-| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |  24.67 |    21 |    29 |  4.04 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  34    |    32 |    37 |  2.65 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   9.33 |     6 |    15 |  3.2  |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |  24.33 |    20 |    32 |  6.66 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |  33.67 |    29 |    38 |  4.51 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |  34    |    29 |    37 |  4.36 |
 
 ### cc_loc
 
 | kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |  29.83 |    24 |    38 |  5.81 |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   4 |  29.75 |    25 |    35 |  4.99 |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |  29.67 |    24 |    36 |  4.5  |
-| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |  51.33 |    48 |    55 |  3.51 |
-| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |  44.33 |    36 |    55 |  9.71 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  31.67 |    31 |    32 |  0.58 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |  32.33 |    25 |    47 |  8.14 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |  31.67 |    31 |    33 |  1.15 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |  34    |    31 |    37 |  3    |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |  32.33 |    30 |    36 |  3.21 |
 
 ### mccabe_max
 
 | kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |  11.83 |     8 |    15 |  2.48 |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   4 |   5.25 |     4 |     7 |  1.26 |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   6.33 |     3 |    11 |  2.66 |
-| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |   8.33 |     8 |     9 |  0.58 |
-| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |   8.67 |     8 |     9 |  0.58 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  14.33 |    14 |    15 |  0.58 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   4    |     3 |     5 |  0.89 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |  10.67 |    10 |    12 |  1.15 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |  14    |    12 |    15 |  1.73 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |  12    |    12 |    12 |  0    |
 
 ### cognitive_max
 
 | kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |  16.67 |     9 |    21 |  4.08 |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   4 |   5.25 |     3 |     7 |  2.06 |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |  10.17 |     2 |    21 |  7.11 |
-| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |   9.33 |     9 |    10 |  0.58 |
-| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |   9.67 |     9 |    10 |  0.58 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  23.33 |    19 |    28 |  4.51 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |   2.83 |     2 |     4 |  0.75 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |  18.33 |    11 |    24 |  6.66 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |  20.67 |    18 |    23 |  2.52 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |  16.67 |    14 |    18 |  2.31 |
 
 ### tests_passing (rate %)
 
 | kata                         | workflow                | model                |   n |   match |   rate_% |
 |:-----------------------------|:------------------------|:---------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |       6 |      100 |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   4 |       4 |      100 |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |       6 |      100 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |       3 |      100 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |       6 |      100 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |       3 |      100 |
 | game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |       3 |      100 |
 | game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |       3 |      100 |
 
-### verification_pct
+### verification_pct (rate %)
 
-| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
-|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |   1    |  1    |  1    |  0    |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   4 |   0.8  |  0.2  |  1    |  0.4  |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |   1    |  1    |  1    |  0    |
-| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |   0.07 |  0.07 |  0.07 |  0    |
-| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |   0.4  |  0.07 |  1    |  0.52 |
+| kata                         | workflow                | model                |   n |   match |   rate_% |
+|:-----------------------------|:------------------------|:---------------------|----:|--------:|---------:|
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |       3 |      100 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |       6 |      100 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |       3 |      100 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |       3 |      100 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |       3 |      100 |
 
 ### verification_passed
 
 | kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |     15 |    15 |    15 |  0    |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   4 |     12 |     3 |    15 |  6    |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |     15 |    15 |    15 |  0    |
-| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |      1 |     1 |     1 |  0    |
-| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |      6 |     1 |    15 |  7.81 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
 
 ### verification_total
 
 | kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |     15 |    15 |    15 |     0 |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   4 |     15 |    15 |    15 |     0 |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |     15 |    15 |    15 |     0 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
 | game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
 | game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |     15 |    15 |    15 |     0 |
 
@@ -122,9 +122,9 @@ Cells declared: 5 · matched runs: 22 · min_replicates: 3
 
 | kata                         | workflow                | model                |   n |   match |   rate_% |
 |:-----------------------------|:------------------------|:---------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |       6 |      100 |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   4 |       4 |      100 |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |       6 |      100 |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |       3 |      100 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |       6 |      100 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |       3 |      100 |
 | game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |       3 |      100 |
 | game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |       3 |      100 |
 
@@ -146,20 +146,20 @@ _Spalte `tests_immediately_passing` nicht in CSV — wird nicht erhoben oder Tip
 
 ### duration_seconds
 
-| kata                         | workflow                | model                |   n |    mean |   min |   max |    std |
-|:-----------------------------|:------------------------|:---------------------|----:|--------:|------:|------:|-------:|
-| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 |   56.5  |    45 |    83 |  14.27 |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   4 | 1087    |   763 |  1376 | 326.43 |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |  349.5  |   329 |   377 |  16.56 |
-| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |  101.33 |    74 |   127 |  26.54 |
-| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |  109    |    89 |   120 |  17.35 |
+| kata                         | workflow                | model                |   n |   mean |   min |   max |    std |
+|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|-------:|
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 |  67    |    59 |    82 |  13    |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 | 865.17 |   661 |  1124 | 179.28 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 | 300.33 |   220 |   428 | 111.79 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |  84.67 |    62 |   125 |  35.02 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |  83.67 |    82 |    86 |   2.08 |
 
 ### total_tokens
 
 | kata                         | workflow                | model                |   n |             mean |     min |      max |              std |
 |:-----------------------------|:------------------------|:---------------------|----:|-----------------:|--------:|---------:|-----------------:|
-| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   6 | 630765           |  565424 |   720713 |  73695.5         |
-| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   4 |      3.05962e+06 | 2521335 |  3776105 | 523619           |
-| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   6 |      8.84631e+06 | 7645056 | 10773096 |      1.12327e+06 |
-| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 |      1.02576e+06 |  822081 |  1147997 | 177568           |
-| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 |      1.33224e+06 | 1079254 |  1614279 | 268692           |
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |   3 | 784518           |  688031 |   935220 | 132212           |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |   6 |      2.57698e+06 | 2023377 |  3201698 | 405256           |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   3 |      6.86566e+06 | 4594513 | 10667191 |      3.31299e+06 |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |   3 | 854606           |  683747 |  1093416 | 213120           |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |   3 | 959927           |  855529 |  1034902 |  93236           |
