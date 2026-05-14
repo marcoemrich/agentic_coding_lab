@@ -25,43 +25,85 @@ Bester Wert pro Spalte fett. Kleiner = besser (außer `verification_pct`).
 
 ---
 
-## F-4.1 — TDD-Effekt nicht uniform: v4 dominiert Code-Komplexität deutlich, v3 (minimal-TDD) ist sogar schlechter als kein TDD ✅ stabil
+## F-4.1 — Striktes TDD mit Phasen-Isolation (v4) verbessert Code-Qualität dramatisch ✅ stabil
 
-**Aussage**: Auf den Komplexitäts-Metriken liefert **v4-exact-subagents**
-die mit Abstand niedrigsten Werte; v3-basic-tdd liegt dagegen auf
-`cognitive_max`, `mccabe_max` und `cc_longest_function` **oberhalb** der
-non-TDD-Workflows (v1, v2):
+**Aussage**: Strukturiertes TDD mit phasen-isolierten Subagents
+(v4-exact-subagents) liefert auf jeder Komplexitäts-Metrik die mit Abstand
+besten Werte — Faktor 4–8× besser als alle anderen Workflows in dieser
+Studie:
 
-- v4: `cognitive_max` 2.83, `mccabe_max` 4.00, `cc_longest_function` 9.33,
-  `smell_total` 2.50 — Bestwerte in allen vier Komplexitäts-Metriken.
-- v5-exact-single-context: `cognitive_max` 18.33, `mccabe_max` 10.67,
-  `cc_longest_function` 24.33 — zweitbeste TDD-Variante, aber 6× schlechter
-  als v4 auf `cognitive_max`.
-- v1-oneshot / v2-iterative (non-TDD): `cognitive_max` 17–21, `mccabe_max`
-  12–14, `cc_longest_function` ~34 — mittleres Niveau.
-- v3-basic-tdd: `cognitive_max` 23.33, `mccabe_max` 14.33,
-  `cc_longest_function` 34.00 — **schlechteste Werte über alle Zellen**.
+| Metrik | v4 (strict TDD) | Schlechtester Workflow | v4 ist besser um Faktor |
+|---|---:|---|---:|
+| `cognitive_max` | **2.83** | v3 (23.33) | **8.3×** |
+| `mccabe_max` | **4.00** | v3 (14.33) | 3.6× |
+| `cc_longest_function` | **9.33** | v2/v3 (34.00) | 3.6× |
+| `smell_total` | **2.50** | v3/v5 (5.67) | 2.3× |
 
-H1 ("TDD verbessert Code-Qualität") gilt also nur für *strukturiertes* TDD
-(v4, partiell v5); unstrukturiertes TDD (v3) ist auf Komplexität messbar
-schlechter als kein TDD. Die intuitive Lesart: ohne Phasen-Strukturierung
-führt "use TDD" zu test-getriebenem Hacking ohne Refactor-Disziplin —
-Tests werden geschrieben, aber Komplexität sammelt sich an.
+Über alle vier Komplexitäts-Outcomes ist v4 nicht nur besser, sondern der
+*einzige* Workflow mit konsequent niedrigen Werten — kein anderer kommt in
+die Nähe.
 
-**Konkurrenz-Hypothese geprüft und ausgeschlossen**: In einer früheren
-Auswertung (vor commit `0902a4f`) wählten v1/v2 auf dem prose-Prompt eine
-Set-basierte Repräsentation (`ReadonlySet<string>` mit Koordinaten-Hash-Keys),
-während v3/v4/v5 die Cell-Tupel-Form nutzten. v1/v2-Werte lagen damals bei
-cognitive_max ~9, v3 bei ~17. Eine plausible alternative Erklärung wäre
-gewesen: v3 sieht *nicht wirklich* schlechter aus, sondern der Vergleich ist
-unfair, weil v1/v2 mit einer kompakteren Hash-/Set-Abstraktion arbeiten, die
-explizite Verzweigungen pro Funktion einspart und so McCabe/Cognitive
-deflationiert.
+Mechanik: v4 spawnt für jede TDD-Phase (red, green, refactor) einen
+frischen, isolierten Subagent-Kontext. Die Green-Phase startet ohne
+Kenntnis der bisherigen Implementierung und schreibt deshalb die *minimale*
+Lösung, die den aktuellen roten Test grün macht — kein Generalisieren,
+kein "vorausschauendes Hinzufügen". Die Refactor-Phase läuft separat und
+sieht den fertigen Code mit klarem Auftrag.
 
-Unter dem API-Vertrag müssen jetzt *alle* Workflows die `Cell[]`-Tupel-Form
-verwenden — gleiche Datenstruktur über alle Zellen. Die Werte für v1/v2
-verschlechtern sich erwartungsgemäß (cognitive_max ~9 → ~17–21), aber v3
-bleibt **darüber** (23.33):
+Konsequenz für die Forschungsfrage: **Striktes TDD (Phasen-getrennt) ist
+das stärkste in dieser Studie gemessene Werkzeug zur Code-Qualitäts-
+Verbesserung.** Der Effekt ist Größenordnungen größer als die Effekte von
+Modell-Wahl (Opus-4.7 vs Sonnet vs Opus-4.6, RQ-3 F-3.2 zeigt
+`cognitive_max`-Spread ~5 zwischen Modellen auf v4) oder Thinking-Mode
+(RQ-3 F-3.3).
+
+**Datenbasis**: 6 v4-Runs, n=3 für jeden Vergleichs-Workflow, σ_v4_cognitive
+= 0.75 (min 2, max 4) — Werte extrem stabil. ESLint McCabe + SonarJS
+Cognitive, Funktionslängen aus dem Clean-Code-Reporter.
+
+**Hypothese H2 (Striktheit verbessert)**: bestätigt für v4 über alle
+Komplexitäts-Outcomes.
+
+---
+
+## F-4.2 — Aber: TDD-Effekt ist *nicht* uniform — minimal-TDD (v3) ist schlechter als kein TDD ✅ stabil
+
+**Aussage**: Die F-4.1-Befunde könnten suggerieren, "TDD = besser". Das
+hält *nicht*. Wird der Workflow nur als "use TDD" ohne Phasen-Struktur
+realisiert (v3-basic-tdd), produziert er die **schlechtesten**
+Komplexitäts-Werte aller getesteten Workflows — schlechter als v1
+(oneshot-vibecoding) oder v2 (iterativ ohne TDD):
+
+| Workflow | TDD? | `cognitive_max` | `mccabe_max` | `cc_longest_function` |
+|---|---|---:|---:|---:|
+| v1-oneshot | ❌ Nein | 20.67 | 14.00 | 33.67 |
+| v2-iterative | ❌ Nein | 16.67 | 12.00 | 34.00 |
+| **v3-basic-tdd** | ✅ Ja, minimal | **23.33** | **14.33** | **34.00** |
+| v4-exact-subagents | ✅ Ja, strikt | 2.83 | 4.00 | 9.33 |
+| v5-exact-single-context | ✅ Ja, strikt (Shared-Context) | 18.33 | 10.67 | 24.33 |
+
+v3 hat die höchste cognitive_max und mccabe_max über alle Zellen. Plausible
+Mechanik: "use TDD" ohne Phasen-Strukturierung führt zu test-getriebenem
+Hacking — Tests werden geschrieben, aber die Refactor-Disziplin fehlt; pro
+Test wird inkrementell zu einer bestehenden Funktion hinzugefügt, ohne dass
+ein separater Aufräum-Schritt die Komplexität reduziert. v1/v2 können
+zumindest am Ende einmal aufräumen.
+
+Zusatz: v3-Runs sind mit ~67 s Wallclock auffällig kurz — der Agent
+durchläuft offenbar einen *degenerierten* TDD-Modus, der mehr "Test
+gleich miterzeugen" als echtes Red-Green-Refactor ist.
+
+**Konkurrenz-Hypothese geprüft und ausgeschlossen** (Repräsentations-
+Artefakt): In einer früheren Auswertung (vor commit `0902a4f`) wählten
+v1/v2 auf dem prose-Prompt eine Set-basierte Repräsentation
+(`ReadonlySet<string>`), während v3/v4/v5 Cell-Tupel nutzten. v1/v2-Werte
+lagen damals bei cognitive_max ~9, v3 bei ~17. Plausible alternative
+Erklärung: v3 sieht *nicht wirklich* schlechter aus, sondern der Vergleich
+ist unfair, weil v1/v2 mit einer kompakteren Hash-/Set-Abstraktion arbeiten.
+
+Unter dem API-Vertrag müssen jetzt *alle* Workflows `Cell[]`-Tupel
+verwenden. Die Werte für v1/v2 verschlechtern sich erwartungsgemäß
+(cognitive_max ~9 → ~17–21), aber v3 bleibt **oberhalb** (23.33):
 
 | Workflow | cognitive_max OLD | cognitive_max NEW |
 |---|---:|---:|
@@ -71,19 +113,18 @@ bleibt **darüber** (23.33):
 
 Wäre v1/v2 nur wegen der Set-Abstraktion günstig erschienen, müssten sie
 unter dem fairen Vertrag *unter* oder *gleich* v3 fallen. Sie bleiben
-oberhalb v3. F-4.1 ist damit ein echter Workflow-Effekt, kein
+darüber. F-4.2 ist damit ein echter Workflow-Effekt, kein
 Repräsentations-Artefakt.
 
-**Datenbasis**: 18 Runs, ESLint McCabe + SonarJS Cognitive, Funktionslängen
-aus dem Clean-Code-Reporter.
-
-**Konsequenz**: Pauschale "TDD hilft"-Aussage falsifiziert. Strukturiertes
-TDD (v4) liefert die deutlich beste Code-Qualität; minimal-TDD (v3)
-schadet. Diese Differenzierung ist für künftige TDD-Vergleiche bindend.
+**Konsequenz**: Die pauschale "TDD verbessert Code-Qualität"-Aussage ist
+falsifiziert. *Die Striktheit* — konkret: explizite Phasen-Strukturierung
+mit isolierter Green-Phase — ist der wirksame Hebel, nicht das TDD-Label
+an sich. Ein Team, das "use TDD" ohne weitere Struktur einführt, riskiert
+qualitativ schlechteren Code als gar kein TDD.
 
 ---
 
-## F-4.2 — Phasen-Isolierung (v4) schlägt Shared-Context (v5) auf cognitive_max um Faktor 6 ✅ stabil
+## F-4.3 — Phasen-Isolierung (v4) schlägt Shared-Context (v5) auf cognitive_max um Faktor 6 ✅ stabil
 
 **Aussage**: v4 und v5 implementieren beide das gleiche strukturierte
 Red-Green-Refactor-Protokoll, unterscheiden sich aber in Phase-Isolation
@@ -114,7 +155,7 @@ deutlich über v4-Maximum (4) → ✅ stabil.
 
 ---
 
-## F-4.3 — Korrektheit (innen + außen) ist workflow-unabhängig unter explizitem API-Vertrag ✅ stabil
+## F-4.4 — Korrektheit (innen + außen) ist workflow-unabhängig unter explizitem API-Vertrag ✅ stabil
 
 **Aussage**: Mit dem expliziten API-Vertrag in allen drei GoL-Prompts
 (commit `0902a4f`) erreichen alle fünf Workflows `tests_passing = 100 %`
@@ -134,14 +175,14 @@ innen noch außen, sobald das Modell den Adapter-Vertrag explizit kennt.
 **Konsequenz**: Die in einer früheren Auswertung beobachtete Workflow-
 Korrektheits-Trennung (`v1` 0.07 → `v3/v5` 1.00) war ein **Artefakt der
 Prompt-Underspezifikation**, kein echtes Workflow-Phänomen. Workflow-Effekte
-beschränken sich auf Code-Qualität (F-4.1, F-4.2) und Kosten (F-4.4) — nicht
+beschränken sich auf Code-Qualität (F-4.1, F-4.2) und Kosten (F-4.5) — nicht
 auf Korrektheit.
 
 **Datenbasis**: 18 Runs.
 
 ---
 
-## F-4.4 — Token-Verbrauch wächst mit Workflow-Striktheit überproportional; v5 mit Abstand am teuersten ✅ stabil
+## F-4.5 — Token-Verbrauch wächst mit Workflow-Striktheit überproportional; v5 mit Abstand am teuersten ✅ stabil
 
 **Aussage**: Token-Verbrauch (Mittel) und Wallclock entlang der Workflows:
 
@@ -164,7 +205,7 @@ die isolierten Agent-Spawns dominieren.
 **Konsequenz**: Best-Quality-Per-Token-Wahl ist **v4** (beste Qualität bei
 mittlerem Token-Budget). Wer "good-enough quality fast" sucht, nimmt v1
 oder v2 — die liefern Komplexität-mittel und kosten ~1 M Tokens.
-**v3 ist preislich attraktiv, qualitativ aber das Schlusslicht** (F-4.1) —
+**v3 ist preislich attraktiv, qualitativ aber das Schlusslicht** (F-4.2) —
 nicht empfehlenswert. **v5 ist auf jeder Achse hinter v4** außer marginal
 auf `code_mass`.
 
@@ -175,17 +216,17 @@ auf `code_mass`.
 - **Single model**: Nur `opus-4-7-no-thinking`. Workflow-Effekte könnten
   bei schwächeren Modellen anders aussehen oder mit aktiviertem Thinking.
 - **Single kata**: Nur Game of Life (Library-Form). Mars-rover als zweiter
-  Code-Qualitäts-Carrier offen — würde insbesondere F-4.1 (v3 schlechter
+  Code-Qualitäts-Carrier offen — würde insbesondere F-4.2 (v3 schlechter
   als non-TDD) replizieren oder widerlegen.
 - **Prompt-Asymmetrie**: v1/v2 nutzen `prose`, v3/v4/v5 nutzen
   `example-mapping`. Methodologie-Constraint. Unter dem expliziten API-
-  Vertrag ist der Asymmetrie-Einfluss auf Korrektheit eliminiert (F-4.3),
+  Vertrag ist der Asymmetrie-Einfluss auf Korrektheit eliminiert (F-4.4),
   ein hypothetischer Effekt auf Code-Qualität ist nach RQ-2 nicht zu
   erwarten, kann aber nicht ganz ausgeschlossen werden.
 - **n = 3 pro Zelle** (außer v4 mit n=6): untere Grenze von `min_replicates`.
 - **v3-Schnellläufer-Verdacht**: v3-Runs sind mit ~67 s wallclock auffällig
   kurz. Möglich, dass "use TDD" in einen degenerierten Modus läuft, bei dem
   die Test-First-Disziplin nicht greift und der Agent funktional in den
-  Test-Last-Modus fällt — was die schlechte Komplexität (F-4.1) erklärt.
+  Test-Last-Modus fällt — was die schlechte Komplexität (F-4.2) erklärt.
   Detaillierte Inspektion einer Transkripte wäre für die mechanistische
   Bestätigung hilfreich.
