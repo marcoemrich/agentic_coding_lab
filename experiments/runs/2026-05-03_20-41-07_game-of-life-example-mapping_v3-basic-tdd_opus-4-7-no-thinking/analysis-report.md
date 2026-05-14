@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_20-41-07_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking
 
-Generated: 2026-05-09T11:06:36+02:00
+Generated: 2026-05-14T02:02:43+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:06:36+02:00
 
 ## Code Metrics
 
-- **Implementation file**: game-of-life.ts
-- **Implementation LOC**: 29
+- **Implementation files**: game-of-life.ts
+- **Implementation LOC** (total): 29
 - **Test file**: game-of-life.spec.ts
 - **Test file LOC**: 83
 - **Active tests**: 10
@@ -40,8 +40,8 @@ Generated: 2026-05-09T11:06:36+02:00
 
  Test Files  1 passed (1)
       Tests  10 passed (10)
-   Start at  11:06:37
-   Duration  327ms (transform 26ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 77ms)
+   Start at  02:02:44
+   Duration  345ms (transform 23ms, setup 0ms, collect 20ms, tests 3ms, environment 0ms, prepare 62ms)
 ```
 
 ## Coverage
@@ -69,7 +69,8 @@ Generated: 2026-05-09T11:06:36+02:00
 | LOC (non-blank) | 25 |
 | Functions | 2 |
 | Longest Function | 25 lines |
-| Avg LOC/Function | 13 |
+| Avg LOC/Function | 13.50 |
+| Median LOC/Function | 13.50 |
 | Imports | 0 |
 
 ## Code Smells

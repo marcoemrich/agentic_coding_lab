@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_16-52-54_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
-Generated: 2026-05-09T11:05:15+02:00
+Generated: 2026-05-14T02:01:51+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:05:15+02:00
 
 ## Code Metrics
 
-- **Implementation file**: game-of-life.ts
-- **Implementation LOC**: 31
+- **Implementation files**: game-of-life.ts
+- **Implementation LOC** (total): 31
 - **Test file**: game-of-life.spec.ts
 - **Test file LOC**: 92
 - **Active tests**: 8
@@ -40,8 +40,8 @@ Generated: 2026-05-09T11:05:15+02:00
 
  Test Files  1 passed (1)
       Tests  8 passed (8)
-   Start at  11:05:15
-   Duration  337ms (transform 24ms, setup 1ms, collect 20ms, tests 3ms, environment 0ms, prepare 85ms)
+   Start at  02:01:52
+   Duration  332ms (transform 27ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 98ms)
 ```
 
 ## Coverage
@@ -69,7 +69,8 @@ Generated: 2026-05-09T11:05:15+02:00
 | LOC (non-blank) | 26 |
 | Functions | 3 |
 | Longest Function | 2 lines |
-| Avg LOC/Function | 2 |
+| Avg LOC/Function | 2.00 |
+| Median LOC/Function | 2.00 |
 | Imports | 0 |
 
 ## Code Smells

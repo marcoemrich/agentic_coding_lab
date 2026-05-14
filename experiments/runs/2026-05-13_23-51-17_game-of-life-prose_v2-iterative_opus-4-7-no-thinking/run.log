@@ -1,0 +1,6 @@
+Task complete. Implemented Conway's Game of Life using a sparse representation:
+
+- **`src/game-of-life.ts`**: `nextGeneration(living)` accepts an iterable of `[x, y]` cells, counts neighbors only around living cells (so empty/distant regions cost nothing), and applies the B3/S23 rules. Negative and large coordinates work since cells are keyed by string.
+- **`src/game-of-life.spec.ts`**: 12 tests covering empty input, underpopulation, overpopulation, birth, the block still-life, blinker oscillator (both directions), glider one-step, negative coordinates, large coordinates, input immutability, and duplicate input handling.
+
+All 12 tests pass; `tsc --noEmit` is clean.

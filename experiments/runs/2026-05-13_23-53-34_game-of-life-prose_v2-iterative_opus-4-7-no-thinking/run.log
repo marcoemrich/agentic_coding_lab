@@ -1,0 +1,6 @@
+Complete. Implemented Conway's Game of Life:
+
+- **`src/game-of-life.ts`** — Sparse representation using a `Set<string>` of `"x,y"` keys. `nextGeneration` iterates living cells, increments neighbor counts (each live cell contributes to 8 neighbors), then applies the rules: a cell is alive next gen if it has exactly 3 live neighbors, or has exactly 2 and is currently alive. Handles arbitrary positive/negative integer coordinates.
+- **`src/game-of-life.spec.ts`** — 14 tests covering empty grid, underpopulation, overpopulation, survival, reproduction, the block (still life), the tub (still life), blinker oscillation, glider locomotion over 4 generations, negative and large coordinates, immutability, and duplicate-free output.
+- All 14 tests pass; `tsc --noEmit` is clean.
+- `experiment-done.txt` written with `DONE`.

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-03_21-32-24_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
-Generated: 2026-05-09T11:07:04+02:00
+Generated: 2026-05-14T02:03:04+02:00
 
 ## Configuration
 
@@ -17,8 +17,8 @@ Generated: 2026-05-09T11:07:04+02:00
 
 ## Code Metrics
 
-- **Implementation file**: game-of-life.ts
-- **Implementation LOC**: 34
+- **Implementation files**: game-of-life.ts
+- **Implementation LOC** (total): 34
 - **Test file**: game-of-life.spec.ts
 - **Test file LOC**: 47
 - **Active tests**: 8
@@ -36,12 +36,12 @@ Generated: 2026-05-09T11:07:04+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-03_21-32-24_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
- ✓ src/game-of-life.spec.ts  (8 tests) 3ms
+ ✓ src/game-of-life.spec.ts  (8 tests) 4ms
 
  Test Files  1 passed (1)
       Tests  8 passed (8)
-   Start at  11:07:05
-   Duration  358ms (transform 28ms, setup 0ms, collect 23ms, tests 3ms, environment 0ms, prepare 95ms)
+   Start at  02:03:05
+   Duration  395ms (transform 24ms, setup 1ms, collect 20ms, tests 4ms, environment 0ms, prepare 67ms)
 ```
 
 ## Coverage
@@ -69,7 +69,8 @@ Generated: 2026-05-09T11:07:04+02:00
 | LOC (non-blank) | 28 |
 | Functions | 3 |
 | Longest Function | 15 lines |
-| Avg LOC/Function | 6 |
+| Avg LOC/Function | 6.33 |
+| Median LOC/Function | 2.00 |
 | Imports | 0 |
 
 ## Code Smells

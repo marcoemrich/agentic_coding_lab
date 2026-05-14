@@ -812,6 +812,15 @@ EOF
                 cp "$verification_dir/$adapter_file" "$run_dir/.verification-adapter.ts"
             fi
 
+            # Ensure tsx is available for adapter execution. Older runs
+            # predate the standard pnpm template that included tsx in
+            # devDependencies, so install it on demand.
+            if [[ "$v_command" == *"tsx"* ]] && [ ! -d "$run_dir/node_modules/tsx" ]; then
+                echo -e "  ${YELLOW}tsx missing — installing for verification${NC}"
+                local store_dir="$(cd "$run_dir/.." && pwd)/.pnpm-store"
+                (cd "$run_dir" && pnpm add -D tsx --store-dir "$store_dir" --prefer-offline --silent 2>&1 | tail -3) || true
+            fi
+
             : > "$run_dir/verification.log"
             for input_file in "$verification_dir"/scenarios/*.input.json; do
                 [ -e "$input_file" ] || break
