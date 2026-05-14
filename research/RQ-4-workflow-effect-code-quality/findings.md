@@ -48,9 +48,31 @@ schlechter als kein TDD. Die intuitive Lesart: ohne Phasen-Strukturierung
 führt "use TDD" zu test-getriebenem Hacking ohne Refactor-Disziplin —
 Tests werden geschrieben, aber Komplexität sammelt sich an.
 
-Bestätigt unter API-Vertrag (commit `0902a4f`): das Muster ist robust
-gegenüber dem expliziten Repräsentations-Vertrag — der frühere Verdacht,
-v1/v2 wirkten "gut" nur wegen Set<string>-Abstraktion, ist ausgeschlossen.
+**Konkurrenz-Hypothese geprüft und ausgeschlossen**: In einer früheren
+Auswertung (vor commit `0902a4f`) wählten v1/v2 auf dem prose-Prompt eine
+Set-basierte Repräsentation (`ReadonlySet<string>` mit Koordinaten-Hash-Keys),
+während v3/v4/v5 die Cell-Tupel-Form nutzten. v1/v2-Werte lagen damals bei
+cognitive_max ~9, v3 bei ~17. Eine plausible alternative Erklärung wäre
+gewesen: v3 sieht *nicht wirklich* schlechter aus, sondern der Vergleich ist
+unfair, weil v1/v2 mit einer kompakteren Hash-/Set-Abstraktion arbeiten, die
+explizite Verzweigungen pro Funktion einspart und so McCabe/Cognitive
+deflationiert.
+
+Unter dem API-Vertrag müssen jetzt *alle* Workflows die `Cell[]`-Tupel-Form
+verwenden — gleiche Datenstruktur über alle Zellen. Die Werte für v1/v2
+verschlechtern sich erwartungsgemäß (cognitive_max ~9 → ~17–21), aber v3
+bleibt **darüber** (23.33):
+
+| Workflow | cognitive_max OLD | cognitive_max NEW |
+|---|---:|---:|
+| v1-oneshot | 9.33 | 20.67 |
+| v2-iterative | 9.67 | 16.67 |
+| v3-basic-tdd | 16.67 | 23.33 |
+
+Wäre v1/v2 nur wegen der Set-Abstraktion günstig erschienen, müssten sie
+unter dem fairen Vertrag *unter* oder *gleich* v3 fallen. Sie bleiben
+oberhalb v3. F-4.1 ist damit ein echter Workflow-Effekt, kein
+Repräsentations-Artefakt.
 
 **Datenbasis**: 18 Runs, ESLint McCabe + SonarJS Cognitive, Funktionslängen
 aus dem Clean-Code-Reporter.
