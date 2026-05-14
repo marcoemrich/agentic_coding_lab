@@ -16,6 +16,17 @@
 - A dead cell with exactly three living neighbors becomes alive.
 - The transformation produces the complete set of living cells of the next generation.
 
+## API contract
+
+Export from `src/game-of-life.ts` a function with this signature:
+
+```ts
+type Cell = [number, number]; // [x, y]
+export function nextGeneration(cells: Cell[]): Cell[];
+```
+
+Input and output are arrays of `[x, y]` coordinate tuples. Internally you may use whatever data structure suits you (Set, Map, …), but the function boundary must match the signature above.
+
 ## Expected Output Files
 
 - `src/game-of-life.ts` - Implementation

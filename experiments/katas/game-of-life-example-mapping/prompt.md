@@ -94,6 +94,17 @@ Implement the Game of Life based on the rules and examples above.
 
 The implementation should accept an arbitrary grid of living cells and output the next generation.
 
+## API contract
+
+Export from `src/game-of-life.ts` a function with this signature:
+
+```ts
+type Cell = [number, number]; // [x, y]
+export function nextGeneration(cells: Cell[]): Cell[];
+```
+
+Input and output are arrays of `[x, y]` coordinate tuples (matching the coordinate notation used in the examples above). Internally you may use whatever data structure suits you (Set, Map, …), but the function boundary must match the signature above.
+
 ## Expected Output Files
 
 - `src/game-of-life.ts` - Implementation

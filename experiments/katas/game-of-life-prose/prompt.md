@@ -8,6 +8,17 @@ Conway's Game of Life is a cellular automaton that evolves on a two-dimensional 
 
 Implement a function that takes the set of currently living cells and returns the set of cells that are alive in the next generation.
 
+## API contract
+
+Export from `src/game-of-life.ts` a function with this signature:
+
+```ts
+type Cell = [number, number]; // [x, y]
+export function nextGeneration(cells: Cell[]): Cell[];
+```
+
+Input and output are arrays of `[x, y]` coordinate tuples. Internally you may use whatever data structure suits you (Set, Map, …), but the function boundary must match the signature above.
+
 ## Expected Output Files
 
 - `src/game-of-life.ts` - Implementation
