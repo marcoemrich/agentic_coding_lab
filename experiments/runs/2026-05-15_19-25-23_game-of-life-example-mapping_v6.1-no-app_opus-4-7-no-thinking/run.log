@@ -1,0 +1,7 @@
+All 9 tests pass. Conway's Game of Life is implemented with:
+- Sparse representation (Map keyed by "x,y" strings)
+- Infinite grid via string keys (handles negative coords)
+- Full TDD cycle: test list → red/green/refactor for each test
+- Refactored helpers: `NEIGHBOR_OFFSETS`, `cellKey`/`parseCellKey`, `countNeighbors`, `survivesOrIsBorn`, and `asCellSet` test helper
+
+Done marker written.

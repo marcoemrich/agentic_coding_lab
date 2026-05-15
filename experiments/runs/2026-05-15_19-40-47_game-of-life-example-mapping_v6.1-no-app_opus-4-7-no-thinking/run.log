@@ -1,0 +1,11 @@
+Conway's Game of Life kata complete. All 8 tests pass:
+- empty input → empty output
+- single isolated cell dies
+- two adjacent cells die
+- 2x2 block is stable
+- vertical blinker → horizontal blinker
+- reproduction (dead cell with 3 neighbors becomes alive)
+- overpopulation (live cell with >3 neighbors dies)
+- negative coordinates handled correctly
+
+Implementation uses sparse representation via a `Map<CellKey, number>` to count live neighbors of each candidate cell, then applies the survival rule. `experiment-done.txt` written.

@@ -1,0 +1,171 @@
+{
+  "wall_clock_seconds": 411.98,
+  "total_tokens": {
+    "input": 180,
+    "output": 25613,
+    "cache_read": 4863468,
+    "cache_creation": 97039,
+    "total": 4986300
+  },
+  "context_utilization_pct": 8,
+  "context_window_tokens": 1000000,
+  "context_peak_tokens": 81801,
+  "message_count": 80,
+  "tool_calls": {
+    "Read": 1,
+    "Bash": 16,
+    "Skill": 11,
+    "Write": 3,
+    "Edit": 11,
+    "Agent": 3
+  },
+  "skill_invocations": {
+    "test-list": 1,
+    "red": 8,
+    "green": 2
+  },
+  "task_invocations": {
+    "refactor": 3
+  },
+  "cycle_count": 8,
+  "predictions_correct": 16,
+  "predictions_total": 16,
+  "model_versions": [
+    "claude-opus-4-7"
+  ],
+  "subagent_token_total": 784202,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 231965,
+      "duration_seconds": 16.45,
+      "start_ts": "2026-05-15T19:41:03.622000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 499551,
+      "duration_seconds": 32.82,
+      "start_ts": "2026-05-15T19:41:20.068000+00:00"
+    },
+    {
+      "phase": "green",
+      "tokens": 377194,
+      "duration_seconds": 18.89,
+      "start_ts": "2026-05-15T19:41:52.886000+00:00"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 179920,
+      "duration_seconds": 41.16,
+      "transcript": "agent-a1ad76d873b96cc69.jsonl",
+      "start_ts": "2026-05-15T19:42:11.778000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 343078,
+      "duration_seconds": 20.48,
+      "start_ts": "2026-05-15T19:42:52.940000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 359960,
+      "duration_seconds": 22.88,
+      "start_ts": "2026-05-15T19:43:13.415000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 314326,
+      "duration_seconds": 15.94,
+      "start_ts": "2026-05-15T19:43:36.292000+00:00"
+    },
+    {
+      "phase": "green",
+      "tokens": 467958,
+      "duration_seconds": 22.14,
+      "start_ts": "2026-05-15T19:43:52.231000+00:00"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 245968,
+      "duration_seconds": 44.11,
+      "transcript": "agent-a78bb5f732437e869.jsonl",
+      "start_ts": "2026-05-15T19:44:14.371000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 424790,
+      "duration_seconds": 18.96,
+      "start_ts": "2026-05-15T19:44:58.484000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 441432,
+      "duration_seconds": 19.85,
+      "start_ts": "2026-05-15T19:45:17.446000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 461808,
+      "duration_seconds": 25.44,
+      "start_ts": "2026-05-15T19:45:37.294000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 804781,
+      "duration_seconds": 20.01,
+      "start_ts": "2026-05-15T19:46:02.731000+00:00"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 358314,
+      "duration_seconds": 78.25,
+      "transcript": "agent-ae8ed306355623a78.jsonl",
+      "start_ts": "2026-05-15T19:46:22.743000+00:00"
+    }
+  ],
+  "phase_source": "skills+subagents",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 231965,
+        "duration_seconds": 16.45
+      },
+      "red": {
+        "count": 8,
+        "tokens": 3649726,
+        "duration_seconds": 176.38
+      },
+      "green": {
+        "count": 2,
+        "tokens": 845152,
+        "duration_seconds": 41.03
+      },
+      "refactor": {
+        "count": 3,
+        "tokens": 784202,
+        "duration_seconds": 163.52
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 231965.0,
+        "avg_duration_seconds": 16.45
+      },
+      "red": {
+        "avg_tokens": 456215.75,
+        "avg_duration_seconds": 22.05
+      },
+      "green": {
+        "avg_tokens": 422576.0,
+        "avg_duration_seconds": 20.52
+      },
+      "refactor": {
+        "avg_tokens": 261400.67,
+        "avg_duration_seconds": 54.51
+      }
+    },
+    "refactorings_applied": 3,
+    "tests_passed_immediately": 6
+  }
+}
