@@ -94,6 +94,15 @@ zum ersten Mal in Begutachtung.
 HPSMV-Lesart ist, dass sie *parallel* greifen — Item-Erst plus
 Kunden-Folgevertrag.
 
+**JSON-Lesart:** Items im Szenario-JSON haben keine Identität (keine
+`id`, kein "wasInsuredBefore"-Flag). Konsequenz: jedes Item gilt
+implizit als Erstversicherung — der +10 %-Aufschlag fällt also bei
+*jedem* Quote-Step auf *jedes* Item an. Der −15 %-Folgevertrags-Rabatt
+hingegen ist am JSON ablesbar: er greift bei jedem `quote`-Step *nach
+dem ersten* im `steps`-Array (selber Kunde im ganzen Szenario). Häufige
+Teilnehmer-Frage: "Wie sehe ich, dass das Schwert schon mal versichert
+war?" — Antwort: gar nicht, das ist Absicht.
+
 ### D — Faktor-Reihenfolge bei Modifikatoren
 
 **Frage:** Wie werden die Modifikatoren (Fluch, Verzauberung, Treue,
