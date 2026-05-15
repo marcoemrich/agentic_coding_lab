@@ -1,0 +1,7 @@
+All 33 tests pass. Implementation covers:
+- Quote: base premiums (sword/amulet/staff/potion), component blocks, curse/enchantment item-mods, loyalty/follow-up/first-insurance policy-mods, rounding up
+- Claim: deductible per damage, high-enchantment 50%, dragon material full reimbursement, cap tracking across successive claims, payout floor rounding
+- Errors: unknown item type, item not on policy, more damages than insured items, negative damage amount
+- CLI at `src/cli.ts` reading stdin / writing stdout
+
+`experiment-done.txt` written with `DONE`.

@@ -1,0 +1,7 @@
+Exercise complete. Summary:
+
+- 36 tests covering the MHPCO Claim Office kata: base premiums, components/blocks, item-specific modifiers (cursed, high-enchantment), policy-wide modifiers (loyalty, first insurance, follow-up), multi-item scope, rounding, integration examples, claim reimbursement (standard, dragon material, high-enchantment 50% rule), per-damage deductible, cap exhaustion across multiple claims, and multiple items of the same type.
+- `src/claim-office.ts` implements `quote()` and `claim()` functions
+- `src/cli.ts` reads JSON scenarios from stdin and writes results to stdout, handling unknown item types, negative damage amounts, claims for items not in policy, etc. (exits non-zero with stderr message)
+- TypeScript compiles cleanly; all 36 tests pass; integration examples produce expected outputs (165 G newcomer cursed sword, 160 G 3-yr 2nd contract).
+- `experiment-done.txt` written with `DONE`.

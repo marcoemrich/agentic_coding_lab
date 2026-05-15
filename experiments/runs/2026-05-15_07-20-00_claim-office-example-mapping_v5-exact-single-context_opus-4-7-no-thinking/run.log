@@ -1,0 +1,7 @@
+Experiment complete. All 35 tests pass, the CLI works correctly with stdin/stdout JSON I/O, and the done marker is written.
+
+Summary:
+- **35/35 tests passing** covering quote premiums, claim payouts, modifiers (cursed, high-enchantment, loyalty, first-insurance, follow-up), component block pricing, deductibles, cap exhaustion, rounding, and validation errors
+- **`src/claim-office.ts`**: core domain logic (`runScenario`, `quotePremium`, `processClaim`)
+- **`src/cli.ts`**: CLI entry point reading JSON from stdin, writing JSON to stdout, with non-zero exit + stderr on errors
+- **`experiment-done.txt`**: written with `DONE`

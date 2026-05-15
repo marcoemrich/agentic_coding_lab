@@ -3,9 +3,9 @@ id: RQ-6
 question: "Welche Form der Kontext-Strukturierung — isolierte Subagent-Kontexte pro TDD-Phase (v4) oder ein geteilter, akkumulierter Single-Context (v5) — fuehrt zu besserer Code-Qualitaet, bei sonst identischem Phasen-Skript?"
 factors:
   workflow: [v4-exact-subagents, v5-exact-single-context]
+  kata_base: [game-of-life, claim-office]
 controls:
   model: opus-4-7-no-thinking
-  kata_base: game-of-life
   prompt: example-mapping
 outcomes:
   # primaer: Code-Qualitaet
@@ -60,13 +60,16 @@ Die Wirkung der Kontext-Strukturierung auf Code-Qualitaet ist a priori unklar �
 
 ```
 Faktor:    workflow   — 2 Stufen (v4-exact-subagents, v5-exact-single-context)
+Faktor:    kata_base  — 2 Stufen (game-of-life, claim-office)
 Kontrolle: model      — opus-4-7-no-thinking
-Kontrolle: kata_base  — game-of-life
 Kontrolle: prompt     — example-mapping
 
-Zellen:    2
-Replikate: n = 10 (uebernommen aus RQ-5; keine neuen Runs noetig)
-Runs:      20 total
+Zellen:    4 (2 Workflows x 2 Katas)
+Replikate: n = 10
+Runs:      40 total
+           — 20 game-of-life-Runs wiederverwendet aus RQ-5-Pool
+           — 11 claim-office-Runs bereits im Pool (6 v4 + 5 v5)
+           — 9 neue claim-office-Runs zur Auffuellung auf n=10
 ```
 
 ## Hypothesen
@@ -76,10 +79,14 @@ Runs:      20 total
 - **H2 (Korrektheit)**: Beide Architekturen erreichen `tests_passing = 100 %` und `verification_pct = 100 %` (auf game-of-life). Korrektheit ist nicht der Engpass.
 - **H3 (Token-Verbrauch)**: v4 verbraucht *weniger* Tokens als v5, weil isolierte Subagent-Kontexte zwar ueberlappen, aber jeder Subagent linear und kurz waechst — waehrend der v5-Single-Context die Tokens aller Phasen kumuliert.
 - **H4 (Stabilitaet)**: Die Streuung der Code-Qualitaets-Metriken pro Zelle ist bei v4 systematisch niedriger als bei v5 (aus RQ-5 F-5.2 bereits vorgezeichnet). Falsifikation H4: v5-Streuung ≤ v4-Streuung.
+- **H5 (Wallclock)**: v4 ist **deutlich langsamer** als v5 in Wallclock-Zeit. Plausible Mechanik: jeder Subagent-Spawn pro TDD-Phase kostet eine Einrichtungs-Latenz (Modell-Warmup, Re-Read der Phasen-Definitionen aus den Agent-Files), die ueber die ~8 TDD-Zyklen pro Run und 4 Phasen je Zyklus aufsummiert wird; v5 zahlt diesen Overhead nur einmal pro Run. Erwartung: v4-Wallclock ≥ 2× v5-Wallclock auf game-of-life; auf claim-office ggf. groesserer Spread, weil mehr Phasen-Wiederholungen.
+- **H6 (Cross-Kata-Replikation)**: H1 (Code-Qualitaet zugunsten v4), H3 (Tokens zugunsten v4) und H5 (Wallclock zugunsten v5) replizieren auf der CLI-Kata `claim-office` mit vergleichbarer Effektrichtung und mindestens halber Effektstaerke. Falsifikation H6: auf claim-office kippt mindestens ein Vorzeichen — Kontext-Architektur-Effekt waere dann kata-spezifisch.
 
 **Falsifikation H1** (v5 ≤ v4 auf Komplexitaet): die Kontext-Trennung bringt keinen Code-Qualitaets-Vorteil — moeglicherweise schadet sie sogar, weil Refactor-Phase keine Kenntnis der Test-Historie hat.
 
 **Falsifikation H3** (v4 ≥ v5 Tokens): die Subagent-Spawn-Overheads dominieren die durch Kontext-Akkumulation eingesparten Tokens.
+
+**Falsifikation H5** (v4 ≤ v5 Wallclock): Subagent-Spawn-Overhead ist vernachlaessigbar gegenueber kumulierten Token-Verarbeitungs-Kosten im Single-Context.
 
 ## Caveats
 

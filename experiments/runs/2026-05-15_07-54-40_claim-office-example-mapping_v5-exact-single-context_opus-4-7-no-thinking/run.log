@@ -1,0 +1,5 @@
+All 36 tests pass. The implementation includes:
+- `src/claim-office.ts`: core logic for quotes (base premiums, item surcharges, policy modifiers, block discount, rounding) and claims (deductible per damage, enchantment/dragon clauses, cap exhaustion, error cases)
+- `src/cli.ts`: stdin→JSON→`runScenario`→stdout, with non-zero exit on errors
+- `src/claim-office.spec.ts`: 36 tests covering empty quotes, all item types, components+blocks, all modifier rules, integration examples, claim rules, and error cases
+- `experiment-done.txt`: contains `DONE`

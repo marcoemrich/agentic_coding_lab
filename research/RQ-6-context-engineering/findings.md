@@ -5,159 +5,199 @@ Persistente Sammlung der Erkenntnisse zur Frage:
 TDD-Phase (v4) oder ein geteilter, akkumulierter Single-Context (v5) —
 fuehrt zu besserer Code-Qualitaet?**
 
-Datenbasis: 20 Runs (2 Zellen × n=10), Stand 2026-05-15. Modell
-`opus-4-7-no-thinking`, Kata `game-of-life-example-mapping`. Identischer
-Phasen-Skript-Inhalt in beiden Workflows; einziger Unterschied ist die
-Kontext-Architektur. Runs wiederverwendet aus dem RQ-5-Pool.
+Datenbasis: 40 Runs (4 Zellen × n=10), Stand 2026-05-15. Modell
+`opus-4-7-no-thinking`, zwei Katas: `game-of-life-example-mapping`
+(Library-Form mit API-Vertrag) und `claim-office-example-mapping`
+(CLI-Form mit externem Verifikations-Adapter, komplexere Domain). Beide
+Workflows nutzen identischen Phasen-Skript-Inhalt; einziger Unterschied
+ist die Kontext-Architektur.
 
 ---
 
-## Ueberblick: Isolierter vs. geteilter Kontext
+## Ueberblick: v4 vs v5 ueber beide Katas
 
-| Outcome | v4 (isolierte Subagents) | v5 (Single-Context) | v5 / v4 |
+| Outcome | game-of-life v4 | game-of-life v5 | claim-office v4 | claim-office v5 |
+|---|---:|---:|---:|---:|
+| `cognitive_max` | **4.40** | 14.50 | **10.50** | 14.20 |
+| `mccabe_max` | **4.50** | 8.90 | **7.90** | 10.20 |
+| `cc_longest_function` | **8.10** | 17.40 | **25.00** | 31.40 |
+| `smell_total` | **2.60** | 4.10 | **1.80** | 8.90 |
+| `code_mass` | 166.60 | **152.60** | **625.90** | 761.60 |
+| `verification_pct` | 1.00 | 1.00 | 0.67 | **0.87** |
+| `total_tokens` (M) | **2.56** | 8.14 | 13.66 | 14.14 |
+| `duration_seconds` | 1163 | **380** | 3693 | **655** |
+
+Bester Wert pro Spalte fett. Auf Code-Qualitaets-Metriken: kleiner = besser.
+Auf `verification_pct`: groesser = besser.
+
+---
+
+## F-6.1 — Isolierte Subagent-Kontexte (v4) verbessern Code-Qualitaet auf beiden Katas; Effekt auf GoL groesser als auf claim-office ✅ stabil
+
+**Aussage**: v4 dominiert v5 auf jeder Code-Qualitaets-Metrik (außer
+`code_mass` auf GoL marginal anders, auf claim-office aber wieder zugunsten
+v4). Cross-Kata-Vergleich der v5/v4-Faktoren:
+
+| Metrik | v5/v4 game-of-life | v5/v4 claim-office |
+|---|---:|---:|
+| `cognitive_max` | 3.3× | 1.35× |
+| `mccabe_max` | 2.0× | 1.29× |
+| `cc_longest_function` | 2.1× | 1.26× |
+| `smell_total` | 1.6× | **4.94×** |
+
+Vorzeichen ueber alle Komplexitaets-Outcomes konsistent zugunsten v4.
+Effekt auf game-of-life dramatischer (Faktoren 1.6–3.3×); auf
+claim-office gedaempft auf 1.3× — bis auf `smell_total`, wo v4 sogar
+deutlich besser ist (1.8 vs 8.9 — fast 5×).
+
+**Mechanik-Interpretation**: claim-office ist mit 600–760 LoC ein
+substantieller Code-Korpus; die absoluten Komplexitaets-Werte sind
+naturgemaess hoeher als bei der ~30-LoC-GoL-Implementation. Der
+relative v4-Vorteil bleibt aber bestehen — die Phasen-Isolation
+verhindert auch hier opportunistisches Vorausschauen in der Green-Phase.
+
+H1 bestaetigt, H6 (Cross-Kata-Replikation) bestaetigt mit gedaempftem
+Effekt-Magnitude.
+
+**Datenbasis**: 40 Runs (10 pro Zelle). σ auf claim-office substanziell
+groesser (z.B. v4-cognitive_max σ = 9.44, Range 4–30) — die Streuung
+waechst mit Kata-Komplexitaet.
+
+---
+
+## F-6.2 — Aussen-Korrektheit kehrt sich um: v4 fuehrt auf GoL, v5 fuehrt auf claim-office ⚠️ bedingt → wichtige Falsifikation von H2
+
+**Aussage**: Auf game-of-life ist `verification_pct` 100 % in beiden
+Workflows. **Auf claim-office kippt das Muster**: v5 erreicht 0.87
+(σ=0.32), v4 nur 0.67 (σ=0.36). Per-Run-Verteilung:
+
+| Workflow | 15/15 perfekt | 11/15 partial | ≤ 5/15 Failure |
 |---|---:|---:|---:|
-| `cognitive_max` | **4.40** | 14.50 | **3.3×** |
-| `mccabe_max` | **4.50** | 8.90 | 2.0× |
-| `cc_longest_function` | **8.10** | 17.40 | 2.1× |
-| `smell_total` | **2.60** | 4.10 | 1.6× |
-| `code_mass` | 166.60 | **152.60** | 0.92× |
-| `total_tokens` | **2.56 M** | 8.14 M | 3.2× |
-| `duration_seconds` | 1163 | **380** | 0.33× |
-| `tests_passing` | 100 % | 100 % | — |
-| `verification_pct` | 100 % | 100 % | — |
+| v4 (claim-office) | 4/10 | 2/10 | **4/10** |
+| v5 (claim-office) | 8/10 | 1/10 | 1/10 |
 
-Kleiner = besser auf allen Code-Qualitaets- und Kosten-Metriken (ausser
-`tests_passing`/`verification_pct`, hier groesser = besser).
+v4 hat eine 40 %-Rate von **Spec-Coverage-Failures**: Runs, in denen die
+externe Akzeptanz-Suite ≤ 5/15 Szenarien besteht. Die `tests_passing`-
+Rate ist trotzdem 100 % — die vom Agenten selbst geschriebenen Tests
+laufen gruen, aber decken nur einen Teil der Spec ab.
 
----
+**Mechanik-Interpretation — Kontext-Engineering-Trade-off**:
 
-## F-6.1 — Isolierte Subagent-Kontexte (v4) reduzieren Code-Komplexitaet deutlich, Faktor 2–3× ✅ stabil
+- Auf einer einfachen, eng spezifizierten Kata (game-of-life: 4 Regeln,
+  klare Examples) ist v4s Phase-Isolation ein Vorteil: jeder Subagent
+  implementiert minimal, ohne Drift.
+- Auf einer komplexen, breit spezifizierten Kata (claim-office: 9
+  Rabatt-Regeln, Erstkunden-Logik, Material-Block-Constraints,
+  Currency-Rounding, Error-Codes fuer 5 Failure-Modi) wird v4s
+  Minimalismus zur **Schwaeche**: die Green-Phase implementiert nur
+  was der aktuelle Test verlangt; die Refactor-Phase fuegt keine
+  Features hinzu; Edge-Cases, die der Agent in der Test-List-Phase
+  nicht antizipiert hat, werden nie implementiert.
+- v5s Shared-Context behaelt die volle Spec im Blick und implementiert
+  defensiver — der Agent kennt die noch ausstehenden Tests und sieht
+  die ganze Kata-Beschreibung kumuliert; Edge-Cases werden im
+  Refactor-Schritt nachgezogen.
 
-**Aussage**: Die Kontext-Architektur ist der dominante Faktor fuer die
-Code-Qualitaets-Unterschiede zwischen v4 und v5. Bei identischem Phasen-
-Skript-Inhalt (gleicher Predictor, Red, Green, Refactor) und identischem
-Modell/Kata/Prompt liefert die **Phase-Isolation** strukturell besseren Code:
+**H2 falsifiziert**: Aussen-Korrektheit ist *nicht* Kontext-Architektur-
+unabhaengig auf komplexen Katas. Die Wahl der Kontext-Architektur ist
+**eine Korrektheits-Frage**, nicht nur eine Qualitaets-Frage.
 
-- `cognitive_max`: 4.40 vs 14.50 — Faktor 3.3×.
-- `cc_longest_function`: 8.10 vs 17.40 — Faktor 2.1×.
-- `mccabe_max`: 4.50 vs 8.90 — Faktor 2.0×.
-- `smell_total`: 2.60 vs 4.10 — Faktor 1.6×.
+**Datenbasis**: 20 claim-office-Runs, 15 Verifikations-Szenarien pro Run.
+n=10 → 95 % CI fuer die 40 %-Failure-Rate bei v4 etwa 12–74 %; auch im
+optimistischen Fall (~12 %) waere die Rate kein zufaelliges Phaenomen.
 
-H1 (Isolation reduziert Komplexitaet) bestaetigt. Plausible Mechanik: Im
-v5-Shared-Context sieht die Green-Phase die bereits geschriebenen Tests
-und kann opportunistisch *vorausschauend implementieren* (z.B. eine
-Funktion gleich so generalisieren, dass spaetere Tests "automatisch"
-gruen werden). Die Refactor-Phase erbt diesen Code mit eingebauter
-Komplexitaet und kann ihn nicht mehr in Minimalform zerlegen.
-
-In v4 hingegen startet jede Green-Subagent-Phase mit **leerem Kontext**
-plus dem Phasen-Auftrag — sie kennt die zukuenftigen Tests nicht und
-implementiert deshalb minimal. Die Refactor-Phase sieht den existierenden
-Code aus einem frischen Blickwinkel und kann saubere Strukturentscheidungen
-treffen.
-
-**code_mass** ist die einzige Metrik, auf der v5 leicht besser ist
-(152.6 vs 166.6, -8 %). v4 produziert mehr Helper-Funktionen — das ist
-Teil der Mechanik: aufgesplittete Funktionen erhoehen die Gesamtzeilenzahl
-geringfuegig, reduzieren aber die Komplexitaet pro Funktion drastisch.
-
-**Datenbasis**: 20 Runs (10 pro Zelle). σ_v4_cognitive = 4.48 wegen einem
-Refactor-Aussetzer (siehe F-6.4); v4-Median ist 3, IQR 1.25 — der typische
-v4-Run ist deutlich besser als der Mittelwert suggeriert.
+**Bedingung**: ⚠️ bedingt — eine zweite komplexe Kata (z.B. mars-rover
+mit aehnlicher Spec-Breite) wuerde das Muster festigen oder die
+claim-office-Spezifitaet aufzeigen.
 
 ---
 
-## F-6.2 — Korrektheit ist von der Kontext-Architektur unabhaengig ✅ stabil
+## F-6.3 — Kosten-Trade-off: v4 spart Tokens auf GoL, ist auf claim-office aber etwa gleich teuer; v5 immer wallclock-effizient ✅ stabil
 
-**Aussage**: `tests_passing` und `verification_pct` liegen in beiden
-Zellen bei 100 % (20/20 Runs). Die Wahl der Kontext-Architektur hat
-**keinen Einfluss auf die Korrektheit** des generierten Codes — sie
-beeinflusst ausschliesslich Strukturqualitaet und Effizienz.
+**Aussage**: Kosten-Profile pro Kata:
 
-H2 bestaetigt.
+| Kosten-Outcome | GoL v4 | GoL v5 | claim-office v4 | claim-office v5 |
+|---|---:|---:|---:|---:|
+| `total_tokens` (M) | 2.56 | 8.14 | 13.66 | 14.14 |
+| `duration_seconds` | 1163 | 380 | 3693 | 655 |
+| **Faktor v5/v4 Tokens** | **3.2×** | | **1.04×** | |
+| **Faktor v4/v5 Wallclock** | **3.1×** | | **5.6×** | |
 
-**Datenbasis**: 20 Runs × 15 Verifikations-Szenarien = 300 Szenario-Checks,
-alle bestanden.
+- **Token-Trade-off variiert mit Kata-Komplexitaet**: Auf game-of-life
+  spart v4 Faktor 3.2× Tokens. Auf claim-office sind beide Workflows
+  nahezu gleich teuer (Faktor 1.04×) — der claim-office-Loesungs-Pfad
+  braucht so viele Tokens, dass die Akkumulation in v5s Single-Context
+  kaum mehr als die Wiederholung in v4s Subagent-Kontexten wiegt.
+- **Wallclock-Trade-off wird auf claim-office groesser**: 5.6× statt
+  3.1× auf GoL. v4-claim-office-Runs dauern im Mittel ~62 min; v5
+  ~11 min. Subagent-Spawn-Overhead skaliert mit Anzahl TDD-Zyklen, und
+  claim-office hat mehr Zyklen als GoL.
 
----
+H3 nur auf GoL bestaetigt, auf claim-office falsifiziert (Tokens etwa
+gleich). H5 (Wallclock zugunsten v5) cross-kata sehr deutlich bestaetigt.
 
-## F-6.3 — Kosten-Trade-off: v4 spart Tokens, v5 spart Wallclock ✅ stabil
-
-**Aussage**: Beide Architekturen haben unterschiedliche Kosten-Profile:
-
-| Kosten-Outcome | v4 | v5 | Vergleich |
-|---|---:|---:|---|
-| `total_tokens` (Mittel) | **2.56 M** | 8.14 M | v4 -69 % |
-| `duration_seconds` (Mittel) | 1163 s | **380 s** | v5 -67 % |
-
-- **v4 ist token-effizient**, weil jeder Subagent nur einen Bruchteil
-  des Gesamtkontexts traegt — die Phasen-spezifischen Prompts wiederholen
-  sich zwar, aber die Konversations-History ist je Subagent kurz. v5
-  haeuft alle Phasen im selben Kontext an; Tokens akkumulieren linear bis
-  exponentiell mit Anzahl Phasen.
-- **v5 ist wallclock-effizient**, weil keine Subagent-Spawn-Overheads
-  anfallen. v4 zahlt fuer jeden der ~4 Subagents pro TDD-Zyklus eine
-  Einrichtungs-Latenz, die ueber die typischen 8 TDD-Zyklen pro Run
-  signifikant wird (Faktor 3× wallclock).
-
-H3 bestaetigt (v4 spart Tokens, deutlich).
-
-**Konsequenz**: Bei API-Kosten-getriebenen Setups ist v4 bevorzugt.
-Bei interaktiven oder zeitkritischen Setups (Live-Pair-Programming, CI/CD
-mit Wallclock-Budget) ist v5 attraktiver — solange die Code-Qualitaet
-nicht das primaere Optimierungsziel ist.
-
-**Streuung**: v5-Token-Verbrauch ist *sehr* breit gestreut (σ=3.79 M, Range
-4.6–12.2 M). Bei v4 ist die σ enger (382k, Range 2.0–3.2 M). Plan-Budgets
-fuer v5 muessen den schlechten Worst-Case beruecksichtigen.
+**Konsequenz fuer Setup-Wahl**:
+- Auf einfachen, eng spezifizierten Aufgaben: v4 fuer Qualitaet *und*
+  Token-Effizienz; nur Wallclock leidet.
+- Auf komplexen, breit spezifizierten Aufgaben: v4 spart keine Tokens
+  mehr, Code-Qualitaet ist nur marginal besser, **Aussen-Korrektheit
+  ist sogar schlechter** (F-6.2), und Wallclock kostet 5.6× mehr. Der
+  Vorteil von v4 schmilzt.
 
 ---
 
-## F-6.4 — Beide Workflows haben spezifische Tail-Risiken ⚠️ bedingt
+## F-6.4 — Tail-Risiken: v4 hat auf beiden Katas spezifische Failure-Modi ⚠️ bedingt
 
-**Aussage**: Bei n=10 zeigen beide Workflows je einen charakteristischen
-Tail-Failure-Modus:
+**Aussage**: Pro Workflow lassen sich charakteristische Tail-Risiken
+benennen:
 
-- **v4-Refactor-Aussetzer** (1/10 Run): cognitive_max=17 (Median: 3,
-  IQR: 1.25). Manuelle Inspektion zeigt eine monolithische 28-zeilige
-  Arrow-Function ohne Refactor-Split. Die Refactor-Subagent-Phase hat hier
-  keine Strukturverbesserung vorgenommen — Korrektheit aber 100 %.
-  Auftrittsrate ~10 %.
-- **v4-Wallclock-Aussetzer** (1/10 Run): duration = 3923 s (~65 min) vs
-  typischen 800–1100 s. Vermutlich Subagent-Stall oder API-Retries.
-  Korrektheit ebenfalls 100 %.
-- **v5-Komplexitaets-Aussetzer**: cognitive_max max=24 (Median: 14),
-  cc_longest_function max=32. Keine isolierten Outlier — v5 ist generell
-  breit gestreut.
-- **v5-Token-Aussetzer**: total_tokens max = 12.2 M vs Median ~8 M.
-  Single-Context-Akkumulation in einem laenger laufenden Run.
+**v4 auf game-of-life** (10 Runs):
+- 1/10 Refactor-Aussetzer (cognitive_max=17 in einer monolithischen
+  Funktion ohne Helper-Split).
+- 1/10 Wallclock-Aussetzer (3923 s ≈ 65 min vs Median ~14 min).
+- Korrektheit aber 100 %.
 
-**Konsequenz fuer Produktivitaets-Planung**:
-- v4: ~10 %-Risiko von Refactor-Failure → konsequente Refactor-Pruefung
-  empfohlen (z.B. cognitive_max-Threshold in CI).
-- v5: keine isolierten Failures, aber konsistent breitere Streuung →
-  hoehere Token-Budget-Reserven.
+**v4 auf claim-office** (10 Runs):
+- **4/10 Spec-Coverage-Failures** (verification_pct ≤ 33 %, siehe F-6.2)
+  — das mit Abstand schlimmste Tail-Risiko.
+- Hoch korreliert mit *niedrigem* cognitive_max (Mittel ~5 in den
+  Failures vs ~17 in den 15/15-Runs): minimale Implementation =
+  schlechte Spec-Abdeckung.
 
-**Bedingung**: ⚠️ bedingt — n=10 ist fuer Tail-Quantile knapp. Auftrittsraten
-um 10 % entsprechen einzelnen Runs; Konfidenzintervalle der Rate sind
-breit (95 % CI etwa 0–30 %).
+**v5 auf game-of-life** (10 Runs):
+- cognitive_max range 9–24, σ 4.84 — breit, aber kein expliziter Outlier.
+- 1/10 Token-Aussetzer (12.2 M vs Median ~8 M).
+
+**v5 auf claim-office** (10 Runs):
+- 1/10 Total-Failure (verification_pct = 0.00).
+- Sonst 9/10 mit ≥ 73 % Spec-Abdeckung — deutlich robuster als v4.
+
+**Konsequenz**: v4 hat einen schaerferen Failure-Tail, der mit
+Kata-Komplexitaet zunimmt. Auf einfachen Aufgaben ist das vertretbar
+(~10 % minor failures, Korrektheit intakt). Auf komplexen Aufgaben wird
+es zur dominanten Sorge (40 %-Rate von Spec-Coverage-Failures).
+
+**Bedingung**: ⚠️ bedingt — n=10 ist zur Tail-Quantil-Charakterisierung
+knapp; 95 %-CIs der Failure-Raten breit.
 
 ---
 
 ## Caveats
 
-- **Single model**: Nur `opus-4-7-no-thinking`. Bei schwaecheren Modellen
-  koennte der v4-Vorteil groesser werden (kein Drift) oder kleiner
-  (Subagent-Spawn-Overhead zu hoch fuer Modell-Kapazitaet).
-- **Single kata**: Nur Game of Life (Library-Form). Cross-Kata-Validierung
-  mit `claim-office` (CLI-Kata) ist eine offene Erweiterung — 2 Zellen
-  × 10 Runs = 20 weitere Runs noetig.
+- **Single model**: Nur `opus-4-7-no-thinking`. Bei staerkeren Modellen
+  (Opus mit Thinking) koennte v4 mehr Spec-Antizipation in der Test-List-
+  Phase leisten und die F-6.2-Spec-Coverage-Luecke schliessen — offen.
+- **Zwei Katas**: game-of-life (eng spezifiziert) und claim-office
+  (breit spezifiziert). Mars-rover als dritte Kata mittlerer Komplexitaet
+  bleibt offen — wuerde die Magnituden-Skalierung (GoL → claim-office)
+  weiter validieren.
 - **Identischer Phasen-Skript-Inhalt**: garantiert durch die Workflow-
-  Definition. Diese RQ misst nur den Effekt der Kontext-Architektur, nicht
-  des Phasen-Skripts.
-- **Tail-Praezision**: Auftrittsraten der Outlier (~10 %) sind bei n=10
-  grob — fuer enge Konfidenzintervalle waere n=30+ noetig.
-- **Refactor-Aussetzer als Workflow-Bug**: F-6.4 dokumentiert einen
-  konkreten v4-Failure-Modus, der durch Workflow-Iteration adressierbar
-  waere (z.B. expliziter Komplexitaets-Trigger fuer den Refactor-Subagent).
-  Nicht Teil dieser RQ, aber dokumentiert als Verbesserungsansatz.
+  Definition. Diese RQ misst nur den Effekt der Kontext-Architektur.
+- **Tail-Praezision**: Auftrittsraten ~10 % bei GoL, ~40 % bei
+  claim-office sind bei n=10 punktuell — Konfidenzintervalle breit.
+  Trend (v4 instabiler bei komplexer Kata) aber konsistent ueber alle
+  beobachteten Outcomes.
+- **Refactor-Aussetzer als Workflow-Bug**: v4 Refactor-Phase verlaesst
+  sich auf den Phasen-Trigger; bei Spec-Coverage-Failures koennte ein
+  expliziter Komplexitaets-/Coverage-Trigger fuer den Refactor-Subagent
+  helfen. Nicht Teil dieser RQ, aber dokumentiert als Verbesserungsansatz.
