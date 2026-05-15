@@ -1,6 +1,6 @@
 ---
 id: RQ-5
-question: "Wie stabil ist die Code-Qualitaet pro Workflow ueber Replikate, und unter welchen Bedingungen ist n=3 als Replikat-Anzahl ausreichend?"
+question: "Wie stabil sind Code-Qualitaet und TDD-Disziplin pro Workflow ueber Replikate, und unter welchen Bedingungen ist n=3 als Replikat-Anzahl ausreichend?"
 factors:
   workflow_x_prompt:
     - {workflow: v1-oneshot,             prompt: prose}
@@ -8,6 +8,7 @@ factors:
     - {workflow: v3-basic-tdd,           prompt: example-mapping}
     - {workflow: v4-exact-subagents,     prompt: example-mapping}
     - {workflow: v5-exact-single-context, prompt: example-mapping}
+    - {workflow: v6-hybrid,              prompt: example-mapping}
 controls:
   model: opus-4-7-no-thinking
   kata_base: game-of-life
@@ -19,6 +20,11 @@ outcomes:
   - cc_longest_function
   - mccabe_max
   - cognitive_max
+  # neu: TDD-Disziplin-Banden pro Workflow
+  - predictions_correct_rate    # pooled rate aus predictions_correct/predictions_total
+  - refactorings_applied        # Refactor-Disziplin (pro Run)
+  - cycle_count                 # Zyklen-Granularitaet
+  - tests_passed_immediately    # Over-Implementation-Indikator
   # sekundaer: Korrektheit (Sanity, sollte bei 100 % bleiben)
   - tests_passing
   - verification_pct

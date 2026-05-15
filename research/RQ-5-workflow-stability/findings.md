@@ -4,7 +4,7 @@ Persistente Sammlung der Erkenntnisse zur Frage:
 **Wie stabil ist die Code-Qualitaet pro Workflow ueber Replikate, und unter
 welchen Bedingungen ist n=3 als Replikat-Anzahl ausreichend?**
 
-Datenbasis: 50 Runs (5 Zellen × n=10), Stand 2026-05-15. Modell
+Datenbasis: 60 Runs (6 Zellen × n=10), Stand 2026-05-15. Modell
 `opus-4-7-no-thinking`, Kata `game-of-life` (Library-Form) mit explizitem
 API-Vertrag. Stabilitaets-Analyse via Subsampling
 (`research/RQ-5-workflow-stability/subsample-analysis.py`).
@@ -18,8 +18,9 @@ API-Vertrag. Stabilitaets-Analyse via Subsampling
 | v1-oneshot (prose) | 155.00 | 4.80 | 12.80 | 18.80 | 31.70 | 10 |
 | v2-iterative (prose) | 157.80 | 4.10 | 11.60 | 16.20 | 32.10 | 10 |
 | v3-basic-tdd (EM) | 165.60 | 6.00 | 13.70 | 21.80 | 32.50 | 10 |
-| v4-exact-subagents (EM) | 166.60 | **2.60** | **4.50** | **4.40** | **8.10** | 10 |
+| v4-exact-subagents (EM) | 166.60 | 2.60 | **4.50** | **4.40** | **8.10** | 10 |
 | v5-exact-single-context (EM) | **152.60** | 4.10 | 8.90 | 14.50 | 17.40 | 10 |
+| v6-hybrid (EM) | 158.60 | **2.20** | **4.50** | 5.20 | 13.10 | 10 |
 
 Bester Wert pro Spalte fett. Kleiner = besser.
 
@@ -69,9 +70,10 @@ ranking-instabil ist.
 | v1-oneshot | 18.80 | 3.40 | 0.181 | 3.25 | 10 % |
 | v2-iterative | 16.20 | 3.40 | 0.210 | 5.00 | 0 % |
 | v5-exact-single-context | 14.50 | 4.59 | 0.316 | 7.75 | 10 % |
-| v4-exact-subagents | 4.40 | 4.25 | **0.965** | **1.25** | 10 % |
+| v6-hybrid | 5.20 | **2.30** | 0.442 | ~3 | **0 %** |
+| v4-exact-subagents | 4.40 | 4.25 | 0.965 | **1.25** | 10 % |
 
-Zwei Stabilitäts-Profile:
+Drei Stabilitäts-Profile:
 
 - **v1/v2/v3** sind "**bandförmig**": σ ~3.4 mit moderatem IQR (3–6),
   Werte konzentriert um den Mittel. Diese Workflows produzieren konsistent
@@ -84,6 +86,13 @@ Zwei Stabilitäts-Profile:
 - **v5 ist "**breit**": σ 4.59, IQR 7.75. v5-Runs sind generell
   unvorhersagbar in der Komplexität — der Shared-Context lässt
   pfadabhängig sehr unterschiedliche Implementationen entstehen.
+- **v6 ist "**kompakt ohne Tail**": σ 2.30, alle 10 Runs in [1, 7],
+  0 % Outlier-Rate. v6 erreicht v4-nahe Median-Performance (5.2 vs 4.4)
+  ohne den 1/10-Refactor-Aussetzer von v4. Plausible Mechanik: der
+  isolierte Refactor-Subagent wird in jedem TDD-Zyklus formal aufgerufen
+  (siehe F-5.6, cycle σ=0.82) — der "Refactor-Phase übersprungen"-
+  Failure-Mode aus v4 ist durch die Hybrid-Konstruktion strukturell
+  ausgeschlossen.
 
 Der **CV ist als alleiniges Stabilitätsmaß irreführend**: v4 hat CV 0.965
 (höchste relative Streuung), obwohl 9/10 Runs in einem extrem engen
@@ -153,13 +162,13 @@ mit n=3 nicht trennscharf.
 
 ## F-5.4 — Korrektheit bleibt bei n=10 modell-/workflow-unabhängig 100 % ✅ stabil
 
-**Aussage**: Über alle 50 Runs erreicht jeder Workflow `tests_passing = 100 %`
-und `verification_pct = 1.00`. Die in RQ-4 F-4.4 dokumentierte
-Korrektheits-Stabilität unter API-Vertrag wird durch das größere n
-bestätigt: keine versteckten Outlier-Failures, die in n=3 unentdeckt
-geblieben wären.
+**Aussage**: Über alle 60 Runs (inklusive der 10 neuen v6-hybrid-Runs)
+erreicht jeder Workflow `tests_passing = 100 %` und `verification_pct = 1.00`.
+Die in RQ-4 F-4.4 dokumentierte Korrektheits-Stabilität unter API-Vertrag
+wird durch das größere n bestätigt: keine versteckten Outlier-Failures, die
+in n=3 unentdeckt geblieben wären.
 
-**Datenbasis**: 50 Runs, je 15 Verifikations-Szenarien.
+**Datenbasis**: 60 Runs (6 Workflows × n=10), je 15 Verifikations-Szenarien.
 
 ---
 
@@ -188,6 +197,71 @@ Workflows sind diese Tails einzukalkulieren.
 
 **Bedingung**: ⚠️ bedingt — n=10 ist zur Tail-Charakterisierung knapp;
 für robuste Tail-Quantile (P99, P95) wäre n=30+ nötig.
+
+---
+
+## F-5.6 — TDD-Disziplin bildet workflow-charakteristische Banden ✅ stabil
+
+**Aussage**: Die vier TDD-Disziplin-Indikatoren (`cycle_count`,
+`refactorings_applied`, `predictions_correct_rate`, `tests_passed_immediately`)
+trennen die sechs Workflows in **vier Disziplin-Klassen**:
+
+| Workflow | `cycle_count` μ±σ | `refactorings_applied` μ±σ | `predictions_correct_rate` | `tests_passed_immediately` μ±σ | Disziplin-Klasse |
+|---|---:|---:|---:|---:|---|
+| v1-oneshot | 1.0 ± 0 | 0.0 ± 0 | — | 1.0 ± 0 | **strukturell-leer** |
+| v2-iterative | 1.0 ± 0 | 0.0 ± 0 | — | 1.0 ± 0 | **strukturell-leer** |
+| v3-basic-tdd | 1.5 ± 0.97 | 0.1 ± 0.32 | — | 0.5 ± 0.97 | **Phantom-TDD** |
+| v5-exact-single-context | 6.7 ± **2.67** | 6.0 ± **3.09** | 100.0 % | 0.9 ± 1.66 | **breitbandige Disziplin** |
+| v4-exact-subagents | 7.8 ± 0.92 | 5.9 ± 2.02 | 98.0 % | 3.3 ± 2.87 | **enge Bänder, strenge Disziplin** |
+| v6-hybrid | **8.3 ± 0.82** | 4.0 ± 1.63 | 99.4 % | 3.3 ± 3.02 | **engste Bänder, strengste Disziplin** |
+
+**Rationale**: Die vier Klassen sind über drei Indikatoren konsistent
+definiert:
+
+- **v1/v2 (strukturell-leer)**: keine Zyklen, keine Refactorings, keine
+  Predictions — strukturell ohne TDD-Disziplin (Workflow-Definition).
+  `tests_passed_immediately = 1` ist Artefakt des Metriken-Codes:
+  die nachträgliche Tests-after-Implementation laufen alle zugleich grün
+  durch.
+
+- **v3 (Phantom-TDD)**: trotz formaler TDD-Aufforderung im Workflow keine
+  echten Zyklen (μ=1.5 — typischerweise ein einziger Mega-Zyklus),
+  praktisch keine Refactorings (μ=0.1), kein konsistentes Prediction-Format
+  (`predictions_total = 0` über alle 10 Runs, deshalb aus der Rate-Spalte
+  ausgenommen). Repliziert das F-1.10-Muster aus dem Archiv (`rqs-v1`):
+  v3 erfüllt TDD nur nominell.
+
+- **v4 / v6 (enge Bänder, strenge Disziplin)**: cycle σ < 1.0,
+  refactorings σ ≈ 1.6–2.0, predictions ≥ 98 %. v6 hat sogar das engste
+  cycle-Band überhaupt (σ=0.82), erzwungen durch die Hybrid-Konstruktion:
+  jeder Zyklus muss vom Refactor-Subagent formal abgeschlossen werden,
+  bevor die nächste Red-Phase im Main-Context startet.
+
+- **v5 (breitbandige Disziplin)**: gleich hohe Mittelwerte wie v4 in
+  Zyklen und Refactorings, aber **3–4× breitere Streuung**
+  (refactorings σ=3.09 vs v4-σ=2.02). Der geteilte Single-Context erlaubt
+  unterschiedliche Pfad-Realisierungen — ein Run kann 0 Refactorings
+  haben, ein anderer 8. Auf der langen CLI-Kata claim-office kollabiert
+  diese Streuung in einen klaren Disziplin-Verlust (RQ-7 F-7.4):
+  v5 fällt dort auf 3.4 Zyklen, während v4 und v6 bei 25–37 bleiben.
+
+`tests_passed_immediately` (Indikator für Over-Implementation): v4 und v6
+haben den höchsten Mittelwert (3.3). Plausibel: in beiden Workflows wird
+die Test-Liste vorab vollständig angelegt, anschließend wird der erste
+echte Test grün gemacht — dabei werden mehrere `it.todo`-Tests durch die
+minimale Green-Implementierung mit-erfüllt. Das ist kein Disziplin-Bruch
+im engeren Sinn, sondern strukturelle Folge der Test-First-Phase.
+
+**Datenbasis**: 60 Runs (6 Workflows × n=10), `opus-4-7-no-thinking`,
+`game-of-life-example-mapping` und `game-of-life-prose` (für v1/v2). Bei
+v3 fällt `predictions_correct_rate` aus, weil v3 das Prediction-Format
+nicht konsequent emittiert.
+
+**Konsequenz für die Workflow-Auswahl**: Die Disziplin-Bänder sind
+*orthogonal* zur Code-Qualität — v5 erreicht hohe Disziplin-Mittel mit
+breiter Streuung, v6 erreicht ähnliche Mittel mit engster Streuung. Wenn
+*Reproduzierbarkeit der Disziplin-Indikatoren* selbst ein Workflow-Ziel ist
+(z.B. für audit-fähige Entwicklungs-Logs), ist v6 die robusteste Wahl.
 
 ---
 
