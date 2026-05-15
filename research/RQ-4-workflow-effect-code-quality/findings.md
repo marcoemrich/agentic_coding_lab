@@ -124,34 +124,22 @@ qualitativ schlechteren Code als gar kein TDD.
 
 ---
 
-## F-4.3 — Phasen-Isolierung (v4) schlägt Shared-Context (v5) auf cognitive_max um Faktor 6 ✅ stabil
+## F-4.3 — v4 vs v5: Kontext-Architektur-Effekt — siehe RQ-6 ➡
 
-**Aussage**: v4 und v5 implementieren beide das gleiche strukturierte
-Red-Green-Refactor-Protokoll, unterscheiden sich aber in Phase-Isolation
-(v4: pro Phase ein frischer Subagent-Kontext; v5: alle Phasen im selben
-Kontext). Effekte:
+Der Vergleich v4-exact-subagents vs v5-exact-single-context ist eine
+eigenstaendige Forschungsfrage zum **Context-Engineering** und wird in
+[RQ-6](../RQ-6-context-engineering/findings.md) gesondert behandelt.
+Beide Workflows teilen denselben Phasen-Skript-Inhalt; der einzige
+Unterschied ist die Kontext-Architektur (isolierte Subagent-Kontexte vs
+geteilter Single-Context). Headline-Befund aus RQ-6 (n=10 pro Zelle):
 
-| Metrik | v4 | v5 | v5/v4 |
-|---|---:|---:|---:|
-| `cognitive_max` | 2.83 | 18.33 | **6.5×** |
-| `cc_longest_function` | 9.33 | 24.33 | 2.6× |
-| `mccabe_max` | 4.00 | 10.67 | 2.7× |
-| `smell_total` | 2.50 | 5.67 | 2.3× |
-| `code_mass` | 167.67 | 161.67 | 0.96× |
+- `cognitive_max`: v4 = 4.40 vs v5 = 14.50 (Faktor 3.3×)
+- `mccabe_max`: v4 = 4.50 vs v5 = 8.90 (Faktor 2.0×)
+- `total_tokens`: v4 = 2.56 M vs v5 = 8.14 M (v5 ~3× teurer)
+- `duration_seconds`: v5 = 380 s vs v4 = 1163 s (v5 ~3× schneller)
 
-v4 ist auf allen Komplexitäts-Outcomes deutlich besser; der `cognitive_max`-
-Spread ist mit Faktor 6.5× außerordentlich groß. v5 erreicht
-zwar einen leicht kompakteren Code-Mass-Wert, zahlt das aber mit
-dramatisch höherer Komplexität.
-
-Plausible Mechanik: In v5 sammelt der Shared-Context Kontext-Rauschen aus
-früheren Iterationen mit; die Green-Phase baut auf bestehender Logik auf
-statt aus frischem Kontext eine minimale Implementierung zu liefern. v4
-zwingt durch Phase-Isolation jeden Green-Subagent zu minimaler Lösung.
-
-**Datenbasis**: n_v4 = 6 (RQ-3 + RQ-4 pooled), n_v5 = 3. σ_cognitive_max
-bei v5 mit 6.66 substanziell, aber v5-Minimum (11) liegt immer noch
-deutlich über v4-Maximum (4) → ✅ stabil.
+v4 dominiert auf Code-Qualitaet, v5 spart Wallclock. Volle Argumentation
+und Tail-Risiko-Analyse in RQ-6.
 
 ---
 
