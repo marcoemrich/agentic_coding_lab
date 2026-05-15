@@ -1,0 +1,7 @@
+All 9 tests pass and `experiment-done.txt` is present with `DONE`.
+
+**Summary:**
+- Test list: 9 tests covering empty grid, all 4 rules (underpopulation, survival, overpopulation, reproduction), blinker oscillation, block still life, and negative coordinates.
+- TDD cycle completed for each test with Red → (Green if needed) → Refactor.
+- Final implementation in `src/game-of-life.ts` uses a sparse representation: counts live neighbors via a Map keyed by "x,y" coords, then applies B3/S23 rule.
+- All 9 tests passing.

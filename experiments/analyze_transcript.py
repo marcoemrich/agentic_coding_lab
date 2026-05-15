@@ -324,6 +324,7 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
             "inline_tool_phases": inline_tool_phases,
             "task_order": task_order,
             "red_tool_use_ids": red_tool_use_ids,
+            "last_ts": last_ts,
         },
     }
 
@@ -449,9 +450,48 @@ def aggregate_skill_phases(
                 "phase": skill,
                 "tokens": tokens,
                 "duration_seconds": round(duration, 2),
+                "start_ts": ts.isoformat() if ts else None,
             }
         )
     return phases
+
+
+def merge_phase_streams(
+    skill_phases: list[dict[str, Any]],
+    subagent_phases: list[dict[str, Any]],
+    final_ts: datetime | None,
+) -> list[dict[str, Any]]:
+    """For v6 hybrid workflow: merge inline-skill phases with subagent phases.
+
+    Both sources carry a `start_ts` (ISO 8601). Phases are interleaved by
+    timestamp; durations are recomputed as deltas between adjacent merged
+    phases (last → final_ts). Tokens are kept as derived per source — skill
+    tokens cover the main-context span, subagent tokens come from the
+    subagent transcript.
+    """
+    combined = list(skill_phases) + list(subagent_phases)
+    if not combined:
+        return []
+
+    def sort_key(p: dict[str, Any]) -> str:
+        return p.get("start_ts") or ""
+
+    combined.sort(key=sort_key)
+
+    final_iso = final_ts.isoformat() if final_ts else None
+    for i, p in enumerate(combined):
+        start = p.get("start_ts")
+        next_start = (
+            combined[i + 1].get("start_ts") if i + 1 < len(combined) else final_iso
+        )
+        if start and next_start:
+            try:
+                a = datetime.fromisoformat(start)
+                b = datetime.fromisoformat(next_start)
+                p["duration_seconds"] = round((b - a).total_seconds(), 2)
+            except ValueError:
+                pass
+    return combined
 
 
 def derive_cycle_count(
@@ -550,6 +590,7 @@ def aggregate_subagent_phases(
                     "tokens": agent_tokens,
                     "duration_seconds": round(duration, 2),
                     "transcript": jsonl_path.name,
+                    "start_ts": first_ts.isoformat() if first_ts else None,
                 },
             )
         )
@@ -662,10 +703,17 @@ def main(argv: list[str]) -> int:
             main_models.append(m)
     metrics["model_versions"] = main_models
 
-    # Pick the phase source: subagents (v4) have authoritative timings;
-    # otherwise fall back to inline skill markers (v5). v1/v2/v3 have no
-    # phase structure.
-    if subagent_phases:
+    # Pick the phase source:
+    #   v4 (subagents only):     subagent_phases
+    #   v5 (skills only):        skill_phases
+    #   v6 (hybrid: skills for red/green, subagent for refactor): merge both
+    #   v1/v2/v3:                inline tool inference or none
+    if subagent_phases and internal["skill_phases"]:
+        phases = merge_phase_streams(
+            internal["skill_phases"], subagent_phases, internal.get("last_ts")
+        )
+        phase_source = "skills+subagents"
+    elif subagent_phases:
         phases = subagent_phases
         phase_source = "subagents"
     elif internal["skill_phases"]:

@@ -1,0 +1,5 @@
+All 35 tests passing. The implementation includes:
+- Premium calculation with base premiums, item modifiers (cursed +50%, high enchantment +30%), policy-wide modifiers (loyalty -20%, first insurance +10%, follow-up -15%), component blocks of 3, and processing fee with rounding up
+- Claim processing with deductible per damage, 2x insurance cap, 50% reimbursement for enchantment ≥8, full reimbursement for dragon material
+- CLI at src/cli.ts reading JSON from stdin
+- Validation errors for unknown items, mismatched claims, negative amounts, and over-claiming
