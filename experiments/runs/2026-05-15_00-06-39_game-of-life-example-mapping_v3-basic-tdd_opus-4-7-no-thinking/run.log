@@ -1,0 +1,4 @@
+All 14 tests pass. The implementation:
+
+- `src/game-of-life.ts` — sparse `nextGeneration` using a Set of live cell keys; counts neighbors only for cells adjacent to live cells (efficient for infinite grids).
+- `src/game-of-life.spec.ts` — 14 tests covering empty input, all four rules, blinker oscillation (both directions), block still-life, negative coordinates, 3x3 ring transformation, input immutability, and duplicate input handling.

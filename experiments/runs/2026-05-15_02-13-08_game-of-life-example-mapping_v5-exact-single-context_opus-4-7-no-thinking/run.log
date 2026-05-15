@@ -1,0 +1,5 @@
+All 8 tests pass. Conway's Game of Life implementation complete:
+
+- `src/game-of-life.ts` — sparse representation using a neighbor-count Map keyed by `"x,y"` strings, applying the GoL rules in a single condition `count === 3 || (isLive && count === 2)`.
+- `src/game-of-life.spec.ts` — 8 tests covering empty input, underpopulation (1 and 2 cells), block still life, blinker rotation, reproduction, overpopulation, and negative coordinates.
+- `experiment-done.txt` — DONE marker written.

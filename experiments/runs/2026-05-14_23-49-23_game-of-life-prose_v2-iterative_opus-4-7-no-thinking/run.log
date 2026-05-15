@@ -1,0 +1,5 @@
+Task complete. Implemented Conway's Game of Life with a sparse representation:
+
+- `src/game-of-life.ts` — `nextGeneration` uses a neighbor-count map keyed by `"x,y"` strings, iterating only over live cells and their neighborhoods (no allocation of dead space). Survives with 2-3 neighbors; births with exactly 3.
+- `src/game-of-life.spec.ts` — 11 tests covering empty input, lone cell, block (still life), blinker (oscillator), glider (spaceship), overpopulation, birth, negative + large coordinates, and uniqueness.
+- All 11 tests pass.

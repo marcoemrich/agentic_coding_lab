@@ -1,0 +1,7 @@
+All 8 tests passing. The full TDD cycle was completed:
+
+- 8 tests written and activated one at a time
+- Implementation evolved from `return []` → full neighbor-counting algorithm with sparse representation
+- Refactorings included: extracting `survives` helper, naming improvements (`cellKey`, `liveCells`), and replacing nested-loop with explicit `NEIGHBOR_OFFSETS` constant
+- Handles negative coordinates correctly via string keys
+- `experiment-done.txt` written with `DONE`

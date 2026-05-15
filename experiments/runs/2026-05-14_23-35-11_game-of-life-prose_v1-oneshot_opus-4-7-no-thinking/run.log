@@ -1,0 +1,6 @@
+Implemented Conway's Game of Life with sparse representation in `src/game-of-life.ts` and tests in `src/game-of-life.spec.ts`. All 10 tests pass, TypeScript compiles cleanly.
+
+Key design choices:
+- Uses `Map<string, number>` to count neighbor contributions, iterating only over living cells and their neighborhoods (sparse).
+- Encodes coordinates as `"x,y"` strings for Set/Map keys, supporting negative coordinates.
+- Applies B3/S23 rules: count==3 (birth or survival) or count==2 with cell currently alive (survival).

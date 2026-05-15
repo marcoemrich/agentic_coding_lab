@@ -1,0 +1,11 @@
+All 7 tests for Conway's Game of Life pass. The TDD cycle (Red → Green → Refactor) was completed via specialized agents for each test:
+
+1. Empty input → empty array
+2. Single live cell dies (underpopulation)
+3. Two adjacent cells die (underpopulation)
+4. 2x2 block unchanged (still life)
+5. Vertical blinker → horizontal blinker (covers survival, reproduction, negative coords)
+6. 3x3 full block (overpopulation)
+7. L-shape reproduction (dead cell with 3 neighbors)
+
+The `experiment-done.txt` marker file contains `DONE`.

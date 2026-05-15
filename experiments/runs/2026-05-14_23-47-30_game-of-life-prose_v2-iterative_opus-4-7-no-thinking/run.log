@@ -1,0 +1,5 @@
+All steps complete. Summary:
+
+- **`src/game-of-life.ts`** — `nextGeneration` uses a sparse representation: a `Set` of live-cell keys plus a `Map` counting neighbor contributions. For each live cell, we increment all 8 neighbor counts; then any cell with exactly 3 neighbors (or 2 if currently alive) is alive next generation. Handles negative and large coordinates.
+- **`src/game-of-life.spec.ts`** — 12 tests covering: empty input, underpopulation, overpopulation, block (still life), blinker (oscillator, both directions, full period), birth rule, negative coordinates, large coordinates, no duplicates, and the glider after 4 generations.
+- All 12 tests pass.

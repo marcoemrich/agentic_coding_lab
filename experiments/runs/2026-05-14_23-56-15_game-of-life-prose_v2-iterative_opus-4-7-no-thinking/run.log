@@ -1,0 +1,10 @@
+## Implementation Checklist
+
+- [x] Step 1: Create `src/game-of-life.ts` with `nextGeneration` function
+- [x] Step 2: Create `src/game-of-life.spec.ts` with tests
+- [x] Step 3: Run tests to verify (11/11 passing)
+- [x] Step 4: Write `experiment-done.txt`
+
+Implemented Conway's Game of Life with sparse representation:
+- `src/game-of-life.ts`: Uses a Set of string keys (`"x,y"`) for living cells and a Map to count neighbors only for cells adjacent to living ones — handles the infinite grid efficiently and supports negative coordinates.
+- `src/game-of-life.spec.ts`: 11 tests covering empty input, underpopulation, overpopulation, reproduction, still life (block), oscillator (blinker), glider, negative coordinates, immutability, and uniqueness.

@@ -1,0 +1,5 @@
+Implementation complete:
+
+- `src/game-of-life.ts` — Sparse `nextGeneration` using neighbor-count accumulation. Each living cell increments counts for its 8 neighbor coordinates; cells with count 3 become/stay alive, count 2 alive cells survive.
+- `src/game-of-life.spec.ts` — 11 tests covering empty input, lone cell, block (still life), blinker (oscillator), L-shape reproduction, overpopulation, negative coordinates, glider, deduplication, and large coordinates. All passing.
+- `experiment-done.txt` written.

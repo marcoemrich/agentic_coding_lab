@@ -1,0 +1,6 @@
+Implementation complete. Summary:
+
+- **`src/game-of-life.ts`**: Sparse implementation using a `Set` of living cells and `Map` of neighbor counts. For each living cell, increments neighbor counts on all 8 surrounding positions. A cell lives in the next generation if its count is 3, or if its count is 2 and it was already alive.
+- **`src/game-of-life.spec.ts`**: 15 tests covering empty input, underpopulation, overpopulation, reproduction, blinker oscillator (period 2), block/tub still lifes, glider movement, negative coordinates, large coordinates, and no-duplicates invariant.
+- **Tests**: All 15 passing.
+- **`experiment-done.txt`**: Created with `DONE`.

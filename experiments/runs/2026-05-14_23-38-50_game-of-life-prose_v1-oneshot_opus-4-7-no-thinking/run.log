@@ -1,0 +1,6 @@
+Implementation complete:
+
+- `src/game-of-life.ts` — `nextGeneration` using sparse representation (Set/Map keyed by `"x,y"`), counts neighbor contributions only around live cells, supports negative/large coordinates
+- `src/game-of-life.spec.ts` — 12 tests covering empty input, underpopulation, overpopulation, birth, still life (block), blinker oscillation both directions, glider step, negative coordinates, large coordinates, deduplication
+- All 12 tests pass; `tsc --noEmit` clean
+- `experiment-done.txt` written

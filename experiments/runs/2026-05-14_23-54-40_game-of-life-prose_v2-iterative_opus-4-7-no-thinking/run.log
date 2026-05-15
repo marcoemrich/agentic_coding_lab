@@ -1,0 +1,6 @@
+Completed the Game of Life kata:
+
+- `src/game-of-life.ts` — sparse `nextGeneration` using a neighbor-count Map; only cells adjacent to a live cell are considered, supporting an infinite grid with negative coordinates.
+- `src/game-of-life.spec.ts` — 11 tests covering: empty grid, underpopulation, overpopulation, reproduction, block (still life), blinker (oscillator), glider (4-step displacement), negative coordinates, no-duplicates.
+- All 11 tests pass.
+- `experiment-done.txt` written with `DONE`.

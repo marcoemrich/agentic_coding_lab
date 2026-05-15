@@ -1,0 +1,6 @@
+Completed the Game of Life kata using TDD:
+
+- `src/game-of-life.spec.ts` — 11 tests covering all 4 rules, blinker oscillation (both directions), still-life block, negative coordinates, empty input, and input immutability
+- `src/game-of-life.ts` — sparse implementation using a Set of live cells and a Map of neighbor counts; iterates over neighbors of live cells only (handles the infinite grid efficiently)
+
+All 11 tests pass. `experiment-done.txt` written with `DONE`.
