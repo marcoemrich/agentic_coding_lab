@@ -265,6 +265,50 @@ breiter Streuung, v6 erreicht ähnliche Mittel mit engster Streuung. Wenn
 
 ---
 
+## F-5.7 — Test-Stärke (`mutation_score`) hat eigenes Stabilitätsprofil; v6-hybrid ist stabilster Workflow, v4 instabilster ✅ stabil
+
+**Aussage**: Mutation-Score (Anteil gekillter Mutanten, Stryker) zeigt eine
+**andere** Stabilitätsrangfolge als die Code-Komplexitäts-Metriken aus
+F-5.1/F-5.2. Auf game-of-life (n=10 pro Workflow):
+
+| Workflow | `mutation_score` mean | std | min | max |
+|---|---:|---:|---:|---:|
+| **v6-hybrid** | **0.953** | **0.005** | 0.940 | 0.957 |
+| v2-iterative | 0.954 | 0.006 | 0.939 | 0.960 |
+| v1-oneshot | 0.953 | 0.009 | 0.933 | 0.962 |
+| v3-basic-tdd | 0.949 | 0.009 | 0.938 | 0.962 |
+| v5-exact-single-context | 0.945 | 0.036 | 0.843 | 0.965 |
+| **v4-exact-subagents** | 0.908 | **0.080** | **0.735** | 0.957 |
+
+**Auffälligkeiten:**
+
+- **v6-hybrid** liefert die niedrigste Streuung (σ=0.005) UND zugleich den
+  höchsten Mean (gleichauf mit v1/v2). In Komplexitäts-Metriken war v4
+  dominant; in Test-Stärke ist v6 dominant. Die Hybrid-Architektur
+  (Skill-basierte Red/Green + isolierter Refactor) scheint die Test-Stärke-
+  Streuung von v4 zu eliminieren ohne die Test-Stärke selbst zu verlieren.
+- **v4** zeigt erneut sein in F-5.2 dokumentiertes Tail-Risiko: σ=0.080,
+  min 0.735 — mehrere v4-Runs liegen deutlich unterhalb des typischen
+  v4-Werts. Die isolierte Green-Phase scheint gelegentlich schwache
+  Test-Generalisierung zu erzeugen.
+- **v5** hat ebenfalls erhöhte Streuung (σ=0.036, min 0.843) — single-context
+  ist robuster als v4 in Test-Stärke, aber nicht so glatt wie v1/v2/v3/v6.
+- v1/v2/v3 (non-TDD oder minimal-TDD) clustern bei mean ≈0.95, σ≈0.008 —
+  trotz unterschiedlicher Workflow-Philosophie nicht unterscheidbar in
+  Test-Stärke auf game-of-life.
+
+**Konsequenz für H1 (n=3-Frage)**: Für `mutation_score` wäre n=3 bei v4
+besonders unzuverlässig — drei Ziehungen aus einer Verteilung mit σ=0.080
+und min 0.735 können je nach Glück ein völlig anderes v4-Bild liefern.
+Bei v6 und v1/v2/v3 wäre n=3 dagegen ausreichend (σ < 0.01). Die
+**Outlier-Asymmetrie aus F-5.2 wiederholt sich für Test-Stärke**: v4 hat
+eine breite Schwanzverteilung, andere Workflows nicht.
+
+**Datenbasis**: 60 Runs game-of-life, opus-4-7-no-thinking, EM für
+v3/v4/v5/v6 bzw. prose für v1/v2. Stryker 8.6.0.
+
+---
+
 ## Caveats
 
 - **Single model**: Nur `opus-4-7-no-thinking`. Modell-Wechsel könnte das

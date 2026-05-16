@@ -2,7 +2,7 @@
 
 _Wie stabil sind Code-Qualitaet und TDD-Disziplin pro Workflow ueber Replikate, und unter welchen Bedingungen ist n=3 als Replikat-Anzahl ausreichend?_
 
-Generated: 2026-05-15T16:28:42Z
+Generated: 2026-05-16T14:55:00Z
 
 Cells declared: 6 · matched runs: 60 · min_replicates: 10
 
@@ -73,6 +73,17 @@ Cells declared: 6 · matched runs: 60 · min_replicates: 10
 | game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |    5.2 |     1 |     7 |  2.3  |
 | game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |  10 |   18.8 |    10 |    23 |  3.58 |
 | game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |  10 |   16.2 |    10 |    20 |  3.58 |
+
+### mutation_score
+
+| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
+| game-of-life-example-mapping | v3-basic-tdd            | opus-4-7-no-thinking |  10 |   0.95 |  0.94 |  0.96 |  0.01 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |   0.91 |  0.74 |  0.96 |  0.08 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |   0.94 |  0.84 |  0.96 |  0.04 |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |   0.95 |  0.94 |  0.96 |  0    |
+| game-of-life-prose           | v1-oneshot              | opus-4-7-no-thinking |  10 |   0.95 |  0.93 |  0.96 |  0.01 |
+| game-of-life-prose           | v2-iterative            | opus-4-7-no-thinking |  10 |   0.95 |  0.94 |  0.96 |  0.01 |
 
 ### predictions_correct_rate (pooled %)
 

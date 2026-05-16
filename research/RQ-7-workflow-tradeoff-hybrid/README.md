@@ -16,10 +16,11 @@ outcomes:
   - mccabe_max
   - duration_seconds
   - total_tokens
-  # sekundaer: Korrektheit
+  # sekundaer: Korrektheit (innen + aussen + Test-Staerke)
   - tests_passing
   - verification_pct
   - completed_within_budget
+  - mutation_score
   # TDD-Disziplin (alle drei sind echte TDD-Workflows)
   - cycle_count
   - refactorings_applied

@@ -15,10 +15,11 @@ outcomes:
   - cc_loc
   - mccabe_max
   - cognitive_max
-  # sekundaer: Korrektheit
+  # sekundaer: Korrektheit (innen + aussen + Test-Staerke)
   - tests_passing
   - verification_pct
   - completed_within_budget
+  - mutation_score
   # Kontext-Effizienz
   - total_tokens
   - duration_seconds

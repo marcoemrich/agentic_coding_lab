@@ -20,6 +20,8 @@ outcomes:
   - cc_longest_function
   - mccabe_max
   - cognitive_max
+  # Test-Staerke: zusaetzliche Stabilitaets-Dimension neben Code-Qualitaet
+  - mutation_score
   # neu: TDD-Disziplin-Banden pro Workflow
   - predictions_correct_rate    # pooled rate aus predictions_correct/predictions_total
   - refactorings_applied        # Refactor-Disziplin (pro Run)

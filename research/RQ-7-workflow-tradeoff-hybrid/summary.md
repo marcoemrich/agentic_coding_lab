@@ -2,9 +2,9 @@
 
 _Liefert ein Hybrid-Workflow (v6: red/green im Single-Context, refactor im isolierten Subagent) ein besseres Tradeoff aus Code-Qualitaet, Wallclock-Dauer und Tokenverbrauch als die Reinformen v4 (alles Subagents) und v5 (alles Single-Context)?_
 
-Generated: 2026-05-15T14:17:54Z
+Generated: 2026-05-16T14:55:01Z
 
-Cells declared: 6 · matched runs: 50 · min_replicates: 5
+Cells declared: 6 · matched runs: 55 · min_replicates: 5
 
 ## Zell-Coverage
 
@@ -14,7 +14,7 @@ Cells declared: 6 · matched runs: 50 · min_replicates: 5
 | claim-office-example-mapping | v4-exact-subagents | opus-4-7-no-thinking | 10 | 10 | ✅ |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking | 10 | 10 | ✅ |
 | claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking | 10 | 10 | ✅ |
-| game-of-life-example-mapping | v6-hybrid | opus-4-7-no-thinking | 5 | 5 | ✅ |
+| game-of-life-example-mapping | v6-hybrid | opus-4-7-no-thinking | 10 | 10 | ✅ |
 | claim-office-example-mapping | v6-hybrid | opus-4-7-no-thinking | 5 | 5 | ✅ |
 
 ## Outcome-Pivots (pro Zelle)
@@ -28,7 +28,7 @@ Cells declared: 6 · matched runs: 50 · min_replicates: 5
 | claim-office-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |  883.2 |   839 |   923 |  36.53 |
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |  166.6 |   146 |   201 |  17.65 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |  152.6 |   136 |   173 |  13.85 |
-| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |  162.2 |   147 |   187 |  16.27 |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |  158.6 |   140 |   187 |  15.14 |
 
 ### smell_total
 
@@ -39,7 +39,7 @@ Cells declared: 6 · matched runs: 50 · min_replicates: 5
 | claim-office-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |    0.2 |     0 |     1 |  0.45 |
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |    2.6 |     2 |     4 |  0.7  |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |    4.1 |     2 |     7 |  1.79 |
-| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |    2.2 |     2 |     3 |  0.45 |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |    2.2 |     2 |     3 |  0.42 |
 
 ### cc_longest_function
 
@@ -50,7 +50,7 @@ Cells declared: 6 · matched runs: 50 · min_replicates: 5
 | claim-office-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |   21   |    12 |    29 |  7.18 |
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |    8.1 |     2 |    15 |  4.04 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |   17.4 |     2 |    32 |  9.25 |
-| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |   11   |     4 |    15 |  4.18 |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |   13.1 |     4 |    21 |  5.97 |
 
 ### cognitive_max
 
@@ -61,7 +61,7 @@ Cells declared: 6 · matched runs: 50 · min_replicates: 5
 | claim-office-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |    6.6 |     3 |    14 |  4.28 |
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |    4.4 |     2 |    17 |  4.48 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |   14.5 |     9 |    24 |  4.84 |
-| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |    4.6 |     1 |     7 |  2.51 |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |    5.2 |     1 |     7 |  2.3  |
 
 ### mccabe_max
 
@@ -72,7 +72,7 @@ Cells declared: 6 · matched runs: 50 · min_replicates: 5
 | claim-office-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |    6.2 |     4 |    12 |  3.35 |
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |    4.5 |     3 |    11 |  2.42 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |    8.9 |     6 |    12 |  2.08 |
-| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |    3.8 |     2 |     5 |  1.1  |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |    4.5 |     2 |     7 |  1.51 |
 
 ### duration_seconds
 
@@ -83,7 +83,7 @@ Cells declared: 6 · matched runs: 50 · min_replicates: 5
 | claim-office-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 | 2116    |  1058 |  2883 | 716.26 |
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 | 1162.9  |   604 |  3923 | 984.46 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |   9 |  379.56 |   220 |   508 | 100.79 |
-| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |  498    |   427 |   606 |  73.25 |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |  521.4  |   427 |   711 |  95.48 |
 
 ### total_tokens
 
@@ -94,7 +94,7 @@ Cells declared: 6 · matched runs: 50 · min_replicates: 5
 | claim-office-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 | 3.3248e+07  | 21492140 | 39096785 |      7.41969e+06 |
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 | 2.56189e+06 |  2023377 |  3201698 | 382603           |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 | 8.14255e+06 |        0 | 12207170 |      3.79036e+06 |
-| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 | 6.4323e+06  |  5002606 |  8557921 |      1.47108e+06 |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 | 6.62354e+06 |  4863281 |  8557921 |      1.31893e+06 |
 
 ### tests_passing (rate %)
 
@@ -105,7 +105,7 @@ Cells declared: 6 · matched runs: 50 · min_replicates: 5
 | claim-office-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |       5 |      100 |
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |      10 |      100 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |      10 |      100 |
-| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |       5 |      100 |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |      10 |      100 |
 
 ### verification_pct
 
@@ -116,7 +116,7 @@ Cells declared: 6 · matched runs: 50 · min_replicates: 5
 | claim-office-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |   1    |   1   |     1 |  0    |
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |   1    |   1   |     1 |  0    |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |   1    |   1   |     1 |  0    |
-| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |   1    |   1   |     1 |  0    |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |   1    |   1   |     1 |  0    |
 
 ### completed_within_budget (rate %)
 
@@ -127,7 +127,18 @@ Cells declared: 6 · matched runs: 50 · min_replicates: 5
 | claim-office-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |       5 |      100 |
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |      10 |      100 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |      10 |      100 |
-| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |       5 |      100 |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |      10 |      100 |
+
+### mutation_score
+
+| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |   0.93 |  0.83 |  0.98 |  0.04 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |   0.88 |  0.84 |  0.96 |  0.04 |
+| claim-office-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |   0.93 |  0.87 |  0.99 |  0.04 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |   0.91 |  0.74 |  0.96 |  0.08 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |   0.94 |  0.84 |  0.96 |  0.04 |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |   0.95 |  0.94 |  0.96 |  0    |
 
 ### cycle_count
 
@@ -138,7 +149,7 @@ Cells declared: 6 · matched runs: 50 · min_replicates: 5
 | claim-office-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |   25.8 |     8 |    33 | 10.8  |
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |    7.8 |     6 |     9 |  0.92 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |    6.7 |     0 |     8 |  2.67 |
-| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |    8.4 |     7 |    10 |  1.14 |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |    8.3 |     7 |    10 |  0.82 |
 
 ### refactorings_applied
 
@@ -149,7 +160,7 @@ Cells declared: 6 · matched runs: 50 · min_replicates: 5
 | claim-office-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |   10.4 |     4 |    13 |  3.78 |
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |    5.9 |     3 |     8 |  2.02 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |    6   |     0 |     8 |  3.09 |
-| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |    3.6 |     3 |     5 |  0.89 |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |    4   |     3 |     8 |  1.63 |
 
 ### tests_passed_immediately
 
@@ -160,4 +171,4 @@ Cells declared: 6 · matched runs: 50 · min_replicates: 5
 | claim-office-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |   10   |     2 |    14 |  4.74 |
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |    3.3 |     0 |     6 |  2.87 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |    0.9 |     0 |     5 |  1.66 |
-| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |   5 |    3.6 |     0 |     7 |  3.36 |
+| game-of-life-example-mapping | v6-hybrid               | opus-4-7-no-thinking |  10 |    3.3 |     0 |     7 |  3.02 |

@@ -2,12 +2,18 @@
 
 ## Übersicht
 
-Smell-Summe (`smell_total`, Mittelwert) über alle Zellen, Kontrolle: `opus-4-7-no-thinking`, `prompt: example-mapping`:
+Headline-Outcomes (Mittelwerte, ggf. mit Streuung), Kontrolle:
+`opus-4-7-no-thinking`, `prompt: example-mapping`. Datenbasis: 55 Runs
+(GoL n=10 pro Workflow; claim-office n=10 für v4/v5, n=5 für v6).
 
-| Kata | v4-exact-subagents (n=10) | v5-exact-single-context (n=10) | **v6-hybrid (n=5)** |
-|---|---:|---:|---:|
-| game-of-life | 2.6 | 4.1 | **2.2** |
-| claim-office | 1.8 | 8.9 | **0.2** |
+| Kata | Outcome | v4 | v5 | **v6** |
+|---|---|---:|---:|---:|
+| game-of-life | `smell_total` | 2.6 | 4.1 | **2.2** |
+| game-of-life | `mutation_score` (σ) | 0.908 (0.080) | 0.945 (0.036) | **0.953 (0.005)** |
+| game-of-life | `verification_pct` | 1.00 | 1.00 | 1.00 |
+| claim-office | `smell_total` | 1.8 | 8.9 | **0.2** |
+| claim-office | `mutation_score` (σ) | 0.927 (0.042) | 0.876 (0.035) | **0.930 (0.044)** |
+| claim-office | `verification_pct` | 0.67 | 0.87 | **1.00** |
 
 ---
 
@@ -68,3 +74,49 @@ Hypothese H3/H4 — v6 ≈ v5 Tokens bei v4-naher Qualität, strikte Dominanz ü
 | game-of-life | `refactorings_applied` | 5.9 | 6.0 | 3.6 |
 
 **Rationale:** Auf der langen CLI-Kata kollabiert v5 von ~7 Zyklen (game-of-life) auf nur 3.4 Zyklen — d.h. das Modell implementiert große Test-Batches statt rote-grüne Mini-Schleifen. Das erklärt die schlechtere Korrektheit-außen aus F-7.2 trotz interner Test-Coverage von 100%: weil die selbst-geschriebenen Tests breite Batches abdecken, bleibt das vom Modell selbst nicht erkannte Verhalten ungeprüft. v6 hält die Zyklen-Disziplin auch auf langen Aufgaben (25.8 Zyklen, nahe v4). Strukturelle Erklärung: weil der Refactor-Subagent jeden Zyklus formal abschließt, kann das Single-Context-Modell mehrere rote-grüne Schritte nicht in einen Batch falten.
+
+---
+
+## F-7.5 — v6-Hybrid hat höchsten Mutation-Score auf beiden Katas; auf game-of-life zugleich niedrigste Streuung von allen ✅ stabil
+
+Mutation-Score (Anteil gekillter Mutanten gegen die vom Implementierer
+selbst geschriebenen internen Tests, Stryker):
+
+| Kata | Outcome | v4 | v5 | **v6** |
+|---|---|---:|---:|---:|
+| game-of-life | `mutation_score` mean | 0.908 | 0.945 | **0.953** |
+| game-of-life | `mutation_score` σ | 0.080 | 0.036 | **0.005** |
+| game-of-life | `mutation_score` min | 0.735 | 0.843 | **0.940** |
+| claim-office | `mutation_score` mean | 0.927 | 0.876 | **0.930** |
+| claim-office | `mutation_score` σ | 0.042 | 0.035 | 0.044 |
+
+**Game-of-life**: v6 ist nicht nur Workflow-Sieger im Mittel, sondern hat
+mit σ=0.005 (vs v4: 0.080, v5: 0.036) **eine Größenordnung weniger
+Streuung** als v4. Der schlechteste v6-Run liegt bei 0.940 — über dem
+Mittelwert von v4. Die Hybrid-Architektur eliminiert den v4-Tail (siehe
+auch RQ-5 F-5.7 und RQ-6 F-6.5).
+
+**Claim-office**: v6 dominiert im Mean (0.930) knapp vor v4 (0.927) und
+deutlich vor v5 (0.876). Streuung ist hier mit σ=0.044 nicht besser als
+v4 — d.h. die GoL-Stabilitäts-Überlegenheit von v6 verallgemeinert sich
+nicht ohne Weiteres auf claim-office. Mögliche Erklärung: bei n=5 ist die
+σ-Schätzung breit, eine wahre Differenz zu v4 lässt sich nicht statistisch
+sichern.
+
+**Kreuzung von Test-Stärke und Aussen-Korrektheit aufgelöst**: Wo bei
+v4/v5 in RQ-6 (F-6.5) Test-Stärke und Aussen-Korrektheit zwischen Katas
+kreuzten, ist v6 auf claim-office der **einzige Workflow mit gleichzeitig
+hohem `mutation_score` (0.930) und perfektem `verification_pct` (1.00)**.
+Damit ist der in F-4.4/F-4.6 dokumentierte v3↔v4-Tradeoff auf claim-office
+aufgehoben.
+
+**Konsequenz für H1/H2**: v6 ist auf der einen messbaren Dimension
+(Test-Stärke), wo F-7.3 keine Preisaufstockung gegenüber v4/v5 verlangt,
+strikt nicht-unterlegen — v6 dominiert v4 in Mean+Streuung auf GoL und
+matched v4 im Mean auf claim-office. Damit verschiebt sich die Bewertung
+aus F-7.3 (v6 ist teurer): die Token-Mehrkosten kaufen nicht nur
+verification_pct (F-7.2) und smell-Reduktion (F-7.1), sondern auch
+substantielle Test-Stärke-Stabilität.
+
+**Datenbasis**: 15 v6-Runs (10 GoL, 5 claim-office), 40 v4/v5-Runs (je 10
+pro Kata-Zelle). Stryker 8.6.0.

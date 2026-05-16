@@ -2,7 +2,7 @@
 
 _Welche Form der Kontext-Strukturierung — isolierte Subagent-Kontexte pro TDD-Phase (v4) oder ein geteilter, akkumulierter Single-Context (v5) — fuehrt zu besserer Code-Qualitaet, bei sonst identischem Phasen-Skript?_
 
-Generated: 2026-05-15T08:07:22Z
+Generated: 2026-05-16T14:55:00Z
 
 Cells declared: 4 · matched runs: 40 · min_replicates: 10
 
@@ -97,6 +97,15 @@ Cells declared: 4 · matched runs: 40 · min_replicates: 10
 | claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |      10 |      100 |
 | game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |      10 |      100 |
 | game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |      10 |      100 |
+
+### mutation_score
+
+| kata                         | workflow                | model                |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------|:---------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |   0.93 |  0.83 |  0.98 |  0.04 |
+| claim-office-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |   0.88 |  0.84 |  0.96 |  0.04 |
+| game-of-life-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking |  10 |   0.91 |  0.74 |  0.96 |  0.08 |
+| game-of-life-example-mapping | v5-exact-single-context | opus-4-7-no-thinking |  10 |   0.94 |  0.84 |  0.96 |  0.04 |
 
 ### total_tokens
 

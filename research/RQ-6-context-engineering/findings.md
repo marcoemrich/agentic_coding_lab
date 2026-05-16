@@ -182,6 +182,49 @@ knapp; 95 %-CIs der Failure-Raten breit.
 
 ---
 
+## F-6.5 — Test-Staerke (`mutation_score`) zeigt dieselbe Kata-Inkonsistenz wie Aussen-Korrektheit — verstaerkt F-6.2 ⚠️ bedingt
+
+**Aussage**: Mutation-Score (Stärke der vom Implementierer selbst
+geschriebenen internen Tests, Stryker) ist auf den beiden Katas
+**entgegengesetzt verteilt**:
+
+| Kata | v4 mean (σ, min, max) | v5 mean (σ, min, max) | Sieger |
+|---|---|---|---|
+| game-of-life (n=10) | 0.908 (σ=0.080, 0.735, 0.957) | **0.945** (σ=0.036, 0.843, 0.965) | **v5** (+0.037) |
+| claim-office (n=10) | **0.927** (σ=0.042, 0.832, 0.980) | 0.876 (σ=0.035, 0.839, 0.957) | **v4** (+0.051) |
+
+**Mechanik der Umkehrung**:
+- Auf **game-of-life** schreibt v5 (single-context) strengere Tests, weil
+  das Modell die bisherige Implementierung samt Lücken sieht und gezielt
+  ergänzende Tests formuliert.
+- Auf **claim-office** schreibt v4 (isolierte Subagents) strengere Tests:
+  jeder Test wird ohne Kenntnis des bisherigen Codes entworfen und prüft
+  damit eigenständig, statt auf bereits implementierte Pfade einzuschwenken.
+- Welche Architektur gewinnt, hängt offenbar von der **Aufgaben-Spec-Dichte**
+  ab: dichte, kleine Specs (GoL) → v5 sieht mehr Kontext und kann besser
+  generalisieren. Spärliche, große Specs (claim-office) → v4's Isolation
+  zwingt jeden Test zu eigenständiger Härte.
+
+**Verbindung zu F-6.1 und F-6.2**: Auf game-of-life ist v4 zwar bei
+Komplexität (F-6.1) und Aussen-Korrektheit besser, hat aber **schwächere
+Tests** als v5 — d.h. das hohe `verification_pct` von v4 auf GoL ist
+weniger ein Verdienst seiner Tests als der Modell-Generalisierung. Auf
+claim-office liegen Test-Stärke (v4 > v5) und Aussen-Korrektheit (v5 > v4)
+auseinander: v4 hat strengere interne Tests, trifft aber weniger
+Acceptance-Szenarien. Das ist eine **dritte Falsifikations-Variante** für
+H2 (uniforme v4-Überlegenheit): nicht nur kehrt sich Aussen-Korrektheit
+zwischen Katas um — sondern auch die Trennung von Innen-Test-Stärke und
+Aussen-Korrektheit verläuft pro Kata anders.
+
+**v4-Streuung bestätigt**: σ=0.080 auf GoL, σ=0.042 auf claim-office —
+auf beiden Katas hat v4 die breiteste Test-Stärke-Verteilung. Tail-Risiko-
+Beobachtung aus F-6.4 wiederholt sich in dieser Metrik.
+
+**Datenbasis**: 40 Runs (4 Zellen × n=10), opus-4-7-no-thinking,
+example-mapping. Stryker 8.6.0.
+
+---
+
 ## Caveats
 
 - **Single model**: Nur `opus-4-7-no-thinking`. Bei staerkeren Modellen
