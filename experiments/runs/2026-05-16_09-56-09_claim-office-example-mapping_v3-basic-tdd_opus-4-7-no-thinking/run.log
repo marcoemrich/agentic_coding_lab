@@ -1,0 +1,10 @@
+Exercise complete. Summary:
+
+- **41 tests pass** across 3 test files (premium, claim, scenario)
+- **Source files**:
+  - `src/types.ts` — type definitions, item catalogs, type guards
+  - `src/premium.ts` — quote/premium computation with all modifiers (cursed, high-enchantment, loyalty, first insurance, follow-up contract, processing fee, MHPCO-favorable rounding)
+  - `src/claim.ts` — policy creation (insurance sum, cap = 2× sum) and claim processing (deductible per damage event, high-enchantment 50% rule, dragon material full reimbursement, cap exhaustion across claims)
+  - `src/scenario.ts` — sequential step processing with policy index references and prior-contract tracking
+  - `src/cli.ts` — JSON stdin/stdout, error exits with non-zero status to stderr
+- `experiment-done.txt` written with `DONE`

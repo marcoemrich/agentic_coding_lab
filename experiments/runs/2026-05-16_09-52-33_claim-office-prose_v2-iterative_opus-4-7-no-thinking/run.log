@@ -1,0 +1,9 @@
+Implementation complete. Summary:
+
+- **src/types.ts** — Domain types (Item, Customer, Scenario, etc.)
+- **src/pricing.ts** — Premium computation with component bundle discount, per-item modifiers (cursed +50%, ench≥5 +30%), policy-level modifiers (loyalty -20%, first +10%, repeat -15%), 5G fee, rounded up in MHPCO's favor
+- **src/claims.ts** — Claim processing with 100G deductible, 2× insurance cap, dragon-material full reimbursement, ench≥8 50% reimbursement
+- **src/scenario.ts** — Step runner tracking policies by index and contract count
+- **src/cli.ts** — CLI entry point reading JSON from stdin, writing to stdout
+- 22 passing tests across 3 spec files
+- Both schema examples produce expected results

@@ -1,0 +1,10 @@
+Implementation complete. The MHPCO Claim Office system:
+
+- **`src/types.ts`** — Scenario/Step/Policy domain types
+- **`src/pricing.ts`** — Premium computation: base prices, component-block pricing, cursed/enchantment surcharges (additive per-item), customer modifiers (loyalty, first/subsequent contract), 5 G fee, ceiling rounding
+- **`src/claim.ts`** — Per-event 100 G deductible, dragon-material (full) and enchantment ≥ 8 (50%) reimbursement rules, 2× insurance-sum cap
+- **`src/scenario.ts`** — Sequentially runs steps, maintaining policies indexed by step number
+- **`src/cli.ts`** — Reads JSON from stdin, writes JSON to stdout
+- **`src/scenario.spec.ts`** — 17 tests covering both schema examples plus modifier, component-block, and claim edge cases
+
+Both schema examples produce well-formed output (Example 1: `{"premium":115}`, Example 2: `{"premium":59}`, `{"payout":100,"remainingCap":1100}`, `{"payout":150,"remainingCap":950}`). `tsc --noEmit` passes cleanly.

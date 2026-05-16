@@ -1,0 +1,12 @@
+Implemented the MHPCO Claim Office kata:
+
+**Source files** (`src/`):
+- `types.ts` — Scenario, Step, Item, Policy types
+- `pricing.ts` — premium calculation: main item base prices, component bundling (3 alike → 60 G), per-item cursed/enchantment surcharges, contract-level loyalty/first/subsequent modifiers, processing fee, ceil rounding (with float-noise guard)
+- `claims.ts` — claim processing: 100 G deductible per event, 50% rate for ench≥8, 100% for dragon material, cap at 2× insurance sum
+- `engine.ts` — runs scenario steps sequentially, tracks per-customer contract index, indexes policies by quote step
+- `cli.ts` — stdin → stdout JSON CLI
+
+**Tests**: 22 passing across `pricing.spec.ts`, `claims.spec.ts`, `engine.spec.ts`, covering both schema examples and rule combinations.
+
+Both example shapes verified end-to-end via the CLI; `tsc --noEmit` passes.

@@ -8,9 +8,9 @@ factors:
     - {workflow: v3-basic-tdd,           prompt: example-mapping}
     - {workflow: v4-exact-subagents,     prompt: example-mapping}
     - {workflow: v5-exact-single-context, prompt: example-mapping}
+  kata_base: [game-of-life, claim-office]
 controls:
   model: opus-4-7-no-thinking
-  kata_base: game-of-life
 outcomes:
   # primaer: Code-Qualitaet
   - code_mass
@@ -19,6 +19,10 @@ outcomes:
   - cc_loc
   - mccabe_max
   - cognitive_max
+  # Test-Staerke: operationalisiert die Kern-Hypothese, ob TDD-Workflows
+  # substanziellere Tests erzeugen als Post-hoc-Tests (v1/v2). Wird nur
+  # fuer grüne Runs berechnet; bei v1/v2 darum oft nur Teilabdeckung.
+  - mutation_score
   # sekundaer: Korrektheit (innen + aussen)
   - tests_passing
   - verification_pct
@@ -33,7 +37,7 @@ outcomes:
   # Kontext
   - duration_seconds
   - total_tokens
-min_replicates: 3
+min_replicates: 5
 status: aktiv
 ---
 

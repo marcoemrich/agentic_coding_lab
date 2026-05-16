@@ -1,0 +1,10 @@
+Implementation complete. Summary:
+
+- `src/types.ts` — Type definitions for scenarios, items, results, policies.
+- `src/pricing.ts` — Premium computation: base prices, component bundling (3 alike → 60 G), cursed +50%, enchantment ≥5 +30%, loyalty −20%, first +10% / subsequent −15%, 5 G fee, rounded up.
+- `src/claims.ts` — Claim processing: 100 G deductible per incident, enchantment ≥8 → 50%, dragon material → 100%, otherwise full; capped at 2× insurance sum.
+- `src/engine.ts` — Sequential scenario runner with policy tracking by step index.
+- `src/cli.ts` — Reads JSON from stdin, writes JSON to stdout.
+- `src/pricing.spec.ts` + `src/engine.spec.ts` — 16 passing tests verifying both examples and edge cases (caps, deductibles, dragon material, high enchantment, bundles, subsequent contracts).
+
+Both schema examples confirmed via CLI execution.

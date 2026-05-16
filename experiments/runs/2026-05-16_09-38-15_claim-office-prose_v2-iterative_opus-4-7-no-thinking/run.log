@@ -1,0 +1,9 @@
+Implementation complete. Summary:
+
+- `src/types.ts` — type definitions for scenarios, items, policies, and results.
+- `src/pricing.ts` — price list, modifier rates, item modifier application.
+- `src/quote.ts` — premium computation (item modifiers, component bundling, loyalty/first-insurance/subsequent discounts, processing fee, ceil rounding in MHPCO's favor).
+- `src/claim.ts` — eligibility (dragon = 100%, enchantment ≥ 8 = 50%), per-claim deductible, policy cap = 2× insurance sum.
+- `src/scenario.ts` — orchestrates steps, tracks policies and prior contract count.
+- `src/cli.ts` — reads JSON from stdin, writes JSON results to stdout.
+- Three spec files with 24 passing tests; CLI verified against both schema examples.

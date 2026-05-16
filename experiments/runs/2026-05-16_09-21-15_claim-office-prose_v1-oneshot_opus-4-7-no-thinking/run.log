@@ -1,0 +1,10 @@
+Implementation complete. Summary:
+
+- **src/types.ts** — TypeScript interfaces for Scenario, Customer, Item, Steps, Policy, Results
+- **src/pricing.ts** — Item price catalogue, component bundling (3-alike → 60G), cursed/enchantment risk multipliers
+- **src/quote.ts** — Premium computation with loyalty discount, first-insurance surcharge, subsequent-contract discount, processing fee, ceiling rounding
+- **src/claim.ts** — Claim processing with 100G deductible, 2× insurance cap, 50% reimbursement for enchantment ≥ 8, 100% for dragon material
+- **src/scenario.ts** — Orchestrates scenarios; tracks policies and prior-contract count
+- **src/cli.ts** — Stdin/stdout JSON CLI entry point
+- **Tests** — 18 passing spec tests across quote/claim/scenario, including both prompt examples
+- ESLint clean

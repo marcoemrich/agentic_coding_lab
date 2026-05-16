@@ -1,0 +1,9 @@
+Implementation complete:
+
+- **`src/types.ts`** — domain types (Item, Customer, Step, Policy, Result)
+- **`src/pricing.ts`** — `computePremium` with main items (sword/amulet/staff/potion), components with 3-bundle pricing, curse/enchantment surcharges, loyalty discount, first/repeat contract modifier, processing fee, MHPCO-favoring rounding
+- **`src/claims.ts`** — `processClaim` with 100G per-event deductible, ench≥8 at 50%, dragon material at 100%, cap enforcement
+- **`src/engine.ts`** — orchestrates a scenario, tracking contract index and per-policy remaining caps
+- **`src/cli.ts`** — reads JSON from stdin, writes JSON to stdout
+- **Tests** — 21 tests across pricing, claims, engine; all passing
+- CLI verified against both schema examples

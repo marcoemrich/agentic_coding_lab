@@ -1,0 +1,9 @@
+Implementation complete. Summary:
+
+- **src/types.ts** — Type definitions for scenarios, steps, policies, results.
+- **src/pricing.ts** — Item/component price table, insurance value calculations.
+- **src/quote.ts** — Premium computation with per-item surcharges (cursed +50%, enchantment≥5 +30%), customer modifiers (loyalty −20%, first +10%, subsequent −15%), component grouping into blocks of 3, processing fee, and rounding up (in MHPCO's favor).
+- **src/claim.ts** — Claim processing with per-incident deductible (100G), dragon material (full reimbursement), high-enchantment items ≥8 (50% reimbursement), cap of 2× insurance sum.
+- **src/scenario.ts** — Orchestrator tracking contracts count and policy state across steps.
+- **src/cli.ts** — Reads JSON from stdin, writes JSON to stdout.
+- 23 tests pass across quote, claim, and scenario specs.

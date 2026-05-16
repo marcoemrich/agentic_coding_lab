@@ -1,0 +1,9 @@
+Exercise complete. Implemented the MHPCO Claim Office Kata via TDD:
+
+- **`src/types.ts`** — item types, customer, constants
+- **`src/premium.ts`** — premium calculation with all modifiers, blocks of 3 alike components, rounding up
+- **`src/claim.ts`** — claim processing with deductible, high-enchantment/dragon clauses, cap exhaustion, validation
+- **`src/scenario.ts`** — scenario runner managing policies across steps and per-step contract index
+- **`src/cli.ts`** — CLI reading JSON from stdin, writing to stdout, non-zero exit on errors
+
+All 34 tests pass across `premium.spec.ts`, `claim.spec.ts`, `scenario.spec.ts`, and `cli.spec.ts`. `experiment-done.txt` written.

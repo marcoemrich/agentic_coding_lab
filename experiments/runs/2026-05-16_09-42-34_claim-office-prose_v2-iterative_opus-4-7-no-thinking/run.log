@@ -1,0 +1,11 @@
+Implementation complete. Summary:
+
+- **src/types.ts** — type definitions for scenarios, steps, results, and policies
+- **src/pricing.ts** — price table for main items, component bundling logic (3 alike → 60 G), per-item risk surcharges (cursed +50%, ench ≥ 5 +30%)
+- **src/quote.ts** — premium computation with loyalty discount (≥ 2 yrs, –20%), first-insurance surcharge (+10%) vs repeat-contract discount (–15%), 5 G processing fee, ceiling rounding in MHPCO's favor (with FP epsilon)
+- **src/claim.ts** — claim processing: 100 G deductible per incident, dragon material → 100%, ench ≥ 8 → 50%, capped at 2× insurance sum
+- **src/engine.ts** — runs the scenario, tracking policies by step index and contract count
+- **src/cli.ts** — reads JSON from stdin, writes JSON to stdout
+- **src/__tests__/{quote,claim,engine}.spec.ts** — 18 tests, all passing
+
+Type check clean, CLI verified end-to-end. `experiment-done.txt` written.
