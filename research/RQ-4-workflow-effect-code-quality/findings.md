@@ -4,11 +4,13 @@ Persistente Sammlung der Erkenntnisse zur Frage:
 **Wie wirkt sich die Workflow-Struktur auf die Code-Qualität aus, und macht
 die TDD-Striktheit einen Unterschied?**
 
-Datenbasis: 85 Runs, Stand 2026-05-16. Modell `opus-4-7-no-thinking`,
+Datenbasis: 100 Runs, Stand 2026-05-16. Modell `opus-4-7-no-thinking`,
 zwei Katas: `game-of-life` (Library-Form, n=10 pro Workflow) und
 `claim-office` (CLI mit externer Acceptance-Suite, n=5–10 pro Workflow).
-Prompt-Pairing nach Methodologie-Constraint: v1/v2 → prose,
-v3/v4/v5 → example-mapping.
+Sechs Workflow-Varianten: v1-oneshot, v2-iterative (jeweils prose),
+v3-basic-tdd, v4-exact-subagents, v5-exact-single-context, v6-hybrid
+(jeweils example-mapping). Prompt-Pairing nach Methodologie-Constraint:
+v1/v2 → prose, v3/v4/v5/v6 → example-mapping.
 
 ---
 
@@ -21,8 +23,9 @@ v3/v4/v5 → example-mapping.
 | v1-oneshot (prose) | 155 | 4.80 | 12.8 | 18.8 | 31.7 | 1.00 | 0.953 |
 | v2-iterative (prose) | 158 | 4.10 | 11.6 | 16.2 | 32.1 | 1.00 | **0.954** |
 | v3-basic-tdd (EM) | 166 | 6.00 | 13.7 | 21.8 | 32.5 | 1.00 | 0.949 |
-| v4-exact-subagents (EM) | 167 | **2.60** | **4.5** | **4.4** | **8.1** | 1.00 | 0.908 |
+| v4-exact-subagents (EM) | 167 | 2.60 | **4.5** | **4.4** | **8.1** | 1.00 | 0.908 |
 | v5-exact-single-context (EM) | **153** | 4.10 | 8.9 | 14.5 | 17.4 | 1.00 | 0.945 |
+| v6-hybrid (EM) | 159 | **2.20** | **4.5** | 5.2 | 13.1 | 1.00 | **0.953** |
 
 ### claim-office (n=5–10)
 
@@ -31,8 +34,9 @@ v3/v4/v5 → example-mapping.
 | v1-oneshot (prose) | 835 | 11.6 | 8.4 | 12.2 | 40.4 | 0.28 | 0.861 |
 | v2-iterative (prose) | 851 | 15.8 | 8.4 | 11.4 | 41.4 | 0.28 | 0.872 |
 | v3-basic-tdd (EM) | 992 | 16.8 | 15.4 | 19.8 | 51.6 | **1.00** | 0.777 |
-| v4-exact-subagents (EM) | **626** | **1.8** | **7.9** | **10.5** | **25.0** | 0.67 | **0.927** |
+| v4-exact-subagents (EM) | **626** | 1.8 | 7.9 | 10.5 | 25.0 | 0.67 | 0.927 |
 | v5-exact-single-context (EM) | 762 | 8.9 | 10.2 | 14.2 | 31.4 | 0.87 | 0.876 |
+| v6-hybrid (EM) | 883 | **0.2** | **6.2** | **6.6** | **21.0** | **1.00** | **0.930** |
 
 Bester Wert pro Spalte fett. Kleiner = besser (außer `verification_pct`, `mutation_score`).
 
@@ -98,6 +102,7 @@ Komplexitäts-Werte aller getesteten Workflows — schlechter als v1
 | **v3-basic-tdd** | ✅ Ja, minimal | **21.8** | **13.7** | **32.5** |
 | v4-exact-subagents | ✅ Ja, strikt | 4.4 | 4.5 | 8.1 |
 | v5-exact-single-context | ✅ Ja, strikt (Shared-Context) | 14.5 | 8.9 | 17.4 |
+| v6-hybrid | ✅ Ja, hybrid (Skills + isolated refactor) | 5.2 | 4.5 | 13.1 |
 
 **claim-office:**
 
@@ -108,6 +113,7 @@ Komplexitäts-Werte aller getesteten Workflows — schlechter als v1
 | **v3-basic-tdd** | ✅ Ja, minimal | **19.8** | **15.4** | **51.6** | **16.8** |
 | v4-exact-subagents | ✅ Ja, strikt | 10.5 | 7.9 | 25.0 | 1.8 |
 | v5-exact-single-context | ✅ Ja, strikt (Shared-Context) | 14.2 | 10.2 | 31.4 | 8.9 |
+| v6-hybrid | ✅ Ja, hybrid | 6.6 | 6.2 | 21.0 | 0.2 |
 
 v3 hat auf **beiden** Katas die schlechtesten Komplexitäts-Werte des gesamten
 Vergleichsfelds — also auch schlechter als v1/v2 ohne jegliches TDD.
@@ -237,6 +243,7 @@ getrennt nach Kata:
 | v1-oneshot | 0.99 M | 88 s |
 | v4-exact-subagents | 2.56 M | 1163 s |
 | v5-exact-single-context | 8.14 M | 380 s |
+| v6-hybrid | 6.62 M | 521 s |
 
 **claim-office:**
 
@@ -247,6 +254,7 @@ getrennt nach Kata:
 | v3-basic-tdd | 3.28 M | 312 s |
 | v5-exact-single-context | 14.14 M | 655 s |
 | v4-exact-subagents | 13.66 M | **3693 s** (~62 min) |
+| v6-hybrid | 33.25 M | 2116 s (~35 min) |
 
 **Game-of-life-Muster**: v5 ist 8.4× teurer als v3 (Shared-Context
 akkumuliert), v4 zeitlich am teuersten (~19 min) wegen Subagent-Spawns,
@@ -285,6 +293,7 @@ zeigt aber gelegentlich schwache Test-Runs).
 | v3-basic-tdd | **0.78** | **1.00** | schwache Tests, perfekte Aussen-Korrektheit |
 | v4-exact-subagents | **0.93** | 0.67 | starke Tests, mittlere Aussen-Korrektheit |
 | v5-exact-single-context | 0.88 | 0.87 | beides mittel |
+| v6-hybrid | 0.93 | 1.00 | starke Tests *und* perfekte Aussen-Korrektheit |
 
 Die beiden Korrektheits-Dimensionen **stehen in Spannung**:
 
@@ -318,6 +327,49 @@ Score-Formel: `(Killed + Timeout) / (Killed + Survived + Timeout + NoCoverage)`.
 keine Workflow-Differenzierung — die Kata ist zu klein/wohlbekannt, alle
 Workflows produzieren bereits hochwertige interne Tests. Mutation-Score
 zeigt sein Diskriminierungs-Potenzial erst auf der größeren Kata.
+
+---
+
+## F-4.7 — v6-hybrid löst auf claim-office den v4↔v3-Tradeoff aus F-4.4 — siehe RQ-7 ➡
+
+**Aussage**: Der Hybrid-Workflow v6 (Red/Green als Skills im Shared-Context
+analog v5, Refactor als isolierter Subagent analog v4) ist im RQ-4-Vergleich
+auf **claim-office (n=5)** der erste Workflow, der die in F-4.4/F-4.6
+beschriebene **Spannung zwischen Code-Qualität, Aussen-Korrektheit und
+Test-Stärke aufhebt**:
+
+| Metrik (claim-office, EM) | v3 | v4 | v5 | **v6-hybrid** |
+|---|---:|---:|---:|---:|
+| `verification_pct` | **1.00** | 0.67 | 0.87 | **1.00** |
+| `mutation_score` | 0.78 | **0.93** | 0.88 | **0.93** |
+| `smell_total` | 16.8 | 1.8 | 8.9 | **0.2** |
+| `cognitive_max` | 19.8 | 10.5 | 14.2 | **6.6** |
+| `mccabe_max` | 15.4 | 7.9 | 10.2 | **6.2** |
+| `cc_longest_function` | 51.6 | 25.0 | 31.4 | **21.0** |
+| `code_mass` | 992 | **626** | 762 | 883 |
+| `total_tokens` | 3.3 M | 13.7 M | 14.1 M | 33.3 M |
+| `duration_seconds` | 312 s | 3693 s | 655 s | 2116 s |
+
+v6 ist auf vier der fünf Komplexitäts-Metriken der beste Workflow,
+matched v3 auf `verification_pct` (1.00), matched v4 auf `mutation_score`
+(0.93) — d.h. der einzige Workflow mit perfekter Aussen-*und* hoher
+Innen-Korrektheit *und* minimaler Komplexität gleichzeitig. Auf
+game-of-life (n=10) sieht v6 ähnlich aus: gleichauf mit v4 auf `mccabe_max`
+(4.5), bester `smell_total` (2.20) und bester `mutation_score` (0.953),
+bei nur ~45 % der v4-Wallclock.
+
+**Preis**: v6 ist auf claim-office mit 33.3 M Tokens der mit Abstand
+teuerste Workflow (~2.4× v4/v5). Auf game-of-life dagegen mit 6.6 M
+moderater Token-Verbrauch — die Effizienz-Differenz erscheint also erst
+bei komplexerer Aufgabe.
+
+**Tiefergehende Analyse und Tail-Risiko/Cost-Tradeoff** liegen in
+[RQ-7](../RQ-7-workflow-tradeoff-hybrid/findings.md). RQ-4 führt v6 als
+zusätzliche Vergleichszelle, der eigentliche Hybrid-Tradeoff-Befund
+gehört aber methodisch nach RQ-7.
+
+**Datenbasis**: 15 v6-Runs (10 game-of-life, 5 claim-office,
+opus-4-7-no-thinking).
 
 ---
 

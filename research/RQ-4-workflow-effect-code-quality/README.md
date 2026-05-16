@@ -8,6 +8,7 @@ factors:
     - {workflow: v3-basic-tdd,           prompt: example-mapping}
     - {workflow: v4-exact-subagents,     prompt: example-mapping}
     - {workflow: v5-exact-single-context, prompt: example-mapping}
+    - {workflow: v6-hybrid,              prompt: example-mapping}
   kata_base: [game-of-life, claim-office]
 controls:
   model: opus-4-7-no-thinking
