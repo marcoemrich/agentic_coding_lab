@@ -1,0 +1,11 @@
+All tasks complete. Here's a summary of the TDD cycle:
+
+**8 tests, all passing.** The implementation went through:
+
+1. **Test List** — 8 `it.todo()` tests covering empty grid, underpopulation (0 and 1 neighbor), reproduction, survival, overpopulation, block (still life), and blinker (oscillator)
+2. **Tests 1-3** (empty, single cell, two cells) — all satisfied by initial `return []`
+3. **Test 4** (reproduction) — forced the real implementation: neighbor counting with Map/Set, applying `count === 3 || (count === 2 && alive)`
+4. **Tests 5-8** (survival, overpopulation, block, blinker) — all passed immediately, confirming the general implementation was correct
+5. **Refactor** — extracted `toKey`/`fromKey`, `countNeighbors`, `shouldLive` helpers; converted to declarative `filter`/`map` style
+
+Final implementation: 30 lines in `src/game-of-life.ts`, clean and well-factored.

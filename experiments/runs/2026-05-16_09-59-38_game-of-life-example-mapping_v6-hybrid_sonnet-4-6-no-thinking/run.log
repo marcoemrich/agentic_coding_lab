@@ -1,0 +1,26 @@
+```
+📋 Test List Created:
+**Feature**: Game of Life - Next Generation
+**Test File**: src/game-of-life.spec.ts
+**Base Functionality Tests**: 9
+
+**Test Cases** (ordered simple → complex):
+1. ✅ should return empty grid when given empty grid
+2. ✅ should kill a single live cell (underpopulation)
+3. ✅ should kill two adjacent cells (underpopulation, each has only 1 neighbor)
+4. ✅ should keep a live cell alive with exactly 2 neighbors (survival)
+5. ✅ should keep a live cell alive with exactly 3 neighbors (survival)
+6. ✅ should kill a live cell with more than 3 neighbors (overpopulation)
+7. ✅ should birth a dead cell with exactly 3 neighbors (reproduction)
+8. ✅ should produce correct next generation for blinker oscillator
+9. ✅ should produce correct next generation for block still life
+
+**Advanced Features** (NOT included):
+- Negative coordinates stress testing - save for later
+- Large grid performance - save for later
+- Multiple oscillator patterns - save for later
+
+**Next Step**: Invoke `/red` to activate the first test.
+```
+
+📋 Test List Phase Complete. Proceeding to Red phase with the first test.

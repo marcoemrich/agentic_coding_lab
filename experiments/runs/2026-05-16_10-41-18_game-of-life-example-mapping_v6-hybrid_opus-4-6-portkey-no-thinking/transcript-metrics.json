@@ -1,0 +1,173 @@
+{
+  "wall_clock_seconds": 614.44,
+  "total_tokens": {
+    "input": 154,
+    "output": 35652,
+    "cache_read": 6224775,
+    "cache_creation": 108471,
+    "total": 6369052
+  },
+  "context_utilization_pct": 38,
+  "context_window_tokens": 200000,
+  "context_peak_tokens": 76266,
+  "message_count": 124,
+  "tool_calls": {
+    "Read": 13,
+    "Glob": 2,
+    "Bash": 18,
+    "Skill": 11,
+    "Write": 3,
+    "TodoWrite": 10,
+    "Edit": 10,
+    "Agent": 3
+  },
+  "skill_invocations": {
+    "test-list": 1,
+    "red": 8,
+    "green": 2
+  },
+  "task_invocations": {
+    "refactor": 3
+  },
+  "cycle_count": 8,
+  "predictions_correct": 0,
+  "predictions_total": 0,
+  "model_versions": [
+    "claude-opus-4-6"
+  ],
+  "subagent_token_total": 947436,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 376140,
+      "duration_seconds": 39.09,
+      "start_ts": "2026-05-16T10:41:39.238000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 495220,
+      "duration_seconds": 32.31,
+      "start_ts": "2026-05-16T10:42:18.330000+00:00"
+    },
+    {
+      "phase": "green",
+      "tokens": 464600,
+      "duration_seconds": 17.89,
+      "start_ts": "2026-05-16T10:42:50.636000+00:00"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 169688,
+      "duration_seconds": 55.85,
+      "transcript": "agent-a9a3a7e0dc665823f.jsonl",
+      "start_ts": "2026-05-16T10:43:08.531000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 457040,
+      "duration_seconds": 29.45,
+      "start_ts": "2026-05-16T10:44:04.382000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 438129,
+      "duration_seconds": 25.7,
+      "start_ts": "2026-05-16T10:44:33.827000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 414888,
+      "duration_seconds": 25.12,
+      "start_ts": "2026-05-16T10:44:59.532000+00:00"
+    },
+    {
+      "phase": "green",
+      "tokens": 679005,
+      "duration_seconds": 27.72,
+      "start_ts": "2026-05-16T10:45:24.648000+00:00"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 273547,
+      "duration_seconds": 78.42,
+      "transcript": "agent-ad8c3dd04008abd30.jsonl",
+      "start_ts": "2026-05-16T10:45:52.370000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 491750,
+      "duration_seconds": 40.41,
+      "start_ts": "2026-05-16T10:47:10.791000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 520541,
+      "duration_seconds": 31.77,
+      "start_ts": "2026-05-16T10:47:51.200000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 548392,
+      "duration_seconds": 30.02,
+      "start_ts": "2026-05-16T10:48:22.972000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 1179088,
+      "duration_seconds": 33.81,
+      "start_ts": "2026-05-16T10:48:52.995000+00:00"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 504201,
+      "duration_seconds": 127.95,
+      "transcript": "agent-abeac8466df0aaef3.jsonl",
+      "start_ts": "2026-05-16T10:49:26.807000+00:00"
+    }
+  ],
+  "phase_source": "skills+subagents",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 376140,
+        "duration_seconds": 39.09
+      },
+      "red": {
+        "count": 8,
+        "tokens": 4545048,
+        "duration_seconds": 248.59
+      },
+      "green": {
+        "count": 2,
+        "tokens": 1143605,
+        "duration_seconds": 45.61
+      },
+      "refactor": {
+        "count": 3,
+        "tokens": 947436,
+        "duration_seconds": 262.22
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 376140.0,
+        "avg_duration_seconds": 39.09
+      },
+      "red": {
+        "avg_tokens": 568131.0,
+        "avg_duration_seconds": 31.07
+      },
+      "green": {
+        "avg_tokens": 571802.5,
+        "avg_duration_seconds": 22.8
+      },
+      "refactor": {
+        "avg_tokens": 315812.0,
+        "avg_duration_seconds": 87.41
+      }
+    },
+    "refactorings_applied": 3,
+    "tests_passed_immediately": 6
+  }
+}

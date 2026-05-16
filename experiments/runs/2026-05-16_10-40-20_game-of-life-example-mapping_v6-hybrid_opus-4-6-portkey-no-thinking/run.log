@@ -1,0 +1,24 @@
+## Step 5: Summary
+
+Test List Created:
+**Feature**: Game of Life - Next Generation
+**Test File**: src/game-of-life.spec.ts
+**Base Functionality Tests**: 8
+
+**Test Cases** (ordered simple -> complex):
+1. returns empty array for empty grid
+2. single live cell dies from underpopulation
+3. two adjacent live cells die from underpopulation
+4. live cell with two neighbors survives
+5. live cell with three neighbors survives
+6. live cell with more than three neighbors dies from overpopulation
+7. dead cell with exactly three live neighbors becomes alive
+8. block pattern remains stable across generations
+
+**Advanced Features** (NOT included):
+- Blinker/oscillator patterns — save for later
+- Negative coordinate handling — save for later
+- Large grid performance — save for later
+- Glider patterns — save for later
+
+Test List Phase Complete. Proceeding to Red phase with the first test.

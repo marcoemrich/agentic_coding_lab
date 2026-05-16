@@ -1,0 +1,14 @@
+The experiment is complete. Here's a summary of what was accomplished:
+
+**Game of Life — TDD Cycle Summary**
+
+| Phase | Test | Outcome |
+|-------|------|---------|
+| Red/Green | Empty grid → `[]` | Stub `return []` |
+| Red/Green | Single cell dies | Passed via stub (correct answer is `[]`) |
+| Red/Green | Two cells die | Passed via stub (correct answer is `[]`) |
+| Red/Green | Reproduction (3 neighbors) | Forced full algorithm implementation |
+| Red | Blinker oscillator | Already passing (algorithm complete) |
+| Red | Block still life | Already passing (algorithm complete) |
+
+**Final implementation** (`src/game-of-life.ts`): Sparse Game of Life using a `Set` for live cells, a `Map` for neighbor counts, and the `cellKey` helper to encode coordinates — with `NEIGHBOR_OFFSETS` constant for the 8-neighbor pattern. All 6 tests pass.
