@@ -86,6 +86,7 @@ research/
 
 - `verification_pct` (0.0–1.0) = external acceptance score for CLI katas (claim-office). `tests_passing` = internal vitest pass/fail.
 - `completed_within_budget` = Boolean derived from `exit_reason`.
+- `mutation_score` (0.0–1.0) = Stryker mutation score. **Opt-in per RQ** (must appear in `outcomes:`) and only computed for `tests_passing = true`. Driven by `experiments/compute-mutation-score.py`, run between batch and aggregation. Mutation testing is expensive (minutes per run), so do not add it to `analyze-run.sh` or routine reanalysis.
 - Full metrics table in README section "Metrics".
 
 ## Docker & version pins

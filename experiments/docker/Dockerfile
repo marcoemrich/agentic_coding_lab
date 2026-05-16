@@ -24,6 +24,13 @@ RUN npm install -g pnpm@9.15.9
 # container. 2.1.107 was verified end-to-end with the v4 workflow on Haiku.
 RUN npm install -g @anthropic-ai/claude-code@2.1.107
 
+# Stryker (mutation testing): NOT installed globally. Stryker's TS-config
+# preprocessor resolves `typescript` from where stryker itself is loaded,
+# so a global install + per-run typescript devDep produces ERR_MODULE_NOT_FOUND.
+# Instead, compute-mutation-score.py adds Stryker as a per-run devDep on
+# demand. The pinned versions are pre-cached via package.cache.json into
+# the shared pnpm store, so the install is offline-cache-hit and cheap.
+
 # Reuse existing node user (UID 1000) - rename and adjust if needed
 # This avoids conflicts with node:22-slim's built-in user
 RUN usermod -l experimenter -d /home/experimenter -m node \

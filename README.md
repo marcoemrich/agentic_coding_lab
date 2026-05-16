@@ -422,6 +422,10 @@ This reads the RQ frontmatter, selects all matching runs from `experiments/runs/
 # 2. Execute: run the batch in Docker
 ./experiments/docker/batch.sh experiments/batch-plans/rq-3-fill.json
 
+# 2b. Optional: compute Stryker mutation_score for green runs
+#     (idempotent; only does anything if outcomes: [..., mutation_score])
+./experiments/compute-mutation-score.py research/RQ-3-model-and-thinking/
+
 # 3. Aggregate: re-derive runs.csv + summary.md
 ./experiments/aggregate-by-query.py research/RQ-3-model-and-thinking/
 
@@ -479,6 +483,7 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 |--------|---------|
 | `experiments/aggregate-by-query.py` | Reads an RQ frontmatter, selects matching runs from the pool, writes `runs.csv` + `summary.md` into the RQ directory. The canonical aggregator. |
 | `experiments/batch-plan-from-rq.py` | Reads an RQ frontmatter, computes missing cells against `min_replicates`, writes `experiments/batch-plans/<rq-id>-fill.json`. Idempotent — empty plan if everything is covered. |
+| `experiments/compute-mutation-score.py` | RQ-driven mutation testing. If the RQ lists `mutation_score` in `outcomes`, runs Stryker against every matching green run (`tests_passing = true`) and writes `final_metrics.mutation_score` back into `metrics.json`. Idempotent (skip when already set) and bounded by `--timeout-seconds`. No-op when the RQ does not request the outcome. Run between batch execution and aggregation. |
 | `experiments/generate-snapshot-skeleton.py` | Reads all `research/RQ-*/README.md` + `findings.md`, emits a Markdown skeleton to `/tmp/snapshot-skeleton-YYYY-MM-DD.md` with data sections (run counts, coverage per RQ, finding lists sorted by status, cross-RQ caveats) pre-filled and synthesis sections marked with `<!-- TODO Claude -->`. Consumed by the `/build-overview` skill. |
 
 ### Docker batch execution (`experiments/docker/`)
@@ -651,6 +656,7 @@ The **Term (binding)** column gives the canonical name to use in `findings.md`, 
 | Metric | Term (binding) | Source | Description |
 |--------|----------------|--------|-------------|
 | `code_mass` | **Code-Mass (APP)** | code analysis | Weighted sum of code constructs (constants, invocations, conditionals, loops, assignments — heavier weights for higher-complexity constructs) following the *Absolute Priority Premise* by Micah Martin. Aims to compare implementations objectively beyond raw LoC. Lower = simpler. See [Code Cop blog](http://blog.code-cop.org/2016/08/absolute-priority-premise-example.html). |
+| `mutation_score` | **Mutation-Score** | [Stryker](https://stryker-mutator.io/) + `@stryker-mutator/vitest-runner` | Fraction of mutants killed by the implementer's own Vitest tests (0.0–1.0, formula `(Killed + Timeout) / (Killed + Survived + Timeout + NoCoverage)`). Higher = the test suite genuinely exercises behavior, not just coverage. Computed **only** when an RQ lists `mutation_score` in `outcomes` and `tests_passing = true`; otherwise `null`. Driven by `experiments/compute-mutation-score.py` (separate from `analyze-run.sh`). |
 | `cc_loc` | **Produktiv-LoC** | code analysis | Production LoC only, from the clean-code reporter (no tests) |
 | `test_lines` | **Test-LoC** | code analysis | Vitest test code |
 | `smell_total` | **Smell-Summe** | [ESLint](https://eslint.org/) + [`eslint-plugin-sonarjs`](https://github.com/SonarSource/eslint-plugin-sonarjs) | Aggregated code-smell count. Sub-counters `smell_complexity`, `smell_duplication`, `smell_magic_numbers`, `smell_code_quality` group SonarJS rules (e.g. `no-duplicate-string`, `no-collapsible-if`) plus a few ESLint built-ins (`max-depth`, `max-lines-per-function`, `max-params`, `no-magic-numbers`, `no-unreachable`). |

@@ -3,6 +3,12 @@ node_modules/
 experiments/runs/*/coverage/
 experiments/runs/*/pnpm-lock.yaml
 experiments/runs/.pnpm-store/
+# Stryker mutation-testing scaffolding (regenerated per run by
+# experiments/compute-mutation-score.py). Same status as coverage/.
+experiments/runs/*/.npmrc
+experiments/runs/*/stryker.config.json
+experiments/runs/*/stryker.log
+experiments/runs/*/reports/
 experiments/reanalyze.log
 .claude/scheduled_tasks.lock
 .claude/settings.local.json
