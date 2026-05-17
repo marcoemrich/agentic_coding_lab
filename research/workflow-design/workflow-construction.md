@@ -80,12 +80,16 @@ Inhaltsklassen messbar kosmetisch sind:
   "Hexagonal Architecture", "Named exports only" — irrelevant für die
   Mini-Aufgaben, kein Effekt.
 - **Repeated Warnings**: "🚨 USE SKILLS" zwei-, dreimal — einmal reicht.
-- **Verbatim-Duplikat-Bullet-Listen** (`v6.5.2-bullets-cut`): "Remember"-
-  Sektionen und DO/DON'T-Listen, die andere File-Sections wortwörtlich
-  wiederholen — RQ-15 zeigt: Cut hebt Code-Qualität (cognitive_max −29 %)
-  und senkt Tokens (−15 %). Aber Achtung: die Bullets *tragen* die σ-
-  Determinismus der Disziplin-Metriken; ohne sie verdreifacht sich σ
-  bei `refactorings_applied`. Cut ist ein Trade-off, kein purer Win.
+- **Verbatim-Duplikat-Bullet-Listen** (`v6.5.2-bullets-cut`,
+  `v6.5.3-targeted-cuts`): "Remember"-Sektionen und DO/DON'T-Listen, die
+  andere File-Sections wortwörtlich wiederholen. RQ-15 (alle drei
+  gestrichen): Quality + Tokens gewinnen, aber σ Disziplin verdreifacht
+  sich. RQ-16 (nur mid-file DO/DON'Ts gestrichen, end-of-file
+  "Remember" behalten): Quality gewinnt *noch besser* (cognitive_max
+  −37 % vs v6.5.1), Floor restauriert (tests_passed_immediately = 0),
+  Token-Win aber komplett weg. → **Position matters**: end-of-file-
+  Bullets sind Floor-Anker (letzter Pass vor Subagent-Output), mid-file-
+  Bullets sind Noise. Streichregel: nur mid-file-Duplikate cutten.
 
 Bevor inhaltlich etwas hinzugefügt wird, prüfen: gibt es einen Block
 im File, der ersatzlos gestrichen werden kann?
@@ -296,6 +300,27 @@ zugehörige Finding für Details:
   (statt der rechnerisch erwarteten <1 %). → Effekt kommt aus
   Sekundär-Wirkungen (kürzere Refactor-Phasen mit weniger Edit-
   Iterationen), nicht aus dem entfernten Text selbst.
+- **RQ-16 F-16.1** — Floor-Anker isolierbar auf eine einzige Sektion:
+  `refactor.md` "Remember" am Datei-Ende. v6.5.3 (mid-file DO/DON'Ts
+  weg, "Remember" behalten) reproduziert v6.5.1's perfekten
+  `tests_passed_immediately = 0` und 7er-Refactor-Floor, obwohl 30
+  Zeilen Bullet-Text gestrichen sind. → Position (end-of-file) ist
+  strukturell tragend, nicht Inhalt.
+- **RQ-16 F-16.2** — v6.5.3 ist neuer Quality-Champion: `cognitive_max`
+  −37 % vs v6.5.1 (5.6 → 3.5), σ niedrigste über alle drei Varianten.
+  Mid-file DO/DON'T-Wiederholungen waren *kontraproduktiv* — sie
+  schwemmten den Refactor-Subagent mit Noise zu.
+- **RQ-16 F-16.3** — "Remember" treibt Refactor-Tiefe (mehr Iterationen,
+  längere Phasen) und damit auch Tokens. v6.5.3 hat 19 % höhere Tokens
+  als v6.5.2 trotz nur 8 Zeilen mehr Text. → Floor-Anker hat einen
+  Token-Preis, der nicht durch Text-Länge erklärt ist.
+- **RQ-16 F-16.4** — `predictions_correct_rate` fällt in v6.5.3 auf
+  95.8 % (7 Wrong-Predictions in 10 Runs vs 1–2 in v6.5.1/v6.5.2).
+  Vermutete Ursache: `red/SKILL.md`-DO/DON'T-Cut, der den
+  Wrong-Prediction-Schutz mitgestrichen hat. → Hinweis darauf, dass
+  *manche* mid-file DO/DON'T-Blöcke doch tragen — pro Block testen,
+  nicht pauschal cutten. v6.5.4 (mit `red/SKILL.md`-DO/DON'T zurück)
+  wäre der Folge-RQ-Kandidat.
 
 ### Generalisierung über Modelle hinweg
 
@@ -352,5 +377,9 @@ zugehörige Finding für Details:
   gestrichen: Quality + Cost gewinnen deutlich, Disziplin-σ verliert
   Faktor 2–3. Quality-Champion v6.5.2 vs Determinismus-Champion v6.5.1
   als zwei verschiedene Profile.
+- `research/RQ-16-targeted-cuts/` — Floor-Anker auf end-of-file
+  "Remember"-Section pinpointed. v6.5.3 (mid-file cuts, end behalten)
+  ist neuer Quality-Champion (`cognitive_max` −37 %); Token-Win bleibt
+  bei v6.5.2. Drei Pareto-Profile statt einem Champion.
 - `research/kata-design/kata-construction.md` — Schwester-Doku zur
   Kata-Methodik.
