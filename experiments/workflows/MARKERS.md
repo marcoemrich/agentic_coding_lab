@@ -1,5 +1,11 @@
 # Workflow Markers — What the Pipeline Actually Reads
 
+> **Inhalts-Design** (Theory-of-Mind, Why-Block-Pattern, Reduktions-
+> Erfahrungen aus RQ-9/10/11/13, Subagent-Architektur-Gradient):
+> siehe `research/workflow-design/workflow-construction.md`. Diese
+> Datei hier deckt nur die harten Parser-Anforderungen ab.
+
+
 When you derive a new workflow (e.g. `v5.1`, `v6`) by reducing or rewriting
 rules/commands, these markers must remain intact. Removing one of them
 silently zeros out the corresponding metric — runs still complete, but the

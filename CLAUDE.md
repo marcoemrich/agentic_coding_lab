@@ -47,7 +47,7 @@ research/
 
 ### Editing workflows
 
-- **Read `experiments/workflows/MARKERS.md` first.** Four parser markers drive all TDD metrics. Removing or altering one silently zeros the corresponding metric — no error, just missing data.
+- **Read `experiments/workflows/MARKERS.md` first** (hard parser requirements — four markers drive all TDD metrics; altering one silently zeros the corresponding metric, no error). **For content design** (Theory-of-Mind / Why-Block pattern, reduction learnings from RQ-9/10/11/13, Skill-vs-Subagent architecture gradient): `research/workflow-design/workflow-construction.md`.
 - Smoke-test after every workflow change:
   ```bash
   jq '.final_metrics | {cycle_count, refactorings_applied, predictions_correct, predictions_total, tests_passing}' experiments/runs/<latest>/metrics.json
