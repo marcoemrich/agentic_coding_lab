@@ -1,0 +1,10 @@
+Experiment complete. All 31 tests pass:
+- 18 quote tests (base premiums, components/blocks, modifiers)
+- 9 claim tests (basic payout, deductible per item, dragon material, high-enchantment, cap clamping, successive claims)
+- 4 CLI tests (scenario processing, unknown item type error, claim-item-not-in-policy error, negative damage error)
+
+Files produced:
+- `src/claim-office.ts` — quote/claim logic
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing JSON to stdout
+- `src/claim-office.spec.ts` — test suite
+- `experiment-done.txt` — DONE marker

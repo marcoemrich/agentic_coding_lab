@@ -1,0 +1,4 @@
+All 8 tests pass. The TDD cycle is complete:
+- Final test "handles negative coordinates correctly" was activated and passed immediately (the existing sparse-Map representation already supported negative coordinates)
+- Refactor pass applied: extracted `NEIGHBOR_OFFSETS` constant, renamed `parseKey` → `parseCell`, and removed the `(0,0)` skip guard
+- `experiment-done.txt` written

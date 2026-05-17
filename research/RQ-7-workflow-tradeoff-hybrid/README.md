@@ -2,7 +2,7 @@
 id: RQ-7
 question: "Liefert ein Hybrid-Workflow (v6: red/green im Single-Context, refactor im isolierten Subagent) ein besseres Tradeoff aus Code-Qualitaet, Wallclock-Dauer und Tokenverbrauch als die Reinformen v4 (alles Subagents) und v5 (alles Single-Context)?"
 factors:
-  workflow: [v4-exact-subagents, v5-exact-single-context, v6-hybrid]
+  workflow: [v4-exact-subagents, v5-exact-single-context, v6-hybrid, v7-hybrid-green-refactor]
   kata_base: [game-of-life, claim-office]
 controls:
   model: opus-4-7-no-thinking
