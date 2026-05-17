@@ -158,6 +158,14 @@ status: <status>
 
 **Overview table**: `findings.md` starts with a `## Übersicht` section containing a pivot table of the primary outcome across all factor levels (all models, all prompt styles, etc.) — before the individual `F-x.y` blocks. This table gives readers the full picture at a glance; individual findings then zoom in on specific effects. Update this table whenever findings are added or updated.
 
+**Trophy convention (🏆) in overview tables**: append 🏆 to the best value per outcome row. Conventions:
+
+- The direction is metric-dependent — note it in the column header or row label (`smell_total` etc. → "kleiner = besser"; `refactorings_applied`, `predictions_correct_rate` → "höher = besser"). Don't assume.
+- Use 🏆 only where there is a meaningful winner. If the spread is below 1 σ and the framing is "no effect", award 🏆 to all near-tied values (or to none if the table message is "indistinguishable") — don't fabricate a winner from rounding noise.
+- Multiple 🏆 are fine for ties. Three 🏆 across a row signal "no effect", which is itself a useful reading aid.
+- Always bold the winner value too — 🏆 is in addition to, not instead of, the bold.
+- Trophies belong only in human-facing research documents (`findings.md`, archive snapshots). Workflow files (`experiments/workflows/**/*.md`) stay emoji-free per the RQ-11 / CLAUDE.md convention.
+
 1. Diff sources:
    - **Existing**: `findings.md` from phase 1.
    - **New**: `summary.md` from phase 5.
