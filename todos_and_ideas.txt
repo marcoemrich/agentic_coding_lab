@@ -1,11 +1,15 @@
+# Aktuelle Workflow entwicklung
+
+ * v6.2
+  nur Refactor im subagent,
+  no rules of simple design
+  (emojis, pep talk)
+
 
 # EXACT-Coding workflow optmization, try:
 
-* reduce workflow rules
-* remove reasoning
-* ask the LLM what else could improve
-* Optimzer-Skill
 * Chris Meta Framework: https://github.com/chdalski/claude_orchestration
+* ask the LLM what else could improve
 
 # Try other TDD workflows
 
@@ -52,6 +56,7 @@ https://github.com/parcadei/Continuous-Claude-v3/tree/main/.claude/skills/tdd
 # Merge with other science framework or take ideas from it
 
 * https://github.com/vercel-labs/agent-eval/
+* /plugin install plugin-eval@claude-code-workflows
 
 # Add in more Refactoring rules and Security Stuff
 
@@ -60,16 +65,12 @@ https://github.com/parcadei/Continuous-Claude-v3/tree/main/.claude/skills/tdd
 * Scanner
 * Research
 
-# Mutation Testing
-
-* Improve Mutation Score
 
 
 # Metrics
 
 * Smell-Detect-Agent bauen mit Wissen aus Büchern
 * research from science papers about TDD Studies
-* Mutation Testing as metric
 * Typing Strength
 * Interdeps
 
@@ -115,7 +116,6 @@ Streuung geringer bei v4 als v5
 
 # Optimierung
 
- * Parallelisierung (Problem: Rate-Limit?)
  * Game of Life reicht evtl. für alle Fragen ausser Example Mapping
  * Claim Office evtl. reduzieren
 
@@ -133,7 +133,6 @@ Streuung geringer bei v4 als v5
 Idee für neue Workflows:
 
 * Control-Workflow: oneshot+review und/oder Refactoring am ende
-* mischung aus v4 und v5 subagent nur für Refactoring
 
 # Verwendbarkeit für andere
 
@@ -148,5 +147,19 @@ Mehr Post-Toolings (test vs. bei jedem Refactoring):
  * Agents für Refactoring nach verschiedenen Prinzipien
  *
 
+ Refactorstep vs. Postprocessing Steps
+   * use other metrics in refactor step
 
  Reanalyze-Skill
+
+Language-Erweiterung: RUST
+
+ DONE
+* mischung aus v4 und v5 subagent nur für Refactoring
+* Parallelisierung (Problem: Rate-Limit?)
+* reduce workflow rules
+* remove reasoning
+# Mutation Testing
+* Mutation Testing as metric
+* Manuelle Reduktion ()
+* Optimze Skill mit: https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md

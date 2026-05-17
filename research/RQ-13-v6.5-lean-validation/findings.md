@@ -14,23 +14,24 @@
 
 | Outcome | v6 (n=10) | v6.5-lean (n=10) | v6.6-leaner (n=10) | Bemerkung |
 |---|---:|---:|---:|---|
-| **Code-Qualität** | | | | |
-| Code-Mass (APP) | 158.6 ± 15.14 | **143.9 ± 6.06** | 146.4 ± 10.27 | v6.5 bestes, v6.6 leicht schlechter |
-| Smell-Summe | 2.2 ± 0.42 | 2.2 ± 0.42 | **2.5 ± 0.53** | v6.6 leicht schlechter |
-| Spitzen-Komplexität | 13.1 ± 5.97 | **12.7 ± 5.79** | **15.7 ± 4.99** | v6.6 deutlich schlechter (+24 %) |
-| `cognitive_max` | 5.2 ± 2.30 | 5.1 ± 3.84 | 5.8 ± 4.02 | v6.6 leicht schlechter |
-| `mccabe_max` | 4.5 ± 1.51 | 4.5 ± 2.01 | 5.0 ± 2.05 | v6.6 leicht schlechter |
+| **Code-Qualität** (kleiner = besser) | | | | |
+| Code-Mass (APP) | 158.6 ± 15.14 | **143.9 ± 6.06** 🏆 | 146.4 ± 10.27 | v6.5 bestes, v6.6 leicht schlechter |
+| Smell-Summe | **2.2 ± 0.42** 🏆 | **2.2 ± 0.42** 🏆 | 2.5 ± 0.53 | v6 und v6.5 gleichauf, v6.6 leicht schlechter |
+| Spitzen-Komplexität (`cc_longest_function`) | 13.1 ± 5.97 | **12.7 ± 5.79** 🏆 | 15.7 ± 4.99 | v6.6 deutlich schlechter (+24 %) |
+| `cognitive_max` | 5.2 ± 2.30 | **5.1 ± 3.84** 🏆 | 5.8 ± 4.02 | v6.5 knapp vorn |
+| `mccabe_max` | **4.5 ± 1.51** 🏆 | **4.5 ± 2.01** 🏆 | 5.0 ± 2.05 | v6 und v6.5 gleichauf |
 | **TDD-Disziplin** | | | | |
-| `refactorings_applied` | 4.0 ± 1.63 | **6.9 ± 2.33** | 5.9 ± 1.45 | v6.6 verliert v6.5-Boost |
-| `cycle_count` | 8.3 ± 0.82 | 8.2 ± 0.63 | **6.0 ± 1.25** | v6.6 −27 % Cycles! |
-| `predictions_correct_rate` | 99.4 % | **100 %** (166/166) | **97.5 %** (119/122) | v6.6 fällt ab |
-| `tests_passed_immediately` | 3.3 ± 3.02 | 1.4 ± 2.27 | 0.4 ± 0.70 | v6.6 sehr niedrig (Folge weniger Cycles) |
-| **Kosten** | | | | |
-| `total_tokens` | 6.62 M | 7.40 M | **6.22 M** | **v6.6 günstigster** (−6 % vs v6, −16 % vs v6.5) |
-| `duration_seconds` (mean) | 521 | 624 | 803 (σ=662) | v6.6 mean verzerrt durch Outlier |
-| `duration_seconds` (median) | ~510 | ~620 | 656 | v6.6-Median nur +29 % vs v6 |
-| `duration_seconds` (mean ohne Outlier) | 521 | 624 | **609** | v6.6 sogar günstiger als v6.5 |
-| **Korrektheit** | 100 % / 1.00 | 100 % / 1.00 | 100 % / 1.00 | unverändert |
+| `refactorings_applied` (höher = besser) | 4.0 ± 1.63 | **6.9 ± 2.33** 🏆 | 5.9 ± 1.45 | v6.5 mit +72 % vs v6 |
+| `cycle_count` (mehr = mehr TDD-Granularität) | **8.3 ± 0.82** 🏆 | 8.2 ± 0.63 | 6.0 ± 1.25 ⚠️ | v6.6 −27 % Cycles! |
+| `predictions_correct_rate` (höher = besser) | 99.4 % | **100 %** (166/166) 🏆 | 97.5 % (119/122) ⚠️ | v6.6 fällt ab |
+| `tests_passed_immediately` (niedriger = weniger Over-Impl) | 3.3 ± 3.02 | 1.4 ± 2.27 | **0.4 ± 0.70** 🏆 | v6.6 niedrigster (Folge weniger Cycles) |
+| **Kosten** (kleiner = besser) | | | | |
+| `total_tokens` | 6.62 M | 7.40 M | **6.22 M** 🏆 | v6.6 günstigster (−6 % vs v6, −16 % vs v6.5) |
+| `duration_seconds` (mean) | **521** 🏆 | 624 | 803 (σ=662) | v6.6 mean verzerrt durch Outlier |
+| `duration_seconds` (median) | **~510** 🏆 | ~620 | 656 | v6.6-Median nur +29 % vs v6 |
+| `duration_seconds` (mean ohne Outlier) | **521** 🏆 | 624 | 609 | v6.6 fast gleichauf mit v6 |
+| **Korrektheit** | | | | |
+| `tests_passing` / `verification_pct` | **100 % / 1.00** 🏆 | **100 % / 1.00** 🏆 | **100 % / 1.00** 🏆 | unverändert (Drei-Wege-Gleichstand) |
 
 ---
 
