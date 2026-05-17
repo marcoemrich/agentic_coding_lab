@@ -1,0 +1,10 @@
+All 6 tests pass and `experiment-done.txt` contains `DONE`. The TDD cycle is complete:
+
+1. **Empty input** → returns `[]`
+2. **Block (still life)** → returns input unchanged
+3. **Single isolated cell (underpopulation)** → dies
+4. **Vertical blinker → horizontal** (oscillator)
+5. **Reproduction** (dead cell with 3 neighbors becomes alive)
+6. **Overpopulation** (live cell with >3 neighbors dies)
+
+The implementation handles infinite grid with sparse representation and negative coordinates via a Set keyed on `"x,y"` strings.

@@ -3,8 +3,9 @@ id: RQ-13
 question: "Performt v6.5-lean (Four Rules raus, Pep raus, Emojis raus, mit strukturellen Rewrites + Why-Begruendungen) mindestens gleichwertig zu v6 auf Code-Qualitaet und TDD-Disziplin?"
 factors:
   workflow_x_prompt:
-    - {workflow: v6-hybrid, prompt: example-mapping}
-    - {workflow: v6.5-lean, prompt: example-mapping}
+    - {workflow: v6-hybrid,   prompt: example-mapping}
+    - {workflow: v6.5-lean,   prompt: example-mapping}
+    - {workflow: v6.6-leaner, prompt: example-mapping}
 controls:
   model: opus-4-7-no-thinking
   kata_base: game-of-life
