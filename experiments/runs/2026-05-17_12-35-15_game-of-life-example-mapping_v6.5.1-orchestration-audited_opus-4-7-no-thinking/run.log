@@ -1,0 +1,12 @@
+Conway's Game of Life implementation complete. All 8 tests pass through the full TDD red-green-refactor cycle:
+
+1. Empty input → []
+2. Single isolated cell dies (underpopulation)
+3. Two adjacent cells die (underpopulation)
+4. 2x2 block remains unchanged (still life)
+5. Vertical blinker oscillates to horizontal (survival + reproduction)
+6. Fully-surrounded center cell dies (overpopulation)
+7. Dead cell with 3 live neighbors is born (reproduction)
+8. Negative coordinates handled correctly
+
+The `experiment-done.txt` marker has been written.
