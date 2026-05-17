@@ -6,11 +6,11 @@ Vergleich v6-hybrid (mit Emojis) vs v6.4-no-emoji (ohne Emojis) auf game-of-life
 
 | Metrik | v6 (mit Emojis) μ±σ | v6.4 (ohne Emojis) μ±σ | Δ | v6 σ-Schwelle | über Schwelle? |
 |---|---:|---:|---:|---:|:---:|
-| Code-Mass (APP) | 158.6 ± 15.14 | 158.3 ± 12.50 | −0.3 | 15.14 | nein (praktisch identisch) |
-| Smell-Summe | 2.2 ± 0.42 | 2.5 ± 0.71 | +0.3 | 0.42 | nein (knapp drunter) |
-| Spitzen-Komplexität (`cc_longest_function`) | 13.1 ± 5.97 | 12.8 ± 6.20 | −0.3 | 5.97 | nein (v6.4 leicht besser) |
-| `cognitive_max` | 5.2 ± 2.30 | 5.3 ± 4.03 | +0.1 | 2.30 | nein (praktisch identisch) |
-| `mccabe_max` | 4.5 ± 1.51 | 4.3 ± 1.95 | −0.2 | 1.51 | nein (v6.4 leicht besser) |
+| Code-Mass (APP) | 158.6 ± 15.14 | **158.3 ± 12.50** 🏆 | −0.3 | 15.14 | nein (praktisch identisch) |
+| Smell-Summe | **2.2 ± 0.42** 🏆 | 2.5 ± 0.71 | +0.3 | 0.42 | nein (knapp drunter) |
+| Spitzen-Komplexität (`cc_longest_function`) | 13.1 ± 5.97 | **12.8 ± 6.20** 🏆 | −0.3 | 5.97 | nein (v6.4 leicht besser) |
+| `cognitive_max` | **5.2 ± 2.30** 🏆 | 5.3 ± 4.03 | +0.1 | 2.30 | nein (praktisch identisch) |
+| `mccabe_max` | 4.5 ± 1.51 | **4.3 ± 1.95** 🏆 | −0.2 | 1.51 | nein (v6.4 leicht besser) |
 
 Bei n=10 ist die Richtung **klar gemischt**: 2 Metriken leicht zu v6 (smell), 2 leicht zu v6.4 (cc_longest, mccabe), 2 praktisch identisch (code_mass, cognitive_max). Der n=5-Befund "4 von 5 zu v6 getiltet" war Sampling-Artefakt.
 

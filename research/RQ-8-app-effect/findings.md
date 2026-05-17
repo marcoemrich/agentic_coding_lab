@@ -6,11 +6,11 @@ Vergleich v6-hybrid (mit APP, n=10) vs v6.1-no-app (ohne APP, n=5) auf game-of-l
 
 | Metrik | v6 (mit APP) μ±σ | v6.1 (ohne APP) μ±σ | Δ (v6.1 − v6) | v6 σ-Schwelle | über Schwelle? |
 |---|---:|---:|---:|---:|:---:|
-| Smell-Summe | 2.2 ± 0.42 | 3.2 ± 1.30 | **+1.0** | 0.42 | ✅ |
-| `cognitive_max` | 5.2 ± 2.30 | 8.4 ± 4.93 | **+3.2** | 2.30 | ✅ |
-| `mccabe_max` | 4.5 ± 1.51 | 6.0 ± 2.55 | **+1.5** | 1.51 | ✅ knapp |
-| Spitzen-Komplexität (`cc_longest_function`) | 13.1 ± 5.97 | 15.2 ± 9.44 | +2.1 | 5.97 | — |
-| Code-Mass (APP) | 158.6 ± 15.14 | 166.0 ± 5.15 | +7.4 | 15.14 | — |
+| Smell-Summe | **2.2 ± 0.42** 🏆 | 3.2 ± 1.30 | **+1.0** | 0.42 | ✅ |
+| `cognitive_max` | **5.2 ± 2.30** 🏆 | 8.4 ± 4.93 | **+3.2** | 2.30 | ✅ |
+| `mccabe_max` | **4.5 ± 1.51** 🏆 | 6.0 ± 2.55 | **+1.5** | 1.51 | ✅ knapp |
+| Spitzen-Komplexität (`cc_longest_function`) | **13.1 ± 5.97** 🏆 | 15.2 ± 9.44 | +2.1 | 5.97 | — |
+| Code-Mass (APP) | **158.6 ± 15.14** 🏆 | 166.0 ± 5.15 | +7.4 | 15.14 | — |
 
 Niedriger = besser. Drei der fünf Metriken zeigen v6.1 mindestens 1σ schlechter als v6 mit konsistenter Richtung über alle fünf.
 

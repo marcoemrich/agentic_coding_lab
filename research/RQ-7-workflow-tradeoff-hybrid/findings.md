@@ -8,12 +8,12 @@ Headline-Outcomes (Mittelwerte, ggf. mit Streuung), Kontrolle:
 
 | Kata | Outcome | v4 | v5 | **v6** | v7 |
 |---|---|---:|---:|---:|---:|
-| game-of-life | `smell_total` | 2.6 | 4.1 | **2.2** | 2.8 |
-| game-of-life | `mutation_score` (σ) | 0.91 (0.08) | 0.94 (0.04) | **0.95 (0.005)** | 0.92 (0.08) |
-| game-of-life | `verification_pct` | 1.00 | 1.00 | 1.00 | 1.00 |
-| claim-office | `smell_total` | 1.8 | 8.9 | **0.2** | 3.3 |
-| claim-office | `mutation_score` (σ) | 0.93 (0.04) | 0.88 (0.04) | **0.93 (0.04)** | 0.92 (0.03) |
-| claim-office | `verification_pct` | 0.67 | 0.87 | **1.00** | 0.78 |
+| game-of-life | `smell_total` | 2.6 | 4.1 | **2.2** 🏆 | 2.8 |
+| game-of-life | `mutation_score` (σ, höher = besser) | 0.91 (0.08) | 0.94 (0.04) | **0.95 (0.005)** 🏆 | 0.92 (0.08) |
+| game-of-life | `verification_pct` | 1.00 🏆 | 1.00 🏆 | 1.00 🏆 | 1.00 🏆 |
+| claim-office | `smell_total` | 1.8 | 8.9 | **0.2** 🏆 | 3.3 |
+| claim-office | `mutation_score` (σ, höher = besser) | **0.93 (0.04)** 🏆 | 0.88 (0.04) | **0.93 (0.04)** 🏆 | 0.92 (0.03) |
+| claim-office | `verification_pct` | 0.67 | 0.87 | **1.00** 🏆 | 0.78 |
 
 ---
 
