@@ -59,6 +59,13 @@ Die Why-Variante ist kürzer und erlaubt dem Modell zu erkennen, dass
 auch *neue* Marker-relevante Formate verbatim bleiben müssen, ohne dass
 sie explizit verboten wurden.
 
+RQ-14 stützt das Prinzip direkt: das Audit-Bundle aus dem externen
+`claude_orchestration`-Framework hat in v6.5.1 *nur* Rationale-Blocks
+und Short-Circuit-Hardening hinzugefügt (keine Reduktion). Ergebnis:
+`tests_passed_immediately` 1.4 → 0, `refactorings_applied`-σ ein
+Sechstel. Why-Begründung wirkt messbar — auf Kosten von ~15 % Tokens
+(siehe Anti-Pattern und Befund unten).
+
 ### 2. Reduktion vor Addition
 
 Default-Hypothese: ein Workflow-File enthält zu viel, nicht zu wenig.
@@ -252,6 +259,27 @@ zugehörige Finding für Details:
   Mittelwerte, leichte Streuungs- und Disziplin-Drift. → Emojis raus
   ist *bedingt* OK auf opus-4-7.
 
+### Procedural Hardening (Rationale + Short-Circuit-Schutz)
+
+- **RQ-14 F-14.1** — Mandatory-Procedure-Preamble in `red.md` (alle
+  sieben Schritte verpflichtend, kein Skip bei vorzeitig grünem Test)
+  plus "Wrong Predictions Are Data" (kein retroaktives Backfilling)
+  eliminieren Over-Implementation komplett: `tests_passed_immediately`
+  1.4 ± 2.27 → 0 ± 0 bei n=10.
+- **RQ-14 F-14.2** — Explizite Rationales in `refactor.md` ("Pflicht
+  wegen Measurement-Pipeline", Bisectability-Begründung) plus konkreter
+  Refactor-Bar (name tightening / APP mass ≥1 / removable smell)
+  heben `refactorings_applied` 6.9 ± 2.33 → 7.8 ± 0.42 — σ ein
+  Sechstel.
+- **RQ-14 F-14.4** — Audit-Bundle kostet +15 % Tokens / +16 %
+  Wallclock. → Rationale-Addition ist *nicht* kostenlos; "Reduktion
+  vor Addition" bleibt Default. Why-Blocks mit Measurement-Pipeline-
+  Bezug sind aber die ersten Additions, die das Default-Prinzip
+  empirisch rechtfertigen.
+- **RQ-14 F-14.5** — Streuung sinkt fast überall (TDD-Disziplin-σ
+  quasi deterministisch, σ Tokens/Duration halbiert). → Hardening
+  wirkt primär *streuungsreduzierend*, nicht mittelwert-verschiebend.
+
 ### Generalisierung über Modelle hinweg
 
 - **RQ-12 F-12.1 / F-12.2** — **Wichtigste Warnung**: Workflow-
@@ -274,6 +302,12 @@ zugehörige Finding für Details:
   Schritt geändert → nicht trennbar, welche Komponente trägt. Eine
   "v6.5-no-why"-RQ würde es separieren. → Bei Bundle-RQs immer die
   Offenheit dokumentieren.
+- **RQ-14 (Komplement zu RQ-13)** — nimmt das fertige v6.5-lean und
+  addiert *nur* Rationale-Ergänzungen + Short-Circuit-Hardening
+  (keine weitere Reduktion). Disziplin-Boost und σ-Reduktion treten
+  trotzdem auf → der RQ-13-Anteil "Why-Rewrites" trägt isolierbar.
+  Die in RQ-13 dokumentierte Offenheit ("welche Komponente trägt?")
+  ist damit für die Rationale-Komponente positiv beantwortet.
 
 ## Verweise
 
@@ -294,5 +328,8 @@ zugehörige Finding für Details:
   der RQ-11-Befunde (mit Warnsignal).
 - `research/RQ-13-v6.5-lean-validation/` — Bundle-Reduktion +
   Why-Rewrites + drei Workflow-Profile.
+- `research/RQ-14-orchestration-audit/` — externes Audit-Bundle
+  (Rationale + Hardening, *ohne* weitere Reduktion) trägt isolierbar
+  und kostet ~15 % Tokens.
 - `research/kata-design/kata-construction.md` — Schwester-Doku zur
   Kata-Methodik.
