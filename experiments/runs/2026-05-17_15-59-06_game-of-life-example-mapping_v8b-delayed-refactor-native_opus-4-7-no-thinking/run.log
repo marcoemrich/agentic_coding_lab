@@ -1,0 +1,6 @@
+All three phases complete:
+- **Phase 1**: Implemented `nextGeneration` in `src/game-of-life.ts` using sparse representation (Set + neighbor-count Map).
+- **Phase 2**: Wrote 19 tests in `src/game-of-life.spec.ts` covering empty input, all 4 rules, blinker/block patterns, negative coordinates, and output properties. All green.
+- **Phase 3**: Refactored: extracted neighbor offsets constant, encode/decode helpers, `countLiveNeighbors`, and `cellSurvivesOrIsBorn` predicate. Tests still green.
+
+`experiment-done.txt` written.

@@ -1,0 +1,6 @@
+All three phases complete:
+- **Phase 1**: Implemented `nextGeneration` in `src/game-of-life.ts` using a sparse Set-based representation.
+- **Phase 2**: Wrote 16 tests in `src/game-of-life.spec.ts` covering all 4 rules, blinker/block patterns, single cell, empty input, negative coordinates, input immutability, and duplicate handling. All green.
+- **Phase 3**: Refactor subagent extracted helpers (`uniqueCells`, `countNeighbors`, `survives`), pulled out `NEIGHBOR_OFFSETS` constant, and improved naming. All 16 tests still passing.
+
+`experiment-done.txt` written.
