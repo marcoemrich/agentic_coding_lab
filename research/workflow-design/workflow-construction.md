@@ -80,6 +80,12 @@ Inhaltsklassen messbar kosmetisch sind:
   "Hexagonal Architecture", "Named exports only" — irrelevant für die
   Mini-Aufgaben, kein Effekt.
 - **Repeated Warnings**: "🚨 USE SKILLS" zwei-, dreimal — einmal reicht.
+- **Verbatim-Duplikat-Bullet-Listen** (`v6.5.2-bullets-cut`): "Remember"-
+  Sektionen und DO/DON'T-Listen, die andere File-Sections wortwörtlich
+  wiederholen — RQ-15 zeigt: Cut hebt Code-Qualität (cognitive_max −29 %)
+  und senkt Tokens (−15 %). Aber Achtung: die Bullets *tragen* die σ-
+  Determinismus der Disziplin-Metriken; ohne sie verdreifacht sich σ
+  bei `refactorings_applied`. Cut ist ein Trade-off, kein purer Win.
 
 Bevor inhaltlich etwas hinzugefügt wird, prüfen: gibt es einen Block
 im File, der ersatzlos gestrichen werden kann?
@@ -279,6 +285,17 @@ zugehörige Finding für Details:
 - **RQ-14 F-14.5** — Streuung sinkt fast überall (TDD-Disziplin-σ
   quasi deterministisch, σ Tokens/Duration halbiert). → Hardening
   wirkt primär *streuungsreduzierend*, nicht mittelwert-verschiebend.
+- **RQ-15 F-15.1 / F-15.2** — Bullet-Cut auf v6.5.1 verbessert Code-
+  Qualität (`cognitive_max` 5.6 → 4.0, `mccabe_max` 4.9 → 4.1, σ
+  jeweils −30 bis −50 %), hält Disziplin-Mittelwerte, lässt aber σ
+  bei `refactorings_applied` und `cycle_count` um Faktor 2–3 steigen.
+  → Bullets sind Pattern-Match-*Floor*-Anker: sie tragen nicht den
+  Mittelwert, sondern das Worst-Case-Verhalten. Cut ist netto positiv
+  für Quality/Cost, negativ für Determinismus.
+- **RQ-15 F-15.3** — −38 Workflow-Zeilen erzeugen −15 % `total_tokens`
+  (statt der rechnerisch erwarteten <1 %). → Effekt kommt aus
+  Sekundär-Wirkungen (kürzere Refactor-Phasen mit weniger Edit-
+  Iterationen), nicht aus dem entfernten Text selbst.
 
 ### Generalisierung über Modelle hinweg
 
@@ -331,5 +348,9 @@ zugehörige Finding für Details:
 - `research/RQ-14-orchestration-audit/` — externes Audit-Bundle
   (Rationale + Hardening, *ohne* weitere Reduktion) trägt isolierbar
   und kostet ~15 % Tokens.
+- `research/RQ-15-bullets-cut/` — verbatim-duplikat-Bullets aus v6.5.1
+  gestrichen: Quality + Cost gewinnen deutlich, Disziplin-σ verliert
+  Faktor 2–3. Quality-Champion v6.5.2 vs Determinismus-Champion v6.5.1
+  als zwei verschiedene Profile.
 - `research/kata-design/kata-construction.md` — Schwester-Doku zur
   Kata-Methodik.

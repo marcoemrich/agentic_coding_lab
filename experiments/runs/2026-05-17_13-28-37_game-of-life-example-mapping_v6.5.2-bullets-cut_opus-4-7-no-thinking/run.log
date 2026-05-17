@@ -1,0 +1,10 @@
+All 8 tests pass and the `experiment-done.txt` marker has been written. The Game of Life implementation is complete with full TDD cycle coverage:
+
+1. Empty array → empty array
+2. Single cell dies (underpopulation)
+3. Two adjacent cells die (underpopulation)
+4. Block (2x2) survives as still life
+5. Vertical blinker → horizontal blinker
+6. Cell with >3 neighbors dies (overpopulation)
+7. Dead cell with 3 neighbors becomes alive (reproduction)
+8. Negative coordinates handled correctly
