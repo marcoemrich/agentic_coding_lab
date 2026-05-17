@@ -81,15 +81,20 @@ Inhaltsklassen messbar kosmetisch sind:
   Mini-Aufgaben, kein Effekt.
 - **Repeated Warnings**: "🚨 USE SKILLS" zwei-, dreimal — einmal reicht.
 - **Verbatim-Duplikat-Bullet-Listen** (`v6.5.2-bullets-cut`,
-  `v6.5.3-targeted-cuts`): "Remember"-Sektionen und DO/DON'T-Listen, die
-  andere File-Sections wortwörtlich wiederholen. RQ-15 (alle drei
-  gestrichen): Quality + Tokens gewinnen, aber σ Disziplin verdreifacht
-  sich. RQ-16 (nur mid-file DO/DON'Ts gestrichen, end-of-file
-  "Remember" behalten): Quality gewinnt *noch besser* (cognitive_max
-  −37 % vs v6.5.1), Floor restauriert (tests_passed_immediately = 0),
-  Token-Win aber komplett weg. → **Position matters**: end-of-file-
-  Bullets sind Floor-Anker (letzter Pass vor Subagent-Output), mid-file-
-  Bullets sind Noise. Streichregel: nur mid-file-Duplikate cutten.
+  `v6.5.3-targeted-cuts`, `v6.5.4-refactor-cut-only`): "Remember"-
+  Sektionen und DO/DON'T-Listen, die andere File-Sections wortwörtlich
+  wiederholen. RQ-15/16/17 differenzieren drei Cut-Klassen:
+  - **End-of-file "Remember" (10a)**: **Floor-Anker** — letzter Pass
+    vor Subagent-Output. NICHT cutten.
+  - **Mid-file `refactor.md` DO/DON'T (10b)**: dekorativ und sogar
+    *kontraproduktiv* für Komplexität — schwemmt Refactor-Subagent
+    mit Noise zu. Cutten ist netto-positiv.
+  - **Mid-file `red/SKILL.md` DO/DON'T (10c)**: phasen-spezifischer
+    Pred-Hygiene-Anker — Pred-Rate fällt ohne ihn von 99 % auf 96 %.
+    NICHT cutten.
+  → Streichregel: mid-file-Duplikate cutten **wenn sie keine
+  phasen-spezifische Mechanik schützen**. Vor jedem Cut prüfen, ob
+  der Block eine messbare Disziplin- oder Format-Garantie absichert.
 
 Bevor inhaltlich etwas hinzugefügt wird, prüfen: gibt es einen Block
 im File, der ersatzlos gestrichen werden kann?
@@ -319,8 +324,23 @@ zugehörige Finding für Details:
   Vermutete Ursache: `red/SKILL.md`-DO/DON'T-Cut, der den
   Wrong-Prediction-Schutz mitgestrichen hat. → Hinweis darauf, dass
   *manche* mid-file DO/DON'T-Blöcke doch tragen — pro Block testen,
-  nicht pauschal cutten. v6.5.4 (mit `red/SKILL.md`-DO/DON'T zurück)
-  wäre der Folge-RQ-Kandidat.
+  nicht pauschal cutten.
+- **RQ-17 F-17.1** — Hypothese bestätigt: v6.5.4 (10c wieder drin, 10b
+  weiterhin weg) liefert **100 %** Pred-Rate (162/162 — perfekt, sogar
+  besser als v6.5.1). → `red/SKILL.md`-DO/DON'T ist Pred-Hygiene-Anker,
+  nicht dekorativ. Generelle Lehre: *mid-file*-Bullets können tragen
+  *wenn sie phasen-spezifische Mechanik schützen* (hier:
+  Prediction-Format).
+- **RQ-17 F-17.2** — v6.5.4 dominiert v6.5.1 in 7 von 8 Outcomes mit
+  σ-Reduktion quer durch (oft −40 % bis −70 %). → Saubere
+  Pareto-Improvement: gezieltes Cutten *einer* mid-file
+  Bullet-Wiederholung (refactor.md DO/DON'T) bei Erhalt der anderen
+  (red/SKILL.md DO/DON'T) ist netto-positiv.
+- **RQ-17 F-17.3** — Interaction-Effekt zwischen 10b und 10c:
+  `cc_longest_function`-Optimum (v6.5.3: 12.0) braucht beide Cuts; mit
+  nur 10b allein (v6.5.4) springt es auf 15.0. → Mid-file DO/DON'T-Blöcke
+  wirken nicht unabhängig. `cc_longest_function`-Minimum ist
+  Pareto-incompatible mit perfekter Pred-Rate.
 
 ### Generalisierung über Modelle hinweg
 
@@ -381,5 +401,11 @@ zugehörige Finding für Details:
   "Remember"-Section pinpointed. v6.5.3 (mid-file cuts, end behalten)
   ist neuer Quality-Champion (`cognitive_max` −37 %); Token-Win bleibt
   bei v6.5.2. Drei Pareto-Profile statt einem Champion.
+- `research/RQ-17-refactor-cut-only/` — F-16.4-Hypothese bestätigt:
+  `red/SKILL.md`-DO/DON'T ist Pred-Hygiene-Anker (v6.5.4 erreicht
+  100 % Pred-Rate). v6.5.4 dominiert v6.5.1 in 7 von 8 Outcomes mit
+  σ-Reduktion quer durch — neuer Default-Champion. Zeigt auch
+  Interaction-Effekt zwischen 10b und 10c (cc_longest_function-Minimum
+  braucht beide Cuts).
 - `research/kata-design/kata-construction.md` — Schwester-Doku zur
   Kata-Methodik.
