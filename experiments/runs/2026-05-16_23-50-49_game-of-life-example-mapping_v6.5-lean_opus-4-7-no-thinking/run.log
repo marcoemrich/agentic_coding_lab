@@ -1,0 +1,12 @@
+Experiment complete. All 8 tests for Conway's Game of Life are passing:
+
+1. ✓ empty input returns empty
+2. ✓ single isolated cell dies (underpopulation)
+3. ✓ two adjacent cells die (underpopulation)
+4. ✓ 2x2 block is preserved (still life)
+5. ✓ vertical blinker oscillates to horizontal
+6. ✓ overpopulated cell dies
+7. ✓ dead cell with 3 neighbors is born (reproduction)
+8. ✓ negative coordinates handled
+
+Implementation uses sparse representation (only living cells), supports infinite grid via offset-based neighbor enumeration, and is coordinate-agnostic for negative values.

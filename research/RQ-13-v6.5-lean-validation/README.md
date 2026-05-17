@@ -27,7 +27,7 @@ outcomes:
   - tests_passing
   - verification_pct
   - completed_within_budget
-min_replicates: 5
+min_replicates: 10
 status: aktiv
 ---
 
