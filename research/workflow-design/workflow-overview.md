@@ -5,7 +5,7 @@ Schnell-Überblick über alle Workflow-Varianten unter
 verworfen wurde. Stand: 2026-05-17.
 
 Schwester-Doku zu `workflow-construction.md` (Methodik) und
-`experiments/workflows/MARKERS.md` (Parser-Anforderungen).
+`experiments/workflows/MARKERS.md` (Parser-Anforderungen). Stand: 2026-05-17.
 
 ## Generationen — was sie testen
 
@@ -37,13 +37,22 @@ Schwester-Doku zu `workflow-construction.md` (Methodik) und
 | `v6.5-lean` | alle vier Cuts gebündelt + skill-creator-Why-Rewrites | RQ-13 | Bundle trägt, Komponenten nicht isolierbar |
 | `v6.6-leaner` | weitere skill-creator-Empfehlungen (DO/DON'T-Listen raus, Test-List-Empfehlung "3-6 tests") | RQ-13 | DO/DON'T-Hypothese teilweise widerlegt: Pred-Rate −2.5 pp; Test-List-Hint senkt cycle_count −27 % |
 
-### v6.5er Detail-Audits — RQ-14 bis RQ-16
+### v6.5er Detail-Audits — RQ-14 bis RQ-17
 
-| Variante | Änderung | RQ | Befund |
-|---|---|---|---|
-| `v6.5.1-orchestration-audited` | Rationale-Blocks + Short-Circuit-Hardening aus externem `claude_orchestration` | RQ-14 | Determinismus ↑ (σ refactorings ⅙), Tokens +15% |
-| `v6.5.2-bullets-cut` | Duplikat-"Remember"/DO-DON'T-Bullets gestrichen | RQ-15 | cognitive_max −29%, Tokens −15%, σ refactorings ×3 (Trade-off) |
-| `v6.5.3-targeted-cuts` | gezielte Cuts | RQ-16 | aktiv |
+Drei Bullet-Blöcke aus `claude_orchestration`-Audit Finding 10:
+**10a** = `refactor.md` "Remember"-End-Section, **10b** = `refactor.md`
+mid-file DO/DON'T, **10c** = `red/SKILL.md` mid-file DO/DON'T.
+
+| Variante | Cuts (10a/10b/10c) | RQ | Befund |
+|---|:---:|---|---|
+| `v6.5.1-orchestration-audited` | ✓ / ✓ / ✓ | RQ-14 | Determinismus ↑ (σ refactorings ⅙), Tokens +15 % vs v6.5-lean |
+| `v6.5.2-bullets-cut` | ✗ / ✗ / ✗ | RQ-15 | cognitive_max −29 %, Tokens −15 %, σ refactorings ×3 (Trade-off) |
+| `v6.5.3-targeted-cuts` | ✓ / ✗ / ✗ | RQ-16 | Quality-Champion: cognitive_max 3.5, aber Pred-Rate 95.8 % |
+| `v6.5.4-refactor-cut-only` | ✓ / ✗ / ✓ | RQ-17 | **Default-Champion**: 100 % Pred-Rate, dominiert v6.5.1 in 7/8 Outcomes |
+
+Lehre aus den vier Varianten: **Position + Phasen-Mechanik entscheiden**.
+10a ist Floor-Anker (NICHT cutten), 10b ist dekorativ und kontraproduktiv
+für Komplexität (cutten), 10c ist Pred-Hygiene-Anker (NICHT cutten).
 
 ### v7: weitere Isolation — RQ-7
 
@@ -64,8 +73,11 @@ inhaltliche Patterns, die ab v6.5 systematisch eingearbeitet wurden:
   enthalten zu viel. Triebkraft der RQ-8 bis RQ-11 (Einzel-Cuts) und
   RQ-13 (Bundle).
 - **DO/DON'T-Listen-Kritik** — Hypothese aus skill-creator-Review:
-  Duplikat-Listen sind kosmetisch. In v6.6 getestet (RQ-13) und
-  **teilweise widerlegt**: Listen tragen 2.5 pp Pred-Rate.
+  Duplikat-Listen sind kosmetisch. In v6.6 (RQ-13) und v6.5.2–v6.5.4
+  (RQ-15/16/17) differenziert getestet: pauschal cutten ist falsch.
+  `red/SKILL.md`-DO/DON'T trägt 4 pp Pred-Rate (RQ-17); `refactor.md`
+  DO/DON'T ist dekorativ und sogar kontraproduktiv für Komplexität.
+  Pro Block testen, nicht pauschal.
 - **Test-List-Empfehlung** — skill-creator-Hint "3-6 tests" in v6.6
   hat messbaren Scope-Effekt (cycle_count −27 %).
 - **"Why skills required"-Block** — neuer Einleitungsblock in `tdd.md`
@@ -90,10 +102,17 @@ RQ-13-Findings F-13.2 und F-13.6.
 - Predictions-verbatim-Block in `red.md`.
 - "Mandatory refactoring attempt" in `refactor.md`.
 - APP-Vorher/Nachher-Berechnung im Refactor als Disziplin-Zwang.
+- `refactor.md` "Remember"-End-Section (10a) — Floor-Anker für
+  `tests_passed_immediately` und `refactorings_applied`-Floor (RQ-16).
+- `red/SKILL.md` mid-file DO/DON'T (10c) — Pred-Hygiene-Anker; ohne
+  ihn fällt Pred-Rate um ~4 pp (RQ-17 F-17.1).
 
 ## Aktuelle Front
 
-`v6.5.3-targeted-cuts` (RQ-16). Findings noch in Arbeit.
+`v6.5.4-refactor-cut-only` (RQ-17) ist neuer Default-Champion: 100 %
+Pred-Rate, dominiert v6.5.1 in 7 von 8 Outcomes mit σ-Reduktion quer
+durch. v6.5.3 bleibt Spezialist für maximale Komplexitäts-Reduktion
+(Pareto-incompatible mit perfekter Pred-Rate, siehe RQ-17 F-17.3).
 
 ## Quellen
 
