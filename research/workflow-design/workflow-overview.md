@@ -60,6 +60,17 @@ für Komplexität (cutten), 10c ist Pred-Hygiene-Anker (NICHT cutten).
 |---|---|---|
 | `v7-hybrid-green-refactor` | green *und* refactor isoliert | Pareto-dominiert von v6: spart Tokens, verliert Qualität *und* Korrektheit |
 
+### v8: Delayed-Refactor-Kontroll-Achse — RQ-18, RQ-18.1
+
+Drei Phasen in einer Session statt periodischer TDD-Cycles: Oneshot-Implementation → nachträgliche Tests gegen `prompt.md` → Einmal-End-Refactor. Dient als Kontrolle für die Hypothese, periodisches TDD-Refactor sei besser als End-Refactor nach Vibe-Coding.
+
+| Variante | End-Refactor-Mechanik | RQ | Befund |
+|---|---|---|---|
+| `v8a-delayed-refactor-agent` | `refactor.md` 1:1 aus v6.5.4 (APP + Naming + Mandatory-Attempt) | RQ-18 | cognitive_max 7.8 ± 4.89 — **Agent schadet als End-Refactor** (σ 5×) |
+| `v8b-delayed-refactor-native` | nativer Inline-Refactor im v3-Stil, kein Agent | RQ-18 | cognitive_max 4.4 ± 0.97 — deterministischer als der Agent, nahe an v6.5.4 |
+
+Lehre aus RQ-18: der `refactor.md`-Subagent ist auf periodische Mini-Refactors mit Test-Feedback-Schleife optimiert. Als Einmal-Schuss auf vollständigem Code wirkt seine Mandatory-Attempt-Klausel und das APP-Mass-Optimierungsziel kontraproduktiv. RQ-18.1 prüft den Befund auf novel Kata (`claim-office-prose`) mit primärer Outcome-Metrik `verification_pct`, um Trainingsdaten- und Example-Mapping-Confounders auszuschließen.
+
 ## Skill-Creator-Beiträge
 
 Aus `~/.claude/skills/skill-creator/SKILL.md` stammen mehrere
@@ -109,10 +120,9 @@ RQ-13-Findings F-13.2 und F-13.6.
 
 ## Aktuelle Front
 
-`v6.5.4-refactor-cut-only` (RQ-17) ist neuer Default-Champion: 100 %
-Pred-Rate, dominiert v6.5.1 in 7 von 8 Outcomes mit σ-Reduktion quer
-durch. v6.5.3 bleibt Spezialist für maximale Komplexitäts-Reduktion
-(Pareto-incompatible mit perfekter Pred-Rate, siehe RQ-17 F-17.3).
+`v6.5.4-refactor-cut-only` (RQ-17) ist Default-Champion für TDD-Workflows: 100 % Pred-Rate, dominiert v6.5.1 in 7 von 8 Outcomes mit σ-Reduktion quer durch. v6.5.3 bleibt Spezialist für maximale Komplexitäts-Reduktion (Pareto-incompatible mit perfekter Pred-Rate, siehe RQ-17 F-17.3).
+
+RQ-18.1 läuft (`claim-office-prose × v6.5.4/v8a/v8b × opus-4-7-no-thinking × n=10`) und prüft, ob der RQ-18-Befund "APP-Refactor-Agent schadet als End-Refactor" auch auf novel Code mit narrativem Spec hält oder ein Trainingsdaten-/Example-Mapping-Artefakt war. Folgebefund kann zur systematischen Verbesserung des Refactor-Agents führen (siehe `workflow-construction.md` §"Refactor-Agent außerhalb periodischer TDD-Cycles").
 
 ## Quellen
 

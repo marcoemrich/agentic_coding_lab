@@ -341,6 +341,45 @@ zugehörige Finding für Details:
   nur 10b allein (v6.5.4) springt es auf 15.0. → Mid-file DO/DON'T-Blöcke
   wirken nicht unabhängig. `cc_longest_function`-Minimum ist
   Pareto-incompatible mit perfekter Pred-Rate.
+- **RQ-18 F-18.2** — Der `refactor.md`-Subagent (APP + Naming-Eval +
+  Mandatory-Attempt) funktioniert **nur im periodischen TDD-Kontext**.
+  Als Einmal-End-Refactor nach Vibe-Coding-Implementation produziert
+  *derselbe* Agent gelegentlich schädliche Refactorings: `cognitive_max`
+  7.8 ± 4.89 (max 17) vs 4.4 ± 0.97 (max 7) beim nativen Inline-Refactor
+  ohne Agent. σ ist 3–8× größer. → Der Agent ist nicht universell
+  besser als "Refactor it"; seine Mechanik (Mandatory-Attempt-Pflicht
+  + APP-Mass-Optimierung) ist auf den iterativen Mini-Refactor pro
+  Cycle ausgelegt, nicht auf den großen Einmal-Refactor.
+- **RQ-18 F-18.5** — Native Inline-Refactor (v8b: kein Agent, kein APP,
+  kein Mandatory-Attempt) ist deterministischer als der Subagent:
+  σ `mccabe_max` 0.32 vs 2.54, σ `cognitive_max` 0.97 vs 4.89. → Die
+  Mandatory-Attempt-Klausel kauft Disziplin (Refactor-Anzahl) auf
+  Kosten von Varianz (welche Refactorings). Im TDD-Kontext stabilisiert
+  der Refactor-Trigger via Test-Run das Outcome; im End-Refactor-Kontext
+  fehlt diese Korrektur.
+
+### Refactor-Agent außerhalb periodischer TDD-Cycles
+
+RQ-18 zeigt, dass `refactor.md` als End-Refactor-Komponente nicht
+funktioniert. Wer einen Refactor-Agent für andere Kontexte bauen will
+(z.B. "refactor an existing legacy codebase"), sollte daher nicht
+einfach `refactor.md` kopieren. Zwei beobachtete Probleme:
+
+1. **Mandatory-Attempt + Mass-Optimierung als Kombination**: der Agent
+   muss mindestens einen Refactor machen *und* APP-Mass senken. Wenn
+   der Code schon gut ist, optimiert er gegen Mass (Konstanten,
+   Bindungen, Invocations) auf Kosten von Cognitive. APP-Mass und
+   Verzweigungs-Tiefe sind keine kongruenten Ziele.
+2. **Keine Test-Feedback-Schleife pro Atom-Refactoring**: im periodischen
+   Kontext läuft `pnpm test` nach jedem Einzel-Refactor (Step 3:
+   *"Make ONE improvement at a time. Run tests after each change."*).
+   Im End-Kontext führt das Modell tendenziell ein größeres Bundle aus,
+   das schwerer rückrollbar ist.
+
+Implikation für künftige Refactor-Agent-Varianten: Mandatory-Attempt
+weglassen (im End-Kontext gibt es keine Pipeline-Pflicht), Optimierungs-
+Ziel auf Cognitive statt Mass umstellen, und die Atom-Refactor-Regel
+explizit ans Test-Verhalten koppeln statt an die Schritt-Liste.
 
 ### Generalisierung über Modelle hinweg
 

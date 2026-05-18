@@ -3,14 +3,17 @@ id: RQ-18
 question: "Produziert periodisches Refactoring innerhalb von TDD-Cycles besseren Code als ein einzelnes End-Refactoring nach Vibe-Coding-Implementierung + nachträglich geschriebenen Tests? Und falls ja: liegt das am Zeitpunkt (periodisch vs einmalig) oder am Refactor-Inhalt (spezialisierter Subagent mit APP/Naming vs nativer Inline-Refactor)?"
 factors:
   workflow_x_prompt:
-    - {workflow: v6.5.4-refactor-cut-only,    prompt: example-mapping}
+    - {workflow: v6-hybrid,                    prompt: example-mapping}
     - {workflow: v8a-delayed-refactor-agent,  prompt: example-mapping}
     - {workflow: v8b-delayed-refactor-native, prompt: example-mapping}
 controls:
   model: opus-4-7-no-thinking
-  kata_base: game-of-life
+  kata_base: game-of-life-cli
 outcomes:
-  # primär: Code-Qualität
+  # primär: Korrektheit-außen (verification suite)
+  - verification_pct
+  - verification_passed
+  # sekundär: Code-Qualität
   - code_mass
   - cognitive_max
   - mccabe_max
@@ -27,7 +30,7 @@ outcomes:
   - tests_total
   - test_lines
 min_replicates: 10
-status: aktiv
+status: geplant
 ---
 
 # RQ-18: Delayed-Refactor — entkräftet TDD-mit-periodischem-Refactor das Vibe-Coding-mit-End-Refactor-Argument?

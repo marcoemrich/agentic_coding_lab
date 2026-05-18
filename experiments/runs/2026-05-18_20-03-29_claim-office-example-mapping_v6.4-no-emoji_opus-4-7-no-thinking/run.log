@@ -1,0 +1,6 @@
+All 32 tests pass, CLI works, and the experiment-done marker is written.
+
+Summary:
+- Implemented the MHPCO claim-office system using TDD
+- 32 passing tests covering: base premiums by item type, processing fee, block discount for 3 alike components, cursed/high-enchantment item surcharges, loyalty/first-insurance/follow-up policy modifiers, multi-item modifier scoping, premium rounding (up, in MHPCO favor), claim payouts with per-damage deductibles, high-enchantment 50% reimbursement clause, cap exhaustion across successive claims, multiple items of the same type, and error handling for unknown item types / out-of-policy damages / negative amounts
+- CLI at `src/cli.ts` reads JSON from stdin, writes JSON to stdout, exits non-zero on errors

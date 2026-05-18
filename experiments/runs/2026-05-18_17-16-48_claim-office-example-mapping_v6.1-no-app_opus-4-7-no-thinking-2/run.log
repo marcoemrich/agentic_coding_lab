@@ -1,0 +1,6 @@
+All 28 tests pass. CLI works. `experiment-done.txt` written with content `DONE`.
+
+Summary:
+- Implemented quote (base premiums, components with block discount, curse + high-enchantment surcharges, loyalty discount, first-insurance surcharge, follow-up discount, MHPCO-favor rounding, processing fee)
+- Implemented claim (deductible per damage, cap = 2× insurance sum, 50% high-enchantment payout rule, validation for unknown items and negative damages)
+- CLI at `src/cli.ts` reads JSON from stdin, writes JSON to stdout, exits non-zero on errors

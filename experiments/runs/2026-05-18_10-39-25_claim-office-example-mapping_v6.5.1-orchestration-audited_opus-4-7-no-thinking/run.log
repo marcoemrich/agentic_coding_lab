@@ -1,0 +1,7 @@
+
+Created `src/cli.ts` at the required path. It:
+
+- Reads JSON from stdin asynchronously
+- Calls `runScenario` from the existing `./claim-office.js` module
+- Writes the resulting JSON to stdout
+- Exits non-zero with an error message on stderr if parsing or processing fails
