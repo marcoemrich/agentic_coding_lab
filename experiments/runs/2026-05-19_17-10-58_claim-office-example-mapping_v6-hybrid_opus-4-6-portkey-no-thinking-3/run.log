@@ -1,0 +1,6 @@
+Exercise complete. All 37 tests pass (0 todo), covering:
+
+- **Quote**: base premiums (6 item types), component block pricing, cursed/enchantment surcharges, first insurance surcharge, loyalty discount, follow-up discount, stacked modifiers, rounding (ceil), 2 integration examples
+- **Claim**: deductible per damage, enchantment >= 8 at 50%, dragon material full reimbursement, combined clauses, cap enforcement, multi-claim cap tracking, multi-damage deductibles, rounding (floor)
+- **Validation**: unknown item type, uninsured claim item, negative damage, excess damages per type
+The CLI is working. It reads JSON from stdin, passes it to `processScenario`, and writes the JSON result to stdout. A quick test confirms the empty-items quote returns `{"results":[{"premium":5}]}` as expected.

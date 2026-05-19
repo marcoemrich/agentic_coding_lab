@@ -1,0 +1,12 @@
+Test passes immediately as predicted. 19 passing, 19 todo.
+
+### Step 7: Report
+
+🔴 Red Phase Complete:
+**Test Activated**: "applies 10% first insurance surcharge (always applies to each quote item)"
+**Compilation Prediction**: No compilation error expected ✅ Correct
+**Runtime Prediction**: Test passes immediately (premium 115 matches implementation) ✅ Correct
+**Result**: Test passes — this is a verification test for already-implemented logic. No Green phase needed.
+
+Moving to the next test: "applies 15% follow-up contract discount on second and subsequent quotes". This one will actually require new implementation.
+`src/cli.ts` is created and working. It reads a JSON scenario from stdin, passes it to `processScenario`, and writes the JSON result to stdout. The smoke test confirms it produces the expected output (`{"results":[{"premium":115}]}`).

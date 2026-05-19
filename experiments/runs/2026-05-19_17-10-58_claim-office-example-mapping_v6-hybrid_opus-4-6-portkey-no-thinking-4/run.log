@@ -1,0 +1,13 @@
+I need to update all these to include `remainingCap`. Let me calculate each one:
+
+1. Line 376: sword(1000 val), damage 500, payout=400, cap=2000, remainingCap=2000-400=1600
+2. Line 393: amulet(600 val), damage 350, payout=250, cap=1200, remainingCap=1200-250=950
+3. Line 413: sword(1000 val, dragon), damage 700, payout=600, cap=2000, remainingCap=1400
+4. Line 433: sword(1000 val, ench8), damage 600, payout=200 (50%=300-100), cap=2000, remainingCap=1800
+5. Line 450: sword(1000 val, dragon+ench8), damage 800, payout=300 (50%=400-100), cap=2000, remainingCap=1700
+6. Line 471: potion(400 val), damage 1000, payout=800 (capped), cap=800, remainingCap=0
+7. Line 494: potion(400 val), claim1 damage 600, payout=500, cap=800, remainingCap=300
+8. Line 495: claim2 damage 500, payout=300 (capped at remaining), remainingCap=0
+9. Line 521: sword+amulet (1000+600=1600), damage sword400+amulet300, payout=500, cap=3200, remainingCap=2700
+10. Line 544: 2 swords (2000), damage 500+300, payout=600, cap=4000, remainingCap=3400
+11. Line 564: sword(1000, ench8), damage 555, payout=177 (floor), cap=2000, remainingCap=2000-177=1823

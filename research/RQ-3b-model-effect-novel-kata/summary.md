@@ -2,7 +2,7 @@
 
 _Wie unterscheiden sich Opus 4.7 und Opus 4.6 (jeweils no-thinking) in Korrektheit und Code-Qualität auf einer novel Kata mit Mehrdeutigkeiten, die stärker differenziert als die trainingsbekannte game-of-life?_
 
-Generated: 2026-05-19T15:15:49Z
+Generated: 2026-05-19T19:00:48Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 5
 

@@ -23,12 +23,15 @@ Einschränkung: opus-4-6 hat n=5 (Portkey), opus-4-7 hat n=10 (Direct API). Rout
 
 Der Befund "opus-4-6 besser als opus-4-7" gilt nur für v4-exact-subagents. Auf v6-hybrid kehrt sich das um:
 
-| Workflow | opus-4-7 vpct | opus-4-6 vpct |
+| Workflow | opus-4-7 vpct (n) | opus-4-6 vpct (n) |
 |---|---:|---:|
-| v4-exact-subagents | 0.67 | **0.93** |
-| v6-hybrid | **1.00** | 0.65 |
+| v4-exact-subagents | 0.67 (10) | **0.93** (5) |
+| v5-exact-single-context | 0.87 (10) | 0.87 (5) |
+| v6-hybrid | **1.00** (5) | 0.68 (15) |
 
-Weder "opus-4-7 ist besser" noch "opus-4-6 ist besser" ist eine haltbare Aussage — **der Workflow bestimmt, welches Modell vorne liegt**. Model-Vergleiche ohne Workflow-Kontrolle sind auf novel Katas nicht generalisierbar.
+Weder "opus-4-7 ist besser" noch "opus-4-6 ist besser" ist eine haltbare Aussage — **der Workflow bestimmt, welches Modell vorne liegt**. v5 ist modell-unabhängig konstant (0.87). Model-Vergleiche ohne Workflow-Kontrolle sind auf novel Katas nicht generalisierbar.
+
+Mechanismus: v6-hybrid delegiert Orchestrierung an das Modell (Skill-Invocation im shared Context) — opus-4-7 beherrscht das, opus-4-6 verliert in ~40 % der Runs die Claim-Hälfte der Spec (implementiert nur Quote, `claim`-Operation komplett ignoriert, trotzdem `tests_passing=true` weil die internen Tests nur Quote abdecken). v4 gibt jeder Phase einen expliziten Subagent-Prompt — opus-4-6 profitiert von dieser Struktur, opus-4-7 wird auf v4 "überkreativ" bei Mehrdeutigkeiten.
 
 ## F-3b.3 — Korrektheit differenziert stärker als Code-Qualität
 

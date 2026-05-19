@@ -1,0 +1,17 @@
+Test fails exactly as predicted: the second quote returns `{ premium: 115 }` instead of `{ premium: 100 }` because the follow-up discount is not implemented.
+
+### Step 7: Report Completion
+
+🔴 Red Phase Complete:
+**Test Activated**: "applies 15% follow-up discount on second quote"
+**Compilation Prediction**: No compilation error ✅ Correct
+**Runtime Prediction**: Expected `{ premium: 100 }`, received `{ premium: 115 }` ✅ Correct
+**Result**: Test fails as expected with assertion error
+
+Proceeding to Green phase.
+The CLI is working. It reads JSON from stdin, processes it through `processScenario`, and writes JSON to stdout. Example:
+
+```
+echo '{"customer":{"yearsWithMHPCO":0},"steps":[{"op":"quote","items":[]}]}' | npx tsx src/cli.ts
+# → {"results":[{"premium":5}]}
+```

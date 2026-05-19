@@ -71,15 +71,27 @@ Konsequenz: alle v6.5er-Quality-Wins (cognitive_max-Reduktion, Smell-Reduktion, 
 
 Jede Workflow-Iteration braucht mindestens eine Korrektheits-Stichprobe auf einer Kata mit externer Verification-Suite, auch wenn die RQ primär Code-Qualität untersucht. Vorschlag: `claim-office-example-mapping × n=3` als Pflicht-Smoke vor jedem n=10-Quality-Batch in `workflow-construction.md` verankern.
 
-## F-19.6 — Cross-Model: opus-4-6 ist generell instabiler auf claim-office
+## F-19.6 — Workflow×Modell-Interaktion: v4 und v6 tauschen die Plätze
 
-Auf opus-4-6-portkey-no-thinking ist **kein Workflow stabil** — selbst v6-hybrid (opus-4-7: 1.00) erreicht nur 0.65 mit σ=0.46. Die Bimodalität (entweder nahe 0 oder nahe 1) tritt in allen Workflows auf. Das macht opus-4-6 als Modell für Workflow-Vergleiche auf claim-office ungeeignet: die Modell-Varianz übertönt das Workflow-Signal.
+| Workflow | opus-4-7 (n) | opus-4-6 (n) |
+|---|---:|---:|
+| v4-exact-subagents | 0.67 (10) | **0.93** (5) |
+| v5-exact-single-context | 0.87 (10) | 0.87 (5) |
+| v6-hybrid | **1.00** (5) | 0.68 (15) |
 
-Ausnahme: v4-exact-subagents erreicht auf opus-4-6 0.93 ± 0.08 (n=5, siehe RQ-3b) — deutlich stabiler als alle v6-Varianten. Hypothese: die vollständige Subagent-Isolation von v4 kompensiert die geringere Spec-Parsing-Fähigkeit von opus-4-6, weil jede Phase ihren eigenen frischen Context bekommt.
+v4 und v6 sind **modell-abhängig komplementär**: v6-hybrid ist opus-4-7-Optimum (1.00), aber auf opus-4-6 instabil (0.68). v4-exact-subagents ist auf opus-4-6 stabil (0.93), aber auf opus-4-7 bimodal (0.67). v5 ist modell-unabhängig konstant (0.87).
+
+Mechanismus: v6-hybrid delegiert die Orchestrierung an das Modell (Skill-Invocation-Semantik im shared Context). opus-4-7 beherrscht das. opus-4-6 verliert in ~40 % der Runs die Claim-Hälfte der Spec — das Modell implementiert nur Quote und ignoriert Claim komplett (`grep "claim\|payout\|deductible" claim-office.ts` = 0 Treffer, `tests_total` trotzdem 19–23 weil die internen Tests nur Quote abdecken).
+
+v4 gibt jeder Phase einen expliziten Subagent-Prompt. opus-4-6 profitiert von dieser Struktur, opus-4-7 wird auf v4 "überkreativ" und trifft bei Mehrdeutigkeiten häufiger die falsche Lesart.
 
 ## F-19.7 — Emoji-Effekt auf opus-4-6 existiert nicht
 
-Nachschärfung auf n=11/12 zeigt: `v6-hybrid` (0.65) und `v6.4-no-emoji` (0.64) sind auf opus-4-6 praktisch identisch. Ein Initialbefund bei n=3/4 (0.03 vs 1.00) stellte sich als Artefakt kontaminierter Early-Runs heraus. Nach Bereinigung der 05-18-Runs und Nachfüllung auf n=11+ kein Signal. Konsistent mit dem opus-4-7-Befund (1.00 vs 0.93, marginal bei n=3).
+Nachschärfung auf n=12 zeigt: `v6-hybrid` (0.68, n=15) und `v6.4-no-emoji` (0.64, n=12) sind auf opus-4-6 praktisch identisch. Ein Initialbefund bei n=3/4 (0.03 vs 1.00) stellte sich als Artefakt kontaminierter Early-Runs heraus (Portkey-Warmup-Effekt, drei `tests=1`-Ausreißer bei Batch-Start). Nach Bereinigung und Nachfüllung auf n=12+ kein Signal. Konsistent mit dem opus-4-7-Befund (1.00 vs 0.93, marginal bei n=3).
+
+## F-19.8 — Portkey-Warmup-Effekt als methodische Warnung
+
+Die ersten opus-4-6-Batches (05-18 und 05-19 06:49) zeigten konzentrierte Null-Runs (`tests=1`, Skill-Loop sofort abgebrochen). Spätere Batches auf demselben Routing-Pfad reproduzierten das nicht. Hypothese: Portkey-seitiger Cold-Start-Effekt oder transiente Routing-Instabilität. Konsequenz: erste 1–2 Runs eines neuen Portkey-Batches sind potenziell unzuverlässig und sollten nicht ohne Nachprüfung in die Aggregation einfließen.
 
 ## Nächster Schritt
 

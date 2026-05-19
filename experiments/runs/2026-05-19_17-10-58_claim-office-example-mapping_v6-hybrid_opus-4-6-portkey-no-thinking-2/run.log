@@ -1,0 +1,15 @@
+All 20 tests pass (20 todo remaining).
+
+### Step 4: Verify No Over-Implementation
+
+- I added only the `FOLLOW_UP_DISCOUNT_RATE` constant and the tracking/application of the follow-up discount
+- The `quoteCount` tracks quote ordering; `isFollowUp` is true for 2nd+ quotes
+- No extra features beyond what the test demands
+
+🟢 Green Phase Complete:
+**Implementation**: Added `FOLLOW_UP_DISCOUNT_RATE = 0.15`, tracked quote count with `quoteCount` variable, applied 15% discount on basePremium for follow-up quotes (2nd+)
+**Result**: All tests now pass (20 passing, 20 todo)
+**Approach**: Minimal — just a counter, a boolean check, and one additional term in the premium formula
+
+Proceeding to Refactor phase.
+The CLI works. It reads JSON from stdin, processes it through `processScenario`, and writes the result as JSON to stdout. The smoke test correctly returned `{"results":[{"premium":115}]}` for a single sword quote (100 base + 10 first insurance + 5 fee = 115).

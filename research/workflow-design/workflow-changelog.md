@@ -138,15 +138,35 @@ Zusätzlich zu v6.5-lean:
 Korrektheits-Status: nicht auf claim-office getestet, erbt aber
 v6.5-lean-Basis → vermutlich defekt.
 
+## Cross-Model-Befund (RQ-19 F-19.6, RQ-3b F-3b.2)
+
+| Workflow | opus-4-7 vpct (n) | opus-4-6 vpct (n) |
+|---|---:|---:|
+| v4-exact-subagents | 0.67 (10) | **0.93** (5) |
+| v5-exact-single-context | 0.87 (10) | 0.87 (5) |
+| v6-hybrid | **1.00** (5) | 0.68 (15) |
+
+v4 und v6 sind **modell-abhängig komplementär**. v5 ist
+modell-unabhängig konstant.
+
+Mechanismus: v6-hybrid delegiert Orchestrierung an das Modell
+(Skill-Invocation im shared Context). opus-4-7 beherrscht das.
+opus-4-6 verliert in ~40 % der Runs die Claim-Hälfte der Spec —
+implementiert nur Quote, ignoriert Claim komplett, trotzdem
+`tests_passing=true` weil interne Tests nur Quote abdecken.
+
+v4 gibt jeder Phase einen expliziten Subagent-Prompt. opus-4-6
+profitiert von dieser Struktur. opus-4-7 wird auf v4 "überkreativ"
+bei Mehrdeutigkeiten.
+
 ## Aktueller Stand
 
-**Empfohlener Workflow für Korrektheit**: `v6-hybrid` (original, ohne
-skill-creator-Rewrites). Einziger Workflow mit perfekter verification_pct
-auf claim-office (1.00, n=5).
+**Empfohlener Workflow für Korrektheit auf opus-4-7**: `v6-hybrid`
+(1.00, n=5). Auf opus-4-6: `v4-exact-subagents` (0.93, n=5).
 
 **Empfohlener Workflow für Code-Qualität auf trainingsbekanntem Code**:
 `v6.5.4-refactor-cut-only` — Quality-Champion auf GOL, 100 % Pred-Rate.
-Aber: auf novel Code nicht korrekt.
+Aber: auf novel Code nicht korrekt (Korrektheits-Regression ab v6.5).
 
 **Offene Aufgabe**: v6-hybrid + gezielte Quality-Verbesserungen aus
 der v6.5er-Kette, die die Korrektheits-Regression nicht auslösen.
