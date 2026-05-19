@@ -1,0 +1,14 @@
+Test fails exactly as predicted: expected 165, received 170.
+
+🔴 Red Phase Complete:
+**Test Activated**: "newcomer with cursed sword: 165 G"
+**Compilation Prediction**: N/A — no new types or functions needed
+**Runtime Prediction**: Expected 165, received 170 ✅ Correct
+**Result**: Test fails as expected with assertion error. The policy-wide modifiers are being applied to item totals including surcharges, but should be applied only to the sum of base premiums.
+
+Proceeding to Green phase.
+`src/cli.ts` is created and working. It:
+
+- Reads JSON from stdin
+- Parses it and passes the scenario to `processScenario`
+- Writes the JSON result to stdout

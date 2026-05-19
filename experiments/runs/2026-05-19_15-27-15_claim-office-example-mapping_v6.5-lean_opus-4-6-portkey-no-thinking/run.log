@@ -1,0 +1,10 @@
+Test fails exactly as predicted — no compilation error, runtime assertion error comparing `{}` to `{ payout: 400, remainingCap: 1600 }`.
+
+Red Phase Complete:
+**Test Activated**: "applies 100 G deductible per damaged item"
+**Compilation Prediction**: No compilation error (processScenario accepts any) - Correct
+**Runtime Prediction**: Expected { payout: 400, remainingCap: 1600 }, received {} - Correct
+**Result**: Test fails as expected with assertion error
+
+Proceeding to Green phase.
+The CLI is working. It reads JSON from stdin, processes it through `processScenario`, and writes the JSON result to stdout. The test confirmed a sword quote returns `{"results":[{"premium":115}]}` as expected.

@@ -1,0 +1,16 @@
+## Step 7: Report
+
+Red Phase Complete:
+**Test Activated**: "should return 5 G for an empty item list (processing fee only)"
+**Compilation Prediction**: Cannot find module './claim-office.js' - Correct
+**Runtime Prediction**: TypeError: Cannot read properties of undefined (reading 'results') - Correct
+**Result**: Test fails as expected with TypeError
+
+Proceeding to Green phase.
+The test failure is pre-existing (the `processScenario` stub returns `undefined`). The CLI file itself introduces no new issues.
+
+`src/cli.ts` is created. It:
+- Reads JSON from stdin
+- Passes it to `processScenario` from `./claim-office.js`
+- Writes the JSON result to stdout
+- On error, writes the message to stderr and exits with code 1

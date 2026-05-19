@@ -1,0 +1,14 @@
+### Step 4: Verify No Over-Implementation
+
+The implementation is a hardcoded return — maximally minimal. No future features, no unnecessary logic.
+
+Green Phase Complete:
+**Implementation**: Hardcoded return of `{ results: [{ premium: 5 }] }`
+**Result**: All tests now pass (1 passing)
+
+Proceeding to Refactor phase.
+`src/cli.ts` is created and working. It:
+
+1. Reads JSON from stdin (buffering all chunks)
+2. Parses it and passes it to `processScenario`
+3. Writes the JSON result to stdout followed by a newline

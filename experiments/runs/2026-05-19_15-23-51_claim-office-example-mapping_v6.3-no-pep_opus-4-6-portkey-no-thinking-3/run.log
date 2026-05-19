@@ -1,0 +1,20 @@
+✅ Runtime error as predicted: `TypeError: Cannot read properties of undefined (reading 'results')` — `processScenario` returns `undefined`, so accessing `.results` fails.
+
+### Step 7: Report
+
+🔴 Red Phase Complete:
+**Test Activated**: "returns premium of 5G for an empty item list (processing fee only)"
+**Compilation Prediction**: Failed to load url ./claim-office.js ✅ Correct
+**Runtime Prediction**: Cannot read properties of undefined (reading 'results') ✅ Correct
+**Result**: Test fails as expected with TypeError
+
+Proceeding to Green phase.
+The CLI works — it outputs `undefined` because `processScenario` currently returns `undefined`. Once the implementation is filled in, it will produce proper JSON output.
+
+Created `src/cli.ts`. It:
+1. Imports `processScenario` from `./claim-office.js`
+2. Reads all JSON from stdin
+3. Parses it, passes it to `processScenario`
+4. Writes the JSON result to stdout
+
+You can run it with: `echo '{"customer":...}' | npx tsx src/cli.ts`

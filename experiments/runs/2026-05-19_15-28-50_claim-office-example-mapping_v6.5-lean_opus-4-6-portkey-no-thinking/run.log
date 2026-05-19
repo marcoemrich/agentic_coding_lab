@@ -1,0 +1,69 @@
+All 28 tests are registered as todos. The test file runs cleanly.
+
+### Step 5: Summary
+
+```
+Test List Created:
+**Feature**: MHPCO Claim Office
+**Test File**: src/claim-office.spec.ts
+**Base Functionality Tests**: 28
+
+**Test Cases** (ordered simple → complex):
+
+Quote - base premiums:
+1. should return 5G premium for empty item list (processing fee only)
+2. should calculate base premium for a single sword (100G + 5G fee = 105G)
+3. should calculate base premium for each main item type
+4. should sum base premiums for multiple items in a policy
+
+Quote - component pricing:
+5. should calculate premium for individual components at 25G each
+6. should apply block discount for exactly 3 alike components (60G instead of 75G)
+7. should not apply block discount for 4 alike components
+8. should apply separate blocks for different component types
+
+Quote - item-specific modifiers:
+9. should add 50% cursed surcharge to cursed item base premium
+10. should add 30% high-enchantment surcharge for enchantment >= 5
+11. should apply both cursed and high-enchantment surcharges to same item
+12. should apply item-specific modifiers only to affected item, not whole policy
+
+Quote - policy-wide modifiers:
+13. should add 10% first insurance surcharge to policy base premium
+14. should apply 20% loyalty discount for customer with >= 2 years
+15. should apply 15% follow-up contract discount on second quote
+16. should combine loyalty, first insurance, and follow-up modifiers
+
+Quote - rounding:
+17. should round premium up in MHPCO's favor
+
+Claim - basic payout:
+18. should apply 100G deductible per damaged item
+19. should reimburse standard damage fully minus deductible
+
+Claim - reimbursement rules:
+20. should reimburse enchantment >= 8 damage at 50% then apply deductible
+21. should fully reimburse dragon material damage then apply deductible
+22. should apply 50% rule when both high-enchantment and dragon-material apply
+
+Claim - cap tracking:
+23. should cap total payout at 2x insurance sum
+24. should track remaining cap across multiple claims on same policy
+
+Claim - rounding:
+25. should round payout down in MHPCO's favor
+
+Validation:
+26. should reject unknown item types in quote
+27. should reject claim damage for item not in policy
+28. should reject negative damage amounts
+
+**Advanced Features** (NOT included):
+- CLI stdin/stdout integration - save for later
+- Multiple damage entries per claim event - save for later
+- Excess damage entries beyond insured items - save for later
+
+**Next Step**: Invoke `/red` to activate the first test.
+```
+
+Test List Phase Complete. Proceeding to Red phase with the first test.
