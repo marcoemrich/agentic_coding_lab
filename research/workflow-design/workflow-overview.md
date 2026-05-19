@@ -23,7 +23,7 @@ Schwester-Doku zu `workflow-construction.md` (Methodik) und
 |---|---|---|
 | `v4-exact-subagents` | red/green/refactor als Task-Subagents, fresh context | maximale Isolation, höchste Tokens |
 | `v5-exact-single-context` | alles in einem Context | niedrigste Tokens, Disziplin-Kollaps bei langen Aufgaben |
-| `v4.1-minimized`, `v4.2-conservative`, `v4.3-targeted`, `v5.1-minimized` | Minimierungs-/Targeting-Experimente innerhalb der Generation | — |
+| `v5.1-minimized` | Minimierungs-Experiment innerhalb v5 | — |
 
 ### v6: Hybrid + Reduktions-Achse — RQ-7 bis RQ-13
 
