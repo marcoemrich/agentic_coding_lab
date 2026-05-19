@@ -1,0 +1,10 @@
+Test fails exactly as predicted — the implementation returns `{ payout: 400, remainingCap: 1600 }` (full reimbursement) instead of `{ payout: 150, remainingCap: 1850 }` (50% reimbursement for high enchantment).
+
+Red Phase Complete:
+**Test Activated**: "reimburses damage to high-enchantment items (>= 8) at 50% minus deductible"
+**Compilation Prediction**: No compilation error - Correct
+**Runtime Prediction**: Expected { payout: 150, remainingCap: 1850 }, received { payout: 400, remainingCap: 1600 } - Correct
+**Result**: Test fails as expected with assertion error
+
+Proceeding to Green phase.
+The CLI is working. It reads JSON from stdin, passes it to `processScenario`, and writes the JSON result to stdout. The smoke test confirms a sword quote returns `{"results":[{"premium":115}]}` as expected.

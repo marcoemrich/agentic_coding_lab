@@ -1,0 +1,28 @@
+The MHPCO Claim Office kata is complete. Here's a summary:
+
+**25 tests implemented via TDD (Red-Green-Refactor):**
+
+**Quote tests (17):**
+- Empty item list → 5 G processing fee only
+- Single items: sword (115), amulet (71), staff (93), potion (49)
+- Components: 25 G each, building block of 3 alike = 60 G
+- Multiple items summing
+- Cursed surcharge (+50% on item base), high enchantment (+30% for ≥5), both combined
+- First insurance surcharge (+10% on policy base), loyalty discount (-20% for ≥2 years), follow-up discount (-15%)
+- Rounding up in MHPCO's favor
+- Integration: newcomer cursed sword = 165 G, long-standing 2nd contract = 160 G
+
+**Claim tests (8):**
+- Standard deductible (100 G per item)
+- High enchantment ≥8: 50% reimbursement then deductible
+- Dragon material: full reimbursement then deductible
+- Both dragon + high ench: 50% rule wins
+- Multiple damaged items with per-item deductible
+- Payout cap at 2× insurance sum
+- Cap exhaustion across successive claims
+- Rounding down in MHPCO's favor
+
+**Files produced:**
+- `src/claim-office.ts` — Core logic (175 lines)
+- `src/claim-office.spec.ts` — 25 tests (519 lines)
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing to stdout

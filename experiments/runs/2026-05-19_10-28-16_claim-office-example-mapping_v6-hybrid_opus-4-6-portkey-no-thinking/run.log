@@ -1,0 +1,16 @@
+Test passes immediately — 21 passing, 17 todo.
+
+🔴 Red Phase Complete:
+**Test Activated**: "rounds premium up in MHPCO favor"
+**Compilation Prediction**: N/A — confirmation test
+**Runtime Prediction**: Test passes immediately ✅ Correct
+**Result**: Confirmation test passes, no code changes needed
+
+Proceeding to the next test.
+`src/cli.ts` is created and working. It:
+
+- Reads JSON from stdin
+- Passes it to `processScenario` from `./claim-office.js`
+- Writes the JSON result to stdout
+
+The smoke test confirms correct output: `{"results":[{"premium":115}]}` for a single sword quote.

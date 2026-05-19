@@ -1,0 +1,11 @@
+All tasks complete. 36 tests implemented and passing across the full MHPCO Claim Office kata:
+
+- **Quote tests (1-24)**: Base premiums, component blocks, item-specific modifiers (cursed, enchantment), policy-wide modifiers (first insurance, loyalty, follow-up), rounding, integration examples
+- **Claim tests (25-32)**: Standard/dragon/enchanted payouts, multi-item claims, component claims, cap enforcement, cap tracking across multiple claims
+- **Error handling (33-36)**: Unknown item types, uninsured item claims, excess damages, negative damage amounts
+The CLI is working correctly:
+
+- **Happy path**: reads JSON from stdin, passes it to `processScenario`, writes the result as JSON to stdout (exit code 0)
+- **Error path**: writes the error message to stderr and exits with code 1
+
+Run it with: `echo '<json>' | npx tsx src/cli.ts`

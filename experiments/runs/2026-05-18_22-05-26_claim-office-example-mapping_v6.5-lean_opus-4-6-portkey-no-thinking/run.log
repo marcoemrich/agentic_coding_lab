@@ -1,0 +1,60 @@
+All 22 todos are recognized. 
+
+### Step 5: Summary
+
+```
+Test List Created:
+**Feature**: MHPCO Claim Office (quote and claim processing)
+**Test File**: src/claim-office.spec.ts
+**Base Functionality Tests**: 22
+
+**Test Cases** (ordered simple → complex):
+
+Quote - base premiums:
+1. should return 5 G for an empty item list (processing fee only)
+2. should return 115 G for a single sword (100 base + 10 first insurance + 5 fee)
+3. should return 71 G for a single amulet (60 base + 6 first insurance + 5 fee)
+4. should return 33 G for a single rune component (25 base + 2.5 first insurance + 5 fee, rounded up to 33)
+
+Quote - item-level modifiers:
+5. should add 50% cursed surcharge to cursed item base premium
+6. should add 30% high-enchantment surcharge for enchantment level >= 5
+7. should apply both cursed and high-enchantment surcharges to same item
+
+Quote - component blocks:
+8. should charge 60 G base premium for a block of 3 alike components
+9. should charge 100 G base premium for 4 alike components (no block discount)
+10. should charge 75 G for 2 runes + 1 moonstone (no block, different types)
+
+Quote - policy-level modifiers:
+11. should apply 20% loyalty discount for customer with >= 2 years
+12. should apply 15% follow-up discount on second quote step
+
+Quote - integration:
+13. should compute 165 G for newcomer with cursed sword
+14. should compute 160 G for long-standing customer second contract with cursed enchanted sword
+
+Claim - basic:
+15. should apply 100 G deductible per damaged item
+16. should reimburse at 50% for items with enchantment >= 8
+17. should fully reimburse dragon-material items then apply deductible
+18. should apply 50% rule when both enchantment >= 8 and dragon material
+
+Claim - cap:
+19. should cap total payout at twice the insurance sum
+20. should track remaining cap across multiple claims on same policy
+
+Errors:
+21. should throw for unknown item type in quote
+22. should throw for damage to item not covered by policy
+
+**Advanced Features** (NOT included):
+- CLI stdin/stdout integration - save for later
+- Multiple items per policy with mixed modifiers - save for later
+- Component block edge cases (7 runes = 175 G) - save for later
+- Negative damage amounts - save for later
+
+**Next Step**: Invoke `/red` to activate the first test.
+```
+
+Test List Phase Complete. Proceeding to Red phase with the first test.

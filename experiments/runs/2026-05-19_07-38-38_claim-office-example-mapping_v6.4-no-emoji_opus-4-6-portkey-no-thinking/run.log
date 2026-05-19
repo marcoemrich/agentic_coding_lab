@@ -1,0 +1,18 @@
+Passes immediately as predicted. 25 passing.
+
+```
+Red Phase Complete:
+**Test Activated**: "applies deductible to component damage (rune 200 G damage = 100 G payout)"
+**Compilation Prediction**: No compilation error expected - Correct
+**Runtime Prediction**: Test passes immediately (deductible logic already generic) - Correct
+**Result**: Test passes (25 passing). No Green phase needed.
+```
+
+Moving to the next test: multiple damage deductibles.
+The CLI is working:
+
+- **`src/cli.ts`** reads JSON from stdin, passes it to `processScenario`, and writes the result as JSON to stdout.
+- On success, it outputs the result JSON and exits with code 0.
+- On error (unknown item type, invalid JSON, etc.), it writes the error message to stderr and exits with code 1.
+
+Run it with: `echo '<json>' | npx tsx src/cli.ts`

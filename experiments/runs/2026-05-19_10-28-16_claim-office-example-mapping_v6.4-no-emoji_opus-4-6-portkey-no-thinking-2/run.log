@@ -1,0 +1,8 @@
+All work complete. Summary:
+
+- **34 tests** implemented and passing (0 todo remaining)
+- **Quote operation**: base premiums, component blocks, item-specific modifiers (cursed, enchantment), policy-wide modifiers (first-insurance, loyalty, follow-up), rounding up, integration examples
+- **Claim operation**: standard reimbursement with deductible, special clauses (enchantment >= 8 at 50%, dragon material full), cap tracking (2x insurance sum), rounding down
+- **Validation**: unknown item types, items not in policy, excess damage entries, negative damage amounts
+- **CLI**: `src/cli.ts` reads JSON from stdin, writes results to stdout, errors to stderr with exit code 1
+- **Done marker**: `experiment-done.txt` written

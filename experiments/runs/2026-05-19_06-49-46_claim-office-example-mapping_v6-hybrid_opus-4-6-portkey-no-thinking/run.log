@@ -1,0 +1,23 @@
+### Step 4: Verify No Over-Implementation
+
+- Did I implement features for future tests? No — just a hardcoded return.
+- Did I add logic not demanded by current test? No.
+- Did I optimize prematurely? No.
+- Did I refactor? No.
+
+### Step 5: Report
+
+🟢 Green Phase Complete:
+**Implementation**: Hardcoded return of `{ results: [{ premium: 5 }] }`
+**Result**: All tests now pass (1 passing)
+**Approach**: Minimal hardcoded value — the simplest thing that makes the test pass
+
+Proceeding to Refactor phase.
+The CLI is working. It reads JSON from stdin, passes it to `processScenario`, and writes the JSON result to stdout:
+
+```
+$ echo '{"customer":{"yearsWithMHPCO":0},"steps":[{"op":"quote","items":[]}]}' | npx tsx src/cli.ts
+{"results":[{"premium":5}]}
+```
+
+The file `src/cli.ts` collects all stdin chunks, parses the input as JSON, calls `processScenario`, and writes the result as a JSON line to stdout.

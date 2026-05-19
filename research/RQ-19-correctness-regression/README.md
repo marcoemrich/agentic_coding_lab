@@ -1,6 +1,6 @@
 ---
 id: RQ-19
-question: "An welcher Stelle in der Optimierungskette v6 → v6.5 → v6.5.1 → v6.5.2 → v6.5.3 → v6.5.4 (→ v6.6) ist die verification_pct-Regression auf claim-office-example-mapping entstanden? v6-hybrid liefert 1.0 ± 0, v6.5.4 nur 0.40 ± 0.43 — die Stufe dazwischen ist nicht beobachtet."
+question: "An welcher Stelle in der Optimierungskette v6 → v6.5 → v6.5.1 → v6.5.2 → v6.5.3 → v6.5.4 (→ v6.6) ist die verification_pct-Regression auf claim-office-example-mapping entstanden? Ist der Befund modell-unabhängig?"
 factors:
   workflow_x_prompt:
     - {workflow: v6-hybrid,                       prompt: example-mapping}
@@ -13,8 +13,10 @@ factors:
     - {workflow: v6.5.2-bullets-cut,              prompt: example-mapping}
     - {workflow: v6.5.3-targeted-cuts,            prompt: example-mapping}
     - {workflow: v6.5.4-refactor-cut-only,        prompt: example-mapping}
+  model:
+    - opus-4-7-no-thinking
+    - opus-4-6-portkey-no-thinking
 controls:
-  model: opus-4-7-no-thinking
   kata_base: claim-office
 outcomes:
   - verification_pct

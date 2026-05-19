@@ -1,36 +1,48 @@
 # RQ-19 Findings
 
-Lokalisierung der `verification_pct`-Regression auf `claim-office-example-mapping × opus-4-7-no-thinking` entlang der v6-Optimierungskette. n=3–10 pro Workflow (Triage-Probe).
+Lokalisierung der `verification_pct`-Regression auf `claim-office-example-mapping` entlang der v6-Optimierungskette. Zwei Modelle: opus-4-7-no-thinking (Direct API) und opus-4-6-portkey-no-thinking (Portkey). n=3–12 pro Zelle (Triage-Probe + Nachschärfung auf Emoji-Effekt).
 
-## Übersicht: verification_pct pro Workflow
+## Übersicht: verification_pct pro Workflow × Modell
 
-| Workflow | n_ok | mean | Einzelwerte | Quelle |
-|---|---:|---:|---|---|
-| `v6-hybrid` | 5 | **1.00** | 1 1 1 1 1 | RQ-7-Pool |
-| `v6.1-no-app` | 3 | **1.00** | 1 1 1 | RQ-19 |
-| `v6.2-no-rules` | 3 | **1.00** | 1 1 1 | RQ-19 |
-| `v6.3-no-pep` | 3 | **1.00** | 1 1 1 | RQ-19 |
-| `v6.4-no-emoji` | 3 | 0.93 | 0.80 1 1 | RQ-19 |
-| **`v6.5-lean`** | 3 | **0.38** | 0 0.13 1 | RQ-19 |
-| `v6.5.1-orchestration-audited` | 3 | 0.36 | 0 0.07 1 | RQ-19 |
-| `v6.5.2-bullets-cut` | 3 | 0.51 | 0.13 0.67 0.73 | RQ-19 |
-| `v6.5.3-targeted-cuts` | 1 | 0.73 | 0.73 (zu dünn) | RQ-19 |
-| `v6.5.4-refactor-cut-only` | 10 | 0.40 | 0 0 0 0.13 0.13 0.20 0.67 0.87 1 1 | RQ-18.1 |
+### opus-4-7-no-thinking
 
-## F-19.1 — Bruchstelle ist v6-hybrid → v6.5-lean
+| Workflow | n | mean | Einzelwerte |
+|---|---:|---:|---|
+| `v6-hybrid` | 5 | **1.00** | 1 1 1 1 1 |
+| `v6.1-no-app` | 3 | **1.00** | 1 1 1 |
+| `v6.2-no-rules` | 3 | **1.00** | 1 1 1 |
+| `v6.3-no-pep` | 3 | **1.00** | 1 1 1 |
+| `v6.4-no-emoji` | 3 | 0.93 | 0.80 1 1 |
+| **`v6.5-lean`** | 3 | **0.38** | 0 0.13 1 |
+| `v6.5.1-orchestration-audited` | 3 | 0.36 | 0 0.07 1 |
+| `v6.5.2-bullets-cut` | 3 | 0.51 | 0.13 0.67 0.73 |
+| `v6.5.3-targeted-cuts` | 1 | 0.73 | 0.73 (zu dünn) |
+| `v6.5.4-refactor-cut-only` | 10 | 0.40 | 0 0 0 0.13 0.13 0.20 0.67 0.87 1 1 |
 
-Alle vier Einzel-Cut-Varianten (v6.1 bis v6.4) halten Korrektheit auf claim-office stabil (mean ≥ 0.93). Der Sprung von 1.00 auf 0.38 tritt erst bei v6.5-lean auf — und keine nachfolgende Iteration (v6.5.1 Audit, v6.5.2 Bullets, v6.5.3 targeted, v6.5.4 cut-only) hat ihn repariert. Die gesamte v6.5er-Quality-Optimierungskette (RQ-13 bis RQ-17) lief auf einem schon defekten Workflow.
+### opus-4-6-portkey-no-thinking
+
+| Workflow | n | mean | Einzelwerte |
+|---|---:|---:|---|
+| `v6-hybrid` | 11 | 0.65 | 0 0 0 0.33 0.87 1 1 1 1 1 1 |
+| `v6.2-no-rules` | 3 | 0.11 | 0 0 0.33 |
+| `v6.3-no-pep` | 4 | 0.68 | 0 0.73 1 1 |
+| `v6.4-no-emoji` | 12 | 0.64 | 0 0.20 0.27 0.33 0.33 0.73 0.87 1 1 1 1 1 |
+| `v6.5-lean` | 4 | 0.47 | 0 0 0.87 1 |
+
+## F-19.1 — Bruchstelle auf opus-4-7 ist v6-hybrid → v6.5-lean
+
+Alle vier Einzel-Cut-Varianten (v6.1 bis v6.4) halten Korrektheit auf claim-office bei opus-4-7 stabil (mean ≥ 0.93). Der Sprung von 1.00 auf 0.38 tritt erst bei v6.5-lean auf — und keine nachfolgende Iteration (v6.5.1 Audit, v6.5.2 Bullets, v6.5.3 targeted, v6.5.4 cut-only) hat ihn repariert. Die gesamte v6.5er-Quality-Optimierungskette (RQ-13 bis RQ-17) lief auf einem schon defekten Workflow.
 
 ## F-19.2 — Die Einzel-Cuts sind nicht der Täter
 
 v6.5-lean bündelt vier Reduktionen plus strukturelle Rewrites:
 
-| Komponente | Isoliert getestet? | Effekt auf verification_pct |
+| Komponente | Isoliert getestet? | Effekt auf verification_pct (opus-4-7) |
 |---|---|---|
 | APP-Heuristik raus | v6.1-no-app | 1.00 (kein Effekt) |
 | Four Rules raus | v6.2-no-rules | 1.00 (kein Effekt) |
 | Pep-Talks raus | v6.3-no-pep | 1.00 (kein Effekt) |
-| Emojis raus | v6.4-no-emoji | 0.93 (marginal) |
+| Emojis raus | v6.4-no-emoji | 0.93 (marginal, n=3) |
 | Project-Standards raus | nicht isoliert | unbekannt |
 | **skill-creator-Why-Rewrites** | nicht isoliert | **Hauptverdächtiger** |
 
@@ -59,6 +71,16 @@ Konsequenz: alle v6.5er-Quality-Wins (cognitive_max-Reduktion, Smell-Reduktion, 
 
 Jede Workflow-Iteration braucht mindestens eine Korrektheits-Stichprobe auf einer Kata mit externer Verification-Suite, auch wenn die RQ primär Code-Qualität untersucht. Vorschlag: `claim-office-example-mapping × n=3` als Pflicht-Smoke vor jedem n=10-Quality-Batch in `workflow-construction.md` verankern.
 
+## F-19.6 — Cross-Model: opus-4-6 ist generell instabiler auf claim-office
+
+Auf opus-4-6-portkey-no-thinking ist **kein Workflow stabil** — selbst v6-hybrid (opus-4-7: 1.00) erreicht nur 0.65 mit σ=0.46. Die Bimodalität (entweder nahe 0 oder nahe 1) tritt in allen Workflows auf. Das macht opus-4-6 als Modell für Workflow-Vergleiche auf claim-office ungeeignet: die Modell-Varianz übertönt das Workflow-Signal.
+
+Ausnahme: v4-exact-subagents erreicht auf opus-4-6 0.93 ± 0.08 (n=5, siehe RQ-3b) — deutlich stabiler als alle v6-Varianten. Hypothese: die vollständige Subagent-Isolation von v4 kompensiert die geringere Spec-Parsing-Fähigkeit von opus-4-6, weil jede Phase ihren eigenen frischen Context bekommt.
+
+## F-19.7 — Emoji-Effekt auf opus-4-6 existiert nicht
+
+Nachschärfung auf n=11/12 zeigt: `v6-hybrid` (0.65) und `v6.4-no-emoji` (0.64) sind auf opus-4-6 praktisch identisch. Ein Initialbefund bei n=3/4 (0.03 vs 1.00) stellte sich als Artefakt kontaminierter Early-Runs heraus. Nach Bereinigung der 05-18-Runs und Nachfüllung auf n=11+ kein Signal. Konsistent mit dem opus-4-7-Befund (1.00 vs 0.93, marginal bei n=3).
+
 ## Nächster Schritt
 
-Isolation der verdächtigen Komponente: v6.5-lean minus Why-Rewrites (alle vier Cuts angewandt, aber originale MUST/Procedure-Formulierungen aus v6-hybrid beibehalten) × claim-office-example-mapping × n=3. Falls dort verification_pct ≈ 1.0 → Why-Rewrites bestätigt als Täter. Falls auch dort Bruch → Bundle-Interaction-Effekt oder Project-Standards-Cut.
+Isolation der verdächtigen Komponente auf opus-4-7: v6.5-lean minus Why-Rewrites (alle vier Cuts angewandt, aber originale MUST/Procedure-Formulierungen aus v6-hybrid beibehalten) × claim-office-example-mapping × n=3. Falls dort verification_pct ≈ 1.0 → Why-Rewrites bestätigt als Täter. Falls auch dort Bruch → Bundle-Interaction-Effekt oder Project-Standards-Cut.

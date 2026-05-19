@@ -1,0 +1,16 @@
+All 15 tests pass, 18 remain as todo.
+
+### Step 4: Verify No Over-Implementation
+
+- Did I implement features for future tests? No -- only loyalty discount, no follow-up contract discount.
+- Did I add logic not demanded by current test? No -- just the loyalty check and passing customer through.
+- Did I optimize prematurely? No.
+- Did I refactor existing code? No.
+
+Green Phase Complete:
+**Implementation**: Added `customer` parameter to `calculateQuotePremium`, calculated loyalty discount as 20% of policy base premium when `yearsWithMHPCO >= 2`, and passed `scenario.customer` from `processScenario`.
+**Result**: All tests now pass (15 passing)
+**Approach**: Minimal -- only added the customer parameter threading and the single loyalty discount calculation. No follow-up contract or other future features.
+
+Proceeding to Refactor phase.
+The CLI works. It reads JSON from stdin, processes it through `processScenario`, and writes JSON to stdout. Error handling sets a non-zero exit code and writes the error message to stderr.
