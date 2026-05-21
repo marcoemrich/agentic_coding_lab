@@ -88,9 +88,10 @@ services:
       # listed runs are executed; otherwise the full cross-product is run.
       - BATCH_PLAN=${BATCH_PLAN:-}
       # Per-run hard timeout (seconds). Forwarded to run-batch.sh.
-      # Default 5400s (90 min) — methodological budget, see
-      # top-level README.md → "Timeouts as a research finding".
-      - CLAUDE_TIMEOUT_SECONDS=${CLAUDE_TIMEOUT_SECONDS:-5400}
+      # Default 7200s (2h) — raised 2026-05-21 because v4.1/v4.2/v6 workflows
+      # routinely exceed 90 min on slower models (esp. Opus 4.6 portkey).
+      # Methodological budget, see top-level README.md → "Timeouts as a research finding".
+      - CLAUDE_TIMEOUT_SECONDS=${CLAUDE_TIMEOUT_SECONDS:-7200}
 
     deploy:
       resources:
