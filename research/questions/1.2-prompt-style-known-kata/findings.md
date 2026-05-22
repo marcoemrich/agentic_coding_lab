@@ -15,9 +15,11 @@ direkt, kein CLI-Vertrag nötig).
 
 | Modell | prose | user-story | example-mapping |
 |---|---|---|---|
-| opus-4-6-portkey-no-thinking | **1.00** (σ=0) | **1.00** (σ=0) | **1.00** (σ=0) |
-| sonnet-4-6-portkey-no-thinking | **1.00** (σ=0) | **1.00** (σ=0) | **1.00** (σ=0) |
-| haiku-4-5-portkey-no-thinking | 0.24 (σ=0.43) | 0.00 (σ=0) | 0.63 (σ=0.51) |
+| opus-4-6-portkey-no-thinking | **1.00** 🏆 (σ=0) | **1.00** 🏆 (σ=0) | **1.00** 🏆 (σ=0) |
+| sonnet-4-6-portkey-no-thinking | **1.00** 🏆 (σ=0) | **1.00** 🏆 (σ=0) | **1.00** 🏆 (σ=0) |
+| haiku-4-5-portkey-no-thinking | 0.24 (σ=0.43) | 0.00 (σ=0) | **0.63** 🏆 (σ=0.51) |
+
+Höher = besser; 🏆 = bester Stil pro Zeile (Opus/Sonnet: alle drei Stile bei 1.00 gleichauf → Ties, alle 🏆).
 
 ---
 
@@ -55,7 +57,9 @@ distinkte Modi:
 |---|---:|---:|---:|---:|
 | prose | 5 | 0.24 | 2 (1× vpct=1, 1× vpct=0.2) | 3 |
 | user-story | 5 | 0.00 | 0 | 5 |
-| example-mapping | 5 | 0.63 | 4 (3× vpct=1, 1× vpct=0.13) | 1 |
+| example-mapping | 5 | **0.63** 🏆 | 4 (3× vpct=1, 1× vpct=0.13) | 1 |
+
+Höher = besser (vpct mean); 🏆 = bester Stil. Übrige Spalten sind deskriptive Zählungen, kein Wettbewerb.
 
 **Interpretation**: Der Unterschied ist nicht Regelkorrektheit,
 sondern ob Haiku die Aufgabe überhaupt *beginnt*. Example-mapping

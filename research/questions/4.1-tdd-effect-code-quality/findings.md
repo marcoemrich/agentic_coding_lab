@@ -21,11 +21,11 @@ v1/v2 → prose, v3/v4/v5/v6 → example-mapping.
 | Workflow (+ Prompt) | `code_mass` | `smell_total` | `mccabe_max` | `cognitive_max` | `cc_longest_function` | `verification_pct` | `mutation_score` |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | v1-oneshot (prose) | 155 | 4.80 | 12.8 | 18.8 | 31.7 | 1.00 | 0.953 |
-| v2-iterative (prose) | 158 | 4.10 | 11.6 | 16.2 | 32.1 | 1.00 | **0.954** |
+| v2-iterative (prose) | 158 | 4.10 | 11.6 | 16.2 | 32.1 | 1.00 | **0.954** 🏆 |
 | v3-basic-tdd (EM) | 166 | 6.00 | 13.7 | 21.8 | 32.5 | 1.00 | 0.949 |
-| v4-exact-subagents (EM) | 167 | 2.60 | **4.5** | **4.4** | **8.1** | 1.00 | 0.908 |
-| v5-exact-single-context (EM) | **153** | 4.10 | 8.9 | 14.5 | 17.4 | 1.00 | 0.945 |
-| v6-hybrid (EM) | 159 | **2.20** | **4.5** | 5.2 | 13.1 | 1.00 | **0.953** |
+| v4-exact-subagents (EM) | 167 | 2.60 | **4.5** 🏆 | **4.4** 🏆 | **8.1** 🏆 | 1.00 | 0.908 |
+| v5-exact-single-context (EM) | **153** 🏆 | 4.10 | 8.9 | 14.5 | 17.4 | 1.00 | 0.945 |
+| v6-hybrid (EM) | 159 | **2.20** 🏆 | **4.5** 🏆 | 5.2 | 13.1 | 1.00 | **0.953** |
 
 ### claim-office (n=5–10)
 
@@ -33,12 +33,12 @@ v1/v2 → prose, v3/v4/v5/v6 → example-mapping.
 |---|---:|---:|---:|---:|---:|---:|---:|
 | v1-oneshot (prose) | 835 | 11.6 | 8.4 | 12.2 | 40.4 | 0.28 | 0.861 |
 | v2-iterative (prose) | 851 | 15.8 | 8.4 | 11.4 | 41.4 | 0.28 | 0.872 |
-| v3-basic-tdd (EM) | 992 | 16.8 | 15.4 | 19.8 | 51.6 | **1.00** | 0.777 |
-| v4-exact-subagents (EM) | **626** | 1.8 | 7.9 | 10.5 | 25.0 | 0.67 | 0.927 |
+| v3-basic-tdd (EM) | 992 | 16.8 | 15.4 | 19.8 | 51.6 | **1.00** 🏆 | 0.777 |
+| v4-exact-subagents (EM) | **626** 🏆 | 1.8 | 7.9 | 10.5 | 25.0 | 0.67 | 0.927 |
 | v5-exact-single-context (EM) | 762 | 8.9 | 10.2 | 14.2 | 31.4 | 0.87 | 0.876 |
-| v6-hybrid (EM) | 883 | **0.2** | **6.2** | **6.6** | **21.0** | **1.00** | **0.930** |
+| v6-hybrid (EM) | 883 | **0.2** 🏆 | **6.2** 🏆 | **6.6** 🏆 | **21.0** 🏆 | **1.00** 🏆 | **0.930** 🏆 |
 
-Bester Wert pro Spalte fett. Kleiner = besser (außer `verification_pct`, `mutation_score`).
+Bester Wert pro Spalte fett, 🏆 markiert den Sieger. Kleiner = besser (außer `verification_pct`, `mutation_score`).
 
 ---
 
@@ -100,9 +100,11 @@ Komplexitäts-Werte aller getesteten Workflows — schlechter als v1
 | v1-oneshot | ❌ Nein | 18.8 | 12.8 | 31.7 |
 | v2-iterative | ❌ Nein | 16.2 | 11.6 | 32.1 |
 | **v3-basic-tdd** | ✅ Ja, minimal | **21.8** | **13.7** | **32.5** |
-| v4-exact-subagents | ✅ Ja, strikt | 4.4 | 4.5 | 8.1 |
+| v4-exact-subagents | ✅ Ja, strikt | **4.4** 🏆 | **4.5** 🏆 | **8.1** 🏆 |
 | v5-exact-single-context | ✅ Ja, strikt (Shared-Context) | 14.5 | 8.9 | 17.4 |
-| v6-hybrid | ✅ Ja, hybrid (Skills + isolated refactor) | 5.2 | 4.5 | 13.1 |
+| v6-hybrid | ✅ Ja, hybrid (Skills + isolated refactor) | 5.2 | **4.5** 🏆 | 13.1 |
+
+Fett+🏆 = bester (kleinster) Wert je Spalte; das fett markierte **v3** zeigt den schlechtesten — die Kernaussage dieses Findings.
 
 **claim-office:**
 
@@ -113,7 +115,7 @@ Komplexitäts-Werte aller getesteten Workflows — schlechter als v1
 | **v3-basic-tdd** | ✅ Ja, minimal | **19.8** | **15.4** | **51.6** | **16.8** |
 | v4-exact-subagents | ✅ Ja, strikt | 10.5 | 7.9 | 25.0 | 1.8 |
 | v5-exact-single-context | ✅ Ja, strikt (Shared-Context) | 14.2 | 10.2 | 31.4 | 8.9 |
-| v6-hybrid | ✅ Ja, hybrid | 6.6 | 6.2 | 21.0 | 0.2 |
+| v6-hybrid | ✅ Ja, hybrid | **6.6** 🏆 | **6.2** 🏆 | **21.0** 🏆 | **0.2** 🏆 |
 
 v3 hat auf **beiden** Katas die schlechtesten Komplexitäts-Werte des gesamten
 Vergleichsfelds — also auch schlechter als v1/v2 ohne jegliches TDD.
@@ -195,9 +197,11 @@ ebenfalls überall 100 % (35/35 Runs). Die äußere Korrektheit
 |---|---|---:|
 | v1-oneshot | prose | 0.28 |
 | v2-iterative | prose | 0.28 |
-| v3-basic-tdd | example-mapping | **1.00** |
+| v3-basic-tdd | example-mapping | **1.00** 🏆 |
 | v4-exact-subagents | example-mapping | 0.67 |
 | v5-exact-single-context | example-mapping | 0.87 |
+
+`verification_pct`: höher = besser.
 
 **Wichtige Abgrenzung — Konfundierung**: Die Lücke v1/v2 (prose) → v3
 (example-mapping) ist **nicht** primär ein Workflow-Effekt, sondern weitgehend
@@ -238,7 +242,7 @@ getrennt nach Kata:
 
 | Workflow | `total_tokens` | `duration_seconds` |
 |---|---:|---:|
-| v3-basic-tdd | 0.80 M | 75 s |
+| v3-basic-tdd | **0.80 M** 🏆 | **75 s** 🏆 |
 | v2-iterative | 0.97 M | 83 s |
 | v1-oneshot | 0.99 M | 88 s |
 | v4-exact-subagents | 2.56 M | 1163 s |
@@ -249,12 +253,14 @@ getrennt nach Kata:
 
 | Workflow | `total_tokens` | `duration_seconds` |
 |---|---:|---:|
-| v1-oneshot | 2.11 M | 231 s |
+| v1-oneshot | **2.11 M** 🏆 | **231 s** 🏆 |
 | v2-iterative | 2.12 M | 244 s |
 | v3-basic-tdd | 3.28 M | 312 s |
 | v5-exact-single-context | 14.14 M | 655 s |
-| v4-exact-subagents | 13.66 M | **3693 s** (~62 min) |
+| v4-exact-subagents | 13.66 M | 3693 s (~62 min) |
 | v6-hybrid | 33.25 M | 2116 s (~35 min) |
+
+Kleiner = besser; 🏆 = günstigster.
 
 **Game-of-life-Muster**: v5 ist 8.4× teurer als v3 (Shared-Context
 akkumuliert), v4 zeitlich am teuersten (~19 min) wegen Subagent-Spawns,
@@ -290,10 +296,12 @@ zeigt aber gelegentlich schwache Test-Runs).
 
 | Workflow | `mutation_score` | `verification_pct` | Beziehung |
 |---|---:|---:|---|
-| v3-basic-tdd | **0.78** | **1.00** | schwache Tests, perfekte Aussen-Korrektheit |
-| v4-exact-subagents | **0.93** | 0.67 | starke Tests, mittlere Aussen-Korrektheit |
+| v3-basic-tdd | 0.78 | **1.00** 🏆 | schwache Tests, perfekte Aussen-Korrektheit |
+| v4-exact-subagents | **0.93** 🏆 | 0.67 | starke Tests, mittlere Aussen-Korrektheit |
 | v5-exact-single-context | 0.88 | 0.87 | beides mittel |
-| v6-hybrid | 0.93 | 1.00 | starke Tests *und* perfekte Aussen-Korrektheit |
+| v6-hybrid | **0.93** 🏆 | **1.00** 🏆 | starke Tests *und* perfekte Aussen-Korrektheit |
+
+`mutation_score` und `verification_pct`: höher = besser; 🏆 je Spalte (Ties möglich).
 
 Die beiden Korrektheits-Dimensionen **stehen in Spannung**:
 
@@ -340,15 +348,17 @@ Test-Stärke aufhebt**:
 
 | Metrik (claim-office, EM) | v3 | v4 | v5 | **v6-hybrid** |
 |---|---:|---:|---:|---:|
-| `verification_pct` | **1.00** | 0.67 | 0.87 | **1.00** |
-| `mutation_score` | 0.78 | **0.93** | 0.88 | **0.93** |
-| `smell_total` | 16.8 | 1.8 | 8.9 | **0.2** |
-| `cognitive_max` | 19.8 | 10.5 | 14.2 | **6.6** |
-| `mccabe_max` | 15.4 | 7.9 | 10.2 | **6.2** |
-| `cc_longest_function` | 51.6 | 25.0 | 31.4 | **21.0** |
-| `code_mass` | 992 | **626** | 762 | 883 |
-| `total_tokens` | 3.3 M | 13.7 M | 14.1 M | 33.3 M |
-| `duration_seconds` | 312 s | 3693 s | 655 s | 2116 s |
+| `verification_pct` ↑ | **1.00** 🏆 | 0.67 | 0.87 | **1.00** 🏆 |
+| `mutation_score` ↑ | 0.78 | **0.93** 🏆 | 0.88 | **0.93** 🏆 |
+| `smell_total` ↓ | 16.8 | 1.8 | 8.9 | **0.2** 🏆 |
+| `cognitive_max` ↓ | 19.8 | 10.5 | 14.2 | **6.6** 🏆 |
+| `mccabe_max` ↓ | 15.4 | 7.9 | 10.2 | **6.2** 🏆 |
+| `cc_longest_function` ↓ | 51.6 | 25.0 | 31.4 | **21.0** 🏆 |
+| `code_mass` ↓ | 992 | **626** 🏆 | 762 | 883 |
+| `total_tokens` ↓ | **3.3 M** 🏆 | 13.7 M | 14.1 M | 33.3 M |
+| `duration_seconds` ↓ | **312 s** 🏆 | 3693 s | 655 s | 2116 s |
+
+(↑ höher = besser, ↓ kleiner = besser; 🏆 je Zeile, Ties möglich.)
 
 v6 ist auf vier der fünf Komplexitäts-Metriken der beste Workflow,
 matched v3 auf `verification_pct` (1.00), matched v4 auf `mutation_score`

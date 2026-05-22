@@ -18,17 +18,20 @@ ist die Kontext-Architektur.
 
 | Outcome | game-of-life v4 | game-of-life v5 | claim-office v4 | claim-office v5 |
 |---|---:|---:|---:|---:|
-| `cognitive_max` | **4.40** | 14.50 | **10.50** | 14.20 |
-| `mccabe_max` | **4.50** | 8.90 | **7.90** | 10.20 |
-| `cc_longest_function` | **8.10** | 17.40 | **25.00** | 31.40 |
-| `smell_total` | **2.60** | 4.10 | **1.80** | 8.90 |
-| `code_mass` | 166.60 | **152.60** | **625.90** | 761.60 |
-| `verification_pct` | 1.00 | 1.00 | 0.67 | **0.87** |
-| `total_tokens` (M) | **2.56** | 8.14 | 13.66 | 14.14 |
-| `duration_seconds` | 1163 | **380** | 3693 | **655** |
+| `cognitive_max` | **4.40** 🏆 | 14.50 | **10.50** 🏆 | 14.20 |
+| `mccabe_max` | **4.50** 🏆 | 8.90 | **7.90** 🏆 | 10.20 |
+| `cc_longest_function` | **8.10** 🏆 | 17.40 | **25.00** 🏆 | 31.40 |
+| `smell_total` | **2.60** 🏆 | 4.10 | **1.80** 🏆 | 8.90 |
+| `code_mass` | 166.60 | **152.60** 🏆 | **625.90** 🏆 | 761.60 |
+| `verification_pct` | **1.00** 🏆 | **1.00** 🏆 | 0.67 | **0.87** 🏆 |
+| `total_tokens` (M) | **2.56** 🏆 | 8.14 | 13.66 | 14.14 |
+| `duration_seconds` | 1163 | **380** 🏆 | 3693 | **655** 🏆 |
 
-Bester Wert pro Spalte fett. Auf Code-Qualitaets-Metriken: kleiner = besser.
-Auf `verification_pct`: groesser = besser.
+Bester Wert je Kata (v4 vs v5) fett + 🏆. Auf Code-Qualitaets-Metriken,
+`code_mass`, `total_tokens` und `duration_seconds`: kleiner = besser. Auf
+`verification_pct`: groesser = besser. `verification_pct` auf game-of-life
+ist ein Gleichstand (1.00 = 1.00 → beide 🏆). `total_tokens` auf
+claim-office ist kein Effekt (Faktor 1.04×, siehe F-context.3) → kein 🏆.
 
 ---
 
@@ -74,7 +77,11 @@ Workflows. **Auf claim-office kippt das Muster**: v5 erreicht 0.87
 | Workflow | 15/15 perfekt | 11/15 partial | ≤ 5/15 Failure |
 |---|---:|---:|---:|
 | v4 (claim-office) | 4/10 | 2/10 | **4/10** |
-| v5 (claim-office) | 8/10 | 1/10 | 1/10 |
+| v5 (claim-office) | **8/10** 🏆 | 1/10 | 1/10 |
+
+🏆 = bestes Ergebnis (meiste 15/15-perfekt-Runs, höher = besser). Das Fett
+auf v4s **4/10** markiert den *schlechtesten* Wert (Spec-Coverage-Failure-Rate),
+nicht einen Sieger.
 
 v4 hat eine 40 %-Rate von **Spec-Coverage-Failures**: Runs, in denen die
 externe Akzeptanz-Suite ≤ 5/15 Szenarien besteht. Die `tests_passing`-
@@ -118,10 +125,14 @@ claim-office-Spezifitaet aufzeigen.
 
 | Kosten-Outcome | GoL v4 | GoL v5 | claim-office v4 | claim-office v5 |
 |---|---:|---:|---:|---:|
-| `total_tokens` (M) | 2.56 | 8.14 | 13.66 | 14.14 |
-| `duration_seconds` | 1163 | 380 | 3693 | 655 |
+| `total_tokens` (M) | **2.56** 🏆 | 8.14 | 13.66 | 14.14 |
+| `duration_seconds` | 1163 | **380** 🏆 | 3693 | **655** 🏆 |
 | **Faktor v5/v4 Tokens** | **3.2×** | | **1.04×** | |
 | **Faktor v4/v5 Wallclock** | **3.1×** | | **5.6×** | |
+
+🏆 = bester Wert je Kata (kleiner = besser). `total_tokens` auf claim-office
+ist kein Effekt (Faktor 1.04×) → kein 🏆. Die Faktor-Zeilen sind abgeleitete
+Magnituden (kein Workflow-Sieger-Vergleich), das Fett markiert dort den Faktorwert.
 
 - **Token-Trade-off variiert mit Kata-Komplexitaet**: Auf game-of-life
   spart v4 Faktor 3.2× Tokens. Auf claim-office sind beide Workflows
@@ -190,8 +201,10 @@ geschriebenen internen Tests, Stryker) ist auf den beiden Katas
 
 | Kata | v4 mean (σ, min, max) | v5 mean (σ, min, max) | Sieger |
 |---|---|---|---|
-| game-of-life (n=10) | 0.908 (σ=0.080, 0.735, 0.957) | **0.945** (σ=0.036, 0.843, 0.965) | **v5** (+0.037) |
-| claim-office (n=10) | **0.927** (σ=0.042, 0.832, 0.980) | 0.876 (σ=0.035, 0.839, 0.957) | **v4** (+0.051) |
+| game-of-life (n=10) | 0.908 (σ=0.080, 0.735, 0.957) | **0.945** 🏆 (σ=0.036, 0.843, 0.965) | **v5** (+0.037) |
+| claim-office (n=10) | **0.927** 🏆 (σ=0.042, 0.832, 0.980) | 0.876 (σ=0.035, 0.839, 0.957) | **v4** (+0.051) |
+
+`mutation_score`: höher = besser; 🏆 = bester Wert je Kata.
 
 **Mechanik der Umkehrung**:
 - Auf **game-of-life** schreibt v5 (single-context) strengere Tests, weil

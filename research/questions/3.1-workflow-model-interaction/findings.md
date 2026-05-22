@@ -8,9 +8,11 @@ Herkunft: herausgelöst aus der Lokalisierungs-RQ `research/workflow-dev/5.1-cor
 
 | Workflow | opus-4-7 (n) | opus-4-6 (n) |
 |---|---:|---:|
-| v4-exact-subagents | 0.67 (10) | **0.93** (5) |
+| v4-exact-subagents | 0.67 (10) | **0.93** (5) 🏆 |
 | v5-exact-single-context | 0.87 (10) | 0.87 (5) |
-| v6-hybrid | **1.00** (5) | 0.68 (15) |
+| v6-hybrid | **1.00** (5) 🏆 | 0.68 (15) |
+
+`verification_pct`: höher = besser; 🏆 je Modell-Spalte — die Kernaussage ist gerade, dass der Sieger modell-abhängig wechselt.
 
 v4 und v6 sind **modell-abhängig komplementär**: v6-hybrid ist opus-4-7-Optimum (1.00), aber auf
 opus-4-6 instabil (0.68). v4-exact-subagents ist auf opus-4-6 stabil (0.93), aber auf opus-4-7

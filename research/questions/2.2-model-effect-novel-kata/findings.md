@@ -6,7 +6,7 @@ Modell-Vergleich opus-4-7-no-thinking vs opus-4-6-portkey-no-thinking auf `claim
 
 | Modell | n | verification_pct | σ |
 |---|---:|---:|---:|
-| opus-4-6-portkey-no-thinking | 5 | **0.93** | 0.08 |
+| opus-4-6-portkey-no-thinking | 5 | **0.93** 🏆 | 0.08 |
 | opus-4-7-no-thinking | 10 | 0.67 | 0.36 |
 
 ## F-model-novel.1 — opus-4-6 schlägt opus-4-7 auf v4 × claim-office
@@ -25,9 +25,9 @@ Der Befund "opus-4-6 besser als opus-4-7" gilt nur für v4-exact-subagents. Auf 
 
 | Workflow | opus-4-7 vpct (n) | opus-4-6 vpct (n) |
 |---|---:|---:|
-| v4-exact-subagents | 0.67 (10) | **0.93** (5) |
+| v4-exact-subagents | 0.67 (10) | **0.93** 🏆 (5) |
 | v5-exact-single-context | 0.87 (10) | 0.87 (5) |
-| v6-hybrid | **1.00** (5) | 0.68 (15) |
+| v6-hybrid | **1.00** 🏆 (5) | 0.68 (15) |
 
 Weder "opus-4-7 ist besser" noch "opus-4-6 ist besser" ist eine haltbare Aussage — **der Workflow bestimmt, welches Modell vorne liegt**. v5 ist modell-unabhängig konstant (0.87). Model-Vergleiche ohne Workflow-Kontrolle sind auf novel Katas nicht generalisierbar.
 
@@ -49,8 +49,10 @@ Aus RQ-tdd-correctness auf claim-office × opus-4-7-portkey-no-thinking (35 Runs
 | **v4.1-testlist-scope-fix** | 5 | **0.96 (σ 0.09)** | 22.2 | "Cover every spec example" | nein |
 | v4.2-shared-context† | 5 | 0.71 (σ 0.41) | 14.0 | "Cover every spec example" | ja |
 | v4.2.1-fake-it-green† | 2 | 0.70 | 12.0 | "Cover every spec example" | ja + Green-Fake-it |
-| v5-exact-single-context | 9 | 0.97 (σ 0.09) | 0.9 | (single context, implizit vollständig) | n.a. |
-| v6-hybrid | 5 | 1.00 (σ 0.00) | 10.0 | (single context, implizit vollständig) | n.a. |
+| v5-exact-single-context | 9 | 0.97 (σ 0.09) | **0.9** 🏆 | (single context, implizit vollständig) | n.a. |
+| v6-hybrid | 5 | **1.00 (σ 0.00)** 🏆 | 10.0 | (single context, implizit vollständig) | n.a. |
+
+`verification_pct`: höher = besser; 🏆 = bester Wert. `passed_immediately`: niedriger = besser (Disziplin-Gewinn, siehe Beobachtung 3); 🏆 = niedrigster Wert. Das Fett auf v4.1 markiert den Finding-Hero (schließt die v4-Lücke), nicht das Spalten-Maximum.
 
 † Workflows archiviert in `experiments/workflows/_archive/` (2026-05-22). Aus RQ-tdd-correctness-Frontmatter entfernt, die abgeschlossenen Runs bleiben als Belege für diese Findings erhalten.
 

@@ -19,14 +19,15 @@ Außensicht via Modul-Import-Adapter `game-of-life-verification/`
 
 | Modell | `code_mass` | `smell_total` | `mccabe_max` | `cognitive_max` | `cc_longest_function` | `verification_pct` | n |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| opus-4-7 | 159.00 | 2.33 | **3.33** | 3.00 | **7.00** | 1.00 | 3 |
-| opus-4-7-no-thinking | 167.67 | **2.50** | 4.00 | **2.83** | 9.33 | 1.00 | 6 |
-| opus-4-6-portkey | 173.00 | 4.33 | 6.67 | 12.00 | 19.33 | 1.00 | 3 |
-| opus-4-6-portkey-no-thinking | 175.67 | 4.33 | 7.67 | 13.00 | 18.67 | 1.00 | 3 |
-| sonnet-4-6 | 178.00 | 5.67 | 6.33 | 11.00 | 21.67 | 1.00 | 3 |
-| sonnet-4-6-no-thinking | **166.67** | 3.33 | 6.00 | 5.00 | 15.00 | 0.73 | 3 |
+| opus-4-7 | **159.00** 🏆 | **2.33** 🏆 | **3.33** 🏆 | 3.00 | **7.00** 🏆 | **1.00** 🏆 | 3 |
+| opus-4-7-no-thinking | 167.67 | 2.50 | 4.00 | **2.83** 🏆 | 9.33 | **1.00** 🏆 | 6 |
+| opus-4-6-portkey | 173.00 | 4.33 | 6.67 | 12.00 | 19.33 | **1.00** 🏆 | 3 |
+| opus-4-6-portkey-no-thinking | 175.67 | 4.33 | 7.67 | 13.00 | 18.67 | **1.00** 🏆 | 3 |
+| sonnet-4-6 | 178.00 | 5.67 | 6.33 | 11.00 | 21.67 | **1.00** 🏆 | 3 |
+| sonnet-4-6-no-thinking | 166.67 | 3.33 | 6.00 | 5.00 | 15.00 | 0.73 | 3 |
 
-Bester Wert pro Spalte fett. Kleiner = besser (außer `verification_pct`: größer = besser).
+Bester Wert pro Spalte fett + 🏆. Kleiner = besser (außer `verification_pct`: größer = besser).
+`verification_pct`: fünf Modelle gleichauf bei 1.00 → Ties, alle 🏆.
 
 ---
 
@@ -57,11 +58,13 @@ betrifft, und Opus 4.6 ist das schwächste der drei Modelle auf v4:
 
 | Metrik (no-thinking) | opus-4-7 | sonnet-4-6 | opus-4-6-portkey |
 |---|---:|---:|---:|
-| `cognitive_max` | **2.83** | 5.00 | 13.00 |
-| `mccabe_max` | **4.00** | 6.00 | 7.67 |
-| `cc_longest_function` | **9.33** | 15.00 | 18.67 |
-| `smell_total` | **2.50** | 3.33 | 4.33 |
-| `code_mass` | 167.67 | **166.67** | 175.67 |
+| `cognitive_max` | **2.83** 🏆 | 5.00 | 13.00 |
+| `mccabe_max` | **4.00** 🏆 | 6.00 | 7.67 |
+| `cc_longest_function` | **9.33** 🏆 | 15.00 | 18.67 |
+| `smell_total` | **2.50** 🏆 | 3.33 | 4.33 |
+| `code_mass` | 167.67 | **166.67** 🏆 | 175.67 |
+
+Kleiner = besser; 🏆 = bestes Modell pro Metrik (Zeile).
 
 Ranking opus-4-7 < sonnet-4-6 < opus-4-6 ist über vier der fünf
 Code-Qualitäts-Metriken vorzeichen-konsistent (bei `code_mass` liegen
@@ -91,6 +94,9 @@ mit Thinking):
 | opus-4-6-portkey | −2.67 | 0.00 | −1.00 | −1.00 | +0.66 |
 | sonnet-4-6 | +11.33 | +2.34 | +0.33 | **+6.00** | +6.67 |
 
+∆-Tabelle (Thinking-Effekt, ∆ negativ = besser mit Thinking) — kein Modell-Wettbewerb, daher kein 🏆.
+Das Fett auf **+6.00** markiert die stärkste Verschlechterung (Negativ-Befund Sonnet), nicht einen Sieger.
+
 - **Opus 4.7**: Thinking-Effekt klein, im wesentlichen neutral mit leichter
   Tendenz zu kompakterem Code und kürzeren Funktionen. Die Cognitive-Komplexität
   steigt minimal (+0.17).
@@ -118,12 +124,14 @@ wünschenswert → ⚠️ bedingt.
 
 | Modell | `total_tokens` (Mittel) | `duration_seconds` (Mittel) |
 |---|---:|---:|
-| sonnet-4-6-no-thinking | 2.21 M | 1116.7 |
+| sonnet-4-6-no-thinking | **2.21 M** 🏆 | 1116.7 |
 | sonnet-4-6 | 2.41 M | 846.3 |
-| opus-4-7 | 2.49 M | 827.7 |
+| opus-4-7 | 2.49 M | **827.7** 🏆 |
 | opus-4-7-no-thinking | 2.58 M | 865.2 |
 | opus-4-6-portkey | 2.93 M | 956.3 |
 | opus-4-6-portkey-no-thinking | 3.87 M | 1160.7 |
+
+Kleiner = besser; 🏆 = bestes Modell pro Spalte.
 
 Spread zwischen günstigstem (sonnet-no-thinking ~2.2 M) und teuerstem
 (opus-4-6-no-thinking ~3.9 M) ist Faktor ~1.75× — deutlich kleiner als das

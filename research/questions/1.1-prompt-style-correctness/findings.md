@@ -20,15 +20,16 @@ Batch-Retry eingebaut um das Problem in zukünftigen Runs zu vermeiden.
 
 | Modell | Modus | prose | example-mapping | user-story |
 |---|---|---|---|---|
-| opus-4-7 | −thinking | — | **1.00** (n=3) | — |
-| opus-4-6 | −thinking | 0.23 | **0.87** | 0.23 |
-| opus-4-6 | +thinking | 0.15 | **0.77** | 0.25 |
-| sonnet-4-6 | −thinking | 0.23 | **0.71** | 0.17 |
-| sonnet-4-6 | +thinking | 0.21 | 0.35 | 0.19 |
+| opus-4-7 | −thinking | — | **1.00** 🏆 (n=3) | — |
+| opus-4-6 | −thinking | 0.23 | **0.87** 🏆 | 0.23 |
+| opus-4-6 | +thinking | 0.15 | **0.77** 🏆 | 0.25 |
+| sonnet-4-6 | −thinking | 0.23 | **0.71** 🏆 | 0.17 |
+| sonnet-4-6 | +thinking | 0.21 | **0.35** 🏆 | 0.19 |
 | haiku-4-5 | −thinking | 0.00 | 0.00 | 0.00 |
 | haiku-4-5 | +thinking | 0.00 | 0.00 | 0.01 |
 
 Werte: mean(`verification_pct`), je n=5 (Opus 4.7: n=3, vorläufig).
+Höher = besser; 🏆 = bester Stil pro Zeile (Haiku-Zeilen: kein Effekt, alle Werte ~0 → kein Sieger).
 
 ---
 
@@ -69,11 +70,14 @@ Effekt in beiden Thinking-Modi stark; bei Sonnet nur ohne Thinking.
 
 | Modell | Modus | prose | example-mapping | user-story | Δ (EM − prose) |
 |---|---|---|---|---|---|
-| opus-4-7 | −thinking | — | **1.00** (n=3) | — | — |
-| opus-4-6 | −thinking | 0.23 | **0.87** | 0.23 | **+64 pp** |
-| opus-4-6 | +thinking | 0.15 | **0.77** | 0.25 | **+62 pp** |
-| sonnet-4-6 | −thinking | 0.23 | **0.71** | 0.17 | **+48 pp** |
-| sonnet-4-6 | +thinking | 0.21 | 0.35 | 0.19 | +14 pp |
+| opus-4-7 | −thinking | — | **1.00** 🏆 (n=3) | — | — |
+| opus-4-6 | −thinking | 0.23 | **0.87** 🏆 | 0.23 | **+64 pp** |
+| opus-4-6 | +thinking | 0.15 | **0.77** 🏆 | 0.25 | **+62 pp** |
+| sonnet-4-6 | −thinking | 0.23 | **0.71** 🏆 | 0.17 | **+48 pp** |
+| sonnet-4-6 | +thinking | 0.21 | **0.35** 🏆 | 0.19 | +14 pp |
+
+Höher = besser; 🏆 = bester Stil pro Zeile (Spalten prose/EM/user-story).
+Δ ist eine Effektgröße, kein Wettbewerb → kein 🏆.
 
 **Datenbasis**: 60 Runs (Opus 4.6 + Sonnet 4.6, je n=5); Opus 4.7
 vorläufig (n=3). Haiku ausgenommen — dort ist der Prompt-Stil
@@ -97,8 +101,10 @@ aber der Effekt ist modellabhängig:
 
 | Modell | +thinking | −thinking | Δ |
 |---|---|---|---|
-| sonnet-4-6 | 0.35 (σ=0.41) | **0.71** (σ=0.18) | **−36 pp** |
-| opus-4-6 | 0.77 (σ=0.35) | **0.87** (σ=0.30) | −10 pp |
+| sonnet-4-6 | 0.35 (σ=0.41) | **0.71** 🏆 (σ=0.18) | **−36 pp** |
+| opus-4-6 | 0.77 (σ=0.35) | **0.87** 🏆 (σ=0.30) | −10 pp |
+
+Höher = besser; 🏆 = besserer Modus pro Zeile (+thinking vs. −thinking). Δ = Effektgröße, kein 🏆.
 
 Bei prose und user-story ist der Thinking-Effekt vernachlässigbar
 (±5 pp, keine konsistente Richtung).
