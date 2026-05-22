@@ -1,0 +1,68 @@
+{
+  "kata": "claim-office-lite-example-mapping",
+  "workflow": "v4-exact-subagents",
+  "model": "opus-4-7-portkey-no-thinking",
+  "cli_model": "@vertex-eu-global/anthropic.claude-opus-4-7",
+  "thinking": false,
+  "started_at": "2026-05-21T22:55:29+00:00",
+  "ended_at": "2026-05-21T23:36:34+00:00",
+  "duration_seconds": 2463,
+  "batch_run": true,
+  "plan_file": "/home/experimenter/experiments/batch-plans/lite-workflow-compare.shard4.json",
+  "run_status": {
+    "exit_code": 0,
+    "exit_reason": "ok",
+    "rate_limited": false
+  },
+  "final_metrics": {
+    "lines_of_code": 182,
+    "test_lines": 255,
+    "tests_total": 42,
+    "todos_remaining": 0,
+    "code_mass": 710,
+    "tests_passing": true,
+    "verification_total": 10,
+    "verification_passed": 10,
+    "verification_pct": 1,
+    "cli_built": true,
+    "mccabe_max": 8,
+    "mccabe_avg": 2,
+    "mccabe_high_count": 0,
+    "cognitive_max": 8,
+    "cognitive_avg": 2.8,
+    "cognitive_high_count": 0
+  },
+  "coverage": {
+    "statements_pct": 65,
+    "branches_pct": 95
+  },
+  "code_smells": {
+    "total": 0,
+    "complexity": 0,
+    "duplication": 0,
+    "magic_numbers": 0,
+    "code_quality": 0
+  },
+  "clean_code": {
+    "loc": 160,
+    "functions": 14,
+    "longest_function": 31,
+    "avg_loc_per_function": 8.36,
+    "median_loc_per_function": 5,
+    "imports": 1
+  },
+  "summary_metrics": {
+    "total_tokens": 14012900,
+    "context_utilization_pct": 16,
+    "cycle_count": 42,
+    "refactorings_applied": 14,
+    "predictions_correct": 46,
+    "predictions_total": 47,
+    "tests_passed_immediately": 22,
+    "avg_cycle_seconds": 78.4,
+    "avg_red_seconds": 24.34,
+    "avg_green_seconds": 20.87,
+    "avg_refactor_seconds": 33.19
+  },
+  "analyze_status": "ok"
+}

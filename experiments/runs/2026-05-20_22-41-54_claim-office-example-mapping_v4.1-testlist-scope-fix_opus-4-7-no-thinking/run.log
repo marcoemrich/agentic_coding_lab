@@ -1,0 +1,6 @@
+All 50 tests pass. The MHPCO Claim Office kata is complete:
+
+- **src/claim-office.ts** — `quote()` and `claim()` functions implementing all rules: item base premiums, block-of-3 components, curse/high-enchantment/loyalty/first-insurance/follow-up-contract modifiers, dragon-material and high-enchantment claim clauses, per-damage deductible, cap and cap-exhaustion, rounding (ceil for premium, floor for payout), and error validation.
+- **src/cli.ts** — Reads JSON scenario from stdin, processes quote/claim steps sequentially (tracking previousContracts and priorPaid per policy), translates `yearsWithMHPCO` → internal `yearsInsured`, writes `{results: [...]}` to stdout, exits non-zero with stderr on errors.
+- **src/claim-office.spec.ts** — 50 passing tests covering all spec examples.
+- **experiment-done.txt** — Marker written.

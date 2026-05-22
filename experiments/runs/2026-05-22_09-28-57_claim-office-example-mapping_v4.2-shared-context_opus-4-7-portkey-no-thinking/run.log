@@ -1,0 +1,7 @@
+Experiment complete. All 36 tests pass through the full TDD cycle:
+- Test list created with example mapping
+- Red → Green → Refactor for each test (tests that passed immediately skipped Green/Refactor)
+- `quote` function in `src/claim-office.ts` handles all premium calculations (base, blocks, curse, enchantment, loyalty, follow-up, fee, rounding)
+- `claim` function handles deductibles, caps, special clauses (high enchantment 50%, dragon material), payout flooring
+- `src/cli.ts` exposes `runScenario` with stdin/stdout JSON interface and validation of all error cases
+- `experiment-done.txt` written with "DONE"

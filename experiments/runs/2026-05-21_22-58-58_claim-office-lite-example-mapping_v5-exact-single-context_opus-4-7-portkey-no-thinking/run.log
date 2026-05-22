@@ -1,0 +1,4 @@
+All 35 tests pass. Implementation covers:
+- Quote: per-item base premiums (sword/amulet/staff/potion), components (rune/moonstone) with 3-alike block discount, per-item modifiers (cursed +50%, ench≥5 +30%), policy-wide modifiers (loyalty 20%, first insurance 10%, follow-up 15%), 5 G fee, round-up
+- Claim: base reimbursement, ench≥8 50%, dragon material full, 100 G deductible per damage, round-down, errors (unknown type, item not in policy, extra damages, negative amount)
+- CLI at src/cli.ts reads stdin JSON, writes stdout JSON, exits non-zero on errors

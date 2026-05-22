@@ -1,0 +1,7 @@
+All 26 tests pass and the CLI works against both sample scenarios. Implementation:
+
+- `src/quote.ts` — premium calculation (base by type, building-block component pricing, cursed/enchant surcharges, loyalty discount, first/subsequent contract modifiers, +5 G fee, round up)
+- `src/claim.ts` — payout (dragon full / ench ≥8 half, 100 G deductible per incident, clamp ≥0, round down)
+- `src/scenario.ts` — runs steps sequentially, tracks contract index, stores policy items by step index
+- `src/cli.ts` + `bin/claim-office.mjs` — stdin/stdout JSON CLI
+- Test specs alongside each module

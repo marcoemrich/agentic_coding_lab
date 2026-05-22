@@ -74,6 +74,115 @@ insure
     `remainingCap` (integer, cap remaining on the policy after this
     claim).
 
+### JSON Schema (normative)
+
+The field names below are **binding**. Your implementation must use
+exactly these names; do not rename or restructure them.
+
+**Input (stdin):**
+
+```json
+{
+  "type": "object",
+  "required": ["customer", "steps"],
+  "properties": {
+    "customer": {
+      "type": "object",
+      "required": ["yearsWithMHPCO"],
+      "properties": {
+        "yearsWithMHPCO": { "type": "integer" }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "description": "Quote step",
+            "required": ["op", "items"],
+            "properties": {
+              "op": { "const": "quote" },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["type"],
+                  "properties": {
+                    "type":        { "type": "string", "description": "sword | amulet | staff | potion | rune | moonstone" },
+                    "material":    { "type": "string" },
+                    "enchantment": { "type": "integer" },
+                    "cursed":      { "type": "boolean" }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "description": "Claim step",
+            "required": ["op", "policy", "incident"],
+            "properties": {
+              "op":     { "const": "claim" },
+              "policy": { "type": "integer", "description": "zero-based index of the quote step that created the policy" },
+              "incident": {
+                "type": "object",
+                "required": ["cause", "damages"],
+                "properties": {
+                  "cause": { "type": "string" },
+                  "damages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["itemType", "amount"],
+                      "properties": {
+                        "itemType": { "type": "string" },
+                        "amount":   { "type": "integer" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+**Output (stdout):**
+
+```json
+{
+  "type": "object",
+  "required": ["results"],
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "description": "Quote result",
+            "required": ["premium"],
+            "properties": {
+              "premium": { "type": "integer" }
+            }
+          },
+          {
+            "description": "Claim result",
+            "required": ["payout", "remainingCap"],
+            "properties": {
+              "payout":       { "type": "integer" },
+              "remainingCap": { "type": "integer" }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
 ### Schema example 1 — Quote only
 
 Stdin:

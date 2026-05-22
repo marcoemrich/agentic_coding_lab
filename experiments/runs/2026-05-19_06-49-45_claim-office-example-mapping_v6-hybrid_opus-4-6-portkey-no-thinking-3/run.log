@@ -1,6 +1,0 @@
-All 34 tests pass and the experiment is complete. The MHPCO Claim Office implementation covers:
-
-- **Quote operation**: base premiums for all item types, component/block pricing, cursed and high-enchantment surcharges, first-insurance surcharge, loyalty discount, follow-up discount, processing fee, and premium rounding up
-- **Claim operation**: standard reimbursement with deductible, 50% reimbursement for enchantment >= 8, dragon material full reimbursement, payout cap (2x insurance sum) with tracking across claims, payout rounding down, and error validation (unknown items, excess damages, negative amounts)
-- **Integration tests**: confirming multi-modifier stacking for both newcomer and long-standing customer scenarios
-`src/cli.ts` is created and working. It reads JSON from stdin, passes it to `processScenario`, and writes the JSON result to stdout. The test run confirms correct output (`{"results":[{"premium":115}]}`).

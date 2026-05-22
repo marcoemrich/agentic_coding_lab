@@ -1,0 +1,17 @@
+All done. Here's a summary of what was built:
+
+**Files created:**
+- `src/claim-office.ts` — Domain logic with `processScenario()` function implementing quote and claim operations
+- `src/claim-office.spec.ts` — 40 unit tests covering base premiums, component blocks, premium modifiers, claim processing, cap exhaustion, rounding, and edge cases
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing results to stdout
+- `src/cli.spec.ts` — 5 integration tests for the CLI
+- `experiment-done.txt` — Done marker
+
+**All 45 tests pass.** The implementation covers:
+- Item base premiums (sword/amulet/staff/potion) and component pricing (rune/moonstone with block discounts)
+- Item-specific surcharges (cursed 50%, high enchantment 30%) applied to item base premium
+- Policy-wide modifiers (loyalty 20%, first insurance 10%, follow-up 15%) applied to policy base premium sum
+- 5G processing fee added last
+- Claim deductible (100G per damage), cap (2× insurance sum), high enchantment 50% reimbursement, dragon material full reimbursement
+- Rounding in MHPCO's favor (premiums up, payouts down)
+- Error handling for unknown types, negative amounts, and mismatched damages

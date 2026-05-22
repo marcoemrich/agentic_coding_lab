@@ -1,0 +1,12 @@
+All done. Here's a summary of what was built:
+
+**Files created:**
+- `src/claim-office.ts` — Core domain logic with `processScenario()` handling quotes and claims
+- `src/claim-office.spec.ts` — 45 tests covering all rules from the prompt
+- `src/cli.ts` — CLI entry point that reads JSON from stdin, writes JSON to stdout
+- `claim-office` — Shell wrapper to invoke the CLI as an executable
+
+**Key implementation details:**
+- **Quote**: Computes per-item base premiums (with component block discounts for exactly 3 alike), applies item-specific surcharges (cursed 50%, enchantment≥5 30%), then policy-wide modifiers (first insurance +10%, loyalty -20%, follow-up -15%), rounds up, adds 5G fee
+- **Claim**: Applies reimbursement rules (enchantment≥8 → 50%, dragon material → full, both → 50% wins), deducts 100G per damage entry, rounds payout down, enforces cap (2× insurance sum) across successive claims
+- **Validation**: Rejects unknown item types, mismatched damage entries, negative amounts with non-zero exit codes and stderr messages

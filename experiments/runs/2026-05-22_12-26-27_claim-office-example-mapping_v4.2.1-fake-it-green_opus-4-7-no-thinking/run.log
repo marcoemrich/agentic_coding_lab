@@ -1,0 +1,24 @@
+The exercise is complete. I implemented the MHPCO Claim Office kata following the mandated TDD workflow, driving each test through the specialized Red → Green → Refactor agents.
+
+## Summary
+
+**Result: 43/43 tests passing**, CLI verified end-to-end, `experiment-done.txt` written.
+
+**Workflow followed:**
+- `test-list` agent created 43 tests from the spec (ordered simple → complex)
+- For each test: `red` (activate one test + predictions) → `green` (minimal fake-it implementation) → `refactor` (Simple Design Rules + APP mass)
+
+**What was built:**
+- `src/claim-office.ts` — `quote()` and `claim()` plus helpers (base-premium lookup, block-of-3 grouping, per-item surcharges, policy-wide modifiers, deductible/cap/clause logic, rounding)
+- `src/cli.ts` — reads a JSON scenario from stdin, dispatches quote/claim steps sequentially, validates inputs, writes `{results:[...]}` to stdout
+
+**Behaviors covered:** base premiums, component blocks ("alike" by type), cursed/high-enchantment surcharges, loyalty/first-insurance/follow-up modifiers (with the unmodified-vs-modified base distinction triangulated by the integration examples), favor-rounding (premium up, payout down), deductibles, dragon/enchantment claim clauses, cap and cap-exhaustion, and all four CLI error cases.
+
+**Notable TDD moments:**
+- The 2/3/4-rune triangulation forced the real block-of-exactly-3 rule (no longer fakeable).
+- The integration example (test 21) revealed first-insurance must apply to the *unmodified* base, not the curse/enchantment-inflated base.
+- Test 22 forced the enchantment threshold from `=== 5` to `>= 5`; that agent also corrected a test fixture that was missing `firstInsurance: true`, consistent with the test's own documented breakdown and the spec.
+
+**Two honest observations (not defects against the spec's test list):**
+- The dragon-material clause never became independently necessary — in every specified case it coincides with the default full-reimbursement path, so no test distinguishes it.
+- The CLI calls `claim()` with the default full cap per claim; cross-claim cap threading is exercised at the unit level (test 37 via the third argument) but no test drives it through the CLI, so it was left unimplemented per the no-anticipation discipline.

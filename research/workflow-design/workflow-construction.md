@@ -206,6 +206,51 @@ Required-Prompt-Context-Block ausformuliert. Wer ein neues Subagent-
 Workflow baut, sollte dieses Muster übernehmen — sonst halluziniert
 der Subagent Files oder verfehlt die aktive Test-Phase.
 
+### Shared-context-Files für Red/Green sind kein Korrektheits-Hebel auf 4.7
+
+Die intuitive Annahme, dass Red/Green-Subagents besser performen, wenn
+sie persistente Spec-Notizen (`example-mapping/<feature>.md`,
+`tdd-journal.md`, `architecture-notes.md`) zwischen Aufrufen lesen,
+hält empirisch nicht. Auf claim-office × opus-4-7-portkey-no-thinking
+(RQ-4b, 2026-05-22):
+
+| Workflow | n | verification_pct | duration_s |
+|---|---:|---:|---:|
+| v4-exact-subagents | 10 | 0.67 | 3693 |
+| **v4.1-testlist-scope-fix** | 5 | **0.96** | 3229 |
+| v4.2-shared-context | 5 | 0.71 | 4538 |
+| v4.2.1-fake-it-green | 2 | 0.70 | ~5500 |
+
+v4.1 fügt *nur* eine "Cover every spec example"-Pflicht zum
+test-list-Subagent hinzu — sonst nichts. Damit erreicht es v5/v6-Niveau
+(0.96 vs. 0.97 vs. 1.00) bei niedriger Streuung (σ 0.09). v4.2 erbt
+diesen Fix UND fügt shared example-mapping für Red/Green hinzu —
+trotzdem zurück auf 0.71 mit bimodaler Streuung (σ 0.41). v4.2.1
+(Green-Fake-it-Pflicht zusätzlich): keine Verbesserung, +50 %
+Wallclock.
+
+Schluss für künftige Workflow-Designs:
+
+- Wenn ein Subagent-Workflow auf novel kata schlecht performt
+  (`verification_pct` < 0.8), prüfe ZUERST die Test-Listen-Vollständigkeit
+  des `test-list`-Subagents. "Cover every spec example" mit Failure-Mode
+  "Missing an entire operation described in the spec" ist die einfachste
+  und stärkste Intervention.
+- Spec-Sharing in Red/Green-Subagents lädt die Subagents zum
+  Re-Interpretieren der Spec ein, statt sich auf den aktivierten Test
+  zu konzentrieren. Die Spec gehört in die Test-Liste (durch test-list),
+  nicht in Subagent-Memory.
+- Wallclock-Aufschlag durch shared-context-Reads ist erheblich (~25–50 %),
+  selbst wenn das Journal-Format auf One-Liner reduziert ist —
+  Refactor-Phase reagiert insbesondere mit mehr Refactorings, weil
+  Fake-it-Green die Komplexität auf Refactor verschiebt.
+- v4.2-shared-context und v4.2.1-fake-it-green liegen archiviert in
+  `experiments/workflows/_archive/`. Wer ähnliche Architektur-Ideen
+  testen will: erst F-3b.4 in RQ-3b-findings lesen, dann begründen
+  warum der Mechanismus diesmal anders ist.
+
+Verweis: F-3b.4 in `research/RQ-3b-model-effect-novel-kata/findings.md`.
+
 ## Wann eine Workflow-RQ keine Antwort liefern kann
 
 Bei drei Konstellationen verschwendet ein n=10-Batch Tokens, weil das

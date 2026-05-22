@@ -1,0 +1,104 @@
+{
+  "wall_clock_seconds": 177.62,
+  "total_tokens": {
+    "input": 56,
+    "output": 23719,
+    "cache_read": 2260330,
+    "cache_creation": 146391,
+    "total": 2430496
+  },
+  "context_utilization_pct": 6,
+  "context_window_tokens": 1000000,
+  "context_peak_tokens": 62212,
+  "message_count": 46,
+  "tool_calls": {
+    "Bash": 10,
+    "Read": 1,
+    "TaskCreate": 5,
+    "Write": 10,
+    "Edit": 1,
+    "TaskUpdate": 8
+  },
+  "skill_invocations": {},
+  "task_invocations": {},
+  "cycle_count": 3,
+  "predictions_correct": 0,
+  "predictions_total": 0,
+  "model_versions": [
+    "claude-opus-4-7"
+  ],
+  "subagent_token_total": 0,
+  "phases": [
+    {
+      "phase": "red",
+      "tokens": 97866,
+      "duration_seconds": 15.19
+    },
+    {
+      "phase": "green",
+      "tokens": 155025,
+      "duration_seconds": 21.83
+    },
+    {
+      "phase": "red",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "green",
+      "tokens": 57945,
+      "duration_seconds": 2.48
+    },
+    {
+      "phase": "refactor",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "red",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "green",
+      "tokens": 60970,
+      "duration_seconds": 1.43
+    }
+  ],
+  "phase_source": "inline-tool",
+  "phase_summary": {
+    "by_phase": {
+      "red": {
+        "count": 3,
+        "tokens": 97866,
+        "duration_seconds": 15.19
+      },
+      "green": {
+        "count": 3,
+        "tokens": 273940,
+        "duration_seconds": 25.74
+      },
+      "refactor": {
+        "count": 1,
+        "tokens": 0,
+        "duration_seconds": 0.0
+      }
+    },
+    "averages": {
+      "red": {
+        "avg_tokens": 32622.0,
+        "avg_duration_seconds": 5.06
+      },
+      "green": {
+        "avg_tokens": 91313.33,
+        "avg_duration_seconds": 8.58
+      },
+      "refactor": {
+        "avg_tokens": 0.0,
+        "avg_duration_seconds": 0.0
+      }
+    },
+    "refactorings_applied": 1,
+    "tests_passed_immediately": 0
+  }
+}

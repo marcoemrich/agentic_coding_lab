@@ -1,0 +1,17 @@
+The TDD experiment is complete. All 40 tests pass.
+
+## Summary
+
+I drove the full MHPCO Claim Office kata through the autonomous Red-Green-Refactor cycle using the specialized TDD agents, one test at a time across 40 tests.
+
+**What was built** (`src/claim-office.ts` + `src/cli.ts`):
+- **Quote engine**: per-item base premiums, the exactly-3 "block of alike components" discount (per type), item-specific surcharges (cursed +50%, high-enchantment ≥5 +30%), and additive policy-wide modifiers (loyalty −20%, first-insurance +10%, follow-up −15%) plus the 5 G fee, with round-up in MHPCO's favor.
+- **Claim engine**: per-damage deductible (100 G each), enchantment-≥8 half-reimbursement clause, payout floor rounding, and cap exhaustion (2× insurance sum) persisted across successive claims on the same policy.
+- **CLI** (`src/cli.ts`): reads a JSON scenario from stdin, processes quote/claim steps in order, writes `{results:[...]}` to stdout, and exits non-zero with a stderr message on unknown item type, item-not-in-policy, negative amount, or more damages than insured.
+
+**Verification**:
+- `pnpm test` → 40/40 passing.
+- CLI end-to-end on the spec's schema example → `{"results":[{"premium":59},{"payout":100,"remainingCap":1100}]}`, exit 0.
+- CLI error path (unknown type) → stderr message, exit 1, no stdout results.
+
+Notably, several tests (boundary/threshold cases like 4 runes, enchantment-4, dragon-at-low-enchantment) passed immediately because the prior minimal implementations already generalized correctly — consistent with the spec's intent. `experiment-done.txt` written with `DONE`.

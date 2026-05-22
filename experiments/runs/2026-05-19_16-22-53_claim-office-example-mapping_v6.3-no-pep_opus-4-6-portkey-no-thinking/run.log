@@ -1,0 +1,41 @@
+All 19 tests show as todo. 
+
+### Step 5: Summary
+
+📋 Test List Created:
+**Feature**: MHPCO Claim Office
+**Test File**: src/claim-office.spec.ts
+**Base Functionality Tests**: 19
+
+**Test Cases** (ordered simple → complex):
+1. Empty item list → 5 G (fee only)
+2. Single sword base premium → 115 G
+3. Single amulet base premium → 71 G
+4. Cursed item surcharge (+50%)
+5. High enchantment surcharge (+30%, enchantment >= 5)
+6. Multi-item policy premium
+7. Component base premium (25 G each)
+8. Block of 3 alike components (60 G)
+9. Loyalty discount (-20%, >= 2 years)
+10. Follow-up contract discount (-15%)
+11. Integration: newcomer cursed sword → 165 G
+12. Integration: long-standing 2nd contract → 160 G
+13. Basic claim with deductible
+14. Claim with enchantment >= 8 (50% reimbursement)
+15. Claim with dragon material (full reimbursement)
+16. Claim cap limits payout
+17. Reject unknown item type
+18. Reject claim for uninsured item
+19. Reject negative damage amount
+
+**Advanced Features** (NOT included):
+- Multiple claims exhausting cap across events - save for later
+- Rounding edge cases (fractional amounts) - save for later
+- CLI stdin/stdout integration - save for later
+- Components not forming a block (4 runes, mixed types) - save for later
+- Multiple damages per claim event - save for later
+- More damages than insured items validation - save for later
+
+**Next Step**: Invoke `/red` to activate the first test.
+
+📋 Test List Phase Complete. Proceeding to Red phase with the first test.

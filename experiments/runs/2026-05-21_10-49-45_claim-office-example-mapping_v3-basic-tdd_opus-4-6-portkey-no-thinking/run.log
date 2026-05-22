@@ -1,0 +1,14 @@
+All done. Here's a summary of what was built:
+
+**Source files:**
+- `src/pricing.ts` — Item values, base premiums, component block pricing
+- `src/quote.ts` — Premium computation with all modifiers (cursed, enchantment, loyalty, first insurance, follow-up, processing fee)
+- `src/claim.ts` — Claim processing with deductible, enchantment reimbursement reduction, cap enforcement, and rounding
+- `src/engine.ts` — Scenario runner that processes sequential quote/claim steps with correct step-index policy references
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing results to stdout, error handling to stderr
+
+**Test files (70 tests, all passing):**
+- `src/pricing.spec.ts` — 16 tests for item values, base premiums, component block pricing
+- `src/quote.spec.ts` — 16 tests for premium modifiers and integration examples
+- `src/claim.spec.ts` — 17 tests for deductible, enchantment/dragon clauses, cap, rounding, errors
+- `src/engine.spec.ts` — 21 tests including CLI subprocess tests, interleaved steps, all prompt examples

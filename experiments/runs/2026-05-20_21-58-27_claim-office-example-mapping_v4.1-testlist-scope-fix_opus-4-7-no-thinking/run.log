@@ -1,0 +1,6 @@
+Exercise complete. All 55 tests pass:
+- Quote logic: base premiums for all item types, component block discount, item-specific modifiers (cursed +50%, high enchantment ≥5 +30%), policy-wide modifiers (loyalty -20% ≥2yr, first-insurance +10%/item, follow-up -15%), processing fee, ceiling rounding, unknown type error
+- Claim logic: per-damage deductible (100G), high enchantment ≥8 → 50% reimbursement, dragon material → full, cap = 2× insurance sum, cap exhaustion with successive claims, floor rounding, error cases (out-of-policy, unknown type, negative amounts, too-many-damages)
+- Scenario processor + CLI: JSON stdin/stdout, non-zero exit on errors
+
+`experiment-done.txt` written with `DONE`.

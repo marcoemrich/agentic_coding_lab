@@ -1,0 +1,20 @@
+The MHPCO Claim Office kata is complete. Here's a summary:
+
+**40 tests passing** covering:
+- Quote: empty items, base premiums for all item types (sword, amulet, staff, potion, rune, moonstone)
+- Component blocks: 3-alike discount at 60 G, mixed types, various counts
+- Item-specific modifiers: cursed (+50%), high enchantment (+30%), both combined
+- Policy-wide modifiers: loyalty discount (-20%), first insurance (+10%), follow-up contract (-15%)
+- Integration examples: newcomer cursed sword (165 G), long-standing second contract (160 G)
+- Premium rounding: Math.ceil (in MHPCO's favor)
+- Claims: standard deductible (100 G per item), enchantment >= 8 (50% reimbursement), dragon material (full), both clauses (50% wins)
+- Payout rounding: Math.floor (in MHPCO's favor)
+- Cap: 2x insurance sum, cap exhaustion across successive claims
+- Multiple items of same type with separate deductibles
+- Error handling: unknown item types, items not in policy, excess damages, negative amounts
+
+**Files created:**
+- `src/claim-office.ts` - Core logic (142 lines)
+- `src/claim-office.spec.ts` - Test suite (40 tests)
+- `src/cli.ts` - CLI entry point (reads JSON from stdin, writes to stdout)
+- `experiment-done.txt` - Completion marker

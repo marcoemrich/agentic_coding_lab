@@ -1,0 +1,7 @@
+All work complete. 14 tests passing, `experiment-done.txt` written.
+Both actions work correctly:
+
+- **Quote**: `{"action":"quote", "customer":..., "items":..., "options":...}` → `{"result":115}` (matches the test expectation for a sword with first contract)
+- **Claim**: `{"action":"claim", "item":..., "damage":500}` → `{"result":400}` (500 - 100 deductible = 400, matches the test)
+
+The CLI reads JSON from stdin, dispatches to `quote` or `processClaim` based on the `action` field, and writes `{"result": <number>}` to stdout.

@@ -29,7 +29,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 RUNS_DIR = REPO_ROOT / "experiments" / "runs"
 
 CSV_COLUMNS = [
-    "kata", "workflow", "model", "cli_model", "thinking", "run_id",
+    "kata", "workflow", "model", "cell_model", "cli_model", "thinking", "run_id",
     "exit_code", "exit_reason", "rate_limited", "completed_within_budget",
     "analyze_status",
     "duration_seconds", "total_tokens", "context_utilization_pct",
@@ -99,6 +99,30 @@ def expand_cells(fm: dict) -> list[dict]:
             if required not in cell:
                 raise SystemExit(f"cell missing '{required}': {cell}")
 
+        # Allow controls.model to be an OR-match. Three accepted forms:
+        #   model: opus-4-7-no-thinking                 # scalar (single match)
+        #   model: [opus-4-7-portkey, opus-4-7]         # bare list (OR-match)
+        #   model: {any: [opus-4-7-portkey, opus-4-7]}  # explicit OR-match
+        # The explicit form is preferred for new RQs — it documents the OR
+        # semantics directly in the YAML. First entry is the canonical model
+        # used for plan generation and cell labelling; all entries match in
+        # aggregation.
+        m = cell["model"]
+        if isinstance(m, dict):
+            if "any" not in m or not isinstance(m["any"], list) or not m["any"]:
+                raise SystemExit(
+                    f"cell model mapping must be {{any: [...]}} with non-empty list: {cell}"
+                )
+            cell["model_alts"] = list(m["any"])
+            cell["model"] = m["any"][0]
+        elif isinstance(m, list):
+            if not m:
+                raise SystemExit(f"cell has empty model list: {cell}")
+            cell["model_alts"] = list(m)
+            cell["model"] = m[0]
+        else:
+            cell["model_alts"] = [m]
+
     return cells
 
 
@@ -118,19 +142,25 @@ def matches_cell(metrics: dict, cell: dict) -> bool:
         return False
     if metrics.get("workflow") != cell["workflow"]:
         return False
-    # Model match: cell["model"] is the lab-variant short alias
-    # (e.g. "opus-4-7-no-thinking"), exactly what metrics.model stores.
-    if metrics.get("model") != cell["model"]:
+    # Model match: cell["model_alts"] is the list of accepted lab-variant
+    # short aliases (e.g. ["opus-4-7-no-thinking", "opus-4-7-portkey-no-thinking"]).
+    # A scalar controls.model becomes a single-entry list in expand_cells().
+    if metrics.get("model") not in cell["model_alts"]:
         return False
     return True
 
 
-def collect_runs(cells: list[dict]) -> tuple[list[Path], dict[tuple, list[Path]]]:
-    """Walk runs dir, return matched metrics paths + per-cell index.
+def collect_runs(cells: list[dict]) -> tuple[list[tuple[Path, str]], dict[tuple, list[Path]]]:
+    """Walk runs dir, return matched (metrics_path, cell_model) + per-cell index.
 
-    Index key = (kata, workflow, cli_model) tuple.
+    `cell_model` is the canonical lab-variant for the cell the run was matched
+    against — equal to `metrics.model` for scalar controls.model, equal to the
+    first list entry for list-valued controls.model. Used as the grouping key
+    in summary.md pivots so list-valued cells aggregate as one row.
+
+    Index key = (kata, workflow, cell_model) tuple.
     """
-    matched: list[Path] = []
+    matched: list[tuple[Path, str]] = []
     by_cell: dict[tuple, list[Path]] = {}
 
     for run_dir in sorted(RUNS_DIR.iterdir()):
@@ -144,9 +174,8 @@ def collect_runs(cells: list[dict]) -> tuple[list[Path], dict[tuple, list[Path]]
 
         for cell in cells:
             if matches_cell(metrics, cell):
-                matched.append(m_file)
+                matched.append((m_file, cell["model"]))
                 key = (kata_for_cell(cell), cell["workflow"], cell["model"])
-                # store short-alias model match (group_cols use 'model' below)
                 by_cell.setdefault(key, []).append(m_file)
                 break  # a run can only match one cell
 
@@ -157,7 +186,7 @@ def collect_runs(cells: list[dict]) -> tuple[list[Path], dict[tuple, list[Path]]
 # CSV emission
 # -----------------------------------------------------------------------
 
-def metrics_to_row(metrics: dict, run_id: str) -> dict:
+def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "") -> dict:
     g = lambda d, *keys: _nested(d, keys)
 
     sm = metrics.get("summary_metrics") or {}
@@ -184,6 +213,7 @@ def metrics_to_row(metrics: dict, run_id: str) -> dict:
         "kata":                       metrics.get("kata", ""),
         "workflow":                   metrics.get("workflow", ""),
         "model":                      metrics.get("model", ""),
+        "cell_model":                 cell_model or metrics.get("model", ""),
         "cli_model":                  metrics.get("cli_model", ""),
         "thinking":                   metrics.get("thinking"),
         "run_id":                     run_id,
@@ -318,7 +348,10 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
     L("## Outcome-Pivots (pro Zelle)")
     L("")
 
-    group_cols = ["kata", "workflow", "model"]
+    # Group by cell_model (canonical per-cell model name) so list-valued
+    # controls.model aggregates as one cell. The real per-run `model` is still
+    # in the CSV for provider-level debugging.
+    group_cols = ["kata", "workflow", "cell_model"]
 
     for outcome in outcomes:
         # Pooled rate: outcome name ends with "_correct_rate" → derive
@@ -431,10 +464,10 @@ def main(argv: list[str]) -> int:
           f"{len(matched)} runs matched", file=sys.stderr)
 
     rows = []
-    for m_file in matched:
+    for m_file, cell_model in matched:
         metrics = json.loads(m_file.read_text())
         run_id = m_file.parent.name
-        rows.append(metrics_to_row(metrics, run_id))
+        rows.append(metrics_to_row(metrics, run_id, cell_model))
 
     df = pd.DataFrame(rows, columns=CSV_COLUMNS)
     csv_path = out_dir / "runs.csv"

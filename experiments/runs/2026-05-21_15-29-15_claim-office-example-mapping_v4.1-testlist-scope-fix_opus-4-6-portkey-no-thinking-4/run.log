@@ -1,0 +1,14 @@
+The MHPCO Claim Office kata is complete. Here's a summary:
+
+**Results: 52/52 tests passing**
+
+**Implementation files:**
+- `src/claim-office.ts` — Core business logic with `claimOffice()` function, `processQuote()` and `processClaim()` helpers
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing results to stdout
+- `src/claim-office.spec.ts` — 52 tests covering all spec examples
+
+**Features implemented:**
+- **Quote operation**: Base premiums for 6 item types, building block discount (3 alike components), item-specific modifiers (cursed 50%, enchantment ≥5 30%), policy-wide modifiers (loyalty 20%, first insurance 10%, follow-up 15%), processing fee, rounding up
+- **Claim operation**: Standard reimbursement with 100 G deductible per item, enchantment ≥8 at 50% reimbursement, dragon material full reimbursement, cap at 2x insurance sum, cap exhaustion tracking across claims, rounding down
+- **Validation**: Unknown item types, over-claiming, negative damage amounts
+- **CLI**: JSON stdin/stdout with `op` field mapping, non-zero exit with stderr for errors

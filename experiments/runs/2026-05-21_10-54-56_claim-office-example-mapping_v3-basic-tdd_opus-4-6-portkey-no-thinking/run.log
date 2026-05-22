@@ -1,0 +1,13 @@
+All done. Here's what was implemented:
+
+- **`src/claim-office.ts`** — Core business logic with `processScenario()` handling:
+  - Item base premiums (sword/amulet/staff/potion) and component pricing (rune/moonstone with block discount for exactly 3 alike)
+  - Item-specific surcharges (cursed 50%, enchantment ≥5 30%) applied per-item
+  - Policy-wide modifiers (loyalty ≥2yr -20%, first insurance +10%, follow-up -15%) applied to policy base premium
+  - Processing fee of 5 G, rounding up premiums
+  - Claim processing with per-item deductible (100 G), enchantment ≥8 (50% reimbursement), dragon material (full), cap at 2× insurance sum, rounding down payouts
+  - Error validation for unknown items, negative damage, excess damage entries
+
+- **`src/cli.ts`** — CLI entry point reading JSON from stdin, writing results to stdout, with stderr + exit code 1 on errors
+
+- **`src/claim-office.spec.ts`** — 42 tests covering all rules, edge cases, and both integration examples from the prompt

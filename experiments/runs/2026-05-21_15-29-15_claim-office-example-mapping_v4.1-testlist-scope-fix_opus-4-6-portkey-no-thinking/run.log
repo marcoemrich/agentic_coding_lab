@@ -1,0 +1,14 @@
+The MHPCO Claim Office kata is complete. Here's a summary:
+
+**41 tests passing** covering:
+- **Tests 1-7**: Base premiums for all item types (sword, amulet, staff, potion, rune, moonstone)
+- **Tests 8-13**: Building block discount (3 alike components = 60 G) and mixed component handling
+- **Tests 14-22**: Premium modifiers (cursed surcharge, enchantment surcharge, loyalty discount, follow-up discount, and full integration)
+- **Tests 23-37**: Claim processing (standard reimbursement, per-item deductible, enchantment >= 8 at 50%, dragon material full reimbursement, payout rounding, multiple same-type items, cap calculation, cap exhaustion across successive claims)
+- **Tests 38-41**: Error cases (unknown item type, item not in policy, excess damages, negative damage amount)
+
+**Files created:**
+- `src/claim-office.ts` — Core implementation with typed interfaces and all business logic
+- `src/claim-office.spec.ts` — 41 test cases
+- `src/cli.ts` — CLI entry point reading JSON from stdin, writing to stdout
+- `experiment-done.txt` — Done marker

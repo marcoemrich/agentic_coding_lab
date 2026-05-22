@@ -1,0 +1,5 @@
+All 24 tests pass and `experiment-done.txt` is written with `DONE`. The TDD cycle completed autonomously:
+
+- **Quote**: base prices per item type (sword/amulet/staff/potion/rune/moonstone), cursed +50%, enchantment≥5 +30%, loyalty -20%, first insurance +10%, post-first contracts -15%, building blocks of 3 alike components at 60G, ceil rounding in MHPCO's favor, +5G fee
+- **Claim**: lookup item in referenced policy step, dragon material → 100% (precedence), enchantment≥8 → 50%, sum across damages, subtract 100G deductible, floored at 0
+- **CLI**: `src/cli.ts` reads JSON stdin, calls `runScenario`, writes JSON stdout

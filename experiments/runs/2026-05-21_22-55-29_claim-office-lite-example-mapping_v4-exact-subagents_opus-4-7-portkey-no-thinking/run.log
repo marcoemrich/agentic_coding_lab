@@ -1,0 +1,3 @@
+All 42 tests pass; CLI at `src/cli.ts` produces correct output on the spec example and exits non-zero on unknown item types. Implementation in `src/claim-office.ts` covers quote (with curse/high-enchantment surcharges, loyalty/follow-up discounts, first-insurance surcharge per item, component blocks, ceiling rounding) and claim (with deductible, 50% high-enchantment clause, validation errors). `experiment-done.txt` written.
+
+Note: I had to correct the test list mid-stream — the test-list agent treated "first insurance" as a one-time customer-level surcharge, but the spec's integration examples make clear it's a +10% surcharge on every item in every quote. I updated the test expectations to match the spec and added rounding handling.

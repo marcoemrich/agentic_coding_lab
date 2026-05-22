@@ -1,0 +1,22 @@
+All done. Here's a summary of what was implemented:
+
+**MHPCO Claim Office** - 42 tests, all passing.
+
+**Quote functionality:**
+- Base premiums for 6 item types (sword, amulet, staff, potion, rune, moonstone)
+- Component block-of-3 discount (exactly 3 alike = 60 G)
+- Item-level modifiers: cursed (+50%), high enchantment ≥5 (+30%)
+- Policy-level modifiers: loyalty discount (-20% for ≥2 years), first insurance (+10% always), follow-up discount (-15% on 2nd+ quote)
+- Rounding up (Math.ceil) in MHPCO's favor
+- 5 G processing fee
+
+**Claim functionality:**
+- 100 G deductible per damaged item
+- High enchantment ≥8: 50% reimbursement (overrides dragon material)
+- Dragon material: full reimbursement
+- Cap = 2× insurance sum, persists across claims
+- Rounding down (Math.floor) in MHPCO's favor
+
+**Error handling:** Unknown item types, items not in policy, negative damage, excess damage entries
+
+**CLI:** `src/cli.ts` reads JSON from stdin, writes JSON to stdout, exits non-zero with stderr on errors.

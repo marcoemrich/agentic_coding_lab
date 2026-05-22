@@ -1,0 +1,6 @@
+Done. All 15 tests pass, the CLI (`src/cli.ts`) reads JSON from stdin and writes JSON to stdout, and the experiment-done.txt marker is written.
+
+Summary of implementation:
+- `src/claim-office.ts`: pricing rules (base premiums, building blocks, cursed/high-enchantment surcharges, loyalty/first-insurance/multi-contract modifiers, ceil-in-MHPCO-favor rounding, processing fee) and claim payouts (deductible, 50% for high enchantment, full for dragon material)
+- `src/cli.ts`: stdin → JSON → `runScenario` → stdout
+- `src/claim-office.spec.ts`: 15 tests covering quote pricing, surcharges/discounts, and claim payouts

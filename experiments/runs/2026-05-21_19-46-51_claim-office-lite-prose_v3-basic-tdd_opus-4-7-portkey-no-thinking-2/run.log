@@ -1,0 +1,3 @@
+Both examples work. The CLI also needs to be invokable as `claim-office`. Let me check if there's a binary script expectation.
+
+The prompt says: "The implementation must be exposed as a command-line executable `claim-office`." but also "CLI entry point at `src/cli.ts`". The harness likely calls `src/cli.ts` directly. Let me add a `bin` entry to package.json to be safe.

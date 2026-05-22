@@ -1,0 +1,16 @@
+All done. Here's a summary of the completed TDD exercise:
+
+**MHPCO Claim Office** - 49 tests, all passing.
+
+**What was built:**
+- `src/claim-office.ts` - Core logic with `processScenario()` handling both quote and claim operations
+- `src/cli.ts` - CLI entry point reading JSON from stdin, writing results to stdout
+- `src/claim-office.spec.ts` - 49 comprehensive tests covering all spec requirements
+
+**Key features implemented:**
+- **Quote operation**: Base premiums for 6 item types, component block discounts (exactly 3 alike), item-specific surcharges (cursed 50%, high-enchantment 30%), policy-wide modifiers (loyalty -20%, follow-up -15%), first-insurance surcharge (+10%), processing fee (+5 G), ceiling rounding
+- **Claim operation**: Per-damage deductible (100 G), enchantment >= 8 half reimbursement, dragon material full reimbursement, cap tracking (2x insurance sum) across successive claims, floor rounding
+- **Error handling**: Unknown item types, damage count exceeding insured count, negative damage amounts, items not in policy
+- **CLI interface**: JSON stdin/stdout, non-zero exit codes with stderr on errors
+
+**TDD cycle stats**: 49 Red-Green-Refactor cycles completed autonomously. Many tests (especially guard/triangulation tests) passed immediately due to well-structured incremental implementation.

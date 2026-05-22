@@ -1,0 +1,7 @@
+All 21 tests pass. The implementation includes:
+- `src/quote.ts` — Premium calculation with item base prices, component bundling, cursed/enchantment surcharges, loyalty/initial/after-first modifiers, and rounding in MHPCO's favor
+- `src/claim.ts` — Damage processing with deductible, 50% for enchantment ≥8, full for dragon material
+- `src/scenario.ts` — Sequential step processor with policy index tracking and contract-count progression
+- `src/cli.ts` — stdin→stdout JSON CLI entry point
+
+The CLI verifies correctly against both kata example scenarios. `experiment-done.txt` written.
