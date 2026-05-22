@@ -63,7 +63,7 @@ Runs:      34 total (Bestand)
 > v4.2-shared-context und v4.2.1-fake-it-green als Workflow-Stufen. Beide
 > wurden 2026-05-22 entfernt, nachdem die Daten klar zeigten, dass der
 > shared-context-Zweig keine Korrektheits-Verbesserung gegenüber v4.1
-> bringt (siehe `research/workflow-design/workflow-construction.md` und
+> bringt (siehe `research/workflow-dev/workflow-construction.md` und
 > F-3b.4 in [RQ-3b](../RQ-3b-model-effect-novel-kata/findings.md)). Die
 > archivierten Workflow-Definitionen liegen in
 > `experiments/workflows/_archive/`; die 5+2 abgeschlossenen Runs bleiben

@@ -106,4 +106,4 @@ Alle Runs in `experiments/runs/` mit
 
 - Externes Audit-Framework: https://github.com/chdalski/claude_orchestration
 - Workflow-Definition: `experiments/workflows/v6.5.3-targeted-cuts/CHANGES.md`
-- Vorgänger-RQs: `research/RQ-14-orchestration-audit/`, `research/RQ-15-bullets-cut/`
+- Vorgänger-RQs: `research/workflow-dev/3.1-orchestration-audit/`, `research/workflow-dev/3.2-bullets-cut/`

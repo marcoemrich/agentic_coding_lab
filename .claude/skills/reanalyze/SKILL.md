@@ -20,8 +20,14 @@ Typical use cases:
 
 ## Argument
 
-- `RQ-N` (e.g. `RQ-2`) or `research/RQ-N-*/` (path).
+- `RQ-N` (e.g. `RQ-2`) or a direct path to an RQ dir.
 - If not given: ask back ("Which RQ? e.g. RQ-2").
+- RQ dirs live in `research/questions/<chapter>-*/` and `research/workflow-dev/<chapter>-*/`. The chapter prefix is an ordering label; the stable id is the frontmatter `id:`. Resolve `RQ-N` to a path by id-grep across both subtrees (boundary keeps `RQ-2` from matching `RQ-20`):
+  ```bash
+  RQ_DIR=$(grep -rlE "^id:[[:space:]]*RQ-2([[:space:]]|$)" \
+             research/questions/*/README.md research/workflow-dev/*/README.md \
+           | head -1 | xargs -r dirname)
+  ```
 
 ## Phases
 
@@ -31,8 +37,8 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
 
 ### Phase 1 — Resolve & Match
 
-1. Resolve the RQ path with Glob: `research/RQ-{N}-*/`. On multiple matches, take the first and inform the user.
-2. Read `README.md` — parse frontmatter for `controls` and `factors` (needed to build the selector).
+1. Resolve the RQ path into `$RQ_DIR` via the id-grep in "Argument" above. On no match, ask the user; on multiple, take the first and inform.
+2. Read `$RQ_DIR/README.md` — parse frontmatter for `controls` and `factors` (needed to build the selector).
 3. Find all matching runs in `experiments/runs/`:
    ```bash
    for d in experiments/runs/*/; do
@@ -69,7 +75,7 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
 
 1. Run:
    ```bash
-   ./experiments/aggregate-by-query.py research/RQ-{N}-*/
+   ./experiments/aggregate-by-query.py "$RQ_DIR"
    ```
 2. Read the generated `summary.md`.
 3. Show the cell coverage table to the user.

@@ -249,7 +249,7 @@ Schluss für künftige Workflow-Designs:
   testen will: erst F-3b.4 in RQ-3b-findings lesen, dann begründen
   warum der Mechanismus diesmal anders ist.
 
-Verweis: F-3b.4 in `research/RQ-3b-model-effect-novel-kata/findings.md`.
+Verweis: F-3b.4 in `research/questions/2.2-model-effect-novel-kata/findings.md`.
 
 ## Wann eine Workflow-RQ keine Antwort liefern kann
 
@@ -462,30 +462,30 @@ explizit ans Test-Verhalten koppeln statt an die Schritt-Liste.
   `experiment-done.txt`).
 - `~/.claude/skills/skill-creator/SKILL.md` — Quelle des Theory-of-
   Mind-/Why-Block-Prinzips (Zeilen 139, 302).
-- `research/RQ-6-context-engineering/` — Architektur-Achse v4 vs v5
+- `research/questions/4.3-context-engineering/` — Architektur-Achse v4 vs v5
   ohne Inhalts-Änderung.
-- `research/RQ-7-workflow-tradeoff-hybrid/` — Subagent-Isolations-
+- `research/workflow-dev/1.1-workflow-tradeoff-hybrid/` — Subagent-Isolations-
   Gradient v4/v5/v6/v7.
-- `research/RQ-8-app-effect/` — APP-Heuristik tragend.
-- `research/RQ-9-rules-effect/` — Four Rules raus = reine Reduktion.
-- `research/RQ-10-pep-effect/`, `RQ-11-emoji-effect/` — Einzelfaktor-
+- `research/workflow-dev/2.1-app-effect/` — APP-Heuristik tragend.
+- `research/workflow-dev/2.2-rules-effect/` — Four Rules raus = reine Reduktion.
+- `research/workflow-dev/2.3-pep-effect/`, `research/workflow-dev/2.4-emoji-effect/` — Einzelfaktor-
   Reduktions-RQs.
-- `research/RQ-12-emoji-cross-model/` — Modell-Generalisierungs-Test
+- `research/workflow-dev/2.5-emoji-cross-model/` — Modell-Generalisierungs-Test
   der RQ-11-Befunde (mit Warnsignal).
-- `research/RQ-13-v6.5-lean-validation/` — Bundle-Reduktion +
+- `research/workflow-dev/2.6-lean-validation/` — Bundle-Reduktion +
   Why-Rewrites + drei Workflow-Profile.
-- `research/RQ-14-orchestration-audit/` — externes Audit-Bundle
+- `research/workflow-dev/3.1-orchestration-audit/` — externes Audit-Bundle
   (Rationale + Hardening, *ohne* weitere Reduktion) trägt isolierbar
   und kostet ~15 % Tokens.
-- `research/RQ-15-bullets-cut/` — verbatim-duplikat-Bullets aus v6.5.1
+- `research/workflow-dev/3.2-bullets-cut/` — verbatim-duplikat-Bullets aus v6.5.1
   gestrichen: Quality + Cost gewinnen deutlich, Disziplin-σ verliert
   Faktor 2–3. Quality-Champion v6.5.2 vs Determinismus-Champion v6.5.1
   als zwei verschiedene Profile.
-- `research/RQ-16-targeted-cuts/` — Floor-Anker auf end-of-file
+- `research/workflow-dev/3.3-targeted-cuts/` — Floor-Anker auf end-of-file
   "Remember"-Section pinpointed. v6.5.3 (mid-file cuts, end behalten)
   ist neuer Quality-Champion (`cognitive_max` −37 %); Token-Win bleibt
   bei v6.5.2. Drei Pareto-Profile statt einem Champion.
-- `research/RQ-17-refactor-cut-only/` — F-16.4-Hypothese bestätigt:
+- `research/workflow-dev/3.4-refactor-cut-only/` — F-16.4-Hypothese bestätigt:
   `red/SKILL.md`-DO/DON'T ist Pred-Hygiene-Anker (v6.5.4 erreicht
   100 % Pred-Rate). v6.5.4 dominiert v6.5.1 in 7 von 8 Outcomes mit
   σ-Reduktion quer durch — neuer Default-Champion. Zeigt auch

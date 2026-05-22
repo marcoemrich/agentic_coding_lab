@@ -2,9 +2,9 @@
 
 _An welcher Stelle in der Optimierungskette v6 → v6.5 → v6.5.1 → v6.5.2 → v6.5.3 → v6.5.4 (→ v6.6) ist die verification_pct-Regression auf claim-office-example-mapping entstanden? Ist der Befund modell-unabhängig?_
 
-Generated: 2026-05-19T19:00:48Z
+Generated: 2026-05-22T15:45:06Z
 
-Cells declared: 20 · matched runs: 71 · min_replicates: 3
+Cells declared: 20 · matched runs: 69 · min_replicates: 3
 
 ## Zell-Coverage
 
@@ -26,7 +26,7 @@ Cells declared: 20 · matched runs: 71 · min_replicates: 3
 | claim-office-example-mapping | v6.5.1-orchestration-audited | opus-4-6-portkey-no-thinking | 0 | 0 | ❌ keine Runs |
 | claim-office-example-mapping | v6.5.2-bullets-cut | opus-4-7-no-thinking | 3 | 3 | ✅ |
 | claim-office-example-mapping | v6.5.2-bullets-cut | opus-4-6-portkey-no-thinking | 0 | 0 | ❌ keine Runs |
-| claim-office-example-mapping | v6.5.3-targeted-cuts | opus-4-7-no-thinking | 3 | 3 | ✅ |
+| claim-office-example-mapping | v6.5.3-targeted-cuts | opus-4-7-no-thinking | 1 | 1 | ⚠️ unter min_replicates (1/3) |
 | claim-office-example-mapping | v6.5.3-targeted-cuts | opus-4-6-portkey-no-thinking | 0 | 0 | ❌ keine Runs |
 | claim-office-example-mapping | v6.5.4-refactor-cut-only | opus-4-7-no-thinking | 0 | 0 | ❌ keine Runs |
 | claim-office-example-mapping | v6.5.4-refactor-cut-only | opus-4-6-portkey-no-thinking | 0 | 0 | ❌ keine Runs |
@@ -35,7 +35,7 @@ Cells declared: 20 · matched runs: 71 · min_replicates: 3
 
 ### verification_pct
 
-| kata                         | workflow                     | model                        |   n |   mean |   min |   max |    std |
+| kata                         | workflow                     | cell_model                   |   n |   mean |   min |   max |    std |
 |:-----------------------------|:-----------------------------|:-----------------------------|----:|-------:|------:|------:|-------:|
 | claim-office-example-mapping | v6-hybrid                    | opus-4-6-portkey-no-thinking |  15 |   0.68 |  0.27 |  1    |   0.33 |
 | claim-office-example-mapping | v6-hybrid                    | opus-4-7-no-thinking         |   5 |   1    |  1    |  1    |   0    |
@@ -54,7 +54,7 @@ Cells declared: 20 · matched runs: 71 · min_replicates: 3
 
 ### verification_passed
 
-| kata                         | workflow                     | model                        |   n |   mean |   min |   max |    std |
+| kata                         | workflow                     | cell_model                   |   n |   mean |   min |   max |    std |
 |:-----------------------------|:-----------------------------|:-----------------------------|----:|-------:|------:|------:|-------:|
 | claim-office-example-mapping | v6-hybrid                    | opus-4-6-portkey-no-thinking |  15 |  10.13 |     4 |    15 |   4.9  |
 | claim-office-example-mapping | v6-hybrid                    | opus-4-7-no-thinking         |   5 |  15    |    15 |    15 |   0    |
@@ -73,7 +73,7 @@ Cells declared: 20 · matched runs: 71 · min_replicates: 3
 
 ### tests_passing (rate %)
 
-| kata                         | workflow                     | model                        |   n |   match |   rate_% |
+| kata                         | workflow                     | cell_model                   |   n |   match |   rate_% |
 |:-----------------------------|:-----------------------------|:-----------------------------|----:|--------:|---------:|
 | claim-office-example-mapping | v6-hybrid                    | opus-4-6-portkey-no-thinking |  15 |      13 |       87 |
 | claim-office-example-mapping | v6-hybrid                    | opus-4-7-no-thinking         |   5 |       5 |      100 |
@@ -88,11 +88,11 @@ Cells declared: 20 · matched runs: 71 · min_replicates: 3
 | claim-office-example-mapping | v6.5-lean                    | opus-4-7-no-thinking         |   3 |       3 |      100 |
 | claim-office-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking         |   3 |       3 |      100 |
 | claim-office-example-mapping | v6.5.2-bullets-cut           | opus-4-7-no-thinking         |   3 |       3 |      100 |
-| claim-office-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking         |   3 |       1 |       33 |
+| claim-office-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking         |   1 |       1 |      100 |
 
 ### tests_total
 
-| kata                         | workflow                     | model                        |   n |   mean |   min |   max |    std |
+| kata                         | workflow                     | cell_model                   |   n |   mean |   min |   max |    std |
 |:-----------------------------|:-----------------------------|:-----------------------------|----:|-------:|------:|------:|-------:|
 | claim-office-example-mapping | v6-hybrid                    | opus-4-6-portkey-no-thinking |  15 |  30.53 |    19 |    39 |   8    |
 | claim-office-example-mapping | v6-hybrid                    | opus-4-7-no-thinking         |   5 |  35.2  |    34 |    37 |   1.3  |
@@ -111,7 +111,7 @@ Cells declared: 20 · matched runs: 71 · min_replicates: 3
 
 ### cycle_count
 
-| kata                         | workflow                     | model                        |   n |   mean |   min |   max |    std |
+| kata                         | workflow                     | cell_model                   |   n |   mean |   min |   max |    std |
 |:-----------------------------|:-----------------------------|:-----------------------------|----:|-------:|------:|------:|-------:|
 | claim-office-example-mapping | v6-hybrid                    | opus-4-6-portkey-no-thinking |  15 |  15.13 |     0 |    39 |  17.39 |
 | claim-office-example-mapping | v6-hybrid                    | opus-4-7-no-thinking         |   5 |  25.8  |     8 |    33 |  10.8  |
@@ -130,7 +130,7 @@ Cells declared: 20 · matched runs: 71 · min_replicates: 3
 
 ### refactorings_applied
 
-| kata                         | workflow                     | model                        |   n |   mean |   min |   max |    std |
+| kata                         | workflow                     | cell_model                   |   n |   mean |   min |   max |    std |
 |:-----------------------------|:-----------------------------|:-----------------------------|----:|-------:|------:|------:|-------:|
 | claim-office-example-mapping | v6-hybrid                    | opus-4-6-portkey-no-thinking |  15 |   5.4  |     0 |    20 |   6.6  |
 | claim-office-example-mapping | v6-hybrid                    | opus-4-7-no-thinking         |   5 |  10.4  |     4 |    13 |   3.78 |
@@ -149,7 +149,7 @@ Cells declared: 20 · matched runs: 71 · min_replicates: 3
 
 ### duration_seconds
 
-| kata                         | workflow                     | model                        |   n |    mean |   min |   max |     std |
+| kata                         | workflow                     | cell_model                   |   n |    mean |   min |   max |     std |
 |:-----------------------------|:-----------------------------|:-----------------------------|----:|--------:|------:|------:|--------:|
 | claim-office-example-mapping | v6-hybrid                    | opus-4-6-portkey-no-thinking |  15 | 2633    |  1665 |  4095 |  837.59 |
 | claim-office-example-mapping | v6-hybrid                    | opus-4-7-no-thinking         |   5 | 2116    |  1058 |  2883 |  716.26 |
@@ -168,26 +168,26 @@ Cells declared: 20 · matched runs: 71 · min_replicates: 3
 
 ### total_tokens
 
-| kata                         | workflow                     | model                        |   n |             mean |              min |              max |              std |
-|:-----------------------------|:-----------------------------|:-----------------------------|----:|-----------------:|-----------------:|-----------------:|-----------------:|
-| claim-office-example-mapping | v6-hybrid                    | opus-4-6-portkey-no-thinking |  15 |      2.26795e+07 | 377985           |      5.78407e+07 |      2.50901e+07 |
-| claim-office-example-mapping | v6-hybrid                    | opus-4-7-no-thinking         |   5 |      3.3248e+07  |      2.14921e+07 |      3.90968e+07 |      7.41969e+06 |
-| claim-office-example-mapping | v6.1-no-app                  | opus-4-7-no-thinking         |   3 |      3.29336e+07 |      2.61851e+07 |      4.1297e+07  |      7.68426e+06 |
-| claim-office-example-mapping | v6.2-no-rules                | opus-4-6-portkey-no-thinking |   5 |      2.04302e+07 | 323988           |      5.20879e+07 |      2.69641e+07 |
-| claim-office-example-mapping | v6.2-no-rules                | opus-4-7-no-thinking         |   3 |      3.7376e+07  |      3.53673e+07 |      3.8767e+07  |      1.78204e+06 |
-| claim-office-example-mapping | v6.3-no-pep                  | opus-4-6-portkey-no-thinking |   5 |      8.32729e+06 | 396160           |      3.95254e+07 |      1.74413e+07 |
-| claim-office-example-mapping | v6.3-no-pep                  | opus-4-7-no-thinking         |   3 |      3.92687e+07 |      3.59768e+07 |      4.18392e+07 |      2.99705e+06 |
-| claim-office-example-mapping | v6.4-no-emoji                | opus-4-6-portkey-no-thinking |  12 |      2.02565e+07 | 380203           |      5.01155e+07 |      2.45394e+07 |
-| claim-office-example-mapping | v6.4-no-emoji                | opus-4-7-no-thinking         |   3 |      3.22839e+07 |      2.6121e+07  |      3.65994e+07 |      5.47803e+06 |
-| claim-office-example-mapping | v6.5-lean                    | opus-4-6-portkey-no-thinking |   5 | 568723           | 388741           | 974067           | 256885           |
-| claim-office-example-mapping | v6.5-lean                    | opus-4-7-no-thinking         |   3 |      3.59917e+07 | 353159           |      5.71708e+07 |      3.10462e+07 |
-| claim-office-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking         |   3 |      2.86817e+07 | 302630           |      4.43308e+07 |      2.46203e+07 |
-| claim-office-example-mapping | v6.5.2-bullets-cut           | opus-4-7-no-thinking         |   3 |      2.57827e+07 | 354557           |      3.85191e+07 |      2.20215e+07 |
-| claim-office-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking         |   1 |      4.05136e+07 |      4.05136e+07 |      4.05136e+07 |    nan           |
+| kata                         | workflow                     | cell_model                   |   n |             mean |      min |      max |              std |
+|:-----------------------------|:-----------------------------|:-----------------------------|----:|-----------------:|---------:|---------:|-----------------:|
+| claim-office-example-mapping | v6-hybrid                    | opus-4-6-portkey-no-thinking |  15 |      2.26795e+07 |   377985 | 57840697 |      2.50901e+07 |
+| claim-office-example-mapping | v6-hybrid                    | opus-4-7-no-thinking         |   5 |      3.3248e+07  | 21492140 | 39096785 |      7.41969e+06 |
+| claim-office-example-mapping | v6.1-no-app                  | opus-4-7-no-thinking         |   3 |      3.29336e+07 | 26185118 | 41296962 |      7.68426e+06 |
+| claim-office-example-mapping | v6.2-no-rules                | opus-4-6-portkey-no-thinking |   5 |      2.04302e+07 |   323988 | 52087887 |      2.69641e+07 |
+| claim-office-example-mapping | v6.2-no-rules                | opus-4-7-no-thinking         |   3 |      3.7376e+07  | 35367266 | 38766981 |      1.78204e+06 |
+| claim-office-example-mapping | v6.3-no-pep                  | opus-4-6-portkey-no-thinking |   5 |      8.32729e+06 |   396160 | 39525438 |      1.74413e+07 |
+| claim-office-example-mapping | v6.3-no-pep                  | opus-4-7-no-thinking         |   3 |      3.92687e+07 | 35976767 | 41839194 |      2.99705e+06 |
+| claim-office-example-mapping | v6.4-no-emoji                | opus-4-6-portkey-no-thinking |  12 |      2.02565e+07 |   380203 | 50115461 |      2.45394e+07 |
+| claim-office-example-mapping | v6.4-no-emoji                | opus-4-7-no-thinking         |   3 |      3.22839e+07 | 26121026 | 36599387 |      5.47803e+06 |
+| claim-office-example-mapping | v6.5-lean                    | opus-4-6-portkey-no-thinking |   5 | 568723           |   388741 |   974067 | 256885           |
+| claim-office-example-mapping | v6.5-lean                    | opus-4-7-no-thinking         |   3 |      3.59917e+07 |   353159 | 57170845 |      3.10462e+07 |
+| claim-office-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking         |   3 |      2.86817e+07 |   302630 | 44330789 |      2.46203e+07 |
+| claim-office-example-mapping | v6.5.2-bullets-cut           | opus-4-7-no-thinking         |   3 |      2.57827e+07 |   354557 | 38519131 |      2.20215e+07 |
+| claim-office-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking         |   1 |      4.05136e+07 | 40513612 | 40513612 |    nan           |
 
 ### completed_within_budget (rate %)
 
-| kata                         | workflow                     | model                        |   n |   match |   rate_% |
+| kata                         | workflow                     | cell_model                   |   n |   match |   rate_% |
 |:-----------------------------|:-----------------------------|:-----------------------------|----:|--------:|---------:|
 | claim-office-example-mapping | v6-hybrid                    | opus-4-6-portkey-no-thinking |  15 |      15 |      100 |
 | claim-office-example-mapping | v6-hybrid                    | opus-4-7-no-thinking         |   5 |       5 |      100 |
@@ -202,4 +202,4 @@ Cells declared: 20 · matched runs: 71 · min_replicates: 3
 | claim-office-example-mapping | v6.5-lean                    | opus-4-7-no-thinking         |   3 |       3 |      100 |
 | claim-office-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking         |   3 |       3 |      100 |
 | claim-office-example-mapping | v6.5.2-bullets-cut           | opus-4-7-no-thinking         |   3 |       3 |      100 |
-| claim-office-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking         |   3 |       3 |      100 |
+| claim-office-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking         |   1 |       1 |      100 |

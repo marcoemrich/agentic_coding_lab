@@ -10,7 +10,7 @@ For each workflow cell at n=10, compute:
   on subsample means matches the n=10 ranking. Repeat 1000 random
   draws to estimate ranking-flip probability.
 
-Reads research/RQ-5-workflow-stability/runs.csv.
+Reads research/workflow-dev/1.2-workflow-stability/runs.csv.
 Writes a markdown table to stdout that gets pasted into findings.md.
 """
 from __future__ import annotations

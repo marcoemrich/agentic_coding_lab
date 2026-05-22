@@ -16,10 +16,10 @@ so this script is deliberately separate from ``analyze-run.sh`` and only
 invoked when an RQ explicitly opts in via ``outcomes: [..., mutation_score]``.
 
 Usage:
-  experiments/compute-mutation-score.py research/RQ-N/
-  experiments/compute-mutation-score.py research/RQ-N/ --dry-run
-  experiments/compute-mutation-score.py research/RQ-N/ --limit 1 --timeout-seconds 600
-  experiments/compute-mutation-score.py research/RQ-N/ --force
+  experiments/compute-mutation-score.py research/workflow-dev/5.1-correctness-regression/
+  experiments/compute-mutation-score.py research/workflow-dev/5.1-correctness-regression/ --dry-run
+  experiments/compute-mutation-score.py research/workflow-dev/5.1-correctness-regression/ --limit 1 --timeout-seconds 600
+  experiments/compute-mutation-score.py research/workflow-dev/5.1-correctness-regression/ --force
 """
 from __future__ import annotations
 

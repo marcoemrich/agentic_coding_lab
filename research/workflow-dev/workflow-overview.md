@@ -126,6 +126,6 @@ RQ-18.1 läuft (`claim-office-prose × v6.5.4/v8a/v8b × opus-4-7-no-thinking ×
 
 ## Quellen
 
-- `research/workflow-design/workflow-construction.md` — Methodik & Design-Leitprinzipien
-- `research/RQ-*/findings.md` — Einzel-RQ-Befunde
+- `research/workflow-dev/workflow-construction.md` — Methodik & Design-Leitprinzipien
+- `research/{questions,workflow-dev}/*/findings.md` — Einzel-RQ-Befunde
 - `experiments/workflows/MARKERS.md` — Parser-Marker

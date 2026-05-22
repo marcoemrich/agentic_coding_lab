@@ -15,12 +15,19 @@ End-to-end orchestration for advancing a single research question (RQ) in this l
 
 ## Argument
 
-- `RQ-N` (e.g. `RQ-3`) or `research/RQ-N-*/` (path).
+- `RQ-N` (e.g. `RQ-3`) or a direct path to an RQ dir.
 - If not given: infer from the last user turn, otherwise ask back ("Which RQ? e.g. RQ-3").
 
 ## Repo conventions (from the top-level `README.md` and memory)
 
-- RQ directory: `research/RQ-{N}-*/` with `README.md`, `findings.md`, `runs.csv`, `summary.md`.
+- RQ dirs live in two subtrees: `research/questions/<chapter>-*/` (generic research) and `research/workflow-dev/<chapter>-*/` (workflow evolution). The `<chapter>` prefix (e.g. `2.6`) is an **ordering label, not an id** — the stable identity is the frontmatter `id:` (e.g. `RQ-13`). Each RQ dir holds `README.md`, `findings.md`, `runs.csv`, `summary.md`.
+- **Resolving `RQ-N` to a path** (the dir name no longer contains the id): grep both subtrees for the frontmatter `id:`. The word boundary keeps `RQ-1` from matching `RQ-18`, and `RQ-3` from matching `RQ-3b`:
+  ```bash
+  RQ_DIR=$(grep -rlE "^id:[[:space:]]*RQ-3([[:space:]]|$)" \
+             research/questions/*/README.md research/workflow-dev/*/README.md \
+           | head -1 | xargs -r dirname)
+  ```
+  On no match → ask the user. On multiple → take the first and inform the user. Pass `"$RQ_DIR"` to all scripts below (they accept any path and write outputs to the dir).
 - Mandatory frontmatter fields: `id, question, factors, controls, outcomes, min_replicates, status`.
 - Methodology constraint: v1/v2 only with `prompt: prose`; v3/v4/v5 with all three styles. If `factors.workflow_x_prompt` exists, no additional `factors.workflow` / `controls.workflow` is allowed.
 - Active katas: `game-of-life`, `mars-rover`, `claim-office`. `controls.kata_base` must be from this set.
@@ -36,8 +43,8 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
 
 ### Phase 1 — Validate
 
-1. Resolve the RQ path with Glob: `research/RQ-{N}-*/`. On multiple matches, take the first and inform the user.
-2. Read `README.md`.
+1. Resolve the RQ path into `$RQ_DIR` via the id-grep in "Repo conventions" above. On no match, ask the user; on multiple, take the first and inform the user.
+2. Read `$RQ_DIR/README.md`.
 3. Parse the frontmatter block (between the first two `---` lines). Check mandatory fields: `id, question, factors, controls, outcomes, min_replicates, status`. Missing fields → abort phase, inform user.
 4. Check methodology constraints:
    - If `factors.workflow_x_prompt` is set: no additional `factors.workflow` and no `controls.workflow` may be set.
@@ -63,7 +70,7 @@ status: <status>
 
 1. Run dry-run:
    ```
-   experiments/batch-plan-from-rq.py research/RQ-{N}-*/ --dry-run
+   experiments/batch-plan-from-rq.py "$RQ_DIR" --dry-run
    ```
 2. Output contains the count of missing runs. Inform user:
    ```
@@ -73,7 +80,7 @@ status: <status>
 4. Otherwise: get user confirmation ("Write the plan with Y runs now?"). Only proceed after explicit "yes".
 5. Write the plan without `--dry-run`:
    ```
-   experiments/batch-plan-from-rq.py research/RQ-{N}-*/
+   experiments/batch-plan-from-rq.py "$RQ_DIR"
    ```
 6. Briefly inspect the generated plan (Read on `experiments/batch-plans/rq-{n}-fill.json`) and summarize the cell distribution (`{kata, workflow, model}` frequencies) to the user.
 
@@ -139,11 +146,11 @@ status: <status>
    - If any of these checks fail: stop, report the suspected pipeline bug to the user, do NOT aggregate. Fixing buggy data after a finding has been drawn from it is much more expensive than spending two minutes on the spot-check.
 2. Invoke:
    ```
-   experiments/aggregate-by-query.py research/RQ-{N}-*/
+   experiments/aggregate-by-query.py "$RQ_DIR"
    ```
 3. Expected outputs:
-   - `research/RQ-{N}-*/runs.csv` (one line per matched run)
-   - `research/RQ-{N}-*/summary.md` (per-cell pivots for each `outcome`)
+   - `$RQ_DIR/runs.csv` (one line per matched run)
+   - `$RQ_DIR/summary.md` (per-cell pivots for each `outcome`)
 4. Read `summary.md` in full and summarize to the user — show the per-cell pivot tables individually.
 5. Sanity check: does every cell have ≥ `min_replicates`? If not: warn and offer to jump back to phase 2 (additional runs).
 6. **Plausibility cross-check before phase 6** — if any cell value contradicts a previously-stable finding by a large margin (e.g. a workflow that was 100% green is suddenly 0%), do NOT treat that as a new finding without first running the spot-check from step 1 against that exact cell. A "v4 is suddenly broken on game-of-life" type observation is more often a pipeline regression than a real shift.

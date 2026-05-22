@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate a skeleton for a research-overview snapshot.
 
-Reads research/RQ-*/README.md (frontmatter) and findings.md, counts runs in
+Reads research/{questions,workflow-dev}/*/README.md (frontmatter) and findings.md, counts runs in
 experiments/runs/ per RQ, and emits a Markdown skeleton with all data-driven
 sections pre-filled. Synthesis sections (RQ paragraphs, cross-RQ synthesis,
 limitations narrative) are left as <!-- TODO Claude: ... --> markers for the
@@ -78,39 +78,72 @@ def parse_findings(findings_md: Path) -> list[dict]:
 # RQ collection
 # -----------------------------------------------------------------------
 
+# Subtrees that hold RQ directories, in display order. The chapter number in
+# each dir name (e.g. "2.6-lean-validation") is an ordering label, NOT an id —
+# the stable identity is the frontmatter `id:`. Renumbering is a pure rename.
+RQ_TREES = [
+    ("questions", "Forschungsfragen"),
+    ("workflow-dev", "Workflow-Entwicklung"),
+]
+
+
+def chapter_key(name: str) -> tuple[int, ...]:
+    """Sort key from the chapter prefix: '2.10-foo' -> (2, 10).
+
+    Numeric per segment so '1.2' sorts before '1.10' (lexicographic would not).
+    Non-numeric prefixes sort last.
+    """
+    head = name.split("-", 1)[0]
+    try:
+        return tuple(int(p) for p in head.split("."))
+    except ValueError:
+        return (9_999,)
+
+
 def collect_rqs() -> list[dict]:
-    """For each research/RQ-*/, parse frontmatter, findings, count runs."""
+    """Walk research/questions/ and research/workflow-dev/, parse frontmatter,
+    findings, count runs. Dirs are returned tree by tree, chapter-sorted."""
     rqs = []
-    for rq_dir in sorted(RESEARCH_DIR.iterdir()):
-        if not rq_dir.is_dir() or not rq_dir.name.startswith("RQ-"):
+    for tree_name, tree_label in RQ_TREES:
+        tree_dir = RESEARCH_DIR / tree_name
+        if not tree_dir.is_dir():
             continue
-        readme = rq_dir / "README.md"
-        if not readme.is_file():
-            continue
-        fm = agg.parse_frontmatter(readme)
-        cells = agg.expand_cells(fm)
-        counts = bpl.count_runs_per_cell(cells)
-        n_total = sum(counts.values())
-        n_cells = len(cells)
-        min_rep = int(fm.get("min_replicates", 1))
-        n_full = sum(1 for v in counts.values() if v >= min_rep)
-        coverage_pct = round(100 * n_full / n_cells) if n_cells else 0
+        sub = sorted(
+            (d for d in tree_dir.iterdir()
+             if d.is_dir() and not d.name.startswith("_")),
+            key=lambda d: chapter_key(d.name),
+        )
+        for rq_dir in sub:
+            readme = rq_dir / "README.md"
+            if not readme.is_file():
+                continue
+            fm = agg.parse_frontmatter(readme)
+            cells = agg.expand_cells(fm)
+            counts = bpl.count_runs_per_cell(cells)
+            n_total = sum(counts.values())
+            n_cells = len(cells)
+            min_rep = int(fm.get("min_replicates", 1))
+            n_full = sum(1 for v in counts.values() if v >= min_rep)
+            coverage_pct = round(100 * n_full / n_cells) if n_cells else 0
 
-        findings = parse_findings(rq_dir / "findings.md")
+            findings = parse_findings(rq_dir / "findings.md")
 
-        rqs.append({
-            "dir": rq_dir,
-            "id": fm.get("id", rq_dir.name),
-            "question": fm.get("question", ""),
-            "status": fm.get("status", ""),
-            "min_replicates": min_rep,
-            "n_cells": n_cells,
-            "n_full": n_full,
-            "n_runs": n_total,
-            "coverage_pct": coverage_pct,
-            "findings": findings,
-            "fm": fm,
-        })
+            rqs.append({
+                "dir": rq_dir,
+                "tree": tree_name,
+                "tree_label": tree_label,
+                "chapter": rq_dir.name.split("-", 1)[0],
+                "id": fm.get("id", rq_dir.name),
+                "question": fm.get("question", ""),
+                "status": fm.get("status", ""),
+                "min_replicates": min_rep,
+                "n_cells": n_cells,
+                "n_full": n_full,
+                "n_runs": n_total,
+                "coverage_pct": coverage_pct,
+                "findings": findings,
+                "fm": fm,
+            })
     return rqs
 
 
@@ -144,16 +177,23 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     # 1. Forschungsfragen-Übersicht
     p("## 1. Forschungsfragen-Übersicht")
     p("")
-    p("| RQ | Frage | Status | Cells | Coverage | n Runs |")
-    p("|---|---|---|---:|---:|---:|")
-    for rq in rqs:
-        p(f"| [{rq['id']}]({rq['dir'].relative_to(REPO_ROOT)}/) "
-          f"| {rq['question']} "
-          f"| {rq['status']} "
-          f"| {rq['n_cells']} "
-          f"| {rq['n_full']}/{rq['n_cells']} ({rq['coverage_pct']} %) "
-          f"| {rq['n_runs']} |")
-    p("")
+    for tree_name, tree_label in RQ_TREES:
+        tree_rqs = [r for r in rqs if r["tree"] == tree_name]
+        if not tree_rqs:
+            continue
+        p(f"### {tree_label}")
+        p("")
+        p("| Kap. | RQ | Frage | Status | Cells | Coverage | n Runs |")
+        p("|---|---|---|---|---:|---:|---:|")
+        for rq in tree_rqs:
+            p(f"| {rq['chapter']} "
+              f"| [{rq['id']}]({rq['dir'].relative_to(REPO_ROOT)}/) "
+              f"| {rq['question']} "
+              f"| {rq['status']} "
+              f"| {rq['n_cells']} "
+              f"| {rq['n_full']}/{rq['n_cells']} ({rq['coverage_pct']} %) "
+              f"| {rq['n_runs']} |")
+        p("")
     p("---")
     p("")
 
@@ -245,12 +285,17 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("---")
     p("")
 
-    # 4. Ergebnisse — pro RQ
+    # 4. Ergebnisse — pro RQ, gruppiert nach Baum + Kapitel
     p("## 4. Ergebnisse")
     p("")
+    current_tree = None
     for rq in rqs:
+        if rq["tree"] != current_tree:
+            current_tree = rq["tree"]
+            p(f"### {rq['tree_label']}")
+            p("")
         rel = rq["dir"].relative_to(REPO_ROOT)
-        p(f"### 4.{rq['id'].split('-')[1]} {rq['id']} — {rq['question']}")
+        p(f"#### {rq['chapter']} {rq['id']} — {rq['question']}")
         p("")
         p(f"_Datenbasis: {rq['n_runs']} Runs · "
           f"Coverage: {rq['n_full']}/{rq['n_cells']} Zellen "
@@ -302,8 +347,8 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p("Alle Daten und Analyse-Skripte liegen im Repo:")
     p("")
-    p("- `research/RQ-*/README.md` — RQ-Definitionen (Frontmatter mit factors/controls/outcomes)")
-    p("- `research/RQ-*/findings.md` — persistente Befund-Listen")
+    p("- `research/questions/*/README.md` und `research/workflow-dev/*/README.md` — RQ-Definitionen (Frontmatter mit factors/controls/outcomes)")
+    p("- `research/{questions,workflow-dev}/*/findings.md` — persistente Befund-Listen")
     p("- `experiments/runs/*/metrics.json` — Rohdaten pro Run")
     p("- `experiments/aggregate-by-query.py` — RQ-spezifische Aggregation")
     p("- `experiments/batch-plan-from-rq.py` — Batch-Plan-Generierung aus RQ-Frontmatter")

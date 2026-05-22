@@ -138,26 +138,12 @@ Zusätzlich zu v6.5-lean:
 Korrektheits-Status: nicht auf claim-office getestet, erbt aber
 v6.5-lean-Basis → vermutlich defekt.
 
-## Cross-Model-Befund (RQ-19 F-19.6, RQ-3b F-3b.2)
+## Cross-Model-Befund
 
-| Workflow | opus-4-7 vpct (n) | opus-4-6 vpct (n) |
-|---|---:|---:|
-| v4-exact-subagents | 0.67 (10) | **0.93** (5) |
-| v5-exact-single-context | 0.87 (10) | 0.87 (5) |
-| v6-hybrid | **1.00** (5) | 0.68 (15) |
-
-v4 und v6 sind **modell-abhängig komplementär**. v5 ist
-modell-unabhängig konstant.
-
-Mechanismus: v6-hybrid delegiert Orchestrierung an das Modell
-(Skill-Invocation im shared Context). opus-4-7 beherrscht das.
-opus-4-6 verliert in ~40 % der Runs die Claim-Hälfte der Spec —
-implementiert nur Quote, ignoriert Claim komplett, trotzdem
-`tests_passing=true` weil interne Tests nur Quote abdecken.
-
-v4 gibt jeder Phase einen expliziten Subagent-Prompt. opus-4-6
-profitiert von dieser Struktur. opus-4-7 wird auf v4 "überkreativ"
-bei Mehrdeutigkeiten.
+v4 und v6 sind **modell-abhängig komplementär** (v6 best auf opus-4-7, v4 best auf opus-4-6); v5 ist
+modell-unabhängig konstant. Der vollständige Befund mit Tabelle und Mechanismus ist als generische
+Forschungsfrage geführt: `research/questions/3.1-workflow-model-interaction/` (RQ-21). Die daraus
+abgeleitete Workflow-Empfehlung pro Modell steht in `model-recommendation-matrix.md`.
 
 ## Aktueller Stand
 

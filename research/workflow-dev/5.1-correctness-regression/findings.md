@@ -71,19 +71,11 @@ Konsequenz: alle v6.5er-Quality-Wins (cognitive_max-Reduktion, Smell-Reduktion, 
 
 Jede Workflow-Iteration braucht mindestens eine Korrektheits-Stichprobe auf einer Kata mit externer Verification-Suite, auch wenn die RQ primär Code-Qualität untersucht. Vorschlag: `claim-office-example-mapping × n=3` als Pflicht-Smoke vor jedem n=10-Quality-Batch in `workflow-construction.md` verankern.
 
-## F-19.6 — Workflow×Modell-Interaktion: v4 und v6 tauschen die Plätze
+## F-19.6 — Workflow×Modell-Interaktion (verschoben)
 
-| Workflow | opus-4-7 (n) | opus-4-6 (n) |
-|---|---:|---:|
-| v4-exact-subagents | 0.67 (10) | **0.93** (5) |
-| v5-exact-single-context | 0.87 (10) | 0.87 (5) |
-| v6-hybrid | **1.00** (5) | 0.68 (15) |
-
-v4 und v6 sind **modell-abhängig komplementär**: v6-hybrid ist opus-4-7-Optimum (1.00), aber auf opus-4-6 instabil (0.68). v4-exact-subagents ist auf opus-4-6 stabil (0.93), aber auf opus-4-7 bimodal (0.67). v5 ist modell-unabhängig konstant (0.87).
-
-Mechanismus: v6-hybrid delegiert die Orchestrierung an das Modell (Skill-Invocation-Semantik im shared Context). opus-4-7 beherrscht das. opus-4-6 verliert in ~40 % der Runs die Claim-Hälfte der Spec — das Modell implementiert nur Quote und ignoriert Claim komplett (`grep "claim\|payout\|deductible" claim-office.ts` = 0 Treffer, `tests_total` trotzdem 19–23 weil die internen Tests nur Quote abdecken).
-
-v4 gibt jeder Phase einen expliziten Subagent-Prompt. opus-4-6 profitiert von dieser Struktur, opus-4-7 wird auf v4 "überkreativ" und trifft bei Mehrdeutigkeiten häufiger die falsche Lesart.
+Der v4/v5/v6 × opus-4-7/opus-4-6-Befund („v4 und v6 tauschen je nach Modell die Plätze") ist als
+eigenständige generische Forschungsfrage herausgelöst:
+`research/questions/3.1-workflow-model-interaction/` (RQ-21, F-21.1/F-21.2).
 
 ## F-19.7 — Emoji-Effekt auf opus-4-6 existiert nicht
 
