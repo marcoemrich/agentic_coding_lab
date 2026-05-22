@@ -1,4 +1,4 @@
-# RQ-13 — Findings: v6.5-lean + v6.6-leaner Bundle-Validierung
+# RQ-lean — Findings: v6.5-lean + v6.6-leaner Bundle-Validierung
 
 ## Überblick
 
@@ -35,17 +35,17 @@
 
 ---
 
-## F-13.1 — v6.5-lean liefert leicht bessere Code-Qualität als v6; v6.6 fällt zurück
+## F-lean.1 — v6.5-lean liefert leicht bessere Code-Qualität als v6; v6.6 fällt zurück
 
 **Aussage:** v6.5-lean übertrifft v6 auf 3 von 5 Komplexitäts-Metriken (alle innerhalb ±1 σ). v6.6-leaner dreht den Trend wieder um: auf 4 von 5 Metriken leicht schlechter als v6.5, mit `cc_longest_function` deutlich (+24 % vs v6.5, +20 % vs v6).
 
-**Mechanismus für v6.5-Vorteil:** die skill-creator-Why-Rewrites disziplinieren das Refactoring (siehe F-13.2).
+**Mechanismus für v6.5-Vorteil:** die skill-creator-Why-Rewrites disziplinieren das Refactoring (siehe F-lean.2).
 
 **Mechanismus für v6.6-Rückgang:** vermutlich verkürzte Test-Liste (cycle_count 6 vs 8) reduziert Refactor-Opportunities pro Run — weniger Iterationen, in denen Spitzen-Komplexität bereinigt werden kann.
 
 ---
 
-## F-13.2 — v6.5-lean hat den stärksten Disziplin-Boost; v6.6 liegt dazwischen
+## F-lean.2 — v6.5-lean hat den stärksten Disziplin-Boost; v6.6 liegt dazwischen
 
 **Aussage:** Die TDD-Disziplin-Profile sind klar gestaffelt:
 
@@ -58,8 +58,8 @@
 
 Drei Verhaltensänderungen lassen sich konkreten Edits zuordnen:
 
-- **v6.5 → v6.6 Pred-Rate-Abfall (100 % → 97.5 %)**: tritt parallel zum Entfernen der DO/DON'T-Listen aus `red.md` auf. Die DO-Liste sagte "Make explicit predictions before running tests" — der Hinweis stand zusätzlich zu den Process-Steps und wirkte als finale visuelle Checkliste. Ohne ihn lässt das Modell gelegentlich Prediction-Lines verkürzt fallen. Parallel zur RQ-10 F-10.2-Erkenntnis ("strict discipline"-Streichung kostete Pred-Rate −6.9 pp): kleine Wortwahl-Änderungen in `red.md` haben unverhältnismäßig große Disziplin-Effekte.
-- **v6.5 → v6.6 Cycle-Count-Abfall (8.2 → 6.0)**: tritt parallel zur `test-list.md`-Konsolidierung auf. Das neue Why-Block in `test-list.md` empfiehlt explizit *"3-6 tests is the typical target. Fewer means the base scope is incomplete; more usually means edge cases crept in."* Das Modell folgt der Empfehlung und produziert kürzere Listen. Reduziert Scope (weniger Tests pro Run), spart Tokens (siehe F-13.4), aber auch weniger Refactor-Opportunities.
+- **v6.5 → v6.6 Pred-Rate-Abfall (100 % → 97.5 %)**: tritt parallel zum Entfernen der DO/DON'T-Listen aus `red.md` auf. Die DO-Liste sagte "Make explicit predictions before running tests" — der Hinweis stand zusätzlich zu den Process-Steps und wirkte als finale visuelle Checkliste. Ohne ihn lässt das Modell gelegentlich Prediction-Lines verkürzt fallen. Parallel zur RQ-pep F-pep.2-Erkenntnis ("strict discipline"-Streichung kostete Pred-Rate −6.9 pp): kleine Wortwahl-Änderungen in `red.md` haben unverhältnismäßig große Disziplin-Effekte.
+- **v6.5 → v6.6 Cycle-Count-Abfall (8.2 → 6.0)**: tritt parallel zur `test-list.md`-Konsolidierung auf. Das neue Why-Block in `test-list.md` empfiehlt explizit *"3-6 tests is the typical target. Fewer means the base scope is incomplete; more usually means edge cases crept in."* Das Modell folgt der Empfehlung und produziert kürzere Listen. Reduziert Scope (weniger Tests pro Run), spart Tokens (siehe F-lean.4), aber auch weniger Refactor-Opportunities.
 - **v6.5 → v6.6 Refactor-Quote-Abfall (6.9 → 5.9)**: indirekter Effekt — bei 6 statt 8 Cycles ist die maximale Refactor-Quote ohnehin niedriger; pro Cycle ist die Quote sogar gleich (5.9/6.0 ≈ 6.9/8.2).
 
 H4-Bewertung uneinheitlich:
@@ -68,7 +68,7 @@ H4-Bewertung uneinheitlich:
 
 ---
 
-## F-13.3 — Stabilität: v6.5 mit code_mass-Sprung, v6.6 in cc_longest enger aber elsewhere ähnlich
+## F-lean.3 — Stabilität: v6.5 mit code_mass-Sprung, v6.6 in cc_longest enger aber elsewhere ähnlich
 
 **Aussage:** Die Streuungs-Profile sind unterschiedlich pro Reduktionsstufe:
 
@@ -84,7 +84,7 @@ H4-Bewertung uneinheitlich:
 
 ---
 
-## F-13.4 — v6.6 ist Token-Sieger, v6.5 Quality-Sieger, v6 Wallclock-Sieger
+## F-lean.4 — v6.6 ist Token-Sieger, v6.5 Quality-Sieger, v6 Wallclock-Sieger
 
 **Aussage:** Klare 3-way Differenzierung in der Kosten-Dimension:
 
@@ -105,20 +105,20 @@ H4-Bewertung uneinheitlich:
 
 ---
 
-## F-13.5 — Korrektheit überall 100 % (Sanity)
+## F-lean.5 — Korrektheit überall 100 % (Sanity)
 
 `tests_passing = 100 %` und `verification_pct = 1.00` über alle 30 Runs (3 × n=10). Keine Pipeline-Auffälligkeit, keine Marker-Bruche.
 
 ---
 
-## F-13.6 — Konsequenz: drei Workflow-Profile für drei Ziel-Profile
+## F-lean.6 — Konsequenz: drei Workflow-Profile für drei Ziel-Profile
 
 | Ziel-Profil | Empfehlung | Kosten-Profil |
 |---|---|---|
 | **Token-Budget primär** | **v6.6-leaner** | −16 % vs v6.5, −6 % vs v6 |
 | **Quality + Disziplin primär** | **v6.5-lean** | +72 % Refactor, 100 % Pred, +12 % Tokens vs v6 |
 | **Wallclock primär (game-of-life)** | **v6** | klar schneller, leichter Quality-Tradeoff vs v6.5 |
-| **Sonnet-Deployment** | v6.4-no-emoji (RQ-12) | n/a hier |
+| **Sonnet-Deployment** | v6.4-no-emoji (RQ-emoji-cross-model) | n/a hier |
 
 v6.6 hat die DO/DON'T-Hypothese aus dem skill-creator-Review **teilweise widerlegt**: die Listen waren nicht rein redundant — Pred-Rate fällt um 2.5 pp ohne sie. Plus die Test-List-Empfehlung "3-6 tests" hat einen messbaren Scope-Effekt (cycle_count −27 %).
 
@@ -131,7 +131,7 @@ v6.6 hat die DO/DON'T-Hypothese aus dem skill-creator-Review **teilweise widerle
 
 - **Single Kata, single Modell**: nur game-of-life-example-mapping auf opus-4-7-no-thinking. Generalisierbarkeit auf claim-office und Sonnet offen.
 - **Reduktion und Why-Rewrites in v6.5 nicht separierbar**: ob die Disziplin-Boosts aus den Why-Begründungen oder aus der Prompt-Schlankheit kommen, bleibt eine offene Frage. Eine "v6.5-no-why"-RQ würde das trennen.
-- **v6.6 ändert zwei Dinge gleichzeitig**: test-list-Konsolidierung (mit expliziter "3-6 tests"-Empfehlung) UND DO/DON'T-Entfernung. Die Effekte aus F-13.4 sind nicht getrennt zuzuordnen.
+- **v6.6 ändert zwei Dinge gleichzeitig**: test-list-Konsolidierung (mit expliziter "3-6 tests"-Empfehlung) UND DO/DON'T-Entfernung. Die Effekte aus F-lean.4 sind nicht getrennt zuzuordnen.
 - **v6.6 cognitive_max-Outlier**: 1 von 10 Runs mit cognitive=12 (gleich wie v6.5). Manuelle Inspektion könnte zeigen, ob das ein Refactor-Aussetzer ist.
 - **v6.6 Wallclock-Outlier (2656s)**: Infrastruktur-Stall, keine Workflow-Pathologie. Aussagen über v6.6-Geschwindigkeit besser via Median (656s) oder mean ohne Outlier (609s) interpretieren.
 - **Why-Block-Wirkung in test-list.md asymmetrisch**: die Empfehlung "3-6 tests" wirkt als implizite Obergrenze. Hätte ich den Why-Block ohne diese Zahl-Empfehlung formuliert, wäre der cycle_count vermutlich nicht gefallen. Wortwahl-Sensitivität in Skill-Prompts ist offenbar sehr hoch.

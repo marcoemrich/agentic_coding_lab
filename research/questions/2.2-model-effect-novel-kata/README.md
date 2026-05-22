@@ -1,5 +1,5 @@
 ---
-id: RQ-3b
+id: RQ-model-novel
 question: "Wie unterscheiden sich Opus 4.7 und Opus 4.6 (jeweils no-thinking) in Korrektheit und Code-Qualität auf einer novel Kata mit Mehrdeutigkeiten, die stärker differenziert als die trainingsbekannte game-of-life?"
 factors:
   model:
@@ -30,23 +30,23 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-3b: Model-Effekt auf novel Kata (claim-office)
+# RQ-model-novel: Model-Effekt auf novel Kata (claim-office)
 
 ## Motivation
 
-RQ-3 vergleicht 6 Modelle auf `game-of-life-example-mapping` (trainingsbekannt). Ergebnis: alle Modelle erreichen 100 % `verification_pct` (außer sonnet-4-6-no-thinking mit 0.73). Die Kata differenziert auf Code-Qualität, aber nicht auf Korrektheit — alle "bestehen".
+RQ-model-quality vergleicht 6 Modelle auf `game-of-life-example-mapping` (trainingsbekannt). Ergebnis: alle Modelle erreichen 100 % `verification_pct` (außer sonnet-4-6-no-thinking mit 0.73). Die Kata differenziert auf Code-Qualität, aber nicht auf Korrektheit — alle "bestehen".
 
-Auf `claim-office-example-mapping` (novel, 5 Mehrdeutigkeiten, CLI mit externer Verification-Suite) hat RQ-19 gezeigt, dass opus-4-6 systematisch schlechtere Spec-Vollständigkeit liefert als opus-4-7: ein opus-4-6-Run auf v6-hybrid hat die `claim`-Operation komplett ignoriert (nur `quote` implementiert), obwohl das JSON-Schema-Beispiel in der Spec beide klar spezifiziert.
+Auf `claim-office-example-mapping` (novel, 5 Mehrdeutigkeiten, CLI mit externer Verification-Suite) hat RQ-regression gezeigt, dass opus-4-6 systematisch schlechtere Spec-Vollständigkeit liefert als opus-4-7: ein opus-4-6-Run auf v6-hybrid hat die `claim`-Operation komplett ignoriert (nur `quote` implementiert), obwohl das JSON-Schema-Beispiel in der Spec beide klar spezifiziert.
 
-RQ-3b fokussiert auf die zwei stärksten Modelle (no-thinking, weil RQ-3 F-3.2 zeigt, dass Thinking keinen konsistenten Vorteil bringt) und gibt ihnen die härtere Challenge.
+RQ-model-novel fokussiert auf die zwei stärksten Modelle (no-thinking, weil RQ-model-quality F-model-quality.2 zeigt, dass Thinking keinen konsistenten Vorteil bringt) und gibt ihnen die härtere Challenge.
 
 ## Vorhandene Daten
 
-- **opus-4-7-no-thinking × v4 × claim-office-EM**: n=10 aus RQ-7-Pool (mean verification_pct 0.67, bimodal: 4 perfekt, 6 zwischen 0.20–0.87)
-- **opus-4-6-portkey-no-thinking × v4 × claim-office-EM**: n=3 läuft (RQ-19 cross-model batch)
+- **opus-4-7-no-thinking × v4 × claim-office-EM**: n=10 aus RQ-workflow-tradeoff-Pool (mean verification_pct 0.67, bimodal: 4 perfekt, 6 zwischen 0.20–0.87)
+- **opus-4-6-portkey-no-thinking × v4 × claim-office-EM**: n=3 läuft (RQ-regression cross-model batch)
 
 ## Hypothesen
 
-- **H1 (Modell-Capability-Gap bei Spec-Vollständigkeit)**: opus-4-6 hat signifikant niedrigere `verification_pct` als opus-4-7 — bestätigt die RQ-19-Beobachtung "implementiert nur die Hälfte der Spec" als modell-spezifisches Defizit.
-- **H2 (Code-Qualitäts-Gap bleibt)**: opus-4-6 hat höhere Komplexitäts-Metriken (cognitive_max, mccabe_max), konsistent mit RQ-3 F-3.3 (~2× auf GOL).
+- **H1 (Modell-Capability-Gap bei Spec-Vollständigkeit)**: opus-4-6 hat signifikant niedrigere `verification_pct` als opus-4-7 — bestätigt die RQ-regression-Beobachtung "implementiert nur die Hälfte der Spec" als modell-spezifisches Defizit.
+- **H2 (Code-Qualitäts-Gap bleibt)**: opus-4-6 hat höhere Komplexitäts-Metriken (cognitive_max, mccabe_max), konsistent mit RQ-model-quality F-model-quality.3 (~2× auf GOL).
 - **H3 (Korrektheit ist die härtere Achse)**: Auf claim-office differenziert `verification_pct` die Modelle stärker als jede Code-Qualitäts-Metrik — die "stärkere Challenge" exponiert Unterschiede, die auf GOL unsichtbar waren.

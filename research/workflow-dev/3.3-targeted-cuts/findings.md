@@ -1,4 +1,4 @@
-# RQ-16 Findings
+# RQ-targeted Findings
 
 ## Übersicht
 
@@ -23,7 +23,7 @@ Lesart: drei verschiedene Pareto-Profile. v6.5.3 gewinnt fast alle Quality- und 
 
 ---
 
-## F-16.1 — Floor-Anker bestätigt: "Remember"-Sektion trägt das Disziplin-Floor
+## F-targeted.1 — Floor-Anker bestätigt: "Remember"-Sektion trägt das Disziplin-Floor
 
 Zwei Floor-Metriken springen mit der "Remember"-Sektion zwischen v6.5.1/v6.5.3 (enthält "Remember") und v6.5.2 (entfernt) — die mid-file DO/DON'T-Blöcke haben keinen Einfluss:
 
@@ -38,7 +38,7 @@ v6.5.3 reproduziert den perfekten 0/10-Floor von v6.5.1 und den 7er-Refactor-Flo
 
 ---
 
-## F-16.2 — v6.5.3 ist neuer Quality-Champion: `cognitive_max` 5.6 → 3.5
+## F-targeted.2 — v6.5.3 ist neuer Quality-Champion: `cognitive_max` 5.6 → 3.5
 
 Drei Komplexitäts-Metriken erreichen mit v6.5.3 ihr Minimum über alle drei Workflows:
 
@@ -52,7 +52,7 @@ Drei Komplexitäts-Metriken erreichen mit v6.5.3 ihr Minimum über alle drei Wor
 
 ---
 
-## F-16.3 — Token-Win von v6.5.2 ist NICHT übertragbar: "Remember" treibt Refactor-Tiefe
+## F-targeted.3 — Token-Win von v6.5.2 ist NICHT übertragbar: "Remember" treibt Refactor-Tiefe
 
 | outcome           | v6.5.1            | v6.5.2 (alle drei Cuts) | v6.5.3 (nur DO/DON'T weg) |
 |-------------------|-------------------|-------------------------|---------------------------|
@@ -66,7 +66,7 @@ Lesart: "Remember" treibt den Refactor-Subagent zu *tieferer* Refactor-Arbeit �
 
 ---
 
-## F-16.4 — v6.5.3 zeigt überraschend schlechtere `predictions_correct_rate` (95.8 %)
+## F-targeted.4 — v6.5.3 zeigt überraschend schlechtere `predictions_correct_rate` (95.8 %)
 
 | workflow | correct / total | rate    | Wrong-Predictions |
 |---|---:|---:|---:|
@@ -82,7 +82,7 @@ Plausibelste Lesart: die DO/DON'T-Streichung in `red/SKILL.md` (14 Z.) hat einen
 
 ---
 
-## F-16.5 — Drei verschiedene Champion-Profile
+## F-targeted.5 — Drei verschiedene Champion-Profile
 
 Die drei Workflows besetzen drei verschiedene Pareto-Punkte:
 

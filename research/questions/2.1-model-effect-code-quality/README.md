@@ -1,5 +1,5 @@
 ---
-id: RQ-3
+id: RQ-model-quality
 question: "Wie stark unterscheiden sich die verfügbaren Modelle (Sonnet 4.6, Opus 4.6, Opus 4.7 — jeweils mit/ohne Thinking) in der Code-Qualität auf einer trainingsbekannten Kata bei stärkstem Workflow?"
 factors:
   model:
@@ -34,7 +34,7 @@ min_replicates: 3
 status: aktiv
 ---
 
-# RQ-3: Modell-Effekt auf Code-Qualität
+# RQ-model-quality: Modell-Effekt auf Code-Qualität
 
 Wie stark differenzieren sich die produktiv verfügbaren Modelle in der Code-Qualität, wenn Workflow und Kata kontrolliert sind?
 
@@ -63,7 +63,7 @@ v4-exact-subagents ist nach den bisherigen Befunden der stärkste Workflow für 
 
 ## Warum Prompt = example-mapping fix?
 
-RQ-2 hat empirisch gezeigt, dass der Prompt-Stil bei trainingsbekannten Katas (Game of Life) **keinen** belastbaren Effekt auf Code-Qualität hat (Opus und Sonnet stilunabhängig 100 % Korrektheit; Stil-Spread bei Qualitätsmetriken nicht über Modelle konsistent). Daher pinnen wir example-mapping und sparen den Faktor.
+RQ-prompt-known-kata hat empirisch gezeigt, dass der Prompt-Stil bei trainingsbekannten Katas (Game of Life) **keinen** belastbaren Effekt auf Code-Qualität hat (Opus und Sonnet stilunabhängig 100 % Korrektheit; Stil-Spread bei Qualitätsmetriken nicht über Modelle konsistent). Daher pinnen wir example-mapping und sparen den Faktor.
 
 ## Warum Game of Life?
 

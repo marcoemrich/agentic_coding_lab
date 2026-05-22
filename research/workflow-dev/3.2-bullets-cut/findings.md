@@ -1,4 +1,4 @@
-# RQ-15 Findings
+# RQ-bullets Findings
 
 ## Übersicht
 
@@ -23,7 +23,7 @@ Lesart: v6.5.2 gewinnt auf **Code-Qualität** (Komplexitäts-Metriken deutlich b
 
 ---
 
-## F-15.1 — Bullet-Cut verbessert Code-Qualität substanziell
+## F-bullets.1 — Bullet-Cut verbessert Code-Qualität substanziell
 
 Drei Komplexitäts-Metriken sinken deutlich, σ ebenso:
 
@@ -37,7 +37,7 @@ Code-Mass (APP) und Smell-Summe bleiben praktisch identisch (146.7 vs 146.7; 2.0
 
 ---
 
-## F-15.2 — TDD-Disziplin-Mittelwerte halten, Streuung steigt deutlich
+## F-bullets.2 — TDD-Disziplin-Mittelwerte halten, Streuung steigt deutlich
 
 Mittelwerte der Disziplin-Metriken bleiben innerhalb 1 σ der v6.5.1-Werte, aber σ verdoppelt/verdreifacht sich:
 
@@ -47,11 +47,11 @@ Mittelwerte der Disziplin-Metriken bleiben innerhalb 1 σ der v6.5.1-Werte, aber
 | `cycle_count`                | 7.8 ± 0.42        | 7.7 ± 1.06      | 2.5×     |
 | `tests_passed_immediately`   | 0 / 10            | 1 / 10          | n. a.    |
 
-H1 (Mittelwerte halten) ist erfüllt, H4 (σ stabil) klar widerlegt. Die in RQ-14 fast deterministischen Bänder lösen sich auf — v6.5.2-Runs sind im Mittel ähnlich diszipliniert, aber das *deterministische Floor-Verhalten* (refactorings_applied: min 7 in v6.5.1, min 5 in v6.5.2) ist verloren. Lesart: die Bullets haben nicht die Mittelwerte getragen, sondern den Pattern-Match-Floor — ohne sie kollabieren Outlier auf die alten v6.5-lean-Niveaus zurück.
+H1 (Mittelwerte halten) ist erfüllt, H4 (σ stabil) klar widerlegt. Die in RQ-audit fast deterministischen Bänder lösen sich auf — v6.5.2-Runs sind im Mittel ähnlich diszipliniert, aber das *deterministische Floor-Verhalten* (refactorings_applied: min 7 in v6.5.1, min 5 in v6.5.2) ist verloren. Lesart: die Bullets haben nicht die Mittelwerte getragen, sondern den Pattern-Match-Floor — ohne sie kollabieren Outlier auf die alten v6.5-lean-Niveaus zurück.
 
 ---
 
-## F-15.3 — Token-Mittelwert sinkt überraschend stark, σ verdoppelt sich
+## F-bullets.3 — Token-Mittelwert sinkt überraschend stark, σ verdoppelt sich
 
 | outcome           | v6.5.1            | v6.5.2            | Δ Mittel | Δ σ  |
 |-------------------|-------------------|-------------------|---------:|-----:|
@@ -64,13 +64,13 @@ Die σ-Verdoppelung (0.60 M → 1.35 M) heißt: Cost ist im Mittel günstiger, a
 
 ---
 
-## F-15.4 — Korrektheit bleibt perfekt, Bullets sind nicht korrektheits-tragend
+## F-bullets.4 — Korrektheit bleibt perfekt, Bullets sind nicht korrektheits-tragend
 
 `tests_passing` 10/10, `verification_pct` 10/10 in beiden Zellen. Die gestrichenen Bullets hatten keinen Anteil an der Test-/Acceptance-Korrektheit.
 
 ---
 
-## F-15.5 — Promotion-Lesart: zwei verschiedene Champions
+## F-bullets.5 — Promotion-Lesart: zwei verschiedene Champions
 
 v6.5.2 ist **kein** Drop-in-Ersatz für v6.5.1, sondern ein anderes Profil:
 

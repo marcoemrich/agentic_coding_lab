@@ -3,7 +3,7 @@
 The batch container's default Claude profile (`./claude-config/`) talks to
 the Anthropic API directly via OAuth. When the Anthropic-API rate limit
 is reached, RQs can be routed through the Portkey gateway instead
-(currently used by `RQ-9` with model variant `opus-4-6-portkey`).
+(currently used by `RQ-rules` with model variant `opus-4-6-portkey`).
 
 This file documents the **host-side setup** for the Portkey profile.
 

@@ -1,4 +1,4 @@
-# RQ-6 Findings
+# RQ-context Findings
 
 Persistente Sammlung der Erkenntnisse zur Frage:
 **Welche Form der Kontext-Strukturierung — isolierte Subagent-Kontexte pro
@@ -32,7 +32,7 @@ Auf `verification_pct`: groesser = besser.
 
 ---
 
-## F-6.1 — Isolierte Subagent-Kontexte (v4) verbessern Code-Qualitaet auf beiden Katas; Effekt auf GoL groesser als auf claim-office ✅ stabil
+## F-context.1 — Isolierte Subagent-Kontexte (v4) verbessern Code-Qualitaet auf beiden Katas; Effekt auf GoL groesser als auf claim-office ✅ stabil
 
 **Aussage**: v4 dominiert v5 auf jeder Code-Qualitaets-Metrik (außer
 `code_mass` auf GoL marginal anders, auf claim-office aber wieder zugunsten
@@ -65,7 +65,7 @@ waechst mit Kata-Komplexitaet.
 
 ---
 
-## F-6.2 — Aussen-Korrektheit kehrt sich um: v4 fuehrt auf GoL, v5 fuehrt auf claim-office ⚠️ bedingt → wichtige Falsifikation von H2
+## F-context.2 — Aussen-Korrektheit kehrt sich um: v4 fuehrt auf GoL, v5 fuehrt auf claim-office ⚠️ bedingt → wichtige Falsifikation von H2
 
 **Aussage**: Auf game-of-life ist `verification_pct` 100 % in beiden
 Workflows. **Auf claim-office kippt das Muster**: v5 erreicht 0.87
@@ -112,7 +112,7 @@ claim-office-Spezifitaet aufzeigen.
 
 ---
 
-## F-6.3 — Kosten-Trade-off: v4 spart Tokens auf GoL, ist auf claim-office aber etwa gleich teuer; v5 immer wallclock-effizient ✅ stabil
+## F-context.3 — Kosten-Trade-off: v4 spart Tokens auf GoL, ist auf claim-office aber etwa gleich teuer; v5 immer wallclock-effizient ✅ stabil
 
 **Aussage**: Kosten-Profile pro Kata:
 
@@ -141,12 +141,12 @@ gleich). H5 (Wallclock zugunsten v5) cross-kata sehr deutlich bestaetigt.
   Token-Effizienz; nur Wallclock leidet.
 - Auf komplexen, breit spezifizierten Aufgaben: v4 spart keine Tokens
   mehr, Code-Qualitaet ist nur marginal besser, **Aussen-Korrektheit
-  ist sogar schlechter** (F-6.2), und Wallclock kostet 5.6× mehr. Der
+  ist sogar schlechter** (F-context.2), und Wallclock kostet 5.6× mehr. Der
   Vorteil von v4 schmilzt.
 
 ---
 
-## F-6.4 — Tail-Risiken: v4 hat auf beiden Katas spezifische Failure-Modi ⚠️ bedingt
+## F-context.4 — Tail-Risiken: v4 hat auf beiden Katas spezifische Failure-Modi ⚠️ bedingt
 
 **Aussage**: Pro Workflow lassen sich charakteristische Tail-Risiken
 benennen:
@@ -158,7 +158,7 @@ benennen:
 - Korrektheit aber 100 %.
 
 **v4 auf claim-office** (10 Runs):
-- **4/10 Spec-Coverage-Failures** (verification_pct ≤ 33 %, siehe F-6.2)
+- **4/10 Spec-Coverage-Failures** (verification_pct ≤ 33 %, siehe F-context.2)
   — das mit Abstand schlimmste Tail-Risiko.
 - Hoch korreliert mit *niedrigem* cognitive_max (Mittel ~5 in den
   Failures vs ~17 in den 15/15-Runs): minimale Implementation =
@@ -182,7 +182,7 @@ knapp; 95 %-CIs der Failure-Raten breit.
 
 ---
 
-## F-6.5 — Test-Staerke (`mutation_score`) zeigt dieselbe Kata-Inkonsistenz wie Aussen-Korrektheit — verstaerkt F-6.2 ⚠️ bedingt
+## F-context.5 — Test-Staerke (`mutation_score`) zeigt dieselbe Kata-Inkonsistenz wie Aussen-Korrektheit — verstaerkt F-context.2 ⚠️ bedingt
 
 **Aussage**: Mutation-Score (Stärke der vom Implementierer selbst
 geschriebenen internen Tests, Stryker) ist auf den beiden Katas
@@ -205,8 +205,8 @@ geschriebenen internen Tests, Stryker) ist auf den beiden Katas
   generalisieren. Spärliche, große Specs (claim-office) → v4's Isolation
   zwingt jeden Test zu eigenständiger Härte.
 
-**Verbindung zu F-6.1 und F-6.2**: Auf game-of-life ist v4 zwar bei
-Komplexität (F-6.1) und Aussen-Korrektheit besser, hat aber **schwächere
+**Verbindung zu F-context.1 und F-context.2**: Auf game-of-life ist v4 zwar bei
+Komplexität (F-context.1) und Aussen-Korrektheit besser, hat aber **schwächere
 Tests** als v5 — d.h. das hohe `verification_pct` von v4 auf GoL ist
 weniger ein Verdienst seiner Tests als der Modell-Generalisierung. Auf
 claim-office liegen Test-Stärke (v4 > v5) und Aussen-Korrektheit (v5 > v4)
@@ -218,7 +218,7 @@ Aussen-Korrektheit verläuft pro Kata anders.
 
 **v4-Streuung bestätigt**: σ=0.080 auf GoL, σ=0.042 auf claim-office —
 auf beiden Katas hat v4 die breiteste Test-Stärke-Verteilung. Tail-Risiko-
-Beobachtung aus F-6.4 wiederholt sich in dieser Metrik.
+Beobachtung aus F-context.4 wiederholt sich in dieser Metrik.
 
 **Datenbasis**: 40 Runs (4 Zellen × n=10), opus-4-7-no-thinking,
 example-mapping. Stryker 8.6.0.
@@ -229,7 +229,7 @@ example-mapping. Stryker 8.6.0.
 
 - **Single model**: Nur `opus-4-7-no-thinking`. Bei staerkeren Modellen
   (Opus mit Thinking) koennte v4 mehr Spec-Antizipation in der Test-List-
-  Phase leisten und die F-6.2-Spec-Coverage-Luecke schliessen — offen.
+  Phase leisten und die F-context.2-Spec-Coverage-Luecke schliessen — offen.
 - **Zwei Katas**: game-of-life (eng spezifiziert) und claim-office
   (breit spezifiziert). Mars-rover als dritte Kata mittlerer Komplexitaet
   bleibt offen — wuerde die Magnituden-Skalierung (GoL → claim-office)

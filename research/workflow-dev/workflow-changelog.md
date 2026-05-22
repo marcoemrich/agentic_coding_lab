@@ -16,9 +16,9 @@ unabhängig.
 Kohärenz (Subagent kennt die Plan-Entscheidungen der Test-List-Phase
 nicht).
 
-## v6-hybrid — Architektur-Optimum (RQ-7)
+## v6-hybrid — Architektur-Optimum (RQ-workflow-tradeoff)
 
-Pareto-Optimum aus RQ-7: red/green als Skills im Hauptkontext
+Pareto-Optimum aus RQ-workflow-tradeoff: red/green als Skills im Hauptkontext
 (geteilter State), nur Refactor als isolierter Subagent.
 
 **Befund**: Beste Smell-Reduktion + perfekte `verification_pct` auf
@@ -28,22 +28,22 @@ auf Korrektheit und v7 (green+refactor isoliert) auf allen Achsen.
 **Lehre**: Isolation hilft dort, wo Frische-Perspektive Wert hat
 (Refactor). Sie schadet dort, wo Kontinuität nötig ist (red→green).
 
-## v6.1–v6.4 — Einzel-Cuts (RQ-8 bis RQ-12)
+## v6.1–v6.4 — Einzel-Cuts (RQ-app bis RQ-emoji-cross-model)
 
 Vier isolierte Reduktionen gegen v6-hybrid, jeweils ein einziger
 Cut:
 
 | Variante | Was entfernt wurde | RQ | Effekt GOL | Effekt claim-office |
 |---|---|---|---|---|
-| v6.1-no-app | APP-Heuristik aus refactor.md | RQ-8 | kein Effekt | 1.00 (n=3, hält) |
-| v6.2-no-rules | Four Rules of Simple Design | RQ-9 | kein Effekt | 1.00 (n=3, hält) |
-| v6.3-no-pep | Pep-Talks ("Trust the process" etc.) | RQ-10 | kein Effekt | 1.00 (n=3, hält) |
-| v6.4-no-emoji | 🔴🟢🔄📋✅❌ Marker | RQ-11/12 | kein Effekt | 0.93 (n=3, marginal) |
+| v6.1-no-app | APP-Heuristik aus refactor.md | RQ-app | kein Effekt | 1.00 (n=3, hält) |
+| v6.2-no-rules | Four Rules of Simple Design | RQ-rules | kein Effekt | 1.00 (n=3, hält) |
+| v6.3-no-pep | Pep-Talks ("Trust the process" etc.) | RQ-pep | kein Effekt | 1.00 (n=3, hält) |
+| v6.4-no-emoji | 🔴🟢🔄📋✅❌ Marker | RQ-emoji/RQ-emoji-cross-model | kein Effekt | 0.93 (n=3, marginal) |
 
 **Befund**: Alle vier Cuts sind einzeln **neutral** auf Korrektheit
 (claim-office) und Code-Qualität (GOL).
 
-## v6.5-lean — Skill-Creator-Intervention (RQ-13) ⚠️ KORREKTHEITS-REGRESSION
+## v6.5-lean — Skill-Creator-Intervention (RQ-lean) ⚠️ KORREKTHEITS-REGRESSION
 
 v6.5-lean bündelt alle vier Cuts **plus** strukturelle Rewrites durch
 den `skill-creator`-Skill. Ziel: Theory-of-Mind statt MUSTs,
@@ -96,12 +96,12 @@ Reduktion vor Addition.
 
 ### Befunde
 
-- **GOL Code-Qualität (RQ-13)**: v6.5-lean leicht besser als v6-hybrid
+- **GOL Code-Qualität (RQ-lean)**: v6.5-lean leicht besser als v6-hybrid
   auf Code-Qualität, stärkster Disziplin-Boost. Bundle trägt.
-- **claim-office Korrektheit (RQ-19)**: **verification_pct 0.38 ± 0.54**
+- **claim-office Korrektheit (RQ-regression)**: **verification_pct 0.38 ± 0.54**
   (vs v6-hybrid 1.00). Bruchstelle lokalisiert zwischen v6.4-no-emoji
   (0.93) und v6.5-lean (0.38) — die vier Einzel-Cuts sind nicht der
-  Täter, die **Why-Rewrites** sind Hauptverdächtiger (F-19.3).
+  Täter, die **Why-Rewrites** sind Hauptverdächtiger (F-regression.3).
 
 ### Status: ⚠️ auf novel Code nicht einsetzbar
 
@@ -110,7 +110,7 @@ auf claim-office systematisch falsche Ergebnisse. Die Quality-Wins
 auf GOL sind als Messungen valide, aber der Workflow ist für
 Korrektheit auf unbekanntem Code nicht vertrauenswürdig.
 
-## v6.5.1–v6.5.4 — Detail-Audits (RQ-14 bis RQ-17)
+## v6.5.1–v6.5.4 — Detail-Audits (RQ-audit bis RQ-refactor-cut)
 
 Aufbauend auf v6.5-lean, Feintuning der Bullet-Blöcke. Alle erben
 die Korrektheits-Regression von v6.5-lean.
@@ -126,14 +126,14 @@ die Korrektheits-Regression von v6.5-lean.
 schaden) sind valide. Korrektheits-Befunde: alle defekt, nicht als
 Workflow einsetzbar.
 
-## v6.6-leaner — Weitere skill-creator-Empfehlungen (RQ-13)
+## v6.6-leaner — Weitere skill-creator-Empfehlungen (RQ-lean)
 
 Zusätzlich zu v6.5-lean:
 - DO/DON'T-Listen aus red.md und refactor.md entfernt
 - test-list.md: "Why test-list first"-Block + "3-6 tests"-Empfehlung
   statt prozeduraler Schritt-Liste
 
-**Befund (RQ-13)**: DO/DON'T-Hypothese teilweise widerlegt: Pred-Rate
+**Befund (RQ-lean)**: DO/DON'T-Hypothese teilweise widerlegt: Pred-Rate
 −2.5 pp. Test-List-Hint "3-6 tests" senkt cycle_count −27 %.
 Korrektheits-Status: nicht auf claim-office getestet, erbt aber
 v6.5-lean-Basis → vermutlich defekt.
@@ -142,7 +142,7 @@ v6.5-lean-Basis → vermutlich defekt.
 
 v4 und v6 sind **modell-abhängig komplementär** (v6 best auf opus-4-7, v4 best auf opus-4-6); v5 ist
 modell-unabhängig konstant. Der vollständige Befund mit Tabelle und Mechanismus ist als generische
-Forschungsfrage geführt: `research/questions/3.1-workflow-model-interaction/` (RQ-21). Die daraus
+Forschungsfrage geführt: `research/questions/3.1-workflow-model-interaction/` (RQ-workflow-model). Die daraus
 abgeleitete Workflow-Empfehlung pro Modell steht in `model-recommendation-matrix.md`.
 
 ## Aktueller Stand
@@ -164,6 +164,6 @@ beibehalten) × claim-office × n=3 — wartet auf Rate-Limit-Reset.
 
 - **v7-hybrid-green-refactor**: green + refactor isoliert → Pareto-dominiert von v6
 - **v8a/v8b delayed-refactor**: Oneshot + End-Refactor als TDD-Kontrolle.
-  GOL-Befunde (F-18.2 "APP-Agent schadet") stellten sich als
-  Trainingsdaten-Artefakt heraus. RQ-18 zurückgesetzt auf
+  GOL-Befunde (F-delayed-refactor.2 "APP-Agent schadet") stellten sich als
+  Trainingsdaten-Artefakt heraus. RQ-delayed-refactor zurückgesetzt auf
   game-of-life-cli (mit Verification) + v6-hybrid als Baseline.

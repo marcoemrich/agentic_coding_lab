@@ -1,8 +1,8 @@
-# RQ-9 — Findings: Four Rules of Simple Design im Refactor-Subagent
+# RQ-rules — Findings: Four Rules of Simple Design im Refactor-Subagent
 
 ## Übersicht
 
-Vergleich v6-hybrid (mit Four Rules, n=10) vs v6.2-no-rules (ohne Four Rules, n=5) auf game-of-life-example-mapping, opus-4-7-no-thinking. **Spiegelbild zu RQ-8: alle 5 primären Code-Qualitäts-Metriken liegen innerhalb ±1σ der v6-Streuung — Four Rules sind praktisch wirkungslos, wenn APP + Naming-Eval bleiben.**
+Vergleich v6-hybrid (mit Four Rules, n=10) vs v6.2-no-rules (ohne Four Rules, n=5) auf game-of-life-example-mapping, opus-4-7-no-thinking. **Spiegelbild zu RQ-app: alle 5 primären Code-Qualitäts-Metriken liegen innerhalb ±1σ der v6-Streuung — Four Rules sind praktisch wirkungslos, wenn APP + Naming-Eval bleiben.**
 
 | Metrik | v6 (mit Rules) μ±σ | v6.2 (ohne Rules) μ±σ | Δ (v6.2 − v6) | v6 σ-Schwelle | über Schwelle? |
 |---|---:|---:|---:|---:|:---:|
@@ -16,7 +16,7 @@ Niedriger = besser. Keine einzige Metrik überschreitet die ±1σ-Schwelle der v
 
 ---
 
-## F-9.1 — Four Rules of Simple Design haben keinen messbaren Effekt auf Code-Qualität, wenn APP + Naming-Eval bleiben
+## F-rules.1 — Four Rules of Simple Design haben keinen messbaren Effekt auf Code-Qualität, wenn APP + Naming-Eval bleiben
 
 **Aussage:** Auf keinem der fünf primären Code-Qualitäts-Outcomes überschreitet die Median-Differenz zwischen v6 und v6.2 eine Standardabweichung der v6-Streuung. Die Richtung ist sogar uneinheitlich (3 Metriken minimal pro v6.2, 2 praktisch identisch, 1 minimal pro v6). Damit ist der Effekt der Four-Rules-Sektion im Refactor-Subagent-Prompt **unterhalb der Mess-Auflösung dieses Designs**.
 
@@ -33,13 +33,13 @@ Niedriger = besser. Keine einzige Metrik überschreitet die ±1σ-Schwelle der v
 
 Die Four Rules sind also weitgehend **redundante Heuristiken** — APP + Naming + MUST-attempt fangen denselben Effekt-Raum ab, mit weniger Prompt-Volumen.
 
-**Datenbasis:** 15 Runs (v6 n=10 aus RQ-5-Pool, v6.2 n=5 neu), gleiches Modell und Kata, gleicher Skill/Subagent-Mechanismus.
+**Datenbasis:** 15 Runs (v6 n=10 aus RQ-stability-Pool, v6.2 n=5 neu), gleiches Modell und Kata, gleicher Skill/Subagent-Mechanismus.
 
 ---
 
-## F-9.2 — Streuung der Code-Qualität bleibt praktisch unverändert — kein Stabilitätsverlust durch Reduktion
+## F-rules.2 — Streuung der Code-Qualität bleibt praktisch unverändert — kein Stabilitätsverlust durch Reduktion
 
-**Aussage:** Im starken Kontrast zu RQ-8 F-8.2 (wo σ ohne APP **2–3× anstieg**) bleibt die Streuung in v6.2 nahezu identisch oder verbessert sich sogar leicht:
+**Aussage:** Im starken Kontrast zu RQ-app F-app.2 (wo σ ohne APP **2–3× anstieg**) bleibt die Streuung in v6.2 nahezu identisch oder verbessert sich sogar leicht:
 
 | Metrik | v6 σ (mit Rules) | v6.2 σ (ohne Rules) | σ-Faktor |
 |---|---:|---:|---:|
@@ -51,11 +51,11 @@ Die Four Rules sind also weitgehend **redundante Heuristiken** — APP + Naming 
 
 Der einzige nennenswerte σ-Anstieg ist bei `cognitive_max` (Faktor 1.33×) — verursacht durch einen einzelnen 10-Outlier bei v6.2 (vs Maximum 7 bei v6). Bei n=5 ist das ein Einzel-Run-Effekt mit breitem Schätz-Intervall.
 
-**Konsequenz:** v6.2 erbt die Stabilitäts-Eigenschaft von v6 (RQ-5 F-5.2: 0% Outlier-Rate). Der Stabilitäts-Anker scheint also tatsächlich **APP** zu sein (RQ-8 F-8.2), nicht die Four Rules.
+**Konsequenz:** v6.2 erbt die Stabilitäts-Eigenschaft von v6 (RQ-stability F-stability.2: 0% Outlier-Rate). Der Stabilitäts-Anker scheint also tatsächlich **APP** zu sein (RQ-app F-app.2), nicht die Four Rules.
 
 ---
 
-## F-9.3 — TDD-Disziplin unverändert ohne Four Rules
+## F-rules.3 — TDD-Disziplin unverändert ohne Four Rules
 
 **Aussage:** Cycle-Count, Refactor-Quote, Prediction-Compliance und Over-Implementation-Indikator bleiben identisch:
 
@@ -71,7 +71,7 @@ H4 (TDD-Disziplin unverändert) — **bestätigt**. Die Refactor-Frequenz wird n
 
 ---
 
-## F-9.4 — Token-Einsparung durch Four-Rules-Entfernung: ~8.5%, ohne Qualitätsverlust
+## F-rules.4 — Token-Einsparung durch Four-Rules-Entfernung: ~8.5%, ohne Qualitätsverlust
 
 **Aussage:** v6.2 spart messbar Tokens und kostet praktisch gleichviel Wallclock:
 
@@ -80,15 +80,15 @@ H4 (TDD-Disziplin unverändert) — **bestätigt**. Die Refactor-Frequenz wird n
 | `total_tokens` μ | 6.62 M | 6.06 M | **−8.5 %** |
 | `duration_seconds` μ | 521 | 517 | −0.8 % |
 
-H3 (Four Rules kosten ≥ 5%) — **bestätigt**. Im Gegensatz zu RQ-8 F-8.4 (wo die ~8% Token-Einsparung den Qualitätsverlust nicht wert war), liefert hier die Reduktion **keine Qualitäts-Kosten**. Tradeoff klar günstig.
+H3 (Four Rules kosten ≥ 5%) — **bestätigt**. Im Gegensatz zu RQ-app F-app.4 (wo die ~8% Token-Einsparung den Qualitätsverlust nicht wert war), liefert hier die Reduktion **keine Qualitäts-Kosten**. Tradeoff klar günstig.
 
 ---
 
-## F-9.5 — Konsequenz für die Workflow-Optimierung
+## F-rules.5 — Konsequenz für die Workflow-Optimierung
 
-Im direkten Vergleich mit RQ-8:
+Im direkten Vergleich mit RQ-app:
 
-| | RQ-8: APP entfernt | RQ-9: Four Rules entfernt |
+| | RQ-app: APP entfernt | RQ-rules: Four Rules entfernt |
 |---|:---:|:---:|
 | Code-Qualität alle 5 Metriken | ⬇️ schlechter | ➡️ unverändert |
 | Streuung σ | ⬆️ verdoppelt-verdreifacht | ➡️ unverändert |

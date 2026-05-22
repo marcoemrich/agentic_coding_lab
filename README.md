@@ -64,7 +64,7 @@ Each `README.md` starts with YAML frontmatter that acts as a **selector query** 
 
 ```yaml
 ---
-id: RQ-1
+id: RQ-prompt-correctness
 question: "Does workflow choice affect code quality, correctness, TDD discipline?"
 factors:                          # what varies
   workflow_x_prompt:
@@ -100,7 +100,7 @@ Together: declare the question once → fill the gaps → re-aggregate.
 
 ```yaml
 ---
-id: RQ-N
+id: RQ-<slug>                       # stable identity, e.g. RQ-prompt-correctness
 question: "Full text of the research question"
 factors:                          # what varies
   <factor-name>: [<value>, ...]
@@ -247,12 +247,12 @@ Consequences for analysis and data collection:
 │   ├── analyze_transcript.py             # Parse transcript.jsonl for TDD-cycle metrics
 │   └── generate-snapshot-skeleton.py     # Cross-RQ snapshot skeleton (used by /build-overview)
 ├── research/
-│   ├── RQ-1-workflow-effect/     # Per-RQ:
+│   ├── RQ-prompt-correctness-workflow-effect/     # Per-RQ:
 │   │   ├── README.md             #   frontmatter selector + question + hypotheses
 │   │   ├── findings.md           #   curated, growing list of numbered findings
 │   │   ├── runs.csv              #   generated: raw data of all matching runs
 │   │   └── summary.md            #   generated: pivot tables per outcome × cell
-│   ├── RQ-2-prompt-style/
+│   ├── RQ-prompt-known-kata-prompt-style/
 │   ├── ...                       # one directory per active RQ
 │   ├── kata-design/              # kata construction guidelines
 │   └── _archive/                 # frozen snapshots of past analyses + experiment-overview snapshots

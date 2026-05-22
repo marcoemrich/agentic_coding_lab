@@ -1,4 +1,4 @@
-# RQ-3 Findings
+# RQ-model-quality Findings
 
 Persistente Sammlung der Erkenntnisse zur Frage:
 **Wie stark unterscheiden sich die verfügbaren Modelle (Sonnet 4.6, Opus 4.6,
@@ -6,7 +6,7 @@ Opus 4.7 — jeweils mit/ohne Thinking) in der Code-Qualität auf einer
 trainingsbekannten Kata bei stärkstem Workflow?**
 
 Datenbasis: 21 Runs (6 Zellen × n=3, plus 3 zusätzliche
-opus-4-7-no-thinking-Replikate aus dem RQ-4-Batch), Stand 2026-05-15.
+opus-4-7-no-thinking-Replikate aus dem RQ-tdd-quality-Batch), Stand 2026-05-15.
 Workflow v4-exact-subagents, Kata game-of-life-example-mapping mit
 explizitem API-Vertrag (`nextGeneration(cells: Cell[]): Cell[]`).
 Korrektheits-Innensicht via vom Agenten geschriebene Vitest-Tests,
@@ -30,7 +30,7 @@ Bester Wert pro Spalte fett. Kleiner = besser (außer `verification_pct`: größ
 
 ---
 
-## F-3.1 — Korrektheit (innen + außen) auf v4 ist nahezu modellunabhängig perfekt ✅ stabil
+## F-model-quality.1 — Korrektheit (innen + außen) auf v4 ist nahezu modellunabhängig perfekt ✅ stabil
 
 **Aussage**: `tests_passing` liegt für alle sechs Modelle bei 100 % (21/21
 Runs). `verification_pct` liegt in fünf von sechs Zellen ebenfalls bei
@@ -39,7 +39,7 @@ Runs). `verification_pct` liegt in fünf von sechs Zellen ebenfalls bei
 Repräsentations-Mismatches fast vollständig.
 
 Einzige Ausnahme: **sonnet-4-6-no-thinking** mit `verification_pct = 0.73`
-— 2/3 Runs perfekt (15/15), ein Run mit 3/15 (siehe F-3.5).
+— 2/3 Runs perfekt (15/15), ein Run mit 3/15 (siehe F-model-quality.5).
 
 **Datenbasis**: 21 Runs, 15 Verifikations-Szenarien pro Run.
 
@@ -49,7 +49,7 @@ sind auf korrektem Code basiert.
 
 ---
 
-## F-3.2 — Modell-Ranking: Opus-4.7 deutlich vor Sonnet-4.6 und Opus-4.6; Sonnet jetzt vor Opus-4.6 ✅ stabil
+## F-model-quality.2 — Modell-Ranking: Opus-4.7 deutlich vor Sonnet-4.6 und Opus-4.6; Sonnet jetzt vor Opus-4.6 ✅ stabil
 
 **Aussage**: Im no-thinking-Vergleich (apples-to-apples) liefert
 **Opus 4.7** den deutlich besten Code; **Sonnet 4.6** liegt davor, was Opus 4.6
@@ -69,18 +69,18 @@ opus-4-7 und sonnet-4-6 effektiv gleichauf, ~1 % auseinander). Die
 Spannweite zwischen Bester (opus-4-7) und Schlechtester (opus-4-6) ist auf
 `cognitive_max` mit Faktor 4.6× substanziell.
 
-**Datenbasis**: opus-4-7-no-thinking n=6 (RQ-3 + RQ-4-Pool), sonnet-4-6-no-thinking n=3,
+**Datenbasis**: opus-4-7-no-thinking n=6 (RQ-model-quality + RQ-tdd-quality-Pool), sonnet-4-6-no-thinking n=3,
 opus-4-6-portkey-no-thinking n=3.
 
 **Bemerkung zur Reihenfolge**: Sonnet vor Opus 4.6 ist eine Umkehr gegenüber
 naiver Modell-Tier-Intuition ("Opus > Sonnet"). Eine plausible Erklärung:
 Sonnet (no-thinking) erzeugt schlicht *kürzeren, weniger generalisierten*
 Code, während Opus 4.6 dazu neigt, eine vollständigere Abstraktion zu
-bauen (vgl. F-3.3 — Opus 4.6 + Thinking degradiert sogar).
+bauen (vgl. F-model-quality.3 — Opus 4.6 + Thinking degradiert sogar).
 
 ---
 
-## F-3.3 — Thinking wirkt nicht uniform; Opus-4.6 + Thinking ohne Vorteil, Sonnet + Thinking sogar negativ auf cognitive_max ⚠️ bedingt
+## F-model-quality.3 — Thinking wirkt nicht uniform; Opus-4.6 + Thinking ohne Vorteil, Sonnet + Thinking sogar negativ auf cognitive_max ⚠️ bedingt
 
 **Aussage**: Within-model-Deltas (thinking vs. no-thinking, ∆ negativ = besser
 mit Thinking):
@@ -112,7 +112,7 @@ wünschenswert → ⚠️ bedingt.
 
 ---
 
-## F-3.4 — Token-Kosten und Wallclock nivellieren sich auf v4 weitgehend ✅ stabil
+## F-model-quality.4 — Token-Kosten und Wallclock nivellieren sich auf v4 weitgehend ✅ stabil
 
 **Aussage**: Token-Verbrauch (Mittel) und Wallclock-Zeit nach Modell:
 
@@ -135,13 +135,13 @@ Wallclock liegt einheitlich bei ~14–20 min/Run. Sonnet ist nicht mehr
 zeitlich auffällig billig oder teuer.
 
 **Konsequenz**: Auf v4 ist Modell-Wahl primär eine Code-Qualitätsentscheidung
-(F-3.2), nicht eine Token-Effizienz-Entscheidung. Opus 4.7 liefert die beste
+(F-model-quality.2), nicht eine Token-Effizienz-Entscheidung. Opus 4.7 liefert die beste
 Qualität bei mittlerem Token-Budget; Sonnet liegt qualitativ dahinter, ist
 aber nicht signifikant günstiger.
 
 ---
 
-## F-3.5 — Vertrags-Konformität unter explizitem API-Vertrag fast vollständig erreicht; ein Sonnet-Ausreißer redefiniert `Cell` als Objekt ⚠️ bedingt
+## F-model-quality.5 — Vertrags-Konformität unter explizitem API-Vertrag fast vollständig erreicht; ein Sonnet-Ausreißer redefiniert `Cell` als Objekt ⚠️ bedingt
 
 **Aussage**: Mit explizitem API-Vertrag in der Kata-Prompt
 (`type Cell = [number, number]; export function nextGeneration(cells: Cell[]): Cell[]`)
@@ -171,13 +171,13 @@ größeres n nötig zur stabilen Frequenz-Schätzung.
 ## Caveats
 
 - **Single workflow**: Nur v4-exact-subagents. Andere Workflows könnten
-  andere Modell-Rankings produzieren (vgl. RQ-4 F-4.1).
+  andere Modell-Rankings produzieren (vgl. RQ-tdd-quality F-tdd-quality.1).
 - **Single kata**: Nur Game of Life (Library-Form, example-mapping).
   Mars-rover als zweiter Code-Qualitäts-Carrier offen.
 - **Opus 4.6 via Portkey**: Findings über `opus-4-6-portkey*` nicht
   automatisch auf Direct-API-Opus-4.6 übertragbar.
 - **n = 3 pro Zelle** (außer opus-4-7-no-thinking mit n=6 dank
-  RQ-4-Pooling): σ in einzelnen Outcomes hoch — F-3.3 und F-3.5 daher
+  RQ-tdd-quality-Pooling): σ in einzelnen Outcomes hoch — F-model-quality.3 und F-model-quality.5 daher
   ⚠️ bedingt.
 - **API-Vertrag eingeführt**: Alle Runs in dieser Datenbasis nutzen den
   expliziten API-Vertrag in der Prompt (commit `0902a4f`). Frühere Findings

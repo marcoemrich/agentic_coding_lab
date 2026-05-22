@@ -1,4 +1,4 @@
-# RQ-2 Findings
+# RQ-prompt-known-kata Findings
 
 Persistente Sammlung der Erkenntnisse zur Frage:
 **Beeinflusst der Prompt-Stil bei einer trainingsbekannten Kata (Game of
@@ -21,7 +21,7 @@ direkt, kein CLI-Vertrag nötig).
 
 ---
 
-## F-2.1 — Opus und Sonnet liefern stilunabhängig perfekte Korrektheit
+## F-prompt-known-kata.1 — Opus und Sonnet liefern stilunabhängig perfekte Korrektheit
 
 **Aussage**: Opus 4.6 und Sonnet 4.6 (no-thinking) erreichen auf
 game-of-life `verification_pct = 1.00` über alle drei Prompt-Stile,
@@ -39,7 +39,7 @@ das verbessern oder verschlechtern.
 
 ---
 
-## F-2.2 — Haiku scheitert kapazitätsbedingt, nicht stilbedingt
+## F-prompt-known-kata.2 — Haiku scheitert kapazitätsbedingt, nicht stilbedingt
 
 **Aussage**: Haiku 4.5 (no-thinking) zeigt auf game-of-life zwei
 distinkte Modi:
@@ -67,13 +67,13 @@ zu wenig Anker — Haiku erkennt die Aufgabe nicht als machbar.
 
 ---
 
-## F-2.3 — H1 bestätigt: Prompt-Stil differenziert bei starken Modellen nicht
+## F-prompt-known-kata.3 — H1 bestätigt: Prompt-Stil differenziert bei starken Modellen nicht
 
 **Aussage**: H1 ("Pro Modell ist der verification_pct-Spread zwischen
 Stilen < 10 pp") ist für Opus und Sonnet vollständig bestätigt
 (Spread = 0 pp). Für Haiku ist H1 trivialerweise falsifiziert
 (Spread = 63 pp), aber die Ursache ist nicht Stil-Sensitivität,
-sondern kapazitätsbedingte Instabilität (F-2.2).
+sondern kapazitätsbedingte Instabilität (F-prompt-known-kata.2).
 
 **Implikation für Code-Qualitäts-RQs**: Prompt-Stil kann auf
 game-of-life als Control fixiert werden (z.B. prose oder
@@ -83,11 +83,11 @@ example-mapping), ohne Korrektheits-Confound bei Opus/Sonnet.
 
 ---
 
-## F-2.4 — H4 bestätigt: Mehrdeutigkeits-Mechanismus greift nicht bei trainingsbekannter Kata
+## F-prompt-known-kata.4 — H4 bestätigt: Mehrdeutigkeits-Mechanismus greift nicht bei trainingsbekannter Kata
 
-**Aussage**: Bei RQ-1 (claim-office, domain-novel) verbessert
+**Aussage**: Bei RQ-prompt-correctness (claim-office, domain-novel) verbessert
 example-mapping die Korrektheit, weil konkrete Beispiele
-domänenspezifische Mehrdeutigkeiten auflösen. Bei RQ-2
+domänenspezifische Mehrdeutigkeiten auflösen. Bei RQ-prompt-known-kata
 (game-of-life, trainingsbekannt) gibt es keine solchen
 Mehrdeutigkeiten — die Conway-Regeln sind eindeutig und im
 Vorwissen. Example-mapping wirkt hier über einen anderen Mechanismus:
@@ -110,7 +110,7 @@ kein gemessener Effekt)
 
 ---
 
-## F-2.5 — H2 kann nicht bewertet werden: Code-Qualität nur bei funktionierenden Runs vergleichbar
+## F-prompt-known-kata.5 — H2 kann nicht bewertet werden: Code-Qualität nur bei funktionierenden Runs vergleichbar
 
 **Aussage**: Code-Qualitäts-Outcomes (code_mass, smell_total,
 cc_longest_function, mccabe_max, cognitive_max) sind nur bei Runs
@@ -133,9 +133,9 @@ Code-Qualitäts-Ranking.
 
 ---
 
-## F-2.6 — RQ-1-Prognose bestätigt: Prompt-Stil differenziert nicht auf trainingsbekannter Kata
+## F-prompt-known-kata.6 — RQ-prompt-correctness-Prognose bestätigt: Prompt-Stil differenziert nicht auf trainingsbekannter Kata
 
-**Aussage**: Die Prognose in RQ-1 ("game-of-life ist als
+**Aussage**: Die Prognose in RQ-prompt-correctness ("game-of-life ist als
 Mehrdeutigkeits-Aufdecker für Prompt-Stile nicht brauchbar") ist
 für Opus und Sonnet vollständig bestätigt: verification_pct = 1.00
 über alle Stile, Code-Qualität variiert nicht systematisch.
@@ -149,7 +149,7 @@ separat behandelt wird.
 
 ---
 
-## F-2.7 — Verification-Adapter eliminiert Interface-Artefakte
+## F-prompt-known-kata.7 — Verification-Adapter eliminiert Interface-Artefakte
 
 **Aussage**: Vor Einführung des Verification-Adapters zeigten Opus
 und Sonnet scheinbare Korrektheits-Fehler, die tatsächlich

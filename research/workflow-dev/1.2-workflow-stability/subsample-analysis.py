@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Subsample analysis for RQ-5.
+"""Subsample analysis for RQ-stability.
 
 For each workflow cell at n=10, compute:
 - σ, CV, IQR, outlier rate per code-quality metric
@@ -122,7 +122,7 @@ def ranking_stability(cells: dict, metric: str, sub_n: int = 3,
 
 def main() -> None:
     cells = load_cells()
-    print("# RQ-5 Subsampling-Analyse — generiert\n")
+    print("# RQ-stability Subsampling-Analyse — generiert\n")
     print("Datenquelle: `runs.csv` (n=10 pro Zelle, v5 ggf. ergänzt).\n")
     stability_per_metric(cells)
 

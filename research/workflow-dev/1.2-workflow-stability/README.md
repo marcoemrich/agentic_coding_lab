@@ -1,5 +1,5 @@
 ---
-id: RQ-5
+id: RQ-stability
 question: "Wie stabil sind Code-Qualitaet und TDD-Disziplin pro Workflow ueber Replikate, und unter welchen Bedingungen ist n=3 als Replikat-Anzahl ausreichend?"
 factors:
   workflow_x_prompt:
@@ -13,7 +13,7 @@ controls:
   model: opus-4-7-no-thinking
   kata_base: game-of-life
 outcomes:
-  # primaer: dieselben Code-Qualitaets-Metriken wie RQ-4,
+  # primaer: dieselben Code-Qualitaets-Metriken wie RQ-tdd-quality,
   # ausgewertet auf Streuung und Stabilitaet
   - code_mass
   - smell_total
@@ -38,15 +38,15 @@ min_replicates: 10
 status: aktiv
 ---
 
-# RQ-5: Run-Stabilitaet pro Workflow
+# RQ-stability: Run-Stabilitaet pro Workflow
 
 Wie stabil produzieren die fuenf Workflows ihre Code-Qualitaet ueber Replikate, und unter welchen Bedingungen reicht ein n=3-Sample fuer belastbare Aussagen?
 
 ## Motivation
 
-RQ-4 (Workflow-Effekt auf Code-Qualitaet) zeigt **dramatische Mittelwert-Unterschiede** zwischen den Workflows — insbesondere v4 vs alle anderen auf `cognitive_max` (Faktor 4–8x). Die Streuungen sind aber sehr ungleich verteilt:
+RQ-tdd-quality (Workflow-Effekt auf Code-Qualitaet) zeigt **dramatische Mittelwert-Unterschiede** zwischen den Workflows — insbesondere v4 vs alle anderen auf `cognitive_max` (Faktor 4–8x). Die Streuungen sind aber sehr ungleich verteilt:
 
-| Workflow (RQ-4 Daten) | `cognitive_max` Mittel | σ | Range |
+| Workflow (RQ-tdd-quality Daten) | `cognitive_max` Mittel | σ | Range |
 |---|---:|---:|---|
 | v4-exact-subagents | 2.83 | **0.75** | 2–4 |
 | v2-iterative | 16.67 | 2.31 | 14–18 |
@@ -60,7 +60,7 @@ Drei Beobachtungen:
 2. **v5 hat σ=6.66 bei Mittel 18.33** — der Variationskoeffizient (σ/μ) ist 0.36. Bei n=3 ist die Wahrscheinlichkeit hoch, dass eine zukuenftige Wiederholung mit 3 anderen Runs einen substantiell anderen Mittelwert produziert.
 3. **Bei v4 ist n=3 wahrscheinlich ausreichend** (σ klein, Distanz zu jeder anderen Zelle >> σ_v4). Bei v5 vermutlich nicht — der Mittelwert ist instabil.
 
-Diese Beobachtungen sind aber selbst bei n=3 noch nicht belastbar — σ-Schätzungen mit n=3 haben breite Konfidenzintervalle. RQ-5 misst Stabilitaet bei **n=10** pro Zelle und beantwortet damit zwei Fragen:
+Diese Beobachtungen sind aber selbst bei n=3 noch nicht belastbar — σ-Schätzungen mit n=3 haben breite Konfidenzintervalle. RQ-stability misst Stabilitaet bei **n=10** pro Zelle und beantwortet damit zwei Fragen:
 
 - **(a) Welche Workflows produzieren stabilen Code, welche nicht?**
 - **(b) Bei welchen Workflows ist n=3 belastbar, bei welchen braucht es mehr Replikate?**
@@ -75,11 +75,11 @@ Kontrolle: kata_base         — game-of-life
 
 Zellen:    5
 Replikate: n = 10
-Runs:      50 total (38 neu, 12 aus RQ-4 wiederverwendet:
-           v1=3, v2=3, v3=3, v4=6 (RQ-3+RQ-4 gepoolt), v5=3)
+Runs:      50 total (38 neu, 12 aus RQ-tdd-quality wiederverwendet:
+           v1=3, v2=3, v3=3, v4=6 (RQ-model-quality+RQ-tdd-quality gepoolt), v5=3)
 ```
 
-Identisches Setup wie RQ-4, nur mit n=10 statt n=3 — Code-Qualitaets-Aussagen aus RQ-4 werden mit hoeherem n verifiziert und mit Stabilitaets-Aussagen ergaenzt.
+Identisches Setup wie RQ-tdd-quality, nur mit n=10 statt n=3 — Code-Qualitaets-Aussagen aus RQ-tdd-quality werden mit hoeherem n verifiziert und mit Stabilitaets-Aussagen ergaenzt.
 
 ## Methodologische Sub-Frage: Wann reicht n=3?
 
@@ -98,9 +98,9 @@ Die Subsampling-Analyse wird im Findings-File numerisch dokumentiert.
 - **H1 (Workflow-Stabilitaets-Ranking)**: σ_cognitive_max waechst in der Reihenfolge v4 < v2 ≈ v1 < v3 < v5. Phasen-Isolation (v4) liefert das stabilste Signal; v5 mit Shared-Context ist am volatilsten, weil pfadabhaengige Kontext-Akkumulation die Loesungs-Form streuen laesst.
 - **H2 (n=3 reicht fuer v4)**: Subsampling-Analyse auf v4 zeigt fuer alle Komplexitaets-Outcomes ≥ 95 % Uebereinstimmung des n=3-Rankings mit dem n=10-Ranking.
 - **H3 (n=3 reicht NICHT fuer v5)**: Subsampling-Analyse auf v5 zeigt fuer `cognitive_max` und `cc_longest_function` < 80 % Uebereinstimmung.
-- **H4 (RQ-4-Hauptbefund haelt unter n=10)**: F-4.1 ("strikt-TDD v4 deutlich besser") und F-4.2 ("v3 schlechter als non-TDD") replizieren bei n=10 mit gleichem Vorzeichen und gleicher Groessenordnung.
+- **H4 (RQ-tdd-quality-Hauptbefund haelt unter n=10)**: F-tdd-quality.1 ("strikt-TDD v4 deutlich besser") und F-tdd-quality.2 ("v3 schlechter als non-TDD") replizieren bei n=10 mit gleichem Vorzeichen und gleicher Groessenordnung.
 
-**Falsifikation H4** waere besonders wichtig: wenn bei n=10 das Ranking kippt (z.B. v3 nicht mehr Schlusslicht), waeren F-4.1/F-4.2 nur bei n=3 ein Befund — was die ganze RQ-4 unterminieren wuerde.
+**Falsifikation H4** waere besonders wichtig: wenn bei n=10 das Ranking kippt (z.B. v3 nicht mehr Schlusslicht), waeren F-tdd-quality.1/F-tdd-quality.2 nur bei n=3 ein Befund — was die ganze RQ-tdd-quality unterminieren wuerde.
 
 ## Operationalisierung der Stabilitaets-Outcomes
 
@@ -115,8 +115,8 @@ Pro Zelle werden zusaetzlich zu den ueblichen Mittelwert/min/max/σ folgende Sta
 
 - **(a) Single model**: nur `opus-4-7-no-thinking`. Stabilitaet bei anderen Modellen offen.
 - **(b) Single kata**: nur Game of Life. Stabilitaet bei mars-rover oder claim-office koennte anders aussehen.
-- **(c) Prompt-Asymmetrie** (v1/v2 prose, v3/v4/v5 EM): Methodologie-Constraint; in RQ-4 Caveats schon dokumentiert. F-4.4 zeigt: Korrektheit ist unter API-Vertrag von der Prompt-Asymmetrie nicht beeinflusst.
-- **(d) Wiederverwendung von 12 RQ-4-Runs**: ist methodologisch sauber, weil Workflow/Modell/Kata/Prompt identisch sind — aber neue 38 Runs koennten z.B. durch Kalender-Drift (anderer Server-Snapshot, andere Tools-Version) systematisch leicht abweichen. Wir pruefen Mittelwert-Konsistenz zwischen alten 12 und neuen 38 als Sanity-Check.
+- **(c) Prompt-Asymmetrie** (v1/v2 prose, v3/v4/v5 EM): Methodologie-Constraint; in RQ-tdd-quality Caveats schon dokumentiert. F-tdd-quality.4 zeigt: Korrektheit ist unter API-Vertrag von der Prompt-Asymmetrie nicht beeinflusst.
+- **(d) Wiederverwendung von 12 RQ-tdd-quality-Runs**: ist methodologisch sauber, weil Workflow/Modell/Kata/Prompt identisch sind — aber neue 38 Runs koennten z.B. durch Kalender-Drift (anderer Server-Snapshot, andere Tools-Version) systematisch leicht abweichen. Wir pruefen Mittelwert-Konsistenz zwischen alten 12 und neuen 38 als Sanity-Check.
 - **(e) Stabilitaets-Praezision**: Selbst n=10 gibt nur grobe σ-Schaetzungen. Ein robusteres σ-Mass haette n=30. Bei 50 Runs Budget ist das nicht praktikabel; die Bootstrap-Konfidenzintervalle auf den σ-Schaetzungen werden in den Findings ausgewiesen.
 
 ## Findings

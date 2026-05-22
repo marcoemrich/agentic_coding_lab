@@ -1,8 +1,8 @@
-# RQ-2 — Aggregation
+# RQ-prompt-known-kata — Aggregation
 
 _Beeinflusst der Prompt-Stil (prose/user-story/example-mapping) bei einer trainingsbekannten Kata (Game of Life) Korrektheit und Code-Qualität — und ist dieser Effekt modellabhängig?_
 
-Generated: 2026-05-13T09:38:14Z
+Generated: 2026-05-22T16:38:07Z
 
 Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
@@ -24,7 +24,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### verification_pct
 
-| kata                             | workflow                | model                          |   n |   mean |   min |   max |   std |
+| kata                             | workflow                | cell_model                     |   n |   mean |   min |   max |   std |
 |:---------------------------------|:------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-cli-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |   0.63 |     0 |     1 |  0.51 |
 | game-of-life-cli-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |   1    |     1 |     1 |  0    |
@@ -38,7 +38,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### verification_passed
 
-| kata                             | workflow                | model                          |   n |   mean |   min |   max |   std |
+| kata                             | workflow                | cell_model                     |   n |   mean |   min |   max |   std |
 |:---------------------------------|:------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-cli-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |    9.4 |     0 |    15 |   7.7 |
 | game-of-life-cli-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |   15   |    15 |    15 |   0   |
@@ -52,7 +52,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### verification_total
 
-| kata                             | workflow                | model                          |   n |   mean |   min |   max |   std |
+| kata                             | workflow                | cell_model                     |   n |   mean |   min |   max |   std |
 |:---------------------------------|:------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-cli-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |     15 |    15 |    15 |     0 |
 | game-of-life-cli-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |     15 |    15 |    15 |     0 |
@@ -66,7 +66,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### tests_passing (rate %)
 
-| kata                             | workflow                | model                          |   n |   match |   rate_% |
+| kata                             | workflow                | cell_model                     |   n |   match |   rate_% |
 |:---------------------------------|:------------------------|:-------------------------------|----:|--------:|---------:|
 | game-of-life-cli-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |       4 |       80 |
 | game-of-life-cli-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |       5 |      100 |
@@ -80,7 +80,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### completed_within_budget (rate %)
 
-| kata                             | workflow                | model                          |   n |   match |   rate_% |
+| kata                             | workflow                | cell_model                     |   n |   match |   rate_% |
 |:---------------------------------|:------------------------|:-------------------------------|----:|--------:|---------:|
 | game-of-life-cli-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |       5 |      100 |
 | game-of-life-cli-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |       5 |      100 |
@@ -94,7 +94,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### cli_built (rate %)
 
-| kata                             | workflow                | model                          |   n |   match |   rate_% |
+| kata                             | workflow                | cell_model                     |   n |   match |   rate_% |
 |:---------------------------------|:------------------------|:-------------------------------|----:|--------:|---------:|
 | game-of-life-cli-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |       5 |      100 |
 | game-of-life-cli-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |       5 |      100 |
@@ -108,7 +108,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### code_mass
 
-| kata                             | workflow                | model                          |   n |   mean |   min |   max |    std |
+| kata                             | workflow                | cell_model                     |   n |   mean |   min |   max |    std |
 |:---------------------------------|:------------------------|:-------------------------------|----:|-------:|------:|------:|-------:|
 | game-of-life-cli-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |  224.2 |     0 |   318 | 127.59 |
 | game-of-life-cli-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |  221.6 |   159 |   282 |  48.71 |
@@ -122,7 +122,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### smell_total
 
-| kata                             | workflow                | model                          |   n |   mean |   min |   max |   std |
+| kata                             | workflow                | cell_model                     |   n |   mean |   min |   max |   std |
 |:---------------------------------|:------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-cli-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |    4.8 |     0 |    12 |  4.44 |
 | game-of-life-cli-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |    4   |     3 |     6 |  1.22 |
@@ -136,7 +136,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### cc_longest_function
 
-| kata                             | workflow                | model                          |   n |   mean |   min |   max |   std |
+| kata                             | workflow                | cell_model                     |   n |   mean |   min |   max |   std |
 |:---------------------------------|:------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-cli-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |   16.8 |     0 |    34 | 14.53 |
 | game-of-life-cli-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |   20   |     7 |    27 |  8    |
@@ -150,7 +150,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### cc_loc
 
-| kata                             | workflow                | model                          |   n |   mean |   min |   max |   std |
+| kata                             | workflow                | cell_model                     |   n |   mean |   min |   max |   std |
 |:---------------------------------|:------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-cli-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |   41.6 |     0 |    66 | 25.77 |
 | game-of-life-cli-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |   36.2 |    24 |    46 |  9.26 |
@@ -164,7 +164,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### mccabe_max
 
-| kata                             | workflow                | model                          |   n |   mean |   min |   max |   std |
+| kata                             | workflow                | cell_model                     |   n |   mean |   min |   max |   std |
 |:---------------------------------|:------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-cli-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |    6.8 |     0 |    10 |  4.09 |
 | game-of-life-cli-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |    7.4 |     4 |    12 |  3.21 |
@@ -178,7 +178,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### cognitive_max
 
-| kata                             | workflow                | model                          |   n |   mean |   min |   max |   std |
+| kata                             | workflow                | cell_model                     |   n |   mean |   min |   max |   std |
 |:---------------------------------|:------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-cli-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |    8.8 |     0 |    14 |  5.26 |
 | game-of-life-cli-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |   12.2 |     6 |    18 |  5.76 |
@@ -192,7 +192,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### duration_seconds
 
-| kata                             | workflow                | model                          |   n |   mean |   min |   max |    std |
+| kata                             | workflow                | cell_model                     |   n |   mean |   min |   max |    std |
 |:---------------------------------|:------------------------|:-------------------------------|----:|-------:|------:|------:|-------:|
 | game-of-life-cli-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |  390.8 |    12 |   710 | 258.06 |
 | game-of-life-cli-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |  677.8 |   509 |   897 | 139.75 |
@@ -206,7 +206,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### total_tokens
 
-| kata                             | workflow                | model                          |   n |             mean |     min |      max |             std |
+| kata                             | workflow                | cell_model                     |   n |             mean |     min |      max |             std |
 |:---------------------------------|:------------------------|:-------------------------------|----:|-----------------:|--------:|---------:|----------------:|
 | game-of-life-cli-example-mapping | v5-exact-single-context | haiku-4-5-portkey-no-thinking  |   5 |      1.08445e+07 |  287857 | 16698499 |     6.4818e+06  |
 | game-of-life-cli-example-mapping | v5-exact-single-context | opus-4-6-portkey-no-thinking   |   5 |      1.32846e+07 | 9103184 | 19631161 |     3.88712e+06 |

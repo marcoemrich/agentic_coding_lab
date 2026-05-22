@@ -1,5 +1,5 @@
 ---
-id: RQ-21
+id: RQ-workflow-model
 question: "Hängt die Güte eines TDD-Workflows vom Modell ab — gibt es einen universell besten Workflow, oder tauschen verschiedene Workflows je nach Modell die Plätze?"
 factors:
   workflow:
@@ -21,7 +21,7 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-21: Workflow×Modell-Interaktion — gibt es einen universell besten Workflow?
+# RQ-workflow-model: Workflow×Modell-Interaktion — gibt es einen universell besten Workflow?
 
 ## Motivation
 
@@ -55,6 +55,6 @@ Empfehlung kann modell-unabhängig gegeben werden.
 ## Verwandte RQs
 
 - Lokalisierung der Korrektheits-Regression in der v6.5-Kette (woraus dieser Befund stammt):
-  `research/workflow-dev/5.1-correctness-regression/` (F-19.1–F-19.5, F-19.7, F-19.8).
+  `research/workflow-dev/5.1-correctness-regression/` (F-regression.1–F-regression.5, F-regression.7, F-regression.8).
 - Modell-Effekt auf novel Kata generell: `research/questions/2.2-model-effect-novel-kata/`.
 - Abgeleitete Praxis-Empfehlung: `research/workflow-dev/model-recommendation-matrix.md`.

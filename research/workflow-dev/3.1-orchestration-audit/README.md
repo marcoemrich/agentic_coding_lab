@@ -1,5 +1,5 @@
 ---
-id: RQ-14
+id: RQ-audit
 question: "Trägt das claude_orchestration-Audit-Bundle (Mechanism-Alignment, Rationale-Ergänzungen, Short-Circuit-Hardening) messbar zur Code-Qualität oder TDD-Disziplin gegenüber v6.5-lean bei?"
 factors:
   workflow_x_prompt:
@@ -31,9 +31,9 @@ min_replicates: 10
 status: aktiv
 ---
 
-# RQ-14: v6.5.1-orchestration-audited — Trägt das externe Audit-Bundle?
+# RQ-audit: v6.5.1-orchestration-audited — Trägt das externe Audit-Bundle?
 
-v6.5-lean ist seit RQ-13 unser Code-Quality-Champion. Eine externe Audit-Runde gegen das `chdalski/claude_orchestration`-Toolkit (siehe `experiments/workflows/v6.5.1-orchestration-audited/AUDIT.md` und `CHANGES.md`) hat ein Bundle nicht-verhaltensorientierter Änderungen produziert. Diese RQ misst, ob das Bundle empirisch trägt — als isolierter Vergleich `v6.5-lean` vs `v6.5.1-orchestration-audited` unter sonst identischen Bedingungen.
+v6.5-lean ist seit RQ-lean unser Code-Quality-Champion. Eine externe Audit-Runde gegen das `chdalski/claude_orchestration`-Toolkit (siehe `experiments/workflows/v6.5.1-orchestration-audited/AUDIT.md` und `CHANGES.md`) hat ein Bundle nicht-verhaltensorientierter Änderungen produziert. Diese RQ misst, ob das Bundle empirisch trägt — als isolierter Vergleich `v6.5-lean` vs `v6.5.1-orchestration-audited` unter sonst identischen Bedingungen.
 
 ## Motivation
 
@@ -48,7 +48,7 @@ Die explizit **nicht** durchgeführten Änderungen (keine Skill-Migration des Re
 
 ## Workflow-Definition
 
-- **v6.5-lean (Baseline, n=10 aus RQ-13-Pool)**: aktueller Quality-Champion.
+- **v6.5-lean (Baseline, n=10 aus RQ-lean-Pool)**: aktueller Quality-Champion.
 - **v6.5.1-orchestration-audited (neu, n=10)**: Bundle der Audit-Änderungen, keine Verhaltensänderungen intendiert.
 
 ## Hypothesen
@@ -68,15 +68,15 @@ Kontrolle: kata_base        — game-of-life
 
 Zellen:    2 (2 Workflows × 1 Kata)
 Replikate: n = 10 je Zelle
-Runs:      20 total (10 v6.5-lean aus RQ-13-Pool + 10 neue v6.5.1-orchestration-audited)
+Runs:      20 total (10 v6.5-lean aus RQ-lean-Pool + 10 neue v6.5.1-orchestration-audited)
 ```
 
 ## Caveats
 
-- **commands/ vs skills/ Frage offen für Marker-Compliance**: Unsere Pipeline parst Skill-tool-uses unabhängig vom Source-Pfad — `transcript-metrics.json` aller RQ-13-Runs zeigt funktionsfähige `cycle_count`, `refactorings_applied`, `predictions_correct_rate`. AUDIT.md argumentiert mit Skill-Tool-Konformität (das Tool *findet* commands/-Skills generell nicht). Falls v6.5.1 trotzdem Mehreffekte zeigt, läge das an Rationale/Hardening/Decoupling, nicht an der Ordnerstruktur.
+- **commands/ vs skills/ Frage offen für Marker-Compliance**: Unsere Pipeline parst Skill-tool-uses unabhängig vom Source-Pfad — `transcript-metrics.json` aller RQ-lean-Runs zeigt funktionsfähige `cycle_count`, `refactorings_applied`, `predictions_correct_rate`. AUDIT.md argumentiert mit Skill-Tool-Konformität (das Tool *findet* commands/-Skills generell nicht). Falls v6.5.1 trotzdem Mehreffekte zeigt, läge das an Rationale/Hardening/Decoupling, nicht an der Ordnerstruktur.
 - **Bundle, nicht isolierte Effekte**: Vier Änderungsklassen gleichzeitig. Bei positivem Bundle-Befund bleibt offen, welche Klasse trägt. Folge-RQs (Rationale-only, Hardening-only) sind denkbar.
 - **Single Kata, single Modell**: opus-4-7-no-thinking auf game-of-life. Cross-Model (sonnet, haiku) und Cross-Kata (mars-rover) als Folge-RQs, falls v6.5.1 promotet wird.
-- **n=10**: vergleichbar zu RQ-13; ausreichend für Mittelwert-Signal, knapp für σ-Stabilität.
+- **n=10**: vergleichbar zu RQ-lean; ausreichend für Mittelwert-Signal, knapp für σ-Stabilität.
 
 ## Findings
 

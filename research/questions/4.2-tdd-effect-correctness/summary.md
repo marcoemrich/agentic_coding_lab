@@ -1,8 +1,8 @@
-# RQ-4b — Aggregation
+# RQ-tdd-correctness — Aggregation
 
 _Unterscheidet sich die externe Korrektheit (verification_pct) zwischen TDD-Workflow-Varianten auf der neuartigen claim-office-Kata?_
 
-Generated: 2026-05-22T14:40:21Z
+Generated: 2026-05-22T16:38:09Z
 
 Cells declared: 5 · matched runs: 34 · min_replicates: 5
 

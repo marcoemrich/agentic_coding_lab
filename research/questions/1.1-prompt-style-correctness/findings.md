@@ -1,4 +1,4 @@
-# RQ-1 Findings
+# RQ-prompt-correctness Findings
 
 Persistente Sammlung der Erkenntnisse zur Frage:
 **Steigert Example-Mapping die Korrektheit gegenüber Prose und
@@ -32,7 +32,7 @@ Werte: mean(`verification_pct`), je n=5 (Opus 4.7: n=3, vorläufig).
 
 ---
 
-## F-1.1 — Schwache Modelle scheitern unabhängig vom Prompt-Stil
+## F-prompt-correctness.1 — Schwache Modelle scheitern unabhängig vom Prompt-Stil
 
 Haiku 4.5 erreicht 0 % Korrektheit (außen) über alle drei Prompt-Stile
 und beide Thinking-Modi (n=30, 6 Zellen à 5 Runs, `verification_pct`
@@ -52,7 +52,7 @@ umsetzt. Haiku produziert zwar kompilierbaren Code mit
 `cli_built=true`, aber die Domänenlogik ist in keinem Fall nah
 genug an der externen Verifikations-Suite. Example-Mapping —
 das bei stärkeren Modellen den entscheidenden Unterschied macht
-(→ F-1.2) — hat für Haiku keinen messbaren Effekt: die
+(→ F-prompt-correctness.2) — hat für Haiku keinen messbaren Effekt: die
 Reasoning-Kapazität reicht nicht aus, um die Beispiele auf neue
 Eingaben zu generalisieren.
 
@@ -61,7 +61,7 @@ example-mapping keine Korrektheit.
 
 ---
 
-## F-1.2 — Example-Mapping hebt Korrektheit massiv
+## F-prompt-correctness.2 — Example-Mapping hebt Korrektheit massiv
 
 Bei Opus 4.6 und Sonnet 4.6 steigert example-mapping die Korrektheit
 (außen) gegenüber prose um 14–64 Prozentpunkte. Bei Opus ist der
@@ -77,7 +77,7 @@ Effekt in beiden Thinking-Modi stark; bei Sonnet nur ohne Thinking.
 
 **Datenbasis**: 60 Runs (Opus 4.6 + Sonnet 4.6, je n=5); Opus 4.7
 vorläufig (n=3). Haiku ausgenommen — dort ist der Prompt-Stil
-irrelevant (→ F-1.1).
+irrelevant (→ F-prompt-correctness.1).
 
 **Rationale**: Example-Mapping liefert konkrete Input/Output-Paare,
 die die Mehrdeutigkeiten der Kata-Regeln auflösen. Modelle mit
@@ -90,7 +90,7 @@ Sonnet +thinking zeigt +14 pp — schwächer, aber gleiche Richtung.
 
 ---
 
-## F-1.3 — Thinking schadet bei Example-Mapping (Sonnet > Opus)
+## F-prompt-correctness.3 — Thinking schadet bei Example-Mapping (Sonnet > Opus)
 
 Thinking-Mode reduziert die Korrektheit (außen) bei example-mapping,
 aber der Effekt ist modellabhängig:
@@ -128,7 +128,7 @@ Sonnet hinterfragt sie häufiger und konstruiert Alternativ-Lesarten.
 
 ---
 
-## F-1.4 — User-Story ≈ Prose, keine messbare Wirkung auf Korrektheit
+## F-prompt-correctness.4 — User-Story ≈ Prose, keine messbare Wirkung auf Korrektheit
 
 User-Story erreicht über alle Modelle und Thinking-Modi ähnliche
 Korrektheit (außen) wie Prose. Maximale Differenz: 6 pp.
@@ -155,7 +155,7 @@ gegenüber Prose nur geringfügig (≤6 pp).
 
 ---
 
-## F-1.5 — Streuung bei Example-Mapping ist modellabhängig
+## F-prompt-correctness.5 — Streuung bei Example-Mapping ist modellabhängig
 
 Example-Mapping-Runs streuen stärker als prose/user-story, aber
 die Streuung hängt stark vom Modell ab:
@@ -174,7 +174,7 @@ example-mapping).
 **Rationale**: Sonnet +thinking zeigt weiterhin quasi-binäres
 Verhalten (0 % oder hoch), während Opus in beiden Modi konsistenter
 die richtige Interpretation trifft. Die Streuung bei Sonnet
-+thinking (σ=0.41) ist ein Thinking-Effekt (→ F-1.3), nicht ein
++thinking (σ=0.41) ist ein Thinking-Effekt (→ F-prompt-correctness.3), nicht ein
 generelles EM-Problem — Sonnet −thinking und Opus ±thinking
 streuen deutlich weniger.
 

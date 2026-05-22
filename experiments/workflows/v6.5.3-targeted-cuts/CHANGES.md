@@ -5,7 +5,7 @@ of the three Finding 10 cuts (the structurally larger
 DO/DON'T blocks) and **keeps** the third ("Remember"
 section) as a Floor-Anker candidate.
 
-Motivation: RQ-15 showed v6.5.2-bullets-cut (all three
+Motivation: RQ-bullets showed v6.5.2-bullets-cut (all three
 cuts) wins on quality (cognitive_max −29 %, mccabe_max
 −16 %) and cost (−15 % tokens) but loses on TDD-discipline
 determinism (σ refactorings_applied 0.42 → 1.26, σ

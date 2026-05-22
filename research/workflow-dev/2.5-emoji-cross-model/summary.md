@@ -1,8 +1,8 @@
-# RQ-12 — Aggregation
+# RQ-emoji-cross-model — Aggregation
 
-_Replizieren die RQ-11-Befunde (Emojis ohne Code-Qualitaets-Effekt, Tokens -5%) auch auf sonnet-4-6 und opus-4-6, oder ist der Effekt opus-4-7-spezifisch?_
+_Replizieren die RQ-emoji-Befunde (Emojis ohne Code-Qualitaets-Effekt, Tokens -5%) auch auf sonnet-4-6 und opus-4-6, oder ist der Effekt opus-4-7-spezifisch?_
 
-Generated: 2026-05-16T11:40:00Z
+Generated: 2026-05-22T16:38:12Z
 
 Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
@@ -21,7 +21,7 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
 ### code_mass
 
-| kata                         | workflow      | model                        |   n |   mean |   min |   max |   std |
+| kata                         | workflow      | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6-hybrid     | opus-4-6-portkey-no-thinking |   5 |   32.6 |     0 |   163 | 72.9  |
 | game-of-life-example-mapping | v6-hybrid     | opus-4-7-no-thinking         |  10 |  158.6 |   140 |   187 | 15.14 |
@@ -32,7 +32,7 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
 ### smell_total
 
-| kata                         | workflow      | model                        |   n |   mean |   min |   max |   std |
+| kata                         | workflow      | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6-hybrid     | opus-4-6-portkey-no-thinking |   5 |    0.8 |     0 |     4 |  1.79 |
 | game-of-life-example-mapping | v6-hybrid     | opus-4-7-no-thinking         |  10 |    2.2 |     2 |     3 |  0.42 |
@@ -43,7 +43,7 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
 ### cc_longest_function
 
-| kata                         | workflow      | model                        |   n |   mean |   min |   max |   std |
+| kata                         | workflow      | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6-hybrid     | opus-4-6-portkey-no-thinking |   5 |    2.6 |     0 |    13 |  5.81 |
 | game-of-life-example-mapping | v6-hybrid     | opus-4-7-no-thinking         |  10 |   13.1 |     4 |    21 |  5.97 |
@@ -54,7 +54,7 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
 ### cognitive_max
 
-| kata                         | workflow      | model                        |   n |   mean |   min |   max |   std |
+| kata                         | workflow      | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6-hybrid     | opus-4-6-portkey-no-thinking |   5 |    2.4 |     0 |    12 |  5.37 |
 | game-of-life-example-mapping | v6-hybrid     | opus-4-7-no-thinking         |  10 |    5.2 |     1 |     7 |  2.3  |
@@ -65,7 +65,7 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
 ### mccabe_max
 
-| kata                         | workflow      | model                        |   n |   mean |   min |   max |   std |
+| kata                         | workflow      | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6-hybrid     | opus-4-6-portkey-no-thinking |   5 |    1.4 |     0 |     7 |  3.13 |
 | game-of-life-example-mapping | v6-hybrid     | opus-4-7-no-thinking         |  10 |    4.5 |     2 |     7 |  1.51 |
@@ -76,7 +76,7 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
 ### refactorings_applied
 
-| kata                         | workflow      | model                        |   n |   mean |   min |   max |   std |
+| kata                         | workflow      | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6-hybrid     | opus-4-6-portkey-no-thinking |   5 |    0.6 |     0 |     3 |  1.34 |
 | game-of-life-example-mapping | v6-hybrid     | opus-4-7-no-thinking         |  10 |    4   |     3 |     8 |  1.63 |
@@ -87,7 +87,7 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
 ### cycle_count
 
-| kata                         | workflow      | model                        |   n |   mean |   min |   max |   std |
+| kata                         | workflow      | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6-hybrid     | opus-4-6-portkey-no-thinking |   5 |    1.8 |     0 |     8 |  3.49 |
 | game-of-life-example-mapping | v6-hybrid     | opus-4-7-no-thinking         |  10 |    8.3 |     7 |    10 |  0.82 |
@@ -98,7 +98,7 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
 ### predictions_correct_rate (pooled %)
 
-| kata                         | workflow      | model                        |   n |   correct |   total |   rate_% |
+| kata                         | workflow      | cell_model                   |   n |   correct |   total |   rate_% |
 |:-----------------------------|:--------------|:-----------------------------|----:|----------:|--------:|---------:|
 | game-of-life-example-mapping | v6-hybrid     | opus-4-7-no-thinking         |  10 |       169 |     170 |     99.4 |
 | game-of-life-example-mapping | v6-hybrid     | sonnet-4-6-no-thinking       |   2 |        13 |      16 |     81.2 |
@@ -108,7 +108,7 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
 ### tests_passed_immediately
 
-| kata                         | workflow      | model                        |   n |   mean |   min |   max |   std |
+| kata                         | workflow      | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6-hybrid     | opus-4-6-portkey-no-thinking |   5 |    1.2 |     0 |     6 |  2.68 |
 | game-of-life-example-mapping | v6-hybrid     | opus-4-7-no-thinking         |  10 |    3.3 |     0 |     7 |  3.02 |
@@ -119,7 +119,7 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
 ### duration_seconds
 
-| kata                         | workflow      | model                        |   n |   mean |   min |   max |    std |
+| kata                         | workflow      | cell_model                   |   n |   mean |   min |   max |    std |
 |:-----------------------------|:--------------|:-----------------------------|----:|-------:|------:|------:|-------:|
 | game-of-life-example-mapping | v6-hybrid     | opus-4-6-portkey-no-thinking |   5 |  158.6 |    40 |   616 | 255.72 |
 | game-of-life-example-mapping | v6-hybrid     | opus-4-7-no-thinking         |  10 |  521.4 |   427 |   711 |  95.48 |
@@ -130,7 +130,7 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
 ### total_tokens
 
-| kata                         | workflow      | model                        |   n |        mean |     min |     max |              std |
+| kata                         | workflow      | cell_model                   |   n |        mean |     min |     max |              std |
 |:-----------------------------|:--------------|:-----------------------------|----:|------------:|--------:|--------:|-----------------:|
 | game-of-life-example-mapping | v6-hybrid     | opus-4-6-portkey-no-thinking |   5 | 1.6829e+06  |  499928 | 6369052 |      2.61968e+06 |
 | game-of-life-example-mapping | v6-hybrid     | opus-4-7-no-thinking         |  10 | 6.62354e+06 | 4863281 | 8557921 |      1.31893e+06 |
@@ -141,7 +141,7 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
 ### tests_passing (rate %)
 
-| kata                         | workflow      | model                        |   n |   match |   rate_% |
+| kata                         | workflow      | cell_model                   |   n |   match |   rate_% |
 |:-----------------------------|:--------------|:-----------------------------|----:|--------:|---------:|
 | game-of-life-example-mapping | v6-hybrid     | opus-4-6-portkey-no-thinking |   5 |       1 |       20 |
 | game-of-life-example-mapping | v6-hybrid     | opus-4-7-no-thinking         |  10 |      10 |      100 |
@@ -152,7 +152,7 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
 ### verification_pct
 
-| kata                         | workflow      | model                        |   n |   mean |   min |   max |   std |
+| kata                         | workflow      | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6-hybrid     | opus-4-6-portkey-no-thinking |   5 |   0.2  |   0   |     1 |  0.45 |
 | game-of-life-example-mapping | v6-hybrid     | opus-4-7-no-thinking         |  10 |   1    |   1   |     1 |  0    |
@@ -163,7 +163,7 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
 ### completed_within_budget (rate %)
 
-| kata                         | workflow      | model                        |   n |   match |   rate_% |
+| kata                         | workflow      | cell_model                   |   n |   match |   rate_% |
 |:-----------------------------|:--------------|:-----------------------------|----:|--------:|---------:|
 | game-of-life-example-mapping | v6-hybrid     | opus-4-6-portkey-no-thinking |   5 |       5 |      100 |
 | game-of-life-example-mapping | v6-hybrid     | opus-4-7-no-thinking         |  10 |      10 |      100 |

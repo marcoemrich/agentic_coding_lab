@@ -46,7 +46,7 @@ rationale additions, terminology.
 The cut bullet lists are pure verbatim duplicates of
 content present elsewhere — by the behavior-preserving-
 cuts rule they should not change agent behavior. If the
-TDD-discipline metrics from RQ-14 hold (refactorings_applied
+TDD-discipline metrics from RQ-audit hold (refactorings_applied
 ~7.8, tests_passed_immediately ~0, smell_total ~2.0,
 predictions_correct_rate ~99 %) the bullets were
 decorative and the cut is a net win on token cost. If

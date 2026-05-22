@@ -1,8 +1,8 @@
-# RQ-20 — Aggregation
+# RQ-testlist-fix — Aggregation
 
 _Verbessert die v4.1-testlist-scope-fix-Variante die verification_pct auf claim-office-example-mapping gegenüber v4-exact-subagents — und gilt der Effekt konsistent über Opus 4.7 (Direct API) und Opus 4.6 (Portkey)?_
 
-Generated: 2026-05-21T17:48:33Z
+Generated: 2026-05-22T16:38:15Z
 
 Cells declared: 4 · matched runs: 24 · min_replicates: 5
 
@@ -19,7 +19,7 @@ Cells declared: 4 · matched runs: 24 · min_replicates: 5
 
 ### verification_pct
 
-| kata                         | workflow                | model                        |   n |   mean |   min |   max |   std |
+| kata                         | workflow                | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-6-portkey-no-thinking |   5 |   0.93 |   0.8 |     1 |  0.08 |
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking         |  10 |   0.67 |   0.2 |     1 |  0.36 |
@@ -28,7 +28,7 @@ Cells declared: 4 · matched runs: 24 · min_replicates: 5
 
 ### verification_passed
 
-| kata                         | workflow                | model                        |   n |   mean |   min |   max |   std |
+| kata                         | workflow                | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-6-portkey-no-thinking |   5 |  14    |    12 |    15 |  1.22 |
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking         |  10 |  10    |     3 |    15 |  5.33 |
@@ -37,7 +37,7 @@ Cells declared: 4 · matched runs: 24 · min_replicates: 5
 
 ### tests_passing (rate %)
 
-| kata                         | workflow                | model                        |   n |   match |   rate_% |
+| kata                         | workflow                | cell_model                   |   n |   match |   rate_% |
 |:-----------------------------|:------------------------|:-----------------------------|----:|--------:|---------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-6-portkey-no-thinking |   5 |       5 |      100 |
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking         |  10 |      10 |      100 |
@@ -46,7 +46,7 @@ Cells declared: 4 · matched runs: 24 · min_replicates: 5
 
 ### cycle_count
 
-| kata                         | workflow                | model                        |   n |   mean |   min |   max |   std |
+| kata                         | workflow                | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-6-portkey-no-thinking |   5 |  29.4  |    21 |    40 |  7.16 |
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking         |  10 |  37.8  |    16 |    49 |  9.51 |
@@ -55,7 +55,7 @@ Cells declared: 4 · matched runs: 24 · min_replicates: 5
 
 ### refactorings_applied
 
-| kata                         | workflow                | model                        |   n |   mean |   min |   max |   std |
+| kata                         | workflow                | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-6-portkey-no-thinking |   5 |  18    |    15 |    20 |  2.12 |
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking         |  10 |  16.4  |     3 |    27 |  7.4  |
@@ -64,7 +64,7 @@ Cells declared: 4 · matched runs: 24 · min_replicates: 5
 
 ### duration_seconds
 
-| kata                         | workflow                | model                        |   n |   mean |   min |   max |    std |
+| kata                         | workflow                | cell_model                   |   n |   mean |   min |   max |    std |
 |:-----------------------------|:------------------------|:-----------------------------|----:|-------:|------:|------:|-------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-6-portkey-no-thinking |   5 | 4415.8 |  3385 |  5401 | 787.02 |
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking         |  10 | 3692.7 |  1640 |  4822 | 942.11 |
@@ -73,7 +73,7 @@ Cells declared: 4 · matched runs: 24 · min_replicates: 5
 
 ### total_tokens
 
-| kata                         | workflow                | model                        |   n |        mean |      min |      max |         std |
+| kata                         | workflow                | cell_model                   |   n |        mean |      min |      max |         std |
 |:-----------------------------|:------------------------|:-----------------------------|----:|------------:|---------:|---------:|------------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-6-portkey-no-thinking |   5 | 1.50647e+07 | 13213114 | 18251612 | 1.97916e+06 |
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking         |  10 | 1.3655e+07  |  9411553 | 16548065 | 2.09204e+06 |
@@ -82,7 +82,7 @@ Cells declared: 4 · matched runs: 24 · min_replicates: 5
 
 ### completed_within_budget (rate %)
 
-| kata                         | workflow                | model                        |   n |   match |   rate_% |
+| kata                         | workflow                | cell_model                   |   n |   match |   rate_% |
 |:-----------------------------|:------------------------|:-----------------------------|----:|--------:|---------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-6-portkey-no-thinking |   5 |       4 |       80 |
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking         |  10 |      10 |      100 |

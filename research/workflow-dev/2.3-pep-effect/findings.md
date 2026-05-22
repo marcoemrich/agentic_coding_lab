@@ -1,4 +1,4 @@
-# RQ-10 — Findings: Psychologische Begründungen in Red/Green-Skills
+# RQ-pep — Findings: Psychologische Begründungen in Red/Green-Skills
 
 ## Übersicht
 
@@ -16,19 +16,19 @@ Keine Code-Qualitäts-Metrik überschreitet ±1σ-Schwelle. Richtung gemischt: 2
 
 ---
 
-## F-10.1 — Pep-Talks haben keinen messbaren Effekt auf Code-Qualität
+## F-pep.1 — Pep-Talks haben keinen messbaren Effekt auf Code-Qualität
 
 **Aussage:** Auf keiner der fünf primären Code-Qualitäts-Metriken überschreitet die Median-Differenz zwischen v6 und v6.3 eine Standardabweichung der v6-Streuung. Die Richtung ist gemischt (2 von 5 leicht zu v6.3, 3 von 5 leicht zu v6). Im Daten-Niveau dieser RQ kein Effekt nachweisbar.
 
 **Hypothesen-Auswertung:**
-- H1 (Pep-Talks wirkungslos auf Code-Qualität) — **bestätigt für Code-Qualitäts-Outcomes** (gleiche Caveats wie F-9.1: Null-Befund mit n=5).
+- H1 (Pep-Talks wirkungslos auf Code-Qualität) — **bestätigt für Code-Qualitäts-Outcomes** (gleiche Caveats wie F-rules.1: Null-Befund mit n=5).
 - H2 (Pep-Talks helfen messbar in Code-Qualität, ≥ +1σ in mindestens zwei Metriken) — **nicht erfüllt** für Code-Qualität.
 
-**Mechanismus-Hypothese:** Die entfernten Pep-Bestandteile ("Trust the process", "Simple steps compound into elegant solutions", "Hardcoded values feel wrong → They're exactly right") zielen auf Modell-Selbstdisziplin in der **Green-Phase**, nicht auf das Code-Qualitäts-Outcome direkt. Code-Qualität entsteht primär im Refactor-Subagent (vgl. RQ-8 F-8.1) — der bleibt in v6.3 vollständig unverändert. Dass Pep-Talks in Red/Green keine Code-Komplexitäts-Wirkung haben, ist mechanistisch plausibel.
+**Mechanismus-Hypothese:** Die entfernten Pep-Bestandteile ("Trust the process", "Simple steps compound into elegant solutions", "Hardcoded values feel wrong → They're exactly right") zielen auf Modell-Selbstdisziplin in der **Green-Phase**, nicht auf das Code-Qualitäts-Outcome direkt. Code-Qualität entsteht primär im Refactor-Subagent (vgl. RQ-app F-app.1) — der bleibt in v6.3 vollständig unverändert. Dass Pep-Talks in Red/Green keine Code-Komplexitäts-Wirkung haben, ist mechanistisch plausibel.
 
 ---
 
-## F-10.2 — Aber: `predictions_correct_rate` fällt um 6.9 Prozentpunkte (99.4 % → 92.5 %)
+## F-pep.2 — Aber: `predictions_correct_rate` fällt um 6.9 Prozentpunkte (99.4 % → 92.5 %)
 
 **Aussage:** Der einzige TDD-Disziplin-Indikator mit deutlichem Effekt ist die Prediction-Compliance in der Red-Phase:
 
@@ -43,11 +43,11 @@ In absoluten Zahlen: 6 falsche Predictions bei v6.3 (auf 80 gemessenen) vs 1 bei
 
 **Mechanismus-Hypothese:** Das Wort "discipline" in der Red-Phase-Mission scheint das Modell tatsächlich zu strafferer Prediction-Compliance zu führen. Ohne diesen Anker entstehen mehr Predictions, die unprägnant geraten und in der Verifikation als "Incorrect" eingestuft werden. **Plausibel, aber bei n=5 (= 80 Predictions) statistisch grenzwertig** — die wahre Rate könnte zwischen 88 % und 97 % liegen (95%-Konfidenzintervall).
 
-H3 (mehr Over-Implementation in Green-Phase ohne Pep) — **falsifiziert** in dieser RQ: `tests_passed_immediately` ist sogar leicht *niedriger* bei v6.3 (2.2 vs 3.3). Der Disziplin-Effekt aus F-10.2 sitzt in der Red-Phase, nicht in der Green-Phase.
+H3 (mehr Over-Implementation in Green-Phase ohne Pep) — **falsifiziert** in dieser RQ: `tests_passed_immediately` ist sogar leicht *niedriger* bei v6.3 (2.2 vs 3.3). Der Disziplin-Effekt aus F-pep.2 sitzt in der Red-Phase, nicht in der Green-Phase.
 
 ---
 
-## F-10.3 — Keine Token- oder Wallclock-Einsparung — entgegen Hypothese H4
+## F-pep.3 — Keine Token- oder Wallclock-Einsparung — entgegen Hypothese H4
 
 **Aussage:** Die Reduktion der Pep-Bestandteile ist mengenmäßig zu klein, um messbare Einsparungen zu erzeugen:
 
@@ -62,15 +62,15 @@ H4 (Pep-Talks kosten ≥ 5 % Tokens/Wallclock) — **falsifiziert**. Die entfern
 
 ---
 
-## F-10.4 — Konsequenz für die Workflow-Optimierung
+## F-pep.4 — Konsequenz für die Workflow-Optimierung
 
 Im Vergleich der drei Reduktions-RQs:
 
 | RQ | Reduktion | Code-Qualität | Stabilität | Disziplin | Tokens | Verdict |
 |---|---|:---:|:---:|:---:|:---:|:---:|
-| RQ-8 (F-8.x) | APP raus | ⬇️ alle schlechter | ⬆️ σ verdoppelt | ➡️ | −8 % | APP bleibt |
-| RQ-9 (F-9.x) | Four Rules raus | ➡️ unverändert | ➡️ unverändert | ➡️ | −8.5 % | **Four Rules können raus** |
-| RQ-10 (F-10.x) | Pep-Talks raus | ➡️ unverändert | gemischt | ⚠️ pred-rate −7 pp | ±0 % | **Mixed — vor Entscheidung mehr Daten** |
+| RQ-app (F-app.x) | APP raus | ⬇️ alle schlechter | ⬆️ σ verdoppelt | ➡️ | −8 % | APP bleibt |
+| RQ-rules (F-rules.x) | Four Rules raus | ➡️ unverändert | ➡️ unverändert | ➡️ | −8.5 % | **Four Rules können raus** |
+| RQ-pep (F-pep.x) | Pep-Talks raus | ➡️ unverändert | gemischt | ⚠️ pred-rate −7 pp | ±0 % | **Mixed — vor Entscheidung mehr Daten** |
 
 v6.3-no-pep ist **kein eindeutiger Reduktions-Erfolg** wie v6.2 — der Pred-Rate-Abfall ist ein konkretes Warnsignal, das bei n=5 zu wenig Daten hat für eine endgültige Bewertung. Bevor Pep-Talks in einen konsolidierten v6.4-Reduktions-Bundle aufgenommen werden, sollte:
 
@@ -81,5 +81,5 @@ v6.3-no-pep ist **kein eindeutiger Reduktions-Erfolg** wie v6.2 — der Pred-Rat
 
 - **n=5 v6.3, n=80 Predictions**: die 6.9-pp-Differenz hat ein breites Konfidenzintervall. Bei n=10 wäre die Aussage robuster.
 - **Asymmetrische Pep-Reduktion**: green.md hat den größeren Pep-Block (12-zeilige Psychological-Resistance-Sektion), red.md nur kleine Edits. Das Hauptsignal (pred-rate) sitzt aber in red.md — ein Hinweis, dass die scheinbar kleine "strict discipline"-Streichung mehr Effekt hat als die scheinbar große Resistance-Sektion-Streichung.
-- **Single Kata, single Modell**: identische Limitierungen wie RQ-8/RQ-9.
+- **Single Kata, single Modell**: identische Limitierungen wie RQ-app/RQ-rules.
 - **Mixed-Result-Interpretation**: das Daten-Muster lässt zwei Lesarten zu: (a) "Pep-Talks wirken subtil über Disziplin, nicht über Qualität" — bestätigt MARKERS-Klassifikation nur teilweise; (b) "Daten-Rauschen bei n=5, kein echter Effekt" — bestätigt MARKERS voll. Folgestudie nötig.

@@ -1,5 +1,5 @@
 ---
-id: RQ-19
+id: RQ-regression
 question: "An welcher Stelle in der Optimierungskette v6 → v6.5 → v6.5.1 → v6.5.2 → v6.5.3 → v6.5.4 (→ v6.6) ist die verification_pct-Regression auf claim-office-example-mapping entstanden? Ist der Befund modell-unabhängig?"
 factors:
   workflow_x_prompt:
@@ -32,17 +32,17 @@ min_replicates: 3
 status: aktiv
 ---
 
-# RQ-19: verification_pct-Regression in der v6-Optimierungs-Kette lokalisieren
+# RQ-regression: verification_pct-Regression in der v6-Optimierungs-Kette lokalisieren
 
 ## Motivation
 
-RQ-18.1 hat unerwartet gezeigt, dass v6.5.4 auf `claim-office-example-mapping × opus-4-7-no-thinking` nur 0.40 ± 0.43 `verification_pct` erreicht (3 perfekte Runs, 7 zwischen 0 und 0.20). Historische Daten aus RQ-7 / RQ-1 zeigen aber:
+RQ-delayed-claim-office hat unerwartet gezeigt, dass v6.5.4 auf `claim-office-example-mapping × opus-4-7-no-thinking` nur 0.40 ± 0.43 `verification_pct` erreicht (3 perfekte Runs, 7 zwischen 0 und 0.20). Historische Daten aus RQ-workflow-tradeoff / RQ-prompt-correctness zeigen aber:
 
 - v4-exact-subagents: 0.67 (bimodal)
 - v5-exact-single-context: 0.87 (1 Outlier)
 - **v6-hybrid: 1.00** (n=5, perfekt)
 
-Die gesamte v6.5er-Reduktionskette (RQ-13 → RQ-17) wurde ausschließlich auf game-of-life gemessen, weil GOL keine externe Verification-Suite hat. Damit war die Korrektheits-Achse für die letzten ~5 Workflow-Iterationen blind. v6-hybrid → v6.5.4 ist eine 60-Punkte-Regression, deren Quelle in einer der Reduktions-Stufen versteckt ist.
+Die gesamte v6.5er-Reduktionskette (RQ-lean → RQ-refactor-cut) wurde ausschließlich auf game-of-life gemessen, weil GOL keine externe Verification-Suite hat. Damit war die Korrektheits-Achse für die letzten ~5 Workflow-Iterationen blind. v6-hybrid → v6.5.4 ist eine 60-Punkte-Regression, deren Quelle in einer der Reduktions-Stufen versteckt ist.
 
 ## Hypothesen
 
@@ -60,6 +60,6 @@ Wenn H3 stimmt: Sprung schon bei v6.5-lean (1.0 → 0.5±).
 
 Die Probe ist bewusst klein (n=3 pro Workflow), um schnell zu identifizieren, *wo* der Bruch ist. Nach Identifikation der verdächtigen Stufe wird diese Stufe und die Nachbar-Stufen auf n=10 nachgeschärft, um den Effekt statistisch abzusichern.
 
-## Methodisches Defizit, das RQ-19 aufdeckt
+## Methodisches Defizit, das RQ-regression aufdeckt
 
 Die v6.5er-RQs waren auf Code-Qualität fokussiert und haben Korrektheit-außen nicht in der Outcome-Liste geführt. Lehre: **mindestens eine Korrektheits-Stichprobe pro Workflow-Iteration**, auch wenn die RQ primär Code-Qualität untersucht. Vorschlag für `workflow-construction.md`: Pflicht-Smoke auf claim-office-example-mapping × n=3 vor jedem n=10-Quality-Batch.

@@ -46,7 +46,7 @@ research/
 
 Each RQ dir holds `README.md`, `findings.md`, `runs.csv`, `summary.md`. The `<chapter>` prefix
 (e.g. `2.6-lean-validation`) is an **ordering label, not an id** — like a document section number,
-freely renumber-able. The stable identity is the frontmatter `id:` (e.g. `RQ-13`); all tooling
+freely renumber-able. The stable identity is the frontmatter `id:` (e.g. `RQ-lean`); all tooling
 resolves RQs by that id, never by the directory name. Resolve `RQ-N` → path by id-grep across both
 subtrees.
 
@@ -55,7 +55,7 @@ subtrees.
 ### Editing workflows
 
 - **Keine numerischen Schwellwerte in Workflow-/Agent-Prompts** (z.B. `cognitive_max < 15`, `LoC < 50`, `complexity ≤ 10`). Katas, Szenarien und Umgebungen sind zu volatil — ein Schwellwert, der für game-of-life sinnvoll ist, ist für claim-office unsinnig. Stattdessen qualitative Sprache ("reduce cognitive complexity", "extract when a function does multiple things"). Gilt auch für neue Refactor-/Review-Agenten.
-- **Read `experiments/workflows/MARKERS.md` first** (hard parser requirements — four markers drive all TDD metrics; altering one silently zeros the corresponding metric, no error). **For content design** (Theory-of-Mind / Why-Block pattern, reduction learnings from RQ-9/10/11/13, Skill-vs-Subagent architecture gradient): `research/workflow-dev/workflow-construction.md`.
+- **Read `experiments/workflows/MARKERS.md` first** (hard parser requirements — four markers drive all TDD metrics; altering one silently zeros the corresponding metric, no error). **For content design** (Theory-of-Mind / Why-Block pattern, reduction learnings from RQ-rules/RQ-pep/RQ-emoji/RQ-lean, Skill-vs-Subagent architecture gradient): `research/workflow-dev/workflow-construction.md`.
 - Smoke-test after every workflow change:
   ```bash
   jq '.final_metrics | {cycle_count, refactorings_applied, predictions_correct, predictions_total, tests_passing}' experiments/runs/<latest>/metrics.json

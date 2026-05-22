@@ -1,8 +1,8 @@
-# RQ-17 — Aggregation
+# RQ-refactor-cut — Aggregation
 
 _Ist der Pred-Rate-Drop in v6.5.3 (95.8 %) durch den red/SKILL.md-DO/DON'T-Cut verursacht? Liefert v6.5.4 (nur refactor.md DO/DON'T gestrichen) einen sauberen Pareto-Optimum mit v6.5.3-Quality + v6.5.1-Pred-Hygiene + Floor?_
 
-Generated: 2026-05-17T18:57:20Z
+Generated: 2026-05-22T16:38:14Z
 
 Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
@@ -18,7 +18,7 @@ Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
 ### code_mass
 
-| kata                         | workflow                     | model                |   n |   mean |   min |   max |   std |
+| kata                         | workflow                     | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking |  10 |  146.7 |   133 |   162 | 11.53 |
 | game-of-life-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking |  10 |  150.7 |   130 |   177 | 13.93 |
@@ -26,7 +26,7 @@ Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
 ### smell_total
 
-| kata                         | workflow                     | model                |   n |   mean |   min |   max |   std |
+| kata                         | workflow                     | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking |  10 |      2 |     2 |     2 |     0 |
 | game-of-life-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking |  10 |      2 |     2 |     2 |     0 |
@@ -34,7 +34,7 @@ Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
 ### cc_longest_function
 
-| kata                         | workflow                     | model                |   n |   mean |   min |   max |   std |
+| kata                         | workflow                     | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking |  10 |   13.1 |     2 |    21 |  6.3  |
 | game-of-life-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking |  10 |   12   |     6 |    17 |  3.4  |
@@ -42,7 +42,7 @@ Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
 ### cognitive_max
 
-| kata                         | workflow                     | model                |   n |   mean |   min |   max |   std |
+| kata                         | workflow                     | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking |  10 |    5.6 |     2 |    10 |  3.17 |
 | game-of-life-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking |  10 |    3.5 |     2 |     7 |  1.43 |
@@ -50,7 +50,7 @@ Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
 ### mccabe_max
 
-| kata                         | workflow                     | model                |   n |   mean |   min |   max |   std |
+| kata                         | workflow                     | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking |  10 |    4.9 |     3 |     7 |  1.45 |
 | game-of-life-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking |  10 |    4.3 |     3 |     5 |  0.67 |
@@ -58,7 +58,7 @@ Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
 ### refactorings_applied
 
-| kata                         | workflow                     | model                |   n |   mean |   min |   max |   std |
+| kata                         | workflow                     | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking |  10 |    7.8 |     7 |     8 |  0.42 |
 | game-of-life-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking |  10 |    8.3 |     7 |     9 |  0.67 |
@@ -66,7 +66,7 @@ Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
 ### cycle_count
 
-| kata                         | workflow                     | model                |   n |   mean |   min |   max |   std |
+| kata                         | workflow                     | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking |  10 |    7.8 |     7 |     8 |  0.42 |
 | game-of-life-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking |  10 |    8.3 |     7 |     9 |  0.67 |
@@ -74,7 +74,7 @@ Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
 ### predictions_correct_rate (pooled %)
 
-| kata                         | workflow                     | model                |   n |   correct |   total |   rate_% |
+| kata                         | workflow                     | cell_model           |   n |   correct |   total |   rate_% |
 |:-----------------------------|:-----------------------------|:---------------------|----:|----------:|--------:|---------:|
 | game-of-life-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking |  10 |       175 |     177 |     98.9 |
 | game-of-life-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking |  10 |       159 |     166 |     95.8 |
@@ -82,7 +82,7 @@ Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
 ### tests_passed_immediately (rate %)
 
-| kata                         | workflow                     | model                |   n |   match |   rate_% |
+| kata                         | workflow                     | cell_model           |   n |   match |   rate_% |
 |:-----------------------------|:-----------------------------|:---------------------|----:|--------:|---------:|
 | game-of-life-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking |  10 |       0 |        0 |
 | game-of-life-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking |  10 |       0 |        0 |
@@ -90,7 +90,7 @@ Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
 ### duration_seconds
 
-| kata                         | workflow                     | model                |   n |   mean |   min |   max |    std |
+| kata                         | workflow                     | cell_model           |   n |   mean |   min |   max |    std |
 |:-----------------------------|:-----------------------------|:---------------------|----:|-------:|------:|------:|-------:|
 | game-of-life-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking |  10 |  726.1 |   605 |   903 |  86.95 |
 | game-of-life-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking |  10 |  752.1 |   595 |  1066 | 146.46 |
@@ -98,7 +98,7 @@ Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
 ### total_tokens
 
-| kata                         | workflow                     | model                |   n |        mean |     min |      max |             std |
+| kata                         | workflow                     | cell_model           |   n |        mean |     min |      max |             std |
 |:-----------------------------|:-----------------------------|:---------------------|----:|------------:|--------:|---------:|----------------:|
 | game-of-life-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking |  10 | 8.52687e+06 | 7616336 |  9276348 | 601678          |
 | game-of-life-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking |  10 | 8.55884e+06 | 6250382 | 10576013 |      1.4763e+06 |
@@ -106,7 +106,7 @@ Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
 ### tests_passing (rate %)
 
-| kata                         | workflow                     | model                |   n |   match |   rate_% |
+| kata                         | workflow                     | cell_model           |   n |   match |   rate_% |
 |:-----------------------------|:-----------------------------|:---------------------|----:|--------:|---------:|
 | game-of-life-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking |  10 |      10 |      100 |
 | game-of-life-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking |  10 |      10 |      100 |
@@ -114,7 +114,7 @@ Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
 ### verification_pct (rate %)
 
-| kata                         | workflow                     | model                |   n |   match |   rate_% |
+| kata                         | workflow                     | cell_model           |   n |   match |   rate_% |
 |:-----------------------------|:-----------------------------|:---------------------|----:|--------:|---------:|
 | game-of-life-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking |  10 |      10 |      100 |
 | game-of-life-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking |  10 |      10 |      100 |
@@ -122,7 +122,7 @@ Cells declared: 3 · matched runs: 30 · min_replicates: 10
 
 ### completed_within_budget (rate %)
 
-| kata                         | workflow                     | model                |   n |   match |   rate_% |
+| kata                         | workflow                     | cell_model           |   n |   match |   rate_% |
 |:-----------------------------|:-----------------------------|:---------------------|----:|--------:|---------:|
 | game-of-life-example-mapping | v6.5.1-orchestration-audited | opus-4-7-no-thinking |  10 |      10 |      100 |
 | game-of-life-example-mapping | v6.5.3-targeted-cuts         | opus-4-7-no-thinking |  10 |      10 |      100 |

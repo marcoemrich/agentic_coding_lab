@@ -1,7 +1,7 @@
 # Workflow Markers — What the Pipeline Actually Reads
 
 > **Inhalts-Design** (Theory-of-Mind, Why-Block-Pattern, Reduktions-
-> Erfahrungen aus RQ-9/10/11/13, Subagent-Architektur-Gradient):
+> Erfahrungen aus RQ-rules/RQ-pep/RQ-emoji/RQ-lean, Subagent-Architektur-Gradient):
 > siehe `research/workflow-dev/workflow-construction.md`. Diese
 > Datei hier deckt nur die harten Parser-Anforderungen ab.
 

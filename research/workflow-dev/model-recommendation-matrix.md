@@ -6,7 +6,7 @@ v4 und v6 je nach Modell die Plätze. Wer einen Workflow optimiert, muss das Zie
 eine Verbesserung auf opus-4-7 ist nicht automatisch eine auf opus-4-6.
 
 Vollständiger Befund (Tabelle, Stichproben, Mechanismus):
-`research/questions/3.1-workflow-model-interaction/findings.md` (RQ-21, F-21.1/F-21.2).
+`research/questions/3.1-workflow-model-interaction/findings.md` (RQ-workflow-model, F-workflow-model.1/F-workflow-model.2).
 
 ## Empfehlung (Korrektheit auf novel Kata, `claim-office-example-mapping`)
 

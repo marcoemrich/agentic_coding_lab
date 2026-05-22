@@ -9,7 +9,7 @@
 
 (`verification_pct`: höher = besser; 🏆 bei ≥ 0.90)
 
-## F-20.1 — v4.1 beseitigt die Korrektheits-Bimodalität auf Opus 4.7
+## F-testlist-fix.1 — v4.1 beseitigt die Korrektheits-Bimodalität auf Opus 4.7
 
 **Effekt:** v4-exact-subagents zeigt auf opus-4-7-no-thinking bimodale `verification_pct` (4× perfekt, 6× unter 0.40, Schnitt 0.67 ± 0.36). v4.1-testlist-scope-fix hebt den Schnitt auf 0.95 ± 0.10 (3× perfekt, 1× bei 0.80, n=4) und eliminiert die Low-Outlier-Runs.
 
@@ -19,7 +19,7 @@
 
 ---
 
-## F-20.2 — Kein Korrektheits-Effekt auf Opus 4.6 Portkey
+## F-testlist-fix.2 — Kein Korrektheits-Effekt auf Opus 4.6 Portkey
 
 **Effekt:** Auf opus-4-6-portkey-no-thinking liefern v4 und v4.1 nahezu identische `verification_pct` (0.93 ± 0.08 vs. 0.93 ± 0.09). Dort war v4 bereits auf hohem Niveau — der Test-List-Scope-Fix löst ein Problem, das auf 4.6 nicht existierte.
 
@@ -29,7 +29,7 @@
 
 ---
 
-## F-20.3 — v4.1 braucht mehr Budget als v4
+## F-testlist-fix.3 — v4.1 braucht mehr Budget als v4
 
 **Effekt:** v4.1 macht 44–46 Cycles (v4: 29–38). Auf opus-4-6-portkey überschritt das bei 5400s-Budget (alte Einstellung) systematisch die Laufzeit — 5/5 Timeouts, `verification_pct` = 0.20. Mit 7200s-Budget sind alle 5 Runs innerhalb des Budgets (`completed_within_budget` = 100%).
 

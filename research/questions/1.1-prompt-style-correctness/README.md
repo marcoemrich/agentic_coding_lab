@@ -1,5 +1,5 @@
 ---
-id: RQ-1
+id: RQ-prompt-correctness
 question: "Steigert Example-Mapping die Korrektheit gegenüber Prose und User-Story — und ist der Effekt modellabhängig?"
 factors:
   prompt: [prose, example-mapping, user-story]
@@ -26,7 +26,7 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-1: Prompt-Stil-Effekt auf Korrektheit
+# RQ-prompt-correctness: Prompt-Stil-Effekt auf Korrektheit
 
 Steigert Example-Mapping die Korrektheit gegenüber Prose und User-Story
 — und ist der Effekt modellabhängig?

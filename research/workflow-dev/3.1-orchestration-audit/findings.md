@@ -1,4 +1,4 @@
-# RQ-14 Findings
+# RQ-audit Findings
 
 ## Übersicht
 
@@ -18,7 +18,7 @@ Primär-Outcomes je Zelle (n=10 je Workflow, opus-4-7-no-thinking, game-of-life-
 
 ---
 
-## F-14.1 — Mandatory-Procedure-Preamble eliminiert Over-Implementation
+## F-audit.1 — Mandatory-Procedure-Preamble eliminiert Over-Implementation
 
 `tests_passed_immediately` fällt von 1.4 ± 2.27 (max 5) auf **0 ± 0**. In zehn v6.5.1-Runs hat *kein* Test sofort nach dem Red-Switch grün gestanden.
 
@@ -31,7 +31,7 @@ Mechanismen: Mandatory-Procedure-Preamble (alle sieben Red-Schritte verpflichten
 
 ---
 
-## F-14.2 — Refactoring-Disziplin steigt und stabilisiert massiv
+## F-audit.2 — Refactoring-Disziplin steigt und stabilisiert massiv
 
 `refactorings_applied` 6.9 ± 2.33 → **7.8 ± 0.42**. Mittelwert +13 %, σ ein Sechstel.
 
@@ -44,7 +44,7 @@ Die expliziten Rationales in `refactor.md` ("MUST attempt at least one refactori
 
 ---
 
-## F-14.3 — Code-Qualität gleichwertig, mit leichtem Smell-Floor-Gewinn
+## F-audit.3 — Code-Qualität gleichwertig, mit leichtem Smell-Floor-Gewinn
 
 Code-Mass (APP), Spitzen-Komplexität, `cognitive_max`, `mccabe_max` liegen je innerhalb 1 σ — keine Verschlechterung. Smell-Summe sinkt knapp und perfekt konsistent: 2.2 ± 0.42 → **2.0 ± 0**.
 
@@ -60,7 +60,7 @@ Das Audit-Bundle verschlechtert die Quality-Champion-Position von v6.5-lean nich
 
 ---
 
-## F-14.4 — Audit-Bundle kostet ~15 % Tokens und ~16 % Wallclock
+## F-audit.4 — Audit-Bundle kostet ~15 % Tokens und ~16 % Wallclock
 
 | outcome | v6.5-lean | v6.5.1 | Δ |
 |---|---:|---:|---:|
@@ -71,7 +71,7 @@ Die Hypothese H3 (Tokens neutral ±5 %) ist widerlegt. Die Audit-Erweiterungen (
 
 ---
 
-## F-14.5 — Streuung sinkt fast überall
+## F-audit.5 — Streuung sinkt fast überall
 
 Vergleich der σ-Werte über die wichtigsten Outcomes:
 

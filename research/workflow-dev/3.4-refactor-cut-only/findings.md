@@ -1,4 +1,4 @@
-# RQ-17 Findings
+# RQ-refactor-cut Findings
 
 ## Übersicht
 
@@ -19,11 +19,11 @@ Primär-Outcomes je Zelle (n=10 je Workflow, opus-4-7-no-thinking, game-of-life-
 | `duration_seconds` (kleiner = besser)               | **726.1 ± 87** 🏆            | 752.1 ± 146          | 740.6 ± 66               |
 | `tests_passing` / `verification_pct`                | 100 % / 100 %                | 100 % / 100 %        | 100 % / 100 %            |
 
-Lesart: v6.5.4 ist **breitest aufgestellter Champion** — gewinnt 4 von 11 Outcome-Vergleichen exklusiv (`code_mass`, `mccabe_max`, `predictions_correct_rate`, `total_tokens`), teilt 3 weitere (`smell_total`, `tests_passed_immediately`), regrediert nur bei `cc_longest_function` (vs v6.5.3) und marginal bei `duration_seconds` (vs v6.5.1). F-16.4 ist spektakulär bestätigt: 100 % Pred-Rate.
+Lesart: v6.5.4 ist **breitest aufgestellter Champion** — gewinnt 4 von 11 Outcome-Vergleichen exklusiv (`code_mass`, `mccabe_max`, `predictions_correct_rate`, `total_tokens`), teilt 3 weitere (`smell_total`, `tests_passed_immediately`), regrediert nur bei `cc_longest_function` (vs v6.5.3) und marginal bei `duration_seconds` (vs v6.5.1). F-targeted.4 ist spektakulär bestätigt: 100 % Pred-Rate.
 
 ---
 
-## F-17.1 — F-16.4-Hypothese bestätigt: `red/SKILL.md`-DO/DON'T trägt Pred-Hygiene
+## F-refactor-cut.1 — F-targeted.4-Hypothese bestätigt: `red/SKILL.md`-DO/DON'T trägt Pred-Hygiene
 
 | workflow | Cut-Muster (10a/10b/10c) | correct / total | rate | Wrong-Predictions |
 |---|:---:|---:|---:|---:|
@@ -35,7 +35,7 @@ v6.5.4 unterscheidet sich von v6.5.3 ausschließlich durch das wieder-eingeführ
 
 ---
 
-## F-17.2 — v6.5.4 dominiert v6.5.1 in fast allen Metriken (sauberer Pareto-Improvement)
+## F-refactor-cut.2 — v6.5.4 dominiert v6.5.1 in fast allen Metriken (sauberer Pareto-Improvement)
 
 | outcome | v6.5.1 | v6.5.4 | Δ |
 |---|---|---|---|
@@ -48,11 +48,11 @@ v6.5.4 unterscheidet sich von v6.5.3 ausschließlich durch das wieder-eingeführ
 | `cc_longest_function` | 13.1 ± 6.30 | 15.0 ± 3.23     | +14 % Mittel, σ −49 % |
 | `duration_seconds`  | **726.1 ± 87** | 740.6 ± 66       | +2 %, σ −24 % |
 
-Sieben von acht Outcomes gewinnt v6.5.4, sechs davon mit niedrigerer σ. Einzige Regression: `cc_longest_function` Mittelwert +14 % — siehe F-17.3. Die σ-Reduktion läuft quer durch fast alle Metriken: v6.5.4 ist v6.5.1 mit höherer Quality, perfekter Pred-Rate und engeren Bändern.
+Sieben von acht Outcomes gewinnt v6.5.4, sechs davon mit niedrigerer σ. Einzige Regression: `cc_longest_function` Mittelwert +14 % — siehe F-refactor-cut.3. Die σ-Reduktion läuft quer durch fast alle Metriken: v6.5.4 ist v6.5.1 mit höherer Quality, perfekter Pred-Rate und engeren Bändern.
 
 ---
 
-## F-17.3 — Interaction-Effekt: 10b + 10c zusammen erzeugen besseres `cc_longest_function` als 10b allein
+## F-refactor-cut.3 — Interaction-Effekt: 10b + 10c zusammen erzeugen besseres `cc_longest_function` als 10b allein
 
 | workflow | Cuts (10a/10b/10c) | `cc_longest_function` | `cognitive_max` |
 |---|:---:|---:|---:|
@@ -62,11 +62,11 @@ Sieben von acht Outcomes gewinnt v6.5.4, sechs davon mit niedrigerer σ. Einzige
 
 v6.5.3 (10b + 10c beide gestrichen) hat das niedrigste `cc_longest_function` und `cognitive_max`. v6.5.4 (nur 10b gestrichen) liegt zwischen v6.5.1 und v6.5.3. Lesart: die `cc_longest_function`-Reduktion in v6.5.3 ist kein additiver Effekt von 10b allein — sie braucht den 10c-Cut. Möglicher Mechanismus: ohne `red/SKILL.md`-DO/DON'T wird der Red-Phase-Fokus weicher, der Subagent betrachtet auch nebenbei Code-Struktur und entscheidet komplexitäts-orientierter; mit 10c (in v6.5.4) ist der Red-Fokus eng auf Predictions, weniger Struktur-Querblicke.
 
-Das stützt die F-16.2-Hypothese aus einem anderen Winkel: mid-file DO/DON'T-Wiederholungen sind nicht unabhängig wirksam, sondern beeinflussen sich gegenseitig. `cc_longest_function`-Optimum ist Pareto-incompatible mit perfekter Pred-Rate.
+Das stützt die F-targeted.2-Hypothese aus einem anderen Winkel: mid-file DO/DON'T-Wiederholungen sind nicht unabhängig wirksam, sondern beeinflussen sich gegenseitig. `cc_longest_function`-Optimum ist Pareto-incompatible mit perfekter Pred-Rate.
 
 ---
 
-## F-17.4 — Aktualisiertes Pareto-Bild: vier Profile statt drei
+## F-refactor-cut.4 — Aktualisiertes Pareto-Bild: vier Profile statt drei
 
 | Ziel                          | empfohlener Workflow              | Begründung |
 |-------------------------------|-----------------------------------|------------|

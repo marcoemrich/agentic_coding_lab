@@ -1,10 +1,10 @@
-# Findings: RQ-21 — Workflow×Modell-Interaktion
+# Findings: RQ-workflow-model — Workflow×Modell-Interaktion
 
 Datenbasis: `claim-office-example-mapping`, externe Verifikations-Suite (`verification_pct`).
 Herkunft: herausgelöst aus der Lokalisierungs-RQ `research/workflow-dev/5.1-correctness-regression/`
-(vormals F-19.6), wo die v4/v5/v6-Spalten als Nebenbefund anfielen.
+(vormals F-regression.6), wo die v4/v5/v6-Spalten als Nebenbefund anfielen.
 
-## F-21.1 — v4 und v6 tauschen je nach Modell die Plätze
+## F-workflow-model.1 — v4 und v6 tauschen je nach Modell die Plätze
 
 | Workflow | opus-4-7 (n) | opus-4-6 (n) |
 |---|---:|---:|
@@ -20,7 +20,7 @@ Es gibt damit **keinen universell besten Workflow** auf dieser Achse — die Wah
 modell-bedingt. Die Praxis-Empfehlung daraus steht in
 `research/workflow-dev/model-recommendation-matrix.md`.
 
-## F-21.2 — Mechanismus: Orchestrierungs-Delegation vs. expliziter Subagent-Prompt
+## F-workflow-model.2 — Mechanismus: Orchestrierungs-Delegation vs. expliziter Subagent-Prompt
 
 v6-hybrid delegiert die Orchestrierung an das Modell (Skill-Invocation-Semantik im shared Context).
 opus-4-7 beherrscht das. opus-4-6 verliert in ~40 % der Runs die Claim-Hälfte der Spec — das Modell

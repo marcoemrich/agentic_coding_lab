@@ -1,4 +1,4 @@
-# RQ-19 Findings
+# RQ-regression Findings
 
 Lokalisierung der `verification_pct`-Regression auf `claim-office-example-mapping` entlang der v6-Optimierungskette. Zwei Modelle: opus-4-7-no-thinking (Direct API) und opus-4-6-portkey-no-thinking (Portkey). n=3–12 pro Zelle (Triage-Probe + Nachschärfung auf Emoji-Effekt).
 
@@ -29,11 +29,11 @@ Lokalisierung der `verification_pct`-Regression auf `claim-office-example-mappin
 | `v6.4-no-emoji` | 12 | 0.64 | 0 0.20 0.27 0.33 0.33 0.73 0.87 1 1 1 1 1 |
 | `v6.5-lean` | 4 | 0.47 | 0 0 0.87 1 |
 
-## F-19.1 — Bruchstelle auf opus-4-7 ist v6-hybrid → v6.5-lean
+## F-regression.1 — Bruchstelle auf opus-4-7 ist v6-hybrid → v6.5-lean
 
-Alle vier Einzel-Cut-Varianten (v6.1 bis v6.4) halten Korrektheit auf claim-office bei opus-4-7 stabil (mean ≥ 0.93). Der Sprung von 1.00 auf 0.38 tritt erst bei v6.5-lean auf — und keine nachfolgende Iteration (v6.5.1 Audit, v6.5.2 Bullets, v6.5.3 targeted, v6.5.4 cut-only) hat ihn repariert. Die gesamte v6.5er-Quality-Optimierungskette (RQ-13 bis RQ-17) lief auf einem schon defekten Workflow.
+Alle vier Einzel-Cut-Varianten (v6.1 bis v6.4) halten Korrektheit auf claim-office bei opus-4-7 stabil (mean ≥ 0.93). Der Sprung von 1.00 auf 0.38 tritt erst bei v6.5-lean auf — und keine nachfolgende Iteration (v6.5.1 Audit, v6.5.2 Bullets, v6.5.3 targeted, v6.5.4 cut-only) hat ihn repariert. Die gesamte v6.5er-Quality-Optimierungskette (RQ-lean bis RQ-refactor-cut) lief auf einem schon defekten Workflow.
 
-## F-19.2 — Die Einzel-Cuts sind nicht der Täter
+## F-regression.2 — Die Einzel-Cuts sind nicht der Täter
 
 v6.5-lean bündelt vier Reduktionen plus strukturelle Rewrites:
 
@@ -48,7 +48,7 @@ v6.5-lean bündelt vier Reduktionen plus strukturelle Rewrites:
 
 Die vier isoliert getesteten Cuts tragen die Regression nicht. Bleiben zwei untestete Komponenten: der Project-Standards-Cut und die skill-creator-Why-Rewrites (strukturelle Umformulierungen in `tdd.md`, `red.md` Step 7, `green.md` Minimality).
 
-## F-19.3 — Why-Rewrites sind der Hauptverdächtige
+## F-regression.3 — Why-Rewrites sind der Hauptverdächtige
 
 Die skill-creator-Why-Rewrites haben `tdd.md` strukturell umgeschrieben: Checklist + Remember + redundante DO-NOTs raus, stattdessen einleitender "Why skills required"-Block mit Marker-Compliance-Begründung. `red.md` Step 7 bekam einen Why-Block. `green.md` erhielt eine gemergte Minimal-Strategies-Section + Why-Minimality-Block.
 
@@ -61,27 +61,27 @@ Hypothese: die Why-Rewrites lockern die prozedurale Test-List-Disziplin. Im Kont
 
 Einschränkung: der Project-Standards-Cut (Hexagonal, DI, Named exports aus `refactor.md`) ist als Einzelfaktor nicht getestet. Ein Interaktions-Effekt zwischen diesem Cut und den Why-Rewrites ist nicht ausschließbar, aber unplausibel — die Project-Standards betreffen `refactor.md`, nicht die Phasen-Mechanik.
 
-## F-19.4 — Die Korrektheits-Blindheit der v6.5er-RQ-Kette
+## F-regression.4 — Die Korrektheits-Blindheit der v6.5er-RQ-Kette
 
-RQ-13 bis RQ-17 haben Code-Qualität auf game-of-life gemessen. game-of-life hat keine externe Verification-Suite — `tests_passing=true` war die einzige Korrektheits-Prüfung, und die misst nur interne Konsistenz ("Code besteht seine eigenen Tests"). Ob der Agent die richtige Interpretation der Aufgabe gewählt hat, wurde nie extern geprüft.
+RQ-lean bis RQ-refactor-cut haben Code-Qualität auf game-of-life gemessen. game-of-life hat keine externe Verification-Suite — `tests_passing=true` war die einzige Korrektheits-Prüfung, und die misst nur interne Konsistenz ("Code besteht seine eigenen Tests"). Ob der Agent die richtige Interpretation der Aufgabe gewählt hat, wurde nie extern geprüft.
 
-Konsequenz: alle v6.5er-Quality-Wins (cognitive_max-Reduktion, Smell-Reduktion, σ-Stabilisierung) sind als Messungen valide, aber sie wurden auf einem Workflow erzielt, der auf novel Code systematisch falsche Ergebnisse produziert. Der "Default-Champion" v6.5.4 (RQ-17 F-17.2) ist nur Code-Quality-Champion, nicht Korrektheits-Champion.
+Konsequenz: alle v6.5er-Quality-Wins (cognitive_max-Reduktion, Smell-Reduktion, σ-Stabilisierung) sind als Messungen valide, aber sie wurden auf einem Workflow erzielt, der auf novel Code systematisch falsche Ergebnisse produziert. Der "Default-Champion" v6.5.4 (RQ-refactor-cut F-refactor-cut.2) ist nur Code-Quality-Champion, nicht Korrektheits-Champion.
 
-## F-19.5 — Lehre für die Workflow-Methodik
+## F-regression.5 — Lehre für die Workflow-Methodik
 
 Jede Workflow-Iteration braucht mindestens eine Korrektheits-Stichprobe auf einer Kata mit externer Verification-Suite, auch wenn die RQ primär Code-Qualität untersucht. Vorschlag: `claim-office-example-mapping × n=3` als Pflicht-Smoke vor jedem n=10-Quality-Batch in `workflow-construction.md` verankern.
 
-## F-19.6 — Workflow×Modell-Interaktion (verschoben)
+## F-regression.6 — Workflow×Modell-Interaktion (verschoben)
 
 Der v4/v5/v6 × opus-4-7/opus-4-6-Befund („v4 und v6 tauschen je nach Modell die Plätze") ist als
 eigenständige generische Forschungsfrage herausgelöst:
-`research/questions/3.1-workflow-model-interaction/` (RQ-21, F-21.1/F-21.2).
+`research/questions/3.1-workflow-model-interaction/` (RQ-workflow-model, F-workflow-model.1/F-workflow-model.2).
 
-## F-19.7 — Emoji-Effekt auf opus-4-6 existiert nicht
+## F-regression.7 — Emoji-Effekt auf opus-4-6 existiert nicht
 
 Nachschärfung auf n=12 zeigt: `v6-hybrid` (0.68, n=15) und `v6.4-no-emoji` (0.64, n=12) sind auf opus-4-6 praktisch identisch. Ein Initialbefund bei n=3/4 (0.03 vs 1.00) stellte sich als Artefakt kontaminierter Early-Runs heraus (Portkey-Warmup-Effekt, drei `tests=1`-Ausreißer bei Batch-Start). Nach Bereinigung und Nachfüllung auf n=12+ kein Signal. Konsistent mit dem opus-4-7-Befund (1.00 vs 0.93, marginal bei n=3).
 
-## F-19.8 — Portkey-Warmup-Effekt als methodische Warnung
+## F-regression.8 — Portkey-Warmup-Effekt als methodische Warnung
 
 Die ersten opus-4-6-Batches (05-18 und 05-19 06:49) zeigten konzentrierte Null-Runs (`tests=1`, Skill-Loop sofort abgebrochen). Spätere Batches auf demselben Routing-Pfad reproduzierten das nicht. Hypothese: Portkey-seitiger Cold-Start-Effekt oder transiente Routing-Instabilität. Konsequenz: erste 1–2 Runs eines neuen Portkey-Batches sind potenziell unzuverlässig und sollten nicht ohne Nachprüfung in die Aggregation einfließen.
 

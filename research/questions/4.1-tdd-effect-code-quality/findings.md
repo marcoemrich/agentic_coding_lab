@@ -1,4 +1,4 @@
-# RQ-4 Findings
+# RQ-tdd-quality Findings
 
 Persistente Sammlung der Erkenntnisse zur Frage:
 **Wie wirkt sich die Workflow-Struktur auf die Code-Qualität aus, und macht
@@ -42,7 +42,7 @@ Bester Wert pro Spalte fett. Kleiner = besser (außer `verification_pct`, `mutat
 
 ---
 
-## F-4.1 — Striktes TDD mit Phasen-Isolation (v4) verbessert Code-Qualität dramatisch ✅ stabil
+## F-tdd-quality.1 — Striktes TDD mit Phasen-Isolation (v4) verbessert Code-Qualität dramatisch ✅ stabil
 
 **Aussage**: Strukturiertes TDD mit phasen-isolierten Subagents
 (v4-exact-subagents) liefert auf jeder Komplexitäts-Metrik die mit Abstand
@@ -72,9 +72,9 @@ sieht den fertigen Code mit klarem Auftrag.
 Konsequenz für die Forschungsfrage: **Striktes TDD (Phasen-getrennt) ist
 das stärkste in dieser Studie gemessene Werkzeug zur Code-Qualitäts-
 Verbesserung.** Der Effekt ist Größenordnungen größer als die Effekte von
-Modell-Wahl (Opus-4.7 vs Sonnet vs Opus-4.6, RQ-3 F-3.2 zeigt
+Modell-Wahl (Opus-4.7 vs Sonnet vs Opus-4.6, RQ-model-quality F-model-quality.2 zeigt
 `cognitive_max`-Spread ~5 zwischen Modellen auf v4) oder Thinking-Mode
-(RQ-3 F-3.3).
+(RQ-model-quality F-model-quality.3).
 
 **Datenbasis**: v4 mit n=10 (game-of-life) bzw. n=10 (claim-office). Vergleichszellen
 n=5–10. ESLint McCabe + SonarJS Cognitive, Funktionslängen aus dem
@@ -85,9 +85,9 @@ Komplexitäts-Outcomes, auf beiden Katas.
 
 ---
 
-## F-4.2 — Aber: TDD-Effekt ist *nicht* uniform — minimal-TDD (v3) ist schlechter als kein TDD ✅ stabil
+## F-tdd-quality.2 — Aber: TDD-Effekt ist *nicht* uniform — minimal-TDD (v3) ist schlechter als kein TDD ✅ stabil
 
-**Aussage**: Die F-4.1-Befunde könnten suggerieren, "TDD = besser". Das
+**Aussage**: Die F-tdd-quality.1-Befunde könnten suggerieren, "TDD = besser". Das
 hält *nicht*. Wird der Workflow nur als "use TDD" ohne Phasen-Struktur
 realisiert (v3-basic-tdd), produziert er die **schlechtesten**
 Komplexitäts-Werte aller getesteten Workflows — schlechter als v1
@@ -150,7 +150,7 @@ verwenden. Die Werte für v1/v2 verschlechtern sich erwartungsgemäß
 
 Wäre v1/v2 nur wegen der Set-Abstraktion günstig erschienen, müssten sie
 unter dem fairen Vertrag *unter* oder *gleich* v3 fallen. Sie bleiben
-darüber. F-4.2 ist damit ein echter Workflow-Effekt, kein
+darüber. F-tdd-quality.2 ist damit ein echter Workflow-Effekt, kein
 Repräsentations-Artefakt.
 
 **Konsequenz**: Die pauschale "TDD verbessert Code-Qualität"-Aussage ist
@@ -161,14 +161,14 @@ qualitativ schlechteren Code als gar kein TDD.
 
 ---
 
-## F-4.3 — v4 vs v5: Kontext-Architektur-Effekt — siehe RQ-6 ➡
+## F-tdd-quality.3 — v4 vs v5: Kontext-Architektur-Effekt — siehe RQ-context ➡
 
 Der Vergleich v4-exact-subagents vs v5-exact-single-context ist eine
 eigenstaendige Forschungsfrage zum **Context-Engineering** und wird in
-[RQ-6](../RQ-6-context-engineering/findings.md) gesondert behandelt.
+[RQ-context](../RQ-context-context-engineering/findings.md) gesondert behandelt.
 Beide Workflows teilen denselben Phasen-Skript-Inhalt; der einzige
 Unterschied ist die Kontext-Architektur (isolierte Subagent-Kontexte vs
-geteilter Single-Context). Headline-Befund aus RQ-6 (n=10 pro Zelle):
+geteilter Single-Context). Headline-Befund aus RQ-context (n=10 pro Zelle):
 
 - `cognitive_max`: v4 = 4.40 vs v5 = 14.50 (Faktor 3.3×)
 - `mccabe_max`: v4 = 4.50 vs v5 = 8.90 (Faktor 2.0×)
@@ -176,11 +176,11 @@ geteilter Single-Context). Headline-Befund aus RQ-6 (n=10 pro Zelle):
 - `duration_seconds`: v5 = 380 s vs v4 = 1163 s (v5 ~3× schneller)
 
 v4 dominiert auf Code-Qualitaet, v5 spart Wallclock. Volle Argumentation
-und Tail-Risiko-Analyse in RQ-6.
+und Tail-Risiko-Analyse in RQ-context.
 
 ---
 
-## F-4.4 — Korrektheit ist auf game-of-life workflow-unabhängig; auf claim-office bleibt ein Workflow-Effekt *innerhalb* der example-mapping-Gruppe ⚠️ bedingt
+## F-tdd-quality.4 — Korrektheit ist auf game-of-life workflow-unabhängig; auf claim-office bleibt ein Workflow-Effekt *innerhalb* der example-mapping-Gruppe ⚠️ bedingt
 
 **Aussage (game-of-life)**: Mit dem expliziten API-Vertrag in allen drei
 GoL-Prompts (commit `0902a4f`) erreichen alle fünf Workflows
@@ -201,15 +201,15 @@ ebenfalls überall 100 % (35/35 Runs). Die äußere Korrektheit
 
 **Wichtige Abgrenzung — Konfundierung**: Die Lücke v1/v2 (prose) → v3
 (example-mapping) ist **nicht** primär ein Workflow-Effekt, sondern weitgehend
-der **example-mapping-Prompt-Vorteil**, der bereits in RQ-1 und RQ-2 für
+der **example-mapping-Prompt-Vorteil**, der bereits in RQ-prompt-correctness und RQ-prompt-known-kata für
 claim-office dokumentiert ist (konkrete Beispiele im Prompt liefern dem
 Modell de-facto-Acceptance-Cases). Dieser Anteil wird nicht erneut als
-RQ-4-Befund geführt — siehe RQ-1/RQ-2.
+RQ-tdd-quality-Befund geführt — siehe RQ-prompt-correctness/RQ-prompt-known-kata.
 
-**Echter RQ-4-Befund** (gleicher Prompt, gleicher Kata): *Innerhalb* der
+**Echter RQ-tdd-quality-Befund** (gleicher Prompt, gleicher Kata): *Innerhalb* der
 example-mapping-Gruppe (v3 / v4 / v5) bleibt ein signifikanter Workflow-
 Effekt auf `verification_pct`: 1.00 (v3) → 0.87 (v5) → 0.67 (v4). Die
-Reihenfolge ist die *Umkehrung* der Code-Qualitäts-Reihenfolge (F-4.1): v4
+Reihenfolge ist die *Umkehrung* der Code-Qualitäts-Reihenfolge (F-tdd-quality.1): v4
 liefert den saubersten Code, trifft aber am wenigsten zuverlässig die
 spezifizierten Acceptance-Szenarien. v3 liefert den schmutzigsten Code,
 trifft aber jedes Szenario.
@@ -219,7 +219,7 @@ Beispielen aus dem Prompt liegen — die Implementierung passt sich diesen
 direkten Beispielen an und reproduziert sie deshalb 1:1. v4 abstrahiert
 über die Phasen-Isolation hinweg, generalisiert Tests und Implementierung —
 und entfernt sich dabei vom konkreten Acceptance-Verhalten. Verbindung zu
-F-4.6 (Mutation-Score) bestätigt das (siehe dort).
+F-tdd-quality.6 (Mutation-Score) bestätigt das (siehe dort).
 
 **Konsequenz**: Workflow wirkt auf claim-office-Aussen-Korrektheit *real*,
 aber gegenläufig zur Code-Qualität. Wer im example-mapping-Setting beides
@@ -229,7 +229,7 @@ will, hat auf claim-office einen Tradeoff zu lösen.
 
 ---
 
-## F-4.5 — Token-Verbrauch und Wallclock skalieren stark mit Workflow und Kata ✅ stabil
+## F-tdd-quality.5 — Token-Verbrauch und Wallclock skalieren stark mit Workflow und Kata ✅ stabil
 
 **Aussage**: Token-Verbrauch (Mittel) und Wallclock entlang der Workflows,
 getrennt nach Kata:
@@ -269,12 +269,12 @@ v3 ist auf claim-office mit 312 s nicht mehr ein Schnellläufer.
 claim-office hat v4 den gleichen Token-Preis wie v5 *plus* den hohen
 Wallclock-Aufschlag — die Workflow-Wahl im realistischeren Setting ist also
 nicht mehr "v4 dominiert", sondern ein Tradeoff zwischen Code-Qualität
-(v4 dominiert weiter), Aussen-Korrektheit (v3 > v5 > v4, siehe F-4.4) und
+(v4 dominiert weiter), Aussen-Korrektheit (v3 > v5 > v4, siehe F-tdd-quality.4) und
 Kosten (v3 << v5 ≈ v4).
 
 ---
 
-## F-4.6 — Mutation-Score: Test-Stärke und Aussen-Korrektheit divergieren auf claim-office innerhalb example-mapping ✅ stabil
+## F-tdd-quality.6 — Mutation-Score: Test-Stärke und Aussen-Korrektheit divergieren auf claim-office innerhalb example-mapping ✅ stabil
 
 **Aussage**: Der Mutation-Score (Anteil der durch die vom Agenten selbst
 geschriebenen Vitest-Tests gekillten Mutanten, Stryker) misst die Stärke
@@ -283,7 +283,7 @@ der internen Tests — wie streng prüfen sie tatsächlich die Implementierung?
 **game-of-life (n=10):** alle Workflows clustern eng zwischen 0.91 und 0.95.
 Keine Workflow-Differenzierung. v4 hat den niedrigsten Mittelwert (0.908)
 bei zugleich auffällig hoher Streuung (σ=0.080, min 0.735) — ein Tail-
-Risiko, das mit F-4.1 / F-4.3 zusammen passt (v4 ist auf Qualität dominant,
+Risiko, das mit F-tdd-quality.1 / F-tdd-quality.3 zusammen passt (v4 ist auf Qualität dominant,
 zeigt aber gelegentlich schwache Test-Runs).
 
 **claim-office (n=5–10), example-mapping-Gruppe:**
@@ -300,7 +300,7 @@ Die beiden Korrektheits-Dimensionen **stehen in Spannung**:
 - **v3** liefert *minimale Tests, die nahe an den Prompt-Beispielen liegen*.
   Die Implementierung passt sich diesen Beispielen 1:1 an und trifft die
   Acceptance-Suite (die im example-mapping ja teilweise leak-äquivalent ist,
-  vgl. RQ-1/RQ-2). Aber: Mutationen der Implementierung überleben oft —
+  vgl. RQ-prompt-correctness/RQ-prompt-known-kata). Aber: Mutationen der Implementierung überleben oft —
   die Tests prüfen das *Verhalten* nicht streng, sondern nur die *Beispiele*.
 - **v4** schreibt durch die isolierte Red/Green-Phase strengere Tests, die
   Implementierungs-Variationen aktiv falsifizieren. Die Generalisierung
@@ -311,7 +311,7 @@ Die beiden Korrektheits-Dimensionen **stehen in Spannung**:
 **Konsequenz**: `verification_pct` und `mutation_score` sind **keine
 redundanten Korrektheits-Signale**. Sie messen unterschiedliche
 Eigenschaften der Test-Suite — Treue zu spezifizierten Beispielen vs.
-Robustheit gegen Code-Mutationen. Für die RQ-4-Headline-Interpretation
+Robustheit gegen Code-Mutationen. Für die RQ-tdd-quality-Headline-Interpretation
 bedeutet das: v4 verbessert *Test-Stärke* und *Code-Qualität*, kostet aber
 *Aussen-Korrektheit*; v3 invertiert das. Die Hypothese "TDD-Workflows
 schreiben substanziellere Tests" ist auf claim-office im example-mapping-
@@ -330,11 +330,11 @@ zeigt sein Diskriminierungs-Potenzial erst auf der größeren Kata.
 
 ---
 
-## F-4.7 — v6-hybrid löst auf claim-office den v4↔v3-Tradeoff aus F-4.4 — siehe RQ-7 ➡
+## F-tdd-quality.7 — v6-hybrid löst auf claim-office den v4↔v3-Tradeoff aus F-tdd-quality.4 — siehe RQ-workflow-tradeoff ➡
 
 **Aussage**: Der Hybrid-Workflow v6 (Red/Green als Skills im Shared-Context
-analog v5, Refactor als isolierter Subagent analog v4) ist im RQ-4-Vergleich
-auf **claim-office (n=5)** der erste Workflow, der die in F-4.4/F-4.6
+analog v5, Refactor als isolierter Subagent analog v4) ist im RQ-tdd-quality-Vergleich
+auf **claim-office (n=5)** der erste Workflow, der die in F-tdd-quality.4/F-tdd-quality.6
 beschriebene **Spannung zwischen Code-Qualität, Aussen-Korrektheit und
 Test-Stärke aufhebt**:
 
@@ -364,9 +364,9 @@ moderater Token-Verbrauch — die Effizienz-Differenz erscheint also erst
 bei komplexerer Aufgabe.
 
 **Tiefergehende Analyse und Tail-Risiko/Cost-Tradeoff** liegen in
-[RQ-7](../RQ-7-workflow-tradeoff-hybrid/findings.md). RQ-4 führt v6 als
+[RQ-workflow-tradeoff](../RQ-workflow-tradeoff-workflow-tradeoff-hybrid/findings.md). RQ-tdd-quality führt v6 als
 zusätzliche Vergleichszelle, der eigentliche Hybrid-Tradeoff-Befund
-gehört aber methodisch nach RQ-7.
+gehört aber methodisch nach RQ-workflow-tradeoff.
 
 **Datenbasis**: 15 v6-Runs (10 game-of-life, 5 claim-office,
 opus-4-7-no-thinking).
@@ -379,13 +379,13 @@ opus-4-7-no-thinking).
   bei schwächeren Modellen anders aussehen oder mit aktiviertem Thinking.
 - **Zwei Katas, kein Mars-Rover**: game-of-life (n=10) + claim-office (n=5–10).
   Mars-rover als dritter Code-Qualitäts-Carrier offen — würde insbesondere
-  F-4.2 (v3 schlechter als non-TDD) auf einer weiteren Kata replizieren oder
+  F-tdd-quality.2 (v3 schlechter als non-TDD) auf einer weiteren Kata replizieren oder
   widerlegen.
-- **Prompt-Asymmetrie & Konfundierung mit RQ-1/RQ-2**: v1/v2 nutzen
+- **Prompt-Asymmetrie & Konfundierung mit RQ-prompt-correctness/RQ-prompt-known-kata**: v1/v2 nutzen
   `prose`, v3/v4/v5 nutzen `example-mapping`. Auf claim-office ist
-  example-mapping bekanntermassen aus RQ-1/RQ-2 mit höherer
+  example-mapping bekanntermassen aus RQ-prompt-correctness/RQ-prompt-known-kata mit höherer
   `verification_pct` assoziiert; die v1/v2 → v3 Verifikations-Lücke auf
-  claim-office (F-4.4) ist daher *nicht* als Workflow-Effekt zu lesen.
+  claim-office (F-tdd-quality.4) ist daher *nicht* als Workflow-Effekt zu lesen.
   Workflow-Effekte werden konservativ nur *innerhalb* der example-mapping-
   Gruppe (v3/v4/v5) ausgewertet.
 - **n=5 untere Grenze für claim-office prose-Zellen** (v1, v2); n=10 für die
@@ -394,5 +394,5 @@ opus-4-7-no-thinking).
   wallclock auffällig kurz. Möglich, dass "use TDD" in einen degenerierten
   Modus läuft, bei dem die Test-First-Disziplin nicht greift und der Agent
   funktional in den Test-Last-Modus fällt — was die schlechte Komplexität
-  (F-4.2) erklärt. Auf claim-office ist v3 nicht mehr auffällig kurz
+  (F-tdd-quality.2) erklärt. Auf claim-office ist v3 nicht mehr auffällig kurz
   (~312 s), aber liefert weiterhin die schlechteste Code-Qualität.

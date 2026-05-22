@@ -1,5 +1,5 @@
 ---
-id: RQ-18
+id: RQ-delayed-refactor
 question: "Produziert periodisches Refactoring innerhalb von TDD-Cycles besseren Code als ein einzelnes End-Refactoring nach Vibe-Coding-Implementierung + nachträglich geschriebenen Tests? Und falls ja: liegt das am Zeitpunkt (periodisch vs einmalig) oder am Refactor-Inhalt (spezialisierter Subagent mit APP/Naming vs nativer Inline-Refactor)?"
 factors:
   workflow_x_prompt:
@@ -33,9 +33,9 @@ min_replicates: 10
 status: geplant
 ---
 
-# RQ-18: Delayed-Refactor — entkräftet TDD-mit-periodischem-Refactor das Vibe-Coding-mit-End-Refactor-Argument?
+# RQ-delayed-refactor: Delayed-Refactor — entkräftet TDD-mit-periodischem-Refactor das Vibe-Coding-mit-End-Refactor-Argument?
 
-Die Hypothese, die TDD-mit-periodischem-Refactor stützt, ist: *iterativ kleine Refactorings nach jedem Green-Cycle produzieren besseren Code als ein einzelnes großes Refactoring nach einer kompletten Implementierung.* Das naive Gegenargument: "Mach einfach Vibe-Coding, schreib am Schluss Tests, refactor dann." RQ-18 testet das direkt.
+Die Hypothese, die TDD-mit-periodischem-Refactor stützt, ist: *iterativ kleine Refactorings nach jedem Green-Cycle produzieren besseren Code als ein einzelnes großes Refactoring nach einer kompletten Implementierung.* Das naive Gegenargument: "Mach einfach Vibe-Coding, schreib am Schluss Tests, refactor dann." RQ-delayed-refactor testet das direkt.
 
 ## Motivation
 
@@ -76,5 +76,5 @@ Beide Workflows liefern saubere Marker und gültige Outcome-Metriken. Re-smoke v
 
 ## Offene Punkte
 
-- **claim-office-Erweiterung** (RQ-18.1 oder RQ-19): Korrektheits-Achse zusätzlich zur Code-Qualität. Wird angegangen, wenn RQ-18-game-of-life ein klares Signal in irgendeine Richtung zeigt.
+- **claim-office-Erweiterung** (RQ-delayed-claim-office oder RQ-regression): Korrektheits-Achse zusätzlich zur Code-Qualität. Wird angegangen, wenn RQ-delayed-refactor-game-of-life ein klares Signal in irgendeine Richtung zeigt.
 - **Test-Qualität ist nicht direkt messbar**: H3 bleibt explorativ. Falls qualitative Inspektion zeigt, dass v8-Tests systematisch implementationsspiegelnd sind, lohnt eine eigene Mutation-Score-RQ.

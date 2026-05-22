@@ -1,4 +1,4 @@
-# RQ-5 Findings
+# RQ-stability Findings
 
 Persistente Sammlung der Erkenntnisse zur Frage:
 **Wie stabil ist die Code-Qualitaet pro Workflow ueber Replikate, und unter
@@ -26,12 +26,12 @@ Bester Wert pro Spalte fett. Kleiner = besser.
 
 ---
 
-## F-5.1 — RQ-4-Hauptbefund (v4 dominiert Code-Komplexität, v3 ist Schlusslicht) repliziert bei n=10 mit gleichem Vorzeichen ✅ stabil
+## F-stability.1 — RQ-tdd-quality-Hauptbefund (v4 dominiert Code-Komplexität, v3 ist Schlusslicht) repliziert bei n=10 mit gleichem Vorzeichen ✅ stabil
 
-**Aussage**: Bei n=10 wird das in RQ-4 mit n=3 beobachtete Muster
+**Aussage**: Bei n=10 wird das in RQ-tdd-quality mit n=3 beobachtete Muster
 vollständig bestätigt:
 
-| Metrik | RQ-4 (n=3) | RQ-5 (n=10) | Ranking-Änderung? |
+| Metrik | RQ-tdd-quality (n=3) | RQ-stability (n=10) | Ranking-Änderung? |
 |---|---|---|---|
 | `cognitive_max` v4 best | 2.83 | 4.40 | unverändert (v4 stark vorn) |
 | `cognitive_max` v3 worst | 23.33 | 21.80 | unverändert (v3 hinten) |
@@ -40,27 +40,27 @@ vollständig bestätigt:
 | `smell_total` v4 best | 2.50 | 2.60 | unverändert |
 
 v4 bleibt auf allen vier Komplexitäts-Outcomes klar Erster, v3 bleibt
-Schlusslicht. **H4 (RQ-4-Befund hält bei n=10) bestätigt** — die zentralen
-Aussagen aus F-4.1/F-4.2 sind kein n=3-Artefakt.
+Schlusslicht. **H4 (RQ-tdd-quality-Befund hält bei n=10) bestätigt** — die zentralen
+Aussagen aus F-tdd-quality.1/F-tdd-quality.2 sind kein n=3-Artefakt.
 
-**Datenbasis**: 50 Runs (10 pro Zelle). Mittelwert-Drift gegenüber RQ-4
+**Datenbasis**: 50 Runs (10 pro Zelle). Mittelwert-Drift gegenüber RQ-tdd-quality
 (n=3) typischerweise < 15 % bei Komplexitäts-Outcomes.
 
 **Wichtige Verschiebung im mittleren Feld**: Die Reihenfolge zwischen v1,
 v2 und v5 auf `cognitive_max` ändert sich:
 
-- RQ-4 (n=3): v2 (16.7) < v5 (18.3) < v1 (20.7)
-- RQ-5 (n=10): v5 (14.5) < v2 (16.2) < v1 (18.8)
+- RQ-tdd-quality (n=3): v2 (16.7) < v5 (18.3) < v1 (20.7)
+- RQ-stability (n=10): v5 (14.5) < v2 (16.2) < v1 (18.8)
 
 v5 rutscht aus der Mitte des Felds in den vorderen Bereich. Die n=3-Werte
 für v5 waren von wenigen hohen Runs dominiert; bei n=10 zeigt sich eine
 breitere Verteilung mit niedrigerem Mittel. Das ist der erste konkrete
-Hinweis darauf, dass n=3 für Workflows mit hoher Streuung (siehe F-5.2)
+Hinweis darauf, dass n=3 für Workflows mit hoher Streuung (siehe F-stability.2)
 ranking-instabil ist.
 
 ---
 
-## F-5.2 — Workflow-Stabilität ist nicht uniform; v4 hat 10 %-Outlier-Rate trotz tiefem typischen Wert; v5 ist breitestes Workflow ✅ stabil
+## F-stability.2 — Workflow-Stabilität ist nicht uniform; v4 hat 10 %-Outlier-Rate trotz tiefem typischen Wert; v5 ist breitestes Workflow ✅ stabil
 
 **Aussage**: Stabilitäts-Kennzahlen pro Zelle (cognitive_max als Hauptbeispiel):
 
@@ -90,7 +90,7 @@ Drei Stabilitäts-Profile:
   0 % Outlier-Rate. v6 erreicht v4-nahe Median-Performance (5.2 vs 4.4)
   ohne den 1/10-Refactor-Aussetzer von v4. Plausible Mechanik: der
   isolierte Refactor-Subagent wird in jedem TDD-Zyklus formal aufgerufen
-  (siehe F-5.6, cycle σ=0.82) — der "Refactor-Phase übersprungen"-
+  (siehe F-stability.6, cycle σ=0.82) — der "Refactor-Phase übersprungen"-
   Failure-Mode aus v4 ist durch die Hybrid-Konstruktion strukturell
   ausgeschlossen.
 
@@ -113,7 +113,7 @@ keine Strukturverbesserung vornimmt.
 
 ---
 
-## F-5.3 — Bei n=3 ist die volle Workflow-Rangordnung nur in ~25–60 % der Fälle korrekt; v4 als "Bester" ist robuster ✅ stabil
+## F-stability.3 — Bei n=3 ist die volle Workflow-Rangordnung nur in ~25–60 % der Fälle korrekt; v4 als "Bester" ist robuster ✅ stabil
 
 **Aussage**: Aus 1000 zufälligen Trials, in denen jeder Zelle ein
 Dreier-Subsample entnommen und daraus die Workflow-Rangordnung berechnet
@@ -160,11 +160,11 @@ mit n=3 nicht trennscharf.
 
 ---
 
-## F-5.4 — Korrektheit bleibt bei n=10 modell-/workflow-unabhängig 100 % ✅ stabil
+## F-stability.4 — Korrektheit bleibt bei n=10 modell-/workflow-unabhängig 100 % ✅ stabil
 
 **Aussage**: Über alle 60 Runs (inklusive der 10 neuen v6-hybrid-Runs)
 erreicht jeder Workflow `tests_passing = 100 %` und `verification_pct = 1.00`.
-Die in RQ-4 F-4.4 dokumentierte Korrektheits-Stabilität unter API-Vertrag
+Die in RQ-tdd-quality F-tdd-quality.4 dokumentierte Korrektheits-Stabilität unter API-Vertrag
 wird durch das größere n bestätigt: keine versteckten Outlier-Failures, die
 in n=3 unentdeckt geblieben wären.
 
@@ -172,7 +172,7 @@ in n=3 unentdeckt geblieben wären.
 
 ---
 
-## F-5.5 — Token-Verbrauch zeigt extrem hohe Streuung bei v4 und v5 ⚠️ bedingt
+## F-stability.5 — Token-Verbrauch zeigt extrem hohe Streuung bei v4 und v5 ⚠️ bedingt
 
 **Aussage**: Token-Verbrauch (n=10):
 
@@ -200,7 +200,7 @@ für robuste Tail-Quantile (P99, P95) wäre n=30+ nötig.
 
 ---
 
-## F-5.6 — TDD-Disziplin bildet workflow-charakteristische Banden ✅ stabil
+## F-stability.6 — TDD-Disziplin bildet workflow-charakteristische Banden ✅ stabil
 
 **Aussage**: Die vier TDD-Disziplin-Indikatoren (`cycle_count`,
 `refactorings_applied`, `predictions_correct_rate`, `tests_passed_immediately`)
@@ -228,7 +228,7 @@ definiert:
   echten Zyklen (μ=1.5 — typischerweise ein einziger Mega-Zyklus),
   praktisch keine Refactorings (μ=0.1), kein konsistentes Prediction-Format
   (`predictions_total = 0` über alle 10 Runs, deshalb aus der Rate-Spalte
-  ausgenommen). Repliziert das F-1.10-Muster aus dem Archiv (`rqs-v1`):
+  ausgenommen). Repliziert das F-prompt-correctness.10-Muster aus dem Archiv (`rqs-v1`):
   v3 erfüllt TDD nur nominell.
 
 - **v4 / v6 (enge Bänder, strenge Disziplin)**: cycle σ < 1.0,
@@ -242,7 +242,7 @@ definiert:
   (refactorings σ=3.09 vs v4-σ=2.02). Der geteilte Single-Context erlaubt
   unterschiedliche Pfad-Realisierungen — ein Run kann 0 Refactorings
   haben, ein anderer 8. Auf der langen CLI-Kata claim-office kollabiert
-  diese Streuung in einen klaren Disziplin-Verlust (RQ-7 F-7.4):
+  diese Streuung in einen klaren Disziplin-Verlust (RQ-workflow-tradeoff F-workflow-tradeoff.4):
   v5 fällt dort auf 3.4 Zyklen, während v4 und v6 bei 25–37 bleiben.
 
 `tests_passed_immediately` (Indikator für Over-Implementation): v4 und v6
@@ -265,11 +265,11 @@ breiter Streuung, v6 erreicht ähnliche Mittel mit engster Streuung. Wenn
 
 ---
 
-## F-5.7 — Test-Stärke (`mutation_score`) hat eigenes Stabilitätsprofil; v6-hybrid ist stabilster Workflow, v4 instabilster ✅ stabil
+## F-stability.7 — Test-Stärke (`mutation_score`) hat eigenes Stabilitätsprofil; v6-hybrid ist stabilster Workflow, v4 instabilster ✅ stabil
 
 **Aussage**: Mutation-Score (Anteil gekillter Mutanten, Stryker) zeigt eine
 **andere** Stabilitätsrangfolge als die Code-Komplexitäts-Metriken aus
-F-5.1/F-5.2. Auf game-of-life (n=10 pro Workflow):
+F-stability.1/F-stability.2. Auf game-of-life (n=10 pro Workflow):
 
 | Workflow | `mutation_score` mean | std | min | max |
 |---|---:|---:|---:|---:|
@@ -287,7 +287,7 @@ F-5.1/F-5.2. Auf game-of-life (n=10 pro Workflow):
   dominant; in Test-Stärke ist v6 dominant. Die Hybrid-Architektur
   (Skill-basierte Red/Green + isolierter Refactor) scheint die Test-Stärke-
   Streuung von v4 zu eliminieren ohne die Test-Stärke selbst zu verlieren.
-- **v4** zeigt erneut sein in F-5.2 dokumentiertes Tail-Risiko: σ=0.080,
+- **v4** zeigt erneut sein in F-stability.2 dokumentiertes Tail-Risiko: σ=0.080,
   min 0.735 — mehrere v4-Runs liegen deutlich unterhalb des typischen
   v4-Werts. Die isolierte Green-Phase scheint gelegentlich schwache
   Test-Generalisierung zu erzeugen.
@@ -301,7 +301,7 @@ F-5.1/F-5.2. Auf game-of-life (n=10 pro Workflow):
 besonders unzuverlässig — drei Ziehungen aus einer Verteilung mit σ=0.080
 und min 0.735 können je nach Glück ein völlig anderes v4-Bild liefern.
 Bei v6 und v1/v2/v3 wäre n=3 dagegen ausreichend (σ < 0.01). Die
-**Outlier-Asymmetrie aus F-5.2 wiederholt sich für Test-Stärke**: v4 hat
+**Outlier-Asymmetrie aus F-stability.2 wiederholt sich für Test-Stärke**: v4 hat
 eine breite Schwanzverteilung, andere Workflows nicht.
 
 **Datenbasis**: 60 Runs game-of-life, opus-4-7-no-thinking, EM für
@@ -312,7 +312,7 @@ v3/v4/v5/v6 bzw. prose für v1/v2. Stryker 8.6.0.
 ## Caveats
 
 - **Single model**: Nur `opus-4-7-no-thinking`. Modell-Wechsel könnte das
-  Stabilitäts-Bild verschieben — RQ-3 deutet auf höhere Sonnet-Streuung
+  Stabilitäts-Bild verschieben — RQ-model-quality deutet auf höhere Sonnet-Streuung
   hin, aber nur bei n=3.
 - **Single kata**: Nur Game of Life (Library-Form). Andere Katas
   (claim-office, mars-rover) könnten andere Stabilitäts-Profile zeigen,

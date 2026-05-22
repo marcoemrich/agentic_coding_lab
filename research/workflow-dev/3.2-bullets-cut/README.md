@@ -1,5 +1,5 @@
 ---
-id: RQ-15
+id: RQ-bullets
 question: "Sind die drei redundanten Bullet-Listen in v6.5.1-orchestration-audited dekorativ (Cut spart Tokens, Disziplin/Quali halten) oder Pattern-Match-Anker (Cut schadet)?"
 factors:
   workflow_x_prompt:
@@ -31,13 +31,13 @@ min_replicates: 10
 status: aktiv
 ---
 
-# RQ-15: v6.5.2-bullets-cut — Sind redundante Bullet-Listen Anker oder Dekoration?
+# RQ-bullets: v6.5.2-bullets-cut — Sind redundante Bullet-Listen Anker oder Dekoration?
 
 Das `claude_orchestration`-Audit hat in v6.5.1 drei Bullet-Listen als verbatim-Duplikate bereits vorhandener Sections markiert (`AUDIT.md` Finding 10). v6.5.2-bullets-cut entfernt diese drei Blöcke — netto −38 Zeilen über zwei Files. Frage: trägt das gestrichene Material, oder ist es Wiederholungs-Dekoration?
 
 ## Motivation
 
-Behavior-preserving-cuts-Regel: wenn Inhalt anderswo im File schon steht, ist die Wiederholung kosmetisch. Im RQ-9 wurde das für die "Four Rules of Simple Design" empirisch bestätigt (−8.5 % Tokens, keine Quali-Regression). Hier dieselbe Logik auf eine kleinere Skala:
+Behavior-preserving-cuts-Regel: wenn Inhalt anderswo im File schon steht, ist die Wiederholung kosmetisch. Im RQ-rules wurde das für die "Four Rules of Simple Design" empirisch bestätigt (−8.5 % Tokens, keine Quali-Regression). Hier dieselbe Logik auf eine kleinere Skala:
 
 - **`refactor.md` „Remember"-Section** (−8 Z.): Bullets wiederholen Mission und Important Guidelines.
 - **`refactor.md` „Important Guidelines" DO/DON'T** (−16 Z.): jeder DO-Bullet entspricht einem Mission-Punkt oder einer Process-Step; jeder DON'T-Bullet invertiert eine Refactoring-Rule.
@@ -49,7 +49,7 @@ Die zweite Hypothese (Bullets sind Pattern-Match-Anker) wäre die Gegenposition:
 
 ## Workflow-Definition
 
-- **v6.5.1-orchestration-audited (Baseline, n=10 aus RQ-14-Pool)**: aktueller Disziplin-Champion mit Bullets.
+- **v6.5.1-orchestration-audited (Baseline, n=10 aus RQ-audit-Pool)**: aktueller Disziplin-Champion mit Bullets.
 - **v6.5.2-bullets-cut (neu, n=10)**: identisch bis auf die drei gestrichenen Bullet-Blöcke.
 
 ## Hypothesen
@@ -70,13 +70,13 @@ Kontrolle: kata_base        — game-of-life
 
 Zellen:    2 (2 Workflows × 1 Kata)
 Replikate: n = 10 je Zelle
-Runs:      20 total (10 v6.5.1 aus RQ-14-Pool + 10 neue v6.5.2-bullets-cut)
+Runs:      20 total (10 v6.5.1 aus RQ-audit-Pool + 10 neue v6.5.2-bullets-cut)
 ```
 
 ## Caveats
 
 - **Single Kata, single Modell**: opus-4-7-no-thinking auf game-of-life. Cross-Model und Cross-Kata sind Folge-RQs, falls v6.5.2 promotet wird.
-- **Reine Reduktion, keine Verhaltensänderung intendiert**: anders als RQ-14 (Rationale + Hardening hinzufügt) ist RQ-15 nur Streichung. Vergleichbar zu RQ-9 (Four Rules raus) auf kleinerer Skala.
+- **Reine Reduktion, keine Verhaltensänderung intendiert**: anders als RQ-audit (Rationale + Hardening hinzufügt) ist RQ-bullets nur Streichung. Vergleichbar zu RQ-rules (Four Rules raus) auf kleinerer Skala.
 - **Token-Effekt klein erwartet**: −38 Zeilen über zwei Files ≈ <1 % der Working-Memory-Last. H3 prüft, ob der Effekt überhaupt messbar wird.
 - **n=10**: ausreichend für Mittelwert-Signal; σ-Vergleich zu v6.5.1 wegen der dort sehr engen Bänder (σ=0 bei tests_passed_immediately, σ=0.42 bei refactorings_applied) sensitiv für jede Streuungs-Zunahme.
 

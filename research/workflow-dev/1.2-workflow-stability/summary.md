@@ -1,8 +1,8 @@
-# RQ-5 — Aggregation
+# RQ-stability — Aggregation
 
 _Wie stabil sind Code-Qualitaet und TDD-Disziplin pro Workflow ueber Replikate, und unter welchen Bedingungen ist n=3 als Replikat-Anzahl ausreichend?_
 
-Generated: 2026-05-22T15:45:17Z
+Generated: 2026-05-22T16:38:10Z
 
 Cells declared: 6 · matched runs: 59 · min_replicates: 10
 

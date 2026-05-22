@@ -1,8 +1,8 @@
-# RQ-19 — Aggregation
+# RQ-regression — Aggregation
 
 _An welcher Stelle in der Optimierungskette v6 → v6.5 → v6.5.1 → v6.5.2 → v6.5.3 → v6.5.4 (→ v6.6) ist die verification_pct-Regression auf claim-office-example-mapping entstanden? Ist der Befund modell-unabhängig?_
 
-Generated: 2026-05-22T15:45:06Z
+Generated: 2026-05-22T16:38:15Z
 
 Cells declared: 20 · matched runs: 69 · min_replicates: 3
 

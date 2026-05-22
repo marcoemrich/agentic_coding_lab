@@ -44,8 +44,11 @@ _spec2.loader.exec_module(bpl)  # type: ignore[union-attr]
 # Findings parsing
 # -----------------------------------------------------------------------
 
+# Finding ids are F-<namespace>.<minor>. The namespace mirrors the RQ id
+# (slug since the id→slug migration, e.g. F-regression.6); the legacy numeric
+# form (F-19.6, F-3b.1) still matches so this stays backward-compatible.
 FINDING_HEADER_RE = re.compile(
-    r"^##\s+(F-\d+\.\d+)\s+—\s+(.+?)\s*$"
+    r"^##\s+(F-[A-Za-z0-9][A-Za-z0-9-]*\.\d+)\s+—\s+(.+?)\s*$"
 )
 
 
@@ -68,9 +71,14 @@ def parse_findings(findings_md: Path) -> list[dict]:
             title_part = rest.strip()
 
         findings.append({"id": fid, "title": title_part})
-    findings.sort(
-        key=lambda f: tuple(int(p) for p in f["id"].split("-")[1].split("."))
-    )
+
+    # Within one findings.md the namespace is constant (one RQ), so the minor
+    # number orders the findings. The major segment is now a slug, not an int.
+    def _minor(fid: str) -> int:
+        tail = fid.rsplit(".", 1)[-1]
+        return int(tail) if tail.isdigit() else 0
+
+    findings.sort(key=lambda f: _minor(f["id"]))
     return findings
 
 

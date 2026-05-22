@@ -1,5 +1,5 @@
 ---
-id: RQ-20
+id: RQ-testlist-fix
 question: "Verbessert die v4.1-testlist-scope-fix-Variante die verification_pct auf claim-office-example-mapping gegenüber v4-exact-subagents — und gilt der Effekt konsistent über Opus 4.7 (Direct API) und Opus 4.6 (Portkey)?"
 factors:
   workflow:
@@ -24,7 +24,7 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-20: v4.1-testlist-scope-fix Korrektheits-Effekt auf Opus (ohne Thinking)
+# RQ-testlist-fix: v4.1-testlist-scope-fix Korrektheits-Effekt auf Opus (ohne Thinking)
 
 ## Motivation
 

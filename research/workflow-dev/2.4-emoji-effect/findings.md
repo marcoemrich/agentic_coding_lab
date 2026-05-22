@@ -1,4 +1,4 @@
-# RQ-11 — Findings: Emojis in Workflow-Prompts
+# RQ-emoji — Findings: Emojis in Workflow-Prompts
 
 ## Übersicht
 
@@ -16,7 +16,7 @@ Bei n=10 ist die Richtung **klar gemischt**: 2 Metriken leicht zu v6 (smell), 2 
 
 ---
 
-## F-11.1 — Emojis haben keinen messbaren Effekt auf Code-Qualitäts-Mittelwerte
+## F-emoji.1 — Emojis haben keinen messbaren Effekt auf Code-Qualitäts-Mittelwerte
 
 **Aussage:** Bei n=10 liegen alle Median-Differenzen weit unter ±1σ der v6-Streuung (maximaler Effekt: Smell +0.3 vs σ=0.42, also 70 % der Schwelle). Die Richtung ist gemischt — kein Hinweis auf einen systematischen Code-Qualitäts-Effekt durch Emoji-Entfernung.
 
@@ -24,11 +24,11 @@ Bei n=10 ist die Richtung **klar gemischt**: 2 Metriken leicht zu v6 (smell), 2 
 - H1 (Emojis wirkungslos auf Code-Qualität) — **bestätigt** bei n=10. Die n=5-Beobachtung "konsistente Tilt zu v6" war Sampling-Variation.
 - H2 (Emojis helfen messbar) — **falsifiziert**.
 
-**Vergleich mit RQ-9 (Four Rules):** sehr ähnliches Muster. Beide Reduktionen ohne Mittel-Effekt auf Code-Qualität.
+**Vergleich mit RQ-rules (Four Rules):** sehr ähnliches Muster. Beide Reduktionen ohne Mittel-Effekt auf Code-Qualität.
 
 ---
 
-## F-11.2 — Streuung steigt bei 3 von 5 Metriken, abgeschwächt gegenüber n=5
+## F-emoji.2 — Streuung steigt bei 3 von 5 Metriken, abgeschwächt gegenüber n=5
 
 **Aussage:** v6.4 zeigt bei 3 Metriken größere Streuung als v6 — der Effekt bleibt bei n=10 sichtbar, aber kleiner als bei n=5:
 
@@ -40,13 +40,13 @@ Bei n=10 ist die Richtung **klar gemischt**: 2 Metriken leicht zu v6 (smell), 2 
 | `cognitive_max` | 2.30 | 4.03 | **1.75×** | 2.05× |
 | `mccabe_max` | 1.51 | 1.95 | 1.29× | 1.58× |
 
-`cognitive_max` zeigt weiterhin einen 15er-Outlier in v6.4 (Maximum 15 vs v6-Max 7) — v6.4 verliert den 0%-Outlier-Status von v6 (RQ-5 F-5.2). Bei n=10 zwar mit nur **1 von 10** Outlier-Runs, aber konsistent mit dem n=5-Befund.
+`cognitive_max` zeigt weiterhin einen 15er-Outlier in v6.4 (Maximum 15 vs v6-Max 7) — v6.4 verliert den 0%-Outlier-Status von v6 (RQ-stability F-stability.2). Bei n=10 zwar mit nur **1 von 10** Outlier-Runs, aber konsistent mit dem n=5-Befund.
 
-**Mechanismus-Hypothese:** Emojis scheinen als visuelle Anker im Prompt eine leichte Stabilitäts-Wirkung zu haben. Der Effekt ist real, aber klein — vergleichbar mit dem Übergang RQ-9 → RQ-10 (Four Rules wirkungslos auf σ, Pep-Talks zeigen mixed-σ).
+**Mechanismus-Hypothese:** Emojis scheinen als visuelle Anker im Prompt eine leichte Stabilitäts-Wirkung zu haben. Der Effekt ist real, aber klein — vergleichbar mit dem Übergang RQ-rules → RQ-pep (Four Rules wirkungslos auf σ, Pep-Talks zeigen mixed-σ).
 
 ---
 
-## F-11.3 — Schwache Disziplin-Drift bei n=10: weniger Refactorings, mehr Over-Implementation
+## F-emoji.3 — Schwache Disziplin-Drift bei n=10: weniger Refactorings, mehr Over-Implementation
 
 **Aussage:** Während Code-Qualität gleich bleibt, zeigen zwei TDD-Disziplin-Indikatoren leichte Drift:
 
@@ -61,13 +61,13 @@ Bei n=10 ist die Richtung **klar gemischt**: 2 Metriken leicht zu v6 (smell), 2 
 **Beobachtungen:**
 1. **Refactorings −17 %**: v6.4 macht systematisch weniger Refactor-Phasen pro Run (3.3 vs 4.0). Streuung enger (σ=0.67 vs 1.63) — konsistentes Muster. Bei gleicher cycle_count heißt das: das Modell überspringt häufiger das Refactor-Step.
 2. **Over-Implementation +21 %**: `tests_passed_immediately` steigt von 3.3 auf 4.0. Mehr Tests passen bereits in der Red-Phase, ohne dass Green-Code geschrieben werden müsste — Hinweis auf mehr Vorab-Implementierung in der Green-Phase.
-3. **Prediction-Compliance stabil**: −1.8 pp Differenz, deutlich kleiner als der RQ-10-Effekt (−6.9 pp bei "strict discipline"-Streichung). H4 (Emoji-Marker als Disziplin-Anker für Predictions) — **nicht bestätigt**.
+3. **Prediction-Compliance stabil**: −1.8 pp Differenz, deutlich kleiner als der RQ-pep-Effekt (−6.9 pp bei "strict discipline"-Streichung). H4 (Emoji-Marker als Disziplin-Anker für Predictions) — **nicht bestätigt**.
 
 H4 wurde teilweise umformuliert nach den Daten: nicht die Predictions sind sensitiv, sondern **Refactor-Quote und Over-Implementation in der Green-Phase**. Beide Effekte sind klein (innerhalb σ), aber konsistent in dieselbe Richtung — Hinweis auf einen subtilen Effekt der ✅/❌-Marker in DO/DON'T-Listen, die ohne Emojis weniger als harte Pflicht-Regeln gelesen werden.
 
 ---
 
-## F-11.4 — Token-Einsparung gerade über 5 %-Schwelle, Wallclock klar günstiger
+## F-emoji.4 — Token-Einsparung gerade über 5 %-Schwelle, Wallclock klar günstiger
 
 **Aussage:**
 
@@ -82,16 +82,16 @@ H3 (Tokens ≥ 5 %) — **bestätigt** bei n=10 (n=5 war 3.4 %, knapp drunter). 
 
 ---
 
-## F-11.5 — Konsequenz: bedingter Reduktions-Erfolg
+## F-emoji.5 — Konsequenz: bedingter Reduktions-Erfolg
 
 Vier Reduktions-RQs im Vergleich (jetzt alle bei n=10 für v6 + RQ-Workflow):
 
 | RQ | Reduktion | Qualität μ | Stabilität σ | Disziplin | Kosten | Verdict |
 |---|---|:---:|:---:|:---:|:---:|:---:|
-| RQ-8 | APP raus | ⬇️ alle schlechter | ⬆️ verdoppelt | ➡️ | −8 % | APP bleibt |
-| RQ-9 | Four Rules raus | ➡️ | ➡️ | ➡️ | −8.5 % | **Four Rules raus** |
-| RQ-10 | Pep raus | ➡️ | gemischt | ⚠️ pred −7 pp | ±0 % | mehr Daten |
-| **RQ-11 (n=10)** | **Emojis raus** | ➡️ | ⚠️ 3/5 σ leicht breiter | ⚠️ refactor −17%, over-impl +21% | **−5 % Tokens, −7 % Wallclock** | **bedingter Erfolg** |
+| RQ-app | APP raus | ⬇️ alle schlechter | ⬆️ verdoppelt | ➡️ | −8 % | APP bleibt |
+| RQ-rules | Four Rules raus | ➡️ | ➡️ | ➡️ | −8.5 % | **Four Rules raus** |
+| RQ-pep | Pep raus | ➡️ | gemischt | ⚠️ pred −7 pp | ±0 % | mehr Daten |
+| **RQ-emoji (n=10)** | **Emojis raus** | ➡️ | ⚠️ 3/5 σ leicht breiter | ⚠️ refactor −17%, over-impl +21% | **−5 % Tokens, −7 % Wallclock** | **bedingter Erfolg** |
 
 **v6.4-no-emoji ist OK zu entfernen, aber mit Vorbehalten:**
 - ✅ Code-Qualitäts-Mittel unverändert
@@ -110,7 +110,7 @@ Vier Reduktions-RQs im Vergleich (jetzt alle bei n=10 für v6 + RQ-Workflow):
 
 ## Caveats
 
-- **n=10 v6.4, single Kata, single Modell**: konsistent mit RQ-5-Tiefe für v6. claim-office-Replikation steht aus.
-- **n=5 → n=10 Lehre**: die n=5-Beobachtung "v6.4 in 4 von 5 Metriken leicht schlechter" war Sampling-Artefakt — bei n=10 flippte das Bild. Bestätigt RQ-5 F-5.3 (n=3-Rankings instabil) für n=5-Mittel-Differenzen unter ~0.5σ.
+- **n=10 v6.4, single Kata, single Modell**: konsistent mit RQ-stability-Tiefe für v6. claim-office-Replikation steht aus.
+- **n=5 → n=10 Lehre**: die n=5-Beobachtung "v6.4 in 4 von 5 Metriken leicht schlechter" war Sampling-Artefakt — bei n=10 flippte das Bild. Bestätigt RQ-stability F-stability.3 (n=3-Rankings instabil) für n=5-Mittel-Differenzen unter ~0.5σ.
 - **Disziplin-Drift statistisch grenzwertig**: Refactorings-Δ und tests_passed_immediately-Δ liegen beide unter σ. Bei n=20 wäre das schärfer.
 - **Parser-Hyphen-Variante**: 168 von 168 Predictions wurden erkannt (verlustfrei). Keine Marker-Daten verloren.

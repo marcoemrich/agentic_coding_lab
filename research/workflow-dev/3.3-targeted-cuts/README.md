@@ -1,5 +1,5 @@
 ---
-id: RQ-16
+id: RQ-targeted
 question: "Sind die Quality/Cost-Gewinne aus v6.5.2 ohne σ-Verlust erreichbar, wenn nur die mid-file DO/DON'T-Blöcke gestrichen werden und die `Remember`-End-Sektion in refactor.md erhalten bleibt?"
 factors:
   workflow_x_prompt:
@@ -32,9 +32,9 @@ min_replicates: 10
 status: aktiv
 ---
 
-# RQ-16: v6.5.3-targeted-cuts — Floor-Anker isolieren
+# RQ-targeted: v6.5.3-targeted-cuts — Floor-Anker isolieren
 
-RQ-15 hat ein gemischtes Bild gezeigt: v6.5.2-bullets-cut (alle drei Finding-10-Cuts) gewinnt auf Code-Qualität (`cognitive_max` −29 %, `mccabe_max` −16 %) und Kosten (−15 % Tokens, −4 % Wallclock), verliert aber massiv auf TDD-Disziplin-Determinismus (σ `refactorings_applied` 0.42 → 1.26, σ `cycle_count` 0.42 → 1.06, `tests_passed_immediately` Floor 0 → 1). Diese RQ isoliert, *welcher* der drei Cuts den σ-Verlust verursacht hat.
+RQ-bullets hat ein gemischtes Bild gezeigt: v6.5.2-bullets-cut (alle drei Finding-10-Cuts) gewinnt auf Code-Qualität (`cognitive_max` −29 %, `mccabe_max` −16 %) und Kosten (−15 % Tokens, −4 % Wallclock), verliert aber massiv auf TDD-Disziplin-Determinismus (σ `refactorings_applied` 0.42 → 1.26, σ `cycle_count` 0.42 → 1.06, `tests_passed_immediately` Floor 0 → 1). Diese RQ isoliert, *welcher* der drei Cuts den σ-Verlust verursacht hat.
 
 ## Motivation
 
@@ -50,8 +50,8 @@ v6.5.3-targeted-cuts wendet **nur** Cuts 2 und 3 an, behält "Remember". Wenn di
 
 ## Workflow-Definition
 
-- **v6.5.1-orchestration-audited (Baseline, n=10 aus RQ-14-Pool)**: Disziplin-Champion mit allen Bullets.
-- **v6.5.2-bullets-cut (Baseline, n=10 aus RQ-15-Pool)**: Quality/Cost-Champion ohne alle Bullets.
+- **v6.5.1-orchestration-audited (Baseline, n=10 aus RQ-audit-Pool)**: Disziplin-Champion mit allen Bullets.
+- **v6.5.2-bullets-cut (Baseline, n=10 aus RQ-bullets-Pool)**: Quality/Cost-Champion ohne alle Bullets.
 - **v6.5.3-targeted-cuts (neu, n=10)**: Mittelweg — Mid-file-DO/DON'T weg, End-File-"Remember" bleibt.
 
 ## Hypothesen
@@ -88,8 +88,8 @@ Der dritte Ausgang wäre der informativste — er würde nahelegen, dass *jede* 
 
 - **Single Kata, single Modell**: opus-4-7-no-thinking auf game-of-life. Falls v6.5.3 promotet wird, Cross-Model/Cross-Kata als Folge-RQs.
 - **Position vs. Inhalt verwechselt**: v6.5.3 lässt "Remember" *als End-File-Block* stehen. Falls v6.5.3 σ behält, ist offen, ob das an Position (Datei-Ende) oder Form ("Remember"-Wording) liegt. Saubere Disambiguierung wäre eine v6.5.4-Variante, die "Remember" entfernt und stattdessen einen anderen Bullet-Block ans Datei-Ende verschiebt — falls nötig.
-- **n=10**: gut für Mittelwert, sensitiv für σ-Vergleich. RQ-15 hatte die σ-Verdoppelung schon bei n=10 klar sichtbar; das sollte hier auch ausreichen.
-- **Vergleichs-Pool**: nutzt vorhandene RQ-14- und RQ-15-Runs für v6.5.1 und v6.5.2. Nur v6.5.3 muss neu laufen.
+- **n=10**: gut für Mittelwert, sensitiv für σ-Vergleich. RQ-bullets hatte die σ-Verdoppelung schon bei n=10 klar sichtbar; das sollte hier auch ausreichen.
+- **Vergleichs-Pool**: nutzt vorhandene RQ-audit- und RQ-bullets-Runs für v6.5.1 und v6.5.2. Nur v6.5.3 muss neu laufen.
 
 ## Findings
 

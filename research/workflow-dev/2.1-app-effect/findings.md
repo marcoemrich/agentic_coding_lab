@@ -1,4 +1,4 @@
-# RQ-8 — Findings: APP-Heuristik im Refactor-Subagent
+# RQ-app — Findings: APP-Heuristik im Refactor-Subagent
 
 ## Übersicht
 
@@ -16,7 +16,7 @@ Niedriger = besser. Drei der fünf Metriken zeigen v6.1 mindestens 1σ schlechte
 
 ---
 
-## F-8.1 — APP-Heuristik im Refactor-Subagent verbessert Code-Qualität konsistent auf allen primären Metriken
+## F-app.1 — APP-Heuristik im Refactor-Subagent verbessert Code-Qualität konsistent auf allen primären Metriken
 
 **Aussage:** Der Refactor-Subagent ohne APP-Block produziert auf allen fünf primären Code-Qualitäts-Metriken **schlechtere Werte** als der Subagent mit APP. Auf zwei Metriken (Smell-Summe, `cognitive_max`) liegt der Effekt klar über einer Standardabweichung der v6-Streuung; auf `mccabe_max` knapp über; auf `cc_longest_function` und Code-Mass unter der Schwelle, aber mit konsistenter Richtung.
 
@@ -24,13 +24,13 @@ Niedriger = besser. Drei der fünf Metriken zeigen v6.1 mindestens 1σ schlechte
 - H1 (APP wirkungslos) — **falsifiziert.**
 - H2 (APP hilft messbar, Median-Differenz ≥ +1σ in mindestens zwei der fünf Metriken, konsistente Richtung) — **bestätigt.**
 
-**Mechanismus-Hypothese:** APP zwingt den Refactor-Subagent zu einer expliziten Vorher-Nachher-Berechnung, was offenbar **die Qualität der ausgewählten Refactorings** beeinflusst — nicht ihre Anzahl (siehe F-8.3). Ohne den Mass-Anker entscheidet das Modell qualitativ über Verbesserungen ("liest sich besser") und wählt seltener Strukturänderungen, die Spitzen-Komplexität tatsächlich reduzieren.
+**Mechanismus-Hypothese:** APP zwingt den Refactor-Subagent zu einer expliziten Vorher-Nachher-Berechnung, was offenbar **die Qualität der ausgewählten Refactorings** beeinflusst — nicht ihre Anzahl (siehe F-app.3). Ohne den Mass-Anker entscheidet das Modell qualitativ über Verbesserungen ("liest sich besser") und wählt seltener Strukturänderungen, die Spitzen-Komplexität tatsächlich reduzieren.
 
-**Datenbasis:** 15 Runs (v6 n=10 aus RQ-5-Pool, v6.1 n=5 neu), gleiches Modell und Kata, gleicher Skill/Subagent-Mechanismus, gleicher Refactor-Prompt **abgesehen von** den APP-Bestandteilen.
+**Datenbasis:** 15 Runs (v6 n=10 aus RQ-stability-Pool, v6.1 n=5 neu), gleiches Modell und Kata, gleicher Skill/Subagent-Mechanismus, gleicher Refactor-Prompt **abgesehen von** den APP-Bestandteilen.
 
 ---
 
-## F-8.2 — APP-Heuristik stabilisiert die Refactor-Ergebnisse (Streuung verdoppelt sich bis verdreifacht ohne APP)
+## F-app.2 — APP-Heuristik stabilisiert die Refactor-Ergebnisse (Streuung verdoppelt sich bis verdreifacht ohne APP)
 
 **Aussage:** v6.1 produziert nicht nur im Mittel schlechtere Code-Qualität, sondern auch **deutlich instabilere** Werte:
 
@@ -41,7 +41,7 @@ Niedriger = besser. Drei der fünf Metriken zeigen v6.1 mindestens 1σ schlechte
 | Spitzen-Komplexität | 5.97 | 9.44 | 1.6× |
 | `mccabe_max` | 1.51 | 2.55 | 1.7× |
 
-v6.1 verliert damit auch den "0% Outlier-Rate"-Status, den v6 in RQ-5 F-5.2 hatte. Auf `cognitive_max` liegt der schlechteste v6.1-Run bei 15 (vs. v6-Maximum 7) — der Refactor-Aussetzer-Failure-Mode aus v4 (10% Tail) ist ohne APP teilweise zurück.
+v6.1 verliert damit auch den "0% Outlier-Rate"-Status, den v6 in RQ-stability F-stability.2 hatte. Auf `cognitive_max` liegt der schlechteste v6.1-Run bei 15 (vs. v6-Maximum 7) — der Refactor-Aussetzer-Failure-Mode aus v4 (10% Tail) ist ohne APP teilweise zurück.
 
 **Mechanismus-Hypothese:** APP gibt dem Refactor-Subagent eine **objektive Mess-Schiene**, die unabhängig von der konkreten Code-Form funktioniert. Ohne sie variiert das Modell stärker in seiner Strenge — manche Runs refactorieren strukturell, andere nur kosmetisch.
 
@@ -49,9 +49,9 @@ v6.1 verliert damit auch den "0% Outlier-Rate"-Status, den v6 in RQ-5 F-5.2 hatt
 
 ---
 
-## F-8.3 — APP wirkt nicht über die Refactor-Quote — TDD-Disziplin bleibt unverändert
+## F-app.3 — APP wirkt nicht über die Refactor-Quote — TDD-Disziplin bleibt unverändert
 
-**Aussage:** Trotz Entfernung der APP-Heuristik bleibt die Refactor-Frequenz und die TDD-Disziplin in den v6-Bändern aus RQ-5 F-5.6:
+**Aussage:** Trotz Entfernung der APP-Heuristik bleibt die Refactor-Frequenz und die TDD-Disziplin in den v6-Bändern aus RQ-stability F-stability.6:
 
 | Outcome | v6 (mit APP) | v6.1 (ohne APP) |
 |---|---:|---:|
@@ -60,7 +60,7 @@ v6.1 verliert damit auch den "0% Outlier-Rate"-Status, den v6 in RQ-5 F-5.2 hatt
 | `predictions_correct_rate` | 99.4 % | 100.0 % |
 | `tests_passed_immediately` μ±σ | 3.3 ± 3.02 | 4.6 ± 2.07 |
 
-**Konsequenz:** Der Qualitäts-Vorteil aus F-8.1 ist **nicht** dadurch erklärbar, dass v6 mehr Refactorings durchführt. Die Anzahl der Refactor-Phasen ist praktisch identisch. APP wirkt also über die **Auswahl/Tiefe** der einzelnen Refactorings, nicht über deren Häufigkeit.
+**Konsequenz:** Der Qualitäts-Vorteil aus F-app.1 ist **nicht** dadurch erklärbar, dass v6 mehr Refactorings durchführt. Die Anzahl der Refactor-Phasen ist praktisch identisch. APP wirkt also über die **Auswahl/Tiefe** der einzelnen Refactorings, nicht über deren Häufigkeit.
 
 H4 (TDD-Disziplin unverändert) — **bestätigt.**
 
@@ -68,7 +68,7 @@ H4 (TDD-Disziplin unverändert) — **bestätigt.**
 
 ---
 
-## F-8.4 — Token- und Wallclock-Einsparung durch APP-Entfernung minimal (~8%), Tradeoff ungünstig
+## F-app.4 — Token- und Wallclock-Einsparung durch APP-Entfernung minimal (~8%), Tradeoff ungünstig
 
 **Aussage:** Die Hoffnung, dass ein schlankerer Refactor-Prompt substanzielle Token-Einsparungen bringt, wird nicht eingelöst:
 
@@ -77,7 +77,7 @@ H4 (TDD-Disziplin unverändert) — **bestätigt.**
 | `total_tokens` μ | 6.62 M | 6.08 M | −8.2 % |
 | `duration_seconds` μ | 521 | 481 | −7.8 % |
 
-H3 (APP kostet ≥ 5%) **bestätigt**, aber mit zu kleiner Effektstärke, um den Qualitäts- und Stabilitäts-Verlust aus F-8.1/F-8.2 aufzuwiegen. Pro eingesparten Token verliert v6.1 messbare Code-Qualität — kein attraktiver Tradeoff.
+H3 (APP kostet ≥ 5%) **bestätigt**, aber mit zu kleiner Effektstärke, um den Qualitäts- und Stabilitäts-Verlust aus F-app.1/F-app.2 aufzuwiegen. Pro eingesparten Token verliert v6.1 messbare Code-Qualität — kein attraktiver Tradeoff.
 
 **Konsequenz:** APP bleibt im Refactor-Subagent. v6 bleibt der Default-Hybrid, v6.1-no-app wird **nicht** der Nachfolger.
 
@@ -86,10 +86,10 @@ H3 (APP kostet ≥ 5%) **bestätigt**, aber mit zu kleiner Effektstärke, um den
 ## Folgerung für die Workflow-Optimierung
 
 - APP ist **kein Prompt-Ballast** — sondern ein **tragender Bestandteil** des v6-Refactor-Subagents. Künftige Reduktionsversuche sollten andere Prompt-Blöcke ins Visier nehmen (z.B. die ausführlichen Refactoring-Beispiele oder die "Common TDD Failure Modes"-Listen).
-- Die zentralen Befund-Stützen sind F-8.1 (alle 5 Metriken konsistent schlechter) und F-8.2 (Streuung verdoppelt). Die ungewöhnlich saubere Konsistenz über fünf orthogonale Metriken bei n=5 deutet auf einen robusten Effekt — sollte aber bei Bedarf mit n=10 + zweiter Kata (claim-office) repliziert werden, bevor "APP unverzichtbar" als allgemeine Aussage gilt.
+- Die zentralen Befund-Stützen sind F-app.1 (alle 5 Metriken konsistent schlechter) und F-app.2 (Streuung verdoppelt). Die ungewöhnlich saubere Konsistenz über fünf orthogonale Metriken bei n=5 deutet auf einen robusten Effekt — sollte aber bei Bedarf mit n=10 + zweiter Kata (claim-office) repliziert werden, bevor "APP unverzichtbar" als allgemeine Aussage gilt.
 
 ## Caveats
 
-- **n=5 v6.1**: Stabilitäts-Vergleich (F-8.2) ist daten-knapp; σ-Schätzung breit. Cross-Validation mit n=10 würde den Effekt schärfen.
+- **n=5 v6.1**: Stabilitäts-Vergleich (F-app.2) ist daten-knapp; σ-Schätzung breit. Cross-Validation mit n=10 würde den Effekt schärfen.
 - **Single Kata**: nur game-of-life (Library-Form). Auf claim-office (CLI, verzweigte Logik) könnte APP einen anderen Effekt-Charakter zeigen — APP-Mass ist auf Code mit vielen Conditionals/Loops besonders wirksam.
-- **Single Modell**: opus-4-7-no-thinking. Schwächere Modelle könnten ohne APP-Heuristik in stärkere Drift verfallen — der Effekt aus F-8.2 könnte sich auf Sonnet/Haiku vergrößern.
+- **Single Modell**: opus-4-7-no-thinking. Schwächere Modelle könnten ohne APP-Heuristik in stärkere Drift verfallen — der Effekt aus F-app.2 könnte sich auf Sonnet/Haiku vergrößern.

@@ -20,11 +20,11 @@ Typical use cases:
 
 ## Argument
 
-- `RQ-N` (e.g. `RQ-2`) or a direct path to an RQ dir.
-- If not given: ask back ("Which RQ? e.g. RQ-2").
-- RQ dirs live in `research/questions/<chapter>-*/` and `research/workflow-dev/<chapter>-*/`. The chapter prefix is an ordering label; the stable id is the frontmatter `id:`. Resolve `RQ-N` to a path by id-grep across both subtrees (boundary keeps `RQ-2` from matching `RQ-20`):
+- `RQ-N` (e.g. `RQ-prompt-known-kata`) or a direct path to an RQ dir.
+- If not given: ask back ("Which RQ? e.g. RQ-prompt-known-kata").
+- RQ dirs live in `research/questions/<chapter>-*/` and `research/workflow-dev/<chapter>-*/`. The chapter prefix is an ordering label; the stable id is the frontmatter `id:` (a slug like `RQ-prompt-known-kata`). Resolve it to a path by exact-line id-grep across both subtrees:
   ```bash
-  RQ_DIR=$(grep -rlE "^id:[[:space:]]*RQ-2([[:space:]]|$)" \
+  RQ_DIR=$(grep -rlE "^id:[[:space:]]*RQ-prompt-known-kata[[:space:]]*$" \
              research/questions/*/README.md research/workflow-dev/*/README.md \
            | head -1 | xargs -r dirname)
   ```
@@ -107,18 +107,18 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
    === Findings Update Proposal for RQ-N ===
 
    STALE (numbers changed):
-   - F-2.1: verification_pct Opus×prose was 0.75, now 1.00
-   - F-2.3: Haiku spread was "0–25 pp", now "0–63 pp"
+   - F-prompt-known-kata.1: verification_pct Opus×prose was 0.75, now 1.00
+   - F-prompt-known-kata.3: Haiku spread was "0–25 pp", now "0–63 pp"
 
    STATUS CHANGES:
-   - F-2.3: ⚠️ bedingt → ✅ stabil (n grew from 3 to 5, pattern holds)
+   - F-prompt-known-kata.3: ⚠️ bedingt → ✅ stabil (n grew from 3 to 5, pattern holds)
 
    NEW FINDINGS:
-   - [proposed] F-2.8: <title> — <brief description>
+   - [proposed] F-prompt-known-kata.8: <title> — <brief description>
 
-   OK (unchanged): F-2.4, F-2.5, F-2.6
+   OK (unchanged): F-prompt-known-kata.4, F-prompt-known-kata.5, F-prompt-known-kata.6
 
-   Apply? (yes/no, or "yes except F-2.8" to cherry-pick)
+   Apply? (yes/no, or "yes except F-prompt-known-kata.8" to cherry-pick)
    ```
 5. On "yes" (or partial accept):
    - **STALE**: replace the affected numbers in the existing finding block via `Edit`. Rewrite the Datenbasis table and any prose that references the changed numbers. Do NOT add "previously X" or "corrected from" — just write the current state.

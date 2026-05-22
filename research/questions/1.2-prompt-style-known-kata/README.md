@@ -1,5 +1,5 @@
 ---
-id: RQ-2
+id: RQ-prompt-known-kata
 question: "Beeinflusst der Prompt-Stil (prose/user-story/example-mapping) bei einer trainingsbekannten Kata (Game of Life) Korrektheit und Code-Qualität — und ist dieser Effekt modellabhängig?"
 factors:
   prompt: [prose, user-story, example-mapping]
@@ -29,13 +29,13 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-2: Prompt-Stil-Effekt bei trainingsbekannter Kata
+# RQ-prompt-known-kata: Prompt-Stil-Effekt bei trainingsbekannter Kata
 
 Beeinflusst der Prompt-Stil bei einer trainingsbekannten Kata (Game of Life) Korrektheit *und* Code-Qualität — und ist der Effekt modellabhängig?
 
 ## Motivation
 
-RQ-1 misst den Prompt-Stil-Effekt auf einer domain-novel Kata (claim-office) und prognostiziert in ihrer Sektion "Warum nicht game-of-life?", dass Stile auf trainingsbekannten Katas in Korrektheit *nicht messbar differenzieren*, weil das Modell-Vorwissen die Stil-Unterschiede überschreibt. RQ-2 prüft diese Prognose empirisch und erweitert sie um die Code-Qualitäts-Dimension.
+RQ-prompt-correctness misst den Prompt-Stil-Effekt auf einer domain-novel Kata (claim-office) und prognostiziert in ihrer Sektion "Warum nicht game-of-life?", dass Stile auf trainingsbekannten Katas in Korrektheit *nicht messbar differenzieren*, weil das Modell-Vorwissen die Stil-Unterschiede überschreibt. RQ-prompt-known-kata prüft diese Prognose empirisch und erweitert sie um die Code-Qualitäts-Dimension.
 
 Das Ergebnis hat Konsequenzen für alle späteren Code-Qualitäts-RQs auf Game of Life:
 
@@ -64,7 +64,7 @@ Alle Modelle laufen über Portkey (rate-limit-frei). Thinking ist durchgehend au
 
 ## Warum v5 als Kontroll-Workflow?
 
-Konsistent mit RQ-1: v5-exact-single-context liefert das sauberste Signal (kein Phase-Handoff, kein State-Verlust), sodass beobachtete Varianz auf Stil und/oder Modell zurückführbar ist, nicht auf den Workflow. Details siehe RQ-1.
+Konsistent mit RQ-prompt-correctness: v5-exact-single-context liefert das sauberste Signal (kein Phase-Handoff, kein State-Verlust), sodass beobachtete Varianz auf Stil und/oder Modell zurückführbar ist, nicht auf den Workflow. Details siehe RQ-prompt-correctness.
 
 ## Warum game-of-life-cli?
 
@@ -72,7 +72,7 @@ Konsistent mit RQ-1: v5-exact-single-context liefert das sauberste Signal (kein 
 
 Conway's Game of Life ist im Trainingsmaterial allgegenwärtig — das ist der Punkt. Die Hypothese "Stile differenzieren nicht bei trainingsbekannten Katas" lässt sich nur prüfen, wenn die Kata tatsächlich im Vorwissen vorhanden ist.
 
-Die bestehenden GOL-Katas (`game-of-life-{prose,user-story,example-mapping}`) sind Library-only (eine Funktion, vitest-Tests). Sie liefern nur die *innere* Korrektheits-Sicht (`tests_passing`) — der Agent schreibt sich seine eigenen Tests. Für eine *äußere* Korrektheits-Sicht (verification gegen eine fixe Akzeptanz-Suite) braucht es ein CLI-Interface, das wir für RQ-2 als neue Kata-Familie hinzufügen: `game-of-life-cli-{prose,user-story,example-mapping}`.
+Die bestehenden GOL-Katas (`game-of-life-{prose,user-story,example-mapping}`) sind Library-only (eine Funktion, vitest-Tests). Sie liefern nur die *innere* Korrektheits-Sicht (`tests_passing`) — der Agent schreibt sich seine eigenen Tests. Für eine *äußere* Korrektheits-Sicht (verification gegen eine fixe Akzeptanz-Suite) braucht es ein CLI-Interface, das wir für RQ-prompt-known-kata als neue Kata-Familie hinzufügen: `game-of-life-cli-{prose,user-story,example-mapping}`.
 
 ### Externe Verifikations-Suite
 
@@ -107,9 +107,9 @@ Runs:      27 total
 
 ## Caveats
 
-- **(a) Thinking aus**: Findings gelten nur für No-Thinking-Modus. Mit Thinking könnten sich Korrektheits- oder Qualitäts-Ergebnisse verschieben — insbesondere bei Opus zeigt sich aus RQ-3-v1 ein deutlicher Thinking-Effekt auf Code-Qualität (cognitive_max −42 %). Eine separate RQ wäre für die Thinking-Dimension nötig.
+- **(a) Thinking aus**: Findings gelten nur für No-Thinking-Modus. Mit Thinking könnten sich Korrektheits- oder Qualitäts-Ergebnisse verschieben — insbesondere bei Opus zeigt sich aus RQ-model-quality-v1 ein deutlicher Thinking-Effekt auf Code-Qualität (cognitive_max −42 %). Eine separate RQ wäre für die Thinking-Dimension nötig.
 - **(b) Opus 4.6 via Portkey, nicht 4.7**: Die `*-portkey`-Varianten routen Opus 4.6. Findings über `opus-4-6-portkey-no-thinking` sind *nicht* automatisch auf Opus 4.7 oder Direct-API-Opus-4.6 übertragbar.
-- **(c) CLI-Overhead-Bias**: Die `game-of-life-cli-*`-Kata pinnt JSON-IO + Dispatcher in `src/cli.ts`. Code-Qualitäts-Metriken (`code_mass`, `smell_total`, `cc_*`, `mccabe_*`, `cognitive_*`) enthalten einen CLI-Overhead-Anteil, den die existierende Library-Variante `game-of-life-*` nicht hat. Cross-Kata-Vergleiche zwischen `game-of-life-cli-*` und `game-of-life-*` bei Code-Qualität sind daher nicht direkt gültig. Innerhalb von RQ-2 (Variation nur über prompt × model) ist der Bias über alle Zellen konstant und stört den Stil-Vergleich nicht.
+- **(c) CLI-Overhead-Bias**: Die `game-of-life-cli-*`-Kata pinnt JSON-IO + Dispatcher in `src/cli.ts`. Code-Qualitäts-Metriken (`code_mass`, `smell_total`, `cc_*`, `mccabe_*`, `cognitive_*`) enthalten einen CLI-Overhead-Anteil, den die existierende Library-Variante `game-of-life-*` nicht hat. Cross-Kata-Vergleiche zwischen `game-of-life-cli-*` und `game-of-life-*` bei Code-Qualität sind daher nicht direkt gültig. Innerhalb von RQ-prompt-known-kata (Variation nur über prompt × model) ist der Bias über alle Zellen konstant und stört den Stil-Vergleich nicht.
 - **(d) Single workflow point**: v5-exact-single-context als alleiniger Workflow. Keine Workflow-Generalisierung — andere Workflows könnten andere Stil-Effekte erzeugen.
 
 ## Findings

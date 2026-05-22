@@ -15,15 +15,15 @@ End-to-end orchestration for advancing a single research question (RQ) in this l
 
 ## Argument
 
-- `RQ-N` (e.g. `RQ-3`) or a direct path to an RQ dir.
-- If not given: infer from the last user turn, otherwise ask back ("Which RQ? e.g. RQ-3").
+- `RQ-N` (e.g. `RQ-model-quality`) or a direct path to an RQ dir.
+- If not given: infer from the last user turn, otherwise ask back ("Which RQ? e.g. RQ-model-quality").
 
 ## Repo conventions (from the top-level `README.md` and memory)
 
-- RQ dirs live in two subtrees: `research/questions/<chapter>-*/` (generic research) and `research/workflow-dev/<chapter>-*/` (workflow evolution). The `<chapter>` prefix (e.g. `2.6`) is an **ordering label, not an id** — the stable identity is the frontmatter `id:` (e.g. `RQ-13`). Each RQ dir holds `README.md`, `findings.md`, `runs.csv`, `summary.md`.
-- **Resolving `RQ-N` to a path** (the dir name no longer contains the id): grep both subtrees for the frontmatter `id:`. The word boundary keeps `RQ-1` from matching `RQ-18`, and `RQ-3` from matching `RQ-3b`:
+- RQ dirs live in two subtrees: `research/questions/<chapter>-*/` (generic research) and `research/workflow-dev/<chapter>-*/` (workflow evolution). The `<chapter>` prefix (e.g. `2.6`) is an **ordering label, not an id** — the stable identity is the frontmatter `id:` (e.g. `RQ-lean`). Each RQ dir holds `README.md`, `findings.md`, `runs.csv`, `summary.md`.
+- **Resolving an `RQ-<slug>` id to a path** (the dir name carries a chapter number, not the id): grep both subtrees for the frontmatter `id:`. Anchor with `^id:` and a trailing boundary so the whole slug must match exactly (no slug is a prefix of another, so an exact-line match is unambiguous):
   ```bash
-  RQ_DIR=$(grep -rlE "^id:[[:space:]]*RQ-3([[:space:]]|$)" \
+  RQ_DIR=$(grep -rlE "^id:[[:space:]]*RQ-model-quality[[:space:]]*$" \
              research/questions/*/README.md research/workflow-dev/*/README.md \
            | head -1 | xargs -r dirname)
   ```
@@ -171,7 +171,7 @@ status: <status>
 - Use 🏆 only where there is a meaningful winner. If the spread is below 1 σ and the framing is "no effect", award 🏆 to all near-tied values (or to none if the table message is "indistinguishable") — don't fabricate a winner from rounding noise.
 - Multiple 🏆 are fine for ties. Three 🏆 across a row signal "no effect", which is itself a useful reading aid.
 - Always bold the winner value too — 🏆 is in addition to, not instead of, the bold.
-- Trophies belong only in human-facing research documents (`findings.md`, archive snapshots). Workflow files (`experiments/workflows/**/*.md`) stay emoji-free per the RQ-11 / CLAUDE.md convention.
+- Trophies belong only in human-facing research documents (`findings.md`, archive snapshots). Workflow files (`experiments/workflows/**/*.md`) stay emoji-free per the RQ-emoji / CLAUDE.md convention.
 
 1. Diff sources:
    - **Existing**: `findings.md` from phase 1.
