@@ -40,6 +40,8 @@ def count_runs_per_cell(cells: list[dict]) -> dict[tuple, int]:
         counts[key] = 0
 
     for run_dir in agg.RUNS_DIR.iterdir():
+        if run_dir.name.startswith("_"):
+            continue  # skip _archive/ and other underscore-prefixed dirs
         m_file = run_dir / "metrics.json"
         if not m_file.is_file():
             continue

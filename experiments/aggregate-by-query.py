@@ -164,6 +164,8 @@ def collect_runs(cells: list[dict]) -> tuple[list[tuple[Path, str]], dict[tuple,
     by_cell: dict[tuple, list[Path]] = {}
 
     for run_dir in sorted(RUNS_DIR.iterdir()):
+        if run_dir.name.startswith("_"):
+            continue  # skip _archive/ and other underscore-prefixed dirs
         m_file = run_dir / "metrics.json"
         if not m_file.is_file():
             continue

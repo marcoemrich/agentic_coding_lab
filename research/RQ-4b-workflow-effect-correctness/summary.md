@@ -2,7 +2,7 @@
 
 _Unterscheidet sich die externe Korrektheit (verification_pct) zwischen TDD-Workflow-Varianten auf der neuartigen claim-office-Kata?_
 
-Generated: 2026-05-22T14:06:38Z
+Generated: 2026-05-22T14:40:21Z
 
 Cells declared: 5 · matched runs: 34 · min_replicates: 5
 
