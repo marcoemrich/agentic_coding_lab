@@ -9,8 +9,8 @@ factors:
     - {workflow: v4.1-testlist-scope-fix, prompt: example-mapping}
     - {workflow: v5.1-testlist-scope-fix, prompt: example-mapping}
     - {workflow: v6.1-hybrid-testlist-scope-fix, prompt: example-mapping}
-  kata_base: game-of-life
 controls:
+  kata_base: game-of-life
   model:
     any:                            # OR-match: neue Runs via Portkey (Prio 1), bestehende Direct-Runs wiederverwenden
       - opus-4-7-portkey-no-thinking

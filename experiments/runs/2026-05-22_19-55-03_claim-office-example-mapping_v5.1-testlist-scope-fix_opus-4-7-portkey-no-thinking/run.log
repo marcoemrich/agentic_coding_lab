@@ -1,0 +1,4 @@
+Implementation complete. 39/39 tests passing, covering the full MHPCO Claim Office spec:
+- Quote: base premiums, building-block-of-3 (exact match per type), curse/high-ench/loyalty/first-insurance/follow-up modifiers, processing fee, ceiling rounding
+- Claim: deductible per damage, dragon material full, ench ≥8 50%, cap-from-insurance-value, cap exhaustion across claims, floor rounding
+- CLI: stdin JSON → stdout JSON results array; error handling for unknown types and negative damages with non-zero exit + stderr

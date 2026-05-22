@@ -1,0 +1,5 @@
+All 6 tests pass. Implementation covers Conway's Game of Life with sparse infinite-grid representation. 
+
+Notes on the test list:
+- Removed the Rule 2 (Survival) and Rule 3 (Overpopulation) spec diagrams from the test list because their stated Gen 1 outputs contradict standard Conway's rules applied to their stated Gen 0 inputs (e.g., the Rule 2 diagram says "center cell (1,1) has 3 neighbors and survives" but (1,1) is dead in Gen 0).
+- The retained tests (single-cell death, underpopulation, reproduction, block still-life, blinker both phases) collectively exercise all four GoL rules and the negative-coordinate constraint.

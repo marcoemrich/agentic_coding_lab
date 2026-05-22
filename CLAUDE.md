@@ -67,6 +67,8 @@ subtrees.
 - `findings.md` shows **current state only**. No status tags ("revised"/"confirmed"), no legacy comparisons, no "previously X" references.
 - Finding headers: `## F-x.y — Title` (no trailing suffix).
 - Overview table comes first (pivot of primary outcome).
+- **🏆-Pokale in der Übersichts-Tabelle sind Pflicht.** Sieger pro Spalte bekommen `**…** 🏆`; bei Ties alle. Metrik-Richtung im Header oder in der Tabellen-Beschreibung notieren (`kleiner = besser` / `höher = besser`). Volle Konvention (Spread-Schwelle, ambivalente Metriken ohne Pokal): `.claude/skills/run-rq/SKILL.md` Abschnitt "Trophy convention".
+- **Bei findings-Updates immer den `/run-rq` oder `/reanalyze` Skill nutzen** — die Skills tragen Trophy-Konvention, Spot-Check vor Aggregation, Plausibilitäts-Cross-Check und die "nie automatisch schreiben"-Regel. Wenn du Findings ad-hoc schreibst ohne Skill, übersiehst du diese Regeln (passiert reproduzierbar).
 - **Glossary terms from README are binding** — use the exact forms. "Code-Volumen" and "LoC-Groesse" are forbidden synonyms.
 - Open hypotheses live in the RQ's `README.md`, not in findings.md or separate files.
 
