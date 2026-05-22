@@ -696,16 +696,16 @@ The **Term (binding)** column gives the canonical name to use in `findings.md`, 
 
 | Metric | Term (binding) | Source | Description |
 |--------|----------------|--------|-------------|
-| `code_mass` | **Code-Mass (APP)** | code analysis | Weighted sum of code constructs (constants, invocations, conditionals, loops, assignments — heavier weights for higher-complexity constructs) following the *Absolute Priority Premise* by Micah Martin. Aims to compare implementations objectively beyond raw LoC. Lower = simpler. See [Code Cop blog](http://blog.code-cop.org/2016/08/absolute-priority-premise-example.html). |
+| `code_mass` | **Code-Mass (APP)** | [`analyze-run.sh`](experiments/analyze-run.sh) | Weighted sum of code constructs (constants, invocations, conditionals, loops, assignments — heavier weights for higher-complexity constructs) following the *Absolute Priority Premise* by Micah Martin. Aims to compare implementations objectively beyond raw LoC. Lower = simpler. See [Code Cop blog](http://blog.code-cop.org/2016/08/absolute-priority-premise-example.html); original talk: [Micah Martin — *Absolute Priority Premise* (8LU, Vimeo)](https://vimeo.com/57851350). |
 | `mutation_score` | **Mutation-Score** | [Stryker](https://stryker-mutator.io/) + `@stryker-mutator/vitest-runner` | Fraction of mutants killed by the implementer's own Vitest tests (0.0–1.0, formula `(Killed + Timeout) / (Killed + Survived + Timeout + NoCoverage)`). Higher = the test suite genuinely exercises behavior, not just coverage. Computed **only** when an RQ lists `mutation_score` in `outcomes` and `tests_passing = true`; otherwise `null`. Driven by `experiments/compute-mutation-score.py` (separate from `analyze-run.sh`). |
-| `cc_loc` | **Produktiv-LoC** | code analysis | Production LoC only, from the clean-code reporter (no tests) |
-| `test_lines` | **Test-LoC** | code analysis | Vitest test code |
+| `cc_loc` | **Produktiv-LoC** | [`analyze-run.sh`](experiments/analyze-run.sh) | Production LoC only, from the clean-code reporter (no tests) |
+| `test_lines` | **Test-LoC** | [`analyze-run.sh`](experiments/analyze-run.sh) | Vitest test code |
 | `smell_total` | **Smell-Summe** | [ESLint](https://eslint.org/) + [`eslint-plugin-sonarjs`](https://github.com/SonarSource/eslint-plugin-sonarjs) | Aggregated code-smell count. Sub-counters `smell_complexity`, `smell_duplication`, `smell_magic_numbers`, `smell_code_quality` group SonarJS rules (e.g. `no-duplicate-string`, `no-collapsible-if`) plus a few ESLint built-ins (`max-depth`, `max-lines-per-function`, `max-params`, `no-magic-numbers`, `no-unreachable`). |
-| `cc_longest_function` | **Spitzen-Komplexität** | code analysis | Longest function in lines (complexity peak per run) |
-| `cc_avg_loc_per_function` | — | code analysis | Mean function length in lines |
-| `cc_median_loc_per_function` | — | code analysis | Median function length in lines (robust against single long outliers) |
-| `mccabe_max`, `mccabe_avg`, `mccabe_high_count` | — | ESLint [`complexity`](https://eslint.org/docs/latest/rules/complexity) rule | McCabe cyclomatic complexity per function — max, mean, and count of functions above the threshold |
-| `cognitive_max`, `cognitive_avg`, `cognitive_high_count` | — | ESLint [`sonarjs/cognitive-complexity`](https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/cognitive-complexity.md) | Cognitive complexity per function (SonarSource metric, weights nesting and control-flow breaks heavier than McCabe) — max, mean, and count above threshold |
+| `cc_longest_function` | **Spitzen-Komplexität** | [`analyze-run.sh`](experiments/analyze-run.sh) | Longest function in lines (complexity peak per run) |
+| `cc_avg_loc_per_function` | — | [`analyze-run.sh`](experiments/analyze-run.sh) | Mean function length in lines |
+| `cc_median_loc_per_function` | — | [`analyze-run.sh`](experiments/analyze-run.sh) | Median function length in lines (robust against single long outliers) |
+| `mccabe_max`, `mccabe_avg`, `mccabe_high_count` | — | ESLint [`complexity`](https://eslint.org/docs/latest/rules/complexity) rule | McCabe cyclomatic complexity per function — max, mean, and count of functions above the threshold. Concept: [Cyclomatic complexity (Wikipedia)](https://en.wikipedia.org/wiki/Cyclomatic_complexity); originally [McCabe 1976](https://www.literateprogramming.com/mccabe.pdf). |
+| `cognitive_max`, `cognitive_avg`, `cognitive_high_count` | — | ESLint [`sonarjs/cognitive-complexity`](https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/cognitive-complexity.md) | Cognitive complexity per function (SonarSource metric, weights nesting and control-flow breaks heavier than McCabe) — max, mean, and count above threshold. Original definition: [G. Ann Campbell — *Cognitive Complexity* whitepaper (PDF)](https://www.sonarsource.com/docs/CognitiveComplexity.pdf). |
 
 ### Token & context metrics
 
@@ -717,6 +717,8 @@ The **Term (binding)** column gives the canonical name to use in `findings.md`, 
 v4-exact-subagents keeps the main context low because each agent has fresh context. v5-exact-single-context accumulates tokens, so utilization is higher.
 
 ### TDD discipline metrics
+
+Extracted from `transcript.jsonl` (+ `transcript-subagents/`) by [`experiments/analyze_transcript.py`](experiments/analyze_transcript.py). The four phase markers that drive these counts are documented in [`experiments/workflows/MARKERS.md`](experiments/workflows/MARKERS.md) — removing or renaming a marker silently zeroes the corresponding metric.
 
 | Metric | Description |
 |--------|-------------|
