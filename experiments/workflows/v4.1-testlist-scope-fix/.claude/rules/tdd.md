@@ -53,8 +53,8 @@ Task({
 })
 ```
 
-The agent will create a comprehensive test list using `it.todo()` for BASE FUNCTIONALITY ONLY:
-- Focus on core behavior, not advanced features
+The agent will create a comprehensive test list using `it.todo()` covering every rule and example from the specification:
+- Cover every example and clarifying question from the spec
 - Order tests from simple → complex
 - No implementation yet
 
@@ -170,7 +170,6 @@ TDD practices will feel counterintuitive:
 ### Common TDD Failure Modes
 Watch for these violations:
 - **🚨 NOT USING TDD AGENTS** - The most critical failure mode!
-- Planning beyond base functionality
 - Multiple active tests at once
 - Implementing beyond what tests demand
 - Skipping predictions
