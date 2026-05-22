@@ -36,3 +36,16 @@
 **Datenbasis:** 5/5 Timeouts bei 5400s (gelöscht), 5/5 OK bei 7200s.
 
 **Rationale:** Der Test-List-Scope-Fix erzeugt längere Test-Listen und damit mehr Red-Green-Refactor-Cycles. Auf dem schnelleren Opus 4.7 passt das noch ins Budget, auf Opus 4.6 (Portkey) nur mit 7200s.
+
+---
+
+## Caveat — Workflow-Konsistenz vs. Reproduzierbarkeit
+
+Die Werte oben stammen aus Runs auf der ursprünglichen `v4.1-testlist-scope-fix`-Fassung. In dieser
+Fassung war der Scope-Fix nur im test-list-Agent angewandt; `rules/tdd.md` trug noch zwei „BASE
+FUNCTIONALITY ONLY"-Reste (Agent-Beschreibung + Failure-Mode „Planning beyond base functionality"),
+die dem Fix widersprachen. Diese Reste wurden nachträglich bereinigt (konsistent zu derselben
+Bereinigung in der neuen `v6.1-hybrid-testlist-scope-fix`-Basis). Der Effekt ist voraussichtlich
+gering — es ist kein Marker und nicht der test-list-Body — aber künftige v4.1-Runs laufen auf der
+bereinigten `tdd.md`. Eine exakte Reproduktion der obigen Zahlen müsste die alte `tdd.md`-Fassung
+(git-History vor dieser Bereinigung) verwenden.

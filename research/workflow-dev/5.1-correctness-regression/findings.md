@@ -87,4 +87,12 @@ Die ersten opus-4-6-Batches (05-18 und 05-19 06:49) zeigten konzentrierte Null-R
 
 ## Nächster Schritt
 
-Isolation der verdächtigen Komponente auf opus-4-7: v6.5-lean minus Why-Rewrites (alle vier Cuts angewandt, aber originale MUST/Procedure-Formulierungen aus v6-hybrid beibehalten) × claim-office-example-mapping × n=3. Falls dort verification_pct ≈ 1.0 → Why-Rewrites bestätigt als Täter. Falls auch dort Bruch → Bundle-Interaction-Effekt oder Project-Standards-Cut.
+Die Reduktionskette wird auf einer korrektheits-reparierten Basis neu aufgesetzt: `v6-hybrid` +
+testlist-scope-fix → **`v6.1-hybrid-testlist-scope-fix`** (siehe [RQ-testlist-fix](../5.2-v4.1-testlist-scope-fix/findings.md)).
+Die alten v6.x-Reduktionsschritte sind nach `experiments/workflows/_archive/` konserviert und als
+wiederanwendbares Rezept dokumentiert: [v6-reduction-recipe.md](../v6-reduction-recipe.md).
+
+Erste Isolation auf der neuen Basis (opus-4-7 × claim-office-example-mapping × n=3): die als Täter
+verdächtigten Why-Rewrites einzeln anwenden — originale MUST/Procedure-Formulierungen ersetzt durch die
+Why-Block-Variante. Falls dort verification_pct ≈ 1.0 → Why-Rewrites bestätigt; falls Bruch →
+Project-Standards-Cut oder Bundle-Interaction. Re-Test noch nicht ausgelöst.

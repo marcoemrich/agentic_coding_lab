@@ -182,6 +182,19 @@ die Bundle-Reduktion nichts?"). Folge-RQ braucht es, wenn man die
 einzelne Komponente isolieren will. Default-Empfehlung: lieber drei
 Faktor-isolierte n=5-RQs als eine Bundle-n=15-RQ.
 
+**Nachtrag (RQ-regression)**: Der v6.5-lean-Bundle hat genau diesen
+Fehler mit Folgekosten gezeigt — der Bundle brach die Korrektheit auf
+`claim-office` (1.00 → 0.38, Hauptverdächtiger: die mit-gebündelten
+Why-Rewrites), aber die gesamte v6.5er-Folgekette wurde nur auf
+game-of-life (ohne externe Verification-Suite) gemessen und lief damit
+~5 Iterationen auf einem defekten Workflow. Die Kette wird auf der
+reparierten Basis **`v6.1-hybrid-testlist-scope-fix`** neu aufgesetzt;
+die alten Schritte sind als wiederanwendbares Rezept konserviert:
+[v6-reduction-recipe.md](v6-reduction-recipe.md). Lehre verschärft:
+**jede Workflow-Iteration braucht eine Korrektheits-Stichprobe auf einer
+Kata mit externer Verification-Suite** (claim-office-example-mapping × n=3),
+auch wenn die RQ primär Code-Qualität misst.
+
 ### Reduktion ohne Marker-Check
 
 Häufiger Fehler: ein "leaner" Workflow streicht versehentlich den
