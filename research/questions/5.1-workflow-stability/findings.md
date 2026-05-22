@@ -7,7 +7,7 @@ welchen Bedingungen ist n=3 als Replikat-Anzahl ausreichend?**
 Datenbasis: 60 Runs (6 Zellen × n=10), Stand 2026-05-15. Modell
 `opus-4-7-no-thinking`, Kata `game-of-life` (Library-Form) mit explizitem
 API-Vertrag. Stabilitaets-Analyse via Subsampling
-(`research/workflow-dev/1.2-workflow-stability/subsample-analysis.py`).
+(`research/questions/5.1-workflow-stability/subsample-analysis.py`).
 
 ---
 
