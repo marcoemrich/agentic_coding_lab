@@ -13,13 +13,15 @@ RUNS_DIR="$EXPERIMENTS_DIR/runs"
 BATCH_PLANS_DIR="$EXPERIMENTS_DIR/batch-plans"
 
 # Hard timeout for a single Claude Code call (seconds). Override via env.
-# Default 5400s (90 min). This is the methodological budget — runs that
+# Default 7200s (2h). This is the methodological budget — runs that
 # hit it are not data errors but legitimate "did not complete within
 # practical budget" findings (see top-level README.md → "Timeouts as a
 # research finding"). Do NOT lower this without coordinating across the
 # RQ data set: shorter budgets re-classify previously OK runs as
 # timeouts and break cross-batch comparability.
-CLAUDE_TIMEOUT_SECONDS="${CLAUDE_TIMEOUT_SECONDS:-5400}"
+# Raised from 5400s (90 min) on 2026-05-21: v4.1/v4.2/v6 workflows
+# are slower on novel katas and need more headroom.
+CLAUDE_TIMEOUT_SECONDS="${CLAUDE_TIMEOUT_SECONDS:-7200}"
 
 # Rate-limit / API-overload / subscription-quota behaviour. Tunable via env.
 #   BATCH_RATELIMIT_RETRIES   per-run retries on rate-limit/overload/quota
@@ -55,6 +57,8 @@ MODEL_CONFIGS=(
     # ANTHROPIC_CUSTOM_HEADERS (see .env.example). The -portkey suffix
     # labels runs that were routed via Portkey, so they remain
     # distinguishable from any future direct-API opus-4-6 runs.
+    "opus-4-7-portkey|@vertex-eu-global/anthropic.claude-opus-4-7|true"
+    "opus-4-7-portkey-no-thinking|@vertex-eu-global/anthropic.claude-opus-4-7|false"
     "opus-4-6-portkey|@vertex-ai/anthropic.claude-opus-4-6|true"
     "opus-4-6-portkey-no-thinking|@vertex-ai/anthropic.claude-opus-4-6|false"
     "sonnet-4-6-portkey|@vertex-ai/anthropic.claude-sonnet-4-6|true"

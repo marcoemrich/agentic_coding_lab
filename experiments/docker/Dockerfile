@@ -17,12 +17,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN npm install -g pnpm@9.15.9
 
 # Install Claude Code CLI
-# Pinned to 2.1.107 (mid-April 2026): older versions like 2.1.37 hang
-# indefinitely on `--print` runs whose cwd contains a `.claude/agents/`
-# directory (v4-exact-subagents workflow). Newer versions (2.1.126) regressed
-# and require a `~/.claude.json` config file we do not provision in the
-# container. 2.1.107 was verified end-to-end with the v4 workflow on Haiku.
-RUN npm install -g @anthropic-ai/claude-code@2.1.107
+# 2.1.107: verified end-to-end, but sends thinking.type.enabled which
+#   Vertex-AI Opus 4.7 rejects (needs thinking.type.adaptive).
+# 2.1.146: upgrade candidate to fix Opus 4.7 Vertex thinking support.
+# Known bad: 2.1.37 (hangs on .claude/agents/), 2.1.126 (needs ~/.claude.json).
+RUN npm install -g @anthropic-ai/claude-code@2.1.146
 
 # Stryker (mutation testing): NOT installed globally. Stryker's TS-config
 # preprocessor resolves `typescript` from where stryker itself is loaded,

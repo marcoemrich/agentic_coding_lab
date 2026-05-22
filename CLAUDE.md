@@ -47,6 +47,7 @@ research/
 
 ### Editing workflows
 
+- **Keine numerischen Schwellwerte in Workflow-/Agent-Prompts** (z.B. `cognitive_max < 15`, `LoC < 50`, `complexity ≤ 10`). Katas, Szenarien und Umgebungen sind zu volatil — ein Schwellwert, der für game-of-life sinnvoll ist, ist für claim-office unsinnig. Stattdessen qualitative Sprache ("reduce cognitive complexity", "extract when a function does multiple things"). Gilt auch für neue Refactor-/Review-Agenten.
 - **Read `experiments/workflows/MARKERS.md` first** (hard parser requirements — four markers drive all TDD metrics; altering one silently zeros the corresponding metric, no error). **For content design** (Theory-of-Mind / Why-Block pattern, reduction learnings from RQ-9/10/11/13, Skill-vs-Subagent architecture gradient): `research/workflow-design/workflow-construction.md`.
 - Smoke-test after every workflow change:
   ```bash
@@ -111,6 +112,7 @@ Full model table: README section "Model Configurations" and `MODEL_CONFIGS` in `
 - v1/v2 workflows: only `prose` prompt style. v3/v4/v5: all three styles allowed.
 - Kata assignment: `claim-office` → correctness (`verification_pct`), `game-of-life`/`mars-rover` → code quality.
 - Never mix control values into a controlled RQ — opens it as uncontrolled factor. Open a new RQ instead.
+- **Exception: `controls.model: {any: [...]}`** for routing variants of the same underlying model (e.g. Portkey + Direct API of `opus-4-7-no-thinking`). OR-match — all listed values count toward the same cell, first entry is the canonical for new fill-runs. Use only when routing is assumed not to affect the outcome; document as caveat in the RQ README. **Do not** use `any:` for different models — that would silently smear the model factor.
 
 ## Worktree convention
 

@@ -12,7 +12,7 @@ The framework runs controlled experiments across four dimensions:
 
 - **Workflow variants** — from simple one-shot generation ("vibe coding") to structured TDD with specialized agents per phase
 - **Model configurations** — Opus 4.7, Sonnet 4.6, Haiku 4.5, with and without extended thinking
-- **Coding katas** — standardized tasks (currently game-of-life and mars-rover; see [Katas](#katas))
+- **Coding katas** — standardized tasks, known (game-of-life, mars-rover) and novel (claim-office, claim-office-lite); see [Katas](#katas)
 - **Prompt styles** — prose, example-mapping, user-story
 
 Each experiment produces measurable metrics: token usage, code complexity, code smells, test coverage, TDD cycle discipline, and more.
@@ -115,6 +115,20 @@ status: active | partial | closed
 
 **Selector resolution**: The selector query forms the effective kata ID as `<kata_base>-<prompt>`. `prompt` comes from `controls.prompt`, the `workflow_x_prompt` pairing, or `factors.prompt`.
 
+**OR-match on `controls.model`**: A control normally pins one exact value. `controls.model` is the one exception that accepts an explicit OR-match:
+
+```yaml
+controls:
+  model:
+    any:                            # OR-match across providers/routings
+      - opus-4-7-portkey-no-thinking
+      - opus-4-7-no-thinking
+```
+
+All listed values count toward the same cell during aggregation, and the first entry is the canonical value used for new fill-runs (`batch-plan-from-rq.py`) and cell labelling in `summary.md`. The real per-run model stays in `runs.csv` under the `model` column for debugging; the cell-grouping value is the new `cell_model` column.
+
+Intended use: combine routing variants of the same underlying model (e.g. Portkey-routed and Direct-API runs of `opus-4-7-no-thinking`) when routing is assumed not to affect the outcome under study. **Not** for combining different *models* — use `factors.model` instead, otherwise you collapse a real factor into a hidden uncontrolled variable.
+
 ### Outcome conventions
 
 `outcomes` in the frontmatter are CSV column names from `runs.csv` (see `CSV_COLUMNS` in `experiments/aggregate-by-query.py`). `aggregate-by-query.py` picks the pivot type automatically:
@@ -156,6 +170,23 @@ From the re-evaluation of an earlier 235-run study, three constraints are stable
 **Consequence for RQs**: All current RQs use `kata_base: game-of-life` as the default. mars-rover stays available for cross-kata validation once enough replicates exist. Generalizability claims about arbitrary katas are 🚫 not testable with the current design.
 
 **New novel kata**: `claim-office` was added as a fresh, non-classic kata with enough complexity to differentiate workflows and models. It is not in training data and ships with an external acceptance suite (see [CLI katas](#cli-katas-with-external-acceptance-suite)), so correctness is measured from the outside via `verification_pct`. Once enough replicates land, it becomes the second carrier of the code-quality signal alongside game-of-life.
+
+**Reduced variant `claim-office-lite`**: a derived kata with the same `quote` rules but `claim` stripped of cap-tracking and multi-claim chains (10 scenarios instead of 15, all 6 ambiguities preserved). Discriminability test 2026-05-21 (7 workflows × 2 replicates × example-mapping × opus-4-7-portkey-no-thinking) showed it differentiates workflows on **code-quality metrics** (`cognitive_max` 3–21, `mccabe_max` 4–15) and **wallclock** (3 min to 88 min) — usable as a faster code-quality kata alongside game-of-life. Not usable for correctness research: with example-mapping `verification_pct` saturates at 9–10/10 for all workflows; with prose it collapses to 2–4/10 without workflow separation. For correctness use the full `claim-office`.
+
+#### Goodhart's Law: metrics named in workflow prompts stop being independent outcomes
+
+> *"When a measure becomes a target, it ceases to be a good measure."* — Goodhart's Law
+
+The moment a workflow or agent prompt explicitly names a metric (e.g. "reduce cognitive complexity", "keep functions short"), runs of that workflow no longer produce **independent observations** of that metric — they produce **compliance signals**. A finding like "v6.6 improves `cognitive_max` over v6.5" then partly measures how diligently the agent follows its own instructions, not how good the resulting code is.
+
+This is not an absolute disqualifier — naming `code_mass` ideas (APP) in refactor prompts is already standard practice in the v5/v6 line, and `code_mass` is still measured. But the contamination must be tracked explicitly:
+
+- **Metrics named in the prompt** of a workflow under test are **compliance metrics** for that workflow. Cross-workflow comparisons on those metrics are valid only if *both* workflows name them (or *neither* does).
+- **Hidden metrics** — never named in any prompt — stay independent. `mutation_score` is the strongest example: it measures test-suite quality from the outside and is hard to game without also producing better tests.
+- **No numeric thresholds in workflow/agent prompts** (e.g. `cognitive_max < 15`, `LoC < 50`). Katas and scenarios are too volatile for any single threshold to be meaningful — qualitative language only ("reduce", "extract when …"). Mirrored in `CLAUDE.md` under "Editing workflows".
+- When introducing a new metric into an agent's vocabulary, **open a new workflow variant** (e.g. v6.6) rather than mutating an existing one, so prior findings on that metric remain interpretable.
+
+When in doubt, list the named metrics in the workflow's `README.md` / header so future RQs know which outcomes are compliance signals for it.
 
 ### Timeouts as a research finding
 
@@ -350,7 +381,17 @@ The ID exactly matches the `model` field in `metrics.json` and the suffix in the
 
 Katas live under `experiments/katas/<basename>-<prompt-style>/prompt.md`. The directory name typically ends with one of `-prose`, `-user-story`, or `-example-mapping` (the prompt style); the part before is the **basename**.
 
-Currently maintained kata families: **game-of-life** and **mars-rover** (each with all three prompt styles), plus the CLI kata family **claim-office**. Older classic katas (string-calculator, pixel-art-scaler, diamond) were dropped because training-data contamination collapses the code-quality signal — see [Methodology constraints](#methodology-constraints).
+Currently maintained kata families, grouped by training-data exposure:
+
+**Known katas** (classic exercises that the model has likely seen during training, but complex enough to still produce code-quality signal):
+- **game-of-life** — primary code-quality kata, all three prompt styles
+- **mars-rover** — secondary code-quality kata, all three prompt styles (mostly prose runs so far)
+
+**Novel katas** (custom-built for this lab, not in training data; ship with external acceptance suite, see [CLI katas](#cli-katas-with-external-acceptance-suite)):
+- **claim-office** — full version with `quote` + `claim` (incl. cap-tracking and multi-claim chains), 15 verification scenarios. Primary correctness kata via `verification_pct`.
+- **claim-office-lite** — reduced derivative: `quote` rules unchanged, `claim` without cap/multi-claim, 10 scenarios. All 6 ambiguities preserved. Use for **code-quality** research (~3× faster than full claim-office); **not** for correctness (saturates on example-mapping, collapses on prose). See [Methodology constraints](#code-quality-signal-limited-to-game-of-life-and-mars-rover) for details.
+
+Older classic katas (string-calculator, pixel-art-scaler, diamond) were dropped because training-data contamination collapses the code-quality signal — see [Methodology constraints](#code-quality-signal-limited-to-game-of-life-and-mars-rover).
 
 For deeper guidance on building good katas (ambiguity construction, ruling strategies, test-suite distribution, anti-patterns), see `research/kata-design/kata-construction.md`.
 
