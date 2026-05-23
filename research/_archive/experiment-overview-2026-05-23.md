@@ -151,12 +151,65 @@ Pipeline gegenüber dem v2-Snapshot (2026-05-04) im Wesentlichen unverändert; e
 
 ### 3.2 Erfasste Metriken
 
-- **Korrektheit**: `tests_passing` (Korrektheit innen), `verification_pct` (Korrektheit außen).
-- **Effizienz**: `duration_seconds`, `total_tokens`, `context_utilization_pct`.
-- **Code-Mass & Umfang**: `code_mass` (Code-Mass APP), `cc_loc` (Produktiv-LoC), `test_lines` (Test-LoC), `tests_total`.
-- **Code-Qualität (ESLint+SonarJS)**: `cc_loc`, `cc_functions`, `cc_longest_function` (Spitzen-Komplexität), `cc_avg_loc_per_function`, `smell_total` (Smell-Summe), `smell_complexity`, `smell_magic_numbers`, `smell_duplication`, `smell_code_quality`, `coverage_statements_pct`, `coverage_branches_pct`, `mccabe_max/avg/high_count`, `cognitive_max/avg/high_count`.
-- **Test-Stärke**: `mutation_score` (Stryker, opt-in per RQ).
-- **TDD-Disziplin**: `cycle_count`, `refactorings_applied`, `predictions_correct/total`, `tests_passed_immediately`, `avg_red_seconds`, `avg_green_seconds`, `avg_refactor_seconds`.
+Verbindliche Termini (Spalte "Term") sind im Top-`README.md` definiert — alternative Synonyme sind verboten, weil sie kollidieren oder mehrdeutig sind. Volle Metrik-Tabelle inklusive externer Referenzen (Stryker, SonarJS, McCabe-Paper etc.) im README Abschnitt "Metrics".
+
+**Korrektheit**
+
+| Metrik | Term | Was misst es | Richtung |
+|---|---|---|---|
+| `tests_passing` | Korrektheit (innen) | Boolean: laufen die vom Agenten geschriebenen Vitest-Tests am Ende des Runs grün? | `true` = besser |
+| `verification_pct` | Korrektheit (außen) | Anteil bestandener Verifikations-Szenarien aus einer externen Acceptance-Suite, die der Agent nie zu sehen bekommt (0.0–1.0). Nur für CLI-Katas mit `<basename>-verification/`-Verzeichnis. | höher = besser |
+
+**Effizienz**
+
+| Metrik | Term | Was misst es | Richtung |
+|---|---|---|---|
+| `duration_seconds` | — | Wallclock-Sekunden des `claude --print`-Runs inkl. aller Subagent-Spawns | kleiner = besser |
+| `total_tokens` | — | Summe aller Tokens (Input + Output + Cache) über alle Subagent-Spawns hinweg | kleiner = besser |
+| `context_utilization_pct` | — | Finale Context-Window-Auslastung im Main-Context, in Prozent | informativ |
+
+**Code-Mass & Umfang**
+
+| Metrik | Term | Was misst es | Richtung |
+|---|---|---|---|
+| `code_mass` | Code-Mass (APP) | Gewichtete Summe der Produktiv-Code-Konstrukte (Konstanten, Invocations, Conditionals, Loops, Assignments — gestaffelte Gewichte nach Komplexität) gemäß *Absolute Priority Premise* (Micah Martin). Vergleicht Implementationen objektiver als reine LoC. | kleiner = besser |
+| `cc_loc` | Produktiv-LoC | Produktiv-LoC ohne Tests, aus dem Clean-Code-Reporter | kleiner = besser (bei gleicher Korrektheit) |
+| `test_lines` | Test-LoC | Anzahl Zeilen Test-Code (Vitest) | informativ |
+| `tests_total` | — | Anzahl vom Agenten geschriebener Tests | informativ |
+
+**Code-Qualität (ESLint + SonarJS)**
+
+| Metrik | Term | Was misst es | Richtung |
+|---|---|---|---|
+| `cc_longest_function` | Spitzen-Komplexität | Längste Funktion in Zeilen — Proxy für die schlechteste Stelle im Code | kleiner = besser |
+| `cc_avg_loc_per_function` | — | Mittlere Funktionsgröße in Zeilen | kleiner = besser |
+| `cc_median_loc_per_function` | — | Median-Funktionsgröße (robust gegen einzelne lange Outlier) | kleiner = besser |
+| `cc_functions` | — | Anzahl Funktionen | informativ |
+| `mccabe_max` / `mccabe_avg` / `mccabe_high_count` | — | McCabe Cyclomatic Complexity pro Funktion: Maximum, Mittel, Anzahl über Schwellwert. Klassische Verzweigungs-Metrik. | kleiner = besser |
+| `cognitive_max` / `cognitive_avg` / `cognitive_high_count` | — | SonarSource Cognitive Complexity pro Funktion: gewichtet Nesting und Control-Flow-Breaks stärker als McCabe, näher an menschlich wahrgenommener Komplexität. Diagnostisch tragende Hauptmetrik dieser Studie. | kleiner = besser |
+| `smell_total` | Smell-Summe | Aggregierte Anzahl ESLint+SonarJS-Verstöße über alle Regeln | kleiner = besser |
+| `smell_complexity` | — | Subset von `smell_total`: cognitive-complexity, max-depth, max-lines-per-function, max-params, no-nested-switch | kleiner = besser |
+| `smell_magic_numbers` | — | Subset: ESLint `no-magic-numbers`-Verstöße | kleiner = besser |
+| `smell_duplication` | — | Subset: SonarJS `no-duplicate-string` und verwandte Duplikations-Regeln | kleiner = besser |
+| `smell_code_quality` | — | Subset: SonarJS `no-collapsible-if`, `no-redundant-jump` etc., plus ESLint `no-unreachable` | kleiner = besser |
+| `coverage_statements_pct` | — | Statement-Coverage der vom Agenten geschriebenen Tests (in %) | höher = besser |
+| `coverage_branches_pct` | — | Branch-Coverage der vom Agenten geschriebenen Tests (in %) | höher = besser |
+
+**Test-Stärke**
+
+| Metrik | Term | Was misst es | Richtung |
+|---|---|---|---|
+| `mutation_score` | Mutation-Score | Anteil der Stryker-Mutanten, die von der Test-Suite des Agenten gekillt werden (0.0–1.0): `(Killed + Timeout) / (Killed + Survived + Timeout + NoCoverage)`. Hidden Metric — kommt in keinem Workflow-Prompt vor, daher Goodhart-resistent. Opt-in per RQ, nur für `tests_passing = true`. | höher = besser |
+
+**TDD-Disziplin** (aus `transcript.jsonl` + `transcript-subagents/`; getrieben von vier Markern in `experiments/workflows/MARKERS.md` — fehlt ein Marker, fällt die zugehörige Metrik still auf null)
+
+| Metrik | Term | Was misst es | Richtung |
+|---|---|---|---|
+| `cycle_count` | — | Anzahl Red-Green-Refactor-Zyklen pro Run | informativ (höher = feiner zerlegt) |
+| `refactorings_applied` | — | Anzahl explizit angewandter Refactoring-Schritte | höher = besser (bei TDD-Workflows) |
+| `predictions_correct` / `predictions_total` | — | Red-Phase-Vorhersagen über Compile-/Runtime-Failure: korrekt vs. gesamt. Tiefe des Code-Verständnisses des Agenten. Pro Cycle 1–2 Predictions je nach Workflow. | Quote höher = besser |
+| `tests_passed_immediately` | — | Anzahl Tests, die in der Red-Phase bereits grün waren — Indikator für Over-Implementation in vorherigen Green-Phasen | kleiner = besser |
+| `avg_red_seconds` / `avg_green_seconds` / `avg_refactor_seconds` | — | Mittlere Phasendauer pro Cycle | informativ |
 
 ### 3.3 Bewertungsgrundsätze
 
