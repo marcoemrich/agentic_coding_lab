@@ -1,0 +1,6 @@
+All 9 tests pass. The experiment-done.txt marker is in place with "DONE" as the single content.
+
+The Game of Life implementation is complete:
+- **9 tests** covering all 4 rules, block still life, blinker oscillator, and negative coordinates
+- **Algorithm**: Set-based live cells + Map-based neighbor counts using the 4 unified rules (live cells in result iff `neighbors == 3 || (isAlive && neighbors == 2)`)
+- **Sparse representation**: only stores living cells, supports infinite grid in all directions

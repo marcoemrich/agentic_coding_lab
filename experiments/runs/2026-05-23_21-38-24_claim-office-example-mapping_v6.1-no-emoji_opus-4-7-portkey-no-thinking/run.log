@@ -1,0 +1,25 @@
+Test List Created:
+**Feature**: MHPCO Claim Office
+**Test File**: src/claim-office.spec.ts
+**Tests**: 39
+
+**Test Cases** (ordered simple → complex):
+1. empty item list yields premium 5 G
+2-5. plain main items (sword/amulet/staff/potion) for newcomer
+6-9. components and block-of-3 rule (2/3/4/7 runes)
+10-11. "alike" clarification (runes + moonstone)
+12-16. item-level modifiers (cursed, high-enchantment, thresholds)
+17-20. policy-wide modifiers (loyalty, follow-up, first-insurance)
+21. modifier scope on multi-item (cursed sword + plain amulet → 210 G)
+22-23. rounding (premium up, payout down)
+24-26. claim basics (sword 500 → 400; rune 200 → 100; remaining cap)
+27-30. claim special clauses (dragon/enchantment/both)
+31. deductible per damage event (sword+amulet → 600)
+32-34. multiple items of same type (insurance sum, two deductibles, rejection)
+35-38. cap exhaustion (various)
+39-40. integration examples (newcomer cursed sword 165; 3-yr 2nd quote 160)
+41-43. CLI error handling (unknown item, unknown claim item, negative amount)
+
+**Next Step**: Invoke `/red` to activate the first test.
+
+Test List Phase Complete. Proceeding to Red phase with the first test.
