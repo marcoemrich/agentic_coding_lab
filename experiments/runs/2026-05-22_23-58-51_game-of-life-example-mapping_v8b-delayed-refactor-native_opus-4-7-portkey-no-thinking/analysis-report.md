@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-22_23-58-51_game-of-life-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking
 
-Generated: 2026-05-23T00:00:11+00:00
+Generated: 2026-05-23T11:57:08+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-23T00:00:11+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-22_23-58-51_game-of-life-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-22_23-58-51_game-of-life-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-22_23-58-51_game-of-life-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-22_23-58-51_game-of-life-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking
 
- ✓ src/game-of-life.spec.ts  (17 tests) 4ms
+ ✓ src/game-of-life.spec.ts  (17 tests) 7ms
 
  Test Files  1 passed (1)
       Tests  17 passed (17)
-   Start at  00:00:12
-   Duration  188ms (transform 32ms, setup 0ms, collect 30ms, tests 4ms, environment 0ms, prepare 58ms)
+   Start at  11:57:08
+   Duration  379ms (transform 28ms, setup 0ms, collect 27ms, tests 7ms, environment 0ms, prepare 82ms)
 ```
 
 ## Coverage

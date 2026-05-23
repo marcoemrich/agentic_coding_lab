@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-14_23-43-02_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking
 
-Generated: 2026-05-14T23:44:20+00:00
+Generated: 2026-05-23T11:47:19+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-14T23:44:20+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-14_23-43-02_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-14_23-43-02_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-14_23-43-02_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-14_23-43-02_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking
 
  ✓ src/game-of-life.spec.ts  (11 tests) 4ms
 
  Test Files  1 passed (1)
       Tests  11 passed (11)
-   Start at  23:44:21
-   Duration  171ms (transform 31ms, setup 0ms, collect 31ms, tests 4ms, environment 0ms, prepare 44ms)
+   Start at  11:47:20
+   Duration  363ms (transform 25ms, setup 0ms, collect 20ms, tests 4ms, environment 0ms, prepare 117ms)
 ```
 
 ## Coverage

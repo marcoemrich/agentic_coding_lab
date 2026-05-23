@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-22_19-48-07_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking
 
-Generated: 2026-05-22T19:57:45+00:00
+Generated: 2026-05-23T11:56:10+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-22T19:57:45+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-22_19-48-07_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-22_19-48-07_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-22_19-48-07_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-22_19-48-07_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking
 
- ✓ src/claim-office.spec.ts  (43 tests) 8ms
+ ✓ src/claim-office.spec.ts  (43 tests) 10ms
 
  Test Files  1 passed (1)
       Tests  43 passed (43)
-   Start at  19:57:46
-   Duration  193ms (transform 50ms, setup 0ms, collect 49ms, tests 8ms, environment 0ms, prepare 48ms)
+   Start at  11:56:11
+   Duration  426ms (transform 45ms, setup 0ms, collect 47ms, tests 10ms, environment 0ms, prepare 71ms)
 ```
 
 ## Coverage

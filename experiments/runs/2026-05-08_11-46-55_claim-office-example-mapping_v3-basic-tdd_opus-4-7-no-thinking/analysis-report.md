@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-08_11-46-55_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking
 
-Generated: 2026-05-10T14:54:20+02:00
+Generated: 2026-05-23T11:44:43+02:00
 
 ## Configuration
 
@@ -42,8 +42,8 @@ Generated: 2026-05-10T14:54:20+02:00
 
  Test Files  3 passed (3)
       Tests  39 passed (39)
-   Start at  14:54:21
-   Duration  359ms (transform 66ms, setup 0ms, collect 86ms, tests 10ms, environment 0ms, prepare 240ms)
+   Start at  11:44:44
+   Duration  374ms (transform 74ms, setup 0ms, collect 100ms, tests 10ms, environment 0ms, prepare 347ms)
 ```
 
 ## Coverage

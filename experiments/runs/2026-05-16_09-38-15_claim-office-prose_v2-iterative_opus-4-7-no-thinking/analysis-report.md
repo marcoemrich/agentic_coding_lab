@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-16_09-38-15_claim-office-prose_v2-iterative_opus-4-7-no-thinking
 
-Generated: 2026-05-16T09:42:17+00:00
+Generated: 2026-05-23T11:51:19+02:00
 
 ## Configuration
 
@@ -30,20 +30,20 @@ Generated: 2026-05-16T09:42:17+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-16_09-38-15_claim-office-prose_v2-iterative_opus-4-7-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-16_09-38-15_claim-office-prose_v2-iterative_opus-4-7-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-16_09-38-15_claim-office-prose_v2-iterative_opus-4-7-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-16_09-38-15_claim-office-prose_v2-iterative_opus-4-7-no-thinking
 
  ✓ src/quote.spec.ts  (14 tests) 3ms
- ✓ src/claim.spec.ts  (7 tests) 3ms
- ✓ src/scenario.spec.ts  (3 tests) 3ms
+ ✓ src/claim.spec.ts  (7 tests) 4ms
+ ✓ src/scenario.spec.ts  (3 tests) 4ms
 
  Test Files  3 passed (3)
       Tests  24 passed (24)
-   Start at  09:42:18
-   Duration  448ms (transform 42ms, setup 0ms, collect 59ms, tests 9ms, environment 0ms, prepare 140ms)
+   Start at  11:51:20
+   Duration  376ms (transform 61ms, setup 0ms, collect 81ms, tests 11ms, environment 0ms, prepare 358ms)
 ```
 
 ## Coverage

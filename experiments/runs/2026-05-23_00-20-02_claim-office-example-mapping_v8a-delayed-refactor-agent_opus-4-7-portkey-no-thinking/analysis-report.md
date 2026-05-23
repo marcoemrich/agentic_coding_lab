@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-23_00-20-02_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking
 
-Generated: 2026-05-23T00:24:30+00:00
+Generated: 2026-05-23T11:57:49+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-23T00:24:30+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-23_00-20-02_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-23_00-20-02_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-23_00-20-02_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-23_00-20-02_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking
 
- ✓ src/claim-office.spec.ts  (41 tests) 2173ms
+ ✓ src/claim-office.spec.ts  (41 tests) 2067ms
 
  Test Files  1 passed (1)
       Tests  41 passed (41)
-   Start at  00:24:30
-   Duration  2.34s (transform 41ms, setup 0ms, collect 43ms, tests 2.17s, environment 0ms, prepare 43ms)
+   Start at  11:57:50
+   Duration  2.48s (transform 42ms, setup 0ms, collect 42ms, tests 2.07s, environment 0ms, prepare 62ms)
 ```
 
 ## Coverage

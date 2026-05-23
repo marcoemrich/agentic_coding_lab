@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-22_19-39-13_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking
 
-Generated: 2026-05-22T19:44:07+00:00
+Generated: 2026-05-23T11:55:02+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-22T19:44:07+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-22_19-39-13_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-22_19-39-13_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-22_19-39-13_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-22_19-39-13_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking
 
  ✓ src/game-of-life.spec.ts  (9 tests) 3ms
 
  Test Files  1 passed (1)
       Tests  9 passed (9)
-   Start at  19:44:07
-   Duration  153ms (transform 24ms, setup 0ms, collect 22ms, tests 3ms, environment 0ms, prepare 43ms)
+   Start at  11:55:03
+   Duration  303ms (transform 47ms, setup 0ms, collect 20ms, tests 3ms, environment 0ms, prepare 146ms)
 ```
 
 ## Coverage

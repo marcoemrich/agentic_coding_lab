@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-16_09-56-09_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking
 
-Generated: 2026-05-16T10:00:47+00:00
+Generated: 2026-05-23T11:52:07+02:00
 
 ## Configuration
 
@@ -30,20 +30,20 @@ Generated: 2026-05-16T10:00:47+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-16_09-56-09_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-16_09-56-09_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-16_09-56-09_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-16_09-56-09_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking
 
- ✓ src/claim.spec.ts  (19 tests) 4ms
  ✓ src/premium.spec.ts  (19 tests) 4ms
- ✓ src/scenario.spec.ts  (3 tests) 3ms
+ ✓ src/claim.spec.ts  (19 tests) 4ms
+ ✓ src/scenario.spec.ts  (3 tests) 4ms
 
  Test Files  3 passed (3)
       Tests  41 passed (41)
-   Start at  10:00:47
-   Duration  462ms (transform 52ms, setup 0ms, collect 65ms, tests 11ms, environment 0ms, prepare 135ms)
+   Start at  11:52:07
+   Duration  412ms (transform 78ms, setup 0ms, collect 109ms, tests 12ms, environment 1ms, prepare 333ms)
 ```
 
 ## Coverage

@@ -13,8 +13,8 @@ factors:
     # Non-TDD-Kontrollgruppe: vibe-coding + tests + einmaliges End-Refactoring
     - {workflow: v8a-delayed-refactor-agent,  prompt: example-mapping}
     - {workflow: v8b-delayed-refactor-native, prompt: example-mapping}
+  kata_base: [game-of-life, claim-office]
 controls:
-  kata_base: game-of-life
   model:
     any:                            # OR-match: neue Runs via Portkey (Prio 1), bestehende Direct-Runs wiederverwenden
       - opus-4-7-portkey-no-thinking
@@ -45,13 +45,13 @@ outcomes:
   # Kontext
   - duration_seconds
   - total_tokens
-min_replicates: 3
+min_replicates: 5
 status: aktiv
 ---
 
 # RQ-tdd-quality: Workflow-Effekt auf Code-Qualitaet
 
-Wie veraendern sich Code-Qualitaet, Korrektheit und TDD-Disziplin entlang der Workflow-Spanne von "vibe-coding ohne TDD" (v1) ueber iteratives Vorgehen (v2), minimales TDD (v3) bis hin zu strikt phasen-isoliertem TDD mit Subagents (v4.1) bzw. strikt phasen-strukturiertem TDD im Single-Context (v5.1)?
+Wie veraendern sich Code-Qualitaet, Korrektheit und TDD-Disziplin entlang der Workflow-Spanne von "vibe-coding ohne TDD" (v1) ueber iteratives Vorgehen (v2), minimales TDD (v3) bis hin zu strikt phasen-isoliertem TDD mit Subagents (v4.1) bzw. strikt phasen-strukturiertem TDD im Single-Context (v5.1) — und wie veraendert sich dieses Muster zwischen einer trainingsbekannten Kata (game-of-life) und einer novel Kata mit Mehrdeutigkeiten (claim-office)?
 
 ## Motivation
 
@@ -63,6 +63,7 @@ Insbesondere offen:
 2. **Macht die Striktheit einen Unterschied?** (v3 minimal vs v4.1/v5.1 strikt)
 3. **Phasen-Isolierung vs Shared-Context?** (v4.1 vs v5.1)
 4. **Reicht ein einziges End-Refactoring nach Vibe-Coding aus?** (v8a/v8b als Non-TDD-Kontrollgruppe vs v3/v4.1/v5.1/v6.1)
+5. **Halten die Workflow-Effekte ueber Kata-Komplexitaet hinweg?** (game-of-life vs claim-office) — game-of-life ist trainingsbekannt und das Modell startet mit einer guten memorierten Loesung; claim-office ist novel mit Mehrdeutigkeiten und zwingt zur tatsaechlichen Konstruktion einer Loesung. Workflow-Effekte koennen kata-abhaengig sein (vgl. RQ-context Kata-Inversion).
 
 ## Non-TDD-Kontrollgruppe (v8a, v8b)
 
@@ -78,7 +79,7 @@ Die TDD-Disziplin-Metriken (`tdd_cycles`, `refactorings`, `prediction_accuracy`,
 | Variable | Wert | Begruendung |
 |---|---|---|
 | Modell | `opus-4-7-no-thinking` (Portkey ODER Direct, OR-match) | Aktuellste Opus-Version. Neue Fill-Runs gehen ueber Portkey (Prio 1), bestehende Direct-Runs werden wiederverwendet; beide Routen zaehlen als eine Zelle (siehe Caveat b). RQ-model-quality zeigt: Opus-Modelle differenzieren sich in Code-Qualitaet nur marginal, Thinking-Effekt ist modell-individuell; ein einziger Modell-Pin isoliert den Workflow-Effekt cleanly. Workflow x Modell-Interaktion bleibt eine spaetere RQ. |
-| Kata | `game-of-life` (Library-Form, kein CLI) | Code-Qualitaet wird ohne CLI-Overhead-Anteil gemessen. Externe Korrektheit ueber `game-of-life-verification/` ist seit RQ-model-quality-Folgeschritt auch ohne CLI verfuegbar (Modul-Import-Adapter). |
+| Kata | `game-of-life` (Library-Form, kein CLI) **und** `claim-office` (CLI) | game-of-life liefert Code-Qualitaet ohne CLI-Overhead; claim-office ist novel mit Mehrdeutigkeiten und prueft, ob Workflow-Effekte ueber Kata-Komplexitaet hinweg halten (vgl. RQ-context Kata-Inversion). |
 | Prompt-Pairing | v1/v2 → prose, v3/v4.1/v5.1 → example-mapping | Methodologie-Constraint: Examples in v1/v2 koennten den Agenten zu Test-First-Verhalten anstacheln und damit den Non-TDD-Vergleich kontaminieren. RQ-prompt-known-kata hat zudem gezeigt, dass auf trainingsbekannten Katas der Prompt-Stil keinen konsistenten Qualitaetseffekt hat — die Asymmetrie sollte das Ergebnis nicht verzerren. |
 
 ## Design
@@ -87,13 +88,19 @@ Die TDD-Disziplin-Metriken (`tdd_cycles`, `refactorings`, `prediction_accuracy`,
 Faktor:    workflow_x_prompt  — 8 Stufen (TDD-Achse: v1+prose, v2+prose,
                                           v3+EM, v4.1+EM, v5.1+EM, v6.1+EM
                                           Non-TDD-Kontrolle: v8a+EM, v8b+EM)
+Faktor:    kata_base          — 2 Stufen (game-of-life, claim-office)
 Kontrolle: model              — opus-4-7-no-thinking (Portkey ODER Direct, OR-match, siehe Caveat b)
-Kontrolle: kata_base          — game-of-life
 
-Zellen:    8
-Replikate: n = 3
-Runs:      24 total
+Zellen:    16  (8 workflow_x_prompt × 2 kata_base)
+Replikate: n = 5
+Runs:      80 total
 ```
+
+> **Aggregation getrennt pro Kata**: Es wird **nie ueber Katas gemittelt** —
+> game-of-life (~40 LoC Loesung) und claim-office (~280 LoC Loesung) sind
+> nicht vergleichbar; ein Cross-Kata-Mittel wuerde das Signal verschmieren.
+> `aggregate-by-query.py` liefert pro-Kata-Pivots; die Übersicht im
+> `findings.md` enthaelt zwei Tabellen, eine pro Kata.
 
 ## Hypothesen
 
@@ -112,7 +119,7 @@ Runs:      24 total
 
 - **(a) Single workflow point je Cell**: Jeder Workflow nur einmal — keine "Workflow x sub-Variante"-Differenzierung (z.B. v4.1 mit/ohne explizite Skill-Definitionen).
 - **(b) Single model, Routing gemischt**: Nur `opus-4-7-no-thinking`, aber `controls.model` ist eine ODER-Liste `[opus-4-7-portkey-no-thinking, opus-4-7-no-thinking]`. Neue Fill-Runs gehen ueber Portkey (Prio 1), bestehende Direct-Runs werden weiterverwendet; beide Routen zaehlen als eine Zelle. Annahme: Routing hat keinen Effekt auf Code-Qualitaet (selbes Modellgewicht, selbe Sampling-Parameter); auf `duration_seconds`/`completed_within_budget` ggf. schon (Portkey-Retry/Timeout-Charakteristik). Falls Pivots starke routing-bedingte Streuung zeigen, nach `model` statt `cell_model` gruppieren. Workflow-Effekte koennten zudem bei schwaecheren Modellen anders aussehen (vgl. RQ-model-quality Sonnet-Repraesentations-Problem).
-- **(c) Single kata**: Nur Game of Life (Library-Form). mars-rover bleibt offen.
+- **(c) Zwei Katas**: game-of-life (Library-Form, trainingsbekannt) und claim-office (CLI, novel mit Mehrdeutigkeiten). mars-rover bleibt offen.
 - **(d) Prompt-Asymmetrie**: v1/v2 nutzen `prose`, v3/v4.1/v5.1/v6.1/v8a/v8b nutzen `example-mapping`. Methodologie-Constraint; ein hypothetischer Prompt-Effekt auf game-of-life ist nach RQ-prompt-known-kata nicht zu erwarten, kann aber nicht ganz ausgeschlossen werden.
 - **(f) v8 auf example-mapping ist kein reines Vibe-Coding**: Die Beispiel-Liste im Prompt ist faktisch eine implizite Test-Spec. v8a/v8b koennen diese in Phase 1 mitlesen und in Phase 2 in Tests konvertieren. Das verfaelscht die "Vibe-Coding vs TDD"-Achse leicht zugunsten von v8, ist aber fuer die **Refactor-Zeitpunkt-Achse** (H5) akzeptabel: alle Arme bekommen identische Spec-Strukturierung; einzige Variable ist *wann* refactored wird (periodisch nach jedem Cycle vs einmal am Ende). v1+prose / v2+prose bleiben das *prompt-rein* Non-TDD-Referenzniveau.
 - **(e) Aussen-Korrektheit via Tupel-Adapter**: `verification_pct` setzt `[number, number][]`-Repraesentation voraus (siehe RQ-model-quality F-model-quality.5). Bei opus-4-7-no-thinking war die Tupel-Wahl in RQ-model-quality in 3/4 Runs gegeben, 1/4 nutzte Objekte. Ggf. landen einzelne Zellen unter 100 % aus diesem Grund — siehe H4.
@@ -125,5 +132,5 @@ Siehe [findings.md](findings.md).
 
 Alle Runs in `experiments/runs/` mit
 `workflow ∈ {v1-oneshot, v2-iterative, v3-basic-tdd, v4.1-testlist-scope-fix, v5.1-testlist-scope-fix, v6.1-hybrid-testlist-scope-fix, v8a-delayed-refactor-agent, v8b-delayed-refactor-native}`,
-`kata ∈ {game-of-life-prose, game-of-life-example-mapping}` (jeweils nach Workflow-Constraint),
+`kata ∈ {game-of-life-prose, game-of-life-example-mapping, claim-office-prose, claim-office-example-mapping}` (jeweils nach Workflow-Constraint: v1/v2 → prose, v3+ → example-mapping),
 `model ∈ {opus-4-7-portkey-no-thinking, opus-4-7-no-thinking}` (ODER-Match, siehe Caveat b).

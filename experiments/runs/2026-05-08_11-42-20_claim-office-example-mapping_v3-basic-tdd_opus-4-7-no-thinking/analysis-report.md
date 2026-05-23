@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-08_11-42-20_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking
 
-Generated: 2026-05-10T14:54:10+02:00
+Generated: 2026-05-23T11:44:32+02:00
 
 ## Configuration
 
@@ -36,14 +36,14 @@ Generated: 2026-05-10T14:54:10+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-08_11-42-20_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking
 
+ ✓ src/scenario.spec.ts  (6 tests) 3ms
  ✓ src/premium.spec.ts  (17 tests) 3ms
- ✓ src/scenario.spec.ts  (6 tests) 6ms
- ✓ src/claim.spec.ts  (15 tests) 6ms
+ ✓ src/claim.spec.ts  (15 tests) 4ms
 
  Test Files  3 passed (3)
       Tests  38 passed (38)
-   Start at  14:54:10
-   Duration  360ms (transform 74ms, setup 0ms, collect 101ms, tests 15ms, environment 1ms, prepare 263ms)
+   Start at  11:44:33
+   Duration  381ms (transform 82ms, setup 0ms, collect 104ms, tests 10ms, environment 0ms, prepare 294ms)
 ```
 
 ## Coverage

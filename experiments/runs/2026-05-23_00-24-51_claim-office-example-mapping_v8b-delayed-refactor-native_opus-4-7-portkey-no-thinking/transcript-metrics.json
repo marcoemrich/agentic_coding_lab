@@ -1,0 +1,99 @@
+{
+  "wall_clock_seconds": 307.12,
+  "total_tokens": {
+    "input": 69,
+    "output": 58021,
+    "cache_read": 3813547,
+    "cache_creation": 128390,
+    "total": 4000027
+  },
+  "context_utilization_pct": 9,
+  "context_window_tokens": 1000000,
+  "context_peak_tokens": 89941,
+  "message_count": 59,
+  "tool_calls": {
+    "Read": 5,
+    "Bash": 11,
+    "Write": 7,
+    "TaskCreate": 4,
+    "TaskUpdate": 7,
+    "Edit": 6
+  },
+  "skill_invocations": {},
+  "task_invocations": {},
+  "cycle_count": 2,
+  "predictions_correct": 0,
+  "predictions_total": 0,
+  "model_versions": [
+    "claude-opus-4-7"
+  ],
+  "subagent_token_total": 0,
+  "phases": [
+    {
+      "phase": "green",
+      "tokens": 415360,
+      "duration_seconds": 45.41
+    },
+    {
+      "phase": "red",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "green",
+      "tokens": 130852,
+      "duration_seconds": 4.63
+    },
+    {
+      "phase": "refactor",
+      "tokens": 478024,
+      "duration_seconds": 43.54
+    },
+    {
+      "phase": "refactor",
+      "tokens": 173354,
+      "duration_seconds": 6.63
+    },
+    {
+      "phase": "red",
+      "tokens": 88982,
+      "duration_seconds": 1.69
+    }
+  ],
+  "phase_source": "inline-tool",
+  "phase_summary": {
+    "by_phase": {
+      "green": {
+        "count": 2,
+        "tokens": 546212,
+        "duration_seconds": 50.04
+      },
+      "red": {
+        "count": 2,
+        "tokens": 88982,
+        "duration_seconds": 1.69
+      },
+      "refactor": {
+        "count": 2,
+        "tokens": 651378,
+        "duration_seconds": 50.17
+      }
+    },
+    "averages": {
+      "green": {
+        "avg_tokens": 273106.0,
+        "avg_duration_seconds": 25.02
+      },
+      "red": {
+        "avg_tokens": 44491.0,
+        "avg_duration_seconds": 0.84
+      },
+      "refactor": {
+        "avg_tokens": 325689.0,
+        "avg_duration_seconds": 25.09
+      }
+    },
+    "refactorings_applied": 2,
+    "tests_passed_immediately": 1
+  }
+}

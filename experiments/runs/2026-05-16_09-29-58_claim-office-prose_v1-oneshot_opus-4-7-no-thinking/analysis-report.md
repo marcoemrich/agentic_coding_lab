@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-16_09-29-58_claim-office-prose_v1-oneshot_opus-4-7-no-thinking
 
-Generated: 2026-05-16T09:34:01+00:00
+Generated: 2026-05-23T11:50:57+02:00
 
 ## Configuration
 
@@ -30,20 +30,20 @@ Generated: 2026-05-16T09:34:01+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-16_09-29-58_claim-office-prose_v1-oneshot_opus-4-7-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-16_09-29-58_claim-office-prose_v1-oneshot_opus-4-7-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-16_09-29-58_claim-office-prose_v1-oneshot_opus-4-7-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-16_09-29-58_claim-office-prose_v1-oneshot_opus-4-7-no-thinking
 
- ✓ src/pricing.spec.ts  (12 tests) 3ms
- ✓ src/claims.spec.ts  (6 tests) 2ms
- ✓ src/engine.spec.ts  (4 tests) 4ms
+ ✓ src/claims.spec.ts  (6 tests) 3ms
+ ✓ src/pricing.spec.ts  (12 tests) 2ms
+ ✓ src/engine.spec.ts  (4 tests) 3ms
 
  Test Files  3 passed (3)
       Tests  22 passed (22)
-   Start at  09:34:02
-   Duration  419ms (transform 42ms, setup 0ms, collect 53ms, tests 9ms, environment 0ms, prepare 131ms)
+   Start at  11:50:58
+   Duration  416ms (transform 79ms, setup 1ms, collect 102ms, tests 8ms, environment 0ms, prepare 276ms)
 ```
 
 ## Coverage

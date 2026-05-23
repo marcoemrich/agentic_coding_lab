@@ -1,0 +1,6 @@
+All three phases complete:
+- **Phase 1**: Implemented `src/claim-office.ts` (quote + claim logic) and `src/cli.ts` (stdin/stdout JSON).
+- **Phase 2**: Wrote 43 tests in `src/claim-office.spec.ts` covering every spec rule, example, edge case, and clarifying question; all green.
+- **Phase 3**: Refactored: introduced a unified price catalog with shared `priceOf`, extracted `policyBasePremium` / `itemSurcharge`, pulled rule constants into a `RULES` block, split claim processing into `validateDamages` / `matchDamagesToItems` / `damageReimbursement`, replaced the sparse `policies` array with a `Map`, and simplified the dead dragon-material branch in reimbursement.
+
+Done marker written.

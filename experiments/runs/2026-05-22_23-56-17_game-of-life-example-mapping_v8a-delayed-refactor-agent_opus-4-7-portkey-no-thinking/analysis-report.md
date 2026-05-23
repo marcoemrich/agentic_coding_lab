@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-22_23-56-17_game-of-life-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking
 
-Generated: 2026-05-22T23:58:34+00:00
+Generated: 2026-05-23T11:56:57+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-22T23:58:34+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-22_23-56-17_game-of-life-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-22_23-56-17_game-of-life-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-22_23-56-17_game-of-life-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-22_23-56-17_game-of-life-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking
 
  ✓ src/game-of-life.spec.ts  (16 tests) 5ms
 
  Test Files  1 passed (1)
       Tests  16 passed (16)
-   Start at  23:58:34
-   Duration  172ms (transform 31ms, setup 0ms, collect 29ms, tests 5ms, environment 0ms, prepare 47ms)
+   Start at  11:56:58
+   Duration  368ms (transform 29ms, setup 0ms, collect 24ms, tests 5ms, environment 0ms, prepare 102ms)
 ```
 
 ## Coverage

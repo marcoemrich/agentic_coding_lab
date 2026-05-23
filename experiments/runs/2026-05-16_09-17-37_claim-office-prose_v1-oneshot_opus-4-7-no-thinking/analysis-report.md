@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-16_09-17-37_claim-office-prose_v1-oneshot_opus-4-7-no-thinking
 
-Generated: 2026-05-16T09:20:59+00:00
+Generated: 2026-05-23T11:50:24+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-16T09:20:59+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-16_09-17-37_claim-office-prose_v1-oneshot_opus-4-7-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-16_09-17-37_claim-office-prose_v1-oneshot_opus-4-7-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-16_09-17-37_claim-office-prose_v1-oneshot_opus-4-7-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-16_09-17-37_claim-office-prose_v1-oneshot_opus-4-7-no-thinking
 
- ✓ src/scenario.spec.ts  (17 tests) 5ms
+ ✓ src/scenario.spec.ts  (17 tests) 4ms
 
  Test Files  1 passed (1)
       Tests  17 passed (17)
-   Start at  09:20:59
-   Duration  172ms (transform 40ms, setup 0ms, collect 39ms, tests 5ms, environment 0ms, prepare 43ms)
+   Start at  11:50:24
+   Duration  430ms (transform 40ms, setup 0ms, collect 42ms, tests 4ms, environment 0ms, prepare 117ms)
 ```
 
 ## Coverage

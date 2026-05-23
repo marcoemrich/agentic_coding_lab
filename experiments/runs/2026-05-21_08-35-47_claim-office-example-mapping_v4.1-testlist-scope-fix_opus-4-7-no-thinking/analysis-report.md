@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-21_08-35-47_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking
 
-Generated: 2026-05-21T09:48:02+00:00
+Generated: 2026-05-23T11:53:17+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-21T09:48:02+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-21_08-35-47_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-21_08-35-47_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-21_08-35-47_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-21_08-35-47_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking
 
- ✓ src/claim-office.spec.ts  (46 tests) 3409ms
+ ✓ src/claim-office.spec.ts  (46 tests) 2547ms
 
  Test Files  1 passed (1)
       Tests  46 passed (46)
-   Start at  09:48:03
-   Duration  3.63s (transform 63ms, setup 0ms, collect 66ms, tests 3.41s, environment 0ms, prepare 51ms)
+   Start at  11:53:18
+   Duration  2.91s (transform 40ms, setup 0ms, collect 39ms, tests 2.55s, environment 0ms, prepare 73ms)
 ```
 
 ## Coverage
