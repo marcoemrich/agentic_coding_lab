@@ -176,14 +176,40 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p(f"Stand: {today}. Datenbasis: `experiments/runs/` ({total} Runs gesamt).")
     p("")
     p("**Autor:** Marco Emrich (codecentric AG) — Mit-Initiator von "
-      "[EXACT Coding](https://www.linkedin.com/in/marco-emrich).")
+      "[EXACT Coding](https://www.linkedin.com/in/marco-emrich) gemeinsam mit "
+      "Ferdinand Ade.")
     p("")
     p("**Repository:** [github.com/marcoemrich/agentic_coding_lab]"
       "(https://github.com/marcoemrich/agentic_coding_lab) — alle Skripte, "
       "Workflow-Definitionen, Run-Artefakte und das Stylesheet sind dort "
       "öffentlich versioniert.")
     p("")
-    p("**AI-Hinweis.** Dieser Snapshot wurde mit der `/build-overview`-Skill in "
+    p("## Über die Studie")
+    p("")
+    p("<!-- TODO Claude: Zwei flowing-Absätze unter dieser H2. "
+      "(Absatz 1) Das Lab ist die empirische Validierungs-Plattform für **EXACT Coding** "
+      "(EXample-guided AI-Collaborative Test-driven Coding), Manuskript "
+      "`../../../exact-coding-book/manuscript/exact-coding.md` (relativ zur Repo-Wurzel); "
+      "Workflow-Varianten als Spektrum Vibe-Coding (v1/v2) → EXACT (v4/v6) → Delayed-Refactor (v8). "
+      "(Absatz 2) Snapshot-Status: Zeitstand, Run-Anzahl, RQ-Anzahl, aktuelle Forschungs-Front "
+      "in beschreibender Form (nie Workflow-Versionsnamen wie v6.1 hier verwenden — Workflows sind "
+      "an dieser Stelle noch nicht eingeführt; stattdessen Mechanismus-Beschreibung wie "
+      "\"Hybrid-Workflow mit Skill-basiertem Red/Green im geteilten Kontext + isolierter "
+      "Refactor-Subagent\"), Hinweis auf ausgesparte workflow-dev-RQs falls Datenerhebung läuft. "
+      "Stilvorlage: research/_archive/findings-validation-2026-05-04/experiment-overview-v2.md. -->")
+    p("")
+    p("### Scope")
+    p("")
+    p("<!-- TODO Claude: Ein Absatz unter dieser H3. Bewusst enger agentic-tool-Scope: "
+      "ausschließlich **Claude-Code-CLI** als Harness (Version aus experiments/docker/Dockerfile "
+      "pinnen), headless ohne HITL, ausschließlich **Anthropic-Modelle** (Opus, Sonnet, Haiku — "
+      "mit/ohne Thinking, Direct-API und Portkey). Befunde gelten **für** diesen Stack; Transfer "
+      "auf andere Tools (Cursor, Aider, Cline, Windsurf), andere Provider (OpenAI, Google, lokale "
+      "Modelle) oder HITL-Setups ist offen und außerhalb dieses Scopes. -->")
+    p("")
+    p("### AI-Hinweis")
+    p("")
+    p("Dieser Snapshot wurde mit der `/build-overview`-Skill in "
       "**Claude Code** (Anthropic Opus 4.7) erstellt. Datengetriebene Sektionen — "
       "RQ-Übersichts-Tabelle, Coverage-Werte, Finding-Listen pro RQ, Reproduzierbarkeits- "
       "und Files-Tabelle — werden deterministisch aus "
@@ -193,20 +219,17 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
       "gedrafted und human-curated. Die Generierung ist damit vollständig "
       "nachvollziehbar.")
     p("")
-    p("<!-- TODO Claude: drei kurze Absätze. Pflicht-Inhalte je Absatz: "
-      "(P1) das Lab ist die empirische Validierungs-Plattform für **EXACT Coding** "
-      "(EXample-guided AI-Collaborative Test-driven Coding), Manuskript "
-      "`../../../exact-coding-book/manuscript/exact-coding.md` (relativ zur Repo-Wurzel); "
-      "Workflow-Varianten als Spektrum Vibe-Coding (v1/v2) → EXACT (v4/v6) → Delayed-Refactor (v8). "
-      "(P2) **Scope.** bold-Marker. Bewusst enger agentic-tool-Scope: ausschließlich **Claude-Code-CLI** "
-      "als Harness (Version aus experiments/docker/Dockerfile pinnen), headless ohne HITL, ausschließlich "
-      "**Anthropic-Modelle** (Opus, Sonnet, Haiku — mit/ohne Thinking, Direct-API und Portkey). "
-      "Befunde gelten **für** diesen Stack; Transfer auf andere Tools (Cursor, Aider, Cline, Windsurf), "
-      "andere Provider (OpenAI, Google, lokale Modelle) oder HITL-Setups ist offen. "
-      "(P3) Snapshot-Status: Zeitstand, Run-Anzahl, RQ-Anzahl, aktuelle Forschungs-Front "
-      "(z.B. v6.1 als Default-Kandidat, Workflow×Modell-Interaktion), Hinweis auf ausgesparte "
-      "workflow-dev-RQs falls Datenerhebung noch läuft. "
-      "Stilvorlage: research/_archive/findings-validation-2026-05-04/experiment-overview-v2.md. -->")
+    p("## Hauptbefunde")
+    p("")
+    p("<!-- TODO Claude: 3–5 nummerierte Befunde, die quer über die RQs den größten "
+      "Praxis-Wert haben. Pflicht-Form pro Befund: **Titel als bold-Satz.** danach "
+      "1–3 Sätze mit konkreten Zahlen (verification_pct, cognitive_max, Tokens) + "
+      "praktische Konsequenz. Verweise per §4/§5 statt URL. WICHTIG: Workflow-Versions"
+      "namen (v6.1-hybrid etc.) sind an dieser frühen Stelle noch nicht eingeführt — "
+      "stattdessen den Mechanismus beschreiben (z.B. \"Hybrid-Workflow mit Skill-"
+      "basiertem Red/Green im geteilten Kontext + isolierter Refactor-Subagent\" "
+      "statt \"v6.1-hybrid\"). Die Befunde sollen Praktikern eine 1-Minuten-Antwort "
+      "auf \"was nehme ich aus dieser Studie mit?\" geben. -->")
     p("")
     p("---")
     p("")

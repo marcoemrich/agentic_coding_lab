@@ -2,17 +2,35 @@
 
 Stand: 2026-05-23. Datenbasis: `experiments/runs/` (659 Runs gesamt).
 
-**Autor:** Marco Emrich (codecentric AG) — Mit-Initiator von [EXACT Coding](https://www.linkedin.com/in/marco-emrich).
+**Autor:** Marco Emrich (codecentric AG) — Mit-Initiator von [EXACT Coding](https://www.linkedin.com/in/marco-emrich) gemeinsam mit Ferdinand Ade.
 
 **Repository:** [github.com/marcoemrich/agentic_coding_lab](https://github.com/marcoemrich/agentic_coding_lab) — alle Skripte, Workflow-Definitionen, Run-Artefakte und das Stylesheet sind dort öffentlich versioniert.
 
-**AI-Hinweis.** Dieser Snapshot wurde mit der `/build-overview`-Skill in **Claude Code** (Anthropic Opus 4.7) erstellt. Datengetriebene Sektionen — RQ-Übersichts-Tabelle, Coverage-Werte, Finding-Listen pro RQ, Reproduzierbarkeits- und Files-Tabelle — werden deterministisch aus `research/{questions,workflow-dev}/*/{README,findings}.md` via `experiments/generate-snapshot-skeleton.py` generiert. Synthese-Sektionen (Intro, Per-RQ-Paragraphen, Cross-RQ-Synthese, Limitierungen) sind vom LLM gedrafted und human-curated. Die Generierung ist damit vollständig nachvollziehbar.
+## Über die Studie
 
 Das Agentic Coding Lab ist die empirische Validierungs-Plattform für **EXACT Coding** (**EX**ample-guided **A**I-**C**ollaborative **T**est-driven Coding) — einen Software-Craft-Workflow für Agentic Development, der bewährte Praktiken (TDD, Example-Driven Development, Refactoring, Human-in-the-Loop) gezielt zusammenstellt, um den von Vibe Coding bekannten Qualitätsverlust zu vermeiden (siehe Manuskript `exact-coding-book/manuscript/exact-coding.md`). Die hier untersuchten Workflows decken den Bereich von Vibe-Coding-Baselines (v1/v2) bis zu vollständig EXACT-konformen TDD-Aufbauten mit isolierten Phasen-Subagents (v4) und Hybriden mit isoliertem Refactor-Subagent (v6/v7) ab; die v8-Varianten testen ein „End-Refactor nach Vibe-Coding"-Gegenmodell.
 
-**Scope.** Der untersuchte agentic-tool-Scope ist bewusst eng: ausschließlich der **Claude-Code-CLI** als Harness (pinned auf `@anthropic-ai/claude-code@2.1.146`, headless ohne HITL) und ausschließlich **Anthropic-Modelle** (Opus 4.6 und 4.7, Sonnet 4.6, Haiku 4.5 — jeweils mit/ohne Thinking, sowohl Direct-API als auch via Portkey-Gateway). Diese Eingrenzung eliminiert Tool- und Provider-Variabilität als Confounder; Befunde gelten **für** diesen Stack. Transfer auf andere Agentic-Coding-Tools (Cursor, Aider, Cline, Windsurf), auf andere Modell-Provider (OpenAI, Google, lokale Modelle) oder auf interaktive HITL-Setups ist offen und steht außerhalb dieses Scopes.
+Dieser Snapshot fasst den Stand zum 2026-05-23 über 9 aktive generische Forschungsfragen in `research/questions/` zusammen — insgesamt 659 Runs in `experiments/runs/`. Die zentrale Front liegt bei der Validierung eines Hybrid-Workflows (Skill-basiertes Red/Green im geteilten Kontext + isolierter Refactor-Subagent) als robuster Default-Wahl und bei der Charakterisierung der Workflow×Modell-Interaktion auf novel Katas. Aktive Workflow-Entwicklungs-RQs (`research/workflow-dev/`) sind ausgespart, solange ihre Datenerhebung läuft.
 
-Dieser Snapshot fasst den Stand zum 2026-05-23 über 9 aktive generische Forschungsfragen in `research/questions/` zusammen — insgesamt 659 Runs in `experiments/runs/`. Die zentrale Front liegt bei der Validierung von `v6.1-hybrid-testlist-scope-fix` als robuster Default-Wahl und bei der Charakterisierung der Workflow×Modell-Interaktion auf novel Katas. Aktive Workflow-Entwicklungs-RQs (`research/workflow-dev/`) sind ausgespart, solange ihre Datenerhebung läuft.
+### Scope
+
+Der untersuchte agentic-tool-Scope ist bewusst eng: ausschließlich der **Claude-Code-CLI** als Harness (pinned auf `@anthropic-ai/claude-code@2.1.146`, headless ohne HITL) und ausschließlich **Anthropic-Modelle** (Opus 4.6 und 4.7, Sonnet 4.6, Haiku 4.5 — jeweils mit/ohne Thinking, sowohl Direct-API als auch via Portkey-Gateway). Diese Eingrenzung eliminiert Tool- und Provider-Variabilität als Confounder; Befunde gelten **für** diesen Stack. Transfer auf andere Agentic-Coding-Tools (Cursor, Aider, Cline, Windsurf), auf andere Modell-Provider (OpenAI, Google, lokale Modelle) oder auf interaktive HITL-Setups ist offen und steht außerhalb dieses Scopes.
+
+### AI-Hinweis
+
+Dieser Snapshot wurde mit der `/build-overview`-Skill in **Claude Code** (Anthropic Opus 4.7) erstellt. Datengetriebene Sektionen — RQ-Übersichts-Tabelle, Coverage-Werte, Finding-Listen pro RQ, Reproduzierbarkeits- und Files-Tabelle — werden deterministisch aus `research/{questions,workflow-dev}/*/{README,findings}.md` via `experiments/generate-snapshot-skeleton.py` generiert. Synthese-Sektionen (Intro, Per-RQ-Paragraphen, Cross-RQ-Synthese, Limitierungen) sind vom LLM gedrafted und human-curated. Die Generierung ist damit vollständig nachvollziehbar.
+
+## Hauptbefunde
+
+Vier zentrale Befunde aus den neun Forschungsfragen — Details und Belege in §4, Cross-RQ-Synthese in §5:
+
+1. **EXACT-Coding wirkt — periodisches TDD-Refactor schlägt Vibe-Coding messbar.** Auf der novel Kata (claim-office) fällt die externe Korrektheit (`verification_pct`) von 1.00 bei TDD-Workflows mit Test-Schreib-Phase auf 0.28 bei reinem Vibe-Coding (v1/v2 ohne Tests). Auf der trainingsbekannten Kata (game-of-life) liefern strikte Workflows mit Refactor-Phase um Faktor ~3 niedrigere Komplexitäts-Spitzen (`cognitive_max`) als alle Non-/Minimal-TDD-Varianten. Praktische Konsequenz: Wenn der Code nicht reiner Wegwerf-Status ist, lohnt sich der Mehraufwand einer TDD-Workflow-Struktur.
+
+2. **Ein Hybrid-Workflow mit Skill-basiertem Red/Green im geteilten Kontext und isoliertem Refactor-Subagent ist der robuste Default für Opus 4.7.** Diese Architektur ist die einzige, die über beide Code-Qualitäts-Katas (game-of-life, claim-office) in den Top-2 landet, und die einzige mit 0 % Outlier-Rate auf `cognitive_max` (alle 10 Runs ∈ [1, 7]). Der Preis: höchster Token-Verbrauch (Faktor ~17 gegenüber einem End-Refactor nach Vibe-Coding). Für langlebigen Produktiv-Code amortisiert sich der Aufpreis über die Lebensdauer des Codes; für Throwaway-Code bleiben günstigere Varianten attraktiver.
+
+3. **Example-Mapping ist auf novel Katas der dominante Korrektheits-Hebel — User-Story ≈ Prose.** Auf claim-office hebt Example-Mapping `verification_pct` um +48–64 Prozentpunkte gegenüber Prose-Spezifikationen (bei Opus 4.6 und Sonnet 4.6, beide no-thinking), weil konkrete Input/Output-Beispiele die Domänen-Mehrdeutigkeiten auflösen. User-Story-Formulierungen wirken praktisch identisch zu Prose (Δ ≤ 6 pp). Auf trainingsbekannten Katas (game-of-life) ist der Effekt null — dort gibt es keine Mehrdeutigkeit, die Beispiele auflösen müssten. Praktische Konsequenz: Beim Schreiben einer Spec für eine novel Domäne sind konkrete Input/Output-Paare die mit Abstand wertvollste Investition — exakt der zweite Schritt im EXACT-Coding-Workflow.
+
+4. **Refactor-Position trägt mehr als Refactor-Mechanik.** Derselbe spezialisierte Refactor-Subagent (APP-Heuristik + Naming-Eval + Mandatory-Attempt-Klausel) erreicht im periodischen TDD-Zyklus auf claim-office `cognitive_max` 5.0, als End-Refactor nach Vibe-Coding dagegen nur 7.6 — Faktor 1.5 schlechter trotz identischem Prompt. Plausibler Mechanismus: periodisches Refactoring zerlegt Funktionen früh, ein End-Refactor glättet sie nur oberflächlich. Praktische Konsequenz: Wer den Refactor-Subagent als „Aufräumer nach Vibe-Coding" einsetzt, lässt einen großen Teil seines Werts liegen — der Wert kommt aus der Wiederholung pro Cycle, nicht aus der Mechanik.
 
 ---
 
