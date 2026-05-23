@@ -16,6 +16,17 @@ Snapshot = frozen, table-heavy report at a point in time.
 
 Both exist in parallel. The snapshot is **not written from memory** — it is filled in from an auto-generated skeleton.
 
+## Prerequisites
+
+System tools required (all on `$PATH`):
+
+- `python3` — runs `experiments/generate-snapshot-skeleton.py`
+- `pandoc` — Markdown → HTML for the PDF step (any version ≥ 2.9 works)
+- `google-chrome` (or `chromium` — adjust the binary name in step 6) — headless `--print-to-pdf`
+- `pdfinfo` (Poppler utils) — optional, used for the PDF verification check in step 6
+
+If any of these are missing, stop at step 6 and report which tool is unavailable so the user can install it.
+
 ## Lifecycle (6 steps)
 
 ### Step 1 — generate the skeleton
@@ -31,17 +42,22 @@ The script writes to `/tmp/snapshot-skeleton-YYYY-MM-DD.md`. It auto-fills:
 - Data-base count (from `experiments/runs/`)
 - **Author line** (Marco Emrich, with EXACT-Coding co-credit "gemeinsam mit Ferdinand Ade")
 - **Repository link** (github.com/marcoemrich/agentic_coding_lab)
-- **AI-Hinweis** as a `### AI-Hinweis` sub-heading inside `## Über die Studie`
-- **`## Über die Studie`** H2 with `### Scope` and `### AI-Hinweis` sub-headings
-- **`## Hauptbefunde`** H2 with a TODO marker (filled in step 4)
-- Research-question overview table with per-RQ coverage
-- Experiment-design tables (workflow, model, kata, workflow→prompt mapping)
-- **Workflow-Mechanik im Detail** block (static, one bullet per workflow generation)
-- Methodology block (static, with a freshness-check marker)
-- Per RQ: raw finding list (current state, no status tags)
-- Reproducibility + files table
+- **`## Über die Studie`** H2 — only the heading; the two flowing paragraphs underneath are TODO-markers (filled in step 3)
+- **`### Scope`** H3 sub-heading — TODO-marker (filled in step 3)
+- **`### AI-Hinweis`** H3 sub-heading — full text is static
+- **`## Hauptbefunde`** H2 — TODO-marker (filled interactively in step 4)
+- §1 Research-question overview table with per-RQ coverage (data-driven, regenerated from frontmatter)
+- §2.1 Experiment-design tables: Workflow, Modell × Thinking, Kata × Prompt-Stil — all static
+- §2.1 **Workflow-Mechanik im Detail** block — static, one bullet per workflow generation
+- §2.2 Workflow → Prompt-Mapping table — static
+- §3 Methodology block — static, with a freshness-check TODO marker
+- §3.2 **Metrik-Tabellen** (six grouped tables: Korrektheit, Effizienz, Code-Mass & Umfang, Code-Qualität, Test-Stärke, TDD-Disziplin) — all static
+- §3.3 Bewertungsgrundsätze — static
+- §4 Per RQ: heading + Datenbasis line + raw finding list + per-RQ synthesis TODO (current state, no status tags)
+- §7 Reproducibility block — static
+- §8 Files table — data-driven
 
-Wherever synthesis is missing, a `<!-- TODO Claude: ... -->` marker is left in place. The author + Repository + AI-Hinweis blocks are static and must stay verbatim — do not edit them during synthesis.
+Wherever Claude must fill in content, a `<!-- TODO Claude: ... -->` marker is left in place. **Everything else is static skeleton content — do not edit it during synthesis.** Concretely: Author / Repository / AI-Hinweis blocks, all §1 / §2 / §3 / §7 / §8 tables and prose, and the Workflow-Mechanik block must stay byte-identical to what the skeleton produced.
 
 ### Step 2 — read the skeleton + every findings.md
 
@@ -116,7 +132,15 @@ The stylesheet (`experiments/snapshot-style.css`) is checked in so every regener
 
 A harmless `Failed to load module: …libgiolibproxy.so` or `VAAPI version is too old` warning from Chromium can be ignored — they don't affect PDF output.
 
-Report at the end in 1–2 sentences the output paths (`.md` + `.pdf`) and any notable coverage gaps ("RQ-X is currently below min_replicates").
+**PDF verification.** After generation, sanity-check the output:
+
+```bash
+pdfinfo "$SNAP.pdf" | grep -E "Pages|Page size|Page rot"
+```
+
+Expected: `Pages` ≥ 5, `Page size` ≈ `595 x 842 pts (A4)`, `Page rot` = `0`. If any of these are off (e.g. zero pages, landscape page size, non-zero rotation), the PDF is broken — report it instead of pretending it worked.
+
+Report at the end in 1–2 sentences the output paths (`.md` + `.pdf`), the page count, and any notable coverage gaps ("RQ-X is currently below min_replicates").
 
 ## Style template
 
