@@ -175,9 +175,15 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p(f"Stand: {today}. Datenbasis: `experiments/runs/` ({total} Runs gesamt).")
     p("")
-    p("<!-- TODO Claude: 2–3 Sätze Einleitung — Ziel der Studie und was dieser "
-      "Snapshot abdeckt. Stilvorlage: research/_archive/findings-validation-"
-      "2026-05-04/experiment-overview-v2.md. -->")
+    p("<!-- TODO Claude: 4–6 Sätze Einleitung. Pflicht-Inhalte: "
+      "(1) das Lab ist die empirische Validierungs-Plattform für **EXACT Coding** "
+      "(EXample-guided AI-Collaborative Test-driven Coding), siehe Manuskript "
+      "`../../../exact-coding-book/manuscript/exact-coding.md` (relativ zur Repo-Wurzel); "
+      "(2) die Workflow-Varianten decken das Spektrum von Vibe-Coding-Baselines (v1/v2) über "
+      "EXACT-konforme Aufbauten (v4/v6) bis zur Delayed-Refactor-Kontrolle (v8) ab; "
+      "(3) Zeitstand, Run-Anzahl, RQ-Anzahl; "
+      "(4) aktuelle Forschungs-Front (z.B. v6.1 als Default-Kandidat, Workflow×Modell-Interaktion). "
+      "Stilvorlage: research/_archive/findings-validation-2026-05-04/experiment-overview-v2.md. -->")
     p("")
     p("---")
     p("")
@@ -210,34 +216,102 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p("### 2.1 Variablen")
     p("")
-    p("**Workflow** — fünf Klassen mit zunehmender TDD-Strenge:")
+    p("**Workflow** — sechs Generationen (Details: `research/workflow-dev/workflow-overview.md`):")
     p("")
     p("| Workflow | Aufbau | TDD-Strenge |")
     p("|---|---|---|")
-    p("| v1-oneshot              | \"Implementiere X.\" | keine |")
-    p("| v2-iterative            | \"Plane Schritt für Schritt, dann implementiere.\" | keine |")
-    p("| v3-basic-tdd            | \"Verwende TDD.\" | minimal (Self-Reporting) |")
-    p("| v4-exact-subagents      | Eigener Subagent pro Phase (Predictor + Red/Green/Refactor) | strikt, multi-context |")
-    p("| v5-exact-single-context | Alle Phasen in einer Konversation, gleiches Phasen-Skript | strikt, single-context |")
+    p("| v1-oneshot                              | \"Implementiere X.\" | keine |")
+    p("| v2-iterative                            | \"Plane Schritt für Schritt, dann implementiere.\" | keine |")
+    p("| v3-basic-tdd                            | Inline TDD, kein Skill/Subagent (Self-Reporting) | minimal |")
+    p("| v4-exact-subagents                      | Eigener Subagent pro Phase (Predictor + Red/Green/Refactor), fresh context | strikt, multi-context |")
+    p("| v4.1-testlist-scope-fix                 | v4 mit Test-List-Scope-Patch | strikt, multi-context |")
+    p("| v5-exact-single-context                 | Alle Phasen in einer Konversation, gleiches Phasen-Skript | strikt, single-context |")
+    p("| v5.1-testlist-scope-fix                 | v5 mit Test-List-Scope-Patch (an v4.1 angeglichen) | strikt, single-context |")
+    p("| v6-hybrid                               | Hybrid: inline TDD + nur Refactor als Subagent | strikt, hybrid |")
+    p("| v6.1-hybrid-testlist-scope-fix          | v6-hybrid mit Test-List-Scope-Patch (aktuelle Default-Basis) | strikt, hybrid |")
+    p("| v6.1-no-pep                             | v6.1 ohne Pep-Talks (RQ-pep-Replikation) | strikt, hybrid |")
+    p("| v7-hybrid-green-refactor                | Wie v6, aber green *und* refactor als Subagent | strikt, mehr Isolation |")
+    p("| v7.1-hybrid-green-refactor-testlist-scope-fix | v7 mit Test-List-Scope-Patch | strikt, mehr Isolation |")
+    p("| v8a-delayed-refactor-agent              | Oneshot → nachträgliche Tests → einmaliger End-Refactor-Agent (`refactor.md` aus v6.5.4) | delayed-refactor |")
+    p("| v8b-delayed-refactor-native             | Wie v8a, aber nativer Inline-Refactor im v3-Stil, kein Agent | delayed-refactor |")
     p("")
-    p("Konfiguration: `experiments/workflows/v{1..5}-*/.claude/agents/` und `.claude/rules/`.")
+    p("Konfiguration: `experiments/workflows/<variant>/.claude/agents/` und `.claude/rules/`. "
+      "Archivierte Varianten (v5.1-minimized, v6.2–v6.6, v6.5.x-Audits) liegen unter `experiments/workflows/_archive/`.")
     p("")
-    p("**Modell × Thinking** (Lab-Varianten-IDs):")
+    p("**Workflow-Mechanik im Detail.** Die sechs Generationen sind nicht nur eine Skala "
+      "\"mehr/weniger TDD\", sondern eine systematische Variation der EXACT-Coding-Bausteine "
+      "(Test-Liste, Red, Green, Refactor) und ihrer Kontext-Architektur:")
     p("")
-    p("| Lab-Varianten-ID | API-ID | Thinking |")
-    p("|---|---|---|")
-    p("| `opus-4-7`               | `claude-opus-4-7`            | Adaptive |")
-    p("| `opus-4-7-no-thinking`   | `claude-opus-4-7`            | aus |")
-    p("| `sonnet-4-6`             | `claude-sonnet-4-6`          | Extended |")
-    p("| `sonnet-4-6-no-thinking` | `claude-sonnet-4-6`          | aus |")
-    p("| `haiku-4-5`              | `claude-haiku-4-5-20251001`  | Extended |")
+    p("- **v1-oneshot / v2-iterative — Vibe-Coding-Baselines (kein TDD).** Ein einzelner Agent liest "
+      "die Anforderungen und schreibt Code in einem Schritt (v1) oder mit explizitem Plan/Checkliste (v2); "
+      "Tests werden erst nachträglich auf Basis des Example Mappings hinzugefügt. Dient als Messlatte "
+      "für den Wert von TDD selbst (siehe `experiments/workflows/v1-oneshot/.claude/rules/experiment-mode.md`).")
+    p("- **v3-basic-tdd — Minimal-TDD ohne Struktur.** Ein einziger Agent mit minimaler Anweisung "
+      "\"use TDD\" — keine Phasen-Prompts, keine Subagents. Claude entscheidet selbst, wie es den "
+      "TDD-Prozess strukturiert. Misst, wie weit eine reine Aufforderung trägt "
+      "(`v3-basic-tdd/.claude/rules/experiment-mode.md`).")
+    p("- **v4-exact-subagents / v4.1-testlist-scope-fix — Strict TDD, multi-context.** Jede TDD-Phase "
+      "läuft als spezialisierter Subagent in **isoliertem Kontext** (`Task(subagent_type: \"red\")` etc.): "
+      "`test-list` → `red` → `green` → `refactor`. Hypothese: isolierte Kontexte erzwingen Disziplin, "
+      "können aber Zustand zwischen Phasen verlieren. v4.1 ergänzt im `test-list`-Subagent die Pflicht "
+      "\"Cover every spec example\" — schließt den dominanten Failure-Mode auf novel Katas "
+      "(unvollständige Test-Liste) auf Opus 4.7.")
+    p("- **v5-exact-single-context / v5.1-testlist-scope-fix — Strict TDD, single-context.** Identisches "
+      "Phasen-Skript wie v4, aber alle Phasen laufen im **gleichen Kontext** als Skill-Calls "
+      "(`Skill(skill: \"red\")` etc.) statt als Subagents. Hypothese: shared context erhält den Zustand, "
+      "kann aber zu Disziplin-Verlust führen. v5.1 spiegelt v4.1 mit dem identischen Test-List-Scope-Patch.")
+    p("- **v6-hybrid / v6.1-hybrid-testlist-scope-fix — Hybrid mit isoliertem Refactor.** Red und Green "
+      "laufen inline als Skills im Shared-Context (wie v5), Refactor läuft als isolierter Subagent (wie v4). "
+      "Hypothese: kombiniert die Spec-Kohärenz des Single-Context mit der Disziplin-Schärfung der "
+      "Subagent-Isolation am kritischsten Punkt (Refactor). v6.1 ist die aktuelle Default-Basis und "
+      "Champion über mehrere RQs. `v6.1-no-pep` testet die Reduktion psychologischer Begründungen in Red/Green.")
+    p("- **v7-hybrid-green-refactor / v7.1-…-testlist-scope-fix — Hybrid mit isoliertem Green + Refactor.** "
+      "Zusätzlich zur Refactor-Isolation aus v6 läuft auch Green als isolierter Subagent. Test-Liste und Red "
+      "bleiben im Shared-Context. Prüft, ob mehr Isolation gleich besser ist (Pareto-dominiert von v6 auf "
+      "game-of-life: spart Tokens, verliert Qualität und Korrektheit).")
+    p("- **v8a-delayed-refactor-agent / v8b-delayed-refactor-native — Delayed-Refactor-Kontrolle.** "
+      "Drei sequentielle Phasen ohne TDD-Cycles: (1) Oneshot-Implementation, (2) nachträgliche Tests gegen "
+      "`prompt.md` mit Coverage-Pflicht, (3) ein einmaliger End-Refactor. v8a nutzt den `refactor.md`-Subagent "
+      "aus v6.5.4 (APP + Naming + Mandatory-Attempt), v8b einen nativen Inline-Refactor im v3-Stil ohne Agent. "
+      "Dient als Kontroll-Achse für die Hypothese \"periodisches TDD-Refactor schlägt End-Refactor nach "
+      "Vibe-Coding\".")
     p("")
-    p("**Kata × Prompt-Stil** (aktive Katas):")
+    p("Tiefere Mechanik-Diskussion und die Reduktions-Genealogie (v6.5.x-Linie, v6.5.4 als "
+      "Code-Qualitäts-Champion) stehen in `research/workflow-dev/workflow-overview.md` und "
+      "`workflow-construction.md`. Welche Marker das Parsing der TDD-Metriken treibt, dokumentiert "
+      "`experiments/workflows/MARKERS.md`.")
     p("")
-    p("| Kata | Prompt-Stile | Komplexität |")
-    p("|---|---|---|")
-    p("| game-of-life      | prose, example-mapping, user-story | groß (~40 LoC) |")
-    p("| mars-rover        | prose, (example-mapping, user-story selten erhoben) | mittel (~30 LoC) |")
+    p("**Modell × Thinking** (Lab-Varianten-IDs aus `MODEL_CONFIGS` in `experiments/docker/run-batch.sh`):")
+    p("")
+    p("| Lab-Varianten-ID | API-ID | Thinking | Routing |")
+    p("|---|---|---|---|")
+    p("| `opus-4-7`                       | `claude-opus-4-7`                              | Adaptive | Direct |")
+    p("| `opus-4-7-no-thinking`           | `claude-opus-4-7`                              | aus      | Direct |")
+    p("| `sonnet-4-6`                     | `claude-sonnet-4-6`                            | Extended | Direct |")
+    p("| `sonnet-4-6-no-thinking`         | `claude-sonnet-4-6`                            | aus      | Direct |")
+    p("| `haiku-4-5`                      | `claude-haiku-4-5-20251001`                    | Extended | Direct |")
+    p("| `haiku-4-5-no-thinking`          | `claude-haiku-4-5-20251001`                    | aus      | Direct |")
+    p("| `opus-4-7-portkey`               | `@vertex-eu-global/anthropic.claude-opus-4-7`  | Adaptive | Portkey |")
+    p("| `opus-4-7-portkey-no-thinking`   | `@vertex-eu-global/anthropic.claude-opus-4-7`  | aus      | Portkey |")
+    p("| `opus-4-6-portkey`               | `@vertex-ai/anthropic.claude-opus-4-6`         | Adaptive | Portkey |")
+    p("| `opus-4-6-portkey-no-thinking`   | `@vertex-ai/anthropic.claude-opus-4-6`         | aus      | Portkey |")
+    p("| `sonnet-4-6-portkey`             | `@vertex-ai/anthropic.claude-sonnet-4-6`       | Extended | Portkey |")
+    p("| `sonnet-4-6-portkey-no-thinking` | `@vertex-ai/anthropic.claude-sonnet-4-6`       | aus      | Portkey |")
+    p("| `haiku-4-5-portkey`              | `@vertex-ai/anthropic.claude-haiku-4-5@20251001` | Extended | Portkey |")
+    p("| `haiku-4-5-portkey-no-thinking`  | `@vertex-ai/anthropic.claude-haiku-4-5@20251001` | aus      | Portkey |")
+    p("")
+    p("Direct- und Portkey-Routings desselben Modells sind getrennte Varianten und werden nur per "
+      "expliziter `controls.model: {any: [...]}`-Klausel pro RQ als gemeinsame Zelle gewertet.")
+    p("")
+    p("**Kata × Prompt-Stil** (aktive Katas in `experiments/katas/`):")
+    p("")
+    p("| Kata-Basis | Prompt-Stile | Verifikations-Suite | Hinweis |")
+    p("|---|---|---|---|")
+    p("| game-of-life      | prose, example-mapping, user-story | nein  | Code-Qualität, groß (~40 LoC), vitest-basiert |")
+    p("| game-of-life-cli  | prose, example-mapping, user-story | ja    | CLI-Variante mit externer Akzeptanz-Suite |")
+    p("| mars-rover        | prose, example-mapping, user-story | nein  | mittel (~30 LoC), vitest-basiert |")
+    p("| claim-office      | prose, example-mapping, user-story | ja    | Korrektheit, novel Versicherungs-Domäne (HPSMV/MHPCO), 15 Szenarien |")
+    p("| claim-office-lite | prose, example-mapping, user-story | ja    | Reduzierte claim-office-Variante (10 Szenarien) für Code-Qualitäts-Research |")
     p("")
     p("Prompt-Stile:")
     p("- **prose**: Beschreibung der Regeln in Prosa, keine Test-Beispiele.")
@@ -251,7 +325,7 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("| Workflow | erlaubte Prompt-Stile | Begründung |")
     p("|---|---|---|")
     p("| v1, v2 | nur prose | Test-Beispiele in example-mapping wären für Non-TDD-Workflows ein verstecktes Test-Geschenk → unfair gegenüber den TDD-Workflows. |")
-    p("| v3, v4, v5 | alle drei | Beispiele dienen als natürliche Test-Cases — für TDD-Workflows ist das das Idealbild der Aufgabe. |")
+    p("| v3, v4(.1), v5(.1), v6(.1), v7(.1), v8a/b | alle drei | Beispiele dienen als natürliche Test-Cases — für TDD-/Refactor-Workflows ist das das Idealbild der Aufgabe. |")
     p("")
     p("---")
     p("")
