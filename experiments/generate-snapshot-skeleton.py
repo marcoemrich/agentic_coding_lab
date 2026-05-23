@@ -175,14 +175,19 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p(f"Stand: {today}. Datenbasis: `experiments/runs/` ({total} Runs gesamt).")
     p("")
-    p("<!-- TODO Claude: 4–6 Sätze Einleitung. Pflicht-Inhalte: "
-      "(1) das Lab ist die empirische Validierungs-Plattform für **EXACT Coding** "
-      "(EXample-guided AI-Collaborative Test-driven Coding), siehe Manuskript "
+    p("<!-- TODO Claude: drei kurze Absätze. Pflicht-Inhalte je Absatz: "
+      "(P1) das Lab ist die empirische Validierungs-Plattform für **EXACT Coding** "
+      "(EXample-guided AI-Collaborative Test-driven Coding), Manuskript "
       "`../../../exact-coding-book/manuscript/exact-coding.md` (relativ zur Repo-Wurzel); "
-      "(2) die Workflow-Varianten decken das Spektrum von Vibe-Coding-Baselines (v1/v2) über "
-      "EXACT-konforme Aufbauten (v4/v6) bis zur Delayed-Refactor-Kontrolle (v8) ab; "
-      "(3) Zeitstand, Run-Anzahl, RQ-Anzahl; "
-      "(4) aktuelle Forschungs-Front (z.B. v6.1 als Default-Kandidat, Workflow×Modell-Interaktion). "
+      "Workflow-Varianten als Spektrum Vibe-Coding (v1/v2) → EXACT (v4/v6) → Delayed-Refactor (v8). "
+      "(P2) **Scope.** bold-Marker. Bewusst enger agentic-tool-Scope: ausschließlich **Claude-Code-CLI** "
+      "als Harness (Version aus experiments/docker/Dockerfile pinnen), headless ohne HITL, ausschließlich "
+      "**Anthropic-Modelle** (Opus, Sonnet, Haiku — mit/ohne Thinking, Direct-API und Portkey). "
+      "Befunde gelten **für** diesen Stack; Transfer auf andere Tools (Cursor, Aider, Cline, Windsurf), "
+      "andere Provider (OpenAI, Google, lokale Modelle) oder HITL-Setups ist offen. "
+      "(P3) Snapshot-Status: Zeitstand, Run-Anzahl, RQ-Anzahl, aktuelle Forschungs-Front "
+      "(z.B. v6.1 als Default-Kandidat, Workflow×Modell-Interaktion), Hinweis auf ausgesparte "
+      "workflow-dev-RQs falls Datenerhebung noch läuft. "
       "Stilvorlage: research/_archive/findings-validation-2026-05-04/experiment-overview-v2.md. -->")
     p("")
     p("---")
