@@ -12,7 +12,12 @@
  */
 
 @page {
-  size: A4;
+  /* `portrait` is explicit even though it is the A4 default — VS Code's
+   * built-in PDF preview (vscode-pdf, PDF.js-based) was observed to render
+   * the content rotated 90° when only `size: A4` was set; pinning the
+   * orientation defensively keeps that viewer happy without affecting
+   * compliant viewers. */
+  size: A4 portrait;
   margin: 2cm 1.8cm;
   @bottom-right { content: counter(page) " / " counter(pages); font-size: 9pt; color: #666; }
 }
