@@ -1,0 +1,171 @@
+{
+  "wall_clock_seconds": 473.41,
+  "total_tokens": {
+    "input": 186,
+    "output": 33666,
+    "cache_read": 5790020,
+    "cache_creation": 110673,
+    "total": 5934545
+  },
+  "context_utilization_pct": 9,
+  "context_window_tokens": 1000000,
+  "context_peak_tokens": 91238,
+  "message_count": 87,
+  "tool_calls": {
+    "Read": 1,
+    "Bash": 19,
+    "Skill": 11,
+    "Write": 4,
+    "Edit": 10,
+    "Agent": 3
+  },
+  "skill_invocations": {
+    "test-list": 1,
+    "red": 8,
+    "green": 2
+  },
+  "task_invocations": {
+    "refactor": 3
+  },
+  "cycle_count": 8,
+  "predictions_correct": 15,
+  "predictions_total": 15,
+  "model_versions": [
+    "claude-opus-4-7"
+  ],
+  "subagent_token_total": 909916,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 196958,
+      "duration_seconds": 16.44,
+      "start_ts": "2026-05-23T15:32:36.447000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 687177,
+      "duration_seconds": 33.63,
+      "start_ts": "2026-05-23T15:32:52.886000+00:00"
+    },
+    {
+      "phase": "green",
+      "tokens": 399700,
+      "duration_seconds": 13.81,
+      "start_ts": "2026-05-23T15:33:26.515000+00:00"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 260223,
+      "duration_seconds": 43.36,
+      "transcript": "agent-ab9a4e599f72bcb30.jsonl",
+      "start_ts": "2026-05-23T15:33:40.330000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 303827,
+      "duration_seconds": 22.78,
+      "start_ts": "2026-05-23T15:34:23.691000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 649382,
+      "duration_seconds": 44.86,
+      "start_ts": "2026-05-23T15:34:46.473000+00:00"
+    },
+    {
+      "phase": "green",
+      "tokens": 564111,
+      "duration_seconds": 20.9,
+      "start_ts": "2026-05-23T15:35:31.330000+00:00"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 266942,
+      "duration_seconds": 70.64,
+      "transcript": "agent-a9c94e081ed9669db.jsonl",
+      "start_ts": "2026-05-23T15:35:52.231000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 461454,
+      "duration_seconds": 42.82,
+      "start_ts": "2026-05-23T15:37:02.874000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 482232,
+      "duration_seconds": 23.82,
+      "start_ts": "2026-05-23T15:37:45.698000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 499300,
+      "duration_seconds": 15.57,
+      "start_ts": "2026-05-23T15:38:09.521000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 517138,
+      "duration_seconds": 18.27,
+      "start_ts": "2026-05-23T15:38:25.092000+00:00"
+    },
+    {
+      "phase": "red",
+      "tokens": 898340,
+      "duration_seconds": 17.91,
+      "start_ts": "2026-05-23T15:38:43.358000+00:00"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 382751,
+      "duration_seconds": 69.2,
+      "transcript": "agent-acf4a73cfabee58d6.jsonl",
+      "start_ts": "2026-05-23T15:39:01.266000+00:00"
+    }
+  ],
+  "phase_source": "skills+subagents",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 196958,
+        "duration_seconds": 16.44
+      },
+      "red": {
+        "count": 8,
+        "tokens": 4498850,
+        "duration_seconds": 219.66
+      },
+      "green": {
+        "count": 2,
+        "tokens": 963811,
+        "duration_seconds": 34.71
+      },
+      "refactor": {
+        "count": 3,
+        "tokens": 909916,
+        "duration_seconds": 183.2
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 196958.0,
+        "avg_duration_seconds": 16.44
+      },
+      "red": {
+        "avg_tokens": 562356.25,
+        "avg_duration_seconds": 27.46
+      },
+      "green": {
+        "avg_tokens": 481905.5,
+        "avg_duration_seconds": 17.36
+      },
+      "refactor": {
+        "avg_tokens": 303305.33,
+        "avg_duration_seconds": 61.07
+      }
+    },
+    "refactorings_applied": 3,
+    "tests_passed_immediately": 6
+  }
+}
