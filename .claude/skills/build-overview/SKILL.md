@@ -81,23 +81,23 @@ Then verify with Glob or Read that:
 
 ### Step 5 — generate the PDF
 
-Convert the Markdown snapshot to a PDF sibling using the project stylesheet, then post-process via Ghostscript for viewer compatibility:
+Convert the Markdown snapshot to a PDF sibling via pandoc → Chromium headless:
 
 ```bash
 SNAP=research/_archive/experiment-overview-YYYY-MM-DD
 pandoc "$SNAP.md" -o "$SNAP.html" --standalone --self-contained \
   --metadata title="Experiment-Overview YYYY-MM-DD" \
   --css=experiments/snapshot-style.css
-weasyprint "$SNAP.html" /tmp/snapshot-raw.pdf
-gs -dQUIET -dBATCH -dNOPAUSE -sDEVICE=pdfwrite \
-  -dPDFSETTINGS=/prepress -dCompatibilityLevel=1.5 \
-  -o "$SNAP.pdf" /tmp/snapshot-raw.pdf
-rm "$SNAP.html" /tmp/snapshot-raw.pdf
+google-chrome --headless --no-sandbox --disable-gpu --no-pdf-header-footer \
+  --print-to-pdf="$SNAP.pdf" "file://$(pwd)/$SNAP.html" 2>/dev/null
+rm "$SNAP.html"
 ```
 
-The stylesheet (`experiments/snapshot-style.css`) is checked in so every regeneration uses the same A4 layout, page-break rules (tables may span pages, individual rows stay intact, header repeats), and typography. The intermediate HTML is throwaway. A harmless `overflow-x: auto` warning from weasyprint can be ignored.
+The stylesheet (`experiments/snapshot-style.css`) is checked in so every regeneration uses the same A4 layout, page-break rules (tables may span pages, individual rows stay intact, header repeats), and typography. The intermediate HTML is throwaway.
 
-**Why the Ghostscript step:** VS Code's built-in PDF preview (vscode-pdf, PDF.js-based) renders raw WeasyPrint output rotated 90° on some pages, even though `pdfinfo` confirms portrait orientation and rotation=0. Re-serializing through Ghostscript with `pdfwrite` normalizes the PDF structure and makes vscode-pdf render correctly without affecting compliant viewers (Browser, evince, okular, pdftoppm). Pure-WeasyPrint output is fine for everything except VS Code preview.
+**Why Chromium and not WeasyPrint:** earlier iterations used WeasyPrint, optionally with Ghostscript re-serialization. Both produced technically valid PDFs (`pdfinfo` confirms A4 portrait, rotation=0), but VS Code's built-in PDF preview (vscode-pdf, PDF.js-based) consistently rendered the content rotated 90° inside otherwise portrait pages. Chromium's `--print-to-pdf` writes PDFs through Skia/PDFium — the same lineage that PDF.js was forked from — so PDF.js-based viewers render them reliably. All other viewers (Browser, evince, okular, pdftoppm) handle Chromium output equally well. Chromium also packs the content denser (typically ~40% fewer pages than WeasyPrint for the same snapshot).
+
+A harmless `Failed to load module: …libgiolibproxy.so` or `VAAPI version is too old` warning from Chromium can be ignored — they don't affect PDF output.
 
 Report at the end in 1–2 sentences the output paths (`.md` + `.pdf`) and any notable coverage gaps ("RQ-X is currently below min_replicates").
 
