@@ -200,12 +200,14 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p("### Scope")
     p("")
-    p("<!-- TODO Claude: Ein Absatz unter dieser H3. Bewusst enger agentic-tool-Scope: "
-      "ausschließlich **Claude-Code-CLI** als Harness (Version aus experiments/docker/Dockerfile "
-      "pinnen), headless ohne HITL, ausschließlich **Anthropic-Modelle** (Opus, Sonnet, Haiku — "
-      "mit/ohne Thinking, Direct-API und Portkey). Befunde gelten **für** diesen Stack; Transfer "
-      "auf andere Tools (Cursor, Aider, Cline, Windsurf), andere Provider (OpenAI, Google, lokale "
-      "Modelle) oder HITL-Setups ist offen und außerhalb dieses Scopes. -->")
+    p("<!-- TODO Claude: Ein Absatz unter dieser H3. Drei-Achsen-Scope explizit nennen: "
+      "(1) Harness — ausschließlich **Claude-Code-CLI** (Version aus experiments/docker/Dockerfile "
+      "pinnen), headless ohne HITL; (2) Modelle — ausschließlich **Anthropic-Modelle** "
+      "(Opus, Sonnet, Haiku — mit/ohne Thinking, Direct-API und Portkey); (3) Zielsprache — "
+      "ausschließlich **TypeScript** mit festem pnpm/tsx/Vitest/ESLint+SonarJS-Stack pro Run. "
+      "Befunde gelten **für** diesen Stack; Transfer auf andere Tools (Cursor, Aider, Cline, "
+      "Windsurf), andere Provider (OpenAI, Google, lokale Modelle), andere Zielsprachen "
+      "(Python, Go, Java) oder HITL-Setups ist offen und außerhalb dieses Scopes. -->")
     p("")
     p("### AI-Hinweis")
     p("")

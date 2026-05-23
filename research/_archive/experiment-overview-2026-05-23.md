@@ -14,7 +14,7 @@ Dieser Snapshot fasst den Stand zum 2026-05-23 über 9 aktive generische Forschu
 
 ### Scope
 
-Der untersuchte agentic-tool-Scope ist bewusst eng: ausschließlich der **Claude-Code-CLI** als Harness (pinned auf `@anthropic-ai/claude-code@2.1.146`, headless ohne HITL) und ausschließlich **Anthropic-Modelle** (Opus 4.6 und 4.7, Sonnet 4.6, Haiku 4.5 — jeweils mit/ohne Thinking, sowohl Direct-API als auch via Portkey-Gateway). Diese Eingrenzung eliminiert Tool- und Provider-Variabilität als Confounder; Befunde gelten **für** diesen Stack. Transfer auf andere Agentic-Coding-Tools (Cursor, Aider, Cline, Windsurf), auf andere Modell-Provider (OpenAI, Google, lokale Modelle) oder auf interaktive HITL-Setups ist offen und steht außerhalb dieses Scopes.
+Der untersuchte Scope ist bewusst eng entlang dreier Achsen: (1) Harness — ausschließlich der **Claude-Code-CLI** (pinned auf `@anthropic-ai/claude-code@2.1.146`, headless ohne HITL); (2) Modelle — ausschließlich **Anthropic-Modelle** (Opus 4.6 und 4.7, Sonnet 4.6, Haiku 4.5 — jeweils mit/ohne Thinking, sowohl Direct-API als auch via Portkey-Gateway); (3) Zielsprache — ausschließlich **TypeScript** mit dem festen pnpm/tsx/Vitest/ESLint+SonarJS-Stack pro Run. Diese Eingrenzung eliminiert Tool-, Provider- und Sprach-Variabilität als Confounder; Befunde gelten **für** diesen Stack. Transfer auf andere Agentic-Coding-Tools (Cursor, Aider, Cline, Windsurf), andere Modell-Provider (OpenAI, Google, lokale Modelle), andere Zielsprachen (Python, Go, Java) oder interaktive HITL-Setups ist offen und steht außerhalb dieses Scopes.
 
 ### AI-Hinweis
 
