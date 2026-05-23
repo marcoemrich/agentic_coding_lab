@@ -16,7 +16,7 @@ Snapshot = frozen, table-heavy report at a point in time.
 
 Both exist in parallel. The snapshot is **not written from memory** — it is filled in from an auto-generated skeleton.
 
-## Lifecycle (4 steps)
+## Lifecycle (5 steps)
 
 ### Step 1 — generate the skeleton
 
@@ -78,7 +78,22 @@ Then verify with Glob or Read that:
 3. All current findings from the findings.md files are referenced somewhere in the RQ sections (number + statement)
 4. No status tags (`⚠️ bedingt`, `✅ stabil`) and no references to old studies / archive snapshots in the published snapshot
 
-Report at the end in 1–2 sentences the output path and any notable coverage gaps ("RQ-X is currently below min_replicates").
+### Step 5 — generate the PDF
+
+Convert the Markdown snapshot to a PDF sibling using the project stylesheet:
+
+```bash
+SNAP=research/_archive/experiment-overview-YYYY-MM-DD
+pandoc "$SNAP.md" -o "$SNAP.html" --standalone --self-contained \
+  --metadata title="Experiment-Overview YYYY-MM-DD" \
+  --css=experiments/snapshot-style.css
+weasyprint "$SNAP.html" "$SNAP.pdf"
+rm "$SNAP.html"
+```
+
+The stylesheet (`experiments/snapshot-style.css`) is checked in so every regeneration uses the same A4 layout, page-break rules (tables may span pages, individual rows stay intact, header repeats), and typography. The intermediate HTML is throwaway. A harmless `overflow-x: auto` warning from weasyprint can be ignored.
+
+Report at the end in 1–2 sentences the output paths (`.md` + `.pdf`) and any notable coverage gaps ("RQ-X is currently below min_replicates").
 
 ## Style template
 
