@@ -29,13 +29,14 @@ Bash:
 The script writes to `/tmp/snapshot-skeleton-YYYY-MM-DD.md`. It auto-fills:
 
 - Data-base count (from `experiments/runs/`)
+- **Author line and AI-disclosure** (Marco Emrich & Ferdinand Ade; `/build-overview` skill in Claude Code)
 - Research-question overview table with per-RQ coverage
 - Experiment-design tables (workflow, model, kata, workflow→prompt mapping)
 - Methodology block (static, with a freshness-check marker)
 - Per RQ: raw finding list (current state, no status tags)
 - Reproducibility + files table
 
-Wherever synthesis is missing, a `<!-- TODO Claude: ... -->` marker is left in place.
+Wherever synthesis is missing, a `<!-- TODO Claude: ... -->` marker is left in place. The author + AI-disclosure block is static and must stay verbatim — do not edit it during synthesis.
 
 ### Step 2 — read the skeleton + every findings.md
 

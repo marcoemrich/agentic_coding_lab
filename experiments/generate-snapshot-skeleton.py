@@ -175,6 +175,20 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p(f"Stand: {today}. Datenbasis: `experiments/runs/` ({total} Runs gesamt).")
     p("")
+    p("**Autoren:** Marco Emrich & Ferdinand Ade (codecentric AG) — "
+      "Initiatoren von [EXACT Coding](https://www.linkedin.com/in/marco-emrich).")
+    p("")
+    p("**AI-Hinweis.** Dieser Snapshot wurde mit der `/build-overview`-Skill in "
+      "**Claude Code** (Anthropic Opus 4.7) erstellt. Datengetriebene Sektionen — "
+      "RQ-Übersichts-Tabelle, Coverage-Werte, Finding-Listen pro RQ, Reproduzierbarkeits- "
+      "und Files-Tabelle — werden deterministisch aus "
+      "`research/{questions,workflow-dev}/*/{README,findings}.md` via "
+      "`experiments/generate-snapshot-skeleton.py` generiert. Synthese-Sektionen "
+      "(Intro, Per-RQ-Paragraphen, Cross-RQ-Synthese, Limitierungen) sind vom LLM "
+      "gedrafted und human-curated. Quellen-Code aller Skripte und das Stylesheet "
+      "liegen im Repo, alle Run-Daten sind unter `experiments/runs/` versioniert — "
+      "die Generierung ist damit vollständig nachvollziehbar.")
+    p("")
     p("<!-- TODO Claude: drei kurze Absätze. Pflicht-Inhalte je Absatz: "
       "(P1) das Lab ist die empirische Validierungs-Plattform für **EXACT Coding** "
       "(EXample-guided AI-Collaborative Test-driven Coding), Manuskript "
