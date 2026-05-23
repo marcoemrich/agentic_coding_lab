@@ -81,18 +81,23 @@ Then verify with Glob or Read that:
 
 ### Step 5 — generate the PDF
 
-Convert the Markdown snapshot to a PDF sibling using the project stylesheet:
+Convert the Markdown snapshot to a PDF sibling using the project stylesheet, then post-process via Ghostscript for viewer compatibility:
 
 ```bash
 SNAP=research/_archive/experiment-overview-YYYY-MM-DD
 pandoc "$SNAP.md" -o "$SNAP.html" --standalone --self-contained \
   --metadata title="Experiment-Overview YYYY-MM-DD" \
   --css=experiments/snapshot-style.css
-weasyprint "$SNAP.html" "$SNAP.pdf"
-rm "$SNAP.html"
+weasyprint "$SNAP.html" /tmp/snapshot-raw.pdf
+gs -dQUIET -dBATCH -dNOPAUSE -sDEVICE=pdfwrite \
+  -dPDFSETTINGS=/prepress -dCompatibilityLevel=1.5 \
+  -o "$SNAP.pdf" /tmp/snapshot-raw.pdf
+rm "$SNAP.html" /tmp/snapshot-raw.pdf
 ```
 
 The stylesheet (`experiments/snapshot-style.css`) is checked in so every regeneration uses the same A4 layout, page-break rules (tables may span pages, individual rows stay intact, header repeats), and typography. The intermediate HTML is throwaway. A harmless `overflow-x: auto` warning from weasyprint can be ignored.
+
+**Why the Ghostscript step:** VS Code's built-in PDF preview (vscode-pdf, PDF.js-based) renders raw WeasyPrint output rotated 90° on some pages, even though `pdfinfo` confirms portrait orientation and rotation=0. Re-serializing through Ghostscript with `pdfwrite` normalizes the PDF structure and makes vscode-pdf render correctly without affecting compliant viewers (Browser, evince, okular, pdftoppm). Pure-WeasyPrint output is fine for everything except VS Code preview.
 
 Report at the end in 1–2 sentences the output paths (`.md` + `.pdf`) and any notable coverage gaps ("RQ-X is currently below min_replicates").
 

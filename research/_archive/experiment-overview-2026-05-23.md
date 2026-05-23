@@ -2,9 +2,11 @@
 
 Stand: 2026-05-23. Datenbasis: `experiments/runs/` (659 Runs gesamt).
 
-**Autoren:** Marco Emrich & Ferdinand Ade (codecentric AG) — Initiatoren von [EXACT Coding](https://www.linkedin.com/in/marco-emrich).
+**Autor:** Marco Emrich (codecentric AG) — Mit-Initiator von [EXACT Coding](https://www.linkedin.com/in/marco-emrich).
 
-**AI-Hinweis.** Dieser Snapshot wurde mit der `/build-overview`-Skill in **Claude Code** (Anthropic Opus 4.7) erstellt. Datengetriebene Sektionen — RQ-Übersichts-Tabelle, Coverage-Werte, Finding-Listen pro RQ, Reproduzierbarkeits- und Files-Tabelle — werden deterministisch aus `research/{questions,workflow-dev}/*/{README,findings}.md` via `experiments/generate-snapshot-skeleton.py` generiert. Synthese-Sektionen (Intro, Per-RQ-Paragraphen, Cross-RQ-Synthese, Limitierungen) sind vom LLM gedrafted und human-curated. Quellen-Code aller Skripte und das Stylesheet liegen im Repo, alle Run-Daten sind unter `experiments/runs/` versioniert — die Generierung ist damit vollständig nachvollziehbar.
+**Repository:** [github.com/marcoemrich/agentic_coding_lab](https://github.com/marcoemrich/agentic_coding_lab) — alle Skripte, Workflow-Definitionen, Run-Artefakte und das Stylesheet sind dort öffentlich versioniert.
+
+**AI-Hinweis.** Dieser Snapshot wurde mit der `/build-overview`-Skill in **Claude Code** (Anthropic Opus 4.7) erstellt. Datengetriebene Sektionen — RQ-Übersichts-Tabelle, Coverage-Werte, Finding-Listen pro RQ, Reproduzierbarkeits- und Files-Tabelle — werden deterministisch aus `research/{questions,workflow-dev}/*/{README,findings}.md` via `experiments/generate-snapshot-skeleton.py` generiert. Synthese-Sektionen (Intro, Per-RQ-Paragraphen, Cross-RQ-Synthese, Limitierungen) sind vom LLM gedrafted und human-curated. Die Generierung ist damit vollständig nachvollziehbar.
 
 Das Agentic Coding Lab ist die empirische Validierungs-Plattform für **EXACT Coding** (**EX**ample-guided **A**I-**C**ollaborative **T**est-driven Coding) — einen Software-Craft-Workflow für Agentic Development, der bewährte Praktiken (TDD, Example-Driven Development, Refactoring, Human-in-the-Loop) gezielt zusammenstellt, um den von Vibe Coding bekannten Qualitätsverlust zu vermeiden (siehe Manuskript `exact-coding-book/manuscript/exact-coding.md`). Die hier untersuchten Workflows decken den Bereich von Vibe-Coding-Baselines (v1/v2) bis zu vollständig EXACT-konformen TDD-Aufbauten mit isolierten Phasen-Subagents (v4) und Hybriden mit isoliertem Refactor-Subagent (v6/v7) ab; die v8-Varianten testen ein „End-Refactor nach Vibe-Coding"-Gegenmodell.
 
