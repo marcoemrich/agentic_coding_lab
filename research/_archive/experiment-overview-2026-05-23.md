@@ -127,12 +127,12 @@ Pipeline gegenüber dem v2-Snapshot (2026-05-04) im Wesentlichen unverändert; e
 
 ### 3.2 Erfasste Metriken
 
-**Korrektheit**: `tests_passing` (Korrektheit innen), `verification_pct` (Korrektheit außen).
-**Effizienz**: `duration_seconds`, `total_tokens`, `context_utilization_pct`.
-**Code-Mass & Umfang**: `code_mass` (Code-Mass APP), `cc_loc` (Produktiv-LoC), `test_lines` (Test-LoC), `tests_total`.
-**Code-Qualität (ESLint+SonarJS)**: `cc_loc`, `cc_functions`, `cc_longest_function` (Spitzen-Komplexität), `cc_avg_loc_per_function`, `smell_total` (Smell-Summe), `smell_complexity`, `smell_magic_numbers`, `smell_duplication`, `smell_code_quality`, `coverage_statements_pct`, `coverage_branches_pct`, `mccabe_max/avg/high_count`, `cognitive_max/avg/high_count`.
-**Test-Stärke**: `mutation_score` (Stryker, opt-in per RQ).
-**TDD-Disziplin**: `cycle_count`, `refactorings_applied`, `predictions_correct/total`, `tests_passed_immediately`, `avg_red_seconds`, `avg_green_seconds`, `avg_refactor_seconds`.
+- **Korrektheit**: `tests_passing` (Korrektheit innen), `verification_pct` (Korrektheit außen).
+- **Effizienz**: `duration_seconds`, `total_tokens`, `context_utilization_pct`.
+- **Code-Mass & Umfang**: `code_mass` (Code-Mass APP), `cc_loc` (Produktiv-LoC), `test_lines` (Test-LoC), `tests_total`.
+- **Code-Qualität (ESLint+SonarJS)**: `cc_loc`, `cc_functions`, `cc_longest_function` (Spitzen-Komplexität), `cc_avg_loc_per_function`, `smell_total` (Smell-Summe), `smell_complexity`, `smell_magic_numbers`, `smell_duplication`, `smell_code_quality`, `coverage_statements_pct`, `coverage_branches_pct`, `mccabe_max/avg/high_count`, `cognitive_max/avg/high_count`.
+- **Test-Stärke**: `mutation_score` (Stryker, opt-in per RQ).
+- **TDD-Disziplin**: `cycle_count`, `refactorings_applied`, `predictions_correct/total`, `tests_passed_immediately`, `avg_red_seconds`, `avg_green_seconds`, `avg_refactor_seconds`.
 
 ### 3.3 Bewertungsgrundsätze
 
