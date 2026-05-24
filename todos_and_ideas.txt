@@ -1,34 +1,55 @@
 # TODOs and Ideas
 
-## Income
+# In-Box
+
+* H: Mars-Rover command-idea, wie integrieren
+* reiterate optmization:
+ * pep-talk,
+ * Emojis,
+ * skill-creator,
+ * Theory of Mind
+ * cuts?
+ * Alternative Refactor-Techniques: vocab-refactor - smell, McCabe,
+   Dedicated Smell-Skill, Deterministic Refactorings?,
 
 * TDD-Micro-Cycle
-
+* FP-Stuff, check for immutabilitym pure functions
+* switch everything to english
+* Language-Erweiterung: RUST
 
 ## Problem separation first
+Prio: High
 
 * iTDD & more by Ralf Westphal (see his book)
 * https://ralfw.de/test-first-codierung/
 * Anti-Pattern: Pear-Programming / Ship in a bottle
+* ATDD Loop with Acceptance Test (matching Journeys, Matching John Oesterhoods Deep Modules)
+* Integration Segregation Pattern
 
 ## Kata Specific Metrics
+Prio: Medium
 
 * Game of Life: Problem Separation
 * Mars Rover: Command-Lamdas
 
 ## weitere Workflows
 
- * Control-Workflow: oneshot+review und/oder Refactoring am ende
  * explizite Pre + Post-Steps
  * Functional Domain Modelling
 
 ## Merge with other science framework or take ideas from it
+Prio: Low
 
 * https://github.com/vercel-labs/agent-eval/
 * /plugin install plugin-eval@claude-code-workflows
 * Harbor https://www.harborframework.com
 
 ## Try other TDD workflows
+Prio: Medium
+
+https://www.skills.sh/mattpocock/skills/tdd
+https://github.com/parcadei/Continuous-Claude-v3/blob/main/.claude/skills/tdd/SKILL.md
+
 
 * Dimitry's Spec Loop
 https://gitlab.com/dpolivaev/spec-loop/-/blob/main/docs/review-responsibility-and-traceability.md?ref_type=heads
@@ -36,14 +57,14 @@ https://gitlab.com/dpolivaev/spec-loop/-/blob/main/docs/review-responsibility-an
 * Chris Agent-Team workflows
 * from skills repo:
 
-https://www.skills.sh/mattpocock/skills/tdd
-https://github.com/parcadei/Continuous-Claude-v3/blob/main/.claude/skills/tdd/SKILL.md
-
 
 ## TCR und TCRDD Workflows
 
-https://www.skill.fish/skill/tcr-practice-test-commit-revert
+https://github.com/bsene/approvalsTypescript/blob/main/.agents/skills/tcrdd/SKILL.md
 https://www.skills.sh/bsene/skills/tcrdd
+https://github.com/xpepper/tcr-skill
+
+https://www.skill.fish/skill/tcr-practice-test-commit-revert
 
 
 ## Encode well know TDD workflows aka schools in rules
@@ -117,8 +138,6 @@ https://www.skills.sh/bsene/skills/tcrdd
    nachziehen.
  * research/kata-design/* bleibt bewusst Deutsch (Workshop-Material).
 
-
-
 ## Verwendbarkeit für andere
 
 Aktuell ist das sehr auf mein Setup
@@ -128,7 +147,6 @@ mit Pfaden etc. -> muss veralgemeinert werden
 Mehr Post-Toolings (test vs. bei jedem Refactoring):
 
  * https://github.com/fallow-rs/fallow
- * Stryker
  * Agents für Refactoring nach verschiedenen Prinzipien
  *
 
@@ -193,24 +211,9 @@ Delayed-Arm (v8a-Erweiterung): `refactor.md` byte-identisch zum TDD-Arm kopieren
 # Optmization Ideas
 
  * use Hooks
- * customized context - improve and minimize (4.2)
- *
 
-Language-Erweiterung: RUST
 
-# In-Box
 
-* H: Mars-Rover command-idea, wie integrieren
-* reiterate optmization:
- * pep-talk,
- * 4 Rules of Simple Design,
- * Emojis,
- * skill-creator,
- * Theory of Mind
- * cuts?
- * Alternative Refactor-Techniques: vocab-refactor - smell, McCabe,
-   Dedicated Smell-Skill, Deterministic Refactorings?,
-* Distinguish between General Research and Workflow Optmization
 
 # DONE
 
@@ -228,3 +231,6 @@ Language-Erweiterung: RUST
 ## EXACT-Coding workflow optmization, Chris Meta Framework: https://github.com/chdalski/claude_orchestration
 Reanalyze-Skill
 * Game of Life reicht evtl. für alle Fragen ausser Example Mapping
+* Distinguish between General Research and Workflow Optmization
+* Control-Workflow: oneshot+review und/oder Refactoring am ende
+* Stryker
