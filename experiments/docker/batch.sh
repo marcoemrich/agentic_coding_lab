@@ -107,27 +107,12 @@ fi
 plan_basename="$(basename "$plan_file")"
 plan_stem="${plan_basename%.json}"
 
-# ---------------------------------------------------------------------------
-# Auto-detect Portkey routing
-# ---------------------------------------------------------------------------
-
-if [ -z "${CLAUDE_CONFIG_DIR:-}" ]; then
-    if python3 -c "
-import json, sys
-runs = json.load(open(sys.argv[1])).get('runs', [])
-sys.exit(0 if any('portkey' in r.get('model','') for r in runs) else 1)
-" "$plan_file" 2>/dev/null; then
-        portkey_config="$HOME/.claude.portkey"
-        if [ -d "$portkey_config" ]; then
-            export CLAUDE_CONFIG_DIR="$portkey_config"
-            echo "Auto-detected Portkey models → CLAUDE_CONFIG_DIR=$portkey_config"
-        else
-            echo "WARNING: Plan contains -portkey models but $portkey_config not found." >&2
-            echo "Set CLAUDE_CONFIG_DIR manually or create $portkey_config" >&2
-            exit 2
-        fi
-    fi
-fi
+# Portkey routing wird seit 2026-05-25 ausschließlich über
+# experiments/docker/.env gesteuert (env_file-Directive in
+# docker-compose.yml, Variablen ANTHROPIC_BASE_URL, ANTHROPIC_AUTH_TOKEN,
+# ANTHROPIC_CUSTOM_HEADERS). Der frühere CLAUDE_CONFIG_DIR=~/.claude.portkey
+# Auto-Detect ist entfernt; die Modell-IDs mit `-portkey`-Suffix bleiben
+# als Label-Konvention, beeinflussen aber nicht mehr die Config-Auswahl.
 
 # ---------------------------------------------------------------------------
 # Single-shard mode (sequential, backward-compat)

@@ -33,9 +33,22 @@ services:
       - pnpm-store:/home/experimenter/.local/share/pnpm/store:rw
 
     # Environment
+    # .env (docker-Verzeichnis) liefert u.a. ANTHROPIC_BASE_URL,
+    # ANTHROPIC_AUTH_TOKEN, ANTHROPIC_CUSTOM_HEADERS und die
+    # ANTHROPIC_DEFAULT_*_MODEL-Routen für Portkey-Routing.
+    env_file:
+      - .env
     environment:
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
       - NODE_ENV=production
+      # Explicit pass-through (env_file lädt sie schon, hier nur dokumentiert)
+      - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-}
+      - ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN:-}
+      - ANTHROPIC_CUSTOM_HEADERS=${ANTHROPIC_CUSTOM_HEADERS:-}
+      - ANTHROPIC_DEFAULT_SONNET_MODEL=${ANTHROPIC_DEFAULT_SONNET_MODEL:-}
+      - ANTHROPIC_DEFAULT_HAIKU_MODEL=${ANTHROPIC_DEFAULT_HAIKU_MODEL:-}
+      - ANTHROPIC_DEFAULT_OPUS_MODEL=${ANTHROPIC_DEFAULT_OPUS_MODEL:-}
+      - CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=${CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS:-}
 
     # Resource limits for safety
     deploy:
@@ -81,6 +94,8 @@ services:
       # Persistent pnpm store shared across runs (avoids re-downloading deps)
       - pnpm-store:/home/experimenter/.local/share/pnpm/store:rw
 
+    env_file:
+      - .env
     environment:
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
       - NODE_ENV=production
@@ -92,6 +107,14 @@ services:
       # routinely exceed 90 min on slower models (esp. Opus 4.6 portkey).
       # Methodological budget, see top-level README.md → "Timeouts as a research finding".
       - CLAUDE_TIMEOUT_SECONDS=${CLAUDE_TIMEOUT_SECONDS:-7200}
+      # Portkey routing pass-through (env_file lädt sie schon)
+      - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-}
+      - ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN:-}
+      - ANTHROPIC_CUSTOM_HEADERS=${ANTHROPIC_CUSTOM_HEADERS:-}
+      - ANTHROPIC_DEFAULT_SONNET_MODEL=${ANTHROPIC_DEFAULT_SONNET_MODEL:-}
+      - ANTHROPIC_DEFAULT_HAIKU_MODEL=${ANTHROPIC_DEFAULT_HAIKU_MODEL:-}
+      - ANTHROPIC_DEFAULT_OPUS_MODEL=${ANTHROPIC_DEFAULT_OPUS_MODEL:-}
+      - CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=${CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS:-}
 
     deploy:
       resources:
@@ -141,9 +164,18 @@ services:
       # Persistent pnpm store shared across runs (avoids re-downloading deps)
       - pnpm-store:/home/experimenter/.local/share/pnpm/store:rw
 
+    env_file:
+      - .env
     environment:
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
       - NODE_ENV=production
+      - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-}
+      - ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN:-}
+      - ANTHROPIC_CUSTOM_HEADERS=${ANTHROPIC_CUSTOM_HEADERS:-}
+      - ANTHROPIC_DEFAULT_SONNET_MODEL=${ANTHROPIC_DEFAULT_SONNET_MODEL:-}
+      - ANTHROPIC_DEFAULT_HAIKU_MODEL=${ANTHROPIC_DEFAULT_HAIKU_MODEL:-}
+      - ANTHROPIC_DEFAULT_OPUS_MODEL=${ANTHROPIC_DEFAULT_OPUS_MODEL:-}
+      - CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=${CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS:-}
 
     deploy:
       resources:
