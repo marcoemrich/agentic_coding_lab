@@ -20,6 +20,8 @@ parser, update this file.
 | # | Marker | Where it must appear | Drives | Where in parser |
 |---|---|---|---|---|
 | 1 | `Skill` tool-use with `skill ∈ {test-list, red, green, refactor}` | Tool calls during the run | Phase recognition, `cycle_count`, `refactorings_applied`, per-phase tokens/duration | `analyze_transcript.py` ~line 233 (`if tool_name == "Skill"`) and `aggregate_skill_phases` |
+
+> **Skill-Tool findet auch `.claude/commands/<name>.md`.** Commands sind in Skills "merged" (Claude-Code-Doku, Slash-Commands-Sektion) und nicht deprecated. Die v6.x-Linie liegt bewusst unter `commands/` — Begründung in `research/workflow-dev/workflow-construction.md` §"Mechanismus: commands/ mit Skill-Tool".
 | 2 | The literal string `Red Phase Complete` | Assistant text emitted by the red-phase command | **Gates** prediction parsing — without this string, predictions in the same block are ignored | `extract_predictions_from_text` ~line 75 |
 | 3 | One or more lines matching `(- \| ✅ \| ❌) (Correct\|Incorrect)` inside that block | Assistant text in the same block as marker 2 | `predictions_correct`, `predictions_total`, derived `predictions_correct_rate` | `_PREDICTION_OUTCOME_RE` ~line 61 |
 | 4 | `experiment-done.txt` containing `DONE` | Written to the run cwd at the end of the autonomous loop | Run-driver detects clean termination; without it the container hits its timeout and the run is flagged `exit_reason: timeout` | `tdd-experiment-mode.md` |

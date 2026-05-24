@@ -264,7 +264,7 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p("### 2.1 Variablen")
     p("")
-    p("**Workflow** — sechs Generationen (Details: `research/workflow-dev/workflow-overview.md`):")
+    p("**Workflow** — sechs Generationen (Details: `research/workflow-dev/workflow-construction.md` — Inventar):")
     p("")
     p("| Workflow | Aufbau | TDD-Strenge |")
     p("|---|---|---|")
@@ -324,10 +324,10 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
       "Dient als Kontroll-Achse für die Hypothese \"periodisches TDD-Refactor schlägt End-Refactor nach "
       "Vibe-Coding\".")
     p("")
-    p("Tiefere Mechanik-Diskussion und die Reduktions-Genealogie (v6.5.x-Linie, v6.5.4 als "
-      "Code-Qualitäts-Champion) stehen in `research/workflow-dev/workflow-overview.md` und "
-      "`workflow-construction.md`. Welche Marker das Parsing der TDD-Metriken treibt, dokumentiert "
-      "`experiments/workflows/MARKERS.md`.")
+    p("Tiefere Mechanik-Diskussion, Inventar der aktiven v6.1-Reduktionslinie und tragende RQ-Befunde "
+      "stehen in `research/workflow-dev/workflow-construction.md`. Welche Marker das Parsing der "
+      "TDD-Metriken treibt, dokumentiert `experiments/workflows/MARKERS.md`. Die archivierte "
+      "v6.5.x-Linie liegt in `experiments/workflows/_archive/` und `research/_archive/workflow-dev-v1/`.")
     p("")
     p("**Modell × Thinking** (Lab-Varianten-IDs aus `MODEL_CONFIGS` in `experiments/docker/run-batch.sh`):")
     p("")
