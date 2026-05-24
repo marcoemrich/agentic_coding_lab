@@ -12,6 +12,8 @@ experiments/runs/*/reports/
 experiments/reanalyze.log
 .claude/scheduled_tasks.lock
 .claude/settings.local.json
+# Container-Cleanup-Timestamp wird bei jedem Batch refresht.
+experiments/docker/claude-config/.last-cleanup
 # Batch plans: ignore all by default — most are ad-hoc / generated /
 # referencing archived workflows. Only the basic smoke-test plan stays
 # tracked. New permanent plans need an explicit !-line here.
