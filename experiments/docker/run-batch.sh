@@ -579,6 +579,15 @@ EOF
         retry_attempts=$attempt
     done
 
+    # Save main transcript BEFORE the optional nudge below. The nudge
+    # spawns a second `claude --print` invocation that creates a new
+    # session jsonl; if save_transcript runs after the nudge, `ls -t`
+    # picks the nudge jsonl and overwrites the main TDD-loop transcript.
+    # All cycle_count / refactorings / predictions then drop to 0 for
+    # the affected runs (typical for outlier runs that finish without
+    # cli.ts and trigger the nudge).
+    save_transcript "$run_dir"
+
     # --- cli.ts nudge ---------------------------------------------------
     # If the agent finished successfully but forgot to create src/cli.ts,
     # nudge it once with a short follow-up prompt. This fixes a recurring
@@ -668,9 +677,7 @@ EOF
         echo -e "  ${GREEN}OK (${duration}s)${NC}"
     fi
 
-    # Save Claude transcript + subagent transcripts before analysis so
-    # analyze_transcript.py (called from analyze-run.sh) has its inputs.
-    save_transcript "$run_dir"
+    # (transcript already saved above, before the optional cli.ts nudge)
 
     # Run analysis (best-effort)
     echo -e "  Analyzing results..."
