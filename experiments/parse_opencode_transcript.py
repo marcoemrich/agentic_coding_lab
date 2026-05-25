@@ -7,17 +7,24 @@ JSON to <run_dir>/transcript-opencode.json after each OC run.
 
 This script reads that file and emits transcript-metrics.json in the
 schema that analyze-run.sh's extract_transcript_metrics() expects, so the
-existing aggregation pipeline picks up token counts (and, eventually,
-TDD-discipline markers) without a fork.
+existing aggregation pipeline picks up tokens, TDD-cycle counts,
+refactoring counts, and prediction outcomes without a separate
+aggregator fork.
 
 Fields emitted:
   - total_tokens.{input, output, reasoning, cache_read, cache_write, total}
   - context_utilization_pct      (None for OC — no documented context-cap signal)
-  - cycle_count                  (0 for non-TDD OC workflows)
-  - phase_summary.averages.{red,green,refactor}.avg_duration_seconds (0)
-  - phase_summary.refactorings_applied / tests_passed_immediately      (0)
-  - predictions_correct / predictions_total                             (0)
+  - cycle_count                  (count of `red` skill invocations)
+  - phase_summary.averages.{red,green,refactor}.avg_duration_seconds
+                                  (mean part.time.completed-created per skill)
+  - phase_summary.refactorings_applied   (count of `refactor` skill invocations)
+  - phase_summary.tests_passed_immediately (0 — heuristic absent for OC)
+  - predictions_correct / predictions_total
+                                  (parsed from assistant text containing
+                                   "Red Phase Complete" markers, via shared
+                                   helper from analyze_transcript.py)
   - session_duration_seconds     (info.time.updated - info.time.created)
+  - skill_invocations            (raw per-skill counter, debug aid)
 """
 
 from __future__ import annotations
@@ -25,6 +32,98 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
+
+# Reuse the prediction extractor so OC and CC parsers agree on what counts.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+try:
+    from analyze_transcript import extract_predictions_from_text  # type: ignore
+except Exception:  # pragma: no cover — fallback, keeps OC parser self-contained
+    import re
+
+    _FALLBACK_RE = re.compile(
+        r"(?:-|✅|❌|[.:])[\s]*[*_]{0,2}(Correct|Incorrect)[*_]{0,2}\b",
+        re.IGNORECASE,
+    )
+
+    def extract_predictions_from_text(text: str) -> tuple[int, int]:
+        if not text or "Red Phase Complete" not in text:
+            return 0, 0
+        correct = total = 0
+        for m in _FALLBACK_RE.finditer(text):
+            total += 1
+            if m.group(1).lower() == "correct":
+                correct += 1
+        return correct, total
+
+
+TDD_SKILLS = ("test-list", "red", "green", "refactor")
+
+
+def _is_skill_part(part: dict) -> bool:
+    """Detect a skill-tool-call part in OC's message schema."""
+    if part.get("type") != "tool":
+        return False
+    return part.get("tool") == "skill"
+
+
+def _skill_name(part: dict) -> str | None:
+    """Extract the invoked skill name from a tool part."""
+    state = part.get("state") or {}
+    inp = state.get("input") or {}
+    name = inp.get("name") or inp.get("skill")
+    if isinstance(name, str):
+        return name
+    return None
+
+
+def _part_duration_seconds(part: dict) -> float:
+    """Duration of a single part in seconds, or 0 if timestamps missing."""
+    time_block = part.get("time") or {}
+    start = time_block.get("created") or time_block.get("start")
+    end = time_block.get("completed") or time_block.get("end")
+    if isinstance(start, (int, float)) and isinstance(end, (int, float)):
+        return max(0.0, (end - start) / 1000.0)
+    return 0.0
+
+
+def _walk_parts(messages: list) -> tuple[dict[str, list[float]], list[str]]:
+    """Return (skill_durations_by_name, assistant_text_blocks).
+
+    skill_durations_by_name maps the invoked skill name to a list of
+    per-invocation durations in seconds.
+
+    assistant_text_blocks is one entry per assistant message, with all
+    text-part contents concatenated. This matches what
+    extract_predictions_from_text expects: a per-message block that may
+    contain a "Red Phase Complete" marker.
+    """
+    durations: dict[str, list[float]] = {name: [] for name in TDD_SKILLS}
+    text_blocks: list[str] = []
+
+    for message in messages or []:
+        info = message.get("info") or {}
+        parts = message.get("parts") or []
+        text_chunks: list[str] = []
+
+        for part in parts:
+            ptype = part.get("type")
+            if ptype == "text":
+                t = part.get("text")
+                if isinstance(t, str):
+                    text_chunks.append(t)
+            elif _is_skill_part(part):
+                name = _skill_name(part)
+                if name in durations:
+                    durations[name].append(_part_duration_seconds(part))
+
+        if info.get("role") == "assistant" and text_chunks:
+            text_blocks.append("\n".join(text_chunks))
+
+    return durations, text_blocks
+
+
+def _avg(xs: list[float]) -> float:
+    return round(sum(xs) / len(xs), 2) if xs else 0.0
 
 
 def main(run_dir: str) -> int:
@@ -41,6 +140,7 @@ def main(run_dir: str) -> int:
         return 1
 
     info = export.get("info") or {}
+    messages = export.get("messages") or []
     tokens = info.get("tokens") or {}
     cache = tokens.get("cache") or {}
     time_block = info.get("time") or {}
@@ -59,6 +159,19 @@ def main(run_dir: str) -> int:
     else:
         session_duration = 0.0
 
+    skill_durations, assistant_blocks = _walk_parts(messages)
+    skill_counts = {name: len(skill_durations[name]) for name in TDD_SKILLS}
+
+    cycle_count = skill_counts["red"]
+    refactorings_applied = skill_counts["refactor"]
+
+    predictions_correct = 0
+    predictions_total = 0
+    for block in assistant_blocks:
+        c, t = extract_predictions_from_text(block)
+        predictions_correct += c
+        predictions_total += t
+
     metrics = {
         "source": "opencode",
         "session_id": info.get("id"),
@@ -72,20 +185,21 @@ def main(run_dir: str) -> int:
             "total": total_t,
         },
         "context_utilization_pct": None,
-        "cycle_count": 0,
+        "cycle_count": cycle_count,
         "phase_summary": {
             "averages": {
-                "red": {"avg_duration_seconds": 0},
-                "green": {"avg_duration_seconds": 0},
-                "refactor": {"avg_duration_seconds": 0},
+                "red":      {"avg_duration_seconds": _avg(skill_durations["red"])},
+                "green":    {"avg_duration_seconds": _avg(skill_durations["green"])},
+                "refactor": {"avg_duration_seconds": _avg(skill_durations["refactor"])},
             },
-            "refactorings_applied": 0,
+            "refactorings_applied": refactorings_applied,
             "tests_passed_immediately": 0,
         },
-        "predictions_correct": 0,
-        "predictions_total": 0,
+        "predictions_correct": predictions_correct,
+        "predictions_total": predictions_total,
         "session_duration_seconds": round(session_duration, 2),
         "cost_usd": info.get("cost"),
+        "skill_invocations": skill_counts,
     }
 
     dest = run_path / "transcript-metrics.json"

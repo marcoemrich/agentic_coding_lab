@@ -65,6 +65,14 @@ MODEL_CONFIGS=(
     "sonnet-4-6-portkey-no-thinking|@vertex-ai/anthropic.claude-sonnet-4-6|false"
     "haiku-4-5-portkey|@vertex-ai/anthropic.claude-haiku-4-5@20251001|true"
     "haiku-4-5-portkey-no-thinking|@vertex-ai/anthropic.claude-haiku-4-5@20251001|false"
+    # OpenCode-only models — cli_model is a placeholder; the actual --model
+    # string is resolved in the OC invocation branch via the case-mapping
+    # below (uses portkey/<provider>/<model> format that opencode.json
+    # registers). thinking=false because OC has no thinking-token flag.
+    "kimi-k2-6|oc-only|false"
+    "minimax-m2-7|oc-only|false"
+    "gemini-2-5-pro|oc-only|false"
+    "gemini-3-5-flash|oc-only|false"
 )
 
 # ---------------------------------------------------------------------------
@@ -556,9 +564,13 @@ EOF
             case "$model_name" in
                 # Provider name = key in opencode.json "provider" block ("portkey").
                 # Model name = key in provider.<name>.models block — for Portkey
-                # we pass the @vertex-prefixed routing string verbatim so Portkey
-                # picks the right backend. OC splits on the first slash.
-                opus-4-7-portkey) oc_model="portkey/@vertex-eu-global/anthropic.claude-opus-4-7" ;;
+                # we pass the upstream routing string verbatim so Portkey picks
+                # the right backend. OC splits on the first slash.
+                opus-4-7-portkey)  oc_model="portkey/@vertex-eu-global/anthropic.claude-opus-4-7" ;;
+                kimi-k2-6)         oc_model="portkey/moonshotai/kimi-k2.6" ;;
+                minimax-m2-7)      oc_model="portkey/minimax/minimax-m2.7" ;;
+                gemini-2-5-pro)    oc_model="portkey/@vertex-ai/google.gemini-2-5-pro" ;;
+                gemini-3-5-flash)  oc_model="portkey/@vertex-ai/google.gemini-3-5-flash" ;;
                 *) echo -e "  ${RED}ERROR: no OpenCode model mapping for $model_name${NC}"
                    claude_exit=2
                    oc_model="" ;;

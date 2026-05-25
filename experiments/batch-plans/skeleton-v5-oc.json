@@ -1,0 +1,7 @@
+{
+  "name": "v5.1-testlist-scope-fix-oc smoke",
+  "description": "Single-run smoke test: validates that v5.1-oc workflow (4 skills + AGENTS.md) drives a full TDD cycle through OpenCode, producing cycle_count + predictions + refactorings in transcript-metrics.json.",
+  "runs": [
+    { "kata": "claim-office-example-mapping", "workflow": "v5.1-testlist-scope-fix-oc", "model": "opus-4-7-portkey" }
+  ]
+}
