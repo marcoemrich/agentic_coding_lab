@@ -21,6 +21,7 @@ services:
       - ../record-run.sh:/home/experimenter/experiments/record-run.sh:ro
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
       - ../analyze_transcript.py:/home/experimenter/experiments/analyze_transcript.py:ro
+      - ../parse_opencode_transcript.py:/home/experimenter/experiments/parse_opencode_transcript.py:ro
 
       # Claude config — schlankes Container-Profil (./claude-config), kein
       # MCP, keine Host-Pfade. Override via CLAUDE_CONFIG_DIR=~/.claude.
@@ -81,6 +82,7 @@ services:
       - ../record-run.sh:/home/experimenter/experiments/record-run.sh:ro
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
       - ../analyze_transcript.py:/home/experimenter/experiments/analyze_transcript.py:ro
+      - ../parse_opencode_transcript.py:/home/experimenter/experiments/parse_opencode_transcript.py:ro
       - ./run-batch.sh:/home/experimenter/experiments/run-batch.sh:ro
       # Batch plan files (e.g. smoke-test.json, hybrid-matrix.json)
       - ../batch-plans:/home/experimenter/experiments/batch-plans:ro
@@ -157,6 +159,7 @@ services:
       - ../record-run.sh:/home/experimenter/experiments/record-run.sh:ro
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
       - ../analyze_transcript.py:/home/experimenter/experiments/analyze_transcript.py:ro
+      - ../parse_opencode_transcript.py:/home/experimenter/experiments/parse_opencode_transcript.py:ro
       - ./run-batch-retry.sh:/home/experimenter/experiments/run-batch-retry.sh:ro
       # Claude config — schlankes Container-Profil (./claude-config), kein
       # MCP, keine Host-Pfade. Override via CLAUDE_CONFIG_DIR=~/.claude.

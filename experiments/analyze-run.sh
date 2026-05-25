@@ -136,6 +136,14 @@ analyze_single_run() {
             python3 "$analyzer" "$run_dir" >/dev/null 2>&1 || \
                 echo -e "${YELLOW}analyze_transcript.py failed for $run_dir${NC}"
         fi
+    elif [ -f "$run_dir/transcript-opencode.json" ]; then
+        # OpenCode runs: parse the session export into the same
+        # transcript-metrics.json schema the rest of the pipeline expects.
+        local oc_parser="$EXPERIMENTS_DIR/parse_opencode_transcript.py"
+        if [ -x "$oc_parser" ] || [ -f "$oc_parser" ]; then
+            python3 "$oc_parser" "$run_dir" >/dev/null 2>&1 || \
+                echo -e "${YELLOW}parse_opencode_transcript.py failed for $run_dir${NC}"
+        fi
     fi
 
     # Basic info from metrics.json

@@ -629,8 +629,19 @@ EOF
     # the affected runs (typical for outlier runs that finish without
     # cli.ts and trigger the nudge).
     # OpenCode runs don't produce ~/.claude/projects/ transcripts —
-    # skip the lookup to avoid the misleading "not found" warning.
-    if [ "$harness" != "opencode" ]; then
+    # they have their own session DB; export it instead.
+    if [ "$harness" = "opencode" ]; then
+        # Sessions live in the container's SQLite DB (lost on --rm), so
+        # export the just-completed one synchronously. Most-recent session
+        # = the one this run just created (single OC invocation per run).
+        oc_session_id=$( (cd "$run_dir" && opencode session list -n 1 --format json 2>/dev/null) | jq -r '.[0].id // empty' )
+        if [ -n "$oc_session_id" ]; then
+            (cd "$run_dir" && opencode export "$oc_session_id" > "$run_dir/transcript-opencode.json" 2>/dev/null) || \
+                echo -e "  ${YELLOW}opencode export $oc_session_id failed${NC}"
+        else
+            echo -e "  ${YELLOW}No OpenCode session found to export${NC}"
+        fi
+    else
         save_transcript "$run_dir"
     fi
 

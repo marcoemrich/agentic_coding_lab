@@ -1,0 +1,21 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "portkey": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Portkey Gateway",
+      "options": {
+        "baseURL": "https://api.portkey.ai/v1",
+        "apiKey": "dummy",
+        "headers": {
+          "x-portkey-api-key": "{env:PORTKEY_API_KEY}"
+        }
+      },
+      "models": {
+        "@vertex-eu-global/anthropic.claude-opus-4-7": {
+          "name": "Opus 4.7 (Portkey Vertex EU)"
+        }
+      }
+    }
+  }
+}
