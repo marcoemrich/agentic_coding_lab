@@ -73,6 +73,7 @@ MODEL_CONFIGS=(
     "minimax-m2-7|oc-only|false"
     "gemini-2-5-pro|oc-only|false"
     "gemini-3-5-flash|oc-only|false"
+    "glm-5-1|oc-only|false"
 )
 
 # ---------------------------------------------------------------------------
@@ -572,6 +573,7 @@ EOF
                 gemini-3-5-flash)  oc_model="portkey/@vertex-eu-global/gemini-3.5-flash" ;;
                 kimi-k2-6)         oc_model="portkey/@openrouter-eval/moonshotai/kimi-k2.6" ;;
                 minimax-m2-7)      oc_model="portkey/@openrouter-eval/minimax/minimax-m2.7" ;;
+                glm-5-1)           oc_model="portkey/@openrouter-eval/z-ai/glm-5.1" ;;
                 *) echo -e "  ${RED}ERROR: no OpenCode model mapping for $model_name${NC}"
                    claude_exit=2
                    oc_model="" ;;

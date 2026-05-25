@@ -175,6 +175,7 @@ status: <status>
 - Multiple 🏆 are fine for ties. Three 🏆 across a row signal "no effect", which is itself a useful reading aid.
 - Always bold the winner value too — 🏆 is in addition to, not instead of, the bold.
 - Trophies belong only in human-facing research documents (`findings.md`, archive snapshots). Workflow files (`experiments/workflows/**/*.md`) stay emoji-free per the RQ-emoji / CLAUDE.md convention.
+- **Correctness-gating** for code-quality and efficiency metrics: when the RQ has a correctness outcome (typically `verification_pct`), trophies for quality/efficiency metrics (`smell_*`, `cognitive_*`, `mccabe_*`, `cc_*`, `duration_seconds`, `total_tokens`, `cost_usd`, also derived $/perfect-result ratios) go **only** to models with `verification_pct = 1.0`. A model that scores low on complexity / cost / duration but failed the verification is showing a stub or abort artifact, not parsimony or speed — awarding a 🏆 there is misleading. State the rule explicitly in the table's caveat block when it applies. Pure correctness metrics (`verification_pct` mean / std) are not gated. RQs without a correctness outcome (pure code-quality studies on game-of-life) are also not gated.
 
 1. Diff sources:
    - **Existing**: `findings.md` from phase 1.

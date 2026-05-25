@@ -12,14 +12,29 @@ Korrektheit außen (`verification_pct`, höher = besser) als primärer Outcome; 
 | `verification_pct` (std) | kleiner | **0.00** 🏆 | 0.26 | 0.45 | 0.09 |
 | `smell_total` (mean) | kleiner | **0.8** 🏆 | 20 | 18 | 10.2 |
 | `cognitive_max` (mean) | kleiner | **9.8** 🏆 | 21.8 | 40.2 | 11.4 |
-| `mccabe_max` (mean) | kleiner | **7.6** 🏆 | 17.6 | 23.4 | **7.6** 🏆 |
+| `mccabe_max` (mean) | kleiner | **7.6** 🏆 | 17.6 | 23.4 | 7.6 |
 | `cc_longest_function` (mean) | kleiner | **25.4** 🏆 | 54.4 | 98.4 | 30.0 |
-| `code_mass` (mean) | — | 759.6 | 741 | 526 | 364.4 |
+| `code_mass` (mean) | kleiner (bei gleicher Korrektheit) | 759.6 | 741 | 526 | 364.4 |
+| `total_tokens` (mean) | kleiner (bei gleicher Korrektheit) | 8.06 M | 6.65 M | 7.02 M | 8.48 M |
+| `cost_usd` (mean, $/run) | kleiner (bei gleicher Korrektheit) | $5.90 | $4.93 | $2.23 | $2.40 |
 | `cycle_count` (mean) | — | 1.2 | 2.0 | 2.2 | 4.8 |
 | `predictions_total` (mean) | — | 2.4 | 0.4 | 0.4 | 2.6 |
-| `duration_seconds` (mean) | kleiner | 664 | 1811 | **395** 🏆 | 1428 |
+| `duration_seconds` (mean) | kleiner | 664 | 1811 | 395 | 1428 |
 
-`code_mass`, `cycle_count`, `predictions_total` sind ambivalente Metriken ohne klare Richtung — kein Pokal (Mehr ist nicht automatisch besser).
+`cycle_count` und `predictions_total` sind ambivalente Metriken ohne klare Richtung — kein Pokal. Bei `code_mass`, `total_tokens` und `cost_usd` ist weniger besser, aber nur bei vergleichbarer Korrektheit aussagekräftig: MiniMax' niedrige Werte sind Stub-Artefakt (verification 0.04), Flash' Werte werden vom 3-LoC-Abbruch-Run (siehe F-1.2) gezogen — deshalb dort kein Pokal. Cost-Effizienz bei tatsächlich nutzbarer Korrektheit: siehe F-1.6.
+
+**Trophy-Regel zur Korrektheits-Gating**: Pokale für Qualitäts-Metriken (`smell_*`, `cognitive_*`, `mccabe_*`, `cc_*`, `duration_seconds`) werden nur an Modelle mit `verification_pct = 1.0` vergeben. Begründung: niedrige Komplexität / kurze Dauer bei nicht-korrekter Implementierung misst nicht das was die Metrik vorgibt zu messen (Code-Qualität / Effizienz), sondern Stub- oder Abbruch-Artefakte. Konkret entfernt: MiniMax 🏆 bei `mccabe_max` (Tie mit Opus, aber vpt=0.04) und Flash 🏆 bei `duration_seconds` (vpt=0.80).
+
+**Cost-Berechnung**: per-Run aus `transcript-metrics.json.total_tokens` × Pricing per 1M Token. Quellen 2026-05-25:
+
+| Modell | input | output | cache_read |
+|---|---|---|---|
+| opus-4-7 (via Vertex EU) | $5.00 | $25.00 | $0.50 (10%) |
+| kimi-k2-6 (OpenRouter) | $0.73 | $3.49 | $0.73 (keine Cache-Rate gelistet → input-Rate) |
+| gemini-3-5-flash (Vertex Standard) | $1.50 | $9.00 | $0.15 |
+| minimax-m2-7 (OpenRouter) | $0.279 | $1.20 | $0.279 (keine Cache-Rate gelistet → input-Rate) |
+
+Portkey-Markup nicht eingerechnet (Portkey listet keinen modell-spezifischen Aufschlag, Gateway-Plan-Kosten sind separate Tier-Pauschalen).
 
 ---
 
@@ -92,3 +107,22 @@ MiniMax hat die höchste Prediction-Frequenz (2.6/Run) bei der schlechtesten Kor
 Opus und Kimi schreiben konsistent ~750 LoC; Flash und MiniMax triggern die "es war fertig"-Heuristik variabel — Flash kann mit 3 LoC abbrechen (siehe F-1.2 Bimodalität), MiniMax variiert zwischen Minimal-Stub und voller Implementierung. `cycle_count = 18` bei einem MiniMax-Run (Outlier) deutet auf Loop-Verhalten ohne Abschluss — der Run lief zwar im Budget durch (`completed_within_budget = true`), aber die Anzahl Red-Skill-Aufrufe ist 9× höher als der Median.
 
 Folgerung: Workflow-Selbstabbruch-Heuristik ist modellabhängig; sie schützt nicht zuverlässig vor "Modell hört zu früh auf" (Flash-Bimodalität) oder "Modell loop-t bis Budget-Cap" (MiniMax-Outlier).
+
+---
+
+## F-1.6 — Cost-Effizienz pro perfektem Lauf: Flash 2× günstiger als Opus, Kimi durch Retry-Kosten teurer
+
+Bei der einfachen "Cost pro Run"-Sicht (Übersichts-Tabelle) sehen Flash ($2.23) und MiniMax ($2.40) am günstigsten aus — aber bei niedrigerer Korrektheit. Aussagekräftiger ist die Frage: was kostet ein **garantiert perfekter** Lauf (verification 1.00, also 15/15), inklusive der Retries die für die Misserfolge nötig wären?
+
+| Modell | n_perfect / n | $/Run (mean) | $/perfekter Run (cond.) | erwartet $/perfekt-Resultat (mit Retry) |
+|---|---|---|---|---|
+| opus-4-7-portkey | 5/5 | 5.90 | 5.90 | **$5.90** 🏆 (deterministisch) |
+| kimi-k2-6 | 3/5 | 4.93 | 4.83 | $8.21 |
+| gemini-3-5-flash | 4/5 | 2.23 | 2.69 | $2.78 |
+| minimax-m2-7 | 0/5 | 2.40 | — | ∞ (kein perfekter Lauf in n=5) |
+
+"Erwartet" = totale Kosten der 5 Runs / Anzahl perfekter Runs — operativ: wenn ein perfektes Ergebnis das Ziel ist und Nicht-Perfekt-Läufe verworfen werden, dann ist das die Kosten-pro-Akzeptanz-Größe.
+
+Kimi kehrt sich um: günstigster $/Run wird teuerster $/perfekt-Resultat, weil 2 von 5 Läufen Geld kosten ohne nutzbares Ergebnis. Flash bleibt klar Cost-Sieger (~halbe Opus-Kosten pro nutzbarer Run), aber mit Reliability-Tradeoff: erwarteter Wert basiert auf nur 5 Replikaten, der eine Abbruch-Run zieht die Statistik stark.
+
+Pokal nur an Opus (verification 1.00, deterministisch) — Flash' $2.78/perfekt-Resultat wäre nominal niedriger, aber pro Korrektheits-Gating-Regel (siehe Übersichts-Caveat) gehen Pokale für Qualitäts-/Effizienz-Metriken nur an Modelle mit vpt=1.0.
