@@ -86,9 +86,11 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
 
 ---
 
-### Phase 4 — Findings update proposal
+### Phase 4 — Findings update (write-first)
 
-**Never write to `findings.md` automatically.** Only present a proposal in chat, then wait for explicit "yes, apply", then patch via `Edit`.
+**Write directly to `findings.md`, then notify the user to review.** Markdown tables and trophy assignments are much easier to evaluate as rendered output than as a chat proposal; reverting is cheap (it's only markdown). After writing, send one line: "geschrieben — lies drüber" with a brief list of what changed (STALE / STATUS / NEW).
+
+Exception: **deletions** of existing findings still require explicit user confirmation before the `Edit` — losing a documented finding is more expensive than re-reading a fresh write.
 
 `findings.md` shows **only the current state**. No legacy comparisons, no "previously X" references, no "revised"/"confirmed" tags. Header form: `## F-x.y — Title` (no trailing suffix).
 
@@ -105,30 +107,16 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
 3. Check for **NEW patterns** not yet captured in findings:
    - Scan the pivot tables for cells with notable deviations (σ > 0.3, mean < 0.5 on verification_pct, or cross-cell spreads > 20 pp).
    - If a pattern is new and not covered by any existing finding, propose a new `F-x.y` block.
-4. Present the full proposal to the user:
-   ```
-   === Findings Update Proposal for RQ-N ===
-
-   STALE (numbers changed):
-   - F-prompt-known-kata.1: verification_pct Opus×prose was 0.75, now 1.00
-   - F-prompt-known-kata.3: Haiku spread was "0–25 pp", now "0–63 pp"
-
-   STATUS CHANGES:
-   - F-prompt-known-kata.3: ⚠️ bedingt → ✅ stabil (n grew from 3 to 5, pattern holds)
-
-   NEW FINDINGS:
-   - [proposed] F-prompt-known-kata.8: <title> — <brief description>
-
-   OK (unchanged): F-prompt-known-kata.4, F-prompt-known-kata.5, F-prompt-known-kata.6
-
-   Apply? (yes/no, or "yes except F-prompt-known-kata.8" to cherry-pick)
-   ```
-5. On "yes" (or partial accept):
+4. Apply the changes directly:
    - **STALE**: replace the affected numbers in the existing finding block via `Edit`. Rewrite the Datenbasis table and any prose that references the changed numbers. Do NOT add "previously X" or "corrected from" — just write the current state.
    - **STATUS CHANGE**: update the status tag inline.
    - **NEW**: append at end of findings.md, after the last `---` separator.
    - **Update the overview table** at the top of findings.md to reflect any changed numbers.
-6. On "no": proposal stays in chat only, `findings.md` is unchanged.
+   - **Deletion** (data contradicts a finding): ask the user first, then remove the block including its `---` separator on confirmation.
+5. After writing, send one short line summarizing what changed:
+   ```
+   geschrieben — STALE: F-x.y, F-a.b · NEW: F-x.z · OK: F-c.d, F-e.f. Lies drüber.
+   ```
 
 **Glossary discipline**: use terms from the README glossary ("Code-Mass (APP)", "Produktiv-LoC", "Korrektheit (außen)", etc.) or metric IDs in backticks. Synonyms like "Code-Volumen" or "LoC-Größe" are forbidden.
 

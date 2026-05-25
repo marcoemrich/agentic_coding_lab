@@ -160,9 +160,11 @@ status: <status>
 
 ---
 
-### Phase 6 — Findings proposal
+### Phase 6 — Findings (write-first)
 
-**Never write to `findings.md` automatically.** Only present a proposal in chat, then wait for explicit "yes, apply", then patch via `Edit`.
+**Write directly to `findings.md`, then notify the user to review.** Markdown tables and trophy assignments are much easier to evaluate as rendered output than as a chat proposal; reverting is cheap (it's only markdown). After writing, send one line: "geschrieben — lies drüber".
+
+Exception: **deletions** of existing findings still require explicit user confirmation before the `Edit` — losing a documented finding is more expensive than re-reading a fresh write.
 
 `findings.md` shows **only the current state**. No status tags (`✅ stabil` / `⚠️ bedingt` / `🚫 offen` / `❌ widerlegt`), no comparisons with archive snapshots or older studies, no "previously X, corrected" hints in the prose. Header form: `## F-x.y — title` (no `· …` suffix).
 
@@ -181,17 +183,13 @@ status: <status>
    - **Existing**: `findings.md` from phase 1.
    - **New**: `summary.md` from phase 5.
 2. Three possible actions per effect:
-   - **New finding**: cell/factor group with Δ ≥ 1σ over the other groups AND the effect is not yet covered in `findings.md` → new `F-{N}.{M+1}` block (M = highest existing finding number).
-   - **Update**: an existing finding covers the same effect, but cell values or interpretation have shifted → `Edit` on the existing block. Rewrite table and rationale, **without** old/new diff, **without** "previously X", **without** reference to archive snapshots.
-   - **Deletion**: data contradicts the finding → get user confirmation, then remove the block including its `---` separator. Do not mark as "widerlegt".
+   - **New finding**: cell/factor group with Δ ≥ 1σ over the other groups AND the effect is not yet covered in `findings.md` → new `F-{N}.{M+1}` block (M = highest existing finding number). Write directly.
+   - **Update**: an existing finding covers the same effect, but cell values or interpretation have shifted → `Edit` the existing block directly. Rewrite table and rationale, **without** old/new diff, **without** "previously X", **without** reference to archive snapshots.
+   - **Deletion**: data contradicts the finding → ask the user first ("Finding F-x.y wird durch neue Daten widerlegt — entfernen?"), then remove the block including its `---` separator on confirmation. Do not mark as "widerlegt".
 3. Data gap: if an effect is suspected but coverage is too small for `n ≥ min_replicates` → note in `todos_and_ideas.txt` (section "Re-Check ungeprüfter Hypothesen aus alten findings.md") as a bullet with a concrete re-check target. **Do not** create as a finding in `findings.md`.
-4. Format per proposal: statement / data-base table / rationale. Header `## F-x.y — title` with no suffix.
-   **Glossary discipline**: terms like `code_mass`, `cc_loc`, `cc_longest_function`, `smell_total`, `verification_pct` are to be used only in the form from the glossary in the top-level `README.md` ("Code-Mass (APP)", "Produktiv-LoC", "Spitzen-Komplexität", "Smell-Summe", "Korrektheit (außen)") or directly via the metric ID in backticks. Synonyms like "Code-Volumen", "Code-Gesamtvolumen", "LoC-Größe" are forbidden — they are ambiguous or collide with established definitions (APP). Before patching the proposal, read the glossary once and check every term used in the block against the table.
-5. Get user decision per proposal. On "yes", apply with `Edit`:
-   - New finding: block at the end of `findings.md`.
-   - Update: replace the existing `## F-x.y` block, removing any `· …` header suffix still in place.
-   - Deletion: remove the block including the trailing `---` separator.
-6. On "no": proposal stays in chat only, `findings.md` is unchanged.
+4. Format per block: statement / data-base table / rationale. Header `## F-x.y — title` with no suffix.
+   **Glossary discipline**: terms like `code_mass`, `cc_loc`, `cc_longest_function`, `smell_total`, `verification_pct` are to be used only in the form from the glossary in the top-level `README.md` ("Code-Mass (APP)", "Produktiv-LoC", "Spitzen-Komplexität", "Smell-Summe", "Korrektheit (außen)") or directly via the metric ID in backticks. Synonyms like "Code-Volumen", "Code-Gesamtvolumen", "LoC-Größe" are forbidden — they are ambiguous or collide with established definitions (APP). Before writing, read the glossary once and check every term used in the block against the table.
+5. After writing all new/updated blocks, send one short line to the user: "geschrieben — lies drüber". The user reviews the rendered markdown directly.
 
 ---
 

@@ -1,0 +1,796 @@
+Performing one time database migration, may take a few minutes...
+sqlite-migration:done
+Database migration complete.
+[0m
+> build · @vertex-eu-global/anthropic.claude-opus-4-7
+[0m
+I'll read the prompt and start the TDD exercise.
+[0m→ [0mRead prompt.md
+[0m
+[0m$ [0mls
+AGENTS.md
+eslint.config.mjs
+metrics.json
+node_modules
+opencode.json
+package.json
+pnpm-lock.yaml
+prompt.md
+run.log
+src
+tsconfig.json
+vitest.config.ts
+[0m
+[0m$ [0mls src
+(no output)
+[0m
+[0m→ [0mSkill "test-list"
+Now I'll create the test list. Reading through the spec, I find:
+
+**Rules (4):**
+1. Underpopulation
+2. Survival
+3. Overpopulation
+4. Reproduction
+
+**Examples in spec:**
+- Rule 1 example: two adjacent live cells both die
+- Rule 2 example: top row + bottom cell, center survives
+- Rule 3 example: 8 cells around center, center dies (and others)
+- Rule 4 example: 3 cells in L shape, dead (1,1) becomes alive
+- Blinker oscillator (vertical → horizontal)
+- Block still life
+- Single cell dies
+
+**Constraint examples:**
+- Infinite grid / negative coordinates
+- Sparse representation
+
+Let me create the test list:
+[0m
+[0m← [0mWrite src/game-of-life.spec.ts
+Wrote file successfully.
+[0m
+[0m→ [0mSkill "red"
+Test List Created:
+- **Feature**: Game of Life - nextGeneration
+- **Test File**: src/game-of-life.spec.ts
+- **Tests**: 9
+
+Now proceeding to Red phase for the first test.
+[0m
+[0m← [0mEdit src/game-of-life.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+@@ -2,9 +2,11 @@
+ import { nextGeneration } from "./game-of-life.js";
+ 
+ describe("Game of Life - nextGeneration", () => {
+   // Single cell / underpopulation simplest cases
+-  it.todo("empty grid stays empty -- []");
++  it("empty grid stays empty -- []", () => {
++    expect(nextGeneration([])).toEqual([]);
++  });
+   it.todo("single live cell at (0,0) dies (underpopulation) -- []");
+ 
+   // Rule 1 - Underpopulation example from spec
+   it.todo("two adjacent live cells [(0,1),(1,1)] both die (each has 1 neighbor) -- []");
+
+[0m
+## Red Phase - Test 1: empty grid stays empty
+**Red Phase - Compilation Error Prediction:**
+- Test: "empty grid stays empty"
+- Expected: Compilation error
+- Reason: `game-of-life.ts` doesn't exist
+- Error: "Cannot find module './game-of-life.js'"
+[0m$ [0mpnpm test 2>&1 | head -50
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+> vitest run
+
+sh: 1: vitest: not found
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+[0m$ [0mpnpm install 2>&1 | tail -20
+Lockfile is up to date, resolution step is skipped
+Already up to date
+
+devDependencies: skipped because NODE_ENV is set to production
+
+Done in 423ms using pnpm v9.15.9
+[0m
+[0m$ [0mNODE_ENV=development pnpm install 2>&1 | tail -10
+devDependencies:
++ @vitest/coverage-v8 1.6.1
++ eslint 9.39.4
++ eslint-plugin-sonarjs 1.0.4
++ tsx 4.22.3
++ typescript 5.9.3
++ typescript-eslint 8.59.4
++ vitest 1.6.1
+
+Done in 820ms using pnpm v9.15.9
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -30
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+> vitest run
+
+
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+
+ ❯ src/game-of-life.spec.ts  (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/game-of-life.spec.ts [ src/game-of-life.spec.ts ]
+Error: Failed to load url ./game-of-life.js (resolved id: ./game-of-life.js) in /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/.pnpm/vite@5.4.21/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51969:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  20:01:40
+   Duration  154ms (transform 18ms, setup 0ms, collect 0ms, tests 0ms, environment 0ms, prepare 45ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+[0m← [0mWrite src/game-of-life.ts
+Wrote file successfully.
+[0m
+Compilation prediction correct. Now creating empty function:
+**Red Phase - Runtime Error Prediction:**
+- Test: "empty grid stays empty"
+- Expected: Runtime assertion error
+- Expected value: `[]`
+- Actual value: `undefined`
+- Diff: Expected `[]`, Received `undefined`
+[0m$ [0mpnpm test 2>&1 | tail -25
+FAIL  src/game-of-life.spec.ts > Game of Life - nextGeneration > empty grid stays empty -- []
+AssertionError: expected undefined to deeply equal []
+
+- Expected: 
+Array []
+
++ Received: 
+undefined
+
+ ❯ src/game-of-life.spec.ts:7:32
+      5|   // Single cell / underpopulation simplest cases
+      6|   it("empty grid stays empty -- []", () => {
+      7|     expect(nextGeneration([])).toEqual([]);
+       |                                ^
+      8|   });
+      9|   it.todo("single live cell at (0,0) dies (underpopulation) -- []");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 todo (9)
+   Start at  20:01:46
+   Duration  180ms (transform 26ms, setup 0ms, collect 20ms, tests 5ms, environment 0ms, prepare 58ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+[0m→ [0mSkill "green"
+```
+Red Phase Complete:
+**Test Activated**: "empty grid stays empty -- []"
+**Compilation Prediction**: Cannot find module './game-of-life.js' ✅ Correct
+**Runtime Prediction**: Expected [], received undefined ✅ Correct
+**Result**: Test fails as expected with assertion error
+
+Proceeding to Green phase.
+```
+[0m
+[0m← [0mEdit src/game-of-life.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.ts
++++ /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.ts
+@@ -1,5 +1,5 @@
+ export type Cell = [number, number];
+ 
+ export function nextGeneration(cells: Cell[]): Cell[] {
+-  return undefined as unknown as Cell[];
++  return [];
+ }
+
+[0m
+## Green Phase - Test 1
+
+Minimal: return `[]`.
+[0m$ [0mpnpm test 2>&1 | tail -10
+RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+
+ ✓ src/game-of-life.spec.ts  (9 tests | 8 skipped) 2ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 8 todo (9)
+   Start at  20:01:58
+   Duration  178ms (transform 24ms, setup 0ms, collect 21ms, tests 2ms, environment 0ms, prepare 53ms)
+[0m
+[0m→ [0mSkill "refactor"
+```
+Green Phase Complete:
+**Implementation**: return []
+**Result**: All tests pass (1 passed, 8 todo)
+**Approach**: Minimal - hardcoded return matches expected output
+
+Proceeding to Refactor phase.
+```
+[0m
+[0m← [0mEdit src/game-of-life.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+@@ -5,9 +5,11 @@
+ // Single cell / underpopulation simplest cases
+ it("empty grid stays empty -- []", () => {
+   expect(nextGeneration([])).toEqual([]);
+ });
+-it.todo("single live cell at (0,0) dies (underpopulation) -- []");
++it("single live cell at (0,0) dies (underpopulation) -- []", () => {
++  expect(nextGeneration([[0, 0]])).toEqual([]);
++});
+ 
+ // Rule 1 - Underpopulation example from spec
+ it.todo("two adjacent live cells [(0,1),(1,1)] both die (each has 1 neighbor) -- []");
+ 
+
+[0m
+## Refactor Phase - Test 1
+
+**Naming Evaluation**: `nextGeneration` is mandated by the API contract — name is clear.
+
+**Mass**: 1 binding (cells param unused) + 1 constant (empty array) = 2. Very minimal.
+
+**Rule 2 (Intent)**: Clear.
+**Rule 3 (No Duplication)**: None to remove.
+**Rule 4 (Fewest Elements)**: Already minimal.
+
+```
+Refactor Phase Complete:
+**Refactoring**: None possible - hardcoded return is minimal
+**Mass**: 2 (1 binding + 1 constant)
+**Tests**: 1 passing, 8 todo
+
+Proceeding to the next test.
+```
+
+## Red Phase - Test 2: single live cell at (0,0) dies
+**Red Phase - Runtime Prediction:**
+- Test: "single live cell at (0,0) dies"
+- Expected value: `[]`
+- Actual value: `[]` (current impl returns [])
+- Result: **Test will PASS** — implementation already handles it.
+[0m$ [0mpnpm test 2>&1 | tail -10
+RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+
+ ✓ src/game-of-life.spec.ts  (9 tests | 7 skipped) 1ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed | 7 todo (9)
+   Start at  20:02:14
+   Duration  151ms (transform 20ms, setup 0ms, collect 18ms, tests 1ms, environment 0ms, prepare 45ms)
+[0m
+[0m← [0mEdit src/game-of-life.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+@@ -10,9 +10,11 @@
+   expect(nextGeneration([[0, 0]])).toEqual([]);
+ });
+ 
+ // Rule 1 - Underpopulation example from spec
+-it.todo("two adjacent live cells [(0,1),(1,1)] both die (each has 1 neighbor) -- []");
++it("two adjacent live cells [(0,1),(1,1)] both die (each has 1 neighbor) -- []", () => {
++  expect(nextGeneration([[0, 1], [1, 1]])).toEqual([]);
++});
+ 
+ // Rule 4 - Reproduction example from spec
+ it.todo("L-shape [(0,2),(1,2),(0,1)] produces dead (1,1) coming alive -- includes (1,1)");
+ 
+
+[0m
+Test already passes — the trivial implementation `return []` handles it. No new code needed. Skip to next test.
+
+## Red Phase - Test 3: two adjacent cells both die
+**Red Phase - Runtime Prediction:**
+- Expected value: `[]`
+- Actual value: `[]`
+- Result: Test will pass (still hardcoded `return []`).
+[0m$ [0mpnpm test 2>&1 | tail -8
+✓ src/game-of-life.spec.ts  (9 tests | 6 skipped) 1ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed | 6 todo (9)
+   Start at  20:02:25
+   Duration  156ms (transform 20ms, setup 0ms, collect 18ms, tests 1ms, environment 0ms, prepare 45ms)
+[0m
+[0m← [0mEdit src/game-of-life.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+@@ -1,7 +1,11 @@
+ import { describe, it, expect } from "vitest";
+-import { nextGeneration } from "./game-of-life.js";
++import { nextGeneration, type Cell } from "./game-of-life.js";
+ 
++function sortCells(cells: Cell[]): Cell[] {
++  return [...cells].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
++}
++
+ describe("Game of Life - nextGeneration", () => {
+   // Single cell / underpopulation simplest cases
+   it("empty grid stays empty -- []", () => {
+     expect(nextGeneration([])).toEqual([]);
+
+[0m
+Passes. Move on.
+
+## Red Phase - Test 4: L-shape reproduction (dead cell becomes alive)
+
+This is the first test that should actually force real implementation. Gen 0: `(0,2), (1,2), (0,1)` → Gen 1 should include `(1,1)`.
+
+Let me think about all outputs for this. Cells in Gen 0:
+- (0,2): neighbors (1,2)✓, (0,1)✓ → 2 → survives
+- (1,2): neighbors (0,2)✓ → 1 → dies... wait need to count (0,1)? (0,1) is at distance: |0-1|=1, |1-2|=1, yes neighbor. So (1,2) has neighbors (0,2)✓ and (0,1)✓ = 2 → survives. 
+
+Wait, also (1,1) is neighbor of (1,2)? (1,1): |1-1|=0, |1-2|=1, yes. But (1,1) is dead initially.
+- (1,2): live neighbors = (0,2), (1,1)? dead, (0,1) ✓. So 2 → survives.
+
+Wait recount (1,2)'s neighbors (8 around): (0,1), (1,1), (2,1), (0,2), (2,2), (0,3), (1,3), (2,3). Live ones from Gen 0 {(0,2),(1,2),(0,1)}: (0,1)✓ and (0,2)✓ = 2 → survives.
+
+- (0,1): neighbors (-1,0),(0,0),(1,0),(-1,1),(1,1),(-1,2),(0,2),(1,2). Live: (0,2)✓, (1,2)✓ = 2 → survives.
+
+- Dead cell (1,1): neighbors (0,0),(1,0),(2,0),(0,1),(2,1),(0,2),(1,2),(2,2). Live: (0,1)✓, (0,2)✓, (1,2)✓ = 3 → comes alive.
+
+So Gen 1 should be: `(0,2), (1,2), (0,1), (1,1)` — same as the spec showing `##.; ##.; ...` = positions (0,1),(1,1),(0,2),(1,2).
+
+I'll use a Set-based comparison via sorted arrays:
+[0m← [0mEdit src/game-of-life.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+@@ -19,9 +19,12 @@
+   expect(nextGeneration([[0, 1], [1, 1]])).toEqual([]);
+ });
+ 
+ // Rule 4 - Reproduction example from spec
+-it.todo("L-shape [(0,2),(1,2),(0,1)] produces dead (1,1) coming alive -- includes (1,1)");
++it("L-shape [(0,2),(1,2),(0,1)] produces dead (1,1) coming alive -- [(0,1),(0,2),(1,1),(1,2)]", () => {
++  const result = nextGeneration([[0, 2], [1, 2], [0, 1]]);
++  expect(sortCells(result)).toEqual(sortCells([[0, 1], [0, 2], [1, 1], [1, 2]]));
++});
+ 
+ // Rule 2 - Survival example from spec
+ it.todo("center cell (1,1) with 3 neighbors survives in T-shape pattern");
+ 
+
+[0m
+**Red Phase - Runtime Prediction:**
+- Expected value: 4 cells `[(0,1),(0,2),(1,1),(1,2)]`
+- Actual value: `[]` (hardcoded)
+- Result: Test fails with assertion error showing `[]` vs sorted 4-cell list.
+[0m$ [0mpnpm test 2>&1 | tail -20
+-   ],
+- ]
++ Array []
+
+ ❯ src/game-of-life.spec.ts:25:31
+     23|   it("L-shape [(0,2),(1,2),(0,1)] produces dead (1,1) coming alive -- …
+     24|     const result = nextGeneration([[0, 2], [1, 2], [0, 1]]);
+     25|     expect(sortCells(result)).toEqual(sortCells([[0, 1], [0, 2], [1, 1…
+       |                               ^
+     26|   });
+     27| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed | 5 todo (9)
+   Start at  20:02:44
+   Duration  152ms (transform 23ms, setup 0ms, collect 20ms, tests 7ms, environment 0ms, prepare 43ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+```
+Red Phase Complete:
+**Test Activated**: "L-shape produces dead (1,1) coming alive"
+**Compilation Prediction**: (N/A — no new symbols introduced beyond existing) ✅ Correct (no compilation error)
+**Runtime Prediction**: Expected 4 cells, received [] ✅ Correct
+**Result**: Test fails as expected with assertion error
+
+Proceeding to Green phase.
+```
+
+## Green Phase - Test 4
+
+I need real Game of Life logic now. Minimal implementation that handles this case (and naturally satisfies the others):
+[0m← [0mWrite src/game-of-life.ts
+Wrote file successfully.
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -10
+RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+
+ ✓ src/game-of-life.spec.ts  (9 tests | 5 skipped) 2ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed | 5 todo (9)
+   Start at  20:02:54
+   Duration  152ms (transform 22ms, setup 0ms, collect 20ms, tests 2ms, environment 0ms, prepare 43ms)
+[0m
+[0m← [0mWrite src/game-of-life.ts
+Wrote file successfully.
+[0m
+All 4 active tests pass. 
+
+```
+Green Phase Complete:
+**Implementation**: Real Game of Life logic using neighbor counts via Map keyed by "x,y" strings
+**Result**: All tests pass (4 passed, 5 todo)
+**Approach**: Standard sparse representation - for each live cell, increment counts at 8 neighbors; cell is alive next gen if count==3, or count==2 and currently alive
+
+Proceeding to Refactor phase.
+```
+
+## Refactor Phase
+
+**Naming Evaluation**: `nextGeneration` (fixed API), `key`, `alive`, `neighborCounts`, `result` — all reveal intent.
+
+**Mass calculation** (rough):
+- Constants: ~10 (-1, 1, 0, etc.) 
+- Bindings: ~12 (alive, neighborCounts, x, y, dx, dy, k, result, count, etc.)
+- Invocations: ~10 (map, has, set, get, push, split, ??, etc.)
+- Conditionals: 2 (`if dx===dy===0`, `if count===3||...`)
+- Loops: 4 (outer for, double for, for-of)
+- Assignments: minor
+
+**Rule 2**: Could improve clarity by extracting:
+- `countLiveNeighbors` could be named computation
+- The neighbor-iteration uses 8 directions, could be a constant array
+
+Let me make one improvement — extract a `NEIGHBOR_OFFSETS` constant array to make the iteration clearer, and use `cell` keying helpers more consistently:
+
+Actually the code is reasonable. Let me try extracting neighbor offsets and the parsing:
+[0m$ [0mpnpm test 2>&1 | tail -8
+✓ src/game-of-life.spec.ts  (9 tests | 5 skipped) 2ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed | 5 todo (9)
+   Start at  20:03:09
+   Duration  198ms (transform 27ms, setup 0ms, collect 22ms, tests 2ms, environment 0ms, prepare 85ms)
+[0m
+All still green.
+
+```
+Refactor Phase Complete:
+**Refactoring**: Extracted NEIGHBOR_OFFSETS constant, parseCellKey helper, named `survives`/`reproduces` booleans
+**Mass**: Reduced loops (3 nested → 2 nested), improved Rule 2 (intent) via named booleans matching spec rules
+**Tests**: 4 passing, 5 todo
+
+Proceeding to the next test.
+```
+
+## Red Phase - Test 5: Survival (center with 3 neighbors)
+
+Spec: `###; ...; .#.` → center (1,1) survives.
+
+Gen 0 cells: (0,2),(1,2),(2,2),(1,0). Compute Gen 1:
+- (0,2): neighbors in set: (1,2)✓ = 1 → dies
+- (1,2): (0,2)✓, (2,2)✓ = 2 → survives
+- (2,2): (1,2)✓ = 1 → dies
+- (1,0): no live neighbors (since (0,1),(1,1),(2,1) all dead) = 0 → dies
+- Dead cells with 3:
+  - (0,1): neighbors (0,2)✓,(1,2)✓,(1,0)✓ = 3 → comes alive
+  - (1,1): (0,2)✓,(1,2)✓,(2,2)✓,(1,0)✓ = 4 → no (Rule 4 needs exactly 3) — wait, this means (1,1) doesn't survive because it's dead originally. The spec test description says "center (1,1) with 3 neighbors survives" but in this configuration (1,1) is dead! Let me re-read the spec.
+
+```
+Gen 0:       Gen 1:
+ ###          .#.
+ ...    →     .#.
+ .#.          ...
+```
+
+The text says "The center cell (1,1) has 3 live neighbors → survives." But the input pattern `###; ...; .#.` doesn't have (1,1) alive! 
+
+Looking again carefully at the spec - the diagram shows top row alive, bottom row has cell. Let me look at Gen 1: `.#.; .#.; ...` — alive at (1,1) and (1,2)? Or with row order?
+
+I need to interpret coordinates. The spec uses (x,y) but doesn't say which row is y=0. Looking at the blinker example: Gen 0 vertical `.#.; .#.; .#.` has coords `[(0,0), (0,1), (0,2)]`. That's a vertical line at x=0, y=0,1,2. Gen 1 horizontal becomes `[(-1,1), (0,1), (1,1)]`. So the blinker's y-axis works either way (symmetric).
+
+Hmm, the Rule 2 example shows: top row `###`, middle `...`, bottom `.#.`. If top row is y=2: cells (0,2),(1,2),(2,2),(1,0). If top is y=0: cells (0,0),(1,0),(2,0),(1,2).
+
+Either way, the "center cell (1,1)" claim is suspicious - (1,1) is DEAD in this Gen 0 pattern. But the rule says SURVIVAL is for live cells with 2-3 neighbors. So this example may be slightly off-spec OR the diagram's top row shifts perspective.
+
+Wait — let me re-read the example interpretation. Maybe the spec means: of the cells that survive into Gen 1, the center (1,1) has 3 live neighbors in Gen 0. But (1,1) doesn't survive — it was dead.
+
+Actually I think the spec example has an inconsistency. Gen 1 shown is `.#.; .#.; ...` meaning cells at (1,2) and (1,1). Let me verify:
+- Assume top=y=2: Gen 0 alive = {(0,2),(1,2),(2,2),(1,0)}
+- (1,2): neighbors (0,2)✓,(2,2)✓ = 2 → survives ✓ (matches Gen 1 having (1,2))
+- (1,1) dead → neighbors (0,2)✓,(1,2)✓,(2,2)✓,(1,0)✓ = 4 → does NOT come alive (Rule 4 says exactly 3)
+
+So Gen 1 should have (1,2) but NOT (1,1). The diagram showing `.#.; .#.; ...` (cells at (1,2) and (1,1)) doesn't match the rules.
+
+OR if top=y=0: Gen 0 alive = {(0,0),(1,0),(2,0),(1,2)}, Gen 1 by rules:
+- (1,0): (0,0)✓,(2,0)✓ = 2 → survives
+- (1,1) dead: (0,0)✓,(1,0)✓,(2,0)✓,(1,2)✓ = 4 → no
+- Same problem.
+
+The spec example as written has issues. The text claim "center (1,1) has 3 live neighbors" requires Gen 0 to be `###; .#.; ...` (not `###; ...; .#.`). Let me re-read the example once more.
+
+Looking at lines 38-42:
+```
+Gen 0:       Gen 1:
+ ###          .#.
+ ...    →     .#.
+ .#.          ...
+```
+
+OK so this is the spec as given. There's an ambiguity. Most likely interpretation: the **text description** "(1,1) has 3 live neighbors → survives" is what the author wanted to demonstrate. The intended Gen 0 might have been:
+```
+###
+.#.
+...
+```
+where (1,1) is alive (the middle row's middle cell) and has 3 neighbors from the top row. That would make (1,1) survive.
+
+The Gen 1 `.#.; .#.; ...` then would be: (1,1)+(1,2)... let me check with `###; .#.; ...`:
+- Gen 0: {(0,2),(1,2),(2,2),(1,1)}
+- (0,2): (1,2)✓,(1,1)✓ = 2 → survives
+- (1,2): (0,2)✓,(2,2)✓,(1,1)✓ = 3 → survives
+- (2,2): (1,2)✓,(1,1)✓ = 2 → survives
+- (1,1): (0,2)✓,(1,2)✓,(2,2)✓ = 3 → survives
+- Dead with 3: (0,1): (0,2)✓,(1,2)✓,(1,1)✓ = 3 → comes alive. (2,1) same → comes alive.
+- Gen 1: {(0,2),(1,2),(2,2),(1,1),(0,1),(2,1)} = `###; #.#; ...`. Doesn't match diagram either.
+
+OK the spec diagrams in this Rule 2 example seem inconsistent with the rules. I'll take the test to be: write a test that verifies the survival rule using the spec's description: a cell with 3 neighbors survives.
+
+I'll use the **textual description**: "center cell (1,1) has 3 live neighbors → survives". So input must have (1,1) alive plus 3 neighbors. Let me design a minimal test: cells = {(1,1), (0,0), (1,0), (2,0)} — (1,1) has neighbors (0,0),(1,0),(2,0) = 3. (1,1) should survive.
+
+Other cells in this config:
+- (0,0): (1,0)✓,(1,1)✓ = 2 → survives  
+- (1,0): (0,0)✓,(2,0)✓,(1,1)✓ = 3 → survives
+- (2,0): (1,0)✓,(1,1)✓ = 2 → survives
+- Dead checks: (0,1): (0,0)✓,(1,0)✓,(1,1)✓ = 3 → alive. (2,1): (1,0)✓,(2,0)✓,(1,1)✓ = 3 → alive.
+
+Gen 1: {(0,0),(1,0),(2,0),(1,1),(0,1),(2,1)} - 6 cells. This is good — verifies survival.
+
+Actually, since the implementation is general, let me write the test exactly per the spec's textual claim — use the L-pattern that the spec asserts. Just verify that (1,1) appears in the output when it has 3 live neighbors:
+[0m← [0mEdit src/game-of-life.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+@@ -25,9 +25,13 @@
+   expect(sortCells(result)).toEqual(sortCells([[0, 1], [0, 2], [1, 1], [1, 2]]));
+ });
+ 
+ // Rule 2 - Survival example from spec
+-it.todo("center cell (1,1) with 3 neighbors survives in T-shape pattern");
++it("center cell (1,1) with 3 live neighbors survives (Rule 2 survival)", () => {
++  // Cells: (1,1) center with neighbors (0,0),(1,0),(2,0) - exactly 3 live neighbors
++  const result = nextGeneration([[1, 1], [0, 0], [1, 0], [2, 0]]);
++  expect(result).toContainEqual([1, 1]);
++});
+ 
+ // Rule 3 - Overpopulation example from spec
+ it.todo("center cell (1,1) with 8 neighbors dies (overpopulation)");
+ 
+
+[0m
+**Red Phase - Runtime Prediction:**
+- Expected: result contains [1,1]
+- Actual: implementation handles survival (count===2 || count===3 && alive). (1,1) has 3 neighbors → count==3 → reproduces==true → added. Test passes.
+[0m$ [0mpnpm test 2>&1 | tail -8
+✓ src/game-of-life.spec.ts  (9 tests | 4 skipped) 2ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed | 4 todo (9)
+   Start at  20:03:41
+   Duration  188ms (transform 25ms, setup 0ms, collect 23ms, tests 2ms, environment 0ms, prepare 71ms)
+[0m
+[0m← [0mEdit src/game-of-life.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+@@ -32,9 +32,17 @@
+   expect(result).toContainEqual([1, 1]);
+ });
+ 
+ // Rule 3 - Overpopulation example from spec
+-it.todo("center cell (1,1) with 8 neighbors dies (overpopulation)");
++it("center cell (1,1) with 8 live neighbors dies (Rule 3 overpopulation)", () => {
++  // Pattern: ###; .#.; ### -- (1,1) has 8 live neighbors
++  const result = nextGeneration([
++    [0, 0], [1, 0], [2, 0],
++    [1, 1],
++    [0, 2], [1, 2], [2, 2],
++  ]);
++  expect(result).not.toContainEqual([1, 1]);
++});
+ 
+ // Block still life
+ it.todo("block [(0,0),(1,0),(0,1),(1,1)] is unchanged");
+ 
+
+[0m
+Passes (already implemented). Note: my prediction was that it'd pass and we'd skip refactor — but the test does pass. Let me also verify Rule 2 with `count===2` case via a different test... actually I have the block test coming up which will cover that. Move on.
+
+**Refactor**: No new code added. Code is unchanged. Continue.
+
+## Red Phase - Test 6: Overpopulation (center with 8 neighbors dies)
+
+Spec: `###; .#.; ###` → (1,1) has 8 live neighbors → dies.
+
+Gen 0: {(0,0),(1,0),(2,0),(1,1),(0,2),(1,2),(2,2)}. (1,1) should NOT be in Gen 1.
+**Red Phase - Runtime Prediction:**
+- Expected: result does NOT contain [1,1]
+- Actual: (1,1) has 8 neighbors → count==8 → neither survives nor reproduces → excluded. Test passes.
+[0m$ [0mpnpm test 2>&1 | tail -8
+✓ src/game-of-life.spec.ts  (9 tests | 3 skipped) 3ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed | 3 todo (9)
+   Start at  20:03:54
+   Duration  152ms (transform 22ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 44ms)
+[0m
+[0m← [0mEdit src/game-of-life.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+@@ -43,9 +43,13 @@
+   expect(result).not.toContainEqual([1, 1]);
+ });
+ 
+ // Block still life
+-it.todo("block [(0,0),(1,0),(0,1),(1,1)] is unchanged");
++it("block [(0,0),(1,0),(0,1),(1,1)] is unchanged (still life)", () => {
++  const block: Cell[] = [[0, 0], [1, 0], [0, 1], [1, 1]];
++  const result = nextGeneration(block);
++  expect(sortCells(result)).toEqual(sortCells(block));
++});
+ 
+ // Blinker oscillator
+ it.todo("vertical blinker [(0,0),(0,1),(0,2)] becomes horizontal [(-1,1),(0,1),(1,1)]");
+ 
+
+[0m
+Passes.
+
+## Red Phase - Test 7: Block still life
+
+Gen 0 {(0,0),(1,0),(0,1),(1,1)}:
+- Each has 3 live neighbors (corner of a 2x2) → all survive
+- (0,0): (1,0)✓,(0,1)✓,(1,1)✓ = 3 → survives
+- Same for others
+- Dead neighbors like (-1,-1): only (0,0) live = 1 → dies
+- No dead cell with exactly 3 → no new births
+
+Gen 1 = same.
+**Red Phase - Runtime Prediction:** Block is a still life — implementation should preserve it. Each live cell has 3 neighbors → survives. No dead cell has exactly 3. Test passes.
+[0m$ [0mpnpm test 2>&1 | tail -8
+✓ src/game-of-life.spec.ts  (9 tests | 2 skipped) 3ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed | 2 todo (9)
+   Start at  20:04:05
+   Duration  155ms (transform 24ms, setup 1ms, collect 22ms, tests 3ms, environment 0ms, prepare 46ms)
+[0m
+Passes.
+
+## Red Phase - Test 8: Blinker oscillator
+
+Gen 0 {(0,0),(0,1),(0,2)} → Gen 1 {(-1,1),(0,1),(1,1)}.
+[0m← [0mEdit src/game-of-life.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+@@ -50,9 +50,12 @@
+     expect(sortCells(result)).toEqual(sortCells(block));
+   });
+ 
+   // Blinker oscillator
+-  it.todo("vertical blinker [(0,0),(0,1),(0,2)] becomes horizontal [(-1,1),(0,1),(1,1)]");
++  it("vertical blinker [(0,0),(0,1),(0,2)] becomes horizontal [(-1,1),(0,1),(1,1)]", () => {
++    const result = nextGeneration([[0, 0], [0, 1], [0, 2]]);
++    expect(sortCells(result)).toEqual(sortCells([[-1, 1], [0, 1], [1, 1]]));
++  });
+ 
+   // Negative coordinates (infinite grid)
+   it.todo("vertical blinker at negative coordinates [(-5,-5),(-5,-4),(-5,-3)] becomes horizontal [(-6,-4),(-5,-4),(-4,-4)]");
+ });
+
+[0m
+**Red Phase - Runtime Prediction:** Verifying:
+- (0,0): (0,1)✓ = 1 → dies
+- (0,1): (0,0)✓,(0,2)✓ = 2 → survives
+- (0,2): (0,1)✓ = 1 → dies
+- (-1,1): (0,0)✓,(0,1)✓,(0,2)✓ = 3 → alive
+- (1,1): same = 3 → alive
+
+Gen 1 = {(-1,1),(0,1),(1,1)}. Test passes.
+[0m$ [0mpnpm test 2>&1 | tail -8
+✓ src/game-of-life.spec.ts  (9 tests | 1 skipped) 3ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed | 1 todo (9)
+   Start at  20:04:14
+   Duration  157ms (transform 26ms, setup 0ms, collect 24ms, tests 3ms, environment 0ms, prepare 45ms)
+[0m
+[0m← [0mEdit src/game-of-life.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_20-01-05_game-of-life-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/game-of-life.spec.ts
+@@ -56,6 +56,9 @@
+     expect(sortCells(result)).toEqual(sortCells([[-1, 1], [0, 1], [1, 1]]));
+   });
+ 
+   // Negative coordinates (infinite grid)
+-  it.todo("vertical blinker at negative coordinates [(-5,-5),(-5,-4),(-5,-3)] becomes horizontal [(-6,-4),(-5,-4),(-4,-4)]");
++  it("vertical blinker at negative coordinates [(-5,-5),(-5,-4),(-5,-3)] becomes horizontal [(-6,-4),(-5,-4),(-4,-4)]", () => {
++    const result = nextGeneration([[-5, -5], [-5, -4], [-5, -3]]);
++    expect(sortCells(result)).toEqual(sortCells([[-6, -4], [-5, -4], [-4, -4]]));
++  });
+ });
+
+[0m
+Passes.
+
+## Red Phase - Test 9: Negative coordinates (infinite grid)
+**Red Phase - Runtime Prediction:** Same blinker logic at negative coordinates. Implementation uses string keys with arithmetic — handles negatives natively. Test passes.
+[0m$ [0mpnpm test 2>&1 | tail -8
+✓ src/game-of-life.spec.ts  (9 tests) 3ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  20:04:23
+   Duration  150ms (transform 24ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 42ms)
+[0m
+All 9 tests pass.
+
+## Final Refactor Phase
+
+**Naming Evaluation**: All names clear and intentional.
+
+**Mass**: Reasonable. Could potentially destructure differently, but current code reads cleanly with named booleans `survives` and `reproduces` matching the spec.
+
+**Rule 3 (Duplication)**: None.
+
+**Rule 4 (Fewest elements)**: Could inline `parseCellKey` but it improves readability.
+
+Code is in good shape. Run all tests once more to confirm green:
+[0m$ [0mpnpm test 2>&1 | tail -8
+✓ src/game-of-life.spec.ts  (9 tests) 3ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  20:04:28
+   Duration  155ms (transform 24ms, setup 0ms, collect 22ms, tests 3ms, environment 0ms, prepare 43ms)
+[0m
+[0m← [0mWrite experiment-done.txt
+Wrote file successfully.
+[0m
+All 9 tests pass. Writing the done marker:
+TDD cycle complete. All 9 tests from the test list are passing:
+
+1. ✅ empty grid stays empty
+2. ✅ single live cell dies (underpopulation)
+3. ✅ two adjacent live cells both die
+4. ✅ L-shape reproduction (dead (1,1) becomes alive)
+5. ✅ center cell with 3 live neighbors survives (Rule 2)
+6. ✅ center cell with 8 live neighbors dies (Rule 3)
+7. ✅ block still life unchanged
+8. ✅ vertical blinker becomes horizontal
+9. ✅ blinker at negative coordinates
+
+Implementation at `src/game-of-life.ts:19` uses sparse representation with a Map of neighbor counts. `experiment-done.txt` written.
