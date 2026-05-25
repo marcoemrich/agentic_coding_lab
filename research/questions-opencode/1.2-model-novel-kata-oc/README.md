@@ -7,6 +7,7 @@ factors:
     - kimi-k2-6
     - minimax-m2-7
     - gemini-3-5-flash
+    - glm-5-1
 controls:
   workflow: v5.1-testlist-scope-fix-oc
   kata_base: claim-office
