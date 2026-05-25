@@ -20,6 +20,11 @@ Re-run analysis pipeline on all runs matching an RQ, reaggregate metrics, and pr
 Generates a frozen experiment-overview snapshot across all RQs under `research/_archive/`. Runs `generate-snapshot-skeleton.py`, then fills synthesis sections from `findings.md` files.
 - Details: `.claude/skills/build-overview/SKILL.md`
 
+### `/exact-coding-baseline-export`
+Mint a new versioned `exact-coding-baseline-YYYY-MM-DD/` snapshot under `research/workflow-dev/export/`. Default flow clones the most recent baseline and re-stamps date/version. Fallback flow re-derives from a source workflow (default `v6.2-with-why-cleaned`) and applies the HITL + autonomy-level customizations.
+- Triggers: "exact-coding baseline export", "neue exact-coding baseline", "exact-coding-baseline-export"
+- Details: `.claude/skills/exact-coding-baseline-export/SKILL.md`
+
 ### Other skills
 - `/simplify` — Review changed code for reuse, quality, and efficiency; fix issues found
 - `/review` — Pull-request review
