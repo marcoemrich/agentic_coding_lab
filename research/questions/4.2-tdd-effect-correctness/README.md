@@ -58,7 +58,7 @@ Zusaetzlich aufgenommen ist eine **Non-TDD-Kontrollgruppe** (v8a/v8b), um die kr
 v8a und v8b sind keine TDD-Workflows, sondern Drei-Phasen-Kontrollen:
 
 - **v8a-delayed-refactor-agent** — Phase 1: Implementation ohne Tests. Phase 2: Test-Suite gegen `prompt.md` (mit "Cover every spec example"-Pflicht, gleich wie der test-list-scope-fix). Phase 3: einmaliger Refactor via Subagent (`refactor.md` inhaltlich identisch zu v6.1/v7.1 — Four Rules of Simple Design + APP + Naming + Mandatory-Attempt).
-- **v8b-delayed-refactor-native** — identisch zu v8a in Phase 1+2, aber Phase 3 ist eine native Inline-Refactor-Anweisung ohne Subagent, ohne APP, ohne Naming-Block, ohne Mandatory-Attempt-Klausel.
+- **v8b-delayed-refactor-native** — identisch zu v8a in Phase 1+2 **und Phase 3 inhaltlich** (Four Rules + APP + Naming + Mandatory-Attempt), aber Phase 3 wird ueber den Slash-Command `/refactor` (`.claude/commands/refactor.md`) **inline im Haupt-Session-Kontext** ausgefuehrt statt als frischer Subagent gespawnt. Strukturell symmetrisch zu v8a (`.claude/agents/refactor.md`): beide externalisieren die Refactor-Spec in eine eigene Datei, einzige Differenz ist Agent-Spawn vs Command-Invocation. v8a vs v8b isoliert damit den **Subagent-Mechanismus** bei sonst identischem Refactor-Inhalt und Timing.
 
 TDD-Disziplin-Metriken (`cycle_count`, `refactorings_applied`, `predictions_correct_rate`, `tests_passed_immediately`) sind in den v8-Armen **by-design null** — sie liegen ausserhalb des Vergleichs. Outcome-Vergleich gegen die TDD-Arme laeuft ueber `verification_pct`, `tests_passing`, `completed_within_budget` und Kosten.
 

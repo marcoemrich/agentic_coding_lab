@@ -1,0 +1,6 @@
+All three phases complete:
+
+- **Phase 1 (Implementation)**: `src/claim-office.ts` and `src/cli.ts` implement quote/claim with all spec rules.
+- **Phase 2 (Tests)**: `src/claim-office.spec.ts` — 39 tests covering every spec example, every operation, and the clarifying questions (alike components, modifier scope, multiple items of same type, first-insurance-per-item).
+- **Phase 3 (Refactor)**: Applied via `/refactor` skill — consolidated the price list, eliminated the index-lookup in `processClaim`, extracted `reimbursedAmount`, and removed dead code. 39/39 tests still green.
+- `experiment-done.txt` written.
