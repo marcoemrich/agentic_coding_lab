@@ -1,0 +1,8 @@
+{
+  "name": "MiniMax variance probe",
+  "description": "Two additional runs on minimax-m2-7 × v5.1-oc × claim-office-EM (smoke had 0/15, n=1). Combined with smoke gives n=3 — checks whether the 0/15 verification result is stable spec-misunderstanding or single-run variance. Decides whether MiniMax is a robust 'broken-on-novel-kata' finding or needs higher min_replicates.",
+  "runs": [
+    { "kata": "claim-office-example-mapping", "workflow": "v5.1-testlist-scope-fix-oc", "model": "minimax-m2-7" },
+    { "kata": "claim-office-example-mapping", "workflow": "v5.1-testlist-scope-fix-oc", "model": "minimax-m2-7" }
+  ]
+}

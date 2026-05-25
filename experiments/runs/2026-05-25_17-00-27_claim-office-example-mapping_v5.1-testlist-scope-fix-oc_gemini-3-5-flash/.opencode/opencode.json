@@ -1,0 +1,48 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "portkey": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Portkey Gateway (Vertex)",
+      "options": {
+        "baseURL": "https://api.portkey.ai/v1",
+        "apiKey": "dummy",
+        "headers": {
+          "x-portkey-api-key": "{env:PORTKEY_API_KEY}"
+        }
+      },
+      "models": {
+        "@vertex-eu-global/anthropic.claude-opus-4-7": {
+          "name": "Opus 4.7 (Portkey Vertex EU)"
+        },
+        "@vertex-ai/gemini-2.5-pro": {
+          "name": "Gemini 2.5 Pro (Portkey Vertex)"
+        },
+        "@vertex-eu-global/gemini-3.5-flash": {
+          "name": "Gemini 3.5 Flash (Portkey Vertex EU)"
+        },
+        "@openrouter-eval/moonshotai/kimi-k2.6": {
+          "name": "Kimi K2.6 (Portkey OpenRouter Eval)"
+        },
+        "@openrouter-eval/minimax/minimax-m2.7": {
+          "name": "MiniMax M2.7 (Portkey OpenRouter Eval)"
+        }
+      }
+    }
+  },
+  "permission": {
+    "read": "allow",
+    "edit": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "bash": {
+      "pnpm *": "allow",
+      "ls *": "allow",
+      "mkdir *": "allow"
+    },
+    "skill": "allow",
+    "task": "deny",
+    "webfetch": "deny",
+    "websearch": "deny"
+  }
+}

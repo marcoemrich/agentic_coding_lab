@@ -1,0 +1,2657 @@
+Performing one time database migration, may take a few minutes...
+sqlite-migration:done
+Database migration complete.
+[0m
+> build · @vertex-eu-global/anthropic.claude-opus-4-7
+[0m
+[0m→ [0mRead prompt.md
+I'll start by reading the prompt file to understand the exercise.
+[0m
+[0m$ [0mls -la
+total 272
+drwxr-xr-x   5 experimenter experimenter   4096 May 25 15:10 .
+drwxr-xr-x 762 experimenter experimenter 122880 May 25 15:10 ..
+drwxr-xr-x   3 experimenter experimenter   4096 May 25 15:10 .opencode
+-rw-r--r--   1 experimenter experimenter   6535 May 25 15:10 AGENTS.md
+-rw-r--r--   1 experimenter experimenter   1568 May 25 15:10 eslint.config.mjs
+-rw-r--r--   1 experimenter experimenter    412 May 25 15:10 metrics.json
+drwxr-xr-x   3 experimenter experimenter   4096 May 25 15:10 node_modules
+-rw-r--r--   1 experimenter experimenter   1258 May 25 15:10 opencode.json
+-rw-r--r--   1 experimenter experimenter    537 May 25 15:10 package.json
+-rw-r--r--   1 experimenter experimenter  79272 May 25 15:10 pnpm-lock.yaml
+-rw-r--r--   1 experimenter experimenter  13225 May 25 15:10 prompt.md
+-rw-r--r--   1 experimenter experimenter    275 May 25 15:10 run.log
+drwxr-xr-x   2 experimenter experimenter   4096 May 25 15:10 src
+-rw-r--r--   1 experimenter experimenter    236 May 25 15:10 tsconfig.json
+-rw-r--r--   1 experimenter experimenter    306 May 25 15:10 vitest.config.ts
+[0m
+[0m$ [0mls src/ && cat package.json
+{
+  "name": "tdd-experiment-run",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:unit:basic": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage --coverage.reporter=json-summary"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "tsx": "^4.7.0",
+    "vitest": "^1.0.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "eslint": "^9.0.0",
+    "eslint-plugin-sonarjs": "^1.0.0",
+    "typescript-eslint": "^8.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  }
+}
+[0m
+src/ is empty. Now let me invoke the test-list skill to create the test list.
+[0m→ [0mSkill "test-list"
+Now let me create a comprehensive test list. Given the complexity (many rules, CLI), I'll organize tests around two core functions: `quote()` and `claim()`, with a CLI integration suite.
+
+Let me plan tests covering each spec example:
+
+**Quote tests** (premium computation):
+- Empty items → 5 G (only fee)
+- Single sword → 105 G (100 + 5)
+- Each main item type base premium
+- Component (1 rune) → 25 + 5 = 30 G
+- 2 runes → 55 G (50 + 5)
+- 3 runes → 65 G (60 block + 5)
+- 4 runes → 105 G (no block, 4×25 = 100 + 5)
+- 7 runes → 180 G (175 + 5)
+- 2 runes + 1 moonstone → 80 G (75 base + 5) — no block, different types
+- 3 runes + 3 moonstones → 125 G (60+60 + 5)
+- Cursed sword alone → base 100 + 50 cursed = 150 + 5 = 155
+- Cursed sword + plain amulet → 100+60 = 160 + 50 cursed (on sword) = 210, + 5 = 215
+- High enchantment (level 5) sword → 100 + 30 = 130 + 5 = 135
+- High enchantment cursed sword (ench 5) → 100 + 50 + 30 = 180 + 5 = 185
+- Sword enchantment 4 not cursed → 100 + 5 = 105
+- Loyalty discount (2 years) → 100 × 0.8 = 80 + 5 = 85
+- First insurance surcharge → 100 + 10 = 110 + 5 = 115 (need explicit "first insurance" — for newcomer)
+- 15% discount on second contract
+- Processing fee
+- Rounding in MHPCO's favor (premium 197.5 → 198)
+- Unknown item type → error
+- Newcomer cursed sword integration → 165
+- Long-standing 2nd contract → 160
+
+**Claim tests:**
+- Standard sword steel ench3 damage 500 → 400
+- Rune damage 200 → 100
+- High enchantment dragon sword ench 8 dmg 1000 → 400
+- High enchantment ench 9 dragon dmg 1000 → 400
+- Dragon ench 5 dmg 800 → 700
+- Steel ench 9 dmg 1000 → 400
+- Two items damaged (sword 500, amulet 300) → 600 (deductible per damaged item)
+- Two same swords each damaged
+- Damage entry exceeds inventory → error
+- Claim references item not in policy → error
+- Damage amount negative → error
+- Cap exhaustion (2 claims of 1500 on 1000 G sword)
+- Rounding payout (350.5 → 350)
+- Insurance sum for sword + amulet = 1600, cap 3200
+- Cursed sword cap based on unmodified value (cap 2000)
+- Sword + 3 runes = 1750 insurance sum
+
+**CLI integration tests:**
+- End-to-end via stdin/stdout
+- Newcomer cursed sword scenario
+- Long-standing 2nd contract scenario
+- Unknown item type → non-zero exit
+- Schema example shape
+
+Given scope, I'll organize tests across multiple spec files. Let me create them:
+[0m→ [0mRead vitest.config.ts
+[0m→ [0mRead tsconfig.json
+I'll create three test files: one for `quote`, one for `claim`, and one CLI integration test. Let me write the test list:
+[0m
+[0m← [0mWrite src/quote.spec.ts
+Wrote file successfully.
+[0m
+Wait — I need to revisit the cursed sword + amulet expected value. Spec says:
+"the cursed surcharge adds 50 G (50% of the cursed sword's base premium, not of the policy total) → 210 G **before further modifiers and fee**"
+
+So before further modifiers: 160 base + 50 cursed = 210 G. Now newcomer 1st contract: +10% on policy base (160) = +16. Then +5 fee → 210 + 16 + 5 = 231 G. Let me re-check — spec doesn't say first insurance was applied; the 210 is before further modifiers. For newcomer 1st contract: 160 + 50 + 16 + 5 = 231 G.
+
+Actually let me re-read spec more carefully about modifier scope:
+"item-specific modifiers (cursed, high enchantment) apply to the base premium of the affected item; policy-wide modifiers (loyalty, first insurance, follow-up contract) apply to the policy base premium (the sum of all item base premiums); the processing fee is added at the very end"
+
+So first insurance = 10% of policy base premium (160) = 16. Total: 160 + 50 + 16 + 5 = 231 G ✓
+
+Let me also verify the long-standing 2nd contract example explicitly. Spec gives:
+`100 G base + 50 G curse + 30 G high enchantment − 20 G loyalty + 10 G first insurance − 15 G follow-up contract = 155 G + 5 G fee = 160 G`
+
+Wait, loyalty is 20% on policy base 100 = 20. First insurance is 10% on 100 = 10. Follow-up 15% on 100 = 15. So the loyalty/first/follow-up all apply to policy base. ✓
+
+Let me also verify the 1 rune calculation. Newcomer 1st: 25 base + 10% first = 2.5 → policy = 27.5 + 5 fee = 32.5 → round up = 33 G. ✓
+
+Let me check 7 runes: 175 base + 17.5 first = 192.5 + 5 fee = 197.5 → round up = 198. ✓
+
+For 2 runes + 1 moonstone: base = 50 + 25 = 75. First = 7.5. Subtotal = 82.5. +5 = 87.5 → round up = 88. ✓
+
+For sword exact ench 5 newcomer: 100 base + 30 high ench = 130. First insurance applies to policy base 100 = 10. Total: 130 + 10 + 5 = 145. Hmm, my test said 148. Let me recompute. Policy base = sum of item base premiums = 100. First insurance 10% × 100 = 10. Item modifier high-ench = 30. Premium = 100 + 30 + 10 + 5 = 145. Let me fix.
+
+For cursed + ench 5: 100 + 50 + 30 + 10 + 5 = 195.
+
+For sword ench 4 not cursed: 100 + 10 + 5 = 115 ✓
+
+For 2 years loyalty 1st contract single sword: 100 base. Item mods: 0. Policy mods: -20% loyalty = -20. +10% first = +10. = 100 + 10 - 20 + 5 = 95 ✓
+
+Let me also re-check the 4 runes (no block): 100 base. First = 10. = 100 + 10 + 5 = 115 ✓
+
+3 runes (block): 60 base. First = 6. = 60 + 6 + 5 = 71 ✓
+
+2 runes: 50 base. First = 5. = 50 + 5 + 5 = 60 ✓
+
+3 runes + 3 moonstones: 120 base. First = 12. = 120 + 12 + 5 = 137 ✓
+
+Let me fix the wrong values:
+[0m← [0mWrite src/quote.spec.ts
+Wrote file successfully.
+[0m
+[0m← [0mWrite src/claim.spec.ts
+Wrote file successfully.
+[0m
+[0m← [0mWrite src/cli.spec.ts
+Wrote file successfully.
+[0m
+Now let me run vitest to make sure everything compiles (todo tests should be skipped):
+[0m$ [0mpnpm test 2>&1 | tail -50
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+> vitest run
+
+sh: 1: vitest: not found
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+[0m$ [0mls node_modules/.bin/ 2>&1 | head -20 ; ls node_modules/ 2>&1 | head -20
+ls: cannot access 'node_modules/.bin/': No such file or directory
+[0m
+[0m$ [0mls node_modules/
+(no output)
+[0m
+[0m$ [0mpnpm install 2>&1 | tail -30
+Lockfile is up to date, resolution step is skipped
+Already up to date
+
+devDependencies: skipped because NODE_ENV is set to production
+
+Done in 344ms using pnpm v9.15.9
+[0m
+[0m$ [0mNODE_ENV=development pnpm install 2>&1 | tail -30
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +204
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 204, reused 204, downloaded 0, added 204, done
+
+devDependencies:
++ @vitest/coverage-v8 1.6.1
++ eslint 9.39.4
++ eslint-plugin-sonarjs 1.0.4
++ tsx 4.22.3
++ typescript 5.9.3
++ typescript-eslint 8.59.4
++ vitest 1.6.1
+
+Done in 846ms using pnpm v9.15.9
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -40
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+> vitest run
+
+
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+
+ ↓ src/quote.spec.ts  (21 tests | 21 skipped)
+ ↓ src/claim.spec.ts  (17 tests | 17 skipped)
+ ↓ src/cli.spec.ts  (10 tests | 10 skipped)
+
+ Test Files  3 skipped (3)
+      Tests  48 todo (48)
+   Start at  15:12:07
+   Duration  429ms (transform 27ms, setup 0ms, collect 32ms, tests 0ms, environment 0ms, prepare 140ms)
+[0m
+All 48 todos in place. Now let me proceed to Red phase, starting with the simplest test in quote.spec.ts.
+
+## Test List Created
+
+**Feature**: MHPCO Claim Office (quote + claim + CLI)
+**Test Files**: `src/quote.spec.ts`, `src/claim.spec.ts`, `src/cli.spec.ts`
+**Total Tests**: 48 todos
+
+Proceeding to Red phase with first test: "empty item list returns 5 G".
+[0m→ [0mSkill "red"
+### Activating first test: "empty item list returns 5 G"
+[0m
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -2,9 +2,11 @@
+ import { quote } from "./quote.js";
+ 
+ describe("quote", () => {
+   // Simplest case
+-  it.todo("empty item list returns 5 G (processing fee only)");
++  it("empty item list returns 5 G (processing fee only)", () => {
++    expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [], contractIndex: 0 })).toBe(5);
++  });
+ 
+   // Single-item base premiums for a 0-year customer's 1st contract with no extras:
+   // premium = base + 10% first insurance (on policy base) + 5 G fee
+   it.todo("single sword (no modifiers, newcomer 1st contract) returns 115 G (100 base + 10 first + 5 fee)");
+
+[0m
+**Compilation Prediction:**
+- Test: "empty item list returns 5 G"
+- Expected: Compilation/module-resolution error
+- Reason: `./quote.js` does not exist
+- Error: "Failed to resolve import './quote.js'" or similar
+[0m$ [0mpnpm test 2>&1 | tail -30
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+> vitest run
+
+
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+
+ ❯ src/quote.spec.ts  (0 test)
+ ↓ src/claim.spec.ts  (17 tests | 17 skipped)
+ ↓ src/cli.spec.ts  (10 tests | 10 skipped)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/quote.spec.ts [ src/quote.spec.ts ]
+Error: Failed to load url ./quote.js (resolved id: ./quote.js) in /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/.pnpm/vite@5.4.21/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51969:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 2 skipped (3)
+      Tests  27 todo (27)
+   Start at  15:12:19
+   Duration  404ms (transform 26ms, setup 1ms, collect 15ms, tests 0ms, environment 0ms, prepare 134ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+[0m← [0mWrite src/quote.ts
+Wrote file successfully.
+[0m
+Compilation error as predicted ✅. Now creating empty function:
+**Runtime Prediction:**
+- Test: "empty item list returns 5 G"
+- Expected value: 5
+- Actual value: undefined
+- Diff: Expected 5, Received undefined
+[0m$ [0mpnpm test 2>&1 | tail -25
+FAIL  src/quote.spec.ts > quote > empty item list returns 5 G (processing fee only)
+AssertionError: expected undefined to be 5 // Object.is equality
+
+- Expected: 
+5
+
++ Received: 
+undefined
+
+ ❯ src/quote.spec.ts:7:85
+      5|   // Simplest case
+      6|   it("empty item list returns 5 G (processing fee only)", () => {
+      7|     expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [], contrac…
+       |                                                                                     ^
+      8|   });
+      9| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 2 skipped (3)
+      Tests  1 failed | 47 todo (48)
+   Start at  15:12:26
+   Duration  436ms (transform 30ms, setup 0ms, collect 38ms, tests 5ms, environment 0ms, prepare 148ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+[0m→ [0mSkill "green"
+```
+Red Phase Complete:
+**Test Activated**: "empty item list returns 5 G (processing fee only)"
+**Compilation Prediction**: Failed to load url ./quote.js ✅ Correct
+**Runtime Prediction**: Expected 5, received undefined ✅ Correct
+**Result**: Test fails as expected with assertion error
+
+Proceeding to Green phase.
+```
+[0m
+[0m← [0mEdit src/quote.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
+@@ -15,6 +15,6 @@
+   contractIndex: number;
+ }
+ 
+ export function quote(_input: QuoteInput): number {
+-  return undefined as unknown as number;
++  return 5;
+ }
+
+[0m
+Minimal implementation: return 5.
+[0m$ [0mpnpm test 2>&1 | tail -15
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+> vitest run
+
+
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+
+ ✓ src/quote.spec.ts  (21 tests | 20 skipped) 1ms
+ ↓ src/claim.spec.ts  (17 tests | 17 skipped)
+ ↓ src/cli.spec.ts  (10 tests | 10 skipped)
+
+ Test Files  1 passed | 2 skipped (3)
+      Tests  1 passed | 47 todo (48)
+   Start at  15:12:35
+   Duration  419ms (transform 29ms, setup 0ms, collect 35ms, tests 1ms, environment 0ms, prepare 134ms)
+[0m
+```
+Green Phase Complete:
+**Implementation**: Hardcoded `return 5`
+**Result**: 1 passing, 47 todo
+**Approach**: Simplest possible — return the fee directly.
+
+Proceeding to Refactor phase.
+```
+[0m→ [0mSkill "refactor"
+[0m
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -8,9 +8,11 @@
+ });
+ 
+ // Single-item base premiums for a 0-year customer's 1st contract with no extras:
+ // premium = base + 10% first insurance (on policy base) + 5 G fee
+-it.todo("single sword (no modifiers, newcomer 1st contract) returns 115 G (100 base + 10 first + 5 fee)");
++it("single sword (no modifiers, newcomer 1st contract) returns 115 G (100 base + 10 first + 5 fee)", () => {
++  expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "sword" }], contractIndex: 0 })).toBe(115);
++});
+ it.todo("single amulet (no modifiers, newcomer 1st contract) returns 71 G (60 base + 6 first + 5 fee)");
+ it.todo("single staff (no modifiers, newcomer 1st contract) returns 93 G (80 base + 8 first + 5 fee)");
+ it.todo("single potion (no modifiers, newcomer 1st contract) returns 49 G (40 base + 4 first + 5 fee)");
+ 
+
+[0m
+**Naming evaluation**: `quote` is clear and matches spec terminology.
+**Mass**: Constants 1 (5) + bindings 1 (_input) + return = 2. Already minimal.
+**No refactoring possible** for the implementation (hardcoded return). The interfaces are useful for future tests.
+
+```
+Refactor Phase Complete:
+**Refactoring**: None — code is minimal (mass 2). Interfaces kept as spec scaffolding.
+**Tests**: 1 passing, 47 todo
+
+Proceeding to next Red.
+```
+
+To make progress efficient through the remaining 47 tests, I'll continue the cycle but be more concise in narration while still following all skill rules.
+
+### Red 2: "single sword (no modifiers, newcomer 1st) returns 115 G"
+**Predictions**: compilation OK; runtime: expected 115, got 5.
+[0m$ [0mpnpm test 2>&1 | tail -15
+11|   // premium = base + 10% first insurance (on policy base) + 5 G fee
+     12|   it("single sword (no modifiers, newcomer 1st contract) returns 115 G…
+     13|     expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "s…
+       |                                                                                                      ^
+     14|   });
+     15|   it.todo("single amulet (no modifiers, newcomer 1st contract) returns…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 2 skipped (3)
+      Tests  1 failed | 1 passed | 46 todo (48)
+   Start at  15:12:49
+   Duration  419ms (transform 28ms, setup 0ms, collect 36ms, tests 6ms, environment 0ms, prepare 135ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+[0m← [0mWrite src/quote.ts
+Wrote file successfully.
+[0m
+Runtime fail as predicted. **Green**: now build the price logic. I'll implement a real solution that handles base premium + first insurance + fee, since it's now natural and minimal won't pass both tests.
+[0m$ [0mpnpm test 2>&1 | tail -10
+✓ src/quote.spec.ts  (21 tests | 19 skipped) 2ms
+ ↓ src/claim.spec.ts  (17 tests | 17 skipped)
+ ↓ src/cli.spec.ts  (10 tests | 10 skipped)
+
+ Test Files  1 passed | 2 skipped (3)
+      Tests  2 passed | 46 todo (48)
+   Start at  15:12:58
+   Duration  418ms (transform 31ms, setup 0ms, collect 36ms, tests 2ms, environment 0ms, prepare 141ms)
+[0m
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -11,9 +11,11 @@
+ // premium = base + 10% first insurance (on policy base) + 5 G fee
+ it("single sword (no modifiers, newcomer 1st contract) returns 115 G (100 base + 10 first + 5 fee)", () => {
+   expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "sword" }], contractIndex: 0 })).toBe(115);
+ });
+-it.todo("single amulet (no modifiers, newcomer 1st contract) returns 71 G (60 base + 6 first + 5 fee)");
++it("single amulet (no modifiers, newcomer 1st contract) returns 71 G (60 base + 6 first + 5 fee)", () => {
++  expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "amulet" }], contractIndex: 0 })).toBe(71);
++});
+ it.todo("single staff (no modifiers, newcomer 1st contract) returns 93 G (80 base + 8 first + 5 fee)");
+ it.todo("single potion (no modifiers, newcomer 1st contract) returns 49 G (40 base + 4 first + 5 fee)");
+ 
+ // Components and the building block of 3 alike components
+
+[0m
+Both pass. **Refactor**: Code is clear, function names self-explanatory. No refactoring needed yet.
+
+### Red 3-5: amulet, staff, potion (all same shape)
+
+Activate one at a time per skill rules.
+Prediction: 60+6+5 = 71 → already passes. Run:
+[0m$ [0mpnpm test 2>&1 | tail -8
+↓ src/claim.spec.ts  (17 tests | 17 skipped)
+ ↓ src/cli.spec.ts  (10 tests | 10 skipped)
+
+ Test Files  1 passed | 2 skipped (3)
+      Tests  3 passed | 45 todo (48)
+   Start at  15:13:05
+   Duration  476ms (transform 31ms, setup 1ms, collect 40ms, tests 2ms, environment 0ms, prepare 178ms)
+[0m
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -14,9 +14,11 @@
+ });
+ it("single amulet (no modifiers, newcomer 1st contract) returns 71 G (60 base + 6 first + 5 fee)", () => {
+   expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "amulet" }], contractIndex: 0 })).toBe(71);
+ });
+-it.todo("single staff (no modifiers, newcomer 1st contract) returns 93 G (80 base + 8 first + 5 fee)");
++it("single staff (no modifiers, newcomer 1st contract) returns 93 G (80 base + 8 first + 5 fee)", () => {
++  expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "staff" }], contractIndex: 0 })).toBe(93);
++});
+ it.todo("single potion (no modifiers, newcomer 1st contract) returns 49 G (40 base + 4 first + 5 fee)");
+ 
+ // Components and the building block of 3 alike components
+ it.todo("1 rune (newcomer 1st) returns 33 G (25 base + 2.5 first = 27.5 + 5 fee = 32.5 -> 33)");
+
+[0m
+Already green (the implementation generalized). This is fine. Refactor: nothing new.
+
+To go faster on equivalent triangulation tests (same code path), I'll activate batches when the implementation is identical and I can predict all pass. But the skill requires one at a time. Let me continue one-by-one but quickly.
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  4 passed | 44 todo (48)
+   Start at  15:13:12
+   Duration  446ms (transform 35ms, setup 0ms, collect 39ms, tests 2ms, environment 0ms, prepare 147ms)
+[0m
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -17,9 +17,11 @@
+ });
+ it("single staff (no modifiers, newcomer 1st contract) returns 93 G (80 base + 8 first + 5 fee)", () => {
+   expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "staff" }], contractIndex: 0 })).toBe(93);
+ });
+-it.todo("single potion (no modifiers, newcomer 1st contract) returns 49 G (40 base + 4 first + 5 fee)");
++it("single potion (no modifiers, newcomer 1st contract) returns 49 G (40 base + 4 first + 5 fee)", () => {
++  expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "potion" }], contractIndex: 0 })).toBe(49);
++});
+ 
+ // Components and the building block of 3 alike components
+ it.todo("1 rune (newcomer 1st) returns 33 G (25 base + 2.5 first = 27.5 + 5 fee = 32.5 -> 33)");
+ it.todo("2 runes (newcomer 1st) returns 60 G (50 base + 5 first + 5 fee)");
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  5 passed | 43 todo (48)
+   Start at  15:13:19
+   Duration  443ms (transform 31ms, setup 0ms, collect 38ms, tests 2ms, environment 0ms, prepare 156ms)
+[0m
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -22,9 +22,11 @@
+   expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "potion" }], contractIndex: 0 })).toBe(49);
+ });
+ 
+ // Components and the building block of 3 alike components
+-it.todo("1 rune (newcomer 1st) returns 33 G (25 base + 2.5 first = 27.5 + 5 fee = 32.5 -> 33)");
++it("1 rune (newcomer 1st) returns 33 G (25 base + 2.5 first = 27.5 + 5 fee = 32.5 -> 33)", () => {
++  expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "rune" }], contractIndex: 0 })).toBe(33);
++});
+ it.todo("2 runes (newcomer 1st) returns 60 G (50 base + 5 first + 5 fee)");
+ it.todo("3 runes (block applies, newcomer 1st) returns 71 G (60 block base + 6 first + 5 fee)");
+ it.todo("4 runes (no block, newcomer 1st) returns 115 G (100 base + 10 first + 5 fee)");
+ it.todo("7 runes (newcomer 1st) returns 198 G (175 base + 17.5 first + 5 fee = 197.5 -> 198)");
+
+[0m
+### Red 6: 1 rune → 33
+
+Existing impl: 25 base + 2.5 first = 27.5 + 5 = 32.5 → ceil = 33. ✓ Should pass already.
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  6 passed | 42 todo (48)
+   Start at  15:13:27
+   Duration  412ms (transform 29ms, setup 0ms, collect 34ms, tests 2ms, environment 0ms, prepare 131ms)
+[0m
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -25,9 +25,11 @@
+ // Components and the building block of 3 alike components
+ it("1 rune (newcomer 1st) returns 33 G (25 base + 2.5 first = 27.5 + 5 fee = 32.5 -> 33)", () => {
+   expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "rune" }], contractIndex: 0 })).toBe(33);
+ });
+-it.todo("2 runes (newcomer 1st) returns 60 G (50 base + 5 first + 5 fee)");
++it("2 runes (newcomer 1st) returns 60 G (50 base + 5 first + 5 fee)", () => {
++  expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "rune" }, { type: "rune" }], contractIndex: 0 })).toBe(60);
++});
+ it.todo("3 runes (block applies, newcomer 1st) returns 71 G (60 block base + 6 first + 5 fee)");
+ it.todo("4 runes (no block, newcomer 1st) returns 115 G (100 base + 10 first + 5 fee)");
+ it.todo("7 runes (newcomer 1st) returns 198 G (175 base + 17.5 first + 5 fee = 197.5 -> 198)");
+ 
+
+[0m
+### Red 7: 2 runes → 60
+
+50 base + 5 first + 5 fee = 60. Already passes.
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  7 passed | 41 todo (48)
+   Start at  15:13:35
+   Duration  458ms (transform 32ms, setup 0ms, collect 39ms, tests 2ms, environment 0ms, prepare 157ms)
+[0m
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -28,9 +28,11 @@
+ });
+ it("2 runes (newcomer 1st) returns 60 G (50 base + 5 first + 5 fee)", () => {
+   expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "rune" }, { type: "rune" }], contractIndex: 0 })).toBe(60);
+ });
+-it.todo("3 runes (block applies, newcomer 1st) returns 71 G (60 block base + 6 first + 5 fee)");
++it("3 runes (block applies, newcomer 1st) returns 71 G (60 block base + 6 first + 5 fee)", () => {
++  expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "rune" }, { type: "rune" }, { type: "rune" }], contractIndex: 0 })).toBe(71);
++});
+ it.todo("4 runes (no block, newcomer 1st) returns 115 G (100 base + 10 first + 5 fee)");
+ it.todo("7 runes (newcomer 1st) returns 198 G (175 base + 17.5 first + 5 fee = 197.5 -> 198)");
+ 
+ // "Alike" components clarification: same type only
+
+[0m
+### Red 8: 3 runes block → 71
+
+Currently impl: 75 base + 7.5 first + 5 fee = 87.5 → 88. Test expects 71. **Predicted fail**.
+[0m$ [0mpnpm test 2>&1 | tail -10
+35|   it.todo("4 runes (no block, newcomer 1st) returns 115 G (100 base + …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 2 skipped (3)
+      Tests  1 failed | 7 passed | 40 todo (48)
+   Start at  15:13:42
+   Duration  519ms (transform 32ms, setup 0ms, collect 36ms, tests 7ms, environment 0ms, prepare 172ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+Failed as predicted. **Green**: implement block discount for 3 alike components.
+[0m← [0mEdit src/quote.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
+@@ -23,20 +23,53 @@
+   rune: 25,
+   moonstone: 25,
+ };
+ 
++const COMPONENT_TYPES = new Set(["rune", "moonstone"]);
++const BLOCK_SIZE = 3;
++const BLOCK_PREMIUM = 60;
+ const PROCESSING_FEE = 5;
+ 
++function isComponent(item: Item): boolean {
++  return COMPONENT_TYPES.has(item.type);
++}
++
+ function basePremiumOfItem(item: Item): number {
+   const base = BASE_PREMIUMS[item.type];
+   if (base === undefined) {
+     throw new Error(`Unknown item type: ${item.type}`);
+   }
+   return base;
+ }
+ 
++function policyBasePremium(items: Item[]): number {
++  // Group components by type to detect "blocks of 3 alike".
++  const componentCounts = new Map<string, number>();
++  let nonComponentBase = 0;
++  for (const item of items) {
++    if (isComponent(item)) {
++      componentCounts.set(item.type, (componentCounts.get(item.type) ?? 0) + 1);
++    } else {
++      nonComponentBase += basePremiumOfItem(item);
++    }
++  }
++  let componentBase = 0;
++  for (const [type, count] of componentCounts) {
++    if (count === BLOCK_SIZE) {
++      componentBase += BLOCK_PREMIUM;
++    } else {
++      componentBase += count * basePremiumOfItem({ type });
++    }
++  }
++  return nonComponentBase + componentBase;
++}
++
+ export function quote(input: QuoteInput): number {
+-  const policyBase = input.items.reduce((sum, item) => sum + basePremiumOfItem(item), 0);
++  // Validate item types eagerly.
++  for (const item of input.items) {
++    basePremiumOfItem(item);
++  }
++  const policyBase = policyBasePremium(input.items);
+   const firstInsurance = policyBase * 0.1;
+   const total = policyBase + firstInsurance + PROCESSING_FEE;
+   return Math.ceil(total);
+ }
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -10
+✓ src/quote.spec.ts  (21 tests | 13 skipped) 2ms
+ ↓ src/claim.spec.ts  (17 tests | 17 skipped)
+ ↓ src/cli.spec.ts  (10 tests | 10 skipped)
+
+ Test Files  1 passed | 2 skipped (3)
+      Tests  8 passed | 40 todo (48)
+   Start at  15:13:55
+   Duration  421ms (transform 32ms, setup 0ms, collect 40ms, tests 2ms, environment 0ms, prepare 140ms)
+[0m
+8 passing. Refactor: code is reasonably clear. Move on.
+
+### Red 9: 4 runes → 115 (no block, 100+10+5)
+
+Should pass with current code (count !== 3 → 4×25=100).
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -31,9 +31,11 @@
+ });
+ it("3 runes (block applies, newcomer 1st) returns 71 G (60 block base + 6 first + 5 fee)", () => {
+   expect(quote({ customer: { yearsWithMHPCO: 0 }, items: [{ type: "rune" }, { type: "rune" }, { type: "rune" }], contractIndex: 0 })).toBe(71);
+ });
+-it.todo("4 runes (no block, newcomer 1st) returns 115 G (100 base + 10 first + 5 fee)");
++it("4 runes (no block, newcomer 1st) returns 115 G (100 base + 10 first + 5 fee)", () => {
++  expect(quote({ customer: { yearsWithMHPCO: 0 }, items: Array(4).fill({ type: "rune" }), contractIndex: 0 })).toBe(115);
++});
+ it.todo("7 runes (newcomer 1st) returns 198 G (175 base + 17.5 first + 5 fee = 197.5 -> 198)");
+ 
+ // "Alike" components clarification: same type only
+ it.todo("2 runes + 1 moonstone (newcomer 1st) returns 88 G (75 base + 7.5 first + 5 fee = 87.5 -> 88)");
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  9 passed | 39 todo (48)
+   Start at  15:14:04
+   Duration  419ms (transform 41ms, setup 0ms, collect 52ms, tests 3ms, environment 0ms, prepare 127ms)
+[0m
+### Red 10: 7 runes → 198 (175+17.5+5=197.5→198)
+
+7 runes: count=7 ≠ 3, so 7×25 = 175. Should pass.
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -34,9 +34,11 @@
+ });
+ it("4 runes (no block, newcomer 1st) returns 115 G (100 base + 10 first + 5 fee)", () => {
+   expect(quote({ customer: { yearsWithMHPCO: 0 }, items: Array(4).fill({ type: "rune" }), contractIndex: 0 })).toBe(115);
+ });
+-it.todo("7 runes (newcomer 1st) returns 198 G (175 base + 17.5 first + 5 fee = 197.5 -> 198)");
++it("7 runes (newcomer 1st) returns 198 G (175 base + 17.5 first + 5 fee = 197.5 -> 198)", () => {
++  expect(quote({ customer: { yearsWithMHPCO: 0 }, items: Array(7).fill({ type: "rune" }), contractIndex: 0 })).toBe(198);
++});
+ 
+ // "Alike" components clarification: same type only
+ it.todo("2 runes + 1 moonstone (newcomer 1st) returns 88 G (75 base + 7.5 first + 5 fee = 87.5 -> 88)");
+ it.todo("3 runes + 3 moonstones (newcomer 1st) returns 137 G (120 base + 12 first + 5 fee)");
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  10 passed | 38 todo (48)
+   Start at  15:14:11
+   Duration  396ms (transform 31ms, setup 0ms, collect 38ms, tests 3ms, environment 0ms, prepare 128ms)
+[0m
+### Red 11: 2 runes + 1 moonstone → 88
+
+50+25 = 75 base, 7.5 first, 5 fee = 87.5 → 88. Currently impl: runes count=2 (not 3), moonstones count=1 (not 3) → 2×25 + 1×25 = 75. ✓ Should pass.
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -39,9 +39,15 @@
+   expect(quote({ customer: { yearsWithMHPCO: 0 }, items: Array(7).fill({ type: "rune" }), contractIndex: 0 })).toBe(198);
+ });
+ 
+ // "Alike" components clarification: same type only
+-it.todo("2 runes + 1 moonstone (newcomer 1st) returns 88 G (75 base + 7.5 first + 5 fee = 87.5 -> 88)");
++it("2 runes + 1 moonstone (newcomer 1st) returns 88 G (75 base + 7.5 first + 5 fee = 87.5 -> 88)", () => {
++  expect(quote({
++    customer: { yearsWithMHPCO: 0 },
++    items: [{ type: "rune" }, { type: "rune" }, { type: "moonstone" }],
++    contractIndex: 0,
++  })).toBe(88);
++});
+ it.todo("3 runes + 3 moonstones (newcomer 1st) returns 137 G (120 base + 12 first + 5 fee)");
+ 
+ // Modifier scope on multi-item policies
+ // Spec: 160 base + 50 cursed = 210 G before further modifiers and fee
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  11 passed | 37 todo (48)
+   Start at  15:14:18
+   Duration  435ms (transform 34ms, setup 0ms, collect 46ms, tests 3ms, environment 0ms, prepare 144ms)
+[0m
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -46,9 +46,18 @@
+     items: [{ type: "rune" }, { type: "rune" }, { type: "moonstone" }],
+     contractIndex: 0,
+   })).toBe(88);
+ });
+-it.todo("3 runes + 3 moonstones (newcomer 1st) returns 137 G (120 base + 12 first + 5 fee)");
++it("3 runes + 3 moonstones (newcomer 1st) returns 137 G (120 base + 12 first + 5 fee)", () => {
++  expect(quote({
++    customer: { yearsWithMHPCO: 0 },
++    items: [
++      { type: "rune" }, { type: "rune" }, { type: "rune" },
++      { type: "moonstone" }, { type: "moonstone" }, { type: "moonstone" },
++    ],
++    contractIndex: 0,
++  })).toBe(137);
++});
+ 
+ // Modifier scope on multi-item policies
+ // Spec: 160 base + 50 cursed = 210 G before further modifiers and fee
+ // Newcomer 1st: + 16 first (10% of 160) + 5 fee = 231 G
+
+[0m
+### Red 12: 3 runes + 3 moonstones → 137 (two separate blocks)
+
+60+60 = 120 base, 12 first, 5 fee = 137. Should pass.
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  12 passed | 36 todo (48)
+   Start at  15:14:26
+   Duration  501ms (transform 34ms, setup 0ms, collect 39ms, tests 2ms, environment 0ms, prepare 161ms)
+[0m
+### Red 13: cursed sword + amulet → 231
+
+160 base + 50 cursed + 16 first + 5 fee = 231. Current code doesn't handle cursed → will produce 160+16+5 = 181. **Fails as predicted**.
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -60,9 +60,15 @@
+ 
+ // Modifier scope on multi-item policies
+ // Spec: 160 base + 50 cursed = 210 G before further modifiers and fee
+ // Newcomer 1st: + 16 first (10% of 160) + 5 fee = 231 G
+-it.todo("cursed sword + plain amulet (newcomer 1st contract) returns 231 G (160 base + 50 cursed + 16 first + 5 fee)");
++it("cursed sword + plain amulet (newcomer 1st contract) returns 231 G (160 base + 50 cursed + 16 first + 5 fee)", () => {
++  expect(quote({
++    customer: { yearsWithMHPCO: 0 },
++    items: [{ type: "sword", cursed: true }, { type: "amulet" }],
++    contractIndex: 0,
++  })).toBe(231);
++});
+ 
+ // Modifier thresholds
+ it.todo("sword with exactly enchantment 5 (newcomer 1st) returns 145 G (100 + 30 high + 10 first + 5 fee)");
+ it.todo("cursed sword with exactly enchantment 5 (newcomer 1st) returns 195 G (100 + 50 cursed + 30 high + 10 first + 5 fee)");
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -10
+71| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 2 skipped (3)
+      Tests  1 failed | 12 passed | 35 todo (48)
+   Start at  15:14:33
+   Duration  402ms (transform 31ms, setup 1ms, collect 37ms, tests 6ms, environment 0ms, prepare 126ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+Failed as predicted. **Green**: add item-specific modifier (cursed = 50% of item's base).
+
+I need to track item-level base premiums separately to apply item modifiers. Let me refactor the design.
+[0m← [0mEdit src/quote.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
+@@ -62,14 +62,21 @@
+   }
+   return nonComponentBase + componentBase;
+ }
+ 
++function itemModifierSurcharge(item: Item): number {
++  const base = basePremiumOfItem(item);
++  let surcharge = 0;
++  if (item.cursed) surcharge += base * 0.5;
++  return surcharge;
++}
++
+ export function quote(input: QuoteInput): number {
+-  // Validate item types eagerly.
+   for (const item of input.items) {
+     basePremiumOfItem(item);
+   }
+   const policyBase = policyBasePremium(input.items);
++  const itemSurcharges = input.items.reduce((sum, item) => sum + itemModifierSurcharge(item), 0);
+   const firstInsurance = policyBase * 0.1;
+-  const total = policyBase + firstInsurance + PROCESSING_FEE;
++  const total = policyBase + itemSurcharges + firstInsurance + PROCESSING_FEE;
+   return Math.ceil(total);
+ }
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -10
+✓ src/quote.spec.ts  (21 tests | 8 skipped) 3ms
+ ↓ src/claim.spec.ts  (17 tests | 17 skipped)
+ ↓ src/cli.spec.ts  (10 tests | 10 skipped)
+
+ Test Files  1 passed | 2 skipped (3)
+      Tests  13 passed | 35 todo (48)
+   Start at  15:14:45
+   Duration  442ms (transform 32ms, setup 0ms, collect 38ms, tests 3ms, environment 0ms, prepare 130ms)
+[0m
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -69,9 +69,15 @@
+   })).toBe(231);
+ });
+ 
+ // Modifier thresholds
+-it.todo("sword with exactly enchantment 5 (newcomer 1st) returns 145 G (100 + 30 high + 10 first + 5 fee)");
++it("sword with exactly enchantment 5 (newcomer 1st) returns 145 G (100 + 30 high + 10 first + 5 fee)", () => {
++  expect(quote({
++    customer: { yearsWithMHPCO: 0 },
++    items: [{ type: "sword", enchantment: 5 }],
++    contractIndex: 0,
++  })).toBe(145);
++});
+ it.todo("cursed sword with exactly enchantment 5 (newcomer 1st) returns 195 G (100 + 50 cursed + 30 high + 10 first + 5 fee)");
+ it.todo("sword with enchantment 4 not cursed (newcomer 1st) returns 115 G (no high-ench, 100 + 10 first + 5 fee)");
+ 
+ // Loyalty exactly 2 years
+
+[0m
+All passing. Refactor: code stays clean.
+
+### Red 14: sword ench 5 → 145 (100 + 30 high + 10 first + 5 fee)
+
+Current: doesn't handle enchantment → 100+10+5 = 115. **Fails**.
+[0m$ [0mpnpm test 2>&1 | tail -8
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 2 skipped (3)
+      Tests  1 failed | 13 passed | 34 todo (48)
+   Start at  15:14:56
+   Duration  410ms (transform 31ms, setup 0ms, collect 37ms, tests 7ms, environment 0ms, prepare 129ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+[0m← [0mEdit src/quote.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
+@@ -62,12 +62,15 @@
+   }
+   return nonComponentBase + componentBase;
+ }
+ 
++const HIGH_ENCHANTMENT_THRESHOLD = 5;
++
+ function itemModifierSurcharge(item: Item): number {
+   const base = basePremiumOfItem(item);
+   let surcharge = 0;
+   if (item.cursed) surcharge += base * 0.5;
++  if ((item.enchantment ?? 0) >= HIGH_ENCHANTMENT_THRESHOLD) surcharge += base * 0.3;
+   return surcharge;
+ }
+ 
+ export function quote(input: QuoteInput): number {
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  14 passed | 34 todo (48)
+   Start at  15:15:05
+   Duration  423ms (transform 32ms, setup 1ms, collect 39ms, tests 4ms, environment 0ms, prepare 139ms)
+[0m
+### Red 15: cursed sword ench 5 → 195
+
+100 + 50 + 30 + 10 + 5 = 195. Should pass.
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -76,9 +76,15 @@
+     items: [{ type: "sword", enchantment: 5 }],
+     contractIndex: 0,
+   })).toBe(145);
+ });
+-it.todo("cursed sword with exactly enchantment 5 (newcomer 1st) returns 195 G (100 + 50 cursed + 30 high + 10 first + 5 fee)");
++it("cursed sword with exactly enchantment 5 (newcomer 1st) returns 195 G (100 + 50 cursed + 30 high + 10 first + 5 fee)", () => {
++  expect(quote({
++    customer: { yearsWithMHPCO: 0 },
++    items: [{ type: "sword", enchantment: 5, cursed: true }],
++    contractIndex: 0,
++  })).toBe(195);
++});
+ it.todo("sword with enchantment 4 not cursed (newcomer 1st) returns 115 G (no high-ench, 100 + 10 first + 5 fee)");
+ 
+ // Loyalty exactly 2 years
+ it.todo("long-standing customer (2 years), 1st contract, single sword returns 95 G (100 base - 20 loyalty + 10 first + 5 fee)");
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  15 passed | 33 todo (48)
+   Start at  15:15:12
+   Duration  410ms (transform 36ms, setup 0ms, collect 43ms, tests 3ms, environment 0ms, prepare 128ms)
+[0m
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -83,9 +83,15 @@
+     items: [{ type: "sword", enchantment: 5, cursed: true }],
+     contractIndex: 0,
+   })).toBe(195);
+ });
+-it.todo("sword with enchantment 4 not cursed (newcomer 1st) returns 115 G (no high-ench, 100 + 10 first + 5 fee)");
++it("sword with enchantment 4 not cursed (newcomer 1st) returns 115 G (no high-ench, 100 + 10 first + 5 fee)", () => {
++  expect(quote({
++    customer: { yearsWithMHPCO: 0 },
++    items: [{ type: "sword", enchantment: 4 }],
++    contractIndex: 0,
++  })).toBe(115);
++});
+ 
+ // Loyalty exactly 2 years
+ it.todo("long-standing customer (2 years), 1st contract, single sword returns 95 G (100 base - 20 loyalty + 10 first + 5 fee)");
+ 
+
+[0m
+### Red 16: sword ench 4 not cursed → 115 (no high-ench)
+
+Already covered by existing logic. Should pass.
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  16 passed | 32 todo (48)
+   Start at  15:15:23
+   Duration  593ms (transform 50ms, setup 0ms, collect 58ms, tests 4ms, environment 0ms, prepare 214ms)
+[0m
+### Red 17: 2-year loyalty → 95
+
+100 base + 0 item mods + (-20 loyalty + 10 first) policy mods + 5 fee = 95. Current code only has first insurance → 100 + 10 + 5 = 115. **Fails**.
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -92,9 +92,15 @@
+   })).toBe(115);
+ });
+ 
+ // Loyalty exactly 2 years
+-it.todo("long-standing customer (2 years), 1st contract, single sword returns 95 G (100 base - 20 loyalty + 10 first + 5 fee)");
++it("long-standing customer (2 years), 1st contract, single sword returns 95 G (100 base - 20 loyalty + 10 first + 5 fee)", () => {
++  expect(quote({
++    customer: { yearsWithMHPCO: 2 },
++    items: [{ type: "sword" }],
++    contractIndex: 0,
++  })).toBe(95);
++});
+ 
+ // Newcomer with a cursed sword integration example: 165 G
+ it.todo("newcomer with cursed sword (steel, ench 3) returns 165 G (100 + 50 cursed + 10 first + 5 fee)");
+ 
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -8
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 2 skipped (3)
+      Tests  1 failed | 16 passed | 31 todo (48)
+   Start at  15:15:32
+   Duration  407ms (transform 38ms, setup 1ms, collect 39ms, tests 7ms, environment 0ms, prepare 133ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+[0m← [0mEdit src/quote.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.ts
+@@ -72,14 +72,24 @@
+   if ((item.enchantment ?? 0) >= HIGH_ENCHANTMENT_THRESHOLD) surcharge += base * 0.3;
+   return surcharge;
+ }
+ 
++const LOYALTY_YEARS_THRESHOLD = 2;
++
++function policyModifierAdjustment(policyBase: number, customer: Customer, contractIndex: number): number {
++  let adjustment = 0;
++  if (customer.yearsWithMHPCO >= LOYALTY_YEARS_THRESHOLD) adjustment -= policyBase * 0.2;
++  adjustment += policyBase * 0.1; // first insurance applies per quote
++  if (contractIndex > 0) adjustment -= policyBase * 0.15;
++  return adjustment;
++}
++
+ export function quote(input: QuoteInput): number {
+   for (const item of input.items) {
+     basePremiumOfItem(item);
+   }
+   const policyBase = policyBasePremium(input.items);
+   const itemSurcharges = input.items.reduce((sum, item) => sum + itemModifierSurcharge(item), 0);
+-  const firstInsurance = policyBase * 0.1;
+-  const total = policyBase + itemSurcharges + firstInsurance + PROCESSING_FEE;
++  const policyAdjustment = policyModifierAdjustment(policyBase, input.customer, input.contractIndex);
++  const total = policyBase + itemSurcharges + policyAdjustment + PROCESSING_FEE;
+   return Math.ceil(total);
+ }
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  17 passed | 31 todo (48)
+   Start at  15:15:43
+   Duration  409ms (transform 35ms, setup 0ms, collect 44ms, tests 3ms, environment 0ms, prepare 127ms)
+[0m
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -101,9 +101,15 @@
+   })).toBe(95);
+ });
+ 
+ // Newcomer with a cursed sword integration example: 165 G
+-it.todo("newcomer with cursed sword (steel, ench 3) returns 165 G (100 + 50 cursed + 10 first + 5 fee)");
++it("newcomer with cursed sword (steel, ench 3) returns 165 G (100 + 50 cursed + 10 first + 5 fee)", () => {
++  expect(quote({
++    customer: { yearsWithMHPCO: 0 },
++    items: [{ type: "sword", material: "steel", enchantment: 3, cursed: true }],
++    contractIndex: 0,
++  })).toBe(165);
++});
+ 
+ // Long-standing 2nd contract integration example: 160 G
+ it.todo("long-standing customer (3 years), 2nd contract, cursed sword ench 7 returns 160 G (100 + 50 cursed + 30 high - 20 loyalty + 10 first - 15 follow-up + 5 fee)");
+ 
+
+[0m
+### Red 18: newcomer + cursed sword (steel, ench 3) → 165
+
+100 + 50 cursed + 10 first + 5 = 165. Should pass.
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  18 passed | 30 todo (48)
+   Start at  15:15:51
+   Duration  433ms (transform 37ms, setup 0ms, collect 44ms, tests 5ms, environment 0ms, prepare 143ms)
+[0m
+### Red 19: long-standing 2nd contract cursed ench 7 → 160
+
+100 + 50 + 30 - 20 + 10 - 15 + 5 = 160. Should pass.
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -110,9 +110,15 @@
+   })).toBe(165);
+ });
+ 
+ // Long-standing 2nd contract integration example: 160 G
+-it.todo("long-standing customer (3 years), 2nd contract, cursed sword ench 7 returns 160 G (100 + 50 cursed + 30 high - 20 loyalty + 10 first - 15 follow-up + 5 fee)");
++it("long-standing customer (3 years), 2nd contract, cursed sword ench 7 returns 160 G (100 + 50 cursed + 30 high - 20 loyalty + 10 first - 15 follow-up + 5 fee)", () => {
++  expect(quote({
++    customer: { yearsWithMHPCO: 3 },
++    items: [{ type: "sword", material: "steel", enchantment: 7, cursed: true }],
++    contractIndex: 1,
++  })).toBe(160);
++});
+ 
+ // Rounding in MHPCO's favor (already verified by 7 runes / 2 runes + moonstone)
+ it.todo("intermediate fractional amounts are kept as fractions; only final premium is rounded (covered by 7 runes case)");
+ 
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  19 passed | 29 todo (48)
+   Start at  15:16:01
+   Duration  437ms (transform 37ms, setup 0ms, collect 43ms, tests 4ms, environment 0ms, prepare 145ms)
+[0m
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -119,9 +119,16 @@
+     })).toBe(160);
+   });
+ 
+   // Rounding in MHPCO's favor (already verified by 7 runes / 2 runes + moonstone)
+-  it.todo("intermediate fractional amounts are kept as fractions; only final premium is rounded (covered by 7 runes case)");
++  it("intermediate fractional amounts are kept as fractions; only final premium is rounded (7 runes -> 198)", () => {
++    // 7 runes: base 175, first ins 17.5, fee 5 -> 197.5 -> ceil 198. Intermediate fraction preserved.
++    expect(quote({
++      customer: { yearsWithMHPCO: 0 },
++      items: Array(7).fill({ type: "rune" }),
++      contractIndex: 0,
++    })).toBe(198);
++  });
+ 
+   // Unknown item type
+   it.todo("quote with unknown item type throws an error");
+ });
+
+[0m
+### Red 20: Rounding (covered by 7 runes case)
+
+Let me just remove the redundant todo since it duplicates an existing test, or convert it to a fractional check.
+
+Actually, the spec says "intermediate amounts during a calculation are kept as fractions; only the final premium or payout is rounded". The 7 runes case (197.5 → 198) verified this. Let me write a dedicated test verifying the principle with intermediate fractions:
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  20 passed | 28 todo (48)
+   Start at  15:16:11
+   Duration  438ms (transform 41ms, setup 0ms, collect 45ms, tests 3ms, environment 0ms, prepare 143ms)
+[0m
+[0m← [0mEdit src/quote.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/quote.spec.ts
+@@ -129,6 +129,12 @@
+     })).toBe(198);
+   });
+ 
+   // Unknown item type
+-  it.todo("quote with unknown item type throws an error");
++  it("quote with unknown item type throws an error", () => {
++    expect(() => quote({
++      customer: { yearsWithMHPCO: 0 },
++      items: [{ type: "broomstick" }],
++      contractIndex: 0,
++    })).toThrow();
++  });
+ });
+
+[0m
+### Red 21: Unknown item type throws
+
+Current code throws in `basePremiumOfItem`. Should pass.
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  21 passed | 27 todo (48)
+   Start at  15:16:18
+   Duration  427ms (transform 35ms, setup 0ms, collect 43ms, tests 4ms, environment 0ms, prepare 138ms)
+[0m
+All 21 quote tests passing. Now let's do a refactor pass on quote.ts.
+
+### Refactor pass on quote.ts
+
+The code has a small smell: validating item types twice (once in `quote`, once in `policyBasePremium`). Also the `basePremiumOfItem` is called inside the eager validation loop wastefully. Let me consolidate:
+[0m→ [0mRead src/quote.ts
+Refactoring: constants grouped at top. Naming is good. Let me reorganize for clarity:
+[0m
+[0m← [0mWrite src/quote.ts
+Wrote file successfully.
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  1 passed | 2 skipped (3)
+      Tests  21 passed | 27 todo (48)
+   Start at  15:16:40
+   Duration  439ms (transform 39ms, setup 0ms, collect 44ms, tests 4ms, environment 0ms, prepare 140ms)
+[0m
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -2,9 +2,15 @@
+ import { claim } from "./claim.js";
+ 
+ describe("claim", () => {
+   // Standard reimbursement (no special clauses)
+-  it.todo("steel sword ench 3, damage 500 G -> payout 400 G (full minus 100 deductible)");
++  it("steel sword ench 3, damage 500 G -> payout 400 G (full minus 100 deductible)", () => {
++    const result = claim({
++      policy: { items: [{ type: "sword", material: "steel", enchantment: 3 }], remainingCap: 2000 },
++      incident: { cause: "fire", damages: [{ itemType: "sword", amount: 500 }] },
++    });
++    expect(result.payout).toBe(400);
++  });
+   it.todo("rune (no enchantment, no material), damage 200 G -> payout 100 G (full minus 100 deductible)");
+ 
+   // Enchantment threshold vs dragon material
+   it.todo("dragon-material sword ench 8, damage 1000 G -> payout 400 G (high-ench 50% then deductible: 500 - 100)");
+
+[0m
+Refactor green. Tests still pass. Now move to claim tests.
+
+### Red: claim — steel sword ench 3 damage 500 → 400
+**Compilation prediction**: `./claim.js` not found.
+[0m$ [0mpnpm test 2>&1 | tail -15
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/claim.spec.ts [ src/claim.spec.ts ]
+Error: Failed to load url ./claim.js (resolved id: ./claim.js) in /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/.pnpm/vite@5.4.21/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51969:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 1 passed | 1 skipped (3)
+      Tests  21 passed | 10 todo (31)
+   Start at  15:16:52
+   Duration  425ms (transform 38ms, setup 0ms, collect 35ms, tests 4ms, environment 0ms, prepare 135ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+[0m← [0mWrite src/claim.ts
+Wrote file successfully.
+[0m
+Compilation error as predicted ✅. Empty function:
+**Runtime prediction**: expected 400, received 0.
+[0m$ [0mpnpm test 2>&1 | tail -8
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 1 passed | 1 skipped (3)
+      Tests  1 failed | 21 passed | 26 todo (48)
+   Start at  15:16:59
+   Duration  432ms (transform 42ms, setup 0ms, collect 48ms, tests 9ms, environment 0ms, prepare 133ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+**Green**: Implement basic claim logic.
+[0m← [0mEdit src/claim.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+@@ -24,7 +24,14 @@
+   payout: number;
+   remainingCap: number;
+ }
+ 
+-export function claim(_input: ClaimInput): ClaimResult {
+-  return { payout: 0, remainingCap: 0 };
++const DEDUCTIBLE = 100;
++
++export function claim(input: ClaimInput): ClaimResult {
++  let totalPayout = 0;
++  for (const damage of input.incident.damages) {
++    const itemPayout = Math.max(0, damage.amount - DEDUCTIBLE);
++    totalPayout += itemPayout;
++  }
++  return { payout: totalPayout, remainingCap: input.policy.remainingCap - totalPayout };
+ }
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  22 passed | 26 todo (48)
+   Start at  15:17:09
+   Duration  410ms (transform 40ms, setup 0ms, collect 47ms, tests 5ms, environment 0ms, prepare 129ms)
+[0m
+### Red: rune damage 200 → 100
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -9,9 +9,15 @@
+     incident: { cause: "fire", damages: [{ itemType: "sword", amount: 500 }] },
+   });
+   expect(result.payout).toBe(400);
+ });
+-it.todo("rune (no enchantment, no material), damage 200 G -> payout 100 G (full minus 100 deductible)");
++it("rune (no enchantment, no material), damage 200 G -> payout 100 G (full minus 100 deductible)", () => {
++  const result = claim({
++    policy: { items: [{ type: "rune" }], remainingCap: 500 },
++    incident: { cause: "fire", damages: [{ itemType: "rune", amount: 200 }] },
++  });
++  expect(result.payout).toBe(100);
++});
+ 
+ // Enchantment threshold vs dragon material
+ it.todo("dragon-material sword ench 8, damage 1000 G -> payout 400 G (high-ench 50% then deductible: 500 - 100)");
+ it.todo("dragon-material sword ench 9, damage 1000 G -> payout 400 G (both clauses; 50% wins, then deductible)");
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  23 passed | 25 todo (48)
+   Start at  15:17:19
+   Duration  434ms (transform 41ms, setup 0ms, collect 53ms, tests 5ms, environment 0ms, prepare 136ms)
+[0m
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -18,9 +18,15 @@
+   expect(result.payout).toBe(100);
+ });
+ 
+ // Enchantment threshold vs dragon material
+-it.todo("dragon-material sword ench 8, damage 1000 G -> payout 400 G (high-ench 50% then deductible: 500 - 100)");
++it("dragon-material sword ench 8, damage 1000 G -> payout 400 G (high-ench 50% then deductible: 500 - 100)", () => {
++  const result = claim({
++    policy: { items: [{ type: "sword", material: "dragon", enchantment: 8 }], remainingCap: 2000 },
++    incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1000 }] },
++  });
++  expect(result.payout).toBe(400);
++});
+ it.todo("dragon-material sword ench 9, damage 1000 G -> payout 400 G (both clauses; 50% wins, then deductible)");
+ it.todo("dragon-material sword ench 5, damage 800 G -> payout 700 G (only dragon clause: full reimbursement minus deductible)");
+ it.todo("steel sword ench 9, damage 1000 G -> payout 400 G (only high-ench clause: 50% then deductible)");
+ 
+
+[0m
+### Red: dragon sword ench 8, damage 1000 → 400 (high-ench 50% then deductible: 500-100=400)
+
+Current: just deductible → 1000-100 = 900. **Fails**.
+[0m$ [0mpnpm test 2>&1 | tail -5
+Tests  1 failed | 23 passed | 24 todo (48)
+   Start at  15:17:27
+   Duration  429ms (transform 40ms, setup 0ms, collect 46ms, tests 11ms, environment 0ms, prepare 137ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+**Green**: The 50% high-enchantment clause applies. Spec says ench 8 → high-ench applies (50%), then deductible. Important: per spec note, "high-enchantment clause applies, then deductible" wins even with dragon material at ench=8.
+
+Per spec example: dragon-material sword ench 8, damage 1000 → 400 (high-ench clause applies, then deductible). So when ench≥8 the high-ench 50% rule wins over dragon full reimbursement.
+
+Wait — high-enchantment surcharge threshold for premium is ench≥5, but the 50% damage reimbursement is for ench≥8. Different thresholds! Let me re-read.
+
+> Damage to items with enchantment level ≥ 8 is reimbursed at 50 % of the damage amount.
+
+Yes — claim threshold is ≥8.
+
+> dragon-material sword, enchantment 9, damage 1000 G → payout 400 G (both clauses apply; the 50 % rule wins, then deductible)
+
+So when both apply (ench≥8 AND dragon), 50% wins.
+
+I need to look up the item by type to determine material/enchantment. The damage entry only specifies `itemType` and `amount`. We must match damages to items.
+
+For now, with one item, I find the first matching item by type:
+[0m← [0mEdit src/claim.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+@@ -25,13 +25,28 @@
+   remainingCap: number;
+ }
+ 
+ const DEDUCTIBLE = 100;
++const HIGH_ENCHANTMENT_PAYOUT_THRESHOLD = 8;
+ 
++function findItem(items: Item[], itemType: string): Item | undefined {
++  return items.find((it) => it.type === itemType);
++}
++
++function reimbursementFor(damage: Damage, item: Item | undefined): number {
++  const enchantment = item?.enchantment ?? 0;
++  if (enchantment >= HIGH_ENCHANTMENT_PAYOUT_THRESHOLD) {
++    return damage.amount * 0.5;
++  }
++  return damage.amount;
++}
++
+ export function claim(input: ClaimInput): ClaimResult {
+   let totalPayout = 0;
+   for (const damage of input.incident.damages) {
+-    const itemPayout = Math.max(0, damage.amount - DEDUCTIBLE);
++    const item = findItem(input.policy.items, damage.itemType);
++    const reimbursement = reimbursementFor(damage, item);
++    const itemPayout = Math.max(0, reimbursement - DEDUCTIBLE);
+     totalPayout += itemPayout;
+   }
+   return { payout: totalPayout, remainingCap: input.policy.remainingCap - totalPayout };
+ }
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  24 passed | 24 todo (48)
+   Start at  15:17:40
+   Duration  427ms (transform 38ms, setup 0ms, collect 49ms, tests 6ms, environment 0ms, prepare 131ms)
+[0m
+### Red: dragon ench 9, damage 1000 → 400 (same as above; 50% wins)
+
+Already passes (9≥8 → 50%).
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -25,9 +25,15 @@
+     incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1000 }] },
+   });
+   expect(result.payout).toBe(400);
+ });
+-it.todo("dragon-material sword ench 9, damage 1000 G -> payout 400 G (both clauses; 50% wins, then deductible)");
++it("dragon-material sword ench 9, damage 1000 G -> payout 400 G (both clauses; 50% wins, then deductible)", () => {
++  const result = claim({
++    policy: { items: [{ type: "sword", material: "dragon", enchantment: 9 }], remainingCap: 2000 },
++    incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1000 }] },
++  });
++  expect(result.payout).toBe(400);
++});
+ it.todo("dragon-material sword ench 5, damage 800 G -> payout 700 G (only dragon clause: full reimbursement minus deductible)");
+ it.todo("steel sword ench 9, damage 1000 G -> payout 400 G (only high-ench clause: 50% then deductible)");
+ 
+ // Deductible per damage event
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  25 passed | 23 todo (48)
+   Start at  15:17:47
+   Duration  464ms (transform 41ms, setup 0ms, collect 48ms, tests 6ms, environment 0ms, prepare 160ms)
+[0m
+### Red: dragon ench 5, damage 800 → 700 (only dragon: full - 100)
+
+Current code: ench 5 < 8 → full reimbursement 800. -100 = 700. ✓ Should pass.
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -32,9 +32,15 @@
+     incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1000 }] },
+   });
+   expect(result.payout).toBe(400);
+ });
+-it.todo("dragon-material sword ench 5, damage 800 G -> payout 700 G (only dragon clause: full reimbursement minus deductible)");
++it("dragon-material sword ench 5, damage 800 G -> payout 700 G (only dragon clause: full reimbursement minus deductible)", () => {
++  const result = claim({
++    policy: { items: [{ type: "sword", material: "dragon", enchantment: 5 }], remainingCap: 2000 },
++    incident: { cause: "fire", damages: [{ itemType: "sword", amount: 800 }] },
++  });
++  expect(result.payout).toBe(700);
++});
+ it.todo("steel sword ench 9, damage 1000 G -> payout 400 G (only high-ench clause: 50% then deductible)");
+ 
+ // Deductible per damage event
+ it.todo("dragon attack damages sword (500 G) and amulet (300 G) -> payout 600 G (deductible applied once per damaged item)");
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  26 passed | 22 todo (48)
+   Start at  15:17:55
+   Duration  416ms (transform 43ms, setup 0ms, collect 49ms, tests 7ms, environment 0ms, prepare 128ms)
+[0m
+### Red: steel ench 9, dmg 1000 → 400
+
+Already passes (9≥8 → 500-100=400).
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -39,9 +39,15 @@
+     incident: { cause: "fire", damages: [{ itemType: "sword", amount: 800 }] },
+   });
+   expect(result.payout).toBe(700);
+ });
+-it.todo("steel sword ench 9, damage 1000 G -> payout 400 G (only high-ench clause: 50% then deductible)");
++it("steel sword ench 9, damage 1000 G -> payout 400 G (only high-ench clause: 50% then deductible)", () => {
++  const result = claim({
++    policy: { items: [{ type: "sword", material: "steel", enchantment: 9 }], remainingCap: 2000 },
++    incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1000 }] },
++  });
++  expect(result.payout).toBe(400);
++});
+ 
+ // Deductible per damage event
+ it.todo("dragon attack damages sword (500 G) and amulet (300 G) -> payout 600 G (deductible applied once per damaged item)");
+ 
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  27 passed | 21 todo (48)
+   Start at  15:18:01
+   Duration  462ms (transform 41ms, setup 0ms, collect 47ms, tests 7ms, environment 0ms, prepare 148ms)
+[0m
+### Red: dragon attack damages sword 500 + amulet 300 → 600 (deductible per item)
+
+Current: (500-100) + (300-100) = 400+200 = 600 ✓.
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -48,9 +48,21 @@
+   expect(result.payout).toBe(400);
+ });
+ 
+ // Deductible per damage event
+-it.todo("dragon attack damages sword (500 G) and amulet (300 G) -> payout 600 G (deductible applied once per damaged item)");
++it("dragon attack damages sword (500 G) and amulet (300 G) -> payout 600 G (deductible applied once per damaged item)", () => {
++  const result = claim({
++    policy: { items: [{ type: "sword" }, { type: "amulet" }], remainingCap: 3200 },
++    incident: {
++      cause: "dragon",
++      damages: [
++        { itemType: "sword", amount: 500 },
++        { itemType: "amulet", amount: 300 },
++      ],
++    },
++  });
++  expect(result.payout).toBe(600);
++});
+ 
+ // Multiple items of the same type
+ it.todo("policy covers two swords, damage to both -> each entry gets its own deductible");
+ it.todo("policy covers one sword but claim has two sword damages -> claim is rejected");
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  28 passed | 20 todo (48)
+   Start at  15:18:12
+   Duration  449ms (transform 44ms, setup 0ms, collect 51ms, tests 7ms, environment 0ms, prepare 144ms)
+[0m
+### Red: two swords each damaged, each gets deductible
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -63,9 +63,22 @@
+   expect(result.payout).toBe(600);
+ });
+ 
+ // Multiple items of the same type
+-it.todo("policy covers two swords, damage to both -> each entry gets its own deductible");
++it("policy covers two swords, damage to both -> each entry gets its own deductible", () => {
++  const result = claim({
++    policy: { items: [{ type: "sword" }, { type: "sword" }], remainingCap: 4000 },
++    incident: {
++      cause: "dragon",
++      damages: [
++        { itemType: "sword", amount: 500 },
++        { itemType: "sword", amount: 400 },
++      ],
++    },
++  });
++  // (500-100) + (400-100) = 700
++  expect(result.payout).toBe(700);
++});
+ it.todo("policy covers one sword but claim has two sword damages -> claim is rejected");
+ 
+ // Cap exhaustion
+ it.todo("policy covers sword + amulet -> insurance sum 1600 G, cap 3200 G (verified by remainingCap on a small claim)");
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  29 passed | 19 todo (48)
+   Start at  15:18:19
+   Duration  437ms (transform 40ms, setup 1ms, collect 46ms, tests 7ms, environment 0ms, prepare 136ms)
+[0m
+### Red: claim has 2 sword damages but only 1 sword insured → reject
+
+Current code wouldn't reject. **Fails as predicted**.
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -77,9 +77,20 @@
+   });
+   // (500-100) + (400-100) = 700
+   expect(result.payout).toBe(700);
+ });
+-it.todo("policy covers one sword but claim has two sword damages -> claim is rejected");
++it("policy covers one sword but claim has two sword damages -> claim is rejected", () => {
++  expect(() => claim({
++    policy: { items: [{ type: "sword" }], remainingCap: 2000 },
++    incident: {
++      cause: "dragon",
++      damages: [
++        { itemType: "sword", amount: 500 },
++        { itemType: "sword", amount: 400 },
++      ],
++    },
++  })).toThrow();
++});
+ 
+ // Cap exhaustion
+ it.todo("policy covers sword + amulet -> insurance sum 1600 G, cap 3200 G (verified by remainingCap on a small claim)");
+ it.todo("cursed sword (mod premium) -> cap 2000 G based on unmodified insurance value");
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Tests  1 failed | 29 passed | 18 todo (48)
+   Start at  15:18:26
+   Duration  438ms (transform 42ms, setup 0ms, collect 47ms, tests 10ms, environment 0ms, prepare 138ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+[0m← [0mEdit src/claim.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+@@ -39,9 +39,27 @@
+   }
+   return damage.amount;
+ }
+ 
++function validateDamages(items: Item[], damages: Damage[]): void {
++  const itemCounts = new Map<string, number>();
++  for (const item of items) {
++    itemCounts.set(item.type, (itemCounts.get(item.type) ?? 0) + 1);
++  }
++  const damageCounts = new Map<string, number>();
++  for (const damage of damages) {
++    damageCounts.set(damage.itemType, (damageCounts.get(damage.itemType) ?? 0) + 1);
++  }
++  for (const [type, count] of damageCounts) {
++    const insured = itemCounts.get(type) ?? 0;
++    if (count > insured) {
++      throw new Error(`Claim has ${count} damages of type ${type} but policy covers only ${insured}`);
++    }
++  }
++}
++
+ export function claim(input: ClaimInput): ClaimResult {
++  validateDamages(input.policy.items, input.incident.damages);
+   let totalPayout = 0;
+   for (const damage of input.incident.damages) {
+     const item = findItem(input.policy.items, damage.itemType);
+     const reimbursement = reimbursementFor(damage, item);
+
+[0m
+**Green**: Validate damages don't exceed item counts per type.
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  30 passed | 18 todo (48)
+   Start at  15:18:39
+   Duration  443ms (transform 41ms, setup 0ms, collect 51ms, tests 7ms, environment 0ms, prepare 137ms)
+[0m
+### Red: sword + amulet → insurance sum 1600 G, cap 3200 G
+
+This test is about cap computation. The current `Policy` has `remainingCap` as input. We need an API to compute cap from items. Let me add a helper or shift design. Since the test verifies "remainingCap" after small claim, I'll express the cap-from-items logic.
+
+Actually re-reading my test: "verified by remainingCap on a small claim" — it's verifying the cap was set correctly initially. Let me write a test that exercises an `insuranceSumFor`/`capFor` helper function from claim.ts:
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -1,6 +1,6 @@
+ import { describe, it, expect } from "vitest";
+-import { claim } from "./claim.js";
++import { claim, insuranceSum, policyCap } from "./claim.js";
+ 
+ describe("claim", () => {
+   // Standard reimbursement (no special clauses)
+   it("steel sword ench 3, damage 500 G -> payout 400 G (full minus 100 deductible)", () => {
+
+[0m
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -91,9 +91,13 @@
+   })).toThrow();
+ });
+ 
+ // Cap exhaustion
+-it.todo("policy covers sword + amulet -> insurance sum 1600 G, cap 3200 G (verified by remainingCap on a small claim)");
++it("policy covers sword + amulet -> insurance sum 1600 G, cap 3200 G", () => {
++  const items = [{ type: "sword" }, { type: "amulet" }];
++  expect(insuranceSum(items)).toBe(1600);
++  expect(policyCap(items)).toBe(3200);
++});
+ it.todo("cursed sword (mod premium) -> cap 2000 G based on unmodified insurance value");
+ it.todo("sword + 3 runes (block) -> insurance sum 1750 G, cap 3500 G (block discount affects premium only)");
+ it.todo("sword (cap 2000) two claims of 1500 each: first claim payout 1400, cap remaining 600");
+ it.todo("sword (cap 2000) two claims of 1500 each: second claim payout 600, cap remaining 0");
+
+[0m
+**Compilation prediction**: `insuranceSum` not exported. **Runtime**: when added, expect 1600 + 3200.
+[0m$ [0mpnpm test 2>&1 | tail -8
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 1 passed | 1 skipped (3)
+      Tests  1 failed | 30 passed | 17 todo (48)
+   Start at  15:18:52
+   Duration  450ms (transform 44ms, setup 0ms, collect 51ms, tests 11ms, environment 0ms, prepare 138ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+[0m← [0mEdit src/claim.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+@@ -1,5 +1,5 @@
+-import type { Item } from "./quote.js";
++import { baseInsuranceValue, type Item } from "./quote.js";
+ 
+ export interface Damage {
+   itemType: string;
+   amount: number;
+
+[0m
+[0m← [0mEdit src/claim.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+@@ -26,9 +26,18 @@
+ }
+ 
+ const DEDUCTIBLE = 100;
+ const HIGH_ENCHANTMENT_PAYOUT_THRESHOLD = 8;
++const CAP_MULTIPLIER = 2;
+ 
++export function insuranceSum(items: Item[]): number {
++  return items.reduce((sum, item) => sum + baseInsuranceValue(item.type), 0);
++}
++
++export function policyCap(items: Item[]): number {
++  return insuranceSum(items) * CAP_MULTIPLIER;
++}
++
+ function findItem(items: Item[], itemType: string): Item | undefined {
+   return items.find((it) => it.type === itemType);
+ }
+ 
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  31 passed | 17 todo (48)
+   Start at  15:19:04
+   Duration  463ms (transform 47ms, setup 0ms, collect 53ms, tests 7ms, environment 0ms, prepare 143ms)
+[0m
+### Red: cursed sword → cap 2000 (based on unmodified insurance value)
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -96,9 +96,11 @@
+   const items = [{ type: "sword" }, { type: "amulet" }];
+   expect(insuranceSum(items)).toBe(1600);
+   expect(policyCap(items)).toBe(3200);
+ });
+-it.todo("cursed sword (mod premium) -> cap 2000 G based on unmodified insurance value");
++it("cursed sword -> cap 2000 G based on unmodified insurance value (premium modifiers don't raise cap)", () => {
++  expect(policyCap([{ type: "sword", cursed: true, enchantment: 9 }])).toBe(2000);
++});
+ it.todo("sword + 3 runes (block) -> insurance sum 1750 G, cap 3500 G (block discount affects premium only)");
+ it.todo("sword (cap 2000) two claims of 1500 each: first claim payout 1400, cap remaining 600");
+ it.todo("sword (cap 2000) two claims of 1500 each: second claim payout 600, cap remaining 0");
+ 
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  32 passed | 16 todo (48)
+   Start at  15:19:10
+   Duration  425ms (transform 42ms, setup 0ms, collect 51ms, tests 8ms, environment 0ms, prepare 134ms)
+[0m
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -99,9 +99,13 @@
+ });
+ it("cursed sword -> cap 2000 G based on unmodified insurance value (premium modifiers don't raise cap)", () => {
+   expect(policyCap([{ type: "sword", cursed: true, enchantment: 9 }])).toBe(2000);
+ });
+-it.todo("sword + 3 runes (block) -> insurance sum 1750 G, cap 3500 G (block discount affects premium only)");
++it("sword + 3 runes (block) -> insurance sum 1750 G, cap 3500 G (block discount affects premium only)", () => {
++  const items = [{ type: "sword" }, { type: "rune" }, { type: "rune" }, { type: "rune" }];
++  expect(insuranceSum(items)).toBe(1750);
++  expect(policyCap(items)).toBe(3500);
++});
+ it.todo("sword (cap 2000) two claims of 1500 each: first claim payout 1400, cap remaining 600");
+ it.todo("sword (cap 2000) two claims of 1500 each: second claim payout 600, cap remaining 0");
+ 
+ // Rounding payout
+
+[0m
+### Red: sword + 3 runes (block) → insurance sum 1750 (1000 + 750), cap 3500
+
+Current: 1000 + 3×250 = 1750 ✓.
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  33 passed | 15 todo (48)
+   Start at  15:19:17
+   Duration  456ms (transform 44ms, setup 0ms, collect 52ms, tests 8ms, environment 0ms, prepare 139ms)
+[0m
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -104,9 +104,16 @@
+   const items = [{ type: "sword" }, { type: "rune" }, { type: "rune" }, { type: "rune" }];
+   expect(insuranceSum(items)).toBe(1750);
+   expect(policyCap(items)).toBe(3500);
+ });
+-it.todo("sword (cap 2000) two claims of 1500 each: first claim payout 1400, cap remaining 600");
++it("sword (cap 2000) first claim 1500 -> payout 1400, cap remaining 600", () => {
++  const result = claim({
++    policy: { items: [{ type: "sword" }], remainingCap: 2000 },
++    incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1500 }] },
++  });
++  expect(result.payout).toBe(1400);
++  expect(result.remainingCap).toBe(600);
++});
+ it.todo("sword (cap 2000) two claims of 1500 each: second claim payout 600, cap remaining 0");
+ 
+ // Rounding payout
+ it.todo("payout calculation yielding 350.5 G rounds down to 350 G (MHPCO favor)");
+
+[0m
+### Red: sword cap 2000, 1st claim 1500 → payout 1400, cap rem 600
+
+(1500-100) = 1400, cap rem 2000-1400 = 600 ✓.
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  34 passed | 14 todo (48)
+   Start at  15:19:26
+   Duration  457ms (transform 43ms, setup 0ms, collect 51ms, tests 7ms, environment 0ms, prepare 147ms)
+[0m
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -112,9 +112,16 @@
+   });
+   expect(result.payout).toBe(1400);
+   expect(result.remainingCap).toBe(600);
+ });
+-it.todo("sword (cap 2000) two claims of 1500 each: second claim payout 600, cap remaining 0");
++it("sword (cap 2000) second claim 1500 against cap remaining 600 -> payout 600, cap remaining 0", () => {
++  const result = claim({
++    policy: { items: [{ type: "sword" }], remainingCap: 600 },
++    incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1500 }] },
++  });
++  expect(result.payout).toBe(600);
++  expect(result.remainingCap).toBe(0);
++});
+ 
+ // Rounding payout
+ it.todo("payout calculation yielding 350.5 G rounds down to 350 G (MHPCO favor)");
+ 
+
+[0m
+### Red: 2nd claim 1500 on remaining cap 600 → payout 600, cap rem 0
+
+Current: would compute 1500-100 = 1400, but cap is only 600 → should cap to 600. Current impl doesn't cap. **Fails as predicted**.
+[0m$ [0mpnpm test 2>&1 | tail -8
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 1 passed | 1 skipped (3)
+      Tests  1 failed | 34 passed | 13 todo (48)
+   Start at  15:19:35
+   Duration  439ms (transform 47ms, setup 0ms, collect 52ms, tests 13ms, environment 0ms, prepare 136ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+**Green**: cap the payout to remainingCap.
+[0m← [0mEdit src/claim.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+@@ -74,6 +74,7 @@
+     const reimbursement = reimbursementFor(damage, item);
+     const itemPayout = Math.max(0, reimbursement - DEDUCTIBLE);
+     totalPayout += itemPayout;
+   }
+-  return { payout: totalPayout, remainingCap: input.policy.remainingCap - totalPayout };
++  const cappedPayout = Math.min(totalPayout, input.policy.remainingCap);
++  return { payout: cappedPayout, remainingCap: input.policy.remainingCap - cappedPayout };
+ }
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  35 passed | 13 todo (48)
+   Start at  15:19:43
+   Duration  451ms (transform 45ms, setup 0ms, collect 57ms, tests 8ms, environment 0ms, prepare 143ms)
+[0m
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -122,9 +122,16 @@
+   expect(result.remainingCap).toBe(0);
+ });
+ 
+ // Rounding payout
+-it.todo("payout calculation yielding 350.5 G rounds down to 350 G (MHPCO favor)");
++it("payout calculation yielding 350.5 G rounds down to 350 G (MHPCO favor)", () => {
++  // high-ench sword, damage 901: 901*0.5 = 450.5; -100 deductible = 350.5 -> floor 350.
++  const result = claim({
++    policy: { items: [{ type: "sword", enchantment: 8 }], remainingCap: 2000 },
++    incident: { cause: "fire", damages: [{ itemType: "sword", amount: 901 }] },
++  });
++  expect(result.payout).toBe(350);
++});
+ 
+ // Edge cases
+ it.todo("claim references item not in policy -> throws error");
+ it.todo("claim contains damage entry with negative amount -> throws error");
+
+[0m
+### Red: payout 350.5 → 350 (round down)
+
+Need a scenario producing 350.5. With 50% reimbursement: amount × 0.5 - 100 = 350.5 → amount × 0.5 = 450.5 → amount = 901. So damage=901 on high-ench item: 450.5 - 100 = 350.5 → round down to 350.
+[0m$ [0mpnpm test 2>&1 | tail -8
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 1 passed | 1 skipped (3)
+      Tests  1 failed | 35 passed | 12 todo (48)
+   Start at  15:19:51
+   Duration  445ms (transform 45ms, setup 0ms, collect 55ms, tests 12ms, environment 0ms, prepare 135ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+[0m← [0mEdit src/claim.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+@@ -75,6 +75,7 @@
+     const itemPayout = Math.max(0, reimbursement - DEDUCTIBLE);
+     totalPayout += itemPayout;
+   }
+   const cappedPayout = Math.min(totalPayout, input.policy.remainingCap);
+-  return { payout: cappedPayout, remainingCap: input.policy.remainingCap - cappedPayout };
++  const finalPayout = Math.floor(cappedPayout);
++  return { payout: finalPayout, remainingCap: input.policy.remainingCap - finalPayout };
+ }
+
+[0m
+Got 350.5 (probably). **Green**: floor the final payout.
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  36 passed | 12 todo (48)
+   Start at  15:19:58
+   Duration  477ms (transform 44ms, setup 0ms, collect 52ms, tests 8ms, environment 0ms, prepare 158ms)
+[0m
+### Red: claim references item not in policy → throws
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -132,7 +132,12 @@
+     expect(result.payout).toBe(350);
+   });
+ 
+   // Edge cases
+-  it.todo("claim references item not in policy -> throws error");
++  it("claim references item not in policy -> throws error", () => {
++    expect(() => claim({
++      policy: { items: [{ type: "sword" }], remainingCap: 2000 },
++      incident: { cause: "fire", damages: [{ itemType: "amulet", amount: 200 }] },
++    })).toThrow();
++  });
+   it.todo("claim contains damage entry with negative amount -> throws error");
+ });
+
+[0m
+Current `validateDamages` checks "more entries of type than insured". For an amulet not insured at all, that's 1 > 0 → throws. ✓
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  37 passed | 11 todo (48)
+   Start at  15:20:06
+   Duration  442ms (transform 42ms, setup 0ms, collect 54ms, tests 8ms, environment 0ms, prepare 138ms)
+[0m
+### Red: negative damage amount → throws
+[0m← [0mEdit src/claim.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.spec.ts
+@@ -138,6 +138,11 @@
+       policy: { items: [{ type: "sword" }], remainingCap: 2000 },
+       incident: { cause: "fire", damages: [{ itemType: "amulet", amount: 200 }] },
+     })).toThrow();
+   });
+-  it.todo("claim contains damage entry with negative amount -> throws error");
++  it("claim contains damage entry with negative amount -> throws error", () => {
++    expect(() => claim({
++      policy: { items: [{ type: "sword" }], remainingCap: 2000 },
++      incident: { cause: "fire", damages: [{ itemType: "sword", amount: -200 }] },
++    })).toThrow();
++  });
+ });
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -8
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 1 passed | 1 skipped (3)
+      Tests  1 failed | 37 passed | 10 todo (48)
+   Start at  15:20:15
+   Duration  452ms (transform 44ms, setup 0ms, collect 62ms, tests 10ms, environment 0ms, prepare 143ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+**Green**: validate non-negative.
+[0m← [0mEdit src/claim.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+@@ -49,8 +49,13 @@
+   return damage.amount;
+ }
+ 
+ function validateDamages(items: Item[], damages: Damage[]): void {
++  for (const damage of damages) {
++    if (damage.amount < 0) {
++      throw new Error(`Damage amount must be non-negative, got ${damage.amount}`);
++    }
++  }
+   const itemCounts = new Map<string, number>();
+   for (const item of items) {
+     itemCounts.set(item.type, (itemCounts.get(item.type) ?? 0) + 1);
+   }
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  38 passed | 10 todo (48)
+   Start at  15:20:25
+   Duration  439ms (transform 44ms, setup 0ms, collect 52ms, tests 8ms, environment 0ms, prepare 135ms)
+[0m
+All claim tests pass! Now the CLI tests.
+
+### Refactor pass on claim.ts
+[0m→ [0mRead src/claim.ts
+Naming is clear. There's small duplication in counting maps. Extract `countByType`:
+[0m
+[0m← [0mEdit src/claim.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/claim.ts
+@@ -48,22 +48,25 @@
+   }
+   return damage.amount;
+ }
+ 
++function countByKey<T>(values: T[], keyOf: (v: T) => string): Map<string, number> {
++  const counts = new Map<string, number>();
++  for (const v of values) {
++    const key = keyOf(v);
++    counts.set(key, (counts.get(key) ?? 0) + 1);
++  }
++  return counts;
++}
++
+ function validateDamages(items: Item[], damages: Damage[]): void {
+   for (const damage of damages) {
+     if (damage.amount < 0) {
+       throw new Error(`Damage amount must be non-negative, got ${damage.amount}`);
+     }
+   }
+-  const itemCounts = new Map<string, number>();
+-  for (const item of items) {
+-    itemCounts.set(item.type, (itemCounts.get(item.type) ?? 0) + 1);
+-  }
+-  const damageCounts = new Map<string, number>();
+-  for (const damage of damages) {
+-    damageCounts.set(damage.itemType, (damageCounts.get(damage.itemType) ?? 0) + 1);
+-  }
++  const itemCounts = countByKey(items, (i) => i.type);
++  const damageCounts = countByKey(damages, (d) => d.itemType);
+   for (const [type, count] of damageCounts) {
+     const insured = itemCounts.get(type) ?? 0;
+     if (count > insured) {
+       throw new Error(`Claim has ${count} damages of type ${type} but policy covers only ${insured}`);
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  2 passed | 1 skipped (3)
+      Tests  38 passed | 10 todo (48)
+   Start at  15:20:39
+   Duration  441ms (transform 42ms, setup 0ms, collect 50ms, tests 8ms, environment 0ms, prepare 142ms)
+[0m
+[0m← [0mEdit src/cli.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+@@ -1,9 +1,36 @@
+ import { describe, it, expect } from "vitest";
++import { spawnSync } from "node:child_process";
++import { fileURLToPath } from "node:url";
++import path from "node:path";
+ 
++const CLI_PATH = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "cli.ts");
++
++interface CliRun {
++  status: number | null;
++  stdout: string;
++  stderr: string;
++}
++
++function runCli(input: unknown): CliRun {
++  const result = spawnSync("node", ["--import", "tsx", CLI_PATH], {
++    input: JSON.stringify(input),
++    encoding: "utf8",
++  });
++  return { status: result.status, stdout: result.stdout, stderr: result.stderr };
++}
++
+ describe("claim-office CLI (src/cli.ts)", () => {
+   // End-to-end scenarios via stdin/stdout
+-  it.todo("runs a scenario with one quote step and writes {results: [{premium}]} to stdout");
++  it("runs a scenario with one quote step and writes {results: [{premium}]} to stdout", () => {
++    const run = runCli({
++      customer: { yearsWithMHPCO: 0 },
++      steps: [{ op: "quote", items: [{ type: "sword" }] }],
++    });
++    expect(run.status).toBe(0);
++    const out = JSON.parse(run.stdout);
++    expect(out).toEqual({ results: [{ premium: 115 }] });
++  });
+   it.todo("schema example: amulet quote then fire claim -- writes 2 results in order");
+   it.todo("newcomer + cursed sword integration scenario -- premium 165");
+   it.todo("long-standing customer 2nd contract scenario -- premium 160 (steps reflect ordering)");
+   it.todo("multi-step: quote then claim referencing earlier policy by index -- correct payout and remainingCap");
+
+[0m
+Refactor green. Now the CLI tests.
+
+### Red: CLI — runs quote scenario, writes results
+
+The CLI test needs to spawn a subprocess. Let me write a helper using `child_process` and `tsx` to run the CLI.
+**Compilation prediction**: cli.ts not found, will be a non-zero exit.
+[0m$ [0mpnpm test 2>&1 | tail -15
+27|       steps: [{ op: "quote", items: [{ type: "sword" }] }],
+     28|     });
+     29|     expect(run.status).toBe(0);
+       |                        ^
+     30|     const out = JSON.parse(run.stdout);
+     31|     expect(out).toEqual({ results: [{ premium: 115 }] });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 38 passed | 9 todo (48)
+   Start at  15:20:58
+   Duration  558ms (transform 42ms, setup 0ms, collect 55ms, tests 132ms, environment 0ms, prepare 137ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
+[0m
+CLI fails because cli.ts doesn't exist. **Green**: create CLI.
+[0m← [0mWrite src/cli.ts
+Wrote file successfully.
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -10
+✓ src/quote.spec.ts  (21 tests) 6ms
+ ✓ src/claim.spec.ts  (17 tests) 6ms
+ ✓ src/cli.spec.ts  (10 tests | 9 skipped) 149ms
+
+ Test Files  3 passed (3)
+      Tests  39 passed | 9 todo (48)
+   Start at  15:21:13
+   Duration  664ms (transform 49ms, setup 1ms, collect 66ms, tests 161ms, environment 0ms, prepare 162ms)
+[0m
+### Red: schema example — amulet quote + fire claim
+[0m← [0mEdit src/cli.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+@@ -29,9 +29,31 @@
+   expect(run.status).toBe(0);
+   const out = JSON.parse(run.stdout);
+   expect(out).toEqual({ results: [{ premium: 115 }] });
+ });
+-it.todo("schema example: amulet quote then fire claim -- writes 2 results in order");
++it("schema example: amulet quote then fire claim -- writes 2 results in order", () => {
++  // customer 5 years (loyalty), 1st contract
++  // amulet base 60, item mods 0, policy mods: -20% loyalty + 10% first = -10% of 60 = -6
++  // premium = 60 - 12 + 6 + 5 = 59
++  // claim: amount 200 -> 100 deductible -> payout 100, cap 1200 - 100 = 1100
++  const run = runCli({
++    customer: { yearsWithMHPCO: 5 },
++    steps: [
++      { op: "quote", items: [{ type: "amulet", material: "silver", enchantment: 2, cursed: false }] },
++      { op: "claim", policy: 0, incident: { cause: "fire", damages: [{ itemType: "amulet", amount: 200 }] } },
++    ],
++  });
++  expect(run.status).toBe(0);
++  const out = JSON.parse(run.stdout);
++  expect(out.results).toHaveLength(2);
++  expect(out.results[0]).toHaveProperty("premium");
++  expect(out.results[1]).toHaveProperty("payout");
++  expect(out.results[1]).toHaveProperty("remainingCap");
++  // verified specific amounts
++  expect(out.results[0].premium).toBe(59);
++  expect(out.results[1].payout).toBe(100);
++  expect(out.results[1].remainingCap).toBe(1100);
++});
+ it.todo("newcomer + cursed sword integration scenario -- premium 165");
+ it.todo("long-standing customer 2nd contract scenario -- premium 160 (steps reflect ordering)");
+ it.todo("multi-step: quote then claim referencing earlier policy by index -- correct payout and remainingCap");
+ it.todo("two successive claims against same policy demonstrate cap exhaustion");
+
+[0m
+Wait — let me recompute the amulet premium for customer 5 years, 1st contract:
+- amulet base: 60
+- item mods: 0
+- policy mods: loyalty -20% × 60 = -12, first +10% × 60 = +6 → net -6
+- total: 60 - 12 + 6 + 5 = 59 ✓
+
+Claim: amulet damage 200; ench 2 < 8, no special clause → 200 - 100 = 100. Cap = 600 × 2 = 1200. Remaining = 1100. ✓
+[0m$ [0mpnpm test 2>&1 | tail -8
+✓ src/claim.spec.ts  (17 tests) 3ms
+ ✓ src/cli.spec.ts  (10 tests | 8 skipped) 217ms
+
+ Test Files  3 passed (3)
+      Tests  40 passed | 8 todo (48)
+   Start at  15:21:28
+   Duration  659ms (transform 46ms, setup 0ms, collect 54ms, tests 224ms, environment 0ms, prepare 141ms)
+[0m
+### Red: newcomer + cursed sword scenario → premium 165
+[0m← [0mEdit src/cli.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+@@ -52,9 +52,17 @@
+   expect(out.results[0].premium).toBe(59);
+   expect(out.results[1].payout).toBe(100);
+   expect(out.results[1].remainingCap).toBe(1100);
+ });
+-it.todo("newcomer + cursed sword integration scenario -- premium 165");
++it("newcomer + cursed sword integration scenario -- premium 165", () => {
++  const run = runCli({
++    customer: { yearsWithMHPCO: 0 },
++    steps: [{ op: "quote", items: [{ type: "sword", material: "steel", enchantment: 3, cursed: true }] }],
++  });
++  expect(run.status).toBe(0);
++  const out = JSON.parse(run.stdout);
++  expect(out).toEqual({ results: [{ premium: 165 }] });
++});
+ it.todo("long-standing customer 2nd contract scenario -- premium 160 (steps reflect ordering)");
+ it.todo("multi-step: quote then claim referencing earlier policy by index -- correct payout and remainingCap");
+ it.todo("two successive claims against same policy demonstrate cap exhaustion");
+ 
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  3 passed (3)
+      Tests  41 passed | 7 todo (48)
+   Start at  15:21:37
+   Duration  746ms (transform 44ms, setup 0ms, collect 53ms, tests 339ms, environment 0ms, prepare 127ms)
+[0m
+### Red: long-standing 2nd contract scenario → premium 160
+[0m← [0mEdit src/cli.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+@@ -61,9 +61,20 @@
+   expect(run.status).toBe(0);
+   const out = JSON.parse(run.stdout);
+   expect(out).toEqual({ results: [{ premium: 165 }] });
+ });
+-it.todo("long-standing customer 2nd contract scenario -- premium 160 (steps reflect ordering)");
++it("long-standing customer 2nd contract scenario -- premium 160 (steps reflect ordering)", () => {
++  const run = runCli({
++    customer: { yearsWithMHPCO: 3 },
++    steps: [
++      { op: "quote", items: [{ type: "sword", material: "steel", enchantment: 3 }] },
++      { op: "quote", items: [{ type: "sword", material: "steel", enchantment: 7, cursed: true }] },
++    ],
++  });
++  expect(run.status).toBe(0);
++  const out = JSON.parse(run.stdout);
++  expect(out.results[1]).toEqual({ premium: 160 });
++});
+ it.todo("multi-step: quote then claim referencing earlier policy by index -- correct payout and remainingCap");
+ it.todo("two successive claims against same policy demonstrate cap exhaustion");
+ 
+ // Error paths
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  3 passed (3)
+      Tests  42 passed | 6 todo (48)
+   Start at  15:21:47
+   Duration  908ms (transform 49ms, setup 0ms, collect 59ms, tests 468ms, environment 0ms, prepare 136ms)
+[0m
+### Red: multi-step quote then claim by index
+[0m← [0mEdit src/cli.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+@@ -73,9 +73,20 @@
+   expect(run.status).toBe(0);
+   const out = JSON.parse(run.stdout);
+   expect(out.results[1]).toEqual({ premium: 160 });
+ });
+-it.todo("multi-step: quote then claim referencing earlier policy by index -- correct payout and remainingCap");
++it("multi-step: quote then claim referencing earlier policy by index -- correct payout and remainingCap", () => {
++  const run = runCli({
++    customer: { yearsWithMHPCO: 0 },
++    steps: [
++      { op: "quote", items: [{ type: "sword" }] },
++      { op: "claim", policy: 0, incident: { cause: "fire", damages: [{ itemType: "sword", amount: 500 }] } },
++    ],
++  });
++  expect(run.status).toBe(0);
++  const out = JSON.parse(run.stdout);
++  expect(out.results[1]).toEqual({ payout: 400, remainingCap: 1600 });
++});
+ it.todo("two successive claims against same policy demonstrate cap exhaustion");
+ 
+ // Error paths
+ it.todo("unknown item type in quote -- exits non-zero, writes error to stderr, no results on stdout");
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  3 passed (3)
+      Tests  43 passed | 5 todo (48)
+   Start at  15:21:56
+   Duration  1.05s (transform 43ms, setup 0ms, collect 52ms, tests 624ms, environment 0ms, prepare 134ms)
+[0m
+### Red: two successive claims demonstrate cap exhaustion
+[0m← [0mEdit src/cli.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+@@ -85,9 +85,22 @@
+   expect(run.status).toBe(0);
+   const out = JSON.parse(run.stdout);
+   expect(out.results[1]).toEqual({ payout: 400, remainingCap: 1600 });
+ });
+-it.todo("two successive claims against same policy demonstrate cap exhaustion");
++it("two successive claims against same policy demonstrate cap exhaustion (1400 then 600)", () => {
++  const run = runCli({
++    customer: { yearsWithMHPCO: 0 },
++    steps: [
++      { op: "quote", items: [{ type: "sword" }] },
++      { op: "claim", policy: 0, incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1500 }] } },
++      { op: "claim", policy: 0, incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1500 }] } },
++    ],
++  });
++  expect(run.status).toBe(0);
++  const out = JSON.parse(run.stdout);
++  expect(out.results[1]).toEqual({ payout: 1400, remainingCap: 600 });
++  expect(out.results[2]).toEqual({ payout: 600, remainingCap: 0 });
++});
+ 
+ // Error paths
+ it.todo("unknown item type in quote -- exits non-zero, writes error to stderr, no results on stdout");
+ it.todo("claim references item not in policy -- exits non-zero, writes error to stderr");
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  3 passed (3)
+      Tests  44 passed | 4 todo (48)
+   Start at  15:22:06
+   Duration  1.18s (transform 54ms, setup 0ms, collect 66ms, tests 699ms, environment 0ms, prepare 158ms)
+[0m
+[0m← [0mEdit src/cli.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+@@ -101,9 +101,17 @@
+     expect(out.results[2]).toEqual({ payout: 600, remainingCap: 0 });
+   });
+ 
+   // Error paths
+-  it.todo("unknown item type in quote -- exits non-zero, writes error to stderr, no results on stdout");
++  it("unknown item type in quote -- exits non-zero, writes error to stderr, no results on stdout", () => {
++    const run = runCli({
++      customer: { yearsWithMHPCO: 0 },
++      steps: [{ op: "quote", items: [{ type: "broomstick" }] }],
++    });
++    expect(run.status).not.toBe(0);
++    expect(run.stderr.length).toBeGreaterThan(0);
++    expect(run.stdout).toBe("");
++  });
+   it.todo("claim references item not in policy -- exits non-zero, writes error to stderr");
+   it.todo("claim has more damage entries of a type than the policy covers -- exits non-zero");
+   it.todo("claim contains negative damage amount -- exits non-zero, writes error to stderr");
+ });
+
+[0m
+### Red: unknown item type → non-zero exit, stderr, no stdout
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  3 passed (3)
+      Tests  45 passed | 3 todo (48)
+   Start at  15:22:15
+   Duration  1.24s (transform 44ms, setup 1ms, collect 53ms, tests 823ms, environment 0ms, prepare 130ms)
+[0m
+### Red: claim references item not in policy
+[0m← [0mEdit src/cli.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+@@ -110,8 +110,18 @@
+     expect(run.status).not.toBe(0);
+     expect(run.stderr.length).toBeGreaterThan(0);
+     expect(run.stdout).toBe("");
+   });
+-  it.todo("claim references item not in policy -- exits non-zero, writes error to stderr");
++  it("claim references item not in policy -- exits non-zero, writes error to stderr", () => {
++    const run = runCli({
++      customer: { yearsWithMHPCO: 0 },
++      steps: [
++        { op: "quote", items: [{ type: "sword" }] },
++        { op: "claim", policy: 0, incident: { cause: "fire", damages: [{ itemType: "amulet", amount: 200 }] } },
++      ],
++    });
++    expect(run.status).not.toBe(0);
++    expect(run.stderr.length).toBeGreaterThan(0);
++  });
+   it.todo("claim has more damage entries of a type than the policy covers -- exits non-zero");
+   it.todo("claim contains negative damage amount -- exits non-zero, writes error to stderr");
+ });
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  3 passed (3)
+      Tests  46 passed | 2 todo (48)
+   Start at  15:22:24
+   Duration  1.32s (transform 47ms, setup 1ms, collect 57ms, tests 909ms, environment 0ms, prepare 128ms)
+[0m
+### Red: more damage entries than insured → non-zero
+[0m← [0mEdit src/cli.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+@@ -121,7 +121,19 @@
+     });
+     expect(run.status).not.toBe(0);
+     expect(run.stderr.length).toBeGreaterThan(0);
+   });
+-  it.todo("claim has more damage entries of a type than the policy covers -- exits non-zero");
++  it("claim has more damage entries of a type than the policy covers -- exits non-zero", () => {
++    const run = runCli({
++      customer: { yearsWithMHPCO: 0 },
++      steps: [
++        { op: "quote", items: [{ type: "sword" }] },
++        { op: "claim", policy: 0, incident: { cause: "dragon", damages: [
++          { itemType: "sword", amount: 500 },
++          { itemType: "sword", amount: 400 },
++        ] } },
++      ],
++    });
++    expect(run.status).not.toBe(0);
++  });
+   it.todo("claim contains negative damage amount -- exits non-zero, writes error to stderr");
+ });
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  3 passed (3)
+      Tests  47 passed | 1 todo (48)
+   Start at  15:22:33
+   Duration  1.46s (transform 51ms, setup 1ms, collect 60ms, tests 1.03s, environment 0ms, prepare 139ms)
+[0m
+### Red: negative damage amount → non-zero
+[0m← [0mEdit src/cli.spec.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.spec.ts
+@@ -134,6 +134,16 @@
+       ],
+     });
+     expect(run.status).not.toBe(0);
+   });
+-  it.todo("claim contains negative damage amount -- exits non-zero, writes error to stderr");
++  it("claim contains negative damage amount -- exits non-zero, writes error to stderr", () => {
++    const run = runCli({
++      customer: { yearsWithMHPCO: 0 },
++      steps: [
++        { op: "quote", items: [{ type: "sword" }] },
++        { op: "claim", policy: 0, incident: { cause: "fire", damages: [{ itemType: "sword", amount: -200 }] } },
++      ],
++    });
++    expect(run.status).not.toBe(0);
++    expect(run.stderr.length).toBeGreaterThan(0);
++  });
+ });
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -8
+✓ src/claim.spec.ts  (17 tests) 4ms
+ ✓ src/cli.spec.ts  (10 tests) 1113ms
+
+ Test Files  3 passed (3)
+      Tests  48 passed (48)
+   Start at  15:22:41
+   Duration  1.58s (transform 50ms, setup 0ms, collect 65ms, tests 1.12s, environment 0ms, prepare 144ms)
+[0m
+All 48 tests pass! Let me do a final refactor pass on all files.
+[0m→ [0mRead src/cli.ts
+Refactor: remove the `void insuranceSum` (already covered by `policyCap`). Clean up `ClaimResultDTO` naming.
+[0m
+[0m← [0mEdit src/cli.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.ts
+@@ -1,6 +1,6 @@
+ import { quote, type Item, type Customer } from "./quote.js";
+-import { claim, insuranceSum, policyCap } from "./claim.js";
++import { claim, policyCap } from "./claim.js";
+ 
+ interface QuoteStep {
+   op: "quote";
+   items: Item[];
+
+[0m
+[0m← [0mEdit src/cli.ts
+Index: /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.ts
+===================================================================
+--- /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.ts
++++ /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey/src/cli.ts
+@@ -62,10 +62,8 @@
+     contractIndex: quoteCount,
+   });
+   quoteCount += 1;
+   policies.set(i, { items: step.items, remainingCap: policyCap(step.items) });
+-  // Touch insuranceSum so any unknown type would error consistently.
+-  void insuranceSum(step.items);
+   results.push({ premium });
+ } else {
+   const policy = policies.get(step.policy);
+   if (!policy) {
+
+[0m
+[0m$ [0mpnpm test 2>&1 | tail -5
+Test Files  3 passed (3)
+      Tests  48 passed (48)
+   Start at  15:23:02
+   Duration  1.54s (transform 47ms, setup 0ms, collect 56ms, tests 1.13s, environment 0ms, prepare 127ms)
+[0m
+[0m← [0mWrite experiment-done.txt
+Wrote file successfully.
+[0m
+All 48 tests still pass. Writing done marker.
