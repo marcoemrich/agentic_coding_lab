@@ -106,6 +106,8 @@ file out without touching the workflow files.
 
 ```
 .claude/
+├── README.md                           This file (travels with the workflow)
+├── VERSION                             Date-based version tag
 ├── settings.json                       Permissions allowlist (Read/Write/Edit/Bash/Skill/Task)
 ├── agents/
 │   └── refactor.md                     Refactor subagent (isolated context)
@@ -119,6 +121,10 @@ file out without touching the workflow files.
     ├── tdd-with-ts-and-vitest.md       Tech-stack conventions
     └── human-in-the-loop.md            ★ Single source of truth for HITL stops
 ```
+
+README.md and VERSION live **inside** `.claude/` on purpose: when you copy
+`.claude/` into a project, the version info and overview travel with it, and
+they don't clash with your project's own `README.md`.
 
 ## Version and updates
 
