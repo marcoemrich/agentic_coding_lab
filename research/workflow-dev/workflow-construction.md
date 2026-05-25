@@ -43,6 +43,7 @@ Alle Varianten leben unter `experiments/workflows/v6.1-*` und differieren nur in
 | `v6.1-no-pep-no-emoji` | beide Reduktionen kombiniert | [RQ-1.3](1.3-pep-emoji-combined-v6.1/findings.md), [RQ-1.4](1.4-pep-emoji-claim-office/findings.md) | Effekte nicht additiv; kombiniert refactoriert *unter* Baseline. **Auf claim-office −5 pp Korrektheit** |
 | `v6.1-with-why` | 3 Why-Blöcke aus v6.5-lean (green.md, red.md Step 7, rules/tdd.md) **bei voll erhaltenen MUSTs** | [RQ-1.5](1.5-why-block-effect-v6.1/findings.md) | Korrektheit invariant auf claim-office (1× Outlier 0.27); +87 % Refactorings, −87 % Smells, Spitzen-Komplexität −37–43 % bei σ −82–90 %; +53 % Wallclock, +22 % Tokens |
 | `v6.2-with-why-cleaned` | v6.1-with-why + 3 Hygiene-Cleanups aus archiviertem v6.5.1-Audit (`pnpm test:unit:basic`→`pnpm test`, rule-file-Hyphen, settings-Permission-Dedup; `refactor.md` role-neutral; `tdd-experiment-mode.md` ohne Phantom-HITL-Framing) | [RQ-1.6](1.6-v62-cleanup-validation-v61-with-why/findings.md) | Korrektheit nicht schlechter (Mean 0.91→0.96 inkl. v6.1-Nudge-Outlier); +34 % Refactorings, cycle_count-Streuung σ 14.2→1.6; +13 % Wallclock, +12 % Tokens. Cleanups verhaltens-äquivalent, **neue Default-Baseline** |
+| `v6.3-audit-bundle` | v6.2-with-why-cleaned + restliche Audit-Bundle-Items aus archiviertem v6.5.1-Audit: **Klasse 2** Rationale-Ergänzungen (measurement-pipeline-Rationale für Pflicht-Refactoring, Bisectability für ONE-at-a-time, konkreter Drei-Pfad-Bar für "no improvement possible", Green-Phase-Generalization-Rationale in test-list Step 3) + **Klasse 3** Red-Phase-Hardening (Mandatory-Procedure-Preamble, Streichung "STOP and explain" in Steps 3/6, Ersatz "Prediction Failure Protocol" → "Wrong Predictions Are Data"). Plus opt-in `HUMAN-IN-THE-LOOP.md` im Workflow-Root für nicht-autonome Profile (Prediction-Failure → Human-Escalation). | [RQ-1.8](1.8-audit-bundle-effect-v62/findings.md) (GoL) + [RQ-1.9](1.9-audit-bundle-validation-claim-office/findings.md) (claim-office) | **GoL (RQ-1.8):** Korrektheit invariant (100 % `tests_passing`); `tests_passed_immediately` 0.7 → **0** (deterministisch); `refactorings_applied` +10 % bei σ −64 %; Code-Qualität innerhalb 1 σ (leichte Verbesserung Code-Mass/Smell); `predictions_correct_rate` 100 → 97.4 %; +16 % Tokens, Wallclock neutral. **claim-office (RQ-1.9): `verification_pct` kippt 0.96 → 0.35 (bi-modal, 6/8 Runs ≤ 0.30)** — Agent erklärt sich nach 7–14 Cycles fertig statt 37–38 Cycles wie v6.2; `experiment-done.txt` fehlt in 6/8 Runs. **Nicht** als Default-Baseline für claim-office promoten — bleibt GoL-spezifischer Quality-Champion |
 
 ### Tragende Inhalte — vor jeder Reduktion schützen
 
@@ -53,10 +54,11 @@ Alle Varianten leben unter `experiments/workflows/v6.1-*` und differieren nur in
 
 ### Aktuelle Front
 
-- **Default für korrekheits-kritische Arbeit auf claim-office × opus-4-7-portkey-no-thinking:** `v6.2-with-why-cleaned` (RQ-1.6). Verhalts-äquivalent zu v6.1-with-why bei zusätzlicher Hygiene (Konsistenz-Renames, refactor.md-Entkopplung, tdd-experiment-mode-Reframing). v6.1-with-why bleibt Vorgänger-Referenz im Inventar.
+- **Default für korrekheits-kritische Arbeit auf claim-office × opus-4-7-portkey-no-thinking:** `v6.2-with-why-cleaned` (RQ-1.6 + RQ-1.9-Bestätigung). Verhalts-äquivalent zu v6.1-with-why bei zusätzlicher Hygiene. RQ-1.9 hat die Default-Empfehlung gegen den v6.3-Audit-Bundle-Herausforderer verteidigt (v6.2: 0.96; v6.3: 0.35). v6.1-with-why bleibt Vorgänger-Referenz im Inventar.
+- **Default für Code-Qualität auf trainingsbekannten Katas (GoL) × opus-4-7-portkey-no-thinking:** `v6.3-audit-bundle` (RQ-1.8). Eliminiert `tests_passed_immediately` deterministisch, +10 % Refactorings bei σ −64 %. **Nur** auf GoL/saturierter Korrektheit — auf claim-office bricht der Workflow (RQ-1.9).
 - **Default für Speed/Token-Effizienz, trainingsbekannte Katas:** `v6.1-no-pep` auf GOL. Auf claim-office nicht empfohlen.
 - **Default für Methoden-Vergleichs-RQs (Reduktions-Kette):** `v6.1-hybrid-testlist-scope-fix` als Baseline.
-- **Niemals als Default verwenden:** `v6.1-no-emoji` und `v6.1-no-pep-no-emoji` auf novel Code mit echten Mehrdeutigkeiten. Beide haben dokumentierte Korrektheits-Brüche auf claim-office.
+- **Niemals als Default verwenden:** `v6.1-no-emoji`, `v6.1-no-pep-no-emoji`, `v6.3-audit-bundle` auf novel Code mit echten Mehrdeutigkeiten. Alle drei haben dokumentierte Korrektheits-Brüche auf claim-office.
 
 ---
 
@@ -193,6 +195,16 @@ v4.1 fügt *nur* eine "Cover every spec example"-Pflicht zum test-list-Subagent 
 
 Verweis: F-model-novel.4 in `research/questions/2.2-model-effect-novel-kata/findings.md`.
 
+#### Additive Bundles haben dasselbe Bundle-Risiko wie Reduktions-Bundles
+
+Das Anti-Pattern "Bundle-Reduktion ohne Korrektheits-Stichprobe" wurde ursprünglich an v6.5-lean (gleichzeitige Entfernung mehrerer Inhalte) festgemacht. RQ-1.9 zeigt: **dieselbe Falle gilt für additive Bundles**, die Inhalt ergänzen statt zu streichen.
+
+Konkret: das Audit-Bundle in `v6.3-audit-bundle` ergänzt nur Inhalt (Rationale-Blöcke, Mandatory-Procedure-Preamble, Drei-Pfad-Bar, Wrong-Predictions-Block). Auf GoL (RQ-1.8) wirkt es klar positiv. Auf claim-office (RQ-1.9) kippt `verification_pct` von 0.96 auf 0.35, weil der Agent in 6 von 8 Runs vorzeitig stoppt. Welche der vier Bundle-Komponenten den Bruch treibt, ist mit dem Bundle-Befund nicht entscheidbar — kausale Lokalisierung bräuchte isolierte Sub-RQs (Klasse 2 vs Klasse 3).
+
+**Lehre:** Jede Workflow-Iteration — additiv wie reduktiv — braucht eine Korrektheits-Stichprobe auf einer Kata mit externer Verification-Suite (claim-office-example-mapping × n ≥ 5). "Wir ergänzen nur Rationales, kann nichts kaputt machen" ist falsch. Inhalt-Additionen können Self-Stop-Verhalten triggern, das auf saturierten Katas (GoL: 9 Tests, schnell durch) unsichtbar bleibt, auf Multi-Iteration-Katas (claim-office: 41 Tests) aber sofort zuschlägt.
+
+Faktor-isolierte Sub-RQs bleiben Bundle-RQs vorzuziehen, weil sie die kausalen Pfade direkt liefern. Bundle-Validierung ist akzeptabel als erster Schritt, *wenn* die Korrektheits-Stichprobe auf novel Code von Anfang an mit drin ist.
+
 #### Disziplin-Muster aus GOL nicht auf andere Katas verallgemeinern
 
 Die GOL-basierten Disziplin-Befunde der v6.1-Linie (RQ-1.1, RQ-1.2, RQ-1.3) sehen klar und konsistent aus: "weniger Drumherum → mehr Refactoring → mehr Disziplin". Auf claim-office (RQ-1.4) **kippt das Muster komplett**:
@@ -224,7 +236,17 @@ Empirische Stützen für die Leitprinzipien oben. Geordnet nach Design-Achse.
 - **[RQ-1.5 F-1.1](1.5-why-block-effect-v6.1/findings.md#f-11)** — Why-Blöcke neben MUSTs (v6.1-with-why): kein Korrektheits-Effekt, aber +87 % Refactorings, −87 % Smells, Spitzen-Komplexität −37–43 %, σ −82–90 %. Hypothese H2 aus RQ-1.5 bestätigt. **Theory-of-Mind hat empirische Stütze aus diesem Repo, nicht nur die Anthropic-Skill-Creator-Doku.**
 - **[RQ-1.5 F-1.2](1.5-why-block-effect-v6.1/findings.md#f-12)** — Pro Cycle gleich schnell/teuer; der ~50 % Wallclock-Aufschlag und ~22 % Token-Aufschlag pro Run sind reine Konsequenz des höheren Cycle-Counts, nicht Why-Bloat-Overhead.
 
-### Hygiene-Cleanups (v6.5.1-Audit auf v6.1-with-why)
+### v6.2-with-why-cleaned — Hygiene-Cleanups (v6.5.1-Audit-Subset auf v6.1-with-why, RQ-1.6 + RQ-1.7)
+
+Subset des archivierten v6.5.1-Blueprint-Audits, beschränkt auf strukturelle Hygiene ohne MUST-/Why-/Marker-Eingriff:
+
+- **Konsistenz-Renames** in `red.md`: `pnpm test:unit:basic` → `pnpm test` (matched `tdd.md` und Tech-Stack-Rule).
+- **Rule-File-Hyphen-Rename**: `tdd_with_ts_and_vitest.md` → `tdd-with-ts-and-vitest.md` (matched die Hyphen-Konvention aller anderen Rules).
+- **Settings-Permission-Dedup** in `.claude/settings.json`: Entfernung redundanter `Bash(pnpm test:*)`, `Bash(pnpm install:*)`, `Bash(pnpm run:*)` (bereits durch `Bash(pnpm:*)` abgedeckt).
+- **refactor.md-Entkopplung**: Mission-Beschreibung und Steps role-neutral umformuliert ("Guide the requester through a refactoring pass" statt "After Green phase / Proceeding to next test / Skipping refactor"). Agent-File definiert jetzt Rolle/Capability, die TDD-Sequenz lebt nur noch in `tdd.md`. "Build and Tests"-Sektion gestrichen (bereits in `tdd-with-ts-and-vitest.md` abgedeckt).
+- **tdd-experiment-mode.md-Reframing**: Phantom-HITL-Override-Framing entfernt, ersetzt durch positive Aussage der autonomen Default-Mode mit Measurement-Pipeline-Rationale.
+
+Explizit **nicht** Teil dieses Cleanup-Subsets (deshalb Reservierung für späteres v6.3-Audit-Bundle): Rationale-Ergänzungen, Red-Phase-Mandatory-Procedure-Preamble, Wrong-Predictions-Block, Mechanism-Migration `commands/` → `skills/`. Siehe `experiments/workflows/v6.2-with-why-cleaned/.claude/` für die exakten Files.
 
 - **[RQ-1.6 F-1.1](1.6-v62-cleanup-validation-v61-with-why/findings.md#f-11)** — Drei Hygiene-Cleanups aus dem archivierten v6.5.1-blueprint-audit (Konsistenz-Renames + refactor.md-Entkopplung + tdd-experiment-mode-Reframing) sind auf claim-office × opus-4-7-portkey-no-thinking **verhaltens-äquivalent**. Korrektheits-Bruch klar widerlegt (verification_pct Mean 0.91 → 0.96, tests_passing 100 %/100 %). Damit ist das in [v6.5-correctness-setback](https://) dokumentierte Risiko von skill-creator-Cleanups *für diese spezifische Auswahl* gebannt — die Cleanups haben MUSTs, Why-Blöcke und alle MARKERS unangetastet gelassen.
 - **[RQ-1.6 F-1.2](1.6-v62-cleanup-validation-v61-with-why/findings.md#f-12)** — Disziplin-Drift in eine Richtung: +34 % `refactorings_applied`, `cycle_count`-Streuung kollabiert von σ 14.2 auf σ 1.6 (letzteres teils durch Wegfall des v6.1-Nudge-Outliers). Mechanistisch plausibel: refactor.md-Entkopplung entfernt die "TDD Refactor Phase specialist"-Verkettungs-Hemmung und produziert mehr Refactor-Iterationen.
@@ -234,6 +256,23 @@ Empirische Stützen für die Leitprinzipien oben. Geordnet nach Design-Achse.
 - **[RQ-1.7 F-1.4](1.7-v62-cleanup-validation-gol/findings.md#f-14)** — Kosten-Aufschlag auf GoL +13 % Wallclock / +15 % Tokens — fast identisch zu claim-office (+13 % / +12 %). Der "v6.2-Aufpreis" ist also kata-unabhängig.
 
 **Konsequenz für die Methodik:** Cleanups, die strukturell auf "Style-Hygiene" beschränkt bleiben (Renames, role-neutrale Sprache, Reframing ohne MUST-Eingriff), sind in dieser Größenordnung sicher anwendbar. Das ersetzt nicht die Pflicht zur Korrektheits-Stichprobe — bestätigt aber, dass nicht *jeder* Cleanup-Versuch die v6.5-lean-Falle reproduziert. Die Cross-Kata-Validierung in RQ-1.7 stärkt die v6.2-Default-Empfehlung über die ursprüngliche claim-office-only-Aussage hinaus.
+
+### Audit-Bundle (v6.5.1-Audit auf v6.2-with-why-cleaned, RQ-1.8 + RQ-1.9)
+
+Bundle aus zwei Item-Klassen, isoliert auf v6.2-Basis getestet:
+- **Klasse 2** — Rationale-Ergänzungen in `refactor.md` (Measurement-Pipeline für Pflicht-Refactoring; Bisectability für ONE-at-a-time; konkreter Drei-Pfad-Bar für "no improvement possible") und in `test-list.md` (Green-Phase-Generalization-Rationale für simple→complex).
+- **Klasse 3** — Red-Phase-Hardening in `red.md` (Mandatory-Procedure-Preamble; Streichung "STOP and explain"-Klausel in Steps 3/6; Ersatz "Prediction Failure Protocol" → "Wrong Predictions Are Data" mit Backfill-Verbot).
+
+Plus eine opt-in `HUMAN-IN-THE-LOOP.md` im Workflow-Root (kein Auto-Load, kein Mess-Effekt) für nicht-autonome Profile, in denen Prediction-Failures an den Menschen eskaliert werden statt als Daten zu zählen.
+
+- **[RQ-1.8 F-1.1](1.8-audit-bundle-effect-v62/findings.md#f-181)** — Mandatory-Procedure-Preamble eliminiert vorzeitige Greens auf GoL deterministisch: `tests_passed_immediately` 0.7 ± 2.21 → **0 ± 0** (10/10 Runs). Pattern identisch zur archivierten v6.5-lean → v6.5.1-Präzedenz; der Effekt repliziert auf MUST/PEP-tragender v6.2-Basis (nicht nur als v6.5-lean-Reparatur).
+- **[RQ-1.8 F-1.2](1.8-audit-bundle-effect-v62/findings.md#f-182)** — Refactor-Rationale + Drei-Pfad-Bar erhöht und stabilisiert Refactoring-Disziplin: `refactorings_applied` 7.9 → 8.7 (+10 %), σ 1.85 → 0.67 (−64 %). Effekt-Größe kleiner als beim v6.5-lean-Bundle (Why-Blöcke in v6.2 tragen bereits einen Teil der Rationale-Wirkung), σ-Reduktion klar.
+- **[RQ-1.8 F-1.4](1.8-audit-bundle-effect-v62/findings.md#f-184)** — Wrong-Predictions-Block macht ehrliche Falsch-Predictions sichtbar: `predictions_correct_rate` 100 % → 97.4 % (auf GoL). Nicht Disziplin-Verlust, sondern intendierter Effekt des Backfill-Verbots. Auf claim-office (RQ-1.9) ebenfalls leichter Drop (97.2 → 94.9 %).
+- **[RQ-1.8 F-1.5](1.8-audit-bundle-effect-v62/findings.md#f-185)** — Bundle kostet +16 % Tokens (replizierte v6.5.1-Präzedenz), aber Wallclock-neutral auf GoL — vermutlich kompensiert durch eingesparte vorzeitige-Green-Detours auf v6.2-Basis.
+- **[RQ-1.9 F-1.1](1.9-audit-bundle-validation-claim-office/findings.md#f-191)** — Cross-Kata-Validierung auf claim-office bricht: `verification_pct` 0.96 → **0.35** (bi-modal). Internal `tests_passing` 100 %, CLI baut — aber Implementation unvollständig.
+- **[RQ-1.9 F-1.2](1.9-audit-bundle-validation-claim-office/findings.md#f-192)** — Bi-modale Vollständigkeit: 6 von 8 v6.3-Runs ohne `experiment-done.txt`, mit 7–14 Cycles (vs v6.2: 35–40) und 8–19 min Wallclock (vs v6.2: 37–55 min). Der Agent erklärt sich nach wenigen vollständigen Cycles selbst fertig. Mechanismus-Hypothese: das Audit-Bundle erzeugt mehr Per-Cycle-Aufwand; auf Multi-Iteration-Katas interpretiert der Agent die Pflicht zur disziplinierten Cycle-Vollendung als implizites Fertig-Signal nach wenigen vollen Cycles.
+
+**Konsequenz für die Methodik:** Das Audit-Bundle ist auf GoL eindeutig wirksam (Disziplin + Code-Qualität), aber auf novel Code mit echten Mehrdeutigkeiten brennt es die Vollständigkeit aus. v6.3 ist als GoL-spezifischer Quality-Champion empfohlen, **nicht** als allgemeine Default-Baseline. v6.2-with-why-cleaned bleibt Default für korrektheits-kritische Arbeit. Das ist die dritte unabhängige Bestätigung des "GoL-Sieger ≠ claim-office-Sieger"-Anti-Patterns (vgl. RQ-1.4 für Reduktionen + F-model-novel.4 für Architektur; jetzt RQ-1.9 für additive Bundles).
 
 ### Pep-/Emoji-Reduktion (v6.1-Linie)
 
