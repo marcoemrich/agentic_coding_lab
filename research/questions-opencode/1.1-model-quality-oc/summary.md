@@ -2,9 +2,9 @@
 
 _Wie unterscheiden sich fünf via OpenCode-Harness erreichbare Modelle (Opus 4.7 via Portkey + vier Nicht-Anthropic-Modelle aus dem Portkey-Catalog) in Code-Qualität und TDD-Disziplin auf game-of-life-example-mapping mit dem v5.1-testlist-scope-fix-oc-Workflow?_
 
-Generated: 2026-05-25T08:30:19Z
+Generated: 2026-05-25T13:05:59Z
 
-Cells declared: 5 · matched runs: 0 · min_replicates: 5
+Cells declared: 4 · matched runs: 0 · min_replicates: 5
 
 ## Zell-Coverage
 
@@ -13,7 +13,6 @@ Cells declared: 5 · matched runs: 0 · min_replicates: 5
 | game-of-life-example-mapping | v5.1-testlist-scope-fix-oc | opus-4-7-portkey | 0 | 0 | ❌ keine Runs |
 | game-of-life-example-mapping | v5.1-testlist-scope-fix-oc | kimi-k2-6 | 0 | 0 | ❌ keine Runs |
 | game-of-life-example-mapping | v5.1-testlist-scope-fix-oc | minimax-m2-7 | 0 | 0 | ❌ keine Runs |
-| game-of-life-example-mapping | v5.1-testlist-scope-fix-oc | gemini-2-5-pro | 0 | 0 | ❌ keine Runs |
 | game-of-life-example-mapping | v5.1-testlist-scope-fix-oc | gemini-3-5-flash | 0 | 0 | ❌ keine Runs |
 
 _Keine matching Runs gefunden._

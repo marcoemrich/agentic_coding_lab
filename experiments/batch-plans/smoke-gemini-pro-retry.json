@@ -1,0 +1,7 @@
+{
+  "name": "Gemini Pro retry with continuation prompt",
+  "description": "Re-smoke Gemini 2.5 Pro after adding explicit continuation pressure ('do NOT stop... continue until experiment-done.txt') to the OC invocation prompt in run-batch.sh.",
+  "runs": [
+    { "kata": "claim-office-example-mapping", "workflow": "v5.1-testlist-scope-fix-oc", "model": "gemini-2-5-pro" }
+  ]
+}

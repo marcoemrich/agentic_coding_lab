@@ -6,7 +6,6 @@ factors:
     - opus-4-7-portkey
     - kimi-k2-6
     - minimax-m2-7
-    - gemini-2-5-pro
     - gemini-3-5-flash
 controls:
   workflow: v5.1-testlist-scope-fix-oc
@@ -55,16 +54,18 @@ Diese RQ misst den **Modell-Effekt auf Code-Qualität und TDD-Disziplin** in ein
 
 ## Vorhandene Daten
 
-- **Stand 2026-05-25**: Keine Runs für irgendeine Zelle dieser RQ. Erstbatch komplett offen.
-- v1-Skeleton-Smokes (claim-office × v1-oneshot-oc) zählen NICHT — anderer Workflow und andere Kata.
-- v5.1-oc-Smoke (claim-office × v5.1-testlist-scope-fix-oc × opus) hat gezeigt: v5.1-oc liefert verification_pct=1.0, cycle_count >= 2, refactorings >= 1, predictions_correct 4/4 (100%). Mechanik funktioniert.
+- **Stand 2026-05-25**: Keine Runs für irgendeine GOL-Zelle dieser RQ. Erstbatch komplett offen.
+- Routing-Smokes auf claim-office × v5.1-oc (parallel-RQ) haben bestätigt: alle 4 Modelle routen korrekt durch Portkey (Vertex EU für Opus, Vertex für Gemini, OpenRouter-Eval-Integration für Kimi/MiniMax).
+
+## Modell-Auswahl: warum nur 4 Modelle
+
+Gemini 2.5 Pro wurde am 2026-05-25 aus der RQ entfernt: drei Smoke-Versuche (91s/314s/85s, je n=1) zeigten konsistent vorzeitigen Abbruch des autonomen Loops nach 1-2 Cycles ohne `experiment-done.txt`. Auch ein expliziter Continuation-Prompt ("Do NOT stop... continue until experiment-done.txt") änderte nichts — Pro interpretiert `pnpm test passes` als natürliches Ende und stoppt mit empty turn. Ist ein v5.1-oc-Compatibility-Issue (Pro folgt dem Skill-Loop-Pattern nicht zuverlässig), kein Routing- oder Modell-Stärke-Problem. Wenn das später behoben wird (--variant high, alternativer Workflow, OC-Update), kann Pro nachträglich als 5. Faktor-Wert ergänzt werden.
 
 ## Hypothesen
 
 - **H1 (Opus-Anker)**: opus-4-7-portkey liefert die niedrigsten Werte bei `cognitive_max` und `smell_total` — bestätigt, dass das Opus-4.7-Niveau via OpenCode-Routing erhalten bleibt (sonst ist OC-Harness wertloser Confound).
-- **H2 (Nicht-Anthropic-Spreizung)**: Die vier Nicht-Anthropic-Modelle (Kimi, MiniMax, beide Gemini) zeigen eine messbare Spreizung über `smell_total` und `cognitive_max` — d.h. der OpenCode-Harness ist diskriminationsfähig genug, um Modell-Unterschiede sichtbar zu machen.
-- **H3 (Flash vs Pro innerhalb Gemini)**: gemini-3-5-flash liegt bei `code_mass` und `smell_total` schlechter als gemini-2-5-pro — der erwartete Flash-vs-Pro-Trade-off zeigt sich auch im OpenCode-Setup.
-- **H4 (Skill-Tool-Compliance modellabhängig)**: `cycle_count` und `refactorings_applied` zeigen über die fünf Modelle Spreizung — manche Modelle nutzen den `skill`-Tool diszipliniert, andere driften nach 1-2 Cycles in inline-Mode (siehe Skeleton-Befund). Niedriger cycle_count ist NICHT automatisch schwächere TDD-Disziplin, sondern auch Compliance mit der Skill-Affordance.
+- **H2 (Nicht-Anthropic-Spreizung)**: Die drei Nicht-Anthropic-Modelle (Kimi, MiniMax, Flash) zeigen eine messbare Spreizung über `smell_total` und `cognitive_max` — d.h. der OpenCode-Harness ist diskriminationsfähig genug, um Modell-Unterschiede sichtbar zu machen.
+- **H3 (Skill-Tool-Compliance modellabhängig)**: `cycle_count` und `refactorings_applied` zeigen über die vier Modelle Spreizung — manche nutzen den `skill`-Tool diszipliniert, andere driften nach 1-2 Cycles in inline-Mode. Niedriger cycle_count ist NICHT automatisch schwächere TDD-Disziplin, sondern auch Compliance mit der Skill-Affordance. Smoke-Befund: nur Opus produziert "Red Phase Complete"+Prediction-Marker; alle drei anderen Modelle ignorieren das Format → `predictions_total=0`.
 
 ## Methodologische Anmerkungen
 

@@ -1,0 +1,8 @@
+{
+  "name": "OpenRouter OC routing smoke",
+  "description": "One run per OpenRouter model on claim-office-EM × v5.1-oc, after switching to @openrouter-eval/ integration prefix (matching local opencode.jsonc convention).",
+  "runs": [
+    { "kata": "claim-office-example-mapping", "workflow": "v5.1-testlist-scope-fix-oc", "model": "kimi-k2-6" },
+    { "kata": "claim-office-example-mapping", "workflow": "v5.1-testlist-scope-fix-oc", "model": "minimax-m2-7" }
+  ]
+}

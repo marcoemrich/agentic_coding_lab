@@ -562,23 +562,29 @@ EOF
             # Lab-variant model name → OpenCode --model format. Skeleton
             # uses hardcoded mapping; generalize when more OC models land.
             case "$model_name" in
-                # Provider name = key in opencode.json "provider" block ("portkey").
-                # Model name = key in provider.<name>.models block — for Portkey
-                # we pass the upstream routing string verbatim so Portkey picks
-                # the right backend. OC splits on the first slash.
+                # Provider = "portkey" (single OC provider block); model id
+                # carries the @<integration>/<upstream-id> prefix that
+                # Portkey uses to dispatch to the right backend integration
+                # (@vertex-*, @openrouter-eval, etc.). Matches the user's
+                # local ~/.config/opencode/opencode.jsonc convention.
                 opus-4-7-portkey)  oc_model="portkey/@vertex-eu-global/anthropic.claude-opus-4-7" ;;
-                kimi-k2-6)         oc_model="portkey/moonshotai/kimi-k2.6" ;;
-                minimax-m2-7)      oc_model="portkey/minimax/minimax-m2.7" ;;
-                gemini-2-5-pro)    oc_model="portkey/@vertex-ai/google.gemini-2-5-pro" ;;
-                gemini-3-5-flash)  oc_model="portkey/@vertex-ai/google.gemini-3-5-flash" ;;
+                gemini-2-5-pro)    oc_model="portkey/@vertex-ai/gemini-2.5-pro" ;;
+                gemini-3-5-flash)  oc_model="portkey/@vertex-eu-global/gemini-3.5-flash" ;;
+                kimi-k2-6)         oc_model="portkey/@openrouter-eval/moonshotai/kimi-k2.6" ;;
+                minimax-m2-7)      oc_model="portkey/@openrouter-eval/minimax/minimax-m2.7" ;;
                 *) echo -e "  ${RED}ERROR: no OpenCode model mapping for $model_name${NC}"
                    claude_exit=2
                    oc_model="" ;;
             esac
             if [ -n "$oc_model" ]; then
+                # Continuation pressure: some models (Gemini 2.5 Pro
+                # observed 2026-05-25) interpret a passing test run as a
+                # natural conversation endpoint and stop autonomously
+                # without finishing the test list. Explicit "continue until
+                # experiment-done.txt" keeps them in the loop.
                 (cd "$run_dir" && timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
                     opencode run --model "$oc_model" --dangerously-skip-permissions \
-                    "Read prompt.md and complete the exercise following the workflow rules.") \
+                    "Read prompt.md and complete the exercise following the workflow rules. Continue autonomously through ALL tests in the test list until you have written experiment-done.txt with the single word DONE. Do NOT stop after a single passing test or cycle — keep going until every test is implemented.") \
                     2>&1 | tee "$run_log"
                 claude_exit=${PIPESTATUS[0]}
             fi

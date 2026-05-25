@@ -1,0 +1,10 @@
+{
+  "name": "Non-Anthropic OC routing smoke",
+  "description": "One run per non-Anthropic OC model on claim-office-EM × v5.1-oc. Validates Portkey routing strings (portkey/moonshotai/kimi-k2.6 etc.) and confirms each model can drive the v5.1-oc workflow before kicking off the 25-run RQ-model-quality-oc / RQ-model-novel-oc batches.",
+  "runs": [
+    { "kata": "claim-office-example-mapping", "workflow": "v5.1-testlist-scope-fix-oc", "model": "kimi-k2-6" },
+    { "kata": "claim-office-example-mapping", "workflow": "v5.1-testlist-scope-fix-oc", "model": "minimax-m2-7" },
+    { "kata": "claim-office-example-mapping", "workflow": "v5.1-testlist-scope-fix-oc", "model": "gemini-2-5-pro" },
+    { "kata": "claim-office-example-mapping", "workflow": "v5.1-testlist-scope-fix-oc", "model": "gemini-3-5-flash" }
+  ]
+}

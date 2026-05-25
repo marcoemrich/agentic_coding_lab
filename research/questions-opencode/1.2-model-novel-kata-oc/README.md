@@ -6,7 +6,6 @@ factors:
     - opus-4-7-portkey
     - kimi-k2-6
     - minimax-m2-7
-    - gemini-2-5-pro
     - gemini-3-5-flash
 controls:
   workflow: v5.1-testlist-scope-fix-oc
@@ -47,18 +46,29 @@ Parallel zu RQ-model-quality-oc (game-of-life, Code-Qualität), aber auf der hä
 
 RQ-model-novel (CC-Seite) hat gezeigt, dass `verification_pct` auf claim-office Modelle stärker differenziert als jede Code-Qualitäts-Metrik auf game-of-life. Diese RQ überträgt den Test auf die OpenCode-Seite mit fünf neuen Modellen und dem v5.1-Workflow (TDD mit Skills).
 
-## Vorhandene Daten
+## Vorhandene Daten (Stand 2026-05-25)
 
-- **opus-4-7-portkey × v5.1-testlist-scope-fix-oc × claim-office-example-mapping**: n=1 aus Skeleton-Smoke 2026-05-25 mit `verification_pct=1.00` (15/15 perfekt). Counted für `min_replicates`.
-- v1-Smokes (claim-office × v1-oneshot-oc × opus-4-7-portkey, n=2 mit verification_pct ≈ 0.20) zählen NICHT für diese RQ (anderer Workflow).
-- Alle anderen Zellen offen.
+Aus Routing-Smokes vorhanden (n=1 pro Zelle, counten für `min_replicates`):
+
+| Modell | verification_pct | tests | cycles | preds | done | Wallclock |
+|---|---|---|---|---|---|---|
+| opus-4-7-portkey | 1.00 (15/15) | 36 | 2 | 4/4 | ✓ | 12 min |
+| kimi-k2-6 | 1.00 (15/15) | 46 | 3 | 0/0 | ✓ | 32 min |
+| minimax-m2-7 | 0.00 (0/15) | 37 | 1 | 0/2 | ✓ | 35 min |
+| gemini-3-5-flash | 1.00 (15/15) | 32 | 2 | 0/0 | ✓ | 8 min |
+
+Bemerkenswert: MiniMax schreibt 37 eigene Tests und macht sie grün, scheitert aber an allen 15 externen Verifikations-Szenarien — klassischer Spec-Misverständnis-Fall, genau der Kata-Mehrdeutigkeits-Effekt wofür claim-office gebaut wurde. Wird sich bei n=5 zeigen ob das systematisch oder Einzelfall ist.
+
+## Modell-Auswahl: warum nur 4 Modelle
+
+Gemini 2.5 Pro wurde am 2026-05-25 aus der RQ entfernt: drei Smoke-Versuche (91s/314s/85s) zeigten konsistent vorzeitigen Abbruch des autonomen Loops nach 1-2 Cycles ohne `experiment-done.txt`. Auch expliziter Continuation-Prompt ("Do NOT stop... continue until experiment-done.txt") änderte nichts — Pro interpretiert ein passierendes `pnpm test` als natürliches Conversation-Ende und stoppt mit empty turn. v5.1-oc-Compatibility-Issue, kein Routing- oder Modell-Stärke-Problem.
 
 ## Hypothesen
 
-- **H1 (v5.1-Workflow hebt OC-Niveau)**: opus-4-7-portkey × v5.1-oc × claim-office-EM erreicht `verification_pct` deutlich über dem v1-oneshot-oc-Niveau (0.20) — der Skeleton-Run mit 1.0 ist konsistent damit. Erwartung: mean >= 0.8 über n=5.
-- **H2 (Modell-Spreizung sichtbar)**: Die fünf Modelle zeigen über `verification_pct` eine größere Spreizung als ihre Code-Qualitäts-Spreizung auf game-of-life — claim-office exponiert Spec-Verstehen, das auf trainings-vertrauten Katas verdeckt bleibt.
-- **H3 (Flash schwach auf Korrektheit)**: gemini-3-5-flash hat deutlich niedrigere `verification_pct` als gemini-2-5-pro — Spec-Vollständigkeit ist der erste Trade-off, den schnellere/kleinere Modelle einbüßen.
-- **H4 (TDD-Disziplin und Korrektheit korrelieren)**: Modelle mit höherem `cycle_count` (mehr Skill-Tool-Aufrufe) zeigen tendenziell höhere `verification_pct`. Hinweis auf Workflow-Compliance als Erfolgsfaktor, nicht nur Modell-Stärke.
+- **H1 (v5.1-Workflow hebt OC-Niveau)**: opus-4-7-portkey × v5.1-oc × claim-office-EM erreicht `verification_pct` deutlich über dem v1-oneshot-oc-Niveau (0.20) — Skeleton-Befund 1.00 ist konsistent damit. Erwartung: mean >= 0.8 über n=5.
+- **H2 (Modell-Spreizung sichtbar)**: Die vier Modelle zeigen über `verification_pct` Spreizung — Smoke deutet bereits an: Opus/Kimi/Flash bei 1.00, MiniMax bei 0.00. Wenn das stabil ist, ist die Spreizung dichotom (15/15 vs 0/15) statt graduell — claim-office als Pass/Fail-Filter für Spec-Verstehen.
+- **H3 (Flash überraschend stark)**: gemini-3-5-flash hat im Smoke perfekte Korrektheit (15/15) trotz Flash-Positionierung als "schnelles/kleines" Modell. Bei n=5 prüfen ob das stabil ist oder Glücksfall war (n=1 + bekannt heikle Kata = vorsichtige Interpretation).
+- **H4 (TDD-Disziplin und Korrektheit korrelieren NICHT linear)**: Smoke-Befund: Opus 4/4 Predictions + 15/15 Verification; Kimi 0/0 Predictions + 15/15 Verification. Predictions-Format-Compliance ist nicht notwendig für Korrektheit — der TDD-Inhalt (Test-First-Disziplin) wirkt anscheinend unabhängig von der spezifischen Prediction-Marker-Compliance.
 
 ## Methodologische Anmerkungen
 
