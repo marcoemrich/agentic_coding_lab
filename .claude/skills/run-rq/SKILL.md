@@ -20,12 +20,15 @@ End-to-end orchestration for advancing a single research question (RQ) in this l
 
 ## Repo conventions (from the top-level `README.md` and memory)
 
-- RQ dirs live in two subtrees: `research/questions/<chapter>-*/` (generic research) and `research/workflow-dev/<chapter>-*/` (workflow evolution). The `<chapter>` prefix (e.g. `2.6`) is an **ordering label, not an id** — the stable identity is the frontmatter `id:` (e.g. `RQ-lean`). Each RQ dir holds `README.md`, `findings.md`, `runs.csv`, `summary.md`.
-- **Resolving an `RQ-<slug>` id to a path** (the dir name carries a chapter number, not the id): grep both subtrees for the frontmatter `id:`. Anchor with `^id:` and a trailing boundary so the whole slug must match exactly (no slug is a prefix of another, so an exact-line match is unambiguous):
+- RQ dirs live in four subtrees: `research/questions-claude/<chapter>-*/` (Claude-Code RQs), `research/questions-opencode/<chapter>-*/` (OpenCode RQs), `research/questions-cross/<chapter>-*/` (harness-übergreifende RQs), and `research/workflow-dev/<chapter>-*/` (workflow evolution). The `<chapter>` prefix (e.g. `2.6`) is an **ordering label, not an id** — the stable identity is the frontmatter `id:` (e.g. `RQ-lean`). Each RQ dir holds `README.md`, `findings.md`, `runs.csv`, `summary.md`.
+- **Resolving an `RQ-<slug>` id to a path** (the dir name carries a chapter number, not the id): grep all subtrees for the frontmatter `id:`. Anchor with `^id:` and a trailing boundary so the whole slug must match exactly (no slug is a prefix of another, so an exact-line match is unambiguous):
   ```bash
   RQ_DIR=$(grep -rlE "^id:[[:space:]]*RQ-model-quality[[:space:]]*$" \
-             research/questions/*/README.md research/workflow-dev/*/README.md \
-           | head -1 | xargs -r dirname)
+             research/questions-claude/*/README.md \
+             research/questions-opencode/*/README.md \
+             research/questions-cross/*/README.md \
+             research/workflow-dev/*/README.md \
+           2>/dev/null | head -1 | xargs -r dirname)
   ```
   On no match → ask the user. On multiple → take the first and inform the user. Pass `"$RQ_DIR"` to all scripts below (they accept any path and write outputs to the dir).
 - Mandatory frontmatter fields: `id, question, factors, controls, outcomes, min_replicates, status`.

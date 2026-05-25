@@ -22,11 +22,14 @@ Typical use cases:
 
 - `RQ-N` (e.g. `RQ-prompt-known-kata`) or a direct path to an RQ dir.
 - If not given: ask back ("Which RQ? e.g. RQ-prompt-known-kata").
-- RQ dirs live in `research/questions/<chapter>-*/` and `research/workflow-dev/<chapter>-*/`. The chapter prefix is an ordering label; the stable id is the frontmatter `id:` (a slug like `RQ-prompt-known-kata`). Resolve it to a path by exact-line id-grep across both subtrees:
+- RQ dirs live in four subtrees: `research/questions-claude/<chapter>-*/`, `research/questions-opencode/<chapter>-*/`, `research/questions-cross/<chapter>-*/`, and `research/workflow-dev/<chapter>-*/`. The chapter prefix is an ordering label; the stable id is the frontmatter `id:` (a slug like `RQ-prompt-known-kata`). Resolve it to a path by exact-line id-grep across all subtrees:
   ```bash
   RQ_DIR=$(grep -rlE "^id:[[:space:]]*RQ-prompt-known-kata[[:space:]]*$" \
-             research/questions/*/README.md research/workflow-dev/*/README.md \
-           | head -1 | xargs -r dirname)
+             research/questions-claude/*/README.md \
+             research/questions-opencode/*/README.md \
+             research/questions-cross/*/README.md \
+             research/workflow-dev/*/README.md \
+           2>/dev/null | head -1 | xargs -r dirname)
   ```
 
 ## Phases

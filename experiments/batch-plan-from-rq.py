@@ -7,9 +7,9 @@ batch plan (JSON consumed by experiments/docker/run-batch.sh) with
 exactly enough triples to fill every cell up to min_replicates.
 
 Usage:
-  experiments/batch-plan-from-rq.py research/questions/2.1-model-effect-code-quality/
-  experiments/batch-plan-from-rq.py research/questions/2.1-model-effect-code-quality/ --out my-plan.json
-  experiments/batch-plan-from-rq.py research/questions/2.1-model-effect-code-quality/ --dry-run
+  experiments/batch-plan-from-rq.py research/questions-claude/2.1-model-effect-code-quality/
+  experiments/batch-plan-from-rq.py research/questions-claude/2.1-model-effect-code-quality/ --out my-plan.json
+  experiments/batch-plan-from-rq.py research/questions-claude/2.1-model-effect-code-quality/ --dry-run
 
 Default output path: experiments/batch-plans/<rq-id-lower>-fill.json
 """

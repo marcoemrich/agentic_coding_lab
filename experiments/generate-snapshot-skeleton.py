@@ -90,7 +90,9 @@ def parse_findings(findings_md: Path) -> list[dict]:
 # each dir name (e.g. "2.6-lean-validation") is an ordering label, NOT an id —
 # the stable identity is the frontmatter `id:`. Renumbering is a pure rename.
 RQ_TREES = [
-    ("questions", "Forschungsfragen"),
+    ("questions-claude", "Forschungsfragen (Claude Code)"),
+    ("questions-opencode", "Forschungsfragen (OpenCode)"),
+    ("questions-cross", "Forschungsfragen (Harness-übergreifend)"),
     ("workflow-dev", "Workflow-Entwicklung"),
 ]
 
@@ -109,8 +111,8 @@ def chapter_key(name: str) -> tuple[int, ...]:
 
 
 def collect_rqs() -> list[dict]:
-    """Walk research/questions/ and research/workflow-dev/, parse frontmatter,
-    findings, count runs. Dirs are returned tree by tree, chapter-sorted."""
+    """Walk all RQ subtrees (see RQ_TREES), parse frontmatter, findings,
+    count runs. Dirs are returned tree by tree, chapter-sorted."""
     rqs = []
     for tree_name, tree_label in RQ_TREES:
         tree_dir = RESEARCH_DIR / tree_name
@@ -533,8 +535,8 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p("Alle Daten und Analyse-Skripte liegen im Repo:")
     p("")
-    p("- `research/questions/*/README.md` und `research/workflow-dev/*/README.md` — RQ-Definitionen (Frontmatter mit factors/controls/outcomes)")
-    p("- `research/{questions,workflow-dev}/*/findings.md` — persistente Befund-Listen")
+    p("- `research/questions-{claude,opencode,cross}/*/README.md` und `research/workflow-dev/*/README.md` — RQ-Definitionen (Frontmatter mit factors/controls/outcomes)")
+    p("- `research/{questions-claude,questions-opencode,questions-cross,workflow-dev}/*/findings.md` — persistente Befund-Listen")
     p("- `experiments/runs/*/metrics.json` — Rohdaten pro Run")
     p("- `experiments/aggregate-by-query.py` — RQ-spezifische Aggregation")
     p("- `experiments/batch-plan-from-rq.py` — Batch-Plan-Generierung aus RQ-Frontmatter")

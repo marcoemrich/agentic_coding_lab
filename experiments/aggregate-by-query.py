@@ -11,8 +11,8 @@ Outputs into the RQ directory:
   summary.md   — per-cell pivots (avg/rate) for each declared outcome
 
 Usage:
-  experiments/aggregate-by-query.py research/questions/2.1-model-effect-code-quality/
-  experiments/aggregate-by-query.py research/questions/2.1-model-effect-code-quality/README.md
+  experiments/aggregate-by-query.py research/questions-claude/2.1-model-effect-code-quality/
+  experiments/aggregate-by-query.py research/questions-claude/2.1-model-effect-code-quality/README.md
 """
 from __future__ import annotations
 

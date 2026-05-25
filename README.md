@@ -54,11 +54,12 @@ The current model decouples three concerns:
 
 ### What an RQ contains
 
-RQ directories live in two subtrees: `research/questions/` (generic research) and
-`research/workflow-dev/` (workflow-evolution chain). Each dir carries a `<chapter>-slug` name
-(e.g. `2.6-lean-validation`) where the chapter number is an **ordering label, not an id** — like a
-document section heading, freely renumber-able by `git mv`. The stable identity is the frontmatter
-`id:`; tooling resolves an RQ by that id across both subtrees, never by directory name.
+RQ directories live in four subtrees: `research/questions-claude/` (Claude Code RQs),
+`research/questions-opencode/` (OpenCode RQs), `research/questions-cross/` (harness-übergreifende
+RQs), and `research/workflow-dev/` (workflow-evolution chain). Each dir carries a `<chapter>-slug`
+name (e.g. `2.6-lean-validation`) where the chapter number is an **ordering label, not an id** —
+like a document section heading, freely renumber-able by `git mv`. The stable identity is the
+frontmatter `id:`; tooling resolves an RQ by that id across all subtrees, never by directory name.
 
 Each `README.md` starts with YAML frontmatter that acts as a **selector query** over the run pool:
 
@@ -446,7 +447,7 @@ Then either run an existing batch plan or generate one for a research question:
 
 ```bash
 # Generate a fill plan for an RQ (only missing replicates)
-./experiments/batch-plan-from-rq.py research/questions/2.1-model-effect-code-quality/
+./experiments/batch-plan-from-rq.py research/questions-claude/2.1-model-effect-code-quality/
 
 # Execute the batch
 ./experiments/docker/batch.sh experiments/batch-plans/rq-3-fill.json
@@ -455,7 +456,7 @@ Then either run an existing batch plan or generate one for a research question:
 ### Aggregate results for a research question
 
 ```bash
-./experiments/aggregate-by-query.py research/questions/2.1-model-effect-code-quality/
+./experiments/aggregate-by-query.py research/questions-claude/2.1-model-effect-code-quality/
 ```
 
 This reads the RQ frontmatter, selects all matching runs from `experiments/runs/`, and writes `runs.csv` + `summary.md` into the RQ directory. Findings are then curated by hand into `findings.md` with status flags (`✅ stabil`, `⚠️ bedingt`, `❌ widerlegt`, `🚫 offen`).
@@ -464,17 +465,17 @@ This reads the RQ frontmatter, selects all matching runs from `experiments/runs/
 
 ```bash
 # 1. Plan: generate the missing cells for an RQ
-./experiments/batch-plan-from-rq.py research/questions/2.1-model-effect-code-quality/
+./experiments/batch-plan-from-rq.py research/questions-claude/2.1-model-effect-code-quality/
 
 # 2. Execute: run the batch in Docker
 ./experiments/docker/batch.sh experiments/batch-plans/rq-3-fill.json
 
 # 2b. Optional: compute Stryker mutation_score for green runs
 #     (idempotent; only does anything if outcomes: [..., mutation_score])
-./experiments/compute-mutation-score.py research/questions/2.1-model-effect-code-quality/
+./experiments/compute-mutation-score.py research/questions-claude/2.1-model-effect-code-quality/
 
 # 3. Aggregate: re-derive runs.csv + summary.md
-./experiments/aggregate-by-query.py research/questions/2.1-model-effect-code-quality/
+./experiments/aggregate-by-query.py research/questions-claude/2.1-model-effect-code-quality/
 
 # 4. Curate: update findings.md with new evidence and status flags
 ```
@@ -531,7 +532,7 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 | `experiments/aggregate-by-query.py` | Reads an RQ frontmatter, selects matching runs from the pool, writes `runs.csv` + `summary.md` into the RQ directory. The canonical aggregator. |
 | `experiments/batch-plan-from-rq.py` | Reads an RQ frontmatter, computes missing cells against `min_replicates`, writes `experiments/batch-plans/<rq-id>-fill.json`. Idempotent — empty plan if everything is covered. |
 | `experiments/compute-mutation-score.py` | RQ-driven mutation testing. If the RQ lists `mutation_score` in `outcomes`, runs Stryker against every matching green run (`tests_passing = true`) and writes `final_metrics.mutation_score` back into `metrics.json`. Idempotent (skip when already set) and bounded by `--timeout-seconds`. No-op when the RQ does not request the outcome. Run between batch execution and aggregation. |
-| `experiments/generate-snapshot-skeleton.py` | Reads all `README.md` + `findings.md` under `research/questions/` and `research/workflow-dev/`, emits a Markdown skeleton to `/tmp/snapshot-skeleton-YYYY-MM-DD.md` with data sections (run counts, coverage per RQ, finding lists sorted by status, cross-RQ caveats) pre-filled and synthesis sections marked with `<!-- TODO Claude -->`. Consumed by the `/build-overview` skill. |
+| `experiments/generate-snapshot-skeleton.py` | Reads all `README.md` + `findings.md` under `research/questions-{claude,opencode,cross}/` and `research/workflow-dev/`, emits a Markdown skeleton to `/tmp/snapshot-skeleton-YYYY-MM-DD.md` with data sections (run counts, coverage per RQ, finding lists sorted by status, cross-RQ caveats) pre-filled and synthesis sections marked with `<!-- TODO Claude -->`. Consumed by the `/build-overview` skill. |
 
 ### Docker batch execution (`experiments/docker/`)
 
@@ -548,11 +549,11 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 **Fill a research question:**
 
 ```bash
-./experiments/batch-plan-from-rq.py research/questions/2.1-model-effect-code-quality/
+./experiments/batch-plan-from-rq.py research/questions-claude/2.1-model-effect-code-quality/
 ./experiments/docker/list-plans.sh                          # verify
 ./experiments/docker/batch.sh rq-3-fill                     # run
 ./experiments/docker/watch-batch.sh                         # monitor in another shell
-./experiments/aggregate-by-query.py research/questions/2.1-model-effect-code-quality/
+./experiments/aggregate-by-query.py research/questions-claude/2.1-model-effect-code-quality/
 ```
 
 **Recover from an interrupted batch:**

@@ -7,7 +7,7 @@ allowed-tools: Bash(./experiments/generate-snapshot-skeleton.py:*) Read Write Gl
 
 # /build-overview — produce an experiment-overview snapshot
 
-You produce a frozen, publishable research report from the current state of every `findings.md` under `research/questions/` and `research/workflow-dev/`. The snapshot lands as a new file under `research/_archive/experiment-overview-YYYY-MM-DD.md`.
+You produce a frozen, publishable research report from the current state of every `findings.md` under `research/questions-claude/`, `research/questions-opencode/`, `research/questions-cross/`, and `research/workflow-dev/`. The snapshot lands as a new file under `research/_archive/experiment-overview-YYYY-MM-DD.md`.
 
 ## Core principle
 
@@ -61,7 +61,7 @@ Wherever Claude must fill in content, a `<!-- TODO Claude: ... -->` marker is le
 
 ### Step 2 — read the skeleton + every findings.md
 
-Read the skeleton (`/tmp/snapshot-skeleton-YYYY-MM-DD.md`) and **every** `findings.md` under `research/questions/*/` and `research/workflow-dev/*/` (skip dirs starting with `_`). Note for each RQ the current findings with their statement and data values.
+Read the skeleton (`/tmp/snapshot-skeleton-YYYY-MM-DD.md`) and **every** `findings.md` under `research/questions-claude/*/`, `research/questions-opencode/*/`, `research/questions-cross/*/`, and `research/workflow-dev/*/` (skip dirs starting with `_`). Note for each RQ the current findings with their statement and data values.
 
 `open-questions.md` (when present) does **not** go into the snapshot — those are internal backlog items for future batches, not publishable state.
 

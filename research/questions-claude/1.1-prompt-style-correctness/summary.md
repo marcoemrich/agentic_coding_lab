@@ -2,7 +2,7 @@
 
 _Steigert Example-Mapping die Korrektheit gegenüber Prose und User-Story — und ist der Effekt modellabhängig?_
 
-Generated: 2026-05-22T16:38:07Z
+Generated: 2026-05-25T06:53:25Z
 
 Cells declared: 24 · matched runs: 126 · min_replicates: 5
 
