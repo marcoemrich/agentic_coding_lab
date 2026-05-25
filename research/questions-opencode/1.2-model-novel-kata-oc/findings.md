@@ -37,6 +37,18 @@ Korrektheit außen (`verification_pct`, höher = besser) als primärer Outcome; 
 
 Portkey-Markup nicht eingerechnet (Portkey listet keinen modell-spezifischen Aufschlag, Gateway-Plan-Kosten sind separate Tier-Pauschalen).
 
+**Cost-Aufschlüsselung pro Mittel-Run** (Tokens als Mittelwert über n=5, Cost-Spalten = Tokens × Rate):
+
+| Modell | input (mean) → cost | output (mean) → cost | cache_read (mean) → cost | total |
+|---|---|---|---|---|
+| opus-4-7-portkey | 143 k × $5.00 = $0.71 | 50.2 k × $25.00 = $1.25 | 7.86 M × $0.50 = $3.93 | **$5.90** |
+| glm-5-1 | 143 k × $0.98 = $0.14 | 7.7 k × $3.08 = $0.02 | 10.77 M × $0.18 = $1.94 | **$2.10** |
+| kimi-k2-6 | 649 k × $0.73 = $0.47 | 26.8 k × $3.49 = $0.09 | 5.97 M × $0.37 = $2.21 | **$2.78** |
+| gemini-3-5-flash | 635 k × $1.50 = $0.95 | 35.7 k × $9.00 = $0.32 | 6.35 M × $0.15 = $0.95 | **$2.23** |
+| minimax-m2-7 | 234 k × $0.279 = $0.07 | 38.4 k × $1.20 = $0.05 | 8.21 M × $0.279 = $2.29 | **$2.40** |
+
+Bemerkung: das `total_tokens`-Feld in der Übersichts-Tabelle täuscht über die Cost — z. B. Opus' "8 M Tokens" sind zu ~97 % `cache_read`, das bei Anthropic-Pricing nur 10 % des Input-Preises kostet (cache hit ↔ 0.1×). Echter Input pro Opus-Run liegt bei ~140 k Tokens; die Cache-Tokens stammen aus wiederholt eingelesenen System-Prompts/Tool-Definitionen, die im Skill-Workflow über mehrere Skill-Aufrufe pro Run mehrfach durchlaufen. Bei den OpenRouter-Modellen ist das Cache-Verhältnis ähnlich, aber die Cache-Rate variiert pro Provider (GLM $0.18, Kimi $0.37, MiniMax keine Cache-Rate gelistet → input-Rate als konservative Obergrenze).
+
 ---
 
 ## F-1.1 — Opus 4.7 und GLM 5.1 erreichen vollständige Korrektheit; Tradeoff Code-Qualität ↔ Kosten
