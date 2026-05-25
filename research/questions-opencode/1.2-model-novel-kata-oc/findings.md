@@ -16,34 +16,34 @@ Korrektheit außen (`verification_pct`, höher = besser) als primärer Outcome; 
 | `cc_longest_function` (mean) | kleiner | **25.4** 🏆 | 28.8 | 54.4 | 98.4 | 30.0 |
 | `code_mass` (mean) | kleiner (bei gleicher Korrektheit) | **759.6** 🏆 | 816 | 741 | 526 | 364.4 |
 | `total_tokens` (mean) | kleiner (bei gleicher Korrektheit) | **8.06 M** 🏆 | 10.97 M | 6.65 M | 7.02 M | 8.48 M |
-| `cost_usd` (mean, $/run) | kleiner (bei gleicher Korrektheit) | **$5.90** 🏆 | $10.72 | $4.93 | $2.23 | $2.40 |
+| `cost_usd` (mean, $/run) | kleiner (bei gleicher Korrektheit) | $5.90 | **$2.10** 🏆 | $2.78 | $2.23 | $2.40 |
 | `cycle_count` (mean) | — | 1.2 | 2.0 | 2.0 | 2.2 | 4.8 |
 | `predictions_total` (mean) | — | 2.4 | 4.0 | 0.4 | 0.4 | 2.6 |
 | `duration_seconds` (mean) | kleiner | **664** 🏆 | 1726 | 1811 | 395 | 1428 |
 
 `cycle_count` und `predictions_total` sind ambivalente Metriken ohne klare Richtung — kein Pokal. Bei `code_mass`, `total_tokens` und `cost_usd` ist weniger besser, aber nur bei vergleichbarer Korrektheit aussagekräftig: MiniMax' niedrige Werte sind Stub-Artefakt (verification 0.04), Flash' Werte werden vom 3-LoC-Abbruch-Run (siehe F-1.2) gezogen — deshalb dort kein Pokal. Cost-Effizienz bei tatsächlich nutzbarer Korrektheit: siehe F-1.6.
 
-**Trophy-Regel zur Korrektheits-Gating**: Pokale für Qualitäts-/Effizienz-Metriken (`smell_*`, `cognitive_*`, `mccabe_*`, `cc_*`, `duration_seconds`, `total_tokens`, `cost_usd`) werden nur an Modelle mit `verification_pct = 1.0` vergeben. Begründung: niedrige Komplexität / kurze Dauer / niedrige Kosten bei nicht-korrekter Implementierung misst nicht das was die Metrik vorgibt zu messen, sondern Stub- oder Abbruch-Artefakte. In dieser Studie sind Opus und GLM 5.1 vpt=1.0 — beide qualifizieren sich. Pokal-Vergabe innerhalb dieses Pools: Opus gewinnt sämtliche sekundären Achsen (Smells, Komplexität, Code-Mass, Tokens, Cost, Duration), GLM erreicht nur den Tie bei `verification_pct`.
+**Trophy-Regel zur Korrektheits-Gating**: Pokale für Qualitäts-/Effizienz-Metriken (`smell_*`, `cognitive_*`, `mccabe_*`, `cc_*`, `duration_seconds`, `total_tokens`, `cost_usd`) werden nur an Modelle mit `verification_pct = 1.0` vergeben. Begründung: niedrige Komplexität / kurze Dauer / niedrige Kosten bei nicht-korrekter Implementierung misst nicht das was die Metrik vorgibt zu messen, sondern Stub- oder Abbruch-Artefakte. In dieser Studie sind Opus und GLM 5.1 vpt=1.0 — beide qualifizieren sich. Pokal-Vergabe innerhalb dieses Pools: Opus gewinnt Code-Qualität (Smells, Komplexität, Code-Mass) und Wallclock; GLM 5.1 gewinnt Cost. `total_tokens` an Opus (8.06 M vs 10.97 M).
 
-**Cost-Berechnung**: per-Run aus `transcript-metrics.json.total_tokens` × Pricing per 1M Token. Quellen 2026-05-25:
+**Cost-Berechnung**: per-Run aus `transcript-metrics.json.total_tokens` × Pricing per 1M Token. Quellen 2026-05-25: Anthropic Pricing-Seite (Opus), OpenRouter API `/api/v1/models` (GLM/Kimi/MiniMax), Vertex Standard (Gemini Flash).
 
 | Modell | input | output | cache_read |
 |---|---|---|---|
 | opus-4-7 (via Vertex EU) | $5.00 | $25.00 | $0.50 (10%) |
-| glm-5-1 (OpenRouter) | $0.98 | $3.08 | $0.98 (keine Cache-Rate gelistet → input-Rate) |
-| kimi-k2-6 (OpenRouter) | $0.73 | $3.49 | $0.73 (keine Cache-Rate gelistet → input-Rate) |
+| glm-5-1 (OpenRouter) | $0.98 | $3.08 | $0.18 |
+| kimi-k2-6 (OpenRouter) | $0.73 | $3.49 | $0.37 |
 | gemini-3-5-flash (Vertex Standard) | $1.50 | $9.00 | $0.15 |
-| minimax-m2-7 (OpenRouter) | $0.279 | $1.20 | $0.279 (keine Cache-Rate gelistet → input-Rate) |
+| minimax-m2-7 (OpenRouter) | $0.279 | $1.20 | $0.279 (keine Cache-Rate von OpenRouter gelistet → input-Rate als konservative Obergrenze) |
 
 Portkey-Markup nicht eingerechnet (Portkey listet keinen modell-spezifischen Aufschlag, Gateway-Plan-Kosten sind separate Tier-Pauschalen).
 
 ---
 
-## F-1.1 — Opus 4.7 und GLM 5.1 erreichen vollständige Korrektheit; Opus dominiert auf allen sekundären Achsen
+## F-1.1 — Opus 4.7 und GLM 5.1 erreichen vollständige Korrektheit; Tradeoff Code-Qualität ↔ Kosten
 
-Zwei Modelle erreichen über alle 5 Replikate perfekte Korrektheit außen (15/15 in jedem Run, `verification_pct = 1.00 ± 0.00`): Opus 4.7 und GLM 5.1. Auf den sekundären Achsen (Code-Qualität, Effizienz) liegt Opus deutlich vorne:
+Zwei Modelle erreichen über alle 5 Replikate perfekte Korrektheit außen (15/15 in jedem Run, `verification_pct = 1.00 ± 0.00`): Opus 4.7 und GLM 5.1. Auf den sekundären Achsen ist die Wahl ein klarer Tradeoff:
 
-| Metrik | opus-4-7-portkey | glm-5-1 | Δ |
+| Metrik | opus-4-7-portkey | glm-5-1 | Sieger |
 |---|---|---|---|
 | smell_total mean ± std | 0.8 ± 0.45 | 4.0 ± 6.16 | Opus 5× besser |
 | cognitive_max mean ± std | 9.8 ± 1.79 | 12.2 ± 4.15 | Opus 24 % niedriger |
@@ -51,9 +51,11 @@ Zwei Modelle erreichen über alle 5 Replikate perfekte Korrektheit außen (15/15
 | cc_longest_function mean | 25.4 | 28.8 | Opus 12 % niedriger |
 | code_mass mean ± std | 759.6 ± 33.8 | 816 ± 68.6 | Opus 7 % kleiner, halb so streuend |
 | duration_seconds mean | 664 | 1726 | Opus 2.6× schneller |
-| cost_usd / Run | $5.90 | $10.72 | Opus 45 % billiger |
+| **cost_usd / Run** | **$5.90** | **$2.10** | **GLM 2.8× billiger** |
 
-GLM 5.1 zeigt zwei bimodale Code-Qualitäts-Runs (smell 14 und 6) zwischen drei sauberen (smell 0) — das erklärt die σ-Streuung. Korrektheit bleibt davon unberührt. Pattern: GLM 5.1 ist auf claim-office-EM eine echte Alternative zu Opus für **Korrektheits-Garantie**, aber mit höheren Kosten und etwas inkonsistenter Code-Qualität.
+GLM 5.1 zeigt zwei bimodale Code-Qualitäts-Runs (smell 14 und 6) zwischen drei sauberen (smell 0) — das erklärt die σ-Streuung. Korrektheit bleibt davon unberührt.
+
+Pattern: Bei reiner **Korrektheits-Garantie** ist GLM 5.1 die klar bessere Wahl (gleiche Determinismus, ~drittel der Kosten, Tradeoff: ~2.6× Wallclock und etwas weniger sauberer Code). Wenn Code-Qualität (Lesbarkeit, Komplexität) ein hartes Ziel ist, lohnt sich der Opus-Aufpreis.
 
 ---
 
@@ -116,20 +118,20 @@ Folgerung: Workflow-Selbstabbruch-Heuristik ist modellabhängig; sie schützt ni
 
 ---
 
-## F-1.6 — Cost-Effizienz pro perfektem Lauf: Opus deterministisch günstigster; GLM ebenfalls deterministisch aber ~2× teurer
+## F-1.6 — Cost-Effizienz pro perfektem Lauf: GLM 5.1 deterministisch UND günstig
 
-Bei der einfachen "Cost pro Run"-Sicht (Übersichts-Tabelle) sehen Flash ($2.23) und MiniMax ($2.40) am günstigsten aus — aber bei niedrigerer Korrektheit. Aussagekräftiger ist die Frage: was kostet ein **garantiert perfekter** Lauf (verification 1.00, also 15/15), inklusive der Retries die für die Misserfolge nötig wären?
+Bei der einfachen "Cost pro Run"-Sicht (Übersichts-Tabelle) sehen GLM ($2.10), Flash ($2.23) und MiniMax ($2.40) am günstigsten aus. Aussagekräftiger ist die Frage: was kostet ein **garantiert perfekter** Lauf (verification 1.00, also 15/15), inklusive der Retries die für die Misserfolge nötig wären?
 
 | Modell | n_perfect / n | $/Run (mean) | $/perfekter Run (cond.) | erwartet $/perfekt-Resultat (mit Retry) |
 |---|---|---|---|---|
-| opus-4-7-portkey | 5/5 | 5.90 | 5.90 | **$5.90** 🏆 (deterministisch) |
-| glm-5-1 | 5/5 | 10.72 | 10.72 | $10.72 (deterministisch) |
-| kimi-k2-6 | 3/5 | 4.93 | 4.83 | $8.21 |
+| glm-5-1 | 5/5 | 2.10 | 2.10 | **$2.10** 🏆 (deterministisch) |
+| opus-4-7-portkey | 5/5 | 5.90 | 5.90 | $5.90 (deterministisch) |
 | gemini-3-5-flash | 4/5 | 2.23 | 2.69 | $2.78 |
 | minimax-m2-7 | 0/5 | 2.40 | — | ∞ (kein perfekter Lauf in n=5) |
+| kimi-k2-6 | 3/5 | 2.78 | 2.27 | $4.63 |
 
 "Erwartet" = totale Kosten der 5 Runs / Anzahl perfekter Runs — operativ: wenn ein perfektes Ergebnis das Ziel ist und Nicht-Perfekt-Läufe verworfen werden, dann ist das die Kosten-pro-Akzeptanz-Größe.
 
-Kimi kehrt sich um: günstigster $/Run wird teuerster $/perfekt-Resultat, weil 2 von 5 Läufen Geld kosten ohne nutzbares Ergebnis. Flash bleibt nominal Cost-Sieger (~halbe Opus-Kosten pro nutzbarer Run), aber mit Reliability-Tradeoff: erwarteter Wert basiert auf nur 5 Replikaten, der eine Abbruch-Run zieht die Statistik stark. GLM 5.1 ist die zweite deterministische Lösung, aber ~80 % teurer als Opus — vor allem getrieben durch hohes `cache_read`-Volumen (10.8 M Tokens/Run, in der konservativen Pricing-Annahme zum input-Tarif verrechnet, siehe Caveat-Tabelle oben; reale OpenRouter-Kosten möglicherweise niedriger).
+GLM 5.1 gewinnt klar: deterministisch perfekt (5/5) zu $2.10/Run, ~3× billiger als Opus' $5.90 bei gleicher Verlässlichkeit. Kimi und Flash konkurrieren auf der Cost-Achse, aber beide haben Reliability-Tail: Kimi degradiert (3/5 perfekt) und verteuert sich erwartet auf $4.63; Flash hat einen Total-Fail (4/5 → $2.78 erwartet, knapp hinter GLM aber stochastisch). MiniMax fällt komplett aus.
 
-Pokal nur an Opus (verification 1.00, deterministisch, niedrigste Kosten unter den vpt=1.0-Modellen). Flash' $2.78/perfekt-Resultat wäre nominal niedriger, aber pro Korrektheits-Gating-Regel (siehe Übersichts-Caveat) gehen Pokale für Qualitäts-/Effizienz-Metriken nur an Modelle mit vpt=1.0.
+Pokal an GLM 5.1: günstigster deterministisch perfekter Lauf im vpt=1.0-Pool. Opus bleibt für hohe Code-Qualitäts-Ansprüche relevant (F-1.1), nicht für reine Korrektheits-Garantie.
