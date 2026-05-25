@@ -348,9 +348,31 @@ for entry in "${RUN_LIST[@]}"; do
     fi
     mkdir -p "$run_dir/src"
 
+    # Detect harness from workflow definition. .opencode/ marks an OpenCode
+    # workflow; .claude/ marks a Claude Code workflow. The marker dir is
+    # also the source of harness-specific config.
+    if [ -d "$WORKFLOWS_DIR/$workflow/.opencode" ]; then
+        harness=opencode
+    elif [ -d "$WORKFLOWS_DIR/$workflow/.claude" ]; then
+        harness=claude
+    else
+        echo -e "  ${RED}ERROR: workflow $workflow has neither .claude/ nor .opencode/${NC}"
+        failed_count=$((failed_count + 1))
+        continue
+    fi
+
     # Copy workflow config
-    if [ -d "$WORKFLOWS_DIR/$workflow/.claude" ]; then
+    if [ "$harness" = "claude" ]; then
         cp -r "$WORKFLOWS_DIR/$workflow/.claude" "$run_dir/"
+    elif [ "$harness" = "opencode" ]; then
+        # Mirror the marker dir AND promote opencode.json / AGENTS.md to
+        # run_dir root, because OpenCode reads those from cwd, not from
+        # .opencode/.
+        cp -r "$WORKFLOWS_DIR/$workflow/.opencode" "$run_dir/"
+        [ -f "$WORKFLOWS_DIR/$workflow/.opencode/opencode.json" ] && \
+            cp "$WORKFLOWS_DIR/$workflow/.opencode/opencode.json" "$run_dir/"
+        [ -f "$WORKFLOWS_DIR/$workflow/.opencode/AGENTS.md" ] && \
+            cp "$WORKFLOWS_DIR/$workflow/.opencode/AGENTS.md" "$run_dir/"
     fi
 
     # Copy kata prompt
@@ -528,7 +550,27 @@ EOF
         fi
 
         set +e
-        if [ "$thinking" = "false" ]; then
+        if [ "$harness" = "opencode" ]; then
+            # Lab-variant model name → OpenCode --model format. Skeleton
+            # uses hardcoded mapping; generalize when more OC models land.
+            case "$model_name" in
+                # Provider name = key in opencode.json "provider" block ("portkey").
+                # Model name = key in provider.<name>.models block — for Portkey
+                # we pass the @vertex-prefixed routing string verbatim so Portkey
+                # picks the right backend. OC splits on the first slash.
+                opus-4-7-portkey) oc_model="portkey/@vertex-eu-global/anthropic.claude-opus-4-7" ;;
+                *) echo -e "  ${RED}ERROR: no OpenCode model mapping for $model_name${NC}"
+                   claude_exit=2
+                   oc_model="" ;;
+            esac
+            if [ -n "$oc_model" ]; then
+                (cd "$run_dir" && timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
+                    opencode run --model "$oc_model" --dangerously-skip-permissions \
+                    "Read prompt.md and complete the exercise following the workflow rules.") \
+                    2>&1 | tee "$run_log"
+                claude_exit=${PIPESTATUS[0]}
+            fi
+        elif [ "$thinking" = "false" ]; then
             (cd "$run_dir" && MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
                 claude --dangerously-skip-permissions --strict-mcp-config --model "$cli_model" --print \
                 "Read prompt.md and complete the exercise following the workflow rules.") \
@@ -586,14 +628,20 @@ EOF
     # All cycle_count / refactorings / predictions then drop to 0 for
     # the affected runs (typical for outlier runs that finish without
     # cli.ts and trigger the nudge).
-    save_transcript "$run_dir"
+    # OpenCode runs don't produce ~/.claude/projects/ transcripts —
+    # skip the lookup to avoid the misleading "not found" warning.
+    if [ "$harness" != "opencode" ]; then
+        save_transcript "$run_dir"
+    fi
 
     # --- cli.ts nudge ---------------------------------------------------
     # If the agent finished successfully but forgot to create src/cli.ts,
     # nudge it once with a short follow-up prompt. This fixes a recurring
     # measurement artefact where verification scores 0/15 because the
     # entry point is missing, not because the domain logic is wrong.
-    if [ "$claude_exit" -eq 0 ] && [ ! -f "$run_dir/src/cli.ts" ] && [ -f "$run_dir/src/claim-office.ts" ]; then
+    # Skeleton: OC nudge not wired yet — relying on AGENTS.md to instruct
+    # cli.ts creation directly. Revisit if claim-office cells trip the gap.
+    if [ "$harness" = "claude" ] && [ "$claude_exit" -eq 0 ] && [ ! -f "$run_dir/src/cli.ts" ] && [ -f "$run_dir/src/claim-office.ts" ]; then
         echo -e "  ${YELLOW}src/cli.ts missing — nudging agent to create it...${NC}"
         set +e
         if [ "$thinking" = "false" ]; then

@@ -1,0 +1,7 @@
+{
+  "name": "OpenCode walking skeleton",
+  "description": "Single-run smoke test: validates that OpenCode harness wiring (Dockerfile install, opencode.json with Portkey provider, run-batch.sh harness branch) produces a complete run_dir with src/cli.ts and a non-null verification_pct via analyze-run.sh.",
+  "runs": [
+    { "kata": "claim-office-prose", "workflow": "v1-oneshot-oc", "model": "opus-4-7-portkey" }
+  ]
+}

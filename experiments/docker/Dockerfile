@@ -23,6 +23,13 @@ RUN npm install -g pnpm@9.15.9
 # Known bad: 2.1.37 (hangs on .claude/agents/), 2.1.126 (needs ~/.claude.json).
 RUN npm install -g @anthropic-ai/claude-code@2.1.146
 
+# Install OpenCode CLI (second harness).
+# 1.15.10: verified end-to-end on 2026-05-25 with v1-oneshot-oc +
+#   claim-office-prose + opus-4-7-portkey (via Portkey-Vertex routing).
+# Bump policy: same as Claude Code — re-run skeleton plan after any
+# version bump before launching multi-cell batches.
+RUN npm install -g opencode-ai@1.15.10
+
 # Stryker (mutation testing): NOT installed globally. Stryker's TS-config
 # preprocessor resolves `typescript` from where stryker itself is loaded,
 # so a global install + per-run typescript devDep produces ERR_MODULE_NOT_FOUND.

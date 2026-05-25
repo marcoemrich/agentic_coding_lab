@@ -115,6 +115,10 @@ services:
       - ANTHROPIC_DEFAULT_HAIKU_MODEL=${ANTHROPIC_DEFAULT_HAIKU_MODEL:-}
       - ANTHROPIC_DEFAULT_OPUS_MODEL=${ANTHROPIC_DEFAULT_OPUS_MODEL:-}
       - CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=${CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS:-}
+      # PORTKEY_API_KEY is loaded exclusively via env_file (.env) — we
+      # deliberately do NOT add an explicit `${PORTKEY_API_KEY:-}` line
+      # because that interpolates the shell value first, which on this
+      # machine carries a stale eval key. env_file ensures .env wins.
 
     deploy:
       resources:
