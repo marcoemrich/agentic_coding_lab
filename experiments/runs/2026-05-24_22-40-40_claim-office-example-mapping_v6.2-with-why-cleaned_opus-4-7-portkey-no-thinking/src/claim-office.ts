@@ -129,7 +129,14 @@ const damagePayout = (damage: Damage, policy: Policy): number => {
   return Math.max(0, reimbursableAmount(item, damage.amount) - DEDUCTIBLE_PER_DAMAGE);
 };
 
-const validateDamages = (policy: Policy, damages: Damage[]): void => {
+const validateDamageAmounts = (damages: Damage[]): void => {
+  const negative = damages.find((damage) => damage.amount < 0);
+  if (negative) {
+    throw new Error(`Damage amount must be non-negative, got ${negative.amount}`);
+  }
+};
+
+const validateDamageCounts = (policy: Policy, damages: Damage[]): void => {
   const insuredCounts = countByType(policy.items);
   const damageCounts = countBy(damages, (damage) => damage.itemType);
   for (const [type, count] of damageCounts) {
@@ -138,6 +145,11 @@ const validateDamages = (policy: Policy, damages: Damage[]): void => {
       throw new Error(`Damage references ${count} ${type} entries but policy insures only ${insured}`);
     }
   }
+};
+
+const validateDamages = (policy: Policy, damages: Damage[]): void => {
+  validateDamageAmounts(damages);
+  validateDamageCounts(policy, damages);
 };
 
 const processClaim = (policy: Policy, incident: Incident): ClaimResult => {

@@ -410,5 +410,16 @@ describe("MHPCO Claim Office", () => {
     expect(result.status).not.toBe(0);
     expect(result.stderr).not.toBe("");
   });
-  it.todo("claim damage with negative amount → CLI exits non-zero with stderr");
+  it("claim damage with negative amount → CLI exits non-zero with stderr", () => {
+    const input = JSON.stringify({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword" }] },
+        { op: "claim", policy: 0, incident: { cause: "fire", damages: [{ itemType: "sword", amount: -200 }] } },
+      ],
+    });
+    const result = runCli(input);
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).not.toBe("");
+  });
 });

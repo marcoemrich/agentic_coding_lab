@@ -42,6 +42,7 @@ Alle Varianten leben unter `experiments/workflows/v6.1-*` und differieren nur in
 | `v6.1-no-emoji` | 95 Decoration-Emojis (✅❌🔴🟢🔄📋🚨⚠️) raus | [RQ-1.2](1.2-emoji-effect-v6.1/findings.md) | Korrektheit invariant auf GOL; +29 % Refactorings, **spart KEINE Tokens** (sogar +8.5 %). **Auf claim-office −20 pp Korrektheit** (1× Komplett-Failure, RQ-1.4) |
 | `v6.1-no-pep-no-emoji` | beide Reduktionen kombiniert | [RQ-1.3](1.3-pep-emoji-combined-v6.1/findings.md), [RQ-1.4](1.4-pep-emoji-claim-office/findings.md) | Effekte nicht additiv; kombiniert refactoriert *unter* Baseline. **Auf claim-office −5 pp Korrektheit** |
 | `v6.1-with-why` | 3 Why-Blöcke aus v6.5-lean (green.md, red.md Step 7, rules/tdd.md) **bei voll erhaltenen MUSTs** | [RQ-1.5](1.5-why-block-effect-v6.1/findings.md) | Korrektheit invariant auf claim-office (1× Outlier 0.27); +87 % Refactorings, −87 % Smells, Spitzen-Komplexität −37–43 % bei σ −82–90 %; +53 % Wallclock, +22 % Tokens |
+| `v6.2-with-why-cleaned` | v6.1-with-why + 3 Hygiene-Cleanups aus archiviertem v6.5.1-Audit (`pnpm test:unit:basic`→`pnpm test`, rule-file-Hyphen, settings-Permission-Dedup; `refactor.md` role-neutral; `tdd-experiment-mode.md` ohne Phantom-HITL-Framing) | [RQ-1.6](1.6-v62-cleanup-validation-v61-with-why/findings.md) | Korrektheit nicht schlechter (Mean 0.91→0.96 inkl. v6.1-Nudge-Outlier); +34 % Refactorings, cycle_count-Streuung σ 14.2→1.6; +13 % Wallclock, +12 % Tokens. Cleanups verhaltens-äquivalent, **neue Default-Baseline** |
 
 ### Tragende Inhalte — vor jeder Reduktion schützen
 
@@ -52,7 +53,7 @@ Alle Varianten leben unter `experiments/workflows/v6.1-*` und differieren nur in
 
 ### Aktuelle Front
 
-- **Default für korrekheits-kritische Arbeit auf claim-office × opus-4-7-portkey-no-thinking:** `v6.1-with-why`. Pareto-dominant auf TDD-Disziplin und Code-Qualität bei invarianter Korrektheit (RQ-1.5 F-1.1, RQ-1.4 F-1.3).
+- **Default für korrekheits-kritische Arbeit auf claim-office × opus-4-7-portkey-no-thinking:** `v6.2-with-why-cleaned` (RQ-1.6). Verhalts-äquivalent zu v6.1-with-why bei zusätzlicher Hygiene (Konsistenz-Renames, refactor.md-Entkopplung, tdd-experiment-mode-Reframing). v6.1-with-why bleibt Vorgänger-Referenz im Inventar.
 - **Default für Speed/Token-Effizienz, trainingsbekannte Katas:** `v6.1-no-pep` auf GOL. Auf claim-office nicht empfohlen.
 - **Default für Methoden-Vergleichs-RQs (Reduktions-Kette):** `v6.1-hybrid-testlist-scope-fix` als Baseline.
 - **Niemals als Default verwenden:** `v6.1-no-emoji` und `v6.1-no-pep-no-emoji` auf novel Code mit echten Mehrdeutigkeiten. Beide haben dokumentierte Korrektheits-Brüche auf claim-office.
@@ -222,6 +223,14 @@ Empirische Stützen für die Leitprinzipien oben. Geordnet nach Design-Achse.
 
 - **[RQ-1.5 F-1.1](1.5-why-block-effect-v6.1/findings.md#f-11)** — Why-Blöcke neben MUSTs (v6.1-with-why): kein Korrektheits-Effekt, aber +87 % Refactorings, −87 % Smells, Spitzen-Komplexität −37–43 %, σ −82–90 %. Hypothese H2 aus RQ-1.5 bestätigt. **Theory-of-Mind hat empirische Stütze aus diesem Repo, nicht nur die Anthropic-Skill-Creator-Doku.**
 - **[RQ-1.5 F-1.2](1.5-why-block-effect-v6.1/findings.md#f-12)** — Pro Cycle gleich schnell/teuer; der ~50 % Wallclock-Aufschlag und ~22 % Token-Aufschlag pro Run sind reine Konsequenz des höheren Cycle-Counts, nicht Why-Bloat-Overhead.
+
+### Hygiene-Cleanups (v6.5.1-Audit auf v6.1-with-why)
+
+- **[RQ-1.6 F-1.1](1.6-v62-cleanup-validation-v61-with-why/findings.md#f-11)** — Drei Hygiene-Cleanups aus dem archivierten v6.5.1-blueprint-audit (Konsistenz-Renames + refactor.md-Entkopplung + tdd-experiment-mode-Reframing) sind auf claim-office × opus-4-7-portkey-no-thinking **verhaltens-äquivalent**. Korrektheits-Bruch klar widerlegt (verification_pct Mean 0.91 → 0.96, tests_passing 100 %/100 %). Damit ist das in [v6.5-correctness-setback](https://) dokumentierte Risiko von skill-creator-Cleanups *für diese spezifische Auswahl* gebannt — die Cleanups haben MUSTs, Why-Blöcke und alle MARKERS unangetastet gelassen.
+- **[RQ-1.6 F-1.2](1.6-v62-cleanup-validation-v61-with-why/findings.md#f-12)** — Disziplin-Drift in eine Richtung: +34 % `refactorings_applied`, `cycle_count`-Streuung kollabiert von σ 14.2 auf σ 1.6 (letzteres teils durch Wegfall des v6.1-Nudge-Outliers). Mechanistisch plausibel: refactor.md-Entkopplung entfernt die "TDD Refactor Phase specialist"-Verkettungs-Hemmung und produziert mehr Refactor-Iterationen.
+- **[RQ-1.6 F-1.4](1.6-v62-cleanup-validation-v61-with-why/findings.md#f-14)** — Kosten-Aufschlag +13 % Wallclock, +12 % Tokens — ausschließlich getrieben durch +7 % Cycles und +34 % Refactorings, **pro Cycle nicht teurer** (+5 % Tokens/Cycle im Noise). Streuung sowohl bei Wallclock als auch Tokens drastisch reduziert (σ ungefähr halbiert).
+
+**Konsequenz für die Methodik:** Cleanups, die strukturell auf "Style-Hygiene" beschränkt bleiben (Renames, role-neutrale Sprache, Reframing ohne MUST-Eingriff), sind in dieser Größenordnung sicher anwendbar. Das ersetzt nicht die Pflicht zur Korrektheits-Stichprobe — bestätigt aber, dass nicht *jeder* Cleanup-Versuch die v6.5-lean-Falle reproduziert.
 
 ### Pep-/Emoji-Reduktion (v6.1-Linie)
 

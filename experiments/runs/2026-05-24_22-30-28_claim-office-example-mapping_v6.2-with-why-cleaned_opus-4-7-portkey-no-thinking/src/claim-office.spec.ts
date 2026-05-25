@@ -482,5 +482,19 @@ describe("MHPCO Claim Office", () => {
       }),
     ).toThrow();
   });
-  it.todo("claim contains damage entry with negative amount → rejected");
+  it("claim contains damage entry with negative amount → rejected", () => {
+    expect(() =>
+      runScenario({
+        customer: { yearsWithMHPCO: 0 },
+        steps: [
+          { op: "quote", items: [{ type: "sword", material: "steel", enchantment: 0 }] },
+          {
+            op: "claim",
+            policy: 0,
+            incident: { cause: "fire", damages: [{ itemType: "sword", amount: -200 }] },
+          },
+        ],
+      }),
+    ).toThrow();
+  });
 });

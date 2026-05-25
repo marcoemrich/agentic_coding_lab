@@ -51,13 +51,17 @@ const COMPONENT_BLOCK_SIZE = 3;
 const COMPONENT_BLOCK_BASE = 60;
 const COMPONENT_TYPES = new Set(["rune", "moonstone"]);
 
-const groupCountsByType = (items: Item[]): Map<string, number> => {
+const countByKey = <T>(values: T[], keyOf: (value: T) => string): Map<string, number> => {
   const counts = new Map<string, number>();
-  for (const item of items) {
-    counts.set(item.type, (counts.get(item.type) ?? 0) + 1);
+  for (const value of values) {
+    const key = keyOf(value);
+    counts.set(key, (counts.get(key) ?? 0) + 1);
   }
   return counts;
 };
+
+const groupCountsByType = (items: Item[]): Map<string, number> =>
+  countByKey(items, (item) => item.type);
 
 const baseForGroup = (type: string, count: number): number => {
   if (COMPONENT_TYPES.has(type) && count === COMPONENT_BLOCK_SIZE) {
@@ -76,9 +80,15 @@ const calculatePolicyBase = (items: Item[]): number => {
 
 const roundUpInMHPCOsFavor = (amount: number): number => Math.ceil(amount);
 
-type ItemSurcharge = { applies: (item: Item) => boolean; rate: number };
+type Modifier<T> = { applies: (target: T) => boolean; rate: number };
 
-const ITEM_SURCHARGES: ItemSurcharge[] = [
+const sumApplicableRates = <T>(modifiers: Modifier<T>[], target: T, base: number): number =>
+  modifiers.reduce(
+    (sum, { applies, rate }) => sum + (applies(target) ? base * rate : 0),
+    0,
+  );
+
+const ITEM_SURCHARGES: Modifier<Item>[] = [
   { applies: (item) => item.cursed === true, rate: CURSE_SURCHARGE_RATE },
   {
     applies: (item) => (item.enchantment ?? 0) >= HIGH_ENCHANTMENT_THRESHOLD,
@@ -86,43 +96,30 @@ const ITEM_SURCHARGES: ItemSurcharge[] = [
   },
 ];
 
-const surchargesForItem = (item: Item): number => {
-  const itemBase = ITEM_BASE[item.type];
-  return ITEM_SURCHARGES.reduce(
-    (sum, { applies, rate }) => sum + (applies(item) ? itemBase * rate : 0),
-    0,
-  );
-};
+const surchargesForItem = (item: Item): number =>
+  sumApplicableRates(ITEM_SURCHARGES, item, ITEM_BASE[item.type]);
 
 const itemSpecificSurcharges = (items: Item[]): number =>
   items.reduce((sum, item) => sum + surchargesForItem(item), 0);
 
 type PolicyContext = { customer: Customer; quoteIndex: number };
 
-type PolicyModifier = {
-  applies: (context: PolicyContext) => boolean;
-  signedRate: number;
-};
-
-const POLICY_MODIFIERS: PolicyModifier[] = [
-  { applies: () => true, signedRate: +FIRST_CONTRACT_SURCHARGE_RATE },
+const POLICY_MODIFIERS: Modifier<PolicyContext>[] = [
+  { applies: () => true, rate: +FIRST_CONTRACT_SURCHARGE_RATE },
   {
     applies: ({ customer }) => customer.yearsWithMHPCO >= LOYALTY_THRESHOLD_YEARS,
-    signedRate: -LOYALTY_DISCOUNT_RATE,
+    rate: -LOYALTY_DISCOUNT_RATE,
   },
   {
     applies: ({ quoteIndex }) => quoteIndex > 0,
-    signedRate: -FOLLOW_UP_DISCOUNT_RATE,
+    rate: -FOLLOW_UP_DISCOUNT_RATE,
   },
 ];
 
 const policyWideAdjustment = (policyBase: number, context: PolicyContext): number =>
-  POLICY_MODIFIERS.reduce(
-    (sum, { applies, signedRate }) => sum + (applies(context) ? policyBase * signedRate : 0),
-    0,
-  );
+  sumApplicableRates(POLICY_MODIFIERS, context, policyBase);
 
-const quotePremium = ({ items }: QuoteStep, context: PolicyContext): number => {
+const quotePremium = (items: Item[], context: PolicyContext): number => {
   const policyBase = calculatePolicyBase(items);
   return roundUpInMHPCOsFavor(
     policyBase +
@@ -158,8 +155,29 @@ const sumPayouts = (policy: Policy, damages: Damage[]): number =>
     0,
   );
 
+const validateDamagesAgainstPolicy = (policy: Policy, damages: Damage[]): void => {
+  const insuredCounts = groupCountsByType(policy.items);
+  const damageCounts = countByKey(damages, (damage) => damage.itemType);
+  for (const [type, count] of damageCounts) {
+    if (count > (insuredCounts.get(type) ?? 0)) {
+      throw new Error(`claim references ${count} ${type}(s) but policy covers fewer`);
+    }
+  }
+};
+
+const validateNonNegativeDamageAmounts = (damages: Damage[]): void => {
+  for (const damage of damages) {
+    if (damage.amount < 0) {
+      throw new Error(`damage amount must be non-negative: ${damage.amount}`);
+    }
+  }
+};
+
 const processClaim = (policy: Policy, step: ClaimStep): ClaimResult => {
-  const claimedAmount = sumPayouts(policy, step.incident.damages);
+  const { damages } = step.incident;
+  validateNonNegativeDamageAmounts(damages);
+  validateDamagesAgainstPolicy(policy, damages);
+  const claimedAmount = sumPayouts(policy, damages);
   const payout = roundDownInMHPCOsFavor(Math.min(claimedAmount, policy.remainingCap));
   policy.remainingCap -= payout;
   return { payout, remainingCap: policy.remainingCap };
@@ -170,14 +188,23 @@ const openPolicy = (items: Item[]): Policy => ({
   remainingCap: CAP_MULTIPLIER * insuranceSum(items),
 });
 
+const validateKnownItemTypes = (items: Item[]): void => {
+  for (const item of items) {
+    if (!(item.type in ITEM_BASE)) {
+      throw new Error(`unknown item type: ${item.type}`);
+    }
+  }
+};
+
 const handleQuote = (
   step: QuoteStep,
   customer: Customer,
   policies: Policy[],
 ): QuoteResult => {
+  validateKnownItemTypes(step.items);
   const quoteIndex = policies.length;
   policies.push(openPolicy(step.items));
-  return { premium: quotePremium(step, { customer, quoteIndex }) };
+  return { premium: quotePremium(step.items, { customer, quoteIndex }) };
 };
 
 const handleClaim = (step: ClaimStep, policies: Policy[]): ClaimResult =>

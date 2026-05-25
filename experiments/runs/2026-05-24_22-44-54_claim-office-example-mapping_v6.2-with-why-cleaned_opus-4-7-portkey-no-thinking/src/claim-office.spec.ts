@@ -171,7 +171,20 @@ describe("MHPCO Claim Office", () => {
 
   // --- Rounding ---
   // (premium up: covered by "7 runes" test above which yields 197.5 → 198)
-  it.todo("payout yielding 350.5 G → rounded down to 350 G");
+  it("payout yielding 350.5 G → rounded down to 350 G", () => {
+    const out = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword", enchantment: 8 }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "sword", amount: 901 }] },
+        },
+      ],
+    });
+    expect(out.results[1]).toEqual({ payout: 350, remainingCap: 1650 });
+  });
 
   // --- Integration examples ---
   it("newcomer with cursed sword (enchantment 3) → 165 G", () => {
@@ -319,18 +332,134 @@ describe("MHPCO Claim Office", () => {
         },
       ],
     });
-    expect(out.results[1]).toEqual({ payout: 1300, remainingCap: 2700 });
+    expect(out.results[1]).toEqual({ payout: 1200, remainingCap: 2800 });
   });
-  it.todo("damages array has more entries of a type than policy covers → CLI rejects whole claim");
+  it("damages array has more entries of a type than policy covers → CLI rejects whole claim", () => {
+    expect(() =>
+      runScenario({
+        customer: { yearsWithMHPCO: 0 },
+        steps: [
+          { op: "quote", items: [{ type: "sword" }] },
+          {
+            op: "claim",
+            policy: 0,
+            incident: {
+              cause: "twin strike",
+              damages: [
+                { itemType: "sword", amount: 500 },
+                { itemType: "sword", amount: 500 },
+              ],
+            },
+          },
+        ],
+      }),
+    ).toThrow();
+  });
 
   // --- Cap exhaustion ---
-  it.todo("policy: sword + amulet → insurance sum 1600, cap 3200");
-  it.todo("cursed sword premium modifiers do not raise cap → cap remains 2000");
-  it.todo("sword + 3 runes (block) → insurance sum 1750 (block does not reduce insurance sum)");
-  it.todo("sword cap 2000: two claims of 1500 → first payout 1400 (cap 600), second payout 600 (cap 0)");
+  it("policy: sword + amulet → insurance sum 1600, cap 3200", () => {
+    const out = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword" }, { type: "amulet" }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "sword", amount: 200 }] },
+        },
+      ],
+    });
+    expect(out.results[1]).toEqual({ payout: 100, remainingCap: 3100 });
+  });
+  it("cursed sword premium modifiers do not raise cap → cap remains 2000", () => {
+    const out = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword", cursed: true }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "sword", amount: 200 }] },
+        },
+      ],
+    });
+    expect(out.results[1]).toEqual({ payout: 100, remainingCap: 1900 });
+  });
+  it("sword + 3 runes (block) → insurance sum 1750 (block does not reduce insurance sum)", () => {
+    const out = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        {
+          op: "quote",
+          items: [{ type: "sword" }, { type: "rune" }, { type: "rune" }, { type: "rune" }],
+        },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "sword", amount: 200 }] },
+        },
+      ],
+    });
+    expect(out.results[1]).toEqual({ payout: 100, remainingCap: 3400 });
+  });
+  it("sword cap 2000: two claims of 1500 → first payout 1400 (cap 600), second payout 600 (cap 0)", () => {
+    const out = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword" }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1500 }] },
+        },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "flood", damages: [{ itemType: "sword", amount: 1500 }] },
+        },
+      ],
+    });
+    expect(out.results[1]).toEqual({ payout: 1400, remainingCap: 600 });
+    expect(out.results[2]).toEqual({ payout: 600, remainingCap: 0 });
+  });
 
   // --- Edge cases / CLI errors ---
-  it.todo("quote with unknown item type → CLI exits non-zero, writes stderr, no results");
-  it.todo("claim references item not in policy → CLI exits non-zero, writes stderr");
-  it.todo("claim damage with negative amount → CLI exits non-zero, writes stderr");
+  it("quote with unknown item type → CLI exits non-zero, writes stderr, no results", () => {
+    expect(() =>
+      runScenario({
+        customer: { yearsWithMHPCO: 0 },
+        steps: [{ op: "quote", items: [{ type: "broomstick" }] }],
+      }),
+    ).toThrow();
+  });
+  it("claim references item not in policy → CLI exits non-zero, writes stderr", () => {
+    expect(() =>
+      runScenario({
+        customer: { yearsWithMHPCO: 0 },
+        steps: [
+          { op: "quote", items: [{ type: "sword" }] },
+          {
+            op: "claim",
+            policy: 0,
+            incident: { cause: "fire", damages: [{ itemType: "amulet", amount: 200 }] },
+          },
+        ],
+      }),
+    ).toThrow();
+  });
+  it("claim damage with negative amount → CLI exits non-zero, writes stderr", () => {
+    expect(() =>
+      runScenario({
+        customer: { yearsWithMHPCO: 0 },
+        steps: [
+          { op: "quote", items: [{ type: "sword" }] },
+          {
+            op: "claim",
+            policy: 0,
+            incident: { cause: "fire", damages: [{ itemType: "sword", amount: -200 }] },
+          },
+        ],
+      }),
+    ).toThrow();
+  });
 });

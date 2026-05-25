@@ -179,16 +179,31 @@ const countDamagesByType = (damages: Damage[]): Map<string, number> =>
     return counts;
   }, new Map<string, number>());
 
-const assertDamagesWithinPolicy = (damages: Damage[], policy: Policy): void => {
-  for (const [itemType, damagedCount] of countDamagesByType(damages)) {
-    const insuredCount = countItemsOfType(policy.items, itemType);
-    if (insuredCount === 0) {
-      throw new Error(`No insured item of type ${itemType} in policy`);
-    }
-    if (damagedCount > insuredCount) {
-      throw new Error(`Damage count for ${itemType} exceeds insured quantity`);
-    }
+const assertNonNegativeAmount = (damage: Damage): void => {
+  if (damage.amount < 0) {
+    throw new Error(`Damage amount must be non-negative; got ${damage.amount}`);
   }
+};
+
+const assertDamageCountWithinInsured = (
+  itemType: string,
+  damagedCount: number,
+  policy: Policy,
+): void => {
+  const insuredCount = countItemsOfType(policy.items, itemType);
+  if (insuredCount === 0) {
+    throw new Error(`No insured item of type ${itemType} in policy`);
+  }
+  if (damagedCount > insuredCount) {
+    throw new Error(`Damage count for ${itemType} exceeds insured quantity`);
+  }
+};
+
+const assertDamagesWithinPolicy = (damages: Damage[], policy: Policy): void => {
+  damages.forEach(assertNonNegativeAmount);
+  countDamagesByType(damages).forEach((damagedCount, itemType) =>
+    assertDamageCountWithinInsured(itemType, damagedCount, policy),
+  );
 };
 
 const claim = (step: ClaimStep, policy: Policy): ClaimResult => {
