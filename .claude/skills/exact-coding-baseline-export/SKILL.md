@@ -1,246 +1,285 @@
 ---
 name: exact-coding-baseline-export
 description: |
-  Mint a new versioned exact-coding-baseline-YYYY-MM-DD snapshot under
-  research/workflow-dev/export/. Captures the current best TDD workflow
-  (v6.2-with-why-cleaned by default) with HITL re-enabled, autonomy-level
-  switch, and consumer-facing README/VERSION inside .claude/ so the snapshot
-  can be copied straight into a project. Trigger when the user says
+  Mint a new exact-coding-baseline-YYYY-MM-DD snapshot under
+  research/workflow-dev/export/. Detects the current best correctness-
+  oriented workflow from research/workflow-dev/workflow-construction.md
+  (or takes an explicit source-workflow argument), copies it, applies the
+  HITL transformation using the canonical template in this skill, and
+  writes README + VERSION inside .claude/ so the snapshot can be dropped
+  straight into a consumer project. Trigger when the user says
   "exact-coding baseline export", "neue exact-coding baseline",
   "exact-coding-baseline-export", or asks to refresh the baseline snapshot.
 ---
 
 # Skill: exact-coding-baseline-export
 
-Mint a dated snapshot of the curated exact-coding TDD workflow into
+Mint a dated, HITL-enabled snapshot of the current best TDD workflow into
 `research/workflow-dev/export/exact-coding-baseline-<YYYY-MM-DD>/`.
 
-The snapshot is the version of `v6.2-with-why-cleaned` that has been
-re-shaped for **interactive human use** — autonomous-MUSS wording removed,
-Human-in-the-Loop re-enabled as a single configurable rule, README+VERSION
-shipped inside `.claude/` so the whole directory copies cleanly into a
-consumer project.
+This is a **true transformation skill** — it reads a source workflow
+(immutable), applies HITL re-enablement on top of it, and writes the result
+as a new snapshot. The skill is self-contained: the HITL consumable template
+and the README template live alongside this file under `templates/`.
 
 ## Scope
 
-- **Single repo**: agentic_coding_lab_project. Skill writes only inside
+- **Single repo**: agentic_coding_lab_project. Writes only inside
   `research/workflow-dev/export/`. Does not touch source workflows under
-  `experiments/workflows/`, sibling repos (exact-coding-book,
-  exact-coding-exercises), or anything else.
+  `experiments/workflows/`, sibling repos, or anything else.
 - **Single artifact**: a new directory at
   `research/workflow-dev/export/exact-coding-baseline-<DATE>/`.
 - **Idempotent within a date**: refuses to overwrite an existing
-  same-date snapshot unless the user explicitly says "overwrite" or
-  "force".
+  same-date snapshot unless the user explicitly says "overwrite" / "force".
 
-## Argument
+## Arguments
 
-- Optional date override in `YYYY-MM-DD` form (e.g. "2026-06-15"). If
-  not given, use today's date (`date +%F`).
+Two positional, both optional:
 
-## Default flow — copy-from-latest
+1. **Date** in `YYYY-MM-DD` form. Default: today (`date +%F`).
+2. **Source workflow name** (e.g. `v6.2-with-why-cleaned`). Default:
+   auto-detect (see "Source detection" below).
 
-This is the common case. The most recent existing snapshot is the canonical
-recipe; the skill just clones it under a new date.
+If the user passes "from v6.4 today" or similar, parse the source name and
+use today's date. If only one argument looks like a date, that's the date;
+if only one looks like a workflow name, that's the source.
 
-1. **Resolve target date**:
-   ```bash
-   TARGET_DATE="${1:-$(date +%F)}"
-   ```
-   Validate format `YYYY-MM-DD`. Refuse on malformed input.
+## Source detection
 
-2. **Find latest snapshot** under
-   `research/workflow-dev/export/exact-coding-baseline-*`:
-   ```bash
-   LATEST=$(ls -1d research/workflow-dev/export/exact-coding-baseline-* \
-            2>/dev/null | sort | tail -1)
-   ```
-   If none exists → fall back to the **from-source flow** below.
+When no explicit source is given, find the current correctness-critical
+default from `research/workflow-dev/workflow-construction.md`. The
+recommendation lives in the "Aktuelle Front" section and starts with the
+prefix **"Default für korrekheits-kritische Arbeit"** (note the typo
+"korrekheits" in the source — keep it in the grep).
 
-3. **Refuse to clobber**:
-   ```bash
-   TARGET="research/workflow-dev/export/exact-coding-baseline-$TARGET_DATE"
-   if [ -e "$TARGET" ]; then
-     echo "Target $TARGET already exists. Pass 'overwrite' to replace."
-     exit 1
-   fi
-   ```
+```bash
+SRC_NAME=$(grep -E '\*\*Default für korre[kt]+heits-kritische Arbeit' \
+             research/workflow-dev/workflow-construction.md \
+           | head -1 \
+           | sed -E 's/.*`([^`]+)`.*/\1/')
+```
 
-4. **Clone latest → target**:
-   ```bash
-   cp -r "$LATEST" "$TARGET"
-   ```
+The first backtick-quoted workflow name on that line is the recommendation.
+Verify the directory exists:
 
-5. **Stamp new date** in two places:
-   - `$TARGET/.claude/VERSION` — single line `<TARGET_DATE>\n`.
-   - `$TARGET/.claude/README.md` — replace `Version: **<OLD_DATE>**` with
-     `Version: **<TARGET_DATE>**` (sed/Edit; the line appears once under
-     "## Version and updates"). Also replace title line
-     `# Exact Coding TDD Baseline — Version <OLD_DATE>` at top.
+```bash
+SRC_DIR="experiments/workflows/$SRC_NAME"
+[ -d "$SRC_DIR/.claude" ] || { echo "Source $SRC_DIR missing"; exit 1; }
+```
 
-6. **Validate** (see "Validation" below).
+If the grep fails (the recommendation line moved or got renamed), **ask the
+user** which workflow to use. Do not silently fall back to a hardcoded name
+— a stale fallback is the whole reason this skill was rewritten away from
+clone-from-latest.
 
-7. **Report** to the user: path written, files diff against latest
-   (should be only README.md + VERSION), validation result.
+Print the resolved source to the user before proceeding, so a wrong
+detection can be aborted.
 
-## Fallback flow — from-source (rare)
+## Target
 
-Use this if **no previous snapshot exists** under `export/`, or the user
-explicitly says "rebuild from source" / "from scratch". Source workflow
-defaults to `experiments/workflows/v6.2-with-why-cleaned/`.
+```bash
+TARGET="research/workflow-dev/export/exact-coding-baseline-$DATE"
+[ -e "$TARGET" ] && { echo "Exists; pass 'overwrite' to replace"; exit 1; }
+mkdir -p "$TARGET/.claude/agents" "$TARGET/.claude/commands" \
+         "$TARGET/.claude/rules"
+```
 
-Steps:
+## Transformation steps
 
-1. **Resolve source workflow**:
-   ```bash
-   SRC=experiments/workflows/v6.2-with-why-cleaned/.claude
-   ```
-   If the user named a different source workflow, use that path.
-   Confirm with the user before proceeding if the source is not v6.2.
+### Step 1: copy source files
 
-2. **Create target skeleton**:
-   ```bash
-   TARGET=research/workflow-dev/export/exact-coding-baseline-$TARGET_DATE
-   mkdir -p "$TARGET/.claude/agents" "$TARGET/.claude/commands" \
-            "$TARGET/.claude/rules"
-   ```
+For each file, copy 1:1 from `$SRC_DIR/.claude/` to `$TARGET/.claude/`:
 
-3. **Copy 1:1 files** from source:
-   - `$SRC/settings.json`           → `$TARGET/.claude/settings.json`
-   - `$SRC/rules/tdd-with-ts-and-vitest.md`
-     → `$TARGET/.claude/rules/tdd-with-ts-and-vitest.md`
+- `settings.json`
+- `rules/tdd-with-ts-and-vitest.md` (some older source workflows used
+  `tdd_with_ts_and_vitest.md` — if present, rename to hyphen form in target)
+- `agents/refactor.md`
+- `commands/test-list.md`
+- `commands/red.md`
+- `commands/green.md`
+- `rules/tdd.md`
 
-4. **Copy with customization** (read source, append HITL block, write):
-   - `agents/refactor.md` — copy verbatim, then **append** the
-     "Step 8: Apply HITL Checkpoint" block (template in this skill,
-     "Snippet: Refactor Step 8").
-   - `commands/test-list.md` — copy verbatim through Step 5, then
-     **append** "Step 6: Apply HITL Checkpoint" (Snippet: Test-List Step 6).
-     Adjust the "Completion" section to defer to HITL.
-   - `commands/red.md` — copy verbatim through Step 7 (the verbatim
-     `🔴 Red Phase Complete` block MUST be preserved exactly), then
-     **append** "Step 8: Apply HITL Checkpoint" (Snippet: Red Step 8).
-     Adjust the "Why this format matters" paragraph in Step 7 to use
-     generic wording (Snippet: Red Step 7 why-block — replaces the
-     experiment-pipeline-specific text). Adjust "Prediction Failure
-     Protocol" to reference HITL recovery. Adjust "Completion" section.
-   - `commands/green.md` — copy verbatim; **append** an HITL note in the
-     "Completion" section (Snippet: Green HITL note).
+Do **not** copy `rules/tdd-experiment-mode.md` if present in source — it is
+replaced by the consumable `tdd-execution-mode.md` from this skill's
+templates.
 
-5. **Replace source files** with new templates:
-   - `rules/tdd-experiment-mode.md` from source is **dropped**.
-     Write the new file `rules/tdd-execution-mode.md` from template
-     (Snippet: tdd-execution-mode).
-   - `rules/tdd.md` — rewrite using template (Snippet: tdd.md). The
-     source version contains autonomy-MUSS wording and a reference to
-     `tdd-experiment-mode.md` that must not propagate.
+### Step 2: write fresh files from skill templates
 
-6. **Write new files**:
-   - `rules/human-in-the-loop.md` from template (Snippet: HITL rule).
-   - `.claude/README.md` from template (Snippet: README), substituting
-     `<TARGET_DATE>` and source-workflow lineage info.
-   - `.claude/VERSION` — single line `<TARGET_DATE>\n`.
+Copy verbatim from `.claude/skills/exact-coding-baseline-export/templates/`:
 
-7. **Validate** (see below).
+- `templates/human-in-the-loop.md` → `$TARGET/.claude/rules/human-in-the-loop.md`
+- `templates/tdd-execution-mode.md` → `$TARGET/.claude/rules/tdd-execution-mode.md`
 
-8. **Report** the snapshot path and validation result.
+### Step 3: render README from template
 
-## Validation
+Take `templates/README.template.md`. Substitute placeholders:
 
-After either flow, run all four checks. Any failure means the snapshot is
-broken — report immediately and do not claim success.
+- `{{DATE}}` → `$DATE` (both occurrences: title and "Version" line)
+- `{{SOURCE_WORKFLOW}}` → `$SRC_NAME` (two occurrences in "Tested
+  parameters" and "Original name and lineage")
 
-1. **File set**: exactly these 11 files exist (no more, no less):
-   ```bash
-   find "$TARGET" -type f | sort
-   ```
-   Expected:
-   ```
-   .claude/README.md
-   .claude/VERSION
-   .claude/agents/refactor.md
-   .claude/commands/{green,red,test-list}.md
-   .claude/rules/{human-in-the-loop,tdd,tdd-execution-mode,tdd-with-ts-and-vitest}.md
-   .claude/settings.json
-   ```
+Write to `$TARGET/.claude/README.md`.
 
-2. **MARKERS intact** (these four are tracked in
-   `experiments/workflows/MARKERS.md`; the snapshot must preserve them or
-   the workflow's measurement and discipline collapse):
-   ```bash
-   grep -q 'Skill({ skill: "test-list"' "$TARGET/.claude/rules/tdd.md"
-   grep -q '🔴 Red Phase Complete'        "$TARGET/.claude/commands/red.md"
-   grep -q 'MUST attempt at least one refactoring' \
-                                          "$TARGET/.claude/agents/refactor.md"
-   grep -q 'APP\|Absolute Priority Premise' \
-                                          "$TARGET/.claude/agents/refactor.md"
-   ```
-   Plus the verbatim two-line prediction block in `red.md`:
-   ```bash
-   grep -c 'Prediction.*✅ Correct\|Prediction.*❌ Incorrect\|Prediction.*Correct$' \
-        "$TARGET/.claude/commands/red.md"
-   ```
-   should print ≥ 2.
+### Step 4: write VERSION
 
-3. **HITL referenced from every phase file**:
-   ```bash
-   for f in test-list.md red.md green.md; do
-     grep -q 'human-in-the-loop.md' "$TARGET/.claude/commands/$f"
-   done
-   grep -q 'human-in-the-loop.md' "$TARGET/.claude/agents/refactor.md"
-   ```
+```bash
+echo "$DATE" > "$TARGET/.claude/VERSION"
+```
 
-4. **Autonomy Level switch present** in HITL file:
-   ```bash
-   grep -q 'Autonomy Level' "$TARGET/.claude/rules/human-in-the-loop.md"
-   grep -q 'full-hitl'      "$TARGET/.claude/rules/human-in-the-loop.md"
+### Step 5: HITL inject into copied phase files
+
+The copied source files reference experiment-mode wording or lack HITL
+references. Apply the **HITL Patches** (next section) to each of the four
+phase files plus `rules/tdd.md`.
+
+Use the `Edit` tool for surgical changes; do not rewrite whole files unless
+the surgical change would be larger than the file.
+
+## HITL Patches
+
+Each patch is described as: file → location → replacement / addition. The
+exact target strings are taken from `v6.2-with-why-cleaned`; for other
+source workflows the strings might differ — in that case, use the nearest
+structural anchor (e.g. "after the last numbered Step") and report any
+patch that could not be applied verbatim.
+
+### Patch A — `rules/tdd.md`
+
+1. **Header rename** (top of file):
+
+   - From: `# Test-Driven Development (TDD) Rules — Hybrid (v6)` (or
+     whatever header the source uses)
+   - To: `# TDD Rules — Hybrid (v6, exact-coding baseline)`
+
+2. **Drop experiment-pipeline justification** in the "🚨 CRITICAL" intro
+   paragraph. The source typically has a sentence like *"The experiment's
+   measurement pipeline parses these tool calls to compute `cycle_count`,
+   `predictions_correct_rate`, and `refactorings_applied`."* — remove the
+   pipeline/metric reference and replace with the generic architectural
+   justification:
+
+   > If you write test code, implementation code, or refactorings directly
+   > in the main context instead of delegating, the workflow loses the
+   > architectural separation that makes the hybrid work.
+
+3. **Drop the `EXPERIMENT MODE: Run autonomously, return when done.` line**
+   from the Step 4 Refactor `Task({...})` prompt example.
+
+4. **Append to the Overview section** (after the architectural description,
+   before "TDD Workflow"):
+
+   > This baseline supports **configurable human-in-the-loop checkpoints**
+   > between phases. See `@.claude/rules/human-in-the-loop.md` for the
+   > Autonomy Level setting and stop behavior.
+
+5. **Replace reference** `@.claude/rules/tdd-experiment-mode.md`
+   → `@.claude/rules/tdd-execution-mode.md`.
+
+6. **Insert section** `## Human-in-the-Loop` after "Core TDD Principles":
+
+   ```markdown
+   ## Human-in-the-Loop
+
+   Between phases, the workflow consults `@.claude/rules/human-in-the-loop.md`
+   to decide whether to pause for human approval. The default Autonomy Level
+   is `full-hitl`, which stops after Test-List, Red, and Refactor (not Green)
+   and on prediction failures. Switch levels by editing the setting at the
+   top of the HITL file — see that file for the full table.
+
+   For unattended batch runs, set the level to `autonomous` to disable all
+   stops.
    ```
 
-5. **VERSION matches**:
-   ```bash
-   grep -qx "$TARGET_DATE" "$TARGET/.claude/VERSION"
-   grep -q  "Version: \*\*$TARGET_DATE\*\*" "$TARGET/.claude/README.md"
+7. **Append to "Remember" list**:
+
+   > Consult `@.claude/rules/human-in-the-loop.md` at every phase boundary
+
+### Patch B — `commands/red.md`
+
+1. **Step 7 "Why this format matters"**: the source paragraph refers to
+   `predictions_correct_rate` and "the experiment measures". Replace with:
+
+   ```markdown
+   **Why this format matters:** The block is mechanically parsed by tooling to
+   verify the Guessing Game discipline. The parser expects two lines matching
+   `(- |✅ |❌ )(Correct|Incorrect)` per cycle — one for the compilation
+   prediction, one for the runtime prediction. Collapsing them into a single
+   line, summarizing them as "both correct", or skipping the block entirely
+   loses the signal. Format consistency here matters even outside batch runs:
+   it makes the prediction quality visible to you and any future reader.
    ```
 
-## What this skill explicitly does NOT do
+   The verbatim `🔴 Red Phase Complete:` block that follows **MUST stay
+   exactly as in source** — it is one of the four MARKERS.
 
-- Does **not** push, commit, or `git add` anything. The user does git
-  operations afterwards.
-- Does **not** copy the snapshot into sibling repos (exact-coding-book,
-  exact-coding-exercises). The user does that explicitly when needed.
-- Does **not** edit `experiments/workflows/v6.2-with-why-cleaned/` or any
-  other source workflow. Source workflows are immutable from this skill's
-  perspective.
-- Does **not** edit `HUMAN-IN-THE-LOOP.md` in the repo root. That file
-  is the methodology reference; the export's HITL file is the consumable.
-  They are kept in sync manually.
-- Does **not** prompt for changelog entries or substantive content
-  changes. If the workflow has changed since the last snapshot, the user
-  edits the latest snapshot dir **before** invoking this skill, then the
-  skill mints the new date.
+2. **Step 3 / Step 6 STOP lines**: source has *"❌ Prediction wrong → STOP
+   and explain discrepancy"*. Replace `STOP and explain discrepancy` with
+   `follow the Prediction Failure Protocol below` (the Prediction Failure
+   Protocol section is updated in step B.4).
 
-## When to use the fallback (from-source) flow
+3. **Append Step 8** after the Step 7 block:
 
-- The `export/` directory has no existing baseline (clean repo state).
-- The user explicitly wants to verify "what the customization recipe
-  actually is" by rebuilding from source.
-- The default source workflow has drifted substantially and the existing
-  baseline no longer reflects it. (In this case, prefer manually editing
-  the latest baseline first and re-running the default flow — easier to
-  review.)
+   ```markdown
+   ### Step 8: Apply HITL Checkpoint
 
----
+   Consult `@.claude/rules/human-in-the-loop.md`. If the current Autonomy Level
+   includes a stop after Red phase, present the checkpoint template from that
+   file and wait for explicit user approval before proceeding to Green. If the
+   level does not stop after Red, proceed directly to Green phase.
+   ```
 
-## Snippets (used by the from-source flow)
+4. **Prediction Failure Protocol section**: after the existing
+   `❌ Prediction Failed:` code block, append:
 
-These are the canonical chunks that customize source files for human
-consumption. They live here so a Claude executing the from-source flow
-can produce a snapshot bit-identical (modulo source-file evolution) to a
-copy-from-latest snapshot.
+   ```markdown
+   Then apply the **Prediction Failure Recovery** procedure in
+   `@.claude/rules/human-in-the-loop.md`. In every Autonomy Level except
+   `autonomous`, this is a hard stop — the human decides whether you continue
+   or investigate first.
+   ```
 
-### Snippet: Refactor Step 8
+5. **Completion section** at the end: replace whatever closing prose source
+   has with:
 
-Append to `agents/refactor.md` after the existing Step 7 ("Report Completion"):
+   ```markdown
+   After Step 8 (HITL checkpoint), proceed to Green phase if approved or if
+   the Autonomy Level does not require a stop:
+
+   ```
+   🔴 Red Phase Complete. Proceeding to Green phase.
+   ```
+   ```
+
+### Patch C — `commands/green.md`
+
+Append at the end of the "Completion" section:
+
+```markdown
+> **HITL note:** Green has no human checkpoint by default — the default
+> Autonomy Level (`full-hitl`) skips it because Green is the most mechanical
+> phase and stops here mostly produce "yes, continue" with no review value.
+> To enable a Green checkpoint, see `@.claude/rules/human-in-the-loop.md`.
+```
+
+### Patch D — `commands/test-list.md`
+
+Append after Step 5 ("Provide Summary"):
+
+```markdown
+### Step 6: Apply HITL Checkpoint
+
+Consult `@.claude/rules/human-in-the-loop.md`. If the current Autonomy Level
+includes a stop after Test-List (the default `full-hitl` does), present the
+checkpoint template from that file and wait for explicit user approval
+before proceeding to the first Red phase. If the level does not stop after
+Test-List, proceed directly to Red.
+```
+
+Adjust the trailing "Completion" section's prose to acknowledge Step 6.
+
+### Patch E — `agents/refactor.md`
+
+Append after Step 7 ("Report Completion"):
 
 ```markdown
 ### Step 8: Apply HITL Checkpoint
@@ -253,205 +292,138 @@ before proceeding to the next Red phase. This step is the requester's
 responsibility, not yours — your job ends with the Step 7 report.
 ```
 
-### Snippet: Test-List Step 6
+## Validation
 
-Append after the existing Step 5 ("Provide Summary"):
+Run all checks after Step 5. Any failure means the snapshot is broken —
+report immediately, do not claim success.
 
-```markdown
-### Step 6: Apply HITL Checkpoint
+1. **File set**: exactly these 11 files exist:
 
-Consult `@.claude/rules/human-in-the-loop.md`. If the current Autonomy Level
-includes a stop after Test-List (the default `full-hitl` does), present the
-checkpoint template from that file and wait for explicit user approval
-before proceeding to the first Red phase. If the level does not stop after
-Test-List, proceed directly to Red.
-```
+   ```bash
+   find "$TARGET" -type f | sort
+   ```
 
-Adjust the trailing "Completion" section so it acknowledges Step 6 before
-proceeding.
+   Expected:
+   ```
+   .claude/README.md
+   .claude/VERSION
+   .claude/agents/refactor.md
+   .claude/commands/{green,red,test-list}.md
+   .claude/rules/{human-in-the-loop,tdd,tdd-execution-mode,tdd-with-ts-and-vitest}.md
+   .claude/settings.json
+   ```
 
-### Snippet: Red Step 7 why-block
+2. **Source workflow files copied** (size sanity — none of the source
+   files dropped below 500 bytes during patching, which would indicate a
+   destroyed file):
 
-Replace the source's experiment-pipeline-specific paragraph with this
-generic version (the verbatim format block below it stays exactly as it is
-— it is a MARKER):
+   ```bash
+   find "$TARGET/.claude" -type f -name '*.md' -size -500c
+   ```
+   Must print nothing.
 
-```markdown
-**Why this format matters:** The block is mechanically parsed by tooling to
-verify the Guessing Game discipline. The parser expects two lines matching
-`(- |✅ |❌ )(Correct|Incorrect)` per cycle — one for the compilation
-prediction, one for the runtime prediction. Collapsing them into a single
-line, summarizing them as "both correct", or skipping the block entirely
-loses the signal. Format consistency here matters even outside batch runs:
-it makes the prediction quality visible to you and any future reader.
-```
+3. **MARKERS intact** (cross-reference
+   `experiments/workflows/MARKERS.md`):
 
-### Snippet: Red Step 8
+   ```bash
+   grep -q 'Skill({ skill: "test-list"' "$TARGET/.claude/rules/tdd.md"
+   grep -q '🔴 Red Phase Complete'        "$TARGET/.claude/commands/red.md"
+   grep -q 'MUST attempt at least one refactoring' \
+                                          "$TARGET/.claude/agents/refactor.md"
+   grep -q 'Absolute Priority Premise\|APP.*Mass' \
+                                          "$TARGET/.claude/agents/refactor.md"
+   ```
 
-Append after the (preserved) Step 7 block:
+   Plus the verbatim two-line prediction block in `red.md`:
+   ```bash
+   grep -cE '(Compilation|Runtime) Prediction.*✅ Correct' \
+        "$TARGET/.claude/commands/red.md"
+   ```
+   Must print `2`.
 
-```markdown
-### Step 8: Apply HITL Checkpoint
+4. **No experiment-mode wording leaked into the snapshot**:
+   ```bash
+   grep -r 'tdd-experiment-mode\|EXPERIMENT MODE\|predictions_correct_rate\|refactorings_applied\b' \
+        "$TARGET/.claude" && echo "FAIL: experiment wording leaked"
+   ```
+   Must print no matches.
 
-Consult `@.claude/rules/human-in-the-loop.md`. If the current Autonomy Level
-includes a stop after Red phase, present the checkpoint template from that
-file and wait for explicit user approval before proceeding to Green. If the
-level does not stop after Red, proceed directly to Green phase.
-```
+5. **HITL referenced from every phase file**:
+   ```bash
+   for f in test-list.md red.md green.md; do
+     grep -q 'human-in-the-loop.md' "$TARGET/.claude/commands/$f" \
+       || echo "FAIL: HITL missing from $f"
+   done
+   grep -q 'human-in-the-loop.md' "$TARGET/.claude/agents/refactor.md"
+   ```
 
-Adjust the "Prediction Failure Protocol" section: after the
-"❌ Prediction Failed:" block, add:
+6. **Autonomy Level switch present**:
+   ```bash
+   grep -q 'Autonomy Level' "$TARGET/.claude/rules/human-in-the-loop.md"
+   grep -q 'full-hitl'      "$TARGET/.claude/rules/human-in-the-loop.md"
+   ```
 
-```markdown
-Then apply the **Prediction Failure Recovery** procedure in
-`@.claude/rules/human-in-the-loop.md`. In every Autonomy Level except
-`autonomous`, this is a hard stop — the human decides whether you continue
-or investigate first.
-```
+7. **VERSION + README version line match the requested date**:
+   ```bash
+   grep -qx "$DATE" "$TARGET/.claude/VERSION"
+   grep -q  "Version \*\*$DATE\*\*\|Version: \*\*$DATE\*\*" \
+        "$TARGET/.claude/README.md"
+   ```
 
-### Snippet: Green HITL note
+8. **README placeholders fully substituted**:
+   ```bash
+   grep -F '{{' "$TARGET/.claude/README.md" \
+     && echo "FAIL: unsubstituted placeholders"
+   ```
+   Must print no matches.
 
-Append at the end of the "Completion" section in `commands/green.md`:
+## Report to the user
 
-```markdown
-> **HITL note:** Green has no human checkpoint by default — the default
-> Autonomy Level (`full-hitl`) skips it because Green is the most mechanical
-> phase and stops here mostly produce "yes, continue" with no review value.
-> To enable a Green checkpoint, see `@.claude/rules/human-in-the-loop.md`.
-```
+After successful validation:
 
-### Snippet: tdd-execution-mode
+1. Echo the resolved source workflow name and target snapshot path.
+2. Print the file tree.
+3. Note that the skill did NOT commit/push — the user does git operations
+   afterwards.
+4. Mention the sibling repos (`exact-coding-book`,
+   `exact-coding-exercises`) explicitly: the snapshot has NOT been copied
+   into them; if a copy is desired, the user requests it as a separate
+   action.
 
-Write `rules/tdd-execution-mode.md` from this template (replaces the
-source's `tdd-experiment-mode.md` entirely):
+## What this skill explicitly does NOT do
 
-````markdown
-# TDD Execution Mode
+- Does **not** push, commit, or `git add` anything.
+- Does **not** copy the snapshot into sibling repos.
+- Does **not** edit source workflows under `experiments/workflows/`.
+- Does **not** edit `workflow-construction.md` or any RQ findings — those
+  belong in their own RQ-driven flows.
+- Does **not** prompt for substantive content changes. If the source
+  workflow's content has drifted in a way that the surgical patches in
+  this skill no longer apply cleanly, the patches above need to be
+  updated in this SKILL.md first.
 
-This workflow runs the TDD cycle as a sequence of Skill invocations
-(`/test-list`, `/red`, `/green`) and one Task subagent (`refactor`). Whether
-the cycle pauses for human approval between phases is controlled by
-`@.claude/rules/human-in-the-loop.md` (the Autonomy Level setting at the top
-of that file).
+## Related files
 
-## Workflow Sequence
-
-1. **Test List Phase** → Invoke `/test-list` skill (main context)
-2. **For each test:**
-   - **Red Phase** → Invoke `/red` skill (main context)
-   - **Green Phase** → Invoke `/green` skill (main context)
-   - **Refactor Phase** → Launch the `refactor` subagent via the Task tool
-     (isolated context)
-3. **Continue** until all tests are implemented
-4. At each phase boundary, consult
-   `@.claude/rules/human-in-the-loop.md` to decide whether to stop or
-   continue
-
-## Required Prompt Context for the Refactor Subagent
-
-The refactor subagent has no memory of the red/green phases. Pass everything
-it needs:
-
-```
-Test file: [path]
-Implementation file: [path]
-Passing tests: [count]
-Recent changes: [one-line summary of the Green phase]
-```
-
-After the subagent returns, read its summary, then consult HITL before
-proceeding to the next Red phase.
-
-## Optional Done Marker
-
-For unattended batch runs (e.g. CI pipelines or automation harnesses), it can
-be useful to signal task completion mechanically. If your runner expects one,
-write a file `experiment-done.txt` with the single word `DONE` as its only
-content when all tests are implemented and passing.
-
-In interactive use this marker is unnecessary; the human sees the final
-Refactor checkpoint and ends the session normally.
-````
-
-### Snippet: tdd.md
-
-Write `rules/tdd.md` from the source's structure with these changes:
-
-- Header line `# TDD Rules — Hybrid (v6)` →
-  `# TDD Rules — Hybrid (v6, exact-coding baseline)`.
-- Drop any sentence claiming the workflow is "autonomous", "for batch
-  experiments", or referencing `predictions_correct_rate` /
-  `refactorings_applied` as metrics. Substitute the generic motivation
-  (architectural separation of red/green/refactor) — see the latest
-  snapshot's `tdd.md` for the exact wording.
-- In the Step 4 (Refactor) `Task({...})` prompt example, **remove** the
-  line `EXPERIMENT MODE: Run autonomously, return when done.` Leave the
-  rest of the prompt as in source.
-- Append the "Overview" paragraph with one sentence: *This baseline
-  supports configurable human-in-the-loop checkpoints — see
-  `@.claude/rules/human-in-the-loop.md` for the Autonomy Level setting
-  and stop behavior.*
-- Add a new top-level section `## Human-in-the-Loop` after "Core TDD
-  Principles", deferring to the HITL file for stop behavior.
-- Replace `@.claude/rules/tdd-experiment-mode.md` references with
-  `@.claude/rules/tdd-execution-mode.md`.
-- In the final "Remember" list, add: *Consult
-  `@.claude/rules/human-in-the-loop.md` at every phase boundary*.
-
-Use the latest snapshot's `rules/tdd.md` as the canonical reference if any
-detail above is ambiguous.
-
-### Snippet: HITL rule
-
-Write `rules/human-in-the-loop.md` from the latest snapshot's version
-verbatim. The HITL file is fully self-contained — no source-workflow
-substitutions are needed. The file ships with `full-hitl` as the default
-Autonomy Level, six configurable levels (`full-hitl`, `refactor-only`,
-`red-only`, `every-n-tests N`, `task-end`, `autonomous`), per-phase
-checkpoint templates, and the Prediction Failure Recovery procedure.
-
-If for any reason no previous snapshot exists, the structural requirements
-of the HITL file are:
-
-1. Front-loaded "Autonomy Level" section with the current setting on its
-   own line, plus the six-level table.
-2. Explanation of why Green is exempt by default.
-3. Checkpoint templates for Test-List, Red, Refactor, and (disabled-by-
-   default) Green.
-4. Prediction Failure Recovery section.
-5. "Switching levels mid-task" note (apply from next phase boundary, no
-   retroactive triggering).
-
-### Snippet: README
-
-Write `.claude/README.md` from the latest snapshot's version with these
-substitutions:
-
-- Title: `# Exact Coding TDD Baseline — Version <TARGET_DATE>`
-- "Version and updates" → `Version: **<TARGET_DATE>**`
-- If the source workflow changed from v6.2-with-why-cleaned, update the
-  "Tested parameters" section's findings (verification_pct, refactorings,
-  σ) and the "Original name and lineage" tree to match the new source.
-  Otherwise keep both sections verbatim.
-
-The README must keep these sections (their headings are load-bearing for
-consumers): "What it is", "Tested parameters", "Original name and
-lineage", "HITL adaptation", "Installation", "File layout", "Version and
-updates", "License".
-
-The "File layout" section must show README.md and VERSION **inside**
-`.claude/` — not at the snapshot root.
-
----
+- `templates/human-in-the-loop.md` — canonical HITL consumable, copied
+  verbatim into every snapshot.
+- `templates/tdd-execution-mode.md` — replaces source's
+  `tdd-experiment-mode.md`.
+- `templates/README.template.md` — README with `{{DATE}}` and
+  `{{SOURCE_WORKFLOW}}` placeholders.
+- `HUMAN-IN-THE-LOOP.md` (in this skill's directory) — methodology
+  reference describing the HITL design rationale and re-enablement steps.
+  Useful for understanding **why** the templates look the way they do, but
+  not consumed by the export flow itself.
 
 ## Quick reference
 
-| Trigger phrase | Action |
+| Invocation | Action |
 |---|---|
-| "exact-coding baseline export" | Default flow, date = today |
-| "exact-coding baseline export YYYY-MM-DD" | Default flow, custom date |
-| "rebuild exact-coding baseline from source" | Fallback flow, today |
-| "overwrite today's exact-coding baseline" | Default flow + skip clobber-refuse |
+| `/exact-coding-baseline-export` | Auto-detect source, date = today |
+| `/exact-coding-baseline-export 2026-06-15` | Auto-detect source, custom date |
+| `/exact-coding-baseline-export v6.4-some-variant` | Explicit source, today |
+| `/exact-coding-baseline-export 2026-06-15 v6.4-some-variant` | Both explicit |
+| `/exact-coding-baseline-export overwrite` | Same as default, but allow clobber |
 
 Single output: a new directory at
 `research/workflow-dev/export/exact-coding-baseline-<DATE>/`. Validation

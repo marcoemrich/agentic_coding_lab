@@ -20,8 +20,8 @@ Re-run analysis pipeline on all runs matching an RQ, reaggregate metrics, and pr
 Generates a frozen experiment-overview snapshot across all RQs under `research/_archive/`. Runs `generate-snapshot-skeleton.py`, then fills synthesis sections from `findings.md` files.
 - Details: `.claude/skills/build-overview/SKILL.md`
 
-### `/exact-coding-baseline-export`
-Mint a new versioned `exact-coding-baseline-YYYY-MM-DD/` snapshot under `research/workflow-dev/export/`. Default flow clones the most recent baseline and re-stamps date/version. Fallback flow re-derives from a source workflow (default `v6.2-with-why-cleaned`) and applies the HITL + autonomy-level customizations.
+### `/exact-coding-baseline-export [date] [source-workflow]`
+Mint a new `exact-coding-baseline-YYYY-MM-DD/` snapshot under `research/workflow-dev/export/`. Auto-detects the current correctness-oriented source workflow from `research/workflow-dev/workflow-construction.md` (the "Default für korrekheits-kritische Arbeit" recommendation), or takes an explicit source name. Copies source files, applies the HITL transformation (Step-8 checkpoints, autonomy-level switch, mode-neutral execution rule), and writes README + VERSION inside `.claude/`. Templates (HITL consumable, README, tdd-execution-mode) live in the skill directory.
 - Triggers: "exact-coding baseline export", "neue exact-coding baseline", "exact-coding-baseline-export"
 - Details: `.claude/skills/exact-coding-baseline-export/SKILL.md`
 
