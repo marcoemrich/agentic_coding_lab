@@ -1,47 +1,47 @@
-# Analysis Report: 2026-05-26_09-42-11_game-of-life-example-mapping_v6.2-refactor-vocab_opus-4-7-portkey-no-thinking
+# Analysis Report: 2026-05-26_09-55-16_game-of-life-example-mapping_v6.2.1-refactor-vocab_opus-4-7-portkey-no-thinking
 
-Generated: 2026-05-26T09:53:48+00:00
+Generated: 2026-05-26T10:05:21+00:00
 
 ## Configuration
 
 | Property | Value |
 |----------|-------|
 | Kata | game-of-life-example-mapping |
-| Workflow | v6.2-refactor-vocab |
+| Workflow | v6.2.1-refactor-vocab |
 | Model | opus-4-7-portkey-no-thinking |
 | Model Version(s) | claude-opus-4-7 |
 | Thinking | unknown |
-| Duration | 695s |
-| Started | 2026-05-26T09:42:11+00:00 |
-| Ended | 2026-05-26T09:53:48+00:00 |
+| Duration | 603s |
+| Started | 2026-05-26T09:55:16+00:00 |
+| Ended | 2026-05-26T10:05:21+00:00 |
 
 ## Code Metrics
 
 - **Implementation files**: game-of-life.ts
-- **Implementation LOC** (total): 49
+- **Implementation LOC** (total): 37
 - **Test file**: game-of-life.spec.ts
-- **Test file LOC**: 52
-- **Active tests**: 9
+- **Test file LOC**: 47
+- **Active tests**: 8
 - **Remaining todos**: 0
 
 ## Test Results
 
-**Status**: ✅ All tests passing (9 passed)
+**Status**: ✅ All tests passing (8 passed)
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-26_09-42-11_game-of-life-example-mapping_v6.2-refactor-vocab_opus-4-7-portkey-no-thinking
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-26_09-55-16_game-of-life-example-mapping_v6.2.1-refactor-vocab_opus-4-7-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-26_09-42-11_game-of-life-example-mapping_v6.2-refactor-vocab_opus-4-7-portkey-no-thinking
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-26_09-55-16_game-of-life-example-mapping_v6.2.1-refactor-vocab_opus-4-7-portkey-no-thinking
 
- ✓ src/game-of-life.spec.ts  (9 tests) 5ms
+ ✓ src/game-of-life.spec.ts  (8 tests) 3ms
 
  Test Files  1 passed (1)
-      Tests  9 passed (9)
-   Start at  09:53:49
-   Duration  233ms (transform 31ms, setup 1ms, collect 30ms, tests 5ms, environment 0ms, prepare 63ms)
+      Tests  8 passed (8)
+   Start at  10:05:22
+   Duration  157ms (transform 25ms, setup 0ms, collect 23ms, tests 3ms, environment 0ms, prepare 45ms)
 ```
 
 ## Coverage
@@ -55,21 +55,21 @@ Generated: 2026-05-26T09:53:48+00:00
 
 | Component | Count | Weight | Score |
 |-----------|-------|--------|-------|
-| Constants | 22 | ×1 | 22 |
-| Invocations | 18 | ×2 | 36 |
-| Conditionals | 3 | ×4 | 12 |
+| Constants | 23 | ×1 | 23 |
+| Invocations | 13 | ×2 | 26 |
+| Conditionals | 1 | ×4 | 4 |
 | Loops | 5 | ×5 | 25 |
-| Assignments | 15 | ×6 | 90 |
-| **Total Mass** | | | **185** |
+| Assignments | 11 | ×6 | 66 |
+| **Total Mass** | | | **144** |
 
 ## Clean Code Metrics
 
 | Metric | Value |
 |--------|-------|
-| LOC (non-blank) | 38 |
-| Functions | 5 |
+| LOC (non-blank) | 31 |
+| Functions | 3 |
 | Longest Function | 15 lines |
-| Avg LOC/Function | 6.60 |
+| Avg LOC/Function | 6.33 |
 | Median LOC/Function | 2.00 |
 | Imports | 0 |
 
@@ -87,8 +87,8 @@ Generated: 2026-05-26T09:53:48+00:00
 
 | Metric | Max | Avg | High (>10) |
 |--------|-----|-----|---------------------------|
-| McCabe (Cyclomatic) | 4 | 2.17 | 0 |
-| Cognitive (SonarJS) | 7 | 4.00 | 0 |
+| McCabe (Cyclomatic) | 4 | 2.00 | 0 |
+| Cognitive (SonarJS) | 3 | 2.50 | 0 |
 
 ## Transcript Metrics
 
@@ -96,25 +96,25 @@ Generated: 2026-05-26T09:53:48+00:00
 
 | Metric | Value |
 |--------|-------|
-| Total Tokens | 9175030 |
-| Context Utilization | 12% |
+| Total Tokens | 7392007 |
+| Context Utilization | 11% |
 
 ### TDD Cycle Metrics
 
 | Metric | Value |
 |--------|-------|
-| Cycle Count | 9 |
-| Avg Cycle Time | 74.48s |
-| Avg Red Phase | 17.09s |
-| Avg Green Phase | 12.81s |
-| Avg Refactor Phase | 44.58s |
+| Cycle Count | 8 |
+| Avg Cycle Time | 72.15s |
+| Avg Red Phase | 18.27s |
+| Avg Green Phase | 9.73s |
+| Avg Refactor Phase | 44.15s |
 
 ### Prediction Accuracy (Guessing Game) — Self-Reported
 
 | Metric | Value |
 |--------|-------|
-| Predictions Correct | 18 |
-| Predictions Total | 18 |
+| Predictions Correct | 16 |
+| Predictions Total | 16 |
 | Accuracy | 100% |
 
 _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._
@@ -123,7 +123,7 @@ _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and ma
 
 | Metric | Value |
 |--------|-------|
-| Refactorings Applied | 9 |
+| Refactorings Applied | 8 |
 
 ### TDD Discipline
 

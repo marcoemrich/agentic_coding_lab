@@ -1,4 +1,4 @@
-# Analysis Report: 2026-05-26_09-54-55_game-of-life-example-mapping_v6.2-refactor-vocab_opus-4-7-portkey-no-thinking
+# Analysis Report: 2026-05-26_09-54-55_game-of-life-example-mapping_v6.2.1-refactor-vocab_opus-4-7-portkey-no-thinking
 
 Generated: 2026-05-26T10:07:56+00:00
 
@@ -7,7 +7,7 @@ Generated: 2026-05-26T10:07:56+00:00
 | Property | Value |
 |----------|-------|
 | Kata | game-of-life-example-mapping |
-| Workflow | v6.2-refactor-vocab |
+| Workflow | v6.2.1-refactor-vocab |
 | Model | opus-4-7-portkey-no-thinking |
 | Model Version(s) | claude-opus-4-7 |
 | Thinking | unknown |
@@ -30,11 +30,11 @@ Generated: 2026-05-26T10:07:56+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-26_09-54-55_game-of-life-example-mapping_v6.2-refactor-vocab_opus-4-7-portkey-no-thinking
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-26_09-54-55_game-of-life-example-mapping_v6.2.1-refactor-vocab_opus-4-7-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-26_09-54-55_game-of-life-example-mapping_v6.2-refactor-vocab_opus-4-7-portkey-no-thinking
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-26_09-54-55_game-of-life-example-mapping_v6.2.1-refactor-vocab_opus-4-7-portkey-no-thinking
 
  ✓ src/game-of-life.spec.ts  (10 tests) 15ms
 

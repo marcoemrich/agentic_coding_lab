@@ -1,4 +1,4 @@
-# Analysis Report: 2026-05-26_10-47-28_claim-office-example-mapping_v6.2-refactor-vocab_opus-4-7-portkey-no-thinking
+# Analysis Report: 2026-05-26_10-47-28_claim-office-example-mapping_v6.2.1-refactor-vocab_opus-4-7-portkey-no-thinking
 
 Generated: 2026-05-26T10:57:58+00:00
 
@@ -7,7 +7,7 @@ Generated: 2026-05-26T10:57:58+00:00
 | Property | Value |
 |----------|-------|
 | Kata | claim-office-example-mapping |
-| Workflow | v6.2-refactor-vocab |
+| Workflow | v6.2.1-refactor-vocab |
 | Model | opus-4-7-portkey-no-thinking |
 | Model Version(s) | claude-opus-4-7 |
 | Thinking | unknown |
@@ -30,11 +30,11 @@ Generated: 2026-05-26T10:57:58+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-26_10-47-28_claim-office-example-mapping_v6.2-refactor-vocab_opus-4-7-portkey-no-thinking
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-26_10-47-28_claim-office-example-mapping_v6.2.1-refactor-vocab_opus-4-7-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-26_10-47-28_claim-office-example-mapping_v6.2-refactor-vocab_opus-4-7-portkey-no-thinking
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-26_10-47-28_claim-office-example-mapping_v6.2.1-refactor-vocab_opus-4-7-portkey-no-thinking
 
  ✓ src/claim-office.spec.ts  (38 tests | 31 skipped) 2ms
 

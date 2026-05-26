@@ -4,7 +4,7 @@ question: "Verbessert ein additiver Vokabular-Block im refactor-Agent (Cyclomati
 factors:
   workflow_x_prompt:
     - {workflow: v6.2-with-why-cleaned, prompt: example-mapping}  # Baseline (aktuelle Default-Basis aus RQ-1.6 / RQ-1.7)
-    - {workflow: v6.2-refactor-vocab,   prompt: example-mapping}  # + Vokabular-Block (Complexity Awareness, SRP, Smell-Tabelle)
+    - {workflow: v6.2.1-refactor-vocab,   prompt: example-mapping}  # + Vokabular-Block (Complexity Awareness, SRP, Smell-Tabelle)
   kata_base: [game-of-life, claim-office]
 controls:
   model: opus-4-7-portkey-no-thinking
@@ -34,7 +34,7 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-1.10: v6.2-refactor-vocab vs v6.2-with-why-cleaned (GoL + claim-office)
+# RQ-1.10: v6.2.1-refactor-vocab vs v6.2-with-why-cleaned (GoL + claim-office)
 
 Verbessert ein additiver Vokabular-Block im `refactor`-Agent — Cyclomatic-/Cognitive-Complexity-Definitionen, Single-Responsibility-Operationalisierung, eine Smell→Move-Tabelle — die produzierte Code-Qualitaet, ohne Korrektheit oder Kosten zu beeintraechtigen?
 
@@ -52,9 +52,9 @@ Der Block ist bewusst:
 ## Workflow-Definition
 
 - **v6.2-with-why-cleaned (Baseline)** — aktuelle Default-Basis aus RQ-1.6. Naming Evaluation als einzige strukturierte Refactor-Vokabel oberhalb von APP.
-- **v6.2-refactor-vocab (neu)** — v6.2 + Block "Complexity Awareness (Second Refactoring Priority)" + "Single Responsibility (Naming + Cognitive together)" + "Common Smells and Typical Refactoring Moves" (10-Eintrag-Tabelle), eingefuegt zwischen Naming Evaluation und Rule 3.
+- **v6.2.1-refactor-vocab (neu)** — v6.2 + Block "Complexity Awareness (Second Refactoring Priority)" + "Single Responsibility (Naming + Cognitive together)" + "Common Smells and Typical Refactoring Moves" (10-Eintrag-Tabelle), eingefuegt zwischen Naming Evaluation und Rule 3.
 
-Voller Diff: `diff -r experiments/workflows/v6.2-with-why-cleaned experiments/workflows/v6.2-refactor-vocab` (41 Zeilen Insert nach Z.45 von `refactor.md`, sonst byte-identisch).
+Voller Diff: `diff -r experiments/workflows/v6.2-with-why-cleaned experiments/workflows/v6.2.1-refactor-vocab` (41 Zeilen Insert nach Z.45 von `refactor.md`, sonst byte-identisch).
 
 ## Hypothesen
 
@@ -68,7 +68,7 @@ Voller Diff: `diff -r experiments/workflows/v6.2-with-why-cleaned experiments/wo
 ## Design
 
 ```
-Faktor:    workflow_x_prompt — 2 Stufen (v6.2-with-why-cleaned, v6.2-refactor-vocab), beide example-mapping
+Faktor:    workflow_x_prompt — 2 Stufen (v6.2-with-why-cleaned, v6.2.1-refactor-vocab), beide example-mapping
 Faktor:    kata_base         — 2 Stufen (game-of-life, claim-office)
 Kontrolle: model             — opus-4-7-portkey-no-thinking
 
@@ -96,7 +96,7 @@ Siehe [findings.md](findings.md) (folgt nach Batch-Lauf).
 ## Datenquelle
 
 Alle Runs in `experiments/runs/` mit
-`workflow ∈ {v6.2-with-why-cleaned, v6.2-refactor-vocab}`,
+`workflow ∈ {v6.2-with-why-cleaned, v6.2.1-refactor-vocab}`,
 `kata ∈ {game-of-life-example-mapping, claim-office-example-mapping}`,
 `model = opus-4-7-portkey-no-thinking`.
 
@@ -105,7 +105,7 @@ v6.2-Baseline-Runs koennen ggf. aus RQ-1.6 (GoL) und RQ-1.9 (claim-office) wiede
 ## Quellen
 
 - v6.2-Workflow: `experiments/workflows/v6.2-with-why-cleaned/.claude/agents/refactor.md`.
-- v6.2-refactor-vocab-Diff: `diff -r experiments/workflows/v6.2-with-why-cleaned experiments/workflows/v6.2-refactor-vocab`.
+- v6.2.1-refactor-vocab-Diff: `diff -r experiments/workflows/v6.2-with-why-cleaned experiments/workflows/v6.2.1-refactor-vocab`.
 - Baseline-RQs: [RQ-1.6](../1.6-v62-cleanup-validation-v61-with-why/findings.md), [RQ-1.7](../1.7-v62-cleanup-validation-gol/findings.md), [RQ-1.9](../1.9-audit-bundle-validation-claim-office/findings.md).
 - Kata-Asymmetrie-Praezedenz: [RQ-1.8](../1.8-audit-bundle-effect-v62/findings.md) (GoL-positiv) vs [RQ-1.9](../1.9-audit-bundle-validation-claim-office/findings.md) (claim-office-negativ).
 - Workflow-Convention: `CLAUDE.md` Sektion "Editing workflows" ("Keine numerischen Schwellwerte in Workflow-/Agent-Prompts").
