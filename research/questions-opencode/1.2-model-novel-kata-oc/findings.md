@@ -1,31 +1,33 @@
 # RQ-model-novel-oc — Findings
 
-**Setup**: claim-office-example-mapping × v5.1-testlist-scope-fix-oc × n=5 pro Zelle (25 Runs total). Stand 2026-05-25.
+**Setup**: claim-office-example-mapping × v5.1-testlist-scope-fix-oc × n=5 pro Zelle (30 Runs total, 6 Modelle). Stand 2026-05-26.
 
 ## Übersicht
 
 Korrektheit außen (`verification_pct`, höher = besser) als primärer Outcome; Code-Qualitäts-Metriken sekundär (kleiner = besser außer wo notiert).
 
-| Metrik | Richtung | opus-4-7-portkey | glm-5-1 | kimi-k2-6 | gemini-3-5-flash | minimax-m2-7 |
-|---|---|---|---|---|---|---|
-| `verification_pct` (mean) | höher | **1.00** 🏆 | **1.00** 🏆 | 0.84 | 0.80 | 0.04 |
-| `verification_pct` (std) | kleiner | **0.00** 🏆 | **0.00** 🏆 | 0.26 | 0.45 | 0.09 |
-| `smell_total` (mean) | kleiner | **0.8** 🏆 | 4.0 | 20 | 18 | 10.2 |
-| `cognitive_max` (mean) | kleiner | **9.8** 🏆 | 12.2 | 21.8 | 40.2 | 11.4 |
-| `mccabe_max` (mean) | kleiner | **7.6** 🏆 | 9.2 | 17.6 | 23.4 | 7.6 |
-| `cc_longest_function` (mean) | kleiner | **25.4** 🏆 | 28.8 | 54.4 | 98.4 | 30.0 |
-| `code_mass` (mean) | kleiner (bei gleicher Korrektheit) | **759.6** 🏆 | 816 | 741 | 526 | 364.4 |
-| `total_tokens` (mean) | kleiner (bei gleicher Korrektheit) | **8.06 M** 🏆 | 10.97 M | 6.65 M | 7.02 M | 8.48 M |
-| `cost_usd` (mean, $/run) | kleiner (bei gleicher Korrektheit) | $5.90 | **$2.10** 🏆 | $2.78 | $2.23 | $2.40 |
-| `cycle_count` (mean) | — | 1.2 | 2.0 | 2.0 | 2.2 | 4.8 |
-| `predictions_total` (mean) | — | 2.4 | 4.0 | 0.4 | 0.4 | 2.6 |
-| `duration_seconds` (mean) | kleiner | **664** 🏆 | 1726 | 1811 | 395 | 1428 |
+| Metrik | Richtung | opus-4-7-portkey | glm-5-1 | mistral-medium-3-5 | kimi-k2-6 | gemini-3-5-flash | minimax-m2-7 |
+|---|---|---|---|---|---|---|---|
+| `verification_pct` (mean) | höher | **1.00** 🏆 | **1.00** 🏆 | 0.95 | 0.84 | 0.80 | 0.04 |
+| `verification_pct` (std) | kleiner | **0.00** 🏆 | **0.00** 🏆 | 0.09 | 0.26 | 0.45 | 0.09 |
+| `smell_total` (mean) | kleiner | **0.8** 🏆 | 4.0 | 23.6 | 20 | 18 | 10.2 |
+| `cognitive_max` (mean) | kleiner | **9.8** 🏆 | 12.2 | 74.8 | 21.8 | 40.2 | 11.4 |
+| `mccabe_max` (mean) | kleiner | **7.6** 🏆 | 9.2 | 33.6 | 17.6 | 23.4 | 7.6 |
+| `cc_longest_function` (mean) | kleiner | **25.4** 🏆 | 28.8 | 120 | 54.4 | 98.4 | 30.0 |
+| `code_mass` (mean) | kleiner (bei gleicher Korrektheit) | **759.6** 🏆 | 816 | 712.6 | 741 | 526 | 364.4 |
+| `total_tokens` (mean) | kleiner (bei gleicher Korrektheit) | **8.06 M** 🏆 | 10.97 M | 13.65 M | 6.65 M | 7.02 M | 8.48 M |
+| `cost_usd` (mean, $/run) | kleiner (bei gleicher Korrektheit) | $5.90 | **$2.10** 🏆 | $24.69 † | $2.78 | $2.23 | $2.40 |
+| `cycle_count` (mean) | — | 1.2 | 2.0 | 1.2 | 2.0 | 2.2 | 4.8 |
+| `predictions_total` (mean) | — | 2.4 | 4.0 | 0.8 | 0.4 | 0.4 | 2.6 |
+| `duration_seconds` (mean) | kleiner | **664** 🏆 | 1726 | 4051 | 1811 | 395 | 1428 |
 
-`cycle_count` und `predictions_total` sind ambivalente Metriken ohne klare Richtung — kein Pokal. Bei `code_mass`, `total_tokens` und `cost_usd` ist weniger besser, aber nur bei vergleichbarer Korrektheit aussagekräftig: MiniMax' niedrige Werte sind Stub-Artefakt (verification 0.04), Flash' Werte werden vom 3-LoC-Abbruch-Run (siehe F-1.2) gezogen — deshalb dort kein Pokal. Cost-Effizienz bei tatsächlich nutzbarer Korrektheit: siehe F-1.6.
+`cycle_count` und `predictions_total` sind ambivalente Metriken ohne klare Richtung — kein Pokal. Bei `code_mass`, `total_tokens` und `cost_usd` ist weniger besser, aber nur bei vergleichbarer Korrektheit aussagekräftig: MiniMax' niedrige Werte sind Stub-Artefakt (verification 0.04), Flash' Werte werden vom 3-LoC-Abbruch-Run (siehe F-1.2) gezogen, Mistral ist mit vpt=0.95 knapp unter dem Gating-Schwellwert — deshalb dort kein Pokal. Cost-Effizienz bei tatsächlich nutzbarer Korrektheit: siehe F-1.6.
 
-**Trophy-Regel zur Korrektheits-Gating**: Pokale für Qualitäts-/Effizienz-Metriken (`smell_*`, `cognitive_*`, `mccabe_*`, `cc_*`, `duration_seconds`, `total_tokens`, `cost_usd`) werden nur an Modelle mit `verification_pct = 1.0` vergeben. Begründung: niedrige Komplexität / kurze Dauer / niedrige Kosten bei nicht-korrekter Implementierung misst nicht das was die Metrik vorgibt zu messen, sondern Stub- oder Abbruch-Artefakte. In dieser Studie sind Opus und GLM 5.1 vpt=1.0 — beide qualifizieren sich. Pokal-Vergabe innerhalb dieses Pools: Opus gewinnt Code-Qualität (Smells, Komplexität, Code-Mass) und Wallclock; GLM 5.1 gewinnt Cost. `total_tokens` an Opus (8.06 M vs 10.97 M).
+† Mistral-Cost wird durch fehlendes OpenCode-Prompt-Caching dominiert (kein `prompt_cache_key`); mit aktivem Caching wäre der Wert ~$3.25/Run statt $24.69. Details in der Cost-Sektion und F-1.7.
 
-**Cost-Berechnung**: per-Run aus `transcript-metrics.json.total_tokens` × Pricing per 1M Token. Quellen 2026-05-25: Anthropic Pricing-Seite (Opus), OpenRouter API `/api/v1/models` (GLM/Kimi/MiniMax), Vertex Standard (Gemini Flash).
+**Trophy-Regel zur Korrektheits-Gating**: Pokale für Qualitäts-/Effizienz-Metriken (`smell_*`, `cognitive_*`, `mccabe_*`, `cc_*`, `duration_seconds`, `total_tokens`, `cost_usd`) werden nur an Modelle mit `verification_pct = 1.0` vergeben. Begründung: niedrige Komplexität / kurze Dauer / niedrige Kosten bei nicht-korrekter Implementierung misst nicht das was die Metrik vorgibt zu messen, sondern Stub- oder Abbruch-Artefakte. In dieser Studie sind Opus und GLM 5.1 vpt=1.0 — beide qualifizieren sich. Pokal-Vergabe innerhalb dieses Pools: Opus gewinnt Code-Qualität (Smells, Komplexität, Code-Mass) und Wallclock; GLM 5.1 gewinnt Cost. `total_tokens` an Opus (8.06 M vs 10.97 M). Mistral mit vpt=0.95 fällt knapp aus dem Pool — siehe F-1.7 für das Mistral-spezifische Profil (hohe Korrektheit gepaart mit deutlich höheren Komplexitäts- und Kosten-Werten).
+
+**Cost-Berechnung**: per-Run aus `transcript-metrics.json.total_tokens` × Pricing per 1M Token. Quellen 2026-05-26: Anthropic Pricing-Seite (Opus), OpenRouter API `/api/v1/models` (GLM/Kimi/MiniMax), Vertex Standard (Gemini Flash), Mistral Docs Model-Card (Mistral Medium 3.5).
 
 | Modell | input | output | cache_read |
 |---|---|---|---|
@@ -34,6 +36,7 @@ Korrektheit außen (`verification_pct`, höher = besser) als primärer Outcome; 
 | kimi-k2-6 (OpenRouter) | $0.73 | $3.49 | $0.37 |
 | gemini-3-5-flash (Vertex Standard) | $1.50 | $9.00 | $0.15 |
 | minimax-m2-7 (OpenRouter) | $0.279 | $1.20 | $0.279 (keine Cache-Rate von OpenRouter gelistet → input-Rate als konservative Obergrenze) |
+| mistral-medium-3-5 (Mistral Direct) | $1.50 | $7.50 | $0.15 (10% der Input-Rate, gemäß Mistral-Doku [Prompt caching](https://docs.mistral.ai/studio-api/conversations/advanced/prompt-caching)) |
 
 Portkey-Markup nicht eingerechnet (Portkey listet keinen modell-spezifischen Aufschlag, Gateway-Plan-Kosten sind separate Tier-Pauschalen).
 
@@ -46,8 +49,25 @@ Portkey-Markup nicht eingerechnet (Portkey listet keinen modell-spezifischen Auf
 | kimi-k2-6 | 649 k × $0.73 = $0.47 | 26.8 k × $3.49 = $0.09 | 5.97 M × $0.37 = $2.21 | **$2.78** |
 | gemini-3-5-flash | 635 k × $1.50 = $0.95 | 35.7 k × $9.00 = $0.32 | 6.35 M × $0.15 = $0.95 | **$2.23** |
 | minimax-m2-7 | 234 k × $0.279 = $0.07 | 38.4 k × $1.20 = $0.05 | 8.21 M × $0.279 = $2.29 | **$2.40** |
+| mistral-medium-3-5 | 16.05 M × $1.50 = $24.08 | 63.2 k × $7.50 = $0.47 | 0.95 M × $0.15 = $0.14 | **$24.69** |
 
 Bemerkung: das `total_tokens`-Feld in der Übersichts-Tabelle täuscht über die Cost — z. B. Opus' "8 M Tokens" sind zu ~97 % `cache_read`, das bei Anthropic-Pricing nur 10 % des Input-Preises kostet (cache hit ↔ 0.1×). Echter Input pro Opus-Run liegt bei ~140 k Tokens; die Cache-Tokens stammen aus wiederholt eingelesenen System-Prompts/Tool-Definitionen, die im Skill-Workflow über mehrere Skill-Aufrufe pro Run mehrfach durchlaufen. Bei den OpenRouter-Modellen ist das Cache-Verhältnis ähnlich, aber die Cache-Rate variiert pro Provider (GLM $0.18, Kimi $0.37, MiniMax keine Cache-Rate gelistet → input-Rate als konservative Obergrenze).
+
+**Mistral-Cost-Ausreißer ist ein OpenCode-Integrations-Artefakt, nicht Mistral-Pricing**: Mistral Medium 3.5 fällt mit $24.69/Run massiv aus dem Rahmen (4× Opus, 12× GLM). Ursache ist nicht die Modell-Pricing-Rate ($1.50/$7.50 ist vergleichbar mit Gemini Flash), sondern das **Caching-Verhalten der OpenCode-Mistral-Integration**. Token-Verteilung bei Mistral: 93 % `input`, 7 % `cache_read`. Bei Opus: 1.4 % `input`, 98 % `cache_read`. Mistral hat sehr wohl eine Prompt-Cache-Rate von 10 % der Input-Rate ($0.15/M), aber Caching ist bei der Mistral-API explizit **opt-in via `prompt_cache_key`** ([Mistral Docs / Prompt caching](https://docs.mistral.ai/studio-api/conversations/advanced/prompt-caching)). OpenCode bzw. das verwendete `@ai-sdk/openai-compatible`-Provider-NPM setzt diesen Key nicht — daher landen nur die ~5 % an Tokens im Cache, die Mistral automatisch via KV-Cache-Prefix-Match erkennt.
+
+Hypothesen-Szenarien bei aktivem `prompt_cache_key` (gleiche Token-Volumen, aber 99 % Cache-Hit wie bei Opus auf Anthropic):
+
+| Szenario | Cache-Hit-Rate | Mistral-Cost/Run | Vergleich |
+|---|---|---|---|
+| As-measured (Status quo OpenCode) | ~5 % | $24.69 | 4× Opus |
+| Mit moderatem Caching | ~70 % | $9.91 | Faktor 2 unter Opus, doppelt GLM |
+| Mit aggressivem Caching (Anthropic-Niveau) | ~99 % | $3.25 | Sonnet-Niveau, ~50 % über GLM |
+
+In einem Modell-Vergleich, der den OpenCode-Harness konstant hält, ist der Status-quo-Wert ($24.69) die relevante Größe — denn das ist was eine produktive OpenCode-Pipeline heute tatsächlich kostet. Aber: **das Cost-Ergebnis ist deshalb kein robuster Modell-Befund über Mistral**, sondern hängt am Integrations-Detail. Bei Mistral-Direct-API mit `prompt_cache_key`-Patch oder bei einem anderen Harness mit nativem Caching-Support käme Mistral in den GLM/Sonnet-Cost-Bereich.
+
+Bei nicht-cacheabler Workload (CI/CD-Pipelines die Container-Reset ohne Cache haben, Multi-Tenant ohne shared cache) wäre der Status-quo-Wert dagegen der realistische — dort verschwindet auch Opus' 12× Cost-Vorteil aus dem cache_read-Trick.
+
+n_cost-Basis: Mistral-Cost auf n=4 aus n=5 berechnet (1 Run vom 2026-05-26_10-32-44 hatte kein `transcript-metrics.json` — vermutlich parallel zum CC-Smoke gestartetes Tracking-Artefakt). Verification, Code-Qualitäts- und Wallclock-Werte sind alle auf n=5 berechnet.
 
 ---
 
@@ -67,7 +87,7 @@ Zwei Modelle erreichen über alle 5 Replikate perfekte Korrektheit außen (15/15
 
 GLM 5.1 zeigt zwei bimodale Code-Qualitäts-Runs (smell 14 und 6) zwischen drei sauberen (smell 0) — das erklärt die σ-Streuung. Korrektheit bleibt davon unberührt.
 
-Pattern: Bei reiner **Korrektheits-Garantie** ist GLM 5.1 die klar bessere Wahl (gleiche Determinismus, ~drittel der Kosten, Tradeoff: ~2.6× Wallclock und etwas weniger sauberer Code). Wenn Code-Qualität (Lesbarkeit, Komplexität) ein hartes Ziel ist, lohnt sich der Opus-Aufpreis.
+Pattern: Bei reiner **Korrektheits-Garantie** ist GLM 5.1 die klar bessere Wahl (gleiche Determinismus, ~drittel der Kosten, Tradeoff: ~2.6× Wallclock und etwas weniger sauberer Code). Wenn Code-Qualität (Lesbarkeit, Komplexität) ein hartes Ziel ist, lohnt sich der Opus-Aufpreis. Mistral Medium 3.5 erreicht knapp daneben (vpt=0.95, σ=0.09) und gehört thematisch näher in diesen Cluster als zu den Kimi/Flash-Bimodalen — wird aber durch ein gegenteiliges Profil (hohe Komplexität, höchste Kosten) eingeordnet, siehe F-1.7.
 
 ---
 
@@ -105,10 +125,11 @@ Die Marker-Compliance des v5.1-oc-Workflows (Prediction-Lines im Red-Phase-Block
 | glm-5-1 | 4.0 | 4.0 (100%) | 1.00 |
 | minimax-m2-7 | 2.6 | 2.2 (85%) | 0.04 |
 | opus-4-7-portkey | 2.4 | 2.4 (100%) | 1.00 |
+| mistral-medium-3-5 | 0.8 | 0.8 (100%) | 0.95 |
 | kimi-k2-6 | 0.4 | 0.4 (100%) | 0.84 |
 | gemini-3-5-flash | 0.4 | 0.4 (100%) | 0.80 |
 
-Die zwei extremsten Prediction-Frequenzen liegen an entgegengesetzten Korrektheits-Enden: GLM 4.0/Run mit perfekter Korrektheit, MiniMax 2.6/Run mit fast Null-Korrektheit. Kimi und Flash ignorieren das Format weitgehend (0.4/Run) und sind trotzdem nahe am Top. Marker-Compliance misst die Adoption der Workflow-Affordance, nicht den TDD-Inhalt. Bestätigt H4 aus dem RQ-README.
+Die zwei extremsten Prediction-Frequenzen liegen an entgegengesetzten Korrektheits-Enden: GLM 4.0/Run mit perfekter Korrektheit, MiniMax 2.6/Run mit fast Null-Korrektheit. Kimi, Flash und Mistral ignorieren das Format weitgehend (0.4–0.8/Run) und liegen trotzdem an oder nahe der Spitze. Marker-Compliance misst die Adoption der Workflow-Affordance, nicht den TDD-Inhalt. Bestätigt H4 aus dem RQ-README.
 
 ---
 
@@ -121,18 +142,19 @@ Die zwei extremsten Prediction-Frequenzen liegen an entgegengesetzten Korrekthei
 | opus-4-7-portkey | 717–797 | 34 | 1–2 |
 | glm-5-1 | 705–877 | 69 | 1–3 |
 | kimi-k2-6 | 674–800 | 58 | 1–3 |
+| mistral-medium-3-5 | 589–877 | 117 | 0–2 |
 | gemini-3-5-flash | 3–680 | 293 | 1–4 |
 | minimax-m2-7 | 18–700 | 290 | 1–18 |
 
-Opus, GLM und Kimi schreiben konsistent ~700–880 LoC mit moderater Streuung (std 34–69); Flash und MiniMax triggern die "es war fertig"-Heuristik variabel — Flash kann mit 3 LoC abbrechen (siehe F-1.2 Bimodalität), MiniMax variiert zwischen Minimal-Stub und voller Implementierung. `cycle_count = 18` bei einem MiniMax-Run (Outlier) deutet auf Loop-Verhalten ohne Abschluss — der Run lief zwar im Budget durch (`completed_within_budget = true`), aber die Anzahl Red-Skill-Aufrufe ist 9× höher als der Median.
+Opus, GLM und Kimi schreiben konsistent ~700–880 LoC mit moderater Streuung (std 34–69); Mistral liegt mit std 117 dazwischen und schreibt trotz hoher Test-Zahlen (23–66 Tests pro Run, siehe F-1.7) nur 1.2 Cycles im Mittel — Mistral produziert große Test-Batches in einem Schwung statt klassischer Red-Green-Refactor-Schritte. Flash und MiniMax triggern die "es war fertig"-Heuristik variabel — Flash kann mit 3 LoC abbrechen (siehe F-1.2 Bimodalität), MiniMax variiert zwischen Minimal-Stub und voller Implementierung. `cycle_count = 18` bei einem MiniMax-Run (Outlier) deutet auf Loop-Verhalten ohne Abschluss — der Run lief zwar im Budget durch (`completed_within_budget = true`), aber die Anzahl Red-Skill-Aufrufe ist 9× höher als der Median.
 
-Folgerung: Workflow-Selbstabbruch-Heuristik ist modellabhängig; sie schützt nicht zuverlässig vor "Modell hört zu früh auf" (Flash-Bimodalität) oder "Modell loop-t bis Budget-Cap" (MiniMax-Outlier).
+Folgerung: Workflow-Selbstabbruch-Heuristik ist modellabhängig; sie schützt nicht zuverlässig vor "Modell hört zu früh auf" (Flash-Bimodalität), "Modell loop-t bis Budget-Cap" (MiniMax-Outlier) oder "Modell überspringt Cycles und schreibt alles auf einmal" (Mistral-Profil).
 
 ---
 
 ## F-1.6 — Cost-Effizienz pro perfektem Lauf: GLM 5.1 deterministisch UND günstig
 
-Bei der einfachen "Cost pro Run"-Sicht (Übersichts-Tabelle) sehen GLM ($2.10), Flash ($2.23) und MiniMax ($2.40) am günstigsten aus. Aussagekräftiger ist die Frage: was kostet ein **garantiert perfekter** Lauf (verification 1.00, also 15/15), inklusive der Retries die für die Misserfolge nötig wären?
+Bei der einfachen "Cost pro Run"-Sicht (Übersichts-Tabelle) sehen GLM ($2.10), Flash ($2.23) und MiniMax ($2.40) am günstigsten aus, Mistral ($24.69) fällt deutlich aus dem Rahmen. Aussagekräftiger ist die Frage: was kostet ein **garantiert perfekter** Lauf (verification 1.00, also 15/15), inklusive der Retries die für die Misserfolge nötig wären?
 
 | Modell | n_perfect / n | $/Run (mean) | $/perfekter Run (cond.) | erwartet $/perfekt-Resultat (mit Retry) |
 |---|---|---|---|---|
@@ -141,9 +163,42 @@ Bei der einfachen "Cost pro Run"-Sicht (Übersichts-Tabelle) sehen GLM ($2.10), 
 | gemini-3-5-flash | 4/5 | 2.23 | 2.69 | $2.78 |
 | minimax-m2-7 | 0/5 | 2.40 | — | ∞ (kein perfekter Lauf in n=5) |
 | kimi-k2-6 | 3/5 | 2.78 | 2.27 | $4.63 |
+| mistral-medium-3-5 | 3/5 | 24.69 | 24.69 | $41.16 † |
 
 "Erwartet" = totale Kosten der 5 Runs / Anzahl perfekter Runs — operativ: wenn ein perfektes Ergebnis das Ziel ist und Nicht-Perfekt-Läufe verworfen werden, dann ist das die Kosten-pro-Akzeptanz-Größe.
 
 GLM 5.1 gewinnt klar: deterministisch perfekt (5/5) zu $2.10/Run, ~3× billiger als Opus' $5.90 bei gleicher Verlässlichkeit. Kimi und Flash konkurrieren auf der Cost-Achse, aber beide haben Reliability-Tail: Kimi degradiert (3/5 perfekt) und verteuert sich erwartet auf $4.63; Flash hat einen Total-Fail (4/5 → $2.78 erwartet, knapp hinter GLM aber stochastisch). MiniMax fällt komplett aus.
 
+Mistral schreibt bei 3/5 Runs perfekte Korrektheit, aber unter aktuellem OpenCode-Caching-Verhalten liegt der erwartete Cost pro perfekt-Resultat bei $41.16. † Diese Größe ist Integrations-spezifisch: mit aktivem `prompt_cache_key` (siehe Cost-Sektion) wäre der Per-Run-Cost ~$3.25, der erwartete-Perfekt-Cost ~$5.42 — damit landet Mistral cost-mäßig auf Opus-Niveau, mit deutlich schwächerer Code-Qualität (F-1.7). Status quo, ohne Caching-Patch, ist Mistral die teuerste Wahl unter den vpt ≥ 0.8-Modellen in dieser Studie.
+
 Pokal an GLM 5.1: günstigster deterministisch perfekter Lauf im vpt=1.0-Pool. Opus bleibt für hohe Code-Qualitäts-Ansprüche relevant (F-1.1), nicht für reine Korrektheits-Garantie.
+
+† Mistral-Cost im OpenCode-Harness ist durch fehlendes Prompt-Caching dominiert, nicht durch Mistral-Pricing — siehe Cost-Sektion oben.
+
+---
+
+## F-1.7 — Mistral Medium 3.5: hohe Korrektheit gegen hohe Komplexität und höchste Kosten
+
+Mistral Medium 3.5 erreicht über n=5 Replikate `verification_pct = 0.95 ± 0.09` (Verteilung 15, 15, 14, 15, 12) — die zweithöchste Korrektheit nach Opus/GLM und mit der zweitkleinsten Streuung im gesamten Modell-Set. Auf den sekundären Achsen entsteht aber ein gegenteiliges Profil zu den anderen Top-Modellen:
+
+| Metrik | Mistral | Opus (Referenz) | GLM 5.1 (Referenz) |
+|---|---|---|---|
+| `verification_pct` mean ± std | 0.95 ± 0.09 | 1.00 ± 0.00 | 1.00 ± 0.00 |
+| `cognitive_max` mean (range) | 74.8 (54–107) | 9.8 (8–12) | 12.2 (8–18) |
+| `mccabe_max` mean (range) | 33.6 (27–44) | 7.6 (6–9) | 9.2 (7–14) |
+| `cc_longest_function` mean (range) | 120 (0–242) | 25.4 (22–31) | 28.8 (23–39) |
+| `smell_total` mean | 23.6 | 0.8 | 4.0 |
+| `cycle_count` mean | 1.2 | 1.2 | 2.0 |
+| `tests_total` mean (range) | 41 (23–66) | 25.6 (4–39) | 40.2 (35–44) |
+| `duration_seconds` mean | 4051 | 664 | 1726 |
+| `cost_usd` pro Run (Status quo OpenCode) | $24.69 † | $5.90 | $2.10 |
+
+Beobachtungen:
+
+1. **Komplexität 6–8× über Opus/GLM**: `cognitive_max` 74.8, `mccabe_max` 33.6, `cc_longest_function` 120. Mistral erreicht Korrektheit über stark verschachtelten und langen Code — die einzige längste Funktion sprengt mit 242 LoC den Outlier-Bereich, doppelt so lang wie der nächst-höchste Modell-Mittelwert.
+2. **Viele Tests, wenige Cycles**: 41 Tests pro Run (Niveau GLM/Kimi) bei nur 1.2 Cycle-Aufrufen — Mistral schreibt Tests in großen Batches statt klassischer TDD-Cycles. Die Workflow-Skill-Aufrufe (Red/Green/Refactor) werden weitgehend übersprungen; effektiv ein Single-Shot-Pattern mit Test-First-Vorbereitung.
+3. **Höchste Wallclock**: ~67 min pro Run, 6× Opus, 2.3× GLM. Kombiniert mit der Cost ($24.69/Run im aktuellen OpenCode-Setup) ergibt sich der schwächste Effizienz-Punkt des Modell-Sets im vpt ≥ 0.8-Pool — mit dem Caveat dass die Cost-Komponente integrations-bedingt ist (siehe unten).
+
+Pattern: Mistral Medium 3.5 ist ein **Korrektheits-Solid, Code-Qualitäts-Schwach**-Modell auf dieser Kata. Der Korrektheits-Tail (12/15 in einem Run, 14/15 in einem weiteren) ist begrenzt, aber die Code-Qualität bleibt deutlich unter den Top-Modellen. Für Korrektheits-kritische Aufgaben ohne Code-Qualitäts-Anspruch denkbar; für CI/CD-Integration mit Code-Review-Auflagen klar unterlegen gegenüber Opus oder GLM 5.1.
+
+† Cost-Caveat: Der $24.69-Wert misst Mistral-im-OpenCode-Harness, nicht Mistral-als-Modell. OpenCode setzt für Mistral keinen `prompt_cache_key` (Mistral-API-Caching ist opt-in), wodurch 93 % der Tokens als regulärer Input statt 10%-Cache-Tier abgerechnet werden. Bei aggressivem Caching (analog Opus auf Anthropic, ~99 % Cache-Hit) wäre der Per-Run-Cost ~$3.25 — vergleichbar mit Sonnet, klar über GLM 5.1. **Der Cost-Befund ist also ein Integrations-Befund über OpenCode×Mistral, kein Modell-Befund über Mistral.** Bei Mistral-Direct-API mit Caching-Patch, anderem Harness, oder bei nicht-cacheabler Workload (CI/CD ohne shared cache) sähe das Ranking anders aus. Die Code-Qualitäts-, Cycle- und Wallclock-Befunde sind davon unberührt — die sind echte Modell-Eigenschaften.

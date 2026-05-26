@@ -8,6 +8,7 @@ factors:
     - minimax-m2-7
     - gemini-3-5-flash
     - glm-5-1
+    - mistral-medium-3-5
 controls:
   workflow: v5.1-testlist-scope-fix-oc
   kata_base: claim-office
@@ -57,12 +58,22 @@ Aus Routing-Smokes vorhanden (n=1 pro Zelle, counten für `min_replicates`):
 | kimi-k2-6 | 1.00 (15/15) | 46 | 3 | 0/0 | ✓ | 32 min |
 | minimax-m2-7 | 0.00 (0/15) | 37 | 1 | 0/2 | ✓ | 35 min |
 | gemini-3-5-flash | 1.00 (15/15) | 32 | 2 | 0/0 | ✓ | 8 min |
+| mistral-medium-3-5 | — | — | — | — | — | — (noch kein Smoke; via Portkey `@mistral/mistral-medium-3-5`) |
 
 Bemerkenswert: MiniMax schreibt 37 eigene Tests und macht sie grün, scheitert aber an allen 15 externen Verifikations-Szenarien — klassischer Spec-Misverständnis-Fall, genau der Kata-Mehrdeutigkeits-Effekt wofür claim-office gebaut wurde. Wird sich bei n=5 zeigen ob das systematisch oder Einzelfall ist.
 
-## Modell-Auswahl: warum nur 4 Modelle
+## Modell-Auswahl
 
 Gemini 2.5 Pro wurde am 2026-05-25 aus der RQ entfernt: drei Smoke-Versuche (91s/314s/85s) zeigten konsistent vorzeitigen Abbruch des autonomen Loops nach 1-2 Cycles ohne `experiment-done.txt`. Auch expliziter Continuation-Prompt ("Do NOT stop... continue until experiment-done.txt") änderte nichts — Pro interpretiert ein passierendes `pnpm test` als natürliches Conversation-Ende und stoppt mit empty turn. v5.1-oc-Compatibility-Issue, kein Routing- oder Modell-Stärke-Problem.
+
+Am 2026-05-26 wurden vier weitere via Portkey verfügbare Coding-Modelle smoke-getestet und alle vier nicht in die RQ aufgenommen (Routing in `portkey-cc` Workspace funktionierte sauber, aber v5.1-oc-Workflow-Compatibility versagte jeweils auf andere Art):
+
+- **`devstral-medium-2507` (`@mistral/devstral-medium-2507`)**: 366 tool-calls in einem Edit-Loop, am Ende 0 LOC persistiert, schreibt aber `experiment-done.txt` mit "significant progress" — kein nutzbarer Output trotz hoher Aktivität.
+- **`devstral-2512` (`@mistral/devstral-2512`)**: Echtes TDD (65 LOC, 6 Tests), schreibt aber `experiment-done.txt` **mit roten Tests** — verletzt die Workflow-Invariante "done.txt only when all tests green".
+- **`codestral-2508` (`@mistral/codestral-2508`)**: Stoppt nach 2 tool-calls in der Test-List-Erstellungs-Phase, ohne `.ts`-Datei und ohne `experiment-done.txt` — Modell zu schwach für autonome Multi-Schritt-Tasks dieser Klasse.
+- **`qwen3-coder-480b` (`@bedrock-eu-north-1/qwen.qwen3-coder-480b-a35b-v1:0`)**: TDD inkl. Refactoring funktioniert, stoppt aber nach Test 2 ohne `experiment-done.txt` — derselbe Continuation-Drop wie Gemini 2.5 Pro.
+
+Keines der vier hat `src/cli.ts` geschrieben (verification-suite hätte `null` ergeben). Routing-Mappings für alle vier bleiben in `experiments/docker/run-batch.sh` registriert, falls sie unter einem anderen Workflow (z.B. v1-oneshot-oc als Untergrenze) getestet werden sollen.
 
 ## Hypothesen
 

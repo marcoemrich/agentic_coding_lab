@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-25_10-00-29_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_minimax-m2-7
 
-Generated: 2026-05-25T10:35:44+00:00
+Generated: 2026-05-26T13:16:06+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-25T10:35:44+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-25_10-00-29_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_minimax-m2-7
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-25_10-00-29_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_minimax-m2-7
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-25_10-00-29_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_minimax-m2-7
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-25_10-00-29_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_minimax-m2-7
 
  ✓ src/claim-office.spec.ts  (50 tests | 13 skipped) 5ms
 
  Test Files  1 passed (1)
       Tests  37 passed | 13 todo (50)
-   Start at  10:35:45
-   Duration  169ms (transform 39ms, setup 0ms, collect 39ms, tests 5ms, environment 0ms, prepare 42ms)
+   Start at  13:16:08
+   Duration  375ms (transform 38ms, setup 0ms, collect 35ms, tests 5ms, environment 0ms, prepare 101ms)
 ```
 
 ## Coverage

@@ -74,6 +74,11 @@ MODEL_CONFIGS=(
     "gemini-2-5-pro|oc-only|false"
     "gemini-3-5-flash|oc-only|false"
     "glm-5-1|oc-only|false"
+    "mistral-medium-3-5|oc-only|false"
+    "devstral-medium-2507|oc-only|false"
+    "devstral-2512|oc-only|false"
+    "codestral-2508|oc-only|false"
+    "qwen3-coder-480b|oc-only|false"
 )
 
 # ---------------------------------------------------------------------------
@@ -574,6 +579,11 @@ EOF
                 kimi-k2-6)         oc_model="portkey/@openrouter-eval/moonshotai/kimi-k2.6" ;;
                 minimax-m2-7)      oc_model="portkey/@openrouter-eval/minimax/minimax-m2.7" ;;
                 glm-5-1)           oc_model="portkey/@openrouter-eval/z-ai/glm-5.1" ;;
+                mistral-medium-3-5)   oc_model="portkey-mistral/@mistral/mistral-medium-3-5" ;;
+                devstral-medium-2507) oc_model="portkey-cc/@mistral/devstral-medium-2507" ;;
+                devstral-2512)        oc_model="portkey-cc/@mistral/devstral-2512" ;;
+                codestral-2508)       oc_model="portkey-cc/@mistral/codestral-2508" ;;
+                qwen3-coder-480b)     oc_model="portkey-cc/@bedrock-eu-north-1/qwen.qwen3-coder-480b-a35b-v1:0" ;;
                 *) echo -e "  ${RED}ERROR: no OpenCode model mapping for $model_name${NC}"
                    claude_exit=2
                    oc_model="" ;;

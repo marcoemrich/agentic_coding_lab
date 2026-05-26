@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-25_13-08-02_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_minimax-m2-7-2
 
-Generated: 2026-05-25T13:53:16+00:00
+Generated: 2026-05-26T13:16:18+02:00
 
 ## Configuration
 
@@ -30,13 +30,13 @@ Generated: 2026-05-25T13:53:16+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-25_13-08-02_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_minimax-m2-7-2
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-25_13-08-02_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_minimax-m2-7-2
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-25_13-08-02_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_minimax-m2-7-2
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-25_13-08-02_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_minimax-m2-7-2
 
- ❯ src/claim-office.spec.ts  (39 tests | 19 failed) 14ms
+ ❯ src/claim-office.spec.ts  (39 tests | 19 failed) 16ms
    ❯ src/claim-office.spec.ts > MHPCO Claim Office > Base Premium Calculation > should return 115 G for a sword (100 base + 10% first insurance + 5 fee)
      → expected 116 to be 115 // Object.is equality
    ❯ src/claim-office.spec.ts > MHPCO Claim Office > Base Premium Calculation > should return 81 G for 3 runes (60 base with block + 10% first insurance + 5 fee)
@@ -431,8 +431,8 @@ AssertionError: expected 116 to be 115 // Object.is equality
 
  Test Files  1 failed (1)
       Tests  19 failed | 20 passed (39)
-   Start at  13:53:17
-   Duration  171ms (transform 31ms, setup 0ms, collect 29ms, tests 14ms, environment 0ms, prepare 42ms)
+   Start at  13:16:20
+   Duration  382ms (transform 32ms, setup 0ms, collect 26ms, tests 16ms, environment 0ms, prepare 103ms)
 
  ELIFECYCLE  Test failed. See above for more details.
 ```

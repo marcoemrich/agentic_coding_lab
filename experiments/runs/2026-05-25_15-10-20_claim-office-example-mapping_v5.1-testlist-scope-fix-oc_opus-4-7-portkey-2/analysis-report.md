@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey-2
 
-Generated: 2026-05-25T15:21:40+00:00
+Generated: 2026-05-26T13:16:41+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-25T15:21:40+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey-2
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey-2
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey-2
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-25_15-10-20_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey-2
 
- ✓ src/claim-office.spec.ts  (39 tests) 120ms
+ ✓ src/claim-office.spec.ts  (39 tests) 158ms
 
  Test Files  1 passed (1)
       Tests  39 passed (39)
-   Start at  15:21:40
-   Duration  292ms (transform 42ms, setup 0ms, collect 43ms, tests 120ms, environment 0ms, prepare 43ms)
+   Start at  13:16:43
+   Duration  567ms (transform 44ms, setup 0ms, collect 40ms, tests 158ms, environment 0ms, prepare 107ms)
 ```
 
 ## Coverage

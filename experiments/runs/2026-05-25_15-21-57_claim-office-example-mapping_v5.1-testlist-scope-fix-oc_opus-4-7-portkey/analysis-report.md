@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-25_15-21-57_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
 
-Generated: 2026-05-25T15:30:21+00:00
+Generated: 2026-05-26T13:17:09+02:00
 
 ## Configuration
 
@@ -30,19 +30,19 @@ Generated: 2026-05-25T15:30:21+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-25_15-21-57_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-25_15-21-57_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-25_15-21-57_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-25_15-21-57_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_opus-4-7-portkey
 
- ✓ src/scenario.spec.ts  (37 tests) 6ms
- ✓ src/cli.spec.ts  (4 tests) 1382ms
+ ✓ src/scenario.spec.ts  (37 tests) 7ms
+ ✓ src/cli.spec.ts  (4 tests) 1385ms
 
  Test Files  2 passed (2)
       Tests  41 passed (41)
-   Start at  15:30:21
-   Duration  1.69s (transform 47ms, setup 0ms, collect 52ms, tests 1.39s, environment 0ms, prepare 84ms)
+   Start at  13:17:11
+   Duration  1.72s (transform 59ms, setup 0ms, collect 75ms, tests 1.39s, environment 0ms, prepare 141ms)
 ```
 
 ## Coverage

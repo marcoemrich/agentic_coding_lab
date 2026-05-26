@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-25_15-30-40_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_kimi-k2-6
 
-Generated: 2026-05-25T15:52:15+00:00
+Generated: 2026-05-26T13:17:37+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-25T15:52:15+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-25_15-30-40_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_kimi-k2-6
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-25_15-30-40_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_kimi-k2-6
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-25_15-30-40_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_kimi-k2-6
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-25_15-30-40_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_kimi-k2-6
 
  ✓ src/claim-office.spec.ts  (43 tests) 7ms
 
  Test Files  1 passed (1)
       Tests  43 passed (43)
-   Start at  15:52:15
-   Duration  186ms (transform 50ms, setup 0ms, collect 49ms, tests 7ms, environment 0ms, prepare 42ms)
+   Start at  13:17:40
+   Duration  366ms (transform 39ms, setup 0ms, collect 39ms, tests 7ms, environment 0ms, prepare 62ms)
 ```
 
 ## Coverage

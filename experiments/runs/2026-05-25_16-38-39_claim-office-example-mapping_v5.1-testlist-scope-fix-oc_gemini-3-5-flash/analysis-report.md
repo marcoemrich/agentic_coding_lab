@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-25_16-38-39_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_gemini-3-5-flash
 
-Generated: 2026-05-25T16:40:30+00:00
+Generated: 2026-05-26T13:18:50+02:00
 
 ## Configuration
 
@@ -30,11 +30,11 @@ Generated: 2026-05-25T16:40:30+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-25_16-38-39_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_gemini-3-5-flash
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-25_16-38-39_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_gemini-3-5-flash
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-25_16-38-39_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_gemini-3-5-flash
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-25_16-38-39_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_gemini-3-5-flash
 
  ❯ src/index.spec.ts  (32 tests | 1 failed | 30 skipped) 6ms
    ❯ src/index.spec.ts > MHPCO Claim Office Policy Management > Quote with a plain sword should return 115 G (100 base + 10 first insurance + 5 fee)
@@ -69,8 +69,8 @@ AssertionError: expected { results: [ { premium: 5 } ] } to deeply equal { resul
 
  Test Files  1 failed (1)
       Tests  1 failed | 1 passed | 30 todo (32)
-   Start at  16:40:31
-   Duration  154ms (transform 24ms, setup 0ms, collect 22ms, tests 6ms, environment 0ms, prepare 42ms)
+   Start at  13:18:53
+   Duration  381ms (transform 25ms, setup 0ms, collect 19ms, tests 6ms, environment 0ms, prepare 91ms)
 
  ELIFECYCLE  Test failed. See above for more details.
 ```

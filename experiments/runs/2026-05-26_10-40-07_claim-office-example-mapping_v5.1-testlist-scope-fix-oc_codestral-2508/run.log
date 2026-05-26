@@ -1,0 +1,33 @@
+[0m
+> build · @mistral/codestral-2508
+[0m
+[0m→ [0mRead prompt.md
+[0m→ [0mSkill "test-list"
+Test List Created:
+**Feature**: MHPCO Claim Office Kata
+**Test File**: claim-office.spec.ts
+**Tests**: 20
+
+**Test Cases** (ordered simple -> complex):
+1. should return 5 G for empty item list
+2. should return 115 G for a single sword (100 base + 10 first-insurance + 5 fee)
+3. should return 65 G for a single amulet (60 base + 5 fee)
+4. should return 85 G for a single staff (80 base + 5 fee)
+5. should return 45 G for a single potion (40 base + 5 fee)
+6. should return 25 G for a single rune (25 base + 0 fee)
+7. should return 25 G for a single moonstone (25 base + 0 fee)
+8. should return 60 G for a block of 3 runes (60 base + 0 fee)
+9. should return 120 G for a block of 3 moonstones (60 base + 60 base + 0 fee)
+10. should return 160 G for a cursed sword (100 base + 50 curse + 10 first-insurance + 5 fee)
+11. should return 130 G for a highly enchanted sword (100 base + 30 high-enchantment + 10 first-insurance + 5 fee)
+12. should return 140 G for a long-standing customer's sword (100 base + 20 loyalty + 10 first-insurance + 5 fee)
+13. should return 115 G for a first insurance (100 base + 10 first-insurance + 5 fee)
+14. should return 100 G for a follow-up contract (100 base + 5 fee - 15 follow-up)
+15. should return 165 G for a policy with a cursed sword and a plain amulet (100 base + 50 curse + 60 base + 10 first-insurance + 5 fee)
+16. should return 198 G for a policy with a sword and 3 runes (100 base + 60 base + 10 first-insurance + 5 fee)
+17. should return 1400 G for a claim on a sword with 1500 G damage (1500 - 100 deductible)
+18. should return 400 G for a claim on a dragon-material sword with 1000 G damage (500 - 100 deductible)
+19. should return 700 G for a claim on a dragon-material sword with 800 G damage (800 - 100 deductible)
+20. should return 400 G for a claim on a steel sword with 1000 G damage (500 - 100 deductible)
+
+**Next Step**: Proceed to Red phase to activate the first test.
