@@ -16,15 +16,16 @@ Fields emitted:
   - context_utilization_pct      (None for OC — no documented context-cap signal)
   - cycle_count                  (count of `red` skill invocations)
   - phase_summary.averages.{red,green,refactor}.avg_duration_seconds
-                                  (mean part.time.completed-created per skill)
-  - phase_summary.refactorings_applied   (count of `refactor` skill invocations)
+                                  (mean part.time.completed-created per skill/task)
+  - phase_summary.refactorings_applied   (count of `refactor` skill OR task invocations)
   - phase_summary.tests_passed_immediately (0 — heuristic absent for OC)
   - predictions_correct / predictions_total
                                   (parsed from assistant text containing
                                    "Red Phase Complete" markers, via shared
                                    helper from analyze_transcript.py)
   - session_duration_seconds     (info.time.updated - info.time.created)
-  - skill_invocations            (raw per-skill counter, debug aid)
+  - skill_invocations            (raw per-skill counter, debug aid; includes
+                                   task tool calls mapped to TDD skill names)
 """
 
 from __future__ import annotations
@@ -66,6 +67,13 @@ def _is_skill_part(part: dict) -> bool:
     return part.get("tool") == "skill"
 
 
+def _is_task_part(part: dict) -> bool:
+    """Detect a task (subagent) tool-call part in OC's message schema."""
+    if part.get("type") != "tool":
+        return False
+    return part.get("tool") == "task"
+
+
 def _skill_name(part: dict) -> str | None:
     """Extract the invoked skill name from a tool part."""
     state = part.get("state") or {}
@@ -73,6 +81,24 @@ def _skill_name(part: dict) -> str | None:
     name = inp.get("name") or inp.get("skill")
     if isinstance(name, str):
         return name
+    return None
+
+
+def _task_maps_to_tdd_skill(part: dict) -> str | None:
+    """If a task tool call targets a TDD-relevant subagent, return the
+    equivalent skill name (e.g. 'refactor').  Otherwise return None.
+
+    Heuristic: check the ``description`` and ``subagent_type`` fields of
+    the task input for an exact TDD skill name match.  This covers the
+    v6.2-oc hybrid workflow where refactor runs as a subagent instead of
+    a skill.
+    """
+    state = part.get("state") or {}
+    inp = state.get("input") or {}
+    for field in ("description", "subagent_type"):
+        val = inp.get(field)
+        if isinstance(val, str) and val.strip().lower() in TDD_SKILLS:
+            return val.strip().lower()
     return None
 
 
@@ -115,6 +141,10 @@ def _walk_parts(messages: list) -> tuple[dict[str, list[float]], list[str]]:
                 name = _skill_name(part)
                 if name in durations:
                     durations[name].append(_part_duration_seconds(part))
+            elif _is_task_part(part):
+                mapped = _task_maps_to_tdd_skill(part)
+                if mapped and mapped in durations:
+                    durations[mapped].append(_part_duration_seconds(part))
 
         if info.get("role") == "assistant" and text_chunks:
             text_blocks.append("\n".join(text_chunks))

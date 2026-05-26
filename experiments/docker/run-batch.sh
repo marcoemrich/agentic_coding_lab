@@ -574,6 +574,12 @@ EOF
                 # (@vertex-*, @openrouter-eval, etc.). Matches the user's
                 # local ~/.config/opencode/opencode.jsonc convention.
                 opus-4-7-portkey)  oc_model="portkey/@vertex-eu-global/anthropic.claude-opus-4-7" ;;
+                # OC has no thinking-token flag — `opus-4-7-portkey-no-thinking`
+                # routes to the same upstream model as `opus-4-7-portkey`. The
+                # no-thinking suffix preserves the cross-harness RQ-controls
+                # convention (controls.model identifies the CC-side variant;
+                # OC matches it because thinking is structurally off there).
+                opus-4-7-portkey-no-thinking)  oc_model="portkey/@vertex-eu-global/anthropic.claude-opus-4-7" ;;
                 gemini-2-5-pro)    oc_model="portkey/@vertex-ai/gemini-2.5-pro" ;;
                 gemini-3-5-flash)  oc_model="portkey/@vertex-eu-global/gemini-3.5-flash" ;;
                 kimi-k2-6)         oc_model="portkey/@openrouter-eval/moonshotai/kimi-k2.6" ;;

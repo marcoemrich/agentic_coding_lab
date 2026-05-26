@@ -1,0 +1,21 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "command": {
+    "run-rq": {
+      "template": "Use the run-rq skill to drive RQ-$ARGUMENTS end-to-end. Load the skill first, then follow its instructions.",
+      "description": "Run a research question end-to-end"
+    },
+    "reanalyze": {
+      "template": "Use the reanalyze skill to re-run the analysis pipeline on all runs matching RQ-$ARGUMENTS. Load the skill first, then follow its instructions.",
+      "description": "Re-run analysis pipeline for an RQ"
+    },
+    "build-overview": {
+      "template": "Use the build-overview skill to produce an experiment-overview snapshot of all research questions under research/_archive/. Load the skill first, then follow its instructions.",
+      "description": "Generate experiment-overview snapshot"
+    },
+    "exact-coding-baseline-export": {
+      "template": "Use the exact-coding-baseline-export skill to mint a new exact-coding-baseline-YYYY-MM-DD snapshot under research/workflow-dev/export/. Pass the date or source-workflow as $ARGUMENTS if needed. Load the skill first, then follow its instructions.",
+      "description": "Export a new exact-coding baseline snapshot"
+    }
+  }
+}
