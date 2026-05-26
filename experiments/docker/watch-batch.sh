@@ -159,9 +159,14 @@ render_sharded_snapshot() {
         fi
         shard_container_info+=("    shard${snum}: $cstatus_line")
 
-        # Last 5 log lines (stripped of ANSI).
+        # Last 5 status-like log lines (stripped of ANSI). Filter to
+        # human-readable status output and skip raw JSON event streams
+        # (pi/opencode harnesses emit MB-scale JSONL on stdout).
         local tail_lines
-        tail_lines=$(echo "$log_text" | tail -n 5 | sed 's/\x1b\[[0-9;]*m//g')
+        tail_lines=$(echo "$log_text" \
+            | sed 's/\x1b\[[0-9;]*m//g' \
+            | grep -E '^[[:space:]]*(\[[0-9]+/[0-9]+\]|OK \([0-9]+s\)|timeout \([0-9]+s\)|Failed:|rate-limited after|transient-api-error after|Running Claude Code|Installing dependencies|Analyzing results|Container )' \
+            | tail -n 5)
         shard_last_lines+=("$tail_lines")
     done
 
@@ -266,7 +271,9 @@ render_snapshot() {
     local log_text=""
     if [[ "$log_source" == docker:* ]]; then
         local cname="${log_source#docker:}"
-        log_text=$(docker logs "$cname" 2>&1 || true)
+        # --tail caps cost on long-running containers; status counters
+        # ([N/total], OK, Failed) always live near the tail.
+        log_text=$(docker logs --tail 5000 "$cname" 2>&1 || true)
     elif [ -f "$log_source" ]; then
         log_text=$(cat "$log_source" 2>/dev/null || true)
     fi
@@ -367,8 +374,11 @@ render_snapshot() {
     echo "    Other fail:   $fail_count"
     echo "    ETA:          $eta_str"
     echo
-    echo "─── last 10 log lines ──────────────────────────────"
-    echo "$log_text" | tail -n 10 | sed 's/\x1b\[[0-9;]*m//g'
+    echo "─── last 10 status lines ───────────────────────────"
+    echo "$log_text" \
+        | sed 's/\x1b\[[0-9;]*m//g' \
+        | grep -E '^[[:space:]]*(\[[0-9]+/[0-9]+\]|OK \([0-9]+s\)|timeout \([0-9]+s\)|Failed:|rate-limited after|transient-api-error after|Running Claude Code|Installing dependencies|Analyzing results|Container )' \
+        | tail -n 10
     echo "────────────────────────────────────────────────────"
     echo
 }

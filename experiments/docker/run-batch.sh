@@ -362,15 +362,17 @@ for entry in "${RUN_LIST[@]}"; do
     fi
     mkdir -p "$run_dir/src"
 
-    # Detect harness from workflow definition. .opencode/ marks an OpenCode
-    # workflow; .claude/ marks a Claude Code workflow. The marker dir is
-    # also the source of harness-specific config.
-    if [ -d "$WORKFLOWS_DIR/$workflow/.opencode" ]; then
+    # Detect harness from workflow definition. .pi/ marks a pi workflow,
+    # .opencode/ an OpenCode workflow, .claude/ a Claude Code workflow.
+    # The marker dir is also the source of harness-specific config.
+    if [ -d "$WORKFLOWS_DIR/$workflow/.pi" ]; then
+        harness=pi
+    elif [ -d "$WORKFLOWS_DIR/$workflow/.opencode" ]; then
         harness=opencode
     elif [ -d "$WORKFLOWS_DIR/$workflow/.claude" ]; then
         harness=claude
     else
-        echo -e "  ${RED}ERROR: workflow $workflow has neither .claude/ nor .opencode/${NC}"
+        echo -e "  ${RED}ERROR: workflow $workflow has neither .claude/, .opencode/, nor .pi/${NC}"
         failed_count=$((failed_count + 1))
         continue
     fi
@@ -387,6 +389,15 @@ for entry in "${RUN_LIST[@]}"; do
             cp "$WORKFLOWS_DIR/$workflow/.opencode/opencode.json" "$run_dir/"
         [ -f "$WORKFLOWS_DIR/$workflow/.opencode/AGENTS.md" ] && \
             cp "$WORKFLOWS_DIR/$workflow/.opencode/AGENTS.md" "$run_dir/"
+    elif [ "$harness" = "pi" ]; then
+        # Mirror .pi/ into run_dir. pi reads AGENTS.md via cwd walk-up.
+        # Project-local skills (.pi/skills/) and agents (.pi/agents/) are
+        # discovered by pi + the subagent extension from cwd walk-up.
+        # Provider config (models.json) and the subagent extension itself
+        # come from the global /home/experimenter/.pi/agent/ bind-mount.
+        cp -r "$WORKFLOWS_DIR/$workflow/.pi" "$run_dir/"
+        [ -f "$WORKFLOWS_DIR/$workflow/.pi/AGENTS.md" ] && \
+            cp "$WORKFLOWS_DIR/$workflow/.pi/AGENTS.md" "$run_dir/"
     fi
 
     # Copy kata prompt
@@ -564,7 +575,36 @@ EOF
         fi
 
         set +e
-        if [ "$harness" = "opencode" ]; then
+        if [ "$harness" = "pi" ]; then
+            # Lab-variant model name → pi --model format. Walking skeleton:
+            # only Opus 4.7 via Portkey-Vertex-EU wired. Same upstream as OC.
+            # pi's models.json (per-workflow copy in $run_dir/.pi/) defines
+            # provider=portkey with api:"openai-completions" and the
+            # x-portkey-api-key header, so PORTKEY_API_KEY in the env is
+            # sufficient for auth.
+            case "$model_name" in
+                opus-4-7-portkey)              pi_model="portkey/@vertex-eu-global/anthropic.claude-opus-4-7" ;;
+                opus-4-7-portkey-no-thinking)  pi_model="portkey/@vertex-eu-global/anthropic.claude-opus-4-7" ;;
+                *) echo -e "  ${RED}ERROR: no pi model mapping for $model_name${NC}"
+                   claude_exit=2
+                   pi_model="" ;;
+            esac
+            if [ -n "$pi_model" ]; then
+                # Provider (Portkey) + subagent extension live in
+                # /home/experimenter/.pi/agent/ (bind-mounted from
+                # experiments/docker/pi-config/). Project-level skills and
+                # agents live in $run_dir/.pi/ and are discovered via the
+                # subagent extension's cwd walk-up. --mode json writes the
+                # full event-stream JSONL to stdout — redirect to $run_log
+                # only (no tee) so it doesn't flood the batch shard log.
+                (cd "$run_dir" && \
+                    timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
+                    pi -p --mode json --no-session --model "$pi_model" \
+                    "Read prompt.md and complete the exercise following the workflow rules. Continue autonomously through ALL tests in the test list until you have written experiment-done.txt with the single word DONE. Do NOT stop after a single passing test or cycle — keep going until every test is implemented.") \
+                    > "$run_log" 2>&1
+                claude_exit=$?
+            fi
+        elif [ "$harness" = "opencode" ]; then
             # Lab-variant model name → OpenCode --model format. Skeleton
             # uses hardcoded mapping; generalize when more OC models land.
             case "$model_name" in
@@ -600,11 +640,13 @@ EOF
                 # natural conversation endpoint and stop autonomously
                 # without finishing the test list. Explicit "continue until
                 # experiment-done.txt" keeps them in the loop.
+                # opencode run streams verbose tool/event output; keep it
+                # in $run_log only to avoid flooding the batch shard log.
                 (cd "$run_dir" && timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
                     opencode run --model "$oc_model" --dangerously-skip-permissions \
                     "Read prompt.md and complete the exercise following the workflow rules. Continue autonomously through ALL tests in the test list until you have written experiment-done.txt with the single word DONE. Do NOT stop after a single passing test or cycle — keep going until every test is implemented.") \
-                    2>&1 | tee "$run_log"
-                claude_exit=${PIPESTATUS[0]}
+                    > "$run_log" 2>&1
+                claude_exit=$?
             fi
         elif [ "$thinking" = "false" ]; then
             (cd "$run_dir" && MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
@@ -676,6 +718,13 @@ EOF
                 echo -e "  ${YELLOW}opencode export $oc_session_id failed${NC}"
         else
             echo -e "  ${YELLOW}No OpenCode session found to export${NC}"
+        fi
+    elif [ "$harness" = "pi" ]; then
+        # pi --mode json writes the event stream to stdout; tee already
+        # mirrored it to $run_log. Extract pure NDJSON lines (filter out
+        # non-JSON noise like the cli.ts nudge follow-ups) into transcript-pi.jsonl.
+        if [ -f "$run_log" ]; then
+            grep -E '^\{"type":' "$run_log" > "$run_dir/transcript-pi.jsonl" 2>/dev/null || true
         fi
     else
         save_transcript "$run_dir"
