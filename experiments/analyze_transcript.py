@@ -64,6 +64,22 @@ _PREDICTION_OUTCOME_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Fallback for OpenCode runs whose red-skill output writes the prediction
+# label inline with only whitespace separation, e.g.
+#   **Compilation Prediction**: Compiles successfully Correct
+# Anchored to a "(Compilation|Runtime) Prediction" bullet line so we do not
+# false-positive on prose discussing predictions. This complements
+# _PREDICTION_OUTCOME_RE; matches deduplicated by start position.
+_PREDICTION_OUTCOME_LINE_RE = re.compile(
+    r"^[\s\-*]*[*_]{0,2}(?:Compilation|Runtime)\s+Prediction[*_]{0,2}\s*:.*?\b(Correct|Incorrect)\b[*_\s]*$",
+    re.IGNORECASE | re.MULTILINE,
+)
+
+
+def _line_index_at(text: str, pos: int) -> int:
+    """Return the 0-based line index containing character offset *pos*."""
+    return text.count("\n", 0, pos)
+
 
 def extract_predictions_from_text(text: str) -> tuple[int, int]:
     """Count self-reported prediction outcomes in a single assistant text block.
@@ -75,12 +91,18 @@ def extract_predictions_from_text(text: str) -> tuple[int, int]:
     """
     if not text or "Red Phase Complete" not in text:
         return 0, 0
-    correct = 0
-    total = 0
+    # Collect matches from both patterns, dedup by line so a single Prediction
+    # line that matches both the trenner-based and the line-anchored regex
+    # counts once (CC outputs typically trigger both; OC only the line one).
+    matches: dict[int, str] = {}
     for match in _PREDICTION_OUTCOME_RE.finditer(text):
-        total += 1
-        if match.group(1).lower() == "correct":
-            correct += 1
+        line = _line_index_at(text, match.start())
+        matches.setdefault(line, match.group(1).lower())
+    for match in _PREDICTION_OUTCOME_LINE_RE.finditer(text):
+        line = _line_index_at(text, match.start())
+        matches.setdefault(line, match.group(1).lower())
+    correct = sum(1 for label in matches.values() if label == "correct")
+    total = len(matches)
     return correct, total
 
 
