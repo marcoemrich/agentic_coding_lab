@@ -2,7 +2,6 @@
 
 # In-Box
 
-* v8b fix
 
 * H: Mars-Rover command-idea, wie integrieren
  * Optimize: Alternative Refactor-Techniques: vocab-refactor - smell, McCabe,
@@ -12,6 +11,7 @@
 * FP-Stuff, check for immutabilitym pure functions
 * switch everything to english
 * Language-Erweiterung: RUST
+* Neuer Worflow Red->Green, Refactoring nur am Ende
 
 ## Problem separation first
 Prio: High
@@ -40,28 +40,20 @@ Prio: Low
 * /plugin install plugin-eval@claude-code-workflows
 * Harbor https://www.harborframework.com
 
-## Try other TDD workflows
+## Try other workflows
 Prio: Medium
-
-https://www.skills.sh/mattpocock/skills/tdd
-https://github.com/parcadei/Continuous-Claude-v3/blob/main/.claude/skills/tdd/SKILL.md
-
 
 * Dimitry's Spec Loop
 https://gitlab.com/dpolivaev/spec-loop/-/blob/main/docs/review-responsibility-and-traceability.md?ref_type=heads
 
 * Chris Agent-Team workflows
-* from skills repo:
-
 
 ## TCR und TCRDD Workflows
 
 https://github.com/bsene/approvalsTypescript/blob/main/.agents/skills/tcrdd/SKILL.md
 https://www.skills.sh/bsene/skills/tcrdd
 https://github.com/xpepper/tcr-skill
-
 https://www.skill.fish/skill/tcr-practice-test-commit-revert
-
 
 ## Encode well know TDD workflows aka schools in rules
 
@@ -71,14 +63,12 @@ https://www.skill.fish/skill/tcr-practice-test-commit-revert
 * TCR and TDD variants of TCR
 * Books: Fields, Roy Osheroove, J.B. Rainsberger,
 
-
 ## Use Architecture Concepts
 
 * Quality Attributes
 * Diagramms
 * Design Styles
 * Arch. Pattterns
-
 
 ## Add in more Refactoring rules and Security Stuff
 
@@ -103,14 +93,15 @@ https://www.skill.fish/skill/tcr-practice-test-commit-revert
 
 * Try other models and tools
 
-* Codex (tool)
-* Gpt 5.3 Codex (Model)
 * Open Code
+
+* Superpowers https://claude.com/plugins/superpowers
+* Gpt 5.3 Codex (Model)
+* Codex (tool)
 * Cursor collection
 * BMAD
 * nWave
 * GSD
-* Superpowers https://claude.com/plugins/superpowers
 
 ## Weitere Dimensionen
 
@@ -149,90 +140,6 @@ Mehr Post-Toolings (test vs. bei jedem Refactoring):
  Refactorstep vs. Postprocessing Steps
    * use other metrics in refactor step
 
-## Refactor-Agent Vokabular-Erweiterung — wenn zugrundliegender Workflow repariert ist
-
-Bisheriger Versuch (RQ-19-refactor-vocab-extended) invalide. Wenn Re-Setup ansteht:
-ein neuer Block in `.claude/agents/refactor.md` zwischen "Naming Evaluation"
-und "Absolute Priority Premise (APP)" — wortlaut-fertig:
-
-```markdown
-### Complexity Awareness (Second Refactoring Priority)
-
-After naming, look at the function's structural complexity through two complementary lenses:
-
-- **Cyclomatic Complexity (McCabe)** — how many independent paths run through this function? Each `if`, `else if`, `case`, `&&`, `||`, `?:`, `for`, `while`, and `catch` adds a path. A function with many branches has many paths to test and many ways to be wrong.
-- **Cognitive Complexity (SonarSource)** — how hard is this function to *understand*? Nesting is weighted heavier than flat control flow. A `for` inside an `if` inside a `while` is cognitively heavier than three sequential flat blocks doing the same work, even when McCabe is equal.
-
-When a function feels dense, ask:
-- Could a guard clause flatten a nested `if`?
-- Does a deeply-nested branch belong in its own named helper?
-- Is there control-flow duplication (parallel branches with the same shape)?
-
-Cognitive-complexity reductions usually buy more readability per change than McCabe-only reductions — they make the code humanly cheaper, not just structurally simpler.
-
-### Single Responsibility (Naming + Cognitive together)
-
-A function should describe **one** thing. Two operational checks:
-- Can you describe what this function does without using "and" or "or"?
-- If the name were removed and only the body remained, would you arrive at the same name from the body alone?
-
-When the answer is no, the function is doing multiple things — typically a sign to extract a helper or split it in two. SRP is the lens that decides *whether* to split; it is not a separate metric. SRP violations usually surface as a vague name (resolvable by Naming Evaluation) or as high cognitive complexity (resolvable by extracting a helper).
-
-### Common Smells and Typical Refactoring Moves
-
-Vocabulary for seeing structure, not a checklist to apply per pass. Curated for the TypeScript/functional context of this kata work:
-
-| Smell | Typical Move |
-|---|---|
-| Duplicated Code | Extract Function / Pull Up |
-| Long Function | Extract Function, Decompose Conditional |
-| Long Parameter List | Introduce Parameter Object |
-| Data Clumps (same params travelling together) | Introduce Parameter Object / Extract Type |
-| Primitive Obsession (raw `number`/`string` where a domain type would help) | Replace Primitive with Type |
-| Switch on Type / Long Conditional Chain | Replace Conditional with Map Lookup or Polymorphism |
-| Magic Number / Magic String | Replace with Named Constant |
-| Comments that explain *what* (not *why*) | Extract Function with a revealing name |
-| Feature Envy (function uses another module's data more than its own) | Move Function |
-| Speculative Generality (unused parameters, dead branches, premature abstraction) | Inline / Remove |
-
-No thresholds. These lenses are vocabulary for seeing and naming — not a quota for how many smells must be addressed per refactor pass. One concrete improvement that lowers cognitive load or APP mass beats a long list of cosmetic touches.
-```
-
-Rein additiv. Goodhart-konform: keine Schwellwerte, qualitative Sprache.
-APP-Block, Mass-Regeln, Process-Steps, Beispiele, Red-Flags und Remember-Floor-Anker
-bleiben byte-identisch zu v6.5.4. Skills, rules, settings.json unverändert.
-
-Delayed-Arm (v8a-Erweiterung): `refactor.md` byte-identisch zum TDD-Arm kopieren.
 
 # Optmization Ideas
-
  * use Hooks
-
-
-
-
-# DONE
-
-* H: custom Kata für Example-Mapping  nötig, andere Kata können aber Quality messen
-* H: Opus schneller als Sonnet
-* H: Streuung geringer bei v4 als v5
-* mischung aus v4 und v5 subagent nur für Refactoring
-* Parallelisierung (Problem: Rate-Limit?)
-* reduce workflow rules
-* remove reasoning
-## Mutation Testing
-* Mutation Testing as metric
-* Manuelle Reduktion ()
-* Optimze Skill mit: https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md
-## EXACT-Coding workflow optmization, Chris Meta Framework: https://github.com/chdalski/claude_orchestration
-Reanalyze-Skill
-* Game of Life reicht evtl. für alle Fragen ausser Example Mapping
-* Distinguish between General Research and Workflow Optmization
-* Control-Workflow: oneshot+review und/oder Refactoring am ende
-* Stryker
-* reiterate optmization:
- * pep-talk,
- * Emojis,
- * skill-creator,
- * Theory of Mind
- * cuts?
