@@ -236,7 +236,7 @@ Consequences for analysis and data collection:
 │       └── build-overview/       #   /build-overview — generate cross-RQ snapshot
 ├── experiments/
 │   ├── katas/                            # Coding exercises (problem definitions)
-│   ├── workflows/                        # Workflow variants (v1–v5)
+│   ├── workflows/                        # Workflow variants (v1–v5 + pi variants)
 │   ├── runs/                             # Recorded experiment results (flat pool)
 │   ├── batch-plans/                      # JSON batch specs (auto-generated per RQ)
 │   ├── docker/                           # Containerized batch execution
@@ -245,7 +245,9 @@ Consequences for analysis and data collection:
 │   ├── reanalyze-all-runs.sh             # Backfill metrics across every existing run
 │   ├── aggregate-by-query.py             # RQ frontmatter → runs.csv + summary.md
 │   ├── batch-plan-from-rq.py             # RQ frontmatter → batch plan filling missing cells
-│   ├── analyze_transcript.py             # Parse transcript.jsonl for TDD-cycle metrics
+│   ├── analyze_transcript.py             # Parse CC/OC transcript.jsonl for TDD-cycle metrics
+│   ├── parse_pi_transcript.py            # Parse pi transcript-pi.jsonl (text-marker-based cycle counting)
+│   ├── parse_opencode_transcript.py      # Parse OpenCode session exports
 │   └── generate-snapshot-skeleton.py     # Cross-RQ snapshot skeleton (used by /build-overview)
 ├── research/
 │   ├── RQ-prompt-correctness-workflow-effect/     # Per-RQ:
@@ -366,6 +368,20 @@ v5-exact-single-context/.claude/
 | **Guidance** | None | Plan/checklist | Minimal TDD | Specialized agents | Inline skills |
 | **Definitions** | None | None | None | `agents/*.md` | `commands/*.md` |
 | **Overhead** | None | None | None | Agent spawning | None |
+
+### Multi-harness support
+
+The same workflow design can be deployed on different coding-agent harnesses (Claude Code, OpenCode, pi). The TDD-cycle measurement pipeline adapts per harness:
+
+| Harness | Cycle-counting mechanism | Transcript parser |
+|---------|------------------------|------------------|
+| Claude Code | `Skill` tool calls with `skill: "red"` | `analyze_transcript.py` |
+| OpenCode | Same Skill-based logic | `parse_opencode_transcript.py` |
+| pi | Text markers (`## Red` headers) in assistant output | `parse_pi_transcript.py` |
+
+**Why pi needs text markers:** pi skills are auto-loaded documents, not tool calls. The model reads each `SKILL.md` once and follows its instructions directly ("freihand"), producing `## Red` headings per cycle instead of `Skill({skill: "red"})` tool invocations. The refactor subagent still uses the `subagent` tool (counted the same way across all harnesses). See [`experiments/workflows/MARKERS.md`](experiments/workflows/MARKERS.md) for the full marker specification.
+
+Workflow directories follow a naming convention: `<variant-name>` (Claude Code), `<variant-name>-oc` (OpenCode), `<variant-name>-pi` (pi). Each stores harness-specific configuration (`.claude/` for CC, `.opencode/` for OC, `.pi/` for pi).
 
 ## Model Configurations
 
@@ -523,7 +539,9 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 | `experiments/record-run.sh` | Interactive: pick kata + workflow + model, launch Claude Code locally, record everything into `experiments/runs/<id>/`. Used for ad-hoc single runs outside Docker. |
 | `experiments/analyze-run.sh` | Post-process one run directory: install pnpm deps, run vitest + ESLint+SonarJS, call `analyze_transcript.py`, emit `analysis-report.md` and `metrics.json`. Idempotent — safe to re-run after pipeline fixes. |
 | `experiments/reanalyze-all-runs.sh` | Backfill metrics for every existing run after `analyze-run.sh` is extended (e.g. new fields like `mccabe_*` / `cognitive_*`). Iterates over every `runs/<run>/`, runs `pnpm install` against the shared `runs/.pnpm-store` for any run missing `node_modules/`, and re-invokes `analyze-run.sh`. Output to `experiments/reanalyze.log` (gitignored). |
-| `experiments/analyze_transcript.py` | Parse `transcript.jsonl` (+ `transcript-subagents/`) for TDD-cycle metrics: phase inference, prediction accuracy, refactorings applied, token totals, context-window utilization. Writes `transcript-metrics.json`. |
+| `experiments/analyze_transcript.py` | Parse `transcript.jsonl` (+ `transcript-subagents/`) for TDD-cycle metrics: phase inference, prediction accuracy, refactorings applied, token totals, context-window utilization. Writes `transcript-metrics.json`. Used for **Claude Code** runs. |
+| `experiments/parse_pi_transcript.py` | Parse `transcript-pi.jsonl` for the same TDD-cycle metrics. Used for **pi** runs, where skills are auto-loaded documents (not tool calls) and cycle counting relies on text markers (`## Red` headers) in assistant output instead of `Skill` tool invocations. Writes `transcript-metrics.json`. |
+| `experiments/parse_opencode_transcript.py` | Parse OpenCode session exports into `transcript-metrics.json`. Used for **OpenCode** runs. |
 
 ### Aggregation
 
@@ -725,7 +743,17 @@ v4-exact-subagents keeps the main context low because each agent has fresh conte
 
 ### TDD discipline metrics
 
-Extracted from `transcript.jsonl` (+ `transcript-subagents/`) by [`experiments/analyze_transcript.py`](experiments/analyze_transcript.py). The four phase markers that drive these counts are documented in [`experiments/workflows/MARKERS.md`](experiments/workflows/MARKERS.md) — removing or renaming a marker silently zeroes the corresponding metric.
+Extracted from the harness-specific transcript by the corresponding parser:
+
+| Harness | Transcript file | Parser | Cycle-counting mechanism |
+|---------|----------------|--------|------------------------|
+| Claude Code | `transcript.jsonl` | `analyze_transcript.py` | `Skill` tool calls (`skill: "red"`) |
+| OpenCode | `transcript.jsonl` | `parse_opencode_transcript.py` | Same Skill-based logic |
+| pi | `transcript-pi.jsonl` | `parse_pi_transcript.py` | Text markers (`## Red` headers) in assistant output |
+
+The phase markers that drive these counts are documented in [`experiments/workflows/MARKERS.md`](experiments/workflows/MARKERS.md) — removing or renaming a marker silently zeroes the corresponding metric.
+
+**Why pi uses text markers instead of tool calls:** pi skills are auto-loaded documents, not tool calls. The model reads each `SKILL.md` once and then follows its instructions directly ("freihand"). There is no `Skill({skill: "red"})` tool invocation per cycle. Instead, the parser counts `## Red` headings in the assistant output (one per cycle) and `Red Phase Complete:` blocks with prediction lines. The `derive_cycle_count()` function in `analyze_transcript.py` uses text markers as a tertiary fallback (after Skill and Task tool calls), so both parsers agree on the same priority chain.
 
 | Metric | Description |
 |--------|-------------|
@@ -762,6 +790,14 @@ Create `experiments/workflows/<variant-name>/.claude/` with:
 - `rules/*.md` — TDD rules for this variant
 - `agents/*.md` — agent definitions (if using subagents)
 - `commands/*.md` — skill definitions (if using inline skills)
+
+For **pi** workflows, create `experiments/workflows/<variant-name>-pi/.pi/` with:
+
+- `AGENTS.md` — TDD rules and mandatory output-format markers (pi skills are documents, not tool calls)
+- `skills/<phase>/SKILL.md` — Skill documents for test-list, red, green
+- `agents/<name>.md` — Subagent definitions (refactor)
+
+See `experiments/workflows/v6.2-with-why-cleaned-pi/` for a working example. The pi measurement pipeline (`parse_pi_transcript.py`) counts text markers (`## Red`, `## Green`) in assistant output rather than `Skill` tool calls — see [MARKERS.md](experiments/workflows/MARKERS.md) for the full marker specification.
 
 ## Further Documentation
 

@@ -53,6 +53,26 @@ def resolve_context_window(model_versions: list[str]) -> int:
 
 TDD_PHASES = ("test-list", "red", "green", "refactor")
 
+# Phase-completion text markers for harnesses (pi) that do not emit Skill
+# tool calls. These are matched in assistant text blocks.
+# "Red Phase Complete" is the strict marker (already used for gating
+# predictions). The loose patterns catch the abbreviated headers the
+# model naturally produces when it follows skill content "freihand".
+_PHASE_TEXT_MARKERS = {
+    "test-list": re.compile(
+        r"(?:Test List Created|Test List Phase Complete)", re.IGNORECASE
+    ),
+    "red": re.compile(
+        r"##\s*Red\b", re.IGNORECASE
+    ),
+    "green": re.compile(
+        r"##\s*Green\b", re.IGNORECASE
+    ),
+    "refactor": re.compile(
+        r"##\s*Refactor\b", re.IGNORECASE
+    ),
+}
+
 # Matches the self-reported prediction outcome marker emitted by the red-phase
 # agent inside its "Red Phase Complete:" block (see workflows/.../red.md).
 # Accepts either a leading dash (v4-style: "... - Correct") or an emoji
@@ -63,6 +83,10 @@ _PREDICTION_OUTCOME_RE = re.compile(
     r"(?:-|✅|❌|[.:])[\s]*[*_]{0,2}(Correct|Incorrect)[*_]{0,2}\b",
     re.IGNORECASE,
 )
+
+# Loose red-phase header (pi harnesses) — used as an alternative gate
+# for prediction extraction when "Red Phase Complete" is absent.
+_RED_PHASE_HEADER_RE = re.compile(r"##\s*Red\b", re.IGNORECASE)
 
 # Fallback for OpenCode runs whose red-skill output writes the prediction
 # label inline with only whitespace separation, e.g.
@@ -81,15 +105,34 @@ def _line_index_at(text: str, pos: int) -> int:
     return text.count("\n", 0, pos)
 
 
-def extract_predictions_from_text(text: str) -> tuple[int, int]:
+def extract_predictions_from_text(text: str, loose_gate: bool = False) -> tuple[int, int]:
     """Count self-reported prediction outcomes in a single assistant text block.
 
-    Only counts when the block contains a "Red Phase Complete" marker, to avoid
+    Only counts when the block contains a red-phase marker, to avoid
     false positives from prose discussing predictions elsewhere.
+
+    Red-phase markers (any one suffices as gate):
+    - "Red Phase Complete" (strict, from CC/OC red-skill output)
+    - "## Red" (loose, from pi runs where the model follows skill content
+      freihand and uses markdown headers instead of the formal block)
+
+    When *loose_gate* is True, any block containing a
+    "(Compilation|Runtime) Prediction" line is accepted (for pi
+    harnesses where the red-phase header and predictions may land in
+    separate assistant messages).
 
     Returns (correct_count, total_count).
     """
-    if not text or "Red Phase Complete" not in text:
+    if not text:
+        return 0, 0
+    has_red_marker = (
+        "Red Phase Complete" in text
+        or bool(_RED_PHASE_HEADER_RE.search(text))
+    )
+    if loose_gate:
+        has_pred_header = bool(_PREDICTION_OUTCOME_LINE_RE.search(text))
+        has_red_marker = has_red_marker or has_pred_header
+    if not has_red_marker:
         return 0, 0
     # Collect matches from both patterns, dedup by line so a single Prediction
     # line that matches both the trenner-based and the line-anchored regex
@@ -104,6 +147,21 @@ def extract_predictions_from_text(text: str) -> tuple[int, int]:
     correct = sum(1 for label in matches.values() if label == "correct")
     total = len(matches)
     return correct, total
+
+
+def extract_phase_text_markers(text: str) -> Counter[str]:
+    """Count phase-completion text markers in assistant text.
+
+    Used as a fallback when no Skill/Task tool calls are present (e.g. pi
+    harness where skills are auto-loaded documents, not tool calls).
+    Returns a Counter keyed by phase name.
+    """
+    if not text:
+        return Counter()
+    counts: Counter[str] = Counter()
+    for phase, pattern in _PHASE_TEXT_MARKERS.items():
+        counts[phase] = len(pattern.findall(text))
+    return counts
 
 
 def parse_jsonl(path: Path) -> Iterable[dict[str, Any]]:
@@ -195,6 +253,10 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
     predictions_correct = 0
     predictions_total = 0
 
+    # Phase-completion text markers (fallback for pi and other harnesses
+    # that don't emit Skill/Task tool calls).
+    phase_text_markers: Counter[str] = Counter()
+
     for event in parse_jsonl(jsonl_path):
         ts = parse_timestamp(event.get("timestamp"))
         if ts:
@@ -244,6 +306,7 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
                     c, t = extract_predictions_from_text(text)
                     predictions_correct += c
                     predictions_total += t
+                    phase_text_markers.update(extract_phase_text_markers(text))
                 continue
             if block.get("type") != "tool_use":
                 continue
@@ -316,7 +379,7 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
     context_window = resolve_context_window(model_versions)
     ctx_util_pct = int(round(100 * max_cumulative / context_window))
 
-    cycle_count = derive_cycle_count(skill_invocations, task_invocations, bash_commands)
+    cycle_count = derive_cycle_count(skill_invocations, task_invocations, bash_commands, phase_text_markers)
 
     skill_phases = aggregate_skill_phases(skill_phase_markers, message_stream, last_ts)
     inline_tool_phases = infer_phases_from_tool_sequence(inline_tool_events)
@@ -347,6 +410,7 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
             "task_order": task_order,
             "red_tool_use_ids": red_tool_use_ids,
             "last_ts": last_ts,
+            "phase_text_markers": dict(phase_text_markers),
         },
     }
 
@@ -478,6 +542,66 @@ def aggregate_skill_phases(
     return phases
 
 
+def synthesize_phases_from_text_markers(
+    markers: Counter[str],
+) -> list[dict[str, Any]]:
+    """Synthesize phase records from text-marker counts.
+
+    For pi and other harnesses where skills are documents (not tool calls),
+    the assistant text contains phase-completion markers like
+    "## Red" and "Red Phase Complete". This function creates synthetic
+    phase records with no timestamp or token detail — just counts.
+
+    The ordering follows TDD convention: test-list, then repeating
+    (red, green, refactor) blocks.
+    """
+    if not markers or sum(markers.values()) == 0:
+        return []
+
+    phases: list[dict[str, Any]] = []
+
+    # Test-list phase
+    tl_count = markers.get("test-list", 0)
+    if tl_count > 0:
+        for _ in range(tl_count):
+            phases.append({
+                "phase": "test-list",
+                "tokens": 0,
+                "duration_seconds": 0.0,
+                "start_ts": None,
+            })
+
+    # Interleave red/green/refactor by count.
+    # Use red as the cycle driver (it's the most reliable marker).
+    red_count = markers.get("red", 0)
+    green_count = markers.get("green", 0)
+    refactor_count = markers.get("refactor", 0)
+
+    for i in range(red_count):
+        phases.append({
+            "phase": "red",
+            "tokens": 0,
+            "duration_seconds": 0.0,
+            "start_ts": None,
+        })
+        if i < green_count:
+            phases.append({
+                "phase": "green",
+                "tokens": 0,
+                "duration_seconds": 0.0,
+                "start_ts": None,
+            })
+        if i < refactor_count:
+            phases.append({
+                "phase": "refactor",
+                "tokens": 0,
+                "duration_seconds": 0.0,
+                "start_ts": None,
+            })
+
+    return phases
+
+
 def merge_phase_streams(
     skill_phases: list[dict[str, Any]],
     subagent_phases: list[dict[str, Any]],
@@ -520,11 +644,20 @@ def derive_cycle_count(
     skills: Counter[str],
     tasks: Counter[str],
     bash_commands: list[str],
+    phase_text_markers: Counter[str] | None = None,
 ) -> int:
+    # Primary: Skill tool calls (CC/OC v5+)
     if skills.get("red", 0) > 0:
         return skills["red"]
+    # Secondary: Task/subagent tool calls (CC/OC v4)
     if tasks.get("red", 0) > 0:
         return tasks["red"]
+    # Tertiary: Text markers in assistant output (pi and other harnesses
+    # where skills are documents, not tool calls). Only used when the
+    # primary and secondary sources are empty to avoid double-counting.
+    if phase_text_markers and phase_text_markers.get("red", 0) > 0:
+        return phase_text_markers["red"]
+    # Quaternary: pnpm test invocations (last resort)
     if bash_commands:
         pnpm_test_calls = sum(
             1 for cmd in bash_commands if "pnpm test" in cmd or "pnpm run test" in cmd
@@ -730,6 +863,11 @@ def main(argv: list[str]) -> int:
     #   v5 (skills only):        skill_phases
     #   v6 (hybrid: skills for red/green, subagent for refactor): merge both
     #   v1/v2/v3:                inline tool inference or none
+    #   pi (text markers):       synthesize from assistant text when no tool-call markers
+    text_marker_phases = synthesize_phases_from_text_markers(
+        Counter(internal.get("phase_text_markers", {}))
+    )
+
     if subagent_phases and internal["skill_phases"]:
         phases = merge_phase_streams(
             internal["skill_phases"], subagent_phases, internal.get("last_ts")
@@ -744,6 +882,9 @@ def main(argv: list[str]) -> int:
     elif internal["inline_tool_phases"]:
         phases = internal["inline_tool_phases"]
         phase_source = "inline-tool"
+    elif text_marker_phases:
+        phases = text_marker_phases
+        phase_source = "text-markers"
     else:
         phases = []
         phase_source = "none"

@@ -12,16 +12,20 @@ silently zeros out the corresponding metric — runs still complete, but the
 RQ aggregation gets blind spots that look like "no effect" when really the
 signal vanished.
 
-Source of truth: `experiments/analyze_transcript.py`. If you change that
-parser, update this file.
+Source of truth: `experiments/analyze_transcript.py` (CC/OC) and
+`experiments/parse_pi_transcript.py` (pi). If you change those
+parsers, update this file.
 
-## Hard requirements
+## Hard requirements — Claude Code / OpenCode
 
 | # | Marker | Where it must appear | Drives | Where in parser |
 |---|---|---|---|---|
 | 1 | `Skill` tool-use with `skill ∈ {test-list, red, green, refactor}` | Tool calls during the run | Phase recognition, `cycle_count`, `refactorings_applied`, per-phase tokens/duration | `analyze_transcript.py` ~line 233 (`if tool_name == "Skill"`) and `aggregate_skill_phases` |
 
 > **Skill-Tool findet auch `.claude/commands/<name>.md`.** Commands sind in Skills "merged" (Claude-Code-Doku, Slash-Commands-Sektion) und nicht deprecated. Die v6.x-Linie liegt bewusst unter `commands/` — Begründung in `research/workflow-dev/workflow-construction.md` §"Mechanismus: commands/ mit Skill-Tool".
+
+| # | Marker | Where it must appear | Drives | Where in parser |
+|---|---|---|---|---|
 | 2 | The literal string `Red Phase Complete` | Assistant text emitted by the red-phase command | **Gates** prediction parsing — without this string, predictions in the same block are ignored | `extract_predictions_from_text` ~line 75 |
 | 3 | One or more lines matching `(- \| ✅ \| ❌) (Correct\|Incorrect)` inside that block | Assistant text in the same block as marker 2 | `predictions_correct`, `predictions_total`, derived `predictions_correct_rate` | `_PREDICTION_OUTCOME_RE` ~line 61 |
 | 4 | `experiment-done.txt` containing `DONE` | Written to the run cwd at the end of the autonomous loop | Run-driver detects clean termination; without it the container hits its timeout and the run is flagged `exit_reason: timeout` | `tdd-experiment-mode.md` |
@@ -38,6 +42,38 @@ equivalent) belongs in the red-phase command. Without it, the model tends
 to merge the two prediction lines into one as the run goes on. This was
 the root cause of the v4 compliance bug fixed on 2026-05-09 — see memory
 note for the full story.
+
+## Hard requirements — pi harness
+
+Pi skills are auto-loaded documents, not tool calls. The model reads
+`SKILL.md` once and then follows the instructions "freihand". The
+measurement pipeline therefore cannot count `Skill` tool invocations.
+Instead, it relies on **text markers** in assistant output and
+**subagent tool calls**.
+
+| # | Marker | Where it must appear | Drives | Where in parser |
+|---|---|---|---|---|
+| P1 | `## Red` heading in assistant text | Each occurrence counts as one red-phase cycle (`cycle_count`) | `parse_pi_transcript.py` (`_PHASE_TEXT_MARKERS_RE`) and `analyze_transcript.py` (`_PHASE_TEXT_MARKERS`, `derive_cycle_count`) |
+| P2 | `## Green` heading in assistant text | Green-phase occurrence | same as P1 |
+| P3 | `## Test List` heading in assistant text | Test-list phase occurrence | same as P1 |
+| P4 | `subagent` tool call with `agent: "refactor"` | Each call counts as `refactorings_applied` | `parse_pi_transcript.py` (`_is_refactor_subagent`) |
+| P5 | `Red Phase Complete:` + prediction lines | **Gates** prediction parsing (same as CC marker 2) | `extract_predictions_from_text` with `loose_gate=True` (accepts prediction lines even without `Red Phase Complete` if they appear in a block with `## Red` or a `(Compilation\|Runtime) Prediction` header) |
+| P6 | Lines matching `(Compilation\|Runtime) Prediction: ... (Correct\|Incorrect)` | `predictions_correct`, `predictions_total` | `_PREDICTION_OUTCOME_LINE_RE` |
+| P7 | `experiment-done.txt` containing `DONE` | Same as CC marker 4 | same |
+
+### pi-specific notes
+
+- **P1 replaces CC marker 1** for pi runs. On CC/OC, marker 1 (`Skill` tool call)
+  remains the primary cycle counter. The `## Red` pattern is only used as a fallback
+  in `derive_cycle_count()` when no `Skill` tool calls are found.
+- **P5 is looser than CC marker 2.** On pi, the red-phase header and prediction
+  block may land in separate assistant messages (pi splits tool-call results into
+  their own messages). `parse_pi_transcript.py` therefore passes `loose_gate=True`
+  to `extract_predictions_from_text`, which also accepts blocks containing
+  `(Compilation|Runtime) Prediction` lines as valid prediction carriers.
+- **P4 is equivalent to CC marker 1's refactor branch.** The `subagent` extension
+  produces a tool call with `name: "subagent"` and `arguments.agent: "refactor"`,
+  which the pi parser counts the same way CC counts `Task({subagent_type: "refactor"})`.
 
 ## What is decorative (safe to drop)
 
@@ -78,8 +114,9 @@ marker is broken — fix it before launching the n=3 batch.
 
 ## Cross-reference
 
-- Parser: `experiments/analyze_transcript.py`
-- Existing workflows that satisfy these markers: `v3-basic-tdd`,
+- Parsers: `experiments/analyze_transcript.py`, `experiments/parse_pi_transcript.py`
+- CC/OC workflows satisfying markers 1–4: `v3-basic-tdd`,
   `v4-exact-subagents`, `v5-exact-single-context`
+- pi workflows satisfying markers P1–P7: `v6.2-with-why-cleaned-pi`
 - Past compliance incidents documented in repo memory under
   *"Drei Metriken-Bugs"* and *"v4 Predictions-Compliance"*
