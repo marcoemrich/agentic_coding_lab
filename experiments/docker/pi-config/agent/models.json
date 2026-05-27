@@ -1,0 +1,20 @@
+{
+  "providers": {
+    "portkey": {
+      "baseUrl": "https://api.portkey.ai/v1",
+      "api": "openai-completions",
+      "apiKey": "dummy",
+      "headers": {
+        "x-portkey-api-key": "PORTKEY_API_KEY"
+      },
+      "models": [
+        {
+          "id": "@vertex-eu-global/anthropic.claude-opus-4-7",
+          "name": "Opus 4.7 (Portkey Vertex EU)",
+          "contextWindow": 200000,
+          "maxTokens": 8000
+        }
+      ]
+    }
+  }
+}

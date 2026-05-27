@@ -161,6 +161,14 @@ def _assistant_texts(events: list[dict]) -> list[str]:
 
 
 def _last_usage(events: list[dict]) -> dict:
+    """Final usage block of the *main* pi conversation.
+
+    pi reports usage cumulatively in each assistant message of the main
+    thread (the last `agent_end` carries the highest value). This does
+    NOT include subagent token consumption — see `_subagent_usage_totals`
+    for that. The main-thread total is just the visible chat with the
+    orchestrating model; subagents run as separate pi processes.
+    """
     for ev in reversed(events):
         if ev.get("type") == "agent_end":
             messages = ev.get("messages") or []
@@ -176,6 +184,43 @@ def _last_usage(events: list[dict]) -> dict:
             if isinstance(msg, dict) and msg.get("role") == "assistant":
                 return msg.get("usage") or {}
     return {}
+
+
+def _subagent_usage_totals(events: list[dict]) -> dict:
+    """Sum token usage across all completed subagent invocations.
+
+    Each `tool_execution_end` with `toolName == "subagent"` carries a
+    structured `result.details.results[]` array; every entry has a
+    `usage` block representing that subagent's *final* totals (the
+    extension reports usage cumulatively, so the last value per subagent
+    is the right one).
+
+    pi v6.2-pi observation: subagents account for ~94 % of the run's
+    token consumption (one refactor subagent per TDD cycle, each a fresh
+    pi process re-reading test + implementation context). Ignoring them
+    undercounts H2 (token efficiency) by an order of magnitude.
+    """
+    totals = {"input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0}
+    seen_call_ids: set[str] = set()
+    for ev in events:
+        if ev.get("type") != "tool_execution_end":
+            continue
+        if ev.get("toolName") != "subagent":
+            continue
+        call_id = ev.get("toolCallId") or ""
+        if call_id and call_id in seen_call_ids:
+            continue
+        if call_id:
+            seen_call_ids.add(call_id)
+        result = ev.get("result") or {}
+        details = result.get("details") or {}
+        for r in details.get("results") or []:
+            u = r.get("usage") or {}
+            for k in totals:
+                v = u.get(k)
+                if isinstance(v, (int, float)):
+                    totals[k] += int(v)
+    return totals
 
 
 def _model_id(events: list[dict]) -> str | None:
@@ -220,12 +265,22 @@ def main(run_dir: str) -> int:
             except json.JSONDecodeError:
                 continue
 
-    usage = _last_usage(events)
-    input_t = int(usage.get("input") or 0)
-    output_t = int(usage.get("output") or 0)
-    cache_read_t = int(usage.get("cacheRead") or 0)
-    cache_write_t = int(usage.get("cacheWrite") or 0)
-    total_t = int(usage.get("totalTokens") or (input_t + output_t + cache_read_t + cache_write_t))
+    # Main-thread usage (cumulative across the orchestrating pi conversation).
+    main_usage = _last_usage(events)
+    main_input = int(main_usage.get("input") or 0)
+    main_output = int(main_usage.get("output") or 0)
+    main_cache_read = int(main_usage.get("cacheRead") or 0)
+    main_cache_write = int(main_usage.get("cacheWrite") or 0)
+
+    # Subagent usage (sum across all completed `subagent` tool calls).
+    # Without this, v6.2-pi token counts underreport by ~10x because each
+    # refactor subagent is a fresh pi process re-reading the workflow context.
+    sa_usage = _subagent_usage_totals(events)
+    input_t = main_input + sa_usage["input"]
+    output_t = main_output + sa_usage["output"]
+    cache_read_t = main_cache_read + sa_usage["cacheRead"]
+    cache_write_t = main_cache_write + sa_usage["cacheWrite"]
+    total_t = input_t + output_t + cache_read_t + cache_write_t
 
     start_ms, end_ms = _session_bounds(events)
     duration = 0.0
@@ -299,7 +354,7 @@ def main(run_dir: str) -> int:
         "predictions_correct": predictions_correct,
         "predictions_total": predictions_total,
         "session_duration_seconds": round(duration, 2),
-        "cost_usd": (usage.get("cost") or {}).get("total"),
+        "cost_usd": (main_usage.get("cost") or {}).get("total"),
         "skill_invocations": skill_counts,
     }
 

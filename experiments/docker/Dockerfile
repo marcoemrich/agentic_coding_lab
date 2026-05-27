@@ -30,6 +30,14 @@ RUN npm install -g @anthropic-ai/claude-code@2.1.146
 # version bump before launching multi-cell batches.
 RUN npm install -g opencode-ai@1.15.10
 
+# Install pi CLI (third harness).
+# 0.75.5: verified locally on 2026-05-26 against Portkey-Vertex-EU /
+#   Opus 4.7 via api:"openai-completions" + x-portkey-api-key header.
+#   `anthropic-messages` api type 404s on /v1/messages — must stay openai-completions.
+# Bump policy: same as the others — verify v1-oneshot-pi smoke before
+# launching multi-cell batches.
+RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent@0.75.5
+
 # Stryker (mutation testing): NOT installed globally. Stryker's TS-config
 # preprocessor resolves `typescript` from where stryker itself is loaded,
 # so a global install + per-run typescript devDep produces ERR_MODULE_NOT_FOUND.
