@@ -663,11 +663,22 @@ EOF
         fi
         set -e
 
-        # Classify the failure. We only treat a run as transient if it
-        # ALSO exited non-zero — a successful run (exit 0, tests green)
-        # cannot legitimately be transient regardless of string matches.
-        # Pattern uses word-boundaries on numeric codes so paths containing
-        # digits like ".../backup.1777786429234.json" do not falsely trigger.
+        # Classify the failure. We treat a run as transient on the usual
+        # exit!=0 signatures (rate-limit, overload, connection drop) AND
+        # on two exit=0 patterns that look successful but aren't:
+        #   - "Waiting for retry window to clear." as the *only* CLI
+        #     output: the Anthropic CLI swallowed a subscription-cap and
+        #     gracefully exited 0 with a half-done TDD loop.
+        #   - empty/near-empty run.log: external session cut where the
+        #     CLI shut down without printing its usual final summary.
+        # Both produce exit=0 but no useful final-text line; without
+        # explicit detection they are scored as "ok" by downstream
+        # analysis. Run.log is checked BEFORE the cli.ts nudge runs (the
+        # nudge appends via `tee -a` and would otherwise mask the empty
+        # log).
+        # Pattern uses word-boundaries on numeric codes so paths
+        # containing digits like ".../backup.1777786429234.json" do not
+        # falsely trigger.
         rate_limited="false"
         transient_api_error="false"
         transient_reason=""
@@ -687,6 +698,28 @@ EOF
             elif grep -qiE "API Error: terminated|API Error: Connection error|ECONNRESET|ECONNREFUSED|EAI_AGAIN|socket hang up" "$run_log" 2>/dev/null; then
                 transient_api_error="true"
                 transient_reason="Transient API error"
+            fi
+        else
+            # Exit-0 cap signatures. Only checked for Claude harness — pi
+            # and OpenCode have their own end-of-session conventions.
+            if [ "$harness" = "claude" ]; then
+                # Trimmed log content (whitespace stripped). On a healthy
+                # run this is the model's final report (tests passed, done
+                # marker written, etc.). On a capped run this is exactly
+                # the CLI's stoic one-liner, or empty.
+                log_content=$(tr -d '[:space:]' < "$run_log" 2>/dev/null | head -c 200)
+                if grep -qiE "Waiting for retry window to clear" "$run_log" 2>/dev/null; then
+                    rate_limited="true"
+                    transient_reason="Subscription-cap (graceful exit)"
+                elif [ -z "$log_content" ]; then
+                    # Empty log + exit 0 = external session cut. The CLI
+                    # left without saying anything; the model session
+                    # transcript will show stop_reason=tool_use on the
+                    # last assistant message. Treat as transient so the
+                    # backoff path retries instead of marking it ok.
+                    transient_api_error="true"
+                    transient_reason="External session cut (empty log)"
+                fi
             fi
         fi
 
@@ -737,7 +770,9 @@ EOF
     # entry point is missing, not because the domain logic is wrong.
     # Skeleton: OC nudge not wired yet — relying on AGENTS.md to instruct
     # cli.ts creation directly. Revisit if claim-office cells trip the gap.
-    if [ "$harness" = "claude" ] && [ "$claude_exit" -eq 0 ] && [ ! -f "$run_dir/src/cli.ts" ] && [ -f "$run_dir/src/claim-office.ts" ]; then
+    if [ "$harness" = "claude" ] && [ "$claude_exit" -eq 0 ] \
+            && [ "$rate_limited" = "false" ] && [ "$transient_api_error" = "false" ] \
+            && [ ! -f "$run_dir/src/cli.ts" ] && [ -f "$run_dir/src/claim-office.ts" ]; then
         echo -e "  ${YELLOW}src/cli.ts missing — nudging agent to create it...${NC}"
         set +e
         if [ "$thinking" = "false" ]; then
@@ -832,6 +867,19 @@ EOF
         echo -e "  ${YELLOW}Analysis failed; run dir preserved (see analyze.err).${NC}"
     # Drop empty error log to keep run dirs tidy.
     [ -s "$run_dir/analyze.err" ] || rm -f "$run_dir/analyze.err"
+
+    # Truncate run.log to last 500 lines once analysis succeeded.
+    # pi/oc harnesses tee full NDJSON event streams here, which can balloon
+    # past GitHub's 50 MB file-size warning on long sessions. The tail
+    # preserves the final test summary and agent-side completion signal,
+    # which is all spot-checks need.
+    if [ -f "$run_dir/run.log" ] && [ ! -f "$run_dir/analyze.err" ]; then
+        log_size=$(stat -c%s "$run_dir/run.log" 2>/dev/null || echo 0)
+        if [ "$log_size" -gt 1048576 ]; then
+            tail -n 500 "$run_dir/run.log" > "$run_dir/run.log.tail" && \
+                mv "$run_dir/run.log.tail" "$run_dir/run.log"
+        fi
+    fi
 
     echo
 
