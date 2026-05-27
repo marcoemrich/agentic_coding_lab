@@ -1,0 +1,5 @@
+All 42 tests pass, CLI at `src/cli.ts` reads JSON from stdin / writes JSON to stdout and exits non-zero on errors. The MHPCO Claim Office kata is complete:
+
+- **Quote**: base premiums per item type, component blocks (3 alike), item-level surcharges (curse, high enchantment), policy-level discounts (loyalty, follow-up), first insurance surcharge, processing fee, rounded up.
+- **Claim**: per-damage deductible, high-enchantment 50% rule, cap clamped to 2× insurance sum, rounded down.
+- **Validation**: unknown item types, excess damage entries, negative damage amounts all reject with non-zero exit.
