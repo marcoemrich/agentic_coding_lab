@@ -74,6 +74,8 @@ MODEL_CONFIGS=(
     "gemini-2-5-pro|oc-only|false"
     "gemini-3-5-flash|oc-only|false"
     "glm-5-1|oc-only|false"
+    "deepseek-v4-flash|oc-only|false"
+    "deepseek-v4-pro|oc-only|false"
     "mistral-medium-3-5|oc-only|false"
     "devstral-medium-2507|oc-only|false"
     "devstral-2512|oc-only|false"
@@ -625,6 +627,8 @@ EOF
                 kimi-k2-6)         oc_model="portkey/@openrouter-eval/moonshotai/kimi-k2.6" ;;
                 minimax-m2-7)      oc_model="portkey/@openrouter-eval/minimax/minimax-m2.7" ;;
                 glm-5-1)           oc_model="portkey/@openrouter-eval/z-ai/glm-5.1" ;;
+                deepseek-v4-flash) oc_model="portkey/@openrouter-eval/deepseek/deepseek-v4-flash" ;;
+                deepseek-v4-pro)   oc_model="portkey/@openrouter-eval/deepseek/deepseek-v4-pro" ;;
                 mistral-medium-3-5)   oc_model="portkey-mistral/@mistral/mistral-medium-3-5" ;;
                 devstral-medium-2507) oc_model="portkey-cc/@mistral/devstral-medium-2507" ;;
                 devstral-2512)        oc_model="portkey-cc/@mistral/devstral-2512" ;;

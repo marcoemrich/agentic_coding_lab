@@ -7,6 +7,8 @@ factors:
     - kimi-k2-6
     - glm-5-1
     - gemini-3-5-flash
+    - deepseek-v4-flash
+    - deepseek-v4-pro
 controls:
   workflow: v5.1-testlist-scope-fix-oc
   kata_base: game-of-life
