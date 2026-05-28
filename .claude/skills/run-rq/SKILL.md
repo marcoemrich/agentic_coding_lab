@@ -189,7 +189,8 @@ Exception: **deletions** of existing findings still require explicit user confir
 3. Data gap: if an effect is suspected but coverage is too small for `n ≥ min_replicates` → note in `todos_and_ideas.txt` (section "Re-Check ungeprüfter Hypothesen aus alten findings.md") as a bullet with a concrete re-check target. **Do not** create as a finding in `findings.md`.
 4. Format per block: statement / data-base table / rationale. Header `## F-x.y — title` with no suffix.
    **Glossary discipline**: terms like `code_mass`, `cc_loc`, `cc_longest_function`, `smell_total`, `verification_pct` are to be used only in the form from the glossary in the top-level `README.md` ("Code-Mass (APP)", "Produktiv-LoC", "Spitzen-Komplexität", "Smell-Summe", "Korrektheit (außen)") or directly via the metric ID in backticks. Synonyms like "Code-Volumen", "Code-Gesamtvolumen", "LoC-Größe" are forbidden — they are ambiguous or collide with established definitions (APP). Before writing, read the glossary once and check every term used in the block against the table.
-5. After writing all new/updated blocks, send one short line to the user: "geschrieben — lies drüber". The user reviews the rendered markdown directly.
+5. **Number formatting in `findings.md`:** large counts (typically `total_tokens`, `subagent_token_total`, cache stats) get the `M`-suffix (millions) or `k`-suffix (thousands), not scientific notation. `summary.md` keeps the pandas-default `e+07` form — only `findings.md` gets reformatted. Examples: `44.4 M` (good), `4.44e+07` (bad in findings, fine in summary), `1023 ms` or `1.0 s` (good for duration). σ-Werte werden im selben Format dargestellt wie der Mean (`σ ≈ 5 M`, nicht `σ ≈ 5e+06`). Rationale: M/k ist auf einen Blick lesbar, e+07 zwingt zum Kopfrechnen.
+6. After writing all new/updated blocks, send one short line to the user: "geschrieben — lies drüber". The user reviews the rendered markdown directly.
 
 ---
 

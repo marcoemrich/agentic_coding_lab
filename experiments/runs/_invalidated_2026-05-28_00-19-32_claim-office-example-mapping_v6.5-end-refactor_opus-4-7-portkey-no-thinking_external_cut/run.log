@@ -1,0 +1,4 @@
+🔴 Red Phase - Compilation Error Prediction:
+- Expected: No compilation error
+- Reason: types accept any string
+Created `src/cli.ts`. It reads JSON from stdin, calls `run` from `claim-office.js`, writes the result as JSON to stdout, and on error writes the message to stderr and exits with code 1 (matching the spec's error-handling requirements).
