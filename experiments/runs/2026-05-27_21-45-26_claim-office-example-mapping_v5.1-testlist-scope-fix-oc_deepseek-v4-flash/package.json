@@ -1,0 +1,25 @@
+{
+  "name": "tdd-experiment-run",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:unit:basic": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage --coverage.reporter=json-summary"
+  },
+  "devDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.60.4",
+    "@vitest/coverage-v8": "^1.6.1",
+    "eslint": "^9.39.4",
+    "eslint-plugin-sonarjs": "^1.0.4",
+    "tsx": "^4.22.3",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.60.0",
+    "vitest": "^1.6.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

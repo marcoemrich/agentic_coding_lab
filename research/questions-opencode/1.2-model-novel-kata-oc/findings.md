@@ -1,27 +1,29 @@
 # RQ-model-novel-oc — Findings
 
-**Setup**: claim-office-example-mapping × v5.1-testlist-scope-fix-oc × n=5 pro Zelle (30 Runs total, 6 Modelle). Stand 2026-05-26.
+**Setup**: claim-office-example-mapping × v5.1-testlist-scope-fix-oc × n=5 pro Zelle (40 Runs total, 8 Modelle). Stand 2026-05-28.
 
 ## Übersicht
 
 Korrektheit außen (`verification_pct`, höher = besser) als primärer Outcome; Code-Qualitäts-Metriken sekundär (kleiner = besser außer wo notiert).
 
-| Metrik | Richtung | opus-4-7-portkey | glm-5-1 | mistral-medium-3-5 | kimi-k2-6 | gemini-3-5-flash | minimax-m2-7 |
-|---|---|---|---|---|---|---|---|
-| `verification_pct` (mean) | höher | **1.00** 🏆 | **1.00** 🏆 | 0.95 | 0.84 | 0.80 | 0.04 |
-| `verification_pct` (std) | kleiner | **0.00** 🏆 | **0.00** 🏆 | 0.09 | 0.26 | 0.45 | 0.09 |
-| `smell_total` (mean) | kleiner | **0.8** 🏆 | 4.0 | 23.6 | 20 | 18 | 10.2 |
-| `cognitive_max` (mean) | kleiner | **9.8** 🏆 | 12.2 | 74.8 | 21.8 | 40.2 | 11.4 |
-| `mccabe_max` (mean) | kleiner | **7.6** 🏆 | 9.2 | 33.6 | 17.6 | 23.4 | 7.6 |
-| `cc_longest_function` (mean) | kleiner | **25.4** 🏆 | 28.8 | 120 | 54.4 | 98.4 | 30.0 |
-| `code_mass` (mean) | kleiner (bei gleicher Korrektheit) | **759.6** 🏆 | 816 | 712.6 | 741 | 526 | 364.4 |
-| `total_tokens` (mean) | kleiner (bei gleicher Korrektheit) | **8.06 M** 🏆 | 10.97 M | 13.65 M | 6.65 M | 7.02 M | 8.48 M |
-| `cost_usd` (mean, $/run) | kleiner (bei gleicher Korrektheit) | $5.90 | **$2.10** 🏆 | $24.69 † | $2.78 | $2.23 | $2.40 |
-| `cycle_count` (mean) | — | 1.2 | 2.0 | 1.2 | 2.0 | 2.2 | 4.8 |
-| `predictions_total` (mean) | — | 2.4 | 4.0 | 0.8 | 0.4 | 0.4 | 2.6 |
-| `duration_seconds` (mean) | kleiner | **664** 🏆 | 1726 | 4051 | 1811 | 395 | 1428 |
+| Metrik | Richtung | opus-4-7-portkey | glm-5-1 | mistral-medium-3-5 | kimi-k2-6 | gemini-3-5-flash | deepseek-v4-flash | deepseek-v4-pro | minimax-m2-7 |
+|---|---|---|---|---|---|---|---|---|---|
+| `verification_pct` (mean) | höher | **1.00** 🏆 | **1.00** 🏆 | 0.95 | 0.84 | 0.80 | 0.60 | 0.60 | 0.04 |
+| `verification_pct` (std) | kleiner | **0.00** 🏆 | **0.00** 🏆 | 0.09 | 0.26 | 0.45 | 0.55 | 0.55 | 0.09 |
+| `smell_total` (mean) | kleiner | **0.8** 🏆 | 4.0 | 23.6 | 20 | 18 | 13.4 | 16.6 | 10.2 |
+| `cognitive_max` (mean) | kleiner | **9.8** 🏆 | 12.2 | 74.8 | 21.8 | 40.2 | 11.6 | 17.4 | 11.4 |
+| `mccabe_max` (mean) | kleiner | **7.6** 🏆 | 9.2 | 33.6 | 17.6 | 23.4 | 9.2 | 11.0 | 7.6 |
+| `cc_longest_function` (mean) | kleiner | **25.4** 🏆 | 28.8 | 120 | 54.4 | 98.4 | 31.6 | 42.2 | 30.0 |
+| `code_mass` (mean) | kleiner (bei gleicher Korrektheit) | **759.6** 🏆 | 816 | 712.6 | 741 | 526 | 566.2 | 554.6 | 364.4 |
+| `total_tokens` (mean) | kleiner (bei gleicher Korrektheit) | **8.06 M** 🏆 | 10.97 M | 13.65 M | 6.65 M | 7.02 M | 6.77 M | 4.46 M | 8.48 M |
+| `cost_usd` (mean, $/Run) | kleiner (bei gleicher Korrektheit) | $5.90 | **$2.10** 🏆 | $24.69 † | $2.78 | $2.23 | $0.28 ‡ | $0.11 ‡ | $2.40 |
+| `cycle_count` (mean) | — | 1.2 | 2.0 | 1.2 | 2.0 | 2.2 | 3.2 | 2.6 | 4.8 |
+| `predictions_total` (mean) | — | 2.4 | 4.0 | 0.8 | 0.4 | 0.4 | 2.0 | 2.6 | 2.6 |
+| `duration_seconds` (mean) | kleiner | **664** 🏆 | 1726 | 4051 | 1811 | 395 | 1279 | 956 | 1428 |
 
-`cycle_count` und `predictions_total` sind ambivalente Metriken ohne klare Richtung — kein Pokal. Bei `code_mass`, `total_tokens` und `cost_usd` ist weniger besser, aber nur bei vergleichbarer Korrektheit aussagekräftig: MiniMax' niedrige Werte sind Stub-Artefakt (verification 0.04), Flash' Werte werden vom 3-LoC-Abbruch-Run (siehe F-1.2) gezogen, Mistral ist mit vpt=0.95 knapp unter dem Gating-Schwellwert — deshalb dort kein Pokal. Cost-Effizienz bei tatsächlich nutzbarer Korrektheit: siehe F-1.6.
+`cycle_count` und `predictions_total` sind ambivalente Metriken ohne klare Richtung — kein Pokal. Bei `code_mass`, `total_tokens` und `cost_usd` ist weniger besser, aber nur bei vergleichbarer Korrektheit aussagekräftig: MiniMax' niedrige Werte sind Stub-Artefakt (verification 0.04), Flash' Werte werden vom 3-LoC-Abbruch-Run (siehe F-1.2) gezogen, DeepSeek-flash/pro liegen mit vpt=0.60 deutlich unter dem Gating-Schwellwert, Mistral mit vpt=0.95 knapp darunter — deshalb dort jeweils kein Pokal. Cost-Effizienz bei tatsächlich nutzbarer Korrektheit: siehe F-1.6.
+
+‡ DeepSeek-Cost bezieht sich auf alle n=5 Runs inklusive der zwei CLI-Vertrags-Abbrüche vom 27.05. Auf den drei perfekten Runs (vpt=1.0) liegt der mean cost bei $0.32 (flash) bzw. $0.16 (pro) — beide damit ~1/7 GLM 5.1 und ~1/20 Opus. Pricing-Quelle: OpenRouter API (`deepseek-v4-flash` paid tier $0.10/$0.20/$0.02 cache_read; `deepseek-v4-pro` $0.435/$0.87/$0.003625 cache_read pro 1M Token, Stand 2026-05-28). Cost-Profil DeepSeek ist real, der Pokal wird wegen Gating dennoch nicht vergeben — siehe F-1.8.
 
 † Mistral-Cost wird durch fehlendes OpenCode-Prompt-Caching dominiert (kein `prompt_cache_key`); mit aktivem Caching wäre der Wert ~$3.25/Run statt $24.69. Details in der Cost-Sektion und F-1.7.
 
@@ -37,6 +39,8 @@ Korrektheit außen (`verification_pct`, höher = besser) als primärer Outcome; 
 | gemini-3-5-flash (Vertex Standard) | $1.50 | $9.00 | $0.15 |
 | minimax-m2-7 (OpenRouter) | $0.279 | $1.20 | $0.279 (keine Cache-Rate von OpenRouter gelistet → input-Rate als konservative Obergrenze) |
 | mistral-medium-3-5 (Mistral Direct) | $1.50 | $7.50 | $0.15 (10% der Input-Rate, gemäß Mistral-Doku [Prompt caching](https://docs.mistral.ai/studio-api/conversations/advanced/prompt-caching)) |
+| deepseek-v4-flash (OpenRouter paid) | $0.10 | $0.20 | $0.02 |
+| deepseek-v4-pro (OpenRouter) | $0.435 | $0.87 | $0.003625 |
 
 Portkey-Markup nicht eingerechnet (Portkey listet keinen modell-spezifischen Aufschlag, Gateway-Plan-Kosten sind separate Tier-Pauschalen).
 
@@ -50,6 +54,8 @@ Portkey-Markup nicht eingerechnet (Portkey listet keinen modell-spezifischen Auf
 | gemini-3-5-flash | 635 k × $1.50 = $0.95 | 35.7 k × $9.00 = $0.32 | 6.35 M × $0.15 = $0.95 | **$2.23** |
 | minimax-m2-7 | 234 k × $0.279 = $0.07 | 38.4 k × $1.20 = $0.05 | 8.21 M × $0.279 = $2.29 | **$2.40** |
 | mistral-medium-3-5 | 16.05 M × $1.50 = $24.08 | 63.2 k × $7.50 = $0.47 | 0.95 M × $0.15 = $0.14 | **$24.69** |
+| deepseek-v4-flash | 1.73 M × $0.10 = $0.17 | 26.4 k × $0.20 = $0.005 | 4.99 M × $0.02 = $0.10 | **$0.28** |
+| deepseek-v4-pro | 183 k × $0.435 = $0.08 | 20.8 k × $0.87 = $0.02 | 4.24 M × $0.003625 = $0.015 | **$0.11** |
 
 Bemerkung: das `total_tokens`-Feld in der Übersichts-Tabelle täuscht über die Cost — z. B. Opus' "8 M Tokens" sind zu ~97 % `cache_read`, das bei Anthropic-Pricing nur 10 % des Input-Preises kostet (cache hit ↔ 0.1×). Echter Input pro Opus-Run liegt bei ~140 k Tokens; die Cache-Tokens stammen aus wiederholt eingelesenen System-Prompts/Tool-Definitionen, die im Skill-Workflow über mehrere Skill-Aufrufe pro Run mehrfach durchlaufen. Bei den OpenRouter-Modellen ist das Cache-Verhältnis ähnlich, aber die Cache-Rate variiert pro Provider (GLM $0.18, Kimi $0.37, MiniMax keine Cache-Rate gelistet → input-Rate als konservative Obergrenze).
 
@@ -158,7 +164,9 @@ Bei der einfachen "Cost pro Run"-Sicht (Übersichts-Tabelle) sehen GLM ($2.10), 
 
 | Modell | n_perfect / n | $/Run (mean) | $/perfekter Run (cond.) | erwartet $/perfekt-Resultat (mit Retry) |
 |---|---|---|---|---|
-| glm-5-1 | 5/5 | 2.10 | 2.10 | **$2.10** 🏆 (deterministisch) |
+| deepseek-v4-pro | 3/5 | 0.11 | 0.16 | **$0.19** 🏆 ‡ |
+| deepseek-v4-flash | 3/5 | 0.28 | 0.32 | $0.46 ‡ |
+| glm-5-1 | 5/5 | 2.10 | 2.10 | $2.10 (deterministisch) |
 | opus-4-7-portkey | 5/5 | 5.90 | 5.90 | $5.90 (deterministisch) |
 | gemini-3-5-flash | 4/5 | 2.23 | 2.69 | $2.78 |
 | minimax-m2-7 | 0/5 | 2.40 | — | ∞ (kein perfekter Lauf in n=5) |
@@ -171,9 +179,47 @@ GLM 5.1 gewinnt klar: deterministisch perfekt (5/5) zu $2.10/Run, ~3× billiger 
 
 Mistral schreibt bei 3/5 Runs perfekte Korrektheit, aber unter aktuellem OpenCode-Caching-Verhalten liegt der erwartete Cost pro perfekt-Resultat bei $41.16. † Diese Größe ist Integrations-spezifisch: mit aktivem `prompt_cache_key` (siehe Cost-Sektion) wäre der Per-Run-Cost ~$3.25, der erwartete-Perfekt-Cost ~$5.42 — damit landet Mistral cost-mäßig auf Opus-Niveau, mit deutlich schwächerer Code-Qualität (F-1.7). Status quo, ohne Caching-Patch, ist Mistral die teuerste Wahl unter den vpt ≥ 0.8-Modellen in dieser Studie.
 
-Pokal an GLM 5.1: günstigster deterministisch perfekter Lauf im vpt=1.0-Pool. Opus bleibt für hohe Code-Qualitäts-Ansprüche relevant (F-1.1), nicht für reine Korrektheits-Garantie.
+Pokal-Lage: Auf der **erwartet-perfekt-Cost**-Achse gewinnt DeepSeek V4 Pro mit $0.19 — Faktor ~11 günstiger als GLM 5.1 und ~31 günstiger als Opus. Auf der **deterministisch-perfekt**-Achse (5/5) bleibt GLM 5.1 die robusteste Wahl ($2.10, std=0); DeepSeek-pro/flash haben nur 3/5 mit der CLI-Vertrags-Falle (F-1.8). Operativ: wer Retry-Logik um die Kata baut, fährt mit DeepSeek pro pro perfektem Resultat am billigsten; wer keinen Retry haben kann, nimmt GLM. Opus bleibt für hohe Code-Qualitäts-Ansprüche relevant (F-1.1), nicht für reine Korrektheits-Garantie.
 
 † Mistral-Cost im OpenCode-Harness ist durch fehlendes Prompt-Caching dominiert, nicht durch Mistral-Pricing — siehe Cost-Sektion oben.
+
+‡ DeepSeek-Cost-Vorteil ist real (OpenRouter-Pricing $0.10–$0.87 pro 1M Token plus aggressive Cache-Reads bei $0.02–$0.0036/M), aber das 3/5-Korrektheits-Rating ist halb CLI-Vertrags-Drop (F-1.8) — auf den drei perfekten Runs zeigt das Modell aktuell volles Niveau. Eine Wiederholung mit n=5 ohne den frühen Smoke-Bias würde die erwartete Cost vermutlich Richtung Deterministik verschieben.
+
+---
+
+## F-1.8 — DeepSeek V4 (flash + pro): Workflow-Compat-Drop dominiert über Spec-Verstehen
+
+Beide DeepSeek-V4-Varianten zeigen in n=5 ein temporal getrenntes bimodales Bild: die zwei frühesten Runs (Smokes vom 2026-05-27) brechen mit verification 0/15 ab, die drei darauf folgenden Runs (2026-05-28) erreichen 15/15 verification.
+
+| Modell | verification-Verteilung (n=5) | mean | std |
+|---|---|---|---|
+| deepseek-v4-flash | 0, 0, 15, 15, 15 | 0.60 | 0.55 |
+| deepseek-v4-pro | 0, 0, 15, 15, 15 | 0.60 | 0.55 |
+
+Die zwei Null-Runs sind **keine** Spec-Misverständnisse (wie F-1.3 bei MiniMax), sondern mechanische CLI-Vertrags-Verletzungen:
+- `deepseek-v4-flash` (1. Null-Run): kein `src/cli.ts` geschrieben — Verifikations-Suite kann den Entry-Point nicht aufrufen (`code_mass = 0`, `tests_passing = false`).
+- `deepseek-v4-flash` (2. Null-Run): `cli.ts` da, aber Input-Schema-Drift (`category/declaredValue` statt `type`) — Suite liefert leeren stdout.
+- `deepseek-v4-pro` analog: einmal kein `cli.ts`, einmal `runCLI()` definiert aber nirgends aufgerufen.
+
+Auf den drei perfekten Runs sind beide Modelle korrektheits-stabil und produzieren auf Code-Qualität nahe dem GLM-Niveau:
+
+| Metrik (n=3, nur vpt=1.0) | deepseek-v4-flash | deepseek-v4-pro |
+|---|---|---|
+| `smell_total` mean | 17.3 | 21.7 |
+| `cognitive_max` mean | 13.3 | 22.0 |
+| `mccabe_max` mean | 10.7 | 14.0 |
+| `cc_longest_function` mean | 40.7 | 51.3 |
+| `code_mass` mean | 738 | 702 |
+| `duration_seconds` mean | 1576 | 1163 |
+| `cycle_count` mean | 4.3 | 2.7 |
+| `tests_total` mean | 38.7 | 37.7 |
+| `cost_usd` mean | $0.32 | $0.16 |
+
+Auf der korrekten Hälfte sind die DeepSeek-Modelle leistungsfähiger als die Übersicht suggeriert — Code-Qualität liegt zwischen GLM und Kimi, Wallclock im mittleren Feld. Die korrekten Runs lassen sich nicht mit "Modell ist schwächer" erklären, sondern nur mit "Modell stolpert in den frühen Runs am CLI-Wrapper-Vertrag".
+
+Methodische Folgerung: das Fünf-Replikate-Bild mischt zwei verschiedene Failure-Modi (Workflow-Compat-Drop vs. Modell-Performance) zu einer mittleren Korrektheit von 0.60. **Der Mittelwert ist hier irreführend**: er sagt weder "Modell scheitert systematisch an der Kata" (wie MiniMax) noch "Modell ist gut" — er sagt nur "Modell hat in dieser Probe eine Workflow-Compat-Falle ausgelöst und sie dann nicht mehr getroffen". Mögliche Erklärungen für die Trennung 27.05. ↔ 28.05.: (a) Routing-/Provider-seitige Stabilisierung bei OpenRouter, (b) Glücksvarianz im Sampling, (c) leichte Container-/Plan-Änderung zwischen den Tagen. Keine davon ist im Datenmaterial isolierbar.
+
+Bei einer Folgemessung ohne den 27.05.-Bias wäre eine genauere Charakterisierung möglich; nach der aktuellen Datenlage sind beide DeepSeek-Varianten **konditional auf erfolgreichem CLI-Setup** im Top-Cluster, **unkonditional** aber im Mittelfeld eingeordnet.
 
 ---
 

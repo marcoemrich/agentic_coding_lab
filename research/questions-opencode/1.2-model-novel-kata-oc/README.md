@@ -9,6 +9,8 @@ factors:
     - gemini-3-5-flash
     - glm-5-1
     - mistral-medium-3-5
+    - deepseek-v4-flash
+    - deepseek-v4-pro
 controls:
   workflow: v5.1-testlist-scope-fix-oc
   kata_base: claim-office
@@ -59,8 +61,17 @@ Aus Routing-Smokes vorhanden (n=1 pro Zelle, counten für `min_replicates`):
 | minimax-m2-7 | 0.00 (0/15) | 37 | 1 | 0/2 | ✓ | 35 min |
 | gemini-3-5-flash | 1.00 (15/15) | 32 | 2 | 0/0 | ✓ | 8 min |
 | mistral-medium-3-5 | — | — | — | — | — | — (noch kein Smoke; via Portkey `@mistral/mistral-medium-3-5`) |
+| deepseek-v4-flash | 0.00 (0/15) | 53 | n/a | n/a | ✓ | 28 min |
+| deepseek-v4-pro | 0.00 (0/15) | 26 | n/a | n/a | ✓ | 21 min |
 
 Bemerkenswert: MiniMax schreibt 37 eigene Tests und macht sie grün, scheitert aber an allen 15 externen Verifikations-Szenarien — klassischer Spec-Misverständnis-Fall, genau der Kata-Mehrdeutigkeits-Effekt wofür claim-office gebaut wurde. Wird sich bei n=5 zeigen ob das systematisch oder Einzelfall ist.
+
+DeepSeek V4 (2026-05-28 hinzugefügt, Routing via `@openrouter-eval/deepseek/deepseek-v4-{flash,pro}`): beide Smokes laufen v5.1-oc autonom durch (kein Continuation-Drop), schreiben done.txt, eigene Tests grün — aber 0/15 externe Verification bei beiden, jeweils **mechanisch durch CLI-Vertrags-Verletzung**, nicht durch Spec-Misverständnis:
+
+- **`deepseek-v4-flash`**: Library-Code (`processScenario`) korrekt am Input-Schema (`item.type`), aber **kein `src/cli.ts` geschrieben** — Verification-Suite kann den Entry-Point nicht aufrufen.
+- **`deepseek-v4-pro`**: `src/cli.ts` existiert und definiert `runCLI()`, **ruft sie aber nirgends auf** — `tsx src/cli.ts` liefert leeren stdout, exit 0. Zusätzlich Input-Schema-Drift (`category/declaredValue` statt `type`).
+
+Beide Modelle scheitern damit an der Workflow-Form (CLI-Wrapper-Vertrag stdin→parse→processScenario→stdout), nicht an der Kata-Mehrdeutigkeit. Vergleichbar mit `qwen3-coder-480b`-Befund, aber subtiler (done.txt da, Tests grün). Bei n=5 zeigt sich ob das systematisch ist — falls ja, ist DeepSeek wie qwen3 ein Workflow-Compat-Drop und sagt nichts über Spec-Verstehen.
 
 ## Modell-Auswahl
 

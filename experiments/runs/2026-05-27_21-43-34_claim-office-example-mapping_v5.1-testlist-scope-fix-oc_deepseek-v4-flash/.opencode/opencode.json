@@ -1,0 +1,92 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "portkey": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Portkey Gateway (Vertex)",
+      "options": {
+        "baseURL": "https://api.portkey.ai/v1",
+        "apiKey": "dummy",
+        "headers": {
+          "x-portkey-api-key": "{env:PORTKEY_API_KEY}"
+        }
+      },
+      "models": {
+        "@vertex-eu-global/anthropic.claude-opus-4-7": {
+          "name": "Opus 4.7 (Portkey Vertex EU)"
+        },
+        "@vertex-ai/gemini-2.5-pro": {
+          "name": "Gemini 2.5 Pro (Portkey Vertex)"
+        },
+        "@vertex-eu-global/gemini-3.5-flash": {
+          "name": "Gemini 3.5 Flash (Portkey Vertex EU)"
+        },
+        "@openrouter-eval/moonshotai/kimi-k2.6": {
+          "name": "Kimi K2.6 (Portkey OpenRouter Eval)"
+        },
+        "@openrouter-eval/minimax/minimax-m2.7": {
+          "name": "MiniMax M2.7 (Portkey OpenRouter Eval)"
+        },
+        "@openrouter-eval/z-ai/glm-5.1": {
+          "name": "GLM 5.1 (Portkey OpenRouter Eval)"
+        }
+      }
+    },
+    "portkey-mistral": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Portkey Gateway (Mistral Workspace)",
+      "options": {
+        "baseURL": "https://api.portkey.ai/v1",
+        "apiKey": "dummy",
+        "headers": {
+          "x-portkey-api-key": "{env:PORTKEY_MISTRAL_API_KEY}"
+        }
+      },
+      "models": {
+        "@mistral/mistral-medium-3-5": {
+          "name": "Mistral Medium 3.5 (Portkey Mistral Workspace)"
+        }
+      }
+    },
+    "portkey-cc": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Portkey Gateway (CC Workspace — coding models)",
+      "options": {
+        "baseURL": "https://api.portkey.ai/v1",
+        "apiKey": "dummy",
+        "headers": {
+          "x-portkey-api-key": "{env:PORTKEY_CC_API_KEY}"
+        }
+      },
+      "models": {
+        "@mistral/devstral-medium-2507": {
+          "name": "Devstral Medium 25.07 (Portkey CC Workspace)"
+        },
+        "@mistral/devstral-2512": {
+          "name": "Devstral 25.12 (Portkey CC Workspace)"
+        },
+        "@mistral/codestral-2508": {
+          "name": "Codestral 25.08 (Portkey CC Workspace)"
+        },
+        "@bedrock-eu-north-1/qwen.qwen3-coder-480b-a35b-v1:0": {
+          "name": "Qwen3 Coder 480B (Portkey CC Workspace, Bedrock EU North)"
+        }
+      }
+    }
+  },
+  "permission": {
+    "read": "allow",
+    "edit": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "bash": {
+      "pnpm *": "allow",
+      "ls *": "allow",
+      "mkdir *": "allow"
+    },
+    "skill": "allow",
+    "task": "deny",
+    "webfetch": "deny",
+    "websearch": "deny"
+  }
+}
