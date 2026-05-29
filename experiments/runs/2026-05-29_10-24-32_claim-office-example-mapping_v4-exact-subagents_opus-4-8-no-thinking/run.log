@@ -1,0 +1,24 @@
+The exercise is complete. Here's a summary of what was accomplished.
+
+## MHPCO Claim Office Kata — Complete
+
+Following the mandatory TDD experiment workflow, I drove the entire implementation through the specialized TDD agents (`test-list` → `red` → `green` → `refactor`), one test at a time, fully autonomously.
+
+**Result: 52/52 tests passing** across two spec files (43 domain tests in `claim-office.spec.ts`, 9 CLI integration tests in `cli.spec.ts`). The `claim-office` CLI works end-to-end, correctly processing the spec's schema example and exiting non-zero with stderr on all four error conditions.
+
+**Deliverables:**
+- `src/claim-office.ts` — domain logic (`runScenario`)
+- `src/cli.ts` — CLI entry point (stdin JSON → stdout JSON)
+- `src/claim-office.spec.ts`, `src/cli.spec.ts` — test suites
+
+**Key engineering decisions made during the run:**
+
+1. **Two test-data corrections to match the authoritative spec.** The auto-generated test list had two spec-conformance bugs I caught and fixed:
+   - The "7 runes" block test asserted 165 (treating it as a decomposable block); the spec is explicit that a block requires *exactly 3* of a type, so 7 runes = full price (180). Verified against spec lines 64–68.
+   - The premium-modifier model was internally contradictory: isolated tests keyed first-insurance off `customer.years`, but the spec's integration examples (and the explicit clarification at lines 210–212) require first-insurance to **always** apply per quote, with follow-up keyed on scenario quote-index. I reconciled the tests to the authoritative model and verified both integration examples (165 G newcomer, 160 G long-standing 2nd contract) compute correctly.
+
+2. **Modifier scope correctness.** Item-specific surcharges (curse +50%, high-enchantment +30%) apply to the affected item's base; policy-wide percentages (loyalty, first-insurance, follow-up) apply to the sum of *unmodified* item base premiums — caught when the newcomer integration test exposed a 170-vs-165 discrepancy.
+
+I recorded the authoritative modifier model in memory for future sessions.
+
+A note on the `workflow` keyword in your request: this kata's project rules mandate strict sequential, one-test-at-a-time TDD through the specialized agents — fundamentally incompatible with parallel fan-out — so I followed that binding discipline rather than a parallel Workflow. The `tsc --noEmit` warnings you may notice are solely missing `@types/node` stubs (not in the project's dependencies); the test runner uses esbuild and all 52 tests pass.

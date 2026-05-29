@@ -20,8 +20,11 @@ RUN npm install -g pnpm@9.15.9
 # 2.1.107: verified end-to-end, but sends thinking.type.enabled which
 #   Vertex-AI Opus 4.7 rejects (needs thinking.type.adaptive).
 # 2.1.146: upgrade candidate to fix Opus 4.7 Vertex thinking support.
+# 2.1.156: required for Opus 4.8 (absent in 2.1.107/2.1.146); verified
+#   end-to-end on 2026-05-29 via RQ-model-novel (opus-4-8 native × v4,
+#   5/5 runs OK, verification_pct 0.80–1.00).
 # Known bad: 2.1.37 (hangs on .claude/agents/), 2.1.126 (needs ~/.claude.json).
-RUN npm install -g @anthropic-ai/claude-code@2.1.146
+RUN npm install -g @anthropic-ai/claude-code@2.1.156
 
 # Install OpenCode CLI (second harness).
 # 1.15.10: verified end-to-end on 2026-05-25 with v1-oneshot-oc +

@@ -1,0 +1,25 @@
+The error path correctly exits non-zero with an error on stderr and nothing on stdout.
+
+The exercise is complete. Here's a summary of what was accomplished following the mandated TDD workflow:
+
+## Summary
+
+I implemented the **MHPCO Claim Office** kata using the strict TDD agent workflow (test-list → red → green → refactor for each test), running autonomously per the experiment-mode rules.
+
+**Two test suites, 48 tests total, all passing:**
+
+- **`src/claim-office.ts`** (domain logic, 36 tests) — `quote()` and `claim()`:
+  - Base premiums per item type; component building blocks (exactly-3 discount)
+  - Item-specific modifiers (curse +50%, high-enchantment +30%) and policy-wide modifiers (loyalty −20%, first-insurance +10% per item, follow-up −15%), processing fee, premium rounding up
+  - Claim processing: per-event deductible, enchantment-≥8 50% rule, dragon material, payout cap (2× insurance sum), cap drawdown across successive claims, payout rounding down
+
+- **`src/cli.ts`** (CLI entry point, 12 tests) — `runScenario()` + `main()`:
+  - Sequential step processing, contract tracking across quotes, per-policy cap drawdown across claims
+  - Four error cases (unknown item type, damage not in policy, negative amount, more damages than covered) → throw / non-zero exit + stderr
+  - `main()` reads JSON from stdin, writes `{results}` to stdout, exits 0 on success / non-zero on error (verified end-to-end via subprocess integration tests)
+
+**Key design decision surfaced during TDD:** A model conflict emerged between the spec's rule that "each item in a quote is treated as a first insurance, regardless of customer history" and an isolation unit test. I resolved it spec-faithfully — first-insurance applies on every real quote (gated on `previousContracts` being defined), follow-up discount applies from the 2nd contract — and corrected the affected test's expectation.
+
+**Verification:** `pnpm test` → 48/48 passing. The CLI runs correctly as a real executable (the schema example yields `{"results":[{"premium":59},{"payout":100,"remainingCap":1100}]}`). The only `tsc --noEmit` warnings are missing `@types/node` ambient declarations (Node built-ins), which are environmental — the project's toolchain (tsx/vitest) runs everything cleanly, and `@types/node` is not part of the project's dependency set.
+
+`experiment-done.txt` containing `DONE` has been written.

@@ -1,0 +1,18 @@
+The exercise is complete.
+
+## Summary
+
+I implemented the **MHPCO Claim Office** kata following the mandated TDD agent workflow autonomously (experiment mode, no HITL).
+
+**Process**: For each of 45 tests, I ran the strict Red → Green → Refactor cycle via the specialized agents (`test-list`, `red`, `green`, `refactor`), one active test at a time, with explicit compilation and runtime predictions verified at every Red phase.
+
+**Key decisions I made as orchestrator**:
+1. **Corrected the scenario schema** — the first red agent used a non-normative shape (`kind`, per-step `customer`); I had it rewritten to the binding spec shape (`op`, top-level `customer`).
+2. **Resolved the first-insurance tension** — the test-list's "isolated base premium" tests omitted the spec-mandated per-item first-insurance surcharge. When the dedicated first-insurance test arrived, I directed a spec-faithful correction (first-insurance on every item, +10% of each item's base) and updated the earlier conflicting expectations, keeping the suite consistent with the binding integration examples (165 G, 160 G).
+
+**Result**:
+- **45/45 tests passing**, typecheck clean (`tsc --noEmit` exit 0), lint clean.
+- Full quote logic (base premiums, blocks-of-3, curse/high-enchantment/loyalty/follow-up/first-insurance modifiers, round-up), full claim logic (deductible per damage, special clauses with 50%-wins precedence, cap based on unmodified insurance sum, cap exhaustion across successive claims, round-down), and all four error validations.
+- **`src/cli.ts`** reads JSON from stdin, writes JSON to stdout, and exits non-zero with a stderr error description — verified end-to-end against the spec's schema example and every error case.
+
+`experiment-done.txt` written with `DONE`.

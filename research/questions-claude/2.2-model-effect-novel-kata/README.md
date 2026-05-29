@@ -1,8 +1,9 @@
 ---
 id: RQ-model-novel
-question: "Wie unterscheiden sich Opus 4.7 und Opus 4.6 (jeweils no-thinking) in Korrektheit und Code-Qualität auf einer novel Kata mit Mehrdeutigkeiten, die stärker differenziert als die trainingsbekannte game-of-life?"
+question: "Wie unterscheiden sich Opus 4.8, Opus 4.7 und Opus 4.6 (jeweils no-thinking) in Korrektheit und Code-Qualität auf einer novel Kata mit Mehrdeutigkeiten, die stärker differenziert als die trainingsbekannte game-of-life?"
 factors:
   model:
+    - opus-4-8-no-thinking
     - opus-4-7-no-thinking
     - opus-4-6-portkey-no-thinking
 controls:
@@ -38,12 +39,17 @@ RQ-model-quality vergleicht 6 Modelle auf `game-of-life-example-mapping` (traini
 
 Auf `claim-office-example-mapping` (novel, 5 Mehrdeutigkeiten, CLI mit externer Verification-Suite) hat RQ-regression gezeigt, dass opus-4-6 systematisch schlechtere Spec-Vollständigkeit liefert als opus-4-7: ein opus-4-6-Run auf v6-hybrid hat die `claim`-Operation komplett ignoriert (nur `quote` implementiert), obwohl das JSON-Schema-Beispiel in der Spec beide klar spezifiziert.
 
-RQ-model-novel fokussiert auf die zwei stärksten Modelle (no-thinking, weil RQ-model-quality F-model-quality.2 zeigt, dass Thinking keinen konsistenten Vorteil bringt) und gibt ihnen die härtere Challenge.
+RQ-model-novel fokussiert auf die drei stärksten Opus-Modelle (no-thinking, weil RQ-model-quality F-model-quality.2 zeigt, dass Thinking keinen konsistenten Vorteil bringt) und gibt ihnen die härtere Challenge.
 
 ## Vorhandene Daten
 
 - **opus-4-7-no-thinking × v4 × claim-office-EM**: n=10 aus RQ-workflow-tradeoff-Pool (mean verification_pct 0.67, bimodal: 4 perfekt, 6 zwischen 0.20–0.87)
-- **opus-4-6-portkey-no-thinking × v4 × claim-office-EM**: n=3 läuft (RQ-regression cross-model batch)
+- **opus-4-6-portkey-no-thinking × v4 × claim-office-EM**: n=5 (4 innerhalb Budget, 1 Timeout), mean verification_pct 0.93
+- **opus-4-8-no-thinking × v4 × claim-office-EM**: n=5 erhoben 2026-05-29 (native API — Opus 4.8 ist noch nicht auf Portkey/Vertex; Batch lief mit geleerten ANTHROPIC_*-Env-Vars), mean verification_pct 0.92
+
+## Offene Hypothesen
+
+- **H4 (opus-4-8 Workflow-Robustheit)**: opus-4-8 wurde bisher nur auf v4 erhoben. Teilt es die Workflow-Sensitivität von 4-6/4-7 (F-model-novel.2), oder ist es — wie seine durchweg hohe v4-Korrektheit nahelegt — robuster über Workflows? Re-Check bräuchte opus-4-8 × {v5, v6-hybrid} × claim-office-EM, n≥5.
 
 ## Hypothesen
 

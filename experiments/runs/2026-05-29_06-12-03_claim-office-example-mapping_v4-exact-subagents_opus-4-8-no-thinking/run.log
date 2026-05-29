@@ -1,0 +1,28 @@
+The MHPCO Claim Office kata is complete. Here's a summary of what was built following the mandated TDD workflow:
+
+## Process
+The full feature was implemented via the **test-list → red → green → refactor** agent cycle, autonomously per the experiment-mode rules. The test-list agent produced **41 tests** ordered simple→complex; each test went through its own red/green/refactor cycle.
+
+## Result
+- **41/41 tests passing**, type-check clean.
+- Domain logic in `src/claim-office.ts` (`quote` and `claim`), CLI entry point in `src/cli.ts`.
+
+## Key behaviors implemented
+**Quote (premium):**
+- Base premiums per item type; component "building blocks" (exactly-3-alike → 60 G).
+- Item-specific surcharges: curse +50%, high-enchantment (≥5) +30% on the affected item's base.
+- Policy-wide modifiers as linear percentages of the policy base premium: loyalty −20% (≥2 years), first-insurance +10%, follow-up −15%; +5 processing fee; final premium rounded up.
+- Rejects unknown item types.
+
+**Claim (payout):**
+- Per-damage 100 G deductible; high-enchantment (≥8) → 50% reimbursement; dragon material → full; 50% wins when both apply.
+- Cap = 2× unmodified insurance sum, threaded across successive claims (payout clamped to remaining cap).
+- Rejects damages not covered by the policy (by type and count), unknown types, and negative amounts.
+
+## A notable discovery during TDD
+The "long-standing customer's 2nd quote → 160" integration test exposed a bug: loyalty had been modeled as a multiplier on the surcharged premium (`×0.8`), which gives 144, not 160. The kata's worked examples require **all** policy-wide modifiers to be linear percentages of the policy base premium. I corrected the model and updated the earlier rounding test's expected value (it had been computed under the buggy multiplier model; the same input now correctly yields 217.5 → 218).
+
+## CLI verification
+Confirmed end-to-end: the schema example (premium 59, payout 100/cap 1100), both integration examples (165, 160), cap exhaustion (1400/600 then 600/0), and all error cases (exit 1, stderr message, empty stdout).
+
+`experiment-done.txt` written with `DONE`.

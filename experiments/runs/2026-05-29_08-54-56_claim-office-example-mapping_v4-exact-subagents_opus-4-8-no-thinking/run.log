@@ -1,0 +1,23 @@
+The exercise is complete. Here's a summary of what was built following the mandated TDD workflow (using the `test-list`, `red`, `green`, and `refactor` agents for every phase, autonomously per experiment mode):
+
+## What was implemented
+
+**Core domain logic — `src/claim-office.ts`** (38 tests)
+- `quote(items, context)` — premium calculation: base premiums per item type, component building-block pricing (exactly 3 alike → 60 G), item-specific surcharges (curse +50%, high-enchantment ≥5 +30%), and policy-wide modifiers (loyalty −20%, first-insurance +10%, follow-up −15%) computed against the **unmodified base premium total**, plus the 5 G fee, rounded up.
+- `claim(policy, incident, remainingCapBefore?)` — payout: per-damage 100 G deductible, high-enchantment-≥8 50% rule (wins over dragon material), 2× insurance-sum cap shared across successive claims, rounded down, with validation guards (unknown/absent items, over-count, negative amounts).
+
+**Scenario orchestration — `src/scenario.ts`** (6 tests)
+- `runScenario(scenario)` — processes steps in order, flags every quote after the first as a follow-up, resolves claims to their referenced quote step by index, and threads remaining cap across successive claims on the same policy.
+
+**CLI entry point — `src/cli.ts`**
+- Reads JSON from stdin, writes `{results}` JSON to stdout; on any error exits non-zero and writes the description to stderr.
+
+## Verification
+- **44 tests pass** (38 core + 6 scenario)
+- **`tsc --noEmit` clean** (added `@types/node` for the CLI's Node globals)
+- End-to-end CLI confirmed against the prompt's schema example (`premium 59`, then `payout 100 / remainingCap 1100`), both integration examples (follow-up cursed sword = **160**), cap exhaustion (1400/600 → 600/0), and all four error cases (non-zero exit + stderr).
+
+## A note on process
+The TDD test list deliberately scoped out the CLI as separate integration glue. I caught that a sub-agent had written the `DONE` marker before the spec's required `src/cli.ts` existed — I removed it, drove the scenario runner through full red-green-refactor cycles, added the CLI wrapper, verified everything, and only then re-wrote the marker. Several mid-stream tests were honest false-greens (boundary confirmations) and one mid-cycle correction was significant: test 23 revealed that policy-wide percentage modifiers must apply to the *unmodified* base, not the surcharge-inclusive total — that model fix was made and the affected earlier tests' expectations updated to match the spec.
+
+`experiment-done.txt` now contains `DONE`.
