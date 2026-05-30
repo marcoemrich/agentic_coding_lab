@@ -28,3 +28,14 @@ experiments/batch-plans/*.json
 !experiments/batch-plans/variance-probe-minimax.json
 !experiments/batch-plans/smoke-glm-oc.json
 nohup.out
+
+# Secrets — never commit API keys, credentials, env files (keep .env.example as template)
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+*.key
+*.pem
+*.portkey-bak
