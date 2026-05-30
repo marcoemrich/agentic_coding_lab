@@ -1,0 +1,23 @@
+The exercise is complete. 
+
+## Summary
+
+I implemented Conway's Game of Life with an infinite sparse grid following the strict TDD workflow mandated by the project rules, using the specialized TDD agents (`test-list`, `red`, `green`, `refactor`) for every phase autonomously.
+
+**Process — 7 tests through full Red→Green→Refactor cycles:**
+
+1. **Empty input** → `[]` (hardcoded)
+2. **Single cell dies** — already green (degenerate impl)
+3. **Two adjacent cells die** — already green; introduced `Cell` type in refactor
+4. **Block (still life)** — first non-empty output; drove out the **survival** rule (`countLiveNeighbors`, `isNeighbor`, `survives`)
+5. **Overpopulation** — already green (fell out of `survives`); acts as a regression guard
+6. **Reproduction** — drove out birth logic for dead cells (`deadNeighborCandidates` with `${x},${y}` string keys for negative coordinates)
+7. **Blinker with negative coordinates** — already green; the general implementation handled it
+
+**Final result:**
+- `src/game-of-life.ts` — clean implementation with named predicates `survives`/`reproduces` and a sparse candidate-set approach that only examines neighbors of live cells
+- `src/game-of-life.spec.ts` — 7 tests, all comparing as unordered collections
+- **All 7 tests pass**, `tsc --noEmit` clean
+- `experiment-done.txt` written with `DONE`
+
+The API contract is honored: `nextGeneration(cells: Cell[]): Cell[]` with `Cell = [number, number]`, sparse representation, and full negative-coordinate support.

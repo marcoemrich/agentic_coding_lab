@@ -1,0 +1,22 @@
+The exercise is complete. Conway's Game of Life with an infinite sparse grid was implemented following the full TDD workflow mandated by the project rules.
+
+## Summary
+
+I drove the strict Red→Green→Refactor cycle using the specialized TDD subagents (`test-list`, `red`, `green`, `refactor`) autonomously per experiment mode — never writing test or implementation code directly.
+
+**Test list (8 tests):** empty input → single cell dies → underpopulation (R1) → survival (R2) → overpopulation (R3) → reproduction (R4) → blinker oscillator → block still life.
+
+**TDD progression:**
+- Tests 1–3 passed against the minimal `return []` stub (genuinely correct — those cases produce empty output).
+- Test 4 (survival) forced the first real logic: a neighbor-counting filter keeping live cells with 2–3 neighbors.
+- Test 5 (overpopulation) was already satisfied as the complement of the survival condition.
+- Test 6 (reproduction) forced the births logic — scanning dead neighbors of live cells and reviving those with exactly 3 neighbors.
+- Tests 7–8 (blinker, block) passed against the now-general implementation, confirming infinite-grid and negative-coordinate handling.
+
+The red agent honestly reported its predictions (including marking two as Incorrect for the blinker, where esbuild strips types rather than type-checking). Refactoring extracted named helpers (`cellsEqual`, `isNeighbor`, `countNeighbors`, `isLive`, `neighborsOf`, `deadNeighborCandidates`) for clarity.
+
+**Final state:** All 8 tests pass (`pnpm test` → 8 passed). The API contract matches the spec: `nextGeneration(cells: Cell[]): Cell[]` with `Cell = [number, number]`, sparse representation, negative coordinates supported. `experiment-done.txt` contains `DONE`.
+
+Output files:
+- `src/game-of-life.ts` — implementation
+- `src/game-of-life.spec.ts` — 8 tests

@@ -1,0 +1,25 @@
+The exercise is complete. Conway's Game of Life with an infinite sparse grid was implemented following the full TDD red-green-refactor cycle using the specialized agents, autonomously per experiment mode.
+
+## Summary
+
+**All 7 tests passing**, both expected files present, and `experiment-done.txt` written with `DONE`.
+
+The TDD cycle walked through each rule, one test at a time:
+
+| # | Test | Drove new code? |
+|---|------|----------------|
+| 1 | Empty input → `[]` | Yes (hardcoded `return []`) |
+| 2 | Single cell dies (underpopulation) | Green on arrival |
+| 3 | Two cells die (underpopulation) | Green on arrival |
+| 4 | Block still life survives | **Yes** — real neighbor-counting + survival logic |
+| 5 | Overpopulation (4 neighbors dies) | Green on arrival (inverse of survival) |
+| 6 | Reproduction (dead cell, 3 neighbors → alive) | **Yes** — candidate-cell expansion + birth rule |
+| 7 | Blinker oscillator (negative coords integration) | Green on arrival |
+
+**Implementation highlights** (`src/game-of-life.ts`):
+- Sparse representation — only living cells stored; handles negative coordinates naturally via plain offset arithmetic
+- Candidate set = live cells plus their 8 neighbors, de-duplicated via a `"x,y"`-keyed Map
+- Each candidate filtered by the four rules: live cells survive on 2–3 neighbors, dead cells born on exactly 3
+- Refactoring extracted `sameCell`, `neighborhood`/`offsets`, and `countLiveNeighbors` helpers along the way
+
+A documented but deferred improvement remains noted by the refactor agent: tightening `Cell = number[]` to a `[number, number]` tuple, which the API contract permits but which would touch every signature (out of scope for a single refactor step).

@@ -1,0 +1,20 @@
+The exercise is complete. All work was done through the mandated TDD agents (test-list → red → green → refactor), and the full suite is green and type-clean.
+
+## Summary
+
+Implemented Conway's Game of Life (infinite sparse grid) via the strict Red-Green-Refactor TDD cycle using the specialized agents. **8/8 tests pass**, `tsc --noEmit` is clean, and `experiment-done.txt` is written.
+
+**Final API** matches the contract exactly: `nextGeneration(cells: Cell[]): Cell[]` where `Cell = [number, number]`. Sparse representation (Set/Map keyed by `"x,y"`), correct handling of negative coordinates.
+
+### Two course corrections I had to make as orchestrator
+
+The prompt's per-rule ASCII examples contained internal inconsistencies, which a subagent faithfully (but incorrectly) implemented. I caught these by cross-checking the agents' output against the reliable canonical examples (blinker, block, reproduction L→block):
+
+1. **Matrix vs. coordinate representation** — A red agent drifted into a `1`/`0` matrix interpretation (`[[1]] → [[0]]`), violating the coordinate-tuple API contract. The empty-grid test passed under both, masking it. I corrected test 2 back to coordinates (`[[0,0]] → []`).
+
+2. **`>= 3` birth bug** — The prompt's "Survival" example is broken (it calls a *dead* cell with *4* neighbors a "surviving center with 3"). A green agent satisfied it with a non-standard `count >= 3` birth rule. I replaced the buggy survival fixture with a valid one, then drove the fix to the standard `count === 3` (Rule 4) through an overpopulation test designed to genuinely fail under the bug.
+
+### Final implementation (`src/game-of-life.ts`)
+Standard Conway rules — survive on 2–3 neighbors, born on exactly 3 — with a `NEIGHBOR_OFFSETS` table and an intent-revealing `survivesOrIsBorn` predicate. Iterating the neighbor-count map (not the live set) elegantly handles underpopulation: isolated live cells never appear and thus die.
+
+A note on TDD honesty: tests 2, 3, 6, and 7 passed immediately once the generalized algorithm existed (they map to behavior already covered). The agents reported these "free passes" transparently rather than fabricating failures.

@@ -1,0 +1,23 @@
+The exercise is complete. Conway's Game of Life with an infinite sparse grid was implemented via the full TDD red-green-refactor cycle, using the specialized TDD agents for every phase as mandated by the project rules.
+
+## Summary
+
+**Process** — followed TDD experiment mode autonomously:
+- **Test List** (`test-list` agent): 8 tests ordered simple → complex, one per rule plus integration patterns.
+- **Per-test cycle** (`red` → `green` → `refactor` agents): each Red phase made explicit compilation + runtime predictions before running.
+
+**The 8 tests** (all passing):
+1. Empty input → empty output
+2. Single cell dies (underpopulation)
+3. Two cells, one neighbor each, die (underpopulation)
+4. Cell with 3 neighbors survives — **first test to force real logic**
+5. Cell with 4 neighbors dies (overpopulation — fell out of the survival filter)
+6. Dead cell with 3 neighbors is born — **forced reproduction logic**
+7. Blinker oscillation (exercises negative coordinates)
+8. Block still life unchanged
+
+Several tests (2, 3, 5, 7, 8) passed immediately against existing code — the agents reported these honestly as legitimate "already-green" outcomes rather than fabricating failures.
+
+**Final implementation** (`src/game-of-life.ts`): a sparse-representation `nextGeneration` that filters survivors (live cells with 2–3 live neighbors) and computes births (dead neighbor cells with exactly 3 live neighbors, deduped via a coordinate-keyed Map). Refactoring extracted a shared `neighborsOf` helper so the 8-neighbor concept is defined once, with intent-revealing names (`countLiveNeighbors`, `birthCandidates`).
+
+**Result:** 8/8 tests pass, `tsc` clean, `experiment-done.txt` written.

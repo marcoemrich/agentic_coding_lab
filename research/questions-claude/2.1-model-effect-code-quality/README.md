@@ -1,8 +1,10 @@
 ---
 id: RQ-model-quality
-question: "Wie stark unterscheiden sich die verfügbaren Modelle (Sonnet 4.6, Opus 4.6, Opus 4.7 — jeweils mit/ohne Thinking) in der Code-Qualität auf einer trainingsbekannten Kata bei stärkstem Workflow?"
+question: "Wie stark unterscheiden sich die verfügbaren Modelle (Sonnet 4.6, Opus 4.6, Opus 4.7, Opus 4.8 — jeweils mit/ohne Thinking) in der Code-Qualität auf einer trainingsbekannten Kata bei stärkstem Workflow?"
 factors:
   model:
+    - opus-4-8
+    - opus-4-8-no-thinking
     - opus-4-7
     - opus-4-7-no-thinking
     - opus-4-6-portkey
@@ -48,6 +50,8 @@ Haiku ist bewusst nicht enthalten: in bisherigen Läufen liegt Haiku regelmäßi
 
 | Lab-Variant | Thinking | API-Route |
 |---|---|---|
+| opus-4-8 | Adaptiv (default) | Direct API |
+| opus-4-8-no-thinking | Aus | Direct API |
 | opus-4-7 | Adaptiv (default) | Direct API |
 | opus-4-7-no-thinking | Aus | Direct API |
 | opus-4-6-portkey | Extended (default) | Portkey Gateway |
@@ -74,19 +78,19 @@ RQ-prompt-known-kata hat empirisch gezeigt, dass der Prompt-Stil bei trainingsbe
 ## Design
 
 ```
-Faktor:    model      — 6 Stufen (3 Modelle × {thinking, no-thinking})
+Faktor:    model      — 8 Stufen (4 Modelle × {thinking, no-thinking})
 Kontrolle: workflow   — v4-exact-subagents
 Kontrolle: kata_base  — game-of-life (+ prompt = example-mapping)
 
-Zellen:    6
+Zellen:    8
 Replikate: n = 3
-Runs:      18 total
+Runs:      24 total
 ```
 
 ## Hypothesen
 
-- **H1** (Korrektheit-Sanity): `tests_passing` *und* `verification_pct` liegen für alle sechs Modelle bei 100 % (3/3 pro Zelle). Eine Zelle mit < 100 % entwertet den Code-Qualitäts-Vergleich für dieses Modell oder weist auf eine Repräsentations-Adhärenz-Lücke hin.
-- **H2** (Modell-Ranking Code-Qualität): Auf `code_mass`, `smell_total`, `cc_longest_function`, `mccabe_max`, `cognitive_max` zeigt sich ein konsistentes Ranking Opus 4.7 ≤ Opus 4.6 ≤ Sonnet 4.6 (kleiner = besser).
+- **H1** (Korrektheit-Sanity): `tests_passing` *und* `verification_pct` liegen für alle acht Modelle bei 100 % (3/3 pro Zelle). Eine Zelle mit < 100 % entwertet den Code-Qualitäts-Vergleich für dieses Modell oder weist auf eine Repräsentations-Adhärenz-Lücke hin.
+- **H2** (Modell-Ranking Code-Qualität): Auf `code_mass`, `smell_total`, `cc_longest_function`, `mccabe_max`, `cognitive_max` zeigt sich ein konsistentes Ranking Opus 4.8 ≤ Opus 4.7 ≤ Opus 4.6 ≤ Sonnet 4.6 (kleiner = besser).
 - **H3** (Thinking-Effekt): Innerhalb jedes Modells verbessert Thinking die Code-Qualität (niedrigeres `code_mass`, `cognitive_max`); der Effekt ist bei Opus stärker als bei Sonnet (vgl. F-3.x aus `_archive/rqs-v1/RQ-3-model-and-thinking/`).
 
 **Falsifikation H2** (kein konsistentes Ranking über die Qualitäts-Outcomes): Modell-Effekt auf Code-Qualität ist auf v4 nicht stabil → andere Workflows könnten andere Modell-Rankings zeigen.
