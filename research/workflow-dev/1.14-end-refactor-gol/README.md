@@ -3,8 +3,9 @@ id: RQ-end-refactor-gol
 question: "Haelt der v6.5-end-refactor-Befund (Korrektheit intakt, Code-Qualitaet >= v6.2) auch auf der trainingsbekannten game-of-life-Kata — die Voraussetzung fuer eine globale Baseline-Promotion von v6.5 ueber v6.2?"
 factors:
   workflow_x_prompt:
-    - {workflow: v6.2-with-why-cleaned, prompt: example-mapping}  # interne Default-Baseline
-    - {workflow: v6.5-end-refactor,     prompt: example-mapping}  # End-Refactor-Kandidat
+    - {workflow: v6.2-with-why-cleaned,        prompt: example-mapping}  # interne Default-Baseline
+    - {workflow: v6.4-metric-driven-refactor,  prompt: example-mapping}  # Per-Cycle-Refactor-Kandidat
+    - {workflow: v6.5-end-refactor,            prompt: example-mapping}  # End-Refactor-Kandidat
   kata_base: [game-of-life]
 controls:
   model: opus-4-7-no-thinking
@@ -49,7 +50,13 @@ GoL ist hier die **Code-Qualitaets-Kata** (Library-Form, kein CLI-Overhead). Kor
 
 ## Workflow-Definition
 
-Identisch zu RQ-1.12 / RQ-1.13. `v6.5-end-refactor` = `v6.2-with-why-cleaned` + `end-refactor`-Subagent (einmaliger Whole-src-Pass nach dem letzten Green-Cycle, metric-driven: ESLint/SonarJS/APP/McCabe, ONE-change-at-a-time). Per-Cycle-Anteil byte-identisch zu v6.2. Vollbeschreibung: `../1.12-end-refactor-effect-v62/README.md`.
+Alle drei Arme teilen denselben v6.2-Per-Cycle-Kern; sie unterscheiden sich nur darin, *wann* und *wie oft* metric-driven refactored wird:
+
+- **`v6.2-with-why-cleaned`** — interne Default-Baseline, kein zusaetzlicher Refactor-Pass.
+- **`v6.4-metric-driven-refactor`** — Pre/Post-metric-driven Refactor (ESLint/SonarJS/APP/McCabe) **innerhalb jedes Cycles**.
+- **`v6.5-end-refactor`** = v6.2 + `end-refactor`-Subagent (einmaliger Whole-src-Pass **nach dem letzten Green-Cycle**, metric-driven, ONE-change-at-a-time). Per-Cycle-Anteil byte-identisch zu v6.2.
+
+Vollbeschreibungen: v6.5 in `../1.12-end-refactor-effect-v62/README.md`; v6.4 als per-cycle-Variante derselben Metric-Driven-Idee. Der direkte Vergleich v6.4 vs v6.5 isoliert damit den **Hebel-Zeitpunkt** (laufend vs einmalig am Ende) bei gleicher Refactor-Heuristik.
 
 ## Hypothesen
 
@@ -67,13 +74,13 @@ Identisch zu RQ-1.12 / RQ-1.13. `v6.5-end-refactor` = `v6.2-with-why-cleaned` + 
 ## Design
 
 ```
-Faktor:    workflow   — v6.2 / v6.5, prompt = example-mapping fix
+Faktor:    workflow   — v6.2 / v6.4 / v6.5, prompt = example-mapping fix
 Kontrolle: model      — opus-4-7-no-thinking (Direct-API / native OAuth)
 Kontrolle: kata_base  — game-of-life
 
-Zellen:    2
+Zellen:    3
 Replikate: n = 5
-Runs:      10 (alle neu)
+Runs:      15 (v6.4: 1 vorhanden + 4 neu; v6.2/v6.5: je 5 vorhanden)
 ```
 
 ## Caveats
@@ -90,6 +97,8 @@ Runs:      10 (alle neu)
 2. Fill-Batch **single-shard**, Direct-API/native OAuth (kein Portkey).
 3. Aggregation via `aggregate-by-query.py`, `findings.md` gemaess `/run-rq` Skill-Konventionen.
 4. **Bei H2-Bestaetigung:** v6.5 als globale Default-Baseline in `workflow-construction.md` promoten. **Bei Falsifikation:** Empfehlung claim-office-spezifisch halten.
+
+**Stand (n=5 pro Zelle, abgeschlossen):** Falsifikation fuer v6.5 — auf GoL kein robuster Komplexitaets-Gewinn ueber v6.2, voller Kosten-Aufschlag. Stattdessen ueberraschender Befund: der per-cycle-Arm **v6.4** ist auf GoL der robuste Komplexitaets-Sieger (zu geringerem Aufschlag als v6.5). Keine globale v6.5-Promotion; Refactor-Hebel ist kata-abhaengig (v6.5 fuer mehrteilige Codebasen, v6.4 fuer kleine einteilige). Details: [findings.md](findings.md) F-1.14.1–.4.
 
 ## Findings
 
