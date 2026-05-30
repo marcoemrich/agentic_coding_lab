@@ -10,61 +10,61 @@ Aggregierte Means pro Outcome. Trophy 🏆 = bester Wert (Spread ≥ 1 σ); bei 
 
 ### Code-Qualität (kleiner = besser)
 
-| Workflow | `cognitive_max` | `mccabe_max` | `cc_longest_function` | `cc_avg_loc_per_function` | `smell_total` | `code_mass` |
-|---|---:|---:|---:|---:|---:|---:|
-| v6.2-with-why-cleaned | 3.4 | 4.2 | 18.4 | 5.74 | 0.4 | **155.6** 🏆 |
-| v6.5-end-refactor | **2.4** 🏆 | **3.0** 🏆 | **14.4** 🏆 | **4.42** 🏆 | **0.0** 🏆 | 158.6 |
+| Workflow | `cognitive_max` | `cognitive_avg` | `mccabe_max` | `cc_longest_function` | `cc_avg_loc_per_function` | `smell_total` | `code_mass` |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| v6.2-with-why-cleaned | 3.4 | 2.7 | 4.0 | **10.0** | **3.87** | 1.6 | **154.8** 🏆 |
+| v6.5-end-refactor | **3.0** | **2.2** | **3.2** | 9.8 | 4.08 | **0.0** 🏆 | 168.0 |
+
+- `cognitive_max` / `cognitive_avg` / `mccabe_max` / `cc_longest_function` / `cc_avg_loc_per_function`: alle Δ **< 1 σ** → kein Trophy, ununterscheidbar.
+- Nur `smell_total` (1.6 → 0.0, deterministisch) ist ein robuster v6.5-Vorteil. `code_mass` ist robust schlechter (v6.5 +8.5 %).
 
 ### Korrektheit + Disziplin + Kosten (Sanity)
 
 | Workflow | `tests_passing %` | `verification_pct` | `cycle_count` | `predictions_correct_rate %` | `duration_s` | `total_tokens` |
 |---|---:|---:|---:|---:|---:|---:|
-| v6.2-with-why-cleaned | **100** 🏆 | **1.0** 🏆 | 10.8 | 98.1 | **857** 🏆 | **13.1 M** 🏆 |
-| v6.5-end-refactor | **100** 🏆 | **1.0** 🏆 | 10.2 | 97.3 | 1236 | 20.8 M |
+| v6.2-with-why-cleaned | **100** 🏆 | **1.0** 🏆 | 8.8 | **100** 🏆 | **898** 🏆 | **10.1 M** 🏆 |
+| v6.5-end-refactor | **100** 🏆 | **1.0** 🏆 | 9.6 | **100** 🏆 | 1332 | 12.3 M |
 
 ---
 
-## F-1.14.1 — v6.5 hebt die Code-Qualitaet auch auf game-of-life ueber v6.2; H2 bestaetigt
+## F-1.14.1 — Auf game-of-life ist v6.5 kein robuster Code-Qualitaets-Gewinn ueber v6.2
 
-Der End-Refactor-Pass senkt auf GoL **jede** Spitzen- und Struktur-Komplexitaets-Metrik gegenueber v6.2, bei voller Korrektheit (5/5 `tests_passing`, `verification_pct` = 1.0 in beiden Zellen):
+Anders als auf claim-office (RQ-1.12/1.13, wo der End-Pass die Komplexitaet messbar senkte) sind die Komplexitaets-Metriken auf GoL zwischen v6.2 und v6.5 **statistisch ununterscheidbar** — alle Differenzen liegen innerhalb 1 σ:
 
-| Metrik | v6.2 | v6.5 | Δ | Spread |
-|---|---:|---:|---:|---|
-| `cognitive_max` | 3.4 | **2.4** | −29 % | ≈ 1 σ (σ 0.89–1.14) |
-| `mccabe_max` | 4.2 | **3.0** | −29 % | > 1 σ (v6.5 σ = 0 — **alle 5 Runs exakt 3**) |
-| `cc_longest_function` | 18.4 | **14.4** | −22 % | ≈ 0.5 σ (v6.2 σ 8.32) |
-| `cc_avg_loc_per_function` | 5.74 | **4.42** | −23 % | ≈ 0.6 σ; v6.5 σ 0.77 vs v6.2 σ 2.26 |
-| `smell_total` | 0.4 | **0.0** | −100 % | v6.5 deterministisch 0 |
+| Metrik | v6.2 (Mean) | v6.5 (Mean) | Δ | v6.5-σ | innerhalb 1 σ? |
+|---|---:|---:|---:|---:|:-:|
+| `cognitive_max` | 3.4 | 3.0 | −0.4 | 2.24 (ein Run = 7) | ✓ |
+| `cognitive_avg` | 2.7 | 2.2 | −0.5 | 1.04 | ✓ |
+| `mccabe_max` | 4.0 | 3.2 | −0.8 | 0.45 | ✓ (knapp) |
+| `cc_longest_function` | 10.0 | 9.8 | −0.2 | 2.59 | ✓ |
+| `cc_avg_loc_per_function` | 3.87 | 4.08 | +0.21 (schlechter) | 1.38 | ✓ |
 
-Der staerkste Effekt: `mccabe_max` faellt bei v6.5 auf **konstant 3 ueber alle 5 Runs** (σ = 0), waehrend v6.2 zwischen 3 und 6 streut. Der End-Pass eliminiert die GoL-Komplexitaets-Spitzen deterministisch. Auch die Streuung aller Quality-Metriken schrumpft durchgehend (z. B. `cc_avg_loc_per_function` σ 2.26 → 0.77) — v6.5 liefert nicht nur besseren, sondern **vorhersagbareren** Code.
+Der einzige robuste v6.5-Vorteil ist `smell_total` (v6.2 1.6 → v6.5 **0.0**, σ=0): der End-Pass eliminiert die wenigen GoL-ESLint-Smells deterministisch. Umgekehrt ist `code_mass` bei v6.5 robust **hoeher** (154.8 → 168.0, Δ ≈ 1 σ) — der End-Pass fuegt auf GoL netto Code hinzu (z. B. extrahierte Hilfsfunktionen), statt zu konsolidieren.
 
-`code_mass` ist die einzige Metrik ohne v6.5-Vorteil (155.6 vs 158.6, < 1 σ) — auf der winzigen GoL-Codebasis (~150 vs ~870 auf claim-office) gibt es kaum Volumen zu konsolidieren. Die in F-1.12.3 formulierte Sorge (H2': weniger Cross-file-Hebel auf einteiliger Library) trifft genau auf `code_mass` zu, **nicht** aber auf die Komplexitaets-Metriken — dort wirkt der Pass auch ohne Cross-file-Duplication.
+Plausibilisierung: Die GoL-Codebasis ist winzig (`code_mass` ~155 vs ~870 auf claim-office) und einteilig (Library, kein cli.ts + domain.ts). Der Whole-src-Hebel des End-Pass — Cross-file-Duplication finden, kumulative Komplexitaet ueber viele Cycles abbauen — hat hier kaum Angriffsflaeche. Das bestaetigt die in F-1.12.3 formulierte H2'-Hypothese: auf einer simplen, einteiligen Kata ist der End-Pass-Effekt klein bis abwesend.
 
----
-
-## F-1.14.2 — TDD-Disziplin und Korrektheit auf GoL unveraendert; Kosten-Aufschlag durch den End-Pass
-
-Der Per-Cycle-Anteil von v6.5 ist byte-identisch zu v6.2; die GoL-Cycle-Metriken bestaetigen das:
-
-| Metrik | v6.2 | v6.5 | Δ |
-|---|---:|---:|---:|
-| `cycle_count` | 10.8 | 10.2 | −0.6 (innerhalb 1 σ) |
-| `predictions_correct_rate` | 98.1 % | 97.3 % | −0.8 pp |
-| `tests_passed_immediately` | 9.6 | 8.8 | innerhalb 1 σ |
-| `tests_passing` | 5/5 | 5/5 | — |
-
-Kosten: v6.5 braucht **+44 % Wallclock** (857 → 1236 s) und **+59 % Tokens** (13.1 M → 20.8 M) — der reine End-Pass-Aufschlag. Auf GoL ist der relative Aufschlag groesser als auf claim-office (dort ~+19 % Wallclock, Tokens gleichauf), weil die GoL-Basis-Session viel kuerzer ist und der fixe End-Pass-Overhead staerker ins Gewicht faellt. Absolut bleibt es guenstig (~20 min/Run).
+Ein Ausreisser praegt die v6.5-Komplexitaets-Means: 4 der 5 Runs haben `cognitive_max` = 2, einer hat 7 (σ 2.24). Ohne diesen Run laege v6.5 klar unter v6.2 — mit ihm ist der Mean-Vorsprung Rauschen. Bei n=5 ist das nicht aufloesbar.
 
 ---
 
-## F-1.14.3 — v6.5 ist auf beiden Katas der Qualitaets-Sieger: globale Baseline-Promotion gerechtfertigt
+## F-1.14.2 — Korrektheit und TDD-Disziplin auf GoL unveraendert; Kosten-Aufschlag durch den End-Pass
 
-Mit RQ-1.12 (claim-office × opus-4-7), RQ-1.13 (claim-office × opus-4-8) und dieser RQ (game-of-life × opus-4-7) ist v6.5 jetzt auf **beiden** Kata-Typen und **zwei Modellen** validiert:
+Beide Zellen sind korrektheits-makellos (5/5 `tests_passing`, `verification_pct` = 1.0, `predictions_correct_rate` 100 % pooled). Der Per-Cycle-Anteil ist byte-identisch zu v6.2; die Cycle-Metriken bestaetigen das (`cycle_count` 8.8 vs 9.6, innerhalb 1 σ).
 
-| Achse | Korrektheit | Code-Qualitaet vs v6.2 |
-|---|---|---|
-| claim-office × opus-4-7 (RQ-1.12) | gehalten (0.99) | besser (code_mass −11 %, cognitive_max −44 %) |
-| claim-office × opus-4-8 (RQ-1.13) | gehalten (5/5 perfekt) | besser (cognitive_max −22 %, mccabe_max −20 %) |
-| game-of-life × opus-4-7 (RQ-1.14) | gehalten (5/5, 1.0) | besser (cognitive_max −29 %, mccabe_max −29 %, smell −100 %) |
+Kosten: v6.5 braucht **+48 % Wallclock** (898 → 1332 s) und **+22 % Tokens** (10.1 M → 12.3 M) — der reine End-Pass-Aufschlag. Relativ ist der Wallclock-Aufschlag groesser als auf claim-office (~+19 %), weil die GoL-Basis-Session viel kuerzer ist und der fixe End-Pass-Overhead staerker durchschlaegt. Der End-Pass zahlt auf GoL also vollen Preis fuer einen nur marginalen Qualitaets-Effekt (`smell_total`).
 
-Damit ist das im Lab wiederkehrende "GoL-Sieger ≠ claim-office-Sieger"-Anti-Pattern (RQ-1.4, RQ-1.8/1.9) fuer v6.5 **ausgeschlossen** — v6.5 gewinnt auf beiden. Einziger konsistenter Preis ist ein moderater Token-/Wallclock-Aufschlag durch den End-Pass. v6.5-end-refactor ist damit als **globale Code-Qualitaets-Baseline ueber v6.2** gerechtfertigt; v6.2 bleibt die Referenz fuer minimale Kosten.
+---
+
+## F-1.14.3 — v6.5 ist claim-office-spezifisch wirksam; keine globale Baseline-Promotion ueber v6.2
+
+Zusammengefuehrt ueber alle drei End-Refactor-RQs:
+
+| Achse | Korrektheit | Code-Qualitaet vs v6.2 | Kosten |
+|---|---|---|---|
+| claim-office × opus-4-7 (RQ-1.12) | gehalten | **besser** (code_mass −11 %, cognitive_max −44 %) | ~v6.2-Tokens |
+| claim-office × opus-4-8 (RQ-1.13) | gehalten | **besser** (cognitive_max −22 %, mccabe_max −20 %) | ~v6.2-Tokens |
+| game-of-life × opus-4-7 (RQ-1.14) | gehalten | **gleichauf** (nur smell_total besser; code_mass schlechter) | +48 % Wallclock, +22 % Tokens |
+
+Der End-Refactor-Pass wirkt dort, wo es **Substanz zu konsolidieren** gibt — die zweiteilige claim-office-Codebasis mit echter Cross-file-Duplication. Auf der winzigen, einteiligen GoL-Library bringt er keinen robusten Komplexitaets-Gewinn, kostet aber vollen Wallclock-/Token-Aufschlag.
+
+Konsequenz fuer die Baseline: v6.5 ist **kein** genereller v6.2-Ersatz. Die Empfehlung bleibt **kata-/aufgaben-spezifisch**: fuer mehrteilige, nicht-triviale Codebasen (CLI + Domain, mehrere Module) ist v6.5 der staerkere Quality-Workflow; fuer kleine einteilige Aufgaben rechtfertigt der End-Pass-Aufschlag den marginalen Gewinn nicht — dort bleibt v6.2 die effizientere Wahl. Damit reiht sich v6.5 in das wiederkehrende "Kata-abhaengige Empfehlung"-Muster ein (vgl. RQ-1.4): nicht jeder Workflow-Sieger generalisiert ueber Kata-Typen.
