@@ -1,0 +1,14 @@
+The MHPCO Claim Office kata is complete, implemented end-to-end via the strict TDD hybrid workflow (test-list/red/green skills in the main context, refactor delegated to the subagent).
+
+## Summary
+
+**Process:** Followed the full Red-Green-Refactor cycle for all 39 spec-derived tests. Every cycle made explicit compilation/runtime predictions before running, used the `/red` and `/green` skills for test/implementation code, and launched the `refactor` subagent after each genuine implementation change. Many later examples (≈18 of them) passed immediately because earlier minimal implementations had already generalized correctly — each was honestly verified and noted as a confirming test rather than driving new code.
+
+**Result:**
+- **39/39 tests passing**, ESLint clean (zero smells).
+- `src/claim-office.ts` — the domain engine (`runScenario`), decomposed into small single-purpose helpers kept at McCabe ≤ 2 throughout by the refactor subagent.
+- `src/cli.ts` — the `claim-office` CLI: reads JSON from stdin, writes `{results: [...]}` to stdout, and on invalid input writes a description to stderr and exits non-zero (verified end-to-end for the schema example and all four error cases).
+
+**Coverage:** base premiums; component pricing with the exactly-3 "alike" block rule; item-specific (cursed 50%, high-enchantment ≥5 → 30%) vs. policy-wide (first-insurance, loyalty ≥2y, follow-up contract) modifier scope; processing fee; premium round-up / payout round-down "in MHPCO's favor"; claim deductible per damage; high-enchantment ≥8 → 50% reimbursement (winning over dragon material); cap = 2× insurance sum with exhaustion across successive claims; and all rejection cases (unknown item type, claim item not in policy, negative amount, more damages than insured).
+
+The done marker `experiment-done.txt` has been written.

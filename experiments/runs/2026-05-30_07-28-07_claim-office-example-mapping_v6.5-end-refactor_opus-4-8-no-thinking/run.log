@@ -1,0 +1,18 @@
+The exercise is complete. Here's a summary of what was accomplished following the TDD hybrid workflow:
+
+## Summary
+
+**MHPCO Claim Office kata** — built via strict Red-Green-Refactor TDD using the mandated skill/subagent delegation.
+
+### Process
+- **Test List** (`test-list` skill): 36 tests covering every spec rule and example, ordered simple → complex.
+- **23 TDD cycles**: each test driven through `/red` → `/green` (skills, main context) → `refactor` (Task subagent, isolated context). Per the spec's example-mapping structure, many tests were *characterization* cases at rule boundaries that passed against existing code (predicted honestly in each Red phase); others drove new behavior (block pricing, modifier scope, claim clauses, validation).
+- **End-Refactor** (`end-refactor` subagent, once): metric-driven pass over all of `src/` — extracted `PERCENT_DIVISOR` and `resolvePolicy`; all metrics (ESLint, cognitive, McCabe, APP) at their floor.
+- **Done marker** written.
+
+### Result
+- **36/36 tests passing**, `tsc --noEmit` clean, ESLint clean.
+- `src/claim-office.ts` — quote (premium with item-specific + policy-wide modifiers, component block pricing, rounding) and claim (deductible-per-item, high-enchantment 50% clause, cap exhaustion, membership/negative-amount validation) plus exported `policyCap`.
+- `src/cli.ts` — the required CLI entry point: reads scenario JSON from stdin, processes steps sequentially (threading policy cap state and per-customer quote indices), writes `{results}` to stdout, exits non-zero with a stderr message on any error (unknown type, uncovered/over-claimed item, negative amount). Uses a minimal ambient `process` declaration to avoid adding a `@types/node` dependency.
+
+Verified end-to-end against the spec's schema example, both integration examples (165 G newcomer, 160 G follow-up), cap exhaustion, and all error paths.

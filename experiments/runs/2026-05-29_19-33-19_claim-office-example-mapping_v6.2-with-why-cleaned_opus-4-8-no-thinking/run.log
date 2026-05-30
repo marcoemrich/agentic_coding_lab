@@ -1,0 +1,24 @@
+The MHPCO Claim Office kata is complete. I implemented it through the full TDD workflow as mandated by the project rules.
+
+## Summary
+
+I followed the strict Red-Green-Refactor cycle for every behavior, delegating each phase to the appropriate tool:
+- **`/test-list`** (skill) — built a 39-test list from the spec's rules, examples, and clarifying questions
+- **`/red`** (skill) — activated one test at a time with explicit compile/runtime predictions
+- **`/green`** (skill) — minimal implementations
+- **`refactor`** (Task subagent) — isolated refactoring after each green, applying the Four Rules of Simple Design
+
+(Note: although "workflow" appeared in the system reminder, the project's CLAUDE.md explicitly mandates this TDD skill/subagent flow and forbids writing code directly or splitting the measured tool sequence — so the Workflow tool would have invalidated the experiment's metrics. I followed the mandated TDD process.)
+
+### What was built
+- **`src/claim-office.ts`** — the domain: `quote` (premium) and `claim` (payout).
+  - **Quote**: per-type base premiums; component block-of-exactly-3 pricing; two-tier modifier model (item-specific curse/high-enchantment surcharges off item base; policy-wide first-insurance/loyalty/follow-up off policy base); processing fee; round-up in MHPCO's favor; unknown-type rejection.
+  - **Claim**: per-damage deductible; 50%-enchantment vs. dragon-material reimbursement clauses (50% wins); cap = 2× insurance sum with exhaustion clamping across successive claims; round-down; rejection of over-claims, items not in policy, and negative amounts.
+- **`src/claim-office.spec.ts`** — 39 tests covering every spec example.
+- **`src/cli.ts`** — the required CLI entry point: reads a JSON scenario from stdin, replays steps sequentially (tracking quote count for follow-up discounts and per-policy remaining cap across claims), writes `{results}` to stdout, and exits non-zero with a stderr message on any domain error.
+
+### Verification
+- All **39 tests pass**; `tsc --noEmit` is clean.
+- The CLI was exercised against the prompt's schema example (`premium 59`, `payout 100`/`remainingCap 1100`), unknown-type and negative-amount errors (exit 1 + stderr), and a two-claim cap-exhaustion scenario (1400/600 then 600/0) — all correct.
+
+A notable spec subtlety the TDD process surfaced: the component block applies only to a group of *exactly* 3 (4 runes → 100, not 85), which the 4-runes test caught and corrected.

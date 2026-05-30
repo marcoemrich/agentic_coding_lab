@@ -1,0 +1,20 @@
+The exercise is complete. Here's a summary of what was accomplished following the mandated hybrid TDD workflow.
+
+## Summary
+
+I implemented the **MHPCO Claim Office Kata** in TypeScript using strict Test-Driven Development, following the v6 hybrid workflow exactly: `/test-list`, `/red`, and `/green` as Skills in the main context, and `refactor` as an isolated Task subagent each cycle.
+
+**Process:**
+- **Test List** — 45 tests derived from every rule, example, and clarifying question (❓) in the spec, ordered simple → complex.
+- **45 Red→Green→Refactor cycles** — each Red phase activated one test with explicit two-stage failure predictions; each Green phase added the minimal code; each Refactor ran in an isolated subagent guided by deterministic metrics (ESLint smells, SonarJS cognitive complexity, McCabe, APP mass) and the Four Rules of Simple Design.
+
+**Final deliverables** (`src/`):
+- `claim-office.ts` — the implementation, decomposed into ~30 small, single-purpose pure functions composed by `runScenario`.
+- `claim-office.spec.ts` — 45 passing tests.
+- `cli.ts` — the `claim-office` CLI entry point (reads JSON from stdin, writes results to stdout, writes errors to stderr with a non-zero exit).
+
+**Features covered:** all item base premiums; component blocks (exactly-3 rule, per-type); item-specific modifiers (curse, high-enchantment ≥5, per-item first-insurance) and policy-wide modifiers (loyalty ≥2yr, follow-up discount); processing fee; premium round-up / payout round-down with fractional intermediates; claims with per-event deductible, high-enchantment 50% / dragon-full clauses (50% wins), cap = 2× unmodified insurance sum consumed across successive claims with clamping; and rejection (throw → non-zero exit) for unknown item types, over-claims, items not in policy, and negative amounts.
+
+**Verification:** 45/45 tests pass, ESLint clean, and the CLI was manually verified against the spec's schema example (`{"results":[{"premium":59},{"payout":100,"remainingCap":1100}]}`, exit 0) and error paths (unknown type / negative amount → stderr message, exit 1).
+
+`experiment-done.txt` contains `DONE`.

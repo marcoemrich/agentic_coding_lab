@@ -1,0 +1,17 @@
+The done marker already contains `DONE`, so no change is needed.
+
+The MHPCO Claim Office kata is complete. Summary of what was accomplished following the strict v6 hybrid TDD workflow:
+
+**Process** — Every phase was delegated as the rules require:
+- `/test-list` skill produced 34 `it.todo()` tests covering every spec rule and example.
+- Each test went through `/red` (skill) → `/green` (skill) → refactor (Task subagent), with explicit compilation/runtime predictions at each Red phase.
+- Refactoring ran in isolated subagent contexts, each reporting measured deltas (ESLint smells, cognitive/McCabe complexity, APP mass) while keeping tests green.
+
+**Result** — All 34 tests pass. The implementation in `src/claim-office.ts` covers:
+- **Quote**: main-item base premiums, component block pricing (exactly-3 blocks, per-type grouping), cursed/high-enchant item surcharges, loyalty/first-insurance/follow-up policy modifiers, rounding up in MHPCO's favor, processing fee.
+- **Claim**: per-damage deductible, high-enchantment 50% clause, cap = 2×insurance sum, multi-claim cap tracking, payout rounding down.
+- **Error cases**: unknown item type, claim item not in policy, unknown claim type, over-count damages, negative amounts — all throw.
+
+**CLI** — `src/cli.ts` reads JSON from stdin, writes `{results: [...]}` to stdout, and exits non-zero with a stderr message on errors. Verified end-to-end against the spec's schema example and all error cases.
+
+The `experiment-done.txt` marker is in place.

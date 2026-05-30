@@ -1,0 +1,16 @@
+The MHPCO Claim Office kata is complete. Summary of what was built following the strict TDD workflow:
+
+## Outcome
+- **44/44 tests passing**, ESLint clean, CLI verified end-to-end (success → stdout JSON exit 0; error → stderr exit 1).
+- Every test went through the full **test-list → red → green → refactor** cycle, using the `/test-list`, `/red`, `/green` skills in the main context and the `refactor` subagent (isolated context) for each refactor phase, as the project rules mandate.
+
+## Implementation (`src/claim-office.ts` + `src/cli.ts`)
+**Quote / premium** — additive modifier model: per-item base premiums; component building-blocks (exactly-3-alike → 60, per type); item-specific surcharges (curse +50%, high-enchantment ≥5 +30%); policy-wide modifiers (loyalty ≥2yr −20%, first-insurance +10% per quote, follow-up −15% on quotes after the first); +5 processing fee; final premium rounded **up**.
+
+**Claim / payout** — deductible 100 G per damage entry; reimbursement clauses (enchantment ≥8 → 50%, otherwise full); payout capped at 2× the unmodified insurance sum, clamped across successive claims; final payout rounded **down**; validation throwing on unknown item types, claims referencing uninsured/excess items, and negative amounts.
+
+**CLI** (`src/cli.ts`) — reads JSON from stdin, writes `{results}` to stdout, exits non-zero with a stderr message on any error.
+
+The `experiment-done.txt` marker has been written.
+
+A note for transparency: although your message included the "workflow" keyword (which normally signals the Workflow tool), the project's CLAUDE.md rules explicitly require this kata be done through the TDD skills/subagent pipeline — the measurement harness parses those specific tool calls — so I followed those binding instructions rather than the generic Workflow tool.

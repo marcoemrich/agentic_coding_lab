@@ -1,0 +1,18 @@
+The exercise is complete. Following the v6 hybrid TDD workflow exactly:
+
+## Summary
+
+I implemented the **MHPCO Claim Office** kata using strict Red-Green-Refactor TDD, delegating every phase to the appropriate skill/subagent:
+
+- **Test List** (`/test-list` skill): 36 tests covering every rule and example from the spec, ordered simple → complex.
+- **36 Red→Green→Refactor cycles**: each test activated via `/red`, made to pass via `/green`, then a `refactor` subagent ran in isolated context. Many later cycles were triangulation/boundary tests already satisfied by existing logic (predicted as immediate passes).
+- **End-Refactor** subagent: one final metric-driven pass over the whole `src/` — found the code already at its measured floor (0 ESLint smells, max cognitive complexity 4, max McCabe 4).
+
+**What was built:**
+- `src/claim-office.ts` — `runScenario(scenario)` handling sequential quote/claim steps:
+  - **Quotes**: base premiums by type; component block-of-3 pricing; per-item cursed (+50%) and high-enchantment ≥5 (+30%) surcharges; policy-wide loyalty (−20%), first-insurance (+10%), follow-up (−15%) modifiers; +5 fee; rounded up.
+  - **Claims**: deductible per damage event; enchantment ≥8 → 50% reimbursement; cap = 2× insurance sum tracked cumulatively across successive claims; payout rounded down.
+  - **Validation** (throws): unknown item type, damage count exceeding insured count (covers item-not-in-policy), negative damage amount.
+- `src/cli.ts` — reads JSON from stdin, writes results to stdout; on error exits non-zero with the message on stderr and nothing on stdout.
+
+**Final state:** 36/36 tests passing; CLI verified end-to-end for both a normal scenario and an error case; `experiment-done.txt` written.

@@ -1,0 +1,20 @@
+The MHPCO Claim Office kata is complete, implemented end-to-end via the strict TDD workflow.
+
+## Summary
+
+I followed the mandated hybrid TDD workflow throughout: `/test-list`, `/red`, `/green` skills in the main context, and the `refactor` subagent in isolated context — one test per Red-Green-Refactor cycle, with explicit failure predictions each Red phase.
+
+**Result: 45 tests, all passing**, covering every rule and example from the spec:
+- **Quote/premiums**: base premiums (sword/amulet/staff/potion), component pricing, the 3-alike-components block rule, "alike = same type", all modifiers (curse +50%, high-enchantment +30%, loyalty −20%, first-insurance +10%, follow-up −15%, +5 fee), modifier scope (item modifiers on item base, policy modifiers on policy base, fee last), thresholds, and round-up rounding.
+- **Claims/payouts**: per-event deductible, 2× insurance-sum cap, high-enchantment 50% reimbursement, dragon-material clause (documented as numerically the default), cap exhaustion across successive claims, round-down rounding.
+- **Edge cases**: unknown item type, claim referencing an item not in the policy, more damages than insured, and negative damage amounts — all throwing, surfaced by the CLI as non-zero exits with stderr messages.
+- **Integration examples** and the **schema example** verified end-to-end.
+
+**Files produced:**
+- `src/claim-office.ts` — the core logic (`runScenario`), refactored across every cycle into a clean rule-driven design (`RateRule`/`sumApplicableRates`, `tallyBy`/`sumOf`, directional rounding helpers, named validation guards).
+- `src/claim-office.spec.ts` — 45 Vitest tests.
+- `src/cli.ts` — the `claim-office` entry point: reads JSON from stdin, writes JSON to stdout, exits non-zero with an error on stderr for invalid input.
+
+`pnpm test` is fully green and `tsc --noEmit` type-checks cleanly. The `experiment-done.txt` marker has been written.
+
+One note worth surfacing: the spec's dragon-material "full reimbursement" clause is numerically identical to the default (non-high-enchantment) full reimbursement, so it required no distinct code branch — this is documented with a comment in `reimbursement` rather than implemented as a no-op branch the tests couldn't distinguish.

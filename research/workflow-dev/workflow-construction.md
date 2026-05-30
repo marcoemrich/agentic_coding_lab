@@ -59,6 +59,7 @@ Alle Varianten leben unter `experiments/workflows/v6.1-*` und differieren nur in
 - **Default für Code-Qualität auf trainingsbekannten Katas (GoL) × opus-4-7-portkey-no-thinking:** `v6.3-audit-bundle` (RQ-1.8). Eliminiert `tests_passed_immediately` deterministisch, +10 % Refactorings bei σ −64 %. **Nur** auf GoL/saturierter Korrektheit — auf claim-office bricht der Workflow (RQ-1.9).
 - **Default für Speed/Token-Effizienz, trainingsbekannte Katas:** `v6.1-no-pep` auf GOL. Auf claim-office nicht empfohlen.
 - **Default für Methoden-Vergleichs-RQs (Reduktions-Kette):** `v6.1-hybrid-testlist-scope-fix` als Baseline.
+- **`v6.5-end-refactor` ist auf zwei Modellen validiert** (opus-4-7 via RQ-1.12, opus-4-8 via RQ-1.13): hält Korrektheit auf claim-office ohne Bundle-Bruch, niedrigste Spitzen-Komplexität, ~v6.2-Tokenkosten. Auf opus-4-8 ist die nackte v6.2-Baseline weniger robust (1/5 CLI-Vertragsbruch + 1/5 Timeout), den v6.4/v6.5 durch den zweiten Whole-src-Kontakt abfangen. Eine Default-Promotion über v6.2 bräuchte noch eine GoL-Cross-Validierung; auf claim-office × Opus ist v6.5 der derzeit stärkste Quality-Kandidat ohne Korrektheits-Risiko.
 - **Niemals als Default verwenden:** `v6.1-no-emoji`, `v6.1-no-pep-no-emoji`, `v6.3-audit-bundle`, `v6.2.1-refactor-vocab` auf novel Code mit echten Mehrdeutigkeiten. Alle vier haben dokumentierte Korrektheits-Brüche auf claim-office (RQ-1.4, RQ-1.9, RQ-1.10).
 
 ---

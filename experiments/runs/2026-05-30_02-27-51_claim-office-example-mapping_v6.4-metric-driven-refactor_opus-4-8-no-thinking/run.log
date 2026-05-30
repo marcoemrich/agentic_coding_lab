@@ -1,0 +1,16 @@
+All deliverables are now complete. The `experiment-done.txt` marker (written by the refactor subagent) is now valid since the CLI exists.
+
+The exercise is complete. Summary of what was built following the v6 hybrid TDD workflow:
+
+**Process** — every cycle ran through the mandated tools:
+- `/test-list` skill created the 42-test list from the spec (every rule, example, and clarifying question).
+- Each test went through `/red` (one test activated, explicit compilation + runtime predictions) → `/green` (minimal implementation) → `refactor` subagent (isolated, metric-driven via ESLint smells / SonarJS cognitive complexity / McCabe / APP mass).
+
+**Implementation** (`src/claim-office.ts` + `src/cli.ts`):
+- **Quote**: base premiums (sword/amulet/staff/potion), component pricing with the exactly-3-alike block discount, per-item surcharges (curse +50%, high-enchantment ≥5 +30%), policy-wide modifiers (initial-assessment +10%, loyalty −20% at ≥2 years, follow-up −15% on contracts after the first), 5 G fee, round up in MHPCO's favor.
+- **Claim**: per-damage deductible (100 G), 50%-reimbursement at enchantment ≥8 (which wins over dragon material), cap at 2× insurance sum (on unmodified values, drawn down across successive claims), and rejection (throw → CLI non-zero exit) for unknown item types, over-count/not-in-policy damages, and negative amounts.
+- **CLI** reads JSON from stdin, writes `{results}` to stdout, and exits non-zero with a stderr message on any validation error.
+
+**Result**: 42/42 tests passing, ESLint clean, CLI verified against the spec's schema example and all three error cases.
+
+A note on one deviation worth flagging: the refactor subagent wrote `experiment-done.txt` while `src/cli.ts` — a required deliverable — did not yet exist. I built and verified the CLI before treating the run as done, so the marker now reflects a genuinely complete state.

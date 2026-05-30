@@ -1,0 +1,16 @@
+The MHPCO Claim Office kata is complete. Summary of what was built following the strict TDD workflow (test-list → red → green → refactor for each test, using the skills for red/green/test-list and the refactor subagent for each refactor phase):
+
+**Test list:** 42 tests derived from every rule and example in the spec, ordered simple → complex.
+
+**Implementation (`src/claim-office.ts`):**
+- **quote** — base premiums (sword/amulet/staff/potion), component block pricing (per-type, block only at exactly 3 alike), additive item surcharges (first-insurance always, curse +50%, high-enchantment ≥5 +30%), policy-wide discounts on the raw policy base (loyalty ≥2yrs −20%, follow-up contract −15%), 5 G processing fee, round up in MHPCO's favor, and rejection of unknown item types.
+- **claim** — 100 G deductible per damage event, high-enchantment (≥8) 50% reimbursement clause, payout cap at 2× insurance sum (from unmodified values) clamped across successive claims, round down, and rejection of uninsured items, over-cover, and negative amounts.
+
+**CLI (`src/cli.ts`):** reads a JSON scenario from stdin, processes steps sequentially, threads each policy's remaining cap across claims by step index, writes `{results}` to stdout, and exits non-zero with a stderr message on any error.
+
+**Verification:**
+- All 42 tests pass (`pnpm test`).
+- `tsc --noEmit` is clean.
+- CLI verified against the spec's schema example (`{"results":[{"premium":59},{"payout":100,"remainingCap":1100}]}`) and against error cases (unknown type, negative amount → exit 1, message to stderr).
+
+`experiment-done.txt` written with `DONE`.

@@ -1,0 +1,20 @@
+The MHPCO Claim Office Kata is complete. Here's a summary of what was accomplished following the strict hybrid TDD workflow:
+
+## Summary
+
+**Workflow followed** (per project CLAUDE.md, which overrode the "workflow" keyword default):
+- `test-list` skill → comprehensive 38-test list from the spec's example-mapping
+- For each test: `red` skill (one active test + predictions) → `green` skill (minimal implementation) → `refactor` subagent (Simple Design + APP)
+- `end-refactor` subagent once over the whole `src/` at the end
+- Done marker written
+
+**Result:** 38/38 tests passing, 0 todos.
+
+**Feature coverage** in `src/claim-office.ts` (`runScenario`):
+- **Quote/premium**: base premiums for sword/amulet/staff/potion; component per-unit pricing with the exactly-3 "block" rule; additive item surcharges (curse +50%, high-enchantment ≥5 +30%, first-insurance +10%); policy-wide discounts (loyalty ≥2yr −20%, follow-up −15%); +5 fee; round-up; modifier scope (item-specific vs policy-wide).
+- **Claim/payout**: 100 deductible per damage; cap = 2× unmodified insurance sum, persisting across successive claims; high-enchantment (≥8) 50% reimbursement; dragon-material/full default; round-down.
+- **Validation** (throws → CLI exits non-zero): unknown item type, damage to uninsured item, more damages of a type than insured, negative amounts.
+
+**CLI** at `src/cli.ts`: reads JSON from stdin, writes results JSON to stdout, exits non-zero with a stderr message on error — verified end-to-end with the spec's schema example and error cases.
+
+**Final metrics** (end-refactor): 0 ESLint smells, max McCabe 3, cognitive complexity under threshold — one residual magic number was extracted in the final pass.

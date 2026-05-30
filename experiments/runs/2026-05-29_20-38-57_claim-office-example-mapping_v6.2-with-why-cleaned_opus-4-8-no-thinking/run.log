@@ -1,0 +1,30 @@
+court
+<invoke name="Edit">
+<parameter name="file_path">/home/experimenter/experiments/runs/2026-05-29_20-38-57_claim-office-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking/src/claim-office.spec.ts</parameter>
+<parameter name="old_string">  it.todo("dragon-material sword, ench 9, damage 1000 → payout 400 (50% rule wins over dragon, then deductible)");</parameter>
+<parameter name="new_string">  it("dragon-material sword, ench 9, damage 1000 → payout 400 (50% rule wins over dragon, then deductible)", () => {
+    expect(
+      claim([{ type: "sword", material: "dragon", enchantment: 9 }], {
+        cause: "dragon",
+        damages: [{ itemType: "sword", amount: 1000 }],
+      }),
+    ).toEqual({ payout: 400, remainingCap: 1600 });
+  });</parameter>
+</invoke>
+All three cases work as expected.
+
+Created `src/cli.ts`. It:
+
+- **Reads JSON from stdin** — accumulates the full input stream (`readStdin`) and parses it as a request object.
+- **Dispatches on an `operation` field** to the existing `claim-office.js` module:
+  - `"quote"` → `quote(customer, items, options)`
+  - `"claim"` → `claim(items, incident)`
+- **Writes JSON to stdout** — serializes the result with a trailing newline.
+- **Handles errors** — unknown operations and module-thrown errors (e.g. unknown item types) go to stderr with exit code 1.
+
+Verified live via stdin:
+- Single sword (newcomer) → `{"premium":115}` ✓ (matches the spec example)
+- Sword claim, 300 damage → `{"payout":200,"remainingCap":1800}` ✓
+- Unknown operation → error on stderr, `exit=1` ✓
+
+One note: this was a plain file-creation/wiring task, not a TDD cycle, so I created it directly rather than going through the red/green/refactor skills — there was no new behavior in `claim-office.ts` to test-drive, only an I/O entry point around the existing module.

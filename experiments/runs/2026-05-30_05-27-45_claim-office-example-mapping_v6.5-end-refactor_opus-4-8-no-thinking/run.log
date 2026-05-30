@@ -1,0 +1,15 @@
+The MHPCO Claim Office kata is complete, implemented strictly via the hybrid TDD workflow.
+
+## Summary
+
+**Workflow followed:**
+- **Test List** (`/test-list` skill): 40 tests covering every rule and example from the spec — base premiums, component blocks, premium modifiers (curse, high enchantment, loyalty, first insurance, follow-up contract, fee), rounding, claim processing (deductible, cap, enchantment/dragon clauses, cap exhaustion), and all CLI error cases.
+- **40 Red→Green→Refactor cycles**: each Red and Green ran as a Skill in the main context; each Refactor ran as the isolated `refactor` subagent. Predictions were made and verified every Red phase.
+- **End-Refactor**: the `end-refactor` subagent ran once over the whole `src/`, driven by ESLint/cognitive/APP/McCabe metrics.
+
+**Final state:**
+- `src/claim-office.ts` — the pricing/claim engine (`runScenario`), built from small pure helpers with shared lookup logic (`lookupByType`, `countBy`).
+- `src/cli.ts` — the `claim-office` CLI entry point: reads JSON from stdin, writes results JSON to stdout, exits non-zero with a stderr message on invalid input.
+- `src/claim-office.spec.ts` — 40 passing tests.
+
+**Verification:** 40/40 tests pass; ESLint exits clean. `experiment-done.txt` written with `DONE`.
