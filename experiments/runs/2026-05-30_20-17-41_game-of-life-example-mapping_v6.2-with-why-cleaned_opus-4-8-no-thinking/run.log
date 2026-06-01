@@ -1,0 +1,22 @@
+The exercise is complete. Conway's Game of Life with an infinite sparse grid is fully implemented following the strict hybrid TDD workflow.
+
+## Summary
+
+**Implementation** (`src/game-of-life.ts`): `nextGeneration(cells: Cell[]): Cell[]` using a sparse representation — a `Set` of living-cell keys and a `Map` of neighbor counts built only around live cells. This handles the theoretically infinite grid (including negative coordinates) natively, since string-key encoding and coordinate arithmetic make no positivity assumptions.
+
+**Tests** (`src/game-of-life.spec.ts`): 9 tests, all passing, covering every rule and example from the spec:
+1. Empty input → empty
+2. Single cell dies (underpopulation)
+3. Pair each with 1 neighbor dies (underpopulation)
+4. Reproduction (dead cell with 3 neighbors becomes alive)
+5. Overpopulation (live cell with >3 neighbors dies)
+6. Survival (live cell with 2 neighbors lives)
+7. Block still life (unchanged)
+8. Blinker oscillates
+9. Negative coordinates
+
+**Workflow adherence**: Each cycle ran through the mandated tools — `test-list`, `red`, and `green` Skills in the main context, and the `refactor` subagent in isolated context. Every Red phase made explicit compilation and runtime predictions (all correct). Refactoring evolved the code from a hardcoded `return []` into a clean pipeline with extracted helpers (`toKey`/`fromKey`, `NEIGHBOR_OFFSETS`, `isAliveNextGeneration`, `liveNeighborCounts`).
+
+The `experiment-done.txt` marker has been written.
+
+A note: although my context flagged the "workflow" keyword, the project's TDD rules explicitly require the Skill/Task delegation mechanism (which the measurement pipeline parses) rather than the Workflow orchestration tool — so I followed the project rules.

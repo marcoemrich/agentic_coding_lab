@@ -1,0 +1,27 @@
+The exercise is complete. I implemented Conway's Game of Life with an infinite sparse grid following the strict TDD workflow.
+
+## Summary
+
+**Workflow followed** (per the project's TDD rules, which override the default Workflow-tool behavior — the Skill/subagent mechanism is required for the experiment's measurement pipeline):
+
+- **Test List Phase** (`/test-list` skill) — 8 tests covering every rule and example from the spec, ordered simple → complex.
+- **8 Red→Green→Refactor cycles** using the `/red` and `/green` skills and the `refactor` subagent:
+  1. Empty input → `[]`
+  2. Single cell dies (0 neighbors)
+  3. Pair dies (underpopulation)
+  4. **Block still life** — forced the real algorithm (neighbor-count Map + survival/birth rule)
+  5. Survival (2 neighbors)
+  6. Overpopulation (>3 neighbors)
+  7. Reproduction (dead cell, exactly 3 neighbors)
+  8. **Blinker** — oscillation + negative coordinates
+- **End-Refactor Phase** (`end-refactor` subagent, once) — metric-driven pass: extracted `countLiveNeighbors`, named the Conway-rule constants, reduced McCabe/APP mass. ESLint smells: 0.
+
+**Final state:**
+- ✅ 8/8 tests passing
+- ✅ ESLint clean (exit 0)
+- ✅ `tsc --noEmit` clean
+- ✅ `experiment-done.txt` written with `DONE`
+
+The implementation (`src/game-of-life.ts`) uses a sparse representation (only living cells), handles the infinite grid by only considering candidate cells (neighbors of living cells), and correctly handles negative coordinates — matching the `nextGeneration(cells: Cell[]): Cell[]` API contract.
+
+One prediction was incorrect during cycle 4 (I predicted a compilation error for an unimported `Cell` type, but vitest/esbuild strips types at runtime without type-checking) — I documented the discrepancy and fixed it by exporting/importing the `Cell` type.

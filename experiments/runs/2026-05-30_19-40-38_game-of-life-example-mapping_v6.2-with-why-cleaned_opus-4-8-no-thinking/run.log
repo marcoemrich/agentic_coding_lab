@@ -1,0 +1,27 @@
+The exercise is complete. I implemented Conway's Game of Life with an infinite sparse grid following the full TDD workflow.
+
+## Summary
+
+I followed the mandated hybrid TDD workflow — `/test-list`, `/red`, `/green` as Skills in the main context, and `refactor` as an isolated Task subagent — across all 9 cycles.
+
+**Note on the "workflow" keyword:** I did not use the Workflow tool. The project's TDD rules (which override default behavior) require this specific Skill/subagent delegation so the measurement pipeline can attribute each cycle; a multi-agent workflow would have invalidated the data point.
+
+**Result:** All 9 tests pass.
+
+| # | Test | Forced new logic? |
+|---|------|-------------------|
+| 1 | Empty grid stays empty | Yes (stub → `[]`) |
+| 2 | Single live cell dies | No (hardcoded covered it) |
+| 3 | Rule 1 underpopulation | No |
+| 4 | Rule 3 overpopulation | **Yes** — drove the full algorithm |
+| 5 | Rule 4 reproduction | No |
+| 6 | Rule 2 survival | No |
+| 7 | Block still life | No |
+| 8 | Blinker oscillates | No |
+| 9 | Negative coordinates | No |
+
+**One prediction was incorrect** (cycle 4): I predicted a TypeScript compile error for the unimported `Cell` type, but vitest/esbuild transpiles without type-checking, so the annotation was erased and the test instead failed at the assertion. I reported it as Incorrect and noted the cause. While fixing that test green, I also discovered the prompt's `#.#/#.#/#.#` overpopulation sketch was illustrative-only (it omits cells born just outside the 3×3 window); I verified the true result and corrected the test's expected value.
+
+**Final implementation** (`src/game-of-life.ts`): a sparse algorithm using a `Set` of living cells and a neighbor-count `Map` keyed by `"x,y"` strings — handling negative coordinates naturally. Refactoring evolved it from a hardcoded return into a clean `count → filter → map` pipeline with named helpers (`toKey`/`fromKey`, `countLiveNeighbors`, `isAliveNextGeneration`), named rule constants, and a shared `sortCells` test helper.
+
+`experiment-done.txt` written with `DONE`.

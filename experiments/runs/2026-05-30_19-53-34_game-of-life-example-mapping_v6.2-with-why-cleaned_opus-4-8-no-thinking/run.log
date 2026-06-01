@@ -1,0 +1,25 @@
+The exercise is complete. I implemented Conway's Game of Life with an infinite sparse grid following the full TDD workflow mandated by the project rules.
+
+## Summary
+
+**Workflow followed** (hybrid TDD per `.claude/rules/tdd.md`):
+- **Test List** → `/test-list` skill (main context)
+- **Red/Green** → `/red` and `/green` skills (main context) for each test
+- **Refactor** → `refactor` Task subagent (isolated context) after each meaningful Green
+
+**9 tests, all passing**, covering every rule and example from the spec:
+1. Empty input → `[]`
+2. Single cell dies
+3. Rule 1 — underpopulation (1 neighbor → dies)
+4. Rule 2 — survival (3 neighbors → lives)
+5. Rule 3 — overpopulation (4 neighbors → dies)
+6. Rule 4 — reproduction (dead cell, 3 neighbors → born)
+7. Blinker oscillator
+8. Block still-life
+9. Negative coordinates
+
+**Prediction accuracy**: every Red-phase compilation and runtime prediction was correct, including the several cases where a new test passed immediately against existing logic (overpopulation as the complement of the survival filter; integration patterns like blinker/block; sign-agnostic negative coordinates).
+
+**Final implementation** (`src/game-of-life.ts`): sparse `Set`/`Map` representation keyed on `"x,y"` strings, a shared `NEIGHBOR_OFFSETS`/`neighborsOf` abstraction (no duplication), survivors and births both expressed declaratively. Refactor passes drove it from a mutating-counter stub to clean, intent-revealing code while keeping every test green.
+
+`experiment-done.txt` written with `DONE`.

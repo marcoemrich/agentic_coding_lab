@@ -1,0 +1,23 @@
+The exercise is complete. I implemented Conway's Game of Life with an infinite sparse grid following the full TDD workflow mandated by the project rules.
+
+## Summary
+
+**Workflow followed** (per the project's TDD rules, which override the default Workflow-tool behavior — the measurement pipeline parses these skill/subagent calls):
+
+- **Test List** (skill) → 8 tests covering all 4 rules + 3 patterns
+- **8 Red→Green→Refactor cycles**: each Red/Green via skill, each Refactor via isolated `refactor` subagent
+- **End-Refactor** (subagent, once) over the whole `src/`
+- **Done marker** written
+
+**Tests** (all 8 passing): empty grid, single cell dies, underpopulation pair, survival, reproduction, overpopulation, block still-life, blinker oscillator (negative coordinates).
+
+**Final implementation** (`src/game-of-life.ts`) — a sparse, cohesive module:
+- `nextGeneration` orchestrates: build candidate set, filter by the survival/birth predicate
+- Helpers: `toKey`, `neighborsOf` (data-driven `NEIGHBOR_OFFSETS`), `countLiveNeighbors`, `isAliveNextGeneration`, `candidateCells`
+- Named domain constants `SURVIVAL_NEIGHBORS` / `REPRODUCTION_NEIGHBORS`
+
+**Final metrics**: 0 ESLint smells, max cognitive complexity 2, max McCabe 3, `tsc --noEmit` clean. The blinker test confirms infinite-grid negative-coordinate handling.
+
+A couple of honest notes on the process:
+- Several early tests (single cell, underpopulation pair, overpopulation, block, blinker) passed immediately because the spec's examples all map to behavior already implemented by the time the algorithm was complete — these served as confirmation cases rather than driving new code.
+- The spec's Rule 2 survival diagram is internally inconsistent with its listed coordinates, so I used a clean, unambiguous survival scenario (a horizontal row where the center cell has 2 neighbors and survives) instead.

@@ -1,0 +1,20 @@
+The exercise is complete. Conway's Game of Life with an infinite sparse grid was implemented following the mandated TDD workflow.
+
+## Summary
+
+**Note on "workflow":** The keyword triggered guidance toward the Workflow orchestration tool, but the project's `.claude/rules/tdd.md` explicitly mandate the *TDD workflow* using main-context Skills (`test-list`/`red`/`green`) and Task subagents (`refactor`/`end-refactor`). Using the orchestration tool would have routed work outside the main context and zeroed the experiment's measurement metrics, so I followed the project rules.
+
+**Cycle, by the book:**
+- **Test List** (skill) — 8 tests from the spec, ordered simple → complex.
+- **8 Red→Green→Refactor cycles** (skills + refactor subagent per cycle), each with explicit compilation + runtime predictions (all correct):
+  1. empty grid → `[]`
+  2. single cell dies (underpopulation)
+  3. two cells die (underpopulation)
+  4. survival (2–3 neighbors) — *forced first real logic*
+  5. overpopulation (>3 dies) — already covered by survival predicate
+  6. reproduction (dead cell, exactly 3) — *forced candidate-cell enumeration*
+  7. blinker oscillator — integration, already green
+  8. block still life — integration, already green
+- **End-Refactor** (subagent, once) — 2 applied changes (named domain constants; flattened `candidateCells` loops), 1 reverted (no net metric gain). Final state: 0 ESLint smells, max McCabe 3, max APP ~12.
+
+**Result:** 8/8 tests passing. Files: `src/game-of-life.ts` (implementation), `src/game-of-life.spec.ts` (tests). `experiment-done.txt` written with `DONE`.

@@ -6,7 +6,7 @@ factors:
     - {workflow: v6.2-with-why-cleaned,        prompt: example-mapping}  # Baseline: Per-Cycle APP-Refactor
     - {workflow: v6.4-metric-driven-refactor,  prompt: example-mapping}  # Per-Cycle metric-driven (ESLint/McCabe pre/post pro Cycle)
     - {workflow: v6.5-end-refactor,            prompt: example-mapping}  # v6.2 Per-Cycle + zusaetzlicher End-Refactor-Pass (whole src/, iterativ, metric-driven)
-  kata_base: [claim-office]
+  kata_base: [claim-office, game-of-life]
 controls:
   model: opus-4-8-no-thinking
 outcomes:
@@ -61,15 +61,15 @@ Identisch zu RQ-1.12 — `v6.5-end-refactor` unterscheidet sich von `v6.2-with-w
 
 ## Datenlage zu RQ-Beginn
 
-Bestehende Runs im Pool (Stand 2026-05-29):
+Bestehende Runs im Pool (Stand 2026-05-30):
 
-| Workflow | n (opus-4-8-no-thinking) | Bemerkung |
-|---|---:|---|
-| `v6.2-with-why-cleaned`        | 0 | neu zu fahren |
-| `v6.4-metric-driven-refactor`  | 0 | neu zu fahren |
-| `v6.5-end-refactor`            | 0 | neu zu fahren |
+| Workflow | claim-office | game-of-life | Bemerkung |
+|---|---:|---:|---|
+| `v6.2-with-why-cleaned`        | 5 | 0 | claim-office da (1 ver=0-Outlier, 1 timeout — beide legitime Findings); GoL neu |
+| `v6.4-metric-driven-refactor`  | 5 | 0 | claim-office da; GoL neu |
+| `v6.5-end-refactor`            | 5 | 0 | claim-office da; GoL neu |
 
-Es gibt **keine** wiederverwendbaren opus-4-8-Runs fuer diese drei Workflows — alle 3 Zellen × n=5 = **15 Runs** sind frisch zu erheben. (Die RQ-1.12-Runs sind opus-4-7/Portkey und zaehlen wegen des fixen `controls.model` hier nicht mit.)
+Die **claim-office**-Haelfte (15 Runs, 29./30.05.) ist vollstaendig erhoben. Offen ist die **game-of-life**-Haelfte: 3 Zellen × n=5 = **15 Runs** frisch zu erheben (Direct-API/native, single-shard). (Die RQ-1.12-Runs sind opus-4-7/Portkey und zaehlen wegen des fixen `controls.model` hier nicht mit.)
 
 ## Design
 
@@ -90,7 +90,7 @@ Runs:      15 total (alle neu)
 - **Subscription-Cap-Risiko (Direct-API-spezifisch):** Lange iterative End-Refactor-Sessions × claim-office koennen in ein Subscription-Cap laufen; die Anthropic-CLI verlaesst den Container dann mit `exit=0` ("Waiting for retry window"). `run-batch.sh` fixt das seit 2026-05-27 im exit-0-Pfad (Memory `v64-stress-postmortem`) — vor Aggregation trotzdem `jq .run_status.exit_reason` + `experiment-done.txt`-Praesenz stichprobenartig pruefen.
 - **End-Refactor-Pass ist iterativ ohne hartes Limit:** `duration_seconds` / `total_tokens` von v6.5 liegen im Mittel ueber v6.2; der TDD-Cycle-Anteil ist davon entkoppelt.
 - **Bundle-Caveat (kausale Lokalisierung):** Der End-Refactor-Agent kombiniert Whole-src-Scope + iterative Mehrfach-Refactorings + Pre/Post-Messung. Ein Effekt ist nicht auf eine dieser Komponenten lokalisierbar.
-- **claim-office-only:** GoL-Cross-Validierung bleibt fuer eine eventuelle Folge-RQ.
+- **Kata-Asymmetrie (RQ-1.12-Lehre):** Der v6.5-End-Pass wirkt auf der **mehrteiligen** claim-office-Codebasis (Cross-file-Konsolidierung), war auf der **einteiligen** game-of-life-Library aber Rauschen (F-1.12.2). Die GoL-Zellen prüfen daher primär, ob dieser kata-abhängige Unterschied auf opus-4-8 reproduziert — nicht, ob v6.5 dort gewinnt. Katas werden **nie gemittelt**.
 
 ## Status / Naechste Schritte
 

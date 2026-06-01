@@ -1,0 +1,52 @@
+The full TDD cycle has completed. All 9 tests pass, TypeScript compiles cleanly, and the `experiment-done.txt` marker is written.
+
+## Summary
+
+I implemented Conway's Game of Life (infinite sparse grid) following the autonomous hybrid TDD workflow:
+
+**Test List Phase** (Skill) → created 9 `it.todo()` cases covering all four rules, the degenerate cases, negative coordinates, and the blinker/block patterns.
+
+**Red → Green → Refactor cycles** (Skills for red/green in main context, refactor subagent in isolation):
+
+| # | Test | Result |
+|---|------|--------|
+| 1 | empty grid stays empty | ✅ |
+| 2 | single live cell dies | ✅ |
+| 3 | dead cell with 3 neighbors is born (forced real logic) | ✅ |
+| 4 | two adjacent cells die (underpopulation) | ✅ |
+| 5 | live cell with 2–3 neighbors survives | ✅ |
+| 6 | live cell with >3 neighbors dies (overpopulation) | ✅ |
+| 7 | negative coordinates | ✅ |
+| 8 | blinker oscillates | ✅ |
+| 9 | block still life unchanged | ✅ |
+
+**Final state:** `9 passed`, `tsc --noEmit` clean.
+
+The refactor subagent passes notably caught and fixed a latent bug: the original survival predicate was `count === 2` only — the canonical rule is survive at 2 *or* 3. It was masked by the reproduction clause, but the refactor corrected it to the proper `survives = isAlive && (count === 2 || count === 3)` form and extracted `toKey`/`fromKey`/`neighborsOf`/`countLiveNeighbors` helpers with a `CellKey` type for clarity.
+
+**Final implementation** (`src/game-of-life.ts`):
+```typescript
+type Cell = [number, number]; // [x, y]
+type CellKey = string; // "x,y" — lets cells be used as Map/Set keys
+
+const toKey = ([x, y]: Cell): CellKey => `${x},${y}`;
+const fromKey = (key: CellKey): Cell => key.split(",").map(Number) as Cell;
+
+function neighborsOf([x, y]: Cell): Cell[] { /* 8 surrounding cells */ }
+function countLiveNeighbors(cells: Cell[]): Map<CellKey, number> { /* ... */ }
+
+export function nextGeneration(cells: Cell[]): Cell[] {
+  const living = new Set(cells.map(toKey));
+  const neighborCounts = countLiveNeighbors(cells);
+  const next: Cell[] = [];
+  for (const [key, count] of neighborCounts) {
+    const isAlive = living.has(key);
+    const survives = isAlive && (count === 2 || count === 3);
+    const isBorn = !isAlive && count === 3;
+    if (survives || isBorn) next.push(fromKey(key));
+  }
+  return next;
+}
+```
+
+One environment note worth flagging: the project's `pnpm install` ran with `NODE_ENV=production`, which skipped `vitest`. The refactor subagent installed dev dependencies (`NODE_ENV=development pnpm install --prod=false`), after which `pnpm test` runs normally — which is how all subsequent cycles were verified.

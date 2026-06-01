@@ -1,0 +1,24 @@
+The exercise is complete. I implemented Conway's Game of Life on an infinite sparse grid following the full TDD workflow.
+
+## Summary
+
+**Workflow followed** (per the project's hybrid v6 TDD rules):
+- **Test List** (Skill) → 9 tests covering every rule and example
+- **9 Red → Green → Refactor cycles** — `/red` and `/green` as Skills in main context; each refactor delegated to the `refactor` subagent
+- **End-Refactor** subagent run once over the whole `src/`
+- **Done Marker** written
+
+**Tests** (all 9 passing): empty grid, single cell dies, underpopulation, reproduction, survival, overpopulation, block still-life, blinker oscillator, negative coordinates.
+
+**Implementation** (`src/game-of-life.ts`): sparse representation using string-keyed `Set`/`Map`. The algorithm counts live neighbors only for cells adjacent to living cells, then keeps each cell that satisfies Conway's rules. Final structure after refactoring:
+- `toKey` / `fromKey` — coordinate ↔ string-key encode/decode
+- `NEIGHBOR_OFFSETS` + `neighborsOf` — the eight surrounding cells
+- `willLive` — the birth/survival predicate with named constants `NEIGHBORS_FOR_BIRTH` / `NEIGHBORS_FOR_SURVIVAL`
+- `countLiveNeighbors` — neighbor tally
+- `nextGeneration` — declarative 3-step pipeline (count → filter survivors/births → decode)
+
+**Notable adjustments during the run:**
+- The prompt's Rule 2 diagram was internally inconsistent (it labels the dead center cell `(1,1)` as "surviving"), so I tested survival with an unambiguous three-in-a-row case instead — the behavior verified is correct.
+- One Red-phase compilation prediction was wrong: I expected an unexported-`Cell`-type reference in the test to fail, but vitest transpiles without type-checking. I corrected the test to a self-contained annotation and confirmed `tsc --noEmit` passes clean.
+
+Final state: **9/9 tests green, 0 ESLint smells, clean type-check.**

@@ -1,0 +1,29 @@
+The TDD workflow is complete. All phases were executed via the mandated skills and refactor subagent.
+
+## Summary
+
+I implemented Conway's Game of Life (infinite sparse grid) following the strict Red-Green-Refactor TDD workflow, delegating every phase to the appropriate skill/subagent as the project rules require.
+
+**Result: 9/9 tests passing, ESLint clean, `experiment-done.txt` written with `DONE`.**
+
+### Cycles completed
+1. Empty input → `[]`
+2. Single live cell dies (0 neighbors)
+3. Underpopulation kills both cells
+4. **Survival** — first non-empty output, forced real neighbor-counting (corrected a flawed test premise mid-cycle: the spec's Rule 2 example actually couples survival with reproduction, so I isolated survival using a genuine live cell)
+5. Overpopulation (>3 neighbors dies)
+6. **Reproduction** — first dead-cell birth, forced expanding to a candidate set (live cells + neighbors)
+7. Block still-life (forced output deduplication)
+8. Blinker oscillation (two-axis transform, negative coords)
+9. Negative coordinates (all-negative blinker)
+
+### Final implementation (`src/game-of-life.ts`)
+A clean, sign-agnostic sparse solution:
+- `Set` of string keys for O(1) liveness checks
+- `Map`-based candidate collection (live cells + their neighbors, deduplicated)
+- A pure `willLive(alive, neighbors)` function encoding the survival/reproduction rules with named constants
+- Named `NEIGHBOR_OFFSETS` / `SELF_AND_NEIGHBOR_OFFSETS` tables
+
+The refactor subagent progressively drove down complexity (e.g. `countNeighbors` McCabe 6→1, `nextGeneration` branch logic extracted to `willLive`, array scans replaced by set membership) while keeping all tests green throughout.
+
+Note: the project's `.claude/rules/tdd.md` mandates the Skill/Task-based TDD cycle for measurement, so I followed that rather than the Workflow tool — the per-phase skill and refactor-subagent calls are what populate the experiment's metrics.

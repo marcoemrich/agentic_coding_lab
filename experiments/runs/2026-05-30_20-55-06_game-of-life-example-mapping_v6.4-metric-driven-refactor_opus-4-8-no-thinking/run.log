@@ -1,0 +1,19 @@
+The exercise is complete. Everything is verified:
+
+## Summary
+
+I implemented Conway's Game of Life with an infinite sparse grid following the project's strict TDD workflow (Skills for test-list/red/green in the main context, the refactor subagent in isolated context).
+
+**Process:** 8 full TDD cycles, one per spec example, ordered simple → complex:
+1. Empty grid → `[]`
+2. Single cell dies
+3. Rule 1 Underpopulation (domino dies)
+4. Rule 2 Survival — *this test forced the real algorithm*
+5. Rule 3 Overpopulation
+6. Rule 4 Reproduction
+7. Block still life (unchanged)
+8. Blinker oscillator (with negative coordinates)
+
+**Result:** All 8 tests pass. The implementation (`src/game-of-life.ts`) is a clean set of small pure functions — `neighborsOf`, `countLiveNeighbors`, `isAliveNextGeneration`, `uniqueCells` — with named constants (`SURVIVAL_NEIGHBORS`, `BIRTH_NEIGHBORS`, `NEIGHBOR_OFFSETS`), a sparse `Cell[]` representation, and correct negative-coordinate handling. `experiment-done.txt` contains `DONE`.
+
+**One thing worth flagging:** the prompt's **Rule 2 example is internally inconsistent** — its grid (`###`/`...`/`.#.`) shows `(1,1)` as *dead*, yet the prose says "(1,1) has 3 live neighbors → survives" (it actually has 4 under standard coordinate reading, and "survives" doesn't apply to a dead cell). I reformulated that single test to faithfully express Rule 2 itself — a live cell with 2 neighbors surviving, using the blinker's center cell — rather than encode the contradictory example. Every other example was tested verbatim against the spec's stated coordinates.

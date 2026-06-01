@@ -1,0 +1,21 @@
+The Game of Life kata is complete. I followed the mandated hybrid TDD workflow throughout — using the `test-list`, `red`, and `green` **Skills** in the main context and the **refactor subagent** via the Task tool (not the Workflow tool, which would have produced no measurable signal for this experiment's pipeline).
+
+**Summary of the 9 TDD cycles:**
+
+| # | Test | Forced new logic? |
+|---|------|-------------------|
+| 1 | empty input → `[]` | yes (stub → `return []`) |
+| 2 | single cell dies | no (already green) |
+| 3 | underpopulation pair dies | no |
+| 4 | **survival** (2-neighbor center lives) | **yes** — drove the full neighbor-counting algorithm |
+| 5 | overpopulation (>3 dies) | no (emergent) |
+| 6 | reproduction (dead + 3 → born) | no (emergent) |
+| 7 | block still life unchanged | no |
+| 8 | blinker oscillates (incl. `-1` coord) | no |
+| 9 | negative-coordinate block | no |
+
+**Final implementation** (`src/game-of-life.ts`): a sparse, infinite-grid algorithm that counts neighbors only around living cells via a `"x,y"`-keyed Map, then emits any cell that *survives* (alive with 2 neighbors) or *reproduces* (3 neighbors). Refactoring extracted `countLiveNeighbors`, a `NEIGHBOR_OFFSETS` table, named constants (`SURVIVAL_COUNT`/`REPRODUCTION_COUNT`), and paired `keyOf`/`cellFromKey` helpers — eliminating all ESLint smells (4 → 0) and dropping cognitive complexity below threshold.
+
+- **9/9 tests passing**, all spec rules and examples covered
+- All red-phase predictions verified correct
+- `experiment-done.txt` written with `DONE`

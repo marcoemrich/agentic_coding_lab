@@ -1,0 +1,21 @@
+The exercise is complete. I implemented Conway's Game of Life on an infinite sparse grid using strict TDD via the mandated skill/subagent workflow.
+
+## Summary
+
+**Workflow note:** Although the request included the "workflow" keyword, the project's TDD rules explicitly override default behavior and mandate the skill-based (`/test-list`, `/red`, `/green`) + refactor-subagent cycle — the measurement pipeline depends on those exact tool calls, so a `Workflow` orchestration would have produced zero metric signal. I followed the project rules.
+
+**TDD cycle (8 tests, all green):**
+1. Empty grid → `[]`
+2. Single cell dies (0 neighbors)
+3. Two adjacent cells die (underpopulation)
+4. Live cell with 2 neighbors survives — *first test to force real logic*
+5. Dead cell with 3 neighbors is born (reproduction)
+6. Live cell with 4 neighbors dies (overpopulation)
+7. Block still-life is stable
+8. Blinker oscillates with negative coordinates
+
+**Key decision:** The spec's Rule 2 grid example was internally inconsistent — its stated Gen 1 contradicts its own rules (the center cell would have 4 live neighbors, not 3, so it couldn't survive). I corrected that test to a rule-verifiable survival scenario (center of a 3-in-a-row has exactly 2 neighbors → survives) rather than encode the contradiction.
+
+**Implementation** (`src/game-of-life.ts`): sparse `Set`-based representation, neighbor counting via a `Map`, with named helpers (`toKey`/`fromKey`, `NEIGHBOR_OFFSETS`, `neighborsOf`, `survives`) extracted across three refactor passes. Negative coordinates are handled naturally by the string-key encoding.
+
+Final state: `8 passed (8)`, `experiment-done.txt` written.

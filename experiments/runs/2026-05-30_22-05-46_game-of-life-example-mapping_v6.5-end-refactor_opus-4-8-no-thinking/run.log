@@ -1,0 +1,22 @@
+The exercise is complete. Conway's Game of Life with an infinite sparse grid was implemented following the full TDD workflow.
+
+## Summary
+
+I implemented the kata via strict Red-Green-Refactor cycles, delegating every phase to the mandated skills and subagents:
+
+- **Test List** (`/test-list` skill): 9 tests covering all 4 rules and every spec example, ordered simple → complex.
+- **9 Red→Green→Refactor cycles** (`/red`, `/green` skills + `refactor` subagent per cycle):
+  1. Empty input → `[]`
+  2. Single cell dies (underpopulation)
+  3. Two cells die (underpopulation)
+  4. Live cell with 2 neighbors survives — *first real logic*
+  5. Live cell with 3 neighbors survives
+  6. Overpopulation (>3 neighbors dies)
+  7. Reproduction (dead cell with exactly 3 neighbors born) — *added birth logic*
+  8. Block still life stays stable
+  9. Blinker oscillator (also exercises negative coordinates)
+- **End-Refactor** (`end-refactor` subagent, once): measured the whole `src/` and confirmed it was already at the metric floor — 0 ESLint smells, no cognitive-complexity violations, max McCabe of 2, domain-accurate names, no duplication. 0 changes applied.
+
+**Final state:** All 9 tests pass. The implementation in `src/game-of-life.ts` uses a sparse representation (only living cells), handles negative coordinates, and is built from small single-purpose functions (`nextGeneration`, `birthCandidates`, `unique`, `neighborsOf`, `contains`, `samePosition`, `survives`, `countLiveNeighbors`).
+
+`experiment-done.txt` written with `DONE`.
