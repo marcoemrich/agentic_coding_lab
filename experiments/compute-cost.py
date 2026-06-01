@@ -32,9 +32,13 @@ import sys
 from pathlib import Path
 
 
-# Prices in USD per 1M tokens. Source: research/model-pricing.md (Stand 2026-05-25).
+# Prices in USD per 1M tokens. Source: research/model-pricing.md (Stand 2026-05-29).
 # input / output / cache_read / cache_write
 PRICES = {
+    "opus-4-8":         (5.00,  25.00, 0.50, 6.25),
+    "opus-4-8-no-thinking": (5.00, 25.00, 0.50, 6.25),
+    "opus-4-8-portkey": (5.00, 25.00, 0.50, 6.25),
+    "opus-4-8-portkey-no-thinking": (5.00, 25.00, 0.50, 6.25),
     "opus-4-7":         (5.00,  25.00, 0.50, 6.25),
     "opus-4-7-no-thinking": (5.00, 25.00, 0.50, 6.25),
     "opus-4-7-portkey": (5.00, 25.00, 0.50, 6.25),

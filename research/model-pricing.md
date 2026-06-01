@@ -1,4 +1,4 @@
-# Token-Preise Coding-Modelle (Stand 2026-05-25)
+# Token-Preise Coding-Modelle (Stand 2026-05-29)
 
 Quellen: Anthropic API (claude.com/pricing), OpenRouter API (`/api/v1/models`).
 Alle Preise in USD pro 1M Token.
@@ -7,6 +7,7 @@ Alle Preise in USD pro 1M Token.
 
 | Modell | Input | Output | Cache Read |
 |---|---:|---:|---:|
+| Claude Opus 4.8 | $5.00 | $25.00 | $0.50 |
 | Claude Opus 4.7 | $5.00 | $25.00 | $0.50 |
 | Claude Sonnet 4.6 | $3.00 | $15.00 | $0.30 |
 | Moonshot Kimi K2.6 | $0.73 | $3.49 | $0.37 |
@@ -23,7 +24,8 @@ Alle Preise in USD pro 1M Token.
 - **DeepSeek V4 Pro** ist das aktuelle Flagship. V4-Familie hat keine separate Coder-Variante mehr — Pro ist coding-fähig.
 - **Qwen3-Coder-Plus** ist die bezahlte Flagship-Variante. Alternativen: `qwen3-coder-next` (Preview, $0.11/$0.80), `qwen3-coder` (480B base, $0.22/$1.80).
 - **Kimi K2.6** Preis schwankt zwischen Providern ($0.73–$0.77 input / $3.49–$4.00 output), oben der Hauptpreis.
-- **Opus 4.7** unterstützt Prompt Caching (Cache-Hit = 10% vom Basis-Input-Preis). Kimi und GLM bieten ebenfalls Cache Reads über OpenRouter.
+- **Opus 4.7/4.8** unterstützen Prompt Caching (Cache-Hit = 10% vom Basis-Input-Preis). Opus 4.8 hat identische Token-Tarife wie 4.7. Kimi und GLM bieten ebenfalls Cache Reads über OpenRouter.
+- **Fast mode** (Research Preview): Opus 4.7 = $30/$150, Opus 4.8 = $10/$50 (4.8 ist deutlich günstiger im Fast-Mode).
 
 ## Relative Größenordnung
 
