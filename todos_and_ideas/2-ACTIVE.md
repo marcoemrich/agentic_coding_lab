@@ -1,15 +1,5 @@
-# TODOs and Ideas
+# TODOs and Ideas - Active
 
-# In-Box
-
-* H: Mars-Rover command-idea, wie integrieren
- * Optimize: Alternative Refactor-Techniques: based on Deterministic Refactorings
-
-* TDD-Micro-Cycle
-* FP-Stuff, check for immutabilitym pure functions
-* switch everything to english
-* Language-Erweiterung: RUST
-* Neuer Worflow Red->Green, Refactoring nur am Ende
 
 ## Problem separation first
 Prio: High
@@ -30,13 +20,6 @@ Prio: Medium
 
  * explizite Pre + Post-Steps
  * Functional Domain Modelling
-
-## Merge with other science framework or take ideas from it
-Prio: Low
-
-* https://github.com/vercel-labs/agent-eval/
-* /plugin install plugin-eval@claude-code-workflows
-* Harbor https://www.harborframework.com
 
 ## Other workflows
 Prio: Medium
@@ -98,8 +81,8 @@ https://www.skill.fish/skill/tcr-practice-test-commit-revert
 
 ## Weitere Dimensionen
 
- * Konzepte: Functional va OpenCode
- * Programmiersprache
+ * Paradimen: FP, OOP (Callisthenics)
+ * Programmiersprache: Rust, Haskel, Kotlin, Java
 
 ## Workshop TODOs
 
@@ -132,3 +115,11 @@ Mehr Post-Toolings (test vs. bei jedem Refactoring):
 
 # Optmization Ideas
  * use Hooks
+
+
+## Merge with other science framework or take ideas from it
+Prio: Low
+
+* https://github.com/vercel-labs/agent-eval/
+* /plugin install plugin-eval@claude-code-workflows
+* Harbor https://www.harborframework.com
