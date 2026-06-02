@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_01-37-28_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-2
 
-Generated: 2026-05-13T07:48:59+02:00
+Generated: 2026-06-02T07:56:59+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-13T07:48:59+02:00
 
  Test Files  1 passed (1)
       Tests  16 passed (16)
-   Start at  07:48:59
-   Duration  358ms (transform 35ms, setup 0ms, collect 32ms, tests 3ms, environment 0ms, prepare 83ms)
+   Start at  07:56:59
+   Duration  337ms (transform 34ms, setup 0ms, collect 31ms, tests 3ms, environment 0ms, prepare 104ms)
 ```
 
 ## Coverage

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-13_00-30-39_claim-office-user-story_v5-exact-single-context_opus-4-7-no-thinking
 
-Generated: 2026-05-13T04:08:33+00:00
+Generated: 2026-06-02T08:14:35+02:00
 
 ## Configuration
 
@@ -30,11 +30,11 @@ Generated: 2026-05-13T04:08:33+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-13_00-30-39_claim-office-user-story_v5-exact-single-context_opus-4-7-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-13_00-30-39_claim-office-user-story_v5-exact-single-context_opus-4-7-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-13_00-30-39_claim-office-user-story_v5-exact-single-context_opus-4-7-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-13_00-30-39_claim-office-user-story_v5-exact-single-context_opus-4-7-no-thinking
 
  ❯ src/claim-office.spec.ts  (18 tests | 1 failed | 16 skipped) 6ms
    ❯ src/claim-office.spec.ts > MHPCO Claim Office > should quote a single amulet for a new customer
@@ -69,8 +69,8 @@ AssertionError: expected { results: [ { premium: 115 } ] } to deeply equal { res
 
  Test Files  1 failed (1)
       Tests  1 failed | 1 passed | 16 todo (18)
-   Start at  04:08:33
-   Duration  156ms (transform 22ms, setup 0ms, collect 21ms, tests 6ms, environment 0ms, prepare 44ms)
+   Start at  08:14:35
+   Duration  387ms (transform 26ms, setup 0ms, collect 18ms, tests 6ms, environment 0ms, prepare 114ms)
 
  ELIFECYCLE  Test failed. See above for more details.
 ```

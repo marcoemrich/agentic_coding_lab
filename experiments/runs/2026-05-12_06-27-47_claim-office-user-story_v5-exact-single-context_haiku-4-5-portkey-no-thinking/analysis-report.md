@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_06-27-47_claim-office-user-story_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 
-Generated: 2026-05-12T06:35:18+00:00
+Generated: 2026-06-02T08:04:02+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-12T06:35:18+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_06-27-47_claim-office-user-story_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_06-27-47_claim-office-user-story_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_06-27-47_claim-office-user-story_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_06-27-47_claim-office-user-story_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 
  ✓ src/quote.spec.ts  (15 tests | 5 skipped) 2ms
 
  Test Files  1 passed (1)
       Tests  10 passed | 5 todo (15)
-   Start at  06:35:19
-   Duration  157ms (transform 24ms, setup 0ms, collect 22ms, tests 2ms, environment 0ms, prepare 44ms)
+   Start at  08:04:04
+   Duration  336ms (transform 36ms, setup 0ms, collect 21ms, tests 2ms, environment 0ms, prepare 123ms)
 ```
 
 ## Coverage

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-11_23-37-29_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
-Generated: 2026-05-12T00:10:15+00:00
+Generated: 2026-06-02T07:55:12+02:00
 
 ## Configuration
 
@@ -29,16 +29,22 @@ Generated: 2026-05-12T00:10:15+00:00
 **Status**: ✅ All tests passing (41 passed)
 
 ```
-$ vitest run
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-11_23-37-29_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-37-29_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey-no-thinking
+> vitest run
 
- ✓ src/claim-office.spec.ts  (41 tests) 762ms
+
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-37-29_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey-no-thinking
+
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+ ✓ src/claim-office.spec.ts  (41 tests) 611ms
 
  Test Files  1 passed (1)
       Tests  41 passed (41)
-   Start at  00:10:16
-   Duration  947ms (transform 49ms, setup 0ms, collect 50ms, tests 762ms, environment 0ms, prepare 45ms)
+   Start at  07:55:14
+   Duration  998ms (transform 42ms, setup 0ms, collect 47ms, tests 611ms, environment 0ms, prepare 69ms)
 ```
 
 ## Coverage

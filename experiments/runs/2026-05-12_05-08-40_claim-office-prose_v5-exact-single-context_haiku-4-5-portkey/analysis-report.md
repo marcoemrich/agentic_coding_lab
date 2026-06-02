@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_05-08-40_claim-office-prose_v5-exact-single-context_haiku-4-5-portkey
 
-Generated: 2026-05-12T05:20:55+00:00
+Generated: 2026-06-02T08:01:36+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-12T05:20:55+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_05-08-40_claim-office-prose_v5-exact-single-context_haiku-4-5-portkey
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_05-08-40_claim-office-prose_v5-exact-single-context_haiku-4-5-portkey
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_05-08-40_claim-office-prose_v5-exact-single-context_haiku-4-5-portkey
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_05-08-40_claim-office-prose_v5-exact-single-context_haiku-4-5-portkey
 
- ✓ src/claim-office.spec.ts  (16 tests | 6 skipped) 2ms
+ ✓ src/claim-office.spec.ts  (16 tests | 6 skipped) 3ms
 
  Test Files  1 passed (1)
       Tests  10 passed | 6 todo (16)
-   Start at  05:20:56
-   Duration  153ms (transform 23ms, setup 0ms, collect 22ms, tests 2ms, environment 0ms, prepare 42ms)
+   Start at  08:01:38
+   Duration  325ms (transform 26ms, setup 0ms, collect 23ms, tests 3ms, environment 0ms, prepare 66ms)
 ```
 
 ## Coverage

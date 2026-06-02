@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-08_15-54-26_claim-office-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
-Generated: 2026-05-10T14:54:41+02:00
+Generated: 2026-06-02T07:53:31+02:00
 
 ## Configuration
 
@@ -36,12 +36,12 @@ Generated: 2026-05-10T14:54:41+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-08_15-54-26_claim-office-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
- ✓ src/claim-office.spec.ts  (34 tests) 7ms
+ ✓ src/claim-office.spec.ts  (34 tests) 6ms
 
  Test Files  1 passed (1)
       Tests  34 passed (34)
-   Start at  14:54:41
-   Duration  414ms (transform 36ms, setup 0ms, collect 35ms, tests 7ms, environment 0ms, prepare 63ms)
+   Start at  07:53:31
+   Duration  379ms (transform 37ms, setup 0ms, collect 34ms, tests 6ms, environment 0ms, prepare 72ms)
 ```
 
 ## Coverage

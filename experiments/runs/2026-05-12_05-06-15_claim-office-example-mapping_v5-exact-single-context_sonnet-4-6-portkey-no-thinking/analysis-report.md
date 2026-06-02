@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_05-06-15_claim-office-example-mapping_v5-exact-single-context_sonnet-4-6-portkey-no-thinking
 
-Generated: 2026-05-12T05:51:32+00:00
+Generated: 2026-06-02T08:01:24+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-12T05:51:32+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_05-06-15_claim-office-example-mapping_v5-exact-single-context_sonnet-4-6-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_05-06-15_claim-office-example-mapping_v5-exact-single-context_sonnet-4-6-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_05-06-15_claim-office-example-mapping_v5-exact-single-context_sonnet-4-6-portkey-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_05-06-15_claim-office-example-mapping_v5-exact-single-context_sonnet-4-6-portkey-no-thinking
 
- ✓ src/claim-office.spec.ts  (27 tests) 5ms
+ ✓ src/claim-office.spec.ts  (27 tests) 4ms
 
  Test Files  1 passed (1)
       Tests  27 passed (27)
-   Start at  05:51:33
-   Duration  166ms (transform 37ms, setup 0ms, collect 35ms, tests 5ms, environment 0ms, prepare 42ms)
+   Start at  08:01:26
+   Duration  342ms (transform 31ms, setup 0ms, collect 29ms, tests 4ms, environment 0ms, prepare 86ms)
 ```
 
 ## Coverage

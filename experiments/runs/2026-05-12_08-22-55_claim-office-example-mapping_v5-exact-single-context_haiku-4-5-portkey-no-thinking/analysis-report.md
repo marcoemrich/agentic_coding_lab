@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_08-22-55_claim-office-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 
-Generated: 2026-05-12T08:23:13+00:00
+Generated: 2026-06-02T08:08:17+02:00
 
 ## Configuration
 
@@ -30,11 +30,18 @@ Generated: 2026-05-12T08:23:13+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_08-22-55_claim-office-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_08-22-55_claim-office-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 > vitest run
 
-sh: 1: vitest: not found
- ELIFECYCLE  Test failed. See above for more details.
+
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_08-22-55_claim-office-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+
+ ↓ src/index.spec.ts  (7 tests | 7 skipped)
+
+ Test Files  1 skipped (1)
+      Tests  7 todo (7)
+   Start at  08:08:19
+   Duration  341ms (transform 19ms, setup 0ms, collect 12ms, tests 0ms, environment 0ms, prepare 72ms)
 ```
 
 ## APP Mass Estimation
@@ -61,11 +68,19 @@ sh: 1: vitest: not found
 
 ## Code Smells
 
+| Category | Count |
+|----------|-------|
+| Complexity | 0 |
+| Duplication | 0 |
+| Magic Numbers | 0 |
+| Code Quality | 0 |
+| **Total** | **0** |
+
 ## Complexity Scores
 
 | Metric | Max | Avg | High (>10) |
 |--------|-----|-----|---------------------------|
-| McCabe (Cyclomatic) | 0 | 0 | 0 |
+| McCabe (Cyclomatic) | 1 | 1.00 | 0 |
 | Cognitive (SonarJS) | 0 | 0 | 0 |
 
 ## Transcript Metrics

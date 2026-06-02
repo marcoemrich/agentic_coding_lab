@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_08-29-17_claim-office-user-story_v5-exact-single-context_sonnet-4-6-portkey
 
-Generated: 2026-05-12T08:56:33+00:00
+Generated: 2026-06-02T08:09:08+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-12T08:56:33+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_08-29-17_claim-office-user-story_v5-exact-single-context_sonnet-4-6-portkey
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_08-29-17_claim-office-user-story_v5-exact-single-context_sonnet-4-6-portkey
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_08-29-17_claim-office-user-story_v5-exact-single-context_sonnet-4-6-portkey
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_08-29-17_claim-office-user-story_v5-exact-single-context_sonnet-4-6-portkey
 
- ✓ src/claim-office.spec.ts  (10 tests) 6ms
+ ✓ src/claim-office.spec.ts  (10 tests) 3ms
 
  Test Files  1 passed (1)
       Tests  10 passed (10)
-   Start at  08:56:34
-   Duration  219ms (transform 40ms, setup 0ms, collect 38ms, tests 6ms, environment 0ms, prepare 63ms)
+   Start at  08:09:10
+   Duration  384ms (transform 32ms, setup 0ms, collect 32ms, tests 3ms, environment 0ms, prepare 72ms)
 ```
 
 ## Coverage

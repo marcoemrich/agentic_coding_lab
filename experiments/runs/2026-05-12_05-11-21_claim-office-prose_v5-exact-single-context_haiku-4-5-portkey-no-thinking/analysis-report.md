@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_05-11-21_claim-office-prose_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 
-Generated: 2026-05-12T05:19:30+00:00
+Generated: 2026-06-02T08:01:47+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-12T05:19:30+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_05-11-21_claim-office-prose_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_05-11-21_claim-office-prose_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_05-11-21_claim-office-prose_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_05-11-21_claim-office-prose_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 
  ✓ src/claim-office.spec.ts  (17 tests | 8 skipped) 3ms
 
  Test Files  1 passed (1)
       Tests  9 passed | 8 todo (17)
-   Start at  05:19:31
-   Duration  160ms (transform 27ms, setup 0ms, collect 25ms, tests 3ms, environment 0ms, prepare 46ms)
+   Start at  08:01:49
+   Duration  344ms (transform 30ms, setup 0ms, collect 27ms, tests 3ms, environment 0ms, prepare 96ms)
 ```
 
 ## Coverage
@@ -113,8 +113,8 @@ Generated: 2026-05-12T05:19:30+00:00
 
 | Metric | Value |
 |--------|-------|
-| Predictions Correct | 18 |
-| Predictions Total | 18 |
+| Predictions Correct | 36 |
+| Predictions Total | 36 |
 | Accuracy | 100% |
 
 _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._

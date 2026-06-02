@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-15_07-08-48_claim-office-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
-Generated: 2026-05-15T07:19:42+00:00
+Generated: 2026-06-02T08:14:44+02:00
 
 ## Configuration
 
@@ -30,19 +30,19 @@ Generated: 2026-05-15T07:19:42+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-15_07-08-48_claim-office-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-15_07-08-48_claim-office-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-15_07-08-48_claim-office-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-15_07-08-48_claim-office-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
- ✓ src/claim-office.spec.ts  (44 tests) 6ms
- ✓ src/cli.spec.ts  (2 tests) 668ms
+ ✓ src/claim-office.spec.ts  (44 tests) 8ms
+ ✓ src/cli.spec.ts  (2 tests) 666ms
 
  Test Files  2 passed (2)
       Tests  46 passed (46)
-   Start at  07:19:43
-   Duration  963ms (transform 45ms, setup 0ms, collect 50ms, tests 674ms, environment 0ms, prepare 80ms)
+   Start at  08:14:44
+   Duration  1.04s (transform 49ms, setup 0ms, collect 65ms, tests 674ms, environment 0ms, prepare 147ms)
 ```
 
 ## Coverage

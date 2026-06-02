@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_06-23-47_claim-office-user-story_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 
-Generated: 2026-05-12T06:24:07+00:00
+Generated: 2026-06-02T08:03:54+02:00
 
 ## Configuration
 
@@ -29,11 +29,18 @@ Generated: 2026-05-12T06:24:07+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_06-23-47_claim-office-user-story_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_06-23-47_claim-office-user-story_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 > vitest run
 
-sh: 1: vitest: not found
- ELIFECYCLE  Test failed. See above for more details.
+
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_06-23-47_claim-office-user-story_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+
+ ↓ src/claim-office.spec.ts  (17 tests | 17 skipped)
+
+ Test Files  1 skipped (1)
+      Tests  17 todo (17)
+   Start at  08:03:56
+   Duration  368ms (transform 24ms, setup 0ms, collect 19ms, tests 0ms, environment 0ms, prepare 74ms)
 ```
 
 ## Transcript Metrics

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-08_15-43-45_claim-office-example-mapping_v5-exact-single-context_opus-4-7-no-thinking
 
-Generated: 2026-05-10T14:54:30+02:00
+Generated: 2026-06-02T07:53:20+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-10T14:54:30+02:00
 
  Test Files  1 passed (1)
       Tests  35 passed (35)
-   Start at  14:54:31
-   Duration  382ms (transform 37ms, setup 1ms, collect 34ms, tests 6ms, environment 0ms, prepare 82ms)
+   Start at  07:53:21
+   Duration  378ms (transform 36ms, setup 0ms, collect 34ms, tests 6ms, environment 0ms, prepare 74ms)
 ```
 
 ## Coverage

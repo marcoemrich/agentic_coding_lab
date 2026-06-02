@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_04-00-43_claim-office-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 
-Generated: 2026-05-12T04:07:01+00:00
+Generated: 2026-06-02T07:58:04+02:00
 
 ## Configuration
 
@@ -29,16 +29,19 @@ Generated: 2026-05-12T04:07:01+00:00
 **Status**: ✅ All tests passing (8 passed)
 
 ```
-$ vitest run
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_04-00-43_claim-office-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_04-00-43_claim-office-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+> vitest run
 
- ✓ src/mhpco.spec.ts  (8 tests) 3ms
+
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_04-00-43_claim-office-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+
+ ✓ src/mhpco.spec.ts  (8 tests) 2ms
 
  Test Files  1 passed (1)
       Tests  8 passed (8)
-   Start at  04:07:02
-   Duration  160ms (transform 24ms, setup 0ms, collect 22ms, tests 3ms, environment 0ms, prepare 45ms)
+   Start at  07:58:06
+   Duration  333ms (transform 26ms, setup 0ms, collect 19ms, tests 2ms, environment 0ms, prepare 94ms)
 ```
 
 ## Coverage

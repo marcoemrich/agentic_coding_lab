@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_23-08-25_claim-office-example-mapping_v5-exact-single-context_opus-4-7
 
-Generated: 2026-05-12T23:25:51+00:00
+Generated: 2026-06-02T08:13:01+02:00
 
 ## Configuration
 
@@ -30,18 +30,24 @@ Generated: 2026-05-12T23:25:51+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_23-08-25_claim-office-example-mapping_v5-exact-single-context_opus-4-7
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_23-08-25_claim-office-example-mapping_v5-exact-single-context_opus-4-7
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_23-08-25_claim-office-example-mapping_v5-exact-single-context_opus-4-7
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_23-08-25_claim-office-example-mapping_v5-exact-single-context_opus-4-7
 
- ✓ src/claim-office.spec.ts  (46 tests) 1048ms
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+ ✓ src/claim-office.spec.ts  (46 tests) 1004ms
 
  Test Files  1 passed (1)
       Tests  46 passed (46)
-   Start at  23:25:52
-   Duration  1.26s (transform 62ms, setup 0ms, collect 75ms, tests 1.05s, environment 0ms, prepare 52ms)
+   Start at  08:13:01
+   Duration  1.36s (transform 42ms, setup 0ms, collect 38ms, tests 1.00s, environment 0ms, prepare 70ms)
 ```
 
 ## Coverage

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_01-37-27_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
-Generated: 2026-05-13T07:48:38+02:00
+Generated: 2026-06-02T07:56:49+02:00
 
 ## Configuration
 
@@ -42,12 +42,12 @@ npm warn Unknown env config "_jsr-registry". This will stop working in the next 
 npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
 npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
 npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
- ✓ src/claim-office.spec.ts  (19 tests) 675ms
+ ✓ src/claim-office.spec.ts  (19 tests) 701ms
 
  Test Files  1 passed (1)
       Tests  19 passed (19)
-   Start at  07:48:39
-   Duration  1.05s (transform 43ms, setup 0ms, collect 38ms, tests 675ms, environment 0ms, prepare 112ms)
+   Start at  07:56:50
+   Duration  1.12s (transform 41ms, setup 0ms, collect 38ms, tests 701ms, environment 0ms, prepare 116ms)
 ```
 
 ## Coverage

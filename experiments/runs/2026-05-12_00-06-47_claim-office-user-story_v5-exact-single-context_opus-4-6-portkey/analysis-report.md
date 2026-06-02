@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_00-06-47_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey
 
-Generated: 2026-05-12T00:33:24+00:00
+Generated: 2026-06-02T07:55:48+02:00
 
 ## Configuration
 
@@ -29,16 +29,19 @@ Generated: 2026-05-12T00:33:24+00:00
 **Status**: ✅ All tests passing (16 passed)
 
 ```
-$ vitest run
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_00-06-47_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_00-06-47_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey
+> vitest run
+
+
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_00-06-47_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey
 
  ✓ src/claim-office.spec.ts  (16 tests) 4ms
 
  Test Files  1 passed (1)
       Tests  16 passed (16)
-   Start at  00:33:25
-   Duration  163ms (transform 28ms, setup 0ms, collect 27ms, tests 4ms, environment 0ms, prepare 43ms)
+   Start at  07:55:50
+   Duration  314ms (transform 29ms, setup 0ms, collect 25ms, tests 4ms, environment 0ms, prepare 94ms)
 ```
 
 ## Coverage

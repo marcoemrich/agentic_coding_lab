@@ -11,7 +11,8 @@ Correctness on a novel task, by spec style and model tier (higher = better):
 
 | Model | Prose | User-story | Example-mapping | Δ vs. prose |
 |---|---:|---:|---:|---:|
-| Opus 4.6 | 23 % | 23 % | **87 %** 🏆 | **+64 pp** |
+| Opus 4.7 | 21 % | 13 % | **97 %** 🏆 | **+76 pp** |
+| Opus 4.6 | 23 % | 18 % | **87 %** 🏆 | **+64 pp** |
 | Sonnet 4.6 | 23 % | 17 % | **71 %** 🏆 | **+48 pp** |
 | Haiku 4.5 | 0 % | 0 % | 0 % | — |
 

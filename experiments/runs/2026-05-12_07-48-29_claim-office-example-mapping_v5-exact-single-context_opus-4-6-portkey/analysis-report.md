@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_07-48-29_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey
 
-Generated: 2026-05-12T08:28:19+00:00
+Generated: 2026-06-02T08:06:50+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-12T08:28:19+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_07-48-29_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_07-48-29_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_07-48-29_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_07-48-29_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey
 
- ✓ src/claim-office.spec.ts  (19 tests) 10ms
+ ✓ src/claim-office.spec.ts  (19 tests) 4ms
 
  Test Files  1 passed (1)
       Tests  19 passed (19)
-   Start at  08:28:19
-   Duration  194ms (transform 37ms, setup 0ms, collect 52ms, tests 10ms, environment 0ms, prepare 44ms)
+   Start at  08:06:52
+   Duration  351ms (transform 30ms, setup 0ms, collect 29ms, tests 4ms, environment 0ms, prepare 57ms)
 ```
 
 ## Coverage

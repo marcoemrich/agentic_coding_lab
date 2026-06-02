@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_01-37-57_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
-Generated: 2026-05-13T07:49:17+02:00
+Generated: 2026-06-02T07:57:21+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-13T07:49:17+02:00
 
  Test Files  1 passed (1)
       Tests  21 passed (21)
-   Start at  07:49:18
-   Duration  340ms (transform 75ms, setup 0ms, collect 47ms, tests 5ms, environment 0ms, prepare 132ms)
+   Start at  07:57:22
+   Duration  432ms (transform 54ms, setup 0ms, collect 46ms, tests 5ms, environment 0ms, prepare 89ms)
 ```
 
 ## Coverage

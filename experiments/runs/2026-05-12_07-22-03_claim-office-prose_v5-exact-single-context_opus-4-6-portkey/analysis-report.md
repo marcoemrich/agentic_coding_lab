@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_07-22-03_claim-office-prose_v5-exact-single-context_opus-4-6-portkey
 
-Generated: 2026-05-12T22:38:28+02:00
+Generated: 2026-06-02T08:04:59+02:00
 
 ## Configuration
 
@@ -26,7 +26,30 @@ Generated: 2026-05-12T22:38:28+02:00
 
 ## Test Results
 
-Tests not runnable (dependencies not installed)
+**Status**: ✅ All tests passing (11 passed)
+
+```
+
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_07-22-03_claim-office-prose_v5-exact-single-context_opus-4-6-portkey
+> vitest run
+
+
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_07-22-03_claim-office-prose_v5-exact-single-context_opus-4-6-portkey
+
+ ✓ src/claim-office.spec.ts  (17 tests | 6 skipped) 3ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed | 6 todo (17)
+   Start at  08:05:01
+   Duration  391ms (transform 27ms, setup 0ms, collect 27ms, tests 3ms, environment 0ms, prepare 55ms)
+```
+
+## Coverage
+
+| Metric | Coverage |
+|--------|----------|
+| Statements | 92% |
+| Branches | 95% |
 
 ## APP Mass Estimation
 
@@ -49,6 +72,23 @@ Tests not runnable (dependencies not installed)
 | Avg LOC/Function | 30.00 |
 | Median LOC/Function | 30.00 |
 | Imports | 1 |
+
+## Code Smells
+
+| Category | Count |
+|----------|-------|
+| Complexity | 3 |
+| Duplication | 0 |
+| Magic Numbers | 11 |
+| Code Quality | 0 |
+| **Total** | **14** |
+
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 11 | 3.20 | 1 |
+| Cognitive (SonarJS) | 29 | 15.00 | 1 |
 
 ## Transcript Metrics
 

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_02-54-16_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
-Generated: 2026-05-12T03:25:43+00:00
+Generated: 2026-06-02T07:57:40+02:00
 
 ## Configuration
 
@@ -29,16 +29,19 @@ Generated: 2026-05-12T03:25:43+00:00
 **Status**: ✅ All tests passing (19 passed)
 
 ```
-$ vitest run
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_02-54-16_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_02-54-16_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
+> vitest run
 
- ✓ src/claim-office.spec.ts  (19 tests) 5ms
+
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_02-54-16_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
+
+ ✓ src/claim-office.spec.ts  (19 tests) 4ms
 
  Test Files  1 passed (1)
       Tests  19 passed (19)
-   Start at  03:25:44
-   Duration  187ms (transform 40ms, setup 0ms, collect 40ms, tests 5ms, environment 0ms, prepare 53ms)
+   Start at  07:57:43
+   Duration  339ms (transform 31ms, setup 0ms, collect 30ms, tests 4ms, environment 0ms, prepare 69ms)
 ```
 
 ## Coverage

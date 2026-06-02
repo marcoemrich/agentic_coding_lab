@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-11_23-09-36_claim-office-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking-2
 
-Generated: 2026-05-11T23:36:37+00:00
+Generated: 2026-06-02T07:54:25+02:00
 
 ## Configuration
 
@@ -29,16 +29,25 @@ Generated: 2026-05-11T23:36:37+00:00
 **Status**: ✅ All tests passing (20 passed)
 
 ```
-$ vitest run
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-11_23-09-36_claim-office-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking-2
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-09-36_claim-office-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking-2
+> vitest run
 
- ✓ src/claim-office.spec.ts  (20 tests) 748ms
+
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-09-36_claim-office-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking-2
+
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+ ✓ src/claim-office.spec.ts  (20 tests) 612ms
 
  Test Files  1 passed (1)
       Tests  20 passed (20)
-   Start at  23:36:38
-   Duration  919ms (transform 37ms, setup 0ms, collect 36ms, tests 748ms, environment 0ms, prepare 45ms)
+   Start at  07:54:27
+   Duration  954ms (transform 36ms, setup 0ms, collect 32ms, tests 612ms, environment 0ms, prepare 94ms)
 ```
 
 ## Coverage

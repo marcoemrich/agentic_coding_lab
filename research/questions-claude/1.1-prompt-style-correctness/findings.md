@@ -7,29 +7,26 @@ User-Story — und ist der Effekt modellabhängig?**
 Findings entstehen aus `summary.md` dieser RQ via
 `experiments/aggregate-by-query.py`.
 
-Datenbasis: 93 Runs (19 von 24 Zellen bei n≥5; Opus-4-7-Zellen
-ausstehend). Stand 2026-05-12.
-
-Korrektur 2026-05-12: 9 Runs hatten `cli_built=false` (fehlende
-`src/cli.ts`) → Verifikation konnte nicht laufen → `verification_pct`
-fälschlich 0. Nachträglich per Agent-Nudge behoben und neu analysiert.
-Betroffen: 6× EM, 2× prose, 1× user-story. Prompt gehärtet +
-Batch-Retry eingebaut um das Problem in zukünftigen Runs zu vermeiden.
+Datenbasis: 128 Runs (22 von 24 Zellen bei n≥5; nur opus-4-6 ×
+example-mapping bei n=4). Stand 2026-06-02.
 
 ## Übersicht: Korrektheit (außen) nach Modell × Prompt-Stil × Thinking
 
 | Modell | Modus | prose | example-mapping | user-story |
 |---|---|---|---|---|
-| opus-4-7 | −thinking | — | **1.00** 🏆 (n=3) | — |
-| opus-4-6 | −thinking | 0.23 | **0.87** 🏆 | 0.23 |
-| opus-4-6 | +thinking | 0.15 | **0.77** 🏆 | 0.25 |
+| opus-4-7 | +thinking | 0.29 | **0.95** 🏆 | 0.21 |
+| opus-4-7 | −thinking | 0.21 | **0.97** 🏆 | 0.13 |
+| opus-4-6 | +thinking | 0.24 | **0.72** 🏆 | 0.22 |
+| opus-4-6 | −thinking | 0.23 | **0.87** 🏆 | 0.18 |
+| sonnet-4-6 | +thinking | 0.21 | **0.35** 🏆 | — |
 | sonnet-4-6 | −thinking | 0.23 | **0.71** 🏆 | 0.17 |
-| sonnet-4-6 | +thinking | 0.21 | **0.35** 🏆 | 0.19 |
-| haiku-4-5 | −thinking | 0.00 | 0.00 | 0.00 |
 | haiku-4-5 | +thinking | 0.00 | 0.00 | 0.01 |
+| haiku-4-5 | −thinking | 0.00 | 0.00 | 0.00 |
 
-Werte: mean(`verification_pct`), je n=5 (Opus 4.7: n=3, vorläufig).
-Höher = besser; 🏆 = bester Stil pro Zeile (Haiku-Zeilen: kein Effekt, alle Werte ~0 → kein Sieger).
+Werte: mean(`verification_pct`), je n=5 (opus-4-6 EM n=4; opus-4-7
+−thinking EM n=9). Höher = besser; 🏆 = bester Stil pro Zeile
+(Haiku-Zeilen: kein Effekt, alle Werte ~0 → kein Sieger).
+Routing: opus-4-7 Direct-API, übrige Portkey (`controls.model`).
 
 ---
 
@@ -64,33 +61,37 @@ example-mapping keine Korrektheit.
 
 ## F-prompt-correctness.2 — Example-Mapping hebt Korrektheit massiv
 
-Bei Opus 4.6 und Sonnet 4.6 steigert example-mapping die Korrektheit
-(außen) gegenüber prose um 14–64 Prozentpunkte. Bei Opus ist der
-Effekt in beiden Thinking-Modi stark; bei Sonnet nur ohne Thinking.
+Bei Opus 4.7, Opus 4.6 und Sonnet 4.6 steigert example-mapping die
+Korrektheit (außen) gegenüber prose um 14–76 Prozentpunkte. Bei Opus
+ist der Effekt in beiden Thinking-Modi stark; bei Sonnet nur ohne
+Thinking.
 
 | Modell | Modus | prose | example-mapping | user-story | Δ (EM − prose) |
 |---|---|---|---|---|---|
-| opus-4-7 | −thinking | — | **1.00** 🏆 (n=3) | — | — |
-| opus-4-6 | −thinking | 0.23 | **0.87** 🏆 | 0.23 | **+64 pp** |
-| opus-4-6 | +thinking | 0.15 | **0.77** 🏆 | 0.25 | **+62 pp** |
+| opus-4-7 | +thinking | 0.29 | **0.95** 🏆 | 0.21 | **+66 pp** |
+| opus-4-7 | −thinking | 0.21 | **0.97** 🏆 | 0.13 | **+76 pp** |
+| opus-4-6 | +thinking | 0.24 | **0.72** 🏆 | 0.22 | **+48 pp** |
+| opus-4-6 | −thinking | 0.23 | **0.87** 🏆 | 0.18 | **+64 pp** |
+| sonnet-4-6 | +thinking | 0.21 | **0.35** 🏆 | — | +14 pp |
 | sonnet-4-6 | −thinking | 0.23 | **0.71** 🏆 | 0.17 | **+48 pp** |
-| sonnet-4-6 | +thinking | 0.21 | **0.35** 🏆 | 0.19 | +14 pp |
 
 Höher = besser; 🏆 = bester Stil pro Zeile (Spalten prose/EM/user-story).
 Δ ist eine Effektgröße, kein Wettbewerb → kein 🏆.
 
-**Datenbasis**: 60 Runs (Opus 4.6 + Sonnet 4.6, je n=5); Opus 4.7
-vorläufig (n=3). Haiku ausgenommen — dort ist der Prompt-Stil
-irrelevant (→ F-prompt-correctness.1).
+**Datenbasis**: 128 Runs gesamt; diese Tabelle: Opus 4.7 (n=5/Modus,
+EM −thinking n=9), Opus 4.6 (n=5/Modus, EM +thinking n=4), Sonnet 4.6
+(n=5/Modus). Haiku ausgenommen — dort ist der Prompt-Stil irrelevant
+(→ F-prompt-correctness.1).
 
 **Rationale**: Example-Mapping liefert konkrete Input/Output-Paare,
 die die Mehrdeutigkeiten der Kata-Regeln auflösen. Modelle mit
 ausreichender Reasoning-Kapazität (Opus, Sonnet) können die Muster
 auf neue Eingaben generalisieren.
 
-**Bezug zu H1**: Bestätigt. EM steigert Korrektheit bei Opus um
-+62–64 pp (beide Modi) und bei Sonnet −thinking um +48 pp.
-Sonnet +thinking zeigt +14 pp — schwächer, aber gleiche Richtung.
+**Bezug zu H1**: Bestätigt. EM steigert Korrektheit bei Opus 4.7 um
++66–76 pp, bei Opus 4.6 um +48–64 pp und bei Sonnet −thinking um
++48 pp. Sonnet +thinking zeigt +14 pp — schwächer, aber gleiche
+Richtung.
 
 ---
 
@@ -102,15 +103,17 @@ aber der Effekt ist modellabhängig:
 | Modell | +thinking | −thinking | Δ |
 |---|---|---|---|
 | sonnet-4-6 | 0.35 (σ=0.41) | **0.71** 🏆 (σ=0.18) | **−36 pp** |
-| opus-4-6 | 0.77 (σ=0.35) | **0.87** 🏆 (σ=0.30) | −10 pp |
+| opus-4-6 | 0.72 (σ=0.38) | **0.87** 🏆 (σ=0.30) | −15 pp |
+| opus-4-7 | **0.95** 🏆 (σ=0.12) | **0.97** 🏆 (σ=0.09) | −2 pp |
 
 Höher = besser; 🏆 = besserer Modus pro Zeile (+thinking vs. −thinking). Δ = Effektgröße, kein 🏆.
 
 Bei prose und user-story ist der Thinking-Effekt vernachlässigbar
 (±5 pp, keine konsistente Richtung).
 
-**Datenbasis**: 20 Runs (Opus 4.6 + Sonnet 4.6 × ±thinking ×
-example-mapping, je n=5).
+**Datenbasis**: 33 Runs (Opus 4.7 + Opus 4.6 + Sonnet 4.6 × ±thinking
+× example-mapping; je n=5, außer opus-4-6 +thinking n=4 und opus-4-7
+−thinking n=9).
 
 **Mechanismus (Transcript-Analyse)**: In einem Sonnet-+thinking-Run
 mit `verification_pct`=0 findet sich im Thinking-Block die
@@ -123,32 +126,36 @@ erster Vertrag des Kunden), die es dann als `isFirstQuote`-Parameter
 implementiert. Die −thinking-Variante desselben Modells wendet den
 Zuschlag stattdessen bedingungslos an — konform mit den Beispielen.
 
-Der Effekt ist bei Sonnet stark (−36 pp) und bei Opus schwach
-(−10 pp). Opus hat offenbar genug Reasoning-Kapazität, um die
-Beispiel-Semantik auch mit Thinking meist korrekt zu übernehmen —
-Sonnet hinterfragt sie häufiger und konstruiert Alternativ-Lesarten.
+Der Effekt skaliert invers mit der Modellstärke: Sonnet stark
+(−36 pp), Opus 4.6 mittel (−15 pp), Opus 4.7 vernachlässigbar
+(−2 pp). Stärkere Modelle haben genug Reasoning-Kapazität, um die
+Beispiel-Semantik auch mit Thinking korrekt zu übernehmen — Sonnet
+hinterfragt sie häufiger und konstruiert Alternativ-Lesarten.
 
 **Bezug zu H4**: Teilweise widerlegt. Thinking verbessert
 `verification_pct` nicht — bei Sonnet × EM schadet es erheblich
-(−36 pp), bei Opus × EM leicht (−10 pp).
+(−36 pp), bei Opus 4.6 × EM spürbar (−15 pp), bei Opus 4.7 × EM
+praktisch nicht (−2 pp).
 
 ---
 
 ## F-prompt-correctness.4 — User-Story ≈ Prose, keine messbare Wirkung auf Korrektheit
 
 User-Story erreicht über alle Modelle und Thinking-Modi ähnliche
-Korrektheit (außen) wie Prose. Maximale Differenz: 6 pp.
+Korrektheit (außen) wie Prose. Maximale Differenz: 8 pp, ohne
+konsistente Richtung.
 
 | Modell | Modus | prose | user-story | Δ |
 |---|---|---|---|---|
-| opus-4-6 | −thinking | 0.23 | 0.23 | 0 pp |
-| opus-4-6 | +thinking | 0.15 | 0.25 | +10 pp |
+| opus-4-7 | +thinking | 0.29 | 0.21 | −8 pp |
+| opus-4-7 | −thinking | 0.21 | 0.13 | −8 pp |
+| opus-4-6 | +thinking | 0.24 | 0.22 | −2 pp |
+| opus-4-6 | −thinking | 0.23 | 0.18 | −5 pp |
 | sonnet-4-6 | −thinking | 0.23 | 0.17 | −6 pp |
-| sonnet-4-6 | +thinking | 0.21 | 0.19 | −2 pp |
 | haiku-4-5 | ±thinking | 0.00 | 0.00–0.01 | 0 pp |
 
-**Datenbasis**: 60 Runs (alle Portkey-Modelle × prose/user-story,
-je n=5).
+**Datenbasis**: prose- und user-story-Zellen über alle Modelle ×
+±thinking, je n=5 (opus-4-6/opus-4-7 user-story teils n=7–8).
 
 **Rationale**: Die Stakeholder-Perspektive ("Als X möchte ich Y")
 liefert keine zusätzliche Information über die Domänenregeln.
@@ -168,20 +175,23 @@ die Streuung hängt stark vom Modell ab:
 
 | Zelle | mean | σ | min | max |
 |---|---|---|---|---|
-| opus-4-6 +thinking × EM | 0.77 | 0.35 | 0.20 | 1.00 |
+| opus-4-7 +thinking × EM | 0.95 | 0.12 | 0.73 | 1.00 |
+| opus-4-7 −thinking × EM | 0.97 | 0.09 | 0.73 | 1.00 |
+| opus-4-6 +thinking × EM | 0.72 | 0.38 | 0.20 | 1.00 |
 | opus-4-6 −thinking × EM | 0.87 | 0.30 | 0.33 | 1.00 |
 | sonnet +thinking × EM | 0.35 | 0.41 | 0.00 | 1.00 |
 | sonnet −thinking × EM | 0.71 | 0.18 | 0.40 | 0.87 |
-| opus-4-6 ±thinking × prose | 0.15–0.23 | 0.10–0.14 | 0.00 | 0.33 |
+| opus ±thinking × prose | 0.21–0.29 | 0.04–0.19 | 0.07 | 0.60 |
 
-**Datenbasis**: 20 Runs (Opus 4.6 + Sonnet 4.6 × ±thinking ×
-example-mapping).
+**Datenbasis**: alle EM-Zellen von Opus 4.7, Opus 4.6, Sonnet 4.6 ×
+±thinking (n=5/Zelle, opus-4-6 +thinking n=4, opus-4-7 −thinking n=9).
 
-**Rationale**: Sonnet +thinking zeigt weiterhin quasi-binäres
-Verhalten (0 % oder hoch), während Opus in beiden Modi konsistenter
-die richtige Interpretation trifft. Die Streuung bei Sonnet
-+thinking (σ=0.41) ist ein Thinking-Effekt (→ F-prompt-correctness.3), nicht ein
-generelles EM-Problem — Sonnet −thinking und Opus ±thinking
-streuen deutlich weniger.
+**Rationale**: Die Streuung sinkt mit steigender Modellstärke. Sonnet
++thinking zeigt quasi-binäres Verhalten (0 % oder hoch, σ=0.41),
+Opus 4.6 streut mittel (σ=0.30–0.38), Opus 4.7 trifft die richtige
+Interpretation am konsistentesten (σ=0.09–0.12). Die hohe Streuung bei
+Sonnet +thinking ist ein Thinking-Effekt (→ F-prompt-correctness.3),
+kein generelles EM-Problem — Sonnet −thinking und Opus streuen
+deutlich weniger.
 
 ---

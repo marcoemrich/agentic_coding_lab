@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-11_23-09-36_claim-office-prose_v5-exact-single-context_opus-4-6-portkey-2
 
-Generated: 2026-05-11T23:35:44+00:00
+Generated: 2026-06-02T07:53:53+02:00
 
 ## Configuration
 
@@ -29,16 +29,19 @@ Generated: 2026-05-11T23:35:44+00:00
 **Status**: ✅ All tests passing (14 passed)
 
 ```
-$ vitest run
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-11_23-09-36_claim-office-prose_v5-exact-single-context_opus-4-6-portkey-2
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-09-36_claim-office-prose_v5-exact-single-context_opus-4-6-portkey-2
+> vitest run
 
- ✓ src/claim-office.spec.ts  (14 tests) 164ms
+
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-09-36_claim-office-prose_v5-exact-single-context_opus-4-6-portkey-2
+
+ ✓ src/claim-office.spec.ts  (14 tests) 180ms
 
  Test Files  1 passed (1)
       Tests  14 passed (14)
-   Start at  23:35:45
-   Duration  322ms (transform 32ms, setup 0ms, collect 32ms, tests 164ms, environment 0ms, prepare 43ms)
+   Start at  07:54:04
+   Duration  653ms (transform 100ms, setup 0ms, collect 49ms, tests 180ms, environment 0ms, prepare 175ms)
 ```
 
 ## Coverage
@@ -110,8 +113,8 @@ $ vitest run
 
 | Metric | Value |
 |--------|-------|
-| Predictions Correct | 6 |
-| Predictions Total | 6 |
+| Predictions Correct | 26 |
+| Predictions Total | 26 |
 | Accuracy | 100% |
 
 _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._

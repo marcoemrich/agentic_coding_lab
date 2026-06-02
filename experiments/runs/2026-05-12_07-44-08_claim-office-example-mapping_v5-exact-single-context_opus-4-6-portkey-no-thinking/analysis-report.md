@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_07-44-08_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
-Generated: 2026-05-12T22:38:32+02:00
+Generated: 2026-06-02T08:05:58+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-05-12T22:38:32+02:00
 
  Test Files  1 passed (1)
       Tests  36 passed (36)
-   Start at  22:38:32
-   Duration  384ms (transform 38ms, setup 0ms, collect 36ms, tests 6ms, environment 0ms, prepare 81ms)
+   Start at  08:05:58
+   Duration  368ms (transform 42ms, setup 0ms, collect 41ms, tests 6ms, environment 0ms, prepare 82ms)
 ```
 
 ## Coverage

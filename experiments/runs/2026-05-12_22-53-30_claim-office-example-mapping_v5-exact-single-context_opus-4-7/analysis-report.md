@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_22-53-30_claim-office-example-mapping_v5-exact-single-context_opus-4-7
 
-Generated: 2026-05-12T23:13:45+00:00
+Generated: 2026-06-02T08:12:47+02:00
 
 ## Configuration
 
@@ -30,19 +30,19 @@ Generated: 2026-05-12T23:13:45+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_22-53-30_claim-office-example-mapping_v5-exact-single-context_opus-4-7
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_22-53-30_claim-office-example-mapping_v5-exact-single-context_opus-4-7
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_22-53-30_claim-office-example-mapping_v5-exact-single-context_opus-4-7
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_22-53-30_claim-office-example-mapping_v5-exact-single-context_opus-4-7
 
  ✓ src/claim-office.spec.ts  (44 tests) 7ms
- ✓ src/cli.spec.ts  (5 tests) 1945ms
+ ✓ src/cli.spec.ts  (5 tests) 1669ms
 
  Test Files  2 passed (2)
       Tests  49 passed (49)
-   Start at  23:13:45
-   Duration  2.32s (transform 74ms, setup 0ms, collect 79ms, tests 1.95s, environment 0ms, prepare 100ms)
+   Start at  08:12:48
+   Duration  2.06s (transform 57ms, setup 0ms, collect 69ms, tests 1.68s, environment 0ms, prepare 145ms)
 ```
 
 ## Coverage

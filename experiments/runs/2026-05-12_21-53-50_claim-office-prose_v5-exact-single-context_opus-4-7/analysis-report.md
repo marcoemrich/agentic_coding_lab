@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_21-53-50_claim-office-prose_v5-exact-single-context_opus-4-7
 
-Generated: 2026-05-12T22:13:34+00:00
+Generated: 2026-06-02T08:11:15+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-12T22:13:34+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_21-53-50_claim-office-prose_v5-exact-single-context_opus-4-7
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_21-53-50_claim-office-prose_v5-exact-single-context_opus-4-7
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_21-53-50_claim-office-prose_v5-exact-single-context_opus-4-7
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_21-53-50_claim-office-prose_v5-exact-single-context_opus-4-7
 
- ✓ src/claim-office.spec.ts  (16 tests) 5ms
+ ✓ src/claim-office.spec.ts  (16 tests) 3ms
 
  Test Files  1 passed (1)
       Tests  16 passed (16)
-   Start at  22:13:35
-   Duration  175ms (transform 40ms, setup 0ms, collect 39ms, tests 5ms, environment 0ms, prepare 43ms)
+   Start at  08:11:16
+   Duration  364ms (transform 28ms, setup 0ms, collect 28ms, tests 3ms, environment 0ms, prepare 66ms)
 ```
 
 ## Coverage

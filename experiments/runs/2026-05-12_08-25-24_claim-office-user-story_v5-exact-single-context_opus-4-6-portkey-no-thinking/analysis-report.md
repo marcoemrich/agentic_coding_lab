@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_08-25-24_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
-Generated: 2026-05-12T22:38:53+02:00
+Generated: 2026-06-02T08:08:39+02:00
 
 ## Configuration
 
@@ -36,7 +36,7 @@ Generated: 2026-05-12T22:38:53+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_08-25-24_claim-office-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
- ❯ src/claim-office.spec.ts  (17 tests | 1 failed | 7 skipped) 8ms
+ ❯ src/claim-office.spec.ts  (17 tests | 1 failed | 7 skipped) 7ms
    ❯ src/claim-office.spec.ts > MHPCO Claim Office > Quoting a premium > should apply 15% discount on each contract after the first
      → expected { premium: 105 } to deeply equal { premium: 90 }
 
@@ -65,8 +65,8 @@ AssertionError: expected { premium: 105 } to deeply equal { premium: 90 }
 
  Test Files  1 failed (1)
       Tests  1 failed | 9 passed | 7 todo (17)
-   Start at  22:38:54
-   Duration  366ms (transform 29ms, setup 0ms, collect 26ms, tests 8ms, environment 0ms, prepare 89ms)
+   Start at  08:08:40
+   Duration  352ms (transform 28ms, setup 0ms, collect 25ms, tests 7ms, environment 0ms, prepare 73ms)
 
  ELIFECYCLE  Test failed. See above for more details.
 ```

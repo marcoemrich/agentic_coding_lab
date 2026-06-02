@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_05-35-05_claim-office-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 
-Generated: 2026-05-12T05:35:28+00:00
+Generated: 2026-06-02T08:02:39+02:00
 
 ## Configuration
 
@@ -29,11 +29,18 @@ Generated: 2026-05-12T05:35:28+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_05-35-05_claim-office-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_05-35-05_claim-office-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 > vitest run
 
-sh: 1: vitest: not found
- ELIFECYCLE  Test failed. See above for more details.
+
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_05-35-05_claim-office-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+
+ ↓ src/mhpco.spec.ts  (31 tests | 31 skipped)
+
+ Test Files  1 skipped (1)
+      Tests  31 todo (31)
+   Start at  08:02:41
+   Duration  367ms (transform 26ms, setup 0ms, collect 16ms, tests 0ms, environment 0ms, prepare 131ms)
 ```
 
 ## Transcript Metrics

@@ -1,212 +1,212 @@
 PASS: 01-block-exact-three
 PASS: 02-block-not-four
-/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49
+/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49
   if (!(item.type in MAIN_ITEM_PREMIUMS)) throw new Error(`Unknown item type: ${item.type}`);
                                           ^
 
 Error: Unknown item type: moonstone
-    at getItemBasePremium (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49:49)
-    at calculatePolicyBase (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:60:15)
-    at processQuote (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:91:22)
-    at <anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:120:25)
+    at getItemBasePremium (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49:49)
+    at calculatePolicyBase (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:60:15)
+    at processQuote (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:91:22)
+    at <anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:120:25)
     at Array.map (<anonymous>)
-    at processScenario (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
-    at ReadStream.<anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
-    at ReadStream.emit (node:events:519:28)
-    at endReadableNT (node:internal/streams/readable:1698:12)
-    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+    at processScenario (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
+    at ReadStream.<anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
+    at ReadStream.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
 
-Node.js v22.22.2
+Node.js v24.9.0
 FAIL (exit 1): 03-alike-different-types
-/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100
+/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100
   if ((item.enchantment ?? 0) >= HIGH_ENCHANTMENT_CLAIM_THRESHOLD) return HIGH_ENCHANTMENT_REIMBURSEMENT_RATE;
             ^
 
 TypeError: Cannot read properties of undefined (reading 'enchantment')
-    at getReimbursementRate (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100:13)
-    at processClaim (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:106:34)
-    at <anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:116:27)
+    at getReimbursementRate (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100:13)
+    at processClaim (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:106:34)
+    at <anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:116:27)
     at Array.map (<anonymous>)
-    at processScenario (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
-    at ReadStream.<anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
-    at ReadStream.emit (node:events:519:28)
-    at endReadableNT (node:internal/streams/readable:1698:12)
-    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+    at processScenario (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
+    at ReadStream.<anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
+    at ReadStream.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
 
-Node.js v22.22.2
+Node.js v24.9.0
 FAIL (exit 1): 04-deductible-per-item
-/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100
+/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100
   if ((item.enchantment ?? 0) >= HIGH_ENCHANTMENT_CLAIM_THRESHOLD) return HIGH_ENCHANTMENT_REIMBURSEMENT_RATE;
             ^
 
 TypeError: Cannot read properties of undefined (reading 'enchantment')
-    at getReimbursementRate (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100:13)
-    at processClaim (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:106:34)
-    at <anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:116:27)
+    at getReimbursementRate (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100:13)
+    at processClaim (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:106:34)
+    at <anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:116:27)
     at Array.map (<anonymous>)
-    at processScenario (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
-    at ReadStream.<anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
-    at ReadStream.emit (node:events:519:28)
-    at endReadableNT (node:internal/streams/readable:1698:12)
-    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+    at processScenario (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
+    at ReadStream.<anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
+    at ReadStream.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
 
-Node.js v22.22.2
+Node.js v24.9.0
 FAIL (exit 1): 05-high-enchantment-clause
-/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100
+/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100
   if ((item.enchantment ?? 0) >= HIGH_ENCHANTMENT_CLAIM_THRESHOLD) return HIGH_ENCHANTMENT_REIMBURSEMENT_RATE;
             ^
 
 TypeError: Cannot read properties of undefined (reading 'enchantment')
-    at getReimbursementRate (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100:13)
-    at processClaim (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:106:34)
-    at <anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:116:27)
+    at getReimbursementRate (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100:13)
+    at processClaim (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:106:34)
+    at <anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:116:27)
     at Array.map (<anonymous>)
-    at processScenario (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
-    at ReadStream.<anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
-    at ReadStream.emit (node:events:519:28)
-    at endReadableNT (node:internal/streams/readable:1698:12)
-    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+    at processScenario (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
+    at ReadStream.<anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
+    at ReadStream.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
 
-Node.js v22.22.2
+Node.js v24.9.0
 FAIL (exit 1): 06-dragon-material-clause
-/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100
+/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100
   if ((item.enchantment ?? 0) >= HIGH_ENCHANTMENT_CLAIM_THRESHOLD) return HIGH_ENCHANTMENT_REIMBURSEMENT_RATE;
             ^
 
 TypeError: Cannot read properties of undefined (reading 'enchantment')
-    at getReimbursementRate (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100:13)
-    at processClaim (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:106:34)
-    at <anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:116:27)
+    at getReimbursementRate (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100:13)
+    at processClaim (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:106:34)
+    at <anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:116:27)
     at Array.map (<anonymous>)
-    at processScenario (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
-    at ReadStream.<anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
-    at ReadStream.emit (node:events:519:28)
-    at endReadableNT (node:internal/streams/readable:1698:12)
-    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+    at processScenario (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
+    at ReadStream.<anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
+    at ReadStream.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
 
-Node.js v22.22.2
+Node.js v24.9.0
 FAIL (exit 1): 07-clause-conflict
 PASS: 08-newcomer-cursed
-/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49
+/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49
   if (!(item.type in MAIN_ITEM_PREMIUMS)) throw new Error(`Unknown item type: ${item.type}`);
                                           ^
 
 Error: Unknown item type: potion
-    at getItemBasePremium (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49:49)
-    at calculatePolicyBase (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:60:15)
-    at processQuote (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:91:22)
-    at <anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:120:25)
+    at getItemBasePremium (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49:49)
+    at calculatePolicyBase (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:60:15)
+    at processQuote (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:91:22)
+    at <anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:120:25)
     at Array.map (<anonymous>)
-    at processScenario (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
-    at ReadStream.<anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
-    at ReadStream.emit (node:events:519:28)
-    at endReadableNT (node:internal/streams/readable:1698:12)
-    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+    at processScenario (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
+    at ReadStream.<anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
+    at ReadStream.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
 
-Node.js v22.22.2
+Node.js v24.9.0
 FAIL (exit 1): 09-follow-up-customer
-/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100
+/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100
   if ((item.enchantment ?? 0) >= HIGH_ENCHANTMENT_CLAIM_THRESHOLD) return HIGH_ENCHANTMENT_REIMBURSEMENT_RATE;
             ^
 
 TypeError: Cannot read properties of undefined (reading 'enchantment')
-    at getReimbursementRate (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100:13)
-    at processClaim (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:106:34)
-    at <anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:116:27)
+    at getReimbursementRate (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100:13)
+    at processClaim (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:106:34)
+    at <anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:116:27)
     at Array.map (<anonymous>)
-    at processScenario (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
-    at ReadStream.<anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
-    at ReadStream.emit (node:events:519:28)
-    at endReadableNT (node:internal/streams/readable:1698:12)
-    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+    at processScenario (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
+    at ReadStream.<anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
+    at ReadStream.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
 
-Node.js v22.22.2
+Node.js v24.9.0
 FAIL (exit 1): 10-cap-exhaustion
-/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100
+/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100
   if ((item.enchantment ?? 0) >= HIGH_ENCHANTMENT_CLAIM_THRESHOLD) return HIGH_ENCHANTMENT_REIMBURSEMENT_RATE;
             ^
 
 TypeError: Cannot read properties of undefined (reading 'enchantment')
-    at getReimbursementRate (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100:13)
-    at processClaim (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:106:34)
-    at <anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:116:27)
+    at getReimbursementRate (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100:13)
+    at processClaim (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:106:34)
+    at <anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:116:27)
     at Array.map (<anonymous>)
-    at processScenario (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
-    at ReadStream.<anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
-    at ReadStream.emit (node:events:519:28)
-    at endReadableNT (node:internal/streams/readable:1698:12)
-    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+    at processScenario (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
+    at ReadStream.<anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
+    at ReadStream.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
 
-Node.js v22.22.2
+Node.js v24.9.0
 FAIL (exit 1): 11-multi-items-same-type
-/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49
+/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49
   if (!(item.type in MAIN_ITEM_PREMIUMS)) throw new Error(`Unknown item type: ${item.type}`);
                                           ^
 
 Error: Unknown item type: potion
-    at getItemBasePremium (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49:49)
-    at calculatePolicyBase (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:60:15)
-    at processQuote (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:91:22)
-    at <anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:120:25)
+    at getItemBasePremium (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49:49)
+    at calculatePolicyBase (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:60:15)
+    at processQuote (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:91:22)
+    at <anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:120:25)
     at Array.map (<anonymous>)
-    at processScenario (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
-    at ReadStream.<anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
-    at ReadStream.emit (node:events:519:28)
-    at endReadableNT (node:internal/streams/readable:1698:12)
-    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+    at processScenario (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
+    at ReadStream.<anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
+    at ReadStream.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
 
-Node.js v22.22.2
+Node.js v24.9.0
 FAIL (exit 1): 12-warrior-garras
-/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49
+/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49
   if (!(item.type in MAIN_ITEM_PREMIUMS)) throw new Error(`Unknown item type: ${item.type}`);
                                           ^
 
 Error: Unknown item type: staff
-    at getItemBasePremium (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49:49)
-    at calculatePolicyBase (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:60:15)
-    at processQuote (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:91:22)
-    at <anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:120:25)
+    at getItemBasePremium (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49:49)
+    at calculatePolicyBase (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:60:15)
+    at processQuote (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:91:22)
+    at <anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:120:25)
     at Array.map (<anonymous>)
-    at processScenario (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
-    at ReadStream.<anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
-    at ReadStream.emit (node:events:519:28)
-    at endReadableNT (node:internal/streams/readable:1698:12)
-    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+    at processScenario (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
+    at ReadStream.<anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
+    at ReadStream.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
 
-Node.js v22.22.2
+Node.js v24.9.0
 FAIL (exit 1): 13-magus-velorin
-/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100
+/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100
   if ((item.enchantment ?? 0) >= HIGH_ENCHANTMENT_CLAIM_THRESHOLD) return HIGH_ENCHANTMENT_REIMBURSEMENT_RATE;
             ^
 
 TypeError: Cannot read properties of undefined (reading 'enchantment')
-    at getReimbursementRate (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100:13)
-    at processClaim (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:106:34)
-    at <anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:116:27)
+    at getReimbursementRate (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:100:13)
+    at processClaim (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:106:34)
+    at <anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:116:27)
     at Array.map (<anonymous>)
-    at processScenario (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
-    at ReadStream.<anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
-    at ReadStream.emit (node:events:519:28)
-    at endReadableNT (node:internal/streams/readable:1698:12)
-    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+    at processScenario (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
+    at ReadStream.<anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
+    at ReadStream.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
 
-Node.js v22.22.2
+Node.js v24.9.0
 FAIL (exit 1): 14-family-steinheim
-/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49
+/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49
   if (!(item.type in MAIN_ITEM_PREMIUMS)) throw new Error(`Unknown item type: ${item.type}`);
                                           ^
 
 Error: Unknown item type: potion
-    at getItemBasePremium (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49:49)
-    at calculatePolicyBase (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:60:15)
-    at processQuote (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:91:22)
-    at <anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:120:25)
+    at getItemBasePremium (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:49:49)
+    at calculatePolicyBase (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:60:15)
+    at processQuote (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:91:22)
+    at <anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:120:25)
     at Array.map (<anonymous>)
-    at processScenario (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
-    at ReadStream.<anonymous> (/home/experimenter/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
-    at ReadStream.emit (node:events:519:28)
-    at endReadableNT (node:internal/streams/readable:1698:12)
-    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+    at processScenario (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/claim-office.ts:114:34)
+    at ReadStream.<anonymous> (/home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-11_23-33-54_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey/src/cli.ts:8:18)
+    at ReadStream.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
 
-Node.js v22.22.2
+Node.js v24.9.0
 FAIL (exit 1): 15-unlucky-tordan
