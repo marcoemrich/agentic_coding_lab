@@ -113,6 +113,16 @@ Modellen stabil bleibt, wird diese RQ selbst zeigen. Falls Haiku ×
 v5 × example-mapping streut, wäre das ein Modell-Effekt — und genau
 das will diese RQ messen.
 
+**Offene Datenlücke (Opus 4.7)**: Für opus-4-7 fehlen die
+prose- und user-story-Zellen vollständig — es gibt nur
+example-mapping (n=3, 1.00). Damit ist für das stärkste Modell
+*keine Effektgröße* (Δ EM − prose) belegbar, obwohl es als einziges
+volle 100 % erreicht. Nachzulegen: opus-4-7 × {prose, user-story}
+sowie Aufstockung der example-mapping-Zelle auf n≥5, damit die
+100 %-Aussage und der zugehörige Sprung gegenüber prose belastbar
+werden. Bis dahin ist der robusteste belegte EM-Effekt Opus 4.6
+(+64 pp, 0.23 → 0.87, n=5).
+
 ## Design
 
 ```
