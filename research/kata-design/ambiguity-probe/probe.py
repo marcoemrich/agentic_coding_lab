@@ -9,7 +9,12 @@ Klassifizierung der Antworten erfolgt manuell durch Lesen — nicht hier.
 
 Aufruf:
     cd research/kata-design/ambiguity-probe
-    python3 probe.py
+    python3 probe.py                              # HPSMV-Default
+    python3 probe.py overlords-mehrdeutigkeiten.yaml   # andere Kata
+
+Mit explizitem Config-Pfad landet das Ergebnis in results-<stem>/
+(z.B. results-overlords-mehrdeutigkeiten/), sodass die Default-Artefakte
+unter results/ unberührt bleiben.
 """
 from __future__ import annotations
 
@@ -27,13 +32,27 @@ except ImportError:
     sys.exit(1)
 
 HERE = Path(__file__).parent
-RESULTS = HERE / "results"
-CSV_PATH = RESULTS / "probe.csv"
-MD_PATH = RESULTS / "probe.md"
 
 
-def load_config() -> dict:
-    with (HERE / "mehrdeutigkeiten.yaml").open() as f:
+def resolve_paths(argv: list[str]) -> tuple[Path, Path, Path, Path]:
+    """Liefert (config_path, results_dir, csv_path, md_path).
+
+    Ohne Argument: HPSMV-Default (mehrdeutigkeiten.yaml → results/).
+    Mit Argument: results-<config-stem>/ als getrenntes Ergebnis-Verzeichnis.
+    """
+    if len(argv) > 1:
+        config_path = Path(argv[1])
+        if not config_path.is_absolute():
+            config_path = HERE / config_path
+        results = HERE / f"results-{config_path.stem}"
+    else:
+        config_path = HERE / "mehrdeutigkeiten.yaml"
+        results = HERE / "results"
+    return config_path, results, results / "probe.csv", results / "probe.md"
+
+
+def load_config(config_path: Path) -> dict:
+    with config_path.open() as f:
         return yaml.safe_load(f)
 
 
@@ -70,12 +89,13 @@ def run_claude(prompt: str, model: str, effort: str) -> tuple[str, float, str | 
 
 
 def main() -> int:
-    cfg = load_config()
+    config_path, results_dir, csv_path, md_path = resolve_paths(sys.argv)
+    cfg = load_config(config_path)
     mehrdeutigkeiten = cfg["mehrdeutigkeiten"]
     modelle = cfg["modelle"]
     n = cfg["n_repeats"]
 
-    RESULTS.mkdir(exist_ok=True)
+    results_dir.mkdir(exist_ok=True)
 
     total = len(mehrdeutigkeiten) * len(modelle) * n
     done = 0
@@ -103,25 +123,26 @@ def main() -> int:
                     "antwort": text,
                 })
 
-    with CSV_PATH.open("w", newline="") as f:
+    with csv_path.open("w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         writer.writeheader()
         writer.writerows(rows)
-    print(f"\nCSV geschrieben: {CSV_PATH}")
+    print(f"\nCSV geschrieben: {csv_path}")
 
-    write_markdown(cfg, rows)
-    print(f"Markdown-Bericht: {MD_PATH}")
+    write_markdown(cfg, rows, md_path)
+    print(f"Markdown-Bericht: {md_path}")
     return 0
 
 
-def write_markdown(cfg: dict, rows: list[dict]) -> None:
+def write_markdown(cfg: dict, rows: list[dict], md_path: Path) -> None:
     lines: list[str] = []
     lines.append("# Ambiguitäts-Vortest — Roh-Antworten")
     lines.append("")
     lines.append("Pro Mehrdeutigkeit die Antworten aller Modell-Konfigurationen, gruppiert.")
     lines.append("Klassifikation der Antworten erfolgt manuell durch Lesen.")
     lines.append("")
-    lines.append("Bezug: [../kata-mehrdeutigkeiten.md](../kata-mehrdeutigkeiten.md)")
+    bezug = cfg.get("bezug", "../kata-mehrdeutigkeiten.md")
+    lines.append(f"Bezug: [{bezug}]({bezug})")
     lines.append("")
 
     by_m: dict[str, list[dict]] = {}
@@ -166,7 +187,7 @@ def write_markdown(cfg: dict, rows: list[dict]) -> None:
                     lines.append(f"- **rep {r['rep']}** ({r['dauer_s']}s): {antwort_clean}")
             lines.append("")
 
-    MD_PATH.write_text("\n".join(lines))
+    md_path.write_text("\n".join(lines))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,34 @@
+Vortest: 1 Mehrdeutigkeiten × 4 Modelle × n=5 = 20 Calls
+
+[1/20] Mehrdeutigkeit S3 · opus-think · rep 1 ... OK (17.5s)
+[2/20] Mehrdeutigkeit S3 · opus-think · rep 2 ... OK (21.3s)
+[3/20] Mehrdeutigkeit S3 · opus-think · rep 3 ... OK (8.1s)
+[4/20] Mehrdeutigkeit S3 · opus-think · rep 4 ... OK (6.3s)
+[5/20] Mehrdeutigkeit S3 · opus-think · rep 5 ... OK (6.8s)
+[6/20] Mehrdeutigkeit S3 · opus · rep 1 ... OK (8.1s)
+[7/20] Mehrdeutigkeit S3 · opus · rep 2 ... OK (8.7s)
+[8/20] Mehrdeutigkeit S3 · opus · rep 3 ... OK (8.6s)
+[9/20] Mehrdeutigkeit S3 · opus · rep 4 ... OK (7.4s)
+[10/20] Mehrdeutigkeit S3 · opus · rep 5 ... OK (6.6s)
+[11/20] Mehrdeutigkeit S3 · sonnet-think · rep 1 ... OK (15.7s)
+[12/20] Mehrdeutigkeit S3 · sonnet-think · rep 2 ... OK (14.9s)
+[13/20] Mehrdeutigkeit S3 · sonnet-think · rep 3 ... OK (16.0s)
+[14/20] Mehrdeutigkeit S3 · sonnet-think · rep 4 ... OK (18.9s)
+[15/20] Mehrdeutigkeit S3 · sonnet-think · rep 5 ... OK (12.6s)
+[16/20] Mehrdeutigkeit S3 · haiku · rep 1 ... OK (12.8s)
+[17/20] Mehrdeutigkeit S3 · haiku · rep 2 ... OK (17.7s)
+[18/20] Mehrdeutigkeit S3 · haiku · rep 3 ... OK (6.5s)
+[19/20] Mehrdeutigkeit S3 · haiku · rep 4 ... OK (8.4s)
+[20/20] Mehrdeutigkeit S3 · haiku · rep 5 ... OK (7.4s)
+
+CSV geschrieben: /home/memrich/sync/workspace/agentic_coding_lab_project/main/research/kata-design/ambiguity-probe/results-overlords-sphinx-schwelle/probe.csv
+Traceback (most recent call last):
+  File "/home/memrich/sync/workspace/agentic_coding_lab_project/main/research/kata-design/ambiguity-probe/probe.py", line 194, in <module>
+    sys.exit(main())
+  File "/home/memrich/sync/workspace/agentic_coding_lab_project/main/research/kata-design/ambiguity-probe/probe.py", line 132, in main
+    write_markdown(cfg, rows, md_path)
+  File "/home/memrich/sync/workspace/agentic_coding_lab_project/main/research/kata-design/ambiguity-probe/probe.py", line 152, in write_markdown
+    m_index = {f["id"]: m for m in cfg["mehrdeutigkeiten"]}
+  File "/home/memrich/sync/workspace/agentic_coding_lab_project/main/research/kata-design/ambiguity-probe/probe.py", line 152, in <dictcomp>
+    m_index = {f["id"]: m for m in cfg["mehrdeutigkeiten"]}
+NameError: name 'f' is not defined

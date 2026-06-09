@@ -1,0 +1,74 @@
+# Vortest: Mehrdeutigkeits-Probe für die NEUEN Overlords-Karten (Sphinx, Mantikor)
+#
+# Pro Mehrdeutigkeit: Regeltext (so wie er in der Kata stehen würde, OHNE Beispiele)
+# plus eine konkrete Eingabe-Frage. Erwartung: ohne Beispiele streuen die
+# Modell-Antworten zwischen den Lesarten. Konvergenz auf eine Lesart =
+# kein guter Example-Mapping-Effekt zu erwarten.
+#
+# Aufruf:
+#   cd research/kata-design/ambiguity-probe
+#   python3 probe.py overlords-mehrdeutigkeiten.yaml
+# Ergebnis: results-overlords-mehrdeutigkeiten/
+#
+# Bezug: ../overlords-mehrdeutigkeiten.md, ../kata-construction.md
+
+bezug: "../overlords-mehrdeutigkeiten.md"
+
+mehrdeutigkeiten:
+  - id: S
+    titel: "Sphinx — Art von Monster (Typ vs. Exemplar) + Selbstbezug"
+    regeln: |
+      Punktewertung im Kartenspiel Overlords. Am Spielende zählt jeder
+      Spieler die Karten seiner Armee. Wertung der Sphinx-Karte:
+      - Eine Sphinx zählt 4 Punkte.
+      - Jede Sphinx erhält zusätzlich 2 Punkte für jede Art von Monster
+        in deiner Armee.
+    frage: |
+      Eine Armee besteht aus folgenden Karten:
+      - 1 Sphinx
+      - 3 Zombies
+      - 1 Hydra
+      Wie viele Punkte ist die Sphinx wert? Antworte mit einer einzelnen
+      Zahl und einer kurzen Begründung.
+    lesarten:
+      L1_typ_ohne_selbst: "8 (Arten {Zombie, Hydra} = 2; 4 + 2×2)"
+      L2_typ_mit_selbst: "10 (Arten {Sphinx, Zombie, Hydra} = 3; 4 + 2×3)"
+      L3_exemplar_ohne_selbst: "12 (andere Karten = 4; 4 + 2×4)"
+      L4_exemplar_mit_selbst: "14 (alle Karten = 5; 4 + 2×5)"
+
+  - id: M
+    titel: "Mantikor — Set-Zerlegung mit zwei Set-Größen bei Überzahl"
+    regeln: |
+      Punktewertung im Kartenspiel Overlords. Am Spielende zählt jeder
+      Spieler die Karten seiner Armee. Wertung der Mantikor-Karte:
+      - Ein Paar Mantikore zählt 7 Punkte.
+      - Drei Mantikore bilden ein Rudel und zählen 12 Punkte.
+      - Einzelne Mantikore zählen je 2 Punkte.
+    frage: |
+      Eine Armee enthält 5 Mantikore.
+      Wie viele Punkte sind die Mantikore zusammen wert? Antworte mit
+      einer einzelnen Zahl und einer kurzen Begründung.
+    lesarten:
+      L1_strikt: "10 (Set nur bei exakt 2 oder 3; 5 ist keins → 5×2)"
+      L2_ein_set: "16 (höchstens ein Set, größtes: Rudel + 2 Einzel = 12 + 4)"
+      L3_max: "19 (max. Zerlegung: Rudel + Paar = 12 + 7)"
+
+modelle:
+  - id: opus-think
+    model: claude-opus-4-7
+    effort: high
+    label: "Opus 4.7 (mit thinking)"
+  - id: opus
+    model: claude-opus-4-7
+    effort: low
+    label: "Opus 4.7 (ohne thinking)"
+  - id: sonnet-think
+    model: claude-sonnet-4-6
+    effort: high
+    label: "Sonnet 4.6 (mit thinking)"
+  - id: haiku
+    model: claude-haiku-4-5-20251001
+    effort: low
+    label: "Haiku 4.5 (ohne thinking)"
+
+n_repeats: 5

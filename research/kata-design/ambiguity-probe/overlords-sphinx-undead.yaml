@@ -1,0 +1,67 @@
+# Vortest: Sphinx-Sub-Achse "Undead-Warrior-Aggregation"
+#
+# Frage: Zählen die drei Punktvarianten des Untoten Kriegers (1/2/3 Pkt)
+# als EINE "Art von Monster" (Monster-Name) oder als DREI (Kartenvariante)?
+# Echte Begriffs-Doppeldeutigkeit (Muster C), konstruktiv versteckt:
+# wer das Rulebook liest, sieht, dass "Untoter Krieger" eine Scoring-Gruppe
+# mit drei Kartenvarianten ist.
+#
+# Aufruf:
+#   cd research/kata-design/ambiguity-probe
+#   python3 probe.py overlords-sphinx-undead.yaml
+# Ergebnis: results-overlords-sphinx-undead/
+#
+# Bezug: ../overlords-mehrdeutigkeiten.md
+
+bezug: "../overlords-mehrdeutigkeiten.md"
+
+mehrdeutigkeiten:
+  - id: S2
+    titel: "Sphinx — Untoter Krieger: eine Art oder drei?"
+    regeln: |
+      Punktewertung im Kartenspiel Overlords. Am Spielende zählt jeder
+      Spieler die Karten seiner Armee.
+
+      Untoter Krieger:
+      - Jeder Untote Krieger zählt 1, 2 oder 3 Punkte, je nach Karte.
+      - Ein Satz aus je einem Untoten Krieger mit 1, 2 und 3 Punkten
+        gibt zusätzlich 6 Bonuspunkte.
+
+      Sphinx:
+      - Eine Sphinx zählt 4 Punkte.
+      - Jede Sphinx erhält zusätzlich 2 Punkte für jede Art von Monster
+        in deiner Armee.
+    frage: |
+      Eine Armee besteht aus folgenden Karten:
+      - 1 Sphinx
+      - 1 Untoter Krieger (1 Punkt)
+      - 1 Untoter Krieger (2 Punkte)
+      - 1 Untoter Krieger (3 Punkte)
+      - 1 Hydra
+      Wie viele Punkte ist die Sphinx wert? Antworte mit einer einzelnen
+      Zahl und einer kurzen Begründung.
+    lesarten:
+      L1_einart_ohne_selbst: "8 (Untoter Krieger = 1 Art; {UK, Hydra}=2; 4 + 2×2)"
+      L2_einart_mit_selbst: "10 (1 Art; {Sphinx, UK, Hydra}=3; 4 + 2×3)"
+      L3_dreiart_ohne_selbst: "12 (UK-Varianten = 3 Arten; {UK1,UK2,UK3,Hydra}=4; 4 + 2×4)"
+      L4_dreiart_mit_selbst: "14 (3 Arten + Sphinx = 5; 4 + 2×5)"
+
+modelle:
+  - id: opus-think
+    model: claude-opus-4-7
+    effort: high
+    label: "Opus 4.7 (mit thinking)"
+  - id: opus
+    model: claude-opus-4-7
+    effort: low
+    label: "Opus 4.7 (ohne thinking)"
+  - id: sonnet-think
+    model: claude-sonnet-4-6
+    effort: high
+    label: "Sonnet 4.6 (mit thinking)"
+  - id: haiku
+    model: claude-haiku-4-5-20251001
+    effort: low
+    label: "Haiku 4.5 (ohne thinking)"
+
+n_repeats: 5

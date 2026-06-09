@@ -1,0 +1,61 @@
+# Vortest: Sphinx-Achse "Schwellen-Ellipse" (Muster B)
+#
+# Regel: "2 Punkte pro Art ab vier Arten, sonst 1 Punkt." Der zweite Teil
+# lässt die Bezugsgröße weg (Ellipse): ist "1 Punkt" pauschal (flat) oder
+# 1 Punkt PRO Art? Muster B (unterspezifizierte Operation).
+#
+# Isolierung: Eingabe bleibt UNTER der Schwelle (4) in JEDER Selbstbezug-
+# Lesart (2 andere Arten + evtl. Sphinx = 3 < 4), damit die Schwelle nicht
+# kippt und nur die pauschal-vs-pro-Art-Ellipse misst. Selbstbezug wirkt
+# nur noch als sekundäre Trennung innerhalb der pro-Art-Lesart (6 vs 7).
+#
+# Aufruf:
+#   cd research/kata-design/ambiguity-probe
+#   python3 probe.py overlords-sphinx-schwelle.yaml
+# Ergebnis: results-overlords-sphinx-schwelle/
+#
+# Bezug: ../overlords-mehrdeutigkeiten.md
+
+bezug: "../overlords-mehrdeutigkeiten.md"
+
+mehrdeutigkeiten:
+  - id: S3
+    titel: "Sphinx — Schwellen-Ellipse: 1 Punkt pauschal oder pro Art?"
+    regeln: |
+      Punktewertung im Kartenspiel Overlords. Am Spielende zählt jeder
+      Spieler die Karten seiner Armee. Wertung der Sphinx-Karte:
+      - Eine Sphinx zählt 4 Punkte.
+      - Jede Sphinx erhält außerdem 2 Punkte pro Art von Monster ab vier
+        Arten in deiner Armee, sonst 1 Punkt.
+    frage: |
+      Eine Armee besteht aus folgenden Karten:
+      - 1 Sphinx
+      - 1 Zombie
+      - 1 Hydra
+      Wie viele Punkte ist die Sphinx wert? Antworte mit einer einzelnen
+      Zahl und einer kurzen Begründung.
+    lesarten:
+      L1_pauschal: "5 (unter Schwelle → 1 Punkt pauschal; 4 + 1)"
+      L2_proart_ohne_selbst: "6 (1 Punkt pro Art, 2 Arten {Zombie, Hydra}; 4 + 2)"
+      L3_proart_mit_selbst: "7 (1 Punkt pro Art, 3 Arten inkl. Sphinx; 4 + 3)"
+      LX_schwelle_erreicht: "(Fehllesart: wer Schwelle erreicht sieht, käme auf 2×Arten)"
+
+modelle:
+  - id: opus-think
+    model: claude-opus-4-7
+    effort: high
+    label: "Opus 4.7 (mit thinking)"
+  - id: opus
+    model: claude-opus-4-7
+    effort: low
+    label: "Opus 4.7 (ohne thinking)"
+  - id: sonnet-think
+    model: claude-sonnet-4-6
+    effort: high
+    label: "Sonnet 4.6 (mit thinking)"
+  - id: haiku
+    model: claude-haiku-4-5-20251001
+    effort: low
+    label: "Haiku 4.5 (ohne thinking)"
+
+n_repeats: 5

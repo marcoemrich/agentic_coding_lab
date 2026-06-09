@@ -1,0 +1,54 @@
+Vortest: 2 Mehrdeutigkeiten × 4 Modelle × n=5 = 40 Calls
+
+[1/40] Mehrdeutigkeit S · opus-think · rep 1 ... OK (13.5s)
+[2/40] Mehrdeutigkeit S · opus-think · rep 2 ... OK (15.8s)
+[3/40] Mehrdeutigkeit S · opus-think · rep 3 ... OK (16.9s)
+[4/40] Mehrdeutigkeit S · opus-think · rep 4 ... OK (13.1s)
+[5/40] Mehrdeutigkeit S · opus-think · rep 5 ... OK (16.9s)
+[6/40] Mehrdeutigkeit S · opus · rep 1 ... OK (6.1s)
+[7/40] Mehrdeutigkeit S · opus · rep 2 ... OK (6.5s)
+[8/40] Mehrdeutigkeit S · opus · rep 3 ... OK (7.3s)
+[9/40] Mehrdeutigkeit S · opus · rep 4 ... OK (6.2s)
+[10/40] Mehrdeutigkeit S · opus · rep 5 ... OK (6.3s)
+[11/40] Mehrdeutigkeit S · sonnet-think · rep 1 ... OK (15.7s)
+[12/40] Mehrdeutigkeit S · sonnet-think · rep 2 ... OK (20.2s)
+[13/40] Mehrdeutigkeit S · sonnet-think · rep 3 ... OK (24.9s)
+[14/40] Mehrdeutigkeit S · sonnet-think · rep 4 ... OK (11.4s)
+[15/40] Mehrdeutigkeit S · sonnet-think · rep 5 ... OK (14.6s)
+[16/40] Mehrdeutigkeit S · haiku · rep 1 ... OK (12.9s)
+[17/40] Mehrdeutigkeit S · haiku · rep 2 ... OK (7.9s)
+[18/40] Mehrdeutigkeit S · haiku · rep 3 ... OK (10.1s)
+[19/40] Mehrdeutigkeit S · haiku · rep 4 ... OK (9.8s)
+[20/40] Mehrdeutigkeit S · haiku · rep 5 ... OK (6.1s)
+[21/40] Mehrdeutigkeit M · opus-think · rep 1 ... OK (11.1s)
+[22/40] Mehrdeutigkeit M · opus-think · rep 2 ... OK (11.3s)
+[23/40] Mehrdeutigkeit M · opus-think · rep 3 ... OK (10.7s)
+[24/40] Mehrdeutigkeit M · opus-think · rep 4 ... OK (15.8s)
+[25/40] Mehrdeutigkeit M · opus-think · rep 5 ... OK (11.0s)
+[26/40] Mehrdeutigkeit M · opus · rep 1 ... OK (8.3s)
+[27/40] Mehrdeutigkeit M · opus · rep 2 ... OK (7.3s)
+[28/40] Mehrdeutigkeit M · opus · rep 3 ... OK (17.4s)
+[29/40] Mehrdeutigkeit M · opus · rep 4 ... OK (7.8s)
+[30/40] Mehrdeutigkeit M · opus · rep 5 ... OK (8.4s)
+[31/40] Mehrdeutigkeit M · sonnet-think · rep 1 ... OK (26.8s)
+[32/40] Mehrdeutigkeit M · sonnet-think · rep 2 ... OK (15.9s)
+[33/40] Mehrdeutigkeit M · sonnet-think · rep 3 ... OK (21.2s)
+[34/40] Mehrdeutigkeit M · sonnet-think · rep 4 ... OK (20.8s)
+[35/40] Mehrdeutigkeit M · sonnet-think · rep 5 ... OK (22.1s)
+[36/40] Mehrdeutigkeit M · haiku · rep 1 ... OK (11.4s)
+[37/40] Mehrdeutigkeit M · haiku · rep 2 ... OK (8.0s)
+[38/40] Mehrdeutigkeit M · haiku · rep 3 ... OK (9.6s)
+[39/40] Mehrdeutigkeit M · haiku · rep 4 ... OK (7.2s)
+[40/40] Mehrdeutigkeit M · haiku · rep 5 ... OK (11.0s)
+
+CSV geschrieben: /home/memrich/sync/workspace/agentic_coding_lab_project/main/research/kata-design/ambiguity-probe/results-overlords-mehrdeutigkeiten/probe.csv
+Traceback (most recent call last):
+  File "/home/memrich/sync/workspace/agentic_coding_lab_project/main/research/kata-design/ambiguity-probe/probe.py", line 194, in <module>
+    sys.exit(main())
+  File "/home/memrich/sync/workspace/agentic_coding_lab_project/main/research/kata-design/ambiguity-probe/probe.py", line 132, in main
+    write_markdown(cfg, rows, md_path)
+  File "/home/memrich/sync/workspace/agentic_coding_lab_project/main/research/kata-design/ambiguity-probe/probe.py", line 152, in write_markdown
+    m_index = {f["id"]: m for m in cfg["mehrdeutigkeiten"]}
+  File "/home/memrich/sync/workspace/agentic_coding_lab_project/main/research/kata-design/ambiguity-probe/probe.py", line 152, in <dictcomp>
+    m_index = {f["id"]: m for m in cfg["mehrdeutigkeiten"]}
+NameError: name 'f' is not defined
