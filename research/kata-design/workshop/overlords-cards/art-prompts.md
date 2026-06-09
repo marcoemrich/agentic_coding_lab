@@ -54,7 +54,8 @@ the card. The creature is drawn as a loose ink-and-pencil under-sketch
 with visible hatching and rough unfinished edges, colored over with soft
 painterly washes in a muted earthy palette of browns, tans, ochres and
 sepia. At the bottom of the card, large blackletter Gothic title text
-reads "<TITLE>", and below it in small clean serif lettering: "<SCORING>".
+reads "<TITLE>", and below it, on two lines, in small clean serif
+lettering: "<SCORING>".
 Grim brooding mood, soft diffuse lighting, weathered hand-illustrated
 look, semi-realistic proportions. No other text, no watermark, no logo.
 ```
@@ -73,15 +74,18 @@ look, semi-realistic proportions. No other text, no watermark, no logo.
 ## Sphinx
 
 `<TITLE>` = **Sphinx**
-`<SCORING>` = **4 points / 2 per type (4+ types), else 1**
+`<SCORING>` = two lines:
+  1. **4 points.**
+  2. **2 per type with four or more types, else 1.**
 
 The deck lets magical creatures use a richer palette (cf. the teal/magenta
 Hydra), so the Sphinx gets a restrained warm-gold accent to read as
 arcane, while staying within the earthy parchment look.
 
 ```
-[BASE PROMPT with TITLE "Sphinx" and SCORING "4 points / 2 per type (4+
-types), else 1"], the creature is a sphinx: the serene face of a human
+[BASE PROMPT with TITLE "Sphinx" and a two-line SCORING block reading
+"4 points." on the first line and "2 per type with four or more types,
+else 1." on the second line], the creature is a sphinx: the serene face of a human
 woman, her neck and shoulders covered in short tawny lioness fur (no mane),
 with large folded eagle wings rising behind the shoulders, feather tips
 catching a faint warm-gold glow. Calm, watchful, knowing expression;
@@ -95,14 +99,17 @@ behind the head suggesting hidden wisdom.
 ## Manticore
 
 `<TITLE>` = **Manticore**
-`<SCORING>` = **Pair = 7 points / Pack of 3 = 12 points / Otherwise 2 points each**
+`<SCORING>` = two lines:
+  1. **Pair: 7 points. Pack of three: 12 points.**
+  2. **Otherwise 2 points each.**
 
 Kept in the darker, more bestial register of the deck (cf. Orthrus,
 Minotaur) — earthy, menacing, no bright accent.
 
 ```
-[BASE PROMPT with TITLE "Manticore" and SCORING "Pair = 7 points / Pack of
-3 = 12 points / Otherwise 2 points each"], the creature is a manticore:
+[BASE PROMPT with TITLE "Manticore" and a two-line SCORING block reading
+"Pair: 7 points. Pack of three: 12 points." on the first line and
+"Otherwise 2 points each." on the second line], the creature is a manticore:
 the muscular body and shaggy mane of a lion, a snarling fanged maw crowded
 with rows of teeth, and a long segmented scorpion tail arcing up behind it
 with a venomous barbed stinger at the tip. Aggressive, predatory pose,
@@ -115,8 +122,8 @@ pack-hunter menace.
 
 ## Quick-copy single-line variants (full card incl. lettering)
 
-- **Sphinx:** `A complete dark-fantasy trading card in tall 5:7 portrait orientation, with a black torn scorched border around aged parchment. A bust portrait of a sphinx — a human woman's face with short tawny lioness fur on the neck and shoulders (no mane), and folded eagle wings with warm-gold feather tips — centered in three-quarter view, drawn as a sketchy ink-and-pencil underdrawing with painterly washes, in a muted earthy palette with pale-gold arcane accents and a soft radial glow. At the bottom, a large blackletter Gothic title reads "Sphinx", and a small serif line below reads "4 points / 2 per type (4+ types), else 1". Weathered vintage hand-illustrated look. No other text.`
-- **Manticore:** `A complete dark-fantasy trading card in tall 5:7 portrait orientation, with a black torn scorched border around aged parchment. A bust portrait of a manticore — lion body and mane, snarling fanged maw, long segmented scorpion tail with a barbed stinger arcing overhead — centered in three-quarter view, drawn as a sketchy ink-and-pencil underdrawing with painterly washes, in dark earthy reds and dusty browns with a faint reddish glow. At the bottom, a large blackletter Gothic title reads "Manticore", and a small serif line below reads "Pair = 7 points / Pack of 3 = 12 points / Otherwise 2 points each". Feral menacing mood. No other text.`
+- **Sphinx:** `A complete dark-fantasy trading card in tall 5:7 portrait orientation, with a black torn scorched border around aged parchment. A bust portrait of a sphinx — a human woman's face with short tawny lioness fur on the neck and shoulders (no mane), and folded eagle wings with warm-gold feather tips — centered in three-quarter view, drawn as a sketchy ink-and-pencil underdrawing with painterly washes, in a muted earthy palette with pale-gold arcane accents and a soft radial glow. At the bottom, a large blackletter Gothic title reads "Sphinx", and below it a small two-line serif scoring block reads "4 points." on the first line and "2 per type with four or more types, else 1." on the second line. Weathered vintage hand-illustrated look. No other text.`
+- **Manticore:** `A complete dark-fantasy trading card in tall 5:7 portrait orientation, with a black torn scorched border around aged parchment. A bust portrait of a manticore — lion body and mane, snarling fanged maw, long segmented scorpion tail with a barbed stinger arcing overhead — centered in three-quarter view, drawn as a sketchy ink-and-pencil underdrawing with painterly washes, in dark earthy reds and dusty browns with a faint reddish glow. At the bottom, a large blackletter Gothic title reads "Manticore", and below it a small two-line serif scoring block reads "Pair: 7 points. Pack of three: 12 points." on the first line and "Otherwise 2 points each." on the second line. Feral menacing mood. No other text.`
 
 ---
 
