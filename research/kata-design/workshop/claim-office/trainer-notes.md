@@ -11,7 +11,7 @@ Hinweise für die Workshop-Durchführung.
 Aufgabe: [`prose.md`](prose.md) (Deutsch, narrativer Galaxy-Trucker-Stil).
 
 Verifikations-Szenarien (zur Wertekontrolle / Demonstration nach dem
-Mapping): [`../../../experiments/katas/claim-office-verification/`](../../../experiments/katas/claim-office-verification/).
+Mapping): [`../../../../experiments/katas/claim-office-verification/`](../../../../experiments/katas/claim-office-verification/).
 
 ## Liste der Mehrdeutigkeiten
 
