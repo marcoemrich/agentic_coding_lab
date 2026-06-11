@@ -1,8 +1,10 @@
 ---
 id: RQ-model-quality
-question: "Wie stark unterscheiden sich die verfügbaren Modelle (Sonnet 4.6, Opus 4.6, Opus 4.7, Opus 4.8 — jeweils mit/ohne Thinking) in der Code-Qualität auf einer trainingsbekannten Kata bei stärkstem Workflow?"
+question: "Wie stark unterscheiden sich die verfügbaren Modelle (Sonnet 4.6, Opus 4.6, Opus 4.7, Opus 4.8, Fable 5 — jeweils mit/ohne Thinking) in der Code-Qualität auf einer trainingsbekannten Kata bei stärkstem Workflow?"
 factors:
   model:
+    - fable-5
+    - fable-5-no-thinking
     - opus-4-8
     - opus-4-8-no-thinking
     - opus-4-7
@@ -50,6 +52,8 @@ Haiku ist bewusst nicht enthalten: in bisherigen Läufen liegt Haiku regelmäßi
 
 | Lab-Variant | Thinking | API-Route |
 |---|---|---|
+| fable-5 | Adaptiv (default) | Direct API |
+| fable-5-no-thinking | Aus | Direct API |
 | opus-4-8 | Adaptiv (default) | Direct API |
 | opus-4-8-no-thinking | Aus | Direct API |
 | opus-4-7 | Adaptiv (default) | Direct API |
@@ -60,6 +64,8 @@ Haiku ist bewusst nicht enthalten: in bisherigen Läufen liegt Haiku regelmäßi
 | sonnet-4-6-no-thinking | Aus | Direct API |
 
 **Batch-Hinweis**: Direct-API- und Portkey-Varianten **können nicht im selben Batch** laufen (unterschiedliche Konfiguration / Routing). `batch-plan-from-rq.py` erzeugt einen gemeinsamen Plan; beim Ausführen entweder zwei separate Plan-Files manuell aufteilen oder zwei aufeinanderfolgende `batch.sh`-Läufe fahren. Die `-portkey`-Suffix-Erkennung in `batch.sh` setzt den passenden Config-Dir automatisch — aber gemischte Plans laufen nicht.
+
+**Fable-5-Hinweis**: `fable-5*` ist (wie `opus-4-8*`) noch nicht auf Portkey/Vertex und läuft nur über die native Anthropic-API (Batch mit geleerten `ANTHROPIC_*`-Env-Vars, Fallback auf native OAuth). Fable 5 benötigt Claude Code CLI ≥ 2.1.170 (Docker-Image entsprechend gepinnt).
 
 ## Warum v4-exact-subagents als Kontroll-Workflow?
 
@@ -78,19 +84,19 @@ RQ-prompt-known-kata hat empirisch gezeigt, dass der Prompt-Stil bei trainingsbe
 ## Design
 
 ```
-Faktor:    model      — 8 Stufen (4 Modelle × {thinking, no-thinking})
+Faktor:    model      — 10 Stufen (5 Modelle × {thinking, no-thinking})
 Kontrolle: workflow   — v4-exact-subagents
 Kontrolle: kata_base  — game-of-life (+ prompt = example-mapping)
 
-Zellen:    8
+Zellen:    10
 Replikate: n = 3
-Runs:      24 total
+Runs:      30 total
 ```
 
 ## Hypothesen
 
 - **H1** (Korrektheit-Sanity): `tests_passing` *und* `verification_pct` liegen für alle acht Modelle bei 100 % (3/3 pro Zelle). Eine Zelle mit < 100 % entwertet den Code-Qualitäts-Vergleich für dieses Modell oder weist auf eine Repräsentations-Adhärenz-Lücke hin.
-- **H2** (Modell-Ranking Code-Qualität): Auf `code_mass`, `smell_total`, `cc_longest_function`, `mccabe_max`, `cognitive_max` zeigt sich ein konsistentes Ranking Opus 4.8 ≤ Opus 4.7 ≤ Opus 4.6 ≤ Sonnet 4.6 (kleiner = besser).
+- **H2** (Modell-Ranking Code-Qualität): Auf `code_mass`, `smell_total`, `cc_longest_function`, `mccabe_max`, `cognitive_max` zeigt sich ein konsistentes Ranking Fable 5 ≤ Opus 4.8 ≤ Opus 4.7 ≤ Opus 4.6 ≤ Sonnet 4.6 (kleiner = besser; Fable 5 als neuestes Modell an der Spitze erwartet, ohne numerische Vorhersage).
 - **H3** (Thinking-Effekt): Innerhalb jedes Modells verbessert Thinking die Code-Qualität (niedrigeres `code_mass`, `cognitive_max`); der Effekt ist bei Opus stärker als bei Sonnet (vgl. F-3.x aus `_archive/rqs-v1/RQ-3-model-and-thinking/`).
 
 **Falsifikation H2** (kein konsistentes Ranking über die Qualitäts-Outcomes): Modell-Effekt auf Code-Qualität ist auf v4 nicht stabil → andere Workflows könnten andere Modell-Rankings zeigen.
@@ -113,4 +119,4 @@ Siehe [findings.md](findings.md).
 Alle Runs in `experiments/runs/` mit
 `workflow=v4-exact-subagents`,
 `kata=game-of-life-example-mapping`,
-Modell ∈ {opus-4-7, opus-4-7-no-thinking, opus-4-6-portkey, opus-4-6-portkey-no-thinking, sonnet-4-6, sonnet-4-6-no-thinking}.
+Modell ∈ {fable-5, fable-5-no-thinking, opus-4-8, opus-4-8-no-thinking, opus-4-7, opus-4-7-no-thinking, opus-4-6-portkey, opus-4-6-portkey-no-thinking, sonnet-4-6, sonnet-4-6-no-thinking}.
