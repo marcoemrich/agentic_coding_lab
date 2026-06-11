@@ -260,7 +260,6 @@ Consequences for analysis and data collection:
 │   ├── kata-design/              # kata construction guidelines
 │   └── _archive/                 # frozen snapshots of past analyses + experiment-overview snapshots
 ├── HUMAN-IN-THE-LOOP.md          # Optional HITL checkpoint guide
-├── WORKTREE-WORKFLOW.md          # Persistent agent-worktree convention
 └── todos_and_ideas.txt           # Future research directions
 ```
 
@@ -804,7 +803,6 @@ See `experiments/workflows/v6.2-with-why-cleaned-pi/` for a working example. The
 | Document | Description |
 |----------|-------------|
 | [HUMAN-IN-THE-LOOP.md](HUMAN-IN-THE-LOOP.md) | How to re-enable human approval checkpoints between TDD phases |
-| [WORKTREE-WORKFLOW.md](WORKTREE-WORKFLOW.md) | Persistent agent-worktree convention for parallel work |
 
 ## License
 
