@@ -199,7 +199,7 @@ Exception: **deletions** of existing findings still require explicit user confir
 - ESLint / smell detection (runs per run inside `analyze-run.sh`).
 - Cross-RQ aggregation or creation of new RQs.
 - Auto-commit/push of `runs.csv` / `summary.md` / `findings.md` — stays a user decision.
-- Worktree switching or merging into `main`.
+- Merging into `main`.
 
 ## Behavior on errors
 
