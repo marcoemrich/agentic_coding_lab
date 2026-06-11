@@ -1,0 +1,15 @@
+The Game of Life kata is complete: all 9 tests pass and `experiment-done.txt` has been written.
+
+**How it went.** Following the mandated agent workflow, the `test-list` agent created 9 `it.todo()` tests ordered simple → complex, then each test went through Red (and Green/Refactor where code changes were needed):
+
+1. **Empty grid → []** — first Red/Green cycle; hardcoded `return []`.
+2. **Single cell dies** and **3. two neighbors die** — passed immediately against the hardcoded `[]` (documented as regression tests).
+4. **Survival with 2 neighbors** — first real logic: neighbor counting and a survival filter; Refactor extracted `countLiveNeighbors`.
+5. **Survival with 3 neighbors** — widened the filter to 2-or-3; Refactor extracted a named `survives` rule.
+6. **Overpopulation (4 neighbors)** — already covered by the survival filter; passed immediately.
+7. **Reproduction (dead cell, exactly 3 neighbors)** — added births from dead neighbor candidates; the Refactor pass unified the neighborhood into a single `neighborOffsets`/`neighborsOf` representation, replaced an imperative triple loop with a flatMap/filter pipeline plus Set-based dedup, and cut APP mass from 170 to 153.
+8. **Block still life** and **9. blinker oscillation with negative x** — both passed immediately against the finished rules, confirming still-life stability and the infinite-grid requirement.
+
+**Deliverables.** `src/game-of-life.ts` exports `nextGeneration(cells: Cell[]): Cell[]` with the required sparse representation (only live cells tracked, negative coordinates handled); `src/game-of-life.spec.ts` holds the 9 Vitest tests. Final run: 9 passed, 0 failed, 0 todo.
+
+One environment note: `NODE_ENV=production` is set in this environment, so tests must be run as `NODE_ENV=development pnpm test` — plain `pnpm test` can't find vitest.

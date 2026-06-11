@@ -1,0 +1,11 @@
+The kata is complete: all 7 tests pass, and `experiment-done.txt` contains `DONE` as required.
+
+**What was done.** I followed the autonomous TDD workflow from the project rules end to end, delegating every phase to the specialized agents: one `test-list` run, then red → green → refactor cycles for each of the 7 tests derived from the spec's examples (two underpopulation cases, survival, overpopulation, reproduction, block still life, blinker oscillator with negative coordinates).
+
+**Notable events along the way:**
+
+- **Spec inconsistency caught and corrected.** The spec's per-rule drawings for Survival and Overpopulation are focal illustrations, not true full-grid transformations — taken literally they contradict Conway's own rules (e.g. they show 2-neighbor cells dying and omit births), which would have made the suite unsatisfiable once the blinker test (which requires 2-neighbor survival and births) was activated. The survival test was initially written as a full-grid `toEqual` encoding that contradiction; I had a red agent correct it (and wrote the overpopulation test from the start) to assert only what the spec actually claims: the focal cell survives/dies. The pattern examples (block, blinker, reproduction) are consistent with the real rules and were tested as full outcomes.
+- **Two honest "no red" outcomes.** The second underpopulation test and the block still-life test passed immediately against the existing implementation (the hardcoded `[]` and the `=== 3` rule respectively); the red agents reported this honestly rather than fabricating failures, and Green was skipped for those cycles.
+- **Incremental rule emergence.** The implementation grew exactly as the tests forced it: hardcoded `[]` → survival at `>= 3` → exact-3 (overpopulation bound) → birth rule → final 2-or-3 survival on the blinker test.
+
+**Final implementation** (`src/game-of-life.ts`): a sparse, infinite-grid `nextGeneration(cells: Cell[]): Cell[]` matching the required signature — survivors are live cells with 2 or 3 live neighbors; births are deduplicated dead neighbors of live cells with exactly 3 live neighbors. Negative coordinates work naturally since cells are plain coordinate tuples with no grid bounds.

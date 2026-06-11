@@ -1,6 +1,6 @@
 # RQ-model-novel Findings
 
-Modell-Vergleich opus-4-8-no-thinking vs opus-4-7-no-thinking vs opus-4-6-portkey-no-thinking auf `claim-office-example-mapping × v4-exact-subagents`.
+Modell-Vergleich Fable 5 vs opus-4-8-no-thinking vs opus-4-7-no-thinking vs opus-4-6-portkey-no-thinking (jeweils no-thinking) auf `claim-office-example-mapping × v4-exact-subagents`.
 
 ## Übersicht
 
@@ -8,17 +8,20 @@ Primär-Outcome `verification_pct` (Korrektheit außen, höher = besser); sekund
 
 | Modell | n | verification_pct ↑ | σ | cognitive_max ↓ | mccabe_max ↓ | smell_total ↓ | total_tokens ↓ | duration_s ↓ |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
+| fable-5-no-thinking | 5 | 0.83 | 0.10 | (4.0) | (4.2) | (0.2) | **13.4 M** 🏆 | 7826 |
 | opus-4-8-no-thinking | 5 | **0.92** 🏆 | 0.09 | **7.4** 🏆 | **7.0** 🏆 | **1.2** 🏆 | 31.0 M | 5264 |
-| opus-4-7-no-thinking | 10 | 0.67 | 0.36 | 10.5 | 7.9 | 1.8 | **13.7 M** 🏆 | **3693** 🏆 |
+| opus-4-7-no-thinking | 10 | 0.67 | 0.36 | 10.5 | 7.9 | 1.8 | 13.7 M | **3693** 🏆 |
 | opus-4-6-portkey-no-thinking | 5 | **0.93** 🏆 | 0.08 | 22.2 | 10.6 | 5.6 | 15.1 M | 4416 |
 
-`verification_pct`: 4-6 (0.93) und 4-8 (0.92) sind innerhalb 0.1 σ ununterscheidbar → beide 🏆; 4-7 fällt mit 0.67 klar ab. **Korrektheits-Gating der Qualitäts-/Kosten-Pokale:** Die Qualitäts-Pokale gehen an opus-4-8, weil es als hoch-korrektes Modell (0.92, alle Runs ≥ 12/15) echte Vollimplementierungen liefert. opus-4-7s niedrigere Komplexität wäre als Pokal irreführend — seine bimodale Verteilung (Runs bis 3/15) drückt die Komplexität teils durch *unvollständige* Implementierungen, nicht durch Sparsamkeit. Die Token-/Duration-Pokale für opus-4-7 sind deshalb ebenfalls mit Vorsicht zu lesen: niedrige Kosten bei teils abgebrochener Spec sind kein reiner Effizienzgewinn.
+`verification_pct`: 4-6 (0.93) und 4-8 (0.92) sind innerhalb 0.1 σ ununterscheidbar → beide 🏆; fable-5 (0.83) liegt im Mittelfeld, 4-7 (0.67) fällt klar ab. **Korrektheits-Gating der Qualitäts-Pokale:** Die Qualitäts-Pokale gehen an opus-4-8, weil es als hoch-korrektes Modell (0.92, alle Runs ≥ 12/15, Runs bis 15/15) echte Vollimplementierungen liefert. fable-5 hat zwar die **niedrigsten Rohwerte aller Modelle** auf jeder Qualitäts-Metrik (cognitive 4.0, mccabe 4.2, smell 0.2 — rund ein Fünftel von opus-4-6), bekommt aber **bewusst keinen Qualitäts-Pokal** — bei 0.83 Korrektheit (max 14/15, **nie eine Vollimplementierung**) wäre niedrige Komplexität als Pokal irreführend, dieselbe Gating-Logik wie bei opus-4-7. Die Klammerwerte markieren genau das: führende Zahlen ohne volle Korrektheits-Deckung. opus-4-7s niedrigere Komplexität wäre als Pokal ebenso irreführend — seine bimodale Verteilung (Runs bis 3/15) drückt die Komplexität teils durch *unvollständige* Implementierungen, nicht durch Sparsamkeit.
 
-## F-model-novel.1 — opus-4-8 und opus-4-6 lösen claim-office zuverlässig, opus-4-7 nicht
+**Kosten-Pokale (nicht korrektheits-gegated, aber mit Vorsicht):** Der `total_tokens`-Pokal geht an fable-5 (13.4 M, knapp vor 4-7s 13.7 M) — fable-5 ist das günstigste Modell *und* liefert dabei 0.83 Korrektheit (vs. 4-7s 0.67), also kein reiner Spar-durch-Abbruch-Effekt. Der `duration_s`-Pokal bleibt bei 4-7 (3693 s); fable-5 ist mit 7826 s am langsamsten, teils inflationiert durch Rate-Limit-Backoff in zwei Runs (ein Timeout). 4-7s Token-Wert ist wie gehabt mit Vorsicht zu lesen (niedrige Kosten bei teils abgebrochener Spec).
 
-Auf v4-exact-subagents erreichen **opus-4-8 (0.92, σ 0.09)** und **opus-4-6 (0.93, σ 0.08)** nahezu identische, hohe Korrektheit mit enger Streuung. opus-4-7 liegt mit 0.67 (σ 0.36) deutlich darunter und ist bimodal verteilt (4 perfekte Runs, 6 zwischen 0.20–0.87). Alle opus-4-8- und opus-4-6-Runs liegen ≥ 0.80; kein opus-4-7-Run-Cluster ist vergleichbar konsistent.
+## F-model-novel.1 — opus-4-8 und opus-4-6 lösen claim-office zuverlässig, fable-5 im Mittelfeld, opus-4-7 nicht
 
-Die naive Erwartung "neueres Modell = monoton besser" trägt nicht: nicht das mittlere Modell (4-7) liegt vorne, sondern die beiden Ränder (4-6 und 4-8). opus-4-7 ist auf dieser novel Kata mit v4 das schwächste der drei — konsistent mit der RQ-regression-Beobachtung, dass v4 ohne erzwungene Test-Listen-Vollständigkeit auf opus-4-7 ganze Spec-Operationen verlieren kann (Mechanismus siehe F-model-novel.4).
+Auf v4-exact-subagents erreichen **opus-4-8 (0.92, σ 0.09)** und **opus-4-6 (0.93, σ 0.08)** nahezu identische, hohe Korrektheit mit enger Streuung. opus-4-7 liegt mit 0.67 (σ 0.36) deutlich darunter und ist bimodal verteilt (4 perfekte Runs, 6 zwischen 0.20–0.87). fable-5 liegt mit 0.83 (σ 0.10, n=5) dazwischen — über 4-7, aber unter den beiden Spitzen-Modellen, mit moderater Streuung (0.73–0.93) und ohne 4-7s Totalausfälle. Alle opus-4-8- und opus-4-6-Runs liegen ≥ 0.80, mit Runs bis 15/15; fable-5 erreicht max 14/15 und **nie eine Vollimplementierung**, opus-4-7 hat kein vergleichbar konsistentes hohes Cluster.
+
+Die naive Erwartung "neueres Modell = monoton besser" trägt nicht: nicht das mittlere Modell (4-7) liegt vorne, sondern die beiden Ränder (4-6 und 4-8). opus-4-7 ist auf dieser novel Kata mit v4 das schwächste der Opus-Modelle — konsistent mit der RQ-regression-Beobachtung, dass v4 ohne erzwungene Test-Listen-Vollständigkeit auf opus-4-7 ganze Spec-Operationen verlieren kann (Mechanismus siehe F-model-novel.4). **fable-5 (0.83)** reiht sich nicht oben ein: trotz neuester Generation erreicht es nicht die Spec-Treue von 4-6/4-8 (nie 15/15), sondern liegt im Mittelfeld zwischen 4-7 und den beiden Spitzen-Modellen — der Profil-Grund (sauberster Code, aber konsistent ein paar Spec-Punkte fehlend) siehe F-model-novel.6.
 
 opus-4-8 schließt die Frage, ob die hohe 4-6-Korrektheit nur konservatives Parsen war: das neueste Modell erreicht dieselbe Korrektheit, ohne den Qualitäts-Preis zu zahlen (siehe F-model-novel.5). Damit ist die 4-6-Stärke auf claim-office reproduzierbar als "Spec-Treue", nicht als Routing- oder Generations-Artefakt.
 
@@ -42,7 +45,7 @@ opus-4-8 ist bisher nur auf v4 erhoben; ob es die Workflow-Sensitivität von 4-6
 
 ## F-model-novel.3 — Korrektheit differenziert stärker als Code-Qualität
 
-Auf game-of-life (RQ-model-quality) trennt Code-Qualität die Modelle bei perfekter Korrektheit. Auf claim-office trennt **Korrektheit selbst** die Modelle: opus-4-7s `verification_pct`-Spread (0.20–1.00) ist die größte Modell-Differenz der ganzen RQ, während alle drei Modelle interne Tests zu 100 % grün haben (`tests_passing` 100 % für alle). Die externe Korrektheit deckt also Spec-Lücken auf, die die inneren Tests nicht sehen — die "stärkere Challenge" exponiert Unterschiede, die auf GOL unsichtbar waren.
+Auf game-of-life (RQ-model-quality) trennt Code-Qualität die Modelle bei perfekter Korrektheit. Auf claim-office trennt **Korrektheit selbst** die Modelle: opus-4-7s `verification_pct`-Spread (0.20–1.00) ist die größte Modell-Differenz der ganzen RQ, während alle vier Modelle interne Tests zu 100 % grün haben (`tests_passing` 100 % für alle). Die externe Korrektheit deckt also Spec-Lücken auf, die die inneren Tests nicht sehen — die "stärkere Challenge" exponiert Unterschiede, die auf GOL unsichtbar waren. fable-5 ist ein gutes Beispiel: 100 % grüne Tests (bis 45 Tests/Run) bei 0.83 externer Korrektheit und nie 15/15 — grüne interne Suite ≠ vollständige Spec (F-model-novel.6).
 
 ## F-model-novel.4 — Präziserer Mechanismus auf opus-4-7: Test-Listen-Vollständigkeit, nicht Subagent-Isolation
 
@@ -84,3 +87,16 @@ Bei nahezu gleicher Korrektheit wie opus-4-6 (0.92 vs 0.93) liefert opus-4-8 die
 Der Preis steht auf der Kosten-Achse: opus-4-8 verbraucht im Schnitt **31.0 M** `total_tokens` — etwa doppelt so viel wie 4-6 (15.1 M) und 4-7 (13.7 M) — und braucht mit 5264 s am längsten (vs 4416 / 3693 s). Es schreibt zugleich am meisten Code (`code_mass` 820, `lines_of_code` 303 vs. 4-7: 626 / 194), bei niedrigster Komplexität pro Funktion — d.h. das Mehr-Volumen verteilt sich auf mehr, einfachere Funktionen, nicht auf wenige komplexe. Für korrektheits- und qualitätskritische Arbeit auf v4 ist opus-4-8 die stärkste Wahl; wo Token-Budget oder Latenz bindet, bleibt opus-4-6 bei vergleichbarer Korrektheit die günstigere Option.
 
 Einschränkung: n=5. Der `cognitive_max`-Mittelwert (7.4) wird von einem Ausreißer-Run (18) gezogen, der zugleich der einzige opus-4-8-Run mit `verification_pct` 0.80 ist; die übrigen vier liegen bei 3–7. Hoch-komplexer Ausreißer und schwächster Korrektheits-Run fallen also zusammen.
+
+## F-model-novel.6 — fable-5: sauberster, am meisten getesteter Code — aber nie die volle Spec
+
+fable-5 zeigt auf claim-office ein in sich konsistentes, aber paradoxes Profil: es schreibt den **mit Abstand saubersten Code** aller vier Modelle und gleichzeitig den **am wenigsten Spec-vollständigen** unter den brauchbaren Modellen.
+
+- **Qualität (führend, aber un-getrophit):** `cognitive_max` 4.0 und `mccabe_max` 4.2 sind die niedrigsten der RQ — etwa ein Fünftel von opus-4-6 (22.2 / 10.6) und klar unter opus-4-8 (7.4 / 7.0). `cc_longest_function` 14.8 (vs. 4-8: 28.4, 4-6: 50.8) und `smell_total` 0.2 (vs. 4-8: 1.2, 4-6: 5.6) sind ebenfalls Bestwerte. Der Code ist zugleich gründlich getestet (alle Runs `tests_passing=true`, bis 45 Tests) bei der kompaktesten Code-Basis (`lines_of_code` 257.6, `code_mass` 743).
+- **Korrektheit (Mittelfeld):** `verification_pct` 0.83 (σ 0.10, 0.73–0.93) — im Schnitt 12.4 von 15 externen Checks, max 14/15, **nie 15/15**. fable-5 liegt damit über opus-4-7 (0.67), aber unter opus-4-6/4-8 (~0.92). Die internen Tests sind grün, decken aber nicht die volle Spec ab: dasselbe "Tests grün, Spec lückenhaft"-Muster wie bei opus-4-6 auf v6 (F-model-novel.2) und opus-4-7 auf v4 (F-model-novel.4) — bei fable-5 aber milder ausgeprägt (kein Totalausfall einer ganzen Operation, eher einzelne Edge-Cases fehlend).
+- **Kosten:** **günstigstes Modell** mit 13.4 M `total_tokens` (knapp unter 4-7s 13.7 M, etwa halb so viel wie opus-4-8) — und anders als 4-7 nicht durch Spec-Abbruch erkauft. Aber mit 7826 s die **längste Wallclock** der RQ; ein Run lief in den 7200 s Timeout (n_ok=4/5), und zwei Runs erlebten Rate-Limit-Backoff, was die Wallclock zusätzlich inflationiert.
+- **Cycle-Granularität variabel:** Die fünf Runs reichen von 7 bis 46 RGR-Zyklen (pred/cycle-Ratio durchweg 2.0, Marker gesund). fable-5 batcht teils mehrere `it.todo`s pro Zyklus statt strikt eins-pro-Test — kein Qualitäts-Defizit, aber ein Unterschied im TDD-Rhythmus gegenüber den Opus-Modellen.
+
+Interpretation: fable-5 optimiert sichtbar auf Code-Qualität und Test-Disziplin, „verliert" dabei aber etwas Spec-Breite — es implementiert die abgedeckten Operationen sauber und vollständig getestet, lässt aber konsistent ein paar Spec-Punkte aus (nie 15/15). Das ist das Spiegelbild von opus-4-8 (spec-treu bis 15/15, aber höhere Komplexität und 2× Tokens). Für token-/qualitätskritische Arbeit mit Toleranz für ~10 % fehlende Spec-Punkte ist fable-5 die günstigste und sauberste Wahl; wo Vollständigkeit zwingend ist, bleibt opus-4-8/4-6 vorne.
+
+**Offene Folge-Frage:** Ob ein vollständigerer Test-Listen-Schritt (analog v4.1 für 4-7, F-model-novel.4) fable-5 von 0.83 auf 4-8-Korrektheit hebt, ist nicht erhoben — fable-5 wurde bisher nur auf v4 getestet.

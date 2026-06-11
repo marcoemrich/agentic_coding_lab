@@ -47,12 +47,15 @@ NC='\033[0m'
 # versions (`opus` -> claude-opus-4-6, not 4.7). Pinning the full ID
 # guarantees we run the model we mean to run.
 MODEL_CONFIGS=(
-    # opus-4-8 is not yet on Portkey/Vertex — runs via the native Anthropic
-    # API. Launch its batch with the ANTHROPIC_BASE_URL/AUTH_TOKEN/
-    # CUSTOM_HEADERS env vars blanked so the .env Portkey routing is bypassed
-    # and the CLI falls back to ~/.claude/.credentials.json (native OAuth).
+    # opus-4-8 and fable-5 are not yet on Portkey/Vertex — they run via the
+    # native Anthropic API. Launch their batches with the ANTHROPIC_BASE_URL/
+    # AUTH_TOKEN/CUSTOM_HEADERS env vars blanked so the .env Portkey routing is
+    # bypassed and the CLI falls back to ~/.claude/.credentials.json (native
+    # OAuth). Neither has a -portkey variant for the same reason.
     "opus-4-8|claude-opus-4-8|true"
     "opus-4-8-no-thinking|claude-opus-4-8|false"
+    "fable-5|claude-fable-5|true"
+    "fable-5-no-thinking|claude-fable-5|false"
     "opus-4-7|claude-opus-4-7|true"
     "opus-4-7-no-thinking|claude-opus-4-7|false"
     "sonnet-4-6|claude-sonnet-4-6|true"

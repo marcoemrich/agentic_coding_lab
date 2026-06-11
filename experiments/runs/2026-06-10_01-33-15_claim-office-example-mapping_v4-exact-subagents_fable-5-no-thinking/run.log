@@ -1,0 +1,13 @@
+The MHPCO Claim Office kata is complete: all 39 tests pass and `experiment-done.txt` has been written.
+
+**How it went:**
+- The `test-list` agent created 39 `it.todo()` tests from the spec's Example Mapping, ordered simple → complex across four groups: premium calculation (20), claim payout (12), errors (5), and CLI (2).
+- Each test then went through the agent-driven Red → Green → Refactor cycle. 25 tests required real implementation work; the other 14 passed immediately on activation because earlier minimal generalizations already covered them (e.g. the per-type block grouping, the ≥8 enchantment rule subsuming the dragon-material cases), so their Green/Refactor phases were skipped.
+
+**Resulting design** (`src/claim-office.ts` + `src/cli.ts`):
+- `runScenario` processes steps sequentially, tracking cumulative payouts per policy for cap drawdown.
+- Quote pricing: `BASE_PREMIUMS` table, per-type component grouping with the exactly-3 block premium, item-level surcharges (curse 50%, enchantment ≥5 30%) via a shared `surchargeFor`, policy-level modifiers (loyalty −20%, first-insurance +10% on every quote, follow-up −15%) computed on the unmodified base premium per the spec's integration examples, +5 fee, final `Math.ceil`.
+- Claims: 50% reimbursement at enchantment ≥8 (winning over dragon material), 100 deductible per damage entry, payout capped at 2× insurance sum consumed across successive claims, final `Math.floor`, with guards rejecting unknown item types, uncovered/over-counted damage entries, and negative amounts by throwing.
+- `src/cli.ts` reads the JSON scenario from stdin, writes `{results: [...]}` to stdout, and exits non-zero with the error on stderr when validation throws.
+
+A note from the refactor phases: `tsc --noEmit` complains about missing `@types/node` for the CLI test's `child_process`/`readFileSync` imports — pre-existing in the project setup and outside the experiment's `pnpm test` gate, but worth knowing if you later add a type-check step.

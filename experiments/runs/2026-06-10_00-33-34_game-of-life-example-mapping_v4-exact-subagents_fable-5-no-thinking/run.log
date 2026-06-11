@@ -1,0 +1,12 @@
+The exercise is complete: all 8 tests pass and `experiment-done.txt` has been written.
+
+**What was done**, following the autonomous TDD agent workflow from the project rules:
+
+1. **Test list phase** — the `test-list` agent created `src/game-of-life.spec.ts` with 8 `it.todo()` tests derived strictly from the kata spec, ordered simple → complex (empty grid, single cell dies, underpopulation pair, survival, overpopulation, reproduction, block still life, blinker with negative coordinates).
+
+2. **Red-Green-Refactor cycles** — each test went through the `red`, `green`, and `refactor` agents:
+   - Tests 1, 4, 6, 7, 8 genuinely failed in Red and drove implementation. Tests 2, 3, 5 passed immediately against the existing minimal code (a legitimate TDD outcome, noted explicitly by the red agent each time), so their Green phases were no-ops.
+   - The implementation grew incrementally: hardcoded `[]` → filter live cells with exactly 3 neighbors → consider dead neighbor cells as candidates (reproduction) → deduplicate candidates (forced by the block test) → add survival-with-2-neighbors for live cells (forced by the blinker test).
+   - Each refactor phase applied the Simple Design Rules with APP mass tracking — notable extractions: `neighborsOf`, `isAlive`, `isSamePosition`, and finally a named domain predicate `willBeAlive`.
+
+**Final state**: `src/game-of-life.ts` exports `nextGeneration(cells: Cell[]): Cell[]` using a sparse representation (only live cells tracked), handles negative coordinates, and implements all four Game of Life rules. `pnpm test` reports 8/8 passing and the type-check is clean.

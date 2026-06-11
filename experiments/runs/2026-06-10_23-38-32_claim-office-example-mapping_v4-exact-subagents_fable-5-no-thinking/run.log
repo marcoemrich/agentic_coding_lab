@@ -1,0 +1,13 @@
+The MHPCO Claim Office kata is complete: all 50 tests pass, the `claim-office` CLI works end to end, and `experiment-done.txt` has been written.
+
+I resumed an in-progress run (42 tests passing, one mid-Red failure, two todos, no CLI) and drove it to completion using the mandated TDD agents:
+
+**Core logic (`src/claim-office.ts`, 45 tests)**
+- Green: fixed the "more damage entries than insured items" test by making damage matching consume from a pool of policy items (`findIndex` + `splice`), so a second sword damage against a one-sword policy now throws. Refactor renamed the helper to `takeInsuredItemFor` to reveal the mutation.
+- Red/Green/Refactor: added the negative damage amount guard (throws on `amount < 0`); refactor extracted `reimbursementRateOf` and later `uncappedPayoutOf` for clarity.
+- The final "Scenario API" integration test passed immediately — its behavior was already covered by prior cycles.
+
+**CLI (`src/cli.ts` + `src/cli.spec.ts`, 5 tests)**
+- The test-list agent created five tests for the thin adapter; Red/Green built a CLI that reads the JSON scenario from stdin, calls `processScenario`, and writes `{"results": [...]}` to stdout. The three error-contract tests (non-zero exit, stderr message, empty stdout) passed on activation via Node's uncaught-exception behavior; the final refactor made that contract explicit with a try/catch, a clean one-line stderr message, and `process.exit(1)`.
+
+Final verification: `pnpm test` → 50/50 passing across both spec files; the schema example produces `{"results":[{"premium":59},{"payout":100,"remainingCap":1100}]}` with exit 0, and an unknown item type ("broomstick") exits 1 with an error on stderr and nothing on stdout.

@@ -1,0 +1,10 @@
+The Game of Life kata is complete. All 8 tests pass, and `experiment-done.txt` contains `DONE`.
+
+**How it went:** I followed the mandated agent workflow — one `test-list` agent, then Red/Green/Refactor agents per test, fully autonomously per experiment mode.
+
+- The **test-list agent** produced 8 tests from the kata spec, ordered simple → complex (empty grid, underpopulation ×2, survival, overpopulation, reproduction, block still life, blinker).
+- Tests 1, 4, 6, and 8 went through genuine Red → Green → Refactor cycles. Tests 2, 3, 5, and 7 passed immediately in their Red phase because the implementation at that point already covered them (e.g. the early hardcoded `return []` satisfied all underpopulation cases), so their Green phases were no-ops.
+- The implementation grew naturally: hardcoded `[]` → "live cells with exactly 3 neighbors survive" → reproduction via scanning live-cell neighborhoods → the final rule `liveNeighbors === 3 || (liveNeighbors === 2 && isAlive)`, forced by the blinker test.
+- Refactor phases extracted `cellKey`, `neighborhoodOf`, `neighborsOf`, and `isAlive`, unified survivors and births into a single `livesInNextGeneration` filter over candidate cells, and reduced APP mass (final pass: 119 → 105).
+
+**Final state** (`src/game-of-life.ts:16`): a sparse, expression-oriented implementation — live cells go into a `Set` of coordinate keys, candidates are the union of all live cells' 3×3 neighborhoods (deduplicated via a `Map`), and each candidate survives per the Conway rules. It handles negative coordinates and the infinite grid, and matches the required `nextGeneration(cells: Cell[]): Cell[]` contract exactly. One spec deviation worth noting: the red agent for the survival test found the kata's literal survival example inconsistent with Conway's rules (the pictured center cell actually has 4 neighbors), so it used a corrected 3-neighbor layout instead.

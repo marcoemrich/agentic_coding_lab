@@ -1,0 +1,16 @@
+The MHPCO Claim Office kata is complete. All 46 tests pass and `experiment-done.txt` is written.
+
+**What was built**, entirely through the mandated agent-driven TDD workflow (test-list → red → green → refactor per test):
+
+- `src/claim-office.ts` — the domain engine. `processScenario` dispatches quote/claim steps: quotes price items from a base-premium table with component-block pricing (exactly 3 alike components → 60 G, components only), item-level surcharges (curse +50%, enchantment ≥5 +30%), policy-level modifiers computed on the unmodified policy base (loyalty −20%, first-insurance +10%, follow-up −15%), the 5 G fee, and final round-up. Claims apply per-damage reimbursement rules (enchantment ≥8 → 50%, which beats dragon-material full reimbursement), a 100 G deductible per damaged item, per-policy cap tracking (2× insurance sum, depleted across successive claims with payout clamping), final round-down, and validation errors (unknown types, uncovered/over-counted damages, negative amounts).
+- `src/cli.ts` — the `claim-office` CLI: stdin JSON → stdout `{"results": [...]}`, exit 0; errors produce a clean description on stderr and exit 1.
+- `src/claim-office.spec.ts` (44 tests) and `src/cli.spec.ts` (2 subprocess tests).
+
+**Notable events along the way:**
+
+- 14 of the 44 unit tests passed immediately on activation (honest red-phase findings — earlier minimal implementations had already generalized correctly); the rest went through genuine red → green failures with verified predictions.
+- The most important correction: my early cycles assumed policy-wide percentage modifiers apply to the surcharge-inclusive base. The spec's integration example ("100 + 50 curse + 10 first insurance = 160 + 5 fee = 165") proved they apply to the *unmodified* sum of item base premiums. The green agent caught this and corrected four earlier test expectations to the spec-derived values (e.g., cursed sword 170 → 165).
+- A refactor pass also tightened the block rule to components only (3 swords would otherwise have been priced as a 60 G block).
+- One side effect worth knowing: `@types/node` was added as a devDependency so `tsc --noEmit` passes for the CLI's `process`/`Buffer` usage.
+
+Final verification: `pnpm test` → 46/46 passing, and the CLI reproduces all spec examples exactly (schema example → premium 59 / payout 100 / remainingCap 1100; both integration examples → 165 and 160; broomstick → exit 1 with "Unknown item type: broomstick" on stderr).

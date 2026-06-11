@@ -1,0 +1,15 @@
+Game of Life kata complete — all 8 tests pass and `experiment-done.txt` is written.
+
+The full TDD cycle ran autonomously through the specialized agents per the experiment rules:
+
+- **Test list** (`test-list` agent): 8 tests in `src/game-of-life.spec.ts`, ordered simple → complex, mapped one-to-one to the spec's examples (empty grid, single cell dies, two-cell underpopulation, survival, overpopulation, reproduction, blinker oscillator, block still life).
+- **Red/Green/Refactor cycles**: Each test went through the `red` agent with explicit compilation/runtime predictions (all predictions correct across all 8 cycles). Four tests drove real implementation work; the other four passed immediately upon activation because earlier minimal implementations already covered them — reported honestly each time:
+  - Test 1 (empty grid) drove the function stub with hardcoded `return []`.
+  - Tests 2, 3, 5 (single-cell death, two-cell underpopulation, overpopulation) passed immediately against the minimal code of the time.
+  - Test 4 (survival) drove neighbor counting with a `=== 3` filter.
+  - Test 6 (reproduction) drove birth logic for dead cells with exactly 3 live neighbors.
+  - Test 7 (blinker, with negative coordinates) drove the generalization to the full 2-or-3 survival rule.
+  - Test 8 (block still life) passed immediately as a regression check on the composed rules.
+- **Refactoring** (`refactor` agent after each Green): extracted named helpers (`countLiveNeighbors`, `neighborsOf`, `isSameCell`, `unique`) and rule predicates (`survives`, `isBorn`), removed a duplicate adjacency definition, and tracked APP mass at each step — tests stayed green throughout.
+
+The implementation in `src/game-of-life.ts` exports `nextGeneration(cells: Cell[]): Cell[]` per the API contract, uses a sparse representation (only live cells), and handles negative coordinates (verified by the blinker test producing `[-1,1]`).

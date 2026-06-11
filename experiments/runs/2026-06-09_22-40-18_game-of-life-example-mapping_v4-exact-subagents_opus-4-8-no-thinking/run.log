@@ -1,0 +1,24 @@
+The exercise is complete. Conway's Game of Life with an infinite sparse grid was implemented following the full TDD red-green-refactor cycle using the specialized agents.
+
+## Summary
+
+**Workflow:** Followed the autonomous TDD experiment mode — `test-list` agent created the test plan, then each of 8 tests went through `red` → `green` → `refactor` agent phases.
+
+**Result:** All 8 tests passing, `experiment-done.txt` written with `DONE`.
+
+**Tests implemented (simple → complex):**
+1. Empty grid returns empty
+2. Single cell dies (underpopulation, 0 neighbors)
+3. Two cells each with 1 neighbor die (Rule 1)
+4. Live cell with 2–3 neighbors survives (Rule 2) — *forced first real logic*
+5. Live cell with >3 neighbors dies (Rule 3) — *emergent from survival filter*
+6. Dead cell with exactly 3 neighbors is born (Rule 4) — *forced reproduction logic*
+7. Block still life stays unchanged — *emergent*
+8. Blinker oscillates into negative coordinates — *emergent from sparse representation*
+
+**Final implementation** (`src/game-of-life.ts`): A sparse coordinate-based solution where:
+- `survivors` keeps live cells with 2–3 live neighbors
+- `births` revives dead neighbor-cells with exactly 3 live neighbors
+- Helpers (`cellEquals`, `isNeighbor`, `neighborsOf`, `dedupeCells`) keep each responsibility named and isolated
+
+The infinite-grid and negative-coordinate requirements fell out naturally from the sparse `[x,y]` representation — no bounded array, so they emerged as characterization tests rather than driving new code.

@@ -1,0 +1,9 @@
+The Game of Life kata is complete — all 7 tests pass and `experiment-done.txt` contains `DONE`.
+
+**What was built:** `src/game-of-life.ts` exports `nextGeneration(cells: Cell[]): Cell[]` using a sparse representation that works on an infinite grid with negative coordinates. The next generation is the survivors (live cells with 2 or 3 live neighbors) plus the births (deduplicated dead neighbors of live cells with exactly 3 live neighbors), expressed through small named helpers: `neighborsOf`, `isLive`, `countLiveNeighbors`, `survives`, `isBorn`, `uniqueCells`, `cellKey`.
+
+**Process:** Followed the mandated agent workflow — one `test-list` agent created 7 spec-derived tests, then each test went through `red` → `green` → `refactor` agents (Green skipped where a test passed immediately against the existing minimal implementation, which happened for the second underpopulation test, overpopulation, the block, and the blinker).
+
+**One notable correction mid-run:** the survival test initially carried an expectation (from my own prompt, not the spec) that 2-neighbor cells die — which contradicts rule 2 and would have made the suite unsatisfiable once the blinker test arrived. I caught it after the Green agent flagged the inconsistency and had a red agent replace it with a correct, isolated survival example (diagonal line `[[0,0],[1,1],[2,2]] → [[1,1]]`, which has no births). The overpopulation test was also designed as a non-containment assertion (`not.toContainEqual([1,1])`) so it wouldn't force reproduction logic ahead of its own test.
+
+Final suite: single cell dies, two adjacent cells die, 2-neighbor survival, overpopulation death, reproduction, block still life, and blinker oscillation into negative coordinates — 7 passed (7).

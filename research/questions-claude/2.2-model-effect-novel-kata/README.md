@@ -1,8 +1,9 @@
 ---
 id: RQ-model-novel
-question: "Wie unterscheiden sich Opus 4.8, Opus 4.7 und Opus 4.6 (jeweils no-thinking) in Korrektheit und Code-Qualität auf einer novel Kata mit Mehrdeutigkeiten, die stärker differenziert als die trainingsbekannte game-of-life?"
+question: "Wie unterscheiden sich Fable 5, Opus 4.8, Opus 4.7 und Opus 4.6 (jeweils no-thinking) in Korrektheit und Code-Qualität auf einer novel Kata mit Mehrdeutigkeiten, die stärker differenziert als die trainingsbekannte game-of-life?"
 factors:
   model:
+    - fable-5-no-thinking
     - opus-4-8-no-thinking
     - opus-4-7-no-thinking
     - opus-4-6-portkey-no-thinking
@@ -39,13 +40,14 @@ RQ-model-quality vergleicht 6 Modelle auf `game-of-life-example-mapping` (traini
 
 Auf `claim-office-example-mapping` (novel, 5 Mehrdeutigkeiten, CLI mit externer Verification-Suite) hat RQ-regression gezeigt, dass opus-4-6 systematisch schlechtere Spec-Vollständigkeit liefert als opus-4-7: ein opus-4-6-Run auf v6-hybrid hat die `claim`-Operation komplett ignoriert (nur `quote` implementiert), obwohl das JSON-Schema-Beispiel in der Spec beide klar spezifiziert.
 
-RQ-model-novel fokussiert auf die drei stärksten Opus-Modelle (no-thinking, weil RQ-model-quality F-model-quality.2 zeigt, dass Thinking keinen konsistenten Vorteil bringt) und gibt ihnen die härtere Challenge.
+RQ-model-novel fokussiert auf die stärksten Opus-Modelle plus Fable 5 (no-thinking, weil RQ-model-quality F-model-quality.2 zeigt, dass Thinking keinen konsistenten Vorteil bringt) und gibt ihnen die härtere Challenge. Fable 5 als neuestes Top-Modell wird ergänzt, um zu prüfen, ob es die hohe Spec-Treue von opus-4-8/opus-4-6 erreicht oder übertrifft.
 
 ## Vorhandene Daten
 
 - **opus-4-7-no-thinking × v4 × claim-office-EM**: n=10 aus RQ-workflow-tradeoff-Pool (mean verification_pct 0.67, bimodal: 4 perfekt, 6 zwischen 0.20–0.87)
 - **opus-4-6-portkey-no-thinking × v4 × claim-office-EM**: n=5 (4 innerhalb Budget, 1 Timeout), mean verification_pct 0.93
 - **opus-4-8-no-thinking × v4 × claim-office-EM**: n=5 erhoben 2026-05-29 (native API — Opus 4.8 ist noch nicht auf Portkey/Vertex; Batch lief mit geleerten ANTHROPIC_*-Env-Vars), mean verification_pct 0.92
+- **fable-5-no-thinking × v4 × claim-office-EM**: n=5 erhoben 2026-06-10/11 (mean verification_pct 0.83, σ 0.10, 0.73–0.93; 4/5 innerhalb Budget, 1 Timeout). Native API (Fable 5 ist noch nicht auf Portkey/Vertex; Batch mit geleerten ANTHROPIC_*-Env-Vars, native OAuth). Benötigt Claude Code CLI ≥ 2.1.170.
 
 ## Offene Hypothesen
 
