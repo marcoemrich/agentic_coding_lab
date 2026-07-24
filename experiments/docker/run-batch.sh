@@ -593,9 +593,24 @@ EOF
             # ($REQUESTY_API_KEY), so REQUESTY_API_KEY in the env is
             # sufficient for auth. The -portkey model-name suffix is kept as
             # the RQ-controls label only; it no longer implies Portkey routing.
+            # Lab-variant → requesty/<provider>/<id>. Backprovider is pinned
+            # per lab-variant (id encodes the routing path); a changed
+            # backprovider needs a new lab-variant. IDs mirror
+            # pi-config/agent/models.json exactly.
             case "$model_name" in
                 opus-4-7-portkey)              pi_model="requesty/bedrock/claude-opus-4-7@eu-west-1" ;;
                 opus-4-7-portkey-no-thinking)  pi_model="requesty/bedrock/claude-opus-4-7@eu-west-1" ;;
+                # --- RQ-model-quality-pi / RQ-model-novel-pi matrix ---
+                opus-4-8)                      pi_model="requesty/vertex/claude-opus-4-8@eu" ;;
+                sonnet-5)                      pi_model="requesty/vertex/claude-sonnet-5@eu" ;;
+                gpt-5-6-sol)                   pi_model="requesty/azure/gpt-5.6-sol@swedencentral" ;;
+                gpt-5-6-terra)                 pi_model="requesty/azure/gpt-5.6-terra@swedencentral" ;;
+                glm-5-1)                       pi_model="requesty/nebius/zai-org/glm-5.1" ;;
+                glm-5-2)                       pi_model="requesty/tensorx/glm-5.2" ;;
+                kimi-k2-7)                     pi_model="requesty/tensorx/kimi-k2.7-code" ;;
+                minimax-m3)                    pi_model="requesty/tensorx/minimax-m3" ;;
+                deepseek-v4-pro)               pi_model="requesty/tensorx/deepseek-v4-pro" ;;
+                qwen3-235b)                    pi_model="requesty/nebius/qwen/qwen3-235b-a22b-instruct-2507" ;;
                 *) echo -e "  ${RED}ERROR: no pi model mapping for $model_name${NC}"
                    claude_exit=2
                    pi_model="" ;;
