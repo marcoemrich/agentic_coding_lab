@@ -881,16 +881,34 @@ EOF
                 verification_pct=$(awk "BEGIN {printf \"%.4f\", $verification_passed / $verification_total}")
             fi
 
-            # cli_built is true iff at least one verification scenario
-            # got the CLI to produce stdout (whether the output matched
-            # or not). When every scenario failed to invoke the command,
-            # the agent never wrote the entry point demanded by the
-            # prompt — a separate finding from "vitest is red", and we
-            # keep them as two orthogonal fields so RQs can distinguish
-            # internal correctness (tests_passing) from contract
-            # fulfilment (cli_built).
-            if [ "$verification_total" -gt 0 ] && \
-               [ "$verification_invoke_failed" -eq "$verification_total" ]; then
+            # cli_built reflects whether the agent actually wrote the CLI
+            # entry point the verification command invokes — a separate
+            # finding from "vitest is red", kept as an orthogonal field so
+            # RQs can distinguish internal correctness (tests_passing) from
+            # contract fulfilment (cli_built).
+            #
+            # Ground truth is file existence: parse the entry-point path out
+            # of the runner command (e.g. `pnpm exec tsx src/cli.ts` ->
+            # src/cli.ts) and check whether it exists in the run dir. The
+            # older heuristic — "every scenario failed to produce stdout" —
+            # false-positives: a missing src/cli.ts makes tsx print its
+            # module-resolution error to stdout, so `actual` is non-empty and
+            # verification_invoke_failed never fires, leaving cli_built=true
+            # for a run that has no CLI at all. File existence does not have
+            # that failure mode.
+            local cli_entry
+            cli_entry=$(echo "$v_command" | grep -oE '[A-Za-z0-9_./-]+\.(ts|js|mjs|cjs)' | head -1)
+            if [ -n "$cli_entry" ]; then
+                if [ -f "$run_dir/$cli_entry" ]; then
+                    cli_built=true
+                else
+                    cli_built=false
+                    echo -e "${RED}CLI entry point missing: $cli_entry not found in run dir${NC}"
+                fi
+            elif [ "$verification_total" -gt 0 ] && \
+                 [ "$verification_invoke_failed" -eq "$verification_total" ]; then
+                # Fallback for runners whose command has no parseable entry
+                # file: keep the old invocation-side-effect heuristic.
                 cli_built=false
                 echo -e "${RED}CLI entry point missing (no scenario invoked the command)${NC}"
             fi

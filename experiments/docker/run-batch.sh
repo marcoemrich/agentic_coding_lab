@@ -87,6 +87,35 @@ MODEL_CONFIGS=(
     "devstral-2512|oc-only|false"
     "codestral-2508|oc-only|false"
     "qwen3-coder-480b|oc-only|false"
+    # pi-harness-only models (Requesty-routed) — cli_model is a placeholder;
+    # the actual --model string is resolved in the pi invocation branch via
+    # the pi_model case-mapping below (requesty/<provider>/<model> format).
+    # These must be registered here so plan validation (lookup_model_config)
+    # accepts them; harness (pi/oc/claude) is chosen from the workflow marker
+    # dir, not from the model, so a pi-only placeholder is sufficient.
+    # opus-4-8, glm-5-1 and deepseek-v4-pro already appear above (native /
+    # oc-only entries) and are reused by the pi branch, so they are not
+    # repeated here.
+    "sonnet-5|pi-only|false"
+    "gpt-5-6-sol|pi-only|false"
+    "gpt-5-6-terra|pi-only|false"
+    "glm-5-2|pi-only|false"
+    "kimi-k2-7|pi-only|false"
+    "minimax-m3|pi-only|false"
+    "qwen3-235b|pi-only|false"
+    # Reasoning-off arm (RQ-model-novel-pi fair baseline). Same routing as
+    # the bare ids above; the pi branch strips the -no-thinking suffix and
+    # adds `--thinking off`. Registered here only so plan validation accepts
+    # them. opus-4-8-no-thinking already exists in the native block above.
+    "sonnet-5-no-thinking|pi-only|false"
+    "gpt-5-6-sol-no-thinking|pi-only|false"
+    "gpt-5-6-terra-no-thinking|pi-only|false"
+    "glm-5-1-no-thinking|pi-only|false"
+    "glm-5-2-no-thinking|pi-only|false"
+    "kimi-k2-7-no-thinking|pi-only|false"
+    "minimax-m3-no-thinking|pi-only|false"
+    "deepseek-v4-pro-no-thinking|pi-only|false"
+    "qwen3-235b-no-thinking|pi-only|false"
 )
 
 # ---------------------------------------------------------------------------
@@ -597,10 +626,33 @@ EOF
             # per lab-variant (id encodes the routing path); a changed
             # backprovider needs a new lab-variant. IDs mirror
             # pi-config/agent/models.json exactly.
-            case "$model_name" in
+            #
+            # Reasoning on/off is a per-invocation setting in pi
+            # (`--thinking off|minimal|low|…|max`), NOT a separate model
+            # entry. A trailing `-no-thinking` on the lab-variant selects the
+            # reasoning-off arm: strip it to resolve the routing id via the
+            # base case below, and remember to pass `--thinking off`. Bare
+            # ids keep the model's default reasoning (on). This is analogous
+            # to the claude branch's MAX_THINKING_TOKENS=0 handling.
+            pi_thinking=""   # empty = model default; "off" = reasoning off
+            model_base="$model_name"
+            if [[ "$model_base" == *-no-thinking ]]; then
+                # Keep the historical *-portkey-no-thinking labels intact —
+                # those are matched verbatim in the case below and predate
+                # this suffix convention. Only strip the suffix for the
+                # requesty RQ matrix ids.
+                if [[ "$model_base" != *-portkey-no-thinking ]]; then
+                    model_base="${model_base%-no-thinking}"
+                    pi_thinking="off"
+                fi
+            fi
+            case "$model_base" in
                 opus-4-7-portkey)              pi_model="requesty/bedrock/claude-opus-4-7@eu-west-1" ;;
                 opus-4-7-portkey-no-thinking)  pi_model="requesty/bedrock/claude-opus-4-7@eu-west-1" ;;
                 # --- RQ-model-quality-pi / RQ-model-novel-pi matrix ---
+                # Each id also has a `<id>-no-thinking` lab-variant (same
+                # routing, --thinking off) registered in MODEL_CONFIGS; the
+                # suffix is stripped above so both resolve here.
                 opus-4-8)                      pi_model="requesty/vertex/claude-opus-4-8@eu" ;;
                 sonnet-5)                      pi_model="requesty/vertex/claude-sonnet-5@eu" ;;
                 gpt-5-6-sol)                   pi_model="requesty/azure/gpt-5.6-sol@swedencentral" ;;
@@ -615,6 +667,17 @@ EOF
                    claude_exit=2
                    pi_model="" ;;
             esac
+            # Build the optional --thinking flag once, reused by the main
+            # run and the cli.ts nudge below. Empty array = model default.
+            pi_thinking_args=()
+            [ "$pi_thinking" = "off" ] && pi_thinking_args=(--thinking off)
+            # Subagents spawned by the workflow's subagent extension do not
+            # inherit --model; without this they fall back to the
+            # defaultModel in pi-config/agent/settings.json (Opus 4.7),
+            # which contaminates the model factor of every pi run. The
+            # extension reads PI_INHERIT_MODEL when the agent file itself
+            # pins no model. See .pi/extensions/subagent/index.ts.
+            export PI_INHERIT_MODEL="$pi_model"
             if [ -n "$pi_model" ]; then
                 # Provider (Requesty) lives in /home/experimenter/.pi/agent/
                 # (bind-mounted from experiments/docker/pi-config/). Project-
@@ -633,7 +696,7 @@ EOF
                 # drops to 0). --approve also covers project-local skills/agents.
                 (cd "$run_dir" && \
                     timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
-                    pi -p --approve --mode json --no-session --model "$pi_model" \
+                    pi -p --approve --mode json --no-session --model "$pi_model" "${pi_thinking_args[@]}" \
                     "Read prompt.md and complete the exercise following the workflow rules. Continue autonomously through ALL tests in the test list until you have written experiment-done.txt with the single word DONE. Do NOT stop after a single passing test or cycle — keep going until every test is implemented.") \
                     > "$run_log" 2>&1
                 claude_exit=$?
@@ -822,6 +885,31 @@ EOF
                 "The file src/cli.ts is missing. The prompt requires a CLI entry point at src/cli.ts that reads JSON from stdin and writes JSON to stdout. Create src/cli.ts now. It should import from your existing module and wire up stdin reading, processing, and stdout output.") \
                 2>&1 | tee -a "$run_log"
         fi
+        set -e
+        if [ -f "$run_dir/src/cli.ts" ]; then
+            echo -e "  ${GREEN}cli.ts created by nudge.${NC}"
+        else
+            echo -e "  ${RED}cli.ts still missing after nudge.${NC}"
+        fi
+    fi
+
+    # --- cli.ts nudge (pi harness) --------------------------------------
+    # Same measurement-artefact fix as the claude branch above, but routed
+    # through pi. Non-Anthropic models via Requesty (qwen, minimax, …) tend
+    # to skip src/cli.ts even though AGENTS.md demands it, which scores a
+    # false 0/15 on verification. Re-uses the resolved $pi_model and the same
+    # pi invocation flags as the main run (--approve for project-local
+    # skills/agents/extension; --mode json --no-session).
+    if [ "$harness" = "pi" ] && [ "$claude_exit" -eq 0 ] \
+            && [ "$rate_limited" = "false" ] && [ "$transient_api_error" = "false" ] \
+            && [ -n "$pi_model" ] \
+            && [ ! -f "$run_dir/src/cli.ts" ] && [ -f "$run_dir/src/claim-office.ts" ]; then
+        echo -e "  ${YELLOW}src/cli.ts missing — nudging pi agent to create it...${NC}"
+        set +e
+        (cd "$run_dir" && timeout --signal=TERM --kill-after=30s 120 \
+            pi -p --approve --mode json --no-session --model "$pi_model" "${pi_thinking_args[@]}" \
+            "The file src/cli.ts is missing. The prompt requires a CLI entry point at src/cli.ts that reads JSON from stdin and writes JSON to stdout. Create src/cli.ts now. It should import from your existing module and wire up stdin reading, processing, and stdout output.") \
+            >> "$run_log" 2>&1
         set -e
         if [ -f "$run_dir/src/cli.ts" ]; then
             echo -e "  ${GREEN}cli.ts created by nudge.${NC}"

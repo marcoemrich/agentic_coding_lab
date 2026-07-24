@@ -291,8 +291,16 @@ async function runSingleAgent(
 		};
 	}
 
+	// Model resolution order: agent frontmatter > inherited parent model >
+	// pi's defaultModel. Without the inherit step a subagent silently falls
+	// back to settings.json defaultModel, so an experiment run pinned to
+	// model X would execute its refactor steps on a different model — the
+	// run's model factor would be contaminated. PI_INHERIT_MODEL is set by
+	// run-batch.sh to the same --model string the parent was invoked with.
+	const inheritedModel = process.env.PI_INHERIT_MODEL;
+	const effectiveModel = agent.model || inheritedModel;
 	const args: string[] = ["--mode", "json", "-p", "--no-session"];
-	if (agent.model) args.push("--model", agent.model);
+	if (effectiveModel) args.push("--model", effectiveModel);
 	if (agent.tools && agent.tools.length > 0) args.push("--tools", agent.tools.join(","));
 
 	let tmpPromptDir: string | null = null;
@@ -306,7 +314,7 @@ async function runSingleAgent(
 		messages: [],
 		stderr: "",
 		usage: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, cost: 0, contextTokens: 0, turns: 0 },
-		model: agent.model,
+		model: effectiveModel,
 		step,
 	};
 

@@ -195,6 +195,35 @@ This is not an absolute disqualifier — naming `code_mass` ideas (APP) in refac
 
 When in doubt, list the named metrics in the workflow's `README.md` / header so future RQs know which outcomes are compliance signals for it.
 
+#### Reasoning state is a model property, not a controllable factor (pi harness)
+
+Under the pi harness with Requesty routing, whether a model reasons is **not** something the experiment sets. Measured 2026-07-24 per model with a reasoning-demanding prompt, once with `--thinking off` and once with `--thinking high`, counting thinking blocks in the pi event stream:
+
+| Model | `off` | `high` | Controllable? |
+|---|---|---|---|
+| `opus-4-8` | 0 | 91 | **yes** |
+| `sonnet-5` | 0 | 0 (also at `max`) | no — never reasons |
+| `deepseek-v4-pro` | 0 | 0 | no — never reasons |
+| `qwen3-235b` | 0 | 0 | no — never reasons |
+| `glm-5-2` | reasons | 299 | no — always reasons |
+| `kimi-k2-7` | 217 | 137 | no — always reasons |
+| `minimax-m3` | 615 | 396 | no — always reasons |
+| `gpt-5-6-sol`, `gpt-5-6-terra` | 0 | 0 | no — forced off |
+
+`opus-4-8` is the only model where the switch takes effect. For every other model `--thinking <level>`, the `:<level>` suffix on the model string, and `models.json "reasoning": false` are all inert: Requesty-routed OpenAI-compatible models return reasoning through the `reasoning_content` channel, and suppressing it needs a provider-specific body parameter that pi neither sends nor allows injecting (model entries accept only `contextWindow, id, input, maxTokens, name, reasoning`; there is no `--extra-body`). `gpt-5.6-*` is a separate case: with reasoning enabled the Azure endpoint returns `400: Function tools with reasoning_effort are not supported … use /v1/responses instead`, and no `openai-responses/gpt-5.6-*` exists in the Requesty catalog (only 5.4 and 5.5), so both run with `"reasoning": false`.
+
+**Consequences for RQ design:**
+
+- **Encode reasoning in the model ID, not as a separate factor.** `<id>` (native default) and `<id>-no-thinking` (`--thinking off`) are two distinct lab-variants sharing one routing path — the same convention as `opus-4-7-no-thinking` on the Claude-native side. This keeps cell resolution unchanged; a separate `factors.reasoning` entry would imply the level is freely settable, which it is not.
+- **The table above is a single-prompt probe** (no tool calls, no long context). It is evidence about the switch, not proof that it behaves identically under a full kata run. Declaring both arms for a model the probe called "never"/"always" is legitimate as a **test of controllability**: if the pair shows no difference, merge the cells in findings as "switch inert, empirically checked" — never report it as a reasoning effect. Only where the switch provably cannot exist (`gpt-5-6-*` forced off; `glm-5-2` reasoning through `--thinking off`) should a model carry a single arm.
+- **Reasoning is confounded with the model.** In any pi model comparison the reasoning state rides along with the model identity. Document it per model in the RQ README and read model differences with it in view — "always reasons" (`glm-5-2`, `kimi-k2-7`, `minimax-m3`) vs. "never reasons" (`sonnet-5`, `deepseek-v4-pro`, `qwen3-235b`, `gpt-5-6-*`).
+- **Verify, do not assume.** `"reasoning": true` in `models.json` advertises a capability; it does not mean the state is settable, and it does not even mean the model reasons. Check the run itself:
+  ```bash
+  grep -c '"thinking":"' run.log                                 # thinking blocks
+  grep -oE '"reasoning":[0-9]+' run.log | grep -v ':0' | wc -l   # nonzero reasoning events
+  ```
+- A trivial prompt makes every model look non-reasoning. Probe with a task that actually demands reasoning, otherwise the measurement is an artifact.
+
 ### Timeouts as a research finding
 
 Each run has a hard wallclock budget (default 90 min, set via `CLAUDE_TIMEOUT_SECONDS=5400` in `run-batch.sh`). When a `(workflow, model, kata)` cell systematically hits this limit, that's **not a data error** — it is itself the finding: the variant is impractical within the chosen cost frame.
@@ -399,6 +428,8 @@ In RQ frontmatter, **lab-variant IDs** are pinned — not the Claude API IDs (`c
 | `haiku-4-5-no-thinking`  | `claude-haiku-4-5-20251001` | Off      | `MAX_THINKING_TOKENS=0` |
 
 The ID exactly matches the `model` field in `metrics.json` and the suffix in the run directory name. Source: `MODEL_CONFIGS` in `experiments/record-run.sh` and `experiments/docker/run-batch.sh`.
+
+The `-no-thinking` suffix convention carries over to the pi harness (`run-batch.sh` strips it and passes `--thinking off`), but the *effect* does not: for Requesty-routed models the reasoning state is largely a property of the model rather than of the invocation, and `opus-4-8` is the only one measured to respond to the switch. The suffix is therefore still the right way to label the arm — just do not assume the two arms differ. Before treating reasoning as settable in a pi RQ, read [Reasoning state is a model property](#reasoning-state-is-a-model-property-not-a-controllable-factor-pi-harness).
 
 ## Katas
 
