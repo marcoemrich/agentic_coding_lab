@@ -399,10 +399,11 @@ for entry in "${RUN_LIST[@]}"; do
             cp "$WORKFLOWS_DIR/$workflow/.opencode/AGENTS.md" "$run_dir/"
     elif [ "$harness" = "pi" ]; then
         # Mirror .pi/ into run_dir. pi reads AGENTS.md via cwd walk-up.
-        # Project-local skills (.pi/skills/) and agents (.pi/agents/) are
-        # discovered by pi + the subagent extension from cwd walk-up.
-        # Provider config (models.json) and the subagent extension itself
-        # come from the global /home/experimenter/.pi/agent/ bind-mount.
+        # Project-local skills (.pi/skills/), agents (.pi/agents/) and the
+        # subagent extension (.pi/extensions/subagent/) are all workflow-local
+        # and discovered by pi from the run_dir cwd (project-local extension
+        # dir = cwd/.pi/extensions/). Only the provider config (models.json)
+        # comes from the global /home/experimenter/.pi/agent/ bind-mount.
         cp -r "$WORKFLOWS_DIR/$workflow/.pi" "$run_dir/"
         [ -f "$WORKFLOWS_DIR/$workflow/.pi/AGENTS.md" ] && \
             cp "$WORKFLOWS_DIR/$workflow/.pi/AGENTS.md" "$run_dir/"
@@ -585,29 +586,39 @@ EOF
         set +e
         if [ "$harness" = "pi" ]; then
             # Lab-variant model name → pi --model format. Walking skeleton:
-            # only Opus 4.7 via Portkey-Vertex-EU wired. Same upstream as OC.
-            # pi's models.json (per-workflow copy in $run_dir/.pi/) defines
-            # provider=portkey with api:"openai-completions" and the
-            # x-portkey-api-key header, so PORTKEY_API_KEY in the env is
-            # sufficient for auth.
+            # only Opus 4.7 wired. Portkey was retired; pi now routes via
+            # Requesty (provider=requesty, bedrock/claude-opus-4-7@eu-west-1).
+            # pi's models.json (bind-mounted from pi-config/) defines
+            # provider=requesty with api:"openai-completions" + Bearer auth
+            # ($REQUESTY_API_KEY), so REQUESTY_API_KEY in the env is
+            # sufficient for auth. The -portkey model-name suffix is kept as
+            # the RQ-controls label only; it no longer implies Portkey routing.
             case "$model_name" in
-                opus-4-7-portkey)              pi_model="portkey/@vertex-eu-global/anthropic.claude-opus-4-7" ;;
-                opus-4-7-portkey-no-thinking)  pi_model="portkey/@vertex-eu-global/anthropic.claude-opus-4-7" ;;
+                opus-4-7-portkey)              pi_model="requesty/bedrock/claude-opus-4-7@eu-west-1" ;;
+                opus-4-7-portkey-no-thinking)  pi_model="requesty/bedrock/claude-opus-4-7@eu-west-1" ;;
                 *) echo -e "  ${RED}ERROR: no pi model mapping for $model_name${NC}"
                    claude_exit=2
                    pi_model="" ;;
             esac
             if [ -n "$pi_model" ]; then
-                # Provider (Portkey) + subagent extension live in
-                # /home/experimenter/.pi/agent/ (bind-mounted from
-                # experiments/docker/pi-config/). Project-level skills and
-                # agents live in $run_dir/.pi/ and are discovered via the
-                # subagent extension's cwd walk-up. --mode json writes the
-                # full event-stream JSONL to stdout — redirect to $run_log
-                # only (no tee) so it doesn't flood the batch shard log.
+                # Provider (Requesty) lives in /home/experimenter/.pi/agent/
+                # (bind-mounted from experiments/docker/pi-config/). Project-
+                # level skills, agents AND the subagent extension live in
+                # $run_dir/.pi/ and are discovered by pi from the cwd
+                # (project-local extension dir = cwd/.pi/extensions/).
+                # --mode json writes the full event-stream JSONL to stdout —
+                # redirect to $run_log only (no tee) so it doesn't flood the
+                # batch shard log.
+                # --approve trusts project-local files for this run. REQUIRED
+                # for the workflow-local subagent extension: pi gates
+                # project-local extensions (.pi/extensions/) behind project
+                # trust, and in non-interactive -p mode there is no prompt to
+                # grant it — without --approve the extension silently does not
+                # load and the model has no `subagent` tool (refactorings_applied
+                # drops to 0). --approve also covers project-local skills/agents.
                 (cd "$run_dir" && \
                     timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
-                    pi -p --mode json --no-session --model "$pi_model" \
+                    pi -p --approve --mode json --no-session --model "$pi_model" \
                     "Read prompt.md and complete the exercise following the workflow rules. Continue autonomously through ALL tests in the test list until you have written experiment-done.txt with the single word DONE. Do NOT stop after a single passing test or cycle — keep going until every test is implemented.") \
                     > "$run_log" 2>&1
                 claude_exit=$?

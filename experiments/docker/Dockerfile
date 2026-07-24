@@ -34,12 +34,20 @@ RUN npm install -g @anthropic-ai/claude-code@2.1.156
 RUN npm install -g opencode-ai@1.15.10
 
 # Install pi CLI (third harness).
-# 0.75.5: verified locally on 2026-05-26 against Portkey-Vertex-EU /
-#   Opus 4.7 via api:"openai-completions" + x-portkey-api-key header.
-#   `anthropic-messages` api type 404s on /v1/messages — must stay openai-completions.
-# Bump policy: same as the others — verify v1-oneshot-pi smoke before
-# launching multi-cell batches.
-RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent@0.75.5
+# 0.81.1: bumped 2026-07-24. Extension-loader API (discoverAndLoadExtensions,
+#   project-local cwd/.pi/extensions/ discovery, isExtensionFile .ts/.js) is
+#   unchanged from 0.75→0.81; the vendored subagent extension is byte-identical
+#   to the upstream 0.81.1 example. Portkey-Vertex-EU / Opus 4.7 via
+#   api:"openai-completions" + x-portkey-api-key header (`anthropic-messages`
+#   404s on /v1/messages — must stay openai-completions).
+#   The subagent extension is now workflow-local
+#   (workflows/v6.2-with-why-cleaned-pi/.pi/extensions/subagent/), not global.
+#   BREAKING vs 0.75: pi's config-value resolver now requires a "$" prefix for
+#   env-var header refs — models.json must use "$PORTKEY_API_KEY", not the bare
+#   name (a bare name is sent literally → Portkey 401 Invalid API Key).
+# Bump policy: same as the others — verify v1-oneshot-pi (and the v6.2-pi
+# refactor-subagent smoke) before launching multi-cell batches.
+RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent@0.81.1
 
 # Stryker (mutation testing): NOT installed globally. Stryker's TS-config
 # preprocessor resolves `typescript` from where stryker itself is loaded,
