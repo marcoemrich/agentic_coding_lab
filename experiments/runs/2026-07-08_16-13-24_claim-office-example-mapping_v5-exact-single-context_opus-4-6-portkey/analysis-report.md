@@ -1,0 +1,77 @@
+# Analysis Report: 2026-07-08_16-13-24_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey
+
+Generated: 2026-07-08T16:13:27+00:00
+
+## Configuration
+
+| Property | Value |
+|----------|-------|
+| Kata | claim-office-example-mapping |
+| Workflow | v5-exact-single-context |
+| Model | opus-4-6-portkey |
+| Model Version(s) | <synthetic> |
+| Thinking | true |
+| Duration | 2s |
+| Started | 2026-07-08T16:13:24+00:00 |
+| Ended | 2026-07-08T16:13:27+00:00 |
+
+## Code Metrics
+
+- **Implementation**: Not found
+- **Tests**: Not found
+
+## Test Results
+
+**Status**: ❌ Tests failed or not runnable
+
+```
+
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-07-08_16-13-24_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey
+> vitest run
+
+sh: 1: vitest: not found
+ ELIFECYCLE  Test failed. See above for more details.
+```
+
+## Transcript Metrics
+
+### Token Usage
+
+| Metric | Value |
+|--------|-------|
+| Total Tokens | 0 |
+| Context Utilization | 0% |
+
+### TDD Cycle Metrics
+
+| Metric | Value |
+|--------|-------|
+| Cycle Count | 0 |
+| Avg Cycle Time | 0.00s |
+| Avg Red Phase | 0s |
+| Avg Green Phase | 0s |
+| Avg Refactor Phase | 0s |
+
+### Prediction Accuracy (Guessing Game) — Self-Reported
+
+| Metric | Value |
+|--------|-------|
+| Predictions Correct | 0 |
+| Predictions Total | 0 |
+| Accuracy | N/A |
+
+_Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._
+
+### Refactoring Metrics
+
+| Metric | Value |
+|--------|-------|
+| Refactorings Applied | 0 |
+
+### TDD Discipline
+
+| Metric | Value |
+|--------|-------|
+| Tests Passed Immediately | 0 |
+
+
