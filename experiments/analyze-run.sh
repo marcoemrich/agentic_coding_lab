@@ -677,6 +677,12 @@ EOF
         [[ "$summary_avg_green" =~ ^[0-9]+(\.[0-9]+)?$ ]] || summary_avg_green=0
         [[ "$summary_avg_refactor" =~ ^[0-9]+(\.[0-9]+)?$ ]] || summary_avg_refactor=0
 
+        # Actual routed cost (USD) if the transcript parser captured it
+        # (Requesty /v1/messages path surfaces per-message cost; native/
+        # Portkey do not → stays "null", compute-cost.py fills the estimate).
+        summary_cost_usd=$(jq -c '.cost_usd // null' "$run_dir/transcript-metrics.json" 2>/dev/null)
+        [[ -n "$summary_cost_usd" ]] || summary_cost_usd=null
+
         # Token Usage
         echo -e "  ${CYAN}Token Usage:${NC}"
         echo -e "    Total tokens: $summary_total_tokens"
@@ -967,6 +973,7 @@ EOF
            --argjson verification_passed "$verification_passed" \
            --argjson verification_pct "$verification_pct" \
            --argjson cli_built "$cli_built" \
+           --argjson cost_usd "$summary_cost_usd" \
            '.final_metrics.lines_of_code = $impl_loc |
             .final_metrics.test_lines = $test_loc |
             .final_metrics.tests_total = $test_count |
@@ -1006,7 +1013,8 @@ EOF
             .summary_metrics.avg_cycle_seconds = $avg_cycle |
             .summary_metrics.avg_red_seconds = $avg_red |
             .summary_metrics.avg_green_seconds = $avg_green |
-            .summary_metrics.avg_refactor_seconds = $avg_refactor' \
+            .summary_metrics.avg_refactor_seconds = $avg_refactor |
+            (if $cost_usd != null then .final_metrics.cost_usd = $cost_usd else . end)' \
            "$run_dir/metrics.json" > "$run_dir/metrics.tmp" && \
         mv "$run_dir/metrics.tmp" "$run_dir/metrics.json"
 

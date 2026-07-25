@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-24_17-51-45_claim-office-example-mapping_v6.2-with-why-cleaned-pi_sonnet-5-no-thinking
 
-Generated: 2026-07-25T13:01:35+02:00
+Generated: 2026-07-25T20:26:42+02:00
 
 ## Configuration
 
@@ -36,8 +36,8 @@ Generated: 2026-07-25T13:01:35+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-24_17-51-45_claim-office-example-mapping_v6.2-with-why-cleaned-pi_sonnet-5-no-thinking
 
- ✓ src/claim.spec.ts  (12 tests) 5ms
- ✓ src/quote.spec.ts  (9 tests) 5ms
+ ✓ src/quote.spec.ts  (9 tests) 2ms
+ ✓ src/claim.spec.ts  (12 tests) 3ms
 npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
 npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
 npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
@@ -57,12 +57,12 @@ npm warn Unknown env config "npm-globalconfig". This will stop working in the ne
 npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
 npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
 Error: Claim references 2 "sword" damages but only 1 are insured
- ✓ src/cli.spec.ts  (5 tests) 1553ms
+ ✓ src/cli.spec.ts  (5 tests) 1522ms
 
  Test Files  3 passed (3)
       Tests  26 passed (26)
-   Start at  13:01:36
-   Duration  1.88s (transform 56ms, setup 0ms, collect 79ms, tests 1.56s, environment 0ms, prepare 250ms)
+   Start at  20:26:42
+   Duration  1.88s (transform 59ms, setup 0ms, collect 75ms, tests 1.53s, environment 0ms, prepare 282ms)
 ```
 
 ## Coverage

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_01-23-54_claim-office-example-mapping_v6.2-with-why-cleaned-pi_minimax-m3
 
-Generated: 2026-07-25T13:04:37+02:00
+Generated: 2026-07-25T20:30:08+02:00
 
 ## Configuration
 
@@ -36,12 +36,12 @@ Generated: 2026-07-25T13:04:37+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_01-23-54_claim-office-example-mapping_v6.2-with-why-cleaned-pi_minimax-m3
 
- ✓ src/claim-office.spec.ts  (48 tests) 7ms
+ ✓ src/claim-office.spec.ts  (48 tests) 11ms
 
  Test Files  1 passed (1)
       Tests  48 passed (48)
-   Start at  13:04:38
-   Duration  352ms (transform 44ms, setup 0ms, collect 45ms, tests 7ms, environment 0ms, prepare 73ms)
+   Start at  20:30:09
+   Duration  459ms (transform 56ms, setup 0ms, collect 63ms, tests 11ms, environment 0ms, prepare 81ms)
 ```
 
 ## Coverage

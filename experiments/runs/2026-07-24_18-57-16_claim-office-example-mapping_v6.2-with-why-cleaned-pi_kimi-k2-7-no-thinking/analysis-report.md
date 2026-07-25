@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-24_18-57-16_claim-office-example-mapping_v6.2-with-why-cleaned-pi_kimi-k2-7-no-thinking
 
-Generated: 2026-07-25T13:02:20+02:00
+Generated: 2026-07-25T20:27:29+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-07-25T13:02:20+02:00
 
  Test Files  1 skipped (1)
       Tests  36 todo (36)
-   Start at  13:02:21
-   Duration  343ms (transform 20ms, setup 0ms, collect 15ms, tests 0ms, environment 0ms, prepare 77ms)
+   Start at  20:27:30
+   Duration  323ms (transform 19ms, setup 0ms, collect 15ms, tests 0ms, environment 0ms, prepare 73ms)
 ```
 
 ## APP Mass Estimation

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_02-01-15_claim-office-example-mapping_v6.2.1-phase-continuation-pi_minimax-m3-no-thinking
 
-Generated: 2026-07-25T13:06:17+02:00
+Generated: 2026-07-25T20:32:06+02:00
 
 ## Configuration
 
@@ -36,9 +36,9 @@ Generated: 2026-07-25T13:06:17+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_02-01-15_claim-office-example-mapping_v6.2.1-phase-continuation-pi_minimax-m3-no-thinking
 
- ✓ src/quote.spec.ts  (23 tests) 6ms
  ✓ src/policy.spec.ts  (21 tests) 4ms
- ❯ src/scenario.spec.ts  (15 tests | 1 failed) 1245ms
+ ✓ src/quote.spec.ts  (23 tests) 4ms
+ ❯ src/scenario.spec.ts  (15 tests | 1 failed) 1287ms
    ❯ src/scenario.spec.ts > CLI subprocess > reads JSON from stdin, writes JSON to stdout for valid scenario
      → expected 'npm warn Unknown env config "npm-glob…' to be '' // Object.is equality
 
@@ -67,8 +67,8 @@ AssertionError: expected 'npm warn Unknown env config "npm-glob…' to be '' // 
 
  Test Files  1 failed | 2 passed (3)
       Tests  1 failed | 58 passed (59)
-   Start at  13:06:18
-   Duration  1.61s (transform 78ms, setup 1ms, collect 110ms, tests 1.25s, environment 1ms, prepare 270ms)
+   Start at  20:32:08
+   Duration  1.66s (transform 71ms, setup 0ms, collect 100ms, tests 1.29s, environment 0ms, prepare 218ms)
 
  ELIFECYCLE  Test failed. See above for more details.
 ```

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_08-51-36_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_glm-5-2
 
-Generated: 2026-07-25T14:36:18+02:00
+Generated: 2026-07-25T20:17:42+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-07-25T14:36:18+02:00
 
  Test Files  1 passed (1)
       Tests  9 passed (9)
-   Start at  14:36:19
-   Duration  297ms (transform 26ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 98ms)
+   Start at  20:17:44
+   Duration  353ms (transform 24ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 82ms)
 ```
 
 ## Coverage

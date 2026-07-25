@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_03-48-17_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 
-Generated: 2026-07-25T13:09:21+02:00
+Generated: 2026-07-25T20:35:46+02:00
 
 ## Configuration
 
@@ -41,12 +41,12 @@ damage references item not covered by policy: amulet
 damage references item not covered by policy: broomstick
 damage amount must not be negative: -200
 damage references item not covered by policy: sword
- ✓ src/claim-office.spec.ts  (38 tests) 1025ms
+ ✓ src/claim-office.spec.ts  (38 tests) 1205ms
 
  Test Files  1 passed (1)
       Tests  38 passed (38)
-   Start at  13:09:26
-   Duration  1.37s (transform 42ms, setup 0ms, collect 41ms, tests 1.02s, environment 0ms, prepare 69ms)
+   Start at  20:35:52
+   Duration  1.73s (transform 57ms, setup 0ms, collect 45ms, tests 1.21s, environment 0ms, prepare 177ms)
 ```
 
 ## Coverage

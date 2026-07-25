@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_09-45-21_claim-office-example-mapping_v6.2.1-phase-continuation-pi_qwen3-235b
 
-Generated: 2026-07-25T13:12:10+02:00
+Generated: 2026-07-25T20:38:43+02:00
 
 ## Configuration
 

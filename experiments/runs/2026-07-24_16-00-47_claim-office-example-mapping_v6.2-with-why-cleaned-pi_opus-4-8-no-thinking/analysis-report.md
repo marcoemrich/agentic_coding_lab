@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-24_16-00-47_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-8-no-thinking
 
-Generated: 2026-07-25T13:00:01+02:00
+Generated: 2026-07-25T20:25:07+02:00
 
 ## Configuration
 
@@ -55,12 +55,12 @@ Error: Negative damage amount: -200
 npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
 npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
 npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
- ✓ src/claim-office.spec.ts  (38 tests) 1530ms
+ ✓ src/claim-office.spec.ts  (38 tests) 1533ms
 
  Test Files  1 passed (1)
       Tests  38 passed (38)
-   Start at  13:00:02
-   Duration  1.86s (transform 55ms, setup 0ms, collect 33ms, tests 1.53s, environment 0ms, prepare 121ms)
+   Start at  20:25:08
+   Duration  1.87s (transform 35ms, setup 1ms, collect 33ms, tests 1.53s, environment 0ms, prepare 59ms)
 ```
 
 ## Coverage

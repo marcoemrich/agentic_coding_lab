@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-24_15-24-24_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-8-2
 
-Generated: 2026-07-25T12:58:33+02:00
+Generated: 2026-07-25T20:23:34+02:00
 
 ## Configuration
 
@@ -36,12 +36,12 @@ Generated: 2026-07-25T12:58:33+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-24_15-24-24_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-8-2
 
- ✓ src/claim-office.spec.ts  (41 tests) 908ms
+ ✓ src/claim-office.spec.ts  (41 tests) 921ms
 
  Test Files  1 passed (1)
       Tests  41 passed (41)
-   Start at  12:58:34
-   Duration  1.31s (transform 42ms, setup 0ms, collect 42ms, tests 908ms, environment 0ms, prepare 59ms)
+   Start at  20:23:34
+   Duration  1.26s (transform 38ms, setup 0ms, collect 35ms, tests 921ms, environment 0ms, prepare 82ms)
 ```
 
 ## Coverage

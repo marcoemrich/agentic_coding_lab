@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-24_16-04-17_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-8-no-thinking
 
-Generated: 2026-07-25T13:00:14+02:00
+Generated: 2026-07-25T20:25:20+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-07-25T13:00:14+02:00
 
  Test Files  1 passed (1)
       Tests  37 passed (37)
-   Start at  13:00:15
-   Duration  366ms (transform 37ms, setup 0ms, collect 34ms, tests 7ms, environment 0ms, prepare 90ms)
+   Start at  20:25:21
+   Duration  334ms (transform 37ms, setup 0ms, collect 36ms, tests 7ms, environment 0ms, prepare 52ms)
 ```
 
 ## Coverage

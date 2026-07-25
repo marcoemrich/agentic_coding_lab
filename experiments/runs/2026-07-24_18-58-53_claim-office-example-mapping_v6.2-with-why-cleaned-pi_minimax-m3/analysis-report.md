@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-24_18-58-53_claim-office-example-mapping_v6.2-with-why-cleaned-pi_minimax-m3
 
-Generated: 2026-07-25T13:02:29+02:00
+Generated: 2026-07-25T20:27:39+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-07-25T13:02:29+02:00
 
  Test Files  1 passed (1)
       Tests  17 passed | 51 todo (68)
-   Start at  13:02:34
-   Duration  351ms (transform 31ms, setup 0ms, collect 30ms, tests 3ms, environment 0ms, prepare 93ms)
+   Start at  20:27:44
+   Duration  366ms (transform 27ms, setup 0ms, collect 26ms, tests 3ms, environment 0ms, prepare 90ms)
 ```
 
 ## Coverage

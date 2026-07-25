@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_01-35-59_claim-office-example-mapping_v6.2.1-phase-continuation-pi_kimi-k2-7
 
-Generated: 2026-07-25T13:06:05+02:00
+Generated: 2026-07-25T20:31:55+02:00
 
 ## Configuration
 
@@ -36,12 +36,12 @@ Generated: 2026-07-25T13:06:05+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_01-35-59_claim-office-example-mapping_v6.2.1-phase-continuation-pi_kimi-k2-7
 
- ✓ src/claim-office.spec.ts  (39 tests) 7ms
+ ✓ src/claim-office.spec.ts  (39 tests) 6ms
 
  Test Files  1 passed (1)
       Tests  39 passed (39)
-   Start at  13:06:06
-   Duration  410ms (transform 40ms, setup 0ms, collect 39ms, tests 7ms, environment 0ms, prepare 72ms)
+   Start at  20:31:56
+   Duration  368ms (transform 36ms, setup 0ms, collect 35ms, tests 6ms, environment 0ms, prepare 93ms)
 ```
 
 ## Coverage

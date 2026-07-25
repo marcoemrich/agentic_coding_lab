@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-24_15-24-24_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-8-4
 
-Generated: 2026-07-25T12:58:55+02:00
+Generated: 2026-07-25T20:23:56+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-07-25T12:58:55+02:00
 
  Test Files  1 passed (1)
       Tests  32 passed (32)
-   Start at  12:58:56
-   Duration  307ms (transform 40ms, setup 1ms, collect 36ms, tests 6ms, environment 0ms, prepare 127ms)
+   Start at  20:23:57
+   Duration  487ms (transform 48ms, setup 0ms, collect 33ms, tests 6ms, environment 0ms, prepare 149ms)
 ```
 
 ## Coverage

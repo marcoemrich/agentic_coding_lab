@@ -53,6 +53,13 @@ MODEL_CONFIGS=(
     # and the CLI falls back to ~/.claude/.credentials.json (native OAuth).
     "opus-4-8|claude-opus-4-8|true"
     "opus-4-8-no-thinking|claude-opus-4-8|false"
+    # opus-4-8 via Requesty (Anthropic /v1/messages path). cli_model carries
+    # the Requesty route format (native alias claude-opus-4-8 → 403); CC picks
+    # it up via --model. Requires .env ANTHROPIC_BASE_URL=router.eu.requesty.ai
+    # + ANTHROPIC_AUTH_TOKEN=$REQUESTY_API_KEY. The -requesty suffix keeps these
+    # runs distinguishable from native opus-4-8 (different tariff, real cost).
+    "opus-4-8-requesty|vertex/claude-opus-4-8@eu|true"
+    "opus-4-8-requesty-no-thinking|vertex/claude-opus-4-8@eu|false"
     "opus-4-7|claude-opus-4-7|true"
     "opus-4-7-no-thinking|claude-opus-4-7|false"
     "sonnet-4-6|claude-sonnet-4-6|true"
@@ -717,6 +724,11 @@ EOF
                 # convention (controls.model identifies the CC-side variant;
                 # OC matches it because thinking is structurally off there).
                 opus-4-7-portkey-no-thinking)  oc_model="portkey/@vertex-eu-global/anthropic.claude-opus-4-7" ;;
+                # opus-4-8 via Requesty: provider "requesty" (block in the
+                # workflow's opencode.json), route format vertex/…@eu. Both the
+                # -requesty and -requesty-no-thinking labels map to the same
+                # upstream (OC has no thinking flag).
+                opus-4-8-requesty|opus-4-8-requesty-no-thinking)  oc_model="requesty/vertex/claude-opus-4-8@eu" ;;
                 gemini-2-5-pro)    oc_model="portkey/@vertex-ai/gemini-2.5-pro" ;;
                 gemini-3-5-flash)  oc_model="portkey/@vertex-eu-global/gemini-3.5-flash" ;;
                 kimi-k2-6)         oc_model="portkey/@openrouter-eval/moonshotai/kimi-k2.6" ;;

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_10-44-42_claim-office-example-mapping_v6.2.1-phase-continuation-pi_qwen3-235b-no-thinking
 
-Generated: 2026-07-25T13:12:42+02:00
+Generated: 2026-07-25T20:39:14+02:00
 
 ## Configuration
 
@@ -36,7 +36,7 @@ Generated: 2026-07-25T13:12:42+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_10-44-42_claim-office-example-mapping_v6.2.1-phase-continuation-pi_qwen3-235b-no-thinking
 
- ❯ src/claim-office.spec.ts  (35 tests | 12 failed | 21 skipped) 9ms
+ ❯ src/claim-office.spec.ts  (35 tests | 12 failed | 21 skipped) 10ms
    ❯ src/claim-office.spec.ts > Claim Office > should apply base premium for a sword -- 100 G base premium for a sword
      → expected 116 to be 105 // Object.is equality
    ❯ src/claim-office.spec.ts > Claim Office > should apply base premium for an amulet -- 60 G base premium for amulet
@@ -294,8 +294,8 @@ AssertionError: expected 93 to be 85 // Object.is equality
 
  Test Files  1 failed (1)
       Tests  12 failed | 2 passed | 21 todo (35)
-   Start at  13:12:43
-   Duration  314ms (transform 28ms, setup 0ms, collect 25ms, tests 9ms, environment 0ms, prepare 67ms)
+   Start at  20:39:15
+   Duration  412ms (transform 27ms, setup 0ms, collect 25ms, tests 10ms, environment 0ms, prepare 60ms)
 
  ELIFECYCLE  Test failed. See above for more details.
 ```

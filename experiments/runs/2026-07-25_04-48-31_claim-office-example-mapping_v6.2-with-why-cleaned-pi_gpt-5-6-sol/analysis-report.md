@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_04-48-31_claim-office-example-mapping_v6.2-with-why-cleaned-pi_gpt-5-6-sol
 
-Generated: 2026-07-25T13:11:26+02:00
+Generated: 2026-07-25T20:38:01+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-07-25T13:11:26+02:00
 
  Test Files  1 passed (1)
       Tests  34 passed (34)
-   Start at  13:11:26
-   Duration  363ms (transform 29ms, setup 0ms, collect 29ms, tests 5ms, environment 0ms, prepare 72ms)
+   Start at  20:38:02
+   Duration  306ms (transform 50ms, setup 0ms, collect 32ms, tests 5ms, environment 0ms, prepare 134ms)
 ```
 
 ## Coverage

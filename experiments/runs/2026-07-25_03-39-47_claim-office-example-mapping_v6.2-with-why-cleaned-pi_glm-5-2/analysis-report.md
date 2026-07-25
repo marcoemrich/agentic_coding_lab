@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_03-39-47_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 
-Generated: 2026-07-25T13:08:41+02:00
+Generated: 2026-07-25T20:35:01+02:00
 
 ## Configuration
 
@@ -36,15 +36,15 @@ Generated: 2026-07-25T13:08:41+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_03-39-47_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 
- ✓ src/scenario.spec.ts  (2 tests) 3ms
- ✓ src/cli.spec.ts  (5 tests) 3ms
- ✓ src/quote.spec.ts  (13 tests) 4ms
+ ✓ src/quote.spec.ts  (13 tests) 3ms
  ✓ src/claim.spec.ts  (10 tests) 3ms
+ ✓ src/cli.spec.ts  (5 tests) 4ms
+ ✓ src/scenario.spec.ts  (2 tests) 2ms
 
  Test Files  4 passed (4)
       Tests  30 passed (30)
-   Start at  13:08:52
-   Duration  404ms (transform 91ms, setup 1ms, collect 131ms, tests 13ms, environment 1ms, prepare 409ms)
+   Start at  20:35:12
+   Duration  412ms (transform 76ms, setup 0ms, collect 105ms, tests 12ms, environment 1ms, prepare 449ms)
 ```
 
 ## Coverage

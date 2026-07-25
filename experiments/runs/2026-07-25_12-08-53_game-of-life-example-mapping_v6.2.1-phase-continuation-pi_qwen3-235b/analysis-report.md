@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_12-08-53_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_qwen3-235b
 
-Generated: 2026-07-25T14:38:33+02:00
+Generated: 2026-07-25T20:19:59+02:00
 
 ## Configuration
 
@@ -36,7 +36,7 @@ Generated: 2026-07-25T14:38:33+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_12-08-53_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_qwen3-235b
 
- ❯ src/game-of-life.spec.ts  (9 tests | 5 failed) 8ms
+ ❯ src/game-of-life.spec.ts  (9 tests | 5 failed) 9ms
    ❯ src/game-of-life.spec.ts > Game of Life - Next Generation > should keep center cell alive when it has exactly 2 live neighbors -- [(1,1)] given [(0,1), (1,1), (2,1)]
      → expected [ [ 1, +0 ], [ 1, 1 ], [ 1, 2 ] ] to deeply equal [ [ 1, 1 ] ]
    ❯ src/game-of-life.spec.ts > Game of Life - Next Generation > should keep center cell alive when it has exactly 3 live neighbors -- [(1,1)] given [(0,1), (1,0), (1,1), (2,1)]
@@ -246,8 +246,8 @@ AssertionError: expected [ [ +0, +0 ], [ +0, 1 ], …(2) ] to deeply equal [ [ +
 
  Test Files  1 failed (1)
       Tests  5 failed | 4 passed (9)
-   Start at  14:38:34
-   Duration  333ms (transform 24ms, setup 0ms, collect 21ms, tests 8ms, environment 0ms, prepare 71ms)
+   Start at  20:20:00
+   Duration  372ms (transform 27ms, setup 0ms, collect 21ms, tests 9ms, environment 0ms, prepare 99ms)
 
  ELIFECYCLE  Test failed. See above for more details.
 ```

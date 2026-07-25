@@ -1,14 +1,14 @@
 # Analysis Report: 2026-07-25_12-20-43_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_qwen3-235b
 
-Generated: 2026-07-25T14:40:28+02:00
+Generated: 2026-07-25T20:20:51+02:00
 
 ## Configuration
 
 | Property | Value |
 |----------|-------|
-| Kata | null |
-| Workflow | null |
-| Model | unknown |
+| Kata | game-of-life-example-mapping |
+| Workflow | v6.2.1-phase-continuation-pi |
+| Model | qwen3-235b |
 | Model Version(s) | N/A |
 | Thinking | unknown |
 | Duration | 584s |

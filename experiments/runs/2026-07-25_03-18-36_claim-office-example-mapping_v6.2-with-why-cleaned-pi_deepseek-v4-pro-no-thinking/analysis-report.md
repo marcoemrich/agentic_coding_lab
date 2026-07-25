@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_03-18-36_claim-office-example-mapping_v6.2-with-why-cleaned-pi_deepseek-v4-pro-no-thinking
 
-Generated: 2026-07-25T13:06:48+02:00
+Generated: 2026-07-25T20:32:40+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-07-25T13:06:48+02:00
 
  Test Files  1 passed (1)
       Tests  43 passed (43)
-   Start at  13:06:49
-   Duration  377ms (transform 41ms, setup 0ms, collect 38ms, tests 7ms, environment 0ms, prepare 76ms)
+   Start at  20:32:41
+   Duration  382ms (transform 63ms, setup 0ms, collect 59ms, tests 7ms, environment 0ms, prepare 96ms)
 ```
 
 ## Coverage

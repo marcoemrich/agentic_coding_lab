@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-24_18-20-57_claim-office-example-mapping_v6.2-with-why-cleaned-pi_sonnet-5-no-thinking
 
-Generated: 2026-07-25T13:01:59+02:00
+Generated: 2026-07-25T20:27:09+02:00
 
 ## Configuration
 
@@ -36,12 +36,12 @@ Generated: 2026-07-25T13:01:59+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-24_18-20-57_claim-office-example-mapping_v6.2-with-why-cleaned-pi_sonnet-5-no-thinking
 
- ✓ src/claim-office.spec.ts  (32 tests) 4ms
+ ✓ src/claim-office.spec.ts  (32 tests) 5ms
 
  Test Files  1 passed (1)
       Tests  32 passed (32)
-   Start at  13:02:00
-   Duration  351ms (transform 31ms, setup 0ms, collect 29ms, tests 4ms, environment 0ms, prepare 60ms)
+   Start at  20:27:09
+   Duration  387ms (transform 35ms, setup 0ms, collect 35ms, tests 5ms, environment 0ms, prepare 77ms)
 ```
 
 ## Coverage

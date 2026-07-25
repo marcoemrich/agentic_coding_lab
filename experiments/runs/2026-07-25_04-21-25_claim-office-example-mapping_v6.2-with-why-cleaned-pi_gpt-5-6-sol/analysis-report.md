@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_04-21-25_claim-office-example-mapping_v6.2-with-why-cleaned-pi_gpt-5-6-sol
 
-Generated: 2026-07-25T13:10:07+02:00
+Generated: 2026-07-25T20:36:41+02:00
 
 ## Configuration
 
@@ -36,12 +36,12 @@ Generated: 2026-07-25T13:10:07+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_04-21-25_claim-office-example-mapping_v6.2-with-why-cleaned-pi_gpt-5-6-sol
 
- ✓ src/claim-office.spec.ts  (11 tests) 791ms
+ ✓ src/claim-office.spec.ts  (11 tests) 810ms
 
  Test Files  1 passed (1)
       Tests  11 passed (11)
-   Start at  13:10:08
-   Duration  1.20s (transform 37ms, setup 0ms, collect 38ms, tests 791ms, environment 0ms, prepare 73ms)
+   Start at  20:36:41
+   Duration  1.21s (transform 50ms, setup 0ms, collect 51ms, tests 810ms, environment 0ms, prepare 80ms)
 ```
 
 ## Coverage

@@ -2,7 +2,7 @@
 
 _Wie unterscheiden sich die via pi-Harness (Requesty-Routing) erreichbaren Modelle in Code-Qualität und TDD-Disziplin auf game-of-life-example-mapping mit dem v6.2.1-phase-continuation-pi-Workflow?_
 
-Generated: 2026-07-25T12:40:43Z
+Generated: 2026-07-25T18:24:11Z
 
 Cells declared: 10 · matched runs: 50 · min_replicates: 5
 
@@ -230,7 +230,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k2-7       |   5 |   1    |  1    |     1 |  0    |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3      |   5 |   0.87 |  0.33 |     1 |  0.3  |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8        |   5 |   1    |  1    |     1 |  0    |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b      |   4 |   0.25 |  0    |     1 |  0.5  |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b      |   5 |   0.4  |  0    |     1 |  0.55 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5        |   5 |   1    |  1    |     1 |  0    |
 
 ### tests_passing (rate %)
@@ -367,3 +367,18 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8        |   5 |      1.23042e+06 |  992904 | 1651260 | 277681           |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b      |   5 |      3.55122e+06 |   60076 | 6535630 |      2.50945e+06 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5        |   5 |      3.664e+06   | 2306184 | 5454604 |      1.44702e+06 |
+
+### cost_usd
+
+| kata                         | cell_workflow                | cell_model      |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-----------------------------|:----------------|----:|-------:|------:|------:|------:|
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | deepseek-v4-pro |   5 |   0.83 |  0.55 |  1.19 |  0.27 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | glm-5-1         |   5 |   1.74 |  0.08 |  2.5  |  0.97 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | glm-5-2         |   5 |   2.53 |  1.48 |  3.45 |  0.72 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol     |   5 |   1.09 |  0.71 |  1.47 |  0.29 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-terra   |   5 |   0.67 |  0.44 |  0.9  |  0.18 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k2-7       |   5 |   0.6  |  0.47 |  0.82 |  0.14 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3      |   5 |   0.77 |  0.47 |  1.21 |  0.32 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8        |   5 |   2    |  1.77 |  2.3  |  0.25 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b      |   5 |   0.72 |  0.01 |  1.32 |  0.51 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5        |   5 |   2.83 |  1.79 |  3.88 |  0.78 |

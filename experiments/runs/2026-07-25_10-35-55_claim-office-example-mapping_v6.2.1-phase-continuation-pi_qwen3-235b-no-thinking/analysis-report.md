@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_10-35-55_claim-office-example-mapping_v6.2.1-phase-continuation-pi_qwen3-235b-no-thinking
 
-Generated: 2026-07-25T13:12:33+02:00
+Generated: 2026-07-25T20:39:05+02:00
 
 ## Configuration
 
@@ -39,7 +39,7 @@ Generated: 2026-07-25T13:12:33+02:00
  ❯ src/claim-office-mapping.spec.ts  (33 tests | 1 failed | 31 skipped) 4ms
    ❯ src/claim-office-mapping.spec.ts > MHPCO Claim Office Mapping > should compute base premium for sword - 100 G
      → Cannot read properties of undefined (reading 'premium')
- ❯ src/claim-office.spec.ts  (35 tests | 7 failed | 20 skipped) 8ms
+ ❯ src/claim-office.spec.ts  (35 tests | 7 failed | 20 skipped) 9ms
    ❯ src/claim-office.spec.ts > MHPCO Claim Office > should compute base premium for a sword as 100 G
      → expected 110 to be 100 // Object.is equality
    ❯ src/claim-office.spec.ts > MHPCO Claim Office > should compute base premium for an amulet as 60 G
@@ -204,8 +204,8 @@ AssertionError: expected 88 to be 80 // Object.is equality
 
  Test Files  2 failed (2)
       Tests  8 failed | 9 passed | 51 todo (68)
-   Start at  13:12:34
-   Duration  398ms (transform 39ms, setup 0ms, collect 51ms, tests 12ms, environment 0ms, prepare 177ms)
+   Start at  20:39:06
+   Duration  353ms (transform 46ms, setup 0ms, collect 55ms, tests 13ms, environment 0ms, prepare 149ms)
 
  ELIFECYCLE  Test failed. See above for more details.
 ```

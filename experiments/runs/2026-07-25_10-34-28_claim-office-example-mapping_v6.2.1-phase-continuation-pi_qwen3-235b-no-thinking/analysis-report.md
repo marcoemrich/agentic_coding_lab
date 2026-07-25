@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_10-34-28_claim-office-example-mapping_v6.2.1-phase-continuation-pi_qwen3-235b-no-thinking
 
-Generated: 2026-07-25T13:12:27+02:00
+Generated: 2026-07-25T20:39:00+02:00
 
 ## Configuration
 

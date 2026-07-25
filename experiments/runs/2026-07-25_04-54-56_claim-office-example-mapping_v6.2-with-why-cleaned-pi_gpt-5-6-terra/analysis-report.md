@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_04-54-56_claim-office-example-mapping_v6.2-with-why-cleaned-pi_gpt-5-6-terra
 
-Generated: 2026-07-25T13:11:36+02:00
+Generated: 2026-07-25T20:38:11+02:00
 
 ## Configuration
 

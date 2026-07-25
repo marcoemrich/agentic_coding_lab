@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-24_20-33-25_claim-office-example-mapping_v6.2-with-why-cleaned-pi_kimi-k2-7-no-thinking
 
-Generated: 2026-07-25T13:04:13+02:00
+Generated: 2026-07-25T20:29:39+02:00
 
 ## Configuration
 
@@ -36,12 +36,12 @@ Generated: 2026-07-25T13:04:13+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-24_20-33-25_claim-office-example-mapping_v6.2-with-why-cleaned-pi_kimi-k2-7-no-thinking
 
- ✓ src/claim-office.spec.ts  (41 tests) 6ms
+ ✓ src/claim-office.spec.ts  (41 tests) 9ms
 
  Test Files  1 passed (1)
       Tests  41 passed (41)
-   Start at  13:04:13
-   Duration  318ms (transform 60ms, setup 0ms, collect 35ms, tests 6ms, environment 0ms, prepare 145ms)
+   Start at  20:29:40
+   Duration  479ms (transform 50ms, setup 0ms, collect 48ms, tests 9ms, environment 0ms, prepare 103ms)
 ```
 
 ## Coverage

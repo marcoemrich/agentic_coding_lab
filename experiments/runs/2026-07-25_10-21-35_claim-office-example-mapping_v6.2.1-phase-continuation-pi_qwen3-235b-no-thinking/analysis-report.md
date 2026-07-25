@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_10-21-35_claim-office-example-mapping_v6.2.1-phase-continuation-pi_qwen3-235b-no-thinking
 
-Generated: 2026-07-25T13:12:18+02:00
+Generated: 2026-07-25T20:38:50+02:00
 
 ## Configuration
 
@@ -36,7 +36,7 @@ Generated: 2026-07-25T13:12:18+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_10-21-35_claim-office-example-mapping_v6.2.1-phase-continuation-pi_qwen3-235b-no-thinking
 
- ❯ src/claim-office.spec.ts  (37 tests | 3 failed | 19 skipped) 8ms
+ ❯ src/claim-office.spec.ts  (37 tests | 3 failed | 19 skipped) 7ms
    ❯ src/claim-office.spec.ts > MHPCO Claim Office > should apply 20% loyalty discount to a long-standing customer (≥ 2 years) on policy base premium -- (loyalty: 20% off base sum)
      → expected 95 to be 93 // Object.is equality
    ❯ src/claim-office.spec.ts > MHPCO Claim Office > should apply 15% discount on each contract after the first -- (follow-up contract: 15% discount)
@@ -105,8 +105,8 @@ AssertionError: expected 95 to be 80 // Object.is equality
 
  Test Files  1 failed (1)
       Tests  3 failed | 15 passed | 19 todo (37)
-   Start at  13:12:18
-   Duration  378ms (transform 39ms, setup 0ms, collect 36ms, tests 8ms, environment 0ms, prepare 128ms)
+   Start at  20:38:51
+   Duration  337ms (transform 36ms, setup 0ms, collect 30ms, tests 7ms, environment 0ms, prepare 68ms)
 
  ELIFECYCLE  Test failed. See above for more details.
 ```

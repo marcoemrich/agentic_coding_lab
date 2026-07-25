@@ -57,6 +57,10 @@ subtrees.
 
 ## Conventions
 
+### Git-Branches
+
+- **Branches nur auf explizite Anforderung anlegen.** Nie automatisch branchen, auch nicht wenn HEAD auf `main` steht. Immer auf dem aktuellen Branch committen. Wenn ein Branch sinnvoll erscheint, nachfragen statt ungefragt anlegen.
+
 ### Editing workflows
 
 - **Keine numerischen Schwellwerte in Workflow-/Agent-Prompts** (z.B. `cognitive_max < 15`, `LoC < 50`, `complexity ≤ 10`). Katas, Szenarien und Umgebungen sind zu volatil — ein Schwellwert, der für game-of-life sinnvoll ist, ist für claim-office unsinnig. Stattdessen qualitative Sprache ("reduce cognitive complexity", "extract when a function does multiple things"). Gilt auch für neue Refactor-/Review-Agenten.
@@ -82,7 +86,7 @@ subtrees.
 - Start with `./batch.sh <plan>` using Bash tool `run_in_background: true`. Do NOT combine with `nohup` or `&` — that breaks tool tracking.
 - `--shards N` for parallel containers (default 2, max 3; each needs ~4 GB RAM).
 - Rate-limit resilience is built in: 5 retries with backoff (60s → 5min → 30min → 1h → 2h). Do not add manual retry logic.
-- **Never mix Portkey-routed (`*-portkey*`) and Direct-API models in one plan.** They need different config dirs / routing; `batch.sh` auto-selects per plan, not per run. Split such plans into two files and run them sequentially.
+- **CC-Routing ist container-global.** Die `ANTHROPIC_*`-Env-Vars gelten für den ganzen Batch-Container, nicht pro Run. Ein Plan darf darum nicht CC-Runs mit unterschiedlichem CC-Routing mischen (z. B. CC-requesty + CC-nativ) — split in zwei Pläne, sequentiell. Gemischt CC-requesty + OC-requesty + pi-requesty ist dagegen OK (getrennte Routing-Kanäle: `.env` für CC, `opencode.json` für OC, `models.json` für pi).
 - **Run completion signal:** `metrics.json | jq .run_status.exit_reason` — NOT presence of `analysis-report.md`.
 - **Timeouts are findings, not errors.** They count toward `min_replicates` and are not refilled. `completed_within_budget` captures this.
 
@@ -109,7 +113,7 @@ subtrees.
 - **Claude Code CLI: `2.1.107`** — 2.1.37 hangs on `.claude/agents/` dirs; 2.1.126 requires missing `.claude.json`. Do not bump without verifying v4 workflow end-to-end.
 - **pnpm: `9.15.9`** — pnpm 11 breaks builds via `ERR_PNPM_IGNORED_BUILDS`. Pinned via `npm install -g pnpm@9.15.9` in Dockerfile.
 - Container uses `experiments/docker/claude-config/` for Claude config, **not** the host `~/.claude`. This separation is intentional (host config has fish/MCP spawns that hang in the container).
-- Portkey routing: `batch.sh` auto-detects `-portkey` model suffix and sets config dir accordingly. No manual env-var override needed.
+- Routing: alle Harnesse laufen über **Requesty** (Portkey 2026-07 abgeschaltet). Steuerung rein über `experiments/docker/.env` (`ANTHROPIC_BASE_URL`/`ANTHROPIC_AUTH_TOKEN` für CC via `env_file`; OC über `.opencode/opencode.json` requesty-Provider; pi über `pi-config/agent/models.json`). Kein `batch.sh`-Auto-Detect mehr — `-portkey`-Suffixe an alten Modell-IDs sind nur noch Label. `ANTHROPIC_AUTH_TOKEN` wird in `docker-compose.yml` aus `${REQUESTY_API_KEY}` gespeist.
 
 ## Model IDs
 

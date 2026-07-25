@@ -128,6 +128,14 @@ def process_run(run_dir: Path, dry_run: bool) -> tuple[str, float | None]:
     except json.JSONDecodeError:
         return ("bad-transcript-metrics", None)
     tokens = tm.get("total_tokens") or {}
+    # If the transcript captured a real routed cost (Requesty /v1/messages
+    # path, CC/OC), it already sits in final_metrics.cost_usd via
+    # analyze-run.sh — don't overwrite it with a list-price estimate.
+    # Note: pi runs carry cost_usd = 0 (pi's cost scaffold, models.json has
+    # no prices) — that is NOT a real cost, so require a positive value.
+    tm_cost = tm.get("cost_usd")
+    if isinstance(tm_cost, (int, float)) and tm_cost > 0:
+        return ("skip-actual-cost", tm_cost)
     cost = compute_cost(tokens, model)
     if cost is None:
         return ("price-lookup-failed", None)
@@ -183,13 +191,15 @@ def main() -> int:
 
     runs = iter_target_runs(target)
     print(f"processing {len(runs)} runs", file=sys.stderr)
-    counts = {"written": 0, "would-write": 0, "skipped": 0}
+    counts = {"written": 0, "would-write": 0, "skipped": 0, "actual-cost": 0}
     for run in runs:
         status, cost = process_run(run, dry_run=args.dry_run)
         if status in ("written", "would-write"):
             counts[status] += 1
             if cost is not None and cost > 0.001:
                 print(f"  {run.name} | ${cost:.4f}")
+        elif status == "skip-actual-cost":
+            counts["actual-cost"] += 1
         else:
             counts["skipped"] += 1
     print(f"summary: {counts}", file=sys.stderr)

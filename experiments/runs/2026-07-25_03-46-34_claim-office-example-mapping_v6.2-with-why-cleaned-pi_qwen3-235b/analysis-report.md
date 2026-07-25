@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_03-46-34_claim-office-example-mapping_v6.2-with-why-cleaned-pi_qwen3-235b
 
-Generated: 2026-07-25T13:09:13+02:00
+Generated: 2026-07-25T20:35:37+02:00
 
 ## Configuration
 
@@ -36,7 +36,7 @@ Generated: 2026-07-25T13:09:13+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_03-46-34_claim-office-example-mapping_v6.2-with-why-cleaned-pi_qwen3-235b
 
- ❯ src/claim-office.spec.ts  (49 tests | 1 failed | 48 skipped) 3ms
+ ❯ src/claim-office.spec.ts  (49 tests | 1 failed | 48 skipped) 4ms
    ❯ src/claim-office.spec.ts > MHPCO Claim Office > should compute premium for empty item list as 5 G (only processing fee)
      → Cannot read properties of undefined (reading '0')
 
@@ -56,8 +56,8 @@ TypeError: Cannot read properties of undefined (reading '0')
 
  Test Files  1 failed (1)
       Tests  1 failed | 48 todo (49)
-   Start at  13:09:13
-   Duration  359ms (transform 23ms, setup 0ms, collect 20ms, tests 3ms, environment 0ms, prepare 66ms)
+   Start at  20:35:37
+   Duration  396ms (transform 21ms, setup 0ms, collect 19ms, tests 4ms, environment 0ms, prepare 58ms)
 
  ELIFECYCLE  Test failed. See above for more details.
 ```

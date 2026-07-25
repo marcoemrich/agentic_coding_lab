@@ -2,7 +2,7 @@
 
 _Wie unterscheiden sich die via pi-Harness (Requesty-Routing) erreichbaren Modelle in Korrektheit und TDD-Disziplin auf claim-office-example-mapping mit dem v6.2-with-why-cleaned-pi-Workflow?_
 
-Generated: 2026-07-25T11:39:14Z
+Generated: 2026-07-25T18:40:10Z
 
 Cells declared: 15 · matched runs: 75 · min_replicates: 5
 

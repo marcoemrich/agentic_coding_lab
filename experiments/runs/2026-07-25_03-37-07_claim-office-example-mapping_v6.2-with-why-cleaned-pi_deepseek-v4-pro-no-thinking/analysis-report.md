@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_03-37-07_claim-office-example-mapping_v6.2-with-why-cleaned-pi_deepseek-v4-pro-no-thinking
 
-Generated: 2026-07-25T13:08:31+02:00
+Generated: 2026-07-25T20:34:50+02:00
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Generated: 2026-07-25T13:08:31+02:00
 
  Test Files  1 skipped (1)
       Tests  46 todo (46)
-   Start at  13:08:31
-   Duration  365ms (transform 24ms, setup 0ms, collect 18ms, tests 0ms, environment 0ms, prepare 90ms)
+   Start at  20:34:51
+   Duration  417ms (transform 25ms, setup 0ms, collect 27ms, tests 0ms, environment 0ms, prepare 104ms)
 ```
 
 ## APP Mass Estimation

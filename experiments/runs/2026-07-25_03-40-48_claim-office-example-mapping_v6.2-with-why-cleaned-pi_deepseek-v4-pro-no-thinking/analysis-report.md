@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_03-40-48_claim-office-example-mapping_v6.2-with-why-cleaned-pi_deepseek-v4-pro-no-thinking
 
-Generated: 2026-07-25T13:09:02+02:00
+Generated: 2026-07-25T20:35:23+02:00
 
 ## Configuration
 
@@ -36,12 +36,12 @@ Generated: 2026-07-25T13:09:02+02:00
 
  RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_03-40-48_claim-office-example-mapping_v6.2-with-why-cleaned-pi_deepseek-v4-pro-no-thinking
 
- ✓ src/claim-office.spec.ts  (48 tests) 6ms
+ ✓ src/claim-office.spec.ts  (48 tests) 7ms
 
  Test Files  1 passed (1)
       Tests  48 passed (48)
-   Start at  13:09:03
-   Duration  331ms (transform 42ms, setup 0ms, collect 41ms, tests 6ms, environment 0ms, prepare 74ms)
+   Start at  20:35:24
+   Duration  516ms (transform 41ms, setup 0ms, collect 38ms, tests 7ms, environment 0ms, prepare 138ms)
 ```
 
 ## Coverage
