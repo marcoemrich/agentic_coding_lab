@@ -27,7 +27,16 @@ factors:
     - gpt-5-6-sol                  # GPT SOL (azure/gpt-5.6-sol@swedencentral) — erzwungen aus
     - gpt-5-6-terra                # GPT TERRA (azure/gpt-5.6-terra@swedencentral) — erzwungen aus
 controls:
-  workflow: v6.2-with-why-cleaned-pi
+  # OR-Match: v6.2.1 fixt nur den Continuation-Drop am Test-List->Red-
+  # Uebergang (kimi/minimax/qwen brachen dort ab: nur spec.ts, kein cli.ts).
+  # Der Fix ist als outcome-neutral angenommen (aendert nur Drop->Durchlauf,
+  # nicht die TDD-/Qualitaets-Mechanik). Alte saubere v6.2-Runs und neue
+  # v6.2.1-Ersatzruns aggregieren daher in EINER Zelle. Erster Eintrag ist
+  # kanonisch (Label + Fill-Plan-Generierung).
+  workflow:
+    any:
+      - v6.2.1-phase-continuation-pi
+      - v6.2-with-why-cleaned-pi
   kata_base: claim-office
   prompt: example-mapping
 outcomes:
@@ -53,6 +62,7 @@ outcomes:
   - completed_within_budget
   - duration_seconds
   - total_tokens
+  - cost_usd
 min_replicates: 5
 status: aktiv
 ---

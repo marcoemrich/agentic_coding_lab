@@ -3,6 +3,19 @@
 Quellen: Anthropic API (claude.com/pricing), OpenRouter API (`/api/v1/models`).
 Alle Preise in USD pro 1M Token.
 
+## Requesty-Preise pi-Harness-Modelle (Stand 2026-07-25)
+
+Für die aktuellen pi-/Requesty-Modelle (RQ-model-novel-pi, RQ-model-quality-pi). Requesty berechnet den Upstream-Provider-Preis (kein Markup laut Anbieter; älterer Stand nannte 5 %). Alle Preise USD pro 1M Token.
+
+| Modell | Requesty-Route | Input | Output | Cache Read |
+|---|---|---:|---:|---:|
+| Claude Opus 4.8 | `vertex/claude-opus-4-8` | $5.00 | $25.00 | $0.50 |
+| GLM 5.2 | `tensorx/glm-5.2` | $1.40 | $4.40 | $0.26 |
+| GPT-5.6 Sol | `azure/gpt-5.6-sol` | $5.00 | $30.00 | $0.50 |
+| GPT-5.6 Terra | `azure/gpt-5.6-terra` | $2.50 | $15.00 | $0.25 |
+
+Quellen: [Requesty GLM-5.2](https://www.requesty.ai/models/zai/glm-5.2), [aipricing.guru GPT-5.6](https://www.aipricing.guru/openai-pricing/), Anthropic-Tarif für Opus 4.8 (identisch zu 4.7). GPT-5.6-Cache = 10 % vom Input-Preis. Cache-Write für die OpenAI-/GLM-Routen nicht separat ausgewiesen → in `compute-cost.py` als 0 geführt.
+
 ## Übersicht
 
 | Modell | Input | Output | Cache Read |

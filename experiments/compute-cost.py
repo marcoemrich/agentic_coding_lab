@@ -60,6 +60,12 @@ PRICES = {
     "minimax-m2-7":     (0.28,  1.20,  0.0,  0.0),
     "gemini-2-5-pro":   (1.25,  10.00, 0.31, 0.0),
     "gemini-3-5-flash": (0.30,  2.50,  0.075, 0.0),
+    # pi-/Requesty-Modelle (Stand 2026-07-25, siehe research/model-pricing.md).
+    # opus-4-8 ist bereits oben gelistet (identischer Tarif).
+    "glm-5-2":          (1.40,  4.40,  0.26, 0.0),
+    "glm-5-2-no-thinking": (1.40, 4.40, 0.26, 0.0),
+    "gpt-5-6-sol":      (5.00,  30.00, 0.50, 0.0),
+    "gpt-5-6-terra":    (2.50,  15.00, 0.25, 0.0),
 }
 
 

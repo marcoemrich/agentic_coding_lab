@@ -247,6 +247,64 @@ def _session_bounds(events: list[dict]) -> tuple[float | None, float | None]:
     return start, end
 
 
+def _process_tool_call_event(ev: dict, by_id: dict) -> None:
+    """Fold one message_update event's tool-call content into by_id.
+
+    Streaming equivalent of _collect_tool_calls: dedupe by tool call id,
+    keeping the most complete args seen (toolcall_end wins).
+    """
+    if ev.get("type") != "message_update":
+        return
+    ame = ev.get("assistantMessageEvent") or {}
+    if not str(ame.get("type", "")).startswith("toolcall"):
+        return
+    partial = ame.get("partial") or {}
+    content = partial.get("content") or []
+    if not isinstance(content, list):
+        return
+    for item in content:
+        if not isinstance(item, dict) or item.get("type") != "toolCall":
+            continue
+        tc_id = item.get("id") or ""
+        name = item.get("name") or ""
+        args = item.get("arguments") or {}
+        if not tc_id or not name:
+            continue
+        by_id[tc_id] = (name, args)
+
+
+def _assistant_text_of(ev: dict) -> str | None:
+    """Return the final assistant text block of a text_end event, else None."""
+    if ev.get("type") != "message_update":
+        return None
+    ame = ev.get("assistantMessageEvent") or {}
+    if ame.get("type") != "text_end":
+        return None
+    content = ame.get("content")
+    return content if isinstance(content, str) else None
+
+
+def _subagent_usage_of(ev: dict, totals: dict, seen_call_ids: set) -> None:
+    """Fold one tool_execution_end(subagent) event's usage into totals."""
+    if ev.get("type") != "tool_execution_end":
+        return
+    if ev.get("toolName") != "subagent":
+        return
+    call_id = ev.get("toolCallId") or ""
+    if call_id and call_id in seen_call_ids:
+        return
+    if call_id:
+        seen_call_ids.add(call_id)
+    result = ev.get("result") or {}
+    details = result.get("details") or {}
+    for r in details.get("results") or []:
+        u = r.get("usage") or {}
+        for k in totals:
+            v = u.get(k)
+            if isinstance(v, (int, float)):
+                totals[k] += int(v)
+
+
 def main(run_dir: str) -> int:
     run_path = Path(run_dir)
     transcript = run_path / "transcript-pi.jsonl"
@@ -254,44 +312,100 @@ def main(run_dir: str) -> int:
         print(f"transcript-pi.jsonl not found in {run_dir}", file=sys.stderr)
         return 1
 
-    events: list[dict] = []
+    # Single streaming pass — never hold the full event list in memory.
+    # Transcripts for always-reasoning models (glm, minimax) reach several
+    # GB; loading them all as parsed dicts OOMs even a 16 GB host. All
+    # collectors below are O(1) or O(#tool-calls) in memory.
+    by_id: dict[str, tuple[str, dict]] = {}          # tool calls by id
+    sa_totals = {"input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0}
+    sa_seen: set[str] = set()
+    last_agent_end_usage: dict = {}                   # newest agent_end assistant usage
+    last_msg_end_usage: dict = {}                     # fallback: newest message_end usage
+    last_model: str | None = None
+    last_cost: dict = {}
+    start_ms: float | None = None
+    end_ms: float | None = None
+    text_phase_counts: dict[str, int] = {name: 0 for name in TDD_SKILLS}
+    skill_counts = {name: 0 for name in TDD_SKILLS}
+    predictions_correct = 0
+    predictions_total = 0
+
     with transcript.open() as f:
         for line in f:
             line = line.strip()
             if not line:
                 continue
             try:
-                events.append(json.loads(line))
+                ev = json.loads(line)
             except json.JSONDecodeError:
                 continue
 
-    # Main-thread usage (cumulative across the orchestrating pi conversation).
-    main_usage = _last_usage(events)
+            etype = ev.get("type")
+
+            # --- tool calls (streamed into by_id) ---
+            _process_tool_call_event(ev, by_id)
+
+            # --- subagent usage totals ---
+            _subagent_usage_of(ev, sa_totals, sa_seen)
+
+            # --- main-thread usage / model / cost (keep newest terminal) ---
+            if etype == "agent_end":
+                for msg in reversed(ev.get("messages") or []):
+                    if isinstance(msg, dict) and msg.get("role") == "assistant":
+                        u = msg.get("usage") or {}
+                        if u:
+                            last_agent_end_usage = u
+                            last_cost = u.get("cost") or last_cost
+                        if msg.get("model"):
+                            last_model = msg.get("model")
+                        break
+            elif etype == "message_end":
+                msg = ev.get("message") or {}
+                if isinstance(msg, dict) and msg.get("role") == "assistant":
+                    if msg.get("usage"):
+                        last_msg_end_usage = msg.get("usage")
+                    if msg.get("model"):
+                        last_model = msg.get("model")
+
+            # --- session time bounds ---
+            msg = ev.get("message")
+            if isinstance(msg, dict):
+                t = msg.get("timestamp")
+                if isinstance(t, (int, float)):
+                    if start_ms is None or t < start_ms:
+                        start_ms = t
+                    if end_ms is None or t > end_ms:
+                        end_ms = t
+
+            # --- assistant text: apply markers now, don't retain text ---
+            text = _assistant_text_of(ev)
+            if text is not None:
+                for phase, pattern in _PHASE_TEXT_MARKERS_RE.items():
+                    text_phase_counts[phase] += len(pattern.findall(text))
+                c, t = extract_predictions_from_text(text, loose_gate=True)
+                predictions_correct += c
+                predictions_total += t
+
+    # main usage: agent_end preferred, else message_end fallback (same order
+    # of preference as the former _last_usage()).
+    main_usage = last_agent_end_usage or last_msg_end_usage
     main_input = int(main_usage.get("input") or 0)
     main_output = int(main_usage.get("output") or 0)
     main_cache_read = int(main_usage.get("cacheRead") or 0)
     main_cache_write = int(main_usage.get("cacheWrite") or 0)
 
-    # Subagent usage (sum across all completed `subagent` tool calls).
-    # Without this, v6.2-pi token counts underreport by ~10x because each
-    # refactor subagent is a fresh pi process re-reading the workflow context.
-    sa_usage = _subagent_usage_totals(events)
-    input_t = main_input + sa_usage["input"]
-    output_t = main_output + sa_usage["output"]
-    cache_read_t = main_cache_read + sa_usage["cacheRead"]
-    cache_write_t = main_cache_write + sa_usage["cacheWrite"]
+    input_t = main_input + sa_totals["input"]
+    output_t = main_output + sa_totals["output"]
+    cache_read_t = main_cache_read + sa_totals["cacheRead"]
+    cache_write_t = main_cache_write + sa_totals["cacheWrite"]
     total_t = input_t + output_t + cache_read_t + cache_write_t
 
-    start_ms, end_ms = _session_bounds(events)
     duration = 0.0
     if start_ms is not None and end_ms is not None and end_ms >= start_ms:
         duration = (end_ms - start_ms) / 1000.0
 
-    tool_calls = _collect_tool_calls(events)
-    skill_counts = {name: 0 for name in TDD_SKILLS}
+    tool_calls = list(by_id.values())
     refactor_calls = 0
-    text_phase_counts: dict[str, int] = {name: 0 for name in TDD_SKILLS}
-
     for name, args in tool_calls:
         skill_name = _is_skill_read(name, args)
         if skill_name:
@@ -301,37 +415,16 @@ def main(run_dir: str) -> int:
             refactor_calls += 1
             skill_counts["refactor"] += 1
 
-    # Text-marker fallback: when skills are auto-loaded documents, the
-    # model reads SKILL.md once and then works "freihand". Phase
-    # completion markers in the assistant text are the reliable signal.
-    for block in _assistant_texts(events):
-        for phase, pattern in _PHASE_TEXT_MARKERS_RE.items():
-            text_phase_counts[phase] += len(pattern.findall(block))
-
     # cycle_count: prefer text markers over skill-reads for pi runs.
-    # Text markers ("## Red") are far more reliable than counting
-    # how many times red/SKILL.md was read (typically just once).
     cycle_count = text_phase_counts["red"] or skill_counts["red"]
 
-    # Update skill_counts with text-marker counts where they exceed the
-    # read-based counts (so skill_invocations reflects the true usage).
     for phase in TDD_SKILLS:
         if text_phase_counts.get(phase, 0) > skill_counts.get(phase, 0):
             skill_counts[phase] = text_phase_counts[phase]
 
-    predictions_correct = 0
-    predictions_total = 0
-    # Use loose_gate for pi: red-phase header and prediction blocks may
-    # land in separate assistant messages (pi splits tool-call results
-    # into their own messages).
-    for block in _assistant_texts(events):
-        c, t = extract_predictions_from_text(block, loose_gate=True)
-        predictions_correct += c
-        predictions_total += t
-
     metrics = {
         "source": "pi",
-        "model": _model_id(events),
+        "model": last_model,
         "total_tokens": {
             "input": input_t,
             "output": output_t,
@@ -354,7 +447,7 @@ def main(run_dir: str) -> int:
         "predictions_correct": predictions_correct,
         "predictions_total": predictions_total,
         "session_duration_seconds": round(duration, 2),
-        "cost_usd": (main_usage.get("cost") or {}).get("total"),
+        "cost_usd": (last_cost or {}).get("total"),
         "skill_invocations": skill_counts,
     }
 
