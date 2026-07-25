@@ -66,6 +66,10 @@ def expand_cells(fm: dict) -> list[dict]:
 
     Each cell is a dict with keys: kata_base, prompt, workflow, model.
     Special factor `workflow_x_prompt` is a paired list of {workflow, prompt}.
+    Special factor `model_x_workflow` is a paired list of {model, workflow} —
+    use it when model and harness (encoded in the workflow suffix) vary together
+    as coupled bundles rather than as an independent cross-product. Each entry's
+    model/workflow may itself be an `{any: [...]}` OR-match (normalized below).
     """
     factors = fm.get("factors") or {}
     controls = fm.get("controls") or {}
@@ -77,6 +81,9 @@ def expand_cells(fm: dict) -> list[dict]:
     for key, values in factors.items():
         if key == "workflow_x_prompt":
             axes.append([{"workflow": p["workflow"], "prompt": p["prompt"]}
+                         for p in values])
+        elif key == "model_x_workflow":
+            axes.append([{"model": p["model"], "workflow": p["workflow"]}
                          for p in values])
         else:
             axes.append([{key: v} for v in values])
