@@ -1,0 +1,93 @@
+# Analysis Report: 2026-07-25_03-36-39_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
+
+Generated: 2026-07-25T04:20:58+00:00
+
+## Configuration
+
+| Property | Value |
+|----------|-------|
+| Kata | claim-office-example-mapping |
+| Workflow | v6.2-with-why-cleaned-pi |
+| Model | glm-5-2 |
+| Model Version(s) | N/A |
+| Thinking | unknown |
+| Duration | 2658s |
+| Started | 2026-07-25T03:36:39+00:00 |
+| Ended | 2026-07-25T04:20:58+00:00 |
+
+## Code Metrics
+
+- **Implementation files**: claim-office.ts, cli.ts
+- **Implementation LOC** (total): 268
+- **Test file**: claim-office.spec.ts
+- **Test file LOC**: 437
+- **Active tests**: 42
+- **Remaining todos**: 0
+
+## Test Results
+
+**Status**: ✅ All tests passing (42 passed)
+
+```
+
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-07-25_03-36-39_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
+> vitest run
+
+
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-07-25_03-36-39_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
+
+ ✓ src/claim-office.spec.ts  (42 tests) 7ms
+
+ Test Files  1 passed (1)
+      Tests  42 passed (42)
+   Start at  04:21:09
+   Duration  255ms (transform 55ms, setup 0ms, collect 58ms, tests 7ms, environment 0ms, prepare 95ms)
+```
+
+## Coverage
+
+| Metric | Coverage |
+|--------|----------|
+| Statements | 95% |
+| Branches | 94% |
+
+## APP Mass Estimation
+
+| Component | Count | Weight | Score |
+|-----------|-------|--------|-------|
+| Constants | 61 | ×1 | 61 |
+| Invocations | 95 | ×2 | 190 |
+| Conditionals | 14 | ×4 | 56 |
+| Loops | 7 | ×5 | 35 |
+| Assignments | 66 | ×6 | 396 |
+| **Total Mass** | | | **738** |
+
+## Clean Code Metrics
+
+| Metric | Value |
+|--------|-------|
+| LOC (non-blank) | 228 |
+| Functions | 21 |
+| Longest Function | 32 lines |
+| Avg LOC/Function | 6.33 |
+| Median LOC/Function | 3.00 |
+| Imports | 2 |
+
+## Code Smells
+
+| Category | Count |
+|----------|-------|
+| Complexity | 1 |
+| Duplication | 0 |
+| Magic Numbers | 0 |
+| Code Quality | 0 |
+| **Total** | **1** |
+
+## Complexity Scores
+
+| Metric | Max | Avg | High (>10) |
+|--------|-----|-----|---------------------------|
+| McCabe (Cyclomatic) | 4 | 1.58 | 0 |
+| Cognitive (SonarJS) | 4 | 2.20 | 0 |
+
+

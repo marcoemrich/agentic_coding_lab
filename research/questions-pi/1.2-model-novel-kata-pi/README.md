@@ -9,7 +9,7 @@ factors:
   # Wo der Schalter nicht greift, existiert nur ein Arm — siehe
   # "Reasoning-Zustand" unten.
   model:
-    # --- beide Arme: Schalter greift oder wird empirisch geprueft ---
+    # beide Arme: Schalter greift oder wird empirisch geprueft
     - opus-4-8                     # aktuelles Opus (vertex/claude-opus-4-8@eu)
     - opus-4-8-no-thinking         # einziges Modell mit belegt steuerbarem Reasoning
     - sonnet-5                     # aktuelles Sonnet (vertex/claude-sonnet-5@eu)
@@ -22,7 +22,7 @@ factors:
     - deepseek-v4-pro-no-thinking
     - qwen3-235b                   # aktuelles Qwen (nebius/qwen/qwen3-235b-a22b-instruct-2507)
     - qwen3-235b-no-thinking
-    # --- nur ein Arm: Reasoning-Zustand nicht waehlbar ---
+    # nur ein Arm: Reasoning-Zustand nicht waehlbar
     - glm-5-2                      # GLM 5.2 (tensorx/glm-5.2) — reasoniert immer, kein -no-thinking-Arm
     - gpt-5-6-sol                  # GPT SOL (azure/gpt-5.6-sol@swedencentral) — erzwungen aus
     - gpt-5-6-terra                # GPT TERRA (azure/gpt-5.6-terra@swedencentral) — erzwungen aus

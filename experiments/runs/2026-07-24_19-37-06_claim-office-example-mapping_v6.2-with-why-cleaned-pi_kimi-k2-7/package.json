@@ -1,0 +1,29 @@
+{
+  "name": "tdd-experiment-run",
+  "type": "module",
+  "bin": {
+    "claim-office": "./src/cli.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:unit:basic": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage --coverage.reporter=json-summary"
+  },
+  "devDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.62.2",
+    "@types/node": "^26.1.1",
+    "@vitest/coverage-v8": "^1.6.1",
+    "eslint": "^9.39.5",
+    "eslint-plugin-sonarjs": "^1.0.4",
+    "tsx": "^4.23.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.65.0",
+    "vitest": "^1.6.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}
