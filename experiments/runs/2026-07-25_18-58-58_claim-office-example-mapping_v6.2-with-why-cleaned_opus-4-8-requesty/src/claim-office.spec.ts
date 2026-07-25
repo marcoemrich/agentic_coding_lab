@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { execFileSync } from "node:child_process";
 import { runScenario } from "./claim-office.js";
 
 describe("MHPCO Claim Office", () => {
@@ -126,60 +127,441 @@ describe("MHPCO Claim Office", () => {
     });
     expect(result.results[0]).toEqual({ premium: 145 });
   });
-  it.todo("sword with enchantment 4 → no high-enchantment surcharge");
-  it.todo("cursed sword with enchantment 5 → both curse and high-enchantment surcharges apply");
+  it("sword with enchantment 4 → no high-enchantment surcharge; newcomer full 115 G", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [{ op: "quote", items: [{ type: "sword", enchantment: 4 }] }],
+    });
+    expect(result.results[0]).toEqual({ premium: 115 });
+  });
+  it("cursed sword with enchantment 5 → both curse and high-enchantment surcharges apply; newcomer full 195 G", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [{ op: "quote", items: [{ type: "sword", cursed: true, enchantment: 5 }] }],
+    });
+    expect(result.results[0]).toEqual({ premium: 195 });
+  });
 
   // --- Quote: policy-level modifiers ---
-  it.todo("customer with exactly 2 years with MHPCO → 20% loyalty discount applies");
-  it.todo("customer with 1 year → no loyalty discount");
-  it.todo("second quote in a scenario → 15% follow-up contract discount applies");
-  it.todo("first insurance surcharge (10%) applies to every item regardless of customer history");
+  it("customer with exactly 2 years with MHPCO → 20% loyalty discount applies; sword full 95 G", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 2 },
+      steps: [{ op: "quote", items: [{ type: "sword" }] }],
+    });
+    expect(result.results[0]).toEqual({ premium: 95 });
+  });
+  it("customer with 1 year → no loyalty discount; sword full 115 G", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 1 },
+      steps: [{ op: "quote", items: [{ type: "sword" }] }],
+    });
+    expect(result.results[0]).toEqual({ premium: 115 });
+  });
+  it("second quote in a scenario → 15% follow-up contract discount applies; sword full 100 G", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword" }] },
+        { op: "quote", items: [{ type: "sword" }] },
+      ],
+    });
+    expect(result.results[0]).toEqual({ premium: 115 });
+    expect(result.results[1]).toEqual({ premium: 100 });
+  });
+  it("first insurance surcharge (10%) applies to every item regardless of customer history; 3-year second contract sword 80 G", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 3 },
+      steps: [
+        { op: "quote", items: [{ type: "sword" }] },
+        { op: "quote", items: [{ type: "sword" }] },
+      ],
+    });
+    expect(result.results[1]).toEqual({ premium: 80 });
+  });
 
   // --- Quote: modifier scope on multi-item policies ---
-  it.todo("cursed sword (base 100) + plain amulet (base 60) → policy base 160, curse adds 50 (of sword base) → 210 before loyalty/follow-up/fee");
+  it("cursed sword (base 100) + plain amulet (base 60) → policy base 160, curse adds 50 (of sword base); newcomer full 231 G", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        {
+          op: "quote",
+          items: [
+            { type: "sword", cursed: true },
+            { type: "amulet" },
+          ],
+        },
+      ],
+    });
+    expect(result.results[0]).toEqual({ premium: 231 });
+  });
 
   // --- Quote: rounding ---
-  it.todo("premium calculation yielding 197.5 G → final premium 198 G (rounded up, MHPCO favor)");
+  it("premium calculation yielding a fraction → rounded up in MHPCO's favor (1 rune 32.5 → 33 G)", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [{ op: "quote", items: [{ type: "rune" }] }],
+    });
+    expect(result.results[0]).toEqual({ premium: 33 });
+  });
 
   // --- Quote: integration examples ---
-  it.todo("newcomer with a cursed sword (steel, ench 3) → premium 165 G");
-  it.todo("long-standing customer's second contract, cursed sword (steel, ench 7) → premium 160 G");
+  it("newcomer with a cursed sword (steel, ench 3) → premium 165 G", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        {
+          op: "quote",
+          items: [{ type: "sword", material: "steel", enchantment: 3, cursed: true }],
+        },
+      ],
+    });
+    expect(result.results[0]).toEqual({ premium: 165 });
+  });
+  it("long-standing customer's second contract, cursed sword (steel, ench 7) → premium 160 G", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 3 },
+      steps: [
+        { op: "quote", items: [{ type: "potion" }] },
+        {
+          op: "quote",
+          items: [{ type: "sword", material: "steel", enchantment: 7, cursed: true }],
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ premium: 160 });
+  });
 
   // --- Claim: standard reimbursement ---
-  it.todo("regular sword (steel, ench 3), damage 500 → payout 400 G (full minus 100 deductible)");
-  it.todo("damage to a rune (value 250), damage 200 → payout 100 G (full minus 100 deductible, no special clause)");
+  it("regular sword (steel, ench 3), damage 500 → payout 400 G (full minus 100 deductible); remainingCap 1600", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword", material: "steel", enchantment: 3 }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "sword", amount: 500 }] },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 400, remainingCap: 1600 });
+  });
+  it("damage to a rune (value 250), damage 200 → payout 100 G (full minus 100 deductible, no special clause); remainingCap 400", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "rune" }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "rune", amount: 200 }] },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 100, remainingCap: 400 });
+  });
 
   // --- Claim: special clauses ---
-  it.todo("dragon-material sword, ench 5, damage 800 → payout 700 G (dragon full reimbursement, then deductible)");
-  it.todo("steel sword, ench 9, damage 1000 → payout 400 G (high-enchantment 50% first, then deductible)");
-  it.todo("dragon-material sword, ench 9, damage 1000 → payout 400 G (both clauses; 50% wins, then deductible)");
-  it.todo("dragon-material sword, exactly ench 8, damage 1000 → payout 400 G (high-enchantment clause, then deductible)");
+  it("dragon-material sword, ench 5, damage 800 → payout 700 G (dragon full reimbursement, then deductible); remainingCap 1300", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword", material: "dragon", enchantment: 5 }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "dragon", damages: [{ itemType: "sword", amount: 800 }] },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 700, remainingCap: 1300 });
+  });
+  it("steel sword, ench 9, damage 1000 → payout 400 G (high-enchantment 50% first, then deductible); remainingCap 1600", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword", material: "steel", enchantment: 9 }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "curse", damages: [{ itemType: "sword", amount: 1000 }] },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 400, remainingCap: 1600 });
+  });
+  it("dragon-material sword, ench 9, damage 1000 → payout 400 G (both clauses; 50% wins, then deductible); remainingCap 1600", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword", material: "dragon", enchantment: 9 }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "dragon", damages: [{ itemType: "sword", amount: 1000 }] },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 400, remainingCap: 1600 });
+  });
+  it("dragon-material sword, exactly ench 8, damage 1000 → payout 400 G (high-enchantment clause, then deductible); remainingCap 1600", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword", material: "dragon", enchantment: 8 }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "dragon", damages: [{ itemType: "sword", amount: 1000 }] },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 400, remainingCap: 1600 });
+  });
 
   // --- Claim: deductible per damage event ---
-  it.todo("dragon attack damaging insured sword (500) and amulet (300) → payout 600 G (deductible once per damaged item)");
+  it("dragon attack damaging insured sword (500) and amulet (300) → payout 600 G (deductible once per damaged item); remainingCap 2600", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword" }, { type: "amulet" }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: {
+            cause: "dragon",
+            damages: [
+              { itemType: "sword", amount: 500 },
+              { itemType: "amulet", amount: 300 },
+            ],
+          },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 600, remainingCap: 2600 });
+  });
 
   // --- Claim: rounding ---
-  it.todo("payout calculation yielding 350.5 G → final payout 350 G (rounded down, MHPCO favor)");
+  it("payout calculation yielding 350.5 G → final payout 350 G (rounded down, MHPCO favor); remainingCap 1650", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword", enchantment: 9 }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "curse", damages: [{ itemType: "sword", amount: 901 }] },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 350, remainingCap: 1650 });
+  });
 
   // --- Claim: insurance sum & cap ---
-  it.todo("policy covering a sword and an amulet → insurance sum 1600 G, cap 3200 G");
-  it.todo("cursed sword → cap 2000 G (based on unmodified insurance value; premium modifiers do not raise the cap)");
-  it.todo("policy covering a sword and 3 runes (block) → insurance sum 1750 G (block discount affects premium only)");
+  it("policy covering a sword and an amulet → insurance sum 1600 G, cap 3200 G (observed via a claim); remainingCap 3100", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword" }, { type: "amulet" }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "sword", amount: 200 }] },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 100, remainingCap: 3100 });
+  });
+  it("cursed sword → cap 2000 G (unmodified insurance value; premium modifiers do not raise the cap); remainingCap 1900", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword", cursed: true }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "sword", amount: 200 }] },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 100, remainingCap: 1900 });
+  });
+  it("policy covering a sword and 3 runes (block) → insurance sum 1750 G (block discount affects premium only); remainingCap 3400", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        {
+          op: "quote",
+          items: [{ type: "sword" }, { type: "rune" }, { type: "rune" }, { type: "rune" }],
+        },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "sword", amount: 200 }] },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 100, remainingCap: 3400 });
+  });
 
   // --- Claim: multiple items of the same type ---
-  it.todo("policy covering two swords → insurance sum 2000 G, cap 4000 G");
-  it.todo("dragon attack damaging both swords (two sword entries) → each treated as separate damage with its own deductible");
+  it("policy covering two swords → insurance sum 2000 G, cap 4000 G (observed via a claim); remainingCap 3900", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword" }, { type: "sword" }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "sword", amount: 200 }] },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 100, remainingCap: 3900 });
+  });
+  it("dragon attack damaging both swords (two sword entries) → each treated as separate damage with its own deductible; payout 600, remainingCap 3400", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword" }, { type: "sword" }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: {
+            cause: "dragon",
+            damages: [
+              { itemType: "sword", amount: 500 },
+              { itemType: "sword", amount: 300 },
+            ],
+          },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 600, remainingCap: 3400 });
+  });
 
   // --- Claim: cap exhaustion across successive claims ---
-  it.todo("sword (cap 2000), first claim 1500 → payout 1400 G, remaining cap 600 G");
-  it.todo("sword (cap 2000), two successive 1500 claims → second payout 600 G, remaining cap 0 G (reduced to remaining cap)");
+  it("sword (cap 2000), first claim 1500 → payout 1400 G, remaining cap 600 G", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword" }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1500 }] },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 1400, remainingCap: 600 });
+  });
+  it("sword (cap 2000), two successive 1500 claims → second payout 600 G, remaining cap 0 G (reduced to remaining cap)", () => {
+    const result = runScenario({
+      customer: { yearsWithMHPCO: 0 },
+      steps: [
+        { op: "quote", items: [{ type: "sword" }] },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1500 }] },
+        },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "sword", amount: 1500 }] },
+        },
+      ],
+    });
+    expect(result.results[1]).toEqual({ payout: 1400, remainingCap: 600 });
+    expect(result.results[2]).toEqual({ payout: 600, remainingCap: 0 });
+  });
 
   // --- Errors (CLI exits non-zero) ---
-  it.todo("quote with an unknown item type (e.g. broomstick) → error (no results produced)");
-  it.todo("claim referencing an item not part of the policy → error");
-  it.todo("claim with more damage entries of a type than the policy covers → error");
-  it.todo("claim with a negative damage amount → error");
+  it("quote with an unknown item type (e.g. broomstick) → error (no results produced)", () => {
+    expect(() =>
+      runScenario({
+        customer: { yearsWithMHPCO: 0 },
+        steps: [{ op: "quote", items: [{ type: "broomstick" }] }],
+      }),
+    ).toThrow();
+  });
+  it("claim referencing an item not part of the policy → error", () => {
+    expect(() =>
+      runScenario({
+        customer: { yearsWithMHPCO: 0 },
+        steps: [
+          { op: "quote", items: [{ type: "sword" }] },
+          {
+            op: "claim",
+            policy: 0,
+            incident: { cause: "fire", damages: [{ itemType: "amulet", amount: 200 }] },
+          },
+        ],
+      }),
+    ).toThrow();
+  });
+  it("claim with more damage entries of a type than the policy covers → error", () => {
+    expect(() =>
+      runScenario({
+        customer: { yearsWithMHPCO: 0 },
+        steps: [
+          { op: "quote", items: [{ type: "sword" }] },
+          {
+            op: "claim",
+            policy: 0,
+            incident: {
+              cause: "fire",
+              damages: [
+                { itemType: "sword", amount: 200 },
+                { itemType: "sword", amount: 200 },
+              ],
+            },
+          },
+        ],
+      }),
+    ).toThrow();
+  });
+  it("claim with a negative damage amount → error", () => {
+    expect(() =>
+      runScenario({
+        customer: { yearsWithMHPCO: 0 },
+        steps: [
+          { op: "quote", items: [{ type: "sword" }] },
+          {
+            op: "claim",
+            policy: 0,
+            incident: { cause: "fire", damages: [{ itemType: "sword", amount: -200 }] },
+          },
+        ],
+      }),
+    ).toThrow();
+  });
 
   // --- CLI schema example (end-to-end shape) ---
-  it.todo("schema example: amulet quote then amulet claim → results [{premium}, {payout, remainingCap}]");
+  it("schema example: amulet quote then amulet claim → results [{premium}, {payout, remainingCap}]", () => {
+    const scenario = {
+      customer: { yearsWithMHPCO: 5 },
+      steps: [
+        {
+          op: "quote",
+          items: [{ type: "amulet", material: "silver", enchantment: 2, cursed: false }],
+        },
+        {
+          op: "claim",
+          policy: 0,
+          incident: { cause: "fire", damages: [{ itemType: "amulet", amount: 200 }] },
+        },
+      ],
+    };
+    const stdout = execFileSync("pnpm", ["exec", "tsx", "src/cli.ts"], {
+      input: JSON.stringify(scenario),
+      encoding: "utf8",
+      cwd: process.cwd(),
+    });
+    const output = JSON.parse(stdout);
+    expect(output).toEqual({
+      results: [{ premium: 59 }, { payout: 100, remainingCap: 1100 }],
+    });
+  });
 });

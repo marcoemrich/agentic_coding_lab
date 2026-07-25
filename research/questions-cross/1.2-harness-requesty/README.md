@@ -32,7 +32,7 @@ outcomes:
   - cycle_count
   - predictions_correct_rate
   - refactorings_applied
-  # Kontext + Kosten (Requesty liefert für CC/OC echte inline-Kosten)
+  # Kontext + Kosten (cache-inklusive, Tarif-gleich über alle Harnesse; Quelle je Harness s. § Kostenvergleich)
   - completed_within_budget
   - duration_seconds
   - total_tokens
@@ -55,8 +55,11 @@ zwei entscheidenden Verbesserungen der Datenlage gegenüber der Portkey-Ära:
    gestrippt → pi `cache_read=0`) existiert auf Requesty nicht. Live verifiziert: Requesty's
    Anthropic-`/v1/messages`-Pfad liefert `cache_creation`→`cache_read` korrekt (Cache-Hit
    senkt den Preis um ~10×).
-2. **Echte Kosten inline für CC/OC.** Requesty's Messages-Pfad schickt `cost` pro Message
-   mit (auch im Streaming); pi bleibt auf der Token×Preis-Schätzung.
+2. **Kosten cache-inklusive über alle Harnesse.** Alle drei tragen `cost_usd` auf demselben
+   Requesty-Tarif; die Cache-Rabatte greifen echt (kein #1579-Strip). CC und pi über die
+   Token×Preis-Schätzung (`compute-cost.py`), OC potenziell inline (`info.cost`) — Details
+   und Caveat in § Kostenvergleich. Entscheidend: der Cache-Effekt ist erstmals auf allen
+   Harnessen real, nicht nur bei CC/OC wie in der Portkey-Ära.
 
 Beide Punkte machen den Harness-Kostenvergleich erstmals sauber messbar — Details,
 Preis-Baseline und Kosten-Herkunft pro Harness stehen unten in § Kostenvergleich.
@@ -114,15 +117,17 @@ Vergleich zwingend als Caveat mitführen:
 
 | Harness | cost_usd-Quelle | Cache-Read echt? |
 |---------|-----------------|------------------|
-| CC | **inline** aus Requesty-Messages (`cost` pro Message, auch Streaming) → `transcript-metrics.json.cost_usd` | ja |
-| OC | **inline** aus Requesty-Messages (OC-Parser) → `transcript-metrics.json.cost_usd` | ja |
+| CC | **Schätzung** Token×Preis via `compute-cost.py`. Die Claude-Code-CLI verwirft das `cost`-Feld aus dem Requesty-Messages-Response beim Schreiben von `transcript.jsonl` (nur Anthropic-Standard-Token-Felder bleiben, `usage.cost` fehlt) — live an einem opus-4-8-requesty-Run verifiziert (`cost_usd=null`, cache_read=4.16M). Der Parser-Hook in `analyze_transcript.py` bleibt, greift aber nur, falls eine künftige CLI-Version `cost` durchreicht. | ja |
+| OC | **inline** aus Requesty-Messages (OC-Parser `info.cost`) → `transcript-metrics.json.cost_usd`, **falls** OpenCode das Feld füllt (nach Batch-Ende zu verifizieren); sonst Fallback auf Schätzung | ja |
 | pi | **Schätzung** Token×Preis via `compute-cost.py` (Requesty-`openai-completions`-Pfad liefert `cost=0`) | ja (route-abhängig, opus: ja) |
 
-CC/OC tragen den real abgerechneten Betrag; pi die Listpreis-Schätzung auf denselben
-Tarif. Beide liegen nahe am tatsächlichen Requesty-Preis, sind aber nicht 1:1
-gleichwertig gemessen — kein Trophy-Automatismus ohne diesen Hinweis. Voraussetzung
-für belastbare pi-Zahlen: der Main-Thread-Summierungs-Fix in `parse_pi_transcript.py`
-(sonst massiver cache_read-Undercount, s. § Methodologische Anmerkungen).
+Faktenlage nach dem ersten Cross-Harness-Batch (2026-07-25): **CC bekommt entgegen der
+ursprünglichen Annahme KEINE Inline-Kosten** — die CLI ist die Engstelle, nicht der Parser
+oder Requesty. CC und pi tragen damit beide die Token×Preis-Schätzung auf demselben Tarif;
+nur OC *könnte* echte Kosten liefern (offen bis zur Verifikation). Alle drei sind über
+`compute-cost.py` mindestens vergleichbar geschätzt. **Kein Trophy-Automatismus** ohne
+diesen Hinweis. Voraussetzung für belastbare pi-Zahlen: der Main-Thread-Summierungs-Fix in
+`parse_pi_transcript.py` (sonst massiver cache_read-Undercount, s. § Methodologische Anmerkungen).
 
 ### Was gegenüber der Portkey-Vorgänger-RQ neu ist
 

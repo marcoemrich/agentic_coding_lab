@@ -42,6 +42,12 @@ PRICES = {
     # Anthropic-opus-4-8-Runs dazukommen, brauchen die eine route-abhängige Unterscheidung.
     "opus-4-8":         (5.50,  27.50, 0.55, 6.25),
     "opus-4-8-no-thinking": (5.50, 27.50, 0.55, 6.25),
+    # CC/OC-Label desselben Modells auf derselben vertex/claude-opus-4-8@eu-Route
+    # (RQ-harness-requesty § Preis-Baseline): identischer Requesty-Tarif wie opus-4-8.
+    # Requesty liefert auf dieser Route kein inline cost mehr → Token×Preis-Schätzung
+    # für alle drei Harnesse, konsistent gemessen.
+    "opus-4-8-requesty":         (5.50,  27.50, 0.55, 6.25),
+    "opus-4-8-requesty-no-thinking": (5.50, 27.50, 0.55, 6.25),
     "opus-4-8-portkey": (5.00, 25.00, 0.50, 6.25),
     "opus-4-8-portkey-no-thinking": (5.00, 25.00, 0.50, 6.25),
     "opus-4-7":         (5.00,  25.00, 0.50, 6.25),
