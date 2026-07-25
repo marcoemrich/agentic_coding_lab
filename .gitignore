@@ -44,4 +44,5 @@ experiments/runs/*/analyze.err
 # Console transcript of a run; can balloon to multiple GB when a model
 # spams output (blocks GitHub's 2 GiB push limit). The run's data lives in
 # metrics.json / transcript.jsonl — run.log is not needed in the repo.
-experiments/runs/*/run.log
+# ** matches any depth so runs/_archive/<dir>/run.log is covered too.
+experiments/runs/**/run.log
