@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_03-39-47_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 
-Generated: 2026-07-25T04:34:26+00:00
+Generated: 2026-07-25T13:08:41+02:00
 
 ## Configuration
 
@@ -30,21 +30,21 @@ Generated: 2026-07-25T04:34:26+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-07-25_03-39-47_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_03-39-47_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-07-25_03-39-47_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_03-39-47_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 
- ✓ src/claim.spec.ts  (10 tests) 2ms
- ✓ src/quote.spec.ts  (13 tests) 3ms
+ ✓ src/scenario.spec.ts  (2 tests) 3ms
  ✓ src/cli.spec.ts  (5 tests) 3ms
- ✓ src/scenario.spec.ts  (2 tests) 2ms
+ ✓ src/quote.spec.ts  (13 tests) 4ms
+ ✓ src/claim.spec.ts  (10 tests) 3ms
 
  Test Files  4 passed (4)
       Tests  30 passed (30)
-   Start at  04:34:38
-   Duration  572ms (transform 49ms, setup 0ms, collect 66ms, tests 10ms, environment 0ms, prepare 190ms)
+   Start at  13:08:52
+   Duration  404ms (transform 91ms, setup 1ms, collect 131ms, tests 13ms, environment 1ms, prepare 409ms)
 ```
 
 ## Coverage
@@ -92,5 +92,46 @@ Generated: 2026-07-25T04:34:26+00:00
 |--------|-----|-----|---------------------------|
 | McCabe (Cyclomatic) | 7 | 1.93 | 0 |
 | Cognitive (SonarJS) | 9 | 2.54 | 0 |
+
+## Transcript Metrics
+
+### Token Usage
+
+| Metric | Value |
+|--------|-------|
+| Total Tokens | 23913255 |
+| Context Utilization | 0% |
+
+### TDD Cycle Metrics
+
+| Metric | Value |
+|--------|-------|
+| Cycle Count | 36 |
+| Avg Cycle Time | 0.00s |
+| Avg Red Phase | 0s |
+| Avg Green Phase | 0s |
+| Avg Refactor Phase | 0s |
+
+### Prediction Accuracy (Guessing Game) — Self-Reported
+
+| Metric | Value |
+|--------|-------|
+| Predictions Correct | 34 |
+| Predictions Total | 34 |
+| Accuracy | 100% |
+
+_Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._
+
+### Refactoring Metrics
+
+| Metric | Value |
+|--------|-------|
+| Refactorings Applied | 17 |
+
+### TDD Discipline
+
+| Metric | Value |
+|--------|-------|
+| Tests Passed Immediately | 0 |
 
 

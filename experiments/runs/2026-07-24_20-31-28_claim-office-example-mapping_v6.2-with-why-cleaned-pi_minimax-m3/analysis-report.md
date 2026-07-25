@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-24_20-31-28_claim-office-example-mapping_v6.2-with-why-cleaned-pi_minimax-m3
 
-Generated: 2026-07-24T22:31:35+00:00
+Generated: 2026-07-25T13:03:58+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-07-24T22:31:35+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-07-24_20-31-28_claim-office-example-mapping_v6.2-with-why-cleaned-pi_minimax-m3
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-24_20-31-28_claim-office-example-mapping_v6.2-with-why-cleaned-pi_minimax-m3
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-07-24_20-31-28_claim-office-example-mapping_v6.2-with-why-cleaned-pi_minimax-m3
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-24_20-31-28_claim-office-example-mapping_v6.2-with-why-cleaned-pi_minimax-m3
 
- ✓ src/office.spec.ts  (44 tests | 11 skipped) 5ms
+ ✓ src/office.spec.ts  (44 tests | 11 skipped) 6ms
 
  Test Files  1 passed (1)
       Tests  33 passed | 11 todo (44)
-   Start at  22:31:43
-   Duration  172ms (transform 34ms, setup 0ms, collect 32ms, tests 5ms, environment 0ms, prepare 44ms)
+   Start at  13:04:03
+   Duration  352ms (transform 32ms, setup 0ms, collect 32ms, tests 6ms, environment 0ms, prepare 106ms)
 ```
 
 ## Coverage
@@ -96,7 +96,7 @@ Generated: 2026-07-24T22:31:35+00:00
 
 | Metric | Value |
 |--------|-------|
-| Total Tokens | 2320094 |
+| Total Tokens | 15505282 |
 | Context Utilization | 0% |
 
 ### TDD Cycle Metrics

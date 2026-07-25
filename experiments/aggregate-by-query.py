@@ -29,7 +29,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 RUNS_DIR = REPO_ROOT / "experiments" / "runs"
 
 CSV_COLUMNS = [
-    "kata", "workflow", "model", "cell_model", "cli_model", "thinking", "run_id",
+    "kata", "workflow", "cell_workflow", "model", "cell_model", "cli_model", "thinking", "run_id",
     "exit_code", "exit_reason", "rate_limited", "completed_within_budget",
     "analyze_status",
     "duration_seconds", "total_tokens", "context_utilization_pct",
@@ -123,6 +123,27 @@ def expand_cells(fm: dict) -> list[dict]:
         else:
             cell["model_alts"] = [m]
 
+        # Allow controls.workflow to be an OR-match, same three forms as model.
+        # Use case: an outcome-neutral workflow bugfix (e.g. v6.2 -> v6.2.1)
+        # where old clean runs and new replacement runs must aggregate into
+        # the SAME cell. First entry is canonical (cell label + plan gen);
+        # all entries match in aggregation.
+        w = cell["workflow"]
+        if isinstance(w, dict):
+            if "any" not in w or not isinstance(w["any"], list) or not w["any"]:
+                raise SystemExit(
+                    f"cell workflow mapping must be {{any: [...]}} with non-empty list: {cell}"
+                )
+            cell["workflow_alts"] = list(w["any"])
+            cell["workflow"] = w["any"][0]
+        elif isinstance(w, list):
+            if not w:
+                raise SystemExit(f"cell has empty workflow list: {cell}")
+            cell["workflow_alts"] = list(w)
+            cell["workflow"] = w[0]
+        else:
+            cell["workflow_alts"] = [w]
+
     return cells
 
 
@@ -140,7 +161,10 @@ def kata_for_cell(cell: dict) -> str:
 def matches_cell(metrics: dict, cell: dict) -> bool:
     if metrics.get("kata") != kata_for_cell(cell):
         return False
-    if metrics.get("workflow") != cell["workflow"]:
+    # Workflow match: cell["workflow_alts"] is the list of accepted workflow
+    # names (usually one; more than one only for an OR-matched outcome-neutral
+    # bugfix, e.g. [v6.2-with-why-cleaned-pi, v6.2.1-phase-continuation-pi]).
+    if metrics.get("workflow") not in cell["workflow_alts"]:
         return False
     # Model match: cell["model_alts"] is the list of accepted lab-variant
     # short aliases (e.g. ["opus-4-7-no-thinking", "opus-4-7-portkey-no-thinking"]).
@@ -176,7 +200,7 @@ def collect_runs(cells: list[dict]) -> tuple[list[tuple[Path, str]], dict[tuple,
 
         for cell in cells:
             if matches_cell(metrics, cell):
-                matched.append((m_file, cell["model"]))
+                matched.append((m_file, cell["model"], cell["workflow"]))
                 key = (kata_for_cell(cell), cell["workflow"], cell["model"])
                 by_cell.setdefault(key, []).append(m_file)
                 break  # a run can only match one cell
@@ -188,7 +212,7 @@ def collect_runs(cells: list[dict]) -> tuple[list[tuple[Path, str]], dict[tuple,
 # CSV emission
 # -----------------------------------------------------------------------
 
-def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "") -> dict:
+def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "", cell_workflow: str = "") -> dict:
     g = lambda d, *keys: _nested(d, keys)
 
     sm = metrics.get("summary_metrics") or {}
@@ -214,6 +238,7 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "") -> dict:
     return {
         "kata":                       metrics.get("kata", ""),
         "workflow":                   metrics.get("workflow", ""),
+        "cell_workflow":              cell_workflow or metrics.get("workflow", ""),
         "model":                      metrics.get("model", ""),
         "cell_model":                 cell_model or metrics.get("model", ""),
         "cli_model":                  metrics.get("cli_model", ""),
@@ -352,9 +377,11 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
     L("")
 
     # Group by cell_model (canonical per-cell model name) so list-valued
-    # controls.model aggregates as one cell. The real per-run `model` is still
-    # in the CSV for provider-level debugging.
-    group_cols = ["kata", "workflow", "cell_model"]
+    # controls.model aggregates as one cell, and by cell_workflow (canonical
+    # per-cell workflow) so an OR-matched outcome-neutral workflow bugfix
+    # (v6.2 + v6.2.1) aggregates as one cell too. The real per-run `model`
+    # and `workflow` are still in the CSV for provider-level debugging.
+    group_cols = ["kata", "cell_workflow", "cell_model"]
 
     for outcome in outcomes:
         # Pooled rate: outcome name ends with "_correct_rate" → derive
@@ -467,10 +494,10 @@ def main(argv: list[str]) -> int:
           f"{len(matched)} runs matched", file=sys.stderr)
 
     rows = []
-    for m_file, cell_model in matched:
+    for m_file, cell_model, cell_workflow in matched:
         metrics = json.loads(m_file.read_text())
         run_id = m_file.parent.name
-        rows.append(metrics_to_row(metrics, run_id, cell_model))
+        rows.append(metrics_to_row(metrics, run_id, cell_model, cell_workflow))
 
     df = pd.DataFrame(rows, columns=CSV_COLUMNS)
     csv_path = out_dir / "runs.csv"

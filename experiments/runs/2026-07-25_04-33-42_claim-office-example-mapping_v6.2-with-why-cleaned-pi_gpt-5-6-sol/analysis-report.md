@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_04-33-42_claim-office-example-mapping_v6.2-with-why-cleaned-pi_gpt-5-6-sol
 
-Generated: 2026-07-25T04:43:12+00:00
+Generated: 2026-07-25T13:10:42+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-07-25T04:43:12+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-07-25_04-33-42_claim-office-example-mapping_v6.2-with-why-cleaned-pi_gpt-5-6-sol
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_04-33-42_claim-office-example-mapping_v6.2-with-why-cleaned-pi_gpt-5-6-sol
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-07-25_04-33-42_claim-office-example-mapping_v6.2-with-why-cleaned-pi_gpt-5-6-sol
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_04-33-42_claim-office-example-mapping_v6.2-with-why-cleaned-pi_gpt-5-6-sol
 
- ✓ src/claim-office.spec.ts  (16 tests) 5ms
+ ✓ src/claim-office.spec.ts  (16 tests) 6ms
 
  Test Files  1 passed (1)
       Tests  16 passed (16)
-   Start at  04:43:13
-   Duration  170ms (transform 38ms, setup 0ms, collect 36ms, tests 5ms, environment 0ms, prepare 43ms)
+   Start at  13:10:42
+   Duration  380ms (transform 31ms, setup 0ms, collect 31ms, tests 6ms, environment 0ms, prepare 56ms)
 ```
 
 ## Coverage
@@ -96,7 +96,7 @@ Generated: 2026-07-25T04:43:12+00:00
 
 | Metric | Value |
 |--------|-------|
-| Total Tokens | 540905 |
+| Total Tokens | 1879693 |
 | Context Utilization | 0% |
 
 ### TDD Cycle Metrics

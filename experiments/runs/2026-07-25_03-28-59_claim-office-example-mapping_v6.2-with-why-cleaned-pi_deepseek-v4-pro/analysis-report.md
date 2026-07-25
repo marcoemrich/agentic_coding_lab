@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_03-28-59_claim-office-example-mapping_v6.2-with-why-cleaned-pi_deepseek-v4-pro
 
-Generated: 2026-07-25T03:40:32+00:00
+Generated: 2026-07-25T13:07:30+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-07-25T03:40:32+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-07-25_03-28-59_claim-office-example-mapping_v6.2-with-why-cleaned-pi_deepseek-v4-pro
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_03-28-59_claim-office-example-mapping_v6.2-with-why-cleaned-pi_deepseek-v4-pro
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-07-25_03-28-59_claim-office-example-mapping_v6.2-with-why-cleaned-pi_deepseek-v4-pro
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_03-28-59_claim-office-example-mapping_v6.2-with-why-cleaned-pi_deepseek-v4-pro
 
- ✓ src/claim-office.spec.ts  (44 tests) 11ms
+ ✓ src/claim-office.spec.ts  (44 tests) 9ms
 
  Test Files  1 passed (1)
       Tests  44 passed (44)
-   Start at  03:40:34
-   Duration  180ms (transform 45ms, setup 0ms, collect 43ms, tests 11ms, environment 0ms, prepare 42ms)
+   Start at  13:07:31
+   Duration  334ms (transform 39ms, setup 0ms, collect 34ms, tests 9ms, environment 0ms, prepare 92ms)
 ```
 
 ## Coverage
@@ -96,7 +96,7 @@ Generated: 2026-07-25T03:40:32+00:00
 
 | Metric | Value |
 |--------|-------|
-| Total Tokens | 528135 |
+| Total Tokens | 15652593 |
 | Context Utilization | 0% |
 
 ### TDD Cycle Metrics

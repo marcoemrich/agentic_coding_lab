@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_03-48-17_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 
-Generated: 2026-07-25T04:33:19+00:00
+Generated: 2026-07-25T13:09:21+02:00
 
 ## Configuration
 
@@ -30,23 +30,23 @@ Generated: 2026-07-25T04:33:19+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-07-25_03-48-17_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_03-48-17_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-07-25_03-48-17_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_03-48-17_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 
 unknown item type: broomstick
 damage references item not covered by policy: amulet
 damage references item not covered by policy: broomstick
 damage amount must not be negative: -200
 damage references item not covered by policy: sword
- ✓ src/claim-office.spec.ts  (38 tests) 606ms
+ ✓ src/claim-office.spec.ts  (38 tests) 1025ms
 
  Test Files  1 passed (1)
       Tests  38 passed (38)
-   Start at  04:33:25
-   Duration  780ms (transform 45ms, setup 0ms, collect 45ms, tests 606ms, environment 0ms, prepare 43ms)
+   Start at  13:09:26
+   Duration  1.37s (transform 42ms, setup 0ms, collect 41ms, tests 1.02s, environment 0ms, prepare 69ms)
 ```
 
 ## Coverage
@@ -101,7 +101,7 @@ damage references item not covered by policy: sword
 
 | Metric | Value |
 |--------|-------|
-| Total Tokens | 2195688 |
+| Total Tokens | 16229304 |
 | Context Utilization | 0% |
 
 ### TDD Cycle Metrics

@@ -5,16 +5,28 @@ Alle Preise in USD pro 1M Token.
 
 ## Requesty-Preise pi-Harness-Modelle (Stand 2026-07-25)
 
-Für die aktuellen pi-/Requesty-Modelle (RQ-model-novel-pi, RQ-model-quality-pi). Requesty berechnet den Upstream-Provider-Preis (kein Markup laut Anbieter; älterer Stand nannte 5 %). Alle Preise USD pro 1M Token.
+Für die aktuellen pi-/Requesty-Modelle (RQ-model-novel-pi, RQ-model-quality-pi, RQ-harness-requesty). Requesty berechnet den Upstream-Provider-Preis (kein Markup laut Anbieter; älterer Stand nannte 5 %). Preise = **Live-Requesty-Katalog** (`curl https://router.eu.requesty.ai/v1/models`), pro Route aus der `pi_model`-Map in `experiments/docker/run-batch.sh`. Alle Preise USD pro 1M Token.
 
-| Modell | Requesty-Route | Input | Output | Cache Read |
-|---|---|---:|---:|---:|
-| Claude Opus 4.8 | `vertex/claude-opus-4-8` | $5.00 | $25.00 | $0.50 |
-| GLM 5.2 | `tensorx/glm-5.2` | $1.40 | $4.40 | $0.26 |
-| GPT-5.6 Sol | `azure/gpt-5.6-sol` | $5.00 | $30.00 | $0.50 |
-| GPT-5.6 Terra | `azure/gpt-5.6-terra` | $2.50 | $15.00 | $0.25 |
+| lab-variant | Requesty-Route | Input | Output | Cache Read | Cache? |
+|---|---|---:|---:|---:|:--:|
+| opus-4-8 | `vertex/claude-opus-4-8@eu` | $5.50 | $27.50 | $0.55 | ja |
+| sonnet-5 | `vertex/claude-sonnet-5@eu` | $2.20 | $11.00 | $0.22 | ja |
+| gpt-5-6-sol | `azure/gpt-5.6-sol@swedencentral` | $5.00 | $30.00 | $0.50 | ja |
+| gpt-5-6-terra | `azure/gpt-5.6-terra@swedencentral` | $2.50 | $15.00 | $0.25 | ja |
+| glm-5-1 | `nebius/zai-org/glm-5.1` | $1.40 | $4.40 | $1.40 | **nein** |
+| glm-5-2 | `tensorx/glm-5.2` | $1.50 | $4.50 | $0.38 | ja |
+| kimi-k2-7 | `tensorx/kimi-k2.7-code` | $1.25 | $4.50 | $0.31 | ja |
+| minimax-m3 | `tensorx/minimax-m3` | $0.40 | $2.00 | $0.10 | ja |
+| deepseek-v4-pro | `tensorx/deepseek-v4-pro` | $1.75 | $3.50 | $0.44 | ja |
+| qwen3-235b | `nebius/qwen/qwen3-235b-a22b-instruct-2507` | $0.20 | $0.60 | $0.20 | **nein** |
 
-Quellen: [Requesty GLM-5.2](https://www.requesty.ai/models/zai/glm-5.2), [aipricing.guru GPT-5.6](https://www.aipricing.guru/openai-pricing/), Anthropic-Tarif für Opus 4.8 (identisch zu 4.7). GPT-5.6-Cache = 10 % vom Input-Preis. Cache-Write für die OpenAI-/GLM-Routen nicht separat ausgewiesen → in `compute-cost.py` als 0 geführt.
+Anmerkungen:
+- Diese Werte weichen bewusst von den **nativen** Anthropic-Listpreisen ab: auf den vertex-Routen liegt Requesty ~10 % höher (opus-4-8 $5.50/$27.50 statt $5.00/$25.00 nativ). Im aktuellen Run-Pool laufen ALLE `opus-4-8`/`sonnet-5`-Runs über pi/Requesty, deshalb tragen die shared lab-variants in `compute-cost.py` den Requesty-Tarif.
+- **`supports_caching=false`** (glm-5-1, qwen3-235b): Requesty rechnet cache_read zum vollen Input-Preis ab → in `compute-cost.py` ist `cache_read = input` gesetzt (kein Rabatt).
+- Cache-Write auf den OpenAI-/GLM-/Kimi-/MiniMax-/DeepSeek-Routen nicht separat ausgewiesen → in `compute-cost.py` als 0 geführt.
+- Requesty rotiert Modelle/Provider schnell — bei Abweichungen den Live-Katalog gegen `compute-cost.py` `PRICES` und `experiments/docker/pi-config/agent/models.json` diffen.
+
+Ältere Quellen (zum Nachvollziehen): [Requesty GLM-5.2](https://www.requesty.ai/models/zai/glm-5.2), [aipricing.guru GPT-5.6](https://www.aipricing.guru/openai-pricing/).
 
 ## Übersicht
 

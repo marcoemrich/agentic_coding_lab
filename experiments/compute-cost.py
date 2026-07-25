@@ -10,10 +10,12 @@ Prices are sourced from ``research/model-pricing.md`` (manually maintained
 from Anthropic, OpenRouter, and Portkey list prices). The script does NOT
 fetch live prices.
 
-Caveat: Portkey-routed runs may diverge from the direct-API list price
-depending on the workspace tariff. We use the direct-API price as best
-estimate; treat cost_usd as a "list-price baseline", not actual billed
-amount.
+Caveat: pi-/Requesty-Runs tragen den Requesty-Katalogpreis (Upstream-Provider-Tarif,
+kein Markup laut Anbieter) — nahe am tatsächlich abgerechneten Betrag, aber ohne
+workspace-spezifische Rabatte / Smart-Routing-Ersparnis. Requesty liefert KEINE Kosten
+inline (usage=null im Response), darum bleibt Token×Preis der einzige Weg. Auf den
+vertex-Anthropic-Routen liegt Requesty ~10 % über dem nativen Anthropic-Listpreis. Treat
+cost_usd als "list-price baseline", nicht als abgerechneten Betrag.
 
 Idempotent: runs with a numeric cost_usd are recomputed unless --skip-existing
 is passed (recomputation is cheap, so default is to refresh).
@@ -35,8 +37,11 @@ from pathlib import Path
 # Prices in USD per 1M tokens. Source: research/model-pricing.md (Stand 2026-05-29).
 # input / output / cache_read / cache_write
 PRICES = {
-    "opus-4-8":         (5.00,  25.00, 0.50, 6.25),
-    "opus-4-8-no-thinking": (5.00, 25.00, 0.50, 6.25),
+    # opus-4-8: im aktuellen Run-Pool AUSSCHLIESSLICH Requesty-geroutet (pi-Harness) →
+    # Requesty-vertex-Tarif 5.50/27.50/0.55 (~10 % über Anthropic-nativ). Falls je native
+    # Anthropic-opus-4-8-Runs dazukommen, brauchen die eine route-abhängige Unterscheidung.
+    "opus-4-8":         (5.50,  27.50, 0.55, 6.25),
+    "opus-4-8-no-thinking": (5.50, 27.50, 0.55, 6.25),
     "opus-4-8-portkey": (5.00, 25.00, 0.50, 6.25),
     "opus-4-8-portkey-no-thinking": (5.00, 25.00, 0.50, 6.25),
     "opus-4-7":         (5.00,  25.00, 0.50, 6.25),
@@ -56,16 +61,36 @@ PRICES = {
     "haiku-4-5-portkey": (1.00, 5.00, 0.10, 1.25),
     "haiku-4-5-portkey-no-thinking": (1.00, 5.00, 0.10, 1.25),
     "kimi-k2-6":        (0.73,  3.49,  0.37, 0.0),
-    "glm-5-1":          (0.98,  3.08,  0.18, 0.0),
     "minimax-m2-7":     (0.28,  1.20,  0.0,  0.0),
     "gemini-2-5-pro":   (1.25,  10.00, 0.31, 0.0),
     "gemini-3-5-flash": (0.30,  2.50,  0.075, 0.0),
-    # pi-/Requesty-Modelle (Stand 2026-07-25, siehe research/model-pricing.md).
-    # opus-4-8 ist bereits oben gelistet (identischer Tarif).
-    "glm-5-2":          (1.40,  4.40,  0.26, 0.0),
-    "glm-5-2-no-thinking": (1.40, 4.40, 0.26, 0.0),
-    "gpt-5-6-sol":      (5.00,  30.00, 0.50, 0.0),
-    "gpt-5-6-terra":    (2.50,  15.00, 0.25, 0.0),
+    # pi-/Requesty-Modelle. Preise = Live-Requesty-Katalog
+    # (curl https://router.eu.requesty.ai/v1/models, Stand 2026-07-25), pro Route
+    # aus der pi_model-Map in experiments/docker/run-batch.sh. Requesty berechnet den
+    # Upstream-Provider-Preis; auf den vertex-Anthropic-Routen liegt der ~10 % über dem
+    # Anthropic-Listpreis (opus-4-8 5.50/27.50 statt 5.00/25.00) — deshalb weicht dieser
+    # Block bewusst von den nativen opus-/sonnet-Einträgen oben ab. cache_write auf den
+    # OpenAI-/GLM-/Kimi-Routen nicht separat ausgewiesen → 0.
+    # Modelle mit supports_caching=false (qwen3-235b, glm-5-1) rechnen cache_read zum
+    # vollen Input-Preis ab → cache_read = input.
+    "kimi-k2-7":        (1.25,  4.50,  0.31, 0.0),   # tensorx/kimi-k2.7-code
+    "kimi-k2-7-no-thinking": (1.25, 4.50, 0.31, 0.0),
+    "minimax-m3":       (0.40,  2.00,  0.10, 0.0),   # tensorx/minimax-m3
+    "minimax-m3-no-thinking": (0.40, 2.00, 0.10, 0.0),
+    "deepseek-v4-pro":  (1.75,  3.50,  0.44, 0.0),   # tensorx/deepseek-v4-pro
+    "deepseek-v4-pro-no-thinking": (1.75, 3.50, 0.44, 0.0),
+    "qwen3-235b":       (0.20,  0.60,  0.20, 0.0),   # nebius/… (kein Cache-Rabatt: cr=in)
+    "qwen3-235b-no-thinking": (0.20, 0.60, 0.20, 0.0),
+    "glm-5-1":          (1.40,  4.40,  1.40, 0.0),   # nebius/zai-org/glm-5.1 (kein Cache-Rabatt: cr=in)
+    "glm-5-1-no-thinking": (1.40, 4.40, 1.40, 0.0),
+    "glm-5-2":          (1.50,  4.50,  0.38, 0.0),   # tensorx/glm-5.2
+    "glm-5-2-no-thinking": (1.50, 4.50, 0.38, 0.0),
+    "gpt-5-6-sol":      (5.00,  30.00, 0.50, 0.0),   # azure/gpt-5.6-sol
+    "gpt-5-6-sol-no-thinking": (5.00, 30.00, 0.50, 0.0),
+    "gpt-5-6-terra":    (2.50,  15.00, 0.25, 0.0),   # azure/gpt-5.6-terra
+    "gpt-5-6-terra-no-thinking": (2.50, 15.00, 0.25, 0.0),
+    "sonnet-5":         (2.20,  11.00, 0.22, 0.0),   # vertex/claude-sonnet-5@eu (Requesty-Tarif)
+    "sonnet-5-no-thinking": (2.20, 11.00, 0.22, 0.0),
 }
 
 

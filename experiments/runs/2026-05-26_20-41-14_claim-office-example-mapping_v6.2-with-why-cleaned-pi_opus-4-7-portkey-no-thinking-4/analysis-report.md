@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-26_20-41-14_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-7-portkey-no-thinking-4
 
-Generated: 2026-05-27T00:49:07+02:00
+Generated: 2026-07-25T12:58:13+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-27T00:49:07+02:00
 
 ```
 
-> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-26_20-41-14_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-7-portkey-no-thinking-4
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-26_20-41-14_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-7-portkey-no-thinking-4
 > vitest run
 
 
- RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-26_20-41-14_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-7-portkey-no-thinking-4
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-26_20-41-14_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-7-portkey-no-thinking-4
 
- ✓ src/claim-office.spec.ts  (39 tests) 364ms
+ ✓ src/claim-office.spec.ts  (39 tests) 311ms
 
  Test Files  1 passed (1)
       Tests  39 passed (39)
-   Start at  00:49:08
-   Duration  767ms (transform 37ms, setup 0ms, collect 38ms, tests 364ms, environment 0ms, prepare 102ms)
+   Start at  12:58:13
+   Duration  678ms (transform 41ms, setup 0ms, collect 38ms, tests 311ms, environment 0ms, prepare 65ms)
 ```
 
 ## Coverage
@@ -96,7 +96,7 @@ Generated: 2026-05-27T00:49:07+02:00
 
 | Metric | Value |
 |--------|-------|
-| Total Tokens | 1611984 |
+| Total Tokens | 11541519 |
 | Context Utilization | 0% |
 
 ### TDD Cycle Metrics

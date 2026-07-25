@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_03-36-39_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 
-Generated: 2026-07-25T04:20:58+00:00
+Generated: 2026-07-25T13:08:02+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-07-25T04:20:58+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-07-25_03-36-39_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_03-36-39_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-07-25_03-36-39_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_03-36-39_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 
  ✓ src/claim-office.spec.ts  (42 tests) 7ms
 
  Test Files  1 passed (1)
       Tests  42 passed (42)
-   Start at  04:21:09
-   Duration  255ms (transform 55ms, setup 0ms, collect 58ms, tests 7ms, environment 0ms, prepare 95ms)
+   Start at  13:08:10
+   Duration  408ms (transform 34ms, setup 0ms, collect 38ms, tests 7ms, environment 0ms, prepare 55ms)
 ```
 
 ## Coverage
@@ -89,5 +89,46 @@ Generated: 2026-07-25T04:20:58+00:00
 |--------|-----|-----|---------------------------|
 | McCabe (Cyclomatic) | 4 | 1.58 | 0 |
 | Cognitive (SonarJS) | 4 | 2.20 | 0 |
+
+## Transcript Metrics
+
+### Token Usage
+
+| Metric | Value |
+|--------|-------|
+| Total Tokens | 6548551 |
+| Context Utilization | 0% |
+
+### TDD Cycle Metrics
+
+| Metric | Value |
+|--------|-------|
+| Cycle Count | 66 |
+| Avg Cycle Time | 0.00s |
+| Avg Red Phase | 0s |
+| Avg Green Phase | 0s |
+| Avg Refactor Phase | 0s |
+
+### Prediction Accuracy (Guessing Game) — Self-Reported
+
+| Metric | Value |
+|--------|-------|
+| Predictions Correct | 26 |
+| Predictions Total | 26 |
+| Accuracy | 100% |
+
+_Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._
+
+### Refactoring Metrics
+
+| Metric | Value |
+|--------|-------|
+| Refactorings Applied | 15 |
+
+### TDD Discipline
+
+| Metric | Value |
+|--------|-------|
+| Tests Passed Immediately | 0 |
 
 

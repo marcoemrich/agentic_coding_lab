@@ -212,6 +212,12 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
     total_output = 0
     total_cache_read = 0
     total_cache_creation = 0
+    # Requesty's Anthropic /v1/messages path reports a per-message `cost`
+    # (USD, scalar) inside usage; native Anthropic / Portkey do not. Summed
+    # across all assistant messages → actual routed cost. Stays None when no
+    # message carried a cost (native runs fall back to compute-cost.py).
+    total_cost: float = 0.0
+    saw_cost = False
     max_cumulative = 0
     message_count = 0
     first_ts: datetime | None = None
@@ -284,6 +290,16 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
         total_output += out_tok
         total_cache_read += cache_read
         total_cache_creation += cache_create
+
+        # Requesty surfaces routed cost inside usage. Accept a scalar
+        # (`cost: 0.0019`) or a nested object (`cost: {total: 0.0019}`);
+        # native/Portkey usage has neither, leaving cost_usd = None.
+        cost_val = usage.get("cost")
+        if isinstance(cost_val, dict):
+            cost_val = cost_val.get("total")
+        if isinstance(cost_val, (int, float)):
+            total_cost += float(cost_val)
+            saw_cost = True
 
         cumulative = in_tok + cache_read + cache_create
         if cumulative > max_cumulative:
@@ -396,6 +412,10 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
         "context_utilization_pct": ctx_util_pct,
         "context_window_tokens": context_window,
         "context_peak_tokens": max_cumulative,
+        # Actual routed cost (USD) when the provider surfaced it (Requesty
+        # /v1/messages path); None for native/Portkey runs → compute-cost.py
+        # supplies a list-price estimate in that case.
+        "cost_usd": round(total_cost, 6) if saw_cost else None,
         "message_count": message_count,
         "tool_calls": dict(tool_calls),
         "skill_invocations": dict(skill_invocations),

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-25_03-32-33_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 
-Generated: 2026-07-25T04:09:53+00:00
+Generated: 2026-07-25T13:07:41+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-07-25T04:09:53+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-07-25_03-32-33_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_03-32-33_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-07-25_03-32-33_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-25_03-32-33_claim-office-example-mapping_v6.2-with-why-cleaned-pi_glm-5-2
 
- ✓ src/claim-office.spec.ts  (38 tests) 138ms
+ ✓ src/claim-office.spec.ts  (38 tests) 242ms
 
  Test Files  1 passed (1)
       Tests  38 passed (38)
-   Start at  04:10:00
-   Duration  310ms (transform 39ms, setup 0ms, collect 39ms, tests 138ms, environment 0ms, prepare 48ms)
+   Start at  13:07:52
+   Duration  621ms (transform 38ms, setup 0ms, collect 39ms, tests 242ms, environment 0ms, prepare 59ms)
 ```
 
 ## Coverage
@@ -89,5 +89,46 @@ Generated: 2026-07-25T04:09:53+00:00
 |--------|-----|-----|---------------------------|
 | McCabe (Cyclomatic) | 6 | 1.84 | 0 |
 | Cognitive (SonarJS) | 6 | 2.08 | 0 |
+
+## Transcript Metrics
+
+### Token Usage
+
+| Metric | Value |
+|--------|-------|
+| Total Tokens | 26439317 |
+| Context Utilization | 0% |
+
+### TDD Cycle Metrics
+
+| Metric | Value |
+|--------|-------|
+| Cycle Count | 25 |
+| Avg Cycle Time | 0.00s |
+| Avg Red Phase | 0s |
+| Avg Green Phase | 0s |
+| Avg Refactor Phase | 0s |
+
+### Prediction Accuracy (Guessing Game) — Self-Reported
+
+| Metric | Value |
+|--------|-------|
+| Predictions Correct | 32 |
+| Predictions Total | 32 |
+| Accuracy | 100% |
+
+_Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._
+
+### Refactoring Metrics
+
+| Metric | Value |
+|--------|-------|
+| Refactorings Applied | 16 |
+
+### TDD Discipline
+
+| Metric | Value |
+|--------|-------|
+| Tests Passed Immediately | 0 |
 
 

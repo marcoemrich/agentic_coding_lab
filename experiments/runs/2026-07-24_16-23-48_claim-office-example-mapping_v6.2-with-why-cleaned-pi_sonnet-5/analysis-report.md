@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-24_16-23-48_claim-office-example-mapping_v6.2-with-why-cleaned-pi_sonnet-5
 
-Generated: 2026-07-24T17:59:50+00:00
+Generated: 2026-07-25T13:00:46+02:00
 
 ## Configuration
 
@@ -30,23 +30,23 @@ Generated: 2026-07-24T17:59:50+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-07-24_16-23-48_claim-office-example-mapping_v6.2-with-why-cleaned-pi_sonnet-5
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-24_16-23-48_claim-office-example-mapping_v6.2-with-why-cleaned-pi_sonnet-5
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-07-24_16-23-48_claim-office-example-mapping_v6.2-with-why-cleaned-pi_sonnet-5
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-24_16-23-48_claim-office-example-mapping_v6.2-with-why-cleaned-pi_sonnet-5
 
- ✓ src/claim.spec.ts  (15 tests) 4ms
- ✓ src/scenario.spec.ts  (6 tests) 4ms
+ ✓ src/rounding.spec.ts  (2 tests) 3ms
  ✓ src/catalog.spec.ts  (16 tests) 3ms
+ ✓ src/claim.spec.ts  (15 tests) 4ms
  ✓ src/quote.spec.ts  (10 tests) 3ms
- ✓ src/cli.spec.ts  (4 tests) 1206ms
- ✓ src/rounding.spec.ts  (2 tests) 1ms
+ ✓ src/scenario.spec.ts  (6 tests) 5ms
+ ✓ src/cli.spec.ts  (4 tests) 1306ms
 
  Test Files  6 passed (6)
       Tests  53 passed (53)
-   Start at  17:59:51
-   Duration  2.05s (transform 58ms, setup 0ms, collect 84ms, tests 1.22s, environment 1ms, prepare 280ms)
+   Start at  13:00:47
+   Duration  1.66s (transform 128ms, setup 0ms, collect 197ms, tests 1.32s, environment 1ms, prepare 669ms)
 ```
 
 ## Coverage
@@ -101,7 +101,7 @@ Generated: 2026-07-24T17:59:50+00:00
 
 | Metric | Value |
 |--------|-------|
-| Total Tokens | 3177840 |
+| Total Tokens | 40068004 |
 | Context Utilization | 0% |
 
 ### TDD Cycle Metrics

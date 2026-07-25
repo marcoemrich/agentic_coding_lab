@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-24_17-51-45_claim-office-example-mapping_v6.2-with-why-cleaned-pi_sonnet-5-no-thinking
 
-Generated: 2026-07-24T18:59:25+00:00
+Generated: 2026-07-25T13:01:35+02:00
 
 ## Configuration
 
@@ -30,24 +30,39 @@ Generated: 2026-07-24T18:59:25+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-07-24_17-51-45_claim-office-example-mapping_v6.2-with-why-cleaned-pi_sonnet-5-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-24_17-51-45_claim-office-example-mapping_v6.2-with-why-cleaned-pi_sonnet-5-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-07-24_17-51-45_claim-office-example-mapping_v6.2-with-why-cleaned-pi_sonnet-5-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-24_17-51-45_claim-office-example-mapping_v6.2-with-why-cleaned-pi_sonnet-5-no-thinking
 
- ✓ src/claim.spec.ts  (12 tests) 2ms
- ✓ src/quote.spec.ts  (9 tests) 4ms
+ ✓ src/claim.spec.ts  (12 tests) 5ms
+ ✓ src/quote.spec.ts  (9 tests) 5ms
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
 Error: Unknown item type: "broomstick"
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
 Error: Damaged item type "amulet" is not part of the referenced policy
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
 Error: Damage amount cannot be negative: -200
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
 Error: Claim references 2 "sword" damages but only 1 are insured
- ✓ src/cli.spec.ts  (5 tests) 1402ms
+ ✓ src/cli.spec.ts  (5 tests) 1553ms
 
  Test Files  3 passed (3)
       Tests  26 passed (26)
-   Start at  18:59:26
-   Duration  1.83s (transform 47ms, setup 0ms, collect 54ms, tests 1.41s, environment 0ms, prepare 136ms)
+   Start at  13:01:36
+   Duration  1.88s (transform 56ms, setup 0ms, collect 79ms, tests 1.56s, environment 0ms, prepare 250ms)
 ```
 
 ## Coverage
@@ -102,7 +117,7 @@ Error: Claim references 2 "sword" damages but only 1 are insured
 
 | Metric | Value |
 |--------|-------|
-| Total Tokens | 2614111 |
+| Total Tokens | 16812591 |
 | Context Utilization | 0% |
 
 ### TDD Cycle Metrics

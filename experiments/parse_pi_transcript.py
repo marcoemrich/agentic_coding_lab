@@ -160,30 +160,50 @@ def _assistant_texts(events: list[dict]) -> list[str]:
     return out
 
 
-def _last_usage(events: list[dict]) -> dict:
-    """Final usage block of the *main* pi conversation.
+def _sum_main_usage(events: list[dict]) -> dict:
+    """Sum token usage across ALL main-thread assistant messages.
 
-    pi reports usage cumulatively in each assistant message of the main
-    thread (the last `agent_end` carries the highest value). This does
-    NOT include subagent token consumption — see `_subagent_usage_totals`
-    for that. The main-thread total is just the visible chat with the
-    orchestrating model; subagents run as separate pi processes.
+    pi's per-message ``usage`` is NOT a running total: ``input`` is the prompt
+    size of each individual request (jumps around, decreases across turns),
+    ``output`` is that message's completion, ``cacheRead`` is that request's
+    cache hit. Each API call bills its own input+output+cache, so the billable
+    main-thread cost is the SUM over every request — not the last value.
+
+    Taking only the last ``agent_end`` usage (the previous behaviour) captured
+    just the final request and undercounted main-thread input by ~99 % on real
+    claim-office runs (e.g. input 391 vs summed 260 753). This does NOT include
+    subagent consumption — see ``_subagent_usage_totals`` for that.
+
+    Preferred source: the single terminal ``agent_end`` carries the full
+    ``messages[]`` array of the main conversation; summing over it equals
+    summing the streamed ``message_end`` events. Fallback: sum ``message_end``
+    directly for transcripts without a terminal ``agent_end``.
     """
+    keys = ("input", "output", "cacheRead", "cacheWrite")
+
+    def _add(totals: dict, usage: dict) -> None:
+        for k in keys:
+            v = usage.get(k)
+            if isinstance(v, (int, float)):
+                totals[k] += int(v)
+
     for ev in reversed(events):
         if ev.get("type") == "agent_end":
-            messages = ev.get("messages") or []
-            for msg in reversed(messages):
+            totals = {k: 0 for k in keys}
+            for msg in ev.get("messages") or []:
                 if isinstance(msg, dict) and msg.get("role") == "assistant":
-                    usage = msg.get("usage") or {}
-                    if usage:
-                        return usage
-            return {}
-    for ev in reversed(events):
+                    _add(totals, msg.get("usage") or {})
+            if any(totals.values()):
+                return totals
+            break
+
+    totals = {k: 0 for k in keys}
+    for ev in events:
         if ev.get("type") == "message_end":
             msg = ev.get("message") or {}
             if isinstance(msg, dict) and msg.get("role") == "assistant":
-                return msg.get("usage") or {}
-    return {}
+                _add(totals, msg.get("usage") or {})
+    return totals
 
 
 def _subagent_usage_totals(events: list[dict]) -> dict:
@@ -319,8 +339,12 @@ def main(run_dir: str) -> int:
     by_id: dict[str, tuple[str, dict]] = {}          # tool calls by id
     sa_totals = {"input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0}
     sa_seen: set[str] = set()
-    last_agent_end_usage: dict = {}                   # newest agent_end assistant usage
-    last_msg_end_usage: dict = {}                     # fallback: newest message_end usage
+    # Main-thread usage is summed, not kept-last: pi's per-message usage is the
+    # per-request prompt/completion size, so each API call bills its own tokens
+    # (see _sum_main_usage). agent_end carries the full messages[] and is the
+    # authoritative source; msg_end_sum is the streaming fallback.
+    agent_end_usage_sum: dict = {}                    # summed over agent_end.messages[]
+    msg_end_usage_sum = {"input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0}
     last_model: str | None = None
     last_cost: dict = {}
     start_ms: float | None = None
@@ -348,22 +372,35 @@ def main(run_dir: str) -> int:
             # --- subagent usage totals ---
             _subagent_usage_of(ev, sa_totals, sa_seen)
 
-            # --- main-thread usage / model / cost (keep newest terminal) ---
+            # --- main-thread usage / model / cost ---
+            # Sum over all assistant messages (each request bills its own tokens).
             if etype == "agent_end":
-                for msg in reversed(ev.get("messages") or []):
-                    if isinstance(msg, dict) and msg.get("role") == "assistant":
-                        u = msg.get("usage") or {}
-                        if u:
-                            last_agent_end_usage = u
-                            last_cost = u.get("cost") or last_cost
-                        if msg.get("model"):
-                            last_model = msg.get("model")
-                        break
+                totals = {"input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0}
+                newest_cost: dict = {}
+                for msg in ev.get("messages") or []:
+                    if not (isinstance(msg, dict) and msg.get("role") == "assistant"):
+                        continue
+                    u = msg.get("usage") or {}
+                    for k in totals:
+                        v = u.get(k)
+                        if isinstance(v, (int, float)):
+                            totals[k] += int(v)
+                    if u.get("cost"):
+                        newest_cost = u.get("cost")
+                    if msg.get("model"):
+                        last_model = msg.get("model")
+                if any(totals.values()):
+                    agent_end_usage_sum = totals
+                if newest_cost:
+                    last_cost = newest_cost
             elif etype == "message_end":
                 msg = ev.get("message") or {}
                 if isinstance(msg, dict) and msg.get("role") == "assistant":
-                    if msg.get("usage"):
-                        last_msg_end_usage = msg.get("usage")
+                    u = msg.get("usage") or {}
+                    for k in msg_end_usage_sum:
+                        v = u.get(k)
+                        if isinstance(v, (int, float)):
+                            msg_end_usage_sum[k] += int(v)
                     if msg.get("model"):
                         last_model = msg.get("model")
 
@@ -386,9 +423,9 @@ def main(run_dir: str) -> int:
                 predictions_correct += c
                 predictions_total += t
 
-    # main usage: agent_end preferred, else message_end fallback (same order
-    # of preference as the former _last_usage()).
-    main_usage = last_agent_end_usage or last_msg_end_usage
+    # main usage: agent_end sum preferred, else streamed message_end sum
+    # (same order of preference as the former keep-last logic, but summed).
+    main_usage = agent_end_usage_sum or msg_end_usage_sum
     main_input = int(main_usage.get("input") or 0)
     main_output = int(main_usage.get("output") or 0)
     main_cache_read = int(main_usage.get("cacheRead") or 0)

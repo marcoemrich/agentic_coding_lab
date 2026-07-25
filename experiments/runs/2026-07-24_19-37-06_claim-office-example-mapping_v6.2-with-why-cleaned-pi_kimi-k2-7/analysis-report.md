@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-24_19-37-06_claim-office-example-mapping_v6.2-with-why-cleaned-pi_kimi-k2-7
 
-Generated: 2026-07-24T20:29:45+00:00
+Generated: 2026-07-25T13:03:05+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-07-24T20:29:45+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-07-24_19-37-06_claim-office-example-mapping_v6.2-with-why-cleaned-pi_kimi-k2-7
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-24_19-37-06_claim-office-example-mapping_v6.2-with-why-cleaned-pi_kimi-k2-7
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-07-24_19-37-06_claim-office-example-mapping_v6.2-with-why-cleaned-pi_kimi-k2-7
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-24_19-37-06_claim-office-example-mapping_v6.2-with-why-cleaned-pi_kimi-k2-7
 
  ✓ src/claim-office.spec.ts  (45 tests) 7ms
 
  Test Files  1 passed (1)
       Tests  45 passed (45)
-   Start at  20:29:47
-   Duration  182ms (transform 42ms, setup 0ms, collect 50ms, tests 7ms, environment 0ms, prepare 41ms)
+   Start at  13:03:06
+   Duration  335ms (transform 36ms, setup 0ms, collect 36ms, tests 7ms, environment 0ms, prepare 65ms)
 ```
 
 ## Coverage
@@ -96,7 +96,7 @@ Generated: 2026-07-24T20:29:45+00:00
 
 | Metric | Value |
 |--------|-------|
-| Total Tokens | 4158102 |
+| Total Tokens | 19613494 |
 | Context Utilization | 0% |
 
 ### TDD Cycle Metrics

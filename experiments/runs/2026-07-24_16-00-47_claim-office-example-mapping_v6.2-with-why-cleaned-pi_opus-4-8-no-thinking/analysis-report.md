@@ -1,6 +1,6 @@
 # Analysis Report: 2026-07-24_16-00-47_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-8-no-thinking
 
-Generated: 2026-07-24T16:18:00+00:00
+Generated: 2026-07-25T13:00:01+02:00
 
 ## Configuration
 
@@ -30,22 +30,37 @@ Generated: 2026-07-24T16:18:00+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-07-24_16-00-47_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-8-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-24_16-00-47_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-8-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-07-24_16-00-47_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-8-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-07-24_16-00-47_claim-office-example-mapping_v6.2-with-why-cleaned-pi_opus-4-8-no-thinking
 
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
 Error: Unknown item type: broomstick
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
 Error: Damage to uninsured item: amulet
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
 Error: Damage to uninsured item: sword
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
 Error: Negative damage amount: -200
- ✓ src/claim-office.spec.ts  (38 tests) 1455ms
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+ ✓ src/claim-office.spec.ts  (38 tests) 1530ms
 
  Test Files  1 passed (1)
       Tests  38 passed (38)
-   Start at  16:18:01
-   Duration  1.62s (transform 40ms, setup 0ms, collect 35ms, tests 1.46s, environment 0ms, prepare 47ms)
+   Start at  13:00:02
+   Duration  1.86s (transform 55ms, setup 0ms, collect 33ms, tests 1.53s, environment 0ms, prepare 121ms)
 ```
 
 ## Coverage
@@ -100,7 +115,7 @@ Error: Negative damage amount: -200
 
 | Metric | Value |
 |--------|-------|
-| Total Tokens | 717591 |
+| Total Tokens | 8774145 |
 | Context Utilization | 0% |
 
 ### TDD Cycle Metrics
