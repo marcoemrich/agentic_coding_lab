@@ -6,6 +6,7 @@ factors:
     - v6.2-with-why-cleaned
     - v6.2-with-why-cleaned-oc
     - v6.2-with-why-cleaned-pi
+    - v6.2.1-phase-continuation-cursor   # cursor-Harness; v6.2.1 ≈ v6.2 (nur continuation-Fix, outcome-neutral)
   kata_base:
     - claim-office
     - game-of-life
@@ -14,6 +15,7 @@ controls:
     any:
       - opus-4-8-requesty   # CC + OC: Route vertex/claude-opus-4-8@eu, kanonisch für neue Fill-Runs
       - opus-4-8            # pi: gleiches Modell, pi-Label ohne -requesty-Suffix (models.json-Route)
+      - opus-cursor         # cursor: claude-opus-4-8-medium (gleiches Modell, cursor-Route, MEDIUM effort — Caveat)
   prompt: example-mapping
 outcomes:
   # primär: Korrektheit (innen + außen)
@@ -81,6 +83,24 @@ Eintrag `opus-4-8-requesty` ist kanonisch für neue Fill-Runs (CC/OC); pi-Fill n
 
 Thinking ist deaktiviert (no-thinking-Arme), konsistent mit der alten RQ.
 
+### Cursor als 4. Harness (später ergänzt)
+
+`v6.2.1-phase-continuation-cursor` + `opus-cursor` bringt cursor-cli als vierten Arm
+neben CC/OC/pi. Eigener Routing-Kanal: `cursor-agent` über die Cursor-API
+(`CURSOR_API_KEY`), unabhängig von Requesty und der nativen Anthropic-Subscription.
+Das `opus-cursor`-Label ist Teil des `any:`-Modell-Matches (dritter Eintrag) und
+bezeichnet `claude-opus-4-8-medium`.
+
+**Zwei bindende Caveats für jeden cursor-Vergleich:**
+1. **Effort-Confound.** cursor-opus läuft auf **medium effort** (`claude-opus-4-8-medium`);
+   die drei anderen Arme fahren plain `opus-4-8` (default effort). Das ist ein echter
+   Modell-Confound — ein beobachteter cursor-Unterschied kann Effort- statt Harness-Effekt
+   sein. Cursor kodiert Effort nur im Modellnamen; ein exakt-vergleichbarer default-effort-Arm
+   existiert (noch) nicht.
+2. **Workflow-Version.** cursor läuft auf `v6.2.1-phase-continuation-cursor`, die anderen auf
+   `v6.2-with-why-cleaned{,-oc,-pi}`. v6.2.1 unterscheidet sich von v6.2 nur durch den
+   outcome-neutralen continuation-Fix und wird darum als äquivalenter Harness-Arm geführt.
+
 ## Kostenvergleich
 
 Kernfrage dieser RQ: **Welcher Harness ist bei gleichem Modell und Workflow am
@@ -120,6 +140,7 @@ Vergleich zwingend als Caveat mitführen:
 | CC | **Schätzung** Token×Preis via `compute-cost.py`. Die Claude-Code-CLI verwirft das `cost`-Feld aus dem Requesty-Messages-Response beim Schreiben von `transcript.jsonl` (nur Anthropic-Standard-Token-Felder bleiben, `usage.cost` fehlt) — live an einem opus-4-8-requesty-Run verifiziert (`cost_usd=null`, cache_read=4.16M). Der Parser-Hook in `analyze_transcript.py` bleibt, greift aber nur, falls eine künftige CLI-Version `cost` durchreicht. | ja |
 | OC | **inline** aus Requesty-Messages (OC-Parser `info.cost`) → `transcript-metrics.json.cost_usd`, **falls** OpenCode das Feld füllt (nach Batch-Ende zu verifizieren); sonst Fallback auf Schätzung | ja |
 | pi | **Schätzung** Token×Preis via `compute-cost.py` (Requesty-`openai-completions`-Pfad liefert `cost=0`) | ja (route-abhängig, opus: ja) |
+| cursor | **Schätzung** Token×Preis via `compute-cost.py`. cursor-agent liefert `cost_usd=null` (keine Inline-Kosten im stream-json); Modell `claude-opus-4-8-medium` nativ → native Listpreise ($5/$25), nicht der Requesty-Tarif. | ja (nativ) |
 
 Faktenlage nach dem ersten Cross-Harness-Batch (2026-07-25): **CC bekommt entgegen der
 ursprünglichen Annahme KEINE Inline-Kosten** — die CLI ist die Engstelle, nicht der Parser
