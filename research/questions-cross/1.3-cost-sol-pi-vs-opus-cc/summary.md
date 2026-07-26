@@ -1,6 +1,6 @@
 # RQ-cost-sol-pi-vs-opus-cc — Aggregation
 
-_Wie viel günstiger ist das GPT-Modell gpt-5-6-sol auf dem pi-Harness gegenüber opus-4-8 auf Claude Code — bei gleichem Prompt-Stil und outcome-äquivalentem TDD-Workflow, über beide Katas?_
+_How much cheaper is the GPT model gpt-5-6-sol on the pi harness compared to opus-4-8 on Claude Code — at the same prompt style and an outcome-equivalent TDD workflow, across both katas?_
 
 Generated: 2026-07-25T23:13:37Z
 

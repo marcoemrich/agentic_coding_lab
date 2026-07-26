@@ -1,6 +1,6 @@
 # RQ-model-quality-cc-vs-pi — Aggregation
 
-_Unterscheidet sich das Code-Qualitäts-Profil von Opus (opus-4-8) zwischen dem Claude-Code- und dem pi-Harness, je mit und ohne Thinking, bei konstanter Workflow-Generation (v6.2)?_
+_Does the code-quality profile of Opus (opus-4-8) differ between the Claude Code and the pi harness, each with and without thinking, at a constant workflow generation (v6.2)?_
 
 Generated: 2026-07-26T10:34:56Z
 

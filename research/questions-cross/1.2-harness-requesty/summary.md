@@ -1,6 +1,6 @@
 # RQ-harness-requesty — Aggregation
 
-_Wie wirkt sich der Harness-Wechsel (Claude Code vs OpenCode vs pi) auf Korrektheit, Code-Qualität, TDD-Disziplin und Kosten aus, wenn Modell (opus-4-8 über Requesty), Workflow-Intention und Prompt-Stil konstant gehalten werden?_
+_How does switching harness (Claude Code vs OpenCode vs pi) affect correctness, code quality, TDD discipline and cost when model (opus-4-8 via Requesty), workflow intention and prompt style are held constant?_
 
 Generated: 2026-07-26T15:30:31Z
 

@@ -1,6 +1,6 @@
 # RQ-prompt-correctness — Aggregation
 
-_Steigert Example-Mapping die Korrektheit gegenüber Prose und User-Story — und ist der Effekt modellabhängig?_
+_Does example mapping increase correctness compared to prose and user story — and is the effect model-dependent?_
 
 Generated: 2026-06-02T06:16:17Z
 

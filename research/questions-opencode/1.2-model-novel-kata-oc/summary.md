@@ -1,6 +1,6 @@
 # RQ-model-novel-oc — Aggregation
 
-_Wie unterscheiden sich fünf via OpenCode-Harness erreichbare Modelle in Korrektheit und TDD-Disziplin auf claim-office-example-mapping mit dem v5.1-testlist-scope-fix-oc-Workflow?_
+_How do five models reachable via the OpenCode harness differ in correctness and TDD discipline on claim-office-example-mapping with the v5.1-testlist-scope-fix-oc workflow?_
 
 Generated: 2026-05-28T08:50:22Z
 

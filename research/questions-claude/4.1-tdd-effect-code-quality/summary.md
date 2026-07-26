@@ -1,6 +1,6 @@
 # RQ-tdd-quality — Aggregation
 
-_Wie wirkt sich die Workflow-Struktur (von oneshot ueber iterativ bis zu striktem TDD mit Subagents) auf die Code-Qualitaet aus, und macht die TDD-Striktheit einen Unterschied?_
+_How does the workflow structure (from oneshot through iterative to strict TDD with subagents) affect code quality, and does TDD strictness make a difference?_
 
 Generated: 2026-05-25T19:26:52Z
 

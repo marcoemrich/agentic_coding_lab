@@ -483,6 +483,8 @@ The four-point comparison locates the quality lever precisely: it arises from th
 
 _Data basis: 11 runs · Coverage: 2/2 cells (100 %) at min_replicates=3._
 
+**Attribution.** The external skill is vendored unmodified from [mattpocock/skills](https://github.com/mattpocock/skills) (path `skills/engineering/tdd/`, MIT-licensed), retrieved **2026-05-26**. The measurements below therefore describe that specific snapshot; upstream has evolved since, so this is not a statement about the current version of that skill.
+
 **External single-skill TDD against the internal multi-command baseline:**
 
 | Axis | v6.2-with-why-cleaned (n=8) | v9-pocock-tdd (n=3) | Winner |

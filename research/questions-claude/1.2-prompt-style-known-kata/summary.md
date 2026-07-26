@@ -1,6 +1,6 @@
 # RQ-prompt-known-kata — Aggregation
 
-_Beeinflusst der Prompt-Stil (prose/user-story/example-mapping) bei einer trainingsbekannten Kata (Game of Life) Korrektheit und Code-Qualität — und ist dieser Effekt modellabhängig?_
+_Does the prompt style (prose/user-story/example-mapping) influence correctness and code quality on a training-known kata (Game of Life) — and is this effect model-dependent?_
 
 Generated: 2026-05-22T16:38:07Z
 

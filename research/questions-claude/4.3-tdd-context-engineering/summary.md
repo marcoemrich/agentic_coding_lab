@@ -1,6 +1,6 @@
 # RQ-context — Aggregation
 
-_Welche Form der Kontext-Strukturierung — isolierte Subagent-Kontexte pro TDD-Phase (v4.1), ein geteilter, akkumulierter Single-Context (v5.1), ein Hybrid mit Skill-basiertem Red/Green im Shared-Context und isoliertem Refactor-Subagent (v6.1) oder ein Hybrid mit isolierten Green- und Refactor-Subagents bei Shared-Context-Test-Liste/Red (v7.1) — fuehrt zu besserer Code-Qualitaet?_
+_Which form of context structuring — isolated subagent contexts per TDD phase (v4.1), a shared, accumulated single context (v5.1), a hybrid with skill-based red/green in the shared context and an isolated refactor subagent (v6.1), or a hybrid with isolated green and refactor subagents alongside a shared-context test list/red (v7.1) — leads to better code quality?_
 
 Generated: 2026-05-23T00:08:16Z
 

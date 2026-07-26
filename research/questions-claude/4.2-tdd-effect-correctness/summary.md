@@ -1,6 +1,6 @@
 # RQ-tdd-correctness — Aggregation
 
-_Unterscheidet sich die externe Korrektheit (verification_pct) zwischen TDD-Workflow-Varianten auf der neuartigen claim-office-Kata?_
+_Does external correctness (verification_pct) differ between TDD workflow variants on the novel claim-office kata?_
 
 Generated: 2026-05-23T00:07:13Z
 

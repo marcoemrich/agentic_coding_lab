@@ -1,6 +1,6 @@
 # RQ-harness — Aggregation
 
-_Wie wirkt sich der Harness-Wechsel (Claude Code vs OpenCode vs pi) auf Korrektheit, Code-Qualität und TDD-Disziplin aus, wenn Modell, Workflow-Intention und Prompt-Stil konstant gehalten werden?_
+_How does switching harness (Claude Code vs OpenCode vs pi) affect correctness, code quality and TDD discipline when model, workflow intention and prompt style are held constant?_
 
 Generated: 2026-05-26T23:02:53Z
 

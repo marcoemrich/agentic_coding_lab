@@ -1,6 +1,6 @@
 # RQ-model-quality-cursor — Aggregation
 
-_Wie unterscheiden sich die via cursor-cli-Harness erreichbaren Modelle (Opus, Composer, Grok) in Code-Qualität und TDD-Disziplin auf game-of-life-example-mapping?_
+_How do the models reachable via the cursor-cli harness (Opus, Composer, Grok) differ in code quality and TDD discipline on game-of-life-example-mapping?_
 
 Generated: 2026-07-26T09:20:43Z
 

@@ -1,6 +1,6 @@
 # RQ-workflow-model — Aggregation
 
-_Hängt die Güte eines TDD-Workflows vom Modell ab — gibt es einen universell besten Workflow, oder tauschen verschiedene Workflows je nach Modell die Plätze?_
+_Does the quality of a TDD workflow depend on the model — is there a universally best workflow, or do different workflows swap places depending on the model?_
 
 Generated: 2026-05-22T16:38:08Z
 

@@ -1,6 +1,6 @@
 # RQ-model-quality-pi — Aggregation
 
-_Wie unterscheiden sich die via pi-Harness (Requesty-Routing) erreichbaren Modelle in Code-Qualität und TDD-Disziplin auf game-of-life-example-mapping mit dem v6.2.1-phase-continuation-pi-Workflow?_
+_How do the models reachable via the pi harness (Requesty routing) differ in code quality and TDD discipline on game-of-life-example-mapping with the v6.2.1-phase-continuation-pi workflow?_
 
 Generated: 2026-07-25T18:24:11Z
 

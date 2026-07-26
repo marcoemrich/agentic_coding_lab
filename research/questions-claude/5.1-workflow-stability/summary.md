@@ -1,6 +1,6 @@
 # RQ-stability — Aggregation
 
-_Wie stabil sind Code-Qualitaet und TDD-Disziplin pro Workflow ueber Replikate, und unter welchen Bedingungen ist n=3 als Replikat-Anzahl ausreichend?_
+_How stable are code quality and TDD discipline per workflow across replicates, and under which conditions is n=3 a sufficient replicate count?_
 
 Generated: 2026-05-22T16:38:10Z
 

@@ -1,6 +1,6 @@
 # RQ-model-novel-pi — Aggregation
 
-_Wie unterscheiden sich die via pi-Harness (Requesty-Routing) erreichbaren Modelle in Korrektheit und TDD-Disziplin auf claim-office-example-mapping mit dem v6.2-with-why-cleaned-pi-Workflow?_
+_How do the models reachable via the pi harness (Requesty routing) differ in correctness and TDD discipline on claim-office-example-mapping with the v6.2-with-why-cleaned-pi workflow?_
 
 Generated: 2026-07-25T18:40:10Z
 
