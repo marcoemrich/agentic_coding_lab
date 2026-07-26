@@ -1,6 +1,6 @@
 ---
 id: RQ-model-quality-cursor
-question: "How do the models reachable via the cursor-cli harness (Opus, Composer, Grok) differ in code quality and TDD discipline on game-of-life-example-mapping?"
+question: "How do the models reachable via the cursor-cli harness (Opus 4.8 medium, Composer 2.5, Grok 4.5 medium) differ in code quality and TDD discipline on game-of-life-example-mapping?"
 factors:
   model:
     # Lab variant IDs → cursor-agent --model (verified via smoke run 2026-07-26,

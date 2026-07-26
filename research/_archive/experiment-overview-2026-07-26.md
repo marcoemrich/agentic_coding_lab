@@ -73,7 +73,7 @@ Four central findings from the 19 research questions — details and evidence in
 
 | Ch. | RQ | Question | Status | Cells | Coverage | n Runs |
 |---|---|---|---|---:|---:|---:|
-| 1.1 | [RQ-model-quality-cursor](https://github.com/marcoemrich/agentic_coding_lab/tree/main/research/questions-cursor-cli/1.1-model-quality-cursor/) | How do the models reachable via the cursor-cli harness (Opus, Composer, Grok) differ in code quality and TDD discipline on game-of-life-example-mapping? | active | 3 | 3/3 (100 %) | 15 |
+| 1.1 | [RQ-model-quality-cursor](https://github.com/marcoemrich/agentic_coding_lab/tree/main/research/questions-cursor-cli/1.1-model-quality-cursor/) | How do the models reachable via the cursor-cli harness (Opus 4.8 medium, Composer 2.5, Grok 4.5 medium) differ in code quality and TDD discipline on game-of-life-example-mapping? | active | 3 | 3/3 (100 %) | 15 |
 
 ### Research Questions (cross-harness)
 
@@ -670,9 +670,11 @@ With 15 cells, the broadest model survey in the lab, and it shows a three-part d
 
 ### Research Questions (Cursor CLI)
 
-#### 1.1 RQ-model-quality-cursor — How do the models reachable via the cursor-cli harness (Opus, Composer, Grok) differ in code quality and TDD discipline on game-of-life-example-mapping?
+#### 1.1 RQ-model-quality-cursor — How do the models reachable via the cursor-cli harness (Opus 4.8 medium, Composer 2.5, Grok 4.5 medium) differ in code quality and TDD discipline on game-of-life-example-mapping?
 
 _Data basis: 15 runs · Coverage: 3/3 cells (100 %) at min_replicates=5._
+
+Model IDs: `opus-cursor` → `claude-opus-4-8-medium`, `composer-cursor` → `composer-2.5`, `grok-cursor` → `cursor-grok-4.5-medium`. The `-medium` suffix is the reasoning-effort level, which cursor-cli encodes in the model ID; Composer 2.5 has no effort axis.
 
 **Code quality and correctness** (all quality metrics lower = better; all three cells 100 % correct, hence no correctness gating):
 
@@ -913,7 +915,7 @@ Container pins: `claude-code@2.1.170`, `opencode-ai@1.15.10`, `@earendil-works/p
 | `research/questions-pi/1.1-model-quality-pi/runs.csv` | RQ-model-quality-pi aggregated run metrics |
 | `research/questions-pi/1.2-model-novel-kata-pi/findings.md` | RQ-model-novel-pi — How do the models reachable via the pi harness (Requesty routing) differ in correctness and TDD discipline on claim-office-example-mapping with the v6.2-with-why-cleaned-pi workflow? |
 | `research/questions-pi/1.2-model-novel-kata-pi/runs.csv` | RQ-model-novel-pi aggregated run metrics |
-| `research/questions-cursor-cli/1.1-model-quality-cursor/findings.md` | RQ-model-quality-cursor — How do the models reachable via the cursor-cli harness (Opus, Composer, Grok) differ in code quality and TDD discipline on game-of-life-example-mapping? |
+| `research/questions-cursor-cli/1.1-model-quality-cursor/findings.md` | RQ-model-quality-cursor — How do the models reachable via the cursor-cli harness (Opus 4.8 medium, Composer 2.5, Grok 4.5 medium) differ in code quality and TDD discipline on game-of-life-example-mapping? |
 | `research/questions-cursor-cli/1.1-model-quality-cursor/runs.csv` | RQ-model-quality-cursor aggregated run metrics |
 | `research/questions-cross/1.1-harness-effect/findings.md` | RQ-harness — How does switching harness (Claude Code vs OpenCode vs pi) affect correctness, code quality and TDD discipline when model, workflow intention and prompt style are held constant? |
 | `research/questions-cross/1.1-harness-effect/runs.csv` | RQ-harness aggregated run metrics |
