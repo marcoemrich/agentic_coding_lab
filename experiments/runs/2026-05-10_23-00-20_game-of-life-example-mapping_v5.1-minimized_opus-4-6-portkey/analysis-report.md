@@ -30,11 +30,11 @@ Generated: 2026-05-11T02:20:17+02:00
 
 ```
 
-> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/agent-1/experiments/runs/2026-05-10_23-00-20_game-of-life-example-mapping_v5.1-minimized_opus-4-6-portkey
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-10_23-00-20_game-of-life-example-mapping_v5.1-minimized_opus-4-6-portkey
 > vitest run
 
 
- RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/agent-1/experiments/runs/2026-05-10_23-00-20_game-of-life-example-mapping_v5.1-minimized_opus-4-6-portkey
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-10_23-00-20_game-of-life-example-mapping_v5.1-minimized_opus-4-6-portkey
 
  ✓ src/game-of-life.spec.ts  (9 tests) 3ms
 

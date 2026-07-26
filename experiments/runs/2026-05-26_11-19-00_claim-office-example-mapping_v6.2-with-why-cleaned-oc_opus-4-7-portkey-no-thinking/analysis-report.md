@@ -30,11 +30,11 @@ Generated: 2026-05-26T16:45:30+02:00
 
 ```
 
-> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/agent-1/experiments/runs/2026-05-26_11-19-00_claim-office-example-mapping_v6.2-with-why-cleaned-oc_opus-4-7-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-26_11-19-00_claim-office-example-mapping_v6.2-with-why-cleaned-oc_opus-4-7-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/agent-1/experiments/runs/2026-05-26_11-19-00_claim-office-example-mapping_v6.2-with-why-cleaned-oc_opus-4-7-portkey-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-26_11-19-00_claim-office-example-mapping_v6.2-with-why-cleaned-oc_opus-4-7-portkey-no-thinking
 
  ✓ src/claim-office.spec.ts  (37 tests) 7ms
 
