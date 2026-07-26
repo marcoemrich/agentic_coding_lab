@@ -1,15 +1,15 @@
 ---
 id: RQ-cost-sol-pi-vs-opus-cc
-question: "Wie viel günstiger ist das GPT-Modell gpt-5-6-sol auf dem pi-Harness gegenüber opus-4-8 auf Claude Code — bei gleichem Prompt-Stil und outcome-äquivalentem TDD-Workflow, über beide Katas?"
+question: "How much cheaper is the GPT model gpt-5-6-sol on the pi harness compared to opus-4-8 on Claude Code — at the same prompt style and an outcome-equivalent TDD workflow, across both katas?"
 factors:
-  # Gekoppelter Modell+Harness-Faktor: die beiden Achsen variieren gemeinsam
-  # als Praxis-Bündel, NICHT als Kreuzprodukt (kein sol@cc / opus@pi).
+  # Coupled model+harness factor: the two axes vary jointly
+  # as a practice bundle, NOT as a cross product (no sol@cc / opus@pi).
   model_x_workflow:
     - model: gpt-5-6-sol
       workflow:
         any:
-          - v6.2-with-why-cleaned-pi        # claim-office-Runs, kanonisch
-          - v6.2.1-phase-continuation-pi    # game-of-life-Runs, outcome-neutraler Fix
+          - v6.2-with-why-cleaned-pi        # claim-office runs, canonical
+          - v6.2.1-phase-continuation-pi    # game-of-life runs, outcome-neutral fix
     - model: opus-4-8-requesty
       workflow: v6.2-with-why-cleaned
   kata_base:
@@ -18,14 +18,14 @@ factors:
 controls:
   prompt: example-mapping
 outcomes:
-  # primär: Kosten
+  # primary: cost
   - cost_usd
   - total_tokens
   - duration_seconds
-  # Korrektheit als Gegengewicht zum Preis
+  # correctness as a counterweight to price
   - verification_pct
   - tests_passing
-  # "billiger heißt nicht sauberer"-Check (Code-Qualität)
+  # "cheaper does not mean cleaner" check (code quality)
   - cognitive_max
   - mccabe_max
   - smell_total
@@ -33,105 +33,105 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-cost-sol-pi-vs-opus-cc: Wie viel günstiger ist Sol@pi gegenüber Opus@Claude-Code?
+# RQ-cost-sol-pi-vs-opus-cc: How much cheaper is Sol@pi compared to Opus@Claude-Code?
 
 ## Motivation
 
-Direkte Praxis-Frage: Wenn man vom Premium-Setup **opus-4-8 auf Claude Code**
-(CC) auf das günstige Setup **gpt-5-6-sol ("Sol") auf pi** wechselt — wie viel
-Kosten spart man real, und was gibt man dafür an Korrektheit/Code-Qualität auf?
-Diese RQ isoliert nicht Modell- oder Harness-Effekt einzeln (das leisten die
-Nachbar-RQs), sondern misst den **kombinierten Umstiegs-Effekt** als ein Bündel.
+A direct practical question: If you switch from the premium setup **opus-4-8 on Claude Code**
+(CC) to the cheap setup **gpt-5-6-sol ("Sol") on pi** — how much
+cost do you really save, and what do you give up in correctness/code quality in return?
+This RQ does not isolate model or harness effect individually (the neighboring RQs do that),
+but measures the **combined switching effect** as one bundle.
 
-## Bündel-Definition + Confound-Caveat (bindend)
+## Bundle definition + confound caveat (binding)
 
-Dies ist ein **bewusst unkontrollierter** Vergleich. Modell UND Harness variieren
-**gemeinsam** in zwei gekoppelten Bündeln:
+This is a **deliberately uncontrolled** comparison. Model AND harness vary
+**jointly** in two coupled bundles:
 
-- **sol-pi** — `gpt-5-6-sol` (GPT, `azure/gpt-5.6-sol@swedencentral`) auf pi
-- **opus-cc** — `opus-4-8` (`vertex/claude-opus-4-8@eu`, Requesty) auf Claude Code
+- **sol-pi** — `gpt-5-6-sol` (GPT, `azure/gpt-5.6-sol@swedencentral`) on pi
+- **opus-cc** — `opus-4-8` (`vertex/claude-opus-4-8@eu`, Requesty) on Claude Code
 
-Beide Achsen sind verschränkt: der gemessene Unterschied ist die **Summe** aus
-Modell-Effekt und Harness-Effekt, nicht einer von beiden allein. Wer die
-isolierten Effekte braucht, findet sie in:
+Both axes are entangled: the measured difference is the **sum** of
+model effect and harness effect, not either one alone. Anyone who needs the
+isolated effects will find them in:
 
-- **`RQ-harness-requesty`** (`../1.2-harness-requesty/`) — Harness-Effekt CC vs
-  OC vs pi bei **konstantem** opus-4-8. Dort ist pi bei gleichem Modell auf
-  claim-office ~56 % günstiger als CC, auf game-of-life ~48 %.
+- **`RQ-harness-requesty`** (`../1.2-harness-requesty/`) — harness effect CC vs
+  OC vs pi at **constant** opus-4-8. There, at the same model, pi is on
+  claim-office ~56 % cheaper than CC, on game-of-life ~48 %.
 - **`RQ-model-quality-pi`** (`../../questions-pi/1.1-model-quality-pi/`) —
-  Modell-Effekt (u.a. sol vs opus) bei **konstantem** pi-Harness auf
-  game-of-life. Dort kostet sol ~$1.09/Run gegen opus ~$2.00/Run.
+  model effect (among others sol vs opus) at **constant** pi harness on
+  game-of-life. There sol costs ~$1.09/run against opus ~$2.00/run.
 
-Diese RQ kombiniert beide Hebel und beantwortet damit die *Umstiegs*-Frage
+This RQ combines both levers and thereby answers the *switching* question
 end-to-end.
 
-### Gekoppelter Faktor `model_x_workflow`
+### Coupled factor `model_x_workflow`
 
-Der Harness ist im Workflow-Suffix kodiert (`-pi` = pi, kein Suffix = CC), das
-Modell in `model`. Beide zusammen definieren ein Bündel. Das Framework paart sie
-über den `model_x_workflow`-Faktor (analog `workflow_x_prompt`), sodass genau die
-2 gewünschten Bündel × 2 Katas = **4 Zellen** entstehen — kein 4er-Kreuzprodukt
-mit den nie gemessenen Geisterzellen sol@cc / opus@pi.
+The harness is encoded in the workflow suffix (`-pi` = pi, no suffix = CC), the
+model in `model`. Both together define a bundle. The framework pairs them
+via the `model_x_workflow` factor (analogous to `workflow_x_prompt`), so that exactly the
+2 desired bundles × 2 katas = **4 cells** arise — no 4-way cross product
+with the never-measured ghost cells sol@cc / opus@pi.
 
-### Workflow-`any:`-Begründung (outcome-neutral)
+### Workflow `any:` rationale (outcome-neutral)
 
-Sol's Runs liegen auf zwei pi-Workflow-Ständen: game-of-life unter
-`v6.2.1-phase-continuation-pi`, claim-office unter `v6.2-with-why-cleaned-pi`.
-Der `.1`-Stand ist ein **outcome-neutraler** Fix des `-pi`-Stands (nur
-Phasenübergangs-Drop → Durchlauf, alle Marker P1–P7 unverändert; Memory
-`pi-workflow-continuation-drop-v621`). Nach der CLAUDE.md-Ausnahme für
-outcome-neutrale Workflow-Bugfixes (`rq-workflow-any-match-tooling`) kollabieren
-beide Stände per `workflow: {any: [...]}` in **eine** sol-pi-Zelle. Opus@CC nutzt
-in beiden Katas denselben `v6.2-with-why-cleaned`.
+Sol's runs sit on two pi workflow versions: game-of-life under
+`v6.2.1-phase-continuation-pi`, claim-office under `v6.2-with-why-cleaned-pi`.
+The `.1` version is an **outcome-neutral** fix of the `-pi` version (only
+phase-transition drop → continuation, all markers P1–P7 unchanged; memory
+`pi-workflow-continuation-drop-v621`). Following the CLAUDE.md exception for
+outcome-neutral workflow bugfixes (`rq-workflow-any-match-tooling`), both
+versions collapse via `workflow: {any: [...]}` into **one** sol-pi cell. Opus@CC uses
+the same `v6.2-with-why-cleaned` in both katas.
 
-## Kosten-Baseline
+## Cost baseline
 
-Beide Bündel routen über Requesty; `cost_usd` ist eine **Listenpreis-Schätzung**
-(Token × Preis via `compute-cost.py`, Stand `research/model-pricing.md`
-2026-07-25), **kein** abgerechneter Betrag — Requesty liefert auf diesen Routen
-keine Inline-Kosten. Cache-Reads gehen zum Rabatt-Tarif ein; Token-Zahlen inkl.
-`cache_read` sind für beide Harnesse korrekt erfasst (pi nach dem
-Main-Thread-Summierungs-Fix, Memory `pi-requesty-cost-and-parser-undercount`).
+Both bundles route via Requesty; `cost_usd` is a **list-price estimate**
+(token × price via `compute-cost.py`, as of `research/model-pricing.md`
+2026-07-25), **not** a billed amount — Requesty delivers no inline cost on these
+routes. Cache reads enter at the discount tariff; token counts incl.
+`cache_read` are correctly captured for both harnesses (pi after the
+main-thread summation fix, memory `pi-requesty-cost-and-parser-undercount`).
 
-**Wichtig:** die beiden Bündel tragen **unterschiedliche Tarife** (sol =
+**Important:** the two bundles carry **different tariffs** (sol =
 `azure/gpt-5.6-sol` $5.00/$30.00/$0.50; opus = `vertex/claude-opus-4-8@eu`
-$5.50/$27.50/$0.55/$6.25 pro 1M). Anders als in `RQ-harness-requesty` (dort ein
-Tarif für alle Zellen) ist der Preisunterschied hier also Tarif **und** Aufwand
-zusammen — was der Umstiegs-Frage entspricht: man zahlt real den jeweiligen
-Modell-Tarif auf dem jeweiligen Harness.
+$5.50/$27.50/$0.55/$6.25 per 1M). Unlike in `RQ-harness-requesty` (one
+tariff for all cells there), the price difference here is thus tariff **and** effort
+combined — which matches the switching question: you really pay the respective
+model tariff on the respective harness.
 
-## Vorhandene Daten
+## Existing data
 
-Alle 4 Zellen sind bereits mit **n=5** vollständig analysierten Runs belegt
-(`cost_usd` + `verification_pct` gefüllt) — **keine** Fill-Runs nötig. Die RQ ist
-eine Re-Selektion vorhandener Daten aus den Batches vom 2026-07-25.
+All 4 cells are already covered with **n=5** fully analyzed runs
+(`cost_usd` + `verification_pct` filled) — **no** fill runs needed. The RQ is
+a re-selection of existing data from the batches of 2026-07-25.
 
-| Bündel | Kata | Modell | Workflow | n |
+| Bundle | Kata | Model | Workflow | n |
 |---|---|---|---|--:|
 | sol-pi | game-of-life | gpt-5-6-sol | v6.2.1-phase-continuation-pi | 5 |
 | sol-pi | claim-office | gpt-5-6-sol | v6.2-with-why-cleaned-pi | 5 |
 | opus-cc | game-of-life | opus-4-8-requesty | v6.2-with-why-cleaned | 5 |
 | opus-cc | claim-office | opus-4-8-requesty | v6.2-with-why-cleaned | 5 |
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Kosten)**: sol-pi ist auf beiden Katas deutlich günstiger als opus-cc;
-  der Spread ist auf claim-office (teure CLI-Kata, hohe Token-Last) größer als
-  auf game-of-life.
-- **H2 (Korrektheit)**: sol-pi hält auf game-of-life volle Korrektheit
-  (`verification_pct`=1.0); auf claim-office liegt es nahe an opus-cc, ohne
-  systematischen Einbruch trotz drastisch niedrigerer Kosten.
-- **H3 (Qualität-Kosten-Tradeoff)**: sol-pi erkauft den Preisvorteil mit höherer
-  Spitzen-Komplexität (`cognitive_max`/`mccabe_max`) — "billiger heißt nicht
-  sauberer".
+- **H1 (cost)**: sol-pi is clearly cheaper than opus-cc on both katas;
+  the spread is larger on claim-office (expensive CLI kata, high token load) than
+  on game-of-life.
+- **H2 (correctness)**: sol-pi maintains full correctness on game-of-life
+  (`verification_pct`=1.0); on claim-office it is close to opus-cc, without
+  a systematic collapse despite drastically lower cost.
+- **H3 (quality-cost tradeoff)**: sol-pi buys the price advantage with a higher
+  Complexity Peak (`cognitive_max`/`mccabe_max`) — "cheaper does not mean
+  cleaner".
 
-## Methodologische Anmerkungen
+## Methodological notes
 
-- **Confound Modell×Harness ist Design, kein Fehler** — bei jeder $-Aussage der
-  gekoppelte Charakter mitführen; isolierte Effekte via Nachbar-RQs oben.
-- **Zwei Tarife** — der Kostenvergleich ist Tarif+Aufwand, nicht Aufwand allein
-  (Unterschied zu `RQ-harness-requesty`).
-- **Spend-Limit-Guard**: vor Aggregation `grep -l 'Reached monthly spend limit'`
-  über die sol-Run-Logs (Memory `pi-requesty-412-spend-limit`).
-- **Nie über Katas mitteln** — string-calculator-Skala ≠ game-of-life-Skala;
-  Aggregation pro Zelle.
+- **The model×harness confound is design, not a defect** — carry the
+  coupled character along with every $ statement; isolated effects via the neighboring RQs above.
+- **Two tariffs** — the cost comparison is tariff+effort, not effort alone
+  (difference from `RQ-harness-requesty`).
+- **Spend limit guard**: before aggregation `grep -l 'Reached monthly spend limit'`
+  over the sol run logs (memory `pi-requesty-412-spend-limit`).
+- **Never average across katas** — string-calculator scale ≠ game-of-life scale;
+  aggregation per cell.

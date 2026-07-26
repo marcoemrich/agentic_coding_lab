@@ -1,11 +1,11 @@
 ---
 id: RQ-model-quality-cc-vs-pi
-question: "Unterscheidet sich das Code-Qualitäts-Profil von Opus (opus-4-8) zwischen dem Claude-Code- und dem pi-Harness, je mit und ohne Thinking, bei konstanter Workflow-Generation (v6.2)?"
+question: "Does the code-quality profile of Opus (opus-4-8) differ between the Claude Code and the pi harness, each with and without thinking, at a constant workflow generation (v6.2)?"
 factors:
-  # model (inkl. thinking-Suffix) + Harness (im workflow kodiert) als gekoppelte
-  # Bundles. 4 Zellen: {CC, pi} × {thinking, no-thinking}. thinking steckt im
-  # Modell-Suffix (-no-thinking); jede Zelle kollabiert per {any:[...]} äquivalente
-  # Schreibweisen (v6.2 ≡ v6.2.1, opus-4-8 ≡ opus-4-8-requesty).
+  # model (incl. thinking suffix) + harness (encoded in the workflow) as coupled
+  # bundles. 4 cells: {CC, pi} × {thinking, no-thinking}. thinking sits in the
+  # model suffix (-no-thinking); every cell collapses equivalent spellings
+  # via {any:[...]} (v6.2 ≡ v6.2.1, opus-4-8 ≡ opus-4-8-requesty).
   model_x_workflow:
     # Claude Code, thinking
     - model: {any: [opus-4-8-requesty, opus-4-8]}
@@ -23,7 +23,7 @@ controls:
   kata_base: game-of-life
   prompt: example-mapping
 outcomes:
-  # primär: Code-Qualität / Komplexität (der cognitive_max-Befund treibt diese RQ)
+  # primary: code quality / complexity (the cognitive_max finding drives this RQ)
   - cognitive_max
   - cognitive_avg
   - mccabe_max
@@ -33,16 +33,16 @@ outcomes:
   - lines_of_code
   - code_mass
   - smell_total
-  # sekundär: Korrektheit
+  # secondary: correctness
   - tests_passing
   - tests_total
   - verification_pct
-  # tertiär: TDD-Disziplin
+  # tertiary: TDD discipline
   - cycle_count
   - refactorings_applied
   - predictions_correct
   - predictions_total
-  # Kontext
+  # context
   - completed_within_budget
   - duration_seconds
   - total_tokens
@@ -51,38 +51,38 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-model-quality-cc-vs-pi: Opus über den Claude-Code- vs. pi-Pfad
+# RQ-model-quality-cc-vs-pi: Opus via the Claude Code vs. pi path
 
 ## Motivation
 
-Der Harness-Effekt auf Opus soll bei **konstant gehaltenem Modell, Thinking und Workflow-Generation** isoliert werden: Claude Code (CC) vs. pi, beide mit `opus-4-8` und `thinking=true`, beide auf der v6.2-Workflow-Generation, Kata game-of-life-example-mapping. Bleibt bei dieser Konstanthaltung ein Code-Qualitäts-Unterschied (`cognitive_max`, `cognitive_avg`), ist er dem Harness-/Routing-Pfad zuzuschreiben — nicht Modell, Effort oder Workflow-Generation.
+The harness effect on Opus is to be isolated with **model, thinking and workflow generation held constant**: Claude Code (CC) vs. pi, both with `opus-4-8` and `thinking=true`, both on the v6.2 workflow generation, kata game-of-life-example-mapping. If a code-quality difference (`cognitive_max`, `cognitive_avg`) remains under this constancy, it is attributable to the harness/routing path — not to model, effort or workflow generation.
 
-Diese RQ ist der thinking-konstante Kern eines ursprünglich breiteren Harness-Vergleichs. cursor und OpenCode sind bewusst ausgeklammert: cursor kann roster-bedingt kein `thinking` (nur `medium`), OpenCode wird hier nicht weiterverfolgt.
+This RQ is the thinking-constant core of an originally broader harness comparison. cursor and OpenCode are deliberately excluded: cursor cannot do `thinking` due to its roster (only `medium`), OpenCode is not pursued further here.
 
-Nur game-of-life-example-mapping: die RQ zielt auf das Code-Qualitäts-/Komplexitäts-Signal, das game-of-life trägt. claim-office (Korrektheit) läge auf einer anderen Achse.
+Only game-of-life-example-mapping: the RQ targets the code-quality/complexity signal that game-of-life carries. claim-office (correctness) would lie on a different axis.
 
-## Konstanthaltung und verbleibende Confounds
+## Constancy and remaining confounds
 
-- **Modell + Effort konstant**: beide Zellen `opus-4-8` mit `thinking=true`. Die 5 CC-Bestandsruns fahren `opus-4-8-requesty`, die pi-Zelle `opus-4-8` — beide realroutet über Requesty/Vertex-EU (Container-global), gleiche Route, unterschiedlich im `cli_model`-Feld protokolliert. Kein Routing-Confound im Modell.
-- **Workflow-Generation konstant, Workflow-Linie NICHT**: CC läuft auf `v6.2-with-why-cleaned`, pi auf `v6.2.1-phase-continuation-pi`. Beide gehören zur v6.2-Generation und werden hier — als explizite Setzung — **workflowmässig identisch behandelt** (inkl. `v6.2.1` ≡ `v6.2` und ihrer Harness-Varianten wie `-pi`). Strukturell sind es zwei Linien derselben Generation (with-why-cleaned nutzt `commands`/`rules`, phase-continuation nutzt `skills`/`extensions`/`AGENTS.md`). Ein verbleibender Unterschied kann daher Harness ODER Workflow-Linie sein — beim Finding als Caveat benennen.
+- **Model + effort constant**: both cells `opus-4-8` with `thinking=true`. The 5 existing CC runs use `opus-4-8-requesty`, the pi cell `opus-4-8` — both actually routed via Requesty/Vertex-EU (container-global), same route, logged differently in the `cli_model` field. No routing confound in the model.
+- **Workflow generation constant, workflow line NOT**: CC runs on `v6.2-with-why-cleaned`, pi on `v6.2.1-phase-continuation-pi`. Both belong to the v6.2 generation and are here — as an explicit stipulation — **treated as identical in workflow terms** (incl. `v6.2.1` ≡ `v6.2` and their harness variants such as `-pi`). Structurally they are two lines of the same generation (with-why-cleaned uses `commands`/`rules`, phase-continuation uses `skills`/`extensions`/`AGENTS.md`). A remaining difference can therefore be harness OR workflow line — name it as a caveat in the finding.
 
-`model` ist deshalb nicht als `controls.model` gepinnt, sondern über den `model_x_workflow`-Paar-Faktor je Zelle an die passende Harness-Workflow-/Modell-Schreibweise gebunden. Jede Zelle nutzt `{any:[...]}`, um äquivalente Schreibweisen (v6.2 ≡ v6.2.1; `opus-4-8` ≡ `opus-4-8-requesty`) zu kollabieren.
+`model` is therefore not pinned as `controls.model`, but bound per cell via the `model_x_workflow` pair factor to the matching harness workflow/model spelling. Every cell uses `{any:[...]}` to collapse equivalent spellings (v6.2 ≡ v6.2.1; `opus-4-8` ≡ `opus-4-8-requesty`).
 
-## Vorhandene Daten (Stand 2026-07-26)
+## Existing data (as of 2026-07-26)
 
-- **CC-Zelle** (`v6.2-with-why-cleaned`, `opus-4-8-requesty`, thinking=true): **5** Runs — alle DONE, Tests grün. Kein Nachziehen nötig.
-- **pi-Zelle** (`v6.2.1-phase-continuation-pi`, `opus-4-8`, thinking=true): **5** Runs (inkl. eines `-2`-Rerun). Kein Nachziehen nötig.
+- **CC cell** (`v6.2-with-why-cleaned`, `opus-4-8-requesty`, thinking=true): **5** runs — all DONE, tests green. No topping up needed.
+- **pi cell** (`v6.2.1-phase-continuation-pi`, `opus-4-8`, thinking=true): **5** runs (incl. one `-2` rerun). No topping up needed.
 
-Beide Zellen aus Bestandsdaten füllbar → kein Fill-Batch. Sollte künftig eine Zelle unter n=5 fallen, deckt der `{any:[...]}`-Match auch die jeweils andere Schreibweise ab.
+Both cells fillable from existing data → no fill batch. Should a cell fall below n=5 in the future, the `{any:[...]}` match also covers the respective other spelling.
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Harness-Isolierung)**: Bei konstantem Modell/Thinking/Workflow-Generation ist der `cognitive_max`/`cognitive_avg`-Unterschied zwischen CC und pi klein (< 1σ) → Harness-neutral. Ein großer Unterschied ist dem Harness-Pfad (oder der Workflow-Linie, s. Caveat) zuzuschreiben.
-- **H2 (Parsimonie)**: Falls sich die Harnesse in `lines_of_code` unterscheiden, zeigt sich ggf. derselbe Parsimonie/Komplexitäts-Tradeoff wie in [RQ-model-quality-cursor](../../questions-cursor-cli/1.1-model-quality-cursor/findings.md) (wenig LoC bei hoher Dichte).
+- **H1 (harness isolation)**: At constant model/thinking/workflow generation the `cognitive_max`/`cognitive_avg` difference between CC and pi is small (< 1σ) → harness-neutral. A large difference is attributable to the harness path (or the workflow line, see caveat).
+- **H2 (parsimony)**: If the harnesses differ in `lines_of_code`, the same parsimony/complexity tradeoff as in [RQ-model-quality-cursor](../../questions-cursor-cli/1.1-model-quality-cursor/findings.md) may show up (few LoC at high density).
 
-## Methodologische Anmerkungen
+## Methodological notes
 
-- **Harness im Workflow kodiert**: analog [RQ-harness](../1.1-harness-effect/README.md) trägt der Workflow den Harness. Eine 1:1-identische Workflow-Datei über Harnesse ist unmöglich (verschiedene Marker-Dirs: `.claude/` vs `.pi/`).
-- **Tarif-Confound**: `cost_usd` ist für die CC-requesty-Zelle vorhanden, ebenso pi (beide Requesty). Vergleichbar, solange beide über Requesty laufen.
-- `n=5` per Zelle folgt Memory [[replicates-n-reliability]].
-- `verification_pct` spiegelt auf game-of-life `tests_passing` (keine externe Suite); Korrektheits-Anker ist `tests_passing`.
+- **Harness encoded in the workflow**: analogous to [RQ-harness](../1.1-harness-effect/README.md), the workflow carries the harness. A 1:1 identical workflow file across harnesses is impossible (different marker dirs: `.claude/` vs `.pi/`).
+- **Tariff confound**: `cost_usd` is present for the CC-requesty cell, likewise pi (both Requesty). Comparable as long as both run via Requesty.
+- `n=5` per cell follows memory [[replicates-n-reliability]].
+- `verification_pct` mirrors `tests_passing` on game-of-life (no external suite); the correctness anchor is `tests_passing`.

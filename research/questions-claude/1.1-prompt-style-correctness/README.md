@@ -1,6 +1,6 @@
 ---
 id: RQ-prompt-correctness
-question: "Steigert Example-Mapping die Korrektheit gegenüber Prose und User-Story — und ist der Effekt modellabhängig?"
+question: "Does example mapping increase correctness compared to prose and user story — and is the effect model-dependent?"
 factors:
   prompt: [prose, example-mapping, user-story]
   model:
@@ -26,56 +26,56 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-prompt-correctness: Prompt-Stil-Effekt auf Korrektheit
+# RQ-prompt-correctness: Prompt Style Effect on Correctness
 
-Steigert Example-Mapping die Korrektheit gegenüber Prose und User-Story
-— und ist der Effekt modellabhängig?
+Does example mapping increase correctness compared to prose and user story
+— and is the effect model-dependent?
 
-## Motivation: Korrektheit vor Code-Qualität
+## Motivation: Correctness Before Code Quality
 
-Code-Qualität (Smells, Komplexität, Funktionslänge) ist wertlos, wenn
-das Programm die falsche Sache tut. Ein eleganter, gut strukturierter
-Algorithmus, der die Domänenregeln falsch umsetzt, hat keinen
-Produktionswert. Deshalb muss die erste Forschungsfrage klären, **unter
-welchen Bedingungen der Agent korrekte Lösungen produziert** — bevor
-wir die Qualität dieser Lösungen untersuchen. Alle nachfolgenden
-Code-Qualitäts-RQs können dann auf Konfigurationen einschränken, von
-denen bekannt ist, dass sie korrekte Ergebnisse liefern.
+Code quality (smells, complexity, function length) is worthless if
+the program does the wrong thing. An elegant, well-structured
+algorithm that implements the domain rules incorrectly has no
+production value. Therefore the first research question must clarify **under
+which conditions the agent produces correct solutions** — before
+we examine the quality of those solutions. All subsequent
+code-quality RQs can then restrict themselves to configurations that
+are known to deliver correct results.
 
-## Prompt-Stile
+## Prompt Styles
 
-| Stil | Beschreibung |
+| Style | Description |
 |---|---|
-| **prose** | Beschreibung der Regeln in Fließtext, keine Beispiele. |
-| **example-mapping** | Regel + 1–3 konkrete Input/Output-Beispiele pro Regel. |
-| **user-story** | "Als X möchte ich Y, damit Z" — Stakeholder-Perspektive ohne Beispiele. |
+| **prose** | Description of the rules in running text, no examples. |
+| **example-mapping** | Rule + 1–3 concrete input/output examples per rule. |
+| **user-story** | "As X I want Y, so that Z" — stakeholder perspective without examples. |
 
-Konfiguration: `experiments/katas/claim-office-{prose, example-mapping, user-story}/prompt.md`.
+Configuration: `experiments/katas/claim-office-{prose, example-mapping, user-story}/prompt.md`.
 
-## Modelle
+## Models
 
-| Modell | Thinking | API-Route |
+| Model | Thinking | API route |
 |---|---|---|
-| opus-4-7 | Adaptive Thinking | Anthropic direct |
-| opus-4-7-no-thinking | Aus | Anthropic direct |
+| opus-4-7 | Adaptive thinking | Anthropic direct |
+| opus-4-7-no-thinking | Off | Anthropic direct |
 | opus-4-6-portkey | Thinking | Portkey Gateway |
-| opus-4-6-portkey-no-thinking | Aus | Portkey Gateway |
-| sonnet-4-6-portkey | Extended Thinking | Portkey Gateway |
-| sonnet-4-6-portkey-no-thinking | Aus | Portkey Gateway |
-| haiku-4-5-portkey | Extended Thinking | Portkey Gateway |
-| haiku-4-5-portkey-no-thinking | Aus | Portkey Gateway |
+| opus-4-6-portkey-no-thinking | Off | Portkey Gateway |
+| sonnet-4-6-portkey | Extended thinking | Portkey Gateway |
+| sonnet-4-6-portkey-no-thinking | Off | Portkey Gateway |
+| haiku-4-5-portkey | Extended thinking | Portkey Gateway |
+| haiku-4-5-portkey-no-thinking | Off | Portkey Gateway |
 
-Opus 4.7 läuft über die Anthropic-direct-API (Rate-Limit). Alle anderen
-Modelle laufen über das Portkey-Gateway (rate-limit-frei) und können in
-einem einzigen Batch erhoben werden.
+Opus 4.7 runs via the Anthropic direct API (rate limit). All other
+models run via the Portkey Gateway (rate-limit-free) and can be collected in
+a single batch.
 
-## Warum v5 als Kontroll-Workflow?
+## Why v5 as the Control Workflow?
 
-Diese RQ misst den Effekt des **Prompt-Stils** auf **Korrektheit**. Der
-Workflow darf daher kein eigenes Rauschen in die Korrektheits-Metrik
-einbringen. Die drei TDD-Workflow-Kandidaten unterscheiden sich auf
-claim-office erheblich (alle Werte: claim-office × example-mapping,
-modellübergreifend, Stand 2026-05-11):
+This RQ measures the effect of **prompt style** on **correctness**. The
+workflow must therefore not introduce noise of its own into the correctness metric.
+The three TDD workflow candidates differ considerably on
+claim-office (all values: claim-office × example-mapping,
+across models, as of 2026-05-11):
 
 | Workflow | mean(verification_pct) | σ | n | Spread |
 |---|---:|---:|---:|---|
@@ -83,149 +83,149 @@ modellübergreifend, Stand 2026-05-11):
 | v3 (basic TDD) | 0.844 | 0.275 | 15 | 0.0–1.0 |
 | v4 (subagents) | 0.340 | 0.419 | 20 | 0.0–1.0 |
 
-### v4 scheidet aus (σ = 0.42)
+### v4 Is Ruled Out (σ = 0.42)
 
-Das Subagent-Lotterie-Problem (State-Rekonstruktion scheitert beim
-Phase-Wechsel) verschluckt den Prompt-Stil-Effekt. Einzelne Runs
-landen bei 0 % obwohl das Modell die Aufgabe beherrscht — ein
-Workflow-Artefakt, kein Prompt-Signal. Beispiel: Opus-4.7 × v4 ×
-example-mapping zeigt Runs mit 0 %, 0.27 %, 0.73 %, 1.00 % — der
-Workflow dominiert die Varianz.
+The subagent lottery problem (state reconstruction fails at the
+phase change) swallows the prompt style effect. Individual runs
+land at 0 % although the model masters the task — a
+workflow artifact, not a prompt signal. Example: Opus-4.7 × v4 ×
+example-mapping shows runs with 0 %, 0.27 %, 0.73 %, 1.00 % — the
+workflow dominates the variance.
 
-### v3 ist suboptimal (σ = 0.28)
+### v3 Is Suboptimal (σ = 0.28)
 
-v3 hat keine expliziten Phasen-Skripte; das Modell entscheidet selbst
-über TDD-Disziplin. Auf schwächeren Modellen zeigt v3 Ausreißer, die
-nicht prompt-bedingt, sondern workflow-bedingt sind (Haiku × v3 ×
-example-mapping: 0.0, 0.4, 0.8). Dieses Rauschen würde den
-Prompt-Effekt konfundieren.
+v3 has no explicit phase scripts; the model decides on its own
+about TDD discipline. On weaker models v3 shows outliers that are
+not prompt-related but workflow-related (Haiku × v3 ×
+example-mapping: 0.0, 0.4, 0.8). This noise would confound the
+prompt effect.
 
-### v5 liefert das sauberste Signal (σ = 0)
+### v5 Delivers the Cleanest Signal (σ = 0)
 
-v5 hält den gesamten Kontext in einer Konversation — kein
-Phase-Handoff, kein State-Verlust. Damit ist jede beobachtete Varianz
-im `verification_pct` auf den Prompt-Stil und/oder das Modell
-zurückführbar, nicht auf den Workflow.
+v5 keeps the entire context in a single conversation — no
+phase handoff, no state loss. This makes every observed variance
+in `verification_pct` attributable to the prompt style and/or the model,
+not to the workflow.
 
-**Einschränkung**: Die v5-Daten stammen bisher nur aus
-Opus-4.7-no-thinking (n=3, alle 100 %). Ob v5 auch auf schwächeren
-Modellen stabil bleibt, wird diese RQ selbst zeigen. Falls Haiku ×
-v5 × example-mapping streut, wäre das ein Modell-Effekt — und genau
-das will diese RQ messen.
+**Limitation**: The v5 data so far comes only from
+Opus-4.7-no-thinking (n=3, all 100 %). Whether v5 also remains stable on weaker
+models is what this RQ itself will show. If Haiku ×
+v5 × example-mapping spreads, that would be a model effect — and exactly
+what this RQ wants to measure.
 
-**Datenlücke Opus 4.7 geschlossen (Stand 2026-06-02)**: opus-4-7
-liegt jetzt in allen drei Stilen × beiden Thinking-Modi mit n=5 vor
-(EM −thinking n=9). Effektgröße belegt: EM − prose = +66 pp
-(+thinking, 0.29 → 0.95) bzw. +76 pp (−thinking, 0.21 → 0.97). Die
-ältere „1.00 (n=3)"-Angabe war ein Kleinstichproben-Artefakt — der
-belastbare EM-Mittelwert liegt bei 0.95–0.97. Einzige verbleibende
-Teil-Lücke: opus-4-6-portkey × example-mapping bei n=4 (ein Run
-wegen Vertex-AI-Routing-Defekt verworfen).
+**Data gap for Opus 4.7 closed (as of 2026-06-02)**: opus-4-7
+is now available in all three styles × both thinking modes with n=5
+(EM −thinking n=9). Effect size demonstrated: EM − prose = +66 pp
+(+thinking, 0.29 → 0.95) and +76 pp (−thinking, 0.21 → 0.97), respectively. The
+older "1.00 (n=3)" figure was a small-sample artifact — the
+robust EM mean lies at 0.95–0.97. The only remaining partial
+gap: opus-4-6-portkey × example-mapping at n=4 (one run
+discarded due to a Vertex AI routing defect).
 
 ## Design
 
 ```
-Faktor 1:  prompt        — 3 Stufen (prose, example-mapping, user-story)
-Faktor 2:  model         — 8 Stufen (4 Modell-Tiers × ±Thinking)
-Kontrolle: workflow      — v5-exact-single-context
-Kontrolle: kata_base     — claim-office
+Factor 1:  prompt        — 3 levels (prose, example-mapping, user-story)
+Factor 2:  model         — 8 levels (4 model tiers × ±thinking)
+Control:   workflow      — v5-exact-single-context
+Control:   kata_base     — claim-office
 
-Zellen:    3 × 8 = 24
-Replikate: n = 5
-Runs:      120 total
+Cells:      3 × 8 = 24
+Replicates: n = 5
+Runs:       120 total
 ```
 
-### Warum claim-office?
+### Why claim-office?
 
-#### Die Kata als Enterprise-Simulation
+#### The Kata as an Enterprise Simulation
 
 claim-office (*Most Honorable Privileged Claims Office for Magical
-Risks and Cursed Items*, MHPCO) ist eine eigens für dieses Lab
-entwickelte Kata, die **nicht** in den Trainingsdaten der Modelle
-vorkommt. Sie modelliert eine an Versicherungen angelehnte Domäne mit
-bürokratisch-spezifischer Business-Logik: Risikokategorien,
-Rabattstaffeln, Erstversicherungs-Bedingungen, kumulative
-Schadensbewertung.
+Risks and Cursed Items*, MHPCO) is a kata developed specifically for this
+lab that does **not** appear in the models' training data.
+It models an insurance-inspired domain with
+bureaucratically specific business logic: risk categories,
+discount tiers, first-insurance conditions, cumulative
+damage assessment.
 
-Die Formulierung ist bewusst **realistisch im Sinne von
-Enterprise-Software**: Die Regeln enthalten die Art von
-Mehrdeutigkeiten, die in realen Versicherungs-, Finanz- oder
-Verwaltungsdomänen typisch sind — Begriffe mit mehreren plausiblen
-Lesarten ("Erstversicherung": erster Vertrag des Kunden oder erster
-Vertrag für ein Risiko?), implizite Berechnungsreihenfolgen und
-Grenzfälle, die der Regeltext nicht explizit adressiert. Diese
-Mehrdeutigkeiten sind nicht als Fallen konstruiert, sondern spiegeln
-wider, wie fachliche Anforderungen in der Praxis formuliert werden:
-unvollständig, kontextabhängig, und mit Wissen beladen, das der
-Autor für selbstverständlich hält.
+The wording is deliberately **realistic in the sense of
+enterprise software**: the rules contain the kind of
+ambiguities that are typical in real insurance, financial or
+administrative domains — terms with several plausible
+readings ("first insurance": the customer's first contract or the first
+contract for a risk?), implicit calculation orders and
+edge cases that the rule text does not explicitly address. These
+ambiguities are not constructed as traps but reflect
+how domain requirements are formulated in practice:
+incomplete, context-dependent, and loaded with knowledge that the
+author takes for granted.
 
-#### Externe Verifikations-Suite
+#### External Verification Suite
 
-Die Korrektheit wird **nicht** durch die vom Agenten geschriebenen
-Unit-Tests gemessen (diese prüfen nur, ob der Agent seine eigene
-Interpretation konsistent umsetzt), sondern durch eine **externe
-Verifikations-Suite** aus 15 Szenarien
-(`experiments/katas/claim-office-verification/`). Die Suite deckt
-drei Stufen ab: 7 isolierte Regelprüfungen, 4 kombinierte Szenarien
-und 4 Story-basierte End-to-End-Fälle. Der Agent sieht diese Suite
-nie — sie läuft nach dem Container-Run auf dem Host.
+Correctness is **not** measured by the unit tests written by the
+agent (these only check whether the agent implements its own
+interpretation consistently), but by an **external
+verification suite** of 15 scenarios
+(`experiments/katas/claim-office-verification/`). The suite covers
+three levels: 7 isolated rule checks, 4 combined scenarios
+and 4 story-based end-to-end cases. The agent never sees this suite
+— it runs on the host after the container run.
 
-`verification_pct` (0.0–1.0) misst den Anteil bestandener Szenarien
-und ist damit ein **objektives Korrektheitsmaß**, unabhängig von der
-Selbsteinschätzung des Agenten.
+`verification_pct` (0.0–1.0) measures the share of passed scenarios
+and is therefore an **objective correctness measure**, independent of the
+agent's self-assessment.
 
-#### Warum nicht game-of-life?
+#### Why Not game-of-life?
 
-game-of-life ist als Mehrdeutigkeits-Aufdecker für Prompt-Stile
-**nicht brauchbar**. Die Spec inkl. Beispiele ist in den Trainingsdaten
-der Modelle — Modelle "kennen" die korrekte Lösung bereits, unabhängig
-davon, ob der Prompt Beispiele mitliefert. Die Stile differenzieren
-auf game-of-life nicht messbar in Korrektheit.
+game-of-life is **not usable** as an ambiguity revealer for prompt styles.
+The spec including examples is in the models' training data
+— models already "know" the correct solution, regardless
+of whether the prompt supplies examples. The styles do not differentiate
+measurably in correctness on game-of-life.
 
-### Warum voller Modell-Mix?
+### Why the Full Model Mix?
 
-Die Kernfrage ist, ob stärkere Modelle den Example-Mapping-Vorteil
-**kompensieren** können — ob also ein Opus mit Prose die gleiche
-Korrektheit erreicht wie ein Haiku mit Example-Mapping. Dafür braucht
-es die volle Modell-Variation. Die Thinking-Dimension klärt zusätzlich,
-ob Reasoning-Kapazität den Prompt-Stil-Effekt abschwächt.
+The core question is whether stronger models can **compensate** for the
+example-mapping advantage — that is, whether an Opus with prose reaches the same
+correctness as a Haiku with example mapping. This requires
+the full model variation. The thinking dimension additionally clarifies
+whether reasoning capacity attenuates the prompt style effect.
 
-## Hypothesen
+## Hypotheses
 
-- **H1**: Example-mapping erhöht `verification_pct` gegenüber
-  prose bei Modellen mit ausreichender Reasoning-Kapazität.
-- **H2**: User-story erhöht `verification_pct` gegenüber prose nur
-  geringfügig — Stakeholder-Perspektive löst keine domänen-internen
-  Mehrdeutigkeiten auf.
-- **H3**: Stärkere Modelle (Opus) erreichen mit prose höhere
-  `verification_pct` als schwächere (Haiku), aber der Abstand zu
-  example-mapping bleibt — Modell-Stärke kompensiert fehlende
-  Beispiele nicht vollständig.
-- **H4**: Thinking-Mode verbessert `verification_pct` unabhängig vom
-  Prompt-Stil, aber der Zugewinn ist kleiner als der
-  Example-Mapping-Effekt.
-- **H5**: Schwächere Modelle (Haiku) erreichen auch mit
-  example-mapping keine volle Korrektheit — die Beispiele
-  entschärfen die Mehrdeutigkeiten nur, wenn das Modell genug
-  Reasoning-Kapazität hat, sie auf neue Eingaben zu generalisieren.
+- **H1**: Example mapping increases `verification_pct` compared to
+  prose on models with sufficient reasoning capacity.
+- **H2**: User story increases `verification_pct` compared to prose only
+  marginally — the stakeholder perspective does not resolve domain-internal
+  ambiguities.
+- **H3**: Stronger models (Opus) reach higher `verification_pct` with prose
+  than weaker ones (Haiku), but the gap to
+  example mapping remains — model strength does not fully compensate for missing
+  examples.
+- **H4**: Thinking mode improves `verification_pct` independently of the
+  prompt style, but the gain is smaller than the
+  example-mapping effect.
+- **H5**: Weaker models (Haiku) do not reach full correctness even with
+  example mapping — the examples only defuse the ambiguities
+  if the model has enough reasoning capacity to generalize
+  them to new inputs.
 
-## Batch-Strategie
+## Batch Strategy
 
-1. **Phase 1** (rate-limit-frei): Opus 4.6 + Sonnet + Haiku via
-   Portkey — 18 Zellen × n=3 = 54 Runs in einem Batch.
-2. **Phase 2** (zeitversetzt): Opus 4.7 via Anthropic direct —
-   6 Zellen × n=3 = 18 Runs (strenges Rate-Limit).
+1. **Phase 1** (rate-limit-free): Opus 4.6 + Sonnet + Haiku via
+   Portkey — 18 cells × n=3 = 54 runs in one batch.
+2. **Phase 2** (time-shifted): Opus 4.7 via Anthropic direct —
+   6 cells × n=3 = 18 runs (strict rate limit).
 
 ## Findings
 
-Siehe [findings.md](findings.md).
+See [findings.md](findings.md).
 
-## Datenquelle
+## Data Source
 
-Alle Runs in `experiments/runs/` mit
+All runs in `experiments/runs/` with
 `workflow=v5-exact-single-context`,
 `kata=claim-office-{prose|example-mapping|user-story}`,
-Modell ∈ {opus-4-7, opus-4-7-no-thinking, opus-4-6-portkey,
+model ∈ {opus-4-7, opus-4-7-no-thinking, opus-4-6-portkey,
 opus-4-6-portkey-no-thinking, sonnet-4-6-portkey,
 sonnet-4-6-portkey-no-thinking, haiku-4-5-portkey,
 haiku-4-5-portkey-no-thinking}.

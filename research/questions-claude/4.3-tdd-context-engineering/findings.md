@@ -1,72 +1,72 @@
 # RQ-context Findings
 
-Kata: `claim-office-example-mapping` (novel). Modell: `opus-4-7-no-thinking` (Portkey ODER Direct, OR-match). 4 Kontext-Architekturen mit derselben Test-Listen-Disziplin: v4.1 (alle 4 Phasen als isolierte Subagents), v5.1 (alle 4 Phasen als Skills im Shared-Context), v6.1 (Red/Green Skill, Refactor isoliert), v7.1 (Test-Liste/Red Skill, Green und Refactor isoliert). n=17 Runs.
+Kata: `claim-office-example-mapping` (novel). Model: `opus-4-7-no-thinking` (Portkey OR direct, OR-match). 4 context architectures with the same test-list discipline: v4.1 (all 4 phases as isolated subagents), v5.1 (all 4 phases as skills in the shared context), v6.1 (red/green skill, refactor isolated), v7.1 (test list/red skill, green and refactor isolated). n=17 runs.
 
-## Übersicht — Code-Qualität, Korrektheit, Kosten
+## Overview — Code Quality, Correctness, Cost
 
-🏆 = bester Wert pro Spalte. Richtungen: `cognitive_max`/`mccabe_max`/`cc_longest_function`/`smell_total`/`code_mass`/`cc_loc`/`duration_seconds`/`total_tokens` kleiner = besser; `verification_pct` höher = besser. Bei Spreads kleiner 1 σ wird 🏆 auf alle nahen Werte verteilt.
+🏆 = best value per column. Directions: `cognitive_max`/`mccabe_max`/`cc_longest_function`/`smell_total`/`code_mass`/`cc_loc`/`duration_seconds`/`total_tokens` lower = better; `verification_pct` higher = better. Where spreads are smaller than 1 σ, 🏆 is distributed across all nearby values.
 
 | Workflow | n | `cognitive_max` | `mccabe_max` | `cc_longest_function` | `smell_total` | `code_mass` | `cc_loc` | `verification_pct` | `duration_seconds` | `total_tokens` |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| v4.1 (alle isoliert) | 5 | 26.8 ± 24.1 | 16.0 ± 9.0 | 40.8 ± 27.1 | 13.2 ± 7.5 | **621.6 ± 65.6** 🏆 | **156.8 ± 38.0** 🏆 | 0.96 ± 0.09 | 3 229 ± 920 | **14.10 M ± 2.99** 🏆 |
-| v5.1 (alle geteilt) | 6 | 14.8 ± 4.2 | 10.2 ± 2.6 | 32.7 ± 10.2 | 6.8 ± 7.6 | 692.7 ± 78.8 | 167.2 ± 27.9 | **1.00 ± 0** 🏆 | **641 ± 122** 🏆 | 18.73 M ± 5.35 |
-| v6.1 (Refactor isoliert) | 3 | **4.3 ± 1.5** 🏆 | **5.0 ± 1.7** 🏆 | **16.7 ± 6.7** 🏆 | **1.3 ± 1.2** 🏆 | 920.7 ± 55.2 | 184.3 ± 4.9 | **1.00 ± 0** 🏆 | 1 424 ± 781 | 30.16 M ± 18.56 |
-| v7.1 (Green + Refactor isoliert) | 3 | **5.0 ± 1.0** 🏆 | **4.67 ± 0.58** 🏆 | **19.3 ± 2.5** 🏆 | **2.3 ± 2.3** 🏆 | 801 ± 3.6 | 187.3 ± 29.2 | 0.98 ± 0.04 | 1 970 ± 715 | 26.11 M ± 6.20 |
+| v4.1 (all isolated) | 5 | 26.8 ± 24.1 | 16.0 ± 9.0 | 40.8 ± 27.1 | 13.2 ± 7.5 | **621.6 ± 65.6** 🏆 | **156.8 ± 38.0** 🏆 | 0.96 ± 0.09 | 3 229 ± 920 | **14.10 M ± 2.99** 🏆 |
+| v5.1 (all shared) | 6 | 14.8 ± 4.2 | 10.2 ± 2.6 | 32.7 ± 10.2 | 6.8 ± 7.6 | 692.7 ± 78.8 | 167.2 ± 27.9 | **1.00 ± 0** 🏆 | **641 ± 122** 🏆 | 18.73 M ± 5.35 |
+| v6.1 (refactor isolated) | 3 | **4.3 ± 1.5** 🏆 | **5.0 ± 1.7** 🏆 | **16.7 ± 6.7** 🏆 | **1.3 ± 1.2** 🏆 | 920.7 ± 55.2 | 184.3 ± 4.9 | **1.00 ± 0** 🏆 | 1 424 ± 781 | 30.16 M ± 18.56 |
+| v7.1 (green + refactor isolated) | 3 | **5.0 ± 1.0** 🏆 | **4.67 ± 0.58** 🏆 | **19.3 ± 2.5** 🏆 | **2.3 ± 2.3** 🏆 | 801 ± 3.6 | 187.3 ± 29.2 | 0.98 ± 0.04 | 1 970 ± 715 | 26.11 M ± 6.20 |
 
-`tests_passing` und `completed_within_budget` sind in allen vier Zellen 100 %. `mutation_score` wurde für diese RQ nicht erhoben.
+`tests_passing` and `completed_within_budget` are 100 % in all four cells. `mutation_score` was not collected for this RQ.
 
-## F-context.1 — Refactor-Subagent liefert den Komplexitäts-Vorteil; zusätzliche Green-Isolation ändert das Bild nicht
+## F-context.1 — The Refactor Subagent Delivers the Complexity Advantage; Additional Green Isolation Does Not Change the Picture
 
-v6.1 und v7.1 — beide mit isoliertem Refactor-Subagent, v7.1 zusätzlich mit isoliertem Green-Subagent — erreichen praktisch identische Komplexitäts-Spitzen: `cognitive_max` 4.3 / 5.0, `mccabe_max` 5.0 / 4.67, `cc_longest_function` 16.7 / 19.3, `smell_total` 1.3 / 2.3. Alle paarweisen Differenzen liegen innerhalb ihrer σ. v5.1 (alle Phasen geteilt) liegt deutlich darüber (cognitive_max 14.8, mccabe_max 10.2), v4.1 (alle isoliert) am schlechtesten und mit der größten Streuung (σ cognitive_max=24.1).
+v6.1 and v7.1 — both with an isolated refactor subagent, v7.1 additionally with an isolated green subagent — reach practically identical complexity peaks: `cognitive_max` 4.3 / 5.0, `mccabe_max` 5.0 / 4.67, `cc_longest_function` 16.7 / 19.3, `smell_total` 1.3 / 2.3. All pairwise differences lie within their σ. v5.1 (all phases shared) is clearly above (cognitive_max 14.8, mccabe_max 10.2), v4.1 (all isolated) is the worst and has the largest spread (σ cognitive_max=24.1).
 
-Die plausible Lesart wird durch v7.1 geschärft: der Architektur-Vorteil entsteht ausschließlich aus dem **isolierten Refactor-Subagent**, dem gemeinsamen Element von v6.1 und v7.1. Das zusätzliche Isolieren der Green-Phase (v7.1) bringt keinen zusätzlichen Komplexitäts-Hub. Wenn alle vier Phasen isoliert laufen (v4.1), schadet das auf claim-office — die isolierten Subagents müssen die Gesamt-Architektur ohne Kontext immer wieder neu konstruieren und akkumulieren strukturelle Komplexität über die 44.6 Cycles (F-context.4), die keine einzelne Phase als Ganzes sieht.
+The plausible reading is sharpened by v7.1: the architecture advantage arises exclusively from the **isolated refactor subagent**, the shared element of v6.1 and v7.1. Additionally isolating the green phase (v7.1) brings no further complexity lift. When all four phases run isolated (v4.1), this hurts on claim-office — the isolated subagents have to reconstruct the overall architecture again and again without context and accumulate structural complexity over the 44.6 cycles (F-context.4) that no single phase sees as a whole.
 
-**H1 bestätigt** in der Hybrid-Lesart (Refactor-Isolation senkt Komplexität), aber **die paarweise Hypothese „v4.1 < v5.1 auf Komplexität" wird falsifiziert** — v4.1 liegt auf claim-office sogar schlechter als v5.1 in allen vier Spitzen-Metriken.
+**H1 confirmed** in the hybrid reading (refactor isolation lowers complexity), but **the pairwise hypothesis "v4.1 < v5.1 on complexity" is falsified** — on claim-office, v4.1 is even worse than v5.1 in all four peak metrics.
 
-**H4 (Stabilität)**: v7.1 ist die stabilste Zelle (σ code_mass=3.6, σ mccabe_max=0.58, σ cognitive_max=1.0). v6.1 zweitstabilster auf den Komplexitäts-Spitzen, v4.1 mit Abstand am unstabilsten. Die ursprüngliche Erwartung (v4.1 am stabilsten) wird klar **falsifiziert**.
+**H4 (stability)**: v7.1 is the most stable cell (σ code_mass=3.6, σ mccabe_max=0.58, σ cognitive_max=1.0). v6.1 is the second most stable on the complexity peaks, v4.1 by far the least stable. The original expectation (v4.1 most stable) is clearly **falsified**.
 
-## F-context.2 — Refactor-Subagent verteilt Funktionalität auf mehr Bausteine; Green-Isolation bremst den Mehr-Code-Effekt
+## F-context.2 — The Refactor Subagent Distributes Functionality Across More Building Blocks; Green Isolation Slows the More-Code Effect
 
-v4.1 schreibt am wenigsten Code (621.6 LOC), v6.1 am meisten (920.7 LOC, +48 % gegenüber v4.1). v7.1 liegt mit 801 LOC zwischen v5.1 (692.7) und v6.1 — der isolierte Green-Subagent hält den Code-Umfang gegenüber v6.1 niedriger, vermutlich weil ihm die akkumulierte Test-Listen-Diskussion fehlt, die in v6.1 zusätzliche Helper-Strukturen motiviert.
+v4.1 writes the least code (621.6 LOC), v6.1 the most (920.7 LOC, +48 % compared to v4.1). At 801 LOC, v7.1 lies between v5.1 (692.7) and v6.1 — the isolated green subagent keeps the code volume lower than v6.1, presumably because it lacks the accumulated test-list discussion that in v6.1 motivates additional helper structures.
 
-Trotz der Code-Mengen-Unterschiede haben v6.1 und v7.1 ähnlich wenige Smells (1.3 / 2.3) — die strukturelle Sauberkeit kommt aus dem Refactor-Subagent, nicht aus dem Code-Volumen. v4.1 mit 13.2 Smells in 621.6 LOC ist dicht und schwer-strukturiert; v6.1 mit 1.3 Smells in 920.7 LOC ist verteilt und sauber.
+Despite the differences in code quantity, v6.1 and v7.1 have similarly few smells (1.3 / 2.3) — the structural cleanliness comes from the refactor subagent, not from the code volume. v4.1 with 13.2 smells in 621.6 LOC is dense and heavily structured; v6.1 with 1.3 smells in 920.7 LOC is distributed and clean.
 
-Der Befund ist mit der Refactor-Subagent-Mechanik konsistent: ein frischer Refactor-Kontext, der die akkumulierte Implementation als Ganzes sieht (Code-Stand plus optional Red/Green-History bei v6.1), kann gezielt extrahieren und aufteilen. v4.1's isolierter Refactor sieht nur den jeweils aktuellen Code-Stand ohne den Entstehungs-Kontext und neigt zu lokalem Aufräumen statt strukturellem Umbau.
+The finding is consistent with the refactor-subagent mechanic: a fresh refactor context that sees the accumulated implementation as a whole (the code state plus optionally the red/green history in v6.1) can extract and split in a targeted way. v4.1's isolated refactor sees only the respective current code state without the context of how it came about and tends toward local cleanup instead of structural rebuilding.
 
-## F-context.3 — Korrektheit unterscheidet die Architekturen nicht
+## F-context.3 — Correctness Does Not Distinguish the Architectures
 
-v5.1 und v6.1 erreichen 1.00 verification_pct (15/15 in jedem Run, σ=0). v4.1 erreicht 0.96 mit einem Ausreißer bei 0.8 (12/15), v7.1 erreicht 0.98 mit einem Run bei 14/15. Alle vier Architekturen sind hoch-korrekt; auffällig ist, dass die zwei Architekturen mit Green als isoliertem Schritt (v4.1, v7.1) je einen Ausreißer tragen, die zwei Architekturen mit Green im Shared-Context (v5.1, v6.1) perfekt sind.
+v5.1 and v6.1 reach 1.00 verification_pct (15/15 in every run, σ=0). v4.1 reaches 0.96 with one outlier at 0.8 (12/15), v7.1 reaches 0.98 with one run at 14/15. All four architectures are highly correct; it is notable that the two architectures with green as an isolated step (v4.1, v7.1) each carry one outlier, while the two architectures with green in the shared context (v5.1, v6.1) are perfect.
 
-**H2 bestätigt**: der Kontext-Architektur-Effekt zeigt sich in Code-Qualität und Kosten, nicht substantiell in der Aussen-Korrektheit. Der Test-List-Scope-Fix dominiert über die Architektur.
+**H2 confirmed**: the context-architecture effect shows up in code quality and cost, not substantially in external correctness. The test-list-scope-fix dominates over the architecture.
 
-## F-context.4 — Vier sehr unterschiedliche Kosten-Profile
+## F-context.4 — Four Very Different Cost Profiles
 
-| Metrik (kleiner = besser, außer wo markiert) | v4.1 | v5.1 | v6.1 | v7.1 |
+| Metric (lower = better, except where marked) | v4.1 | v5.1 | v6.1 | v7.1 |
 |---|---:|---:|---:|---:|
 | `duration_seconds` (mean) | 3 229 (~54 min) | **641 (~11 min)** 🏆 | 1 424 (~24 min) | 1 970 (~33 min) |
 | `total_tokens` (mean)     | **14.10 M** 🏆 | 18.73 M | 30.16 M | 26.11 M |
 | `cycle_count` (mean)      | 44.6 | 5.5 | 24.7 | 18.3 |
 | `refactorings_applied`    | 6.8 | 2.2 | 10.7 | 14.0 |
 
-v5.1 ist 5× schneller als v4.1 und 3× schneller als v7.1 — der Single-Context ohne Subagent-Spawns dominiert die Wallclock-Wertung. v4.1 verbraucht die wenigsten Tokens — isolierte Subagent-Kontexte wachsen linear, der v5.1-Single-Context kumuliert, und v6.1 kombiniert kumulierten Single-Context mit zusätzlichem Refactor-Subagent → höchster Token-Verbrauch. v7.1 (zwei Subagent-Phasen) ist überraschend **günstiger** als v6.1 (eine Subagent-Phase) — vermutlich, weil der Green-Subagent ohne kumulierten Single-Context kürzer und fokussierter arbeitet als Green-im-Shared-Context und damit den späteren Refactor entlastet.
+v5.1 is 5× faster than v4.1 and 3× faster than v7.1 — the single context without subagent spawns dominates the wallclock rating. v4.1 consumes the fewest tokens — isolated subagent contexts grow linearly, the v5.1 single context accumulates, and v6.1 combines an accumulated single context with an additional refactor subagent → the highest token consumption. v7.1 (two subagent phases) is surprisingly **cheaper** than v6.1 (one subagent phase) — presumably because the green subagent, without an accumulated single context, works more briefly and in a more focused way than green-in-the-shared-context and thereby relieves the later refactor.
 
-Die `cycle_count`-Spreizung zeigt vier qualitativ verschiedene Arbeitsmodi: v5.1 mit nur 5.5 Cycles und 1.7 sofort-grünen Tests arbeitet in groben Schritten; v4.1 mit 44.6 Cycles und 22.2 sofort-grünen Tests zerlegt sehr fein und produziert oft Pre-Implementation in Red; v6.1 (24.7 Cycles) und v7.1 (18.3 Cycles) liegen dazwischen, mit der höchsten Refactor-Rate aller Workflows (v7.1 14.0/Run, v6.1 10.7/Run vs. v4.1 6.8 und v5.1 2.2) — die isolierten Refactor-Subagents „arbeiten" sichtbar mehr.
+The `cycle_count` spread shows four qualitatively different working modes: v5.1 with only 5.5 cycles and 1.7 immediately green tests works in coarse steps; v4.1 with 44.6 cycles and 22.2 immediately green tests decomposes very finely and often produces pre-implementation in red; v6.1 (24.7 cycles) and v7.1 (18.3 cycles) lie in between, with the highest refactor rate of all workflows (v7.1 14.0/run, v6.1 10.7/run vs. v4.1 6.8 and v5.1 2.2) — the isolated refactor subagents visibly "work" more.
 
-**H3 (v4.1 < v5.1 < v6.1 Tokens) für die ersten drei Zellen bestätigt**, aber **H3 für v7.1 falsifiziert**: v7.1 (26.1 M) liegt unter v6.1 (30.2 M), nicht darüber.
+**H3 (v4.1 < v5.1 < v6.1 tokens) confirmed for the first three cells**, but **H3 falsified for v7.1**: v7.1 (26.1 M) lies below v6.1 (30.2 M), not above.
 
-**H5 (Wallclock-Ordnung v5.1 < Hybride < v4.1) bestätigt** — v7.1 (1 970s) zwischen v6.1 (1 424s) und v4.1 (3 229s), näher an v6.1 als an v4.1.
+**H5 (wallclock ordering v5.1 < hybrids < v4.1) confirmed** — v7.1 (1 970s) between v6.1 (1 424s) and v4.1 (3 229s), closer to v6.1 than to v4.1.
 
-## F-context.5 — Zwei Hybrid-Positionen mit ähnlicher Code-Qualität, unterschiedlichem Kosten-Profil
+## F-context.5 — Two Hybrid Positions with Similar Code Quality, Different Cost Profiles
 
-Auf der Code-Qualitäts-Dimension liegen v6.1 und v7.1 praktisch gleichauf (alle 4 Spitzen-Metriken innerhalb 1 σ; je 4 🏆 in der Übersicht). v6.1 ist minimal sauberer in `smell_total` und `cognitive_max`; v7.1 hat dafür **niedrigeren Code-Umfang** (801 vs. 921 LOC), **niedrigeren Token-Verbrauch** (26 vs. 30 M) und die **kleinste Streuung** über alle Metriken. Wallclock umgekehrt: v6.1 ~24 min, v7.1 ~33 min.
+On the code-quality dimension, v6.1 and v7.1 are practically level (all 4 peak metrics within 1 σ; 4 🏆 each in the overview). v6.1 is marginally cleaner on `smell_total` and `cognitive_max`; v7.1 in return has a **lower code volume** (801 vs. 921 LOC), **lower token consumption** (26 vs. 30 M) and the **smallest spread** across all metrics. Wallclock the other way around: v6.1 ~24 min, v7.1 ~33 min.
 
-Es gibt keinen Pareto-Sieger: v4.1 dominiert auf Code-Kompaktheit und Token-Effizienz, v5.1 auf Wallclock und (knapp) Korrektheit, v6.1/v7.1 auf Code-Qualitäts-Spitzen. Für ein Anwendungsprofil mit Fokus auf strukturelle Code-Qualität bei moderaten Kosten ist v7.1 die effizientere Hybrid-Variante; v6.1 die minimal sauberere Wahl mit höheren Tokens. v4.1 hat unter dieser claim-office-Evidenz keinen klaren Use-Case — niedrigster Code-Umfang, aber alle Qualitäts-Spitzen die schlechtesten und die höchste Streuung.
+There is no Pareto winner: v4.1 dominates on code compactness and token efficiency, v5.1 on wallclock and (narrowly) correctness, v6.1/v7.1 on the code-quality peaks. For an application profile focused on structural code quality at moderate cost, v7.1 is the more efficient hybrid variant; v6.1 the marginally cleaner choice at higher tokens. Under this claim-office evidence, v4.1 has no clear use case — the lowest code volume, but the worst values on all quality peaks and the highest spread.
 
-## Cross-RQ-Bezug
+## Cross-RQ Reference
 
-Die Befunde dieser RQ präzisieren den Context-Engineering-Effekt auf claim-office gegenüber dem Befund auf game-of-life in [RQ-tdd-quality F-tdd-quality.3](../4.1-tdd-effect-code-quality/findings.md):
+The findings of this RQ refine the context-engineering effect on claim-office relative to the finding on game-of-life in [RQ-tdd-quality F-tdd-quality.3](../4.1-tdd-effect-code-quality/findings.md):
 
-- Auf game-of-life (RQ-tdd-quality, 2-Punkt-Vergleich): v4.1 hatte die niedrigsten Komplexitäts-Spitzen, v5.1 verlor diesen Vorteil. v6.1 dort ebenfalls niedrige Spitzen (cognitive_max 7.7).
-- Auf claim-office (diese RQ, 4-Punkt-Vergleich): v6.1 und v7.1 dominieren gleichauf, v5.1 zweitbester, v4.1 verliert deutlich.
+- On game-of-life (RQ-tdd-quality, 2-point comparison): v4.1 had the lowest complexity peaks, v5.1 lost this advantage. v6.1 also had low peaks there (cognitive_max 7.7).
+- On claim-office (this RQ, 4-point comparison): v6.1 and v7.1 dominate on a par, v5.1 second best, v4.1 loses clearly.
 
-Auf der einfacheren, trainingsbekannten Kata genügt die vollständige Phasen-Isolation; auf der komplexeren, novel Kata wird die Phasen-Isolation kontraproduktiv und nur die Refactor-Isolation trägt zur Strukturqualität bei. Cross-Kata-Replikation auf einer dritten Kata (z.B. mars-rover) bleibt offen, um zwischen den beiden Lesarten ("Kata-Komplexität" vs. "Kata-Vertrautheit") zu trennen.
+On the simpler, training-known kata, full phase isolation suffices; on the more complex, novel kata, phase isolation becomes counterproductive and only refactor isolation contributes to structural quality. Cross-kata replication on a third kata (e.g. mars-rover) remains open in order to separate the two readings ("kata complexity" vs. "kata familiarity").

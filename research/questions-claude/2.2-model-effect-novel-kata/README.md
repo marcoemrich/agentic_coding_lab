@@ -1,6 +1,6 @@
 ---
 id: RQ-model-novel
-question: "Wie unterscheiden sich Fable 5, Opus 4.8, Opus 4.7 und Opus 4.6 (jeweils no-thinking) in Korrektheit und Code-Qualität auf einer novel Kata mit Mehrdeutigkeiten, die stärker differenziert als die trainingsbekannte game-of-life?"
+question: "How do Fable 5, Opus 4.8, Opus 4.7 and Opus 4.6 (each no-thinking) differ in correctness and code quality on a novel kata with ambiguities that differentiates more strongly than the training-known game-of-life?"
 factors:
   model:
     - fable-5-no-thinking
@@ -13,17 +13,17 @@ controls:
   kata_base: claim-office
   prompt: example-mapping
 outcomes:
-  # primär: Korrektheit-außen
+  # primary: correctness (external)
   - verification_pct
   - verification_passed
-  # sekundär: Code-Qualität
+  # secondary: code quality
   - code_mass
   - cognitive_max
   - mccabe_max
   - cc_longest_function
   - lines_of_code
   - smell_total
-  # Kontext
+  # context
   - tests_passing
   - tests_total
   - completed_within_budget
@@ -33,30 +33,30 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-model-novel: Model-Effekt auf novel Kata (claim-office)
+# RQ-model-novel: Model Effect on a Novel Kata (claim-office)
 
 ## Motivation
 
-RQ-model-quality vergleicht 6 Modelle auf `game-of-life-example-mapping` (trainingsbekannt). Ergebnis: alle Modelle erreichen 100 % `verification_pct` (außer sonnet-4-6-no-thinking mit 0.73). Die Kata differenziert auf Code-Qualität, aber nicht auf Korrektheit — alle "bestehen".
+RQ-model-quality compares 6 models on `game-of-life-example-mapping` (training-known). Result: all models reach 100 % `verification_pct` (except sonnet-4-6-no-thinking with 0.73). The kata differentiates on code quality but not on correctness — all of them "pass".
 
-Auf `claim-office-example-mapping` (novel, 5 Mehrdeutigkeiten, CLI mit externer Verification-Suite) hat RQ-regression gezeigt, dass opus-4-6 systematisch schlechtere Spec-Vollständigkeit liefert als opus-4-7: ein opus-4-6-Run auf v6-hybrid hat die `claim`-Operation komplett ignoriert (nur `quote` implementiert), obwohl das JSON-Schema-Beispiel in der Spec beide klar spezifiziert.
+On `claim-office-example-mapping` (novel, 5 ambiguities, CLI with an external verification suite), RQ-regression has shown that opus-4-6 systematically delivers poorer spec completeness than opus-4-7: one opus-4-6 run on v6-hybrid ignored the `claim` operation entirely (implementing only `quote`), although the JSON schema example in the spec clearly specifies both.
 
-RQ-model-novel fokussiert auf die stärksten Opus-Modelle plus Fable 5 (no-thinking, weil RQ-model-quality F-model-quality.2 zeigt, dass Thinking keinen konsistenten Vorteil bringt) und gibt ihnen die härtere Challenge. Fable 5 als neuestes Top-Modell wird ergänzt, um zu prüfen, ob es die hohe Spec-Treue von opus-4-8/opus-4-6 erreicht oder übertrifft.
+RQ-model-novel focuses on the strongest Opus models plus Fable 5 (no-thinking, because RQ-model-quality F-model-quality.2 shows that thinking brings no consistent advantage) and gives them the harder challenge. Fable 5 is added as the newest top model in order to test whether it reaches or exceeds the high spec fidelity of opus-4-8/opus-4-6.
 
-## Vorhandene Daten
+## Existing Data
 
-- **opus-4-7-no-thinking × v4 × claim-office-EM**: n=10 aus RQ-workflow-tradeoff-Pool (mean verification_pct 0.67, bimodal: 4 perfekt, 6 zwischen 0.20–0.87)
-- **opus-4-6-portkey-no-thinking × v4 × claim-office-EM**: n=5 (4 innerhalb Budget, 1 Timeout), mean verification_pct 0.93
-- **opus-4-8-no-thinking × v4 × claim-office-EM**: n=5 erhoben 2026-05-29 (native API — Opus 4.8 ist noch nicht auf Portkey/Vertex; Batch lief mit geleerten ANTHROPIC_*-Env-Vars), mean verification_pct 0.92
-- **fable-5-no-thinking × v4 × claim-office-EM**: n=5 erhoben 2026-06-10/11 (mean verification_pct 0.83, σ 0.10, 0.73–0.93; 4/5 innerhalb Budget, 1 Timeout). Native API (Fable 5 ist noch nicht auf Portkey/Vertex; Batch mit geleerten ANTHROPIC_*-Env-Vars, native OAuth). Benötigt Claude Code CLI ≥ 2.1.170.
-- **opus-5-no-thinking × v4 × claim-office-EM**: neu zu erheben (n=5). Nativ (`claude-opus-5`, Listpreis $5/$25) über den seit 2026-07 real implementierten Native-Bypass in `run-batch.sh`. Vorher beschrieb der Kommentar das Env-Blanking nur — die älteren fable-5/opus-4-8-Native-Runs oben liefen faktisch evtl. über die Requesty-Route (Routing-Caveat).
+- **opus-4-7-no-thinking × v4 × claim-office-EM**: n=10 from the RQ-workflow-tradeoff pool (mean verification_pct 0.67, bimodal: 4 perfect, 6 between 0.20–0.87)
+- **opus-4-6-portkey-no-thinking × v4 × claim-office-EM**: n=5 (4 within budget, 1 timeout), mean verification_pct 0.93
+- **opus-4-8-no-thinking × v4 × claim-office-EM**: n=5 collected 2026-05-29 (native API — Opus 4.8 is not yet on Portkey/Vertex; the batch ran with blanked ANTHROPIC_* env vars), mean verification_pct 0.92
+- **fable-5-no-thinking × v4 × claim-office-EM**: n=5 collected 2026-06-10/11 (mean verification_pct 0.83, σ 0.10, 0.73–0.93; 4/5 within budget, 1 timeout). Native API (Fable 5 is not yet on Portkey/Vertex; batch with blanked ANTHROPIC_* env vars, native OAuth). Requires Claude Code CLI ≥ 2.1.170.
+- **opus-5-no-thinking × v4 × claim-office-EM**: to be newly collected (n=5). Native (`claude-opus-5`, list price $5/$25) via the native bypass in `run-batch.sh` that has been really implemented since 2026-07. Previously the comment only described the env blanking — the older fable-5/opus-4-8 native runs above may in fact have gone via the Requesty route (routing caveat).
 
-## Offene Hypothesen
+## Open Hypotheses
 
-- **H4 (opus-4-8 Workflow-Robustheit)**: opus-4-8 wurde bisher nur auf v4 erhoben. Teilt es die Workflow-Sensitivität von 4-6/4-7 (F-model-novel.2), oder ist es — wie seine durchweg hohe v4-Korrektheit nahelegt — robuster über Workflows? Re-Check bräuchte opus-4-8 × {v5, v6-hybrid} × claim-office-EM, n≥5.
+- **H4 (opus-4-8 workflow robustness)**: opus-4-8 has so far only been collected on v4. Does it share the workflow sensitivity of 4-6/4-7 (F-model-novel.2), or is it — as its consistently high v4 correctness suggests — more robust across workflows? A re-check would need opus-4-8 × {v5, v6-hybrid} × claim-office-EM, n≥5.
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Modell-Capability-Gap bei Spec-Vollständigkeit)**: opus-4-6 hat signifikant niedrigere `verification_pct` als opus-4-7 — bestätigt die RQ-regression-Beobachtung "implementiert nur die Hälfte der Spec" als modell-spezifisches Defizit.
-- **H2 (Code-Qualitäts-Gap bleibt)**: opus-4-6 hat höhere Komplexitäts-Metriken (cognitive_max, mccabe_max), konsistent mit RQ-model-quality F-model-quality.3 (~2× auf GOL).
-- **H3 (Korrektheit ist die härtere Achse)**: Auf claim-office differenziert `verification_pct` die Modelle stärker als jede Code-Qualitäts-Metrik — die "stärkere Challenge" exponiert Unterschiede, die auf GOL unsichtbar waren.
+- **H1 (model capability gap on spec completeness)**: opus-4-6 has significantly lower `verification_pct` than opus-4-7 — confirming the RQ-regression observation "implements only half the spec" as a model-specific deficit.
+- **H2 (code-quality gap persists)**: opus-4-6 has higher complexity metrics (cognitive_max, mccabe_max), consistent with RQ-model-quality F-model-quality.3 (~2× on GOL).
+- **H3 (correctness is the harder axis)**: On claim-office, `verification_pct` differentiates the models more strongly than any code-quality metric — the "harder challenge" exposes differences that were invisible on GOL.

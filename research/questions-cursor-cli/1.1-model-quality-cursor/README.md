@@ -1,20 +1,20 @@
 ---
 id: RQ-model-quality-cursor
-question: "Wie unterscheiden sich die via cursor-cli-Harness erreichbaren Modelle (Opus, Composer, Grok) in Code-Qualität und TDD-Disziplin auf game-of-life-example-mapping?"
+question: "How do the models reachable via the cursor-cli harness (Opus, Composer, Grok) differ in code quality and TDD discipline on game-of-life-example-mapping?"
 factors:
   model:
-    # Lab-Variant-IDs → cursor-agent --model (per Smoke-Run 2026-07-26 verifiziert,
-    # resolved via system/init-Event). Baseline-Arm: no-thinking / vergleichbares
-    # Effort-Level, soweit die Familie eine Effort-Achse hat.
+    # Lab variant IDs → cursor-agent --model (verified via smoke run 2026-07-26,
+    # resolved via system/init event). Baseline arm: no-thinking / comparable
+    # effort level, where the family has an effort axis.
     - opus-cursor         # → claude-opus-4-8-medium  ("Opus 4.8 300K Medium No Thinking")
-    - composer-cursor     # → composer-2.5            ("Composer 2.5") — keine Effort-Achse
+    - composer-cursor     # → composer-2.5            ("Composer 2.5") — no effort axis
     - grok-cursor         # → cursor-grok-4.5-medium  ("Cursor Grok 4.5 Medium")
 controls:
-  workflow: v6.2.1-phase-continuation-cursor   # cursor-cli-Workflow (.cursor/-Marker), von v6.2.1-pi abgeleitet, Refactor inline
+  workflow: v6.2.1-phase-continuation-cursor   # cursor-cli workflow (.cursor/ markers), derived from v6.2.1-pi, refactor inline
   kata_base: game-of-life
   prompt: example-mapping
 outcomes:
-  # primär: Code-Qualität (game-of-life trägt das Code-Qualitäts-Signal)
+  # primary: code quality (game-of-life carries the code-quality signal)
   - code_mass
   - cognitive_max
   - cognitive_avg
@@ -28,16 +28,16 @@ outcomes:
   - smell_complexity
   - smell_magic_numbers
   - smell_duplication
-  # sekundär: Korrektheit
-  - verification_pct  # extern (game-of-life-verification)
-  - tests_passing     # intern (vitest)
+  # secondary: correctness
+  - verification_pct  # external (game-of-life-verification)
+  - tests_passing     # internal (vitest)
   - tests_total
-  # tertiär: TDD-Disziplin
+  # tertiary: TDD discipline
   - cycle_count
   - refactorings_applied
   - predictions_correct
   - predictions_total
-  # Kontext
+  # context
   - completed_within_budget
   - duration_seconds
   - total_tokens
@@ -46,47 +46,47 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-model-quality-cursor: Modell-Effekt auf Code-Qualität (cursor-cli-Harness)
+# RQ-model-quality-cursor: Model effect on code quality (cursor-cli harness)
 
 ## Motivation
 
-Mit cursor-cli (`cursor-agent`) als viertem Harness — nach Claude Code (native), OpenCode und pi (beide Requesty) — wird ein **dritter Routing-Pfad** erschlossen: der Cursor-eigene Model-Roster, auth via `CURSOR_API_KEY` über das Cursor-Abo. Das macht drei Modelle direkt vergleichbar, die auf diesem Pfad zusammenkommen: **Opus** (Anthropic-Anker, harness-übergreifend zu pi/OC/CC vergleichbar), **Composer** (Cursors eigenes Agenten-Modell) und **Grok**.
+With cursor-cli (`cursor-agent`) as the fourth harness — after Claude Code (native), OpenCode and pi (both Requesty) — a **third routing path** becomes available: Cursor's own model roster, auth via `CURSOR_API_KEY` through the Cursor subscription. That makes three models directly comparable that meet on this path: **Opus** (Anthropic anchor, comparable across harnesses to pi/OC/CC), **Composer** (Cursor's own agent model) and **Grok**.
 
-Diese RQ misst den **Modell-Effekt auf Code-Qualität und TDD-Disziplin** in einem harness-konstanten Setting (alle Zellen cursor-cli, gleicher Workflow, gleiche Kata). Sie ist das **direkte Pendant** zu RQ-model-quality (Claude-Code-Seite), RQ-model-quality-oc (OpenCode) und RQ-model-quality-pi (pi) — mit einem cursor-cli-Workflow. Der Workflow- und Routing-Unterschied muss bei Cross-Harness-Findings explizit benannt werden, KEIN 1:1-Transfer.
+This RQ measures the **model effect on code quality and TDD discipline** in a harness-constant setting (all cells cursor-cli, same workflow, same kata). It is the **direct counterpart** to RQ-model-quality (Claude Code side), RQ-model-quality-oc (OpenCode) and RQ-model-quality-pi (pi) — with a cursor-cli workflow. The workflow and routing difference must be named explicitly in cross-harness findings, NO 1:1 transfer.
 
-`game-of-life-example-mapping` als Kata: trägt das Code-Qualitäts-Signal (`smell_total`, `cognitive_max`, etc. differenzieren) und ist example-mapping-kompatibel. claim-office (Korrektheit als primärer Outcome) kann parallel in einer späteren RQ-model-novel-cursor untersucht werden.
+`game-of-life-example-mapping` as kata: carries the code-quality signal (`smell_total`, `cognitive_max`, etc. differentiate) and is example-mapping compatible. claim-office (correctness as primary outcome) can be investigated in parallel in a later RQ-model-novel-cursor.
 
-## Harness-Status: einsatzbereit
+## Harness status: ready for use
 
-**Stand 2026-07-26**: cursor-cli ist **vollständig in `run-batch.sh` verdrahtet und End-to-End verifiziert** (alle fünf Bausteine gebaut, Docker installiert `cursor-agent`, Smoke-Run game-of-life × `opus-cursor` sauber durch: cycle_count=9, refactorings=7, predictions 18/18, 9/9 Tests grün). Details in der [Subtree-README](../README.md#harness-status-walking-skeleton). Diese RQ ist **offen (n=0)** — Harness bereit, Fill-Batches ausstehend.
+**As of 2026-07-26**: cursor-cli is **fully wired into `run-batch.sh` and verified end-to-end** (all five building blocks built, Docker installs `cursor-agent`, smoke run game-of-life × `opus-cursor` cleanly through: cycle_count=9, refactorings=7, predictions 18/18, 9/9 tests green). Details in the [subtree README](../README.md#harness-status-walking-skeleton). This RQ is **open (n=0)** — harness ready, fill batches pending.
 
-Vor dem Erstbatch:
-0. **Auth (gelöst 2026-07-26)**: Headless braucht einen echten Dashboard-`CURSOR_API_KEY` (`crsr_…`), nicht den OAuth-Token. Im Container via `.env`/docker-compose setzen (analog `REQUESTY_API_KEY`). Details: [Subtree-README](../README.md#recherche-stand-cursor-agent-2026-07-26-smoke-run-durchgeführt).
-1. **Modell-IDs (verifiziert)**: `opus-cursor`→`claude-opus-4-8-medium`, `composer-cursor`→`composer-2.5`, `grok-cursor`→`cursor-grok-4.5-medium`. In Baustein 4 (`run-batch.sh` case-mapping) verdrahten.
-2. JSON-Event-Schema erfassen → `parse_cursor_transcript.py` bauen.
-3. cursor-cli-Workflow (`.cursor/`-Marker, vier TDD-Marker aus `MARKERS.md`) anlegen und in `controls.workflow` eintragen.
-4. Smoke-Test-Regel (Subtree-README): Opus-Run muss `cycle_count`/`predictions_* != null` liefern.
+Before the first batch:
+0. **Auth (solved 2026-07-26)**: Headless needs a real dashboard `CURSOR_API_KEY` (`crsr_…`), not the OAuth token. Set it in the container via `.env`/docker-compose (analogous to `REQUESTY_API_KEY`). Details: [subtree README](../README.md#recherche-stand-cursor-agent-2026-07-26-smoke-run-durchgeführt).
+1. **Model IDs (verified)**: `opus-cursor`→`claude-opus-4-8-medium`, `composer-cursor`→`composer-2.5`, `grok-cursor`→`cursor-grok-4.5-medium`. Wire into building block 4 (`run-batch.sh` case mapping).
+2. Capture the JSON event schema → build `parse_cursor_transcript.py`.
+3. Create the cursor-cli workflow (`.cursor/` markers, four TDD markers from `MARKERS.md`) and enter it in `controls.workflow`.
+4. Smoke-test rule (subtree README): an Opus run must yield `cycle_count`/`predictions_* != null`.
 
-## Vorhandene Daten
+## Existing data
 
-- **Stand 2026-07-26**: Keine Runs. Harness noch nicht gebaut. Erstbatch komplett offen.
+- **As of 2026-07-26**: No runs. Harness not yet built. First batch completely open.
 
-## Modell-Auswahl
+## Model selection
 
-Vom User gesetzt: **Opus, Composer, Grok** — der spezifische Reiz des cursor-cli-Pfads. Opus ist der harness-übergreifende Anker (Cross-Check gegen die Opus-Werte in RQ-model-quality-pi / -oc / CC: bleibt das Anthropic-Niveau über den Cursor-Routing-Pfad erhalten?). Composer ist Cursors eigenes Modell und auf keinem anderen Pfad erreichbar — der eigentliche Neuwert dieser RQ. Grok ergänzt einen dritten Anbieter-Familienzweig.
+Set by the user: **Opus, Composer, Grok** — the specific appeal of the cursor-cli path. Opus is the cross-harness anchor (cross-check against the Opus values in RQ-model-quality-pi / -oc / CC: is the Anthropic level preserved over the Cursor routing path?). Composer is Cursor's own model and not reachable on any other path — the actual new value of this RQ. Grok adds a third provider family branch.
 
-Pro Modell gilt wie bei pi/oc: Aufnahme, wenn der autonome TDD-Loop unter dem cursor-cli-Workflow sauber durchläuft und `src/` sowie ggf. `src/cli.ts` geschrieben werden. Modelle, die den Loop nicht zuverlässig zu Ende führen (Continuation-Drop, done.txt mit roten Tests), werden mit Begründung aus der RQ genommen und hier dokumentiert.
+Per model the same rule applies as for pi/oc: inclusion if the autonomous TDD loop runs cleanly through under the cursor-cli workflow and `src/` plus, where applicable, `src/cli.ts` are written. Models that do not reliably finish the loop (continuation drop, done.txt with red tests) are removed from the RQ with justification and documented here.
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Anthropic-Anker über Cursor-Pfad)**: opus-cursor liefert Code-Qualität auf Anthropic-Niveau (niedrigstes `cognitive_max`/`smell_total`) und bestätigt, dass der cursor-cli-Routing-Pfad kein wertsenkender Confound ist. Cross-Check gegen Opus in RQ-model-quality-pi/-oc/CC. Wenn opus-cursor deutlich schlechter ist als Opus auf anderen Pfaden → Harness-/Routing-Artefakt, nicht Modell-Eigenschaft.
-- **H2 (Composer als Unbekannte)**: composer-cursor ist auf keinem anderen Pfad messbar — diese RQ ist der erste Datenpunkt. Offen, ob es code-qualitativ mit Opus mithält oder eigene Profile zeigt (z.B. hoher Durchsatz, aber mehr Smells).
-- **H3 (Modell-Spreizung)**: Über `smell_total` und `cognitive_max` zeigt sich eine messbare Spreizung zwischen Opus, Composer und Grok — d.h. der cursor-cli-Harness ist diskriminationsfähig genug, um Modell-Unterschiede sichtbar zu machen.
-- **H4 (TDD-Marker-Compliance)**: `cycle_count` und `predictions_total` spreizen über die Modelle — manche nutzen die Workflow-Marker-Mechanik diszipliniert, andere driften. Niedriger cycle_count ist NICHT automatisch schwächere TDD-Disziplin, sondern auch Marker-/Skill-Compliance (parallel zum pi-/oc-Befund).
+- **H1 (Anthropic anchor over the Cursor path)**: opus-cursor delivers code quality at the Anthropic level (lowest `cognitive_max`/`smell_total`) and confirms that the cursor-cli routing path is not a value-reducing confound. Cross-check against Opus in RQ-model-quality-pi/-oc/CC. If opus-cursor is markedly worse than Opus on other paths → harness/routing artifact, not a model property.
+- **H2 (Composer as unknown)**: composer-cursor is not measurable on any other path — this RQ is the first data point. Open whether it keeps up with Opus in code quality or shows its own profile (e.g. high throughput, but more smells).
+- **H3 (model spread)**: A measurable spread between Opus, Composer and Grok shows up over `smell_total` and `cognitive_max` — i.e. the cursor-cli harness is discriminating enough to make model differences visible.
+- **H4 (TDD marker compliance)**: `cycle_count` and `predictions_total` spread across the models — some use the workflow marker mechanics with discipline, others drift. A low cycle_count is NOT automatically weaker TDD discipline, but also marker/skill compliance (parallel to the pi/oc finding).
 
-## Methodologische Anmerkungen
+## Methodological notes
 
-- **Eigener Tarif-Confound**: Kosten laufen über das Cursor-Abo, nicht über Requesty-Tarif (pi/OC) oder Anthropic-Listenpreis (CC). Bei `cost_usd`-Cross-Harness-Vergleichen explizit als Confound benennen.
-- `n=5` per Zelle folgt Memory [[replicates-n-reliability]] (Default für mittleres Feld).
-- TDD-Disziplin-Metriken (`cycle_count`, `predictions_*`, `refactorings_applied`) hängen davon ab, dass `parse_cursor_transcript.py` (Baustein 5) die vier Marker aus `MARKERS.md` korrekt erfasst. Vor dem ersten Batch verifizieren (Smoke-Test-Regel).
-- Bei Findings unterscheiden: "Modell A hat höhere TDD-Disziplin" ≠ "Modell A nutzt den Marker-Pfad öfter".
+- **Separate tariff confound**: Cost runs through the Cursor subscription, not the Requesty tariff (pi/OC) or the Anthropic list price (CC). Name this explicitly as a confound in `cost_usd` cross-harness comparisons.
+- `n=5` per cell follows memory [[replicates-n-reliability]] (default for a medium field).
+- TDD discipline metrics (`cycle_count`, `predictions_*`, `refactorings_applied`) depend on `parse_cursor_transcript.py` (building block 5) capturing the four markers from `MARKERS.md` correctly. Verify before the first batch (smoke-test rule).
+- Distinguish in findings: "model A has higher TDD discipline" ≠ "model A uses the marker path more often".

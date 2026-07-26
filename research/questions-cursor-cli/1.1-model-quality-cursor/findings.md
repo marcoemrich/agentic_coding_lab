@@ -1,68 +1,68 @@
 # RQ-model-quality-cursor — Findings
 
-Modell-Effekt (Opus / Composer / Grok) auf Code-Qualität und TDD-Disziplin über den **cursor-cli-Harness** (`cursor-agent`), Kata `game-of-life-example-mapping`, Workflow `v6.2.1-phase-continuation-cursor`. n=5 pro Zelle, alle 15 Runs korrekt (Korrektheit innen & außen je 100 %, alle `completed_within_budget`).
+Model effect (Opus / Composer / Grok) on code quality and TDD discipline over the **cursor-cli harness** (`cursor-agent`), kata `game-of-life-example-mapping`, workflow `v6.2.1-phase-continuation-cursor`. n=5 per cell, all 15 runs correct (correctness internal & external 100 % each, all `completed_within_budget`).
 
-Modell-IDs: `opus-cursor` → `claude-opus-4-8-medium`, `composer-cursor` → `composer-2.5`, `grok-cursor` → `cursor-grok-4.5-medium`.
+Model IDs: `opus-cursor` → `claude-opus-4-8-medium`, `composer-cursor` → `composer-2.5`, `grok-cursor` → `cursor-grok-4.5-medium`.
 
-## Übersicht
+## Overview
 
-Primär-Metriken der Code-Qualität (alle **kleiner = besser**) plus Korrektheit. Da alle drei Modelle 100 % Korrektheit (innen) erreichen, sind die Qualitäts-Pokale nicht durch Korrektheit eingeschränkt — alle Zellen qualifizieren.
+Primary code-quality metrics (all **lower = better**) plus correctness. Since all three models reach 100 % correctness (internal), the quality trophies are not constrained by correctness — all cells qualify.
 
-| Metrik (Richtung) | opus-cursor | composer-cursor | grok-cursor |
+| Metric (direction) | opus-cursor | composer-cursor | grok-cursor |
 |---|---:|---:|---:|
-| `cognitive_max` (Spitzen-Kognitiv, ↓) | 16.6 | **8.2** 🏆 | 10.6 |
+| `cognitive_max` (Cognitive Peak, ↓) | 16.6 | **8.2** 🏆 | 10.6 |
 | `cognitive_avg` (↓) | 15.3 | **5.93** 🏆 | 7.2 |
 | `mccabe_max` (↓) | 10.6 | **7.6** 🏆 | 8.8 |
 | `mccabe_avg` (↓) | 4.33 | **2.63** 🏆 | 3.38 |
-| `smell_total` (Smell-Summe, ↓) | 4.0 | **3.4** 🏆 | 3.6 |
-| Produktiv-LoC `lines_of_code` (↓) | **27.8** 🏆 | 59.2 | 42.8 |
-| Code-Mass (APP) `code_mass` (↓) | **141.8** 🏆 | 182.2 | 149.2 |
-| Korrektheit (innen) `tests_passing` (↑) | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
-| `predictions_total` (Marker-Nutzung) | 18.4 | 7.0 | 9.8 |
+| `smell_total` (Smell Total, ↓) | 4.0 | **3.4** 🏆 | 3.6 |
+| Production LoC `lines_of_code` (↓) | **27.8** 🏆 | 59.2 | 42.8 |
+| Code Mass (APP) `code_mass` (↓) | **141.8** 🏆 | 182.2 | 149.2 |
+| Correctness (internal) `tests_passing` (↑) | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
+| `predictions_total` (marker usage) | 18.4 | 7.0 | 9.8 |
 | `duration_seconds` (↓) | 198 | **120.8** 🏆 | 169 |
 | `total_tokens` (↓) | 1.74 M | **768 k** 🏆 | 1.17 M |
 
-`cost_usd` fehlt für alle Runs — der cursor-cli-Pfad (Cursor-Abo) liefert keine Inline-Kosten pro Run.
+`cost_usd` is missing for all runs — the cursor-cli path (Cursor subscription) provides no inline cost per run.
 
 ---
 
-## F-1.1 — Composer schreibt die komplexitätsärmste, Opus die knappste Lösung
+## F-1.1 — Composer writes the least complex, Opus the most concise solution
 
-Auf dem cursor-cli-Harness spreizen sich die drei Modelle deutlich auf zwei **entgegengesetzten** Qualitätsachsen:
+On the cursor-cli harness the three models spread clearly along two **opposing** quality axes:
 
-- **composer-cursor** gewinnt jede Komplexitäts-Metrik: `cognitive_max` 8.2 vs. 16.6 (opus), `cognitive_avg` 5.93 vs. 15.3, `mccabe_max` 7.6, `mccabe_avg` 2.63, `smell_total` 3.4.
-- **opus-cursor** gewinnt die Volumen-Metriken: Produktiv-LoC 27.8 vs. 59.2 (composer), Code-Mass (APP) 141.8.
+- **composer-cursor** wins every complexity metric: `cognitive_max` 8.2 vs. 16.6 (opus), `cognitive_avg` 5.93 vs. 15.3, `mccabe_max` 7.6, `mccabe_avg` 2.63, `smell_total` 3.4.
+- **opus-cursor** wins the volume metrics: Production LoC 27.8 vs. 59.2 (composer), Code Mass (APP) 141.8.
 
-| Achse | opus | composer | grok |
+| Axis | opus | composer | grok |
 |---|---:|---:|---:|
 | `cognitive_max` (↓) | 16.6 | **8.2** 🏆 | 10.6 |
 | `mccabe_avg` (↓) | 4.33 | **2.63** 🏆 | 3.38 |
-| Produktiv-LoC (↓) | **27.8** 🏆 | 59.2 | 42.8 |
+| Production LoC (↓) | **27.8** 🏆 | 59.2 | 42.8 |
 
-Der Spread ist bei `cognitive_avg` groß (opus 15.3 vs. composer 5.93, ~2.5× bei σ≈3.8) und bei Produktiv-LoC ebenfalls (opus 27.8 vs. composer 59.2 bei σ≈6). Beides deutlich > 1σ.
+The spread is large for `cognitive_avg` (opus 15.3 vs. composer 5.93, ~2.5× at σ≈3.8) and likewise for Production LoC (opus 27.8 vs. composer 59.2 at σ≈6). Both clearly > 1σ.
 
-**Begründung (Code-Inspektion bestätigt die Metriken):** Opus packt die gesamte Logik in eine dichte `nextGeneration` mit dreifach verschachtelten Schleifen (`dx`/`dy` + `continue`-Guard) — wenige Zeilen, hohe kognitive Last pro Zeile. Composer extrahiert `NEIGHBOR_OFFSETS` als Konstante plus `cellKey()`/`parseKey()`-Helfer und trennt Survival- und Birth-Pass in flache Einzelschritte — mehr Zeilen, aber jede Einheit simpel. **Parsimonie (wenig Code) und niedrige Komplexität fallen hier auseinander**: das knappste Modell ist nicht das komplexitätsärmste. grok-cursor liegt auf beiden Achsen dazwischen.
-
----
-
-## F-1.2 — Modell-Spreizung bestätigt: der cursor-cli-Harness ist diskriminationsfähig
-
-Der Harness macht Modell-Unterschiede messbar (H3 bestätigt). Über `cognitive_max` und `mccabe_avg` trennen sich die drei Modelle klar, bei durchgängig 100 % Korrektheit — die Spreizung ist also ein reines Qualitätssignal, kein Korrektheits-Confound.
-
-Composer ist zudem **effizienter**: kürzeste Laufzeit (120.8 s vs. opus 198 s) und wenigste Tokens (768 k vs. opus 1.74 M) — bei gleicher Korrektheit und niedrigster Komplexität. Damit ist H2 (Composer als Unbekannte) beantwortet: Composer hält code-qualitativ nicht nur mit, sondern führt auf den Komplexitäts- und Effizienz-Achsen.
+**Rationale (code inspection confirms the metrics):** Opus packs the entire logic into one dense `nextGeneration` with triply nested loops (`dx`/`dy` + `continue` guard) — few lines, high cognitive load per line. Composer extracts `NEIGHBOR_OFFSETS` as a constant plus `cellKey()`/`parseKey()` helpers and separates the survival and birth pass into flat individual steps — more lines, but every unit simple. **Parsimony (little code) and low complexity come apart here**: the most concise model is not the least complex one. grok-cursor sits in between on both axes.
 
 ---
 
-## F-1.3 — Opus nutzt die TDD-Marker-Mechanik am dichtesten
+## F-1.2 — Model spread confirmed: the cursor-cli harness is discriminating
 
-`predictions_total` spreizt stark: opus 18.4 vs. grok 9.8 vs. composer 7.0. opus fährt also mehr explizite Vorhersage-Marker pro Run, bei ebenfalls hoher Trefferquote (`predictions_correct` 18.4/18.4). `cycle_count` liegt dagegen enger beieinander (opus 8.4, composer 7.6, grok 9.6).
+The harness makes model differences measurable (H3 confirmed). Over `cognitive_max` and `mccabe_avg` the three models separate clearly, at a consistent 100 % correctness — the spread is therefore a pure quality signal, not a correctness confound.
 
-**Begründung:** Höhere `predictions_total` heißt dichtere Nutzung des Workflow-Marker-Pfads, **nicht** automatisch höhere TDD-Disziplin (parallel zum pi-/oc-Befund). Composer erreicht mit weniger Markern dieselbe Korrektheit und bessere Komplexitätswerte — Marker-Compliance und Ergebnisqualität sind hier entkoppelt.
+Composer is also **more efficient**: shortest runtime (120.8 s vs. opus 198 s) and fewest tokens (768 k vs. opus 1.74 M) — at equal correctness and the lowest complexity. This answers H2 (Composer as unknown): Composer does not merely keep up in code quality, it leads on the complexity and efficiency axes.
+
+---
+
+## F-1.3 — Opus uses the TDD marker mechanics most densely
+
+`predictions_total` spreads strongly: opus 18.4 vs. grok 9.8 vs. composer 7.0. So opus runs more explicit prediction markers per run, with a likewise high hit rate (`predictions_correct` 18.4/18.4). `cycle_count`, by contrast, lies closer together (opus 8.4, composer 7.6, grok 9.6).
+
+**Rationale:** Higher `predictions_total` means denser use of the workflow marker path, **not** automatically higher TDD discipline (parallel to the pi/oc finding). Composer reaches the same correctness and better complexity values with fewer markers — marker compliance and result quality are decoupled here.
 
 ---
 
 ## Caveats
 
-- **Eigener Tarif-Confound:** Kosten laufen über das Cursor-Abo, nicht Requesty (pi/OC) oder Anthropic-Listenpreis (CC). `cost_usd` ist daher leer; Cross-Harness-Kostenvergleiche mit dieser RQ sind nicht möglich.
-- **Routing-/Harness-Confound:** Alle Zellen laufen über cursor-cli mit dem cursor-spezifischen Workflow. Kein 1:1-Transfer der Modell-Werte zu RQ-model-quality (CC) / -oc / -pi. Der Opus-Cross-Check (H1) gegen die anderen Harnesse steht noch aus.
-- `verification_pct` = 100 % spiegelt hier `tests_passing` (game-of-life hat keine externe Verifikations-Suite); Korrektheits-Anker ist `tests_passing` (innen).
+- **Separate tariff confound:** Cost runs through the Cursor subscription, not Requesty (pi/OC) or the Anthropic list price (CC). `cost_usd` is therefore empty; cross-harness cost comparisons with this RQ are not possible.
+- **Routing/harness confound:** All cells run over cursor-cli with the cursor-specific workflow. No 1:1 transfer of the model values to RQ-model-quality (CC) / -oc / -pi. The Opus cross-check (H1) against the other harnesses is still pending.
+- `verification_pct` = 100 % mirrors `tests_passing` here (game-of-life has no external verification suite); the correctness anchor is `tests_passing` (internal).

@@ -1,10 +1,10 @@
 # RQ-tdd-correctness Findings
 
-Kata: `claim-office-example-mapping` (novel). Modell: `opus-4-7-no-thinking` (Portkey ODER Direct, OR-match). 5 TDD-Workflow-Varianten, n=22 Runs. v8a/v8b (Non-TDD-Kontrollgruppe) noch ohne Runs.
+Kata: `claim-office-example-mapping` (novel). Model: `opus-4-7-no-thinking` (Portkey OR direct, OR-match). 5 TDD workflow variants, n=22 runs. v8a/v8b (non-TDD control group) still without runs.
 
-## Übersicht — Korrektheit pro Workflow
+## Overview — Correctness per Workflow
 
-🏆 = bester Wert pro Spalte (auch bei Gleichstand mehrfach). `verification_pct`/`tests_passing`: höher = besser.
+🏆 = best value per column (also multiple times in case of a tie). `verification_pct`/`tests_passing`: higher = better.
 
 | Workflow | n | `verification_pct` (mean ± std) | `verification_passed` / 15 (min – max) | `tests_passing` |
 |---|---:|---|---|---|
@@ -14,17 +14,17 @@ Kata: `claim-office-example-mapping` (novel). Modell: `opus-4-7-no-thinking` (Po
 | v6.1-hybrid-…                 | 3 | **1.00 ± 0** 🏆    | 15 – 15 | **100 %** 🏆 |
 | v7.1-hybrid-green-refactor-…  | 3 | 0.98 ± 0.04        | 14 – 15 | **100 %** 🏆 |
 
-`completed_within_budget` ist in allen Zellen 100 %.
+`completed_within_budget` is 100 % in all cells.
 
-## F-tdd-correctness.1 — Drei von fünf TDD-Workflows lösen claim-office perfekt; v4.1 und v7.1 verlieren vereinzelt Szenarien
+## F-tdd-correctness.1 — Three of Five TDD Workflows Solve claim-office Perfectly; v4.1 and v7.1 Lose Isolated Scenarios
 
-Auf der neuartigen claim-office-Kata, die nicht in Trainingsdaten enthalten ist, erreichen v3 (n=5), v5.1 (n=6) und v6.1 (n=3) in jedem einzelnen Run die volle Acceptance-Suite (15/15 Verifikations-Szenarien). v4.1 zeigt einen Ausreißer (4/5 Runs perfekt, 1 Run bei 12/15 → 0.96), v7.1 einen kleineren (2/3 Runs perfekt, 1 Run bei 14/15 → 0.98). Auffällig: die beiden Workflows mit isoliertem Green-Subagent (v4.1, v7.1) tragen je einen Korrektheits-Ausreißer; die drei Workflows mit Green im Shared-Context (v3, v5.1, v6.1) sind perfekt. Plausible Mechanik: ein isolierter Green-Subagent sieht weder die Test-Listen-Diskussion noch frühere Cycle-Diskussionen und kann Edge-Cases übersehen, die im Shared-Context implizit präsent sind.
+On the novel claim-office kata that is not contained in the training data, v3 (n=5), v5.1 (n=6) and v6.1 (n=3) reach the full acceptance suite (15/15 verification scenarios) in every single run. v4.1 shows one outlier (4/5 runs perfect, 1 run at 12/15 → 0.96), v7.1 a smaller one (2/3 runs perfect, 1 run at 14/15 → 0.98). Notably: the two workflows with an isolated green subagent (v4.1, v7.1) each carry one correctness outlier; the three workflows with green in the shared context (v3, v5.1, v6.1) are perfect. Plausible mechanic: an isolated green subagent sees neither the test-list discussion nor earlier cycle discussions and can overlook edge cases that are implicitly present in the shared context.
 
-Hypothese H1 ("phasen-strukturierte Workflows erreichen höhere Korrektheit als minimal-TDD") wird damit nicht bestätigt — minimal-TDD (v3) liegt auf Augenhöhe mit den strukturierten Workflows. H3 (Nullhypothese: alle Workflows ähnlich hoch >0.8) wird bestätigt.
+Hypothesis H1 ("phase-structured workflows reach higher correctness than minimal TDD") is therefore not confirmed — minimal TDD (v3) is on a par with the structured workflows. H3 (null hypothesis: all workflows similarly high >0.8) is confirmed.
 
-## F-tdd-correctness.2 — v4.1 erreicht Korrektheit nur über drastisch höheren Aufwand pro Zyklus
+## F-tdd-correctness.2 — v4.1 Reaches Correctness Only via Drastically Higher Effort per Cycle
 
-Die Aufwands-Profile pro Workflow. 🏆 = bester Wert pro Spalte. Richtungen: `predictions_correct_rate` höher = besser; `duration_seconds`/`total_tokens`/`tests_passed_immediately` kleiner = besser; `cycle_count` und `refactorings_applied` sind ambivalent (kein Pokal).
+The effort profiles per workflow. 🏆 = best value per column. Directions: `predictions_correct_rate` higher = better; `duration_seconds`/`total_tokens`/`tests_passed_immediately` lower = better; `cycle_count` and `refactorings_applied` are ambivalent (no trophy).
 
 | Workflow | `cycle_count` | `refactorings_applied` | `predictions_correct_rate` | `tests_passed_immediately` | `duration_seconds` | `total_tokens` |
 |---|---:|---:|---:|---:|---:|---:|
@@ -34,23 +34,23 @@ Die Aufwands-Profile pro Workflow. 🏆 = bester Wert pro Spalte. Richtungen: `p
 | v6.1-hybrid-…                 | 24.7 | 10.7 |  94.9 %         | 13.0 | 1 424 | 30.16 M |
 | v7.1-hybrid-green-refactor-…  | 18.3 | 14.0 | **100.0 %** 🏆  |  6.3 | 1 970 | 26.11 M |
 
-v4.1 fährt im Schnitt **44.6 TDD-Zyklen** pro Run (vs. 3.8 bei v3, 5.5 bei v5.1), bei vergleichbarer Korrektheit. Die Wallclock liegt bei ~54 min pro Run gegen ~10 min bei v5.1 und ~5 min bei v3. Tokens 14 M (v4.1) vs. 3.3 M (v3). Trotz dieses Aufwands ist v4.1 das einzige Setup mit einem 0.8-Ausreißer.
+v4.1 runs on average **44.6 TDD cycles** per run (vs. 3.8 for v3, 5.5 for v5.1), at comparable correctness. The wallclock is at ~54 min per run against ~10 min for v5.1 and ~5 min for v3. Tokens 14 M (v4.1) vs. 3.3 M (v3). Despite this effort, v4.1 is the only setup with a 0.8 outlier.
 
-v6.1 und v7.1 fahren beide deutlich mehr Refactor-Schritte als v5.1 (10.7 / 14.0 vs. 2.2) — der isolierte Refactor-Subagent „arbeitet" sichtbar mehr; v7.1 erreicht die höchste Refactor-Rate aller Workflows. Trotz der Hybrid-Aufbauten zahlen beide für die Stabilität, nicht für besseren Korrektheits-Mittelwert.
+v6.1 and v7.1 both run considerably more refactor steps than v5.1 (10.7 / 14.0 vs. 2.2) — the isolated refactor subagent visibly "works" more; v7.1 reaches the highest refactor rate of all workflows. Despite the hybrid constructions, both pay for stability, not for a better correctness mean.
 
-## F-tdd-correctness.3 — Predictions-Rate-Vergleich ist verzerrt durch ungleiche Vorhersage-Basis
+## F-tdd-correctness.3 — The Predictions Rate Comparison Is Distorted by an Unequal Prediction Base
 
-`predictions_correct_rate` liegt bei 100 % für v5.1 (39/39) und v7.1 (99/99), 94.9 % für v6.1 (131/138), 92.9 % für v4.1 (302/325). Die Nenner unterscheiden sich drastisch: v5.1 ~6.5, v7.1 ~33, v6.1 ~46, v4.1 ~65 Predictions/Run. Die Predictions-Rate misst hier nicht primär Disziplin, sondern wird durch die Aufgabengröße pro Cycle dominiert — v4.1 zerlegt am feinsten und nutzt mehr Predictions, hat damit aber auch mehr Gelegenheiten zu Fehlern.
+`predictions_correct_rate` is at 100 % for v5.1 (39/39) and v7.1 (99/99), 94.9 % for v6.1 (131/138), 92.9 % for v4.1 (302/325). The denominators differ drastically: v5.1 ~6.5, v7.1 ~33, v6.1 ~46, v4.1 ~65 predictions/run. The predictions rate here does not primarily measure discipline but is dominated by the task size per cycle — v4.1 decomposes most finely and uses more predictions, thereby also having more opportunities for errors.
 
-Hypothese H3 aus RQ-tdd-quality („v4.1 hat höhere prediction_accuracy") wird unter dieser Lesart nicht bestätigt. Der Vergleich wird erst belastbar, wenn die Predictions pro Cycle normalisiert werden — derzeit aus den Metriken nicht direkt ableitbar.
+Hypothesis H3 from RQ-tdd-quality ("v4.1 has higher prediction_accuracy") is not confirmed under this reading. The comparison only becomes robust once the predictions are normalized per cycle — currently not directly derivable from the metrics.
 
-## F-tdd-correctness.4 — Wallclock-Spanne ist 10×, Token-Spanne 9×; keine Korrektheits-Korrelation
+## F-tdd-correctness.4 — The Wallclock Range Is 10×, the Token Range 9×; No Correlation with Correctness
 
-Über die fünf TDD-Workflows hinweg:
+Across the five TDD workflows:
 
-- günstigster Workflow nach Tokens: **v3 (3.28 M)** — bei 100 % Korrektheit
-- günstigster Workflow nach Wallclock: **v3 (5 min)**
-- teuerster Workflow nach Tokens: **v6.1 (30.16 M, σ=18.6 M)** — bei 100 % Korrektheit
-- teuerster Workflow nach Wallclock: **v4.1 (54 min, σ=15 min)** — bei 0.96 Korrektheit
+- cheapest workflow by tokens: **v3 (3.28 M)** — at 100 % correctness
+- cheapest workflow by wallclock: **v3 (5 min)**
+- most expensive workflow by tokens: **v6.1 (30.16 M, σ=18.6 M)** — at 100 % correctness
+- most expensive workflow by wallclock: **v4.1 (54 min, σ=15 min)** — at 0.96 correctness
 
-v7.1 fügt sich mittig ein (33 min Wallclock, 26 M Tokens, 0.98 Korrektheit). Für claim-office unter Opus 4.7 ist Korrektheit kein knappes Gut; die Workflow-Wahl bestimmt fast ausschließlich Aufwand und Streuung. v3 dominiert die Korrektheits-pro-Token-Wertung dieser Kata. Strukturierte Workflows rechtfertigen sich auf claim-office nicht durch Korrektheit — ihr Wert liegt in Code-Qualität (siehe RQ-context F-context.1/2 für die Komplexitäts- und Smell-Unterschiede auf derselben Kata).
+v7.1 slots in the middle (33 min wallclock, 26 M tokens, 0.98 correctness). For claim-office under Opus 4.7, correctness is not a scarce good; the workflow choice determines almost exclusively effort and spread. v3 dominates the correctness-per-token rating on this kata. Structured workflows do not justify themselves on claim-office through correctness — their value lies in code quality (see RQ-context F-context.1/2 for the complexity and smell differences on the same kata).

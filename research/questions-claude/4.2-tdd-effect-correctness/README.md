@@ -1,20 +1,20 @@
 ---
 id: RQ-tdd-correctness
-question: "Unterscheidet sich die externe Korrektheit (verification_pct) zwischen TDD-Workflow-Varianten auf der neuartigen claim-office-Kata?"
+question: "Does external correctness (verification_pct) differ between TDD workflow variants on the novel claim-office kata?"
 factors:
   workflow_x_prompt:
-    # TDD-Achse (gefixte Linie)
+    # TDD axis (fixed line)
     - {workflow: v3-basic-tdd,                                  prompt: example-mapping}
     - {workflow: v4.1-testlist-scope-fix,                       prompt: example-mapping}
     - {workflow: v5.1-testlist-scope-fix,                       prompt: example-mapping}
     - {workflow: v6.1-hybrid-testlist-scope-fix,                prompt: example-mapping}
     - {workflow: v7.1-hybrid-green-refactor-testlist-scope-fix, prompt: example-mapping}
-    # Non-TDD-Kontrollgruppe: vibe-coding + tests + einmaliges End-Refactoring
+    # non-TDD control group: vibe-coding + tests + single end refactoring
     - {workflow: v8a-delayed-refactor-agent,                    prompt: example-mapping}
     - {workflow: v8b-delayed-refactor-native,                   prompt: example-mapping}
 controls:
   model:
-    any:                            # OR-match: bestehende Direct-Runs wiederverwenden, neue via Portkey
+    any:                            # OR-match: reuse existing direct runs, new ones via Portkey
       - opus-4-7-portkey-no-thinking
       - opus-4-7-no-thinking
   kata_base: claim-office
@@ -34,105 +34,105 @@ min_replicates: 3
 status: aktiv
 ---
 
-# RQ-tdd-correctness: Workflow-Effekt auf Korrektheit (claim-office)
+# RQ-tdd-correctness: Workflow Effect on Correctness (claim-office)
 
-Unterscheidet sich die externe Korrektheit (`verification_pct`) zwischen TDD-Workflow-Varianten, wenn das Modell eine neuartige, nicht in Trainingsdaten enthaltene Kata loesen muss?
+Does external correctness (`verification_pct`) differ between TDD workflow variants when the model has to solve a novel kata not contained in the training data?
 
 ## Motivation
 
-RQ-tdd-quality untersucht den Workflow-Effekt auf *Code-Qualitaet* (game-of-life). Hypothese H4 dort nimmt an, dass `verification_pct` workflow-unabhaengig bei ~1.0 liegt — aber diese Annahme basiert auf trainingsbekannten Katas, bei denen das Modell die Loesung "kennt".
+RQ-tdd-quality examines the workflow effect on *code quality* (game-of-life). Hypothesis H4 there assumes that `verification_pct` lies at ~1.0 independently of the workflow — but this assumption is based on training-known katas in which the model "knows" the solution.
 
-Auf claim-office (novel kata, nicht in Trainingsdaten) ist Korrektheit nicht selbstverstaendlich. Hier koennte die Workflow-Struktur einen messbaren Einfluss haben:
-- Minimal-TDD (v3) erzwingt nur lose inkrementelle Verifikation.
-- v4.1 (testlist-scope-fix, isolierte Subagents) begrenzt den Scope pro Zyklus explizit und arbeitet phasen-isoliert.
-- v5.1 (testlist-scope-fix, Single-Context) nutzt denselben Phasen-Skript-Inhalt wie v4.1, aber im geteilten Kontext.
-- v6.1 (hybrid) kombiniert Skill-basierte Red/Green im Shared-Context mit isoliertem Refactor-Subagent.
-- v7.1 (hybrid-green-refactor) isoliert zusaetzlich zur Refactor- auch die Green-Phase als Subagent; Test-Liste und Red bleiben Skills im Shared-Context.
+On claim-office (a novel kata, not in the training data) correctness is not a given. Here the workflow structure could have a measurable influence:
+- Minimal TDD (v3) enforces only loose incremental verification.
+- v4.1 (testlist-scope-fix, isolated subagents) explicitly limits the scope per cycle and works phase-isolated.
+- v5.1 (testlist-scope-fix, single context) uses the same phase-script content as v4.1, but in a shared context.
+- v6.1 (hybrid) combines skill-based red/green in the shared context with an isolated refactor subagent.
+- v7.1 (hybrid-green-refactor) isolates the green phase as a subagent in addition to the refactor phase; the test list and red remain skills in the shared context.
 
-Alle vier strukturierten Workflows tragen den test-list-scope-fix ("Cover every spec example"). Die Frage ist, ob die Kontext-Architektur-Unterschiede sich in der Aussen-Korrektheit niederschlagen, *bevor* wir Code-Qualitaet vergleichen.
+All four structured workflows carry the test-list-scope-fix ("Cover every spec example"). The question is whether the context-architecture differences show up in external correctness *before* we compare code quality.
 
-Zusaetzlich aufgenommen ist eine **Non-TDD-Kontrollgruppe** (v8a/v8b), um die kritische Vorfrage zu beantworten: *ist TDD ueberhaupt notwendig fuer Korrektheit, oder erreicht Vibe-Coding + nachtraegliche Tests + einmaliges End-Refactoring dasselbe `verification_pct`-Niveau?* Diese Kontrolle steht orthogonal zu H1/H2/H3 (die TDD-Inner-Vergleich machen) — siehe H4 unten.
+Additionally included is a **non-TDD control group** (v8a/v8b) in order to answer the critical preliminary question: *is TDD necessary for correctness at all, or does vibe-coding + tests after the fact + a single end refactoring reach the same `verification_pct` level?* This control is orthogonal to H1/H2/H3 (which make the TDD-internal comparison) — see H4 below.
 
-## Non-TDD-Kontrollgruppe (v8a, v8b)
+## Non-TDD Control Group (v8a, v8b)
 
-v8a und v8b sind keine TDD-Workflows, sondern Drei-Phasen-Kontrollen:
+v8a and v8b are not TDD workflows but three-phase controls:
 
-- **v8a-delayed-refactor-agent** — Phase 1: Implementation ohne Tests. Phase 2: Test-Suite gegen `prompt.md` (mit "Cover every spec example"-Pflicht, gleich wie der test-list-scope-fix). Phase 3: einmaliger Refactor via Subagent (`refactor.md` inhaltlich identisch zu v6.1/v7.1 — Four Rules of Simple Design + APP + Naming + Mandatory-Attempt).
-- **v8b-delayed-refactor-native** — identisch zu v8a in Phase 1+2 **und Phase 3 inhaltlich** (Four Rules + APP + Naming + Mandatory-Attempt), aber Phase 3 wird ueber den Slash-Command `/refactor` (`.claude/commands/refactor.md`) **inline im Haupt-Session-Kontext** ausgefuehrt statt als frischer Subagent gespawnt. Strukturell symmetrisch zu v8a (`.claude/agents/refactor.md`): beide externalisieren die Refactor-Spec in eine eigene Datei, einzige Differenz ist Agent-Spawn vs Command-Invocation. v8a vs v8b isoliert damit den **Subagent-Mechanismus** bei sonst identischem Refactor-Inhalt und Timing.
+- **v8a-delayed-refactor-agent** — Phase 1: implementation without tests. Phase 2: test suite against `prompt.md` (with the "Cover every spec example" obligation, same as the test-list-scope-fix). Phase 3: a single refactor via subagent (`refactor.md` identical in content to v6.1/v7.1 — Four Rules of Simple Design + APP + naming + mandatory attempt).
+- **v8b-delayed-refactor-native** — identical to v8a in phases 1+2 **and in the content of phase 3** (Four Rules + APP + naming + mandatory attempt), but phase 3 is executed via the slash command `/refactor` (`.claude/commands/refactor.md`) **inline in the main session context** instead of being spawned as a fresh subagent. Structurally symmetric to v8a (`.claude/agents/refactor.md`): both externalize the refactor spec into a separate file, the only difference being agent spawn vs command invocation. v8a vs v8b thereby isolates the **subagent mechanism** at otherwise identical refactor content and timing.
 
-TDD-Disziplin-Metriken (`cycle_count`, `refactorings_applied`, `predictions_correct_rate`, `tests_passed_immediately`) sind in den v8-Armen **by-design null** — sie liegen ausserhalb des Vergleichs. Outcome-Vergleich gegen die TDD-Arme laeuft ueber `verification_pct`, `tests_passing`, `completed_within_budget` und Kosten.
+TDD discipline metrics (`cycle_count`, `refactorings_applied`, `predictions_correct_rate`, `tests_passed_immediately`) are **null by design** in the v8 arms — they lie outside the comparison. The outcome comparison against the TDD arms runs via `verification_pct`, `tests_passing`, `completed_within_budget` and cost.
 
 ## Design
 
 ```
-Faktor:    workflow_x_prompt  — 7 Stufen (TDD-Achse: v3+EM, v4.1+EM,
+Factor:    workflow_x_prompt  — 7 levels (TDD axis: v3+EM, v4.1+EM,
                                           v5.1+EM, v6.1+EM, v7.1+EM
-                                          Non-TDD-Kontrolle: v8a+EM, v8b+EM)
-Kontrolle: model              — opus-4-7-no-thinking (Portkey ODER Direct, OR-match, siehe Caveat a)
-Kontrolle: kata_base          — claim-office
+                                          non-TDD control: v8a+EM, v8b+EM)
+Control:   model              — opus-4-7-no-thinking (Portkey OR direct, OR-match, see caveat a)
+Control:   kata_base          — claim-office
 
-Zellen:    7
-Replikate: n = 3
-Runs:      vollstaendig neu zu erheben (gefixte Linie + v8-Kontrolle)
+Cells:      7
+Replicates: n = 3
+Runs:       to be collected entirely anew (fixed line + v8 control)
 ```
 
-> **Historische Notiz:** Die ursprüngliche Frontmatter enthielt zusätzlich
-> v4.2-shared-context und v4.2.1-fake-it-green als Workflow-Stufen. Beide
-> wurden 2026-05-22 entfernt, nachdem die Daten klar zeigten, dass der
-> shared-context-Zweig keine Korrektheits-Verbesserung gegenüber v4.1
-> bringt (siehe `research/workflow-dev/workflow-construction.md` und
-> F-model-novel.4 in [RQ-model-novel](../RQ-model-novel-model-effect-novel-kata/findings.md)). Die
-> archivierten Workflow-Definitionen liegen in
-> `experiments/workflows/_archive/`; die 5+2 abgeschlossenen Runs bleiben
-> als historische Datenpunkte erhalten, werden aber nicht mehr für die
-> Aggregation gematcht.
+> **Historical note:** The original frontmatter additionally contained
+> v4.2-shared-context and v4.2.1-fake-it-green as workflow levels. Both
+> were removed on 2026-05-22 after the data clearly showed that the
+> shared-context branch brings no correctness improvement over v4.1
+> (see `research/workflow-dev/workflow-construction.md` and
+> F-model-novel.4 in [RQ-model-novel](../RQ-model-novel-model-effect-novel-kata/findings.md)). The
+> archived workflow definitions are in
+> `experiments/workflows/_archive/`; the 5+2 completed runs are retained
+> as historical data points but are no longer matched for
+> aggregation.
 >
-> Ebenfalls 2026-05-22 wurde die RQ auf die **gefixte Workflow-Linie**
-> umgestellt: v4-exact-subagents → v4.1-testlist-scope-fix,
+> Also on 2026-05-22, the RQ was switched to the **fixed workflow line**:
+> v4-exact-subagents → v4.1-testlist-scope-fix,
 > v5-exact-single-context → v5.1-testlist-scope-fix,
-> v6-hybrid → v6.1-hybrid-testlist-scope-fix. Alle drei strukturierten
-> Workflows tragen jetzt den test-list-scope-fix; v4.1 und v5.1 sind so
-> abgeleitet, dass ihr Phasen-Skript-Inhalt identisch ist und sich nur im
-> Aufruf-Mechanismus unterscheidet (vgl. RQ-context). Die alten v4-/v5-/v6-Runs
-> sind damit nicht mehr übertragbar — die Zellen werden neu erhoben.
+> v6-hybrid → v6.1-hybrid-testlist-scope-fix. All three structured
+> workflows now carry the test-list-scope-fix; v4.1 and v5.1 are derived
+> such that their phase-script content is identical and differs only in the
+> invocation mechanism (cf. RQ-context). The old v4/v5/v6 runs
+> are therefore no longer transferable — the cells are collected anew.
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Korrektheit variiert zwischen Workflows)**: `verification_pct` unterscheidet sich signifikant zwischen den 5 TDD-Workflow-Stufen. Phasen-strukturierte Workflows (v4.1/v5.1/v6.1/v7.1) erreichen hoehere Korrektheit als minimal-TDD (v3), weil inkrementelle Verifikation bei unbekannten Anforderungen wichtiger ist als bei trainingsbekannten Katas.
-- **H2 (Kontext-Architektur bei gleichem Scope-Fix)**: Da v4.1 und v5.1 denselben Phasen-Skript-Inhalt inkl. test-list-scope-fix tragen und sich nur in der Kontext-Architektur (isolierte Subagents vs. Single-Context) unterscheiden, isoliert ihr `verification_pct`-Vergleich den reinen Kontext-Effekt auf Korrektheit. Erwartung: gering — der Scope-Fix ("Cover every spec example") dominiert ueber die Architektur.
-- **H3 (Korrektheit ist hoch ueber alle Workflows)**: Nullhypothese — `verification_pct` ist fuer alle Workflows aehnlich hoch (>0.8). Die Workflow-Struktur beeinflusst *wie* der Code entsteht, nicht *ob* er korrekt ist. Das waere konsistent mit RQ-tdd-quality H4.
-- **H4 (TDD ist notwendig fuer Korrektheit auf novel kata)**: Die TDD-Arme (v3/v4.1/v5.1/v6.1/v7.1) erreichen hoehere `verification_pct` als die Non-TDD-Kontrollgruppe (v8a/v8b). Der Mechanismus: inkrementelle Test-Definition pro Cycle zwingt zur fortlaufenden Spec-Re-Lektuere, waehrend Vibe-Coding in Phase 1 sich auf den ersten Spec-Lese-Eindruck verlaesst und in Phase 2 Tests gegen die eigene Implementation neigt zu schreiben (siehe Caveat e). Falsifikation: v8a/v8b liegen innerhalb 1 σ der TDD-Arme — dann ist der Vibe-+-End-Refactor-Ansatz fuer Korrektheit-aussen aequivalent.
+- **H1 (correctness varies between workflows)**: `verification_pct` differs significantly between the 5 TDD workflow levels. Phase-structured workflows (v4.1/v5.1/v6.1/v7.1) reach higher correctness than minimal TDD (v3), because incremental verification matters more with unknown requirements than with training-known katas.
+- **H2 (context architecture at equal scope fix)**: Since v4.1 and v5.1 carry the same phase-script content including the test-list-scope-fix and differ only in the context architecture (isolated subagents vs. single context), their `verification_pct` comparison isolates the pure context effect on correctness. Expectation: small — the scope fix ("Cover every spec example") dominates over the architecture.
+- **H3 (correctness is high across all workflows)**: Null hypothesis — `verification_pct` is similarly high (>0.8) for all workflows. The workflow structure influences *how* the code comes about, not *whether* it is correct. That would be consistent with RQ-tdd-quality H4.
+- **H4 (TDD is necessary for correctness on a novel kata)**: The TDD arms (v3/v4.1/v5.1/v6.1/v7.1) reach higher `verification_pct` than the non-TDD control group (v8a/v8b). The mechanism: incremental test definition per cycle forces continuous re-reading of the spec, whereas vibe-coding in phase 1 relies on the first spec reading impression and in phase 2 tends to write tests against its own implementation (see caveat e). Falsification: v8a/v8b lie within 1 σ of the TDD arms — then the vibe + end refactor approach is equivalent for external correctness.
 
-**Falsifikation H1** (verification_pct ueberlappt vollstaendig zwischen TDD-Stufen): Workflow-Struktur hat innerhalb der TDD-Achse keinen Korrektheits-Effekt auf novel katas — Korrektheit ist primaer modell-getrieben.
+**Falsification of H1** (verification_pct overlaps completely between the TDD levels): the workflow structure has no correctness effect within the TDD axis on novel katas — correctness is primarily model-driven.
 
-**Falsifikation H4** (v8a/v8b ≈ TDD-Arme): Der TDD-Vorteil fuer Korrektheit ist auf claim-office nicht empirisch stuetzbar — Konsequenz fuer die Empfehlung "TDD ist fuer novel katas wertvoll" aus RQ-prompt-correctness / RQ-model-novel.
+**Falsification of H4** (v8a/v8b ≈ TDD arms): the TDD advantage for correctness is not empirically supportable on claim-office — a consequence for the recommendation "TDD is valuable for novel katas" from RQ-prompt-correctness / RQ-model-novel.
 
-## Abgrenzung zu RQ-tdd-quality
+## Delimitation from RQ-tdd-quality
 
 | | RQ-tdd-quality | RQ-tdd-correctness |
 |---|---|---|
-| Primaer-Outcome | Code-Qualitaet | Korrektheit |
-| Kata | game-of-life (trainingsbekannt) | claim-office (novel) |
-| Modell | opus-4-7-no-thinking | opus-4-7 (Portkey ODER Direct, siehe Caveat a) |
-| Workflows | v1–v6.1 + v8a/v8b | gefixte Linie v3/v4.1/v5.1/v6.1/v7.1 + v8a/v8b |
-| Non-TDD | v1+v2 (prompt-rein) + v8a/v8b (struktur-rein) | v8a/v8b (struktur-reine Non-TDD-Kontrollgruppe) |
-| Sub-Varianten | keine | gefixte Linie (v4.2/v4.2.1-Zweig 2026-05-22 verworfen, siehe historische Notiz oben) |
+| Primary outcome | Code quality | Correctness |
+| Kata | game-of-life (training-known) | claim-office (novel) |
+| Model | opus-4-7-no-thinking | opus-4-7 (Portkey OR direct, see caveat a) |
+| Workflows | v1–v6.1 + v8a/v8b | fixed line v3/v4.1/v5.1/v6.1/v7.1 + v8a/v8b |
+| Non-TDD | v1+v2 (prompt-pure) + v8a/v8b (structure-pure) | v8a/v8b (structure-pure non-TDD control group) |
+| Sub-variants | none | fixed line (v4.2/v4.2.1 branch discarded 2026-05-22, see historical note above) |
 
 ## Caveats
 
-- **(a) Routing gemischt**: `controls.model` ist eine ODER-Liste `[opus-4-7-portkey-no-thinking, opus-4-7-no-thinking]`. Bestehende Direct-Runs (39 Stk., aufgebaut vor Portkey-Umstieg) werden weiterverwendet, neue Refill-Runs gehen ueber Portkey (erstes Listenelement). In den Aggregations-Pivots werden beide Routen als eine Zelle behandelt — Annahme: Routing hat keinen Korrektheits-Effekt (selbes Modellgewicht, selbe Sampling-Parameter). Falls Pivots starke Routing-bedingte Streuung zeigen, kann die Zerlegung durch Gruppierung nach `model` (statt `cell_model`) in `runs.csv` debugged werden.
-- **(b) Portkey-Routing-Charakteristik**: Portkey kann anderes Retry-/Timeout-Verhalten haben als Direct. Auf `verification_pct` kein Effekt erwartet, auf `completed_within_budget`/`duration_seconds` aber moeglich. Wird in den Pivots beobachtet.
-- **(c) Prompt-Stil einheitlich**: Alle Workflows nutzen `example-mapping`. Der Prompt-Stil-Effekt auf claim-office (RQ-prompt-correctness) wird hier nicht kontrolliert, aber da alle Zellen denselben Stil nutzen, ist er kein Confounder.
-- **(d) v8 auf example-mapping ist kein reines Vibe-Coding**: Die Beispiel-Liste im Prompt ist faktisch eine implizite Test-Spec, die das Modell in Phase 1 mitlesen und in Phase 2 in Tests konvertieren kann. Das verfaelscht die "Vibe-Coding vs TDD"-Achse leicht zugunsten von v8, ist aber fuer die **Refactor-Zeitpunkt-/Korrektheits-Achse** (H4) akzeptabel: alle Arme bekommen identische Spec-Strukturierung; einzige Variable ist *wann* Tests/Refactor passieren (periodisch waehrend der Implementation vs einmal am Ende). Ein "rein vibe" Non-TDD-Arm (z.B. v1+prose) wuerde Spec-Stil-Effekt mit Workflow-Effekt vermischen.
-- **(e) v8-Tests gegen Implementation statt Spec**: Phase 2 von v8a/v8b enthaelt zwar die explizite Pflicht "source of behavior is `prompt.md` — not the implementation you just wrote", aber das Modell hat seine eigene Implementation gerade frisch im Kontext. Selbst mit Spec-Anker bleibt ein Bias-Risiko: Tests koennten implizit der Implementation folgen statt der Spec, insbesondere bei Mehrdeutigkeiten. Diese Schwaeche ist Teil dessen, was H4 messen will — sie ist nicht zu reparieren, ohne v8 zu TDD zu machen.
+- **(a) Mixed routing**: `controls.model` is an OR list `[opus-4-7-portkey-no-thinking, opus-4-7-no-thinking]`. Existing direct runs (39 of them, built up before the switch to Portkey) continue to be used, new refill runs go via Portkey (the first list element). In the aggregation pivots both routes are treated as one cell — assumption: routing has no correctness effect (same model weights, same sampling parameters). If pivots show a strong routing-related spread, the decomposition can be debugged by grouping by `model` (instead of `cell_model`) in `runs.csv`.
+- **(b) Portkey routing characteristics**: Portkey can have different retry/timeout behavior than direct. No effect on `verification_pct` is expected, but one on `completed_within_budget`/`duration_seconds` is possible. This is observed in the pivots.
+- **(c) Uniform prompt style**: All workflows use `example-mapping`. The prompt style effect on claim-office (RQ-prompt-correctness) is not controlled here, but since all cells use the same style it is not a confounder.
+- **(d) v8 on example-mapping is not pure vibe-coding**: The example list in the prompt is in fact an implicit test spec that the model can read in phase 1 and convert into tests in phase 2. This slightly distorts the "vibe-coding vs TDD" axis in favor of v8, but is acceptable for the **refactor-timing/correctness axis** (H4): all arms receive identical spec structuring; the only variable is *when* tests/refactor happen (periodically during the implementation vs once at the end). A "purely vibe" non-TDD arm (e.g. v1+prose) would mix the spec style effect with the workflow effect.
+- **(e) v8 tests against the implementation instead of the spec**: Phase 2 of v8a/v8b does contain the explicit obligation "source of behavior is `prompt.md` — not the implementation you just wrote", but the model has its own implementation freshly in context. Even with the spec anchor a bias risk remains: tests could implicitly follow the implementation instead of the spec, particularly in the presence of ambiguities. This weakness is part of what H4 aims to measure — it cannot be repaired without turning v8 into TDD.
 
 ## Findings
 
-Siehe [findings.md](findings.md).
+See [findings.md](findings.md).
 
-## Datenquelle
+## Data Source
 
-Alle Runs in `experiments/runs/` mit
+All runs in `experiments/runs/` with
 `workflow ∈ {v3-basic-tdd, v4.1-testlist-scope-fix, v5.1-testlist-scope-fix, v6.1-hybrid-testlist-scope-fix, v7.1-hybrid-green-refactor-testlist-scope-fix, v8a-delayed-refactor-agent, v8b-delayed-refactor-native}`,
 `kata = claim-office-example-mapping`,
-`model ∈ {opus-4-7-portkey-no-thinking, opus-4-7-no-thinking}` (ODER-Match, siehe Caveat a).
+`model ∈ {opus-4-7-portkey-no-thinking, opus-4-7-no-thinking}` (OR-match, see caveat a).

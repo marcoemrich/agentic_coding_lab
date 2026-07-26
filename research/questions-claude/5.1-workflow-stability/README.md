@@ -1,6 +1,6 @@
 ---
 id: RQ-stability
-question: "Wie stabil sind Code-Qualitaet und TDD-Disziplin pro Workflow ueber Replikate, und unter welchen Bedingungen ist n=3 als Replikat-Anzahl ausreichend?"
+question: "How stable are code quality and TDD discipline per workflow across replicates, and under which conditions is n=3 a sufficient replicate count?"
 factors:
   workflow_x_prompt:
     - {workflow: v1-oneshot,             prompt: prose}
@@ -13,40 +13,40 @@ controls:
   model: opus-4-7-no-thinking
   kata_base: game-of-life
 outcomes:
-  # primaer: dieselben Code-Qualitaets-Metriken wie RQ-tdd-quality,
-  # ausgewertet auf Streuung und Stabilitaet
+  # primary: the same code-quality metrics as RQ-tdd-quality,
+  # evaluated for spread and stability
   - code_mass
   - smell_total
   - cc_longest_function
   - mccabe_max
   - cognitive_max
-  # Test-Staerke: zusaetzliche Stabilitaets-Dimension neben Code-Qualitaet
+  # test strength: an additional stability dimension alongside code quality
   - mutation_score
-  # neu: TDD-Disziplin-Banden pro Workflow
-  - predictions_correct_rate    # pooled rate aus predictions_correct/predictions_total
-  - refactorings_applied        # Refactor-Disziplin (pro Run)
-  - cycle_count                 # Zyklen-Granularitaet
-  - tests_passed_immediately    # Over-Implementation-Indikator
-  # sekundaer: Korrektheit (Sanity, sollte bei 100 % bleiben)
+  # new: TDD discipline bands per workflow
+  - predictions_correct_rate    # pooled rate from predictions_correct/predictions_total
+  - refactorings_applied        # refactor discipline (per run)
+  - cycle_count                 # cycle granularity
+  - tests_passed_immediately    # over-implementation indicator
+  # secondary: correctness (sanity, should stay at 100 %)
   - tests_passing
   - verification_pct
   - completed_within_budget
-  # Kontext
+  # context
   - duration_seconds
   - total_tokens
 min_replicates: 10
 status: aktiv
 ---
 
-# RQ-stability: Run-Stabilitaet pro Workflow
+# RQ-stability: Run Stability per Workflow
 
-Wie stabil produzieren die fuenf Workflows ihre Code-Qualitaet ueber Replikate, und unter welchen Bedingungen reicht ein n=3-Sample fuer belastbare Aussagen?
+How stably do the five workflows produce their code quality across replicates, and under which conditions does an n=3 sample suffice for robust statements?
 
 ## Motivation
 
-RQ-tdd-quality (Workflow-Effekt auf Code-Qualitaet) zeigt **dramatische Mittelwert-Unterschiede** zwischen den Workflows — insbesondere v4 vs alle anderen auf `cognitive_max` (Faktor 4–8x). Die Streuungen sind aber sehr ungleich verteilt:
+RQ-tdd-quality (workflow effect on code quality) shows **dramatic differences in the means** between the workflows — in particular v4 vs all others on `cognitive_max` (a factor of 4–8x). The spreads, however, are distributed very unevenly:
 
-| Workflow (RQ-tdd-quality Daten) | `cognitive_max` Mittel | σ | Range |
+| Workflow (RQ-tdd-quality data) | `cognitive_max` mean | σ | Range |
 |---|---:|---:|---|
 | v4-exact-subagents | 2.83 | **0.75** | 2–4 |
 | v2-iterative | 16.67 | 2.31 | 14–18 |
@@ -54,78 +54,78 @@ RQ-tdd-quality (Workflow-Effekt auf Code-Qualitaet) zeigt **dramatische Mittelwe
 | v3-basic-tdd | 23.33 | 4.51 | 19–28 |
 | v5-exact-single-context | 18.33 | **6.66** | 11–24 |
 
-Drei Beobachtungen:
+Three observations:
 
-1. **v4 ist auffaellig stabil** — σ=0.75 ist eine Groessenordnung kleiner als bei den anderen. Das ist konsistent mit der Hypothese, dass Phasen-Isolation Pfadabhaengigkeit reduziert.
-2. **v5 hat σ=6.66 bei Mittel 18.33** — der Variationskoeffizient (σ/μ) ist 0.36. Bei n=3 ist die Wahrscheinlichkeit hoch, dass eine zukuenftige Wiederholung mit 3 anderen Runs einen substantiell anderen Mittelwert produziert.
-3. **Bei v4 ist n=3 wahrscheinlich ausreichend** (σ klein, Distanz zu jeder anderen Zelle >> σ_v4). Bei v5 vermutlich nicht — der Mittelwert ist instabil.
+1. **v4 is notably stable** — σ=0.75 is an order of magnitude smaller than for the others. This is consistent with the hypothesis that phase isolation reduces path dependence.
+2. **v5 has σ=6.66 at a mean of 18.33** — the coefficient of variation (σ/μ) is 0.36. At n=3 the probability is high that a future repetition with 3 other runs would produce a substantially different mean.
+3. **For v4, n=3 is probably sufficient** (σ small, distance to every other cell >> σ_v4). For v5 presumably not — the mean is unstable.
 
-Diese Beobachtungen sind aber selbst bei n=3 noch nicht belastbar — σ-Schätzungen mit n=3 haben breite Konfidenzintervalle. RQ-stability misst Stabilitaet bei **n=10** pro Zelle und beantwortet damit zwei Fragen:
+These observations are, however, themselves not robust at n=3 — σ estimates with n=3 have wide confidence intervals. RQ-stability measures stability at **n=10** per cell and thereby answers two questions:
 
-- **(a) Welche Workflows produzieren stabilen Code, welche nicht?**
-- **(b) Bei welchen Workflows ist n=3 belastbar, bei welchen braucht es mehr Replikate?**
+- **(a) Which workflows produce stable code, which do not?**
+- **(b) For which workflows is n=3 robust, and for which are more replicates needed?**
 
 ## Design
 
 ```
-Faktor:    workflow_x_prompt — 5 Stufen (v1+prose, v2+prose,
+Factor:    workflow_x_prompt — 5 levels (v1+prose, v2+prose,
                                          v3/v4/v5+example-mapping)
-Kontrolle: model             — opus-4-7-no-thinking
-Kontrolle: kata_base         — game-of-life
+Control:   model             — opus-4-7-no-thinking
+Control:   kata_base         — game-of-life
 
-Zellen:    5
-Replikate: n = 10
-Runs:      50 total (38 neu, 12 aus RQ-tdd-quality wiederverwendet:
-           v1=3, v2=3, v3=3, v4=6 (RQ-model-quality+RQ-tdd-quality gepoolt), v5=3)
+Cells:      5
+Replicates: n = 10
+Runs:       50 total (38 new, 12 reused from RQ-tdd-quality:
+            v1=3, v2=3, v3=3, v4=6 (RQ-model-quality+RQ-tdd-quality pooled), v5=3)
 ```
 
-Identisches Setup wie RQ-tdd-quality, nur mit n=10 statt n=3 — Code-Qualitaets-Aussagen aus RQ-tdd-quality werden mit hoeherem n verifiziert und mit Stabilitaets-Aussagen ergaenzt.
+An identical setup to RQ-tdd-quality, only with n=10 instead of n=3 — the code-quality statements from RQ-tdd-quality are verified at a higher n and supplemented with stability statements.
 
-## Methodologische Sub-Frage: Wann reicht n=3?
+## Methodological Sub-Question: When Does n=3 Suffice?
 
-Ein zentrales Nebenergebnis: aus den n=10-Daten kann *post hoc* berechnet werden, wie haeufig ein zufaelliges n=3-Subsample dieselben Ranking-Schluesse stuetzt wie das volle n=10-Sample.
+A central side result: from the n=10 data it can be calculated *post hoc* how often a random n=3 subsample supports the same ranking conclusions as the full n=10 sample.
 
-**Subsampling-Analyse** (auf je n=10 pro Zelle): aus jeder Zelle alle `C(10, 3) = 120` moeglichen Dreier-Subsamples ziehen und pro Outcome berechnen, wie oft die Subsample-basierte Rangordnung mit der n=10-Wahrheits-Rangordnung uebereinstimmt. Eine Zelle, die hier eine niedrige Uebereinstimmung produziert (z.B. < 80 %), ist mit n=3 nicht zuverlaessig charakterisierbar.
+**Subsampling analysis** (on n=10 per cell): draw all `C(10, 3) = 120` possible three-element subsamples from each cell and calculate per outcome how often the subsample-based ranking agrees with the n=10 ground-truth ranking. A cell that produces low agreement here (e.g. < 80 %) cannot be reliably characterized with n=3.
 
-Daraus laesst sich die praktische Regel ableiten:
-- **Klein-σ-Workflows** (geschaetzt: v4) → n=3 reicht.
-- **Hoch-σ-Workflows** (geschaetzt: v3, v5) → n ≥ 7 noetig fuer belastbare Mittelwert-Aussagen.
+From this the practical rule can be derived:
+- **Small-σ workflows** (estimated: v4) → n=3 suffices.
+- **High-σ workflows** (estimated: v3, v5) → n ≥ 7 is needed for robust statements about the mean.
 
-Die Subsampling-Analyse wird im Findings-File numerisch dokumentiert.
+The subsampling analysis is documented numerically in the findings file.
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Workflow-Stabilitaets-Ranking)**: σ_cognitive_max waechst in der Reihenfolge v4 < v2 ≈ v1 < v3 < v5. Phasen-Isolation (v4) liefert das stabilste Signal; v5 mit Shared-Context ist am volatilsten, weil pfadabhaengige Kontext-Akkumulation die Loesungs-Form streuen laesst.
-- **H2 (n=3 reicht fuer v4)**: Subsampling-Analyse auf v4 zeigt fuer alle Komplexitaets-Outcomes ≥ 95 % Uebereinstimmung des n=3-Rankings mit dem n=10-Ranking.
-- **H3 (n=3 reicht NICHT fuer v5)**: Subsampling-Analyse auf v5 zeigt fuer `cognitive_max` und `cc_longest_function` < 80 % Uebereinstimmung.
-- **H4 (RQ-tdd-quality-Hauptbefund haelt unter n=10)**: F-tdd-quality.1 ("strikt-TDD v4 deutlich besser") und F-tdd-quality.2 ("v3 schlechter als non-TDD") replizieren bei n=10 mit gleichem Vorzeichen und gleicher Groessenordnung.
+- **H1 (workflow stability ranking)**: σ_cognitive_max grows in the order v4 < v2 ≈ v1 < v3 < v5. Phase isolation (v4) delivers the most stable signal; v5 with a shared context is the most volatile, because path-dependent context accumulation lets the form of the solution spread.
+- **H2 (n=3 suffices for v4)**: The subsampling analysis on v4 shows ≥ 95 % agreement of the n=3 ranking with the n=10 ranking for all complexity outcomes.
+- **H3 (n=3 does NOT suffice for v5)**: The subsampling analysis on v5 shows < 80 % agreement for `cognitive_max` and `cc_longest_function`.
+- **H4 (the main RQ-tdd-quality finding holds at n=10)**: F-tdd-quality.1 ("strict TDD v4 clearly better") and F-tdd-quality.2 ("v3 worse than non-TDD") replicate at n=10 with the same sign and the same order of magnitude.
 
-**Falsifikation H4** waere besonders wichtig: wenn bei n=10 das Ranking kippt (z.B. v3 nicht mehr Schlusslicht), waeren F-tdd-quality.1/F-tdd-quality.2 nur bei n=3 ein Befund — was die ganze RQ-tdd-quality unterminieren wuerde.
+**Falsification of H4** would be particularly important: if the ranking flips at n=10 (e.g. v3 no longer last), F-tdd-quality.1/F-tdd-quality.2 would be a finding only at n=3 — which would undermine the whole of RQ-tdd-quality.
 
-## Operationalisierung der Stabilitaets-Outcomes
+## Operationalization of the Stability Outcomes
 
-Pro Zelle werden zusaetzlich zu den ueblichen Mittelwert/min/max/σ folgende Stabilitaets-Kennzahlen ausgewiesen:
+Per cell, the following stability indicators are reported in addition to the usual mean/min/max/σ:
 
-- **CV** (Coefficient of Variation = σ/μ): dimensionslose Relativ-Streuung. CV < 0.1 = sehr stabil; 0.1–0.3 = moderat; > 0.3 = instabil.
-- **IQR** (Interquartile Range): robust gegenueber Einzel-Ausreissern.
-- **Outlier-Rate**: Anteil der Runs, deren Outcome > Mittel ± 2σ ist.
-- **Reproduzierbarkeits-Score** (aus Subsampling-Analyse): Anteil der Dreier-Subsamples, deren Mittelwert innerhalb ±20 % des n=10-Mittels liegt.
+- **CV** (coefficient of variation = σ/μ): dimensionless relative spread. CV < 0.1 = very stable; 0.1–0.3 = moderate; > 0.3 = unstable.
+- **IQR** (interquartile range): robust against individual outliers.
+- **Outlier rate**: the share of runs whose outcome is > mean ± 2σ.
+- **Reproducibility score** (from the subsampling analysis): the share of three-element subsamples whose mean lies within ±20 % of the n=10 mean.
 
 ## Caveats
 
-- **(a) Single model**: nur `opus-4-7-no-thinking`. Stabilitaet bei anderen Modellen offen.
-- **(b) Single kata**: nur Game of Life. Stabilitaet bei mars-rover oder claim-office koennte anders aussehen.
-- **(c) Prompt-Asymmetrie** (v1/v2 prose, v3/v4/v5 EM): Methodologie-Constraint; in RQ-tdd-quality Caveats schon dokumentiert. F-tdd-quality.4 zeigt: Korrektheit ist unter API-Vertrag von der Prompt-Asymmetrie nicht beeinflusst.
-- **(d) Wiederverwendung von 12 RQ-tdd-quality-Runs**: ist methodologisch sauber, weil Workflow/Modell/Kata/Prompt identisch sind — aber neue 38 Runs koennten z.B. durch Kalender-Drift (anderer Server-Snapshot, andere Tools-Version) systematisch leicht abweichen. Wir pruefen Mittelwert-Konsistenz zwischen alten 12 und neuen 38 als Sanity-Check.
-- **(e) Stabilitaets-Praezision**: Selbst n=10 gibt nur grobe σ-Schaetzungen. Ein robusteres σ-Mass haette n=30. Bei 50 Runs Budget ist das nicht praktikabel; die Bootstrap-Konfidenzintervalle auf den σ-Schaetzungen werden in den Findings ausgewiesen.
+- **(a) Single model**: only `opus-4-7-no-thinking`. Stability on other models is open.
+- **(b) Single kata**: only Game of Life. Stability on mars-rover or claim-office could look different.
+- **(c) Prompt asymmetry** (v1/v2 prose, v3/v4/v5 EM): a methodology constraint; already documented in the RQ-tdd-quality caveats. F-tdd-quality.4 shows: under the API contract, correctness is not influenced by the prompt asymmetry.
+- **(d) Reuse of 12 RQ-tdd-quality runs**: methodologically clean, because workflow/model/kata/prompt are identical — but 38 new runs could deviate slightly and systematically, e.g. through calendar drift (a different server snapshot, a different tools version). We check the consistency of the means between the old 12 and the new 38 as a sanity check.
+- **(e) Stability precision**: Even n=10 gives only rough σ estimates. A more robust σ measure would need n=30. At a budget of 50 runs that is not practicable; the bootstrap confidence intervals on the σ estimates are reported in the findings.
 
 ## Findings
 
-Siehe [findings.md](findings.md).
+See [findings.md](findings.md).
 
-## Datenquelle
+## Data Source
 
-Alle Runs in `experiments/runs/` mit
+All runs in `experiments/runs/` with
 `workflow ∈ {v1-oneshot, v2-iterative, v3-basic-tdd, v4-exact-subagents, v5-exact-single-context}`,
-`kata ∈ {game-of-life-prose, game-of-life-example-mapping}` (workflow-konstrainiert),
+`kata ∈ {game-of-life-prose, game-of-life-example-mapping}` (workflow-constrained),
 `model = opus-4-7-no-thinking`.

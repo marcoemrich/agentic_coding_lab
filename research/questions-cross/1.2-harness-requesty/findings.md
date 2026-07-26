@@ -1,70 +1,70 @@
 # RQ-harness-requesty — Findings
 
-Harness-Effekt Claude Code (CC) vs OpenCode (OC) vs pi bei konstantem Modell
-(opus-4-8 über Requesty, `vertex/claude-opus-4-8@eu`), Workflow-Intention
-(`v6.2-with-why-cleaned{,-oc,-pi}`) und Prompt-Stil (`example-mapping`).
-n=5 pro Zelle, 6 Zellen (3 Harnesse × 2 Katas).
+Harness effect Claude Code (CC) vs OpenCode (OC) vs pi at constant model
+(opus-4-8 via Requesty, `vertex/claude-opus-4-8@eu`), workflow intention
+(`v6.2-with-why-cleaned{,-oc,-pi}`) and prompt style (`example-mapping`).
+n=5 per cell, 6 cells (3 harnesses × 2 katas).
 
-**Kosten-Caveat (bindend für alle $-Aussagen):** Requesty liefert auf dieser
-Route **kein** inline `cost_usd` mehr (CC=null, OC=0 im Response). Alle drei
-Harnesse tragen darum die **Token×Preis-Schätzung** (`compute-cost.py`,
-Requesty-vertex-Tarif $5.50/$27.50/$0.55/$6.25 pro 1M). Damit ist der
-Kostenvergleich erstmals **einheitlich gemessen** — kein Methoden-Mix mehr
-zwischen inline-CC/OC und geschätztem pi. Preis: die frühere Prämisse „CC/OC
-tragen den real abgerechneten Betrag" gilt nicht; alle Zahlen sind
-List-Preis-Baseline, nicht abgerechnet. Tokens inkl. `cache_read` sind für
-alle drei korrekt erfasst (Cache greift echt: claim-office `cache_read`
-CC ~53M, OC ~47M, pi im Mittel niedriger, weil pi insgesamt weniger Tokens zieht).
+**Cost caveat (binding for all $ statements):** Requesty no longer returns an
+inline `cost_usd` on this route (CC=null, OC=0 in the response). All three
+harnesses therefore carry the **token×price estimate** (`compute-cost.py`,
+Requesty vertex tariff $5.50/$27.50/$0.55/$6.25 per 1M). This makes the
+cost comparison **uniformly measured** for the first time — no more method mix
+between inline CC/OC and estimated pi. The price: the earlier premise "CC/OC
+carry the actually billed amount" no longer holds; all numbers are a
+list-price baseline, not billed. Tokens incl. `cache_read` are captured
+correctly for all three (cache genuinely applies: claim-office `cache_read`
+CC ~53M, OC ~47M, pi lower on average because pi draws fewer tokens overall).
 
-## Übersicht
+## Overview
 
-Primär-Outcome **Korrektheit (außen)** `verification_pct` (höher = besser) +
-Kern-Kostenmetrik `cost_usd` (kleiner = besser), je Harness × Kata.
+Primary outcome **Correctness (external)** `verification_pct` (higher = better) +
+core cost metric `cost_usd` (lower = better), per harness × kata.
 
-### claim-office (CLI-Kata, Korrektheit außen zählt)
+### claim-office (CLI kata, Correctness external counts)
 
-| Metrik (Richtung) | CC | OC | pi | cursor |
+| Metric (direction) | CC | OC | pi | cursor |
 |---|---:|---:|---:|---:|
-| `verification_pct` (höher) | 0.93 | 0.88 | 0.99 | **1.0** 🏆 |
-| `tests_passing`-Rate (höher) | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
-| `cost_usd` $ (kleiner) | 32.89 | 22.30 | 14.43 | **9.22** 🏆 |
-| `total_tokens` (kleiner) | 49.9 M | 34.1 M | 13.8 M | **13.8 M** 🏆 |
-| `duration_seconds` (kleiner) | 3149 | 2393 | 1884 | **1001** 🏆 |
+| `verification_pct` (higher) | 0.93 | 0.88 | 0.99 | **1.0** 🏆 |
+| `tests_passing` rate (higher) | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
+| `cost_usd` $ (lower) | 32.89 | 22.30 | 14.43 | **9.22** 🏆 |
+| `total_tokens` (lower) | 49.9 M | 34.1 M | 13.8 M | **13.8 M** 🏆 |
+| `duration_seconds` (lower) | 3149 | 2393 | 1884 | **1001** 🏆 |
 
-### game-of-life (Code-Qualitäts-Kata, alle Zellen `verification_pct` = 1.0)
+### game-of-life (code-quality kata, all cells `verification_pct` = 1.0)
 
-| Metrik (Richtung) | CC | OC | pi | cursor |
+| Metric (direction) | CC | OC | pi | cursor |
 |---|---:|---:|---:|---:|
-| `verification_pct` (höher) | **1.0** 🏆 | **1.0** 🏆 | **1.0** 🏆 | **1.0** 🏆 |
-| `cost_usd` $ (kleiner) | 3.45 | 1.99 | 1.78 | **1.48** 🏆 |
-| `total_tokens` (kleiner) | 4.09 M | 1.96 M | **1.07 M** 🏆 | 1.74 M |
-| `cognitive_max` (kleiner) | **5.0** 🏆 | 12.6 | 11.0 | 16.6 |
-| `mccabe_max` (kleiner) | **4.6** 🏆 | 8.8 | 8.0 | 10.6 |
-| `smell_total` (kleiner) | **2.2** 🏆 | 3.2 | 3.4 | 4.0 |
-| `refactorings_applied` (höher) | **8.8** 🏆 | 3.2 | 2.8 | 2.6 |
+| `verification_pct` (higher) | **1.0** 🏆 | **1.0** 🏆 | **1.0** 🏆 | **1.0** 🏆 |
+| `cost_usd` $ (lower) | 3.45 | 1.99 | 1.78 | **1.48** 🏆 |
+| `total_tokens` (lower) | 4.09 M | 1.96 M | **1.07 M** 🏆 | 1.74 M |
+| `cognitive_max` (lower) | **5.0** 🏆 | 12.6 | 11.0 | 16.6 |
+| `mccabe_max` (lower) | **4.6** 🏆 | 8.8 | 8.0 | 10.6 |
+| `smell_total` (lower) | **2.2** 🏆 | 3.2 | 3.4 | 4.0 |
+| `refactorings_applied` (higher) | **8.8** 🏆 | 3.2 | 2.8 | 2.6 |
 
-Trophy-Gating: `verification_pct` ist reine Korrektheit → ungated. Qualitäts-/
-Kosten-Trophies auf claim-office gehen nur an Zellen mit `verification_pct` = 1.0 —
-**das erreicht als einzige Zelle cursor (1.0)**, darum trägt cursor die
-claim-office-$/Token/Dauer-Trophies berechtigt (voll grün *und* am günstigsten/
-schnellsten). Bei game-of-life sind alle vier voll grün, alle Trophies regulär
-vergeben.
+Trophy gating: `verification_pct` is pure correctness → ungated. Quality/
+cost trophies on claim-office go only to cells with `verification_pct` = 1.0 —
+**the only cell achieving that is cursor (1.0)**, so cursor legitimately carries the
+claim-office $/token/duration trophies (fully green *and* cheapest/
+fastest). On game-of-life all four are fully green, all trophies awarded
+normally.
 
-**Cursor-Caveats (bindend, s. README § Cursor als 4. Harness):** (1) cursor-opus =
-`claude-opus-4-8-medium` (**medium effort** ≠ plain opus-4-8 der anderen Arme) — der
-schwächere Code-Qualitäts-Wert (höchste `cognitive_max`/`smell_total`, wenigste
-`refactorings_applied`) kann Effort- statt Harness-Effekt sein. (2) cursor läuft auf
-`v6.2.1-phase-continuation-cursor` (v6.2.1 ≈ v6.2, outcome-neutraler Fix). (3)
-`cost_usd` ist wie bei allen Armen Token×Preis-Schätzung (cursor liefert keine
-Inline-Kosten), native Listpreise.
+**Cursor caveats (binding, see README § Cursor as 4th harness):** (1) cursor-opus =
+`claude-opus-4-8-medium` (**medium effort** ≠ plain opus-4-8 of the other arms) — the
+weaker code-quality value (highest `cognitive_max`/`smell_total`, fewest
+`refactorings_applied`) may be an effort rather than a harness effect. (2) cursor runs on
+`v6.2.1-phase-continuation-cursor` (v6.2.1 ≈ v6.2, outcome-neutral fix). (3)
+`cost_usd` is a token×price estimate as with all arms (cursor returns no
+inline cost), at native list prices.
 
 ---
 
-## F-1.1 — Korrektheit ist harness-invariant
+## F-1.1 — Correctness is harness-invariant
 
-`tests_passing` (Korrektheit innen) = 100 % in allen acht Zellen.
-`verification_pct` (Korrektheit außen) auf game-of-life durchgängig 1.0
-(σ=0). Auf claim-office liegen alle vier hoch beieinander; cursor und pi am tightesten.
+`tests_passing` (Correctness internal) = 100 % in all eight cells.
+`verification_pct` (Correctness external) on game-of-life uniformly 1.0
+(σ=0). On claim-office all four sit closely together; cursor and pi are tightest.
 
 | Kata | Outcome | CC | OC | pi | cursor |
 |---|---|---:|---:|---:|---:|
@@ -74,22 +74,22 @@ Inline-Kosten), native Listpreise.
 | game-of-life | `tests_passing` | 100 % | 100 % | 100 % | 100 % |
 | game-of-life | `verification_pct` (mean) | 1.0 | 1.0 | 1.0 | 1.0 |
 
-Der Harness-Wechsel verschiebt die Korrektheit bei konstantem Modell und
-Workflow nicht systematisch. Die claim-office-Spanne (0.88–1.0) liegt
-innerhalb der Replikat-Streuung (σ bis 0.17 bei OC) — kein belastbarer
-Harness-Effekt auf die außen gemessene Korrektheit. cursor (1.0, σ=0, alle 5 Runs
-15/15) und pi (0.99, σ=0.03) sind am konsistentesten — bei cursor mitzudenken, dass
-es auf medium effort und v6.2.1 läuft (Caveats s. Übersicht).
+Switching harness does not systematically shift correctness at constant model and
+workflow. The claim-office range (0.88–1.0) lies
+within the replicate spread (σ up to 0.17 for OC) — no robust
+harness effect on externally measured correctness. cursor (1.0, σ=0, all 5 runs
+15/15) and pi (0.99, σ=0.03) are the most consistent — bearing in mind for cursor that
+it runs on medium effort and v6.2.1 (caveats see overview).
 
 ---
 
-## F-1.2 — cursor ist der günstigste und schnellste Harness; pi führt unter CC/OC/pi
+## F-1.2 — cursor is the cheapest and fastest harness; pi leads among CC/OC/pi
 
-Bei einheitlicher Token×Preis-Messung rangiert `cost_usd` auf beiden Katas
-**cursor < pi < OC < CC**. Cursor unterbietet pi (den bisherigen Günstigsten) klar
-und ist zusätzlich mit Abstand der schnellste Harness.
+Under uniform token×price measurement, `cost_usd` ranks on both katas
+**cursor < pi < OC < CC**. Cursor clearly undercuts pi (the previous cheapest)
+and is additionally by far the fastest harness.
 
-| Kata | Metrik | CC | OC | pi | cursor |
+| Kata | Metric | CC | OC | pi | cursor |
 |---|---|---:|---:|---:|---:|
 | claim-office | `cost_usd` $ | 32.89 | 22.30 | 14.43 | **9.22** |
 | claim-office | `total_tokens` | 49.9 M | 34.1 M | 13.8 M | 13.8 M |
@@ -98,74 +98,74 @@ und ist zusätzlich mit Abstand der schnellste Harness.
 | game-of-life | `total_tokens` | 4.09 M | 1.96 M | **1.07 M** | 1.74 M |
 | game-of-life | `duration_seconds` | 719 | 350 | 326 | **198** |
 
-Auf claim-office zieht cursor etwa gleich viele Tokens wie pi (13.8 M), ist im $
-aber günstiger, weil es nativ zum Anthropic-Listpreis abgerechnet wird statt zum
-~10 % höheren Requesty-vertex-Tarif der anderen Arme. Auf game-of-life zieht cursor
-sogar mehr Tokens als pi (1.74 M vs 1.07 M), bleibt im $ aber knapp vorn — derselbe
-Tarif-Effekt. Beim reinen Token-Aufwand (cache-bereinigter Proxy) führt weiter pi
-auf game-of-life; im abrechnungsnahen `cost_usd` führt cursor auf beiden Katas.
+On claim-office cursor draws roughly as many tokens as pi (13.8 M) but is
+cheaper in $, because it is billed natively at the Anthropic list price instead of at the
+~10 % higher Requesty vertex tariff of the other arms. On game-of-life cursor draws
+even more tokens than pi (1.74 M vs 1.07 M) yet stays narrowly ahead in $ — the same
+tariff effect. On pure token effort (the cache-adjusted proxy) pi still leads
+on game-of-life; on the billing-proximate `cost_usd` cursor leads on both katas.
 
-Die frühere H2-Erwartung (pi's Kostenvorteil kippt, wenn Caching überall echt
-greift) traf für CC/OC/pi **nicht** zu — dort blieb pi vorn. Erst der native
-Routing-Kanal von cursor (Listpreis statt Requesty-Aufschlag) unterbietet pi. Das
-ist damit teils ein **Tarif-Effekt** (nativ vs Requesty), nicht rein ein
-Token-Effizienz-Effekt: cursor gewinnt trotz gleicher/höherer Token-Zahl.
+The earlier H2 expectation (pi's cost advantage flips once caching genuinely
+applies everywhere) did **not** hold for CC/OC/pi — pi stayed ahead there. Only the native
+routing channel of cursor (list price instead of Requesty surcharge) undercuts pi. This
+is therefore partly a **tariff effect** (native vs Requesty), not purely a
+token-efficiency effect: cursor wins despite equal/higher token counts.
 
-Dauer-Bild getrennt: cursor ist unabhängig vom Tarif der schnellste Harness
-(claim-office 1001 s vs pi 1884 s, game-of-life 198 s vs pi 326 s) — hier zählt
-reine Wallclock, kein Preis. Ein Teil davon ist plausibel dem medium-effort-Modell
-zuzuschreiben (weniger Reasoning/Refactor-Tiefe → schneller; s. F-1.3 + Caveat).
+Duration picture, separately: cursor is the fastest harness independently of tariff
+(claim-office 1001 s vs pi 1884 s, game-of-life 198 s vs pi 326 s) — here pure
+wallclock counts, no price. Part of that is plausibly attributable to the medium-effort model
+(less reasoning/refactor depth → faster; see F-1.3 + caveat).
 
-Caveat: alle vier Werte sind List-Preis-Baseline (keine Inline-Kosten), nicht
-abgerechnete Beträge. CC/OC/pi tragen den Requesty-vertex-Tarif, cursor den nativen
-Anthropic-Listpreis — der Tarif-Unterschied ist Teil des cursor-Vorsprungs und beim
-Vergleich mitzuführen.
+Caveat: all four values are a list-price baseline (no inline cost), not
+billed amounts. CC/OC/pi carry the Requesty vertex tariff, cursor the native
+Anthropic list price — the tariff difference is part of cursor's lead and must be
+carried along in the comparison.
 
 ---
 
-## F-1.3 — Claude Code liefert auf game-of-life die schlankste Spitzen-Komplexität; cursor die höchste
+## F-1.3 — Claude Code delivers the leanest Complexity Peak on game-of-life; cursor the highest
 
-Auf game-of-life (alle Zellen voll korrekt) erzeugt CC deutlich niedrigere
-Komplexitäts-Peaks und mehr Refactorings als OC, pi und cursor. cursor liegt am
-anderen Ende — höchste Komplexität und wenigste Refactorings.
+On game-of-life (all cells fully correct) CC produces markedly lower
+complexity peaks and more refactorings than OC, pi and cursor. cursor sits at the
+other end — highest complexity and fewest refactorings.
 
-| Metrik (kleiner = besser, außer refactorings) | CC | OC | pi | cursor |
+| Metric (lower = better, except refactorings) | CC | OC | pi | cursor |
 |---|---:|---:|---:|---:|
 | `cognitive_max` | 5.0 | 12.6 | 11.0 | 16.6 |
 | `mccabe_max` | 4.6 | 8.8 | 8.0 | 10.6 |
-| `cc_longest_function` (Spitzen-Komplexität) | 11.6 | 21.8 | 17.8 | 23.2 |
-| `smell_total` (Smell-Summe) | 2.2 | 3.2 | 3.4 | 4.0 |
-| `refactorings_applied` (höher = besser) | 8.8 | 3.2 | 2.8 | 3.0 |
+| `cc_longest_function` (Complexity Peak) | 11.6 | 21.8 | 17.8 | 23.2 |
+| `smell_total` (Smell Total) | 2.2 | 3.2 | 3.4 | 4.0 |
+| `refactorings_applied` (higher = better) | 8.8 | 3.2 | 2.8 | 3.0 |
 
-CC's `cognitive_max` (5.0) liegt bei rund 30–45 % der OC/pi/cursor-Werte;
-der Abstand übersteigt die Replikat-Streuung (CC σ=1.87). Parallel
-wendet CC im Mittel 8.8 Refactorings an — fast das Dreifache der übrigen Harnesse.
-Der plausible Mechanismus: der Refactor-Subagent im CC-Workflow greift
-strukturell häufiger, was die Spitzen-Komplexität drückt. `code_mass` (Code-Mass
-APP) ist dagegen harness-nah (CC 158.6, OC 154.2, pi 150.8, cursor 141.8) — der
-Unterschied liegt in der Komplexitäts-**Verteilung**, nicht im Code-Umfang; cursor
-schreibt sogar die geringste Code-Mass, packt die Logik aber am dichtesten.
+CC's `cognitive_max` (5.0) sits at roughly 30–45 % of the OC/pi/cursor values;
+the gap exceeds the replicate spread (CC σ=1.87). In parallel
+CC applies 8.8 refactorings on average — almost three times the other harnesses.
+The plausible mechanism: the refactor subagent in the CC workflow engages
+structurally more often, which pushes down the Complexity Peak. `code_mass` (Code Mass
+APP) is by contrast harness-close (CC 158.6, OC 154.2, pi 150.8, cursor 141.8) — the
+difference lies in the **distribution** of complexity, not in code volume; cursor
+even writes the lowest Code Mass, but packs the logic most densely.
 
-**cursor als Komplexitäts-Schlusslicht — Effort-Caveat greift hier am stärksten:**
-cursor läuft auf `claude-opus-4-8-medium` (medium effort). Weniger Reasoning- und
-Refactor-Tiefe passt genau zum Bild (wenigste Refactorings, höchste Peaks). Ob das
-ein Harness- oder ein Effort-Effekt ist, lässt sich mit diesem Arm nicht trennen —
-ein default-effort-cursor-Arm existiert nicht. Der cursor-Qualitäts-Nachteil ist
-darum **nicht als Harness-Aussage** zu lesen, sondern als konfundierter Effort+Harness-Wert.
+**cursor as complexity laggard — the effort caveat bites hardest here:**
+cursor runs on `claude-opus-4-8-medium` (medium effort). Less reasoning and
+refactor depth fits the picture exactly (fewest refactorings, highest peaks). Whether that
+is a harness or an effort effect cannot be separated with this arm —
+a default-effort cursor arm does not exist. The cursor quality disadvantage is
+therefore **not to be read as a harness statement**, but as a confounded effort+harness value.
 
-Auf claim-office ist das Bild schwächer und teils umgekehrt (`cognitive_max`
+On claim-office the picture is weaker and partly reversed (`cognitive_max`
 CC 3.0 < pi 3.6 < OC 4.6 < cursor 7.2; `cc_longest_function` CC 15.0 < OC 18.4 <
-cursor 19.0 < pi 22.0) — der klare CC-Vorteil ist game-of-life-spezifisch, cursor
-bleibt aber auch hier am oberen Komplexitäts-Ende.
+cursor 19.0 < pi 22.0) — the clear CC advantage is game-of-life-specific, but cursor
+remains at the upper complexity end here too.
 
 ---
 
-## F-1.4 — TDD-Disziplin ist über alle Harnesse strukturgleich, außer Refactor-Intensität
+## F-1.4 — TDD discipline is structurally equal across all harnesses, except refactor intensity
 
-`cycle_count` und `predictions_correct_rate` laufen über alle vier Harnesse
-parallel; nur `refactorings_applied` trennt CC (mehr) von OC/pi/cursor.
+`cycle_count` and `predictions_correct_rate` run in parallel across all four harnesses;
+only `refactorings_applied` separates CC (more) from OC/pi/cursor.
 
-| Kata | Metrik | CC | OC | pi | cursor |
+| Kata | Metric | CC | OC | pi | cursor |
 |---|---|---:|---:|---:|---:|
 | claim-office | `cycle_count` | 39.8 | 36.4 | 40.2 | 46.0 |
 | claim-office | `predictions_correct_rate` | 99.5 % | 99.2 % | 99.4 % | 98.9 % |
@@ -174,17 +174,17 @@ parallel; nur `refactorings_applied` trennt CC (mehr) von OC/pi/cursor.
 | game-of-life | `predictions_correct_rate` | 100 % | 90.5 % | 97.6 % | 100 % |
 | game-of-life | `refactorings_applied` | 8.8 | 3.2 | 2.8 | 3.0 |
 
-Die TDD-Grundmechanik (Zyklen, Vorhersage-Trefferquote) ist harness-invariant —
-Zyklenzahl innerhalb der Streuung pro Kata (cursor auf claim-office mit 46.0 leicht
-höher, aber σ=16 breit), Vorhersage-Trefferquote 90–100 % überall. Das bestätigt
-H4 für die Kern-Disziplin über alle vier Harnesse. Der einzige robuste Unterschied
-ist die Refactor-Intensität: CC refaktoriert auf game-of-life ~2.8× häufiger als
-OC/pi/cursor, was direkt die niedrigere Spitzen-Komplexität aus F-1.3 speist. cursor
-reiht sich bei der Refactor-Intensität zu OC/pi (game-of-life 3.0) — konsistent mit
-dem medium-effort-Bild. Die game-of-life-`predictions_correct_rate` bei OC (90.5 %,
-gepoolt aus nur 84 Vorhersagen) liegt tiefer, ist aber wegen der kleinen
-Grundgesamtheit weniger belastbar als die claim-office-Werte (>340 Vorhersagen, alle ~99 %).
+The basic TDD mechanics (cycles, prediction hit rate) are harness-invariant —
+cycle count within the spread per kata (cursor slightly higher on claim-office at 46.0,
+but with a broad σ=16), prediction hit rate 90–100 % everywhere. This confirms
+H4 for the core discipline across all four harnesses. The only robust difference
+is refactor intensity: on game-of-life CC refactors ~2.8× more often than
+OC/pi/cursor, which directly feeds the lower Complexity Peak from F-1.3. cursor
+lines up with OC/pi on refactor intensity (game-of-life 3.0) — consistent with
+the medium-effort picture. The game-of-life `predictions_correct_rate` for OC (90.5 %,
+pooled from only 84 predictions) is lower, but less robust because of the small
+base population than the claim-office values (>340 predictions, all ~99 %).
 
-Marker-Provenienz-Hinweis: cursor-Runs tragen `marker_source=null` (der cursor-Parser
-dokumentiert seinen Parse-Pfad so); die TDD-Metriken sind dennoch voll befüllt
-(cycle_count 32–69, predictions 44–96) und plausibel — kein Parser-Ausfall.
+Marker provenance note: cursor runs carry `marker_source=null` (that is how the cursor parser
+documents its parse path); the TDD metrics are nevertheless fully populated
+(cycle_count 32–69, predictions 44–96) and plausible — no parser failure.

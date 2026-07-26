@@ -1,6 +1,6 @@
 ---
 id: RQ-model-novel-oc
-question: "Wie unterscheiden sich fünf via OpenCode-Harness erreichbare Modelle in Korrektheit und TDD-Disziplin auf claim-office-example-mapping mit dem v5.1-testlist-scope-fix-oc-Workflow?"
+question: "How do five models reachable via the OpenCode harness differ in correctness and TDD discipline on claim-office-example-mapping with the v5.1-testlist-scope-fix-oc workflow?"
 factors:
   model:
     - opus-4-7-portkey
@@ -16,23 +16,23 @@ controls:
   kata_base: claim-office
   prompt: example-mapping
 outcomes:
-  # primär: Korrektheit außen (claim-office hat externe Verification-Suite)
+  # primary: correctness (external) — claim-office has an external verification suite
   - verification_pct
   - verification_passed
   - verification_total
-  # sekundär: Code-Qualität
+  # secondary: code quality
   - code_mass
   - cognitive_max
   - mccabe_max
   - cc_longest_function
   - lines_of_code
   - smell_total
-  # tertiär: TDD-Disziplin (v5.1-oc liefert diese dank parse_opencode_transcript)
+  # tertiary: TDD discipline (v5.1-oc provides these thanks to parse_opencode_transcript)
   - cycle_count
   - refactorings_applied
   - predictions_correct
   - predictions_total
-  # Kontext
+  # context
   - tests_passing
   - tests_total
   - completed_within_budget
@@ -42,61 +42,61 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-model-novel-oc: Modell-Effekt auf novel Kata (OpenCode-Harness)
+# RQ-model-novel-oc: Model effect on a novel kata (OpenCode harness)
 
 ## Motivation
 
-Parallel zu RQ-model-quality-oc (game-of-life, Code-Qualität), aber auf der härteren Achse: **Spec-Verstehen und Vollständigkeit der Implementierung**. `claim-office-example-mapping` ist eine novel Kata mit fünf bewusst konstruierten Mehrdeutigkeiten und einer externen Verification-Suite (15 Szenarien) — keine reine Training-Recall-Übung wie game-of-life.
+Parallel to RQ-model-quality-oc (game-of-life, code quality), but on the harder axis: **spec comprehension and completeness of the implementation**. `claim-office-example-mapping` is a novel kata with five deliberately constructed ambiguities and an external verification suite (15 scenarios) — not a pure training-recall exercise like game-of-life.
 
-RQ-model-novel (CC-Seite) hat gezeigt, dass `verification_pct` auf claim-office Modelle stärker differenziert als jede Code-Qualitäts-Metrik auf game-of-life. Diese RQ überträgt den Test auf die OpenCode-Seite mit fünf neuen Modellen und dem v5.1-Workflow (TDD mit Skills).
+RQ-model-novel (CC side) has shown that `verification_pct` on claim-office differentiates models more strongly than any code-quality metric on game-of-life. This RQ transfers the test to the OpenCode side with five new models and the v5.1 workflow (TDD with skills).
 
-## Vorhandene Daten (Stand 2026-05-25)
+## Existing data (as of 2026-05-25)
 
-Aus Routing-Smokes vorhanden (n=1 pro Zelle, counten für `min_replicates`):
+Available from routing smokes (n=1 per cell, count toward `min_replicates`):
 
-| Modell | verification_pct | tests | cycles | preds | done | Wallclock |
+| Model | verification_pct | tests | cycles | preds | done | Wallclock |
 |---|---|---|---|---|---|---|
 | opus-4-7-portkey | 1.00 (15/15) | 36 | 2 | 4/4 | ✓ | 12 min |
 | kimi-k2-6 | 1.00 (15/15) | 46 | 3 | 0/0 | ✓ | 32 min |
 | minimax-m2-7 | 0.00 (0/15) | 37 | 1 | 0/2 | ✓ | 35 min |
 | gemini-3-5-flash | 1.00 (15/15) | 32 | 2 | 0/0 | ✓ | 8 min |
-| mistral-medium-3-5 | — | — | — | — | — | — (noch kein Smoke; via Portkey `@mistral/mistral-medium-3-5`) |
+| mistral-medium-3-5 | — | — | — | — | — | — (no smoke yet; via Portkey `@mistral/mistral-medium-3-5`) |
 | deepseek-v4-flash | 0.00 (0/15) | 53 | n/a | n/a | ✓ | 28 min |
 | deepseek-v4-pro | 0.00 (0/15) | 26 | n/a | n/a | ✓ | 21 min |
 
-Bemerkenswert: MiniMax schreibt 37 eigene Tests und macht sie grün, scheitert aber an allen 15 externen Verifikations-Szenarien — klassischer Spec-Misverständnis-Fall, genau der Kata-Mehrdeutigkeits-Effekt wofür claim-office gebaut wurde. Wird sich bei n=5 zeigen ob das systematisch oder Einzelfall ist.
+Notable: MiniMax writes 37 of its own tests and makes them green, but fails all 15 external verification scenarios — a classic spec-misunderstanding case, exactly the kata ambiguity effect claim-office was built for. n=5 will show whether this is systematic or an isolated case.
 
-DeepSeek V4 (2026-05-28 hinzugefügt, Routing via `@openrouter-eval/deepseek/deepseek-v4-{flash,pro}`): beide Smokes laufen v5.1-oc autonom durch (kein Continuation-Drop), schreiben done.txt, eigene Tests grün — aber 0/15 externe Verification bei beiden, jeweils **mechanisch durch CLI-Vertrags-Verletzung**, nicht durch Spec-Misverständnis:
+DeepSeek V4 (added 2026-05-28, routing via `@openrouter-eval/deepseek/deepseek-v4-{flash,pro}`): both smokes run v5.1-oc autonomously through (no continuation drop), write done.txt, own tests green — but 0/15 external verification for both, in each case **mechanically through a CLI contract violation**, not through spec misunderstanding:
 
-- **`deepseek-v4-flash`**: Library-Code (`processScenario`) korrekt am Input-Schema (`item.type`), aber **kein `src/cli.ts` geschrieben** — Verification-Suite kann den Entry-Point nicht aufrufen.
-- **`deepseek-v4-pro`**: `src/cli.ts` existiert und definiert `runCLI()`, **ruft sie aber nirgends auf** — `tsx src/cli.ts` liefert leeren stdout, exit 0. Zusätzlich Input-Schema-Drift (`category/declaredValue` statt `type`).
+- **`deepseek-v4-flash`**: Library code (`processScenario`) correct against the input schema (`item.type`), but **no `src/cli.ts` written** — the verification suite cannot invoke the entry point.
+- **`deepseek-v4-pro`**: `src/cli.ts` exists and defines `runCLI()`, **but never calls it anywhere** — `tsx src/cli.ts` yields empty stdout, exit 0. Additionally input-schema drift (`category/declaredValue` instead of `type`).
 
-Beide Modelle scheitern damit an der Workflow-Form (CLI-Wrapper-Vertrag stdin→parse→processScenario→stdout), nicht an der Kata-Mehrdeutigkeit. Vergleichbar mit `qwen3-coder-480b`-Befund, aber subtiler (done.txt da, Tests grün). Bei n=5 zeigt sich ob das systematisch ist — falls ja, ist DeepSeek wie qwen3 ein Workflow-Compat-Drop und sagt nichts über Spec-Verstehen.
+Both models therefore fail on the workflow form (CLI wrapper contract stdin→parse→processScenario→stdout), not on the kata ambiguity. Comparable to the `qwen3-coder-480b` finding, but subtler (done.txt present, tests green). n=5 will show whether this is systematic — if so, DeepSeek is, like qwen3, a workflow-compat drop and says nothing about spec comprehension.
 
-## Modell-Auswahl
+## Model selection
 
-Gemini 2.5 Pro wurde am 2026-05-25 aus der RQ entfernt: drei Smoke-Versuche (91s/314s/85s) zeigten konsistent vorzeitigen Abbruch des autonomen Loops nach 1-2 Cycles ohne `experiment-done.txt`. Auch expliziter Continuation-Prompt ("Do NOT stop... continue until experiment-done.txt") änderte nichts — Pro interpretiert ein passierendes `pnpm test` als natürliches Conversation-Ende und stoppt mit empty turn. v5.1-oc-Compatibility-Issue, kein Routing- oder Modell-Stärke-Problem.
+Gemini 2.5 Pro was removed from the RQ on 2026-05-25: three smoke attempts (91s/314s/85s) consistently showed a premature abort of the autonomous loop after 1-2 cycles without `experiment-done.txt`. An explicit continuation prompt ("Do NOT stop... continue until experiment-done.txt") changed nothing either — Pro interprets a passing `pnpm test` as a natural end of conversation and stops with an empty turn. A v5.1-oc compatibility issue, not a routing or model-strength problem.
 
-Am 2026-05-26 wurden vier weitere via Portkey verfügbare Coding-Modelle smoke-getestet und alle vier nicht in die RQ aufgenommen (Routing in `portkey-cc` Workspace funktionierte sauber, aber v5.1-oc-Workflow-Compatibility versagte jeweils auf andere Art):
+On 2026-05-26 four further coding models available via Portkey were smoke-tested and none of the four were included in the RQ (routing in the `portkey-cc` workspace worked cleanly, but v5.1-oc workflow compatibility failed in a different way in each case):
 
-- **`devstral-medium-2507` (`@mistral/devstral-medium-2507`)**: 366 tool-calls in einem Edit-Loop, am Ende 0 LOC persistiert, schreibt aber `experiment-done.txt` mit "significant progress" — kein nutzbarer Output trotz hoher Aktivität.
-- **`devstral-2512` (`@mistral/devstral-2512`)**: Echtes TDD (65 LOC, 6 Tests), schreibt aber `experiment-done.txt` **mit roten Tests** — verletzt die Workflow-Invariante "done.txt only when all tests green".
-- **`codestral-2508` (`@mistral/codestral-2508`)**: Stoppt nach 2 tool-calls in der Test-List-Erstellungs-Phase, ohne `.ts`-Datei und ohne `experiment-done.txt` — Modell zu schwach für autonome Multi-Schritt-Tasks dieser Klasse.
-- **`qwen3-coder-480b` (`@bedrock-eu-north-1/qwen.qwen3-coder-480b-a35b-v1:0`)**: TDD inkl. Refactoring funktioniert, stoppt aber nach Test 2 ohne `experiment-done.txt` — derselbe Continuation-Drop wie Gemini 2.5 Pro.
+- **`devstral-medium-2507` (`@mistral/devstral-medium-2507`)**: 366 tool calls in an edit loop, 0 LOC persisted at the end, but writes `experiment-done.txt` with "significant progress" — no usable output despite high activity.
+- **`devstral-2512` (`@mistral/devstral-2512`)**: Real TDD (65 LOC, 6 tests), but writes `experiment-done.txt` **with red tests** — violates the workflow invariant "done.txt only when all tests green".
+- **`codestral-2508` (`@mistral/codestral-2508`)**: Stops after 2 tool calls in the test-list creation phase, without a `.ts` file and without `experiment-done.txt` — model too weak for autonomous multi-step tasks of this class.
+- **`qwen3-coder-480b` (`@bedrock-eu-north-1/qwen.qwen3-coder-480b-a35b-v1:0`)**: TDD including refactoring works, but stops after test 2 without `experiment-done.txt` — the same continuation drop as Gemini 2.5 Pro.
 
-Keines der vier hat `src/cli.ts` geschrieben (verification-suite hätte `null` ergeben). Routing-Mappings für alle vier bleiben in `experiments/docker/run-batch.sh` registriert, falls sie unter einem anderen Workflow (z.B. v1-oneshot-oc als Untergrenze) getestet werden sollen.
+None of the four wrote `src/cli.ts` (the verification suite would have yielded `null`). Routing mappings for all four remain registered in `experiments/docker/run-batch.sh`, in case they are to be tested under a different workflow (e.g. v1-oneshot-oc as a lower bound).
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (v5.1-Workflow hebt OC-Niveau)**: opus-4-7-portkey × v5.1-oc × claim-office-EM erreicht `verification_pct` deutlich über dem v1-oneshot-oc-Niveau (0.20) — Skeleton-Befund 1.00 ist konsistent damit. Erwartung: mean >= 0.8 über n=5.
-- **H2 (Modell-Spreizung sichtbar)**: Die vier Modelle zeigen über `verification_pct` Spreizung — Smoke deutet bereits an: Opus/Kimi/Flash bei 1.00, MiniMax bei 0.00. Wenn das stabil ist, ist die Spreizung dichotom (15/15 vs 0/15) statt graduell — claim-office als Pass/Fail-Filter für Spec-Verstehen.
-- **H3 (Flash überraschend stark)**: gemini-3-5-flash hat im Smoke perfekte Korrektheit (15/15) trotz Flash-Positionierung als "schnelles/kleines" Modell. Bei n=5 prüfen ob das stabil ist oder Glücksfall war (n=1 + bekannt heikle Kata = vorsichtige Interpretation).
-- **H4 (TDD-Disziplin und Korrektheit korrelieren NICHT linear)**: Smoke-Befund: Opus 4/4 Predictions + 15/15 Verification; Kimi 0/0 Predictions + 15/15 Verification. Predictions-Format-Compliance ist nicht notwendig für Korrektheit — der TDD-Inhalt (Test-First-Disziplin) wirkt anscheinend unabhängig von der spezifischen Prediction-Marker-Compliance.
+- **H1 (v5.1 workflow lifts the OC level)**: opus-4-7-portkey × v5.1-oc × claim-office-EM reaches a `verification_pct` clearly above the v1-oneshot-oc level (0.20) — the skeleton finding of 1.00 is consistent with that. Expectation: mean >= 0.8 over n=5.
+- **H2 (model spread visible)**: The four models show a spread over `verification_pct` — the smoke already suggests: Opus/Kimi/Flash at 1.00, MiniMax at 0.00. If that is stable, the spread is dichotomous (15/15 vs 0/15) rather than graded — claim-office as a pass/fail filter for spec comprehension.
+- **H3 (Flash surprisingly strong)**: gemini-3-5-flash has perfect correctness in the smoke (15/15) despite Flash's positioning as a "fast/small" model. Check at n=5 whether this is stable or was luck (n=1 + a known tricky kata = cautious interpretation).
+- **H4 (TDD discipline and correctness do NOT correlate linearly)**: Smoke finding: Opus 4/4 predictions + 15/15 verification; Kimi 0/0 predictions + 15/15 verification. Prediction-format compliance is not necessary for correctness — the TDD substance (test-first discipline) apparently works independently of the specific prediction-marker compliance.
 
-## Methodologische Anmerkungen
+## Methodological notes
 
-- Skeleton-Befund `verification_pct=1.0` ist EIN Datenpunkt — Replikate werden zeigen, ob das stabil ist oder Glücksfall. Memory [[replicates-n-reliability]]: n=3 bimodal-erkennend, n=5 für mittlere Sicherheit.
-- v5.1-Workflow erzwingt skill-Tool-Aufrufe, aber Agent-Drift nach 1-2 Cycles ist beobachtet (Skeleton: nur 2 Skill-Aufrufe trotz ~18 echter TDD-Cycles). `cycle_count` ist damit konservativ; tatsächliche TDD-Aktivität höher.
-- Alle fünf Modelle via Portkey, gemischte Backprovider — siehe RQ-model-quality-oc für Routing-Details.
-- Vorhandene v1-oneshot-oc-Smokes auf claim-office (verification 0.20) zeigen den Workflow-Effekt: v1 ohne TDD-Mechanik vs v5.1 mit Skills macht ~50 Prozentpunkte Unterschied bei Opus. Cross-Workflow-Comparison aber Gegenstand einer separaten RQ.
-- `cli.ts`-Nudge ist für OC NICHT verdrahtet. Falls Nicht-Anthropic-Modelle systematisch `src/cli.ts` vergessen → `verification_pct=null`. AGENTS.md verlangt cli.ts explizit; v5.1-Smoke hat funktioniert. Beobachten beim ersten Batch.
+- The skeleton finding `verification_pct=1.0` is ONE data point — replicates will show whether it is stable or luck. Memory [[replicates-n-reliability]]: n=3 detects bimodality, n=5 for medium confidence.
+- The v5.1 workflow enforces skill-tool calls, but agent drift after 1-2 cycles has been observed (skeleton: only 2 skill calls despite ~18 real TDD cycles). `cycle_count` is therefore conservative; actual TDD activity is higher.
+- All five models via Portkey, mixed backproviders — see RQ-model-quality-oc for routing details.
+- Existing v1-oneshot-oc smokes on claim-office (verification 0.20) show the workflow effect: v1 without TDD mechanics vs v5.1 with skills makes a ~50 percentage point difference for Opus. Cross-workflow comparison is, however, the subject of a separate RQ.
+- The `cli.ts` nudge is NOT wired for OC. Should non-Anthropic models systematically forget `src/cli.ts` → `verification_pct=null`. AGENTS.md demands cli.ts explicitly; the v5.1 smoke worked. Observe during the first batch.

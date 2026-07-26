@@ -1,24 +1,24 @@
 ---
 id: RQ-model-quality-pi
-question: "Wie unterscheiden sich die via pi-Harness (Requesty-Routing) erreichbaren Modelle in Code-Qualität und TDD-Disziplin auf game-of-life-example-mapping mit dem v6.2.1-phase-continuation-pi-Workflow?"
+question: "How do the models reachable via the pi harness (Requesty routing) differ in code quality and TDD discipline on game-of-life-example-mapping with the v6.2.1-phase-continuation-pi workflow?"
 factors:
   model:
-    - opus-4-8            # aktuelles Opus (vertex/bedrock claude-opus-4-8@eu)
-    - sonnet-5            # aktuelles Sonnet (vertex/claude-sonnet-5@eu)
+    - opus-4-8            # current Opus (vertex/bedrock claude-opus-4-8@eu)
+    - sonnet-5            # current Sonnet (vertex/claude-sonnet-5@eu)
     - gpt-5-6-sol         # GPT SOL (azure/gpt-5.6-sol@swedencentral)
     - gpt-5-6-terra       # GPT TERRA (azure/gpt-5.6-terra@swedencentral)
     - glm-5-1             # GLM 5.1 (nebius/zai-org/glm-5.1)
     - glm-5-2             # GLM 5.2 (tensorx/glm-5.2)
-    - kimi-k2-7           # aktuelles Kimi (tensorx/kimi-k2.7-code)
+    - kimi-k2-7           # current Kimi (tensorx/kimi-k2.7-code)
     - minimax-m3          # MiniMax M3 (tensorx/minimax-m3)
     - deepseek-v4-pro     # DeepSeek V4 Pro (tensorx/deepseek-v4-pro)
-    - qwen3-235b          # aktuelles Qwen (nebius/qwen/qwen3-235b-a22b-instruct-2507)
+    - qwen3-235b          # current Qwen (nebius/qwen/qwen3-235b-a22b-instruct-2507)
 controls:
   workflow: v6.2.1-phase-continuation-pi
   kata_base: game-of-life
   prompt: example-mapping
 outcomes:
-  # primär: Code-Qualität (game-of-life trägt das Code-Qualitäts-Signal)
+  # primary: code quality (game-of-life carries the code-quality signal)
   - code_mass
   - cognitive_max
   - cognitive_avg
@@ -32,16 +32,16 @@ outcomes:
   - smell_complexity
   - smell_magic_numbers
   - smell_duplication
-  # sekundär: Korrektheit
-  - verification_pct  # extern (game-of-life-verification)
-  - tests_passing     # intern (vitest)
+  # secondary: correctness
+  - verification_pct  # external (game-of-life-verification)
+  - tests_passing     # internal (vitest)
   - tests_total
-  # tertiär: TDD-Disziplin
+  # tertiary: TDD discipline
   - cycle_count
   - refactorings_applied
   - predictions_correct
   - predictions_total
-  # Kontext
+  # context
   - completed_within_budget
   - duration_seconds
   - total_tokens
@@ -50,21 +50,21 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-model-quality-pi: Modell-Effekt auf Code-Qualität (pi-Harness)
+# RQ-model-quality-pi: Model effect on code quality (pi harness)
 
 ## Motivation
 
-Mit pi als drittem Harness (nach Claude Code und OpenCode) werden Modelle über einen weiteren Routing-Pfad erreichbar: pi routet via **Requesty** (`provider=requesty`, `api:"openai-completions"`, Bearer-Auth), das GPT-5.x (Azure), kimi/minimax (Bedrock/Inceptron/TensorX), glm/deepseek (TensorX/Nebius), Gemini (Vertex) und Mistral/Nebius-Modelle unter einer OpenAI-kompatiblen Schnittstelle bündelt.
+With pi as the third harness (after Claude Code and OpenCode), models become reachable over another routing path: pi routes via **Requesty** (`provider=requesty`, `api:"openai-completions"`, bearer auth), which bundles GPT-5.x (Azure), kimi/minimax (Bedrock/Inceptron/TensorX), glm/deepseek (TensorX/Nebius), Gemini (Vertex) and Mistral/Nebius models under one OpenAI-compatible interface.
 
-Diese RQ misst den **Modell-Effekt auf Code-Qualität und TDD-Disziplin** in einem harness-konstanten Setting (alle Zellen pi, alle gleicher Workflow, alle gleiche Kata). Sie ist das **direkte Pendant** zu RQ-model-quality (Claude-Code-Seite) und RQ-model-quality-oc (OpenCode-Seite) — aber mit `v6.2.1-phase-continuation-pi` als Workflow. Der Workflow-Unterschied muss bei Findings-Vergleichen über die Harnesse hinweg explizit benannt werden, KEIN 1:1-Transfer.
+This RQ measures the **model effect on code quality and TDD discipline** in a harness-constant setting (all cells pi, all the same workflow, all the same kata). It is the **direct counterpart** to RQ-model-quality (Claude Code side) and RQ-model-quality-oc (OpenCode side) — but with `v6.2.1-phase-continuation-pi` as the workflow. The workflow difference must be named explicitly when comparing findings across harnesses, NO 1:1 transfer.
 
-`game-of-life-example-mapping` als Kata: trägt das Code-Qualitäts-Signal (`smell_total`, `cognitive_max`, etc. differenzieren) und ist example-mapping-kompatibel (v6.2.1 erlaubt wie v6.2 alle drei Prompt-Stile). claim-office wird parallel in RQ-model-novel-pi untersucht (Korrektheit als primärer Outcome).
+`game-of-life-example-mapping` as kata: carries the code-quality signal (`smell_total`, `cognitive_max`, etc. differentiate) and is example-mapping compatible (v6.2.1, like v6.2, permits all three prompt styles). claim-office is investigated in parallel in RQ-model-novel-pi (correctness as primary outcome).
 
-## Harness-Status: Walking Skeleton
+## Harness status: walking skeleton
 
-**Stand 2026-07-24**: Die Lab-Variant→pi-Modell-Mappings für alle `factors.model`-Werte dieser RQ sind in `experiments/docker/run-batch.sh` (`harness = pi`-Branch, `case "$model_name"`) verdrahtet, mit IDs 1:1 aus `pi-config/agent/models.json`:
+**As of 2026-07-24**: The lab-variant→pi model mappings for all `factors.model` values of this RQ are wired into `experiments/docker/run-batch.sh` (`harness = pi` branch, `case "$model_name"`), with IDs taken 1:1 from `pi-config/agent/models.json`:
 
-| Lab-Variant | Requesty-Route |
+| Lab variant | Requesty route |
 |---|---|
 | `opus-4-8` | `requesty/vertex/claude-opus-4-8@eu` |
 | `sonnet-5` | `requesty/vertex/claude-sonnet-5@eu` |
@@ -77,37 +77,37 @@ Diese RQ misst den **Modell-Effekt auf Code-Qualität und TDD-Disziplin** in ein
 | `deepseek-v4-pro` | `requesty/tensorx/deepseek-v4-pro` |
 | `qwen3-235b` | `requesty/nebius/qwen/qwen3-235b-a22b-instruct-2507` |
 
-Diese RQ ist zunächst **offen (n=0)**: Mapping steht, aber pro Modell fehlt noch der erste Batch. Vorgehen identisch zum Start von `questions-opencode/`. Der Workflow `v6.2.1-phase-continuation-pi` adressiert gezielt den Continuation-Drop am Übergang Test-List→Red, der unter `v6.2-with-why-cleaned-pi` bei kimi und minimax Runs abbrechen ließ (nur Test-List, kein `src/cli.ts`). Smoke-Beleg auf claim-office × v6.2.1 (2026-07-25): kimi-k2-7 und minimax-m3-no-thinking laufen jetzt autonom durch (`cli_built=true`, grüne Tests, `experiment-done.txt`). Ob jedes Modell den Loop stabil zu Ende führt, ist pro Zelle nach dem Erstbatch zu prüfen.
+This RQ is initially **open (n=0)**: the mapping is in place, but the first batch is still missing for every model. Procedure identical to the start of `questions-opencode/`. The workflow `v6.2.1-phase-continuation-pi` specifically addresses the continuation drop at the test-list→red transition, which under `v6.2-with-why-cleaned-pi` caused kimi and minimax runs to abort (test list only, no `src/cli.ts`). Smoke evidence on claim-office × v6.2.1 (2026-07-25): kimi-k2-7 and minimax-m3-no-thinking now run autonomously through (`cli_built=true`, green tests, `experiment-done.txt`). Whether every model carries the loop stably to the end is to be checked per cell after the first batch.
 
-## Vorhandene Daten
+## Existing data
 
-- **Stand 2026-07-24**: Keine game-of-life-Runs für irgendeine Zelle dieser RQ. Erstbatch komplett offen. (Vorhandene pi-Runs auf `v6.2-with-why-cleaned-pi` und `v6.2.1-phase-continuation-pi` liegen auf claim-office, nicht auf game-of-life — siehe RQ-model-novel-pi.)
+- **As of 2026-07-24**: No game-of-life runs for any cell of this RQ. First batch completely open. (Existing pi runs on `v6.2-with-why-cleaned-pi` and `v6.2.1-phase-continuation-pi` are on claim-office, not on game-of-life — see RQ-model-novel-pi.)
 
-## Modell-Auswahl
+## Model selection
 
-Die `factors.model`-Liste ist vom User gesetzt: aktuelles Opus + Sonnet (Anthropic-Anker, harness-übergreifend zu `-oc`/CC vergleichbar), GPT-5.6 **SOL und TERRA** (Intra-Familie-Varianten, analog zu GLM 5.1/5.2), GLM 5.1 **und** 5.2 (direkter Intra-Familie-Versionsvergleich), aktuelles Kimi, plus MiniMax M3, DeepSeek V4 Pro und aktuelles Qwen (qwen3-235b). Pro Modell gilt wie bei `-oc`: Aufnahme, wenn der autonome Loop unter `v6.2.1-phase-continuation-pi` sauber durchläuft und `src/cli.ts` geschrieben wird. Modelle, die den Skill-Loop nicht zuverlässig zu Ende führen (Continuation-Drop, done.txt mit roten Tests, kein cli.ts), werden mit Begründung aus der RQ genommen und hier dokumentiert — analog zur Gemini-2.5-Pro-/Devstral-/Codestral-Historie in `questions-opencode/`. Der Test-List→Red-Continuation-Drop, der unter v6.2 kimi/minimax betraf, ist in v6.2.1 gefixt (siehe Harness-Status).
+The `factors.model` list is set by the user: current Opus + Sonnet (Anthropic anchor, comparable across harnesses to `-oc`/CC), GPT-5.6 **SOL and TERRA** (intra-family variants, analogous to GLM 5.1/5.2), GLM 5.1 **and** 5.2 (direct intra-family version comparison), current Kimi, plus MiniMax M3, DeepSeek V4 Pro and current Qwen (qwen3-235b). Per model the same rule applies as for `-oc`: inclusion if the autonomous loop runs cleanly through under `v6.2.1-phase-continuation-pi` and `src/cli.ts` is written. Models that do not reliably finish the skill loop (continuation drop, done.txt with red tests, no cli.ts) are removed from the RQ with justification and documented here — analogous to the Gemini 2.5 Pro / Devstral / Codestral history in `questions-opencode/`. The test-list→red continuation drop that affected kimi/minimax under v6.2 is fixed in v6.2.1 (see harness status).
 
-MiniMax und DeepSeek sind bewusst dabei, weil sie im `-oc`-Pendant klare, dokumentierte Kontrastprofile hatten: MiniMax = "interne Tests grün, externe Verification 0/15" (Spec-Misverständnis), DeepSeek-Pro = Skill-Compliance-Champion mit Duration-Tail-Risk. Das macht den Cross-Harness-Vergleich direkt.
+MiniMax and DeepSeek are deliberately included because they had clear, documented contrast profiles in the `-oc` counterpart: MiniMax = "internal tests green, external verification 0/15" (spec misunderstanding), DeepSeek-Pro = skill-compliance champion with duration tail risk. That makes the cross-harness comparison direct.
 
-Der Backprovider-Pfad ist in jeder Lab-Variant implizit gepinnt (Opus/Sonnet via Vertex EU, GPT via Azure, GLM-5.1 via Nebius, GLM-5.2 + Kimi + MiniMax + DeepSeek via TensorX, Qwen via Nebius); ein wechselnder Backprovider braucht eine neue Variant.
+The backprovider path is implicitly pinned in every lab variant (Opus/Sonnet via Vertex EU, GPT via Azure, GLM-5.1 via Nebius, GLM-5.2 + Kimi + MiniMax + DeepSeek via TensorX, Qwen via Nebius); a changing backprovider requires a new variant.
 
-### Nicht aufgenommen / weitere Kandidaten
+### Not included / further candidates
 
-- **Gemma**: In `pi-config/agent/models.json` **nicht vorhanden** (kein Gemma bei Requesty konfiguriert). Erst aufnehmbar, wenn ein Gemma-Modell in `models.json` ergänzt und via Requesty routbar ist.
-- **`gpt-5-6-luna`** (Azure) — drittes GPT-5.6-Geschwister neben SOL und TERRA; würde den GPT-Zweig weiter spreizen.
-- **`gemini-2-5-pro`** (`vertex/gemini-2.5-pro@europe-west1`) — im `-oc`-Lauf wegen Continuation-Drop raus; unter v6.2.1 (expliziter Phase-Continuation-Fix) evtl. stabiler.
-- **`qwen3-next-80b-a3b-thinking`** (Nebius) — thinking-Variante neben dem aufgenommenen qwen3-235b, falls der Qwen-Zweig gespreizt werden soll.
+- **Gemma**: **Not present** in `pi-config/agent/models.json` (no Gemma configured at Requesty). Only includable once a Gemma model is added to `models.json` and is routable via Requesty.
+- **`gpt-5-6-luna`** (Azure) — third GPT-5.6 sibling next to SOL and TERRA; would spread the GPT branch further.
+- **`gemini-2-5-pro`** (`vertex/gemini-2.5-pro@europe-west1`) — dropped in the `-oc` run because of the continuation drop; possibly more stable under v6.2.1 (explicit phase-continuation fix).
+- **`qwen3-next-80b-a3b-thinking`** (Nebius) — thinking variant next to the included qwen3-235b, should the Qwen branch be spread.
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Anthropic-Anker)**: opus-4-8 und sonnet-5 liefern die niedrigsten Werte bei `cognitive_max` und `smell_total` und bestätigen, dass das Anthropic-Niveau auch über das Requesty-Routing erhalten bleibt (sonst ist der pi-Harness ein wertloser Confound). Cross-Check gegen die Opus-Werte in RQ-model-quality-oc.
-- **H1b (GLM-Versionssprung)**: glm-5-2 verbessert `smell_total`/`cognitive_max` gegenüber glm-5-1 messbar — direkter Intra-Familie-Versionsvergleich innerhalb einer Zelle-Matrix (beide via unterschiedliche Backprovider: 5.1 Nebius, 5.2 TensorX; Backprovider-Confound als Caveat notieren).
-- **H2 (Nicht-Anthropic-Spreizung)**: Die Nicht-Anthropic-Modelle (gpt-5-6-sol, glm-5-1, glm-5-2, kimi-k2-7) zeigen über `smell_total` und `cognitive_max` eine messbare Spreizung — d.h. der pi-Harness ist diskriminationsfähig genug, um Modell-Unterschiede sichtbar zu machen.
-- **H3 (Skill-Tool-Compliance modellabhängig)**: `cycle_count` und `predictions_total` spreizen über die Modelle — manche nutzen den v6.2.1-Skill-/Subagent-Mechanismus diszipliniert, andere driften in inline-Mode. Niedriger cycle_count ist NICHT automatisch schwächere TDD-Disziplin, sondern auch Compliance mit der pi-Skill-Affordance. (Parallel zum `-oc`-Befund: nur manche Modelle produzieren Prediction-Marker.)
+- **H1 (Anthropic anchor)**: opus-4-8 and sonnet-5 deliver the lowest values for `cognitive_max` and `smell_total` and confirm that the Anthropic level is preserved over the Requesty routing as well (otherwise the pi harness is a worthless confound). Cross-check against the Opus values in RQ-model-quality-oc.
+- **H1b (GLM version jump)**: glm-5-2 measurably improves `smell_total`/`cognitive_max` over glm-5-1 — direct intra-family version comparison within one cell matrix (both via different backproviders: 5.1 Nebius, 5.2 TensorX; note the backprovider confound as a caveat).
+- **H2 (non-Anthropic spread)**: The non-Anthropic models (gpt-5-6-sol, glm-5-1, glm-5-2, kimi-k2-7) show a measurable spread over `smell_total` and `cognitive_max` — i.e. the pi harness is discriminating enough to make model differences visible.
+- **H3 (skill-tool compliance is model-dependent)**: `cycle_count` and `predictions_total` spread across the models — some use the v6.2.1 skill/subagent mechanism with discipline, others drift into inline mode. A low cycle_count is NOT automatically weaker TDD discipline, but also compliance with the pi skill affordance. (Parallel to the `-oc` finding: only some models produce prediction markers.)
 
-## Methodologische Anmerkungen
+## Methodological notes
 
-- Alle Modelle laufen via Requesty, aber mit unterschiedlichen Backprovidern (Azure für GPT-5.x, Bedrock/Vertex für Anthropic/Gemini, TensorX/Nebius/Inceptron für die übrigen). Backprovider-Routing-Effekte sind in den Lab-Variant-IDs implizit gepinnt.
-- `n=5` per Zelle folgt Memory [[replicates-n-reliability]] (Default für mittleres Feld).
-- v6.2.1 erzwingt (wie v6.2) Test-First-TDD mit der Why-Block-/Skill-Mechanik. Beobachtbare Drift in `cycle_count` (nur ein Teil der echten Cycles wird über den Skill-/Marker-Pfad erfasst) ist eine Workflow-Compliance-Eigenschaft, kein Parser-Bug. Bei Findings unterscheiden: "Modell A hat höhere TDD-Disziplin" ≠ "Modell A nutzt den Skill-Marker öfter".
-- TDD-Disziplin-Metriken (`cycle_count`, `predictions_*`, `refactorings_applied`) hängen davon ab, dass der pi-Transcript-Parser die Marker erfasst. v6.2.1 ändert nur den Phasenübergang (Test-List→Red-Continuation), nicht die Marker selbst — alle P1–P7 sind unverändert. Vor dem ersten Batch verifizieren, dass ein Opus-Run diese Metriken != null liefert (Smoke-Test-Regel aus CLAUDE.md).
+- All models run via Requesty, but with different backproviders (Azure for GPT-5.x, Bedrock/Vertex for Anthropic/Gemini, TensorX/Nebius/Inceptron for the rest). Backprovider routing effects are implicitly pinned in the lab-variant IDs.
+- `n=5` per cell follows memory [[replicates-n-reliability]] (default for a medium field).
+- v6.2.1 enforces (like v6.2) test-first TDD with the why-block/skill mechanics. Observable drift in `cycle_count` (only part of the real cycles is captured via the skill/marker path) is a workflow-compliance property, not a parser bug. Distinguish in findings: "model A has higher TDD discipline" ≠ "model A uses the skill marker more often".
+- TDD discipline metrics (`cycle_count`, `predictions_*`, `refactorings_applied`) depend on the pi transcript parser capturing the markers. v6.2.1 changes only the phase transition (test-list→red continuation), not the markers themselves — all of P1–P7 are unchanged. Before the first batch, verify that an Opus run yields these metrics != null (smoke-test rule from CLAUDE.md).

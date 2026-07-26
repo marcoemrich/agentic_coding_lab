@@ -1,6 +1,6 @@
 ---
 id: RQ-harness
-question: "Wie wirkt sich der Harness-Wechsel (Claude Code vs OpenCode vs pi) auf Korrektheit, Code-Qualität und TDD-Disziplin aus, wenn Modell, Workflow-Intention und Prompt-Stil konstant gehalten werden?"
+question: "How does switching harness (Claude Code vs OpenCode vs pi) affect correctness, code quality and TDD discipline when model, workflow intention and prompt style are held constant?"
 factors:
   workflow:
     - v6.2-with-why-cleaned
@@ -13,23 +13,23 @@ controls:
   model: opus-4-7-portkey-no-thinking
   prompt: example-mapping
 outcomes:
-  # primär: Korrektheit (innen + außen)
+  # primary: correctness (internal + external)
   - tests_passing
   - tests_total
   - verification_pct
   - verification_passed
-  # Code-Qualität
+  # code quality
   - code_mass
   - cognitive_max
   - mccabe_max
   - cc_longest_function
   - lines_of_code
   - smell_total
-  # TDD-Disziplin (nur v6.2-Zellen)
+  # TDD discipline (v6.2 cells only)
   - cycle_count
   - predictions_correct_rate
   - refactorings_applied
-  # Kontext
+  # context
   - completed_within_budget
   - duration_seconds
   - total_tokens
@@ -38,55 +38,55 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-harness: Harness-Effekt Claude Code vs OpenCode vs pi
+# RQ-harness: Harness effect Claude Code vs OpenCode vs pi
 
 ## Motivation
 
-OpenCode- und pi-Integration als zweiter und dritter Harness werfen sofort die Frage auf: läuft "derselbe Lauf" auf allen drei Harnessen messbar anders? Alle drei haben unterschiedliche Subagent-/Skill-Konzepte, unterschiedliche Tool-Choreographie, unterschiedliche System-Prompt-Bibliotheken. Eine 1:1-Übersetzung von Workflows zwischen den Harnessen ist nicht möglich.
+Integrating OpenCode and pi as second and third harness immediately raises the question: does "the same run" behave measurably differently on all three harnesses? All three have different subagent/skill concepts, different tool choreography, different system-prompt libraries. A 1:1 translation of workflows between the harnesses is not possible.
 
-Diese RQ misst den Harness-Effekt bei voller TDD-Mechanik: v6.2-with-why-cleaned (CC) vs v6.2-with-why-cleaned-oc (OC) vs v6.2-with-why-cleaned-pi (pi). Skills + Subagent, Prediction-Marker, Refactor-Isolation — die harness-spezifischen Mechaniken sind aktiv, und der Effekt müsste maximal beobachtbar sein.
+This RQ measures the harness effect with full TDD mechanics: v6.2-with-why-cleaned (CC) vs v6.2-with-why-cleaned-oc (OC) vs v6.2-with-why-cleaned-pi (pi). Skills + subagent, prediction markers, refactor isolation — the harness-specific mechanics are active, and the effect should be maximally observable.
 
-v1-oneshot-Varianten waren Walking-Skeleton-Material für die Harness-Integration und sind in dieser RQ bewusst NICHT enthalten — sie sagen wenig über den interessanten Fall (volle TDD-Mechanik) aus und liefen nur in prose.
+v1-oneshot variants were walking-skeleton material for the harness integration and are deliberately NOT included in this RQ — they say little about the interesting case (full TDD mechanics) and only ran in prose.
 
-Gleiches Modell (Opus 4.7 via Portkey-Vertex-EU, damit auch das Routing identisch), gleicher Prompt-Stil (example-mapping), beide Katas (game-of-life für Code-Qualität, claim-office für Korrektheit).
+Same model (Opus 4.7 via Portkey-Vertex-EU, so that routing is identical as well), same prompt style (example-mapping), both katas (game-of-life for code quality, claim-office for correctness).
 
-## Routing-Konstanz (wichtiger Punkt)
+## Routing constancy (important point)
 
-`controls.model: opus-4-7-portkey-no-thinking` heißt: **beide Harnesse routen über Portkey-Vertex-EU**, mit deaktiviertem Thinking. Die CC-Seite läuft NICHT auf Direct-Anthropic-API, sondern auf demselben Portkey-Endpoint, damit der Harness-Effekt nicht mit einem Routing-Effekt konfundiert ist (siehe Memory [[opus-46-vs-47-not-equivalent]]).
+`controls.model: opus-4-7-portkey-no-thinking` means: **both harnesses route via Portkey-Vertex-EU**, with thinking disabled. The CC side does NOT run on the Direct Anthropic API, but on the same Portkey endpoint, so that the harness effect is not confounded with a routing effect (see memory [[opus-46-vs-47-not-equivalent]]).
 
-Thinking ist deaktiviert, weil (a) die existierende CC-Run-Basis (n=8 auf claim-office, n=9 auf game-of-life) schon auf no-thinking läuft und ohne Refill weiterverwendet werden kann; (b) ein erster Thinking-Smoke (n=3 pro Zelle) einen Claude-Code-Harness-Glitch ("premature end_turn") gezeigt hat, der separat zu untersuchen ist; (c) Thinking für eine Harness-Vergleichs-RQ keine erkennbare Hebelwirkung hat.
+Thinking is disabled because (a) the existing CC run base (n=8 on claim-office, n=9 on game-of-life) already runs on no-thinking and can be reused without a refill; (b) a first thinking smoke (n=3 per cell) showed a Claude Code harness glitch ("premature end_turn") that has to be investigated separately; (c) thinking has no discernible leverage for a harness comparison RQ.
 
-Alle drei Workflows sind auf `opus-4-7-portkey-no-thinking` testbar — keine Konfiguration im run-batch.sh nötig, weil das Modell schon in MODEL_CONFIGS gelistet ist und alle drei Harnesse über `.env`'s ANTHROPIC_CUSTOM_HEADERS bzw. PORTKEY_API_KEY laufen.
+All three workflows are testable on `opus-4-7-portkey-no-thinking` — no configuration in run-batch.sh needed, because the model is already listed in MODEL_CONFIGS and all three harnesses run via `.env`'s ANTHROPIC_CUSTOM_HEADERS resp. PORTKEY_API_KEY.
 
-## Workflow-Tripel
+## Workflow triple
 
-| CC-Workflow | OC-Workflow | pi-Workflow | Mechanik | TDD-Metriken? |
+| CC workflow | OC workflow | pi workflow | Mechanics | TDD metrics? |
 |---|---|---|---|---|
-| v6.2-with-why-cleaned | v6.2-with-why-cleaned-oc | v6.2-with-why-cleaned-pi | Skills (test-list/red/green) + Subagent (refactor) | Ja |
+| v6.2-with-why-cleaned | v6.2-with-why-cleaned-oc | v6.2-with-why-cleaned-pi | Skills (test-list/red/green) + subagent (refactor) | Yes |
 
-v6.2-with-why-cleaned-oc und -pi sind strukturgleiche Übersetzungen: test-list/red/green als Skills (shared context), Refactor als Subagent (isolated context), gleiche Marker-Konventionen, gleiche Why-Blocks in Green. Die Unterschiede sind nur die Harness-Syntax:
+v6.2-with-why-cleaned-oc and -pi are structurally identical translations: test-list/red/green as skills (shared context), refactor as subagent (isolated context), same marker conventions, same why-blocks in green. The differences are only the harness syntax:
 
-- **CC**: `.claude/commands/<name>.md` + `.claude/agents/refactor.md`, Tools `Skill` und `Task`
-- **OC**: `.opencode/skills/<name>/SKILL.md` + `.opencode/agents/refactor.md`, Tools `skill` und `task`
-- **pi**: `.pi/skills/<name>/SKILL.md` + `.pi/agents/refactor.md`. Tool `subagent` (via vendored extension) für Refactor. **Skills sind in pi Auto-Load-Dokumente, keine Tool-Calls** — das Modell liest SKILL.md einmalig und arbeitet dann freihand. Pi-Workflows müssen darum in AGENTS.md **Pflicht-Output-Marker** (`## Red`, `## Green`, `Red Phase Complete:` + Prediction-Lines) erzwingen, die der Parser zählt. Siehe `experiments/workflows/MARKERS.md`.
+- **CC**: `.claude/commands/<name>.md` + `.claude/agents/refactor.md`, tools `Skill` and `Task`
+- **OC**: `.opencode/skills/<name>/SKILL.md` + `.opencode/agents/refactor.md`, tools `skill` and `task`
+- **pi**: `.pi/skills/<name>/SKILL.md` + `.pi/agents/refactor.md`. Tool `subagent` (via vendored extension) for refactor. **In pi, skills are auto-load documents, not tool calls** — the model reads SKILL.md once and then works freehand. Pi workflows therefore have to enforce **mandatory output markers** (`## Red`, `## Green`, `Red Phase Complete:` + prediction lines) in AGENTS.md, which the parser counts. See `experiments/workflows/MARKERS.md`.
 
-## Vorhandene Daten
+## Existing data
 
-Keine — alle bisherigen Smokes liefen auf prose; diese RQ läuft auf example-mapping. Skeleton-Smokes (v1-oneshot-*, v6.2-pi prose) verbleiben im Pool als historische Artefakte, zählen aber nicht für den Selector.
+None — all previous smokes ran on prose; this RQ runs on example-mapping. Skeleton smokes (v1-oneshot-*, v6.2-pi prose) remain in the pool as historical artifacts, but do not count for the selector.
 
-6 Zellen (3 Workflows × 2 Katas), 5 Replikate Ziel → 30 Runs voll von neu.
+6 cells (3 workflows × 2 katas), 5 replicates target → 30 runs entirely from scratch.
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Korrektheit harness-invariant)**: `tests_passing` und `verification_pct` zeigen keinen systematischen Harness-Unterschied bei konstantem Modell+Workflow-Intention — wenn doch, ist das ein starker Befund über Harness-Bias jenseits des System-Prompts.
-- **H2 (Token-Profil differenziert)**: `total_tokens` und `duration_seconds` zeigen einen Harness-Unterschied — die System-Prompts und Default-Tool-Choreographie der drei Harnesse sind unterschiedlich groß und führen zu meßbaren Effizienz-Unterschieden. **Vorbedingung für H2-Interpretation**: Pi-Workflows tragen wegen der Marker-Pflicht in AGENTS.md eine strukturelle Token-Mehrlast (siehe Anmerkungen unten); die ist *Teil* des Harness-Effekts, aber im Diff erkennbar zu halten.
-- **H3 (Code-Mass-Drift)**: `code_mass` und `cognitive_max` auf game-of-life zeigen eine harness-typische Stil-Tendenz (z.B. ein Harness produziert konsistent kompaktere/expansivere Implementations).
-- **H4 (TDD-Disziplin harness-invariant)**: `cycle_count`, `predictions_correct_rate` und `refactorings_applied` in den v6.2-Zellen zeigen keinen systematischen Harness-Unterschied — die Marker-Konventionen sind strukturgleich übersetzt, und die Parser (`parse_opencode_transcript.py` mit Task-Erkennung, `parse_pi_transcript.py` mit Text-Marker-Fallback) zählen dieselben Ereignisse über alle drei Harnesse.
+- **H1 (correctness harness-invariant)**: `tests_passing` and `verification_pct` show no systematic harness difference at constant model + workflow intention — if they do, that is a strong finding about harness bias beyond the system prompt.
+- **H2 (token profile differentiated)**: `total_tokens` and `duration_seconds` show a harness difference — the system prompts and default tool choreography of the three harnesses differ in size and lead to measurable efficiency differences. **Precondition for interpreting H2**: pi workflows carry a structural token overhead because of the marker requirement in AGENTS.md (see notes below); it is *part* of the harness effect, but should remain identifiable in the diff.
+- **H3 (Code Mass drift)**: `code_mass` and `cognitive_max` on game-of-life show a harness-typical style tendency (e.g. one harness consistently produces more compact/more expansive implementations).
+- **H4 (TDD discipline harness-invariant)**: `cycle_count`, `predictions_correct_rate` and `refactorings_applied` in the v6.2 cells show no systematic harness difference — the marker conventions are translated structurally identically, and the parsers (`parse_opencode_transcript.py` with task detection, `parse_pi_transcript.py` with text-marker fallback) count the same events across all three harnesses.
 
-## Methodologische Anmerkungen
+## Methodological notes
 
-- **Übersetzungs-Confound**: Ein "Harness-Effekt" in dieser RQ ist immer auch ein **Prompt-Übersetzungs-Effekt**. v6.2 hat `.claude/commands/*.md` + `.claude/agents/refactor.md` + `.claude/rules/tdd.md`; v6.2-oc und v6.2-pi haben jeweils ihre `skills/*/SKILL.md` + `agents/refactor.md` + `AGENTS.md`. Alle drei Tripel enthalten inhaltlich dasselbe, aber jede Datei ist eine eigene Schreibe. Falls signifikante Unterschiede gefunden werden: vor der Interpretation die Prompt-Files diff-en und überlegen, ob ein Wort-Choice-Drift den Befund erklärt.
-- **Subagent-Erkennung im OC-Parser**: `parse_opencode_transcript.py` wurde erweitert, um `task` tool calls mit TDD-relevantem `description`/`subagent_type` (z.B. `"refactor"`) als äquivalente Skill-Invocation zu zählen.
-- **Skill- und Refactor-Erkennung im pi-Parser**: pi-Skills sind Auto-Load-Dokumente, keine Tool-Calls. `parse_pi_transcript.py` zählt darum `## Red`/`## Green`/`## Test List`-Marker in Assistant-Texten als Phasen, und `subagent`-Tool-Calls mit `agent: "refactor"` als Refactorings. Mandatory-Output-Marker stehen in der jeweiligen AGENTS.md. Wenn die Marker im Modell-Output fehlen, fällt `cycle_count` still auf 0 — Spot-Check pro Run vor Aggregation (siehe [[silent-zero-metric-bugs]]). Re-Smoke 2026-05-26 hat cycle_count=29 (=tests_total) und predictions_total=59 produziert, also funktioniert die Marker-Disziplin auf Opus 4.7. Vor jedem neuen Modell auf pi: erst Smoke, dann fillen.
-- **Marker-Disziplin kostet Tokens**: Der v6.2-pi Re-Smoke unter Pflicht-Markern hat 40 % mehr Tokens und 21 % mehr Wallclock verbraucht als der erste, marker-lose Smoke (~80 → 112 k Tokens; ~22 → 26 min). Bei Effizienz-Vergleichen (H2) muss diese Schreibe-Mehrlast als Caveat dokumentiert sein — pi-Workflows tragen sie strukturell, CC und OC nicht.
-- **TDD-Disziplin-Metriken nur für v6.2-Zellen**: v1-Workflows liefern keine TDD-Disziplin-Metriken — `cycle_count`, `predictions_correct_rate` und `refactorings_applied` sind dort 0/null. Die H4-Hypothese bezieht sich ausschließlich auf den v6.2-Vergleich.
+- **Translation confound**: A "harness effect" in this RQ is always also a **prompt translation effect**. v6.2 has `.claude/commands/*.md` + `.claude/agents/refactor.md` + `.claude/rules/tdd.md`; v6.2-oc and v6.2-pi each have their `skills/*/SKILL.md` + `agents/refactor.md` + `AGENTS.md`. All three triples contain the same content, but every file is its own wording. If significant differences are found: diff the prompt files before interpreting and consider whether a word-choice drift explains the finding.
+- **Subagent detection in the OC parser**: `parse_opencode_transcript.py` was extended to count `task` tool calls with a TDD-relevant `description`/`subagent_type` (e.g. `"refactor"`) as an equivalent skill invocation.
+- **Skill and refactor detection in the pi parser**: pi skills are auto-load documents, not tool calls. `parse_pi_transcript.py` therefore counts `## Red`/`## Green`/`## Test List` markers in assistant texts as phases, and `subagent` tool calls with `agent: "refactor"` as refactorings. Mandatory output markers are stated in the respective AGENTS.md. If the markers are missing from the model output, `cycle_count` silently drops to 0 — spot-check per run before aggregation (see [[silent-zero-metric-bugs]]). The re-smoke on 2026-05-26 produced cycle_count=29 (=tests_total) and predictions_total=59, so marker discipline works on Opus 4.7. Before every new model on pi: smoke first, then fill.
+- **Marker discipline costs tokens**: The v6.2-pi re-smoke under mandatory markers consumed 40 % more tokens and 21 % more wallclock than the first, marker-free smoke (~80 → 112 k tokens; ~22 → 26 min). In efficiency comparisons (H2), this writing overhead must be documented as a caveat — pi workflows carry it structurally, CC and OC do not.
+- **TDD discipline metrics only for v6.2 cells**: v1 workflows deliver no TDD discipline metrics — `cycle_count`, `predictions_correct_rate` and `refactorings_applied` are 0/null there. The H4 hypothesis refers exclusively to the v6.2 comparison.

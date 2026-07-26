@@ -1,23 +1,23 @@
 # RQ-model-quality Findings
 
-Persistente Sammlung der Erkenntnisse zur Frage:
-**Wie stark unterscheiden sich die verfügbaren Modelle (Sonnet 4.6, Opus 4.6,
-Opus 4.7, Opus 4.8, Fable 5 — jeweils mit/ohne Thinking) in der Code-Qualität
-auf einer trainingsbekannten Kata bei stärkstem Workflow?**
+Persistent collection of the insights on the question:
+**How strongly do the available models (Sonnet 4.6, Opus 4.6,
+Opus 4.7, Opus 4.8, Fable 5 — each with/without thinking) differ in code quality
+on a training-known kata under the strongest workflow?**
 
-Datenbasis: 38 Runs (10 Zellen × n=3, plus zusätzliche
-opus-4-7-no-thinking-Replikate aus dem RQ-tdd-quality-Pool → dort n=10, und
-opus-4-8-no-thinking mit n=4). Workflow v4-exact-subagents, Kata
-game-of-life-example-mapping mit explizitem API-Vertrag
-(`nextGeneration(cells: Cell[]): Cell[]`). Korrektheits-Innensicht via vom
-Agenten geschriebene Vitest-Tests, Außensicht via Modul-Import-Adapter
-`game-of-life-verification/` (15 Szenarien).
+Data basis: 38 runs (10 cells × n=3, plus additional
+opus-4-7-no-thinking replicates from the RQ-tdd-quality pool → n=10 there, and
+opus-4-8-no-thinking with n=4). Workflow v4-exact-subagents, kata
+game-of-life-example-mapping with an explicit API contract
+(`nextGeneration(cells: Cell[]): Cell[]`). Internal correctness view via the
+vitest tests written by the agent, external view via the module-import adapter
+`game-of-life-verification/` (15 scenarios).
 
 ---
 
-## Übersicht: Code-Qualität nach Modell (Mittelwerte)
+## Overview: Code Quality by Model (means)
 
-| Modell | `code_mass` | `smell_total` | `mccabe_max` | `cognitive_max` | `cc_longest_function` | `verification_pct` | n |
+| Model | `code_mass` | `smell_total` | `mccabe_max` | `cognitive_max` | `cc_longest_function` | `verification_pct` | n |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | opus-5 | 172.67 | 1.67 | 3.00 | 2.00 | 6.33 | **1.00** 🏆 | 3 |
 | opus-5-no-thinking | 149.33 | **1.67** 🏆 | 2.67 | 1.67 | 5.33 | **1.00** 🏆 | 3 |
@@ -32,52 +32,52 @@ Agenten geschriebene Vitest-Tests, Außensicht via Modul-Import-Adapter
 | sonnet-4-6 | 178.00 | 5.67 | 6.33 | 11.00 | 21.67 | **1.00** 🏆 | 3 |
 | sonnet-4-6-no-thinking | 166.67 | 3.33 | 6.00 | 5.00 | 15.00 | 0.73 | 3 |
 
-Bester Wert pro Spalte fett + 🏆. Kleiner = besser (außer `verification_pct`: größer = besser).
-Quality-Trophies sind korrektheits-gegated: nur Zellen mit `verification_pct = 1.0`
-sind trophy-fähig (sonnet-4-6-no-thinking mit 0.73 ausgenommen).
-`verification_pct`: elf Zellen gleichauf bei 1.00 → Ties, alle 🏆.
-`smell_total`: opus-5-no-thinking setzt mit 1.67 den neuen Bestwert (opus-5-mit-Thinking gleichauf im Mittel, aber höhere Streuung σ 1.53).
+Best value per column in bold + 🏆. Lower = better (except `verification_pct`: higher = better).
+Quality trophies are correctness-gated: only cells with `verification_pct = 1.0`
+are trophy-eligible (sonnet-4-6-no-thinking with 0.73 excluded).
+`verification_pct`: eleven cells tied at 1.00 → ties, all 🏆.
+`smell_total`: opus-5-no-thinking sets the new best value at 1.67 (opus-5 with thinking is tied on the mean, but with a higher spread of σ 1.53).
 
-Opus 5 und Fable 5 teilen sich die Komplexitäts-Spitze: Fable 5 (mit Thinking)
-hält `cognitive_max` 1.0 und `mccabe_max` 2.0 knapp vor Opus 5, Opus 5 setzt dafür
-die niedrigste Smell-Summe (1.67). Opus 4.8 (mit Thinking) bleibt der **kompakteste
-Code** (`code_mass` 145.3, `cc_longest_function` 4.3). Drei komplementäre
-Qualitäts-Gewinner: Fable 5 / Opus 5 für niedrigste Komplexität, Opus 4.8 für
-geringste Code-Mass.
-
----
-
-## F-model-quality.1 — Korrektheit (innen + außen) auf v4 ist nahezu modellunabhängig perfekt
-
-**Aussage**: `tests_passing` liegt für alle zwölf Modell-Zellen bei 100 % (44/44
-Runs). `verification_pct` liegt in elf von zwölf Zellen ebenfalls bei
-1.00 — der explizite API-Vertrag (`Cell = [number, number]`,
-`nextGeneration(cells: Cell[]): Cell[]`) eliminiert die zuvor beobachteten
-Repräsentations-Mismatches fast vollständig. Beide Fable-5-Zellen, beide
-Opus-4.8-Zellen und beide Opus-5-Zellen liefern 15/15 in allen Replikaten.
-
-Einzige Ausnahme: **sonnet-4-6-no-thinking** mit `verification_pct = 0.73`
-— 2/3 Runs perfekt (15/15), ein Run mit 3/15 (siehe F-model-quality.5).
-
-**Datenbasis**: 44 Runs, 15 Verifikations-Szenarien pro Run.
-
-**Konsequenz**: Auf v4 + game-of-life + Direct-API/Portkey-Opus + Sonnet ist
-Korrektheit kein differenzierendes Merkmal mehr. Code-Qualitäts-Ranking-Aussagen
-sind auf korrektem Code basiert.
+Opus 5 and Fable 5 share the complexity peak: Fable 5 (with thinking)
+holds `cognitive_max` 1.0 and `mccabe_max` 2.0 narrowly ahead of Opus 5, while Opus 5 sets
+the lowest Smell Total (1.67). Opus 4.8 (with thinking) remains the **most compact
+code** (`code_mass` 145.3, `cc_longest_function` 4.3). Three complementary
+quality winners: Fable 5 / Opus 5 for the lowest complexity, Opus 4.8 for
+the lowest Code Mass.
 
 ---
 
-## F-model-quality.2 — Modell-Ranking: Fable 5 und Opus 5 führen auf Komplexität, Opus 4.8 auf Code-Mass; alle drei deutlich vor Opus 4.6 und Sonnet
+## F-model-quality.1 — Correctness (internal + external) on v4 Is Almost Model-Independently Perfect
 
-**Aussage**: Die Spitze teilen sich drei Modelle mit unterschiedlichem Profil.
-**Fable 5** und **Opus 5** liefern die niedrigste Spitzen-Komplexität
-(`cognitive_max` 1.0 bzw. 2.0, `mccabe_max` 2.0 bzw. 3.0 — alle nahe dem
-theoretischen Minimum), **Opus 4.8** die geringste Code-Mass und die kürzeste
-längste Funktion (`code_mass` 145.3, `cc_longest_function` 4.3). Opus 5 setzt
-zusätzlich die niedrigste Smell-Summe (1.67). Alle drei liegen klar vor Opus 4.7
-(solides Mittelfeld) und deutlich vor Opus 4.6 und Sonnet:
+**Statement**: `tests_passing` is at 100 % for all twelve model cells (44/44
+runs). `verification_pct` is likewise at 1.00 in eleven of twelve cells
+— the explicit API contract (`Cell = [number, number]`,
+`nextGeneration(cells: Cell[]): Cell[]`) almost completely eliminates the previously observed
+representation mismatches. Both Fable 5 cells, both
+Opus 4.8 cells and both Opus 5 cells deliver 15/15 in all replicates.
 
-| Metrik (mit Thinking) | fable-5 | opus-5 | opus-4-8 | opus-4-7 | opus-4-6-portkey | sonnet-4-6 |
+The only exception: **sonnet-4-6-no-thinking** with `verification_pct = 0.73`
+— 2/3 runs perfect (15/15), one run with 3/15 (see F-model-quality.5).
+
+**Data basis**: 44 runs, 15 verification scenarios per run.
+
+**Consequence**: On v4 + game-of-life + Direct-API/Portkey Opus + Sonnet,
+correctness is no longer a differentiating characteristic. Code-quality ranking statements
+are based on correct code.
+
+---
+
+## F-model-quality.2 — Model Ranking: Fable 5 and Opus 5 Lead on Complexity, Opus 4.8 on Code Mass; All Three Clearly Ahead of Opus 4.6 and Sonnet
+
+**Statement**: Three models with different profiles share the top position.
+**Fable 5** and **Opus 5** deliver the lowest Complexity Peak
+(`cognitive_max` 1.0 and 2.0 respectively, `mccabe_max` 2.0 and 3.0 — all near the
+theoretical minimum), **Opus 4.8** the lowest Code Mass and the shortest
+longest function (`code_mass` 145.3, `cc_longest_function` 4.3). Opus 5 additionally
+sets the lowest Smell Total (1.67). All three are clearly ahead of Opus 4.7
+(solid midfield) and considerably ahead of Opus 4.6 and Sonnet:
+
+| Metric (with thinking) | fable-5 | opus-5 | opus-4-8 | opus-4-7 | opus-4-6-portkey | sonnet-4-6 |
 |---|---:|---:|---:|---:|---:|---:|
 | `code_mass` | 163.00 | 172.67 | **145.33** 🏆 | 159.00 | 173.00 | 178.00 |
 | `cc_longest_function` | 8.33 | 6.33 | **4.33** 🏆 | 7.00 | 19.33 | 21.67 |
@@ -85,37 +85,37 @@ zusätzlich die niedrigste Smell-Summe (1.67). Alle drei liegen klar vor Opus 4.
 | `mccabe_max` | **2.00** 🏆 | 3.00 | 4.33 | 3.33 | 6.67 | 6.33 |
 | `cognitive_max` | **1.00** 🏆 | 2.00 | 5.33 | 3.00 | 12.00 | 11.00 |
 
-Kleiner = besser; 🏆 = bestes Modell pro Metrik (Zeile), korrektheits-gegated
-(alle sechs Zellen hier bei `verification_pct = 1.0`).
+Lower = better; 🏆 = best model per metric (row), correctness-gated
+(all six cells here at `verification_pct = 1.0`).
 
-Der Abstand der Spitzengruppe zu Opus 4.6 ist substanziell: auf `cognitive_max`
-trennt Fable 5 (1.0) von Opus 4.6 (12.0) ein Faktor ~12×, auf
-`cc_longest_function` Opus 4.8 (4.3) von Opus 4.6 (19.3) ein Faktor ~4.5×. Die
-drei Spitzenprofile sind komplementär: Fable 5 und Opus 5 halten die
-Spitzen-Komplexität trivial, schreiben aber etwas mehr Code; Opus 4.8 minimiert
-die Code-Mass, packt die Logik dafür dichter (höhere `cognitive_max`/`mccabe_max`).
-Opus 5 verbindet fast-triviale Komplexität mit der niedrigsten Smell-Summe des
-Feldes und schiebt damit den bisherigen Zwei-Wege-Trade-off (Fable-Komplexität vs
-Opus-4.8-Code-Mass) zu einer dritten, smell-armen Option.
+The gap between the leading group and Opus 4.6 is substantial: on `cognitive_max`
+a factor of ~12× separates Fable 5 (1.0) from Opus 4.6 (12.0), on
+`cc_longest_function` a factor of ~4.5× separates Opus 4.8 (4.3) from Opus 4.6 (19.3). The
+three leading profiles are complementary: Fable 5 and Opus 5 keep the
+Complexity Peak trivial but write somewhat more code; Opus 4.8 minimizes
+the Code Mass but packs the logic more densely (higher `cognitive_max`/`mccabe_max`).
+Opus 5 combines almost trivial complexity with the lowest Smell Total in the
+field and thereby shifts the previous two-way trade-off (Fable complexity vs
+Opus 4.8 Code Mass) to a third, smell-poor option.
 
-**Datenbasis**: fable-5 n=3, opus-5 n=3, opus-4-8 n=3, opus-4-7 n=3,
-opus-4-6-portkey n=3, sonnet-4-6 n=3 (jeweils mit Thinking).
+**Data basis**: fable-5 n=3, opus-5 n=3, opus-4-8 n=3, opus-4-7 n=3,
+opus-4-6-portkey n=3, sonnet-4-6 n=3 (each with thinking).
 
-**Bemerkung zur Reihenfolge**: Sonnet vor Opus 4.6 (im no-thinking-Vergleich,
-siehe Übersicht) ist eine Umkehr gegenüber naiver Modell-Tier-Intuition
-("Opus > Sonnet"). Plausible Erklärung: Sonnet (no-thinking) erzeugt schlicht
-*kürzeren, weniger generalisierten* Code, während Opus 4.6 dazu neigt, eine
-vollständigere Abstraktion zu bauen (vgl. F-model-quality.3 — Opus 4.6 +
-Thinking degradiert sogar).
+**Note on the ordering**: Sonnet ahead of Opus 4.6 (in the no-thinking comparison,
+see overview) is a reversal of the naive model-tier intuition
+("Opus > Sonnet"). A plausible explanation: Sonnet (no-thinking) simply produces
+*shorter, less generalized* code, whereas Opus 4.6 tends to build a
+more complete abstraction (cf. F-model-quality.3 — Opus 4.6 +
+thinking even degrades).
 
 ---
 
-## F-model-quality.3 — Thinking wirkt nicht uniform; bei Opus 4.8 stark auf Code-Größe, bei Opus 4.6 neutral, bei Sonnet negativ auf cognitive_max
+## F-model-quality.3 — Thinking Does Not Act Uniformly; Strong on Code Size for Opus 4.8, Neutral for Opus 4.6, Negative on cognitive_max for Sonnet
 
-**Aussage**: Within-model-Deltas (thinking vs. no-thinking, ∆ negativ = besser
-mit Thinking):
+**Statement**: Within-model deltas (thinking vs. no-thinking, ∆ negative = better
+with thinking):
 
-| Modell | ∆ `code_mass` | ∆ `smell_total` | ∆ `mccabe_max` | ∆ `cognitive_max` | ∆ `cc_longest_function` |
+| Model | ∆ `code_mass` | ∆ `smell_total` | ∆ `mccabe_max` | ∆ `cognitive_max` | ∆ `cc_longest_function` |
 |---|---:|---:|---:|---:|---:|
 | fable-5 | −0.33 | +0.67 | −0.67 | −0.67 | +1.66 |
 | opus-4-8 | **−45.17** | −0.33 | +0.08 | +0.58 | −7.17 |
@@ -123,46 +123,46 @@ mit Thinking):
 | opus-4-6-portkey | −2.67 | 0.00 | −1.00 | −1.00 | +0.66 |
 | sonnet-4-6 | +11.33 | +2.34 | +0.33 | **+6.00** | +6.67 |
 
-∆-Tabelle (Thinking-Effekt, ∆ negativ = besser mit Thinking) — kein Modell-Wettbewerb, daher kein 🏆.
-Das Fett markiert die stärksten Effekte: **−45.17** (stärkste Verbesserung, Opus 4.8 auf `code_mass`)
-und **+6.00** (stärkste Verschlechterung, Sonnet auf `cognitive_max`).
+∆ table (thinking effect, ∆ negative = better with thinking) — not a model competition, hence no 🏆.
+The bold marks the strongest effects: **−45.17** (strongest improvement, Opus 4.8 on `code_mass`)
+and **+6.00** (strongest degradation, Sonnet on `cognitive_max`).
 
-- **Fable 5**: Thinking-Effekt durchweg klein und uneinheitlich (alle |∆| < 2),
-  effektiv neutral. Fable 5 erreicht seine triviale Spitzen-Komplexität mit und
-  ohne Thinking gleichermaßen — die niedrige `cognitive_max`/`mccabe_max` ist
-  kein Thinking-Artefakt, sondern Modell-intrinsisch.
-- **Opus 4.8**: Thinking wirkt **stark auf die Code-Größe** — `code_mass`
-  fällt um 45 (190 → 145) und die längste Funktion mehr als halbiert sich
-  (11.5 → 4.3). Auf den reinen Komplexitäts-Scores ist der Effekt dagegen
-  leicht negativ (`cognitive_max` +0.58, `mccabe_max` +0.08): mit Thinking
-  packt Opus 4.8 die Logik kompakter in weniger/kürzere Funktionen, was die
-  Dichte pro Funktion minimal erhöht.
-- **Opus 4.7**: Thinking-Effekt klein, im wesentlichen neutral mit leichter
-  Tendenz zu kompakterem Code und kürzeren Funktionen. Die Cognitive-Komplexität
-  steigt minimal (+0.17).
-- **Opus 4.6**: Thinking-Effekt klein und uneinheitlich — leicht besser auf
-  Komplexität, leicht schlechter auf längster Funktion. Effektiv neutral.
-- **Sonnet 4.6**: Thinking **verschlechtert** über alle fünf Outcomes,
-  besonders `cognitive_max` (5.00 → 11.00, mehr als Verdopplung).
+- **Fable 5**: Thinking effect small and inconsistent throughout (all |∆| < 2),
+  effectively neutral. Fable 5 reaches its trivial Complexity Peak equally with and
+  without thinking — the low `cognitive_max`/`mccabe_max` is
+  not a thinking artifact but model-intrinsic.
+- **Opus 4.8**: Thinking acts **strongly on code size** — `code_mass`
+  falls by 45 (190 → 145) and the longest function more than halves
+  (11.5 → 4.3). On the pure complexity scores, by contrast, the effect is
+  slightly negative (`cognitive_max` +0.58, `mccabe_max` +0.08): with thinking
+  Opus 4.8 packs the logic more compactly into fewer/shorter functions, which
+  raises the density per function marginally.
+- **Opus 4.7**: Thinking effect small, essentially neutral with a slight
+  tendency toward more compact code and shorter functions. The cognitive complexity
+  rises marginally (+0.17).
+- **Opus 4.6**: Thinking effect small and inconsistent — slightly better on
+  complexity, slightly worse on the longest function. Effectively neutral.
+- **Sonnet 4.6**: Thinking **degrades** across all five outcomes,
+  especially `cognitive_max` (5.00 → 11.00, more than a doubling).
 
-H3 (Thinking-Effekt bei Opus stärker als Sonnet, beide positiv) ist
-falsifiziert: bei Sonnet ist der Effekt deutlich negativ. Eine plausible
-Mechanik: Sonnet nutzt Thinking, um eine elegantere/vollständigere Abstraktion
-zu konstruieren, die aber mehr Verzweigungen und Helfer-Logik einführt
-(höhere Cognitive-Komplexität).
+H3 (thinking effect stronger on Opus than on Sonnet, both positive) is
+falsified: on Sonnet the effect is clearly negative. A plausible
+mechanic: Sonnet uses thinking to construct a more elegant/complete abstraction
+that, however, introduces more branches and helper logic
+(higher cognitive complexity).
 
-**Bedingung**: n = 3 in den Opus-4.8-, Opus-4.6- und Sonnet-Zellen,
-σ_cognitive bei sonnet-4-6 mit 7.81 sehr hoch (range 2–16). Die Mittelwert-
-sprünge sind über mehrere Metriken vorzeichen-konsistent, aber bei n=3 ist
-Replikation wünschenswert.
+**Condition**: n = 3 in the Opus 4.8, Opus 4.6 and Sonnet cells,
+σ_cognitive on sonnet-4-6 very high at 7.81 (range 2–16). The jumps in the
+means are sign-consistent across several metrics, but at n=3
+replication is desirable.
 
 ---
 
-## F-model-quality.4 — Token-Kosten: Fable 5 und Sonnet/Opus 4.7 die günstigsten, Opus 4.8 der teuerste; Wallclock einheitlich
+## F-model-quality.4 — Token Costs: Fable 5 and Sonnet/Opus 4.7 the Cheapest, Opus 4.8 the Most Expensive; Wallclock Uniform
 
-**Aussage**: Token-Verbrauch (Mittel) und Wallclock-Zeit nach Modell:
+**Statement**: Token consumption (mean) and wallclock time by model:
 
-| Modell | `total_tokens` (Mittel) | `duration_seconds` (Mittel) |
+| Model | `total_tokens` (mean) | `duration_seconds` (mean) |
 |---|---:|---:|
 | sonnet-4-6-no-thinking | 2.21 M | 1116.7 |
 | fable-5-no-thinking | **2.26 M** 🏆 | 1158.0 |
@@ -175,81 +175,81 @@ Replikation wünschenswert.
 | opus-4-8 | 3.80 M | 1017.0 |
 | opus-4-6-portkey-no-thinking | 3.87 M | 1160.7 |
 
-Kleiner = besser; 🏆 = bestes Modell pro Spalte, korrektheits-gegated
-(sonnet-4-6-no-thinking mit `verification_pct = 0.73` ist trotz niedrigstem
-Token-Wert nicht trophy-fähig — der niedrige Verbrauch spiegelt teils einen
-fehlerhaften Lauf, nicht echte Sparsamkeit; daher geht der Token-Pokal an
-fable-5-no-thinking als günstigste korrekte Zelle).
+Lower = better; 🏆 = best model per column, correctness-gated
+(sonnet-4-6-no-thinking with `verification_pct = 0.73` is not trophy-eligible despite the lowest
+token value — the low consumption partly reflects a
+faulty run, not genuine frugality; the token trophy therefore goes to
+fable-5-no-thinking as the cheapest correct cell).
 
-Spread zwischen günstigstem korrekten Modell (fable-5-no-thinking ~2.3 M) und
-teuerstem (opus-4-6-no-thinking ~3.9 M, opus-4-8 ~3.8 M) ist Faktor ~1.7×.
-**Fable 5 verbindet niedrigste Komplexität (F-model-quality.2) mit günstigem
-Token-Budget** — anders als Opus 4.8, dessen kompakter Output (geringste
-Code-Mass) mit dem höchsten Inferenz-Budget erkauft wird (~1.4× gegenüber
+The spread between the cheapest correct model (fable-5-no-thinking ~2.3 M) and
+the most expensive (opus-4-6-no-thinking ~3.9 M, opus-4-8 ~3.8 M) is a factor of ~1.7×.
+**Fable 5 combines the lowest complexity (F-model-quality.2) with a cheap
+token budget** — unlike Opus 4.8, whose compact output (lowest
+Code Mass) is bought with the highest inference budget (~1.4× compared to
 Fable 5).
 
-Wallclock liegt überwiegend bei ~14–21 min/Run; einzelne opus-4-7-no-thinking-
-Replikate streuen stark nach oben (Pool n=10, max 3923 s).
+Wallclock is predominantly at ~14–21 min/run; individual opus-4-7-no-thinking
+replicates spread strongly upward (pool n=10, max 3923 s).
 
-**Konsequenz**: Auf v4 ist Modell-Wahl ein Trade-off zwischen Code-Kompaktheit
-(Opus 4.8 vorn auf `code_mass`) und der Kombination aus niedriger Komplexität
-und Token-Budget (Fable 5 vorn). Fable 5 ist der beste Allrounder — triviale
-Spitzen-Komplexität bei günstigen Kosten; Opus 4.8 lohnt, wenn minimale
-Code-Mass das Ziel ist und das höhere Token-Budget akzeptabel.
+**Consequence**: On v4, model choice is a trade-off between code compactness
+(Opus 4.8 ahead on `code_mass`) and the combination of low complexity
+and token budget (Fable 5 ahead). Fable 5 is the best all-rounder — trivial
+Complexity Peak at a favorable cost; Opus 4.8 pays off when minimal
+Code Mass is the goal and the higher token budget is acceptable.
 
 ---
 
-## F-model-quality.5 — Vertrags-Konformität unter explizitem API-Vertrag fast vollständig erreicht; ein Sonnet-Ausreißer redefiniert `Cell` als Objekt
+## F-model-quality.5 — Contract Conformance Almost Fully Achieved Under an Explicit API Contract; One Sonnet Outlier Redefines `Cell` as an Object
 
-**Aussage**: Mit explizitem API-Vertrag in der Kata-Prompt
+**Statement**: With an explicit API contract in the kata prompt
 (`type Cell = [number, number]; export function nextGeneration(cells: Cell[]): Cell[]`)
-verschwinden die zuvor beobachteten Repräsentations-Mismatches fast
-vollständig. Verbleibend ist ein einziger Ausreißer:
+the previously observed representation mismatches almost completely
+disappear. A single outlier remains:
 
-| Run | Modell | Gewählte Signatur | `verification_pct` |
+| Run | Model | Chosen signature | `verification_pct` |
 |---|---|---|---:|
-| `2026-05-14_21-09-13_…_sonnet-4-6-no-thinking` | sonnet-4-6-no-thinking | `Cell = { x: number; y: number }` (Objekt) | 0.20 |
+| `2026-05-14_21-09-13_…_sonnet-4-6-no-thinking` | sonnet-4-6-no-thinking | `Cell = { x: number; y: number }` (object) | 0.20 |
 
-Alle anderen 37 Runs halten sich an die `[number, number]`-Tupel-Form (bzw.
-deren Superset `number[]`) und erreichen 15/15 — darunter alle sechs
-Fable-5-Runs und alle sieben Opus-4.8-Runs. Die Sonnet-Abweichung zeigt: der
-explizite Prompt-Vertrag
-reduziert Repräsentations-Drift drastisch (Sonnet zuvor 6/6 Runs `boolean[][]`
-→ jetzt 5/6 Runs Tupel), eliminiert ihn aber nicht in allen Fällen.
+All other 37 runs adhere to the `[number, number]` tuple form (or
+its superset `number[]`) and reach 15/15 — including all six
+Fable 5 runs and all seven Opus 4.8 runs. The Sonnet deviation shows: the
+explicit prompt contract
+drastically reduces representation drift (Sonnet previously 6/6 runs `boolean[][]`
+→ now 5/6 runs tuple), but does not eliminate it in all cases.
 
-**Datenbasis**: 38 Runs, manuelle Inspektion der `nextGeneration`-Signaturen
+**Data basis**: 38 runs, manual inspection of the `nextGeneration` signatures
 in `src/game-of-life.ts`.
 
-**Mechanik-Vermutung**: Sonnet (no-thinking) interpretiert `type Cell = [number, number]`
-gelegentlich als "irgendein Cell-Typ" und ersetzt ihn durch eine vermeintlich
-ausdrucksstärkere Objektform. Bei n=3 ist ein Ausreißer 33 % der Zelle —
-größeres n nötig zur stabilen Frequenz-Schätzung.
+**Suspected mechanic**: Sonnet (no-thinking) occasionally interprets `type Cell = [number, number]`
+as "some Cell type" and replaces it with a supposedly
+more expressive object form. At n=3 one outlier is 33 % of the cell —
+a larger n is needed for a stable frequency estimate.
 
-**Bedingung**: n=3 in der betroffenen Zelle.
+**Condition**: n=3 in the affected cell.
 
 ---
 
 ## Caveats
 
-- **Single workflow**: Nur v4-exact-subagents. Andere Workflows könnten
-  andere Modell-Rankings produzieren (vgl. RQ-tdd-quality F-tdd-quality.1).
-- **Single kata**: Nur Game of Life (Library-Form, example-mapping).
-  Mars-rover als zweiter Code-Qualitäts-Carrier offen.
-- **Opus 4.6 via Portkey**: Findings über `opus-4-6-portkey*` nicht
-  automatisch auf Direct-API-Opus-4.6 übertragbar.
-- **Fable 5 / Opus 4.8 nur Native-API**: `fable-5*` und `opus-4-8*` laufen
-  über die native Anthropic-API (CLI 2.1.170, geleerte `ANTHROPIC_*`-Env,
-  native OAuth), nicht über Portkey. Ein Routing-Confound gegenüber den
-  Portkey-Opus-4.6-Zellen besteht, ist hier aber für die Code-Qualitäts-
-  Metriken als unkritisch angenommen.
-- **n = 3 pro Zelle** (außer opus-4-7-no-thinking mit n=10 dank
-  RQ-tdd-quality-Pooling, opus-4-8-no-thinking mit n=4): σ in einzelnen
-  Outcomes hoch — Thinking-Deltas (F-model-quality.3) und der
-  Repräsentations-Ausreißer (F-model-quality.5) sind bei n=3
-  replikationsbedürftig. Fable 5 erreicht seine Bestwerte auf
-  `cognitive_max`/`mccabe_max` mit σ ≤ 0.58 (sehr eng), die niedrige
-  Spitzen-Komplexität ist also über die drei Replikate stabil.
-- **API-Vertrag eingeführt**: Alle Runs in dieser Datenbasis nutzen den
-  expliziten API-Vertrag in der Prompt (commit `0902a4f`). Frühere Findings
-  über Repräsentations-Wahl ohne expliziten Vertrag sind nicht direkt
-  vergleichbar.
+- **Single workflow**: Only v4-exact-subagents. Other workflows could
+  produce different model rankings (cf. RQ-tdd-quality F-tdd-quality.1).
+- **Single kata**: Only Game of Life (library form, example-mapping).
+  Mars-rover as a second code-quality carrier remains open.
+- **Opus 4.6 via Portkey**: Findings about `opus-4-6-portkey*` are not
+  automatically transferable to Direct-API Opus 4.6.
+- **Fable 5 / Opus 4.8 native API only**: `fable-5*` and `opus-4-8*` run
+  via the native Anthropic API (CLI 2.1.170, blanked `ANTHROPIC_*` env,
+  native OAuth), not via Portkey. A routing confound relative to the
+  Portkey Opus 4.6 cells exists but is assumed here to be uncritical for the
+  code-quality metrics.
+- **n = 3 per cell** (except opus-4-7-no-thinking with n=10 thanks to
+  RQ-tdd-quality pooling, opus-4-8-no-thinking with n=4): σ is high in individual
+  outcomes — the thinking deltas (F-model-quality.3) and the
+  representation outlier (F-model-quality.5) need replication at
+  n=3. Fable 5 reaches its best values on
+  `cognitive_max`/`mccabe_max` with σ ≤ 0.58 (very tight), so the low
+  Complexity Peak is stable across the three replicates.
+- **API contract introduced**: All runs in this data basis use the
+  explicit API contract in the prompt (commit `0902a4f`). Earlier findings
+  about representation choice without an explicit contract are not directly
+  comparable.

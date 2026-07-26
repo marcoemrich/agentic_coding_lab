@@ -1,18 +1,18 @@
 # RQ-prompt-correctness Findings
 
-Persistente Sammlung der Erkenntnisse zur Frage:
-**Steigert Example-Mapping die Korrektheit gegenüber Prose und
-User-Story — und ist der Effekt modellabhängig?**
+Persistent collection of the insights on the question:
+**Does example mapping increase correctness compared to prose and
+user story — and is the effect model-dependent?**
 
-Findings entstehen aus `summary.md` dieser RQ via
+Findings originate from `summary.md` of this RQ via
 `experiments/aggregate-by-query.py`.
 
-Datenbasis: 128 Runs (22 von 24 Zellen bei n≥5; nur opus-4-6 ×
-example-mapping bei n=4). Stand 2026-06-02.
+Data basis: 128 runs (22 of 24 cells at n≥5; only opus-4-6 ×
+example-mapping at n=4). As of 2026-06-02.
 
-## Übersicht: Korrektheit (außen) nach Modell × Prompt-Stil × Thinking
+## Overview: Correctness (external) by Model × Prompt Style × Thinking
 
-| Modell | Modus | prose | example-mapping | user-story |
+| Model | Mode | prose | example-mapping | user-story |
 |---|---|---|---|---|
 | opus-4-7 | +thinking | 0.29 | **0.95** 🏆 | 0.21 |
 | opus-4-7 | −thinking | 0.21 | **0.97** 🏆 | 0.13 |
@@ -23,50 +23,50 @@ example-mapping bei n=4). Stand 2026-06-02.
 | haiku-4-5 | +thinking | 0.00 | 0.00 | 0.01 |
 | haiku-4-5 | −thinking | 0.00 | 0.00 | 0.00 |
 
-Werte: mean(`verification_pct`), je n=5 (opus-4-6 EM n=4; opus-4-7
-−thinking EM n=9). Höher = besser; 🏆 = bester Stil pro Zeile
-(Haiku-Zeilen: kein Effekt, alle Werte ~0 → kein Sieger).
-Routing: opus-4-7 Direct-API, übrige Portkey (`controls.model`).
+Values: mean(`verification_pct`), n=5 each (opus-4-6 EM n=4; opus-4-7
+−thinking EM n=9). Higher = better; 🏆 = best style per row
+(Haiku rows: no effect, all values ~0 → no winner).
+Routing: opus-4-7 Direct API, the rest Portkey (`controls.model`).
 
 ---
 
-## F-prompt-correctness.1 — Schwache Modelle scheitern unabhängig vom Prompt-Stil
+## F-prompt-correctness.1 — Weak Models Fail Regardless of Prompt Style
 
-Haiku 4.5 erreicht 0 % Korrektheit (außen) über alle drei Prompt-Stile
-und beide Thinking-Modi (n=30, 6 Zellen à 5 Runs, `verification_pct`
-= 0.00, σ=0.00 in jeder Zelle).
+Haiku 4.5 reaches 0 % correctness (external) across all three prompt styles
+and both thinking modes (n=30, 6 cells of 5 runs each, `verification_pct`
+= 0.00, σ=0.00 in every cell).
 
-| Prompt-Stil | +thinking | −thinking |
+| Prompt style | +thinking | −thinking |
 |---|---|---|
 | prose | 0.00 | 0.00 |
 | example-mapping | 0.00 | 0.00 |
 | user-story | 0.01 | 0.00 |
 
-**Datenbasis**: 30 Runs, alle Haiku-4.5-portkey × v5 × claim-office.
+**Data basis**: 30 runs, all Haiku-4.5-portkey × v5 × claim-office.
 
-**Rationale**: Die Kata erfordert, dass der Agent mehrere
-Domänenregeln korrekt interpretiert und in eine lauffähige CLI
-umsetzt. Haiku produziert zwar kompilierbaren Code mit
-`cli_built=true`, aber die Domänenlogik ist in keinem Fall nah
-genug an der externen Verifikations-Suite. Example-Mapping —
-das bei stärkeren Modellen den entscheidenden Unterschied macht
-(→ F-prompt-correctness.2) — hat für Haiku keinen messbaren Effekt: die
-Reasoning-Kapazität reicht nicht aus, um die Beispiele auf neue
-Eingaben zu generalisieren.
+**Rationale**: The kata requires the agent to interpret several
+domain rules correctly and implement them in a runnable CLI.
+Haiku does produce compilable code with
+`cli_built=true`, but the domain logic is in no case close
+enough to the external verification suite. Example mapping —
+which makes the decisive difference on stronger models
+(→ F-prompt-correctness.2) — has no measurable effect for Haiku: the
+reasoning capacity is not sufficient to generalize the examples to new
+inputs.
 
-**Bezug zu H5**: Bestätigt. Schwächere Modelle erreichen auch mit
-example-mapping keine Korrektheit.
+**Relation to H5**: Confirmed. Weaker models do not reach correctness even with
+example mapping.
 
 ---
 
-## F-prompt-correctness.2 — Example-Mapping hebt Korrektheit massiv
+## F-prompt-correctness.2 — Example Mapping Raises Correctness Massively
 
-Bei Opus 4.7, Opus 4.6 und Sonnet 4.6 steigert example-mapping die
-Korrektheit (außen) gegenüber prose um 14–76 Prozentpunkte. Bei Opus
-ist der Effekt in beiden Thinking-Modi stark; bei Sonnet nur ohne
-Thinking.
+On Opus 4.7, Opus 4.6 and Sonnet 4.6, example mapping increases
+correctness (external) compared to prose by 14–76 percentage points. On Opus
+the effect is strong in both thinking modes; on Sonnet only without
+thinking.
 
-| Modell | Modus | prose | example-mapping | user-story | Δ (EM − prose) |
+| Model | Mode | prose | example-mapping | user-story | Δ (EM − prose) |
 |---|---|---|---|---|---|
 | opus-4-7 | +thinking | 0.29 | **0.95** 🏆 | 0.21 | **+66 pp** |
 | opus-4-7 | −thinking | 0.21 | **0.97** 🏆 | 0.13 | **+76 pp** |
@@ -75,77 +75,77 @@ Thinking.
 | sonnet-4-6 | +thinking | 0.21 | **0.35** 🏆 | — | +14 pp |
 | sonnet-4-6 | −thinking | 0.23 | **0.71** 🏆 | 0.17 | **+48 pp** |
 
-Höher = besser; 🏆 = bester Stil pro Zeile (Spalten prose/EM/user-story).
-Δ ist eine Effektgröße, kein Wettbewerb → kein 🏆.
+Higher = better; 🏆 = best style per row (columns prose/EM/user-story).
+Δ is an effect size, not a competition → no 🏆.
 
-**Datenbasis**: 128 Runs gesamt; diese Tabelle: Opus 4.7 (n=5/Modus,
-EM −thinking n=9), Opus 4.6 (n=5/Modus, EM +thinking n=4), Sonnet 4.6
-(n=5/Modus). Haiku ausgenommen — dort ist der Prompt-Stil irrelevant
+**Data basis**: 128 runs in total; this table: Opus 4.7 (n=5/mode,
+EM −thinking n=9), Opus 4.6 (n=5/mode, EM +thinking n=4), Sonnet 4.6
+(n=5/mode). Haiku excluded — there the prompt style is irrelevant
 (→ F-prompt-correctness.1).
 
-**Rationale**: Example-Mapping liefert konkrete Input/Output-Paare,
-die die Mehrdeutigkeiten der Kata-Regeln auflösen. Modelle mit
-ausreichender Reasoning-Kapazität (Opus, Sonnet) können die Muster
-auf neue Eingaben generalisieren.
+**Rationale**: Example mapping supplies concrete input/output pairs
+that resolve the ambiguities of the kata rules. Models with
+sufficient reasoning capacity (Opus, Sonnet) can generalize the patterns
+to new inputs.
 
-**Bezug zu H1**: Bestätigt. EM steigert Korrektheit bei Opus 4.7 um
-+66–76 pp, bei Opus 4.6 um +48–64 pp und bei Sonnet −thinking um
-+48 pp. Sonnet +thinking zeigt +14 pp — schwächer, aber gleiche
-Richtung.
+**Relation to H1**: Confirmed. EM increases correctness on Opus 4.7 by
++66–76 pp, on Opus 4.6 by +48–64 pp and on Sonnet −thinking by
++48 pp. Sonnet +thinking shows +14 pp — weaker, but the same
+direction.
 
 ---
 
-## F-prompt-correctness.3 — Thinking schadet bei Example-Mapping (Sonnet > Opus)
+## F-prompt-correctness.3 — Thinking Hurts with Example Mapping (Sonnet > Opus)
 
-Thinking-Mode reduziert die Korrektheit (außen) bei example-mapping,
-aber der Effekt ist modellabhängig:
+Thinking mode reduces correctness (external) with example mapping,
+but the effect is model-dependent:
 
-| Modell | +thinking | −thinking | Δ |
+| Model | +thinking | −thinking | Δ |
 |---|---|---|---|
 | sonnet-4-6 | 0.35 (σ=0.41) | **0.71** 🏆 (σ=0.18) | **−36 pp** |
 | opus-4-6 | 0.72 (σ=0.38) | **0.87** 🏆 (σ=0.30) | −15 pp |
 | opus-4-7 | **0.95** 🏆 (σ=0.12) | **0.97** 🏆 (σ=0.09) | −2 pp |
 
-Höher = besser; 🏆 = besserer Modus pro Zeile (+thinking vs. −thinking). Δ = Effektgröße, kein 🏆.
+Higher = better; 🏆 = better mode per row (+thinking vs. −thinking). Δ = effect size, no 🏆.
 
-Bei prose und user-story ist der Thinking-Effekt vernachlässigbar
-(±5 pp, keine konsistente Richtung).
+With prose and user story the thinking effect is negligible
+(±5 pp, no consistent direction).
 
-**Datenbasis**: 33 Runs (Opus 4.7 + Opus 4.6 + Sonnet 4.6 × ±thinking
-× example-mapping; je n=5, außer opus-4-6 +thinking n=4 und opus-4-7
+**Data basis**: 33 runs (Opus 4.7 + Opus 4.6 + Sonnet 4.6 × ±thinking
+× example-mapping; n=5 each, except opus-4-6 +thinking n=4 and opus-4-7
 −thinking n=9).
 
-**Mechanismus (Transcript-Analyse)**: In einem Sonnet-+thinking-Run
-mit `verification_pct`=0 findet sich im Thinking-Block die
-Passage: *"I'm realizing the first insurance surcharge might apply
+**Mechanism (transcript analysis)**: In a Sonnet +thinking run
+with `verification_pct`=0, the thinking block contains the
+passage: *"I'm realizing the first insurance surcharge might apply
 to every item in a quote regardless of whether it's the customer's
-first contract overall. Let me check the example again."* — Das
-Modell hinterfragt die vom Beispiel implizierte Lesart und
-konstruiert eine alternative Interpretation ("Erstversicherung" =
-erster Vertrag des Kunden), die es dann als `isFirstQuote`-Parameter
-implementiert. Die −thinking-Variante desselben Modells wendet den
-Zuschlag stattdessen bedingungslos an — konform mit den Beispielen.
+first contract overall. Let me check the example again."* — The
+model questions the reading implied by the example and
+constructs an alternative interpretation ("first insurance" =
+the customer's first contract), which it then implements as an `isFirstQuote`
+parameter. The −thinking variant of the same model instead applies the
+surcharge unconditionally — consistent with the examples.
 
-Der Effekt skaliert invers mit der Modellstärke: Sonnet stark
-(−36 pp), Opus 4.6 mittel (−15 pp), Opus 4.7 vernachlässigbar
-(−2 pp). Stärkere Modelle haben genug Reasoning-Kapazität, um die
-Beispiel-Semantik auch mit Thinking korrekt zu übernehmen — Sonnet
-hinterfragt sie häufiger und konstruiert Alternativ-Lesarten.
+The effect scales inversely with model strength: Sonnet strong
+(−36 pp), Opus 4.6 medium (−15 pp), Opus 4.7 negligible
+(−2 pp). Stronger models have enough reasoning capacity to adopt the
+example semantics correctly even with thinking — Sonnet
+questions them more often and constructs alternative readings.
 
-**Bezug zu H4**: Teilweise widerlegt. Thinking verbessert
-`verification_pct` nicht — bei Sonnet × EM schadet es erheblich
-(−36 pp), bei Opus 4.6 × EM spürbar (−15 pp), bei Opus 4.7 × EM
-praktisch nicht (−2 pp).
+**Relation to H4**: Partially refuted. Thinking does not improve
+`verification_pct` — on Sonnet × EM it hurts considerably
+(−36 pp), on Opus 4.6 × EM noticeably (−15 pp), on Opus 4.7 × EM
+practically not at all (−2 pp).
 
 ---
 
-## F-prompt-correctness.4 — User-Story ≈ Prose, keine messbare Wirkung auf Korrektheit
+## F-prompt-correctness.4 — User Story ≈ Prose, No Measurable Effect on Correctness
 
-User-Story erreicht über alle Modelle und Thinking-Modi ähnliche
-Korrektheit (außen) wie Prose. Maximale Differenz: 8 pp, ohne
-konsistente Richtung.
+User story reaches similar correctness (external) to prose across all models and
+thinking modes. Maximum difference: 8 pp, without
+consistent direction.
 
-| Modell | Modus | prose | user-story | Δ |
+| Model | Mode | prose | user-story | Δ |
 |---|---|---|---|---|
 | opus-4-7 | +thinking | 0.29 | 0.21 | −8 pp |
 | opus-4-7 | −thinking | 0.21 | 0.13 | −8 pp |
@@ -154,26 +154,26 @@ konsistente Richtung.
 | sonnet-4-6 | −thinking | 0.23 | 0.17 | −6 pp |
 | haiku-4-5 | ±thinking | 0.00 | 0.00–0.01 | 0 pp |
 
-**Datenbasis**: prose- und user-story-Zellen über alle Modelle ×
-±thinking, je n=5 (opus-4-6/opus-4-7 user-story teils n=7–8).
+**Data basis**: prose and user-story cells across all models ×
+±thinking, n=5 each (opus-4-6/opus-4-7 user story partly n=7–8).
 
-**Rationale**: Die Stakeholder-Perspektive ("Als X möchte ich Y")
-liefert keine zusätzliche Information über die Domänenregeln.
-Mehrdeutigkeiten wie "Erstversicherung" bleiben in beiden Formaten
-gleichermaßen unaufgelöst — nur konkrete Input/Output-Beispiele
-(example-mapping) disambiguieren sie.
+**Rationale**: The stakeholder perspective ("As X I want Y")
+supplies no additional information about the domain rules.
+Ambiguities such as "first insurance" remain equally unresolved in both
+formats — only concrete input/output examples
+(example mapping) disambiguate them.
 
-**Bezug zu H2**: Bestätigt. User-Story verbessert Korrektheit
-gegenüber Prose nur geringfügig (≤6 pp).
+**Relation to H2**: Confirmed. User story improves correctness
+compared to prose only marginally (≤6 pp).
 
 ---
 
-## F-prompt-correctness.5 — Streuung bei Example-Mapping ist modellabhängig
+## F-prompt-correctness.5 — Spread with Example Mapping Is Model-Dependent
 
-Example-Mapping-Runs streuen stärker als prose/user-story, aber
-die Streuung hängt stark vom Modell ab:
+Example-mapping runs spread more than prose/user story, but
+the spread depends strongly on the model:
 
-| Zelle | mean | σ | min | max |
+| Cell | mean | σ | min | max |
 |---|---|---|---|---|
 | opus-4-7 +thinking × EM | 0.95 | 0.12 | 0.73 | 1.00 |
 | opus-4-7 −thinking × EM | 0.97 | 0.09 | 0.73 | 1.00 |
@@ -183,15 +183,15 @@ die Streuung hängt stark vom Modell ab:
 | sonnet −thinking × EM | 0.71 | 0.18 | 0.40 | 0.87 |
 | opus ±thinking × prose | 0.21–0.29 | 0.04–0.19 | 0.07 | 0.60 |
 
-**Datenbasis**: alle EM-Zellen von Opus 4.7, Opus 4.6, Sonnet 4.6 ×
-±thinking (n=5/Zelle, opus-4-6 +thinking n=4, opus-4-7 −thinking n=9).
+**Data basis**: all EM cells of Opus 4.7, Opus 4.6, Sonnet 4.6 ×
+±thinking (n=5/cell, opus-4-6 +thinking n=4, opus-4-7 −thinking n=9).
 
-**Rationale**: Die Streuung sinkt mit steigender Modellstärke. Sonnet
-+thinking zeigt quasi-binäres Verhalten (0 % oder hoch, σ=0.41),
-Opus 4.6 streut mittel (σ=0.30–0.38), Opus 4.7 trifft die richtige
-Interpretation am konsistentesten (σ=0.09–0.12). Die hohe Streuung bei
-Sonnet +thinking ist ein Thinking-Effekt (→ F-prompt-correctness.3),
-kein generelles EM-Problem — Sonnet −thinking und Opus streuen
-deutlich weniger.
+**Rationale**: The spread decreases as model strength rises. Sonnet
++thinking shows quasi-binary behavior (0 % or high, σ=0.41),
+Opus 4.6 spreads moderately (σ=0.30–0.38), Opus 4.7 hits the correct
+interpretation most consistently (σ=0.09–0.12). The high spread on
+Sonnet +thinking is a thinking effect (→ F-prompt-correctness.3),
+not a general EM problem — Sonnet −thinking and Opus spread
+considerably less.
 
 ---

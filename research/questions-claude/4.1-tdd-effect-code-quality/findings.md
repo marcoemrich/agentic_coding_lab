@@ -1,18 +1,18 @@
 # RQ-tdd-quality Findings
 
-Katas: `game-of-life` (Library-Form, trainingsbekannt) und `claim-office` (CLI, novel mit Mehrdeutigkeiten). Modell: `opus-4-7-no-thinking` (Portkey ODER Direct, OR-match). 8 Workflows (6 TDD-Achse + 2 Non-TDD-Kontrolle v8a/v8b) × 2 Katas = 16 Zellen, n=103 Runs.
+Katas: `game-of-life` (library form, training-known) and `claim-office` (CLI, novel with ambiguities). Model: `opus-4-7-no-thinking` (Portkey OR direct, OR-match). 8 workflows (6 on the TDD axis + 2 non-TDD controls v8a/v8b) × 2 katas = 16 cells, n=103 runs.
 
-## Methodische Notiz — silent workflow drops und abgebrochene Refactor-Loops
+## Methodological Note — Silent Workflow Drops and Aborted Refactor Loops
 
-Während der claim-office-Erhebung trat ein v6.1-Run mit fehlender `experiment-done.txt` auf: das Modell hat aufgehört, Tools zu callen, Claude exited mit `exit_code=0`/`exit_reason=ok`, aber der Workflow lief nicht zu Ende — Stopp nach der Test-Liste vor dem ersten Red-Cycle (63 s, 11 Assistant-Messages).
+During the claim-office collection, one v6.1 run occurred with a missing `experiment-done.txt`: the model stopped calling tools, Claude exited with `exit_code=0`/`exit_reason=ok`, but the workflow did not run to completion — a stop after the test list before the first red cycle (63 s, 11 assistant messages).
 
-Zusätzlich wurde ein v6.1-claim-office-Run mit abgebrochenem Refactor-Loop entfernt: `exit_reason=ok` und alle Tests grün, aber nur 4 statt der typischen 5+ Zyklen, 10 statt 14–27 Funktionen, längste Funktion 60 LoC (Median 17). Profil ist mit dem normalen v6.1-Verhalten inkonsistent — der Refactor-Subagent hat die Implementierung nicht zerlegt.
+In addition, a v6.1 claim-office run with an aborted refactor loop was removed: `exit_reason=ok` and all tests green, but only 4 instead of the typical 5+ cycles, 10 instead of 14–27 functions, longest function 60 LoC (median 17). The profile is inconsistent with normal v6.1 behavior — the refactor subagent did not decompose the implementation.
 
-Diese zwei Runs wurden aus den n=5-Zellen entfernt und durch frische Runs ersetzt bzw. nicht ersetzt (n=7 für v6.1 claim-office ist > min_replicates=5). Begründung: für die TDD-Workflow-Frage interessiert das Outcome des **abgelaufenen** Workflows, nicht die Vollautonomie-Stabilität. Im praktischen Einsatz (HITL) wäre ein abgebrochener Refactor durch Resume/Re-Trigger zu beheben; nur unter Vollautonomie wird er zum Problem. Vollautonomie-Stabilität ist eine eigenständige Forschungsfrage (vgl. RQ-stability) und liegt außerhalb des Scopes dieser RQ.
+These two runs were removed from the n=5 cells and replaced by fresh runs, or not replaced (n=7 for v6.1 claim-office is > min_replicates=5). Rationale: for the TDD workflow question, what matters is the outcome of the workflow that **ran through**, not full-autonomy stability. In practical use (HITL), an aborted refactor would be fixed by a resume/re-trigger; only under full autonomy does it become a problem. Full-autonomy stability is a research question in its own right (cf. RQ-stability) and lies outside the scope of this RQ.
 
-## Übersicht — Code-Qualität pro Workflow
+## Overview — Code Quality per Workflow
 
-Alle Metriken in den Tabellen: kleiner = besser. 🏆 = bester Wert pro Spalte (auch bei Gleichstand mehrfach). **Nie über Katas gemittelt** — game-of-life (~30–40 Produktiv-LoC) und claim-office (~150–320 Produktiv-LoC) sind nicht vergleichbar.
+All metrics in the tables: lower = better. 🏆 = best value per column (also multiple times in case of a tie). **Never averaged across katas** — game-of-life (~30–40 Production LoC) and claim-office (~150–320 Production LoC) are not comparable.
 
 ### Kata: game-of-life
 
@@ -40,66 +40,66 @@ Alle Metriken in den Tabellen: kleiner = besser. 🏆 = bester Wert pro Spalte (
 | v8a-delayed-refactor-agent  |  5 | 7.4 | 6.6 | 28.4 | 4.0 | 245.6 | 813.8 |
 | v8b-delayed-refactor-native |  5 | 11.0 | 8.0 | 35.8 | 6.2 | 238.8 | 780.2 |
 
-⚠️ v4.1-claim-office ist bimodal (`cognitive_max` σ=24, max=68) — gelegentliche extreme Fehlsteuerungen. Siehe F-tdd-quality.9.
+⚠️ v4.1 claim-office is bimodal (`cognitive_max` σ=24, max=68) — occasional extreme misdirections. See F-tdd-quality.9.
 
-Korrektheit ist auf den zwei Katas **unterschiedlich**: auf game-of-life sind alle 8 Workflows bei `verification_pct=1.00`. Auf claim-office variiert sie zwischen 0.28 (v1+v2, Vibe-Coding ohne Tests) und 1.00 (v3, v5.1, v6.1, v8a) — siehe F-tdd-quality.4 und F-tdd-quality.8. `mutation_score` wurde nur für v1/v2/v3 auf game-of-life erhoben (0.95 ± 0.01 in allen drei).
+Correctness **differs** between the two katas: on game-of-life all 8 workflows are at `verification_pct=1.00`. On claim-office it varies between 0.28 (v1+v2, vibe-coding without tests) and 1.00 (v3, v5.1, v6.1, v8a) — see F-tdd-quality.4 and F-tdd-quality.8. `mutation_score` was collected only for v1/v2/v3 on game-of-life (0.95 ± 0.01 in all three).
 
-## F-tdd-quality.1 — Strikte phasen-strukturierte Workflows mit Refactor-Phase senken die Komplexitäts-Spitzen drastisch
+## F-tdd-quality.1 — Strict Phase-Structured Workflows with a Refactor Phase Lower the Complexity Peaks Drastically
 
-v4.1 und v6.1 erreichen auf game-of-life `cognitive_max ≈ 6–7` und `mccabe_max ≈ 5` — das sind ~⅓ der Werte von v1/v2/v3 (`cognitive_max ≈ 16–22`, `mccabe_max ≈ 12–14`). `cc_longest_function` halbiert sich entsprechend (13–16 vs. 32). `smell_total` halbiert sich ebenfalls (≈2.3 vs. 4–6).
+On game-of-life, v4.1 and v6.1 reach `cognitive_max ≈ 6–7` and `mccabe_max ≈ 5` — these are ~⅓ of the values of v1/v2/v3 (`cognitive_max ≈ 16–22`, `mccabe_max ≈ 12–14`). `cc_longest_function` halves accordingly (13–16 vs. 32). `smell_total` also halves (≈2.3 vs. 4–6).
 
-Auf claim-office hält das Muster für v6.1 **noch deutlicher**: `cognitive_max` 5.7, `mccabe_max` 5.7, `cc_longest_function` 18.1 — alle die niedrigsten Werte der gesamten Matrix. v4.1 dagegen bricht auf claim-office ein (siehe F-tdd-quality.9) — bleibt zwar auf `code_mass` und `cc_loc` an der Spitze (621.6/156.8, je beste über alle Workflows), kollabiert aber bei Verzweigungs-Komplexität.
+On claim-office the pattern holds **even more clearly** for v6.1: `cognitive_max` 5.7, `mccabe_max` 5.7, `cc_longest_function` 18.1 — all the lowest values of the entire matrix. v4.1, by contrast, breaks down on claim-office (see F-tdd-quality.9) — it does stay at the top on `code_mass` and `cc_loc` (621.6/156.8, each the best across all workflows), but collapses on branching complexity.
 
-Plausible Mechanik: v4.1 und v6.1 schreiben eine eigene Refactor-Phase pro Zyklus vor, die ausdrücklich Komplexität abbaut — und beide trennen Implementation (Green) und Refactor architekturell (v4.1 via isolierten Subagent, v6.1 via dediziertem Refactor-Subagent im Hybrid). Die Refactor-Disziplin schlägt sich direkt in den Komplexitäts-Spitzen nieder, nicht im `cc_loc` — der Code wird nicht kürzer, sondern flacher.
+Plausible mechanic: v4.1 and v6.1 prescribe a dedicated refactor phase per cycle that explicitly reduces complexity — and both separate implementation (green) and refactor architecturally (v4.1 via an isolated subagent, v6.1 via a dedicated refactor subagent in the hybrid). The refactor discipline shows up directly in the complexity peaks, not in `cc_loc` — the code does not become shorter, but flatter.
 
-## F-tdd-quality.2 — Naives "use TDD" (v3) bringt auf game-of-life keinen Komplexitäts-Vorteil gegenüber Non-TDD (v1/v2)
+## F-tdd-quality.2 — Naive "use TDD" (v3) Brings No Complexity Advantage over Non-TDD (v1/v2) on game-of-life
 
-v3 liegt auf game-of-life in *allen* Komplexitäts-Metriken auf oder leicht über v1/v2: `cognitive_max` 21.8 (v3) vs. 18.8/16.2 (v1/v2), `mccabe_max` 13.7 vs. 12.8/11.6, `smell_total` 6.0 vs. 4.8/4.1, `code_mass` 165.6 vs. 155/157.8. Funktionsgrößen (`cc_longest_function`, `cc_loc`) sind vergleichbar.
+On game-of-life, v3 is at or slightly above v1/v2 in *all* complexity metrics: `cognitive_max` 21.8 (v3) vs. 18.8/16.2 (v1/v2), `mccabe_max` 13.7 vs. 12.8/11.6, `smell_total` 6.0 vs. 4.8/4.1, `code_mass` 165.6 vs. 155/157.8. Function sizes (`cc_longest_function`, `cc_loc`) are comparable.
 
-Auf claim-office ist v3 sogar **deutlich schlechter** als v1/v2 in fast allen Metriken: `cognitive_max` 19.8 vs. 12.2/11.4, `mccabe_max` 15.4 vs. 8.4/8.4, `cc_longest_function` 51.6 vs. 40.4/41.4, `cc_loc` 317.4 vs. 269.4/268.6, `code_mass` 992.4 vs. 835.4/851.0. Der naive "use TDD"-Ansatz produziert auf der novel Kata den schwersten Code der ganzen Matrix — die Test-First-Inkremente treiben die Implementation in eine fragmentierte Struktur ohne strukturierten Aufräum-Takt.
+On claim-office, v3 is even **clearly worse** than v1/v2 in almost all metrics: `cognitive_max` 19.8 vs. 12.2/11.4, `mccabe_max` 15.4 vs. 8.4/8.4, `cc_longest_function` 51.6 vs. 40.4/41.4, `cc_loc` 317.4 vs. 269.4/268.6, `code_mass` 992.4 vs. 835.4/851.0. The naive "use TDD" approach produces the heaviest code of the whole matrix on the novel kata — the test-first increments drive the implementation into a fragmented structure without a structured cleanup rhythm.
 
-Plausible Mechanik: v3 ist ein einzelner Agent mit der minimalen Anweisung "use TDD" und ohne erzwungenen Red-Green-Refactor-Takt — kein isolierter Refactor-Schritt, keine Phasen-Struktur. Auf einer trainingsbekannten Kata produziert das Modell auch ohne TDD eine sortierte Lösung; auf einer novel Kata fügt v3 inkrementell Test-Erfüllung an Test-Erfüllung — ohne periodisches Refactoring wird das Resultat klobiger als selbst eine schlechte oneshot-Lösung. Den messbaren Qualitätsvorteil bringt erst die strukturierte Refactor-Disziplin der strikten Workflows (F-tdd-quality.1). Das "use TDD"-Etikett allein genügt nicht — der Hebel ist der erzwungene Refactor-Schritt im Takt, nicht die Test-First-Anweisung.
+Plausible mechanic: v3 is a single agent with the minimal instruction "use TDD" and without an enforced red-green-refactor rhythm — no isolated refactor step, no phase structure. On a training-known kata the model produces an orderly solution even without TDD; on a novel kata v3 appends test satisfaction to test satisfaction incrementally — without periodic refactoring the result becomes clunkier than even a poor oneshot solution. The measurable quality advantage only comes from the structured refactor discipline of the strict workflows (F-tdd-quality.1). The "use TDD" label alone does not suffice — the lever is the enforced refactor step in the rhythm, not the test-first instruction.
 
-Hypothese H1 ("v3/v4.1/v5.1 zeigen niedrigere Komplexität als v1/v2") trifft damit *nicht* uniform für alle TDD-Workflows zu — v3 erreicht (game-of-life) bzw. unterschreitet (claim-office) Non-TDD-Niveau, nur v4.1 (game-of-life) und v6.1 (beide Katas) trennen sich klar ab.
+Hypothesis H1 ("v3/v4.1/v5.1 show lower complexity than v1/v2") therefore does *not* hold uniformly for all TDD workflows — v3 reaches (game-of-life) or falls below (claim-office) the non-TDD level; only v4.1 (game-of-life) and v6.1 (both katas) separate themselves clearly.
 
-## F-tdd-quality.3 — Single-Context (v5.1) verliert den Komplexitäts-Vorteil der phasen-isolierten Subagents (v4.1) — aber nur auf game-of-life
+## F-tdd-quality.3 — Single Context (v5.1) Loses the Complexity Advantage of the Phase-Isolated Subagents (v4.1) — But Only on game-of-life
 
-v5.1 und v4.1 tragen denselben Phasen-Skript-Inhalt (test-list-scope-fix, Test-Liste → Red → Green → Refactor) und unterscheiden sich nur im Aufruf-Mechanismus: v4.1 spawnt einen frischen Subagent pro Phase (isolierter Kontext), v5.1 ruft Skills im selben Kontext auf.
+v5.1 and v4.1 carry the same phase-script content (test-list-scope-fix, test list → red → green → refactor) and differ only in the invocation mechanism: v4.1 spawns a fresh subagent per phase (isolated context), v5.1 invokes skills in the same context.
 
-Auf **game-of-life** zeigt v5.1 in den Spitzen-Metriken Werte auf v1/v2/v3-Niveau:
+On **game-of-life**, v5.1 shows values at the v1/v2/v3 level in the peak metrics:
 
-| Metrik (kleiner = besser) | v4.1 (isoliert) | v5.1 (geteilt) | Faktor v5.1 / v4.1 |
+| Metric (lower = better) | v4.1 (isolated) | v5.1 (shared) | Factor v5.1 / v4.1 |
 |---|---:|---:|---:|
 | `cognitive_max` | **6.4** 🏆 | 17.6 | 2.8× |
 | `mccabe_max`    | **5.0** 🏆 | 10.2 | 2.0× |
 | `cc_longest_function` | **16.4** 🏆 | 20.8 | 1.3× |
 | `smell_total`   | **2.4** 🏆 | 4.8 | 2.0× |
 
-Auf **claim-office kehrt sich die Reihenfolge um** — v5.1 schlägt v4.1 klar:
+On **claim-office the ordering reverses** — v5.1 clearly beats v4.1:
 
-| Metrik (kleiner = besser) | v4.1 (isoliert) | v5.1 (geteilt) |
+| Metric (lower = better) | v4.1 (isolated) | v5.1 (shared) |
 |---|---:|---:|
 | `cognitive_max` | 26.8 ⚠️ | **14.8** 🏆 |
 | `mccabe_max`    | 16.0 ⚠️ | **10.2** 🏆 |
 | `cc_longest_function` | 40.8 | **32.7** 🏆 |
 | `smell_total`   | 13.2 | **6.8** 🏆 |
 
-Plausible Mechanik: auf der kurzen game-of-life-Test-Liste hilft der frische Subagent-Kontext, weil jede Phase isoliert die ganze Test-Liste überblicken kann; auf der langen claim-office-Test-Liste verliert der frische Kontext pro Cycle die Kohärenz und re-interpretiert Spec-Mehrdeutigkeiten unterschiedlich. v5.1 mit geteiltem Kontext profitiert von der Spec-Konsistenz innerhalb einer Session. Der Hybrid v6.1 (Skill-Red/Green im Shared-Context + isolierter Refactor-Subagent) verbindet beide Stärken und dominiert claim-office über die Verzweigungs- und Größen-Metriken — siehe RQ-context (4.3) F-context.1 für die explizite Zerlegung.
+Plausible mechanic: on the short game-of-life test list the fresh subagent context helps, because each phase can survey the whole test list in isolation; on the long claim-office test list the fresh context loses coherence per cycle and re-interprets spec ambiguities differently. v5.1 with its shared context benefits from spec consistency within a session. The hybrid v6.1 (skill red/green in the shared context + isolated refactor subagent) combines both strengths and dominates claim-office across the branching and size metrics — see RQ-context (4.3) F-context.1 for the explicit decomposition.
 
-## F-tdd-quality.4 — Korrektheit ist workflow-abhängig auf novel Kata; v1/v2 Vibe-Coding kollabiert auf claim-office
+## F-tdd-quality.4 — Correctness Is Workflow-Dependent on a Novel Kata; v1/v2 Vibe-Coding Collapses on claim-office
 
-`verification_pct` ist auf den zwei Katas **strukturell unterschiedlich**:
+`verification_pct` is **structurally different** on the two katas:
 
 | Kata | v1 | v2 | v3 | v4.1 | v5.1 | v6.1 | v8a | v8b |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | game-of-life | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |
 | claim-office | **0.28** | **0.28** | 1.00 | 0.96 | 1.00 | 1.00 | 1.00 | 0.97 |
 
-Auf game-of-life sind alle 8 Workflows bei 100 % (15/15 Verifikations-Szenarien) — der Workflow-Effekt ist hier unsichtbar, weil das Modell die Lösung memoriert hat. Auf claim-office (novel mit Mehrdeutigkeiten) fallen **v1 und v2** auf ~28 % (4/15) — das Modell schreibt für die Vibe-Coding-Prosa-Variante eine Lösung, die in 11 von 15 Szenarien fehlschlägt. Alle Workflows mit einer **Test-Schreib-Phase** (v3+, v8a/v8b) bleiben bei ≥ 96 %; die meisten erreichen 100 %. Die kleineren Abweichungen bei v4.1 (0.96) und v8b (0.97) kommen von je 1 Run mit `verification_pct ∈ {0.80, 0.87}` (Implementation-Bugs, die die spec nicht ganz abdecken — nicht silent workflow drops).
+On game-of-life all 8 workflows are at 100 % (15/15 verification scenarios) — the workflow effect is invisible here, because the model has memorized the solution. On claim-office (novel with ambiguities), **v1 and v2** drop to ~28 % (4/15) — for the vibe-coding prose variant the model writes a solution that fails in 11 of 15 scenarios. All workflows with a **test-writing phase** (v3+, v8a/v8b) stay at ≥ 96 %; most reach 100 %. The smaller deviations at v4.1 (0.96) and v8b (0.97) come from 1 run each with `verification_pct ∈ {0.80, 0.87}` (implementation bugs that do not quite cover the spec — not silent workflow drops).
 
-**H4 (Korrektheit unabhängig vom Workflow) widerlegt.** Der Workflow-Effekt auf Korrektheit ist kata-abhängig: auf trainingsbekannten Katas unsichtbar, auf novel Katas dominant. Die Vibe-Coding-Workflows v1/v2 ohne Tests fallen aus; selbst ein nachträgliches Test-Schreiben (v8a/v8b) reicht aus, um auf TDD-Niveau zu kommen — siehe F-tdd-quality.8.
+**H4 (correctness independent of the workflow) refuted.** The workflow effect on correctness is kata-dependent: invisible on training-known katas, dominant on novel katas. The vibe-coding workflows v1/v2 without tests drop out; even writing tests after the fact (v8a/v8b) is enough to reach TDD level — see F-tdd-quality.8.
 
-## F-tdd-quality.5 — Kostenspanne zwischen Workflows ist eine Größenordnung; strikte Workflows sind 5–50× teurer; Kata-Komplexität skaliert linear
+## F-tdd-quality.5 — The Cost Range Between Workflows Spans an Order of Magnitude; Strict Workflows Are 5–50× More Expensive; Kata Complexity Scales Linearly
 
 ### game-of-life
 
@@ -127,45 +127,45 @@ Auf game-of-life sind alle 8 Workflows bei 100 % (15/15 Verifikations-Szenarien)
 | v8a-delayed-refactor-agent  | 308 | 2.12 M |
 | v8b-delayed-refactor-native | **276** 🏆 | 3.45 M |
 
-Die strikten TDD-Workflows kosten auf claim-office **3–10× mehr** als auf game-of-life — und v6.1 hat die größte Token-Spanne (σ=12 M, max 44.85 M). v4.1 dauert auf claim-office im Mittel **54 Minuten pro Run** — kombiniert mit dem Bimodal-Risiko (F-tdd-quality.9) der schlechteste Cost-Quality-Tradeoff der ganzen Matrix.
+On claim-office, the strict TDD workflows cost **3–10× more** than on game-of-life — and v6.1 has the largest token range (σ=12 M, max 44.85 M). On claim-office, v4.1 takes on average **54 minutes per run** — combined with the bimodal risk (F-tdd-quality.9), the worst cost-quality trade-off of the entire matrix.
 
-v8a/v8b liegen auf beiden Katas auf v1/v2/v3-Kosten-Niveau (~1–3 M Tokens, 2–5 min) und liefern dabei (auf claim-office) deutlich bessere Verzweigungs-Komplexität als v1/v2/v3 und vergleichbare Korrektheit zu den strikten TDD-Workflows — siehe F-tdd-quality.6 und F-tdd-quality.8.
+On both katas, v8a/v8b are at the v1/v2/v3 cost level (~1–3 M tokens, 2–5 min) and deliver (on claim-office) considerably better branching complexity than v1/v2/v3 and correctness comparable to the strict TDD workflows — see F-tdd-quality.6 and F-tdd-quality.8.
 
-## F-tdd-quality.6 — Vibe + End-Refactoring erreicht Volumen-Niveau der strikten TDD-Workflows zu Non-TDD-Kosten; Verzweigungs-Komplexität bleibt schwächer
+## F-tdd-quality.6 — Vibe + End Refactoring Reaches the Volume Level of the Strict TDD Workflows at Non-TDD Cost; Branching Complexity Remains Weaker
 
-Die Non-TDD-Kontrollgruppe v8a/v8b (Phase 1 Implementation ohne Tests → Phase 2 Tests gegen `prompt.md` → Phase 3 einmaliger Refactor) erreicht auf den Volumen-Metriken Niveau der strikten TDD-Workflows zu einem Bruchteil der Kosten.
+The non-TDD control group v8a/v8b (phase 1 implementation without tests → phase 2 tests against `prompt.md` → phase 3 a single refactor) reaches the level of the strict TDD workflows on the volume metrics at a fraction of the cost.
 
 ### game-of-life
 
 | Workflow | `code_mass` | `cc_longest_function` | `cognitive_max` | `duration_s` | `total_tokens` |
 |---|---:|---:|---:|---:|---:|
-| v4.1 (periodisches Refactor) | 156.6 | 16.4 | **6.4** 🏆 | 838 | 4.32 M |
-| v6.1 (periodisches Refactor) | 153.7 | **14.2** 🏆 | 6.5 | 508 | 6.94 M |
-| **v8a (end-refactor, agent)** | **142.0** 🏆 | 17.6 | 10.6 | 143 | **1.18 M** 🏆 |
-| **v8b (end-refactor, command)** | 145.8 | 17.6 | 9.0 | **116** 🏆 | 1.32 M |
+| v4.1 (periodic refactor) | 156.6 | 16.4 | **6.4** 🏆 | 838 | 4.32 M |
+| v6.1 (periodic refactor) | 153.7 | **14.2** 🏆 | 6.5 | 508 | 6.94 M |
+| **v8a (end refactor, agent)** | **142.0** 🏆 | 17.6 | 10.6 | 143 | **1.18 M** 🏆 |
+| **v8b (end refactor, command)** | 145.8 | 17.6 | 9.0 | **116** 🏆 | 1.32 M |
 
 ### claim-office
 
 | Workflow | `code_mass` | `cc_longest_function` | `cognitive_max` | `duration_s` | `total_tokens` |
 |---|---:|---:|---:|---:|---:|
-| v4.1 (periodisches Refactor) | **621.6** 🏆 | 40.8 | 26.8 ⚠️ | 3229 | 14.10 M |
-| v6.1 (periodisches Refactor) | 861.3 | **18.1** 🏆 | **5.7** 🏆 | 1569 | 34.54 M |
-| **v8a (end-refactor, agent)** | 813.8 | 28.4 | 7.4 | 308 | **2.12 M** 🏆 |
-| **v8b (end-refactor, command)** | 780.2 | 35.8 | 11.0 | **276** 🏆 | 3.45 M |
+| v4.1 (periodic refactor) | **621.6** 🏆 | 40.8 | 26.8 ⚠️ | 3229 | 14.10 M |
+| v6.1 (periodic refactor) | 861.3 | **18.1** 🏆 | **5.7** 🏆 | 1569 | 34.54 M |
+| **v8a (end refactor, agent)** | 813.8 | 28.4 | 7.4 | 308 | **2.12 M** 🏆 |
+| **v8b (end refactor, command)** | 780.2 | 35.8 | 11.0 | **276** 🏆 | 3.45 M |
 
-H5 (Periodizität des Refactorings trägt) **kata-abhängig**:
-- Auf game-of-life: v8a/v8b nahezu gleichauf mit v4.1/v6.1 bei `code_mass` und `cc_longest_function`; `cognitive_max` bleibt v4.1/v6.1-dominiert (6.4/6.5 vs 9.0/10.6).
-- Auf claim-office: v6.1 dominiert klar bei Verzweigungs-Komplexität (`cognitive_max` 5.7 vs v8a/b 7.4/11.0) und Funktionsgröße (`cc_longest_function` 18.1 vs 28.4/35.8). v4.1 (Code-Volumen-Champion bei 621.6) liefert dagegen die schlechteste Verzweigungs-Komplexität (26.8 ⚠️) — kein Workflow dominiert *alle* Metriken auf claim-office.
+H5 (the periodicity of refactoring matters) is **kata-dependent**:
+- On game-of-life: v8a/v8b are almost level with v4.1/v6.1 on `code_mass` and `cc_longest_function`; `cognitive_max` remains v4.1/v6.1-dominated (6.4/6.5 vs 9.0/10.6).
+- On claim-office: v6.1 clearly dominates on branching complexity (`cognitive_max` 5.7 vs v8a/b 7.4/11.0) and function size (`cc_longest_function` 18.1 vs 28.4/35.8). v4.1 (the code-volume champion at 621.6), by contrast, delivers the worst branching complexity (26.8 ⚠️) — no workflow dominates *all* metrics on claim-office.
 
-Lesart: ein einziges End-Refactoring nach Vibe-Coding reduziert Code-Volumen vergleichbar zu periodischem Refactoring, aber nicht Verzweigungs-Tiefe innerhalb einzelner Funktionen. Auf einer komplexen Kata mit längeren Funktionen wird der Periodizitäts-Vorteil sichtbarer — der TDD-Refactor pro Cycle zerlegt Funktionen früh, während ein End-Refactor sie nur oberflächlich glättet. Konsistent mit RQ-delayed-refactor "der TDD-Vorteil ist Verzweigungs-Komplexität, nicht Substanz".
+Reading: a single end refactoring after vibe-coding reduces code volume comparably to periodic refactoring, but not the branching depth within individual functions. On a complex kata with longer functions the periodicity advantage becomes more visible — the TDD refactor per cycle decomposes functions early, while an end refactor only smooths them superficially. Consistent with RQ-delayed-refactor "the TDD advantage is branching complexity, not substance".
 
-## F-tdd-quality.7 — Subagent-Mechanismus für End-Refactor schlägt Slash-Command auf großer Kata; gleichauf auf kleiner Kata
+## F-tdd-quality.7 — The Subagent Mechanism for the End Refactor Beats the Slash Command on the Large Kata; Level on the Small Kata
 
-Die zwei Non-TDD-Arme isolieren den **Refactor-Delivery-Mechanismus** bei identischem Refactor-Inhalt: v8a spawnt einen frischen Refactor-Subagent (`.claude/agents/refactor.md`, Task-Tool), v8b ruft denselben Inhalt als Slash-Command (`.claude/commands/refactor.md`, Skill-Tool) inline im Haupt-Session-Kontext auf. Beide Refactor-Specs sind byte-identisch (Four Rules of Simple Design + APP-Mass + Naming-Evaluation + Mandatory-Attempt). Phase 1 und Phase 2 ebenfalls identisch.
+The two non-TDD arms isolate the **refactor delivery mechanism** at identical refactor content: v8a spawns a fresh refactor subagent (`.claude/agents/refactor.md`, Task tool), v8b invokes the same content as a slash command (`.claude/commands/refactor.md`, Skill tool) inline in the main session context. Both refactor specs are byte-identical (Four Rules of Simple Design + APP mass + naming evaluation + mandatory attempt). Phase 1 and phase 2 are likewise identical.
 
-Auf **game-of-life sind beide Mechanismen praktisch gleichauf**:
+On **game-of-life both mechanisms are practically level**:
 
-| Metrik (kleiner = besser) | v8a (Subagent) | v8b (Command) |
+| Metric (lower = better) | v8a (subagent) | v8b (command) |
 |---|---:|---:|
 | `cognitive_max` mean | 10.6 (max 15) | **9.0** (max 17) |
 | `mccabe_max` mean | 7.4 (max 9) | **6.8** (max 11) |
@@ -174,11 +174,11 @@ Auf **game-of-life sind beide Mechanismen praktisch gleichauf**:
 | `total_tokens` mean | **1.18 M** | 1.32 M |
 | `code_mass` mean | **142.0** | 145.8 |
 
-Differenzen liegen alle innerhalb 1 σ (z.B. `cognitive_max` σ_v8a=4.93, σ_v8b=4.47); kein systematischer Vorteil eines Mechanismus.
+All differences lie within 1 σ (e.g. `cognitive_max` σ_v8a=4.93, σ_v8b=4.47); no systematic advantage of either mechanism.
 
-Auf **claim-office dominiert v8a (Subagent) klar bei Spitzen-Komplexität und Token-Effizienz**:
+On **claim-office, v8a (subagent) clearly dominates on Complexity Peak and token efficiency**:
 
-| Metrik (kleiner = besser) | v8a (Subagent) | v8b (Command) |
+| Metric (lower = better) | v8a (subagent) | v8b (command) |
 |---|---:|---:|
 | `cognitive_max` mean | **7.4** (max 10) | 11.0 (max 19) |
 | `mccabe_max` mean | **6.6** (max 9) | 8.0 (max 13) |
@@ -188,38 +188,38 @@ Auf **claim-office dominiert v8a (Subagent) klar bei Spitzen-Komplexität und To
 | `verification_pct` mean | **1.00** | 0.97 |
 | `code_mass` mean | 813.8 | **780.2** |
 
-v8a führt auf 6 von 7 Metriken; bei `cc_longest_function` ist die Spanne besonders eng (v8a max 30, v8b max 49 — der Subagent verhindert die Outlier-Funktionen). v8b braucht 63 % mehr Tokens und produziert breitere Verteilungen.
+v8a leads on 6 of 7 metrics; on `cc_longest_function` the range is particularly tight (v8a max 30, v8b max 49 — the subagent prevents the outlier functions). v8b needs 63 % more tokens and produces wider distributions.
 
-**H6 (Subagent-Delivery trägt unabhängig vom Inhalt) auf claim-office bestätigt; auf game-of-life keine Trennung.** Plausible Mechanik: der frische Subagent-Kontext entlastet den Refactor von Anker-Bias aus Phase 1/2 — bei der kleinen, trainingsbekannten game-of-life-Codebase ist der Bias-Effekt gering und beide Mechanismen liefern ähnlich; bei der größeren novel claim-office-Codebase mit 240+ LoC pro Lösung verschleppt der Inline-Command (v8b) implizite Annahmen aus den Vorgänger-Phasen in den Refactor, während der Subagent (v8a) mit dem Refactor neu ansetzt. Konsistent mit RQ-delayed-refactor / F-delayed-refactor.2 (Refactor-Mechanismus ist nicht-trivial), jetzt sauber isoliert von Inhalts-Effekten.
+**H6 (subagent delivery matters independently of the content) confirmed on claim-office; no separation on game-of-life.** Plausible mechanic: the fresh subagent context relieves the refactor of anchoring bias from phases 1/2 — on the small, training-known game-of-life codebase the bias effect is small and both mechanisms deliver similarly; on the larger novel claim-office codebase with 240+ LoC per solution, the inline command (v8b) carries implicit assumptions from the preceding phases into the refactor, whereas the subagent (v8a) starts afresh with the refactor. Consistent with RQ-delayed-refactor / F-delayed-refactor.2 (the refactor mechanism is non-trivial), now cleanly isolated from content effects.
 
-## F-tdd-quality.8 — Test-Schreib-Phase rettet Korrektheit auf novel Kata; reines Vibe-Coding scheitert
+## F-tdd-quality.8 — A Test-Writing Phase Rescues Correctness on a Novel Kata; Pure Vibe-Coding Fails
 
-Auf der novel Kata `claim-office` mit Mehrdeutigkeiten ist das **Vorhandensein einer Test-Schreib-Phase** der entscheidende Hebel für Korrektheit — nicht ihre Position (vor oder nach Implementation):
+On the novel kata `claim-office` with ambiguities, the **presence of a test-writing phase** is the decisive lever for correctness — not its position (before or after implementation):
 
-| Workflow | Test-Phase? | n | `verification_pct` mean | min |
+| Workflow | Test phase? | n | `verification_pct` mean | min |
 |---|---|---:|---:|---:|
-| v1-oneshot (prose) | nein | 5 | **0.28** | 0.20 |
-| v2-iterative (prose) | nein | 5 | **0.28** | 0.20 |
+| v1-oneshot (prose) | no | 5 | **0.28** | 0.20 |
+| v2-iterative (prose) | no | 5 | **0.28** | 0.20 |
 | v4.1-testlist-scope-fix (em) | TDD strict | 5 | 0.96 | 0.80 |
-| v8b-delayed-refactor-native (em) | nach Impl | 5 | 0.97 | 0.87 |
+| v8b-delayed-refactor-native (em) | after impl | 5 | 0.97 | 0.87 |
 | v3-basic-tdd (em) | TDD strict | 5 | 1.00 | 1.00 |
 | v5.1-testlist-scope-fix (em) | TDD strict | 6 | 1.00 | 1.00 |
 | v6.1-hybrid-… (em) | TDD strict | 7 | 1.00 | 1.00 |
-| v8a-delayed-refactor-agent (em) | nach Impl | 5 | 1.00 | 1.00 |
+| v8a-delayed-refactor-agent (em) | after impl | 5 | 1.00 | 1.00 |
 
-v1/v2 ohne Tests fallen auf 28 % (4/15 Verifikations-Szenarien). Sobald irgendeine Phase Tests gegen die Spec schreibt, springt die Korrektheit auf ≥ 96 %. Die strikten TDD-Workflows v3/v5.1/v6.1 sowie v8a (delayed-refactor via Subagent) erreichen 100 %; v4.1 und v8b liegen bei 96–97 % mit je einem Run unter 1.00 (Implementation-Bugs, die einzelne Verifikations-Szenarien verfehlen — nicht silent workflow drops).
+v1/v2 without tests fall to 28 % (4/15 verification scenarios). As soon as any phase writes tests against the spec, correctness jumps to ≥ 96 %. The strict TDD workflows v3/v5.1/v6.1 as well as v8a (delayed refactor via subagent) reach 100 %; v4.1 and v8b are at 96–97 % with one run each below 1.00 (implementation bugs that miss individual verification scenarios — not silent workflow drops).
 
-Auf game-of-life ist dieser Hebel **unsichtbar** (alle 8 Workflows bei 100 %), weil das Modell die Lösung memoriert hat. Der Befund manifestiert sich nur auf novel Katas.
+On game-of-life this lever is **invisible** (all 8 workflows at 100 %), because the model has memorized the solution. The finding manifests itself only on novel katas.
 
-Konsequenz für offene Frage #4 ("reicht ein einziges End-Refactoring nach Vibe-Coding aus?"): **Ja für Korrektheit, wenn die nachträglich geschriebenen Tests die Spec abdecken** — v8a (mit scope-fix-Pflicht "Cover every spec example" in Phase 2) erreicht 100 % auf claim-office, gleich auf mit v3/v5.1/v6.1 (strict TDD); v8b 97 %, nahe an v4.1. Code-Qualität ist eine separate Achse (siehe F-tdd-quality.6/.7).
+Consequence for open question #4 ("is a single end refactoring after vibe-coding sufficient?"): **Yes for correctness, if the tests written after the fact cover the spec** — v8a (with the scope-fix obligation "Cover every spec example" in phase 2) reaches 100 % on claim-office, level with v3/v5.1/v6.1 (strict TDD); v8b 97 %, close to v4.1. Code quality is a separate axis (see F-tdd-quality.6/.7).
 
-Caveat: v1/v2 nutzen `prose`-Prompt, v8a/v8b `example-mapping`. Die `example-mapping`-Spec ist faktisch eine implizite Test-Spec — der Effekt könnte teilweise dem Prompt-Stil zuzuschreiben sein, nicht nur der Test-Phase. RQ-prompt-correctness (1.1) zeigte aber, dass example-mapping allein auf v5 nur ~5 pp gegenüber prose bringt; der hier gemessene Effekt (+68 pp) ist zu groß für einen reinen Prompt-Stil-Effekt.
+Caveat: v1/v2 use the `prose` prompt, v8a/v8b `example-mapping`. The `example-mapping` spec is in fact an implicit test spec — the effect could partly be attributable to the prompt style, not only to the test phase. RQ-prompt-correctness (1.1) showed, however, that example mapping alone brings only ~5 pp over prose on v5; the effect measured here (+68 pp) is too large for a pure prompt-style effect.
 
-## F-tdd-quality.9 — v6.1-Hybrid ist der robusteste TDD-Workflow über beide Katas; v4.1 ist kata-instabil
+## F-tdd-quality.9 — The v6.1 Hybrid Is the Most Robust TDD Workflow Across Both Katas; v4.1 Is Kata-Unstable
 
-Pro-Kata Komplexitäts-Ranking auf `cognitive_max` (kleiner = besser):
+Per-kata complexity ranking on `cognitive_max` (lower = better):
 
-| Rang | game-of-life | claim-office |
+| Rank | game-of-life | claim-office |
 |---:|---|---|
 | 1 | **v4.1** (6.4) 🏆 | **v6.1** (5.7) 🏆 |
 | 2 | v6.1 (6.5) | v8a (7.4) |
@@ -230,61 +230,61 @@ Pro-Kata Komplexitäts-Ranking auf `cognitive_max` (kleiner = besser):
 | 7 | v1-oneshot (18.8) | v3-basic-tdd (19.8) |
 | 8 | v3-basic-tdd (21.8) | v4.1 (26.8) ⚠️ bimodal |
 
-Strikte phasen-strukturierte Workflows (v6.1, v4.1) belegen auf beiden Katas die vordersten Plätze (mit der v4.1-Ausnahme auf claim-office); die v8-Kontrollgruppe folgt direkt dahinter. Die schwächsten TDD-Workflows (v3, v5.1) und v1+prose teilen sich das hintere Drittel. **v6.1 ist der einzige Workflow, der auf beiden Katas in den Top-2 landet** und auf claim-office in 4 von 6 Qualitäts-Metriken die Spitze hält.
+Strict phase-structured workflows (v6.1, v4.1) occupy the leading places on both katas (with the v4.1 exception on claim-office); the v8 control group follows directly behind. The weakest TDD workflows (v3, v5.1) and v1+prose share the rear third. **v6.1 is the only workflow that lands in the top 2 on both katas** and holds the top position on claim-office in 4 of 6 quality metrics.
 
-**v4.1 stürzt auf claim-office von Platz 1 auf 8 ab** (`cognitive_max` mean 26.8, σ=24, max=68) — bimodal mit gelegentlichen extremen Fehlsteuerungen. Auf game-of-life ist v4.1 stabilster Performer. Lesart: der v4.1-Vorteil (phasen-isolierte Subagents) trägt nur auf einer Kata, deren Test-Liste vom Modell unmittelbar überschaut werden kann. Auf claim-office mit ~15 Test-Szenarien und vielen Mehrdeutigkeiten verliert der frische Kontext pro Phase die Kohärenz — der Subagent re-interpretiert die Spec pro Cycle. v6.1 (Hybrid: Skill-Red/Green im Shared-Context + isolierter Refactor) vermeidet diesen Effekt, weil Red und Green denselben Kontext teilen.
+**On claim-office, v4.1 crashes from rank 1 to rank 8** (`cognitive_max` mean 26.8, σ=24, max=68) — bimodal with occasional extreme misdirections. On game-of-life, v4.1 is the most stable performer. Reading: the v4.1 advantage (phase-isolated subagents) only carries on a kata whose test list the model can survey immediately. On claim-office with ~15 test scenarios and many ambiguities, the fresh context loses coherence per phase — the subagent re-interprets the spec per cycle. v6.1 (hybrid: skill red/green in the shared context + isolated refactor) avoids this effect, because red and green share the same context.
 
-Empfehlung: **v6.1 als robuste Default-Wahl** über Kata-Komplexität hinweg. v4.1 nur auf Katas mit kompakter Test-Liste einsetzen, sonst Kollaps-Risiko.
+Recommendation: **v6.1 as the robust default choice** across kata complexity. Use v4.1 only on katas with a compact test list, otherwise there is a collapse risk.
 
-Caveat: n=5 pro claim-office-Zelle, n=10 für v1/v2/v3 game-of-life. v4.1-claim-office `cognitive_max`-σ=24 — der mean ist von 1–2 Outliern dominiert. Größerer n könnte das Bild verschieben, das Bimodal-Risiko aber nicht.
+Caveat: n=5 per claim-office cell, n=10 for v1/v2/v3 game-of-life. v4.1 claim-office `cognitive_max` σ=24 — the mean is dominated by 1–2 outliers. A larger n could shift the picture, but not the bimodal risk.
 
-## Praktische Empfehlung — Code-Qualität vs Token-Preis
+## Practical Recommendation — Code Quality vs Token Price
 
-### Klarstellung zur Kernfrage
+### Clarification of the Core Question
 
-Die ursprüngliche Forschungs-Motivation war: *ist der TDD-Zyklus mit kontinuierlichem Refactoring pro Cycle wertvoller als Vibe-Coding mit einmaligem End-Refactoring?* Die Datenlage ist eindeutig:
+The original research motivation was: *is the TDD cycle with continuous refactoring per cycle more valuable than vibe-coding with a single end refactoring?* The data is unambiguous:
 
-**Ja, kontinuierliches Refactoring im TDD-Zyklus produziert messbar bessere Code-Qualität.** Auf claim-office (komplexe novel Kata) gewinnt v6.1 auf 5 von 6 Code-Qualitäts-Metriken klar gegen die End-Refactor-Kontrollen:
+**Yes, continuous refactoring in the TDD cycle produces measurably better code quality.** On claim-office (a complex novel kata), v6.1 clearly wins on 5 of 6 code-quality metrics against the end-refactor controls:
 
-| Metrik (kleiner = besser) | v6.1 (periodisch) | v8a (end-refactor, agent) | v8b (end-refactor, command) | Sieger |
+| Metric (lower = better) | v6.1 (periodic) | v8a (end refactor, agent) | v8b (end refactor, command) | Winner |
 |---|---:|---:|---:|---|
 | `cognitive_max` | **5.7** | 7.4 | 11.0 | **v6.1** |
 | `mccabe_max` | **5.7** | 6.6 | 8.0 | **v6.1** |
 | `cc_longest_function` | **18.1** | 28.4 | 35.8 | **v6.1** |
 | `smell_total` | **1.3** | 4.0 | 6.2 | **v6.1** |
 | `cc_loc` | **191** | 246 | 239 | **v6.1** |
-| `code_mass` | 861 | 814 | **780** | v8b (knapp) |
+| `code_mass` | 861 | 814 | **780** | v8b (narrowly) |
 
-v6.1 dominiert die Verzweigungs- und Struktur-Metriken durchgehend; v8b gewinnt nur knapp bei `code_mass` (Reduktion ~9 %). Auf game-of-life ist das Muster konsistent (v6.1 `cognitive_max` 6.5 vs v8a/v8b 10.6/9.0; `cc_longest` 14.2 vs 17.6/17.6). Die Periodizitäts-These hält uniform.
+v6.1 dominates the branching and structure metrics throughout; v8b wins only narrowly on `code_mass` (a reduction of ~9 %). On game-of-life the pattern is consistent (v6.1 `cognitive_max` 6.5 vs v8a/v8b 10.6/9.0; `cc_longest` 14.2 vs 17.6/17.6). The periodicity thesis holds uniformly.
 
-### Der Tradeoff: Token- und Wallclock-Preis
+### The Trade-off: Token and Wallclock Price
 
-Diese Qualität ist **nicht umsonst**. Auf claim-office:
+This quality is **not free**. On claim-office:
 
-| Workflow | `cognitive_max` | `total_tokens` | `duration_s` | Tokens-Verhältnis |
+| Workflow | `cognitive_max` | `total_tokens` | `duration_s` | Token ratio |
 |---|---:|---:|---:|---:|
-| v8a-delayed (Agent) | 7.4 | **2.12 M** | 308 | 1.0× |
-| v8b-delayed (Command) | 11.0 | 3.45 M | **276** | 1.6× |
+| v8a-delayed (agent) | 7.4 | **2.12 M** | 308 | 1.0× |
+| v8b-delayed (command) | 11.0 | 3.45 M | **276** | 1.6× |
 | v6.1-hybrid | **5.7** | 34.54 M | 1569 | **16×** |
 | v4.1-strict | 26.8 ⚠️ | 14.10 M | 3229 | 7× |
 
-v6.1 kostet **16× mehr Tokens und ~5× mehr Wallclock** als v8a für eine Reduktion von 7.4 → 5.7 in `cognitive_max` (und weitere Verbesserungen bei `cc_longest`, `smell_total`, `cc_loc`). Das ist die ehrliche Bilanz.
+v6.1 costs **16× more tokens and ~5× more wallclock** than v8a for a reduction of 7.4 → 5.7 in `cognitive_max` (and further improvements on `cc_longest`, `smell_total`, `cc_loc`). That is the honest balance sheet.
 
-### Empfehlung nach Anwendungsfall
+### Recommendation by Use Case
 
-| Situation | Workflow | Begründung |
+| Situation | Workflow | Rationale |
 |---|---|---|
-| **Langlebiger Produktiv-Code** — wird oft gelesen, refactored, erweitert; Onboarding-relevant | **v6.1-hybrid** | Beste Verzweigungs-Komplexität auf beiden Katas; Token-Aufschlag amortisiert sich über die Code-Lebensdauer |
-| **Wartungs-kritischer Code** mit hohen Korrektheits-Ansprüchen, der nicht häufig geändert wird | **v6.1-hybrid** oder **v5.1** | v5.1 ist auf claim-office in `cognitive_max` zweitbester TDD-Workflow (14.8) bei ~½ der Tokens von v6.1 |
-| **Prototyping / Throwaway-Code** — wird wenig oder nie wieder angefasst | **v8b-delayed-refactor-command** | Niedrigste Wallclock unter den Workflows mit Test-Schreib-Phase; Korrektheit 0.97 gleichauf mit v4.1; `cognitive_max` (11.0) ist für kurze Lebensdauer akzeptabel |
-| **Hohe Iterations-Frequenz** unter Token-Budget — viele kleine Aufgaben, häufige Re-Runs | **v8a-delayed-refactor-agent** | ~16× günstiger als v6.1; `cognitive_max` 7.4 (vs v6.1 5.7) ist nicht ideal, aber für kurze Lebensdauer akzeptabel; 100 % Korrektheit auf claim-office |
-| **Reines Vibe-Coding ohne Tests** | **Nicht empfohlen für novel Probleme** | v1/v2 brechen auf novel Kata auf 28 % Korrektheit ein; die Test-Schreib-Phase aus v8a/v8b ist die billigste Versicherung dagegen |
-| **Korrektheit zählt mehr als Qualität** (z.B. Skript, Tooling, Glue-Code) | **v3-basic-tdd** | 100 % Korrektheit auf claim-office bei 3.28 M Tokens — günstigster Korrektheits-Workflow; akzeptiert die schlechteste Code-Qualität (cog 19.8, größter `code_mass`) als Preis |
+| **Long-lived production code** — read, refactored, extended often; onboarding-relevant | **v6.1-hybrid** | Best branching complexity on both katas; the token surcharge amortizes over the code's lifetime |
+| **Maintenance-critical code** with high correctness demands that is not changed frequently | **v6.1-hybrid** or **v5.1** | On claim-office, v5.1 is the second-best TDD workflow on `cognitive_max` (14.8) at ~½ the tokens of v6.1 |
+| **Prototyping / throwaway code** — touched rarely or never again | **v8b-delayed-refactor-command** | Lowest wallclock among the workflows with a test-writing phase; correctness 0.97 level with v4.1; `cognitive_max` (11.0) is acceptable for a short lifetime |
+| **High iteration frequency** under a token budget — many small tasks, frequent re-runs | **v8a-delayed-refactor-agent** | ~16× cheaper than v6.1; `cognitive_max` 7.4 (vs v6.1 5.7) is not ideal but acceptable for a short lifetime; 100 % correctness on claim-office |
+| **Pure vibe-coding without tests** | **Not recommended for novel problems** | v1/v2 break down to 28 % correctness on a novel kata; the test-writing phase from v8a/v8b is the cheapest insurance against this |
+| **Correctness counts more than quality** (e.g. scripts, tooling, glue code) | **v3-basic-tdd** | 100 % correctness on claim-office at 3.28 M tokens — the cheapest correctness workflow; accepts the worst code quality (cog 19.8, largest `code_mass`) as the price |
 
-v4.1-strict bleibt **nicht generell empfohlen** wegen des Bimodal-Risikos auf längeren Test-Listen (claim-office σ=24, max cog=68). Nur auf Katas mit kompakter, übersichtlicher Test-Spec.
+v4.1-strict remains **not generally recommended** because of the bimodal risk on longer test lists (claim-office σ=24, max cog=68). Only on katas with a compact, surveyable test spec.
 
-### Was diese Empfehlung NICHT trifft
+### What This Recommendation Does NOT Cover
 
-- **Modell-Abhängigkeit**: alle Befunde gelten für `opus-4-7-no-thinking`. Auf Sonnet/Haiku kann die Reihenfolge sich verschieben (vgl. F-emoji-cross-model in RQ-emoji-cross-model: Workflow-Reduktionen sind nicht modell-agnostisch).
-- **Domänen-Abhängigkeit**: die Katas sind ~30–320 LoC Library/CLI-Code. Auf Web-Apps, Datenbank-Code, Async-Systems sind die Befunde nicht direkt übertragbar.
-- **Team-Faktoren**: HITL-Workflows (Mensch reviewed Cycle), Pair-Programming-Setups, IDE-Integration sind außerhalb des Scopes.
+- **Model dependence**: all findings apply to `opus-4-7-no-thinking`. On Sonnet/Haiku the ordering can shift (cf. F-emoji-cross-model in RQ-emoji-cross-model: workflow reductions are not model-agnostic).
+- **Domain dependence**: the katas are ~30–320 LoC of library/CLI code. The findings are not directly transferable to web apps, database code, or async systems.
+- **Team factors**: HITL workflows (a human reviews the cycle), pair-programming setups, and IDE integration are outside the scope.

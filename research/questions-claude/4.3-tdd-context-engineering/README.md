@@ -1,125 +1,125 @@
 ---
 id: RQ-context
-question: "Welche Form der Kontext-Strukturierung — isolierte Subagent-Kontexte pro TDD-Phase (v4.1), ein geteilter, akkumulierter Single-Context (v5.1), ein Hybrid mit Skill-basiertem Red/Green im Shared-Context und isoliertem Refactor-Subagent (v6.1) oder ein Hybrid mit isolierten Green- und Refactor-Subagents bei Shared-Context-Test-Liste/Red (v7.1) — fuehrt zu besserer Code-Qualitaet?"
+question: "Which form of context structuring — isolated subagent contexts per TDD phase (v4.1), a shared, accumulated single context (v5.1), a hybrid with skill-based red/green in the shared context and an isolated refactor subagent (v6.1), or a hybrid with isolated green and refactor subagents alongside a shared-context test list/red (v7.1) — leads to better code quality?"
 factors:
   workflow: [v4.1-testlist-scope-fix, v5.1-testlist-scope-fix, v6.1-hybrid-testlist-scope-fix, v7.1-hybrid-green-refactor-testlist-scope-fix]
 controls:
   kata_base: claim-office
   model:
-    any:                            # OR-match: neue Runs via Portkey (Prio 1), bestehende Direct-Runs wiederverwenden
+    any:                            # OR-match: new runs via Portkey (priority 1), reuse existing direct runs
       - opus-4-7-portkey-no-thinking
       - opus-4-7-no-thinking
   prompt: example-mapping
 outcomes:
-  # primaer: Code-Qualitaet
+  # primary: code quality
   - code_mass
   - smell_total
   - cc_longest_function
   - cc_loc
   - mccabe_max
   - cognitive_max
-  # sekundaer: Korrektheit (innen + aussen + Test-Staerke)
+  # secondary: correctness (internal + external + test strength)
   - tests_passing
   - verification_pct
   - completed_within_budget
   - mutation_score
-  # Kontext-Effizienz
+  # context efficiency
   - total_tokens
   - duration_seconds
 min_replicates: 3
 status: aktiv
 ---
 
-# RQ-context: Context-Engineering — Isolierte, geteilte und hybride Kontexte
+# RQ-context: Context Engineering — Isolated, Shared and Hybrid Contexts
 
-Macht es einen Unterschied, ob die einzelnen TDD-Phasen (Test-Liste, Red, Green, Refactor) in **isolierten Subagent-Kontexten** ablaufen, in **einem geteilten, akkumulierten Single-Context**, in einer **Hybrid-Form mit nur isoliertem Refactor** (v6.1) oder in einer **Hybrid-Form mit isoliertem Green und Refactor** (v7.1)?
+Does it make a difference whether the individual TDD phases (test list, red, green, refactor) run in **isolated subagent contexts**, in **one shared, accumulated single context**, in a **hybrid form with only the refactor isolated** (v6.1), or in a **hybrid form with green and refactor isolated** (v7.1)?
 
 ## Motivation
 
-v4.1-testlist-scope-fix und v5.1-testlist-scope-fix teilen sich **denselben Phasen-Skript-Inhalt** — gleiche Regeln, gleiche Prompts, gleiche Reihenfolge Test-Liste → Red → Green → Refactor. v6.1-hybrid-testlist-scope-fix nutzt **denselben Test-List-Scope-Fix**, aber eine dritte Kontext-Architektur: Red und Green laufen Skill-basiert im geteilten Konversations-Kontext (wie v5.1), während die Refactor-Phase als isolierter Subagent gespawnt wird (wie v4.1 für alle Phasen). v7.1-hybrid-green-refactor-testlist-scope-fix geht einen Schritt weiter und isoliert **zusaetzlich die Green-Phase** als Subagent — nur Test-Liste und Red bleiben Skills im Shared-Context. v6.1 und v7.1 sind damit nicht zeichengenau aus den `.1`-Varianten abgeleitet — siehe Caveat (c).
+v4.1-testlist-scope-fix and v5.1-testlist-scope-fix share **the same phase-script content** — same rules, same prompts, same order test list → red → green → refactor. v6.1-hybrid-testlist-scope-fix uses **the same test-list-scope-fix** but a third context architecture: red and green run skill-based in the shared conversation context (like v5.1), while the refactor phase is spawned as an isolated subagent (like v4.1 for all phases). v7.1-hybrid-green-refactor-testlist-scope-fix goes one step further and **additionally isolates the green phase** as a subagent — only the test list and red remain skills in the shared context. v6.1 and v7.1 are therefore not character-exact derivations of the `.1` variants — see caveat (c).
 
 | | v4.1-testlist-scope-fix | v5.1-testlist-scope-fix | v6.1-hybrid-testlist-scope-fix | v7.1-hybrid-green-refactor-testlist-scope-fix |
 |---|---|---|---|---|
-| Test-Liste | dedizierter Subagent | Skill im Single-Context | Skill im Single-Context | Skill im Single-Context |
-| Red        | dedizierter Subagent | Skill im Single-Context | Skill im Single-Context | Skill im Single-Context |
-| Green      | dedizierter Subagent | Skill im Single-Context | Skill im Single-Context | **dedizierter Subagent** |
-| Refactor   | dedizierter Subagent | Skill im Single-Context | **dedizierter Subagent** | **dedizierter Subagent** |
-| Token-Profil | mehr (jeder Subagent liest Prompt-Inputs neu) | weniger pro Phase, aber kumulativ im einen Kontext | Mischform — Red/Green im Single-Context plus separater Refactor-Kontext | Mischform — Test-Liste/Red im Single-Context plus separate Green- und Refactor-Kontexte |
+| Test list | dedicated subagent | skill in the single context | skill in the single context | skill in the single context |
+| Red        | dedicated subagent | skill in the single context | skill in the single context | skill in the single context |
+| Green      | dedicated subagent | skill in the single context | skill in the single context | **dedicated subagent** |
+| Refactor   | dedicated subagent | skill in the single context | **dedicated subagent** | **dedicated subagent** |
+| Token profile | more (each subagent re-reads the prompt inputs) | less per phase, but cumulative in the one context | mixed form — red/green in the single context plus a separate refactor context | mixed form — test list/red in the single context plus separate green and refactor contexts |
 
-Diese RQ extrahiert die Context-Engineering-Frage aus RQ-tdd-quality (wo sie als F-tdd-quality.3 nur ein Befund unter fuenf war) und erweitert sie um zwei Hybrid-Punkte: v6.1 isoliert nur die Refactor-Phase, v7.1 isoliert zusaetzlich die Green-Phase. Damit laesst sich ein Architektur-Gradient pruefen — von voller Phasen-Isolation (v4.1) ueber teil-isoliert mit zwei Subagent-Phasen (v7.1) bzw. einer Subagent-Phase (v6.1) bis voll geteilt (v5.1). Die `.1`-Varianten wurden gezielt so abgeleitet, dass ihr Phasen-Skript-Inhalt zeichengenau uebereinstimmt; v6.1 und v7.1 sind eigenständige Hybride mit derselben Test-Listen-Disziplin, aber anderer Phasen-Aufruf-Struktur.
+This RQ extracts the context-engineering question from RQ-tdd-quality (where it was only one finding among five, as F-tdd-quality.3) and extends it by two hybrid points: v6.1 isolates only the refactor phase, v7.1 additionally isolates the green phase. This allows an architecture gradient to be tested — from full phase isolation (v4.1) through partial isolation with two subagent phases (v7.1) or one subagent phase (v6.1) to fully shared (v5.1). The `.1` variants were deliberately derived so that their phase-script content matches character for character; v6.1 and v7.1 are independent hybrids with the same test-list discipline but a different phase invocation structure.
 
-## Gegenlaeufige Hypothesen
+## Opposing Hypotheses
 
-**Pro isolierte Subagents (v4.1)**:
-- Jeder Phasen-Schritt startet mit fokussiertem, ungestoertem Kontext.
-- Keine Drift aus vorherigen Phasen, kein Akkumulieren von vergangener Diskussion.
-- Haertere Phasen-Disziplin, weil der Green-Subagent keine "Erinnerung" an vorherige Helper-Funktionen hat und keine Versuchung, zu generalisieren.
+**In favor of isolated subagents (v4.1)**:
+- Each phase step starts with a focused, undisturbed context.
+- No drift from previous phases, no accumulation of past discussion.
+- Harder phase discipline, because the green subagent has no "memory" of previous helper functions and no temptation to generalize.
 
-**Pro Single-Context (v5.1)**:
-- Komplette Lesbarkeit der bisherigen Konversation; keine Re-Establishment-Kosten.
-- Spaetere Phasen koennen explizit auf frueheren Code referenzieren ("refactor the function we just wrote").
-- Weniger Token-Overhead pro Phase, weil keine erneute Kontext-Einrichtung.
+**In favor of the single context (v5.1)**:
+- Complete readability of the conversation so far; no re-establishment cost.
+- Later phases can refer explicitly to earlier code ("refactor the function we just wrote").
+- Less token overhead per phase, because there is no repeated context setup.
 
-**Pro Hybrid v6.1 (nur Refactor isoliert)**:
-- Red/Green im Single-Context profitieren von kumulierter Test-/Implementations-Historie (wie v5.1).
-- Die kostenintensive Refactor-Phase isoliert im Subagent — frischer Kontext erzwingt explizite Strukturanalyse statt opportunistischem Lokal-Aufraeumen.
-- Sollte den Komplexitaets-Vorteil von v4.1 mit dem Stabilitaets- und Geschwindigkeits-Profil von v5.1 verbinden — *falls* der Architektur-Effekt aus F-tdd-quality.1 wirklich vom Refactor-Subagent kommt und nicht von der vollstaendigen Phasen-Isolation.
+**In favor of the hybrid v6.1 (only refactor isolated)**:
+- Red/green in the single context benefit from the accumulated test/implementation history (like v5.1).
+- The cost-intensive refactor phase is isolated in the subagent — the fresh context forces an explicit structural analysis instead of opportunistic local cleanup.
+- Should combine the complexity advantage of v4.1 with the stability and speed profile of v5.1 — *if* the architecture effect from F-tdd-quality.1 really comes from the refactor subagent and not from the full phase isolation.
 
-**Pro Hybrid v7.1 (Green und Refactor isoliert)**:
-- Test-Liste/Red im Single-Context fuehren die Spec-Anker und die juengste Test-Diskussion am Stueck (wie v5.1).
-- Der Green-Subagent sieht *nur* den Roten Test und die Aufgabe "make it pass" — ohne Akkumulation aus Test-Listen-Brainstorming oder vorherigen Cycle-Diskussionen, also haerter auf Minimal-Loesung getrimmt (wie in v4.1).
-- Der Refactor-Subagent erbt zusaetzlich den Kontext-Reset-Vorteil aus v6.1.
-- Sollte den Komplexitaets-Vorteil von v4.1 noch staerker treffen als v6.1, *falls* die Green-Drift im Single-Context ein eigenstaendiger Treiber von Code-Mass/Komplexitaet ist und nicht nur der Refactor.
+**In favor of the hybrid v7.1 (green and refactor isolated)**:
+- Test list/red in the single context carry the spec anchors and the most recent test discussion in one piece (like v5.1).
+- The green subagent sees *only* the red test and the task "make it pass" — without accumulation from test-list brainstorming or previous cycle discussions, hence trimmed more strictly toward the minimal solution (as in v4.1).
+- The refactor subagent additionally inherits the context-reset advantage from v6.1.
+- Should hit the complexity advantage of v4.1 even more strongly than v6.1, *if* green drift in the single context is an independent driver of Code Mass/complexity and not just the refactor.
 
-Die Wirkung der Kontext-Strukturierung auf Code-Qualitaet ist a priori unklar — alle vier Architekturen sind plausibel besser.
+The effect of context structuring on code quality is unclear a priori — all four architectures are plausibly better.
 
 ## Design
 
 ```
-Faktor:    workflow   — 4 Stufen (v4.1-testlist-scope-fix, v5.1-testlist-scope-fix,
+Factor:    workflow   — 4 levels (v4.1-testlist-scope-fix, v5.1-testlist-scope-fix,
                                   v6.1-hybrid-testlist-scope-fix,
                                   v7.1-hybrid-green-refactor-testlist-scope-fix)
-Kontrolle: model      — opus-4-7-no-thinking (Portkey ODER Direct, OR-match, siehe Caveat a)
-Kontrolle: kata_base  — claim-office
-Kontrolle: prompt     — example-mapping
+Control:   model      — opus-4-7-no-thinking (Portkey OR direct, OR-match, see caveat a)
+Control:   kata_base  — claim-office
+Control:   prompt     — example-mapping
 
-Zellen:    4 (4 Workflows x 1 Kata)
-Replikate: n = 3
-Runs:      12 total — vollstaendig neu zu erheben (v5.1 und v7.1 sind neu;
-           die alten v4-/v5-/v6-/v7-Runs sind nicht uebertragbar, da sie den
-           test-list-scope-fix bzw. die Skript-Vereinheitlichung nicht haben)
+Cells:      4 (4 workflows x 1 kata)
+Replicates: n = 3
+Runs:       12 total — to be collected entirely anew (v5.1 and v7.1 are new;
+            the old v4/v5/v6/v7 runs are not transferable, since they do not have
+            the test-list-scope-fix or the script unification)
 ```
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Code-Qualitaet)**: Isolierte Subagent-Kontexte (v4.1) produzieren niedrigere Komplexitaets-Metriken (`cognitive_max`, `mccabe_max`, `cc_longest_function`, `smell_total`) als der Single-Context (v5.1). v6.1 liegt dazwischen, naeher an v4.1 — weil die kostenintensive Refactor-Phase isoliert laeuft und damit den Hauptmechanismus von v4.1 erbt. v7.1 liegt noch naeher an v4.1 als v6.1, weil zusaetzlich der Green-Drift-Mechanismus wirkt.
-  Plausible Mechanik: ohne kumulierte History kann die Green-Phase nicht "vorausschauend abstrahieren" und liefert die minimal-noetige Implementation; ohne Refactor-Drift bleibt die Refactor-Phase fokussiert auf reine Strukturverbesserung. Bei v6.1 wirkt nur der zweite, bei v7.1 beide Mechanismen.
-- **H2 (Korrektheit)**: Alle vier Architekturen erreichen aehnliche `tests_passing` und `verification_pct` auf claim-office. Korrektheit ist nicht der primaere Engpass — der Kontext-Architektur-Effekt zeigt sich (falls vorhanden) in Code-Qualitaet und Kosten, nicht in der Aussen-Korrektheit. Falsifikation: eine Architektur trifft systematisch weniger Acceptance-Szenarien.
-- **H3 (Token-Verbrauch)**: v4.1 verbraucht *weniger* Tokens als v5.1, weil isolierte Subagent-Kontexte zwar ueberlappen, aber jeder Subagent linear und kurz waechst — waehrend der v5.1-Single-Context die Tokens aller Phasen kumuliert. v6.1 bezahlt fuer den Refactor-Subagent zusaetzlich zum kumulierten Single-Context und liegt damit token-maessig ueber v5.1. v7.1 bezahlt zwei Subagent-Phasen (Green + Refactor) zusaetzlich zum Single-Context und liegt erwartungsgemaess noch ueber v6.1.
-- **H4 (Stabilitaet)**: Die Streuung der Code-Qualitaets-Metriken pro Zelle ist bei v4.1 systematisch niedriger als bei v5.1 (aus RQ-stability F-stability.2 bereits vorgezeichnet). v6.1 und v7.1 sollten stabilitaets-maessig zwischen v4.1 und v5.1 liegen, v7.1 naeher an v4.1. Falsifikation H4: v5.1-Streuung ≤ v4.1-Streuung.
-  **Vorbehalt (n=3)**: Bei der aktuellen Replikatzahl ist die Streuungs-Schaetzung pro Zelle statistisch schwach — H4 kann mit n=3 nur als Tendenz gepruft, nicht belastbar bestaetigt werden. Fuer eine tragfaehige Stabilitaets-Aussage muessen die Replikate spaeter erhoeht werden.
-- **H5 (Wallclock)**: v4.1 ist **deutlich langsamer** als v5.1 in Wallclock-Zeit. Plausible Mechanik: jeder Subagent-Spawn pro TDD-Phase kostet eine Einrichtungs-Latenz (Modell-Warmup, Re-Read der Phasen-Definitionen aus den Agent-Files), die ueber die TDD-Zyklen pro Run und 4 Phasen je Zyklus aufsummiert wird; v5.1 zahlt diesen Overhead nur einmal pro Run. Erwartung: v4.1-Wallclock ≥ 2× v5.1-Wallclock auf claim-office. v6.1 zahlt den Spawn-Overhead einmal pro Cycle (Refactor), v7.1 zweimal pro Cycle (Green + Refactor); beide sollten zwischen v5.1 und v4.1 liegen, v7.1 naeher an v4.1.
+- **H1 (code quality)**: Isolated subagent contexts (v4.1) produce lower complexity metrics (`cognitive_max`, `mccabe_max`, `cc_longest_function`, `smell_total`) than the single context (v5.1). v6.1 lies in between, closer to v4.1 — because the cost-intensive refactor phase runs isolated and thereby inherits the main mechanism of v4.1. v7.1 lies even closer to v4.1 than v6.1, because the green-drift mechanism additionally takes effect.
+  Plausible mechanic: without accumulated history the green phase cannot "abstract in anticipation" and delivers the minimally necessary implementation; without refactor drift the refactor phase stays focused on pure structural improvement. With v6.1 only the second mechanism acts, with v7.1 both.
+- **H2 (correctness)**: All four architectures reach similar `tests_passing` and `verification_pct` on claim-office. Correctness is not the primary bottleneck — the context-architecture effect shows up (if present) in code quality and cost, not in external correctness. Falsification: one architecture systematically hits fewer acceptance scenarios.
+- **H3 (token consumption)**: v4.1 consumes *fewer* tokens than v5.1, because isolated subagent contexts do overlap but each subagent grows linearly and briefly — whereas the v5.1 single context accumulates the tokens of all phases. v6.1 pays for the refactor subagent in addition to the accumulated single context and therefore lies above v5.1 in token terms. v7.1 pays for two subagent phases (green + refactor) in addition to the single context and, as expected, lies above v6.1 as well.
+- **H4 (stability)**: The spread of the code-quality metrics per cell is systematically lower for v4.1 than for v5.1 (already foreshadowed by RQ-stability F-stability.2). v6.1 and v7.1 should lie between v4.1 and v5.1 in terms of stability, v7.1 closer to v4.1. Falsification of H4: v5.1 spread ≤ v4.1 spread.
+  **Reservation (n=3)**: At the current replicate count, the spread estimate per cell is statistically weak — with n=3, H4 can only be examined as a tendency, not robustly confirmed. For a solid stability statement the replicates must be increased later.
+- **H5 (wallclock)**: v4.1 is **considerably slower** than v5.1 in wallclock time. Plausible mechanic: each subagent spawn per TDD phase costs a setup latency (model warmup, re-reading the phase definitions from the agent files), which sums up over the TDD cycles per run and 4 phases per cycle; v5.1 pays this overhead only once per run. Expectation: v4.1 wallclock ≥ 2× v5.1 wallclock on claim-office. v6.1 pays the spawn overhead once per cycle (refactor), v7.1 twice per cycle (green + refactor); both should lie between v5.1 and v4.1, v7.1 closer to v4.1.
 
-**Falsifikation H1** (v5.1 ≤ v4.1 auf Komplexitaet, oder v6.1/v7.1 weit ueber v4.1): die Kontext-Trennung bzw. die Refactor-/Green-Isolation bringt keinen Code-Qualitaets-Vorteil — moeglicherweise schadet sie sogar, weil isolierte Subagents keine Kenntnis der Test-Historie haben.
+**Falsification of H1** (v5.1 ≤ v4.1 on complexity, or v6.1/v7.1 far above v4.1): the context separation or the refactor/green isolation brings no code-quality advantage — it may even hurt, because isolated subagents have no knowledge of the test history.
 
-**Falsifikation H3** (v4.1 ≥ v5.1 Tokens, oder v6.1/v7.1 ≤ v5.1): die Subagent-Spawn-Overheads dominieren die durch Kontext-Akkumulation eingesparten Tokens; bzw. die isolierten Subagents sind nicht die dominanten Token-Treiber.
+**Falsification of H3** (v4.1 ≥ v5.1 tokens, or v6.1/v7.1 ≤ v5.1): the subagent spawn overheads dominate the tokens saved by avoiding context accumulation; or the isolated subagents are not the dominant token drivers.
 
-**Falsifikation H5** (v4.1 ≤ v5.1 Wallclock): Subagent-Spawn-Overhead ist vernachlaessigbar gegenueber kumulierten Token-Verarbeitungs-Kosten im Single-Context.
+**Falsification of H5** (v4.1 ≤ v5.1 wallclock): subagent spawn overhead is negligible compared to the accumulated token-processing cost in the single context.
 
 ## Caveats
 
-- **(a) Single model, Routing gemischt**: Nur `opus-4-7-no-thinking`, aber `controls.model` ist eine ODER-Liste `[opus-4-7-portkey-no-thinking, opus-4-7-no-thinking]`. Neue Fill-Runs gehen ueber Portkey (Prio 1), bestehende Direct-Runs werden weiterverwendet; beide Routen zaehlen als eine Zelle. Annahme: Routing hat keinen Effekt auf Code-Qualitaet; auf `duration_seconds` (H5) ggf. schon (Portkey-Retry/Timeout-Charakteristik) — bei der Wallclock-Auswertung beachten, ggf. nach `model` statt `cell_model` gruppieren. Schwaechere Modelle koennten zudem von Phase-Isolation staerker profitieren (kein Drift) oder weniger (Re-Establishment-Kosten dominieren).
-- **(b) Single kata**: Nur claim-office (CLI-Kata, novel) — gewaehlt, weil Context-Engineering auf einer Aufgabe geprueft werden soll, die das Modell nicht auswendig kann und bei der Korrektheit nicht selbstverstaendlich ist. game-of-life (Library-Form) und mars-rover bleiben als Cross-Kata-Replikation offen.
-- **(c) Identischer Phasen-Skript-Inhalt nur fuer v4.1 ↔ v5.1**: garantiert durch die Workflow-Definition (siehe `experiments/workflows/v4.1-testlist-scope-fix/.claude/agents/` vs `experiments/workflows/v5.1-testlist-scope-fix/.claude/commands/`). Die `.1`-Varianten wurden gezielt so abgeleitet, dass die Phasen-Skript-Texte (Test-Liste, Red, Green, Refactor inkl. test-list-scope-fix) inhaltlich uebereinstimmen; der einzige Unterschied ist der Aufruf-Mechanismus — Subagent-Spawn (isolierter Kontext) bei v4.1 vs. Skill-Invocation im selben Kontext bei v5.1. v6.1 und v7.1 sind hingegen **keine zeichengenauen Derivate**: beide teilen den test-list-scope-fix und nutzen Test-Liste/Red als Skills im Single-Context (wie v5.1); v6.1 spawnt zusaetzlich den Refactor als Subagent, v7.1 spawnt Green und Refactor als Subagents (jeweils wie v4.1 fuer diese Phasen). Konsequenz: der v4.1↔v5.1-Vergleich isoliert den reinen Architektur-Effekt, die v6.1- und v7.1-Vergleiche vermischen Architektur- und (geringe) Skript-Unterschiede in den Subagent-Spezifikationen. Bei v4.1, v6.1 und v7.1 erhalten die Subagents ihren Kontext explizit per Prompt-Block (`tdd-experiment-mode.md`), bei v5.1 entfaellt das, weil der Kontext geteilt wird.
-- **(d) Vollstaendig neue Datenerhebung**: Diese RQ erhebt alle Runs neu. Die alten v4-/v5-/v6-/v7-Runs sind nicht uebertragbar, weil v5.1 und v7.1 neue Workflows sind und alle vier Varianten den test-list-scope-fix bzw. die Skript-Vereinheitlichung tragen, die die alten Runs nicht hatten.
+- **(a) Single model, mixed routing**: Only `opus-4-7-no-thinking`, but `controls.model` is an OR list `[opus-4-7-portkey-no-thinking, opus-4-7-no-thinking]`. New fill runs go via Portkey (priority 1), existing direct runs continue to be used; both routes count as one cell. Assumption: routing has no effect on code quality; on `duration_seconds` (H5) it possibly does (Portkey retry/timeout characteristics) — take this into account in the wallclock evaluation, if necessary group by `model` instead of `cell_model`. Weaker models could moreover benefit more from phase isolation (no drift) or less (re-establishment costs dominate).
+- **(b) Single kata**: Only claim-office (CLI kata, novel) — chosen because context engineering should be tested on a task the model does not know by heart and for which correctness is not a given. game-of-life (library form) and mars-rover remain open as cross-kata replication.
+- **(c) Identical phase-script content only for v4.1 ↔ v5.1**: guaranteed by the workflow definition (see `experiments/workflows/v4.1-testlist-scope-fix/.claude/agents/` vs `experiments/workflows/v5.1-testlist-scope-fix/.claude/commands/`). The `.1` variants were deliberately derived so that the phase-script texts (test list, red, green, refactor including the test-list-scope-fix) match in content; the only difference is the invocation mechanism — subagent spawn (isolated context) for v4.1 vs. skill invocation in the same context for v5.1. v6.1 and v7.1, by contrast, are **not character-exact derivatives**: both share the test-list-scope-fix and use the test list/red as skills in the single context (like v5.1); v6.1 additionally spawns the refactor as a subagent, v7.1 spawns green and refactor as subagents (each as v4.1 does for these phases). Consequence: the v4.1↔v5.1 comparison isolates the pure architecture effect, while the v6.1 and v7.1 comparisons mix architecture differences with (small) script differences in the subagent specifications. With v4.1, v6.1 and v7.1 the subagents receive their context explicitly via a prompt block (`tdd-experiment-mode.md`); with v5.1 this is unnecessary because the context is shared.
+- **(d) Entirely new data collection**: This RQ collects all runs anew. The old v4/v5/v6/v7 runs are not transferable, because v5.1 and v7.1 are new workflows and all four variants carry the test-list-scope-fix or the script unification that the old runs did not have.
 
 ## Findings
 
-Siehe [findings.md](findings.md).
+See [findings.md](findings.md).
 
-## Datenquelle
+## Data Source
 
-Alle Runs in `experiments/runs/` mit
+All runs in `experiments/runs/` with
 `workflow ∈ {v4.1-testlist-scope-fix, v5.1-testlist-scope-fix, v6.1-hybrid-testlist-scope-fix, v7.1-hybrid-green-refactor-testlist-scope-fix}`,
 `kata = claim-office-example-mapping`,
-`model ∈ {opus-4-7-portkey-no-thinking, opus-4-7-no-thinking}` (ODER-Match, siehe Caveat a).
+`model ∈ {opus-4-7-portkey-no-thinking, opus-4-7-no-thinking}` (OR-match, see caveat a).

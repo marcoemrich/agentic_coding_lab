@@ -1,6 +1,6 @@
 ---
 id: RQ-model-quality-oc
-question: "Wie unterscheiden sich fünf via OpenCode-Harness erreichbare Modelle (Opus 4.7 via Portkey + vier Nicht-Anthropic-Modelle aus dem Portkey-Catalog) in Code-Qualität und TDD-Disziplin auf game-of-life-example-mapping mit dem v5.1-testlist-scope-fix-oc-Workflow?"
+question: "How do five models reachable via the OpenCode harness (Opus 4.7 via Portkey + four non-Anthropic models from the Portkey catalog) differ in code quality and TDD discipline on game-of-life-example-mapping with the v5.1-testlist-scope-fix-oc workflow?"
 factors:
   model:
     - opus-4-7-portkey
@@ -14,7 +14,7 @@ controls:
   kata_base: game-of-life
   prompt: example-mapping
 outcomes:
-  # primär: Code-Qualität (game-of-life trägt das Code-Qualitäts-Signal)
+  # primary: code quality (game-of-life carries the code-quality signal)
   - code_mass
   - cognitive_max
   - cognitive_avg
@@ -28,16 +28,16 @@ outcomes:
   - smell_complexity
   - smell_magic_numbers
   - smell_duplication
-  # sekundär: Korrektheit
-  - verification_pct  # extern (game-of-life-verification existiert seit 2026-05-25)
-  - tests_passing     # intern (vitest)
+  # secondary: correctness
+  - verification_pct  # external (game-of-life-verification has existed since 2026-05-25)
+  - tests_passing     # internal (vitest)
   - tests_total
-  # tertiär: TDD-Disziplin (jetzt verfügbar dank v5.1-oc + parse_opencode_transcript)
+  # tertiary: TDD discipline (now available thanks to v5.1-oc + parse_opencode_transcript)
   - cycle_count
   - refactorings_applied
   - predictions_correct
   - predictions_total
-  # Kontext
+  # context
   - completed_within_budget
   - duration_seconds
   - total_tokens
@@ -45,34 +45,34 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-model-quality-oc: Modell-Effekt auf Code-Qualität (OpenCode-Harness)
+# RQ-model-quality-oc: Model effect on code quality (OpenCode harness)
 
 ## Motivation
 
-Mit OpenCode als zweitem Harness werden Modelle erreichbar, die über Claude Code nicht laufen — Kimi K2, GLM 5.1, Gemini 2.5 Pro, Gemini 3.5 Flash (alle via Portkey, OpenRouter/Vertex-Backends). Opus 4.7 läuft auf beiden Harnessen und dient hier als Anker.
+With OpenCode as the second harness, models become reachable that do not run over Claude Code — Kimi K2, GLM 5.1, Gemini 2.5 Pro, Gemini 3.5 Flash (all via Portkey, OpenRouter/Vertex backends). Opus 4.7 runs on both harnesses and serves as the anchor here.
 
-Diese RQ misst den **Modell-Effekt auf Code-Qualität und TDD-Disziplin** in einem harness-konstanten Setting (alle Zellen OpenCode, alle gleicher Workflow, alle gleiche Kata). Sie ist das **direkte Pendant** zum bestehenden RQ-model-quality (Claude-Code-Seite, v4-exact-subagents × example-mapping) — aber mit v5.1-Workflow statt v4 (OpenCode hat keinen sauberen Subagent-Equivalent, v5.1 ist das ehrlichste TDD-Pendant). Workflow-Unterschied muss bei Findings-Vergleichen explizit benannt werden, KEIN 1:1-Transfer.
+This RQ measures the **model effect on code quality and TDD discipline** in a harness-constant setting (all cells OpenCode, all the same workflow, all the same kata). It is the **direct counterpart** to the existing RQ-model-quality (Claude Code side, v4-exact-subagents × example-mapping) — but with the v5.1 workflow instead of v4 (OpenCode has no clean subagent equivalent, v5.1 is the most honest TDD counterpart). The workflow difference must be named explicitly when comparing findings, NO 1:1 transfer.
 
-`game-of-life-example-mapping` als Kata: trägt das Code-Qualitäts-Signal (`smell_total`, `cognitive_max`, etc. differenzieren) UND ist mit v5.1's TDD-Mechanik example-mapping-kompatibel (v5 erlaubt alle drei Prompt-Stile). claim-office wird parallel in RQ-model-novel-kata-oc untersucht (Korrektheit als primärer Outcome).
+`game-of-life-example-mapping` as kata: carries the code-quality signal (`smell_total`, `cognitive_max`, etc. differentiate) AND is example-mapping compatible with v5.1's TDD mechanics (v5 permits all three prompt styles). claim-office is investigated in parallel in RQ-model-novel-kata-oc (correctness as primary outcome).
 
-## Vorhandene Daten
+## Existing data
 
-- **Stand 2026-05-25**: Keine Runs für irgendeine GOL-Zelle dieser RQ. Erstbatch komplett offen.
-- Routing-Smokes auf claim-office × v5.1-oc (parallel-RQ) haben bestätigt: alle 4 Modelle routen korrekt durch Portkey (Vertex EU für Opus, Vertex für Gemini, OpenRouter-Eval-Integration für Kimi/MiniMax).
+- **As of 2026-05-25**: No runs for any GOL cell of this RQ. First batch completely open.
+- Routing smokes on claim-office × v5.1-oc (parallel RQ) confirmed: all 4 models route correctly through Portkey (Vertex EU for Opus, Vertex for Gemini, OpenRouter eval integration for Kimi/MiniMax).
 
-## Modell-Auswahl: warum nur 4 Modelle
+## Model selection: why only 4 models
 
-Gemini 2.5 Pro wurde am 2026-05-25 aus der RQ entfernt: drei Smoke-Versuche (91s/314s/85s, je n=1) zeigten konsistent vorzeitigen Abbruch des autonomen Loops nach 1-2 Cycles ohne `experiment-done.txt`. Auch ein expliziter Continuation-Prompt ("Do NOT stop... continue until experiment-done.txt") änderte nichts — Pro interpretiert `pnpm test passes` als natürliches Ende und stoppt mit empty turn. Ist ein v5.1-oc-Compatibility-Issue (Pro folgt dem Skill-Loop-Pattern nicht zuverlässig), kein Routing- oder Modell-Stärke-Problem. Wenn das später behoben wird (--variant high, alternativer Workflow, OC-Update), kann Pro nachträglich als 5. Faktor-Wert ergänzt werden.
+Gemini 2.5 Pro was removed from the RQ on 2026-05-25: three smoke attempts (91s/314s/85s, n=1 each) consistently showed a premature abort of the autonomous loop after 1-2 cycles without `experiment-done.txt`. An explicit continuation prompt ("Do NOT stop... continue until experiment-done.txt") changed nothing either — Pro interprets `pnpm test passes` as a natural ending and stops with an empty turn. This is a v5.1-oc compatibility issue (Pro does not follow the skill-loop pattern reliably), not a routing or model-strength problem. If this is fixed later (--variant high, alternative workflow, OC update), Pro can be added retroactively as a 5th factor value.
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Opus-Anker)**: opus-4-7-portkey liefert die niedrigsten Werte bei `cognitive_max` und `smell_total` — bestätigt, dass das Opus-4.7-Niveau via OpenCode-Routing erhalten bleibt (sonst ist OC-Harness wertloser Confound).
-- **H2 (Nicht-Anthropic-Spreizung)**: Die drei Nicht-Anthropic-Modelle (Kimi, GLM, Flash) zeigen eine messbare Spreizung über `smell_total` und `cognitive_max` — d.h. der OpenCode-Harness ist diskriminationsfähig genug, um Modell-Unterschiede sichtbar zu machen.
-- **H3 (Skill-Tool-Compliance modellabhängig)**: `cycle_count` und `refactorings_applied` zeigen über die vier Modelle Spreizung — manche nutzen den `skill`-Tool diszipliniert, andere driften nach 1-2 Cycles in inline-Mode. Niedriger cycle_count ist NICHT automatisch schwächere TDD-Disziplin, sondern auch Compliance mit der Skill-Affordance. Smoke-Befund: nur Opus produziert "Red Phase Complete"+Prediction-Marker; alle drei anderen Modelle ignorieren das Format → `predictions_total=0`.
+- **H1 (Opus anchor)**: opus-4-7-portkey delivers the lowest values for `cognitive_max` and `smell_total` — confirming that the Opus 4.7 level is preserved via OpenCode routing (otherwise the OC harness is a worthless confound).
+- **H2 (non-Anthropic spread)**: The three non-Anthropic models (Kimi, GLM, Flash) show a measurable spread over `smell_total` and `cognitive_max` — i.e. the OpenCode harness is discriminating enough to make model differences visible.
+- **H3 (skill-tool compliance is model-dependent)**: `cycle_count` and `refactorings_applied` show a spread across the four models — some use the `skill` tool with discipline, others drift into inline mode after 1-2 cycles. A low cycle_count is NOT automatically weaker TDD discipline, but also compliance with the skill affordance. Smoke finding: only Opus produces "Red Phase Complete" + prediction markers; all three other models ignore the format → `predictions_total=0`.
 
-## Methodologische Anmerkungen
+## Methodological notes
 
-- Alle vier Modelle laufen via Portkey, aber mit unterschiedlichen Backprovidern (Vertex EU für Opus, Vertex für Gemini, OpenRouter für Kimi/GLM). Backprovider-Routing-Effekte sind in den Lab-Variant-IDs implizit gepinnt; ein wechselnder Backprovider würde eine neue Lab-Variant brauchen.
-- `n=5` per Cell folgt Memory [[replicates-n-reliability]] (Default für mittleres Feld).
-- v5.1-Workflow erzwingt Test-First-TDD mit `skill`-Tool-Aufrufen. Beobachtbare Drift in `cycle_count` (Skeleton: nur 2 von ~18 Cycles via Skill-Tool erfasst) ist eine Workflow-Compliance-Eigenschaft, kein Parser-Bug. Bei Findings unterscheiden: "Modell A hat höhere TDD-Disziplin" ≠ "Modell A nutzt den Skill-Tool öfter".
-- TDD-Disziplin-Metriken (`cycle_count`, `predictions_*`, `refactorings_applied`) sind dank `parse_opencode_transcript.py` ab 2026-05-25 für OC-Runs verfügbar.
+- All four models run via Portkey, but with different backproviders (Vertex EU for Opus, Vertex for Gemini, OpenRouter for Kimi/GLM). Backprovider routing effects are implicitly pinned in the lab-variant IDs; a changing backprovider would require a new lab variant.
+- `n=5` per cell follows memory [[replicates-n-reliability]] (default for a medium field).
+- The v5.1 workflow enforces test-first TDD with `skill` tool calls. Observable drift in `cycle_count` (skeleton: only 2 of ~18 cycles captured via the skill tool) is a workflow-compliance property, not a parser bug. Distinguish in findings: "model A has higher TDD discipline" ≠ "model A uses the skill tool more often".
+- TDD discipline metrics (`cycle_count`, `predictions_*`, `refactorings_applied`) are available for OC runs from 2026-05-25 thanks to `parse_opencode_transcript.py`.

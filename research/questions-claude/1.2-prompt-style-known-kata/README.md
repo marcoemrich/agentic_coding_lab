@@ -1,6 +1,6 @@
 ---
 id: RQ-prompt-known-kata
-question: "Beeinflusst der Prompt-Stil (prose/user-story/example-mapping) bei einer trainingsbekannten Kata (Game of Life) Korrektheit und Code-Qualität — und ist dieser Effekt modellabhängig?"
+question: "Does the prompt style (prose/user-story/example-mapping) influence correctness and code quality on a training-known kata (Game of Life) — and is this effect model-dependent?"
 factors:
   prompt: [prose, user-story, example-mapping]
   model:
@@ -29,96 +29,96 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-prompt-known-kata: Prompt-Stil-Effekt bei trainingsbekannter Kata
+# RQ-prompt-known-kata: Prompt Style Effect on a Training-Known Kata
 
-Beeinflusst der Prompt-Stil bei einer trainingsbekannten Kata (Game of Life) Korrektheit *und* Code-Qualität — und ist der Effekt modellabhängig?
+Does the prompt style influence correctness *and* code quality on a training-known kata (Game of Life) — and is the effect model-dependent?
 
 ## Motivation
 
-RQ-prompt-correctness misst den Prompt-Stil-Effekt auf einer domain-novel Kata (claim-office) und prognostiziert in ihrer Sektion "Warum nicht game-of-life?", dass Stile auf trainingsbekannten Katas in Korrektheit *nicht messbar differenzieren*, weil das Modell-Vorwissen die Stil-Unterschiede überschreibt. RQ-prompt-known-kata prüft diese Prognose empirisch und erweitert sie um die Code-Qualitäts-Dimension.
+RQ-prompt-correctness measures the prompt style effect on a domain-novel kata (claim-office) and predicts in its section "Why not game-of-life?" that styles *do not differentiate measurably* in correctness on training-known katas, because the model's prior knowledge overrides the style differences. RQ-prompt-known-kata tests this prediction empirically and extends it by the code-quality dimension.
 
-Das Ergebnis hat Konsequenzen für alle späteren Code-Qualitäts-RQs auf Game of Life:
+The result has consequences for all later code-quality RQs on Game of Life:
 
-- **Bestätigt** (kein Stil-Effekt) → spätere Code-Qualitäts-RQs können auf einen Stil fixieren und sparen den Faktor.
-- **Widerlegt** (Stil-Effekt sichtbar) → Stil muss als Faktor in allen Code-Qualitäts-RQs mitlaufen, sonst Confound.
+- **Confirmed** (no style effect) → later code-quality RQs can fix one style and save the factor.
+- **Refuted** (style effect visible) → style must be carried as a factor in all code-quality RQs, otherwise confound.
 
-## Prompt-Stile
+## Prompt Styles
 
-| Stil | Beschreibung |
+| Style | Description |
 |---|---|
-| **prose** | Beschreibung der Regeln in Fließtext, keine Beispiele. |
-| **user-story** | "Als X möchte ich Y, damit Z" — Stakeholder-Perspektive plus Akzeptanzkriterien ohne Zahlbeispiele. |
-| **example-mapping** | Regel + 1–2 konkrete Schema-Beispiele, die das I/O-Format demonstrieren. |
+| **prose** | Description of the rules in running text, no examples. |
+| **user-story** | "As X I want Y, so that Z" — stakeholder perspective plus acceptance criteria without numeric examples. |
+| **example-mapping** | Rule + 1–2 concrete schema examples that demonstrate the I/O format. |
 
-Konfiguration: `experiments/katas/game-of-life-cli-{prose,user-story,example-mapping}/prompt.md`. Alle drei sind inhalts-äquivalent (gleiche Regeln, gleicher I/O-Vertrag, gleiche Constraints), unterscheiden sich nur in der Präsentationsform.
+Configuration: `experiments/katas/game-of-life-cli-{prose,user-story,example-mapping}/prompt.md`. All three are content-equivalent (same rules, same I/O contract, same constraints), differing only in the form of presentation.
 
-## Modelle
+## Models
 
-| Modell | Thinking | API-Route |
+| Model | Thinking | API route |
 |---|---|---|
-| opus-4-6-portkey-no-thinking | Aus | Portkey Gateway |
-| sonnet-4-6-portkey-no-thinking | Aus | Portkey Gateway |
-| haiku-4-5-portkey-no-thinking | Aus | Portkey Gateway |
+| opus-4-6-portkey-no-thinking | Off | Portkey Gateway |
+| sonnet-4-6-portkey-no-thinking | Off | Portkey Gateway |
+| haiku-4-5-portkey-no-thinking | Off | Portkey Gateway |
 
-Alle Modelle laufen über Portkey (rate-limit-frei). Thinking ist durchgehend aus, um den Prompt-Stil-Effekt nicht mit dem Thinking-Effekt zu vermischen (siehe Caveat unten).
+All models run via Portkey (rate-limit-free). Thinking is off throughout so as not to mix the prompt style effect with the thinking effect (see caveat below).
 
-## Warum v5 als Kontroll-Workflow?
+## Why v5 as the Control Workflow?
 
-Konsistent mit RQ-prompt-correctness: v5-exact-single-context liefert das sauberste Signal (kein Phase-Handoff, kein State-Verlust), sodass beobachtete Varianz auf Stil und/oder Modell zurückführbar ist, nicht auf den Workflow. Details siehe RQ-prompt-correctness.
+Consistent with RQ-prompt-correctness: v5-exact-single-context delivers the cleanest signal (no phase handoff, no state loss), so that observed variance is attributable to style and/or model, not to the workflow. For details see RQ-prompt-correctness.
 
-## Warum game-of-life-cli?
+## Why game-of-life-cli?
 
-### Trainingsbekannte Kata mit messbarer externer Korrektheit
+### Training-Known Kata with Measurable External Correctness
 
-Conway's Game of Life ist im Trainingsmaterial allgegenwärtig — das ist der Punkt. Die Hypothese "Stile differenzieren nicht bei trainingsbekannten Katas" lässt sich nur prüfen, wenn die Kata tatsächlich im Vorwissen vorhanden ist.
+Conway's Game of Life is ubiquitous in training material — that is the point. The hypothesis "styles do not differentiate on training-known katas" can only be tested if the kata is actually present in the prior knowledge.
 
-Die bestehenden GOL-Katas (`game-of-life-{prose,user-story,example-mapping}`) sind Library-only (eine Funktion, vitest-Tests). Sie liefern nur die *innere* Korrektheits-Sicht (`tests_passing`) — der Agent schreibt sich seine eigenen Tests. Für eine *äußere* Korrektheits-Sicht (verification gegen eine fixe Akzeptanz-Suite) braucht es ein CLI-Interface, das wir für RQ-prompt-known-kata als neue Kata-Familie hinzufügen: `game-of-life-cli-{prose,user-story,example-mapping}`.
+The existing GOL katas (`game-of-life-{prose,user-story,example-mapping}`) are library-only (one function, vitest tests). They deliver only the *internal* correctness view (`tests_passing`) — the agent writes its own tests. An *external* correctness view (verification against a fixed acceptance suite) requires a CLI interface, which we add for RQ-prompt-known-kata as a new kata family: `game-of-life-cli-{prose,user-story,example-mapping}`.
 
-### Externe Verifikations-Suite
+### External Verification Suite
 
-`experiments/katas/game-of-life-cli-verification/` enthält 15 Szenarien (Stills, Oscillators Periode 2, Glider, Halbphasen, negative Koordinaten, leeres Grid, `steps:0`-Identität). Der Agent sieht diese Suite nie. `analyze-run.sh` pipet jedes Szenario in den vom Agenten gebauten `src/cli.ts` und vergleicht canonical via `jq -S` mit der erwarteten Ausgabe. `verification_pct` (0.0–1.0) ist der Anteil bestandener Szenarien.
+`experiments/katas/game-of-life-cli-verification/` contains 15 scenarios (stills, oscillators of period 2, glider, half phases, negative coordinates, empty grid, `steps:0` identity). The agent never sees this suite. `analyze-run.sh` pipes each scenario into the `src/cli.ts` built by the agent and compares it canonically via `jq -S` with the expected output. `verification_pct` (0.0–1.0) is the share of passed scenarios.
 
 ## Design
 
 ```
-Faktor 1:  prompt        — 3 Stufen (prose, user-story, example-mapping)
-Faktor 2:  model         — 3 Stufen (opus-4-6 / sonnet-4-6 / haiku-4-5, alle Portkey, alle no-thinking)
-Kontrolle: workflow      — v5-exact-single-context
-Kontrolle: kata_base     — game-of-life-cli
+Factor 1:  prompt        — 3 levels (prose, user-story, example-mapping)
+Factor 2:  model         — 3 levels (opus-4-6 / sonnet-4-6 / haiku-4-5, all Portkey, all no-thinking)
+Control:   workflow      — v5-exact-single-context
+Control:   kata_base     — game-of-life-cli
 
-Zellen:    3 × 3 = 9
-Replikate: n = 3
-Runs:      27 total
+Cells:      3 × 3 = 9
+Replicates: n = 3
+Runs:       27 total
 ```
 
-## Hypothesen
+## Hypotheses
 
-- **H1** (Korrektheit): Pro Modell ist der Spread von `verification_pct` zwischen den drei Stilen geringer als 10 Prozentpunkte — die Kata ist im Trainingsmaterial bekannt, Stil-Unterschiede werden vom Vorwissen kompensiert.
-- **H2** (Code-Qualität): Es existiert kein konsistentes Stil-Ranking auf `code_mass`, `smell_total`, `cc_longest_function`, `mccabe_max`, `cognitive_max`, das modellübergreifend stabil ist — Stil-induzierte Qualitäts-Variation ist Rauschen auf bekannter Kata.
-- **H3** (Modell-Ranking): `code_mass` und Komplexitäts-Outcomes folgen weiterhin dem Modell-Ranking Opus < Sonnet < Haiku (vgl. F-3.1 in `_archive/rqs-v1/RQ-3-model-and-thinking/findings.md`), unabhängig vom Prompt-Stil.
+- **H1** (correctness): Per model, the spread of `verification_pct` between the three styles is less than 10 percentage points — the kata is known from the training material, style differences are compensated by prior knowledge.
+- **H2** (code quality): There is no consistent style ranking on `code_mass`, `smell_total`, `cc_longest_function`, `mccabe_max`, `cognitive_max` that is stable across models — style-induced quality variation is noise on a known kata.
+- **H3** (model ranking): `code_mass` and complexity outcomes continue to follow the model ranking Opus < Sonnet < Haiku (cf. F-3.1 in `_archive/rqs-v1/RQ-3-model-and-thinking/findings.md`), independently of the prompt style.
 
-- **H4** (Mehrdeutigkeits-Hypothese): Bei trainingsbekannten Katas greift der Example-Mapping-Vorteil nicht, weil keine domänenspezifischen Mehrdeutigkeiten vorhanden sind, die durch Beispiele aufgelöst werden müssten. Stattdessen können konkrete Beispiele das trainierte Pattern (Library-Form) so stark aktivieren, dass der tatsächliche Task-Vertrag (CLI) verdrängt wird — example-mapping wird *kontraproduktiv*. Dieses Phänomen tritt bei domain-novel Katas (claim-office) nicht auf, weil dort kein konkurrierendes Vorwissen existiert.
+- **H4** (ambiguity hypothesis): On training-known katas the example-mapping advantage does not take effect, because there are no domain-specific ambiguities that would need to be resolved by examples. Instead, concrete examples can activate the trained pattern (library form) so strongly that the actual task contract (CLI) is displaced — example mapping becomes *counterproductive*. This phenomenon does not occur on domain-novel katas (claim-office), because there no competing prior knowledge exists.
 
-**Falsifikation H1** (≥1 Modell zeigt ≥10 pp Spread): Stil-Effekt auch bei trainingsbekannter Kata vorhanden → Code-Qualitäts-RQs müssen Stil als Faktor führen, nicht kontrollieren.
+**Falsification of H1** (≥1 model shows ≥10 pp spread): style effect present even on a training-known kata → code-quality RQs must carry style as a factor, not control it.
 
-**Falsifikation H2** (mindestens ein Code-Qualitäts-Outcome zeigt ein modellübergreifend konsistentes Stil-Ranking): Stil beeinflusst Qualität auch wenn nicht Korrektheit → noch stärkere Implikation für Code-Qualitäts-RQs.
+**Falsification of H2** (at least one code-quality outcome shows a style ranking that is consistent across models): style influences quality even if not correctness → an even stronger implication for code-quality RQs.
 
-**Falsifikation H4** (example-mapping verbessert Korrektheit auch auf trainingsbekannter Kata): Das Vorwissen-Verdrängungsmodell greift nicht → Beispiele helfen universell, nicht nur bei Mehrdeutigkeit.
+**Falsification of H4** (example mapping improves correctness even on a training-known kata): the prior-knowledge displacement model does not apply → examples help universally, not only in the presence of ambiguity.
 
 ## Caveats
 
-- **(a) Thinking aus**: Findings gelten nur für No-Thinking-Modus. Mit Thinking könnten sich Korrektheits- oder Qualitäts-Ergebnisse verschieben — insbesondere bei Opus zeigt sich aus RQ-model-quality-v1 ein deutlicher Thinking-Effekt auf Code-Qualität (cognitive_max −42 %). Eine separate RQ wäre für die Thinking-Dimension nötig.
-- **(b) Opus 4.6 via Portkey, nicht 4.7**: Die `*-portkey`-Varianten routen Opus 4.6. Findings über `opus-4-6-portkey-no-thinking` sind *nicht* automatisch auf Opus 4.7 oder Direct-API-Opus-4.6 übertragbar.
-- **(c) CLI-Overhead-Bias**: Die `game-of-life-cli-*`-Kata pinnt JSON-IO + Dispatcher in `src/cli.ts`. Code-Qualitäts-Metriken (`code_mass`, `smell_total`, `cc_*`, `mccabe_*`, `cognitive_*`) enthalten einen CLI-Overhead-Anteil, den die existierende Library-Variante `game-of-life-*` nicht hat. Cross-Kata-Vergleiche zwischen `game-of-life-cli-*` und `game-of-life-*` bei Code-Qualität sind daher nicht direkt gültig. Innerhalb von RQ-prompt-known-kata (Variation nur über prompt × model) ist der Bias über alle Zellen konstant und stört den Stil-Vergleich nicht.
-- **(d) Single workflow point**: v5-exact-single-context als alleiniger Workflow. Keine Workflow-Generalisierung — andere Workflows könnten andere Stil-Effekte erzeugen.
+- **(a) Thinking off**: Findings apply only to the no-thinking mode. With thinking, correctness or quality results could shift — on Opus in particular, RQ-model-quality-v1 shows a clear thinking effect on code quality (cognitive_max −42 %). A separate RQ would be needed for the thinking dimension.
+- **(b) Opus 4.6 via Portkey, not 4.7**: The `*-portkey` variants route Opus 4.6. Findings about `opus-4-6-portkey-no-thinking` are *not* automatically transferable to Opus 4.7 or Direct-API Opus 4.6.
+- **(c) CLI overhead bias**: The `game-of-life-cli-*` kata pins JSON IO + dispatcher in `src/cli.ts`. Code-quality metrics (`code_mass`, `smell_total`, `cc_*`, `mccabe_*`, `cognitive_*`) contain a CLI overhead share that the existing library variant `game-of-life-*` does not have. Cross-kata comparisons between `game-of-life-cli-*` and `game-of-life-*` on code quality are therefore not directly valid. Within RQ-prompt-known-kata (variation only over prompt × model) the bias is constant across all cells and does not disturb the style comparison.
+- **(d) Single workflow point**: v5-exact-single-context as the sole workflow. No workflow generalization — other workflows could produce different style effects.
 
 ## Findings
 
-Siehe [findings.md](findings.md).
+See [findings.md](findings.md).
 
-## Datenquelle
+## Data Source
 
-Alle Runs in `experiments/runs/` mit
+All runs in `experiments/runs/` with
 `workflow=v5-exact-single-context`,
 `kata=game-of-life-cli-{prose|user-story|example-mapping}`,
-Modell ∈ {opus-4-6-portkey-no-thinking, sonnet-4-6-portkey-no-thinking, haiku-4-5-portkey-no-thinking}.
+model ∈ {opus-4-6-portkey-no-thinking, sonnet-4-6-portkey-no-thinking, haiku-4-5-portkey-no-thinking}.
