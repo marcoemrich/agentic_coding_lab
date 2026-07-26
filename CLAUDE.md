@@ -110,7 +110,8 @@ subtrees.
 
 ## Docker & version pins
 
-- **Claude Code CLI: `2.1.107`** — 2.1.37 hangs on `.claude/agents/` dirs; 2.1.126 requires missing `.claude.json`. Do not bump without verifying v4 workflow end-to-end.
+- **Claude Code CLI: `2.1.170`** — 2.1.37 hangs on `.claude/agents/` dirs; 2.1.126 requires missing `.claude.json`. Do not bump without verifying v4 workflow end-to-end.
+- **Weitere Harness-Pins:** `opencode-ai@1.15.10`, `@earendil-works/pi-coding-agent@0.81.1`, `cursor-agent` (Dashboard-API-Key). Alle in `experiments/docker/Dockerfile`.
 - **pnpm: `9.15.9`** — pnpm 11 breaks builds via `ERR_PNPM_IGNORED_BUILDS`. Pinned via `npm install -g pnpm@9.15.9` in Dockerfile.
 - Container uses `experiments/docker/claude-config/` for Claude config, **not** the host `~/.claude`. This separation is intentional (host config has fish/MCP spawns that hang in the container).
 - Routing: alle Harnesse laufen über **Requesty** (Portkey 2026-07 abgeschaltet). Steuerung rein über `experiments/docker/.env` (`ANTHROPIC_BASE_URL`/`ANTHROPIC_AUTH_TOKEN` für CC via `env_file`; OC über `.opencode/opencode.json` requesty-Provider; pi über `pi-config/agent/models.json`). Kein `batch.sh`-Auto-Detect mehr — `-portkey`-Suffixe an alten Modell-IDs sind nur noch Label. `ANTHROPIC_AUTH_TOKEN` wird in `docker-compose.yml` aus `${REQUESTY_API_KEY}` gespeist.

@@ -92,6 +92,8 @@ def parse_findings(findings_md: Path) -> list[dict]:
 RQ_TREES = [
     ("questions-claude", "Forschungsfragen (Claude Code)"),
     ("questions-opencode", "Forschungsfragen (OpenCode)"),
+    ("questions-pi", "Forschungsfragen (pi)"),
+    ("questions-cursor-cli", "Forschungsfragen (Cursor CLI)"),
     ("questions-cross", "Forschungsfragen (Harness-übergreifend)"),
     ("workflow-dev", "Workflow-Entwicklung"),
 ]
@@ -390,7 +392,7 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p("### 3.1 Run-Pipeline")
     p("")
-    p("1. Container-Image `docker-batch` (Node 22 slim, claude-code 2.1.107 gepinnt) wird gestartet.")
+    p("1. Container-Image `docker-batch` (Node 22 slim, claude-code 2.1.170 / opencode 1.15.10 / pi 0.81.1 / cursor-agent gepinnt) wird gestartet.")
     p("2. Run-Dir `runs/<timestamp>_<kata>_<workflow>_<model>/` wird angelegt; Workflow-Konfig (`.claude/agents/`, `.claude/rules/`) und Kata-Prompt (`prompt.md`) hinein kopiert.")
     p("3. pnpm-Workspace mit TypeScript, Vitest, ESLint+SonarJS aufgesetzt.")
     p("4. `claude --print \"$(< prompt.md)\"` läuft headless, ohne HITL.")
@@ -543,7 +545,7 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("- `experiments/docker/Dockerfile` + `run-batch.sh` + `batch.sh` — Container-Pipeline")
     p("- `experiments/analyze-run.sh` + `analyze_transcript.py` — Run-Analyse")
     p("")
-    p("Container-Pin: `claude-code@2.1.107` (siehe `experiments/docker/Dockerfile`).")
+    p("Container-Pins: `claude-code@2.1.170`, `opencode-ai@1.15.10`, `@earendil-works/pi-coding-agent@0.81.1`, `pnpm@9.15.9` (siehe `experiments/docker/Dockerfile`).")
     p("")
     p("---")
     p("")

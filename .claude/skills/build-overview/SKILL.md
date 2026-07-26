@@ -37,6 +37,16 @@ Bash:
 ./experiments/generate-snapshot-skeleton.py
 ```
 
+**Before trusting the output, verify the script sees every RQ subtree.** `RQ_TREES` in `generate-snapshot-skeleton.py` is a hardcoded list. When a new subtree appears under `research/` (a new harness family, a new question class), the script silently omits it — no warning, no error, just a smaller snapshot. Cross-check the RQ count against the filesystem before proceeding:
+
+```bash
+# every dir with a README.md carrying an `id:` is an RQ
+find research -mindepth 2 -maxdepth 2 -name README.md | xargs grep -l '^id:' | wc -l
+./experiments/generate-snapshot-skeleton.py 2>&1 | grep 'RQs:'
+```
+
+If the two numbers disagree, add the missing subtree to `RQ_TREES` and regenerate — do not hand-patch the skeleton. (This bit in 2026-07: `questions-pi/` and `questions-cursor-cli/` were missing, which would have dropped 3 RQs and 140 runs from the report.)
+
 The script writes to `/tmp/snapshot-skeleton-YYYY-MM-DD.md`. It auto-fills:
 
 - Data-base count (from `experiments/runs/`)
@@ -74,8 +84,29 @@ Style requirements:
 - **Glossary discipline:** Before step 3, read the glossary in the top-level `README.md`. Use terms like `code_mass`, `cc_loc`, `cc_longest_function`, `smell_total`, `verification_pct` only in the binding form defined there ("Code-Mass (APP)", "Produktiv-LoC", "Spitzen-Komplexität", "Smell-Summe", "Korrektheit (außen)") or directly via the metric ID in backticks. Synonyms like "Code-Volumen", "Code-Gesamtvolumen", "LoC-Größe" are forbidden — they are ambiguous or collide with established definitions (APP).
 - **`## Über die Studie` (H2):** Two flowing paragraphs (no sub-headings between them):
   - **Paragraph 1 — EXACT Coding anchor.** Lab as the empirical validation platform for **EXACT Coding** (EXample-guided AI-Collaborative Test-driven Coding) — reference the manuscript at `../../../exact-coding-book/manuscript/exact-coding.md` (path relative to the repo root). Position the workflow variants as a spectrum from Vibe-Coding baselines (v1/v2) over EXACT-conformant setups (v4/v6) to the Delayed-Refactor control (v8).
-  - **Paragraph 2 — Snapshot status.** Date, run count, RQ count, current research front. **Never use workflow version names (`v6.1-hybrid` etc.) here** — workflows are not yet introduced in §2.1; describe by mechanism instead (e.g. "Hybrid-Workflow mit Skill-basiertem Red/Green im geteilten Kontext + isoliertem Refactor-Subagent"). Mention any excluded workflow-dev RQs if their data collection is still ongoing.
-- **`### Scope` (H3 sub-heading inside Über die Studie):** One paragraph with the three-axis scope named explicitly: (1) Harness — **Claude Code CLI** (pin the version from `experiments/docker/Dockerfile`), headless without HITL; (2) Models — **only Anthropic models** (Opus, Sonnet, Haiku — with/without thinking, Direct-API and Portkey); (3) Target language — **only TypeScript** with the fixed pnpm/tsx/Vitest/ESLint+SonarJS stack per run. State explicitly that findings hold **for** this stack; transfer to other agentic tools (Cursor, Aider, Cline, Windsurf), other model providers (OpenAI, Google, local models), other target languages (Python, Go, Java), or interactive HITL setups is open.
+  - **Paragraph 2 — Snapshot status.** Date, run count, RQ count, current research front. **Never use workflow version names (`v6.1-hybrid` etc.) here** — workflows are not yet introduced in §2.1; describe by mechanism instead (e.g. "Hybrid-Workflow mit Skill-basiertem Red/Green im geteilten Kontext + isoliertem Refactor-Subagent").
+
+- **Reporting a subset of RQs.** The user may ask to leave a whole subtree out — most often `workflow-dev/`, which is tool-development on the measuring apparatus and hard to read without knowing the workflow version history. That is a legitimate editorial call, but it must be **visible, not silent**. When you drop a subtree:
+  - Remove it in three places, not one: the §1 overview table block, the §4 sections, and the §8 files rows. Grep for leftovers afterwards (`grep -n '<subtree>' <snapshot>`) — some references are legitimate (methodology pointers in §2/§3/§7), so read each hit rather than deleting blindly.
+  - Recompute the reported totals. The header, the intro paragraph and any "N Forschungsfragen" phrasing must state the *reported* count, not the lab total. Derive both from the file itself:
+    ```bash
+    grep -c '^#### ' <snapshot>                                    # reported RQs
+    python3 -c "import re,sys;print(sum(int(m) for m in re.findall(r'_Datenbasis: (\d+) Runs',open(sys.argv[1]).read())))" <snapshot>
+    ```
+  - Say in the header and intro *what* was left out, *how large* it is, and *where it lives* — a reader who later finds 32 RQs in the repo but 19 in the report must be able to reconcile the two without asking.
+- **`### Scope` (H3 sub-heading inside Über die Studie):** The three-axis scope named explicitly: (1) **Harness** — which agent CLIs, at which pinned versions, headless without HITL; (2) **Models** — which providers and families; (3) **Target language** — the per-run stack. State explicitly that findings hold **for** this stack and name what stays open (other target languages, interactive HITL setups, non-synthetic codebases).
+
+  **Derive all three axes from the data, never from this skill's prose.** The scope is the fastest-drifting part of the whole document — each new harness or provider family silently invalidates it. Read the actual values before writing:
+
+  ```bash
+  grep -n 'npm install -g' experiments/docker/Dockerfile     # harness pins
+  ls -d research/questions-*/                                 # harness families with RQs
+  grep -h '^\s*model' research/questions-*/*/README.md | sort -u | head -40
+  ```
+
+  A stale scope is worse than a vague one: it tells readers the study is narrower than it is, and it reads as sloppiness precisely to the readers who check. (This bit in 2026-07: the skill still prescribed "only Claude Code CLI, only Anthropic models" while the data already spanned four harnesses and a dozen third-party models.)
+
+  Do the same for the **HITL framing** — it is the one scope limit that never drifts, and it is worth more than one sentence. Several documented correctness losses are failure modes a single human question would catch (premature self-termination, incomplete test lists, mis-guessed CLI contracts). Say so: the numbers bound *unattended autonomy*, they are not a ceiling for supervised use.
 - **Methodology (section 3):** Skeleton content is static. Verify against `experiments/docker/Dockerfile`, `experiments/analyze-run.sh`, `experiments/aggregate-by-query.py` whether the pipeline description is still accurate. On drift, correct in the snapshot. Replace the `<!-- TODO Claude: check whether still current ... -->` marker with either a brief confirmation ("pipeline unchanged since ...") or the corrected steps.
 - **RQ sections (4.X):** Two artefacts per RQ, in this order:
   - **Übersichts-Tabelle from `findings.md`** copied verbatim into the snapshot, placed directly after the `_Datenbasis: …_` line and before the `**Befunde**:` list. Each findings.md carries an "Übersicht" or headline table near the top; copy it (with its caption + 🏆 markers) so readers see the numbers without leaving the snapshot. If a findings.md exposes two parallel overview tables (e.g. one per kata, as in RQ-tdd-quality), copy both.
@@ -97,10 +128,20 @@ Attribution rule: Never credit a *bundled* workflow's outcome to a single one of
 
 This is the only interactive step. Do **not** silently write the Hauptbefunde — propose candidates and let the user pick.
 
-1. From everything you read in step 2, draft **5–7 candidate main findings** that have the largest cross-RQ practical impact for a practitioner ("what should I take away?"). Each candidate carries: a bold-sentence title, 1–3 sentences with concrete numbers (`verification_pct`, `cognitive_max`, tokens), and a one-line practical consequence. **Apply the counter-cell + attribution checks (step 3) to every candidate** — Hauptbefunde are where a wrong causal attribution does the most damage. A catchy title may name a factor ("strict TDD improves quality"), but the body must name the *isolated* lever (the enforced refactor cadence, not the TDD label) and must not let a correctness lever and a quality lever bleed into one claim.
+**Always ask — and always offer both continuity and novelty.** The selection is the user's call every single time; never write the Hauptbefunde from your own judgement, and never treat the previous snapshot as auto-approved. The question you put to the user must contain two clearly separated groups:
+
+- **Carried-over candidates** — the previous snapshot's Hauptbefunde with refreshed numbers. These are the study's public face: they get lifted into talks, slide decks and the manuscript, so their *wording* accumulates value across snapshots and should stay recognisable. Read the most recent `research/_archive/experiment-overview-*.md` and any `slide-tables-*.md` (the talk-ready condensates) before drafting.
+- **New candidates** — findings the old set could not carry, because the RQs behind them did not exist or had too little data last time. **Proposing these is mandatory, not optional.** Look specifically at: RQ subtrees added since the last snapshot, RQs whose coverage crossed `min_replicates` since then, and cross-RQ patterns that only became visible with the new cells. For each, say in one line why it is newly sayable ("only measurable since the fourth harness was added"). If you genuinely find no new candidate, say that explicitly and name what you checked — do not let the new group quietly stay empty.
+
+Label each candidate as carried-over or new when presenting, so the user can weigh continuity against novelty deliberately.
+
+For each carried-over finding, re-verify every number against the current `findings.md` rather than copying it forward. Values shift as cells grow — in 2026-07 the Example-Mapping effect widened from "+48–64 pp" to "+48–76 pp" because one cell had grown to n=9. Where a carried sentence mixes katas or workflows in a way the numbers do not support, fix it while carrying it and say so. A carried-over finding whose numbers no longer support it is a *finding in its own right* — report that to the user rather than silently dropping or softening it.
+
+1. From the previous snapshot plus everything you read in step 2, assemble **5–7 candidates — at least two of them new** (see above). Each candidate carries: a bold-sentence title, 1–3 sentences with concrete numbers (`verification_pct`, `cognitive_max`, tokens), and a one-line practical consequence. **Apply the counter-cell + attribution checks (step 3) to every candidate** — Hauptbefunde are where a wrong causal attribution does the most damage. A catchy title may name a factor ("strict TDD improves quality"), but the body must name the *isolated* lever (the enforced refactor cadence, not the TDD label) and must not let a correctness lever and a quality lever bleed into one claim.
 2. Present the candidates as a numbered list in chat, plus a short "why these and not others" line. **Do not** name workflow versions like `v6.1-hybrid` in the Hauptbefunde — workflows are not yet introduced at that early point in the document. Describe by mechanism instead ("Hybrid-Workflow mit Skill-basiertem Red/Green im geteilten Kontext + isoliertem Refactor-Subagent").
 3. Use `AskUserQuestion` (multiSelect: true) to let the user pick **3–5** of the candidates. Accept "Other" answers as additions.
-4. After the user has chosen, write the selected findings — verbatim with their bold titles and the practical-consequence line — into the `## Hauptbefunde` block, replacing the TODO marker. Order the chosen findings by descending practical impact (most actionable first).
+4. After the user has chosen, write the selected findings — verbatim with their bold titles and the practical-consequence line — into the `## Hauptbefunde` block, replacing the TODO marker. Keep the previous snapshot's ordering for carried-over findings (readers and the deck know them in that order); place genuinely new ones by descending practical impact.
+5. Open the block with a one-sentence TLDR framing that names the through-line, then "N zentrale Befunde aus den M Forschungsfragen — Details in §4, Cross-RQ-Synthese in §5". Hauptbefunde are read by people who will read nothing else; the framing sentence is what they take away if they stop after it. Make it state the actual structure of the result (e.g. that two levers drive two *different* outcomes), not a generic "TDD works".
 
 ### Step 5 — write the file
 

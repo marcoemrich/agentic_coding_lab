@@ -31,7 +31,7 @@ The current model decouples three concerns:
 
 ```
                                 +-----------------------------+
-                                |  research/{questions,        |
+                                |  research/{questions-*,       |
                                 |    workflow-dev}/<chapter>-*/ |
                                 |  README.md (frontmatter)      |
                                 +---------+-------------------+
@@ -54,9 +54,13 @@ The current model decouples three concerns:
 
 ### What an RQ contains
 
-RQ directories live in four subtrees: `research/questions-claude/` (Claude Code RQs),
-`research/questions-opencode/` (OpenCode RQs), `research/questions-cross/` (harness-übergreifende
-RQs), and `research/workflow-dev/` (workflow-evolution chain). Each dir carries a `<chapter>-slug`
+RQ directories live in six subtrees: `research/questions-claude/` (Claude Code RQs),
+`research/questions-opencode/` (OpenCode RQs), `research/questions-pi/` (pi RQs),
+`research/questions-cursor-cli/` (cursor-cli RQs), `research/questions-cross/`
+(harness-übergreifende RQs), and `research/workflow-dev/` (workflow-evolution chain).
+**Adding a new subtree requires registering it in `RQ_TREES` in
+`experiments/generate-snapshot-skeleton.py`** — the script has no auto-discovery and
+silently omits unregistered subtrees from snapshots. Each dir carries a `<chapter>-slug`
 name (e.g. `2.6-lean-validation`) where the chapter number is an **ordering label, not an id** —
 like a document section heading, freely renumber-able by `git mv`. The stable identity is the
 frontmatter `id:`; tooling resolves an RQ by that id across all subtrees, never by directory name.
@@ -399,17 +403,18 @@ v5-exact-single-context/.claude/
 
 ### Multi-harness support
 
-The same workflow design can be deployed on different coding-agent harnesses (Claude Code, OpenCode, pi). The TDD-cycle measurement pipeline adapts per harness:
+The same workflow design can be deployed on different coding-agent harnesses (Claude Code, OpenCode, pi, cursor-cli). The TDD-cycle measurement pipeline adapts per harness:
 
 | Harness | Cycle-counting mechanism | Transcript parser |
 |---------|------------------------|------------------|
 | Claude Code | `Skill` tool calls with `skill: "red"` | `analyze_transcript.py` |
 | OpenCode | Same Skill-based logic | `parse_opencode_transcript.py` |
 | pi | Text markers (`## Red` headers) in assistant output | `parse_pi_transcript.py` |
+| cursor-cli | Text markers in the `stream-json` event stream | `parse_cursor_transcript.py` |
 
 **Why pi needs text markers:** pi skills are auto-loaded documents, not tool calls. The model reads each `SKILL.md` once and follows its instructions directly ("freihand"), producing `## Red` headings per cycle instead of `Skill({skill: "red"})` tool invocations. The refactor subagent still uses the `subagent` tool (counted the same way across all harnesses). See [`experiments/workflows/MARKERS.md`](experiments/workflows/MARKERS.md) for the full marker specification.
 
-Workflow directories follow a naming convention: `<variant-name>` (Claude Code), `<variant-name>-oc` (OpenCode), `<variant-name>-pi` (pi). Each stores harness-specific configuration (`.claude/` for CC, `.opencode/` for OC, `.pi/` for pi).
+Workflow directories follow a naming convention: `<variant-name>` (Claude Code), `<variant-name>-oc` (OpenCode), `<variant-name>-pi` (pi), `<variant-name>-cursor` (cursor-cli). Each stores harness-specific configuration (`.claude/` for CC, `.opencode/` for OC, `.pi/` for pi, `.cursor/` for cursor-cli).
 
 ## Model Configurations
 
@@ -572,6 +577,7 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 | `experiments/analyze_transcript.py` | Parse `transcript.jsonl` (+ `transcript-subagents/`) for TDD-cycle metrics: phase inference, prediction accuracy, refactorings applied, token totals, context-window utilization. Writes `transcript-metrics.json`. Used for **Claude Code** runs. |
 | `experiments/parse_pi_transcript.py` | Parse `transcript-pi.jsonl` for the same TDD-cycle metrics. Used for **pi** runs, where skills are auto-loaded documents (not tool calls) and cycle counting relies on text markers (`## Red` headers) in assistant output instead of `Skill` tool invocations. Writes `transcript-metrics.json`. |
 | `experiments/parse_opencode_transcript.py` | Parse OpenCode session exports into `transcript-metrics.json`. Used for **OpenCode** runs. |
+| `experiments/parse_cursor_transcript.py` | Parse `transcript-cursor.jsonl` (the `stream-json` NDJSON event stream that `run-batch.sh` extracts from `run.log`) into `transcript-metrics.json`. Used for **cursor-cli** runs. Same output schema as the pi and OpenCode parsers. |
 
 ### Aggregation
 
@@ -580,7 +586,7 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 | `experiments/aggregate-by-query.py` | Reads an RQ frontmatter, selects matching runs from the pool, writes `runs.csv` + `summary.md` into the RQ directory. The canonical aggregator. |
 | `experiments/batch-plan-from-rq.py` | Reads an RQ frontmatter, computes missing cells against `min_replicates`, writes `experiments/batch-plans/<rq-id>-fill.json`. Idempotent — empty plan if everything is covered. |
 | `experiments/compute-mutation-score.py` | RQ-driven mutation testing. If the RQ lists `mutation_score` in `outcomes`, runs Stryker against every matching green run (`tests_passing = true`) and writes `final_metrics.mutation_score` back into `metrics.json`. Idempotent (skip when already set) and bounded by `--timeout-seconds`. No-op when the RQ does not request the outcome. Run between batch execution and aggregation. |
-| `experiments/generate-snapshot-skeleton.py` | Reads all `README.md` + `findings.md` under `research/questions-{claude,opencode,cross}/` and `research/workflow-dev/`, emits a Markdown skeleton to `/tmp/snapshot-skeleton-YYYY-MM-DD.md` with data sections (run counts, coverage per RQ, finding lists sorted by status, cross-RQ caveats) pre-filled and synthesis sections marked with `<!-- TODO Claude -->`. Consumed by the `/build-overview` skill. |
+| `experiments/generate-snapshot-skeleton.py` | Reads all `README.md` + `findings.md` under the subtrees listed in its `RQ_TREES` constant (currently `research/questions-{claude,opencode,pi,cursor-cli,cross}/` and `research/workflow-dev/`), emits a Markdown skeleton to `/tmp/snapshot-skeleton-YYYY-MM-DD.md` with data sections (run counts, coverage per RQ, finding lists, cross-RQ caveats) pre-filled and synthesis sections marked with `<!-- TODO Claude -->`. Consumed by the `/build-overview` skill. **`RQ_TREES` is hardcoded** — a new subtree that is not registered there is silently omitted from every snapshot. |
 
 ### Docker batch execution (`experiments/docker/`)
 
@@ -780,6 +786,7 @@ Extracted from the harness-specific transcript by the corresponding parser:
 | Claude Code | `transcript.jsonl` | `analyze_transcript.py` | `Skill` tool calls (`skill: "red"`) |
 | OpenCode | `transcript.jsonl` | `parse_opencode_transcript.py` | Same Skill-based logic |
 | pi | `transcript-pi.jsonl` | `parse_pi_transcript.py` | Text markers (`## Red` headers) in assistant output |
+| cursor-cli | `transcript-cursor.jsonl` | `parse_cursor_transcript.py` | Text markers in the `stream-json` event stream |
 
 The phase markers that drive these counts are documented in [`experiments/workflows/MARKERS.md`](experiments/workflows/MARKERS.md) — removing or renaming a marker silently zeroes the corresponding metric.
 
