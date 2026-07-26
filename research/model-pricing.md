@@ -32,6 +32,7 @@ Anmerkungen:
 
 | Modell | Input | Output | Cache Read |
 |---|---:|---:|---:|
+| Claude Opus 5 | $5.00 | $25.00 | $0.50 |
 | Claude Opus 4.8 | $5.00 | $25.00 | $0.50 |
 | Claude Opus 4.7 | $5.00 | $25.00 | $0.50 |
 | Claude Sonnet 4.6 | $3.00 | $15.00 | $0.30 |

@@ -19,11 +19,13 @@ Agenten geschriebene Vitest-Tests, Außensicht via Modul-Import-Adapter
 
 | Modell | `code_mass` | `smell_total` | `mccabe_max` | `cognitive_max` | `cc_longest_function` | `verification_pct` | n |
 |---|---:|---:|---:|---:|---:|---:|---:|
+| opus-5 | 172.67 | 1.67 | 3.00 | 2.00 | 6.33 | **1.00** 🏆 | 3 |
+| opus-5-no-thinking | 149.33 | **1.67** 🏆 | 2.67 | 1.67 | 5.33 | **1.00** 🏆 | 3 |
 | fable-5 | 163.00 | 3.00 | **2.00** 🏆 | **1.00** 🏆 | 8.33 | **1.00** 🏆 | 3 |
-| fable-5-no-thinking | 163.33 | **2.33** 🏆 | 2.67 | 1.67 | 6.67 | **1.00** 🏆 | 3 |
+| fable-5-no-thinking | 163.33 | 2.33 | 2.67 | 1.67 | 6.67 | **1.00** 🏆 | 3 |
 | opus-4-8 | **145.33** 🏆 | 2.67 | 4.33 | 5.33 | **4.33** 🏆 | **1.00** 🏆 | 3 |
 | opus-4-8-no-thinking | 190.50 | 3.00 | 4.25 | 4.75 | 11.50 | **1.00** 🏆 | 4 |
-| opus-4-7 | 159.00 | **2.33** 🏆 | 3.33 | 3.00 | 7.00 | **1.00** 🏆 | 3 |
+| opus-4-7 | 159.00 | 2.33 | 3.33 | 3.00 | 7.00 | **1.00** 🏆 | 3 |
 | opus-4-7-no-thinking | 166.60 | 2.60 | 4.50 | 4.40 | 8.10 | **1.00** 🏆 | 10 |
 | opus-4-6-portkey | 173.00 | 4.33 | 6.67 | 12.00 | 19.33 | **1.00** 🏆 | 3 |
 | opus-4-6-portkey-no-thinking | 175.67 | 4.33 | 7.67 | 13.00 | 18.67 | **1.00** 🏆 | 3 |
@@ -33,31 +35,31 @@ Agenten geschriebene Vitest-Tests, Außensicht via Modul-Import-Adapter
 Bester Wert pro Spalte fett + 🏆. Kleiner = besser (außer `verification_pct`: größer = besser).
 Quality-Trophies sind korrektheits-gegated: nur Zellen mit `verification_pct = 1.0`
 sind trophy-fähig (sonnet-4-6-no-thinking mit 0.73 ausgenommen).
-`verification_pct`: neun Zellen gleichauf bei 1.00 → Ties, alle 🏆.
-`smell_total`: opus-4-7 und fable-5-no-thinking gleichauf bei 2.33 → Tie, beide 🏆.
+`verification_pct`: elf Zellen gleichauf bei 1.00 → Ties, alle 🏆.
+`smell_total`: opus-5-no-thinking setzt mit 1.67 den neuen Bestwert (opus-5-mit-Thinking gleichauf im Mittel, aber höhere Streuung σ 1.53).
 
-Fable 5 setzt die neuen Bestwerte auf den reinen Komplexitäts-Scores:
-`cognitive_max` 1.0 und `mccabe_max` 2.0 (mit Thinking) liegen deutlich unter
-allem anderen — die Spitzen-Komplexität ist faktisch trivial. Opus 4.8 (mit
-Thinking) bleibt der **kompakteste Code** (`code_mass` 145.3,
-`cc_longest_function` 4.3). Damit gibt es zwei verschiedene Qualitäts-Gewinner:
-Fable 5 für niedrigste Komplexität, Opus 4.8 für geringste Code-Mass.
+Opus 5 und Fable 5 teilen sich die Komplexitäts-Spitze: Fable 5 (mit Thinking)
+hält `cognitive_max` 1.0 und `mccabe_max` 2.0 knapp vor Opus 5, Opus 5 setzt dafür
+die niedrigste Smell-Summe (1.67). Opus 4.8 (mit Thinking) bleibt der **kompakteste
+Code** (`code_mass` 145.3, `cc_longest_function` 4.3). Drei komplementäre
+Qualitäts-Gewinner: Fable 5 / Opus 5 für niedrigste Komplexität, Opus 4.8 für
+geringste Code-Mass.
 
 ---
 
 ## F-model-quality.1 — Korrektheit (innen + außen) auf v4 ist nahezu modellunabhängig perfekt
 
-**Aussage**: `tests_passing` liegt für alle zehn Modell-Zellen bei 100 % (38/38
-Runs). `verification_pct` liegt in neun von zehn Zellen ebenfalls bei
+**Aussage**: `tests_passing` liegt für alle zwölf Modell-Zellen bei 100 % (44/44
+Runs). `verification_pct` liegt in elf von zwölf Zellen ebenfalls bei
 1.00 — der explizite API-Vertrag (`Cell = [number, number]`,
 `nextGeneration(cells: Cell[]): Cell[]`) eliminiert die zuvor beobachteten
-Repräsentations-Mismatches fast vollständig. Beide Fable-5-Zellen und beide
-Opus-4.8-Zellen liefern 15/15 in allen Replikaten.
+Repräsentations-Mismatches fast vollständig. Beide Fable-5-Zellen, beide
+Opus-4.8-Zellen und beide Opus-5-Zellen liefern 15/15 in allen Replikaten.
 
 Einzige Ausnahme: **sonnet-4-6-no-thinking** mit `verification_pct = 0.73`
 — 2/3 Runs perfekt (15/15), ein Run mit 3/15 (siehe F-model-quality.5).
 
-**Datenbasis**: 38 Runs, 15 Verifikations-Szenarien pro Run.
+**Datenbasis**: 44 Runs, 15 Verifikations-Szenarien pro Run.
 
 **Konsequenz**: Auf v4 + game-of-life + Direct-API/Portkey-Opus + Sonnet ist
 Korrektheit kein differenzierendes Merkmal mehr. Code-Qualitäts-Ranking-Aussagen
@@ -65,36 +67,39 @@ sind auf korrektem Code basiert.
 
 ---
 
-## F-model-quality.2 — Modell-Ranking: Fable 5 führt auf Komplexität, Opus 4.8 auf Code-Mass; beide deutlich vor Opus 4.6 und Sonnet
+## F-model-quality.2 — Modell-Ranking: Fable 5 und Opus 5 führen auf Komplexität, Opus 4.8 auf Code-Mass; alle drei deutlich vor Opus 4.6 und Sonnet
 
-**Aussage**: Die Spitze teilen sich zwei Modelle mit unterschiedlichem Profil.
-**Fable 5** liefert die niedrigste Spitzen-Komplexität überhaupt
-(`cognitive_max` 1.0, `mccabe_max` 2.0 — beide nahe dem theoretischen Minimum),
-**Opus 4.8** die geringste Code-Mass und die kürzeste längste Funktion
-(`code_mass` 145.3, `cc_longest_function` 4.3). Beide liegen klar vor Opus 4.7
-(solides Mittelfeld der Top-Gruppe), und alle drei deutlich vor Opus 4.6 und
-Sonnet:
+**Aussage**: Die Spitze teilen sich drei Modelle mit unterschiedlichem Profil.
+**Fable 5** und **Opus 5** liefern die niedrigste Spitzen-Komplexität
+(`cognitive_max` 1.0 bzw. 2.0, `mccabe_max` 2.0 bzw. 3.0 — alle nahe dem
+theoretischen Minimum), **Opus 4.8** die geringste Code-Mass und die kürzeste
+längste Funktion (`code_mass` 145.3, `cc_longest_function` 4.3). Opus 5 setzt
+zusätzlich die niedrigste Smell-Summe (1.67). Alle drei liegen klar vor Opus 4.7
+(solides Mittelfeld) und deutlich vor Opus 4.6 und Sonnet:
 
-| Metrik (mit Thinking) | fable-5 | opus-4-8 | opus-4-7 | opus-4-6-portkey | sonnet-4-6 |
-|---|---:|---:|---:|---:|---:|
-| `code_mass` | 163.00 | **145.33** 🏆 | 159.00 | 173.00 | 178.00 |
-| `cc_longest_function` | 8.33 | **4.33** 🏆 | 7.00 | 19.33 | 21.67 |
-| `smell_total` | 3.00 | 2.67 | **2.33** 🏆 | 4.33 | 5.67 |
-| `mccabe_max` | **2.00** 🏆 | 4.33 | 3.33 | 6.67 | 6.33 |
-| `cognitive_max` | **1.00** 🏆 | 5.33 | 3.00 | 12.00 | 11.00 |
+| Metrik (mit Thinking) | fable-5 | opus-5 | opus-4-8 | opus-4-7 | opus-4-6-portkey | sonnet-4-6 |
+|---|---:|---:|---:|---:|---:|---:|
+| `code_mass` | 163.00 | 172.67 | **145.33** 🏆 | 159.00 | 173.00 | 178.00 |
+| `cc_longest_function` | 8.33 | 6.33 | **4.33** 🏆 | 7.00 | 19.33 | 21.67 |
+| `smell_total` | 3.00 | **1.67** 🏆 | 2.67 | 2.33 | 4.33 | 5.67 |
+| `mccabe_max` | **2.00** 🏆 | 3.00 | 4.33 | 3.33 | 6.67 | 6.33 |
+| `cognitive_max` | **1.00** 🏆 | 2.00 | 5.33 | 3.00 | 12.00 | 11.00 |
 
 Kleiner = besser; 🏆 = bestes Modell pro Metrik (Zeile), korrektheits-gegated
-(alle fünf Zellen hier bei `verification_pct = 1.0`).
+(alle sechs Zellen hier bei `verification_pct = 1.0`).
 
 Der Abstand der Spitzengruppe zu Opus 4.6 ist substanziell: auf `cognitive_max`
 trennt Fable 5 (1.0) von Opus 4.6 (12.0) ein Faktor ~12×, auf
 `cc_longest_function` Opus 4.8 (4.3) von Opus 4.6 (19.3) ein Faktor ~4.5×. Die
-beiden Spitzenprofile sind komplementär: Fable 5 hält die Spitzen-Komplexität
-trivial, schreibt aber etwas mehr Code; Opus 4.8 minimiert die Code-Mass, packt
-die Logik dafür dichter (höhere `cognitive_max`/`mccabe_max` als Fable 5).
+drei Spitzenprofile sind komplementär: Fable 5 und Opus 5 halten die
+Spitzen-Komplexität trivial, schreiben aber etwas mehr Code; Opus 4.8 minimiert
+die Code-Mass, packt die Logik dafür dichter (höhere `cognitive_max`/`mccabe_max`).
+Opus 5 verbindet fast-triviale Komplexität mit der niedrigsten Smell-Summe des
+Feldes und schiebt damit den bisherigen Zwei-Wege-Trade-off (Fable-Komplexität vs
+Opus-4.8-Code-Mass) zu einer dritten, smell-armen Option.
 
-**Datenbasis**: fable-5 n=3, opus-4-8 n=3, opus-4-7 n=3, opus-4-6-portkey n=3,
-sonnet-4-6 n=3 (jeweils mit Thinking).
+**Datenbasis**: fable-5 n=3, opus-5 n=3, opus-4-8 n=3, opus-4-7 n=3,
+opus-4-6-portkey n=3, sonnet-4-6 n=3 (jeweils mit Thinking).
 
 **Bemerkung zur Reihenfolge**: Sonnet vor Opus 4.6 (im no-thinking-Vergleich,
 siehe Übersicht) ist eine Umkehr gegenüber naiver Modell-Tier-Intuition

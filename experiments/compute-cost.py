@@ -37,6 +37,10 @@ from pathlib import Path
 # Prices in USD per 1M tokens. Source: research/model-pricing.md (Stand 2026-05-29).
 # input / output / cache_read / cache_write
 PRICES = {
+    # opus-5: nativ (claude-opus-5 via OAuth-Bypass in run-batch.sh), echter
+    # Anthropic-Listpreis 5.00/25.00/0.50/6.25 — NICHT der Requesty-Tarif.
+    "opus-5":           (5.00,  25.00, 0.50, 6.25),
+    "opus-5-no-thinking": (5.00, 25.00, 0.50, 6.25),
     # opus-4-8: im aktuellen Run-Pool AUSSCHLIESSLICH Requesty-geroutet (pi-Harness) →
     # Requesty-vertex-Tarif 5.50/27.50/0.55 (~10 % über Anthropic-nativ). Falls je native
     # Anthropic-opus-4-8-Runs dazukommen, brauchen die eine route-abhängige Unterscheidung.

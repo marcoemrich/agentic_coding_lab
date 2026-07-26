@@ -4,6 +4,7 @@ question: "Wie unterscheiden sich Fable 5, Opus 4.8, Opus 4.7 und Opus 4.6 (jewe
 factors:
   model:
     - fable-5-no-thinking
+    - opus-5-no-thinking
     - opus-4-8-no-thinking
     - opus-4-7-no-thinking
     - opus-4-6-portkey-no-thinking
@@ -48,6 +49,7 @@ RQ-model-novel fokussiert auf die stärksten Opus-Modelle plus Fable 5 (no-think
 - **opus-4-6-portkey-no-thinking × v4 × claim-office-EM**: n=5 (4 innerhalb Budget, 1 Timeout), mean verification_pct 0.93
 - **opus-4-8-no-thinking × v4 × claim-office-EM**: n=5 erhoben 2026-05-29 (native API — Opus 4.8 ist noch nicht auf Portkey/Vertex; Batch lief mit geleerten ANTHROPIC_*-Env-Vars), mean verification_pct 0.92
 - **fable-5-no-thinking × v4 × claim-office-EM**: n=5 erhoben 2026-06-10/11 (mean verification_pct 0.83, σ 0.10, 0.73–0.93; 4/5 innerhalb Budget, 1 Timeout). Native API (Fable 5 ist noch nicht auf Portkey/Vertex; Batch mit geleerten ANTHROPIC_*-Env-Vars, native OAuth). Benötigt Claude Code CLI ≥ 2.1.170.
+- **opus-5-no-thinking × v4 × claim-office-EM**: neu zu erheben (n=5). Nativ (`claude-opus-5`, Listpreis $5/$25) über den seit 2026-07 real implementierten Native-Bypass in `run-batch.sh`. Vorher beschrieb der Kommentar das Env-Blanking nur — die älteren fable-5/opus-4-8-Native-Runs oben liefen faktisch evtl. über die Requesty-Route (Routing-Caveat).
 
 ## Offene Hypothesen
 

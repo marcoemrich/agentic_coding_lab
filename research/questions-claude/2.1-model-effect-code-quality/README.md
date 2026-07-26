@@ -5,6 +5,8 @@ factors:
   model:
     - fable-5
     - fable-5-no-thinking
+    - opus-5
+    - opus-5-no-thinking
     - opus-4-8
     - opus-4-8-no-thinking
     - opus-4-7
@@ -52,6 +54,8 @@ Haiku ist bewusst nicht enthalten: in bisherigen Läufen liegt Haiku regelmäßi
 
 | Lab-Variant | Thinking | API-Route |
 |---|---|---|
+| opus-5 | Adaptiv (default) | Direct API |
+| opus-5-no-thinking | Aus | Direct API |
 | fable-5 | Adaptiv (default) | Direct API |
 | fable-5-no-thinking | Aus | Direct API |
 | opus-4-8 | Adaptiv (default) | Direct API |
@@ -66,6 +70,8 @@ Haiku ist bewusst nicht enthalten: in bisherigen Läufen liegt Haiku regelmäßi
 **Batch-Hinweis**: Direct-API- und Portkey-Varianten **können nicht im selben Batch** laufen (unterschiedliche Konfiguration / Routing). `batch-plan-from-rq.py` erzeugt einen gemeinsamen Plan; beim Ausführen entweder zwei separate Plan-Files manuell aufteilen oder zwei aufeinanderfolgende `batch.sh`-Läufe fahren. Die `-portkey`-Suffix-Erkennung in `batch.sh` setzt den passenden Config-Dir automatisch — aber gemischte Plans laufen nicht.
 
 **Fable-5-Hinweis**: `fable-5*` ist (wie `opus-4-8*`) noch nicht auf Portkey/Vertex und läuft nur über die native Anthropic-API (Batch mit geleerten `ANTHROPIC_*`-Env-Vars, Fallback auf native OAuth). Fable 5 benötigt Claude Code CLI ≥ 2.1.170 (Docker-Image entsprechend gepinnt).
+
+**Opus-5-Hinweis**: `opus-5*` läuft nativ (`claude-opus-5`, Anthropic-Listpreis $5/$25). Der Native-Bypass in `run-batch.sh` (leert `ANTHROPIC_BASE_URL`/`AUTH_TOKEN`/`CUSTOM_HEADERS`/`DEFAULT_*_MODEL` im `claude`-Aufruf für alle bare-`claude-*`-cli_models) ist seit 2026-07 **tatsächlich implementiert** — vorher beschrieb der Kommentar das Verhalten nur, sodass native Runs faktisch über die container-globale Requesty-Route liefen und der native Alias 403 riskierte. Ältere `fable-5`/`opus-4-8`-Native-Runs sind darum als Routing-Caveat zu behandeln (evtl. real Requesty-geroutet). Neue `opus-5`-Runs sind sauber nativ.
 
 ## Warum v4-exact-subagents als Kontroll-Workflow?
 
