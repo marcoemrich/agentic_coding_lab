@@ -4,9 +4,13 @@
 FROM node:22-slim
 
 # Install system dependencies
+# ca-certificates: required for curl HTTPS verification (node:22-slim ships
+# without it). The cursor-agent installer fetches over HTTPS via curl and
+# fails with "curl: (77) error setting certificate file" without this.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
+    ca-certificates \
     jq \
     bash \
     python3 \
@@ -92,7 +96,30 @@ WORKDIR /home/experimenter
 # Set environment variables
 ENV NODE_ENV=production
 ENV PNPM_HOME=/home/experimenter/.local/share/pnpm
-ENV PATH="$PNPM_HOME:$PATH"
+ENV PATH="$PNPM_HOME:/home/experimenter/.local/bin:$PATH"
+
+# Install cursor-agent CLI (fourth harness). NOT an npm package — it is a
+# standalone binary. The official installer (curl https://cursor.com/install)
+# hard-codes a single release and offers no --version flag, so for a
+# reproducible pin we fetch the versioned package tarball directly (the exact
+# artifact the installer would download) and lay it out the same way:
+#   ~/.local/share/cursor-agent/versions/<VER>/ + symlink in ~/.local/bin.
+#   Pin: 2026.07.23-e383d2b. Verified against smoke run 2026-07-26 — headless
+#   -p --force --output-format stream-json, models claude-opus-4-8-medium /
+#   composer-2.5 / cursor-grok-4.5-medium.
+# Bump policy: same as the other harnesses — verify a single cursor run
+# (v6.2.1-phase-continuation-cursor smoke) before launching multi-cell batches.
+ENV CURSOR_AGENT_VERSION=2026.07.23-e383d2b
+RUN set -eux; \
+    arch="$(uname -m)"; \
+    case "$arch" in x86_64|amd64) arch=x64;; arm64|aarch64) arch=arm64;; \
+        *) echo "unsupported arch: $arch" >&2; exit 1;; esac; \
+    dest="$HOME/.local/share/cursor-agent/versions/$CURSOR_AGENT_VERSION"; \
+    mkdir -p "$dest" "$HOME/.local/bin"; \
+    curl -fSL "https://downloads.cursor.com/lab/$CURSOR_AGENT_VERSION/linux/$arch/agent-cli-package.tar.gz" \
+        | tar --strip-components=1 -xz -C "$dest"; \
+    ln -sf "$dest/cursor-agent" "$HOME/.local/bin/cursor-agent"; \
+    cursor-agent --version
 
 # Pre-cache common dependencies into the default pnpm store
 # (/home/experimenter/.local/share/pnpm/store). At runtime this path is

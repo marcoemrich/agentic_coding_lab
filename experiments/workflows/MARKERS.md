@@ -12,8 +12,9 @@ silently zeros out the corresponding metric — runs still complete, but the
 RQ aggregation gets blind spots that look like "no effect" when really the
 signal vanished.
 
-Source of truth: `experiments/analyze_transcript.py` (CC/OC) and
-`experiments/parse_pi_transcript.py` (pi). If you change those
+Source of truth: `experiments/analyze_transcript.py` (CC/OC),
+`experiments/parse_pi_transcript.py` (pi), and
+`experiments/parse_cursor_transcript.py` (cursor). If you change those
 parsers, update this file.
 
 ## Hard requirements — Claude Code / OpenCode
@@ -75,7 +76,41 @@ Instead, it relies on **text markers** in assistant output and
   produces a tool call with `name: "subagent"` and `arguments.agent: "refactor"`,
   which the pi parser counts the same way CC counts `Task({subagent_type: "refactor"})`.
 
-## What is decorative (safe to drop)
+## Hard requirements — cursor harness
+
+cursor-agent runs like pi: skills are auto-loaded documents, not tool calls,
+and the model follows them "freihand". Cycle/prediction detection relies on
+the same **text markers** in assistant output. The one structural difference:
+cursor-agent has **no subagent tool**, so refactor runs inline and is detected
+as a `## Refactor` text marker (not a tool call). A **tool-sequence fallback**
+covers models that skip the text markers entirely.
+
+| # | Marker | Where it must appear | Drives | Where in parser |
+|---|---|---|---|---|
+| C1 | `## Red` heading in assistant text (not only reasoning) | Each occurrence counts as one red-phase cycle (`cycle_count`) | `parse_cursor_transcript.py` (`_PHASE_TEXT_MARKERS_RE`) |
+| C2 | `## Green` heading in assistant text | Green-phase occurrence | same as C1 |
+| C3 | `## Test List` heading in assistant text | Test-list phase occurrence | same as C1 |
+| C4 | `## Refactor` heading in assistant text | Each occurrence counts as `refactorings_applied` | `parse_cursor_transcript.py` (`_PHASE_TEXT_MARKERS_RE["refactor"]`) |
+| C5 | `Red Phase Complete:` + prediction lines | **Gates** prediction parsing (same as pi P5) | `extract_predictions_from_text` with `loose_gate=True` |
+| C6 | Lines matching `(Compilation\|Runtime) Prediction: ... (Correct\|Incorrect)` | `predictions_correct`, `predictions_total` | `_PREDICTION_OUTCOME_LINE_RE` |
+| C7 | `experiment-done.txt` containing `DONE` | Same as CC marker 4 | same |
+
+### cursor-specific notes
+
+- **Markers must appear in *assistant output text*, not only in reasoning.**
+  cursor-agent emits `thinking` events (private reasoning) separately from
+  `assistant` events. The parser reads only `assistant` text, so a `## Red`
+  that appears solely in a thinking block is not counted. The workflow prompt
+  states this explicitly.
+- **C4 replaces pi's P4 (subagent call).** cursor has no subagent tool;
+  refactor is an inline phase emitting `## Refactor`. `refactorings_applied`
+  therefore measures "refactor phase declared", not "isolated subagent ran" —
+  note this when comparing cursor to pi cross-harness.
+- **Tool-sequence fallback.** When zero `## Red` markers are found,
+  `parse_cursor_transcript.py` infers cycles from the `editToolCall` /
+  `shellToolCall` sequence (test-edit → `pnpm test` = red; impl-edit →
+  `pnpm test` = green; later impl-edit = refactor). `transcript-metrics.json`
+  records `marker_source: "tool-sequence-fallback"` when this path is used.
 
 - Emoji headers `🔴` / `🟢` / `🔄` / `📋`
 - The `Green Phase Complete:` / `Refactor Phase Complete:` strings (only
@@ -114,9 +149,10 @@ marker is broken — fix it before launching the n=3 batch.
 
 ## Cross-reference
 
-- Parsers: `experiments/analyze_transcript.py`, `experiments/parse_pi_transcript.py`
+- Parsers: `experiments/analyze_transcript.py`, `experiments/parse_pi_transcript.py`, `experiments/parse_cursor_transcript.py`
 - CC/OC workflows satisfying markers 1–4: `v3-basic-tdd`,
   `v4-exact-subagents`, `v5-exact-single-context`
 - pi workflows satisfying markers P1–P7: `v6.2-with-why-cleaned-pi`
+- cursor workflows satisfying markers C1–C7: `v6.2.1-phase-continuation-cursor`
 - Past compliance incidents documented in repo memory under
   *"Drei Metriken-Bugs"* and *"v4 Predictions-Compliance"*

@@ -47,11 +47,16 @@ NC='\033[0m'
 # versions (`opus` -> claude-opus-4-6, not 4.7). Pinning the full ID
 # guarantees we run the model we mean to run.
 MODEL_CONFIGS=(
-    # opus-4-8 and fable-5 are not yet on Portkey/Vertex — they run via the
-    # native Anthropic API. Launch their batches with the ANTHROPIC_BASE_URL/
-    # AUTH_TOKEN/CUSTOM_HEADERS env vars blanked so the .env Portkey routing is
-    # bypassed and the CLI falls back to ~/.claude/.credentials.json (native
-    # OAuth). Neither has a -portkey variant for the same reason.
+    # Native Anthropic models: cli_model is a bare `claude-*` ID (no vertex/,
+    # no @-provider, no -requesty/-portkey label). These are auto-detected as
+    # native by the CC-invocation branches below (case "$cli_model" in claude-*)
+    # and run with the container's Requesty env (ANTHROPIC_BASE_URL/AUTH_TOKEN/
+    # CUSTOM_HEADERS/DEFAULT_*_MODEL) blanked, so the CLI falls back to the
+    # mounted ~/.claude/.credentials.json (native OAuth) and hits the native
+    # Anthropic API at list price. Without the bypass the native alias would be
+    # sent to the Requesty route and 403 (see the opus-4-8-requesty note below).
+    "opus-5|claude-opus-5|true"
+    "opus-5-no-thinking|claude-opus-5|false"
     "opus-4-8|claude-opus-4-8|true"
     "opus-4-8-no-thinking|claude-opus-4-8|false"
     # opus-4-8 via Requesty (Anthropic /v1/messages path). cli_model carries
@@ -126,6 +131,15 @@ MODEL_CONFIGS=(
     "minimax-m3-no-thinking|pi-only|false"
     "deepseek-v4-pro-no-thinking|pi-only|false"
     "qwen3-235b-no-thinking|pi-only|false"
+    # cursor-agent-harness-only models — cli_model is a placeholder; the actual
+    # --model string is resolved in the cursor invocation branch via the
+    # cursor_model case-mapping below. Registered here only so plan validation
+    # (lookup_model_config) accepts them; harness is chosen from the workflow
+    # marker dir (.cursor/), not from the model. Reasoning effort is encoded in
+    # the cursor model id (-low/-medium/-high…), so thinking is always false.
+    "opus-cursor|cursor-only|false"
+    "composer-cursor|cursor-only|false"
+    "grok-cursor|cursor-only|false"
 )
 
 # ---------------------------------------------------------------------------
@@ -391,6 +405,24 @@ for entry in "${RUN_LIST[@]}"; do
     cfg="$(lookup_model_config "$model_name")"
     cli_model=$(echo "$cfg" | cut -d'|' -f2)
     thinking=$(echo "$cfg" | cut -d'|' -f3)
+    # Native Anthropic model? A bare claude-* cli_model routes to the native API
+    # via OAuth credentials, so the container's Requesty env must be blanked on
+    # the CC call (see MODEL_CONFIGS comment). vertex/…, @provider/…, and the
+    # oc-only/pi-only placeholders are NOT native.
+    case "$cli_model" in
+        claude-*) native_cc=true ;;
+        *)        native_cc=false ;;
+    esac
+    # env-prefix that blanks the container-global Requesty routing for native CC
+    # runs so the CLI falls back to mounted native OAuth credentials. Empty for
+    # non-native models (they keep the Requesty env from .env). Used as an array
+    # so it expands to nothing when non-native.
+    if [ "$native_cc" = true ]; then
+        cc_env=(env -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
+                    -u ANTHROPIC_DEFAULT_OPUS_MODEL -u ANTHROPIC_DEFAULT_SONNET_MODEL -u ANTHROPIC_DEFAULT_HAIKU_MODEL)
+    else
+        cc_env=()
+    fi
 
     current=$((current + 1))
     echo -e "${YELLOW}[$current/$total] $kata + $workflow + $model_name${NC}"
@@ -410,16 +442,19 @@ for entry in "${RUN_LIST[@]}"; do
     mkdir -p "$run_dir/src"
 
     # Detect harness from workflow definition. .pi/ marks a pi workflow,
-    # .opencode/ an OpenCode workflow, .claude/ a Claude Code workflow.
+    # .opencode/ an OpenCode workflow, .cursor/ a cursor-agent workflow,
+    # .claude/ a Claude Code workflow.
     # The marker dir is also the source of harness-specific config.
     if [ -d "$WORKFLOWS_DIR/$workflow/.pi" ]; then
         harness=pi
     elif [ -d "$WORKFLOWS_DIR/$workflow/.opencode" ]; then
         harness=opencode
+    elif [ -d "$WORKFLOWS_DIR/$workflow/.cursor" ]; then
+        harness=cursor
     elif [ -d "$WORKFLOWS_DIR/$workflow/.claude" ]; then
         harness=claude
     else
-        echo -e "  ${RED}ERROR: workflow $workflow has neither .claude/, .opencode/, nor .pi/${NC}"
+        echo -e "  ${RED}ERROR: workflow $workflow has neither .claude/, .opencode/, .cursor/, nor .pi/${NC}"
         failed_count=$((failed_count + 1))
         continue
     fi
@@ -446,6 +481,14 @@ for entry in "${RUN_LIST[@]}"; do
         cp -r "$WORKFLOWS_DIR/$workflow/.pi" "$run_dir/"
         [ -f "$WORKFLOWS_DIR/$workflow/.pi/AGENTS.md" ] && \
             cp "$WORKFLOWS_DIR/$workflow/.pi/AGENTS.md" "$run_dir/"
+    elif [ "$harness" = "cursor" ]; then
+        # Mirror .cursor/ into run_dir. cursor-agent reads AGENTS.md via cwd
+        # walk-up (same pattern as pi/opencode), and auto-loads project-local
+        # skills from .cursor/skills/. There is no subagent extension —
+        # refactor runs inline (see the workflow's AGENTS.md).
+        cp -r "$WORKFLOWS_DIR/$workflow/.cursor" "$run_dir/"
+        [ -f "$WORKFLOWS_DIR/$workflow/.cursor/AGENTS.md" ] && \
+            cp "$WORKFLOWS_DIR/$workflow/.cursor/AGENTS.md" "$run_dir/"
     fi
 
     # Copy kata prompt
@@ -762,14 +805,42 @@ EOF
                     > "$run_log" 2>&1
                 claude_exit=$?
             fi
+        elif [ "$harness" = "cursor" ]; then
+            # Lab-variant model name → cursor-agent --model format. Verified
+            # via smoke run 2026-07-26 (see research/questions-cursor-cli/).
+            # Reasoning effort is encoded in the model id (-medium = no-thinking
+            # baseline arm); composer-2.5 has no effort axis.
+            case "$model_name" in
+                opus-cursor)     cursor_model="claude-opus-4-8-medium" ;;
+                composer-cursor) cursor_model="composer-2.5" ;;
+                grok-cursor)     cursor_model="cursor-grok-4.5-medium" ;;
+                *) echo -e "  ${RED}ERROR: no cursor model mapping for $model_name${NC}"
+                   claude_exit=2
+                   cursor_model="" ;;
+            esac
+            if [ -n "$cursor_model" ]; then
+                # cursor-agent -p is non-interactive; --force allows tool use
+                # without prompts. --output-format stream-json emits the NDJSON
+                # event stream the parser reads. --workspace pins cwd to run_dir
+                # so edits land in the right place. Auth via CURSOR_API_KEY in
+                # the container env. Redirect to $run_log only (no tee) — the
+                # stream is verbose, same as the pi/opencode branches.
+                (cd "$run_dir" && \
+                    timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
+                    cursor-agent -p --force --output-format stream-json \
+                    --model "$cursor_model" --workspace "$run_dir" \
+                    "Read prompt.md and complete the exercise following the workflow rules in AGENTS.md. Continue autonomously through ALL tests in the test list until you have written experiment-done.txt with the single word DONE. Do NOT stop after a single passing test or cycle — keep going until every test is implemented.") \
+                    > "$run_log" 2>&1
+                claude_exit=$?
+            fi
         elif [ "$thinking" = "false" ]; then
-            (cd "$run_dir" && MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
+            (cd "$run_dir" && "${cc_env[@]}" MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
                 claude --dangerously-skip-permissions --strict-mcp-config --model "$cli_model" --print \
                 "Read prompt.md and complete the exercise following the workflow rules.") \
                 2>&1 | tee "$run_log"
             claude_exit=${PIPESTATUS[0]}
         else
-            (cd "$run_dir" && timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
+            (cd "$run_dir" && "${cc_env[@]}" timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
                 claude --dangerously-skip-permissions --strict-mcp-config --model "$cli_model" --print \
                 "Read prompt.md and complete the exercise following the workflow rules.") \
                 2>&1 | tee "$run_log"
@@ -873,6 +944,15 @@ EOF
         if [ -f "$run_log" ]; then
             grep -E '^\{"type":' "$run_log" > "$run_dir/transcript-pi.jsonl" 2>/dev/null || true
         fi
+    elif [ "$harness" = "cursor" ]; then
+        # cursor-agent --output-format stream-json writes the NDJSON event
+        # stream to stdout (redirected to $run_log). Extract the pure JSON
+        # lines into transcript-cursor.jsonl for parse_cursor_transcript.py.
+        # Without this branch cursor would fall through to save_transcript,
+        # which looks for a non-existent Claude project dir and warns.
+        if [ -f "$run_log" ]; then
+            grep -E '^\{"type":' "$run_log" > "$run_dir/transcript-cursor.jsonl" 2>/dev/null || true
+        fi
     else
         save_transcript "$run_dir"
     fi
@@ -890,12 +970,12 @@ EOF
         echo -e "  ${YELLOW}src/cli.ts missing — nudging agent to create it...${NC}"
         set +e
         if [ "$thinking" = "false" ]; then
-            (cd "$run_dir" && MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s 120 \
+            (cd "$run_dir" && "${cc_env[@]}" MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s 120 \
                 claude --dangerously-skip-permissions --strict-mcp-config --model "$cli_model" --print \
                 "The file src/cli.ts is missing. The prompt requires a CLI entry point at src/cli.ts that reads JSON from stdin and writes JSON to stdout. Create src/cli.ts now. It should import from your existing module and wire up stdin reading, processing, and stdout output.") \
                 2>&1 | tee -a "$run_log"
         else
-            (cd "$run_dir" && timeout --signal=TERM --kill-after=30s 120 \
+            (cd "$run_dir" && "${cc_env[@]}" timeout --signal=TERM --kill-after=30s 120 \
                 claude --dangerously-skip-permissions --strict-mcp-config --model "$cli_model" --print \
                 "The file src/cli.ts is missing. The prompt requires a CLI entry point at src/cli.ts that reads JSON from stdin and writes JSON to stdout. Create src/cli.ts now. It should import from your existing module and wire up stdin reading, processing, and stdout output.") \
                 2>&1 | tee -a "$run_log"
