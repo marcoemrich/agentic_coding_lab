@@ -4,6 +4,8 @@
 
 This file overrides human-in-the-loop requirements for automated experiment runs of the Pocock-style TDD skill.
 
+The skill under `.claude/skills/tdd/` is **not authored by this project**. It is vendored unmodified from [mattpocock/skills](https://github.com/mattpocock/skills) (path `skills/engineering/tdd/`, MIT-licensed, retrieved 2026-05-26) to serve as an external comparison baseline in RQ-pocock-vs-v62. Upstream has evolved since that date, so measurements here describe that specific snapshot — not the current upstream skill. The upstream license is preserved in `LICENSE.upstream` at the workflow root. This rules file is the only project-authored addition.
+
 When running experiments:
 
 - Do NOT wait for human approval between phases or before starting.
