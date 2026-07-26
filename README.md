@@ -743,26 +743,28 @@ sudo chown -R $(id -u):$(id -g) ../runs
 
 Each run is evaluated on metrics extracted from two sources: direct code analysis of generated files, and the AI-generated `experiment-summary.md`. All metrics live in `metrics.json` per run; the analysis pipeline (ESLint with `sonarjs/cognitive-complexity`, `max-depth`, etc.) runs inside the Docker batch container.
 
-The **Term (binding)** column gives the canonical name to use in `findings.md`, `summary.md`, and snapshots. These terms are binding — alternatives like "Code-Volumen", "Code-Gesamtvolumen", or "LoC-Größe" for `code_mass` are forbidden because they are ambiguous or collide with established definitions from the software-craftsmanship literature. When in doubt, cite the metric ID in backticks.
+The **Term (binding)** column gives the canonical name to use in `findings.md`, `summary.md`, and snapshots. These terms are binding — alternatives like "code volume", "total code size", or "LoC size" for `code_mass` are forbidden because they are ambiguous or collide with established definitions from the software-craftsmanship literature. When in doubt, cite the metric ID in backticks.
+
+These terms were German until 2026-07 (`Korrektheit (innen/außen)`, `Code-Mass (APP)`, `Smell-Summe`, `Produktiv-LoC`, `Spitzen-Komplexität`, `Test-LoC`, `Mutation-Score`). They are now English, and the retired German forms count as forbidden synonyms. Snapshots archived before that date still use them.
 
 ### Run outcomes
 
 | Metric | Term (binding) | Source | Description |
 |--------|----------------|--------|-------------|
 | `duration_seconds` | — | metrics.json | Wall-clock time for the complete task |
-| `tests_passing` | **Korrektheit (innen)** | test runner | Whether the implementer's own Vitest tests pass — the "inside view" of correctness |
-| `verification_pct` | **Korrektheit (außen)** | external acceptance suite | For CLI katas with a sibling `<basename>-verification/` directory: fraction of acceptance scenarios passed (0.0–1.0). The "outside view" of correctness — measured against scenarios the implementer did not see during the run. `null` for katas without a verification suite. |
+| `tests_passing` | **Correctness (internal)** | test runner | Whether the implementer's own Vitest tests pass — the "inside view" of correctness |
+| `verification_pct` | **Correctness (external)** | external acceptance suite | For CLI katas with a sibling `<basename>-verification/` directory: fraction of acceptance scenarios passed (0.0–1.0). The "outside view" of correctness — measured against scenarios the implementer did not see during the run. `null` for katas without a verification suite. |
 
 ### Code-quality metrics
 
 | Metric | Term (binding) | Source | Description |
 |--------|----------------|--------|-------------|
-| `code_mass` | **Code-Mass (APP)** | [`analyze-run.sh`](experiments/analyze-run.sh) | Weighted sum of code constructs (constants, invocations, conditionals, loops, assignments — heavier weights for higher-complexity constructs) following the *Absolute Priority Premise* by Micah Martin. Aims to compare implementations objectively beyond raw LoC. Lower = simpler. See [Code Cop blog](http://blog.code-cop.org/2016/08/absolute-priority-premise-example.html); original talk: [Micah Martin — *Absolute Priority Premise* (8LU, Vimeo)](https://vimeo.com/57851350). |
-| `mutation_score` | **Mutation-Score** | [Stryker](https://stryker-mutator.io/) + `@stryker-mutator/vitest-runner` | Fraction of mutants killed by the implementer's own Vitest tests (0.0–1.0, formula `(Killed + Timeout) / (Killed + Survived + Timeout + NoCoverage)`). Higher = the test suite genuinely exercises behavior, not just coverage. Computed **only** when an RQ lists `mutation_score` in `outcomes` and `tests_passing = true`; otherwise `null`. Driven by `experiments/compute-mutation-score.py` (separate from `analyze-run.sh`). |
-| `cc_loc` | **Produktiv-LoC** | [`analyze-run.sh`](experiments/analyze-run.sh) | Production LoC only, from the clean-code reporter (no tests) |
-| `test_lines` | **Test-LoC** | [`analyze-run.sh`](experiments/analyze-run.sh) | Vitest test code |
-| `smell_total` | **Smell-Summe** | [ESLint](https://eslint.org/) + [`eslint-plugin-sonarjs`](https://github.com/SonarSource/eslint-plugin-sonarjs) | Aggregated code-smell count. Sub-counters `smell_complexity`, `smell_duplication`, `smell_magic_numbers`, `smell_code_quality` group SonarJS rules (e.g. `no-duplicate-string`, `no-collapsible-if`) plus a few ESLint built-ins (`max-depth`, `max-lines-per-function`, `max-params`, `no-magic-numbers`, `no-unreachable`). |
-| `cc_longest_function` | **Spitzen-Komplexität** | [`analyze-run.sh`](experiments/analyze-run.sh) | Longest function in lines (complexity peak per run) |
+| `code_mass` | **Code Mass (APP)** | [`analyze-run.sh`](experiments/analyze-run.sh) | Weighted sum of code constructs (constants, invocations, conditionals, loops, assignments — heavier weights for higher-complexity constructs) following the *Absolute Priority Premise* by Micah Martin. Aims to compare implementations objectively beyond raw LoC. Lower = simpler. See [Code Cop blog](http://blog.code-cop.org/2016/08/absolute-priority-premise-example.html); original talk: [Micah Martin — *Absolute Priority Premise* (8LU, Vimeo)](https://vimeo.com/57851350). |
+| `mutation_score` | **Mutation Score** | [Stryker](https://stryker-mutator.io/) + `@stryker-mutator/vitest-runner` | Fraction of mutants killed by the implementer's own Vitest tests (0.0–1.0, formula `(Killed + Timeout) / (Killed + Survived + Timeout + NoCoverage)`). Higher = the test suite genuinely exercises behavior, not just coverage. Computed **only** when an RQ lists `mutation_score` in `outcomes` and `tests_passing = true`; otherwise `null`. Driven by `experiments/compute-mutation-score.py` (separate from `analyze-run.sh`). |
+| `cc_loc` | **Production LoC** | [`analyze-run.sh`](experiments/analyze-run.sh) | Production LoC only, from the clean-code reporter (no tests) |
+| `test_lines` | **Test LoC** | [`analyze-run.sh`](experiments/analyze-run.sh) | Vitest test code |
+| `smell_total` | **Smell Total** | [ESLint](https://eslint.org/) + [`eslint-plugin-sonarjs`](https://github.com/SonarSource/eslint-plugin-sonarjs) | Aggregated code-smell count. Sub-counters `smell_complexity`, `smell_duplication`, `smell_magic_numbers`, `smell_code_quality` group SonarJS rules (e.g. `no-duplicate-string`, `no-collapsible-if`) plus a few ESLint built-ins (`max-depth`, `max-lines-per-function`, `max-params`, `no-magic-numbers`, `no-unreachable`). |
+| `cc_longest_function` | **Complexity Peak** | [`analyze-run.sh`](experiments/analyze-run.sh) | Longest function in lines (complexity peak per run) |
 | `cc_avg_loc_per_function` | — | [`analyze-run.sh`](experiments/analyze-run.sh) | Mean function length in lines |
 | `cc_median_loc_per_function` | — | [`analyze-run.sh`](experiments/analyze-run.sh) | Median function length in lines (robust against single long outliers) |
 | `mccabe_max`, `mccabe_avg`, `mccabe_high_count` | — | ESLint [`complexity`](https://eslint.org/docs/latest/rules/complexity) rule | McCabe cyclomatic complexity per function — max, mean, and count of functions above the threshold. Concept: [Cyclomatic complexity (Wikipedia)](https://en.wikipedia.org/wiki/Cyclomatic_complexity); originally [McCabe 1976](https://www.literateprogramming.com/mccabe.pdf). |

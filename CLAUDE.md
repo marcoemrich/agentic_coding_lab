@@ -78,7 +78,8 @@ subtrees.
 - Overview table comes first (pivot of primary outcome).
 - **🏆-Pokale in der Übersichts-Tabelle sind Pflicht.** Sieger pro Spalte bekommen `**…** 🏆`; bei Ties alle. Metrik-Richtung im Header oder in der Tabellen-Beschreibung notieren (`kleiner = besser` / `höher = besser`). Volle Konvention (Spread-Schwelle, ambivalente Metriken ohne Pokal): `.claude/skills/run-rq/SKILL.md` Abschnitt "Trophy convention".
 - **Bei findings-Updates immer den `/run-rq` oder `/reanalyze` Skill nutzen** — die Skills tragen Trophy-Konvention, Spot-Check vor Aggregation, Plausibilitäts-Cross-Check und die "nie automatisch schreiben"-Regel. Wenn du Findings ad-hoc schreibst ohne Skill, übersiehst du diese Regeln (passiert reproduzierbar).
-- **Glossary terms from README are binding** — use the exact forms. "Code-Volumen" and "LoC-Groesse" are forbidden synonyms.
+- **Glossary terms from README are binding** — use the exact forms: Correctness (internal) / Correctness (external) / Code Mass (APP) / Smell Total / Production LoC / Complexity Peak / Test LoC / Mutation Score. "Code-Volumen" and "LoC-Groesse" are forbidden synonyms, as are the German forms these replaced in 2026-07 ("Korrektheit (innen/außen)", "Code-Mass", "Smell-Summe", "Produktiv-LoC", "Spitzen-Komplexität").
+- **Findings and RQ questions are written in English** (since 2026-07). The snapshot generator pulls `question:` fields and finding titles verbatim, so German in an RQ source file resurfaces in the published snapshot. Archived snapshots before that date stay German.
 - Open hypotheses live in the RQ's `README.md`, not in findings.md or separate files.
 
 ### Running batches

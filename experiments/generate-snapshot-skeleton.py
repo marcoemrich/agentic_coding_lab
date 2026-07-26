@@ -90,12 +90,12 @@ def parse_findings(findings_md: Path) -> list[dict]:
 # each dir name (e.g. "2.6-lean-validation") is an ordering label, NOT an id —
 # the stable identity is the frontmatter `id:`. Renumbering is a pure rename.
 RQ_TREES = [
-    ("questions-claude", "Forschungsfragen (Claude Code)"),
-    ("questions-opencode", "Forschungsfragen (OpenCode)"),
-    ("questions-pi", "Forschungsfragen (pi)"),
-    ("questions-cursor-cli", "Forschungsfragen (Cursor CLI)"),
-    ("questions-cross", "Forschungsfragen (Harness-übergreifend)"),
-    ("workflow-dev", "Workflow-Entwicklung"),
+    ("questions-claude", "Research Questions (Claude Code)"),
+    ("questions-opencode", "Research Questions (OpenCode)"),
+    ("questions-pi", "Research Questions (pi)"),
+    ("questions-cursor-cli", "Research Questions (Cursor CLI)"),
+    ("questions-cross", "Research Questions (cross-harness)"),
+    ("workflow-dev", "Workflow Development"),
 ]
 
 
@@ -175,73 +175,73 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     L: list[str] = []
     p = L.append
 
-    p(f"# Experiment-Overview: TDD-Workflows × Modelle × Prompt-Stile")
+    p(f"# Experiment Overview: TDD Workflows × Models × Prompt Styles")
     p("")
-    p(f"Stand: {today}. Datenbasis: `experiments/runs/` ({total} Runs gesamt).")
+    p(f"As of: {today}. Data basis: `experiments/runs/` ({total} runs total).")
     p("")
-    p("**Autor:** Marco Emrich (codecentric AG) — Mit-Initiator von "
-      "[EXACT Coding](https://www.linkedin.com/in/marco-emrich) gemeinsam mit "
+    p("**Author:** Marco Emrich (codecentric AG) — co-initiator of "
+      "[EXACT Coding](https://www.linkedin.com/in/marco-emrich) together with "
       "Ferdinand Ade.")
     p("")
     p("**Repository:** [github.com/marcoemrich/agentic_coding_lab]"
-      "(https://github.com/marcoemrich/agentic_coding_lab) — alle Skripte, "
-      "Workflow-Definitionen, Run-Artefakte und das Stylesheet sind dort "
-      "öffentlich versioniert.")
+      "(https://github.com/marcoemrich/agentic_coding_lab) — all scripts, "
+      "workflow definitions, run artifacts and the stylesheet are publicly "
+      "versioned there.")
     p("")
-    p("## Über die Studie")
+    p("## About the Study")
     p("")
-    p("<!-- TODO Claude: Zwei flowing-Absätze unter dieser H2. "
-      "(Absatz 1) Das Lab ist die empirische Validierungs-Plattform für **EXACT Coding** "
-      "(EXample-guided AI-Collaborative Test-driven Coding), Buch verlinken unter "
-      "<https://leanpub.com/exact-coding> (nie einen lokalen Manuskript-Pfad); "
-      "Workflow-Varianten als Spektrum Vibe-Coding (v1/v2) → EXACT (v4/v6) → Delayed-Refactor (v8). "
-      "(Absatz 2) Snapshot-Status: Zeitstand, Run-Anzahl, RQ-Anzahl, aktuelle Forschungs-Front "
-      "in beschreibender Form (nie Workflow-Versionsnamen wie v6.1 hier verwenden — Workflows sind "
-      "an dieser Stelle noch nicht eingeführt; stattdessen Mechanismus-Beschreibung wie "
-      "\"Hybrid-Workflow mit Skill-basiertem Red/Green im geteilten Kontext + isolierter "
-      "Refactor-Subagent\"), Hinweis auf ausgesparte workflow-dev-RQs falls Datenerhebung läuft. "
-      "Stilvorlage: research/_archive/findings-validation-2026-05-04/experiment-overview-v2.md. -->")
+    p("<!-- TODO Claude: Two flowing paragraphs under this H2, written in ENGLISH. "
+      "(Paragraph 1) The lab is the empirical validation platform for **EXACT Coding** "
+      "(EXample-guided AI-Collaborative Test-driven Coding); link the book at "
+      "<https://leanpub.com/exact-coding> (never a local manuscript path); "
+      "workflow variants as a spectrum vibe coding (v1/v2) → EXACT (v4/v6) → delayed refactor (v8). "
+      "(Paragraph 2) Snapshot status: date, run count, RQ count, current research front "
+      "in descriptive form (never use workflow version names like v6.1 here — workflows are "
+      "not yet introduced at this point; use a mechanism description instead, e.g. "
+      "\"hybrid workflow with skill-based red/green in shared context + isolated "
+      "refactor subagent\"), note any omitted workflow-dev RQs if data collection is ongoing. "
+      "Style reference: research/_archive/findings-validation-2026-05-04/experiment-overview-v2.md. -->")
     p("")
     p("### Scope")
     p("")
-    p("<!-- TODO Claude: Ein Absatz unter dieser H3. Drei-Achsen-Scope explizit nennen: "
-      "(1) Harness — ausschließlich **Claude-Code-CLI** (Version aus experiments/docker/Dockerfile "
-      "pinnen), headless ohne HITL; (2) Modelle — ausschließlich **Anthropic-Modelle** "
-      "(Opus, Sonnet, Haiku — mit/ohne Thinking, Direct-API und Portkey); (3) Zielsprache — "
-      "ausschließlich **TypeScript** mit festem pnpm/tsx/Vitest/ESLint+SonarJS-Stack pro Run. "
-      "Befunde gelten **für** diesen Stack; Transfer auf andere Tools (Cursor, Aider, Cline, "
-      "Windsurf), andere Provider (OpenAI, Google, lokale Modelle), andere Zielsprachen "
-      "(Python, Go, Java) oder HITL-Setups ist offen und außerhalb dieses Scopes. -->")
+    p("<!-- TODO Claude: One paragraph under this H3, written in ENGLISH. Name the three-axis scope "
+      "explicitly: (1) Harness — the agent CLIs actually used, with versions pinned from "
+      "experiments/docker/Dockerfile, headless without HITL; (2) Models — the model families "
+      "actually covered (Anthropic with/without thinking plus any third-party models routed "
+      "via the gateway); (3) Target language — exclusively **TypeScript** with a fixed "
+      "pnpm/tsx/Vitest/ESLint+SonarJS stack per run. "
+      "Findings hold **for** this stack; transfer to other target languages "
+      "(Python, Go, Java) or to interactive HITL setups is open and outside this scope. -->")
     p("")
-    p("### AI-Hinweis")
+    p("### AI Disclosure")
     p("")
-    p("Dieser Snapshot wurde mit der `/build-overview`-Skill in "
-      "**Claude Code** (Anthropic Opus 4.7) erstellt. Datengetriebene Sektionen — "
-      "RQ-Übersichts-Tabelle, Coverage-Werte, Finding-Listen pro RQ, Reproduzierbarkeits- "
-      "und Files-Tabelle — werden deterministisch aus "
-      "`research/{questions,workflow-dev}/*/{README,findings}.md` via "
-      "`experiments/generate-snapshot-skeleton.py` generiert. Synthese-Sektionen "
-      "(Intro, Per-RQ-Paragraphen, Cross-RQ-Synthese, Limitierungen) sind vom LLM "
-      "gedrafted und human-curated. Die Generierung ist damit vollständig "
-      "nachvollziehbar.")
+    p("This snapshot was produced with the `/build-overview` skill in "
+      "**Claude Code**. Data-driven sections — "
+      "the RQ overview table, coverage values, per-RQ finding lists, reproducibility "
+      "and files tables — are generated deterministically from "
+      "`research/{questions-*,workflow-dev}/*/{README,findings}.md` via "
+      "`experiments/generate-snapshot-skeleton.py`. Synthesis sections "
+      "(intro, per-RQ paragraphs, cross-RQ synthesis, limitations) are LLM-drafted "
+      "and human-curated. The generation is therefore fully "
+      "traceable.")
     p("")
-    p("## Hauptbefunde")
+    p("## Key Findings")
     p("")
-    p("<!-- TODO Claude: 3–5 nummerierte Befunde, die quer über die RQs den größten "
-      "Praxis-Wert haben. Pflicht-Form pro Befund: **Titel als bold-Satz.** danach "
-      "1–3 Sätze mit konkreten Zahlen (verification_pct, cognitive_max, Tokens) + "
-      "praktische Konsequenz. Verweise per §4/§5 statt URL. WICHTIG: Workflow-Versions"
-      "namen (v6.1-hybrid etc.) sind an dieser frühen Stelle noch nicht eingeführt — "
-      "stattdessen den Mechanismus beschreiben (z.B. \"Hybrid-Workflow mit Skill-"
-      "basiertem Red/Green im geteilten Kontext + isolierter Refactor-Subagent\" "
-      "statt \"v6.1-hybrid\"). Die Befunde sollen Praktikern eine 1-Minuten-Antwort "
-      "auf \"was nehme ich aus dieser Studie mit?\" geben. -->")
+    p("<!-- TODO Claude: 3–5 numbered findings with the greatest practical value across "
+      "the RQs, written in ENGLISH. Mandatory form per finding: **Title as a bold sentence.** then "
+      "1–3 sentences with concrete numbers (verification_pct, cognitive_max, tokens) + "
+      "a practical consequence. Cross-reference via §4/§5 rather than URLs. IMPORTANT: workflow version "
+      "names (v6.1-hybrid etc.) are not yet introduced at this early point — "
+      "describe the mechanism instead (e.g. \"hybrid workflow with skill-"
+      "based red/green in shared context + isolated refactor subagent\" "
+      "rather than \"v6.1-hybrid\"). The findings should give practitioners a one-minute answer "
+      "to \"what do I take away from this study?\". -->")
     p("")
     p("---")
     p("")
 
-    # 1. Forschungsfragen-Übersicht
-    p("## 1. Forschungsfragen-Übersicht")
+    # 1. Research questions overview
+    p("## 1. Research Questions Overview")
     p("")
     for tree_name, tree_label in RQ_TREES:
         tree_rqs = [r for r in rqs if r["tree"] == tree_name]
@@ -249,7 +249,7 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
             continue
         p(f"### {tree_label}")
         p("")
-        p("| Kap. | RQ | Frage | Status | Cells | Coverage | n Runs |")
+        p("| Ch. | RQ | Question | Status | Cells | Coverage | n Runs |")
         p("|---|---|---|---|---:|---:|---:|")
         for rq in tree_rqs:
             p(f"| {rq['chapter']} "
@@ -263,220 +263,220 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("---")
     p("")
 
-    # 2. Experiment-Design
-    p("## 2. Experiment-Design")
+    # 2. Experiment design
+    p("## 2. Experiment Design")
     p("")
-    p("### 2.1 Variablen")
+    p("### 2.1 Variables")
     p("")
-    p("**Workflow** — sechs Generationen (Details: `research/workflow-dev/workflow-construction.md` — Inventar):")
+    p("**Workflow** — six generations (details: `research/workflow-dev/workflow-construction.md` — inventory):")
     p("")
-    p("| Workflow | Aufbau | TDD-Strenge |")
+    p("| Workflow | Structure | TDD strictness |")
     p("|---|---|---|")
-    p("| v1-oneshot                              | \"Implementiere X.\" | keine |")
-    p("| v2-iterative                            | \"Plane Schritt für Schritt, dann implementiere.\" | keine |")
-    p("| v3-basic-tdd                            | Inline TDD, kein Skill/Subagent (Self-Reporting) | minimal |")
-    p("| v4-exact-subagents                      | Eigener Subagent pro Phase (Predictor + Red/Green/Refactor), fresh context | strikt, multi-context |")
-    p("| v4.1-testlist-scope-fix                 | v4 mit Test-List-Scope-Patch | strikt, multi-context |")
-    p("| v5-exact-single-context                 | Alle Phasen in einer Konversation, gleiches Phasen-Skript | strikt, single-context |")
-    p("| v5.1-testlist-scope-fix                 | v5 mit Test-List-Scope-Patch (an v4.1 angeglichen) | strikt, single-context |")
-    p("| v6-hybrid                               | Hybrid: inline TDD + nur Refactor als Subagent | strikt, hybrid |")
-    p("| v6.1-hybrid-testlist-scope-fix          | v6-hybrid mit Test-List-Scope-Patch (aktuelle Default-Basis) | strikt, hybrid |")
-    p("| v6.1-no-pep                             | v6.1 ohne Pep-Talks (RQ-pep-Replikation) | strikt, hybrid |")
-    p("| v7-hybrid-green-refactor                | Wie v6, aber green *und* refactor als Subagent | strikt, mehr Isolation |")
-    p("| v7.1-hybrid-green-refactor-testlist-scope-fix | v7 mit Test-List-Scope-Patch | strikt, mehr Isolation |")
-    p("| v8a-delayed-refactor-agent              | Oneshot → nachträgliche Tests → einmaliger End-Refactor-Agent (`refactor.md` aus v6.5.4) | delayed-refactor |")
-    p("| v8b-delayed-refactor-native             | Wie v8a, aber nativer Inline-Refactor im v3-Stil, kein Agent | delayed-refactor |")
+    p("| v1-oneshot                              | \"Implement X.\" | none |")
+    p("| v2-iterative                            | \"Plan step by step, then implement.\" | none |")
+    p("| v3-basic-tdd                            | Inline TDD, no skill/subagent (self-reporting) | minimal |")
+    p("| v4-exact-subagents                      | Dedicated subagent per phase (predictor + red/green/refactor), fresh context | strict, multi-context |")
+    p("| v4.1-testlist-scope-fix                 | v4 with test-list scope patch | strict, multi-context |")
+    p("| v5-exact-single-context                 | All phases in one conversation, same phase script | strict, single-context |")
+    p("| v5.1-testlist-scope-fix                 | v5 with test-list scope patch (aligned with v4.1) | strict, single-context |")
+    p("| v6-hybrid                               | Hybrid: inline TDD + only refactor as subagent | strict, hybrid |")
+    p("| v6.1-hybrid-testlist-scope-fix          | v6-hybrid with test-list scope patch (current default base) | strict, hybrid |")
+    p("| v6.1-no-pep                             | v6.1 without pep talks (RQ-pep replication) | strict, hybrid |")
+    p("| v7-hybrid-green-refactor                | Like v6, but green *and* refactor as subagent | strict, more isolation |")
+    p("| v7.1-hybrid-green-refactor-testlist-scope-fix | v7 with test-list scope patch | strict, more isolation |")
+    p("| v8a-delayed-refactor-agent              | Oneshot → tests added afterwards → single end-refactor agent (`refactor.md` from v6.5.4) | delayed-refactor |")
+    p("| v8b-delayed-refactor-native             | Like v8a, but native inline refactor in v3 style, no agent | delayed-refactor |")
     p("")
-    p("Konfiguration: `experiments/workflows/<variant>/.claude/agents/` und `.claude/rules/`. "
-      "Archivierte Varianten (v5.1-minimized, v6.2–v6.6, v6.5.x-Audits) liegen unter `experiments/workflows/_archive/`.")
+    p("Configuration: `experiments/workflows/<variant>/.claude/agents/` and `.claude/rules/`. "
+      "Archived variants (v5.1-minimized, v6.2–v6.6, v6.5.x audits) live under `experiments/workflows/_archive/`.")
     p("")
-    p("**Workflow-Mechanik im Detail.** Die sechs Generationen sind nicht nur eine Skala "
-      "\"mehr/weniger TDD\", sondern eine systematische Variation der EXACT-Coding-Bausteine "
-      "(Test-Liste, Red, Green, Refactor) und ihrer Kontext-Architektur:")
+    p("**Workflow mechanics in detail.** The six generations are not merely a scale of "
+      "\"more/less TDD\", but a systematic variation of the EXACT Coding building blocks "
+      "(test list, red, green, refactor) and their context architecture:")
     p("")
-    p("- **v1-oneshot / v2-iterative — Vibe-Coding-Baselines (kein TDD).** Ein einzelner Agent liest "
-      "die Anforderungen und schreibt Code in einem Schritt (v1) oder mit explizitem Plan/Checkliste (v2); "
-      "Tests werden erst nachträglich auf Basis des Example Mappings hinzugefügt. Dient als Messlatte "
-      "für den Wert von TDD selbst (siehe `experiments/workflows/v1-oneshot/.claude/rules/experiment-mode.md`).")
-    p("- **v3-basic-tdd — Minimal-TDD ohne Struktur.** Ein einziger Agent mit minimaler Anweisung "
-      "\"use TDD\" — keine Phasen-Prompts, keine Subagents. Claude entscheidet selbst, wie es den "
-      "TDD-Prozess strukturiert. Misst, wie weit eine reine Aufforderung trägt "
+    p("- **v1-oneshot / v2-iterative — vibe-coding baselines (no TDD).** A single agent reads "
+      "the requirements and writes code in one step (v1) or with an explicit plan/checklist (v2); "
+      "tests are only added afterwards based on the example mapping. Serves as the yardstick "
+      "for the value of TDD itself (see `experiments/workflows/v1-oneshot/.claude/rules/experiment-mode.md`).")
+    p("- **v3-basic-tdd — minimal TDD without structure.** A single agent with the minimal instruction "
+      "\"use TDD\" — no phase prompts, no subagents. Claude decides on its own how to structure the "
+      "TDD process. Measures how far a bare request carries "
       "(`v3-basic-tdd/.claude/rules/experiment-mode.md`).")
-    p("- **v4-exact-subagents / v4.1-testlist-scope-fix — Strict TDD, multi-context.** Jede TDD-Phase "
-      "läuft als spezialisierter Subagent in **isoliertem Kontext** (`Task(subagent_type: \"red\")` etc.): "
-      "`test-list` → `red` → `green` → `refactor`. Hypothese: isolierte Kontexte erzwingen Disziplin, "
-      "können aber Zustand zwischen Phasen verlieren. v4.1 ergänzt im `test-list`-Subagent die Pflicht "
-      "\"Cover every spec example\" — schließt den dominanten Failure-Mode auf novel Katas "
-      "(unvollständige Test-Liste) auf Opus 4.7.")
-    p("- **v5-exact-single-context / v5.1-testlist-scope-fix — Strict TDD, single-context.** Identisches "
-      "Phasen-Skript wie v4, aber alle Phasen laufen im **gleichen Kontext** als Skill-Calls "
-      "(`Skill(skill: \"red\")` etc.) statt als Subagents. Hypothese: shared context erhält den Zustand, "
-      "kann aber zu Disziplin-Verlust führen. v5.1 spiegelt v4.1 mit dem identischen Test-List-Scope-Patch.")
-    p("- **v6-hybrid / v6.1-hybrid-testlist-scope-fix — Hybrid mit isoliertem Refactor.** Red und Green "
-      "laufen inline als Skills im Shared-Context (wie v5), Refactor läuft als isolierter Subagent (wie v4). "
-      "Hypothese: kombiniert die Spec-Kohärenz des Single-Context mit der Disziplin-Schärfung der "
-      "Subagent-Isolation am kritischsten Punkt (Refactor). v6.1 ist die aktuelle Default-Basis und "
-      "Champion über mehrere RQs. `v6.1-no-pep` testet die Reduktion psychologischer Begründungen in Red/Green.")
-    p("- **v7-hybrid-green-refactor / v7.1-…-testlist-scope-fix — Hybrid mit isoliertem Green + Refactor.** "
-      "Zusätzlich zur Refactor-Isolation aus v6 läuft auch Green als isolierter Subagent. Test-Liste und Red "
-      "bleiben im Shared-Context. Prüft, ob mehr Isolation gleich besser ist (Pareto-dominiert von v6 auf "
-      "game-of-life: spart Tokens, verliert Qualität und Korrektheit).")
-    p("- **v8a-delayed-refactor-agent / v8b-delayed-refactor-native — Delayed-Refactor-Kontrolle.** "
-      "Drei sequentielle Phasen ohne TDD-Cycles: (1) Oneshot-Implementation, (2) nachträgliche Tests gegen "
-      "`prompt.md` mit Coverage-Pflicht, (3) ein einmaliger End-Refactor. v8a nutzt den `refactor.md`-Subagent "
-      "aus v6.5.4 (APP + Naming + Mandatory-Attempt), v8b einen nativen Inline-Refactor im v3-Stil ohne Agent. "
-      "Dient als Kontroll-Achse für die Hypothese \"periodisches TDD-Refactor schlägt End-Refactor nach "
-      "Vibe-Coding\".")
+    p("- **v4-exact-subagents / v4.1-testlist-scope-fix — strict TDD, multi-context.** Every TDD phase "
+      "runs as a specialized subagent in an **isolated context** (`Task(subagent_type: \"red\")` etc.): "
+      "`test-list` → `red` → `green` → `refactor`. Hypothesis: isolated contexts enforce discipline, "
+      "but can lose state between phases. v4.1 adds to the `test-list` subagent the obligation "
+      "\"Cover every spec example\" — closing the dominant failure mode on novel katas "
+      "(incomplete test list) on Opus 4.7.")
+    p("- **v5-exact-single-context / v5.1-testlist-scope-fix — strict TDD, single-context.** Identical "
+      "phase script to v4, but all phases run in the **same context** as skill calls "
+      "(`Skill(skill: \"red\")` etc.) instead of subagents. Hypothesis: shared context preserves state, "
+      "but can lead to loss of discipline. v5.1 mirrors v4.1 with the identical test-list scope patch.")
+    p("- **v6-hybrid / v6.1-hybrid-testlist-scope-fix — hybrid with isolated refactor.** Red and green "
+      "run inline as skills in the shared context (like v5), refactor runs as an isolated subagent (like v4). "
+      "Hypothesis: combines the spec coherence of the single context with the discipline sharpening of "
+      "subagent isolation at the most critical point (refactor). v6.1 is the current default base and "
+      "champion across several RQs. `v6.1-no-pep` tests removing psychological rationales in red/green.")
+    p("- **v7-hybrid-green-refactor / v7.1-…-testlist-scope-fix — hybrid with isolated green + refactor.** "
+      "In addition to the refactor isolation from v6, green also runs as an isolated subagent. Test list and red "
+      "remain in the shared context. Tests whether more isolation is automatically better (Pareto-dominated by v6 on "
+      "game-of-life: saves tokens, loses quality and correctness).")
+    p("- **v8a-delayed-refactor-agent / v8b-delayed-refactor-native — delayed-refactor control.** "
+      "Three sequential phases without TDD cycles: (1) oneshot implementation, (2) tests added afterwards against "
+      "`prompt.md` with a coverage obligation, (3) a single end refactor. v8a uses the `refactor.md` subagent "
+      "from v6.5.4 (APP + naming + mandatory attempt), v8b a native inline refactor in v3 style without an agent. "
+      "Serves as the control axis for the hypothesis \"periodic TDD refactor beats end refactor after "
+      "vibe coding\".")
     p("")
-    p("Tiefere Mechanik-Diskussion, Inventar der aktiven v6.1-Reduktionslinie und tragende RQ-Befunde "
-      "stehen in `research/workflow-dev/workflow-construction.md`. Welche Marker das Parsing der "
-      "TDD-Metriken treibt, dokumentiert `experiments/workflows/MARKERS.md`. Die archivierte "
-      "v6.5.x-Linie liegt in `experiments/workflows/_archive/` und `research/_archive/workflow-dev-v1/`.")
+    p("Deeper mechanics discussion, the inventory of the active v6.1 reduction line and the load-bearing RQ findings "
+      "are in `research/workflow-dev/workflow-construction.md`. Which markers drive the parsing of the "
+      "TDD metrics is documented in `experiments/workflows/MARKERS.md`. The archived "
+      "v6.5.x line lives in `experiments/workflows/_archive/` and `research/_archive/workflow-dev-v1/`.")
     p("")
-    p("**Modell × Thinking** (Lab-Varianten-IDs aus `MODEL_CONFIGS` in `experiments/docker/run-batch.sh`):")
+    p("**Model × thinking** (lab variant IDs from `MODEL_CONFIGS` in `experiments/docker/run-batch.sh`):")
     p("")
-    p("| Lab-Varianten-ID | API-ID | Thinking | Routing |")
+    p("| Lab variant ID | API ID | Thinking | Routing |")
     p("|---|---|---|---|")
     p("| `opus-4-7`                       | `claude-opus-4-7`                              | Adaptive | Direct |")
-    p("| `opus-4-7-no-thinking`           | `claude-opus-4-7`                              | aus      | Direct |")
+    p("| `opus-4-7-no-thinking`           | `claude-opus-4-7`                              | off      | Direct |")
     p("| `sonnet-4-6`                     | `claude-sonnet-4-6`                            | Extended | Direct |")
-    p("| `sonnet-4-6-no-thinking`         | `claude-sonnet-4-6`                            | aus      | Direct |")
+    p("| `sonnet-4-6-no-thinking`         | `claude-sonnet-4-6`                            | off      | Direct |")
     p("| `haiku-4-5`                      | `claude-haiku-4-5-20251001`                    | Extended | Direct |")
-    p("| `haiku-4-5-no-thinking`          | `claude-haiku-4-5-20251001`                    | aus      | Direct |")
+    p("| `haiku-4-5-no-thinking`          | `claude-haiku-4-5-20251001`                    | off      | Direct |")
     p("| `opus-4-7-portkey`               | `@vertex-eu-global/anthropic.claude-opus-4-7`  | Adaptive | Portkey |")
-    p("| `opus-4-7-portkey-no-thinking`   | `@vertex-eu-global/anthropic.claude-opus-4-7`  | aus      | Portkey |")
+    p("| `opus-4-7-portkey-no-thinking`   | `@vertex-eu-global/anthropic.claude-opus-4-7`  | off      | Portkey |")
     p("| `opus-4-6-portkey`               | `@vertex-ai/anthropic.claude-opus-4-6`         | Adaptive | Portkey |")
-    p("| `opus-4-6-portkey-no-thinking`   | `@vertex-ai/anthropic.claude-opus-4-6`         | aus      | Portkey |")
+    p("| `opus-4-6-portkey-no-thinking`   | `@vertex-ai/anthropic.claude-opus-4-6`         | off      | Portkey |")
     p("| `sonnet-4-6-portkey`             | `@vertex-ai/anthropic.claude-sonnet-4-6`       | Extended | Portkey |")
-    p("| `sonnet-4-6-portkey-no-thinking` | `@vertex-ai/anthropic.claude-sonnet-4-6`       | aus      | Portkey |")
+    p("| `sonnet-4-6-portkey-no-thinking` | `@vertex-ai/anthropic.claude-sonnet-4-6`       | off      | Portkey |")
     p("| `haiku-4-5-portkey`              | `@vertex-ai/anthropic.claude-haiku-4-5@20251001` | Extended | Portkey |")
-    p("| `haiku-4-5-portkey-no-thinking`  | `@vertex-ai/anthropic.claude-haiku-4-5@20251001` | aus      | Portkey |")
+    p("| `haiku-4-5-portkey-no-thinking`  | `@vertex-ai/anthropic.claude-haiku-4-5@20251001` | off      | Portkey |")
     p("")
-    p("Direct- und Portkey-Routings desselben Modells sind getrennte Varianten und werden nur per "
-      "expliziter `controls.model: {any: [...]}`-Klausel pro RQ als gemeinsame Zelle gewertet.")
+    p("Direct and Portkey routings of the same model are separate variants and only count as a shared cell "
+      "via an explicit `controls.model: {any: [...]}` clause per RQ.")
     p("")
-    p("**Kata × Prompt-Stil** (aktive Katas in `experiments/katas/`):")
+    p("**Kata × prompt style** (active katas in `experiments/katas/`):")
     p("")
-    p("| Kata-Basis | Prompt-Stile | Verifikations-Suite | Hinweis |")
+    p("| Kata base | Prompt styles | Verification suite | Note |")
     p("|---|---|---|---|")
-    p("| game-of-life      | prose, example-mapping, user-story | nein  | Code-Qualität, groß (~40 LoC), vitest-basiert |")
-    p("| game-of-life-cli  | prose, example-mapping, user-story | ja    | CLI-Variante mit externer Akzeptanz-Suite |")
-    p("| mars-rover        | prose, example-mapping, user-story | nein  | mittel (~30 LoC), vitest-basiert |")
-    p("| claim-office      | prose, example-mapping, user-story | ja    | Korrektheit, novel Versicherungs-Domäne (HPSMV/MHPCO), 15 Szenarien |")
-    p("| claim-office-lite | prose, example-mapping, user-story | ja    | Reduzierte claim-office-Variante (10 Szenarien) für Code-Qualitäts-Research |")
+    p("| game-of-life      | prose, example-mapping, user-story | no   | Code quality, large (~40 LoC), vitest-based |")
+    p("| game-of-life-cli  | prose, example-mapping, user-story | yes  | CLI variant with external acceptance suite |")
+    p("| mars-rover        | prose, example-mapping, user-story | no   | medium (~30 LoC), vitest-based |")
+    p("| claim-office      | prose, example-mapping, user-story | yes  | Correctness, novel insurance domain (HPSMV/MHPCO), 15 scenarios |")
+    p("| claim-office-lite | prose, example-mapping, user-story | yes  | Reduced claim-office variant (10 scenarios) for code-quality research |")
     p("")
-    p("Prompt-Stile:")
-    p("- **prose**: Beschreibung der Regeln in Prosa, keine Test-Beispiele.")
-    p("- **example-mapping**: Regel + 1–3 konkrete Input/Output-Beispiele pro Regel.")
-    p("- **user-story**: \"Als X möchte ich Y, damit Z\" — Beschreibung ohne Beispiele.")
+    p("Prompt styles:")
+    p("- **prose**: description of the rules in prose, no test examples.")
+    p("- **example-mapping**: rule + 1–3 concrete input/output examples per rule.")
+    p("- **user-story**: \"As X I want Y so that Z\" — description without examples.")
     p("")
-    p("### 2.2 Workflow → Prompt-Mapping")
+    p("### 2.2 Workflow → prompt mapping")
     p("")
-    p("Aus methodischer Symmetrie (siehe Top-`README.md`, Abschnitt 'Methodology constraints'):")
+    p("For methodological symmetry (see top-level `README.md`, section 'Methodology constraints'):")
     p("")
-    p("| Workflow | erlaubte Prompt-Stile | Begründung |")
+    p("| Workflow | Allowed prompt styles | Rationale |")
     p("|---|---|---|")
-    p("| v1, v2 | nur prose | Test-Beispiele in example-mapping wären für Non-TDD-Workflows ein verstecktes Test-Geschenk → unfair gegenüber den TDD-Workflows. |")
-    p("| v3, v4(.1), v5(.1), v6(.1), v7(.1), v8a/b | alle drei | Beispiele dienen als natürliche Test-Cases — für TDD-/Refactor-Workflows ist das das Idealbild der Aufgabe. |")
+    p("| v1, v2 | prose only | Test examples in example-mapping would be a hidden test gift for non-TDD workflows → unfair towards the TDD workflows. |")
+    p("| v3, v4(.1), v5(.1), v6(.1), v7(.1), v8a/b | all three | Examples serve as natural test cases — for TDD/refactor workflows that is the ideal form of the task. |")
     p("")
     p("---")
     p("")
 
-    # 3. Methodik
-    p("## 3. Methodik")
+    # 3. Methodology
+    p("## 3. Methodology")
     p("")
-    p("<!-- TODO Claude: prüfen ob noch aktuell gegen experiments/docker/Dockerfile, "
-      "experiments/analyze-run.sh, experiments/aggregate-by-query.py. Falls "
-      "Pipeline unverändert seit dem v2-Snapshot, kann dieser Block 1:1 "
-      "übernommen werden. -->")
+    p("<!-- TODO Claude: check whether this is still current against experiments/docker/Dockerfile, "
+      "experiments/analyze-run.sh, experiments/aggregate-by-query.py. If the "
+      "pipeline is unchanged since the v2 snapshot, this block can be carried over "
+      "verbatim. Write in ENGLISH. -->")
     p("")
-    p("### 3.1 Run-Pipeline")
+    p("### 3.1 Run pipeline")
     p("")
-    p("1. Container-Image `docker-batch` (Node 22 slim, claude-code 2.1.170 / opencode 1.15.10 / pi 0.81.1 / cursor-agent gepinnt) wird gestartet.")
-    p("2. Run-Dir `runs/<timestamp>_<kata>_<workflow>_<model>/` wird angelegt; Workflow-Konfig (`.claude/agents/`, `.claude/rules/`) und Kata-Prompt (`prompt.md`) hinein kopiert.")
-    p("3. pnpm-Workspace mit TypeScript, Vitest, ESLint+SonarJS aufgesetzt.")
-    p("4. `claude --print \"$(< prompt.md)\"` läuft headless, ohne HITL.")
-    p("5. `analyze-run.sh` schreibt `metrics.json` und `analysis-report.md`.")
-    p("6. `aggregate-by-query.py <RQ>/` baut `runs.csv` und `summary.md` pro RQ.")
+    p("1. Container image `docker-batch` (Node 22 slim, claude-code 2.1.170 / opencode 1.15.10 / pi 0.81.1 / cursor-agent pinned) is started.")
+    p("2. Run dir `runs/<timestamp>_<kata>_<workflow>_<model>/` is created; workflow config (`.claude/agents/`, `.claude/rules/`) and kata prompt (`prompt.md`) are copied into it.")
+    p("3. pnpm workspace set up with TypeScript, Vitest, ESLint+SonarJS.")
+    p("4. `claude --print \"$(< prompt.md)\"` runs headless, without HITL.")
+    p("5. `analyze-run.sh` writes `metrics.json` and `analysis-report.md`.")
+    p("6. `aggregate-by-query.py <RQ>/` builds `runs.csv` and `summary.md` per RQ.")
     p("")
-    p("### 3.2 Erfasste Metriken")
+    p("### 3.2 Collected metrics")
     p("")
-    p("Verbindliche Termini (Spalte \"Term\") sind im Top-`README.md` definiert — "
-      "alternative Synonyme sind verboten, weil sie kollidieren oder mehrdeutig sind. "
-      "Volle Metrik-Tabelle inklusive externer Referenzen (Stryker, SonarJS, McCabe-Paper "
-      "etc.) im README Abschnitt \"Metrics\".")
+    p("Binding terms (column \"Term\") are defined in the top-level `README.md` — "
+      "alternative synonyms are forbidden because they collide or are ambiguous. "
+      "Full metric table including external references (Stryker, SonarJS, McCabe paper "
+      "etc.) in the README section \"Metrics\".")
     p("")
-    p("**Korrektheit**")
+    p("**Correctness**")
     p("")
-    p("| Metrik | Term | Was misst es | Richtung |")
+    p("| Metric | Term | What it measures | Direction |")
     p("|---|---|---|---|")
-    p("| `tests_passing` | Korrektheit (innen) | Boolean: laufen die vom Agenten geschriebenen Vitest-Tests am Ende des Runs grün? | `true` = besser |")
-    p("| `verification_pct` | Korrektheit (außen) | Anteil bestandener Verifikations-Szenarien aus einer externen Acceptance-Suite, die der Agent nie zu sehen bekommt (0.0–1.0). Nur für CLI-Katas mit `<basename>-verification/`-Verzeichnis. | höher = besser |")
+    p("| `tests_passing` | Correctness (internal) | Boolean: do the Vitest tests written by the agent pass at the end of the run? | `true` = better |")
+    p("| `verification_pct` | Correctness (external) | Share of passed verification scenarios from an external acceptance suite the agent never gets to see (0.0–1.0). Only for CLI katas with a `<basename>-verification/` directory. | higher = better |")
     p("")
-    p("**Effizienz**")
+    p("**Efficiency**")
     p("")
-    p("| Metrik | Term | Was misst es | Richtung |")
+    p("| Metric | Term | What it measures | Direction |")
     p("|---|---|---|---|")
-    p("| `duration_seconds` | — | Wallclock-Sekunden des `claude --print`-Runs inkl. aller Subagent-Spawns | kleiner = besser |")
-    p("| `total_tokens` | — | Summe aller Tokens (Input + Output + Cache) über alle Subagent-Spawns hinweg | kleiner = besser |")
-    p("| `context_utilization_pct` | — | Finale Context-Window-Auslastung im Main-Context, in Prozent | informativ |")
+    p("| `duration_seconds` | — | Wallclock seconds of the `claude --print` run including all subagent spawns | lower = better |")
+    p("| `total_tokens` | — | Sum of all tokens (input + output + cache) across all subagent spawns | lower = better |")
+    p("| `context_utilization_pct` | — | Final context-window utilization in the main context, in percent | informative |")
     p("")
-    p("**Code-Mass & Umfang**")
+    p("**Code Mass & size**")
     p("")
-    p("| Metrik | Term | Was misst es | Richtung |")
+    p("| Metric | Term | What it measures | Direction |")
     p("|---|---|---|---|")
-    p("| `code_mass` | Code-Mass (APP) | Gewichtete Summe der Produktiv-Code-Konstrukte (Konstanten, Invocations, Conditionals, Loops, Assignments — gestaffelte Gewichte nach Komplexität) gemäß *Absolute Priority Premise* (Micah Martin). Vergleicht Implementationen objektiver als reine LoC. | kleiner = besser |")
-    p("| `cc_loc` | Produktiv-LoC | Produktiv-LoC ohne Tests, aus dem Clean-Code-Reporter | kleiner = besser (bei gleicher Korrektheit) |")
-    p("| `test_lines` | Test-LoC | Anzahl Zeilen Test-Code (Vitest) | informativ |")
-    p("| `tests_total` | — | Anzahl vom Agenten geschriebener Tests | informativ |")
+    p("| `code_mass` | Code Mass (APP) | Weighted sum of production-code constructs (constants, invocations, conditionals, loops, assignments — graded weights by complexity) per the *Absolute Priority Premise* (Micah Martin). Compares implementations more objectively than raw LoC. | lower = better |")
+    p("| `cc_loc` | Production LoC | Production LoC excluding tests, from the clean-code reporter | lower = better (at equal correctness) |")
+    p("| `test_lines` | Test LoC | Number of lines of test code (Vitest) | informative |")
+    p("| `tests_total` | — | Number of tests written by the agent | informative |")
     p("")
-    p("**Code-Qualität (ESLint + SonarJS)**")
+    p("**Code quality (ESLint + SonarJS)**")
     p("")
-    p("| Metrik | Term | Was misst es | Richtung |")
+    p("| Metric | Term | What it measures | Direction |")
     p("|---|---|---|---|")
-    p("| `cc_longest_function` | Spitzen-Komplexität | Längste Funktion in Zeilen — Proxy für die schlechteste Stelle im Code | kleiner = besser |")
-    p("| `cc_avg_loc_per_function` | — | Mittlere Funktionsgröße in Zeilen | kleiner = besser |")
-    p("| `cc_median_loc_per_function` | — | Median-Funktionsgröße (robust gegen einzelne lange Outlier) | kleiner = besser |")
-    p("| `cc_functions` | — | Anzahl Funktionen | informativ |")
-    p("| `mccabe_max` / `mccabe_avg` / `mccabe_high_count` | — | McCabe Cyclomatic Complexity pro Funktion: Maximum, Mittel, Anzahl über Schwellwert. Klassische Verzweigungs-Metrik. | kleiner = besser |")
-    p("| `cognitive_max` / `cognitive_avg` / `cognitive_high_count` | — | SonarSource Cognitive Complexity pro Funktion: gewichtet Nesting und Control-Flow-Breaks stärker als McCabe, näher an menschlich wahrgenommener Komplexität. Diagnostisch tragende Hauptmetrik dieser Studie. | kleiner = besser |")
-    p("| `smell_total` | Smell-Summe | Aggregierte Anzahl ESLint+SonarJS-Verstöße über alle Regeln | kleiner = besser |")
-    p("| `smell_complexity` | — | Subset von `smell_total`: cognitive-complexity, max-depth, max-lines-per-function, max-params, no-nested-switch | kleiner = besser |")
-    p("| `smell_magic_numbers` | — | Subset: ESLint `no-magic-numbers`-Verstöße | kleiner = besser |")
-    p("| `smell_duplication` | — | Subset: SonarJS `no-duplicate-string` und verwandte Duplikations-Regeln | kleiner = besser |")
-    p("| `smell_code_quality` | — | Subset: SonarJS `no-collapsible-if`, `no-redundant-jump` etc., plus ESLint `no-unreachable` | kleiner = besser |")
-    p("| `coverage_statements_pct` | — | Statement-Coverage der vom Agenten geschriebenen Tests (in %) | höher = besser |")
-    p("| `coverage_branches_pct` | — | Branch-Coverage der vom Agenten geschriebenen Tests (in %) | höher = besser |")
+    p("| `cc_longest_function` | Complexity Peak | Longest function in lines — proxy for the worst spot in the code | lower = better |")
+    p("| `cc_avg_loc_per_function` | — | Mean function size in lines | lower = better |")
+    p("| `cc_median_loc_per_function` | — | Median function size (robust against single long outliers) | lower = better |")
+    p("| `cc_functions` | — | Number of functions | informative |")
+    p("| `mccabe_max` / `mccabe_avg` / `mccabe_high_count` | — | McCabe cyclomatic complexity per function: maximum, mean, count above threshold. Classic branching metric. | lower = better |")
+    p("| `cognitive_max` / `cognitive_avg` / `cognitive_high_count` | — | SonarSource cognitive complexity per function: weights nesting and control-flow breaks more heavily than McCabe, closer to humanly perceived complexity. The diagnostically load-bearing main metric of this study. | lower = better |")
+    p("| `smell_total` | Smell Total | Aggregated number of ESLint+SonarJS violations across all rules | lower = better |")
+    p("| `smell_complexity` | — | Subset of `smell_total`: cognitive-complexity, max-depth, max-lines-per-function, max-params, no-nested-switch | lower = better |")
+    p("| `smell_magic_numbers` | — | Subset: ESLint `no-magic-numbers` violations | lower = better |")
+    p("| `smell_duplication` | — | Subset: SonarJS `no-duplicate-string` and related duplication rules | lower = better |")
+    p("| `smell_code_quality` | — | Subset: SonarJS `no-collapsible-if`, `no-redundant-jump` etc., plus ESLint `no-unreachable` | lower = better |")
+    p("| `coverage_statements_pct` | — | Statement coverage of the tests written by the agent (in %) | higher = better |")
+    p("| `coverage_branches_pct` | — | Branch coverage of the tests written by the agent (in %) | higher = better |")
     p("")
-    p("**Test-Stärke**")
+    p("**Test strength**")
     p("")
-    p("| Metrik | Term | Was misst es | Richtung |")
+    p("| Metric | Term | What it measures | Direction |")
     p("|---|---|---|---|")
-    p("| `mutation_score` | Mutation-Score | Anteil der Stryker-Mutanten, die von der Test-Suite des Agenten gekillt werden (0.0–1.0): `(Killed + Timeout) / (Killed + Survived + Timeout + NoCoverage)`. Hidden Metric — kommt in keinem Workflow-Prompt vor, daher Goodhart-resistent. Opt-in per RQ, nur für `tests_passing = true`. | höher = besser |")
+    p("| `mutation_score` | Mutation Score | Share of Stryker mutants killed by the agent's test suite (0.0–1.0): `(Killed + Timeout) / (Killed + Survived + Timeout + NoCoverage)`. Hidden metric — appears in no workflow prompt and is therefore Goodhart-resistant. Opt-in per RQ, only for `tests_passing = true`. | higher = better |")
     p("")
-    p("**TDD-Disziplin** (aus `transcript.jsonl` + `transcript-subagents/`; getrieben von vier "
-      "Markern in `experiments/workflows/MARKERS.md` — fehlt ein Marker, fällt die zugehörige "
-      "Metrik still auf null)")
+    p("**TDD discipline** (from `transcript.jsonl` + `transcript-subagents/`; driven by four "
+      "markers in `experiments/workflows/MARKERS.md` — if a marker is missing, the corresponding "
+      "metric silently drops to zero)")
     p("")
-    p("| Metrik | Term | Was misst es | Richtung |")
+    p("| Metric | Term | What it measures | Direction |")
     p("|---|---|---|---|")
-    p("| `cycle_count` | — | Anzahl Red-Green-Refactor-Zyklen pro Run | informativ (höher = feiner zerlegt) |")
-    p("| `refactorings_applied` | — | Anzahl explizit angewandter Refactoring-Schritte | höher = besser (bei TDD-Workflows) |")
-    p("| `predictions_correct` / `predictions_total` | — | Red-Phase-Vorhersagen über Compile-/Runtime-Failure: korrekt vs. gesamt. Tiefe des Code-Verständnisses des Agenten. Pro Cycle 1–2 Predictions je nach Workflow. | Quote höher = besser |")
-    p("| `tests_passed_immediately` | — | Anzahl Tests, die in der Red-Phase bereits grün waren — Indikator für Over-Implementation in vorherigen Green-Phasen | kleiner = besser |")
-    p("| `avg_red_seconds` / `avg_green_seconds` / `avg_refactor_seconds` | — | Mittlere Phasendauer pro Cycle | informativ |")
+    p("| `cycle_count` | — | Number of red-green-refactor cycles per run | informative (higher = more finely decomposed) |")
+    p("| `refactorings_applied` | — | Number of explicitly applied refactoring steps | higher = better (for TDD workflows) |")
+    p("| `predictions_correct` / `predictions_total` | — | Red-phase predictions about compile/runtime failure: correct vs. total. Depth of the agent's code understanding. 1–2 predictions per cycle depending on workflow. | ratio higher = better |")
+    p("| `tests_passed_immediately` | — | Number of tests already green in the red phase — indicator of over-implementation in previous green phases | lower = better |")
+    p("| `avg_red_seconds` / `avg_green_seconds` / `avg_refactor_seconds` | — | Mean phase duration per cycle | informative |")
     p("")
-    p("### 3.3 Bewertungsgrundsätze")
+    p("### 3.3 Evaluation principles")
     p("")
-    p("- **Korrektheit zuerst**: ein Run mit `tests_passing=false` zählt nicht als gleichwertige Lösung.")
-    p("- **Pro Kata aggregieren**: Workflow×Modell-Tabellen werden ausschließlich pro Kata gebildet.")
-    p("- **Effekt-Schwelle**: Bei n=1 pro Zelle gelten nur Differenzen mit Faktor ≥ 2 oder klar getrennten σ-Bändern als belastbar.")
+    p("- **Correctness first**: a run with `tests_passing=false` does not count as an equivalent solution.")
+    p("- **Aggregate per kata**: workflow×model tables are formed exclusively per kata.")
+    p("- **Effect threshold**: at n=1 per cell, only differences with a factor ≥ 2 or clearly separated σ bands are considered robust.")
     p("")
     p("---")
     p("")
 
-    # 4. Ergebnisse — pro RQ, gruppiert nach Baum + Kapitel
-    p("## 4. Ergebnisse")
+    # 4. Results — per RQ, grouped by tree + chapter
+    p("## 4. Results")
     p("")
     current_tree = None
     for rq in rqs:
@@ -487,65 +487,65 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
         rel = rq["dir"].relative_to(REPO_ROOT)
         p(f"#### {rq['chapter']} {rq['id']} — {rq['question']}")
         p("")
-        p(f"_Datenbasis: {rq['n_runs']} Runs · "
-          f"Coverage: {rq['n_full']}/{rq['n_cells']} Zellen "
-          f"({rq['coverage_pct']} %) bei min_replicates={rq['min_replicates']}._")
+        p(f"_Data basis: {rq['n_runs']} runs · "
+          f"Coverage: {rq['n_full']}/{rq['n_cells']} cells "
+          f"({rq['coverage_pct']} %) at min_replicates={rq['min_replicates']}._")
         p("")
 
-        p("**Befunde**:")
+        p("**Findings**:")
         p("")
         for f in rq["findings"]:
             p(f"- **{f['id']}** — {f['title']}")
         if not rq["findings"]:
-            p("- _Keine Findings dokumentiert._")
+            p("- _No findings documented._")
         p("")
-        p(f"<!-- TODO Claude: 60–100 Wörter Synthese der Befunde dieser RQ. "
-          f"Top-Befund ausführlich + ggf. 1 Caveat aus dem Befund selbst "
-          f"(z.B. enge Datenbasis, nur eine Kata) + Verweis auf "
-          f"`{rel}/findings.md`. Tabellen aus findings.md NICHT duplizieren. -->")
+        p(f"<!-- TODO Claude: 60–100 words synthesizing this RQ's findings, written in ENGLISH. "
+          f"Top finding in detail + optionally 1 caveat from the finding itself "
+          f"(e.g. narrow data basis, only one kata) + reference to "
+          f"`{rel}/findings.md`. Do NOT duplicate tables from findings.md. -->")
         p("")
 
     p("---")
     p("")
 
-    # 5. Cross-RQ-Synthese
-    p("## 5. Cross-RQ-Synthese")
+    # 5. Cross-RQ synthesis
+    p("## 5. Cross-RQ Synthesis")
     p("")
-    p("<!-- TODO Claude: 3–5 nummerierte Punkte, die aus mehreren RQs zusammen "
-      "entstehen und in keiner einzelnen findings.md stehen. Beispiele aus dem "
-      "v2-Snapshot: \"Workflow-Wahl ist bedeutsamer als Modell-Wahl auf großen "
-      "Katas\", \"v5 ist der praktische Sweet Spot\", \"Magic Numbers dominieren "
-      "das Smell-Signal\". Die Punkte sollen Cross-RQ-Verbindungen herstellen, "
-      "nicht einzelne Findings paraphrasieren. -->")
-    p("")
-    p("---")
-    p("")
-
-    # 6. Limitierungen
-    p("## 6. Limitierungen")
-    p("")
-    p("<!-- TODO Claude: 5–8 Stichpunkte. Pflicht-Items: nur Anthropic-Modelle, "
-      "nur synthetische Katas, nur TypeScript, headless ohne HITL, n ≤ 3 pro "
-      "Zelle. Optional: konkrete Coverage-Lücken aus den RQ-Coverage-Werten "
-      "oben (z.B. \"RQ-X bei N % Coverage\"). -->")
+    p("<!-- TODO Claude: 3–5 numbered points, written in ENGLISH, that emerge from several RQs "
+      "together and appear in no single findings.md. Examples from the "
+      "v2 snapshot: \"workflow choice matters more than model choice on large "
+      "katas\", \"v5 is the practical sweet spot\", \"magic numbers dominate "
+      "the smell signal\". The points should establish cross-RQ connections, "
+      "not paraphrase individual findings. -->")
     p("")
     p("---")
     p("")
 
-    # 7. Reproduzierbarkeit
-    p("## 7. Reproduzierbarkeit")
+    # 6. Limitations
+    p("## 6. Limitations")
     p("")
-    p("Alle Daten und Analyse-Skripte liegen im Repo:")
+    p("<!-- TODO Claude: 5–8 bullet points, written in ENGLISH. Mandatory items: Anthropic models only, "
+      "synthetic katas only, TypeScript only, headless without HITL, n ≤ 3 per "
+      "cell. Optional: concrete coverage gaps from the RQ coverage values "
+      "above (e.g. \"RQ-X at N % coverage\"). -->")
     p("")
-    p("- `research/questions-{claude,opencode,cross}/*/README.md` und `research/workflow-dev/*/README.md` — RQ-Definitionen (Frontmatter mit factors/controls/outcomes)")
-    p("- `research/{questions-claude,questions-opencode,questions-cross,workflow-dev}/*/findings.md` — persistente Befund-Listen")
-    p("- `experiments/runs/*/metrics.json` — Rohdaten pro Run")
-    p("- `experiments/aggregate-by-query.py` — RQ-spezifische Aggregation")
-    p("- `experiments/batch-plan-from-rq.py` — Batch-Plan-Generierung aus RQ-Frontmatter")
-    p("- `experiments/docker/Dockerfile` + `run-batch.sh` + `batch.sh` — Container-Pipeline")
-    p("- `experiments/analyze-run.sh` + `analyze_transcript.py` — Run-Analyse")
+    p("---")
     p("")
-    p("Container-Pins: `claude-code@2.1.170`, `opencode-ai@1.15.10`, `@earendil-works/pi-coding-agent@0.81.1`, `pnpm@9.15.9` (siehe `experiments/docker/Dockerfile`).")
+
+    # 7. Reproducibility
+    p("## 7. Reproducibility")
+    p("")
+    p("All data and analysis scripts live in the repo:")
+    p("")
+    p("- `research/questions-{claude,opencode,cross}/*/README.md` and `research/workflow-dev/*/README.md` — RQ definitions (frontmatter with factors/controls/outcomes)")
+    p("- `research/{questions-claude,questions-opencode,questions-cross,workflow-dev}/*/findings.md` — persistent finding lists")
+    p("- `experiments/runs/*/metrics.json` — raw data per run")
+    p("- `experiments/aggregate-by-query.py` — RQ-specific aggregation")
+    p("- `experiments/batch-plan-from-rq.py` — batch-plan generation from RQ frontmatter")
+    p("- `experiments/docker/Dockerfile` + `run-batch.sh` + `batch.sh` — container pipeline")
+    p("- `experiments/analyze-run.sh` + `analyze_transcript.py` — run analysis")
+    p("")
+    p("Container pins: `claude-code@2.1.170`, `opencode-ai@1.15.10`, `@earendil-works/pi-coding-agent@0.81.1`, `pnpm@9.15.9` (see `experiments/docker/Dockerfile`).")
     p("")
     p("---")
     p("")
@@ -553,15 +553,15 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     # 8. Files
     p("## 8. Files")
     p("")
-    p("| Pfad | Inhalt |")
+    p("| Path | Content |")
     p("|---|---|")
     for rq in rqs:
         rel = rq["dir"].relative_to(REPO_ROOT)
         p(f"| `{rel}/findings.md` | {rq['id']} — {rq['question']} |")
         runs_csv = rq["dir"] / "runs.csv"
         if runs_csv.is_file():
-            p(f"| `{rel}/runs.csv` | {rq['id']} aggregierte Run-Metriken |")
-    p("| `experiments/runs/` | Alle Run-Verzeichnisse mit Source, Transcript, Metriken |")
+            p(f"| `{rel}/runs.csv` | {rq['id']} aggregated run metrics |")
+    p("| `experiments/runs/` | All run directories with source, transcript, metrics |")
     p("")
 
     return "\n".join(L) + "\n"
