@@ -192,8 +192,8 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p("<!-- TODO Claude: Zwei flowing-Absätze unter dieser H2. "
       "(Absatz 1) Das Lab ist die empirische Validierungs-Plattform für **EXACT Coding** "
-      "(EXample-guided AI-Collaborative Test-driven Coding), Manuskript "
-      "`../../../exact-coding-book/manuscript/exact-coding.md` (relativ zur Repo-Wurzel); "
+      "(EXample-guided AI-Collaborative Test-driven Coding), Buch verlinken unter "
+      "<https://leanpub.com/exact-coding> (nie einen lokalen Manuskript-Pfad); "
       "Workflow-Varianten als Spektrum Vibe-Coding (v1/v2) → EXACT (v4/v6) → Delayed-Refactor (v8). "
       "(Absatz 2) Snapshot-Status: Zeitstand, Run-Anzahl, RQ-Anzahl, aktuelle Forschungs-Front "
       "in beschreibender Form (nie Workflow-Versionsnamen wie v6.1 hier verwenden — Workflows sind "
