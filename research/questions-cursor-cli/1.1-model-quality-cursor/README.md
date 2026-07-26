@@ -43,7 +43,7 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: offen
+status: aktiv
 ---
 
 # RQ-model-quality-cursor: Modell-Effekt auf Code-Qualität (cursor-cli-Harness)
