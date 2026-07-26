@@ -50,7 +50,7 @@ If the two numbers disagree, add the missing subtree to `RQ_TREES` and regenerat
 The script writes to `/tmp/snapshot-skeleton-YYYY-MM-DD.md`. It auto-fills:
 
 - Data-base count (from `experiments/runs/`)
-- **Author line** (Marco Emrich, with EXACT-Coding co-credit "together with Ferdinand Ade")
+- **Author line** — Marco Emrich, with EXACT-Coding co-credit "together with Ferdinand Ade". Two links, and they must not be swapped: the **name** links to the LinkedIn profile (<https://www.linkedin.com/in/marco-emrich>), **"EXACT Coding"** links to the book (<https://leanpub.com/exact-coding>). Link text and target have to match — a person's name pointing at a book, or a book title pointing at a profile, is wrong in a published document.
 - **Repository link** (github.com/marcoemrich/agentic_coding_lab)
 - **`## About the Study`** H2 — only the heading; the two flowing paragraphs underneath are TODO-markers (filled in step 3)
 - **`### Scope`** H3 sub-heading — TODO-marker (filled in step 3)

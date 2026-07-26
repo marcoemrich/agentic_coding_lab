@@ -179,8 +179,9 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p(f"As of: {today}. Data basis: `experiments/runs/` ({total} runs total).")
     p("")
-    p("**Author:** Marco Emrich (codecentric AG) — co-initiator of "
-      "[EXACT Coding](https://www.linkedin.com/in/marco-emrich) together with "
+    p("**Author:** [Marco Emrich](https://www.linkedin.com/in/marco-emrich) "
+      "(codecentric AG) — co-initiator of "
+      "[EXACT Coding](https://leanpub.com/exact-coding) together with "
       "Ferdinand Ade.")
     p("")
     p("**Repository:** [github.com/marcoemrich/agentic_coding_lab]"
