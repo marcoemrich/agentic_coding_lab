@@ -844,4 +844,11 @@ See `experiments/workflows/v6.2-with-why-cleaned-pi/` for a working example. The
 
 ## License
 
-This project is provided as-is for research and educational purposes.
+Released under the [MIT License](LICENSE) — code, scripts, workflow definitions, run
+artifacts, and findings alike. You are free to reuse, adapt, and build on any of it,
+including commercially, as long as the copyright notice is retained.
+
+One exception: `experiments/workflows/v9-pocock-tdd/` vendors a third-party TDD skill
+from [mattpocock/skills](https://github.com/mattpocock/skills) (also MIT) as an
+external comparison baseline. Its own license is preserved alongside it in
+[`LICENSE.upstream`](experiments/workflows/v9-pocock-tdd/LICENSE.upstream).
