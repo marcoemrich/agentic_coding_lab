@@ -134,6 +134,38 @@ mechanism, and the gate is frontmatter. Three modes:
 | `alwaysApply: false` + `description` | Model pulls it in when the description matches (export target) |
 | `alwaysApply: false` + `globs` | Auto-attached for matching files |
 
+#### Subagents — cursor has them natively
+
+Cursor has supported subagents since **v2.4** (docs:
+https://cursor.com/docs/subagents). This matters for the refactor phases:
+cursor is a full peer of cc here, not a degraded variant.
+
+| | |
+|---|---|
+| Tool | native `Task` tool (`taskToolCall` in stream-json) |
+| Custom agents | `.cursor/agents/*.md` — also reads `.claude/agents/` and `.codex/agents/`, with `.cursor/` winning name conflicts |
+| Frontmatter | `name`, `description`, `model` (default `inherit`), `readonly`, `is_background` |
+| Invocation | automatic delegation, `/agent-name …`, or plain language |
+| Built-ins | Explore, Bash, Browser (no configuration needed) |
+| Headless | works in `-p --force`; verified against `cursor-agent 2026.07.23-e383d2b` |
+
+Verified event shape:
+
+```
+tool_call / subtype=completed
+  tool_call.taskToolCall.args.subagentType.custom.name = "refactor"
+  tool_call.taskToolCall.result.success.conversationSteps[…]
+```
+
+Built-in subagents arrive as `taskToolCall` too but carry no
+`subagentType.custom.name`, so a parser keying on that field ignores them.
+
+> **A prior version of this file claimed cursor had no subagent mechanism and
+> that refactor must run inline.** That was wrong, and it shaped both cursor
+> lab workflows plus the 2026-07-27 export before being caught. When a harness
+> appears to lack a capability, check its docs and probe the CLI before
+> designing around the gap.
+
 Note the exercises repo already uses the glob form for
 `tdd-with-ts-and-vitest.mdc` — TS/Vitest conventions *should* attach when
 editing test files, independent of whether a TDD session was requested.
@@ -226,7 +258,11 @@ documenting the gap. Translate the mechanism, keep the content:
 | cc | `agents/end-refactor.md`, `Task({subagent_type: "end-refactor"})` |
 | pi | `agents/end-refactor.md`, `subagent` tool + `agentScope: "both"` |
 | oc | `agents/end-refactor.md`, `mode: subagent`, `task` tool |
-| cursor | `skills/end-refactor/SKILL.md`, applied **inline** (no subagent) |
+| cursor | `.cursor/agents/end-refactor.md`, native `Task` tool |
+
+All four delegate to an isolated subagent. The only genuine harness-forced
+difference in this area is **pi**, which needs a bundled extension and a trust
+prompt to get a `subagent` tool at all; cc, oc and cursor have one natively.
 
 Porting a phase means four things, not one — a new agent file alone is
 inert:
@@ -239,10 +275,15 @@ inert:
 
 ### Text-marker harnesses: check the regex before choosing a marker
 
-On pi and cursor the parser reads headings, and its patterns are narrow.
-`parse_cursor_transcript.py` matches refactor with `##\s*Refactor\b` — so
-`## End-Refactor` does **not** match (the word is not at the start after
-`##`), and the phase would be invisible to the metrics.
+On pi and cursor the red/green/test-list phases are auto-loaded documents with
+no tool call of their own, so the parser reads headings — and its patterns are
+narrow. (The refactor phases are exempt: they are delegated, so
+`parse_cursor_transcript.py` counts the `taskToolCall` instead of a heading.)
+
+The legacy refactor regex is still worth knowing, since text-marker runs
+predate the delegated contract: `##\s*Refactor\b` does **not** match
+`## End-Refactor` (the word is not at the start after `##`), which silently
+hid the final pass in the 2026-07 cursor workflows.
 
 Verify a new marker against the live regex before adopting it:
 

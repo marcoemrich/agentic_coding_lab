@@ -126,15 +126,17 @@ exact-coding-baseline-<DATE>/
   .opencode/  # oc      opencode.json (carries command.tdd)
               #         agents/{refactor,end-refactor}.md · skills/ · rules/
   .cursor/    # cursor  rules/{tdd,human-in-the-loop,tdd-with-ts-and-vitest}.mdc
-              #         skills/{test-list,red,green,refactor,end-refactor}/
+              #         skills/{test-list,red,green}/
+              #         agents/{refactor,end-refactor}.md
 ```
 
 Note the file name: OpenCode reads **`opencode.json`**, not `.jsonc`.
 
 Both refactor phases appear in every harness — the per-cycle one and the
-final `end-refactor` pass. cursor realises both as skills because it has no
-subagent mechanism; see "Keep the harness variants feature-equal" in
-`HARNESS-MECHANISMS.md`.
+final `end-refactor` pass — and **all four harnesses delegate them to
+isolated subagents**. cursor uses its native Task tool with agent files in
+`.cursor/agents/`, the same shape as cc's `.claude/agents/`; see "Keep the
+harness variants feature-equal" in `HARNESS-MECHANISMS.md`.
 
 Create only the subtrees for the requested harnesses:
 
@@ -143,7 +145,7 @@ case "$H" in
   cc)     mkdir -p "$TARGET/.claude"/{skills/tdd,agents,commands,rules} ;;
   pi)     mkdir -p "$TARGET/.pi"/{skills/tdd,agents,rules,extensions/subagent} ;;
   oc)     mkdir -p "$TARGET/.opencode"/{agents,skills,rules} ;;
-  cursor) mkdir -p "$TARGET/.cursor"/{rules,skills} ;;
+  cursor) mkdir -p "$TARGET/.cursor"/{rules,skills,agents} ;;
 esac
 ```
 
@@ -264,10 +266,11 @@ Name only the harnesses actually exported.
 
 **On a multi-harness export, also write a snapshot-level `$TARGET/README.md`.**
 There is no template for it — it is not a per-harness document. It must carry:
-the harness→directory→invocation table, the phase table with the mechanism per
-harness (subagent vs. inline), the end-refactor mechanism table, the opt-in
-gating table, the HITL summary, install steps including the **pi trust prompt**
-warning, and the provenance / three-transformations section.
+the harness→directory→invocation table, the phase table (all four harnesses
+delegate refactor to an isolated subagent — only the tool name differs), the
+end-refactor mechanism table, the opt-in gating table, the HITL summary, install
+steps including the **pi trust prompt** warning, and the provenance /
+three-transformations section.
 
 > **Both READMEs claim the same version, so both must describe the same
 > snapshot.** The 2026-07-27 export shipped a four-harness snapshot README
@@ -573,23 +576,17 @@ Adjust the trailing "Completion" section's prose to acknowledge Step 6.
 
 ### Patch E — `agents/refactor.md`
 
-> **cursor-agent needs the inverse of this patch.** The wording below hands
-> the checkpoint to "the requester" because on cc/pi/oc the refactor phase
-> runs as an isolated subagent that cannot pause for a human. cursor has no
-> subagent mechanism — refactor runs **inline in the main context**, so the
-> phase applies its own checkpoint. Copying Patch E verbatim there produces
-> an instruction that defers to a requester who does not exist. Use:
+> **This patch applies verbatim on all four harnesses, cursor included.**
+> The wording hands the checkpoint to "the requester" because the refactor
+> phase runs as an isolated subagent that cannot pause for a human — true on
+> cc, pi, oc **and** cursor, which delegates to `.cursor/agents/` via its
+> native Task tool. Only the referenced HITL path differs per harness
+> (`.claude/rules/…md`, `.pi/rules/…md`, `.opencode/rules/…md`,
+> `.cursor/rules/…mdc`).
 >
-> ```markdown
-> ### Step 7: Apply HITL Checkpoint
->
-> Unlike the subagent-based harnesses, refactor runs inline in the main
-> context here — so applying the checkpoint is **your** responsibility, not
-> a requester's. Consult `@.cursor/rules/human-in-the-loop.mdc`. If the
-> current Autonomy Level includes a stop after Refactor (the default
-> `full-hitl` does), present the checkpoint template and wait for explicit
-> user approval before proceeding to the next Red phase.
-> ```
+> Earlier versions of this skill carried a cursor-specific inverse of this
+> patch, on the false premise that cursor had no subagent mechanism and
+> refactored inline. That exception is gone — do not reintroduce it.
 
 Append after Step 7 ("Report Completion"):
 
@@ -797,6 +794,55 @@ print('  OK opencode.json is consumer-shaped')"
     — fix it in `experiments/workflows/`, not in the snapshot, then
     re-export. Do not ship an uneven snapshot with a caveat.
 
+    An agent file alone is not enough: verify the phase is actually
+    invoked from the harness's orchestration file. Check that one file
+    directly — piping `grep -rl` into `grep -q` gives false FAILs, because
+    the second grep exits on the first non-matching line:
+
+    ```bash
+    for h in claude pi opencode cursor; do
+      [ -d "$TARGET/.$h" ] || continue
+      case $h in
+        claude)   o="$TARGET/.claude/skills/tdd/SKILL.md" ;;
+        pi)       o="$TARGET/.pi/skills/tdd/SKILL.md" ;;
+        opencode) o="$TARGET/.opencode/opencode.json" ;;
+        cursor)   o="$TARGET/.cursor/rules/tdd.mdc" ;;
+      esac
+      printf '  %-9s ' "$h"
+      grep -q 'end-refactor' "$o" && echo "OK invoked" || echo "FAIL: defined but never called"
+    done
+    ```
+
+    **Both refactor phases must be *delegated*, not inline — on every
+    harness.** "Invoked" is not enough: a workflow can name the phase and
+    still execute it in the main context, which silently drops the
+    isolated-context architecture. Each harness keeps its refactor phases as
+    agent files, never as phase skills:
+
+    ```bash
+    for h in claude pi opencode cursor; do
+      [ -d "$TARGET/.$h" ] || continue
+      printf '  %-9s ' "$h"
+      # agent files present
+      [ -f "$TARGET/.$h/agents/refactor.md" ] || { echo "FAIL: refactor not an agent"; continue; }
+      # and NOT also sitting in skills/ (that shape means inline execution)
+      if [ -e "$TARGET/.$h/skills/refactor" ]; then
+        echo "FAIL: refactor also present as a skill — inline regression"
+      else
+        echo "OK delegated"
+      fi
+    done
+
+    # no orchestration file may instruct inline refactoring
+    grep -rniE 'refactor (runs|is applied) inline|apply it inline|no subagent' "$TARGET" \
+      && echo "FAIL: inline-refactor instruction in snapshot"
+    ```
+
+    cursor is the one to watch here: the 2026-07-27 snapshot shipped it with
+    `skills/refactor/` and `skills/end-refactor/` on the false premise that
+    the harness had no subagent mechanism. It does — `.cursor/agents/*.md`
+    plus the native Task tool, same shape as cc.
+
 13. **README pair agrees** (multi-harness exports only). Both READMEs carry
     the same version, so neither may describe a narrower snapshot than was
     actually shipped:
@@ -819,25 +865,6 @@ print('  OK opencode.json is consumer-shaped')"
     ```bash
     grep -qF "$DATE" "$TARGET/README.md" && grep -qF "$DATE" "$TARGET/.claude/README.md" \
       || echo "FAIL: README pair disagrees on version"
-    ```
-
-    An agent file alone is not enough: verify the phase is actually
-    invoked from the harness's orchestration file. Check that one file
-    directly — piping `grep -rl` into `grep -q` gives false FAILs, because
-    the second grep exits on the first non-matching line:
-
-    ```bash
-    for h in claude pi opencode cursor; do
-      [ -d "$TARGET/.$h" ] || continue
-      case $h in
-        claude)   o="$TARGET/.claude/skills/tdd/SKILL.md" ;;
-        pi)       o="$TARGET/.pi/skills/tdd/SKILL.md" ;;
-        opencode) o="$TARGET/.opencode/opencode.json" ;;
-        cursor)   o="$TARGET/.cursor/rules/tdd.mdc" ;;
-      esac
-      printf '  %-9s ' "$h"
-      grep -q 'end-refactor' "$o" && echo "OK invoked" || echo "FAIL: defined but never called"
-    done
     ```
 
 ## Consumer sync
@@ -899,10 +926,16 @@ After successful validation:
    afterwards.
 5. On a multi-harness export, confirm the subtrees are **feature-equal**
    (validation 12), and name any difference that is genuinely forced by a
-   harness limitation — e.g. cursor applies refactor and end-refactor
-   inline because it has no subagent mechanism. A difference that is *not*
-   harness-forced is a bug to fix in the source workflow, not a caveat to
-   ship.
+   harness limitation — e.g. pi needs a bundled extension and a trust prompt
+   for the `subagent` tool the other three get natively. A difference that is
+   *not* harness-forced is a bug to fix in the source workflow, not a caveat
+   to ship.
+
+   Be sceptical of any claim that a harness "cannot" do something. The
+   2026-07-27 export shipped cursor with inline refactoring on exactly such a
+   claim, and it was false — cursor had a Task tool the whole time. Verify
+   against the harness's own docs and, where feasible, a probe run before
+   accepting a limitation as real.
 6. Point at the consumer (`exact-coding-exercises`, path above) and state
    that the snapshot has **not** been copied into it. If the layout
    mismatch documented under "Consumer sync" is still unresolved, say so —
@@ -932,8 +965,9 @@ After successful validation:
   halves are already covered elsewhere on every harness: the phase sequence
   sits in that harness's orchestration file (`skills/tdd/SKILL.md`,
   `command.tdd` in `opencode.json`, `rules/tdd.mdc`), and the subagent
-  contracts in its own `rules/subagent-prompts.md`. cursor carries no
-  contracts at all because it has no subagents — refactor runs inline.
+  contracts in its own `rules/subagent-prompts.md` — cursor included, since it
+  delegates refactor to `.cursor/agents/` and its subagents need the same
+  prompt contract as everyone else's.
   Replaces source's
   `tdd-experiment-mode.md` (`legacy` layout). On a `v66` source there is
   no such file to replace: the lab half is dropped with `lab-only.md` and
