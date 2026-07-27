@@ -109,6 +109,13 @@ covers models that skip the text markers entirely.
 | C2 | `## Green` heading in assistant text | Green-phase occurrence | same as C1 |
 | C3 | `## Test List` heading in assistant text | Test-list phase occurrence | same as C1 |
 | C4 | `## Refactor` heading in assistant text | Each occurrence counts as `refactorings_applied` | `parse_cursor_transcript.py` (`_PHASE_TEXT_MARKERS_RE["refactor"]`) |
+
+> **End-refactor on cursor must use `## Refactor (final pass)`.** The C4
+> regex is `##\s*Refactor\b`, so `## End-Refactor` does **not** match — the
+> final pass would be invisible to `refactorings_applied`. The parenthetical
+> form matches and needs no parser change. Verify any new heading against
+> the live regex before adopting it; changing the parser instead would
+> re-scope every historical cursor run.
 | C5 | `Red Phase Complete:` + prediction lines | **Gates** prediction parsing (same as pi P5) | `extract_predictions_from_text` with `loose_gate=True` |
 | C6 | Lines matching `(Compilation\|Runtime) Prediction: ... (Correct\|Incorrect)` | `predictions_correct`, `predictions_total` | `_PREDICTION_OUTCOME_LINE_RE` |
 | C7 | `experiment-done.txt` containing `DONE` | Same as CC marker 4 | same |

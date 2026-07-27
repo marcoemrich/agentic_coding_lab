@@ -683,19 +683,42 @@ assert not c.get('instructions'), 'FAIL: AGENTS.md still auto-loaded'
 print('  OK opencode.json is consumer-shaped')"
     ```
 
-12. **Feature parity reported, not assumed**:
+12. **Feature parity across exported harnesses**. The variants are meant
+    to be identical as far as each harness allows — a missing phase is a
+    port that lagged, not a design choice:
 
     ```bash
     for h in claude pi opencode cursor; do
       [ -d "$TARGET/.$h" ] || continue
       printf '  %-9s ' "$h"
       find "$TARGET/.$h" -name '*end-refactor*' | grep -q . \
-        && echo "has end-refactor" || echo "no end-refactor"
+        && echo "OK end-refactor" || echo "FAIL: end-refactor missing"
     done
     ```
-    Not a pass/fail — the subtrees are legitimately at different
-    generations (see `HARNESS-MECHANISMS.md`). But the result must appear
-    in the report, so the consumer is not left assuming parity.
+
+    A `FAIL` means the source variant needs the phase ported (see
+    "Keep the harness variants feature-equal" in `HARNESS-MECHANISMS.md`)
+    — fix it in `experiments/workflows/`, not in the snapshot, then
+    re-export. Do not ship an uneven snapshot with a caveat.
+
+    An agent file alone is not enough: verify the phase is actually
+    invoked from the harness's orchestration file. Check that one file
+    directly — piping `grep -rl` into `grep -q` gives false FAILs, because
+    the second grep exits on the first non-matching line:
+
+    ```bash
+    for h in claude pi opencode cursor; do
+      [ -d "$TARGET/.$h" ] || continue
+      case $h in
+        claude)   o="$TARGET/.claude/skills/tdd/SKILL.md" ;;
+        pi)       o="$TARGET/.pi/skills/tdd/SKILL.md" ;;
+        opencode) o="$TARGET/.opencode/opencode.json" ;;
+        cursor)   o="$TARGET/.cursor/rules/tdd.mdc" ;;
+      esac
+      printf '  %-9s ' "$h"
+      grep -q 'end-refactor' "$o" && echo "OK invoked" || echo "FAIL: defined but never called"
+    done
+    ```
 
 ## Consumer sync
 
@@ -754,10 +777,12 @@ After successful validation:
    last and dislikes most.
 4. Note that the skill did NOT commit/push — the user does git operations
    afterwards.
-5. On a multi-harness export, state **which harnesses are not feature-
-   equal** (validation 12). As of 2026-07 only cc has the end-refactor
-   phase. Reporting four subtrees without that caveat implies a parity
-   that does not exist.
+5. On a multi-harness export, confirm the subtrees are **feature-equal**
+   (validation 12), and name any difference that is genuinely forced by a
+   harness limitation — e.g. cursor applies refactor and end-refactor
+   inline because it has no subagent mechanism. A difference that is *not*
+   harness-forced is a bug to fix in the source workflow, not a caveat to
+   ship.
 6. Point at the consumer (`exact-coding-exercises`, path above) and state
    that the snapshot has **not** been copied into it. If the layout
    mismatch documented under "Consumer sync" is still unresolved, say so —

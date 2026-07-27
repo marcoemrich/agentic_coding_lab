@@ -149,16 +149,40 @@ description-gated form.
 | OpenCode | `AGENTS.md` via `instructions` | `command.tdd` in `opencode.jsonc` | command name |
 | cursor | `.cursor/rules/*.mdc` `alwaysApply: true` | same file, `alwaysApply: false` | `description` |
 
-## Config files carry lab routing — rewrite, don't copy
+## Strip environment-specific configuration
 
-`opencode.json` is **not** a pure workflow file. In the lab it also holds
-the provider configuration: Requesty and Portkey `baseURL`s, `{env:...}`
-API-key references, and the model roster used by batch runs. Copying it
-into a snapshot ships routing config that is useless to a consumer,
-references environment variables they do not have, and advertises internal
-infrastructure.
+**The exported baseline must be usable by anyone.** It is a general-purpose
+workflow, not a copy of one lab's setup. Anything that only works in the
+environment it was exported *from* has to be removed — not documented, not
+carried along with a warning.
 
-Rewrite it instead. A consumer `opencode.json` needs exactly three keys:
+Concretely, an export must never contain:
+
+- **Provider / routing configuration** — gateway `baseURL`s, model rosters,
+  region pins. A consumer routes through their own provider.
+- **Credential references** — `{env:SOME_KEY}`, API-key placeholders,
+  auth-token names. Even a reference (not the secret itself) encodes
+  someone else's setup and breaks on a machine where that variable is
+  unset.
+- **Absolute paths, machine names, container assumptions.**
+- **Harness-version pins** that exist for lab reproducibility rather than
+  because the workflow needs them.
+
+What legitimately stays: the workflow itself, and permissions the workflow
+genuinely needs (e.g. running the test command).
+
+The failure mode is silent — a consumer copies the directory, the config
+references an environment variable they have never heard of, and the
+harness fails with an error that points nowhere near the real cause.
+
+### Where this bites: `opencode.json`
+
+`opencode.json` is the one harness config that mixes both concerns. In the
+lab it carries the provider block — gateway `baseURL`s, `{env:...}` key
+references, the full model roster — alongside the command definitions.
+
+Do not copy it. Rewrite it. A consumer `opencode.json` needs exactly three
+keys:
 
 ```json
 {
@@ -182,29 +206,55 @@ infrastructure. `settings.json` (cc) is safe — it only carries a
 permissions allowlist. `.pi/` has no config file in the workflow at all
 (routing lives in the container's `models.json`, outside the workflow).
 
-## Not every harness variant is at the same generation
+## Keep the harness variants feature-equal
 
-The lab's harness variants are ports, and ports lag. As of 2026-07 only the
-cc variant carries the **end-refactor** phase (added in v6.5); the pi, oc
-and cursor variants descend from v6.2.x predecessors that never got it.
+**Goal: all v6.6 variants are identical, as far as the harness allows.**
+Differences should come from what a harness *can* do, never from a port
+that lagged behind.
 
-Consequence for an export: the harness subtrees are **not** feature-equal.
-`.claude/` ships `agents/end-refactor.md` and a step 6 in the workflow;
-the other three stop after the last per-cycle refactor. That is a real
-difference in what the consumer gets, not a packaging detail.
+Harness variants are ports, and ports drift. The v6.6 line was assembled
+from different generations — cc from v6.5, the rest from v6.2.x — which
+initially left the **end-refactor** phase in cc only. That was a defect,
+not a design choice, and was closed on 2026-07-27: all four variants now
+run the final metric-driven pass.
 
-Check before reporting an export as complete:
+When a variant is missing a phase the others have, **port it** rather than
+documenting the gap. Translate the mechanism, keep the content:
 
-```bash
-for h in claude pi opencode cursor; do
-  printf '%-9s ' "$h"
-  find "$TARGET/.$h" -name '*end-refactor*' | grep -q . && echo "has end-refactor" || echo "no end-refactor"
-done
+| Harness | End-refactor is realised as |
+|---|---|
+| cc | `agents/end-refactor.md`, `Task({subagent_type: "end-refactor"})` |
+| pi | `agents/end-refactor.md`, `subagent` tool + `agentScope: "both"` |
+| oc | `agents/end-refactor.md`, `mode: subagent`, `task` tool |
+| cursor | `skills/end-refactor/SKILL.md`, applied **inline** (no subagent) |
+
+Porting a phase means four things, not one — a new agent file alone is
+inert:
+
+1. The agent/skill file itself, with harness-native frontmatter.
+2. A step in the orchestration file that actually invokes it.
+3. An entry in the Workflow Sequence summary.
+4. On lab variants: the done-marker condition, and the phase-continuation
+   chain, both of which must know the run does not end at the last cycle.
+
+### Text-marker harnesses: check the regex before choosing a marker
+
+On pi and cursor the parser reads headings, and its patterns are narrow.
+`parse_cursor_transcript.py` matches refactor with `##\s*Refactor\b` — so
+`## End-Refactor` does **not** match (the word is not at the start after
+`##`), and the phase would be invisible to the metrics.
+
+Verify a new marker against the live regex before adopting it:
+
+```python
+import re
+r = re.compile(r"##\s*Refactor\b", re.IGNORECASE)
+r.search("## End-Refactor")           # False — would be invisible
+r.search("## Refactor (final pass)")  # True  — use this
 ```
 
-Say so in the report. Do not silently imply the four subtrees are
-equivalent — and do not invent an end-refactor phase for a harness whose
-lab variant has never been measured with one.
+Prefer a marker that fits the existing parser over changing the parser.
+Changing a parser re-scopes every historical run that used the old form.
 
 ## What stays auto-loaded even in the export
 

@@ -1,5 +1,5 @@
 ---
-description: Strict Test-Driven Development workflow (Red-Green-Refactor) with configurable human-in-the-loop checkpoints. Apply when the user explicitly asks to use TDD, do a TDD kata, or follow the Red-Green-Refactor discipline. Do NOT apply for general coding tasks where the user has not asked for TDD.
+description: Strict Test-Driven Development workflow (Red-Green-Refactor) with configurable human-in-the-loop checkpoints. Invoke when the user explicitly asks to use TDD, do a TDD kata, or follow the Red-Green-Refactor discipline. Do NOT invoke for general coding tasks where the user has not asked for TDD.
 alwaysApply: false
 ---
 
@@ -26,6 +26,7 @@ Skipping them makes the cycle impossible to audit after the fact.
 | Red       | `Red Phase Complete:` + prediction lines  | `predictions_correct`, `predictions_total` |
 | Green     | `## Green` heading                        | green-phase occurrence               |
 | Refactor  | `## Refactor` heading                     | refactoring applied this cycle       |
+| End-Refactor | `## Refactor (final pass)` heading      | the final whole-src pass             |
 
 **IMPORTANT**: emit every marker as **assistant output text**, not only inside
 private reasoning. Markers that appear only in a thinking/reasoning block are
@@ -158,6 +159,20 @@ marker with the outcome, then proceed directly to the next Red phase.
 ### 5. Repeat
 Return to step 2 (Red phase) for the next test.
 
+### 6. End-Refactor (once, after the last green cycle)
+**READ SKILL**: `.cursor/skills/end-refactor/SKILL.md`
+
+After the last per-cycle refactor and once all tests pass, perform the
+end-refactor pass exactly once. It covers the **whole production tree**
+(`src/`, excluding `*.spec.ts`) using deterministic pre/post measurements:
+ESLint smells + SonarJS cognitive complexity, plus APP mass and McCabe
+cyclomatic complexity. Iterate one change at a time until no metric
+improves further.
+
+Like the per-cycle refactor, this runs **inline in the main context** —
+cursor-agent has no subagent mechanism. Read the skill and apply it
+yourself, then emit the report under a `## Refactor (final pass)` heading.
+
 ## Core TDD Principles
 
 ### TDD Mindset
@@ -215,7 +230,8 @@ describe("Some Feature", () => {
    - **Red Phase** -- Read skill, produce `## Red` and `Red Phase Complete:` with predictions
    - **Green Phase** -- Read skill, produce `## Green` marker
    - **Refactor Phase** -- Read skill, apply it inline, produce `## Refactor` marker
-3. **Continue** until all tests are implemented
+3. **Continue** until all tests are implemented and passing
+4. **End-Refactor** -- read `end-refactor/SKILL.md`, apply inline once, produce `## End-Refactor`
 
 ## Remember
 

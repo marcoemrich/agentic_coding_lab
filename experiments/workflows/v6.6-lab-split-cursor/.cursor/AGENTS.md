@@ -29,7 +29,8 @@ invalidating the data point.
 | Red       | `## Red` heading                          | red-phase cycle (`cycle_count`)      |
 | Red       | `Red Phase Complete:` + prediction lines  | `predictions_correct`, `predictions_total` |
 | Green     | `## Green` heading                        | green-phase occurrence               |
-| Refactor  | `## Refactor` heading                     | `refactorings_applied`               |
+| Refactor  | `## Refactor` heading                     | refactoring applied this cycle       |
+| End-Refactor | `## Refactor (final pass)` heading      | the final whole-src pass             |
 
 **IMPORTANT**: emit every marker as **assistant output text**, not only inside
 private reasoning. Markers that appear only in a thinking/reasoning block are
@@ -169,6 +170,20 @@ marker with the outcome, then proceed directly to the next Red phase.
 ### 5. Repeat
 Return to step 2 (Red phase) for the next test.
 
+### 6. End-Refactor (once, after the last green cycle)
+**READ SKILL**: `.cursor/skills/end-refactor/SKILL.md`
+
+After the last per-cycle refactor and once all tests pass, perform the
+end-refactor pass exactly once. It covers the **whole production tree**
+(`src/`, excluding `*.spec.ts`) using deterministic pre/post measurements:
+ESLint smells + SonarJS cognitive complexity, plus APP mass and McCabe
+cyclomatic complexity. Iterate one change at a time until no metric
+improves further.
+
+Like the per-cycle refactor, this runs **inline in the main context** —
+cursor-agent has no subagent mechanism. Read the skill and apply it
+yourself, then emit the report under a `## Refactor (final pass)` heading.
+
 ## Core TDD Principles
 
 ### TDD Mindset
@@ -226,7 +241,8 @@ describe("Some Feature", () => {
    - **Red Phase** -- Read skill, produce `## Red` and `Red Phase Complete:` with predictions
    - **Green Phase** -- Read skill, produce `## Green` marker
    - **Refactor Phase** -- Read skill, apply it inline, produce `## Refactor` marker
-3. **Continue** until all tests are implemented
+3. **Continue** until all tests are implemented and passing
+4. **End-Refactor** -- read `end-refactor/SKILL.md`, apply inline once, produce `## End-Refactor`
 
 ## Remember
 
@@ -262,7 +278,8 @@ When executing:
 
 ### Done Marker
 
-When all tests are implemented and passing, write a file
+When all tests are implemented and passing AND the end-refactor pass has
+completed, write a file
 `experiment-done.txt` with the single word `DONE` as its only content. Do
 not write any other summary or report file.
 
@@ -294,6 +311,7 @@ phase's action in the same turn:
 - After **Red** -> read `green/SKILL.md` and produce `## Green`.
 - After **Green** -> read `refactor/SKILL.md` and produce `## Refactor`.
 - After **Refactor** -> produce `## Red` for the next test.
+- After the **last cycle** -> apply `end-refactor/SKILL.md` inline once.
 
 The only place your turn may end is **after** you have written
 `experiment-done.txt` containing `DONE`. Ending the turn on a "Proceeding

@@ -3,16 +3,15 @@ name: tdd
 description: Strict Test-Driven Development workflow (Red-Green-Refactor) with configurable human-in-the-loop checkpoints. Invoke when the user explicitly asks to use TDD, do a TDD kata, or follow the Red-Green-Refactor discipline. Do NOT invoke for general coding tasks where the user has not asked for TDD.
 ---
 
-> **First run on this project: accept the trust prompt.** The refactor
-> phase uses the `subagent` tool, which pi provides through the
+> **First run on this project: accept the trust prompt.** The refactor and
+> end-refactor phases use the `subagent` tool, which pi provides through the
 > project-local extension in `.pi/extensions/subagent/`. pi gates
 > project-local extensions behind project trust, so the first invocation
-> prompts you. If you decline, the extension does not load, the `subagent`
-> tool is unavailable, and refactoring silently collapses into the main
-> context — the isolated-context architecture is lost.
+> prompts you. Declining leaves the workflow without its refactor steps —
+> nothing errors, the isolated-context architecture is simply gone.
 >
-> The refactor agent must be invoked with `agentScope: "both"`, since it
-> lives in project-local `.pi/agents/` rather than at user level.
+> Both agents must be invoked with `agentScope: "both"`, since they live in
+> project-local `.pi/agents/`.
 
 # Test-Driven Development (TDD) Rules -- Hybrid (v6.6, pi)
 
@@ -158,6 +157,26 @@ The agent will improve code while keeping tests green:
 ### 5. Repeat
 Return to step 2 (Red phase) for the next test.
 
+### 6. End-Refactor (once, after the last green cycle)
+**INVOKE SUBAGENT**: `subagent` tool with `agent: "end-refactor"`, `agentScope: "both"`
+
+After the last per-cycle refactor returns and all tests pass, invoke the
+`end-refactor` subagent exactly once. It refactors the **whole production
+tree** (`src/`, excluding `*.spec.ts`) using deterministic pre/post
+measurements: ESLint smells + SonarJS cognitive complexity, plus APP mass
+and McCabe cyclomatic complexity. It iterates one change at a time until no
+metric improves further.
+
+```json
+{
+  "agent": "end-refactor",
+  "agentScope": "both",
+  "task": "Implementation files: src/<all non-spec *.ts>\nTest files: src/<*.spec.ts>\nPassing tests: <count>\n\nRun the final metric-driven refactoring pass over the whole src/. Iterate ONE change at a time with pre/post measurement (ESLint, cognitive, APP, McCabe). Stop when no metric improves further."
+}
+```
+
+**DO NOT** refactor the whole src/ yourself — delegate to the end-refactor subagent.
+
 ## Core TDD Principles
 
 ### TDD Mindset
@@ -216,7 +235,8 @@ describe("Some Feature", () => {
    - **Red Phase** -- Read skill, produce `## Red` and `Red Phase Complete:` with predictions
    - **Green Phase** -- Read skill, produce `## Green` marker
    - **Refactor Phase** -- Invoke `subagent` tool with `agent: "refactor"`, `agentScope: "both"`
-3. **Continue** until all tests are implemented
+3. **Continue** until all tests are implemented and passing
+4. **End-Refactor** -- invoke `subagent` with `agent: "end-refactor"`, once, over the whole `src/`
 
 ### Required Task Content for the Refactor Subagent
 

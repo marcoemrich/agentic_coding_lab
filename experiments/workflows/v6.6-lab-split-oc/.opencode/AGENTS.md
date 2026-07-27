@@ -99,6 +99,29 @@ The agent will improve code while keeping tests green:
 ### 5. Repeat
 Return to step 2 (Red phase) for the next test. **Invoke the `red` skill again.**
 
+### 6. End-Refactor (once, after the last green cycle)
+**LAUNCH SUBAGENT**: Use the `task` tool to invoke the `end-refactor` subagent.
+
+After the last per-cycle refactor returns and all tests pass, launch the
+`end-refactor` subagent exactly once. It refactors the **whole production
+tree** (`src/`, excluding `*.spec.ts`) using deterministic pre/post
+measurements: ESLint smells + SonarJS cognitive complexity, plus APP mass
+and McCabe cyclomatic complexity. It iterates one change at a time until no
+metric improves further.
+
+```
+@end-refactor
+Implementation files: src/<all non-spec *.ts>
+Test files: src/<*.spec.ts>
+Passing tests: <count>
+
+Run the final metric-driven refactoring pass over the whole src/.
+Iterate ONE change at a time with pre/post measurement (ESLint, cognitive,
+APP, McCabe). Stop when no metric improves further.
+```
+
+**DO NOT** refactor the whole src/ yourself — delegate to the end-refactor subagent.
+
 ## Core TDD Principles
 
 ### TDD Mindset
@@ -155,7 +178,8 @@ describe("Some Feature", () => {
    - **Red Phase** -> Invoke `red` skill
    - **Green Phase** -> Invoke `green` skill
    - **Refactor Phase** -> Launch `refactor` subagent via the `task` tool
-3. **Continue** until all tests are implemented
+3. **Continue** until all tests are implemented and passing
+4. **End-Refactor** -> Launch `end-refactor` subagent via the `task` tool, once, over the whole `src/`
 
 ### Required Prompt Context for the Refactor Subagent
 
@@ -207,7 +231,8 @@ Append an autonomy instruction to every refactor subagent prompt, e.g.
 
 ### Done Marker
 
-When all tests are implemented and passing, write a file
+When all tests are implemented and passing AND the end-refactor pass has
+completed, write a file
 `experiment-done.txt` with the single word `DONE` as its only content. Do
 not write any other summary or report file.
 
@@ -241,6 +266,7 @@ emitting one, continue immediately with the next phase's action:
 - After **Red** -> invoke the `green` skill.
 - After **Green** -> launch the `refactor` subagent via the `task` tool.
 - After **Refactor returns** -> invoke the `red` skill for the next test.
+- After the **last cycle** -> launch the `end-refactor` subagent once.
 
 The only place the run ends is after `experiment-done.txt` contains `DONE`.
 Announcing an action is not performing it.
