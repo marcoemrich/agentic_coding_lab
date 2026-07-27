@@ -149,6 +149,63 @@ description-gated form.
 | OpenCode | `AGENTS.md` via `instructions` | `command.tdd` in `opencode.jsonc` | command name |
 | cursor | `.cursor/rules/*.mdc` `alwaysApply: true` | same file, `alwaysApply: false` | `description` |
 
+## Config files carry lab routing — rewrite, don't copy
+
+`opencode.json` is **not** a pure workflow file. In the lab it also holds
+the provider configuration: Requesty and Portkey `baseURL`s, `{env:...}`
+API-key references, and the model roster used by batch runs. Copying it
+into a snapshot ships routing config that is useless to a consumer,
+references environment variables they do not have, and advertises internal
+infrastructure.
+
+Rewrite it instead. A consumer `opencode.json` needs exactly three keys:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "command": { "tdd": { "description": "...", "prompt": "<orchestration>" } },
+  "permission": { "...": "..." }
+}
+```
+
+No `provider` block, no `instructions` array. Verify after writing:
+
+```bash
+python3 -c "
+import json;c=json.load(open('\$TARGET/.opencode/opencode.json'))
+assert 'provider' not in c, 'FAIL: lab routing config leaked'
+assert not c.get('instructions'), 'FAIL: AGENTS.md still auto-loaded'"
+```
+
+The same caution applies to any harness config that mixes workflow and
+infrastructure. `settings.json` (cc) is safe — it only carries a
+permissions allowlist. `.pi/` has no config file in the workflow at all
+(routing lives in the container's `models.json`, outside the workflow).
+
+## Not every harness variant is at the same generation
+
+The lab's harness variants are ports, and ports lag. As of 2026-07 only the
+cc variant carries the **end-refactor** phase (added in v6.5); the pi, oc
+and cursor variants descend from v6.2.x predecessors that never got it.
+
+Consequence for an export: the harness subtrees are **not** feature-equal.
+`.claude/` ships `agents/end-refactor.md` and a step 6 in the workflow;
+the other three stop after the last per-cycle refactor. That is a real
+difference in what the consumer gets, not a packaging detail.
+
+Check before reporting an export as complete:
+
+```bash
+for h in claude pi opencode cursor; do
+  printf '%-9s ' "$h"
+  find "$TARGET/.$h" -name '*end-refactor*' | grep -q . && echo "has end-refactor" || echo "no end-refactor"
+done
+```
+
+Say so in the report. Do not silently imply the four subtrees are
+equivalent — and do not invent an end-refactor phase for a harness whose
+lab variant has never been measured with one.
+
 ## What stays auto-loaded even in the export
 
 Not everything should be gated. Language/test conventions

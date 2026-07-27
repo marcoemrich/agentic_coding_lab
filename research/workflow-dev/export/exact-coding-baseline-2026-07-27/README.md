@@ -29,6 +29,20 @@ end-refactor pass on harnesses that support isolated subagents.
 ¹ On cursor-agent, refactor runs inline: that harness has no subagent
 mechanism. The phase is otherwise identical.
 
+### The four subtrees are not feature-equal
+
+| | Test-List → Red → Green → Refactor | End-refactor pass |
+|---|---|---|
+| Claude Code | ✅ | ✅ |
+| pi | ✅ | — |
+| OpenCode | ✅ | — |
+| cursor-agent | ✅ (refactor inline) | — |
+
+The **end-refactor** phase — a final metric-driven pass over the whole
+`src/` after the last cycle — currently exists only in the Claude Code
+subtree. The other three derive from an earlier generation of the workflow
+that predates it. The core cycle is identical everywhere.
+
 ## The workflow is opt-in, by design
 
 On every harness the TDD workflow is **explicitly invoked**, not

@@ -261,6 +261,30 @@ Everything else is identical across layouts. If an anchor string in the
 HITL Patches cannot be found, report which patch and why rather than
 force-fitting it.
 
+> **The HITL Patches are written against the cc file layout.** Patches A–E
+> name `rules/tdd.md`, `commands/*.md` and `agents/refactor.md`. pi, oc and
+> cursor put the same content in different files — and crucially, **the
+> lab-metric justification that Patches A.2 and B.1 remove lives somewhere
+> else on every harness.** Applying only the literal patches leaves it in
+> place. Where it actually sits:
+>
+> | Harness | Metric wording lives in |
+> |---|---|
+> | cc | `rules/tdd.md` (A.2), `commands/red.md` (B.1) |
+> | pi | `skills/tdd/SKILL.md` (marker table + intro) |
+> | oc | the `command.tdd` **prompt string** inside `opencode.json` |
+> | cursor | `rules/tdd.mdc`, `skills/red/SKILL.md`, `skills/refactor/SKILL.md` |
+>
+> The oc case is the easiest to miss: the orchestration is a JSON string,
+> so a plain `grep` over `*.md` will not see it. Grep the whole subtree,
+> not just markdown.
+>
+> Text-marker harnesses (pi, cursor) legitimately need a marker table —
+> the markers are how their phases are recognised. Keep the table; replace
+> only the lab-metric framing. "Missing markers silently zero
+> `refactorings_applied`" becomes "these markers make each phase boundary
+> visible and machine-checkable".
+
 > **Shell trap.** Several patch anchors contain backticks
 > (`` `predictions_correct_rate` ``, `` `cycle_count` ``). In an
 > *unquoted* heredoc (`<<PY`) the shell runs those as command
@@ -464,6 +488,24 @@ Adjust the trailing "Completion" section's prose to acknowledge Step 6.
 
 ### Patch E — `agents/refactor.md`
 
+> **cursor-agent needs the inverse of this patch.** The wording below hands
+> the checkpoint to "the requester" because on cc/pi/oc the refactor phase
+> runs as an isolated subagent that cannot pause for a human. cursor has no
+> subagent mechanism — refactor runs **inline in the main context**, so the
+> phase applies its own checkpoint. Copying Patch E verbatim there produces
+> an instruction that defers to a requester who does not exist. Use:
+>
+> ```markdown
+> ### Step 7: Apply HITL Checkpoint
+>
+> Unlike the subagent-based harnesses, refactor runs inline in the main
+> context here — so applying the checkpoint is **your** responsibility, not
+> a requester's. Consult `@.cursor/rules/human-in-the-loop.mdc`. If the
+> current Autonomy Level includes a stop after Refactor (the default
+> `full-hitl` does), present the checkpoint template and wait for explicit
+> user approval before proceeding to the next Red phase.
+> ```
+
 Append after Step 7 ("Report Completion"):
 
 ```markdown
@@ -621,6 +663,40 @@ report immediately, do not claim success.
    the snapshot still behaves like a lab workflow — it would load TDD
    discipline into every unrelated session in the consumer's project.
 
+10. **Lab wording, whole subtree** (not just `*.md`). The oc orchestration
+    is a JSON string, so a markdown-only grep misses it:
+
+    ```bash
+    grep -rn 'predictions_correct_rate\|refactorings_applied\b\|the experiment\|invalidating the data point\|Run autonomously' \
+         "$TARGET" && echo "FAIL: lab wording leaked"
+    ```
+    Must print no matches. On a multi-harness export this check has caught
+    leaks in *every* non-cc subtree — Patches A.2/B.1 only cover cc.
+
+11. **No lab routing config in `opencode.json`**:
+
+    ```bash
+    python3 -c "
+import json;c=json.load(open('$TARGET/.opencode/opencode.json'))
+assert 'provider' not in c, 'FAIL: Requesty/Portkey provider block leaked'
+assert not c.get('instructions'), 'FAIL: AGENTS.md still auto-loaded'
+print('  OK opencode.json is consumer-shaped')"
+    ```
+
+12. **Feature parity reported, not assumed**:
+
+    ```bash
+    for h in claude pi opencode cursor; do
+      [ -d "$TARGET/.$h" ] || continue
+      printf '  %-9s ' "$h"
+      find "$TARGET/.$h" -name '*end-refactor*' | grep -q . \
+        && echo "has end-refactor" || echo "no end-refactor"
+    done
+    ```
+    Not a pass/fail — the subtrees are legitimately at different
+    generations (see `HARNESS-MECHANISMS.md`). But the result must appear
+    in the report, so the consumer is not left assuming parity.
+
 ## Consumer sync
 
 The skill never writes outside the lab repo. This section records **where
@@ -678,7 +754,11 @@ After successful validation:
    last and dislikes most.
 4. Note that the skill did NOT commit/push — the user does git operations
    afterwards.
-5. Point at the consumer (`exact-coding-exercises`, path above) and state
+5. On a multi-harness export, state **which harnesses are not feature-
+   equal** (validation 12). As of 2026-07 only cc has the end-refactor
+   phase. Reporting four subtrees without that caveat implies a parity
+   that does not exist.
+6. Point at the consumer (`exact-coding-exercises`, path above) and state
    that the snapshot has **not** been copied into it. If the layout
    mismatch documented under "Consumer sync" is still unresolved, say so —
    a naive `cp -r` there produces a double-loaded workflow.
