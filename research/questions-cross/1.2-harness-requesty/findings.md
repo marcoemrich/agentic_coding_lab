@@ -1,5 +1,34 @@
 # RQ-harness-requesty — Findings
 
+> **⚠️ The cursor arm below is invalidated (2026-07-28); re-run pending.**
+>
+> All 10 cursor runs were deleted. They ran on
+> `v6.2.1-phase-continuation-cursor`, built on the false premise that
+> cursor-agent has no subagent mechanism, so refactor executed inline instead
+> of in an isolated subagent. Cursor has had subagents since v2.4 — verified
+> against the pinned `cursor-agent 2026.07.23-e383d2b`; no deleted run
+> contained a single `taskToolCall`.
+>
+> Every `cursor` column, and every claim comparing cursor to CC/OC/pi, is
+> unsupported until the arm is re-run. Two consequences are structural, not
+> cosmetic:
+>
+> - **`refactorings_applied` (cursor 2.6, F-1.4).** It counted inline
+>   `## Refactor` headings, not delegated refactor phases, and conflated
+>   per-cycle with final-pass refactorings. The "cursor refactors least"
+>   reading is most likely a measurement artifact.
+> - **The claim-office trophy gating.** Quality/cost trophies there were
+>   awarded on the basis that cursor is the only cell reaching
+>   `verification_pct` = 1.0. With the cursor arm withdrawn, that gate — and
+>   therefore the claim-office $/token/duration trophies — must be
+>   recomputed.
+>
+> The CC, OC and pi arms are **untouched and still valid**; their runs remain
+> in the pool. This file is deliberately left in place rather than blanked so
+> that data is not lost. It will be rewritten wholesale from reaggregated data
+> via `/reanalyze` once cursor is re-run — not patched by hand, so the trophy
+> convention and spot-check gates apply.
+
 Harness effect Claude Code (CC) vs OpenCode (OC) vs pi at constant model
 (opus-4-8 via Requesty, `vertex/claude-opus-4-8@eu`), workflow intention
 (`v6.2-with-why-cleaned{,-oc,-pi}`) and prompt style (`example-mapping`).

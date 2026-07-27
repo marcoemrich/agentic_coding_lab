@@ -10,7 +10,7 @@ factors:
     - composer-cursor     # → composer-2.5            ("Composer 2.5") — no effort axis
     - grok-cursor         # → cursor-grok-4.5-medium  ("Cursor Grok 4.5 Medium")
 controls:
-  workflow: v6.2.1-phase-continuation-cursor   # cursor-cli workflow (.cursor/ markers), derived from v6.2.1-pi, refactor inline
+  workflow: v6.2.1-phase-continuation-cursor   # cursor-cli workflow (.cursor/ markers), derived from v6.2.1-pi, refactor via .cursor/agents/ subagent
   kata_base: game-of-life
   prompt: example-mapping
 outcomes:
