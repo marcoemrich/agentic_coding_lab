@@ -631,8 +631,16 @@ EOF
     echo -e "  Installing dependencies..."
     (cd "$run_dir" && pnpm install --silent --prefer-offline 2>/dev/null) || true
 
-    # Run Claude Code with timeout + capture log + tolerate non-zero exit.
-    echo -e "  Running Claude Code... (model: $cli_model, thinking: $thinking)"
+    # Run the harness CLI with timeout + capture log + tolerate non-zero exit.
+    # Name the actual CLI — a hardcoded "Claude Code" here made pi/oc/cursor
+    # runs look like they had been dispatched to the wrong harness.
+    case "$harness" in
+        pi)       harness_label="pi" ;;
+        opencode) harness_label="OpenCode" ;;
+        cursor)   harness_label="cursor-agent" ;;
+        *)        harness_label="Claude Code" ;;
+    esac
+    echo -e "  Running $harness_label... (model: $cli_model, thinking: $thinking)"
     start_time=$(date +%s)
     run_log="$run_dir/run.log"
     claude_exit=0
