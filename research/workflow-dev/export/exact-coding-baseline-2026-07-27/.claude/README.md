@@ -4,6 +4,13 @@ A ready-to-copy Claude Code workflow for Test-Driven Development with
 configurable human-in-the-loop checkpoints. This baseline ships the
 `.claude/` directory you can drop into your project.
 
+> **This is the Claude Code subtree.** The same workflow ships for pi
+> (`.pi/`), OpenCode (`.opencode/`), and cursor-agent (`.cursor/`) in the
+> snapshot this directory came from — see the snapshot-level `README.md`
+> there for the harness comparison. The four are independent; you only need
+> the one your harness reads. If you received `.claude/` on its own, nothing
+> is missing — it is self-contained.
+
 ## What it is
 
 A four-phase TDD cycle (Test-List → Red → Green → Refactor) implemented as
@@ -55,10 +62,9 @@ to "current best for correctness-critical work", see
 
 ## HITL adaptation
 
-The source workflow was built for unattended batch experiments — it ran with
-no human gates between phases so a measurement pipeline could parse an
-uninterrupted sequence of tool calls. For interactive use, that
-autonomous-by-default behavior is wrong.
+The source workflow was built for unattended batch runs — it ran with no human
+gates between phases, start to finish, without stopping. For interactive use,
+that autonomous-by-default behavior is wrong.
 
 This export changes it to:
 

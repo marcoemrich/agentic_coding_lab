@@ -327,9 +327,27 @@ force-fitting it.
 >
 > Text-marker harnesses (pi, cursor) legitimately need a marker table —
 > the markers are how their phases are recognised. Keep the table; replace
-> only the lab-metric framing. "Missing markers silently zero
-> `refactorings_applied`" becomes "these markers make each phase boundary
-> visible and machine-checkable".
+> only the lab-metric framing.
+>
+> **Replace the frame, not just the metric names.** Renaming
+> `refactorings_applied` while leaving "the measurement pipeline parses…"
+> around it still tells the consumer they are being measured. The whole
+> sentence has to shift from *what the lab counts* to *what the marker
+> makes visible to a human reader*:
+>
+> | Lab framing | Consumer framing |
+> |---|---|
+> | "the measurement pipeline **cannot count tool invocations** to track cycles" | "because there is no tool call per phase, the phase boundaries are marked by text markers instead" |
+> | column header "What the Parser Counts" | "What It Makes Visible" |
+> | "red-phase cycle (`cycle_count`)" | "a new cycle started" |
+> | "`predictions_correct`, `predictions_total`" | "both predictions were made and scored" |
+> | "are **parsed mechanically**" | "scoring each prediction separately is what makes the Guessing Game worth playing" |
+> | "unattended batch experiments … so a measurement pipeline could parse an uninterrupted sequence of tool calls" | "unattended batch runs — it ran with no human gates between phases, start to finish" |
+>
+> The test: a reader who has never heard of the lab should find nothing in
+> the exported files that only makes sense if they had. Validation 10
+> greps for the left column; it cannot check that the right column reads
+> naturally.
 >
 > **The table's own right-hand column is part of that framing.** In the lab
 > it is headed *"What the Parser Counts"* and its cells name metrics

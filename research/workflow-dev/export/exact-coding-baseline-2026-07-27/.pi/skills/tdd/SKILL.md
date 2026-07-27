@@ -20,8 +20,8 @@ description: Strict Test-Driven Development workflow (Red-Green-Refactor) with c
 
 This workflow runs on **pi**, where skills are auto-loaded documents, not tool calls.
 The model reads each SKILL.md once and then follows its instructions directly.
-This means the measurement pipeline **cannot count tool invocations** to track cycles.
-Instead, it relies on **text markers** in the assistant output.
+Because there is no tool call per phase, the phase boundaries are marked by
+**text markers** in the assistant output instead.
 
 ### Phase-Completion Markers Are MANDATORY
 
@@ -29,13 +29,13 @@ Every TDD phase MUST produce a specific text marker in your output.
 These markers make each phase boundary visible and machine-checkable.
 Skipping them makes the cycle impossible to audit after the fact.
 
-| Phase     | Mandatory Output Marker                   | What the Parser Counts               |
+| Phase     | Mandatory Output Marker                   | What It Makes Visible                |
 |-----------|-------------------------------------------|--------------------------------------|
-| Test List | `## Test List` heading                    | test-list phase occurrence           |
-| Red       | `## Red` heading                          | red-phase cycle (`cycle_count`)      |
-| Red       | `Red Phase Complete:` + prediction lines  | `predictions_correct`, `predictions_total` |
-| Green     | `## Green` heading                        | green-phase occurrence               |
-| Refactor  | `subagent` tool call with `agent: "refactor"` | refactoring applied this cycle  |
+| Test List | `## Test List` heading                    | the test list was written up front   |
+| Red       | `## Red` heading                          | a new cycle started                  |
+| Red       | `Red Phase Complete:` + prediction lines  | both predictions were made and scored |
+| Green     | `## Green` heading                        | the failing test was made to pass    |
+| Refactor  | `subagent` tool call with `agent: "refactor"` | refactoring ran this cycle      |
 
 **Format for each Red phase output:**
 
@@ -51,10 +51,11 @@ Red Phase Complete:
 <Result summary>
 ```
 
-The two prediction lines (`Compilation Prediction: ... Correct` / `Runtime Prediction: ... Correct`)
-are **parsed mechanically**. You MUST output them verbatim with `Correct` or `Incorrect` at the end.
-Do not abbreviate, summarize, or collapse them. Do not skip them when a test already passes --
-in that case, write:
+Output both prediction lines (`Compilation Prediction: ... Correct` / `Runtime
+Prediction: ... Correct`) verbatim, ending in `Correct` or `Incorrect`.
+Do not abbreviate, summarize, or collapse them -- scoring each prediction
+separately is what makes the Guessing Game worth playing. Do not skip them when
+a test already passes -- in that case, write:
 
 ```
 ## Red -- Test N: <test description>
