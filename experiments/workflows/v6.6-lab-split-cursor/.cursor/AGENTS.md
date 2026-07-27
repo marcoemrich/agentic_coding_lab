@@ -11,31 +11,32 @@
 
 ## CRITICAL: Mandatory Output Format
 
-This workflow runs on **cursor-agent**, where skills are auto-loaded documents,
-not tool calls. Read each SKILL.md once and then follow its instructions
-directly. The measurement pipeline **cannot count tool invocations** to track
-cycles. Instead, it relies on **text markers** in the assistant output.
+This workflow runs on **cursor-agent**. The `test-list`, `red` and `green`
+phases are auto-loaded skill documents, not tool calls — read each SKILL.md
+once and then follow its instructions directly. Because those phases produce no
+tool call of their own, they are tracked by **text markers** in the assistant
+output. Refactor and end-refactor are different: they run as **isolated
+subagents** via the Task tool, so they are tracked by the tool call itself.
 
 ### Phase-Completion Markers Are MANDATORY
 
-Every TDD phase MUST produce a specific text marker in your output.
-These markers are mechanically parsed to compute `cycle_count`, `predictions_correct`,
-and `refactorings_applied`. Missing markers silently zero the corresponding metric,
-invalidating the data point.
+Every TDD phase MUST produce its marker. The skill phases emit a text heading;
+the refactor phases are recognised by their subagent call. Missing markers
+silently zero the corresponding metric, invalidating the data point.
 
-| Phase     | Mandatory Output Marker                   | What the Parser Counts               |
+| Phase     | Mandatory Marker                          | What the Parser Counts               |
 |-----------|-------------------------------------------|--------------------------------------|
-| Test List | `## Test List` heading                    | test-list phase occurrence           |
+| Test List | `Test List Created` (or `Test List Phase Complete`) | test-list phase occurrence |
 | Red       | `## Red` heading                          | red-phase cycle (`cycle_count`)      |
 | Red       | `Red Phase Complete:` + prediction lines  | `predictions_correct`, `predictions_total` |
 | Green     | `## Green` heading                        | green-phase occurrence               |
-| Refactor  | `## Refactor` heading                     | refactoring applied this cycle       |
-| End-Refactor | `## Refactor (final pass)` heading      | the final whole-src pass             |
+| Refactor  | Task call to the `refactor` subagent      | per-cycle refactoring                |
+| End-Refactor | Task call to the `end-refactor` subagent | the final whole-src pass            |
 
-**IMPORTANT**: emit every marker as **assistant output text**, not only inside
-private reasoning. Markers that appear only in a thinking/reasoning block are
-not counted. State the `## Red` / `## Green` / `## Refactor` headings in your
-visible response.
+**IMPORTANT**: emit every text marker as **assistant output text**, not only
+inside private reasoning. Markers that appear only in a thinking/reasoning block
+are not counted. State the `## Red` / `## Green` headings in your visible
+response.
 
 **Format for each Red phase output:**
 
@@ -68,21 +69,13 @@ Test already passes -- no new failure to fix. Skipping green/refactor.
 ## Green -- <brief summary of what was added>
 ```
 
-**Format for Refactor phase output:**
-
-```
-## Refactor
-
-**Naming**: <renamed X to Y / kept X because Z>
-**Mass Change**: <before -> after> (delta)
-**Rule applied**: <Rule 2/3/4 improvement, or "none possible because ...">
-**Tests**: All passing
-```
+**Refactor phase output** is produced by the `refactor` subagent, not by you.
+After it returns, read its report and continue with the next Red phase.
 
 **Format for Test List phase output:**
 
 ```
-## Test List
+Test List Created:
 
 <test list details>
 ```
@@ -93,17 +86,25 @@ This project follows strict Test-Driven Development practices using the Red-Gree
 v6 keeps red and green in a shared context so the predictions, error messages, and minimal
 implementations stay coherent -- then evaluates the resulting code in a dedicated refactor pass.
 
-## Architecture: Auto-loaded Skills
+## Architecture: Auto-loaded Skills + Isolated Subagents
 
-- **`test-list`, `red`, `green`, `refactor`** -- Their SKILL.md files are auto-loaded as context.
+This workflow is a **hybrid**, exactly like the cc and pi variants:
+
+- **`test-list`, `red`, `green`** -- Their SKILL.md files are auto-loaded as context.
   Read each SKILL.md **before the first use** of that phase, then follow its instructions
-  directly in the main context. You execute every phase yourself, following the skill content.
+  directly in the main context. These three share state, so the test list, last error,
+  and current implementation stay in working memory.
+- **`refactor` and `end-refactor`** -- Run as **Task subagents with isolated context**.
+  They live in `.cursor/agents/` and see only the current source and tests, not the
+  red/green history. Hypothesis: refactoring benefits most from a fresh perspective
+  free of implementation bias.
 
-Unlike the pi variant of this workflow, refactor runs **inline in the main
-context** (cursor-agent has no separate subagent tool). Read
-`refactor/SKILL.md` and apply it yourself, then emit `## Refactor`.
+**Delegate the refactor phases — do not perform them yourself.** If you refactor
+in the main context instead of calling the subagent, the workflow loses the
+architectural separation that makes the hybrid work, and the refactor phase is
+not counted.
 
-Do NOT skip reading the skill files. Do NOT skip the mandatory output markers.
+Do NOT skip reading the skill files. Do NOT skip the mandatory markers.
 
 ### Which Mechanism to Use:
 
@@ -112,7 +113,8 @@ Do NOT skip reading the skill files. Do NOT skip the mandatory output markers.
 | Test List     | **Skill document** (main context)      | Read `.cursor/skills/test-list/SKILL.md`, follow its steps  |
 | Red Phase     | **Skill document** (main context)      | Read `.cursor/skills/red/SKILL.md`, follow its steps        |
 | Green Phase   | **Skill document** (main context)      | Read `.cursor/skills/green/SKILL.md`, follow its steps      |
-| Refactor Phase| **Skill document** (main context)      | Read `.cursor/skills/refactor/SKILL.md`, follow its steps   |
+| Refactor Phase| **Task subagent** (isolated context)   | Launch the `refactor` agent from `.cursor/agents/`           |
+| End-Refactor  | **Task subagent** (isolated context)   | Launch the `end-refactor` agent from `.cursor/agents/`       |
 
 ## TDD Workflow
 
@@ -123,10 +125,10 @@ Provide: feature, test file path, implementation file path, requirements.
 
 The skill creates a comprehensive test list using `it.todo()` covering every rule and example from the specification.
 
-**DO NOT** write the test list yourself. Follow the skill instructions and produce the `## Test List` marker.
+**DO NOT** write the test list yourself. Follow the skill instructions and produce the `Test List Created:` marker.
 
 <!-- LAB-ONLY:START -->
-**DO NOT** end your turn after the test list. The moment the `## Test List`
+**DO NOT** end your turn after the test list. The moment the `Test List Created:`
 marker is complete, continue in the same turn into the Red Phase for test 1
 (read `red/SKILL.md`, produce `## Red`). See "Phase Continuation" in the
 LAB-ONLY block at the end of this file -- the Test-List -> Red boundary is
@@ -152,37 +154,54 @@ The skill implements minimal code to make the test pass -- hardcoded returns are
 **DO NOT** write implementation code yourself. Follow the skill instructions and produce the `## Green` marker.
 
 ### 4. Refactor Phase
-**READ SKILL**: `.cursor/skills/refactor/SKILL.md`
+**LAUNCH SUBAGENT**: the `refactor` agent from `.cursor/agents/refactor.md`
 
-Provide (to yourself, as you apply the skill): test file path, implementation
-file path, passing-test count, a one-line summary of the Green phase you just
-completed.
+The subagent runs in an isolated context and has **no memory of red/green** —
+everything it needs must be in the prompt you pass it:
 
-The refactor skill improves the implementation while keeping all tests green:
+```
+Test file: src/<feature>.spec.ts
+Implementation file: src/<feature>.ts
+Passing tests: <count>
+Recent Green phase: <one-line summary of what was just added>
+
+Refactor the implementation while keeping all tests green.
+```
+
+The agent improves the implementation while keeping all tests green:
 - MUST attempt at least one refactoring (or document why none is possible)
 - Evaluate naming FIRST
 - Apply the Four Rules of Simple Design (priority order)
 - Calculate APP (Absolute Priority Premise) mass before/after
 
-Run `pnpm test` after each change to keep tests green. Emit the `## Refactor`
-marker with the outcome, then proceed directly to the next Red phase.
+**DO NOT** refactor code yourself -- let the agent do it. After it returns,
+read its report and proceed directly to the next Red phase.
 
 ### 5. Repeat
 Return to step 2 (Red phase) for the next test.
 
 ### 6. End-Refactor (once, after the last green cycle)
-**READ SKILL**: `.cursor/skills/end-refactor/SKILL.md`
+**LAUNCH SUBAGENT**: the `end-refactor` agent from `.cursor/agents/end-refactor.md`
 
-After the last per-cycle refactor and once all tests pass, perform the
-end-refactor pass exactly once. It covers the **whole production tree**
+After the last per-cycle refactor returns and all tests pass, launch the
+`end-refactor` agent exactly once. It covers the **whole production tree**
 (`src/`, excluding `*.spec.ts`) using deterministic pre/post measurements:
 ESLint smells + SonarJS cognitive complexity, plus APP mass and McCabe
-cyclomatic complexity. Iterate one change at a time until no metric
+cyclomatic complexity. It iterates one change at a time until no metric
 improves further.
 
-Like the per-cycle refactor, this runs **inline in the main context** —
-cursor-agent has no subagent mechanism. Read the skill and apply it
-yourself, then emit the report under a `## Refactor (final pass)` heading.
+```
+Implementation files: src/<all non-spec *.ts>
+Test files: src/<*.spec.ts>
+Passing tests: <count>
+
+Run the final metric-driven refactoring pass over the whole src/.
+Iterate ONE change at a time with pre/post measurement (ESLint, cognitive,
+APP, McCabe). Stop when no metric improves further.
+```
+
+**DO NOT** refactor the whole `src/` yourself — delegate to the end-refactor
+subagent. After it returns, read its report.
 
 ## Core TDD Principles
 
@@ -195,8 +214,10 @@ TDD practices will feel counterintuitive:
 
 ### Common TDD Failure Modes
 - **MISSING OUTPUT MARKERS** -- The most critical failure mode.
-  Every cycle MUST have `## Red`, `## Green`, and `## Refactor` headings in visible output.
+  Every cycle MUST have `## Red` and `## Green` headings in visible output.
   Every Red cycle with a failing test MUST have `Red Phase Complete:` with prediction lines.
+- **NOT DELEGATING THE REFACTOR PHASES** -- equally critical. Refactoring in the
+  main context loses the isolated-context architecture and is not counted.
 - Multiple active tests at once
 - Implementing beyond what tests demand
 - Skipping predictions
@@ -236,18 +257,19 @@ describe("Some Feature", () => {
 
 ## Workflow Sequence
 
-1. **Test List Phase** -- Read skill, produce `## Test List` marker
+1. **Test List Phase** -- Read skill, produce `Test List Created:` marker
 2. **For each test:**
    - **Red Phase** -- Read skill, produce `## Red` and `Red Phase Complete:` with predictions
    - **Green Phase** -- Read skill, produce `## Green` marker
-   - **Refactor Phase** -- Read skill, apply it inline, produce `## Refactor` marker
+   - **Refactor Phase** -- Launch the `refactor` subagent, read its report
 3. **Continue** until all tests are implemented and passing
-4. **End-Refactor** -- read `end-refactor/SKILL.md`, apply inline once, produce `## End-Refactor`
+4. **End-Refactor** -- Launch the `end-refactor` subagent once, over the whole `src/`
 
 ## Remember
 
-- **ALWAYS PRODUCE THE MANDATORY MARKERS** -- `## Test List`, `## Red`, `Red Phase Complete:`, `## Green`, `## Refactor` -- in visible assistant output, not only in reasoning.
-- **REFACTOR INLINE** -- read `refactor/SKILL.md` and apply it yourself; there is no subagent on this harness.
+- **ALWAYS PRODUCE THE MANDATORY MARKERS** -- `Test List Created:`, `## Red`, `Red Phase Complete:`, `## Green` -- in visible assistant output, not only in reasoning. Refactor and end-refactor are counted by their subagent call, not by a heading.
+- **ALWAYS DELEGATE THE REFACTOR PHASES** -- launch the `refactor` / `end-refactor` agents from `.cursor/agents/`; never refactor in the main context.
+- **The refactor subagents have no memory of red/green** -- pass them everything they need in the prompt.
 - Follow skill content (test-list/red/green/refactor SKILL.md) for the actual work
 - Trust the process -- discomfort is a signal you're doing it right
 
@@ -303,15 +325,19 @@ turn**. There are no human-approval gates and no natural stopping points
 between phases.
 
 A phase-completion line (e.g. "Test List Phase Complete", "Red Phase
-Complete", a `## Refactor` block) is a **checkpoint, not a
-terminus**. After emitting it you MUST immediately continue with the next
+Complete"), or a returning refactor subagent, is a **checkpoint, not a
+terminus**. After it you MUST immediately continue with the next
 phase's action in the same turn:
 
 - After the **Test List** -> read `red/SKILL.md` and produce `## Red` for test 1.
 - After **Red** -> read `green/SKILL.md` and produce `## Green`.
-- After **Green** -> read `refactor/SKILL.md` and produce `## Refactor`.
-- After **Refactor** -> produce `## Red` for the next test.
-- After the **last cycle** -> apply `end-refactor/SKILL.md` inline once.
+- After **Green** -> launch the `refactor` subagent.
+- After the **refactor subagent returns** -> produce `## Red` for the next test.
+- After the **last cycle** -> launch the `end-refactor` subagent once.
+
+A returning subagent is the most tempting place to end a turn — its report
+looks like a conclusion. It is not. Read it and start the next phase
+immediately.
 
 The only place your turn may end is **after** you have written
 `experiment-done.txt` containing `DONE`. Ending the turn on a "Proceeding
@@ -319,8 +345,8 @@ to..." / "Next Step..." announcement -- without actually taking that step
 -- is the single most common failure mode on this harness and invalidates
 the run. Announcing an action is not doing it; always do it in the same turn.
 
-**NEVER STOP AT A PHASE BOUNDARY** -- Test List -> Red -> Green -> Refactor
--> next Red all happen in one turn. The only turn-end is after
+**NEVER STOP AT A PHASE BOUNDARY** -- Test List -> Red -> Green -> refactor
+subagent -> next Red all happen in one turn. The only turn-end is after
 `experiment-done.txt` says `DONE`.
 
 <!-- LAB-ONLY:END -->

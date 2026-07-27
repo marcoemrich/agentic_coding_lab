@@ -96,26 +96,46 @@ Instead, it relies on **text markers** in assistant output and
 
 ## Hard requirements — cursor harness
 
-cursor-agent runs like pi: skills are auto-loaded documents, not tool calls,
-and the model follows them "freihand". Cycle/prediction detection relies on
-the same **text markers** in assistant output. The one structural difference:
-cursor-agent has **no subagent tool**, so refactor runs inline and is detected
-as a `## Refactor` text marker (not a tool call). A **tool-sequence fallback**
-covers models that skip the text markers entirely.
+cursor-agent is a hybrid, like cc and pi. The `test-list`, `red` and `green`
+phases are auto-loaded skill documents, not tool calls, and the model follows
+them "freihand" — so cycle/prediction detection relies on **text markers** in
+assistant output. Refactor and end-refactor are **delegated to isolated
+subagents** in `.cursor/agents/` and are detected by the `taskToolCall` itself,
+exactly as pi's `subagent` calls are. A **tool-sequence fallback** covers models
+that skip the text markers entirely.
+
+> **Historical note.** Until 2026-07 these workflows ran refactor inline and
+> counted a `## Refactor` text marker, on the false premise that cursor-agent
+> had no subagent mechanism. Cursor has had a Task tool since v2.4. All cursor
+> runs produced under the inline contract were discarded — none contained a
+> single `taskToolCall`, so the isolated-context architecture was never
+> actually measured on this harness.
 
 | # | Marker | Where it must appear | Drives | Where in parser |
 |---|---|---|---|---|
 | C1 | `## Red` heading in assistant text (not only reasoning) | Each occurrence counts as one red-phase cycle (`cycle_count`) | `parse_cursor_transcript.py` (`_PHASE_TEXT_MARKERS_RE`) |
 | C2 | `## Green` heading in assistant text | Green-phase occurrence | same as C1 |
-| C3 | `## Test List` heading in assistant text | Test-list phase occurrence | same as C1 |
-| C4 | `## Refactor` heading in assistant text | Each occurrence counts as `refactorings_applied` | `parse_cursor_transcript.py` (`_PHASE_TEXT_MARKERS_RE["refactor"]`) |
+| C3 | `Test List Created` or `Test List Phase Complete` in assistant text | Test-list phase occurrence | same as C1 |
+| C4 | `taskToolCall` with `subagentType.custom.name` = `refactor` | Each call counts as a per-cycle refactoring (`refactorings_per_cycle`) | `parse_cursor_transcript.py` (`_subagent_name_of`, `_classify_tool_event`) |
+| C4b | `taskToolCall` with `subagentType.custom.name` = `end-refactor` | The final whole-`src/` pass (`refactorings_end_pass`) | same as C4 |
 
-> **End-refactor on cursor must use `## Refactor (final pass)`.** The C4
-> regex is `##\s*Refactor\b`, so `## End-Refactor` does **not** match — the
-> final pass would be invisible to `refactorings_applied`. The parenthetical
-> form matches and needs no parser change. Verify any new heading against
-> the live regex before adopting it; changing the parser instead would
-> re-scope every historical cursor run.
+> **C3 is not a `##` heading.** The regex matches the prose forms
+> `Test List Created` / `Test List Phase Complete`, **not** `## Test List`.
+> The workflows emit the prose forms; instructing a model to emit
+> `## Test List` produces a marker the parser cannot see.
+
+> **`refactorings_applied` = C4 + C4b**, and the two are also reported
+> separately. Do **not** add the `## Refactor` text-marker count on top: a
+> workflow that both delegates and echoes a heading would be double-counted.
+> The parser enforces this — when any delegated call is present it ignores the
+> text marker and sets `marker_source: "subagent-calls"`.
+>
+> Built-in subagents (Explore / Bash / Browser) also arrive as `taskToolCall`
+> but carry no `subagentType.custom.name`, so they are correctly ignored.
+>
+> Text-marker-only runs (pre-2026-07 workflows) still parse via
+> `##\s*Refactor\b`, which matches `## Refactor (final pass)` but **not**
+> `## End-Refactor`. That path is legacy; new cursor workflows must delegate.
 | C5 | `Red Phase Complete:` + prediction lines | **Gates** prediction parsing (same as pi P5) | `extract_predictions_from_text` with `loose_gate=True` |
 | C6 | Lines matching `(Compilation\|Runtime) Prediction: ... (Correct\|Incorrect)` | `predictions_correct`, `predictions_total` | `_PREDICTION_OUTCOME_LINE_RE` |
 | C7 | `experiment-done.txt` containing `DONE` | Same as CC marker 4 | same |
@@ -127,15 +147,24 @@ covers models that skip the text markers entirely.
   `assistant` events. The parser reads only `assistant` text, so a `## Red`
   that appears solely in a thinking block is not counted. The workflow prompt
   states this explicitly.
-- **C4 replaces pi's P4 (subagent call).** cursor has no subagent tool;
-  refactor is an inline phase emitting `## Refactor`. `refactorings_applied`
-  therefore measures "refactor phase declared", not "isolated subagent ran" —
-  note this when comparing cursor to pi cross-harness.
+- **C4 is the direct analogue of pi's P4 (subagent call).** Both count an
+  isolated refactor subagent actually running, so `refactorings_applied` is
+  **comparable across cc, pi and cursor** — all three measure the same
+  construct. This was not true before 2026-07, when cursor counted a text
+  marker meaning "refactor phase declared"; cross-harness comparisons of
+  `refactorings_applied` from that era are not valid.
 - **Tool-sequence fallback.** When zero `## Red` markers are found,
   `parse_cursor_transcript.py` infers cycles from the `editToolCall` /
   `shellToolCall` sequence (test-edit → `pnpm test` = red; impl-edit →
   `pnpm test` = green; later impl-edit = refactor). `transcript-metrics.json`
   records `marker_source: "tool-sequence-fallback"` when this path is used.
+
+- **`marker_source` tells you which path produced the refactor count:**
+  `"subagent-calls"` (delegated — the current contract), `"text-markers"`
+  (legacy inline), or `"tool-sequence-fallback"` (model ignored the markers).
+  A current-generation cursor run reporting anything other than
+  `"subagent-calls"` means the model refactored in the main context instead of
+  delegating — the run is not measuring the intended architecture.
 
 - Emoji headers `🔴` / `🟢` / `🔄` / `📋`
 - The `Green Phase Complete:` / `Refactor Phase Complete:` strings (only
@@ -180,7 +209,8 @@ marker is broken — fix it before launching the n=3 batch.
   `v6.6-lab-split-oc`
 - pi workflows satisfying markers P1–P7: `v6.2-with-why-cleaned-pi`,
   `v6.6-lab-split-pi`
-- cursor workflows satisfying markers C1–C7: `v6.2.1-phase-continuation-cursor`,
-  `v6.6-lab-split-cursor`
+- cursor workflows satisfying markers C1–C7: `v6.2.1-phase-continuation-cursor`
+  (C4b not applicable — that generation has no end-refactor phase),
+  `v6.6-lab-split-cursor` (all markers incl. C4b)
 - Past compliance incidents documented in repo memory under
   *"Drei Metriken-Bugs"* and *"v4 Predictions-Compliance"*

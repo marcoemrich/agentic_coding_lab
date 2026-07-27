@@ -483,9 +483,10 @@ for entry in "${RUN_LIST[@]}"; do
             cp "$WORKFLOWS_DIR/$workflow/.pi/AGENTS.md" "$run_dir/"
     elif [ "$harness" = "cursor" ]; then
         # Mirror .cursor/ into run_dir. cursor-agent reads AGENTS.md via cwd
-        # walk-up (same pattern as pi/opencode), and auto-loads project-local
-        # skills from .cursor/skills/. There is no subagent extension —
-        # refactor runs inline (see the workflow's AGENTS.md).
+        # walk-up (same pattern as pi/opencode), auto-loads project-local
+        # skills from .cursor/skills/, and resolves subagents from
+        # .cursor/agents/ (native Task tool — no extension needed, unlike pi).
+        # The recursive copy covers both subdirs; keep it recursive.
         cp -r "$WORKFLOWS_DIR/$workflow/.cursor" "$run_dir/"
         [ -f "$WORKFLOWS_DIR/$workflow/.cursor/AGENTS.md" ] && \
             cp "$WORKFLOWS_DIR/$workflow/.cursor/AGENTS.md" "$run_dir/"

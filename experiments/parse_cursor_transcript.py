@@ -18,21 +18,39 @@ Event shapes (verified against a real cursor-agent stream-json run, 2026-07):
      "tool_call":{"editToolCall":{"args":{"path":"...","streamContent":"..."},
                                    "result":{"success":{"linesAdded":N,...}}}}, ...}
   {"type":"tool_call", "tool_call":{"shellToolCall":{"args":{"command":"pnpm test",...}}}, ...}
+  {"type":"tool_call","subtype":"completed",
+     "tool_call":{"taskToolCall":{"args":{"subagentType":{"custom":{"name":"refactor"}},
+                                          "prompt":"...","description":"..."},
+                                  "result":{"success":{"conversationSteps":[...]}}}}, ...}
   {"type":"result","subtype":"success","is_error":false,
      "usage":{"inputTokens":N,"outputTokens":N,"cacheReadTokens":N,"cacheWriteTokens":N},
      "duration_ms":N, "session_id":"..."}
 
-TDD metrics (design decision, see research/questions-cursor-cli/):
+TDD metrics:
 
-- PRIMARY: text markers in assistant output (same contract as pi):
-  `## Red` -> cycle_count, `## Refactor` -> refactorings_applied,
-  predictions via the shared extract_predictions_from_text (loose_gate=True).
-  cursor-agent has no subagent tool, so refactor is inline and detected as
-  a `## Refactor` heading — not a tool call.
+- cycle_count comes from `## Red` text markers in assistant output (same
+  contract as pi), predictions via the shared extract_predictions_from_text
+  (loose_gate=True). The red/green/test-list phases are auto-loaded skill
+  documents that produce no tool call of their own, so text is the only signal.
+- refactorings_applied comes from **delegated subagent calls**: a completed
+  `taskToolCall` whose `subagentType.custom.name` is `refactor` or
+  `end-refactor`. cursor-agent has had a Task tool since v2.4, and the cursor
+  workflows delegate both refactor phases to `.cursor/agents/` — verified
+  against cursor-agent 2026.07.23 in headless `-p` mode.
+
+  Per-cycle and final-pass refactorings are reported separately
+  (`refactorings_per_cycle` / `refactorings_end_pass`). The older text-marker
+  path could not distinguish them: one `## Refactor` regex matched both.
+
+  Runs that emit only text markers (pre-2026-07 workflows) still parse via the
+  `## Refactor` heading, but the two signals are never summed.
 - FALLBACK (only when zero `## Red` markers are found): infer phases from the
   edit/shell tool-call sequence (test-edit -> test_run = red; impl-edit ->
   test_run = green), so a run whose model ignored the marker contract still
   yields a non-zero cycle_count instead of silently scoring 0.
+
+`marker_source` records which path produced the refactor count:
+"subagent-calls", "text-markers", or "tool-sequence-fallback".
 
 cost_usd is None: cursor-agent's result event reports token usage but no cost
 (Requesty-like); cost is computed downstream from tokens x price if needed.
@@ -104,26 +122,48 @@ def _assistant_text_of(ev: dict) -> str | None:
 def _tool_call_of(ev: dict) -> tuple[str, dict] | None:
     """Return (tool_kind, args) for a completed tool_call event, else None.
 
-    tool_kind is the cursor wrapper key: "editToolCall" or "shellToolCall".
-    Only the `completed` subtype is used so each call is counted once with its
-    full argument payload.
+    tool_kind is the cursor wrapper key: "editToolCall", "shellToolCall" or
+    "taskToolCall" (the subagent dispatch). Only the `completed` subtype is
+    used so each call is counted once with its full argument payload.
     """
     if ev.get("type") != "tool_call" or ev.get("subtype") != "completed":
         return None
     tc = ev.get("tool_call") or {}
     if not isinstance(tc, dict):
         return None
-    for kind in ("editToolCall", "shellToolCall"):
+    for kind in ("editToolCall", "shellToolCall", "taskToolCall"):
         inner = tc.get(kind)
         if isinstance(inner, dict):
             return kind, (inner.get("args") or {})
     return None
 
 
-def _classify_tool_event(kind: str, args: dict) -> str | None:
-    """Map a cursor tool call onto an inline TDD event kind.
+def _subagent_name_of(args: dict) -> str | None:
+    """Extract the dispatched subagent name from a taskToolCall's args.
 
-    Returns one of write_test / write_impl / test_run, else None.
+    Shape (verified against cursor-agent 2026.07.23 stream-json):
+        args.subagentType.custom.name == "refactor"
+
+    Built-in subagents (Explore/Bash/Browser) use a different key inside
+    `subagentType`, so a missing `custom.name` simply yields None — those
+    calls are not TDD refactor phases and must not be counted.
+    """
+    st = args.get("subagentType")
+    if not isinstance(st, dict):
+        return None
+    custom = st.get("custom")
+    if not isinstance(custom, dict):
+        return None
+    name = custom.get("name")
+    return name if isinstance(name, str) and name else None
+
+
+def _classify_tool_event(kind: str, args: dict) -> str | None:
+    """Map a cursor tool call onto a TDD event kind.
+
+    Returns one of write_test / write_impl / test_run (inline edit/shell work,
+    used by the fallback inference) or refactor_subagent / end_refactor_subagent
+    (delegated refactor phases, counted directly). None if not TDD-relevant.
     """
     if kind == "editToolCall":
         path = args.get("path") or ""
@@ -138,6 +178,13 @@ def _classify_tool_event(kind: str, args: dict) -> str | None:
         cmd = args.get("command") or ""
         if isinstance(cmd, str) and _TEST_RUN_RE.search(cmd):
             return "test_run"
+        return None
+    if kind == "taskToolCall":
+        name = _subagent_name_of(args)
+        if name == "refactor":
+            return "refactor_subagent"
+        if name == "end-refactor":
+            return "end_refactor_subagent"
         return None
     return None
 
@@ -251,17 +298,42 @@ def main(run_dir: str) -> int:
 
     total_t = tok["input"] + tok["output"] + tok["cache_read"] + tok["cache_write"]
 
-    # cycle_count / refactorings: text markers primary, tool-sequence fallback.
+    # --- refactorings: delegated subagent calls are the primary signal ---
+    #
+    # Since 2026-07 the cursor workflows delegate refactor and end-refactor to
+    # isolated subagents in `.cursor/agents/` (cursor has had a Task tool since
+    # v2.4). A delegated call is unambiguous evidence that the phase ran, so it
+    # outranks the `## Refactor` text heading.
+    #
+    # The two are reported separately, which older text-marker parsing could not
+    # do: one `## Refactor` regex counted per-cycle and final-pass refactorings
+    # into the same number.
+    refactor_subagent_count = tool_events.count("refactor_subagent")
+    end_refactor_subagent_count = tool_events.count("end_refactor_subagent")
+    delegated_total = refactor_subagent_count + end_refactor_subagent_count
+
     cycle_count = text_phase_counts["red"]
-    refactor_count = text_phase_counts["refactor"]
-    used_fallback = False
+
+    if delegated_total > 0:
+        # Delegated run. Do NOT add the text-marker count on top — a workflow
+        # that both delegates and echoes a `## Refactor` heading would otherwise
+        # be counted twice.
+        refactor_count = delegated_total
+        marker_source = "subagent-calls"
+    else:
+        refactor_count = text_phase_counts["refactor"]
+        marker_source = "text-markers"
+
     if cycle_count == 0:
         fb_red, _fb_green, fb_refactor = _infer_cycles_from_tool_events(tool_events)
         if fb_red > 0:
-            used_fallback = True
             cycle_count = fb_red
             if refactor_count == 0:
                 refactor_count = fb_refactor
+            # Only relabel when the fallback is genuinely carrying the result;
+            # a delegated refactor count stays attributed to the subagent path.
+            if delegated_total == 0:
+                marker_source = "tool-sequence-fallback"
 
     metrics = {
         "source": "cursor",
@@ -283,13 +355,15 @@ def main(run_dir: str) -> int:
                 "refactor": {"avg_duration_seconds": 0.0},
             },
             "refactorings_applied": refactor_count,
+            "refactorings_per_cycle": refactor_subagent_count,
+            "refactorings_end_pass": end_refactor_subagent_count,
             "tests_passed_immediately": 0,
         },
         "predictions_correct": predictions_correct,
         "predictions_total": predictions_total,
         "session_duration_seconds": round(duration_ms / 1000.0, 2),
         "cost_usd": None,
-        "marker_source": "tool-sequence-fallback" if used_fallback else "text-markers",
+        "marker_source": marker_source,
         "phase_marker_counts": text_phase_counts,
     }
 
