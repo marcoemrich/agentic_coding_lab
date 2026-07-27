@@ -116,23 +116,34 @@ a consumer copies the one directory their harness reads:
 
 ```
 exact-coding-baseline-<DATE>/
-  README.md            # snapshot-level: which harnesses, how to install
+  README.md   # snapshot-level: which harnesses, how to install
   VERSION
-  .claude/             # cc      — skills/tdd/, commands/, agents/, rules/
-  .pi/                 # pi      — skills/tdd/, skills/{red,green,test-list}/,
-                       #           agents/, extensions/subagent/
-  .opencode/           # oc      — agents/, + opencode.jsonc fragment
-  .cursor/             # cursor  — rules/*.mdc
+  .claude/    # cc      skills/tdd/SKILL.md · commands/{test-list,red,green}.md
+              #         agents/{refactor,end-refactor}.md · rules/ · settings.json
+  .pi/        # pi      skills/tdd/SKILL.md · skills/{test-list,red,green}/
+              #         agents/{refactor,end-refactor}.md · rules/
+              #         extensions/subagent/{index,agents}.ts + README.md
+  .opencode/  # oc      opencode.json (carries command.tdd)
+              #         agents/{refactor,end-refactor}.md · skills/ · rules/
+  .cursor/    # cursor  rules/{tdd,human-in-the-loop,tdd-with-ts-and-vitest}.mdc
+              #         skills/{test-list,red,green,refactor,end-refactor}/
 ```
+
+Note the file name: OpenCode reads **`opencode.json`**, not `.jsonc`.
+
+Both refactor phases appear in every harness — the per-cycle one and the
+final `end-refactor` pass. cursor realises both as skills because it has no
+subagent mechanism; see "Keep the harness variants feature-equal" in
+`HARNESS-MECHANISMS.md`.
 
 Create only the subtrees for the requested harnesses:
 
 ```bash
 case "$H" in
   cc)     mkdir -p "$TARGET/.claude"/{skills/tdd,agents,commands,rules} ;;
-  pi)     mkdir -p "$TARGET/.pi"/{skills/tdd,agents,extensions/subagent} ;;
-  oc)     mkdir -p "$TARGET/.opencode/agents" ;;
-  cursor) mkdir -p "$TARGET/.cursor/rules" ;;
+  pi)     mkdir -p "$TARGET/.pi"/{skills/tdd,agents,rules,extensions/subagent} ;;
+  oc)     mkdir -p "$TARGET/.opencode"/{agents,skills,rules} ;;
+  cursor) mkdir -p "$TARGET/.cursor"/{rules,skills} ;;
 esac
 ```
 
@@ -231,8 +242,43 @@ Take `templates/README.template.md`. Substitute placeholders:
 - `{{DATE}}` → `$DATE` (both occurrences: title and "Version" line)
 - `{{SOURCE_WORKFLOW}}` → `$SRC_NAME` (two occurrences in "Tested
   parameters" and "Original name and lineage")
+- `{{MULTI_HARNESS_NOTE}}` → see below
 
 Write to `$TARGET/.claude/README.md`.
+
+**`{{MULTI_HARNESS_NOTE}}`.** The template is Claude-Code-specific by
+design: it travels *inside* `.claude/`, so a consumer who copies that one
+directory keeps its documentation. On a cc-only export, substitute the empty
+string. On a multi-harness export, substitute:
+
+```markdown
+> **This is the Claude Code subtree.** The same workflow ships for pi
+> (`.pi/`), OpenCode (`.opencode/`), and cursor-agent (`.cursor/`) in the
+> snapshot this directory came from — see the snapshot-level `README.md`
+> there for the harness comparison. The four are independent; you only need
+> the one your harness reads. If you received `.claude/` on its own, nothing
+> is missing — it is self-contained.
+```
+
+Name only the harnesses actually exported.
+
+**On a multi-harness export, also write a snapshot-level `$TARGET/README.md`.**
+There is no template for it — it is not a per-harness document. It must carry:
+the harness→directory→invocation table, the phase table with the mechanism per
+harness (subagent vs. inline), the end-refactor mechanism table, the opt-in
+gating table, the HITL summary, install steps including the **pi trust prompt**
+warning, and the provenance / three-transformations section.
+
+> **Both READMEs claim the same version, so both must describe the same
+> snapshot.** The 2026-07-27 export shipped a four-harness snapshot README
+> next to a nested `.claude/README.md` that still said "ships the `.claude/`
+> directory" and knew nothing of the other three. A Claude Code user copying
+> `.claude/` got the stale one. Write the snapshot README *and* substitute
+> `{{MULTI_HARNESS_NOTE}}`; validation 13 checks the pair.
+
+Keep the nested README's stack claims concrete. It may say `pnpm` where the
+snapshot README says "a package manager" — `pnpm test` is hardcoded across the
+phase files, so the specific form is the accurate one.
 
 ### Step 4: write VERSION
 
@@ -284,6 +330,27 @@ force-fitting it.
 > only the lab-metric framing. "Missing markers silently zero
 > `refactorings_applied`" becomes "these markers make each phase boundary
 > visible and machine-checkable".
+>
+> **The table's own right-hand column is part of that framing.** In the lab
+> it is headed *"What the Parser Counts"* and its cells name metrics
+> (`cycle_count`, `predictions_total`). Rewriting only the prose around the
+> table leaves the lab vocabulary sitting in the table — which is exactly
+> how it survived into the 2026-07-27 export. Re-head the column *"What It
+> Makes Visible"* and restate each cell as an observable fact about the
+> phase ("a new cycle started", "both predictions were made and scored"),
+> not a counter the consumer has no pipeline for.
+>
+> Two more sentences in the same files carry lab framing and are easy to
+> skip because they read as generic emphasis:
+>
+> | Lab wording | Export wording |
+> |---|---|
+> | "the measurement pipeline **cannot count tool invocations**" | "because there is no tool call per phase, the phase boundaries are marked by text markers instead" |
+> | prediction lines "are **parsed mechanically**" | "scoring each prediction separately is what makes the Guessing Game worth playing" |
+>
+> Do **not** touch the marker strings themselves (`## Red`, `Red Phase
+> Complete:`, the two `Prediction` lines) — those are the MARKERS contract
+> and validation 3 checks them.
 
 > **Shell trap.** Several patch anchors contain backticks
 > (`` `predictions_correct_rate` ``, `` `cycle_count` ``). In an
@@ -331,7 +398,7 @@ Phase skills (`red`, `green`, `test-list`) and the subagent extension carry
 over unchanged.
 
 **OpenCode** — remove `AGENTS.md` from the `instructions` array in
-`opencode.jsonc` (that array is what makes it automatic) and add a
+`opencode.json` (that array is what makes it automatic) and add a
 `command.tdd` entry whose `prompt` carries the orchestration. Phase agents
 in `.opencode/agents/*.md` keep `mode: subagent` and are launched from the
 command prompt.
@@ -649,7 +716,7 @@ report immediately, do not claim success.
    done
 
    # oc — AGENTS.md no longer in the instructions array
-   grep -q '"instructions".*AGENTS.md' "$TARGET/.opencode/opencode.jsonc" 2>/dev/null \
+   grep -q '"instructions".*AGENTS.md' "$TARGET/.opencode/opencode.json" 2>/dev/null \
      && echo "FAIL oc: AGENTS.md still auto-loaded via instructions"
 
    # cursor — workflow rules gated, conventions may stay glob-attached
@@ -667,11 +734,22 @@ report immediately, do not claim success.
     is a JSON string, so a markdown-only grep misses it:
 
     ```bash
-    grep -rn 'predictions_correct_rate\|refactorings_applied\b\|the experiment\|invalidating the data point\|Run autonomously' \
+    grep -rn 'predictions_correct_rate\|refactorings_applied\b\|predictions_correct\b\|predictions_total\|cycle_count\|the experiment\|invalidating the data point\|Run autonomously\|measurement pipeline\|Parser Counts\|parsed mechanically' \
          "$TARGET" && echo "FAIL: lab wording leaked"
     ```
     Must print no matches. On a multi-harness export this check has caught
     leaks in *every* non-cc subtree — Patches A.2/B.1 only cover cc.
+
+    > **The metric-name half of this list is the half that gets missed.**
+    > The 2026-07-27 export shipped with `cycle_count`, `predictions_total`,
+    > "What the Parser Counts", "measurement pipeline" and "parsed
+    > mechanically" live in `.pi/skills/tdd/SKILL.md` and
+    > `.cursor/rules/tdd.mdc` — and passed validation, because the token list
+    > at the time only had `predictions_correct_rate` and
+    > `refactorings_applied`. Those two happen to be the tokens cc uses; the
+    > text-marker harnesses name *different* metrics in their marker tables.
+    > Keep both halves of the alternation, and when a new metric name enters
+    > a workflow, add it here.
 
 11. **No lab routing config in `opencode.json`**:
 
@@ -700,6 +778,30 @@ print('  OK opencode.json is consumer-shaped')"
     "Keep the harness variants feature-equal" in `HARNESS-MECHANISMS.md`)
     — fix it in `experiments/workflows/`, not in the snapshot, then
     re-export. Do not ship an uneven snapshot with a caveat.
+
+13. **README pair agrees** (multi-harness exports only). Both READMEs carry
+    the same version, so neither may describe a narrower snapshot than was
+    actually shipped:
+
+    ```bash
+    # snapshot-level README exists and names every exported harness
+    [ -f "$TARGET/README.md" ] || echo "FAIL: no snapshot-level README.md"
+    for h in claude pi opencode cursor; do
+      [ -d "$TARGET/.$h" ] || continue
+      grep -q "\.$h/" "$TARGET/README.md" \
+        || echo "FAIL: snapshot README omits .$h/"
+    done
+
+    # nested cc README acknowledges it is one subtree of several
+    grep -q 'Claude Code subtree' "$TARGET/.claude/README.md" \
+      || echo "FAIL: .claude/README.md still reads as a single-harness export"
+    ```
+
+    Both READMEs must also agree on the date:
+    ```bash
+    grep -qF "$DATE" "$TARGET/README.md" && grep -qF "$DATE" "$TARGET/.claude/README.md" \
+      || echo "FAIL: README pair disagrees on version"
+    ```
 
     An agent file alone is not enough: verify the phase is actually
     invoked from the harness's orchestration file. Check that one file
@@ -807,7 +909,14 @@ After successful validation:
 
 - `templates/human-in-the-loop.md` — canonical HITL consumable, copied
   verbatim into every snapshot.
-- `templates/tdd-execution-mode.md` — replaces source's
+- `templates/tdd-execution-mode.md` — **cc-only, by design.** Do not port it
+  to the other subtrees, and do not read its absence there as a gap. Its two
+  halves are already covered elsewhere on every harness: the phase sequence
+  sits in that harness's orchestration file (`skills/tdd/SKILL.md`,
+  `command.tdd` in `opencode.json`, `rules/tdd.mdc`), and the subagent
+  contracts in its own `rules/subagent-prompts.md`. cursor carries no
+  contracts at all because it has no subagents — refactor runs inline.
+  Replaces source's
   `tdd-experiment-mode.md` (`legacy` layout). On a `v66` source there is
   no such file to replace: the lab half is dropped with `lab-only.md` and
   the methodology half already lives in the source's

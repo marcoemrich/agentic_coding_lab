@@ -107,7 +107,7 @@ Two pi-specific options worth knowing:
 | | Mechanism |
 |---|---|
 | Auto-load (lab) | `opencode.json(c)` → `"instructions": ["AGENTS.md"]`, plus root `AGENTS.md`. |
-| Explicit (export) | A `command` entry in `opencode.jsonc`, invoked by name. |
+| Explicit (export) | A `command` entry in `opencode.json`, invoked by name. |
 
 OpenCode commands are declared inline in config with a `description` and a
 `prompt`, e.g. the `tdd-auto` / `example-mapping` / `code-review` commands in
@@ -146,7 +146,7 @@ description-gated form.
 |---|---|---|---|
 | Claude Code | `.claude/rules/*.md` | `.claude/skills/tdd/SKILL.md` | frontmatter `description` |
 | pi | `.pi/AGENTS.md` | `.pi/skills/tdd/SKILL.md` | `description`, optional `disable-model-invocation` |
-| OpenCode | `AGENTS.md` via `instructions` | `command.tdd` in `opencode.jsonc` | command name |
+| OpenCode | `AGENTS.md` via `instructions` | `command.tdd` in `opencode.json` | command name |
 | cursor | `.cursor/rules/*.mdc` `alwaysApply: true` | same file, `alwaysApply: false` | `description` |
 
 ## Strip environment-specific configuration

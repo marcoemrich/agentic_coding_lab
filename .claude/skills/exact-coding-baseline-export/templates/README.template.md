@@ -4,6 +4,8 @@ A ready-to-copy Claude Code workflow for Test-Driven Development with
 configurable human-in-the-loop checkpoints. This baseline ships the
 `.claude/` directory you can drop into your project.
 
+{{MULTI_HARNESS_NOTE}}
+
 ## What it is
 
 A four-phase TDD cycle (Test-List → Red → Green → Refactor) implemented as
