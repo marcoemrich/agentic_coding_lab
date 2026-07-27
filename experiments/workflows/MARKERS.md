@@ -29,7 +29,25 @@ parsers, update this file.
 |---|---|---|---|---|
 | 2 | The literal string `Red Phase Complete` | Assistant text emitted by the red-phase command | **Gates** prediction parsing — without this string, predictions in the same block are ignored | `extract_predictions_from_text` ~line 75 |
 | 3 | One or more lines matching `(- \| ✅ \| ❌) (Correct\|Incorrect)` inside that block | Assistant text in the same block as marker 2 | `predictions_correct`, `predictions_total`, derived `predictions_correct_rate` | `_PREDICTION_OUTCOME_RE` ~line 61 |
-| 4 | `experiment-done.txt` containing `DONE` | Written to the run cwd at the end of the autonomous loop | Run-driver detects clean termination; without it the container hits its timeout and the run is flagged `exit_reason: timeout` | `tdd-experiment-mode.md` |
+| 4 | `experiment-done.txt` containing `DONE` | Written to the run cwd at the end of the autonomous loop | Run-driver detects clean termination; without it the container hits its timeout and the run is flagged `exit_reason: timeout` | `tdd-experiment-mode.md` (v6.5 and earlier) / `lab-only.md` (v6.6+) |
+
+### Where marker 4 lives per workflow generation
+
+| Generation | Claude Code | pi / cursor / opencode |
+|---|---|---|
+| v6.5 and earlier | `.claude/rules/tdd-experiment-mode.md` | inline in `AGENTS.md` |
+| **v6.6+ (`v6.6-lab-split-*`)** | `.claude/rules/lab-only.md` | `LAB-ONLY` fenced block at the end of `AGENTS.md` |
+
+The v6.6 line separates **lab measurement infrastructure** from **TDD
+methodology** so a workflow can be exported for real-world use by deleting
+one file (CC) or stripping one fenced block (pi/cursor/oc). Everything the
+parser depends on — the done-marker contract, the autonomy mandate, and the
+phase-continuation fix — lives inside that droppable region.
+
+**Consequence for new workflows:** if you derive from a v6.6 variant, marker
+4 is *not* in `tdd.md`. Do not "clean up" `lab-only.md` or the fenced blocks
+in a lab workflow — removing them zeroes clean-termination detection and
+every run times out.
 
 ### Convention for marker 3
 
@@ -151,8 +169,11 @@ marker is broken — fix it before launching the n=3 batch.
 
 - Parsers: `experiments/analyze_transcript.py`, `experiments/parse_pi_transcript.py`, `experiments/parse_cursor_transcript.py`
 - CC/OC workflows satisfying markers 1–4: `v3-basic-tdd`,
-  `v4-exact-subagents`, `v5-exact-single-context`
-- pi workflows satisfying markers P1–P7: `v6.2-with-why-cleaned-pi`
-- cursor workflows satisfying markers C1–C7: `v6.2.1-phase-continuation-cursor`
+  `v4-exact-subagents`, `v5-exact-single-context`, `v6.6-lab-split-cc`,
+  `v6.6-lab-split-oc`
+- pi workflows satisfying markers P1–P7: `v6.2-with-why-cleaned-pi`,
+  `v6.6-lab-split-pi`
+- cursor workflows satisfying markers C1–C7: `v6.2.1-phase-continuation-cursor`,
+  `v6.6-lab-split-cursor`
 - Past compliance incidents documented in repo memory under
   *"Drei Metriken-Bugs"* and *"v4 Predictions-Compliance"*

@@ -4,45 +4,74 @@ description: |
   Mint a new exact-coding-baseline-YYYY-MM-DD snapshot under
   research/workflow-dev/export/. Detects the current best correctness-
   oriented workflow from research/workflow-dev/workflow-construction.md
-  (or takes an explicit source-workflow argument), copies it, applies the
-  HITL transformation using the canonical template in this skill, and
-  writes README + VERSION inside .claude/ so the snapshot can be dropped
-  straight into a consumer project. Trigger when the user says
+  (or takes an explicit source-workflow argument) and transforms it from a
+  lab workflow into a consumer-ready one on three axes: strips lab-only
+  measurement content, re-enables human-in-the-loop checkpoints, and
+  converts auto-loading config into an explicitly-invoked skill. Exports
+  Claude Code, pi, OpenCode and cursor-agent. Trigger when the user says
   "exact-coding baseline export", "neue exact-coding baseline",
   "exact-coding-baseline-export", or asks to refresh the baseline snapshot.
 ---
 
 # Skill: exact-coding-baseline-export
 
-Mint a dated, HITL-enabled snapshot of the current best TDD workflow into
+Mint a dated, consumer-ready snapshot of the current best TDD workflow into
 `research/workflow-dev/export/exact-coding-baseline-<YYYY-MM-DD>/`.
 
 This is a **true transformation skill** — it reads a source workflow
-(immutable), applies HITL re-enablement on top of it, and writes the result
-as a new snapshot. The skill is self-contained: the HITL consumable template
-and the README template live alongside this file under `templates/`.
+(immutable) and applies three transformations on top of it (see "The three
+transformations" below), writing the result as a new snapshot. The skill is
+self-contained: the HITL consumable template and the README template live
+alongside this file under `templates/`, and the harness research lives in
+`HARNESS-MECHANISMS.md`.
 
 ## Scope
 
 - **Single repo**: agentic_coding_lab_project. Writes only inside
   `research/workflow-dev/export/`. Does not touch source workflows under
-  `experiments/workflows/`, sibling repos, or anything else.
+  `experiments/workflows/`, consumer repos, or anything else.
 - **Single artifact**: a new directory at
-  `research/workflow-dev/export/exact-coding-baseline-<DATE>/`.
+  `research/workflow-dev/export/exact-coding-baseline-<DATE>/`, containing
+  one subtree per exported harness.
 - **Idempotent within a date**: refuses to overwrite an existing
   same-date snapshot unless the user explicitly says "overwrite" / "force".
 
+## The three transformations
+
+The export is not a copy. A lab workflow and a consumer workflow differ on
+three independent axes, and every export applies all three:
+
+| # | Axis | Lab | Export |
+|---|---|---|---|
+| 1 | **Lab content** | autonomy mandate, done-marker, phase-continuation fix | removed (drop `lab-only.md` / strip `LAB-ONLY` fences) |
+| 2 | **Human checkpoints** | none — runs unattended | HITL checkpoints, default level `full-hitl` |
+| 3 | **Invocation** | auto-loads on every session | explicitly invoked by the user |
+
+Axis 3 is the one most easily forgotten, and it is harness-specific. A
+consumer fixing a typo must not get Red-Green-Refactor discipline in
+context; they should have to *ask* for the workflow. Mechanisms per
+harness are documented in `HARNESS-MECHANISMS.md` — **read it before
+exporting a harness you have not exported before.**
+
 ## Arguments
 
-Two positional, both optional:
+Three, all optional:
 
 1. **Date** in `YYYY-MM-DD` form. Default: today (`date +%F`).
-2. **Source workflow name** (e.g. `v6.2-with-why-cleaned`). Default:
+2. **Source workflow name** (e.g. `v6.6-lab-split-cc`). Default:
    auto-detect (see "Source detection" below).
+3. **Harness set**: any of `cc`, `pi`, `oc`, `cursor`, or `all`.
+   Default: `cc`.
 
 If the user passes "from v6.4 today" or similar, parse the source name and
 use today's date. If only one argument looks like a date, that's the date;
 if only one looks like a workflow name, that's the source.
+
+With `all` (or an explicit multi-harness list), resolve one source workflow
+per harness. For the v6.6 line the naming is regular —
+`v6.6-lab-split-{cc,pi,oc,cursor}` — so a single detected base name plus the
+harness suffix resolves each. If a suffix variant is missing, report it and
+export the harnesses that do exist rather than aborting the whole run.
 
 ## Source detection
 
@@ -80,28 +109,113 @@ detection can be aborted.
 ```bash
 TARGET="research/workflow-dev/export/exact-coding-baseline-$DATE"
 [ -e "$TARGET" ] && { echo "Exists; pass 'overwrite' to replace"; exit 1; }
-mkdir -p "$TARGET/.claude/agents" "$TARGET/.claude/commands" \
-         "$TARGET/.claude/rules"
 ```
+
+Each exported harness gets its own config subtree at the snapshot root, so
+a consumer copies the one directory their harness reads:
+
+```
+exact-coding-baseline-<DATE>/
+  README.md            # snapshot-level: which harnesses, how to install
+  VERSION
+  .claude/             # cc      — skills/tdd/, commands/, agents/, rules/
+  .pi/                 # pi      — skills/tdd/, skills/{red,green,test-list}/,
+                       #           agents/, extensions/subagent/
+  .opencode/           # oc      — agents/, + opencode.jsonc fragment
+  .cursor/             # cursor  — rules/*.mdc
+```
+
+Create only the subtrees for the requested harnesses:
+
+```bash
+case "$H" in
+  cc)     mkdir -p "$TARGET/.claude"/{skills/tdd,agents,commands,rules} ;;
+  pi)     mkdir -p "$TARGET/.pi"/{skills/tdd,agents,extensions/subagent} ;;
+  oc)     mkdir -p "$TARGET/.opencode/agents" ;;
+  cursor) mkdir -p "$TARGET/.cursor/rules" ;;
+esac
+```
+
+> **pi: the subagent extension is mandatory, not optional.** pi has **no
+> native subagent tool**. The `subagent` tool the refactor phase depends on
+> comes entirely from the project-local extension at
+> `.pi/extensions/subagent/` (`index.ts`, `agents.ts`, `README.md`). Ship
+> all three files verbatim — without them the model has no way to delegate
+> refactoring, and the isolated-context architecture silently degrades to
+> inline refactoring.
+>
+> The extension is **trust-gated**: pi only loads project-local extensions
+> after the project is trusted. The lab passes `--approve` because
+> non-interactive `-p` mode has no prompt. A consumer running pi
+> interactively gets a trust prompt on first use instead — the exported
+> README must tell them to accept it, and that declining leaves the
+> workflow without its refactor step.
+>
+> The refactor agent must also be invoked with `agentScope: "both"`, since
+> it lives in the project-local `.pi/agents/` rather than user-level.
+
+> **Single-harness back-compat.** Earlier snapshots (through 2026-05-25)
+> put `.claude/` at the snapshot root with `README.md` and `VERSION`
+> *inside* it, so that copying `.claude/` carried its own documentation.
+> With multiple harnesses that no longer works — README/VERSION move to the
+> snapshot root. A cc-only export may still additionally write
+> `.claude/README.md` + `.claude/VERSION` for continuity with the old
+> layout; say so in the report either way.
 
 ## Transformation steps
 
 ### Step 1: copy source files
 
-For each file, copy 1:1 from `$SRC_DIR/.claude/` to `$TARGET/.claude/`:
+First detect which layout the source uses — this changes what gets copied
+and how much patching Step 5 needs:
+
+```bash
+if [ -f "$SRC_DIR/.claude/rules/lab-only.md" ]; then LAYOUT=v66; else LAYOUT=legacy; fi
+echo "source layout: $LAYOUT"
+```
+
+**Common to both layouts** — copy 1:1 from `$SRC_DIR/.claude/` to
+`$TARGET/.claude/`:
 
 - `settings.json`
 - `rules/tdd-with-ts-and-vitest.md` (some older source workflows used
   `tdd_with_ts_and_vitest.md` — if present, rename to hyphen form in target)
 - `agents/refactor.md`
+- `agents/end-refactor.md` (present from v6.5 onward; skip if absent)
 - `commands/test-list.md`
 - `commands/red.md`
 - `commands/green.md`
 - `rules/tdd.md`
 
-Do **not** copy `rules/tdd-experiment-mode.md` if present in source — it is
-replaced by the consumable `tdd-execution-mode.md` from this skill's
-templates.
+**Layout `v66`** (source has `rules/lab-only.md` — e.g. `v6.6-lab-split-cc`):
+
+- Also copy `rules/subagent-prompts.md` — it holds the isolated-subagent
+  prompt contracts and is workflow methodology, not lab infrastructure.
+- Do **not** copy `rules/lab-only.md`. Dropping it is the whole point of
+  the v6.6 layout: it carries the autonomy mandate, the done-marker
+  contract, and the phase-continuation fix.
+- After copying, strip any `LAB-ONLY` fenced regions from every copied
+  `.md` (they appear in `rules/tdd.md`; other phase files may gain them
+  later):
+
+  ```bash
+  find "$TARGET/.claude" -name '*.md' -print0 | while IFS= read -r -d '' f; do
+    python3 -c "
+import sys,re
+p=sys.argv[1]; s=open(p).read()
+s=re.sub(r'<!-- LAB-ONLY:START -->.*?<!-- LAB-ONLY:END -->\n?', '', s, flags=re.S)
+open(p,'w').write(s)" "$f"
+  done
+  ```
+
+  Strip each file exactly **once** — running the regex repeatedly over the
+  same file can eat surrounding lines.
+
+**Layout `legacy`** (source has `rules/tdd-experiment-mode.md` — v6.5 and
+earlier): do **not** copy `rules/tdd-experiment-mode.md`. It is replaced by
+the consumable `tdd-execution-mode.md` from this skill's templates. Note
+that this file also carries the subagent prompt contracts, which the
+template must therefore reproduce.
 
 ### Step 2: write fresh files from skill templates
 
@@ -132,8 +246,79 @@ The copied source files reference experiment-mode wording or lack HITL
 references. Apply the **HITL Patches** (next section) to each of the four
 phase files plus `rules/tdd.md`.
 
+**Layout-dependent patches.** On a `v66` source, several patches are
+already satisfied by the fence-strip in Step 1 — applying them again is a
+no-op, and their anchor strings will not be found:
+
+| Patch | `legacy` source | `v66` source |
+|---|---|---|
+| A.3 — drop `EXPERIMENT MODE:` from Task prompts | apply | already absent; instead delete the bare `Run autonomously, return when done.` line from both Task prompt examples in `rules/tdd.md` |
+| A.5 — replace `@…/tdd-experiment-mode.md` reference | apply | no such reference; skip |
+| A.2, A.4, A.6, A.7 | apply | apply |
+| B, C, D, E | apply | apply |
+
+Everything else is identical across layouts. If an anchor string in the
+HITL Patches cannot be found, report which patch and why rather than
+force-fitting it.
+
+> **Shell trap.** Several patch anchors contain backticks
+> (`` `predictions_correct_rate` ``, `` `cycle_count` ``). In an
+> *unquoted* heredoc (`<<PY`) the shell runs those as command
+> substitution and silently corrupts the patch. Always use a **quoted**
+> heredoc (`<<'PY'`) and pass paths via the environment, or use the Edit
+> tool instead of shell scripting for these patches.
+
 Use the `Edit` tool for surgical changes; do not rewrite whole files unless
 the surgical change would be larger than the file.
+
+### Step 6: Convert auto-load into explicit invocation
+
+**Read `HARNESS-MECHANISMS.md` before doing this step.** It documents each
+harness's auto-load and explicit-invocation mechanisms, researched against
+the pinned CLI versions.
+
+This is transformation axis 3. In the lab the workflow loads on every
+session; in a consumer project it must be requested. What moves where:
+
+**Claude Code** — `rules/tdd.md` becomes `skills/tdd/SKILL.md`, gaining
+frontmatter. Phase commands and agents stay where they are (they are
+invoked by the workflow, not the user).
+
+```yaml
+---
+name: tdd
+description: Strict Test-Driven Development workflow (Red-Green-Refactor) with configurable human-in-the-loop checkpoints. Invoke when the user explicitly asks to use TDD, do a TDD kata, or follow the Red-Green-Refactor discipline. Do NOT invoke for general coding tasks where the user has not asked for TDD.
+---
+```
+
+The negative clause is load-bearing. A description that only says what the
+skill does will fire on ordinary coding tasks.
+
+`rules/tdd-with-ts-and-vitest.md` **stays a rule** — TS/Vitest conventions
+are useful whenever someone edits a `*.spec.ts`, whether or not a TDD
+session was requested. Gate the workflow, not the ambient conventions.
+
+**pi** — `AGENTS.md` orchestration content becomes `.pi/skills/tdd/SKILL.md`,
+registered as `/skill:tdd`. Same frontmatter contract (Agent Skills
+standard: `name` ≤64 chars lowercase/digits/hyphens, `description` ≤1024).
+Add `disable-model-invocation: true` if the consumer wants the skill hidden
+from the system prompt entirely, loadable only by typing `/skill:tdd`.
+Phase skills (`red`, `green`, `test-list`) and the subagent extension carry
+over unchanged.
+
+**OpenCode** — remove `AGENTS.md` from the `instructions` array in
+`opencode.jsonc` (that array is what makes it automatic) and add a
+`command.tdd` entry whose `prompt` carries the orchestration. Phase agents
+in `.opencode/agents/*.md` keep `mode: subagent` and are launched from the
+command prompt.
+
+**cursor** — flip `alwaysApply: true` → `false` on `tdd.mdc` and
+`human-in-the-loop.mdc`, and make sure each has a specific `description`
+(that combination is cursor's "Agent Requested" mode). Leave
+`tdd-with-ts-and-vitest.mdc` on its `globs` form — same reasoning as CC.
+
+After this step, verify the workflow is genuinely gated: a session that
+never mentions TDD must not pull the workflow into context.
 
 ## HITL Patches
 
@@ -297,13 +482,13 @@ responsibility, not yours — your job ends with the Step 7 report.
 Run all checks after Step 5. Any failure means the snapshot is broken —
 report immediately, do not claim success.
 
-1. **File set**: exactly these 11 files exist:
+1. **File set**: the expected set depends on the source layout.
 
    ```bash
    find "$TARGET" -type f | sort
    ```
 
-   Expected:
+   Expected for a `legacy` source (11 files):
    ```
    .claude/README.md
    .claude/VERSION
@@ -312,6 +497,20 @@ report immediately, do not claim success.
    .claude/rules/{human-in-the-loop,tdd,tdd-execution-mode,tdd-with-ts-and-vitest}.md
    .claude/settings.json
    ```
+
+   Expected for a `v66` source (13 files) — adds the end-refactor agent and
+   the subagent prompt contracts:
+   ```
+   .claude/README.md
+   .claude/VERSION
+   .claude/agents/{end-refactor,refactor}.md
+   .claude/commands/{green,red,test-list}.md
+   .claude/rules/{human-in-the-loop,subagent-prompts,tdd,tdd-execution-mode,tdd-with-ts-and-vitest}.md
+   .claude/settings.json
+   ```
+
+   In **neither** case may `rules/lab-only.md` or
+   `rules/tdd-experiment-mode.md` appear.
 
 2. **Source workflow files copied** (size sanity — none of the source
    files dropped below 500 bytes during patching, which would indicate a
@@ -341,10 +540,21 @@ report immediately, do not claim success.
    ```
    Must print `2`.
 
-4. **No experiment-mode wording leaked into the snapshot**:
+4. **No lab wording leaked into the snapshot**:
    ```bash
-   grep -r 'tdd-experiment-mode\|EXPERIMENT MODE\|predictions_correct_rate\|refactorings_applied\b' \
-        "$TARGET/.claude" && echo "FAIL: experiment wording leaked"
+   grep -r 'tdd-experiment-mode\|EXPERIMENT MODE\|predictions_correct_rate\|refactorings_applied\b\|LAB-ONLY\|lab-only\.md\|experiment-done' \
+        "$TARGET/.claude" && echo "FAIL: lab wording leaked"
+   ```
+   Must print no matches. `LAB-ONLY` / `lab-only.md` / `experiment-done`
+   catch an incomplete fence-strip on a `v66` source — the most likely
+   failure mode of that layout, since a surviving fence marker means the
+   block it delimited also survived.
+
+   Additionally, no bare autonomy instruction may remain in the Task
+   prompt examples:
+   ```bash
+   grep -n 'Run autonomously' "$TARGET/.claude/rules/tdd.md" \
+     && echo "FAIL: autonomy line survived (see Patch A.3, v66 row)"
    ```
    Must print no matches.
 
@@ -377,23 +587,109 @@ report immediately, do not claim success.
    ```
    Must print no matches.
 
+9. **Invocation is gated** (transformation axis 3). The workflow must not
+   auto-load. Per exported harness:
+
+   ```bash
+   # cc — workflow lives in skills/, not rules/; frontmatter present
+   [ -f "$TARGET/.claude/skills/tdd/SKILL.md" ] || echo "FAIL cc: no skills/tdd/SKILL.md"
+   [ -f "$TARGET/.claude/rules/tdd.md" ] && echo "FAIL cc: tdd.md still auto-loads from rules/"
+   grep -q '^name: tdd'        "$TARGET/.claude/skills/tdd/SKILL.md" || echo "FAIL cc: no name in frontmatter"
+   grep -q '^description: .*TDD' "$TARGET/.claude/skills/tdd/SKILL.md" || echo "FAIL cc: no description gate"
+   grep -qi 'do not invoke'    "$TARGET/.claude/skills/tdd/SKILL.md" || echo "WARN cc: description lacks a negative clause"
+
+   # pi — skill exists; AGENTS.md must not carry the orchestration
+   [ -f "$TARGET/.pi/skills/tdd/SKILL.md" ] || echo "FAIL pi: no skills/tdd/SKILL.md"
+
+   # pi — subagent extension shipped (no native subagent tool on pi)
+   for f in index.ts agents.ts README.md; do
+     [ -f "$TARGET/.pi/extensions/subagent/$f" ] || echo "FAIL pi: extension missing $f"
+   done
+
+   # oc — AGENTS.md no longer in the instructions array
+   grep -q '"instructions".*AGENTS.md' "$TARGET/.opencode/opencode.jsonc" 2>/dev/null \
+     && echo "FAIL oc: AGENTS.md still auto-loaded via instructions"
+
+   # cursor — workflow rules gated, conventions may stay glob-attached
+   for f in tdd human-in-the-loop; do
+     grep -q 'alwaysApply: true' "$TARGET/.cursor/rules/$f.mdc" 2>/dev/null \
+       && echo "FAIL cursor: $f.mdc still alwaysApply: true"
+   done
+   ```
+
+   Run only the blocks for harnesses actually exported. Any `FAIL` means
+   the snapshot still behaves like a lab workflow — it would load TDD
+   discipline into every unrelated session in the consumer's project.
+
+## Consumer sync
+
+The skill never writes outside the lab repo. This section records **where
+the snapshot is meant to end up**, so the report can point at it and a
+manual copy has a documented target.
+
+### The consumer
+
+`exact-coding-exercises` — the one repo that actually consumes the
+baseline.
+
+| | |
+|---|---|
+| Local | `/home/memrich/sync/work/konferenzen_und_talks/exact_coding/exact-coding-exercises` |
+| Remote | `git@github.com:marcoemrich/EXACT-Coding-Exercises.git` |
+| Harnesses in use | `.claude/`, `.cursor/`, `.opencode/` — already multi-harness |
+
+Record the remote for identification, but treat the **local path as the
+write target**: syncing is a filesystem copy, and this skill neither
+commits nor pushes. Verify the path with `[ -d ]` before reporting it —
+a moved directory should fail loudly rather than be silently wrong.
+
+That repo is already a **reference implementation of the invocation
+transformation**: its `.claude/skills/tdd/SKILL.md` carries exactly the
+frontmatter gate Step 6 produces, negative clause and all. When in doubt
+about what an exported cc tree should look like, read that file.
+
+Two things there still differ from a fresh export, and a sync should
+reconcile rather than blindly overwrite:
+
+- **Layout.** It uses `.claude/skills/tdd/{SKILL,human-in-the-loop,
+  tdd-execution-mode,tdd-with-ts-and-vitest}.md` — HITL and execution-mode
+  files nested *inside* the skill dir. Copying a `rules/`-shaped export on
+  top would leave both layouts live at once (CC auto-loads `rules/`), so
+  the workflow would be simultaneously gated and always-on.
+- **cursor rules.** `tdd.mdc` and `human-in-the-loop.mdc` are still
+  `alwaysApply: true`, i.e. not yet gated. `tdd-with-ts-and-vitest.mdc` is
+  already correct on its `globs` form.
+
+`exact-coding-exercises` is the **only** sync target. Distribution is
+deliberately strict: one consumer repo, one baseline. If another project
+wants the workflow, it copies from that repo or from a snapshot here — do
+not add a second distribution path without an explicit decision to.
+
 ## Report to the user
 
 After successful validation:
 
-1. Echo the resolved source workflow name and target snapshot path.
+1. Echo the resolved source workflow(s), the harnesses exported, and the
+   target snapshot path.
 2. Print the file tree.
-3. Note that the skill did NOT commit/push — the user does git operations
+3. State which of the three transformations were applied per harness —
+   in particular whether invocation gating (Step 6) succeeded, since a
+   snapshot that still auto-loads is the failure mode a consumer notices
+   last and dislikes most.
+4. Note that the skill did NOT commit/push — the user does git operations
    afterwards.
-4. Mention the sibling repos (`exact-coding-book`,
-   `exact-coding-exercises`) explicitly: the snapshot has NOT been copied
-   into them; if a copy is desired, the user requests it as a separate
-   action.
+5. Point at the consumer (`exact-coding-exercises`, path above) and state
+   that the snapshot has **not** been copied into it. If the layout
+   mismatch documented under "Consumer sync" is still unresolved, say so —
+   a naive `cp -r` there produces a double-loaded workflow.
 
 ## What this skill explicitly does NOT do
 
 - Does **not** push, commit, or `git add` anything.
-- Does **not** copy the snapshot into sibling repos.
+- Does **not** copy the snapshot into consumer repos — not
+  `exact-coding-exercises`, not anywhere else. It writes only inside
+  `research/workflow-dev/export/`. Syncing is a separate, explicitly
+  requested action.
 - Does **not** edit source workflows under `experiments/workflows/`.
 - Does **not** edit `workflow-construction.md` or any RQ findings — those
   belong in their own RQ-driven flows.
@@ -407,24 +703,43 @@ After successful validation:
 - `templates/human-in-the-loop.md` — canonical HITL consumable, copied
   verbatim into every snapshot.
 - `templates/tdd-execution-mode.md` — replaces source's
-  `tdd-experiment-mode.md`.
+  `tdd-experiment-mode.md` (`legacy` layout). On a `v66` source there is
+  no such file to replace: the lab half is dropped with `lab-only.md` and
+  the methodology half already lives in the source's
+  `rules/subagent-prompts.md`, which is copied through. The template is
+  still written in both layouts — it is what tells the consumer the
+  workflow runs in a normal, interruptible mode.
 - `templates/README.template.md` — README with `{{DATE}}` and
   `{{SOURCE_WORKFLOW}}` placeholders.
 - `HUMAN-IN-THE-LOOP.md` (in this skill's directory) — methodology
-  reference describing the HITL design rationale and re-enablement steps.
-  Useful for understanding **why** the templates look the way they do, but
-  not consumed by the export flow itself.
+  reference describing the HITL design rationale and re-enablement steps
+  (transformation axis 2). Useful for understanding **why** the templates
+  look the way they do, but not consumed by the export flow itself.
+- `HARNESS-MECHANISMS.md` (in this skill's directory) — auto-load vs.
+  explicit-invocation mechanism per harness (transformation axis 3),
+  researched against the pinned CLI versions. **Read before exporting a
+  harness for the first time.** Also records the pi subagent-extension
+  requirement and a correction to the lab's "pi skills are auto-loaded"
+  assumption.
 
 ## Quick reference
 
 | Invocation | Action |
 |---|---|
-| `/exact-coding-baseline-export` | Auto-detect source, date = today |
+| `/exact-coding-baseline-export` | Auto-detect source, date = today, harness `cc` |
 | `/exact-coding-baseline-export 2026-06-15` | Auto-detect source, custom date |
 | `/exact-coding-baseline-export v6.4-some-variant` | Explicit source, today |
 | `/exact-coding-baseline-export 2026-06-15 v6.4-some-variant` | Both explicit |
+| `/exact-coding-baseline-export all` | All four harnesses (`cc`, `pi`, `oc`, `cursor`) |
+| `/exact-coding-baseline-export pi cursor` | Named harness subset |
 | `/exact-coding-baseline-export overwrite` | Same as default, but allow clobber |
 
 Single output: a new directory at
-`research/workflow-dev/export/exact-coding-baseline-<DATE>/`. Validation
-must pass before reporting success.
+`research/workflow-dev/export/exact-coding-baseline-<DATE>/`, with one
+config subtree per exported harness. Validation must pass before reporting
+success.
+
+**Every export applies all three transformations** — lab-content removal,
+HITL re-enablement, and invocation gating. An export that skips axis 3
+produces a workflow that still loads on every session in the consumer's
+project; that is a defect, not a variant.
