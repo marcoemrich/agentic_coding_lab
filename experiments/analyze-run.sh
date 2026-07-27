@@ -154,8 +154,9 @@ analyze_single_run() {
         fi
     elif [ -f "$run_dir/transcript-cursor.jsonl" ]; then
         # cursor-agent runs: parse the stream-json event stream into
-        # transcript-metrics.json. TDD markers via text (## Red/## Refactor)
-        # with a tool-sequence fallback when the model skips the markers.
+        # transcript-metrics.json. Cycles via text markers (## Red), refactor
+        # phases via delegated taskToolCall (subagentType.custom.name), with a
+        # tool-sequence fallback when the model skips the markers entirely.
         local cursor_parser="$EXPERIMENTS_DIR/parse_cursor_transcript.py"
         if [ -x "$cursor_parser" ] || [ -f "$cursor_parser" ]; then
             python3 "$cursor_parser" "$run_dir" >/dev/null 2>&1 || \
