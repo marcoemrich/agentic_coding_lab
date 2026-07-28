@@ -646,7 +646,17 @@ EOF
         cursor)   harness_label="cursor-agent" ;;
         *)        harness_label="Claude Code" ;;
     esac
-    echo -e "  Running $harness_label... (model: $cli_model, thinking: $thinking)"
+    # $cli_model is a placeholder for the non-CC harnesses ("pi-only",
+    # "oc-only", "cursor-only") — the real --model string is resolved in each
+    # harness branch further down. Printing the placeholder made the logs
+    # useless for telling which model a shard was actually running, which is
+    # exactly what you need when a batch fails. Show the lab-variant name and,
+    # where it differs, the resolved CLI id.
+    case "$cli_model" in
+        pi-only|oc-only|cursor-only) model_display="$model_name" ;;
+        *)                           model_display="$cli_model" ;;
+    esac
+    echo -e "  Running $harness_label... (model: $model_display, thinking: $thinking)"
     start_time=$(date +%s)
     run_log="$run_dir/run.log"
     claude_exit=0
@@ -869,6 +879,7 @@ EOF
                    claude_exit=2
                    cursor_model="" ;;
             esac
+            [ -n "$cursor_model" ] && echo -e "    → cursor-agent --model $cursor_model"
             if [ -n "$cursor_model" ]; then
                 # cursor-agent -p is non-interactive; --force allows tool use
                 # without prompts. --output-format stream-json emits the NDJSON
@@ -917,14 +928,34 @@ EOF
         # falsely trigger.
         rate_limited="false"
         transient_api_error="false"
+        quota_exhausted="false"
         transient_reason=""
         if [ "$claude_exit" -ne 0 ]; then
+            # NON-RETRYABLE QUOTA EXHAUSTION — check before the rate-limit
+            # branch, whose "usage limit" pattern would otherwise swallow it.
+            #
+            # cursor-agent raises ActionRequiredError when the Cursor plan's
+            # monthly model allowance is spent:
+            #   "ActionRequiredError: You've hit your usage limit for Opus …
+            #    Your usage limits will reset when your monthly cycle ends
+            #    on 8/2/2026."
+            # This does NOT clear within a batch — the reset is days away and
+            # needs a plan change or a spend limit. Retrying burns the whole
+            # backoff ladder (60s→5min→30min→1h→2h ≈ 3.7h per run) for an
+            # error that is guaranteed to still be there at the end of it.
+            # Fail fast so the operator sees it immediately.
+            if grep -qiE "ActionRequiredError|usage limits will reset|set a Spend Limit" "$run_log" 2>/dev/null; then
+                quota_exhausted="true"
+                transient_reason="Plan quota exhausted (non-retryable)"
+                echo -e "  ${RED}Plan quota exhausted — not retryable. Stopping this run.${NC}"
+                grep -oiE "You've hit your usage limit for [A-Za-z0-9.-]+" "$run_log" 2>/dev/null | head -1 | sed 's/^/    /'
+                grep -oiE "reset when your monthly cycle ends on [0-9/]+" "$run_log" 2>/dev/null | head -1 | sed 's/^/    /'
             # "hit your limit" / "resets <time>" is the Anthropic
             # subscription-quota signature shown by the Claude CLI when
             # the daily/weekly cap is reached (different from API
             # 429/529). Treated as rate-limit so the retry/backoff path
             # waits it out instead of failing the batch.
-            if grep -qiE "rate.?limit|\b429\b|\b529\b|usage limit|overloaded|hit your limit|resets [0-9]+(:[0-9]+)?\s*[ap]m" "$run_log" 2>/dev/null; then
+            elif grep -qiE "rate.?limit|\b429\b|\b529\b|usage limit|overloaded|hit your limit|resets [0-9]+(:[0-9]+)?\s*[ap]m" "$run_log" 2>/dev/null; then
                 rate_limited="true"
                 transient_reason="Rate-limit"
             # "API Error: terminated" is the Anthropic CLI's signature for
@@ -1073,6 +1104,10 @@ EOF
     esac
     [ "$rate_limited" = "true" ]        && exit_reason="rate-limited"
     [ "$transient_api_error" = "true" ] && exit_reason="transient-api-error"
+    # Distinct from rate-limited: the plan allowance is gone until a billing
+    # cycle reset, so no amount of waiting inside this batch helps. Kept as
+    # its own reason so aggregation does not read it as a transient blip.
+    [ "$quota_exhausted" = "true" ]     && exit_reason="quota-exhausted"
     # Backwards compat for downstream consumers that still reference
     # rate_limit_attempts in the old single-class retry log line.
     rate_limit_attempts=$retry_attempts
