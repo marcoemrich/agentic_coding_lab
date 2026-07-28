@@ -57,20 +57,142 @@ def count_runs_per_cell(cells: list[dict]) -> dict[tuple, int]:
     return counts
 
 
+WORKFLOWS_DIR = REPO_ROOT / "experiments" / "workflows"
+
+# Harness marker dir → the model-name suffix that harness's run-batch.sh branch
+# can resolve. Mirrors the harness detection in run-batch.sh (~line 450), which
+# keys off the same marker dirs.
+_HARNESS_MARKERS = (
+    (".pi", "pi"),
+    (".opencode", "opencode"),
+    (".cursor", "cursor"),
+    (".claude", "claude"),
+)
+
+
+def harness_of(workflow: str) -> str | None:
+    """Which harness runs this workflow, from its marker dir.
+
+    Returns None when the workflow dir is absent (plan generation should not
+    fail on that — run-batch.sh reports it per run).
+    """
+    wf_dir = WORKFLOWS_DIR / workflow
+    for marker, harness in _HARNESS_MARKERS:
+        if (wf_dir / marker).is_dir():
+            return harness
+    return None
+
+
+RUN_BATCH = REPO_ROOT / "experiments" / "docker" / "run-batch.sh"
+
+# Which shell variable each harness assigns in its model case-mapping.
+_HARNESS_MODEL_VAR = {
+    "pi": "pi_model",
+    "opencode": "oc_model",
+    "cursor": "cursor_model",
+}
+
+_known_cache: dict[str, set[str]] = {}
+
+
+def models_known_to(harness: str) -> set[str]:
+    """Model names the harness's case-mapping in run-batch.sh can resolve.
+
+    Parsed from the script rather than duplicated here — a hardcoded copy would
+    drift the moment a model is added, and the failure mode of drift is a dead
+    batch run. Lines look like:
+
+        opus-cursor)     cursor_model="claude-opus-4-8-medium" ;;
+
+    so the label before `)` is the lab-variant name. On any parse trouble
+    return an empty set, which makes runnable_model fall back to current
+    behaviour instead of guessing.
+    """
+    var = _HARNESS_MODEL_VAR.get(harness)
+    if var is None:
+        return set()
+    if harness in _known_cache:
+        return _known_cache[harness]
+
+    names: set[str] = set()
+    try:
+        for line in RUN_BATCH.read_text().splitlines():
+            stripped = line.strip()
+            if f'{var}="' not in stripped or ")" not in stripped:
+                continue
+            label = stripped.split(")", 1)[0].strip()
+            # Skip the `*)` default branch and anything not a plain model name.
+            if label and label != "*" and all(
+                c.isalnum() or c in "-._" for c in label
+            ):
+                names.add(label)
+    except OSError:
+        return set()
+
+    _known_cache[harness] = names
+    return names
+
+
+def runnable_model(cell: dict) -> str:
+    """Pick the model alternative the cell's harness can actually run.
+
+    `expand_cells` sets cell["model"] to the FIRST entry of an
+    `{any: [...]}` OR-match. That is right for aggregation — it is the
+    canonical cell label — but wrong for plan generation when the
+    alternatives are per-harness spellings of the same model. A cross-harness
+    RQ with
+
+        controls.model: {any: [opus-4-8-requesty, opus-4-8, opus-cursor]}
+
+    would label EVERY workflow's runs `opus-4-8-requesty`; the cursor branch
+    of run-batch.sh has no mapping for that name, so those runs die with
+    error-2 before the agent starts. Same failure mode for the pi branch,
+    which needs the bare `opus-4-8`.
+
+    Rule: pick the first alternative that the harness's own case-mapping in
+    run-batch.sh actually knows. Falls back to the canonical first entry when
+    nothing matches, so behaviour is unchanged for CC and for single-spelling
+    cells — and a genuinely unmappable model still fails loudly in run-batch.sh
+    rather than being silently swapped here.
+    """
+    alts = cell.get("model_alts") or [cell["model"]]
+    if len(alts) == 1:
+        return alts[0]
+
+    harness = harness_of(cell["workflow"])
+    if harness in (None, "claude"):
+        return cell["model"]
+
+    known = models_known_to(harness)
+    if known:
+        for alt in alts:
+            if alt in known:
+                return alt
+    return cell["model"]
+
+
 def build_plan(fm: dict, cells: list[dict], counts: dict[tuple, int]) -> dict:
     rq_id = fm.get("id", "?")
     min_rep = int(fm.get("min_replicates", 1))
 
     runs = []
+    relabelled: list[str] = []
     for cell in cells:
         key = (agg.kata_for_cell(cell), cell["workflow"], cell["model"])
+        model = runnable_model(cell)
+        if model != cell["model"]:
+            relabelled.append(f"{cell['workflow']}: {cell['model']} → {model}")
         missing = max(0, min_rep - counts[key])
         for _ in range(missing):
             runs.append({
                 "kata": key[0],
                 "workflow": key[1],
-                "model": key[2],
+                "model": model,
             })
+
+    if relabelled:
+        for line in sorted(set(relabelled)):
+            print(f"  harness-specific model label — {line}", file=sys.stderr)
 
     return {
         "name": f"{rq_id} fill",
