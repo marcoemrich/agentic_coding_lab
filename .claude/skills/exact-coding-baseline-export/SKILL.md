@@ -441,7 +441,9 @@ over unchanged.
 
 **OpenCode** — remove `AGENTS.md` from the `instructions` array in
 `opencode.json` (that array is what makes it automatic) and add a
-`command.tdd` entry whose `prompt` carries the orchestration. Phase agents
+`command.tdd` entry whose **`template`** carries the orchestration (`template`
+is the schema-required field — `prompt` is not valid and silently drops the
+instructions). Phase agents
 in `.opencode/agents/*.md` keep `mode: subagent` and are launched from the
 command prompt.
 
@@ -787,15 +789,22 @@ report immediately, do not claim success.
     > Keep both halves of the alternation, and when a new metric name enters
     > a workflow, add it here.
 
-11. **No lab routing config in `opencode.json`**:
+11. **`opencode.json` is consumer-shaped and schema-valid**:
 
     ```bash
     python3 -c "
 import json;c=json.load(open('$TARGET/.opencode/opencode.json'))
 assert 'provider' not in c, 'FAIL: Requesty/Portkey provider block leaked'
 assert not c.get('instructions'), 'FAIL: AGENTS.md still auto-loaded'
+for n,cmd in c.get('command',{}).items():
+    assert 'template' in cmd, f'FAIL: command.{n} has no template (schema-required)'
+    assert 'prompt' not in cmd, f'FAIL: command.{n} uses prompt; the field is template'
 print('  OK opencode.json is consumer-shaped')"
     ```
+
+    The `template` check is not pedantry: `prompt` parses as valid JSON, so a
+    wrong key produces a command that loads with an empty instruction body and
+    fails only at use time. The 2026-07-28 export shipped it that way.
 
 12. **Feature parity across exported harnesses**. The variants are meant
     to be identical as far as each harness allows — a missing phase is a

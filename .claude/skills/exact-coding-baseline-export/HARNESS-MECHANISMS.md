@@ -110,9 +110,28 @@ Two pi-specific options worth knowing:
 | Explicit (export) | A `command` entry in `opencode.json`, invoked by name. |
 
 OpenCode commands are declared inline in config with a `description` and a
-`prompt`, e.g. the `tdd-auto` / `example-mapping` / `code-review` commands in
-the exercises repo. Subagents live in `.opencode/agents/*.md` with
-`mode: subagent` frontmatter and are launched by the command's prompt.
+**`template`** — the field holding the instruction text. Subagents live in
+`.opencode/agents/*.md` with `mode: subagent` frontmatter and are launched by
+the command's template.
+
+> **The field is `template`, not `prompt`.** `https://opencode.ai/config.json`
+> declares `"required": ["template"]` for a command entry; `prompt` is not a
+> valid key and the command silently fails to carry its instructions. The
+> 2026-07-28 export shipped `prompt` and had to be corrected against an
+> upstream fix in the consumer repo (PR #1 there). Validate the written config
+> against the published schema rather than copying an older config's shape.
+
+Agent frontmatter also wants **block YAML** for nested permission maps —
+inline-JSON flow style (`bash: { "git *": "allow" }`) was fixed out of the
+consumer repo in the same PR:
+
+```yaml
+permission:
+  edit: allow
+  bash:
+    "npm *": allow
+    "*": ask
+```
 
 Export approach: keep the phase agents, move the orchestration prose out of
 the always-loaded `AGENTS.md` into a `command.tdd` entry. Removing
@@ -219,7 +238,7 @@ keys:
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
-  "command": { "tdd": { "description": "...", "prompt": "<orchestration>" } },
+  "command": { "tdd": { "description": "...", "template": "<orchestration>" } },
   "permission": { "...": "..." }
 }
 ```
