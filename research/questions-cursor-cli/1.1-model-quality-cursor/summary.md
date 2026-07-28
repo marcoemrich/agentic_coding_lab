@@ -1,16 +1,16 @@
 # RQ-model-quality-cursor — Aggregation
 
-_How do the models reachable via the cursor-cli harness (Opus, Composer, Grok) differ in code quality and TDD discipline on game-of-life-example-mapping?_
+_How do the models reachable via the cursor-cli harness (Opus 4.8 medium, Composer 2.5, Grok 4.5 medium) differ in code quality and TDD discipline on game-of-life-example-mapping?_
 
-Generated: 2026-07-26T09:20:43Z
+Generated: 2026-07-28T03:48:15Z
 
-Cells declared: 3 · matched runs: 15 · min_replicates: 5
+Cells declared: 3 · matched runs: 10 · min_replicates: 5
 
 ## Zell-Coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor | 5 | 5 | ✅ |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor | 0 | 0 | ❌ keine Runs |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor | 5 | 5 | ✅ |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor | 5 | 5 | ✅ |
 
@@ -20,97 +20,85 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |  182.2 |   158 |   208 | 18.34 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |  149.2 |   134 |   183 | 19.34 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |  141.8 |   133 |   149 |  6.1  |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |  211.2 |   181 |   246 | 24.59 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |  151.6 |   130 |   180 | 23.2  |
 
 ### cognitive_max
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    8.2 |     3 |    13 |  4.21 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |   10.6 |     7 |    15 |  2.88 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |   16.6 |    15 |    17 |  0.89 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    7.8 |     2 |    12 |  4.27 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    9.2 |     7 |    11 |  1.48 |
 
 ### cognitive_avg
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |   5.93 |   2.5 |    12 |  3.77 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |   7.2  |   4.5 |    11 |  2.59 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |  15.3  |   8.5 |    17 |  3.8  |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |   4.97 |   1.2 |  11   |  3.69 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |   7.9  |   4.5 |  10.5 |  2.38 |
 
 ### mccabe_max
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    7.6 |     5 |    11 |  2.61 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    8.8 |     6 |    10 |  1.64 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |   10.6 |     9 |    11 |  0.89 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    6.2 |     3 |     9 |  2.39 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    7.8 |     6 |     9 |  1.1  |
 
 ### mccabe_avg
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |   2.63 |   2   |   3.5 |  0.61 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |   3.38 |   2.4 |   4   |  0.59 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |   4.33 |   3.5 |   6   |  1.02 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |   2.4  |  1.43 |   3.6 |  0.85 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |   3.47 |  2.75 |   5   |  0.92 |
 
 ### cc_longest_function
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |   23.6 |    16 |    30 |  5.55 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |   21.8 |    19 |    24 |  1.92 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |   23.2 |    22 |    24 |  0.84 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |   25.4 |    14 |    31 |  6.73 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |   21.8 |    20 |    24 |  1.64 |
 
 ### cc_avg_loc_per_function
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |   8.53 |  6.5  | 11.67 |  2.01 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |   9.92 |  7.25 | 12    |  1.74 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |  12.6  |  8.33 | 24    |  6.65 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |   7.39 |  4.12 |  9.5  |  2.02 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |  11    |  9    | 12.67 |  1.49 |
 
 ### cc_median_loc_per_function
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    4.3 |   3.5 |   5.5 |  0.76 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    6.4 |   3.5 |  12   |  3.38 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |    8.6 |   2   |  24   |  9.84 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    3.3 |     3 |   3.5 |  0.27 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    8.2 |     4 |  12   |  3.63 |
 
 ### lines_of_code
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |   59.2 |    50 |    65 |  5.89 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |   42.8 |    36 |    51 |  5.97 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |   27.8 |    26 |    30 |  1.48 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |   68.2 |    55 |    86 | 11.73 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |   39.2 |    33 |    44 |  4.32 |
 
 ### smell_total
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    3.4 |     3 |     4 |  0.55 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    3.6 |     2 |     5 |  1.14 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |    4   |     4 |     4 |  0    |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    3   |     2 |     4 |  0.71 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    2.8 |     2 |     4 |  0.84 |
 
-### smell_complexity
+### smell_complexity (rate %)
 
-| kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    0.4 |     0 |     1 |  0.55 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    0.6 |     0 |     2 |  0.89 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |    2   |     2 |     2 |  0    |
+| kata                         | cell_workflow                    | cell_model      |   n |   match |   rate_% |
+|:-----------------------------|:---------------------------------|:----------------|----:|--------:|---------:|
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |       2 |       40 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |       1 |       20 |
 
 ### smell_magic_numbers
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    3   |     3 |     3 |  0    |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    2.8 |     2 |     3 |  0.45 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |    2   |     2 |     2 |  0    |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    2.6 |     2 |     3 |  0.55 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    2.4 |     2 |     3 |  0.55 |
 
 ### smell_duplication (rate %)
 
@@ -118,7 +106,6 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 |:-----------------------------|:---------------------------------|:----------------|----:|--------:|---------:|
 | game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |       0 |        0 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |       1 |       20 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |       0 |        0 |
 
 ### verification_pct (rate %)
 
@@ -126,7 +113,6 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 |:-----------------------------|:---------------------------------|:----------------|----:|--------:|---------:|
 | game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |       5 |      100 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |       5 |      100 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |       5 |      100 |
 
 ### tests_passing (rate %)
 
@@ -134,47 +120,41 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 |:-----------------------------|:---------------------------------|:----------------|----:|--------:|---------:|
 | game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |       5 |      100 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |       5 |      100 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |       5 |      100 |
 
 ### tests_total
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    9.2 |     9 |    10 |  0.45 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    8.4 |     8 |     9 |  0.55 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |    8.4 |     8 |     9 |  0.55 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    8.4 |     8 |     9 |  0.55 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    7.8 |     7 |     8 |  0.45 |
 
 ### cycle_count
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    7.6 |     5 |    10 |  2.41 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    9.6 |     8 |    11 |  1.14 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |    8.4 |     8 |     9 |  0.55 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    7.4 |     5 |     9 |  1.52 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    8.4 |     6 |    11 |  2.07 |
 
 ### refactorings_applied
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    4   |     3 |     7 |  1.73 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    5.2 |     4 |     7 |  1.1  |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |    3   |     3 |     3 |  0    |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    3.6 |     2 |     6 |  1.52 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    5   |     4 |     6 |  0.71 |
 
 ### predictions_correct
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    6.8 |     4 |    13 |  4.09 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    9.8 |     6 |    16 |  4.15 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |   18.4 |    16 |    24 |  3.29 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    6.4 |     4 |     8 |  1.67 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |   14.8 |    10 |    16 |  2.68 |
 
 ### predictions_total
 
 | kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    7   |     4 |    14 |  4.47 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |    9.8 |     6 |    16 |  4.15 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |   18.4 |    16 |    24 |  3.29 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |    6.4 |     4 |     8 |  1.67 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |   14.8 |    10 |    16 |  2.68 |
 
 ### completed_within_budget (rate %)
 
@@ -182,23 +162,20 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 |:-----------------------------|:---------------------------------|:----------------|----:|--------:|---------:|
 | game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |       5 |      100 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |       5 |      100 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |       5 |      100 |
 
 ### duration_seconds
 
-| kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |  120.8 |   111 |   133 |  8.96 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |  169.4 |   140 |   184 | 18.13 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |  198   |   169 |   221 | 21.44 |
+| kata                         | cell_workflow                    | cell_model      |   n |   mean |   min |   max |    std |
+|:-----------------------------|:---------------------------------|:----------------|----:|-------:|------:|------:|-------:|
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 |  330.8 |   244 |   534 | 115.89 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |  584.8 |   487 |   683 |  88.14 |
 
 ### total_tokens
 
-| kata                         | cell_workflow                    | cell_model      |   n |             mean |     min |     max |    std |
-|:-----------------------------|:---------------------------------|:----------------|----:|-----------------:|--------:|--------:|-------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 | 767959           |  596859 |  932199 | 130466 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 |      1.16773e+06 |  745387 | 1564164 | 313913 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | opus-cursor     |   5 |      1.74373e+06 | 1534727 | 1907404 | 138537 |
+| kata                         | cell_workflow                    | cell_model      |   n |        mean |     min |     max |    std |
+|:-----------------------------|:---------------------------------|:----------------|----:|------------:|--------:|--------:|-------:|
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | composer-cursor |   5 | 1.13088e+06 |  799400 | 1537175 | 266402 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-cursor | grok-cursor     |   5 | 1.32566e+06 | 1141791 | 1629875 | 198297 |
 
 ### cost_usd
 
