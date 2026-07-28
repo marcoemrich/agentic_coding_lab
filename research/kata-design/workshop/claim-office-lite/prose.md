@@ -114,12 +114,6 @@ umzugehen". Wer den Aktuar persönlich fragt, erhält die etwas
 weniger gewählte Antwort, dass die HPSMV einfach gerne hundert
 Goldstücke einbehält, wo immer sie kann.
 
-Der **Gesamtbetrag**, den die HPSMV für eine einzelne Police über
-die Jahre auszahlt, ist auf das *Doppelte der Versicherungssumme*
-gedeckelt. Die Versicherungssumme ist dabei die Summe der
-Versicherungswerte aller in der Police geführten Stücke. Was über
-den Deckel hinausginge, wird nicht ausgezahlt.
-
 Bei besonders auffälligen Stücken kennt das Kontor zwei
 Sonderklauseln:
 
