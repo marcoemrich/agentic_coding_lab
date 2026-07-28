@@ -112,6 +112,11 @@ MODEL_CONFIGS=(
     # oc-only entries) and are reused by the pi branch, so they are not
     # repeated here.
     "sonnet-5|pi-only|false"
+    # gpt-5-6-sol is wired for BOTH pi and OpenCode (same Requesty route,
+    # azure/gpt-5.6-sol@swedencentral). The `pi-only` placeholder here only
+    # feeds plan validation, which just checks the name exists — the harness
+    # is chosen from the workflow marker dir, and each harness branch resolves
+    # its own model string. Do not read the placeholder as "pi only".
     "gpt-5-6-sol|pi-only|false"
     "gpt-5-6-terra|pi-only|false"
     "glm-5-2|pi-only|false"
@@ -784,6 +789,43 @@ EOF
                 # -requesty and -requesty-no-thinking labels map to the same
                 # upstream (OC has no thinking flag).
                 opus-4-8-requesty|opus-4-8-requesty-no-thinking)  oc_model="requesty/vertex/claude-opus-4-8@eu" ;;
+                # gpt-5.6-sol via Requesty (Azure swedencentral) — same upstream
+                # route the pi branch uses. Requires the matching entry in the
+                # workflow's opencode.json requesty provider block, otherwise
+                # OC rejects the --model string.
+                #
+                # Requires "options": {"reasoningEffort": "minimal"} on this model
+                # in the workflow's opencode.json. Without it the run dies with a
+                # 400 from Requesty. Verified 2026-07-28 against the raw API:
+                #
+                #   tools + reasoning_effort=medium|low|none -> 400 "Function
+                #     tools with reasoning_effort are not supported for
+                #     gpt-5.6-sol in /v1/chat/completions."
+                #   tools + reasoning_effort=minimal         -> 200 OK
+                #   tools, no reasoning_effort               -> 200 OK
+                #
+                # "minimal" is the only accepted non-empty value, and it is what
+                # makes this work on OC: OpenCode force-injects reasoning params
+                # for any model *id* matching "gpt-5" (exempting only
+                # "gpt-5-chat"/"gpt-5-pro"), defaulting to reasoningEffort
+                # "medium" — which is one of the rejected values. The injection
+                # cannot be removed, but model-level options DO override its
+                # value, so pinning "minimal" lands an accepted request.
+                #
+                # Note "reasoning": false alone does NOT do this — it only
+                # affects OC's own display/logic, the wire still carried
+                # "medium". Confirmed end-to-end in docker-batch (oc 1.15.10):
+                # multi-turn tool use, file written correctly.
+                #
+                # Upstream context: the same injection bug was fixed for Azure
+                # gpt-5.5 in opencode PR #26222, but scope-locked to that model,
+                # so 5.6 does not benefit. Requesty also maps /v1/responses down
+                # to chat-completions, so that escape hatch is closed.
+                #
+                # Unlike pi (reasoning-off declared in pi-config/agent/
+                # models.json), OC has no way to omit the parameter entirely —
+                # hence the pinned value rather than a suppression.
+                gpt-5-6-sol|gpt-5-6-sol-no-thinking)  oc_model="requesty/azure/gpt-5.6-sol@swedencentral" ;;
                 gemini-2-5-pro)    oc_model="portkey/@vertex-ai/gemini-2.5-pro" ;;
                 gemini-3-5-flash)  oc_model="portkey/@vertex-eu-global/gemini-3.5-flash" ;;
                 kimi-k2-6)         oc_model="portkey/@openrouter-eval/moonshotai/kimi-k2.6" ;;
