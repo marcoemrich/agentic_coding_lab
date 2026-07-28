@@ -89,6 +89,12 @@ PRICES = {
     # vollen Input-Preis ab → cache_read = input.
     "kimi-k2-7":        (1.25,  4.50,  0.31, 0.0),   # tensorx/kimi-k2.7-code
     "kimi-k2-7-no-thinking": (1.25, 4.50, 0.31, 0.0),
+    # kimi-k3: zwei Routen mit unterschiedlichem Tarif und Cache-Verhalten.
+    # sference (Primaerroute, run-batch.sh:743) ist billiger und cached;
+    # nebius (Fallback, :749) hat supports_caching=false → cache_read = input.
+    "kimi-k3":          (2.25,  11.25, 0.225, 0.0),  # sference/kimi-k3
+    "kimi-k3-no-thinking": (2.25, 11.25, 0.225, 0.0),
+    "kimi-k3-nebius":   (3.00,  15.00, 3.00, 0.0),   # nebius/kimi-k3 (kein Cache-Rabatt: cr=in)
     "minimax-m3":       (0.40,  2.00,  0.10, 0.0),   # tensorx/minimax-m3
     "minimax-m3-no-thinking": (0.40, 2.00, 0.10, 0.0),
     "deepseek-v4-pro":  (1.75,  3.50,  0.44, 0.0),   # tensorx/deepseek-v4-pro

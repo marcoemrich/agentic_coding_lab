@@ -16,13 +16,16 @@ Für die aktuellen pi-/Requesty-Modelle (RQ-model-novel-pi, RQ-model-quality-pi,
 | glm-5-1 | `nebius/zai-org/glm-5.1` | $1.40 | $4.40 | $1.40 | **nein** |
 | glm-5-2 | `tensorx/glm-5.2` | $1.50 | $4.50 | $0.38 | ja |
 | kimi-k2-7 | `tensorx/kimi-k2.7-code` | $1.25 | $4.50 | $0.31 | ja |
+| kimi-k3 | `sference/kimi-k3` | $2.25 | $11.25 | $0.225 | ja |
+| kimi-k3-nebius | `nebius/kimi-k3` | $3.00 | $15.00 | $3.00 | **nein** |
 | minimax-m3 | `tensorx/minimax-m3` | $0.40 | $2.00 | $0.10 | ja |
 | deepseek-v4-pro | `tensorx/deepseek-v4-pro` | $1.75 | $3.50 | $0.44 | ja |
 | qwen3-235b | `nebius/qwen/qwen3-235b-a22b-instruct-2507` | $0.20 | $0.60 | $0.20 | **nein** |
 
 Anmerkungen:
 - Diese Werte weichen bewusst von den **nativen** Anthropic-Listpreisen ab: auf den vertex-Routen liegt Requesty ~10 % höher (opus-4-8 $5.50/$27.50 statt $5.00/$25.00 nativ). Im aktuellen Run-Pool laufen ALLE `opus-4-8`/`sonnet-5`-Runs über pi/Requesty, deshalb tragen die shared lab-variants in `compute-cost.py` den Requesty-Tarif.
-- **`supports_caching=false`** (glm-5-1, qwen3-235b): Requesty rechnet cache_read zum vollen Input-Preis ab → in `compute-cost.py` ist `cache_read = input` gesetzt (kein Rabatt).
+- **`supports_caching=false`** (glm-5-1, qwen3-235b, kimi-k3-nebius): Requesty rechnet cache_read zum vollen Input-Preis ab → in `compute-cost.py` ist `cache_read = input` gesetzt (kein Rabatt).
+- **kimi-k3** hat zwei lab-variants für zwei Routen: `kimi-k3` (sference, Primärroute) und `kimi-k3-nebius` (Fallback, `run-batch.sh:749`). Die Tarife unterscheiden sich deutlich (sference ~25 % billiger und mit Cache-Rabatt) — Runs der beiden Routen sind in Kosten-Vergleichen nicht austauschbar.
 - Cache-Write auf den OpenAI-/GLM-/Kimi-/MiniMax-/DeepSeek-Routen nicht separat ausgewiesen → in `compute-cost.py` als 0 geführt.
 - Requesty rotiert Modelle/Provider schnell — bei Abweichungen den Live-Katalog gegen `compute-cost.py` `PRICES` und `experiments/docker/pi-config/agent/models.json` diffen.
 
