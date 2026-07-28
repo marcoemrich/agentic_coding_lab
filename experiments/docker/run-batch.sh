@@ -121,6 +121,8 @@ MODEL_CONFIGS=(
     "gpt-5-6-terra|pi-only|false"
     "glm-5-2|pi-only|false"
     "kimi-k2-7|pi-only|false"
+    "kimi-k3|pi-only|false"
+    "kimi-k3-nebius|pi-only|false"
     "minimax-m3|pi-only|false"
     "qwen3-235b|pi-only|false"
     # Reasoning-off arm (RQ-model-novel-pi fair baseline). Same routing as
@@ -133,6 +135,7 @@ MODEL_CONFIGS=(
     "glm-5-1-no-thinking|pi-only|false"
     "glm-5-2-no-thinking|pi-only|false"
     "kimi-k2-7-no-thinking|pi-only|false"
+    "kimi-k3-no-thinking|pi-only|false"
     "minimax-m3-no-thinking|pi-only|false"
     "deepseek-v4-pro-no-thinking|pi-only|false"
     "qwen3-235b-no-thinking|pi-only|false"
@@ -737,6 +740,13 @@ EOF
                 glm-5-1)                       pi_model="requesty/nebius/zai-org/glm-5.1" ;;
                 glm-5-2)                       pi_model="requesty/tensorx/glm-5.2" ;;
                 kimi-k2-7)                     pi_model="requesty/tensorx/kimi-k2.7-code" ;;
+                kimi-k3)                       pi_model="requesty/sference/kimi-k3" ;;
+                # Fallback route. sference/kimi-k3 reproducibly dies mid-run
+                # with Requesty 502 "problem with the provider stream"
+                # (2026-07-28, 2/2 smoke runs). nebius is pricier, has no
+                # caching and half the max output, but is a separate stream
+                # path. Keep both ids so a routing comparison stays possible.
+                kimi-k3-nebius)                pi_model="requesty/nebius/kimi-k3" ;;
                 minimax-m3)                    pi_model="requesty/tensorx/minimax-m3" ;;
                 deepseek-v4-pro)               pi_model="requesty/tensorx/deepseek-v4-pro" ;;
                 qwen3-235b)                    pi_model="requesty/nebius/qwen/qwen3-235b-a22b-instruct-2507" ;;
@@ -929,6 +939,7 @@ EOF
         rate_limited="false"
         transient_api_error="false"
         quota_exhausted="false"
+        pi_retries_exhausted="false"
         transient_reason=""
         if [ "$claude_exit" -ne 0 ]; then
             # NON-RETRYABLE QUOTA EXHAUSTION — check before the rate-limit
@@ -969,7 +980,31 @@ EOF
         else
             # Exit-0 cap signatures. Only checked for Claude harness — pi
             # and OpenCode have their own end-of-session conventions.
-            if [ "$harness" = "claude" ]; then
+            if [ "$harness" = "pi" ]; then
+                # pi runs its own auto-retry ladder inside the process. When
+                # that ladder is exhausted it gives up, emits
+                #   {"type":"auto_retry_end","success":false,"finalError":"…"}
+                # and exits 0 — so the exit code alone reports "ok" for a run
+                # that never produced a line of code. Observed with Requesty
+                # 502 "problem with the provider stream" (sference/kimi-k3),
+                # but the signature is provider-agnostic.
+                #
+                # Matched on the JSONL event, not on prose, so model output
+                # mentioning "auto_retry_end" cannot forge it: the event is
+                # emitted by pi itself at top level of a log line.
+                # Deliberately NOT flagged transient: pi has already spent
+                # its own retry ladder on this error, so an upstream issue
+                # that survived that is not a seconds-long hiccup. Adding
+                # the outer backoff ladder (60s→5min→30min→1h→2h) on top
+                # would burn ~3.7h per run for an error that is very likely
+                # still there afterwards. Fail the run, keep the batch
+                # moving — same rationale as the quota-exhausted branch.
+                if grep -qE '"type":"auto_retry_end","success":false' "$run_log" 2>/dev/null; then
+                    pi_retries_exhausted="true"
+                    echo -e "  ${RED}pi exhausted its internal retries — marking run failed.${NC}"
+                    grep -oE '"finalError":"[^"]{0,120}' "$run_log" 2>/dev/null | tail -1 | sed 's/^/    /'
+                fi
+            elif [ "$harness" = "claude" ]; then
                 # Trimmed log content (whitespace stripped). On a healthy
                 # run this is the model's final report (tests passed, done
                 # marker written, etc.). On a capped run this is exactly
@@ -1079,6 +1114,7 @@ EOF
     # skills/agents/extension; --mode json --no-session).
     if [ "$harness" = "pi" ] && [ "$claude_exit" -eq 0 ] \
             && [ "$rate_limited" = "false" ] && [ "$transient_api_error" = "false" ] \
+            && [ "$pi_retries_exhausted" = "false" ] \
             && [ -n "$pi_model" ] \
             && [ ! -f "$run_dir/src/cli.ts" ] && [ -f "$run_dir/src/claim-office.ts" ]; then
         echo -e "  ${YELLOW}src/cli.ts missing — nudging pi agent to create it...${NC}"
@@ -1104,6 +1140,10 @@ EOF
     esac
     [ "$rate_limited" = "true" ]        && exit_reason="rate-limited"
     [ "$transient_api_error" = "true" ] && exit_reason="transient-api-error"
+    # pi gave up after its own retry ladder and still exited 0. Without this
+    # the run is filed as "ok" with zero cycles and no code — indistinguishable
+    # in aggregation from a model that simply failed the kata.
+    [ "$pi_retries_exhausted" = "true" ] && exit_reason="pi-retries-exhausted"
     # Distinct from rate-limited: the plan allowance is gone until a billing
     # cycle reset, so no amount of waiting inside this batch helps. Kept as
     # its own reason so aggregation does not read it as a transient blip.
@@ -1151,7 +1191,15 @@ EOF
             break
         fi
         echo -e "  ${YELLOW}Continuing with next run (consecutive transient failures: $consecutive_ratelimited/$BATCH_CONSECUTIVE_GIVEUP).${NC}"
-    elif [ "$claude_exit" -ne 0 ]; then
+    # Failed runs. Beyond a non-zero exit code, two failure modes leave the
+    # process exiting 0 and need their flags checked explicitly:
+    # quota-exhausted (cursor plan allowance) and pi-retries-exhausted (pi
+    # gave up after its own retry ladder). Without them the run falls
+    # through to the OK branch, and the batch summary reads
+    # "OK: 1, Failed: 0" for a run that produced no code at all.
+    elif [ "$claude_exit" -ne 0 ] \
+            || [ "$quota_exhausted" = "true" ] \
+            || [ "$pi_retries_exhausted" = "true" ]; then
         failed_count=$((failed_count + 1))
         consecutive_ratelimited=0
         echo -e "  ${RED}Failed: $exit_reason (${duration}s)${NC}"

@@ -240,6 +240,13 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "", cell_workfl
     completed = exit_reason not in {
         "timeout", "timeout-killed",
         "rate-limited", "transient-api-error",
+        # Infrastructure aborts, not model behaviour: the run never got a
+        # fair attempt at the kata, so it must not count as a completion.
+        # quota-exhausted (cursor plan allowance) and pi-retries-exhausted
+        # (pi gave up after its own retry ladder, e.g. Requesty 502) both
+        # exit 0 and would otherwise be filed as clean runs with zero
+        # cycles — visually identical to a model that failed the task.
+        "quota-exhausted", "pi-retries-exhausted",
     }
 
     return {
@@ -358,6 +365,7 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
             if reason not in {
                 "timeout", "timeout-killed",
                 "rate-limited", "transient-api-error",
+                "quota-exhausted", "pi-retries-exhausted",
             }:
                 n_ok += 1
         if n == 0:
