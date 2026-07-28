@@ -10,7 +10,7 @@ factors:
     - glm-5-1             # GLM 5.1 (nebius/zai-org/glm-5.1)
     - glm-5-2             # GLM 5.2 (tensorx/glm-5.2)
     - kimi-k2-7           # previous Kimi (tensorx/kimi-k2.7-code)
-    - kimi-k3             # current Kimi (sference/kimi-k3)
+    - kimi-k3-nebius      # current Kimi (nebius/kimi-k3); sference route dropped, see caveat
     - minimax-m3          # MiniMax M3 (tensorx/minimax-m3)
     - deepseek-v4-pro     # DeepSeek V4 Pro (tensorx/deepseek-v4-pro)
     - qwen3-235b          # current Qwen (nebius/qwen/qwen3-235b-a22b-instruct-2507)
@@ -91,23 +91,27 @@ The `factors.model` list is set by the user: current Opus + Sonnet (Anthropic an
 
 MiniMax and DeepSeek are deliberately included because they had clear, documented contrast profiles in the `-oc` counterpart: MiniMax = "internal tests green, external verification 0/15" (spec misunderstanding), DeepSeek-Pro = skill-compliance champion with duration tail risk. That makes the cross-harness comparison direct.
 
-The backprovider path is implicitly pinned in every lab variant (Opus/Sonnet via Vertex EU, GPT via Azure, GLM-5.1 via Nebius, GLM-5.2 + Kimi-K2.7 + MiniMax + DeepSeek via TensorX, Kimi-K3 via Sference, Qwen via Nebius); a changing backprovider requires a new variant.
+The backprovider path is implicitly pinned in every lab variant (Opus/Sonnet via Vertex EU, GPT via Azure, GLM-5.1 via Nebius, GLM-5.2 + Kimi-K2.7 + MiniMax + DeepSeek via TensorX, Kimi-K3 via Nebius, Qwen via Nebius); a changing backprovider requires a new variant.
 
-### kimi-k3: routing not yet stable (as of 2026-07-28)
+### kimi-k3: nebius route chosen, sference dropped (as of 2026-07-29)
 
-`kimi-k3` is included as a factor level, but its **primary route is not yet proven runnable**. Smoke on game-of-life × `v6.6-lab-split-pi`, n=4:
+The factor level is **`kimi-k3-nebius`**. The sference route was tried first and dropped. Evidence across all workflows, n=7:
 
 | Route | Runs | Result |
 |---|---|---|
-| `requesty/sference/kimi-k3` | 2 | both dead — Requesty `502 "There was a problem with the provider stream"` after pi's own retry ladder; `src/` empty |
+| `requesty/sference/kimi-k3` | 4 | 2× dead — Requesty `502 "There was a problem with the provider stream"` / `"Stream ended without finish_reason"` after pi's own retry ladder, `src/` empty; 2× clean |
 | `requesty/nebius/kimi-k3` | 2 | 1× `pi-retries-exhausted`, 1× clean (`tests_passing`, 8 tests, `cycle_count=12`, `predictions_total=8`) |
 
-So one of four smoke runs produced usable data. Two consequences:
+Neither route is reliable — sference is 2/4, nebius 1/2. Nebius was chosen because its failures have not shown the mid-run stream-abort signature that makes sference runs die after ~30 minutes of work. Expect to over-schedule replicates to reach `min_replicates: 5`.
+
+The **cell is pure nebius**: the two clean sference runs are *not* counted toward it (see point 2 below). One of them (`2026-07-28_22-08-05`, `v6.2.1-phase-continuation-pi`) was produced by the fill batch before the switch and is left in the runs pool as a non-matching run.
+
+Two further consequences:
 
 1. **Two of these smokes carry a stale `exit_reason: ok`.** pi exhausts its internal retry ladder, emits `auto_retry_end {success:false}` and exits 0 — so a run with an empty `src/` looked green. This is **fixed in the harness** (`344daa8c`, 2026-07-28): `run-batch.sh` matches the JSONL event and sets `exit_reason: pi-retries-exhausted`, which `aggregate-by-query.py` excludes from `completed_within_budget`. The fix landed *after* these four runs were scored, and `exit_reason` is written once by `record-run.sh` at batch time — `analyze-run.sh` never recomputes it, so `/reanalyze` does not repair them. Only the two 06:34/06:41 sference rows are affected; runs from `344daa8c` onward are labelled correctly. When reading those two rows, judge by `tests_total > 0` rather than exit code.
-2. **`kimi-k3-nebius` is a separate lab variant, not a fallback that may be silently substituted.** Tariffs differ (`research/model-pricing.md`: sference $2.25/$11.25 with cache discount, nebius $3.00/$15.00 without), so `cost_usd` is not comparable across the two. If the fill is done over the nebius route, the cell must be relabelled `kimi-k3-nebius` and the route named in the findings — do **not** merge the two under `any:`, that would smear a ~25 % cost difference and the caching factor.
+2. **`kimi-k3-nebius` is a separate lab variant, not a fallback that may be silently substituted.** Tariffs differ (`research/model-pricing.md`: sference $2.25/$11.25 with cache discount, nebius $3.00/$15.00 without), so `cost_usd` is not comparable across the two. This is why the cell was relabelled rather than merged under `any:` — an OR-match would smear a ~25 % cost difference and the caching factor. **`cost_usd` for this cell is not comparable to the other pi cells** either, since nebius bills without the cache discount the other routes get; read it as an upper bound.
 
-Inclusion decision is deferred until the fill batch: if sference stays at 502 and nebius does not reliably finish, kimi-k3 is dropped from the RQ with justification (same rule as the Gemini 2.5 Pro / Devstral / Codestral history in `questions-opencode/`).
+Inclusion decision if the fill fails: should nebius not reach `min_replicates: 5` within a reasonable number of attempts, kimi-k3 is dropped from the RQ with justification (same rule as the Gemini 2.5 Pro / Devstral / Codestral history in `questions-opencode/`).
 
 ### Not included / further candidates
 

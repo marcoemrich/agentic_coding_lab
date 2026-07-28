@@ -440,13 +440,21 @@ for entry in "${RUN_LIST[@]}"; do
     run_name="${timestamp}_${kata}_${workflow}_${model_name}"
     run_dir="$RUNS_DIR/$run_name"
     # Avoid collision when parallel shards start the same cell in the same second.
-    if [ -d "$run_dir" ]; then
-        suffix=2
-        while [ -d "${run_dir}-${suffix}" ]; do
-            suffix=$((suffix + 1))
-        done
-        run_dir="${run_dir}-${suffix}"
-    fi
+    # A replicate-fill plan makes every run of a cell identical, so the
+    # second-resolution timestamp is the ONLY distinguishing part of the name --
+    # simultaneous shards reliably collide.
+    #
+    # `mkdir` (no -p) is the atomic claim: it fails if the directory already
+    # exists, so exactly one shard can win a given name. A check-then-create
+    # guard (`[ -d ] || mkdir -p`) does NOT work here -- both shards test before
+    # either creates, both see a free path, and `mkdir -p` then succeeds for
+    # both. The loser only discovers the collision later, when it copies config
+    # into a directory another shard is already populating.
+    suffix=1
+    until mkdir "$run_dir" 2>/dev/null; do
+        suffix=$((suffix + 1))
+        run_dir="$RUNS_DIR/${run_name}-${suffix}"
+    done
     mkdir -p "$run_dir/src"
 
     # Detect harness from workflow definition. .pi/ marks a pi workflow,
