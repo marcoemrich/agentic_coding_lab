@@ -244,7 +244,17 @@ Take `templates/README.template.md`. Substitute placeholders:
 - `{{DATE}}` → `$DATE` (both occurrences: title and "Version" line)
 - `{{SOURCE_WORKFLOW}}` → `$SRC_NAME` (two occurrences in "Tested
   parameters" and "Original name and lineage")
+- `{{MODEL}}` → the model the source workflow was validated against, e.g.
+  `Claude Opus 4.8 (no-thinking variant)`. Read it from the RQ named on the
+  recommendation line in `workflow-construction.md` — do not carry the
+  previous snapshot's value forward.
+- `{{CC_VERSION}}` → the Claude Code pin from `experiments/docker/Dockerfile`
+  (CLAUDE.md's "Docker & version pins" records the same number).
 - `{{MULTI_HARNESS_NOTE}}` → see below
+
+Model and harness version are placeholders precisely because they rot: they
+were hardcoded until 2026-07-28 and shipped two snapshots claiming Opus 4.7
+/ CC 2.1.107 long after both had moved.
 
 Write to `$TARGET/.claude/README.md`.
 
@@ -320,13 +330,24 @@ force-fitting it.
 > | Harness | Metric wording lives in |
 > |---|---|
 > | cc | `rules/tdd.md` (A.2), `commands/red.md` (B.1) |
-> | pi | `skills/tdd/SKILL.md` (marker table + intro) |
-> | oc | the `command.tdd` **prompt string** inside `opencode.json` |
-> | cursor | `rules/tdd.mdc`, `skills/red/SKILL.md`, `skills/refactor/SKILL.md` |
+> | pi | `skills/tdd/SKILL.md` (marker table + intro), `skills/red/SKILL.md` |
+> | oc | the `command.tdd` **prompt string** inside `opencode.json`, `skills/red/SKILL.md` |
+> | cursor | `rules/tdd.mdc`, `skills/red/SKILL.md` |
 >
 > The oc case is the easiest to miss: the orchestration is a JSON string,
 > so a plain `grep` over `*.md` will not see it. Grep the whole subtree,
 > not just markdown.
+>
+> **Two sites sit outside the orchestration files entirely** and were missed
+> by every earlier export because the patches never look there:
+>
+> - **`agents/end-refactor.md`, all four harnesses** — the Remember list ends
+>   with "*that's the trail of evidence the experiment reads*". Replace with
+>   "that's the audit trail for every decision".
+> - **`skills/red/SKILL.md` on pi, oc and cursor** — carries the same
+>   `predictions_correct_rate` / "a metric the experiment measures"
+>   justification that Patch B.1 removes from cc's `commands/red.md`. The
+>   three are byte-identical copies, so patch them in one pass.
 >
 > Text-marker harnesses (pi, cursor) legitimately need a marker table —
 > the markers are how their phases are recognised. Keep the table; replace

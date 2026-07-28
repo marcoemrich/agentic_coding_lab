@@ -1,10 +1,15 @@
-# Exact Coding TDD Baseline — Version {{DATE}}
+# Exact Coding TDD Baseline — Version 2026-07-28
 
 A ready-to-copy Claude Code workflow for Test-Driven Development with
 configurable human-in-the-loop checkpoints. This baseline ships the
 `.claude/` directory you can drop into your project.
 
-{{MULTI_HARNESS_NOTE}}
+> **This is the Claude Code subtree.** The same workflow ships for pi
+> (`.pi/`), OpenCode (`.opencode/`), and cursor-agent (`.cursor/`) in the
+> snapshot this directory came from — see the snapshot-level `README.md`
+> there for the harness comparison. The four are independent; you only need
+> the one your harness reads. If you received `.claude/` on its own, nothing
+> is missing — it is self-contained.
 
 ## What it is
 
@@ -35,24 +40,24 @@ Switch the level by editing one line in the HITL file.
 
 ## Tested parameters
 
-This snapshot derives from `{{SOURCE_WORKFLOW}}`. The recommendation
+This snapshot derives from `v6.6-lab-split-cc`. The recommendation
 for that workflow comes from
 `research/workflow-dev/workflow-construction.md` in the upstream lab repo
 (`agentic_coding_lab_project`). Refer there for the validating
 experiments, replicate counts, and outcome metrics.
 
-- **Model:** {{MODEL}} — primary validation target
-- **Harness:** Claude Code CLI {{CC_VERSION}}
+- **Model:** Claude Opus 4.8 (no-thinking variant) — primary validation target
+- **Harness:** Claude Code CLI 2.1.170
 - **Language stack:** TypeScript, Vitest, pnpm
 
 Different models or harness versions may produce different results. The
 hybrid architecture (skills + isolated refactor subagents) was found to be a
 Pareto-optimal point against pure single-context and pure all-subagent
-variants.
+variants on Opus 4.x.
 
 ## Original name and lineage
 
-Source workflow: `{{SOURCE_WORKFLOW}}` from
+Source workflow: `v6.6-lab-split-cc` from
 `agentic_coding_lab_project/experiments/workflows/`.
 
 For the full lineage and the empirical findings that promoted this workflow
@@ -125,7 +130,7 @@ they don't clash with your project's own `README.md`.
 
 ## Version and updates
 
-Version: **{{DATE}}** (date-based — also recorded in the `VERSION` file in
+Version: **2026-07-28** (date-based — also recorded in the `VERSION` file in
 this directory).
 
 Future updates ship in their own dated sub-directory next to this one.
