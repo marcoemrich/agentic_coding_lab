@@ -9,7 +9,8 @@ factors:
     - gpt-5-6-terra       # GPT TERRA (azure/gpt-5.6-terra@swedencentral)
     - glm-5-1             # GLM 5.1 (nebius/zai-org/glm-5.1)
     - glm-5-2             # GLM 5.2 (tensorx/glm-5.2)
-    - kimi-k2-7           # current Kimi (tensorx/kimi-k2.7-code)
+    - kimi-k2-7           # previous Kimi (tensorx/kimi-k2.7-code)
+    - kimi-k3             # current Kimi (sference/kimi-k3)
     - minimax-m3          # MiniMax M3 (tensorx/minimax-m3)
     - deepseek-v4-pro     # DeepSeek V4 Pro (tensorx/deepseek-v4-pro)
     - qwen3-235b          # current Qwen (nebius/qwen/qwen3-235b-a22b-instruct-2507)
@@ -73,6 +74,7 @@ This RQ measures the **model effect on code quality and TDD discipline** in a ha
 | `glm-5-1` | `requesty/nebius/zai-org/glm-5.1` |
 | `glm-5-2` | `requesty/tensorx/glm-5.2` |
 | `kimi-k2-7` | `requesty/tensorx/kimi-k2.7-code` |
+| `kimi-k3` | `requesty/sference/kimi-k3` |
 | `minimax-m3` | `requesty/tensorx/minimax-m3` |
 | `deepseek-v4-pro` | `requesty/tensorx/deepseek-v4-pro` |
 | `qwen3-235b` | `requesty/nebius/qwen/qwen3-235b-a22b-instruct-2507` |
@@ -85,11 +87,27 @@ This RQ is initially **open (n=0)**: the mapping is in place, but the first batc
 
 ## Model selection
 
-The `factors.model` list is set by the user: current Opus + Sonnet (Anthropic anchor, comparable across harnesses to `-oc`/CC), GPT-5.6 **SOL and TERRA** (intra-family variants, analogous to GLM 5.1/5.2), GLM 5.1 **and** 5.2 (direct intra-family version comparison), current Kimi, plus MiniMax M3, DeepSeek V4 Pro and current Qwen (qwen3-235b). Per model the same rule applies as for `-oc`: inclusion if the autonomous loop runs cleanly through under `v6.2.1-phase-continuation-pi` and `src/cli.ts` is written. Models that do not reliably finish the skill loop (continuation drop, done.txt with red tests, no cli.ts) are removed from the RQ with justification and documented here — analogous to the Gemini 2.5 Pro / Devstral / Codestral history in `questions-opencode/`. The test-list→red continuation drop that affected kimi/minimax under v6.2 is fixed in v6.2.1 (see harness status).
+The `factors.model` list is set by the user: current Opus + Sonnet (Anthropic anchor, comparable across harnesses to `-oc`/CC), GPT-5.6 **SOL and TERRA** (intra-family variants, analogous to GLM 5.1/5.2), GLM 5.1 **and** 5.2 (direct intra-family version comparison), Kimi **K2.7 and K3** (third intra-family version comparison, added 2026-07-28), plus MiniMax M3, DeepSeek V4 Pro and current Qwen (qwen3-235b). Per model the same rule applies as for `-oc`: inclusion if the autonomous loop runs cleanly through under `v6.2.1-phase-continuation-pi` and `src/cli.ts` is written. Models that do not reliably finish the skill loop (continuation drop, done.txt with red tests, no cli.ts) are removed from the RQ with justification and documented here — analogous to the Gemini 2.5 Pro / Devstral / Codestral history in `questions-opencode/`. The test-list→red continuation drop that affected kimi/minimax under v6.2 is fixed in v6.2.1 (see harness status).
 
 MiniMax and DeepSeek are deliberately included because they had clear, documented contrast profiles in the `-oc` counterpart: MiniMax = "internal tests green, external verification 0/15" (spec misunderstanding), DeepSeek-Pro = skill-compliance champion with duration tail risk. That makes the cross-harness comparison direct.
 
-The backprovider path is implicitly pinned in every lab variant (Opus/Sonnet via Vertex EU, GPT via Azure, GLM-5.1 via Nebius, GLM-5.2 + Kimi + MiniMax + DeepSeek via TensorX, Qwen via Nebius); a changing backprovider requires a new variant.
+The backprovider path is implicitly pinned in every lab variant (Opus/Sonnet via Vertex EU, GPT via Azure, GLM-5.1 via Nebius, GLM-5.2 + Kimi-K2.7 + MiniMax + DeepSeek via TensorX, Kimi-K3 via Sference, Qwen via Nebius); a changing backprovider requires a new variant.
+
+### kimi-k3: routing not yet stable (as of 2026-07-28)
+
+`kimi-k3` is included as a factor level, but its **primary route is not yet proven runnable**. Smoke on game-of-life × `v6.6-lab-split-pi`, n=4:
+
+| Route | Runs | Result |
+|---|---|---|
+| `requesty/sference/kimi-k3` | 2 | both dead — Requesty `502 "There was a problem with the provider stream"` after pi's own retry ladder; `src/` empty |
+| `requesty/nebius/kimi-k3` | 2 | 1× `pi-retries-exhausted`, 1× clean (`tests_passing`, 8 tests, `cycle_count=12`, `predictions_total=8`) |
+
+So one of four smoke runs produced usable data. Two consequences:
+
+1. **Two of these smokes carry a stale `exit_reason: ok`.** pi exhausts its internal retry ladder, emits `auto_retry_end {success:false}` and exits 0 — so a run with an empty `src/` looked green. This is **fixed in the harness** (`344daa8c`, 2026-07-28): `run-batch.sh` matches the JSONL event and sets `exit_reason: pi-retries-exhausted`, which `aggregate-by-query.py` excludes from `completed_within_budget`. The fix landed *after* these four runs were scored, and `exit_reason` is written once by `record-run.sh` at batch time — `analyze-run.sh` never recomputes it, so `/reanalyze` does not repair them. Only the two 06:34/06:41 sference rows are affected; runs from `344daa8c` onward are labelled correctly. When reading those two rows, judge by `tests_total > 0` rather than exit code.
+2. **`kimi-k3-nebius` is a separate lab variant, not a fallback that may be silently substituted.** Tariffs differ (`research/model-pricing.md`: sference $2.25/$11.25 with cache discount, nebius $3.00/$15.00 without), so `cost_usd` is not comparable across the two. If the fill is done over the nebius route, the cell must be relabelled `kimi-k3-nebius` and the route named in the findings — do **not** merge the two under `any:`, that would smear a ~25 % cost difference and the caching factor.
+
+Inclusion decision is deferred until the fill batch: if sference stays at 502 and nebius does not reliably finish, kimi-k3 is dropped from the RQ with justification (same rule as the Gemini 2.5 Pro / Devstral / Codestral history in `questions-opencode/`).
 
 ### Not included / further candidates
 
@@ -102,7 +120,8 @@ The backprovider path is implicitly pinned in every lab variant (Opus/Sonnet via
 
 - **H1 (Anthropic anchor)**: opus-4-8 and sonnet-5 deliver the lowest values for `cognitive_max` and `smell_total` and confirm that the Anthropic level is preserved over the Requesty routing as well (otherwise the pi harness is a worthless confound). Cross-check against the Opus values in RQ-model-quality-oc.
 - **H1b (GLM version jump)**: glm-5-2 measurably improves `smell_total`/`cognitive_max` over glm-5-1 — direct intra-family version comparison within one cell matrix (both via different backproviders: 5.1 Nebius, 5.2 TensorX; note the backprovider confound as a caveat).
-- **H2 (non-Anthropic spread)**: The non-Anthropic models (gpt-5-6-sol, glm-5-1, glm-5-2, kimi-k2-7) show a measurable spread over `smell_total` and `cognitive_max` — i.e. the pi harness is discriminating enough to make model differences visible.
+- **H1c (Kimi version jump)**: kimi-k3 measurably improves `smell_total`/`cognitive_max` over kimi-k2-7 — third intra-family version comparison next to GLM 5.1/5.2 and GPT SOL/TERRA. Backprovider confound as with GLM: K2.7 via TensorX, K3 via Sference. Testable only if the kimi-k3 routing stabilises (see "kimi-k3: routing not yet stable").
+- **H2 (non-Anthropic spread)**: The non-Anthropic models (gpt-5-6-sol, glm-5-1, glm-5-2, kimi-k2-7, kimi-k3) show a measurable spread over `smell_total` and `cognitive_max` — i.e. the pi harness is discriminating enough to make model differences visible.
 - **H3 (skill-tool compliance is model-dependent)**: `cycle_count` and `predictions_total` spread across the models — some use the v6.2.1 skill/subagent mechanism with discipline, others drift into inline mode. A low cycle_count is NOT automatically weaker TDD discipline, but also compliance with the pi skill affordance. (Parallel to the `-oc` finding: only some models produce prediction markers.)
 
 ## Methodological notes

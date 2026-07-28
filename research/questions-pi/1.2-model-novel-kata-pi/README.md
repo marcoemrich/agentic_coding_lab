@@ -14,8 +14,10 @@ factors:
     - opus-4-8-no-thinking         # only model with demonstrably controllable reasoning
     - sonnet-5                     # current Sonnet (vertex/claude-sonnet-5@eu)
     - sonnet-5-no-thinking
-    - kimi-k2-7                    # current Kimi (tensorx/kimi-k2.7-code)
+    - kimi-k2-7                    # previous Kimi (tensorx/kimi-k2.7-code)
     - kimi-k2-7-no-thinking
+    - kimi-k3                      # current Kimi (sference/kimi-k3)
+    - kimi-k3-no-thinking
     - minimax-m3                   # MiniMax M3 (tensorx/minimax-m3)
     - minimax-m3-no-thinking
     - deepseek-v4-pro              # DeepSeek V4 Pro (tensorx/deepseek-v4-pro)
@@ -77,7 +79,9 @@ RQ-model-novel (CC side) and RQ-model-novel-oc (OpenCode side) have shown that `
 
 ## Harness status
 
-**As of 2026-07-24**: Harness verified, routing for all nine `factors.model` values is in place (`experiments/docker/run-batch.sh`, `harness = pi` branch; routing table also in `../1.1-model-quality-pi/README.md`). An n=1 smoke over all models has run; the cells are not yet filled to `min_replicates`.
+**As of 2026-07-24**: Harness verified, routing for all `factors.model` values in place at that time is wired (`experiments/docker/run-batch.sh`, `harness = pi` branch; routing table also in `../1.1-model-quality-pi/README.md`). An n=1 smoke over those models has run; the cells are not yet filled to `min_replicates`.
+
+**Update 2026-07-28**: `kimi-k3` / `kimi-k3-no-thinking` added. Routing is wired, but not yet smoked **on this kata** — the available evidence is from game-of-life and is unstable (see "Model selection"). K3 has no claim-office smoke and no rope-riddle reasoning probe yet; both are open before its cells are interpreted.
 
 Three harness defects were found and fixed in the process:
 
@@ -93,7 +97,9 @@ Earlier `v6.2-with-why-cleaned-pi` × claim-office **prose** runs with `opus-4-7
 
 ## Model selection
 
-Current Opus + Sonnet as the Anthropic anchor, GPT-5.6-SOL and -TERRA, GLM 5.2, current Kimi, MiniMax M3, DeepSeek V4 Pro, current Qwen (qwen3-235b). Wiring procedure and drop criteria as with `questions-opencode/` (routing smoke → inclusion; continuation drop / done.txt-with-red-tests / missing cli.ts → exclusion with justification).
+Current Opus + Sonnet as the Anthropic anchor, GPT-5.6-SOL and -TERRA, GLM 5.2, Kimi K2.7 **and K3** (K3 added 2026-07-28), MiniMax M3, DeepSeek V4 Pro, current Qwen (qwen3-235b). Wiring procedure and drop criteria as with `questions-opencode/` (routing smoke → inclusion; continuation drop / done.txt-with-red-tests / missing cli.ts → exclusion with justification).
+
+**`kimi-k3` is included provisionally.** Its primary route (`requesty/sference/kimi-k3`) died in 2/2 game-of-life smokes with Requesty `502 "problem with the provider stream"`, the nebius fallback in 1/2 — one of four smoke runs produced usable data. Two things follow for this RQ. First, that failure mode used to present as `exit_reason: ok` with an empty `src/` (pi exits 0 after its own retry ladder); this is **fixed in the harness** (`344daa8c`, 2026-07-28) and fill runs for this RQ are labelled `pi-retries-exhausted` correctly — only the two pre-fix game-of-life smokes still carry the stale `ok`, and `exit_reason` is not recomputed by reanalysis. Second, `kimi-k3-nebius` is a **separate lab variant**, not a silent substitute, because the tariffs differ (sference $2.25/$11.25 with cache discount vs. nebius $3.00/$15.00 without — `research/model-pricing.md`). Full routing evidence in `../1.1-model-quality-pi/README.md` § "kimi-k3: routing not yet stable". If neither route finishes reliably, K3 is dropped with justification. Note the smoke evidence is from **game-of-life**, not claim-office — routing stability should hold across katas, but that is an assumption until this RQ's own smoke.
 
 `glm-5-1` (Nebius) was removed: the planned intra-family comparison with `glm-5-2` (TensorX) was confounded by the backprovider change, so a version effect could not have been separated cleanly from a provider effect.
 
@@ -113,17 +119,20 @@ Measurement was done per model with a reasoning-demanding prompt (rope riddle), 
 | `qwen3-235b` | 0 | 0 | no — never reasons |
 | `glm-5-2` | reasons | 299 | no — always reasons |
 | `kimi-k2-7` | 217 | 137 | no — always reasons |
+| `kimi-k3` | not probed | not probed | unknown — added 2026-07-28, rope riddle not re-run |
 | `minimax-m3` | 615 | 396 | no — always reasons |
 | `gpt-5-6-sol` | 0 | 0 | no — forced off |
 | `gpt-5-6-terra` | 0 | 0 | no — forced off |
 
-**Only `opus-4-8` responds to `--thinking`.** For all other models the reasoning state is a property of the model or the route, not of the call — `--thinking off`, the `:off` suffix on the model string and `models.json "reasoning": false` all remain without effect. Requesty-routed OpenAI-compatible models deliver reasoning over the `reasoning_content` channel (`thinkingSignature: "reasoning_content"`); switching it off requires a provider-specific body parameter that pi neither sends nor allows to be injected (model entries only know `contextWindow, id, input, maxTokens, name, reasoning`; no `--extra-body`).
+**Of the probed models, only `opus-4-8` responds to `--thinking`.** (`kimi-k3` was added after this measurement and has not been through the rope riddle — see below.) For all other probed models the reasoning state is a property of the model or the route, not of the call — `--thinking off`, the `:off` suffix on the model string and `models.json "reasoning": false` all remain without effect. Requesty-routed OpenAI-compatible models deliver reasoning over the `reasoning_content` channel (`thinkingSignature: "reasoning_content"`); switching it off requires a provider-specific body parameter that pi neither sends nor allows to be injected (model entries only know `contextWindow, id, input, maxTokens, name, reasoning`; no `--extra-body`).
 
 **`gpt-5-6-sol` / `gpt-5-6-terra`: forced off.** With reasoning on, the Azure endpoint answers `400: Function tools with reasoning_effort are not supported … use /v1/responses instead`; an `openai-responses/gpt-5.6-*` does not exist in the Requesty catalog (only for 5.4 and 5.5). Both therefore run with `"reasoning": false` in `pi-config/agent/models.json`.
 
 **Consequence for the design.** Reasoning is carried as a **model suffix**, not as a separate `factors` entry: `<id>` (native default) and `<id>-no-thinking` (`--thinking off`) are two standalone lab variants with identical routing. This is the same convention as `opus-4-7-no-thinking` in `research/workflow-dev/` and leaves the cell resolution of the aggregation unchanged.
 
 The rope-riddle measurement above was a **single-prompt probe without tool calls and without long context**. Whether the switch behaves the same under the real kata is therefore not established — which is why all models where the probe yielded "never" (sonnet-5, deepseek-v4-pro, qwen3-235b) or "always" (kimi-k2-7, minimax-m3) still get both arms. There the comparison is a **test of controllability itself**: if it comes out at zero difference, the two cells are merged in the findings and carried as "switch without effect, checked empirically" — not as a reasoning effect.
+
+**`kimi-k3` (added 2026-07-28) carries both arms on weaker evidence than the rest.** The rope riddle was not re-run for it; the only signal is from the game-of-life smokes, where thinking blocks appear in every run (24, 24, 33, 292 over four runs — the 292 from the one run that completed). That establishes "reasons at all", not "reasons regardless of the switch", because those smokes ran without `--thinking off`. K3 is therefore treated like K2.7 — both arms, as a **test of controllability itself** — and the rope-riddle probe should be run for it before the arms are interpreted as a reasoning effect. If both arms come out identical, they merge into one cell as "switch without effect, checked empirically".
 
 Only where the switch demonstrably does not exist is there a single arm: `glm-5-2` reasons even with `--thinking off` (confirmed in the aborted 08:46 run with full `reasoning_content` blocks), `gpt-5-6-sol`/`-terra` run technically forced with `"reasoning": false`. For these three the reasoning state is confounded with the model and must be read along when interpreting.
 
