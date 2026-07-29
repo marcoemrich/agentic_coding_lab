@@ -2,9 +2,9 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in correctness and TDD discipline on claim-office-example-mapping with the v6.2-with-why-cleaned-pi workflow?_
 
-Generated: 2026-07-29T05:19:22Z
+Generated: 2026-07-29T05:57:27Z
 
-Cells declared: 17 · matched runs: 84 · min_replicates: 5
+Cells declared: 17 · matched runs: 83 · min_replicates: 5
 
 ## Zell-Coverage
 
@@ -17,7 +17,7 @@ Cells declared: 17 · matched runs: 84 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k2-7 | 5 | 5 | ✅ |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k2-7-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-nebius | 5 | 1 | ⚠️ nur 1/5 ohne Timeout |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-nebius-no-thinking | 4 | 3 | ⚠️ unter min_replicates (4/5) |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-nebius-no-thinking | 3 | 2 | ⚠️ unter min_replicates (3/5) |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3 | 5 | 2 | ⚠️ nur 2/5 ohne Timeout |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking | 5 | 4 | ⚠️ nur 4/5 ohne Timeout |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | deepseek-v4-pro | 5 | 5 | ✅ |
@@ -328,7 +328,7 @@ Cells declared: 17 · matched runs: 84 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k2-7                   |   5 |       5 |      100 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k2-7-no-thinking       |   5 |       4 |       80 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-nebius              |   5 |       5 |      100 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-nebius-no-thinking  |   4 |       3 |       75 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-nebius-no-thinking  |   3 |       3 |      100 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3                  |   5 |       5 |      100 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |       4 |       80 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |       5 |      100 |
@@ -372,7 +372,7 @@ Cells declared: 17 · matched runs: 84 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k2-7                   |   5 |       5 |      100 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k2-7-no-thinking       |   5 |       5 |      100 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-nebius              |   5 |       1 |       20 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-nebius-no-thinking  |   4 |       3 |       75 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-nebius-no-thinking  |   3 |       2 |       67 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3                  |   5 |       2 |       40 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |       4 |       80 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |       5 |      100 |
@@ -406,25 +406,25 @@ Cells declared: 17 · matched runs: 84 · min_replicates: 5
 
 ### total_tokens
 
-| kata                         | cell_workflow                | cell_model                  |   n |             mean |              min |         max |              std |
-|:-----------------------------|:-----------------------------|:----------------------------|----:|-----------------:|-----------------:|------------:|-----------------:|
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | deepseek-v4-pro             |   5 |      1.46158e+07 |      1.0449e+07  | 1.86033e+07 |      3.19643e+06 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | deepseek-v4-pro-no-thinking |   5 |      9.47146e+06 | 162369           | 1.60331e+07 |      6.41141e+06 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | glm-5-2                     |   5 |      1.53202e+07 |      3.47055e+06 | 2.64393e+07 |      1.01938e+07 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol                 |   5 |      2.08521e+06 |      1.14535e+06 | 3.32557e+06 | 801525           |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-terra               |   5 | 809357           | 228031           | 1.48582e+06 | 502409           |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k2-7                   |   5 |      1.77036e+07 |      1.30505e+07 | 2.46772e+07 |      4.73805e+06 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k2-7-no-thinking       |   5 |      1.09921e+07 | 180023           | 1.8589e+07  |      7.0597e+06  |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-nebius              |   5 |      6.19093e+06 |      1.9416e+06  | 8.42457e+06 |      2.92713e+06 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-nebius-no-thinking  |   3 |      7.495e+06   |      1.07571e+06 | 1.19647e+07 |      5.70027e+06 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3                  |   5 |      7.27703e+06 | 710090           | 1.55053e+07 |      5.98934e+06 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |      1.27888e+07 |      8.75722e+06 | 1.94871e+07 |      4.79597e+06 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |      1.3833e+07  |      1.02517e+07 | 1.83105e+07 |      3.09284e+06 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |      1.36489e+07 |      8.77414e+06 | 1.74792e+07 |      3.40331e+06 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |      1.0336e+07  | 106782           | 2.67574e+07 |      1.2803e+07  |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |      4.58033e+06 | 702061           | 9.69382e+06 |      3.24081e+06 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |      2.88842e+07 | 585789           | 4.0068e+07  |      1.6135e+07  |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5-no-thinking        |   5 |      2.4437e+07  |      1.68003e+07 | 3.2697e+07  |      7.7755e+06  |
+| kata                         | cell_workflow                | cell_model                  |   n |             mean |      min |      max |              std |
+|:-----------------------------|:-----------------------------|:----------------------------|----:|-----------------:|---------:|---------:|-----------------:|
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | deepseek-v4-pro             |   5 |      1.46158e+07 | 10448957 | 18603325 |      3.19643e+06 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | deepseek-v4-pro-no-thinking |   5 |      9.47146e+06 |   162369 | 16033125 |      6.41141e+06 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | glm-5-2                     |   5 |      1.53202e+07 |  3470550 | 26439317 |      1.01938e+07 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol                 |   5 |      2.08521e+06 |  1145350 |  3325566 | 801525           |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-terra               |   5 | 809357           |   228031 |  1485822 | 502409           |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k2-7                   |   5 |      1.77036e+07 | 13050493 | 24677166 |      4.73805e+06 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k2-7-no-thinking       |   5 |      1.09921e+07 |   180023 | 18589006 |      7.0597e+06  |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-nebius              |   5 |      6.19093e+06 |  1941602 |  8424566 |      2.92713e+06 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-nebius-no-thinking  |   3 |      7.495e+06   |  1075708 | 11964672 |      5.70027e+06 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3                  |   5 |      7.27703e+06 |   710090 | 15505282 |      5.98934e+06 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |      1.27888e+07 |  8757216 | 19487070 |      4.79597e+06 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |      1.3833e+07  | 10251676 | 18310499 |      3.09284e+06 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |      1.36489e+07 |  8774145 | 17479172 |      3.40331e+06 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |      1.0336e+07  |   106782 | 26757422 |      1.2803e+07  |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |      4.58033e+06 |   702061 |  9693824 |      3.24081e+06 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |      2.88842e+07 |   585789 | 40068004 |      1.6135e+07  |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5-no-thinking        |   5 |      2.4437e+07  | 16800301 | 32696958 |      7.7755e+06  |
 
 ### cost_usd
 
