@@ -29,6 +29,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import sys
 from pathlib import Path
@@ -95,6 +96,7 @@ PRICES = {
     "kimi-k3":          (2.25,  11.25, 0.225, 0.0),  # sference/kimi-k3
     "kimi-k3-no-thinking": (2.25, 11.25, 0.225, 0.0),
     "kimi-k3-nebius":   (3.00,  15.00, 3.00, 0.0),   # nebius/kimi-k3 (kein Cache-Rabatt: cr=in)
+    "kimi-k3-nebius-no-thinking": (3.00, 15.00, 3.00, 0.0),
     "minimax-m3":       (0.40,  2.00,  0.10, 0.0),   # tensorx/minimax-m3
     "minimax-m3-no-thinking": (0.40, 2.00, 0.10, 0.0),
     "deepseek-v4-pro":  (1.75,  3.50,  0.44, 0.0),   # tensorx/deepseek-v4-pro
@@ -184,11 +186,23 @@ def iter_target_runs(target: Path) -> list[Path]:
         # already appear in that RQ's runs.csv (if present), else update all.
         runs_csv = target / "runs.csv"
         if runs_csv.exists():
+            # Look the id column up by NAME. It is not the first column
+            # (that is `kata`), and its index has moved as columns were
+            # added -- a positional read silently yields kata names, which
+            # match no run dir, so the script reports "processing 0 runs"
+            # and exits 0. A whole RQ then looks up-to-date while nothing
+            # was ever computed.
             ids = set()
-            for line in runs_csv.read_text().splitlines()[1:]:
-                rid = line.split(",", 1)[0].strip().strip('"')
-                if rid:
-                    ids.add(rid)
+            with runs_csv.open(newline="") as fh:
+                for row in csv.DictReader(fh):
+                    rid = (row.get("run_id") or "").strip()
+                    if rid:
+                        ids.add(rid)
+            if not ids:
+                raise SystemExit(
+                    f"{runs_csv} has no usable 'run_id' column -- refusing to "
+                    f"silently process nothing. Re-run aggregate-by-query.py?"
+                )
             return [runs_root / rid for rid in sorted(ids) if (runs_root / rid).is_dir()]
         return sorted(p for p in runs_root.iterdir() if (p / "metrics.json").exists())
     raise SystemExit(f"unrecognized target: {target}")

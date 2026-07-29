@@ -136,6 +136,7 @@ MODEL_CONFIGS=(
     "glm-5-2-no-thinking|pi-only|false"
     "kimi-k2-7-no-thinking|pi-only|false"
     "kimi-k3-no-thinking|pi-only|false"
+    "kimi-k3-nebius-no-thinking|pi-only|false"
     "minimax-m3-no-thinking|pi-only|false"
     "deepseek-v4-pro-no-thinking|pi-only|false"
     "qwen3-235b-no-thinking|pi-only|false"
