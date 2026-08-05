@@ -2,9 +2,9 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in correctness and TDD discipline on claim-office-example-mapping with the v6.2-with-why-cleaned-pi workflow?_
 
-Generated: 2026-08-04T23:56:25Z
+Generated: 2026-08-05T15:48:54Z
 
-Cells declared: 16 · matched runs: 80 · min_replicates: 5
+Cells declared: 18 · matched runs: 90 · min_replicates: 5
 
 ## Zell-Coverage
 
@@ -12,6 +12,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 |---|---|---|---:|---:|---|
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8 | 5 | 5 | ✅ |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking | 5 | 5 | ✅ |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty | 5 | 5 | ✅ |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5 | 5 | 5 | ✅ |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | kimi-k2-7 | 5 | 5 | ✅ |
@@ -45,6 +47,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |   0.77 |  0    |     1 |  0.44 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |   0.99 |  0.93 |     1 |  0.03 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |   1    |  1    |     1 |  0    |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |   0.96 |  0.8  |     1 |  0.09 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |   0.96 |  0.8  |     1 |  0.09 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |   0    |  0    |     0 |  0    |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |   0    |  0    |     0 |  0    |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |   0.72 |  0.47 |     1 |  0.19 |
@@ -66,6 +70,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |   11.6 |     0 |    15 |  6.54 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |   14.8 |    14 |    15 |  0.45 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |   15   |    15 |    15 |  0    |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |   14.4 |    12 |    15 |  1.34 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |   14.4 |    12 |    15 |  1.34 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |    0   |     0 |     0 |  0    |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |    0   |     0 |     0 |  0    |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |   10.8 |     7 |    15 |  2.86 |
@@ -87,6 +93,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |     15 |    15 |    15 |     0 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |     15 |    15 |    15 |     0 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |     15 |    15 |    15 |     0 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |     15 |    15 |    15 |     0 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |     15 |    15 |    15 |     0 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |     15 |    15 |    15 |     0 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |     15 |    15 |    15 |     0 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |     15 |    15 |    15 |     0 |
@@ -108,6 +116,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |  700.4 |   281 |   919 | 256.03 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |  782   |   653 |   866 |  85.84 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |  895.2 |   795 |  1012 |  85    |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |  765.6 |   706 |   815 |  42.65 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |  762.2 |   689 |   892 |  77.39 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |  296.4 |    73 |   818 | 306.79 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |  251.4 |    66 |   431 | 172.34 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |  867.6 |   755 |   938 |  79.44 |
@@ -129,6 +139,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |    7   |     3 |    10 |  2.55 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |    3.6 |     3 |     6 |  1.34 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |    4.6 |     3 |     9 |  2.51 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |    2.8 |     1 |     4 |  1.3  |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |    3   |     2 |     4 |  1    |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |    0.2 |     0 |     1 |  0.45 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |    4.6 |     0 |    11 |  4.72 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |    4.2 |     3 |     5 |  1.1  |
@@ -150,6 +162,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |    6.8 |     4 |     9 |  1.92 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |    3.8 |     3 |     6 |  1.3  |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |    4.4 |     3 |     7 |  1.52 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |    3.4 |     2 |     4 |  0.89 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |    3.6 |     3 |     4 |  0.55 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |    0.4 |     0 |     2 |  0.89 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |    4.2 |     0 |     9 |  4.09 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |    4.8 |     4 |     6 |  0.84 |
@@ -171,6 +185,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |   29.4 |    20 |    36 |  6.07 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |   22   |    17 |    25 |  4.12 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |   18.2 |    13 |    28 |  5.89 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |   12.8 |    11 |    17 |  2.49 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |    9.2 |     8 |    10 |  1.1  |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |   33   |     3 |    78 | 28.04 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |   33.2 |     3 |    55 | 27.22 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |   20.6 |    10 |    37 | 10.41 |
@@ -192,6 +208,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |  286.6 |   161 |   389 |  83.87 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |  271.6 |   257 |   292 |  16.76 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |  303.6 |   271 |   369 |  38.49 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |  295   |   265 |   343 |  35.18 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |  311.8 |   267 |   348 |  29.6  |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |  117.8 |    27 |   331 | 125.18 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |   84   |    28 |   145 |  54.54 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |  304.4 |   267 |   363 |  42.05 |
@@ -213,6 +231,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |    4.4 |     0 |    17 |  7.09 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |    0.4 |     0 |     2 |  0.89 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |    0   |     0 |     0 |  0    |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |    2.4 |     0 |    12 |  5.37 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |    0   |     0 |     0 |  0    |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |    0   |     0 |     0 |  0    |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |    4.6 |     0 |    11 |  4.67 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |    0.8 |     0 |     2 |  0.84 |
@@ -234,6 +254,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |   33   |    21 |    42 | 10.56 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |   40.2 |    32 |    44 |  4.76 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |   51   |    37 |    74 | 15.03 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |   43.6 |    35 |    62 | 10.69 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |   42.8 |    34 |    54 |  7.46 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |    2.8 |     0 |    11 |  4.6  |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |    8.6 |     1 |    26 | 10.97 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |   47.4 |     1 |    69 | 26.67 |
@@ -255,6 +277,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |   13.2 |    10 |    17 |  3.11 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |   19.4 |    14 |    27 |  5.18 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |   15.8 |     8 |    22 |  5.02 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |   21.8 |    21 |    24 |  1.3  |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |   23.2 |    20 |    26 |  2.17 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |    4.6 |     0 |    16 |  7.06 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |    6.4 |     0 |    13 |  6.02 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |   19.6 |     0 |    30 | 11.84 |
@@ -276,6 +300,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |   31.8 |     3 |    78 | 28.99 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |   69.6 |    35 |    87 | 20.97 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |   63.2 |    36 |    86 | 25.24 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |   52.2 |    41 |    86 | 19.08 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |   52.8 |    40 |    84 | 17.91 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |   10.6 |     0 |    35 | 15.19 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |   12.2 |     2 |    28 | 11.1  |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |   37.4 |     2 |    56 | 21.09 |
@@ -297,6 +323,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |   31.8 |     3 |    78 | 28.99 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |   70   |    36 |    87 | 20.7  |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |   63.2 |    36 |    86 | 25.24 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |   52.4 |    42 |    86 | 18.94 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |   53.2 |    40 |    84 | 17.75 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |   10.8 |     0 |    36 | 15.59 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |   14.8 |     2 |    28 | 12.05 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |   38.2 |     2 |    58 | 21.71 |
@@ -318,6 +346,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |       4 |       80 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |       5 |      100 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |       5 |      100 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |       5 |      100 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |       5 |      100 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |       0 |        0 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |       0 |        0 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |       5 |      100 |
@@ -339,6 +369,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |   19.6 |     3 |    41 | 13.85 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |   39.4 |    32 |    43 |  4.28 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |   41   |    37 |    45 |  3.39 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |   39.6 |    35 |    43 |  3.21 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |   39.6 |    34 |    45 |  4.16 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |    0.6 |     0 |     1 |  0.55 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |    9.8 |     1 |    18 |  8.17 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |   23.4 |     5 |    42 | 14.69 |
@@ -360,6 +392,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |       4 |       80 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |       5 |      100 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |       5 |      100 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |       5 |      100 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |       5 |      100 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |       5 |      100 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |       5 |      100 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |       5 |      100 |
@@ -381,6 +415,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 | 8090.2 |  6008 | 13707 | 3176.79 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 | 1883.8 |  1435 |  2375 |  392.48 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 | 1656   |  1032 |  1961 |  382.66 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 | 2801.6 |  2637 |  2938 |  132.12 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 | 3142.2 |  2711 |  3750 |  395.97 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |  679.2 |    19 |  2158 |  876.71 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |  409   |    73 |   757 |  272.54 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 | 5787.4 |  4065 |  7341 | 1380.77 |
@@ -402,6 +438,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |      1.27888e+07 |  8757216 | 19487070 |      4.79597e+06 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |      1.3833e+07  | 10251676 | 18310499 |      3.09284e+06 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |      1.36489e+07 |  8774145 | 17479172 |      3.40331e+06 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |      1.60094e+07 | 13200000 | 19280230 |      2.31311e+06 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |      1.91457e+07 | 16179318 | 22267259 |      2.72463e+06 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |      1.0336e+07  |   106782 | 26757422 |      1.2803e+07  |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |      4.58033e+06 |   702061 |  9693824 |      3.24081e+06 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |      2.88842e+07 |   585789 | 40068004 |      1.6135e+07  |
@@ -423,6 +461,8 @@ Cells declared: 16 · matched runs: 80 · min_replicates: 5
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3-no-thinking      |   5 |   1.71 |  1.22 |  2.48 |  0.51 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8                    |   5 |  14.43 | 11.04 | 18.67 |  2.98 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking        |   5 |  13.68 |  8.68 | 16.73 |  3.17 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty             |   5 |  18.53 | 16.62 | 21.09 |  1.64 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |  21.43 | 18.15 | 25.74 |  3.21 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b                  |   5 |   2.08 |  0.02 |  5.4  |  2.57 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |   0.93 |  0.14 |  1.96 |  0.66 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5                    |   5 |  13.68 |  0.76 | 20.24 |  7.57 |
