@@ -1,17 +1,17 @@
 # RQ-model-novel-pi — Findings
 
-**Setup**: claim-office-example-mapping × v6.2.1-phase-continuation-pi, 17 cells, `min_replicates` = 5 (16 cells at n=5, `kimi-k3-nebius-no-thinking` at n=3). Primary outcome: `verification_pct` (**Correctness (external)**, 15 external scenarios, 0.0–1.0). All models via pi harness / Requesty.
+**Setup**: claim-office-example-mapping × v6.2.1-phase-continuation-pi, 16 cells at n=5, `min_replicates` = 5. Primary outcome: `verification_pct` (**Correctness (external)**, 15 external scenarios, 0.0–1.0). All models via pi harness / Requesty.
 
-**Coverage caveat (unstable cells)**: four cells do not carry the full replicate weight and are excluded from every ranking, trophy and cluster statement below:
+**Coverage caveat (unstable cells)**: two cells do not carry the full replicate weight and are excluded from every trophy and cluster statement below:
 
 | Cell | n | without timeout | Reason |
 |---|---:|---:|---|
-| `kimi-k3-nebius` | 5 | **1** | nebius route unstable on claim-office; runs take 1.5–2.5 h and mostly exceed the 7200 s budget |
-| `kimi-k3-nebius-no-thinking` | **3** | 2 | below `min_replicates`; refill attempts died at provider `404`/timeout |
 | `minimax-m3` | 5 | **2** | timeout-heavy |
 | `minimax-m3-no-thinking` | 5 | **4** | timeout-heavy |
 
-The K3 cells are reported as **unstable** rather than filled: their means rest on 1–2 completed runs and are not comparable with the fully covered cells. Both `minimax-m3` arms appear in the tables because n=5 is reached, but their high σ is partly a timeout artifact, not model variance alone. Details and route evidence in `README.md` → "Model selection".
+Both `minimax-m3` arms appear in the tables because n=5 is reached, but their high σ is partly a timeout artifact, not model variance alone.
+
+**Route change caveat (kimi-k3)**: the K3 cell was re-measured on 2026-08-04 on `requesty/sference/kimi-k3` and now completes 5/5 without timeout. The earlier `kimi-k3-nebius` runs — an unstable cell at 1/5 completed — were discarded rather than reused, since with both Requesty routes failing it could not be established which values reflect the model and which the provider. K3 also has **no `-no-thinking` arm**: `--thinking off` provably does not take effect on this route. Details in `README.md` → "Model selection" and "Reasoning state".
 
 **Workflow caveat**: Cells aggregate v6.2-with-why-cleaned-pi and v6.2.1-phase-continuation-pi together (OR match, canonically labeled as v6.2.1). v6.2.1 fixes only the continuation drop at the test-list→red transition (kimi/minimax/qwen aborted there: only `*.spec.ts`, no `cli.ts`) and is considered outcome-neutral. Affected drop runs were replaced by v6.2.1 runs; the remaining cells stay unchanged v6.2 runs.
 
@@ -25,6 +25,7 @@ The K3 cells are reported as **unstable** rather than filled: their means rest o
 | glm-5-2 | **1.00** 🏆 | 0.00 | 100 % | 5 |
 | gpt-5-6-sol | **1.00** 🏆 | 0.00 | 100 % | 5 |
 | kimi-k2-7 | **1.00** 🏆 | 0.00 | 100 % | 5 |
+| kimi-k3-sference | **0.99** 🏆 | 0.03 | 100 % | 5 |
 | opus-4-8 | **0.99** 🏆 | 0.03 | 100 % | 5 |
 | sonnet-5-no-thinking | 0.84 | 0.15 | 100 % | 5 |
 | deepseek-v4-pro-no-thinking | 0.80 | 0.45 | 80 % | 5 |
@@ -36,10 +37,8 @@ The K3 cells are reported as **unstable** rather than filled: their means rest o
 | minimax-m3 | 0.20 | 0.45 | 100 % | 5 |
 | qwen3-235b | 0.00 | 0.00 | 0 % | 5 |
 | qwen3-235b-no-thinking | 0.00 | 0.00 | 0 % | 5 |
-| _kimi-k3-nebius-no-thinking_ (unstable) | _0.93_ | _0.07_ | _100 %_ | _3_ |
-| _kimi-k3-nebius_ (unstable) | _0.52_ | _0.49_ | _100 %_ | _5 (1 without timeout)_ |
 
-🏆 only for the five models with `verification_pct ≥ 0.99` at σ ≤ 0.03 (reproducibly perfect). The graded middle (0.60–0.84) carries no trophy — there the spread within σ is not separable from neighbors. The two **K3 cells are set in italics and carry no trophy**: their values rest on 1–3 completed runs (see coverage caveat) and are not comparable with the fully covered cells — `kimi-k3-nebius-no-thinking` would otherwise rank sixth on the strength of two runs.
+🏆 for the six models with `verification_pct ≥ 0.99` at σ ≤ 0.03 (reproducibly perfect). The graded middle (0.60–0.84) carries no trophy — there the spread within σ is not separable from neighbors.
 
 ---
 
@@ -106,21 +105,21 @@ Where both arms exist, the `verification_pct` difference between `<id>` and `<id
 | deepseek-v4-pro | 0.60 | 0.80 | +0.20 |
 | kimi-k2-7 | 1.00 | 0.73 | −0.27 |
 | minimax-m3 | 0.20 | 0.77 | +0.57 |
-| _kimi-k3-nebius_ (unstable) | _0.52_ | _0.93_ | _+0.41_ |
 
 **Interpretation.** Even for opus, where the switch demonstrably turns thinking blocks on and off, correctness does not move. For the remaining models the "off" arm is the same routing path as "on" (switch without effect, checked empirically) — the Δ there are replicate noise (all within the σ of 0.42–0.55 of the respective cells), not reasoning effects. That the Δ come out sometimes positive (minimax +0.57), sometimes negative (kimi −0.27), without the switch having any effect at all, confirms: it is noise, not a reasoning signal. Across this RQ the native reasoning state is not a predictor for `verification_pct`.
 
-The K3 row carries no weight in either direction. Its Δ of +0.41 is the second-largest in the table, but the two arms differ in **completion rate** rather than in reasoning: the "on" arm finished 1 of 5 runs within budget, the "off" arm 2 of 3, and the two timeout runs in the "on" arm score 0.00 purely because the 7200 s elapsed before `cli.ts` was written (`cli_built = false`, tests green). Remove those two and the arms are indistinguishable. K3 also never went through the rope-riddle probe, so it is not even established that its switch does anything. Reading this as a reasoning effect would mean reading a budget artifact.
+`kimi-k3-sference` has no row here because it has no second arm. Measured under this kata, an `--thinking off` run produced **more** reasoning than the default (5439 vs. 4568 `thinking_delta`, at a higher share of the run), and its outcome landed inside the default-arm distribution. A second cell would have sampled the same state twice under a label suggesting otherwise — the same reason `glm-5-2` and the two GPT cells are single-arm.
 
 ---
 
 ## F-1.5 — Perfect correctness at widely differing cost
 
-Among the five reproducibly perfect cells (`verification_pct ≥ 0.99`) the estimated run cost spans almost an order of magnitude: `gpt-5-6-sol` solves the kata perfectly for ~$2.54/run, opus-4-8 costs ~$14.43 — roughly 5.7×. The estimate applies the current Requesty token tariffs (as of 2026-07-25, `research/model-pricing.md`) to the per-run measured token breakdown (input/output/cache).
+Among the six reproducibly perfect cells (`verification_pct ≥ 0.99`) the estimated run cost spans almost an order of magnitude: `gpt-5-6-sol` solves the kata perfectly for ~$2.54/run, opus-4-8 costs ~$14.43 — roughly 5.7×. The estimate applies the current Requesty token tariffs (`research/model-pricing.md`) to the per-run measured token breakdown (input/output/cache).
 
 | Model (verified ≥ 0.99) | `cost_usd` (estimate/run) | σ | `duration_seconds` | `code_mass` | `cc_longest_function` | `smell_total` |
 |---|---|---|---|---|---|---|
 | gpt-5-6-sol | **$2.54** 🏆 | 0.65 | **503** 🏆 | **462** 🏆 | 24.0 | 15.4 |
+| kimi-k3-sference | $3.56 | 0.54 | 1929 | 666 | 21.4 | 0.4 |
 | kimi-k2-7 | $6.79 | 1.46 | 2214 | 851 | 19.4 | **0.0** 🏆 |
 | glm-5-2 | $7.76 | 4.51 | 2818 | 761 | 24.0 | 0.2 |
 | opus-4-8-no-thinking | $13.68 | 3.17 | 1656 | 895 | **18.2** 🏆 | **0.0** 🏆 |
@@ -128,10 +127,6 @@ Among the five reproducibly perfect cells (`verification_pct ≥ 0.99`) the esti
 
 Direction: `cost_usd`, `duration_seconds`, `code_mass` (**Code Mass (APP)**), `cc_longest_function` (**Complexity Peak**), `smell_total` (**Smell Total**) — lower = better. Trophies only among the correctness-perfect cells (correctness gating: models with low cost but incomplete verification show stubs/aborts, not frugality). At `smell_total` kimi-k2-7 and opus-4-8-no-thinking share the trophy (both 0.0). `gpt-5-6-terra` ($0.60/run) is cheaper, but with `verification_pct = 0.69` not in the perfect cluster and therefore without a trophy.
 
-**Cost caveat.** `cost_usd` is a **list-price estimate** (Requesty tariffs per 1M tokens × measured tokens), not a billed amount — without workspace-specific discounts or smart-routing savings (30–80 % possible through caching according to the provider). Requesty provides no inline cost (`usage = null`), so token × price is the only way. The token counts, and hence the cost, are considerably higher after the parser fix (correct `cache_read` summation over the main thread) than in earlier estimates. All 17 cells now have an estimate.
+**Cost caveat.** `cost_usd` is a **list-price estimate** (Requesty tariffs per 1M tokens × measured tokens), not a billed amount — without workspace-specific discounts or smart-routing savings (30–80 % possible through caching according to the provider). Requesty provides no inline cost (`usage = null`), so pi writes a scaffold of `0` and every value here is backfilled by `compute-cost.py`. Token counts are after the parser fix (correct `cache_read` summation over the main thread).
 
-Until 2026-07-29 the K3 cells read `cost_usd = 0.00`, which looked like a measurement and would have made K3 the cheapest model of the RQ. It was an artifact of two defects: pi writes a cost scaffold of `0` when Requesty returns no usage, and `compute-cost.py` never replaced it — given an RQ dir it read the run ids positionally from column 0 of `runs.csv` (which is `kata`, not `run_id`), found no matching run directory and reported "processing 0 runs" with exit 0, and its price table was missing the `kimi-k3-nebius-no-thinking` tariff. Both fixed; the cells below carry recomputed values.
-
-**The most expensive cells in the RQ are the two unstable K3 ones** — `kimi-k3-nebius` $20.13/run and `kimi-k3-nebius-no-thinking` $24.20, both above `opus-4-8` at $14.43, and neither in the perfect cluster. Two things drive this and neither is model appetite: the nebius tariff carries no cache discount ($3.00/$15.00 per 1M vs. sference $2.25/$11.25), and the runs are the longest in the study (mean 5959–7327 s), so a run that times out still bills the full two hours. A K3 cost comparison against the other models therefore measures route and budget as much as model.
-
-**Interpretation.** `gpt-5-6-sol` is by far the cheapest among the perfect models (~$2.54/run, ~1/5.7 of the Opus cost) and at the same time the fastest — the price is the highest **Smell Total** of the group (15.4 vs. ≤ 0.4 for the others). The **Complexity Peak** lies close together across all five perfect cells (18–24 lines longest function) — unlike the unstable qwen spread, the structure here is consistently compact; opus-4-8-no-thinking holds the lowest peak at 18.2. `kimi-k2-7` is the interesting middle path: perfect correctness, **Smell Total 0.0** (best of the group, level with opus-4-8-no-thinking) and, at ~$6.79, roughly half as expensive as opus. Anyone needing perfect correctness at minimal code smell for moderate cost finds the best compromise in kimi-k2-7; anyone putting cost and latency above all else and tolerating some smell picks `gpt-5-6-sol`; the Opus arms ($13.68–14.43) deliver the same correctness at minimal smell and the lowest Complexity Peak, but at the highest price.
+**Interpretation.** `gpt-5-6-sol` is the cheapest among the perfect models (~$2.54/run, ~1/5.7 of the Opus cost) and at the same time the fastest — the price is the highest **Smell Total** of the group (15.4 vs. ≤ 0.4 for the others). `kimi-k3-sference` is the strongest all-round cell: second-cheapest at $3.56, second-lowest **Code Mass (APP)** at 666 and near-zero smell (0.4), at a mid-field **Complexity Peak** (21.4) — it buys this with wall clock (1929 s, roughly four times gpt-5-6-sol). `kimi-k2-7` holds **Smell Total 0.0** level with opus-4-8-no-thinking at about half the Opus cost. Anyone needing perfect correctness at minimal smell for moderate cost picks kimi-k2-7 or kimi-k3-sference; anyone putting cost and latency above all else and tolerating smell picks `gpt-5-6-sol`; the Opus arms ($13.68–14.43) deliver the same correctness at minimal smell, but at the highest price and without leading on any structural metric.

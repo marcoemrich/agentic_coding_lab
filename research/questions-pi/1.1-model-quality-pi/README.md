@@ -10,7 +10,7 @@ factors:
     - glm-5-1             # GLM 5.1 (nebius/zai-org/glm-5.1)
     - glm-5-2             # GLM 5.2 (tensorx/glm-5.2)
     - kimi-k2-7           # previous Kimi (tensorx/kimi-k2.7-code)
-    - kimi-k3-nebius      # current Kimi (nebius/kimi-k3); sference route dropped, see caveat
+    - kimi-k3-sference    # current Kimi (sference/kimi-k3); see routing caveat
     - minimax-m3          # MiniMax M3 (tensorx/minimax-m3)
     - deepseek-v4-pro     # DeepSeek V4 Pro (tensorx/deepseek-v4-pro)
     - qwen3-235b          # current Qwen (nebius/qwen/qwen3-235b-a22b-instruct-2507)
@@ -74,7 +74,7 @@ This RQ measures the **model effect on code quality and TDD discipline** in a ha
 | `glm-5-1` | `requesty/nebius/zai-org/glm-5.1` |
 | `glm-5-2` | `requesty/tensorx/glm-5.2` |
 | `kimi-k2-7` | `requesty/tensorx/kimi-k2.7-code` |
-| `kimi-k3` | `requesty/sference/kimi-k3` |
+| `kimi-k3-sference` | `requesty/sference/kimi-k3` |
 | `minimax-m3` | `requesty/tensorx/minimax-m3` |
 | `deepseek-v4-pro` | `requesty/tensorx/deepseek-v4-pro` |
 | `qwen3-235b` | `requesty/nebius/qwen/qwen3-235b-a22b-instruct-2507` |
@@ -91,27 +91,21 @@ The `factors.model` list is set by the user: current Opus + Sonnet (Anthropic an
 
 MiniMax and DeepSeek are deliberately included because they had clear, documented contrast profiles in the `-oc` counterpart: MiniMax = "internal tests green, external verification 0/15" (spec misunderstanding), DeepSeek-Pro = skill-compliance champion with duration tail risk. That makes the cross-harness comparison direct.
 
-The backprovider path is implicitly pinned in every lab variant (Opus/Sonnet via Vertex EU, GPT via Azure, GLM-5.1 via Nebius, GLM-5.2 + Kimi-K2.7 + MiniMax + DeepSeek via TensorX, Kimi-K3 via Nebius, Qwen via Nebius); a changing backprovider requires a new variant.
+The backprovider path is implicitly pinned in every lab variant (Opus/Sonnet via Vertex EU, GPT via Azure, GLM-5.1 via Nebius, GLM-5.2 + Kimi-K2.7 + MiniMax + DeepSeek via TensorX, Kimi-K3 via Sference, Qwen via Nebius); a changing backprovider requires a new variant.
 
-### kimi-k3: nebius route chosen, sference dropped (as of 2026-07-29)
+### kimi-k3: sference route, all pre-fix runs discarded (as of 2026-08-04)
 
-The factor level is **`kimi-k3-nebius`**. The sference route was tried first and dropped. Evidence across all workflows, n=7:
+The factor level is **`kimi-k3-sference`** (`requesty/sference/kimi-k3`).
 
-| Route | Runs | Result |
-|---|---|---|
-| `requesty/sference/kimi-k3` | 4 | 2× dead — Requesty `502 "There was a problem with the provider stream"` / `"Stream ended without finish_reason"` after pi's own retry ladder, `src/` empty; 2× clean |
-| `requesty/nebius/kimi-k3` | 2 | 1× `pi-retries-exhausted`, 1× clean (`tests_passing`, 8 tests, `cycle_count=12`, `predictions_total=8`) |
+Both routes were unreliable through 2026-07-28/29. sference died mid-run with Requesty `502 "There was a problem with the provider stream"` / `"Stream ended without finish_reason"` after pi's own retry ladder, `src/` empty — 2/2 smokes, which is why nebius was wired as a fallback. nebius then proved unreliable in its own way, mostly on the larger kata: 6 of 15 runs non-`ok` (4 `timeout`, 2 `pi-retries-exhausted`), with claim-office runs taking 1.5–2.5 h against the 7200 s budget.
 
-Neither route is reliable — sference is 2/4, nebius 1/2. Nebius was chosen because its failures have not shown the mid-run stream-abort signature that makes sference runs die after ~30 minutes of work. Expect to over-schedule replicates to reach `min_replicates: 5`.
+Requesty reported the stream issue fixed on 2026-08-04. A four-run smoke on the repaired route came back clean — game-of-life 2/2 (8 and 9 tests, 8 and 7 min), claim-office 2/2 (`verification_pct` 1.0 and 0.933, 50 and 52 cycles, 40 and 25 min), no stream aborts anywhere. sference is also the better route on its own terms: $2.25/$11.25 with cache discount vs. nebius $3.00/$15.00 without (`research/model-pricing.md`), and double the max output. n=4 shows only that the reproducible failure mode is gone, not a stability rate — that comes from the fill.
 
-The **cell is pure nebius**: the two clean sference runs are *not* counted toward it (see point 2 below). One of them (`2026-07-28_22-08-05`, `v6.2.1-phase-continuation-pi`) was produced by the fill batch before the switch and is left in the runs pool as a non-matching run.
+**All 18 pre-fix runs were discarded rather than partially reused.** With both routes failing in different ways, it cannot be established which measured values reflect the model and which the provider — that applies to the runs that exited `ok` as well. They are archived metrics-only under `experiments/runs/_archive/kimi-k3-preroute-fix-2026-08-04/`, whose README carries the exit-reason breakdown, and are kept solely for a possible later routing comparison. The bare `kimi-k3` id was retired with them; every K3 id now names its route.
 
-Two further consequences:
+This also retires two caveats that applied to the old data: the stale `exit_reason: ok` on the two earliest smokes (pi exits 0 after its retry ladder; fixed in `344daa8c`, but `exit_reason` is written once at batch time and never recomputed by `/reanalyze`), and the warning that `cost_usd` for the K3 cell is not comparable to the other pi cells. The latter was a nebius artifact — sference bills with the same cache discount as the other routes.
 
-1. **Two of these smokes carry a stale `exit_reason: ok`.** pi exhausts its internal retry ladder, emits `auto_retry_end {success:false}` and exits 0 — so a run with an empty `src/` looked green. This is **fixed in the harness** (`344daa8c`, 2026-07-28): `run-batch.sh` matches the JSONL event and sets `exit_reason: pi-retries-exhausted`, which `aggregate-by-query.py` excludes from `completed_within_budget`. The fix landed *after* these four runs were scored, and `exit_reason` is written once by `record-run.sh` at batch time — `analyze-run.sh` never recomputes it, so `/reanalyze` does not repair them. Only the two 06:34/06:41 sference rows are affected; runs from `344daa8c` onward are labelled correctly. When reading those two rows, judge by `tests_total > 0` rather than exit code.
-2. **`kimi-k3-nebius` is a separate lab variant, not a fallback that may be silently substituted.** Tariffs differ (`research/model-pricing.md`: sference $2.25/$11.25 with cache discount, nebius $3.00/$15.00 without), so `cost_usd` is not comparable across the two. This is why the cell was relabelled rather than merged under `any:` — an OR-match would smear a ~25 % cost difference and the caching factor. **`cost_usd` for this cell is not comparable to the other pi cells** either, since nebius bills without the cache discount the other routes get; read it as an upper bound.
-
-Inclusion decision if the fill fails: should nebius not reach `min_replicates: 5` within a reasonable number of attempts, kimi-k3 is dropped from the RQ with justification (same rule as the Gemini 2.5 Pro / Devstral / Codestral history in `questions-opencode/`).
+Inclusion decision if the fill fails: should sference not reach `min_replicates: 5` within a reasonable number of attempts, kimi-k3 is dropped from the RQ with justification (same rule as the Gemini 2.5 Pro / Devstral / Codestral history in `questions-opencode/`).
 
 ### Not included / further candidates
 
@@ -124,7 +118,7 @@ Inclusion decision if the fill fails: should nebius not reach `min_replicates: 5
 
 - **H1 (Anthropic anchor)**: opus-4-8 and sonnet-5 deliver the lowest values for `cognitive_max` and `smell_total` and confirm that the Anthropic level is preserved over the Requesty routing as well (otherwise the pi harness is a worthless confound). Cross-check against the Opus values in RQ-model-quality-oc.
 - **H1b (GLM version jump)**: glm-5-2 measurably improves `smell_total`/`cognitive_max` over glm-5-1 — direct intra-family version comparison within one cell matrix (both via different backproviders: 5.1 Nebius, 5.2 TensorX; note the backprovider confound as a caveat).
-- **H1c (Kimi version jump)**: kimi-k3 measurably improves `smell_total`/`cognitive_max` over kimi-k2-7 — third intra-family version comparison next to GLM 5.1/5.2 and GPT SOL/TERRA. Backprovider confound as with GLM: K2.7 via TensorX, K3 via Sference. Testable only if the kimi-k3 routing stabilises (see "kimi-k3: routing not yet stable").
+- **H1c (Kimi version jump)**: kimi-k3 measurably improves `smell_total`/`cognitive_max` over kimi-k2-7 — third intra-family version comparison next to GLM 5.1/5.2 and GPT SOL/TERRA. Backprovider confound as with GLM: K2.7 via TensorX, K3 via Sference (see "kimi-k3: sference route, all pre-fix runs discarded").
 - **H2 (non-Anthropic spread)**: The non-Anthropic models (gpt-5-6-sol, glm-5-1, glm-5-2, kimi-k2-7, kimi-k3) show a measurable spread over `smell_total` and `cognitive_max` — i.e. the pi harness is discriminating enough to make model differences visible.
 - **H3 (skill-tool compliance is model-dependent)**: `cycle_count` and `predictions_total` spread across the models — some use the v6.2.1 skill/subagent mechanism with discipline, others drift into inline mode. A low cycle_count is NOT automatically weaker TDD discipline, but also compliance with the pi skill affordance. (Parallel to the `-oc` finding: only some models produce prediction markers.)
 

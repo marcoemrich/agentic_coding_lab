@@ -16,8 +16,6 @@ factors:
     - sonnet-5-no-thinking
     - kimi-k2-7                    # previous Kimi (tensorx/kimi-k2.7-code)
     - kimi-k2-7-no-thinking
-    - kimi-k3-nebius               # current Kimi (nebius/kimi-k3) — nebius route, see "Model selection"
-    - kimi-k3-nebius-no-thinking
     - minimax-m3                   # MiniMax M3 (tensorx/minimax-m3)
     - minimax-m3-no-thinking
     - deepseek-v4-pro              # DeepSeek V4 Pro (tensorx/deepseek-v4-pro)
@@ -26,6 +24,7 @@ factors:
     - qwen3-235b-no-thinking
     # only one arm: reasoning state not selectable
     - glm-5-2                      # GLM 5.2 (tensorx/glm-5.2) — always reasons, no -no-thinking arm
+    - kimi-k3-sference             # current Kimi (sference/kimi-k3) — always reasons, no -no-thinking arm
     - gpt-5-6-sol                  # GPT SOL (azure/gpt-5.6-sol@swedencentral) — forced off
     - gpt-5-6-terra                # GPT TERRA (azure/gpt-5.6-terra@swedencentral) — forced off
 controls:
@@ -81,7 +80,7 @@ RQ-model-novel (CC side) and RQ-model-novel-oc (OpenCode side) have shown that `
 
 **As of 2026-07-24**: Harness verified, routing for all `factors.model` values in place at that time is wired (`experiments/docker/run-batch.sh`, `harness = pi` branch; routing table also in `../1.1-model-quality-pi/README.md`). An n=1 smoke over those models has run; the cells are not yet filled to `min_replicates`.
 
-**Update 2026-07-28**: `kimi-k3-nebius` / `kimi-k3-nebius-no-thinking` added. Routing is wired, but not yet smoked **on this kata** — the available evidence is from game-of-life (see "Model selection"). K3 has no claim-office smoke and no rope-riddle reasoning probe yet; both are open before its cells are interpreted.
+**Update 2026-08-04**: K3 now enters as `kimi-k3-sference`, single-arm. Both open points from the 2026-07-28 wiring are closed: the claim-office smoke ran (2/2 clean, `verification_pct` 1.0 / 0.933), and the reasoning question was settled under the kata instead of by rope riddle — `--thinking off` has no effect, so there is no non-thinking arm (see "Reasoning state"). All pre-fix runs on both routes were discarded (see "Model selection").
 
 Three harness defects were found and fixed in the process:
 
@@ -99,15 +98,15 @@ Earlier `v6.2-with-why-cleaned-pi` × claim-office **prose** runs with `opus-4-7
 
 Current Opus + Sonnet as the Anthropic anchor, GPT-5.6-SOL and -TERRA, GLM 5.2, Kimi K2.7 **and K3** (K3 added 2026-07-28), MiniMax M3, DeepSeek V4 Pro, current Qwen (qwen3-235b). Wiring procedure and drop criteria as with `questions-opencode/` (routing smoke → inclusion; continuation drop / done.txt-with-red-tests / missing cli.ts → exclusion with justification).
 
-**K3 runs on the nebius route in this RQ.** The sference route (`requesty/sference/kimi-k3`) died in 2/2 game-of-life smokes with Requesty `502 "problem with the provider stream"`; `requesty/nebius/kimi-k3` completed 5/5 of the later game-of-life runs (2026-07-28, 22:14–22:57). This RQ therefore carries `kimi-k3-nebius` as the K3 cell, not `kimi-k3`. The two are **separate lab variants**, not interchangeable, because the tariffs differ (sference $2.25/$11.25 with cache discount vs. nebius $3.00/$15.00 without — `research/model-pricing.md`); cost comparisons against the other models must read this along. Full routing evidence in `../1.1-model-quality-pi/README.md` § "kimi-k3: routing not yet stable".
+**K3 runs on the sference route (`kimi-k3-sference`).** Both Requesty routes were unreliable through 2026-07-28/29: sference died mid-run with `502 "problem with the provider stream"` (2/2 game-of-life smokes), and the nebius fallback then failed on claim-office in its own way — 4 timeouts and 1 `pi-retries-exhausted` out of 9, with runs taking 1.5–2.5 h against the 7200 s budget. Requesty reported the stream issue fixed on 2026-08-04. A four-run smoke on the repaired route came back clean (see below), so sference is the route this RQ fills: it is the cheaper tariff ($2.25/$11.25 with cache discount vs. nebius $3.00/$15.00 without — `research/model-pricing.md`) and carries double the max output.
 
-Two caveats remain. First, the earlier sference failure mode used to present as `exit_reason: ok` with an empty `src/` (pi exits 0 after its own retry ladder); this is **fixed in the harness** (`344daa8c`, 2026-07-28) and fill runs are labelled `pi-retries-exhausted` correctly — only the two pre-fix game-of-life smokes still carry the stale `ok`, and `exit_reason` is not recomputed by reanalysis. Second, the routing evidence quoted above is from **game-of-life**; the assumption that it carries to claim-office did not hold (see next paragraph).
+**All pre-fix K3 runs were discarded, not reused.** With both routes failing in different ways, it could not be established which measured values reflect the model and which the provider — including for the runs that exited `ok`. All 18 were deleted and archived metrics-only under `experiments/runs/_archive/kimi-k3-preroute-fix-2026-08-04/` (with a README documenting the exit-reason breakdown). The bare `kimi-k3` id was retired along with them, so every K3 id now names its route explicitly.
 
-**Nebius does not finish reliably on claim-office.** The K3 cells are the weakest in the RQ: `kimi-k3-nebius` completes 1 of 5 runs without timeout, `kimi-k3-nebius-no-thinking` 2 of 3. Runs take 1.5–2.5 h and several exceed the 7200 s budget mid-implementation. The route is stable on game-of-life (5/5) and unstable here — the difference is kata size, not routing. K3 therefore stays included but **both cells are below usable coverage**; `kimi-k3-nebius-no-thinking` is at n=3 < `min_replicates`. Findings must not compare K3 against fully-covered cells without naming this.
+**Post-fix smoke, 2026-08-04 (n=4, all `ok`, no stream aborts):** claim-office `verification_pct` 1.0 / 0.933 at 50 and 52 cycles, in 40 and 25 minutes; game-of-life 2/2 with 8 and 9 tests, in 8 and 7 minutes. Against the nebius baseline on claim-office (4/9 completed, 1.5–2.5 h) this is a marked change, but n=4 establishes only that the reproducible failure mode is gone — not a stability rate. The real coverage figure comes from the fill.
 
-A refill attempt for the missing `-no-thinking` replicates (2026-07-29, 07:12–07:53) failed on a second, distinct failure mode: both runs died on **provider-side 404s** — `{"origin":"provider","message":"Not Found"}`, 16× and 4×, alongside `Stream ended without finish_reason`. Routing was correct (`requesty/nebius/kimi-k3` in the event stream), so this was a Nebius-side outage rather than a config error. Both surfaced as `exit_reason: ok` with no `experiment-done.txt` and no domain code (pi exits 0 after its retry ladder) and were **deleted rather than counted** — `batch-plan-from-rq.py` counts runs without judging them, and a 0.07 abort artifact would have dragged the cell mean down while making the cell look full. Any apparent difference between the two K3 arms is therefore an observation, not a finding, until the arm is refilled on a stable route.
+**The old "K3 is the most expensive model in the RQ" finding does not carry over.** It was measured on the nebius tariff, which bills without the cache discount the other routes get: `kimi-k3-nebius` came to $20.13 mean and `kimi-k3-nebius-no-thinking` to $24.20, both above `opus-4-8` at $14.43. On sference the tariff is ~25 % lower *and* caches, and the smoke runs finished in a fraction of the time. Cost for this cell must be re-read from the new runs; the old figures describe a route this RQ no longer uses.
 
-**K3 is the most expensive model in the RQ, not the cheapest.** `cost_usd` initially read `0.00` for these cells — pi writes a cost scaffold of `0` when Requesty returns no inline usage, and that zero propagated into `final_metrics`. Backfilled via `compute-cost.py` (token × list price): `kimi-k3-nebius` $20.13 mean, `kimi-k3-nebius-no-thinking` $24.20 — both above `opus-4-8` at $14.43. The nebius tariff has no cache discount, which combined with the long runs produces the highest cost per run in the study.
+Note on `cost_usd` regardless of route: pi writes a cost scaffold of `0` when Requesty returns no inline usage, and that zero propagates into `final_metrics`. Values must be backfilled via `compute-cost.py` (token × list price) before they are read.
 
 ### qwen3-235b: continuation drop, `verification_pct = 0` is not a model result (2026-07-29)
 
@@ -146,12 +145,12 @@ Measurement was done per model with a reasoning-demanding prompt (rope riddle), 
 | `qwen3-235b` | 0 | 0 | no — never reasons |
 | `glm-5-2` | reasons | 299 | no — always reasons |
 | `kimi-k2-7` | 217 | 137 | no — always reasons |
-| `kimi-k3-nebius` | not probed | not probed | unknown — added 2026-07-28, rope riddle not re-run |
+| `kimi-k3-sference` | 5439 | not probed | no — always reasons (measured under the kata, not by rope riddle) |
 | `minimax-m3` | 615 | 396 | no — always reasons |
 | `gpt-5-6-sol` | 0 | 0 | no — forced off |
 | `gpt-5-6-terra` | 0 | 0 | no — forced off |
 
-**Of the probed models, only `opus-4-8` responds to `--thinking`.** (`kimi-k3` was added after this measurement and has not been through the rope riddle — see below.) For all other probed models the reasoning state is a property of the model or the route, not of the call — `--thinking off`, the `:off` suffix on the model string and `models.json "reasoning": false` all remain without effect. Requesty-routed OpenAI-compatible models deliver reasoning over the `reasoning_content` channel (`thinkingSignature: "reasoning_content"`); switching it off requires a provider-specific body parameter that pi neither sends nor allows to be injected (model entries only know `contextWindow, id, input, maxTokens, name, reasoning`; no `--extra-body`).
+**Of the probed models, only `opus-4-8` responds to `--thinking`.** (`kimi-k3-sference` was added after this measurement; its row comes from a direct kata measurement instead — see below.) For all other probed models the reasoning state is a property of the model or the route, not of the call — `--thinking off`, the `:off` suffix on the model string and `models.json "reasoning": false` all remain without effect. Requesty-routed OpenAI-compatible models deliver reasoning over the `reasoning_content` channel (`thinkingSignature: "reasoning_content"`); switching it off requires a provider-specific body parameter that pi neither sends nor allows to be injected (model entries only know `contextWindow, id, input, maxTokens, name, reasoning`; no `--extra-body`).
 
 **`gpt-5-6-sol` / `gpt-5-6-terra`: forced off.** With reasoning on, the Azure endpoint answers `400: Function tools with reasoning_effort are not supported … use /v1/responses instead`; an `openai-responses/gpt-5.6-*` does not exist in the Requesty catalog (only for 5.4 and 5.5). Both therefore run with `"reasoning": false` in `pi-config/agent/models.json`.
 
@@ -159,9 +158,13 @@ Measurement was done per model with a reasoning-demanding prompt (rope riddle), 
 
 The rope-riddle measurement above was a **single-prompt probe without tool calls and without long context**. Whether the switch behaves the same under the real kata is therefore not established — which is why all models where the probe yielded "never" (sonnet-5, deepseek-v4-pro, qwen3-235b) or "always" (kimi-k2-7, minimax-m3) still get both arms. There the comparison is a **test of controllability itself**: if it comes out at zero difference, the two cells are merged in the findings and carried as "switch without effect, checked empirically" — not as a reasoning effect.
 
-**`kimi-k3-nebius` (added 2026-07-28) carries both arms on weaker evidence than the rest.** The rope riddle was not re-run for it; the only signal is from the game-of-life smokes, where thinking blocks appear in every run (24, 24, 33, 292 over four runs — the 292 from the one run that completed). That establishes "reasons at all", not "reasons regardless of the switch", because those smokes ran without `--thinking off`. K3 is therefore treated like K2.7 — both arms, as a **test of controllability itself** — and the rope-riddle probe should be run for it before the arms are interpreted as a reasoning effect. If both arms come out identical, they merge into one cell as "switch without effect, checked empirically".
+**`kimi-k3-sference` has no non-thinking variant.** Measured directly under the kata rather than by rope riddle (2026-08-04, claim-office, `v6.2.1-phase-continuation-pi`): the arm launched with `--thinking off` produced **5439** `thinking_delta` events — more than the default arm at 4568, and at a higher share of the run (12.4 vs. 8.4 thinking per text delta). The stream carries `thinkingSignature: "reasoning_content"`, the same channel that makes the switch inert for every other Requesty-routed model. K3 therefore enters the RQ with **one arm only**; a `kimi-k3-sference-no-thinking` cell would not be a reasoning-off condition but a second sample of the same state under a misleading label.
 
-Only where the switch demonstrably does not exist is there a single arm: `glm-5-2` reasons even with `--thinking off` (confirmed in the aborted 08:46 run with full `reasoning_content` blocks), `gpt-5-6-sol`/`-terra` run technically forced with `"reasoning": false`. For these three the reasoning state is confounded with the model and must be read along when interpreting.
+Two things separate this from the "both arms as a test of controllability" treatment that `kimi-k2-7` and `minimax-m3` get. First, the measurement here is under the real kata rather than the rope riddle, so the caveat that a single-prompt probe may not carry to long tool-using contexts does not apply. Second, the switch does not merely fail to reduce reasoning — the `off` arm reasoned *more*, which no reading of "partially effective" accommodates. The difference is well inside run-to-run variance: two runs in the same default arm on game-of-life differ by a factor of 12 (230 vs. 2928 `thinking_delta`).
+
+The `--thinking off` run itself is kept in the runs pool as a non-matching run (`2026-08-04_21-48-40`, claim-office). Its outcome sits squarely inside the default-arm distribution — `verification_pct` 0.933 at 35 tests and 52 cycles, against 0.933–1.0 at 31–36 tests and 32–54 cycles across the five cell runs — which is the second, independent reason there is nothing for a separate cell to measure.
+
+This puts K3 in the single-arm group alongside `glm-5-2`, which reasons even with `--thinking off` (confirmed in the aborted 08:46 run with full `reasoning_content` blocks), and `gpt-5-6-sol`/`-terra`, which run technically forced with `"reasoning": false`. For all four the reasoning state is confounded with the model and must be read along when interpreting.
 
 Check query for whether reasoning was actually off in a run:
 
