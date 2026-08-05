@@ -1,6 +1,24 @@
 # TODOs and Ideas - Active
 
 
+## pi-config agent dirs read-only — done 2026-08-05, open: same hole in other harnesses
+Prio: Medium
+
+* Fixed: `.pi/agents/` and `.pi/agent/agents/` now mounted `:ro` on top of the
+  `:rw` parent, in all three compose services. A blanket `:ro` is **not**
+  possible — pi mkdir's `.pi/agent/sessions/--<cwd>--/` at startup and dies
+  with ENOENT without write access (verified in the image).
+* Background: qwen3-235b rewrote its own refactor agent and the edit escaped
+  into the host repo. See `experiments/docker/pi-config/README.md` and
+  RQ-model-quality-pi F-1.8.
+* **Still open:** the same class of hole for the other harnesses. `claude-config`
+  is mounted `:rw` at `/home/experimenter/.claude` (compose line ~30), and
+  OpenCode/cursor configs should be checked too. Whether an agent can reach
+  something durable there is unverified.
+* Keep doing: `git status --porcelain experiments/docker/pi-config/` before
+  trusting a pi batch — the overlays cover the agent dirs, not `models.json`.
+
+
 ## Problem separation first
 Prio: High
 

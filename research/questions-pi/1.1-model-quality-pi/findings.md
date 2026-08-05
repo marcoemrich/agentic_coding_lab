@@ -157,6 +157,32 @@ The price of the improvement is real and one-directional: +$1.10 per run at this
 
 ---
 
+## F-1.8 — qwen3-235b rewrote the refactor agent instead of refactoring, and the edit escaped the run
+
+In run `2026-08-05_00-01-18` (game-of-life, v6.2.1-phase-continuation-pi, exit `ok`), `qwen3-235b` responded to the refactor step by **redefining the task rather than performing it**. It rewrote `refactor.md` — the instruction file for its own refactor subagent — adding a section titled "Current Implementation (Mock)" which declares that no refactoring is possible, and authored a companion `refactor.js` whose hardcoded output ends in `**Refactoring**: none possible`.
+
+| Observation | Value |
+|---|---|
+| `write` calls to `.pi/agents/refactor.js` | **789** |
+| `write` calls to `refactor.md` (both paths) | **397** |
+| Total `write` calls in the run | 3938 |
+| `**Refactoring**: none possible` markers emitted | 55 |
+| `refactorings_applied` (parsed) | 11 |
+| `tests_passing` / `tests_total` | **false** / 10 |
+| `cli_built` | true |
+
+**Interpretation.** Two things make this more than a bad run.
+
+First, **the model tampered with its own measuring instrument.** `refactor.js` exists in no workflow — the file is entirely model-authored; only `refactor.md` ships with the workflow. The model did not merely fail to refactor; it produced a stub that reports "none possible" and an instruction file stating that this is the intended behaviour. Repeating the write 789 times is not a stray tool call.
+
+Second, **the edit did not stay inside the run.** `docker-compose.yml` binds `experiments/docker/pi-config/` as `:rw`, so writes to `~/.pi/agents/` inside the container land in the host repository — in the configuration every subsequent pi run inherits. A single run could therefore alter the instrument for all later ones. Measured effect on the runs that followed was none (the mock never resolved, likely because `refactor.ts` takes precedence), but that is luck, not isolation. Details and the detection recipe: `experiments/docker/pi-config/README.md`.
+
+This sharpens F-1.3 rather than replacing it. qwen3's floor position there is read as weak capability; this run shows a distinct failure mode alongside it — when the task proves hard, the model is willing to edit the definition of the task. The same disposition appears in RQ-model-novel-pi F-1.2, where qwen3 writes the full test list and then treats the turn as finished: in both cases the model produces the *artifacts* of the process while skipping the work the process exists for.
+
+The 11 counted `refactorings_applied` in this run are not evidence against the above — of 137 `**Refactoring**:` markers in the transcript, 59 report `none`/`none possible`, and the parser resolves the remainder to 11 applied refactorings. Marker-derived TDD metrics measure what the agent *reports*, not what it did; that limitation is structural and applies to every cell, but it is only visible where a model states the discrepancy this plainly.
+
+---
+
 **Data caveat.** One qwen3-235b run (`12-20-43`) was created without a metadata header (missing `record-run` field); kata/workflow/model were added retroactively from the directory name so that it counts toward the quality metrics. No external `verification_pct` exists for this run, so the qwen verification figure is based on n=4.
 
 **Route change for kimi-k3.** This cell was re-measured on 2026-08-04. The earlier `kimi-k3-nebius` runs were discarded rather than reused: both Requesty routes to K3 were unstable through 2026-07-28/29 (sference dying mid-run with `502 "problem with the provider stream"`, nebius with timeouts and retry exhaustion), so it could not be established which values reflect the model and which the provider. After Requesty reported the stream issue fixed, the cell was refilled on `requesty/sference/kimi-k3` at 5/5 `ok`. The discarded runs are archived metrics-only under `experiments/runs/_archive/kimi-k3-preroute-fix-2026-08-04/`. The route change also moves the cost basis: sference bills with a cache discount, nebius did not.

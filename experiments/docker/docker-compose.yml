@@ -35,6 +35,15 @@ services:
       # (Portkey provider) and the subagent extension. Workflows add their
       # own .pi/skills/ and .pi/agents/ via cwd walk-up.
       - ${PI_CONFIG_DIR:-./pi-config}:/home/experimenter/.pi:rw
+      # Agent definitions read-only on top of the :rw mount above. pi needs
+      # write access to .pi/agent/sessions/ (it mkdir's a session dir per cwd
+      # at startup and dies with ENOENT otherwise), so the parent cannot be
+      # :ro — but nothing legitimately writes to the agent dirs. Without these
+      # two overlays a run can rewrite its own refactor agent, and the edit
+      # lands in the host repo, i.e. in every later run's config. That has
+      # happened: see pi-config/README.md and RQ-model-quality-pi F-1.8.
+      - ${PI_CONFIG_DIR:-./pi-config}/agents:/home/experimenter/.pi/agents:ro
+      - ${PI_CONFIG_DIR:-./pi-config}/agent/agents:/home/experimenter/.pi/agent/agents:ro
 
       # Persistent pnpm store shared across runs (avoids re-downloading deps)
       - pnpm-store:/home/experimenter/.local/share/pnpm/store:rw
@@ -107,6 +116,15 @@ services:
       # (Portkey provider) and the subagent extension. Workflows add their
       # own .pi/skills/ and .pi/agents/ via cwd walk-up.
       - ${PI_CONFIG_DIR:-./pi-config}:/home/experimenter/.pi:rw
+      # Agent definitions read-only on top of the :rw mount above. pi needs
+      # write access to .pi/agent/sessions/ (it mkdir's a session dir per cwd
+      # at startup and dies with ENOENT otherwise), so the parent cannot be
+      # :ro — but nothing legitimately writes to the agent dirs. Without these
+      # two overlays a run can rewrite its own refactor agent, and the edit
+      # lands in the host repo, i.e. in every later run's config. That has
+      # happened: see pi-config/README.md and RQ-model-quality-pi F-1.8.
+      - ${PI_CONFIG_DIR:-./pi-config}/agents:/home/experimenter/.pi/agents:ro
+      - ${PI_CONFIG_DIR:-./pi-config}/agent/agents:/home/experimenter/.pi/agent/agents:ro
 
       # Persistent pnpm store shared across runs (avoids re-downloading deps)
       - pnpm-store:/home/experimenter/.local/share/pnpm/store:rw
@@ -191,6 +209,15 @@ services:
       # (Portkey provider) and the subagent extension. Workflows add their
       # own .pi/skills/ and .pi/agents/ via cwd walk-up.
       - ${PI_CONFIG_DIR:-./pi-config}:/home/experimenter/.pi:rw
+      # Agent definitions read-only on top of the :rw mount above. pi needs
+      # write access to .pi/agent/sessions/ (it mkdir's a session dir per cwd
+      # at startup and dies with ENOENT otherwise), so the parent cannot be
+      # :ro — but nothing legitimately writes to the agent dirs. Without these
+      # two overlays a run can rewrite its own refactor agent, and the edit
+      # lands in the host repo, i.e. in every later run's config. That has
+      # happened: see pi-config/README.md and RQ-model-quality-pi F-1.8.
+      - ${PI_CONFIG_DIR:-./pi-config}/agents:/home/experimenter/.pi/agents:ro
+      - ${PI_CONFIG_DIR:-./pi-config}/agent/agents:/home/experimenter/.pi/agent/agents:ro
 
       # Persistent pnpm store shared across runs (avoids re-downloading deps)
       - pnpm-store:/home/experimenter/.local/share/pnpm/store:rw
