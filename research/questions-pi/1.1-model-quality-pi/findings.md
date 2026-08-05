@@ -1,8 +1,8 @@
 # RQ-model-quality-pi — Findings
 
-**Setup**: game-of-life-example-mapping × v6.2.1-phase-continuation-pi × n=5 per cell (11 cells, all filled). This RQ measures the **model effect on code quality and TDD discipline** in a harness-constant setting. Primary axes: `smell_total` (**Smell Total**), `cognitive_max`, `mccabe_max` — all **lower = better**. `tests_passing` (internal) and `verification_pct` (external, game-of-life-verification) serve as the correctness gate. All models via pi harness / Requesty.
+**Setup**: game-of-life-example-mapping × v6.2.1-phase-continuation-pi × n=5 per cell (12 cells, all filled). This RQ measures the **model effect on code quality and TDD discipline** in a harness-constant setting. Primary axes: `smell_total` (**Smell Total**), `cognitive_max`, `mccabe_max` — all **lower = better**. `tests_passing` (internal) and `verification_pct` (external, game-of-life-verification) serve as the correctness gate. All models via pi harness / Requesty.
 
-**Reasoning caveat**: All models run in the native reasoning default (no `-no-thinking` arm in this RQ). `glm-5-1` and `glm-5-2` are a direct intra-family version comparison.
+**Reasoning caveat**: All models run in the native reasoning default (no `-no-thinking` arm in this RQ). Three pairs form direct intra-family version comparisons: `glm-5-1`/`glm-5-2`, `kimi-k2-7`/`kimi-k3-sference`, and `opus-4-8`/`opus-5-requesty` — the last one without a backprovider confound (see F-1.7).
 
 **Quality gating**: Quality metrics are only meaningful if the code works. `qwen3-235b` (0 % `tests_passing`) and `gpt-5-6-terra` (80 %) therefore carry no quality trophy — low smell/complexity values on non-passing code are not a quality signal.
 
@@ -10,36 +10,43 @@
 
 | Model | `smell_total` | `cognitive_max` | `mccabe_max` | `code_mass` | `cc_longest_function` | `tests_passing` |
 |---|---|---|---|---|---|---|
+| opus-5-requesty | 2.0 | **2.4** 🏆 | **3.4** 🏆 | 151.8 | **5.8** 🏆 | 100 % |
 | glm-5-2 | **1.0** 🏆 | 7.8 | 6.6 | 178.2 | 22.6 | 100 % |
-| sonnet-5 | 2.2 | **6.6** 🏆 | **5.0** 🏆 | 183.0 | 19.6 | 100 % |
-| kimi-k3-sference | 2.4 | 7.0 | 5.8 | 143.8 | **15.0** 🏆 | 100 % |
+| sonnet-5 | 2.2 | 6.6 | 5.0 | 183.0 | 19.6 | 100 % |
+| kimi-k3-sference | 2.4 | 7.0 | 5.8 | 143.8 | 15.0 | 100 % |
 | kimi-k2-7 | 3.0 | 10.8 | 7.2 | 150.4 | 21.6 | 100 % |
 | glm-5-1 | 3.2 | 9.6 | 7.6 | 183.2 | 27.2 | 100 % |
 | opus-4-8 | 3.4 | 9.6 | 6.8 | 149.2 | 17.4 | 100 % |
 | gpt-5-6-sol | 3.6 | 13.4 | 9.4 | **134.8** 🏆 | 21.2 | 100 % |
 | deepseek-v4-pro | 4.0 | 14.0 | 10.2 | 158.4 | 25.4 | 100 % |
-| minimax-m3 | 8.4 | **6.6** 🏆 | 5.2 | 212.2 | **15.0** 🏆 | 100 % |
+| minimax-m3 | 8.4 | 6.6 | 5.2 | 212.2 | 15.0 | 100 % |
 | — 80 %/0 % (no trophy) | | | | | | |
 | gpt-5-6-terra | 6.0 | 7.8 | 6.0 | 136.4 | 23.2 | 80 % |
 | qwen3-235b | 1.8 | 6.4 | 3.4 | 248.0 | 46.6 | 0 % |
 
-Direction: all five quality metrics **lower = better** (`smell_total` = **Smell Total**, `code_mass` = **Code Mass (APP)**, `cc_longest_function` = **Complexity Peak**). Trophies only among the correctness-complete cells (`tests_passing` = 100 %). At `cognitive_max` sonnet-5 and minimax-m3 tie at 6.6, with kimi-k3-sference (7.0) inside the same noise band. At `code_mass` gpt-5-6-sol leads (134.8); at `cc_longest_function` kimi-k3-sference and minimax-m3 tie at 15.0.
+Direction: all five quality metrics **lower = better** (`smell_total` = **Smell Total**, `code_mass` = **Code Mass (APP)**, `cc_longest_function` = **Complexity Peak**). Trophies only among the correctness-complete cells (`tests_passing` = 100 %). `opus-5-requesty` takes three of the five axes outright. **Smell Total** stays with glm-5-2 (1.0 against 2.0), though the margin is soft: glm-5-2's runs range 0–3 at σ = 1.41 while every Opus 5 run landed on exactly 2 (σ = 0). At `code_mass` gpt-5-6-sol leads (134.8); opus-5-requesty is mid-field there (151.8) — it writes an ordinary amount of code, but structures it far more simply.
 
 ---
 
-## F-1.1 — glm-5-2 delivers the cleanest code, sonnet the lowest complexity
+## F-1.1 — opus-5 breaks the complexity field, glm-5-2 holds the smell crown
 
-Among the eight correctness-complete models, `glm-5-2` leads on **Smell Total** (1.0, against 2.2–8.4 for the rest), while `sonnet-5` takes both complexity measures (`cognitive_max` 6.6 tied with minimax-m3, `mccabe_max` 5.0). No model dominates all three axes: glm-5-2 is smell-poor, but cognitive_max 7.8; sonnet is complexity-poor, but smell 2.2.
+`opus-5-requesty` takes all three complexity axes by a wide margin: `cognitive_max` 2.4 against 6.6 for the next-best correctness-complete cell, `mccabe_max` 3.4 against 5.0, **Complexity Peak** 5.8 against 15.0. The gaps are far larger than the spread among the other green models, which sit between 6.6 and 14.0 on `cognitive_max` — a band Opus 5 undercuts by a factor of nearly three. On **Smell Total** it places second (2.0) behind `glm-5-2` (1.0).
 
-| Model | `smell_total` | `cognitive_max` | `mccabe_max` | `code_mass` |
-|---|---|---|---|---|
-| glm-5-2 | 1.0 | 7.8 | 6.6 | 178 |
-| sonnet-5 | 2.2 | 6.6 | 5.0 | 183 |
-| kimi-k3-sference | 2.4 | 7.0 | 5.8 | 144 |
-| kimi-k2-7 | 3.0 | 10.8 | 7.2 | 150 |
-| opus-4-8 | 3.4 | 9.6 | 6.8 | 149 |
+| Model | `smell_total` | `cognitive_max` | `mccabe_max` | `cc_longest_function` | `code_mass` |
+|---|---|---|---|---|---|
+| opus-5-requesty | 2.0 | 2.4 | 3.4 | 5.8 | 152 |
+| glm-5-2 | 1.0 | 7.8 | 6.6 | 22.6 | 178 |
+| sonnet-5 | 2.2 | 6.6 | 5.0 | 19.6 | 183 |
+| kimi-k3-sference | 2.4 | 7.0 | 5.8 | 15.0 | 144 |
+| opus-4-8 | 3.4 | 9.6 | 6.8 | 17.4 | 149 |
 
-**Interpretation.** The models spread measurably on game-of-life over `smell_total` and `cognitive_max` (H2 confirmed: the pi harness is discriminating). The quality axes are partly orthogonal — a model with little smell does not automatically have low cyclomatic complexity. `glm-5-2` and `glm-5-1` both reach `verification_pct = 1.00`, but the newer version is measurably cleaner (`smell_total` 1.0 vs. 3.2, `cognitive_max` 7.8 vs. 9.6, `cc_longest_function` 22.6 vs. 27.2). The top of the complexity field (sonnet-5 and minimax-m3 at 6.6, kimi-k3-sference at 7.0) is separated by less than one σ — the three are practically indistinguishable there.
+**Interpretation.** The models spread measurably on game-of-life over `smell_total` and `cognitive_max` (H2 confirmed: the pi harness is discriminating). Among the pre-Opus-5 field the quality axes are partly orthogonal — glm-5-2 is smell-poor but sits at `cognitive_max` 7.8, sonnet is complexity-poor but at smell 2.2. `opus-5-requesty` weakens that pattern without dissolving it: it leads all three complexity axes while placing second on smell, so a model can be strong on both — but the smell crown still sits elsewhere.
+
+Two things make the complexity lead unusually solid. Its σ values are the smallest among the correctness-complete cells (`cognitive_max` σ = 0.89 against 2.12 for the next-tightest, `mccabe_max` σ = 0.89 against 1.14, `smell_total` σ = 0 — all five runs scored exactly 2), and `code_mass` stays mid-field at 151.8, so the simple structure is not bought by writing less code. `cc_median_loc_per_function` is 2.0 at σ = 0 against 2.7–13.7 across the other correctness-complete cells: functions are consistently tiny, which is what drives every complexity measure down at unchanged volume.
+
+The **Smell Total** ranking deserves a caveat: glm-5-2's mean of 1.0 is genuinely lower, but its runs range 0–3 while every Opus 5 run landed on exactly 2. glm-5-2 is cleaner on average and sometimes perfect, Opus 5 is never worse than 2 — at n=5 the ordering holds, the margin does not separate the two reliably.
+
+Within the Anthropic family the version jump 4.8 → 5 is the largest intra-family move in this RQ — `cognitive_max` 9.6 → 2.4, **Complexity Peak** 17.4 → 5.8 — and unlike the GLM and Kimi comparisons it carries no backprovider confound: both route over Vertex EU.
 
 ---
 
@@ -52,46 +59,50 @@ Among the eight correctness-complete models, `glm-5-2` leads on **Smell Total** 
 | deepseek-v4-pro | 1.00 | 14.0 | 10.2 | 4.0 |
 | gpt-5-6-sol | 1.00 | 13.4 | 9.4 | 3.6 |
 | sonnet-5 | 1.00 | 6.6 | 5.0 | 2.2 |
+| opus-5-requesty | 1.00 | 2.4 | 3.4 | 2.0 |
 
-**Interpretation.** Correctness and code complexity are decoupled: the same perfect external verification is reached by sonnet with half as complex code. Anyone optimizing only for `verification_pct` overlooks that deepseek/gpt-sol produce more maintenance-intensive code — on game-of-life the signal is small (max ~14), but it scales with kata size.
+**Interpretation.** Correctness and code complexity are decoupled: the same perfect external verification is reached at `cognitive_max` 2.4 (opus-5-requesty) and at 14.0 (deepseek-v4-pro) — a factor of roughly six across cells that are indistinguishable on the correctness gate. Anyone optimizing only for `verification_pct` overlooks that deepseek/gpt-sol produce more maintenance-intensive code — on game-of-life the signal is small in absolute terms (max ~14), but it scales with kata size.
 
 ---
 
 ## F-1.3 — Correctness clusters at the top, with qwen as total fail
 
-On the easier game-of-life kata, eight of eleven models reach `verification_pct = 1.00`; the continuation-drop fix (v6.2.1) ensures that kimi/minimax/qwen also run through the TDD loop. `qwen3-235b` forms the floor: it builds code (`cli_built = true`), but rarely gets it green (`tests_passing = 0 %`, `verification_pct = 0.40`).
+On the easier game-of-life kata, nine of twelve models reach `verification_pct = 1.00`; the continuation-drop fix (v6.2.1) ensures that kimi/minimax/qwen also run through the TDD loop. `qwen3-235b` forms the floor: it builds code (`cli_built = true`), but rarely gets it green (`tests_passing = 0 %`, `verification_pct = 0.40`).
 
 | Model | `verification_pct` | `tests_passing` rate |
 |---|---|---|
-| opus-4-8, sonnet-5, gpt-5-6-sol, glm-5-1, glm-5-2, kimi-k2-7, kimi-k3-sference, deepseek-v4-pro | 1.00 | 100 % |
+| opus-4-8, opus-5-requesty, sonnet-5, gpt-5-6-sol, glm-5-1, glm-5-2, kimi-k2-7, kimi-k3-sference, deepseek-v4-pro | 1.00 | 100 % |
 | minimax-m3 | 0.87 | 100 % |
 | gpt-5-6-terra | 0.59 | 80 % |
 | qwen3-235b | 0.40 | 0 % |
 
-**Interpretation.** The qwen pattern is consistent across harness and kata with RQ-model-novel-pi (claim-office): qwen produces an implementation that passes neither internally nor externally — a real competence deficit, not an abort. Its `verification_pct` of 0.40 alongside `tests_passing = 0 %` means external scenarios sometimes pass on code its own test suite rejects. The easier kata lifts the overall level (eight perfect models vs. six on claim-office), but separates the weak ones just as clearly.
+**Interpretation.** The qwen pattern is consistent across harness and kata with RQ-model-novel-pi (claim-office): qwen produces an implementation that passes neither internally nor externally — a real competence deficit, not an abort. Its `verification_pct` of 0.40 alongside `tests_passing = 0 %` means external scenarios sometimes pass on code its own test suite rejects. The easier kata lifts the overall level (nine perfect models vs. six on claim-office), but separates the weak ones just as clearly. Correctness is saturated at the top of this field and carries no signal for model choice — nine cells sit at 1.00 with σ = 0, which is why the quality and cost axes do the discriminating here.
 
 ---
 
 ## F-1.4 — TDD discipline varies strongly without correlating with correctness
 
-Among the correctness-perfect models, `predictions_total` spans from 8.2 (kimi-k3-sference) to 19.4 (opus-4-8) and `cycle_count` from 8.6 (opus) to 14.8 (sonnet). sonnet reaches perfect correctness with 4.8 predictions — the fewest of all, clearly below the field.
+Among the correctness-perfect models, `predictions_total` spans from 4.8 (sonnet-5) to 19.4 (opus-4-8) and `cycle_count` from 8.6 (opus-4-8) to 14.8 (sonnet-5). sonnet-5 and opus-5-requesty reach perfect correctness with 4.8 and 6.4 predictions — the two lowest values, clearly below the field.
 
 | Model (verified 1.0) | `cycle_count` | `predictions_total` | `refactorings_applied` |
 |---|---|---|---|
 | sonnet-5 | 14.8 | 4.8 | 3.2 |
+| opus-5-requesty | 10.2 | 6.4 | 3.8 |
 | kimi-k3-sference | 14.6 | 8.2 | 3.0 |
 | opus-4-8 | 8.6 | 19.4 | 3.0 |
 | glm-5-2 | 10.8 | 11.2 | 5.8 |
 | kimi-k2-7 | 9.6 | 13.6 | 3.4 |
 | gpt-5-6-sol | 9.0 | 10.0 | 5.0 |
 
-**Interpretation.** As in RQ-model-novel-pi (F-1.3), marker compliance is not a necessary condition for correctness (H3/H4). sonnet-5 solves game-of-life perfectly with 4.8 predictions, opus needs 19.4 for the same result. The two ends of the `cycle_count` range are occupied by models with opposite prediction behaviour — sonnet-5 and kimi-k3-sference run the most cycles (14.8 / 14.6) with the fewest predictions (4.8 / 8.2), opus the fewest cycles (8.6) with the most predictions (19.4). `cycle_count`/`predictions_total` measure workflow conformance, not result quality.
+**Interpretation.** As in RQ-model-novel-pi (F-1.3), marker compliance is not a necessary condition for correctness (H3/H4). sonnet-5 solves game-of-life perfectly with 4.8 predictions, opus-4-8 needs 19.4 for the same result. The two ends of the `cycle_count` range are occupied by models with opposite prediction behaviour — sonnet-5 and kimi-k3-sference run the most cycles (14.8 / 14.6) with the fewest predictions (4.8 / 8.2), opus-4-8 the fewest cycles (8.6) with the most predictions (19.4). `cycle_count`/`predictions_total` measure workflow conformance, not result quality.
+
+The Anthropic version jump sharpens this: `opus-5-requesty` produces a third of its predecessor's predictions (6.4 vs. 19.4) while writing markedly simpler code (F-1.1). Whatever `predictions_total` captures, it moves opposite to code quality inside the same model family — further evidence that the metric reads marker usage, not diligence.
 
 ---
 
-## F-1.5 — Cost spreads by a factor of 4.7 at comparable quality
+## F-1.5 — Cost spreads by a factor of 5.2 at comparable quality
 
-The estimated run cost among the correctness-complete models ranges from ~$0.60/run (kimi-k2-7) to ~$2.83 (sonnet-5). The two Kimi generations are the cheapest cells in the field, `sonnet-5` and `glm-5-2` the most expensive. The failed/partly failed models lie in between (qwen ~$0.96 at 0 % tests_passing, gpt-5-6-terra ~$0.67 at 80 %).
+The estimated run cost among the correctness-complete models ranges from ~$0.60/run (kimi-k2-7) to ~$3.10 (opus-5-requesty). The two Kimi generations are the cheapest cells in the field, `opus-5-requesty` and `sonnet-5` the most expensive. The failed/partly failed models lie in between (qwen ~$0.96 at 0 % tests_passing, gpt-5-6-terra ~$0.67 at 80 %).
 
 | Model (`tests_passing` 100 %) | `cost_usd` (estimate/run) | `duration_seconds` | `total_tokens` | `smell_total` | `cognitive_max` |
 |---|---|---|---|---|---|
@@ -104,12 +115,15 @@ The estimated run cost among the correctness-complete models ranges from ~$0.60/
 | glm-5-1 | $2.10 | 1649 | 1.41 M | 3.2 | 9.6 |
 | glm-5-2 | $2.53 | 883 | 4.36 M | 1.0 | 7.8 |
 | sonnet-5 | $2.83 | 1216 | 3.66 M | 2.2 | 6.6 |
+| opus-5-requesty | $3.10 | 436 | 2.22 M | 2.0 | 2.4 |
 
 Direction: `cost_usd`, `duration_seconds` (wall clock), `total_tokens` — lower = better. Trophy only among `tests_passing` = 100 %. At `duration_seconds` deepseek-v4-pro leads (200 s), at `total_tokens` gpt-5-6-sol (661 k).
 
-**Cost caveat.** `cost_usd` is a **list-price estimate** (Requesty tariffs per 1M tokens × measured tokens, `research/model-pricing.md`), not a billed amount — without workspace-specific discounts or smart-routing savings. Requesty provides no inline cost (`usage = null`), so values are backfilled by `compute-cost.py`; token counts are after the parser fix (correct `cache_read` summation). All eight cells now route over cache-discounted paths, so the column is comparable across models.
+**Cost caveat.** `cost_usd` is a **list-price estimate** (Requesty tariffs per 1M tokens × measured tokens, `research/model-pricing.md`), not a billed amount — without workspace-specific discounts or smart-routing savings. Requesty provides no inline cost (`usage = null`), so values are backfilled by `compute-cost.py`; token counts are after the parser fix (correct `cache_read` summation). All ten correctness-complete cells route over cache-discounted paths, so the column is comparable across models. The `opus-5-requesty` tariff ($5.50 / $27.50 per 1M, cache read $0.55) was read from the live Requesty catalogue on 2026-08-05 and matches `opus-4-8` except on cache write ($6.88 vs. $6.25).
 
-**Interpretation.** `kimi-k3-sference` is the "cheap AND clean" cell this field previously lacked: at $0.64 it is within four cents of the cheapest model, while placing third on **Smell Total** (2.4) and inside the leading noise band on `cognitive_max` (7.0 against 6.6). Compared to `sonnet-5` — the closest quality profile — it costs roughly a quarter and runs in under a third of the wall clock, at 1.02 M tokens against 3.66 M. `glm-5-2` still holds the smell crown (1.0) but costs four times as much. Wall clock and tokens do not run parallel to cost: `deepseek-v4-pro` and `gpt-5-6-sol` are fastest at ~200–240 s and gpt-5-6-sol is the most token-frugal at 661 k, while `minimax-m3` falls far out of the range at 4121 s and 4.68 M tokens despite low cost (~$0.77) — the cheap run buys its price with extreme runtime and token volume.
+**Interpretation.** The field now has a clear price-quality frontier with two ends. `opus-5-requesty` is the most expensive cell ($3.10) and buys the largest quality margin in the RQ — `cognitive_max` 2.4 against a field minimum of 6.6 elsewhere (F-1.1). At the other end, `kimi-k3-sference` is the "cheap AND clean" cell: at $0.64 it is within four cents of the cheapest model while placing fourth on both **Smell Total** (2.4) and `cognitive_max` (7.0). The choice between them is a factor of ~4.8 in price against roughly a factor of three in peak complexity.
+
+`glm-5-2` still holds the smell crown (1.0) but costs four times as much as kimi-k3. Wall clock and tokens do not run parallel to cost: `deepseek-v4-pro` and `gpt-5-6-sol` are fastest at ~200–240 s and gpt-5-6-sol is the most token-frugal at 661 k, while `minimax-m3` falls far out of the range at 4121 s and 4.68 M tokens despite low cost (~$0.77) — the cheap run buys its price with extreme runtime and token volume. `opus-5-requesty` is the exception to the "expensive = slow" pattern in the upper price band: at 436 s it runs roughly a third of sonnet-5's wall clock (1216 s) on 2.22 M against 3.66 M tokens, so its price comes from the tariff rather than from token volume.
 
 ---
 
@@ -122,7 +136,24 @@ Direction: `cost_usd`, `duration_seconds` (wall clock), `total_tokens` — lower
 | kimi-k2-7 | 3.0 | 10.8 | 7.2 | 21.6 | $0.60 | 234 | 1.34 M |
 | kimi-k3-sference | 2.4 | 7.0 | 5.8 | 15.0 | $0.64 | 359 | 1.02 M |
 
-**Interpretation.** H1c holds: the newer Kimi generation writes measurably less complex code, and the `cognitive_max` gap (10.8 → 7.0) is the clearest intra-family jump in this RQ — larger than the GLM 5.1 → 5.2 step. The **Complexity Peak** improvement is the sharpest single move (21.6 → 15.0, from mid-field to joint best). One confound remains: the two versions route through different backproviders (K2.7 via TensorX, K3 via Sference), so provider-side differences cannot be separated from model behaviour. Cost is no longer a confound — both routes bill with a cache discount, and the 4-cent gap is inside estimate noise. The improvement costs 53 % more wall clock (234 → 359 s) while consuming fewer tokens, i.e. K3 spends longer per token rather than producing more. `cycle_count` rises from 9.6 to 14.6 while `predictions_total` falls from 13.6 to 8.2 — more marked TDD cycles carrying fewer predictions, consistent with F-1.4 (marker compliance ≠ result quality).
+**Interpretation.** H1c holds: the newer Kimi generation writes measurably less complex code, and the `cognitive_max` gap (10.8 → 7.0) is larger than the GLM 5.1 → 5.2 step, though smaller than the Anthropic 4.8 → 5 jump (9.6 → 2.4, F-1.7). The **Complexity Peak** improvement moves it from mid-field to 15.0. One confound remains: the two versions route through different backproviders (K2.7 via TensorX, K3 via Sference), so provider-side differences cannot be separated from model behaviour. Cost is no longer a confound — both routes bill with a cache discount, and the 4-cent gap is inside estimate noise. The improvement costs 53 % more wall clock (234 → 359 s) while consuming fewer tokens, i.e. K3 spends longer per token rather than producing more. `cycle_count` rises from 9.6 to 14.6 while `predictions_total` falls from 13.6 to 8.2 — more marked TDD cycles carrying fewer predictions, consistent with F-1.4 (marker compliance ≠ result quality).
+
+---
+
+## F-1.7 — The Anthropic version jump is the cleanest intra-family comparison and the largest
+
+`opus-5-requesty` improves over `opus-4-8` on every quality axis: `cognitive_max` 2.4 vs. 9.6, `mccabe_max` 3.4 vs. 6.8, **Smell Total** 2.0 vs. 3.4, **Complexity Peak** 5.8 vs. 17.4. Both reach `verification_pct = 1.00` at 100 % `tests_passing`. The improvement costs 55 % more per run ($3.10 vs. $2.00) at 80 % more tokens and 29 % more wall clock.
+
+| Model | `smell_total` | `cognitive_max` | `mccabe_max` | `cc_longest_function` | `code_mass` | `cost_usd` | `duration_seconds` | `total_tokens` |
+|---|---|---|---|---|---|---|---|---|
+| opus-4-8 | 3.4 | 9.6 | 6.8 | 17.4 | 149.2 | $2.00 | 339 | 1.23 M |
+| opus-5-requesty | 2.0 | 2.4 | 3.4 | 5.8 | 151.8 | $3.10 | 436 | 2.22 M |
+
+**Interpretation.** This is the third intra-family version comparison in the RQ, alongside GLM 5.1 → 5.2 and Kimi K2.7 → K3 — and the only one **without a backprovider confound**: both Anthropic cells route over `vertex/…@eu`, so the difference is attributable to the model rather than to provider-side behaviour. It is also the largest: `cognitive_max` falls by a factor of four, against 10.8 → 7.0 for Kimi and 9.6 → 7.8 for GLM.
+
+`code_mass` stays effectively unchanged (149.2 → 151.8, well inside σ), so the newer version is not writing less — it is writing the same amount of code in smaller, simpler units. `cc_median_loc_per_function` drops from 2.7 to 2.0 at σ = 0, and `cc_avg_loc_per_function` from 6.89 to 2.62.
+
+The price of the improvement is real and one-directional: +$1.10 per run at this kata size, driven by token volume (1.23 M → 2.22 M) on an identical tariff. Whether that trade pays depends on whether peak complexity matters for the target codebase — on game-of-life the absolute numbers are small either way (9.6 vs. 2.4), but the ratio should scale with kata size, which claim-office in RQ-model-novel-pi can test.
 
 ---
 

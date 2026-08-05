@@ -12,6 +12,8 @@ factors:
     # both arms: switch takes effect or is checked empirically
     - opus-4-8                     # current Opus (vertex/claude-opus-4-8@eu)
     - opus-4-8-no-thinking         # only model with demonstrably controllable reasoning
+    - opus-5-requesty              # Opus 5 (vertex/claude-opus-5@eu); -requesty separates it from the native route
+    - opus-5-requesty-no-thinking  # same Vertex route as opus-4-8, so the switch is assumed to work; unprobed
     - sonnet-5                     # current Sonnet (vertex/claude-sonnet-5@eu)
     - sonnet-5-no-thinking
     - kimi-k2-7                    # previous Kimi (tensorx/kimi-k2.7-code)
@@ -140,6 +142,7 @@ Measurement was done per model with a reasoning-demanding prompt (rope riddle), 
 | Model | `--thinking off` | `--thinking high` | Reasoning controllable? |
 |---|---|---|---|
 | `opus-4-8` | 0 | 91 | **yes** — the only model where the switch takes effect |
+| `opus-5-requesty` | not probed | not probed | assumed yes — same Vertex EU route as opus-4-8; see below |
 | `sonnet-5` | 0 | 0 (also at `max`) | no — never reasons over this route |
 | `deepseek-v4-pro` | 0 | 0 | no — never reasons |
 | `qwen3-235b` | 0 | 0 | no — never reasons |
@@ -149,6 +152,10 @@ Measurement was done per model with a reasoning-demanding prompt (rope riddle), 
 | `minimax-m3` | 615 | 396 | no — always reasons |
 | `gpt-5-6-sol` | 0 | 0 | no — forced off |
 | `gpt-5-6-terra` | 0 | 0 | no — forced off |
+
+**`opus-5-requesty`: both arms on an assumption, not a measurement (added 2026-08-05).** The model was wired into pi on 2026-08-05 (see RQ-model-quality-pi, "opus-5-requesty: added 2026-08-05") and has not been through the rope-riddle probe. It enters with both arms because it shares the Vertex EU route with `opus-4-8`, the one model whose switch demonstrably works — routing, not the model family, is what determines controllability for every other entry in this table. That is a plausible inference, not a finding.
+
+The fill settles it either way: `thinking_delta` counts per arm are read off the transcripts (query at the end of this section). If the `off` arm reasons anyway, the two cells are merged in the findings under "switch without effect, checked empirically" — the same treatment `sonnet-5`, `deepseek-v4-pro` and `qwen3-235b` get. If it comes out at zero, Opus 5 joins `opus-4-8` as the second model with a working switch. Do not report a reasoning effect for this cell before that check has run.
 
 **Of the probed models, only `opus-4-8` responds to `--thinking`.** (`kimi-k3-sference` was added after this measurement; its row comes from a direct kata measurement instead — see below.) For all other probed models the reasoning state is a property of the model or the route, not of the call — `--thinking off`, the `:off` suffix on the model string and `models.json "reasoning": false` all remain without effect. Requesty-routed OpenAI-compatible models deliver reasoning over the `reasoning_content` channel (`thinkingSignature: "reasoning_content"`); switching it off requires a provider-specific body parameter that pi neither sends nor allows to be injected (model entries only know `contextWindow, id, input, maxTokens, name, reasoning`; no `--extra-body`).
 

@@ -4,6 +4,7 @@ question: "How do the models reachable via the pi harness (Requesty routing) dif
 factors:
   model:
     - opus-4-8            # current Opus (vertex/bedrock claude-opus-4-8@eu)
+    - opus-5-requesty     # Opus 5 (vertex/claude-opus-5@eu); -requesty suffix separates it from the native route
     - sonnet-5            # current Sonnet (vertex/claude-sonnet-5@eu)
     - gpt-5-6-sol         # GPT SOL (azure/gpt-5.6-sol@swedencentral)
     - gpt-5-6-terra       # GPT TERRA (azure/gpt-5.6-terra@swedencentral)
@@ -68,6 +69,7 @@ This RQ measures the **model effect on code quality and TDD discipline** in a ha
 | Lab variant | Requesty route |
 |---|---|
 | `opus-4-8` | `requesty/vertex/claude-opus-4-8@eu` |
+| `opus-5-requesty` | `requesty/vertex/claude-opus-5@eu` |
 | `sonnet-5` | `requesty/vertex/claude-sonnet-5@eu` |
 | `gpt-5-6-sol` | `requesty/azure/gpt-5.6-sol@swedencentral` |
 | `gpt-5-6-terra` | `requesty/azure/gpt-5.6-terra@swedencentral` |
@@ -92,6 +94,14 @@ The `factors.model` list is set by the user: current Opus + Sonnet (Anthropic an
 MiniMax and DeepSeek are deliberately included because they had clear, documented contrast profiles in the `-oc` counterpart: MiniMax = "internal tests green, external verification 0/15" (spec misunderstanding), DeepSeek-Pro = skill-compliance champion with duration tail risk. That makes the cross-harness comparison direct.
 
 The backprovider path is implicitly pinned in every lab variant (Opus/Sonnet via Vertex EU, GPT via Azure, GLM-5.1 via Nebius, GLM-5.2 + Kimi-K2.7 + MiniMax + DeepSeek via TensorX, Kimi-K3 via Sference, Qwen via Nebius); a changing backprovider requires a new variant.
+
+### opus-5-requesty: added 2026-08-05
+
+Opus 5 became reachable on pi once three pieces were wired: the `vertex/claude-opus-5@eu` entry in `pi-config/agent/models.json`, the `MODEL_CONFIGS` registration and the `pi_model` case mapping in `run-batch.sh`. Before that a pi run with an Opus-5 id died in the `*)` branch with `no pi model mapping` — the model was available at Requesty the whole time, only the harness could not address it.
+
+The id carries the **`-requesty` suffix** because the bare `opus-5` is already taken by the native Direct-API route (env-blanking bypass, see `research/questions-claude/`). Same split as `opus-4-8` / `opus-4-8-requesty`, and for the same reason: different tariff, real cost, different routing channel. The two must not be merged into one cell.
+
+This makes Opus 5 the second Anthropic anchor next to `opus-4-8` and extends H1 by an **intra-family version comparison** (4.8 → 5) over an identical Vertex EU route — cleaner than the GLM and Kimi version jumps, which are confounded by a backprovider change.
 
 ### kimi-k3: sference route, all pre-fix runs discarded (as of 2026-08-04)
 

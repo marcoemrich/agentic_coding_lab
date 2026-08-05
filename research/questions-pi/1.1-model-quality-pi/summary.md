@@ -2,15 +2,16 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in code quality and TDD discipline on game-of-life-example-mapping with the v6.2.1-phase-continuation-pi workflow?_
 
-Generated: 2026-08-05T00:21:06Z
+Generated: 2026-08-05T05:41:40Z
 
-Cells declared: 11 · matched runs: 55 · min_replicates: 5
+Cells declared: 12 · matched runs: 60 · min_replicates: 5
 
 ## Zell-Coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8 | 5 | 5 | ✅ |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty | 5 | 5 | ✅ |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5 | 5 | 5 | ✅ |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol | 5 | 5 | ✅ |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-terra | 5 | 5 | ✅ |
@@ -37,6 +38,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |  143.8 |   124 |   155 | 12.19 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |  212.2 |   160 |   303 | 60.95 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |  149.2 |   132 |   164 | 13.08 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |  151.8 |   139 |   167 | 10.83 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |  248   |   215 |   315 | 40.24 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |  183   |   169 |   202 | 12.57 |
 
@@ -53,6 +55,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |    7   |     4 |     9 |  2.12 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |    6.6 |     3 |    12 |  3.36 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |    9.6 |     7 |    15 |  3.71 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |    2.4 |     2 |     4 |  0.89 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |    6.4 |     0 |    32 | 14.31 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |    6.6 |     3 |    12 |  3.78 |
 
@@ -69,6 +72,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |   4.7  |  2.5  |  9    |  2.59 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |   3.93 |  2    |  5.67 |  1.44 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |   5.57 |  4    |  8.5  |  1.87 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |   2.2  |  2    |  3    |  0.45 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |   3.3  |  0    | 16.5  |  7.38 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |   4.57 |  2    |  7.5  |  2.25 |
 
@@ -85,6 +89,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |    5.8 |     4 |     8 |  1.48 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |    5.2 |     3 |     7 |  1.48 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |    6.8 |     5 |     9 |  1.48 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |    3.4 |     3 |     5 |  0.89 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |    3.4 |     0 |    17 |  7.6  |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |    5   |     3 |     7 |  2    |
 
@@ -101,6 +106,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |   2.3  |  2    |  3.33 |  0.58 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |   2.41 |  1.75 |  2.75 |  0.45 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |   2.9  |  2.33 |  3.4  |  0.39 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |   1.31 |  1.18 |  1.75 |  0.24 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |   1.33 |  0    |  6.67 |  2.98 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |   2.2  |  1.55 |  2.67 |  0.55 |
 
@@ -117,6 +123,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |   15   |     3 |    24 |  8.43 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |   15   |     2 |    24 |  8.28 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |   17.4 |    10 |    22 |  5.5  |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |    5.8 |     2 |    11 |  3.63 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |   46.6 |    24 |    60 | 13.58 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |   19.6 |    14 |    27 |  5.68 |
 
@@ -133,6 +140,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |   7.11 |  2.25 | 11.5  |  3.89 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |   5.56 |  1.67 |  7.75 |  2.29 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |   6.89 |  4.2  |  8.33 |  1.69 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |   2.62 |  2    |  3.5  |  0.62 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |  34.5  | 13.5  | 60    | 19.36 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |   7.94 |  6.38 | 10.5  |  1.69 |
 
@@ -149,6 +157,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |    4.9 |   2   |  11.5 |  3.85 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |    3.2 |   2   |   6   |  1.79 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |    2.7 |   2   |   5   |  1.3  |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |    2   |   2   |   2   |  0    |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |   33.3 |  13.5 |  60   | 20.49 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |    5   |   3   |   6.5 |  1.37 |
 
@@ -165,6 +174,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |   41   |    32 |    50 |  6.48 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |   64.6 |    39 |    95 | 20.31 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |   35.2 |    31 |    38 |  2.77 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |   39.8 |    33 |    45 |  4.38 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |   52.6 |    27 |    69 | 16.23 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |   58.8 |    47 |    70 |  8.53 |
 
@@ -181,6 +191,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |    2.4 |     2 |     3 |  0.55 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |    8.4 |     0 |    33 | 13.83 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |    3.4 |     2 |     5 |  1.52 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |    2   |     2 |     2 |  0    |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |    1.8 |     0 |     9 |  4.02 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |    2.2 |     0 |     5 |  2.17 |
 
@@ -197,6 +208,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |    0   |     0 |     0 |  0    |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |    0.4 |     0 |     2 |  0.89 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |    0.8 |     0 |     2 |  1.1  |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |    0   |     0 |     0 |  0    |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |    1   |     0 |     5 |  2.24 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |    0.4 |     0 |     2 |  0.89 |
 
@@ -213,6 +225,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |    2.4 |     2 |     3 |  0.55 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |    8   |     0 |    33 | 14.02 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |    2.6 |     2 |     3 |  0.55 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |    2   |     2 |     2 |  0    |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |    0.6 |     0 |     3 |  1.34 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |    1.8 |     0 |     3 |  1.64 |
 
@@ -229,6 +242,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |       0 |        0 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |       0 |        0 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |       0 |        0 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |       0 |        0 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |       1 |       20 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |       0 |        0 |
 
@@ -245,6 +259,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |   1    |  1    |     1 |  0    |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |   0.87 |  0.33 |     1 |  0.3  |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |   1    |  1    |     1 |  0    |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |   1    |  1    |     1 |  0    |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |   0.4  |  0    |     1 |  0.55 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |   1    |  1    |     1 |  0    |
 
@@ -261,6 +276,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |       5 |      100 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |       5 |      100 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |       5 |      100 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |       5 |      100 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |       0 |        0 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |       5 |      100 |
 
@@ -277,6 +293,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |    9.4 |     8 |    11 |  1.14 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |   11   |    10 |    14 |  1.73 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |    8.6 |     8 |     9 |  0.55 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |   10.2 |    10 |    11 |  0.45 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |    8.8 |     7 |    10 |  1.3  |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |    9.8 |     9 |    10 |  0.45 |
 
@@ -293,6 +310,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |   14.6 |    11 |    19 |  2.97 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |   13.4 |     9 |    16 |  3.58 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |    8.6 |     8 |     9 |  0.55 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |   10.2 |    10 |    11 |  0.45 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |    7.4 |     1 |    10 |  3.65 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |   14.8 |     9 |    18 |  4.09 |
 
@@ -309,6 +327,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |    3   |     2 |     4 |  0.71 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |    5.8 |     2 |    12 |  3.9  |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |    3   |     3 |     3 |  0    |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |    3.8 |     3 |     4 |  0.45 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |    7   |     4 |    11 |  3.32 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |    3.2 |     3 |     4 |  0.45 |
 
@@ -325,6 +344,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |    8.2 |     4 |    20 |  6.65 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |   22.6 |     6 |    42 | 13.37 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |   19.4 |    16 |    29 |  5.46 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |    6.4 |     6 |     8 |  0.89 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |   14   |     8 |    20 |  4.42 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |    4.6 |     4 |     6 |  0.89 |
 
@@ -341,6 +361,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |    8.2 |     4 |    20 |  6.65 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |   22.8 |     6 |    42 | 13.31 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |   19.4 |    16 |    29 |  5.46 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |    6.4 |     6 |     8 |  0.89 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |   15.2 |     8 |    20 |  5.22 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |    4.8 |     4 |     6 |  1.1  |
 
@@ -357,6 +378,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |       5 |      100 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |       5 |      100 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |       5 |      100 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |       5 |      100 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |       5 |      100 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |       5 |      100 |
 
@@ -373,6 +395,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |  359   |   241 |   494 |   99.15 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 | 4120.6 |  2243 |  6556 | 1939.34 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |  339.4 |   289 |   412 |   45.72 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |  436.2 |   346 |   541 |   78.66 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |  549.6 |   376 |   758 |  164.24 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 | 1216   |   774 |  1734 |  349.45 |
 
@@ -389,6 +412,7 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |      1.01617e+06 |  689466 | 1520621 | 342494           |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |      4.67698e+06 | 3044008 | 7676085 |      1.89744e+06 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |      1.23042e+06 |  992904 | 1651260 | 277681           |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |      2.21753e+06 | 1516437 | 2600069 | 414527           |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |      4.71415e+06 | 2282810 | 6535630 |      1.70572e+06 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |      3.664e+06   | 2306184 | 5454604 |      1.44702e+06 |
 
@@ -405,5 +429,6 @@ Cells declared: 11 · matched runs: 55 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | kimi-k3-sference |   5 |   0.64 |  0.51 |  0.9  |  0.16 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | minimax-m3       |   5 |   0.77 |  0.47 |  1.21 |  0.32 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8         |   5 |   2    |  1.77 |  2.3  |  0.25 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-5-requesty  |   5 |   3.1  |  2.3  |  3.86 |  0.58 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | qwen3-235b       |   5 |   0.96 |  0.47 |  1.32 |  0.34 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | sonnet-5         |   5 |   2.83 |  1.79 |  3.88 |  0.78 |
