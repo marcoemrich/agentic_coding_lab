@@ -190,7 +190,28 @@ Exception: **deletions** of existing findings still require explicit user confir
 4. Format per block: statement / data-base table / rationale. Header `## F-x.y — title` with no suffix.
    **Glossary discipline**: terms like `code_mass`, `cc_loc`, `cc_longest_function`, `smell_total`, `verification_pct` are to be used only in the form from the glossary in the top-level `README.md` ("Code-Mass (APP)", "Produktiv-LoC", "Spitzen-Komplexität", "Smell-Summe", "Korrektheit (außen)") or directly via the metric ID in backticks. Synonyms like "Code-Volumen", "Code-Gesamtvolumen", "LoC-Größe" are forbidden — they are ambiguous or collide with established definitions (APP). Before writing, read the glossary once and check every term used in the block against the table.
 5. **Number formatting in `findings.md`:** large counts (typically `total_tokens`, `subagent_token_total`, cache stats) get the `M`-suffix (millions) or `k`-suffix (thousands), not scientific notation. `summary.md` keeps the pandas-default `e+07` form — only `findings.md` gets reformatted. Examples: `44.4 M` (good), `4.44e+07` (bad in findings, fine in summary), `1023 ms` or `1.0 s` (good for duration). σ-Werte werden im selben Format dargestellt wie der Mean (`σ ≈ 5 M`, nicht `σ ≈ 5e+06`). Rationale: M/k ist auf einen Blick lesbar, e+07 zwingt zum Kopfrechnen.
-6. After writing all new/updated blocks, send one short line to the user: "geschrieben — lies drüber". The user reviews the rendered markdown directly.
+6. **Verify every number you just wrote** before reporting. Do not skip this — a wrong
+   number in a findings table looks authoritative and gets quoted onward. Pull the written
+   rows back out and diff them against `summary.md`:
+   ```bash
+   grep -n "<cell-name>" "$RQ_DIR/findings.md" | grep "|"
+   ```
+   Check each value against the same metric in `summary.md` for **this** RQ.
+
+   The failure mode this catches: when several RQs are edited in sequence, values from a
+   different kata sit in context and get written from memory instead of looked up. Cell
+   names and metric names are identical across RQs — only the ranges differ, and a foreign
+   value is often plausible enough to survive proofreading. (Real case, 2026-08-04:
+   `cc_longest_function = 15.0` from the game-of-life RQ landed in the claim-office RQ,
+   where 21.4 was correct — wrong trophy, plus an interpretation sentence built on the
+   wrong figure.)
+
+   Two habits prevent it upstream: query metrics **completely** per RQ rather than
+   selectively (the gap appears when a table column is missing from the fresh extract),
+   and treat magnitude as a sanity anchor — claim-office is the large kata
+   (`code_mass` ~666, `cycle_count` ~47), game-of-life the small one (~144, ~15).
+
+7. After verifying, send one short line to the user: "geschrieben — lies drüber". The user reviews the rendered markdown directly.
 
 ---
 

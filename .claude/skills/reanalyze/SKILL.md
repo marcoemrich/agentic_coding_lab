@@ -113,7 +113,29 @@ Exception: **deletions** of existing findings still require explicit user confir
    - **NEW**: append at end of findings.md, after the last `---` separator.
    - **Update the overview table** at the top of findings.md to reflect any changed numbers.
    - **Deletion** (data contradicts a finding): ask the user first, then remove the block including its `---` separator on confirmation.
-5. After writing, send one short line summarizing what changed:
+5. **Verify every number you just wrote** before reporting. Do not skip this — a wrong
+   number in a findings table is the most expensive kind of error here, because it looks
+   authoritative and gets quoted onward. Pull the written rows back out and diff them
+   against `summary.md`:
+   ```bash
+   grep -n "<cell-name>" "$RQ_DIR/findings.md" | grep "|"
+   ```
+   Check each value against the same metric in `summary.md` for **this** RQ.
+
+   The failure mode this catches: when several RQs are edited in sequence, values from a
+   different kata sit in context and get written from memory instead of looked up. Cell
+   names and metric names are identical across RQs — only the ranges differ, and a
+   foreign value is often plausible enough to survive proofreading. (Real case,
+   2026-08-04: `cc_longest_function = 15.0` from the game-of-life RQ landed in the
+   claim-office RQ, where 21.4 was correct — wrong trophy, plus an interpretation
+   sentence built on the wrong figure.)
+
+   Two habits prevent it upstream: query metrics **completely** per RQ rather than
+   selectively (the gap appears when a table column is missing from the fresh extract),
+   and treat magnitude as a sanity anchor — claim-office is the large kata
+   (`code_mass` ~666, `cycle_count` ~47), game-of-life the small one (~144, ~15).
+
+6. After verifying, send one short line summarizing what changed:
    ```
    geschrieben — STALE: F-x.y, F-a.b · NEW: F-x.z · OK: F-c.d, F-e.f. Lies drüber.
    ```
