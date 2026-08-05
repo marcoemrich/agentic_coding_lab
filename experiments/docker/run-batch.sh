@@ -121,8 +121,8 @@ MODEL_CONFIGS=(
     "gpt-5-6-terra|pi-only|false"
     "glm-5-2|pi-only|false"
     "kimi-k2-7|pi-only|false"
-    "kimi-k3|pi-only|false"
     "kimi-k3-nebius|pi-only|false"
+    "kimi-k3-sference|pi-only|false"
     "minimax-m3|pi-only|false"
     "qwen3-235b|pi-only|false"
     # Reasoning-off arm (RQ-model-novel-pi fair baseline). Same routing as
@@ -135,8 +135,8 @@ MODEL_CONFIGS=(
     "glm-5-1-no-thinking|pi-only|false"
     "glm-5-2-no-thinking|pi-only|false"
     "kimi-k2-7-no-thinking|pi-only|false"
-    "kimi-k3-no-thinking|pi-only|false"
     "kimi-k3-nebius-no-thinking|pi-only|false"
+    "kimi-k3-sference-no-thinking|pi-only|false"
     "minimax-m3-no-thinking|pi-only|false"
     "deepseek-v4-pro-no-thinking|pi-only|false"
     "qwen3-235b-no-thinking|pi-only|false"
@@ -749,12 +749,22 @@ EOF
                 glm-5-1)                       pi_model="requesty/nebius/zai-org/glm-5.1" ;;
                 glm-5-2)                       pi_model="requesty/tensorx/glm-5.2" ;;
                 kimi-k2-7)                     pi_model="requesty/tensorx/kimi-k2.7-code" ;;
-                kimi-k3)                       pi_model="requesty/sference/kimi-k3" ;;
-                # Fallback route. sference/kimi-k3 reproducibly dies mid-run
-                # with Requesty 502 "problem with the provider stream"
-                # (2026-07-28, 2/2 smoke runs). nebius is pricier, has no
-                # caching and half the max output, but is a separate stream
-                # path. Keep both ids so a routing comparison stays possible.
+                # One underlying model, two routes, one id each -- the route is
+                # always explicit in the id. Keep both so a routing comparison
+                # stays possible.
+                #
+                # 2026-07-28: sference/kimi-k3 reproducibly died mid-run with
+                # Requesty 502 "problem with the provider stream" (2/2 smoke
+                # runs), so nebius/kimi-k3 was added as a fallback. nebius then
+                # showed its own instability -- 6/15 runs non-ok, mostly
+                # claim-office timeouts.
+                # 2026-08-04: Requesty reported the stream issue fixed. sference
+                # is the preferred route again (prompt caching, double the max
+                # output); kimi-k3-sference is the id the RQs now fill. The bare
+                # `kimi-k3` id was retired with the pre-fix runs it produced --
+                # those are archived under
+                # experiments/runs/_archive/kimi-k3-preroute-fix-2026-08-04/.
+                kimi-k3-sference)              pi_model="requesty/sference/kimi-k3" ;;
                 kimi-k3-nebius)                pi_model="requesty/nebius/kimi-k3" ;;
                 minimax-m3)                    pi_model="requesty/tensorx/minimax-m3" ;;
                 deepseek-v4-pro)               pi_model="requesty/tensorx/deepseek-v4-pro" ;;
