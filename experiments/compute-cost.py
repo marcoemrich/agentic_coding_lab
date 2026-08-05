@@ -57,6 +57,13 @@ PRICES = {
     # für alle drei Harnesse, konsistent gemessen.
     "opus-4-8-requesty":         (5.50,  27.50, 0.55, 6.25),
     "opus-4-8-requesty-no-thinking": (5.50, 27.50, 0.55, 6.25),
+    # opus-5-requesty: vertex/claude-opus-5@eu über pi/Requesty. Input/Output/
+    # cache_read identisch zu opus-4-8-requesty, cache_write liegt höher
+    # (6.88 statt 6.25) — Werte aus dem Live-Katalog 2026-08-05. Der bare
+    # opus-5-Eintrag oben ist die native Direct-API-Route zum Anthropic-Listpreis
+    # und darf nicht mit dieser Zelle vermischt werden.
+    "opus-5-requesty":         (5.50,  27.50, 0.55, 6.88),
+    "opus-5-requesty-no-thinking": (5.50, 27.50, 0.55, 6.88),
     "opus-4-8-portkey": (5.00, 25.00, 0.50, 6.25),
     "opus-4-8-portkey-no-thinking": (5.00, 25.00, 0.50, 6.25),
     "opus-4-7":         (5.00,  25.00, 0.50, 6.25),

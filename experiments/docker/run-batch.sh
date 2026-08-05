@@ -112,6 +112,12 @@ MODEL_CONFIGS=(
     # oc-only entries) and are reused by the pi branch, so they are not
     # repeated here.
     "sonnet-5|pi-only|false"
+    # opus-5 via Requesty (vertex/claude-opus-5@eu). The bare `opus-5` id is
+    # already taken by the native Direct-API route in the block above, so the
+    # Requesty arm carries the -requesty suffix — same split as opus-4-8 /
+    # opus-4-8-requesty, and for the same reason: different tariff, real cost,
+    # different routing channel. Do not merge the two into one cell.
+    "opus-5-requesty|pi-only|false"
     # gpt-5-6-sol is wired for BOTH pi and OpenCode (same Requesty route,
     # azure/gpt-5.6-sol@swedencentral). The `pi-only` placeholder here only
     # feeds plan validation, which just checks the name exists — the harness
@@ -130,6 +136,7 @@ MODEL_CONFIGS=(
     # adds `--thinking off`. Registered here only so plan validation accepts
     # them. opus-4-8-no-thinking already exists in the native block above.
     "sonnet-5-no-thinking|pi-only|false"
+    "opus-5-requesty-no-thinking|pi-only|false"
     "gpt-5-6-sol-no-thinking|pi-only|false"
     "gpt-5-6-terra-no-thinking|pi-only|false"
     "glm-5-1-no-thinking|pi-only|false"
@@ -744,6 +751,7 @@ EOF
                 # suffix is stripped above so both resolve here.
                 opus-4-8)                      pi_model="requesty/vertex/claude-opus-4-8@eu" ;;
                 sonnet-5)                      pi_model="requesty/vertex/claude-sonnet-5@eu" ;;
+                opus-5-requesty)               pi_model="requesty/vertex/claude-opus-5@eu" ;;
                 gpt-5-6-sol)                   pi_model="requesty/azure/gpt-5.6-sol@swedencentral" ;;
                 gpt-5-6-terra)                 pi_model="requesty/azure/gpt-5.6-terra@swedencentral" ;;
                 glm-5-1)                       pi_model="requesty/nebius/zai-org/glm-5.1" ;;
