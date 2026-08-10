@@ -1,64 +1,63 @@
 # Findings — RQ-architecture-axis-sol-pi
 
 Does the TDD architecture axis (v4.1 isolated subagents / v5.1 single context / v6.1 hybrid)
-rank the same way on gpt-5-6-sol as it does on opus-4-7 — and does any of it beat the
-unstructured baselines?
+rank the same way on gpt-5-6-sol as it does on opus-4-7 — and does any of it beat plain TDD
+without an architecture?
 
-Data base: 50 runs, 10 cells × n=5, all `exit_reason: ok`, `completed_within_budget` 100 %.
+Data base: 40 runs, 8 cells × n=5, all `exit_reason: ok`, `completed_within_budget` 100 %.
+`v3-basic-tdd-pi` is the baseline: TDD with no phase structure, no agents, no skills.
 
 ## Übersicht
 
 **claim-office-example-mapping** (correctness kata)
 
-| Metric | v1 | v3 | v4.1 | v5.1 | v6.1 | Direction |
-|---|---:|---:|---:|---:|---:|---|
-| Correctness (external) `verification_pct` | 80 % | **100 %** 🏆 | 40 % | **100 %** 🏆 | **100 %** 🏆 | höher = besser |
-| Correctness (internal) `tests_passing` | 80 % | 100 % | 100 % | 100 % | 100 % | höher = besser |
-| `cognitive_max` | 7.8 | 9.2 | 11.6 | 8.4 | **5.8** 🏆 | kleiner = besser |
-| `cognitive_avg` | 2.54 | 3.65 | 3.70 | 3.58 | **2.65** 🏆 | kleiner = besser |
-| `mccabe_max` | 8.0 | 8.2 | 13.6 | 8.2 | **6.0** 🏆 | kleiner = besser |
-| Smell Total | 0.0 | **6.8** 🏆 | 28.0 | 12.4 | 15.2 | kleiner = besser |
-| Complexity Peak `cc_longest_function` | 17.8 | **21.8** 🏆 | 43.4 | 23.0 | 23.0 | kleiner = besser |
-| `cc_avg_loc_per_function` | 6.74 | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | kleiner = besser |
-| Code Mass (APP) | 874.6 | 678.8 | 646.8 | 524.6 | 446.4 | kleiner = besser (kein 🏆 — s. Caveat) |
-| `cycle_count` | n/a | n/a | 87.4 | **29.6** 🏆 | 34.2 | — |
-| `refactorings_applied` | n/a | n/a | 10.2 | **19.6** 🏆 | 15.0 | höher = besser |
-| `predictions_correct_rate` | n/a | n/a | 79.0 % | 98.4 % | **98.6 %** 🏆 | höher = besser |
-| `duration_seconds` | 167 | **229** 🏆 | 4296 | 255 | 1185 | kleiner = besser |
-| `total_tokens` | 177 k | **288 k** 🏆 | 14.1 M | 821 k | 4.99 M | kleiner = besser |
-| `cost_usd` | $0.74 | **$1.18** 🏆 | $38.22 | $1.72 | $9.52 | kleiner = besser |
+| Metric | v3 | v4.1 | v5.1 | v6.1 | Direction |
+|---|---:|---:|---:|---:|---|
+| Correctness (external) `verification_pct` | **100 %** 🏆 | 40 % | **100 %** 🏆 | **100 %** 🏆 | höher = besser |
+| Correctness (internal) `tests_passing` | 100 % | 100 % | 100 % | 100 % | höher = besser |
+| `cognitive_max` | 9.2 | 11.6 | 8.4 | **5.8** 🏆 | kleiner = besser |
+| `cognitive_avg` | 3.65 | 3.70 | 3.58 | **2.65** 🏆 | kleiner = besser |
+| `mccabe_max` | 8.2 | 13.6 | 8.2 | **6.0** 🏆 | kleiner = besser |
+| Smell Total | **6.8** 🏆 | 28.0 | 12.4 | 15.2 | kleiner = besser |
+| Complexity Peak `cc_longest_function` | **21.8** 🏆 | 43.4 | 23.0 | 23.0 | kleiner = besser |
+| `cc_avg_loc_per_function` | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | kleiner = besser |
+| Code Mass (APP) | 678.8 | 646.8 | 524.6 | 446.4 | kleiner = besser (kein 🏆 — s. Caveat) |
+| `cycle_count` | n/a | 87.4 | **29.6** 🏆 | 34.2 | — |
+| `refactorings_applied` | n/a | 10.2 | **19.6** 🏆 | 15.0 | höher = besser |
+| `predictions_correct_rate` | n/a | 79.0 % | 98.4 % | **98.6 %** 🏆 | höher = besser |
+| `duration_seconds` | **229** 🏆 | 4296 | 255 | 1185 | kleiner = besser |
+| `total_tokens` | **288 k** 🏆 | 14.06 M | 821 k | 4.99 M | kleiner = besser |
+| `cost_usd` | **$1.18** 🏆 | $38.22 | $1.72 | $9.52 | kleiner = besser |
 
 **game-of-life-example-mapping** (code-quality kata)
 
-| Metric | v1 | v3 | v4.1 | v5.1 | v6.1 | Direction |
-|---|---:|---:|---:|---:|---:|---|
-| Correctness (external) `verification_pct` | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | höher = besser |
-| `cognitive_max` | 4.2 | **4.0** 🏆 | 7.0 | 7.4 | 8.6 | kleiner = besser |
-| `cognitive_avg` | 2.41 | **2.35** 🏆 | 3.23 | 4.37 | 6.20 | kleiner = besser |
-| `mccabe_max` | 4.8 | **4.6** 🏆 | 6.0 | 6.2 | 6.6 | kleiner = besser |
-| Smell Total | **0.0** 🏆 | **0.0** 🏆 | 3.8 | 2.4 | 2.8 | kleiner = besser |
-| Complexity Peak `cc_longest_function` | **13.2** 🏆 | 15.6 | 22.0 | 20.6 | 20.8 | kleiner = besser |
-| `cc_avg_loc_per_function` | **6.80** 🏆 | 8.66 | 12.83 | 13.07 | 15.90 | kleiner = besser |
-| Code Mass (APP) | 188.0 | 174.8 | 146.8 | 141.0 | 125.8 | kleiner = besser (kein 🏆 — s. Caveat) |
-| `cycle_count` | n/a | n/a | 22.0 | 9.4 | **9.0** 🏆 | — |
-| `refactorings_applied` | n/a | n/a | **10.2** 🏆 | 5.2 | 4.4 | höher = besser |
-| `predictions_correct_rate` | n/a | n/a | 84.4 % | 95.9 % | **100 %** 🏆 | höher = besser |
-| `duration_seconds` | **87** 🏆 | 140 | 899 | 198 | 343 | kleiner = besser |
-| `total_tokens` | **66 k** 🏆 | 134 k | 1.61 M | 701 k | 803 k | kleiner = besser |
-| `cost_usd` | **$0.35** 🏆 | $0.57 | $4.84 | $1.58 | $2.18 | kleiner = besser |
+| Metric | v3 | v4.1 | v5.1 | v6.1 | Direction |
+|---|---:|---:|---:|---:|---|
+| Correctness (external) `verification_pct` | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | höher = besser |
+| `cognitive_max` | **4.0** 🏆 | 7.0 | 7.4 | 8.6 | kleiner = besser |
+| `cognitive_avg` | **2.35** 🏆 | 3.23 | 4.37 | 6.20 | kleiner = besser |
+| `mccabe_max` | **4.6** 🏆 | 6.0 | 6.2 | 6.6 | kleiner = besser |
+| Smell Total | **0.0** 🏆 | 3.8 | 2.4 | 2.8 | kleiner = besser |
+| Complexity Peak `cc_longest_function` | **15.6** 🏆 | 22.0 | 20.6 | 20.8 | kleiner = besser |
+| `cc_avg_loc_per_function` | **8.66** 🏆 | 12.83 | 13.07 | 15.90 | kleiner = besser |
+| Code Mass (APP) | 174.8 | 146.8 | 141.0 | 125.8 | kleiner = besser (kein 🏆 — s. Caveat) |
+| `cycle_count` | n/a | 22.0 | 9.4 | **9.0** 🏆 | — |
+| `refactorings_applied` | n/a | **10.2** 🏆 | 5.2 | 4.4 | höher = besser |
+| `predictions_correct_rate` | n/a | 84.4 % | 95.9 % | **100 %** 🏆 | höher = besser |
+| `duration_seconds` | **140** 🏆 | 899 | 198 | 343 | kleiner = besser |
+| `total_tokens` | **134 k** 🏆 | 1.61 M | 701 k | 803 k | kleiner = besser |
+| `cost_usd` | **$0.57** 🏆 | $4.84 | $1.58 | $2.18 | kleiner = besser |
 
 Caveats for reading the tables:
 
 - **Correctness gating**: on claim-office, trophies for quality/efficiency metrics go only to
-  cells at `verification_pct` 100 % — v3, v5.1, v6.1. v1 (80 %) and v4.1 (40 %) produce partly
-  wrong implementations; their complexity and cost figures do not describe parsimony. v1's
-  Smell Total 0.0 and its category-leading `cc_longest_function` 17.8 are therefore untrophied
-  despite being the lowest values in the row.
-- On game-of-life all five variants reach `verification_pct` 100 %, so no gating applies there.
-- **`cycle_count`, `refactorings_applied` and `predictions_correct_rate` are n/a for v1 and v3**,
-  not zero. Neither workflow prescribes phase markers, so the parser has nothing to count — a 0
-  would read as "did not refactor" when the truth is "not instrumented". See MARKERS.md,
-  "Baseline workflows satisfy marker 4 only".
+  cells at `verification_pct` 100 % — v3, v5.1, v6.1. v4.1 (40 %) produces partly wrong
+  implementations; its complexity and cost figures do not describe parsimony.
+- On game-of-life all four variants reach `verification_pct` 100 %, so no gating applies there.
+- **`cycle_count`, `refactorings_applied` and `predictions_correct_rate` are n/a for v3**, not
+  zero. v3 prescribes no phase markers, so the parser has nothing to count — a 0 would read as
+  "did not refactor" when the truth is "not instrumented". See MARKERS.md, "Baseline workflows
+  satisfy marker 4 only".
 - **Code Mass (APP) carries no trophy in this RQ.** It rewards exactly what F-1.9 shows this
   data does not support: the cells with the lowest `code_mass` are the ones that decompose
   least. APP measures compactness (Micah Martin's premise), which is a different question from
@@ -155,8 +154,8 @@ the Opus pattern, which raises confidence that the inversion is a property of th
 not of one model.
 
 The baselines qualify the rank statement: v4.1's "rank 1 on game-of-life" holds only among the
-structured cells. Against the full field it is rank 3 of 5 — v1 (4.2) and v3 (4.0) are lower
-still, and their spread is far tighter (σ 1.10 / 0.71 against v4.1's 4.58).
+structured cells. Against the full field it is rank 2 of 4 — v3 (4.0) is lower still, and its
+spread is far tighter (σ 0.71 against v4.1's 4.58).
 
 ---
 
@@ -222,73 +221,81 @@ earlier claim, not a refutation of it.
 
 ---
 
-## F-1.6 — On game-of-life the entire architecture axis is a net negative
+## F-1.6 — On game-of-life the architecture axis is a net negative against plain TDD
 
-All five cells reach Correctness (external) 100 %. Every structured workflow is nonetheless
-worse than doing nothing in particular — on every quality metric, not only on cost.
+All four cells reach Correctness (external) 100 %. Every architecture is nonetheless worse
+than structureless TDD — on every quality metric, not only on cost.
 
-| Metric | v1 | v3 | best structured | Direction |
+| Metric | v3 (baseline) | best structured | Faktor | Direction |
 |---|---:|---:|---:|---|
-| `cognitive_max` | 4.2 | **4.0** 🏆 | 7.0 (v4.1) | kleiner = besser |
-| `cognitive_avg` | 2.41 | **2.35** 🏆 | 3.23 (v4.1) | kleiner = besser |
-| `mccabe_max` | 4.8 | **4.6** 🏆 | 6.0 (v4.1) | kleiner = besser |
-| Smell Total | **0.0** 🏆 | **0.0** 🏆 | 2.4 (v5.1) | kleiner = besser |
-| Complexity Peak `cc_longest_function` | **13.2** 🏆 | 15.6 | 20.6 (v5.1) | kleiner = besser |
-| `cc_avg_loc_per_function` | **6.80** 🏆 | 8.66 | 12.83 (v4.1) | kleiner = besser |
-| `cost_usd` | **$0.35** 🏆 | $0.57 | $1.58 (v5.1) | kleiner = besser |
+| `cognitive_max` | **4.0** 🏆 | 7.0 (v4.1) | 1.75× | kleiner = besser |
+| `cognitive_avg` | **2.35** 🏆 | 3.23 (v4.1) | 1.37× | kleiner = besser |
+| `mccabe_max` | **4.6** 🏆 | 6.0 (v4.1) | 1.30× | kleiner = besser |
+| Smell Total | **0.0** 🏆 | 2.4 (v5.1) | — | kleiner = besser |
+| Complexity Peak `cc_longest_function` | **15.6** 🏆 | 20.6 (v5.1) | 1.32× | kleiner = besser |
+| `cc_avg_loc_per_function` | **8.66** 🏆 | 12.83 (v4.1) | 1.48× | kleiner = besser |
+| `cost_usd` | **$0.57** 🏆 | $1.58 (v5.1) | 2.77× | kleiner = besser |
 
-Code Mass (APP) runs the other way — v6.1 produces the lowest value (125.8 against v1's
-188.0) — but on this kata that ranking is an artefact of the metric, not a counter-result:
-v6.1 also has the *worst* decomposition in the field (`cc_avg_loc_per_function` 15.90, and
-1.6 functions per run on average). It scores low on APP because it writes one long function,
-not because it writes compact code. See F-1.9.
+Against v6.1 specifically — the current default — the gaps are wider: `cognitive_max` 2.15×,
+`cognitive_avg` 2.64×, decomposition 1.84×, cost 3.82×.
+
+Code Mass (APP) runs the other way: v6.1 produces the lowest value (125.8 against v3's
+174.8). On this kata that ranking is an artefact of the metric, not a counter-result — v6.1
+also has the *worst* decomposition in the field (`cc_avg_loc_per_function` 15.90, averaging
+1.6 functions per run). It scores low on APP because it writes one long function, not because
+it writes compact code. See F-1.9.
 
 Rationale: game-of-life is small and training-known. The spec fits in one context, so there is
 nothing for a TDD architecture to protect against — and the machinery it adds (phase splits,
 refactor passes, subagent hand-offs) shows up as complexity in the artefact. v3's σ is also the
-tightest in the field (`cognitive_max` σ 0.71 against v6.1's 5.73): the unstructured cells are
-not just better on the mean, they are more predictable.
+tightest in the field (`cognitive_max` σ 0.71 against v6.1's 5.73): the baseline is not just
+better on the mean, it is more predictable.
+
+Worth naming because it runs against the architecture's stated purpose: v6.1 is the cell with
+the **isolated refactor subagent**, whose job is exactly the extraction that would lower these
+numbers. On this kata it does not perform it — inspected runs leave a triply-nested loop and
+the survival rule inlined as a filter expression, where the baseline names both. On opus-4-7
+the same subagent does extract (F-1.10), so this is a model-architecture interaction, not a
+property of v6.1.
 
 This is the counter-case named in H4 and it holds for this kata. It does not generalise to
 claim-office — see F-1.7.
 
 ---
 
-## F-1.7 — Structure pays only where the spec exceeds one context
+## F-1.7 — On claim-office architecture buys a lower complexity peak and nothing else
 
-The two katas invert. On claim-office the baselines lose the property they won on
-game-of-life: v1 drops to 80 % Correctness (external) and carries the highest Code Mass (APP)
-in the field.
+The katas differ. Where game-of-life shows the baseline ahead across the board (F-1.6),
+claim-office splits: v6.1 wins the complexity peaks decisively, v3 wins everything else.
 
-| Metric (claim-office) | v1 | v3 | v5.1 | v6.1 |
+| Metric (claim-office) | v3 (baseline) | v5.1 | v6.1 | Faktor v6.1/v3 |
 |---|---:|---:|---:|---:|
-| Correctness (external) | 80 % | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
-| `cognitive_max` | 7.8 | 9.2 | 8.4 | **5.8** 🏆 |
-| `cc_avg_loc_per_function` | 6.74 | **8.01** 🏆 | 10.48 | 10.72 |
-| Code Mass (APP) | 874.6 | 678.8 | 524.6 | 446.4 |
-| `cost_usd` | $0.74 | **$1.18** 🏆 | $1.72 | $9.52 |
+| Correctness (external) | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | 1.00× |
+| `cognitive_max` | 9.2 | 8.4 | **5.8** 🏆 | **0.63×** |
+| `mccabe_max` | 8.2 | 8.2 | **6.0** 🏆 | **0.73×** |
+| Smell Total | **6.8** 🏆 | 12.4 | 15.2 | 2.24× |
+| `cc_avg_loc_per_function` | **8.01** 🏆 | 10.48 | 10.72 | 1.34× |
+| Complexity Peak `cc_longest_function` | **21.8** 🏆 | 23.0 | 23.0 | 1.06× |
+| Code Mass (APP) | 678.8 | 524.6 | 446.4 | 0.66× |
+| `cost_usd` | **$1.18** 🏆 | $1.72 | $9.52 | 8.10× |
 
-v1's single failure is the slowest run of its cell (214 s against 134–176 s) — the same
-"more work, worse result" signature as v4.1 in F-1.2, and the mechanism differs: that run fails
-its own tests (`tests_passing` false), where v4.1's failures pass theirs. Without a test-first
-discipline the model has no way to notice it has misread the spec.
+**v3 is the practical finding.** It reaches the same 100 % Correctness (external) as v5.1 and
+v6.1 at $1.18 against v6.1's $9.52 — an 8× cost difference for identical external correctness —
+with a ~15-line prompt carrying no agents, no skills and no phase structure. It also carries
+less than half the smells (6.8 against 15.2) and decomposes better (8.01 against 10.72).
 
-**v3 is the practical finding here.** It reaches the same 100 % Correctness (external) as v5.1
-and v6.1, at $1.18 against v6.1's $9.52 — an 8× cost difference for identical external
-correctness — and it does so with a ~15-line prompt carrying no agents, no skills and no phase
-structure. It also decomposes better than either structured cell
-(`cc_avg_loc_per_function` 8.01 against 10.48 / 10.72). What it gives up is the complexity
-peak: `cognitive_max` 9.2, the second-highest in the field, against v6.1's 5.8.
+What v6.1 buys is the complexity peak: `cognitive_max` 5.8 against 9.2, `mccabe_max` 6.0
+against 8.2. That is a real advantage and the largest quality effect in the RQ — but it is one
+axis, bought at 8× the cost, while three other quality metrics move the other way.
 
-Rationale: the correctness gap between v1 (80 %) and v3 (100 %) is what TDD itself buys on a
-spec that does not fit one pass. What *architecture* buys on top is narrower than the earlier
-reading of this data suggested — on `cognitive_max` v6.1 leads clearly, but on decomposition it
-trails, and the Code Mass (APP) advantage it appeared to hold does not survive F-1.9. The
-defensible claim is "v6.1 produces the flattest single functions", not "v6.1 produces the
-better-structured code".
+Rationale: the two metric groups disagree because they measure different things (F-1.9).
+v6.1's isolated refactor subagent flattens individual functions, which `cognitive_max` and
+`mccabe_max` reward; it does not extract named concepts, which is what decomposition and smell
+counts track. The defensible claim is "v6.1 produces the flattest single functions", not
+"v6.1 produces the better-structured code".
 
-Caveat: at n=5 the v1/v3 correctness difference (4/5 against 5/5) rests on a single run.
-The direction is consistent with the mechanism above, but the effect size is not established.
+Caveat: this RQ has no no-TDD cell, so it cannot say what TDD itself buys — only what
+*architecture on top of TDD* buys. See the RQ README, "Why there is no no-TDD baseline".
 
 ---
 
@@ -319,15 +326,18 @@ from the source tree.
 
 ## F-1.9 — The architecture axis trades decomposition for flatness, and the standard metrics hide it
 
-The more architecture a workflow carries, the longer its average function. The effect is
-monotonic on both katas and is the exact opposite of what Code Mass (APP) reports.
+Decomposition and Code Mass (APP) rank the cells in opposite directions.
 
-| Kata | v1 | v3 | v4.1 | v5.1 | v6.1 | Direction |
-|---|---:|---:|---:|---:|---:|---|
-| `cc_avg_loc_per_function` — claim-office | **6.74** | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | kleiner = besser |
-| `cc_avg_loc_per_function` — game-of-life | **6.80** 🏆 | 8.66 | 12.83 | 13.07 | 15.90 | kleiner = besser |
-| Code Mass (APP) — claim-office | 874.6 | 678.8 | 646.8 | 524.6 | 446.4 | kleiner = besser |
-| Code Mass (APP) — game-of-life | 188.0 | 174.8 | 146.8 | 141.0 | 125.8 | kleiner = besser |
+| Kata | v3 | v4.1 | v5.1 | v6.1 | Direction |
+|---|---:|---:|---:|---:|---|
+| `cc_avg_loc_per_function` — claim-office | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | kleiner = besser |
+| `cc_avg_loc_per_function` — game-of-life | **8.66** 🏆 | 12.83 | 13.07 | 15.90 | kleiner = besser |
+| Code Mass (APP) — claim-office | 678.8 | 646.8 | 524.6 | 446.4 | kleiner = besser |
+| Code Mass (APP) — game-of-life | 174.8 | 146.8 | 141.0 | 125.8 | kleiner = besser |
+
+On game-of-life the decomposition ordering is monotonic in architecture weight
+(v3 → v4.1 → v5.1 → v6.1); on claim-office v4.1 breaks it, scoring best on this metric while
+being worst on `cognitive_max` and `cc_longest_function`.
 
 The two rows per kata rank the cells in reverse. v6.1 has the lowest Code Mass (APP) on both
 katas and the worst decomposition on both. On game-of-life it averages 1.6 functions per run —
@@ -365,3 +375,58 @@ that ranks cells by Code Mass (APP) or `cognitive_max` alone.
 Caveat: `cc_avg_loc_per_function` measures decomposition, not naming. A function split into
 `step1`…`step10` would score well. It is also gameable once a workflow prompt names it — no
 workflow in this RQ does, so the comparison holds here.
+
+---
+
+## F-1.10 — Architecture helps the model that does not iterate on its own, and hurts the one that does
+
+The v3 → v6.1 step moves the two models in opposite directions on game-of-life. All four cells
+reach Correctness (external) 100 %.
+
+| Cell | n | `cognitive_max` | Smell Total | `cc_avg_loc_per_function` | Funktionen |
+|---|---:|---:|---:|---:|---:|
+| Sol v3 | 5 | **4.0** 🏆 | **0.0** 🏆 | 8.66 | 3.4 |
+| Sol v6.1 | 5 | 8.6 | 2.8 | 15.90 | 1.6 |
+| Opus v3 | 10 | 21.8 | 6.0 | 16.52 | 2.3 |
+| Opus v6.1 | 10 | 6.5 | 2.4 | **6.56** 🏆 | 4.2 |
+
+For Opus the architecture is a large gain (`cognitive_max` 21.8 → 6.5, a 3.4× improvement);
+for Sol it is a loss (4.0 → 8.6, 2.2× worse). The best cell in the field is Sol *without* an
+architecture; the worst is Opus without one.
+
+**The mechanism is visible in the transcripts.** Reconstructing the tool-call order shows the
+two models read the same v3 prompt ("complete the exercise autonomously using TDD")
+differently:
+
+| | Sol v3 | Opus v3 |
+|---|---|---|
+| Steps to solution | 19 | 4–12 (median 5) |
+| Tests in the first spec write | 1 | 10–14 |
+| Red-green cycles | 6 | 1 |
+| Refactoring step | yes — Extract Method | none observed |
+
+Every one of the 10 Opus v3 runs writes its entire test suite in one go, runs it once, writes
+the entire implementation, runs it again. That is test-first, but it is not a TDD cycle. Sol
+writes one test, watches it fail, returns `[]` as a first implementation, and iterates — and
+after a green test extracts the triply-nested neighbour loop into a named `neighbors()`
+function.
+
+Rationale: v6.1's value is that it *imposes* the cycle — test list, red, green, isolated
+refactor. Opus does not produce that rhythm on its own, so imposing it is worth 3.4× on the
+complexity peak. Sol already produces it, so the same machinery adds phase overhead without
+adding discipline — and the isolated refactor subagent, which on Opus performs the extraction,
+does not perform it on Sol (F-1.6).
+
+This reframes the architecture question: the axis does not measure "how good is this workflow"
+but "how much of the cycle does the model supply by itself". A model that iterates unprompted
+needs less scaffolding than the workflow line was designed around.
+
+Caveats, both load-bearing:
+
+- The Opus cells run on Claude Code, the Sol cells on pi. Harness and model are confounded
+  here; this finding cannot separate them.
+- The transcript reconstruction covers all 10 Opus v3 runs but only 1 of the 5 Sol v3 runs in
+  full. Sol's cell-level consistency (`cognitive_max` σ 0.71, Smell Total 0 in all five) makes
+  the pattern plausible for the rest, but it is not verified run by run.
+- The Opus cells come from other RQs (`RQ-tdd-quality`, `RQ-context`) and were not produced
+  under this RQ's controls.

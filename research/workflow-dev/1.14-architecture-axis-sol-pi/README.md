@@ -3,7 +3,6 @@ id: RQ-architecture-axis-sol-pi
 question: "Does the TDD architecture axis (v4.1 isolated subagents / v5.1 single context / v6.1 hybrid) rank the same way on gpt-5-6-sol as it does on opus-4-7 — or does Sol land on the other side of the documented v4/v6 model swap?"
 factors:
   workflow_x_prompt:
-    - {workflow: v1-oneshot-pi,                  prompt: example-mapping}  # baseline: no TDD at all
     - {workflow: v3-basic-tdd-pi,                prompt: example-mapping}  # baseline: TDD without architecture
     - {workflow: v4.1-testlist-scope-fix-pi,     prompt: example-mapping}  # all phases as isolated subagents
     - {workflow: v5.1-testlist-scope-fix-pi,     prompt: example-mapping}  # everything in one shared context
@@ -85,23 +84,37 @@ v6.1→v6.5 reduction chain is a refinement *of v6*. If Sol does not prefer v6, 
 chain is moot for Sol, and retesting it (planned as the follow-up RQ-B) would measure
 refinements of an architecture that does not suit the model.
 
-## Baseline cells (v1 / v3)
+## Baseline cell (v3)
 
 The three architecture cells only compare structured TDD workflows against each
 other. That answers "which architecture ranks best" but not "does any of this beat
-doing nothing in particular" — a question the Sol data makes pressing, because v5.1
-reaches perfect correctness at ~1/5 the wallclock of v6.1. Without a floor, a
+plain TDD without an architecture" — a question the Sol data makes pressing, because
+v5.1 reaches perfect correctness at ~1/5 the wallclock of v6.1. Without a floor, a
 finding like "v6.1 leads on `cognitive_max`" has no scale.
-
-Two cells provide that floor:
 
 | Cell | What it prescribes | Isolates |
 |---|---|---|
-| `v1-oneshot-pi` | implement directly, no TDD | the cost and benefit of TDD as such |
 | `v3-basic-tdd-pi` | "use TDD", no phase structure, no agents, no skills | the cost and benefit of *architecture* on top of TDD |
 
-The gap v3 → {v4.1, v5.1, v6.1} is the actual return on the whole workflow line;
-the gap v1 → v3 is the return on TDD itself. Neither has been measured on Sol.
+The gap v3 → {v4.1, v5.1, v6.1} is the actual return on the whole workflow line.
+It has not been measured on Sol.
+
+### Why there is no no-TDD baseline
+
+A `v1-oneshot-pi` cell was run (n=5 per kata) and **discarded**. Its purpose was to
+isolate the return on TDD itself, and it cannot: every kata prompt — prose,
+user-story and example-mapping alike — lists `src/<kata>.spec.ts - Tests` among its
+deliverables. The v1 workflow says "Do NOT use TDD", which correctly means "not
+test-first", not "no tests". The runs duly produced test suites: 9.6 tests / 65 test
+LoC on game-of-life, *more* than v6.1's 9.0 / 44.
+
+The cell therefore measured "tests written after the fact" rather than "no TDD", and
+the v1 → v3 gap would have been the return on test-*ordering*, not on testing. The
+10 runs were deleted rather than archived — they answer no question this RQ asks.
+
+Measuring the no-TDD case properly needs a kata-prompt variant that does not request
+a spec file — which makes the prompt an uncontrolled factor against the other cells.
+That is a separate RQ, not a cell in this one.
 
 **`v3-basic-tdd-pi` was created for this RQ** as a direct translation of the CC
 original (`v3-basic-tdd/.claude/rules/experiment-mode.md`), following the
