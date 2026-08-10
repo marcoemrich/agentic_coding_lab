@@ -2,7 +2,7 @@
 
 _Does the TDD architecture axis (v4.1 isolated subagents / v5.1 single context / v6.1 hybrid) rank the same way on gpt-5-6-sol as it does on opus-4-7 — or does Sol land on the other side of the documented v4/v6 model swap?_
 
-Generated: 2026-08-10T10:18:14Z
+Generated: 2026-08-10T11:28:55Z
 
 Cells declared: 10 · matched runs: 50 · min_replicates: 5
 
@@ -172,6 +172,21 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 | game-of-life-example-mapping | v4.1-testlist-scope-fix-pi        | gpt-5-6-sol  |   5 |  146.8 |   120 |   165 |  18.29 |
 | game-of-life-example-mapping | v5.1-testlist-scope-fix-pi        | gpt-5-6-sol  |   5 |  141   |   109 |   173 |  24.63 |
 | game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix-pi | gpt-5-6-sol  |   5 |  125.8 |   105 |   145 |  14.27 |
+
+### cc_avg_loc_per_function
+
+| kata                         | cell_workflow                     | cell_model   |   n |   mean |   min |   max |   std |
+|:-----------------------------|:----------------------------------|:-------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v1-oneshot-pi                     | gpt-5-6-sol  |   5 |   6.74 |  5.48 |  8.29 |  1.17 |
+| claim-office-example-mapping | v3-basic-tdd-pi                   | gpt-5-6-sol  |   5 |   8.01 |  5.7  | 10    |  1.81 |
+| claim-office-example-mapping | v4.1-testlist-scope-fix-pi        | gpt-5-6-sol  |   5 |   6.96 |  5.7  |  8.18 |  1    |
+| claim-office-example-mapping | v5.1-testlist-scope-fix-pi        | gpt-5-6-sol  |   5 |  10.48 |  8.5  | 15.5  |  2.87 |
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix-pi | gpt-5-6-sol  |   5 |  10.72 |  7    | 13.25 |  2.37 |
+| game-of-life-example-mapping | v1-oneshot-pi                     | gpt-5-6-sol  |   5 |   6.8  |  5.2  |  8    |  1.2  |
+| game-of-life-example-mapping | v3-basic-tdd-pi                   | gpt-5-6-sol  |   5 |   8.66 |  5.8  | 12    |  2.68 |
+| game-of-life-example-mapping | v4.1-testlist-scope-fix-pi        | gpt-5-6-sol  |   5 |  12.83 |  8.67 | 17    |  3.44 |
+| game-of-life-example-mapping | v5.1-testlist-scope-fix-pi        | gpt-5-6-sol  |   5 |  13.07 |  8.33 | 26    |  7.29 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix-pi | gpt-5-6-sol  |   5 |  15.9  |  9.5  | 26    |  7.96 |
 
 ### cycle_count
 

@@ -19,7 +19,8 @@ Data base: 50 runs, 10 cells × n=5, all `exit_reason: ok`, `completed_within_bu
 | `mccabe_max` | 8.0 | 8.2 | 13.6 | 8.2 | **6.0** 🏆 | kleiner = besser |
 | Smell Total | 0.0 | **6.8** 🏆 | 28.0 | 12.4 | 15.2 | kleiner = besser |
 | Complexity Peak `cc_longest_function` | 17.8 | **21.8** 🏆 | 43.4 | 23.0 | 23.0 | kleiner = besser |
-| Code Mass (APP) | 874.6 | 678.8 | 646.8 | 524.6 | **446.4** 🏆 | kleiner = besser |
+| `cc_avg_loc_per_function` | 6.74 | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | kleiner = besser |
+| Code Mass (APP) | 874.6 | 678.8 | 646.8 | 524.6 | 446.4 | kleiner = besser (kein 🏆 — s. Caveat) |
 | `cycle_count` | n/a | n/a | 87.4 | **29.6** 🏆 | 34.2 | — |
 | `refactorings_applied` | n/a | n/a | 10.2 | **19.6** 🏆 | 15.0 | höher = besser |
 | `predictions_correct_rate` | n/a | n/a | 79.0 % | 98.4 % | **98.6 %** 🏆 | höher = besser |
@@ -37,7 +38,8 @@ Data base: 50 runs, 10 cells × n=5, all `exit_reason: ok`, `completed_within_bu
 | `mccabe_max` | 4.8 | **4.6** 🏆 | 6.0 | 6.2 | 6.6 | kleiner = besser |
 | Smell Total | **0.0** 🏆 | **0.0** 🏆 | 3.8 | 2.4 | 2.8 | kleiner = besser |
 | Complexity Peak `cc_longest_function` | **13.2** 🏆 | 15.6 | 22.0 | 20.6 | 20.8 | kleiner = besser |
-| Code Mass (APP) | 188.0 | 174.8 | 146.8 | 141.0 | **125.8** 🏆 | kleiner = besser |
+| `cc_avg_loc_per_function` | **6.80** 🏆 | 8.66 | 12.83 | 13.07 | 15.90 | kleiner = besser |
+| Code Mass (APP) | 188.0 | 174.8 | 146.8 | 141.0 | 125.8 | kleiner = besser (kein 🏆 — s. Caveat) |
 | `cycle_count` | n/a | n/a | 22.0 | 9.4 | **9.0** 🏆 | — |
 | `refactorings_applied` | n/a | n/a | **10.2** 🏆 | 5.2 | 4.4 | höher = besser |
 | `predictions_correct_rate` | n/a | n/a | 84.4 % | 95.9 % | **100 %** 🏆 | höher = besser |
@@ -57,6 +59,12 @@ Caveats for reading the tables:
   not zero. Neither workflow prescribes phase markers, so the parser has nothing to count — a 0
   would read as "did not refactor" when the truth is "not instrumented". See MARKERS.md,
   "Baseline workflows satisfy marker 4 only".
+- **Code Mass (APP) carries no trophy in this RQ.** It rewards exactly what F-1.9 shows this
+  data does not support: the cells with the lowest `code_mass` are the ones that decompose
+  least. APP measures compactness (Micah Martin's premise), which is a different question from
+  "is this well decomposed" — and it has no notion of nesting, so a 30-line callback chain and
+  the same logic split across named functions are indistinguishable to it. The values stay in
+  the table as context; the decomposition reading belongs to `cc_avg_loc_per_function`.
 - Where the spread stays inside 1 σ, all near-tied values carry a trophy — the reading is
   "no effect", not a winner.
 - `cycle_count` is ambivalent (neither high nor low is per se better) and carries a trophy only
@@ -219,10 +227,14 @@ worse than doing nothing in particular — on every quality metric, not only on 
 | `mccabe_max` | 4.8 | **4.6** 🏆 | 6.0 (v4.1) | kleiner = besser |
 | Smell Total | **0.0** 🏆 | **0.0** 🏆 | 2.4 (v5.1) | kleiner = besser |
 | Complexity Peak `cc_longest_function` | **13.2** 🏆 | 15.6 | 20.6 (v5.1) | kleiner = besser |
+| `cc_avg_loc_per_function` | **6.80** 🏆 | 8.66 | 12.83 (v4.1) | kleiner = besser |
 | `cost_usd` | **$0.35** 🏆 | $0.57 | $1.58 (v5.1) | kleiner = besser |
 
-The one metric that goes the other way is Code Mass (APP): v6.1 produces the least code
-(125.8 against v1's 188.0). Structure buys compactness and costs complexity.
+Code Mass (APP) runs the other way — v6.1 produces the lowest value (125.8 against v1's
+188.0) — but on this kata that ranking is an artefact of the metric, not a counter-result:
+v6.1 also has the *worst* decomposition in the field (`cc_avg_loc_per_function` 15.90, and
+1.6 functions per run on average). It scores low on APP because it writes one long function,
+not because it writes compact code. See F-1.9.
 
 Rationale: game-of-life is small and training-known. The spec fits in one context, so there is
 nothing for a TDD architecture to protect against — and the machinery it adds (phase splits,
@@ -244,8 +256,9 @@ in the field.
 | Metric (claim-office) | v1 | v3 | v5.1 | v6.1 |
 |---|---:|---:|---:|---:|
 | Correctness (external) | 80 % | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
-| Code Mass (APP) | 874.6 | 678.8 | 524.6 | **446.4** 🏆 |
 | `cognitive_max` | 7.8 | 9.2 | 8.4 | **5.8** 🏆 |
+| `cc_avg_loc_per_function` | 6.74 | **8.01** 🏆 | 10.48 | 10.72 |
+| Code Mass (APP) | 874.6 | 678.8 | 524.6 | 446.4 |
 | `cost_usd` | $0.74 | **$1.18** 🏆 | $1.72 | $9.52 |
 
 v1's single failure is the slowest run of its cell (214 s against 134–176 s) — the same
@@ -256,13 +269,16 @@ discipline the model has no way to notice it has misread the spec.
 **v3 is the practical finding here.** It reaches the same 100 % Correctness (external) as v5.1
 and v6.1, at $1.18 against v6.1's $9.52 — an 8× cost difference for identical external
 correctness — and it does so with a ~15-line prompt carrying no agents, no skills and no phase
-structure. Its cost is Code Mass (APP) and complexity: 678.8 against v6.1's 446.4, and
-`cognitive_max` 9.2, the second-highest in the field.
+structure. It also decomposes better than either structured cell
+(`cc_avg_loc_per_function` 8.01 against 10.48 / 10.72). What it gives up is the complexity
+peak: `cognitive_max` 9.2, the second-highest in the field, against v6.1's 5.8.
 
 Rationale: the correctness gap between v1 (80 %) and v3 (100 %) is what TDD itself buys on a
-spec that does not fit one pass. The gap between v3 and v6.1 is what *architecture* buys on top
-— and on this data it is not correctness but compactness and complexity. Which of the two
-matters is a project decision, not a measurement one.
+spec that does not fit one pass. What *architecture* buys on top is narrower than the earlier
+reading of this data suggested — on `cognitive_max` v6.1 leads clearly, but on decomposition it
+trails, and the Code Mass (APP) advantage it appeared to hold does not survive F-1.9. The
+defensible claim is "v6.1 produces the flattest single functions", not "v6.1 produces the
+better-structured code".
 
 Caveat: at n=5 the v1/v3 correctness difference (4/5 against 5/5) rests on a single run.
 The direction is consistent with the mechanism above, but the effect size is not established.
@@ -291,3 +307,54 @@ without invoking a workflow effect. v6.1 holds the model on-format most reliably
 Consequence for RQ-B: any TDD-discipline metric compared across architectures carries this
 confound. Correctness and code-quality metrics are unaffected — they are measured externally
 from the source tree.
+
+---
+
+## F-1.9 — The architecture axis trades decomposition for flatness, and the standard metrics hide it
+
+The more architecture a workflow carries, the longer its average function. The effect is
+monotonic on both katas and is the exact opposite of what Code Mass (APP) reports.
+
+| Kata | v1 | v3 | v4.1 | v5.1 | v6.1 | Direction |
+|---|---:|---:|---:|---:|---:|---|
+| `cc_avg_loc_per_function` — claim-office | **6.74** | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | kleiner = besser |
+| `cc_avg_loc_per_function` — game-of-life | **6.80** 🏆 | 8.66 | 12.83 | 13.07 | 15.90 | kleiner = besser |
+| Code Mass (APP) — claim-office | 874.6 | 678.8 | 646.8 | 524.6 | 446.4 | kleiner = besser |
+| Code Mass (APP) — game-of-life | 188.0 | 174.8 | 146.8 | 141.0 | 125.8 | kleiner = besser |
+
+The two rows per kata rank the cells in reverse. v6.1 has the lowest Code Mass (APP) on both
+katas and the worst decomposition on both. On game-of-life it averages 1.6 functions per run —
+the implementation is essentially one function.
+
+**Three metrics fail to detect this, for two distinct reasons.** Established by construction on
+a minimal pair (same logic, nested control flow vs. `reduce` callbacks):
+
+| Metric | nested `for`/`if` | callback chain |
+|---|---:|---:|
+| Cognitive Complexity | 10 | **1** |
+| McCabe | 5 | **2** |
+| Code Mass (APP) | 43 | **43** |
+
+Cognitive Complexity resets its nesting counter at every function boundary, and an arrow
+function is one — `for` inside `for` counts as nesting, `reduce` inside `reduce` does not.
+`cognitive_max` compounds this by taking a maximum *per function*, so logic spread across
+callbacks reports the maximum of one callback. APP fails differently: it has no notion of
+nesting at all, only of how many constructs occur.
+
+Rationale: this is why `cognitive_max` reads v6.1 as the cleanest cell on claim-office (5.8)
+while `cc_avg_loc_per_function` reads it as among the worst (10.72). Both are correct about
+what they measure. A single long function built from callback chains genuinely has a low
+cognitive peak — and genuinely lacks abstraction. Spot-checking one Sol/v6.1/claim-office run
+against an opus-4-7 implementation of the same kata makes the gap concrete: 3 functions against
+28, `cognitive_max` 4 against 6, Smell Total 14 against 1. The metric that tracked the readable
+difference was Smell Total; the metric that inverted it was `cognitive_max`.
+
+Consequence: `cc_avg_loc_per_function` is a required outcome for any RQ comparing architectures,
+and Code Mass (APP) should not be read as a quality metric. Both limits are recorded in the RQ
+README under "Metric blind spot". The finding is about the metrics, not about Sol — nothing here
+suggests the effect is model-specific, and the same blind spot applies to every RQ in the repo
+that ranks cells by Code Mass (APP) or `cognitive_max` alone.
+
+Caveat: `cc_avg_loc_per_function` measures decomposition, not naming. A function split into
+`step1`…`step10` would score well. It is also gameable once a workflow prompt names it — no
+workflow in this RQ does, so the comparison holds here.

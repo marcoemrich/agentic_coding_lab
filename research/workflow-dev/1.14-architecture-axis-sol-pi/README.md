@@ -25,6 +25,11 @@ outcomes:
   - cc_longest_function
   - smell_total
   - code_mass
+  # decomposition — added 2026-08-10 because none of the metrics above detect
+  # missing abstraction: cognitive_max resets its nesting counter at every
+  # callback boundary, and code_mass has no notion of nesting at all.
+  # See "Metric blind spot" below.
+  - cc_avg_loc_per_function
   # TDD discipline — does Sol keep the mechanics alive in each architecture?
   # NOT measurable on the two baseline cells (v1/v3 prescribe no phase markers) —
   # see "Baseline cells" below. Read those rows as n/a, not as zero.
@@ -128,6 +133,48 @@ Consequences:
 Deliberately not fixed by adding markers to v3: that would make it a different
 workflow (a mini-v4) and destroy comparability with the 22 CC runs that define
 what "v3" means in this lab.
+
+## Metric blind spot — decomposition (binding)
+
+`code_mass`, `cognitive_max` and `mccabe_max` all fail to detect missing abstraction.
+Established by construction, not inferred:
+
+| Metric | nested `for`/`if` | same logic as `reduce` callbacks |
+|---|---:|---:|
+| Cognitive Complexity | 10 | **1** |
+| McCabe | 5 | **2** |
+| `code_mass` (APP) | 43 | **43** |
+
+Two independent causes:
+
+1. **Cognitive Complexity resets its nesting counter at every function boundary**, and an
+   arrow function is a function boundary. `for` inside `for` counts as nesting; `reduce`
+   inside `reduce` does not — although the reader holds two levels either way. On top of
+   that, `cognitive_max` is a maximum *per function*: logic spread across three callbacks
+   reports the maximum of one callback.
+2. **APP has no notion of nesting at all.** It counts how many constructs occur, never how
+   they are arranged. This is not a bug — Micah Martin's premise is explicitly "more compact
+   is better", which is a sensible question and a different one from "is this well
+   decomposed".
+
+Consequence: a single 30-line function built from callback chains scores *better* on all
+three than the same logic split into named domain functions. Observed in this RQ —
+Sol/v6.1/claim-office averages 4.6 functions per run, and the one run inspected by hand
+scores `cognitive_max` 4 against 6 for a 28-function opus-4-7 implementation of the same
+kata, while carrying 14 smells against 1.
+
+**`cc_avg_loc_per_function` is therefore the binding decomposition metric for this RQ**, with
+`cc_longest_function` as a secondary. Both are immune to the callback trick: a 30-line
+function stays 30 lines regardless of its internal shape.
+
+Two limits, stated so they are not rediscovered later:
+
+- Neither measures naming. A function sawn into `step1`…`step10` would score well.
+- Both are gameable the moment a workflow prompt names them (README §"Compliance metrics").
+  No workflow in this RQ names them, so cross-workflow comparison is valid here.
+- Function *count* is deliberately **not** an outcome. More functions is not better — only
+  the same work better decomposed is better, and `cc_avg_loc_per_function` captures that while a
+  raw count would reward splintering.
 
 ## Two open gaps this RQ closes
 
