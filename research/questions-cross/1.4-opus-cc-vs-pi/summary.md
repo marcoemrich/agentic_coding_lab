@@ -2,7 +2,7 @@
 
 _Does the code-quality profile of Opus (opus-4-8) differ between the Claude Code and the pi harness, each with and without thinking, at a constant workflow generation (v6.2)?_
 
-Generated: 2026-07-26T10:34:56Z
+Generated: 2026-08-10T15:54:31Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -192,6 +192,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
 | kata                         | cell_workflow                | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:---------------------|----:|-------:|------:|------:|------:|
+| game-of-life-example-mapping | v6.2-with-why-cleaned        | opus-4-8-no-thinking |   5 |  13.35 |  5.5  | 40.38 | 15.13 |
 | game-of-life-example-mapping | v6.2-with-why-cleaned        | opus-4-8-requesty    |   5 |   3.45 |  3.07 |  3.77 |  0.34 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8             |   5 |   2    |  1.77 |  2.3  |  0.25 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking |   5 |   0    |  0    |  0    |  0    |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | opus-4-8-no-thinking |   5 |   2    |  1.91 |  2.1  |  0.09 |
