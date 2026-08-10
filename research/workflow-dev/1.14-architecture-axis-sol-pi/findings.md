@@ -172,13 +172,20 @@ correctness question.
 | `cost_usd` | **$1.72** 🏆 | $9.52 | 5.5× |
 | `cognitive_max` | 8.4 | **5.8** 🏆 | 1.4× |
 | `mccabe_max` | 8.2 | **6.0** 🏆 | 1.4× |
-| Code Mass (APP) | 524.6 | **446.4** 🏆 | 1.2× |
 | Smell Total | **12.4** 🏆 | 15.2 | 1.2× |
+| `cc_avg_loc_per_function` | **10.48** 🏆 | 10.72 | 1.0× |
+| Code Mass (APP) | 524.6 | 446.4 | 1.2× |
 
 Rationale: v5.1 runs everything in one shared context and pays for it once; v6.1 isolates the
-refactor phase, which costs a separate context per refactoring but buys measurably lower
-complexity. The efficiency gap (4.6–6.1×) is an order of magnitude larger than the complexity
-gap (1.2–1.4×), so the trade is not symmetric.
+refactor phase, which costs a separate context per refactoring but buys a lower complexity
+peak. The efficiency gap (4.6–6.1×) is an order of magnitude larger than the complexity gap
+(1.2–1.4×), so the trade is not symmetric.
+
+What v6.1 does **not** buy is better structure. On decomposition the two are
+indistinguishable (10.48 vs. 10.72, well inside σ 2.87 / 2.37), and v5.1 carries fewer smells
+(12.4 vs. 15.2). The header's "complexity optimum" therefore means the flattest individual
+functions, not the better-organised code — see F-1.9 for why those come apart. Code Mass (APP)
+carries no trophy here for the same reason.
 
 Caveat on the σ: v5.1 carries the widest spread in the RQ on claim-office — `cycle_count` 6–39
 (σ 13.4), `refactorings_applied` 2–40 (σ 17.4), `cost_usd` $0.57–$4.12. One run completed in 6
