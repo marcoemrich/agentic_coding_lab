@@ -2,7 +2,7 @@
 
 _Does the quality of a TDD workflow depend on the model — is there a universally best workflow, or do different workflows swap places depending on the model?_
 
-Generated: 2026-05-22T16:38:08Z
+Generated: 2026-08-10T00:23:01Z
 
 Cells declared: 6 · matched runs: 49 · min_replicates: 5
 
@@ -21,7 +21,7 @@ Cells declared: 6 · matched runs: 49 · min_replicates: 5
 
 ### verification_pct
 
-| kata                         | workflow                | cell_model                   |   n |   mean |   min |   max |   std |
+| kata                         | cell_workflow           | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-6-portkey-no-thinking |   5 |   0.93 |  0.8  |     1 |  0.08 |
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking         |  10 |   0.67 |  0.2  |     1 |  0.36 |
@@ -32,7 +32,7 @@ Cells declared: 6 · matched runs: 49 · min_replicates: 5
 
 ### verification_passed
 
-| kata                         | workflow                | cell_model                   |   n |   mean |   min |   max |   std |
+| kata                         | cell_workflow           | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-6-portkey-no-thinking |   5 |  14    |    12 |    15 |  1.22 |
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking         |  10 |  10    |     3 |    15 |  5.33 |
@@ -43,7 +43,7 @@ Cells declared: 6 · matched runs: 49 · min_replicates: 5
 
 ### tests_passing (rate %)
 
-| kata                         | workflow                | cell_model                   |   n |   match |   rate_% |
+| kata                         | cell_workflow           | cell_model                   |   n |   match |   rate_% |
 |:-----------------------------|:------------------------|:-----------------------------|----:|--------:|---------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-6-portkey-no-thinking |   5 |       5 |      100 |
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking         |  10 |      10 |      100 |
@@ -54,7 +54,7 @@ Cells declared: 6 · matched runs: 49 · min_replicates: 5
 
 ### completed_within_budget (rate %)
 
-| kata                         | workflow                | cell_model                   |   n |   match |   rate_% |
+| kata                         | cell_workflow           | cell_model                   |   n |   match |   rate_% |
 |:-----------------------------|:------------------------|:-----------------------------|----:|--------:|---------:|
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-6-portkey-no-thinking |   5 |       4 |       80 |
 | claim-office-example-mapping | v4-exact-subagents      | opus-4-7-no-thinking         |  10 |      10 |      100 |

@@ -9,14 +9,15 @@ Origin: extracted from the localization RQ `research/workflow-dev/5.1-correctnes
 | Workflow | opus-4-7 (n) | opus-4-6 (n) |
 |---|---:|---:|
 | v4-exact-subagents | 0.67 (10) | **0.93** (5) 🏆 |
-| v5-exact-single-context | 0.87 (10) | 0.87 (5) |
+| v5-exact-single-context | 0.97 (9) | 0.87 (5) |
 | v6-hybrid | **1.00** (5) 🏆 | 0.68 (15) |
 
 `verification_pct`: higher = better; 🏆 per model column — the core statement is precisely that the winner changes depending on the model.
 
 v4 and v6 are **complementary in a model-dependent way**: v6-hybrid is the opus-4-7 optimum (1.00) but unstable on
 opus-4-6 (0.68). v4-exact-subagents is stable on opus-4-6 (0.93) but bimodal on opus-4-7
-(0.67). v5 is constant independently of the model (0.87).
+(0.67). v5 is the least model-sensitive of the three (0.97 / 0.87) — it never wins a column,
+but it is also the only workflow that stays above 0.85 on both models.
 
 There is therefore **no universally best workflow** on this axis — the choice is
 model-dependent. The practice recommendation derived from this is in

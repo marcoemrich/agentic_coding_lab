@@ -304,6 +304,46 @@ def _assistant_text_of(ev: dict) -> str | None:
     return content if isinstance(content, str) else None
 
 
+def _subagent_phase_text_of(ev: dict) -> list[tuple[str, str]]:
+    """Return (agent_name, text) pairs from one subagent tool_execution_end.
+
+    Fully-delegated workflows (v4.1-*-pi) run *every* TDD phase in its own
+    subagent, so the phase markers are emitted inside the subagent and never
+    reach the main thread that `_assistant_text_of` reads. Without this the
+    whole TDD mechanic parses as zero.
+
+    The agent name is returned alongside the text so the caller can bind each
+    marker to the phase that actually owns it. This binding is essential, not
+    cosmetic: refactor subagents in the hybrid v6.x workflows routinely echo
+    `## Green` (and sometimes `## Refactor`) inside their reports, so counting
+    subagent text indiscriminately would inflate those runs' `cycle_count`.
+    """
+    if ev.get("type") != "tool_execution_end":
+        return []
+    if ev.get("toolName") != "subagent":
+        return []
+    result = ev.get("result") or {}
+    details = result.get("details") or {}
+    pairs: list[tuple[str, str]] = []
+    for r in details.get("results") or []:
+        if not isinstance(r, dict):
+            continue
+        agent = r.get("agent")
+        if not isinstance(agent, str) or agent not in TDD_SKILLS:
+            continue
+        for msg in r.get("messages") or []:
+            if not isinstance(msg, dict) or msg.get("role") != "assistant":
+                continue
+            content = msg.get("content")
+            if isinstance(content, str):
+                pairs.append((agent, content))
+            elif isinstance(content, list):
+                for item in content:
+                    if isinstance(item, dict) and isinstance(item.get("text"), str):
+                        pairs.append((agent, item["text"]))
+    return pairs
+
+
 def _subagent_usage_of(ev: dict, totals: dict, seen_call_ids: set) -> None:
     """Fold one tool_execution_end(subagent) event's usage into totals."""
     if ev.get("type") != "tool_execution_end":
@@ -353,6 +393,13 @@ def main(run_dir: str) -> int:
     skill_counts = {name: 0 for name in TDD_SKILLS}
     predictions_correct = 0
     predictions_total = 0
+    # Fully-delegated workflows only (v4.1-*-pi): markers emitted inside a phase
+    # subagent. Kept separate from the main-thread counters so hybrid workflows,
+    # whose refactor agent echoes `## Green`, are never affected — these are
+    # consulted only when the main thread yielded nothing at all.
+    sa_phase_counts: dict[str, int] = {name: 0 for name in TDD_SKILLS}
+    sa_predictions_correct = 0
+    sa_predictions_total = 0
 
     with transcript.open() as f:
         for line in f:
@@ -423,6 +470,18 @@ def main(run_dir: str) -> int:
                 predictions_correct += c
                 predictions_total += t
 
+            # --- phase markers emitted inside a phase subagent (v4.1-*-pi) ---
+            # Each marker is bound to the agent that produced it: a `## Green`
+            # echoed by a refactor agent is not a green phase.
+            for agent, sa_text in _subagent_phase_text_of(ev):
+                pattern = _PHASE_TEXT_MARKERS_RE.get(agent)
+                if pattern is not None:
+                    sa_phase_counts[agent] += len(pattern.findall(sa_text))
+                if agent == "red":
+                    c, t = extract_predictions_from_text(sa_text, loose_gate=True)
+                    sa_predictions_correct += c
+                    sa_predictions_total += t
+
     # main usage: agent_end sum preferred, else streamed message_end sum
     # (same order of preference as the former keep-last logic, but summed).
     main_usage = agent_end_usage_sum or msg_end_usage_sum
@@ -452,8 +511,28 @@ def main(run_dir: str) -> int:
             refactor_calls += 1
             skill_counts["refactor"] += 1
 
+    # Fully-delegated workflows (v4.1-*-pi) emit every phase marker inside its
+    # own subagent, so the main thread yields nothing. Fall back to the
+    # agent-bound subagent counters — but only per phase and only when the main
+    # thread produced *no* marker for that phase at all, so hybrid workflows
+    # (whose refactor agent echoes `## Green`) keep their main-thread counts.
+    for phase in TDD_SKILLS:
+        if text_phase_counts[phase] == 0 and sa_phase_counts[phase] > 0:
+            text_phase_counts[phase] = sa_phase_counts[phase]
+    if predictions_total == 0 and sa_predictions_total > 0:
+        predictions_correct = sa_predictions_correct
+        predictions_total = sa_predictions_total
+
     # cycle_count: prefer text markers over skill-reads for pi runs.
     cycle_count = text_phase_counts["red"] or skill_counts["red"]
+
+    # refactorings_applied: subagent calls are the primary signal (hybrid
+    # workflows such as v6.x-pi isolate refactor in a subagent). Inline
+    # workflows (v5.1-pi: every phase in one shared context) never emit a
+    # subagent call, so fall back to the `## Refactor` text marker — the same
+    # relationship P1 has to skill reads for cycle_count. Subagent workflows
+    # do not emit `## Refactor`, so this fallback cannot inflate their count.
+    refactorings_applied = refactor_calls or text_phase_counts["refactor"]
 
     for phase in TDD_SKILLS:
         if text_phase_counts.get(phase, 0) > skill_counts.get(phase, 0):
@@ -478,7 +557,7 @@ def main(run_dir: str) -> int:
                 "green":    {"avg_duration_seconds": 0.0},
                 "refactor": {"avg_duration_seconds": 0.0},
             },
-            "refactorings_applied": refactor_calls,
+            "refactorings_applied": refactorings_applied,
             "tests_passed_immediately": 0,
         },
         "predictions_correct": predictions_correct,

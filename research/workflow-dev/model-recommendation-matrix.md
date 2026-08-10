@@ -14,7 +14,7 @@ Vollständiger Befund (Tabelle, Stichproben, Mechanismus):
 |---|---|---:|---|
 | opus-4-7-no-thinking | **v6-hybrid** | 1.00 (5) | beherrscht die Orchestrierungs-Delegation im shared Context |
 | opus-4-6-portkey-no-thinking | **v4-exact-subagents** | 0.93 (5) | profitiert vom expliziten Subagent-Prompt pro Phase |
-| (modell-unabhängig als Fallback) | v5-exact-single-context | 0.87 | konstant über beide Modelle, kein Spitzenwert |
+| (modell-unabhängig als Fallback) | v5-exact-single-context | 0.97 (9) / 0.87 (5) | am wenigsten modell-sensitiv, kein Spitzenwert |
 
 ## Konsequenz für die Weiterentwicklung
 

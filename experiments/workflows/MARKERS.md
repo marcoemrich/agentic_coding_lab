@@ -75,7 +75,7 @@ Instead, it relies on **text markers** in assistant output and
 | P1 | `## Red` heading in assistant text | Each occurrence counts as one red-phase cycle (`cycle_count`) | `parse_pi_transcript.py` (`_PHASE_TEXT_MARKERS_RE`) and `analyze_transcript.py` (`_PHASE_TEXT_MARKERS`, `derive_cycle_count`) |
 | P2 | `## Green` heading in assistant text | Green-phase occurrence | same as P1 |
 | P3 | `## Test List` heading in assistant text | Test-list phase occurrence | same as P1 |
-| P4 | `subagent` tool call with `agent: "refactor"` | Each call counts as `refactorings_applied` | `parse_pi_transcript.py` (`_is_refactor_subagent`) |
+| P4 | `subagent` tool call with `agent: "refactor"` — or, for inline workflows, `## Refactor` in assistant text | Each call counts as `refactorings_applied`; the text marker is only consulted when there is no subagent call at all | `parse_pi_transcript.py` (`_is_refactor_subagent`, `_PHASE_TEXT_MARKERS_RE`) |
 | P5 | `Red Phase Complete:` + prediction lines | **Gates** prediction parsing (same as CC marker 2) | `extract_predictions_from_text` with `loose_gate=True` (accepts prediction lines even without `Red Phase Complete` if they appear in a block with `## Red` or a `(Compilation\|Runtime) Prediction` header) |
 | P6 | Lines matching `(Compilation\|Runtime) Prediction: ... (Correct\|Incorrect)` | `predictions_correct`, `predictions_total` | `_PREDICTION_OUTCOME_LINE_RE` |
 | P7 | `experiment-done.txt` containing `DONE` | Same as CC marker 4 | same |
@@ -93,6 +93,32 @@ Instead, it relies on **text markers** in assistant output and
 - **P4 is equivalent to CC marker 1's refactor branch.** The `subagent` extension
   produces a tool call with `name: "subagent"` and `arguments.agent: "refactor"`,
   which the pi parser counts the same way CC counts `Task({subagent_type: "refactor"})`.
+- **P1–P3, P5, P6 have a subagent fallback for fully-delegated workflows.**
+  `v4.1-*-pi` runs every phase in its own subagent, so the phase markers are
+  emitted *inside* the subagent and never reach the main thread that
+  `_assistant_text_of` reads — parsed naively, the entire TDD mechanic would come
+  out as zero. `_subagent_phase_text_of` therefore also reads assistant text out
+  of `tool_execution_end(subagent).result.details.results[].messages`, and each
+  marker is **bound to the agent that produced it** (`results[].agent`): a
+  `## Green` echoed inside a refactor agent's report is not a green phase. That
+  binding is load-bearing — across 25 existing pi runs the refactor subagents
+  emitted 98 `## Green` and 19 `## Refactor` headings, all of which an unbound
+  fallback would have miscounted. The fallback applies per phase and only when
+  the main thread produced no marker for that phase at all. Verified: 10 hybrid
+  runs across `v6.1-hybrid-testlist-scope-fix-pi`, `v6.2-with-why-cleaned-pi`,
+  `v6.2.1-phase-continuation-pi` and `v6.6-lab-split-pi` unchanged in
+  `cycle_count`, `refactorings_applied` and `predictions_total`.
+- **P4 has a text fallback for inline workflows.** Workflows that refactor in the
+  main context instead of delegating (`v5.1-*-pi`: every phase in one shared
+  context) never emit a subagent call, so counting only subagent calls would pin
+  their `refactorings_applied` at 0 — indistinguishable from "the model never
+  refactored". `refactorings_applied` is therefore `refactor_calls or
+  text_phase_counts["refactor"]`: subagent calls win whenever they exist, and the
+  `## Refactor` heading is consulted only in their complete absence. This mirrors
+  the precedence P1 already has over skill reads for `cycle_count`, and it cannot
+  inflate hybrid workflows, which emit no `## Refactor` heading. Verified against
+  20 existing pi runs across `v6.2-with-why-cleaned-pi`,
+  `v6.2.1-phase-continuation-pi` and `v6.6-lab-split-pi`: all unchanged.
 
 ## Hard requirements — cursor harness
 
