@@ -1,12 +1,13 @@
 ---
 id: RQ-architecture-axis-sol-pi
-question: "Does the TDD architecture axis (v4.1 isolated subagents / v5.1 single context / v6.1 hybrid) rank the same way on gpt-5-6-sol as it does on opus-4-7 — or does Sol land on the other side of the documented v4/v6 model swap?"
+question: "Does the TDD architecture axis (v4.1 isolated subagents / v5.1 single context / v6.1 hybrid) rank the same way on gpt-5-6-sol as it does on opus-4-7 — and does any architecture, including the current v6.6 generation, beat structureless TDD (v3) on Sol?"
 factors:
   workflow_x_prompt:
     - {workflow: v3-basic-tdd-pi,                prompt: example-mapping}  # baseline: TDD without architecture
     - {workflow: v4.1-testlist-scope-fix-pi,     prompt: example-mapping}  # all phases as isolated subagents
     - {workflow: v5.1-testlist-scope-fix-pi,     prompt: example-mapping}  # everything in one shared context
     - {workflow: v6.1-hybrid-testlist-scope-fix-pi, prompt: example-mapping}  # hybrid: red/green shared, refactor isolated
+    - {workflow: v6.6-lab-split-pi,              prompt: example-mapping}  # current generation: v6.1 + end-refactor phase
   kata_base: [claim-office, game-of-life]
 controls:
   model: gpt-5-6-sol
@@ -30,8 +31,8 @@ outcomes:
   # See "Metric blind spot" below.
   - cc_avg_loc_per_function
   # TDD discipline — does Sol keep the mechanics alive in each architecture?
-  # NOT measurable on the two baseline cells (v1/v3 prescribe no phase markers) —
-  # see "Baseline cells" below. Read those rows as n/a, not as zero.
+  # NOT measurable on the v3 baseline cell (it prescribes no phase markers) —
+  # see "Measurement limit" below. Read that row as n/a, not as zero.
   - cycle_count
   - refactorings_applied
   - predictions_correct_rate
@@ -40,7 +41,7 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: closed
+status: open
 ---
 
 # RQ-architecture-axis-sol-pi: Does the Architecture Axis Rank the Same on Sol?
@@ -96,7 +97,7 @@ finding like "v6.1 leads on `cognitive_max`" has no scale.
 |---|---|---|
 | `v3-basic-tdd-pi` | "use TDD", no phase structure, no agents, no skills | the cost and benefit of *architecture* on top of TDD |
 
-The gap v3 → {v4.1, v5.1, v6.1} is the actual return on the whole workflow line.
+The gap v3 → {v4.1, v5.1, v6.1, v6.6} is the actual return on the whole workflow line.
 It has not been measured on Sol.
 
 ### Why there is no no-TDD baseline
@@ -126,8 +127,8 @@ not silently repaired.
 
 ### Measurement limit — binding
 
-**TDD-discipline metrics are not defined on the baseline cells.** Both v1 and v3
-prescribe no phase markers, so P1–P6 never fire. Verified against the 22 existing
+**TDD-discipline metrics are not defined on the v3 baseline cell.** v3 prescribes
+no phase markers, so P1–P6 never fire. Verified against the 22 existing
 CC v3 runs: `cycle_count` 1 (parser fallback), `refactorings_applied` 0,
 `predictions_total` 0 — in *every* run, across five models. v3 says "do TDD" but
 never says "write `## Red`".
@@ -135,11 +136,15 @@ never says "write `## Red`".
 Consequences:
 
 - `cycle_count`, `refactorings_applied` and `predictions_correct_rate` are reported
-  as **n/a** for v1 and v3, never as 0, and they carry no trophy in those rows. A 0
+  as **n/a** for v3, never as 0, and they carry no trophy in those rows. A 0
   here means "not instrumented", not "did not refactor".
-- Whether v3 actually did TDD is therefore **unobservable from the transcript**.
-  Where it matters, `test_loc` and `mutation_score` are the external proxies — they
-  measure the test suite that was produced, regardless of how it came about.
+- Whether v3 did TDD is not *automatically* measurable, but it **is** observable by
+  hand. Reconstructing the tool-call order from `transcript-pi.jsonl` shows the
+  inspected Sol/v3 run doing textbook TDD: spec with one test → failing run →
+  `return []` → implementation → 6 cycles → an Extract-Method refactoring after a
+  green test. Opus/v3, by the same reconstruction, does not (F-1.10).
+  `test_loc` and `mutation_score` remain the external proxies where the question
+  matters at scale.
 - Correctness and code-quality metrics are **unaffected** — measured externally
   from the source tree, not from markers.
 
