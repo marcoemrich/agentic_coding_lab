@@ -3,6 +3,8 @@ id: RQ-architecture-axis-sol-pi
 question: "Does the TDD architecture axis (v4.1 isolated subagents / v5.1 single context / v6.1 hybrid) rank the same way on gpt-5-6-sol as it does on opus-4-7 — or does Sol land on the other side of the documented v4/v6 model swap?"
 factors:
   workflow_x_prompt:
+    - {workflow: v1-oneshot-pi,                  prompt: example-mapping}  # baseline: no TDD at all
+    - {workflow: v3-basic-tdd-pi,                prompt: example-mapping}  # baseline: TDD without architecture
     - {workflow: v4.1-testlist-scope-fix-pi,     prompt: example-mapping}  # all phases as isolated subagents
     - {workflow: v5.1-testlist-scope-fix-pi,     prompt: example-mapping}  # everything in one shared context
     - {workflow: v6.1-hybrid-testlist-scope-fix-pi, prompt: example-mapping}  # hybrid: red/green shared, refactor isolated
@@ -24,6 +26,8 @@ outcomes:
   - smell_total
   - code_mass
   # TDD discipline — does Sol keep the mechanics alive in each architecture?
+  # NOT measurable on the two baseline cells (v1/v3 prescribe no phase markers) —
+  # see "Baseline cells" below. Read those rows as n/a, not as zero.
   - cycle_count
   - refactorings_applied
   - predictions_correct_rate
@@ -76,6 +80,55 @@ v6.1→v6.5 reduction chain is a refinement *of v6*. If Sol does not prefer v6, 
 chain is moot for Sol, and retesting it (planned as the follow-up RQ-B) would measure
 refinements of an architecture that does not suit the model.
 
+## Baseline cells (v1 / v3)
+
+The three architecture cells only compare structured TDD workflows against each
+other. That answers "which architecture ranks best" but not "does any of this beat
+doing nothing in particular" — a question the Sol data makes pressing, because v5.1
+reaches perfect correctness at ~1/5 the wallclock of v6.1. Without a floor, a
+finding like "v6.1 leads on `cognitive_max`" has no scale.
+
+Two cells provide that floor:
+
+| Cell | What it prescribes | Isolates |
+|---|---|---|
+| `v1-oneshot-pi` | implement directly, no TDD | the cost and benefit of TDD as such |
+| `v3-basic-tdd-pi` | "use TDD", no phase structure, no agents, no skills | the cost and benefit of *architecture* on top of TDD |
+
+The gap v3 → {v4.1, v5.1, v6.1} is the actual return on the whole workflow line;
+the gap v1 → v3 is the return on TDD itself. Neither has been measured on Sol.
+
+**`v3-basic-tdd-pi` was created for this RQ** as a direct translation of the CC
+original (`v3-basic-tdd/.claude/rules/experiment-mode.md`), following the
+`v1-oneshot-pi` conventions: explicit `prompt.md` reference and the `src/cli.ts`
+hint that claim-office needs. It carries **no continuation overlay** — v3 has no
+phase boundaries with skill switches, which is where Sol stalls. Should it stall
+anyway, that is itself a finding and is visible in `completed_within_budget`; it is
+not silently repaired.
+
+### Measurement limit — binding
+
+**TDD-discipline metrics are not defined on the baseline cells.** Both v1 and v3
+prescribe no phase markers, so P1–P6 never fire. Verified against the 22 existing
+CC v3 runs: `cycle_count` 1 (parser fallback), `refactorings_applied` 0,
+`predictions_total` 0 — in *every* run, across five models. v3 says "do TDD" but
+never says "write `## Red`".
+
+Consequences:
+
+- `cycle_count`, `refactorings_applied` and `predictions_correct_rate` are reported
+  as **n/a** for v1 and v3, never as 0, and they carry no trophy in those rows. A 0
+  here means "not instrumented", not "did not refactor".
+- Whether v3 actually did TDD is therefore **unobservable from the transcript**.
+  Where it matters, `test_loc` and `mutation_score` are the external proxies — they
+  measure the test suite that was produced, regardless of how it came about.
+- Correctness and code-quality metrics are **unaffected** — measured externally
+  from the source tree, not from markers.
+
+Deliberately not fixed by adding markers to v3: that would make it a different
+workflow (a mini-v4) and destroy comparability with the 22 CC runs that define
+what "v3" means in this lab.
+
 ## Two open gaps this RQ closes
 
 1. **The `.1` generation has never run cross-model.** v4.1/v5.1/v6.1 exist exclusively on
@@ -126,6 +179,14 @@ Two properties of this baseline drive the design:
   the v4 branch. RQ-B is cancelled in its planned form.
 - **H3 (third pattern).** Sol prefers v5.1, or the ranking is flat within 1 σ.
   → No architecture recommendation transfers; the axis must be re-derived for Sol.
+- **H4 (baseline floor).** The structured cells beat `v3-basic-tdd-pi` on
+  `cognitive_max` and `smell_total`, and v3 beats `v1-oneshot-pi`.
+  → The workflow line earns its cost on Sol.
+  **Counter-case worth naming up front:** if v3 lands within 1 σ of the structured
+  cells on quality while running at v5.1 speed or better, the whole architecture
+  axis is a wash on Sol, and the honest recommendation is v3 — regardless of how
+  v4.1/v5.1/v6.1 rank among themselves. This is the one outcome that would make
+  RQ-B pointless even though H1 held.
 
 Reading rule for the correctness/quality split: since Sol carries systematically higher
 complexity than Opus (`cognitive_max` ~3× on comparable cells, `RQ-cost-sol-pi-vs-opus-cc`
@@ -153,6 +214,16 @@ F-1.3), **absolute thresholds are not comparable across models.** Only the *rank
    uncertainty.
 4. **Only one prompt style.** example-mapping, consistent with all previous architecture
    comparisons. prose/user-story were never run against this axis.
+5. **The baselines run one prompt style their CC counterparts never saw.** All 22 CC
+   v3 runs and all 15 CC v1 runs used prose or user-story — example-mapping was
+   introduced with the v3+ generation and never applied to these two. Holding the
+   prompt style constant across all five cells is right for *this* RQ, but it means
+   the v1/v3 rows are not directly comparable to the existing CC v1/v3 data. Any
+   cross-model statement about the baselines confounds model and prompt style.
+6. **The two baselines are unequal in continuation risk.** v4.1/v5.1/v6.1 carry the
+   anti-stall overlay, v1/v3 do not (they have no phase boundaries to stall at).
+   If a baseline nonetheless shows systematic `completed_within_budget = false`,
+   that row measures a harness stall and is not read as a workflow effect.
 
 ## Sequencing
 

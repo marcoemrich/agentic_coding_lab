@@ -230,11 +230,30 @@ marker is broken — fix it before launching the n=3 batch.
 ## Cross-reference
 
 - Parsers: `experiments/analyze_transcript.py`, `experiments/parse_pi_transcript.py`, `experiments/parse_cursor_transcript.py`
-- CC/OC workflows satisfying markers 1–4: `v3-basic-tdd`,
+- CC/OC workflows satisfying markers 1–4:
   `v4-exact-subagents`, `v5-exact-single-context`, `v6.6-lab-split-cc`,
   `v6.6-lab-split-oc`
 - pi workflows satisfying markers P1–P7: `v6.2-with-why-cleaned-pi`,
   `v6.6-lab-split-pi`
+
+### Baseline workflows satisfy marker 4 only — by design
+
+`v1-oneshot` / `v1-oneshot-pi` (no TDD) and `v3-basic-tdd` / `v3-basic-tdd-pi`
+("use TDD", no phase structure) prescribe **no phase markers**. They carry only
+the done-marker (marker 4 / P7). Verified across all 22 CC `v3-basic-tdd` runs
+and five models: `cycle_count` 1 (parser fallback), `refactorings_applied` 0,
+`predictions_total` 0 — without exception. v3 tells the model to do TDD but never
+tells it to write `## Red`.
+
+This is **not a broken marker** and must not be "fixed": adding markers would turn
+v3 into a mini-v4 and break comparability with the existing runs that define what
+v3 means in this lab. The healthy-baseline checklist above does **not** apply to
+these four workflows.
+
+Consequence for RQs using them as a floor (e.g. `RQ-architecture-axis-sol-pi`):
+report `cycle_count`, `refactorings_applied` and `predictions_correct_rate` as
+**n/a**, never as 0, and award no trophy in those rows. Correctness and
+code-quality metrics are unaffected — they are measured from the source tree.
 - cursor workflows satisfying markers C1–C7: `v6.2.1-phase-continuation-cursor`
   (C4b not applicable — that generation has no end-refactor phase),
   `v6.6-lab-split-cursor` (all markers incl. C4b)
