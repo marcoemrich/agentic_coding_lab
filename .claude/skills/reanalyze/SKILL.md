@@ -71,6 +71,19 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
    done
    ```
 3. Report: "Reanalyzed N runs."
+4. **Recompute `cost_usd` — mandatory after any reanalysis of pi runs, not optional.**
+   `analyze-run.sh` reads `cost_usd` from `transcript-metrics.json` and writes it whenever it is
+   not `null`. For pi/Requesty runs that source holds `0` (pi's cost scaffold; Requesty reports
+   no inline cost), so the step above **overwrites correct costs with zero** — silently, with no
+   error. Restore them:
+   ```bash
+   ./experiments/compute-cost.py "$RQ_DIR"
+   ```
+   Then verify: no cell may show `cost_usd` 0.00 at non-zero `total_tokens`. That combination is
+   impossible and means the step did not take.
+5. If `mutation_score` is in the RQ's `outcomes:`, also run
+   `./experiments/compute-mutation-score.py "$RQ_DIR"` (expensive — minutes per run; only for
+   `tests_passing = true`).
 
 ---
 

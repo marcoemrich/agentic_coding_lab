@@ -123,6 +123,39 @@ status: <status>
    - Do not panic-retry when `watch-batch.sh` is once slow to respond.
 4. **Mid-execution cleanup after stop**: the youngest run dir in `experiments/runs/` that lacks `analysis-report.md` OR `transcript.jsonl` was interrupted mid-execution. Ask the user: "Delete interrupted run dir `<run-dir>` (no analysis-report.md)?" Only delete with `rm -rf` after explicit "yes".
 
+5. **Reading partial results while the batch runs** — optional, but if you look at
+   metrics mid-batch, these three rules are binding. All three failed in one session
+   (2026-08-10) and produced three wrong statements to the user in a row.
+
+   **a) Never quote a quality metric without `verification_pct` in the same query.**
+   A run that failed external verification produces *excellent-looking* quality
+   numbers — few functions, low complexity, no smells — because it barely implemented
+   anything. The correctness-gating rule of phase 6 exists for exactly this, but it
+   only helps if the correctness column is in front of you. Query it together, always:
+   ```bash
+   jq -r 'select(.run_status.exit_reason=="ok") |
+     "vpct=\(.final_metrics.verification_pct) cog=\(.final_metrics.cognitive_max) …"' */metrics.json
+   ```
+   Real case: `cognitive_max` 1 and `cc_avg_loc_per_function` 4.67 were reported as
+   "beats the best cell in the field" — the run had `verification_pct = 0`.
+
+   **b) A run is only readable once it is finished.** `metrics.json` exists from the
+   start and is filled at the end; a running run returns `null` for every metric and
+   an absent `exit_reason`. Filter on `select(.run_status.exit_reason=="ok")` rather
+   than on file existence, and never mix finished and running runs in one listing —
+   `ls -dt | head -1` regularly hits a running one. (Same trap as the cursor-harness
+   note in memory: judge runs only after `experiment-done.txt`.)
+
+   **c) Do not interpret a cell at n=1.** Report partial values as an observation
+   ("first run of cell X shows …"), never as a rank statement, a hypothesis
+   confirmation, or a comparison against a reference cell that has full n. The
+   variance across replicates in this lab routinely exceeds the between-cell
+   differences being measured — `refactorings_applied` σ 17.4 at n=5 in
+   RQ-architecture-axis-sol-pi F-1.4 is a documented example.
+
+   Also watch the glob when spot-checking: `*v6.6*opus-5*` matches pi and cursor runs
+   from other RQs. Anchor workflow and model exactly — `*_v6.6-lab-split-cc_opus-5-no-thinking*`.
+
 #### Phase 4b — Resume
 
 1. Generate a resume plan:
@@ -147,16 +180,26 @@ status: <status>
    - Grep `analysis-report.md` for known infrastructure failure patterns: `IGNORED_BUILDS`, `approve-builds`, `corepack`, `ENOENT`, `Cannot find module`, `tsc.*error`. These typically come from container/tooling drift (e.g. pnpm version bumps, missing deps), not from agent code.
    - For CLI-katas (`<basename>-verification/` exists): check `cli_built` in `metrics.json`. If `cli_built: false` for a run whose `src/cli.ts` exists and runs manually (`pnpm exec tsx src/cli.ts < scenario.input.json`), the verification stage misfired — re-run `analyze-run.sh <run_dir>` on the host (with absolute path).
    - If any of these checks fail: stop, report the suspected pipeline bug to the user, do NOT aggregate. Fixing buggy data after a finding has been drawn from it is much more expensive than spending two minutes on the spot-check.
-2. Invoke:
+2. **Post-processing before aggregation** — some metrics are not filled by `analyze-run.sh` and must be computed separately. Skipping a step here does not error; it silently produces a zero or a null that reads like a research result.
+   - **`cost_usd` — always, for any RQ whose `outcomes` contain it.** pi/Requesty runs land with `cost_usd = 0` because Requesty reports no inline cost (`usage: null`); the value comes from token × list price. Run it before aggregating:
+     ```
+     experiments/compute-cost.py "$RQ_DIR"
+     ```
+     Idempotent — existing values are recomputed, so it is safe to run on an RQ whose older runs already carry costs. Verify afterwards that no cell means $0.00 at non-zero `total_tokens`; that combination is impossible and means the step did not take.
+   - **`mutation_score` — only when it appears in `outcomes:`.** Expensive (minutes per run), opt-in per RQ, and only computed for `tests_passing = true`:
+     ```
+     experiments/compute-mutation-score.py "$RQ_DIR"
+     ```
+3. Invoke:
    ```
    experiments/aggregate-by-query.py "$RQ_DIR"
    ```
-3. Expected outputs:
+4. Expected outputs:
    - `$RQ_DIR/runs.csv` (one line per matched run)
    - `$RQ_DIR/summary.md` (per-cell pivots for each `outcome`)
-4. Read `summary.md` in full and summarize to the user — show the per-cell pivot tables individually.
-5. Sanity check: does every cell have ≥ `min_replicates`? If not: warn and offer to jump back to phase 2 (additional runs).
-6. **Plausibility cross-check before phase 6** — if any cell value contradicts a previously-stable finding by a large margin (e.g. a workflow that was 100% green is suddenly 0%), do NOT treat that as a new finding without first running the spot-check from step 1 against that exact cell. A "v4 is suddenly broken on game-of-life" type observation is more often a pipeline regression than a real shift.
+5. Read `summary.md` in full and summarize to the user — show the per-cell pivot tables individually.
+6. Sanity check: does every cell have ≥ `min_replicates`? If not: warn and offer to jump back to phase 2 (additional runs).
+7. **Plausibility cross-check before phase 6** — if any cell value contradicts a previously-stable finding by a large margin (e.g. a workflow that was 100% green is suddenly 0%), do NOT treat that as a new finding without first running the spot-check from step 1 against that exact cell. A "v4 is suddenly broken on game-of-life" type observation is more often a pipeline regression than a real shift.
 
 ---
 
