@@ -419,6 +419,27 @@ session; in a consumer project it must be requested. What moves where:
 frontmatter. Phase commands and agents stay where they are (they are
 invoked by the workflow, not the user).
 
+**Move the workflow's own rule files into the skill directory too.** Claude
+Code auto-loads everything under `rules/`, so a file left there is in context
+on every session regardless of the frontmatter gate on `SKILL.md` — the
+workflow ends up half-gated. Files that belong to the workflow move next to
+it and are referenced from their new location:
+
+```bash
+for f in human-in-the-loop tdd-execution-mode subagent-prompts; do
+  [ -f "$TARGET/.claude/rules/$f.md" ] || continue
+  mv "$TARGET/.claude/rules/$f.md" "$TARGET/.claude/skills/tdd/$f.md"
+done
+# rewrite every reference, in all files, to the new path
+grep -rl '@\.claude/rules/' "$TARGET/.claude" | while read -r p; do
+  sed -i -E 's|@\.claude/rules/(human-in-the-loop|tdd-execution-mode|subagent-prompts)\.md|@.claude/skills/tdd/\1.md|g' "$p"
+done
+```
+
+`rules/tdd-with-ts-and-vitest.md` **stays in `rules/`** — see the next
+paragraph. After the move, `rules/` holds exactly that one file; if it holds
+anything else, the mover missed something.
+
 ```yaml
 ---
 name: tdd
@@ -654,9 +675,16 @@ report immediately, do not claim success.
    .claude/VERSION
    .claude/agents/{end-refactor,refactor}.md
    .claude/commands/{green,red,test-list}.md
-   .claude/rules/{human-in-the-loop,subagent-prompts,tdd,tdd-execution-mode,tdd-with-ts-and-vitest}.md
+   .claude/rules/tdd-with-ts-and-vitest.md
+   .claude/skills/tdd/{SKILL,human-in-the-loop,subagent-prompts,tdd-execution-mode}.md
    .claude/settings.json
    ```
+
+   Both lists are written **after** Step 6, which moves `tdd.md` into
+   `skills/tdd/SKILL.md` and the workflow's own rule files in beside it. Only
+   `tdd-with-ts-and-vitest.md` stays in `rules/`, because it is meant to load
+   ambiently. A source whose `agents/` lacks `end-refactor.md` (the v6.1 line)
+   yields the same set minus that file — see validation 12.
 
    In **neither** case may `rules/lab-only.md` or
    `rules/tdd-experiment-mode.md` appear.
@@ -746,6 +774,18 @@ report immediately, do not claim success.
    grep -q '^name: tdd'        "$TARGET/.claude/skills/tdd/SKILL.md" || echo "FAIL cc: no name in frontmatter"
    grep -q '^description: .*TDD' "$TARGET/.claude/skills/tdd/SKILL.md" || echo "FAIL cc: no description gate"
    grep -qi 'do not invoke'    "$TARGET/.claude/skills/tdd/SKILL.md" || echo "WARN cc: description lacks a negative clause"
+
+   # cc — workflow rule files sit next to the skill, not in auto-loaded rules/
+   for f in human-in-the-loop tdd-execution-mode subagent-prompts; do
+     [ -f "$TARGET/.claude/rules/$f.md" ] \
+       && echo "FAIL cc: $f.md still auto-loads from rules/"
+   done
+   # rules/ must hold nothing but the ambient stack conventions
+   ls "$TARGET/.claude/rules" | grep -v '^tdd-with-ts-and-vitest\.md$' \
+     && echo "FAIL cc: unexpected file left in rules/"
+   # no reference may still point at the old location
+   grep -rn '@\.claude/rules/\(human-in-the-loop\|tdd-execution-mode\|subagent-prompts\)' \
+        "$TARGET/.claude" && echo "FAIL cc: stale @rules/ reference"
 
    # pi — skill exists; AGENTS.md must not carry the orchestration
    [ -f "$TARGET/.pi/skills/tdd/SKILL.md" ] || echo "FAIL pi: no skills/tdd/SKILL.md"
@@ -950,11 +990,14 @@ about what an exported cc tree should look like, read that file.
 Two things there still differ from a fresh export, and a sync should
 reconcile rather than blindly overwrite:
 
-- **Layout.** It uses `.claude/skills/tdd/{SKILL,human-in-the-loop,
-  tdd-execution-mode,tdd-with-ts-and-vitest}.md` — HITL and execution-mode
-  files nested *inside* the skill dir. Copying a `rules/`-shaped export on
-  top would leave both layouts live at once (CC auto-loads `rules/`), so
-  the workflow would be simultaneously gated and always-on.
+- **Layout.** As of the 2026-07-28 snapshot it still carries the workflow's
+  rule files under `.claude/rules/` — the shape exports produced before Step 6
+  started nesting them inside `skills/tdd/`. A sync therefore *replaces* that
+  layout rather than merging into it: delete the stale
+  `rules/{human-in-the-loop,tdd-execution-mode,subagent-prompts}.md` when
+  copying the new snapshot in, or CC auto-loads the old copies and the
+  workflow is gated and always-on at the same time. `rules/tdd-with-ts-and-vitest.md`
+  is the one file that legitimately stays in both layouts.
 - **cursor rules.** `tdd.mdc` and `human-in-the-loop.mdc` are still
   `alwaysApply: true`, i.e. not yet gated. `tdd-with-ts-and-vitest.mdc` is
   already correct on its `globs` form.
