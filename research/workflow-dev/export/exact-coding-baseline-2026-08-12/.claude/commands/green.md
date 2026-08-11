@@ -57,7 +57,7 @@ export const calculate = (input: string): number => {
 
 ### Step 3: Run Tests
 
-Run `pnpm test:unit:basic` and verify:
+Run `pnpm test` and verify:
 - Current test now passes ✅
 - All previous tests still pass ✅
 

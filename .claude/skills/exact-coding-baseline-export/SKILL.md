@@ -294,6 +294,29 @@ Keep the nested README's stack claims concrete. It may say `pnpm` where the
 snapshot README says "a package manager" — `pnpm test` is hardcoded across the
 phase files, so the specific form is the accurate one.
 
+> **Normalise `test:unit:basic` to `test` before shipping.** The phase files
+> call `pnpm test:unit:basic` in three places (`red.md` ×2, `green.md` ×1). That
+> script exists only inside the lab: `run-batch.sh` generates a `package.json`
+> per run that aliases it to `vitest run`. A consumer project has `test`, not
+> `test:unit:basic`, so the command fails there — and it contradicts the
+> workflow's own `tdd-with-ts-and-vitest.md`, which says to run tests with
+> `pnpm test`.
+>
+> ```bash
+> grep -rl 'test:unit:basic' "$TARGET" | while read -r p; do
+>   sed -i 's/test:unit:basic/test/g' "$p"
+> done
+> ```
+>
+> This shipped broken in the 2026-07-28 snapshot and sat unnoticed in the
+> consumer until the next sync. Validation 14 checks it.
+>
+> **The package manager itself is a sync-time decision, not an export-time
+> one.** The snapshot keeps `pnpm`, matching the lab source. A consumer on npm
+> needs `pnpm` → `npm` and `pnpm exec` → `npx` applied while copying — check
+> the target's lockfile (`package-lock.json` vs `pnpm-lock.yaml`) rather than
+> assuming. Do not rewrite the snapshot for one consumer's package manager.
+
 ### Step 4: write VERSION
 
 ```bash
@@ -959,6 +982,18 @@ print('  OK opencode.json is consumer-shaped')"
     grep -qF "$DATE" "$TARGET/README.md" && grep -qF "$DATE" "$TARGET/.claude/README.md" \
       || echo "FAIL: README pair disagrees on version"
     ```
+
+14. **Every command the snapshot names must exist outside the lab.** The lab
+    generates a `package.json` per run with extra script aliases; a consumer
+    project has only what its own `package.json` defines. Any script name the
+    phase files call has to be one a normal project actually has:
+
+    ```bash
+    grep -rn 'test:unit:basic\|test:coverage' "$TARGET" \
+      && echo "FAIL: lab-only npm script referenced"
+    ```
+    Must print no matches. `test` and `test:watch` are the only script names
+    safe to assume.
 
 ## Consumer sync
 

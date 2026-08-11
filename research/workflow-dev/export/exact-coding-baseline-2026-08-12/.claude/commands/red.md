@@ -51,7 +51,7 @@ Before running the test, state your prediction:
 
 ### Step 3: Run Test - Verify Compilation Error
 
-Run `pnpm test:unit:basic` and verify:
+Run `pnpm test` and verify:
 - ✅ Compilation error as predicted, OR
 - ❌ Prediction wrong → follow the Prediction Failure Protocol below
 
@@ -82,7 +82,7 @@ Before running again, state your prediction:
 
 ### Step 6: Run Test - Verify Runtime Error
 
-Run `pnpm test:unit:basic` and verify:
+Run `pnpm test` and verify:
 - ✅ Assertion error as predicted, OR
 - ❌ Prediction wrong → follow the Prediction Failure Protocol below
 
