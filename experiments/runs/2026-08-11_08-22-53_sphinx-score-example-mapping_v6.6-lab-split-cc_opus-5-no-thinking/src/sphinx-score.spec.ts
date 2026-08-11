@@ -1,0 +1,140 @@
+import { describe, it, expect } from "vitest";
+import { spawn } from "node:child_process";
+import { scoreArmy } from "./sphinx-score.js";
+
+const runCli = (stdin: string): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const cli = spawn("pnpm", ["exec", "tsx", "src/cli.ts"]);
+    let stdout = "";
+    let stderr = "";
+
+    cli.stdout.on("data", (chunk) => (stdout += chunk));
+    cli.stderr.on("data", (chunk) => (stderr += chunk));
+    cli.on("close", (code) =>
+      code === 0 ? resolve(stdout) : reject(new Error(stderr)),
+    );
+
+    cli.stdin.end(stdin);
+  });
+
+describe("Sphinx scoring", () => {
+  it("scores an army without a Sphinx as 0 — Chimera, Orthrus, Zombie → 0 points", () => {
+    expect(
+      scoreArmy([
+        { monster: "chimera" },
+        { monster: "orthrus" },
+        { monster: "zombie" },
+      ]),
+    ).toBe(0);
+  });
+  it("scores a Sphinx with three types or fewer as 1 point each — Sphinx, Cyclops → 2 points", () => {
+    expect(scoreArmy([{ monster: "sphinx" }, { monster: "cyclops" }])).toBe(2);
+  });
+  it("counts the Sphinx itself as one of the types — Sphinx, Chimera, Orthrus → 2 points", () => {
+    expect(
+      scoreArmy([
+        { monster: "sphinx" },
+        { monster: "chimera" },
+        { monster: "orthrus" },
+      ]),
+    ).toBe(2);
+  });
+  it("scores 2 per type beyond three — Sphinx, Chimera, Orthrus, Zombie, Hydra → 3 points", () => {
+    expect(
+      scoreArmy([
+        { monster: "sphinx" },
+        { monster: "chimera" },
+        { monster: "orthrus" },
+        { monster: "zombie" },
+        { monster: "hydra" },
+      ]),
+    ).toBe(3);
+  });
+  it("scores 2 per type beyond three — Sphinx, Chimera, Orthrus, Zombie, Hydra, Cyclops → 5 points", () => {
+    expect(
+      scoreArmy([
+        { monster: "sphinx" },
+        { monster: "chimera" },
+        { monster: "orthrus" },
+        { monster: "zombie" },
+        { monster: "hydra" },
+        { monster: "cyclops" },
+      ]),
+    ).toBe(5);
+  });
+  it("counts duplicate cards of the same monster as one type — Sphinx, Chimera, Chimera, Chimera, Orthrus, Orthrus → 2 points", () => {
+    expect(
+      scoreArmy([
+        { monster: "sphinx" },
+        { monster: "chimera" },
+        { monster: "chimera" },
+        { monster: "chimera" },
+        { monster: "orthrus" },
+        { monster: "orthrus" },
+      ]),
+    ).toBe(2);
+  });
+  it("scores each Sphinx separately, a Sphinx counting another Sphinx as its own type — Sphinx, Sphinx, Chimera, Orthrus → 4 points", () => {
+    expect(
+      scoreArmy([
+        { monster: "sphinx" },
+        { monster: "sphinx" },
+        { monster: "chimera" },
+        { monster: "orthrus" },
+      ]),
+    ).toBe(4);
+  });
+  it("scores each Sphinx separately beyond three types — Sphinx, Sphinx, Chimera, Orthrus, Zombie → 6 points", () => {
+    expect(
+      scoreArmy([
+        { monster: "sphinx" },
+        { monster: "sphinx" },
+        { monster: "chimera" },
+        { monster: "orthrus" },
+        { monster: "zombie" },
+      ]),
+    ).toBe(6);
+  });
+  it("counts all Undead Warrior variants as a single type — Sphinx, Undead Warrior (1), Undead Warrior (3), Chimera → 2 points", () => {
+    expect(
+      scoreArmy([
+        { monster: "sphinx" },
+        { monster: "undead-warrior", rank: 1 },
+        { monster: "undead-warrior", rank: 3 },
+        { monster: "chimera" },
+      ]),
+    ).toBe(2);
+  });
+  it("counts all Undead Warrior variants as a single type beyond three types — Sphinx, Undead Warrior (1), Undead Warrior (2), Undead Warrior (3), Cyclops, Orthrus, Chimera → 3 points", () => {
+    expect(
+      scoreArmy([
+        { monster: "sphinx" },
+        { monster: "undead-warrior", rank: 1 },
+        { monster: "undead-warrior", rank: 2 },
+        { monster: "undead-warrior", rank: 3 },
+        { monster: "cyclops" },
+        { monster: "orthrus" },
+        { monster: "chimera" },
+      ]),
+    ).toBe(3);
+  });
+});
+
+describe("Sphinx scoring CLI", () => {
+  it("reads an army JSON document from stdin and writes the score as JSON to stdout", async () => {
+    const stdout = await runCli(
+      JSON.stringify({
+        army: [
+          { monster: "sphinx" },
+          { monster: "chimera" },
+          { monster: "orthrus" },
+          { monster: "zombie" },
+          { monster: "hydra" },
+          { monster: "cyclops" },
+        ],
+      }),
+    );
+
+    expect(JSON.parse(stdout)).toEqual({ score: 5 });
+  });
+});
