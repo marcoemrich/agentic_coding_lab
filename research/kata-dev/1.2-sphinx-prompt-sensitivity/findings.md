@@ -17,23 +17,26 @@ and their absolute levels are not comparable.
 | sphinx-score | **1.00** 🏆 (σ 0) | 0.15 (σ 0.06) | **0.85** |
 | claim-office | **0.94** 🏆 (σ 0.03) | 0.27 (σ 0.00) | 0.67 |
 
-Cost and shape, same cells. Quality/efficiency trophies are **correctness-gated**:
-only `sphinx-score-example-mapping` reaches `verification_pct = 1.0`, so it is the
-only cell eligible for a 🏆 on the non-correctness rows. The prose columns are
-listed for reference, not as competitors — their low numbers come from
-implementing a smaller, wrong rule set.
+Cost and shape, same cells. **No trophies in this table** — it holds no
+competition to win. The two katas differ in size by design (`sphinx-score` is
+the small one, `claim-office` the large one), so sphinx-score's lower cost,
+complexity and Code Mass (APP) reflect the size of the task, not the quality of
+the work. Within a kata the two prompt styles are not competitors either: the
+prose runs implement a smaller, wrong rule set, so their lower numbers are the
+footprint of that, not parsimony. The table exists as context for F-1.2.3 and
+F-1.2.4; the comparison that carries a verdict is the correctness table above.
 
-| Metric (Richtung) | sphinx em | sphinx prose | claim-office em | claim-office prose |
+| Metric | sphinx em | sphinx prose | claim-office em | claim-office prose |
 |---|---:|---:|---:|---:|
-| Correctness (internal) — `tests_passing` (höher = besser) | **100 %** 🏆 | 100 % | 100 % | 100 % |
-| `cost_usd` (kleiner = besser) | **$12.86** 🏆 | $14.64 | $78.98 | $47.76 |
-| `duration_seconds` (kleiner = besser) | **1475** 🏆 | 1262 | 5514 | 3605 |
-| `total_tokens` (kleiner = besser) | **19.1 M** 🏆 | 21.7 M | 136.1 M | 80.4 M |
-| `cycle_count` (höher = besser) | **11.7** 🏆 | 15.0 | 45.8 | 35.7 |
-| Complexity Peak — `cc_longest_function` (kleiner = besser) | **5.8** 🏆 | 6.3 | 13.8 | 11.8 |
-| `cognitive_max` (kleiner = besser) | **1.0** 🏆 | 1.0 | 2.0 | 1.5 |
-| Code Mass (APP) — `code_mass` (kleiner = besser) | **182.8** 🏆 | 144.2 | 997.0 | 808.3 |
-| Smell Total — `smell_total` (kleiner = besser) | **0** 🏆 | 0 | 0 | 0 |
+| Correctness (internal) — `tests_passing` | 100 % | 100 % | 100 % | 100 % |
+| `cost_usd` | $12.86 | $14.64 | $78.98 | $47.76 |
+| `duration_seconds` | 1475 | 1262 | 5514 | 3605 |
+| `total_tokens` | 19.1 M | 21.7 M | 136.1 M | 80.4 M |
+| `cycle_count` | 11.7 | 15.0 | 45.8 | 35.7 |
+| Complexity Peak — `cc_longest_function` | 5.8 | 6.3 | 13.8 | 11.8 |
+| `cognitive_max` | 1.0 | 1.0 | 2.0 | 1.5 |
+| Code Mass (APP) — `code_mass` | 182.8 | 144.2 | 997.0 | 808.3 |
+| Smell Total — `smell_total` | 0 | 0 | 0 | 0 |
 
 ---
 
@@ -123,7 +126,8 @@ behavior.
 The practical consequence for reading other RQs: on claim-office, prompt style
 and run cost are coupled, so a cost comparison across prompt styles on that
 kata is not a clean measurement of workflow efficiency. On sphinx-score they are
-not coupled, which makes it the better carrier if cost is an outcome.
+not coupled, which makes it the safer carrier if cost is an outcome — because of
+that independence, not because its absolute cost is lower.
 
 ---
 
@@ -169,5 +173,10 @@ to establish before the sphinx-score decomposition numbers can be used elsewhere
 - **The two verification suites are not commensurable** (16 vs. 15 scenarios,
   different granularity). Gaps are compared per kata; the absolute Correctness
   (external) values are not.
+- **Cost and code-shape metrics are not comparable across the two katas.**
+  `sphinx-score` is the small kata by construction and `claim-office` the large
+  one, so their cost, complexity and Code Mass (APP) differ by task size, not by
+  quality. Only the prompt-style contrast *within* a kata is a measurement; no
+  ranking is implied between the katas on any of these metrics.
 - **`cost_usd` is a list-price baseline** (token × price), not a billed amount —
   Requesty reports no inline cost.
