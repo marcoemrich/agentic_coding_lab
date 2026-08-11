@@ -1,6 +1,7 @@
 {
   "source": "pi",
   "model": "azure/gpt-5.6-sol@swedencentral",
+  "phase_source": "inline-tool",
   "total_tokens": {
     "input": 119823,
     "output": 3476,
@@ -10,7 +11,7 @@
     "total": 167331
   },
   "context_utilization_pct": null,
-  "cycle_count": 0,
+  "cycle_count": 5,
   "phase_summary": {
     "averages": {
       "red": {
@@ -32,8 +33,8 @@
   "cost_usd": 0,
   "skill_invocations": {
     "test-list": 0,
-    "red": 0,
-    "green": 0,
+    "red": 5,
+    "green": 4,
     "refactor": 0
   }
 }

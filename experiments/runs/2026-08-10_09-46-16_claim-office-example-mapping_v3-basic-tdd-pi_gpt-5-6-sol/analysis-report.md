@@ -1,6 +1,6 @@
 # Analysis Report: 2026-08-10_09-46-16_claim-office-example-mapping_v3-basic-tdd-pi_gpt-5-6-sol
 
-Generated: 2026-08-10T09:51:14+00:00
+Generated: 2026-08-11T23:15:54+02:00
 
 ## Configuration
 
@@ -30,19 +30,19 @@ Generated: 2026-08-10T09:51:14+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-08-10_09-46-16_claim-office-example-mapping_v3-basic-tdd-pi_gpt-5-6-sol
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-08-10_09-46-16_claim-office-example-mapping_v3-basic-tdd-pi_gpt-5-6-sol
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-08-10_09-46-16_claim-office-example-mapping_v3-basic-tdd-pi_gpt-5-6-sol
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-08-10_09-46-16_claim-office-example-mapping_v3-basic-tdd-pi_gpt-5-6-sol
 
- ✓ src/claim-office.spec.ts  (17 tests) 4ms
- ✓ src/cli.spec.ts  (4 tests) 425ms
+ ✓ src/claim-office.spec.ts  (17 tests) 5ms
+ ✓ src/cli.spec.ts  (4 tests) 903ms
 
  Test Files  2 passed (2)
       Tests  21 passed (21)
-   Start at  09:51:15
-   Duration  721ms (transform 34ms, setup 0ms, collect 37ms, tests 429ms, environment 0ms, prepare 87ms)
+   Start at  23:15:55
+   Duration  1.43s (transform 67ms, setup 0ms, collect 64ms, tests 908ms, environment 0ms, prepare 243ms)
 ```
 
 ## Coverage
@@ -104,7 +104,7 @@ Generated: 2026-08-10T09:51:14+00:00
 
 | Metric | Value |
 |--------|-------|
-| Cycle Count | 0 |
+| Cycle Count | 4 |
 | Avg Cycle Time | 0.00s |
 | Avg Red Phase | 0s |
 | Avg Green Phase | 0s |
@@ -124,7 +124,7 @@ _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and ma
 
 | Metric | Value |
 |--------|-------|
-| Refactorings Applied | 0 |
+| Refactorings Applied | 2 |
 
 ### TDD Discipline
 

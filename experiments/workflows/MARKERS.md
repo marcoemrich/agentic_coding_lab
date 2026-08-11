@@ -240,20 +240,74 @@ marker is broken — fix it before launching the n=3 batch.
 
 `v1-oneshot` / `v1-oneshot-pi` (no TDD) and `v3-basic-tdd` / `v3-basic-tdd-pi`
 ("use TDD", no phase structure) prescribe **no phase markers**. They carry only
-the done-marker (marker 4 / P7). Verified across all 22 CC `v3-basic-tdd` runs
-and five models: `cycle_count` 1 (parser fallback), `refactorings_applied` 0,
-`predictions_total` 0 — without exception. v3 tells the model to do TDD but never
-tells it to write `## Red`.
+the done-marker (marker 4 / P7). v3 tells the model to do TDD but never tells it
+to write `## Red`.
 
 This is **not a broken marker** and must not be "fixed": adding markers would turn
 v3 into a mini-v4 and break comparability with the existing runs that define what
 v3 means in this lab. The healthy-baseline checklist above does **not** apply to
 these four workflows.
 
-Consequence for RQs using them as a floor (e.g. `RQ-architecture-axis-sol-pi`):
-report `cycle_count`, `refactorings_applied` and `predictions_correct_rate` as
-**n/a**, never as 0, and award no trophy in those rows. Correctness and
-code-quality metrics are unaffected — they are measured from the source tree.
+#### Marker-free ≠ unmeasurable: the inline-tool inference
+
+Both parsers reconstruct phases from the **tool sequence** when a run carries no
+marker at all — `infer_phases_from_tool_sequence` in `analyze_transcript.py`,
+imported by `parse_pi_transcript.py` so cc and pi apply the same heuristic:
+
+- test-edit → `pnpm test` = **red**
+- impl-edit → `pnpm test` = **green**
+- impl-edit with no fresh test before it = **refactor**
+
+`phase_source` records which path produced the numbers — `skills`, `subagents`,
+`skills+subagents` (cc only), `text-markers`, `inline-tool` or `none`; both
+parsers use the same vocabulary. **The decision is per run, not per metric** —
+inference runs only when the transcript carries no marker of any kind.
+In an instrumented workflow a zero is a measurement, not a gap; a per-metric
+fallback would fabricate refactorings for marked runs whose refactor count is
+legitimately 0. (That bug existed briefly in 2026-08 and was caught by a
+regression diff over 226 pi runs.)
+
+#### What the inferred numbers do and do not support
+
+`cycle_count` is a genuine signal — v3 runs show multi-cycle red/green sequences.
+But it is **not comparable to marker-based counts**: on opus-5 v3 yields 1–8
+while v6.6 yields 7–57. Different constructs (inferred tool sequence vs. marker
+emission), not different amounts of discipline. Never put them in one column.
+
+A non-zero `cycle_count` also does not mean the run was *rigorous* TDD. It counts
+red/green alternations, not their size. Across 55 v3 runs only 22 % open with an
+increment of two test cases or fewer, and 31 % never run the tests before
+implementing — most models author a whole suite up front and implement against
+it. To claim step size or verified-red, measure the first cycle directly; see
+`research/questions-cross/1.5-v3-emergent-tdd/` F-1.5.
+
+`refactorings_applied` is an **upper bound, not a refactoring count**. All 60
+candidates across every v3 run (cc and pi) were hand-classified — against the
+accompanying assistant text where the model narrates its work, against the code
+diff for models that stay silent:
+
+| Category | n | share |
+|---|---:|---:|
+| Refactoring (structure, no behaviour change) | 14 | 23% |
+| Bugfix (wrong logic corrected) | 11 | 18% |
+| Toolchain fix (tsc / ESLint) | 16 | 27% |
+| New untested file ("Now the CLI:") | 19 | 32% |
+
+Precision is strongly model-dependent: `gpt-5-6-sol` 43%, `opus-5` 37%, and
+**0% for opus-4-7, opus-4-6 and haiku-4-5** — those models produce candidates,
+but none of them are refactorings. Report the raw count only alongside a
+validated one, never on its own. Details in
+`research/questions-cross/1.5-v3-emergent-tdd/`.
+
+`predictions_*` stays genuinely unmeasurable — no inference can reconstruct a
+prediction the model was never asked to state. Report those as **n/a**, never 0,
+and award no trophy in those rows.
+
+Consequence for RQs using these workflows as a floor (e.g.
+`RQ-architecture-axis-opus5`, `RQ-architecture-axis-sol-pi`): `cycle_count` and
+`refactorings_applied` are available with the caveats above; only
+`predictions_correct_rate` is n/a. Correctness and code-quality metrics are
+unaffected — they are measured from the source tree.
 - cursor workflows satisfying markers C1–C7: `v6.2.1-phase-continuation-cursor`
   (C4b not applicable — that generation has no end-refactor phase),
   `v6.6-lab-split-cursor` (all markers incl. C4b)

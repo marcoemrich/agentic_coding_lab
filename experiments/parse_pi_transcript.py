@@ -19,6 +19,20 @@ Skill/subagent detection (v6.2-pi and other multi-phase pi workflows):
 - Prediction markers ("Red Phase Complete" + Correct/Incorrect) are
   parsed from assistant text the same way as in the CC and OC parsers.
 
+Marker-free workflows (v3-basic-tdd-pi): the prompt says "use TDD" but
+prescribes no phase markers, so none of the signals above fire. For those
+runs the phases are inferred from the write/edit/bash tool sequence
+(test-edit -> `pnpm test` = red; impl-edit -> `pnpm test` = green; impl-edit
+with no fresh test before it = refactor), reusing
+analyze_transcript.infer_phases_from_tool_sequence so cc and pi apply the
+same heuristic. `phase_source` records which path produced the numbers,
+using cc's vocabulary: "subagents", "text-markers", "skills",
+"inline-tool" or "none".
+
+Inferred counts are a *lower bound* on TDD discipline and are not
+comparable to marker-based counts from instrumented workflows — see
+workflows/MARKERS.md.
+
 For v1-oneshot-pi (no skills, no subagent) all TDD fields stay 0.
 """
 
@@ -32,7 +46,10 @@ from pathlib import Path
 # Reuse the prediction extractor so all three parsers agree on what counts.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 try:
-    from analyze_transcript import extract_predictions_from_text  # type: ignore
+    from analyze_transcript import (  # type: ignore
+        extract_predictions_from_text,
+        infer_phases_from_tool_sequence,
+    )
 except Exception:  # pragma: no cover — keep self-contained fallback
     _FALLBACK_RE = re.compile(
         r"(?:-|✅|❌|[.:])[\s]*[*_]{0,2}(Correct|Incorrect)[*_]{0,2}\b",
@@ -46,6 +63,11 @@ except Exception:  # pragma: no cover — keep self-contained fallback
         correct = sum(1 for m in matches if m.lower() == "correct")
         total = len(matches)
         return (correct, total)
+
+    def infer_phases_from_tool_sequence(events):  # type: ignore[misc]
+        # Without the shared implementation the inline inference is simply
+        # unavailable; marker-based paths are unaffected.
+        return []
 
 
 TDD_SKILLS = ("test-list", "red", "green", "refactor")
@@ -293,6 +315,52 @@ def _process_tool_call_event(ev: dict, by_id: dict) -> None:
         by_id[tc_id] = (name, args)
 
 
+_TEST_PATH_RE = re.compile(r"\.(spec|test)\.(ts|tsx|js|jsx|mjs|cjs)$", re.IGNORECASE)
+
+
+def _inline_tool_events(tool_calls: list[tuple[str, dict]]) -> list[tuple[None, str, int]]:
+    """Classify pi tool calls into the event kinds the phase inference expects.
+
+    Mirrors analyze_transcript.py's inline_tool_events construction, with pi's
+    field names: the path lives in `path` (not `file_path`), and pi has exactly
+    two write tools, `write` and `edit` (its `edit` takes an `edits[]` array, so
+    it covers what CC splits into Edit/MultiEdit).
+
+    pi carries no per-call timestamp and no running token count, so both slots
+    are filled with neutral values: durations come out 0.0, which is what the pi
+    parser already reports for every phase. Only the ordered `kind` sequence
+    drives the phase counts we consume.
+    """
+    events: list[tuple[None, str, int]] = []
+    for name, args in tool_calls:
+        if not isinstance(args, dict):
+            continue
+        tool = str(name).lower()
+
+        if tool == "bash":
+            cmd = args.get("command")
+            if isinstance(cmd, str) and ("pnpm test" in cmd or "pnpm run test" in cmd):
+                events.append((None, "test_run", 0))
+            continue
+
+        if tool not in ("write", "edit"):
+            continue
+
+        path = args.get("path") or args.get("file_path") or ""
+        if not isinstance(path, str) or not path:
+            continue
+        # pi paths are relative ("src/x.ts"), CC's are absolute — startswith
+        # covers pi, the "/src/" branch covers CC-style absolute paths.
+        is_test = bool(_TEST_PATH_RE.search(path))
+        is_src = ("/src/" in path) or path.startswith("src/")
+        verb = "write" if tool == "write" else "edit"
+        if is_test:
+            events.append((None, f"{verb}_test", 0))
+        elif is_src:
+            events.append((None, f"{verb}_impl", 0))
+    return events
+
+
 def _assistant_text_of(ev: dict) -> str | None:
     """Return the final assistant text block of a text_end event, else None."""
     if ev.get("type") != "message_update":
@@ -523,8 +591,34 @@ def main(run_dir: str) -> int:
         predictions_correct = sa_predictions_correct
         predictions_total = sa_predictions_total
 
-    # cycle_count: prefer text markers over skill-reads for pi runs.
-    cycle_count = text_phase_counts["red"] or skill_counts["red"]
+    # Marker-free workflows (v3-basic-tdd-pi) prescribe no phase markers at all,
+    # so every counter above stays 0 — indistinguishable from "the model never
+    # did TDD". Infer the phases from the tool sequence instead, using the same
+    # heuristic cc applies to its own v3 runs.
+    #
+    # The decision is per *run*, not per metric: inference runs only when the
+    # transcript carries no marker of any kind. In an instrumented workflow a
+    # zero is a measurement ("this run refactored nothing"), not a gap, and must
+    # not be overwritten — a per-metric fallback would silently fabricate
+    # refactorings for marked runs whose refactor count is legitimately 0.
+    has_any_marker = (
+        any(text_phase_counts.values())
+        or any(skill_counts.values())
+        or refactor_calls > 0
+        or predictions_total > 0
+    )
+    inferred_counts: dict[str, int] = {name: 0 for name in TDD_SKILLS}
+    if not has_any_marker:
+        for phase in infer_phases_from_tool_sequence(_inline_tool_events(tool_calls)):
+            name = phase.get("phase")
+            if name in inferred_counts:
+                inferred_counts[name] += 1
+
+    # cycle_count: prefer text markers over skill-reads for pi runs; inferred
+    # phases only for wholly marker-free runs (guarded above).
+    cycle_count = (
+        text_phase_counts["red"] or skill_counts["red"] or inferred_counts["red"]
+    )
 
     # refactorings_applied: subagent calls are the primary signal (hybrid
     # workflows such as v6.x-pi isolate refactor in a subagent). Inline
@@ -532,15 +626,44 @@ def main(run_dir: str) -> int:
     # subagent call, so fall back to the `## Refactor` text marker — the same
     # relationship P1 has to skill reads for cycle_count. Subagent workflows
     # do not emit `## Refactor`, so this fallback cannot inflate their count.
-    refactorings_applied = refactor_calls or text_phase_counts["refactor"]
+    # Marker-free runs reach neither and land on the inferred count, which counts
+    # impl-edit blocks with no fresh test before them. That count is a weak
+    # proxy: it also captures bugfixes, lint/tsc fixes and untested new files.
+    # Treat it as an upper bound, never as a refactoring count.
+    refactorings_applied = (
+        refactor_calls
+        or text_phase_counts["refactor"]
+        or inferred_counts["refactor"]
+    )
+
+    # Which path actually produced the numbers above. Uses cc's phase_source
+    # vocabulary (analyze_transcript.py) so a reader can tell a marker-based
+    # count from an inferred one across harnesses — the two are not comparable
+    # (see workflows/MARKERS.md).
+    if refactor_calls:
+        phase_source = "subagents"
+    elif any(text_phase_counts.values()):
+        phase_source = "text-markers"
+    elif any(skill_counts.values()):
+        phase_source = "skills"
+    elif any(inferred_counts.values()):
+        phase_source = "inline-tool"
+    else:
+        phase_source = "none"
 
     for phase in TDD_SKILLS:
         if text_phase_counts.get(phase, 0) > skill_counts.get(phase, 0):
             skill_counts[phase] = text_phase_counts[phase]
+        # Surface the inferred per-phase counts too, but only where no marker
+        # path reported anything for that phase — same last-link precedence the
+        # cycle_count and refactorings_applied chains use above.
+        if skill_counts.get(phase, 0) == 0 and inferred_counts.get(phase, 0) > 0:
+            skill_counts[phase] = inferred_counts[phase]
 
     metrics = {
         "source": "pi",
         "model": last_model,
+        "phase_source": phase_source,
         "total_tokens": {
             "input": input_t,
             "output": output_t,

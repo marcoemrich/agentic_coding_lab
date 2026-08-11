@@ -1,6 +1,7 @@
 {
   "source": "pi",
   "model": "azure/gpt-5.6-sol@swedencentral",
+  "phase_source": "inline-tool",
   "total_tokens": {
     "input": 328673,
     "output": 9796,
@@ -10,7 +11,7 @@
     "total": 496677
   },
   "context_utilization_pct": null,
-  "cycle_count": 0,
+  "cycle_count": 4,
   "phase_summary": {
     "averages": {
       "red": {
@@ -23,7 +24,7 @@
         "avg_duration_seconds": 0.0
       }
     },
-    "refactorings_applied": 0,
+    "refactorings_applied": 2,
     "tests_passed_immediately": 0
   },
   "predictions_correct": 0,
@@ -32,8 +33,8 @@
   "cost_usd": 0,
   "skill_invocations": {
     "test-list": 0,
-    "red": 0,
-    "green": 0,
-    "refactor": 0
+    "red": 4,
+    "green": 3,
+    "refactor": 2
   }
 }
