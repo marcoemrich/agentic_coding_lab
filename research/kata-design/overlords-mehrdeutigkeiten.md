@@ -187,14 +187,11 @@ alten Fassung war derselbe Sprung 24 statt 10.
 Regeltext** — sonst löst der Regeltext die Mehrdeutigkeit auf
 (Wegweiser).
 
-**Methodischer Vorbehalt:** Die gestaffelte Formulierung und die neue
-Selbstbezug-Lesart sind **nicht** durch einen Vortest gedeckt. Die Probe
-vom 2026-06-09 kannte nur "mit sich selbst" / "ohne sich selbst" und die
-Schwellen-Formulierung. Wie Modelle `2 per type beyond three, else 1`
-spontan lesen — und ob sie die Karten-eigene-Sicht überhaupt in Betracht
-ziehen — ist offen. Ein Nachtest wäre wünschenswert, blockiert die Kata
-aber nicht: Alle vier Lesart-Alternativen sind in der Verifikations-Suite
-diskriminiert (siehe `experiments/katas/sphinx-score-verification/README.md`).
+Der Nachtest zur gestaffelten Fassung ist am 2026-08-11 gelaufen — siehe
+[Vortest-Befunde gestaffelte Fassung](#vortest-befunde-gestaffelte-fassung-2026-08-11).
+Er hat eine **vierte, ungeplante Achse** freigelegt (Trostpunkt: addiert
+oder ersetzt) und zeigt, dass alle drei Festlegungen gegen die
+Modell-Mehrheit stehen.
 
 ### Lesarten (Vortest-Fassung 2026-06-09, historisch)
 
@@ -414,6 +411,93 @@ Set-Auflösung über Sphinx (n/a), Mantikor, Chimera und Orthrus
 **einheitlich** festgelegt werden — sonst entsteht unbeabsichtigte
 Zusatz-Mehrdeutigkeit ("warum löst Mantikor anders auf als Chimera?").
 
+## Vortest-Befunde gestaffelte Fassung (2026-08-11)
+
+Konfiguration: `ambiguity-probe/overlords-sphinx-gestaffelt.yaml`,
+3 Fragen × 4 Modell-Konfigs × n=5 = 60 Calls, alle fehlerfrei.
+Roh-Antworten: `results-overlords-sphinx-gestaffelt/`.
+Klassifikation: Headline-Zahl je Antwort (die als Ergebnis präsentierte
+Zahl, nicht die im Rechenweg genannte).
+
+| Frage | misst | Festlegung | getroffen | verschiedene Antworten |
+|---|---|---|---|---|
+| G1 | Formulierung "jenseits von drei" | 5 | **2/20** | 5 (5·7·8·9·11) |
+| G2a | zählt eine zweite Sphinx als Art? | 6 | **6/20** | 7 |
+| G2b | zählt die Sphinx sich selbst? | 2 | **0/20** | 2 (1·3) |
+
+### Befund 1 — vierte Achse: Trostpunkt addiert oder ersetzt?
+
+**Nicht geplant, vom Vortest freigelegt.** Die Modelle lesen "sonst 1
+Punkt" überwiegend als *Ersatz* für den Grundwert, nicht als Zusatz.
+Wörtlich (Opus 4.7 mit thinking, G2b rep 5):
+
+> Der Grundwert von 1 Punkt wird durch die Bonusregel ersetzt (nicht
+> addiert)
+
+und (Opus 4.7 ohne thinking, G2b rep 5):
+
+> Somit: 1 Punkt (Grundwert) + 0 Bonus = 1.
+
+In G2b antwortet **niemand** mit der Festlegung 2: 9/20 lesen "ersetzt"
+(→ 1), 11/20 zählen die Sphinx selbst mit und kommen auf 3.
+
+Ursache ist die Basis-Senkung von 4 auf 1: Bei Basis 4 waren "4+1 = 5"
+und "ersetzt = 1" klar verschiedene Aussagen. Mit Basis 1 stehen zwei
+Einsen nebeneinander, und "1 Punkt. … sonst 1" liest sich natürlicher als
+Fallback denn als Summe. Die ursprünglich geplante Ellipse-Achse
+(*pauschal vs. pro Art*) misst damit faktisch etwas anderes:
+*addiert vs. ersetzt*.
+
+**Festlegung (User, 2026-08-11): bleibt bei addiert (1 + 1 = 2).** Die
+Lesart ist aus dem Regeltext ableitbar — die Modelle benennen die
+Zweideutigkeit selbst ("ist unklar, ob …") —, also zulässig trotz
+20:0-Konvergenz. Es ist der stärkste Beispiel-Hebel der Kata und damit
+ein besonders klarer Beleg dafür, dass Example-Mapping nötig ist.
+Abgesichert: 6 der 10 example-mapping-Beispiele und 8 der 15
+Verifikations-Szenarien schließen die "ersetzt"-Lesart aus.
+
+### Befund 2 — Selbstbezug streut weiter, aber anders als 2026-06
+
+G2a (2 Sphinxe, 3 andere Arten) trennt die Lesarten sauber und streut
+über alle vier Modelle: 6× die Festlegung 6, 5× 8 (Sonnet, konsistent),
+4× 2, dazu 4, 3, 10 und eine unparsbare Antwort. Sonnet 4.6 antwortet
+5/5 mit der Headline 8 — reproduzierbar, aber in 4 dieser 5 Läufe nennt
+der Rechenweg die 6 (rep 2: "Jede Sphinx ist damit 1 + 2 = 3 Punkte wert.
+Zwei Sphinxen = **6 Punkte**." — gefolgt von "Warte –" und der Headline
+8). Sonnet *rechnet* hier also überwiegend die Festlegung und verwirft
+sie in der Selbstkorrektur.
+
+Die Karten-eigene Sicht ("andere Sphinxe zählen, die eigene nicht") wird
+also weder spontan gewählt noch systematisch ausgeschlossen — sie liegt
+im Streubereich. Damit bleibt die Festlegung plausibel.
+
+### Befund 3 — Rechenchaos überlagert die Lesart-Streuung
+
+G1 produziert fünf verschiedene Antworten und in **9/20** Läufen eine
+sichtbare Selbstkorrektur mitten im Text ("Warte — ich zähle neu",
+"Warte, die …"). Ein Opus-Lauf rechnet im Text `1 + 3 + 4 = 8` und
+schreibt als Headline "11 Punkte".
+
+Die häufigste G1-Antwort ist 7 (12/20) = "Überschuss-Lesart, aber mit
+Selbstzählung". Die Formulierung *jenseits von drei* wird also
+mehrheitlich korrekt als Überschuss verstanden; was streut, ist der
+Selbstbezug — und zusätzlich die Arithmetik.
+
+**Bewertung (User, 2026-08-11): akzeptiert als
+[Rechenfehler-als-TDD-Indikator](kata-construction.md#rechenfehler-als-tdd-indikator).**
+Eine Lösung ohne laufende Tests bezahlt den Fehler; genau das soll die
+Kata messen. Einschränkung, die bei der Auswertung zu beachten ist: Bei
+G1 lässt sich "anders gelesen" nicht sauber von "verrechnet" trennen.
+
+### Konsequenz
+
+Alle drei Festlegungen stehen **gegen** die Modell-Mehrheit (2/20, 6/20,
+0/20). Das ist methodisch zulässig — jede Lesart ist aus dem Regeltext
+ableitbar und wird von den Modellen teils selbst benannt — und ergibt das
+stärkste erreichbare Example-Mapping-Signal: Ohne Beispiele streut die
+Kata über 5 bzw. 7 verschiedene Ergebnisse, mit Beispielen muss sie
+konvergieren. Die Kata bleibt unverändert.
+
 ## Vortest-Befunde (Ambiguitäts-Probe, 2026-06-09)
 
 Drei Läufe mit `ambiguity-probe/probe.py <config>.yaml`, je 4 Modell-Konfigs
@@ -560,8 +644,13 @@ Test-Suite jede Achse isoliert pinnen (Stage 1), bevor kombiniert wird.
       außer der Sphinx gewertet wird.
 - [x] Vollständige Kata gebaut: drei Prompt-Stile + 15 Verifikations-
       Szenarien, jede Achse isoliert (Stage 1) und kombiniert (Stage 2/3).
-- [ ] **Nachtest offen:** Die gestaffelte Formulierung und die
-      Selbstbezug-Lesart „eigene Karte nein, andere ja" sind nicht durch
-      eine Ambiguitäts-Probe gedeckt (die Probe vom 2026-06-09 kannte
-      beide nicht). Streuung der Modelle auf `2 per type beyond three,
-      else 1` ist unbekannt.
+- [x] **Nachtest gelaufen (2026-08-11):** 60 Calls auf die gestaffelte
+      Fassung. Alle drei Festlegungen stehen gegen die Modell-Mehrheit
+      (2/20, 6/20, 0/20); die Kata bleibt unverändert (User).
+- [x] Vierte Achse entdeckt und festgelegt: „sonst 1" **addiert** sich
+      zur Basis (User, gegen 20:0-Konvergenz). Vom Vortest freigelegt,
+      nicht geplant.
+- [x] Rechenchaos in G1 (9/20 Selbstkorrekturen) als
+      Rechenfehler-TDD-Indikator akzeptiert (User).
+- [ ] Nach den ersten echten Runs prüfen, ob das Rechenchaos die
+      Lesart-Messung stört oder ob TDD es auffängt.

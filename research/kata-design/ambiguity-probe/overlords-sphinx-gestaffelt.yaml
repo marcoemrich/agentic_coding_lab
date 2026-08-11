@@ -1,0 +1,122 @@
+# Vortest: Sphinx in der GESTAFFELTEN Fassung (2026-08-11)
+#
+# Die Probe vom 2026-06-09 (overlords-sphinx-schwelle.yaml,
+# overlords-sphinx-undead.yaml, overlords-mehrdeutigkeiten.yaml) testete die
+# Schwellen-Fassung "4 Punkte. 2 pro Art ab vier Arten, sonst 1". Die Kata
+# trägt seit 2026-08-11 die gestaffelte Fassung:
+#
+#     Sphinx — 1 Punkt. 2 pro Art jenseits von drei, sonst 1.
+#
+# Damit sind zwei Achsen ungeprüft:
+#   G1  Wie liest man "jenseits von drei"? (neue Formulierung)
+#   G2  Zählt eine Sphinx andere Sphinxe als Art? (neue Lesart; die alte
+#       Probe kannte nur "mit sich selbst" / "ohne sich selbst")
+# Achse G3 (Ellipse "sonst 1") wurde in der alten Fassung geprüft und
+# streute; hier zur Kontrolle mit, weil die neue Formulierung sie
+# beeinflussen könnte.
+#
+# Isolierung: Jede Frage variiert nur EINE Achse. G1 hält die Sphinx-Zahl
+# bei 1 (Selbstbezug egal, weil die eigene Karte in keiner Lesart zählt —
+# außer der "zählt sich selbst"-Lesart, die G2b separat misst). G2 hält die
+# Artenzahl konstant und variiert nur die Sphinx-Anzahl.
+#
+# Aufruf:
+#   cd research/kata-design/ambiguity-probe
+#   python3 probe.py overlords-sphinx-gestaffelt.yaml
+# Ergebnis: results-overlords-sphinx-gestaffelt/
+#
+# Bezug: ../overlords-mehrdeutigkeiten.md
+
+bezug: "../overlords-mehrdeutigkeiten.md"
+
+mehrdeutigkeiten:
+  - id: G1
+    titel: "Sphinx — 'jenseits von drei': nur die Arten darüber, oder alle?"
+    regeln: |
+      Punktewertung im Kartenspiel Overlords. Am Spielende zählt jeder
+      Spieler die Karten seiner Armee. Wertung der Sphinx-Karte:
+      - Eine Sphinx zählt 1 Punkt.
+      - Jede Sphinx erhält außerdem 2 Punkte pro Art von Monster jenseits
+        von drei, sonst 1 Punkt.
+    frage: |
+      Eine Armee besteht aus folgenden Karten:
+      - 1 Sphinx
+      - 1 Zombie
+      - 1 Hydra
+      - 1 Zyklop
+      - 1 Orthrus
+      - 1 Chimäre
+      Wie viele Punkte ist die Sphinx wert? Antworte mit einer einzelnen
+      Zahl und einer kurzen Begründung.
+    lesarten:
+      L1_nur_ueberschuss_ohne_selbst: "5 (5 andere Arten, davon 2 jenseits von drei; 1 + 2x2)"
+      L2_nur_ueberschuss_mit_selbst: "7 (6 Arten inkl. Sphinx, davon 3 jenseits; 1 + 3x2)"
+      L3_alle_arten_ohne_selbst: "11 (Schwellen-Lesart: 5 Arten x 2; 1 + 10)"
+      L4_alle_arten_mit_selbst: "13 (6 Arten x 2; 1 + 12)"
+    # Nur eine Sphinx in der Armee -> die Lesart "andere Sphinxe zaehlen"
+    # faellt hier mit L1/L3 zusammen. G1 misst also die Formulierung
+    # ("jenseits von drei" = nur der Ueberschuss oder alle Arten) und
+    # sekundaer die Selbstzaehlung, nicht die Zweit-Sphinx-Frage.
+
+  - id: G2a
+    titel: "Sphinx — zählt eine zweite Sphinx als Art? (unter der Grenze)"
+    regeln: |
+      Punktewertung im Kartenspiel Overlords. Am Spielende zählt jeder
+      Spieler die Karten seiner Armee. Wertung der Sphinx-Karte:
+      - Eine Sphinx zählt 1 Punkt.
+      - Jede Sphinx erhält außerdem 2 Punkte pro Art von Monster jenseits
+        von drei, sonst 1 Punkt.
+    frage: |
+      Eine Armee besteht aus folgenden Karten:
+      - 2 Sphinx
+      - 1 Zombie
+      - 1 Hydra
+      - 1 Zyklop
+      Wie viele Punkte sind die Sphinx-Karten dieser Armee zusammen wert?
+      Antworte mit einer einzelnen Zahl und einer kurzen Begründung.
+    lesarten:
+      L1_sphinx_zaehlt_nie: "4 (3 andere Arten, keine jenseits von drei; 2x(1+1))"
+      L2_sphinx_zaehlt_als_art: "6 (je 4 Arten, 1 jenseits; 2x(1+2)) — deckt sowohl 'andere Sphinx zaehlt' als auch 'zaehlt sich selbst' ab; bei 2 Sphinxen liefern beide denselben Wert. G2b trennt sie."
+      L3_alle_arten_statt_ueberschuss: "18 (Schwellen-Lesart mit Sphinx-Art: 2x(1+4x2))"
+      LX_gesamtarmee_einmal: "(Fehllesart: nur eine Sphinx gewertet, halber Wert)"
+
+  - id: G2b
+    titel: "Sphinx — zählt sie sich selbst? (Sphinx allein mit drei Arten)"
+    regeln: |
+      Punktewertung im Kartenspiel Overlords. Am Spielende zählt jeder
+      Spieler die Karten seiner Armee. Wertung der Sphinx-Karte:
+      - Eine Sphinx zählt 1 Punkt.
+      - Jede Sphinx erhält außerdem 2 Punkte pro Art von Monster jenseits
+        von drei, sonst 1 Punkt.
+    frage: |
+      Eine Armee besteht aus folgenden Karten:
+      - 1 Sphinx
+      - 1 Zombie
+      - 1 Hydra
+      - 1 Zyklop
+      Wie viele Punkte ist die Sphinx wert? Antworte mit einer einzelnen
+      Zahl und einer kurzen Begründung.
+    lesarten:
+      L1_ohne_selbst: "2 (3 andere Arten, keine jenseits von drei; 1 + 1)"
+      L2_mit_selbst: "3 (4 Arten inkl. Sphinx, 1 jenseits von drei; 1 + 2)"
+      L3_alle_arten_mit_selbst: "9 (Schwellen-Lesart: 4 Arten x 2; 1 + 8)"
+
+modelle:
+  - id: opus-think
+    model: claude-opus-4-7
+    effort: high
+    label: "Opus 4.7 (mit thinking)"
+  - id: opus
+    model: claude-opus-4-7
+    effort: low
+    label: "Opus 4.7 (ohne thinking)"
+  - id: sonnet-think
+    model: claude-sonnet-4-6
+    effort: high
+    label: "Sonnet 4.6 (mit thinking)"
+  - id: haiku
+    model: claude-haiku-4-5-20251001
+    effort: low
+    label: "Haiku 4.5 (ohne thinking)"
+
+n_repeats: 5
