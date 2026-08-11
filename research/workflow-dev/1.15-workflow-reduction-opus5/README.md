@@ -7,11 +7,11 @@ factors:
     - {workflow: v6.7-app-subordinate-cc,        prompt: example-mapping}  # v6.6 plus APP subordination patch
     - {workflow: v6.8-no-end-refactor-cc,        prompt: example-mapping}  # v6.7 minus end-refactor phase
     - {workflow: v5.2-no-subagent-cc,            prompt: example-mapping}  # v6.8 minus isolated subagent
-    # reference cells — already filled at n=5 by RQ-architecture-axis-opus5
+    # reference cells — already filled: v6.6 on both katas, v6.1/v5.1 on game-of-life only
     - {workflow: v6.6-lab-split-cc,              prompt: example-mapping}  # upper bound: end-refactor + subagent
     - {workflow: v6.1-hybrid-testlist-scope-fix, prompt: example-mapping}  # the 86%/60% compromise
     - {workflow: v5.1-testlist-scope-fix,        prompt: example-mapping}  # shared-context predecessor of v5.2
-  kata_base: [claim-office, game-of-life]
+  kata_base: [sphinx-score, game-of-life]
 controls:
   model: opus-5-no-thinking
 outcomes:
@@ -47,7 +47,7 @@ status: open
 on opus-5 (F-1.1) — more architecture yields better decomposition on both katas. But it
 also quantified the price, and the price is where the decision actually sits:
 
-| claim-office | `cc_avg_loc_per_function` | share of the v6.6 gain | tokens | share of v6.6 cost |
+| claim-office (RQ 4.5) | `cc_avg_loc_per_function` | share of the v6.6 gain | tokens | share of v6.6 cost |
 |---|---:|---:|---:|---:|
 | v3 (baseline) | 9.18 | 0 % | 4 M | 3 % |
 | v5.1 | 5.89 | 55 % | 83 M | 60 % |
@@ -62,6 +62,28 @@ That raises the question this RQ asks: v6.6 and v6.1 differ in *two* things (the
 end-refactor phase and the lab-split refactoring of the rule files), so the 14 % cannot be
 attributed cleanly. And below v6.1 sits a second removable component — the isolated refactor
 subagent itself.
+
+## Why sphinx-score replaces claim-office
+
+The measurement above comes from claim-office, but this RQ runs on **sphinx-score**
+instead. The reason is cost: v6.6 needs 137 M tokens and 93 minutes per claim-office run
+against **19 M and 25 minutes** on sphinx — a factor of 7. The full chain on claim-office
+would cost roughly 1.8–2.5 Bn tokens; on sphinx it is ~0.5 Bn, for *more* cells.
+
+Sphinx is a viable substitute rather than a downgrade: it is the newer novel kata with a
+CLI contract and an external verification suite, and v6.6 already reaches
+`cc_avg_loc_per_function` 3.54 there against 3.21 on claim-office, at `verification_pct`
+1.00 against 0.95. The architecture differentiates on it in the same direction and to a
+similar degree.
+
+Two consequences, both accepted:
+
+- **The v3 → v6.6 span is narrower on sphinx** (8.38 → 3.54, factor 2.4) than on
+  claim-office (9.18 → 3.21, factor 2.9). Differences between adjacent chain steps are
+  correspondingly smaller and may fall inside σ where they would not have on claim-office.
+- **Cross-RQ comparisons to RQ 4.5 change the kata.** Statements pairing a cell here with
+  a claim-office cell there confound workflow and kata. The chain itself is unaffected —
+  all its cells run on the same two katas.
 
 ## The reduction chain
 
@@ -126,11 +148,10 @@ statement about v6.8 would mix "end-refactor removed" with "APP patch added"; wi
 are separable.
 
 v6.7 is the expensive cell in this RQ: it inherits v6.6's end-refactor phase, so it runs at
-v6.6 prices (~137 M tokens, ~93 min per claim-office run). Ten runs of it are roughly 0.8 Bn
-tokens — over half the RQ's budget for one factor. That is the price of a clean chain, and
-it is paid deliberately: the patch is the only change in this line that alters what the
-refactor agents *optimise for*, and F-1.6 showed the old wording pointed against the
-measured outcome.
+v6.6 prices (~19 M tokens, ~25 min per sphinx run; ~15 M and ~19 min on game-of-life). Ten
+runs of it are roughly 0.17 Bn tokens — about a third of the RQ's budget for one factor.
+On claim-office the same cell would have cost 0.8 Bn, which is the main reason the kata
+was switched.
 
 ## Hypotheses
 
@@ -139,9 +160,9 @@ measured outcome.
   extraction for compactness.
   → The patch is worth carrying in every downstream workflow. If v6.7 ≈ v6.6 instead, the
   patch is inert and the v6.8/v5.2 results can be read as pure architecture effects.
-- **H1 (end-refactor is the expensive 14 %).** v6.8 lands near v6.1 on decomposition
-  (~4.0–4.5 on claim-office) at ~60 % of v6.6's tokens, confirming that the end-refactor
-  phase buys the last increment at disproportionate cost.
+- **H1 (end-refactor is the expensive increment).** v6.8 lands near v6.1 on decomposition
+  at markedly fewer tokens than v6.7, confirming that the end-refactor phase buys its
+  increment at disproportionate cost.
   → Recommend v6.8 as the default; keep v6.6/v6.7 for correctness-critical work only.
 - **H2 (the APP patch recovers the gap).** v6.8 reaches v6.7-level decomposition at
   v6.1-level cost, because the per-cycle agent already extracts what the end phase would
@@ -152,39 +173,47 @@ measured outcome.
   end-refactor phase is not.
   → Reduction stops at v6.8.
 - **H4 (v5.2 inherits v5.1's instability).** v5.2 shows the early-termination failure mode
-  documented in F-1.5 — v5.1/claim-office ran 0 / 0.93 / 1 / 1 / 1 on `verification_pct`,
-  with the failing run stopping after 2 cycles with 6 functions and 60 green self-written
-  tests.
+  documented in F-1.5 — on claim-office v5.1 ran 0 / 0.93 / 1 / 1 / 1 on
+  `verification_pct`, with the failing run stopping after 2 cycles with 6 functions and 60
+  green self-written tests. Whether sphinx exposes the same mode is itself open: it is a
+  novel kata with a CLI contract, but smaller than claim-office.
   → Shared-context refactoring is not viable for correctness-critical katas regardless of
   its quality numbers. **This is the outcome that would rule v5.2 out even if it wins on
   decomposition.**
 
 ## Reference values (opus-5-no-thinking, from RQ-architecture-axis-opus5)
 
-**claim-office-example-mapping:**
+**sphinx-score-example-mapping** — only the two ends of the chain exist; v5.1 and v6.1 are
+filled by this RQ:
 
 | Workflow | n | verification_pct | cc_avg_loc_per_function | cognitive_max | smell_total | tokens | duration |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| v5.1 | 5 | 0.79 | 5.89 | 2.8 | 0.2 | 83 M | 23 min |
-| v6.1 | 5 | 0.99 | 4.04 | 2.4 | 0.0 | 82 M | 44 min |
-| v6.6 | 5 | 0.95 | 3.21 | 2.2 | 0.0 | 137 M | 93 min |
+| v3 (context, not a cell) | 6 | 0.97 | 8.38 | 1.5 | 0.0 | 3 M | 4 min |
+| v5.1 | — | — | — | — | — | — | — |
+| v6.1 | — | — | — | — | — | — | — |
+| v6.6 | 6 | 1.00 | 3.54 | 1.0 | 0.0 | 19 M | 25 min |
 
-**game-of-life-example-mapping:**
+**game-of-life-example-mapping** — complete:
 
 | Workflow | n | verification_pct | cc_avg_loc_per_function | cognitive_max | smell_total | tokens | duration |
 |---|---:|---:|---:|---:|---:|---:|---:|
+| v3 (context, not a cell) | 6 | 1.00 | 6.48 | 7.17 | 0.0 | 2 M | 3 min |
 | v5.1 | 5 | 1.00 | 4.12 | 1.8 | 0.0 | 12 M | 7 min |
 | v6.1 | 5 | 1.00 | 4.54 | 1.8 | 1.2 | 8 M | 10 min |
 | v6.6 | 5 | 1.00 | 3.57 | 1.2 | 0.0 | 15 M | 19 min |
 
-Two properties of this baseline shape the design:
+Three properties of this baseline shape the design:
 
-- **The katas disagree about v5.1 vs v6.1.** On claim-office v6.1 leads decomposition
-  (4.04 vs 5.89); on game-of-life v5.1 leads (4.12 vs 4.54, inside 1 σ). The subagent's
-  value is kata-dependent, which is exactly what the v6.8 → v5.2 step re-tests under the
-  APP patch.
-- **Correctness only differentiates on claim-office.** All game-of-life cells sit at 1.00.
-  H4 is therefore testable only on claim-office.
+- **The v5.1-vs-v6.1 question is open on sphinx.** On claim-office v6.1 led decomposition
+  (4.04 vs 5.89); on game-of-life v5.1 leads (4.12 vs 4.54, inside 1 σ). Both cells are
+  filled on sphinx by this RQ, so the v6.8 → v5.2 step gets an anchor on both katas.
+- **Correctness may not differentiate at all.** Every game-of-life cell sits at 1.00, and
+  sphinx/v6.6 does too. If sphinx also saturates, `verification_pct` contributes nothing
+  and H4 becomes untestable in this RQ — the failure mode it targets was observed on
+  claim-office, which is no longer a cell.
+- **Sphinx and game-of-life sit close together on v6.6** (3.54 vs 3.57) but far apart on
+  v3 (8.38 vs 6.48). The architecture has more room on sphinx, which is where the chain
+  should show its steps most clearly.
 
 ## Caveats (binding)
 
@@ -209,6 +238,14 @@ Two properties of this baseline shape the design:
    trusting the batch — v5.2 especially, since it is the only one whose refactor phase
    moved from `agents/` to `commands/`.
 6. **Only one prompt style** (example-mapping), consistent with the whole architecture line.
+   Worth noting for sphinx specifically: `RQ-sphinx-prompt-sensitivity` measured
+   v6.6/sphinx-prose at `verification_pct` 0.15 against 1.00 for example-mapping. The kata
+   is highly prompt-sensitive, so this RQ's results describe the example-mapping variant
+   only and must not be generalised to the kata.
+7. **H4 may be untestable here.** The early-termination mode it targets was observed on
+   claim-office, which this RQ drops. If sphinx saturates at `verification_pct` 1.00 like
+   game-of-life, no cell can fail H4 and the question moves to a follow-up RQ on
+   claim-office — at that kata's cost.
 
 ## Sequencing
 
