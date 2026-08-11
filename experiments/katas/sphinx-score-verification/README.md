@@ -77,12 +77,22 @@ smoke test. `S1-none` = "a Sphinx never counts as a type",
 | 13 | 2 Sphinxes + 3 types | 4 each | 6 | S1-none |
 | 14 | 3 Sphinxes + 3 types | 4 each | 9 | S1-none |
 | 15 | 2 Sphinxes + 5 types | 6 each | 14 | S1-none |
+| 16 | scenario 13 reordered, Sphinxes in the middle | 4 each | 6 | positional exclusion |
 
 Scenario 13 is the sharpest S1 pin: three other types plus a second
 Sphinx puts each Sphinx at four types, so both start scoring — 6 instead
 of 4. Scenario 09 is the sharpest S2 pin: reading the three Undead
 Warrior variants as three types would push the army to five types and
 score 5 instead of 2.
+
+Scenario 16 is scenario 13 with the cards in a different order and the
+same expected score, so it pins order-independence. It was added after a
+smoke run (2026-08-11) in which a refactor rewrote the "exclude this
+Sphinx" step as `army.slice(1)` — dropping the *first* card positionally.
+Every scenario 01–15 lists the Sphinxes first, so that implementation
+scored 15/15 while being wrong; with scenario 16 it scores 15/16. Only
+two-Sphinx armies discriminate this: with a single Sphinx, removing the
+wrong card happens to leave the type count unchanged.
 
 Scenarios 01, 07 and 11 pin no ambiguity on their own; they guard the
 base mechanics (no Sphinx → 0; types are counted, not cards; several
@@ -92,10 +102,16 @@ Every pinned reading is discriminated from both directions:
 
 | Reading | Fails at |
 |---|---|
-| S1-none (Sphinx never a type) | 13, 14, 15 |
+| S1-none (Sphinx never a type) | 13, 14, 15, 16 |
 | S1-all (Sphinx counts itself) | 04, 05, 06, 09, 10 |
 | S2 (UW variants = three types) | 08, 09, 10 |
+| S3 ("else 1" replaces the base instead of adding) | 02, 03, 04, 07, 08, 09, 11, 12 |
 | S3 ("else 1" per type) | 02, 03, 04, 07, 08, 09, 12 |
+| positional exclusion (`army.slice(1)`) | 16 |
+
+The "else 1 replaces the base" reading is the one every model in the
+pre-test picked (20/20, see the design doc) — it is the strongest
+example-mapping lever in this kata.
 
 ## Manual execution
 

@@ -1,0 +1,7 @@
+{
+  "name": "sphinx-score smoke",
+  "description": "Erster vollstaendiger Lauf der neuen Sphinx-Kata. Prueft: (1) laeuft die Kata durch, (2) baut der Agent src/cli.ts nach Vertrag (cli_built), (3) greift die Verification-Suite und liefert verification_pct, (4) halten die TDD-Marker (cycle_count, predictions, refactorings). Der example-mapping-Stil traegt die Beispiele, die die vier Mehrdeutigkeits-Achsen pinnen. Ein frueherer Versuch (2026-08-11 00:39) brach nach Zyklus 6 durch Verlust des Run-Verzeichnisses ab und lieferte keine Metriken.",
+  "runs": [
+    { "kata": "sphinx-score-example-mapping", "workflow": "v6.6-lab-split-cc", "model": "opus-5-no-thinking" }
+  ]
+}

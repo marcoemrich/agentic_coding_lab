@@ -498,6 +498,57 @@ stärkste erreichbare Example-Mapping-Signal: Ohne Beispiele streut die
 Kata über 5 bzw. 7 verschiedene Ergebnisse, mit Beispielen muss sie
 konvergieren. Die Kata bleibt unverändert.
 
+## Smoke-Run-Befunde (2026-08-11)
+
+Erster vollständiger Lauf: `sphinx-score-example-mapping` ×
+`v6.6-lab-split-cc` × `opus-5-no-thinking`, 1486 s, `exit_reason: ok`.
+`verification_pct` **1.0**, `cli_built` true, `tests_passing` true
+(11 Tests), 11 Zyklen, 11 Refactorings, 22/22 Predictions korrekt.
+48 LoC, `cognitive_max` 1, `mccabe_max` 2. (Der Lauf wurde gegen die
+damaligen 15 Szenarien analysiert; gegen die um Szenario 16 erweiterte
+Suite nachgeprüft: 16/16, die Metrik im Run ist entsprechend
+aktualisiert.)
+
+**Die Beispiele tragen als Hebel.** Der Agent trifft alle vier
+Festlegungen — auch die Trostpunkt-Lesart, gegen die im Vortest 20/20
+Modelle entschieden hatten. Sein Code-Kommentar formuliert die
+Selbstbezug-Regel eigenständig korrekt: *"A Sphinx scores the distinct
+types it can see: every card except itself. It still sees the Sphinx type
+when a second Sphinx stands beside it."*
+
+### Befund 4 — zwei falsche Formeln vor dem Einrasten
+
+Laut Run-Bericht zählte die erste Formel die Sphinx mit; ein späterer
+Refactor "korrigierte" eine Schwelle von 3 auf 4 — zwei Fehler, die sich
+gegenseitig aufhoben und trotzdem grün waren. Aufgelöst hat es das
+Beispiel `Sphinx, Sphinx, Chimera, Orthrus, Zombie → 6`, also genau der
+Mehrfach-Sphinx-Fall, der die Selbstbezug-Lesarten trennt. Der Agent
+schaltete danach von "gegen den aktiven Test" auf "Kandidatenregeln gegen
+alle zehn Beispiele" um — bewusst über strikte TDD-Minimalität hinaus,
+weil die Zufallstreffer-Historie den grünen Balken entwertet hatte.
+
+Der Rechenfehler-Effekt aus [Befund 3](#befund-3--rechenchaos-überlagert-die-lesart-streuung)
+zeigt sich hier also im Lauf, wird aber von der Testsuite gefangen.
+
+### Befund 5 — Ordering-Lücke in der Verifikations-Suite
+
+Ein Refactor-Subagent ersetzte den Sphinx-Ausschluss durch
+`army.slice(1)` — "erste Karte weg" statt "diese Karte weg". Alle zehn
+Tests des Agenten blieben grün, weil in jeder Testarmee die Sphinx vorn
+steht. Der Subagent fand es durch Codelesen und nahm es zurück.
+
+Dieselbe Lücke hatte die Verifikations-Suite: In allen Szenarien 01–15
+steht die Sphinx an erster Stelle, `slice(1)` hätte 15/15 bestanden.
+**Szenario 16 schließt sie** — es ist Szenario 13 mit vertauschter
+Kartenreihenfolge und identischem Erwartungswert, pinnt also
+Ordering-Invarianz. Nur Zwei-Sphinx-Armeen diskriminieren das: bei einer
+einzelnen Sphinx lässt das Entfernen der falschen Karte die Artenzahl
+zufällig unverändert.
+
+Methodische Notiz: Der Befund kam nicht aus der Metrik, sondern aus dem
+Selbstbericht des Agenten. `verification_pct` allein hätte die Lücke
+nicht gezeigt — sie war ja per Konstruktion unsichtbar.
+
 ## Vortest-Befunde (Ambiguitäts-Probe, 2026-06-09)
 
 Drei Läufe mit `ambiguity-probe/probe.py <config>.yaml`, je 4 Modell-Konfigs
@@ -652,5 +703,15 @@ Test-Suite jede Achse isoliert pinnen (Stage 1), bevor kombiniert wird.
       nicht geplant.
 - [x] Rechenchaos in G1 (9/20 Selbstkorrekturen) als
       Rechenfehler-TDD-Indikator akzeptiert (User).
+- [x] **Smoke-Run gelaufen (2026-08-11):** `sphinx-score-example-mapping`
+      × `v6.6-lab-split-cc` × `opus-5-no-thinking`, 1486s, `exit_reason:
+      ok`. `verification_pct` 1.0 (15/15), `cli_built` true, 11 Zyklen,
+      22/22 Predictions. Der Agent trifft **alle vier** Festlegungen,
+      auch die 20:0-Konvergenz beim Trostpunkt — die Beispiele tragen
+      als Hebel.
+- [x] Szenario 16 ergänzt (Ordering-Invarianz) — Befund aus dem
+      Smoke-Run, siehe unten.
 - [ ] Nach den ersten echten Runs prüfen, ob das Rechenchaos die
-      Lesart-Messung stört oder ob TDD es auffängt.
+      Lesart-Messung stört oder ob TDD es auffängt. Erster Datenpunkt:
+      im Smoke-Run fing die Testsuite es auf (22/22 Predictions korrekt),
+      allerdings erst nach zwei falschen Formeln — siehe unten.
