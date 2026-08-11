@@ -4,18 +4,29 @@ _How much of the v6.6 architecture can be removed on opus-5 before code quality 
 
 ## Übersicht
 
-`cc_avg_loc_per_function` (mean function length, **kleiner = besser**) — the primary decomposition metric, n=5 per cell (n=6 for v6.6):
+**The reduction chain in order** — each step removes exactly one component from the one above
+it. `cc_avg_loc_per_function` is the primary decomposition metric (mean function length,
+kleiner = besser); n=5 per cell, n=6 for v6.6.
 
-| Kata | v5.1 | v5.2 | v6.1 | v6.6 | v6.7 | v6.8 |
-|---|---:|---:|---:|---:|---:|---:|
-| sphinx-score | 6.16 | **3.16** 🏆 | 3.68 | 3.54 | 2.96 | 3.24 |
-| game-of-life | 4.12 | 4.04 | 4.54 | **3.46** 🏆 | 3.83 | 4.67 |
+| Chain position | Workflow | sphinx `cc_avg` | game-of-life `cc_avg` |
+|---|---|---:|---:|
+| upper bound | v6.6-lab-split-cc | 3.54 | **3.46** 🏆 |
+| + APP patch | v6.7-app-subordinate-cc | 2.96 ⚠ | 3.83 |
+| − end-refactor | v6.8-no-end-refactor-cc | 3.24 | 4.67 |
+| − isolated subagent | v5.2-no-subagent-cc | **3.16** 🏆 | 4.04 |
+| _anchor (confounded)_ | v6.1-hybrid-testlist-scope-fix | 3.68 | 4.54 |
+| _anchor (confounded)_ | v5.1-testlist-scope-fix | 6.16 | 4.12 |
 
-Correctness, cost and TDD discipline (sphinx-score / game-of-life):
+⚠ v6.7's 2.96 is the best raw value on sphinx but carries the field's only correctness loss —
+see the gating caveat below and F-1.2.
+
+All outcomes per cell (sphinx-score / game-of-life):
 
 | Outcome | v5.1 | v5.2 | v6.1 | v6.6 | v6.7 | v6.8 |
 |---|---:|---:|---:|---:|---:|---:|
 | `verification_pct` (höher = besser) | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | 0.92 / 1.00 | **1.00 / 1.00** 🏆 |
+| `cc_avg_loc_per_function` (kleiner = besser) | 6.16 / 4.12 | **3.16** 🏆 / 4.04 | 3.68 / 4.54 | 3.54 / **3.46** 🏆 | 2.96 / 3.83 | 3.24 / 4.67 |
+| `cc_longest_function` (kleiner = besser) | 8.6 / 8.0 | 7.2 / 8.8 | 6.8 / 10.8 | **5.83** 🏆 / 7.5 | 5.8 / **7.2** 🏆 | 7.0 / 11.8 |
 | `total_tokens` (kleiner = besser) | 16.6 M / 11.8 M | 18.8 M / 21.1 M | **10.6 M** 🏆 / **8.0 M** 🏆 | 19.1 M / 15.0 M | 14.7 M / 15.1 M | 12.3 M / 12.2 M |
 | `duration_seconds` (kleiner = besser) | **609 s** 🏆 / **431 s** 🏆 | 745 s / 743 s | 786 s / 621 s | 1475 s / 1145 s | 1264 s / 1183 s | 986 s / 1097 s |
 | `cognitive_max` (kleiner = besser) | 1.4 / 1.8 | 1.4 / 3.2 | **1.0** 🏆 / 1.8 | **1.0** 🏆 / **1.17** 🏆 | 1.0 / 1.4 | 1.4 / 2.8 |
@@ -172,6 +183,43 @@ produce genuinely different structures (APP 569–1003). On katas this small the
 dominated by the problem, not by the workflow — a 20 % band across six architectures is not a
 ranking. The patch's arithmetic reasoning remains sound; this RQ simply cannot test it, and no
 conclusion about the patch's mass behaviour should be drawn from these numbers.
+
+---
+
+## F-1.7 — Cost tracks refactoring volume, and the APP patch is not what drives it
+
+`v6.1-hybrid-testlist-scope-fix` runs markedly faster and cheaper than
+`v6.8-no-end-refactor-cc` although both use the same architecture — a refactor subagent per
+cycle, no end-refactor phase. The gap is not a per-unit slowdown; v6.8 simply does more
+refactoring.
+
+| Kata | `cycle_count` | `refactorings_applied` | `duration_seconds` | `total_tokens` |
+|---|---:|---:|---:|---:|
+| game-of-life v6.1 → v6.8 | 10.4 → 10.6 | 4.4 → 9.2 (2.09×) | 621 → 1097 s (1.77×) | 8.0 → 12.2 M (1.53×) |
+| sphinx-score v6.1 → v6.8 | 10.4 → 10.2 | 6.0 → 7.8 (1.30×) | 786 → 986 s (1.25×) | 10.6 → 12.3 M (1.16×) |
+
+`cycle_count` is unchanged, so the entire difference arises *inside* the refactor phase, and
+the refactoring factor predicts the duration factor closely on both katas.
+
+**The cause is the lab-split, not the APP patch.** v6.1 → v6.8 differs in two components, as
+caveat 1 of the RQ README states: the patch *and* the lab-split rule files
+(`subagent-prompts.md`, `lab-only.md`). The clean isolation of the patch is v6.6 → v6.7, which
+holds architecture constant — and there the effect runs the other way:
+
+| Kata | `refactorings_applied` v6.6 → v6.7 | `duration_seconds` | `total_tokens` |
+|---|---:|---:|---:|
+| sphinx-score | 11.67 → 10.4 | 1475 → 1264 s | 19.1 → 14.7 M |
+| game-of-life | 8.83 → 9.0 | 1145 → 1183 s | 15.0 → 15.1 M |
+
+Adding the patch to an otherwise identical workflow lowers refactoring volume on sphinx-score
+and leaves it flat on game-of-life. It does not buy its decomposition behaviour with extra
+refactoring passes.
+
+**Rationale.** Refactoring volume is the cost driver in this workflow family — cost scales with
+what the refactor phase does, not with how the phase is invoked. Which component raises that
+volume is a separate question this RQ cannot answer: the lab-split was never varied in
+isolation. Any recommendation to adopt or drop the lab-split needs a single-factor cell that
+does not exist here.
 
 ---
 

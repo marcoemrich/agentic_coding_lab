@@ -39,10 +39,15 @@ Datenbasis (claim-office-example-mapping, opus-5, n=5, aus RQ-architecture-axis-
 | v6.1-hybrid-testlist-scope-fix | 4.04 | 86 % | 82 M | 44 min | **6.27** | 1.17 | 0.99 |
 | v6.6-lab-split-cc | 3.21 | 100 % | 137 M | 93 min | 4.36 | 0.64 | 0.95 |
 
-**Warum Dauer und Tokens auseinanderfallen:** v5.1 und v6.1 verbrauchen fast gleich viele
-Tokens (83 vs. 82 M), aber v6.1 braucht die doppelte Wallclock. Die Subagenten-Architektur
-serialisiert — jeder isolierte Refactor-Aufruf ist ein eigener Roundtrip. Wer auf Wanduhr
-optimiert, zahlt das nicht in Verbrauch, sondern in Wartezeit.
+**Warum Dauer und Tokens bei v5.1 → v6.1 auseinanderfallen:** beide verbrauchen fast gleich
+viele Tokens (83 vs. 82 M), aber v6.1 braucht die doppelte Wallclock (23 → 44 min). Hier
+serialisiert die Subagenten-Architektur — jeder isolierte Refactor-Aufruf ist ein eigener
+Roundtrip. Wer auf Wanduhr optimiert, zahlt das nicht in Verbrauch, sondern in Wartezeit.
+
+Das ist eine Aussage über **genau dieses Paar**, kein allgemeiner Subagenten-Effekt. Zwischen
+Workflows, die beide einen Refactor-Subagenten haben, laufen Dauer und Tokens gleich mit, und
+der Unterschied kommt aus der Menge der Refactorings — siehe den nächsten Abschnitt zu
+v6.1 vs. v6.8.
 
 **⚠ v5.1 gewinnt die Dauer-Effizienz, wird aber nicht empfohlen.** Sein
 `verification_pct` von 0.79 ist **bimodal, nicht graduell**: ein Run von fünf brach nach 2
@@ -56,6 +61,31 @@ ohne dieses Risiko.
 externe Verifikation). Auf game-of-life ist die Rangfolge dieselbe, die Spanne aber enger.
 Auf sphinx-score bestätigt RQ-workflow-reduction-opus5 das Token- und Dauer-Muster (v6.1
 Token-Sieger, v5.1 Dauer-Sieger auf beiden Katas).
+
+### Kosten folgen dem Refactoring-Volumen
+
+`v6.1-hybrid-testlist-scope-fix` läuft spürbar schneller und billiger als
+`v6.8-no-end-refactor-cc`, obwohl beide dieselbe Architektur haben (Refactor-Subagent pro
+Zyklus, keine End-Refactor-Phase). v6.8 ist dabei nicht langsamer pro Arbeitseinheit — es
+leistet schlicht mehr Refactoring:
+
+| Kata | `refactorings_applied` v6.1 → v6.8 | Dauer | Tokens |
+|---|---:|---:|---:|
+| game-of-life | 4.4 → 9.2 (2.09×) | 621 → 1097 s (1.77×) | 8.0 → 12.2 M (1.53×) |
+| sphinx-score | 6.0 → 7.8 (1.30×) | 786 → 986 s (1.25×) | 10.6 → 12.3 M (1.16×) |
+
+`cycle_count` ist identisch (10.2–10.6), der Unterschied entsteht vollständig innerhalb der
+Refactor-Phase, und der Refactoring-Faktor sagt den Zeitfaktor auf beiden Katas eng voraus.
+
+**Nicht dem APP-Patch zuschreiben.** v6.1 → v6.8 unterscheidet sich in zwei Komponenten (Patch
+*und* Lab-Split-Regeldateien). Die saubere Isolation des Patches ist v6.6 → v6.7, und dort
+läuft der Effekt andersherum: auf sphinx-score sinkt das Refactoring-Volumen von 11.67 auf
+10.4, die Dauer von 1475 auf 1264 s, die Tokens von 19.1 auf 14.7 M; auf game-of-life bleibt
+alles flach. Der Patch kauft sein Dekompositions-Verhalten nicht mit zusätzlichen
+Refactoring-Durchläufen.
+
+Welche Komponente das Volumen tatsächlich hebt, ist offen — der Lab-Split wurde nie isoliert
+variiert. Details: `RQ-workflow-reduction-opus5` F-1.7.
 
 ### Was die Reduktionskette daran nicht ändert
 
