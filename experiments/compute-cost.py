@@ -20,6 +20,12 @@ cost_usd als "list-price baseline", nicht als abgerechneten Betrag.
 Idempotent: runs with a numeric cost_usd are recomputed unless --skip-existing
 is passed (recomputation is cheap, so default is to refresh).
 
+Given an RQ dir, the run set comes from that RQ's ``runs.csv`` -- which is
+written by ``aggregate-by-query.py``. Aggregate BEFORE costing a freshly filled
+RQ, otherwise the csv still lists the pre-batch runs. The script cross-checks
+the csv against the frontmatter selector and exits non-zero on a stale one
+rather than costing a subset and reporting success.
+
 Usage:
   experiments/compute-cost.py research/questions-cross/1.1-harness-effect/
   experiments/compute-cost.py experiments/runs/<run-dir>/   # single run
@@ -178,6 +184,44 @@ def process_run(run_dir: Path, dry_run: bool) -> tuple[str, float | None]:
     return ("written", cost)
 
 
+def _selector_run_ids(rq_dir: Path) -> set[str] | None:
+    """Run ids the RQ frontmatter selector matches right now.
+
+    Returns None when the answer cannot be determined (aggregate-by-query.py
+    not importable, unparseable frontmatter). Callers then skip the staleness
+    check rather than fail -- this is a guard against a silent partial run, and
+    it must never become a new way for the script to break.
+    """
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import importlib
+
+        agg = importlib.import_module("aggregate-by-query".replace("-", "_"))
+    except Exception:
+        try:
+            import importlib.util
+
+            spec = importlib.util.spec_from_file_location(
+                "_agg", Path(__file__).resolve().parent / "aggregate-by-query.py"
+            )
+            if spec is None or spec.loader is None:
+                return None
+            agg = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(agg)
+        except Exception:
+            return None
+    try:
+        fm = agg.parse_frontmatter(rq_dir / "README.md")
+        cells = agg.expand_cells(fm)
+        _, by_cell = agg.collect_runs(cells)
+        # by_cell maps cell-key -> [path/to/<run-id>/metrics.json]. Use it
+        # rather than the first return value, whose tuple arity has changed
+        # before (it is a 3-tuple today, its docstring still says 2).
+        return {p.parent.name for paths in by_cell.values() for p in paths}
+    except Exception:
+        return None
+
+
 def iter_target_runs(target: Path) -> list[Path]:
     if target.is_dir() and (target / "metrics.json").exists():
         # Single run dir.
@@ -211,6 +255,23 @@ def iter_target_runs(target: Path) -> list[Path]:
                 raise SystemExit(
                     f"{runs_csv} has no usable 'run_id' column -- refusing to "
                     f"silently process nothing. Re-run aggregate-by-query.py?"
+                )
+            # runs.csv may be STALE. It is written by aggregate-by-query.py, so
+            # on a freshly-filled RQ it still lists the pre-batch run set --
+            # this script then costs a subset, reports success, and the cells
+            # missing from the csv end up with no cost_usd at all. That reads
+            # as "metric not applicable", not as an error. Cross-check the csv
+            # against the frontmatter selector and refuse rather than compute a
+            # partial answer. (The empty-csv guard above does not catch this:
+            # a stale csv is non-empty, just short.)
+            expected = _selector_run_ids(target)
+            if expected is not None and (missing := expected - ids):
+                raise SystemExit(
+                    f"{runs_csv} is stale: the RQ selector matches "
+                    f"{len(expected)} runs, the csv lists {len(ids)}. "
+                    f"{len(missing)} run(s) would be skipped, e.g. "
+                    f"{sorted(missing)[0]}. Run aggregate-by-query.py first, "
+                    f"then re-run this script."
                 )
             return [runs_root / rid for rid in sorted(ids) if (runs_root / rid).is_dir()]
         return sorted(p for p in runs_root.iterdir() if (p / "metrics.json").exists())
