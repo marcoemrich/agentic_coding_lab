@@ -5,6 +5,7 @@ factors:
   kata_base:
     - sphinx-score
     - claim-office
+    - game-of-life
   workflow:
     - v6.6-lab-split-cc   # elaborate: refactor subagent, test-list phase, audit bundle
     - v3-basic-tdd        # minimal: plain red-green-refactor, no subagents
