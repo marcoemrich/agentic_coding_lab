@@ -46,8 +46,11 @@ mit den bestehenden Karten (siehe je Karte).
 
 | Karte | Muster | Streitpunkt(e) | Vortest | Single-/Cross-Army |
 |---|---|---|---|---|
-| Sphinx | B + Selbstbezug + C | Selbstbezug · Schwellen-Ellipse · UW-Aggregation | 2 Achsen streuen, 1 konvergent | Single |
+| Sphinx | B + Selbstbezug + C | Selbstbezug · Ellipse · UW-Aggregation | 2 Achsen streuen, 1 konvergent | Single |
 | Mantikor | A (Kombination) | Zerlegung bei Überzahl, zwei Set-Größen | konvergent (max) | Single |
+
+**Umgesetzt ist nur die Sphinx** (2026-08-11) — siehe
+[Umsetzung](#umsetzung). Der Mantikor bleibt Entwurf.
 
 Beide bleiben **single-army** (Wertung hängt nur an der eigenen Armee) —
 das hält die Verifikation einfach (CLI nimmt eine Karten-Liste, gibt
@@ -88,16 +91,24 @@ Zwei *unabhängige* Streu-Achsen, die sich kombinieren:
    Sphinx ihre *eigene* Art / sich selbst mit? Die Regel sagt nichts —
    analog zur HPSMV-Sub-Mehrdeutigkeit Aₐ ("gleichartig"). Ein
    aufmerksamer Entwickler stutzt hier und stellt die Klärungsfrage.
-3. **Schwellen-Ellipse (Muster B — unterspezifizierte Operation):** *Nur
-   in der Schwellen-Regelvariante* (siehe unten). Die Regel "2 Punkte pro
-   Art ab vier Arten, sonst 1 Punkt" lässt im zweiten Teil die Bezugsgröße
-   weg — gilt "pro Art" weiter (1 Punkt *pro Art*) oder ist es ein
-   absoluter Wert (1 Punkt *pauschal*)? Klassische Ellipse.
+   In der gestaffelten Fassung zerfällt die Achse in *zwei* Fragen, die
+   sich getrennt beantworten lassen: zählt die Karte **sich selbst**, und
+   zählt sie **andere Sphinxe**? Damit liegen drei Lesarten vor (nie /
+   nur andere / immer), nicht mehr zwei — die Festlegung wird beidseitig
+   diskriminierbar statt nur gegen eine Alternative.
+3. **Ellipse (Muster B — unterspezifizierte Operation):** Die Regel
+   "2 Punkte pro Art jenseits von drei, sonst 1" lässt im zweiten Teil
+   die Bezugsgröße weg — gilt "pro Art" weiter (1 Punkt *pro Art*) oder
+   ist es ein absoluter Wert (1 Punkt *pauschal*)? Klassische Ellipse.
+   In der gestaffelten Fassung ist sie **schärfer** als in der
+   Schwellen-Fassung: Die "pro Art"-Lesart erzeugt eine *Delle* im
+   Kartenwert (4 · 5 · 6 · 7 · **6** · 8 bei 0–5 anderen Arten) — bei
+   vier Arten wäre die Sphinx weniger wert als bei dreien. Ein sichtbarer
+   Widersinn, an dem ein aufmerksamer Leser hängenbleibt.
 
-### Finale Regel — Schwellen-Variante (gewählt 2026-06-09, User)
+### Zwischenstand — Schwellen-Variante (gewählt 2026-06-09, überholt)
 
-Die Sphinx trägt die Schwellen-Regel (statt des flachen "2 Punkte pro
-Art"), weil sie zusätzlich die Ellipse-Mehrdeutigkeit (Achse 3) erzeugt:
+Erste Festlegung, Grundlage der Vortest-Befunde weiter unten:
 
 ```
 Sphinx:
@@ -106,21 +117,92 @@ Sphinx:
   Arten in deiner Armee, sonst 1 Punkt.
 ```
 
-Diese Variante ist die reichere: sie trägt Achse 3 (Ellipse) *und* — über
-die Art-Zählung in der Schwelle — weiterhin Achse 2 (Selbstbezug). Achse 1
-(UW-Aggregation) läuft in jeder Variante mit.
+Selbstbezug damals: "ohne sich selbst"; Ellipse: "pauschal". Diese
+Fassung ist am 2026-08-11 durch die gestaffelte Regel unten ersetzt
+worden — die Vortest-Tabellen ab
+[Vortest-Befunde](#vortest-befunde-ambiguitäts-probe-2026-06-09) beziehen
+sich auf *diese* Fassung und bleiben als historische Messdaten stehen.
 
-**Festlegung Selbstbezug (User, 2026-06-09): Sphinx zählt sich selbst
-nicht.** Begründung: (1) Spielbalance — zählte sie sich selbst, hätte
-jede Sphinx einen garantierten +1-Art-Sockel, die Karte wäre zu leicht
-wertvoll; "ohne sich selbst" macht sie von der echten Vielfalt der
-*übrigen* Armee abhängig. (2) Mess-Vorteil — die Festlegung geht *gegen*
-die Vortest-Konvergenz (Sonnet/Haiku/Opus-thinking tendierten zu "mit
-selbst"), was das stärkere Example-Mapping-Signal gibt. **Diese
-Festlegung steht nur im Beispiel, nicht im Regeltext** — sonst löst der
-Regeltext die Mehrdeutigkeit auf (Wegweiser).
+### Finale Regel — gestaffelte Variante (gewählt 2026-08-11, User)
 
-### Lesarten
+```
+Sphinx:
+- 1 Punkt.
+- 2 Punkte pro Art jenseits von drei, sonst 1.
+```
+
+Kartentext (Prompt-Fassung, englisch):
+`Sphinx — 1 point. 2 per type beyond three, else 1.`
+
+Gedruckte Karte:
+[`experiments/katas/sphinx-score-verification/card.png`](../../experiments/katas/sphinx-score-verification/card.png).
+
+Drei Änderungen gegenüber dem Zwischenstand, alle vom User entschieden:
+
+**1. Gestaffelt statt Schwelle.** Nicht mehr "ab vier Arten zählen *alle*
+Arten doppelt", sondern "jede Art *jenseits von drei* zählt doppelt". Der
+Wert wächst dadurch linear (2 · 2 · 2 · 2 · 3 · 5 · 7 bei 0–6 anderen
+Arten) statt schlagartig von 5 auf 12 zu springen.
+
+**2. Basis 4 → 1.** Zusammen mit (1) bringt das den Grenznutzen in den
+Korridor der Bestandskarten. Begründung: Balance — die Sphinx sollte im
+Draft eine Entscheidung sein, kein Auto-Pick.
+
+| Karte | Grenznutzen 1.–4. Exemplar |
+|---|---|
+| Zombie | 1 / 3 / 5 / 3 |
+| Hydra | 3 / 4 / 5 / 6 |
+| Orthrus | 2 / 5 / −1 / 2 |
+| Chimera | 2 / 2 / 8 / −4 |
+| Cyclops | 6 / −2 / 2 / 2 |
+| Hired Hand | 2 / 2 / 2 / 2 |
+| **Sphinx (alte Fassung)** | **5 … 19** |
+| **Sphinx (neue Fassung)** | **2 … 7** |
+
+Die alte Fassung lag mit bis zu 19 Punkten Grenznutzen weit über allen
+Bestandskarten — verursacht nicht von der Basis, sondern vom
+`2 Punkte × alle Arten`-Faktor über der Schwelle, der sich zusätzlich
+über die Sphinx-Anzahl multipliziert. Eine reine Basis-Senkung hätte den
+Ausreißer *vergrößert* (kleinerer Nenner unter der Schwelle).
+
+**3. Selbstbezug: die eigene Karte zählt nicht, andere Sphinxe schon.**
+Ersetzt "ohne sich selbst". Jede Sphinx-Karte wird gegen die *restliche*
+Armee gewertet — aus Sicht einer Sphinx ist eine zweite Sphinx ein
+anderes Monster in dieser Armee.
+
+Begründung: (1) Wortlaut — die Karte spricht von "types in your army"
+ohne "andere"; "ohne sich selbst" liest ein *other* in den Text hinein,
+das nicht dasteht. (2) Ein Prinzip statt Sonderregel — *jede Karte wertet
+die Armee um sich herum* deckt beide Fälle ab, ohne Ausnahmeklausel.
+(3) Mechanik-Konsistenz — der Zyklop ist der Präzedenzfall für eine
+Karte, deren Wert an der Anzahl ihresgleichen hängt.
+
+Nebeneffekt, bewusst in Kauf genommen: Eine einzelne Sphinx sieht keine
+Sphinx-Art, zwei sehen je eine. Die zweite Sphinx kann die erste damit
+über die Drei-Arten-Grenze heben (2 Sphinxe + 3 andere Arten = 6 statt 4
+Punkte). Das ist im Draft ein spürbarer, aber gedämpfter Effekt — in der
+alten Fassung war derselbe Sprung 24 statt 10.
+
+**Alle drei Festlegungen stehen nur in den Beispielen, nicht im
+Regeltext** — sonst löst der Regeltext die Mehrdeutigkeit auf
+(Wegweiser).
+
+**Methodischer Vorbehalt:** Die gestaffelte Formulierung und die neue
+Selbstbezug-Lesart sind **nicht** durch einen Vortest gedeckt. Die Probe
+vom 2026-06-09 kannte nur "mit sich selbst" / "ohne sich selbst" und die
+Schwellen-Formulierung. Wie Modelle `2 per type beyond three, else 1`
+spontan lesen — und ob sie die Karten-eigene-Sicht überhaupt in Betracht
+ziehen — ist offen. Ein Nachtest wäre wünschenswert, blockiert die Kata
+aber nicht: Alle vier Lesart-Alternativen sind in der Verifikations-Suite
+diskriminiert (siehe `experiments/katas/sphinx-score-verification/README.md`).
+
+### Lesarten (Vortest-Fassung 2026-06-09, historisch)
+
+Die Probe-Eingaben und Werte dieses Abschnitts beziehen sich auf die
+**Schwellen-Fassung** mit Basis 4. Sie dokumentieren, was am 2026-06-09
+gemessen wurde, und sind nicht auf die gestaffelte Regel umgerechnet. Die
+Lesart-Diskriminierung der finalen Fassung steht in
+`experiments/katas/sphinx-score-verification/README.md`.
 
 Zwei Probe-Eingaben isolieren je eine Achse; gefragt ist jeweils nur die
 Sphinx-Wertung.
@@ -161,45 +243,75 @@ Lesart wäre also "zählen nicht". **Verworfen 2026-06-09 (User):** zu
 peripher; die Sphinx-Mehrdeutigkeit lebt vom Untote-Krieger-Aggregations-
 Streit (Achse 1) und dem Selbstbezug (Achse 2).
 
-### Festlegung (nach Vortest 2026-06-09)
+### Festlegung (Stand 2026-08-11)
 
-Pro Achse getrennt, nach Vortest-Streuung:
+| Achse | Vortest 2026-06-09 | Festlegung |
+|---|---|---|
+| 2 Selbstbezug | streute auf der *alten* Fassung (Opus 8 / Rest 10); die dritte Lesart war nicht Teil der Probe | **die eigene Karte zählt nicht, andere Sphinxe schon** |
+| 3 Ellipse | streute (Opus pauschal / Sonnet+Haiku je 2/5 pro Art) | **pauschal** (Trostpunkt) |
+| 1 UW-Aggregation | konvergent auf "eine Art", aber explizit benannt | **"eine Art"** (mit der Konvergenz; Wert liegt in der Klärung) |
 
-| Achse | Vortest | Strategie | Festlegung |
-|---|---|---|---|
-| 2 Selbstbezug | **streut** (Opus-o-think 8 vs. Rest 10) | gegen Konvergenz (User-Entscheid) | **ohne sich selbst** (Spielbalance + Mess-Vorteil) |
-| 3 Schwellen-Ellipse | **streut** (Opus pauschal vs. Sonnet/Haiku je 2/5 pro Art) | Streuung-basiert (User-Entscheid) | **pauschal (Trostpunkt, =5)** — klarer Schwellen-Sprung |
-| 1 UW-Aggregation | konvergent auf "eine Art", aber explizit benannt | konstruktiv-versteckte Klärungsfrage | "eine Art" (mit der Konvergenz; Wert liegt in der Klärung) |
-
-Achse 2 ist durch den User auf "ohne sich selbst" gepinnt (gegen die
-Mehrheits-Konvergenz → starkes Signal, bleibt plausibel). Achse 3 auf
-"pauschal" (Trostpunkt) gepinnt — der klarere Schwellen-Sprung. Achse 1 =
-"eine Art" (rulebook-konsistent).
+Achse 3 und 1 sind gegenüber dem Zwischenstand unverändert; Achse 2 ist
+am 2026-08-11 auf die Karten-eigene Sicht umgestellt (Begründung oben).
 
 **Finale Sphinx-Wertung (alle drei Achsen gepinnt):**
 
-> Eine Sphinx zählt 4 Punkte. Enthält die Armee mindestens vier *andere*
-> Monster-Arten, erhält die Sphinx zusätzlich 2 Punkte pro anderer Art;
-> sonst genau 1 Punkt. (Kartenvarianten desselben Monster-Namens — z.B.
-> die drei Untoten Krieger — zählen als *eine* Art.)
+> Eine Sphinx zählt 1 Punkt. Für jede Monster-Art jenseits der dritten
+> erhält sie zusätzlich 2 Punkte; gibt es keine Art jenseits der dritten,
+> erhält sie stattdessen genau 1 Punkt. Gezählt werden die Arten der
+> *übrigen* Armee — die eigene Karte zählt nicht mit, weitere Sphinxe
+> schon. (Kartenvarianten desselben Monster-Namens — z.B. die drei
+> Untoten Krieger — zählen als *eine* Art.)
 
-Beispiel-Werte: 2 andere Arten → 4+1 = **5**; 3 andere → **5**; 4 andere →
-4 + 4×2 = **12**; 5 andere → **14**. Der Regeltext im Prompt bleibt
-*neutral* (kein "andere", kein "pauschal") — die drei Festlegungen werden
-nur über Example-Mapping-Beispiele kommuniziert.
+Beispiel-Werte (eine Sphinx, nach Anzahl anderer Arten): 0–3 andere →
+**2**; 4 andere → **3**; 5 andere → **5**; 6 andere → **7**. Mit zwei
+Sphinxen: 2 andere Arten → **4**; 3 andere → **6** (jede Sphinx sieht die
+andere als vierte Art). Der Regeltext im Prompt bleibt *neutral* (kein
+"andere", kein "pauschal") — die Festlegungen werden nur über
+Example-Mapping-Beispiele kommuniziert.
 
-**Wert-Verschiebung durch "ohne sich selbst":** Mit der Selbstbezug-
-Festlegung ändern sich die Ellipse-Werte für Eingabe C (1 Sphinx, 1
-Zombie, 1 Hydra → 2 *andere* Arten): pauschal = `4+1 =` **5**, pro Art =
-`4 + 2×1 =` **6** (die im Vortest beobachtete 7 entfiel die Sphinx-
-Selbstzählung). Analog braucht die 2-Punkte-Schwelle nun *vier andere*
-Arten, nicht drei plus Sphinx.
+**Diskriminierung der Festlegungen.** Die Verifikations-Suite trennt jede
+Lesart-Alternative an eigenen Szenarien; eine Implementierung, die eine
+Achse anders liest, fällt messbar durch:
+
+| Falsche Lesart | fällt durch bei (von 15 Szenarien) |
+|---|---|
+| Sphinx zählt nie als Art | 13, 14, 15 |
+| Sphinx zählt sich selbst mit | 04, 05, 06, 09, 10 |
+| UW-Varianten = drei Arten | 08, 09, 10 |
+| "sonst 1" pro Art | 02, 03, 04, 07, 08, 09, 12 |
 
 ### API-Schema
 
 Neutral: alle Lesarten brauchen nur die vollständige Karten-Liste der
 Armee. Das Schema entscheidet keine Lesart vor (kein Feld "distinctTypes"
 o. ä.).
+
+Umgesetzt als CLI-Kata mit JSON über stdin/stdout, damit
+`verification_pct` als externe Akzeptanz-Metrik zur Verfügung steht:
+
+```json
+{ "army": [ { "monster": "sphinx" },
+            { "monster": "undead-warrior", "rank": 2 } ] }
+→ { "score": 2 }
+```
+
+Das `rank`-Feld trägt die Punktvariante des Untoten Kriegers und ist
+bewusst neutral: Es sagt nicht, ob die drei Varianten eine oder drei
+Arten sind — genau Achse 1.
+
+### Umsetzung
+
+`experiments/katas/sphinx-score-{prose,user-story,example-mapping}/` plus
+`sphinx-score-verification/` (15 Szenarien). Nur die Sphinx ist
+scorebar — die übrigen Monster erscheinen ausschließlich als *Arten* für
+die Zählung und haben keine eigene Wertung.
+
+Damit entfällt der unter [Mechanik-Konsistenz](#mechanik-konsistenz-check-statt-tonalität)
+beschriebene Set-Auflösungs-Konflikt: Da Chimera und Orthrus in dieser
+Kata nicht gewertet werden, muss die strikte Mantikor-Lesart nicht mit
+der Greedy-Auslegung dieser Karten vereinheitlicht werden. Der Mantikor
+ist nicht Teil der Kata.
 
 ---
 
@@ -429,16 +541,27 @@ Test-Suite jede Achse isoliert pinnen (Stage 1), bevor kombiniert wird.
       Klärungsfrage wertvoll.
 - [x] Sphinx-Schwellen-Ellipse (S3) geprobt → streut (Muster B).
 - [x] Hired-Hands (Sₐ) → verworfen (out-of-scope, User).
-- [x] Regelvariante festgelegt: **Schwellen-Version** „2 pro Art ab vier,
-      sonst 1" (User, 2026-06-09).
-- [x] Selbstbezug festgelegt: **ohne sich selbst** (User; Spielbalance +
-      gegen-Konvergenz-Mess-Vorteil).
-- [x] Ellipse (Achse 3) festgelegt: **pauschal (Trostpunkt, =5)** (User).
-- [ ] UW-Aggregation im Beispiel als „eine Art" klären (Stage-1-Szenario).
+- [x] Regelvariante festgelegt: zunächst **Schwellen-Version** (2026-06-09),
+      am 2026-08-11 ersetzt durch die **gestaffelte Version** „1 Punkt.
+      2 pro Art jenseits von drei, sonst 1" (User; Balance).
+- [x] Selbstbezug festgelegt: zunächst „ohne sich selbst" (2026-06-09),
+      am 2026-08-11 ersetzt durch **„eigene Karte nein, andere Sphinxe
+      ja"** (User; Wortlaut-Treue + ein Prinzip statt Sonderregel).
+- [x] Ellipse (Achse 3) festgelegt: **pauschal (Trostpunkt)** (User).
+- [x] UW-Aggregation im Beispiel als „eine Art" geklärt — Szenarien 08,
+      09, 10 der Verifikations-Suite.
 - [x] Mantikor festgelegt: **L1 strikt = 10** (User; gegen Konvergenz,
-      Cyclops-Analogie). Frage-Zahl 5.
-- [x] Umfang festgelegt: **beide Karten** (Sphinx + Mantikor) in die Kata.
-- [ ] Falls Chimera/Orthrus auch in der Kata: Set-Auflösung mit Mantikor
-      (strikt) vereinheitlichen oder Abweichung begründen.
-- [ ] Falls vollständige Kata: drei Prompt-Stile + Verifikations-Szenarien
-      (jede Achse isoliert in Stage 1, siehe Verschränkungs-Hinweis).
+      Cyclops-Analogie). Frage-Zahl 5. *Nicht umgesetzt* — die Kata
+      enthält nur die Sphinx.
+- [x] Umfang festgelegt: zunächst beide Karten (2026-06-09), am
+      2026-08-11 auf **nur Sphinx** reduziert (User; schnellere
+      Iteration). Bestandsmonster erscheinen nur als Arten-Zählung.
+- [x] Chimera/Orthrus-Set-Konflikt: entfällt, da in der Kata keine Karte
+      außer der Sphinx gewertet wird.
+- [x] Vollständige Kata gebaut: drei Prompt-Stile + 15 Verifikations-
+      Szenarien, jede Achse isoliert (Stage 1) und kombiniert (Stage 2/3).
+- [ ] **Nachtest offen:** Die gestaffelte Formulierung und die
+      Selbstbezug-Lesart „eigene Karte nein, andere ja" sind nicht durch
+      eine Ambiguitäts-Probe gedeckt (die Probe vom 2026-06-09 kannte
+      beide nicht). Streuung der Modelle auf `2 per type beyond three,
+      else 1` ist unbekannt.
