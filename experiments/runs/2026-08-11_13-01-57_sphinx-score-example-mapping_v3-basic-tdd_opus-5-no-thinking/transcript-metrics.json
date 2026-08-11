@@ -1,0 +1,98 @@
+{
+  "wall_clock_seconds": 208.36,
+  "total_tokens": {
+    "input": 5537,
+    "output": 22471,
+    "cache_read": 2384377,
+    "cache_creation": 46475,
+    "total": 2458860
+  },
+  "context_utilization_pct": 29,
+  "context_window_tokens": 200000,
+  "context_peak_tokens": 58398,
+  "cost_usd": null,
+  "message_count": 49,
+  "tool_calls": {
+    "Read": 2,
+    "Bash": 15,
+    "Write": 5,
+    "Edit": 5
+  },
+  "skill_invocations": {},
+  "task_invocations": {},
+  "cycle_count": 2,
+  "predictions_correct": 0,
+  "predictions_total": 0,
+  "model_versions": [
+    "claude-opus-5"
+  ],
+  "subagent_token_total": 0,
+  "phases": [
+    {
+      "phase": "red",
+      "tokens": 95440,
+      "duration_seconds": 10.15
+    },
+    {
+      "phase": "green",
+      "tokens": 49989,
+      "duration_seconds": 1.86
+    },
+    {
+      "phase": "refactor",
+      "tokens": 207334,
+      "duration_seconds": 18.32
+    },
+    {
+      "phase": "refactor",
+      "tokens": 326555,
+      "duration_seconds": 24.39
+    },
+    {
+      "phase": "refactor",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "red",
+      "tokens": 115089,
+      "duration_seconds": 9.19
+    }
+  ],
+  "phase_source": "inline-tool",
+  "phase_summary": {
+    "by_phase": {
+      "red": {
+        "count": 2,
+        "tokens": 210529,
+        "duration_seconds": 19.34
+      },
+      "green": {
+        "count": 1,
+        "tokens": 49989,
+        "duration_seconds": 1.86
+      },
+      "refactor": {
+        "count": 3,
+        "tokens": 533889,
+        "duration_seconds": 42.71
+      }
+    },
+    "averages": {
+      "red": {
+        "avg_tokens": 105264.5,
+        "avg_duration_seconds": 9.67
+      },
+      "green": {
+        "avg_tokens": 49989.0,
+        "avg_duration_seconds": 1.86
+      },
+      "refactor": {
+        "avg_tokens": 177963.0,
+        "avg_duration_seconds": 14.24
+      }
+    },
+    "refactorings_applied": 3,
+    "tests_passed_immediately": 1
+  }
+}

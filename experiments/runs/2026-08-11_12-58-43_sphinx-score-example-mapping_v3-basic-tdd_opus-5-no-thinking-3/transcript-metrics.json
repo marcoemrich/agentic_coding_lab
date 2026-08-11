@@ -1,0 +1,98 @@
+{
+  "wall_clock_seconds": 266.93,
+  "total_tokens": {
+    "input": 4910,
+    "output": 24575,
+    "cache_read": 2605580,
+    "cache_creation": 116560,
+    "total": 2751625
+  },
+  "context_utilization_pct": 30,
+  "context_window_tokens": 200000,
+  "context_peak_tokens": 59535,
+  "cost_usd": null,
+  "message_count": 55,
+  "tool_calls": {
+    "Read": 3,
+    "Bash": 15,
+    "Write": 5,
+    "Edit": 6
+  },
+  "skill_invocations": {},
+  "task_invocations": {},
+  "cycle_count": 1,
+  "predictions_correct": 0,
+  "predictions_total": 0,
+  "model_versions": [
+    "claude-opus-5"
+  ],
+  "subagent_token_total": 0,
+  "phases": [
+    {
+      "phase": "red",
+      "tokens": 89476,
+      "duration_seconds": 3.46
+    },
+    {
+      "phase": "green",
+      "tokens": 46755,
+      "duration_seconds": 2.62
+    },
+    {
+      "phase": "refactor",
+      "tokens": 295416,
+      "duration_seconds": 31.71
+    },
+    {
+      "phase": "refactor",
+      "tokens": 373968,
+      "duration_seconds": 25.05
+    },
+    {
+      "phase": "refactor",
+      "tokens": 55599,
+      "duration_seconds": 3.16
+    },
+    {
+      "phase": "refactor",
+      "tokens": 113362,
+      "duration_seconds": 5.18
+    }
+  ],
+  "phase_source": "inline-tool",
+  "phase_summary": {
+    "by_phase": {
+      "red": {
+        "count": 1,
+        "tokens": 89476,
+        "duration_seconds": 3.46
+      },
+      "green": {
+        "count": 1,
+        "tokens": 46755,
+        "duration_seconds": 2.62
+      },
+      "refactor": {
+        "count": 4,
+        "tokens": 838345,
+        "duration_seconds": 65.1
+      }
+    },
+    "averages": {
+      "red": {
+        "avg_tokens": 89476.0,
+        "avg_duration_seconds": 3.46
+      },
+      "green": {
+        "avg_tokens": 46755.0,
+        "avg_duration_seconds": 2.62
+      },
+      "refactor": {
+        "avg_tokens": 209586.25,
+        "avg_duration_seconds": 16.27
+      }
+    },
+    "refactorings_applied": 4,
+    "tests_passed_immediately": 0
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "wall_clock_seconds": 212.21,
+  "total_tokens": {
+    "input": 5668,
+    "output": 22637,
+    "cache_read": 2402601,
+    "cache_creation": 45978,
+    "total": 2476884
+  },
+  "context_utilization_pct": 29,
+  "context_window_tokens": 200000,
+  "context_peak_tokens": 57623,
+  "cost_usd": null,
+  "message_count": 50,
+  "tool_calls": {
+    "Read": 2,
+    "Bash": 16,
+    "Write": 4,
+    "Edit": 5
+  },
+  "skill_invocations": {},
+  "task_invocations": {},
+  "cycle_count": 2,
+  "predictions_correct": 0,
+  "predictions_total": 0,
+  "model_versions": [
+    "claude-opus-5"
+  ],
+  "subagent_token_total": 0,
+  "phases": [
+    {
+      "phase": "red",
+      "tokens": 90616,
+      "duration_seconds": 3.22
+    },
+    {
+      "phase": "green",
+      "tokens": 47578,
+      "duration_seconds": 2.12
+    },
+    {
+      "phase": "refactor",
+      "tokens": 198060,
+      "duration_seconds": 19.19
+    },
+    {
+      "phase": "refactor",
+      "tokens": 532875,
+      "duration_seconds": 25.15
+    },
+    {
+      "phase": "refactor",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "red",
+      "tokens": 56026,
+      "duration_seconds": 3.8
+    }
+  ],
+  "phase_source": "inline-tool",
+  "phase_summary": {
+    "by_phase": {
+      "red": {
+        "count": 2,
+        "tokens": 146642,
+        "duration_seconds": 7.02
+      },
+      "green": {
+        "count": 1,
+        "tokens": 47578,
+        "duration_seconds": 2.12
+      },
+      "refactor": {
+        "count": 3,
+        "tokens": 730935,
+        "duration_seconds": 44.34
+      }
+    },
+    "averages": {
+      "red": {
+        "avg_tokens": 73321.0,
+        "avg_duration_seconds": 3.51
+      },
+      "green": {
+        "avg_tokens": 47578.0,
+        "avg_duration_seconds": 2.12
+      },
+      "refactor": {
+        "avg_tokens": 243645.0,
+        "avg_duration_seconds": 14.78
+      }
+    },
+    "refactorings_applied": 3,
+    "tests_passed_immediately": 1
+  }
+}
