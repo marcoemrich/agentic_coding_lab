@@ -132,9 +132,10 @@ exact-coding-baseline-<DATE>/
 
 Note the file name: OpenCode reads **`opencode.json`**, not `.jsonc`.
 
-Both refactor phases appear in every harness — the per-cycle one and the
-final `end-refactor` pass — and **all four harnesses delegate them to
-isolated subagents**. cursor uses its native Task tool with agent files in
+Whichever refactor phases the source defines appear in every harness — the
+per-cycle one always, the final `end-refactor` pass only on sources that have
+it (v6.5/v6.6 line; the v6.1 line deliberately does not) — and **all four
+harnesses delegate them to isolated subagents**. cursor uses its native Task tool with agent files in
 `.cursor/agents/`, the same shape as cc's `.claude/agents/`; see "Keep the
 harness variants feature-equal" in `HARNESS-MECHANISMS.md`.
 
@@ -341,9 +342,10 @@ force-fitting it.
 > **Two sites sit outside the orchestration files entirely** and were missed
 > by every earlier export because the patches never look there:
 >
-> - **`agents/end-refactor.md`, all four harnesses** — the Remember list ends
->   with "*that's the trail of evidence the experiment reads*". Replace with
->   "that's the audit trail for every decision".
+> - **`agents/end-refactor.md`, all four harnesses** (where the source has
+>   that phase) — the Remember list ends with "*that's the trail of evidence
+>   the experiment reads*". Replace with "that's the audit trail for every
+>   decision".
 > - **`skills/red/SKILL.md` on pi, oc and cursor** — carries the same
 >   `predictions_correct_rate` / "a metric the experiment measures"
 >   justification that Patch B.1 removes from cc's `commands/red.md`. The
@@ -807,15 +809,34 @@ print('  OK opencode.json is consumer-shaped')"
     fails only at use time. The 2026-07-28 export shipped it that way.
 
 12. **Feature parity across exported harnesses**. The variants are meant
-    to be identical as far as each harness allows — a missing phase is a
-    port that lagged, not a design choice:
+    to be identical as far as each harness allows — a phase present in one
+    subtree and missing from another is a port that lagged, not a design
+    choice.
+
+    **Parity is measured against the source workflow, not against a fixed
+    phase list.** Which phases exist is a property of the source: the v6.6
+    line carries both a per-cycle refactor and a final `end-refactor` pass;
+    the v6.1 line has only the per-cycle one, and that absence is
+    constitutive — it is why the workflow is cheap (RQ-workflow-reduction-opus5
+    F-1.3: the end phase costs 16–19 % of tokens without moving mean
+    decomposition). Do not require `end-refactor` from a source that never
+    had it, and do not port it in to satisfy this check — that would ship a
+    workflow other than the one the recommendation was measured on.
+
+    Derive the expected phase set from the source, then require every
+    exported harness to match it:
 
     ```bash
+    # phases the source actually defines
+    PHASES=$(cd "$SRC_DIR/.claude/agents" && ls *.md 2>/dev/null | sed 's/\.md$//')
+    echo "source phases: $(echo $PHASES | tr '\n' ' ')"
+
     for h in claude pi opencode cursor; do
       [ -d "$TARGET/.$h" ] || continue
-      printf '  %-9s ' "$h"
-      find "$TARGET/.$h" -name '*end-refactor*' | grep -q . \
-        && echo "OK end-refactor" || echo "FAIL: end-refactor missing"
+      for p in $PHASES; do
+        printf '  %-9s %-14s ' "$h" "$p"
+        [ -f "$TARGET/.$h/agents/$p.md" ] && echo "OK" || echo "FAIL: $p missing"
+      done
     done
     ```
 
@@ -824,7 +845,7 @@ print('  OK opencode.json is consumer-shaped')"
     — fix it in `experiments/workflows/`, not in the snapshot, then
     re-export. Do not ship an uneven snapshot with a caveat.
 
-    An agent file alone is not enough: verify the phase is actually
+    An agent file alone is not enough: verify each phase is actually
     invoked from the harness's orchestration file. Check that one file
     directly — piping `grep -rl` into `grep -q` gives false FAILs, because
     the second grep exits on the first non-matching line:
@@ -838,8 +859,10 @@ print('  OK opencode.json is consumer-shaped')"
         opencode) o="$TARGET/.opencode/opencode.json" ;;
         cursor)   o="$TARGET/.cursor/rules/tdd.mdc" ;;
       esac
-      printf '  %-9s ' "$h"
-      grep -q 'end-refactor' "$o" && echo "OK invoked" || echo "FAIL: defined but never called"
+      for p in $PHASES; do
+        printf '  %-9s %-14s ' "$h" "$p"
+        grep -q "$p" "$o" && echo "OK invoked" || echo "FAIL: defined but never called"
+      done
     done
     ```
 
