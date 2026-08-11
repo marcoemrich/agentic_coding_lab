@@ -122,13 +122,18 @@ undercut it without losing property 1.
 `opus-5-no-thinking` (strong) against `haiku-4-5-no-thinking` (weak),
 workflow held at `v6.6-lab-split-cc`.
 
-Models are the right probe here, and workflows are not. A first cut of
-this RQ used `v6.6-lab-split-cc` vs `v3-basic-tdd` as the strong/weak
-pair. The pool refutes that pairing outright: on claim-office
-`v3-basic-tdd` scores **1.00 in all five runs** (5 min, 4 M tokens) while
-`v6.6-lab-split-cc` scores 0.947 (86 min, 128 M tokens). The elaborate
-workflow is not the stronger one on this kata, so the pair spans no
-quality gap and cannot serve as a yardstick.
+Models are the right probe *for this question*, workflows are not. A first
+cut of this RQ used `v6.6-lab-split-cc` vs `v3-basic-tdd` as the
+strong/weak pair. On the correctness axis that pairing is inverted: on
+claim-office `v3-basic-tdd` scores **1.00 in all five runs** (5 min, 4 M
+tokens) while `v6.6-lab-split-cc` scores 0.947 (86 min, 128 M tokens).
+
+The two workflows *do* separate — but on decomposition
+(`cc_longest_function` 25 vs 14, `cognitive_max` 5 vs 3,
+`refactorings_applied` 2 vs 42), not on correctness. Since this RQ asks
+whether the kata can carry the **correctness** role, a probe that does not
+move correctness is useless here. That workflow gap is the subject of
+[RQ-kata-1.3](../1.3-sphinx-workflow-sensitivity/README.md).
 
 Models do span one. On claim-office the ordering is well populated and
 monotone across 40+ model variants, from 1.000 (glm-5-1, opus-4-7-portkey)
@@ -155,8 +160,9 @@ empty at that workflow, so both katas start from the same footing.
 
 Note that "replace" here means *for correctness RQs on strong models*.
 Even a negative verdict leaves `sphinx-score` useful: it is novel, cheap
-in tokens and wallclock, and carries four documented ambiguities, which makes it a
-candidate for prompt-style and example-mapping RQs regardless.
+in tokens and wallclock, and carries four documented ambiguities, which
+makes it a candidate for prompt-style RQs (1.2) and possibly workflow RQs
+(1.3) regardless.
 
 ## Caveats
 
@@ -184,7 +190,9 @@ candidate for prompt-style and example-mapping RQs regardless.
   prompt carries the example-mapping examples, which the smoke run showed
   to be a sufficient lever for a strong model. Weaker models may use them
   less effectively — that is precisely what H1 tests.
-- **The workflow is now a control, not a factor.** Whether the kata also
-  separates *workflows* is a separate question, and the v3-vs-v6.6 result
-  above suggests claim-office no longer does so on strong models either.
-  Prompt-style discrimination is covered by RQ-kata-1.2.
+- **The workflow is a control here, not a factor.** Whether the kata also
+  separates *workflows* is a separate question — measured on code quality,
+  not correctness — and is covered by
+  [RQ-kata-1.3](../1.3-sphinx-workflow-sensitivity/README.md). Prompt-style
+  discrimination is covered by
+  [RQ-kata-1.2](../1.2-sphinx-prompt-sensitivity/README.md).

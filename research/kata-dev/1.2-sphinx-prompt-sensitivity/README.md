@@ -22,10 +22,16 @@ outcomes:
   - cost_usd
   - cycle_count
   - refactorings_applied
-  # sanity on the produced code
+  # code quality — an unclear prompt may also change how the code is shaped,
+  # not just whether it is correct
   - lines_of_code
+  - code_mass
+  - cc_longest_function
+  - cc_avg_loc_per_function
+  - cc_functions
   - cognitive_max
   - mccabe_max
+  - smell_total
 min_replicates: 6
 status: aktiv
 ---
@@ -75,6 +81,14 @@ scoring question, not a full TDD run.
   the work lands on the right interpretation. *If prose runs turn out much
   cheaper, that is a warning sign: it would mean the agent stops early
   rather than exploring.*
+- **H4 (code quality):** Decomposition is prompt-invariant too — the
+  examples pin *which* rule gets implemented, not *how well* it is
+  factored. `cc_longest_function`, `cc_avg_loc_per_function` and
+  `cognitive_max` should land in the same range for both prompts.
+  *If they do not,* an unclear spec also degrades code structure, which
+  would be a finding beyond this kata: it would mean prompt quality and
+  workflow quality push on the same metrics and cannot be read
+  independently.
 
 ## Design note: why claim-office is in this RQ
 
