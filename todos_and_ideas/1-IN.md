@@ -9,6 +9,10 @@
 * Language-Erweiterung: RUST
 * Neuer Worflow Red->Green, Refactoring nur am Ende
 
+* Skills zum Untersuchen:
+  - Omakase — https://omakaseagent.com
+  - Ponytail — https://github.com/DietrichGebert/ponytail/tree/main
+
 * Metrik-Lücke Lesbarkeit (aus RQ-architecture-axis-sol-pi, F-1.11):
   keine der aktuellen Metriken trennt lesbaren von unlesbarem Code.
   3 von 10 Zellen haben Smell Total 0.0 bei manuell als schlecht bewertetem Code.
