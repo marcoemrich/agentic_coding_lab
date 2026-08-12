@@ -219,8 +219,12 @@ Concretely, an export must never contain:
 - **Harness-version pins** that exist for lab reproducibility rather than
   because the workflow needs them.
 
-What legitimately stays: the workflow itself, and permissions the workflow
-genuinely needs (e.g. running the test command).
+What legitimately stays: the workflow itself. **Permissions do not** — not
+even the ones the workflow appears to need, such as running the test
+command. A lab source has a wide allowlist because runs are unattended and
+a prompt would kill the run; a consumer has a human at the keyboard whose
+job it is to decide what the agent may do. And a shipped permission config
+overwrites one the consumer already wrote, silently.
 
 The failure mode is silent — a consumer copies the directory, the config
 references an environment variable they have never heard of, and the
@@ -232,30 +236,32 @@ harness fails with an error that points nowhere near the real cause.
 lab it carries the provider block — gateway `baseURL`s, `{env:...}` key
 references, the full model roster — alongside the command definitions.
 
-Do not copy it. Rewrite it. A consumer `opencode.json` needs exactly three
+Do not copy it. Rewrite it. A consumer `opencode.json` needs exactly two
 keys:
 
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
-  "command": { "tdd": { "description": "...", "template": "<orchestration>" } },
-  "permission": { "...": "..." }
+  "command": { "tdd": { "description": "...", "template": "<orchestration>" } }
 }
 ```
 
-No `provider` block, no `instructions` array. Verify after writing:
+No `provider` block, no `instructions` array, **no `permission` block**.
+Verify after writing:
 
 ```bash
 python3 -c "
 import json;c=json.load(open('\$TARGET/.opencode/opencode.json'))
 assert 'provider' not in c, 'FAIL: lab routing config leaked'
-assert not c.get('instructions'), 'FAIL: AGENTS.md still auto-loaded'"
+assert not c.get('instructions'), 'FAIL: AGENTS.md still auto-loaded'
+assert 'permission' not in c, 'FAIL: permission config shipped'"
 ```
 
 The same caution applies to any harness config that mixes workflow and
-infrastructure. `settings.json` (cc) is safe — it only carries a
-permissions allowlist. `.pi/` has no config file in the workflow at all
-(routing lives in the container's `models.json`, outside the workflow).
+infrastructure. For cc that means **no `settings.json` at all** — the only
+thing the lab source keeps in it is the permissions allowlist, and that is
+exactly what must not travel. `.pi/` has no config file in the workflow at
+all (routing lives in the container's `models.json`, outside the workflow).
 
 ## Keep the harness variants feature-equal
 

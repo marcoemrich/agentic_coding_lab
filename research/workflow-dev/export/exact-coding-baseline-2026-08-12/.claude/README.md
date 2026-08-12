@@ -98,7 +98,6 @@ file out without touching the workflow files.
 .claude/
 ├── README.md                           This file (travels with the workflow)
 ├── VERSION                             Date-based version tag
-├── settings.json                       Permissions allowlist (Read/Write/Edit/Bash/Skill/Task)
 ├── skills/
 │   ├── tdd/
 │   │   ├── SKILL.md                    ★ The workflow — gated, loads only when you ask for TDD

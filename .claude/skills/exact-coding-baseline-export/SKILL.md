@@ -119,7 +119,7 @@ exact-coding-baseline-<DATE>/
   README.md   # snapshot-level: which harnesses, how to install
   VERSION
   .claude/    # cc      skills/tdd/SKILL.md · commands/{test-list,red,green}.md
-              #         agents/{refactor,end-refactor}.md · rules/ · settings.json
+              #         agents/{refactor,end-refactor}.md · rules/
   .pi/        # pi      skills/tdd/SKILL.md · skills/{test-list,red,green}/
               #         agents/{refactor,end-refactor}.md · rules/
               #         extensions/subagent/{index,agents}.ts + README.md
@@ -191,7 +191,6 @@ echo "source layout: $LAYOUT"
 **Common to both layouts** — copy 1:1 from `$SRC_DIR/.claude/` to
 `$TARGET/.claude/`:
 
-- `settings.json`
 - `rules/tdd-with-ts-and-vitest.md` (some older source workflows used
   `tdd_with_ts_and_vitest.md` — if present, rename to hyphen form in target)
 - `agents/refactor.md`
@@ -200,6 +199,15 @@ echo "source layout: $LAYOUT"
 - `commands/red.md`
 - `commands/green.md`
 - `rules/tdd.md`
+
+**Explicitly not copied: `settings.json`.** Permissions are an environment
+decision belonging to the consumer, not a property of the workflow. The lab
+source needs a wide allowlist because runs are unattended — a consumer has a
+human at the keyboard who should decide what the agent may do. Worse, a
+shipped `settings.json` silently overwrites one the consumer already has. The
+same reasoning removes the `permission` block from `opencode.json` (see
+`HARNESS-MECHANISMS.md`). Do not reintroduce it, and do not substitute a
+`settings.json.example` — the README explains the workflow, not the sandbox.
 
 **Layout `v66`** (source has `rules/lab-only.md` — e.g. `v6.6-lab-split-cc`):
 
@@ -681,17 +689,16 @@ report immediately, do not claim success.
    find "$TARGET" -type f | sort
    ```
 
-   Expected for a `legacy` source (11 files):
+   Expected for a `legacy` source (10 files):
    ```
    .claude/README.md
    .claude/VERSION
    .claude/agents/refactor.md
    .claude/commands/{green,red,test-list}.md
    .claude/rules/{human-in-the-loop,tdd,tdd-execution-mode,tdd-with-ts-and-vitest}.md
-   .claude/settings.json
    ```
 
-   Expected for a `v66` source (13 files) — adds the end-refactor agent and
+   Expected for a `v66` source (12 files) — adds the end-refactor agent and
    the subagent prompt contracts:
    ```
    .claude/README.md
@@ -700,7 +707,6 @@ report immediately, do not claim success.
    .claude/commands/{green,red,test-list}.md
    .claude/rules/tdd-with-ts-and-vitest.md
    .claude/skills/tdd/{SKILL,human-in-the-loop,subagent-prompts,tdd-execution-mode}.md
-   .claude/settings.json
    ```
 
    Both lists are written **after** Step 6, which moves `tdd.md` into
