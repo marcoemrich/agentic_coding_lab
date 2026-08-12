@@ -718,6 +718,18 @@ report immediately, do not claim success.
    In **neither** case may `rules/lab-only.md` or
    `rules/tdd-experiment-mode.md` appear.
 
+   **No permission config in any harness subtree** — permissions are the
+   consumer's decision, and a shipped file overwrites theirs silently:
+
+   ```bash
+   find "$TARGET" \( -name 'settings.json' -o -name 'settings.local.json' \
+     -o -name 'settings.json.example' \) -print | grep . \
+     && echo "FAIL: permission config shipped (consumer decides)" || \
+     echo "  OK no permission config in target"
+   ```
+
+   The `opencode.json` counterpart is asserted in validation 11.
+
 2. **Source workflow files copied** (size sanity — none of the source
    files dropped below 500 bytes during patching, which would indicate a
    destroyed file):
@@ -867,6 +879,7 @@ report immediately, do not claim success.
 import json;c=json.load(open('$TARGET/.opencode/opencode.json'))
 assert 'provider' not in c, 'FAIL: Requesty/Portkey provider block leaked'
 assert not c.get('instructions'), 'FAIL: AGENTS.md still auto-loaded'
+assert 'permission' not in c, 'FAIL: permission config shipped (consumer decides)'
 for n,cmd in c.get('command',{}).items():
     assert 'template' in cmd, f'FAIL: command.{n} has no template (schema-required)'
     assert 'prompt' not in cmd, f'FAIL: command.{n} uses prompt; the field is template'
