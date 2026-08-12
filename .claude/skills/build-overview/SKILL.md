@@ -1,13 +1,13 @@
 ---
 name: build-overview
-description: Generates an experiment-overview snapshot of all research questions under research/_archive/. Invoke when a new point-in-time report across all RQs should be produced.
+description: Generates an experiment-overview snapshot of all research questions under research/reports/. Invoke when a new point-in-time report across all RQs should be produced.
 disable-model-invocation: false
 allowed-tools: Bash(./experiments/generate-snapshot-skeleton.py:*) Read Write Glob
 ---
 
 # /build-overview — produce an experiment-overview snapshot
 
-You produce a frozen, publishable research report from the current state of every `findings.md` under `research/questions-claude/`, `research/questions-opencode/`, `research/questions-cross/`, and `research/workflow-dev/`. The snapshot lands as a new file under `research/_archive/experiment-overview-YYYY-MM-DD.md`.
+You produce a frozen, publishable research report from the current state of every `findings.md` under `research/questions-claude/`, `research/questions-opencode/`, `research/questions-cross/`, and `research/workflow-dev/`. The snapshot lands as a new file under `research/reports/experiment-overview-YYYY-MM-DD.md`.
 
 ## Core principle
 
@@ -131,7 +131,7 @@ This is the only interactive step. Do **not** silently write the Key Findings �
 
 **Always ask — and always offer both continuity and novelty.** The selection is the user's call every single time; never write the Key Findings from your own judgement, and never treat the previous snapshot as auto-approved. The question you put to the user must contain two clearly separated groups:
 
-- **Carried-over candidates** — the previous snapshot's Key Findings with refreshed numbers. These are the study's public face: they get lifted into talks, slide decks and the manuscript, so their *wording* accumulates value across snapshots and should stay recognisable. Read the most recent `research/_archive/experiment-overview-*.md` and any `slide-tables-*.md` (the talk-ready condensates) before drafting.
+- **Carried-over candidates** — the previous snapshot's Key Findings with refreshed numbers. These are the study's public face: they get lifted into talks, slide decks and the manuscript, so their *wording* accumulates value across snapshots and should stay recognisable. Read the most recent `research/reports/experiment-overview-*.md` and any `slide-tables-*.md` (the talk-ready condensates) before drafting.
 - **New candidates** — findings the old set could not carry, because the RQs behind them did not exist or had too little data last time. **Proposing these is mandatory, not optional.** Look specifically at: RQ subtrees added since the last snapshot, RQs whose coverage crossed `min_replicates` since then, and cross-RQ patterns that only became visible with the new cells. For each, say in one line why it is newly sayable ("only measurable since the fourth harness was added"). If you genuinely find no new candidate, say that explicitly and name what you checked — do not let the new group quietly stay empty.
 
 Label each candidate as carried-over or new when presenting, so the user can weigh continuity against novelty deliberately.
@@ -149,7 +149,7 @@ For each carried-over finding, re-verify every number against the current `findi
 Take the date from the skeleton header (line 3: `Stand: YYYY-MM-DD.`) and write to:
 
 ```
-research/_archive/experiment-overview-YYYY-MM-DD.md
+research/reports/experiment-overview-YYYY-MM-DD.md
 ```
 
 Then verify with Glob or Read that:

@@ -11,7 +11,7 @@ Schwester-Dokus:
 - `research/workflow-dev/model-recommendation-matrix.md` — pro Modell empfohlener Workflow.
 - `research/kata-design/kata-construction.md` — Kata-Methodik.
 
-Historie der vor-v6.1-Workflows + erste Reduktions-Kette (v6.5er, v6.6) liegt unter `experiments/workflows/_archive/` und `research/_archive/workflow-dev-v1/`. Befunde aus dieser Kette sind nicht in dieses File übernommen — die Kette war korrektheits-defekt (siehe Anti-Pattern "Bundle-Reduktion ohne Korrektheits-Stichprobe" unten), und alle Folge-Iterationen liefen auf gebrochenem Workflow. Die jetzige v6.1-Linie ist der Neustart auf reparierter Basis.
+Die Workflow-Files der vor-v6.1-Generation + erste Reduktions-Kette (v6.5er, v6.6) liegen unter `experiments/workflows/_archive/`. Die zugehörigen RQ-Verzeichnisse der v1-Generation wurden am 2026-08-11 gelöscht (Commit `953841cb`) und sind nur noch über die Git-Historie erreichbar. Befunde aus dieser Kette sind nicht in dieses File übernommen — die Kette war korrektheits-defekt (siehe Anti-Pattern "Bundle-Reduktion ohne Korrektheits-Stichprobe" unten), und alle Folge-Iterationen liefen auf gebrochenem Workflow. Die jetzige v6.1-Linie ist der Neustart auf reparierter Basis.
 
 ---
 
@@ -124,7 +124,7 @@ Siehe "Tragende Inhalte" im Inventar. Vor jeder Reduktion gegenlesen.
 
 #### 4. Architektur-Achse: Skill vs Subagent
 
-Orthogonal zur Inhaltsfrage. Befunde aus der v1-RQ-Kette (vor v6.1-Rebuild), liegen archiviert in `research/_archive/workflow-dev-v1/1.1-workflow-tradeoff-hybrid/` und sind unter v6.1 nicht re-validiert. Der Pareto-Befund **v6-hybrid (nur refactor isoliert) > v4 (alles isoliert) > v5 (alles single-context)** wird in der aktuellen Linie als Architektur-Default übernommen (`v6.1-*` erbt diese Architektur), eine systematische Re-Validierung auf v6.1-Basis steht aus.
+Orthogonal zur Inhaltsfrage. Der Befund stammt aus der v1-RQ-Kette (vor v6.1-Rebuild, RQ-workflow-tradeoff) und ist unter v6.1 nicht re-validiert; das RQ-Verzeichnis wurde in `953841cb` gelöscht. Der Pareto-Befund **v6-hybrid (nur refactor isoliert) > v4 (alles isoliert) > v5 (alles single-context)** wird in der aktuellen Linie als Architektur-Default übernommen (`v6.1-*` erbt diese Architektur), eine systematische Re-Validierung auf v6.1-Basis steht aus.
 
 **Lesart aus der archivierten Kette:** Isolation hilft dort, wo Frische-Perspektive Wert hat (refactor sieht Code mit neuen Augen). Sie schadet dort, wo Kontinuität nötig ist (red→green braucht Test-Listen-Kohärenz). Pauschal "mehr Isolation = besser" ist falsch.
 
@@ -302,7 +302,7 @@ Plus eine opt-in `HUMAN-IN-THE-LOOP.md` im Workflow-Root (kein Auto-Load, kein M
 
 ### Architektur-Achse (auf v6.1 nicht re-validiert)
 
-Die archivierten v1-RQs (`research/_archive/workflow-dev-v1/`) etablierten v6-hybrid als Pareto-Optimum: red/green als Skills (Test-Listen-Kohärenz), refactor als isolierter Subagent (Frische-Perspektive). Die jetzige v6.1-Linie erbt diese Architektur, eine systematische Re-Validierung auf v6.1-Basis steht aus.
+Die v1-RQs (gelöscht in `953841cb`, nur noch in der Git-Historie) etablierten v6-hybrid als Pareto-Optimum: red/green als Skills (Test-Listen-Kohärenz), refactor als isolierter Subagent (Frische-Perspektive). Die jetzige v6.1-Linie erbt diese Architektur, eine systematische Re-Validierung auf v6.1-Basis steht aus.
 
 Falls auf v6.1 re-validiert werden soll: separate RQ aufsetzen mit v6.1-hybrid (Default), v6.1-all-skills, v6.1-all-subagents als Vergleichszellen. Achtung: das ist eine Architektur-Variation, kein Reduktions-Test — sie fällt nicht unter "Reduktion vor Addition".
 
@@ -320,7 +320,7 @@ Die v1-Archiv-RQ-emoji-cross-model warnt: Reduktionen sind nicht modell-agnostis
 
 - `experiments/workflows/MARKERS.md` — harte Parser-Anforderungen.
 - `experiments/workflows/_archive/` — Workflow-Files der v6.5er-Kette (v6.5-lean, .1–.4, v6.6) + frühe v6.x.
-- `research/_archive/workflow-dev-v1/` — RQs der v1-Generation (RQ-context, RQ-workflow-tradeoff, RQ-app/rules/pep/emoji/lean/audit/bullets/targeted/refactor-cut/delayed-refactor).
+- `git show 953841cb^:research/_archive/workflow-dev-v1/` — RQs der v1-Generation (RQ-context, RQ-workflow-tradeoff, RQ-app/rules/pep/emoji/lean/audit/bullets/targeted/refactor-cut/delayed-refactor). Am 2026-08-11 gelöscht, weil die Kette auf korrektheits-defekter Basis lief; nur noch in der Git-Historie.
 - `research/workflow-dev/1.1-pep-effect-v6.1/` bis `1.5-why-block-effect-v6.1/` — aktuelle Reduktions-RQs auf v6.1-Basis.
 - `research/workflow-dev/v6-reduction-recipe.md` — Reduktions-Rezept (Schritt-für-Schritt-Methodik aus der ersten v6.5er-Kette, jetzt auf v6.1-Basis re-anwendbar).
 - `research/workflow-dev/model-recommendation-matrix.md` — pro Modell empfohlener Workflow.

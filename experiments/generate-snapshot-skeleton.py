@@ -201,7 +201,7 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
       "not yet introduced at this point; use a mechanism description instead, e.g. "
       "\"hybrid workflow with skill-based red/green in shared context + isolated "
       "refactor subagent\"), note any omitted workflow-dev RQs if data collection is ongoing. "
-      "Style reference: research/_archive/findings-validation-2026-05-04/experiment-overview-v2.md. -->")
+      "Style reference: research/reports/experiment-overview-v2-2026-05-04.md. -->")
     p("")
     p("### Scope")
     p("")
@@ -332,7 +332,7 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("Deeper mechanics discussion, the inventory of the active v6.1 reduction line and the load-bearing RQ findings "
       "are in `research/workflow-dev/workflow-construction.md`. Which markers drive the parsing of the "
       "TDD metrics is documented in `experiments/workflows/MARKERS.md`. The archived "
-      "v6.5.x line lives in `experiments/workflows/_archive/` and `research/_archive/workflow-dev-v1/`.")
+      "v6.5.x line lives in `experiments/workflows/_archive/`.")
     p("")
     p("**Model × thinking** (lab variant IDs from `MODEL_CONFIGS` in `experiments/docker/run-batch.sh`):")
     p("")

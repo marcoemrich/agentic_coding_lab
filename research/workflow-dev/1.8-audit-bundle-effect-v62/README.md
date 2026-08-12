@@ -32,7 +32,7 @@ status: aktiv
 
 # RQ-1.8: v6.3-audit-bundle vs v6.2-with-why-cleaned (game-of-life)
 
-Reproduziert das Audit-Bundle die in der archivierten [RQ-audit](../../_archive/workflow-dev-v1/3.1-orchestration-audit/findings.md) gegen v6.5-lean gemessenen Effekte, wenn es stattdessen auf v6.2-with-why-cleaned aufgesetzt wird?
+Reproduziert das Audit-Bundle die in der alten RQ-audit (v1-Generation, `3.1-orchestration-audit`; gelöscht in `953841cb`) gegen v6.5-lean gemessenen Effekte, wenn es stattdessen auf v6.2-with-why-cleaned aufgesetzt wird?
 
 ## Motivation
 
@@ -110,7 +110,7 @@ v6.2-Baseline-Runs liegen aus RQ-1.7 bereits (n=5) vor; n=10 bedeutet ggf. +5 Re
 
 ## Quellen
 
-- Archivierte Praezedenz: [RQ-audit](../../_archive/workflow-dev-v1/3.1-orchestration-audit/) — Bundle gegen v6.5-lean.
+- Praezedenz: RQ-audit der v1-Generation (`3.1-orchestration-audit`) — Bundle gegen v6.5-lean. Verzeichnis in `953841cb` geloescht, abrufbar via `git show 953841cb^:research/_archive/workflow-dev-v1/3.1-orchestration-audit/findings.md`.
 - v6.3-Workflow-Diff: `experiments/workflows/v6.3-audit-bundle/CHANGES.md`.
 - HITL-Profil: `experiments/workflows/v6.3-audit-bundle/HUMAN-IN-THE-LOOP.md`.
 - Baseline-RQ: [RQ-1.6](../1.6-v62-cleanup-validation-v61-with-why/findings.md) (v6.2 als Default etabliert).

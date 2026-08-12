@@ -37,7 +37,7 @@ Liefern die motivierenden bzw. begruendenden Anteile der **Red- und Green-Skill-
 
 ## Motivation
 
-Die alte RQ-pep (`_archive/workflow-dev-v1/2.3-pep-effect/`) baute auf der v6-hybrid-Linie, die spaeter als korrektheits-defekt identifiziert wurde (Bruch v6-hybrid → v6.5-lean). Die neue Basis `v6.1-hybrid-testlist-scope-fix` korrigiert den Test-List-Scope-Bug und ist seit dem v6-Rebuild der valide Ausgangspunkt fuer Reduktions-Experimente. Befunde aus der alten Linie sind potenziell durch den Bug konfundiert — daher Wiederholung.
+Die alte RQ-pep (v1-Generation, `2.3-pep-effect`; gelöscht in `953841cb`, nur noch in der Git-Historie) baute auf der v6-hybrid-Linie, die spaeter als korrektheits-defekt identifiziert wurde (Bruch v6-hybrid → v6.5-lean). Die neue Basis `v6.1-hybrid-testlist-scope-fix` korrigiert den Test-List-Scope-Bug und ist seit dem v6-Rebuild der valide Ausgangspunkt fuer Reduktions-Experimente. Befunde aus der alten Linie sind potenziell durch den Bug konfundiert — daher Wiederholung.
 
 Die `MARKERS.md` klassifiziert "Psychological Resistance"-Sektionen und "Trust the process"-Pep-Talks weiterhin als **decorative content (safe to drop)**. RQ-pep-v6.1 prueft diese Klassifikation gegen v6.1.
 

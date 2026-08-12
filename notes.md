@@ -25,7 +25,7 @@ Parallel hatte v4 vs v4.1 gezeigt, dass `commands/test-list.md` mit Scope "base 
 ### Aufräum-Run (neuer langer Optimierungs-Lauf)
 
 - Alte v6.5-Kette → `experiments/workflows/_archive/` (Lookup ignoriert `_`-Präfix)
-- Alte RQs (2.x/3.x) → `research/_archive/workflow-dev-v1/`
+- Alte RQs (2.x/3.x) → `research/_archive/workflow-dev-v1/` (dieses Archiv am 2026-08-11 in `953841cb` gelöscht; nur noch über die Git-Historie erreichbar)
 - Neue Basis `v6.1-hybrid-testlist-scope-fix` = v6-hybrid + test-list-scope-fix (Diff = nur 2 Files: `test-list.md` + zwei "BASE FUNCTIONALITY ONLY"-Reste in `tdd.md`)
 - Rezept jedes alten Cuts in `research/workflow-dev/v6-reduction-recipe.md` zur Wiederanwendung auf reparierter Basis
 - Neue RQs `1.1-pep-effect-v6.1` … `1.5-why-block-effect-v6.1` re-validieren die Cuts isoliert auf neuer Basis, **mit** claim-office-Smoke (gestartet 23.-24.05.2026)
@@ -153,7 +153,7 @@ Tatsächlich gelaufen wurden ~235 Runs (alte Studie, Stand 11.02.2026, archivier
 **Was an einer Full-Matrix ohne RQ-Disziplin schief geht:**
 - **Falsche Frage-Vielfalt:** Eine Matrix beantwortet keine spezifische Frage, sondern liefert eine n-dimensionale Tabelle, die jeden möglichen Interaktions-Effekt vermengt. Ohne RQ ist nicht klar, welche Confounds kontrolliert werden müssten.
 - **Kosten skalieren multiplikativ:** Jede zusätzliche Faktor-Stufe kostet ×N Runs. Eine isolierte Frage ("Workflow-Effekt bei festem Modell und Kata") kostet 5×3 = 15 Runs statt 630.
-- **Befunde lassen sich nicht sauber zuordnen:** Im 235-Run-Bestand wurden im Nachhinein 21 Befunde aus den Daten extrahiert (`research/_archive/findings-validation-2026-05-04/old-findings.md`). Diese mussten am 04.05.2026 mühsam auf neue RQs verteilt und gegen frische Daten re-validiert werden (✅ haltbar / ⚠️ revidiert / ❌ verworfen / 🚫 nicht prüfbar pro Befund).
+- **Befunde lassen sich nicht sauber zuordnen:** Im 235-Run-Bestand wurden im Nachhinein 21 Befunde aus den Daten extrahiert (`research/_archive/findings-validation-2026-05-04/old-findings.md`, gelöscht in `953841cb`). Diese mussten am 04.05.2026 mühsam auf neue RQs verteilt und gegen frische Daten re-validiert werden (✅ haltbar / ⚠️ revidiert / ❌ verworfen / 🚫 nicht prüfbar pro Befund).
 - **Trivial-Kata-Anteil bleibt unsichtbar:** Wenn pixel-art-scaler und string-calculator dasselbe Gewicht in der Matrix haben wie game-of-life, dominieren sie die Mittelwerte und maskieren echte Workflow-Unterschiede (Lehre aus Kata-Block oben).
 
 **Wende am 04.05.2026 — RQ-driven Struktur:**
@@ -161,7 +161,7 @@ Tatsächlich gelaufen wurden ~235 Runs (alte Studie, Stand 11.02.2026, archivier
 - `batch-plan-from-rq.py` generiert nur die für die jeweilige RQ benötigten Runs (typisch 15-50 statt 630).
 - `aggregate-by-query.py` zieht runs aus dem flachen Pool, die zum RQ-Selektor passen — Re-Use von Runs über RQs hinweg ist explizit.
 - Findings werden pro RQ geführt, nicht als Master-Tabelle.
-- Pre-existierende 235-Run-Daten in `research/_archive/findings-validation-2026-05-04/`, alte Befunde re-evaluiert und auf RQs verteilt (siehe Mapping-Tabelle dort).
+- Pre-existierende 235-Run-Daten in `research/_archive/findings-validation-2026-05-04/`, alte Befunde re-evaluiert und auf RQs verteilt (Verzeichnis in `953841cb` gelöscht; die Methoden-Übersicht daraus liegt als `research/reports/experiment-overview-v2-2026-05-04.md` weiter vor).
 
 **Lehre:** Vor jedem Refill **erst RQ formulieren** (Frage + ein Faktor + Kontrollen + erwartete Outcomes), dann minimalen Plan generieren. Voll-Matrix-Denken ist bei Rate-Limit-beschränkter API praktisch undurchführbar und liefert methodisch schwächere Befunde als gezielte Einzel-RQs. Faktor-Produkt × n × v4-Wallclock vorher rechnen — wenn > 1-2 Tage Wallclock, RQ enger schneiden oder auf Portkey-Routing umziehen.
 

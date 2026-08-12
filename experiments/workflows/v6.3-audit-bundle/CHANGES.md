@@ -1,6 +1,6 @@
 # v6.3-audit-bundle — Changes vs v6.2-with-why-cleaned
 
-Derived from `v6.2-with-why-cleaned` by importing the still-missing items from the archived `3.1-orchestration-audit` bundle (see `research/_archive/workflow-dev-v1/3.1-orchestration-audit/findings.md` for the empirical v6.5.1 result).
+Derived from `v6.2-with-why-cleaned` by importing the still-missing items from the archived `3.1-orchestration-audit` bundle (for the empirical v6.5.1 result see the v1-generation RQ `3.1-orchestration-audit`, deleted in `953841cb`: `git show 953841cb^:research/_archive/workflow-dev-v1/3.1-orchestration-audit/findings.md`).
 
 All edits are content additions (rationale + procedural hardening) and one new opt-in profile file. No mechanism changes (`commands/` stays — v6-line decision, see `research/workflow-dev/workflow-construction.md`).
 

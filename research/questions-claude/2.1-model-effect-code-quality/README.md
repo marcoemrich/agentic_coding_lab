@@ -46,7 +46,7 @@ How strongly do the production-available models differentiate in code quality wh
 
 ## Motivation
 
-Earlier findings (see `_archive/rqs-v1/RQ-3-model-and-thinking/`) show a model ranking on code quality under a weaker workflow setup. This RQ measures the effect **in isolation on the currently strongest workflow (v4-exact-subagents)** and for the first time compares Opus 4.6 ↔ Opus 4.7 ↔ Sonnet 4.6 directly, each with and without thinking. Correctness is measured alongside as a sanity check but is not the object of study — on Game of Life it is expected to be ≈ 100 % for these models.
+Earlier findings (v1-generation RQ-3-model-and-thinking, deleted in `953841cb`, reachable via git history) show a model ranking on code quality under a weaker workflow setup. This RQ measures the effect **in isolation on the currently strongest workflow (v4-exact-subagents)** and for the first time compares Opus 4.6 ↔ Opus 4.7 ↔ Sonnet 4.6 directly, each with and without thinking. Correctness is measured alongside as a sanity check but is not the object of study — on Game of Life it is expected to be ≈ 100 % for these models.
 
 Haiku is deliberately not included: in previous runs Haiku regularly falls below 100 % correctness on Game of Life, which invalidates the code-quality comparison (quality metrics are meaningful only on correct code).
 
@@ -103,7 +103,7 @@ Runs:       30 total
 
 - **H1** (correctness sanity): `tests_passing` *and* `verification_pct` are at 100 % for all eight models (3/3 per cell). A cell below 100 % invalidates the code-quality comparison for that model or indicates a representation-adherence gap.
 - **H2** (model ranking on code quality): On `code_mass`, `smell_total`, `cc_longest_function`, `mccabe_max`, `cognitive_max` a consistent ranking Fable 5 ≤ Opus 4.8 ≤ Opus 4.7 ≤ Opus 4.6 ≤ Sonnet 4.6 emerges (lower = better; Fable 5 expected at the top as the newest model, without a numeric prediction).
-- **H3** (thinking effect): Within each model, thinking improves code quality (lower `code_mass`, `cognitive_max`); the effect is stronger on Opus than on Sonnet (cf. F-3.x from `_archive/rqs-v1/RQ-3-model-and-thinking/`).
+- **H3** (thinking effect): Within each model, thinking improves code quality (lower `code_mass`, `cognitive_max`); the effect is stronger on Opus than on Sonnet (cf. F-3.x from the v1-generation RQ-3-model-and-thinking, deleted in `953841cb`).
 
 **Falsification of H2** (no consistent ranking across the quality outcomes): the model effect on code quality is not stable on v4 → other workflows could show different model rankings.
 

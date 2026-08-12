@@ -37,7 +37,7 @@ Haben die rund 95 Decoration-Emojis (✅ 45×, ❌ 25×, 🚨 6×, 🔴 4×, �
 
 ## Motivation
 
-Wiederholung der archivierten RQ-emoji (`_archive/workflow-dev-v1/2.4-emoji-effect/`) auf der neuen, korrekturgefixten v6.1-Basis. Die alte RQ-emoji baute auf der v6-hybrid-Linie, die spaeter als korrektheits-defekt identifiziert wurde (Bruch v6-hybrid → v6.5-lean). Befunde aus der alten Linie sind potenziell durch den Test-List-Scope-Bug konfundiert — daher Wiederholung auf `v6.1-hybrid-testlist-scope-fix` als valider Basis (siehe Memory `v6-rebuild-new-base.md`).
+Wiederholung der alten RQ-emoji (v1-Generation, `2.4-emoji-effect`; gelöscht in `953841cb`, nur noch in der Git-Historie) auf der neuen, korrekturgefixten v6.1-Basis. Die alte RQ-emoji baute auf der v6-hybrid-Linie, die spaeter als korrektheits-defekt identifiziert wurde (Bruch v6-hybrid → v6.5-lean). Befunde aus der alten Linie sind potenziell durch den Test-List-Scope-Bug konfundiert — daher Wiederholung auf `v6.1-hybrid-testlist-scope-fix` als valider Basis (siehe Memory `v6-rebuild-new-base.md`).
 
 `MARKERS.md` klassifiziert Emoji-Header (`🔴 / 🟢 / 🔄 / 📋`) und ✅/❌-Status-Marker weiterhin als **decorative content (safe to drop)**. RQ-emoji-v6.1 prueft diese Klassifikation gegen v6.1 — parallel zur Schwester-RQ [RQ-pep-v6.1](../1.1-pep-effect-v6.1/README.md).
 

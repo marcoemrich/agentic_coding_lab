@@ -17,7 +17,7 @@ Re-run analysis pipeline on all runs matching an RQ, reaggregate metrics, and pr
 - Details: `.claude/skills/reanalyze/SKILL.md`
 
 ### `/build-overview`
-Generates a frozen experiment-overview snapshot across all RQs under `research/_archive/`. Runs `generate-snapshot-skeleton.py`, then fills synthesis sections from `findings.md` files.
+Generates a frozen experiment-overview snapshot across all RQs under `research/reports/`. Runs `generate-snapshot-skeleton.py`, then fills synthesis sections from `findings.md` files.
 - Details: `.claude/skills/build-overview/SKILL.md`
 
 ### `/exact-coding-baseline-export [date] [source-workflow]`
@@ -127,7 +127,7 @@ Full model table: README section "Model Configurations" and `MODEL_CONFIGS` in `
 
 ## RQ methodology
 
-- **Current state:** Active RQs split into two subtrees — `research/questions/` (generic: prompt/model/TDD/context effects) and `research/workflow-dev/` (workflow-evolution chain). Old RQs frozen in `research/_archive/rqs-v1/` and `rqs-v2/`.
+- **Current state:** Active RQs split by harness family — `research/questions-{claude,opencode,pi,cursor-cli}/` (per-harness model/prompt/TDD effects), `research/questions-cross/` (cross-harness comparisons), `research/workflow-dev/` (workflow-evolution chain) and `research/kata-dev/` (kata validation). Published reports live in `research/reports/`.
 - **Constraint order** when user names an early constraint (model pinning, routing, tool availability): plan-context first → RQ schema → reuse-check. Do not reverse.
 - v1/v2 workflows: only `prose` prompt style. v3/v4/v5: all three styles allowed.
 - Kata assignment: `claim-office` → correctness (`verification_pct`), `game-of-life`/`mars-rover` → code quality.

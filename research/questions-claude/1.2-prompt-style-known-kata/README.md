@@ -95,7 +95,7 @@ Runs:       27 total
 
 - **H1** (correctness): Per model, the spread of `verification_pct` between the three styles is less than 10 percentage points — the kata is known from the training material, style differences are compensated by prior knowledge.
 - **H2** (code quality): There is no consistent style ranking on `code_mass`, `smell_total`, `cc_longest_function`, `mccabe_max`, `cognitive_max` that is stable across models — style-induced quality variation is noise on a known kata.
-- **H3** (model ranking): `code_mass` and complexity outcomes continue to follow the model ranking Opus < Sonnet < Haiku (cf. F-3.1 in `_archive/rqs-v1/RQ-3-model-and-thinking/findings.md`), independently of the prompt style.
+- **H3** (model ranking): `code_mass` and complexity outcomes continue to follow the model ranking Opus < Sonnet < Haiku (cf. F-3.1 in the v1-generation RQ-3-model-and-thinking, deleted in `953841cb`), independently of the prompt style.
 
 - **H4** (ambiguity hypothesis): On training-known katas the example-mapping advantage does not take effect, because there are no domain-specific ambiguities that would need to be resolved by examples. Instead, concrete examples can activate the trained pattern (library form) so strongly that the actual task contract (CLI) is displaced — example mapping becomes *counterproductive*. This phenomenon does not occur on domain-novel katas (claim-office), because there no competing prior knowledge exists.
 

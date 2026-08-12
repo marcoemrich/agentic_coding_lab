@@ -1,11 +1,11 @@
 ---
 name: build-overview
-description: Generates an experiment-overview snapshot of all research questions under research/_archive/. Invoke when a new point-in-time report across all RQs should be produced.
+description: Generates an experiment-overview snapshot of all research questions under research/reports/. Invoke when a new point-in-time report across all RQs should be produced.
 ---
 
 # /build-overview â€” produce an experiment-overview snapshot
 
-You produce a frozen, publishable research report from the current state of every `findings.md` under `research/questions-claude/`, `research/questions-opencode/`, `research/questions-cross/`, and `research/workflow-dev/`. The snapshot lands as a new file under `research/_archive/experiment-overview-YYYY-MM-DD.md`.
+You produce a frozen, publishable research report from the current state of every `findings.md` under `research/questions-claude/`, `research/questions-opencode/`, `research/questions-cross/`, and `research/workflow-dev/`. The snapshot lands as a new file under `research/reports/experiment-overview-YYYY-MM-DD.md`.
 
 ## Core principle
 
@@ -100,7 +100,7 @@ This is the only interactive step. Do **not** silently write the Key Findings â€
 Take the date from the skeleton header (line 3: `Stand: YYYY-MM-DD.`) and write to:
 
 ```
-research/_archive/experiment-overview-YYYY-MM-DD.md
+research/reports/experiment-overview-YYYY-MM-DD.md
 ```
 
 Then verify with Glob or Read that:
