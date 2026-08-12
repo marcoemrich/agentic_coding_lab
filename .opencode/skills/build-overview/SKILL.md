@@ -16,14 +16,17 @@ Both exist in parallel. The snapshot is **not written from memory** — it is fi
 
 ## Prerequisites
 
-System tools required (all on `$PATH`):
+Required on `$PATH` for the Markdown snapshot (steps 1–5):
 
 - `python3` — runs `experiments/generate-snapshot-skeleton.py`
-- `pandoc` — Markdown → HTML for the PDF step (any version ≥ 2.9 works)
-- `google-chrome` (or `chromium` — adjust the binary name in step 6) — headless `--print-to-pdf`
-- `pdfinfo` (Poppler utils) — optional, used for the PDF verification check in step 6
 
-If any of these are missing, stop at step 6 and report which tool is unavailable so the user can install it.
+Only needed when the user asks for a PDF (step 6):
+
+- `pandoc` — Markdown → HTML (any version ≥ 2.9 works)
+- `google-chrome` (or `chromium` — adjust the binary name in step 6) — headless `--print-to-pdf`
+- `pdfinfo` (Poppler utils) — optional, used for the PDF verification check
+
+If a PDF was requested and one of its tools is missing, finish the Markdown snapshot and report which tool is unavailable so the user can install it — do not treat it as a failure of the whole run.
 
 ## Lifecycle (6 steps)
 
@@ -78,7 +81,7 @@ Style requirements:
 - **RQ sections (4.X):** Two artefacts per RQ, in this order:
   - **Overview table from `findings.md`** copied verbatim into the snapshot, placed directly after the `_Data basis: …_` line and before the `**Findings**:` list. Each findings.md carries an "Overview" or headline table near the top; copy it (with its caption + 🏆 markers) so readers see the numbers without leaving the snapshot. If a findings.md exposes two parallel overview tables (e.g. one per kata, as in RQ-tdd-quality), copy both.
   - **Synthesis paragraph** of 60–100 words after the `**Findings**:` list. Top finding in detail + at most one caveat from the finding itself (e.g. narrow data base, only one kata) + an explicit `[research/.../findings.md](relative/path)` link. Where coverage < 100 %, name it in the synthesis ("with currently N runs in M of K cells ...").
-- **Model identifiers must carry their version.** A reader of the PDF alone must be able to tell *which* model produced a number. Most lab-variant IDs are self-describing (`glm-5-2`, `gpt-5-6-sol`, `opus-4-8-no-thinking`) and need nothing extra. Some are not: the cursor-cli arm uses `opus-cursor` / `composer-cursor` / `grok-cursor`, which name a family but no version. Wherever an RQ's table columns use version-less IDs, add a one-line mapping under the `_Data basis: …_` line — e.g. "Model IDs: `opus-cursor` → `claude-opus-4-8-medium`, …" — and make the §4 heading question name the versions too. The authoritative mapping is the `case "$model_name"` block in `experiments/docker/run-batch.sh` (and the RQ README's `factors.model` comments); never guess a version from the label.
+- **Model identifiers must carry their version.** A reader of the snapshot alone — with no access to the repo — must be able to tell *which* model produced a number. Most lab-variant IDs are self-describing (`glm-5-2`, `gpt-5-6-sol`, `opus-4-8-no-thinking`) and need nothing extra. Some are not: the cursor-cli arm uses `opus-cursor` / `composer-cursor` / `grok-cursor`, which name a family but no version. Wherever an RQ's table columns use version-less IDs, add a one-line mapping under the `_Data basis: …_` line — e.g. "Model IDs: `opus-cursor` → `claude-opus-4-8-medium`, …" — and make the §4 heading question name the versions too. The authoritative mapping is the `case "$model_name"` block in `experiments/docker/run-batch.sh` (and the RQ README's `factors.model` comments); never guess a version from the label.
 - **Findings convention:** Snapshot shows **only the current state**. No status tags like `⚠️ bedingt` / `✅ stabil`, no comparisons with archive snapshots or older studies (e.g. the 235-run study). If findings.md still carries such status tags, drop them in the snapshot synthesis and only carry over the current statement. Reason: older runs had pipeline biases (see memory), comparisons are methodologically not robust.
 - **Trophy convention (🏆) in cross-RQ summary tables:** If the snapshot includes pivot tables comparing workflows or models across outcomes, append 🏆 to the best value per row alongside the bold winner. Metric direction must be explicit (`smell_total` → "kleiner = besser", `refactorings_applied` → "höher = besser"). Award 🏆 only where the spread is meaningful — tied values get tied trophies, no winner gets fabricated from rounding noise. Same rule as in `findings.md` headline tables; see `run-rq` SKILL "Overview table" section for the full convention.
 - **Cross-RQ synthesis (5):** 3–5 numbered points. Each point connects at least **two** RQs and would therefore not stand in any single findings.md.
@@ -111,12 +114,14 @@ Then verify with Glob or Read that:
 4. Each RQ section carries the overview table from its `findings.md` before the `**Findings**:` list
 5. No status tags (`⚠️ bedingt`, `✅ stabil`) and no references to old studies / archive snapshots in the published snapshot
 
-### Step 6 — generate the PDF (mandatory)
+### Step 6 — generate the PDF (on request only)
 
-The PDF is part of every snapshot — do **not** skip it, even if the user did not explicitly ask for one. Convert the Markdown snapshot to a PDF sibling via pandoc → Chromium headless:
+The Markdown file is the deliverable and the source of truth. **Do not build a PDF unless the user asks for one** — report PDFs are gitignored (`research/reports/*.pdf`) because they are large binary derivatives that bloat the repo and diff as noise. Anyone can rebuild one from the committed `.md` at any time with the snippet below.
+
+When the user does ask, convert the Markdown snapshot to a PDF sibling via pandoc → Chromium headless:
 
 ```bash
-SNAP=research/_archive/experiment-overview-YYYY-MM-DD
+SNAP=research/reports/experiment-overview-YYYY-MM-DD
 pandoc "$SNAP.md" -o "$SNAP.html" --standalone --self-contained \
   --metadata title="Experiment-Overview YYYY-MM-DD" \
   --css=experiments/snapshot-style.css
@@ -137,11 +142,11 @@ pdfinfo "$SNAP.pdf" | grep -E "Pages|Page size|Page rot"
 
 Expected: `Pages` ≥ 5, `Page size` ≈ `595 x 842 pts (A4)`, `Page rot` = `0`. If any of these are off (e.g. zero pages, landscape page size, non-zero rotation), the PDF is broken — report it instead of pretending it worked.
 
-Report at the end in 1–2 sentences the output paths (`.md` + `.pdf`), the page count, and any notable coverage gaps ("RQ-X is currently below min_replicates").
+Report at the end in 1–2 sentences the output path (`.md`, plus the `.pdf` and its page count if one was requested) and any notable coverage gaps ("RQ-X is currently below min_replicates").
 
 ## Style template
 
-`research/_archive/findings-validation-2026-05-04/experiment-overview-v2.md` shows the target table density and section ordering. Read it for orientation **before** starting step 3. Adopt the table style and tone — not the specific numbers (those come from the current findings.md).
+`research/reports/experiment-overview-v2-2026-05-04.md` shows the target table density and section ordering. Read it for orientation **before** starting step 3. Adopt the table style and tone — not the specific numbers (those come from the current findings.md).
 
 ## What is deliberately NOT part of your output
 

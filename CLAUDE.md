@@ -45,7 +45,7 @@ experiments/
 research/
   questions/        Generic research RQs (prompt/model/TDD/context effects); dirs <chapter>-slug
   workflow-dev/     Workflow-evolution RQs (v6 reduction chain, v4→v4.1) + methodology docs + model-recommendation-matrix.md
-  _archive/         Frozen overview snapshots + old RQs in rqs-v1/, rqs-v2/
+  reports/          Published experiment-overview snapshots (md; pdf gitignored, built on demand)
   kata-design/      Kata construction guidelines, ambiguity probe, workshop variant
 ```
 

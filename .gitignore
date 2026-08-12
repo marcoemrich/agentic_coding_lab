@@ -46,3 +46,9 @@ experiments/runs/*/analyze.err
 # metrics.json / transcript.jsonl — run.log is not needed in the repo.
 # ** matches any depth so runs/_archive/<dir>/run.log is covered too.
 experiments/runs/**/run.log
+
+# Report PDFs are built on demand from the committed .md via the
+# /build-overview skill (pandoc → Chromium headless). They are large binary
+# derivatives that bloat the repo and diff as noise; the Markdown is the
+# source of truth. Rebuild with the snippet in the skill's PDF step.
+research/reports/*.pdf
