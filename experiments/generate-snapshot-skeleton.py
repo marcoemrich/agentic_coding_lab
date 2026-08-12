@@ -44,11 +44,17 @@ _spec2.loader.exec_module(bpl)  # type: ignore[union-attr]
 # Findings parsing
 # -----------------------------------------------------------------------
 
-# Finding ids are F-<namespace>.<minor>. The namespace mirrors the RQ id
-# (slug since the id→slug migration, e.g. F-regression.6); the legacy numeric
-# form (F-19.6, F-3b.1) still matches so this stays backward-compatible.
+# Finding ids are F-<namespace>.<minor>, where the namespace itself may carry
+# dots. The namespace mirrors the RQ id — a slug since the id→slug migration
+# (F-regression.6), the legacy numeric form (F-19.6, F-3b.1), or the chapter
+# number of the RQ directory (F-4.4.1 in 4.4-external-tdd-pocock-vs-v62,
+# F-1.12.5 in 1.12-end-refactor-effect-v62). Everything up to the LAST dot is
+# the namespace, so any number of dotted segments matches.
+# Do not tighten this to a single dot: chapter-numbered ids were silently
+# dropped that way, which reads downstream as "no findings documented" for an
+# RQ that in fact has a full findings.md.
 FINDING_HEADER_RE = re.compile(
-    r"^##\s+(F-[A-Za-z0-9][A-Za-z0-9-]*\.\d+)\s+—\s+(.+?)\s*$"
+    r"^##\s+(F-[A-Za-z0-9][A-Za-z0-9.-]*\.\d+)\s+—\s+(.+?)\s*$"
 )
 
 
@@ -60,6 +66,12 @@ def parse_findings(findings_md: Path) -> list[dict]:
     for line in findings_md.read_text().splitlines():
         m = FINDING_HEADER_RE.match(line)
         if not m:
+            # A line that looks like a finding header but does not parse is a
+            # silent data loss: the RQ shows up as "no findings documented" in
+            # the snapshot while its findings.md is full. Shout instead.
+            if line.startswith("## F-"):
+                print(f"  WARNING: unparsable finding header in {findings_md}:\n"
+                      f"           {line}", file=sys.stderr)
             continue
         fid = m.group(1)
         rest = m.group(2)

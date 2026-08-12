@@ -105,7 +105,7 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
 
 Exception: **deletions** of existing findings still require explicit user confirmation before the `Edit` — losing a documented finding is more expensive than re-reading a fresh write.
 
-`findings.md` shows **only the current state**. No legacy comparisons, no "previously X" references, no "revised"/"confirmed" tags. Header form: `## F-x.y — Title` (no trailing suffix).
+`findings.md` shows **only the current state**. No legacy comparisons, no "previously X" references, no "revised"/"confirmed" tags. Header form: `## F-x.y — Title` (no trailing suffix). The namespace before the last dot may carry dots itself (`F-4.4.1`, `F-1.12.5` are valid). Keep the em-dash `—`: the snapshot generator parses on it and drops non-matching headers silently.
 
 **Trophy convention (🏆) in overview tables**: When refreshing the `## Übersicht` table at the top of `findings.md`, append 🏆 to the best value per outcome row alongside the bolded winner. Metric direction matters — note it in the column header or row label (`smell_total`, complexity-Metriken → "kleiner = besser"; `refactorings_applied`, `predictions_correct_rate` → "höher = besser"). Award 🏆 only where the spread is meaningful — if all values lie within 1 σ and the framing is "no effect", either award 🏆 to all tied or to none, don't fabricate winners from rounding noise. Trophies are for findings docs only; workflow files stay emoji-free.
 
