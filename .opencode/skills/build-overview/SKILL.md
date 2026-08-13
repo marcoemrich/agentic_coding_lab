@@ -148,6 +148,22 @@ Report at the end in 1–2 sentences the output path (`.md`, plus the `.pdf` and
 
 `research/reports/experiment-overview-v2-2026-05-04.md` shows the target table density and section ordering. Read it for orientation **before** starting step 3. Adopt the table style and tone — not the specific numbers (those come from the current findings.md).
 
+**Write each prose paragraph as a single unwrapped line.** Do not hard-wrap flowing text at 80/100 characters. Many Markdown renderers — including the one this repo's reports are read in — run with `breaks: true`, where a single newline becomes a visible line break instead of collapsing into flowing text. A source-wrapped paragraph then renders as ragged short lines with breaks mid-sentence. The published reports in `research/reports/` all follow the one-line-per-paragraph convention (paragraphs run 400–1200 characters); match it. This applies only to prose — tables, headings, list items, blockquotes and code blocks keep their own line structure.
+
+Check before publishing, and compare against an existing report rather than a fixed threshold:
+
+```bash
+python3 - <<'PY'
+import pathlib
+for f in sorted(pathlib.Path('research/reports').glob('experiment-overview-*.md')):
+    p=[l for l in f.read_text().splitlines()
+       if l.strip() and not l.startswith(('|','#','-','>','_','*','`',' '))]
+    if p: print(f'{f.name:42s} prose lines={len(p):4d}  max={max(map(len,p)):5d}')
+PY
+```
+
+A new snapshot with several hundred short prose lines where its predecessors have a few dozen long ones is hard-wrapped and needs a reflow. To fix, join consecutive prose lines into one per paragraph while leaving every `|`, `#`, `>`, list-marker and fenced-code line untouched — then re-verify the structure counts (RQ sections, table rows, 🏆, list items) are unchanged, and grep for accidentally glued words.
+
 ## What is deliberately NOT part of your output
 
 - Do not recompute or fabricate numbers — copy them verbatim from `findings.md` (overview tables and finding-internal values). Numbers in tables come from `findings.md`, never from re-running aggregation or estimating.
