@@ -491,7 +491,19 @@ def main(run_dir: str) -> int:
             # Sum over all assistant messages (each request bills its own tokens).
             if etype == "agent_end":
                 totals = {"input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0}
-                newest_cost: dict = {}
+                # Cost is summed for the same reason tokens are: each request
+                # bills its own input+output+cache, so the run cost is the SUM
+                # over all requests. Taking the last message's cost captured a
+                # single API call -- on the first run of a provider that ships
+                # inline costs (the openai-codex route) that read $0.0136 for a
+                # run that actually cost $0.5576, a ~41x undercount.
+                #
+                # Sum over agent_end.messages[] only. The same 36 requests also
+                # surface as streamed message_end and turn_end events, so
+                # summing across event types double-counts.
+                cost_sum = {"input": 0.0, "output": 0.0, "cacheRead": 0.0,
+                            "cacheWrite": 0.0, "total": 0.0}
+                saw_cost = False
                 for msg in ev.get("messages") or []:
                     if not (isinstance(msg, dict) and msg.get("role") == "assistant"):
                         continue
@@ -500,14 +512,19 @@ def main(run_dir: str) -> int:
                         v = u.get(k)
                         if isinstance(v, (int, float)):
                             totals[k] += int(v)
-                    if u.get("cost"):
-                        newest_cost = u.get("cost")
+                    c = u.get("cost")
+                    if isinstance(c, dict):
+                        for k in cost_sum:
+                            v = c.get(k)
+                            if isinstance(v, (int, float)):
+                                cost_sum[k] += float(v)
+                                saw_cost = True
                     if msg.get("model"):
                         last_model = msg.get("model")
                 if any(totals.values()):
                     agent_end_usage_sum = totals
-                if newest_cost:
-                    last_cost = newest_cost
+                if saw_cost:
+                    last_cost = {k: round(v, 6) for k, v in cost_sum.items()}
             elif etype == "message_end":
                 msg = ev.get("message") or {}
                 if isinstance(msg, dict) and msg.get("role") == "assistant":
