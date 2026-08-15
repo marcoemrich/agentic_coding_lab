@@ -124,6 +124,14 @@ MODEL_CONFIGS=(
     # is chosen from the workflow marker dir, and each harness branch resolves
     # its own model string. Do not read the placeholder as "pi only".
     "gpt-5-6-sol|pi-only|false"
+    # Same underlying model as gpt-5-6-sol, different route: the OpenAI
+    # subscription (provider openai-codex, api openai-codex-responses,
+    # chatgpt.com/backend-api) instead of Requesty/Azure. Separate id because
+    # the route is always explicit in the id -- different tariff (subscription
+    # vs. per-token), different auth (OAuth in pi-config/agent/auth.json vs.
+    # REQUESTY_API_KEY), and the codex entry reports reasoning:true where the
+    # Requesty one is wired reasoning:false. Do not merge the two into one cell.
+    "gpt-5-6-sol-codex|pi-only|false"
     "gpt-5-6-terra|pi-only|false"
     "glm-5-2|pi-only|false"
     "kimi-k2-7|pi-only|false"
@@ -138,6 +146,7 @@ MODEL_CONFIGS=(
     "sonnet-5-no-thinking|pi-only|false"
     "opus-5-requesty-no-thinking|pi-only|false"
     "gpt-5-6-sol-no-thinking|pi-only|false"
+    "gpt-5-6-sol-codex-no-thinking|pi-only|false"
     "gpt-5-6-terra-no-thinking|pi-only|false"
     "glm-5-1-no-thinking|pi-only|false"
     "glm-5-2-no-thinking|pi-only|false"
@@ -733,11 +742,18 @@ EOF
             pi_thinking=""   # empty = model default; "off" = reasoning off
             model_base="$model_name"
             if [[ "$model_base" == *-no-thinking ]]; then
-                # Keep the historical *-portkey-no-thinking labels intact —
-                # those are matched verbatim in the case below and predate
-                # this suffix convention. Only strip the suffix for the
-                # requesty RQ matrix ids.
-                if [[ "$model_base" != *-portkey-no-thinking ]]; then
+                # Two id families are matched verbatim in the case below
+                # instead of being stripped:
+                #   *-portkey-no-thinking  — historical labels, predate the
+                #                            suffix convention.
+                #   *-codex-no-thinking    — OpenAI-subscription route, both
+                #                            arms listed explicitly so the
+                #                            routing id is visible per arm.
+                # Stripping either would leave its case entry unreachable, so
+                # the reasoning-off flag is set here rather than below.
+                if [[ "$model_base" == *-codex-no-thinking ]]; then
+                    pi_thinking="off"
+                elif [[ "$model_base" != *-portkey-no-thinking ]]; then
                     model_base="${model_base%-no-thinking}"
                     pi_thinking="off"
                 fi
@@ -753,6 +769,17 @@ EOF
                 sonnet-5)                      pi_model="requesty/vertex/claude-sonnet-5@eu" ;;
                 opus-5-requesty)               pi_model="requesty/vertex/claude-opus-5@eu" ;;
                 gpt-5-6-sol)                   pi_model="requesty/azure/gpt-5.6-sol@swedencentral" ;;
+                # OpenAI-subscription route. Both reasoning arms are listed
+                # explicitly (not suffix-stripped) so each id shows its own
+                # routing target; the strip guard above skips *-codex-* and
+                # sets --thinking off for the -no-thinking arm.
+                #
+                # The `openai-codex/` provider prefix is mandatory: a bare
+                # `gpt-5.6-sol` resolves against the azure-openai-responses
+                # entry instead and dies with "No API key found for
+                # azure-openai-responses".
+                gpt-5-6-sol-codex)             pi_model="openai-codex/gpt-5.6-sol" ;;
+                gpt-5-6-sol-codex-no-thinking) pi_model="openai-codex/gpt-5.6-sol" ;;
                 gpt-5-6-terra)                 pi_model="requesty/azure/gpt-5.6-terra@swedencentral" ;;
                 glm-5-1)                       pi_model="requesty/nebius/zai-org/glm-5.1" ;;
                 glm-5-2)                       pi_model="requesty/tensorx/glm-5.2" ;;
