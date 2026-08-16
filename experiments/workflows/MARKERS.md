@@ -56,6 +56,23 @@ one for compilation, one for runtime. Fewer lines lower
 `predictions_total` and skew the per-cycle rate; more lines are fine but
 unusual.
 
+> **Exception — workflows that permit already-green cycles.** The
+> `basic-sol-tdd-*` line forbids manufacturing a failure when an earlier
+> generalization already covers the next test. Those cycles count in
+> `cycle_count` but legitimately carry no predictions, so
+> `predictions_total ≈ 2 × cycle_count` does not hold there and a low value
+> is not by itself a compliance break. Compare that line on
+> `predictions_correct_rate`, never on `predictions_total`.
+>
+> Smoke-verified (`game-of-life-prose` × `gpt-5-6-sol-codex`, n=1 each):
+> inline arm 10 red phases → 4 formal prediction blocks (8/8 correct),
+> 3 explicitly already-green, **3 with a prose-only prediction and no
+> `Red Phase Complete:` block**; subagent arm 9 → 6 / 3 / 0. That last
+> column *is* a compliance loss and is not covered by the exception — see
+> `research/workflow-dev/workflow-construction.md`, section
+> "`basic-sol-tdd`-Paar", for why this line is more exposed to it than the
+> v6 line.
+
 The phrase **"MUST verbatim, do not abbreviate, do not collapse"** (or
 equivalent) belongs in the red-phase command. Without it, the model tends
 to merge the two prediction lines into one as the run goes on. This was
@@ -74,7 +91,7 @@ Instead, it relies on **text markers** in assistant output and
 |---|---|---|---|---|
 | P1 | `## Red` heading in assistant text | Each occurrence counts as one red-phase cycle (`cycle_count`) | `parse_pi_transcript.py` (`_PHASE_TEXT_MARKERS_RE`) and `analyze_transcript.py` (`_PHASE_TEXT_MARKERS`, `derive_cycle_count`) |
 | P2 | `## Green` heading in assistant text | Green-phase occurrence | same as P1 |
-| P3 | `## Test List` heading in assistant text | Test-list phase occurrence | same as P1 |
+| P3 | `Test List Created` or `Test List Phase Complete` in assistant text — **not** `## Test List`, see note below | Test-list phase occurrence | same as P1 |
 | P4 | `subagent` tool call with `agent: "refactor"` — or, for inline workflows, `## Refactor` in assistant text | Each call counts as `refactorings_applied`; the text marker is only consulted when there is no subagent call at all | `parse_pi_transcript.py` (`_is_refactor_subagent`, `_PHASE_TEXT_MARKERS_RE`) |
 | P5 | `Red Phase Complete:` + prediction lines | **Gates** prediction parsing (same as CC marker 2) | `extract_predictions_from_text` with `loose_gate=True` (accepts prediction lines even without `Red Phase Complete` if they appear in a block with `## Red` or a `(Compilation\|Runtime) Prediction` header) |
 | P6 | Lines matching `(Compilation\|Runtime) Prediction: ... (Correct\|Incorrect)` | `predictions_correct`, `predictions_total` | `_PREDICTION_OUTCOME_LINE_RE` |
@@ -220,7 +237,9 @@ Healthy baseline (game-of-life, 4–6 tests):
 
 - `cycle_count >= 3` — phases were detected
 - `refactorings_applied >= 1` — refactor skill fired
-- `predictions_total ≈ 2 × cycle_count` — both prediction lines made it through
+- `predictions_total ≈ 2 × cycle_count` — both prediction lines made it
+  through (does **not** apply to workflows permitting already-green cycles,
+  e.g. `basic-sol-tdd-*` — see the exception under "Convention for marker 3")
 - `predictions_correct / predictions_total` plausible (not 0/0)
 - `tests_passing == true`
 
@@ -234,7 +253,20 @@ marker is broken — fix it before launching the n=3 batch.
   `v4-exact-subagents`, `v5-exact-single-context`, `v6.6-lab-split-cc`,
   `v6.6-lab-split-oc`
 - pi workflows satisfying markers P1–P7: `v6.2-with-why-cleaned-pi`,
-  `v6.6-lab-split-pi`
+  `v6.6-lab-split-pi`, `basic-sol-tdd-pi` (P4 via `## Refactor` text
+  fallback), `basic-sol-tdd-subagent-pi` (P4 via `subagent` call)
+
+### P3 is not a `##` heading — same trap as cursor's C3
+
+`_PHASE_TEXT_MARKERS_RE["test-list"]` matches the prose forms
+`Test List Created` / `Test List Phase Complete`, **not** `## Test List`.
+The table above says "heading" for historical reasons; the regex has never
+matched one. Existing pi workflows survive this because their `test-list`
+skill emits `Test List Created:` in its summary block — the AGENTS.md
+instruction to write `## Test List` contributes nothing to P3 on its own.
+
+A new pi workflow that instructs only the heading and drops the prose line
+loses the test-list phase silently. Instruct **both**.
 
 ### Baseline workflows satisfy marker 4 only — by design
 
