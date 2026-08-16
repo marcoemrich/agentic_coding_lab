@@ -131,6 +131,29 @@ Wiring details and the two traps (mandatory `openai-codex/` model prefix;
 expiring OAuth token that cannot come from `.env`) are documented in
 `experiments/docker/pi-config/README.md`.
 
+## Cross-kata replication (outside the cell matrix)
+
+`kata_base: game-of-life` is a **control**, so the six
+`sphinx-score-example-mapping` runs (n=3 per route, same workflow, default
+profile, 2026-08-16) are deliberately **not** matched by this RQ's selector.
+Making kata a factor axis would open the RQ and dilute the existing cells; the
+runs live in the pool as a scope check on the findings, not as cells.
+
+What they establish:
+
+- **F-1.3.1 replicates**: 3432 vs 2388 tok/s (1.44×), same order as the 1.63×
+  measured here. Throughput is the RQ's most robust finding.
+- **F-1.3.2 replicates only in part**: the smell advantage holds (3.0 vs 0.0),
+  the Complexity Peak advantage does not (2.0 vs 2.0 — both at the floor, the
+  kata generates too little structural complexity to discriminate). The LoC
+  relation inverts (codex 36 vs Requesty 49, opposite of game-of-life).
+- **F-1.3.4 holds on a kata that could have broken it**: sphinx-score is built
+  around ambiguity, so `verification_pct` had room to separate the routes. It
+  did not — 100 % median on both, identical per-run distribution.
+
+A full cross-kata RQ would need kata as a declared factor and n=5 per cell.
+This is a scope check, not that RQ.
+
 ## Existing data
 
 **As of 2026-08-16**: n=4 per cell, from the ad-hoc comparison in commit

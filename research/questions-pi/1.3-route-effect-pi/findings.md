@@ -78,17 +78,45 @@ this finding. Reasoning does cost throughput on Requesty — 3379 → 2899 tok/s
 about 14 % — but that is far short of the gap to codex at 2074. Reasoning-on
 Requesty is still 1.40× faster than codex. Most of the difference is transport.
 
-## F-1.3.2 — The codex cell produces the structurally cleaner artefact
+**Replicated on a second kata.** On `sphinx-score-example-mapping` (n=3 per
+route) the gap is 3432 vs 2388 tok/s — 1.44×, the same order as the 1.63× here.
+Requesty's absolute throughput is nearly identical across both katas (3379 /
+3432), codex's a little higher on sphinx (2074 / 2388). This is the most robust
+finding of the RQ: it holds across katas, across replicates, across time of day,
+and it survives the reasoning control.
+
+## F-1.3.2 — The codex cell produces the structurally cleaner artefact — on game-of-life
 
 Complexity Peak halves against both Requesty cells (4.0 vs 8.0/9.0), Smell Total
-drops to zero (vs 2.0/2.0), `smell_complexity` is 0 in all 5 codex runs. Bought
-with volume rather than saved by it: codex writes **more** code (Production LoC
-41 vs 28) — not a smaller solution, a better-decomposed one.
+drops to zero (vs 2.0/2.0), `smell_complexity` is 0 in all 5 codex runs.
 
 Variance is part of the finding: Requesty's Complexity Peak spans 4–17 (σ=5.6)
 with reasoning off and 4–17 with it on, codex 3–7 (σ=1.5). The codex cell is
 both better and markedly more predictable. Attribution: route, not reasoning
 (F-1.3.6).
+
+**This does not generalise across katas.** A replication on
+`sphinx-score-example-mapping` (n=3 per route, same workflow, default profile)
+holds only half of it:
+
+| | game-of-life | sphinx-score |
+|---|---|---|
+| Complexity Peak (Req / codex) | 8.0 / **4.0** | 2.0 / 2.0 — no difference |
+| Smell Total (Req / codex) | 2.0 / **0.0** | 3.0 / **0.0** |
+| Production LoC (Req / codex) | 28 / 41 | 49 / **36** |
+
+The smell advantage replicates. The complexity advantage does not: on
+sphinx-score both routes sit at 2.0, essentially at the floor — that kata does
+not generate enough structural complexity to discriminate. The metric needs a
+kata that produces complexity before it can show a route difference.
+
+The LoC relation even **inverts**: codex writes more code than Requesty on
+game-of-life (41 vs 28) and less on sphinx-score (36 vs 49). An earlier reading
+of this finding — "codex buys structure with volume" — is therefore not
+supported; the volume relation is kata-dependent, not a property of the route.
+
+Scope: the structural advantage is established for smells across two katas, and
+for Complexity Peak only where the kata generates complexity.
 
 ## F-1.3.3 — More TDD cycles and refactorings in the codex cell
 
@@ -109,6 +137,14 @@ volume and code structure.
 `tests_total` tracks `cycle_count` (9.8 codex vs 8.4 Requesty mean), i.e. the
 codex cell also writes more tests. Whether those tests are worth their count is
 not answered here; `mutation_score` is not among this RQ's outcomes.
+
+The sphinx-score replication tests this against a kata where external
+verification is **not** saturated by construction: `sphinx-score` is built
+around ambiguity (does a Sphinx count itself as a type? do three Undead-Warrior
+variants count as one type or three?), so `verification_pct` had room to
+separate. It did not. Both routes score 100 % median, with an identical
+per-run distribution (16/16, 15/16, 16/16) — even the single failing scenario
+appears once on each side. Ambiguity resolution is route-invariant too.
 
 ## Reading the cost column
 
