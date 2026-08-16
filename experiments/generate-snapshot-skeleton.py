@@ -297,11 +297,12 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("| v6.1-no-pep                             | v6.1 without pep talks (RQ-pep replication) | strict, hybrid |")
     p("| v7-hybrid-green-refactor                | Like v6, but green *and* refactor as subagent | strict, more isolation |")
     p("| v7.1-hybrid-green-refactor-testlist-scope-fix | v7 with test-list scope patch | strict, more isolation |")
-    p("| v8a-delayed-refactor-agent              | Oneshot → tests added afterwards → single end-refactor agent (`refactor.md` from v6.5.4) | delayed-refactor |")
+    p("| v8a-delayed-refactor-agent              | Oneshot → tests added afterwards → single end-refactor agent | delayed-refactor |")
     p("| v8b-delayed-refactor-native             | Like v8a, but native inline refactor in v3 style, no agent | delayed-refactor |")
     p("")
     p("Configuration: `experiments/workflows/<variant>/.claude/agents/` and `.claude/rules/`. "
-      "Archived variants (v5.1-minimized, v6.2–v6.6, v6.5.x audits) live under `experiments/workflows/_archive/`.")
+      "Archived variants (v4.2-shared-context, v4.2.1-fake-it-green, v5.1-minimized, v6.2.1-refactor-vocab) "
+      "live under `experiments/workflows/_archive/`.")
     p("")
     p("**Workflow mechanics in detail.** The six generations are not merely a scale of "
       "\"more/less TDD\", but a systematic variation of the EXACT Coding building blocks "
@@ -336,8 +337,8 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
       "game-of-life: saves tokens, loses quality and correctness).")
     p("- **v8a-delayed-refactor-agent / v8b-delayed-refactor-native — delayed-refactor control.** "
       "Three sequential phases without TDD cycles: (1) oneshot implementation, (2) tests added afterwards against "
-      "`prompt.md` with a coverage obligation, (3) a single end refactor. v8a uses the `refactor.md` subagent "
-      "from v6.5.4 (APP + naming + mandatory attempt), v8b a native inline refactor in v3 style without an agent. "
+      "`prompt.md` with a coverage obligation, (3) a single end refactor. v8a uses a dedicated `refactor.md` "
+      "subagent (APP + naming + mandatory attempt), v8b a native inline refactor in v3 style without an agent. "
       "Serves as the control axis for the hypothesis \"periodic TDD refactor beats end refactor after "
       "vibe coding\".")
     p("")
