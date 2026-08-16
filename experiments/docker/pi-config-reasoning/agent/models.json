@@ -1,0 +1,534 @@
+{
+  "providers": {
+    "requesty": {
+      "baseUrl": "https://router.eu.requesty.ai/v1",
+      "api": "openai-completions",
+      "apiKey": "$REQUESTY_API_KEY",
+      "authHeader": true,
+      "compat": {
+        "cacheControlFormat": "anthropic",
+        "supportsLongCacheRetention": true
+      },
+      "models": [
+        {
+          "id": "azure/gpt-5.4@francecentral",
+          "name": "gpt-5.4 (azure francecentral)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1050000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "azure/gpt-5.5@swedencentral",
+          "name": "gpt-5.5 (azure swedencentral)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1050000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "azure/gpt-5.6-luna@swedencentral",
+          "name": "gpt-5.6-luna (azure swedencentral)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1050000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "azure/gpt-5.6-sol@swedencentral",
+          "name": "gpt-5.6-sol (azure swedencentral)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1050000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "azure/gpt-5.6-terra@swedencentral",
+          "name": "gpt-5.6-terra (azure swedencentral)",
+          "reasoning": false,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1050000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "azure/openai-responses/gpt-5.4@francecentral",
+          "name": "openai-responses/gpt-5.4 (azure francecentral)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1050000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "azure/openai-responses/gpt-5.5@swedencentral",
+          "name": "openai-responses/gpt-5.5 (azure swedencentral)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1050000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "bedrock/claude-haiku-4-5@eu-west-1",
+          "name": "claude-haiku-4-5 (bedrock eu-west-1)",
+          "reasoning": false,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 64000
+        },
+        {
+          "id": "bedrock/claude-opus-4-7@eu-west-1",
+          "name": "claude-opus-4-7 (bedrock eu-west-1)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "bedrock/claude-opus-4-8@eu-west-1",
+          "name": "claude-opus-4-8 (bedrock eu-west-1)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "bedrock/claude-sonnet-4-6@eu-west-1",
+          "name": "claude-sonnet-4-6 (bedrock eu-west-1)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 64000
+        },
+        {
+          "id": "bedrock/kimi-k2.5@eu-west-2",
+          "name": "kimi-k2.5 (bedrock eu-west-2)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 128000,
+          "maxTokens": 16000
+        },
+        {
+          "id": "bedrock/minimax-m2.5@eu-west-1",
+          "name": "minimax-m2.5 (bedrock eu-west-1)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 128000,
+          "maxTokens": 16000
+        },
+        {
+          "id": "inceptron/kimi-k2.6",
+          "name": "kimi-k2.6 (inceptron eu)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 262144,
+          "maxTokens": 262144
+        },
+        {
+          "id": "inceptron/minimax-m2.5",
+          "name": "minimax-m2.5 (inceptron)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 196608,
+          "maxTokens": 196608
+        },
+        {
+          "id": "nebius/kimi-k3",
+          "name": "kimi-k3 (nebius eu)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1048576,
+          "maxTokens": 131072
+        },
+        {
+          "id": "sference/kimi-k3",
+          "name": "kimi-k3 (sference eu)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1048576,
+          "maxTokens": 262144
+        },
+        {
+          "id": "mistral/codestral-latest",
+          "name": "codestral-latest (mistral eu)",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 131072,
+          "maxTokens": 8192
+        },
+        {
+          "id": "mistral/devstral-latest",
+          "name": "devstral-latest (mistral eu)",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 256000,
+          "maxTokens": 8192
+        },
+        {
+          "id": "mistral/mistral-medium-3-5",
+          "name": "mistral-medium-3-5 (mistral eu)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 262144,
+          "maxTokens": 8192
+        },
+        {
+          "id": "mistral/mistral-medium-latest",
+          "name": "mistral-medium-latest (mistral eu)",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 131072,
+          "maxTokens": 8192
+        },
+        {
+          "id": "nebius/meta-llama/Llama-3.3-70B-Instruct",
+          "name": "meta-llama/Llama-3.3-70B-Instruct (nebius eu)",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 128000,
+          "maxTokens": 8192
+        },
+        {
+          "id": "nebius/nousresearch/hermes-4-405b",
+          "name": "nousresearch/hermes-4-405b (nebius eu)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 128000,
+          "maxTokens": 8192
+        },
+        {
+          "id": "nebius/nvidia/nemotron-3-nano-omni",
+          "name": "nvidia/nemotron-3-nano-omni (nebius eu)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 300000,
+          "maxTokens": 8192
+        },
+        {
+          "id": "nebius/openai/gpt-oss-120b",
+          "name": "openai/gpt-oss-120b (nebius eu)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 131000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "nebius/qwen/qwen3-235b-a22b-instruct-2507",
+          "name": "qwen/qwen3-235b-a22b-instruct-2507 (nebius)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 128000,
+          "maxTokens": 8192
+        },
+        {
+          "id": "nebius/qwen/qwen3-30b-a3b-instruct-2507",
+          "name": "qwen/qwen3-30b-a3b-instruct-2507 (nebius)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 128000,
+          "maxTokens": 8192
+        },
+        {
+          "id": "nebius/qwen/qwen3-32b",
+          "name": "qwen/qwen3-32b (nebius)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 128000,
+          "maxTokens": 8192
+        },
+        {
+          "id": "nebius/qwen/qwen3-next-80b-a3b-thinking",
+          "name": "qwen/qwen3-next-80b-a3b-thinking (nebius)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 128000,
+          "maxTokens": 8192
+        },
+        {
+          "id": "nebius/zai-org/glm-5.1",
+          "name": "zai-org/glm-5.1 (nebius eu)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 8192
+        },
+        {
+          "id": "tensorx/deepseek-v4-flash",
+          "name": "deepseek-v4-flash (tensorx)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1048576,
+          "maxTokens": 1048576
+        },
+        {
+          "id": "tensorx/deepseek-v4-pro",
+          "name": "deepseek-v4-pro (tensorx)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1048576,
+          "maxTokens": 1048576
+        },
+        {
+          "id": "tensorx/glm-5.2",
+          "name": "glm-5.2 (tensorx)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 1048576,
+          "maxTokens": 1048576
+        },
+        {
+          "id": "tensorx/kimi-k2.7-code",
+          "name": "kimi-k2.7-code (tensorx)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 262144,
+          "maxTokens": 262144
+        },
+        {
+          "id": "tensorx/minimax-m3",
+          "name": "minimax-m3 (tensorx)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1048576,
+          "maxTokens": 1048576
+        },
+        {
+          "id": "vertex/claude-haiku-4-5@europe-west1",
+          "name": "claude-haiku-4-5 (vertex europe-west1)",
+          "reasoning": false,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 64000
+        },
+        {
+          "id": "vertex/claude-opus-4-6@europe-west1",
+          "name": "claude-opus-4-6 (vertex europe-west1)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "vertex/claude-opus-4-7@eu",
+          "name": "claude-opus-4-7 (vertex eu)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "vertex/claude-opus-4-8@eu",
+          "name": "claude-opus-4-8 (vertex eu)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "vertex/claude-opus-5@eu",
+          "name": "claude-opus-5 (vertex eu)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "vertex/claude-sonnet-4-6@europe-west1",
+          "name": "claude-sonnet-4-6 (vertex europe-west1)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "vertex/claude-sonnet-5@eu",
+          "name": "claude-sonnet-5 (vertex eu)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1000000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "vertex/gemini-2.5-flash@europe-west1",
+          "name": "gemini-2.5-flash (vertex europe-west1)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1048576,
+          "maxTokens": 65535
+        },
+        {
+          "id": "vertex/gemini-2.5-pro@europe-west1",
+          "name": "gemini-2.5-pro (vertex europe-west1)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1048576,
+          "maxTokens": 65535
+        },
+        {
+          "id": "vertex/gemini-3.1-flash-lite@eu",
+          "name": "gemini-3.1-flash-lite (vertex eu)",
+          "reasoning": false,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1048576,
+          "maxTokens": 65535
+        }
+      ]
+    },
+    "openai-codex": {
+      "baseUrl": "https://chatgpt.com/backend-api",
+      "api": "openai-codex-responses",
+      "models": [
+        {
+          "id": "gpt-5.6-sol",
+          "name": "GPT-5.6 Sol",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "cost": {
+            "input": 5,
+            "output": 30,
+            "cacheRead": 0.5,
+            "cacheWrite": 6.25,
+            "tiers": [
+              {
+                "inputTokensAbove": 272000,
+                "input": 10,
+                "output": 45,
+                "cacheRead": 1,
+                "cacheWrite": 12.5
+              }
+            ]
+          },
+          "contextWindow": 272000,
+          "maxTokens": 128000,
+          "thinkingLevelMap": {
+            "xhigh": "xhigh",
+            "max": "max",
+            "minimal": "low"
+          },
+          "compat": {
+            "supportsOpenAIGrammarTools": true,
+            "supportsAdditionalTools": true,
+            "supportsToolSearch": true
+          }
+        }
+      ]
+    }
+  }
+}

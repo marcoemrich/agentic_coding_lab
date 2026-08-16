@@ -147,6 +147,27 @@ MODEL_CONFIGS=(
     "opus-5-requesty-no-thinking|pi-only|false"
     "gpt-5-6-sol-no-thinking|pi-only|false"
     "gpt-5-6-sol-codex-no-thinking|pi-only|false"
+    # --- RQ-route-effect-pi 2x2 matrix: route x reasoning ---
+    #
+    # `--thinking off` does NOT suppress reasoning on the codex route: the
+    # Responses API emits reasoning blocks regardless (~3000 per run), while
+    # Chat Completions on requesty emits none. Reasoning is therefore not a
+    # per-invocation flag here but a property of the models.json entry, and
+    # that entry is container-global per model id.
+    #
+    # Hence one lab id per (route, reasoning) cell, each pinned to the
+    # pi-config profile that declares it. The profile is NOT selectable per
+    # run -- PI_CONFIG_DIR applies to the whole container -- so a plan must
+    # not mix ids from different profiles. Same constraint class as the
+    # container-global CC routing (see CLAUDE.md).
+    #
+    #   lab id                          profile              reasoning
+    #   gpt-5-6-sol-no-thinking         pi-config            off (requesty declares false)
+    #   gpt-5-6-sol-codex-no-thinking   pi-config            ON  (codex declares true)
+    #   gpt-5-6-sol-reasoning           pi-config-reasoning  ON  (requesty flipped to true)
+    #   gpt-5-6-sol-codex-noreason      pi-config-noreason   off (codex flipped to false)
+    "gpt-5-6-sol-reasoning|pi-only|false"
+    "gpt-5-6-sol-codex-noreason|pi-only|false"
     "gpt-5-6-terra-no-thinking|pi-only|false"
     "glm-5-1-no-thinking|pi-only|false"
     "glm-5-2-no-thinking|pi-only|false"
@@ -780,6 +801,13 @@ EOF
                 # azure-openai-responses".
                 gpt-5-6-sol-codex)             pi_model="openai-codex/gpt-5.6-sol" ;;
                 gpt-5-6-sol-codex-no-thinking) pi_model="openai-codex/gpt-5.6-sol" ;;
+                # 2x2 matrix arms. The route id is identical to its base arm --
+                # the reasoning difference lives in the pi-config profile, not
+                # in the model string (a made-up model id is rejected upstream:
+                # "The 'gpt-5.6-sol-noreason' model is not supported when using
+                # Codex with a ChatGPT account").
+                gpt-5-6-sol-reasoning)         pi_model="requesty/azure/gpt-5.6-sol@swedencentral" ;;
+                gpt-5-6-sol-codex-noreason)    pi_model="openai-codex/gpt-5.6-sol" ;;
                 gpt-5-6-terra)                 pi_model="requesty/azure/gpt-5.6-terra@swedencentral" ;;
                 glm-5-1)                       pi_model="requesty/nebius/zai-org/glm-5.1" ;;
                 glm-5-2)                       pi_model="requesty/tensorx/glm-5.2" ;;

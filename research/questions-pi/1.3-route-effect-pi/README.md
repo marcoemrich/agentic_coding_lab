@@ -1,12 +1,19 @@
 ---
 id: RQ-route-effect-pi
-question: "How does routing one and the same model (GPT-5.6 Sol) through Requesty versus the OpenAI subscription affect code quality, TDD discipline, throughput and correctness, at constant harness, workflow, kata and prompt style?"
+question: "How do transport route and reasoning channel each affect code quality, TDD discipline, throughput and correctness for one and the same model (GPT-5.6 Sol), at constant harness, workflow, kata and prompt style?"
 factors:
   model:
-    # The route is part of the id -- that is what makes it the factor here.
-    # Both arms address the identical upstream model; only the transport differs.
-    - gpt-5-6-sol-no-thinking        # Requesty: azure/gpt-5.6-sol@swedencentral
-    - gpt-5-6-sol-codex-no-thinking  # OpenAI subscription: openai-codex/gpt-5.6-sol
+    # Route x reasoning. Both axes live in the id because neither is a
+    # per-run flag: the route is the pi provider, reasoning is a property of
+    # the models.json entry and thus of the pi-config profile (see README).
+    #
+    #   id                             route     reasoning  profile
+    - gpt-5-6-sol-no-thinking        # requesty  off        pi-config
+    - gpt-5-6-sol-reasoning          # requesty  ON         pi-config-reasoning
+    - gpt-5-6-sol-codex-no-thinking  # codex     ON         pi-config
+    # The fourth cell (codex without reasoning) is NOT constructible -- the
+    # Responses API reasons regardless of the client declaration. Documented
+    # in the README; do not add gpt-5-6-sol-codex-noreason as a factor level.
 controls:
   workflow: v6.2.1-phase-continuation-pi
   kata_base: game-of-life
@@ -68,18 +75,50 @@ refactorings, more tokens -- at identical `--thinking off`. Whether that
 carries over into the artefact (code quality) is open, which is why this RQ
 takes the full quality metric set rather than just duration.
 
-## Both arms are pinned to `-no-thinking`
+## Reasoning is coupled to the route, not controllable per run
 
-**This is not optional.** The two `models.json` entries declare reasoning
-differently: the Requesty entry carries `reasoning: false`, the codex entry
-`reasoning: true`. Comparing the bare ids would confound route with reasoning,
-and reasoning drives runtime far harder than transport does.
+**`--thinking off` does not suppress reasoning on the codex route.** Both factor
+levels carry the `-no-thinking` suffix, and it was originally assumed that this
+held reasoning constant. Transcript evidence from the first ten runs shows it
+did not:
 
-Both factor levels therefore carry the `-no-thinking` suffix, which resolves to
-`--thinking off` on both arms. In `run-batch.sh` the codex ids are matched
-verbatim in the pi case-map (the strip guard skips `*-codex-no-thinking`);
-without that guard the explicit case entry would be unreachable and the arm
-would silently run with default reasoning.
+| Route | API | thinking blocks per run |
+|---|---|---|
+| Requesty | `openai-completions` (Chat Completions) | 0 (all 5 runs) |
+| codex | `openai-codex-responses` (Responses API) | 2667–3311 (all 5 runs) |
+
+The flag sets pi's *thinking level*, it does not switch the reasoning channel
+off. On the Responses API the lowest level still reasons; on Chat Completions
+there is no reasoning channel to begin with.
+
+Reasoning is a property of the `models.json` entry, and that entry is
+**container-global per model id** — it cannot be varied per run within a batch.
+Each (route, reasoning) cell therefore needs its own lab id plus its own
+pi-config profile, and a batch plan must not mix ids from different profiles.
+Same constraint class as the container-global CC routing (see CLAUDE.md).
+
+### One cell is not constructible
+
+A `reasoning: false` declaration works on Requesty but **not** on the codex
+route:
+
+| Route | `reasoning: false` | `reasoning: true` |
+|---|---|---|
+| Requesty | 0 blocks ✅ | 1649 blocks ✅ |
+| codex | **2882 blocks ❌** | 2667–3311 ✅ |
+
+The codex smoke ran with a verified profile (`reasoning: false`,
+`thinkingLevelMap` removed), a verified `PI_CONFIG_DIR` and a verified API
+(`openai-codex-responses`) — and reasoned anyway, at the same volume as the
+standard runs. **The Responses API decides server-side; a client declaring the
+model cannot reason does not change that.** This is itself a finding about the
+API, not a configuration defect, and the cell is documented as unattainable
+rather than left open.
+
+The consequence for this RQ is that route and reasoning cannot be fully crossed
+for GPT-5.6 Sol. The reasoning effect is isolated on the Requesty side instead
+(`gpt-5-6-sol-no-thinking` vs `gpt-5-6-sol-reasoning`), where the switch works
+in both directions.
 
 ## Routing
 
