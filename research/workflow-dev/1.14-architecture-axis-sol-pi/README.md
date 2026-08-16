@@ -295,6 +295,29 @@ F-1.3), **absolute thresholds are not comparable across models.** Only the *rank
 This RQ is the **gate for RQ-B** (retest of the reduction chain v6.2 / v6.3 /
 v6.2.1-refactor-vocab / v6.5 on Sol). RQ-B is only planned out once H1 is confirmed.
 
+### Follow-up on the H4 counter-case: `RQ-native-sol-workflows-sub`
+
+H4's counter-case occurred — F-1.6 finds that no architecture in this line clears the
+v3 floor on Sol. That result carries a confound this RQ cannot resolve: **every cell
+here descends from the same Opus-developed source**, sharing a lineage, a vocabulary
+(APP mass, the four-marker contract, the prediction form) and design decisions all
+validated on opus-4-7. "The v-line loses to its own baseline" therefore supports both
+"architecture does not pay on Sol" and "*this* architecture does not transfer".
+
+`workflow-dev/1.16-native-sol-workflows-subscription/` tests the second reading with a
+line written independently of the v-chain (`sol_tdd` Predictive TDD, Four Rules without
+APP), against a re-measured v3 floor. It also isolates refactor-inline vs.
+refactor-subagent — a contrast confounded here, since v5.1 → v6.1 changes refactor
+isolation and skill structure at once — which bears on the observation at the end of
+F-1.6 that the v6.1 refactor subagent does not extract on Sol while it does on opus-4-7.
+
+**It is a separate RQ, not extra cells here, because it runs on the OpenAI subscription
+route** (`gpt-5-6-sol-codex`) rather than Requesty. `RQ-route-effect-pi` F-1.3.6
+establishes a real route effect on exactly these quality metrics (Complexity Peak 4.0
+vs 8.0/9.0, Smell Total 0.0 vs 2.0) and shows it is not a reasoning effect. Mixing the
+routes would confound the lineage comparison with the transport, in the same direction
+the native line is expected to move. That RQ re-measures its own v3 floor accordingly.
+
 ## Open questions
 
 - If H1 holds: does the reduction chain also transfer, or does the Bundle/kata asymmetry

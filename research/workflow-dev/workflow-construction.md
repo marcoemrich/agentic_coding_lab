@@ -30,6 +30,147 @@ Die Workflow-Files der vor-v6.1-Generation + erste Reduktions-Kette (v6.5er, v6.
 | `v6.1-hybrid-testlist-scope-fix` | v6-hybrid + Test-List-Scope-Fix | **Aktuelle Default-Basis für Reduktions-RQs** |
 | `v7-hybrid-green-refactor` / `v7.1-...-testlist-scope-fix` | Green und Refactor isoliert | Pareto-dominiert von v6 (RQ-context, v1-Archiv) |
 | `v8a-delayed-refactor-agent` / `v8b-delayed-refactor-native` | Oneshot + End-Refactor (Vibe-Coding-Kontrolle) | Kontrolle für "periodisches TDD vs End-Refactor" |
+| `basic-sol-tdd-pi` / `basic-sol-tdd-subagent-pi` | Predictive TDD aus dem `sol_tdd`-Projekt, pi-nativ. Paar auf der Architektur-Achse: Refactor inline vs. isolierter Subagent | Fremd-Methodik-Import, siehe eigener Abschnitt unten |
+
+### `basic-sol-tdd`-Paar (Import aus `sol_tdd`, pi)
+
+Quelle sind die Skills `predictive-tdd` und `test-list` des `sol_tdd`-Projekts.
+Die Linie steht **außerhalb** der v1–v9-Kette: sie ist kein Reduktionsschritt,
+sondern eine unabhängig entstandene TDD-Methodik, die hier messbar gemacht wurde.
+
+Inhaltliche Unterschiede zur v6-Linie:
+
+- **Predictions sind Prosa, kein Formular.** Die Vorschrift lautet "vor jedem
+  deterministischen Check eine falsifizierbare Erwartung nennen", nicht
+  "Compilation/Runtime-Block ausfüllen". Die zwei verbatim-Prediction-Zeilen
+  sind hier nur die *mechanische Zusammenfassung* der Prosa-Erwartung — nötig
+  für P5/P6, aber nicht die Methodik selbst.
+- **Refactor kennt nur die Four Rules of Simple Design.** Keine APP-Mass-Rechnung,
+  kein metric-driven End-Refactor-Pass. Damit fehlt bewusst der unter
+  "Tragende Inhalte" Punkt 4 geschützte Vorher/Nachher-Zwang — ein Unterschied,
+  den ein Vergleich gegen v6.2/v6.5 direkt misst.
+- **Red ist verhaltensdefiniert.** Ein gültiges Red scheitert daran, dass das
+  aktive Verhalten fehlt; das Compilation-Scaffold ist Mittel, keine eigene Phase.
+
+Zwei Lab-Anpassungen gegenüber der Quelle: die Human-in-the-Loop-Autonomie-
+Vereinbarung entfiel (der Harness läuft unbeaufsichtigt; die Eskalationsregeln
+lösen sich stattdessen zu "verteidigbarste Lesart nennen und weitermachen" auf),
+und die Marker aus `MARKERS.md` kamen hinzu. Beides liegt im LAB-ONLY-Block bzw.
+ist dort dokumentiert, sodass ein Export die Quell-Semantik wiederherstellen kann.
+
+Die beiden Varianten unterscheiden sich **ausschließlich** darin, wo der
+Four-Rules-Review läuft — inline im Hauptkontext (`## Refactor`-Textmarker) oder
+in einem isolierten `subagent` (Tool-Call als Signal). Das ist die Architektur-
+Achse, isoliert auf einer fremden Methodik.
+
+#### Verhältnis zu RQ-architecture-axis-sol-pi (1.14) — bindend
+
+Die Architektur-Achse ist auf Sol/pi **bereits gemessen**: RQ-1.14, 50 Runs,
+10 Zellen × n=5, v3 / v4.1 / v5.1 / v6.1 / v6.6 × claim-office + game-of-life,
+Prompt-Stil `example-mapping`, Modell `gpt-5-6-sol`. Wer das `basic-sol-tdd`-Paar
+auswertet, muss diese RQ zuerst lesen — sie setzt den Rahmen.
+
+Ihr Kernbefund (F-1.6) ist schärfer als ein bloßes Caveat: auf game-of-life
+gewinnt **strukturloses v3 fast jede Qualitätsmetrik** gegen jede Architektur,
+bei 100 % Korrektheit in allen Zellen und 2.8–4.1× geringeren Kosten. Auf
+claim-office erreicht v3 ebenfalls 100 % `verification_pct` — bei 229 s gegen
+1185 s (v6.1) und $1.18 gegen $9.52. Die RQ hatte diesen Ausgang als H4-Counter-Case
+vorab benannt: dann ist die ehrliche Empfehlung v3.
+
+**Was das Paar trotzdem hinzufügt.** RQ-1.14 variiert die Architektur *innerhalb*
+der v-Linie; der Schritt v5.1 → v6.1 ändert Refactor-Isolation **und**
+Skill-Struktur zugleich. Das `basic-sol-tdd`-Paar hält eine fremde Methodik
+konstant und variiert **ausschließlich** inline-vs-Subagent. Damit isoliert es
+den Refactor-Isolations-Effekt, der in RQ-1.14 konfundiert ist.
+
+Anschluss an eine konkrete offene Stelle in F-1.6: dort liefert der isolierte
+Refactor-Subagent (v6.1) auf Sol *nicht* die Extraktion, für die er existiert —
+inspizierte Runs lassen eine dreifach verschachtelte Schleife stehen, die der
+v3-Boden benennt. Auf opus-4-7 extrahiert derselbe Subagent (F-1.10). F-1.6 nennt
+das eine Modell-Architektur-Interaktion. Das Paar prüft, ob der Effekt auch
+auftritt, wenn der Refactor-Auftrag aus einer anderen Methodik kommt (Four Rules
+ohne APP statt v6-Refactor-Agent).
+
+**Treiber-RQ: `RQ-native-sol-workflows-sub`** (`workflow-dev/1.16-native-sol-workflows-subscription/`),
+3 Zellen × 2 Katas × n=5. Sie läuft bewusst **nicht** als Erweiterung von RQ-1.14,
+sondern eigenständig auf der OpenAI-Subscription-Route (`gpt-5-6-sol-codex`):
+RQ-1.14 kontrolliert auf `gpt-5-6-sol` (Requesty), und RQ-route-effect-pi F-1.3.6
+belegt einen echten Routen-Effekt auf genau den hier gemessenen Qualitätsmetriken
+(Complexity Peak 4.0 gegen 8.0/9.0, Smell Total 0.0 gegen 2.0) — nachweislich kein
+Reasoning-Effekt. Ein Mischen würde den Lineage-Vergleich mit dem Transport
+konfundieren, und zwar in genau die Richtung, in die die native Linie erwartet wird.
+
+Deshalb fährt die neue RQ ihren **eigenen v3-Boden** auf der Sub-Route mit —
+`v3-basic-tdd-pi × gpt-5-6-sol-codex` hatte null vorhandene Runs, die RQ-1.14-Zahlen
+sind nicht übertragbar. Ohne diesen Boden wäre die Kernfrage („schlägt die native
+Linie v3?") nicht beantwortbar, denn F-1.6 zeigt: v3 ist auf Sol kein schwacher
+Vergleichspunkt, sondern der amtierende Sieger.
+
+Die beiden Smoke-Runs (`game-of-life-prose`) gehören in keine Zelle — falscher
+Prompt-Stil, sie belegen nur die Marker-Mechanik.
+
+#### `predictions_total ≈ 2 × cycle_count` gilt hier nicht
+
+Die MARKERS.md-Konvention "zwei Prediction-Lines pro Cycle" setzt voraus, dass
+jeder Cycle ein echtes Red durchläuft. Diese Linie erzeugt systematisch
+**already-green-Cycles**: die Quell-Regel verbietet ausdrücklich, ein Failure
+zu fabrizieren, wenn eine frühere Generalisierung den nächsten Test schon
+abdeckt ("do not manufacture a failure"). Solche Cycles zählen in
+`cycle_count`, tragen aber korrekterweise keine Predictions bei.
+
+Der Smoke-Run zeigt das deutlich (`game-of-life-prose` × `gpt-5-6-sol-codex`,
+n=1 je Variante):
+
+| | `basic-sol-tdd-pi` | `basic-sol-tdd-subagent-pi` |
+|---|---|---|
+| `phase_source` | `text-markers` | `subagents` |
+| `cycle_count` | 10 | 9 |
+| `refactorings_applied` | 10 | 10 |
+| `predictions_correct` / `_total` | 8 / 8 | 12 / 12 |
+| Red-Phasen gesamt | 10 | 9 |
+| davon mit formalem Prediction-Block | 4 | 6 |
+| davon explizit already-green | 3 | 3 |
+| Rest (Prosa-Prediction ohne die zwei Zeilen) | 3 | 0 |
+| `verification_pct` | 1.0 | 1.0 |
+| `lines_of_code` | 43 | 37 |
+| `code_mass` | 142 | 144 |
+| `cognitive_max` | 4 | 4 |
+| Wallclock (Batch-Log) | 320 s | 715 s |
+| `cost_usd` | 1.18 | 1.43 |
+
+Beide `tests_passing` true, `exit_reason: ok`. Bei n=1 je Zelle ist davon nur
+die Marker-Mechanik belastbar, nicht der Qualitäts- oder Kostenunterschied —
+der Subagent-Arm kostet hier gut das Doppelte an Wallclock, was zur bekannten
+Architektur-Kostenkurve passt, aber bei einem Run keine Aussage trägt.
+
+Die Lücke zwischen Red-Phasen und Prediction-Blöcken hat **zwei** Ursachen, die
+man auseinanderhalten muss:
+
+1. **Already-green (3 von 10 bzw. 3 von 9) — methodisch korrekt.** Die
+   Quell-Regel verbietet, ein Failure zu fabrizieren; der Workflow schreibt
+   für diesen Fall einen eigenen Block ohne Prediction-Zeilen vor.
+2. **Prosa-Prediction ohne die zwei formalen Zeilen (3 von 10 in Variante A,
+   0 in Variante B) — echter Compliance-Verlust.** Das Modell formuliert die
+   Erwartung als Fließtext ("I predict TypeScript resolution succeeds …") und
+   liefert den `Red Phase Complete:`-Block nicht nach. Diese Cycles hätten
+   Predictions tragen müssen.
+
+Punkt 2 ist der Preis dafür, dass die Quell-Methodik Predictions als Prosa
+definiert und die zwei Zeilen nur nachträglich aufgesetzt sind — anders als in
+der v6-Linie, wo das Formular *die* Prediction ist. Sollte sich das über mehr
+Runs bestätigen, ist der Hebel der verbatim-Hinweis in `red`-Position (siehe
+"Tragende Inhalte" Punkt 2), nicht mehr Prosa.
+
+Ein niedriges `predictions_total` ist auf dieser Linie also **kein
+Compliance-Bruch**, sondern eine Eigenschaft der Methodik. Wer sie gegen die
+v6-Linie vergleicht, muss `predictions_correct_rate` (Anteil) statt
+`predictions_total` (Absolutzahl) verwenden — sonst misst er die Häufigkeit
+already-green-Schritte statt Prediction-Disziplin.
+
+Nebenbefund für die pi-Parser-Mechanik: `## Red` und der zugehörige
+`Red Phase Complete:`-Block landen hier in **getrennten** Assistant-Blöcken.
+Nur weil `parse_pi_transcript.py` mit `loose_gate=True` arbeitet, werden die
+Predictions überhaupt gezählt (P5-Hinweis in `MARKERS.md`).
 
 ### v6.1-Reduktionslinie (aktuell aktiv)
 
@@ -319,7 +460,8 @@ Die v1-Archiv-RQ-emoji-cross-model warnt: Reduktionen sind nicht modell-agnostis
 ## Verweise
 
 - `experiments/workflows/MARKERS.md` — harte Parser-Anforderungen.
-- `experiments/workflows/_archive/` — Workflow-Files der v6.5er-Kette (v6.5-lean, .1–.4, v6.6) + frühe v6.x.
+- `experiments/workflows/_archive/` — verworfene, aber sauber gemessene Workflow-Files (u. a. `v6.2.1-refactor-vocab`, RQ-1.10).
+- `git show <commit>^:experiments/workflows/_archive/` — Workflow-Files der defekten v6-Reduktionskette (v6.1-no-app, v6.2-no-rules, v6.3-no-pep, v6.4-no-emoji, v6.5-lean, v6.5.1–.4, v6.6-leaner) samt ihrer 144 Runs. Am 2026-08-17 gelöscht, weil die Kette auf korrektheits-defekter Basis lief und ihre Runs im aktiven Pool nicht als solche erkennbar waren; nur noch in der Git-Historie.
 - `git show 953841cb^:research/_archive/workflow-dev-v1/` — RQs der v1-Generation (RQ-context, RQ-workflow-tradeoff, RQ-app/rules/pep/emoji/lean/audit/bullets/targeted/refactor-cut/delayed-refactor). Am 2026-08-11 gelöscht, weil die Kette auf korrektheits-defekter Basis lief; nur noch in der Git-Historie.
 - `research/workflow-dev/1.1-pep-effect-v6.1/` bis `1.5-why-block-effect-v6.1/` — aktuelle Reduktions-RQs auf v6.1-Basis.
 - `research/workflow-dev/v6-reduction-recipe.md` — Reduktions-Rezept (Schritt-für-Schritt-Methodik aus der ersten v6.5er-Kette, jetzt auf v6.1-Basis re-anwendbar).
