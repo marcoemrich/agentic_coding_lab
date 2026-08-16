@@ -31,7 +31,7 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: aktiv
+status: answered
 ---
 
 # RQ-1.10: v6.2.1-refactor-vocab vs v6.2-with-why-cleaned (GoL + claim-office)
@@ -91,7 +91,15 @@ Portkey-Routing, Shards moeglich (GoL kurze Sessions, claim-office mittelfristig
 
 ## Findings
 
-Siehe [findings.md](findings.md) (folgt nach Batch-Lauf).
+Siehe [findings.md](findings.md). Beantwortet: **H0 (Falsifizierer) trifft zu.**
+
+- **H1 (Code-Qualitaet) widerlegt** — auf game-of-life bewegt sich keine der primaeren Komplexitaets-Metriken ueber 1 σ hinaus; `code_mass` steigt um 12 %.
+- **H2 (Korrektheit) widerlegt** — `verification_pct` auf claim-office 0.96 → 0.23, 4/5 Runs ≤ 0.13. Kein Ergebnis innerhalb 1 σ der Baseline.
+- **H3 (Disziplin neutral) auf game-of-life bestaetigt**, auf claim-office widerlegt (`cycle_count` 37.4 → 16.0 als Folge des Abbruchs, F-1.10.3).
+- **H4 (Kosten) auf game-of-life bestaetigt** (+15.5 % Tokens); auf claim-office nicht auswertbar, weil der Agent frueh aufhoert.
+- **H5 (Kata-Asymmetrie) bestaetigt, in der negativen Richtung** — der in H5 als Re-Promotion-Blocker benannte Fall ist eingetreten (gleiches Muster wie RQ-1.9).
+
+**Konsequenz:** `v6.2.1-refactor-vocab` verworfen, nach `experiments/workflows/_archive/` verschoben. `v6.2-with-why-cleaned` bleibt Default. Aggregation dieser RQ braucht `--allow-archived`.
 
 ## Datenquelle
 
