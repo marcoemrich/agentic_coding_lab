@@ -461,7 +461,7 @@ Die v1-Archiv-RQ-emoji-cross-model warnt: Reduktionen sind nicht modell-agnostis
 
 - `experiments/workflows/MARKERS.md` — harte Parser-Anforderungen.
 - `experiments/workflows/_archive/` — verworfene, aber sauber gemessene Workflow-Files (u. a. `v6.2.1-refactor-vocab`, RQ-1.10).
-- `git show <commit>^:experiments/workflows/_archive/` — Workflow-Files der defekten v6-Reduktionskette (v6.1-no-app, v6.2-no-rules, v6.3-no-pep, v6.4-no-emoji, v6.5-lean, v6.5.1–.4, v6.6-leaner) samt ihrer 144 Runs. Am 2026-08-17 gelöscht, weil die Kette auf korrektheits-defekter Basis lief und ihre Runs im aktiven Pool nicht als solche erkennbar waren; nur noch in der Git-Historie.
+- `git show 478a0c5e^:experiments/workflows/_archive/` — Workflow-Files der defekten v6-Reduktionskette (v6.1-no-app, v6.2-no-rules, v6.3-no-pep, v6.4-no-emoji, v6.5-lean, v6.5.1–.4, v6.6-leaner) samt ihrer 144 Runs. Am 2026-08-17 gelöscht, weil die Kette auf korrektheits-defekter Basis lief und ihre Runs im aktiven Pool nicht als solche erkennbar waren; nur noch in der Git-Historie.
 - `git show 953841cb^:research/_archive/workflow-dev-v1/` — RQs der v1-Generation (RQ-context, RQ-workflow-tradeoff, RQ-app/rules/pep/emoji/lean/audit/bullets/targeted/refactor-cut/delayed-refactor). Am 2026-08-11 gelöscht, weil die Kette auf korrektheits-defekter Basis lief; nur noch in der Git-Historie.
 - `research/workflow-dev/1.1-pep-effect-v6.1/` bis `1.5-why-block-effect-v6.1/` — aktuelle Reduktions-RQs auf v6.1-Basis.
 - `research/workflow-dev/v6-reduction-recipe.md` — Reduktions-Rezept (Schritt-für-Schritt-Methodik aus der ersten v6.5er-Kette, jetzt auf v6.1-Basis re-anwendbar).

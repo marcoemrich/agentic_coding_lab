@@ -10,9 +10,15 @@ Outputs into the RQ directory:
   runs.csv     — one row per matched run, all metrics
   summary.md   — per-cell pivots (avg/rate) for each declared outcome
 
+Aborts when a selector names a workflow under experiments/workflows/_archive/ —
+those are superseded or correctness-defective, and their runs stay in the flat
+runs pool without any archive marker. Pass --allow-archived when an RQ evaluates
+an archived workflow on purpose.
+
 Usage:
   experiments/aggregate-by-query.py research/questions-claude/2.1-model-effect-code-quality/
   experiments/aggregate-by-query.py research/questions-claude/2.1-model-effect-code-quality/README.md
+  experiments/aggregate-by-query.py research/workflow-dev/1.10-refactor-vocab-effect-v62/ --allow-archived
 """
 from __future__ import annotations
 
@@ -27,6 +33,8 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RUNS_DIR = REPO_ROOT / "experiments" / "runs"
+WORKFLOWS_DIR = REPO_ROOT / "experiments" / "workflows"
+ARCHIVE_DIR = WORKFLOWS_DIR / "_archive"
 
 CSV_COLUMNS = [
     "kata", "workflow", "cell_workflow", "model", "cell_model", "cli_model", "thinking", "run_id",
@@ -179,6 +187,40 @@ def matches_cell(metrics: dict, cell: dict) -> bool:
     if metrics.get("model") not in cell["model_alts"]:
         return False
     return True
+
+
+def check_archived_workflows(cells: list[dict], allow_archived: bool) -> int:
+    """Warn (or fail) when a selector names a workflow that lives in _archive/.
+
+    Workflows are archived for a reason — some are correctness-defective, others
+    were measured and rejected. Their runs stay in the flat experiments/runs/
+    pool and carry no archive marker in metrics.json, so a selector naming an
+    archived workflow silently pulls them into a fresh aggregation. That is a
+    real hazard for `{any: [...]}` OR-matches, where several workflow names
+    collapse into one cell and an archived entry is easy to miss.
+
+    Returns the number of archived workflow names found. With allow_archived
+    the run proceeds anyway (RQ-1.10 legitimately evaluates a rejected
+    workflow); without it, the caller aborts.
+    """
+    if not ARCHIVE_DIR.is_dir():
+        return 0
+
+    archived = {p.name for p in ARCHIVE_DIR.iterdir() if p.is_dir()}
+    hits = sorted({c["workflow"] for c in cells if c.get("workflow") in archived})
+    if not hits:
+        return 0
+
+    verb = "note" if allow_archived else "ERROR"
+    print(f"{verb}: selector names {len(hits)} archived workflow(s):", file=sys.stderr)
+    for name in hits:
+        print(f"    {name}  (experiments/workflows/_archive/{name})", file=sys.stderr)
+    if not allow_archived:
+        print("  Archived workflows are superseded or defective; their runs still sit "
+              "in experiments/runs/ unmarked.\n"
+              "  If this RQ evaluates an archived workflow on purpose, re-run with "
+              "--allow-archived.", file=sys.stderr)
+    return len(hits)
 
 
 def collect_runs(cells: list[dict]) -> tuple[list[tuple[Path, str]], dict[tuple, list[Path]]]:
@@ -486,11 +528,13 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
 # -----------------------------------------------------------------------
 
 def main(argv: list[str]) -> int:
-    if len(argv) != 2:
+    args = [a for a in argv[1:] if a != "--allow-archived"]
+    allow_archived = "--allow-archived" in argv[1:]
+    if len(args) != 1:
         print(__doc__, file=sys.stderr)
         return 2
 
-    target = Path(argv[1])
+    target = Path(args[0])
     if target.is_dir():
         md_in = target / "README.md"
     else:
@@ -503,6 +547,10 @@ def main(argv: list[str]) -> int:
 
     fm = parse_frontmatter(md_in)
     cells = expand_cells(fm)
+
+    if check_archived_workflows(cells, allow_archived) and not allow_archived:
+        return 1
+
     matched, by_cell = collect_runs(cells)
 
     print(f"{fm.get('id', '?')}: {len(cells)} cells declared, "
