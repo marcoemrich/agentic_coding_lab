@@ -7,11 +7,11 @@ factors:
     # per-run flag: the route is the pi provider, reasoning is a property of
     # the models.json entry and thus of the pi-config profile (see README).
     #
-    #   id                             route     reasoning  profile
-    - gpt-5-6-sol-no-thinking        # requesty  off        pi-config
-    - gpt-5-6-sol-reasoning          # requesty  ON         pi-config-reasoning
-    - gpt-5-6-sol-codex-no-thinking  # codex     ON         pi-config
-    # The fourth cell (codex without reasoning) is NOT constructible -- the
+    #   id                             route         reasoning  profile
+    - gpt-5-6-sol-no-thinking        # requesty      off        pi-config
+    - gpt-5-6-sol-reasoning          # requesty      ON         pi-config-reasoning
+    - gpt-5-6-sol-codex-no-thinking  # oai-subscr.  ON         pi-config
+    # The fourth cell (subscription route without reasoning) is NOT constructible -- the
     # Responses API reasons regardless of the client declaration. Documented
     # in the README; do not add gpt-5-6-sol-codex-noreason as a factor level.
 controls:
@@ -54,6 +54,22 @@ status: aktiv
 
 # RQ-route-effect-pi: Route effect Requesty vs OpenAI subscription (pi harness)
 
+## Naming: "codex" here is a provider, not a harness
+
+**The harness is pi in every cell of this RQ.** Nothing here compares harnesses.
+
+`codex` appears in the lab ids (`gpt-5-6-sol-codex-no-thinking`) and in the
+routing strings because that is the name of the **pi provider**
+(`openai-codex`, api `openai-codex-responses`) through which the OpenAI
+subscription is reached. It has nothing to do with the Codex CLI, which is a
+separate coding harness and is not used anywhere in this lab.
+
+The prose therefore says **"the OpenAI subscription route"** or **"the
+subscription route"**; only ids and API strings keep the literal `codex`. In a
+lab that compares four harnesses (Claude Code, OpenCode, pi, cursor-agent), a
+reader could otherwise take these findings for a harness comparison, which they
+are not.
+
 ## Motivation
 
 GPT-5.6 Sol is reachable on pi over two transports since 2026-08-15: the
@@ -70,14 +86,14 @@ factor in every pi RQ that mixes routes, and the ids have to keep them apart
 
 The occasion was a speed question, but the interesting part turned out to be
 elsewhere: an ad-hoc comparison (n=4 per arm, 2026-08-15) found the model
-doing **systematically more work** on the codex route -- more cycles, more
+doing **systematically more work** on the subscription route -- more cycles, more
 refactorings, more tokens -- at identical `--thinking off`. Whether that
 carries over into the artefact (code quality) is open, which is why this RQ
 takes the full quality metric set rather than just duration.
 
 ## Reasoning is coupled to the route, not controllable per run
 
-**`--thinking off` does not suppress reasoning on the codex route.** Both factor
+**`--thinking off` does not suppress reasoning on the subscription route.** Both factor
 levels carry the `-no-thinking` suffix, and it was originally assumed that this
 held reasoning constant. Transcript evidence from the first ten runs shows it
 did not:
@@ -99,15 +115,15 @@ Same constraint class as the container-global CC routing (see CLAUDE.md).
 
 ### One cell is not constructible
 
-A `reasoning: false` declaration works on Requesty but **not** on the codex
-route:
+A `reasoning: false` declaration works on Requesty but **not** on the
+subscription route:
 
 | Route | `reasoning: false` | `reasoning: true` |
 |---|---|---|
 | Requesty | 0 blocks ✅ | 1649 blocks ✅ |
-| codex | **2882 blocks ❌** | 2667–3311 ✅ |
+| OpenAI subscription | **2882 blocks ❌** | 2667–3311 ✅ |
 
-The codex smoke ran with a verified profile (`reasoning: false`,
+The subscription-route smoke ran with a verified profile (`reasoning: false`,
 `thinkingLevelMap` removed), a verified `PI_CONFIG_DIR` and a verified API
 (`openai-codex-responses`) — and reasoned anyway, at the same volume as the
 standard runs. **The Responses API decides server-side; a client declaring the
@@ -146,7 +162,7 @@ What they establish:
 - **F-1.3.2 replicates only in part**: the smell advantage holds (3.0 vs 0.0),
   the Complexity Peak advantage does not (2.0 vs 2.0 — both at the floor, the
   kata generates too little structural complexity to discriminate). The LoC
-  relation inverts (codex 36 vs Requesty 49, opposite of game-of-life).
+  relation inverts (subscription 36 vs Requesty 49, opposite of game-of-life).
 - **F-1.3.4 holds on a kata that could have broken it**: sphinx-score is built
   around ambiguity, so `verification_pct` had room to separate the routes. It
   did not — 100 % median on both, identical per-run distribution.
@@ -166,7 +182,7 @@ Two properties of the existing data are worth carrying forward:
 
 - The four runs per arm ran across **two batches at different times of day**
   (midday and evening). Throughput was practically identical between batches
-  (Requesty 3448/3427 tok/s, codex 2035/2123), so no time-of-day effect
+  (Requesty 3448/3427 tok/s, subscription 2035/2123), so no time-of-day effect
   contaminates the pooled cells.
 - A ninth directory exists from an aborted start
   (`runs/_archive/aborted-2026-08-16/`). It carries no metrics and is **not** a
@@ -176,17 +192,17 @@ Two properties of the existing data are worth carrying forward:
 ## Hypotheses
 
 - **H1 (throughput)**: Requesty delivers measurably higher throughput
-  (tokens/second) than the codex route. Ad-hoc evidence at n=4: 3435 vs 2079
+  (tokens/second) than the subscription route. Ad-hoc evidence at n=4: 3435 vs 2079
   tok/s, a 1.65x gap, with non-overlapping ranges (3364-3516 vs 1997-2160).
   Expected to hold at n=5.
-- **H2 (work volume)**: The model performs more work on the codex route --
+- **H2 (work volume)**: The model performs more work on the subscription route --
   higher `cycle_count`, `refactorings_applied` and `total_tokens`. Ad-hoc
-  evidence: in all 4 codex runs both cycles and refactorings exceeded *every*
+  evidence: in all 4 subscription-route runs both cycles and refactorings exceeded *every*
   Requesty run (median 10 vs 8.5 cycles, 7.5 vs 5 refactorings). **Unexplained**
   at identical `--thinking off`; this RQ is meant to establish whether it
   reproduces, not yet why.
 - **H3 (quality follows work, or does not)**: The open question this RQ adds to
-  the ad-hoc measurement. Either the extra refactoring cycles on the codex route
+  the ad-hoc measurement. Either the extra refactoring cycles on the subscription route
   show up in the artefact (lower `smell_total`, lower `cognitive_max`, shorter
   functions) -- then the route buys quality with time -- or they do not, and the
   additional work is spin without an effect on the product. The ad-hoc runs did
@@ -200,7 +216,7 @@ Two properties of the existing data are worth carrying forward:
 
 - `n=5` per cell as the lab default for a medium field.
 - **`cost_usd` is not a price comparison in this RQ.** Both sides are priced
-  with the same tariff ($5/$30/$0.50); the codex values are *measured* (pi ships
+  with the same tariff ($5/$30/$0.50); the subscription-route values are *measured* (pi ships
   inline costs on that route), the Requesty values are *computed* from the list
   price table in `compute-cost.py`. On a subscription no per-token charge is
   incurred at all. The metric is usable as a token-consumption proxy, not as a
@@ -211,10 +227,10 @@ Two properties of the existing data are worth carrying forward:
   the raw duration gap (2.62x at n=4) overstates the transport effect, which is
   1.65x on throughput.
 - Cache behaviour differs between the routes and partly explains the throughput
-  gap: Requesty reaches 93-94 % cache hits, codex 83 %. Worth reporting
+  gap: Requesty reaches 93-94 % cache hits, subscription route 83 %. Worth reporting
   alongside the throughput figure rather than treating throughput as a pure
   transport property.
-- The codex route depends on an **expiring OAuth token**. If it lapses mid-batch
+- The subscription route depends on an **expiring OAuth token**. If it lapses mid-batch
   the affected runs die on auth, not on a rate limit, and the built-in backoff
   will not rescue them. Refresh `pi-config/agent/auth.json` before a fill batch
   (recipe in `experiments/docker/pi-config/README.md`).
