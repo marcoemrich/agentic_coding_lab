@@ -5,7 +5,9 @@
 #   ./batch.sh smoke-test                   # plan name, .json optional
 #   ./batch.sh smoke-test.json              # plan name with extension
 #   ./batch.sh /abs/path/plan.json          # absolute path also works
-#   ./batch.sh smoke-test --shards 2        # split into 2 shards, run in parallel
+#   ./batch.sh smoke-test                   # 5 shards by default, run in parallel
+#   ./batch.sh smoke-test --shards 2        # split into 2 shards instead
+#   ./batch.sh smoke-test --shards 1        # single container, no split
 #   ./batch.sh smoke-test --shards 2 --detach   # parallel, return immediately
 #
 # Pass through extra env vars as needed:
@@ -25,7 +27,7 @@ cd "$SCRIPT_DIR"
 # ---------------------------------------------------------------------------
 
 plan_arg=""
-shards=1
+shards=5
 detach="false"
 
 while [ $# -gt 0 ]; do

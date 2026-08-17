@@ -33,7 +33,9 @@ End-to-end orchestration for advancing a single research question (RQ) in this l
   On no match → ask the user. On multiple → take the first and inform the user. Pass `"$RQ_DIR"` to all scripts below (they accept any path and write outputs to the dir).
 - Mandatory frontmatter fields: `id, question, factors, controls, outcomes, min_replicates, status`.
 - Methodology constraint: v1/v2 only with `prompt: prose`; v3/v4/v5 with all three styles. If `factors.workflow_x_prompt` exists, no additional `factors.workflow` / `controls.workflow` is allowed.
-- Active katas: `game-of-life`, `mars-rover`, `claim-office`. `controls.kata_base` must be from this set.
+- Active katas: `claim-office`, `game-of-life`, `sphinx-score`, `game-of-life-cli`, `claim-office-lite`, `mars-rover`. `controls.kata_base` must be from this set. Each has the three prompt variants (`-prose`, `-user-story`, `-example-mapping`); all but `mars-rover` also have a `<basename>-verification/` suite, so `verification_pct` is available there.
+  - The list is not a ranking, but the pool is lopsided in practice: `claim-office` and `game-of-life` carry the bulk of the runs, `sphinx-score` is the established small quality kata, and `mars-rover` is near-unused. Prefer a kata that already has runs in neighbouring RQs — a fill on a fresh kata has no reference cells to compare against.
+  - **Check the actual kata dir before rejecting an RQ on this list.** The list is hand-maintained and has lagged behind the repo before (`sphinx-score` was in use in three RQs while still missing here). `ls experiments/katas/` is the authority; this line is a convenience copy.
 - Model IDs are **lab-variant IDs** (`opus-4-7`, `opus-4-7-no-thinking`, `opus-4-6-portkey`, `opus-4-6-portkey-no-thinking`, `sonnet-4-6`, `sonnet-4-6-no-thinking`, `sonnet-4-6-portkey`, `sonnet-4-6-portkey-no-thinking`, `haiku-4-5`, `haiku-4-5-no-thinking`, `haiku-4-5-portkey`, `haiku-4-5-portkey-no-thinking`). The `-portkey` suffix marks models routed via the Portkey gateway.
 - Aggregation is query-based: ALL runs in `experiments/runs/` matching the selector query count — regardless of which batch produced them.
 - Batch plan is idempotent: counts existing matches and only fills missing replicates up to `min_replicates`.
@@ -52,7 +54,7 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
 4. Check methodology constraints:
    - If `factors.workflow_x_prompt` is set: no additional `factors.workflow` and no `controls.workflow` may be set.
    - In every `workflow_x_prompt` entry: if `workflow ∈ {v1-oneshot, v2-iterative}`, then `prompt == prose` is required.
-   - `controls.kata_base ∈ {game-of-life, mars-rover}`.
+   - `controls.kata_base` is one of the active katas listed under "Repo conventions" above. Verify against `ls experiments/katas/` rather than against the list alone — the list is a convenience copy and has lagged the repo before.
    - Model values (in `controls.model` and/or `factors.model`) must appear in the lab-variant table.
 5. Read `findings.md` (needed in phase 6 as the existing baseline).
 6. Target computation: from `factors` × `controls` derive the cell count (every factor multiplies; paired factors like `workflow_x_prompt` count as a single factor with `len(pairing)` values). Target runs = cells × `min_replicates`. Report this number to the user.
@@ -99,9 +101,10 @@ status: <status>
    ```bash
    cd experiments/docker && ./batch.sh rq-{n}-fill --detach
    ```
-   Portkey routing is **auto-detected** by `batch.sh`: it scans the plan JSON for `-portkey` model names and sets `CLAUDE_CONFIG_DIR=~/.claude.portkey` automatically. No manual env-var override needed. For sharded runs (>30 runs), add `--shards N` (max 6):
+   Portkey routing is **auto-detected** by `batch.sh`: it scans the plan JSON for `-portkey` model names and sets `CLAUDE_CONFIG_DIR=~/.claude.portkey` automatically. No manual env-var override needed. Sharding is on by default (5 shards, round-robin); override with `--shards N` when a plan is small or should run in one container:
    ```bash
-   cd experiments/docker && ./batch.sh rq-{n}-fill --shards 4 --detach
+   cd experiments/docker && ./batch.sh rq-{n}-fill --shards 10 --detach   # large fill
+   cd experiments/docker && ./batch.sh rq-{n}-fill --shards 1 --detach    # single container
    ```
 4. After a few seconds, determine the container name via `docker ps --filter name=docker-batch-run --format '{{.Names}}'` and report it to the user.
 

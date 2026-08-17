@@ -85,7 +85,13 @@ subtrees.
 ### Running batches
 
 - Start with `./batch.sh <plan>` using Bash tool `run_in_background: true`. Do NOT combine with `nohup` or `&` — that breaks tool tracking.
-- `--shards N` for parallel containers (default 2, max 3; each needs ~4 GB RAM).
+- `--shards N` for parallel containers (default 5). 5–10 shards are routine — a container
+  uses ~170 MiB in practice; the `memory: 4G` in `docker-compose.yml` is a cap, not a
+  requirement (measured 2026-08-17: 5 shards ≈ 865 MiB total, CPU I/O-bound). The real
+  ceiling is API rate limits, which `batch.sh` already retries against.
+- **Drop to 1–2 shards only against a rate-limit risk**, never for memory. The risk is
+  route- and model-specific: it has repeatedly hit Opus batches, while pi/Sol routes are
+  uncritical. Memory is never the reason to reduce shard count.
 - Rate-limit resilience is built in: 5 retries with backoff (60s → 5min → 30min → 1h → 2h). Do not add manual retry logic.
 - **CC-Routing ist container-global.** Die `ANTHROPIC_*`-Env-Vars gelten für den ganzen Batch-Container, nicht pro Run. Ein Plan darf darum nicht CC-Runs mit unterschiedlichem CC-Routing mischen (z. B. CC-requesty + CC-nativ) — split in zwei Pläne, sequentiell. Gemischt CC-requesty + OC-requesty + pi-requesty ist dagegen OK (getrennte Routing-Kanäle: `.env` für CC, `opencode.json` für OC, `models.json` für pi).
 - **Run completion signal:** `metrics.json | jq .run_status.exit_reason` — NOT presence of `analysis-report.md`.

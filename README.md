@@ -592,7 +592,7 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 
 | Script | Purpose |
 |--------|---------|
-| `docker/batch.sh` | Convenience wrapper around `docker compose --profile batch run --rm batch`. Accepts a plan name or path: `./batch.sh rq-3-fill` or `./batch.sh /abs/path/plan.json`. Tees output to `batch.<plan>.log`. Supports `--shards N` for parallel runs (round-robin split, default 2, do not exceed 3 due to memory + API rate-limit pressure) and `--detach` for background execution. |
+| `docker/batch.sh` | Convenience wrapper around `docker compose --profile batch run --rm batch`. Accepts a plan name or path: `./batch.sh rq-3-fill` or `./batch.sh /abs/path/plan.json`. Tees output to `batch.<plan>.log`. Supports `--shards N` for parallel runs (round-robin split, default 5; 5–10 are routine — memory is not the constraint, a container uses ~170 MiB against the 4 GB compose cap, and API rate limits are already retried) and `--detach` for background execution. |
 | `docker/run-batch.sh` | The *inside-container* entrypoint invoked by `batch.sh`. Reads the plan, executes each `(kata, workflow, model)` triple via Claude Code, calls `analyze-run.sh`, copies transcripts. Not normally invoked directly. |
 | `docker/list-plans.sh` | Print every `experiments/batch-plans/*.json` with name, description, and run count. Useful before kicking off a batch. |
 | `docker/resume-plan.sh` | Compute remaining work for a plan: subtract triples already present in `experiments/runs/` from the original plan, write `/tmp/<plan>-resume.json`. Useful after a crashed/cancelled batch. |
