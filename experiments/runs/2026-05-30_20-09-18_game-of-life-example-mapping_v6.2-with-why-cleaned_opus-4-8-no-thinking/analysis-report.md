@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-30_20-09-18_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking
 
-Generated: 2026-06-01T23:43:25+02:00
+Generated: 2026-08-17T09:37:29+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-06-01T23:43:25+02:00
 
 ```
 
-> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-30_20-09-18_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-30_20-09-18_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-30_20-09-18_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-30_20-09-18_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking
 
  ✓ src/game-of-life.spec.ts  (9 tests) 3ms
 
  Test Files  1 passed (1)
       Tests  9 passed (9)
-   Start at  23:43:26
-   Duration  369ms (transform 25ms, setup 0ms, collect 20ms, tests 3ms, environment 0ms, prepare 109ms)
+   Start at  09:37:30
+   Duration  377ms (transform 24ms, setup 0ms, collect 19ms, tests 3ms, environment 0ms, prepare 72ms)
 ```
 
 ## Coverage

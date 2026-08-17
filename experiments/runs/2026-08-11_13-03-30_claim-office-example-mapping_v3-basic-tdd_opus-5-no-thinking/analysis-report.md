@@ -1,6 +1,6 @@
 # Analysis Report: 2026-08-11_13-03-30_claim-office-example-mapping_v3-basic-tdd_opus-5-no-thinking
 
-Generated: 2026-08-11T13:11:05+00:00
+Generated: 2026-08-17T09:34:27+02:00
 
 ## Configuration
 
@@ -30,22 +30,22 @@ Generated: 2026-08-11T13:11:05+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-08-11_13-03-30_claim-office-example-mapping_v3-basic-tdd_opus-5-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-08-11_13-03-30_claim-office-example-mapping_v3-basic-tdd_opus-5-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-08-11_13-03-30_claim-office-example-mapping_v3-basic-tdd_opus-5-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-08-11_13-03-30_claim-office-example-mapping_v3-basic-tdd_opus-5-no-thinking
 
- ✓ src/claim.spec.ts  (17 tests) 5ms
- ✓ src/cli.spec.ts  (5 tests) 1481ms
- ✓ src/premium-rules.spec.ts  (13 tests) 3ms
- ✓ src/premium.spec.ts  (7 tests) 2ms
- ✓ src/rounding-direction.spec.ts  (2 tests) 1ms
+ ✓ src/premium.spec.ts  (7 tests) 5ms
+ ✓ src/premium-rules.spec.ts  (13 tests) 8ms
+ ✓ src/rounding-direction.spec.ts  (2 tests) 2ms
+ ✓ src/claim.spec.ts  (17 tests) 10ms
+ ✓ src/cli.spec.ts  (5 tests) 2240ms
 
  Test Files  5 passed (5)
       Tests  44 passed (44)
-   Start at  13:11:06
-   Duration  2.18s (transform 53ms, setup 0ms, collect 76ms, tests 1.49s, environment 1ms, prepare 234ms)
+   Start at  09:34:28
+   Duration  2.84s (transform 224ms, setup 1ms, collect 378ms, tests 2.27s, environment 1ms, prepare 1.11s)
 ```
 
 ## Coverage

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-29_10-24-32_claim-office-example-mapping_v4-exact-subagents_opus-4-8-no-thinking
 
-Generated: 2026-05-29T12:05:26+00:00
+Generated: 2026-08-17T09:35:55+02:00
 
 ## Configuration
 
@@ -30,19 +30,19 @@ Generated: 2026-05-29T12:05:26+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-29_10-24-32_claim-office-example-mapping_v4-exact-subagents_opus-4-8-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-29_10-24-32_claim-office-example-mapping_v4-exact-subagents_opus-4-8-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-29_10-24-32_claim-office-example-mapping_v4-exact-subagents_opus-4-8-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-29_10-24-32_claim-office-example-mapping_v4-exact-subagents_opus-4-8-no-thinking
 
  ✓ src/claim-office.spec.ts  (43 tests) 9ms
- ✓ src/cli.spec.ts  (9 tests) 3516ms
+ ✓ src/cli.spec.ts  (9 tests) 2832ms
 
  Test Files  2 passed (2)
       Tests  52 passed (52)
-   Start at  12:05:27
-   Duration  3.87s (transform 58ms, setup 0ms, collect 66ms, tests 3.52s, environment 0ms, prepare 106ms)
+   Start at  09:35:56
+   Duration  3.18s (transform 57ms, setup 0ms, collect 71ms, tests 2.84s, environment 0ms, prepare 134ms)
 ```
 
 ## Coverage

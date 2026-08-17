@@ -1,6 +1,6 @@
 # Analysis Report: 2026-08-11_01-43-28_claim-office-example-mapping_v6.6-lab-split-cc_opus-5-no-thinking
 
-Generated: 2026-08-11T03:04:25+00:00
+Generated: 2026-08-17T09:37:08+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-08-11T03:04:25+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-08-11_01-43-28_claim-office-example-mapping_v6.6-lab-split-cc_opus-5-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-08-11_01-43-28_claim-office-example-mapping_v6.6-lab-split-cc_opus-5-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-08-11_01-43-28_claim-office-example-mapping_v6.6-lab-split-cc_opus-5-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-08-11_01-43-28_claim-office-example-mapping_v6.6-lab-split-cc_opus-5-no-thinking
 
- ✓ src/claim-office.spec.ts  (44 tests) 572ms
+ ✓ src/claim-office.spec.ts  (44 tests) 658ms
 
  Test Files  1 passed (1)
       Tests  44 passed (44)
-   Start at  03:04:25
-   Duration  774ms (transform 60ms, setup 0ms, collect 57ms, tests 572ms, environment 0ms, prepare 53ms)
+   Start at  09:37:08
+   Duration  1.03s (transform 42ms, setup 0ms, collect 45ms, tests 658ms, environment 0ms, prepare 74ms)
 ```
 
 ## Coverage

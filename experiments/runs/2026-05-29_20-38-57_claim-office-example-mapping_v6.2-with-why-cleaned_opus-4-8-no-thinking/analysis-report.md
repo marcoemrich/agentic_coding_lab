@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-29_20-38-57_claim-office-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking
 
-Generated: 2026-05-29T21:09:44+00:00
+Generated: 2026-08-17T09:36:45+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-29T21:09:44+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-29_20-38-57_claim-office-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-29_20-38-57_claim-office-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-29_20-38-57_claim-office-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-29_20-38-57_claim-office-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking
 
  ✓ src/claim-office.spec.ts  (37 tests | 13 skipped) 5ms
 
  Test Files  1 passed (1)
       Tests  24 passed | 13 todo (37)
-   Start at  21:09:44
-   Duration  164ms (transform 32ms, setup 0ms, collect 31ms, tests 5ms, environment 0ms, prepare 43ms)
+   Start at  09:36:46
+   Duration  370ms (transform 41ms, setup 0ms, collect 34ms, tests 5ms, environment 0ms, prepare 77ms)
 ```
 
 ## Coverage

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-08-11_08-22-53_sphinx-score-example-mapping_v6.6-lab-split-cc_opus-5-no-thinking
 
-Generated: 2026-08-11T08:46:20+00:00
+Generated: 2026-08-17T09:37:39+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-08-11T08:46:20+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-08-11_08-22-53_sphinx-score-example-mapping_v6.6-lab-split-cc_opus-5-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-08-11_08-22-53_sphinx-score-example-mapping_v6.6-lab-split-cc_opus-5-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-08-11_08-22-53_sphinx-score-example-mapping_v6.6-lab-split-cc_opus-5-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-08-11_08-22-53_sphinx-score-example-mapping_v6.6-lab-split-cc_opus-5-no-thinking
 
- ✓ src/sphinx-score.spec.ts  (11 tests) 464ms
+ ✓ src/sphinx-score.spec.ts  (11 tests) 373ms
 
  Test Files  1 passed (1)
       Tests  11 passed (11)
-   Start at  08:46:21
-   Duration  650ms (transform 29ms, setup 0ms, collect 27ms, tests 464ms, environment 0ms, prepare 56ms)
+   Start at  09:37:40
+   Duration  711ms (transform 25ms, setup 0ms, collect 22ms, tests 373ms, environment 0ms, prepare 65ms)
 ```
 
 ## Coverage
