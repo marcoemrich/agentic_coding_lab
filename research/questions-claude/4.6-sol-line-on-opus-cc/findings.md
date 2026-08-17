@@ -224,6 +224,38 @@ Against Sol these absolute figures do not transfer (different route, different b
 only the internal ordering is comparable, and there the native line was also the middle
 option at 6.9× the floor (F-1.16.1).
 
+## F-4.6.7 — The native line wins the duration/quality trade-off on both Opus generations
+
+F-4.6.2 establishes that v6.2 decomposes better on Opus. It does not come free, and the
+exchange rate is unfavourable on both models. Comparing the two structured lines directly
+— v3 is not a reference here, its quality is inadequate on Opus and its wide spread
+(`cc_avg_loc_per_function` σ 1.65–1.71) makes it a poor baseline for a marginal figure:
+
+| Model | v6.2 duration | vs. native line | Decomposition gain | **Seconds per point** |
+|---|---:|---:|---:|---:|
+| opus-4-8 | 4159 s | **4.34×** | 1.57× (6.65 → 4.24) | 1328 s |
+| opus-5 | 3637 s | **3.58×** | 1.79× (7.86 → 4.40) | 757 s |
+
+Duration grows faster than quality on both models: roughly four times the wallclock buys
+about one and a half times the decomposition. Expressed per unit, each point of
+`cc_avg_loc_per_function` costs 12.6 minutes of additional runtime on opus-5 and 22.1
+minutes on opus-4-8.
+
+Two qualifications keep this from being a blanket verdict for the native line:
+
+- **The advantage is shrinking across generations.** 4.34× on opus-4-8 against 3.58× on
+  opus-5 — and the reason is not that v6.2 improved (4.24 → 4.40, marginally worse) but
+  that the native line degraded (6.65 → 7.86). The trend runs against it.
+- **It is a trade-off only on decomposition.** On every other quality metric the native
+  line already wins or ties — `cognitive_max` on opus-5, Complexity Peak on both, Smell
+  Total on both — while also reaching 10/10 perfect external correctness against v6.2's
+  80 % / 99 %. There the comparison is not "faster but coarser", it is simply faster and
+  at least as good.
+
+So the duration/quality argument reinforces the recommendation on `opus-4-8`, where v6.2
+is disqualified on correctness anyway (F-4.6.5), and makes the `opus-5` choice a genuine
+decision: v6.2 for structure, the native line for throughput.
+
 ## Recommendation
 
 - **Pick the workflow per model, never per line.** The ranking of these three workflows
@@ -234,9 +266,11 @@ option at 6.9× the floor (F-1.16.1).
   Best decomposition in the field (`cc_avg_loc_per_function` 4.40, median 2.00) at 99 %
   correctness. Not on `opus-4-8-no-thinking` — that cell shows a total verification
   failure in one of four runs (F-4.6.5).
-- **`basic-sol-tdd-cc` is the better choice when cost matters**: 3.4× cheaper than v6.2
-  on opus-5, perfect correctness in 10/10 runs across both models, and still clearly
-  ahead of the structureless floor (F-4.6.4).
+- **`basic-sol-tdd-cc` wins on duration/quality on both models** (F-4.6.7): v6.2 needs
+  3.6–4.3× the wallclock for 1.6–1.8× the decomposition, i.e. 12.6–22.1 minutes per point of
+  `cc_avg_loc_per_function`. It is also 3.4× cheaper on opus-5, reaches perfect external
+  correctness in 10/10 runs, and wins or ties every quality metric except decomposition.
+  Choose it whenever throughput matters or decomposition is not the binding goal.
 
 ## Open questions
 
