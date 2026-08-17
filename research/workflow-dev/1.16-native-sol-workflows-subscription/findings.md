@@ -4,9 +4,15 @@ On the OpenAI subscription route, does a workflow line written natively for Sol
 (basic-sol-tdd, Predictive TDD) beat structureless TDD (v3) — the floor that no
 Opus-derived architecture clears on this model?
 
-Data base: 30 runs, 6 cells × n=5, all `exit_reason: ok`, `completed_within_budget`
+Data base: 45 runs, 9 cells × n=5, all `exit_reason: ok`, `completed_within_budget`
 100 %, `tests_passing` 100 % in every cell. Route: OpenAI subscription
 (`gpt-5-6-sol-codex`), reasoning always on (F-1.3.5).
+
+`sphinx-score` was added as a novelty control — a size twin of game-of-life that is
+novel to the model — to separate spec size from task familiarity in F-1.16.5. It does
+not deliver that separation: the kata collapses to a single function on this model and
+resolves no decomposition difference at all (F-1.16.7). Its rows are reported below but
+decide nothing.
 
 ## Übersicht
 
@@ -48,6 +54,27 @@ Data base: 30 runs, 6 cells × n=5, all `exit_reason: ok`, `completed_within_bud
 | `duration_seconds` | **127** 🏆 | 359 | 688 | kleiner = besser |
 | `total_tokens` | **153 k** 🏆 | 1.03 M | 1.74 M | kleiner = besser |
 | `cost_usd` | **$0.36** 🏆 | $1.15 | $1.25 | kleiner = besser |
+
+**sphinx-score-example-mapping** (novelty control — resolves nothing, see F-1.16.7)
+
+| Metric | v3 | basic-sol-tdd | basic-sol-tdd-subagent | Direction |
+|---|---:|---:|---:|---|
+| Correctness (external) `verification_pct` | **100 %** 🏆 | 99 % | 96 % | höher = besser |
+| Correctness (internal) `tests_passing` | 100 % | 100 % | 100 % | höher = besser |
+| `cc_functions` | 1.4 | 1.0 | 1.2 | — (kein 🏆 — Floor, s. F-1.16.7) |
+| `cognitive_max` | 2.2 ± 0.84 | 1.8 ± 0.45 | 1.6 ± 1.14 | kleiner = besser (kein 🏆 — Floor) |
+| `cognitive_avg` | 1.90 | 1.80 | 1.60 | kleiner = besser (kein 🏆 — Floor) |
+| `mccabe_max` | 3.2 | 2.8 | 2.6 | kleiner = besser (kein 🏆 — Floor) |
+| Smell Total | 0.0 | 0.0 | 0.0 | kleiner = besser (kein 🏆 — überall 0) |
+| Complexity Peak `cc_longest_function` | 15.4 ± 3.05 | 13.2 ± 2.39 | 16.2 ± 5.63 | kleiner = besser (kein 🏆 — Floor) |
+| `cc_avg_loc_per_function` | 14.5 | 13.2 | 15.9 | kleiner = besser (kein 🏆 — Floor) |
+| Code Mass (APP) | 129.6 | 129.2 | 136.0 | kleiner = besser (kein 🏆 — s. Caveat) |
+| `cycle_count` | n/a | 11.8 | 11.2 | — |
+| `refactorings_applied` | n/a | 12.0 | 11.6 | höher = besser (kein 🏆 — innerhalb 1 σ) |
+| `predictions_correct_rate` | n/a | **100 %** 🏆 | **100 %** 🏆 | höher = besser |
+| `duration_seconds` | **145** 🏆 | 440 | 946 | kleiner = besser |
+| `total_tokens` | **275 k** 🏆 | 1.57 M | 2.48 M | kleiner = besser |
+| `cost_usd` | **$0.46** 🏆 | $1.65 | $1.76 | kleiner = besser |
 
 Caveats for reading the tables:
 
@@ -176,6 +203,15 @@ Where the spec is large enough to exceed what one context handles well, architec
 Sol; where it is not, it is overhead — and that holds regardless of which family the
 architecture comes from.
 
+**The two katas confound size with familiarity, and this RQ could not resolve it.**
+game-of-life is small *and* canonical; claim-office is large *and* lab-authored. So
+"the spec exceeds one context" and "the model has no memorised solution" both predict the
+observed split, and nothing here distinguishes them. `sphinx-score` was added as the
+control that would — novel, at game-of-life's size — but it floors out on this model and
+resolves no quality difference at all (F-1.16.7). The size reading above is therefore the
+**more parsimonious** account, not the demonstrated one. A novelty explanation remains
+live and would need a novel kata that decomposes on Sol.
+
 **Route caveat, binding:** this RQ ran entirely on the OpenAI subscription route, RQ-1.14
 entirely on Requesty. `RQ-route-effect-pi` F-1.3.6 documents a real route effect on exactly
 these metrics. The v3 rows make the size of that concern concrete — claim-office
@@ -196,6 +232,67 @@ two-line format would erode. At n=5 per cell it did not: `predictions_correct_ra
 predictions by design — but the *rate*, which is what the RQ compares on, is healthy. No
 change to the red-phase instruction is indicated.
 
+## F-1.16.7 — sphinx-score collapses to one function on Sol and answers nothing
+
+The kata was added to hold size constant against game-of-life while varying novelty, so
+that F-1.16.5's size reading could be separated from a familiarity reading. It cannot
+carry that role on this model. `cc_functions` — the number of functions in the
+production source — is the measurement:
+
+| Kata | v3 | basic-sol-tdd | basic-sol-tdd-subagent |
+|---|---:|---:|---:|
+| claim-office | 14.2 | 9.8 | 11.6 |
+| game-of-life | 4.2 | 4.2 | 4.4 |
+| **sphinx-score** | **1.4** | **1.0** | **1.2** |
+
+**12 of 15 sphinx runs produce exactly one function.** The whole implementation is a
+single block of 28–44 LoC. That has a direct consequence for the metrics the RQ README
+declared binding for these cells: with one function, `cc_avg_loc_per_function` *is*
+`cc_longest_function` — the two columns are identical in every such run (11.0/11,
+17.0/17, 12.0/12 …). Neither measures decomposition here; both measure file length.
+
+The remaining metrics floor out as well, worse than the README anticipated from
+RQ-kata-1.3: `cognitive_max` spans 1.6–2.2 across the three workflows, `mccabe_max`
+2.6–3.2, `smell_total` is 0 in all 15 runs. Every gap is inside 1 σ. **No trophy is
+awarded on any quality metric in the sphinx table**, because the differences are
+rounding noise on a floored scale, not workflow effects.
+
+This is not the same limit as the one RQ-kata-1.3 F-1.2 documented. There the kata was
+"structurally flat" — no branch depth for the complexity metrics — but it still produced
+3.5–6.5 functions on `opus-5-no-thinking`, so the length metrics separated (2.4× on
+`cc_avg_loc_per_function`). On Sol the kata additionally fails to produce *any*
+decomposition, which removes the length metrics too. The floor is a property of the
+kata-model pair, not of the kata alone.
+
+What the sphinx rows still show, and it is consistent with the other two katas: the
+native line refactors (11.6–12.0 applied against 1.6 for v3), predicts perfectly
+(100 % on both native cells, 68 and 76 predictions pooled), and costs 3.6–3.8× the
+baseline for output that is indistinguishable in quality.
+
+**H5 is untestable on this data, neither supported nor refuted.** A novelty control needs
+a kata that resolves decomposition on the target model; sphinx-score does not on Sol.
+
+## F-1.16.8 — Correctness on sphinx orders the cells the same way as claim-office
+
+The one sphinx metric that is not floored is external correctness, and it reproduces the
+claim-office ordering exactly:
+
+| Cell | claim-office | sphinx-score |
+|---|---:|---:|
+| v3-basic-tdd-pi | 100 % | **100 %** |
+| basic-sol-tdd-pi | 100 % | 99 % (4/5 runs at 1.0) |
+| basic-sol-tdd-subagent-pi | 93 % | 96 % (2/5 runs at 1.0) |
+
+The subagent arm is last on both novel katas and clean on game-of-life. On sphinx the
+misses are small (0.94 = 15/16 scenarios) rather than the 0.67 collapse seen once on
+claim-office, so this is a weaker signal than F-1.16.4 — but it points the same way, and
+it is now the second kata where isolating the refactor context costs correctness rather
+than protecting it.
+
+At n=5 per cell with a 1–4 pp spread this is directional only. It does not license a
+correctness ranking on sphinx; it strengthens the case in F-1.16.4 for not recommending
+the subagent arm.
+
 ## Recommendation
 
 - **claim-office-like work (large, novel spec) on Sol/subscription: `basic-sol-tdd-pi`.**
@@ -204,18 +301,30 @@ change to the red-phase instruction is indicated.
   price of the quality and predictability gap documented in F-1.16.1.
 - **game-of-life-like work (small, training-known) on Sol/subscription: `v3-basic-tdd-pi`.**
   The native line does not beat the floor and costs 3.2× more (F-1.16.2).
-- **`basic-sol-tdd-subagent-pi`: not recommended on either kata.** No quality advantage over
-  the inline arm anywhere, 1.9–2.7× the wallclock, and the RQ's only correctness regression
-  (F-1.16.3, F-1.16.4).
+- **sphinx-score-like work (small, flat) on Sol/subscription: `v3-basic-tdd-pi`.** The
+  native line produces indistinguishable code at 3.6× the cost (F-1.16.7). Same call as
+  game-of-life, for a different reason: there the floor is a tie on real metrics, here the
+  metrics do not resolve at all.
+- **`basic-sol-tdd-subagent-pi`: not recommended on any of the three katas.** No quality
+  advantage over the inline arm anywhere, 1.9–2.7× the wallclock, and it ranks last on
+  external correctness on both novel katas (F-1.16.3, F-1.16.4, F-1.16.8).
+- **Do not use `sphinx-score` for workflow comparisons on Sol.** It resolves neither
+  decomposition nor complexity on this model (F-1.16.7). Correctness still works, so it
+  remains usable as a cheap correctness probe.
 
 ## Open questions
 
 - Does F-1.16.1 survive on the Requesty route, or is it entangled with the route effect?
   → the decisive follow-up; the claim-office cells would need re-running on `gpt-5-6-sol`.
 - Is the single 0.67 run a rate or an outlier? → n=10 on the claim-office subagent cell.
-- Where does the kata boundary lie between "architecture pays" and "architecture is
-  overhead"? Both RQs now show the inversion but neither locates it; a mid-size kata
-  (`claim-office-lite`, `sphinx-score`) would.
+- Is the inversion driven by spec size or by task novelty? Still open. `sphinx-score` was
+  the intended control and failed to resolve anything on Sol (F-1.16.7). A replacement
+  needs to be novel to the model, comparable in size to game-of-life, **and** verified to
+  produce more than one function on Sol before the cells are run — `cc_functions` on a
+  single probe run is the cheap pre-check.
+- Where does the size boundary lie between "architecture pays" and "architecture is
+  overhead"? Both RQs show the inversion, neither locates it. Needs a genuine mid-size
+  kata (`claim-office-lite`), subject to the same `cc_functions` pre-check.
 - Does the inline arm's advantage come from the methodology or from the removal of APP?
   → swap the v-line's APP-based refactor brief into the native line, holding architecture
   constant.

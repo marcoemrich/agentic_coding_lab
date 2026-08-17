@@ -6,7 +6,7 @@ factors:
     - {workflow: v3-basic-tdd-pi,           prompt: example-mapping}  # floor: TDD without architecture
     - {workflow: basic-sol-tdd-pi,          prompt: example-mapping}  # native line, refactor inline
     - {workflow: basic-sol-tdd-subagent-pi, prompt: example-mapping}  # native line, refactor isolated
-  kata_base: [claim-office, game-of-life]
+  kata_base: [claim-office, game-of-life, sphinx-score]
 controls:
   model: gpt-5-6-sol-codex
 outcomes:
@@ -90,6 +90,75 @@ Here it is isolated, which speaks to an open point at the end of F-1.6: on Sol t
 v6.1 refactor subagent does not perform the extraction it exists for (inspected runs
 leave a triply-nested loop that the v3 baseline names), while the same subagent does
 extract on opus-4-7. Whether that survives a different refactor brief is measurable here.
+
+## `sphinx-score` as the novelty control — added 2026-08-17
+
+The first pass of this RQ ran two katas and produced an inversion: the native line
+clears the v3 floor decisively on claim-office (F-1.16.1) and ties at 3.2× the cost on
+game-of-life (F-1.16.2). F-1.16.5 reads that as a size effect — architecture pays where
+the spec exceeds what one context handles well.
+
+**That reading is confounded.** The two katas differ on two axes at once, not one:
+
+| | Code Mass (APP) | Novel to the model? |
+|---|---:|---|
+| game-of-life | 196 | no — canonical, training-known |
+| claim-office | 758–997 | yes — lab-authored |
+| **sphinx-score** | **183** | **yes — lab-authored 2026-08-11** |
+
+game-of-life is both *small* and *known*; claim-office is both *large* and *novel*. So
+"the spec fits in one context" and "the model has seen this task a thousand times" are
+indistinguishable in the current data, and F-1.16.5 picks the first without evidence
+against the second.
+
+`sphinx-score` breaks the tie. At Code Mass 183 it is a size twin of game-of-life
+(196 — RQ-kata-1.3, F-1.2 establishes this pairing), but it was authored in this lab and
+carries four pinned ambiguities from the Overlords design. It holds size constant and
+varies only novelty:
+
+- Native line **clears the floor on sphinx** → the driver is novelty, not size. F-1.16.5
+  needs rewriting: architecture pays where the model has no memorized solution,
+  regardless of how large the spec is.
+- Native line **ties on sphinx, as on game-of-life** → the driver is size. F-1.16.5 holds
+  as written, now with the novelty alternative ruled out.
+
+Note this is *not* the mid-size kata that F-1.16.5's open question asks for. Sphinx does
+not sit between game-of-life and claim-office on size; it sits next to game-of-life. It
+answers a different and logically prior question — which of the two entangled axes the
+inversion runs on. Locating the size boundary still needs a genuine mid-size kata and
+stays open.
+
+## Measurement limit — complexity metrics floor on sphinx (binding)
+
+`sphinx-score` is structurally flat, and RQ-kata-1.3 F-1.2 measures it precisely: on
+`opus-5-no-thinking × v6.6-lab-split-cc` **`cognitive_max` is exactly 1 in all six runs
+(σ = 0)** and `mccabe_max` exactly 2 (σ = 0). The kata contains no branch depth for these
+metrics to resolve. Across the three katas the separation factors show which metrics
+survive:
+
+| Metric | sphinx (183) | game-of-life (196) | claim-office (758–997) |
+|---|---:|---:|---:|
+| `cc_longest_function` | 1.9× | 1.9× | 1.8× |
+| `cc_avg_loc_per_function` | 2.4× | 1.9× | 2.8× |
+| `cognitive_max` | 1.5× | 6.1× | 2.7× |
+| `mccabe_max` | 1.2× | 2.3× | 1.9× |
+
+**Outcome (2026-08-17): the floor is worse on Sol than this section anticipated, and the
+sphinx cells decide nothing at all.** The plan was to fall back on the length metrics,
+which separate 2.4× / 1.9× on `opus-5-no-thinking`. On Sol that fallback is unavailable:
+the kata produces a single function in 12 of 15 runs, which makes
+`cc_avg_loc_per_function` numerically identical to `cc_longest_function` and turns both
+into a file-length measure. No quality metric in the sphinx table carries a trophy. See
+F-1.16.7.
+
+The transferability assumption behind the table above is what failed: those factors were
+measured on `opus-5-no-thinking`, and the floor turned out to be a property of the
+kata-model pair, not of the kata alone. **Pre-check `cc_functions` on a single probe run
+before committing cells on a new kata-model pair** — a mean near 1 means no decomposition
+metric will resolve anything.
+
+`smell_total` was 0 in all 36 runs of RQ-kata-1.3 and is unlikely to discriminate here
+either; it stays in `outcomes` as a regression guard, not as a differentiator.
 
 ## Why this is a separate RQ and not two cells in RQ-1.14
 
@@ -214,6 +283,19 @@ comparison is valid here.
   the Requesty route, and the claim-office spec is where Opus-derived workflows have
   historically broken (RQ-1.9, RQ-1.10).
 
+- **H5 (novelty, not size, drives the inversion).** On `sphinx-score` — size twin of
+  game-of-life, novel like claim-office — the native line beats `v3-basic-tdd-pi` on
+  `cc_avg_loc_per_function` and `cc_longest_function`, i.e. it patterns with claim-office
+  rather than with its own size class.
+  → F-1.16.5 is wrong as written: architecture pays against unfamiliarity, not against
+  spec size. The recommendation splits by novelty, and game-of-life's tie becomes a
+  statement about a memorized kata rather than about small specs.
+  → **Counter-case:** sphinx ties, as game-of-life did. Then size is the driver, F-1.16.5
+  stands, and the novelty alternative is ruled out — a strengthening, not a null result.
+  → **Untestable, neither supported nor refuted (F-1.16.7).** The kata collapses to one
+  function on Sol, so the length metrics it was to be decided on measure file length
+  rather than decomposition. The size-vs-novelty confound in F-1.16.5 stays open.
+
 Reading rule inherited from RQ-1.14: absolute thresholds are not comparable across
 models or routes. Only ranking and direction *within this RQ* are evaluated.
 
@@ -235,11 +317,27 @@ models or routes. Only ranking and direction *within this RQ* are evaluated.
    not a workflow effect.
 5. **Cost figures are route-internal.** The subscription route bills per subscription,
    not per token; `cost_usd` is a list-price estimate. Compare within this RQ only.
+6. **The sphinx cells were filled after the first six.** The claim-office and
+   game-of-life cells ran 2026-08-16, the sphinx cells 2026-08-17, same route, model,
+   workflows and prompt style. Any drift on the subscription route between those dates
+   sits in the sphinx rows. The v3 row is the check: it is the same workflow on all three
+   katas, so a v3 profile on sphinx that is anomalous against its own two earlier rows
+   points at the route rather than at the kata.
+7. **Novelty is argued, not measured.** "sphinx-score is novel to the model" rests on it
+   having been authored in this lab on 2026-08-11 and on claim-office behaving like a
+   novel task. There is no contamination test. If Sol has seen a structurally similar
+   set-collection scoring task, H5's counter-case would be indistinguishable from a
+   genuine size effect.
 
 ## Open questions
 
 - If H1 holds: does the advantage survive on the Requesty route, or is it entangled
   with the route effect that F-1.3.6 documents? → follow-up cell on `gpt-5-6-sol`.
+- Where does the size boundary lie between "architecture pays" and "architecture is
+  overhead"? `sphinx-score` does **not** answer this — it is a size twin of
+  game-of-life and controls novelty instead. A genuine mid-size kata
+  (`claim-office-lite`, Code Mass between 200 and 750) is still needed, and is worth
+  running only if H5's counter-case holds and size survives as the driver.
 - If H3 holds: does the same isolation effect appear when the v-line's refactor agent
   (APP-based) is swapped into the native line, isolating brief from architecture?
 - Does the prose-prediction compliance loss (see above) scale with kata size — i.e. is

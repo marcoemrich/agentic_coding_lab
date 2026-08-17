@@ -132,6 +132,13 @@ MODEL_CONFIGS=(
     # REQUESTY_API_KEY), and the codex entry reports reasoning:true where the
     # Requesty one is wired reasoning:false. Do not merge the two into one cell.
     "gpt-5-6-sol-codex|pi-only|false"
+    # Same subscription route (provider openai-codex), different model:
+    # GPT-5.3 Codex Spark. Not offered on Requesty, so the codex route is the
+    # only one -- the `-codex` suffix still names it explicitly, per the
+    # route-in-the-id convention above. Costs are not modelled: the
+    # subscription is flat-rate, and copying the per-token Sol prices would
+    # fabricate a number.
+    "gpt-5-3-codex-spark|pi-only|false"
     "gpt-5-6-terra|pi-only|false"
     "glm-5-2|pi-only|false"
     "kimi-k2-7|pi-only|false"
@@ -800,6 +807,7 @@ EOF
                 # entry instead and dies with "No API key found for
                 # azure-openai-responses".
                 gpt-5-6-sol-codex)             pi_model="openai-codex/gpt-5.6-sol" ;;
+                gpt-5-3-codex-spark)           pi_model="openai-codex/gpt-5.3-codex-spark" ;;
                 gpt-5-6-sol-codex-no-thinking) pi_model="openai-codex/gpt-5.6-sol" ;;
                 # 2x2 matrix arms. The route id is identical to its base arm --
                 # the reasoning difference lives in the pi-config profile, not
