@@ -31,6 +31,54 @@ parsers, update this file.
 | 3 | One or more lines matching `(- \| ✅ \| ❌) (Correct\|Incorrect)` inside that block | Assistant text in the same block as marker 2 | `predictions_correct`, `predictions_total`, derived `predictions_correct_rate` | `_PREDICTION_OUTCOME_RE` ~line 61 |
 | 4 | `experiment-done.txt` containing `DONE` | Written to the run cwd at the end of the autonomous loop | Run-driver detects clean termination; without it the container hits its timeout and the run is flagged `exit_reason: timeout` | `tdd-experiment-mode.md` (v6.5 and earlier) / `lab-only.md` (v6.6+) |
 
+### Single-command workflows on CC — `## Refactor` text fallback
+
+A CC workflow that keeps the **whole cycle in one command** (`basic-sol-tdd-cc`:
+`/predictive-tdd` invoked once, then every cycle runs inline from that document)
+breaks the phase-source selection in **two different ways**, depending on whether
+the model treats the command as a tool call or as a document it simply reads.
+Both were measured 2026-08-17 on `basic-sol-tdd-cc` and both silently produced a
+wrong `refactorings_applied`:
+
+| Case | What the model does | Winning phase source | Result |
+|---|---|---|---|
+| 1 | invokes `/predictive-tdd` | `skills` — one phase, **no refactor** | 0 against 11 markers |
+| 2 | reads the rules, never invokes | `inline-tool` — guessed from tool sequences | **2** against 30 markers |
+
+Case 2 is the nastier one: the inline-tool path *infers* phases from tool
+sequences and undercounts badly, but it returns a non-zero number, so a naive
+"fall back only when the count is 0" guard does not fire. Both cases occurred
+within the same 10-run cell, i.e. the same workflow on the same kata can take
+either path from run to run.
+
+`refactorings_applied` therefore has its **own** resolution chain in
+`analyze_transcript.py`, independent of `phase_source`, mirroring
+`parse_pi_transcript.py` (`refactor_calls or text_phase_counts["refactor"] or
+inferred_counts["refactor"]`):
+
+1. subagent / skill-derived count — workflows that really delegate
+2. `## Refactor` **text marker** — inline workflows with no call to count
+3. inline-tool inference — marker-free runs only
+
+**The text marker outranks the inference** (2 before 3). The inferred count is a
+weak proxy — it also captures bugfixes, lint and tsc edits, see the same note in
+`parse_pi_transcript.py` — and must never override a marker the workflow
+contractually emits. Subagent workflows do not emit `## Refactor`, so step 2
+cannot inflate them: for those, step 1 already produced a non-zero count.
+
+Verified against 18 existing CC runs spanning v3, v4, v5.1, v6.2 and v6.6 across
+claim-office, game-of-life and sphinx-score: all unchanged, `cycle_count`
+included. The v3 cells are the load-bearing check here — they run on the
+`inline-tool` path themselves and emit no `## Refactor`, so they confirm step 2
+fires only where markers actually exist.
+
+**Consequence for new CC workflows:** if your workflow refactors inline rather
+than in a subagent, `## Refactor` is the only signal — emit it every cycle,
+including the cycles where the review changes nothing. `cycle_count` is unaffected
+either way: `derive_cycle_count` already had its own chain down to the text
+markers, which is why a run can show a healthy `cycle_count` next to a zeroed
+`refactorings_applied`. **Check both after a smoke run, not just the cycle count.**
+
 ### Where marker 4 lives per workflow generation
 
 | Generation | Claude Code | pi / cursor / opencode |
@@ -251,7 +299,8 @@ marker is broken — fix it before launching the n=3 batch.
 - Parsers: `experiments/analyze_transcript.py`, `experiments/parse_pi_transcript.py`, `experiments/parse_cursor_transcript.py`
 - CC/OC workflows satisfying markers 1–4:
   `v4-exact-subagents`, `v5-exact-single-context`, `v6.6-lab-split-cc`,
-  `v6.6-lab-split-oc`
+  `v6.6-lab-split-oc`, `basic-sol-tdd-cc` (single command — `cycle_count` and
+  `refactorings_applied` both via text markers, see the fallback note above)
 - pi workflows satisfying markers P1–P7: `v6.2-with-why-cleaned-pi`,
   `v6.6-lab-split-pi`, `basic-sol-tdd-pi` (P4 via `## Refactor` text
   fallback), `basic-sol-tdd-subagent-pi` (P4 via `subagent` call)

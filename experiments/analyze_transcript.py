@@ -913,6 +913,50 @@ def main(argv: list[str]) -> int:
     metrics["phase_source"] = phase_source
     metrics["phase_summary"] = summarize_phases(phases)
 
+    # refactorings_applied needs its own resolution chain, independent of the
+    # phase source selected above, and it must mirror pi's precedence exactly:
+    #
+    #   refactor_calls  or  text_phase_counts["refactor"]  or  inferred_counts[...]
+    #
+    # i.e. the `## Refactor` TEXT MARKER outranks the inline-tool inference.
+    # Two distinct failures motivated this on CC (both measured 2026-08-17 on
+    # `basic-sol-tdd-cc`, a workflow that keeps the whole cycle in ONE command
+    # and refactors in the main context):
+    #
+    #  1. The model invokes `/predictive-tdd` once → `skill_phases` is
+    #     non-empty with that single phase and no refactor at all, wins the
+    #     phase-source selection, and the metric reads 0 against 11 markers.
+    #  2. The model never invokes it (reads the rules and proceeds) →
+    #     `inline_tool_phases` wins. That path *guesses* phases from tool
+    #     sequences and undercounts badly: 2 refactor phases against 30
+    #     `## Refactor` markers in the same run.
+    #
+    # Case 2 is why the condition is not `== 0`. The inline-tool count is a
+    # weak proxy (it also captures bugfixes and lint/tsc edits, see the same
+    # note in parse_pi_transcript.py) and must never outrank an explicit
+    # marker the workflow contractually emits.
+    #
+    # Ordering, applied below:
+    #   1. subagent/skill-derived count — workflows that really delegate
+    #   2. `## Refactor` text marker — inline workflows with no call to count
+    #   3. inline-tool inference — marker-free runs only, an upper bound
+    # Subagent workflows do not emit `## Refactor`, so step 2 cannot inflate
+    # them: for those, step 1 already produced a non-zero count.
+    text_refactorings = int(
+        internal.get("phase_text_markers", {}).get("refactor", 0) or 0
+    )
+    phase_refactorings = int(
+        metrics["phase_summary"].get("refactorings_applied", 0) or 0
+    )
+    if phase_source in ("inline-tool", "none") and text_refactorings > 0:
+        # Step 2 outranks step 3.
+        metrics["phase_summary"]["refactorings_applied"] = text_refactorings
+        metrics["refactor_count_source"] = "text-markers"
+    elif phase_refactorings == 0 and text_refactorings > 0:
+        # Step 1 produced a phase stream that carries no refactor at all.
+        metrics["phase_summary"]["refactorings_applied"] = text_refactorings
+        metrics["refactor_count_source"] = "text-markers"
+
     # If we inferred phases (any source), cycle_count = number of red phases.
     # Otherwise keep the derive_cycle_count fallback (skill/task/bash-based).
     if phases:
