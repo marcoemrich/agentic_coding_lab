@@ -1148,8 +1148,38 @@ EOF
         # pi --mode json writes the event stream to stdout; tee already
         # mirrored it to $run_log. Extract pure NDJSON lines (filter out
         # non-JSON noise like the cli.ts nudge follow-ups) into transcript-pi.jsonl.
+        #
+        # Three event types are dropped on the way in. Each carries the FULL
+        # accumulated buffer on every streamed chunk, so a message growing to
+        # 1 MB is re-serialized once per token — quadratic in message length.
+        # thinking_delta / text_delta do this for model output,
+        # tool_execution_update for subagent output. Which one dominates
+        # depends on the workflow (97% thinking_delta on a minimax v6.2 run,
+        # 97% tool_execution_update on a gpt-5-6-sol v4.1 run), so all three
+        # must go. None of them is read by parse_pi_transcript.py: it consumes
+        # message_update only for toolcall*/text_end, plus message_end,
+        # turn_end, agent_end and tool_execution_end.
+        # Verified 2026-08-31 across 18 runs (3 targeted + 15 random):
+        # transcript-metrics.json is bit-identical with and without them.
+        # Historic pool: 71 GB -> 13 GB.
         if [ -f "$run_log" ]; then
-            grep -E '^\{"type":' "$run_log" > "$run_dir/transcript-pi.jsonl" 2>/dev/null || true
+            grep -E '^\{"type":' "$run_log" 2>/dev/null \
+                | grep -vF '"assistantMessageEvent":{"type":"thinking_delta"' \
+                | grep -vF '"assistantMessageEvent":{"type":"text_delta"' \
+                | grep -vF '{"type":"tool_execution_update"' \
+                > "$run_dir/transcript-pi.jsonl" || true
+            # run.log holds the same event stream verbatim and reached 6.5 GB
+            # on a single run. The failure-diagnosis greps above (rate limit,
+            # API error, auto_retry_end) have already consumed it, and the
+            # NDJSON is now preserved in transcript-pi.jsonl, so only the
+            # non-JSON lines (stack traces, nudge follow-ups) still carry
+            # debugging value. Shrinks 22 GB of historic run.log to a few MB.
+            if grep -vE '^\{"type":' "$run_log" > "$run_log.filtered" 2>/dev/null; then
+                mv -f "$run_log.filtered" "$run_log"
+            else
+                : > "$run_log"          # stream was pure NDJSON: nothing left
+                rm -f "$run_log.filtered"
+            fi
         fi
     elif [ "$harness" = "cursor" ]; then
         # cursor-agent --output-format stream-json writes the NDJSON event
