@@ -10,8 +10,24 @@
 * Neuer Worflow Red->Green, Refactoring nur am Ende
 
 * Skills zum Untersuchen:
-  - Omakase — https://omakaseagent.com
-  - Ponytail — https://github.com/DietrichGebert/ponytail/tree/main
+  - Omakase — https://omakaseagent.com — **no TDD part.** Three roles
+    (Engineer/Critic/Archivist) + rubric gate; tests only as verification,
+    no cycle structure. Out for TDD workflow comparisons.
+  - Ponytail — https://github.com/DietrichGebert/ponytail — **no TDD part**, but
+    orthogonal to the loop: a minimalism ladder applied before writing
+    (YAGNI → reuse → stdlib → native → dependency → one line). Targets
+    `code_mass` directly → additively testable (v6.x with/without, same loop,
+    same kata). Own benchmark: -54 % LOC against an agent baseline (Haiku 4.5,
+    n=4, 12 tickets); earlier -80..94 % withdrawn after criticism (issue #126);
+    they also measure a safety tier (does minimalism cut validation/security?).
+  - Superpowers (obra) `test-driven-development` — per-cycle refactor, inline;
+    closes the confound gap of RQ-4.4 (which varies refactor position AND
+    architecture at once). Open question: does it write all tests at once?
+    Measurable with `measure-tdd-rigour.py`, no marker intervention needed.
+  - nWave — Outside-In through the driving port; refactor position unresolved
+    (the canon reads RED → GREEN → COMMIT). Expensive to dock: DELIVER needs the
+    artifact chain from the preceding waves.
+  - Candidate analysis and measurement design: `research/external-tdd-workflows.md`
 
 * Metrik-Lücke Lesbarkeit (aus RQ-architecture-axis-sol-pi, F-1.11):
   keine der aktuellen Metriken trennt lesbaren von unlesbarem Code.
