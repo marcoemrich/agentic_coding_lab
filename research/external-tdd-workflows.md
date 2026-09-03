@@ -24,7 +24,8 @@ alone is informative.
 |---|---|---|---|
 | **Own workflow** (v6.x) | — (baseline) | **per-cycle**, isolated subagent | baseline |
 | **Superpowers** `test-driven-development` | yes, confirmed | **per-cycle**, inline in the skill | candidate |
-| **Pocock** `tdd` | yes, already runs in the lab | **tail** (step 5: "After all tests pass") | measured (RQ-4.4) |
+| **Pocock** `tdd`, May snapshot | yes, already runs in the lab | **tail** (step 5: "After all tests pass") | measured (RQ-4.4), = v9 |
+| **Pocock** `tdd`, Aug snapshot | yes, vendored as v10 | **report-only** — no refactor in loop or review | candidate, not yet run |
 | **nWave** DELIVER | loop yes, but needs artifact chain | **open** (indication: none) | candidate, unresolved |
 | ~~ATDD plugin~~ | **no** | — | dropped → augmentation track |
 
@@ -131,6 +132,65 @@ corresponding section in `experiments/workflows/MARKERS.md`.
    `verified`/`unverified` come out empty and look like "never verified". Check on
    a smoke run before the batch.
 
+## v10-pocock-tdd: upstream moved the refactor out of the loop
+
+`experiments/workflows/v10-pocock-tdd/` holds a second Pocock snapshot, now at
+upstream commit `6654f6b6` (2026-08-24, retrieved 2026-09-04). It is **not an
+update of v9** — upstream restructured the workflow between May and August:
+
+| | v9-pocock-tdd (2026-05-26) | v10-pocock-tdd (2026-08-24) |
+|---|---|---|
+| tdd skill | 5 sub-files (`tests`, `mocking`, `refactoring`, `interface-design`, `deep-modules`) | 2 sub-files (`tests`, `mocking`), 38 lines |
+| Refactor position | tail — inside the skill, after all tests are green | **not in the workflow at all** (see below) |
+| Further skills | — | `code-review`, `codebase-design` |
+| Seam selection | implicit | explicit, pre-agreed before any test |
+
+The decisive line is in "Rules of the loop":
+
+> **Refactoring is not part of the loop.** It belongs to the review stage (see the
+> `code-review` skill), not the red → green implementation cycle.
+
+**But `code-review` does not refactor either.** It runs two parallel sub-agents —
+Standards (against a Fowler smell baseline) and Spec — and *reports* their
+findings side by side. It changes no code. Upstream's `implement` skill closes
+the sequence with "Once done, use /code-review to review the work. Commit your
+work to the current branch" — no fix pass. So in this architecture, refactoring
+is neither in the loop nor in the review; the review hands findings to a human.
+
+That makes v10 a **third** position on the main comparison axis: per-cycle
+(v6.x, Superpowers) → tail (v9) → report-only (v10). RQ-4.4's findings describe
+the May snapshot and stay valid for it.
+
+### Adaptations to make it runnable
+
+Vendored: `tdd`, `code-review`, and `codebase-design` (the latter resolves the
+skill-to-skill reference in `tdd`), all byte-identical, checksum-verified. The
+only project-authored file is `.claude/rules/tdd-experiment-mode.md`, which
+covers four points:
+
+1. **DONE marker** — otherwise the container hits its timeout.
+2. **HITL override.** The skill puts human approval in the body, not in a side
+   note: "Before writing any test, write down the seams under test and confirm
+   them with the user. No test is written at an unconfirmed seam", plus a literal
+   question to ask. The override keeps the write-down and treats `prompt.md` as
+   the confirmation.
+3. **`code-review` without git.** The run dir is not a repo and has no issue
+   tracker, so `git diff <fixed-point>...HEAD`, `docs/agents/issue-tracker.md`
+   and the `/setup-matt-pocock-skills` fallback do not apply. Substitute: the
+   directory started empty, so the change set is every file written; the spec is
+   `prompt.md`; the Standards axis rests on the skill's own smell baseline, which
+   is its documented fallback for repos that document nothing. `git init` is
+   explicitly ruled out — run dirs are tracked in this repo, and a nested repo
+   would corrupt that.
+4. **The review reports, it does not fix.** The rules file forbids acting on the
+   findings. An autonomous fix pass would be a step we invented and would make
+   v10 silently comparable to a tail-refactor workflow it is not. `refactorings_applied = 0`
+   is the expected result here and must be read as the workflow's property.
+
+Point 4 is the one open design decision. The alternative — let it apply its own
+review findings — would be a defensible second variant (call it v10b), but it
+measures something upstream does not prescribe. Not built.
+
 ## Open points
 
 1. **Resolve nWave's refactor position.** The docs mention a "3-Phase TDD Canon
@@ -141,16 +201,24 @@ corresponding section in `experiments/workflows/MARKERS.md`.
    established** — docs.nwave.ai does not lead to the loop spec across four
    levels. Resolution: install the plugin, search its 206 skills locally for the
    software-crafter / deliver spec.
-2. **Set up Superpowers as a lab workflow** (v11?), following the v9 vendoring
-   pattern: skill unmodified, plus a `tdd-experiment-mode.md` with HITL override
-   and DONE marker. No RED marker block — see the section above. Cf.
-   `experiments/workflows/MARKERS.md`.
-3. **v10-pocock-tdd** exists in the lab (leaner tdd skill plus `code-review`
-   skill) but has no runs. Decide whether v10 enters the comparison or v9 stays
-   the reference state.
-4. **Snapshot drift:** the Pocock skill in the lab is from 2026-05-26, upstream
-   has moved on. For Superpowers and nWave, record the snapshot date and upstream
-   commit from the start.
+2. ~~**Set up Superpowers as a lab workflow.**~~ **Done** — see
+   `experiments/workflows/v11-superpowers-tdd/`. Skill vendored byte-identical
+   from release `v6.3.0`, commit `b36e0829` (2026-08-12), checksum-verified
+   against a fresh clone; no RED marker block. The only
+   project-authored file is `.claude/rules/tdd-experiment-mode.md` (HITL
+   override, "example mapping IS the plan", `pnpm test` instead of the skill's
+   `npm test`, DONE marker). **Open: smoke run** before the batch.
+3. ~~**Decide what to do with v10-pocock-tdd.**~~ **Done** — updated to upstream
+   `6654f6b6` (2026-08-24) and made runnable on 2026-09-04; see the section
+   below. It is not "v9 updated" but a different point on the refactor axis, so
+   both stay side by side. **Open: smoke run** before the batch.
+4. **Snapshot drift** is now recorded per workflow, in each
+   `.claude/rules/tdd-experiment-mode.md`: v9 = Pocock 2026-05-26 (kept as the
+   state RQ-4.4 measured), v10 = Pocock `6654f6b6` (2026-08-24), v11 =
+   Superpowers `b36e0829` / v6.3.0 (2026-08-12). Do the same for nWave. Note
+   that Superpowers renamed `testing-anti-patterns.md` to `writing-good-tests.md`
+   between 5.1.0 and 6.3.0; the refactor position stayed per-cycle, so the
+   comparison rationale is unaffected.
 5. **n=3 is small** (the RQ's own caveat). If the Superpowers comparison turns
    out interesting: top up to n=8, matching the RQ-1.9 standard for claim-office.
 

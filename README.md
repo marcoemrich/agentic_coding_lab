@@ -921,7 +921,17 @@ Released under the [MIT License](LICENSE) — code, scripts, workflow definition
 artifacts, and findings alike. You are free to reuse, adapt, and build on any of it,
 including commercially, as long as the copyright notice is retained.
 
-One exception: `experiments/workflows/v9-pocock-tdd/` vendors a third-party TDD skill
-from [mattpocock/skills](https://github.com/mattpocock/skills) (also MIT) as an
-external comparison baseline. Its own license is preserved alongside it in
-[`LICENSE.upstream`](experiments/workflows/v9-pocock-tdd/LICENSE.upstream).
+Three exceptions vendor third-party TDD skills as external comparison baselines. All
+are MIT-licensed, and each upstream license is preserved alongside the skill in a
+`LICENSE.upstream` file at the workflow root:
+
+- `experiments/workflows/v9-pocock-tdd/` — the `tdd` skill from
+  [mattpocock/skills](https://github.com/mattpocock/skills), 2026-05-26 snapshot
+  ([license](experiments/workflows/v9-pocock-tdd/LICENSE.upstream)).
+- `experiments/workflows/v10-pocock-tdd/` — `tdd` + `code-review` + `codebase-design`
+  from the same repo, commit `6654f6b6` (2026-08-24). A restructured workflow, not an
+  update of v9 — upstream moved refactoring out of the loop
+  ([license](experiments/workflows/v10-pocock-tdd/LICENSE.upstream)).
+- `experiments/workflows/v11-superpowers-tdd/` — the `test-driven-development` skill
+  from [obra/superpowers](https://github.com/obra/superpowers), plugin `5.1.0`
+  ([license](experiments/workflows/v11-superpowers-tdd/LICENSE.upstream)).
