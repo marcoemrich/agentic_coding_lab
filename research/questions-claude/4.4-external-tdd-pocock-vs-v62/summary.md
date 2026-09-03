@@ -1,10 +1,10 @@
-# RQ-pocock-vs-v62 — Aggregation
+# RQ-external-tdd-workflows — Aggregation
 
-_How does the external Matt Pocock TDD skill (v9-pocock-tdd: single skill, inline phases, tail refactor) perform on claim-office-example-mapping against the internal default baseline v6.2-with-why-cleaned (multi-command + refactor subagent, per-cycle refactor) — on correctness, code quality, TDD discipline and cost?_
+_Can the inner TDD loop of EXACT Coding be substituted by an externally authored TDD workflow, and what does the substitution cost or buy? Example mapping stays the entry point; only the implement/test/refactor loop is exchanged. Measured on claim-office-example-mapping against the internal default baseline v6.2-with-why-cleaned — on correctness, code quality, TDD discipline and cost._
 
-Generated: 2026-09-03T22:12:22Z
+Generated: 2026-09-03T22:45:42Z
 
-Cells declared: 2 · matched runs: 11 · min_replicates: 3
+Cells declared: 3 · matched runs: 11 · min_replicates: 3
 
 ## Zell-Coverage
 
@@ -12,6 +12,7 @@ Cells declared: 2 · matched runs: 11 · min_replicates: 3
 |---|---|---|---:|---:|---|
 | claim-office-example-mapping | v6.2-with-why-cleaned | opus-4-7-portkey-no-thinking | 8 | 8 | ✅ |
 | claim-office-example-mapping | v9-pocock-tdd | opus-4-7-portkey-no-thinking | 3 | 3 | ✅ |
+| claim-office-example-mapping | v11-superpowers-tdd | opus-4-7-portkey-no-thinking | 0 | 0 | ❌ keine Runs |
 
 ## Outcome-Pivots (pro Zelle)
 

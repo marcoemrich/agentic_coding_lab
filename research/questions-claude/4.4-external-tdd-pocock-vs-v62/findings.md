@@ -1,4 +1,20 @@
-# Findings — RQ-4.4: v9-pocock-tdd vs v6.2-with-why-cleaned (claim-office)
+# Findings — RQ-4.4: Substituting the Inner TDD Loop (claim-office)
+
+## Scope of these findings
+
+**Phase 1 only: `v9-pocock-tdd` vs `v6.2-with-why-cleaned`.** The RQ has since
+been widened from "Pocock vs our baseline" to "can the inner loop be substituted
+by an external workflow at all", with `v11-superpowers-tdd` as a third cell —
+see [README.md](README.md). That cell has no runs yet, so nothing below speaks
+to it.
+
+Everything here therefore compares **two** things at once: refactor position
+(per-cycle vs tail) *and* loop architecture (phase commands + subagent vs single
+inline skill). Which of the two produced the quality gap in F-4.4.2 is **not
+established by these runs** — that is exactly what phase 2 is for.
+
+Both figures describe the vendored snapshots, not the tools in general. Pocock's
+upstream has restructured since (see `v10-pocock-tdd`).
 
 ## Overview
 
