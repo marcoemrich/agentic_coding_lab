@@ -18,6 +18,14 @@ outcomes:
   - tests_passed_immediately
   - predictions_correct_rate
   - cycle_count
+  # Marker-free cycle discipline from the tool sequence. cycle_count relies on a
+  # marker inserted into the vendored skill and undercounts there; test_blocks
+  # reads the transcript directly. test_cases_total / test_blocks is the step size.
+  - test_blocks
+  - test_cases_total
+  - test_cases_first_block
+  - red_verified
+  - red_unverified
   # code quality (Pocock focuses on "deep modules" / "small interfaces" — an interesting counterpart to APP mass awareness in v6.2)
   - code_mass
   - smell_total

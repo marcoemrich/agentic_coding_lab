@@ -13,8 +13,11 @@
 | `code_mass` (lower = better) | 878.5 ± 91 | **748.3 ± 62** 🏆 | Pocock |
 | **Cost** `duration_seconds` (lower = better) | 2530 ± 401 | **570 ± 106** 🏆 | Pocock |
 | `total_tokens` (lower = better) | 44.4 M ± 3.4 M | **13.1 M ± 4.6 M** 🏆 | Pocock |
-| **Discipline** `refactorings_applied` | 24.88 ± 6.90 | 0 ± 0 | different by design |
-| `cycle_count` | 37.38 ± 1.60 | 14.00 ± 3.46 | different by design |
+| **Discipline** `refactorings_applied` | 24.88 ± 6.90 | 1.00 ± 0 | different by design |
+| `cycle_count` (markers) | 37.38 ± 1.60 | 14.00 ± 3.46 | different by design |
+| `test_blocks` (transcript) | 38.50 ± 2.33 | 20.33 ± 2.52 | different by design |
+| test cases per block (lower = finer steps) | **1.10** 🏆 | 2.38 | v6.2 |
+| `red_unverified` (lower = stricter) | 0.50 ± 0.53 | 0.67 ± 1.15 | Tie |
 | `tests_passed_immediately` (lower = stricter) | 15.12 ± 5.84 | **2.33 ± 4.04** 🏆 | Pocock |
 | `predictions_correct_rate` (higher = better) | **97.2 %** 🏆 | 89.9 % | v6.2 |
 
@@ -42,18 +45,28 @@ Wallclock 570s vs 2530s (−78 %), tokens 13 M vs 44 M (−70 %). H6 (−20 % wa
 
 ---
 
-## F-4.4.4 — The Tail Refactor Does Not Trigger on claim-office
+## F-4.4.4 — The Tail Refactor Fires Once and Barely Moves the Metrics
 
-v9-pocock-tdd's "After all tests pass, look for refactor candidates" led to `refactorings_applied = 0` in 3/3 runs. Per-cycle refactor (v6.2) shows 24.88 ± 6.90. This is not "Pocock skips the refactor" — the skill is explicitly tail-oriented — but rather: with a green test the model rates the code as good enough, and without extra prompt pressure no further rebuilding happens. H3 **clearly confirmed**. The direct consequence is visible in F-4.4.2: without refactor iterations the initial implementation, with its higher complexity, remains in place.
+v9-pocock-tdd's "After all tests pass, look for refactor candidates" yields `refactorings_applied = 1` in 3/3 runs — exactly the single tail pass the skill prescribes. Per-cycle refactor (v6.2) shows 24.88 ± 6.90 phases. H3 (Pocock < 2, v6.2 > 3) **confirmed**.
+
+That one pass changes little: the complexity stays where the initial implementation put it (F-4.4.2). Reading: with a green test the model rates the code as good enough, and without further prompt pressure no rebuilding happens.
+
+**Measurement caveat:** the 1 comes from the `## Refactor` text-marker fallback, not from a delegated call — v9-pocock runs with `phase_source: inline-tool` and has no refactor phase in `phases`. v6.2's figure comes from counted refactor-subagent invocations, a harder source. Both count refactor *phases*, so the comparison holds, but the Pocock number is the weaker measurement of the two (see `MARKERS.md` on the inline-tool path).
 
 ---
 
 ## F-4.4.5 — Pocock Takes Fewer, Larger Steps
 
-`cycle_count` v6.2 37.38 ± 1.60 vs Pocock 14.00 ± 3.46. v6.2's explicit test-list prompt appears to increase cycle granularity; Pocock's "one behavior at a time" is interpreted more broadly. Consistent with the ~13 M vs 44 M token spread.
+Marker-free from the transcript: `test_blocks` 38.50 ± 2.33 (v6.2) vs 20.33 ± 2.52 (Pocock), at 42.38 vs 48.33 test cases written. Per block that is **1.10 vs 2.38 test cases** — Pocock writes more than two cases before anything runs, v6.2 stays close to one.
+
+`cycle_count` points the same way (37.38 vs 14.00) but understates Pocock: its marker was inserted into the vendored skill and does not fire on every block (14.00 counted against 20.33 actual). Where the two disagree, `test_blocks` is the figure to use.
+
+Reading: v6.2's explicit test-list prompt holds granularity at one behaviour per step; Pocock's "one behavior at a time" is interpreted more broadly. Consistent with the ~13 M vs 44 M token spread.
 
 ---
 
 ## F-4.4.6 — Pocock Skips Less Often
 
 `tests_passed_immediately` v6.2 15.12 ± 5.84 vs Pocock 2.33 ± 4.04. In 40 % of its cycles, v6.2 has tests that are green immediately — either multiple behaviors per test or speculative implementation. Pocock's vertical-slice discipline (with the verbatim red marker block) holds more strictly.
+
+This is about tests that pass on their first run, not about missing test runs. `red_unverified` — blocks where implementation was written without running the test at all — is near zero for both (0.50 ± 0.53 vs 0.67 ± 1.15). Both workflows do watch their tests; they differ in whether the test was actually red when they looked.

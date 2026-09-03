@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-24_22-44-54_claim-office-example-mapping_v6.2-with-why-cleaned_opus-4-7-portkey-no-thinking
 
-Generated: 2026-05-24T23:25:35+00:00
+Generated: 2026-09-03T23:59:31+02:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-05-24T23:25:35+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-24_22-44-54_claim-office-example-mapping_v6.2-with-why-cleaned_opus-4-7-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-24_22-44-54_claim-office-example-mapping_v6.2-with-why-cleaned_opus-4-7-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-24_22-44-54_claim-office-example-mapping_v6.2-with-why-cleaned_opus-4-7-portkey-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-24_22-44-54_claim-office-example-mapping_v6.2-with-why-cleaned_opus-4-7-portkey-no-thinking
 
  ✓ src/claim-office.spec.ts  (37 tests) 6ms
 
  Test Files  1 passed (1)
       Tests  37 passed (37)
-   Start at  23:25:36
-   Duration  174ms (transform 40ms, setup 0ms, collect 42ms, tests 6ms, environment 0ms, prepare 43ms)
+   Start at  23:59:31
+   Duration  493ms (transform 56ms, setup 0ms, collect 38ms, tests 6ms, environment 0ms, prepare 249ms)
 ```
 
 ## Coverage
@@ -113,8 +113,8 @@ Generated: 2026-05-24T23:25:35+00:00
 
 | Metric | Value |
 |--------|-------|
-| Predictions Correct | 73 |
-| Predictions Total | 75 |
+| Predictions Correct | 72 |
+| Predictions Total | 74 |
 | Accuracy | 97% |
 
 _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._

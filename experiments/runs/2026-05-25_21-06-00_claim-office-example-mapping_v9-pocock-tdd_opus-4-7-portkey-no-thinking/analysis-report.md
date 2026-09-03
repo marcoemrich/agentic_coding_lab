@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-25_21-06-00_claim-office-example-mapping_v9-pocock-tdd_opus-4-7-portkey-no-thinking
 
-Generated: 2026-05-25T21:16:03+00:00
+Generated: 2026-09-04T00:00:48+02:00
 
 ## Configuration
 
@@ -30,19 +30,19 @@ Generated: 2026-05-25T21:16:03+00:00
 
 ```
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-25_21-06-00_claim-office-example-mapping_v9-pocock-tdd_opus-4-7-portkey-no-thinking
+> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-25_21-06-00_claim-office-example-mapping_v9-pocock-tdd_opus-4-7-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-25_21-06-00_claim-office-example-mapping_v9-pocock-tdd_opus-4-7-portkey-no-thinking
+ RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab/experiments/runs/2026-05-25_21-06-00_claim-office-example-mapping_v9-pocock-tdd_opus-4-7-portkey-no-thinking
 
- ✓ src/claim-office.spec.ts  (28 tests) 5ms
- ✓ src/cli.spec.ts  (2 tests) 710ms
+ ✓ src/claim-office.spec.ts  (28 tests) 6ms
+ ✓ src/cli.spec.ts  (2 tests) 924ms
 
  Test Files  2 passed (2)
       Tests  30 passed (30)
-   Start at  21:16:04
-   Duration  1.04s (transform 47ms, setup 1ms, collect 46ms, tests 715ms, environment 0ms, prepare 93ms)
+   Start at  00:00:48
+   Duration  1.57s (transform 93ms, setup 0ms, collect 124ms, tests 930ms, environment 0ms, prepare 341ms)
 ```
 
 ## Coverage
@@ -124,7 +124,7 @@ _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and ma
 
 | Metric | Value |
 |--------|-------|
-| Refactorings Applied | 0 |
+| Refactorings Applied | 1 |
 
 ### TDD Discipline
 
