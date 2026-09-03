@@ -17,6 +17,28 @@ Source of truth: `experiments/analyze_transcript.py` (CC/OC),
 `experiments/parse_cursor_transcript.py` (cursor). If you change those
 parsers, update this file.
 
+## Vendored external workflows: no RED marker block
+
+The markers below apply to workflows **we author**. For a vendored external skill
+(Pocock, Superpowers, nWave …) do **not** insert marker 2/3 — the skill stays
+unmodified, and only marker 4 (`experiment-done.txt`) is added, because without it
+the container hits its timeout.
+
+Reason: the `Red Phase Complete` obligation is itself a structural break per cycle.
+Inserting it into a foreign skill changes the very behaviour under test, and it
+does not even measure reliably there — on v9-pocock the marker-derived
+`cycle_count` (14.0) falls ~30 % short of the actual test-write blocks (20.3),
+while on our own v6.2 the two agree (37.4 vs 38.5).
+
+Measure cycle discipline for those runs with `experiments/measure-tdd-rigour.py`
+instead: it reads only the tool sequence and needs no markers. Full rule and
+evidence in `README.md` → "Cycle discipline is measured from the transcript, not
+from markers".
+
+What you still lose without markers 1–3: `refactorings_applied`,
+`predictions_correct_rate`, and per-phase tokens/duration. Accept that for
+external baselines, or measure those separately.
+
 ## Hard requirements — Claude Code / OpenCode
 
 | # | Marker | Where it must appear | Drives | Where in parser |

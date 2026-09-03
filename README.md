@@ -199,6 +199,53 @@ This is not an absolute disqualifier — naming `code_mass` ideas (APP) in refac
 
 When in doubt, list the named metrics in the workflow's `README.md` / header so future RQs know which outcomes are compliance signals for it.
 
+#### Cycle discipline is measured from the transcript, not from markers
+
+A verbatim `Red Phase Complete` block is **not a neutral probe**. An output
+obligation once per RED phase creates exactly the structural break that separates
+one cycle from the next — so measuring cycle discipline through markers partly
+manufactures the discipline it reports. This is the marker equivalent of the
+Goodhart problem above: the instrument is part of the workflow.
+
+**Default from now on:** cycle discipline comes from `experiments/measure-tdd-rigour.py`,
+which reads only the tool sequence (test-file edits, `src/` edits, test-runner
+invocations) and needs no markers at all:
+
+| Outcome | Meaning |
+|---|---|
+| `test_blocks` | test-write blocks — **1 = big bang**, >1 = incremental |
+| `test_cases_total / test_blocks` | how coarse the steps are (test cases per block) |
+| `test_cases_first_block` | test cases in the very first block — was the entry already coarse? |
+| `red_verified` / `red_unverified` | was there a test run between writing a test and writing impl? |
+
+A *block* is an uninterrupted run of test-file writes; a test run or an edit under
+`src/` closes it.
+
+**Evidence that the two disagree** (2026-09-03, `claim-office-example-mapping`):
+
+| Workflow | marker `cycle_count` | transcript `test_blocks` |
+|---|---:|---:|
+| v6.2-with-why-cleaned | 37.4 | 38.5 |
+| v9-pocock-tdd | 14.0 | 20.3 |
+
+On our own workflows both agree — the marker is emitted per cycle by our own
+commands. On the **vendored** Pocock skill they diverge by ~30 %: the inserted
+marker does not fire on every block. Marker-derived `cycle_count` is therefore
+reliable for workflows we author and unreliable for external ones.
+
+**Consequences:**
+
+- **Do not add a RED marker block to vendored external skills.** They stay
+  unmodified; only the DONE marker remains (without it the container hits its
+  timeout). See `experiments/workflows/MARKERS.md`.
+- **Markers still own what the transcript cannot see:** `refactorings_applied`,
+  `predictions_correct` / `predictions_total` (predictions are plain assistant
+  text — invisible without the gate string), and per-phase tokens/duration. This
+  rule replaces the marker only for cycle discipline, not wholesale.
+- RQs comparing an external workflow against an internal one should report
+  `test_blocks` alongside `cycle_count` where both exist, and prefer
+  `test_blocks` when they disagree.
+
 #### Reasoning state is a model property, not a controllable factor (pi harness)
 
 Under the pi harness with Requesty routing, whether a model reasons is **not** something the experiment sets. Measured 2026-07-24 per model with a reasoning-demanding prompt, once with `--thinking off` and once with `--thinking high`, counting thinking blocks in the pi event stream:
@@ -578,6 +625,7 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 | `experiments/parse_pi_transcript.py` | Parse `transcript-pi.jsonl` for the same TDD-cycle metrics. Used for **pi** runs, where skills are auto-loaded documents (not tool calls) and cycle counting relies on text markers (`## Red` headers) in assistant output instead of `Skill` tool invocations. Writes `transcript-metrics.json`. |
 | `experiments/parse_opencode_transcript.py` | Parse OpenCode session exports into `transcript-metrics.json`. Used for **OpenCode** runs. |
 | `experiments/parse_cursor_transcript.py` | Parse `transcript-cursor.jsonl` (the `stream-json` NDJSON event stream that `run-batch.sh` extracts from `run.log`) into `transcript-metrics.json`. Used for **cursor-cli** runs. Same output schema as the pi and OpenCode parsers. |
+| `experiments/measure-tdd-rigour.py` | Classify TDD rigour from the tool sequence alone — no phase markers required, so it works on vendored external skills that must stay unmodified. `--run <dir>` emits one JSON object (this is how `analyze-run.sh` folds `test_blocks`, `test_cases_*` and `red_verified/unverified` into `metrics.json`); without it, batch mode scans `runs/` and takes `--pattern`, `--workflow` and `--kata-suffix` filters. Handles Claude Code and pi transcripts; OpenCode/cursor formats are skipped and counted. |
 
 ### Aggregation
 
@@ -794,12 +842,35 @@ The phase markers that drive these counts are documented in [`experiments/workfl
 
 **Why pi uses text markers instead of tool calls:** pi skills are auto-loaded documents, not tool calls. The model reads each `SKILL.md` once and then follows its instructions directly ("freihand"). There is no `Skill({skill: "red"})` tool invocation per cycle. Instead, the parser counts `## Red` headings in the assistant output (one per cycle) and `Red Phase Complete:` blocks with prediction lines. The `derive_cycle_count()` function in `analyze_transcript.py` uses text markers as a tertiary fallback (after Skill and Task tool calls), so both parsers agree on the same priority chain.
 
-| Metric | Description |
-|--------|-------------|
-| `tdd_cycles` | Number of red-green-refactor cycles (TDD workflows only); should match test count for proper discipline |
-| `prediction_accuracy` | Correctness of red-phase failure predictions (v4/v5). Higher accuracy shows deeper understanding of code state |
-| `refactorings` | Number of refactoring improvements applied. More refactorings indicate better discipline and cleaner final code |
-| `tests_immediately_passing` | Tests passing immediately in red phase, indicating over-implementation. Lower is better |
+TDD discipline has **two independent sources**. Marker-derived metrics rely on
+phase markers the workflow emits; transcript-derived metrics read only the tool
+sequence and work on skills we cannot modify. Where the two disagree on cycle
+counting, prefer the transcript — see [Cycle discipline is measured from the
+transcript, not from markers](#cycle-discipline-is-measured-from-the-transcript-not-from-markers).
+
+Names below are the exact column names in `runs.csv`, i.e. what an RQ writes
+under `outcomes:`.
+
+| Metric | Source | Description |
+|--------|--------|-------------|
+| `cycle_count` | markers | Number of red-green-refactor cycles (TDD workflows only); should match test count for proper discipline. Undercounts on vendored external skills. |
+| `predictions_correct` / `predictions_total` | markers | Correctness of red-phase failure predictions (v4/v5). Higher accuracy shows deeper understanding of code state. The aggregator derives the pooled `predictions_correct_rate` from this pair. |
+| `refactorings_applied` | markers | Number of refactoring improvements applied. More refactorings indicate better discipline — but read it against the workflow's refactor position: 0 is expected for a tail-refactor workflow and a warning sign for a per-cycle one. |
+| `tests_passed_immediately` | markers | Tests passing immediately in the red phase, indicating over-implementation. Lower is better |
+| `avg_red_seconds` / `avg_green_seconds` / `avg_refactor_seconds` / `avg_cycle_seconds` | markers | Per-phase wall-clock averages |
+| `test_blocks` | transcript | Uninterrupted test-writing blocks. **1 = big bang**, >1 = incremental. A block ends at the next test run or `src/` edit. |
+| `test_cases_total` | transcript | Test cases (`it(` / `test(`) written across all blocks. `test_cases_total / test_blocks` says how coarse the steps were — ~1 is one case per step, higher means several cases go in before anything runs. |
+| `test_cases_first_block` | transcript | Test cases in the very first block — was the entry into the kata already coarse? |
+| `red_verified` / `red_unverified` | transcript | Whether a test run happened between writing a test and writing implementation. `red_unverified > 0` means code was written without ever seeing the test fail. |
+
+The transcript metrics come from `measure-tdd-rigour.py`, which `analyze-run.sh`
+folds into `metrics.json`. They exist **only for runs analysed after that
+integration** — older runs need a `reanalyze` pass before the columns are
+populated.
+
+**Not covered by either source:** GREEN discipline. Nothing measures whether only
+the minimal code to pass was written; over-implementation shows up indirectly in
+`cognitive_max` / `code_mass`, but there is no direct metric for it.
 
 ### Run status
 

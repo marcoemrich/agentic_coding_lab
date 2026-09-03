@@ -943,7 +943,19 @@ EOF
                 ;;
         esac
 
+        # Marker-free TDD rigour from the tool sequence. Works on vendored
+        # external skills that carry no RED marker block — see README,
+        # "Cycle discipline is measured from the transcript, not from markers".
+        # Falls back to {} so the jq merge below stays valid either way.
+        local rigour_json="{}"
+        if [ -f "$EXPERIMENTS_DIR/measure-tdd-rigour.py" ]; then
+            rigour_json=$(python3 "$EXPERIMENTS_DIR/measure-tdd-rigour.py" \
+                --run "$run_dir" 2>/dev/null) || rigour_json="{}"
+            [ -z "$rigour_json" ] && rigour_json="{}"
+        fi
+
         jq --argjson impl_loc "$impl_loc" \
+           --argjson rigour "$rigour_json" \
            --argjson test_loc "$test_loc" \
            --argjson test_count "$test_count" \
            --argjson todo_count "$todo_count" \
@@ -1020,6 +1032,11 @@ EOF
             .summary_metrics.predictions_correct = $pred_correct |
             .summary_metrics.predictions_total = $pred_total |
             .summary_metrics.tests_passed_immediately = $tests_passed_immediately |
+            .summary_metrics.test_blocks = ($rigour.test_blocks // null) |
+            .summary_metrics.test_cases_total = ($rigour.all_cases // null) |
+            .summary_metrics.test_cases_first_block = ($rigour.first_cases // null) |
+            .summary_metrics.red_verified = ($rigour.verified // null) |
+            .summary_metrics.red_unverified = ($rigour.unverified // null) |
             .summary_metrics.avg_cycle_seconds = $avg_cycle |
             .summary_metrics.avg_red_seconds = $avg_red |
             .summary_metrics.avg_green_seconds = $avg_green |

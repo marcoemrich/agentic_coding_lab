@@ -44,6 +44,8 @@ CSV_COLUMNS = [
     "cycle_count", "avg_cycle_seconds", "avg_red_seconds",
     "avg_green_seconds", "avg_refactor_seconds", "refactorings_applied",
     "predictions_correct", "predictions_total", "tests_passed_immediately",
+    "test_blocks", "test_cases_total", "test_cases_first_block",
+    "red_verified", "red_unverified",
     "tests_passing", "tests_total", "todos_remaining",
     "lines_of_code", "test_lines", "code_mass", "mutation_score", "cost_usd",
     "coverage_statements_pct", "coverage_branches_pct",
@@ -317,6 +319,17 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "", cell_workfl
         "predictions_correct":        sm.get("predictions_correct"),
         "predictions_total":          sm.get("predictions_total"),
         "tests_passed_immediately":   sm.get("tests_passed_immediately"),
+        # Marker-free TDD rigour (measure-tdd-rigour.py, folded in by
+        # analyze-run.sh). test_blocks == 1 means big bang; the ratio
+        # test_cases_total / test_blocks says how coarse the steps were.
+        # Preferred over cycle_count for vendored external workflows, where
+        # the inserted RED marker undercounts — see README, "Cycle discipline
+        # is measured from the transcript, not from markers".
+        "test_blocks":                sm.get("test_blocks"),
+        "test_cases_total":           sm.get("test_cases_total"),
+        "test_cases_first_block":     sm.get("test_cases_first_block"),
+        "red_verified":               sm.get("red_verified"),
+        "red_unverified":             sm.get("red_unverified"),
         "tests_passing":              fm.get("tests_passing"),
         "tests_total":                fm.get("tests_total"),
         "todos_remaining":            fm.get("todos_remaining"),
@@ -488,8 +501,18 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
             continue
 
         col = df[outcome]
-        # Treat as boolean rate if values are bool/None
-        is_bool = col.dropna().isin([True, False]).all() and col.notna().any()
+        # Treat as boolean rate if the values are genuinely boolean.
+        # Decide on the type, not on the values: pandas compares 1 == True, so
+        # `isin([True, False])` also matches an integer column that happens to
+        # hold only 0/1 — a count metric would then be rendered as a rate and
+        # read as "share of runs" instead of "mean per run". That bites exactly
+        # when a count is small (test_cases_first_block, red_unverified), i.e.
+        # when the numbers matter most.
+        nn = col.dropna()
+        is_bool = len(nn) > 0 and (
+            pd.api.types.is_bool_dtype(col)
+            or nn.map(lambda v: isinstance(v, bool) or v in ("True", "False")).all()
+        )
 
         if is_bool:
             L(f"### {outcome} (rate %)")
