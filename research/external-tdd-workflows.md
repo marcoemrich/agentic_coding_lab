@@ -51,7 +51,7 @@ augmentation track (`mutate`, `kill-mutants`, `spec-check`).
 The existing lab measurement (RQ-4.4) shows that **refactor position is the
 dominant variable** — not prompt quality and not skill mechanics.
 
-RQ: `research/questions-claude/4.4-external-tdd-pocock-vs-v62/` (id `RQ-external-tdd-workflows`; the directory name predates the widened scope and is kept because three snapshot reports link it).
+RQ: `research/questions-claude/4.4-external-tdd-workflows/` (id `RQ-external-tdd-workflows`).
 Kata `claim-office-example-mapping`, model `opus-4-7-portkey-no-thinking`.
 
 | Metric | v6.2-with-why-cleaned (n=8) | v9-pocock-tdd (n=3) |

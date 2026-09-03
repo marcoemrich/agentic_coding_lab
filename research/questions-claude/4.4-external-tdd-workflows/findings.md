@@ -4,9 +4,9 @@
 
 **Phase 1 only: `v9-pocock-tdd` vs `v6.2-with-why-cleaned`.** The RQ has since
 been widened from "Pocock vs our baseline" to "can the inner loop be substituted
-by an external workflow at all", with `v11-superpowers-tdd` as a third cell —
-see [README.md](README.md). That cell has no runs yet, so nothing below speaks
-to it.
+by an external workflow at all", with two further cells — `v11-superpowers-tdd`
+(per-cycle refactor, inline) and `v10-pocock-tdd` (no refactor stage at all).
+See [README.md](README.md). Neither has runs yet, so nothing below speaks to them.
 
 Everything here therefore compares **two** things at once: refactor position
 (per-cycle vs tail) *and* loop architecture (phase commands + subagent vs single

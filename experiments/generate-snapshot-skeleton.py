@@ -47,7 +47,7 @@ _spec2.loader.exec_module(bpl)  # type: ignore[union-attr]
 # Finding ids are F-<namespace>.<minor>, where the namespace itself may carry
 # dots. The namespace mirrors the RQ id — a slug since the id→slug migration
 # (F-regression.6), the legacy numeric form (F-19.6, F-3b.1), or the chapter
-# number of the RQ directory (F-4.4.1 in 4.4-external-tdd-pocock-vs-v62,
+# number of the RQ directory (F-4.4.1 in 4.4-external-tdd-workflows,
 # F-1.12.5 in 1.12-end-refactor-effect-v62). Everything up to the LAST dot is
 # the namespace, so any number of dotted segments matches.
 # Do not tighten this to a single dot: chapter-numbered ids were silently
