@@ -1,13 +1,11 @@
 ---
 id: RQ-lab-split-neutrality
-question: "Is v6.1.1-lab-split-cc behaviourally equivalent to v6.1-hybrid-testlist-scope-fix, as the exact-coding baseline recommendation assumes, and if not, which edit restores neutrality? The production files are byte-identical; the rule layout differs (lab infrastructure isolated in rules/lab-only.md, subagent contracts in rules/subagent-prompts.md) and lab-only.md carries a Phase Continuation section that enumerates a per-cycle refactor step. Three repairs are measured against it: removing that section (v6.1.2), keeping its continuation guard but dropping the per-cycle enumeration (v6.1.4), and adding an explicit per-cycle REFACTOR / NO REFACTOR decision (v6.1.3)."
+question: "Is v6.1.1-lab-split-cc behaviourally equivalent to v6.1-hybrid-testlist-scope-fix, as the exact-coding baseline recommendation assumes, and if not, does removing the duplicated cycle enumeration restore neutrality? The production files are byte-identical; the rule layout differs (lab infrastructure isolated in rules/lab-only.md, subagent contracts in rules/subagent-prompts.md), and lab-only.md states the Red/Green/Refactor cycle a second time as an imperative chain whose third link makes refactor an unconditional consequence of green. v6.1.4 removes that second statement and keeps the phase-continuation guard."
 factors:
   workflow_x_prompt:
     - {workflow: v6.1-hybrid-testlist-scope-fix, prompt: example-mapping}  # the measurement basis of the v6.1 line
     - {workflow: v6.1.1-lab-split-cc,            prompt: example-mapping}  # the export carrier, recommended as the exact-coding baseline
-    - {workflow: v6.1.2-no-continuation-cc,      prompt: example-mapping}  # v6.1.1 minus the Phase Continuation section
-    - {workflow: v6.1.3-refactor-gate-cc,        prompt: example-mapping}  # v6.1.2 plus an explicit per-cycle refactor decision
-    - {workflow: v6.1.4-continuation-guard-cc,   prompt: example-mapping}  # v6.1.1 minus the per-cycle enumeration, guard kept
+    - {workflow: v6.1.4-continuation-guard-cc,   prompt: example-mapping}  # v6.1.1 minus the duplicated cycle enumeration, guard kept
   kata_base: [game-of-life, claim-office]
 controls:
   model: opus-5-no-thinking
@@ -103,73 +101,119 @@ increase — which also explains why the cost is bimodal rather than shifted:
 
 Roughly double the wall-clock for no gain in correctness.
 
-### The suspected cause, and the two repairs under test
+### The suspected cause, and the repair under test
 
 `rules/lab-only.md` in v6.1.1 did not come from v6.1's
 `tdd-experiment-mode.md`. It was derived from the v6.6 lineage with the
-end-refactor passages deleted (`diff` against `v6.6-lab-split-cc/.claude/rules/lab-only.md`
-is three hunks, all of them end-refactor removals). It therefore carries text
-v6.1 never had, most of it in a `## Phase Continuation` section that
-enumerates the cycle step by step:
+end-refactor passages deleted (`diff` against
+`v6.6-lab-split-cc/.claude/rules/lab-only.md` is three hunks, all of them
+end-refactor removals). It therefore carries text v6.1 never had, in a
+`## Phase Continuation` section.
+
+That section does two independent jobs, and they have different consequences.
+
+**The guard** stops a turn ending at a phase boundary. It says nothing about
+what the phases are:
+
+> A phase-completion line […] is a **checkpoint, not a terminus**.
+> The only place the run ends is after `experiment-done.txt` contains `DONE`.
+> Announcing an action is not performing it.
+
+**The enumeration** names the cycle as a chain of imperatives:
 
 > The whole workflow — Test List, then Red/Green/Refactor **for every test**,
 > through to writing `experiment-done.txt` — is one continuous autonomous run.
 > […]
 > - After **Green** → launch the `refactor` subagent.
 
-That section declares itself unnecessary on this harness: *"Scope: not needed
-on Claude Code. […] On Claude Code the failure mode below has never been
-observed."* It exists for parity with the pi and cursor-agent variants, where
-it fixes a real mid-run stall.
+The enumeration is the suspect, and the reason is sharper than "v6.1.1 says
+more". Enumerating the cycle is not itself new — v6.1 does it too, in
+`tdd-experiment-mode.md` § "Autonomous Workflow", and v6.1.1 carries that
+same list forward almost verbatim into `subagent-prompts.md` § "Workflow
+Sequence". What is new in v6.1.1 is a **second** statement of the same cycle,
+in a different register: not a descriptive sequence but an imperative chain
+with arrows, inside a section whose subject is *do not stop here*, reinforced
+by "for every test".
 
-Three candidate repairs are measured as their own cells:
+| workflow | statements of the cycle | guard |
+|---|---:|---|
+| `v6.1-hybrid-testlist-scope-fix` | 1 (`tdd-experiment-mode.md`) | no |
+| `v6.1.1-lab-split-cc` | **2** (`subagent-prompts.md` + the continuation chain) | yes |
+| `v6.1.4-continuation-guard-cc` | 1 (`subagent-prompts.md`) | yes |
 
-- **`v6.1.2-no-continuation-cc`** — v6.1.1 with that section removed, and the
-  two cross-references to it updated. Rules volume 10625 → 9184 B. Nothing
-  else differs; the production files stay byte-identical to v6.1's.
-- **`v6.1.4-continuation-guard-cc`** — v6.1.1 with only the *enumeration*
-  removed from that section: the sentence naming "Red/Green/Refactor for
-  every test" and the four-bullet chain whose third link is "After **Green**
-  → launch the `refactor` subagent". What stays is the guard — a phase line
-  is a checkpoint, not a terminus; the run ends only at
-  `experiment-done.txt`. Rules volume 10320 B, essentially v6.1.1's, so the
-  arm isolates the enumeration rather than the volume. The section's scope
-  blockquote is corrected here too, because the smoke falsified its claim
-  that the stall has never been seen on Claude Code; leaving a self-negating
-  statement in the model's context is not an option.
-- **`v6.1.3-refactor-gate-cc`** — v6.1.2 plus an explicit per-cycle decision
-  in `rules/tdd.md` § 4: state `REFACTOR: <what to improve>` and launch the
-  agent, or `NO REFACTOR: <why the code is already in shape>` and go to the
-  next Red phase. The point is to make the judgement explicit and recorded
-  instead of implicit-and-sometimes-skipped. Rules volume 10307 B, so it is
-  *not* a volume-reduction arm — it isolates the framing.
+(The step-by-step walkthrough in `tdd.md` §§ 1–5 is not counted: it is
+identical in all three and comes from v6.1.)
 
-### The removal is not free: a run-completion failure at n=1
+That framing matches the measured signature. The defect is not "more
+refactoring" but `refactorings_applied == cycle_count` **exactly**, in 2 runs
+of 5 — the behaviour of a rule read as an unconditional link, not of a raised
+propensity.
 
-The first smoke run of `v6.1.3` (game-of-life, 2026-09-04) ended its turn
-after the Test List: one `test-list` skill call, no red/green/refactor, no
-`experiment-done.txt`, 71 s. It stopped to ask about the kata's internally
+**The repair under test.** `v6.1.4-continuation-guard-cc` removes the second
+statement — the "for every test" sentence and the four-bullet chain — and
+keeps the guard. Rules volume 10320 B against v6.1.1's 10625 B, so the arm
+isolates the wording rather than the volume, and it differs from v6.1.1 in
+`lab-only.md` alone. The section's scope blockquote is corrected there too:
+the smoke falsified its claim that the stall has never been seen on Claude
+Code, and a self-negating statement in the model's own context is not
+defensible.
+
+### Two arms built and retired before the fill
+
+Both were smoked on game-of-life and both are documented here rather than
+carried as cells, because neither is a viable export carrier. Their runs and
+workflow directories stay on disk.
+
+**`v6.1.2-no-continuation-cc`** — v6.1.1 with the whole section removed,
+guard included. One run: rate 0.40, `cognitive_max` 1, `smell_total` 0,
+`code_mass` 176, `experiment-done.txt` written. Mechanically clean, and it
+would have been the arm that answers the RQ's original question — is the
+split alone neutral? It is retired on a design ground, not a measured one:
+the guard is wanted, so an arm that drops it cannot become the carrier. The
+cost is that "is the split alone neutral" is now answered only indirectly,
+by v6.1 against v6.1.4, where the layout and the guard change together.
+
+**`v6.1.3-refactor-gate-cc`** — v6.1.2 plus an explicit per-cycle decision in
+`rules/tdd.md` § 4: state `REFACTOR: <what to improve>` and launch the agent,
+or `NO REFACTOR: <why this code is already in shape>` and go to the next Red
+phase. The intent was to move the judgement from implicit habit to a stated,
+greppable decision. Three runs:
+
+| run | completion | rate | decision lines |
+|---|---|---:|---|
+| 1 | **no `experiment-done.txt`**, 71 s | — | 0 |
+| 2 | DONE, 470 s | 0.20 | **0** |
+| 3 | DONE, 442 s | 0.20 | 10, of which 8 `NO REFACTOR` |
+
+Both goals missed, in opposite directions. The rate fell to 0.20, below
+v6.1's 0.38–0.50 band — explicit permission to decline licenses skipping
+rather than sharpening the judgement. And run 2 launched two refactor
+subagents without writing a single decision line, so the measurement that
+justified the arm is unavailable in half the completed runs. At n=2 that is
+"the mechanism does not work as designed", not "the concept fails"; a
+differently worded gate could land elsewhere.
+
+The stall in run 1 probably does not belong to the gate: `v6.1.2` has the
+same missing section and completed, and two repetitions did not reproduce it.
+It is recorded under run completion below.
+
+### A run-completion failure that the pipeline reports as success
+
+The stalled run made one `test-list` skill call, no red/green/refactor, wrote
+only the spec file, and stopped to ask about the kata's internally
 inconsistent Rule 2 example — in the same message in which it offered to
-proceed without an answer.
+proceed without an answer. That is the boundary the Phase Continuation
+section names, on the harness whose scope note claimed the failure had never
+been observed there. Ten of ten prior game-of-life runs on this kata and
+model (v6.1 and v6.1.1) wrote `experiment-done.txt`.
 
-That is precisely the boundary the deleted section names, on the harness
-whose scope note claimed *"On Claude Code the failure mode below has never
-been observed."* The kata's ambiguity does not explain it on its own: ten of
-ten prior game-of-life runs on this kata and model (v6.1 and v6.1.1) wrote
-`experiment-done.txt`.
-
-Attribution is open at n=1 — `v6.1.2` also lost the section and completed
-normally (10 cycles, rate 0.40, DONE). Either the guard does real work on
-Claude Code and v6.1.2 was lucky, or v6.1.3's deliberative framing
-generalised past the refactor phase. `v6.1.4` exists to separate those: it
-keeps the guard and drops only the enumeration.
-
-**Pipeline consequence.** The stalled run is recorded `exit_reason: ok`, so
-`aggregate-by-query.py` derives `completed_within_budget: true` for a run
-with null metrics throughout. The documented completion signal
-(`jq .run_status.exit_reason`) reports this run as fine. The reliable signal
-is the presence of `experiment-done.txt`; check it before aggregating any
-cell of this RQ.
+It is a 1-in-3 event on a retired arm, so it carries no weight as a rate. It
+does carry weight as a pipeline finding: the run is recorded
+`exit_reason: ok`, so `aggregate-by-query.py:284` derives
+`completed_within_budget: true` for a run with null metrics throughout. The
+documented completion signal (`jq .run_status.exit_reason`) reports it as
+fine. The reliable signal is the presence of `experiment-done.txt` — check it
+before aggregating any cell of this RQ.
 
 ### Why the kata matters here
 
@@ -209,80 +253,97 @@ therefore factors here, not a control.
   cycle_count` and non-zero `refactorings_applied` on both katas, so the
   workflow remains measurable. Confirmed at n=1 on claim-office (50 cycles,
   100 predictions, 50 refactorings).
-- **H7 (removing the section restores neutrality)** — v6.1.2's refactor rate
-  is indistinguishable from v6.1's on both katas, and no v6.1.2 run reaches
-  rate 1.00. This is the load-bearing hypothesis: if it holds, the export
-  carrier is repaired by a deletion and the recommendation needs no cost
-  caveat. Falsifier: v6.1.2 still produces always-refactor runs, which would
-  put the cause somewhere else in the split — the rules volume itself, or the
-  `Rule Files` table in `tdd.md`.
-- **H8 (the explicit gate suppresses the switch without suppressing
-  refactoring)** — v6.1.3 shows neither always-refactor runs nor a rate below
-  the v6.1 band; the decision is made per cycle rather than by run-level
-  habit, so its rate variance across replicates is *lower* than v6.1.1's.
-  Two ways this fails, and they point in opposite directions: being asked the
-  question every cycle raises its salience and the model answers `REFACTOR`
-  almost always (rate → 1.00, i.e. the gate reproduces the defect it was
-  meant to fix), or the explicit permission to decline licenses skipping
-  (rate below v6.1). Either outcome retires v6.1.3 in favour of v6.1.2.
-- **H9 (the gate does not cost correctness)** — v6.1.3 holds
-  `verification_pct` at the v6.1 level. A methodology change that survives
-  export is only acceptable if it is correctness-neutral; this is the
-  gating check before it could ever become the export carrier.
-- **H10 (the enumeration is the mechanism, the guard is not)** — v6.1.4
-  reaches the v6.1 refactor rate *and* completes every run. This separates
-  the two jobs the Phase Continuation section does at once: run-completion
-  safety, and enumerating refactor as an unconditional link in the cycle.
-  If H10 holds, the repair is to delete four bullets and one sentence, not
-  the section — and `v6.1.4` becomes the export-carrier candidate over
-  `v6.1.2`. Falsifiers, each pointing somewhere different: v6.1.4 still
-  produces always-refactor runs (the enumeration is not the mechanism — look
-  at the rules volume or the `Rule Files` table next), or v6.1.4 stalls the
-  way v6.1.3 did (the guard is not sufficient either, and the completion
-  problem is independent of the rate problem).
-- **H11 (completion is not a free variable)** — every arm writes
+- **H7 (the duplicated enumeration is the mechanism)** — v6.1.4's refactor
+  rate is indistinguishable from v6.1's on both katas, and no v6.1.4 run
+  reaches rate 1.00. This is the load-bearing hypothesis: if it holds, the
+  export carrier is repaired by deleting one sentence and four bullets, and
+  the recommendation needs no cost caveat. Falsifier: v6.1.4 still produces
+  always-refactor runs, which would put the cause elsewhere in the split —
+  the rules volume itself, or the `Rule Files` table in `tdd.md`.
+- **H8 (the guard is not the mechanism)** — v6.1.4 keeps the guard and still
+  reaches the v6.1 rate. Together with H7 this is what makes the repair a
+  deletion of four bullets rather than of the section: the anti-stall
+  property and the rate defect live in different halves of the same text.
+  Falsifier: v6.1.4 behaves like v6.1.1, in which case the guard and the
+  enumeration cannot be separated by wording and the carrier question
+  reopens.
+- **H9 (completion is not a free variable)** — v6.1.4 writes
   `experiment-done.txt` in 5 of 5 runs on both katas. This is a
   precondition, not a result: an arm that cannot finish reliably is
   disqualified as an export carrier whatever its refactor rate does, and its
-  quality metrics are not comparable because they describe a partial run.
+  quality metrics are not comparable, because they describe a partial run.
+  Checked on the marker file, not on `exit_reason` — see the pipeline note
+  above.
+
+## What the repaired workflow has to achieve
+
+The target is not a particular refactor rate. It is a workflow that
+
+1. **finishes every run**, checked on `experiment-done.txt`, not on
+   `exit_reason` — see the pipeline note above;
+2. **keeps the lab/product rule split**, so the
+   `exact-coding-baseline-export` skill still ships it by deleting one file;
+3. **does not cost materially more than v6.1** in `duration_seconds` and
+   `total_tokens`.
+
+The refactor rate is the suspected mechanism, not the goal. It earns its
+place among the outcomes because it explains *why* the cost moves, and
+because an always-refactor run is the signature to watch for — but a v6.1.4
+that lands at a slightly different rate and at v6.1's cost has passed.
+
+Criterion 3 is where v6.1.1 fails, and it fails on the large kata only:
+
+| kata | metric | v6.1 (n=5) | v6.1.1 (n=5) | Δ |
+|---|---|---:|---:|---:|
+| claim-office | `duration_seconds` | 2661 ± 411 | 3841 ± 1523 | **+44 %** |
+| claim-office | `total_tokens` | 81.9 ± 17.0 M | 126.2 ± 41.9 M | **+54 %** |
+| game-of-life | `duration_seconds` | 621 ± 90 | 687 ± 106 | +11 % |
+| game-of-life | `total_tokens` | 8.0 ± 1.7 M | 9.8 ± 1.4 M | +22 % |
+
+So the pass mark for v6.1.4 on claim-office is a mean inside v6.1's own
+scatter — `duration_seconds` ≤ 3072 s and `total_tokens` ≤ 98.9 M, i.e.
+v6.1's mean + 1 σ — with no run at `refactorings_applied == cycle_count`.
+On game-of-life the two references are barely separated, which is the same
+reason the original control run missed the defect: this criterion cannot be
+evaluated on the small kata.
 
 ## Design
 
 ```
-Factor:   workflow_x_prompt — 5 levels, all example-mapping
+Factor:   workflow_x_prompt — 3 levels, all example-mapping
 Factor:   kata_base         — game-of-life, claim-office
 Control:  model             — opus-5-no-thinking (native subscription route)
 
-Cells:      10
+Cells:      6
 Replicates: n = 5
 ```
 
 The v6.1 and v6.1.1 cells are complete (n=5 each on both katas; the v6.1.1
 claim-office cell was filled by RQ-4.7, which counts here too because
-aggregation is query-based). The repair cells are being filled; the smoke
-runs count toward them, since aggregation is query-based and does not care
-which batch produced a run.
+aggregation is query-based). v6.1.4 has 2 game-of-life runs from its smoke,
+which count as well, so the fill is 8 runs: 3 game-of-life and 5
+claim-office.
 
-**Workflow gradient.** The four levels form a chain in which each step changes
-exactly one thing, so any effect is attributable:
+**Workflow gradient.** Each step changes exactly one thing, so any effect is
+attributable:
 
-| level | vs. its predecessor | rules volume |
-|---|---|---:|
-| `v6.1-hybrid-testlist-scope-fix` | — (the measurement basis) | 7202 B |
-| `v6.1.1-lab-split-cc` | lab/product rule split, lab file from the v6.6 lineage | 10625 B |
-| `v6.1.4-continuation-guard-cc` | per-cycle enumeration removed, guard kept | 10320 B |
-| `v6.1.2-no-continuation-cc` | whole `## Phase Continuation` section removed | 9184 B |
-| `v6.1.3-refactor-gate-cc` | on top of v6.1.2: explicit `REFACTOR` / `NO REFACTOR` decision | 10307 B |
+| level | vs. its predecessor | statements of the cycle | guard | rules |
+|---|---|---:|---|---:|
+| `v6.1-hybrid-testlist-scope-fix` | — (the measurement basis) | 1 | no | 7202 B |
+| `v6.1.1-lab-split-cc` | lab/product rule split, lab file from the v6.6 lineage | **2** | yes | 10625 B |
+| `v6.1.4-continuation-guard-cc` | duplicated cycle enumeration removed | 1 | yes | 10320 B |
 
-v6.1.4 and v6.1.2 are a nested pair — v6.1.4 removes the enumeration,
-v6.1.2 removes the enumeration *and* the guard — so the two effects separate.
-v6.1.3 builds on v6.1.2, which is why its stall cannot be attributed without
-v6.1.4 in the field.
-
-All three repair workflows are byte-identical to v6.1.1 outside `rules/`;
-v6.1.4 differs from v6.1.1 in `lab-only.md` alone. The four parser markers
-are present in all three (`Skill`/command files, `Red Phase Complete`, the
+v6.1.4 differs from v6.1.1 in `lab-only.md` alone, and at 10320 against
+10625 B it is not a volume-reduction arm — it isolates the wording. Its four
+parser markers are present (`Skill`/command files, `Red Phase Complete`, the
 `Correct`/`Incorrect` lines, `experiment-done.txt`).
+
+Note what the gradient cannot separate: v6.1 has neither the split nor the
+guard, v6.1.4 has both. A v6.1.4 that matches v6.1 on cost therefore shows
+the *combination* is neutral, which is what the product decision needs, but
+it does not attribute neutrality to either half on its own. The arm that
+would have done that (`v6.1.2`, split without guard) is documented above and
+retired.
 
 ## Caveats
 
@@ -300,26 +361,23 @@ are present in all three (`Skill`/command files, `Red Phase Complete`, the
 - **This RQ has product consequences, not just research ones.** v6.1.1 is what
   the `exact-coding-baseline-export` skill ships. If H1–H3 hold, either the
   export carrier changes or the recommendation is restated with its real cost.
-  H7/H8 exist to give that decision a third option: a repaired carrier.
-- **`refactorings_applied` counts launched subagents, nothing else.** On
-  v6.1.3 a `NO REFACTOR` decision is therefore indistinguishable in the
-  metric from a cycle that skipped the step silently — which is precisely the
-  distinction the arm is about. Count the declines separately from the
-  transcript; the decision lines are plain text, not markers, and cannot
-  collide with the `## Refactor` text-marker fallback in
-  `analyze_transcript.py`:
-  ```bash
-  grep -c 'NO REFACTOR:' <run_dir>/transcript.jsonl
-  ```
-  Report it as an observation in findings, not as an outcome — it is not a
-  pipeline metric and `aggregate-by-query.py` does not know it.
-- **v6.1.3 changes methodology, not just lab infrastructure.** Its edit lives
-  in `rules/tdd.md`, so it survives export. That is deliberate — an implicit
-  per-cycle refactor step is a defect in the exported workflow too — but it
-  raises the bar: v6.1.3 only becomes a carrier candidate if H9 holds.
-- **Do not read v6.1.3 as a volume-reduction arm.** At 10307 B it sits
-  essentially at v6.1.1's 10625 B. If both v6.1.2 and v6.1.3 come out neutral,
-  rules volume is not the mechanism and the wording is.
+  H7–H9 exist to give that decision a third option: a repaired carrier that
+  keeps the split.
+- **Check `experiment-done.txt`, not `exit_reason`, before aggregating.** A
+  run that ends its turn early is filed `exit_reason: ok`, and
+  `aggregate-by-query.py:284` then derives `completed_within_budget: true`
+  with every metric null. One such run exists in this pool (on the retired
+  `v6.1.3` arm).
+- **Two retired arms have runs in `experiments/runs/`.** `v6.1.2` (1 run) and
+  `v6.1.3` (3 runs) are no longer cells of this RQ, so the selector excludes
+  them and they do not enter any pivot. Their workflow directories and runs
+  stay on disk; what they showed is written up under "Two arms built and
+  retired before the fill". Do not quote their numbers as cell results — n=1
+  and n=2.
+- **v6.1.4 keeps the guard, so the anti-stall property is untested by
+  contrast.** No arm in the final design lacks it, which is deliberate
+  (criterion 1 wants it) but means this RQ cannot measure what the guard is
+  worth. If that becomes interesting, it is a separate RQ, not a cell here.
 
 ## Findings
 
@@ -329,7 +387,6 @@ See [findings.md](findings.md) — no aggregation yet.
 
 All runs in `experiments/runs/` with
 `workflow ∈ {v6.1-hybrid-testlist-scope-fix, v6.1.1-lab-split-cc,
-v6.1.2-no-continuation-cc, v6.1.3-refactor-gate-cc,
 v6.1.4-continuation-guard-cc}`,
 `kata ∈ {game-of-life-example-mapping, claim-office-example-mapping}`,
 `model = opus-5-no-thinking`.
