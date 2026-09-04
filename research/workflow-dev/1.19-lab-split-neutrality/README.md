@@ -67,12 +67,14 @@ that moved. The refactor *rate* went from 0.42 to 0.58 per cycle at an
 essentially unchanged cycle count — which is why a cycle-count comparison
 looked reassuring.
 
-A single claim-office run of v6.1.1 (2026-09-03, recorded for
-[RQ-4.7](../../questions-claude/4.7-external-tdd-workflows-opus5/)) suggests
-the effect is much larger on the big kata: refactor rate 1.00 against v6.1's
-0.41, at 5019 s against 2661 s and 168.4 M against 81.9 M tokens. That is n=1
-and proves nothing on its own — it is the reason this RQ exists, not its
-result.
+The 2.9 sigma figure above is itself an n=3 artifact — it is computed against
+v6.1's narrow sigma, and v6.1.1 turns out to scatter far more widely. At n=5
+with pooled sigma the same comparison is 0.80 sigma. See F-1.19.7.
+
+What survives is the directional finding and the methodological point: the
+refactor rate is ~50 % higher on both katas, the cost consequence appears only
+on claim-office, and none of that was checked by a control that ran one kata,
+at n=3, outside the RQ pipeline.
 
 ### Why the kata matters here
 

@@ -1,0 +1,153 @@
+# RQ-lab-split-neutrality — Aggregation
+
+_Is v6.1.1-lab-split-cc behaviourally equivalent to v6.1-hybrid-testlist-scope-fix, as the exact-coding baseline recommendation assumes? The production files are byte-identical; only the rule layout differs (lab infrastructure isolated in rules/lab-only.md, subagent contracts in rules/subagent-prompts.md). Measured on both katas, with refactorings_applied as a declared outcome._
+
+Generated: 2026-09-04T08:37:05Z
+
+Cells declared: 4 · matched runs: 20 · min_replicates: 5
+
+## Zell-Coverage
+
+| kata | workflow | model | n | n_ok | status |
+|---|---|---|---:|---:|---|
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking | 5 | 5 | ✅ |
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking | 5 | 5 | ✅ |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc | opus-5-no-thinking | 5 | 5 | ✅ |
+| claim-office-example-mapping | v6.1.1-lab-split-cc | opus-5-no-thinking | 5 | 5 | ✅ |
+
+## Outcome-Pivots (pro Zelle)
+
+### refactorings_applied
+
+| kata                         | cell_workflow                  | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |   17.4 |     9 |    22 |  5.03 |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |   33   |    21 |    50 | 14.27 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |    4.4 |     4 |     5 |  0.55 |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |    6.2 |     3 |    10 |  3.11 |
+
+### cycle_count
+
+| kata                         | cell_workflow                  | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |   42.8 |    38 |    52 |  5.76 |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |   48   |    44 |    50 |  2.55 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |   10.4 |     9 |    13 |  1.52 |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |   10   |     9 |    11 |  0.71 |
+
+### duration_seconds
+
+| kata                         | cell_workflow                  | cell_model         |   n |   mean |   min |   max |     std |
+|:-----------------------------|:-------------------------------|:-------------------|----:|-------:|------:|------:|--------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 | 2660.8 |  2130 |  3256 |  411.31 |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 | 3841   |  2685 |  5923 | 1522.52 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |  620.6 |   509 |   722 |   89.77 |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |  687   |   562 |   809 |  106.49 |
+
+### total_tokens
+
+| kata                         | cell_workflow                  | cell_model         |   n |        mean |      min |       max |         std |
+|:-----------------------------|:-------------------------------|:-------------------|----:|------------:|---------:|----------:|------------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 | 8.18549e+07 | 65109038 | 107931232 | 1.69643e+07 |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 | 1.26165e+08 | 86741467 | 174612025 | 4.19189e+07 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 | 7.99486e+06 |  6503338 |  10565106 | 1.66386e+06 |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 | 9.79348e+06 |  8088469 |  12077523 | 1.43493e+06 |
+
+### verification_pct
+
+| kata                         | cell_workflow                  | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |   0.99 |  0.93 |     1 |  0.03 |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |   0.96 |  0.93 |     1 |  0.04 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |   1    |  1    |     1 |  0    |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |   1    |  1    |     1 |  0    |
+
+### tests_passing (rate %)
+
+| kata                         | cell_workflow                  | cell_model         |   n |   match |   rate_% |
+|:-----------------------------|:-------------------------------|:-------------------|----:|--------:|---------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |       5 |      100 |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |       5 |      100 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |       5 |      100 |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |       5 |      100 |
+
+### completed_within_budget (rate %)
+
+| kata                         | cell_workflow                  | cell_model         |   n |   match |   rate_% |
+|:-----------------------------|:-------------------------------|:-------------------|----:|--------:|---------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |       5 |      100 |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |       5 |      100 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |       5 |      100 |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |       5 |      100 |
+
+### cc_avg_loc_per_function
+
+| kata                         | cell_workflow                  | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |   4.04 |  3.44 |  5    |  0.58 |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |   4.49 |  3.97 |  5.24 |  0.54 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |   4.54 |  2.83 |  5.33 |  1.03 |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |   3.05 |  1.88 |  5.11 |  1.39 |
+
+### cc_longest_function
+
+| kata                         | cell_workflow                  | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |   17   |    11 |    22 |  4.47 |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |   17.6 |    14 |    25 |  4.39 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |   10.8 |     6 |    15 |  3.27 |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |    5.4 |     2 |    13 |  4.56 |
+
+### cognitive_max
+
+| kata                         | cell_workflow                  | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |    2.4 |     1 |     3 |  0.89 |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |    2.8 |     2 |     4 |  0.84 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |    1.8 |     1 |     3 |  0.84 |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |    2.4 |     1 |     7 |  2.61 |
+
+### mccabe_max
+
+| kata                         | cell_workflow                  | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |    3.2 |     3 |     4 |  0.45 |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |    3.4 |     3 |     4 |  0.55 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |    3.2 |     3 |     4 |  0.45 |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |    2.8 |     2 |     5 |  1.3  |
+
+### smell_total
+
+| kata                         | cell_workflow                  | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |    0   |     0 |     0 |  0    |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |    0   |     0 |     0 |  0    |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |    1.2 |     0 |     3 |  1.64 |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |    1.8 |     0 |     3 |  1.64 |
+
+### code_mass
+
+| kata                         | cell_workflow                  | cell_model         |   n |   mean |   min |   max |    std |
+|:-----------------------------|:-------------------------------|:-------------------|----:|-------:|------:|------:|-------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |  861.6 |   729 |   999 | 103.54 |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |  821.2 |   703 |   963 | 110.71 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |  181.8 |   142 |   211 |  25.68 |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |  179.6 |   149 |   241 |  35.68 |
+
+### predictions_correct_rate (pooled %)
+
+| kata                         | cell_workflow                  | cell_model         |   n |   correct |   total |   rate_% |
+|:-----------------------------|:-------------------------------|:-------------------|----:|----------:|--------:|---------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |       433 |     433 |    100   |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |       478 |     480 |     99.6 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |       104 |     104 |    100   |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |       101 |     101 |    100   |
+
+### tests_passed_immediately
+
+| kata                         | cell_workflow                  | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |   21.6 |    16 |    31 |  5.77 |
+| claim-office-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |   20.4 |     0 |    29 | 11.84 |
+| game-of-life-example-mapping | v6.1-hybrid-testlist-scope-fix | opus-5-no-thinking |   5 |    7.2 |     6 |     9 |  1.1  |
+| game-of-life-example-mapping | v6.1.1-lab-split-cc            | opus-5-no-thinking |   5 |    6   |     0 |     8 |  3.39 |
