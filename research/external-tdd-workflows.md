@@ -23,9 +23,9 @@ alone is informative.
 | Candidate | Loop isolable | Refactor position | Status |
 |---|---|---|---|
 | **Own workflow** (v6.x) | — (baseline) | **per-cycle**, isolated subagent | baseline |
-| **Superpowers** `test-driven-development` | yes, confirmed | **per-cycle**, inline in the skill | candidate |
-| **Pocock** `tdd`, May snapshot | yes, already runs in the lab | **tail** (step 5: "After all tests pass") | measured (RQ-4.4), = v9 |
-| **Pocock** `tdd`, Aug snapshot | yes, vendored as v10 | **report-only** — no refactor in loop or review | candidate, not yet run |
+| **Superpowers** `test-driven-development` | yes, confirmed | **per-cycle**, inline in the skill | vendored as v11, measured in RQ-4.7 |
+| **Pocock** `tdd`, May snapshot | yes | **tail** (step 5: "After all tests pass") | withdrawn — see "The withdrawn May snapshot" |
+| **Pocock** `tdd`, Aug snapshot | yes, vendored as v10 | **report-only** — no refactor in loop or review | measured in RQ-4.7 |
 | **nWave** DELIVER | loop yes, but needs artifact chain | **open** (indication: none) | candidate, unresolved |
 | ~~ATDD plugin~~ | **no** | — | dropped → augmentation track |
 
@@ -48,46 +48,56 @@ augmentation track (`mutate`, `kill-mutants`, `spec-check`).
 
 ## Main axis: refactor position
 
-The existing lab measurement (RQ-4.4) shows that **refactor position is the
-dominant variable** — not prompt quality and not skill mechanics.
+Refactor position is the one design choice across these candidates with a
+mechanistic link to code quality, so it is the axis the comparison is built on.
+Where a workflow refactors — every cycle, once at the end, or never — varies
+independently of prompt quality and skill mechanics.
 
-RQ: `research/questions-claude/4.4-external-tdd-workflows/` (id `RQ-external-tdd-workflows`).
-Kata `claim-office-example-mapping`, model `opus-4-7-portkey-no-thinking`.
+Currently measured by
+[RQ-4.7](questions-claude/4.7-external-tdd-workflows-opus5/) on
+`claim-office-example-mapping` × `opus-5-no-thinking`, with three cells that
+span the axis and give two single-variable contrasts:
 
-| Metric | v6.2-with-why-cleaned (n=8) | v9-pocock-tdd (n=3) |
-|---|---:|---:|
-| refactorings_applied | 24.9 | 0 |
-| cognitive_max | 5.0 | 14.3 |
-| mccabe_max | 4.5 | 11.7 |
-| cc_longest_function | 12.4 | 32.3 |
-| smell_total | 0.4 | 6.7 |
-| code_mass | 878 | 748 |
-| cycle_count | 37.4 | 14.0 |
-| duration_seconds | 2530 | 570 |
-| total_tokens | 44.4 M | 13.1 M |
-| verification_pct | 0.96 | 1.00 |
+| Cell | Loop architecture | Refactor position | Mechanism |
+|---|---|---|---|
+| `v6.1.1-lab-split-cc` | phase commands + subagent | per-cycle | isolated subagent |
+| `v11-superpowers-tdd` | single skill, inline phases | per-cycle | inline in the skill |
+| `v10-pocock-tdd` | skill + `code-review` skill | none | — |
 
-**Finding:** hypothesis H4 of the RQ failed. The assumption was that Pocock's
-"deep modules / small interfaces" makes per-cycle refactoring unnecessary. The
-complexity metrics say the opposite — factor 2.5–3 on cognitive_max and
-mccabe_max. At the same time Pocock is more compact (code_mass) and roughly 4.4×
-cheaper at equal correctness.
+- **v11 ↔ v10** varies refactor position at constant architecture.
+- **v6.1.1 ↔ v11** varies architecture and mechanism at constant position.
 
-**Limitation:** the comparison varies two things at once — refactor position
-(per-cycle vs. tail) **and** architecture (multi-command + subagent vs.
-single-skill inline). It therefore does not answer whose inner loop is better,
-but effectively what refactor position does.
+### The withdrawn May snapshot
+
+An earlier study compared `v6.2-with-why-cleaned` against the May Pocock
+snapshot (`v9-pocock-tdd`) on `opus-4-7-portkey-no-thinking`. Both that RQ and
+its runs have been removed from the repo, so its figures cannot be re-derived
+or verified and **no numbers from it are carried forward here**. Two of its
+qualitative observations motivated the current design and are restated as open
+questions, not results:
+
+- A tail refactor may fire only once and leave complexity where the initial
+  implementation put it. `v10` (no refactor stage) is the floor case for this
+  in RQ-4.7.
+- That comparison varied refactor position *and* loop architecture at the same
+  time, so it could not say which produced its effect. RQ-4.7's two contrasts
+  above exist to separate them.
+
+The May snapshot also carried a lab-inserted RED marker block, which is not a
+neutral probe (see below), so it was never a clean authenticity comparison.
+`experiments/workflows/v9-pocock-tdd/` is still on disk but is not part of any
+RQ.
 
 ## Why Superpowers should be the next candidate
 
 Superpowers has **the same refactor position as v6.x (per-cycle)**, but inline
 instead of as a subagent. A comparison v6.x ↔ Superpowers therefore isolates
-exactly the variable RQ-4.4 had to leave open:
+the variable the withdrawn May study could not:
 
 > Does the isolated refactor subagent buy anything over inline refactoring —
 > at equal refactor position?
 
-That is the cleanest next cut and closes the confound gap of RQ-4.4.
+This is the `v6.1.1 ↔ v11` contrast in RQ-4.7.
 
 ## Open question: does Superpowers hold cycle discipline?
 
@@ -114,9 +124,8 @@ classifies TDD rigour purely from the tool sequence in the transcript:
 This resolves a methodological problem: the verbatim RED marker block from
 `MARKERS.md` is **not a neutral probe** — an output obligation per RED phase
 creates exactly the structural break whose absence encourages batching. Measuring
-cycle discipline through markers partly manufactures it. This applies
-retroactively to v9-pocock as well: the RED block was *inserted* there for the
-lab. `measure-tdd-rigour.py` does not need it — so Superpowers can be vendored
+cycle discipline through markers partly manufactures it. It applied to the
+May Pocock snapshot too, where the RED block was *inserted* for the lab. `measure-tdd-rigour.py` does not need it — so Superpowers can be vendored
 unmodified (only the DONE marker stays necessary, otherwise container timeout).
 
 This is now lab-wide policy, not a suggestion for this study: see `README.md` →
@@ -158,8 +167,9 @@ work to the current branch" — no fix pass. So in this architecture, refactorin
 is neither in the loop nor in the review; the review hands findings to a human.
 
 That makes v10 a **third** position on the main comparison axis: per-cycle
-(v6.x, Superpowers) → tail (v9) → report-only (v10). RQ-4.4's findings describe
-the May snapshot and stay valid for it.
+(v6.x, Superpowers) → tail (the May snapshot) → report-only (v10). Only the
+per-cycle and report-only ends are currently measured; the tail position has no
+runs in the pool.
 
 ### Adaptations to make it runnable
 
@@ -213,8 +223,8 @@ measures something upstream does not prescribe. Not built.
    below. It is not "v9 updated" but a different point on the refactor axis, so
    both stay side by side. **Open: smoke run** before the batch.
 4. **Snapshot drift** is now recorded per workflow, in each
-   `.claude/rules/tdd-experiment-mode.md`: v9 = Pocock 2026-05-26 (kept as the
-   state RQ-4.4 measured), v10 = Pocock `6654f6b6` (2026-08-24), v11 =
+   `.claude/rules/tdd-experiment-mode.md`: v9 = Pocock 2026-05-26 (on disk, in
+   no RQ), v10 = Pocock `6654f6b6` (2026-08-24), v11 =
    Superpowers `b36e0829` / v6.3.0 (2026-08-12). Do the same for nWave. Note
    that Superpowers renamed `testing-anti-patterns.md` to `writing-good-tests.md`
    between 5.1.0 and 6.3.0; the refactor position stayed per-cycle, so the
@@ -243,9 +253,8 @@ cards:
   workflow: a decision ladder before writing (YAGNI → reuse → stdlib → native →
   dependency → one line). Says nothing about TDD, but is **orthogonal to the
   loop** and targets `code_mass` directly → additively testable (v6.x with and
-  without, same loop, same kata). Connects to RQ-4.4: Pocock reached the lower
-  code mass (748 vs. 878) via "deep modules"; Ponytail pursues the same goal by a
-  different means. Their own benchmark: −54 % LOC against an agent baseline
+  without, same loop, same kata). Both Pocock snapshots pursue lower code
+  mass via "deep modules"; Ponytail pursues the same goal by a different means. Their own benchmark: −54 % LOC against an agent baseline
   (Haiku 4.5, n=4, 12 tickets, real repo); earlier −80..94 % withdrawn after
   criticism (issue #126); they also measure a safety tier (does minimalism cut
   validation, error handling or security?).
@@ -255,7 +264,8 @@ cards:
 Statements about Superpowers and the ATDD plugin come from skill files and repo
 docs actually read. The nWave statements come from README and a practitioner
 report, **not** from skill files — the refactor question in particular is open.
-The lab numbers come from `summary.md` of RQ-4.4 (generated 2026-05-25).
+No lab numbers are quoted in this document; measured figures live in the
+`findings.md` of the RQ that produced them.
 
 Sister document on the augmentation track (hooks, guardrails, mutation testing)
 lives in the book repo:

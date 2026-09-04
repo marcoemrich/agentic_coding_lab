@@ -221,15 +221,15 @@ invocations) and needs no markers at all:
 A *block* is an uninterrupted run of test-file writes; a test run or an edit under
 `src/` closes it.
 
-**Evidence that the two disagree** (2026-09-03, `claim-office-example-mapping`):
+**Evidence that the two agree on our own workflows** (`claim-office-example-mapping`,
+`opus-5-no-thinking`):
 
 | Workflow | marker `cycle_count` | transcript `test_blocks` |
 |---|---:|---:|
-| v6.2-with-why-cleaned | 37.4 | 38.5 |
-| v9-pocock-tdd | 14.0 | 20.3 |
+| v6.1.1-lab-split-cc | 50 | 50 |
 
-On our own workflows both agree — the marker is emitted per cycle by our own
-commands. On the **vendored** Pocock skill they diverge by ~30 %: the inserted
+The marker is emitted per cycle by our own commands, so the two coincide. On a
+**vendored** skill with a lab-inserted RED block they diverge — the inserted
 marker does not fire on every block. Marker-derived `cycle_count` is therefore
 reliable for workflows we author and unreliable for external ones.
 
