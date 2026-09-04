@@ -1,10 +1,12 @@
 ---
 id: RQ-lab-split-neutrality
-question: "Is v6.1.1-lab-split-cc behaviourally equivalent to v6.1-hybrid-testlist-scope-fix, as the exact-coding baseline recommendation assumes? The production files are byte-identical; only the rule layout differs (lab infrastructure isolated in rules/lab-only.md, subagent contracts in rules/subagent-prompts.md). Measured on both katas, with refactorings_applied as a declared outcome."
+question: "Is v6.1.1-lab-split-cc behaviourally equivalent to v6.1-hybrid-testlist-scope-fix, as the exact-coding baseline recommendation assumes, and if not, which edit restores neutrality? The production files are byte-identical; the rule layout differs (lab infrastructure isolated in rules/lab-only.md, subagent contracts in rules/subagent-prompts.md) and lab-only.md carries a Phase Continuation section that enumerates a per-cycle refactor step. Two repairs are measured against it: removing that section (v6.1.2), and replacing the implicit step with an explicit per-cycle REFACTOR / NO REFACTOR decision (v6.1.3)."
 factors:
   workflow_x_prompt:
     - {workflow: v6.1-hybrid-testlist-scope-fix, prompt: example-mapping}  # the measurement basis of the v6.1 line
     - {workflow: v6.1.1-lab-split-cc,            prompt: example-mapping}  # the export carrier, recommended as the exact-coding baseline
+    - {workflow: v6.1.2-no-continuation-cc,      prompt: example-mapping}  # v6.1.1 minus the Phase Continuation section
+    - {workflow: v6.1.3-refactor-gate-cc,        prompt: example-mapping}  # v6.1.2 plus an explicit per-cycle refactor decision
   kata_base: [game-of-life, claim-office]
 controls:
   model: opus-5-no-thinking
@@ -76,6 +78,61 @@ refactor rate is ~50 % higher on both katas, the cost consequence appears only
 on claim-office, and none of that was checked by a control that ran one kata,
 at n=3, outside the RQ pipeline.
 
+### The effect is a per-run switch, not a distribution shift
+
+At n=5 on both katas the rates are bimodal. Verified against the raw
+transcripts — the `Skill(red)` and `Task(refactor)` call counts reproduce
+`cycle_count` and `refactorings_applied` exactly in all ten runs, so this is
+agent behaviour and not a parser artifact:
+
+| kata | v6.1 (n=5) | v6.1.1 (n=5) |
+|---|---|---|
+| claim-office | 0.24 · 0.37 · 0.40 · 0.50 · 0.53 | 0.42 · 0.50 · 0.51 · **1.00** · **1.00** |
+| game-of-life | 0.38 · 0.40 · 0.40 · 0.44 · 0.50 | 0.30 · 0.40 · 0.45 · **1.00** · **1.00** |
+
+Two runs in five refactor after *every* cycle (50/50, 47/47 on claim-office;
+9/9, 10/10 on game-of-life). The other three sit inside the v6.1 band. The
+mean rise 0.41 → 0.69 is entirely those two runs flipping, not a graded
+increase — which also explains why the cost is bimodal rather than shifted:
+
+| claim-office | `duration_seconds` | `verification_pct` |
+|---|---|---|
+| rate 1.00 runs | 5019, 5923 | 1.00, 0.93 |
+| rate ~0.5 runs | 2685, 2782, 2796 | 0.93, 1.00, 0.93 |
+
+Roughly double the wall-clock for no gain in correctness.
+
+### The suspected cause, and the two repairs under test
+
+`rules/lab-only.md` in v6.1.1 did not come from v6.1's
+`tdd-experiment-mode.md`. It was derived from the v6.6 lineage with the
+end-refactor passages deleted (`diff` against `v6.6-lab-split-cc/.claude/rules/lab-only.md`
+is three hunks, all of them end-refactor removals). It therefore carries text
+v6.1 never had, most of it in a `## Phase Continuation` section that
+enumerates the cycle step by step:
+
+> The whole workflow — Test List, then Red/Green/Refactor **for every test**,
+> through to writing `experiment-done.txt` — is one continuous autonomous run.
+> […]
+> - After **Green** → launch the `refactor` subagent.
+
+That section declares itself unnecessary on this harness: *"Scope: not needed
+on Claude Code. […] On Claude Code the failure mode below has never been
+observed."* It exists for parity with the pi and cursor-agent variants, where
+it fixes a real mid-run stall.
+
+Two candidate repairs are measured as their own cells:
+
+- **`v6.1.2-no-continuation-cc`** — v6.1.1 with that section removed, and the
+  two cross-references to it updated. Rules volume 10625 → 9184 B. Nothing
+  else differs; the production files stay byte-identical to v6.1's.
+- **`v6.1.3-refactor-gate-cc`** — v6.1.2 plus an explicit per-cycle decision
+  in `rules/tdd.md` § 4: state `REFACTOR: <what to improve>` and launch the
+  agent, or `NO REFACTOR: <why the code is already in shape>` and go to the
+  next Red phase. The point is to make the judgement explicit and recorded
+  instead of implicit-and-sometimes-skipped. Rules volume 10307 B, so it is
+  *not* a volume-reduction arm — it isolates the framing.
+
 ### Why the kata matters here
 
 The cost consequence of a refactor-rate shift scales with cycle count and
@@ -114,22 +171,56 @@ therefore factors here, not a control.
   cycle_count` and non-zero `refactorings_applied` on both katas, so the
   workflow remains measurable. Confirmed at n=1 on claim-office (50 cycles,
   100 predictions, 50 refactorings).
+- **H7 (removing the section restores neutrality)** — v6.1.2's refactor rate
+  is indistinguishable from v6.1's on both katas, and no v6.1.2 run reaches
+  rate 1.00. This is the load-bearing hypothesis: if it holds, the export
+  carrier is repaired by a deletion and the recommendation needs no cost
+  caveat. Falsifier: v6.1.2 still produces always-refactor runs, which would
+  put the cause somewhere else in the split — the rules volume itself, or the
+  `Rule Files` table in `tdd.md`.
+- **H8 (the explicit gate suppresses the switch without suppressing
+  refactoring)** — v6.1.3 shows neither always-refactor runs nor a rate below
+  the v6.1 band; the decision is made per cycle rather than by run-level
+  habit, so its rate variance across replicates is *lower* than v6.1.1's.
+  Two ways this fails, and they point in opposite directions: being asked the
+  question every cycle raises its salience and the model answers `REFACTOR`
+  almost always (rate → 1.00, i.e. the gate reproduces the defect it was
+  meant to fix), or the explicit permission to decline licenses skipping
+  (rate below v6.1). Either outcome retires v6.1.3 in favour of v6.1.2.
+- **H9 (the gate does not cost correctness)** — v6.1.3 holds
+  `verification_pct` at the v6.1 level. A methodology change that survives
+  export is only acceptable if it is correctness-neutral; this is the
+  gating check before it could ever become the export carrier.
 
 ## Design
 
 ```
-Factor:   workflow_x_prompt — 2 levels, both example-mapping
+Factor:   workflow_x_prompt — 4 levels, all example-mapping
 Factor:   kata_base         — game-of-life, claim-office
 Control:  model             — opus-5-no-thinking (native subscription route)
 
-Cells:      4
+Cells:      8
 Replicates: n = 5
 ```
 
-Reusable: v6.1 has 5 runs on each kata, v6.1.1 has 3 on game-of-life and 1 on
-claim-office. RQ-4.7's fill adds 4 more v6.1.1 claim-office runs, which count
-here too (aggregation is query-based), so that cell completes without runs of
-its own.
+The v6.1 and v6.1.1 cells are complete (n=5 each on both katas; the v6.1.1
+claim-office cell was filled by RQ-4.7, which counts here too because
+aggregation is query-based). The two repair cells are empty, so the fill is
+20 runs: 5 × 2 katas × 2 workflows.
+
+**Workflow gradient.** The four levels form a chain in which each step changes
+exactly one thing, so any effect is attributable:
+
+| level | vs. its predecessor | rules volume |
+|---|---|---:|
+| `v6.1-hybrid-testlist-scope-fix` | — (the measurement basis) | 7202 B |
+| `v6.1.1-lab-split-cc` | lab/product rule split, lab file from the v6.6 lineage | 10625 B |
+| `v6.1.2-no-continuation-cc` | `## Phase Continuation` removed | 9184 B |
+| `v6.1.3-refactor-gate-cc` | explicit `REFACTOR` / `NO REFACTOR` decision added | 10307 B |
+
+v6.1.2 and v6.1.3 are byte-identical to v6.1.1 outside `rules/`; the four
+parser markers are present in both (`Skill`/command files, `Red Phase
+Complete`, the `Correct`/`Incorrect` lines, `experiment-done.txt`).
 
 ## Caveats
 
@@ -147,6 +238,26 @@ its own.
 - **This RQ has product consequences, not just research ones.** v6.1.1 is what
   the `exact-coding-baseline-export` skill ships. If H1–H3 hold, either the
   export carrier changes or the recommendation is restated with its real cost.
+  H7/H8 exist to give that decision a third option: a repaired carrier.
+- **`refactorings_applied` counts launched subagents, nothing else.** On
+  v6.1.3 a `NO REFACTOR` decision is therefore indistinguishable in the
+  metric from a cycle that skipped the step silently — which is precisely the
+  distinction the arm is about. Count the declines separately from the
+  transcript; the decision lines are plain text, not markers, and cannot
+  collide with the `## Refactor` text-marker fallback in
+  `analyze_transcript.py`:
+  ```bash
+  grep -c 'NO REFACTOR:' <run_dir>/transcript.jsonl
+  ```
+  Report it as an observation in findings, not as an outcome — it is not a
+  pipeline metric and `aggregate-by-query.py` does not know it.
+- **v6.1.3 changes methodology, not just lab infrastructure.** Its edit lives
+  in `rules/tdd.md`, so it survives export. That is deliberate — an implicit
+  per-cycle refactor step is a defect in the exported workflow too — but it
+  raises the bar: v6.1.3 only becomes a carrier candidate if H9 holds.
+- **Do not read v6.1.3 as a volume-reduction arm.** At 10307 B it sits
+  essentially at v6.1.1's 10625 B. If both v6.1.2 and v6.1.3 come out neutral,
+  rules volume is not the mechanism and the wording is.
 
 ## Findings
 
@@ -155,7 +266,8 @@ See [findings.md](findings.md) — no aggregation yet.
 ## Data Source
 
 All runs in `experiments/runs/` with
-`workflow ∈ {v6.1-hybrid-testlist-scope-fix, v6.1.1-lab-split-cc}`,
+`workflow ∈ {v6.1-hybrid-testlist-scope-fix, v6.1.1-lab-split-cc,
+v6.1.2-no-continuation-cc, v6.1.3-refactor-gate-cc}`,
 `kata ∈ {game-of-life-example-mapping, claim-office-example-mapping}`,
 `model = opus-5-no-thinking`.
 
