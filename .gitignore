@@ -52,3 +52,10 @@ experiments/runs/**/run.log
 # derivatives that bloat the repo and diff as noise; the Markdown is the
 # source of truth. Rebuild with the snippet in the skill's PDF step.
 research/reports/*.pdf
+
+# Local dependency dir for the aggregation scripts. The system python is
+# PEP-668 managed and has no tabulate (a hard dep of aggregate-by-query.py);
+# venv needs the python3.14-venv apt package. Recreate with:
+#   python3 -m pip install --target .pylibs tabulate
+# and run:  PYTHONPATH=.pylibs python3 experiments/aggregate-by-query.py <rq>
+.pylibs/

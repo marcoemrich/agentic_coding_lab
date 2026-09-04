@@ -25,10 +25,25 @@ unmodified, and only marker 4 (`experiment-done.txt`) is added, because without 
 the container hits its timeout.
 
 Reason: the `Red Phase Complete` obligation is itself a structural break per cycle.
-Inserting it into a foreign skill changes the very behaviour under test, and it
-does not even measure reliably there — on v9-pocock the marker-derived
-`cycle_count` (14.0) falls ~30 % short of the actual test-write blocks (20.3),
-while on our own v6.2 the two agree (37.4 vs 38.5).
+Inserting it into a foreign skill changes the very behaviour under test.
+
+On top of that, marker-derived `cycle_count` cannot be relied on for a vendored
+skill, because without markers 2/3 it falls back to the inline-tool path. On our
+own workflows it tracks the transcript; on vendored ones it may or may not
+(RQ-4.7, `claim-office-example-mapping` × `opus-5-no-thinking`, n=5 each):
+
+| Workflow | marker `cycle_count` | transcript `test_blocks` | |
+|---|---:|---:|---|
+| `v6.1.1-lab-split-cc` (our markers) | 48.0 | 48.4 | agree |
+| `v11-superpowers-tdd` (vendored) | 13.4 | 13.4 | agree |
+| `v10-pocock-tdd` (vendored) | 35.2 | 19.0 | diverge 46 % |
+
+`v6.2-with-why-cleaned` on `claim-office` × `opus-4-7-portkey-no-thinking` (n=8)
+likewise agrees: `cycle_count` 37.4 against `test_blocks` 38.5.
+
+The point is not that vendored skills always diverge — `v11` matches exactly.
+It is that you cannot tell in advance which case you are in, so `test_blocks`
+is the figure to use whenever markers 2/3 are absent.
 
 Measure cycle discipline for those runs with `experiments/measure-tdd-rigour.py`
 instead: it reads only the tool sequence and needs no markers. Full rule and
