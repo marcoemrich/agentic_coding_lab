@@ -563,6 +563,7 @@ for entry in "${RUN_LIST[@]}"; do
 {
   "name": "tdd-experiment-run",
   "type": "module",
+  "packageManager": "pnpm@9.15.9",
   "scripts": {
     "test": "vitest run",
     "test:unit:basic": "vitest run",

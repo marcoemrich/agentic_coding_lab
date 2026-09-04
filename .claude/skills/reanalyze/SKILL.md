@@ -61,15 +61,27 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
 ### Phase 2 — Reanalyse
 
 1. Get user confirmation: "Reanalyze N runs? This re-runs analyze-run.sh on each (ESLint, verification, metrics extraction). Estimated time: ~N × 10s."
-2. After "yes": iterate over all matched run dirs:
+2. After "yes": reanalyze **inside the container**, never on the host:
    ```bash
-   count=0; total=N
-   for d in <matched_dirs>; do
-       count=$((count+1))
-       echo "[${count}/${total}] $(basename $d)"
-       ./experiments/analyze-run.sh "$d" > /dev/null 2>&1
-   done
+   ./experiments/reanalyze-in-container.sh --rq "$RQ_DIR"      # every run in runs.csv
+   ./experiments/reanalyze-in-container.sh <run_dir> [<run_dir> ...]   # a subset
    ```
+   The wrapper runs `analyze-run.sh` in `docker-batch:latest` with the same mounts the
+   batch uses, and pays container startup once for the whole set. It prints one line per
+   run and a final `reanalyzed: N failed: M`; a single failing run does not abort the rest.
+
+   **Do not call `./experiments/analyze-run.sh` directly on the host.** The verification
+   stage shells out to the package manager, so a host pnpm that differs from the
+   Dockerfile pin (`pnpm@9.15.9`) makes the CLI never start: every scenario fails,
+   `verification_pct` is rewritten to `0`, and the host pnpm mutates the run's
+   `node_modules` besides. The number that lands is plausible enough to survive review
+   and reads as a correctness collapse. `analyze-run.sh` now refuses to write in that
+   situation (it exits 3 and leaves `metrics.json` untouched), but the guard keys on
+   `ERR_PNPM_` specifically — other environment drift (node major, ESLint resolution)
+   would still pass through silently. The container is the actual protection.
+
+   Reanalysis is compared against runs that were *not* reanalyzed, so the analysis
+   environment has to match the batch environment exactly. That is the whole point.
 3. Report: "Reanalyzed N runs."
 4. **Recompute `cost_usd` — mandatory after any reanalysis of pi runs, not optional.**
    `analyze-run.sh` reads `cost_usd` from `transcript-metrics.json` and writes it whenever it is
@@ -162,7 +174,7 @@ Exception: **deletions** of existing findings still require explicit user confir
 | Aspect | `/run-rq` | `/reanalyze` |
 |---|---|---|
 | Starts new runs | Yes (Docker batch) | No |
-| Calls analyze-run.sh | Only on new runs (inside container) | On ALL matching runs |
+| Calls analyze-run.sh | Only on new runs (inside container) | On ALL matching runs (inside container, via `reanalyze-in-container.sh`) |
 | Aggregates | Yes | Yes |
 | Proposes findings | Yes (Phase 6) | Yes (Phase 4) |
 | Use case | Fill missing replicates | Refresh metrics after pipeline fix |

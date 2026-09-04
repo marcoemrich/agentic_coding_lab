@@ -30,25 +30,24 @@ find_impl_files() {
     find "$run_dir/src" -name "*.ts" ! -name "*.spec.ts" 2>/dev/null | sort
 }
 
-# Find test file
-find_test_file() {
+# Find test files (ALL of them). The former kata-name pattern list silently fell
+# back to `head -1`, so any workflow that splits its tests across files had only
+# one of them measured (claim-office was never in the list at all).
+find_test_files() {
     local run_dir=$1
-    local test_file=""
+    find "$run_dir/src" -name "*.spec.ts" 2>/dev/null | sort
+}
 
-    # Try common patterns
-    for pattern in "string-calculator" "game-of-life" "game_of_life" "gameOfLife"; do
-        if [ -f "$run_dir/src/${pattern}.spec.ts" ]; then
-            test_file="$run_dir/src/${pattern}.spec.ts"
-            break
-        fi
-    done
+# Active test call sites: it(...) / test(...) plus their .each variants.
+# `.todo` and `.skip` are deliberately excluded — todos are counted separately.
+count_test_cases() {
+    grep -ohE '(^|[^A-Za-z0-9_.])(it|test)(\.each)?[[:space:]]*\(' "$@" 2>/dev/null \
+        | wc -l | tr -d '[:space:]'
+}
 
-    # Fallback: find any spec file
-    if [ -z "$test_file" ]; then
-        test_file=$(find "$run_dir/src" -name "*.spec.ts" 2>/dev/null | head -1)
-    fi
-
-    echo "$test_file"
+count_test_todos() {
+    grep -ohE '(^|[^A-Za-z0-9_.])(it|test)\.todo[[:space:]]*\(' "$@" 2>/dev/null \
+        | wc -l | tr -d '[:space:]'
 }
 
 # Extract metrics from transcript-metrics.json (post-hoc transcript analysis).
@@ -217,7 +216,7 @@ analyze_single_run() {
 
     # Find implementation and test files
     local impl_files_list=$(find_impl_files "$run_dir")
-    local test_file=$(find_test_file "$run_dir")
+    local test_files_list=$(find_test_files "$run_dir")
 
     # Build bash array of impl files (handles spaces in paths and multi-file katas)
     local impl_files=()
@@ -225,6 +224,14 @@ analyze_single_run() {
         while IFS= read -r f; do
             impl_files+=("$f")
         done <<< "$impl_files_list"
+    fi
+
+    # Same for test files — workflows differ in how many spec files they write.
+    local test_files=()
+    if [ -n "$test_files_list" ]; then
+        while IFS= read -r f; do
+            test_files+=("$f")
+        done <<< "$test_files_list"
     fi
 
     # Code metrics
@@ -254,18 +261,24 @@ analyze_single_run() {
         report_content+="- **Implementation**: Not found\n"
     fi
 
-    # Test file
-    if [ -n "$test_file" ] && [ -f "$test_file" ]; then
-        test_loc=$(wc -l < "$test_file" | tr -d '[:space:]')
-        test_count=$(grep -c "it(" "$test_file" 2>/dev/null | tr -d '[:space:]' || echo "0")
-        todo_count=$(grep -c "it.todo" "$test_file" 2>/dev/null | tr -d '[:space:]' || echo "0")
+    # Test files (aggregate across all *.spec.ts in src/)
+    if [ ${#test_files[@]} -gt 0 ]; then
+        local test_basenames=""
+        for f in "${test_files[@]}"; do
+            local f_loc=$(wc -l < "$f" | tr -d '[:space:]')
+            test_loc=$((test_loc + f_loc))
+            [ -n "$test_basenames" ] && test_basenames+=", "
+            test_basenames+="$(basename "$f")"
+        done
+        test_count=$(count_test_cases "${test_files[@]}")
+        todo_count=$(count_test_todos "${test_files[@]}")
 
-        echo -e "  Test file LOC: $test_loc"
+        echo -e "  Test LOC: $test_loc (across ${#test_files[@]} file(s))"
         echo -e "  Active tests: $test_count"
         echo -e "  Remaining todos: $todo_count"
 
-        report_content+="- **Test file**: $(basename "$test_file")\n"
-        report_content+="- **Test file LOC**: $test_loc\n"
+        report_content+="- **Test files**: $test_basenames\n"
+        report_content+="- **Test LOC** (total): $test_loc\n"
         report_content+="- **Active tests**: $test_count\n"
         report_content+="- **Remaining todos**: $todo_count\n\n"
     else
@@ -812,6 +825,9 @@ EOF
         local verification_total=0
         local verification_passed=0
         local verification_invoke_failed=0
+        # Scenarios whose "output" was a package-manager error rather than
+        # anything the agent's CLI produced. See the guard below.
+        local verification_pm_failed=0
         # cli_built starts as null (no verification suite present means
         # we have no signal). The block below sets it to true as soon
         # as the suite is detected, and may flip it back to false if
@@ -853,6 +869,20 @@ EOF
                 (cd "$run_dir" && pnpm add -D tsx --store-dir "$store_dir" --prefer-offline --silent 2>&1 | tail -3) || true
             fi
 
+            # Pre-flight: the verification stage shells out to the package
+            # manager, so a host pnpm that differs from the container pin
+            # produces failures that have nothing to do with the agent's code.
+            # The pin is read from the Dockerfile so there is one source of truth.
+            local pnpm_pin
+            pnpm_pin=$(grep -oE 'pnpm@[0-9]+\.[0-9]+\.[0-9]+' "$EXPERIMENTS_DIR/docker/Dockerfile" 2>/dev/null | head -1 | cut -d@ -f2)
+            local pnpm_here
+            pnpm_here=$(pnpm --version 2>/dev/null || echo "")
+            if [ -n "$pnpm_pin" ] && [ -n "$pnpm_here" ] && \
+               [ "${pnpm_here%%.*}" != "${pnpm_pin%%.*}" ]; then
+                echo -e "  ${YELLOW}WARNING: pnpm $pnpm_here here, container pin is $pnpm_pin.${NC}"
+                echo -e "  ${YELLOW}Verification may fail for environment reasons. Prefer analyzing in the container.${NC}"
+            fi
+
             : > "$run_dir/verification.log"
             for input_file in "$verification_dir"/scenarios/*.input.json; do
                 [ -e "$input_file" ] || break
@@ -889,6 +919,12 @@ EOF
                     # exist — a hard correctness failure.
                     if [ -z "$actual" ]; then
                         verification_invoke_failed=$((verification_invoke_failed + 1))
+                    fi
+                    # pnpm prints its own failures to STDOUT, so they land in
+                    # $actual and masquerade as CLI output. No agent CLI emits
+                    # ERR_PNPM_, so this signature is unambiguous.
+                    if echo "$actual" | grep -qE 'ERR_PNPM_|Command failed with exit code [0-9]+: pnpm'; then
+                        verification_pm_failed=$((verification_pm_failed + 1))
                     fi
                 fi
             done
@@ -927,6 +963,36 @@ EOF
                 # file: keep the old invocation-side-effect heuristic.
                 cli_built=false
                 echo -e "${RED}CLI entry point missing (no scenario invoked the command)${NC}"
+            fi
+
+            # Harness-failure guard. A scenario producing no stdout is
+            # ambiguous on its own: the agent's CLI may be broken, or the
+            # package manager may have died before the CLI ever ran. Only the
+            # second is an environment fault, and recording it as 0 %
+            # correctness is worse than recording nothing — the number is
+            # plausible, survives review, and gets quoted into findings.
+            # Discriminate on the ERR_PNPM_ signature in what the CLI actually
+            # emitted (not the [WARN] lines, which appear even on success).
+            # Keying on silence alone would suppress genuine zeros from a CLI
+            # that throws; keying on the signature cannot, since no agent CLI
+            # produces it.
+            # The signature can arrive on either stream depending on the pnpm
+            # version: it goes to stdout (captured in $actual, counted as
+            # verification_pm_failed) on pnpm 11, and could go to stderr
+            # (verification.log) elsewhere. Accept either.
+            if [ "$verification_total" -gt 0 ] && \
+               { [ "$verification_pm_failed" -eq "$verification_total" ] || \
+                 { [ "$verification_invoke_failed" -eq "$verification_total" ] && \
+                   grep -qE 'ERR_PNPM_|Command failed with exit code [0-9]+: pnpm' \
+                        "$run_dir/verification.log" 2>/dev/null; }; }; then
+                echo -e "${RED}Verification could not run: the package manager failed before the CLI.${NC}"
+                echo -e "${RED}  pnpm here: ${pnpm_here:-unknown}   container pin: ${pnpm_pin:-unknown}${NC}"
+                echo -e "${RED}  All ${verification_total} scenarios returned a package-manager error${NC}"
+                echo -e "${RED}  instead of CLI output — an environment fault, not a result.${NC}"
+                echo -e "${RED}  metrics.json left UNCHANGED (a 0 here reads as a correctness collapse).${NC}"
+                echo -e "${RED}  Re-run this analysis inside the container:${NC}"
+                echo -e "${RED}    experiments/reanalyze-in-container.sh $run_dir${NC}"
+                exit 3
             fi
 
             echo -e "${YELLOW}Verification: ${verification_passed}/${verification_total} scenarios passed${NC}"
