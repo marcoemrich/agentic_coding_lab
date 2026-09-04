@@ -1,0 +1,4 @@
+#!/bin/sh
+# Entry point for the `claim-office` executable: reads a scenario JSON
+# document from stdin and writes the results JSON document to stdout.
+exec "$(dirname "$0")/../node_modules/.bin/tsx" "$(dirname "$0")/../src/cli.ts" "$@"

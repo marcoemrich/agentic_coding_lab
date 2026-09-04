@@ -1,0 +1,71 @@
+{
+  "wall_clock_seconds": 537.17,
+  "total_tokens": {
+    "input": 10931,
+    "output": 68580,
+    "cache_read": 10620393,
+    "cache_creation": 103927,
+    "total": 10803831
+  },
+  "context_utilization_pct": 50,
+  "context_window_tokens": 200000,
+  "context_peak_tokens": 100081,
+  "cost_usd": null,
+  "message_count": 154,
+  "tool_calls": {
+    "Read": 2,
+    "Bash": 44,
+    "Skill": 2,
+    "Write": 6,
+    "Edit": 44,
+    "Agent": 2
+  },
+  "skill_invocations": {
+    "tdd": 1,
+    "code-review": 1
+  },
+  "task_invocations": {
+    "general-purpose": 2
+  },
+  "cycle_count": 35,
+  "predictions_correct": 0,
+  "predictions_total": 0,
+  "model_versions": [
+    "claude-opus-5"
+  ],
+  "subagent_token_total": 648819,
+  "phases": [
+    {
+      "phase": "general-purpose",
+      "tokens": 229480,
+      "duration_seconds": 28.7,
+      "transcript": "agent-a46adbca90adce223.jsonl",
+      "start_ts": "2026-09-04T08:30:57.230000+00:00"
+    },
+    {
+      "phase": "general-purpose",
+      "tokens": 419339,
+      "duration_seconds": 38.92,
+      "transcript": "agent-a3183d0213ce5a585.jsonl",
+      "start_ts": "2026-09-04T08:31:08.252000+00:00"
+    }
+  ],
+  "phase_source": "subagents",
+  "phase_summary": {
+    "by_phase": {
+      "general-purpose": {
+        "count": 2,
+        "tokens": 648819,
+        "duration_seconds": 67.62
+      }
+    },
+    "averages": {
+      "general-purpose": {
+        "avg_tokens": 324409.5,
+        "avg_duration_seconds": 33.81
+      }
+    },
+    "refactorings_applied": 0,
+    "tests_passed_immediately": 0
+  }
+}
