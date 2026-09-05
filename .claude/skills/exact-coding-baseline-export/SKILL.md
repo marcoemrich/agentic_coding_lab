@@ -43,7 +43,7 @@ three independent axes, and every export applies all three:
 
 | # | Axis | Lab | Export |
 |---|---|---|---|
-| 1 | **Lab content** | autonomy mandate, done-marker, phase-continuation fix | removed (drop `lab-only.md` / strip `LAB-ONLY` fences) |
+| 1 | **Lab content** | autonomy mandate, done-marker, phase-continuation fix | removed — `legacy`: `tdd-experiment-mode.md` not copied, replaced by `templates/tdd-execution-mode.md`; `v66`: drop `lab-only.md`. Both strip `LAB-ONLY` fences. |
 | 2 | **Human checkpoints** | none — runs unattended | HITL checkpoints, default level `full-hitl` |
 | 3 | **Invocation** | auto-loads on every session | explicitly invoked by the user |
 
@@ -188,6 +188,14 @@ if [ -f "$SRC_DIR/.claude/rules/lab-only.md" ]; then LAYOUT=v66; else LAYOUT=leg
 echo "source layout: $LAYOUT"
 ```
 
+**`legacy` is the expected route.** The current recommendation resolves to
+`v6.1-hybrid-testlist-scope-fix`, which has no `lab-only.md`, so the classic
+template path applies. That is deliberate, not an accident of an old source:
+RQ-1.19 measured what the split layout costs at runtime, and the export
+convenience did not justify it. `v66` therefore only fires when someone names
+a split workflow explicitly — see the note on that branch below before doing
+so.
+
 **Common to both layouts** — copy 1:1 from `$SRC_DIR/.claude/` to
 `$TARGET/.claude/`:
 
@@ -213,9 +221,24 @@ same reasoning removes the `permission` block from `opencode.json` (see
 
 - Also copy `rules/subagent-prompts.md` — it holds the isolated-subagent
   prompt contracts and is workflow methodology, not lab infrastructure.
-- Do **not** copy `rules/lab-only.md`. Dropping it is the whole point of
-  the v6.6 layout: it carries the autonomy mandate, the done-marker
-  contract, and the phase-continuation fix.
+- Do **not** copy `rules/lab-only.md`. It carries the autonomy mandate, the
+  done-marker contract, and the phase-continuation fix — a single deletion
+  instead of the template reconstruction the `legacy` path needs.
+
+  **That convenience has a measured price.** RQ-1.19 compared four workflows
+  on `opus-5-no-thinking` and found the split raises the refactor rate per
+  cycle at an unchanged cycle count: 0.41 for `v6.1` against 0.52, 0.56 and
+  0.69 for the three split variants on claim-office. `v6.1.5-pure-split-cc`
+  isolates the cause — a pure partition of `v6.1` carrying only 3.5 % more
+  rule text still shows +27 % refactorings (Welch p = 0.009) and +20 %
+  wall-clock (p = 0.034). It is the partition, not the text volume, and no
+  quality metric improves in return. `v6.1.1-lab-split-cc` adds an
+  always-refactor failure mode on top (4 of 10 runs, Fisher p = 0.010).
+
+  So a `v66` export ships a workflow that costs roughly a fifth more
+  wall-clock than the same instructions unsplit. Say so in the snapshot
+  README when exporting one, and prefer `legacy` unless the consumer has
+  asked for the split layout for their own reasons.
 - After copying, strip any `LAB-ONLY` fenced regions from every copied
   `.md` (they appear in `rules/tdd.md`; other phase files may gain them
   later):
