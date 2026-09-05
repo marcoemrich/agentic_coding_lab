@@ -194,7 +194,7 @@ Tatsächlich gelaufen wurden ~235 Runs (alte Studie, Stand 11.02.2026, archivier
 
 **Debug-Pattern (was wiederholt funktioniert hat):**
 
-1. **Spot-Check vor Aggregation:** `jq '.final_metrics | {cycle_count, refactorings_applied, predictions_correct, predictions_total, tests_passing}'` auf den letzten Run. Healthy für TDD-Workflows: `cycle_count≥3`, `refactorings_applied≥1`, `predictions_total ~ 2 × cycle_count`. Alles 0 → Bug oder echter Workflow-Ausfall.
+1. **Spot-Check vor Aggregation:** `jq '.summary_metrics + .final_metrics | {cycle_count, refactorings_applied, predictions_correct, predictions_total, tests_passing}'` auf den letzten Run. Die Block-Addition ist notwendig: die vier TDD-Marker stehen in `summary_metrics`, nur `tests_passing` in `final_metrics` — `.final_metrics` allein liefert vier `null` und lässt gesunde Runs defekt aussehen. Healthy für TDD-Workflows: `cycle_count≥3`, `refactorings_applied≥1`, `predictions_total ~ 2 × cycle_count`. Alles 0 → Bug oder echter Workflow-Ausfall.
 - 2. **"Plötzliche Schritte"-Diagnose:** Wenn Metrik X zwischen zwei Workflow-Versionen / Container-Builds sprunghaft auf 0 fällt, ist es fast immer Pipeline, nicht Verhalten.
 3. **Erst Pipeline prüfen, dann Befund glauben:** Vor "v4/v5 verhält sich plötzlich anders"-Schluss immer `analyze-run.sh`-Diff und Container-Image-Diff zum letzten gesunden Stand prüfen (steht so auch in MEMORY.md).
 4. **Run-Completion-Signal ist `metrics.json | jq .run_status.exit_reason`**, nicht `analysis-report.md`-Existenz. Beim Aufräumen unfertiger Runs sonst Datenverlust.

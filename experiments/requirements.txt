@@ -1,0 +1,26 @@
+# Host Python dependencies for the analysis scripts in this directory.
+#
+# Only ONE script needs anything beyond the stdlib:
+#   aggregate-by-query.py  →  pandas, PyYAML, tabulate
+#
+# Everything else (analyze_transcript.py, batch-plan-from-rq.py, compute-cost.py,
+# compute-mutation-score.py, generate-snapshot-skeleton.py, measure-tdd-rigour.py,
+# parse_*_transcript.py) is stdlib-only and needs no install.
+#
+# tabulate is the trap: it is NEVER imported by our code. pandas needs it
+# internally for DataFrame.to_markdown(), which is how summary.md is written.
+# Without it aggregate-by-query.py dies late — after matching runs and writing
+# runs.csv — with "ImportError: Missing optional dependency 'tabulate'", so a
+# grep for imports will not find the requirement and runs.csv looks like a
+# successful aggregation.
+#
+# Install (Debian/Ubuntu system Python is PEP 668 "externally managed", so a
+# plain --user install is refused):
+#   pip3 install --user --break-system-packages -r experiments/requirements.txt
+# or, preferred on a fresh machine, a venv:
+#   python3 -m venv .venv && .venv/bin/pip install -r experiments/requirements.txt
+#   .venv/bin/python experiments/aggregate-by-query.py <rq-dir>
+
+pandas
+PyYAML
+tabulate

@@ -67,9 +67,12 @@ subtrees.
 - **Read `experiments/workflows/MARKERS.md` first** (hard parser requirements — four markers drive all TDD metrics; altering one silently zeros the corresponding metric, no error). **For content design** (Theory-of-Mind / Why-Block pattern, reduction learnings from RQ-rules/RQ-pep/RQ-emoji/RQ-lean, Skill-vs-Subagent architecture gradient): `research/workflow-dev/workflow-construction.md`.
 - Smoke-test after every workflow change:
   ```bash
-  jq '.final_metrics | {cycle_count, refactorings_applied, predictions_correct, predictions_total, tests_passing}' experiments/runs/<latest>/metrics.json
+  jq '.summary_metrics + .final_metrics | {cycle_count, refactorings_applied, predictions_correct, predictions_total, tests_passing}' experiments/runs/<latest>/metrics.json
   ```
   Healthy: `cycle_count >= 3`, `refactorings_applied >= 1`, `predictions_total ~ 2 * cycle_count`.
+  The block merge is load-bearing: the four TDD markers live in `summary_metrics`,
+  only `tests_passing` in `final_metrics`. Querying `.final_metrics` alone returns
+  four `null`s and makes every healthy run look broken.
 
 ### Writing findings
 
@@ -114,6 +117,17 @@ subtrees.
 - `completed_within_budget` = Boolean derived from `exit_reason`.
 - `mutation_score` (0.0–1.0) = Stryker mutation score. **Opt-in per RQ** (must appear in `outcomes:`) and only computed for `tests_passing = true`. Driven by `experiments/compute-mutation-score.py`, run between batch and aggregation. Mutation testing is expensive (minutes per run), so do not add it to `analyze-run.sh` or routine reanalysis.
 - Full metrics table in README section "Metrics".
+
+## Host dependencies
+
+- The analysis scripts are stdlib-only **except `aggregate-by-query.py`**, which needs
+  `pandas`, `PyYAML` and `tabulate`. Declared in `experiments/requirements.txt`.
+- **`tabulate` is never imported by our code** — pandas pulls it in for
+  `DataFrame.to_markdown()`, which writes `summary.md`. Missing it fails the
+  aggregation *after* `runs.csv` is already written, so the run looks half-successful
+  and no grep over imports reveals the dependency.
+- System Python on this host is PEP 668 externally managed; a plain `pip3 install --user`
+  is refused. Use `--break-system-packages` for the user site, or a venv.
 
 ## Docker & version pins
 
