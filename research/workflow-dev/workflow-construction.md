@@ -30,7 +30,7 @@ Die Workflow-Files der vor-v6.1-Generation + erste Reduktions-Kette (v6.5er, v6.
 | `v6.1-hybrid-testlist-scope-fix` | v6-hybrid + Test-List-Scope-Fix | **Aktuelle Default-Basis für Reduktions-RQs** |
 | `v7-hybrid-green-refactor` / `v7.1-...-testlist-scope-fix` | Green und Refactor isoliert | Pareto-dominiert von v6 (RQ-context, v1-Archiv) |
 | `v8a-delayed-refactor-agent` / `v8b-delayed-refactor-native` | Oneshot + End-Refactor (Vibe-Coding-Kontrolle) | Kontrolle für "periodisches TDD vs End-Refactor" |
-| `basic-sol-tdd-pi` / `basic-sol-tdd-subagent-pi` | Predictive TDD aus dem `sol_tdd`-Projekt, pi-nativ. Paar auf der Architektur-Achse: Refactor inline vs. isolierter Subagent | Fremd-Methodik-Import, siehe eigener Abschnitt unten |
+| `basic-sol-tdd-*` (7 Varianten) | Predictive TDD aus dem `sol_tdd`-Projekt. Referenz `basic-sol-tdd-pi` (pi-nativ, Refactor inline), Subagent-Arm, vier APP-/Mess-Varianten, Claude-Code-Port | Fremd-Methodik-Import, siehe eigener Abschnitt unten |
 
 ### `basic-sol-tdd`-Paar (Import aus `sol_tdd`, pi)
 
@@ -109,6 +109,10 @@ Vergleichspunkt, sondern der amtierende Sieger.
 Die beiden Smoke-Runs (`game-of-life-prose`) gehören in keine Zelle — falscher
 Prompt-Stil, sie belegen nur die Marker-Mechanik.
 
+**Stand: RQ-1.16 ist beantwortet.** Der v3-Boden hält *nicht* überall — auf
+claim-office schlägt die native Linie ihn deutlich, auf game-of-life und
+sphinx-score nicht. Die Konsequenzen stehen im nächsten Abschnitt.
+
 #### `predictions_total ≈ 2 × cycle_count` gilt hier nicht
 
 Die MARKERS.md-Konvention "zwei Prediction-Lines pro Cycle" setzt voraus, dass
@@ -172,6 +176,102 @@ Nebenbefund für die pi-Parser-Mechanik: `## Red` und der zugehörige
 Nur weil `parse_pi_transcript.py` mit `loose_gate=True` arbeitet, werden die
 Predictions überhaupt gezählt (P5-Hinweis in `MARKERS.md`).
 
+#### Varianten der Sol-Linie und ihr Stand (RQ-1.16, RQ-1.17, RQ-1.18)
+
+Aus dem Paar sind sieben Workflows geworden. Alle teilen Methodik, Marker und die
+beiden Lab-Anpassungen und unterscheiden sich **ausschließlich** im Refactor-Auftrag
+und darin, wo er läuft. Alle Zahlen unten: `claim-office-example-mapping` ×
+`gpt-5-6-sol-codex` (OpenAI-Subscription-Route), n=5 je Zelle.
+
+| Variante | Was anders vs `basic-sol-tdd-pi` | Treiber-RQ | Kernbefund |
+|---|---|---|---|
+| `basic-sol-tdd-pi` | — (Referenz: Refactor inline, nur Four Rules, keine Mass-Metrik) | [RQ-1.16](1.16-native-sol-workflows-subscription/findings.md), [RQ-1.17](1.17-app-vs-four-rules-sol/findings.md) | **Main Line.** Beste oder gleichauf-beste Dekomposition im gesamten Feld bei 100 % Korrektheit |
+| `basic-sol-tdd-subagent-pi` | Four-Rules-Review im isolierten `subagent` statt inline | [RQ-1.16](1.16-native-sol-workflows-subscription/findings.md) | **Verworfen.** Kein Qualitätsvorteil auf keiner der drei Katas, 1.9–2.7× Wallclock, letzter Platz bei externer Korrektheit auf beiden novellen Katas (F-1.16.3, F-1.16.4, F-1.16.8) |
+| `basic-sol-tdd-app-pi` | APP-Mass unter Rule 4 subordiniert, qualitativ; Rule-Reihenfolge explizit als bindend markiert | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Kein Gewinn. Verhindert den APP-Schaden (F-1.17.1), erzeugt aber keinen Vorteil — und ist mit 1226 s die **langsamste** Zelle des Feldes bei den wenigsten Tokens (F-1.18.1, F-1.18.4) |
+| `basic-sol-tdd-app-measured-model-pi` | + Vorher/Nachher-Messung, Modell rechnet alle drei Metriken von Hand | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Nimmt `cognitive_max`/`cognitive_avg`/`mccabe_max` — für +16 % Wallclock und +25 % Tokens (F-1.18.2) |
+| `basic-sol-tdd-app-measured-eslint-pi` | + ESLint für cognitive/McCabe, Mass weiter von Hand | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Schlechteste Dekomposition der Mess-Arme bei +31 % Wallclock und +44 % Tokens |
+| `basic-sol-tdd-app-measured-tool-pi` | + ESLint **und** AST-Skript (`.pi/tools/app-mass.mjs`); Modell rechnet nichts | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Teuerste Zelle (8.22 M Tokens, +78 %) ohne besseres Messergebnis als Handrechnung (F-1.18.3) |
+| `basic-sol-tdd-cc` | Port auf Claude Code (`.claude/commands/` + `rules/`) statt `.pi/skills/` | — | Andere Harness und andere Route. Runs existieren auf `opus-5-no-thinking` und `opus-4-8-no-thinking`; **nicht** mit den pi-Zellen poolen |
+
+##### Was die drei RQs zusammen zeigen
+
+**Die Linie schlägt die v-Linie auf ihrem eigenen Terrain (RQ-1.17).** Bei konstantem
+Modell, Kata und Prompt-Stil gewinnt `basic-sol-tdd-pi` jede Dekompositions-Metrik
+gegen `v6.2.1-phase-continuation-pi` — und gegen den v3-Boden gleich mit:
+
+| Metrik | v3 (Boden) | `basic-sol-tdd-pi` | `v6.2.1` (v-Linie) | Richtung |
+|---|---:|---:|---:|---|
+| `cc_avg_loc_per_function` | 8.45 | **6.60** | 9.52 | kleiner = besser |
+| Complexity Peak | 27.0 | **18.0** | 24.0 | kleiner = besser |
+| `cognitive_max` | 11.4 | **4.0** | 8.2 | kleiner = besser |
+| `mccabe_max` | 9.8 | **5.4** | 6.2 | kleiner = besser |
+| Smell Total | 4.2 | **0.0** | 9.6 | kleiner = besser |
+| Code Mass (APP) | 750.0 | 556.8 | **492.4** | Mechanismus-Zeuge |
+
+Der Mechanismus ist der Refactor-Brief selbst. `refactor.md` der v-Linie bepreist
+Extraktion (**Invocation (Mass: 2)**) — eine extrahierte Funktion wird doppelt
+belastet, einmal fürs Existieren und einmal je Aufrufstelle. Mass-Minimierung
+belohnt also Inlining, und die Zelle tut genau das: wenigster Code, in die wenigsten
+Stücke geschnitten (6.6 Funktionen gegen 9.8). Der eingebaute Schutz dagegen
+("Rule 2 trumps APP: Clarity over low mass") hält auf Sol nicht.
+
+**Nichts, was seither draufgesetzt wurde, hat sich bezahlt gemacht (RQ-1.18).**
+Vier Varianten, alle bei 100 % Korrektheit, keine besser als die nackte Referenz:
+Die Basis hält `cc_avg_loc_per_function` (gleichauf mit Arm A, beide innerhalb 1 σ),
+`cc_median_loc_per_function`, Production LoC und Duration allein. Die Mess-Arme
+nehmen `cognitive_max` und `mccabe_max` — für +16–35 % Wallclock und +25–78 % Tokens
+gegen die Basis. F-1.18.1 in einem Satz: Subordination verhindert den Schaden,
+erzeugt aber keinen Gewinn.
+
+Zwei Nebenbefunde, die über die Sol-Linie hinaus gelten:
+
+- **Dauer und Tokens sind auf reasoning-on-Routen keine austauschbaren Kostenproxys
+  (F-1.18.4).** Arm A ist die langsamste Zelle bei den *wenigsten* Tokens: ein
+  längerer, präskriptiverer Brief schlägt sich als Denkzeit nieder, nicht als
+  Output-Volumen. Ein Brief-Längen-Effekt ist in der Token-Spalte unsichtbar.
+- **Prosa-Vorschriften ohne mechanische Durchsetzung werden bestenfalls teilweise
+  befolgt (F-1.18.5).** Alle drei Mess-Arme waren angewiesen, *jedes* Refactoring mit
+  einer Messung zu klammern; ein B1-Run lieferte einen einzigen Messblock auf 30
+  Refactorings, ein anderer 46 auf 32. Die Effekte in F-1.18.2/F-1.18.3 sind damit
+  Untergrenzen. Der Hebel wäre ein Marker pro Messung — so wie die Phasen-Marker,
+  ohne die der Parser einen Run verwirft.
+
+##### Empfehlung
+
+- **Große, novelle Specs (claim-office-artig) auf Sol/Subscription: `basic-sol-tdd-pi`.**
+  Die schlankste Fassung — 627 Zeilen, vier Dateien, keine Mass-Metrik, keine Messung,
+  kein Subagent. Preis gegen den v3-Boden: 4.0× Wallclock und 6.9× Kosten, das ist der
+  Gegenwert der Qualitäts- und Vorhersagbarkeits-Lücke aus F-1.16.1.
+- **Kleine oder trainingsbekannte Katas (game-of-life, sphinx-score) auf Sol/Subscription:
+  `v3-basic-tdd-pi`.** Die native Linie schlägt den Boden dort nicht und kostet 3.2×
+  (GoL, F-1.16.2) bzw. 3.6× (sphinx, F-1.16.7) mehr. Auf sphinx aus einem anderen Grund
+  als auf GoL: dort lösen die Metriken überhaupt nichts auf.
+- **Keine der sechs Zusatz-Varianten ist als Default empfohlen.** Der Subagent-Arm ist
+  verworfen, die vier APP-/Mess-Varianten sind kostenneutral bis teurer ohne
+  Qualitätsgegenwert.
+- **`sphinx-score` nicht für Workflow-Vergleiche auf Sol verwenden** (F-1.16.7). Als
+  billige Korrektheits-Probe bleibt es brauchbar. Vor Zellen auf einem neuen
+  Kata-Modell-Paar: `cc_functions` an einem einzelnen Probe-Run prüfen — ein Mittel
+  nahe 1 heißt, dass keine Dekompositions-Metrik etwas auflösen wird.
+
+##### Offene Fronten
+
+- **Modell-Achse.** Alles oben ist auf **einem** Modell gemessen (`gpt-5-6-sol-codex`).
+  [RQ-spark-vs-sol](../questions-pi/1.4-spark-vs-sol/findings.md) hat die Achse auf
+  sphinx geöffnet (Spark hält die Korrektheit nicht),
+  [RQ-astra-native-sol](../questions-pi/1.6-astra-native-sol-line/) öffnet sie auf
+  claim-office für GPT-6 Astra — und prüft damit, ob F-1.17.1 eine Eigenschaft des
+  Briefs oder eine Eigenschaft von Sol ist.
+- **Route.** Ob F-1.16.1 auf der Requesty-Route überlebt oder mit dem Routen-Effekt
+  (F-1.3.6) verschränkt ist, ist offen — die claim-office-Zellen müssten auf
+  `gpt-5-6-sol` neu laufen.
+- **Größe vs. Novelty.** Die Inversion zwischen claim-office und game-of-life ist
+  belegt, ihre Ursache nicht: `sphinx-score` war als Novelty-Kontrolle vorgesehen und
+  hat nichts aufgelöst (F-1.16.7). Eine echte Mittelgröße (`claim-office-lite`) steht aus.
+- **Woher der Vorteil der Referenz kommt** — Methodik oder Abwesenheit von APP — ist
+  nicht getrennt. Der Test wäre, den APP-Brief der v-Linie bei konstanter Architektur
+  in die native Linie zu tauschen.
+
 ### v6.1-Reduktionslinie (aktuell aktiv)
 
 Alle Varianten leben unter `experiments/workflows/v6.1-*` und differieren nur in den fünf Workflow-Files (`commands/test-list.md`, `commands/red.md`, `commands/green.md`, `agents/refactor.md`, `rules/tdd.md`). Settings, Marker und Subagent-Mechanik identisch zu `v6.1-hybrid-testlist-scope-fix`.
@@ -193,6 +293,7 @@ Alle Varianten leben unter `experiments/workflows/v6.1-*` und differieren nur in
 2. **Predictions-verbatim-Block in `red.md` Step 7** — ohne diesen mergen Cycles die zwei Prediction-Lines zu einer, `predictions_total` halbiert sich.
 3. **"Mandatory refactoring attempt" in `refactor.md`** — ohne explizite Pflicht überspringt das Modell die Refactor-Phase auf einfachen Tests; `refactorings_applied` fällt.
 4. **APP-Mass-Berechnung in `refactor.md`** — nicht für die Metrik (die wird extern berechnet), sondern weil der explizite Vorher/Nachher-Vergleich das Modell zwingt, Refactorings *messbar* zu machen statt nur kosmetisch.
+   - **Modell-Caveat (bindend):** Das gilt für die v6-Linie auf Opus. Auf Sol/pi kehrt sich der Effekt um — RQ-1.17 F-1.17.1 misst denselben Brief als *Ursache* der schlechtesten Dekomposition im Feld, schlechter als der strukturlose v3-Boden, weil die Mass-Tabelle Extraktion bepreist und damit Inlining belohnt. Punkt 4 ist also kein modell-portabler Schutz, sondern eine Opus-Beobachtung. Vor der Übernahme auf ein neues Modell zu validieren.
 
 ### Aktuelle Front
 
@@ -208,6 +309,7 @@ Alle Varianten leben unter `experiments/workflows/v6.1-*` und differieren nur in
 - **Default für Code-Qualität auf trainingsbekannten Katas (GoL) × opus-4-7-portkey-no-thinking:** `v6.3-audit-bundle` (RQ-1.8). Eliminiert `tests_passed_immediately` deterministisch, +10 % Refactorings bei σ −64 %. **Nur** auf GoL/saturierter Korrektheit — auf claim-office bricht der Workflow (RQ-1.9).
 - **Default für Speed/Token-Effizienz, trainingsbekannte Katas:** `v6.1-no-pep` auf GOL. Auf claim-office nicht empfohlen.
 - **Default für Methoden-Vergleichs-RQs (Reduktions-Kette):** `v6.1-hybrid-testlist-scope-fix` als Baseline.
+- **Default auf Sol/pi (OpenAI-Subscription-Route):** kata-abhängig, und die v-Linie ist in beiden Fällen nicht die Antwort. Große novelle Specs → `basic-sol-tdd-pi`; kleine oder trainingsbekannte Katas → `v3-basic-tdd-pi`. Begründung und die sechs verworfenen Varianten: Abschnitt "Varianten der Sol-Linie und ihr Stand" oben (RQ-1.16, RQ-1.17, RQ-1.18).
 - **Metric-driven Refactor lohnt über v6.2, aber der wirksame Hebel-Zeitpunkt ist kata- UND modell-abhängig — kein globaler v6.2-Ersatz.** Validiert in RQ-1.12 (opus-4-7) und RQ-1.13 (opus-4-8), je v6.2 / v6.4-per-cycle / v6.5-end-refactor × claim-office + game-of-life. Korrektheit durchgehend gehalten (kein Bundle-Bruch). Der Spitzen-Komplexitäts-Sieger **wechselt mit dem Modell**:
   - **opus-4-7:** der per-cycle-Refactor `v6.4-metric-driven-refactor` ist auf BEIDEN Katas der robuste Sieger (cognitive_max: claim-office 5.0→2.4, GoL 4.0→2.2; jeweils ≥ 1 σ). `v6.5-end-refactor` wirkt nur auf mehrteiligen Codebasen (claim-office: gleichauf mit v6.4 + kleinste code_mass durch Cross-file-Konsolidierung); auf der einteiligen GoL-Library ist v6.5 von v6.2 ununterscheidbar und erhöht code_mass.
   - **opus-4-8:** `v6.5-end-refactor` hat auf BEIDEN Katas die niedrigste Spitzen-Komplexität (cognitive_max: claim-office 3.6→2.8, GoL 5.6→2.4); `v6.4` fällt auf claim-office auf v6.2-Niveau zurück (3.6 = 3.6, kein per-cycle-Gewinn). Der v6.5-Cross-file-Mehrwert aus 4.7 (kleinere code_mass) verschwindet auf 4.8 im σ-Rauschen — auf beiden Katas liegen alle drei code_mass-Means innerhalb 1 σ. Was bleibt, ist eine allgemeine Komplexitäts-Senkung, kein spezifischer Cross-file-Hebel.
