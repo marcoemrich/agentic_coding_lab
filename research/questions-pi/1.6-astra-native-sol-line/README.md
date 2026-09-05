@@ -60,7 +60,7 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: aktiv
+status: answered
 ---
 
 # RQ-astra-native-sol: Does the Native Sol Line Transfer to Astra?
@@ -326,18 +326,22 @@ also what every cell of the Sol row carries, so the two rows are balanced.
    reference arm) alongside the Astra fill, +5 runs, and compare against its
    August values. Worth running if any H1/H2 result lands close to the noise
    floor; unnecessary if the model separation is large.
-2. **`cost_usd` must not be read from `runs.csv`.** Astra's `models.json` entry
-   ships without a `cost` block — its tariff is unknown and copying Sol's would
-   fabricate it — so Astra reports a structural 0, while the Sol codex cells carry
-   measured inline costs from the Responses API. Astra would read as free. On a
-   flat-rate subscription no per-token charge is incurred by either model anyway.
-   Token counts and wall-clock are the cost signal.
-3. **Astra's declared context window is inherited, not confirmed.**
-   `contextWindow` 272000 / `maxTokens` 128000 in `models.json` are the GPT-5.6
-   family defaults. claim-office is the largest kata in the lab (Code Mass
-   758–997), so this RQ is the first to put Astra under real context pressure.
-   Under-declaring is safe; verify upstream before reading any context-pressure
-   result.
+2. **`cost_usd` must not be read from `runs.csv` — corrected by the fill.** The
+   expectation here was a structural 0. What the runs show is worse: `gpt-6-astra`
+   is not declared in `pi-config/agent/models.json` at all, pi logs
+   `Warning: Model "gpt-6-astra" not found for provider "openai-codex". Using custom
+   model id.`, and then prices the run with **Sol's tariff**. Verified to the cent on
+   one run: 161 313 input × $5/M + 18 725 output × $30/M + 7 970 944 cache-read ×
+   $0.5/M = $5.353787 = the recorded `cost_usd`. The column carries Sol's list price
+   on Astra's tokens — fabricated, not measured, and not Astra's tariff. On a
+   flat-rate subscription no per-token charge is incurred anyway. Tokens and
+   wall-clock are the cost signal.
+3. **Astra's context window is undeclared, not inherited — corrected by the fill.**
+   There is no `models.json` entry for `gpt-6-astra`, so there is no
+   `contextWindow` / `maxTokens` declaration to inherit; pi falls back to its own
+   defaults. The model itself runs correctly (transcripts record `gpt-6-astra`
+   throughout, no fallback to Sol), but no context-pressure result may be read from
+   this RQ.
 4. **The native line is an adaptation, not the source methodology.** The
    `sol_tdd` skills carry a human-in-the-loop autonomy agreement that was removed
    for unattended measurement, and markers P1–P7 were added where the source
