@@ -109,6 +109,24 @@ fi
 plan_basename="$(basename "$plan_file")"
 plan_stem="${plan_basename%.json}"
 
+# ---------------------------------------------------------------------------
+# Pre-flight: pi model wiring
+# ---------------------------------------------------------------------------
+# A pi model wired in run-batch.sh but undeclared in models.json still RUNS --
+# pi passes the id through -- but is then priced with another model's tariff,
+# producing a cost_usd that looks measured and is fabricated. Nothing else in
+# the run signals it: exit_reason ok, correct model in metrics.json, quality
+# metrics unaffected. Warn rather than block: the quality data stays valid, and
+# only the cost column is wrong.
+if [ -x "$SCRIPT_DIR/../check-pi-model-wiring.py" ]; then
+    if ! wiring_out="$("$SCRIPT_DIR/../check-pi-model-wiring.py" 2>&1)"; then
+        echo "WARNING: pi model wiring is inconsistent -- cost_usd will be fabricated"
+        echo "$wiring_out" | sed 's/^/  /'
+        echo "  (batch continues; quality metrics are unaffected)"
+        echo
+    fi
+fi
+
 # Portkey routing wird seit 2026-05-25 ausschließlich über
 # experiments/docker/.env gesteuert (env_file-Directive in
 # docker-compose.yml, Variablen ANTHROPIC_BASE_URL, ANTHROPIC_AUTH_TOKEN,
