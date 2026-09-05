@@ -29,10 +29,13 @@ outcomes:
   - cycle_count
   - refactorings_applied
   - predictions_correct_rate
-  # cost. cost_usd is deliberately NOT an outcome here: both models run on the
-  # flat-rate subscription and are wired without per-token prices, so the field
-  # is a constant 0 and would fake a tie. Tokens and wall-clock are the real
-  # cost signal on this route.
+  # cost. cost_usd is NOT an outcome here, but the original reason expired on
+  # 2026-09-05: both models were unpriced, so the field was a constant 0 that
+  # would have faked a tie. Both now carry verified tariffs (Sol $5/$30/$0.50,
+  # Spark $1.75/$14.00/$0.175 per 1M) and compute-cost.py prices every pi run
+  # from one table, so a cost comparison IS now possible here -- Spark is the
+  # cheaper tier by a factor of ~2.9 on input. Adding it is a research decision
+  # this RQ has not made; tokens and wall-clock remain what the findings read.
   - duration_seconds
   - total_tokens
 min_replicates: 5

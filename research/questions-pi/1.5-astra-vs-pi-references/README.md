@@ -218,9 +218,11 @@ apply to the Astra cell unchanged:
 - **`cost_usd` has three different provenances in this matrix and is not an
   outcome.** The Sol codex cell carries *measured* inline costs (0.82–1.24 USD
   across its five runs — pi ships them on the Responses API). The Astra entry
-  in `models.json` ships **without** a `cost` block: its tariff is unknown, and
-  copying Sol's would fabricate a number — so Astra reports 0. This held only
-  after the entry was added; see the correction above. The three Requesty cells are computed from the list-price table
+  in `models.json` ships without a `cost` block, but that no longer decides the
+  metric: since 2026-09-05 `compute-cost.py` PRICES is the single source for all
+  pi runs on both routes, and Astra's verified tariff ($10/$50/$1.00 per 1M) sits
+  there. The column is a list-price comparison across all five cells, never a
+  bill. See the correction above for how it got there. The three Requesty cells are computed from the list-price table
   in `compute-cost.py`. Reading the column would make Astra look free. Never
   quote it as a price comparison; on a flat-rate subscription no per-token
   charge is incurred at all.

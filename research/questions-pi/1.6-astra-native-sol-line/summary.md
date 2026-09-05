@@ -2,7 +2,7 @@
 
 _Does the natively-built Sol workflow line (basic-sol-tdd, Predictive TDD) transfer to GPT-6 Astra — or is its advantage over the Opus-derived EXACT line a property of Sol?_
 
-Generated: 2026-09-05T14:51:05Z
+Generated: 2026-09-05T15:21:58Z
 
 Cells declared: 8 · matched runs: 40 · min_replicates: 5
 

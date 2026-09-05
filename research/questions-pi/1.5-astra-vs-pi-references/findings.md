@@ -188,12 +188,16 @@ two subscription cells despite running more cycles.
 
 - **`cost_usd` is not an outcome and must not be read from `runs.csv`.** The
   column carries three provenances: measured inline costs for the Sol
-  subscription cell, a 0 for Astra, and list-price computations for the three
-  Requesty cells. Astra would read as free. The 0 is now correct but was not
-  produced correctly: until 2026-09-05 `gpt-6-astra` had **no** `models.json`
-  entry at all, so pi priced it with Sol's tariff, and two of these five runs
-  recorded a fabricated 0.77 USD. The entry was added (no `cost` block, mirroring
-  Spark) and the two values normalised to 0. See RQ-astra-native-sol, Caveats.
+  subscription cell and list-price computations for the three Requesty cells.
+  That split no longer exists: since 2026-09-05 `compute-cost.py` is the single
+  source for every pi run on both routes, so all five cells are now computed on
+  the same basis and the column *is* comparable — as a list-price estimate, never
+  as a bill. Astra's tariff ($10/$50/$1.00 per 1M) was looked up and cross-checked
+  against three independent sources; see `research/model-pricing.md`.
+
+  The route to that state was not clean. Until 2026-09-05 `gpt-6-astra` had no
+  `models.json` entry at all, so pi priced it with Sol's tariff and two of these
+  five runs recorded a fabricated 0.77 USD. See RQ-astra-native-sol, Caveats.
 - **Phase timings and context utilization are 0 on the subscription route.**
   `avg_cycle_seconds`, `avg_red_seconds`, `avg_green_seconds`,
   `avg_refactor_seconds` and `context_utilization_pct` come back 0 despite

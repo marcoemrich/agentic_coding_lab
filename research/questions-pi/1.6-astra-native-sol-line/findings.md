@@ -43,8 +43,10 @@ Sol = `gpt-5-6-sol-codex`.
 | | Sol | 14.2 | 9.8 | 11.6 | 6.6 |
 | `cycle_count` — kein 🏆, ambivalent | Astra | n/a | 40.4 | 39.4 | 42.4 |
 | | Sol | n/a | 31.6 | 33.2 | 28.0 |
-| `refactorings_applied` — höher = besser | Astra | n/a | **40.4** 🏆 | **39.4** 🏆 | 23.6 |
+| `refactorings_applied` — kein 🏆, s.u. | Astra | n/a | 40.4 | 39.4 | 23.6 |
 | | Sol | n/a | 31.6 | 32.2 | 14.2 |
+| Refactor-Rate (`refactorings_applied`/`cycle_count`) — kein 🏆, Compliance-Maß | Astra | n/a | 1.00 | 1.00 | 0.56 |
+| | Sol | n/a | 1.00 | 0.96 | 0.52 |
 | `predictions_correct_rate` — kein 🏆, s.u. | Astra | n/a | 98.7 % | 99.2 % | 99.7 % |
 | | Sol | n/a | 98.6 % | 99.4 % | 99.3 % |
 | `duration_seconds` — kleiner = besser | Astra | 343.8 | 1801.6 | 4186.2 | 2565.4 |
@@ -52,7 +54,53 @@ Sol = `gpt-5-6-sol-codex`.
 | `total_tokens` — kleiner = besser | Astra | 528.6 k | 7.46 M | 12.23 M | 7.16 M |
 | | Sol | **271.8 k** 🏆 | 4.61 M | 7.13 M | 4.61 M |
 
-**Reading the table.**
+### Astra gegen Sol auf `basic-sol-tdd-pi` (nativ inline)
+
+The head-to-head the RQ's title question reduces to: the native line's own cell, one
+model against the other, n=5 each. Winner bolded; no trophies here — those are awarded
+once, across all eight cells, in the table above.
+
+| Metrik | Astra | Sol | Astra/Sol |
+|---|---:|---:|---:|
+| Correctness (external) — höher = besser | 1.00 | 1.00 | 1.00 |
+| Correctness (internal) — höher = besser | 100 % | 100 % | — |
+| `cc_avg_loc_per_function` — kleiner = besser | **6.17** | 6.60 | 0.93 |
+| `cc_median_loc_per_function` — kleiner = besser | 4.80 | **4.70** | 1.02 |
+| Complexity Peak — kleiner = besser | **13.4** | 18.0 | 0.74 |
+| `cognitive_max` — kleiner = besser | **3.2** | 4.0 | 0.80 |
+| `cognitive_avg` — kleiner = besser | 2.36 | **2.15** | 1.10 |
+| `mccabe_max` — kleiner = besser | **4.2** | 5.4 | 0.78 |
+| Smell Total — kleiner = besser | **0.0** | **0.0** | — |
+| Production LoC — kleiner = besser | **73.6** | 129.4 | 0.57 |
+| Test LoC — kein Sieger, s.u. | 115.2 | 196.8 | 0.59 |
+| Code Mass (APP) — kein Sieger, Mechanismus-Zeuge | 426.2 | 556.8 | 0.77 |
+| `cc_functions` — kein Sieger, ambivalent | 7.4 | 9.8 | 0.76 |
+| `cycle_count` — kein Sieger, ambivalent | 40.4 | 31.6 | 1.28 |
+| `refactorings_applied` — kein Sieger, s. Haupttabelle | 40.4 | 31.6 | 1.28 |
+| `predictions_correct_rate` — kein Sieger, s. Haupttabelle | 98.7 % | 98.6 % | — |
+| `duration_seconds` — kleiner = besser | 1801.6 | **874.2** | 2.06 |
+| `total_tokens` — kleiner = besser | 7.46 M | **4.61 M** | 1.62 |
+
+**Astra wins the structure, Sol wins the bill.** Both cells clear Correctness (external)
+at 1.0 with all five runs green internally, so the whole comparison sits at equal
+correctness. Astra then takes every complexity metric — Complexity Peak at 0.74×,
+`mccabe_max` at 0.78×, `cognitive_max` at 0.80× — and writes 57 % of the production
+code across 7.4 functions against Sol's 9.8. Smell Total is 0.0 in all ten runs.
+
+Two of Sol's three wins are not real. `cc_median_loc_per_function` differs by 0.1 LoC at
+σ 1.48 (Astra) against 0.67 (Sol), and `cognitive_avg` by 0.21 at σ 0.28/0.19 — both
+inside the noise, and both contradicted by the max-variants of the same metrics, where
+Astra leads clearly. Sol's only substantive win is cost: 2.06× wallclock and 1.62×
+tokens is the price of Astra's structure in this cell, which is the general pattern of
+F-1.6.6 rather than anything specific to the native line.
+
+**Test LoC carries no winner.** Astra writes 59 % of Sol's test code (115.2 against
+196.8) at σ 57.9 — the widest relative spread in the table, ranging across the five
+runs where Sol's stays tight at σ 26.4. Less test code at equal external correctness is
+not by itself better, and this RQ has no mutation score to tell coverage from
+under-testing apart. Read it as an open question, not a result.
+
+**Reading the overview table.**
 
 - **Trophies are awarded across all eight cells, not per model row.** The two rows per
   metric are a layout choice — the contest the RQ poses runs over the whole matrix, so
@@ -69,6 +117,19 @@ Sol = `gpt-5-6-sol-codex`.
   **`cc_functions` gets none** because its direction is not fixed — fewer functions
   can mean cleaner consolidation or missing decomposition, and this RQ has no
   independent way to tell those apart in a single row.
+- **`refactorings_applied` gets no trophy either, and cannot get one here.** In three
+  of the four native cells it is not an independent measurement: the native line
+  refactors by contract in every cycle, so the marker that drives it fires exactly as
+  often as the one that drives `cycle_count`. Astra's inline arm reads `[41, 40, 39,
+  39, 43]` in both rows, run for run, as does its subagent arm and Sol's inline arm.
+  Awarding a trophy there would crown the same quantity the row above is denied one
+  for. Only the EXACT line, which refactors in roughly every second cycle, makes the
+  two rows come apart.
+- **The Refactor-Rate is a compliance measure, not a ranking.** 1.00 is the
+  contractual ceiling of the native line, not an achievement over the EXACT line's
+  0.52–0.56 — it says the workflow did what it prescribes. Sol's subagent arm is the
+  only cell where the contract slips (0.96, one run at 0.67, and three runs above 1.0
+  where a refactor subagent ran without a matching `## Red`).
 - **Code Mass (APP) gets no trophy.** It is the witness for the mechanism under
   test, not a quality ranking — see F-1.6.2.
 - **`predictions_correct_rate` gets no trophy.** All six marker-bearing cells lie
@@ -270,8 +331,18 @@ carries opposite meanings two rows apart.
 
 ## Caveats
 
-- **`cost_usd` is not an outcome, and the reason found during this fill is worse than
-  the one anticipated.** `gpt-6-astra` is not declared in `pi-config/agent/models.json`
+- **`cost_usd` is not an outcome of this RQ, but it is now readable.** Astra's tariff
+  was looked up and cross-checked on 2026-09-05 ($10 input / $50 output / $1 cache
+  read per 1M, three independent sources — see `research/model-pricing.md`), and
+  `compute-cost.py` is now the single source for every pi run on both routes. On
+  these cells Astra costs 2.6× Sol at list price — $1.25 / $9.75 / $20.65 / $12.51
+  against $0.58 / $3.98 / $7.40 / $4.84 across v3 / native / subagent / EXACT. That
+  is a real comparison, not the fabricated figure described below. It stays out of
+  `outcomes:` because it was not part of the question this RQ was built to answer,
+  and because the ranking it produces is the token ranking of F-1.6.6 multiplied by
+  a constant tariff ratio — it adds a dimension to the cost of the subagent arm
+  (F-1.6.4), not a new axis.
+- **How the fabricated figure arose, kept as a record.** `gpt-6-astra` is not declared in `pi-config/agent/models.json`
   at all — pi logs `Warning: Model "gpt-6-astra" not found for provider "openai-codex".
   Using custom model id.` and passes the id through. It then prices the run with **Sol's
   tariff**: for one run, 161 313 input × $5/M + 18 725 output × $30/M + 7 970 944

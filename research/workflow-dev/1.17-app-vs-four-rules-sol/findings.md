@@ -30,7 +30,7 @@ metrics measure decomposition rather than function length (F-1.16.7).
 | `predictions_correct_rate` | n/a | 98.6 % | **99.3 %** 🏆 | höher = besser |
 | `duration_seconds` | **218** 🏆 | 874 | 1266 | kleiner = besser |
 | `total_tokens` | **272 k** 🏆 | 4.61 M | 4.61 M | kleiner = besser |
-| `cost_usd` | **$0.58** 🏆 | $3.98 | $3.07 | kleiner = besser |
+| `cost_usd` | **$0.58** 🏆 | $3.98 | $4.84 | kleiner = besser |
 
 Caveats for reading the table:
 
@@ -123,23 +123,32 @@ consistent with H1 and inconsistent with a plain line effect — but it is an ar
 from the mechanism, not from the metric signature the RQ named in advance, and it rests
 on three runs.
 
-## F-1.17.4 — The APP cell is cheaper than the line it is compared against, and slower
+## F-1.17.4 — The APP cell costs more than the line it is compared against, and is slower
 
-Cost and throughput do not follow the quality ranking:
+Cost and throughput do not rescue the APP brief anywhere:
 
 | Metric | v3 | basic-sol-tdd | v6.2.1 | Direction |
 |---|---:|---:|---:|---|
 | `duration_seconds` | **218** | 874 | 1266 | kleiner = besser |
 | `total_tokens` | **272 k** | 4.61 M | 4.61 M | kleiner = besser |
-| `cost_usd` | **$0.58** | $3.98 | $3.07 | kleiner = besser |
+| `cost_usd` | **$0.58** | $3.98 | $4.84 | kleiner = besser |
 
-The two structured cells consume the same tokens (4.61 M both) but v6.2.1 needs 1.45×
-the wallclock and costs 23 % less. The cost gap comes from the token mix, not from the
-work volume; the duration gap is consistent with the subscription route's lower
-throughput (F-1.3.1) applied to a longer agent chain.
+The two structured cells consume the same total tokens (4.61 M both), yet v6.2.1 needs
+1.45× the wallclock and costs 22 % more. The identical totals hide a different mix, and
+the mix is where the money is:
+
+| | basic-sol-tdd | v6.2.1 | |
+|---|---:|---:|---|
+| input | 205 k | 302 k | +47 %, billed at $5/M |
+| output | 25 k | 40 k | +56 %, billed at $30/M |
+| cache read | 4.38 M | 4.27 M | −3 %, billed at $0.50/M |
+
+Cache reads dominate the volume and are the cheap component; the APP cell spends
+noticeably more on the two expensive ones. The duration gap is consistent with the
+subscription route's lower throughput (F-1.3.1) applied to a longer agent chain.
 
 Against the floor, both structured lines are expensive: 4.0–5.8× the wallclock and
-5.3–6.9× the dollars of v3, which reaches the same 100 % correctness. On this kata the
+6.9–8.3× the dollars of v3, which reaches the same 100 % correctness. On this kata the
 case for either brief rests on the quality gap documented in F-1.16.1, not on cost.
 
 ## Recommendation

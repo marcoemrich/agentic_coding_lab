@@ -326,7 +326,10 @@ also what every cell of the Sol row carries, so the two rows are balanced.
    reference arm) alongside the Astra fill, +5 runs, and compare against its
    August values. Worth running if any H1/H2 result lands close to the noise
    floor; unnecessary if the model separation is large.
-2. **`cost_usd` must not be read from `runs.csv` — corrected by the fill.** The
+2. **`cost_usd` is now readable, after two corrections.** Astra's tariff was
+   looked up and cross-checked on 2026-09-05 and `compute-cost.py` became the
+   single source for all pi runs; the column is a list-price comparison across
+   every cell. What follows is the record of how it was wrong. The
    expectation here was a structural 0. What the runs show is worse: `gpt-6-astra`
    is not declared in `pi-config/agent/models.json` at all, pi logs
    `Warning: Model "gpt-6-astra" not found for provider "openai-codex". Using custom

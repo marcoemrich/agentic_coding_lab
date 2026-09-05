@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, does a workflow line written natively for Sol (basic-sol-tdd, Predictive TDD) beat structureless TDD (v3) — the floor that no Opus-derived architecture clears on this model?_
 
-Generated: 2026-08-16T23:58:29Z
+Generated: 2026-09-05T15:21:58Z
 
 Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
@@ -234,11 +234,11 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 | kata                         | cell_workflow             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------|:------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | basic-sol-tdd-pi          | gpt-5-6-sol-codex |   5 |   3.98 |  3.08 |  4.9  |  0.74 |
-| claim-office-example-mapping | basic-sol-tdd-subagent-pi | gpt-5-6-sol-codex |   5 |   3.59 |  0.27 |  6.83 |  2.85 |
+| claim-office-example-mapping | basic-sol-tdd-subagent-pi | gpt-5-6-sol-codex |   5 |   7.4  |  4.08 | 10.87 |  2.74 |
 | claim-office-example-mapping | v3-basic-tdd-pi           | gpt-5-6-sol-codex |   5 |   0.58 |  0.51 |  0.73 |  0.09 |
 | game-of-life-example-mapping | basic-sol-tdd-pi          | gpt-5-6-sol-codex |   5 |   1.15 |  1.01 |  1.43 |  0.16 |
-| game-of-life-example-mapping | basic-sol-tdd-subagent-pi | gpt-5-6-sol-codex |   5 |   1.25 |  1.05 |  1.38 |  0.14 |
+| game-of-life-example-mapping | basic-sol-tdd-subagent-pi | gpt-5-6-sol-codex |   5 |   2.31 |  1.94 |  2.48 |  0.22 |
 | game-of-life-example-mapping | v3-basic-tdd-pi           | gpt-5-6-sol-codex |   5 |   0.36 |  0.28 |  0.46 |  0.07 |
 | sphinx-score-example-mapping | basic-sol-tdd-pi          | gpt-5-6-sol-codex |   5 |   1.65 |  1.49 |  1.76 |  0.1  |
-| sphinx-score-example-mapping | basic-sol-tdd-subagent-pi | gpt-5-6-sol-codex |   5 |   1.76 |  0.5  |  2.28 |  0.73 |
+| sphinx-score-example-mapping | basic-sol-tdd-subagent-pi | gpt-5-6-sol-codex |   5 |   3.18 |  1.96 |  3.93 |  0.77 |
 | sphinx-score-example-mapping | v3-basic-tdd-pi           | gpt-5-6-sol-codex |   5 |   0.46 |  0.32 |  0.76 |  0.17 |

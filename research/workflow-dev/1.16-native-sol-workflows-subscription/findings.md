@@ -34,7 +34,7 @@ decide nothing.
 | `predictions_correct_rate` | n/a | 98.6 % | **99.4 %** 🏆 | höher = besser |
 | `duration_seconds` | **218** 🏆 | 874 | 2397 | kleiner = besser |
 | `total_tokens` | **272 k** 🏆 | 4.61 M | 7.13 M | kleiner = besser |
-| `cost_usd` | **$0.58** 🏆 | $3.98 | $3.59 | kleiner = besser |
+| `cost_usd` | **$0.58** 🏆 | $3.98 | $7.40 | kleiner = besser |
 
 **game-of-life-example-mapping** (code-quality kata)
 
@@ -53,7 +53,7 @@ decide nothing.
 | `predictions_correct_rate` | n/a | 98.1 % | **100 %** 🏆 | höher = besser |
 | `duration_seconds` | **127** 🏆 | 359 | 688 | kleiner = besser |
 | `total_tokens` | **153 k** 🏆 | 1.03 M | 1.74 M | kleiner = besser |
-| `cost_usd` | **$0.36** 🏆 | $1.15 | $1.25 | kleiner = besser |
+| `cost_usd` | **$0.36** 🏆 | $1.15 | $2.31 | kleiner = besser |
 
 **sphinx-score-example-mapping** (novelty control — resolves nothing, see F-1.16.7)
 
@@ -74,7 +74,7 @@ decide nothing.
 | `predictions_correct_rate` | n/a | **100 %** 🏆 | **100 %** 🏆 | höher = besser |
 | `duration_seconds` | **145** 🏆 | 440 | 946 | kleiner = besser |
 | `total_tokens` | **275 k** 🏆 | 1.57 M | 2.48 M | kleiner = besser |
-| `cost_usd` | **$0.46** 🏆 | $1.65 | $1.76 | kleiner = besser |
+| `cost_usd` | **$0.46** 🏆 | $1.65 | $3.18 | kleiner = besser |
 
 Caveats for reading the tables:
 

@@ -2,7 +2,7 @@
 
 _How do transport route and reasoning channel each affect code quality, TDD discipline, throughput and correctness for one and the same model (GPT-5.6 Sol), at constant harness, workflow, kata and prompt style?_
 
-Generated: 2026-08-16T10:57:28Z
+Generated: 2026-09-05T15:21:56Z
 
 Cells declared: 3 · matched runs: 15 · min_replicates: 5
 
@@ -128,21 +128,21 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |    1.6 |     0 |     2 |  0.89 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |    2   |     2 |     2 |  0    |
 
-### smell_duplication (rate %)
+### smell_duplication
 
-| kata                         | cell_workflow                | cell_model                    |   n |   match |   rate_% |
-|:-----------------------------|:-----------------------------|:------------------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |       0 |        0 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |       0 |        0 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |       0 |        0 |
+| kata                         | cell_workflow                | cell_model                    |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-----------------------------|:------------------------------|----:|-------:|------:|------:|------:|
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |     0 |     0 |     0 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |     0 |     0 |     0 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |     0 |     0 |     0 |
 
-### verification_pct (rate %)
+### verification_pct
 
-| kata                         | cell_workflow                | cell_model                    |   n |   match |   rate_% |
-|:-----------------------------|:-----------------------------|:------------------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |       5 |      100 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |       5 |      100 |
+| kata                         | cell_workflow                | cell_model                    |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-----------------------------|:------------------------------|----:|-------:|------:|------:|------:|
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      1 |     1 |     1 |     0 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      1 |     1 |     1 |     0 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      1 |     1 |     1 |     0 |
 
 ### tests_passing (rate %)
 
@@ -204,6 +204,6 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 
 | kata                         | cell_workflow                | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |   1.08 |  0.82 |  1.24 |  0.17 |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |   2.02 |  1.48 |  2.47 |  0.39 |
 | game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |   0.96 |  0.67 |  1.13 |  0.18 |
-| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |   0    |  0    |  0    |  0    |
+| game-of-life-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |   0.95 |  0.78 |  1.11 |  0.12 |

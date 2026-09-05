@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, does subordinating APP mass to the Four Rules recover the decomposition that the unsubordinated brief suppresses — and does adding pre/post measurement improve the result further, at what cost in duration as the measurement moves from the model to deterministic tools?_
 
-Generated: 2026-08-17T15:23:32Z
+Generated: 2026-09-05T15:22:00Z
 
 Cells declared: 5 · matched runs: 25 · min_replicates: 5
 
@@ -78,15 +78,15 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | claim-office-example-mapping | basic-sol-tdd-app-pi                 | gpt-5-6-sol-codex |   5 |    5.6 |     3 |     8 |  2.07 |
 | claim-office-example-mapping | basic-sol-tdd-pi                     | gpt-5-6-sol-codex |   5 |    5.4 |     4 |     6 |  0.89 |
 
-### smell_total (rate %)
+### smell_total
 
-| kata                         | cell_workflow                        | cell_model        |   n |   match |   rate_% |
-|:-----------------------------|:-------------------------------------|:------------------|----:|--------:|---------:|
-| claim-office-example-mapping | basic-sol-tdd-app-measured-eslint-pi | gpt-5-6-sol-codex |   5 |       0 |        0 |
-| claim-office-example-mapping | basic-sol-tdd-app-measured-model-pi  | gpt-5-6-sol-codex |   5 |       0 |        0 |
-| claim-office-example-mapping | basic-sol-tdd-app-measured-tool-pi   | gpt-5-6-sol-codex |   5 |       0 |        0 |
-| claim-office-example-mapping | basic-sol-tdd-app-pi                 | gpt-5-6-sol-codex |   5 |       0 |        0 |
-| claim-office-example-mapping | basic-sol-tdd-pi                     | gpt-5-6-sol-codex |   5 |       0 |        0 |
+| kata                         | cell_workflow                        | cell_model        |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------------|:------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | basic-sol-tdd-app-measured-eslint-pi | gpt-5-6-sol-codex |   5 |      0 |     0 |     0 |     0 |
+| claim-office-example-mapping | basic-sol-tdd-app-measured-model-pi  | gpt-5-6-sol-codex |   5 |      0 |     0 |     0 |     0 |
+| claim-office-example-mapping | basic-sol-tdd-app-measured-tool-pi   | gpt-5-6-sol-codex |   5 |      0 |     0 |     0 |     0 |
+| claim-office-example-mapping | basic-sol-tdd-app-pi                 | gpt-5-6-sol-codex |   5 |      0 |     0 |     0 |     0 |
+| claim-office-example-mapping | basic-sol-tdd-pi                     | gpt-5-6-sol-codex |   5 |      0 |     0 |     0 |     0 |
 
 ### code_mass
 
@@ -118,15 +118,15 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | claim-office-example-mapping | basic-sol-tdd-app-pi                 | gpt-5-6-sol-codex |   5 |  148.8 |   138 |   169 | 11.82 |
 | claim-office-example-mapping | basic-sol-tdd-pi                     | gpt-5-6-sol-codex |   5 |  129.4 |   111 |   146 | 13.24 |
 
-### verification_pct (rate %)
+### verification_pct
 
-| kata                         | cell_workflow                        | cell_model        |   n |   match |   rate_% |
-|:-----------------------------|:-------------------------------------|:------------------|----:|--------:|---------:|
-| claim-office-example-mapping | basic-sol-tdd-app-measured-eslint-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | basic-sol-tdd-app-measured-model-pi  | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | basic-sol-tdd-app-measured-tool-pi   | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | basic-sol-tdd-app-pi                 | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | basic-sol-tdd-pi                     | gpt-5-6-sol-codex |   5 |       5 |      100 |
+| kata                         | cell_workflow                        | cell_model        |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------------|:------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | basic-sol-tdd-app-measured-eslint-pi | gpt-5-6-sol-codex |   5 |      1 |     1 |     1 |     0 |
+| claim-office-example-mapping | basic-sol-tdd-app-measured-model-pi  | gpt-5-6-sol-codex |   5 |      1 |     1 |     1 |     0 |
+| claim-office-example-mapping | basic-sol-tdd-app-measured-tool-pi   | gpt-5-6-sol-codex |   5 |      1 |     1 |     1 |     0 |
+| claim-office-example-mapping | basic-sol-tdd-app-pi                 | gpt-5-6-sol-codex |   5 |      1 |     1 |     1 |     0 |
+| claim-office-example-mapping | basic-sol-tdd-pi                     | gpt-5-6-sol-codex |   5 |      1 |     1 |     1 |     0 |
 
 ### tests_passing (rate %)
 

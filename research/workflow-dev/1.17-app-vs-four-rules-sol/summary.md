@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, does a refactor brief that optimises APP mass (v6.2.1) decompose worse than one governed by the Four Rules of Simple Design alone (basic-sol-tdd) — at constant model, harness, kata and prompt style?_
 
-Generated: 2026-08-17T03:44:47Z
+Generated: 2026-09-05T15:21:59Z
 
 Cells declared: 3 · matched runs: 15 · min_replicates: 5
 
@@ -80,13 +80,13 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | v3-basic-tdd-pi              | gpt-5-6-sol-codex |   5 |    4.2 |     0 |    21 |  9.39 |
 | claim-office-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-codex |   5 |    9.6 |     0 |    19 |  9.02 |
 
-### verification_pct (rate %)
+### verification_pct
 
-| kata                         | cell_workflow                | cell_model        |   n |   match |   rate_% |
-|:-----------------------------|:-----------------------------|:------------------|----:|--------:|---------:|
-| claim-office-example-mapping | basic-sol-tdd-pi             | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | v3-basic-tdd-pi              | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
+| kata                         | cell_workflow                | cell_model        |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-----------------------------|:------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | basic-sol-tdd-pi             | gpt-5-6-sol-codex |   5 |      1 |     1 |     1 |     0 |
+| claim-office-example-mapping | v3-basic-tdd-pi              | gpt-5-6-sol-codex |   5 |      1 |     1 |     1 |     0 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-codex |   5 |      1 |     1 |     1 |     0 |
 
 ### tests_passing (rate %)
 
@@ -149,4 +149,4 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 |:-----------------------------|:-----------------------------|:------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | basic-sol-tdd-pi             | gpt-5-6-sol-codex |   5 |   3.98 |  3.08 |  4.9  |  0.74 |
 | claim-office-example-mapping | v3-basic-tdd-pi              | gpt-5-6-sol-codex |   5 |   0.58 |  0.51 |  0.73 |  0.09 |
-| claim-office-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-codex |   5 |   3.07 |  1.92 |  3.66 |  0.68 |
+| claim-office-example-mapping | v6.2.1-phase-continuation-pi | gpt-5-6-sol-codex |   5 |   4.84 |  3.62 |  5.5  |  0.81 |

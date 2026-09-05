@@ -30,6 +30,50 @@ Anmerkungen:
 - Cache-Write auf den OpenAI-/GLM-/Kimi-/MiniMax-/DeepSeek-Routen nicht separat ausgewiesen → in `compute-cost.py` als 0 geführt.
 - Requesty rotiert Modelle/Provider schnell — bei Abweichungen den Live-Katalog gegen `compute-cost.py` `PRICES` und `experiments/docker/pi-config/agent/models.json` diffen.
 
+## OpenAI-Subscription-Route (openai-codex, Stand 2026-09-05)
+
+Die drei Modelle, die pi über `openai-codex` (`chatgpt.com/backend-api`, OAuth)
+erreicht. **Auf dieser Route wird nichts pro Token abgerechnet** — die Werte
+sind reine Vergleichspreise: was dieselbe Arbeit über die API gekostet hätte,
+auf derselben Basis wie die Requesty-Zellen, gegen die sie verglichen werden.
+
+| lab-variant | pi-Route | Input | Output | Cache Read | Cache Write |
+|---|---|---:|---:|---:|---:|
+| gpt-5-6-sol-codex | `openai-codex/gpt-5.6-sol` | $5.00 | $30.00 | $0.50 | $6.25 |
+| gpt-6-astra-codex | `openai-codex/gpt-6-astra` | $10.00 | $50.00 | $1.00 | $12.50 |
+| gpt-5-3-codex-spark | `openai-codex/gpt-5.3-codex-spark` | $1.75 | $14.00 | $0.175 | $0 |
+
+Quellen (je unabhängig gegengeprüft, 2026-09-05): Astra —
+[OpenAI API-Docs](https://developers.openai.com/api/docs/models/gpt-6-astra),
+[OpenRouter](https://openrouter.ai/openai/gpt-6-astra),
+[pi.dev](https://pi.dev/models/openai/gpt-6-astra); Spark —
+[pi.dev](https://pi.dev/models/openai/gpt-5-3-codex-spark),
+[OpenRouter](https://openrouter.ai/openai/gpt-5.3-codex).
+
+Anmerkungen:
+- **Cache-Write ist auf dieser Route belanglos**, obwohl er ausgewiesen wird: in
+  allen 119 codex-Runs im Pool ist `cache_write` = 0 Tokens. `compute-cost.py`
+  führt ihn deshalb wie bei den übrigen OpenAI-Routen als 0.
+- **Der Langkontext-Tarifsprung ist bewusst NICHT abgebildet.** Sol und Astra
+  berechnen Requests über 272k Input mit 2× Input/Cache und 1.5× Output
+  (Astra: $20/$75/$2). `compute-cost.py` rechnet flach. Die Werte sind damit
+  eine **Untergrenze** für Runs mit großen Einzelrequests — konsistent über alle
+  Zellen, was für den Vergleich zählt, aber kein Rechnungsbetrag.
+- **pis eigene Inline-Kosten sind nicht die Quelle** und dürfen es nicht werden.
+  Sie sind aus unseren Tokenzahlen nicht reproduzierbar: ein Least-Squares-Fit
+  über 83 codex-Runs ergibt einen *negativen* Input-Preis bei 33.6 % mittlerem
+  Fehler — vermutlich, weil die Tarifsprünge pro Request greifen und sich in der
+  Summe nichtlinear verhalten. `compute-cost.py` PRICES ist die alleinige Quelle
+  für alle pi-Runs, beide Routen (`cli_model == "pi-only"`).
+- Astras Kontextfenster ist **strittig**: OpenRouter nennt 1.050.000,
+  [pi.dev](https://pi.dev/models/openai/gpt-6-astra) nennt 272.000.
+  `models.json` folgt pi.dev; die 272k aus den Preisquellen sind die
+  Tarifgrenze, nicht zwingend das Limit. Unter-Deklaration ist die sichere
+  Richtung.
+- Spark ist in `models.json` mit contextWindow 272000 / maxTokens 128000
+  geführt, pi.dev nennt 128.000 / 32.000. Das ist eine **Über**-Deklaration und
+  damit die unsichere Richtung — ungeprüft, hier nur festgehalten.
+
 Ältere Quellen (zum Nachvollziehen): [Requesty GLM-5.2](https://www.requesty.ai/models/zai/glm-5.2), [aipricing.guru GPT-5.6](https://www.aipricing.guru/openai-pricing/).
 
 ## Übersicht

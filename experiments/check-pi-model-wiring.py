@@ -112,6 +112,26 @@ def split_target(pi_model: str) -> tuple[str, str]:
     return provider, model_id
 
 
+def load_prices() -> dict | None:
+    """PRICES from compute-cost.py, or None when it cannot be imported.
+
+    A missing table must not turn into "everything is unpriced" — that would
+    be a louder lie than the silence it replaces — so the price check is
+    skipped rather than failed when the import does not work.
+    """
+    import importlib.util
+    path = REPO_ROOT / "experiments" / "compute-cost.py"
+    if not path.is_file():
+        return None
+    try:
+        spec = importlib.util.spec_from_file_location("_compute_cost", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return getattr(mod, "PRICES", None)
+    except Exception:
+        return None
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("-v", "--verbose", action="store_true",
@@ -125,8 +145,11 @@ def main() -> int:
     wiring = parse_wiring(args.run_batch)
     catalogue = parse_catalogue(args.models_json)
 
+    prices = load_prices()
+
     undeclared: list[tuple[str, str, str]] = []   # lab id, provider, model id
     unknown_provider: list[tuple[str, str]] = []  # lab id, pi_model
+    unpriced: list[str] = []                      # lab id
     wired_ids: set[tuple[str, str]] = set()
 
     for lab_id, pi_model in sorted(wiring.items()):
@@ -137,6 +160,8 @@ def main() -> int:
         wired_ids.add((provider, model_id))
         if model_id not in catalogue[provider]:
             undeclared.append((lab_id, provider, model_id))
+        if prices is not None and lab_id not in prices:
+            unpriced.append(lab_id)
 
     print(f"pi model wiring: {len(wiring)} lab ids -> "
           f"{len(wired_ids)} routing targets across {len(catalogue)} providers")
@@ -145,6 +170,15 @@ def main() -> int:
         print("\nrouted to a provider that models.json does not define:")
         for lab_id, pi_model in unknown_provider:
             print(f"  {lab_id:<32} -> {pi_model}")
+
+    if unpriced:
+        print("\nWIRED BUT UNPRICED — compute-cost.py has no PRICES entry, so "
+              "these report cost_usd 0:")
+        for lab_id in unpriced:
+            print(f"  {lab_id}")
+        print("\nFix: add the lab id to PRICES in compute-cost.py. cost_usd is a "
+              "list-price comparison value — what the work would have cost over "
+              "the API — so a flat-rate route needs an entry too, not a 0.")
 
     if undeclared:
         print("\nWIRED BUT UNDECLARED — these inherit another model's tariff, "
@@ -175,9 +209,9 @@ def main() -> int:
                 status = "UNDECLARED"
             print(f"  {provider + '/' + model_id:<{width}}  {status}")
 
-    if undeclared or unknown_provider:
+    if undeclared or unknown_provider or unpriced:
         return 1
-    print("\nok — every wired pi model is declared.")
+    print("\nok — every wired pi model is declared and priced.")
     return 0
 
 

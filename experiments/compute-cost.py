@@ -124,6 +124,28 @@ PRICES = {
     "glm-5-2-no-thinking": (1.50, 4.50, 0.38, 0.0),
     "gpt-5-6-sol":      (5.00,  30.00, 0.50, 0.0),   # azure/gpt-5.6-sol
     "gpt-5-6-sol-no-thinking": (5.00, 30.00, 0.50, 0.0),
+    # Gleiche Requesty-Route wie gpt-5-6-sol, nur das pi-config-Profil
+    # unterscheidet sich (reasoning: true) -> gleicher Tarif.
+    "gpt-5-6-sol-reasoning": (5.00, 30.00, 0.50, 0.0),
+    # OpenAI-Subscription-Route (openai-codex). Kein per-Token-Billing — die
+    # Werte sind reine Vergleichspreise ("was haette das ueber die API
+    # gekostet"), auf derselben Basis wie die Requesty-Zellen, gegen die sie
+    # verglichen werden. Bewusst OHNE cacheWrite und ohne den >272k-Tarifsprung
+    # aus models.json: sonst rechnete die Subscription-Zelle anders als jede
+    # Requesty-Zelle im selben Vergleich.
+    "gpt-5-6-sol-codex": (5.00, 30.00, 0.50, 0.0),   # openai-codex/gpt-5.6-sol
+    "gpt-5-6-sol-codex-no-thinking": (5.00, 30.00, 0.50, 0.0),
+    "gpt-5-6-sol-codex-noreason": (5.00, 30.00, 0.50, 0.0),
+    # Tarife online verifiziert 2026-09-05 gegen je drei unabhaengige Quellen
+    # (OpenAI-Docs / OpenRouter / pi.dev fuer Astra; Suche / pi.dev / OpenRouter
+    # fuer Spark). cache_write ist auf dieser Route belanglos: in allen 119
+    # codex-Runs im Pool ist cache_write = 0 Tokens.
+    # Astras >272k-Tarifsprung (2x input/cache, 1.5x output) ist bewusst NICHT
+    # abgebildet -- derselbe Grund wie bei Sol: sonst rechnete die Zelle anders
+    # als die Requesty-Zellen, gegen die sie verglichen wird.
+    "gpt-6-astra-codex": (10.00, 50.00, 1.00, 0.0),   # openai-codex/gpt-6-astra
+    "gpt-6-astra-codex-no-thinking": (10.00, 50.00, 1.00, 0.0),
+    "gpt-5-3-codex-spark": (1.75, 14.00, 0.175, 0.0),  # openai-codex/gpt-5.3-codex-spark
     "gpt-5-6-terra":    (2.50,  15.00, 0.25, 0.0),   # azure/gpt-5.6-terra
     "gpt-5-6-terra-no-thinking": (2.50, 15.00, 0.25, 0.0),
     "sonnet-5":         (2.20,  11.00, 0.22, 0.0),   # vertex/claude-sonnet-5@eu (Requesty-Tarif)
@@ -168,10 +190,26 @@ def process_run(run_dir: Path, dry_run: bool) -> tuple[str, float | None]:
     # If the transcript captured a real routed cost (Requesty /v1/messages
     # path, CC/OC), it already sits in final_metrics.cost_usd via
     # analyze-run.sh — don't overwrite it with a list-price estimate.
-    # Note: pi runs carry cost_usd = 0 (pi's cost scaffold, models.json has
-    # no prices) — that is NOT a real cost, so require a positive value.
+    #
+    # pi is the exception, and the reason is not that its number is missing but
+    # that it is not a *routed* charge: pi computes cost itself from whatever
+    # `cost` block models.json happens to declare. On the Requesty route no
+    # block is declared, so it emits 0 — which is where the earlier premise
+    # ("pi runs carry cost_usd = 0") came from. On the OpenAI subscription
+    # route a block IS declared, so pi emits a positive number computed from
+    # its own catalogue, and for an *undeclared* model it emits one computed
+    # from a different model's tariff. That is how gpt-6-astra came to record
+    # $81.73 of phantom spend at Sol's prices (see check-pi-model-wiring.py):
+    # the value was positive, so this function skipped it as "actual cost".
+    #
+    # For pi the PRICES table below is therefore the single source, on both
+    # routes, so every pi cell is computed on the same basis. cost_usd is a
+    # list-price comparison value — what the work would have cost over the
+    # API — not a record of what was billed; on a flat-rate subscription
+    # nothing per-token is billed at all.
     tm_cost = tm.get("cost_usd")
-    if isinstance(tm_cost, (int, float)) and tm_cost > 0:
+    is_pi = metrics.get("cli_model") == "pi-only"
+    if not is_pi and isinstance(tm_cost, (int, float)) and tm_cost > 0:
         return ("skip-actual-cost", tm_cost)
     cost = compute_cost(tokens, model)
     if cost is None:

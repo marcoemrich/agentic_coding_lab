@@ -154,9 +154,15 @@ appears once on each side. Ambiguity resolution is route-invariant too.
 
 ## Reading the cost column
 
-`cost_usd` is **not** a price comparison and must not be quoted as one. Both
-sides are priced with the same tariff ($5/$30/$0.50); the subscription-route figures are
-measured (pi ships inline costs on that route), the Requesty figures are
-computed from the list-price table in `compute-cost.py`. On a subscription no
-per-token charge is incurred at all. Usable as a token-consumption proxy,
-nothing more.
+`cost_usd` is a **list-price comparison value** — what the work would have cost
+over the API — not a billed amount. Both sides are priced with the same tariff
+($5/$30/$0.50) from the table in `compute-cost.py`, which since 2026-09-05 is
+the single source for every pi run on both routes. It replaced pi's own inline
+figure on the subscription route, which was not reproducible from the recorded
+token counts (a fit over 83 codex runs returns a negative input price at 33.6 %
+mean error, most likely because the >272k tariff tiers apply per request).
+
+Two limits stand. On a subscription no per-token charge is incurred at all, so
+this is never a bill. And the tiers are not modelled, so the figures are a lower
+bound for runs with large single requests — consistently across all cells, which
+is what a comparison needs.
