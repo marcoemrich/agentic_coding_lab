@@ -161,7 +161,15 @@ from all but 13 of the 1354 runs in the pool, so Sol's cannot be recounted with
 the same method. That Astra reasons at all despite the flag is established;
 how much it reasons relative to Sol is not.
 
-`contextWindow` (272000) and `maxTokens` (128000) in the `models.json` entry
+**Correction (2026-09-05): the `models.json` entry did not exist when these runs
+were recorded.** Only `run-batch.sh` was wired; `gpt-6-astra` was absent from
+`pi-config/agent/models.json`, so pi logged `Model "gpt-6-astra" not found for
+provider "openai-codex". Using custom model id.` and fell back to Sol's tariff
+for pricing. The model itself ran correctly — transcripts record `gpt-6-astra`
+throughout — but two of the five runs carry a fabricated `cost_usd`, since
+normalised to 0. The entry has been added, mirroring Spark (no `cost` block).
+
+`contextWindow` (272000) and `maxTokens` (128000) in that entry
 are **inherited from the GPT-5.6 family defaults, not confirmed for Astra**.
 Under-declaring a window is safe; if Astra's real window is larger, the entry
 leaves capacity unused. Verify against upstream before reading any
@@ -210,9 +218,9 @@ apply to the Astra cell unchanged:
 - **`cost_usd` has three different provenances in this matrix and is not an
   outcome.** The Sol codex cell carries *measured* inline costs (0.82–1.24 USD
   across its five runs — pi ships them on the Responses API). The Astra entry
-  in `models.json` deliberately ships **without** a `cost` block: its tariff is
-  unknown, and copying Sol's would fabricate a number — so Astra reports a
-  structural 0. The three Requesty cells are computed from the list-price table
+  in `models.json` ships **without** a `cost` block: its tariff is unknown, and
+  copying Sol's would fabricate a number — so Astra reports 0. This held only
+  after the entry was added; see the correction above. The three Requesty cells are computed from the list-price table
   in `compute-cost.py`. Reading the column would make Astra look free. Never
   quote it as a price comparison; on a flat-rate subscription no per-token
   charge is incurred at all.

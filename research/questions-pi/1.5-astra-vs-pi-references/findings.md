@@ -188,17 +188,20 @@ two subscription cells despite running more cycles.
 
 - **`cost_usd` is not an outcome and must not be read from `runs.csv`.** The
   column carries three provenances: measured inline costs for the Sol
-  subscription cell, a structural 0 for Astra (its `models.json` entry ships
-  without a `cost` block — the tariff is unknown and copying Sol's would
-  fabricate it), and list-price computations for the three Requesty cells.
-  Astra would read as free.
+  subscription cell, a 0 for Astra, and list-price computations for the three
+  Requesty cells. Astra would read as free. The 0 is now correct but was not
+  produced correctly: until 2026-09-05 `gpt-6-astra` had **no** `models.json`
+  entry at all, so pi priced it with Sol's tariff, and two of these five runs
+  recorded a fabricated 0.77 USD. The entry was added (no `cost` block, mirroring
+  Spark) and the two values normalised to 0. See RQ-astra-native-sol, Caveats.
 - **Phase timings and context utilization are 0 on the subscription route.**
   `avg_cycle_seconds`, `avg_red_seconds`, `avg_green_seconds`,
   `avg_refactor_seconds` and `context_utilization_pct` come back 0 despite
   millions of tokens. Parser gap, not measurement; excluded from `outcomes`.
 - **Astra's declared context window is inherited, not confirmed.**
-  `contextWindow` 272000 / `maxTokens` 128000 in `models.json` are the GPT-5.6
-  family defaults. Under-declaring is safe; verify upstream before reading any
+  `contextWindow` 272000 / `maxTokens` 128000 are the GPT-5.6 family defaults,
+  and were not even declared when these runs were recorded — the `models.json`
+  entry carrying them was added on 2026-09-05, after the fact. Under-declaring is safe; verify upstream before reading any
   context-pressure result.
 - **`--thinking off` does not suppress reasoning on the subscription route.**
   Astra's smoke run passed the flag, recorded `thinking: false`, and still

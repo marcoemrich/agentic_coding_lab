@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, how does GPT-6 Astra compare to the strongest references reachable on the pi harness — Sol on the same route, Sol on Requesty in both reasoning states, and Opus 5 on Requesty — at constant harness, workflow, kata and prompt style?_
 
-Generated: 2026-09-05T10:57:36Z
+Generated: 2026-09-05T14:51:06Z
 
 Cells declared: 5 · matched runs: 25 · min_replicates: 5
 
