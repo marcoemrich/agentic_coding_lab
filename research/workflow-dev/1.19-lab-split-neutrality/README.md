@@ -6,6 +6,7 @@ factors:
     - {workflow: v6.1-hybrid-testlist-scope-fix, prompt: example-mapping}  # the measurement basis of the v6.1 line
     - {workflow: v6.1.1-lab-split-cc,            prompt: example-mapping}  # the export carrier, recommended as the exact-coding baseline
     - {workflow: v6.1.4-continuation-guard-cc,   prompt: example-mapping}  # v6.1.1 minus the duplicated cycle enumeration, guard kept
+    - {workflow: v6.1.5-pure-split-cc,           prompt: example-mapping}  # the split re-derived as a pure partition of v6.1, same text budget
   kata_base: [game-of-life, claim-office]
 controls:
   model: opus-5-no-thinking
