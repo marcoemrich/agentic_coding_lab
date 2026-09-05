@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+// The `claim-office` executable the spec asks for.
+//
+// src/cli.ts is TypeScript using top-level await, so plain `node` cannot run it.
+// Rather than introduce a build step whose artifact could drift from source,
+// this shim re-execs node with tsx's loader registered, then runs the source —
+// the same code path src/cli.spec.ts drives, so the executable and the tests
+// exercise one implementation rather than two.
+//
+// tsx is located with import.meta.resolve rather than a hardcoded
+// ../node_modules/.bin path: that path only exists when this package sits at an
+// install root, and breaks under a nested/hoisted layout or an npx cache.
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+
+const cli = fileURLToPath(new URL("../src/cli.ts", import.meta.url));
+const tsx = fileURLToPath(import.meta.resolve("tsx"));
+
+// stdio "inherit" hands the child our own stdin/stdout/stderr, so the CLI reads
+// the caller's piped JSON and writes straight back to their streams untouched.
+const { status, error } = spawnSync(
+  process.execPath,
+  ["--import", tsx, cli, ...process.argv.slice(2)],
+  { stdio: "inherit" },
+);
+
+if (error) {
+  process.stderr.write(`claim-office could not start: ${error.message}\n`);
+  process.exit(1);
+}
+
+// Propagate the CLI's own exit code; the spec's rejection contract depends on a
+// non-zero status reaching the caller. A signal death has a null status.
+process.exit(status ?? 1);
