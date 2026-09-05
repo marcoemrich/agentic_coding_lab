@@ -53,46 +53,58 @@ Sol = `gpt-5-6-sol-codex`.
 | | Sol | **218.2** 🏆 | 874.2 | 2397.2 | 1265.6 |
 | `total_tokens` — kleiner = besser | Astra | 528.6 k | 7.46 M | 12.23 M | 7.16 M |
 | | Sol | **271.8 k** 🏆 | 4.61 M | 7.13 M | 4.61 M |
+| `cost_usd` — kleiner = besser, Listenpreis | Astra | 1.25 | 9.75 | 20.65 | 12.51 |
+| | Sol | **0.58** 🏆 | 3.98 | 7.40 | 4.84 |
 
 ### Astra gegen Sol auf `basic-sol-tdd-pi` (nativ inline)
 
 The head-to-head the RQ's title question reduces to: the native line's own cell, one
-model against the other, n=5 each. Winner bolded; no trophies here — those are awarded
-once, across all eight cells, in the table above.
+model against the other, n=5 each. Trophies here are awarded within this two-cell
+contest and are independent of the eight-cell trophies in the table above. A row gets
+one only where the gap clears the pooled σ of the two cells; three rows are inside it
+and are marked as undecided rather than given a winner.
 
 | Metrik | Astra | Sol | Astra/Sol |
 |---|---:|---:|---:|
 | Correctness (external) — höher = besser | 1.00 | 1.00 | 1.00 |
 | Correctness (internal) — höher = besser | 100 % | 100 % | — |
-| `cc_avg_loc_per_function` — kleiner = besser | **6.17** | 6.60 | 0.93 |
-| `cc_median_loc_per_function` — kleiner = besser | 4.80 | **4.70** | 1.02 |
-| Complexity Peak — kleiner = besser | **13.4** | 18.0 | 0.74 |
-| `cognitive_max` — kleiner = besser | **3.2** | 4.0 | 0.80 |
-| `cognitive_avg` — kleiner = besser | 2.36 | **2.15** | 1.10 |
-| `mccabe_max` — kleiner = besser | **4.2** | 5.4 | 0.78 |
-| Smell Total — kleiner = besser | **0.0** | **0.0** | — |
-| Production LoC — kleiner = besser | **73.6** | 129.4 | 0.57 |
+| `cc_avg_loc_per_function` — unentschieden (< 1 σ) | 6.17 | 6.60 | 0.93 |
+| `cc_median_loc_per_function` — unentschieden (< 1 σ) | 4.80 | 4.70 | 1.02 |
+| Complexity Peak — kleiner = besser | **13.4** 🏆 | 18.0 | 0.74 |
+| `cognitive_max` — kleiner = besser | **3.2** 🏆 | 4.0 | 0.80 |
+| `cognitive_avg` — unentschieden (< 1 σ) | 2.36 | 2.15 | 1.10 |
+| `mccabe_max` — kleiner = besser | **4.2** 🏆 | 5.4 | 0.78 |
+| Smell Total — kleiner = besser, Gleichstand am Boden | **0.0** 🏆 | **0.0** 🏆 | — |
+| Production LoC — kleiner = besser | **73.6** 🏆 | 129.4 | 0.57 |
 | Test LoC — kein Sieger, s.u. | 115.2 | 196.8 | 0.59 |
 | Code Mass (APP) — kein Sieger, Mechanismus-Zeuge | 426.2 | 556.8 | 0.77 |
 | `cc_functions` — kein Sieger, ambivalent | 7.4 | 9.8 | 0.76 |
 | `cycle_count` — kein Sieger, ambivalent | 40.4 | 31.6 | 1.28 |
 | `refactorings_applied` — kein Sieger, s. Haupttabelle | 40.4 | 31.6 | 1.28 |
 | `predictions_correct_rate` — kein Sieger, s. Haupttabelle | 98.7 % | 98.6 % | — |
-| `duration_seconds` — kleiner = besser | 1801.6 | **874.2** | 2.06 |
-| `total_tokens` — kleiner = besser | 7.46 M | **4.61 M** | 1.62 |
+| `duration_seconds` — kleiner = besser | 1801.6 | **874.2** 🏆 | 2.06 |
+| `total_tokens` — kleiner = besser | 7.46 M | **4.61 M** 🏆 | 1.62 |
+| `cost_usd` — kleiner = besser, Listenpreis | 9.75 | **3.98** 🏆 | 2.45 |
 
 **Astra wins the structure, Sol wins the bill.** Both cells clear Correctness (external)
 at 1.0 with all five runs green internally, so the whole comparison sits at equal
-correctness. Astra then takes every complexity metric — Complexity Peak at 0.74×,
-`mccabe_max` at 0.78×, `cognitive_max` at 0.80× — and writes 57 % of the production
-code across 7.4 functions against Sol's 9.8. Smell Total is 0.0 in all ten runs.
+correctness. Astra takes the four structural trophies — Complexity Peak at 0.74×,
+`mccabe_max` at 0.78×, `cognitive_max` at 0.80×, and 57 % of the production code across
+7.4 functions against Sol's 9.8. Smell Total is 0.0 in all ten runs, which is a tie at
+the floor rather than a contest, so both cells carry it.
 
-Two of Sol's three wins are not real. `cc_median_loc_per_function` differs by 0.1 LoC at
-σ 1.48 (Astra) against 0.67 (Sol), and `cognitive_avg` by 0.21 at σ 0.28/0.19 — both
-inside the noise, and both contradicted by the max-variants of the same metrics, where
-Astra leads clearly. Sol's only substantive win is cost: 2.06× wallclock and 1.62×
-tokens is the price of Astra's structure in this cell, which is the general pattern of
-F-1.6.6 rather than anything specific to the native line.
+**The three undecided rows are the averages, and they are undecided in both
+directions.** `cc_avg_loc_per_function` favours Astra by 0.44 LoC at a pooled σ of
+1.40, `cc_median_loc_per_function` favours Sol by 0.10 at 1.15, and `cognitive_avg`
+favours Sol by 0.22 at 0.24. None of the three clears its own noise, and none should be
+read as a result in either direction. The pattern is that the *max* variants separate
+the two models and the *averages* do not — consistent with F-1.6.3's reading that what
+distinguishes these models is the worst function they leave behind, not the typical one.
+
+Sol's wins are all one thing: cost. 2.06× wallclock, 1.62× tokens and 2.45× list price
+is what Astra's structure costs in this cell. That is the general pattern of F-1.6.6
+rather than anything specific to the native line — the cost factor is wider than the
+token factor because Astra's tariff is itself the higher one.
 
 **Test LoC carries no winner.** Astra writes 59 % of Sol's test code (115.2 against
 196.8) at σ 57.9 — the widest relative spread in the table, ranging across the five
