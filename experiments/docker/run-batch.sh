@@ -139,6 +139,14 @@ MODEL_CONFIGS=(
     # subscription is flat-rate, and copying the per-token Sol prices would
     # fabricate a number.
     "gpt-5-3-codex-spark|pi-only|false"
+    # Same subscription route (provider openai-codex), third model: GPT-6
+    # Astra. Like Spark it is not offered on Requesty, so the codex route is
+    # the only one -- the `-codex` suffix names it explicitly per the
+    # route-in-the-id convention above (the upstream id `gpt-6-astra` carries
+    # no route hint of its own, unlike `gpt-5.3-codex-spark`). Costs are not
+    # modelled: flat-rate subscription, and the models.json entry ships
+    # without a `cost` block for that reason.
+    "gpt-6-astra-codex|pi-only|false"
     "gpt-5-6-terra|pi-only|false"
     "glm-5-2|pi-only|false"
     "kimi-k2-7|pi-only|false"
@@ -154,6 +162,7 @@ MODEL_CONFIGS=(
     "opus-5-requesty-no-thinking|pi-only|false"
     "gpt-5-6-sol-no-thinking|pi-only|false"
     "gpt-5-6-sol-codex-no-thinking|pi-only|false"
+    "gpt-6-astra-codex-no-thinking|pi-only|false"
     # --- RQ-route-effect-pi 2x2 matrix: route x reasoning ---
     #
     # `--thinking off` does NOT suppress reasoning on the codex route: the
@@ -810,6 +819,8 @@ EOF
                 gpt-5-6-sol-codex)             pi_model="openai-codex/gpt-5.6-sol" ;;
                 gpt-5-3-codex-spark)           pi_model="openai-codex/gpt-5.3-codex-spark" ;;
                 gpt-5-6-sol-codex-no-thinking) pi_model="openai-codex/gpt-5.6-sol" ;;
+                gpt-6-astra-codex)             pi_model="openai-codex/gpt-6-astra" ;;
+                gpt-6-astra-codex-no-thinking) pi_model="openai-codex/gpt-6-astra" ;;
                 # 2x2 matrix arms. The route id is identical to its base arm --
                 # the reasoning difference lives in the pi-config profile, not
                 # in the model string (a made-up model id is rejected upstream:
