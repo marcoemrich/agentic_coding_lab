@@ -31,8 +31,12 @@ RUN npm install -g pnpm@9.15.9
 #   2026-06-09 via fable5-smoke (opus-4-8-no-thinking marker regression OK:
 #   cycle 8 / refactor 8 / pred 16-16; fable-5-no-thinking native-OAuth route
 #   OK: cycle 9 / refactor 4 / pred 18-18, tests 9-9, verification_pct 1.00).
+# 2.1.267: required for Fable 5.1 — 2.1.170 gets a hard 400 from the API
+#   ("does not support this model; version 2.1.251 or newer is required"),
+#   the model itself is reachable on the Max subscription. Bumped for
+#   RQ-fable-vs-opus5; see that RQ for the regression evidence.
 # Known bad: 2.1.37 (hangs on .claude/agents/), 2.1.126 (needs ~/.claude.json).
-RUN npm install -g @anthropic-ai/claude-code@2.1.170
+RUN npm install -g @anthropic-ai/claude-code@2.1.267
 
 # Install OpenCode CLI (second harness).
 # 1.15.10: verified end-to-end on 2026-05-25 with v1-oneshot-oc +

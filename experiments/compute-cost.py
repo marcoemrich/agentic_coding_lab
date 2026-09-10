@@ -48,6 +48,16 @@ PRICES = {
     # Anthropic-Listpreis 5.00/25.00/0.50/6.25 — NICHT der Requesty-Tarif.
     "opus-5":           (5.00,  25.00, 0.50, 6.25),
     "opus-5-no-thinking": (5.00, 25.00, 0.50, 6.25),
+    # fable-5 / fable-5-1: nativ (bare claude-fable-* via OAuth-Bypass), echter
+    # Anthropic-Listpreis 10.00/50.00/*/12.50 (5m-cache-write). Der cache_read
+    # unterscheidet die beiden: Fable 5 rechnet den Standard-0.1x-Multiplikator
+    # (1.00), Fable 5.1 laut Preisseite 0.025x (0.25). Auf der Max-Subscription
+    # wird nichts pro Token abgerechnet — die Zahl ist der Listenpreis-
+    # Vergleichswert, nicht der Rechnungsbetrag (siehe CLAUDE.md).
+    "fable-5":          (10.00, 50.00, 1.00, 12.50),
+    "fable-5-no-thinking": (10.00, 50.00, 1.00, 12.50),
+    "fable-5-1":        (10.00, 50.00, 0.25, 12.50),
+    "fable-5-1-no-thinking": (10.00, 50.00, 0.25, 12.50),
     # opus-cursor: cursor-agent-Route, Modell claude-opus-4-8-medium (nativ, medium
     # effort). cost_usd=null im cursor-stream-json → Token×Preis nötig. Native
     # Listpreise (cursor routet direkt, kein Requesty-Aufschlag).

@@ -68,6 +68,10 @@ MODEL_CONFIGS=(
     "opus-4-8-requesty-no-thinking|vertex/claude-opus-4-8@eu|false"
     "fable-5|claude-fable-5|true"
     "fable-5-no-thinking|claude-fable-5|false"
+    # fable-5-1: nativ wie fable-5 (bare claude-* → OAuth-Bypass, Subscription).
+    # Nur der undatierte Alias existiert; claude-fable-5-1-<datum> gibt 404.
+    "fable-5-1|claude-fable-5-1|true"
+    "fable-5-1-no-thinking|claude-fable-5-1|false"
     "opus-4-7|claude-opus-4-7|true"
     "opus-4-7-no-thinking|claude-opus-4-7|false"
     "sonnet-4-6|claude-sonnet-4-6|true"
@@ -682,6 +686,20 @@ export default [
 ];
 EOF
 
+    # Harness CLI version, recorded per run. Without it a version bump is
+    # invisible after the fact: runs from before and after look identical in
+    # metrics.json, so a CLI change cannot be separated from a model or
+    # workflow effect (the confound RQ-1.19 F-1.19.9 had to rule out by hand
+    # for a container rebuild). Best-effort — an unknown version must not
+    # abort a run.
+    case "$harness" in
+        pi)       harness_version="$(pi --version 2>/dev/null | head -1)" ;;
+        opencode) harness_version="$(opencode --version 2>/dev/null | head -1)" ;;
+        cursor)   harness_version="$(cursor-agent --version 2>/dev/null | head -1)" ;;
+        *)        harness_version="$(claude --version 2>/dev/null | head -1)" ;;
+    esac
+    [ -n "$harness_version" ] || harness_version="unknown"
+
     # Record start
     cat > "$run_dir/metrics.json" << EOF
 {
@@ -689,6 +707,7 @@ EOF
   "workflow": "$workflow",
   "model": "$model_name",
   "cli_model": "$cli_model",
+  "harness_version": "$harness_version",
   "thinking": $thinking,
   "started_at": "$(date -Iseconds)",
   "ended_at": null,

@@ -37,7 +37,8 @@ WORKFLOWS_DIR = REPO_ROOT / "experiments" / "workflows"
 ARCHIVE_DIR = WORKFLOWS_DIR / "_archive"
 
 CSV_COLUMNS = [
-    "kata", "workflow", "cell_workflow", "model", "cell_model", "cli_model", "thinking", "run_id",
+    "kata", "workflow", "cell_workflow", "model", "cell_model", "cli_model", "harness_version",
+    "thinking", "run_id",
     "exit_code", "exit_reason", "rate_limited", "completed_within_budget",
     "analyze_status",
     "duration_seconds", "total_tokens", "context_utilization_pct",
@@ -300,6 +301,11 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "", cell_workfl
         "model":                      metrics.get("model", ""),
         "cell_model":                 cell_model or metrics.get("model", ""),
         "cli_model":                  metrics.get("cli_model", ""),
+        # Empty for every run recorded before harness_version was captured
+        # (run-batch.sh, 2026-09). An empty value means "not recorded", not
+        # "same version" — a CLI period control must read the run date for
+        # those, not assume homogeneity.
+        "harness_version":            metrics.get("harness_version", ""),
         "thinking":                   metrics.get("thinking"),
         "run_id":                     run_id,
         "exit_code":                  rs.get("exit_code"),
