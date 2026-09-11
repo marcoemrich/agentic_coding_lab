@@ -10,6 +10,10 @@ controls:
   workflow: v6.1-hybrid-testlist-scope-fix
   kata_base: claim-office
   prompt: example-mapping
+  # Fable 5.1 needs CC >= 2.1.251, so all three cells run on 2.1.267. Pinning
+  # it as a control keeps the 13 pre-bump opus-5 runs out of the model
+  # comparison — see "The CLI bump" below.
+  harness_version: "2.1.267"
 outcomes:
   # primary: correctness (external). Read with the resolution caveat below —
   # on claim-office this metric is close to a single bit, not a degree.
@@ -31,12 +35,14 @@ outcomes:
   - completed_within_budget
   - duration_seconds
   - total_tokens
+  # H3: list-price comparison value, dominated by cache_read on this workflow
+  - cost_usd
 min_replicates: 5
 status: aktiv
-# NOTE: all three cells must be measured on Claude Code 2.1.267. The 13
-# opus-5-no-thinking runs already in the pool were measured on 2.1.170 and are
-# NOT reusable here — see "The CLI bump" below. They serve as the 2.1.170 arm
-# of the CLI period control instead.
+# NOTE: the 13 pre-bump opus-5-no-thinking runs in the pool are excluded by the
+# harness_version control above, not by hand. They carry no harness_version at
+# all (the field postdates them), so the H5 period control selects them with
+# harness_version: unrecorded — see "The CLI bump" below.
 ---
 
 # RQ-2.3: Fable 5 / Fable 5.1 / Opus 5 on the Current Workflow
@@ -99,14 +105,34 @@ them would confound the CLI version with the model factor — exactly the failur
 RQ-1.19 F-1.19.9 caught, where "v6.1.1 costs more" could not be separated from
 "September costs more" until a period control was run.
 
-**All three cells are therefore measured fresh on 2.1.267.** The old opus-5
-runs stay in the pool and serve a second purpose: they are the 2.1.170 arm of
-a CLI period control. `opus-5-no-thinking` is held constant across the two CLI
-versions, so any difference between the old and new opus-5 runs is the bump
-itself, not the model. This has to be read before any model claim in this RQ —
-if the bump moves cost or refactor rate, the Fable-against-opus-5 comparison is
-still internally valid (all three cells share 2.1.267), but no number here may
-be compared against a finding measured on 2.1.170.
+**All three cells are therefore measured fresh on 2.1.267.** The separation is
+enforced by the `harness_version` control in the frontmatter rather than by
+discipline — `aggregate-by-query.py` filters on the axis, so the pre-bump runs
+cannot leak into a model cell even when someone re-aggregates months later.
+
+The old opus-5 runs stay in the pool and serve a second purpose: they are the
+2.1.170 arm of a CLI period control. `opus-5-no-thinking` is held constant
+across the two CLI versions, so any difference between the old and new opus-5
+runs is the bump itself, not the model. To aggregate that control, swap the
+`harness_version` control for a factor over both arms:
+
+```yaml
+factors:
+  model: [opus-5-no-thinking]
+  harness_version: ["2.1.267", unrecorded]
+```
+
+`unrecorded` is the sentinel for runs from before the field existed. It is not
+a synonym for 2.1.170 — it means "not recorded", and the run date is the only
+evidence of which CLI produced those runs (see the Provenance note). A cell
+pinned to `unrecorded` can never be topped up, since a fresh run always stamps
+the current CLI; `batch-plan-from-rq.py` reports such a cell as unfillable
+instead of planning runs that would never satisfy it.
+
+The period control has to be read before any model claim in this RQ — if the
+bump moves cost or refactor rate, the Fable-against-opus-5 comparison is still
+internally valid (all three cells share 2.1.267), but no number here may be
+compared against a finding measured on 2.1.170.
 
 ## Caveat on the primary outcome
 
