@@ -118,6 +118,7 @@ controls:                         # what is held constant
   workflow: v4-exact-subagents    # only if no workflow_x_prompt factor
   prompt: example-mapping         # only if no prompt factor / pairing
   model: <lab-variant-id>         # e.g. opus-4-7-no-thinking (see model alias table)
+  harness_version: "2.1.267"      # optional; omit unless a CLI bump is a factor
 outcomes: [<metric>, ...]         # which metrics are measured
 min_replicates: N                 # per cell
 status: active | partial | closed
@@ -139,6 +140,30 @@ controls:
 All listed values count toward the same cell during aggregation, and the first entry is the canonical value used for new fill-runs (`batch-plan-from-rq.py`) and cell labelling in `summary.md`. The real per-run model stays in `runs.csv` under the `model` column for debugging; the cell-grouping value is the new `cell_model` column.
 
 Intended use: combine routing variants of the same underlying model (e.g. Portkey-routed and Direct-API runs of `opus-4-7-no-thinking`) when routing is assumed not to affect the outcome under study. **Not** for combining different *models* — use `factors.model` instead, otherwise you collapse a real factor into a hidden uncontrolled variable.
+
+`controls.workflow` accepts the same three forms, for an outcome-neutral workflow bugfix whose old and new runs must land in one cell.
+
+### Selecting on the CLI version
+
+`harness_version` is an optional fourth selector axis, usable as a control or a factor. **Omit it in normal RQs** — a cell then spans whatever CLI versions produced its runs, which is the right default and the behaviour every RQ written before 2026-09 relies on.
+
+Declare it when a harness bump is a live factor, i.e. when runs from before and after the bump would otherwise be compared as if the CLI were constant:
+
+```yaml
+controls:
+  harness_version: "2.1.267"        # only runs on this CLI count
+```
+
+```yaml
+factors:
+  harness_version: ["2.1.267", unrecorded]   # period control: bump as the factor
+```
+
+Values are bare version tokens; `metrics.json` stores `"2.1.267 (Claude Code)"` and the match is on the leading token, so the frontmatter stays readable. The sentinel **`unrecorded`** selects runs from before `run-batch.sh` began capturing the field (2026-09). It means *not recorded*, **not** "some particular older version" — for those runs the run date is the only evidence of which CLI produced them, so a period control built on `unrecorded` is only as sound as that dating.
+
+A cell pinned to `unrecorded` is structurally unfillable: a fresh run always stamps the current CLI. `batch-plan-from-rq.py` reports the shortfall on stderr instead of emitting runs that could never satisfy it.
+
+When any cell declares the axis, `summary.md` gains a `harness` column in the coverage table and a `cell_harness` level in every pivot; RQs that ignore the axis keep their existing table shape byte-for-byte.
 
 ### Outcome conventions
 

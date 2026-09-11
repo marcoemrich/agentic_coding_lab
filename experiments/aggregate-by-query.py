@@ -10,6 +10,13 @@ Outputs into the RQ directory:
   runs.csv     — one row per matched run, all metrics
   summary.md   — per-cell pivots (avg/rate) for each declared outcome
 
+`harness_version` is an optional fourth selector axis, as a control or a
+factor. Declare it only when a CLI bump is a live factor — otherwise a cell
+spans whatever CLI versions produced its runs, which is the right default.
+Values are bare version tokens ('2.1.267', matching the stored
+'2.1.267 (Claude Code)') or the sentinel 'unrecorded' for runs from before
+run-batch.sh captured the field.
+
 Aborts when a selector names a workflow under experiments/workflows/_archive/ —
 those are superseded or correctness-defective, and their runs stay in the flat
 runs pool without any archive marker. Pass --allow-archived when an RQ evaluates
@@ -37,7 +44,8 @@ WORKFLOWS_DIR = REPO_ROOT / "experiments" / "workflows"
 ARCHIVE_DIR = WORKFLOWS_DIR / "_archive"
 
 CSV_COLUMNS = [
-    "kata", "workflow", "cell_workflow", "model", "cell_model", "cli_model", "harness_version",
+    "kata", "workflow", "cell_workflow", "model", "cell_model", "cli_model",
+    "harness_version", "cell_harness",
     "thinking", "run_id",
     "exit_code", "exit_reason", "rate_limited", "completed_within_budget",
     "analyze_status",
@@ -59,6 +67,16 @@ CSV_COLUMNS = [
     "verification_total", "verification_passed", "verification_pct",
     "cli_built",
 ]
+
+# Sentinel for `harness_version` runs recorded before run-batch.sh started
+# capturing the field (2026-09). An empty value means "not recorded" — NOT
+# "same version as everything else"; for those runs the run date is the only
+# evidence of which CLI produced them.
+UNRECORDED = "unrecorded"
+
+# `harness_version` would give the clumsy `harness_version_alts`; every other
+# selector axis keeps its own name.
+ALTS_NAME = {"harness_version": "harness"}
 
 # -----------------------------------------------------------------------
 # Frontmatter parsing
@@ -125,44 +143,58 @@ def expand_cells(fm: dict) -> list[dict]:
         # semantics directly in the YAML. First entry is the canonical model
         # used for plan generation and cell labelling; all entries match in
         # aggregation.
-        m = cell["model"]
-        if isinstance(m, dict):
-            if "any" not in m or not isinstance(m["any"], list) or not m["any"]:
-                raise SystemExit(
-                    f"cell model mapping must be {{any: [...]}} with non-empty list: {cell}"
-                )
-            cell["model_alts"] = list(m["any"])
-            cell["model"] = m["any"][0]
-        elif isinstance(m, list):
-            if not m:
-                raise SystemExit(f"cell has empty model list: {cell}")
-            cell["model_alts"] = list(m)
-            cell["model"] = m[0]
-        else:
-            cell["model_alts"] = [m]
+        normalize_alts(cell, "model")
 
         # Allow controls.workflow to be an OR-match, same three forms as model.
         # Use case: an outcome-neutral workflow bugfix (e.g. v6.2 -> v6.2.1)
         # where old clean runs and new replacement runs must aggregate into
         # the SAME cell. First entry is canonical (cell label + plan gen);
         # all entries match in aggregation.
-        w = cell["workflow"]
-        if isinstance(w, dict):
-            if "any" not in w or not isinstance(w["any"], list) or not w["any"]:
-                raise SystemExit(
-                    f"cell workflow mapping must be {{any: [...]}} with non-empty list: {cell}"
-                )
-            cell["workflow_alts"] = list(w["any"])
-            cell["workflow"] = w["any"][0]
-        elif isinstance(w, list):
-            if not w:
-                raise SystemExit(f"cell has empty workflow list: {cell}")
-            cell["workflow_alts"] = list(w)
-            cell["workflow"] = w[0]
-        else:
-            cell["workflow_alts"] = [w]
+        normalize_alts(cell, "workflow")
+
+        # harness_version is optional and absent from almost every RQ. When a
+        # cell does not declare it, harness_alts stays None and no filtering
+        # happens — the pre-2026-09 behaviour, where a cell spans whatever CLI
+        # versions produced its runs.
+        normalize_alts(cell, "harness_version", required=False)
 
     return cells
+
+
+def normalize_alts(cell: dict, key: str, required: bool = True) -> None:
+    """Normalize cell[key] into a canonical scalar + a `<key>_alts` list.
+
+    Accepts the three OR-match forms (scalar, bare list, {any: [...]}) that
+    controls.model documented first. The first entry becomes canonical — it is
+    the cell label in summary.md and the value plan generation emits — while
+    every entry matches during aggregation.
+
+    With required=False an absent key yields `<key>_alts = None`, which
+    matches_cell() reads as "do not filter on this axis".
+    """
+    alts_key = f"{ALTS_NAME.get(key, key)}_alts"
+
+    if key not in cell:
+        if required:
+            raise SystemExit(f"cell missing '{key}': {cell}")
+        cell[alts_key] = None
+        return
+
+    value = cell[key]
+    if isinstance(value, dict):
+        if "any" not in value or not isinstance(value["any"], list) or not value["any"]:
+            raise SystemExit(
+                f"cell {key} mapping must be {{any: [...]}} with non-empty list: {cell}"
+            )
+        cell[alts_key] = [str(v) for v in value["any"]]
+    elif isinstance(value, list):
+        if not value:
+            raise SystemExit(f"cell has empty {key} list: {cell}")
+        cell[alts_key] = [str(v) for v in value]
+    else:
+        cell[alts_key] = [str(value)]
+
+    cell[key] = cell[alts_key][0]
 
 
 # -----------------------------------------------------------------------
@@ -176,9 +208,42 @@ def kata_for_cell(cell: dict) -> str:
     return f"{base}-{prompt}" if prompt else base
 
 
+def cell_key(cell: dict) -> tuple:
+    """Identity of a cell for counting and coverage.
+
+    Includes the canonical harness so a CLI period control — the same model on
+    two CLI versions — stays two cells instead of collapsing into one. Cells
+    that do not declare harness_version all share the same empty slot, which
+    keeps the key shape stable for every RQ that ignores the axis.
+    """
+    return (kata_for_cell(cell), cell["workflow"], cell["model"],
+            cell.get("harness_version", ""))
+
+
+def harness_of_run(metrics: dict) -> str:
+    """Version token of a run's harness_version, or UNRECORDED.
+
+    metrics.json stores the full '2.1.267 (Claude Code)'; RQs name the bare
+    version. Splitting on whitespace keeps the RQ frontmatter readable and
+    avoids a prefix match, under which '2.1.2' would silently also accept
+    2.1.267 and 2.1.26.
+    """
+    raw = (metrics.get("harness_version") or "").strip()
+    return raw.split()[0] if raw else UNRECORDED
+
+
 def matches_cell(metrics: dict, cell: dict) -> bool:
     if metrics.get("kata") != kata_for_cell(cell):
         return False
+    # Harness match: only when the cell declares harness_version. Needed when a
+    # CLI bump is a live factor — reusing runs from before the bump would
+    # confound the CLI version with whatever the RQ actually varies. Accepts
+    # both the bare version and the full stored string, plus the UNRECORDED
+    # sentinel for runs predating the field.
+    if cell.get("harness_alts") is not None:
+        raw = (metrics.get("harness_version") or "").strip()
+        if raw not in cell["harness_alts"] and harness_of_run(metrics) not in cell["harness_alts"]:
+            return False
     # Workflow match: cell["workflow_alts"] is the list of accepted workflow
     # names (usually one; more than one only for an OR-matched outcome-neutral
     # bugfix, e.g. [v6.2-with-why-cleaned-pi, v6.2.1-phase-continuation-pi]).
@@ -226,17 +291,20 @@ def check_archived_workflows(cells: list[dict], allow_archived: bool) -> int:
     return len(hits)
 
 
-def collect_runs(cells: list[dict]) -> tuple[list[tuple[Path, str]], dict[tuple, list[Path]]]:
-    """Walk runs dir, return matched (metrics_path, cell_model) + per-cell index.
+def collect_runs(
+    cells: list[dict],
+) -> tuple[list[tuple[Path, str, str, str]], dict[tuple, list[Path]]]:
+    """Walk runs dir, return matched (metrics_path, cell_model, cell_workflow,
+    cell_harness) + per-cell index.
 
     `cell_model` is the canonical lab-variant for the cell the run was matched
     against — equal to `metrics.model` for scalar controls.model, equal to the
     first list entry for list-valued controls.model. Used as the grouping key
     in summary.md pivots so list-valued cells aggregate as one row.
 
-    Index key = (kata, workflow, cell_model) tuple.
+    Index key = cell_key(cell).
     """
-    matched: list[tuple[Path, str]] = []
+    matched: list[tuple[Path, str, str, str]] = []
     by_cell: dict[tuple, list[Path]] = {}
 
     for run_dir in sorted(RUNS_DIR.iterdir()):
@@ -252,9 +320,9 @@ def collect_runs(cells: list[dict]) -> tuple[list[tuple[Path, str]], dict[tuple,
 
         for cell in cells:
             if matches_cell(metrics, cell):
-                matched.append((m_file, cell["model"], cell["workflow"]))
-                key = (kata_for_cell(cell), cell["workflow"], cell["model"])
-                by_cell.setdefault(key, []).append(m_file)
+                matched.append((m_file, cell["model"], cell["workflow"],
+                                cell.get("harness_version", "")))
+                by_cell.setdefault(cell_key(cell), []).append(m_file)
                 break  # a run can only match one cell
 
     return matched, by_cell
@@ -264,7 +332,8 @@ def collect_runs(cells: list[dict]) -> tuple[list[tuple[Path, str]], dict[tuple,
 # CSV emission
 # -----------------------------------------------------------------------
 
-def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "", cell_workflow: str = "") -> dict:
+def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
+                   cell_workflow: str = "", cell_harness: str = "") -> dict:
     g = lambda d, *keys: _nested(d, keys)
 
     sm = metrics.get("summary_metrics") or {}
@@ -306,6 +375,9 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "", cell_workfl
         # "same version" — a CLI period control must read the run date for
         # those, not assume homogeneity.
         "harness_version":            metrics.get("harness_version", ""),
+        # Canonical label of the cell this run was matched into; empty for the
+        # RQs that do not select on the axis at all.
+        "cell_harness":               cell_harness,
         "thinking":                   metrics.get("thinking"),
         "run_id":                     run_id,
         "exit_code":                  rs.get("exit_code"),
@@ -408,12 +480,17 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
     # min_replicates (they are legitimate "ran but didn't finish" data
     # points), but the n_ok column makes it visible when a cell has e.g.
     # 3 timeouts and 0 successful completions.
+    # The harness column only appears for RQs that select on it, so every
+    # other RQ's coverage table keeps its existing three-column shape.
+    show_harness = any(cell.get("harness_alts") is not None for cell in cells)
+
     L("## Zell-Coverage")
     L("")
-    L("| kata | workflow | model | n | n_ok | status |")
-    L("|---|---|---|---:|---:|---|")
+    L("| kata | workflow | model |" + (" harness |" if show_harness else "")
+      + " n | n_ok | status |")
+    L("|---|---|---|" + ("---|" if show_harness else "") + "---:|---:|---|")
     for cell in cells:
-        key = (kata_for_cell(cell), cell["workflow"], cell["model"])
+        key = cell_key(cell)
         run_files = by_cell.get(key, [])
         n = len(run_files)
         n_ok = 0
@@ -439,7 +516,8 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
             status = f"⚠️ nur {n_ok}/{min_rep} ohne Timeout"
         else:
             status = "✅"
-        L(f"| {key[0]} | {key[1]} | {key[2]} | {n} | {n_ok} | {status} |")
+        harness_col = f" {key[3] or '—'} |" if show_harness else ""
+        L(f"| {key[0]} | {key[1]} | {key[2]} |{harness_col} {n} | {n_ok} | {status} |")
     L("")
 
     if df.empty:
@@ -457,7 +535,12 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
     # per-cell workflow) so an OR-matched outcome-neutral workflow bugfix
     # (v6.2 + v6.2.1) aggregates as one cell too. The real per-run `model`
     # and `workflow` are still in the CSV for provider-level debugging.
+    # cell_harness joins the grouping only for RQs that select on it —
+    # otherwise it is a constant empty column and every existing RQ's pivots
+    # would grow a meaningless level.
     group_cols = ["kata", "cell_workflow", "cell_model"]
+    if show_harness:
+        group_cols.append("cell_harness")
 
     for outcome in outcomes:
         # Pooled rate: outcome name ends with "_correct_rate" → derive
@@ -586,10 +669,11 @@ def main(argv: list[str]) -> int:
           f"{len(matched)} runs matched", file=sys.stderr)
 
     rows = []
-    for m_file, cell_model, cell_workflow in matched:
+    for m_file, cell_model, cell_workflow, cell_harness in matched:
         metrics = json.loads(m_file.read_text())
         run_id = m_file.parent.name
-        rows.append(metrics_to_row(metrics, run_id, cell_model, cell_workflow))
+        rows.append(metrics_to_row(metrics, run_id, cell_model, cell_workflow,
+                                   cell_harness))
 
     df = pd.DataFrame(rows, columns=CSV_COLUMNS)
     csv_path = out_dir / "runs.csv"

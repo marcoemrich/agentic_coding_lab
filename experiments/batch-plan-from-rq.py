@@ -33,11 +33,10 @@ DEFAULT_PLANS_DIR = REPO_ROOT / "experiments" / "batch-plans"
 
 
 def count_runs_per_cell(cells: list[dict]) -> dict[tuple, int]:
-    """Return {(kata, workflow, model_short): n_existing} for each cell."""
+    """Return {cell_key: n_existing} for each cell."""
     counts: dict[tuple, int] = {}
     for cell in cells:
-        key = (agg.kata_for_cell(cell), cell["workflow"], cell["model"])
-        counts[key] = 0
+        counts[agg.cell_key(cell)] = 0
 
     for run_dir in agg.RUNS_DIR.iterdir():
         if run_dir.name.startswith("_"):
@@ -51,8 +50,7 @@ def count_runs_per_cell(cells: list[dict]) -> dict[tuple, int]:
             continue
         for cell in cells:
             if agg.matches_cell(metrics, cell):
-                key = (agg.kata_for_cell(cell), cell["workflow"], cell["model"])
-                counts[key] += 1
+                counts[agg.cell_key(cell)] += 1
                 break
     return counts
 
@@ -177,12 +175,21 @@ def build_plan(fm: dict, cells: list[dict], counts: dict[tuple, int]) -> dict:
 
     runs = []
     relabelled: list[str] = []
+    unfillable: list[str] = []
     for cell in cells:
-        key = (agg.kata_for_cell(cell), cell["workflow"], cell["model"])
+        key = agg.cell_key(cell)
         model = runnable_model(cell)
         if model != cell["model"]:
             relabelled.append(f"{cell['workflow']}: {cell['model']} → {model}")
         missing = max(0, min_rep - counts[key])
+        # A cell that accepts only runs from before harness_version was
+        # recorded cannot be topped up: a fresh run always stamps the current
+        # CLI. Emitting runs for it would refill on every invocation and never
+        # close the gap, so report the shortfall instead of planning it away.
+        if missing and cell.get("harness_alts") == [agg.UNRECORDED]:
+            unfillable.append(f"{key[0]} × {key[1]} × {key[2]}: "
+                              f"{counts[key]}/{min_rep}")
+            continue
         for _ in range(missing):
             runs.append({
                 "kata": key[0],
@@ -193,6 +200,11 @@ def build_plan(fm: dict, cells: list[dict], counts: dict[tuple, int]) -> dict:
     if relabelled:
         for line in sorted(set(relabelled)):
             print(f"  harness-specific model label — {line}", file=sys.stderr)
+
+    if unfillable:
+        for line in sorted(set(unfillable)):
+            print(f"  cannot be filled (harness_version: {agg.UNRECORDED}) — {line}",
+                  file=sys.stderr)
 
     return {
         "name": f"{rq_id} fill",
@@ -232,8 +244,7 @@ def main(argv: list[str]) -> int:
     rq_id = fm.get("id", "rq")
     n_cells = len(cells)
     n_full = sum(1 for c in cells
-                 if counts[(agg.kata_for_cell(c), c["workflow"], c["model"])]
-                    >= int(fm.get("min_replicates", 1)))
+                 if counts[agg.cell_key(c)] >= int(fm.get("min_replicates", 1)))
     n_missing = len(plan["runs"])
 
     print(f"{rq_id}: {n_cells} cells, {n_full} already at min_replicates, "
