@@ -1,6 +1,6 @@
 ---
 id: RQ-model-quality-pi
-question: "How do the models reachable via the pi harness (Requesty routing) differ in code quality and TDD discipline on game-of-life-example-mapping with the v6.2.1-phase-continuation-pi workflow?"
+question: "How do the models reachable via the pi harness (Requesty routing) differ in code quality and TDD discipline on game-of-life-example-mapping with the exact-hybrid-v4.2-phase-continuation-pi workflow?"
 factors:
   model:
     - opus-4-8            # current Opus (vertex/bedrock claude-opus-4-8@eu)
@@ -16,7 +16,7 @@ factors:
     - deepseek-v4-pro     # DeepSeek V4 Pro (tensorx/deepseek-v4-pro)
     - qwen3-235b          # current Qwen (nebius/qwen/qwen3-235b-a22b-instruct-2507)
 controls:
-  workflow: v6.2.1-phase-continuation-pi
+  workflow: exact-hybrid-v4.2-phase-continuation-pi
   kata_base: game-of-life
   prompt: example-mapping
 outcomes:
@@ -58,9 +58,9 @@ status: aktiv
 
 With pi as the third harness (after Claude Code and OpenCode), models become reachable over another routing path: pi routes via **Requesty** (`provider=requesty`, `api:"openai-completions"`, bearer auth), which bundles GPT-5.x (Azure), kimi/minimax (Bedrock/Inceptron/TensorX), glm/deepseek (TensorX/Nebius), Gemini (Vertex) and Mistral/Nebius models under one OpenAI-compatible interface.
 
-This RQ measures the **model effect on code quality and TDD discipline** in a harness-constant setting (all cells pi, all the same workflow, all the same kata). It is the **direct counterpart** to RQ-model-quality (Claude Code side) and RQ-model-quality-oc (OpenCode side) — but with `v6.2.1-phase-continuation-pi` as the workflow. The workflow difference must be named explicitly when comparing findings across harnesses, NO 1:1 transfer.
+This RQ measures the **model effect on code quality and TDD discipline** in a harness-constant setting (all cells pi, all the same workflow, all the same kata). It is the **direct counterpart** to RQ-model-quality (Claude Code side) and RQ-model-quality-oc (OpenCode side) — but with `exact-hybrid-v4.2-phase-continuation-pi` as the workflow. The workflow difference must be named explicitly when comparing findings across harnesses, NO 1:1 transfer.
 
-`game-of-life-example-mapping` as kata: carries the code-quality signal (`smell_total`, `cognitive_max`, etc. differentiate) and is example-mapping compatible (v6.2.1, like v6.2, permits all three prompt styles). claim-office is investigated in parallel in RQ-model-novel-pi (correctness as primary outcome).
+`game-of-life-example-mapping` as kata: carries the code-quality signal (`smell_total`, `cognitive_max`, etc. differentiate) and is example-mapping compatible (hybrid-v4.2, like hybrid-v4, permits all three prompt styles). claim-office is investigated in parallel in RQ-model-novel-pi (correctness as primary outcome).
 
 ## Harness status: walking skeleton
 
@@ -81,15 +81,15 @@ This RQ measures the **model effect on code quality and TDD discipline** in a ha
 | `deepseek-v4-pro` | `requesty/tensorx/deepseek-v4-pro` |
 | `qwen3-235b` | `requesty/nebius/qwen/qwen3-235b-a22b-instruct-2507` |
 
-This RQ is initially **open (n=0)**: the mapping is in place, but the first batch is still missing for every model. Procedure identical to the start of `questions-opencode/`. The workflow `v6.2.1-phase-continuation-pi` specifically addresses the continuation drop at the test-list→red transition, which under `v6.2-with-why-cleaned-pi` caused kimi and minimax runs to abort (test list only, no `src/cli.ts`). Smoke evidence on claim-office × v6.2.1 (2026-07-25): kimi-k2-7 and minimax-m3-no-thinking now run autonomously through (`cli_built=true`, green tests, `experiment-done.txt`). Whether every model carries the loop stably to the end is to be checked per cell after the first batch.
+This RQ is initially **open (n=0)**: the mapping is in place, but the first batch is still missing for every model. Procedure identical to the start of `questions-opencode/`. The workflow `exact-hybrid-v4.2-phase-continuation-pi` specifically addresses the continuation drop at the test-list→red transition, which under `exact-hybrid-v4-cleaned-pi` caused kimi and minimax runs to abort (test list only, no `src/cli.ts`). Smoke evidence on claim-office × hybrid-v4.2 (2026-07-25): kimi-k2-7 and minimax-m3-no-thinking now run autonomously through (`cli_built=true`, green tests, `experiment-done.txt`). Whether every model carries the loop stably to the end is to be checked per cell after the first batch.
 
 ## Existing data
 
-- **As of 2026-07-24**: No game-of-life runs for any cell of this RQ. First batch completely open. (Existing pi runs on `v6.2-with-why-cleaned-pi` and `v6.2.1-phase-continuation-pi` are on claim-office, not on game-of-life — see RQ-model-novel-pi.)
+- **As of 2026-07-24**: No game-of-life runs for any cell of this RQ. First batch completely open. (Existing pi runs on `exact-hybrid-v4-cleaned-pi` and `exact-hybrid-v4.2-phase-continuation-pi` are on claim-office, not on game-of-life — see RQ-model-novel-pi.)
 
 ## Model selection
 
-The `factors.model` list is set by the user: current Opus + Sonnet (Anthropic anchor, comparable across harnesses to `-oc`/CC), GPT-5.6 **SOL and TERRA** (intra-family variants, analogous to GLM 5.1/5.2), GLM 5.1 **and** 5.2 (direct intra-family version comparison), Kimi **K2.7 and K3** (third intra-family version comparison, added 2026-07-28), plus MiniMax M3, DeepSeek V4 Pro and current Qwen (qwen3-235b). Per model the same rule applies as for `-oc`: inclusion if the autonomous loop runs cleanly through under `v6.2.1-phase-continuation-pi` and `src/cli.ts` is written. Models that do not reliably finish the skill loop (continuation drop, done.txt with red tests, no cli.ts) are removed from the RQ with justification and documented here — analogous to the Gemini 2.5 Pro / Devstral / Codestral history in `questions-opencode/`. The test-list→red continuation drop that affected kimi/minimax under v6.2 is fixed in v6.2.1 (see harness status).
+The `factors.model` list is set by the user: current Opus + Sonnet (Anthropic anchor, comparable across harnesses to `-oc`/CC), GPT-5.6 **SOL and TERRA** (intra-family variants, analogous to GLM 5.1/5.2), GLM 5.1 **and** 5.2 (direct intra-family version comparison), Kimi **K2.7 and K3** (third intra-family version comparison, added 2026-07-28), plus MiniMax M3, DeepSeek V4 Pro and current Qwen (qwen3-235b). Per model the same rule applies as for `-oc`: inclusion if the autonomous loop runs cleanly through under `exact-hybrid-v4.2-phase-continuation-pi` and `src/cli.ts` is written. Models that do not reliably finish the skill loop (continuation drop, done.txt with red tests, no cli.ts) are removed from the RQ with justification and documented here — analogous to the Gemini 2.5 Pro / Devstral / Codestral history in `questions-opencode/`. The test-list→red continuation drop that affected kimi/minimax under hybrid-v4 is fixed in hybrid-v4.2 (see harness status).
 
 MiniMax and DeepSeek are deliberately included because they had clear, documented contrast profiles in the `-oc` counterpart: MiniMax = "internal tests green, external verification 0/15" (spec misunderstanding), DeepSeek-Pro = skill-compliance champion with duration tail risk. That makes the cross-harness comparison direct.
 
@@ -121,7 +121,7 @@ Inclusion decision if the fill fails: should sference not reach `min_replicates:
 
 - **Gemma**: **Not present** in `pi-config/agent/models.json` (no Gemma configured at Requesty). Only includable once a Gemma model is added to `models.json` and is routable via Requesty.
 - **`gpt-5-6-luna`** (Azure) — third GPT-5.6 sibling next to SOL and TERRA; would spread the GPT branch further.
-- **`gemini-2-5-pro`** (`vertex/gemini-2.5-pro@europe-west1`) — dropped in the `-oc` run because of the continuation drop; possibly more stable under v6.2.1 (explicit phase-continuation fix).
+- **`gemini-2-5-pro`** (`vertex/gemini-2.5-pro@europe-west1`) — dropped in the `-oc` run because of the continuation drop; possibly more stable under hybrid-v4.2 (explicit phase-continuation fix).
 - **`qwen3-next-80b-a3b-thinking`** (Nebius) — thinking variant next to the included qwen3-235b, should the Qwen branch be spread.
 
 ## Hypotheses
@@ -130,11 +130,11 @@ Inclusion decision if the fill fails: should sference not reach `min_replicates:
 - **H1b (GLM version jump)**: glm-5-2 measurably improves `smell_total`/`cognitive_max` over glm-5-1 — direct intra-family version comparison within one cell matrix (both via different backproviders: 5.1 Nebius, 5.2 TensorX; note the backprovider confound as a caveat).
 - **H1c (Kimi version jump)**: kimi-k3 measurably improves `smell_total`/`cognitive_max` over kimi-k2-7 — third intra-family version comparison next to GLM 5.1/5.2 and GPT SOL/TERRA. Backprovider confound as with GLM: K2.7 via TensorX, K3 via Sference (see "kimi-k3: sference route, all pre-fix runs discarded").
 - **H2 (non-Anthropic spread)**: The non-Anthropic models (gpt-5-6-sol, glm-5-1, glm-5-2, kimi-k2-7, kimi-k3) show a measurable spread over `smell_total` and `cognitive_max` — i.e. the pi harness is discriminating enough to make model differences visible.
-- **H3 (skill-tool compliance is model-dependent)**: `cycle_count` and `predictions_total` spread across the models — some use the v6.2.1 skill/subagent mechanism with discipline, others drift into inline mode. A low cycle_count is NOT automatically weaker TDD discipline, but also compliance with the pi skill affordance. (Parallel to the `-oc` finding: only some models produce prediction markers.)
+- **H3 (skill-tool compliance is model-dependent)**: `cycle_count` and `predictions_total` spread across the models — some use the hybrid-v4.2 skill/subagent mechanism with discipline, others drift into inline mode. A low cycle_count is NOT automatically weaker TDD discipline, but also compliance with the pi skill affordance. (Parallel to the `-oc` finding: only some models produce prediction markers.)
 
 ## Methodological notes
 
 - All models run via Requesty, but with different backproviders (Azure for GPT-5.x, Bedrock/Vertex for Anthropic/Gemini, TensorX/Nebius/Inceptron for the rest). Backprovider routing effects are implicitly pinned in the lab-variant IDs.
 - `n=5` per cell follows memory [[replicates-n-reliability]] (default for a medium field).
-- v6.2.1 enforces (like v6.2) test-first TDD with the why-block/skill mechanics. Observable drift in `cycle_count` (only part of the real cycles is captured via the skill/marker path) is a workflow-compliance property, not a parser bug. Distinguish in findings: "model A has higher TDD discipline" ≠ "model A uses the skill marker more often".
-- TDD discipline metrics (`cycle_count`, `predictions_*`, `refactorings_applied`) depend on the pi transcript parser capturing the markers. v6.2.1 changes only the phase transition (test-list→red continuation), not the markers themselves — all of P1–P7 are unchanged. Before the first batch, verify that an Opus run yields these metrics != null (smoke-test rule from CLAUDE.md).
+- hybrid-v4.2 enforces (like hybrid-v4) test-first TDD with the why-block/skill mechanics. Observable drift in `cycle_count` (only part of the real cycles is captured via the skill/marker path) is a workflow-compliance property, not a parser bug. Distinguish in findings: "model A has higher TDD discipline" ≠ "model A uses the skill marker more often".
+- TDD discipline metrics (`cycle_count`, `predictions_*`, `refactorings_applied`) depend on the pi transcript parser capturing the markers. hybrid-v4.2 changes only the phase transition (test-list→red continuation), not the markers themselves — all of P1–P7 are unchanged. Before the first batch, verify that an Opus run yields these metrics != null (smoke-test rule from CLAUDE.md).

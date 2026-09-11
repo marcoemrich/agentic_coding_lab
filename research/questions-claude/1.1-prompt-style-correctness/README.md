@@ -13,7 +13,7 @@ factors:
     - haiku-4-5-portkey
     - haiku-4-5-portkey-no-thinking
 controls:
-  workflow: v5-exact-single-context
+  workflow: exact-single-context-v1-cc
   kata_base: claim-office
 outcomes:
   - verification_pct
@@ -69,7 +69,7 @@ Opus 4.7 runs via the Anthropic direct API (rate limit). All other
 models run via the Portkey Gateway (rate-limit-free) and can be collected in
 a single batch.
 
-## Why v5 as the Control Workflow?
+## Why single-context-v1 as the Control Workflow?
 
 This RQ measures the effect of **prompt style** on **correctness**. The
 workflow must therefore not introduce noise of its own into the correctness metric.
@@ -79,38 +79,38 @@ across models, as of 2026-05-11):
 
 | Workflow | mean(verification_pct) | σ | n | Spread |
 |---|---:|---:|---:|---|
-| **v5** (single-context) | **1.000** | **0.000** | 3 | 1.0–1.0 |
-| v3 (basic TDD) | 0.844 | 0.275 | 15 | 0.0–1.0 |
-| v4 (subagents) | 0.340 | 0.419 | 20 | 0.0–1.0 |
+| **single-context-v1** (single-context) | **1.000** | **0.000** | 3 | 1.0–1.0 |
+| inline-tdd-v1 (basic TDD) | 0.844 | 0.275 | 15 | 0.0–1.0 |
+| subagents-v1 (subagents) | 0.340 | 0.419 | 20 | 0.0–1.0 |
 
-### v4 Is Ruled Out (σ = 0.42)
+### subagents-v1 Is Ruled Out (σ = 0.42)
 
 The subagent lottery problem (state reconstruction fails at the
 phase change) swallows the prompt style effect. Individual runs
 land at 0 % although the model masters the task — a
-workflow artifact, not a prompt signal. Example: Opus-4.7 × v4 ×
+workflow artifact, not a prompt signal. Example: Opus-4.7 × subagents-v1 ×
 example-mapping shows runs with 0 %, 0.27 %, 0.73 %, 1.00 % — the
 workflow dominates the variance.
 
-### v3 Is Suboptimal (σ = 0.28)
+### inline-tdd-v1 Is Suboptimal (σ = 0.28)
 
-v3 has no explicit phase scripts; the model decides on its own
-about TDD discipline. On weaker models v3 shows outliers that are
-not prompt-related but workflow-related (Haiku × v3 ×
+inline-tdd-v1 has no explicit phase scripts; the model decides on its own
+about TDD discipline. On weaker models inline-tdd-v1 shows outliers that are
+not prompt-related but workflow-related (Haiku × inline-tdd-v1 ×
 example-mapping: 0.0, 0.4, 0.8). This noise would confound the
 prompt effect.
 
-### v5 Delivers the Cleanest Signal (σ = 0)
+### single-context-v1 Delivers the Cleanest Signal (σ = 0)
 
-v5 keeps the entire context in a single conversation — no
+single-context-v1 keeps the entire context in a single conversation — no
 phase handoff, no state loss. This makes every observed variance
 in `verification_pct` attributable to the prompt style and/or the model,
 not to the workflow.
 
-**Limitation**: The v5 data so far comes only from
-Opus-4.7-no-thinking (n=3, all 100 %). Whether v5 also remains stable on weaker
+**Limitation**: The single-context-v1 data so far comes only from
+Opus-4.7-no-thinking (n=3, all 100 %). Whether single-context-v1 also remains stable on weaker
 models is what this RQ itself will show. If Haiku ×
-v5 × example-mapping spreads, that would be a model effect — and exactly
+single-context-v1 × example-mapping spreads, that would be a model effect — and exactly
 what this RQ wants to measure.
 
 **Data gap for Opus 4.7 closed (as of 2026-06-02)**: opus-4-7
@@ -127,7 +127,7 @@ discarded due to a Vertex AI routing defect).
 ```
 Factor 1:  prompt        — 3 levels (prose, example-mapping, user-story)
 Factor 2:  model         — 8 levels (4 model tiers × ±thinking)
-Control:   workflow      — v5-exact-single-context
+Control:   workflow      — exact-single-context-v1-cc
 Control:   kata_base     — claim-office
 
 Cells:      3 × 8 = 24
@@ -223,7 +223,7 @@ See [findings.md](findings.md).
 ## Data Source
 
 All runs in `experiments/runs/` with
-`workflow=v5-exact-single-context`,
+`workflow=exact-single-context-v1-cc`,
 `kata=claim-office-{prose|example-mapping|user-story}`,
 model ∈ {opus-4-7, opus-4-7-no-thinking, opus-4-6-portkey,
 opus-4-6-portkey-no-thinking, sonnet-4-6-portkey,

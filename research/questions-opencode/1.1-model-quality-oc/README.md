@@ -1,6 +1,6 @@
 ---
 id: RQ-model-quality-oc
-question: "How do five models reachable via the OpenCode harness (Opus 4.7 via Portkey + four non-Anthropic models from the Portkey catalog) differ in code quality and TDD discipline on game-of-life-example-mapping with the v5.1-testlist-scope-fix-oc workflow?"
+question: "How do five models reachable via the OpenCode harness (Opus 4.7 via Portkey + four non-Anthropic models from the Portkey catalog) differ in code quality and TDD discipline on game-of-life-example-mapping with the exact-single-context-v2-testlist-fix-oc workflow?"
 factors:
   model:
     - opus-4-7-portkey
@@ -10,7 +10,7 @@ factors:
     - deepseek-v4-flash
     - deepseek-v4-pro
 controls:
-  workflow: v5.1-testlist-scope-fix-oc
+  workflow: exact-single-context-v2-testlist-fix-oc
   kata_base: game-of-life
   prompt: example-mapping
 outcomes:
@@ -51,9 +51,9 @@ status: aktiv
 
 With OpenCode as the second harness, models become reachable that do not run over Claude Code — Kimi K2, GLM 5.1, Gemini 2.5 Pro, Gemini 3.5 Flash (all via Portkey, OpenRouter/Vertex backends). Opus 4.7 runs on both harnesses and serves as the anchor here.
 
-This RQ measures the **model effect on code quality and TDD discipline** in a harness-constant setting (all cells OpenCode, all the same workflow, all the same kata). It is the **direct counterpart** to the existing RQ-model-quality (Claude Code side, v4-exact-subagents × example-mapping) — but with the v5.1 workflow instead of v4 (OpenCode has no clean subagent equivalent, v5.1 is the most honest TDD counterpart). The workflow difference must be named explicitly when comparing findings, NO 1:1 transfer.
+This RQ measures the **model effect on code quality and TDD discipline** in a harness-constant setting (all cells OpenCode, all the same workflow, all the same kata). It is the **direct counterpart** to the existing RQ-model-quality (Claude Code side, exact-subagents-v1-cc × example-mapping) — but with the single-context-v2 workflow instead of subagents-v1 (OpenCode has no clean subagent equivalent, single-context-v2 is the most honest TDD counterpart). The workflow difference must be named explicitly when comparing findings, NO 1:1 transfer.
 
-`game-of-life-example-mapping` as kata: carries the code-quality signal (`smell_total`, `cognitive_max`, etc. differentiate) AND is example-mapping compatible with v5.1's TDD mechanics (v5 permits all three prompt styles). claim-office is investigated in parallel in RQ-model-novel-kata-oc (correctness as primary outcome).
+`game-of-life-example-mapping` as kata: carries the code-quality signal (`smell_total`, `cognitive_max`, etc. differentiate) AND is example-mapping compatible with single-context-v2's TDD mechanics (single-context-v1 permits all three prompt styles). claim-office is investigated in parallel in RQ-model-novel-kata-oc (correctness as primary outcome).
 
 ## Existing data
 
@@ -74,5 +74,5 @@ Gemini 2.5 Pro was removed from the RQ on 2026-05-25: three smoke attempts (91s/
 
 - All four models run via Portkey, but with different backproviders (Vertex EU for Opus, Vertex for Gemini, OpenRouter for Kimi/GLM). Backprovider routing effects are implicitly pinned in the lab-variant IDs; a changing backprovider would require a new lab variant.
 - `n=5` per cell follows memory [[replicates-n-reliability]] (default for a medium field).
-- The v5.1 workflow enforces test-first TDD with `skill` tool calls. Observable drift in `cycle_count` (skeleton: only 2 of ~18 cycles captured via the skill tool) is a workflow-compliance property, not a parser bug. Distinguish in findings: "model A has higher TDD discipline" ≠ "model A uses the skill tool more often".
+- The single-context-v2 workflow enforces test-first TDD with `skill` tool calls. Observable drift in `cycle_count` (skeleton: only 2 of ~18 cycles captured via the skill tool) is a workflow-compliance property, not a parser bug. Distinguish in findings: "model A has higher TDD discipline" ≠ "model A uses the skill tool more often".
 - TDD discipline metrics (`cycle_count`, `predictions_*`, `refactorings_applied`) are available for OC runs from 2026-05-25 thanks to `parse_opencode_transcript.py`.

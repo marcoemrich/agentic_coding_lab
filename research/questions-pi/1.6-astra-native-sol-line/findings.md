@@ -13,7 +13,7 @@ through which the subscription is reached, not the Codex CLI.
 Means per cell. Direction is stated per row. Astra = `gpt-6-astra-codex-no-thinking`,
 Sol = `gpt-5-6-sol-codex`.
 
-| Metrik | Modell | v3 (Boden) | nativ inline | nativ Subagent | EXACT (v6.2.1) |
+| Metrik | Modell | inline-tdd-v1 (Boden) | nativ inline | nativ Subagent | EXACT (hybrid-v4.2) |
 |---|---|---:|---:|---:|---:|
 | Correctness (external) — saturiert | Astra | 1.00 | 1.00 | 1.00 | 1.00 |
 | | Sol | 1.00 | 1.00 | 0.93 | 1.00 |
@@ -56,7 +56,7 @@ Sol = `gpt-5-6-sol-codex`.
 | `cost_usd` — kleiner = besser, Listenpreis | Astra | 1.25 | 9.75 | 20.65 | 12.51 |
 | | Sol | **0.58** 🏆 | 3.98 | 7.40 | 4.84 |
 
-### Astra gegen Sol auf `basic-sol-tdd-pi` (nativ inline)
+### Astra gegen Sol auf `exact-sol-v1-pi` (nativ inline)
 
 The head-to-head the RQ's title question reduces to: the native line's own cell, one
 model against the other, n=5 each. Trophies here are awarded within this two-cell
@@ -122,7 +122,7 @@ under-testing apart. Read it as an open question, not a result.
   0.93 and is therefore excluded from every quality and efficiency trophy. All
   seven other cells sit at 1.0 and are eligible. The three correctness rows carry
   no trophy themselves — seven cells at the ceiling is not a contest.
-- **TDD-discipline metrics are n/a on the v3 cells**, never 0. v3 prescribes no
+- **TDD-discipline metrics are n/a on the inline-tdd-v1 cells**, never 0. inline-tdd-v1 prescribes no
   phase markers; the parser's inferred `cycle_count` (3.0 Sol / 6.8 Astra) and
   `refactorings_applied` (0.4 / 0.8) are a different construct and are omitted.
 - **`cycle_count` gets no trophy** because more cycles is not per se better, and
@@ -154,8 +154,8 @@ under-testing apart. Read it as an open question, not a result.
 
 ## F-1.6.1 — The native line's advantage over the EXACT line transfers to Astra
 
-The comparison the RQ exists for. On Astra, `basic-sol-tdd-pi` beats
-`v6.2.1-phase-continuation-pi` on every decomposition and complexity metric, in the
+The comparison the RQ exists for. On Astra, `exact-sol-v1-pi` beats
+`exact-hybrid-v4.2-phase-continuation-pi` on every decomposition and complexity metric, in the
 same direction as on Sol and by a wider margin:
 
 | Metrik | Astra nativ | Astra EXACT | Faktor | Sol nativ | Sol EXACT | Faktor |
@@ -212,12 +212,12 @@ function as cheap.
 
 ---
 
-## F-1.6.3 — On Astra the v3 floor collapses into a single callback chain
+## F-1.6.3 — On Astra the inline-tdd-v1 floor collapses into a single callback chain
 
-The structureless baseline behaves completely differently on the two models. Sol's v3
+The structureless baseline behaves completely differently on the two models. Sol's inline-tdd-v1
 cell decomposes into 14.2 functions; Astra's into 1.8:
 
-| | Astra v3 | Sol v3 |
+| | Astra inline-tdd-v1 | Sol inline-tdd-v1 |
 |---|---:|---:|
 | `cc_functions` | 1.8 | 14.2 |
 | Production LoC | 59.4 | 164.0 |
@@ -287,7 +287,7 @@ discriminate on correctness for Astra (F-1.5.6), and F-1.5.3 showed Astra writin
 least and least-decomposed code of the GPT branch, which is the profile that breaks on
 under-specified specs. It did not break here.
 
-The single regression in the RQ belongs to Sol: `basic-sol-tdd-subagent-pi` at 0.93,
+The single regression in the RQ belongs to Sol: `exact-sol-v1.1-subagent-pi` at 0.93,
 one run at 0.67. That reproduces F-1.16.4, which found the subagent arm ranking last
 on external correctness on both novel katas. It gates that cell out of every quality
 and efficiency trophy in the overview.
@@ -304,10 +304,10 @@ magnitude in absolute cost:
 
 | Workflow | Astra | Sol | Faktor | Astra Tokens | Sol Tokens | Faktor |
 |---|---:|---:|---:|---:|---:|---:|
-| v3 (Boden) | 343.8 s | 218.2 s | 1.58× | 528.6 k | 271.8 k | 1.94× |
+| inline-tdd-v1 (Boden) | 343.8 s | 218.2 s | 1.58× | 528.6 k | 271.8 k | 1.94× |
 | nativ inline | 1801.6 s | 874.2 s | 2.06× | 7.46 M | 4.61 M | 1.62× |
 | nativ Subagent | 4186.2 s | 2397.2 s | 1.75× | 12.23 M | 7.13 M | 1.72× |
-| EXACT (v6.2.1) | 2565.4 s | 1265.6 s | 2.03× | 7.16 M | 4.61 M | 1.55× |
+| EXACT (hybrid-v4.2) | 2565.4 s | 1265.6 s | 2.03× | 7.16 M | 4.61 M | 1.55× |
 
 Astra runs 1.58–2.06× the wallclock and 1.55–1.94× the tokens of Sol on identical
 work. It also runs more cycles everywhere (39.4–42.4 against 28.0–33.2) and applies
@@ -324,10 +324,10 @@ direction reverses on the large spec.
 
 | Workflow | Astra Production LoC | Sol Production LoC | Faktor |
 |---|---:|---:|---:|
-| v3 (Boden) | 59.4 | 164.0 | 0.36× |
+| inline-tdd-v1 (Boden) | 59.4 | 164.0 | 0.36× |
 | nativ inline | 73.6 | 129.4 | 0.57× |
 | nativ Subagent | 72.2 | 161.0 | 0.45× |
-| EXACT (v6.2.1) | 58.0 | 110.4 | 0.53× |
+| EXACT (hybrid-v4.2) | 58.0 | 110.4 | 0.53× |
 
 Both models pass the same external acceptance suite at 1.0, so this is not a
 completeness difference. Astra's spread is also far tighter — σ 4.34–14.18 against
@@ -335,7 +335,7 @@ Sol's 13.24–61.76.
 
 The reading depends entirely on which cell is being looked at, which is why Production
 LoC cannot stand alone. In the native cells Astra writes less code *and* decomposes it
-better than Sol (7.4 functions at 6.17 LoC each). In the v3 and EXACT cells it writes
+better than Sol (7.4 functions at 6.17 LoC each). In the inline-tdd-v1 and EXACT cells it writes
 less code *because* it decomposes worse (1.8 and 2.8 functions). The same metric
 carries opposite meanings two rows apart.
 
@@ -348,7 +348,7 @@ carries opposite meanings two rows apart.
   read per 1M, three independent sources — see `research/model-pricing.md`), and
   `compute-cost.py` is now the single source for every pi run on both routes. On
   these cells Astra costs 2.6× Sol at list price — $1.25 / $9.75 / $20.65 / $12.51
-  against $0.58 / $3.98 / $7.40 / $4.84 across v3 / native / subagent / EXACT. That
+  against $0.58 / $3.98 / $7.40 / $4.84 across inline-tdd-v1 / native / subagent / EXACT. That
   is a real comparison, not the fabricated figure described below. It stays out of
   `outcomes:` because it was not part of the question this RQ was built to answer,
   and because the ranking it produces is the token ranking of F-1.6.6 multiplied by
@@ -383,7 +383,7 @@ carries opposite meanings two rows apart.
 - **`--thinking off` does not suppress reasoning on this route** (F-1.3.5). The
   `-no-thinking` suffix names a flag, not a reasoning state.
 - **One prompt style, one kata.** example-mapping on claim-office. F-1.16.2 and
-  F-1.16.7 show the native line losing to the v3 floor on small katas for Sol; whether
+  F-1.16.7 show the native line losing to the inline-tdd-v1 floor on small katas for Sol; whether
   Astra's floor collapse (F-1.6.3) also inverts there is untested.
 - **The native line is an adaptation.** HITL removed, markers P1–P7 added, both in a
   `LAB-ONLY` block. A difference against the EXACT line could in principle come from

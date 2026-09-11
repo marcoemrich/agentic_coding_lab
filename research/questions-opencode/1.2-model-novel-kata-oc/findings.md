@@ -1,6 +1,6 @@
 # RQ-model-novel-oc — Findings
 
-**Setup**: claim-office-example-mapping × v5.1-testlist-scope-fix-oc × n=5 per cell (40 runs total, 8 models). As of 2026-05-28.
+**Setup**: claim-office-example-mapping × exact-single-context-v2-testlist-fix-oc × n=5 per cell (40 runs total, 8 models). As of 2026-05-28.
 
 ## Overview
 
@@ -29,7 +29,7 @@ Correctness (external) (`verification_pct`, higher = better) as primary outcome;
 
 **Trophy rule on correctness gating**: Trophies for quality/efficiency metrics (`smell_*`, `cognitive_*`, `mccabe_*`, `cc_*`, `duration_seconds`, `total_tokens`, `cost_usd`) are awarded only to models with `verification_pct = 1.0`. Rationale: low complexity / short duration / low cost with a non-correct implementation does not measure what the metric claims to measure, but stub or abort artifacts. In this study Opus and GLM 5.1 are vpt=1.0 — both qualify. Trophy allocation within this pool: Opus wins code quality (smells, complexity, code mass) and wallclock; GLM 5.1 wins cost. `total_tokens` to Opus (8.06 M vs 10.97 M). Mistral at vpt=0.95 narrowly drops out of the pool — see F-1.7 for the Mistral-specific profile (high correctness paired with clearly higher complexity and cost values).
 
-**Cost calculation**: per run from `transcript-metrics.json.total_tokens` × pricing per 1M tokens. Sources 2026-05-26: Anthropic pricing page (Opus), OpenRouter API `/api/v1/models` (GLM/Kimi/MiniMax), Vertex Standard (Gemini Flash), Mistral Docs model card (Mistral Medium 3.5).
+**Cost calculation**: per run from `transcript-metrics.json.total_tokens` × pricing per 1M tokens. Sources 2026-05-26: Anthropic pricing page (Opus), OpenRouter API `/api/oneshot-v1/models` (GLM/Kimi/MiniMax), Vertex Standard (Gemini Flash), Mistral Docs model card (Mistral Medium 3.5).
 
 | Model | input | output | cache_read |
 |---|---|---|---|

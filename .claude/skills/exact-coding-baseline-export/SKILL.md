@@ -58,7 +58,7 @@ exporting a harness you have not exported before.**
 Three, all optional:
 
 1. **Date** in `YYYY-MM-DD` form. Default: today (`date +%F`).
-2. **Source workflow name** (e.g. `v6.6-lab-split-cc`). Default:
+2. **Source workflow name** (e.g. `exact-hybrid-v6-lab-split-cc`). Default:
    auto-detect (see "Source detection" below).
 3. **Harness set**: any of `cc`, `pi`, `oc`, `cursor`, or `all`.
    Default: `cc`.
@@ -68,7 +68,7 @@ use today's date. If only one argument looks like a date, that's the date;
 if only one looks like a workflow name, that's the source.
 
 With `all` (or an explicit multi-harness list), resolve one source workflow
-per harness. For the v6.6 line the naming is regular —
+per harness. For the hybrid-v6 line the naming is regular —
 `v6.6-lab-split-{cc,pi,oc,cursor}` — so a single detected base name plus the
 harness suffix resolves each. If a suffix variant is missing, report it and
 export the harnesses that do exist rather than aborting the whole run.
@@ -92,7 +92,11 @@ The first backtick-quoted workflow name on that line is the recommendation.
 Verify the directory exists:
 
 ```bash
-SRC_DIR="experiments/workflows/$SRC_NAME"
+# Workflows liegen in Kategorie-Unterordnern; PATHS.json loest den Leaf-Namen
+# auf und akzeptiert dabei auch Alt-Namen (ALIASES.json).
+SRC_DIR="experiments/workflows/$(jq -r --arg n "$SRC_NAME" \
+    '.[$n] // $n' experiments/workflows/ALIASES.json \
+  | xargs -I{} jq -r --arg n {} '.[$n] // $n' experiments/workflows/PATHS.json)"
 [ -d "$SRC_DIR/.claude" ] || { echo "Source $SRC_DIR missing"; exit 1; }
 ```
 
@@ -134,7 +138,7 @@ Note the file name: OpenCode reads **`opencode.json`**, not `.jsonc`.
 
 Whichever refactor phases the source defines appear in every harness — the
 per-cycle one always, the final `end-refactor` pass only on sources that have
-it (v6.5/v6.6 line; the v6.1 line deliberately does not) — and **all four
+it (v6.5/v6.6 line; the hybrid-v2 line deliberately does not) — and **all four
 harnesses delegate them to isolated subagents**. cursor uses its native Task tool with agent files in
 `.cursor/agents/`, the same shape as cc's `.claude/agents/`; see "Keep the
 harness variants feature-equal" in `HARNESS-MECHANISMS.md`.
@@ -189,7 +193,7 @@ echo "source layout: $LAYOUT"
 ```
 
 **`legacy` is the expected route.** The current recommendation resolves to
-`v6.1-hybrid-testlist-scope-fix`, which has no `lab-only.md`, so the classic
+`exact-hybrid-v2-testlist-fix-cc`, which has no `lab-only.md`, so the classic
 template path applies. That is deliberate, not an accident of an old source:
 RQ-1.19 measured what the split layout costs at runtime, and the export
 convenience did not justify it. `v66` therefore only fires when someone names
@@ -202,7 +206,7 @@ so.
 - `rules/tdd-with-ts-and-vitest.md` (some older source workflows used
   `tdd_with_ts_and_vitest.md` — if present, rename to hyphen form in target)
 - `agents/refactor.md`
-- `agents/end-refactor.md` (present from v6.5 onward; skip if absent)
+- `agents/end-refactor.md` (present from hybrid-v5 onward; skip if absent)
 - `commands/test-list.md`
 - `commands/red.md`
 - `commands/green.md`
@@ -217,7 +221,7 @@ same reasoning removes the `permission` block from `opencode.json` (see
 `HARNESS-MECHANISMS.md`). Do not reintroduce it, and do not substitute a
 `settings.json.example` — the README explains the workflow, not the sandbox.
 
-**Layout `v66`** (source has `rules/lab-only.md` — e.g. `v6.6-lab-split-cc`):
+**Layout `v66`** (source has `rules/lab-only.md` — e.g. `exact-hybrid-v6-lab-split-cc`):
 
 - Also copy `rules/subagent-prompts.md` — it holds the isolated-subagent
   prompt contracts and is workflow methodology, not lab infrastructure.
@@ -227,12 +231,12 @@ same reasoning removes the `permission` block from `opencode.json` (see
 
   **That convenience has a measured price.** RQ-1.19 compared four workflows
   on `opus-5-no-thinking` and found the split raises the refactor rate per
-  cycle at an unchanged cycle count: 0.41 for `v6.1` against 0.52, 0.56 and
-  0.69 for the three split variants on claim-office. `v6.1.5-pure-split-cc`
-  isolates the cause — a pure partition of `v6.1` carrying only 3.5 % more
+  cycle at an unchanged cycle count: 0.41 for `hybrid-v2` against 0.52, 0.56 and
+  0.69 for the three split variants on claim-office. `exact-hybrid-v2.8-pure-split-cc`
+  isolates the cause — a pure partition of `hybrid-v2` carrying only 3.5 % more
   rule text still shows +27 % refactorings (Welch p = 0.009) and +20 %
   wall-clock (p = 0.034). It is the partition, not the text volume, and no
-  quality metric improves in return. `v6.1.1-lab-split-cc` adds an
+  quality metric improves in return. `exact-hybrid-v2.4-lab-split-cc` adds an
   always-refactor failure mode on top (4 of 10 runs, Fisher p = 0.010).
 
   So a `v66` export ships a workflow that costs roughly a fifth more
@@ -256,7 +260,7 @@ open(p,'w').write(s)" "$f"
   Strip each file exactly **once** — running the regex repeatedly over the
   same file can eat surrounding lines.
 
-**Layout `legacy`** (source has `rules/tdd-experiment-mode.md` — v6.5 and
+**Layout `legacy`** (source has `rules/tdd-experiment-mode.md` — hybrid-v5 and
 earlier): do **not** copy `rules/tdd-experiment-mode.md`. It is replaced by
 the consumable `tdd-execution-mode.md` from this skill's templates. Note
 that this file also carries the subagent prompt contracts, which the
@@ -535,7 +539,7 @@ never mentions TDD must not pull the workflow into context.
 ## HITL Patches
 
 Each patch is described as: file → location → replacement / addition. The
-exact target strings are taken from `v6.2-with-why-cleaned`; for other
+exact target strings are taken from `exact-hybrid-v4-cleaned-cc`; for other
 source workflows the strings might differ — in that case, use the nearest
 structural anchor (e.g. "after the last numbered Step") and report any
 patch that could not be applied verbatim.
@@ -544,9 +548,9 @@ patch that could not be applied verbatim.
 
 1. **Header rename** (top of file):
 
-   - From: `# Test-Driven Development (TDD) Rules — Hybrid (v6)` (or
+   - From: `# Test-Driven Development (TDD) Rules — Hybrid (hybrid)` (or
      whatever header the source uses)
-   - To: `# TDD Rules — Hybrid (v6, exact-coding baseline)`
+   - To: `# TDD Rules — Hybrid (hybrid, exact-coding baseline)`
 
 2. **Drop experiment-pipeline justification** in the "🚨 CRITICAL" intro
    paragraph. The source typically has a sentence like *"The experiment's
@@ -735,7 +739,7 @@ report immediately, do not claim success.
    Both lists are written **after** Step 6, which moves `tdd.md` into
    `skills/tdd/SKILL.md` and the workflow's own rule files in beside it. Only
    `tdd-with-ts-and-vitest.md` stays in `rules/`, because it is meant to load
-   ambiently. A source whose `agents/` lacks `end-refactor.md` (the v6.1 line)
+   ambiently. A source whose `agents/` lacks `end-refactor.md` (the hybrid-v2 line)
    yields the same set minus that file — see validation 12.
 
    In **neither** case may `rules/lab-only.md` or
@@ -919,9 +923,9 @@ print('  OK opencode.json is consumer-shaped')"
     choice.
 
     **Parity is measured against the source workflow, not against a fixed
-    phase list.** Which phases exist is a property of the source: the v6.6
+    phase list.** Which phases exist is a property of the source: the hybrid-v6
     line carries both a per-cycle refactor and a final `end-refactor` pass;
-    the v6.1 line has only the per-cycle one, and that absence is
+    the hybrid-v2 line has only the per-cycle one, and that absence is
     constitutive — it is why the workflow is cheap (RQ-workflow-reduction-opus5
     F-1.3: the end phase costs 16–19 % of tokens without moving mean
     decomposition). Do not require `end-refactor` from a source that never

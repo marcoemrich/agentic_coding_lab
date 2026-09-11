@@ -1,6 +1,6 @@
 # RQ-v3-emergent-tdd — Findings
 
-`v3-basic-tdd` ("use TDD", no phase markers). Claude Code for the Anthropic
+`baseline-inline-tdd-v1-cc` ("use TDD", no phase markers). Claude Code for the Anthropic
 models, pi for `gpt-5-6-sol`. Phases inferred from the tool sequence
 (`phase_source: "inline-tool"`); all 60 refactor candidates hand-validated
 against the transcript.
@@ -8,7 +8,7 @@ against the transcript.
 **Two scopes appear below.** The *factor grid* (`runs.csv`) is five models ×
 two katas (`game-of-life`, `claim-office`), example-mapping only, 49 runs — that
 is what the aggregation and the correctness figures use. The *sequence analysis*
-covers **all 71** v3 example-mapping runs, adding `sphinx-score`, the Portkey
+covers **all 71** inline-tdd-v1 example-mapping runs, adding `sphinx-score`, the Portkey
 routes and the thinking variants, because TDD rigour is read from the transcript
 and needs no cell balance. Each table states which scope it uses.
 
@@ -64,7 +64,7 @@ step size (median 42 cases, 0 of 4 runs ≤2), which is unambiguous.
 - **`haiku-4-5` / `opus-4-6` — neither.** Suites up front (opus-4-6: median 42
   cases), red mostly unverified, no refactorings.
 
-**Scope of this table: all 71 v3 example-mapping runs**, which is why `n` exceeds
+**Scope of this table: all 71 inline-tdd-v1 example-mapping runs**, which is why `n` exceeds
 the `runs.csv` cell size (opus-5 18 vs. 12, opus-4-7 17 vs. 15) and why
 `opus-4-6` appears at all — it has no cell in the factor grid.
 
@@ -121,7 +121,7 @@ what happens *after* that first test.
 ## F-1.2 — Refactoring does not survive, and only two models do it at all
 
 The raw heuristic suggests every model refactors occasionally. Hand-validation
-removes that impression. All 60 candidates across every v3 run were classified;
+removes that impression. All 60 candidates across every inline-tdd-v1 run were classified;
 the RQ cells hold 34 of them:
 
 | Model | candidates | Refactoring | Bugfix | Toolchain | New untested file | precision |
@@ -132,9 +132,9 @@ the RQ cells hold 34 of them:
 | haiku-4-5 | 3 | **0** | 2 | 1 | 0 | 0 % |
 | sonnet-4-6 | 0 | — | — | — | — | — |
 | **RQ cells total** | **34** | **12** | 7 | 8 | 7 | **35 %** |
-| *all v3 runs, incl. outside grid* | *60* | *14* | *11* | *16* | *19* | *23 %* |
+| *all inline-tdd-v1 runs, incl. outside grid* | *60* | *14* | *11* | *16* | *19* | *23 %* |
 
-The last row covers every v3 run in the lab, including `sphinx-score` and
+The last row covers every inline-tdd-v1 run in the lab, including `sphinx-score` and
 Portkey-routed cells outside this factor grid. Precision drops there because
 `sphinx-score` alone contributes 16 candidates of which 8 are tsc/ESLint fixes
 and only 2 are refactorings — that kata's lint config pushes the model into
@@ -202,7 +202,7 @@ property.
 
 ## F-1.3 — Test-first discipline stops at the core algorithm
 
-7 of the 34 RQ-cell candidates — and 19 of all 60 v3 candidates (32 %) — are
+7 of the 34 RQ-cell candidates — and 19 of all 60 inline-tdd-v1 candidates (32 %) — are
 **new production files written without any test**, almost all of them the CLI.
 The pattern is uniform across models, and the accompanying text is nearly always
 the same:
@@ -212,7 +212,7 @@ the same:
 The algorithm gets full test-first treatment; the CLI, scenario runner and
 scaffolding around it are written straight out. opus-4-7 is the clearest case:
 6 of its 10 candidates in the RQ cells are untested new files (10 of 16 across
-all its v3 runs).
+all its inline-tdd-v1 runs).
 
 This qualifies F-1.1: **test-first holds for the part of the system the examples
 describe**, not for the whole deliverable. The kata prompts specify behaviour for
@@ -223,14 +223,14 @@ exactly what was exemplified.
 
 ## F-1.4 — The measurement, not the behaviour, was missing
 
-v3 was treated as unmeasurable for TDD discipline. `MARKERS.md` recorded
+inline-tdd-v1 was treated as unmeasurable for TDD discipline. `MARKERS.md` recorded
 `cycle_count 1, refactorings_applied 0, predictions_total 0` "without
 exception", and two RQs instruct readers to report those rows as n/a.
 
 Two separate things were wrong:
 
 1. **cc could already see it.** `infer_phases_from_tool_sequence` has been
-   scoring every v3 run since it was written; nothing propagated that into the
+   scoring every inline-tdd-v1 run since it was written; nothing propagated that into the
    docs, so the output kept being read as zeros.
 2. **pi could not.** `parse_pi_transcript.py` had no equivalent, so all ten
    `gpt-5-6-sol` runs reported 0 — indistinguishable from "this model never did
@@ -279,7 +279,7 @@ versus 4/11 across all its runs. The cause is the thinking variant, which
 verifies red in **0 of 5** runs against 4 of 6 for no-thinking — the only place
 in this dataset where the thinking flag visibly shifts TDD behaviour. Sonnet is
 unaffected (median 10 with thinking, 11 without; red 1/5 vs. 1/6), and the other
-models have no thinking runs at v3. With n=5 this is suggestive, not
+models have no thinking runs at inline-tdd-v1. With n=5 this is suggestive, not
 established; it would need its own RQ to settle.
 
 **`gpt-5-6-sol` is the only model that works in TDD-sized steps.** Median first
@@ -358,7 +358,7 @@ opus-4-7 in 7 of 15. That is the difference between patterns 2 and 3, and it is
 the single sharpest behavioural split in the dataset. opus-5 does watch its tests
 fail — it just fails them a dozen at a time.
 
-**Practical reading.** v3 buys test-first *ordering* from every model and a
+**Practical reading.** inline-tdd-v1 buys test-first *ordering* from every model and a
 functioning red/green loop from opus-5. It does not buy incremental design from
 anything except `gpt-5-6-sol`. If the point of prescribing TDD is small steps,
 the bare instruction does not deliver it — which is an argument for the phase
@@ -371,7 +371,7 @@ softened rather than satisfied. Two checks, both negative:
 
 - **Weakened assertions in the final test code** (`toBeDefined`, `toBeTruthy`,
   `expect.any`, empty `catch`, `.skip` / `.todo`): 2 occurrences across all 72
-  v3 runs, both a single `toBeDefined`.
+  inline-tdd-v1 runs, both a single `toBeDefined`.
 - **Expectations edited after a failure.** Frequent — sonnet 10 of 11 test
   edits, haiku 20 of 32, opus-4-6 8 of 9, opus-5 11 of 51, and `gpt-5-6-sol`
   **0 of 38**. But the accompanying text shows these are corrections of the
@@ -388,8 +388,8 @@ softened rather than satisfied. Two checks, both negative:
 
 ### Measurement notes
 
-- **`cycle_count` is not comparable across workflow generations.** On opus-5, v3
-  yields 1–8 and v6.6 yields 7–57. Inferred tool sequence and marker emission are
+- **`cycle_count` is not comparable across workflow generations.** On opus-5, inline-tdd-v1
+  yields 1–8 and hybrid-v6 yields 7–57. Inferred tool sequence and marker emission are
   different constructs. Never place them in one column.
 - **Raw `refactorings_applied` is an upper bound**, at 23 % precision overall.
   Only `opus-5` and `gpt-5-6-sol` have any validated refactorings at all;
@@ -400,7 +400,7 @@ softened rather than satisfied. Two checks, both negative:
   not their size, and a run that authors 26 expectations before implementing
   scores the same as one that authors two. Step size and verified-red must be
   measured on the first cycle (F-1.5); `experiments/measure-tdd-rigour.py` does
-  this for any workflow, not just v3.
+  this for any workflow, not just inline-tdd-v1.
 - **Medians over all test blocks are misleading here.** Models that front-load a
   suite typically follow it with several one-case fixes, which drags an
   all-block median down to 1–2 and makes a big-bang run look incremental. This

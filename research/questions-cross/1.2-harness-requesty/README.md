@@ -3,9 +3,9 @@ id: RQ-harness-requesty
 question: "How does switching harness (Claude Code vs OpenCode vs pi) affect correctness, code quality, TDD discipline and cost when model (opus-4-8 via Requesty), workflow intention and prompt style are held constant?"
 factors:
   workflow:
-    - v6.2-with-why-cleaned
-    - v6.2-with-why-cleaned-oc
-    - v6.2-with-why-cleaned-pi
+    - exact-hybrid-v4-cleaned-cc
+    - exact-hybrid-v4-cleaned-oc
+    - exact-hybrid-v4-cleaned-pi
   kata_base:
     - claim-office
     - game-of-life
@@ -48,12 +48,12 @@ status: aktiv
 Successor to the frozen `RQ-harness` (Portkey/opus-4-7). The lab switched in 2026-07 from
 Portkey to **Requesty**; the old RQ remains as a Portkey snapshot and
 is not overwritten. This RQ measures the same harness effect (CC vs OC vs pi, full
-TDD mechanics, workflow trio `v6.2-with-why-cleaned{,-oc,-pi}`) anew under Requesty — with
+TDD mechanics, workflow trio `exact-hybrid-v4-cleaned-cc{,-oc,-pi}`) anew under Requesty — with
 two decisive improvements in the data situation compared to the Portkey era:
 
 1. **Real prompt caching on all harnesses.** The Portkey bug #1579 (cache_control
    stripped → pi `cache_read=0`) does not exist on Requesty. Verified live: Requesty's
-   Anthropic `/v1/messages` path delivers `cache_creation`→`cache_read` correctly (a cache hit
+   Anthropic `/oneshot-v1/messages` path delivers `cache_creation`→`cache_read` correctly (a cache hit
    lowers the price by ~10×).
 2. **Cost cache-inclusive across all harnesses.** All three carry `cost_usd` on the same
    Requesty tariff; the cache discounts apply for real (no #1579 strip). CC and pi via
@@ -87,7 +87,7 @@ as an uncontrolled factor.
 
 ### Why cursor is not a fourth arm here (withdrawn 2026-08-13)
 
-cursor-cli was briefly carried as a fourth arm (`v6.2.1-phase-continuation-cursor`
+cursor-cli was briefly carried as a fourth arm (`exact-hybrid-v4.2-phase-continuation-cursor`
 + `opus-cursor`) and has been removed from the factor grid. Two independent reasons,
 either of which alone would be sufficient:
 
@@ -167,7 +167,7 @@ pi that also draws cache discounts on the same route.
 
 ## Workflow trio
 
-Identical to the old RQ-harness — `v6.2-with-why-cleaned{,-oc,-pi}` (complete trio,
+Identical to the old RQ-harness — `exact-hybrid-v4-cleaned-cc{,-oc,-pi}` (complete trio,
 marker dirs `.claude`/`.opencode`/`.pi` verified). Skills (test-list/red/green) +
 subagent (refactor), same marker conventions. Harness syntax differences and the
 translation confound as documented in `RQ-harness` (see there § Methodological

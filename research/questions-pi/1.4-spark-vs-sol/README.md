@@ -3,7 +3,7 @@ id: RQ-spark-vs-sol
 question: "On the OpenAI subscription route, how does GPT-5.3 Codex Spark compare to GPT-5.6 Sol on the two native Sol workflows — does the smaller, cheaper-tier model hold correctness and code quality, or does it only look competitive because the workflow carries it?"
 factors:
   model: [gpt-5-6-sol-codex, gpt-5-3-codex-spark]
-  workflow: [basic-sol-tdd-pi, basic-sol-tdd-subagent-pi]
+  workflow: [exact-sol-v1-pi, exact-sol-v1.1-subagent-pi]
 controls:
   kata_base: sphinx-score
   prompt: example-mapping
@@ -47,7 +47,7 @@ status: answered
 ## The question this answers
 
 `RQ-native-sol-workflows-sub` (workflow-dev/1.16) established that the two native
-Sol workflows — `basic-sol-tdd-pi` (refactor inline) and `basic-sol-tdd-subagent-pi`
+Sol workflows — `exact-sol-v1-pi` (refactor inline) and `exact-sol-v1.1-subagent-pi`
 (refactor isolated) — are the line worth running on the subscription route. Both were
 measured on **one** model: `gpt-5-6-sol-codex`.
 
@@ -72,14 +72,14 @@ kata with 16 external scenarios covering threshold logic and special cases.
 **H3 — Spark holds both.** Then the workflow, not the model, is doing the work on
 this kata, and the cheaper tier is the honest recommendation for this cell.
 
-**H4 — The workflow axis dominates the model axis.** `basic-sol-tdd-subagent-pi`
-vs. `basic-sol-tdd-pi` separates the cells more than Spark vs. Sol does. Would say
+**H4 — The workflow axis dominates the model axis.** `exact-sol-v1.1-subagent-pi`
+vs. `exact-sol-v1-pi` separates the cells more than Spark vs. Sol does. Would say
 the isolated-refactor decision matters more than the model choice — and would make
 RQ-1.16's workflow finding the more portable one.
 
 ## Prior data
 
-The RQ opened with two Spark smoke runs in the `basic-sol-tdd-subagent-pi` cell
+The RQ opened with two Spark smoke runs in the `exact-sol-v1.1-subagent-pi` cell
 (2026-08-17), which established that the newly wired route produces usable runs at all.
 All four cells are now filled to n=5; see `findings.md` for the results and
 `summary.md` for the per-cell pivots.

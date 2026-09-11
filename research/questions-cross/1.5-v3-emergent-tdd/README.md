@@ -1,24 +1,24 @@
 ---
 id: RQ-v3-emergent-tdd
-question: "Under a bare 'use TDD' instruction that prescribes no phase markers (v3), do models actually work test-first and refactor — and how far apart do the models sit once the evidence is hand-validated?"
+question: "Under a bare 'use TDD' instruction that prescribes no phase markers (inline-tdd-v1), do models actually work test-first and refactor — and how far apart do the models sit once the evidence is hand-validated?"
 factors:
   # model + harness as coupled bundles. The harness is encoded in the workflow
-  # name (v3-basic-tdd = CC, v3-basic-tdd-pi = pi), so model and workflow must
+  # name (baseline-inline-tdd-v1-cc = CC, baseline-inline-tdd-v1-pi = pi), so model and workflow must
   # stay paired — a plain controls.workflow {any:[...]} would collapse CC and pi
   # into one cell and hide the harness entirely.
   model_x_workflow:
     # core: the two models the observation started from
     - model: opus-5-no-thinking
-      workflow: v3-basic-tdd            # Claude Code
+      workflow: baseline-inline-tdd-v1-cc            # Claude Code
     - model: gpt-5-6-sol
-      workflow: v3-basic-tdd-pi         # pi
+      workflow: baseline-inline-tdd-v1-pi         # pi
     # contrast: is the behaviour special, or does every model do it?
     - model: opus-4-7-no-thinking
-      workflow: v3-basic-tdd
+      workflow: baseline-inline-tdd-v1-cc
     - model: sonnet-4-6-no-thinking
-      workflow: v3-basic-tdd
+      workflow: baseline-inline-tdd-v1-cc
     - model: haiku-4-5-no-thinking
-      workflow: v3-basic-tdd
+      workflow: baseline-inline-tdd-v1-cc
   kata_base: [game-of-life, claim-office]
 controls:
   prompt: example-mapping
@@ -43,17 +43,17 @@ status: open
 
 ## Motivation
 
-`v3-basic-tdd` says *"Complete the TDD exercise autonomously using Test-Driven
+`baseline-inline-tdd-v1-cc` says *"Complete the TDD exercise autonomously using Test-Driven
 Development"* and nothing else. No phase skills, no `## Red` heading, no
 prediction block. It was built as the floor of the architecture axis: the
 condition where a model is told to do TDD but given no scaffolding to do it in.
 
 The lab has been reading that floor as **unmeasurable**. `MARKERS.md` recorded
-`cycle_count 1, refactorings_applied 0, predictions_total 0` for v3 "without
+`cycle_count 1, refactorings_applied 0, predictions_total 0` for inline-tdd-v1 "without
 exception", and two RQs (`RQ-architecture-axis-opus5`,
 `RQ-architecture-axis-sol-pi`) instruct readers to treat those rows as n/a.
 
-But the runs are full of TDD. Reading a v3 transcript directly shows
+But the runs are full of TDD. Reading a inline-tdd-v1 transcript directly shows
 `write premium.spec.ts` → `pnpm test` → *then* `write premium.ts`, cycle after
 cycle. The behaviour was there all along; the measurement was not.
 
@@ -61,10 +61,10 @@ Two things were missing, and neither required a new run:
 
 1. **cc could already see it.** `analyze_transcript.py` infers phases from the
    tool sequence when no marker fires. That inference has been running on every
-   v3 run — it just never made it into `MARKERS.md`, so the results were read as
+   inline-tdd-v1 run — it just never made it into `MARKERS.md`, so the results were read as
    zeros.
 2. **pi could not.** `parse_pi_transcript.py` had no equivalent, so every
-   `v3-basic-tdd-pi` run reported 0 across the board — indistinguishable from
+   `baseline-inline-tdd-v1-pi` run reported 0 across the board — indistinguishable from
    "this model never did TDD". Fixed in 2026-08 by importing the same heuristic.
 
 This RQ asks what the floor actually looks like once both harnesses can see it.
@@ -111,17 +111,17 @@ anyway"); silent lint compliance counts as a toolchain fix.
 
 - **Model and harness are confounded in the core comparison.** opus-5 runs on
   Claude Code, gpt-5-6-sol on pi. A difference between them cannot be attributed
-  to either factor. The claim is per model — "this model does X under v3" — and
+  to either factor. The claim is per model — "this model does X under inline-tdd-v1" — and
   no ranking between the two is implied. The three contrast cells are all cc, so
   model comparisons *within* cc are clean.
-- **`cycle_count` is not comparable to instrumented workflows.** On opus-5, v3
-  yields 1–8 and v6.6 yields 7–57. Inferred tool sequence and marker emission
+- **`cycle_count` is not comparable to instrumented workflows.** On opus-5, inline-tdd-v1
+  yields 1–8 and hybrid-v6 yields 7–57. Inferred tool sequence and marker emission
   are different constructs; the numbers must not share a column.
 - **`refactorings_applied` (raw) is an upper bound**, with model-dependent
   precision. Use the validated count for any claim about refactoring.
 - **`predictions_*` remain genuinely unmeasurable** and are not in `outcomes:` —
   no inference reconstructs a prediction the model was never asked to state.
-- `sphinx-score` v3 runs exist for opus-5 only and are therefore outside the
+- `sphinx-score` inline-tdd-v1 runs exist for opus-5 only and are therefore outside the
   factor grid; they are cited in findings where the extra evidence matters.
 
 ## Open hypotheses

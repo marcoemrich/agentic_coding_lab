@@ -17,10 +17,10 @@ factors:
     - {any: [gpt-6-astra-codex-no-thinking, gpt-6-astra-codex]}
     - {any: [gpt-5-6-sol-codex, gpt-5-6-sol-codex-no-thinking]}
   workflow:
-    - v3-basic-tdd-pi               # floor: "use TDD", no architecture, no refactor brief
-    - basic-sol-tdd-pi              # native line, refactor inline
-    - basic-sol-tdd-subagent-pi     # native line, refactor isolated
-    - v6.2.1-phase-continuation-pi  # EXACT line, Opus-derived, APP mass in the refactor brief
+    - baseline-inline-tdd-v1-pi               # floor: "use TDD", no architecture, no refactor brief
+    - exact-sol-v1-pi              # native line, refactor inline
+    - exact-sol-v1.1-subagent-pi     # native line, refactor isolated
+    - exact-hybrid-v4.2-phase-continuation-pi  # EXACT line, Opus-derived, APP mass in the refactor brief
 controls:
   kata_base: claim-office
   prompt: example-mapping
@@ -43,13 +43,13 @@ outcomes:
   - cognitive_avg
   - mccabe_max
   - smell_total
-  # mechanism witness: APP mass is what the v6.2.1 refactor brief optimises and
+  # mechanism witness: APP mass is what the hybrid-v4.2 refactor brief optimises and
   # what the native line does not name at all. Expected to run *against* the
   # decomposition metrics. Reported without trophy — see RQ-1.17.
   - code_mass
   - cc_functions
   - cc_loc
-  # TDD discipline. n/a on the v3 cell (no phase markers). Never read
+  # TDD discipline. n/a on the inline-tdd-v1 cell (no phase markers). Never read
   # predictions_total on this line or this model — see "Marker caveats".
   - cycle_count
   - refactorings_applied
@@ -75,15 +75,15 @@ Requesty-routed RQ without the delta in "Constants of the subscription route".
 Two lines of TDD workflow exist in this lab for the pi harness on the OpenAI
 subscription route, and they come from different places:
 
-- The **EXACT line** — `v3` through `v6.x`, developed on Opus, carrying the
+- The **EXACT line** — `inline-tdd-v1` through `hybrid-v1.x`, developed on Opus, carrying the
   four-marker contract, the Compilation/Runtime prediction form and APP mass in
-  the refactor brief. `v6.2.1-phase-continuation-pi` is its current member on pi.
-- The **native Sol line** — `basic-sol-tdd-pi` and `basic-sol-tdd-subagent-pi`,
+  the refactor brief. `exact-hybrid-v4.2-phase-continuation-pi` is its current member on pi.
+- The **native Sol line** — `exact-sol-v1-pi` and `exact-sol-v1.1-subagent-pi`,
   ported from the `sol_tdd` project (Predictive TDD, Four Rules of Simple
   Design, no mass metric), written independently of the v-chain.
 
 GPT-6 Astra has been measured on the first line only. `RQ-astra-pi`
-(questions-pi/1.5) placed it on `v6.2.1-phase-continuation-pi` against Sol,
+(questions-pi/1.5) placed it on `exact-hybrid-v4.2-phase-continuation-pi` against Sol,
 Opus 5 and the route pair, at n=5 on `game-of-life-example-mapping`. It has
 never run on the native line.
 
@@ -93,7 +93,7 @@ contrast on exactly these controls and found the EXACT line's APP brief
 producing the worst decomposition in the field, behind even the structureless
 floor, while the Four-Rules line took every decomposition metric:
 
-| Metric | v3 (floor) | basic-sol-tdd | v6.2.1 (EXACT) | Direction |
+| Metric | inline-tdd-v1 (floor) | basic-sol-tdd | hybrid-v4.2 (EXACT) | Direction |
 |---|---:|---:|---:|---|
 | `cc_avg_loc_per_function` | 8.45 | **6.60** | 9.52 | kleiner = besser |
 | Complexity Peak | 27.0 | **18.0** | 24.0 | kleiner = besser |
@@ -132,10 +132,10 @@ it. On `claim-office-example-mapping`, subscription route (verified 2026-09-05):
 
 | Workflow | Sol (`gpt-5-6-sol-codex`) | Astra (`gpt-6-astra-codex-no-thinking`) |
 |---|---:|---:|
-| `v3-basic-tdd-pi` | 5 ✅ | **0** |
-| `basic-sol-tdd-pi` | 5 ✅ | **0** |
-| `basic-sol-tdd-subagent-pi` | 5 ✅ | **0** |
-| `v6.2.1-phase-continuation-pi` | 5 ✅ | **0** |
+| `baseline-inline-tdd-v1-pi` | 5 ✅ | **0** |
+| `exact-sol-v1-pi` | 5 ✅ | **0** |
+| `exact-sol-v1.1-subagent-pi` | 5 ✅ | **0** |
+| `exact-hybrid-v4.2-phase-continuation-pi` | 5 ✅ | **0** |
 
 All 20 existing runs exited `ok`. Sol cells come from the RQ-1.16 / RQ-1.17 /
 RQ-1.18 batches of 2026-08-16 and 2026-08-17.
@@ -143,14 +143,14 @@ RQ-1.18 batches of 2026-08-16 and 2026-08-17.
 **Net new work: 20 Astra runs.** All four Astra cells sit on the `pi-config`
 profile, so the fill is a single plan (see "Profile split").
 
-### On including the v3 floor
+### On including the inline-tdd-v1 floor
 
 The floor is not strictly required to answer the transfer question — Astra on
 the native line against Astra on the EXACT line would do that in 15 runs. It is
 included because without it a native-line win on Astra cannot be separated from
 "Astra writes decomposed code under any instruction", and because the whole
 reason the native line was built is F-1.6 / F-1.16: on Sol, *no* architecture in
-the v-line beats structureless TDD. That claim deserves its second model. The
+the opus line beats structureless TDD. That claim deserves its second model. The
 row costs 5 of the 20 runs and can be struck without touching the rest of the
 design.
 
@@ -187,7 +187,7 @@ side by side.
 Inherited from `RQ-route-effect-pi` and `RQ-native-sol-workflows-sub`, unchanged:
 
 - **Reasoning is always on and cannot be switched off** (F-1.3.5). It is a
-  constant of this RQ, not a factor, and it is on in every cell including v3.
+  constant of this RQ, not a factor, and it is on in every cell including inline-tdd-v1.
 - **The route is not substitutable for Requesty.** F-1.3.6 establishes a real
   route effect on exactly the metrics measured here, at constant model, harness,
   workflow, kata and prompt style. No cell in this RQ may be compared against a
@@ -201,8 +201,8 @@ Inherited from `RQ-route-effect-pi` and `RQ-native-sol-workflows-sub`, unchanged
 
 ## Hypotheses
 
-**H1 — The native line transfers.** On Astra, `basic-sol-tdd-pi` beats
-`v6.2.1-phase-continuation-pi` on `cc_avg_loc_per_function` and
+**H1 — The native line transfers.** On Astra, `exact-sol-v1-pi` beats
+`exact-hybrid-v4.2-phase-continuation-pi` on `cc_avg_loc_per_function` and
 `cc_longest_function`, in the same direction and of comparable magnitude to the
 Sol row, at 100 % `verification_pct`.
 → F-1.17.1 is a property of the APP refactor brief, not of Sol. The brief's
@@ -215,7 +215,7 @@ other, or invert.
 workflow recommendation splits per model, and `research/workflow-dev/model-recommendation-matrix.md`
 gains a row rather than a rule.
 
-**H3 — The floor holds on Astra too.** No cell beats `v3-basic-tdd-pi` on
+**H3 — The floor holds on Astra too.** No cell beats `baseline-inline-tdd-v1-pi` on
 decomposition at equal correctness.
 → The F-1.6 / F-1.16.2 counter-case reappears on a second model, which makes it a
 statement about the GPT branch rather than about Sol. Note the Sol row does *not*
@@ -248,7 +248,7 @@ be retired from the line rather than kept as a per-model option.
   marker inconsistency was seen at 1-in-5 in RQ-astra-pi (F-1.5.5): one run logged
   8 predictions at 13 cycles where its siblings logged 28–30. **Read
   `predictions_correct_rate` only.**
-- **TDD-discipline metrics are n/a on the v3 cell**, never 0. v3 prescribes no
+- **TDD-discipline metrics are n/a on the inline-tdd-v1 cell**, never 0. inline-tdd-v1 prescribes no
   phase markers; `cycle_count`, `refactorings_applied` and
   `predictions_correct_rate` carry no trophy in that column. The parser's
   inferred values are a different construct, not weaker discipline (MARKERS.md,
@@ -274,12 +274,12 @@ functions.
 callback trick. Neither measures naming.
 
 Code Mass (APP) carries **no trophy**. In this RQ it is not a quality metric but
-the witness for the mechanism under test: it is what the v6.2.1 brief optimises
+the witness for the mechanism under test: it is what the hybrid-v4.2 brief optimises
 and what the native line never names, and F-1.17.1 has it running against the
 decomposition metrics. Reporting it as a win would invert the finding. RQ-astra-pi
 F-1.5.3 already caught the blind spot crowning Astra in a live cell.
 
-Note that this cuts both ways for H1: `v6.2.1-phase-continuation-pi` names APP
+Note that this cuts both ways for H1: `exact-hybrid-v4.2-phase-continuation-pi` names APP
 mass in its refactor brief, so the model is optimising a metric this RQ reports.
 The native cells name none of the outcome metrics. That asymmetry is the
 mechanism, not a flaw in the comparison — but it means Code Mass must never be
@@ -322,7 +322,7 @@ also what every cell of the Sol row carries, so the two rows are balanced.
    2026-08-16/17; every Astra cell will be recorded on or after 2026-09-05. Any
    drift on the subscription route in that window sits entirely inside the model
    factor. There is no cell in the current design that can separate the two.
-   → **Optional drift probe:** refill one Sol cell (`basic-sol-tdd-pi`, the
+   → **Optional drift probe:** refill one Sol cell (`exact-sol-v1-pi`, the
    reference arm) alongside the Astra fill, +5 runs, and compare against its
    August values. Worth running if any H1/H2 result lands close to the noise
    floor; unnecessary if the model separation is large.
@@ -355,12 +355,12 @@ also what every cell of the Sol row carries, so the two rows are balanced.
 5. **One prompt style.** example-mapping, consistent with RQ-1.16, RQ-1.17 and
    every previous architecture comparison. Nothing here speaks to prose or
    user-story.
-6. **No continuation overlay on the native or v3 cells.** v3 has no phase
+6. **No continuation overlay on the native or inline-tdd-v1 cells.** inline-tdd-v1 has no phase
    boundaries to stall at; the native line carries its own phase-continuation
-   section inside its `LAB-ONLY` block; only `v6.2.1-phase-continuation-pi` carries
+   section inside its `LAB-ONLY` block; only `exact-hybrid-v4.2-phase-continuation-pi` carries
    the overlay by name. Systematic `completed_within_budget = false` in any cell
    is read as a harness stall, not as a workflow effect.
-7. **The `-cc` sibling is not in this RQ.** `basic-sol-tdd-cc` exists with
+7. **The `-cc` sibling is not in this RQ.** `exact-sol-v1-cc` exists with
    claim-office runs on `opus-5-no-thinking` and `opus-4-8-no-thinking`. Those are
    a different harness and a different route and must not be pooled into any cell
    here; they are a separate cross-harness question.
@@ -368,7 +368,7 @@ also what every cell of the Sol row carries, so the two rows are balanced.
 ## Open questions
 
 - If H1 holds: does the subordinated brief from RQ-1.18
-  (`basic-sol-tdd-app-pi` and the three `-measured-` variants) behave the same way
+  (`exact-sol-v1.2-app-pi` and the three `-measured-` variants) behave the same way
   on Astra, or is the subordination fix Sol-tuned as well? That is a 4-cell
   follow-up on the same kata and route, with the Sol side already filled at n=5.
 - If H2 holds: what in the native line is Sol-specific — the Four-Rules brief, the

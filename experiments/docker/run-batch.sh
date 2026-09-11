@@ -9,6 +9,35 @@ set -e
 EXPERIMENTS_DIR="/home/experimenter/experiments"
 KATAS_DIR="$EXPERIMENTS_DIR/katas"
 WORKFLOWS_DIR="$EXPERIMENTS_DIR/workflows"
+WORKFLOW_PATHS_FILE="$WORKFLOWS_DIR/PATHS.json"
+WORKFLOW_ALIASES_FILE="$WORKFLOWS_DIR/ALIASES.json"
+
+# Workflows liegen seit dem Lineage-Umbau in Kategorie-Unterordnern
+# (exact-coding/opus/, baselines/, external/, _archive/...), der Plan nennt aber
+# weiterhin nur den Leaf-Namen -- er muss slash-frei bleiben, weil er direkt in
+# den Run-Ordnernamen wandert. Aufgeloest wird deshalb ueber PATHS.json, das
+# workflow-lineage.py aus LINEAGE.yaml generiert. Kein Verzeichnis-Suchlauf:
+# so ist ein Tippfehler ein Fehler und kein Zufallstreffer.
+wf_canonical() {
+    local name="$1"
+    [ -f "$WORKFLOW_ALIASES_FILE" ] || { echo "$name"; return; }
+    jq -r --arg n "$name" '.[$n] // $n' "$WORKFLOW_ALIASES_FILE"
+}
+
+wf_path() {
+    local rel
+    rel=$(jq -r --arg n "$(wf_canonical "$1")" '.[$n] // empty' "$WORKFLOW_PATHS_FILE" 2>/dev/null)
+    [ -n "$rel" ] && echo "$WORKFLOWS_DIR/$rel" || echo "$WORKFLOWS_DIR/$1"
+}
+
+wf_list() {
+    # Archiv am PFAD filtern, nicht am Namen: verworfene Workflows heissen
+    # exact-hybrid-v4.1-refactor-vocab-cc, liegen aber unter _archive/. Das
+    # alte list_enabled sprang ueber das Verzeichnis _archive -- dieselbe
+    # Semantik, nur eine Ebene tiefer.
+    jq -r 'to_entries[] | select(.value | startswith("_") | not) | .key' \
+        "$WORKFLOW_PATHS_FILE" 2>/dev/null || true
+}
 RUNS_DIR="$EXPERIMENTS_DIR/runs"
 BATCH_PLANS_DIR="$EXPERIMENTS_DIR/batch-plans"
 
@@ -357,7 +386,10 @@ if [ -n "$PLAN_FILE" ]; then
         if [ ! -d "$KATAS_DIR/$kata" ]; then
             errors+=("unknown kata: '$kata'")
         fi
-        if [ ! -d "$WORKFLOWS_DIR/$workflow" ]; then
+        # Alt-Namen zulassen, aber kanonisch weiterreichen: neue Runs tragen
+        # damit immer den aktuellen Namen in Ordner und metrics.json.
+        workflow=$(wf_canonical "$workflow")
+        if [ ! -d "$(wf_path "$workflow")" ]; then
             errors+=("unknown workflow: '$workflow'")
         fi
         if ! lookup_model_config "$model" >/dev/null; then
@@ -373,14 +405,14 @@ if [ -n "$PLAN_FILE" ]; then
         done
         echo
         echo -e "${YELLOW}Available katas:${NC}    $(list_enabled "$KATAS_DIR" | tr '\n' ' ')" >&2
-        echo -e "${YELLOW}Available workflows:${NC} $(list_enabled "$WORKFLOWS_DIR" | tr '\n' ' ')" >&2
+        echo -e "${YELLOW}Available workflows:${NC} $(wf_list | tr '\n' ' ')" >&2
         echo -e "${YELLOW}Available models:${NC}   $(printf '%s ' "${MODEL_CONFIGS[@]}" | sed 's/|[^| ]*|[^ ]*//g')" >&2
         exit 3
     fi
 else
     # Full cross-product mode
     mapfile -t katas < <(list_enabled "$KATAS_DIR")
-    mapfile -t workflows < <(list_enabled "$WORKFLOWS_DIR")
+    mapfile -t workflows < <(wf_list)
 
     for kata in "${katas[@]}"; do
         for workflow in "${workflows[@]}"; do
@@ -527,13 +559,14 @@ for entry in "${RUN_LIST[@]}"; do
     # .opencode/ an OpenCode workflow, .cursor/ a cursor-agent workflow,
     # .claude/ a Claude Code workflow.
     # The marker dir is also the source of harness-specific config.
-    if [ -d "$WORKFLOWS_DIR/$workflow/.pi" ]; then
+    wf_src="$(wf_path "$workflow")"
+    if [ -d "$wf_src/.pi" ]; then
         harness=pi
-    elif [ -d "$WORKFLOWS_DIR/$workflow/.opencode" ]; then
+    elif [ -d "$wf_src/.opencode" ]; then
         harness=opencode
-    elif [ -d "$WORKFLOWS_DIR/$workflow/.cursor" ]; then
+    elif [ -d "$wf_src/.cursor" ]; then
         harness=cursor
-    elif [ -d "$WORKFLOWS_DIR/$workflow/.claude" ]; then
+    elif [ -d "$wf_src/.claude" ]; then
         harness=claude
     else
         echo -e "  ${RED}ERROR: workflow $workflow has neither .claude/, .opencode/, .cursor/, nor .pi/${NC}"
@@ -543,16 +576,16 @@ for entry in "${RUN_LIST[@]}"; do
 
     # Copy workflow config
     if [ "$harness" = "claude" ]; then
-        cp -r "$WORKFLOWS_DIR/$workflow/.claude" "$run_dir/"
+        cp -r "$wf_src/.claude" "$run_dir/"
     elif [ "$harness" = "opencode" ]; then
         # Mirror the marker dir AND promote opencode.json / AGENTS.md to
         # run_dir root, because OpenCode reads those from cwd, not from
         # .opencode/.
-        cp -r "$WORKFLOWS_DIR/$workflow/.opencode" "$run_dir/"
-        [ -f "$WORKFLOWS_DIR/$workflow/.opencode/opencode.json" ] && \
-            cp "$WORKFLOWS_DIR/$workflow/.opencode/opencode.json" "$run_dir/"
-        [ -f "$WORKFLOWS_DIR/$workflow/.opencode/AGENTS.md" ] && \
-            cp "$WORKFLOWS_DIR/$workflow/.opencode/AGENTS.md" "$run_dir/"
+        cp -r "$wf_src/.opencode" "$run_dir/"
+        [ -f "$wf_src/.opencode/opencode.json" ] && \
+            cp "$wf_src/.opencode/opencode.json" "$run_dir/"
+        [ -f "$wf_src/.opencode/AGENTS.md" ] && \
+            cp "$wf_src/.opencode/AGENTS.md" "$run_dir/"
     elif [ "$harness" = "pi" ]; then
         # Mirror .pi/ into run_dir. pi reads AGENTS.md via cwd walk-up.
         # Project-local skills (.pi/skills/), agents (.pi/agents/) and the
@@ -560,18 +593,18 @@ for entry in "${RUN_LIST[@]}"; do
         # and discovered by pi from the run_dir cwd (project-local extension
         # dir = cwd/.pi/extensions/). Only the provider config (models.json)
         # comes from the global /home/experimenter/.pi/agent/ bind-mount.
-        cp -r "$WORKFLOWS_DIR/$workflow/.pi" "$run_dir/"
-        [ -f "$WORKFLOWS_DIR/$workflow/.pi/AGENTS.md" ] && \
-            cp "$WORKFLOWS_DIR/$workflow/.pi/AGENTS.md" "$run_dir/"
+        cp -r "$wf_src/.pi" "$run_dir/"
+        [ -f "$wf_src/.pi/AGENTS.md" ] && \
+            cp "$wf_src/.pi/AGENTS.md" "$run_dir/"
     elif [ "$harness" = "cursor" ]; then
         # Mirror .cursor/ into run_dir. cursor-agent reads AGENTS.md via cwd
         # walk-up (same pattern as pi/opencode), auto-loads project-local
         # skills from .cursor/skills/, and resolves subagents from
         # .cursor/agents/ (native Task tool — no extension needed, unlike pi).
         # The recursive copy covers both subdirs; keep it recursive.
-        cp -r "$WORKFLOWS_DIR/$workflow/.cursor" "$run_dir/"
-        [ -f "$WORKFLOWS_DIR/$workflow/.cursor/AGENTS.md" ] && \
-            cp "$WORKFLOWS_DIR/$workflow/.cursor/AGENTS.md" "$run_dir/"
+        cp -r "$wf_src/.cursor" "$run_dir/"
+        [ -f "$wf_src/.cursor/AGENTS.md" ] && \
+            cp "$wf_src/.cursor/AGENTS.md" "$run_dir/"
     fi
 
     # Copy kata prompt

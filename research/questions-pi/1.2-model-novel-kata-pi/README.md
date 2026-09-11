@@ -1,6 +1,6 @@
 ---
 id: RQ-model-novel-pi
-question: "How do the models reachable via the pi harness (Requesty routing) differ in correctness and TDD discipline on claim-office-example-mapping with the v6.2-with-why-cleaned-pi workflow?"
+question: "How do the models reachable via the pi harness (Requesty routing) differ in correctness and TDD discipline on claim-office-example-mapping with the exact-hybrid-v4-cleaned-pi workflow?"
 factors:
   # Reasoning is NOT a factors entry of its own, but encoded in the model
   # name: `<id>` = native reasoning default, `<id>-no-thinking` =
@@ -30,16 +30,16 @@ factors:
     - gpt-5-6-sol                  # GPT SOL (azure/gpt-5.6-sol@swedencentral) — forced off
     - gpt-5-6-terra                # GPT TERRA (azure/gpt-5.6-terra@swedencentral) — forced off
 controls:
-  # OR match: v6.2.1 fixes only the continuation drop at the test-list->red
+  # OR match: hybrid-v4.2 fixes only the continuation drop at the test-list->red
   # transition (kimi/minimax/qwen aborted there: spec.ts only, no cli.ts).
   # The fix is assumed to be outcome-neutral (changes only drop->completion,
-  # not the TDD/quality mechanics). Old clean v6.2 runs and new
-  # v6.2.1 replacement runs therefore aggregate into ONE cell. First entry is
+  # not the TDD/quality mechanics). Old clean hybrid-v4 runs and new
+  # hybrid-v4.2 replacement runs therefore aggregate into ONE cell. First entry is
   # canonical (label + fill-plan generation).
   workflow:
     any:
-      - v6.2.1-phase-continuation-pi
-      - v6.2-with-why-cleaned-pi
+      - exact-hybrid-v4.2-phase-continuation-pi
+      - exact-hybrid-v4-cleaned-pi
   kata_base: claim-office
   prompt: example-mapping
 outcomes:
@@ -76,7 +76,7 @@ status: aktiv
 
 Parallel to RQ-model-quality-pi (game-of-life, code quality), but on the harder axis: **spec comprehension and completeness of the implementation**. `claim-office-example-mapping` is a novel kata with five deliberately constructed ambiguities and an external verification suite — not a pure training-recall exercise like game-of-life.
 
-RQ-model-novel (CC side) and RQ-model-novel-oc (OpenCode side) have shown that `verification_pct` on claim-office differentiates models more strongly than any code-quality metric on game-of-life. This RQ transfers the test to the pi side with `v6.2-with-why-cleaned-pi`.
+RQ-model-novel (CC side) and RQ-model-novel-oc (OpenCode side) have shown that `verification_pct` on claim-office differentiates models more strongly than any code-quality metric on game-of-life. This RQ transfers the test to the pi side with `exact-hybrid-v4-cleaned-pi`.
 
 ## Harness status
 
@@ -94,7 +94,7 @@ In addition, the `cli.ts` nudge is wired for pi.
 
 ## Existing data
 
-Earlier `v6.2-with-why-cleaned-pi` × claim-office **prose** runs with `opus-4-7-portkey-no-thinking` (verification 0.00–0.27) do not count toward the cells of this RQ. The then-open question of whether the low verification was due to the prose prompt, the v6.2-pi workflow or the CLI contract has been answered: **H1 confirmed** — on `example-mapping`, `opus-4-8` reproducibly reaches `verification_pct = 1.00` with a built CLI. The earlier finding was therefore a prompt/model artifact, not a workflow defect.
+Earlier `exact-hybrid-v4-cleaned-pi` × claim-office **prose** runs with `opus-4-7-portkey-no-thinking` (verification 0.00–0.27) do not count toward the cells of this RQ. The then-open question of whether the low verification was due to the prose prompt, the v6.2-pi workflow or the CLI contract has been answered: **H1 confirmed** — on `example-mapping`, `opus-4-8` reproducibly reaches `verification_pct = 1.00` with a built CLI. The earlier finding was therefore a prompt/model artifact, not a workflow defect.
 
 ## Model selection
 
@@ -121,7 +121,7 @@ Both qwen3 arms score `verification_pct = 0.00` in 10/10 runs with `tests_passin
 | `duration_seconds` | 19–2158 s against a ~2 h budget — most end in under 2 min |
 | `cli_built` | `true` throughout |
 
-So the model writes the complete test list, announces the transition to the first red test and then treats the turn as finished. `cli_built: true` plus `tests_total ≈ 0` is the signature: scaffolding exists, the TDD loop never starts. `v6.2.1-phase-continuation-pi` was built for exactly this drop (see the `controls.workflow` comment) and **does not fix it for qwen3 on claim-office** — the three partial runs (14–18 tests) are the same workflow as the seven that stall.
+So the model writes the complete test list, announces the transition to the first red test and then treats the turn as finished. `cli_built: true` plus `tests_total ≈ 0` is the signature: scaffolding exists, the TDD loop never starts. `exact-hybrid-v4.2-phase-continuation-pi` was built for exactly this drop (see the `controls.workflow` comment) and **does not fix it for qwen3 on claim-office** — the three partial runs (14–18 tests) are the same workflow as the seven that stall.
 
 Consequences:
 
@@ -159,13 +159,13 @@ The fill settles it either way: `thinking_delta` counts per arm are read off the
 
 **Of the probed models, only `opus-4-8` responds to `--thinking`.** (`kimi-k3-sference` was added after this measurement; its row comes from a direct kata measurement instead — see below.) For all other probed models the reasoning state is a property of the model or the route, not of the call — `--thinking off`, the `:off` suffix on the model string and `models.json "reasoning": false` all remain without effect. Requesty-routed OpenAI-compatible models deliver reasoning over the `reasoning_content` channel (`thinkingSignature: "reasoning_content"`); switching it off requires a provider-specific body parameter that pi neither sends nor allows to be injected (model entries only know `contextWindow, id, input, maxTokens, name, reasoning`; no `--extra-body`).
 
-**`gpt-5-6-sol` / `gpt-5-6-terra`: forced off.** With reasoning on, the Azure endpoint answers `400: Function tools with reasoning_effort are not supported … use /v1/responses instead`; an `openai-responses/gpt-5.6-*` does not exist in the Requesty catalog (only for 5.4 and 5.5). Both therefore run with `"reasoning": false` in `pi-config/agent/models.json`.
+**`gpt-5-6-sol` / `gpt-5-6-terra`: forced off.** With reasoning on, the Azure endpoint answers `400: Function tools with reasoning_effort are not supported … use /oneshot-v1/responses instead`; an `openai-responses/gpt-5.6-*` does not exist in the Requesty catalog (only for 5.4 and 5.5). Both therefore run with `"reasoning": false` in `pi-config/agent/models.json`.
 
 **Consequence for the design.** Reasoning is carried as a **model suffix**, not as a separate `factors` entry: `<id>` (native default) and `<id>-no-thinking` (`--thinking off`) are two standalone lab variants with identical routing. This is the same convention as `opus-4-7-no-thinking` in `research/workflow-dev/` and leaves the cell resolution of the aggregation unchanged.
 
 The rope-riddle measurement above was a **single-prompt probe without tool calls and without long context**. Whether the switch behaves the same under the real kata is therefore not established — which is why all models where the probe yielded "never" (sonnet-5, deepseek-v4-pro, qwen3-235b) or "always" (kimi-k2-7, minimax-m3) still get both arms. There the comparison is a **test of controllability itself**: if it comes out at zero difference, the two cells are merged in the findings and carried as "switch without effect, checked empirically" — not as a reasoning effect.
 
-**`kimi-k3-sference` has no non-thinking variant.** Measured directly under the kata rather than by rope riddle (2026-08-04, claim-office, `v6.2.1-phase-continuation-pi`): the arm launched with `--thinking off` produced **5439** `thinking_delta` events — more than the default arm at 4568, and at a higher share of the run (12.4 vs. 8.4 thinking per text delta). The stream carries `thinkingSignature: "reasoning_content"`, the same channel that makes the switch inert for every other Requesty-routed model. K3 therefore enters the RQ with **one arm only**; a `kimi-k3-sference-no-thinking` cell would not be a reasoning-off condition but a second sample of the same state under a misleading label.
+**`kimi-k3-sference` has no non-thinking variant.** Measured directly under the kata rather than by rope riddle (2026-08-04, claim-office, `exact-hybrid-v4.2-phase-continuation-pi`): the arm launched with `--thinking off` produced **5439** `thinking_delta` events — more than the default arm at 4568, and at a higher share of the run (12.4 vs. 8.4 thinking per text delta). The stream carries `thinkingSignature: "reasoning_content"`, the same channel that makes the switch inert for every other Requesty-routed model. K3 therefore enters the RQ with **one arm only**; a `kimi-k3-sference-no-thinking` cell would not be a reasoning-off condition but a second sample of the same state under a misleading label.
 
 Two things separate this from the "both arms as a test of controllability" treatment that `kimi-k2-7` and `minimax-m3` get. First, the measurement here is under the real kata rather than the rope riddle, so the caveat that a single-prompt probe may not carry to long tool-using contexts does not apply. Second, the switch does not merely fail to reduce reasoning — the `off` arm reasoned *more*, which no reading of "partially effective" accommodates. The difference is well inside run-to-run variance: two runs in the same default arm on game-of-life differ by a factor of 12 (230 vs. 2928 `thinking_delta`).
 
@@ -189,8 +189,8 @@ grep -c '"thinking":"' run.log                                  # thinking block
 
 - Skeleton/first findings are single data points — replicates show whether patterns are stable. Memory [[replicates-n-reliability]]: n=3 detects bimodality, n=5 for medium confidence.
 - All models via Requesty, mixed backproviders — see RQ-model-quality-pi for routing details.
-- v6.2 enforces the why-block/skill TDD mechanics; agent drift into inline mode after a few cycles is possible. `cycle_count` is therefore conservative.
+- hybrid-v4 enforces the why-block/skill TDD mechanics; agent drift into inline mode after a few cycles is possible. `cycle_count` is therefore conservative.
 - The `cli.ts` nudge is **wired** for pi (`run-batch.sh`, pi branch): if `src/cli.ts` is missing while `src/claim-office.ts` exists, the agent is prompted once. Models that abort without domain code are deliberately not nudged.
 - `cli_built` reflects the actual existence of `src/cli.ts` (entry point parsed from the runner command), no longer the invocation behavior. A `verification_pct = 0` with `cli_built = false` means "no CLI contract", not "spec resolved wrongly".
 - **Subagent model contamination (fixed 2026-07-24).** The subagent extension only passed `--model` on if the agent file itself pinned one; `refactor.md` pins none, so all subagent spawns fell back to `defaultModel` (`bedrock/claude-opus-4-7@eu-west-1`) from `pi-config/agent/settings.json`. The entire refactor phase therefore ran on Opus 4.7 instead of the run model — measured in the 08:46 batch: `gpt-5-6-sol` 77, `gpt-5-6-terra` 45, `opus-4-8` 12 foreign calls. Fix: `PI_INHERIT_MODEL` in `run-batch.sh`, evaluated in `.pi/extensions/subagent/index.ts` (order: agent frontmatter → inherited parent model → pi default). **All runs before this fix (smokes 01:44–08:12) are unusable for refactor-derived metrics** — `verification_pct` is probably unaffected, `refactorings_applied` and the code-quality metrics are not. Fill runs start fresh.
-- TDD discipline metrics depend on the pi transcript parser capturing the v6.2 markers (smoke-test rule from CLAUDE.md). Verified: opus-4-8 yields `cycle_count`/`predictions` non-null. The values are in `metrics.json` under `.summary_metrics.*`, not under `.final_metrics.*`.
+- TDD discipline metrics depend on the pi transcript parser capturing the hybrid-v4 markers (smoke-test rule from CLAUDE.md). Verified: opus-4-8 yields `cycle_count`/`predictions` non-null. The values are in `metrics.json` under `.summary_metrics.*`, not under `.final_metrics.*`.

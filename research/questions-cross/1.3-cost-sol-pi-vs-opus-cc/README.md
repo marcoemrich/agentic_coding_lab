@@ -8,10 +8,10 @@ factors:
     - model: gpt-5-6-sol
       workflow:
         any:
-          - v6.2-with-why-cleaned-pi        # claim-office runs, canonical
-          - v6.2.1-phase-continuation-pi    # game-of-life runs, outcome-neutral fix
+          - exact-hybrid-v4-cleaned-pi        # claim-office runs, canonical
+          - exact-hybrid-v4.2-phase-continuation-pi    # game-of-life runs, outcome-neutral fix
     - model: opus-4-8-requesty
-      workflow: v6.2-with-why-cleaned
+      workflow: exact-hybrid-v4-cleaned-cc
   kata_base:
     - game-of-life
     - claim-office
@@ -76,13 +76,13 @@ with the never-measured ghost cells sol@cc / opus@pi.
 ### Workflow `any:` rationale (outcome-neutral)
 
 Sol's runs sit on two pi workflow versions: game-of-life under
-`v6.2.1-phase-continuation-pi`, claim-office under `v6.2-with-why-cleaned-pi`.
+`exact-hybrid-v4.2-phase-continuation-pi`, claim-office under `exact-hybrid-v4-cleaned-pi`.
 The `.1` version is an **outcome-neutral** fix of the `-pi` version (only
 phase-transition drop → continuation, all markers P1–P7 unchanged; memory
 `pi-workflow-continuation-drop-v621`). Following the CLAUDE.md exception for
 outcome-neutral workflow bugfixes (`rq-workflow-any-match-tooling`), both
 versions collapse via `workflow: {any: [...]}` into **one** sol-pi cell. Opus@CC uses
-the same `v6.2-with-why-cleaned` in both katas.
+the same `exact-hybrid-v4-cleaned-cc` in both katas.
 
 ## Cost baseline
 
@@ -108,10 +108,10 @@ a re-selection of existing data from the batches of 2026-07-25.
 
 | Bundle | Kata | Model | Workflow | n |
 |---|---|---|---|--:|
-| sol-pi | game-of-life | gpt-5-6-sol | v6.2.1-phase-continuation-pi | 5 |
-| sol-pi | claim-office | gpt-5-6-sol | v6.2-with-why-cleaned-pi | 5 |
-| opus-cc | game-of-life | opus-4-8-requesty | v6.2-with-why-cleaned | 5 |
-| opus-cc | claim-office | opus-4-8-requesty | v6.2-with-why-cleaned | 5 |
+| sol-pi | game-of-life | gpt-5-6-sol | exact-hybrid-v4.2-phase-continuation-pi | 5 |
+| sol-pi | claim-office | gpt-5-6-sol | exact-hybrid-v4-cleaned-pi | 5 |
+| opus-cc | game-of-life | opus-4-8-requesty | exact-hybrid-v4-cleaned-cc | 5 |
+| opus-cc | claim-office | opus-4-8-requesty | exact-hybrid-v4-cleaned-cc | 5 |
 
 ## Hypotheses
 

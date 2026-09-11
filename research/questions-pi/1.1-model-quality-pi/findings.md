@@ -1,6 +1,6 @@
 # RQ-model-quality-pi — Findings
 
-**Setup**: game-of-life-example-mapping × v6.2.1-phase-continuation-pi × n=5 per cell (12 cells, all filled). This RQ measures the **model effect on code quality and TDD discipline** in a harness-constant setting. Primary axes: `smell_total` (**Smell Total**), `cognitive_max`, `mccabe_max` — all **lower = better**. `tests_passing` (internal) and `verification_pct` (external, game-of-life-verification) serve as the correctness gate. All models via pi harness / Requesty.
+**Setup**: game-of-life-example-mapping × exact-hybrid-v4.2-phase-continuation-pi × n=5 per cell (12 cells, all filled). This RQ measures the **model effect on code quality and TDD discipline** in a harness-constant setting. Primary axes: `smell_total` (**Smell Total**), `cognitive_max`, `mccabe_max` — all **lower = better**. `tests_passing` (internal) and `verification_pct` (external, game-of-life-verification) serve as the correctness gate. All models via pi harness / Requesty.
 
 **Reasoning caveat**: All models run in the native reasoning default (no `-no-thinking` arm in this RQ). Three pairs form direct intra-family version comparisons: `glm-5-1`/`glm-5-2`, `kimi-k2-7`/`kimi-k3-sference`, and `opus-4-8`/`opus-5-requesty` — the last one without a backprovider confound (see F-1.7).
 
@@ -67,7 +67,7 @@ Within the Anthropic family the version jump 4.8 → 5 is the largest intra-fami
 
 ## F-1.3 — Correctness clusters at the top, with qwen as total fail
 
-On the easier game-of-life kata, nine of twelve models reach `verification_pct = 1.00`; the continuation-drop fix (v6.2.1) ensures that kimi/minimax/qwen also run through the TDD loop. `qwen3-235b` forms the floor: it builds code (`cli_built = true`), but rarely gets it green (`tests_passing = 0 %`, `verification_pct = 0.40`).
+On the easier game-of-life kata, nine of twelve models reach `verification_pct = 1.00`; the continuation-drop fix (hybrid-v4.2) ensures that kimi/minimax/qwen also run through the TDD loop. `qwen3-235b` forms the floor: it builds code (`cli_built = true`), but rarely gets it green (`tests_passing = 0 %`, `verification_pct = 0.40`).
 
 | Model | `verification_pct` | `tests_passing` rate |
 |---|---|---|
@@ -159,7 +159,7 @@ The price of the improvement is real and one-directional: +$1.10 per run at this
 
 ## F-1.8 — qwen3-235b rewrote the refactor agent instead of refactoring, and the edit escaped the run
 
-In run `2026-08-05_00-01-18` (game-of-life, v6.2.1-phase-continuation-pi, exit `ok`), `qwen3-235b` responded to the refactor step by **redefining the task rather than performing it**. It rewrote `refactor.md` — the instruction file for its own refactor subagent — adding a section titled "Current Implementation (Mock)" which declares that no refactoring is possible, and authored a companion `refactor.js` whose hardcoded output ends in `**Refactoring**: none possible`.
+In run `2026-08-05_00-01-18` (game-of-life, exact-hybrid-v4.2-phase-continuation-pi, exit `ok`), `qwen3-235b` responded to the refactor step by **redefining the task rather than performing it**. It rewrote `refactor.md` — the instruction file for its own refactor subagent — adding a section titled "Current Implementation (Mock)" which declares that no refactoring is possible, and authored a companion `refactor.js` whose hardcoded output ends in `**Refactoring**: none possible`.
 
 | Observation | Value |
 |---|---|

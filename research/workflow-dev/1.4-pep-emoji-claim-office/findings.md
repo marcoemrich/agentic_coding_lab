@@ -7,9 +7,9 @@ _Haelt der Interaktions-Befund aus RQ-pep-emoji-v6.1 auch auf claim-office?_
 | Workflow | n | `verification_pct` mean | min | std | `tests_passing` |
 |---|---:|---:|---:|---:|---:|
 | v6.1-hybrid (pep+emoji) | 5 | **1.00** 🏆 | 1.00 | 0.00 | **100%** 🏆 |
-| v6.1-no-pep | 5 | 0.97 | 0.87 | 0.06 | **100%** 🏆 |
-| v6.1-no-emoji | 5 | 0.80 | 0.00 | 0.45 | 80% |
-| v6.1-no-pep-no-emoji | 5 | 0.95 | 0.73 | 0.12 | **100%** 🏆 |
+| exact-hybrid-v2.1-no-pep-cc | 5 | 0.97 | 0.87 | 0.06 | **100%** 🏆 |
+| exact-hybrid-v2.2-no-emoji-cc | 5 | 0.80 | 0.00 | 0.45 | 80% |
+| exact-hybrid-v2.3-no-pep-no-emoji-cc | 5 | 0.95 | 0.73 | 0.12 | **100%** 🏆 |
 
 Nur v6.1-hybrid liefert perfekte Korrektheit (5/5 × 100%, std=0). Alle Reduktionen verlieren — moderat (no-pep -3pp, kombiniert -5pp) bis katastrophal (no-emoji -20pp wegen einem Komplett-Failure).
 
@@ -22,13 +22,13 @@ Nur v6.1-hybrid liefert perfekte Korrektheit (5/5 × 100%, std=0). Alle Reduktio
 | Workflow | `verification_pct` mean | Pattern |
 |---|---:|---|
 | v6.1-hybrid | **1.00** 🏆 (std 0.00) | konstant perfekt |
-| v6.1-no-pep | 0.97 (std 0.06) | konsistent leichte Drift (87%–100%) |
-| v6.1-no-emoji | 0.80 (std 0.45) | 4/5 perfekt + **1 Komplett-Failure** (0/15, Agent stoppte nach Test-List) |
-| v6.1-no-pep-no-emoji | 0.95 (std 0.12) | breitere Streuung (73%–100%) |
+| exact-hybrid-v2.1-no-pep-cc | 0.97 (std 0.06) | konsistent leichte Drift (87%–100%) |
+| exact-hybrid-v2.2-no-emoji-cc | 0.80 (std 0.45) | 4/5 perfekt + **1 Komplett-Failure** (0/15, Agent stoppte nach Test-List) |
+| exact-hybrid-v2.3-no-pep-no-emoji-cc | 0.95 (std 0.12) | breitere Streuung (73%–100%) |
 
-**Begründung:** Der eine 0/15-Run in v6.1-no-emoji ist kein Random-Outlier, sondern ein qualitativer Failure: der Agent erstellte die 92-zeilige `claim-office.spec.ts` und beendete den Run, ohne die Red-Phase zu starten — `experiment-done.txt` fehlt, keine Implementierungs-Datei. Eine plausible Lesart: die ✅/❌/🚨-Marker in den Skill-Templates dienen auf einer komplexen Multi-Section-Spec als "look at me, that's the next step"-Anker. Ohne sie verliert der Agent gelegentlich den Anschluss zwischen Test-List- und Red-Phase. Auf der trainingsbekannten game-of-life-Kata trat dieser Failure-Mode nicht auf — der Agent kennt das Muster ohne Marker.
+**Begründung:** Der eine 0/15-Run in exact-hybrid-v2.2-no-emoji-cc ist kein Random-Outlier, sondern ein qualitativer Failure: der Agent erstellte die 92-zeilige `claim-office.spec.ts` und beendete den Run, ohne die Red-Phase zu starten — `experiment-done.txt` fehlt, keine Implementierungs-Datei. Eine plausible Lesart: die ✅/❌/🚨-Marker in den Skill-Templates dienen auf einer komplexen Multi-Section-Spec als "look at me, that's the next step"-Anker. Ohne sie verliert der Agent gelegentlich den Anschluss zwischen Test-List- und Red-Phase. Auf der trainingsbekannten game-of-life-Kata trat dieser Failure-Mode nicht auf — der Agent kennt das Muster ohne Marker.
 
-v6.1-no-pep verliert milder und kontinuierlich; v6.1-no-pep-no-emoji liegt dazwischen. Hypothese H1 (Korrektheit invariant) ist damit **klar widerlegt**.
+exact-hybrid-v2.1-no-pep-cc verliert milder und kontinuierlich; exact-hybrid-v2.3-no-pep-no-emoji-cc liegt dazwischen. Hypothese H1 (Korrektheit invariant) ist damit **klar widerlegt**.
 
 ---
 
@@ -49,13 +49,13 @@ v6.1-no-pep verliert milder und kontinuierlich; v6.1-no-pep-no-emoji liegt dazwi
 
 ## F-1.3 — Recipe-Empfehlung für komplexe Katas: v6.1-hybrid behalten
 
-**Aussage:** Die game-of-life-basierte Empfehlung "v6.1-no-pep beste Wahl für Code-Qualitäts-Forschung" oder "v6.1-no-pep-no-emoji für Speed" gilt **nicht für komplexe Katas mit echten Mehrdeutigkeiten**. Auf claim-office ist **v6.1-hybrid (mit Pep+Emoji) die einzige korrektheits-sichere Wahl**.
+**Aussage:** Die game-of-life-basierte Empfehlung "exact-hybrid-v2.1-no-pep-cc beste Wahl für Code-Qualitäts-Forschung" oder "exact-hybrid-v2.3-no-pep-no-emoji-cc für Speed" gilt **nicht für komplexe Katas mit echten Mehrdeutigkeiten**. Auf claim-office ist **v6.1-hybrid (mit Pep+Emoji) die einzige korrektheits-sichere Wahl**.
 
 | Anwendungsfall | Empfehlung | Begründung |
 |---|---|---|
-| game-of-life / trainingsbekannte Katas | v6.1-no-pep | Code-Qualität leicht besser, mehr Refactor-Aktivität, Korrektheit invariant |
+| game-of-life / trainingsbekannte Katas | exact-hybrid-v2.1-no-pep-cc | Code-Qualität leicht besser, mehr Refactor-Aktivität, Korrektheit invariant |
 | claim-office / komplexe Katas mit Ambiguitäten | **v6.1-hybrid** | Einzige Variante mit 100/100 Korrektheit; Reduktionen verlieren systematisch |
-| Speed-kritisch (akzeptiert -5pp Korrektheit) | v6.1-no-pep-no-emoji | Nur wenn Korrektheits-Drift bekannt und akzeptiert |
+| Speed-kritisch (akzeptiert -5pp Korrektheit) | exact-hybrid-v2.3-no-pep-no-emoji-cc | Nur wenn Korrektheits-Drift bekannt und akzeptiert |
 
 **Begründung:** Das ist die zentrale Konsequenz aus F-1.1 und F-1.2. Decoration-Marker und Pep-Talks sind auf trainingsbekanntem Code redundant, auf neuem komplexem Code aber funktional notwendig. Der Reduktions-Recipe ([`v6-reduction-recipe.md`](../v6-reduction-recipe.md)) muss um diese Kata-Komplexitäts-Dimension erweitert werden, bevor Reduktionen als allgemeine Empfehlung übernommen werden.
 
@@ -71,4 +71,4 @@ v6.1-no-pep verliert milder und kontinuierlich; v6.1-no-pep-no-emoji liegt dazwi
 | **H4** Disziplin-Pattern kata-spezifisch | bestätigt | siehe F-1.2 |
 | **H5** Code-Qualität indistinguishable | bestätigt | grosse Streuungen, keine konsistenten Trends; no-pep-no-emoji bei smell_total am besten (0.6) |
 
-**Caveat zu n=5:** Die katastrophale 0/15-Failure in v6.1-no-emoji dominiert die Statistik. Bei n=10+ würde sich entscheiden, ob das ein 20%-Failure-Rate-Pattern oder ein 5%-Outlier ist. Für die Recipe-Empfehlung in F-1.3 ist aber das **Vorhandensein** des Failure-Modes entscheidend, nicht die exakte Frequenz — eine Reduktion, die manchmal komplett abbricht, ist als Default-Workflow nicht akzeptabel.
+**Caveat zu n=5:** Die katastrophale 0/15-Failure in exact-hybrid-v2.2-no-emoji-cc dominiert die Statistik. Bei n=10+ würde sich entscheiden, ob das ein 20%-Failure-Rate-Pattern oder ein 5%-Outlier ist. Für die Recipe-Empfehlung in F-1.3 ist aber das **Vorhandensein** des Failure-Modes entscheidend, nicht die exakte Frequenz — eine Reduktion, die manchmal komplett abbricht, ist als Default-Workflow nicht akzeptabel.

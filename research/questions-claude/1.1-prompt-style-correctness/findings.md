@@ -42,7 +42,7 @@ and both thinking modes (n=30, 6 cells of 5 runs each, `verification_pct`
 | example-mapping | 0.00 | 0.00 |
 | user-story | 0.01 | 0.00 |
 
-**Data basis**: 30 runs, all Haiku-4.5-portkey × v5 × claim-office.
+**Data basis**: 30 runs, all Haiku-4.5-portkey × single-context-v1 × claim-office.
 
 **Rationale**: The kata requires the agent to interpret several
 domain rules correctly and implement them in a runnable CLI.

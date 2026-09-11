@@ -127,6 +127,24 @@ if [ -x "$SCRIPT_DIR/../check-pi-model-wiring.py" ]; then
     fi
 fi
 
+# LINEAGE.yaml ist die Quelle fuer Kategorie, Arm, Abstammung und Alt-Namen
+# jedes Workflows; PATHS.json/ALIASES.json werden daraus generiert und von
+# run-batch.sh bzw. der Aggregation gelesen. Driftet die Quelle gegen den
+# Bestand (Workflow angelegt und nicht eingetragen, Praefix passt nicht zur
+# Kategorie, status: discarded ohne _archive/), dann loest run-batch.sh
+# Workflows nicht mehr auf oder die Aggregation matcht die falsche Zelle.
+# Anders als die pi-Wiring-Warnung blockiert das: der Schaden trifft nicht nur
+# eine Spalte, sondern die Zuordnung selbst -- und die Pruefung kostet nichts,
+# waehrend der Batch Stunden laeuft.
+if [ -x "$SCRIPT_DIR/../workflow-lineage.py" ]; then
+    if ! lineage_out="$("$SCRIPT_DIR/../workflow-lineage.py" --check 2>&1)"; then
+        echo "ERROR: workflow lineage is inconsistent -- aborting before the batch"
+        echo "$lineage_out" | sed 's/^/  /'
+        echo "  Fix LINEAGE.yaml, then: experiments/workflow-lineage.py --check --emit"
+        exit 4
+    fi
+fi
+
 # Portkey routing wird seit 2026-05-25 ausschließlich über
 # experiments/docker/.env gesteuert (env_file-Directive in
 # docker-compose.yml, Variablen ANTHROPIC_BASE_URL, ANTHROPIC_AUTH_TOKEN,

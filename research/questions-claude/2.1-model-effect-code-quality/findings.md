@@ -7,7 +7,7 @@ on a training-known kata under the strongest workflow?**
 
 Data basis: 38 runs (10 cells × n=3, plus additional
 opus-4-7-no-thinking replicates from the RQ-tdd-quality pool → n=10 there, and
-opus-4-8-no-thinking with n=4). Workflow v4-exact-subagents, kata
+opus-4-8-no-thinking with n=4). Workflow exact-subagents-v1-cc, kata
 game-of-life-example-mapping with an explicit API contract
 (`nextGeneration(cells: Cell[]): Cell[]`). Internal correctness view via the
 vitest tests written by the agent, external view via the module-import adapter
@@ -47,7 +47,7 @@ the lowest Code Mass.
 
 ---
 
-## F-model-quality.1 — Correctness (internal + external) on v4 Is Almost Model-Independently Perfect
+## F-model-quality.1 — Correctness (internal + external) on subagents-v1 Is Almost Model-Independently Perfect
 
 **Statement**: `tests_passing` is at 100 % for all twelve model cells (44/44
 runs). `verification_pct` is likewise at 1.00 in eleven of twelve cells
@@ -61,7 +61,7 @@ The only exception: **sonnet-4-6-no-thinking** with `verification_pct = 0.73`
 
 **Data basis**: 44 runs, 15 verification scenarios per run.
 
-**Consequence**: On v4 + game-of-life + Direct-API/Portkey Opus + Sonnet,
+**Consequence**: On subagents-v1 + game-of-life + Direct-API/Portkey Opus + Sonnet,
 correctness is no longer a differentiating characteristic. Code-quality ranking statements
 are based on correct code.
 
@@ -191,7 +191,7 @@ Fable 5).
 Wallclock is predominantly at ~14–21 min/run; individual opus-4-7-no-thinking
 replicates spread strongly upward (pool n=10, max 3923 s).
 
-**Consequence**: On v4, model choice is a trade-off between code compactness
+**Consequence**: On subagents-v1, model choice is a trade-off between code compactness
 (Opus 4.8 ahead on `code_mass`) and the combination of low complexity
 and token budget (Fable 5 ahead). Fable 5 is the best all-rounder — trivial
 Complexity Peak at a favorable cost; Opus 4.8 pays off when minimal
@@ -231,7 +231,7 @@ a larger n is needed for a stable frequency estimate.
 
 ## Caveats
 
-- **Single workflow**: Only v4-exact-subagents. Other workflows could
+- **Single workflow**: Only exact-subagents-v1-cc. Other workflows could
   produce different model rankings (cf. RQ-tdd-quality F-tdd-quality.1).
 - **Single kata**: Only Game of Life (library form, example-mapping).
   Mars-rover as a second code-quality carrier remains open.

@@ -1,11 +1,11 @@
 ---
 id: RQ-app-vs-four-rules-sol
-question: "On the OpenAI subscription route, does a refactor brief that optimises APP mass (v6.2.1) decompose worse than one governed by the Four Rules of Simple Design alone (basic-sol-tdd) — at constant model, harness, kata and prompt style?"
+question: "On the OpenAI subscription route, does a refactor brief that optimises APP mass (hybrid-v4.2) decompose worse than one governed by the Four Rules of Simple Design alone (basic-sol-tdd) — at constant model, harness, kata and prompt style?"
 factors:
   workflow:
-    - v3-basic-tdd-pi                  # floor: TDD without architecture, no refactor brief
-    - basic-sol-tdd-pi                 # Four Rules only, no mass metric
-    - v6.2.1-phase-continuation-pi     # Opus-derived line, APP mass in the refactor brief
+    - baseline-inline-tdd-v1-pi                  # floor: TDD without architecture, no refactor brief
+    - exact-sol-v1-pi                 # Four Rules only, no mass metric
+    - exact-hybrid-v4.2-phase-continuation-pi     # Opus-derived line, APP mass in the refactor brief
 controls:
   model:
     # Label variants of the same configuration, not different models: both ids
@@ -20,7 +20,7 @@ outcomes:
   - cc_avg_loc_per_function
   - cc_median_loc_per_function
   - cc_longest_function
-  # mechanism witness: APP mass is what the v6.2.1 brief optimises. Expected to
+  # mechanism witness: APP mass is what the hybrid-v4.2 brief optimises. Expected to
   # run *against* the decomposition metrics. Reported without trophy.
   - code_mass
   # blind-spot controls: these must NOT separate if the mechanism is what the
@@ -33,7 +33,7 @@ outcomes:
   - verification_pct
   - tests_passing
   - completed_within_budget
-  # TDD discipline — n/a on the v3 cell (no phase markers)
+  # TDD discipline — n/a on the inline-tdd-v1 cell (no phase markers)
   - cycle_count
   - refactorings_applied
   - predictions_correct_rate
@@ -58,12 +58,12 @@ The observation that motivates it sits across two RQs rather than inside one. On
 
 | Cell | `cc_avg_loc_per_function` | Code Mass (APP) | Refactor brief |
 |---|---:|---:|---|
-| `v3-basic-tdd-pi` | 6.75 | 176.4 | — (no brief) |
-| `basic-sol-tdd-pi` | 7.27 | 162.8 | Four Rules of Simple Design |
-| `v6.2.1-phase-continuation-pi` | **11.53** | **153.2** | Four Rules **+ APP mass** |
+| `baseline-inline-tdd-v1-pi` | 6.75 | 176.4 | — (no brief) |
+| `exact-sol-v1-pi` | 7.27 | 162.8 | Four Rules of Simple Design |
+| `exact-hybrid-v4.2-phase-continuation-pi` | **11.53** | **153.2** | Four Rules **+ APP mass** |
 
 The APP-optimising cell has the **lowest** mass and the **worst** decomposition, and
-those two facts are not independent. `v6.2.1-phase-continuation-pi/.pi/agents/refactor.md`
+those two facts are not independent. `exact-hybrid-v4.2-phase-continuation-pi/.pi/agents/refactor.md`
 prescribes the mass table that makes extraction expensive:
 
 > **Invocation** (Mass: 2): Function calls
@@ -95,18 +95,18 @@ result (F-1.16.1), so the third cell lands next to a known, non-tied contrast.
 
 This is a separate RQ rather than a fourth cell in RQ-1.16 because RQ-1.16 is a
 **methodology** comparison — native Sol line against the structureless floor. Adding
-the Opus-derived v6.2.1 line to its `workflow_x_prompt` list would change what that RQ
+the Opus-derived hybrid-v4.2 line to its `workflow_x_prompt` list would change what that RQ
 is about and re-open a factor it deliberately holds closed. Here the axis is the
-refactor brief, and v3 is carried over as the shared floor so both RQs anchor on the
+refactor brief, and inline-tdd-v1 is carried over as the shared floor so both RQs anchor on the
 same baseline.
 
-**Consequence: `v6.2.1-phase-continuation-pi` × claim-office has no runs on any Sol
+**Consequence: `exact-hybrid-v4.2-phase-continuation-pi` × claim-office has no runs on any Sol
 route** (checked 2026-08-17 — 0 directories). It must be filled as part of this RQ.
 The two other cells exist and are reused unchanged from RQ-1.16.
 
 ## Model `any:` rationale — binding
 
-The existing cells carry the model label `gpt-5-6-sol-codex`, the existing v6.2.1
+The existing cells carry the model label `gpt-5-6-sol-codex`, the existing hybrid-v4.2
 Codex runs carry `gpt-5-6-sol-codex-no-thinking`. These are **not** two models and not
 two routes. `run-batch.sh` maps both to the same pi model string
 (`openai-codex/gpt-5.6-sol`), both use the `pi-config` profile, and both record
@@ -146,9 +146,9 @@ the robustness check against outliers. Neither measures naming. `code_mass` is
 reported without a trophy — here explicitly as the mechanism witness, not as a
 quality ranking.
 
-## Measurement limit — v3 cell
+## Measurement limit — inline-tdd-v1 cell
 
-Inherited from RQ-1.14 and RQ-1.16: **TDD-discipline metrics are not defined on v3.**
+Inherited from RQ-1.14 and RQ-1.16: **TDD-discipline metrics are not defined on inline-tdd-v1.**
 It prescribes no phase markers, so `cycle_count`, `refactorings_applied` and
 `predictions_correct_rate` are reported as **n/a**, never as 0, and carry no trophy in
 those rows. Correctness and code-quality metrics are unaffected — they are measured
@@ -156,13 +156,13 @@ externally from the source tree.
 
 ## Hypotheses
 
-- **H1 (APP suppresses decomposition).** `v6.2.1-phase-continuation-pi` lands worse
-  than `basic-sol-tdd-pi` on `cc_avg_loc_per_function` and `cc_median_loc_per_function`
+- **H1 (APP suppresses decomposition).** `exact-hybrid-v4.2-phase-continuation-pi` lands worse
+  than `exact-sol-v1-pi` on `cc_avg_loc_per_function` and `cc_median_loc_per_function`
   by more than 1 σ, while reaching **lower** Code Mass, and does not separate against
   it on `cognitive_max`/`mccabe_max`.
   → The APP brief is the driver. RQ-1.16's open question is answered: the native line's
   advantage comes substantially from removing APP, not only from the methodology. The
-  lever for the v-line on Sol is the refactor brief, not the architecture.
+  lever for the opus line on Sol is the refactor brief, not the architecture.
 - **H2 (line effect, not brief effect).** The APP cell is worse on decomposition *and*
   on `cognitive_max`/`smell_total`, i.e. every metric moves together.
   → The mechanism above is not supported; what separates the lines is general quality,
@@ -183,20 +183,20 @@ models or routes. Only ranking and direction *within this RQ* are evaluated.
 
 ## Caveats
 
-1. **Two cells are reused, one is new.** `v3-basic-tdd-pi` and `basic-sol-tdd-pi` ran
-   2026-08-16 as part of RQ-1.16; the v6.2.1 cell is filled later. Any drift on the
+1. **Two cells are reused, one is new.** `baseline-inline-tdd-v1-pi` and `exact-sol-v1-pi` ran
+   2026-08-16 as part of RQ-1.16; the hybrid-v4.2 cell is filled later. Any drift on the
    subscription route between those dates sits in the new cell alone — there is no
-   third workflow to cross-check it against, unlike RQ-1.16 where v3 spans all katas.
-2. **The brief is not the only difference.** `v6.2.1-phase-continuation-pi` and
-   `basic-sol-tdd-pi` differ in skill structure and phase vocabulary as well as in the
+   third workflow to cross-check it against, unlike RQ-1.16 where inline-tdd-v1 spans all katas.
+2. **The brief is not the only difference.** `exact-hybrid-v4.2-phase-continuation-pi` and
+   `exact-sol-v1-pi` differ in skill structure and phase vocabulary as well as in the
    refactor brief. This RQ isolates the axis better than the cross-RQ comparison it
    replaces, but not perfectly. The clean isolation — swapping the APP brief *into* the
    native line, holding architecture constant — remains the follow-up.
 3. **Reasoning is a constant, not a factor** (F-1.3.5), and it is on in every cell
-   including v3.
+   including inline-tdd-v1.
 4. **Cost figures are route-internal.** The subscription route bills per subscription;
    `cost_usd` is a list-price estimate. Compare within this RQ only.
-5. **No continuation overlay on v3 or the native cell.** v6.2.1 carries its own
+5. **No continuation overlay on inline-tdd-v1 or the native cell.** hybrid-v4.2 carries its own
    phase-continuation section. Systematic `completed_within_budget = false` in any cell
    is read as a harness stall, not a workflow effect.
 
@@ -204,11 +204,11 @@ models or routes. Only ranking and direction *within this RQ* are evaluated.
 
 - Does the effect reproduce on the Requesty route, where F-1.3.6 documents a route
   effect on exactly these metrics? → the same three cells on `gpt-5-6-sol`.
-- Does it appear on Opus, or is it Sol-specific? `v6.2.1` × `opus-5-requesty` reaches
+- Does it appear on Opus, or is it Sol-specific? `hybrid-v4.2` × `opus-5-requesty` reaches
   `cc_avg_loc_per_function` 2.62 on game-of-life — the best value in the comparison,
   with the same APP brief. That suggests Opus weighs the "clarity trumps APP" guard
   that Sol appears to ignore, which would make this an instruction-following finding
   rather than a brief-design finding.
-- If H1 holds: does removing only the mass table from the v6.2.1 refactor agent, leaving
+- If H1 holds: does removing only the mass table from the hybrid-v4.2 refactor agent, leaving
   everything else intact, recover the decomposition? → the decisive isolation, and the
   cheapest workflow change the result would license.

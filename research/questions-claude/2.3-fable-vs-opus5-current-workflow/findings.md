@@ -2,7 +2,7 @@
 
 Model comparison of Opus 5 vs Fable 5.1 vs Fable 5 vs Sonnet 5 (each
 no-thinking, Claude Max subscription) on
-`claim-office-example-mapping × v6.1-hybrid-testlist-scope-fix`, all cells
+`claim-office-example-mapping × exact-hybrid-v2-testlist-fix-cc`, all cells
 measured on Claude Code 2.1.267. Sonnet 5 runs on the native Direct-API route
 and is labelled `sonnet-5-native` — the bare `sonnet-5` is the pi/Requesty
 route and a different cell.
@@ -59,7 +59,7 @@ the fastest *eligible* cell — fable-5-1 needs 1.6× and fable-5 1.9× as long.
 
 ## F-fable-vs-opus5.1 — Only Opus 5 and Fable 5.1 Sit at the Kata Ceiling; Perfect-Run Share Ranks Cells Backwards
 
-On `v6.1-hybrid-testlist-scope-fix`, **opus-5 (0.95, σ 0.03)** and **fable-5-1
+On `exact-hybrid-v2-testlist-fix-cc`, **opus-5 (0.95, σ 0.03)** and **fable-5-1
 (0.93, σ 0.08)** are statistically indistinguishable and both sit at the
 effective ceiling of this kata. **fable-5 (0.87, σ 0.12)** and
 **sonnet-5-native (0.85, σ 0.21)** are below it.
@@ -254,7 +254,7 @@ does not support; `refactorings_applied` is a known-noisy metric in this lab.
 would not produce. At n=5 against n=13 this is suggestive, not established.
 
 So H5 holds for every axis the RQ names as load-bearing (cost in the sense of
-refactor rate, quality, correctness), and findings in the v6.1 line measured
+refactor rate, quality, correctness), and findings in the hybrid-v2 line measured
 before the bump remain comparable. The token caveat is worth carrying into any
 future cross-version cost claim.
 
@@ -325,7 +325,7 @@ the cell that makes an ETA unreliable.
 | opus-5-no-thinking | 42.68 | 6.48 | 72.2 M | ~99 % |
 | fable-5-no-thinking | 76.93 | 4.68 | 63.0 M | ~99 % |
 
-The v6.1 workflow is overwhelmingly cache-driven. A representative run splits as
+The hybrid-v2 workflow is overwhelmingly cache-driven. A representative run splits as
 input 108.5 k, output 162.6 k, cache-creation 460.7 k, **cache-read 60.7 M** —
 98.8 % of all tokens are cache reads. `cost_usd` on this workflow is therefore,
 to within about a percent, `cache_read × cache-read price`.
@@ -388,7 +388,7 @@ suite that is fully green against a program that prices claims wrongly.
 | all other 18 runs | green | 14–15 / 15 |
 
 This is the divergence the two correctness metrics exist to expose, and this RQ
-is the first place in the v6.1 line where it opens wide. The mechanism follows
+is the first place in the hybrid-v2 line where it opens wide. The mechanism follows
 from F-fable-vs-opus5.2: the failures are premium *values*, not crashes,
 missing output, or unhandled scenarios. A wrong-but-consistent pricing rule
 produces a program that is internally coherent — the model derives its expected
@@ -417,7 +417,7 @@ alone should be read with that in mind.
 ## F-fable-vs-opus5.9 — The Baseline Workflow Does Not Carry Sonnet 5 to the Frontier, But Its Speed and Cost Advantage Is Real
 
 This is the question the Sonnet cell was added to answer (H6): does the
-structural scaffolding of `v6.1-hybrid-testlist-scope-fix` — test list, phase
+structural scaffolding of `exact-hybrid-v2-testlist-fix-cc` — test list, phase
 gates, refactor subagent — substitute for model capability?
 
 **It does not.** sonnet-5-native lands at `verification_pct` 0.85, below the
@@ -456,7 +456,7 @@ outcome, so it cannot be quoted as a cost estimate for Sonnet 5 on this workflow
 Its only job is to rule out the alternative reading — that the cost and speed
 lead is an artifact of the two runs that did less work. It is not.
 
-**What this says about the baseline recommendation.** The v6.1 workflow does not
+**What this says about the baseline recommendation.** The hybrid-v2 workflow does not
 close the tier gap on this kata, so the correctness-critical recommendation
 stays on the frontier models. The case for revisiting it would be a kata where
 the failure mode is visible to the internal suite; that is not this one.

@@ -1,7 +1,7 @@
 # Findings — RQ-native-sol-workflows-sub
 
 On the OpenAI subscription route, does a workflow line written natively for Sol
-(basic-sol-tdd, Predictive TDD) beat structureless TDD (v3) — the floor that no
+(basic-sol-tdd, Predictive TDD) beat structureless TDD (inline-tdd-v1) — the floor that no
 Opus-derived architecture clears on this model?
 
 Data base: 45 runs, 9 cells × n=5, all `exit_reason: ok`, `completed_within_budget`
@@ -18,7 +18,7 @@ decide nothing.
 
 **claim-office-example-mapping** (correctness kata)
 
-| Metric | v3 | basic-sol-tdd | basic-sol-tdd-subagent | Direction |
+| Metric | inline-tdd-v1 | basic-sol-tdd | basic-sol-tdd-subagent | Direction |
 |---|---:|---:|---:|---|
 | Correctness (external) `verification_pct` | **100 %** 🏆 | **100 %** 🏆 | 93 % | höher = besser |
 | Correctness (internal) `tests_passing` | 100 % | 100 % | 100 % | höher = besser |
@@ -38,7 +38,7 @@ decide nothing.
 
 **game-of-life-example-mapping** (code-quality kata)
 
-| Metric | v3 | basic-sol-tdd | basic-sol-tdd-subagent | Direction |
+| Metric | inline-tdd-v1 | basic-sol-tdd | basic-sol-tdd-subagent | Direction |
 |---|---:|---:|---:|---|
 | Correctness (external) `verification_pct` | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | höher = besser |
 | `cognitive_max` | **4.4** 🏆 | 4.6 | 5.2 | kleiner = besser |
@@ -57,7 +57,7 @@ decide nothing.
 
 **sphinx-score-example-mapping** (novelty control — resolves nothing, see F-1.16.7)
 
-| Metric | v3 | basic-sol-tdd | basic-sol-tdd-subagent | Direction |
+| Metric | inline-tdd-v1 | basic-sol-tdd | basic-sol-tdd-subagent | Direction |
 |---|---:|---:|---:|---|
 | Correctness (external) `verification_pct` | **100 %** 🏆 | 99 % | 96 % | höher = besser |
 | Correctness (internal) `tests_passing` | 100 % | 100 % | 100 % | höher = besser |
@@ -79,10 +79,10 @@ decide nothing.
 Caveats for reading the tables:
 
 - **Correctness gating** on claim-office: quality/efficiency trophies go only to cells at
-  `verification_pct` 100 % — v3 and the inline arm. The subagent arm's figures are reported
+  `verification_pct` 100 % — inline-tdd-v1 and the inline arm. The subagent arm's figures are reported
   but carry no trophy there (F-1.16.4).
-- **`cycle_count`, `refactorings_applied` and `predictions_correct_rate` are n/a for v3**,
-  not zero — v3 prescribes no phase markers. The parser's inferred `cycle_count` 3.0 / 4.6
+- **`cycle_count`, `refactorings_applied` and `predictions_correct_rate` are n/a for inline-tdd-v1**,
+  not zero — inline-tdd-v1 prescribes no phase markers. The parser's inferred `cycle_count` 3.0 / 4.6
   and `refactorings_applied` 0.4 / 0.2 are not comparable to marker-based counts and are
   omitted from the tables. See MARKERS.md, "Baseline workflows satisfy marker 4 only".
 - **Code Mass gets no trophy**: APP has no notion of nesting and rewards one long function
@@ -90,13 +90,13 @@ Caveats for reading the tables:
 - `predictions_total` is not comparable on this line — already-green cycles carry no
   predictions by design. Only the rate is reported.
 
-## F-1.16.1 — On claim-office the native line clears the v3 floor decisively
+## F-1.16.1 — On claim-office the native line clears the inline-tdd-v1 floor decisively
 
 This is the finding the RQ was built to answer, and on the correctness kata the answer is
-yes. The inline arm beats the v3 baseline on every quality metric, at equal (perfect)
+yes. The inline arm beats the inline-tdd-v1 baseline on every quality metric, at equal (perfect)
 correctness:
 
-| Metric | v3 | basic-sol-tdd (inline) | Faktor | Direction |
+| Metric | inline-tdd-v1 | basic-sol-tdd (inline) | Faktor | Direction |
 |---|---:|---:|---:|---|
 | `cognitive_max` | 11.4 | **4.0** | 2.85× | kleiner = besser |
 | Complexity Peak | 27.0 | **18.0** | 1.50× | kleiner = besser |
@@ -104,23 +104,23 @@ correctness:
 | Smell Total | 4.2 | **0.0** | — | kleiner = besser |
 | Code Mass (APP) | 750.0 | **556.8** | 1.35× | kleiner = besser |
 
-The gap is not only in the mean but in the spread: v3's `cognitive_max` σ is 8.96 against
+The gap is not only in the mean but in the spread: inline-tdd-v1's `cognitive_max` σ is 8.96 against
 0.63, its Complexity Peak σ 10.14 against 2.68, its Smell Total σ 8.40 against 0.00. The
-v3 baseline produces one run at `cognitive_max` 29 and one at 21 smells; the native line's
+inline-tdd-v1 baseline produces one run at `cognitive_max` 29 and one at 21 smells; the native line's
 worst run across five is `cognitive_max` 5 with zero smells. **The native line is both
 better and predictable, where the baseline is neither.**
 
 This is the direct counterpoint to F-1.6 in RQ-architecture-axis-sol-pi, where no
-Opus-derived architecture cleared the v3 floor on Sol. It supports the second of the two
+Opus-derived architecture cleared the inline-tdd-v1 floor on Sol. It supports the second of the two
 readings that finding left open: the transfer failure was a property of *that* line, not of
 architecture on this model. See F-1.16.5 for what that does and does not license.
 
-## F-1.16.2 — On game-of-life the floor holds, exactly as it did for the v-line
+## F-1.16.2 — On game-of-life the floor holds, exactly as it did for the opus line
 
 The kata inverts the result. All three cells reach 100 % correctness and zero smells, and
-v3 wins or ties every quality metric:
+inline-tdd-v1 wins or ties every quality metric:
 
-| Metric | v3 | best native | Faktor | Direction |
+| Metric | inline-tdd-v1 | best native | Faktor | Direction |
 |---|---:|---:|---:|---|
 | `cognitive_max` | **4.4** | 4.6 (inline) | 1.05× | kleiner = besser |
 | `cognitive_avg` | **2.67** | 2.83 (inline) | 1.06× | kleiner = besser |
@@ -157,11 +157,11 @@ against 874 s) and consumes 1.5× the tokens; on game-of-life 1.9× longer. It a
 the RQ's only correctness regression (F-1.16.4).
 
 H3 (refactor isolation is the differentiator) is **not supported**: the two arms separate
-from each other by far less than the inline arm separates from v3 on claim-office. Isolating
+from each other by far less than the inline arm separates from inline-tdd-v1 on claim-office. Isolating
 the refactor context — the one axis this pair was built to test cleanly, and which is
-confounded in the v-line — does not pay on Sol.
+confounded in the opus line — does not pay on Sol.
 
-Worth naming against F-1.6's observation that the v6.1 refactor subagent fails to extract on
+Worth naming against F-1.6's observation that the hybrid-v2 refactor subagent fails to extract on
 Sol: with a different refactor brief (Four Rules, no APP) the subagent does now work — it
 applies 32.2 refactorings per claim-office run and reaches zero smells. It simply does not
 produce better code than doing the same review inline.
@@ -189,14 +189,14 @@ prompt.
 
 ## F-1.16.5 — What this does and does not settle about F-1.6
 
-RQ-1.14 F-1.6 found no architecture clearing the v3 floor on Sol and left two readings open:
+RQ-1.14 F-1.6 found no architecture clearing the inline-tdd-v1 floor on Sol and left two readings open:
 architecture does not pay on this model, or that specific Opus-derived line does not
 transfer. This RQ splits the answer by kata:
 
 - **claim-office: the lineage reading holds.** A line with no Opus ancestry clears the floor
   decisively (F-1.16.1), so "architecture does not pay on Sol" is too strong.
 - **game-of-life: the model/kata reading holds.** The native line ties at best and pays 3.2×
-  for it (F-1.16.2) — the same outcome the v-line produced, now without the lineage confound.
+  for it (F-1.16.2) — the same outcome the opus line produced, now without the lineage confound.
 
 The honest synthesis is that F-1.6's conclusion was **kata-overgeneralised**, not wrong.
 Where the spec is large enough to exceed what one context handles well, architecture pays on
@@ -214,7 +214,7 @@ live and would need a novel kata that decomposes on Sol.
 
 **Route caveat, binding:** this RQ ran entirely on the OpenAI subscription route, RQ-1.14
 entirely on Requesty. `RQ-route-effect-pi` F-1.3.6 documents a real route effect on exactly
-these metrics. The v3 rows make the size of that concern concrete — claim-office
+these metrics. The inline-tdd-v1 rows make the size of that concern concrete — claim-office
 `cognitive_max` is 11.4 here against 9.2 on Requesty, and Smell Total 4.2 against 6.8, for
 the same workflow, kata, model and prompt style. Comparisons **across** the two RQs are
 therefore directional at best. Every claim above is internal to this RQ, where the route is
@@ -225,7 +225,7 @@ constant.
 The marker smoke run showed 3 of 10 red phases in the inline arm carrying a prose-only
 prediction with no `Red Phase Complete:` block, raising the concern that the retrofitted
 two-line format would erode. At n=5 per cell it did not: `predictions_correct_rate` is
-98.1–100 % across all four native cells, against 95.8–100 % for the v-line cells on Requesty
+98.1–100 % across all four native cells, against 95.8–100 % for the opus line cells on Requesty
 (RQ-1.14). The rates are pooled over 52–176 predictions per cell.
 
 `predictions_total` is still not comparable on this line — already-green cycles carry no
@@ -239,7 +239,7 @@ that F-1.16.5's size reading could be separated from a familiarity reading. It c
 carry that role on this model. `cc_functions` — the number of functions in the
 production source — is the measurement:
 
-| Kata | v3 | basic-sol-tdd | basic-sol-tdd-subagent |
+| Kata | inline-tdd-v1 | basic-sol-tdd | basic-sol-tdd-subagent |
 |---|---:|---:|---:|
 | claim-office | 14.2 | 9.8 | 11.6 |
 | game-of-life | 4.2 | 4.2 | 4.4 |
@@ -265,7 +265,7 @@ decomposition, which removes the length metrics too. The floor is a property of 
 kata-model pair, not of the kata alone.
 
 What the sphinx rows still show, and it is consistent with the other two katas: the
-native line refactors (11.6–12.0 applied against 1.6 for v3), predicts perfectly
+native line refactors (11.6–12.0 applied against 1.6 for inline-tdd-v1), predicts perfectly
 (100 % on both native cells, 68 and 76 predictions pooled), and costs 3.6–3.8× the
 baseline for output that is indistinguishable in quality.
 
@@ -279,9 +279,9 @@ claim-office ordering exactly:
 
 | Cell | claim-office | sphinx-score |
 |---|---:|---:|
-| v3-basic-tdd-pi | 100 % | **100 %** |
-| basic-sol-tdd-pi | 100 % | 99 % (4/5 runs at 1.0) |
-| basic-sol-tdd-subagent-pi | 93 % | 96 % (2/5 runs at 1.0) |
+| baseline-inline-tdd-v1-pi | 100 % | **100 %** |
+| exact-sol-v1-pi | 100 % | 99 % (4/5 runs at 1.0) |
+| exact-sol-v1.1-subagent-pi | 93 % | 96 % (2/5 runs at 1.0) |
 
 The subagent arm is last on both novel katas and clean on game-of-life. On sphinx the
 misses are small (0.94 = 15/16 scenarios) rather than the 0.67 collapse seen once on
@@ -295,17 +295,17 @@ the subagent arm.
 
 ## Recommendation
 
-- **claim-office-like work (large, novel spec) on Sol/subscription: `basic-sol-tdd-pi`.**
+- **claim-office-like work (large, novel spec) on Sol/subscription: `exact-sol-v1-pi`.**
   Best or tied-best on every quality metric at 5/5 correctness, with markedly tighter spread
-  than the baseline. It costs 4.0× the wallclock and 6.9× the dollars of v3 — that is the
+  than the baseline. It costs 4.0× the wallclock and 6.9× the dollars of inline-tdd-v1 — that is the
   price of the quality and predictability gap documented in F-1.16.1.
-- **game-of-life-like work (small, training-known) on Sol/subscription: `v3-basic-tdd-pi`.**
+- **game-of-life-like work (small, training-known) on Sol/subscription: `baseline-inline-tdd-v1-pi`.**
   The native line does not beat the floor and costs 3.2× more (F-1.16.2).
-- **sphinx-score-like work (small, flat) on Sol/subscription: `v3-basic-tdd-pi`.** The
+- **sphinx-score-like work (small, flat) on Sol/subscription: `baseline-inline-tdd-v1-pi`.** The
   native line produces indistinguishable code at 3.6× the cost (F-1.16.7). Same call as
   game-of-life, for a different reason: there the floor is a tie on real metrics, here the
   metrics do not resolve at all.
-- **`basic-sol-tdd-subagent-pi`: not recommended on any of the three katas.** No quality
+- **`exact-sol-v1.1-subagent-pi`: not recommended on any of the three katas.** No quality
   advantage over the inline arm anywhere, 1.9–2.7× the wallclock, and it ranks last on
   external correctness on both novel katas (F-1.16.3, F-1.16.4, F-1.16.8).
 - **Do not use `sphinx-score` for workflow comparisons on Sol.** It resolves neither
@@ -326,5 +326,5 @@ the subagent arm.
   overhead"? Both RQs show the inversion, neither locates it. Needs a genuine mid-size
   kata (`claim-office-lite`), subject to the same `cc_functions` pre-check.
 - Does the inline arm's advantage come from the methodology or from the removal of APP?
-  → swap the v-line's APP-based refactor brief into the native line, holding architecture
+  → swap the opus line's APP-based refactor brief into the native line, holding architecture
   constant.

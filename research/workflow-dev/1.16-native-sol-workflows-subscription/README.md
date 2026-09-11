@@ -1,23 +1,23 @@
 ---
 id: RQ-native-sol-workflows-sub
-question: "On the OpenAI subscription route, does a workflow line written natively for Sol (basic-sol-tdd, Predictive TDD) beat structureless TDD (v3) — the floor that no Opus-derived architecture clears on this model?"
+question: "On the OpenAI subscription route, does a workflow line written natively for Sol (basic-sol-tdd, Predictive TDD) beat structureless TDD (inline-tdd-v1) — the floor that no Opus-derived architecture clears on this model?"
 factors:
   workflow_x_prompt:
-    - {workflow: v3-basic-tdd-pi,           prompt: example-mapping}  # floor: TDD without architecture
-    - {workflow: basic-sol-tdd-pi,          prompt: example-mapping}  # native line, refactor inline
-    - {workflow: basic-sol-tdd-subagent-pi, prompt: example-mapping}  # native line, refactor isolated
+    - {workflow: baseline-inline-tdd-v1-pi,           prompt: example-mapping}  # floor: TDD without architecture
+    - {workflow: exact-sol-v1-pi,          prompt: example-mapping}  # native line, refactor inline
+    - {workflow: exact-sol-v1.1-subagent-pi, prompt: example-mapping}  # native line, refactor isolated
   kata_base: [claim-office, game-of-life, sphinx-score]
 controls:
   model: gpt-5-6-sol-codex
 outcomes:
-  # primary: does the native line clear the v3 floor on code quality?
+  # primary: does the native line clear the inline-tdd-v1 floor on code quality?
   - cognitive_max
   - cognitive_avg
   - mccabe_max
   - cc_longest_function
   - smell_total
   - cc_avg_loc_per_function
-  # correctness — gate, not differentiator: v3 already reaches 100 % on both katas
+  # correctness — gate, not differentiator: inline-tdd-v1 already reaches 100 % on both katas
   # on the Requesty route (RQ-architecture-axis-sol-pi). A native cell that drops
   # below that disqualifies itself regardless of its quality numbers.
   - verification_pct
@@ -26,7 +26,7 @@ outcomes:
   # code mass — reported without trophy, see "Metric blind spot" in RQ-1.14:
   # APP has no notion of nesting and rewards one long function
   - code_mass
-  # TDD discipline — n/a on the v3 cell (no phase markers). On the native cells,
+  # TDD discipline — n/a on the inline-tdd-v1 cell (no phase markers). On the native cells,
   # compare predictions_correct_rate ONLY, never predictions_total; see below.
   - cycle_count
   - refactorings_applied
@@ -39,21 +39,21 @@ min_replicates: 5
 status: answered
 ---
 
-# RQ-native-sol-workflows-sub: Does a Native Sol Workflow Clear the v3 Floor?
+# RQ-native-sol-workflows-sub: Does a Native Sol Workflow Clear the inline-tdd-v1 Floor?
 
 ## The question this answers
 
 `RQ-architecture-axis-sol-pi` (workflow-dev/1.14) measured the full architecture axis
-on Sol and found that **no** architecture in this lab's v-line beats structureless TDD.
-On game-of-life v3 wins nearly every quality metric; on claim-office it matches every
-structured cell at 100 % correctness while running 5× faster and 8× cheaper than v6.1
+on Sol and found that **no** architecture in this lab's opus line beats structureless TDD.
+On game-of-life inline-tdd-v1 wins nearly every quality metric; on claim-office it matches every
+structured cell at 100 % correctness while running 5× faster and 8× cheaper than hybrid-v2
 (F-1.6). The RQ had named that outcome in advance as its H4 counter-case: then the
-honest recommendation is v3.
+honest recommendation is inline-tdd-v1.
 
 That result leaves one confound untested. **Every cell in RQ-1.14 descends from the
-same Opus-developed source.** v3 through v6.6 share a lineage, a vocabulary (APP mass,
+same Opus-developed source.** inline-tdd-v1 through hybrid-v6 share a lineage, a vocabulary (APP mass,
 the four-marker contract, the Compilation/Runtime prediction form) and a set of design
-decisions all validated on opus-4-7. "The v-line loses to its own baseline on Sol"
+decisions all validated on opus-4-7. "The opus line loses to its own baseline on Sol"
 supports two readings:
 
 1. Architecture does not pay on this model.
@@ -68,14 +68,14 @@ pi as two workflows that differ **only** in where refactoring runs:
 
 | Cell | Methodology | Refactor |
 |---|---|---|
-| `v3-basic-tdd-pi` | "use TDD", no phase structure | — (floor) |
-| `basic-sol-tdd-pi` | Predictive TDD | inline, main context |
-| `basic-sol-tdd-subagent-pi` | identical | isolated subagent |
+| `baseline-inline-tdd-v1-pi` | "use TDD", no phase structure | — (floor) |
+| `exact-sol-v1-pi` | Predictive TDD | inline, main context |
+| `exact-sol-v1.1-subagent-pi` | identical | isolated subagent |
 
-What the native line changes relative to the v-line, deliberately:
+What the native line changes relative to the opus line, deliberately:
 
 - **No APP mass, no metric-driven end-refactor.** Refactoring is governed by the Four
-  Rules of Simple Design alone. The v-line protects APP as a load-bearing element
+  Rules of Simple Design alone. The opus line protects APP as a load-bearing element
   precisely because the before/after comparison forces *measurable* refactorings; this
   line tests whether that scaffolding earns its place on Sol or is part of what F-1.6
   counts as machinery showing up in the artefact.
@@ -84,17 +84,17 @@ What the native line changes relative to the v-line, deliberately:
 - **Red is behavioral.** A valid Red fails because the active behavior is missing;
   compilation scaffold is a means, not a phase.
 
-The pair is also internally controlled. In the v-line the refactor-isolation contrast
-is confounded — v5.1 → v6.1 changes refactor isolation *and* skill structure at once.
+The pair is also internally controlled. In the opus line the refactor-isolation contrast
+is confounded — single-context-v2 → hybrid-v2 changes refactor isolation *and* skill structure at once.
 Here it is isolated, which speaks to an open point at the end of F-1.6: on Sol the
-v6.1 refactor subagent does not perform the extraction it exists for (inspected runs
-leave a triply-nested loop that the v3 baseline names), while the same subagent does
+hybrid-v2 refactor subagent does not perform the extraction it exists for (inspected runs
+leave a triply-nested loop that the inline-tdd-v1 baseline names), while the same subagent does
 extract on opus-4-7. Whether that survives a different refactor brief is measurable here.
 
 ## `sphinx-score` as the novelty control — added 2026-08-17
 
 The first pass of this RQ ran two katas and produced an inversion: the native line
-clears the v3 floor decisively on claim-office (F-1.16.1) and ties at 3.2× the cost on
+clears the inline-tdd-v1 floor decisively on claim-office (F-1.16.1) and ties at 3.2× the cost on
 game-of-life (F-1.16.2). F-1.16.5 reads that as a size effect — architecture pays where
 the spec exceeds what one context handles well.
 
@@ -131,7 +131,7 @@ stays open.
 ## Measurement limit — complexity metrics floor on sphinx (binding)
 
 `sphinx-score` is structurally flat, and RQ-kata-1.3 F-1.2 measures it precisely: on
-`opus-5-no-thinking × v6.6-lab-split-cc` **`cognitive_max` is exactly 1 in all six runs
+`opus-5-no-thinking × exact-hybrid-v6-lab-split-cc` **`cognitive_max` is exactly 1 in all six runs
 (σ = 0)** and `mccabe_max` exactly 2 (σ = 0). The kata contains no branch depth for these
 metrics to resolve. Across the three katas the separation factors show which metrics
 survive:
@@ -176,12 +176,12 @@ prompt style:
 
 F-1.3.6 shows this is a route effect, not a reasoning effect — switching reasoning on
 for Requesty does not reproduce the profile. Putting `-codex` cells next to RQ-1.14's
-Requesty cells would therefore confound the native-vs-v-line comparison with the route,
+Requesty cells would therefore confound the native-vs-opus line comparison with the route,
 in the same direction the native line is expected to move. So the floor is re-measured
 here on the subscription route rather than borrowed.
 
-**Consequence: `v3-basic-tdd-pi` × `gpt-5-6-sol-codex` has no existing runs** (checked
-2026-08-16) and must be filled as part of this RQ. The RQ-1.14 v3 numbers are not
+**Consequence: `baseline-inline-tdd-v1-pi` × `gpt-5-6-sol-codex` has no existing runs** (checked
+2026-08-16) and must be filled as part of this RQ. The RQ-1.14 inline-tdd-v1 numbers are not
 transferable.
 
 ## Constants of the subscription route — binding
@@ -189,7 +189,7 @@ transferable.
 - **Reasoning is always on and cannot be switched off** (F-1.3.5). The Responses API
   decides server-side; `--thinking off` sets pi's level, not whether it reasons, and a
   verified `reasoning: false` profile still produced 2882 thinking blocks. Reasoning is
-  therefore a constant of this RQ, not a factor, and it is on in every cell including v3.
+  therefore a constant of this RQ, not a factor, and it is on in every cell including inline-tdd-v1.
 - **Throughput is lower than on Requesty** (F-1.3.1: Requesty delivers 1.63× the
   throughput). Cost and duration comparisons inside this RQ are valid; against RQ-1.14
   numbers they are not.
@@ -210,7 +210,7 @@ inside the workflows in a `LAB-ONLY` block so they are visible and reversible on
 2. **Markers P1–P7 added.** The source prescribes no phase markers at all.
 
 These cells therefore measure the source methodology *as adapted*. A difference against
-v3 could in principle come from the adaptation rather than the methodology. The
+inline-tdd-v1 could in principle come from the adaptation rather than the methodology. The
 adaptation is confined to autonomy and output format — but it is not zero, and it is
 the first thing to check should a cell behave anomalously.
 
@@ -229,20 +229,20 @@ A second, unrelated effect was seen in the marker smoke run and is *not* covered
 that exception: in the inline arm 3 of 10 red phases carried a prose-only prediction
 with no `Red Phase Complete:` block. That is a genuine compliance loss, and it is
 structural — the source defines predictions as prose and the two lines are retrofitted,
-unlike the v-line where the form *is* the prediction. If it persists at n=5, the lever
+unlike the opus line where the form *is* the prediction. If it persists at n=5, the lever
 is the verbatim instruction in red position, not more prose. Watch it via
-`predictions_correct_rate` against the RQ-1.14 v-line values (95.8–100 % on Requesty).
+`predictions_correct_rate` against the RQ-1.14 opus line values (95.8–100 % on Requesty).
 
-## Measurement limit — v3 cell
+## Measurement limit — inline-tdd-v1 cell
 
-Inherited unchanged from RQ-1.14: **TDD-discipline metrics are not defined on v3.** It
+Inherited unchanged from RQ-1.14: **TDD-discipline metrics are not defined on inline-tdd-v1.** It
 prescribes no phase markers, so `cycle_count`, `refactorings_applied` and
 `predictions_correct_rate` are reported as **n/a**, never as 0, and carry no trophy in
 those rows. Correctness and code-quality metrics are unaffected — they are measured
 externally from the source tree.
 
 Note that `cycle_count` is in any case not comparable across marker-based and
-inferred paths (MARKERS.md: v3 yields 1–8 where v6.6 yields 7–57 on opus-5 — different
+inferred paths (MARKERS.md: inline-tdd-v1 yields 1–8 where hybrid-v6 yields 7–57 on opus-5 — different
 constructs, not different discipline). It is reported for context, not as a ranking.
 
 ## Metric blind spot — decomposition
@@ -263,28 +263,28 @@ comparison is valid here.
 ## Hypotheses
 
 - **H1 (native line clears the floor).** Both `basic-sol-tdd-*` cells beat
-  `v3-basic-tdd-pi` on `cc_avg_loc_per_function` and `cognitive_max` on at least
+  `baseline-inline-tdd-v1-pi` on `cc_avg_loc_per_function` and `cognitive_max` on at least
   game-of-life, at 100 % `verification_pct`.
   → Reading 2 holds: architecture *can* pay on Sol, and F-1.6 measured a transfer
   failure of the Opus-derived line rather than a property of the model. Workflow
   development for Sol restarts from this line.
-- **H2 (floor holds again).** The native cells land within 1 σ of v3 on quality while
+- **H2 (floor holds again).** The native cells land within 1 σ of inline-tdd-v1 on quality while
   costing more.
-  → Reading 1 holds: the F-1.6 result is about the model, not the lineage. v3 stays
+  → Reading 1 holds: the F-1.6 result is about the model, not the lineage. inline-tdd-v1 stays
   the honest recommendation on Sol and further workflow investment there is hard to
   justify.
 - **H3 (refactor isolation is the differentiator).** The two native cells separate
-  from each other by more than they separate from v3.
+  from each other by more than they separate from inline-tdd-v1.
   → The interesting axis on Sol is refactor isolation, independent of methodology;
-  reconciles with the F-1.6 observation that the v6.1 subagent underperforms on Sol.
+  reconciles with the F-1.6 observation that the hybrid-v2 subagent underperforms on Sol.
 - **H4 (correctness regression).** A native cell drops below 100 % `verification_pct`
   on claim-office.
-  → Disqualifying regardless of quality numbers — v3 already achieves 100 % there on
+  → Disqualifying regardless of quality numbers — inline-tdd-v1 already achieves 100 % there on
   the Requesty route, and the claim-office spec is where Opus-derived workflows have
   historically broken (RQ-1.9, RQ-1.10).
 
 - **H5 (novelty, not size, drives the inversion).** On `sphinx-score` — size twin of
-  game-of-life, novel like claim-office — the native line beats `v3-basic-tdd-pi` on
+  game-of-life, novel like claim-office — the native line beats `baseline-inline-tdd-v1-pi` on
   `cc_avg_loc_per_function` and `cc_longest_function`, i.e. it patterns with claim-office
   rather than with its own size class.
   → F-1.16.5 is wrong as written: architecture pays against unfamiliarity, not against
@@ -308,10 +308,10 @@ models or routes. Only ranking and direction *within this RQ* are evaluated.
    `gpt-5-6-sol-codex` (`batch-plans/basic-sol-tdd-smoke.json`). Wrong prompt style for
    this RQ — they verify marker mechanics only and must not be pooled into any cell.
 3. **One prompt style.** example-mapping, consistent with RQ-1.14 and every previous
-   architecture comparison. The v3 cell inherits RQ-1.14's caveat that its CC
-   counterparts never ran example-mapping, so cross-model statements about the v3 row
+   architecture comparison. The inline-tdd-v1 cell inherits RQ-1.14's caveat that its CC
+   counterparts never ran example-mapping, so cross-model statements about the inline-tdd-v1 row
    confound model and prompt style.
-4. **No continuation overlay on any cell.** v3 has no phase boundaries to stall at; the
+4. **No continuation overlay on any cell.** inline-tdd-v1 has no phase boundaries to stall at; the
    native line carries its own phase-continuation section inside the `LAB-ONLY` block.
    Systematic `completed_within_budget = false` in any cell is read as a harness stall,
    not a workflow effect.
@@ -320,8 +320,8 @@ models or routes. Only ranking and direction *within this RQ* are evaluated.
 6. **The sphinx cells were filled after the first six.** The claim-office and
    game-of-life cells ran 2026-08-16, the sphinx cells 2026-08-17, same route, model,
    workflows and prompt style. Any drift on the subscription route between those dates
-   sits in the sphinx rows. The v3 row is the check: it is the same workflow on all three
-   katas, so a v3 profile on sphinx that is anomalous against its own two earlier rows
+   sits in the sphinx rows. The inline-tdd-v1 row is the check: it is the same workflow on all three
+   katas, so a inline-tdd-v1 profile on sphinx that is anomalous against its own two earlier rows
    points at the route rather than at the kata.
 7. **Novelty is argued, not measured.** "sphinx-score is novel to the model" rests on it
    having been authored in this lab on 2026-08-11 and on claim-office behaving like a
@@ -338,7 +338,7 @@ models or routes. Only ranking and direction *within this RQ* are evaluated.
   game-of-life and controls novelty instead. A genuine mid-size kata
   (`claim-office-lite`, Code Mass between 200 and 750) is still needed, and is worth
   running only if H5's counter-case holds and size survives as the driver.
-- If H3 holds: does the same isolation effect appear when the v-line's refactor agent
+- If H3 holds: does the same isolation effect appear when the opus line's refactor agent
   (APP-based) is swapped into the native line, isolating brief from architecture?
 - Does the prose-prediction compliance loss (see above) scale with kata size — i.e. is
   it worse on claim-office than on game-of-life?

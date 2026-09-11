@@ -265,12 +265,12 @@ all (routing lives in the container's `models.json`, outside the workflow).
 
 ## Keep the harness variants feature-equal
 
-**Goal: all v6.6 variants are identical, as far as the harness allows.**
+**Goal: all hybrid-v6 variants are identical, as far as the harness allows.**
 Differences should come from what a harness *can* do, never from a port
 that lagged behind.
 
-Harness variants are ports, and ports drift. The v6.6 line was assembled
-from different generations — cc from v6.5, the rest from v6.2.x — which
+Harness variants are ports, and ports drift. The hybrid-v6 line was assembled
+from different generations — cc from hybrid-v5, the rest from hybrid-v4.x — which
 initially left the **end-refactor** phase in cc only. That was a defect,
 not a design choice, and was closed on 2026-07-27: all four variants now
 run the final metric-driven pass.

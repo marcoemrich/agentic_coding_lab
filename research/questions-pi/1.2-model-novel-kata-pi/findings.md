@@ -1,6 +1,6 @@
 # RQ-model-novel-pi — Findings
 
-**Setup**: claim-office-example-mapping × v6.2.1-phase-continuation-pi, 18 cells at n=5, `min_replicates` = 5. Primary outcome: `verification_pct` (**Correctness (external)**, 15 external scenarios, 0.0–1.0). All models via pi harness / Requesty.
+**Setup**: claim-office-example-mapping × exact-hybrid-v4.2-phase-continuation-pi, 18 cells at n=5, `min_replicates` = 5. Primary outcome: `verification_pct` (**Correctness (external)**, 15 external scenarios, 0.0–1.0). All models via pi harness / Requesty.
 
 **Coverage caveat (unstable cells)**: two cells do not carry the full replicate weight and are excluded from every trophy and cluster statement below:
 
@@ -13,7 +13,7 @@ Both `minimax-m3` arms appear in the tables because n=5 is reached, but their hi
 
 **Route change caveat (kimi-k3)**: the K3 cell was re-measured on 2026-08-04 on `requesty/sference/kimi-k3` and now completes 5/5 without timeout. The earlier `kimi-k3-nebius` runs — an unstable cell at 1/5 completed — were discarded rather than reused, since with both Requesty routes failing it could not be established which values reflect the model and which the provider. K3 also has **no `-no-thinking` arm**: `--thinking off` provably does not take effect on this route. Details in `README.md` → "Model selection" and "Reasoning state".
 
-**Workflow caveat**: Cells aggregate v6.2-with-why-cleaned-pi and v6.2.1-phase-continuation-pi together (OR match, canonically labeled as v6.2.1). v6.2.1 fixes only the continuation drop at the test-list→red transition (kimi/minimax/qwen aborted there: only `*.spec.ts`, no `cli.ts`) and is considered outcome-neutral. Affected drop runs were replaced by v6.2.1 runs; the remaining cells stay unchanged v6.2 runs.
+**Workflow caveat**: Cells aggregate exact-hybrid-v4-cleaned-pi and exact-hybrid-v4.2-phase-continuation-pi together (OR match, canonically labeled as hybrid-v4.2). hybrid-v4.2 fixes only the continuation drop at the test-list→red transition (kimi/minimax/qwen aborted there: only `*.spec.ts`, no `cli.ts`) and is considered outcome-neutral. Affected drop runs were replaced by hybrid-v4.2 runs; the remaining cells stay unchanged hybrid-v4 runs.
 
 **Reasoning caveat**: `<id>` = native reasoning default, `<id>-no-thinking` = `--thinking off`. The switch demonstrably takes effect for `opus-4-8` and `opus-5-requesty` — both on the Vertex EU route; for the remaining models the arm comparison is a test of controllability itself (see `README.md` → "Reasoning state"). `glm-5-2`, `kimi-k3-sference`, `gpt-5-6-sol`, `gpt-5-6-terra` have only one arm.
 
@@ -75,7 +75,7 @@ The **near-perfect** row is a category of its own rather than the top of the gra
 | `cli_built` | `true` throughout |
 | `tests_total` | 0–1 in 7 runs |
 
-**Interpretation.** `cli_built = true` with `tests_total ≈ 0` is the signature: the scaffolding exists, the TDD loop never starts. `v6.2.1-phase-continuation-pi` was built precisely for this drop — for qwen3 on claim-office **it does not fix it**; the three partial runs (14–18 tests) come from the same workflow as the seven that stall.
+**Interpretation.** `cli_built = true` with `tests_total ≈ 0` is the signature: the scaffolding exists, the TDD loop never starts. `exact-hybrid-v4.2-phase-continuation-pi` was built precisely for this drop — for qwen3 on claim-office **it does not fix it**; the three partial runs (14–18 tests) come from the same workflow as the seven that stall.
 
 Consequences for reading the other tables: the qwen3 values for `code_mass`, `lines_of_code`, `cc_longest_function` and `cycle_count` describe **an unfinished implementation**, not a model style. A `code_mass` of 251–296 is a fragment, not parsimony; a **Complexity Peak** spread of 3 to 78 is the difference between a stub and a half-written function, not an architectural decision. No model ranking may be derived from these cells.
 

@@ -8,7 +8,7 @@ factors:
     - sonnet-4-6-portkey-no-thinking
     - haiku-4-5-portkey-no-thinking
 controls:
-  workflow: v5-exact-single-context
+  workflow: exact-single-context-v1-cc
   kata_base: game-of-life-cli
 outcomes:
   - verification_pct
@@ -62,9 +62,9 @@ Configuration: `experiments/katas/game-of-life-cli-{prose,user-story,example-map
 
 All models run via Portkey (rate-limit-free). Thinking is off throughout so as not to mix the prompt style effect with the thinking effect (see caveat below).
 
-## Why v5 as the Control Workflow?
+## Why single-context-v1 as the Control Workflow?
 
-Consistent with RQ-prompt-correctness: v5-exact-single-context delivers the cleanest signal (no phase handoff, no state loss), so that observed variance is attributable to style and/or model, not to the workflow. For details see RQ-prompt-correctness.
+Consistent with RQ-prompt-correctness: exact-single-context-v1-cc delivers the cleanest signal (no phase handoff, no state loss), so that observed variance is attributable to style and/or model, not to the workflow. For details see RQ-prompt-correctness.
 
 ## Why game-of-life-cli?
 
@@ -83,7 +83,7 @@ The existing GOL katas (`game-of-life-{prose,user-story,example-mapping}`) are l
 ```
 Factor 1:  prompt        — 3 levels (prose, user-story, example-mapping)
 Factor 2:  model         — 3 levels (opus-4-6 / sonnet-4-6 / haiku-4-5, all Portkey, all no-thinking)
-Control:   workflow      — v5-exact-single-context
+Control:   workflow      — exact-single-context-v1-cc
 Control:   kata_base     — game-of-life-cli
 
 Cells:      3 × 3 = 9
@@ -110,7 +110,7 @@ Runs:       27 total
 - **(a) Thinking off**: Findings apply only to the no-thinking mode. With thinking, correctness or quality results could shift — on Opus in particular, RQ-model-quality-v1 shows a clear thinking effect on code quality (cognitive_max −42 %). A separate RQ would be needed for the thinking dimension.
 - **(b) Opus 4.6 via Portkey, not 4.7**: The `*-portkey` variants route Opus 4.6. Findings about `opus-4-6-portkey-no-thinking` are *not* automatically transferable to Opus 4.7 or Direct-API Opus 4.6.
 - **(c) CLI overhead bias**: The `game-of-life-cli-*` kata pins JSON IO + dispatcher in `src/cli.ts`. Code-quality metrics (`code_mass`, `smell_total`, `cc_*`, `mccabe_*`, `cognitive_*`) contain a CLI overhead share that the existing library variant `game-of-life-*` does not have. Cross-kata comparisons between `game-of-life-cli-*` and `game-of-life-*` on code quality are therefore not directly valid. Within RQ-prompt-known-kata (variation only over prompt × model) the bias is constant across all cells and does not disturb the style comparison.
-- **(d) Single workflow point**: v5-exact-single-context as the sole workflow. No workflow generalization — other workflows could produce different style effects.
+- **(d) Single workflow point**: exact-single-context-v1-cc as the sole workflow. No workflow generalization — other workflows could produce different style effects.
 
 ## Findings
 
@@ -119,6 +119,6 @@ See [findings.md](findings.md).
 ## Data Source
 
 All runs in `experiments/runs/` with
-`workflow=v5-exact-single-context`,
+`workflow=exact-single-context-v1-cc`,
 `kata=game-of-life-cli-{prose|user-story|example-mapping}`,
 model ∈ {opus-4-6-portkey-no-thinking, sonnet-4-6-portkey-no-thinking, haiku-4-5-portkey-no-thinking}.

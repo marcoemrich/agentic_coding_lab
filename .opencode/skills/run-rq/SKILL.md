@@ -32,7 +32,7 @@ End-to-end orchestration for advancing a single research question (RQ) in this l
   ```
   On no match → ask the user. On multiple → take the first and inform the user. Pass `"$RQ_DIR"` to all scripts below (they accept any path and write outputs to the dir).
 - Mandatory frontmatter fields: `id, question, factors, controls, outcomes, min_replicates, status`.
-- Methodology constraint: v1/v2 only with `prompt: prose`; v3/v4/v5 with all three styles. If `factors.workflow_x_prompt` exists, no additional `factors.workflow` / `controls.workflow` is allowed.
+- Methodology constraint: `baseline-oneshot-*` / `baseline-iterative-*` only with `prompt: prose`; every other arm with all three styles. If `factors.workflow_x_prompt` exists, no additional `factors.workflow` / `controls.workflow` is allowed.
 - Active katas: `game-of-life`, `mars-rover`, `claim-office`. `controls.kata_base` must be from this set.
 - Model IDs are **lab-variant IDs** (`opus-4-7`, `opus-4-7-no-thinking`, `opus-4-6-portkey`, `opus-4-6-portkey-no-thinking`, `sonnet-4-6`, `sonnet-4-6-no-thinking`, `sonnet-4-6-portkey`, `sonnet-4-6-portkey-no-thinking`, `haiku-4-5`, `haiku-4-5-no-thinking`, `haiku-4-5-portkey`, `haiku-4-5-portkey-no-thinking`). The `-portkey` suffix marks models routed via the Portkey gateway.
 - Aggregation is query-based: ALL runs in `experiments/runs/` matching the selector query count — regardless of which batch produced them.
@@ -51,7 +51,7 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
 3. Parse the frontmatter block (between the first two `---` lines). Check mandatory fields: `id, question, factors, controls, outcomes, min_replicates, status`. Missing fields → abort phase, inform user.
 4. Check methodology constraints:
    - If `factors.workflow_x_prompt` is set: no additional `factors.workflow` and no `controls.workflow` may be set.
-   - In every `workflow_x_prompt` entry: if `workflow ∈ {v1-oneshot, v2-iterative}`, then `prompt == prose` is required.
+   - In every `workflow_x_prompt` entry: if `workflow ∈ {baseline-oneshot-v1-cc, baseline-iterative-v1-cc}`, then `prompt == prose` is required.
    - `controls.kata_base ∈ {game-of-life, mars-rover}`.
    - Model values (in `controls.model` and/or `factors.model`) must appear in the lab-variant table.
 5. Read `findings.md` (needed in phase 6 as the existing baseline).
@@ -156,7 +156,7 @@ status: <status>
    - `$RQ_DIR/summary.md` (per-cell pivots for each `outcome`)
 4. Read `summary.md` in full and summarize to the user — show the per-cell pivot tables individually.
 5. Sanity check: does every cell have ≥ `min_replicates`? If not: warn and offer to jump back to phase 2 (additional runs).
-6. **Plausibility cross-check before phase 6** — if any cell value contradicts a previously-stable finding by a large margin (e.g. a workflow that was 100% green is suddenly 0%), do NOT treat that as a new finding without first running the spot-check from step 1 against that exact cell. A "v4 is suddenly broken on game-of-life" type observation is more often a pipeline regression than a real shift.
+6. **Plausibility cross-check before phase 6** — if any cell value contradicts a previously-stable finding by a large margin (e.g. a workflow that was 100% green is suddenly 0%), do NOT treat that as a new finding without first running the spot-check from step 1 against that exact cell. A "the subagents arm is suddenly broken on game-of-life" type observation is more often a pipeline regression than a real shift.
 
 ---
 
@@ -203,7 +203,7 @@ Exception: **deletions** of existing findings still require explicit user confir
 
 ## Behavior on errors
 
-- **Phase 1 fails**: do not continue; give a clear constraint hint (e.g. "v1-oneshot with prompt=example-mapping violates the methodology constraint in the top-level README, section 'Methodology constraints'").
+- **Phase 1 fails**: do not continue; give a clear constraint hint (e.g. "baseline-oneshot-v1-cc with prompt=example-mapping violates the methodology constraint in the top-level README, section 'Methodology constraints'").
 - **Phase 2/3 scripts with non-zero exit**: show output to the user; do NOT blindly retry.
 - **Phase 4 loses the container**: show `docker ps -a`, then offer resume.
 - **Phase 5 produces an empty `runs.csv`**: check whether `experiments/runs/` actually contains matching runs (selector too narrow?). Inform the user.

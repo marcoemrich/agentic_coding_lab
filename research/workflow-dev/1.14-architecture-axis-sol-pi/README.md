@@ -1,23 +1,23 @@
 ---
 id: RQ-architecture-axis-sol-pi
-question: "Does the TDD architecture axis (v4.1 isolated subagents / v5.1 single context / v6.1 hybrid) rank the same way on gpt-5-6-sol as it does on opus-4-7 — and does any architecture, including the current v6.6 generation, beat structureless TDD (v3) on Sol?"
+question: "Does the TDD architecture axis (subagents-v2 isolated subagents / single-context-v2 single context / hybrid-v2 hybrid) rank the same way on gpt-5-6-sol as it does on opus-4-7 — and does any architecture, including the current hybrid-v6 generation, beat structureless TDD (inline-tdd-v1) on Sol?"
 factors:
   workflow_x_prompt:
-    - {workflow: v3-basic-tdd-pi,                prompt: example-mapping}  # baseline: TDD without architecture
-    - {workflow: v4.1-testlist-scope-fix-pi,     prompt: example-mapping}  # all phases as isolated subagents
-    - {workflow: v5.1-testlist-scope-fix-pi,     prompt: example-mapping}  # everything in one shared context
-    - {workflow: v6.1-hybrid-testlist-scope-fix-pi, prompt: example-mapping}  # hybrid: red/green shared, refactor isolated
-    - {workflow: v6.6-lab-split-pi,              prompt: example-mapping}  # current generation: v6.1 + end-refactor phase
+    - {workflow: baseline-inline-tdd-v1-pi,                prompt: example-mapping}  # baseline: TDD without architecture
+    - {workflow: exact-subagents-v2-testlist-fix-pi,     prompt: example-mapping}  # all phases as isolated subagents
+    - {workflow: exact-single-context-v2-testlist-fix-pi,     prompt: example-mapping}  # everything in one shared context
+    - {workflow: exact-hybrid-v2-testlist-fix-pi, prompt: example-mapping}  # hybrid: red/green shared, refactor isolated
+    - {workflow: exact-hybrid-v6-lab-split-pi,              prompt: example-mapping}  # current generation: hybrid-v2 + end-refactor phase
   kata_base: [claim-office, game-of-life]
 controls:
   model: gpt-5-6-sol
 outcomes:
-  # primary: correctness — carries the v4<->v6 swap (only visible on claim-office)
+  # primary: correctness — carries the subagents-v1<->hybrid-v1 swap (only visible on claim-office)
   - verification_pct
   - tests_passing
   - completed_within_budget
   # code quality — measured on BOTH katas: the architecture axis inverts between them
-  # (v4.1 rank 1 on game-of-life, rank 8 on claim-office; F-tdd-quality.9)
+  # (subagents-v2 rank 1 on game-of-life, rank 8 on claim-office; F-tdd-quality.9)
   - cognitive_max
   - cognitive_avg
   - mccabe_max
@@ -31,7 +31,7 @@ outcomes:
   # See "Metric blind spot" below.
   - cc_avg_loc_per_function
   # TDD discipline — does Sol keep the mechanics alive in each architecture?
-  # NOT measurable on the v3 baseline cell (it prescribes no phase markers) —
+  # NOT measurable on the inline-tdd-v1 baseline cell (it prescribes no phase markers) —
   # see "Measurement limit" below. Read that row as n/a, not as zero.
   - cycle_count
   - refactorings_applied
@@ -71,86 +71,86 @@ axis, measured on claim-office (`verification_pct`, *exact* generation):
 
 | Workflow | opus-4-7 (n) | opus-4-6 (n) |
 |---|---:|---:|
-| v4-exact-subagents | 0.67 (10) | **0.93** (5) |
-| v5-exact-single-context | 0.97 (9) | 0.87 (5) |
-| v6-hybrid | **1.00** (5) | 0.68 (15) |
+| exact-subagents-v1-cc | 0.67 (10) | **0.93** (5) |
+| exact-single-context-v1-cc | 0.97 (9) | 0.87 (5) |
+| exact-hybrid-v1-cc | **1.00** (5) | 0.68 (15) |
 
-The winner changes with the model. v6 is the opus-4-7 optimum and unstable on opus-4-6;
-v4 is exactly the other way round. The mechanism (F-workflow-model.2): v6 delegates
+The winner changes with the model. hybrid-v1 is the opus-4-7 optimum and unstable on opus-4-6;
+subagents-v1 is exactly the other way round. The mechanism (F-workflow-model.2): hybrid-v1 delegates
 orchestration to the model via skill invocation in a shared context — opus-4-7 handles it,
 opus-4-6 loses the claim half of the spec in ~40 % of runs.
 
 **This makes the architecture axis a gate, not just one more comparison.** The whole
-v6.1→v6.5 reduction chain is a refinement *of v6*. If Sol does not prefer v6, the reduction
+hybrid-v2→hybrid-v5 reduction chain is a refinement *of hybrid-v1*. If Sol does not prefer hybrid-v1, the reduction
 chain is moot for Sol, and retesting it (planned as the follow-up RQ-B) would measure
 refinements of an architecture that does not suit the model.
 
-## Baseline cell (v3)
+## Baseline cell (inline-tdd-v1)
 
 The three architecture cells only compare structured TDD workflows against each
 other. That answers "which architecture ranks best" but not "does any of this beat
 plain TDD without an architecture" — a question the Sol data makes pressing, because
-v5.1 reaches perfect correctness at ~1/5 the wallclock of v6.1. Without a floor, a
-finding like "v6.1 leads on `cognitive_max`" has no scale.
+single-context-v2 reaches perfect correctness at ~1/5 the wallclock of hybrid-v2. Without a floor, a
+finding like "hybrid-v2 leads on `cognitive_max`" has no scale.
 
 | Cell | What it prescribes | Isolates |
 |---|---|---|
-| `v3-basic-tdd-pi` | "use TDD", no phase structure, no agents, no skills | the cost and benefit of *architecture* on top of TDD |
+| `baseline-inline-tdd-v1-pi` | "use TDD", no phase structure, no agents, no skills | the cost and benefit of *architecture* on top of TDD |
 
-The gap v3 → {v4.1, v5.1, v6.1, v6.6} is the actual return on the whole workflow line.
+The gap inline-tdd-v1 → {subagents-v2, single-context-v2, hybrid-v2, hybrid-v6} is the actual return on the whole workflow line.
 It has not been measured on Sol.
 
 ### Why there is no no-TDD baseline
 
-A `v1-oneshot-pi` cell was run (n=5 per kata) and **discarded**. Its purpose was to
+A `baseline-oneshot-v1-pi` cell was run (n=5 per kata) and **discarded**. Its purpose was to
 isolate the return on TDD itself, and it cannot: every kata prompt — prose,
 user-story and example-mapping alike — lists `src/<kata>.spec.ts - Tests` among its
-deliverables. The v1 workflow says "Do NOT use TDD", which correctly means "not
+deliverables. The oneshot-v1 workflow says "Do NOT use TDD", which correctly means "not
 test-first", not "no tests". The runs duly produced test suites: 9.6 tests / 65 test
-LoC on game-of-life, *more* than v6.1's 9.0 / 44.
+LoC on game-of-life, *more* than hybrid-v2's 9.0 / 44.
 
 The cell therefore measured "tests written after the fact" rather than "no TDD", and
-the v1 → v3 gap would have been the return on test-*ordering*, not on testing. The
+the oneshot-v1 → inline-tdd-v1 gap would have been the return on test-*ordering*, not on testing. The
 10 runs were deleted rather than archived — they answer no question this RQ asks.
 
 Measuring the no-TDD case properly needs a kata-prompt variant that does not request
 a spec file — which makes the prompt an uncontrolled factor against the other cells.
 That is a separate RQ, not a cell in this one.
 
-**`v3-basic-tdd-pi` was created for this RQ** as a direct translation of the CC
-original (`v3-basic-tdd/.claude/rules/experiment-mode.md`), following the
-`v1-oneshot-pi` conventions: explicit `prompt.md` reference and the `src/cli.ts`
-hint that claim-office needs. It carries **no continuation overlay** — v3 has no
+**`baseline-inline-tdd-v1-pi` was created for this RQ** as a direct translation of the CC
+original (`baseline-inline-tdd-v1-cc/.claude/rules/experiment-mode.md`), following the
+`baseline-oneshot-v1-pi` conventions: explicit `prompt.md` reference and the `src/cli.ts`
+hint that claim-office needs. It carries **no continuation overlay** — inline-tdd-v1 has no
 phase boundaries with skill switches, which is where Sol stalls. Should it stall
 anyway, that is itself a finding and is visible in `completed_within_budget`; it is
 not silently repaired.
 
 ### Measurement limit — binding
 
-**TDD-discipline metrics are not defined on the v3 baseline cell.** v3 prescribes
+**TDD-discipline metrics are not defined on the inline-tdd-v1 baseline cell.** inline-tdd-v1 prescribes
 no phase markers, so P1–P6 never fire. Verified against the 22 existing
-CC v3 runs: `cycle_count` 1 (parser fallback), `refactorings_applied` 0,
-`predictions_total` 0 — in *every* run, across five models. v3 says "do TDD" but
+CC inline-tdd-v1 runs: `cycle_count` 1 (parser fallback), `refactorings_applied` 0,
+`predictions_total` 0 — in *every* run, across five models. inline-tdd-v1 says "do TDD" but
 never says "write `## Red`".
 
 Consequences:
 
 - `cycle_count`, `refactorings_applied` and `predictions_correct_rate` are reported
-  as **n/a** for v3, never as 0, and they carry no trophy in those rows. A 0
+  as **n/a** for inline-tdd-v1, never as 0, and they carry no trophy in those rows. A 0
   here means "not instrumented", not "did not refactor".
-- Whether v3 did TDD is not *automatically* measurable, but it **is** observable by
+- Whether inline-tdd-v1 did TDD is not *automatically* measurable, but it **is** observable by
   hand. Reconstructing the tool-call order from `transcript-pi.jsonl` shows the
-  inspected Sol/v3 run doing textbook TDD: spec with one test → failing run →
+  inspected Sol/inline-tdd-v1 run doing textbook TDD: spec with one test → failing run →
   `return []` → implementation → 6 cycles → an Extract-Method refactoring after a
-  green test. Opus/v3, by the same reconstruction, does not (F-1.10).
+  green test. Opus/inline-tdd-v1, by the same reconstruction, does not (F-1.10).
   `test_loc` and `mutation_score` remain the external proxies where the question
   matters at scale.
 - Correctness and code-quality metrics are **unaffected** — measured externally
   from the source tree, not from markers.
 
-Deliberately not fixed by adding markers to v3: that would make it a different
+Deliberately not fixed by adding markers to inline-tdd-v1: that would make it a different
 workflow (a mini-v4) and destroy comparability with the 22 CC runs that define
-what "v3" means in this lab.
+what "inline-tdd-v1" means in this lab.
 
 ## Metric blind spot — decomposition (binding)
 
@@ -177,7 +177,7 @@ Two independent causes:
 
 Consequence: a single 30-line function built from callback chains scores *better* on all
 three than the same logic split into named domain functions. Observed in this RQ —
-Sol/v6.1/claim-office averages 4.6 functions per run, and the one run inspected by hand
+Sol/hybrid-v2/claim-office averages 4.6 functions per run, and the one run inspected by hand
 scores `cognitive_max` 4 against 6 for a 28-function opus-4-7 implementation of the same
 kata, while carrying 14 smells against 1.
 
@@ -196,7 +196,7 @@ Two limits, stated so they are not rediscovered later:
 
 ## Two open gaps this RQ closes
 
-1. **The `.1` generation has never run cross-model.** v4.1/v5.1/v6.1 exist exclusively on
+1. **The `.1` generation has never run cross-model.** subagents-v2/single-context-v2/hybrid-v2 exist exclusively on
    opus-4-7. The swap finding above comes from the older *exact* generation. This RQ is the
    first cross-model replication of the current generation at all — valuable independently
    of Sol.
@@ -212,45 +212,45 @@ and `RQ-tdd-quality` (`questions-claude/4.1-tdd-effect-code-quality/`).
 
 | Workflow | n | verification_pct | cognitive_max | smell_total | code_mass |
 |---|---:|---:|---:|---:|---:|
-| v4.1 | 5 | 0.96 | 26.8 ± 24.1 (max 68) | 13.2 | 621.6 |
-| v5.1 | 6 | **1.00** | 14.8 ± 4.2 | 6.8 | 692.7 |
-| v6.1 | 3 | **1.00** | **4.3 ± 1.5** | **1.3** | 920.7 |
+| subagents-v2 | 5 | 0.96 | 26.8 ± 24.1 (max 68) | 13.2 | 621.6 |
+| single-context-v2 | 6 | **1.00** | 14.8 ± 4.2 | 6.8 | 692.7 |
+| hybrid-v2 | 3 | **1.00** | **4.3 ± 1.5** | **1.3** | 920.7 |
 
 **game-of-life-example-mapping:**
 
 | Workflow | n | verification_pct | cognitive_max | smell_total | code_mass |
 |---|---:|---:|---:|---:|---:|
-| v4.1 | 5 | 1.00 | **6.4** | **2.4** | 156.6 |
-| v5.1 | 5 | 1.00 | 17.6 | 4.8 | **154.0** |
-| v6.1 | 10 | 1.00 | 6.5 | **2.4** | 153.7 |
+| subagents-v2 | 5 | 1.00 | **6.4** | **2.4** | 156.6 |
+| single-context-v2 | 5 | 1.00 | 17.6 | 4.8 | **154.0** |
+| hybrid-v2 | 10 | 1.00 | 6.5 | **2.4** | 153.7 |
 
 Two properties of this baseline drive the design:
 
 - On game-of-life `verification_pct` is **1.00 for all three** — the correctness axis does
   not differentiate there. The swap is visible only on claim-office.
-- The **code-quality ranking inverts between the katas**: v4.1 is rank 1 on game-of-life
+- The **code-quality ranking inverts between the katas**: subagents-v2 is rank 1 on game-of-life
   (`cognitive_max` 6.4) and collapses on claim-office (26.8, σ 24, max 68) — F-tdd-quality.9.
-  v6.1 is the only variant in the top 2 on both. That inversion is precisely the current
-  justification for the v6 default, so `cognitive_max` is measured on **both** katas.
+  hybrid-v2 is the only variant in the top 2 on both. That inversion is precisely the current
+  justification for the hybrid-v1 default, so `cognitive_max` is measured on **both** katas.
 
 ## Hypotheses
 
-- **H1 (v6 holds).** Sol behaves like opus-4-7: v6.1 leads or ties on claim-office
+- **H1 (hybrid-v1 holds).** Sol behaves like opus-4-7: hybrid-v2 leads or ties on claim-office
   `verification_pct`, and lands top-2 on `cognitive_max` on both katas.
   → The reduction chain is a valid foundation for Sol; RQ-B (reduction retest) proceeds.
-- **H2 (Sol lands on the opus-4-6 side).** v6.1 degrades on claim-office (bimodal
-  `verification_pct`, spec halves dropped), while v4.1 stays stable.
+- **H2 (Sol lands on the opus-4-6 side).** hybrid-v2 degrades on claim-office (bimodal
+  `verification_pct`, spec halves dropped), while subagents-v2 stays stable.
   → The reduction chain does not transfer; workflow development for Sol must restart from
-  the v4 branch. RQ-B is cancelled in its planned form.
-- **H3 (third pattern).** Sol prefers v5.1, or the ranking is flat within 1 σ.
+  the subagents-v1 branch. RQ-B is cancelled in its planned form.
+- **H3 (third pattern).** Sol prefers single-context-v2, or the ranking is flat within 1 σ.
   → No architecture recommendation transfers; the axis must be re-derived for Sol.
-- **H4 (baseline floor).** The structured cells beat `v3-basic-tdd-pi` on
-  `cognitive_max` and `smell_total`, and v3 beats `v1-oneshot-pi`.
+- **H4 (baseline floor).** The structured cells beat `baseline-inline-tdd-v1-pi` on
+  `cognitive_max` and `smell_total`, and inline-tdd-v1 beats `baseline-oneshot-v1-pi`.
   → The workflow line earns its cost on Sol.
-  **Counter-case worth naming up front:** if v3 lands within 1 σ of the structured
-  cells on quality while running at v5.1 speed or better, the whole architecture
-  axis is a wash on Sol, and the honest recommendation is v3 — regardless of how
-  v4.1/v5.1/v6.1 rank among themselves. This is the one outcome that would make
+  **Counter-case worth naming up front:** if inline-tdd-v1 lands within 1 σ of the structured
+  cells on quality while running at single-context-v2 speed or better, the whole architecture
+  axis is a wash on Sol, and the honest recommendation is inline-tdd-v1 — regardless of how
+  subagents-v2/single-context-v2/hybrid-v2 rank among themselves. This is the one outcome that would make
   RQ-B pointless even though H1 held.
 
 Reading rule for the correctness/quality split: since Sol carries systematically higher
@@ -261,69 +261,69 @@ F-1.3), **absolute thresholds are not comparable across models.** Only the *rank
 ## Caveats (binding)
 
 1. **The continuation overlay is not identical across cells.** All three pi ports need the
-   anti-stall content from `v6.2.1-phase-continuation-pi`, otherwise Sol ends its turn at
+   anti-stall content from `exact-hybrid-v4.2-phase-continuation-pi`, otherwise Sol ends its turn at
    phase boundaries and the run measures harness stalls instead of workflow effects. But that
-   overlay was written for the v6 skill architecture ("after the test list → read
-   `red/SKILL.md`"). v4.1 has no skills — every phase is a subagent — so the overlay must be
+   overlay was written for the hybrid-v1 skill architecture ("after the test list → read
+   `red/SKILL.md`"). subagents-v2 has no skills — every phase is a subagent — so the overlay must be
    **rewritten in substance** there, not copied. The three cells therefore differ slightly in
    an axis that is not the object of study. Whether a residual stall difference remains is
    checked via `cycle_count` and `completed_within_budget`; a cell with systematic stalls is
    not interpreted as a workflow effect.
 2. **Port equivalence is an assumption, not a measurement.** The `.pi` ports are structural
-   translations of the `.claude` originals. Only `v6.2-with-why-cleaned-pi` has an
-   established track record; the v4.1/v5.1/v6.1 ports are new. Any port bug shows up as a
+   translations of the `.claude` originals. Only `exact-hybrid-v4-cleaned-pi` has an
+   established track record; the subagents-v2/single-context-v2/hybrid-v2 ports are new. Any port bug shows up as a
    workflow effect. Mitigation: verify the four markers from `MARKERS.md` per port before the
    batch, plus a smoke run per cell.
 3. **The reference generation is thinly populated.** The opus-4-7 `.1` cells run at n=3–10
-   (v6.1/claim-office at n=3). Rank statements against that baseline carry corresponding
+   (hybrid-v2/claim-office at n=3). Rank statements against that baseline carry corresponding
    uncertainty.
 4. **Only one prompt style.** example-mapping, consistent with all previous architecture
    comparisons. prose/user-story were never run against this axis.
 5. **The baselines run one prompt style their CC counterparts never saw.** All 22 CC
-   v3 runs and all 15 CC v1 runs used prose or user-story — example-mapping was
-   introduced with the v3+ generation and never applied to these two. Holding the
+   inline-tdd-v1 runs and all 15 CC oneshot-v1 runs used prose or user-story — example-mapping was
+   introduced with the inline-tdd-v1+ generation and never applied to these two. Holding the
    prompt style constant across all five cells is right for *this* RQ, but it means
-   the v1/v3 rows are not directly comparable to the existing CC v1/v3 data. Any
+   the oneshot-v1/inline-tdd-v1 rows are not directly comparable to the existing CC oneshot-v1/inline-tdd-v1 data. Any
    cross-model statement about the baselines confounds model and prompt style.
-6. **The two baselines are unequal in continuation risk.** v4.1/v5.1/v6.1 carry the
-   anti-stall overlay, v1/v3 do not (they have no phase boundaries to stall at).
+6. **The two baselines are unequal in continuation risk.** subagents-v2/single-context-v2/hybrid-v2 carry the
+   anti-stall overlay, oneshot-v1/inline-tdd-v1 do not (they have no phase boundaries to stall at).
    If a baseline nonetheless shows systematic `completed_within_budget = false`,
    that row measures a harness stall and is not read as a workflow effect.
 
 ## Sequencing
 
-This RQ is the **gate for RQ-B** (retest of the reduction chain v6.2 / v6.3 /
-v6.2.1-refactor-vocab / v6.5 on Sol). RQ-B is only planned out once H1 is confirmed.
+This RQ is the **gate for RQ-B** (retest of the reduction chain hybrid-v4 / hybrid-v4.3 /
+exact-hybrid-v4.1-refactor-vocab-cc / hybrid-v5 on Sol). RQ-B is only planned out once H1 is confirmed.
 
 ### Follow-up on the H4 counter-case: `RQ-native-sol-workflows-sub`
 
 H4's counter-case occurred — F-1.6 finds that no architecture in this line clears the
-v3 floor on Sol. That result carries a confound this RQ cannot resolve: **every cell
+inline-tdd-v1 floor on Sol. That result carries a confound this RQ cannot resolve: **every cell
 here descends from the same Opus-developed source**, sharing a lineage, a vocabulary
 (APP mass, the four-marker contract, the prediction form) and design decisions all
-validated on opus-4-7. "The v-line loses to its own baseline" therefore supports both
+validated on opus-4-7. "The opus line loses to its own baseline" therefore supports both
 "architecture does not pay on Sol" and "*this* architecture does not transfer".
 
 `workflow-dev/1.16-native-sol-workflows-subscription/` tests the second reading with a
 line written independently of the v-chain (`sol_tdd` Predictive TDD, Four Rules without
-APP), against a re-measured v3 floor. It also isolates refactor-inline vs.
-refactor-subagent — a contrast confounded here, since v5.1 → v6.1 changes refactor
+APP), against a re-measured inline-tdd-v1 floor. It also isolates refactor-inline vs.
+refactor-subagent — a contrast confounded here, since single-context-v2 → hybrid-v2 changes refactor
 isolation and skill structure at once — which bears on the observation at the end of
-F-1.6 that the v6.1 refactor subagent does not extract on Sol while it does on opus-4-7.
+F-1.6 that the hybrid-v2 refactor subagent does not extract on Sol while it does on opus-4-7.
 
 **It is a separate RQ, not extra cells here, because it runs on the OpenAI subscription
 route** (`gpt-5-6-sol-codex`) rather than Requesty. `RQ-route-effect-pi` F-1.3.6
 establishes a real route effect on exactly these quality metrics (Complexity Peak 4.0
 vs 8.0/9.0, Smell Total 0.0 vs 2.0) and shows it is not a reasoning effect. Mixing the
 routes would confound the lineage comparison with the transport, in the same direction
-the native line is expected to move. That RQ re-measures its own v3 floor accordingly.
+the native line is expected to move. That RQ re-measures its own inline-tdd-v1 floor accordingly.
 
 ## Open questions
 
 - If H1 holds: does the reduction chain also transfer, or does the Bundle/kata asymmetry
-  (v6.3 and v6.2.1-refactor-vocab collapse on claim-office, not on game-of-life) behave
+  (hybrid-v4.3 and exact-hybrid-v4.1-refactor-vocab-cc collapse on claim-office, not on game-of-life) behave
   differently on Sol? → RQ-B.
-- Does the kata inversion of v4.1 (rank 1 GoL / rank 8 claim-office) replicate on Sol, or is
+- Does the kata inversion of subagents-v2 (rank 1 GoL / rank 8 claim-office) replicate on Sol, or is
   it an Opus-specific artefact?
 - Is the swap also visible on a training-known kata — i.e. does game-of-life differentiate on
   Sol where it stayed flat on Opus?

@@ -1,10 +1,10 @@
 # RQ-emoji-v6.1 — Findings
 
-_Haben Decoration-Emojis (✅ ❌ 🔴 🟢 🔄 📋 🚨 ⚠️) in den Workflow-Prompts auf v6.1-Basis einen messbaren Effekt auf Code-Qualitaet oder TDD-Disziplin?_
+_Haben Decoration-Emojis (✅ ❌ 🔴 🟢 🔄 📋 🚨 ⚠️) in den Workflow-Prompts auf hybrid-v2-Basis einen messbaren Effekt auf Code-Qualitaet oder TDD-Disziplin?_
 
 ## Übersicht (Primär-Outcome Code-Qualität — kleiner = besser)
 
-| Outcome | v6.1-hybrid (emoji) | v6.1-no-emoji |
+| Outcome | v6.1-hybrid (emoji) | exact-hybrid-v2.2-no-emoji-cc |
 |---|---:|---:|
 | `code_mass` (APP) | **147.6** 🏆 | 156.8 |
 | `smell_total` | 2.6 | **2.0** 🏆 |
@@ -18,9 +18,9 @@ Trophäen splitten 3:2 zwischen den Workflows, jede einzelne Differenz < 1σ der
 
 ## F-1.1 — Decoration-Emojis: kein Code-Qualitäts-Effekt, leichte Disziplin-Verschiebung
 
-**Aussage:** Das Entfernen aller 95 Decoration-Emojis (✅ ❌ 🚨 🔴 🟢 🔄 📋 ⚠️) aus den Skill-Commands, dem Refactor-Subagent und `rules/tdd.md` auf v6.1-Basis verschlechtert weder Korrektheit (beide 100% **Korrektheit (außen)** und **Korrektheit (innen)**) noch Code-Qualität. Es verschiebt aber das TDD-Verhalten: **no-emoji refactoriert häufiger** und implementiert **seltener vorab** (weniger `tests_passed_immediately`) — dieselbe Richtung wie in [RQ-pep-v6.1](../1.1-pep-effect-v6.1/findings.md) F-1.1.
+**Aussage:** Das Entfernen aller 95 Decoration-Emojis (✅ ❌ 🚨 🔴 🟢 🔄 📋 ⚠️) aus den Skill-Commands, dem Refactor-Subagent und `rules/tdd.md` auf hybrid-v2-Basis verschlechtert weder Korrektheit (beide 100% **Korrektheit (außen)** und **Korrektheit (innen)**) noch Code-Qualität. Es verschiebt aber das TDD-Verhalten: **no-emoji refactoriert häufiger** und implementiert **seltener vorab** (weniger `tests_passed_immediately`) — dieselbe Richtung wie in [RQ-pep-v6.1](../1.1-pep-effect-v6.1/findings.md) F-1.1.
 
-| Metrik (Richtung) | v6.1-hybrid (emoji) | v6.1-no-emoji | Δ |
+| Metrik (Richtung) | v6.1-hybrid (emoji) | exact-hybrid-v2.2-no-emoji-cc | Δ |
 |---|---:|---:|---|
 | `refactorings_applied` (höher = aktiver) | 4.2 (std 2.28) | **5.4** 🏆 (std 2.88) | +29% |
 | `tests_passed_immediately` (kleiner = disziplinierter) | 4.8 (std 2.95) | **2.2** 🏆 (std 3.03) | −54% |
@@ -35,9 +35,9 @@ Trophäen splitten 3:2 zwischen den Workflows, jede einzelne Differenz < 1σ der
 
 ## F-1.2 — Decoration-Emojis sparen keine Tokens
 
-**Aussage:** Entgegen der Erwartung spart `v6.1-no-emoji` keine Tokens — beide Workflows liegen im Bereich 7–8 M Tokens, der no-emoji-Trend ist sogar leicht teurer.
+**Aussage:** Entgegen der Erwartung spart `exact-hybrid-v2.2-no-emoji-cc` keine Tokens — beide Workflows liegen im Bereich 7–8 M Tokens, der no-emoji-Trend ist sogar leicht teurer.
 
-| Metrik (kleiner = besser) | v6.1-hybrid (emoji) | v6.1-no-emoji |
+| Metrik (kleiner = besser) | v6.1-hybrid (emoji) | exact-hybrid-v2.2-no-emoji-cc |
 |---|---:|---:|
 | `total_tokens` (Mittel) | **7.17 M** 🏆 | 7.78 M |
 | `duration_seconds` (Mittel) | **597 s** 🏆 | 669 s |
@@ -54,7 +54,7 @@ Trophäen splitten 3:2 zwischen den Workflows, jede einzelne Differenz < 1σ der
 | **H2** Emojis helfen messbar | nicht bestätigt | kein konsistenter Richtungs-Trend |
 | **H3** Emojis sparen Tokens ≥ 5 % | widerlegt | +8.5 % Tokens, +12 % Wallclock in no-emoji |
 | **H4** Prediction-Disziplin-Effekt durch ✅/❌ | nicht bestätigt | Δ 1.1 pp trivial; Hyphen-Parser funktioniert |
-| **H5** Replikation der alten RQ-emoji (v6-Linie) | bestätigt | H1-Lesart konsistent; Korrektheit beider Workflows 100/100 |
+| **H5** Replikation der alten RQ-emoji (hybrid-v1-Linie) | bestätigt | H1-Lesart konsistent; Korrektheit beider Workflows 100/100 |
 
-**Konsequenz für MARKERS-Klassifikation:** Emoji-Header (`🔴`/`🟢`/`🔄`/`📋`) und ✅/❌-Status-Marker bleiben als **decorative content (safe to drop)** klassifiziert. Die CLAUDE.md-Regel "Only use emojis if the user explicitly requests it" kann ohne Code-Qualitäts- oder Korrektheits-Schaden auf die Workflow-Files angewendet werden — `v6.1-no-emoji` ist als Reduktion freigegeben.
+**Konsequenz für MARKERS-Klassifikation:** Emoji-Header (`🔴`/`🟢`/`🔄`/`📋`) und ✅/❌-Status-Marker bleiben als **decorative content (safe to drop)** klassifiziert. Die CLAUDE.md-Regel "Only use emojis if the user explicitly requests it" kann ohne Code-Qualitäts- oder Korrektheits-Schaden auf die Workflow-Files angewendet werden — `exact-hybrid-v2.2-no-emoji-cc` ist als Reduktion freigegeben.
 wsa

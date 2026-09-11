@@ -40,7 +40,7 @@ Switch the level by editing one line in the HITL file.
 
 ## Tested parameters
 
-This snapshot derives from `v6.6-lab-split-cc`. The recommendation
+This snapshot derives from `exact-hybrid-v6-lab-split-cc`. The recommendation
 for that workflow comes from
 `research/workflow-dev/workflow-construction.md` in the upstream lab repo
 (`agentic_coding_lab_project`). Refer there for the validating
@@ -57,7 +57,7 @@ variants on Opus 4.x.
 
 ## Original name and lineage
 
-Source workflow: `v6.6-lab-split-cc` from
+Source workflow: `exact-hybrid-v6-lab-split-cc` from
 `agentic_coding_lab_project/experiments/workflows/`.
 
 For the full lineage and the empirical findings that promoted this workflow

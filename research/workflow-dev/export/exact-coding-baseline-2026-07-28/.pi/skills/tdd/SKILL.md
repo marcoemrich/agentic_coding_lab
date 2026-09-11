@@ -3,7 +3,7 @@ name: tdd
 description: Strict Test-Driven Development workflow (Red-Green-Refactor) with configurable human-in-the-loop checkpoints. Invoke when the user explicitly asks to use TDD, do a TDD kata, or follow the Red-Green-Refactor discipline. Do NOT invoke for general coding tasks where the user has not asked for TDD.
 ---
 
-# TDD Rules -- Hybrid (v6.6, pi, exact-coding baseline)
+# TDD Rules -- Hybrid (hybrid-v6, pi, exact-coding baseline)
 
 ## CRITICAL: Mandatory Output Format
 
@@ -68,7 +68,7 @@ Test already passes -- no new failure to fix. Skipping green/refactor.
 ## Overview
 
 This project follows strict Test-Driven Development practices using the Red-Green-Refactor cycle.
-v6 keeps red and green in a shared context so the predictions, error messages, and minimal
+hybrid-v1 keeps red and green in a shared context so the predictions, error messages, and minimal
 implementations stay coherent -- and isolates refactoring so the model evaluates the resulting
 code on its own merits.
 

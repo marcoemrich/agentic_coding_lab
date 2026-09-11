@@ -15,7 +15,7 @@ The container starts pi with `PI_CODING_AGENT_DIR=/home/experimenter/.pi/agent` 
 The `subagent` extension is **no longer global**. It is now workflow-local, vendored inside the pi workflow that needs it:
 
 ```
-experiments/workflows/v6.2-with-why-cleaned-pi/.pi/extensions/subagent/{index.ts,agents.ts,README.md}
+experiments/workflows/exact-coding/opus/exact-hybrid-v4-cleaned-pi/.pi/extensions/subagent/{index.ts,agents.ts,README.md}
 ```
 
 pi's extension loader searches `cwd/.pi/extensions/` before the global `agent/extensions/`, so the workflow copy is the single source of truth — the workflow is self-contained and carries its own `subagent` tool. There is no global fallback.
@@ -23,7 +23,7 @@ pi's extension loader searches `cwd/.pi/extensions/` before the global `agent/ex
 If the extension diverges from upstream, refresh the workflow copy:
 ```
 cp ~/.pi/agent/extensions/subagent/{index.ts,agents.ts,README.md} \
-   experiments/workflows/v6.2-with-why-cleaned-pi/.pi/extensions/subagent/
+   experiments/workflows/exact-coding/opus/exact-hybrid-v4-cleaned-pi/.pi/extensions/subagent/
 ```
 
 ## Agent dirs are mounted read-only (hardened 2026-08-05)
@@ -49,7 +49,7 @@ configuration of **every subsequent pi run**. The run-local copy
 only path an agent could reach; the global one was writable too.
 
 **This has happened.** In run
-`2026-08-05_00-01-18_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_qwen3-235b`
+`2026-08-05_00-01-18_game-of-life-example-mapping_exact-hybrid-v4.2-phase-continuation-pi_qwen3-235b`
 (exit `ok`, `tests_passing: false`) the model wrote `.pi/agents/refactor.js` 789 times
 and `refactor.md` 269 times. It replaced the refactor instruction with a
 "Current Implementation (Mock)" section declaring that no refactoring is possible,

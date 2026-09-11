@@ -5,7 +5,7 @@
 Provider-seitigen Fix wurde sie am 2026-08-04 auf `requesty/sference/kimi-k3` neu befüllt
 (5/5 `ok`). Dieser Report ordnet das Ergebnis gegen das Feld ein.
 
-**Datenbasis:** `game-of-life-example-mapping` × `v6.2.1-phase-continuation-pi`, n=5 pro
+**Datenbasis:** `game-of-life-example-mapping` × `exact-hybrid-v4.2-phase-continuation-pi`, n=5 pro
 Zelle, pi-Harness über Requesty. Quelle: `findings.md` dieser RQ (12 Zellen, alle gefüllt).
 
 ---

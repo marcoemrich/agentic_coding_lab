@@ -22,10 +22,10 @@ alone is informative.
 
 | Candidate | Loop isolable | Refactor position | Status |
 |---|---|---|---|
-| **Own workflow** (v6.x) | — (baseline) | **per-cycle**, isolated subagent | baseline |
-| **Superpowers** `test-driven-development` | yes, confirmed | **per-cycle**, inline in the skill | vendored as v11, measured in RQ-4.7 |
+| **Own workflow** (hybrid-v1.x) | — (baseline) | **per-cycle**, isolated subagent | baseline |
+| **Superpowers** `test-driven-development` | yes, confirmed | **per-cycle**, inline in the skill | vendored as superpowers-2026-09-04, measured in RQ-4.7 |
 | **Pocock** `tdd`, May snapshot | yes | **tail** (step 5: "After all tests pass") | withdrawn — see "The withdrawn May snapshot" |
-| **Pocock** `tdd`, Aug snapshot | yes, vendored as v10 | **report-only** — no refactor in loop or review | measured in RQ-4.7 |
+| **Pocock** `tdd`, Aug snapshot | yes, vendored as pocock-2026-09-04 | **report-only** — no refactor in loop or review | measured in RQ-4.7 |
 | **nWave** DELIVER | loop yes, but needs artifact chain | **open** (indication: none) | candidate, unresolved |
 | ~~ATDD plugin~~ | **no** | — | dropped → augmentation track |
 
@@ -60,44 +60,44 @@ span the axis and give two single-variable contrasts:
 
 | Cell | Loop architecture | Refactor position | Mechanism |
 |---|---|---|---|
-| `v6.1.1-lab-split-cc` | phase commands + subagent | per-cycle | isolated subagent |
-| `v11-superpowers-tdd` | single skill, inline phases | per-cycle | inline in the skill |
-| `v10-pocock-tdd` | skill + `code-review` skill | none | — |
+| `exact-hybrid-v2.4-lab-split-cc` | phase commands + subagent | per-cycle | isolated subagent |
+| `external-superpowers-2026-09-04-cc` | single skill, inline phases | per-cycle | inline in the skill |
+| `external-pocock-2026-09-04-cc` | skill + `code-review` skill | none | — |
 
-- **v11 ↔ v10** varies refactor position at constant architecture.
-- **v6.1.1 ↔ v11** varies architecture and mechanism at constant position.
+- **superpowers-2026-09-04 ↔ pocock-2026-09-04** varies refactor position at constant architecture.
+- **hybrid-v2.4 ↔ superpowers-2026-09-04** varies architecture and mechanism at constant position.
 
 ### The withdrawn May snapshot
 
-An earlier study compared `v6.2-with-why-cleaned` against the May Pocock
-snapshot (`v9-pocock-tdd`) on `opus-4-7-portkey-no-thinking`. Both that RQ and
+An earlier study compared `exact-hybrid-v4-cleaned-cc` against the May Pocock
+snapshot (vendored 2026-08-31, since removed) on `opus-4-7-portkey-no-thinking`. Both that RQ and
 its runs have been removed from the repo, so its figures cannot be re-derived
 or verified and **no numbers from it are carried forward here**. Two of its
 qualitative observations motivated the current design and are restated as open
 questions, not results:
 
 - A tail refactor may fire only once and leave complexity where the initial
-  implementation put it. `v10` (no refactor stage) is the floor case for this
+  implementation put it. `pocock-2026-09-04` (no refactor stage) is the floor case for this
   in RQ-4.7.
 - That comparison varied refactor position *and* loop architecture at the same
   time, so it could not say which produced its effect. RQ-4.7's two contrasts
   above exist to separate them.
 
 The May snapshot also carried a lab-inserted RED marker block, which is not a
-neutral probe (see below), so it was never a clean authenticity comparison.
-`experiments/workflows/v9-pocock-tdd/` is still on disk but is not part of any
-RQ.
+neutral probe (see below), so it was never a clean authenticity comparison. Its
+workflow directory has been removed as well — it had no runs left and belonged to
+no RQ; it is recoverable from the git history.
 
 ## Why Superpowers should be the next candidate
 
-Superpowers has **the same refactor position as v6.x (per-cycle)**, but inline
-instead of as a subagent. A comparison v6.x ↔ Superpowers therefore isolates
+Superpowers has **the same refactor position as hybrid-v1.x (per-cycle)**, but inline
+instead of as a subagent. A comparison hybrid-v1.x ↔ Superpowers therefore isolates
 the variable the withdrawn May study could not:
 
 > Does the isolated refactor subagent buy anything over inline refactoring —
 > at equal refactor position?
 
-This is the `v6.1.1 ↔ v11` contrast in RQ-4.7.
+This is the `hybrid-v2.4 ↔ superpowers-2026-09-04` contrast in RQ-4.7.
 
 ## Open question: does Superpowers hold cycle discipline?
 
@@ -134,20 +134,20 @@ corresponding section in `experiments/workflows/MARKERS.md`.
 
 **Two obstacles when setting this up:**
 
-1. The script's `__main__` is hardwired to `*_v3-basic-tdd*` — parameterise the
+1. The script's `__main__` is hardwired to `*_baseline-inline-tdd-v1-cc*` — parameterise the
    glob to apply it to other workflows.
 2. Test runs are only detected via `pnpm test` / `pnpm run test`. The Superpowers
    skill consistently uses `npm test` in its examples. If the model adopts that,
    `verified`/`unverified` come out empty and look like "never verified". Check on
    a smoke run before the batch.
 
-## v10-pocock-tdd: upstream moved the refactor out of the loop
+## external-pocock-2026-09-04-cc: upstream moved the refactor out of the loop
 
-`experiments/workflows/v10-pocock-tdd/` holds a second Pocock snapshot, now at
+`experiments/workflows/external/external-pocock-2026-09-04-cc/` holds a second Pocock snapshot, now at
 upstream commit `6654f6b6` (2026-08-24, retrieved 2026-09-04). It is **not an
-update of v9** — upstream restructured the workflow between May and August:
+update of the May snapshot** — upstream restructured the workflow between May and August:
 
-| | v9-pocock-tdd (2026-05-26) | v10-pocock-tdd (2026-08-24) |
+| | May snapshot (2026-05-26, removed) | external-pocock-2026-09-04-cc (2026-08-24) |
 |---|---|---|
 | tdd skill | 5 sub-files (`tests`, `mocking`, `refactoring`, `interface-design`, `deep-modules`) | 2 sub-files (`tests`, `mocking`), 38 lines |
 | Refactor position | tail — inside the skill, after all tests are green | **not in the workflow at all** (see below) |
@@ -166,8 +166,8 @@ the sequence with "Once done, use /code-review to review the work. Commit your
 work to the current branch" — no fix pass. So in this architecture, refactoring
 is neither in the loop nor in the review; the review hands findings to a human.
 
-That makes v10 a **third** position on the main comparison axis: per-cycle
-(v6.x, Superpowers) → tail (the May snapshot) → report-only (v10). Only the
+That makes pocock-2026-09-04 a **third** position on the main comparison axis: per-cycle
+(hybrid-v1.x, Superpowers) → tail (the May snapshot) → report-only (pocock-2026-09-04). Only the
 per-cycle and report-only ends are currently measured; the tail position has no
 runs in the pool.
 
@@ -194,7 +194,7 @@ covers four points:
    would corrupt that.
 4. **The review reports, it does not fix.** The rules file forbids acting on the
    findings. An autonomous fix pass would be a step we invented and would make
-   v10 silently comparable to a tail-refactor workflow it is not. `refactorings_applied = 0`
+   pocock-2026-09-04 silently comparable to a tail-refactor workflow it is not. `refactorings_applied = 0`
    is the expected result here and must be read as the workflow's property.
 
 Point 4 is the one open design decision. The alternative — let it apply its own
@@ -212,19 +212,19 @@ measures something upstream does not prescribe. Not built.
    levels. Resolution: install the plugin, search its 206 skills locally for the
    software-crafter / deliver spec.
 2. ~~**Set up Superpowers as a lab workflow.**~~ **Done** — see
-   `experiments/workflows/v11-superpowers-tdd/`. Skill vendored byte-identical
+   `experiments/workflows/external/external-superpowers-2026-09-04-cc/`. Skill vendored byte-identical
    from release `v6.3.0`, commit `b36e0829` (2026-08-12), checksum-verified
    against a fresh clone; no RED marker block. The only
    project-authored file is `.claude/rules/tdd-experiment-mode.md` (HITL
    override, "example mapping IS the plan", `pnpm test` instead of the skill's
    `npm test`, DONE marker). **Open: smoke run** before the batch.
-3. ~~**Decide what to do with v10-pocock-tdd.**~~ **Done** — updated to upstream
+3. ~~**Decide what to do with external-pocock-2026-09-04-cc.**~~ **Done** — updated to upstream
    `6654f6b6` (2026-08-24) and made runnable on 2026-09-04; see the section
-   below. It is not "v9 updated" but a different point on the refactor axis, so
+   below. It is not "pocock-2026-08-31 updated" but a different point on the refactor axis, so
    both stay side by side. **Open: smoke run** before the batch.
 4. **Snapshot drift** is now recorded per workflow, in each
-   `.claude/rules/tdd-experiment-mode.md`: v9 = Pocock 2026-05-26 (on disk, in
-   no RQ), v10 = Pocock `6654f6b6` (2026-08-24), v11 =
+   `.claude/rules/tdd-experiment-mode.md`: pocock-2026-08-31 = Pocock 2026-05-26 (on disk, in
+   no RQ), pocock-2026-09-04 = Pocock `6654f6b6` (2026-08-24), superpowers-2026-09-04 =
    Superpowers `b36e0829` / v6.3.0 (2026-08-12). Do the same for nWave. Note
    that Superpowers renamed `testing-anti-patterns.md` to `writing-good-tests.md`
    between 5.1.0 and 6.3.0; the refactor position stayed per-cycle, so the
@@ -237,7 +237,7 @@ measures something upstream does not prescribe. Not built.
 Not yet worked through. Per candidate, clarify what becomes of rule and example
 cards:
 
-- **v6.x / Superpowers**: test list in natural language, one entry = one cycle.
+- **hybrid-v1.x / Superpowers**: test list in natural language, one entry = one cycle.
   Already solved for Pocock in the lab via the stipulation "example mapping IS
   the plan approval".
 - **nWave**: Example Mapping result → acceptance criteria as argument to
@@ -252,7 +252,7 @@ cards:
 - **Ponytail** (github.com/DietrichGebert/ponytail) — a minimalism skill, not a
   workflow: a decision ladder before writing (YAGNI → reuse → stdlib → native →
   dependency → one line). Says nothing about TDD, but is **orthogonal to the
-  loop** and targets `code_mass` directly → additively testable (v6.x with and
+  loop** and targets `code_mass` directly → additively testable (hybrid-v1.x with and
   without, same loop, same kata). Both Pocock snapshots pursue lower code
   mass via "deep modules"; Ponytail pursues the same goal by a different means. Their own benchmark: −54 % LOC against an agent baseline
   (Haiku 4.5, n=4, 12 tickets, real repo); earlier −80..94 % withdrawn after

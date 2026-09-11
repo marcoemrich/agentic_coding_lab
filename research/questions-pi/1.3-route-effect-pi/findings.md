@@ -2,7 +2,7 @@
 
 Effect of transport route and reasoning channel on one and the same model
 (GPT-5.6 Sol), at constant harness, workflow, kata and prompt style.
-`game-of-life-example-mapping` × `v6.2.1-phase-continuation-pi`, n=5 per cell.
+`game-of-life-example-mapping` × `exact-hybrid-v4.2-phase-continuation-pi`, n=5 per cell.
 
 **The harness is pi in every cell — this is not a harness comparison.** The
 `codex` in the lab ids names the pi provider `openai-codex` through which the

@@ -145,7 +145,7 @@ analyze_single_run() {
         fi
     elif [ -f "$run_dir/transcript-pi.jsonl" ]; then
         # pi runs: parse the captured event stream into transcript-metrics.json.
-        # TDD-related fields are emitted as 0 (v1-oneshot scope).
+        # TDD-related fields are emitted as 0 (baseline-oneshot-v1-cc scope).
         local pi_parser="$EXPERIMENTS_DIR/parse_pi_transcript.py"
         if [ -x "$pi_parser" ] || [ -f "$pi_parser" ]; then
             python3 "$pi_parser" "$run_dir" >/dev/null 2>&1 || \

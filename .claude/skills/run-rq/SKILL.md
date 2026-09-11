@@ -32,7 +32,7 @@ End-to-end orchestration for advancing a single research question (RQ) in this l
   ```
   On no match → ask the user. On multiple → take the first and inform the user. Pass `"$RQ_DIR"` to all scripts below (they accept any path and write outputs to the dir).
 - Mandatory frontmatter fields: `id, question, factors, controls, outcomes, min_replicates, status`.
-- Methodology constraint: v1/v2 only with `prompt: prose`; v3/v4/v5 with all three styles. If `factors.workflow_x_prompt` exists, no additional `factors.workflow` / `controls.workflow` is allowed.
+- Methodology constraint: `baseline-oneshot-*` / `baseline-iterative-*` only with `prompt: prose`; every other arm with all three styles. If `factors.workflow_x_prompt` exists, no additional `factors.workflow` / `controls.workflow` is allowed.
 - Active katas: `claim-office`, `game-of-life`, `sphinx-score`, `game-of-life-cli`, `claim-office-lite`, `mars-rover`. `controls.kata_base` must be from this set. Each has the three prompt variants (`-prose`, `-user-story`, `-example-mapping`); all but `mars-rover` also have a `<basename>-verification/` suite, so `verification_pct` is available there.
   - The list is not a ranking, but the pool is lopsided in practice: `claim-office` and `game-of-life` carry the bulk of the runs, `sphinx-score` is the established small quality kata, and `mars-rover` is near-unused. Prefer a kata that already has runs in neighbouring RQs — a fill on a fresh kata has no reference cells to compare against.
   - **Check the actual kata dir before rejecting an RQ on this list.** The list is hand-maintained and has lagged behind the repo before (`sphinx-score` was in use in three RQs while still missing here). `ls experiments/katas/` is the authority; this line is a convenience copy.
@@ -53,7 +53,7 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
 3. Parse the frontmatter block (between the first two `---` lines). Check mandatory fields: `id, question, factors, controls, outcomes, min_replicates, status`. Missing fields → abort phase, inform user.
 4. Check methodology constraints:
    - If `factors.workflow_x_prompt` is set: no additional `factors.workflow` and no `controls.workflow` may be set.
-   - In every `workflow_x_prompt` entry: if `workflow ∈ {v1-oneshot, v2-iterative}`, then `prompt == prose` is required.
+   - In every `workflow_x_prompt` entry: if `workflow ∈ {baseline-oneshot-v1-cc, baseline-iterative-v1-cc}`, then `prompt == prose` is required.
    - `controls.kata_base` is one of the active katas listed under "Repo conventions" above. Verify against `ls experiments/katas/` rather than against the list alone — the list is a convenience copy and has lagged the repo before.
    - Model values (in `controls.model` and/or `factors.model`) must appear in the lab-variant table.
 5. Read `findings.md` (needed in phase 6 as the existing baseline).
@@ -156,8 +156,8 @@ status: <status>
    differences being measured — `refactorings_applied` σ 17.4 at n=5 in
    RQ-architecture-axis-sol-pi F-1.4 is a documented example.
 
-   Also watch the glob when spot-checking: `*v6.6*opus-5*` matches pi and cursor runs
-   from other RQs. Anchor workflow and model exactly — `*_v6.6-lab-split-cc_opus-5-no-thinking*`.
+   Also watch the glob when spot-checking: `*hybrid-v6*opus-5*` matches pi and cursor runs
+   from other RQs. Anchor workflow and model exactly — `*_exact-hybrid-v6-lab-split-cc_opus-5-no-thinking*`.
 
 #### Phase 4b — Resume
 
@@ -204,7 +204,7 @@ status: <status>
    - `$RQ_DIR/summary.md` (per-cell pivots for each `outcome`)
 5. Read `summary.md` in full and summarize to the user — show the per-cell pivot tables individually.
 6. Sanity check: does every cell have ≥ `min_replicates`? If not: warn and offer to jump back to phase 2 (additional runs).
-7. **Plausibility cross-check before phase 6** — if any cell value contradicts a previously-stable finding by a large margin (e.g. a workflow that was 100% green is suddenly 0%), do NOT treat that as a new finding without first running the spot-check from step 1 against that exact cell. A "v4 is suddenly broken on game-of-life" type observation is more often a pipeline regression than a real shift.
+7. **Plausibility cross-check before phase 6** — if any cell value contradicts a previously-stable finding by a large margin (e.g. a workflow that was 100% green is suddenly 0%), do NOT treat that as a new finding without first running the spot-check from step 1 against that exact cell. A "the subagents arm is suddenly broken on game-of-life" type observation is more often a pipeline regression than a real shift.
 
 ---
 
@@ -279,7 +279,7 @@ Exception: **deletions** of existing findings still require explicit user confir
 
 ## Behavior on errors
 
-- **Phase 1 fails**: do not continue; give a clear constraint hint (e.g. "v1-oneshot with prompt=example-mapping violates the methodology constraint in the top-level README, section 'Methodology constraints'").
+- **Phase 1 fails**: do not continue; give a clear constraint hint (e.g. "baseline-oneshot-v1-cc with prompt=example-mapping violates the methodology constraint in the top-level README, section 'Methodology constraints'").
 - **Phase 2/3 scripts with non-zero exit**: show output to the user; do NOT blindly retry.
 - **Phase 4 loses the container**: show `docker ps -a`, then offer resume.
 - **Phase 5 produces an empty `runs.csv`**: check whether `experiments/runs/` actually contains matching runs (selector too narrow?). Inform the user.

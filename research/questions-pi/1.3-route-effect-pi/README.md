@@ -15,7 +15,7 @@ factors:
     # Responses API reasons regardless of the client declaration. Documented
     # in the README; do not add gpt-5-6-sol-codex-noreason as a factor level.
 controls:
-  workflow: v6.2.1-phase-continuation-pi
+  workflow: exact-hybrid-v4.2-phase-continuation-pi
   kata_base: game-of-life
   prompt: example-mapping
 outcomes:

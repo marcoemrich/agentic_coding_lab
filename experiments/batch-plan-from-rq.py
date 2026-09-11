@@ -57,6 +57,9 @@ def count_runs_per_cell(cells: list[dict]) -> dict[tuple, int]:
 
 WORKFLOWS_DIR = REPO_ROOT / "experiments" / "workflows"
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from workflow_paths import workflow_dir as resolve_workflow_dir
+
 # Harness marker dir → the model-name suffix that harness's run-batch.sh branch
 # can resolve. Mirrors the harness detection in run-batch.sh (~line 450), which
 # keys off the same marker dirs.
@@ -73,8 +76,11 @@ def harness_of(workflow: str) -> str | None:
 
     Returns None when the workflow dir is absent (plan generation should not
     fail on that — run-batch.sh reports it per run).
+
+    Resolved through workflow_paths, so both the current name and any old name
+    an RQ still carries land on the same directory.
     """
-    wf_dir = WORKFLOWS_DIR / workflow
+    wf_dir = resolve_workflow_dir(workflow)
     for marker, harness in _HARNESS_MARKERS:
         if (wf_dir / marker).is_dir():
             return harness

@@ -2,7 +2,7 @@
 
 Harness effect Claude Code (CC) vs OpenCode (OC) vs pi at constant model
 (opus-4-8 via Requesty, `vertex/claude-opus-4-8@eu`), workflow intention
-(`v6.2-with-why-cleaned{,-oc,-pi}`) and prompt style (`example-mapping`).
+(`exact-hybrid-v4-cleaned-cc{,-oc,-pi}`) and prompt style (`example-mapping`).
 n=5 per cell, 6 cells (3 harnesses × 2 katas).
 
 **Cost caveat (binding for all $ statements):** Requesty no longer returns an

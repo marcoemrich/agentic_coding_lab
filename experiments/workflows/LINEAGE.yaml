@@ -1,0 +1,153 @@
+# Workflow-Lineage — die Quelle für Abstammung, Status und Alt-Namen.
+#
+# Diese Datei ist die einzige Wahrheit über Kategorie, Arm, Version, Elternteil
+# und Status eines Workflows. ALIASES.json, PATHS.json und die Inventar-Tabelle
+# der Snapshot-Reports werden daraus generiert — nie von Hand nachgezogen.
+#   Regenerieren + prüfen:  experiments/workflow-lineage.py --check --emit
+#
+# ---------------------------------------------------------------------------
+# Namenskonvention
+# ---------------------------------------------------------------------------
+#   <präfix>-<arm>-v<MAJOR>[.<N>…][-<slug>]-<harness>
+#
+# Präfix       exact- | baseline- | external-, muss zur Kategorie passen.
+#              Der Ordnerpfad reist nicht: in metrics.json, Run-Ordnernamen,
+#              runs.csv und findings-Tabellen steht nur dieser Leaf-Name.
+#              Deshalb trägt der Name die Kategorie, nicht nur der Ordner.
+#
+# Arm          Was der Workflow DAUERHAFT IST (hybrid, single-context, sol …).
+# Slug         Was sich IN DIESEM SCHRITT geändert hat (end-refactor, no-pep …).
+#              Daher ist "end-refactor-only" ein Arm (Refactor nur am Ende, kein
+#              Zyklus), "end-refactor" ein Slug (dieser Schritt fügt ihn hinzu)
+#              und "no-end-refactor" ein Slug (dieser Schritt nimmt ihn weg).
+#              Entfällt nur bei v1 eines Arms, wo der Arm-Name schon alles sagt.
+#
+# Version      MAJOR steigt NUR, wenn auf dieser Variante weitergebaut wurde.
+#              Ein Arm, der nie Basis eines nächsten Schritts war, bleibt ein
+#              .N-Zweig — auch wenn er gut gemessen hat. Die Nummer ist damit
+#              Entwicklungstiefe, nicht Güte und nicht Empfehlung.
+#              Welcher Workflow Default ist, steht ausschliesslich in
+#              research/workflow-dev/model-recommendation-matrix.md — der Default
+#              gabelt pro Modell und läuft auch rückwärts.
+#
+# Harness      cc | oc | pi | cursor. Immer explizit, nie implizit.
+#
+# ---------------------------------------------------------------------------
+# Ordner
+# ---------------------------------------------------------------------------
+#   exact-coding/   die vier EXACT-Coding-Bausteine (test-list, red, green,
+#                   refactor) existieren als eigene commands/skills/agents.
+#                   Genau das prüft --check; es ist kein Geschmacksurteil.
+#     opus/         gebaut auf Claude Code mit Sonnet/Opus
+#     sol/          gebaut auf pi mit SOL
+#
+#     ACHTUNG: Der Ordnername sagt, WO DIE LINIE GEBAUT WURDE, nicht wo sie
+#     läuft. exact-hybrid-v6-lab-split-pi liegt unter opus/, exact-sol-v1-cc
+#     unter sol/. Beides ist richtig. Inhaltliche Achsen (APP vs Four Rules,
+#     Prediction-Formular vs Prosa) taugen NICHT als Ordner: jede einzelne ist
+#     von einer RQ absichtlich überquert worden — exact-sol-v1.2-app-pi trägt
+#     APP in die Sol-Linie. Nur die Herkunft kann nicht mehr falsch werden.
+#
+#   baselines/      Vergleichs-Workflows OHNE EXACT-Coding-Bausteine.
+#   external/       vendorte Fremd-Skills. Versionsstelle = Vendoring-Datum aus
+#                   der Git-History, denn LICENSE.upstream nennt keine Upstream-
+#                   Version. "v1/v2" würde Autorschaft an Fremdcode behaupten.
+#   _archive/       spiegelt den Baum. Ausschliesslich status: discarded.
+#
+# ---------------------------------------------------------------------------
+# status
+# ---------------------------------------------------------------------------
+#   trunk       Basis, auf der weitergebaut wurde
+#   branch      Zweig; beantwortet eine RQ, wurde nicht weitergebaut
+#   superseded  von einem Trunk-Nachfolger abgelöst, bleibt reproduzierbar
+#   discarded   verworfen — liegt unter _archive/, aggregate-by-query bricht ab
+#   vendored    Fremdcode, keine eigene Entwicklungslinie
+#
+# parent ist Pflicht ausser bei Wurzeln. Weicht der Arm des Elternteils vom
+# eigenen Arm ab, ist das ein Arm-Sprung: --check meldet ihn als solchen, statt
+# ihn stillschweigend durchzuwinken. Siehe exact-single-context-v3-no-subagent-cc.
+
+categories:
+
+  exact-coding/opus:
+    prefix: exact
+    origin: {harness: claude-code, model: sonnet/opus}
+    workflows:
+      exact-subagents-v1-cc:                      {arm: subagents,      version: "1",     harness: cc,     parent: null,                                   status: superseded, alias: [v4-exact-subagents]}
+      exact-subagents-v2-testlist-fix-cc:         {arm: subagents,      version: "2",     harness: cc,     parent: exact-subagents-v1-cc,                  status: trunk,      alias: [v4.1-testlist-scope-fix]}
+      exact-subagents-v2-testlist-fix-pi:         {arm: subagents,      version: "2",     harness: pi,     parent: exact-subagents-v2-testlist-fix-cc,     status: trunk,      alias: [v4.1-testlist-scope-fix-pi], port_of: exact-subagents-v2-testlist-fix-cc}
+
+      exact-single-context-v1-cc:                 {arm: single-context, version: "1",     harness: cc,     parent: null,                                   status: superseded, alias: [v5-exact-single-context]}
+      exact-single-context-v2-testlist-fix-cc:    {arm: single-context, version: "2",     harness: cc,     parent: exact-single-context-v1-cc,             status: trunk,      alias: [v5.1-testlist-scope-fix]}
+      exact-single-context-v2-testlist-fix-oc:    {arm: single-context, version: "2",     harness: oc,     parent: exact-single-context-v2-testlist-fix-cc, status: trunk,     alias: [v5.1-testlist-scope-fix-oc], port_of: exact-single-context-v2-testlist-fix-cc}
+      exact-single-context-v2-testlist-fix-pi:    {arm: single-context, version: "2",     harness: pi,     parent: exact-single-context-v2-testlist-fix-cc, status: trunk,     alias: [v5.1-testlist-scope-fix-pi], port_of: exact-single-context-v2-testlist-fix-cc}
+      exact-single-context-v3-no-subagent-cc:     {arm: single-context, version: "3",     harness: cc,     parent: exact-hybrid-v8-no-end-refactor-cc,     status: branch,     alias: [v5.2-no-subagent-cc], note: "Arm-Sprung: Elternteil ist der hybrid-Arm. Minimaler Workflow, der noch EXACT Coding ist — alle vier Bausteine, geteilter Kontext, kein isolierter Subagent. RQ-1.15 F-1.4 misst ihn mindestens so gut wie exact-hybrid-v8."}
+
+      exact-hybrid-v1-cc:                         {arm: hybrid,         version: "1",     harness: cc,     parent: null,                                   status: superseded, alias: [v6-hybrid]}
+      exact-hybrid-v2-testlist-fix-cc:            {arm: hybrid,         version: "2",     harness: cc,     parent: exact-hybrid-v1-cc,                     status: trunk,      alias: [v6.1-hybrid-testlist-scope-fix]}
+      exact-hybrid-v2-testlist-fix-pi:            {arm: hybrid,         version: "2",     harness: pi,     parent: exact-hybrid-v2-testlist-fix-cc,        status: trunk,      alias: [v6.1-hybrid-testlist-scope-fix-pi], port_of: exact-hybrid-v2-testlist-fix-cc}
+      exact-hybrid-v2.1-no-pep-cc:                {arm: hybrid,         version: "2.1",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1-no-pep]}
+      exact-hybrid-v2.2-no-emoji-cc:              {arm: hybrid,         version: "2.2",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1-no-emoji]}
+      exact-hybrid-v2.3-no-pep-no-emoji-cc:       {arm: hybrid,         version: "2.3",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1-no-pep-no-emoji]}
+      exact-hybrid-v2.4-lab-split-cc:             {arm: hybrid,         version: "2.4",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.1-lab-split-cc]}
+      exact-hybrid-v2.5-no-continuation-cc:       {arm: hybrid,         version: "2.5",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.2-no-continuation-cc]}
+      exact-hybrid-v2.6-refactor-gate-cc:         {arm: hybrid,         version: "2.6",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.3-refactor-gate-cc]}
+      exact-hybrid-v2.7-continuation-guard-cc:    {arm: hybrid,         version: "2.7",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.4-continuation-guard-cc]}
+      exact-hybrid-v2.8-pure-split-cc:            {arm: hybrid,         version: "2.8",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.5-pure-split-cc]}
+      exact-hybrid-v3-with-why-cc:                {arm: hybrid,         version: "3",     harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: trunk,      alias: [v6.1-with-why]}
+      exact-hybrid-v4-cleaned-cc:                 {arm: hybrid,         version: "4",     harness: cc,     parent: exact-hybrid-v3-with-why-cc,            status: trunk,      alias: [v6.2-with-why-cleaned]}
+      exact-hybrid-v4-cleaned-oc:                 {arm: hybrid,         version: "4",     harness: oc,     parent: exact-hybrid-v4-cleaned-cc,             status: trunk,      alias: [v6.2-with-why-cleaned-oc], port_of: exact-hybrid-v4-cleaned-cc}
+      exact-hybrid-v4-cleaned-pi:                 {arm: hybrid,         version: "4",     harness: pi,     parent: exact-hybrid-v4-cleaned-cc,             status: trunk,      alias: [v6.2-with-why-cleaned-pi], port_of: exact-hybrid-v4-cleaned-cc}
+      exact-hybrid-v4.2-phase-continuation-pi:    {arm: hybrid,         version: "4.2",   harness: pi,     parent: exact-hybrid-v4-cleaned-pi,             status: branch,     alias: [v6.2.1-phase-continuation-pi]}
+      exact-hybrid-v4.2-phase-continuation-cursor: {arm: hybrid,        version: "4.2",   harness: cursor, parent: exact-hybrid-v4-cleaned-cc,             status: branch,     alias: [v6.2.1-phase-continuation-cursor]}
+      exact-hybrid-v4.3-audit-bundle-cc:          {arm: hybrid,         version: "4.3",   harness: cc,     parent: exact-hybrid-v4-cleaned-cc,             status: branch,     alias: [v6.3-audit-bundle], note: "Nicht verworfen, aber kata-spezifisch: GoL-Qualitaets-Champion, bricht auf claim-office (RQ-1.9, verification_pct 0.96 -> 0.35)."}
+      exact-hybrid-v4.4-metric-refactor-cc:       {arm: hybrid,         version: "4.4",   harness: cc,     parent: exact-hybrid-v4-cleaned-cc,             status: branch,     alias: [v6.4-metric-driven-refactor]}
+      exact-hybrid-v5-end-refactor-cc:            {arm: hybrid,         version: "5",     harness: cc,     parent: exact-hybrid-v4-cleaned-cc,             status: trunk,      alias: [v6.5-end-refactor]}
+      exact-hybrid-v6-lab-split-cc:               {arm: hybrid,         version: "6",     harness: cc,     parent: exact-hybrid-v5-end-refactor-cc,        status: trunk,      alias: [v6.6-lab-split-cc], note: "Slug meint das Herausziehen der Lab-Infrastruktur nach rules/lab-only.md, keine Linien-Zugehoerigkeit."}
+      exact-hybrid-v6-lab-split-pi:               {arm: hybrid,         version: "6",     harness: pi,     parent: exact-hybrid-v6-lab-split-cc,           status: trunk,      alias: [v6.6-lab-split-pi], port_of: exact-hybrid-v6-lab-split-cc}
+      exact-hybrid-v6-lab-split-oc:               {arm: hybrid,         version: "6",     harness: oc,     parent: exact-hybrid-v6-lab-split-cc,           status: trunk,      alias: [v6.6-lab-split-oc], port_of: exact-hybrid-v6-lab-split-cc}
+      exact-hybrid-v6-lab-split-cursor:           {arm: hybrid,         version: "6",     harness: cursor, parent: exact-hybrid-v6-lab-split-cc,           status: trunk,      alias: [v6.6-lab-split-cursor], port_of: exact-hybrid-v6-lab-split-cc}
+      exact-hybrid-v7-app-subordinate-cc:         {arm: hybrid,         version: "7",     harness: cc,     parent: exact-hybrid-v6-lab-split-cc,           status: trunk,      alias: [v6.7-app-subordinate-cc]}
+      exact-hybrid-v7-app-subordinate-pi:         {arm: hybrid,         version: "7",     harness: pi,     parent: exact-hybrid-v7-app-subordinate-cc,     status: trunk,      alias: [v6.7-app-subordinate-pi], port_of: exact-hybrid-v7-app-subordinate-cc}
+      exact-hybrid-v8-no-end-refactor-cc:         {arm: hybrid,         version: "8",     harness: cc,     parent: exact-hybrid-v7-app-subordinate-cc,     status: trunk,      alias: [v6.8-no-end-refactor-cc]}
+
+      exact-green-refactor-v1-cc:                 {arm: green-refactor, version: "1",     harness: cc,     parent: null,                                   status: superseded, alias: [v7-hybrid-green-refactor]}
+      exact-green-refactor-v2-testlist-fix-cc:    {arm: green-refactor, version: "2",     harness: cc,     parent: exact-green-refactor-v1-cc,             status: trunk,      alias: [v7.1-hybrid-green-refactor-testlist-scope-fix]}
+
+  exact-coding/sol:
+    prefix: exact
+    origin: {harness: pi, model: sol}
+    workflows:
+      exact-sol-v1-pi:                            {arm: sol,            version: "1",     harness: pi,     parent: null,                                   status: trunk,      alias: [basic-sol-tdd-pi], note: "Referenz-Import der predictive-tdd/test-list-Skills aus dem sol_tdd-Projekt."}
+      exact-sol-v1-cc:                            {arm: sol,            version: "1",     harness: cc,     parent: exact-sol-v1-pi,                        status: trunk,      alias: [basic-sol-tdd-cc], port_of: exact-sol-v1-pi}
+      exact-sol-v1.1-subagent-pi:                 {arm: sol,            version: "1.1",   harness: pi,     parent: exact-sol-v1-pi,                        status: branch,     alias: [basic-sol-tdd-subagent-pi]}
+      exact-sol-v1.2-app-pi:                      {arm: sol,            version: "1.2",   harness: pi,     parent: exact-sol-v1-pi,                        status: branch,     alias: [basic-sol-tdd-app-pi]}
+      exact-sol-v1.2.1-measured-model-pi:         {arm: sol,            version: "1.2.1", harness: pi,     parent: exact-sol-v1.2-app-pi,                  status: branch,     alias: [basic-sol-tdd-app-measured-model-pi]}
+      exact-sol-v1.2.2-measured-eslint-pi:        {arm: sol,            version: "1.2.2", harness: pi,     parent: exact-sol-v1.2-app-pi,                  status: branch,     alias: [basic-sol-tdd-app-measured-eslint-pi]}
+      exact-sol-v1.2.3-measured-tool-pi:          {arm: sol,            version: "1.2.3", harness: pi,     parent: exact-sol-v1.2-app-pi,                  status: branch,     alias: [basic-sol-tdd-app-measured-tool-pi]}
+
+  baselines:
+    prefix: baseline
+    workflows:
+      baseline-oneshot-v1-cc:                     {arm: oneshot,           version: "1",  harness: cc,     parent: null,                                   status: branch,     alias: [v1-oneshot]}
+      baseline-oneshot-v1-oc:                     {arm: oneshot,           version: "1",  harness: oc,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v1-oneshot-oc], port_of: baseline-oneshot-v1-cc}
+      baseline-oneshot-v1-pi:                     {arm: oneshot,           version: "1",  harness: pi,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v1-oneshot-pi], port_of: baseline-oneshot-v1-cc}
+      baseline-iterative-v1-cc:                   {arm: iterative,         version: "1",  harness: cc,     parent: null,                                   status: branch,     alias: [v2-iterative]}
+      baseline-inline-tdd-v1-cc:                  {arm: inline-tdd,        version: "1",  harness: cc,     parent: null,                                   status: branch,     alias: [v3-basic-tdd], note: "TDD-Boden ohne jede Struktur — nur rules/experiment-mode.md. Auf Sol schlaegt er jede Architektur (RQ-1.14 F-1.6)."}
+      baseline-inline-tdd-v1-pi:                  {arm: inline-tdd,        version: "1",  harness: pi,     parent: baseline-inline-tdd-v1-cc,              status: branch,     alias: [v3-basic-tdd-pi], port_of: baseline-inline-tdd-v1-cc}
+      baseline-end-refactor-only-v1-agent-cc:     {arm: end-refactor-only, version: "1",  harness: cc,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v8a-delayed-refactor-agent], note: "Kein Zyklus: drei sequentielle Phasen, Refactor nur am Ende. Isoliert das Refactor-Timing, nicht die Refactor-Mechanik."}
+      baseline-end-refactor-only-v1-native-cc:    {arm: end-refactor-only, version: "1",  harness: cc,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v8b-delayed-refactor-native]}
+
+  external:
+    prefix: external
+    workflows:
+      external-pocock-2026-09-04-cc:              {arm: pocock,        vendored: "2026-09-04", harness: cc, parent: null,                                  status: vendored,   alias: [v10-pocock-tdd]}
+      external-superpowers-2026-09-04-cc:         {arm: superpowers,   vendored: "2026-09-04", harness: cc, parent: null,                                  status: vendored,   alias: [v11-superpowers-tdd]}
+
+  _archive/exact-coding/opus:
+    prefix: exact
+    workflows:
+      exact-subagents-v2.1-shared-context-cc:     {arm: subagents,      version: "2.1",   harness: cc,     parent: exact-subagents-v2-testlist-fix-cc,     status: discarded,  alias: [v4.2-shared-context]}
+      exact-subagents-v2.1.1-fake-it-green-cc:    {arm: subagents,      version: "2.1.1", harness: cc,     parent: exact-subagents-v2.1-shared-context-cc, status: discarded,  alias: [v4.2.1-fake-it-green]}
+      exact-single-context-v2.1-minimized-cc:     {arm: single-context, version: "2.1",   harness: cc,     parent: exact-single-context-v2-testlist-fix-cc, status: discarded, alias: [v5.1-minimized]}
+      exact-hybrid-v4.1-refactor-vocab-cc:        {arm: hybrid,         version: "4.1",   harness: cc,     parent: exact-hybrid-v4-cleaned-cc,             status: discarded,  alias: [v6.2.1-refactor-vocab], note: "Verworfen: claim-office verification_pct 0.96 -> 0.23 (RQ-1.10)."}

@@ -40,7 +40,7 @@ This snapshot is the workflow that was empirically validated on:
   - `game-of-life` (training-known kata) — 100 % `tests_passing` across
     10 runs
 - **Discipline metrics on the same runs:** +34 % refactorings vs the
-  prior baseline (`v6.1-with-why`), `cycle_count` standard deviation
+  prior baseline (`exact-hybrid-v3-with-why-cc`), `cycle_count` standard deviation
   collapsed from σ 14.2 to σ 1.6 (claim-office)
 
 Different models or harness versions may produce different results. The
@@ -50,15 +50,15 @@ variants on Opus 4.x.
 
 ## Original name and lineage
 
-This snapshot is exported from `v6.2-with-why-cleaned` in the
+This snapshot is exported from `exact-hybrid-v4-cleaned-cc` in the
 `agentic_coding_lab_project` workflow research:
 
 ```
-v6-hybrid
-  → v6.1-hybrid-testlist-scope-fix   (correctness repair)
-    → v6.1-with-why                  (Theory-of-Mind "Why" blocks added
+exact-hybrid-v1-cc
+  → exact-hybrid-v2-testlist-fix-cc   (correctness repair)
+    → exact-hybrid-v3-with-why-cc                  (Theory-of-Mind "Why" blocks added
                                       alongside MUSTs, not replacing them)
-      → v6.2-with-why-cleaned        (3 hygiene cleanups: pnpm-script
+      → exact-hybrid-v4-cleaned-cc        (3 hygiene cleanups: pnpm-script
                                       consistency, file naming, settings
                                       dedup, refactor.md role-neutral,
                                       experiment-mode reframing)

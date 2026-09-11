@@ -232,7 +232,7 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
     model_versions: list[str] = []
     model_seen: set[str] = set()
 
-    # For v5 inline-skill phase tracking: capture each tool_use of Skill in
+    # For single-context inline-skill phase tracking: capture each tool_use of Skill in
     # order with timestamp + cumulative-token marker, so we can attribute the
     # follow-up assistant turns to that phase.
     skill_phase_markers: list[tuple[datetime | None, str, int]] = []
@@ -244,7 +244,7 @@ def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
     # subagent-*.jsonl files when meta.json is missing.
     task_order: list[str] = []
 
-    # Inline tool-event stream for v3 phase inference (no skills, no subagents).
+    # Inline tool-event stream for inline-tdd phase inference (no skills, no subagents).
     # Each entry: (timestamp, kind, cumulative_tokens_after_message). Kind is
     # one of: "write_test", "edit_test", "write_impl", "edit_impl", "test_run".
     inline_tool_events: list[tuple[datetime | None, str, int]] = []
@@ -440,7 +440,7 @@ def infer_phases_from_tool_sequence(
 ) -> list[dict[str, Any]]:
     """Infer TDD phases from inline tool-event sequence (no skill/subagent).
 
-    Heuristic for v3 (basic-tdd, inline):
+    Heuristic for inline-tdd (basic-tdd, inline):
       - Red:      [write_test|edit_test ...] up to and including the next test_run
       - Green:    [write_impl|edit_impl ...] up to and including the next test_run
       - Refactor: edit_impl-sequence with no intervening write_test/edit_test
@@ -525,7 +525,7 @@ def aggregate_skill_phases(
     stream: list[tuple[datetime | None, int]],
     final_ts: datetime | None,
 ) -> list[dict[str, Any]]:
-    """For v5 inline-skill workflow: turn skill-tool-use markers into phases.
+    """For single-context inline-skill workflow: turn skill-tool-use markers into phases.
 
     Each phase spans from its skill marker to the next skill marker.
     Tokens are the delta in cumulative tokens within the span; duration is
@@ -627,7 +627,7 @@ def merge_phase_streams(
     subagent_phases: list[dict[str, Any]],
     final_ts: datetime | None,
 ) -> list[dict[str, Any]]:
-    """For v6 hybrid workflow: merge inline-skill phases with subagent phases.
+    """For hybrid hybrid workflow: merge inline-skill phases with subagent phases.
 
     Both sources carry a `start_ts` (ISO 8601). Phases are interleaved by
     timestamp; durations are recomputed as deltas between adjacent merged
@@ -666,10 +666,10 @@ def derive_cycle_count(
     bash_commands: list[str],
     phase_text_markers: Counter[str] | None = None,
 ) -> int:
-    # Primary: Skill tool calls (CC/OC v5+)
+    # Primary: Skill tool calls (CC/OC single-context+)
     if skills.get("red", 0) > 0:
         return skills["red"]
-    # Secondary: Task/subagent tool calls (CC/OC v4)
+    # Secondary: Task/subagent tool calls (CC/OC subagents)
     if tasks.get("red", 0) > 0:
         return tasks["red"]
     # Tertiary: Text markers in assistant output (pi and other harnesses
@@ -852,7 +852,7 @@ def main(argv: list[str]) -> int:
     metrics = aggregate_main_session(transcript)
     internal = metrics.pop("_internal")
 
-    # v4: subagent transcripts give us per-phase tokens/timings
+    # subagents: subagent transcripts give us per-phase tokens/timings
     (
         subagent_total,
         subagent_phases,
@@ -879,9 +879,9 @@ def main(argv: list[str]) -> int:
     metrics["model_versions"] = main_models
 
     # Pick the phase source:
-    #   v4 (subagents only):     subagent_phases
-    #   v5 (skills only):        skill_phases
-    #   v6 (hybrid: skills for red/green, subagent for refactor): merge both
+    #   subagents (subagents only):     subagent_phases
+    #   single-context (skills only):        skill_phases
+    #   hybrid (hybrid: skills for red/green, subagent for refactor): merge both
     #   v1/v2/v3:                inline tool inference or none
     #   pi (text markers):       synthesize from assistant text when no tool-call markers
     text_marker_phases = synthesize_phases_from_text_markers(
@@ -920,7 +920,7 @@ def main(argv: list[str]) -> int:
     #
     # i.e. the `## Refactor` TEXT MARKER outranks the inline-tool inference.
     # Two distinct failures motivated this on CC (both measured 2026-08-17 on
-    # `basic-sol-tdd-cc`, a workflow that keeps the whole cycle in ONE command
+    # `exact-sol-v1-cc`, a workflow that keeps the whole cycle in ONE command
     # and refactors in the main context):
     #
     #  1. The model invokes `/predictive-tdd` once → `skill_phases` is

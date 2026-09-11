@@ -7,8 +7,8 @@ factors:
     - claim-office
     - game-of-life
   workflow:
-    - v6.6-lab-split-cc   # elaborate: refactor subagent, test-list phase, audit bundle
-    - v3-basic-tdd        # minimal: plain red-green-refactor, no subagents
+    - exact-hybrid-v6-lab-split-cc   # elaborate: refactor subagent, test-list phase, audit bundle
+    - baseline-inline-tdd-v1-cc        # minimal: plain red-green-refactor, no subagents
 controls:
   prompt: example-mapping
   model: opus-5-no-thinking
@@ -52,14 +52,14 @@ correctness.
 
 A first cut of RQ-1.1 used this same workflow pair as a strong/weak probe
 and read it as "no separation", because `verification_pct` came out
-*inverted*: `v3-basic-tdd` scored 1.00 in all five runs while
-`v6.6-lab-split-cc` scored 0.947.
+*inverted*: `baseline-inline-tdd-v1-cc` scored 1.00 in all five runs while
+`exact-hybrid-v6-lab-split-cc` scored 0.947.
 
 That reading was wrong. On `claim-office × opus-5-no-thinking` the two
 workflows separate sharply — just on the decomposition metrics, which the
 elaborate workflow is actually built to move:
 
-| Metric | v3-basic-tdd | v6.6-lab-split-cc | ratio |
+| Metric | baseline-inline-tdd-v1-cc | exact-hybrid-v6-lab-split-cc | ratio |
 |---|---:|---:|---|
 | `cc_longest_function` | 25.0 | **14.0** | 1.8× |
 | `cc_avg_loc_per_function` | 8.4 | **3.2** | 2.6× |
@@ -80,7 +80,7 @@ complexity at the price of nearly twice the code and 21× the refactorings.
 
 The smoke run produced 48 LoC, `cc_longest_function` 7, `cognitive_max` 1,
 `mccabe_max` 2 — already near the floor of what these metrics can express.
-If `v3-basic-tdd` lands in the same place, the kata has **no headroom** for
+If `baseline-inline-tdd-v1-cc` lands in the same place, the kata has **no headroom** for
 workflow effects: there is nothing left to decompose in a 48-line solution.
 
 This is the central risk for `sphinx-score` as a general-purpose kata, and
@@ -89,9 +89,9 @@ models on correctness and still be useless for workflow research.
 
 ## Hypotheses
 
-- **H1 (decomposition gap):** On `sphinx-score`, `v3-basic-tdd` produces
+- **H1 (decomposition gap):** On `sphinx-score`, `baseline-inline-tdd-v1-cc` produces
   measurably longer functions and higher complexity than
-  `v6.6-lab-split-cc`, in the same direction as on claim-office.
+  `exact-hybrid-v6-lab-split-cc`, in the same direction as on claim-office.
   *Refuted if both cells sit at `cc_longest_function` ≈ 7 and
   `cognitive_max` ≈ 1.*
 - **H2 (relative resolution):** The gap is *smaller* on `sphinx-score`
@@ -110,7 +110,7 @@ models on correctness and still be useless for workflow research.
 | clear decomposition gap on sphinx | kata is workflow-sensitive — usable for workflow RQs, not just correctness ones |
 | gap present but much smaller than claim-office | usable as a cheap pre-screen; confirm effects on claim-office before publishing |
 | no gap — both cells at the metric floor | **sphinx-score is a correctness/prompt kata only.** Workflow RQs keep claim-office or game-of-life |
-| gap inverted (v3 decomposes better) | worth its own investigation — would contradict the claim-office pattern |
+| gap inverted (inline-tdd-v1 decomposes better) | worth its own investigation — would contradict the claim-office pattern |
 
 ## Caveats
 

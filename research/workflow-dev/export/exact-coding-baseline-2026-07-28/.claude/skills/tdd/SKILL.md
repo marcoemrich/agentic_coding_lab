@@ -3,7 +3,7 @@ name: tdd
 description: Strict Test-Driven Development workflow (Red-Green-Refactor) with configurable human-in-the-loop checkpoints. Invoke when the user explicitly asks to use TDD, do a TDD kata, or follow the Red-Green-Refactor discipline. Do NOT invoke for general coding tasks where the user has not asked for TDD.
 ---
 
-# TDD Rules — Hybrid (v6, exact-coding baseline)
+# TDD Rules — Hybrid (hybrid-v1, exact-coding baseline)
 
 ## ⚠️ CRITICAL: Skill + Subagent Usage is MANDATORY
 
@@ -37,7 +37,7 @@ Do NOT perform TDD phases without invoking the appropriate skill or agent.
 
 ## Overview
 
-This project follows strict Test-Driven Development practices using the Red-Green-Refactor cycle. v6 keeps red and green in a shared context so the predictions, error messages, and minimal implementations stay coherent — and isolates refactoring so the model evaluates the resulting code on its own merits.
+This project follows strict Test-Driven Development practices using the Red-Green-Refactor cycle. hybrid-v1 keeps red and green in a shared context so the predictions, error messages, and minimal implementations stay coherent — and isolates refactoring so the model evaluates the resulting code on its own merits.
 
 This baseline supports **configurable human-in-the-loop checkpoints** between phases. See `@.claude/rules/human-in-the-loop.md` for the Autonomy Level setting and stop behavior.
 

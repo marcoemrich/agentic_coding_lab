@@ -1,6 +1,6 @@
 # RQ-model-quality-oc — Findings
 
-**Setup**: game-of-life-example-mapping × v5.1-testlist-scope-fix-oc × n=5 per cell (30 runs total, 29 without timeout). As of 2026-05-28.
+**Setup**: game-of-life-example-mapping × exact-single-context-v2-testlist-fix-oc × n=5 per cell (30 runs total, 29 without timeout). As of 2026-05-28.
 
 ## Overview
 
@@ -30,7 +30,7 @@ Code quality as primary outcome (lower = better except where noted); correctness
 | `cost_usd` (mean, $/run) | lower (at equal correctness) | $1.84 | $0.74 | $1.06 | $1.06 | **$0.10** 🏆 | $0.37 |
 | `cost_usd` (mean, $/perfect-run) | lower | $1.84 | $0.74 | $1.06 | $2.65 | **$0.10** 🏆 | $0.46 |
 
-**Trophy rule on correctness gating**: Trophies for quality/efficiency metrics go only to models with `verification_pct = 1.0`. Kimi-K2 drops out of the pool at 0.57 mean (3 of 5 runs below 0.5) — its low `cognitive_max` (9.4), low `lines_of_code` (22.4) and short functions are partly stub artifacts (too few tests). DeepSeek-V4-Pro narrowly drops out of the pool at 0.85 — 4/5 runs are perfect, but 1 run timed out at 0.27 verification, so its low `code_mass` (124) and `lines_of_code` (24.6) do not count as clean winners. `cycle_count` and `refactorings_applied` are ambivalent (more cycles ≠ better, depending on skill compliance) — no trophy. `predictions_total` is exceptionally noted with a direction here: it measures compliance with the v5.1 skill format.
+**Trophy rule on correctness gating**: Trophies for quality/efficiency metrics go only to models with `verification_pct = 1.0`. Kimi-K2 drops out of the pool at 0.57 mean (3 of 5 runs below 0.5) — its low `cognitive_max` (9.4), low `lines_of_code` (22.4) and short functions are partly stub artifacts (too few tests). DeepSeek-V4-Pro narrowly drops out of the pool at 0.85 — 4/5 runs are perfect, but 1 run timed out at 0.27 verification, so its low `code_mass` (124) and `lines_of_code` (24.6) do not count as clean winners. `cycle_count` and `refactorings_applied` are ambivalent (more cycles ≠ better, depending on skill compliance) — no trophy. `predictions_total` is exceptionally noted with a direction here: it measures compliance with the single-context-v2 skill format.
 
 `cognitive_max`, `cognitive_avg` and `cc_longest_function`: Opus and GLM are separated by less than 1 σ — spread rule → both 🏆. At `cc_longest_function` Flash is exactly level with Opus (18.6) → third 🏆.
 

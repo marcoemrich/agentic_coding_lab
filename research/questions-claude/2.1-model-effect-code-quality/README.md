@@ -16,7 +16,7 @@ factors:
     - sonnet-4-6
     - sonnet-4-6-no-thinking
 controls:
-  workflow: v4-exact-subagents
+  workflow: exact-subagents-v1-cc
   kata_base: game-of-life
   prompt: example-mapping
 outcomes:
@@ -46,7 +46,7 @@ How strongly do the production-available models differentiate in code quality wh
 
 ## Motivation
 
-Earlier findings (v1-generation RQ-3-model-and-thinking, deleted in `953841cb`, reachable via git history) show a model ranking on code quality under a weaker workflow setup. This RQ measures the effect **in isolation on the currently strongest workflow (v4-exact-subagents)** and for the first time compares Opus 4.6 ↔ Opus 4.7 ↔ Sonnet 4.6 directly, each with and without thinking. Correctness is measured alongside as a sanity check but is not the object of study — on Game of Life it is expected to be ≈ 100 % for these models.
+Earlier findings (v1-generation RQ-3-model-and-thinking, deleted in `953841cb`, reachable via git history) show a model ranking on code quality under a weaker workflow setup. This RQ measures the effect **in isolation on the currently strongest workflow (exact-subagents-v1-cc)** and for the first time compares Opus 4.6 ↔ Opus 4.7 ↔ Sonnet 4.6 directly, each with and without thinking. Correctness is measured alongside as a sanity check but is not the object of study — on Game of Life it is expected to be ≈ 100 % for these models.
 
 Haiku is deliberately not included: in previous runs Haiku regularly falls below 100 % correctness on Game of Life, which invalidates the code-quality comparison (quality metrics are meaningful only on correct code).
 
@@ -73,9 +73,9 @@ Haiku is deliberately not included: in previous runs Haiku regularly falls below
 
 **Opus 5 note**: `opus-5*` runs natively (`claude-opus-5`, Anthropic list price $5/$25). The native bypass in `run-batch.sh` (blanks `ANTHROPIC_BASE_URL`/`AUTH_TOKEN`/`CUSTOM_HEADERS`/`DEFAULT_*_MODEL` in the `claude` invocation for all bare `claude-*` cli_models) has been **actually implemented** since 2026-07 — previously the comment only described the behavior, so native runs in fact went through the container-global Requesty route and the native alias risked a 403. Older `fable-5`/`opus-4-8` native runs are therefore to be treated as a routing caveat (possibly really Requesty-routed). New `opus-5` runs are cleanly native.
 
-## Why v4-exact-subagents as the Control Workflow?
+## Why exact-subagents-v1-cc as the Control Workflow?
 
-According to the findings so far, v4-exact-subagents is the strongest workflow for code quality on Game of Life (isolated phase contexts, clear red/green/refactor separation). A pure model evaluation should isolate the model signal, so the workflow is pinned — not varied as a factor. A later RQ can address model × workflow interaction.
+According to the findings so far, exact-subagents-v1-cc is the strongest workflow for code quality on Game of Life (isolated phase contexts, clear red/green/refactor separation). A pure model evaluation should isolate the model signal, so the workflow is pinned — not varied as a factor. A later RQ can address model × workflow interaction.
 
 ## Why Fix Prompt = example-mapping?
 
@@ -91,7 +91,7 @@ RQ-prompt-known-kata has shown empirically that on training-known katas (Game of
 
 ```
 Factor:    model      — 10 levels (5 models × {thinking, no-thinking})
-Control:   workflow   — v4-exact-subagents
+Control:   workflow   — exact-subagents-v1-cc
 Control:   kata_base  — game-of-life (+ prompt = example-mapping)
 
 Cells:      10
@@ -105,13 +105,13 @@ Runs:       30 total
 - **H2** (model ranking on code quality): On `code_mass`, `smell_total`, `cc_longest_function`, `mccabe_max`, `cognitive_max` a consistent ranking Fable 5 ≤ Opus 4.8 ≤ Opus 4.7 ≤ Opus 4.6 ≤ Sonnet 4.6 emerges (lower = better; Fable 5 expected at the top as the newest model, without a numeric prediction).
 - **H3** (thinking effect): Within each model, thinking improves code quality (lower `code_mass`, `cognitive_max`); the effect is stronger on Opus than on Sonnet (cf. F-3.x from the v1-generation RQ-3-model-and-thinking, deleted in `953841cb`).
 
-**Falsification of H2** (no consistent ranking across the quality outcomes): the model effect on code quality is not stable on v4 → other workflows could show different model rankings.
+**Falsification of H2** (no consistent ranking across the quality outcomes): the model effect on code quality is not stable on subagents-v1 → other workflows could show different model rankings.
 
-**Falsification of H3** (thinking effect < noise, or reversed): thinking acts differently on v4 than on older workflow setups.
+**Falsification of H3** (thinking effect < noise, or reversed): thinking acts differently on subagents-v1 than on older workflow setups.
 
 ## Caveats
 
-- **(a) Single workflow point**: Only v4-exact-subagents. No workflow generalization — the model ranking could deviate on other workflows.
+- **(a) Single workflow point**: Only exact-subagents-v1-cc. No workflow generalization — the model ranking could deviate on other workflows.
 - **(b) Single kata**: Only Game of Life (library form, example-mapping). Mars-rover as a second code-quality carrier would be a sensible extension but is not included here.
 - **(c) Opus 4.6 via Portkey, not Direct API**: The `opus-4-6-portkey*` variants route via Portkey. Findings are not automatically transferable to Direct-API Opus 4.6 (should that ever become available).
 - **(d) External correctness via module-import adapter**: `verification_pct` is measured via `experiments/katas/game-of-life-verification/` — the adapter imports the `evolve` function directly from `src/game-of-life.{ts,…}` and calls it `steps` times per scenario. No CLI contract needed, hence no CLI overhead shares in the code-quality metrics. The adapter does, however, expect the representation `Cell[]` with `Cell = [number, number]` (tuple array). Other reasonable representations (`boolean[][]`, `Set<string>`, `{x,y}[]`) are not excluded by the kata but fail against this adapter convention — this is intended as a representation-adherence signal.
@@ -123,6 +123,6 @@ See [findings.md](findings.md).
 ## Data Source
 
 All runs in `experiments/runs/` with
-`workflow=v4-exact-subagents`,
+`workflow=exact-subagents-v1-cc`,
 `kata=game-of-life-example-mapping`,
 model ∈ {fable-5, fable-5-no-thinking, opus-4-8, opus-4-8-no-thinking, opus-4-7, opus-4-7-no-thinking, opus-4-6-portkey, opus-4-6-portkey-no-thinking, sonnet-4-6, sonnet-4-6-no-thinking}.

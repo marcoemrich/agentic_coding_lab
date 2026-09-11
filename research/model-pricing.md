@@ -1,11 +1,11 @@
 # Token-Preise Coding-Modelle (Stand 2026-05-29)
 
-Quellen: Anthropic API (claude.com/pricing), OpenRouter API (`/api/v1/models`).
+Quellen: Anthropic API (claude.com/pricing), OpenRouter API (`/api/oneshot-v1/models`).
 Alle Preise in USD pro 1M Token.
 
 ## Requesty-Preise pi-Harness-Modelle (Stand 2026-07-25)
 
-Für die aktuellen pi-/Requesty-Modelle (RQ-model-novel-pi, RQ-model-quality-pi, RQ-harness-requesty). Requesty berechnet den Upstream-Provider-Preis (kein Markup laut Anbieter; älterer Stand nannte 5 %). Preise = **Live-Requesty-Katalog** (`curl https://router.eu.requesty.ai/v1/models`), pro Route aus der `pi_model`-Map in `experiments/docker/run-batch.sh`. Alle Preise USD pro 1M Token.
+Für die aktuellen pi-/Requesty-Modelle (RQ-model-novel-pi, RQ-model-quality-pi, RQ-harness-requesty). Requesty berechnet den Upstream-Provider-Preis (kein Markup laut Anbieter; älterer Stand nannte 5 %). Preise = **Live-Requesty-Katalog** (`curl https://router.eu.requesty.ai/oneshot-v1/models`), pro Route aus der `pi_model`-Map in `experiments/docker/run-batch.sh`. Alle Preise USD pro 1M Token.
 
 | lab-variant | Requesty-Route | Input | Output | Cache Read | Cache? |
 |---|---|---:|---:|---:|:--:|

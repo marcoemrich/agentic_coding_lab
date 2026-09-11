@@ -2,7 +2,7 @@
 
 Model effect on code quality and TDD discipline over the **cursor-cli harness**
 (`cursor-agent`), kata `game-of-life-example-mapping`, workflow
-`v6.2.1-phase-continuation-cursor`. n=5 per cell.
+`exact-hybrid-v4.2-phase-continuation-cursor`. n=5 per cell.
 
 **Coverage is partial.** The `opus-cursor` cell is empty: the Cursor Pro plan's
 monthly Opus allowance was exhausted on 2026-07-28 (`ActionRequiredError`,

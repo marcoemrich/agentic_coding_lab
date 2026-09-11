@@ -1,8 +1,8 @@
-# RQ-1.5: Why-Block-Effekt auf v6.1-Basis (claim-office)
+# RQ-1.5: Why-Block-Effekt auf hybrid-v2-Basis (claim-office)
 
 ## Übersicht
 
-Baseline (`v6.1-hybrid-testlist-scope-fix`, n=8) vs. With-Why (`v6.1-with-why`, n=8) auf `claim-office-example-mapping × opus-4-7-portkey-no-thinking`. Richtungen: ↑ = höher besser, ↓ = kleiner besser.
+Baseline (`exact-hybrid-v2-testlist-fix-cc`, n=8) vs. With-Why (`exact-hybrid-v3-with-why-cc`, n=8) auf `claim-office-example-mapping × opus-4-7-portkey-no-thinking`. Richtungen: ↑ = höher besser, ↓ = kleiner besser.
 
 | Metrik | Richtung | Baseline | with-why |
 |---|---|---:|---:|
@@ -27,7 +27,7 @@ Lesart in zwei Sätzen: with-why ist auf Korrektheit nicht besser (knapp schlech
 
 ## F-1.1 — Why-Blöcke ohne Korrektheits-Effekt, mit deutlichem Disziplin- und Code-Qualitäts-Effekt
 
-**Statement.** Die Hinzufügung der drei lean-Why-Blöcke zu v6.1 (bei voll erhaltenen MUSTs in `commands/red.md` Step 7, `commands/green.md`, `rules/tdd.md`) hat **keinen Korrektheits-Effekt** (verification_pct 1.00 vs 0.91 bei einem einzelnen 0-Cycle-Outlier in with-why; predictions_correct_rate 96.5 % vs 96.2 %), aber **deutliche, gleichgerichtete Effekte auf TDD-Disziplin und Code-Qualität**.
+**Statement.** Die Hinzufügung der drei lean-Why-Blöcke zu hybrid-v2 (bei voll erhaltenen MUSTs in `commands/red.md` Step 7, `commands/green.md`, `rules/tdd.md`) hat **keinen Korrektheits-Effekt** (verification_pct 1.00 vs 0.91 bei einem einzelnen 0-Cycle-Outlier in with-why; predictions_correct_rate 96.5 % vs 96.2 %), aber **deutliche, gleichgerichtete Effekte auf TDD-Disziplin und Code-Qualität**.
 
 **Daten (n=8 pro Zelle).**
 
@@ -41,9 +41,9 @@ Lesart in zwei Sätzen: with-why ist auf Korrektheit nicht besser (knapp schlech
 
 **Rationale.** Die Effektgröße auf Code-Qualität (37–43 % Mean-Reduktion bei Spitzen-Komplexitäts-Metriken) übertrifft die Streuung der Baseline um mehrere σ. Besonders auffällig: with-why **streut auf allen Komplexitäts-Achsen um 82–90 % weniger**. Baseline produziert zwei sehr ausreißerhafte Runs (mccabe_max=14, cognitive_max=21, cc_longest=60), with-why nicht. Mechanistisch plausibel: with-why refactoriert fast doppelt so oft (+87 %), das schiebt die Verteilung der Funktionslängen nach unten und kappt Komplexitäts-Spitzen, bevor sie sich aufbauen.
 
-Hypothese H2 aus dem README (`v6.1-with-why verbessert mindestens eine TDD-Disziplin-Metrik um ≥ +1σ bei invariantem verification_pct`) ist **bestätigt** — und sogar stärker als erwartet, weil der Effekt nicht auf Disziplin beschränkt bleibt, sondern auch die Code-Qualitäts-Metriken voll mitzieht.
+Hypothese H2 aus dem README (`exact-hybrid-v3-with-why-cc verbessert mindestens eine TDD-Disziplin-Metrik um ≥ +1σ bei invariantem verification_pct`) ist **bestätigt** — und sogar stärker als erwartet, weil der Effekt nicht auf Disziplin beschränkt bleibt, sondern auch die Code-Qualitäts-Metriken voll mitzieht.
 
-**Konsequenz für `workflow-construction.md`.** Das Theory-of-Mind-/Why-Block-Pattern (Zeilen 30–47) hatte bisher nur Anthropic-Skill-Creator-Doku als Stütze. Mit diesem Befund existiert eine empirische Stütze aus diesem Repo: "MUST X. Why: Y." schlägt reines "MUST X." auf einer Korrektheits-stabilen Basis (v6.1) deutlich. Pattern als Default-Empfehlung übernehmen.
+**Konsequenz für `workflow-construction.md`.** Das Theory-of-Mind-/Why-Block-Pattern (Zeilen 30–47) hatte bisher nur Anthropic-Skill-Creator-Doku als Stütze. Mit diesem Befund existiert eine empirische Stütze aus diesem Repo: "MUST X. Why: Y." schlägt reines "MUST X." auf einer Korrektheits-stabilen Basis (hybrid-v2) deutlich. Pattern als Default-Empfehlung übernehmen.
 
 **Caveat.** Single Kata (claim-office), single Modell (opus-4-7-portkey-no-thinking). Generalisierung auf andere Katas oder Modelle steht aus. Auch ist offen, ob Why-Blöcke an *allen* MUST-Stellen (statt nur den drei lean-Stellen) den Effekt verstärken oder ob es einen abnehmenden Grenznutzen gibt.
 

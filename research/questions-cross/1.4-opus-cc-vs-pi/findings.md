@@ -1,8 +1,8 @@
 # RQ-model-quality-cc-vs-pi — Findings
 
-Opus (`opus-4-8`) via the **Claude Code** vs. the **pi path**, each **with and without thinking**, kata `game-of-life-example-mapping`, v6.2 workflow generation. n=5 per cell (20 runs), all correct (Correctness internal 100 %).
+Opus (`opus-4-8`) via the **Claude Code** vs. the **pi path**, each **with and without thinking**, kata `game-of-life-example-mapping`, hybrid-v4 workflow generation. n=5 per cell (20 runs), all correct (Correctness internal 100 %).
 
-CC cells: `v6.2-with-why-cleaned` (`opus-4-8-requesty` = thinking, `opus-4-8-no-thinking`). pi cells: `v6.2.1-phase-continuation-pi` (`opus-4-8` = thinking, `opus-4-8-no-thinking`). All routed via Requesty/Vertex-EU.
+CC cells: `exact-hybrid-v4-cleaned-cc` (`opus-4-8-requesty` = thinking, `opus-4-8-no-thinking`). pi cells: `exact-hybrid-v4.2-phase-continuation-pi` (`opus-4-8` = thinking, `opus-4-8-no-thinking`). All routed via Requesty/Vertex-EU.
 
 ## Overview
 
@@ -34,7 +34,7 @@ Across both thinking levels, CC-Opus writes less complex code than pi-Opus:
 
 The harness difference (CC ~5 vs. pi ~8–10) is larger and more consistent than the thinking difference *within* a harness. The harness/workflow path is therefore the stronger driver of the code-quality profile, not the reasoning level.
 
-**Caveat (workflow line):** CC runs `v6.2-with-why-cleaned` (`commands`/`rules`), pi runs `v6.2.1-phase-continuation` (`skills`/`extensions`/`AGENTS.md`) — two lines of the v6.2 generation, treated as equivalent by convention. The effect is harness OR workflow line, not separable.
+**Caveat (workflow line):** CC runs `exact-hybrid-v4-cleaned-cc` (`commands`/`rules`), pi runs `v6.2.1-phase-continuation` (`skills`/`extensions`/`AGENTS.md`) — two lines of the hybrid-v4 generation, treated as equivalent by convention. The effect is harness OR workflow line, not separable.
 
 ---
 
@@ -61,7 +61,7 @@ The parsimony/complexity tradeoff from the cursor RQ is confirmed: the more pars
 
 ## Caveats
 
-- **Workflow line (central):** CC (with-why-cleaned) and pi (phase-continuation) are two lines of the v6.2 generation; harness and line are not separable (F-1.1).
+- **Workflow line (central):** CC (with-why-cleaned) and pi (phase-continuation) are two lines of the hybrid-v4 generation; harness and line are not separable (F-1.1).
 - `cost_usd` of all cells via Requesty — comparable.
 - `verification_pct` = 100 % mirrors `tests_passing` (game-of-life has no external suite).
 - The elevated σ of the pi-no-thinking cell is real (genuine density-outlier run), not a parser artifact.

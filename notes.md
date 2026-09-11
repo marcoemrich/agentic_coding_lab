@@ -2,9 +2,9 @@
 
 ## v6.5 Korrektheits-Rückschlag (Optimierungs-Kette 16.-18.05.2026, Rebuild 22.05.2026)
 
-Lange Quality-Optimierungskette **v6-hybrid → v6.5-lean → v6.5.1-audited → v6.5.2-bullets-cut → v6.5.3-targeted-cuts → v6.5.4-refactor-cut-only** (mit v6.6-leaner) lief vom **16.05. bis 18.05.2026** auf game-of-life und verbesserte Code-Qualität kontinuierlich — v6.5.4 wurde "Quality-Champion" (cognitive_max −29 %, 100 % Pred-Rate).
+Lange Quality-Optimierungskette **exact-hybrid-v1-cc → v6.5-lean → v6.5.1-audited → v6.5.2-bullets-cut → v6.5.3-targeted-cuts → v6.5.4-refactor-cut-only** (mit v6.6-leaner) lief vom **16.05. bis 18.05.2026** auf game-of-life und verbesserte Code-Qualität kontinuierlich — v6.5.4 wurde "Quality-Champion" (cognitive_max −29 %, 100 % Pred-Rate).
 
-**Der Rückschlag (entdeckt 18.05.2026):** Erste claim-office-Verifikation von v6.5-lean × opus-4-7 zeigte `verification_pct`-Kollaps von **1.00 (v6-hybrid) auf 0.38 (v6.5-lean)**, defekt in der gesamten Folgekette (0.36–0.73). Die ~5 Iterationen Quality-Tuning liefen auf einem Workflow, der auf novel Code systematisch falsche Ergebnisse produzierte. Debug auf claim-office war nötig, um das Problem überhaupt zu finden — game-of-life-only-Messung der Kette hatte den Bruch zwei Tage lang versteckt.
+**Der Rückschlag (entdeckt 18.05.2026):** Erste claim-office-Verifikation von v6.5-lean × opus-4-7 zeigte `verification_pct`-Kollaps von **1.00 (exact-hybrid-v1-cc) auf 0.38 (v6.5-lean)**, defekt in der gesamten Folgekette (0.36–0.73). Die ~5 Iterationen Quality-Tuning liefen auf einem Workflow, der auf novel Code systematisch falsche Ergebnisse produzierte. Debug auf claim-office war nötig, um das Problem überhaupt zu finden — game-of-life-only-Messung der Kette hatte den Bruch zwei Tage lang versteckt.
 
 ### Täter 1 — skill-creator SKILL
 
@@ -20,13 +20,13 @@ Parser-seitig alles safe (keine Marker zerstört). Verhaltens-seitig: Bruch. **L
 
 ### Täter 2 (unabhängig) — test-list-scope-fix
 
-Parallel hatte v4 vs v4.1 gezeigt, dass `commands/test-list.md` mit Scope "base functionality ONLY / 3-6 tests" zu wenig Coverage erzwingt; v4.1 nutzt "cover every rule/example/❓ + expected values". Derselbe Fix musste in die neue v6-Basis portiert werden (`v6.1-hybrid-testlist-scope-fix`) — sonst gefixt-gegen-ungefixt-Confound in RQ 4.x.
+Parallel hatte v4 vs v4.1 gezeigt, dass `commands/test-list.md` mit Scope "base functionality ONLY / 3-6 tests" zu wenig Coverage erzwingt; v4.1 nutzt "cover every rule/example/❓ + expected values". Derselbe Fix musste in die neue v6-Basis portiert werden (`exact-hybrid-v2-testlist-fix-cc`) — sonst gefixt-gegen-ungefixt-Confound in RQ 4.x.
 
 ### Aufräum-Run (neuer langer Optimierungs-Lauf)
 
 - Alte v6.5-Kette → `experiments/workflows/_archive/` (Lookup ignoriert `_`-Präfix)
 - Alte RQs (2.x/3.x) → `research/_archive/workflow-dev-v1/` (dieses Archiv am 2026-08-11 in `953841cb` gelöscht; nur noch über die Git-Historie erreichbar)
-- Neue Basis `v6.1-hybrid-testlist-scope-fix` = v6-hybrid + test-list-scope-fix (Diff = nur 2 Files: `test-list.md` + zwei "BASE FUNCTIONALITY ONLY"-Reste in `tdd.md`)
+- Neue Basis `exact-hybrid-v2-testlist-fix-cc` = exact-hybrid-v1-cc + test-list-scope-fix (Diff = nur 2 Files: `test-list.md` + zwei "BASE FUNCTIONALITY ONLY"-Reste in `tdd.md`)
 - Rezept jedes alten Cuts in `research/workflow-dev/v6-reduction-recipe.md` zur Wiederanwendung auf reparierter Basis
 - Neue RQs `1.1-pep-effect-v6.1` … `1.5-why-block-effect-v6.1` re-validieren die Cuts isoliert auf neuer Basis, **mit** claim-office-Smoke (gestartet 23.-24.05.2026)
 
@@ -44,11 +44,11 @@ Arbeitsannahme war: Opus 4.6 und 4.7 liefern auf den Workflows grundsätzlich gl
 
 | Workflow | opus-4-7 | opus-4-6 |
 |---|---:|---:|
-| v4-exact-subagents | 0.67 | **0.93** |
-| v5-exact-single-context | 0.87 | 0.87 |
-| v6-hybrid | **1.00** | 0.68 |
+| exact-subagents-v1-cc | 0.67 | **0.93** |
+| exact-single-context-v1-cc | 0.87 | 0.87 |
+| exact-hybrid-v1-cc | **1.00** | 0.68 |
 
-Mechanismus (F-workflow-model.2): v6-hybrid delegiert Orchestrierung an das Modell (Skill-Invocation im shared Context) — das beherrscht 4.7, 4.6 verliert in ~40 % der Runs die Claim-Hälfte. v4 gibt jeder Phase einen expliziten Subagent-Prompt — stützt 4.6, macht 4.7 auf Mehrdeutigkeiten "überkreativ".
+Mechanismus (F-workflow-model.2): exact-hybrid-v1-cc delegiert Orchestrierung an das Modell (Skill-Invocation im shared Context) — das beherrscht 4.7, 4.6 verliert in ~40 % der Runs die Claim-Hälfte. v4 gibt jeder Phase einen expliziten Subagent-Prompt — stützt 4.6, macht 4.7 auf Mehrdeutigkeiten "überkreativ".
 
 **Warum der Wechsel überhaupt nötig war:** Portkey hatte zu dem Zeitpunkt nur 4.6 verfügbar. Mein Direct-API-4.7-Account war nach 2-3 Tagen aktiver v6.5-Optimierungs-Arbeit (15.-18.05.) durch das **Wochen-Ratelimit** aufgebraucht — erste Portkey-4.6-Runs starteten am 16.05., voller Wechsel ab 19.05. (claim-office-Verifikation lief nur noch auf Portkey-4.6). 4.7-Zugriff erst wieder ab ~22.05. Workflow-Arbeit unter Zeitdruck zwang den Wechsel.
 
@@ -77,7 +77,7 @@ Praktische Beobachtung: n=3 ist in vielen Zellen **nicht aussagefähig** — Mit
 | Volle Rangordnung über 5+ Workflows | n=10 zeigt schon Restunsicherheit |
 | Tail-Quantile (P95/P99, Worst-Case-Budget) | n≥30 |
 | Hoch-σ-Workflows (v5 auf Tokens, v5 auf mutation_score) | n≥10 |
-| Korrektheits-Smoke (binär, claim-office unter v6-hybrid) | n=3 reicht wenn alle grün; bei Mix muss n≥5 |
+| Korrektheits-Smoke (binär, claim-office unter exact-hybrid-v1-cc) | n=3 reicht wenn alle grün; bei Mix muss n≥5 |
 
 **Was offen ist:** Die Subsampling-Antwort ("ab welchem n verlässlich") ist **modell-, kata- und metrik-spezifisch**. RQ-stability-Daten gelten für opus-4-7-no-thinking × game-of-life × Code-Komplexität. Übertragung auf claim-office (Korrektheit) und andere Modelle ist nicht gemessen — Caveats (a)/(b) im RQ-README dokumentieren das.
 
@@ -89,7 +89,7 @@ Praktische Beobachtung: n=3 ist in vielen Zellen **nicht aussagefähig** — Mit
 
 ## v4-Wallclock × Single-Shard-Pflicht = zähe Arbeit (akut während v6.5-Optimierung 16.-22.05.2026)
 
-v4-exact-subagents ist auf Wallclock der teuerste Workflow: typisch ~14 min/Run, Worst-Case **~65 min/Run** (RQ-stability F-stability.5, wallclock-σ=984 s, einzelner Run 3923 s = 5× Median). Grund: vier Phasen (test-list/red/green/refactor) als isolierte Task-Subagents, jede mit eigenem Context-Cold-Start.
+exact-subagents-v1-cc ist auf Wallclock der teuerste Workflow: typisch ~14 min/Run, Worst-Case **~65 min/Run** (RQ-stability F-stability.5, wallclock-σ=984 s, einzelner Run 3923 s = 5× Median). Grund: vier Phasen (test-list/red/green/refactor) als isolierte Task-Subagents, jede mit eigenem Context-Cold-Start.
 
 **Sharding-Constraint:** Direct-API-Batches müssen single-shard laufen ([[feedback-direct-single-shard]]) — bei Rate-Limit-Hit verliert man sonst alle parallelen Container synchron (Backoff 60 s → 5 min → 30 min → 1 h → 2 h). Risiko, viele Runs zu verlieren, ist bei v4 besonders hoch, weil jeder verlorene Run teuer nachzuholen ist.
 
@@ -110,10 +110,10 @@ v4-exact-subagents ist auf Wallclock der teuerste Workflow: typisch ~14 min/Run,
 
 Ausgangspunkt der ganzen Aufarbeitung war: die ursprüngliche Kata-Auswahl war methodisch schwach. Drei verkettete Probleme:
 
-**(1) Triviale Katas → One-Shot statt TDD-Messung (Drop am 04.05.2026):** string-calculator und pixel-art-scaler waren so klein (string-calculator ~3 LoC Lösung), dass alle Workflows — auch v1-oneshot — sie korrekt one-shotten konnten. Damit messen sie keinen TDD-Effekt: jeder Workflow erreicht 100 % Korrektheit, Smell-Counts sind 0, kein Signal zwischen den Zellen. Zusätzlich nie-gelaufene Katas (chimera-score, diamond, word-score) raus. Reduktion 137 Runs → 68 Runs.
+**(1) Triviale Katas → One-Shot statt TDD-Messung (Drop am 04.05.2026):** string-calculator und pixel-art-scaler waren so klein (string-calculator ~3 LoC Lösung), dass alle Workflows — auch baseline-oneshot-v1-cc — sie korrekt one-shotten konnten. Damit messen sie keinen TDD-Effekt: jeder Workflow erreicht 100 % Korrektheit, Smell-Counts sind 0, kein Signal zwischen den Zellen. Zusätzlich nie-gelaufene Katas (chimera-score, diamond, word-score) raus. Reduktion 137 Runs → 68 Runs.
 
 **(2) Trainings-Bekanntheit → Lösungs-Verzerrung (game-of-life ist Trainingsdaten):** Game of Life ist eine der bekanntesten Katas; die kanonische Lösung steht in Trainingsdaten praktisch jedes LLM. Konsequenzen:
-  - Workflow-Effekte können durch "Modell kennt die Lösung schon"-Bias maskiert werden — v1-oneshot funktioniert auf GoL ungewöhnlich gut.
+  - Workflow-Effekte können durch "Modell kennt die Lösung schon"-Bias maskiert werden — baseline-oneshot-v1-cc funktioniert auf GoL ungewöhnlich gut.
   - TDD-Hints in Prompts wirken als Trigger (Data-Poisoning); deshalb **10.04. TDD-Hints entfernt**, **02.05. zusätzlich vitest-Hints entfernt**.
   - **Trotzdem nutzbar** für Untersuchungen, die genau diesen Bias kontrollieren oder nicht treffen: Code-Qualitäts-Vergleiche (Form der Lösung) bei konstantem Kata, Reduktions-Validierungen (Bias konstant über Iterationen).
   - **Untauglich** für Korrektheits-Aussagen über "kann der Workflow novel code?" — dafür braucht es novel Katas.
@@ -205,7 +205,7 @@ Tatsächlich gelaufen wurden ~235 Runs (alte Studie, Stand 11.02.2026, archivier
 
 Jeder CLI-Version-Bump bricht etwas anderes, und das Symptom ist nie ein klarer Fehler. Konkrete Inzidenten:
 
-- **2.1.37 (Februar 2026):** Hängt indefinit auf `claude --print`, wenn cwd ein `.claude/agents/`-Verzeichnis enthält (v4-exact-subagents-Workflow). Symptom: `run.log` 0 bytes, exit 124 nach Timeout. Betrifft Haiku, Sonnet, Opus gleichermaßen — also kein Modell-Issue, sondern CLI-Bug. Tage verloren mit falschen "Modell-ist-defekt"-Hypothesen, bevor die CLI als Täter klar war.
+- **2.1.37 (Februar 2026):** Hängt indefinit auf `claude --print`, wenn cwd ein `.claude/agents/`-Verzeichnis enthält (exact-subagents-v1-cc-Workflow). Symptom: `run.log` 0 bytes, exit 124 nach Timeout. Betrifft Haiku, Sonnet, Opus gleichermaßen — also kein Modell-Issue, sondern CLI-Bug. Tage verloren mit falschen "Modell-ist-defekt"-Hypothesen, bevor die CLI als Täter klar war.
 - **2.1.126 (Ende April):** Regrediert; will `~/.claude.json` als Datei (Geschwister von `.claude/`-Verzeichnis), die wir nicht provisionieren → silent exit ohne Output. Wieder kein Error-Signal, nur leerer Output.
 - **2.1.107 (aktueller Pin):** Verifiziert: Smoke-Test v3+Sonnet 28 s, v4+Opus-4.7+thinking 569 s — alle OK.
 

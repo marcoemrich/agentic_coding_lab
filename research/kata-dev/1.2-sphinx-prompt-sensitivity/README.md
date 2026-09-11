@@ -10,7 +10,7 @@ factors:
     - prose             # same rule text, no examples
 controls:
   model: opus-5-no-thinking
-  workflow: v6.6-lab-split-cc
+  workflow: exact-hybrid-v6-lab-split-cc
 outcomes:
   # primary: the example-mapping lever
   - verification_pct

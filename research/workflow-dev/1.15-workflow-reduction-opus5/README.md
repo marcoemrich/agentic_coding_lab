@@ -1,16 +1,16 @@
 ---
 id: RQ-workflow-reduction-opus5
-question: "How much of the v6.6 architecture can be removed on opus-5 before code quality degrades — and how much of its result comes from the APP subordination patch (v6.7) rather than from the end-refactor phase (v6.8) or the isolated refactor subagent (v5.2)?"
+question: "How much of the hybrid-v6 architecture can be removed on opus-5 before code quality degrades — and how much of its result comes from the APP subordination patch (hybrid-v7) rather than from the end-refactor phase (hybrid-v8) or the isolated refactor subagent (single-context-v3)?"
 factors:
   workflow_x_prompt:
     # new cells — the reduction chain, one factor per step
-    - {workflow: v6.7-app-subordinate-cc,        prompt: example-mapping}  # v6.6 plus APP subordination patch
-    - {workflow: v6.8-no-end-refactor-cc,        prompt: example-mapping}  # v6.7 minus end-refactor phase
-    - {workflow: v5.2-no-subagent-cc,            prompt: example-mapping}  # v6.8 minus isolated subagent
-    # reference cells — already filled: v6.6 on both katas, v6.1/v5.1 on game-of-life only
-    - {workflow: v6.6-lab-split-cc,              prompt: example-mapping}  # upper bound: end-refactor + subagent
-    - {workflow: v6.1-hybrid-testlist-scope-fix, prompt: example-mapping}  # the 86%/60% compromise
-    - {workflow: v5.1-testlist-scope-fix,        prompt: example-mapping}  # shared-context predecessor of v5.2
+    - {workflow: exact-hybrid-v7-app-subordinate-cc,        prompt: example-mapping}  # hybrid-v6 plus APP subordination patch
+    - {workflow: exact-hybrid-v8-no-end-refactor-cc,        prompt: example-mapping}  # hybrid-v7 minus end-refactor phase
+    - {workflow: exact-single-context-v3-no-subagent-cc,            prompt: example-mapping}  # hybrid-v8 minus isolated subagent
+    # reference cells — already filled: hybrid-v6 on both katas, hybrid-v2/single-context-v2 on game-of-life only
+    - {workflow: exact-hybrid-v6-lab-split-cc,              prompt: example-mapping}  # upper bound: end-refactor + subagent
+    - {workflow: exact-hybrid-v2-testlist-fix-cc, prompt: example-mapping}  # the 86%/60% compromise
+    - {workflow: exact-single-context-v2-testlist-fix-cc,        prompt: example-mapping}  # shared-context predecessor of single-context-v3
   kata_base: [sphinx-score, game-of-life]
 controls:
   model: opus-5-no-thinking
@@ -24,7 +24,7 @@ outcomes:
   - mccabe_max
   - smell_total
   - code_mass
-  # correctness — v5.1 has a documented failure mode (F-1.5), v5.2 inherits its architecture
+  # correctness — single-context-v2 has a documented failure mode (F-1.5), single-context-v3 inherits its architecture
   - verification_pct
   - tests_passing
   - completed_within_budget
@@ -47,38 +47,38 @@ status: open
 on opus-5 (F-1.1) — more architecture yields better decomposition on both katas. But it
 also quantified the price, and the price is where the decision actually sits:
 
-| claim-office (RQ 4.5) | `cc_avg_loc_per_function` | share of the v6.6 gain | tokens | share of v6.6 cost |
+| claim-office (RQ 4.5) | `cc_avg_loc_per_function` | share of the hybrid-v6 gain | tokens | share of hybrid-v6 cost |
 |---|---:|---:|---:|---:|
-| v3 (baseline) | 9.18 | 0 % | 4 M | 3 % |
-| v5.1 | 5.89 | 55 % | 83 M | 60 % |
-| v6.1 | 4.04 | **86 %** | 82 M | **60 %** |
-| v6.6 | 3.21 | 100 % | 137 M | 100 % |
+| inline-tdd-v1 (baseline) | 9.18 | 0 % | 4 M | 3 % |
+| single-context-v2 | 5.89 | 55 % | 83 M | 60 % |
+| hybrid-v2 | 4.04 | **86 %** | 82 M | **60 %** |
+| hybrid-v6 | 3.21 | 100 % | 137 M | 100 % |
 
-**v6.1 delivers 86 % of the decomposition gain at 60 % of the cost.** The marginal step from
-v6.1 to v6.6 — adding the end-refactor phase — buys the last 14 % for a 67 % token increase
+**hybrid-v2 delivers 86 % of the decomposition gain at 60 % of the cost.** The marginal step from
+hybrid-v2 to hybrid-v6 — adding the end-refactor phase — buys the last 14 % for a 67 % token increase
 and a 111 % wallclock increase.
 
-That raises the question this RQ asks: v6.6 and v6.1 differ in *two* things (the
+That raises the question this RQ asks: hybrid-v6 and hybrid-v2 differ in *two* things (the
 end-refactor phase and the lab-split refactoring of the rule files), so the 14 % cannot be
-attributed cleanly. And below v6.1 sits a second removable component — the isolated refactor
+attributed cleanly. And below hybrid-v2 sits a second removable component — the isolated refactor
 subagent itself.
 
 ## Why sphinx-score replaces claim-office
 
 The measurement above comes from claim-office, but this RQ runs on **sphinx-score**
-instead. The reason is cost: v6.6 needs 137 M tokens and 93 minutes per claim-office run
+instead. The reason is cost: hybrid-v6 needs 137 M tokens and 93 minutes per claim-office run
 against **19 M and 25 minutes** on sphinx — a factor of 7. The full chain on claim-office
 would cost roughly 1.8–2.5 Bn tokens; on sphinx it is ~0.5 Bn, for *more* cells.
 
 Sphinx is a viable substitute rather than a downgrade: it is the newer novel kata with a
-CLI contract and an external verification suite, and v6.6 already reaches
+CLI contract and an external verification suite, and hybrid-v6 already reaches
 `cc_avg_loc_per_function` 3.54 there against 3.21 on claim-office, at `verification_pct`
 1.00 against 0.95. The architecture differentiates on it in the same direction and to a
 similar degree.
 
 Two consequences, both accepted:
 
-- **The v3 → v6.6 span is narrower on sphinx** (8.38 → 3.54, factor 2.4) than on
+- **The inline-tdd-v1 → hybrid-v6 span is narrower on sphinx** (8.38 → 3.54, factor 2.4) than on
   claim-office (9.18 → 3.21, factor 2.9). Differences between adjacent chain steps are
   correspondingly smaller and may fall inside σ where they would not have on claim-office.
 - **Cross-RQ comparisons to RQ 4.5 change the kata.** Statements pairing a cell here with
@@ -89,46 +89,46 @@ Two consequences, both accepted:
 
 The chain runs from the current default down to the leanest variant, one component per
 step. All three new cells carry the APP subordination patch (see below); the two older
-reference cells do not, which is why v6.7 is needed to keep the steps separable.
+reference cells do not, which is why hybrid-v7 is needed to keep the steps separable.
 
 | Workflow | per-cycle refactor | end-refactor | lab-split | APP patch | Status |
 |---|---|---|---|---|---|
-| `v6.6-lab-split-cc` | subagent | ✓ | ✓ | — | reference (n=5) |
-| `v6.7-app-subordinate-cc` | subagent | ✓ | ✓ | ✓ | **new cell** |
-| `v6.8-no-end-refactor-cc` | subagent | — | ✓ | ✓ | **new cell** |
-| `v5.2-no-subagent-cc` | skill (shared ctx) | — | ✓ | ✓ | **new cell** |
-| `v6.1-hybrid-testlist-scope-fix` | subagent | — | — | — | reference (n=5) |
-| `v5.1-testlist-scope-fix` | skill (shared ctx) | — | — | — | reference (n=5) |
+| `exact-hybrid-v6-lab-split-cc` | subagent | ✓ | ✓ | — | reference (n=5) |
+| `exact-hybrid-v7-app-subordinate-cc` | subagent | ✓ | ✓ | ✓ | **new cell** |
+| `exact-hybrid-v8-no-end-refactor-cc` | subagent | — | ✓ | ✓ | **new cell** |
+| `exact-single-context-v3-no-subagent-cc` | skill (shared ctx) | — | ✓ | ✓ | **new cell** |
+| `exact-hybrid-v2-testlist-fix-cc` | subagent | — | — | — | reference (n=5) |
+| `exact-single-context-v2-testlist-fix-cc` | skill (shared ctx) | — | — | — | reference (n=5) |
 
 **The chain is single-factor throughout.** Each consecutive pair differs in exactly one
-component, which is why v6.7 is a cell rather than a shortcut:
+component, which is why hybrid-v7 is a cell rather than a shortcut:
 
-- **v6.6 → v6.7** isolates the *APP subordination patch*. Same architecture, same phases;
+- **hybrid-v6 → hybrid-v7** isolates the *APP subordination patch*. Same architecture, same phases;
   only the refactor agents' wording about mass changes.
-- **v6.7 → v6.8** isolates the *end-refactor phase*. Both carry the patch, both use the
+- **hybrid-v7 → hybrid-v8** isolates the *end-refactor phase*. Both carry the patch, both use the
   isolated subagent per cycle.
-- **v6.8 → v5.2** isolates the *isolated refactor subagent*. Same rule files, same patch,
+- **hybrid-v8 → single-context-v3** isolates the *isolated refactor subagent*. Same rule files, same patch,
   same absence of an end-refactor phase; the only difference is whether refactoring runs in
   a fresh context or the shared one.
 
 The two older reference cells sit outside the chain and are read with their confounds named:
 
-- **v6.8 → v6.1** differs in the lab-split *and* the APP patch.
-- **v5.2 → v5.1** differs in the lab-split, the APP patch *and* the command/agent file
+- **hybrid-v8 → hybrid-v2** differs in the lab-split *and* the APP patch.
+- **single-context-v3 → single-context-v2** differs in the lab-split, the APP patch *and* the command/agent file
   layout.
 
 They are kept because they anchor the new cells against measured data at zero run cost, and
-because v5.1 is where the failure mode of H4 was observed.
+because single-context-v2 is where the failure mode of H4 was observed.
 
 ## The APP subordination patch
 
 `RQ-architecture-axis-opus5` F-1.6 replicated a finding first made on Sol: Code Mass (APP)
-ranks the cells **opposite** to decomposition. v6.6 has the best `cc_avg_loc_per_function`
-on both katas *and* the highest APP mass (claim-office 1002.8 against v5.1's 569.0).
+ranks the cells **opposite** to decomposition. hybrid-v6 has the best `cc_avg_loc_per_function`
+on both katas *and* the highest APP mass (claim-office 1002.8 against single-context-v2's 569.0).
 
-The v6.6 refactor agents nonetheless instruct "Lower mass = Better code (generally)" and
+The hybrid-v6 refactor agents nonetheless instruct "Lower mass = Better code (generally)" and
 soften the conflict to "Rule 2 trumps APP". The patch — ported from
-`v6.7-app-subordinate-pi` — makes the subordination binding and supplies the arithmetic
+`exact-hybrid-v7-app-subordinate-pi` — makes the subordination binding and supplies the arithmetic
 reason:
 
 > Extracting logic into a named function almost always *raises* APP mass. The new function
@@ -138,92 +138,92 @@ reason:
 
 Concretely it forbids what the old wording permitted: reverting an extraction because mass
 rose, inlining a well-named function to lower mass, and letting APP keep the end-refactor
-iteration loop open. In `end-refactor.md` it also flips the worked example — v6.6's example
+iteration loop open. In `end-refactor.md` it also flips the worked example — hybrid-v6's example
 showed an Extract-Method being *reverted* for exactly the reason the patch now rules out.
 
 **Consequence for this RQ:** the patch is present in all three new cells and absent from all
-three reference cells. `v6.7-app-subordinate-cc` exists precisely to measure it in
-isolation — it is v6.6 with nothing changed but the mass wording. Without that cell, every
-statement about v6.8 would mix "end-refactor removed" with "APP patch added"; with it, both
+three reference cells. `exact-hybrid-v7-app-subordinate-cc` exists precisely to measure it in
+isolation — it is hybrid-v6 with nothing changed but the mass wording. Without that cell, every
+statement about hybrid-v8 would mix "end-refactor removed" with "APP patch added"; with it, both
 are separable.
 
-v6.7 is the expensive cell in this RQ: it inherits v6.6's end-refactor phase, so it runs at
-v6.6 prices (~19 M tokens, ~25 min per sphinx run; ~15 M and ~19 min on game-of-life). Ten
+hybrid-v7 is the expensive cell in this RQ: it inherits hybrid-v6's end-refactor phase, so it runs at
+hybrid-v6 prices (~19 M tokens, ~25 min per sphinx run; ~15 M and ~19 min on game-of-life). Ten
 runs of it are roughly 0.17 Bn tokens — about a third of the RQ's budget for one factor.
 On claim-office the same cell would have cost 0.8 Bn, which is the main reason the kata
 was switched.
 
 ## Hypotheses
 
-- **H0 (the APP patch does something).** v6.7 beats v6.6 on `cc_avg_loc_per_function` at
+- **H0 (the APP patch does something).** hybrid-v7 beats hybrid-v6 on `cc_avg_loc_per_function` at
   comparable cost — the refactor agents, no longer told to minimise mass, stop trading
   extraction for compactness.
-  → The patch is worth carrying in every downstream workflow. If v6.7 ≈ v6.6 instead, the
-  patch is inert and the v6.8/v5.2 results can be read as pure architecture effects.
-- **H1 (end-refactor is the expensive increment).** v6.8 lands near v6.1 on decomposition
-  at markedly fewer tokens than v6.7, confirming that the end-refactor phase buys its
+  → The patch is worth carrying in every downstream workflow. If hybrid-v7 ≈ hybrid-v6 instead, the
+  patch is inert and the hybrid-v8/single-context-v3 results can be read as pure architecture effects.
+- **H1 (end-refactor is the expensive increment).** hybrid-v8 lands near hybrid-v2 on decomposition
+  at markedly fewer tokens than hybrid-v7, confirming that the end-refactor phase buys its
   increment at disproportionate cost.
-  → Recommend v6.8 as the default; keep v6.6/v6.7 for correctness-critical work only.
-- **H2 (the APP patch recovers the gap).** v6.8 reaches v6.7-level decomposition at
+  → Recommend hybrid-v8 as the default; keep hybrid-v6/hybrid-v7 for correctness-critical work only.
+- **H2 (the APP patch recovers the gap).** hybrid-v8 reaches v6.7-level decomposition at
   v6.1-level cost, because the per-cycle agent already extracts what the end phase would
   have.
-  → The end-refactor phase is redundant on opus-5; v6.8 becomes the default outright.
-- **H3 (the subagent is what matters).** v5.2 degrades markedly against v6.8 on
+  → The end-refactor phase is redundant on opus-5; hybrid-v8 becomes the default outright.
+- **H3 (the subagent is what matters).** single-context-v3 degrades markedly against hybrid-v8 on
   decomposition, showing the isolated context is the load-bearing component and the
   end-refactor phase is not.
-  → Reduction stops at v6.8.
-- **H4 (v5.2 inherits v5.1's instability).** v5.2 shows the early-termination failure mode
-  documented in F-1.5 — on claim-office v5.1 ran 0 / 0.93 / 1 / 1 / 1 on
+  → Reduction stops at hybrid-v8.
+- **H4 (single-context-v3 inherits single-context-v2's instability).** single-context-v3 shows the early-termination failure mode
+  documented in F-1.5 — on claim-office single-context-v2 ran 0 / 0.93 / 1 / 1 / 1 on
   `verification_pct`, with the failing run stopping after 2 cycles with 6 functions and 60
   green self-written tests. Whether sphinx exposes the same mode is itself open: it is a
   novel kata with a CLI contract, but smaller than claim-office.
   → Shared-context refactoring is not viable for correctness-critical katas regardless of
-  its quality numbers. **This is the outcome that would rule v5.2 out even if it wins on
+  its quality numbers. **This is the outcome that would rule single-context-v3 out even if it wins on
   decomposition.**
 
 ## Reference values (opus-5-no-thinking, from RQ-architecture-axis-opus5)
 
-**sphinx-score-example-mapping** — only the two ends of the chain exist; v5.1 and v6.1 are
+**sphinx-score-example-mapping** — only the two ends of the chain exist; single-context-v2 and hybrid-v2 are
 filled by this RQ:
 
 | Workflow | n | verification_pct | cc_avg_loc_per_function | cognitive_max | smell_total | tokens | duration |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| v3 (context, not a cell) | 6 | 0.97 | 8.38 | 1.5 | 0.0 | 3 M | 4 min |
-| v5.1 | — | — | — | — | — | — | — |
-| v6.1 | — | — | — | — | — | — | — |
-| v6.6 | 6 | 1.00 | 3.54 | 1.0 | 0.0 | 19 M | 25 min |
+| inline-tdd-v1 (context, not a cell) | 6 | 0.97 | 8.38 | 1.5 | 0.0 | 3 M | 4 min |
+| single-context-v2 | — | — | — | — | — | — | — |
+| hybrid-v2 | — | — | — | — | — | — | — |
+| hybrid-v6 | 6 | 1.00 | 3.54 | 1.0 | 0.0 | 19 M | 25 min |
 
 **game-of-life-example-mapping** — complete:
 
 | Workflow | n | verification_pct | cc_avg_loc_per_function | cognitive_max | smell_total | tokens | duration |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| v3 (context, not a cell) | 6 | 1.00 | 6.48 | 7.17 | 0.0 | 2 M | 3 min |
-| v5.1 | 5 | 1.00 | 4.12 | 1.8 | 0.0 | 12 M | 7 min |
-| v6.1 | 5 | 1.00 | 4.54 | 1.8 | 1.2 | 8 M | 10 min |
-| v6.6 | 5 | 1.00 | 3.57 | 1.2 | 0.0 | 15 M | 19 min |
+| inline-tdd-v1 (context, not a cell) | 6 | 1.00 | 6.48 | 7.17 | 0.0 | 2 M | 3 min |
+| single-context-v2 | 5 | 1.00 | 4.12 | 1.8 | 0.0 | 12 M | 7 min |
+| hybrid-v2 | 5 | 1.00 | 4.54 | 1.8 | 1.2 | 8 M | 10 min |
+| hybrid-v6 | 5 | 1.00 | 3.57 | 1.2 | 0.0 | 15 M | 19 min |
 
 Three properties of this baseline shape the design:
 
-- **The v5.1-vs-v6.1 question is open on sphinx.** On claim-office v6.1 led decomposition
-  (4.04 vs 5.89); on game-of-life v5.1 leads (4.12 vs 4.54, inside 1 σ). Both cells are
-  filled on sphinx by this RQ, so the v6.8 → v5.2 step gets an anchor on both katas.
+- **The v5.1-vs-v6.1 question is open on sphinx.** On claim-office hybrid-v2 led decomposition
+  (4.04 vs 5.89); on game-of-life single-context-v2 leads (4.12 vs 4.54, inside 1 σ). Both cells are
+  filled on sphinx by this RQ, so the hybrid-v8 → single-context-v3 step gets an anchor on both katas.
 - **Correctness may not differentiate at all.** Every game-of-life cell sits at 1.00, and
-  sphinx/v6.6 does too. If sphinx also saturates, `verification_pct` contributes nothing
+  sphinx/hybrid-v6 does too. If sphinx also saturates, `verification_pct` contributes nothing
   and H4 becomes untestable in this RQ — the failure mode it targets was observed on
   claim-office, which is no longer a cell.
-- **Sphinx and game-of-life sit close together on v6.6** (3.54 vs 3.57) but far apart on
-  v3 (8.38 vs 6.48). The architecture has more room on sphinx, which is where the chain
+- **Sphinx and game-of-life sit close together on hybrid-v6** (3.54 vs 3.57) but far apart on
+  inline-tdd-v1 (8.38 vs 6.48). The architecture has more room on sphinx, which is where the chain
   should show its steps most clearly.
 
 ## Caveats (binding)
 
-1. **The chain is clean, the anchors are not.** v6.6 → v6.7 → v6.8 → v5.2 is single-factor
-   at every step. The two older reference cells are not part of it: v6.8 → v6.1 mixes the
-   lab-split with the APP patch, and v5.2 → v5.1 mixes three changes. Statements against
-   v6.1/v5.1 name their confounds.
+1. **The chain is clean, the anchors are not.** hybrid-v6 → hybrid-v7 → hybrid-v8 → single-context-v3 is single-factor
+   at every step. The two older reference cells are not part of it: hybrid-v8 → hybrid-v2 mixes the
+   lab-split with the APP patch, and single-context-v3 → single-context-v2 mixes three changes. Statements against
+   hybrid-v2/single-context-v2 name their confounds.
 2. **The reference cells carry no APP patch.** They were produced under
    `RQ-architecture-axis-opus5` with the original "Lower mass = Better code" wording.
-   v6.7 is the cell that makes this measurable rather than a caveat.
+   hybrid-v7 is the cell that makes this measurable rather than a caveat.
 3. **`cc_avg_loc_per_function` measures decomposition, not its appropriateness.** A function
    sawn into `step1`…`step10` scores well. On game-of-life, where the whole implementation
    is 30–60 LoC, a cell can win this metric by splintering. Read it together with
@@ -231,15 +231,15 @@ Three properties of this baseline shape the design:
    kata as a warning rather than a win.
 4. **Code Mass (APP) carries no trophy** — F-1.6 of RQ-architecture-axis-opus5 established
    it ranks opposite to decomposition. It stays as context.
-5. **All three new workflows are untested.** v6.7 was ported from the pi variant, v6.8 and
-   v5.2 derived from it. The four parser markers were verified statically in each, but no
+5. **All three new workflows are untested.** hybrid-v7 was ported from the pi variant, hybrid-v8 and
+   single-context-v3 derived from it. The four parser markers were verified statically in each, but no
    run has exercised them. A marker failure shows as `cycle_count`/`refactorings_applied`
    at zero, not as an error. Smoke-check the first completed run of each cell before
-   trusting the batch — v5.2 especially, since it is the only one whose refactor phase
+   trusting the batch — single-context-v3 especially, since it is the only one whose refactor phase
    moved from `agents/` to `commands/`.
 6. **Only one prompt style** (example-mapping), consistent with the whole architecture line.
    Worth noting for sphinx specifically: `RQ-sphinx-prompt-sensitivity` measured
-   v6.6/sphinx-prose at `verification_pct` 0.15 against 1.00 for example-mapping. The kata
+   hybrid-v6/sphinx-prose at `verification_pct` 0.15 against 1.00 for example-mapping. The kata
    is highly prompt-sensitive, so this RQ's results describe the example-mapping variant
    only and must not be generalised to the kata.
 7. **H4 may be untestable here.** The early-termination mode it targets was observed on
@@ -256,10 +256,10 @@ correctness-critical work regardless of its quality numbers.
 
 ## Open questions
 
-- How much of the v6.6 → v6.8 difference is the APP patch and how much the removed end
-  phase? → decided by v6.7, which holds everything but the patch constant.
+- How much of the hybrid-v6 → hybrid-v8 difference is the APP patch and how much the removed end
+  phase? → decided by hybrid-v7, which holds everything but the patch constant.
 - Does the APP patch change the per-cycle refactor agent's behaviour enough to make the
-  end-refactor phase redundant? → decided by v6.8 vs v6.7 on decomposition.
-- Is the isolated context worth its cost on the small kata, where v5.1 already beat v6.1?
-- Does v5.2 inherit v5.1's early-termination mode, or does the lab-split's phase-continuation
+  end-refactor phase redundant? → decided by hybrid-v8 vs hybrid-v7 on decomposition.
+- Is the isolated context worth its cost on the small kata, where single-context-v2 already beat hybrid-v2?
+- Does single-context-v3 inherit single-context-v2's early-termination mode, or does the lab-split's phase-continuation
   wording suppress it?

@@ -24,6 +24,32 @@ from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+
+_LINEAGE_MOD = None
+
+
+def _lineage():
+    """workflow-lineage.py laden (Bindestrich im Namen -> kein normaler Import)."""
+    global _LINEAGE_MOD
+    if _LINEAGE_MOD is None:
+        spec = importlib.util.spec_from_file_location(
+            "workflow_lineage", REPO_ROOT / "experiments" / "workflow-lineage.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        _LINEAGE_MOD = mod
+    return _LINEAGE_MOD
+
+
+def _workflow_inventory_rows():
+    mod = _lineage()
+    data, index = mod.load()
+    return mod.inventory(data, index).splitlines()
+
+
+def _archived_workflow_names():
+    _, index = _lineage().load()
+    return sorted(n for n, e in index.items() if e.get("status") == "discarded")
+
 RESEARCH_DIR = REPO_ROOT / "research"
 
 # Reuse parse_frontmatter, expand_cells, kata_for_cell, RUNS_DIR from
@@ -207,9 +233,9 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
       "(Paragraph 1) The lab is the empirical validation platform for **EXACT Coding** "
       "(EXample-guided AI-Collaborative Test-driven Coding); link the book at "
       "<https://leanpub.com/exact-coding> (never a local manuscript path); "
-      "workflow variants as a spectrum vibe coding (v1/v2) → EXACT (v4/v6) → delayed refactor (v8). "
+      "workflow variants as a spectrum vibe coding (v1/v2) → EXACT (v4/v6) → delayed refactor (end-refactor-only). "
       "(Paragraph 2) Snapshot status: date, run count, RQ count, current research front "
-      "in descriptive form (never use workflow version names like v6.1 here — workflows are "
+      "in descriptive form (never use workflow version names like hybrid-v2 here — workflows are "
       "not yet introduced at this point; use a mechanism description instead, e.g. "
       "\"hybrid workflow with skill-based red/green in shared context + isolated "
       "refactor subagent\"), note any omitted workflow-dev RQs if data collection is ongoing. "
@@ -283,69 +309,63 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p("**Workflow** — six generations (details: `research/workflow-dev/workflow-construction.md` — inventory):")
     p("")
-    p("| Workflow | Structure | TDD strictness |")
-    p("|---|---|---|")
-    p("| v1-oneshot                              | \"Implement X.\" | none |")
-    p("| v2-iterative                            | \"Plan step by step, then implement.\" | none |")
-    p("| v3-basic-tdd                            | Inline TDD, no skill/subagent (self-reporting) | minimal |")
-    p("| v4-exact-subagents                      | Dedicated subagent per phase (predictor + red/green/refactor), fresh context | strict, multi-context |")
-    p("| v4.1-testlist-scope-fix                 | v4 with test-list scope patch | strict, multi-context |")
-    p("| v5-exact-single-context                 | All phases in one conversation, same phase script | strict, single-context |")
-    p("| v5.1-testlist-scope-fix                 | v5 with test-list scope patch (aligned with v4.1) | strict, single-context |")
-    p("| v6-hybrid                               | Hybrid: inline TDD + only refactor as subagent | strict, hybrid |")
-    p("| v6.1-hybrid-testlist-scope-fix          | v6-hybrid with test-list scope patch (current default base) | strict, hybrid |")
-    p("| v6.1-no-pep                             | v6.1 without pep talks (RQ-pep replication) | strict, hybrid |")
-    p("| v7-hybrid-green-refactor                | Like v6, but green *and* refactor as subagent | strict, more isolation |")
-    p("| v7.1-hybrid-green-refactor-testlist-scope-fix | v7 with test-list scope patch | strict, more isolation |")
-    p("| v8a-delayed-refactor-agent              | Oneshot → tests added afterwards → single end-refactor agent | delayed-refactor |")
-    p("| v8b-delayed-refactor-native             | Like v8a, but native inline refactor in v3 style, no agent | delayed-refactor |")
+    # Inventar aus experiments/workflows/LINEAGE.yaml statt hartkodiert. Die
+    # frueher hier stehende Tabelle listete 14 von 59 Workflows und behauptete
+    # zuletzt, v6.2-v6.6 und eine "hybrid-v5.x line" laegen im Archiv -- beides
+    # falsch, und in drei publizierten Snapshots mitgedruckt. Generiert kann
+    # das nicht mehr auseinanderlaufen.
+    for line in _workflow_inventory_rows():
+        p(line)
     p("")
-    p("Configuration: `experiments/workflows/<variant>/.claude/agents/` and `.claude/rules/`. "
-      "Archived variants (v4.2-shared-context, v4.2.1-fake-it-green, v5.1-minimized, v6.2.1-refactor-vocab) "
-      "live under `experiments/workflows/_archive/`.")
+    archived = _archived_workflow_names()
+    p("Configuration: `experiments/workflows/<category>/<variant>/` — `.claude/`, "
+      "`.opencode/`, `.cursor/` or `.pi/` depending on harness. Naming, lineage and "
+      "status of every variant: `experiments/workflows/LINEAGE.yaml`. "
+      f"Discarded variants ({', '.join(archived)}) live under "
+      "`experiments/workflows/_archive/`.")
     p("")
     p("**Workflow mechanics in detail.** The six generations are not merely a scale of "
       "\"more/less TDD\", but a systematic variation of the EXACT Coding building blocks "
       "(test list, red, green, refactor) and their context architecture:")
     p("")
-    p("- **v1-oneshot / v2-iterative — vibe-coding baselines (no TDD).** A single agent reads "
-      "the requirements and writes code in one step (v1) or with an explicit plan/checklist (v2); "
+    p("- **baseline-oneshot-v1-cc / baseline-iterative-v1-cc — vibe-coding baselines (no TDD).** A single agent reads "
+      "the requirements and writes code in one step (oneshot) or with an explicit plan/checklist (iterative); "
       "tests are only added afterwards based on the example mapping. Serves as the yardstick "
-      "for the value of TDD itself (see `experiments/workflows/v1-oneshot/.claude/rules/experiment-mode.md`).")
-    p("- **v3-basic-tdd — minimal TDD without structure.** A single agent with the minimal instruction "
+      "for the value of TDD itself (see `experiments/workflows/baselines/baseline-oneshot-v1-cc/.claude/rules/experiment-mode.md`).")
+    p("- **baseline-inline-tdd-v1-cc — minimal TDD without structure.** A single agent with the minimal instruction "
       "\"use TDD\" — no phase prompts, no subagents. Claude decides on its own how to structure the "
       "TDD process. Measures how far a bare request carries "
-      "(`v3-basic-tdd/.claude/rules/experiment-mode.md`).")
-    p("- **v4-exact-subagents / v4.1-testlist-scope-fix — strict TDD, multi-context.** Every TDD phase "
+      "(`baseline-inline-tdd-v1-cc/.claude/rules/experiment-mode.md`).")
+    p("- **exact-subagents-v1-cc / exact-subagents-v2-testlist-fix-cc — strict TDD, multi-context.** Every TDD phase "
       "runs as a specialized subagent in an **isolated context** (`Task(subagent_type: \"red\")` etc.): "
       "`test-list` → `red` → `green` → `refactor`. Hypothesis: isolated contexts enforce discipline, "
-      "but can lose state between phases. v4.1 adds to the `test-list` subagent the obligation "
+      "but can lose state between phases. subagents-v2 adds to the `test-list` subagent the obligation "
       "\"Cover every spec example\" — closing the dominant failure mode on novel katas "
       "(incomplete test list) on Opus 4.7.")
-    p("- **v5-exact-single-context / v5.1-testlist-scope-fix — strict TDD, single-context.** Identical "
-      "phase script to v4, but all phases run in the **same context** as skill calls "
+    p("- **exact-single-context-v1-cc / exact-single-context-v2-testlist-fix-cc — strict TDD, single-context.** Identical "
+      "phase script to subagents, but all phases run in the **same context** as skill calls "
       "(`Skill(skill: \"red\")` etc.) instead of subagents. Hypothesis: shared context preserves state, "
-      "but can lead to loss of discipline. v5.1 mirrors v4.1 with the identical test-list scope patch.")
-    p("- **v6-hybrid / v6.1-hybrid-testlist-scope-fix — hybrid with isolated refactor.** Red and green "
-      "run inline as skills in the shared context (like v5), refactor runs as an isolated subagent (like v4). "
+      "but can lead to loss of discipline. single-context-v2 mirrors subagents-v2 with the identical test-list scope patch.")
+    p("- **exact-hybrid-v1-cc / exact-hybrid-v2-testlist-fix-cc — hybrid with isolated refactor.** Red and green "
+      "run inline as skills in the shared context (like single-context), refactor runs as an isolated subagent (like subagents). "
       "Hypothesis: combines the spec coherence of the single context with the discipline sharpening of "
-      "subagent isolation at the most critical point (refactor). v6.1 is the current default base and "
-      "champion across several RQs. `v6.1-no-pep` tests removing psychological rationales in red/green.")
-    p("- **v7-hybrid-green-refactor / v7.1-…-testlist-scope-fix — hybrid with isolated green + refactor.** "
-      "In addition to the refactor isolation from v6, green also runs as an isolated subagent. Test list and red "
-      "remain in the shared context. Tests whether more isolation is automatically better (Pareto-dominated by v6 on "
+      "subagent isolation at the most critical point (refactor). hybrid-v2 is the current default base and "
+      "champion across several RQs. `exact-hybrid-v2.1-no-pep-cc` tests removing psychological rationales in red/green.")
+    p("- **exact-green-refactor-v1-cc / v7.1-…-testlist-scope-fix — hybrid with isolated green + refactor.** "
+      "In addition to the refactor isolation from hybrid, green also runs as an isolated subagent. Test list and red "
+      "remain in the shared context. Tests whether more isolation is automatically better (Pareto-dominated by hybrid on "
       "game-of-life: saves tokens, loses quality and correctness).")
-    p("- **v8a-delayed-refactor-agent / v8b-delayed-refactor-native — delayed-refactor control.** "
+    p("- **baseline-end-refactor-only-v1-agent-cc / baseline-end-refactor-only-v1-native-cc — delayed-refactor control.** "
       "Three sequential phases without TDD cycles: (1) oneshot implementation, (2) tests added afterwards against "
-      "`prompt.md` with a coverage obligation, (3) a single end refactor. v8a uses a dedicated `refactor.md` "
-      "subagent (APP + naming + mandatory attempt), v8b a native inline refactor in v3 style without an agent. "
+      "`prompt.md` with a coverage obligation, (3) a single end refactor. end-refactor-only-agent uses a dedicated `refactor.md` "
+      "subagent (APP + naming + mandatory attempt), end-refactor-only-native a native inline refactor in inline-tdd style without an agent. "
       "Serves as the control axis for the hypothesis \"periodic TDD refactor beats end refactor after "
       "vibe coding\".")
     p("")
-    p("Deeper mechanics discussion, the inventory of the active v6.1 reduction line and the load-bearing RQ findings "
+    p("Deeper mechanics discussion, the inventory of the active hybrid-v2 reduction line and the load-bearing RQ findings "
       "are in `research/workflow-dev/workflow-construction.md`. Which markers drive the parsing of the "
-      "TDD metrics is documented in `experiments/workflows/MARKERS.md`. The archived "
-      "v6.5.x line lives in `experiments/workflows/_archive/`.")
+      "TDD metrics is documented in `experiments/workflows/MARKERS.md`. Lineage, "
+      "status and former names of every variant: `experiments/workflows/LINEAGE.yaml`.")
     p("")
     p("**Model × thinking** (lab variant IDs from `MODEL_CONFIGS` in `experiments/docker/run-batch.sh`):")
     p("")
@@ -390,8 +410,8 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p("| Workflow | Allowed prompt styles | Rationale |")
     p("|---|---|---|")
-    p("| v1, v2 | prose only | Test examples in example-mapping would be a hidden test gift for non-TDD workflows → unfair towards the TDD workflows. |")
-    p("| v3, v4(.1), v5(.1), v6(.1), v7(.1), v8a/b | all three | Examples serve as natural test cases — for TDD/refactor workflows that is the ideal form of the task. |")
+    p("| oneshot, iterative | prose only | Test examples in example-mapping would be a hidden test gift for non-TDD workflows → unfair towards the TDD workflows. |")
+    p("| inline-tdd, subagents(.1), single-context(.1), hybrid(.1), green-refactor(.1), v8a/b | all three | Examples serve as natural test cases — for TDD/refactor workflows that is the ideal form of the task. |")
     p("")
     p("---")
     p("")
@@ -401,7 +421,7 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p("<!-- TODO Claude: check whether this is still current against experiments/docker/Dockerfile, "
       "experiments/analyze-run.sh, experiments/aggregate-by-query.py. If the "
-      "pipeline is unchanged since the v2 snapshot, this block can be carried over "
+      "pipeline is unchanged since the iterative snapshot, this block can be carried over "
       "verbatim. Write in ENGLISH. -->")
     p("")
     p("### 3.1 Run pipeline")
@@ -527,8 +547,8 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p("<!-- TODO Claude: 3–5 numbered points, written in ENGLISH, that emerge from several RQs "
       "together and appear in no single findings.md. Examples from the "
-      "v2 snapshot: \"workflow choice matters more than model choice on large "
-      "katas\", \"v5 is the practical sweet spot\", \"magic numbers dominate "
+      "iterative snapshot: \"workflow choice matters more than model choice on large "
+      "katas\", \"single-context is the practical sweet spot\", \"magic numbers dominate "
       "the smell signal\". The points should establish cross-RQ connections, "
       "not paraphrase individual findings. -->")
     p("")

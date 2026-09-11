@@ -10,7 +10,7 @@ factors:
     - haiku-4-5-no-thinking  # weak probe:   0.371 on claim-office (n=7)
 controls:
   prompt: example-mapping
-  workflow: v6.6-lab-split-cc
+  workflow: exact-hybrid-v6-lab-split-cc
 outcomes:
   # primary: does the kata separate a strong from a weak model?
   - verification_pct
@@ -65,7 +65,7 @@ example-mapping, all workflows):
 | **sphinx-score** | **1** | **24.8 min** | **19.3 M** | **1.000** | **11** | **48** |
 
 Restricted to the exact cell this RQ compares against
-(`opus-5-no-thinking × v6.6-lab-split-cc`):
+(`opus-5-no-thinking × exact-hybrid-v6-lab-split-cc`):
 
 | Kata | n | tokens (med) | duration (med) | verification_pct |
 |---|---|---|---|---|
@@ -95,7 +95,7 @@ already reaches 0.920, so even it is starting to saturate. A replacement
 must show spread on *this* model, not just on weaker ones.
 
 **3. Cost.** Every RQ that uses claim-office pays its per-cell price. At
-`opus-5-no-thinking × v6.6-lab-split-cc` — the strong cell of this RQ —
+`opus-5-no-thinking × exact-hybrid-v6-lab-split-cc` — the strong cell of this RQ —
 that is ~128 M tokens and ~86 min per data point. A replacement has to
 undercut it without losing property 1.
 
@@ -120,13 +120,13 @@ undercut it without losing property 1.
 ## Probe models
 
 `opus-5-no-thinking` (strong) against `haiku-4-5-no-thinking` (weak),
-workflow held at `v6.6-lab-split-cc`.
+workflow held at `exact-hybrid-v6-lab-split-cc`.
 
 Models are the right probe *for this question*, workflows are not. A first
-cut of this RQ used `v6.6-lab-split-cc` vs `v3-basic-tdd` as the
+cut of this RQ used `exact-hybrid-v6-lab-split-cc` vs `baseline-inline-tdd-v1-cc` as the
 strong/weak pair. On the correctness axis that pairing is inverted: on
-claim-office `v3-basic-tdd` scores **1.00 in all five runs** (5 min, 4 M
-tokens) while `v6.6-lab-split-cc` scores 0.947 (86 min, 128 M tokens).
+claim-office `baseline-inline-tdd-v1-cc` scores **1.00 in all five runs** (5 min, 4 M
+tokens) while `exact-hybrid-v6-lab-split-cc` scores 0.947 (86 min, 128 M tokens).
 
 The two workflows *do* separate — but on decomposition
 (`cc_longest_function` 25 vs 14, `cognitive_max` 5 vs 3,
@@ -142,8 +142,8 @@ that range with real spread on both ends — `haiku-4-5-no-thinking` at
 0.371 (n=7) is weak but not floored (max 0.80), which a floored probe like
 qwen3 would not give us.
 
-**Caveat on that 0.371.** Those seven runs come from `v4-exact-subagents`
-(4) and `v3-basic-tdd` (3) — *not* from `v6.6-lab-split-cc`, the workflow
+**Caveat on that 0.371.** Those seven runs come from `exact-subagents-v1-cc`
+(4) and `baseline-inline-tdd-v1-cc` (3) — *not* from `exact-hybrid-v6-lab-split-cc`, the workflow
 this RQ controls on. The number establishes that haiku is weak on this
 kata, but the strong/weak distance under the controlled workflow is
 itself part of what the fill measures. All four cells of this RQ are

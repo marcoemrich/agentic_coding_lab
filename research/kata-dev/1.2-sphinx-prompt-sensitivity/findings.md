@@ -4,7 +4,7 @@ Does `sphinx-score` carry an example-mapping effect, and is it sharper than
 on `claim-office`?
 
 Data base: 24 runs, 4 cells × n=6, all `exit_reason = ok`,
-`v6.6-lab-split-cc` × `opus-5-no-thinking`.
+`exact-hybrid-v6-lab-split-cc` × `opus-5-no-thinking`.
 
 ## Übersicht
 
@@ -165,7 +165,7 @@ to establish before the sphinx-score decomposition numbers can be used elsewhere
 ## Caveats
 
 - **Single model, single workflow.** All 24 runs are `opus-5-no-thinking` ×
-  `v6.6-lab-split-cc`. Whether the prose floor is this low for weaker models is
+  `exact-hybrid-v6-lab-split-cc`. Whether the prose floor is this low for weaker models is
   RQ-kata-1.1's question, not this one's.
 - **claim-office's ceiling.** Its example-mapping cell sits at 0.94, not 1.00,
   so its measured gap understates the effect by up to 0.06. The correction is

@@ -16,7 +16,7 @@ Examples:
 
   # two workflows on one kata, into a file
   ./measure-tdd-rigour.py rigour.json \\
-      --workflow v9-pocock-tdd v6.2-with-why-cleaned \\
+      --workflow external-pocock-2026-09-04-cc exact-hybrid-v4-cleaned-cc \\
       --kata-suffix example-mapping
 """
 import argparse,json,re,sys

@@ -12,7 +12,7 @@ factors:
     - gpt-5-6-sol-reasoning           # Requesty, reasoning ON — reasoning control
     - opus-5-requesty                 # Requesty — the Anthropic reference
 controls:
-  workflow: v6.2.1-phase-continuation-pi
+  workflow: exact-hybrid-v4.2-phase-continuation-pi
   kata_base: game-of-life
   prompt: example-mapping
 outcomes:
@@ -76,7 +76,7 @@ calibration instead.
 
 `RQ-route-effect-pi` measured the route difference on **one and the same
 model** (Sol), at **exactly the controls this RQ uses** —
-`game-of-life-example-mapping` × `v6.2.1-phase-continuation-pi`, n=5 per cell:
+`game-of-life-example-mapping` × `exact-hybrid-v4.2-phase-continuation-pi`, n=5 per cell:
 
 | | Requesty (reasoning off) | Requesty (reasoning ON) | Subscription |
 |---|---:|---:|---:|
@@ -125,8 +125,8 @@ is calibrated by the Sol pair above.
 Routing Opus 5 over the **Anthropic** subscription instead (bare `opus-5`,
 native OAuth via the env-blanking bypass in Claude Code) was considered and
 rejected. It buys nothing and costs more: the run pool holds no `opus-5` cell
-on any v6.2.x Claude Code workflow with `game-of-life` — only n=3 on
-`v4-exact-subagents` — so it would need a fresh fill, and it would add a
+on any hybrid-v4.x Claude Code workflow with `game-of-life` — only n=3 on
+`exact-subagents-v1-cc` — so it would need a fresh fill, and it would add a
 harness confound (CC vs pi) plus a workflow confound (`v6.2.1-phase-continuation`
 vs `-pi`) on top of the route question. The apparent symmetry of
 "subscription against subscription" does not cancel anything either: the
@@ -190,7 +190,7 @@ RQ exists for, and the Sol pair is what makes it testable.
 
 **H3 — Correctness stays saturated.** `verification_pct` = 1.0 in every cell,
 as in RQ-route-effect-pi. game-of-life does not discriminate on correctness
-under v6.2.1; a drop would signal an Astra-specific loop failure, not a
+under hybrid-v4.2; a drop would signal an Astra-specific loop failure, not a
 capability gap.
 
 **H4 — Astra is slower than the Requesty cells.** Throughput on the

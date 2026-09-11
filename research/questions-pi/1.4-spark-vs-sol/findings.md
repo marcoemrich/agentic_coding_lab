@@ -164,7 +164,7 @@ appear to help Spark (0.78 → 0.84), but the Spark/subagent cell has σ = 0.14 
 0.06 difference, so this is not separable from noise at n=5.
 
 The practical reading for the subscription route is unchanged from RQ-1.16: on Sol,
-`basic-sol-tdd-pi` is the better default — same Correctness, half the wall-clock, a
+`exact-sol-v1-pi` is the better default — same Correctness, half the wall-clock, a
 third fewer tokens.
 
 ---

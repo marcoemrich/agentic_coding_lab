@@ -1,6 +1,6 @@
 ---
 id: RQ-model-novel-oc
-question: "How do five models reachable via the OpenCode harness differ in correctness and TDD discipline on claim-office-example-mapping with the v5.1-testlist-scope-fix-oc workflow?"
+question: "How do five models reachable via the OpenCode harness differ in correctness and TDD discipline on claim-office-example-mapping with the exact-single-context-v2-testlist-fix-oc workflow?"
 factors:
   model:
     - opus-4-7-portkey
@@ -12,7 +12,7 @@ factors:
     - deepseek-v4-flash
     - deepseek-v4-pro
 controls:
-  workflow: v5.1-testlist-scope-fix-oc
+  workflow: exact-single-context-v2-testlist-fix-oc
   kata_base: claim-office
   prompt: example-mapping
 outcomes:
@@ -48,7 +48,7 @@ status: aktiv
 
 Parallel to RQ-model-quality-oc (game-of-life, code quality), but on the harder axis: **spec comprehension and completeness of the implementation**. `claim-office-example-mapping` is a novel kata with five deliberately constructed ambiguities and an external verification suite (15 scenarios) — not a pure training-recall exercise like game-of-life.
 
-RQ-model-novel (CC side) has shown that `verification_pct` on claim-office differentiates models more strongly than any code-quality metric on game-of-life. This RQ transfers the test to the OpenCode side with five new models and the v5.1 workflow (TDD with skills).
+RQ-model-novel (CC side) has shown that `verification_pct` on claim-office differentiates models more strongly than any code-quality metric on game-of-life. This RQ transfers the test to the OpenCode side with five new models and the single-context-v2 workflow (TDD with skills).
 
 ## Existing data (as of 2026-05-25)
 
@@ -84,11 +84,11 @@ On 2026-05-26 four further coding models available via Portkey were smoke-tested
 - **`codestral-2508` (`@mistral/codestral-2508`)**: Stops after 2 tool calls in the test-list creation phase, without a `.ts` file and without `experiment-done.txt` — model too weak for autonomous multi-step tasks of this class.
 - **`qwen3-coder-480b` (`@bedrock-eu-north-1/qwen.qwen3-coder-480b-a35b-v1:0`)**: TDD including refactoring works, but stops after test 2 without `experiment-done.txt` — the same continuation drop as Gemini 2.5 Pro.
 
-None of the four wrote `src/cli.ts` (the verification suite would have yielded `null`). Routing mappings for all four remain registered in `experiments/docker/run-batch.sh`, in case they are to be tested under a different workflow (e.g. v1-oneshot-oc as a lower bound).
+None of the four wrote `src/cli.ts` (the verification suite would have yielded `null`). Routing mappings for all four remain registered in `experiments/docker/run-batch.sh`, in case they are to be tested under a different workflow (e.g. baseline-oneshot-v1-oc as a lower bound).
 
 ## Hypotheses
 
-- **H1 (v5.1 workflow lifts the OC level)**: opus-4-7-portkey × v5.1-oc × claim-office-EM reaches a `verification_pct` clearly above the v1-oneshot-oc level (0.20) — the skeleton finding of 1.00 is consistent with that. Expectation: mean >= 0.8 over n=5.
+- **H1 (single-context-v2 workflow lifts the OC level)**: opus-4-7-portkey × v5.1-oc × claim-office-EM reaches a `verification_pct` clearly above the baseline-oneshot-v1-oc level (0.20) — the skeleton finding of 1.00 is consistent with that. Expectation: mean >= 0.8 over n=5.
 - **H2 (model spread visible)**: The four models show a spread over `verification_pct` — the smoke already suggests: Opus/Kimi/Flash at 1.00, MiniMax at 0.00. If that is stable, the spread is dichotomous (15/15 vs 0/15) rather than graded — claim-office as a pass/fail filter for spec comprehension.
 - **H3 (Flash surprisingly strong)**: gemini-3-5-flash has perfect correctness in the smoke (15/15) despite Flash's positioning as a "fast/small" model. Check at n=5 whether this is stable or was luck (n=1 + a known tricky kata = cautious interpretation).
 - **H4 (TDD discipline and correctness do NOT correlate linearly)**: Smoke finding: Opus 4/4 predictions + 15/15 verification; Kimi 0/0 predictions + 15/15 verification. Prediction-format compliance is not necessary for correctness — the TDD substance (test-first discipline) apparently works independently of the specific prediction-marker compliance.
@@ -96,7 +96,7 @@ None of the four wrote `src/cli.ts` (the verification suite would have yielded `
 ## Methodological notes
 
 - The skeleton finding `verification_pct=1.0` is ONE data point — replicates will show whether it is stable or luck. Memory [[replicates-n-reliability]]: n=3 detects bimodality, n=5 for medium confidence.
-- The v5.1 workflow enforces skill-tool calls, but agent drift after 1-2 cycles has been observed (skeleton: only 2 skill calls despite ~18 real TDD cycles). `cycle_count` is therefore conservative; actual TDD activity is higher.
+- The single-context-v2 workflow enforces skill-tool calls, but agent drift after 1-2 cycles has been observed (skeleton: only 2 skill calls despite ~18 real TDD cycles). `cycle_count` is therefore conservative; actual TDD activity is higher.
 - All five models via Portkey, mixed backproviders — see RQ-model-quality-oc for routing details.
-- Existing v1-oneshot-oc smokes on claim-office (verification 0.20) show the workflow effect: v1 without TDD mechanics vs v5.1 with skills makes a ~50 percentage point difference for Opus. Cross-workflow comparison is, however, the subject of a separate RQ.
-- The `cli.ts` nudge is NOT wired for OC. Should non-Anthropic models systematically forget `src/cli.ts` → `verification_pct=null`. AGENTS.md demands cli.ts explicitly; the v5.1 smoke worked. Observe during the first batch.
+- Existing baseline-oneshot-v1-oc smokes on claim-office (verification 0.20) show the workflow effect: oneshot-v1 without TDD mechanics vs single-context-v2 with skills makes a ~50 percentage point difference for Opus. Cross-workflow comparison is, however, the subject of a separate RQ.
+- The `cli.ts` nudge is NOT wired for OC. Should non-Anthropic models systematically forget `src/cli.ts` → `verification_pct=null`. AGENTS.md demands cli.ts explicitly; the single-context-v2 smoke worked. Observe during the first batch.

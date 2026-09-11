@@ -3,11 +3,11 @@ id: RQ-app-subordination-measurement-sol
 question: "On the OpenAI subscription route, does subordinating APP mass to the Four Rules recover the decomposition that the unsubordinated brief suppresses — and does adding pre/post measurement improve the result further, at what cost in duration as the measurement moves from the model to deterministic tools?"
 factors:
   workflow:
-    - basic-sol-tdd-pi                        # reference: Four Rules only, no APP, no measurement
-    - basic-sol-tdd-app-pi                    # A:  + APP subordinated under Rule 4, qualitative
-    - basic-sol-tdd-app-measured-model-pi     # B1: A + pre/post measurement, model computes all three
-    - basic-sol-tdd-app-measured-eslint-pi    # B2: A + ESLint for cognitive/McCabe, mass by hand
-    - basic-sol-tdd-app-measured-tool-pi      # B3: A + ESLint + AST script, model computes nothing
+    - exact-sol-v1-pi                        # reference: Four Rules only, no APP, no measurement
+    - exact-sol-v1.2-app-pi                    # A:  + APP subordinated under Rule 4, qualitative
+    - exact-sol-v1.2.1-measured-model-pi     # B1: A + pre/post measurement, model computes all three
+    - exact-sol-v1.2.2-measured-eslint-pi    # B2: A + ESLint for cognitive/McCabe, mass by hand
+    - exact-sol-v1.2.3-measured-tool-pi      # B3: A + ESLint + AST script, model computes nothing
 controls:
   model:
     # Label variants of one configuration, not two models: both resolve to pi
@@ -54,7 +54,7 @@ status: aktiv
 `RQ-app-vs-four-rules-sol` (workflow-dev/1.17) established that on Sol the APP
 brief actively harms decomposition: the APP-optimising cell reached the **lowest**
 Code Mass and the **worst** `cc_avg_loc_per_function` in the field — behind even the
-structureless v3 floor. Its refactor brief did carry a guard ("Rule 2 trumps APP:
+structureless inline-tdd-v1 floor. Its refactor brief did carry a guard ("Rule 2 trumps APP:
 Clarity over low mass"), and Sol optimised past it.
 
 `RQ-sol-line-on-opus-cc` (questions-claude/4.6) then showed the effect is
@@ -69,9 +69,9 @@ properly does** — and pairs it with the cost question that RQ-1.11 left open.
 
 ## The two axes
 
-### Axis 1 — does subordination work? (`basic-sol-tdd-pi` → `-app`)
+### Axis 1 — does subordination work? (`exact-sol-v1-pi` → `-app`)
 
-`basic-sol-tdd-app-pi` takes the native Sol line and rewrites section 4 of the
+`exact-sol-v1.2-app-pi` takes the native Sol line and rewrites section 4 of the
 `predictive-tdd` skill. The Four Rules list is unchanged; what changes is that
 Rules 2, 3 and 4 are spelled out:
 
@@ -85,8 +85,8 @@ Rules 2, 3 and 4 are spelled out:
   normal case.* Two prohibitions follow ("never undo an extraction because mass went
   up", "never inline a well-named function to lower mass").
 
-This is the same subordination patch that `v6.7-app-subordinate-cc` applies to the
-v-line, rebuilt on the Sol line and extended with the Rule 2/3 elaboration.
+This is the same subordination patch that `exact-hybrid-v7-app-subordinate-cc` applies to the
+opus line, rebuilt on the Sol line and extended with the Rule 2/3 elaboration.
 
 ### Axis 2 — does measuring help, and what does it cost? (`-app` → B1/B2/B3)
 
@@ -157,11 +157,11 @@ Reading rules that follow:
 
 ## Hypotheses
 
-- **H1 (subordination works).** `-app` beats `basic-sol-tdd-pi` on
+- **H1 (subordination works).** `-app` beats `exact-sol-v1-pi` on
   `cc_avg_loc_per_function` and `cc_median_loc_per_function` by more than 1 σ.
   → Stating APP's rank is enough on Sol; the RQ-1.17 damage came from an
   under-specified brief, not from APP as such. The cheapest available fix for the
-  v-line on Sol is a brief rewrite, not removing the metric.
+  opus line on Sol is a brief rewrite, not removing the metric.
 - **H2 (subordination is not enough).** `-app` lands inside 1 σ of the reference, or
   worse. → On Sol the mere presence of a mass formula degrades decomposition
   regardless of how it is ranked. F-4.6.2 then reads as an instruction-following
@@ -176,7 +176,7 @@ Reading rules that follow:
   in the measure-decide-document loop itself, not in the arithmetic.
 - **H5 (measurement is inert).** B1/B2/B3 all sit inside 1 σ of `-app` on the quality
   metrics while costing more. → The brief does the work and the measurement is
-  ceremony; RQ-1.11's gains would then be attributable to the v-line's end-refactor
+  ceremony; RQ-1.11's gains would then be attributable to the opus line's end-refactor
   pass rather than to measurement per se.
 
 Reading rule inherited from RQ-1.14: absolute thresholds are not comparable across
@@ -195,7 +195,7 @@ re-check, together with the pi-config profile actually mounted for that batch.
 
 ## Caveats
 
-1. **One cell is reused, four are new.** `basic-sol-tdd-pi` × claim-office ran
+1. **One cell is reused, four are new.** `exact-sol-v1-pi` × claim-office ran
    2026-08-16 for RQ-1.16 and was reused by RQ-1.17. Any drift on the subscription
    route between then and this batch sits in the four new cells collectively — but
    because all four are filled together, drift cannot explain differences *among*
@@ -224,7 +224,7 @@ re-check, together with the pi-config profile actually mounted for that batch.
 
 - If H1 holds on Sol: does the same elaborated brief change anything on Opus, where
   the unelaborated one already works (F-4.6.2)? → a ceiling test for brief quality.
-- If H4 holds: should `app-mass.mjs` and the threshold-0 config move into the v-line's
+- If H4 holds: should `app-mass.mjs` and the threshold-0 config move into the opus line's
   end-refactor agents, where F-1.4 located the cost in the first place?
 - Does the Rule 2/3 elaboration carry its weight on its own — i.e. the same brief
   *without* the APP block, isolating "spell out decomposition" from "rank APP"?

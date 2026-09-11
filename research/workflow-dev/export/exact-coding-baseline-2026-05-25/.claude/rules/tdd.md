@@ -1,4 +1,4 @@
-# TDD Rules — Hybrid (v6, exact-coding baseline)
+# TDD Rules — Hybrid (hybrid-v1, exact-coding baseline)
 
 ## ⚠️ CRITICAL: Skill + Subagent Usage is MANDATORY
 

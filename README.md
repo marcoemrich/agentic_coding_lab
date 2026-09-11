@@ -73,8 +73,8 @@ id: RQ-prompt-correctness
 question: "Does workflow choice affect code quality, correctness, TDD discipline?"
 factors:                          # what varies
   workflow_x_prompt:
-    - {workflow: v1-oneshot,         prompt: prose}
-    - {workflow: v4-exact-subagents, prompt: example-mapping}
+    - {workflow: baseline-oneshot-v1-cc,         prompt: prose}
+    - {workflow: exact-subagents-v1-cc, prompt: example-mapping}
 controls:                         # what is held constant
   kata_base: game-of-life
   model: opus-4-7-no-thinking
@@ -111,11 +111,11 @@ factors:                          # what varies
   <factor-name>: [<value>, ...]
   # OR for paired factors:
   workflow_x_prompt:
-    - {workflow: v1-oneshot, prompt: prose}
+    - {workflow: baseline-oneshot-v1-cc, prompt: prose}
     - ...
 controls:                         # what is held constant
   kata_base: game-of-life         # kata base name without prompt suffix
-  workflow: v4-exact-subagents    # only if no workflow_x_prompt factor
+  workflow: exact-subagents-v1-cc    # only if no workflow_x_prompt factor
   prompt: example-mapping         # only if no prompt factor / pairing
   model: <lab-variant-id>         # e.g. opus-4-7-no-thinking (see model alias table)
   harness_version: "2.1.267"      # optional; omit unless a CLI bump is a factor
@@ -187,8 +187,8 @@ For methodological symmetry:
 
 | Workflow | Permitted prompt styles | Rationale |
 |---|---|---|
-| v1-oneshot, v2-iterative | only **prose** | Concrete examples in the prompt nudge the agent toward starting with tests, which contaminates the non-TDD condition — the whole point of v1/v2 is to observe what happens when the agent is *not* steered into test-first. |
-| v3-basic-tdd, v4-exact-subagents, v5-exact-single-context | **prose, example-mapping, user-story** | Examples serve as natural test cases — for TDD workflows this is the ideal task shape. |
+| baseline-oneshot-v1-cc, baseline-iterative-v1-cc | only **prose** | Concrete examples in the prompt nudge the agent toward starting with tests, which contaminates the non-TDD condition — the whole point of v1/v2 is to observe what happens when the agent is *not* steered into test-first. |
+| baseline-inline-tdd-v1-cc, exact-subagents-v1-cc, exact-single-context-v1-cc | **prose, example-mapping, user-story** | Examples serve as natural test cases — for TDD workflows this is the ideal task shape. |
 
 Consequences for RQ design:
 
@@ -251,7 +251,7 @@ A *block* is an uninterrupted run of test-file writes; a test run or an edit und
 
 | Workflow | marker `cycle_count` | transcript `test_blocks` |
 |---|---:|---:|
-| v6.1.1-lab-split-cc | 50 | 50 |
+| exact-hybrid-v2.4-lab-split-cc | 50 | 50 |
 
 The marker is emitted per cycle by our own commands, so the two coincide. On a
 **vendored** skill with a lab-inserted RED block they diverge — the inserted
@@ -372,43 +372,43 @@ Consequences for analysis and data collection:
 
 | Variant | Approach | Description |
 |---------|----------|-------------|
-| **v1-oneshot** | No TDD | Direct implementation in one shot ("vibe coding" baseline) |
-| **v2-iterative** | No TDD | Iterative prompting with plan/checklist |
-| **v3-basic-tdd** | Minimal TDD | Just "use TDD" — no detailed rules |
-| **v4-exact-subagents** | Structured TDD | Each TDD phase (red/green/refactor) runs in a separate, isolated agent |
-| **v5-exact-single-context** | Structured TDD | All TDD phases run in one continuous context using inline skills |
+| **baseline-oneshot-v1-cc** | No TDD | Direct implementation in one shot ("vibe coding" baseline) |
+| **baseline-iterative-v1-cc** | No TDD | Iterative prompting with plan/checklist |
+| **baseline-inline-tdd-v1-cc** | Minimal TDD | Just "use TDD" — no detailed rules |
+| **exact-subagents-v1-cc** | Structured TDD | Each TDD phase (red/green/refactor) runs in a separate, isolated agent |
+| **exact-single-context-v1-cc** | Structured TDD | All TDD phases run in one continuous context using inline skills |
 
-### v1-oneshot (No TDD baseline)
+### baseline-oneshot-v1-cc (No TDD baseline)
 
 Single agent reads requirements, writes code, then adds tests after the fact. Baseline that measures the value of TDD itself. Tests are added based on the Example Mapping for fair comparison.
 
 ```
-v1-oneshot/.claude/
+baseline-oneshot-v1-cc/.claude/
 └── rules/
     └── experiment-mode.md     # Non-TDD approach + output format
 ```
 
-### v2-iterative (No TDD, iterative)
+### baseline-iterative-v1-cc (No TDD, iterative)
 
 Single agent builds an explicit checklist, implements step by step, then adds tests after. Measures whether structured iteration alone (without TDD) improves over one-shot.
 
 ```
-v2-iterative/.claude/
+baseline-iterative-v1-cc/.claude/
 └── rules/
     └── experiment-mode.md     # Iterative approach + output format
 ```
 
-### v3-basic-tdd (TDD control)
+### baseline-inline-tdd-v1-cc (TDD control)
 
 Single agent with minimal TDD rules — no phase-specific guidance, no agent spawning. Claude decides how to structure its TDD process. Lowest TDD overhead, maximum flexibility.
 
 ```
-v3-basic-tdd/.claude/
+baseline-inline-tdd-v1-cc/.claude/
 └── rules/
     └── experiment-mode.md     # Minimal TDD guidance + output format
 ```
 
-### v4-exact-subagents
+### exact-subagents-v1-cc
 
 Each TDD phase runs as a specialized subagent with isolated context, invoked via the `Task` tool with `subagent_type` parameter.
 
@@ -423,7 +423,7 @@ Main Agent
 Hypothesis: isolated contexts enforce discipline but may lose state between phases. Fresh context per phase avoids accumulated noise; comes with agent-spawning overhead.
 
 ```
-v4-exact-subagents/.claude/
+exact-subagents-v1-cc/.claude/
 ├── agents/                    # Subagent definitions
 │   ├── test-list.md
 │   ├── red.md
@@ -435,7 +435,7 @@ v4-exact-subagents/.claude/
     └── tdd-experiment-mode.md # Autonomous mode for experiments
 ```
 
-### v5-exact-single-context
+### exact-single-context-v1-cc
 
 All TDD phases run in one continuous context using inline skills via the `Skill` tool.
 
@@ -450,7 +450,7 @@ Single Agent
 Hypothesis: shared context maintains state but may lead to less discipline. No agent-spawning overhead; risk of context pollution / over-implementation.
 
 ```
-v5-exact-single-context/.claude/
+exact-single-context-v1-cc/.claude/
 ├── commands/                  # Skill definitions (inline execution)
 │   ├── test-list.md
 │   ├── red.md
@@ -464,7 +464,7 @@ v5-exact-single-context/.claude/
 
 ### Key differences
 
-| Aspect | v1-oneshot | v2-iterative | v3-basic-tdd | v4-exact-subagents | v5-exact-single-context |
+| Aspect | baseline-oneshot-v1-cc | baseline-iterative-v1-cc | baseline-inline-tdd-v1-cc | exact-subagents-v1-cc | exact-single-context-v1-cc |
 |--------|------------|--------------|--------------|--------------------|-------------------------|
 | **TDD** | ❌ No | ❌ No | ✅ Yes (minimal) | ✅ Yes (strict) | ✅ Yes (strict) |
 | **Mechanism** | Direct code | Checklist | None | `Task(subagent_type: "red")` | `Skill(skill: "red")` |
@@ -693,7 +693,7 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 **Re-derive metrics for a single run after a pipeline fix:**
 
 ```bash
-./experiments/analyze-run.sh experiments/runs/2026-05-04_*_v4-exact-subagents_opus-4-7
+./experiments/analyze-run.sh experiments/runs/2026-05-04_*_exact-subagents-v1-cc_opus-4-7
 ```
 
 ## Docker Setup
@@ -738,7 +738,7 @@ Plan file schema:
   "name": "Optional plan name",
   "description": "Optional description",
   "runs": [
-    { "kata": "game-of-life-prose", "workflow": "v3-basic-tdd", "model": "sonnet-4-6" }
+    { "kata": "game-of-life-prose", "workflow": "baseline-inline-tdd-v1-cc", "model": "sonnet-4-6" }
   ]
 }
 ```
@@ -850,7 +850,7 @@ These terms were German until 2026-07 (`Korrektheit (innen/außen)`, `Code-Mass 
 | `tokens_total` | Total tokens consumed (input + output + cache) |
 | `context_utilization` | Final context-window utilization percentage |
 
-v4-exact-subagents keeps the main context low because each agent has fresh context. v5-exact-single-context accumulates tokens, so utilization is higher.
+exact-subagents-v1-cc keeps the main context low because each agent has fresh context. exact-single-context-v1-cc accumulates tokens, so utilization is higher.
 
 ### TDD discipline metrics
 
@@ -932,7 +932,7 @@ For **pi** workflows, create `experiments/workflows/<variant-name>-pi/.pi/` with
 - `skills/<phase>/SKILL.md` — Skill documents for test-list, red, green
 - `agents/<name>.md` — Subagent definitions (refactor)
 
-See `experiments/workflows/v6.2-with-why-cleaned-pi/` for a working example. The pi measurement pipeline (`parse_pi_transcript.py`) counts text markers (`## Red`, `## Green`) in assistant output rather than `Skill` tool calls — see [MARKERS.md](experiments/workflows/MARKERS.md) for the full marker specification.
+See `experiments/workflows/exact-coding/opus/exact-hybrid-v4-cleaned-pi/` for a working example. The pi measurement pipeline (`parse_pi_transcript.py`) counts text markers (`## Red`, `## Green`) in assistant output rather than `Skill` tool calls — see [MARKERS.md](experiments/workflows/MARKERS.md) for the full marker specification.
 
 ## Further Documentation
 
@@ -950,13 +950,12 @@ Three exceptions vendor third-party TDD skills as external comparison baselines.
 are MIT-licensed, and each upstream license is preserved alongside the skill in a
 `LICENSE.upstream` file at the workflow root:
 
-- `experiments/workflows/v9-pocock-tdd/` — the `tdd` skill from
-  [mattpocock/skills](https://github.com/mattpocock/skills), 2026-05-26 snapshot
-  ([license](experiments/workflows/v9-pocock-tdd/LICENSE.upstream)).
-- `experiments/workflows/v10-pocock-tdd/` — `tdd` + `code-review` + `codebase-design`
-  from the same repo, commit `6654f6b6` (2026-08-24). A restructured workflow, not an
-  update of v9 — upstream moved refactoring out of the loop
-  ([license](experiments/workflows/v10-pocock-tdd/LICENSE.upstream)).
-- `experiments/workflows/v11-superpowers-tdd/` — the `test-driven-development` skill
+- `experiments/workflows/external/external-pocock-2026-09-04-cc/` — `tdd` + `code-review` + `codebase-design`
+  from [mattpocock/skills](https://github.com/mattpocock/skills), commit `6654f6b6` (2026-08-24).
+  A restructured workflow, not an update of the lab's earlier 2026-05-26 snapshot of the
+  same repo (vendored once, removed after it ended up with no runs) — upstream moved
+  refactoring out of the loop
+  ([license](experiments/workflows/external/external-pocock-2026-09-04-cc/LICENSE.upstream)).
+- `experiments/workflows/external/external-superpowers-2026-09-04-cc/` — the `test-driven-development` skill
   from [obra/superpowers](https://github.com/obra/superpowers), plugin `5.1.0`
-  ([license](experiments/workflows/v11-superpowers-tdd/LICENSE.upstream)).
+  ([license](experiments/workflows/external/external-superpowers-2026-09-04-cc/LICENSE.upstream)).

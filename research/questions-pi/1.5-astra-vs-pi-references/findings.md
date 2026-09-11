@@ -2,7 +2,7 @@
 
 GPT-6 Astra on the OpenAI subscription route against the strongest references
 reachable on the pi harness. `game-of-life-example-mapping` ×
-`v6.2.1-phase-continuation-pi`, n=5 per cell, 25 runs.
+`exact-hybrid-v4.2-phase-continuation-pi`, n=5 per cell, 25 runs.
 
 **The harness is pi in every cell — this is not a harness comparison.** Two
 cells sit on the OpenAI subscription route (`openai-codex`, Responses API),
@@ -169,7 +169,7 @@ interpreting).
 
 All 25 runs pass: Correctness (external) 1.0, Correctness (internal) green,
 `completed_within_budget` 100 %, `cli_built` true. **H3 confirmed** —
-`game-of-life` under v6.2.1 does not discriminate on correctness, so the three
+`game-of-life` under hybrid-v4.2 does not discriminate on correctness, so the three
 saturated rows gate rather than differentiate, and every cell is eligible for
 the quality trophies.
 

@@ -10,7 +10,7 @@ factors:
     # the pi/Requesty route and a different cell — see "Adding Sonnet 5" below.
     - sonnet-5-native-no-thinking
 controls:
-  workflow: v6.1-hybrid-testlist-scope-fix
+  workflow: exact-hybrid-v2-testlist-fix-cc
   kata_base: claim-office
   prompt: example-mapping
   # Fable 5.1 needs CC >= 2.1.251, so all three cells run on 2.1.267. Pinning
@@ -50,7 +50,7 @@ status: aktiv
 
 # RQ-2.3: Fable 5 / Fable 5.1 / Opus 5 / Sonnet 5 on the Current Workflow
 
-`v6.1-hybrid-testlist-scope-fix` is the workflow that
+`exact-hybrid-v2-testlist-fix-cc` is the workflow that
 `research/workflow-dev/workflow-construction.md` § "Aktuelle Front" names the
 exact-coding baseline for correctness-critical work. Every finding on that
 baseline was measured on `opus-5-no-thinking`. This RQ asks whether the Fable
@@ -60,10 +60,10 @@ whether the tier below Opus behaves differently on it too.
 ## Why a new RQ rather than an extension
 
 RQ-2.1 (`RQ-model-quality`) and RQ-2.2 (`RQ-model-novel`) already carry Fable 5
-and Opus 5 as model factors, but both control `workflow: v4-exact-subagents`.
+and Opus 5 as model factors, but both control `workflow: exact-subagents-v1-cc`.
 Changing the workflow would open a controlled factor, which the project
 conventions forbid. The existing Fable runs (3 GoL / 5 claim-office / 3 GoL on
-v4) are therefore not transferable and are not counted here.
+subagents-v1) are therefore not transferable and are not counted here.
 
 ## Adding Sonnet 5
 
@@ -73,7 +73,7 @@ only quality separates them (H2). That makes the result hard to use as advice �
 it says which frontier model to pick, not whether a frontier model is needed.
 
 `sonnet-5-native-no-thinking` is added as a fourth cell to answer the question
-the first three cannot: **does the v6.1 baseline workflow carry a cheaper model
+the first three cannot: **does the hybrid-v2 baseline workflow carry a cheaper model
 to the same place?** The workflow does a great deal of the structural work
 itself (test list, phase gates, refactor agent), so a tier gap that is obvious
 on a bare prompt may or may not survive it. Either outcome is usable —
@@ -98,7 +98,7 @@ merged**, and no `controls.model: {any: [...]}` may list both.
 
 Native list price for `claude-sonnet-5` is $2.00 / $10.00 / $0.20 cache read /
 $2.50 cache write, wired into `PRICES` in `compute-cost.py`. On the cache-heavy
-v6.1 workflow the cache-read rate is what decides the cost ranking
+hybrid-v2 workflow the cache-read rate is what decides the cost ranking
 (F-fable-vs-opus5.7), and $0.20 is the lowest in the field — below Fable 5.1's
 $0.25 and 2.5× below opus-5's $0.50.
 
@@ -118,7 +118,7 @@ version, not by a bare API call (the Fable 5.1 gate below is exactly why a bare
 `fable-5-1` was wired for this RQ (`MODEL_CONFIGS` in `run-batch.sh`, `PRICES`
 in `compute-cost.py`). Note the tariff asymmetry: Fable 5.1 prices cache reads
 at 0.025x base input ($0.25/MTok) where Fable 5 uses the standard 0.1x
-($1.00/MTok). Since the v6.1 workflow is cache-heavy, this matters for any
+($1.00/MTok). Since the hybrid-v2 workflow is cache-heavy, this matters for any
 cost comparison between the two Fable versions.
 
 **Cost figures are list-price comparison values, not invoices.** On the Max
@@ -146,7 +146,7 @@ The pin therefore moved to **2.1.267** for this RQ.
 That makes the 13 existing `opus-5-no-thinking` runs unusable as a comparison
 cell. They were measured on 2.1.170; the Fable cells run on 2.1.267. Reusing
 them would confound the CLI version with the model factor — exactly the failure
-RQ-1.19 F-1.19.9 caught, where "v6.1.1 costs more" could not be separated from
+RQ-1.19 F-1.19.9 caught, where "hybrid-v2.4 costs more" could not be separated from
 "September costs more" until a period control was run.
 
 **All model cells are therefore measured fresh on 2.1.267** — the three
@@ -220,9 +220,9 @@ Consequences for reading this RQ:
 - **H5 (the CLI bump is behaviourally neutral)** — `opus-5-no-thinking` on
   2.1.267 matches the 13 existing 2.1.170 runs in cost, refactor rate and
   quality. This is the period control and has to be read first: if it holds,
-  findings here connect to the v6.1 line measured before the bump. Falsifier:
+  findings here connect to the hybrid-v2 line measured before the bump. Falsifier:
   the new opus-5 runs differ from the old ones — then the CLI version is a live
-  factor, every cross-version comparison in the v6.1 line needs re-reading, and
+  factor, every cross-version comparison in the hybrid-v2 line needs re-reading, and
   that is a finding in its own right rather than a nuisance.
 - **H6 (the workflow does not close the tier gap)** — `sonnet-5-native` lands
   below the 0.90 correctness gate and therefore takes no quality or cost trophy,
@@ -232,7 +232,7 @@ Consequences for reading this RQ:
   failing together) is the RQ's existing signature for "built a smaller program
   that never handles the long scenarios". Falsifier — and the more interesting
   outcome — is Sonnet reaching the gate with opus-5's failure profile
-  (`14-family-steinheim` alone), which would say the v6.1 scaffolding
+  (`14-family-steinheim` alone), which would say the hybrid-v2 scaffolding
   substitutes for model capability on this kata and make the baseline
   recommendation several times cheaper. A third outcome is possible and must not
   be read as either: the gate met but with a *new* failure case, which is a
@@ -272,7 +272,7 @@ its own output; the string does not appear in its thinking blocks either.
 Two things worth recording separately:
 
 - `thinking: false` is set and Fable 5.1 still produces thinking blocks. Fable 5
-  did the same on v4 (15–29 blocks per run) but still emitted predictions, so
+  did the same on subagents-v1 (15–29 blocks per run) but still emitted predictions, so
   the missing prediction text is specific to 5.1, not to the Fable line.
 - Whether Fable 5.1 *makes* the predictions and does not write them, or does not
   make them, is not decided by this data. That is a question about the model's

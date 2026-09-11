@@ -6,7 +6,7 @@
 > Datei hier deckt nur die harten Parser-Anforderungen ab.
 
 
-When you derive a new workflow (e.g. `v5.1`, `v6`) by reducing or rewriting
+When you derive a new workflow (e.g. `single-context-v2`, `hybrid`) by reducing or rewriting
 rules/commands, these markers must remain intact. Removing one of them
 silently zeros out the corresponding metric — runs still complete, but the
 RQ aggregation gets blind spots that look like "no effect" when really the
@@ -34,14 +34,14 @@ own workflows it tracks the transcript; on vendored ones it may or may not
 
 | Workflow | marker `cycle_count` | transcript `test_blocks` | |
 |---|---:|---:|---|
-| `v6.1.1-lab-split-cc` (our markers) | 48.0 | 48.4 | agree |
-| `v11-superpowers-tdd` (vendored) | 13.4 | 13.4 | agree |
-| `v10-pocock-tdd` (vendored) | 35.2 | 19.0 | diverge 46 % |
+| `exact-hybrid-v2.4-lab-split-cc` (our markers) | 48.0 | 48.4 | agree |
+| `external-superpowers-2026-09-04-cc` (vendored) | 13.4 | 13.4 | agree |
+| `external-pocock-2026-09-04-cc` (vendored) | 35.2 | 19.0 | diverge 46 % |
 
-`v6.2-with-why-cleaned` on `claim-office` × `opus-4-7-portkey-no-thinking` (n=8)
+`exact-hybrid-v4-cleaned-cc` on `claim-office` × `opus-4-7-portkey-no-thinking` (n=8)
 likewise agrees: `cycle_count` 37.4 against `test_blocks` 38.5.
 
-The point is not that vendored skills always diverge — `v11` matches exactly.
+The point is not that vendored skills always diverge — `superpowers` matches exactly.
 It is that you cannot tell in advance which case you are in, so `test_blocks`
 is the figure to use whenever markers 2/3 are absent.
 
@@ -60,21 +60,21 @@ external baselines, or measure those separately.
 |---|---|---|---|---|
 | 1 | `Skill` tool-use with `skill ∈ {test-list, red, green, refactor}` | Tool calls during the run | Phase recognition, `cycle_count`, `refactorings_applied`, per-phase tokens/duration | `analyze_transcript.py` ~line 233 (`if tool_name == "Skill"`) and `aggregate_skill_phases` |
 
-> **Skill-Tool findet auch `.claude/commands/<name>.md`.** Commands sind in Skills "merged" (Claude-Code-Doku, Slash-Commands-Sektion) und nicht deprecated. Die v6.x-Linie liegt bewusst unter `commands/` — Begründung in `research/workflow-dev/workflow-construction.md` §"Mechanismus: commands/ mit Skill-Tool".
+> **Skill-Tool findet auch `.claude/commands/<name>.md`.** Commands sind in Skills "merged" (Claude-Code-Doku, Slash-Commands-Sektion) und nicht deprecated. Die hybrid.x-Linie liegt bewusst unter `commands/` — Begründung in `research/workflow-dev/workflow-construction.md` §"Mechanismus: commands/ mit Skill-Tool".
 
 | # | Marker | Where it must appear | Drives | Where in parser |
 |---|---|---|---|---|
 | 2 | The literal string `Red Phase Complete` | Assistant text emitted by the red-phase command | **Gates** prediction parsing — without this string, predictions in the same block are ignored | `extract_predictions_from_text` ~line 75 |
 | 3 | One or more lines matching `(- \| ✅ \| ❌) (Correct\|Incorrect)` inside that block | Assistant text in the same block as marker 2 | `predictions_correct`, `predictions_total`, derived `predictions_correct_rate` | `_PREDICTION_OUTCOME_RE` ~line 61 |
-| 4 | `experiment-done.txt` containing `DONE` | Written to the run cwd at the end of the autonomous loop | Run-driver detects clean termination; without it the container hits its timeout and the run is flagged `exit_reason: timeout` | `tdd-experiment-mode.md` (v6.5 and earlier) / `lab-only.md` (v6.6+) |
+| 4 | `experiment-done.txt` containing `DONE` | Written to the run cwd at the end of the autonomous loop | Run-driver detects clean termination; without it the container hits its timeout and the run is flagged `exit_reason: timeout` | `tdd-experiment-mode.md` (hybrid-v5 and earlier) / `lab-only.md` (hybrid-v6+) |
 
 ### Single-command workflows on CC — `## Refactor` text fallback
 
-A CC workflow that keeps the **whole cycle in one command** (`basic-sol-tdd-cc`:
+A CC workflow that keeps the **whole cycle in one command** (`exact-sol-v1-cc`:
 `/predictive-tdd` invoked once, then every cycle runs inline from that document)
 breaks the phase-source selection in **two different ways**, depending on whether
 the model treats the command as a tool call or as a document it simply reads.
-Both were measured 2026-08-17 on `basic-sol-tdd-cc` and both silently produced a
+Both were measured 2026-08-17 on `exact-sol-v1-cc` and both silently produced a
 wrong `refactorings_applied`:
 
 | Case | What the model does | Winning phase source | Result |
@@ -103,9 +103,9 @@ weak proxy — it also captures bugfixes, lint and tsc edits, see the same note 
 contractually emits. Subagent workflows do not emit `## Refactor`, so step 2
 cannot inflate them: for those, step 1 already produced a non-zero count.
 
-Verified against 18 existing CC runs spanning v3, v4, v5.1, v6.2 and v6.6 across
+Verified against 18 existing CC runs spanning inline-tdd, subagents, single-context-v2, hybrid-v4 and hybrid-v6 across
 claim-office, game-of-life and sphinx-score: all unchanged, `cycle_count`
-included. The v3 cells are the load-bearing check here — they run on the
+included. The inline-tdd cells are the load-bearing check here — they run on the
 `inline-tool` path themselves and emit no `## Refactor`, so they confirm step 2
 fires only where markers actually exist.
 
@@ -120,16 +120,16 @@ markers, which is why a run can show a healthy `cycle_count` next to a zeroed
 
 | Generation | Claude Code | pi / cursor / opencode |
 |---|---|---|
-| v6.5 and earlier | `.claude/rules/tdd-experiment-mode.md` | inline in `AGENTS.md` |
-| **v6.6+ (`v6.6-lab-split-*`)** | `.claude/rules/lab-only.md` | `LAB-ONLY` fenced block at the end of `AGENTS.md` |
+| hybrid-v5 and earlier | `.claude/rules/tdd-experiment-mode.md` | inline in `AGENTS.md` |
+| **hybrid-v6+ (`v6.6-lab-split-*`)** | `.claude/rules/lab-only.md` | `LAB-ONLY` fenced block at the end of `AGENTS.md` |
 
-The v6.6 line separates **lab measurement infrastructure** from **TDD
+The hybrid-v6 line separates **lab measurement infrastructure** from **TDD
 methodology** so a workflow can be exported for real-world use by deleting
 one file (CC) or stripping one fenced block (pi/cursor/oc). Everything the
 parser depends on — the done-marker contract, the autonomy mandate, and the
 phase-continuation fix — lives inside that droppable region.
 
-**Consequence for new workflows:** if you derive from a v6.6 variant, marker
+**Consequence for new workflows:** if you derive from a hybrid-v6 variant, marker
 4 is *not* in `tdd.md`. Do not "clean up" `lab-only.md` or the fenced blocks
 in a lab workflow — removing them zeroes clean-termination detection and
 every run times out.
@@ -156,12 +156,12 @@ unusual.
 > column *is* a compliance loss and is not covered by the exception — see
 > `research/workflow-dev/workflow-construction.md`, section
 > "`basic-sol-tdd`-Paar", for why this line is more exposed to it than the
-> v6 line.
+> hybrid line.
 
 The phrase **"MUST verbatim, do not abbreviate, do not collapse"** (or
 equivalent) belongs in the red-phase command. Without it, the model tends
 to merge the two prediction lines into one as the run goes on. This was
-the root cause of the v4 compliance bug fixed on 2026-05-09 — see memory
+the root cause of the subagents compliance bug fixed on 2026-05-09 — see memory
 note for the full story.
 
 ## Hard requirements — pi harness
@@ -207,8 +207,8 @@ Instead, it relies on **text markers** in assistant output and
   emitted 98 `## Green` and 19 `## Refactor` headings, all of which an unbound
   fallback would have miscounted. The fallback applies per phase and only when
   the main thread produced no marker for that phase at all. Verified: 10 hybrid
-  runs across `v6.1-hybrid-testlist-scope-fix-pi`, `v6.2-with-why-cleaned-pi`,
-  `v6.2.1-phase-continuation-pi` and `v6.6-lab-split-pi` unchanged in
+  runs across `exact-hybrid-v2-testlist-fix-pi`, `exact-hybrid-v4-cleaned-pi`,
+  `exact-hybrid-v4.2-phase-continuation-pi` and `exact-hybrid-v6-lab-split-pi` unchanged in
   `cycle_count`, `refactorings_applied` and `predictions_total`.
 - **P4 has a text fallback for inline workflows.** Workflows that refactor in the
   main context instead of delegating (`v5.1-*-pi`: every phase in one shared
@@ -219,8 +219,8 @@ Instead, it relies on **text markers** in assistant output and
   `## Refactor` heading is consulted only in their complete absence. This mirrors
   the precedence P1 already has over skill reads for `cycle_count`, and it cannot
   inflate hybrid workflows, which emit no `## Refactor` heading. Verified against
-  20 existing pi runs across `v6.2-with-why-cleaned-pi`,
-  `v6.2.1-phase-continuation-pi` and `v6.6-lab-split-pi`: all unchanged.
+  20 existing pi runs across `exact-hybrid-v4-cleaned-pi`,
+  `exact-hybrid-v4.2-phase-continuation-pi` and `exact-hybrid-v6-lab-split-pi`: all unchanged.
 
 ## Hard requirements — cursor harness
 
@@ -335,12 +335,12 @@ marker is broken — fix it before launching the n=3 batch.
 
 - Parsers: `experiments/analyze_transcript.py`, `experiments/parse_pi_transcript.py`, `experiments/parse_cursor_transcript.py`
 - CC/OC workflows satisfying markers 1–4:
-  `v4-exact-subagents`, `v5-exact-single-context`, `v6.6-lab-split-cc`,
-  `v6.6-lab-split-oc`, `basic-sol-tdd-cc` (single command — `cycle_count` and
+  `exact-subagents-v1-cc`, `exact-single-context-v1-cc`, `exact-hybrid-v6-lab-split-cc`,
+  `exact-hybrid-v6-lab-split-oc`, `exact-sol-v1-cc` (single command — `cycle_count` and
   `refactorings_applied` both via text markers, see the fallback note above)
-- pi workflows satisfying markers P1–P7: `v6.2-with-why-cleaned-pi`,
-  `v6.6-lab-split-pi`, `basic-sol-tdd-pi` (P4 via `## Refactor` text
-  fallback), `basic-sol-tdd-subagent-pi` (P4 via `subagent` call)
+- pi workflows satisfying markers P1–P7: `exact-hybrid-v4-cleaned-pi`,
+  `exact-hybrid-v6-lab-split-pi`, `exact-sol-v1-pi` (P4 via `## Refactor` text
+  fallback), `exact-sol-v1.1-subagent-pi` (P4 via `subagent` call)
 
 ### P3 is not a `##` heading — same trap as cursor's C3
 
@@ -356,14 +356,14 @@ loses the test-list phase silently. Instruct **both**.
 
 ### Baseline workflows satisfy marker 4 only — by design
 
-`v1-oneshot` / `v1-oneshot-pi` (no TDD) and `v3-basic-tdd` / `v3-basic-tdd-pi`
+`baseline-oneshot-v1-cc` / `baseline-oneshot-v1-pi` (no TDD) and `baseline-inline-tdd-v1-cc` / `baseline-inline-tdd-v1-pi`
 ("use TDD", no phase structure) prescribe **no phase markers**. They carry only
-the done-marker (marker 4 / P7). v3 tells the model to do TDD but never tells it
+the done-marker (marker 4 / P7). inline-tdd tells the model to do TDD but never tells it
 to write `## Red`.
 
 This is **not a broken marker** and must not be "fixed": adding markers would turn
-v3 into a mini-v4 and break comparability with the existing runs that define what
-v3 means in this lab. The healthy-baseline checklist above does **not** apply to
+inline-tdd into a mini-v4 and break comparability with the existing runs that define what
+inline-tdd means in this lab. The healthy-baseline checklist above does **not** apply to
 these four workflows.
 
 #### Marker-free ≠ unmeasurable: the inline-tool inference
@@ -387,20 +387,20 @@ regression diff over 226 pi runs.)
 
 #### What the inferred numbers do and do not support
 
-`cycle_count` is a genuine signal — v3 runs show multi-cycle red/green sequences.
-But it is **not comparable to marker-based counts**: on opus-5 v3 yields 1–8
-while v6.6 yields 7–57. Different constructs (inferred tool sequence vs. marker
+`cycle_count` is a genuine signal — inline-tdd runs show multi-cycle red/green sequences.
+But it is **not comparable to marker-based counts**: on opus-5 inline-tdd yields 1–8
+while hybrid-v6 yields 7–57. Different constructs (inferred tool sequence vs. marker
 emission), not different amounts of discipline. Never put them in one column.
 
 A non-zero `cycle_count` also does not mean the run was *rigorous* TDD. It counts
-red/green alternations, not their size. Across 55 v3 runs only 22 % open with an
+red/green alternations, not their size. Across 55 inline-tdd runs only 22 % open with an
 increment of two test cases or fewer, and 31 % never run the tests before
 implementing — most models author a whole suite up front and implement against
 it. To claim step size or verified-red, measure the first cycle directly; see
 `research/questions-cross/1.5-v3-emergent-tdd/` F-1.5.
 
 `refactorings_applied` is an **upper bound, not a refactoring count**. All 60
-candidates across every v3 run (cc and pi) were hand-classified — against the
+candidates across every inline-tdd run (cc and pi) were hand-classified — against the
 accompanying assistant text where the model narrates its work, against the code
 diff for models that stay silent:
 
@@ -426,8 +426,8 @@ Consequence for RQs using these workflows as a floor (e.g.
 `refactorings_applied` are available with the caveats above; only
 `predictions_correct_rate` is n/a. Correctness and code-quality metrics are
 unaffected — they are measured from the source tree.
-- cursor workflows satisfying markers C1–C7: `v6.2.1-phase-continuation-cursor`
+- cursor workflows satisfying markers C1–C7: `exact-hybrid-v4.2-phase-continuation-cursor`
   (C4b not applicable — that generation has no end-refactor phase),
-  `v6.6-lab-split-cursor` (all markers incl. C4b)
+  `exact-hybrid-v6-lab-split-cursor` (all markers incl. C4b)
 - Past compliance incidents documented in repo memory under
-  *"Drei Metriken-Bugs"* and *"v4 Predictions-Compliance"*
+  *"Drei Metriken-Bugs"* and *"subagents Predictions-Compliance"*

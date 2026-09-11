@@ -58,7 +58,7 @@ exporting a harness you have not exported before.**
 Three, all optional:
 
 1. **Date** in `YYYY-MM-DD` form. Default: today (`date +%F`).
-2. **Source workflow name** (e.g. `v6.6-lab-split-cc`). Default:
+2. **Source workflow name** (e.g. `exact-hybrid-v6-lab-split-cc`). Default:
    auto-detect (see "Source detection" below).
 3. **Harness set**: any of `cc`, `pi`, `oc`, `cursor`, or `all`.
    Default: `cc`.
@@ -68,7 +68,7 @@ use today's date. If only one argument looks like a date, that's the date;
 if only one looks like a workflow name, that's the source.
 
 With `all` (or an explicit multi-harness list), resolve one source workflow
-per harness. For the v6.6 line the naming is regular —
+per harness. For the hybrid-v6 line the naming is regular —
 `v6.6-lab-split-{cc,pi,oc,cursor}` — so a single detected base name plus the
 harness suffix resolves each. If a suffix variant is missing, report it and
 export the harnesses that do exist rather than aborting the whole run.
@@ -92,7 +92,11 @@ The first backtick-quoted workflow name on that line is the recommendation.
 Verify the directory exists:
 
 ```bash
-SRC_DIR="experiments/workflows/$SRC_NAME"
+# Workflows liegen in Kategorie-Unterordnern; PATHS.json loest den Leaf-Namen
+# auf und akzeptiert dabei auch Alt-Namen (ALIASES.json).
+SRC_DIR="experiments/workflows/$(jq -r --arg n "$SRC_NAME" \
+    '.[$n] // $n' experiments/workflows/ALIASES.json \
+  | xargs -I{} jq -r --arg n {} '.[$n] // $n' experiments/workflows/PATHS.json)"
 [ -d "$SRC_DIR/.claude" ] || { echo "Source $SRC_DIR missing"; exit 1; }
 ```
 
@@ -192,18 +196,18 @@ echo "source layout: $LAYOUT"
 - `rules/tdd-with-ts-and-vitest.md` (some older source workflows used
   `tdd_with_ts_and_vitest.md` — if present, rename to hyphen form in target)
 - `agents/refactor.md`
-- `agents/end-refactor.md` (present from v6.5 onward; skip if absent)
+- `agents/end-refactor.md` (present from hybrid-v5 onward; skip if absent)
 - `commands/test-list.md`
 - `commands/red.md`
 - `commands/green.md`
 - `rules/tdd.md`
 
-**Layout `v66`** (source has `rules/lab-only.md` — e.g. `v6.6-lab-split-cc`):
+**Layout `v66`** (source has `rules/lab-only.md` — e.g. `exact-hybrid-v6-lab-split-cc`):
 
 - Also copy `rules/subagent-prompts.md` — it holds the isolated-subagent
   prompt contracts and is workflow methodology, not lab infrastructure.
 - Do **not** copy `rules/lab-only.md`. Dropping it is the whole point of
-  the v6.6 layout: it carries the autonomy mandate, the done-marker
+  the hybrid-v6 layout: it carries the autonomy mandate, the done-marker
   contract, and the phase-continuation fix.
 - After copying, strip any `LAB-ONLY` fenced regions from every copied
   `.md` (they appear in `rules/tdd.md`; other phase files may gain them
@@ -222,7 +226,7 @@ open(p,'w').write(s)" "$f"
   Strip each file exactly **once** — running the regex repeatedly over the
   same file can eat surrounding lines.
 
-**Layout `legacy`** (source has `rules/tdd-experiment-mode.md` — v6.5 and
+**Layout `legacy`** (source has `rules/tdd-experiment-mode.md` — hybrid-v5 and
 earlier): do **not** copy `rules/tdd-experiment-mode.md`. It is replaced by
 the consumable `tdd-execution-mode.md` from this skill's templates. Note
 that this file also carries the subagent prompt contracts, which the
@@ -432,7 +436,7 @@ never mentions TDD must not pull the workflow into context.
 ## HITL Patches
 
 Each patch is described as: file → location → replacement / addition. The
-exact target strings are taken from `v6.2-with-why-cleaned`; for other
+exact target strings are taken from `exact-hybrid-v4-cleaned-cc`; for other
 source workflows the strings might differ — in that case, use the nearest
 structural anchor (e.g. "after the last numbered Step") and report any
 patch that could not be applied verbatim.
@@ -441,9 +445,9 @@ patch that could not be applied verbatim.
 
 1. **Header rename** (top of file):
 
-   - From: `# Test-Driven Development (TDD) Rules — Hybrid (v6)` (or
+   - From: `# Test-Driven Development (TDD) Rules — Hybrid (hybrid)` (or
      whatever header the source uses)
-   - To: `# TDD Rules — Hybrid (v6, exact-coding baseline)`
+   - To: `# TDD Rules — Hybrid (hybrid, exact-coding baseline)`
 
 2. **Drop experiment-pipeline justification** in the "🚨 CRITICAL" intro
    paragraph. The source typically has a sentence like *"The experiment's

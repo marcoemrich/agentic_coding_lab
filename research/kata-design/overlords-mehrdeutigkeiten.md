@@ -501,7 +501,7 @@ konvergieren. Die Kata bleibt unverändert.
 ## Smoke-Run-Befunde (2026-08-11)
 
 Erster vollständiger Lauf: `sphinx-score-example-mapping` ×
-`v6.6-lab-split-cc` × `opus-5-no-thinking`, 1486 s, `exit_reason: ok`.
+`exact-hybrid-v6-lab-split-cc` × `opus-5-no-thinking`, 1486 s, `exit_reason: ok`.
 `verification_pct` **1.0**, `cli_built` true, `tests_passing` true
 (11 Tests), 11 Zyklen, 11 Refactorings, 22/22 Predictions korrekt.
 48 LoC, `cognitive_max` 1, `mccabe_max` 2. (Der Lauf wurde gegen die
@@ -704,7 +704,7 @@ Test-Suite jede Achse isoliert pinnen (Stage 1), bevor kombiniert wird.
 - [x] Rechenchaos in G1 (9/20 Selbstkorrekturen) als
       Rechenfehler-TDD-Indikator akzeptiert (User).
 - [x] **Smoke-Run gelaufen (2026-08-11):** `sphinx-score-example-mapping`
-      × `v6.6-lab-split-cc` × `opus-5-no-thinking`, 1486s, `exit_reason:
+      × `exact-hybrid-v6-lab-split-cc` × `opus-5-no-thinking`, 1486s, `exit_reason:
       ok`. `verification_pct` 1.0 (15/15), `cli_built` true, 11 Zyklen,
       22/22 Predictions. Der Agent trifft **alle vier** Festlegungen,
       auch die 20:0-Konvergenz beim Trostpunkt — die Beispiele tragen

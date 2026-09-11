@@ -19,7 +19,7 @@ Skill/subagent detection (v6.2-pi and other multi-phase pi workflows):
 - Prediction markers ("Red Phase Complete" + Correct/Incorrect) are
   parsed from assistant text the same way as in the CC and OC parsers.
 
-Marker-free workflows (v3-basic-tdd-pi): the prompt says "use TDD" but
+Marker-free workflows (baseline-inline-tdd-v1-pi): the prompt says "use TDD" but
 prescribes no phase markers, so none of the signals above fire. For those
 runs the phases are inferred from the write/edit/bash tool sequence
 (test-edit -> `pnpm test` = red; impl-edit -> `pnpm test` = green; impl-edit
@@ -33,7 +33,7 @@ Inferred counts are a *lower bound* on TDD discipline and are not
 comparable to marker-based counts from instrumented workflows — see
 workflows/MARKERS.md.
 
-For v1-oneshot-pi (no skills, no subagent) all TDD fields stay 0.
+For baseline-oneshot-v1-pi (no skills, no subagent) all TDD fields stay 0.
 """
 
 from __future__ import annotations
@@ -382,7 +382,7 @@ def _subagent_phase_text_of(ev: dict) -> list[tuple[str, str]]:
 
     The agent name is returned alongside the text so the caller can bind each
     marker to the phase that actually owns it. This binding is essential, not
-    cosmetic: refactor subagents in the hybrid v6.x workflows routinely echo
+    cosmetic: refactor subagents in the hybrid hybrid.x workflows routinely echo
     `## Green` (and sometimes `## Refactor`) inside their reports, so counting
     subagent text indiscriminately would inflate those runs' `cycle_count`.
     """
@@ -608,10 +608,10 @@ def main(run_dir: str) -> int:
         predictions_correct = sa_predictions_correct
         predictions_total = sa_predictions_total
 
-    # Marker-free workflows (v3-basic-tdd-pi) prescribe no phase markers at all,
+    # Marker-free workflows (baseline-inline-tdd-v1-pi) prescribe no phase markers at all,
     # so every counter above stays 0 — indistinguishable from "the model never
     # did TDD". Infer the phases from the tool sequence instead, using the same
-    # heuristic cc applies to its own v3 runs.
+    # heuristic cc applies to its own inline-tdd runs.
     #
     # The decision is per *run*, not per metric: inference runs only when the
     # transcript carries no marker of any kind. In an instrumented workflow a
@@ -638,7 +638,7 @@ def main(run_dir: str) -> int:
     )
 
     # refactorings_applied: subagent calls are the primary signal (hybrid
-    # workflows such as v6.x-pi isolate refactor in a subagent). Inline
+    # workflows such as hybrid.x-pi isolate refactor in a subagent). Inline
     # workflows (v5.1-pi: every phase in one shared context) never emit a
     # subagent call, so fall back to the `## Refactor` text marker — the same
     # relationship P1 has to skill reads for cycle_count. Subagent workflows

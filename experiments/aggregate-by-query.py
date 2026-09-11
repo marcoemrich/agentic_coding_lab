@@ -38,10 +38,13 @@ from pathlib import Path
 import pandas as pd
 import yaml
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from workflow_paths import (canonical as canonical_workflow, is_archived,
+                            workflow_dir)
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RUNS_DIR = REPO_ROOT / "experiments" / "runs"
 WORKFLOWS_DIR = REPO_ROOT / "experiments" / "workflows"
-ARCHIVE_DIR = WORKFLOWS_DIR / "_archive"
 
 CSV_COLUMNS = [
     "kata", "workflow", "cell_workflow", "model", "cell_model", "cli_model",
@@ -151,6 +154,11 @@ def expand_cells(fm: dict) -> list[dict]:
         # the SAME cell. First entry is canonical (cell label + plan gen);
         # all entries match in aggregation.
         normalize_alts(cell, "workflow")
+        # Alt-Namen auf die aktuellen ziehen. Eine RQ darf weiter
+        # exact-hybrid-v2-testlist-fix-cc nennen; gematcht und beschriftet
+        # wird trotzdem exact-hybrid-v2-testlist-fix-cc.
+        cell["workflow_alts"] = [canonical_workflow(w) for w in cell["workflow_alts"]]
+        cell["workflow"] = cell["workflow_alts"][0]
 
         # harness_version is optional and absent from almost every RQ. When a
         # cell does not declare it, harness_alts stays None and no filtering
@@ -246,8 +254,8 @@ def matches_cell(metrics: dict, cell: dict) -> bool:
             return False
     # Workflow match: cell["workflow_alts"] is the list of accepted workflow
     # names (usually one; more than one only for an OR-matched outcome-neutral
-    # bugfix, e.g. [v6.2-with-why-cleaned-pi, v6.2.1-phase-continuation-pi]).
-    if metrics.get("workflow") not in cell["workflow_alts"]:
+    # bugfix, e.g. [exact-hybrid-v4-cleaned-pi, exact-hybrid-v4.2-phase-continuation-pi]).
+    if canonical_workflow(metrics.get("workflow", "")) not in cell["workflow_alts"]:
         return False
     # Model match: cell["model_alts"] is the list of accepted lab-variant
     # short aliases (e.g. ["opus-4-7-no-thinking", "opus-4-7-portkey-no-thinking"]).
@@ -271,18 +279,22 @@ def check_archived_workflows(cells: list[dict], allow_archived: bool) -> int:
     the run proceeds anyway (RQ-1.10 legitimately evaluates a rejected
     workflow); without it, the caller aborts.
     """
-    if not ARCHIVE_DIR.is_dir():
-        return 0
-
-    archived = {p.name for p in ARCHIVE_DIR.iterdir() if p.is_dir()}
-    hits = sorted({c["workflow"] for c in cells if c.get("workflow") in archived})
+    # Archiv-Zugehoerigkeit kommt aus PATHS.json (status: discarded <=> Pfad
+    # unter _archive/), nicht mehr aus einem flachen iterdir() -- das Archiv
+    # spiegelt seit dem Lineage-Umbau die Kategorie-Struktur und ist verschachtelt.
+    #
+    # Geprueft werden ALLE Alts, nicht nur der kanonische erste Eintrag: der im
+    # Docstring benannte Hauptfall ist gerade der, dass in einem {any: [...]}
+    # ein archivierter Name mitlaeuft und uebersehen wird.
+    hits = sorted({w for c in cells for w in (c.get("workflow_alts") or [c.get("workflow")])
+                   if w and is_archived(w)})
     if not hits:
         return 0
 
     verb = "note" if allow_archived else "ERROR"
     print(f"{verb}: selector names {len(hits)} archived workflow(s):", file=sys.stderr)
     for name in hits:
-        print(f"    {name}  (experiments/workflows/_archive/{name})", file=sys.stderr)
+        print(f"    {name}  ({workflow_dir(name).relative_to(REPO_ROOT)})", file=sys.stderr)
     if not allow_archived:
         print("  Archived workflows are superseded or defective; their runs still sit "
               "in experiments/runs/ unmarked.\n"

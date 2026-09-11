@@ -5,7 +5,7 @@ Forschungsfragen, die pi-Workflows (Suffix `-pi`) als Subjekt haben.
 Konvention:
 - RQ-Dirs als `<chapter>-<slug>/` (z.B. `1.1-model-quality-pi/`).
 - Frontmatter-`id:` ist die stabile Identität (z.B. `RQ-model-quality-pi`).
-- Workflow-Werte sind pi-Workflows (`v6.2-with-why-cleaned-pi`, …) — erkennbar am `.pi/`-Verzeichnis in `experiments/workflows/<name>/`.
+- Workflow-Werte sind pi-Workflows (`exact-hybrid-v4-cleaned-pi`, …) — erkennbar am `.pi/`-Verzeichnis in `experiments/workflows/<name>/`.
 - Modelle: Lab-Variant-IDs für Requesty-geroutete pi-Modelle. pi routet über **Requesty** (`provider=requesty`, `api:"openai-completions"`, Bearer-Auth), nicht über Portkey (OpenCode) oder die Direct-API (Claude Code). Provider-Config: `experiments/docker/pi-config/agent/models.json`.
 
 Harness-übergreifende RQs (Claude vs OpenCode vs pi) leben unter `../questions-cross/`.

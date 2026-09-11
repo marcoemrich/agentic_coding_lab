@@ -78,16 +78,16 @@ a brief that omits APP entirely.
 
 The decisive comparison is against RQ-1.17, where the *unsubordinated* brief on this
 exact model, route, kata and prompt style produced `cc_avg_loc_per_function` 9.52 at
-Code Mass 492.4 — the worst decomposition in that field, below even the structureless v3
+Code Mass 492.4 — the worst decomposition in that field, below even the structureless inline-tdd-v1
 floor, bought with the lowest mass.
 
 | Brief | `cc_avg` | Code Mass |
 |---|---:|---:|
-| v6.2.1, APP unsubordinated (RQ-1.17) | 9.52 | 492.4 |
+| hybrid-v4.2, APP unsubordinated (RQ-1.17) | 9.52 | 492.4 |
 | Basis, no APP at all | 6.60 | 556.8 |
 | A, APP subordinated | 6.72 | 590.6 |
 
-Arm A lands on the no-APP baseline, not on the v6.2.1 damage. Sol no longer optimises
+Arm A lands on the no-APP baseline, not on the hybrid-v4.2 damage. Sol no longer optimises
 the mass number — mass *rises* by 6 % rather than falling, which is what the brief
 predicts a healthy extraction pattern looks like.
 
