@@ -72,6 +72,14 @@ MODEL_CONFIGS=(
     # Nur der undatierte Alias existiert; claude-fable-5-1-<datum> gibt 404.
     "fable-5-1|claude-fable-5-1|true"
     "fable-5-1-no-thinking|claude-fable-5-1|false"
+    # sonnet-5-native: nativ wie opus-5/fable-5 (bare claude-* -> OAuth-Bypass,
+    # Subscription). Der blanke Name `sonnet-5` ist NICHT frei -- er gehoert der
+    # pi/Requesty-Route (vertex/claude-sonnet-5@eu) weiter unten, und 15 Runs
+    # plus zwei pi-RQs und zwei eingefrorene Reports tragen ihn bereits. Daher
+    # traegt hier die native Route das Suffix, umgekehrt zur opus-5-Aufteilung.
+    # Andere Route, anderer Tarif -- die beiden Zellen nie zusammenfassen.
+    "sonnet-5-native|claude-sonnet-5|true"
+    "sonnet-5-native-no-thinking|claude-sonnet-5|false"
     "opus-4-7|claude-opus-4-7|true"
     "opus-4-7-no-thinking|claude-opus-4-7|false"
     "sonnet-4-6|claude-sonnet-4-6|true"

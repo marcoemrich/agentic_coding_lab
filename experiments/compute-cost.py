@@ -90,6 +90,12 @@ PRICES = {
     "opus-4-6-no-thinking": (15.00, 75.00, 1.50, 18.75),
     "opus-4-6-portkey": (15.00, 75.00, 1.50, 18.75),
     "opus-4-6-portkey-no-thinking": (15.00, 75.00, 1.50, 18.75),
+    # sonnet-5-native: nativ (claude-sonnet-5 via OAuth-Bypass), echter
+    # Anthropic-Listpreis 2.00/10.00/0.20/2.50 (cache_read 0.1x, cache_write
+    # 1.25x). Der `sonnet-5`-Eintrag weiter unten ist die pi/Requesty-Route
+    # (2.20/11.00/0.22) und darf nicht mit dieser Zelle vermischt werden.
+    "sonnet-5-native":  (2.00,  10.00, 0.20, 2.50),
+    "sonnet-5-native-no-thinking": (2.00, 10.00, 0.20, 2.50),
     "sonnet-4-6":       (3.00,  15.00, 0.30, 3.75),
     "sonnet-4-6-no-thinking": (3.00, 15.00, 0.30, 3.75),
     "sonnet-4-6-portkey": (3.00, 15.00, 0.30, 3.75),

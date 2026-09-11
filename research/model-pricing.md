@@ -24,7 +24,8 @@ Für die aktuellen pi-/Requesty-Modelle (RQ-model-novel-pi, RQ-model-quality-pi,
 | qwen3-235b | `nebius/qwen/qwen3-235b-a22b-instruct-2507` | $0.20 | $0.60 | $0.20 | **nein** |
 
 Anmerkungen:
-- Diese Werte weichen bewusst von den **nativen** Anthropic-Listpreisen ab: auf den vertex-Routen liegt Requesty ~10 % höher (opus-4-8 $5.50/$27.50 statt $5.00/$25.00 nativ). Im aktuellen Run-Pool laufen ALLE `opus-4-8`/`sonnet-5`-Runs über pi/Requesty, deshalb tragen die shared lab-variants in `compute-cost.py` den Requesty-Tarif.
+- Diese Werte weichen bewusst von den **nativen** Anthropic-Listpreisen ab: auf den vertex-Routen liegt Requesty ~10 % höher (opus-4-8 $5.50/$27.50 statt $5.00/$25.00 nativ). Im aktuellen Run-Pool laufen ALLE `opus-4-8`-Runs über pi/Requesty, deshalb trägt die shared lab-variant in `compute-cost.py` den Requesty-Tarif.
+- **`sonnet-5` ist die Requesty-Route, nicht das Modell.** Die native Direct-API-Route desselben Modells heißt `sonnet-5-native` ($2.00/$10.00/$0.20, Tabelle "Übersicht") und ist eine eigene Zelle. Die Namensrichtung ist hier umgekehrt zu `opus-5` / `opus-5-requesty`: der blanke Name war schon von der pi-Route belegt, als die native dazukam. Runs der beiden Routen sind in Kosten-Vergleichen nicht austauschbar.
 - **`supports_caching=false`** (glm-5-1, qwen3-235b, kimi-k3-nebius): Requesty rechnet cache_read zum vollen Input-Preis ab → in `compute-cost.py` ist `cache_read = input` gesetzt (kein Rabatt).
 - **kimi-k3** hat zwei lab-variants für zwei Routen: `kimi-k3` (sference, Primärroute) und `kimi-k3-nebius` (Fallback, `run-batch.sh:749`). Die Tarife unterscheiden sich deutlich (sference ~25 % billiger und mit Cache-Rabatt) — Runs der beiden Routen sind in Kosten-Vergleichen nicht austauschbar.
 - Cache-Write auf den OpenAI-/GLM-/Kimi-/MiniMax-/DeepSeek-Routen nicht separat ausgewiesen → in `compute-cost.py` als 0 geführt.
@@ -83,6 +84,7 @@ Anmerkungen:
 | Claude Opus 5 | $5.00 | $25.00 | $0.50 |
 | Claude Opus 4.8 | $5.00 | $25.00 | $0.50 |
 | Claude Opus 4.7 | $5.00 | $25.00 | $0.50 |
+| Claude Sonnet 5 | $2.00 | $10.00 | $0.20 |
 | Claude Sonnet 4.6 | $3.00 | $15.00 | $0.30 |
 | Moonshot Kimi K2.6 | $0.73 | $3.49 | $0.37 |
 | Z-AI GLM 5.1 | $0.98 | $3.08 | $0.18 |
