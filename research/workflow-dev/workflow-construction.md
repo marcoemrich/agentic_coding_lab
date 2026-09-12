@@ -30,7 +30,7 @@ Die Workflow-Files der vor-hybrid-v2-Generation + erste Reduktions-Kette (v6.5er
 | `exact-hybrid-v2-testlist-fix-cc` | exact-hybrid-v1-cc + Test-List-Scope-Fix | **Aktuelle Default-Basis für Reduktions-RQs** |
 | `exact-green-refactor-v1-cc` / `v7.1-...-testlist-scope-fix` | Green und Refactor isoliert | Pareto-dominiert von hybrid-v1 (RQ-context, oneshot-v1-Archiv) |
 | `baseline-end-refactor-only-v1-agent-cc` / `baseline-end-refactor-only-v1-native-cc` | Oneshot + End-Refactor (Vibe-Coding-Kontrolle) | Kontrolle für "periodisches TDD vs End-Refactor" |
-| `basic-sol-tdd-*` (7 Varianten) | Predictive TDD aus dem `sol_tdd`-Projekt. Referenz `exact-sol-v1-pi` (pi-nativ, Refactor inline), Subagent-Arm, vier APP-/Mess-Varianten, Claude-Code-Port | Fremd-Methodik-Import, siehe eigener Abschnitt unten |
+| `basic-sol-tdd-*` (8 Varianten) | Predictive TDD aus dem `sol_tdd`-Projekt. Referenz `exact-sol-v1-pi` (pi-nativ, Refactor inline), Subagent-Arm, vier APP-/Mess-Varianten, Claude-Code-Port, vollständige Stackprofil-Extraktion | Fremd-Methodik-Import, siehe eigener Abschnitt unten |
 
 ### `basic-sol-tdd`-Paar (Import aus `sol_tdd`, pi)
 
@@ -178,10 +178,15 @@ Predictions überhaupt gezählt (P5-Hinweis in `MARKERS.md`).
 
 #### Varianten der Sol-Linie und ihr Stand (RQ-1.16, RQ-1.17, RQ-1.18)
 
-Aus dem Paar sind sieben Workflows geworden. Alle teilen Methodik, Marker und die
-beiden Lab-Anpassungen und unterscheiden sich **ausschließlich** im Refactor-Auftrag
-und darin, wo er läuft. Alle Zahlen unten: `claim-office-example-mapping` ×
-`gpt-5-6-sol-codex` (OpenAI-Subscription-Route), n=5 je Zelle.
+Aus dem Paar sind acht Workflows geworden. Die sieben bereits gemessenen Varianten
+teilen Methodik, Marker und die beiden Lab-Anpassungen und unterscheiden sich im
+Refactor-Auftrag oder darin, wo er läuft. Die achte Variante
+`exact-sol-v1.3-stack-profile-pi` verändert keinen Refactor-Auftrag: Sie verschiebt
+nur die verbliebenen TypeScript/Vitest-Details aus `AGENTS.md` und dem Test-List-Skill
+in das bereits vorhandene Stackprofil und wird separat von
+`RQ-stack-profile-extraction-sol` geprüft. Alle Zahlen der gemessenen Varianten
+unten: `claim-office-example-mapping` × `gpt-5-6-sol-codex`
+(OpenAI-Subscription-Route), n=5 je Zelle.
 
 | Variante | Was anders vs `exact-sol-v1-pi` | Treiber-RQ | Kernbefund |
 |---|---|---|---|
@@ -192,6 +197,7 @@ und darin, wo er läuft. Alle Zahlen unten: `claim-office-example-mapping` ×
 | `exact-sol-v1.2.2-measured-eslint-pi` | + ESLint für cognitive/McCabe, Mass weiter von Hand | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Schlechteste Dekomposition der Mess-Arme bei +31 % Wallclock und +44 % Tokens |
 | `exact-sol-v1.2.3-measured-tool-pi` | + ESLint **und** AST-Skript (`.pi/tools/app-mass.mjs`); Modell rechnet nichts | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Teuerste Zelle (8.22 M Tokens, +78 %) ohne besseres Messergebnis als Handrechnung (F-1.18.3) |
 | `exact-sol-v1-cc` | Port auf Claude Code (`.claude/commands/` + `rules/`) statt `.pi/skills/` | — | Andere Harness und andere Route. Runs existieren auf `opus-5-no-thinking` und `opus-4-8-no-thinking`; **nicht** mit den pi-Zellen poolen |
+| `exact-sol-v1.3-stack-profile-pi` | Verbleibende TS/Vitest-Details in das vorhandene Stackprofil verschoben; keine neue Laufzeitgrenze | `RQ-stack-profile-extraction-sol` | **Offen.** Testet partielle gegen vollständige Stackprofil-Auslagerung auf beiden Kata-Typen |
 
 ##### Was die drei RQs zusammen zeigen
 
@@ -282,6 +288,7 @@ Alle Varianten leben unter `experiments/workflows/exact-coding/opus/exact-hybrid
 | `exact-hybrid-v2.1-no-pep-cc` | "Psychological Resistance"-Sektion und motivierende Inline-Kommentare in red/green raus | [RQ-1.1](1.1-pep-effect-v6.1/findings.md) | Korrektheit invariant auf GOL; +67 % Refactorings, +30 % Wallclock. **Auf claim-office −3 pp Korrektheit** (RQ-1.4) |
 | `exact-hybrid-v2.2-no-emoji-cc` | 95 Decoration-Emojis (✅❌🔴🟢🔄📋🚨⚠️) raus | [RQ-1.2](1.2-emoji-effect-v6.1/findings.md) | Korrektheit invariant auf GOL; +29 % Refactorings, **spart KEINE Tokens** (sogar +8.5 %). **Auf claim-office −20 pp Korrektheit** (1× Komplett-Failure, RQ-1.4) |
 | `exact-hybrid-v2.3-no-pep-no-emoji-cc` | beide Reduktionen kombiniert | [RQ-1.3](1.3-pep-emoji-combined-v6.1/findings.md), [RQ-1.4](1.4-pep-emoji-claim-office/findings.md) | Effekte nicht additiv; kombiniert refactoriert *unter* Baseline. **Auf claim-office −5 pp Korrektheit** |
+| `exact-hybrid-v2.9-stack-profile-cc` | alle konkreten TS/Vitest-Details aus Core, Phasen und Refactor-Agent in das vorhandene `tdd_with_ts_and_vitest.md` verschoben; keine neue Datei-Grenze | `RQ-stack-profile-extraction-opus` | **Offen.** Prüft, ob die bestehende Profilgrenze ohne Verhaltensverlust vollständig werden kann |
 | `exact-hybrid-v3-with-why-cc` | 3 Why-Blöcke aus v6.5-lean (green.md, red.md Step 7, rules/tdd.md) **bei voll erhaltenen MUSTs** | [RQ-1.5](1.5-why-block-effect-v6.1/findings.md) | Korrektheit invariant auf claim-office (1× Outlier 0.27); +87 % Refactorings, −87 % Smells, Spitzen-Komplexität −37–43 % bei σ −82–90 %; +53 % Wallclock, +22 % Tokens |
 | `exact-hybrid-v4-cleaned-cc` | exact-hybrid-v3-with-why-cc + 3 Hygiene-Cleanups aus archiviertem v6.5.1-Audit (`pnpm test:unit:basic`→`pnpm test`, rule-file-Hyphen, settings-Permission-Dedup; `refactor.md` role-neutral; `tdd-experiment-mode.md` ohne Phantom-HITL-Framing) | [RQ-1.6](1.6-v62-cleanup-validation-v61-with-why/findings.md) | Korrektheit nicht schlechter (Mean 0.91→0.96 inkl. hybrid-v2-Nudge-Outlier); +34 % Refactorings, cycle_count-Streuung σ 14.2→1.6; +13 % Wallclock, +12 % Tokens. Cleanups verhaltens-äquivalent, **neue Default-Baseline** |
 | `exact-hybrid-v4.3-audit-bundle-cc` | exact-hybrid-v4-cleaned-cc + restliche Audit-Bundle-Items aus archiviertem v6.5.1-Audit: **Klasse 2** Rationale-Ergänzungen (measurement-pipeline-Rationale für Pflicht-Refactoring, Bisectability für ONE-at-a-time, konkreter Drei-Pfad-Bar für "no improvement possible", Green-Phase-Generalization-Rationale in test-list Step 3) + **Klasse 3** Red-Phase-Hardening (Mandatory-Procedure-Preamble, Streichung "STOP and explain" in Steps 3/6, Ersatz "Prediction Failure Protocol" → "Wrong Predictions Are Data"). Plus opt-in `HUMAN-IN-THE-LOOP.md` im Workflow-Root für nicht-autonome Profile (Prediction-Failure → Human-Escalation). | [RQ-1.8](1.8-audit-bundle-effect-v62/findings.md) (GoL) + [RQ-1.9](1.9-audit-bundle-validation-claim-office/findings.md) (claim-office) | **GoL (RQ-1.8):** Korrektheit invariant (100 % `tests_passing`); `tests_passed_immediately` 0.7 → **0** (deterministisch); `refactorings_applied` +10 % bei σ −64 %; Code-Qualität innerhalb 1 σ (leichte Verbesserung Code-Mass/Smell); `predictions_correct_rate` 100 → 97.4 %; +16 % Tokens, Wallclock neutral. **claim-office (RQ-1.9): `verification_pct` kippt 0.96 → 0.35 (bi-modal, 6/8 Runs ≤ 0.30)** — Agent erklärt sich nach 7–14 Cycles fertig statt 37–38 Cycles wie hybrid-v4; `experiment-done.txt` fehlt in 6/8 Runs. **Nicht** als Default-Baseline für claim-office promoten — bleibt GoL-spezifischer Quality-Champion |
