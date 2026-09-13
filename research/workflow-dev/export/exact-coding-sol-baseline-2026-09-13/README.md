@@ -17,9 +17,10 @@ check it states a falsifiable prediction and compares it with reality.
 Refactoring is inline and follows the Four Rules of Simple Design. There is no
 APP mass objective, metric-driven end-refactor, or refactor subagent.
 
-TypeScript and Vitest details live exclusively in
-`skills/predictive-tdd/stacks/typescript-vitest.md`; orchestration and method
-files are stack-neutral. The export removes experiment-specific autonomy,
+Language and tool details live exclusively in the profiles under
+`skills/predictive-tdd/stacks/`; orchestration and method files are stack-neutral.
+The export currently includes TypeScript/Vitest and Java/JUnit 5/Maven profiles.
+It removes experiment-specific autonomy,
 completion, and measurement content, restores configurable human checkpoints, and gates
 the workflow behind explicit invocation.
 

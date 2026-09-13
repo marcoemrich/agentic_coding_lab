@@ -222,9 +222,10 @@ check it states a falsifiable prediction and compares it with reality.
 Refactoring is inline and follows the Four Rules of Simple Design. There is no
 APP mass objective, metric-driven end-refactor, or refactor subagent.
 
-TypeScript and Vitest details live exclusively in
-`skills/predictive-tdd/stacks/typescript-vitest.md`; orchestration and method
-files are stack-neutral. The export removes experiment-specific autonomy,
+Language and tool details live exclusively in the profiles under
+`skills/predictive-tdd/stacks/`; orchestration and method files are stack-neutral.
+The export currently includes TypeScript/Vitest and Java/JUnit 5/Maven profiles.
+It removes experiment-specific autonomy,
 completion, and measurement content, restores configurable human checkpoints, and gates
 the workflow behind explicit invocation.
 
@@ -235,7 +236,7 @@ not yet been validated as independent cross-harness experiment cells.
 '''
 
 
-def write_harness(target: Path, harness: str, predictive: str, test_list: str, stack: str, stamp: str, source: str) -> None:
+def write_harness(target: Path, harness: str, predictive: str, test_list: str, stacks: dict[str, str], stamp: str, source: str) -> None:
     names = {"cc": ".claude", "pi": ".pi", "oc": ".opencode", "cursor": ".cursor", "copilot": ".github"}
     config = names[harness]
     root = target / config
@@ -252,10 +253,13 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
 
     for rel, content in (
         ("skills/predictive-tdd/SKILL.md", pred),
-        ("skills/predictive-tdd/stacks/typescript-vitest.md", stack),
         ("skills/test-list/SKILL.md", tests),
     ):
         path = root / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content)
+    for filename, content in stacks.items():
+        path = root / "skills/predictive-tdd/stacks" / filename
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content)
 
@@ -304,11 +308,13 @@ def validate(target: Path, harnesses: tuple[str, ...]) -> None:
             match = leaked.search(path.read_text())
             if match:
                 raise SystemExit(f"Lab wording {match.group()!r} leaked into {path}")
+    required_stacks = ("typescript-vitest.md", "java-junit-maven.md")
     for harness in harnesses:
         config = {"cc": ".claude", "pi": ".pi", "oc": ".opencode", "cursor": ".cursor", "copilot": ".github"}[harness]
-        stack = target / config / "skills/predictive-tdd/stacks/typescript-vitest.md"
-        if not stack.is_file():
-            raise SystemExit(f"Missing stack profile: {stack}")
+        for filename in required_stacks:
+            stack = target / config / "skills/predictive-tdd/stacks" / filename
+            if not stack.is_file():
+                raise SystemExit(f"Missing stack profile: {stack}")
     oc = target / ".opencode/opencode.json"
     if oc.exists():
         data = json.loads(oc.read_text())
@@ -413,9 +419,12 @@ def main() -> int:
 
     predictive = (src / "skills/predictive-tdd/SKILL.md").read_text()
     test_list = (src / "skills/test-list/SKILL.md").read_text()
-    stack = (src / "skills/predictive-tdd/stacks/typescript-vitest.md").read_text()
+    stacks_dir = src / "skills/predictive-tdd/stacks"
+    stacks = {path.name: path.read_text() for path in sorted(stacks_dir.glob("*.md"))}
+    if not stacks:
+        raise SystemExit(f"SOL source has no stack profiles: {stacks_dir}")
     for harness in harnesses:
-        write_harness(target, harness, predictive, test_list, stack, args.date, source)
+        write_harness(target, harness, predictive, test_list, stacks, args.date, source)
     (target / "README.md").write_text(readme(source, args.date, harnesses))
     (target / "VERSION").write_text(args.date + "\n")
     validate(target, harnesses)
