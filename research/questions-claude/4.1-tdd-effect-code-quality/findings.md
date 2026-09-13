@@ -42,7 +42,7 @@ All metrics in the tables: lower = better. 🏆 = best value per column (also mu
 
 ⚠️ subagents-v2 claim-office is bimodal (`cognitive_max` σ=24, max=68) — occasional extreme misdirections. See F-tdd-quality.9.
 
-Correctness **differs** between the two katas: on game-of-life all 8 workflows are at `verification_pct=1.00`. On claim-office it varies between 0.28 (oneshot-v1+iterative-v1, vibe-coding without tests) and 1.00 (inline-tdd-v1, single-context-v2, hybrid-v2, end-refactor-only-v1-agent) — see F-tdd-quality.4 and F-tdd-quality.8. `mutation_score` was collected only for oneshot-v1/iterative-v1/inline-tdd-v1 on game-of-life (0.95 ± 0.01 in all three).
+Correctness **differs** between the two katas: on game-of-life all 8 workflows are at `verification_pct=1.00`. On claim-office it varies between 0.28 (oneshot-v1+iterative-v1, vibe coding on a prose spec) and 1.00 (inline-tdd-v1, single-context-v2, hybrid-v2, end-refactor-only-v1-agent) — see F-tdd-quality.4 and F-tdd-quality.8. `mutation_score` was collected only for oneshot-v1/iterative-v1/inline-tdd-v1 on game-of-life (0.95 ± 0.01 in all three).
 
 ## F-tdd-quality.1 — Strict Phase-Structured Workflows with a Refactor Phase Lower the Complexity Peaks Drastically
 
@@ -86,7 +86,7 @@ On **claim-office the ordering reverses** — single-context-v2 clearly beats su
 
 Plausible mechanic: on the short game-of-life test list the fresh subagent context helps, because each phase can survey the whole test list in isolation; on the long claim-office test list the fresh context loses coherence per cycle and re-interprets spec ambiguities differently. single-context-v2 with its shared context benefits from spec consistency within a session. The hybrid hybrid-v2 (skill red/green in the shared context + isolated refactor subagent) combines both strengths and dominates claim-office across the branching and size metrics — see RQ-context (4.3) F-context.1 for the explicit decomposition.
 
-## F-tdd-quality.4 — Correctness Is Workflow-Dependent on a Novel Kata; oneshot-v1/iterative-v1 Vibe-Coding Collapses on claim-office
+## F-tdd-quality.4 — Correctness Differs Only on the Novel Kata, and There It Tracks the Prompt Pairing, Not the Workflow
 
 `verification_pct` is **structurally different** on the two katas:
 
@@ -95,9 +95,9 @@ Plausible mechanic: on the short game-of-life test list the fresh subagent conte
 | game-of-life | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |
 | claim-office | **0.28** | **0.28** | 1.00 | 0.96 | 1.00 | 1.00 | 1.00 | 0.97 |
 
-On game-of-life all 8 workflows are at 100 % (15/15 verification scenarios) — the workflow effect is invisible here, because the model has memorized the solution. On claim-office (novel with ambiguities), **oneshot-v1 and iterative-v1** drop to ~28 % (4/15) — for the vibe-coding prose variant the model writes a solution that fails in 11 of 15 scenarios. All workflows with a **test-writing phase** (inline-tdd-v1+, end-refactor-only-v1-agent/end-refactor-only-v1-native) stay at ≥ 96 %; most reach 100 %. The smaller deviations at subagents-v2 (0.96) and end-refactor-only-v1-native (0.97) come from 1 run each with `verification_pct ∈ {0.80, 0.87}` (implementation bugs that do not quite cover the spec — not silent workflow drops).
+On game-of-life all 8 workflows are at 100 % (15/15 verification scenarios) — the workflow effect is invisible here, because the model has memorized the solution. On claim-office (novel with ambiguities), **oneshot-v1 and iterative-v1** drop to ~28 % (4/15) — the model writes a solution that fails in 11 of 15 scenarios, although both write and pass their own tests. Both run on the `prose` spec, which the methodology ties to them; all other workflows run on `example-mapping` and stay at ≥ 96 %, most at 100 %. The smaller deviations at subagents-v2 (0.96) and end-refactor-only-v1-native (0.97) come from 1 run each with `verification_pct ∈ {0.80, 0.87}` (implementation bugs that do not quite cover the spec — not silent workflow drops).
 
-**H4 (correctness independent of the workflow) refuted.** The workflow effect on correctness is kata-dependent: invisible on training-known katas, dominant on novel katas. The vibe-coding workflows oneshot-v1/iterative-v1 without tests drop out; even writing tests after the fact (end-refactor-only-v1-agent/end-refactor-only-v1-native) is enough to reach TDD level — see F-tdd-quality.8.
+**H4 (correctness independent of the workflow) cannot be decided from this RQ.** The cells differ on claim-office, but the split coincides exactly with the prompt pairing: prose cells fail, example-mapping cells pass. TDD on a prose spec fails just the same (RQ-prompt-correctness), so the difference is not attributable to the workflow — see F-tdd-quality.8.
 
 ## F-tdd-quality.5 — The Cost Range Between Workflows Spans an Order of Magnitude; Strict Workflows Are 5–50× More Expensive; Kata Complexity Scales Linearly
 
@@ -192,28 +192,35 @@ end-refactor-only-v1-agent leads on 6 of 7 metrics; on `cc_longest_function` the
 
 **H6 (subagent delivery matters independently of the content) confirmed on claim-office; no separation on game-of-life.** Plausible mechanic: the fresh subagent context relieves the refactor of anchoring bias from phases 1/2 — on the small, training-known game-of-life codebase the bias effect is small and both mechanisms deliver similarly; on the larger novel claim-office codebase with 240+ LoC per solution, the inline command (end-refactor-only-v1-native) carries implicit assumptions from the preceding phases into the refactor, whereas the subagent (end-refactor-only-v1-agent) starts afresh with the refactor. Consistent with RQ-delayed-refactor / F-delayed-refactor.2 (the refactor mechanism is non-trivial), now cleanly isolated from content effects.
 
-## F-tdd-quality.8 — A Test-Writing Phase Rescues Correctness on a Novel Kata; Pure Vibe-Coding Fails
+## F-tdd-quality.8 — Correctness on the Novel Kata Follows the Spec Style, Not the Presence or Timing of Tests
 
-On the novel kata `claim-office` with ambiguities, the **presence of a test-writing phase** is the decisive lever for correctness — not its position (before or after implementation):
+On the novel kata `claim-office`, correctness splits cleanly by **prompt style** — and every run in every cell writes tests:
 
-| Workflow | Test phase? | n | `verification_pct` mean | min |
-|---|---|---:|---:|---:|
-| baseline-oneshot-v1-cc (prose) | no | 5 | **0.28** | 0.20 |
-| baseline-iterative-v1-cc (prose) | no | 5 | **0.28** | 0.20 |
-| exact-subagents-v2-testlist-fix-cc (em) | TDD strict | 5 | 0.96 | 0.80 |
-| baseline-end-refactor-only-v1-native-cc (em) | after impl | 5 | 0.97 | 0.87 |
-| baseline-inline-tdd-v1-cc (em) | TDD strict | 5 | 1.00 | 1.00 |
-| exact-single-context-v2-testlist-fix-cc (em) | TDD strict | 6 | 1.00 | 1.00 |
-| v6.1-hybrid-… (em) | TDD strict | 7 | 1.00 | 1.00 |
-| baseline-end-refactor-only-v1-agent-cc (em) | after impl | 5 | 1.00 | 1.00 |
+| Workflow | Prompt | Tests written | n | Correctness (external) mean | min |
+|---|---|---|---:|---:|---:|
+| baseline-oneshot-v1-cc | prose | after impl (6–17 tests) | 5 | **0.28** | 0.20 |
+| baseline-iterative-v1-cc | prose | after impl (3–7 tests) | 5 | **0.28** | 0.20 |
+| exact-single-context-v1-cc ¹ | prose | test-first | 5 | **0.21** | 0.13 |
+| exact-subagents-v2-testlist-fix-cc | example-mapping | test-first | 5 | 0.96 | 0.80 |
+| baseline-end-refactor-only-v1-native-cc | example-mapping | after impl | 5 | 0.97 | 0.87 |
+| baseline-inline-tdd-v1-cc | example-mapping | test-first | 5 | 1.00 | 1.00 |
+| exact-single-context-v2-testlist-fix-cc | example-mapping | test-first | 6 | 1.00 | 1.00 |
+| exact-hybrid-v2-testlist-fix-cc | example-mapping | test-first | 7 | 1.00 | 1.00 |
+| baseline-end-refactor-only-v1-agent-cc | example-mapping | after impl | 5 | 1.00 | 1.00 |
 
-oneshot-v1/iterative-v1 without tests fall to 28 % (4/15 verification scenarios). As soon as any phase writes tests against the spec, correctness jumps to ≥ 96 %. The strict TDD workflows inline-tdd-v1/single-context-v2/hybrid-v2 as well as end-refactor-only-v1-agent (delayed refactor via subagent) reach 100 %; subagents-v2 and end-refactor-only-v1-native are at 96–97 % with one run each below 1.00 (implementation bugs that miss individual verification scenarios — not silent workflow drops).
+¹ Counter-cell from RQ-prompt-correctness (F-prompt-correctness.2): same kata, same model (`opus-4-7-no-thinking`). Not part of this RQ's selector.
 
-On game-of-life this lever is **invisible** (all 8 workflows at 100 %), because the model has memorized the solution. The finding manifests itself only on novel katas.
+With a prose spec, correctness stays at 0.21–0.28 whether the agent codes first and adds tests afterwards or works test-first. With an example-mapping spec it reaches ≥ 0.96 whether the tests come before or after the implementation. The ~70 pp gap between the two groups matches the example-mapping effect RQ-prompt-correctness measures on the same model (0.21 → 0.97); the spec style accounts for the whole difference. The runs below 1.00 at subagents-v2 and end-refactor-only-v1-native are one run each (implementation bugs that miss individual verification scenarios — not silent workflow drops).
 
-Consequence for open question #4 ("is a single end refactoring after vibe-coding sufficient?"): **Yes for correctness, if the tests written after the fact cover the spec** — end-refactor-only-v1-agent (with the scope-fix obligation "Cover every spec example" in phase 2) reaches 100 % on claim-office, level with inline-tdd-v1/single-context-v2/hybrid-v2 (strict TDD); end-refactor-only-v1-native 97 %, close to subagents-v2. Code quality is a separate axis (see F-tdd-quality.6/.7).
+Two statements follow, and one does not:
 
-Caveat: oneshot-v1/iterative-v1 use the `prose` prompt, end-refactor-only-v1-agent/end-refactor-only-v1-native `example-mapping`. The `example-mapping` spec is in fact an implicit test spec — the effect could partly be attributable to the prompt style, not only to the test phase. RQ-prompt-correctness (1.1) showed, however, that example mapping alone brings only ~5 pp over prose on single-context-v1; the effect measured here (+68 pp) is too large for a pure prompt-style effect.
+- **Given example mapping, test timing does not matter for correctness.** end-refactor-only-v1-agent (tests written after the implementation, with the obligation "Cover every spec example") reaches 100 %, level with inline-tdd-v1/single-context-v2/hybrid-v2.
+- **Test-first does not rescue a prose spec.** single-context-v1 on prose is no better than vibe coding on prose.
+- **Whether a test-writing phase matters at all remains open.** No cell lacks tests — oneshot-v1/iterative-v1 write their own — and the methodology keeps oneshot-v1/iterative-v1 on prose, so there is no cell "example mapping without tests". The effect of the test phase itself is not isolable in this design.
+
+On game-of-life all of this is **invisible** (all 8 workflows at 100 %), because the model has memorized the solution. The split manifests itself only on novel katas.
+
+Consequence for open question #4 ("is a single end refactoring after vibe-coding sufficient?"): **Yes for correctness, given a spec with concrete examples and tests that cover them** — end-refactor-only-v1-agent reaches 100 % on claim-office, end-refactor-only-v1-native 97 %. Code quality is a separate axis (see F-tdd-quality.6/.7).
 
 ## F-tdd-quality.9 — The hybrid-v2 Hybrid Is the Most Robust TDD Workflow Across Both Katas; subagents-v2 Is Kata-Unstable
 
@@ -276,9 +283,9 @@ hybrid-v2 costs **16× more tokens and ~5× more wallclock** than end-refactor-o
 |---|---|---|
 | **Long-lived production code** — read, refactored, extended often; onboarding-relevant | **v6.1-hybrid** | Best branching complexity on both katas; the token surcharge amortizes over the code's lifetime |
 | **Maintenance-critical code** with high correctness demands that is not changed frequently | **v6.1-hybrid** or **single-context-v2** | On claim-office, single-context-v2 is the second-best TDD workflow on `cognitive_max` (14.8) at ~½ the tokens of hybrid-v2 |
-| **Prototyping / throwaway code** — touched rarely or never again | **v8b-delayed-refactor-command** | Lowest wallclock among the workflows with a test-writing phase; correctness 0.97 level with subagents-v2; `cognitive_max` (11.0) is acceptable for a short lifetime |
+| **Prototyping / throwaway code** — touched rarely or never again | **baseline-end-refactor-only-v1-native-cc** | Lowest wallclock among the example-mapping workflows; correctness 0.97 level with subagents-v2; `cognitive_max` (11.0) is acceptable for a short lifetime |
 | **High iteration frequency** under a token budget — many small tasks, frequent re-runs | **baseline-end-refactor-only-v1-agent-cc** | ~16× cheaper than hybrid-v2; `cognitive_max` 7.4 (vs hybrid-v2 5.7) is not ideal but acceptable for a short lifetime; 100 % correctness on claim-office |
-| **Pure vibe-coding without tests** | **Not recommended for novel problems** | oneshot-v1/iterative-v1 break down to 28 % correctness on a novel kata; the test-writing phase from end-refactor-only-v1-agent/end-refactor-only-v1-native is the cheapest insurance against this |
+| **Coding from a prose spec** | **Not recommended for novel problems** | oneshot-v1/iterative-v1 on prose break down to 28 % correctness on a novel kata — and TDD on prose does no better (21 %, RQ-prompt-correctness). Concrete examples in the spec are the insurance, not the test phase (F-tdd-quality.8) |
 | **Correctness counts more than quality** (e.g. scripts, tooling, glue code) | **baseline-inline-tdd-v1-cc** | 100 % correctness on claim-office at 3.28 M tokens — the cheapest correctness workflow; accepts the worst code quality (cog 19.8, largest `code_mass`) as the price |
 
 v4.1-strict remains **not generally recommended** because of the bimodal risk on longer test lists (claim-office σ=24, max cog=68). Only on katas with a compact, surveyable test spec.
