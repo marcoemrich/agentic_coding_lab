@@ -203,7 +203,7 @@ def readme(source: str, stamp: str, harnesses: tuple[str, ...]) -> str:
         "cc": "| Claude Code | `.claude/` | Ask to use TDD or Predictive TDD |",
         "pi": "| pi | `.pi/` | `/skill:exact-coding` or ask for EXACT Coding |",
         "oc": "| OpenCode | `.opencode/` | `/exact-coding` |",
-        "cursor": "| Cursor | `.cursor/` | Ask for EXACT Coding |",
+        "cursor": "| Cursor | `.cursor/` | `/exact-coding` or ask for EXACT Coding |",
         "copilot": "| GitHub Copilot | `.github/` | `/exact-coding` or ask for EXACT Coding |",
     }
     table = "\n".join(rows[h] for h in harnesses)
@@ -245,7 +245,7 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
         "pi": ".pi/skills/exact-coding/human-in-the-loop.md",
         "copilot": ".github/skills/exact-coding/human-in-the-loop.md",
         "oc": ".opencode/rules/human-in-the-loop.md",
-        "cursor": ".cursor/rules/human-in-the-loop.mdc",
+        "cursor": ".cursor/skills/exact-coding/human-in-the-loop.md",
     }[harness]
     pred = consumer_predictive(predictive, hitl_path)
     tests = consumer_test_list(test_list, hitl_path)
@@ -268,18 +268,9 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
         (root / "skills/exact-coding/SKILL.md").write_text(body)
         (root / "skills/exact-coding/human-in-the-loop.md").write_text(hitl(config))
     elif harness == "cursor":
-        (root / "rules").mkdir(parents=True, exist_ok=True)
-        cursor_body = re.sub(
-            r"\A---\n.*?\n---\n",
-            "---\ndescription: Predictive TDD with explicit predictions, a complete test list, Four Rules refactoring, and human checkpoints. Apply only when the user asks for TDD or Predictive TDD.\nalwaysApply: false\n---\n",
-            body,
-            count=1,
-            flags=re.S,
-        )
-        (root / "rules/exact-coding.mdc").write_text(cursor_body)
-        (root / "rules/human-in-the-loop.mdc").write_text(
-            "---\ndescription: Human checkpoint policy for the requested Predictive TDD workflow.\nalwaysApply: false\n---\n\n" + hitl(config)
-        )
+        (root / "skills/exact-coding").mkdir(parents=True, exist_ok=True)
+        (root / "skills/exact-coding/SKILL.md").write_text(body)
+        (root / "skills/exact-coding/human-in-the-loop.md").write_text(hitl(config))
     else:
         (root / "rules").mkdir(parents=True, exist_ok=True)
         orchestration = re.sub(r"\A---\n.*?\n---\n", "", body, count=1, flags=re.S)

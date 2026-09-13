@@ -8,7 +8,7 @@ does not replace the Opus/Hybrid baseline.
 | Claude Code | `.claude/` | Ask to use TDD or Predictive TDD |
 | pi | `.pi/` | `/skill:exact-coding` or ask for EXACT Coding |
 | OpenCode | `.opencode/` | `/exact-coding` |
-| Cursor | `.cursor/` | Ask for EXACT Coding |
+| Cursor | `.cursor/` | `/exact-coding` or ask for EXACT Coding |
 | GitHub Copilot | `.github/` | `/exact-coding` or ask for EXACT Coding |
 
 The workflow creates a complete test list, then runs one-test Predictive
