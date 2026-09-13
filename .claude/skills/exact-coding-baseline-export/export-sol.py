@@ -200,7 +200,7 @@ may investigate and resume without waiting.
 
 def readme(source: str, stamp: str, harnesses: tuple[str, ...]) -> str:
     rows = {
-        "cc": "| Claude Code | `.claude/` | Ask to use TDD or Predictive TDD |",
+        "cc": "| Claude Code | `.claude/` | `/exact-coding` or ask for EXACT Coding |",
         "pi": "| pi | `.pi/` | `/skill:exact-coding` or ask for EXACT Coding |",
         "oc": "| OpenCode | `.opencode/` | `/exact-coding` |",
         "cursor": "| Cursor | `.cursor/` | `/exact-coding` or ask for EXACT Coding |",

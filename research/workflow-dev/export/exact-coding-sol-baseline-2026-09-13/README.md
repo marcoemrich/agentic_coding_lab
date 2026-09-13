@@ -5,7 +5,7 @@ does not replace the Opus/Hybrid baseline.
 
 | Harness | Directory | Invocation |
 |---|---|---|
-| Claude Code | `.claude/` | Ask to use TDD or Predictive TDD |
+| Claude Code | `.claude/` | `/exact-coding` or ask for EXACT Coding |
 | pi | `.pi/` | `/skill:exact-coding` or ask for EXACT Coding |
 | OpenCode | `.opencode/` | `/exact-coding` |
 | Cursor | `.cursor/` | `/exact-coding` or ask for EXACT Coding |
