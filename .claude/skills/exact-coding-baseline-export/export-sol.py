@@ -109,9 +109,9 @@ first Predictive TDD cycle.
     return text[:start] + replacement + text[end:]
 
 
-def tdd_skill(config: str, hitl_path: str, source: str) -> str:
+def exact_coding_skill(config: str, hitl_path: str, source: str) -> str:
     return f'''---
-name: tdd
+name: exact-coding
 description: Predictive Test-Driven Development with a complete up-front test list, falsifiable predictions before deterministic checks, one-test Red-Green-Refactor cycles, and configurable human checkpoints. Invoke when the user explicitly asks for TDD or Predictive TDD. Do NOT invoke for ordinary coding tasks where TDD was not requested.
 ---
 
@@ -201,10 +201,10 @@ may investigate and resume without waiting.
 def readme(source: str, stamp: str, harnesses: tuple[str, ...]) -> str:
     rows = {
         "cc": "| Claude Code | `.claude/` | Ask to use TDD or Predictive TDD |",
-        "pi": "| pi | `.pi/` | `/skill:tdd` or ask for Predictive TDD |",
-        "oc": "| OpenCode | `.opencode/` | `/tdd` |",
-        "cursor": "| Cursor | `.cursor/` | Ask for Predictive TDD |",
-        "copilot": "| GitHub Copilot | `.github/` | `/tdd` or ask for Predictive TDD |",
+        "pi": "| pi | `.pi/` | `/skill:exact-coding` or ask for EXACT Coding |",
+        "oc": "| OpenCode | `.opencode/` | `/exact-coding` |",
+        "cursor": "| Cursor | `.cursor/` | Ask for EXACT Coding |",
+        "copilot": "| GitHub Copilot | `.github/` | `/exact-coding` or ask for EXACT Coding |",
     }
     table = "\n".join(rows[h] for h in harnesses)
     return f'''# EXACT Coding — SOL / Predictive TDD — {stamp}
@@ -241,15 +241,15 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
     config = names[harness]
     root = target / config
     hitl_path = {
-        "cc": ".claude/skills/tdd/human-in-the-loop.md",
-        "pi": ".pi/skills/tdd/human-in-the-loop.md",
-        "copilot": ".github/skills/tdd/human-in-the-loop.md",
+        "cc": ".claude/skills/exact-coding/human-in-the-loop.md",
+        "pi": ".pi/skills/exact-coding/human-in-the-loop.md",
+        "copilot": ".github/skills/exact-coding/human-in-the-loop.md",
         "oc": ".opencode/rules/human-in-the-loop.md",
         "cursor": ".cursor/rules/human-in-the-loop.mdc",
     }[harness]
     pred = consumer_predictive(predictive, hitl_path)
     tests = consumer_test_list(test_list, hitl_path)
-    body = tdd_skill(config, hitl_path, source)
+    body = exact_coding_skill(config, hitl_path, source)
 
     for rel, content in (
         ("skills/predictive-tdd/SKILL.md", pred),
@@ -264,9 +264,9 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
         path.write_text(content)
 
     if harness in ("cc", "pi", "copilot"):
-        (root / "skills/tdd").mkdir(parents=True, exist_ok=True)
-        (root / "skills/tdd/SKILL.md").write_text(body)
-        (root / "skills/tdd/human-in-the-loop.md").write_text(hitl(config))
+        (root / "skills/exact-coding").mkdir(parents=True, exist_ok=True)
+        (root / "skills/exact-coding/SKILL.md").write_text(body)
+        (root / "skills/exact-coding/human-in-the-loop.md").write_text(hitl(config))
     elif harness == "cursor":
         (root / "rules").mkdir(parents=True, exist_ok=True)
         cursor_body = re.sub(
@@ -276,7 +276,7 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
             count=1,
             flags=re.S,
         )
-        (root / "rules/tdd.mdc").write_text(cursor_body)
+        (root / "rules/exact-coding.mdc").write_text(cursor_body)
         (root / "rules/human-in-the-loop.mdc").write_text(
             "---\ndescription: Human checkpoint policy for the requested Predictive TDD workflow.\nalwaysApply: false\n---\n\n" + hitl(config)
         )
@@ -286,7 +286,7 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
         config_json = {
             "$schema": "https://opencode.ai/config.json",
             "command": {
-                "tdd": {
+                "exact-coding": {
                     "description": "Run the SOL-originated EXACT Coding Predictive TDD workflow.",
                     "template": orchestration,
                 }
@@ -318,7 +318,7 @@ def validate(target: Path, harnesses: tuple[str, ...]) -> None:
     oc = target / ".opencode/opencode.json"
     if oc.exists():
         data = json.loads(oc.read_text())
-        assert "template" in data["command"]["tdd"]
+        assert "template" in data["command"]["exact-coding"]
         assert "provider" not in data and "permission" not in data and "instructions" not in data
 
 

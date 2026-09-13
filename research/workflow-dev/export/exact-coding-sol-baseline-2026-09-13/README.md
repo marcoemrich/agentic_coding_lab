@@ -6,10 +6,10 @@ does not replace the Opus/Hybrid baseline.
 | Harness | Directory | Invocation |
 |---|---|---|
 | Claude Code | `.claude/` | Ask to use TDD or Predictive TDD |
-| pi | `.pi/` | `/skill:tdd` or ask for Predictive TDD |
-| OpenCode | `.opencode/` | `/tdd` |
-| Cursor | `.cursor/` | Ask for Predictive TDD |
-| GitHub Copilot | `.github/` | `/tdd` or ask for Predictive TDD |
+| pi | `.pi/` | `/skill:exact-coding` or ask for EXACT Coding |
+| OpenCode | `.opencode/` | `/exact-coding` |
+| Cursor | `.cursor/` | Ask for EXACT Coding |
+| GitHub Copilot | `.github/` | `/exact-coding` or ask for EXACT Coding |
 
 The workflow creates a complete test list, then runs one-test Predictive
 Red-Green-Refactor cycles in one shared context. Before every deterministic
