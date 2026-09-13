@@ -758,10 +758,14 @@ EOF
 }
 EOF
 
-    # Install dependencies (--prefer-offline reuses the persistent store
-    # volume; falls back to network only for genuinely missing packages)
+    # Install the test toolchain even when the container sets NODE_ENV=production.
+    # --prefer-offline reuses the persistent store. A broken install is an
+    # infrastructure failure: stop before invoking the model, not a kata result.
     echo -e "  Installing dependencies..."
-    (cd "$run_dir" && pnpm install --silent --prefer-offline 2>/dev/null) || true
+    if ! (cd "$run_dir" && pnpm install --prod=false --prefer-offline); then
+        echo "Dependency installation failed in $run_dir; aborting batch before model invocation." >&2
+        exit 1
+    fi
 
     # Run the harness CLI with timeout + capture log + tolerate non-zero exit.
     # Name the actual CLI — a hardcoded "Claude Code" here made pi/oc/cursor

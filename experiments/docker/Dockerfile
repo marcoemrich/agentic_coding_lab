@@ -98,7 +98,8 @@ USER experimenter
 WORKDIR /home/experimenter
 
 # Set environment variables
-ENV NODE_ENV=production
+# Coding experiments need devDependencies, including after agent-driven pnpm add.
+ENV NODE_ENV=development
 ENV PNPM_HOME=/home/experimenter/.local/share/pnpm
 ENV PATH="$PNPM_HOME:/home/experimenter/.local/bin:$PATH"
 
@@ -131,7 +132,7 @@ RUN set -eux; \
 # instead of refetching from the network.
 WORKDIR /tmp/cache
 COPY --chown=experimenter:experimenter package.cache.json ./package.json
-RUN pnpm install --silent 2>/dev/null || true
+RUN pnpm install --prod=false --prefer-offline
 WORKDIR /home/experimenter/experiments
 
 # Default command

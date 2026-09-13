@@ -108,6 +108,19 @@ on the quality outcomes measured here.
   refactors inline.
 - Do not average across katas.
 
+## Fresh comparison
+
+The contemporaneous 20-run comparison specified in
+[fresh-20260913.md](fresh-20260913.md) is the current evidence base:
+[findings.md](findings.md), [summary.md](summary.md), and [runs.csv](runs.csv).
+
+At the user's explicit request, the 20 historical comparison runs were deleted
+from the active repository, and their findings were replaced completely. This
+does not assert that every deleted run had an infrastructure fault. The current
+20 runs and all Opus runs were retained. The four other affected RQs (workflow
+development 1.16–1.18 and pi question 1.6) were reaggregated and their findings
+reviewed with explicit cohort caveats.
+
 ## Execution sequence
 
 1. Audit that no TypeScript/Vitest implementation detail remains outside the

@@ -109,6 +109,26 @@ The results are reported separately and never averaged across katas:
   both cells; their prompt exposure is not changed by the factor.
 - Do not pool or average the two katas. Their scale and evidential role differ.
 
+## Execution provenance — 2026-09-13 refill
+
+At the user's explicit request, three candidate Claim Office runs were deleted
+and scheduled for replacement after fixing dependency installation under
+`NODE_ENV=production` (`pnpm install --prod=false`, fail-fast on install errors):
+
+- `2026-09-12_23-45-17_claim-office-example-mapping_exact-hybrid-v2.9-stack-profile-cc_opus-5-no-thinking`: stopped after the test list, 101 seconds.
+- `2026-09-13_00-12-05_claim-office-example-mapping_exact-hybrid-v2.9-stack-profile-cc_opus-5-no-thinking`: stopped after the test list, 123 seconds.
+- `2026-09-13_00-15-34_claim-office-example-mapping_exact-hybrid-v2.9-stack-profile-cc_opus-5-no-thinking`: timeout at 7200 seconds.
+
+All three had `verification_pct = 0`. The two early stops had repaired their
+toolchain before stopping; the dependency fault is not established as the cause
+of either early termination or the timeout. Retaining successful runs while
+replacing these failures is outcome-dependent selection, not an unbiased
+replication. The resulting aggregate must be labelled exploratory and must not
+be presented as the original batch's success rate or proof of behavioural
+neutrality. A clean comparison requires fresh runs of both arms under the same
+image and harness version. The original candidate Claim Office batch had mean
+`verification_pct = 0.38666`, internal test success 3/5, and 1/5 timeouts.
+
 ## Execution sequence
 
 1. Audit that stack-specific references outside the profile are absent while all

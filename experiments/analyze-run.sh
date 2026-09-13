@@ -298,9 +298,12 @@ analyze_single_run() {
     local cov_branches=0
 
     if [ -f "$run_dir/package.json" ] && [ ! -d "$run_dir/node_modules" ]; then
-        echo -e "  ${YELLOW}node_modules missing — running 'pnpm install' (shared store)${NC}"
+        echo -e "  ${YELLOW}node_modules missing — running 'pnpm install --prod=false' (shared store)${NC}"
         local store_dir="$(cd "$run_dir/.." && pwd)/.pnpm-store"
-        (cd "$run_dir" && pnpm install --store-dir "$store_dir" --prefer-offline --silent 2>&1 | tail -3) || true
+        if ! (cd "$run_dir" && pnpm install --prod=false --store-dir "$store_dir" --prefer-offline); then
+            echo "Dependency installation failed in $run_dir; aborting analysis (infrastructure failure)." >&2
+            return 1
+        fi
     fi
 
     if [ -f "$run_dir/package.json" ] && [ -d "$run_dir/node_modules" ]; then

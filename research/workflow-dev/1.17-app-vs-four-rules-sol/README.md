@@ -47,6 +47,16 @@ status: aktiv
 
 # RQ-app-vs-four-rules-sol: Does the APP Brief Suppress Decomposition on Sol?
 
+## Current evidence scope
+
+The current `exact-sol-v1-pi` reference contains five September 13 fresh runs;
+the floor and hybrid arms retain their historical cohorts. Current values are
+in [findings.md](findings.md) and [summary.md](summary.md). Numerical motivation
+tables and original execution dates below are historical design context.
+Workflow, date and dependency environment are confounded in reference contrasts;
+a brief-only same-image experiment is needed for causal attribution. This
+refresh reaggregated metrics and costs without new experiments or pipeline reruns.
+
 ## The question this answers
 
 `RQ-native-sol-workflows-sub` (workflow-dev/1.16) closes with an open question it

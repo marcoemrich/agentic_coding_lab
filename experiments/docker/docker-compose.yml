@@ -57,7 +57,7 @@ services:
       - .env
     environment:
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
-      - NODE_ENV=production
+      - NODE_ENV=development
       # Explicit pass-through (env_file lädt sie schon, hier nur dokumentiert)
       - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-}
       - ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN:-${REQUESTY_API_KEY:-}}
@@ -135,7 +135,7 @@ services:
       - .env
     environment:
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
-      - NODE_ENV=production
+      - NODE_ENV=development
       # Optional: name (or path) of a batch plan file. If set, only the
       # listed runs are executed; otherwise the full cross-product is run.
       - BATCH_PLAN=${BATCH_PLAN:-}
@@ -229,7 +229,7 @@ services:
       - .env
     environment:
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
-      - NODE_ENV=production
+      - NODE_ENV=development
       - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-}
       - ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN:-${REQUESTY_API_KEY:-}}
       - ANTHROPIC_CUSTOM_HEADERS=${ANTHROPIC_CUSTOM_HEADERS:-}

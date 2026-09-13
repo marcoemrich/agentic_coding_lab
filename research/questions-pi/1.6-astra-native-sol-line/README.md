@@ -70,6 +70,17 @@ status: answered
 — but it is not substitutable either, and nothing here may be read against a
 Requesty-routed RQ without the delta in "Constants of the subscription route".
 
+## Current evidence scope
+
+The current Sol native-inline cell comprises five September 13 fresh runs;
+other Sol cells remain August runs and Astra cells September 5 runs. Current
+values are in [findings.md](findings.md) and [summary.md](summary.md); numerical
+motivation tables and execution notes below are historical design context.
+Date/environment confounds cross-model contrasts and also Sol's within-model
+native-inline contrasts. Astra's within-model cohort is unchanged. This refresh
+reaggregated existing metrics and costs; it did not rerun experiments or the
+analysis pipeline.
+
 ## The question this answers
 
 Two lines of TDD workflow exist in this lab for the pi harness on the OpenAI

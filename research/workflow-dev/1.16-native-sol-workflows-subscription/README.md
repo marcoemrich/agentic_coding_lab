@@ -41,6 +41,17 @@ status: answered
 
 # RQ-native-sol-workflows-sub: Does a Native Sol Workflow Clear the inline-tdd-v1 Floor?
 
+## Current evidence scope
+
+The current query includes the September 13 fresh `exact-sol-v1-pi` reference
+runs on Claim Office and Game of Life; all other cells retain their historical
+cohorts. Each cell has n=5. [findings.md](findings.md) and [summary.md](summary.md)
+are authoritative for current values. Numerical examples and execution dates in
+the design narrative below describe the original study, not the current pool.
+Reference contrasts now confound workflow with date/dependency environment and
+must not be presented as a contemporaneous causal comparison. No new runs or
+analysis-pipeline reruns were made for this refresh.
+
 ## The question this answers
 
 `RQ-architecture-axis-sol-pi` (workflow-dev/1.14) measured the full architecture axis

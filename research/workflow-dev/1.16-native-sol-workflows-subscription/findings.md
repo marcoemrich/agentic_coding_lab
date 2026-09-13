@@ -1,330 +1,210 @@
 # Findings — RQ-native-sol-workflows-sub
 
-On the OpenAI subscription route, does a workflow line written natively for Sol
-(basic-sol-tdd, Predictive TDD) beat structureless TDD (inline-tdd-v1) — the floor that no
-Opus-derived architecture clears on this model?
-
-Data base: 45 runs, 9 cells × n=5, all `exit_reason: ok`, `completed_within_budget`
-100 %, `tests_passing` 100 % in every cell. Route: OpenAI subscription
-(`gpt-5-6-sol-codex`), reasoning always on (F-1.3.5).
-
-`sphinx-score` was added as a novelty control — a size twin of game-of-life that is
-novel to the model — to separate spec size from task familiarity in F-1.16.5. It does
-not deliver that separation: the kata collapses to a single function on this model and
-resolves no decomposition difference at all (F-1.16.7). Its rows are reported below but
-decide nothing.
-
 ## Übersicht
 
-**claim-office-example-mapping** (correctness kata)
+45 runs, nine cells, n=5 each; Sol on the OpenAI subscription route with
+example-mapping prompts. Floor = `baseline-inline-tdd-v1-pi`, Inline =
+`exact-sol-v1-pi`, Isolated = `exact-sol-v1.1-subagent-pi`.
+All cells have 100% internal test success and completion within budget.
 
-| Metric | inline-tdd-v1 | basic-sol-tdd | basic-sol-tdd-subagent | Direction |
-|---|---:|---:|---:|---|
-| Correctness (external) `verification_pct` | **100 %** 🏆 | **100 %** 🏆 | 93 % | höher = besser |
-| Correctness (internal) `tests_passing` | 100 % | 100 % | 100 % | höher = besser |
-| `cognitive_max` | 11.4 ± 8.96 | **4.0 ± 0.63** 🏆 | 4.8 ± 2.14 | kleiner = besser |
-| `cognitive_avg` | 3.40 | **2.15** 🏆 | 2.33 | kleiner = besser |
-| `mccabe_max` | 9.8 | 5.4 | **5.0** 🏆 | kleiner = besser |
-| Smell Total | 4.2 ± 8.40 | **0.0** 🏆 | **0.0** 🏆 | kleiner = besser |
-| Complexity Peak `cc_longest_function` | 27.0 ± 10.14 | **18.0 ± 2.68** 🏆 | 18.4 ± 3.26 | kleiner = besser |
-| `cc_avg_loc_per_function` | 8.45 | **6.60** 🏆 | 7.75 | kleiner = besser |
-| Code Mass (APP) | 750.0 | 556.8 | 618.0 | kleiner = besser (kein 🏆 — s. Caveat) |
-| `cycle_count` | n/a | 31.6 | 33.2 | — |
-| `refactorings_applied` | n/a | 31.6 | **32.2** 🏆 | höher = besser |
-| `predictions_correct_rate` | n/a | 98.6 % | **99.4 %** 🏆 | höher = besser |
-| `duration_seconds` | **218** 🏆 | 874 | 2397 | kleiner = besser |
-| `total_tokens` | **272 k** 🏆 | 4.61 M | 7.13 M | kleiner = besser |
-| `cost_usd` | **$0.58** 🏆 | $3.98 | $7.40 | kleiner = besser |
+### Claim Office
 
-**game-of-life-example-mapping** (code-quality kata)
-
-| Metric | inline-tdd-v1 | basic-sol-tdd | basic-sol-tdd-subagent | Direction |
-|---|---:|---:|---:|---|
-| Correctness (external) `verification_pct` | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | höher = besser |
-| `cognitive_max` | **4.4** 🏆 | 4.6 | 5.2 | kleiner = besser |
-| `cognitive_avg` | **2.67** 🏆 | 2.83 | 3.07 | kleiner = besser |
-| `mccabe_max` | **4.0** 🏆 | 4.2 | 4.6 | kleiner = besser |
-| Smell Total | **0.0** 🏆 | **0.0** 🏆 | **0.0** 🏆 | kleiner = besser |
-| Complexity Peak `cc_longest_function` | **11.2** 🏆 | 13.6 | 12.8 | kleiner = besser |
-| `cc_avg_loc_per_function` | **6.75** 🏆 | 7.27 | 7.01 | kleiner = besser |
-| Code Mass (APP) | 176.4 | 162.8 | 167.4 | kleiner = besser (kein 🏆 — s. Caveat) |
-| `cycle_count` | n/a | 10.2 | 9.0 | — |
-| `refactorings_applied` | n/a | **10.4** 🏆 | 9.8 | höher = besser |
-| `predictions_correct_rate` | n/a | 98.1 % | **100 %** 🏆 | höher = besser |
-| `duration_seconds` | **127** 🏆 | 359 | 688 | kleiner = besser |
-| `total_tokens` | **153 k** 🏆 | 1.03 M | 1.74 M | kleiner = besser |
-| `cost_usd` | **$0.36** 🏆 | $1.15 | $2.31 | kleiner = besser |
-
-**sphinx-score-example-mapping** (novelty control — resolves nothing, see F-1.16.7)
-
-| Metric | inline-tdd-v1 | basic-sol-tdd | basic-sol-tdd-subagent | Direction |
-|---|---:|---:|---:|---|
-| Correctness (external) `verification_pct` | **100 %** 🏆 | 99 % | 96 % | höher = besser |
-| Correctness (internal) `tests_passing` | 100 % | 100 % | 100 % | höher = besser |
-| `cc_functions` | 1.4 | 1.0 | 1.2 | — (kein 🏆 — Floor, s. F-1.16.7) |
-| `cognitive_max` | 2.2 ± 0.84 | 1.8 ± 0.45 | 1.6 ± 1.14 | kleiner = besser (kein 🏆 — Floor) |
-| `cognitive_avg` | 1.90 | 1.80 | 1.60 | kleiner = besser (kein 🏆 — Floor) |
-| `mccabe_max` | 3.2 | 2.8 | 2.6 | kleiner = besser (kein 🏆 — Floor) |
-| Smell Total | 0.0 | 0.0 | 0.0 | kleiner = besser (kein 🏆 — überall 0) |
-| Complexity Peak `cc_longest_function` | 15.4 ± 3.05 | 13.2 ± 2.39 | 16.2 ± 5.63 | kleiner = besser (kein 🏆 — Floor) |
-| `cc_avg_loc_per_function` | 14.5 | 13.2 | 15.9 | kleiner = besser (kein 🏆 — Floor) |
-| Code Mass (APP) | 129.6 | 129.2 | 136.0 | kleiner = besser (kein 🏆 — s. Caveat) |
-| `cycle_count` | n/a | 11.8 | 11.2 | — |
-| `refactorings_applied` | n/a | 12.0 | 11.6 | höher = besser (kein 🏆 — innerhalb 1 σ) |
-| `predictions_correct_rate` | n/a | **100 %** 🏆 | **100 %** 🏆 | höher = besser |
-| `duration_seconds` | **145** 🏆 | 440 | 946 | kleiner = besser |
-| `total_tokens` | **275 k** 🏆 | 1.57 M | 2.48 M | kleiner = besser |
-| `cost_usd` | **$0.46** 🏆 | $1.65 | $3.18 | kleiner = besser |
-
-Caveats for reading the tables:
-
-- **Correctness gating** on claim-office: quality/efficiency trophies go only to cells at
-  `verification_pct` 100 % — inline-tdd-v1 and the inline arm. The subagent arm's figures are reported
-  but carry no trophy there (F-1.16.4).
-- **`cycle_count`, `refactorings_applied` and `predictions_correct_rate` are n/a for inline-tdd-v1**,
-  not zero — inline-tdd-v1 prescribes no phase markers. The parser's inferred `cycle_count` 3.0 / 4.6
-  and `refactorings_applied` 0.4 / 0.2 are not comparable to marker-based counts and are
-  omitted from the tables. See MARKERS.md, "Baseline workflows satisfy marker 4 only".
-- **Code Mass gets no trophy**: APP has no notion of nesting and rewards one long function
-  (metric blind spot, RQ README).
-- `predictions_total` is not comparable on this line — already-green cycles carry no
-  predictions by design. Only the rate is reported.
-
-## F-1.16.1 — On claim-office the native line clears the inline-tdd-v1 floor decisively
-
-This is the finding the RQ was built to answer, and on the correctness kata the answer is
-yes. The inline arm beats the inline-tdd-v1 baseline on every quality metric, at equal (perfect)
-correctness:
-
-| Metric | inline-tdd-v1 | basic-sol-tdd (inline) | Faktor | Direction |
-|---|---:|---:|---:|---|
-| `cognitive_max` | 11.4 | **4.0** | 2.85× | kleiner = besser |
-| Complexity Peak | 27.0 | **18.0** | 1.50× | kleiner = besser |
-| `cc_avg_loc_per_function` | 8.45 | **6.60** | 1.28× | kleiner = besser |
-| Smell Total | 4.2 | **0.0** | — | kleiner = besser |
-| Code Mass (APP) | 750.0 | **556.8** | 1.35× | kleiner = besser |
-
-The gap is not only in the mean but in the spread: inline-tdd-v1's `cognitive_max` σ is 8.96 against
-0.63, its Complexity Peak σ 10.14 against 2.68, its Smell Total σ 8.40 against 0.00. The
-inline-tdd-v1 baseline produces one run at `cognitive_max` 29 and one at 21 smells; the native line's
-worst run across five is `cognitive_max` 5 with zero smells. **The native line is both
-better and predictable, where the baseline is neither.**
-
-This is the direct counterpoint to F-1.6 in RQ-architecture-axis-sol-pi, where no
-Opus-derived architecture cleared the inline-tdd-v1 floor on Sol. It supports the second of the two
-readings that finding left open: the transfer failure was a property of *that* line, not of
-architecture on this model. See F-1.16.5 for what that does and does not license.
-
-## F-1.16.2 — On game-of-life the floor holds, exactly as it did for the opus line
-
-The kata inverts the result. All three cells reach 100 % correctness and zero smells, and
-inline-tdd-v1 wins or ties every quality metric:
-
-| Metric | inline-tdd-v1 | best native | Faktor | Direction |
-|---|---:|---:|---:|---|
-| `cognitive_max` | **4.4** | 4.6 (inline) | 1.05× | kleiner = besser |
-| `cognitive_avg` | **2.67** | 2.83 (inline) | 1.06× | kleiner = besser |
-| `mccabe_max` | **4.0** | 4.2 (inline) | 1.05× | kleiner = besser |
-| Complexity Peak | **11.2** | 12.8 (subagent) | 1.14× | kleiner = besser |
-| `cc_avg_loc_per_function` | **6.75** | 7.01 (subagent) | 1.04× | kleiner = besser |
-| `cost_usd` | **$0.36** | $1.15 (inline) | 3.19× | kleiner = besser |
-
-Every gap is inside 1 σ — this is a tie on quality, not a defeat — but the cost gap is not:
-the native line pays 3.2–3.5× for it. Code Mass runs the other way (176.4 against 162.8),
-which is the APP blind spot, not a counter-result.
-
-The mechanism RQ-1.14 named for F-1.6 applies unchanged: game-of-life is small and
-training-known, the spec fits in one context, and there is nothing for a TDD architecture to
-protect against. **This reproduces on a line with no Opus lineage at all**, which makes it
-a property of the kata-model pair rather than of the workflow family — see F-1.16.5.
-
-## F-1.16.3 — Refactor isolation buys nothing here and costs a great deal
-
-The two native cells differ only in where the Four Rules review runs. Across both katas the
-quality difference is inside 1 σ on every metric, in both directions:
-
-| Metric | inline | subagent | kata |
-|---|---:|---:|---|
-| `cognitive_max` | **4.0 ± 0.63** | 4.8 ± 2.14 | claim-office |
-| `cc_avg_loc_per_function` | **6.60** | 7.75 | claim-office |
-| Complexity Peak | **18.0** | 18.4 | claim-office |
-| `cognitive_max` | **4.6** | 5.2 | game-of-life |
-| Complexity Peak | 13.6 | **12.8** | game-of-life |
-| `cc_avg_loc_per_function` | 7.27 | **7.01** | game-of-life |
-
-The cost side is not a tie. On claim-office the subagent arm runs **2.7× longer** (2397 s
-against 874 s) and consumes 1.5× the tokens; on game-of-life 1.9× longer. It also carries
-the RQ's only correctness regression (F-1.16.4).
-
-H3 (refactor isolation is the differentiator) is **not supported**: the two arms separate
-from each other by far less than the inline arm separates from inline-tdd-v1 on claim-office. Isolating
-the refactor context — the one axis this pair was built to test cleanly, and which is
-confounded in the opus line — does not pay on Sol.
-
-Worth naming against F-1.6's observation that the hybrid-v2 refactor subagent fails to extract on
-Sol: with a different refactor brief (Four Rules, no APP) the subagent does now work — it
-applies 32.2 refactorings per claim-office run and reaches zero smells. It simply does not
-produce better code than doing the same review inline.
-
-## F-1.16.4 — The subagent arm carries the only correctness regression
-
-Four of five claim-office runs reach `verification_pct` 1.0; one reaches 0.67 (10/15),
-pulling the cell to 0.93. It is not a technical failure: `exit_reason: ok`,
-`experiment-done.txt` written, 36 own tests green, CLI built, 37 cycles, 40 refactorings.
-The run worked with full discipline and still failed five scenarios —
-`09-follow-up-customer`, `12-warrior-garras`, `13-magus-velorin`, `14-family-steinheim`,
-`15-unlucky-tordan`. All five are the late multi-step scenarios that depend on earlier
-results.
-
-This is a spec-comprehension failure on the second half of the specification, the same
-failure mode Opus-derived workflows have shown on this kata (RQ-1.9, RQ-1.10) and the
-pattern F-workflow-model.2 describes for shared-context orchestration. That it appears in
-the **isolated** arm and not the inline one is the opposite of the direction isolation is
-supposed to help.
-
-Per the RQ's H4, this disqualifies the subagent arm on claim-office regardless of its
-quality figures. At n=5 a single run is thin evidence for a *rate*, but it is sufficient to
-withhold a recommendation: the inline arm reached 5/5 on the same kata, model, route and
-prompt.
-
-## F-1.16.5 — What this does and does not settle about F-1.6
-
-RQ-1.14 F-1.6 found no architecture clearing the inline-tdd-v1 floor on Sol and left two readings open:
-architecture does not pay on this model, or that specific Opus-derived line does not
-transfer. This RQ splits the answer by kata:
-
-- **claim-office: the lineage reading holds.** A line with no Opus ancestry clears the floor
-  decisively (F-1.16.1), so "architecture does not pay on Sol" is too strong.
-- **game-of-life: the model/kata reading holds.** The native line ties at best and pays 3.2×
-  for it (F-1.16.2) — the same outcome the opus line produced, now without the lineage confound.
-
-The honest synthesis is that F-1.6's conclusion was **kata-overgeneralised**, not wrong.
-Where the spec is large enough to exceed what one context handles well, architecture pays on
-Sol; where it is not, it is overhead — and that holds regardless of which family the
-architecture comes from.
-
-**The two katas confound size with familiarity, and this RQ could not resolve it.**
-game-of-life is small *and* canonical; claim-office is large *and* lab-authored. So
-"the spec exceeds one context" and "the model has no memorised solution" both predict the
-observed split, and nothing here distinguishes them. `sphinx-score` was added as the
-control that would — novel, at game-of-life's size — but it floors out on this model and
-resolves no quality difference at all (F-1.16.7). The size reading above is therefore the
-**more parsimonious** account, not the demonstrated one. A novelty explanation remains
-live and would need a novel kata that decomposes on Sol.
-
-**Route caveat, binding:** this RQ ran entirely on the OpenAI subscription route, RQ-1.14
-entirely on Requesty. `RQ-route-effect-pi` F-1.3.6 documents a real route effect on exactly
-these metrics. The inline-tdd-v1 rows make the size of that concern concrete — claim-office
-`cognitive_max` is 11.4 here against 9.2 on Requesty, and Smell Total 4.2 against 6.8, for
-the same workflow, kata, model and prompt style. Comparisons **across** the two RQs are
-therefore directional at best. Every claim above is internal to this RQ, where the route is
-constant.
-
-## F-1.16.6 — The prose-prediction compliance loss did not persist
-
-The marker smoke run showed 3 of 10 red phases in the inline arm carrying a prose-only
-prediction with no `Red Phase Complete:` block, raising the concern that the retrofitted
-two-line format would erode. At n=5 per cell it did not: `predictions_correct_rate` is
-98.1–100 % across all four native cells, against 95.8–100 % for the opus line cells on Requesty
-(RQ-1.14). The rates are pooled over 52–176 predictions per cell.
-
-`predictions_total` is still not comparable on this line — already-green cycles carry no
-predictions by design — but the *rate*, which is what the RQ compares on, is healthy. No
-change to the red-phase instruction is indicated.
-
-## F-1.16.7 — sphinx-score collapses to one function on Sol and answers nothing
-
-The kata was added to hold size constant against game-of-life while varying novelty, so
-that F-1.16.5's size reading could be separated from a familiarity reading. It cannot
-carry that role on this model. `cc_functions` — the number of functions in the
-production source — is the measurement:
-
-| Kata | inline-tdd-v1 | basic-sol-tdd | basic-sol-tdd-subagent |
+| Outcome | Floor | Inline | Isolated |
 |---|---:|---:|---:|
-| claim-office | 14.2 | 9.8 | 11.6 |
-| game-of-life | 4.2 | 4.2 | 4.4 |
-| **sphinx-score** | **1.4** | **1.0** | **1.2** |
+| Correctness (external) | 100% | 100% | 93% |
+| `cognitive_max` | 11.4 ± 10.01 | 4.8 ± 2.39 | 4.8 ± 2.39 |
+| `cognitive_avg` | 3.40 | 2.10 | 2.33 |
+| `mccabe_max` | 9.8 | 5.6 | 5.0 |
+| Smell Total | 4.2 | 0 | 0 |
+| Complexity Peak | 27.0 ± 11.34 | 20.8 ± 2.39 | 18.4 ± 3.65 |
+| `cc_avg_loc_per_function` | 8.45 | 7.42 | 7.75 |
+| Code Mass (APP) | 750.0 | 562.6 | 618.0 |
+| `cycle_count` | n/a | 33.4 | 33.2 |
+| Refactor markers | n/a | 33.2 | 32.2 |
+| Prediction accuracy, pooled | n/a | 99.3% | 99.4% |
+| Duration, seconds (lower is better) | **218.2** 🏆 | 1083.8 | 2397.2 |
+| Tokens (lower is better) | **0.272 M** 🏆 | 4.869 M | 7.126 M |
+| List-price cost (lower is better) | **$0.58** 🏆 | $3.66 | $7.40 |
 
-**12 of 15 sphinx runs produce exactly one function.** The whole implementation is a
-single block of 28–44 LoC. That has a direct consequence for the metrics the RQ README
-declared binding for these cells: with one function, `cc_avg_loc_per_function` *is*
-`cc_longest_function` — the two columns are identical in every such run (11.0/11,
-17.0/17, 12.0/12 …). Neither measures decomposition here; both measure file length.
+### Game of Life
 
-The remaining metrics floor out as well, worse than the README anticipated from
-RQ-kata-1.3: `cognitive_max` spans 1.6–2.2 across the three workflows, `mccabe_max`
-2.6–3.2, `smell_total` is 0 in all 15 runs. Every gap is inside 1 σ. **No trophy is
-awarded on any quality metric in the sphinx table**, because the differences are
-rounding noise on a floored scale, not workflow effects.
+| Outcome | Floor | Inline | Isolated |
+|---|---:|---:|---:|
+| Correctness (external) | 100% | 100% | 100% |
+| `cognitive_max` | 4.4 | 4.2 | 5.2 |
+| `cognitive_avg` | 2.67 | 3.17 | 3.07 |
+| `mccabe_max` | 4.0 | 4.4 | 4.6 |
+| Smell Total | 0 | 0 | 0 |
+| Complexity Peak | 11.2 | 14.0 | 12.8 |
+| `cc_avg_loc_per_function` | 6.75 | 7.44 | 7.01 |
+| Code Mass (APP) | 176.4 | 156.8 | 167.4 |
+| `cycle_count` | n/a | 9.8 | 9.0 |
+| Refactor markers | n/a | 9.8 | 9.8 |
+| Prediction accuracy, pooled | n/a | 100% | 100% |
+| Duration, seconds (lower is better) | **126.8** 🏆 | 400.2 | 687.6 |
+| Tokens (lower is better) | **0.153 M** 🏆 | 0.933 M | 1.743 M |
+| List-price cost (lower is better) | **$0.36** 🏆 | $1.03 | $2.31 |
 
-This is not the same limit as the one RQ-kata-1.3 F-1.2 documented. There the kata was
-"structurally flat" — no branch depth for the complexity metrics — but it still produced
-3.5–6.5 functions on `opus-5-no-thinking`, so the length metrics separated (2.4× on
-`cc_avg_loc_per_function`). On Sol the kata additionally fails to produce *any*
-decomposition, which removes the length metrics too. The floor is a property of the
-kata-model pair, not of the kata alone.
+### Sphinx Score
 
-What the sphinx rows still show, and it is consistent with the other two katas: the
-native line refactors (11.6–12.0 applied against 1.6 for inline-tdd-v1), predicts perfectly
-(100 % on both native cells, 68 and 76 predictions pooled), and costs 3.6–3.8× the
-baseline for output that is indistinguishable in quality.
+| Outcome | Floor | Inline | Isolated |
+|---|---:|---:|---:|
+| Correctness (external) | 100% | 99% | 96% |
+| `cognitive_max` | 2.2 | 1.8 | 1.6 |
+| `cognitive_avg` | 1.90 | 1.80 | 1.60 |
+| `mccabe_max` | 3.2 | 2.8 | 2.6 |
+| Smell Total | 0 | 0 | 0 |
+| Complexity Peak | 15.4 | 13.2 | 16.2 |
+| `cc_avg_loc_per_function` | 14.5 | 13.2 | 15.9 |
+| Code Mass (APP) | 129.6 | 129.2 | 136.0 |
+| `cycle_count` | n/a | 11.8 | 11.2 |
+| Refactor markers | n/a | 12.0 | 11.6 |
+| Prediction accuracy, pooled | n/a | 100% | 100% |
+| Duration, seconds (lower is better) | **144.8** 🏆 | 440.2 | 945.8 |
+| Tokens (lower is better) | **0.275 M** 🏆 | 1.572 M | 2.476 M |
+| List-price cost (lower is better) | **$0.46** 🏆 | $1.65 | $3.18 |
 
-**H5 is untestable on this data, neither supported nor refuted.** A novelty control needs
-a kata that resolves decomposition on the target model; sphinx-score does not on Sol.
+Means, with sample SD where shown. All cells pass the standard 0.90 correctness
+gate. Quality contrasts are not crowned where variation overlaps; Code Mass is
+not ranked because it can reward missing abstraction. The floor's efficiency
+advantage is clear within each kata; no cross-kata trophy is awarded. TDD markers
+are n/a for the floor and are not independently verified improvements elsewhere.
 
-## F-1.16.8 — Correctness on sphinx orders the cells the same way as claim-office
+**Cohort limitation:** Inline on Claim Office and Game of Life consists of
+September 13 fresh-comparison runs (pi 0.81.1, development dependency environment).
+The remaining cells are historical. Comparisons involving these references are
+not contemporaneous and confound workflow with date/environment. The means below
+are descriptive associations, not proof of a workflow mechanism.
 
-The one sphinx metric that is not floored is external correctness, and it reproduces the
-claim-office ordering exactly:
+## F-1.16.1 — Claim Office favours the native inline arm in observed quality means
 
-| Cell | claim-office | sphinx-score |
+| Outcome | Floor | Inline |
 |---|---:|---:|
-| baseline-inline-tdd-v1-pi | 100 % | **100 %** |
-| exact-sol-v1-pi | 100 % | 99 % (4/5 runs at 1.0) |
-| exact-sol-v1.1-subagent-pi | 93 % | 96 % (2/5 runs at 1.0) |
+| Correctness (external) | 100% | 100% |
+| `cognitive_max` | 11.4 ± 10.01 | 4.8 ± 2.39 |
+| Complexity Peak | 27.0 ± 11.34 | 20.8 ± 2.39 |
+| Average function length | 8.45 ± 2.41 | 7.42 ± 1.04 |
+| Smell Total | 4.2 ± 9.39 | 0.0 ± 0.00 |
 
-The subagent arm is last on both novel katas and clean on game-of-life. On sphinx the
-misses are small (0.94 = 15/16 scenarios) rather than the 0.67 collapse seen once on
-claim-office, so this is a weaker signal than F-1.16.4 — but it points the same way, and
-it is now the second kata where isolating the refactor context costs correctness rather
-than protecting it.
+Inline has lower means and less spread, but these gaps are below the floor's
+SD. The worst cognitive peak is 9 for Inline versus 29 for the floor. This
+supports a provisional quality preference, not a decisive causal claim that
+architecture clears the floor. The cohort limitation applies.
 
-At n=5 per cell with a 1–4 pp spread this is directional only. It does not license a
-correctness ranking on sphinx; it strengthens the case in F-1.16.4 for not recommending
-the subagent arm.
+## F-1.16.2 — Game of Life has no clear native quality advantage over the floor
 
-## Recommendation
+| Outcome | Floor | Inline | Isolated |
+|---|---:|---:|---:|
+| `cognitive_max` | 4.4 | 4.2 | 5.2 |
+| Complexity Peak | 11.2 | 14.0 | 12.8 |
+| Average function length | 6.75 | 7.44 | 7.01 |
+| Cost | $0.36 | $1.03 | $2.31 |
 
-- **claim-office-like work (large, novel spec) on Sol/subscription: `exact-sol-v1-pi`.**
-  Best or tied-best on every quality metric at 5/5 correctness, with markedly tighter spread
-  than the baseline. It costs 4.0× the wallclock and 6.9× the dollars of inline-tdd-v1 — that is the
-  price of the quality and predictability gap documented in F-1.16.1.
-- **game-of-life-like work (small, training-known) on Sol/subscription: `baseline-inline-tdd-v1-pi`.**
-  The native line does not beat the floor and costs 3.2× more (F-1.16.2).
-- **sphinx-score-like work (small, flat) on Sol/subscription: `baseline-inline-tdd-v1-pi`.** The
-  native line produces indistinguishable code at 3.6× the cost (F-1.16.7). Same call as
-  game-of-life, for a different reason: there the floor is a tie on real metrics, here the
-  metrics do not resolve at all.
-- **`exact-sol-v1.1-subagent-pi`: not recommended on any of the three katas.** No quality
-  advantage over the inline arm anywhere, 1.9–2.7× the wallclock, and it ranks last on
-  external correctness on both novel katas (F-1.16.3, F-1.16.4, F-1.16.8).
-- **Do not use `sphinx-score` for workflow comparisons on Sol.** It resolves neither
-  decomposition nor complexity on this model (F-1.16.7). Correctness still works, so it
-  remains usable as a cheap correctness probe.
+Ranks differ by metric and quality differences overlap variation. All cells have
+perfect correctness and zero smells. The native Inline arm costs about 2.9× the
+floor without a clear quality gain. Small task size and familiarity are plausible
+explanations, not separately tested causes.
 
-## Open questions
+## F-1.16.3 — Isolation has no clear quality payoff and takes more time
 
-- Does F-1.16.1 survive on the Requesty route, or is it entangled with the route effect?
-  → the decisive follow-up; the claim-office cells would need re-running on `gpt-5-6-sol`.
-- Is the single 0.67 run a rate or an outlier? → n=10 on the claim-office subagent cell.
-- Is the inversion driven by spec size or by task novelty? Still open. `sphinx-score` was
-  the intended control and failed to resolve anything on Sol (F-1.16.7). A replacement
-  needs to be novel to the model, comparable in size to game-of-life, **and** verified to
-  produce more than one function on Sol before the cells are run — `cc_functions` on a
-  single probe run is the cheap pre-check.
-- Where does the size boundary lie between "architecture pays" and "architecture is
-  overhead"? Both RQs show the inversion, neither locates it. Needs a genuine mid-size
-  kata (`claim-office-lite`), subject to the same `cc_functions` pre-check.
-- Does the inline arm's advantage come from the methodology or from the removal of APP?
-  → swap the opus line's APP-based refactor brief into the native line, holding architecture
-  constant.
+| Kata | Inline seconds | Isolated seconds | Ratio |
+|---|---:|---:|---:|
+| Claim Office | 1083.8 | 2397.2 | 2.21× |
+| Game of Life | 400.2 | 687.6 | 1.72× |
+| Sphinx Score | 440.2 | 945.8 | 2.15× |
+
+On Claim Office the cognitive means tie at 4.8; average function length is
+7.42 versus 7.75, while Complexity Peak favours isolation (20.8 versus 18.4).
+Game of Life similarly has mixed ranks. No consistent quality advantage offsets
+the observed time increase. This does not prove isolation is universally useless,
+particularly with date/environment confounded in two of the three comparisons.
+
+## F-1.16.4 — One isolated Claim Office run fails five external scenarios
+
+| Isolated Claim Office result | Value |
+|---|---:|
+| Runs with perfect external score | 4/5 |
+| Lowest external score | 10/15 scenarios |
+| Cell mean | 93% |
+
+The documented inspection identifies late multi-step scenarios
+`09-follow-up-customer`, `12-warrior-garras`, `13-magus-velorin`,
+`14-family-steinheim`, and `15-unlucky-tordan`. The run exits normally, builds
+its CLI and passes 36 internal tests. This is an observed completeness failure,
+not an infrastructure exclusion. One failure is not a reliable population rate;
+it is a reason to prefer the all-green arm provisionally, not proof that
+isolation caused the failure. The RQ's stricter all-perfect recommendation rule
+is separate from the skill's 0.90 quality-trophy gate.
+
+## F-1.16.5 — Task size and familiarity remain confounded
+
+| Task | Observed result |
+|---|---|
+| Claim Office | Native inline has lower quality means, higher cost |
+| Game of Life | No clear quality gain over the cheap floor |
+| Sphinx Score | Quality metrics have limited structural resolution |
+
+The task split does not isolate size from novelty. Claim Office is larger and
+lab-authored; Game of Life is smaller and canonical. A context-capacity mechanism
+is not measured. Comparisons with the Opus-derived line on Requesty additionally
+change route, so they cannot identify lineage alone. A novel task that actually
+decomposes on Sol is needed to resolve the size/familiarity alternative.
+
+## F-1.16.6 — Parsed prediction accuracy is high but does not establish compliance
+
+| Native cell | Correct / parsed predictions |
+|---|---:|
+| Claim Office inline | 137/138 |
+| Claim Office isolated | 175/176 |
+| Game of Life inline | 48/48 |
+| Game of Life isolated | 52/52 |
+| Sphinx inline | 68/68 |
+| Sphinx isolated | 76/76 |
+
+Rates are 99.3–100%. Already-green cycles legitimately need fewer failure
+predictions, while missing formatted blocks disappear from both numerator and
+denominator. Thus high accuracy cannot establish that prose-only or missing
+predictions are absent. Marker coverage requires transcript inspection;
+`tests_passed_immediately` is hardcoded to zero in the pi parser.
+
+## F-1.16.7 — Sphinx Score has insufficient decomposition resolution on Sol
+
+The existing source inspection of the unchanged sphinx cells found one function
+in 12/15 runs, with mean function counts 1.4 / 1.0 / 1.2 for Floor/Inline/Isolated.
+
+| Sphinx metric | Floor | Inline | Isolated |
+|---|---:|---:|---:|
+| Average function length | 14.5 | 13.2 | 15.9 |
+| Complexity Peak | 15.4 | 13.2 | 16.2 |
+| `cognitive_max` | 2.2 | 1.8 | 1.6 |
+
+When only one function is counted, average and maximum lengths coincide, so
+neither resolves decomposition. Smells are zero throughout and complexity
+contrasts overlap SDs. This does not establish that the workflows are equivalent;
+it shows that this kata-model pairing cannot answer the intended novelty-control
+question with these quality metrics.
+
+## F-1.16.8 — External correctness is directionally lowest in the isolated arm
+
+| Workflow | Claim Office | Sphinx Score |
+|---|---:|---:|
+| Floor | 100% | 100% |
+| Inline | 100% | 99% |
+| Isolated | 93% | 96% |
+
+On sphinx the documented perfect-run counts are 5/5, 4/5 and 2/5; the misses are
+one scenario rather than the five-scenario Claim Office failure. With n=5 and
+small score differences, this is a directional observation, not a robust ranking.
+It does not demonstrate that isolation lowers correctness.
+
+## Recommendation and remaining questions
+
+Use Inline provisionally for Claim Office-like structured work; prefer the cheap
+floor when small-task quality is indistinguishable. Isolation has no demonstrated
+payoff in this sample. Recheck these choices with contemporaneous arms before
+turning them into general workflow rules. Open questions remain route transfer,
+rare-failure frequency, size versus novelty, and separation of refactor brief from
+architecture. Costs are list-price equivalents, not subscription invoices.
+
+Sources: [summary.md](summary.md), [runs.csv](runs.csv). All 45 costs were
+recomputed; this is an aggregation update, not a new analysis-pipeline run.

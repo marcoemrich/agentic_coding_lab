@@ -49,6 +49,16 @@ status: aktiv
 
 # RQ-app-subordination-measurement-sol: Can APP Be Rehabilitated, and What Does Measuring Cost?
 
+## Current evidence scope
+
+The current Basis (`exact-sol-v1-pi`) is five September 13 fresh runs, while
+A/B1/B2/B3 remain their historical cohorts. See [findings.md](findings.md) and
+[summary.md](summary.md) for current values; the motivation and execution dates
+below record the original design. Basis contrasts confound date/environment
+with workflow. Comparisons among A/B retain their shared cohort. In particular,
+the current data do not identify a causal duration penalty from brief length.
+This refresh reaggregated metrics and costs without new experiments or pipeline reruns.
+
 ## The question this answers
 
 `RQ-app-vs-four-rules-sol` (workflow-dev/1.17) established that on Sol the APP
