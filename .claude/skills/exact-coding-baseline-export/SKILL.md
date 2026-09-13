@@ -7,8 +7,9 @@ description: |
   (or takes an explicit source-workflow argument) and transforms it from a
   lab workflow into a consumer-ready one on three axes: strips lab-only
   measurement content, re-enables human-in-the-loop checkpoints, and
-  converts auto-loading config into an explicitly-invoked skill. Exports
-  Claude Code, pi, OpenCode and cursor-agent. Trigger when the user says
+  converts auto-loading config into an explicitly-invoked skill. Supports
+  both promoted EXACT Coding lines: Opus/Hybrid and SOL/Predictive TDD.
+  Exports Claude Code, pi, OpenCode, cursor-agent and, for SOL, Copilot. Trigger when the user says
   "exact-coding baseline export", "neue exact-coding baseline",
   "exact-coding-baseline-export", or asks to refresh the baseline snapshot.
 ---
@@ -27,14 +28,53 @@ alongside this file under `templates/`, and the harness research lives in
 
 ## Scope
 
-- **Single repo**: agentic_coding_lab_project. Writes only inside
-  `research/workflow-dev/export/`. Does not touch source workflows under
-  `experiments/workflows/`, consumer repos, or anything else.
-- **Single artifact**: a new directory at
-  `research/workflow-dev/export/exact-coding-baseline-<DATE>/`, containing
-  one subtree per exported harness.
-- **Idempotent within a date**: refuses to overwrite an existing
+- **Source repo**: writes snapshots only inside `research/workflow-dev/export/`
+  and never edits source workflows under `experiments/workflows/`.
+- **Distribution sync is explicit**: the SOL exporter may additionally create
+  or update the parallel `sol/*` branches in `EXACT-Coding-Exercises` when
+  `--sync-distribution <repo>` is passed. It commits locally and never pushes.
+- **One artifact per line and date**: Opus writes
+  `exact-coding-baseline-<DATE>/`; SOL writes
+  `exact-coding-sol-baseline-<DATE>/`. Each contains one subtree per exported
+  harness.
+- **Idempotent within a date and line**: refuses to overwrite an existing
   same-date snapshot unless the user explicitly says "overwrite" / "force".
+
+## Two promoted EXACT Coding lines
+
+The distribution has two parallel lines. Do not replace one with the other:
+
+| Line | Default source | Native harness | Snapshot name |
+|---|---|---|---|
+| `opus` | the correctness-critical Opus/Hybrid recommendation in `workflow-construction.md` | Claude Code | `exact-coding-baseline-<DATE>` |
+| `sol` | the SOL default in `model-recommendation-matrix.md` | pi | `exact-coding-sol-baseline-<DATE>` |
+
+When the requested line is `sol`, run the checked-in exporter rather than
+manually applying the Hybrid-specific steps below:
+
+```bash
+python3 .claude/skills/exact-coding-baseline-export/export-sol.py \
+  --date "$DATE" \
+  --sync-distribution /home/memrich/EXACT-Coding-Exercises
+```
+
+The script auto-detects the promoted SOL source from
+`model-recommendation-matrix.md`, reads its native `.pi/` tree, removes the lab
+adaptations, restores consumer HITL behavior and explicit invocation, and emits
+feature-equivalent `cc`, `pi`, `oc`, `cursor`, and `copilot` trees. With
+`--sync-distribution` it also creates or updates `sol/main` and the four
+`sol/harness/*` branches, one harness tree per branch, and commits locally. Restrict the
+set with repeated `--harness`; override source or target with `--source` and
+`--target`. It validates that the stack profile exists in every tree, OpenCode
+uses a consumer-shaped command config, and no lab vocabulary leaked.
+
+The SOL source is empirically validated on pi. The generated non-pi trees are
+semantic distribution ports, not cross-harness validation claims; preserve that
+caveat in their READMEs. SOL refactoring stays inline under the Four Rules:
+never add the Opus line's refactor subagent, APP objective, or end-refactor pass.
+
+The remainder of this document describes the established `opus` transformation
+path unless a section explicitly says otherwise.
 
 ## The three transformations
 
@@ -55,13 +95,15 @@ exporting a harness you have not exported before.**
 
 ## Arguments
 
-Three, all optional:
+Four, all optional:
 
-1. **Date** in `YYYY-MM-DD` form. Default: today (`date +%F`).
-2. **Source workflow name** (e.g. `exact-hybrid-v6-lab-split-cc`). Default:
-   auto-detect (see "Source detection" below).
-3. **Harness set**: any of `cc`, `pi`, `oc`, `cursor`, or `all`.
-   Default: `cc`.
+1. **Line**: `opus` or `sol`. Default: `opus` for backward compatibility.
+2. **Date** in `YYYY-MM-DD` form. Default: today (`date +%F`).
+3. **Source workflow name** (e.g. `exact-hybrid-v6-lab-split-cc` or
+   `exact-sol-v1.3-stack-profile-pi`). Default: auto-detect from the selected
+   line's recommendation (see "Source detection" below).
+4. **Harness set**: any of `cc`, `pi`, `oc`, `cursor`, `copilot`, or `all`.
+   Default: `cc` for Opus and `all` for SOL.
 
 If the user passes "from v6.4 today" or similar, parse the source name and
 use today's date. If only one argument looks like a date, that's the date;
@@ -75,7 +117,13 @@ export the harnesses that do exist rather than aborting the whole run.
 
 ## Source detection
 
-When no explicit source is given, find the current correctness-critical
+For `sol`, source detection is implemented by `export-sol.py`: it reads the
+backtick-quoted workflow immediately preceding the phrase
+`der Default der SOL-EXACT-Coding-Linie` from
+`research/workflow-dev/model-recommendation-matrix.md`. If that declaration or
+its `.pi/` source tree is missing, abort; never fall back to v1.
+
+For `opus`, when no explicit source is given, find the current correctness-critical
 default from `research/workflow-dev/workflow-construction.md`. The
 recommendation lives in the "Aktuelle Front" section and starts with the
 prefix **"Default für korrekheits-kritische Arbeit"** (note the typo
@@ -1043,9 +1091,9 @@ print('  OK opencode.json is consumer-shaped')"
 
 ## Consumer sync
 
-The skill never writes outside the lab repo. This section records **where
-the snapshot is meant to end up**, so the report can point at it and a
-manual copy has a documented target.
+The Opus path never writes outside the lab repo. The SOL path can synchronize
+the snapshot when explicitly passed `--sync-distribution`; without that flag it
+also remains snapshot-only. This section records the consumer target.
 
 ### The consumer
 
@@ -1113,18 +1161,18 @@ After successful validation:
    claim, and it was false — cursor had a Task tool the whole time. Verify
    against the harness's own docs and, where feasible, a probe run before
    accepting a limitation as real.
-6. Point at the consumer (`exact-coding-exercises`, path above) and state
-   that the snapshot has **not** been copied into it. If the layout
-   mismatch documented under "Consumer sync" is still unresolved, say so —
-   a naive `cp -r` there produces a double-loaded workflow.
+6. Point at the consumer (`EXACT-Coding-Exercises`, path above). State whether
+   SOL distribution sync ran; if it did, list the local `sol/*` commits and say
+   explicitly that no push occurred. For Opus or snapshot-only SOL exports,
+   state that the snapshot was not copied.
 
 ## What this skill explicitly does NOT do
 
 - Does **not** push, commit, or `git add` anything.
-- Does **not** copy the snapshot into consumer repos — not
-  `exact-coding-exercises`, not anywhere else. It writes only inside
-  `research/workflow-dev/export/`. Syncing is a separate, explicitly
-  requested action.
+- Does **not** copy an Opus snapshot into consumer repos. For SOL only,
+  `export-sol.py --sync-distribution <repo>` is the explicit opt-in that creates
+  or updates the parallel distribution branches; without the flag it writes
+  only the snapshot.
 - Does **not** edit source workflows under `experiments/workflows/`.
 - Does **not** edit `workflow-construction.md` or any RQ findings — those
   belong in their own RQ-driven flows.
@@ -1152,8 +1200,12 @@ After successful validation:
   `rules/subagent-prompts.md`, which is copied through. The template is
   still written in both layouts — it is what tells the consumer the
   workflow runs in a normal, interruptible mode.
-- `templates/README.template.md` — README with `{{DATE}}` and
+- `templates/README.template.md` — Opus/Hybrid README with `{{DATE}}` and
   `{{SOURCE_WORKFLOW}}` placeholders.
+- `templates/SOL-DISTRIBUTION-README-SECTION.template.md` — shared branch
+  documentation used by `export-sol.py` when synchronizing all SOL harnesses.
+- `export-sol.py` — executable SOL export, validation, and optional local
+  distribution-branch synchronization.
 - `HUMAN-IN-THE-LOOP.md` (in this skill's directory) — methodology
   reference describing the HITL design rationale and re-enablement steps
   (transformation axis 2). Useful for understanding **why** the templates
@@ -1176,11 +1228,13 @@ After successful validation:
 | `/exact-coding-baseline-export all` | All four harnesses (`cc`, `pi`, `oc`, `cursor`) |
 | `/exact-coding-baseline-export pi cursor` | Named harness subset |
 | `/exact-coding-baseline-export overwrite` | Same as default, but allow clobber |
+| `/exact-coding-baseline-export sol` | Export the promoted SOL line for all five harnesses |
+| `/exact-coding-baseline-export sol sync` | Export SOL and update local `sol/*` distribution branches; never push |
 
-Single output: a new directory at
-`research/workflow-dev/export/exact-coding-baseline-<DATE>/`, with one
-config subtree per exported harness. Validation must pass before reporting
-success.
+Output is line-specific: Opus writes
+`research/workflow-dev/export/exact-coding-baseline-<DATE>/`; SOL writes
+`research/workflow-dev/export/exact-coding-sol-baseline-<DATE>/`. Validation
+must pass before reporting success.
 
 **Every export applies all three transformations** — lab-content removal,
 HITL re-enablement, and invocation gating. An export that skips axis 3

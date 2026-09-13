@@ -20,8 +20,8 @@ Re-run analysis pipeline on all runs matching an RQ, reaggregate metrics, and pr
 Generates a frozen experiment-overview snapshot across all RQs under `research/reports/`. Runs `generate-snapshot-skeleton.py`, then fills synthesis sections from `findings.md` files.
 - Details: `.claude/skills/build-overview/SKILL.md`
 
-### `/exact-coding-baseline-export [date] [source-workflow]`
-Mint a new `exact-coding-baseline-YYYY-MM-DD/` snapshot under `research/workflow-dev/export/`. Auto-detects the current correctness-oriented source workflow from `research/workflow-dev/workflow-construction.md` (the "Default für korrekheits-kritische Arbeit" recommendation), or takes an explicit source name. Copies source files, applies the HITL transformation (Step-8 checkpoints, autonomy-level switch, mode-neutral execution rule), and writes README + VERSION inside `.claude/`. Templates (HITL consumable, README, tdd-execution-mode) live in the skill directory.
+### `/exact-coding-baseline-export [line] [date] [source-workflow]`
+Mint a dated consumer snapshot under `research/workflow-dev/export/` for either promoted EXACT Coding line. `opus` (default for backward compatibility) resolves the correctness-oriented Hybrid source from `workflow-construction.md`; `sol` resolves the Predictive-TDD source from `model-recommendation-matrix.md` and runs `export-sol.py`. Both remove lab content, restore HITL, and gate invocation. The SOL path emits Claude Code, pi, OpenCode, Cursor and Copilot ports and can explicitly synchronize local `sol/*` branches in `EXACT-Coding-Exercises` with `--sync-distribution`; it never pushes.
 - Triggers: "exact-coding baseline export", "neue exact-coding baseline", "exact-coding-baseline-export"
 - Details: `.claude/skills/exact-coding-baseline-export/SKILL.md`
 

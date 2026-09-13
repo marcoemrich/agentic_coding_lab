@@ -26,7 +26,7 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: open
+status: answered
 ---
 
 # Complete Stack-Profile Extraction on Sol-Originated Predictive TDD

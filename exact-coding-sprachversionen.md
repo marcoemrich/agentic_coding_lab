@@ -164,6 +164,18 @@ Profil.
 5. Einen Harness für TypeScript und Java generieren und gegen die heutigen
    Artefakte diffen; danach die Sprachübertragung messen.
 
+### Umsetzungsstand SOL
+
+`RQ-stack-profile-extraction-sol` hat die vollständige Auslagerung auf
+TypeScript/Vitest mit 20/20 korrekten frischen Runs gestützt.
+`exact-sol-v1.3-stack-profile-pi` ist deshalb als Default der SOL-Linie in
+`research/workflow-dev/model-recommendation-matrix.md` promoviert. Der
+`exact-coding-baseline-export` erkennt diese Empfehlung selbst und erzeugt aus
+der nativen pi-Quelle getrennte Consumer-Bäume für Claude Code, pi, OpenCode,
+Cursor und Copilot. Optional synchronisiert er daraus die parallelen
+`sol/main`- und `sol/harness/*`-Branches im Distributions-Repository; die
+Opus/Hybrid-Linie bleibt unverändert daneben bestehen.
+
 ## Präzisierung: Sprachunterstützung ohne Workflow-Duplikation
 
 Ziel ist, pro Workflow nur **eine kanonische Workflow-Version** zu pflegen. Aktuell
