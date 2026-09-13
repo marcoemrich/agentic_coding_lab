@@ -243,6 +243,10 @@ MODEL_CONFIGS=(
     "opus-cursor|cursor-only|false"
     "composer-cursor|cursor-only|false"
     "grok-cursor|cursor-only|false"
+    # auto-cursor: cursor's "Auto" router, the only model a free plan may use.
+    # Not a pinned model -- usable for mechanics smoke runs only, never for
+    # measurements (the routed model can change between runs).
+    "auto-cursor|cursor-only|false"
 )
 
 # ---------------------------------------------------------------------------
@@ -1051,6 +1055,7 @@ EOF
                 opus-cursor)     cursor_model="claude-opus-4-8-medium" ;;
                 composer-cursor) cursor_model="composer-2.5" ;;
                 grok-cursor)     cursor_model="cursor-grok-4.5-medium" ;;
+                auto-cursor)     cursor_model="auto" ;;
                 *) echo -e "  ${RED}ERROR: no cursor model mapping for $model_name${NC}"
                    claude_exit=2
                    cursor_model="" ;;

@@ -321,6 +321,30 @@ Copy verbatim from `.claude/skills/exact-coding-baseline-export/templates/`:
 - `templates/human-in-the-loop.md` → `$TARGET/.claude/rules/human-in-the-loop.md`
 - `templates/tdd-execution-mode.md` → `$TARGET/.claude/rules/tdd-execution-mode.md`
 
+### Step 2b: optional skills in every subtree
+
+Every exported harness subtree also ships two **user-invoked** skills that are
+not phases of the workflow:
+
+- `skills/example-mapping/SKILL.md` — the requirements conversation before the
+  loop. Taken from the consumer (`exact-coding-exercises`), where it was written.
+- `skills/end-refactor/SKILL.md` — the whole-`src/` measured cleanup, as a
+  **manual extra**. The frontmatter description must say it is never invoked
+  automatically. Source: the skill form first shipped in the 2026-08-12
+  snapshot; one harness-neutral file serves all four subtrees.
+
+These do not count as phases for validation 12. In particular, shipping
+`skills/end-refactor/` does **not** port the end-refactor phase into a
+hybrid-v2 export: no `agents/end-refactor.md`, and no orchestration file may
+invoke it. Both READMEs must label it as a manual extra.
+
+**OpenCode phase skills come from the cc commands, not from the pi port.** The
+pi port rewrote `✅ Correct` as plain `Correct`; the cc/oc prediction parser
+accepts that form, but the OpenCode lab port (`exact-hybrid-v2-testlist-fix-oc`)
+deliberately carries the cc wording so it matches the measured source. Build
+`.opencode/skills/*` from the already HITL-patched `.claude/commands/*` plus
+skill frontmatter. pi and cursor keep the pi-port wording.
+
 ### Step 3: render README from template
 
 Take `templates/README.template.md`. Substitute placeholders:
@@ -335,6 +359,11 @@ Take `templates/README.template.md`. Substitute placeholders:
 - `{{CC_VERSION}}` → the Claude Code pin from `experiments/docker/Dockerfile`
   (CLAUDE.md's "Docker & version pins" records the same number).
 - `{{MULTI_HARNESS_NOTE}}` → see below
+- `{{MEASUREMENTS}}` → the body of `templates/measurements.md` without its
+  leading HTML comment. **Re-check every number against the RQs named in that
+  comment before each export** and update the model named in each subsection;
+  the file is a lay-readable summary, not a generated table, so nothing refreshes
+  it for you.
 
 Model and harness version are placeholders precisely because they rot: they
 were hardcoded until 2026-07-28 and shipped two snapshots claiming Opus 4.7
