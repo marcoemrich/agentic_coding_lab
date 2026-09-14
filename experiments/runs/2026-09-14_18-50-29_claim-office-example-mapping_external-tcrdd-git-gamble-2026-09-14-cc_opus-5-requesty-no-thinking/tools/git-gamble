@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Local stand-in for `git gamble` (https://git-gamble.is-cool.dev/).
+# The real binary is unavailable in this environment (not on PATH, not a git
+# subcommand, 404 on the npm registry, no cargo toolchain to build from source),
+# so this implements the documented semantics:
+#   test && commit || revert, with the expectation flipped for --red
+#   (in the red phase the gamble is that the tests FAIL).
+set -uo pipefail
+
+phase="${1:-}"; shift || true
+[ "${1:-}" = "--" ] && shift
+
+case "$phase" in
+  --red|--green|--refactor) ;;
+  *) echo "usage: git-gamble --red|--green|--refactor -- <test command>" >&2; exit 2 ;;
+esac
+
+"$@"
+status=$?
+
+if [ "$phase" = "--red" ]; then
+  [ $status -ne 0 ] && ok=1 || ok=0
+else
+  [ $status -eq 0 ] && ok=1 || ok=0
+fi
+
+if [ $ok -eq 1 ]; then
+  git add -A
+  git commit -q -m "${phase#--}: $(git diff --cached --name-only | tr '\n' ' ')" \
+    --allow-empty
+  echo "GAMBLE WON (${phase#--}) -> committed"
+  exit 0
+else
+  git reset -q --hard HEAD
+  git clean -qfd
+  echo "GAMBLE LOST (${phase#--}) -> reverted" >&2
+  exit 1
+fi

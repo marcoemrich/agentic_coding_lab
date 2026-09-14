@@ -153,12 +153,12 @@ MODEL_CONFIGS=(
     # oc-only entries) and are reused by the pi branch, so they are not
     # repeated here.
     "sonnet-5|pi-only|false"
-    # opus-5 via Requesty (vertex/claude-opus-5@eu). The bare `opus-5` id is
-    # already taken by the native Direct-API route in the block above, so the
-    # Requesty arm carries the -requesty suffix — same split as opus-4-8 /
-    # opus-4-8-requesty, and for the same reason: different tariff, real cost,
-    # different routing channel. Do not merge the two into one cell.
-    "opus-5-requesty|pi-only|false"
+    # opus-5 via Requesty (vertex/claude-opus-5@eu), usable by both Claude Code
+    # and pi. Claude Code passes this route through --model; pi resolves the
+    # same lab id in its own case-map below. The bare `opus-5` id is already
+    # taken by the native Direct-API route, so this arm carries the -requesty
+    # suffix. Different route and tariff: never merge the two cells.
+    "opus-5-requesty|vertex/claude-opus-5@eu|false"
     # gpt-5-6-sol is wired for BOTH pi and OpenCode (same Requesty route,
     # azure/gpt-5.6-sol@swedencentral). The `pi-only` placeholder here only
     # feeds plan validation, which just checks the name exists — the harness
@@ -200,7 +200,7 @@ MODEL_CONFIGS=(
     # adds `--thinking off`. Registered here only so plan validation accepts
     # them. opus-4-8-no-thinking already exists in the native block above.
     "sonnet-5-no-thinking|pi-only|false"
-    "opus-5-requesty-no-thinking|pi-only|false"
+    "opus-5-requesty-no-thinking|vertex/claude-opus-5@eu|false"
     "gpt-5-6-sol-no-thinking|pi-only|false"
     "gpt-5-6-sol-codex-no-thinking|pi-only|false"
     "gpt-6-astra-codex-no-thinking|pi-only|false"
@@ -1161,7 +1161,7 @@ EOF
                 claude_exit=$?
             fi
         elif [ "$thinking" = "false" ]; then
-            (cd "$run_dir" && "${cc_env[@]}" MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
+            (cd "$run_dir" && "${cc_env[@]}" env MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s "$CLAUDE_TIMEOUT_SECONDS" \
                 claude --dangerously-skip-permissions --strict-mcp-config --model "$cli_model" --print \
                 "Read prompt.md and complete the exercise following the workflow rules.") \
                 2>&1 | tee "$run_log"
@@ -1380,7 +1380,7 @@ EOF
         echo -e "  ${YELLOW}src/cli.ts missing — nudging agent to create it...${NC}"
         set +e
         if [ "$thinking" = "false" ]; then
-            (cd "$run_dir" && "${cc_env[@]}" MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s 120 \
+            (cd "$run_dir" && "${cc_env[@]}" env MAX_THINKING_TOKENS=0 timeout --signal=TERM --kill-after=30s 120 \
                 claude --dangerously-skip-permissions --strict-mcp-config --model "$cli_model" --print \
                 "The file src/cli.ts is missing. The prompt requires a CLI entry point at src/cli.ts that reads JSON from stdin and writes JSON to stdout. Create src/cli.ts now. It should import from your existing module and wire up stdin reading, processing, and stdout output.") \
                 2>&1 | tee -a "$run_log"

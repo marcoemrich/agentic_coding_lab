@@ -3,12 +3,12 @@ id: RQ-tcr-variants-opus5
 question: "How do classic TCR and TCRDD variants affect correctness, code quality, development behavior, and efficiency in autonomous coding agents, and—within TCRDD—does tool-enforced execution with git-gamble differ from native-Git prompt enforcement?"
 factors:
   workflow_x_prompt:
-    - {workflow: baseline-inline-tdd-v1.1-local-git-cc, prompt: example-mapping}
+    - {workflow: exact-hybrid-v2.4-lab-split-cc, prompt: example-mapping}
     - {workflow: external-tcr-kentbeck-2026-09-14-cc, prompt: example-mapping}
     - {workflow: external-tcrdd-bsene-2026-09-14-cc, prompt: example-mapping}
     - {workflow: external-tcrdd-git-gamble-2026-09-14-cc, prompt: example-mapping}
 controls:
-  model: opus-5-no-thinking
+  model: opus-5-requesty-no-thinking
   kata_base: claim-office
 outcomes:
   - verification_pct
@@ -32,7 +32,8 @@ outcomes:
   - code_mass
   - duration_seconds
   - total_tokens
-min_replicates: 5
+  - cost_usd
+min_replicates: 4
 status: geplant
 ---
 
@@ -46,42 +47,44 @@ process behavior, and efficiency? Within TCRDD, does enforcement by
 
 ## Design
 
-All cells use `claim-office-example-mapping`, `opus-5-no-thinking`, Claude Code,
-and an isolated local Git repository initialized by the harness. The repository
+All cells use `claim-office-example-mapping`, `opus-5-requesty-no-thinking`,
+Claude Code via Requesty (`vertex/claude-opus-5@eu`), and an isolated local Git
+repository initialized by the harness. The repository
 is present in every arm so Git availability itself is not a treatment.
 
 | Cell | Method | Enforcement |
 |---|---|---|
-| `baseline-inline-tdd-v1.1-local-git-cc` | unstructured TDD control | prompt |
+| `exact-hybrid-v2.4-lab-split-cc` | current EXACT Coding Predictive-TDD control | Claude Code skills and subagents |
 | `external-tcr-kentbeck-2026-09-14-cc` | classic TCR: tiny change, test, commit on green or revert on red | native Git |
 | `external-tcrdd-bsene-2026-09-14-cc` | RED–GREEN–REFACTOR with phase-specific commit/revert | native Git |
 | `external-tcrdd-git-gamble-2026-09-14-cc` | RED–GREEN–REFACTOR with phase-specific gamble | `git-gamble` 2.14.6 |
 
-Five replicates per cell produce 20 new runs. The control has a distinct,
-content-identical workflow ID so historical pre-Git runs cannot be reused.
-Product metrics are evaluated only within this kata; no cross-kata averaging
-is permitted.
+The final data set contains four valid replicates for EXACT Coding and
+`git-gamble` TCRDD and five for Classic TCR and native-Git TCRDD. The EXACT
+Coding control is the current correctness-oriented baseline for Opus 5. Product
+metrics are evaluated only within this kata; no cross-kata averaging is
+permitted.
 
 ## Planned Contrasts
 
-1. **Classic TCR vs. TDD control** is a method comparison, not a single-factor
-   causal contrast: test-first, commit/revert discipline, and history semantics
-   differ together.
+1. **Classic TCR vs. EXACT Coding** is a method comparison, not a single-factor
+   causal contrast: predictive test-first structure, subagent architecture,
+   commit/revert discipline, and history semantics differ together.
 2. **Classic TCR vs. native TCRDD** compares the two TCR schools: unconstrained
    micro-changes with an always-green main history against a TDD-directed phase
    protocol that accepts expected RED.
 3. **Native TCRDD vs. git-gamble TCRDD** is the main mechanistic contrast. It
    holds the intended phase semantics constant and changes their enforcement.
-4. **Each TCRDD arm vs. TDD control** estimates the net effect of adding
-   phase-specific commit/revert gates to a TDD loop. The TCRDD cells remain
-   separate and are never pooled.
+4. **Each TCRDD arm vs. EXACT Coding** compares phase-specific commit/revert
+   gates with the current predictive, subagent-based TDD workflow. The TCRDD
+   cells remain separate and are never pooled.
 
 ## Hypotheses
 
 - **H1:** Classic TCR produces smaller accepted increments and more frequent
-  commits than the TDD control.
-- **H2:** Both TCRDD variants produce more incremental, verified RED–GREEN
-  cycles than the TDD control.
+  commits than the EXACT Coding control.
+- **H2:** Both TCRDD variants produce incremental, verified RED–GREEN cycles
+  without EXACT Coding's predictive subagent architecture.
 - **H3:** Native and tool-based TCRDD have similar final product outcomes when
   both execute their prescribed method faithfully.
 - **H4:** Tool-based TCRDD has higher protocol adherence than native,
@@ -106,8 +109,8 @@ Fidelity is method-specific rather than one universal score:
 - **TCRDD:** one behavior per RED, observed expected failure, minimum GREEN,
   green-only refactoring, correct handling of surprise outcomes, and separated
   cycles rather than a big bang.
-- **TDD control:** tests preceding their production changes, observed RED, and
-  incremental rather than batched test writing.
+- **EXACT Coding control:** predictive checks, behavioral RED, minimal GREEN,
+  and per-cycle Four-Rules review according to its own contract.
 
 `measure-tdd-rigour.py` supplies marker-free test-block and RED-verification
 measures. Git history supplies commit measures. Reverts must be reconstructed
@@ -140,16 +143,24 @@ repository to its initial commit first.
   final-history RED-commit counts are not by themselves comparable to the
   native TCRDD arm; transcript events and exported reflog data are required for
   phase-fidelity analysis.
-- The TDD control and classic TCR are different methods, not matched
+- The EXACT Coding control and classic TCR are different methods, not matched
   implementations of one method. Only the two TCRDD cells support a focused
   tooling interpretation.
 - Correctness gates interpretation of apparent quality or efficiency wins: a
   smaller incorrect implementation is not cleaner or more efficient delivery.
+- This RQ uses the Requesty route rather than the native Anthropic subscription
+  route. Results remain a separate model-route cell and must not be pooled with
+  existing `opus-5-no-thinking` runs.
+- The valid replicate counts are unequal (4/5/5/4). Two infrastructure-invalid
+  runs were excluded: one EXACT Coding run hit a harness env-command failure in
+  a subagent continuation, and one `git-gamble` run substituted an ad-hoc tool
+  implementation and stopped after two tests.
 
 ## Data Source
 
 All runs in `experiments/runs/` matching the four workflows above,
-`kata = claim-office-example-mapping`, and `model = opus-5-no-thinking`.
+`kata = claim-office-example-mapping`, and
+`model = opus-5-requesty-no-thinking`.
 
 ## Sources
 
