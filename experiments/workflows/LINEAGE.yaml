@@ -130,6 +130,7 @@ categories:
       exact-sol-v1.2.3-measured-tool-pi:          {arm: sol,            version: "1.2.3", harness: pi,     parent: exact-sol-v1.2-app-pi,                  status: branch,     alias: [basic-sol-tdd-app-measured-tool-pi]}
       exact-sol-v1.3-stack-profile-pi:            {arm: sol,            version: "1.3",   harness: pi,     parent: exact-sol-v1-pi,                        status: branch,     alias: [basic-sol-tdd-stack-profile-pi], note: "SOL-Default laut model-recommendation-matrix.md: verbliebene TypeScript/Vitest-Details aus AGENTS.md und test-list in das bestehende Stackprofil verschoben; validiert durch RQ-stack-profile-extraction-sol. Status bleibt branch, weil Empfehlung und Entwicklungstiefe orthogonal sind."}
       exact-sol-v1.3.1-ponytail-pi:                {arm: sol,            version: "1.3.1", harness: pi,     parent: exact-sol-v1.3-stack-profile-pi,        status: branch,     alias: [], note: "Forced Ponytail full augmentation; vendored upstream skill plus lab-authored load overlay. Driver: RQ-ponytail-sol-pi."}
+      exact-sol-v1.3.2-local-git-control-pi:        {arm: sol,            version: "1.3.2", harness: pi,     parent: exact-sol-v1.3-stack-profile-pi,        status: branch,     alias: [], note: "Content-identical SOL control minted under the isolated-local-Git harness condition for RQ-tcr-variants-sol; prevents reuse of pre-Git historical runs."}
 
   baselines:
     prefix: baseline
@@ -140,6 +141,8 @@ categories:
       baseline-iterative-v1-cc:                   {arm: iterative,         version: "1",  harness: cc,     parent: null,                                   status: branch,     alias: [v2-iterative]}
       baseline-inline-tdd-v1-cc:                  {arm: inline-tdd,        version: "1",  harness: cc,     parent: null,                                   status: branch,     alias: [v3-basic-tdd], note: "TDD-Boden ohne jede Struktur — nur rules/experiment-mode.md. Auf Sol schlaegt er jede Architektur (RQ-1.14 F-1.6)."}
       baseline-inline-tdd-v1-pi:                  {arm: inline-tdd,        version: "1",  harness: pi,     parent: baseline-inline-tdd-v1-cc,              status: branch,     alias: [v3-basic-tdd-pi], port_of: baseline-inline-tdd-v1-cc}
+      baseline-inline-tdd-v1.1-local-git-cc:       {arm: inline-tdd,        version: "1.1", harness: cc,    parent: baseline-inline-tdd-v1-cc,              status: branch,     alias: [], note: "Content-identical TDD control minted under the isolated-local-Git harness condition for RQ-tcr-variants-opus5; prevents reuse of pre-Git historical runs."}
+      baseline-inline-tdd-v1.1-local-git-pi:       {arm: inline-tdd,        version: "1.1", harness: pi,    parent: baseline-inline-tdd-v1.1-local-git-cc,   status: branch,     alias: [], port_of: baseline-inline-tdd-v1.1-local-git-cc, note: "Content-identical basic-TDD control minted under the isolated-local-Git harness condition for RQ-tcr-variants-sol; prevents reuse of pre-Git historical runs."}
       baseline-end-refactor-only-v1-agent-cc:     {arm: end-refactor-only, version: "1",  harness: cc,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v8a-delayed-refactor-agent], note: "Kein Zyklus: drei sequentielle Phasen, Refactor nur am Ende. Isoliert das Refactor-Timing, nicht die Refactor-Mechanik."}
       baseline-end-refactor-only-v1-native-cc:    {arm: end-refactor-only, version: "1",  harness: cc,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v8b-delayed-refactor-native]}
 
@@ -148,6 +151,12 @@ categories:
     workflows:
       external-pocock-2026-09-04-cc:              {arm: pocock,        vendored: "2026-09-04", harness: cc, parent: null,                                  status: vendored,   alias: [v10-pocock-tdd]}
       external-superpowers-2026-09-04-cc:         {arm: superpowers,   vendored: "2026-09-04", harness: cc, parent: null,                                  status: vendored,   alias: [v11-superpowers-tdd]}
+      external-tcr-kentbeck-2026-09-14-cc:        {arm: tcr-kentbeck,  vendored: "2026-09-14", harness: cc, parent: null,                                  status: vendored,   alias: [], note: "Classic TCR from xpepper/tcr-skill commit 48c16c0; test-first is not required."}
+      external-tcrdd-git-gamble-2026-09-14-cc:    {arm: tcrdd-gamble,  vendored: "2026-09-14", harness: cc, parent: null,                                  status: vendored,   alias: [], note: "TCRDD via git-gamble 2.14.6; skill from xpepper/tcr-skill commit 48c16c0."}
+      external-tcrdd-bsene-2026-09-14-cc:         {arm: tcrdd-bsene,   vendored: "2026-09-14", harness: cc, parent: null,                                  status: vendored,   alias: [], note: "Native-Git TCRDD from bsene/skills commit 81a792d; upstream snapshot has no declared license."}
+      external-tcr-kentbeck-2026-09-14-pi:        {arm: tcr-kentbeck,  vendored: "2026-09-14", harness: pi, parent: external-tcr-kentbeck-2026-09-14-cc,     status: vendored,   alias: [], port_of: external-tcr-kentbeck-2026-09-14-cc}
+      external-tcrdd-git-gamble-2026-09-14-pi:    {arm: tcrdd-gamble,  vendored: "2026-09-14", harness: pi, parent: external-tcrdd-git-gamble-2026-09-14-cc, status: vendored,   alias: [], port_of: external-tcrdd-git-gamble-2026-09-14-cc}
+      external-tcrdd-bsene-2026-09-14-pi:         {arm: tcrdd-bsene,   vendored: "2026-09-14", harness: pi, parent: external-tcrdd-bsene-2026-09-14-cc,      status: vendored,   alias: [], port_of: external-tcrdd-bsene-2026-09-14-cc, note: "Upstream snapshot has no declared license."}
 
   _archive/exact-coding/opus:
     prefix: exact

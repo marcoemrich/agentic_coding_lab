@@ -1106,6 +1106,7 @@ EOF
             .summary_metrics.test_cases_first_block = ($rigour.first_cases // null) |
             .summary_metrics.red_verified = ($rigour.verified // null) |
             .summary_metrics.red_unverified = ($rigour.unverified // null) |
+            .summary_metrics.tcr_refactor_steps = ($rigour.tcr_refactor_steps // null) |
             .summary_metrics.avg_cycle_seconds = $avg_cycle |
             .summary_metrics.avg_red_seconds = $avg_red |
             .summary_metrics.avg_green_seconds = $avg_green |

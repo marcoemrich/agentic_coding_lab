@@ -1,7 +1,17 @@
 # TDD Experiment Docker Image
 # Provides isolated, reproducible environment for TDD workflow experiments
 
+# git-gamble's published Linux artifact currently carries a Nix-store dynamic
+# loader path, so build the pinned upstream release in a reproducible stage.
+FROM rust:1.90-bookworm AS git-gamble-builder
+RUN git clone --quiet --depth 1 --branch v2.14.6 \
+      https://gitlab.com/pinage404/git-gamble.git /src/git-gamble \
+    && cd /src/git-gamble \
+    && test "$(git rev-parse HEAD)" = "648266b4cf89e586cdb6e8c6f7f99c9577bb5482" \
+    && cargo build --locked --release --bin git-gamble
+
 FROM node:22-slim
+COPY --from=git-gamble-builder /src/git-gamble/target/release/git-gamble /usr/local/bin/git-gamble
 
 # Install system dependencies
 # ca-certificates: required for curl HTTPS verification (node:22-slim ships

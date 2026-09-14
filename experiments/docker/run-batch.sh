@@ -337,6 +337,80 @@ lookup_model_config() {
     return 1
 }
 
+# Every arm gets the same isolated repository so merely having Git available is
+# not a TCR-arm confound. Runtime/analysis files are ignored: `git add -A` in a
+# TCR skill must never commit metrics, transcripts, dependencies, or logs.
+init_run_git() {
+    local run_dir="$1"
+    cat > "$run_dir/.gitignore" <<'EOF'
+node_modules/
+coverage/
+dist/
+metrics.json
+metrics.tmp
+run.log
+analyze.err
+transcript*.json*
+transcript-subagents/
+.claude_exit_*
+.claude_rate_limited
+verification.log
+experiment-done.txt
+tcr-commits.tsv
+tcr-reflog.tsv
+tcr-history.patch
+tcr-final-status.txt
+tcr-git-summary.json
+EOF
+    (
+        cd "$run_dir"
+        git init --quiet
+        git config user.name "TCR Experiment"
+        git config user.email "tcr-experiment@localhost"
+        git add -A
+        git commit --quiet -m "Initial kata state"
+        [ "$(git rev-parse --show-toplevel)" = "$run_dir" ]
+    ) || {
+        echo "Failed to create isolated Git repository in $run_dir" >&2
+        return 1
+    }
+}
+
+# Preserve an auditable, reconstructable text history, then remove the nested
+# repository so the outer lab repository can track the completed run normally.
+export_run_git() {
+    local run_dir="$1"
+    [ -d "$run_dir/.git" ] || return 0
+    (
+        cd "$run_dir"
+        [ "$(git rev-parse --show-toplevel)" = "$run_dir" ] || exit 1
+        git status --porcelain=v1 > tcr-final-status.txt
+        git log --reverse --format='%H%x09%aI%x09%s' > tcr-commits.tsv
+        # git-gamble can amend a RED commit into GREEN; the reflog preserves
+        # that phase transition even when the RED object leaves main history.
+        # Reflog walking is newest-first; Git rejects --reverse with --walk-reflogs.
+        git reflog --all --format='%H%x09%gD%x09%gs' > tcr-reflog.tsv
+        git format-patch --stdout --root --no-signature > tcr-history.patch
+        jq -n \
+          --arg initial_commit "$(git rev-list --max-parents=0 HEAD | head -1)" \
+          --arg final_commit "$(git rev-parse HEAD)" \
+          --argjson commits_total "$(git rev-list --count HEAD)" \
+          --argjson red_commits "$(git log --format=%s | grep -ci '^\[RED\]' || true)" \
+          --argjson green_commits "$(git log --format=%s | grep -ci '^\[GREEN\]' || true)" \
+          --argjson refactor_commits "$(git log --format=%s | grep -ci '^\[REFACTOR\]' || true)" \
+          '{initial_commit: $initial_commit, final_commit: $final_commit,
+            commits_total: $commits_total, method_commits: ($commits_total - 1),
+            red_commits: $red_commits, green_commits: $green_commits,
+            refactor_commits: $refactor_commits}' > tcr-git-summary.json
+        jq --slurpfile tcr tcr-git-summary.json '.tcr = $tcr[0]' metrics.json \
+          > metrics.tmp && mv metrics.tmp metrics.json
+        rm -rf .git
+    ) || {
+        echo "Failed to export isolated Git repository in $run_dir" >&2
+        return 1
+    }
+}
+
 # List enabled (non-underscore-prefixed) entries from a directory.
 list_enabled() {
     local base="$1"
@@ -771,6 +845,9 @@ EOF
         exit 1
     fi
 
+    echo -e "  Initializing isolated Git repository..."
+    init_run_git "$run_dir" || exit 1
+
     # Run the harness CLI with timeout + capture log + tolerate non-zero exit.
     # Name the actual CLI — a hardcoded "Claude Code" here made pi/oc/cursor
     # runs look like they had been dispatched to the wrong harness.
@@ -820,6 +897,13 @@ EOF
             esac
             echo -e "  ${YELLOW}${transient_reason} detected; retry $attempt/$BATCH_RATELIMIT_RETRIES after ${backoff}s backoff...${NC}"
             sleep "$backoff"
+            # A transiently cut TCR session may already have committed partial
+            # work. Every retry must start from the identical kata baseline.
+            # `git clean -fd` respects .gitignore, preserving node_modules and
+            # harness artifacts while removing untracked source attempts.
+            (cd "$run_dir" && \
+                initial_commit=$(git rev-list --max-parents=0 HEAD | head -1) && \
+                git reset --hard "$initial_commit" && git clean -fd) >/dev/null
             : > "$run_log"
         fi
 
@@ -1230,13 +1314,14 @@ EOF
         # mirrored it to $run_log. Extract pure NDJSON lines (filter out
         # non-JSON noise like the cli.ts nudge follow-ups) into transcript-pi.jsonl.
         #
-        # Three event types are dropped on the way in. Each carries the FULL
+        # Four event types are dropped on the way in. Each carries the FULL
         # accumulated buffer on every streamed chunk, so a message growing to
         # 1 MB is re-serialized once per token — quadratic in message length.
         # thinking_delta / text_delta do this for model output,
+        # toolcall_delta for growing command arguments, and
         # tool_execution_update for subagent output. Which one dominates
         # depends on the workflow (97% thinking_delta on a minimax v6.2 run,
-        # 97% tool_execution_update on a gpt-5-6-sol v4.1 run), so all three
+        # 97% tool_execution_update on a gpt-5-6-sol v4.1 run), so all four
         # must go. None of them is read by parse_pi_transcript.py: it consumes
         # message_update only for toolcall*/text_end, plus message_end,
         # turn_end, agent_end and tool_execution_end.
@@ -1247,6 +1332,7 @@ EOF
             grep -E '^\{"type":' "$run_log" 2>/dev/null \
                 | grep -vF '"assistantMessageEvent":{"type":"thinking_delta"' \
                 | grep -vF '"assistantMessageEvent":{"type":"text_delta"' \
+                | grep -vF '"assistantMessageEvent":{"type":"toolcall_delta"' \
                 | grep -vF '{"type":"tool_execution_update"' \
                 > "$run_dir/transcript-pi.jsonl" || true
             # run.log holds the same event stream verbatim and reached 6.5 GB
@@ -1274,6 +1360,12 @@ EOF
     else
         save_transcript "$run_dir"
     fi
+
+    # Export before any harness-authored nudge changes the product outside the
+    # measured workflow. The final source tree remains in place after .git is
+    # removed; only the nested repository metadata is discarded.
+    echo -e "  Exporting isolated Git history..."
+    export_run_git "$run_dir" || exit 1
 
     # --- cli.ts nudge ---------------------------------------------------
     # If the agent finished successfully but forgot to create src/cli.ts,

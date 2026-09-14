@@ -57,7 +57,9 @@ CSV_COLUMNS = [
     "avg_green_seconds", "avg_refactor_seconds", "refactorings_applied",
     "predictions_correct", "predictions_total", "tests_passed_immediately",
     "test_blocks", "test_cases_total", "test_cases_first_block",
-    "red_verified", "red_unverified",
+    "red_verified", "red_unverified", "tcr_refactor_steps",
+    "tcr_method_commits", "tcr_red_commits", "tcr_green_commits",
+    "tcr_refactor_commits",
     "tests_passing", "tests_total", "todos_remaining",
     "lines_of_code", "test_lines", "code_mass", "mutation_score", "cost_usd",
     "coverage_statements_pct", "coverage_branches_pct",
@@ -354,6 +356,7 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
     cov = metrics.get("coverage") or {}
     cc = metrics.get("clean_code") or {}
     cs = metrics.get("code_smells") or {}
+    tcr = metrics.get("tcr") or {}
 
     # A run "completed within budget" iff it neither timed out nor
     # exhausted its retry budget for transient API issues (rate-limit
@@ -420,6 +423,11 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
         "test_cases_first_block":     sm.get("test_cases_first_block"),
         "red_verified":               sm.get("red_verified"),
         "red_unverified":             sm.get("red_unverified"),
+        "tcr_refactor_steps":          sm.get("tcr_refactor_steps"),
+        "tcr_method_commits":          tcr.get("method_commits"),
+        "tcr_red_commits":             tcr.get("red_commits"),
+        "tcr_green_commits":           tcr.get("green_commits"),
+        "tcr_refactor_commits":        tcr.get("refactor_commits"),
         "tests_passing":              fm.get("tests_passing"),
         "tests_total":                fm.get("tests_total"),
         "todos_remaining":            fm.get("todos_remaining"),

@@ -32,6 +32,11 @@ TEST_RUN=re.compile(
     r"|\bnpx\s+(?:vitest|jest)\b"                    # npx vitest
     r"|(?:^|[;&|]\s*)(?:vitest|jest)(?![\w.-])",     # bare vitest/jest as a command
     re.I|re.M)
+# Explicit protocol-level refactor executions in the TCRDD snapshots. Count
+# tool calls only, never prose mentions from the loaded skill document.
+TCR_REFACTOR_RUN=re.compile(
+    r"\bgit\s+gamble\s+--refactor\b"
+    r"|\bgit\s+commit\b[^\n]*(?:\[REFACTOR\]|refactor:)", re.I)
 
 def seq_cc(run):
     for line in open(run/"transcript.jsonl"):
@@ -73,6 +78,29 @@ def seq_pi(run):
             if TEST.search(p): yield ("test",p,content)
             elif p.startswith("src/") or "/src/" in p: yield ("impl",p,content)
 
+def count_tcr_refactor_steps(run):
+    path = run/"transcript-pi.jsonl" if (run/"transcript-pi.jsonl").exists() else run/"transcript.jsonl"
+    count = 0
+    try:
+        lines = open(path)
+    except OSError:
+        return 0
+    with lines:
+        for line in lines:
+            try: d=json.loads(line)
+            except Exception: continue
+            command = ""
+            if d.get("type") == "tool_execution_start" and d.get("toolName") == "bash":
+                command = (d.get("args") or {}).get("command") or ""
+            elif d.get("type") == "assistant":
+                for block in (d.get("message") or {}).get("content") or []:
+                    if block.get("type") == "tool_use" and block.get("name") == "Bash":
+                        command = ((block.get("input") or {}).get("command") or "")
+                        if TCR_REFACTOR_RUN.search(command): count += 1
+                continue
+            if TCR_REFACTOR_RUN.search(command): count += 1
+    return count
+
 def analyse(run):
     gen = seq_pi if (run/"transcript-pi.jsonl").exists() else seq_cc
     try: ev=list(gen(run))
@@ -100,7 +128,8 @@ def analyse(run):
     first_cases=len(CASE.findall(" ".join(test_blocks[0][1]))) if test_blocks else 0
     all_cases=len(CASE.findall(" ".join(c for b in test_blocks for c in b[1])))
     return dict(test_blocks=len(test_blocks), verified=verified,
-                unverified=unverified, first_cases=first_cases, all_cases=all_cases)
+                unverified=unverified, first_cases=first_cases, all_cases=all_cases,
+                tcr_refactor_steps=count_tcr_refactor_steps(run))
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__,
