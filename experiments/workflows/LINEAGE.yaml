@@ -129,6 +129,7 @@ categories:
       exact-sol-v1.2.2-measured-eslint-pi:        {arm: sol,            version: "1.2.2", harness: pi,     parent: exact-sol-v1.2-app-pi,                  status: branch,     alias: [basic-sol-tdd-app-measured-eslint-pi]}
       exact-sol-v1.2.3-measured-tool-pi:          {arm: sol,            version: "1.2.3", harness: pi,     parent: exact-sol-v1.2-app-pi,                  status: branch,     alias: [basic-sol-tdd-app-measured-tool-pi]}
       exact-sol-v1.3-stack-profile-pi:            {arm: sol,            version: "1.3",   harness: pi,     parent: exact-sol-v1-pi,                        status: branch,     alias: [basic-sol-tdd-stack-profile-pi], note: "SOL-Default laut model-recommendation-matrix.md: verbliebene TypeScript/Vitest-Details aus AGENTS.md und test-list in das bestehende Stackprofil verschoben; validiert durch RQ-stack-profile-extraction-sol. Status bleibt branch, weil Empfehlung und Entwicklungstiefe orthogonal sind."}
+      exact-sol-v1.3.1-ponytail-pi:                {arm: sol,            version: "1.3.1", harness: pi,     parent: exact-sol-v1.3-stack-profile-pi,        status: branch,     alias: [], note: "Forced Ponytail full augmentation; vendored upstream skill plus lab-authored load overlay. Driver: RQ-ponytail-sol-pi."}
 
   baselines:
     prefix: baseline

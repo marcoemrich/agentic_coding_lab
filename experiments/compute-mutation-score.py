@@ -183,17 +183,33 @@ def run_stryker(run_dir: Path, timeout_seconds: int, log) -> float | None:
     # fail in the initial dry run with status=null.
     env = os.environ.copy()
     env["PATH"] = f"{run_dir / 'node_modules' / '.bin'}{os.pathsep}{env.get('PATH', '')}"
+    # Host pnpm can be newer than the container-pinned version. pnpm 11 emits a
+    # deprecation warning for package.json's `pnpm.onlyBuiltDependencies`; CLI
+    # tests that correctly assert empty stderr then fail Stryker's dry run. The
+    # setting has already served its purpose during install, so hide it only
+    # while mutation tests run and restore the original package verbatim.
+    package_path = run_dir / "package.json"
+    original_package = package_path.read_text()
+    package = json.loads(original_package)
+    had_pnpm_settings = "pnpm" in package
+    if had_pnpm_settings:
+        package.pop("pnpm")
+        package_path.write_text(json.dumps(package, indent=2) + "\n")
     try:
-        with log_path.open("w") as f:
-            f.write(f"$ {' '.join(cmd)}\n")
-            f.flush()
-            proc = subprocess.run(
-                cmd, cwd=run_dir, stdout=f, stderr=subprocess.STDOUT,
-                timeout=timeout_seconds, env=env,
-            )
-    except subprocess.TimeoutExpired:
-        log(f"  TIMEOUT after {timeout_seconds}s — score stays null")
-        return None
+        try:
+            with log_path.open("w") as f:
+                f.write(f"$ {' '.join(cmd)}\n")
+                f.flush()
+                proc = subprocess.run(
+                    cmd, cwd=run_dir, stdout=f, stderr=subprocess.STDOUT,
+                    timeout=timeout_seconds, env=env,
+                )
+        except subprocess.TimeoutExpired:
+            log(f"  TIMEOUT after {timeout_seconds}s — score stays null")
+            return None
+    finally:
+        if had_pnpm_settings:
+            package_path.write_text(original_package)
 
     if proc.returncode != 0:
         log(f"  stryker exited {proc.returncode}; see stryker.log")
@@ -276,7 +292,7 @@ def main(argv: list[str]) -> int:
     n_skipped_other = 0
     eligible_paths: list[Path] = []
 
-    for m_file in matched:
+    for m_file, _cell_model, _cell_workflow, _cell_harness in matched:
         try:
             metrics = json.loads(m_file.read_text())
         except json.JSONDecodeError:
@@ -323,12 +339,18 @@ def main(argv: list[str]) -> int:
             update_metrics_json(m_file, None)
             continue
 
-        if not ensure_stryker_installed(run_dir, log):
-            n_failed += 1
-            update_metrics_json(m_file, None)
-            continue
+        package_path = run_dir / "package.json"
+        original_package = package_path.read_text()
+        try:
+            if not ensure_stryker_installed(run_dir, log):
+                n_failed += 1
+                update_metrics_json(m_file, None)
+                continue
 
-        score = run_stryker(run_dir, args.timeout_seconds, log)
+            score = run_stryker(run_dir, args.timeout_seconds, log)
+        finally:
+            # Installing the analysis tool must not alter the recorded artifact.
+            package_path.write_text(original_package)
         update_metrics_json(m_file, score)
         if score is None:
             n_failed += 1
