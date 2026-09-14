@@ -940,6 +940,12 @@ See `experiments/workflows/exact-coding/opus/exact-hybrid-v4-cleaned-pi/` for a 
 |----------|-------------|
 | [HUMAN-IN-THE-LOOP.md](HUMAN-IN-THE-LOOP.md) | How to re-enable human approval checkpoints between TDD phases |
 
+## Credits
+
+The Guessing Game and Predictive TDD approach used here is inspired by
+[Ted M. Young's Predictive TDD and TDD Game](https://tdd.cards/) and
+[Jon Jagger's cyber-dojo](https://cyber-dojo.org/).
+
 ## License
 
 Released under the [MIT License](LICENSE) — code, scripts, workflow definitions, run

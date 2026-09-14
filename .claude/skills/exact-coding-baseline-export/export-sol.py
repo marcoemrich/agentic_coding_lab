@@ -233,6 +233,12 @@ Validated on `gpt-5-6-sol-codex` with pi in
 `RQ-stack-profile-extraction-sol` (20/20 fresh runs internally and externally
 correct). Other harness directories are semantic distribution ports and have
 not yet been validated as independent cross-harness experiment cells.
+
+## Credits
+
+The Guessing Game and Predictive TDD approach used here is inspired by
+[Ted M. Young's Predictive TDD and TDD Game](https://tdd.cards/) and
+[Jon Jagger's cyber-dojo](https://cyber-dojo.org/).
 '''
 
 

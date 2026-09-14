@@ -85,6 +85,12 @@ is for **GPT-5.6 SOL on pi**. The Claude Code, Copilot, Cursor, and OpenCode
 branches are semantic ports of the same files; they are not presented as
 additional cross-harness experiment results.
 
+### Credits
+
+The Guessing Game and Predictive TDD approach used here is inspired by
+[Ted M. Young's Predictive TDD and TDD Game](https://tdd.cards/) and
+[Jon Jagger's cyber-dojo](https://cyber-dojo.org/).
+
 ---
 
 Built with EXACT Coding: **EX**ample-guided, **A**I-**C**ollaborative &
