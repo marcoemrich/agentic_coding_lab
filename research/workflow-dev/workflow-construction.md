@@ -31,6 +31,7 @@ Die Workflow-Files der vor-hybrid-v2-Generation + erste Reduktions-Kette (v6.5er
 | `exact-green-refactor-v1-cc` / `v7.1-...-testlist-scope-fix` | Green und Refactor isoliert | Pareto-dominiert von hybrid-v1 (RQ-context, oneshot-v1-Archiv) |
 | `baseline-end-refactor-only-v1-agent-cc` / `baseline-end-refactor-only-v1-native-cc` | Oneshot + End-Refactor (Vibe-Coding-Kontrolle) | Kontrolle für "periodisches TDD vs End-Refactor" |
 | `basic-sol-tdd-*` (8 Varianten) | Predictive TDD aus dem `sol_tdd`-Projekt. Referenz `exact-sol-v1-pi` (pi-nativ, Refactor inline), Subagent-Arm, vier APP-/Mess-Varianten, Claude-Code-Port, vollständige Stackprofil-Extraktion | Fremd-Methodik-Import, siehe eigener Abschnitt unten |
+| `exact-tcr-v1-pi` | Vollständige inaktive Test-Liste, danach native-Git TCRDD mit Commit-or-Revert für Red, Green und Refactor im gemeinsamen pi-Kontext | First-Party-Lab-Port aus `exact-coding-exercises/.pi` Version `2026-09-13`; autonom, mit P1–P7-Markern; noch nicht empirisch bewertet |
 
 ### `basic-sol-tdd`-Paar (Import aus `sol_tdd`, pi)
 
