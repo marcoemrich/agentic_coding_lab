@@ -20,7 +20,7 @@ All cells are correctness-complete enough for quality and efficiency comparison 
 | Retained GREEN commits | 0.0 ± 0.0 | 0.0 ± 0.0 | 15.6 ± 14.3 | 0.0 ± 0.0 |
 | Retained refactor commits | 0.0 ± 0.0 | 0.0 ± 0.0 | 2.8 ± 2.8 | 0.0 ± 0.0 |
 | `cc_avg_loc_per_function` ↓ | **3.67 ± 0.30** 🏆 | 8.66 ± 2.33 | 8.60 ± 0.70 | 10.96 ± 2.46 |
-| Complexity Peak ↓ | **19.0 ± 3.7** 🏆 | **21.4 ± 3.0** 🏆 | **20.6 ± 3.0** 🏆 | 26.3 ± 2.1 |
+| `cc_longest_function` ↓ | **19.0 ± 3.7** 🏆 | **21.4 ± 3.0** 🏆 | **20.6 ± 3.0** 🏆 | 26.3 ± 2.1 |
 | `cognitive_max` ↓ | **3.5 ± 1.9** 🏆 | 8.4 ± 0.9 | 6.0 ± 1.4 | 7.0 ± 1.4 |
 | `mccabe_max` ↓ | **3.75 ± 0.96** 🏆 | 6.20 ± 0.45 | 5.60 ± 0.55 | 5.75 ± 0.50 |
 | Smell Total ↓ | 0.50 ± 0.58 | **0.00 ± 0.00** 🏆 | **0.00 ± 0.00** 🏆 | 0.25 ± 0.50 |
@@ -48,7 +48,7 @@ The result does not support a correctness penalty from commit/revert discipline 
 
 EXACT Coding produced substantially smaller functions and lower cognitive and McCabe peaks than every TCR arm. The TCR variants were mutually much closer than any was to EXACT Coding on decomposition.
 
-| Workflow | `cc_avg_loc_per_function` | Complexity Peak | `cognitive_max` | `mccabe_max` |
+| Workflow | `cc_avg_loc_per_function` | `cc_longest_function` | `cognitive_max` | `mccabe_max` |
 |---|---:|---:|---:|---:|
 | EXACT Coding | 3.67 ± 0.30 | 19.0 ± 3.7 | 3.5 ± 1.9 | 3.75 ± 0.96 |
 | Classic TCR | 8.66 ± 2.33 | 21.4 ± 3.0 | 8.4 ± 0.9 | 6.20 ± 0.45 |

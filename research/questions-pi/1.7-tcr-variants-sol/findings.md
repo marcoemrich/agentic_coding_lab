@@ -2,30 +2,39 @@
 
 ## Overview
 
-All cells achieved perfect external and internal correctness. Directions: higher
-is better for Correctness and verified RED; lower is better for code-quality,
-Code Mass (APP), duration, and token outcomes. Quality and efficiency trophies
-are correctness-gated; all five cells are eligible. Explicit refactor steps and
-retained commits are descriptive process measures, so they receive no trophy.
+All cells achieved perfect external and internal correctness. Direction:
+correctness **higher = better**; complexity, Code Mass (APP), duration, tokens,
+and cost **lower = better**. Quality and efficiency trophies are
+correctness-gated; all five cells are eligible. Process and Git-history metrics
+are descriptive rather than intrinsically directional, so they receive no
+trophies.
 
 | Outcome | Basic TDD | SOL Predictive TDD | Classic TCR | Native-Git TCRDD | git-gamble TCRDD |
 |---|---:|---:|---:|---:|---:|
-| Correctness (external) | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 |
+| Correctness (external) | **1.000 ± 0.000** 🏆 | **1.000 ± 0.000** 🏆 | **1.000 ± 0.000** 🏆 | **1.000 ± 0.000** 🏆 | **1.000 ± 0.000** 🏆 |
 | Correctness (internal) | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 |
-| Verified RED | 2.8 | 9.8 | 6.2 | **17.2** 🏆 | 12.2 |
-| Unverified RED | 1.0 | 15.4 | 1.6 | **0.0** 🏆 | **0.0** 🏆 |
-| Explicit TCRDD refactor steps | 0.0 | 0.0 | 0.0 | 6.6 | 2.8 |
-| `cc_avg_loc_per_function` | 7.29 | **6.80** 🏆 | 8.00 | 9.81 | 8.31 |
-| `cc_longest_function` | 20.2 | **16.2** 🏆 | 22.0 | 18.6 | 17.4 |
-| Complexity Peak (cognitive) | 6.6 | **4.0** 🏆 | 6.8 | 5.4 | 6.2 |
-| Complexity Peak (McCabe) | 8.4 | **4.8** 🏆 | 7.4 | 5.6 | 6.2 |
-| Smell Total | **0.0** 🏆 | **0.0** 🏆 | **0.0** 🏆 | **0.0** 🏆 | **0.0** 🏆 |
-| Code Mass (APP) | 770.2 | 574.2 | 819.2 | **505.0** 🏆 | 556.6 |
-| Duration | **278 s** 🏆 | 1388 s | 460 s | 708 s | 558 s |
-| Total tokens | **0.34 M** 🏆 | 5.48 M | 0.75 M | 2.32 M | 1.71 M |
-| Retained method commits | 0.0 | 0.0 | 10.4 | 1.0 | 24.8 |
+| Completed within budget | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 |
+| Test blocks | 3.8 ± 0.8 | 25.2 ± 8.7 | 7.8 ± 2.5 | 17.2 ± 1.9 | 12.2 ± 3.6 |
+| Test cases total | 12.4 ± 3.2 | 29.8 ± 6.4 | 26.0 ± 7.6 | 29.0 ± 7.7 | 19.8 ± 9.4 |
+| Test cases in first block | 2.8 ± 2.5 | 1.0 ± 0.0 | 1.8 ± 1.1 | 1.0 ± 0.0 | 0.8 ± 0.4 |
+| Verified RED | 2.8 ± 1.3 | 9.8 ± 7.3 | 6.2 ± 3.1 | 17.2 ± 1.9 | 12.2 ± 3.6 |
+| Unverified RED | 1.0 ± 0.7 | 15.4 ± 2.3 | 1.6 ± 3.1 | 0.0 ± 0.0 | 0.0 ± 0.0 |
+| Explicit TCRDD refactor steps | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.0 ± 0.0 | 6.6 ± 2.6 | 2.8 ± 0.8 |
+| TCR method commits | 0.0 ± 0.0 | 0.0 ± 0.0 | 10.4 ± 1.9 | 1.0 ± 0.0 | 24.8 ± 6.4 |
+| Retained RED commits | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.0 ± 0.0 |
+| Retained GREEN commits | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.0 ± 0.0 |
+| Retained refactor commits | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.0 ± 0.0 |
+| `cc_avg_loc_per_function` ↓ | 7.29 ± 1.23 | **6.80 ± 0.39** 🏆 | 8.00 ± 1.14 | 9.81 ± 2.85 | 8.31 ± 1.35 |
+| `cc_longest_function` ↓ | 20.2 ± 3.3 | **16.2 ± 1.3** 🏆 | 22.0 ± 6.4 | 18.6 ± 2.6 | 17.4 ± 1.7 |
+| `cognitive_max` ↓ | 6.6 ± 2.1 | **4.0 ± 1.2** 🏆 | 6.8 ± 0.8 | 5.4 ± 1.5 | 6.2 ± 1.8 |
+| `mccabe_max` ↓ | 8.4 ± 3.6 | **4.8 ± 1.3** 🏆 | 7.4 ± 1.1 | 5.6 ± 0.9 | 6.2 ± 0.4 |
+| Smell Total ↓ | **0.0 ± 0.0** 🏆 | **0.0 ± 0.0** 🏆 | **0.0 ± 0.0** 🏆 | **0.0 ± 0.0** 🏆 | **0.0 ± 0.0** 🏆 |
+| Code Mass (APP) ↓ | 770.2 ± 73.7 | 574.2 ± 34.3 | 819.2 ± 58.8 | **505.0 ± 60.3** 🏆 | 556.6 ± 24.3 |
+| Duration ↓ | **278 ± 41 s** 🏆 | 1388 ± 303 s | 460 ± 77 s | 708 ± 172 s | 558 ± 84 s |
+| Total tokens ↓ | **0.34 M ± 0.07 M** 🏆 | 5.48 M ± 1.26 M | 0.75 M ± 0.13 M | 2.32 M ± 0.41 M | 1.71 M ± 0.75 M |
+| Cost per run ↓ | **$0.60 ± $0.09** 🏆 | $4.16 ± $0.85 | $0.97 ± $0.12 | $2.04 ± $0.32 | $1.61 ± $0.60 |
 
-The retained-commit row describes final-history shape, not adherence rank:
+The retained-commit rows describe final-history shape, not adherence rank:
 Native-Git TCRDD deliberately squashes its phase commits at completion. RED
 verification is a TDD construct and is not a fidelity criterion for Classic
 TCR. `tcr_refactor_steps` counts only explicit TCRDD protocol executions; it
