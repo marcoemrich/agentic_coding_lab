@@ -183,32 +183,32 @@ Predictions überhaupt gezählt (P5-Hinweis in `MARKERS.md`).
 
 #### Varianten der Sol-Linie und ihr Stand (RQ-1.16 bis RQ-1.18, RQ-1.21)
 
-Aus dem Paar sind acht Workflows geworden. Sie teilen Methodik, Marker und die
+Aus dem Paar sind zehn Workflows geworden. Sie teilen Methodik, Marker und die
 beiden Lab-Anpassungen und unterscheiden sich im Refactor-Auftrag, darin, wo er
 läuft, oder in der Vollständigkeit der bereits vorhandenen Stackprofil-Grenze.
 `exact-sol-v1.3-stack-profile-pi` verändert keinen Refactor-Auftrag: Die Variante
 verschiebt nur die verbliebenen TypeScript/Vitest-Details aus `AGENTS.md` und dem
 Test-List-Skill in das Stackprofil. `RQ-stack-profile-extraction-sol` hat auf zwei
 Katas bei je n=5 pro Zelle keine Korrektheits- oder Completion-Regression gefunden
-und unterstützt die Variante als neue Main Line. Die Zahlen der Refactor-Varianten
+und stützt die Variante weiterhin als Lean-/Budget-Linie. Die Zahlen der Refactor-Varianten
 unten stammen aus `claim-office-example-mapping` × `gpt-5-6-sol-codex`
 (OpenAI-Subscription-Route), n=5 je Zelle; der Stackprofil-Befund umfasst zusätzlich
 game-of-life und wird kata-getrennt berichtet.
 
 | Variante | Was anders vs `exact-sol-v1-pi` | Treiber-RQ | Kernbefund |
 |---|---|---|---|
-| `exact-sol-v1-pi` | — (Referenz: Refactor inline, nur Four Rules, keine Mass-Metrik) | [RQ-1.16](1.16-native-sol-workflows-subscription/findings.md), [RQ-1.17](1.17-app-vs-four-rules-sol/findings.md) | Empirische Referenz und Elternvariante der aktuellen Main Line; beste oder gleichauf-beste Dekomposition im Refactor-Variantenfeld bei 100 % Korrektheit |
+| `exact-sol-v1-pi` | — (Referenz: Refactor inline, nur Four Rules, keine Mass-Metrik) | [RQ-1.16](1.16-native-sol-workflows-subscription/findings.md), [RQ-1.17](1.17-app-vs-four-rules-sol/findings.md) | Empirische Referenz und Elternvariante der Lean-/Budget-Linie; beste oder gleichauf-beste Dekomposition im ursprünglichen Refactor-Variantenfeld bei 100 % Korrektheit |
 | `exact-sol-v1.1-subagent-pi` | Four-Rules-Review im isolierten `subagent` statt inline | [RQ-1.16](1.16-native-sol-workflows-subscription/findings.md) | **Verworfen.** Kein Qualitätsvorteil auf keiner der drei Katas, 1.9–2.7× Wallclock, letzter Platz bei externer Korrektheit auf beiden novellen Katas (F-1.16.3, F-1.16.4, F-1.16.8) |
 | `exact-sol-v1.2-app-pi` | APP-Mass unter Rule 4 subordiniert, qualitativ; Rule-Reihenfolge explizit als bindend markiert | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Kein Gewinn. Verhindert den APP-Schaden (F-1.17.1), erzeugt aber keinen Vorteil — und ist mit 1226 s die **langsamste** Zelle des Feldes bei den wenigsten Tokens (F-1.18.1, F-1.18.4) |
 | `exact-sol-v1.2.1-measured-model-pi` | + Vorher/Nachher-Messung, Modell rechnet alle drei Metriken von Hand | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Nimmt `cognitive_max`/`cognitive_avg`/`mccabe_max` — für +16 % Wallclock und +25 % Tokens (F-1.18.2) |
 | `exact-sol-v1.2.2-measured-eslint-pi` | + ESLint für cognitive/McCabe, Mass weiter von Hand | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Schlechteste Dekomposition der Mess-Arme bei +31 % Wallclock und +44 % Tokens |
 | `exact-sol-v1.2.3-measured-tool-pi` | + ESLint **und** AST-Skript (`.pi/tools/app-mass.mjs`); Modell rechnet nichts | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Teuerste Zelle (8.22 M Tokens, +78 %) ohne besseres Messergebnis als Handrechnung (F-1.18.3) |
 | `exact-sol-v1-cc` | Port auf Claude Code (`.claude/commands/` + `rules/`) statt `.pi/skills/` | — | Andere Harness und andere Route. Runs existieren auf `opus-5-no-thinking` und `opus-4-8-no-thinking`; **nicht** mit den pi-Zellen poolen |
-| `exact-sol-v1.3-stack-profile-pi` | Verbleibende TS/Vitest-Details in das vorhandene Stackprofil verschoben; keine neue Laufzeitgrenze | [RQ-stack-profile-extraction-sol](1.21-stack-profile-extraction-sol/findings.md) | **Main Line.** 20/20 frische Runs intern und extern korrekt; Completion invariant; übrige Unterschiede überwiegend innerhalb der Replikatstreuung, auf claim-office niedrigerer Complexity Peak |
+| `exact-sol-v1.3-stack-profile-pi` | Verbleibende TS/Vitest-Details in das vorhandene Stackprofil verschoben; keine neue Laufzeitgrenze | [RQ-stack-profile-extraction-sol](1.21-stack-profile-extraction-sol/findings.md) | **Lean-/Budget-Linie.** 20/20 frische Runs intern und extern korrekt; Completion invariant; übrige Unterschiede überwiegend innerhalb der Replikatstreuung, auf claim-office niedrigerer Complexity Peak |
 | `exact-sol-v1.4-domain-boundary-trial-pi` | Auf dem local-Git-kontrollierten v1.3-Snapshot: derselbe Domain-Responsibility-/Boundary-Trial wie exact-tcr-v1.3, aber über Predictive predict/check/undo ohne TCR-Method-Commits; Stackprofile unverändert | `RQ-srp-effect-exact-tcr-sol` | Volle Korrektheit; auf claim-office nützliche, aber variable Zerlegung (13.0 ± 2.2 Funktionen) und schneller als TCR + Trial, während TCR + Trial konsistenter und stärker zerlegt (15.4 ± 0.9, niedrigerer `mccabe_avg`); auf GoL keine aufgelöste Methodendifferenz. Kein allgemeiner Ersatz der Predictive Main Line |
-| `exact-sol-v1.5-tcr-parity-domain-trial-pi` | Direkter Methodentransfer von exact-tcr-v1.3: vollständiger Testlisten-, Domain-Boundary-, Stack- und Lab-Vertrag bleibt erhalten; nur TCR commit-or-revert wird durch Predictive prediction/check/narrow-undo ersetzt; kein APP | `RQ-tcr-ptdd-parity-claim-sol` | Reproduziert TCR auf claim-office ohne Method-Commits: Ø LoC/Funktion 5.69 vs. 5.67, Funktionen 15.6 vs. 15.4, Code Mass 564.8 vs. 568.4, Zyklen 35.2 vs. 36.0; TCR-Komplexitätsvorteile bleiben innerhalb der Streuung. Nicht-Git-Quellkontext ist der stärkere Mechanismus; Paritätsport übernimmt aber TCRs Tokenprofil |
+| `exact-sol-v1.5-tcr-parity-domain-trial-pi` | Direkter Methodentransfer von exact-tcr-v1.3: vollständiger Testlisten-, Domain-Boundary-, Stack- und Lab-Vertrag bleibt erhalten; nur TCR commit-or-revert wird durch Predictive prediction/check/narrow-undo ersetzt; kein APP | `RQ-tcr-ptdd-parity-claim-sol` | **Main Line für große, novelle Specs.** Reproduziert TCR auf claim-office ohne Method-Commits: Ø LoC/Funktion 5.69 vs. 5.67, Funktionen 15.6 vs. 15.4, Code Mass 564.8 vs. 568.4, Zyklen 35.2 vs. 36.0; TCR-Komplexitätsvorteile bleiben innerhalb der Streuung. Nicht-Git-Quellkontext ist der stärkere Mechanismus; Paritätsport übernimmt aber TCRs Tokenprofil |
 
-##### Was die vier RQs zusammen zeigen
+##### Was die RQs zusammen zeigen
 
 **Die Linie schlägt die opus-Linie auf ihrem eigenen Terrain (RQ-1.17).** Bei konstantem
 Modell, Kata und Prompt-Stil gewinnt `exact-sol-v1-pi` jede Dekompositions-Metrik
@@ -253,21 +253,23 @@ Zwei Nebenbefunde, die über die Sol-Linie hinaus gelten:
 
 ##### Empfehlung
 
-- **Große, novelle Specs (claim-office-artig) auf Sol/Subscription: `exact-sol-v1.3-stack-profile-pi`.**
-  Methodisch bleibt dies die schlanke Four-Rules-Fassung ohne Mass-Metrik, Messung oder
-  Subagent; gegenüber `exact-sol-v1-pi` sind ausschließlich die verbliebenen
-  TypeScript/Vitest-Details in das vorhandene Stackprofil verschoben. RQ-1.21 hält
-  Korrektheit und Completion in 20/20 frischen Runs und findet keinen klaren Laufzeit-
-  oder Kostenaufschlag. Der Preis der nativen Linie gegen den inline-tdd-v1-Boden bleibt
-  der Gegenwert der Qualitäts- und Vorhersagbarkeits-Lücke aus F-1.16.1.
+- **Große, novelle Specs (claim-office-artig) auf Sol/Subscription: `exact-sol-v1.5-tcr-parity-domain-trial-pi`.**
+  Die Predictive-TDD-Linie übernimmt den vollständigen Testlisten-, Stack- und
+  Domain-Boundary-Vertrag von TCR-v1.3, ersetzt aber commit-or-revert durch
+  prediction/check/narrow-undo. Auf Claim Office hält sie 5/5 vollständige Correctness
+  und erreicht bei praktisch gleicher Wallclock wie die schlanke v1.3-Main-Line eine
+  stärkere fachliche Zerlegung (`cc_avg_loc_per_function` 5.69 statt 7.69); der Preis
+  sind rund 32 % mehr Tokens. RQ-tcr-ptdd-parity-claim-sol zeigt zugleich, dass
+  TCR-Method-Commits für diese durchschnittliche Zerlegung nicht notwendig sind.
 - **Kleine oder trainingsbekannte Katas (game-of-life, sphinx-score) auf Sol/Subscription:
   `baseline-inline-tdd-v1-pi`.** Die native Linie schlägt den Boden dort nicht und kostet 3.2×
   (GoL, F-1.16.2) bzw. 3.6× (sphinx, F-1.16.7) mehr. Auf sphinx aus einem anderen Grund
   als auf GoL: dort lösen die Metriken überhaupt nichts auf.
-- **Keine der fünf Refactor-Zusatzvarianten ist als Default empfohlen.** Der
-  Subagent-Arm ist verworfen, die vier APP-/Mess-Varianten sind kostenneutral bis
-  teurer ohne Qualitätsgegenwert. Die Stackprofil-Variante ist keine zusätzliche
-  Refactor-Methodik, sondern die vollständig geschichtete Main Line.
+- **Die älteren Subagent-, APP- und Messvarianten sind nicht als Default empfohlen.**
+  Der Subagent-Arm ist verworfen, die vier APP-/Messvarianten sind kostenneutral bis
+  teurer ohne Qualitätsgegenwert. Der Domain-Boundary-Trial der v1.5-Main-Line ist
+  davon getrennt: Er materialisiert fachliche Grenzen und ist durch die direkte
+  TCR/PTDD-Paritätsprobe gestützt.
 - **`sphinx-score` nicht für Workflow-Vergleiche auf Sol verwenden** (F-1.16.7). Als
   billige Korrektheits-Probe bleibt es brauchbar. Vor Zellen auf einem neuen
   Kata-Modell-Paar: `cc_functions` an einem einzelnen Probe-Run prüfen — ein Mittel
@@ -330,7 +332,7 @@ Alle Varianten leben unter `experiments/workflows/exact-coding/opus/exact-hybrid
 - **Default für Code-Qualität auf trainingsbekannten Katas (GoL) × opus-4-7-portkey-no-thinking:** `exact-hybrid-v4.3-audit-bundle-cc` (RQ-1.8). Eliminiert `tests_passed_immediately` deterministisch, +10 % Refactorings bei σ −64 %. **Nur** auf GoL/saturierter Korrektheit — auf claim-office bricht der Workflow (RQ-1.9).
 - **Default für Speed/Token-Effizienz, trainingsbekannte Katas:** `exact-hybrid-v2.1-no-pep-cc` auf GOL. Auf claim-office nicht empfohlen.
 - **Default für Methoden-Vergleichs-RQs (Reduktions-Kette):** `exact-hybrid-v2-testlist-fix-cc` als Baseline.
-- **Default auf Sol/pi (OpenAI-Subscription-Route):** kata-abhängig, und die opus-Linie ist in beiden Fällen nicht die Antwort. Große novelle Specs → `exact-sol-v1.3-stack-profile-pi`; kleine oder trainingsbekannte Katas → `baseline-inline-tdd-v1-pi`. Die Promotion von v1.3 stützt RQ-1.21: vollständige TS/Vitest-Auslagerung bei 20/20 korrekten frischen Runs auf game-of-life und claim-office, ohne klare Laufzeit- oder Kostenregression. Begründung der Methodenwahl und die fünf verworfenen Refactor-Varianten: Abschnitt "Varianten der Sol-Linie und ihr Stand" oben (RQ-1.16 bis RQ-1.18, RQ-1.21).
+- **Default auf Sol/pi (OpenAI-Subscription-Route):** kata-abhängig, und die opus-Linie ist in beiden Fällen nicht die Antwort. Große novelle Specs → `exact-sol-v1.5-tcr-parity-domain-trial-pi`; kleine oder trainingsbekannte Katas → `baseline-inline-tdd-v1-pi`. Die Promotion von v1.5 stützt RQ-tcr-ptdd-parity-claim-sol: vollständige Correctness, TCR-nahe fachliche Zerlegung ohne Method-Commits und praktisch gleiche Wallclock wie die schlanke v1.3-Main-Line, bei rund 32 % Tokenaufschlag. `exact-sol-v1.3-stack-profile-pi` bleibt die Lean-/Budget-Variante; ihre Stackprofil-Schichtung ist vollständig in v1.5 erhalten.
 - **Metric-driven Refactor lohnt über hybrid-v4, aber der wirksame Hebel-Zeitpunkt ist kata- UND modell-abhängig — kein globaler hybrid-v4-Ersatz.** Validiert in RQ-1.12 (opus-4-7) und RQ-1.13 (opus-4-8), je hybrid-v4 / v6.4-per-cycle / exact-hybrid-v5-end-refactor-cc × claim-office + game-of-life. Korrektheit durchgehend gehalten (kein Bundle-Bruch). Der Spitzen-Komplexitäts-Sieger **wechselt mit dem Modell**:
   - **opus-4-7:** der per-cycle-Refactor `exact-hybrid-v4.4-metric-refactor-cc` ist auf BEIDEN Katas der robuste Sieger (cognitive_max: claim-office 5.0→2.4, GoL 4.0→2.2; jeweils ≥ 1 σ). `exact-hybrid-v5-end-refactor-cc` wirkt nur auf mehrteiligen Codebasen (claim-office: gleichauf mit hybrid-v4.4 + kleinste code_mass durch Cross-file-Konsolidierung); auf der einteiligen GoL-Library ist hybrid-v5 von hybrid-v4 ununterscheidbar und erhöht code_mass.
   - **opus-4-8:** `exact-hybrid-v5-end-refactor-cc` hat auf BEIDEN Katas die niedrigste Spitzen-Komplexität (cognitive_max: claim-office 3.6→2.8, GoL 5.6→2.4); `hybrid-v4.4` fällt auf claim-office auf hybrid-v4-Niveau zurück (3.6 = 3.6, kein per-cycle-Gewinn). Der v6.5-Cross-file-Mehrwert aus 4.7 (kleinere code_mass) verschwindet auf 4.8 im σ-Rauschen — auf beiden Katas liegen alle drei code_mass-Means innerhalb 1 σ. Was bleibt, ist eine allgemeine Komplexitäts-Senkung, kein spezifischer Cross-file-Hebel.

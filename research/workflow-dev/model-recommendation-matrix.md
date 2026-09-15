@@ -109,22 +109,25 @@ Empfehlungstabelle oben bleibt maßgeblich, bis die Kette dort gemessen ist.
 ## Empfehlung GPT-5.6 SOL auf pi (OpenAI-Subscription-Route)
 
 Die native SOL-Linie ist kata-abhängig. Für große, novelle Spezifikationen ist
-**`exact-sol-v1.3-stack-profile-pi` der Default der SOL-EXACT-Coding-Linie**. Für
+**`exact-sol-v1.5-tcr-parity-domain-trial-pi` der Default der SOL-EXACT-Coding-Linie**. Für
 kleine oder trainingsbekannte Aufgaben bleibt `baseline-inline-tdd-v1-pi` die
 kostengünstigere Empfehlung; sie ist ein Vergleichsboden und kein zweiter
 EXACT-Coding-Workflow.
 
 | Einsatz | empfohlener Workflow | Evidenz | Begründung |
 |---|---|---|---|
-| Große, novelle Specs | **`exact-sol-v1.3-stack-profile-pi`** | RQ-1.16–1.18, RQ-1.21 | Four Rules ohne APP-/Messaufschlag; vollständige TS/Vitest-Auslagerung; 20/20 frische RQ-1.21-Runs intern und extern korrekt |
+| Große, novelle Specs | **`exact-sol-v1.5-tcr-parity-domain-trial-pi`** | RQ-tcr-ptdd-parity-claim-sol | Vollständige Correctness; gegenüber dem schlanken SOL-Default stärkere fachliche Zerlegung bei praktisch gleicher Wallclock (`cc_avg_loc_per_function` 5.69 statt 7.69), aber rund 32 % mehr Tokens |
 | Kleine/trainingsbekannte Katas | `baseline-inline-tdd-v1-pi` | RQ-1.16 | Die native SOL-Linie löst dort keinen stabilen Qualitätsvorteil auf und kostet mehr |
 
-Die Promotion von v1.3 ist eine Schichtungsentscheidung, keine neue Methodik:
-`predictive-tdd/SKILL.md` bleibt unverändert, während konkrete Sprache- und
-Frameworkdetails vollständig in `stacks/typescript-vitest.md` liegen. Validiert
-ist diese Empfehlung auf `gpt-5-6-sol-codex` mit pi; Ports auf andere Harnesse
-sind Distributionsvarianten derselben Linie, aber keine zusätzliche empirische
-Cross-Harness-Behauptung.
+Die Promotion von v1.5 ist eine Qualitäts-/Preis-Leistungsentscheidung für
+claim-office-artige Praxisarbeit: Der vollständige Testlisten-, Stack- und
+Domain-Boundary-Vertrag der TCR-v1.3-Linie bleibt erhalten, während Predictive
+TDD mit prediction/check/narrow-undo die Methode trägt. Gegenüber
+`exact-sol-v1.3-stack-profile-pi` sinkt die durchschnittliche Funktionslänge von
+7.69 auf 5.69 bei praktisch gleicher Wallclock; Tokens und Listenpreis steigen
+um rund 31–32 %. Validiert ist diese Empfehlung auf `gpt-5-6-sol-codex` mit pi
+und Claim Office; Ports auf andere Harnesse sind Distributionsvarianten derselben
+Linie, aber keine zusätzliche empirische Cross-Harness-Behauptung.
 
 ## Konsequenz für die Weiterentwicklung
 

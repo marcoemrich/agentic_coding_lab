@@ -99,28 +99,42 @@ Test List Created:
 ...
 ```
 
-### Step 6: Apply HITL Checkpoint
+### Step 6: Verify the Inactive List and Apply the HITL Checkpoint
 
-Consult `{hitl_path}`. Apply the Test-List checkpoint for the active Autonomy
-Level and wait for explicit approval when required; otherwise continue to the
-first Predictive TDD cycle.
+Predict and run the full suite. Continue only when the inactive list leaves the
+suite green; correct the list without implementing behavior if it does not.
+Then consult `{hitl_path}`. Apply the Test-List checkpoint for the active
+Autonomy Level and wait for explicit approval when required; otherwise continue
+to the first Predictive TDD cycle.
 
 '''
     return text[:start] + replacement + text[end:]
 
 
-def exact_coding_skill(config: str, hitl_path: str, source: str) -> str:
+def exact_coding_skill(config: str, hitl_path: str, source: str, domain_boundary: bool) -> str:
+    boundary_intro = (
+        " Refactoring also applies a domain-responsibility review and a mandatory "
+        "concrete boundary trial whenever it finds a credible semantic seam."
+        if domain_boundary
+        else ""
+    )
+    boundary_step = (
+        "\n   - perform the mandatory domain-boundary trial and retain or narrowly undo it based on semantic and test evidence,"
+        if domain_boundary
+        else ""
+    )
     return f'''---
 name: exact-coding
-description: Predictive Test-Driven Development with a complete up-front test list, falsifiable predictions before deterministic checks, one-test Red-Green-Refactor cycles, and configurable human checkpoints. Invoke when the user explicitly asks for TDD or Predictive TDD. Do NOT invoke for ordinary coding tasks where TDD was not requested.
+description: Predictive Test-Driven Development with a complete up-front test list, falsifiable predictions before deterministic checks, one-test Red-Green-Refactor cycles, domain-responsibility review, and configurable human checkpoints. Invoke when the user explicitly asks for TDD or Predictive TDD. Do NOT invoke for ordinary coding tasks where TDD was not requested.
 ---
 
 # EXACT Coding — SOL / Predictive TDD
 
 This is the consumer form of the SOL-originated EXACT Coding line. It runs in
 one shared context: Test List once, then one-test Red-Green-Refactor cycles.
-Refactoring uses the Four Rules of Simple Design inline; this line deliberately
-has no APP calculation, metric-driven end pass, or refactor subagent.
+Refactoring uses the Four Rules of Simple Design inline.{boundary_intro} This
+line deliberately has no APP calculation, metric-driven end pass, or refactor
+subagent.
 
 ## Preparation
 
@@ -136,7 +150,8 @@ tools belong only to the selected stack profile.
 
 ## Sequence
 
-1. Create the complete ordered test list with every future behavior inactive.
+1. Create the complete ordered test list with every future behavior inactive,
+   then predict and verify that the inactive list leaves the full suite green.
 2. Apply the Test-List checkpoint from `{hitl_path}`.
 3. For exactly one behavior at a time, follow the Predictive TDD skill:
    - activate one behavior and reach behavioral Red,
@@ -144,13 +159,20 @@ tools belong only to the selected stack profile.
      explicitly with reality,
    - apply the Red checkpoint,
    - reach Green with the smallest production change,
-   - review and, where useful, refactor inline under the Four Rules,
+   - review and refactor inline under the Four Rules,{boundary_step}
    - apply the Refactor checkpoint.
 4. Continue until every listed behavior is executable and all applicable gates
    from the active stack profile pass.
 
 A test already satisfied by an earlier generalization is legitimate evidence.
 Confirm it and do not manufacture a failure or production change.
+
+## Method boundary
+
+This is Predictive TDD, not TCR. Do not create phase commits or use a hard reset
+as a phase mechanism. Preserve successful work in the working tree. If a
+refactoring trial fails a check or does not improve intent, undo only that trial
+before continuing.
 
 ## Human-in-the-loop
 
@@ -198,7 +220,23 @@ may investigate and resume without waiting.
 '''
 
 
-def readme(source: str, stamp: str, harnesses: tuple[str, ...]) -> str:
+def readme(source: str, stamp: str, harnesses: tuple[str, ...], domain_boundary: bool) -> str:
+    boundary_summary = (
+        " It treats domain language as the semantic anchor, tests independently "
+        "changing policies with a concrete boundary trial, and keeps or narrowly "
+        "undoes the result based on semantic and behavioral evidence."
+        if domain_boundary
+        else ""
+    )
+    validation = (
+        "Validated on `gpt-5-6-sol-codex` with pi and Claim Office in "
+        "`RQ-tcr-ptdd-parity-claim-sol` (5/5 parity-port runs internally and "
+        "externally correct)."
+        if source == "exact-sol-v1.5-tcr-parity-domain-trial-pi"
+        else "Validated on `gpt-5-6-sol-codex` with pi in "
+        "`RQ-stack-profile-extraction-sol` (20/20 fresh runs internally and "
+        "externally correct)."
+    )
     rows = {
         "cc": "| Claude Code | `.claude/` | `/exact-coding` or ask for EXACT Coding |",
         "pi": "| pi | `.pi/` | `/skill:exact-coding` or ask for EXACT Coding |",
@@ -219,8 +257,8 @@ does not replace the Opus/Hybrid baseline.
 The workflow creates a complete test list, then runs one-test Predictive
 Red-Green-Refactor cycles in one shared context. Before every deterministic
 check it states a falsifiable prediction and compares it with reality.
-Refactoring is inline and follows the Four Rules of Simple Design. There is no
-APP mass objective, metric-driven end-refactor, or refactor subagent.
+Refactoring is inline and follows the Four Rules of Simple Design.{boundary_summary}
+There is no APP mass objective, metric-driven end-refactor, or refactor subagent.
 
 Language and tool details live exclusively in the profiles under
 `skills/predictive-tdd/stacks/`; orchestration and method files are stack-neutral.
@@ -229,10 +267,8 @@ It removes experiment-specific autonomy,
 completion, and measurement content, restores configurable human checkpoints, and gates
 the workflow behind explicit invocation.
 
-Validated on `gpt-5-6-sol-codex` with pi in
-`RQ-stack-profile-extraction-sol` (20/20 fresh runs internally and externally
-correct). Other harness directories are semantic distribution ports and have
-not yet been validated as independent cross-harness experiment cells.
+{validation} Other harness directories are semantic distribution ports and
+have not yet been validated as independent cross-harness experiment cells.
 
 ## Credits
 
@@ -255,7 +291,11 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
     }[harness]
     pred = consumer_predictive(predictive, hitl_path)
     tests = consumer_test_list(test_list, hitl_path)
-    body = exact_coding_skill(config, hitl_path, source)
+    domain_boundary = (
+        "## Mandatory domain-boundary trial" in predictive
+        and "#### Domain responsibility review" in predictive
+    )
+    body = exact_coding_skill(config, hitl_path, source, domain_boundary)
 
     for rel, content in (
         ("skills/predictive-tdd/SKILL.md", pred),
@@ -416,13 +456,28 @@ def main() -> int:
 
     predictive = (src / "skills/predictive-tdd/SKILL.md").read_text()
     test_list = (src / "skills/test-list/SKILL.md").read_text()
-    stacks_dir = src / "skills/predictive-tdd/stacks"
-    stacks = {path.name: path.read_text() for path in sorted(stacks_dir.glob("*.md"))}
+    stack_candidates = (
+        src / "skills/predictive-tdd/stacks",
+        src / "skills/exact-coding-ptdd/stacks",
+    )
+    stacks_dir = next((path for path in stack_candidates if path.is_dir()), None)
+    if stacks_dir is None:
+        checked = ", ".join(str(path) for path in stack_candidates)
+        raise SystemExit(f"SOL source has no stack profile directory; checked: {checked}")
+    stacks = {
+        path.name: path.read_text() for path in sorted(stacks_dir.glob("*.md"))
+    }
     if not stacks:
         raise SystemExit(f"SOL source has no stack profiles: {stacks_dir}")
     for harness in harnesses:
         write_harness(target, harness, predictive, test_list, stacks, args.date, source)
-    (target / "README.md").write_text(readme(source, args.date, harnesses))
+    domain_boundary = (
+        "## Mandatory domain-boundary trial" in predictive
+        and "#### Domain responsibility review" in predictive
+    )
+    (target / "README.md").write_text(
+        readme(source, args.date, harnesses, domain_boundary)
+    )
     (target / "VERSION").write_text(args.date + "\n")
     validate(target, harnesses)
     if args.sync_distribution:
