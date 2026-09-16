@@ -16,121 +16,56 @@ Vollständiger Befund (Tabelle, Stichproben, Mechanismus):
 | opus-4-6-portkey-no-thinking | **exact-subagents-v1-cc** | 0.93 (5) | profitiert vom expliziten Subagent-Prompt pro Phase |
 | (modell-unabhängig als Fallback) | exact-single-context-v1-cc | 0.97 (9) / 0.87 (5) | am wenigsten modell-sensitiv, kein Spitzenwert |
 
-## Empfehlung opus-5-no-thinking (drei Dimensionen)
+## Empfehlung opus-5-no-thinking
 
-Auf opus-5 hält die Architektur-Rangfolge inline-tdd-v1 → single-context-v2 → hybrid-v2 → hybrid-v6 (RQ-architecture-axis-opus5
-F-1.1). Anders als bei den 4.x-Modellen liegt hier genug Datenmaterial für getrennte
-Empfehlungen nach Optimierungsziel vor — und die drei Ziele fallen auf **drei verschiedene
-Workflows**.
+**`exact-ptdd-v1-cc` ist der universelle EXACT-Coding-Default auf native Opus 5.**
+Er ersetzt `exact-hybrid-v2-testlist-fix-cc` als gepflegte und exportierte Linie. Die
+Hybrid-Linie bleibt reproduzierbare Forschungs- und Dekompositionsreferenz, wird aber wegen
+ihres deutlich höheren Kontext-, Token- und Laufzeitbedarfs nicht mehr als Produktprofil
+empfohlen.
 
-| Ziel | empfohlener Workflow | Kennzahl | Begründung |
+| Ziel | empfohlener Workflow | Evidenz | Begründung |
 |---|---|---|---|
-| **Code-Qualität** | `exact-hybrid-v6-lab-split-cc` | `cc_avg_loc_per_function` 3.21 / 3.57 | gewinnt praktisch jede Qualitätsmetrik auf beiden Katas |
-| **Preis/Leistung** | `exact-hybrid-v2-testlist-fix-cc` | 86 % des Gewinns für 60 % der Tokens | beste Dekomposition je Token |
-| **Dauer/Leistung** | `exact-hybrid-v2-testlist-fix-cc` | 86 % des Gewinns für 47 % der Wallclock | s. Warnung zu single-context-v2 unten |
+| Correctness und Preis/Leistung | **`exact-ptdd-v1-cc`** | RQ-test-list-dimensions-opus-native; RQ-test-list-dimensions-replication | n=10 auf Claim Office: Correctness (external) 0.993, 9/10 perfekte Runs, Minimum 0.933; Median-Kosten praktisch gleich zu PTDD v1.5, aber stabilerer Correctness-Floor |
+| Historische Dekompositionsreferenz | `exact-hybrid-v2-testlist-fix-cc` | RQ-current-ptdd-vs-exact-opus-native | kleinere typische Funktionen, aber wesentlich mehr Laufzeit und Tokens; superseded, keine aktive Produktempfehlung |
 
-Datenbasis (claim-office-example-mapping, opus-5, n=5, aus RQ-architecture-axis-opus5).
-„Gewinn" = Anteil an der Dekompositions-Verbesserung von inline-tdd-v1 auf hybrid-v6:
+`exact-ptdd-v1-cc` ist der kanonische Produktname für den in
+`exact-sol-v1.6-test-list-dimensions-cc` gemessenen Inhalt. Die Umbenennung ändert keine
+Methodik: Single-Context Predictive TDD, Compilation- und Runtime-Predictions, Four Rules,
+Domain-Boundary-Trial, narrow undo und der unabhängige Dimensions-Cross-Check der Testliste
+bleiben erhalten.
 
-| Workflow | `cc_avg` | Gewinn | Tokens | Dauer | Gewinn/100M Token | Gewinn/10 min | `verification_pct` |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| baseline-inline-tdd-v1-cc | 9.18 | 0 % | 4 M | 5 min | — | — | 1.00 |
-| exact-single-context-v2-testlist-fix-cc | 5.89 | 55 % | 83 M | 23 min | 3.96 | **1.43** | 0.79 ⚠ |
-| exact-hybrid-v2-testlist-fix-cc | 4.04 | 86 % | 82 M | 44 min | **6.27** | 1.17 | 0.99 |
-| exact-hybrid-v6-lab-split-cc | 3.21 | 100 % | 137 M | 93 min | 4.36 | 0.64 | 0.95 |
-
-**Warum Dauer und Tokens bei single-context-v2 → hybrid-v2 auseinanderfallen:** beide verbrauchen fast gleich
-viele Tokens (83 vs. 82 M), aber hybrid-v2 braucht die doppelte Wallclock (23 → 44 min). Hier
-serialisiert die Subagenten-Architektur — jeder isolierte Refactor-Aufruf ist ein eigener
-Roundtrip. Wer auf Wanduhr optimiert, zahlt das nicht in Verbrauch, sondern in Wartezeit.
-
-Das ist eine Aussage über **genau dieses Paar**, kein allgemeiner Subagenten-Effekt. Zwischen
-Workflows, die beide einen Refactor-Subagenten haben, laufen Dauer und Tokens gleich mit, und
-der Unterschied kommt aus der Menge der Refactorings — siehe den nächsten Abschnitt zu
-hybrid-v2 vs. hybrid-v8.
-
-**⚠ single-context-v2 gewinnt die Dauer-Effizienz, wird aber nicht empfohlen.** Sein
-`verification_pct` von 0.79 ist **bimodal, nicht graduell**: ein Run von fünf brach nach 2
-Zyklen mit 6 Funktionen und 60 grünen selbstgeschriebenen Tests ab (RQ-architecture-axis-opus5
-F-1.4). Das ist ein Totalausfall-Risiko von ~20 %, kein moderater Qualitätsabschlag. Für
-korrektheitskritische Arbeit ist der Workflow damit unbrauchbar, egal wie gut die
-Zeit-Kennzahl aussieht. Die Dauer-Empfehlung geht deshalb an hybrid-v2 als schnellste Variante
-ohne dieses Risiko.
-
-**Gültigkeitsbereich.** Die Zahlen stammen von claim-office (novel Kata, CLI-Vertrag,
-externe Verifikation). Auf game-of-life ist die Rangfolge dieselbe, die Spanne aber enger.
-Auf sphinx-score bestätigt RQ-workflow-reduction-opus5 das Token- und Dauer-Muster (hybrid-v2
-Token-Sieger, single-context-v2 Dauer-Sieger auf beiden Katas).
-
-### Kosten folgen dem Refactoring-Volumen
-
-`exact-hybrid-v2-testlist-fix-cc` läuft spürbar schneller und billiger als
-`exact-hybrid-v8-no-end-refactor-cc`, obwohl beide dieselbe Architektur haben (Refactor-Subagent pro
-Zyklus, keine End-Refactor-Phase). hybrid-v8 ist dabei nicht langsamer pro Arbeitseinheit — es
-leistet schlicht mehr Refactoring:
-
-| Kata | `refactorings_applied` hybrid-v2 → hybrid-v8 | Dauer | Tokens |
-|---|---:|---:|---:|
-| game-of-life | 4.4 → 9.2 (2.09×) | 621 → 1097 s (1.77×) | 8.0 → 12.2 M (1.53×) |
-| sphinx-score | 6.0 → 7.8 (1.30×) | 786 → 986 s (1.25×) | 10.6 → 12.3 M (1.16×) |
-
-`cycle_count` ist identisch (10.2–10.6), der Unterschied entsteht vollständig innerhalb der
-Refactor-Phase, und der Refactoring-Faktor sagt den Zeitfaktor auf beiden Katas eng voraus.
-
-**Nicht dem APP-Patch zuschreiben.** hybrid-v2 → hybrid-v8 unterscheidet sich in zwei Komponenten (Patch
-*und* Lab-Split-Regeldateien). Die saubere Isolation des Patches ist hybrid-v6 → hybrid-v7, und dort
-läuft der Effekt andersherum: auf sphinx-score sinkt das Refactoring-Volumen von 11.67 auf
-10.4, die Dauer von 1475 auf 1264 s, die Tokens von 19.1 auf 14.7 M; auf game-of-life bleibt
-alles flach. Der Patch kauft sein Dekompositions-Verhalten nicht mit zusätzlichen
-Refactoring-Durchläufen.
-
-Welche Komponente das Volumen tatsächlich hebt, ist offen — der Lab-Split wurde nie isoliert
-variiert. Details: `RQ-workflow-reduction-opus5` F-1.7.
-
-### Was die Reduktionskette daran nicht ändert
-
-`RQ-workflow-reduction-opus5` hat auf sphinx-score und game-of-life geprüft, wie weit sich
-hybrid-v6 kürzen lässt. Die Kette ordnet auf keiner der beiden Katas monoton (F-1.1), und keine
-der drei neuen Varianten verdrängt eine Empfehlung oben:
-
-- `exact-hybrid-v7-app-subordinate-cc` (hybrid-v6 + APP-Patch) hat auf sphinx die beste Roh-Dekomposition
-  (2.96), ist aber die einzige Zelle im Feld unter `verification_pct` 1.00 — zwei von fünf
-  Runs bei 0.81 (F-1.2). Nicht als Qualitätsempfehlung setzen, solange das auf n=5 mit zwei
-  Ausreißern steht und auf game-of-life nicht reproduziert ist.
-- `exact-hybrid-v8-no-end-refactor-cc` spart 16–19 % Tokens gegenüber hybrid-v7, ohne im Mittel Dekomposition
-  zu verlieren (F-1.3) — der Nutzen der End-Refactor-Phase zeigt sich nur im Peak.
-- `exact-single-context-v3-no-subagent-cc` ist auf beiden Katas mindestens so gut wie hybrid-v8 (F-1.4); der isolierte
-  Subagent trägt auf Katas dieser Größe nichts.
-
-Diese drei Befunde stammen von kleinen Katas, auf denen elf von zwölf Zellen bei
-`verification_pct` 1.00 sättigen. Sie sagen nichts über claim-office-Verhältnisse aus — die
-Empfehlungstabelle oben bleibt maßgeblich, bis die Kette dort gemessen ist.
+Die n=10-Replikation korrigiert die frühe Kosteninterpretation: Der große Mittelwertvorteil
+von v1.6 gegenüber v1.5 auf Opus wurde von langen v1.5-Ausreißern getragen. Die Mediane von
+Tokens und Listenpreis sind praktisch gleich. Die Promotion beruht deshalb primär auf dem
+Correctness-Floor, nicht auf einem behaupteten intrinsischen Kostenvorteil innerhalb der
+PTDD-Linie. Gegenüber dem früheren Hybrid-Default bleibt PTDD jedoch deutlich schlanker.
 
 ## Empfehlung GPT-5.6 SOL auf pi (OpenAI-Subscription-Route)
 
-Die native SOL-Linie ist kata-abhängig. Für große, novelle Spezifikationen ist
-**`exact-sol-v1.5-tcr-parity-domain-trial-pi` der Default der SOL-EXACT-Coding-Linie**. Für
-kleine oder trainingsbekannte Aufgaben bleibt `baseline-inline-tdd-v1-pi` die
-kostengünstigere Empfehlung; sie ist ein Vergleichsboden und kein zweiter
-EXACT-Coding-Workflow.
+**`exact-ptdd-v1-pi` ist der universelle EXACT-Coding-Default auf GPT-5.6 SOL/pi.**
+Er ist der kanonische Produktname für den in
+`exact-sol-v1.6-test-list-dimensions-pi` gemessenen Inhalt.
 
 | Einsatz | empfohlener Workflow | Evidenz | Begründung |
 |---|---|---|---|
-| Große, novelle Specs | **`exact-sol-v1.5-tcr-parity-domain-trial-pi`** | RQ-tcr-ptdd-parity-claim-sol | Vollständige Correctness; gegenüber dem schlanken SOL-Default stärkere fachliche Zerlegung bei praktisch gleicher Wallclock (`cc_avg_loc_per_function` 5.69 statt 7.69), aber rund 32 % mehr Tokens |
-| Kleine/trainingsbekannte Katas | `baseline-inline-tdd-v1-pi` | RQ-1.16 | Die native SOL-Linie löst dort keinen stabilen Qualitätsvorteil auf und kostet mehr |
+| Große oder novelle Spezifikationen | **`exact-ptdd-v1-pi`** | RQ-test-list-dimensions-sol-pi; RQ-test-list-dimensions-multikata-sol-pi; RQ-test-list-dimensions-replication | vollständige Correctness auf Claim Office bei n=10; derselbe gepflegte Vertrag wie der Opus-Port |
+| Kleine/trainingsbekannte Katas ohne Bedarf an der vollständigen Methode | `baseline-inline-tdd-v1-pi` | RQ-1.16 | günstiger Vergleichsboden, aber kein zweiter EXACT-Coding-Produktworkflow |
 
-Die Promotion von v1.5 ist eine Qualitäts-/Preis-Leistungsentscheidung für
-claim-office-artige Praxisarbeit: Der vollständige Testlisten-, Stack- und
-Domain-Boundary-Vertrag der TCR-v1.3-Linie bleibt erhalten, während Predictive
-TDD mit prediction/check/narrow-undo die Methode trägt. Gegenüber
-`exact-sol-v1.3-stack-profile-pi` sinkt die durchschnittliche Funktionslänge von
-7.69 auf 5.69 bei praktisch gleicher Wallclock; Tokens und Listenpreis steigen
-um rund 31–32 %. Validiert ist diese Empfehlung auf `gpt-5-6-sol-codex` mit pi
-und Claim Office; Ports auf andere Harnesse sind Distributionsvarianten derselben
-Linie, aber keine zusätzliche empirische Cross-Harness-Behauptung.
+PTDD v1.5 bleibt eine reproduzierbare Forschungsreferenz: Auf SOL/pi erreicht sie dieselbe
+Correctness und ist auf Claim Office bei Dauer und Median-Tokens günstiger. Die Differenz
+rechtfertigt jedoch keine zweite gepflegte und exportierte Produktlinie. Die Wahl von PTDD v1
+ist damit ausdrücklich eine Wartungsentscheidung unter empirisch überschaubarem SOL-Aufpreis,
+keine Behauptung, dass v1.6 jede Effizienzmetrik auf jedem Modell gewinnt.
+
+Der universelle Vertrag enthält den unabhängigen Dimensions-Cross-Check der Testliste. Auf
+SOL zeigt er über Claim Office, Game of Life und Sphinx Score keinen zusätzlichen
+Correctness-Gewinn; auf Opus verbessert er den beobachteten Correctness-Floor. Ein einziger
+Workflow behält deshalb den robusteren Cross-Check auf allen Ports.
 
 ## Konsequenz für die Weiterentwicklung
 
+- Neue produktive Predictive-TDD-Varianten zweigen von `exact-ptdd-v1-pi` beziehungsweise dem passenden Harness-Port ab und erhalten versionierte Namen (`exact-ptdd-v2-*`, danach weitere Major- oder Branch-Versionen). Historische `exact-sol-*`-Namen bleiben ausschließlich für Reproduktion und RQ-Zuordnung bestehen.
 - Workflow-Optimierungen, die auf opus-4-7 gemessen wurden (die gesamte v6.5-Reduktionskette unter
   `research/workflow-dev/2.*`/`3.*`), gelten **nur für opus-4-7**, bis sie cross-model repliziert
   sind.

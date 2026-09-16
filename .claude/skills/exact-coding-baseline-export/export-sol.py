@@ -21,7 +21,7 @@ DEFAULT_HARNESSES = ("cc", "pi", "oc", "cursor", "copilot")
 def promoted_source() -> str:
     text = MATRIX.read_text()
     match = re.search(
-        r"`(exact-sol-[^`]+)` der Default der SOL-EXACT-Coding-Linie", text
+        r"`(exact-ptdd-[^`]+)` ist der universelle EXACT-Coding-Default auf GPT-5\.6 SOL/pi", text
     )
     if not match:
         raise SystemExit("No promoted SOL default found in model-recommendation-matrix.md")
@@ -80,6 +80,22 @@ def consumer_predictive(text: str, hitl_path: str) -> str:
 
 
 def consumer_test_list(text: str, hitl_path: str) -> str:
+    # v1.6+ has an independent-dimensions cross-check and its summary is Step 6.
+    # Preserve that validated product content; replace only the lab continuation.
+    if "### Step 7: Continue the Workflow\n" in text:
+        start = text.index("### Step 7: Continue the Workflow\n")
+        end = text.index("## Important Guidelines\n", start)
+        replacement = f'''### Step 7: Verify the Inactive List and Apply the HITL Checkpoint
+
+Predict and run the full suite. Continue only when the inactive list leaves the
+suite green; correct the list without implementing behavior if it does not.
+Then consult `{hitl_path}`. Apply the Test-List checkpoint for the active
+Autonomy Level and wait for explicit approval when required; otherwise continue
+to the first Predictive TDD cycle.
+
+'''
+        return text[:start] + replacement + text[end:]
+
     start = text.index("### Step 5: Provide Summary\n")
     end = text.index("## Important Guidelines\n", start)
     replacement = f'''### Step 5: Provide Summary
@@ -229,10 +245,10 @@ def readme(source: str, stamp: str, harnesses: tuple[str, ...], domain_boundary:
         else ""
     )
     validation = (
-        "Validated on `gpt-5-6-sol-codex` with pi and Claim Office in "
-        "`RQ-tcr-ptdd-parity-claim-sol` (5/5 parity-port runs internally and "
-        "externally correct)."
-        if source == "exact-sol-v1.5-tcr-parity-domain-trial-pi"
+        "Validated on `gpt-5-6-sol-codex` with pi and native Opus 5 with "
+        "Claude Code in `RQ-test-list-dimensions-replication` (n=10 per "
+        "workflow and platform cell on Claim Office)."
+        if source == "exact-ptdd-v1-pi"
         else "Validated on `gpt-5-6-sol-codex` with pi in "
         "`RQ-stack-profile-extraction-sol` (20/20 fresh runs internally and "
         "externally correct)."
@@ -247,8 +263,8 @@ def readme(source: str, stamp: str, harnesses: tuple[str, ...], domain_boundary:
     table = "\n".join(rows[h] for h in harnesses)
     return f'''# EXACT Coding — SOL / Predictive TDD — {stamp}
 
-Consumer-ready export of `{source}`. This is the second EXACT Coding line; it
-does not replace the Opus/Hybrid baseline.
+Consumer-ready export of `{source}`, the universal maintained EXACT Coding
+Predictive-TDD line.
 
 | Harness | Directory | Invocation |
 |---|---|---|

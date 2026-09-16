@@ -118,10 +118,10 @@ export the harnesses that do exist rather than aborting the whole run.
 ## Source detection
 
 For `sol`, source detection is implemented by `export-sol.py`: it reads the
-backtick-quoted workflow immediately preceding the phrase
-`der Default der SOL-EXACT-Coding-Linie` from
+backtick-quoted `exact-ptdd-*` workflow immediately preceding the universal
+GPT-5.6 SOL/pi default declaration in
 `research/workflow-dev/model-recommendation-matrix.md`. If that declaration or
-its `.pi/` source tree is missing, abort; never fall back to v1.
+its `.pi/` source tree is missing, abort; never fall back to a historical SOL name.
 
 For `opus`, when no explicit source is given, find the current correctness-critical
 default from `research/workflow-dev/workflow-construction.md`. The
