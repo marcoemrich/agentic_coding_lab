@@ -31,11 +31,11 @@ alongside this file under `templates/`, and the harness research lives in
 - **Source repo**: writes snapshots only inside `research/workflow-dev/export/`
   and never edits source workflows under `experiments/workflows/`.
 - **Distribution sync is explicit**: the SOL exporter may additionally create
-  or update the parallel `sol/*` branches in `EXACT-Coding-Exercises` when
+  or update the canonical `main` and `harness/*` branches in `EXACT-Coding-Exercises` when
   `--sync-distribution <repo>` is passed. It commits locally and never pushes.
 - **One artifact per line and date**: Opus writes
   `exact-coding-baseline-<DATE>/`; SOL writes
-  `exact-coding-sol-baseline-<DATE>/`. Each contains one subtree per exported
+  `exact-coding-ptdd-v1-<DATE>/`. Each contains one subtree per exported
   harness.
 - **Idempotent within a date and line**: refuses to overwrite an existing
   same-date snapshot unless the user explicitly says "overwrite" / "force".
@@ -47,7 +47,7 @@ The distribution has two parallel lines. Do not replace one with the other:
 | Line | Default source | Native harness | Snapshot name |
 |---|---|---|---|
 | `opus` | the correctness-critical Opus/Hybrid recommendation in `workflow-construction.md` | Claude Code | `exact-coding-baseline-<DATE>` |
-| `sol` | the SOL default in `model-recommendation-matrix.md` | pi | `exact-coding-sol-baseline-<DATE>` |
+| `sol` | the universal PTDD default in `model-recommendation-matrix.md` | pi | `exact-coding-ptdd-v1-<DATE>` |
 
 When the requested line is `sol`, run the checked-in exporter rather than
 manually applying the Hybrid-specific steps below:
@@ -62,8 +62,8 @@ The script auto-detects the promoted SOL source from
 `model-recommendation-matrix.md`, reads its native `.pi/` tree, removes the lab
 adaptations, restores consumer HITL behavior and explicit invocation, and emits
 feature-equivalent `cc`, `pi`, `oc`, `cursor`, and `copilot` trees. With
-`--sync-distribution` it also creates or updates `sol/main` and the four
-`sol/harness/*` branches, one harness tree per branch, and commits locally. Restrict the
+`--sync-distribution` it also updates `main` and the four
+`harness/*` branches, one harness tree per branch, and commits locally. Restrict the
 set with repeated `--harness`; override source or target with `--source` and
 `--target`. It validates that the stack profile exists in every tree, OpenCode
 uses a consumer-shaped command config, and no lab vocabulary leaked.
@@ -1191,7 +1191,7 @@ After successful validation:
    against the harness's own docs and, where feasible, a probe run before
    accepting a limitation as real.
 6. Point at the consumer (`EXACT-Coding-Exercises`, path above). State whether
-   SOL distribution sync ran; if it did, list the local `sol/*` commits and say
+   PTDD distribution sync ran; if it did, list the local `main` / `harness/*` commits and say
    explicitly that no push occurred. For Opus or snapshot-only SOL exports,
    state that the snapshot was not copied.
 
@@ -1258,11 +1258,11 @@ After successful validation:
 | `/exact-coding-baseline-export pi cursor` | Named harness subset |
 | `/exact-coding-baseline-export overwrite` | Same as default, but allow clobber |
 | `/exact-coding-baseline-export sol` | Export the promoted SOL line for all five harnesses |
-| `/exact-coding-baseline-export sol sync` | Export SOL and update local `sol/*` distribution branches; never push |
+| `/exact-coding-baseline-export sol sync` | Export PTDD v1 and update local `main` / `harness/*` distribution branches; never push |
 
 Output is line-specific: Opus writes
 `research/workflow-dev/export/exact-coding-baseline-<DATE>/`; SOL writes
-`research/workflow-dev/export/exact-coding-sol-baseline-<DATE>/`. Validation
+`research/workflow-dev/export/exact-coding-ptdd-v1-<DATE>/`. Validation
 must pass before reporting success.
 
 **Every export applies all three transformations** — lab-content removal,

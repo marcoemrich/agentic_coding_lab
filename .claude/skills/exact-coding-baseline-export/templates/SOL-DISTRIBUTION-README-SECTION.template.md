@@ -1,37 +1,34 @@
 ## Agent Configuration
 
-This repository distributes **two parallel EXACT Coding lines**. Neither
-supersedes the other:
+This repository distributes **EXACT Coding Predictive TDD v1** as the universal
+maintained workflow: one shared context, falsifiable predictions before
+deterministic checks, and inline refactoring under the Four Rules of Simple
+Design. The historical Opus/Hybrid branches remain available for reproduction,
+but are superseded as the maintained product line.
 
-- **Opus / Hybrid EXACT Coding** — shared Red/Green context with isolated
-  refactor subagents and an end-refactor pass.
-- **SOL / Predictive TDD** — one shared context, falsifiable predictions before
-  deterministic checks, and inline refactoring under the Four Rules of Simple
-  Design.
+Each PTDD branch carries exactly one agent configuration. This branch is part
+of **Predictive TDD v1**, distribution version **{{DATE}}**.
 
-Each branch carries exactly one line and one agent configuration. This branch is
-part of the **SOL / Predictive TDD** line, version **{{DATE}}**.
-
-| Agent | Opus / Hybrid branch | SOL / Predictive TDD branch | Config | Start SOL TDD with |
-|---|---|---|---|---|
-| Claude Code | `main` | `sol/main` | `.claude/` | `/exact-coding`, or ask for EXACT Coding |
-| GitHub Copilot (TypeScript) | `harness/copilot` | `sol/harness/copilot` | `.github/` | `/exact-coding`, or ask for EXACT Coding |
-| Cursor | `harness/cursor` | `sol/harness/cursor` | `.cursor/` | `/exact-coding`, or ask for EXACT Coding |
-| OpenCode | `harness/opencode` | `sol/harness/opencode` | `.opencode/` | `/exact-coding` |
-| pi | `harness/pi` | `sol/harness/pi` | `.pi/` | `/skill:exact-coding`, or ask for EXACT Coding |
+| Agent | Predictive TDD v1 branch | Config | Start EXACT Coding with |
+|---|---|---|---|
+| Claude Code | `main` | `.claude/` | `/exact-coding`, or ask for EXACT Coding |
+| GitHub Copilot (TypeScript) | `harness/copilot` | `.github/` | `/exact-coding`, or ask for EXACT Coding |
+| Cursor | `harness/cursor` | `.cursor/` | `/exact-coding`, or ask for EXACT Coding |
+| OpenCode | `harness/opencode` | `.opencode/` | `/exact-coding` |
+| pi | `harness/pi` | `.pi/` | `/skill:exact-coding`, or ask for EXACT Coding |
 
 ```bash
-git checkout sol/main                 # Claude Code
-git checkout sol/harness/copilot      # GitHub Copilot
-git checkout sol/harness/cursor       # Cursor
-git checkout sol/harness/opencode     # OpenCode
-git checkout sol/harness/pi           # pi
+git checkout main                 # Claude Code
+git checkout harness/copilot      # GitHub Copilot
+git checkout harness/cursor       # Cursor
+git checkout harness/opencode     # OpenCode
+git checkout harness/pi           # pi
 ```
 
 Keeping line and harness combinations on separate branches prevents agents that
 scan several vendors' directories from loading duplicate workflows.
 
-### SOL / Predictive TDD workflow
+### Predictive TDD v1 workflow
 
 The workflow first creates a complete ordered test list with all future
 behaviors inactive. It then handles exactly one behavior per cycle:
@@ -46,9 +43,9 @@ behaviors inactive. It then handles exactly one behavior per cycle:
 A test already satisfied by an earlier generalization is valid evidence. The
 workflow confirms it instead of manufacturing a failure.
 
-Unlike the Opus / Hybrid line, SOL / Predictive TDD deliberately has **no APP
-mass objective, no refactor subagent, and no metric-driven end-refactor pass**.
-Those are methodological differences, not missing port features.
+Predictive TDD v1 deliberately has **no APP mass objective, no refactor
+subagent, and no metric-driven end-refactor pass**. Those are product-method
+choices, not missing port features.
 
 ### Stack profiles
 
@@ -79,11 +76,11 @@ permission policy are intentionally not shipped.
 
 This distribution is generated from
 `{{SOURCE_WORKFLOW}}` in the `agentic_coding_lab` repository. It was promoted
-after `RQ-stack-profile-extraction-sol`: all 20 fresh validation runs on Game of
-Life and Claim Office passed internal and external verification. That evidence
-is for **GPT-5.6 SOL on pi**. The Claude Code, Copilot, Cursor, and OpenCode
-branches are semantic ports of the same files; they are not presented as
-additional cross-harness experiment results.
+after `RQ-test-list-dimensions-replication` at n=10 per workflow and platform
+cell on Claim Office. The canonical methodology is validated on **GPT-5.6 SOL
+with pi** and **native Opus 5 with Claude Code**. Copilot, Cursor, and OpenCode
+are semantic ports of the same method; they are not presented as independent
+cross-harness experiment cells.
 
 ### Credits
 

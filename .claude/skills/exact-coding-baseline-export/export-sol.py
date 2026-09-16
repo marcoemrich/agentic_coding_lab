@@ -144,9 +144,9 @@ name: exact-coding
 description: Predictive Test-Driven Development with a complete up-front test list, falsifiable predictions before deterministic checks, one-test Red-Green-Refactor cycles, domain-responsibility review, and configurable human checkpoints. Invoke when the user explicitly asks for TDD or Predictive TDD. Do NOT invoke for ordinary coding tasks where TDD was not requested.
 ---
 
-# EXACT Coding — SOL / Predictive TDD
+# EXACT Coding — Predictive TDD v1
 
-This is the consumer form of the SOL-originated EXACT Coding line. It runs in
+This is the consumer form of the universal EXACT Coding Predictive-TDD line. It runs in
 one shared context: Test List once, then one-test Red-Green-Refactor cycles.
 Refactoring uses the Four Rules of Simple Design inline.{boundary_intro} This
 line deliberately has no APP calculation, metric-driven end pass, or refactor
@@ -261,7 +261,7 @@ def readme(source: str, stamp: str, harnesses: tuple[str, ...], domain_boundary:
         "copilot": "| GitHub Copilot | `.github/` | `/exact-coding` or ask for EXACT Coding |",
     }
     table = "\n".join(rows[h] for h in harnesses)
-    return f'''# EXACT Coding — SOL / Predictive TDD — {stamp}
+    return f'''# EXACT Coding — Predictive TDD v1 — {stamp}
 
 Consumer-ready export of `{source}`, the universal maintained EXACT Coding
 Predictive-TDD line.
@@ -391,8 +391,11 @@ def sync_distribution(snapshot: Path, repo: Path, source: str, stamp: str) -> No
     if run_git(repo, "status", "--porcelain", capture=True):
         raise SystemExit(f"Distribution repo is dirty: {repo}")
     current_branch = run_git(repo, "branch", "--show-current", capture=True)
-    if current_branch.startswith("sol/"):
-        raise SystemExit("Check out a non-SOL branch in the distribution repo before sync")
+    distribution_branches = {
+        "main", "harness/pi", "harness/opencode", "harness/cursor", "harness/copilot"
+    }
+    if current_branch in distribution_branches:
+        raise SystemExit("Detach HEAD or check out a non-distribution branch before sync")
     for key in ("user.name", "user.email"):
         if not run_git(repo, "config", "--get", key, capture=True):
             raise SystemExit(f"Distribution repo has no local {key}")
@@ -402,11 +405,11 @@ def sync_distribution(snapshot: Path, repo: Path, source: str, stamp: str) -> No
         / "templates/SOL-DISTRIBUTION-README-SECTION.template.md"
     ).read_text().replace("{{DATE}}", stamp).replace("{{SOURCE_WORKFLOW}}", source)
     variants = {
-        "cc": ("sol/main", "main", ".claude"),
-        "pi": ("sol/harness/pi", "origin/harness/pi", ".pi"),
-        "oc": ("sol/harness/opencode", "origin/harness/opencode", ".opencode"),
-        "cursor": ("sol/harness/cursor", "origin/harness/cursor", ".cursor"),
-        "copilot": ("sol/harness/copilot", "origin/harness/copilot", ".github"),
+        "cc": ("main", "origin/main", ".claude"),
+        "pi": ("harness/pi", "origin/harness/pi", ".pi"),
+        "oc": ("harness/opencode", "origin/harness/opencode", ".opencode"),
+        "cursor": ("harness/cursor", "origin/harness/cursor", ".cursor"),
+        "copilot": ("harness/copilot", "origin/harness/copilot", ".github"),
     }
     available = {p.name for p in snapshot.iterdir() if p.is_dir()}
     for harness, (branch, initial_base, config) in variants.items():
@@ -463,7 +466,7 @@ def main() -> int:
     source = args.source or promoted_source()
     src = source_dir(source) / ".pi"
     harnesses = tuple(args.harness or DEFAULT_HARNESSES)
-    target = args.target or ROOT / f"research/workflow-dev/export/exact-coding-sol-baseline-{args.date}"
+    target = args.target or ROOT / f"research/workflow-dev/export/exact-coding-ptdd-v1-{args.date}"
     if target.exists():
         if not args.force:
             raise SystemExit(f"Target exists: {target}; pass --force to replace")
