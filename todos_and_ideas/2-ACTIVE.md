@@ -39,20 +39,6 @@ Prio: Medium
  * explizite Pre + Post-Steps
  * Functional Domain Modelling
 
-## Other workflows
-Prio: Medium
-
-* Dimitry's Spec Loop
-https://gitlab.com/dpolivaev/spec-loop/-/blob/main/docs/review-responsibility-and-traceability.md?ref_type=heads
-
-* Chris Agent-Team workflows
-
-## TCR und TCRDD Workflows
-
-https://github.com/bsene/approvalsTypescript/blob/main/.agents/skills/tcrdd/SKILL.md
-https://www.skills.sh/bsene/skills/tcrdd
-https://github.com/xpepper/tcr-skill
-https://www.skill.fish/skill/tcr-practice-test-commit-revert
 
 ## Encode well know TDD workflows aka schools in rules
 
@@ -92,19 +78,12 @@ https://www.skill.fish/skill/tcr-practice-test-commit-revert
 
 ## Other Tools
 
-* Superpowers https://claude.com/plugins/superpowers
-* BMAD
 * nWave
-* GSD
 
 ## Weitere Dimensionen
 
  * Paradimen: FP, OOP (Callisthenics)
- * Programmiersprache: Rust, Haskel, Kotlin, Java
-
-## Workshop TODOs
-
-* Claim Office evtl. reduzieren -> Nur Workshop
+ * Programmiersprache: Rust, Haskel, Kotlin, Python
 
 ## Doku-Aufräumen (Phase 2)
 

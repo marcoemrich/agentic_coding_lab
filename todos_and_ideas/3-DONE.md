@@ -24,5 +24,18 @@ Reanalyze-Skill
  * Theory of Mind
  * cuts?
 * v8b fix
-https://www.skills.sh/mattpocock/skills/tdd
- * Harness (PI, OpenCode, ...)
+* https://www.skills.sh/mattpocock/skills/tdd
+* Harness (PI, OpenCode, ...)
+* Red→Green workflow with refactoring only at the end
+* Omakase investigated and excluded from TDD workflow comparisons
+* Ponytail investigated, integrated, and evaluated
+* Superpowers investigated, integrated, and evaluated
+* External TDD workflow candidate analysis and measurement design
+* Smaller novel katas (`sphinx-score`, `claim-office-lite`)
+* SOL-specific workflow development starting from the lean v3 architecture
+* TCR and TCRDD workflows
+  - https://github.com/bsene/approvalsTypescript/blob/main/.agents/skills/tcrdd/SKILL.md
+  - https://www.skills.sh/bsene/skills/tcrdd
+  - https://github.com/xpepper/tcr-skill
+  - https://www.skill.fish/skill/tcr-practice-test-commit-revert
+* Claim Office reduced for workshop use (`claim-office-lite`)

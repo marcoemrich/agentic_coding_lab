@@ -7,27 +7,10 @@
 * FP-Stuff, check for immutabilitym pure functions
 * switch everything to english
 * Language-Erweiterung: RUST
-* Neuer Worflow Red->Green, Refactoring nur am Ende
-
 * Skills zum Untersuchen:
-  - Omakase — https://omakaseagent.com — **no TDD part.** Three roles
-    (Engineer/Critic/Archivist) + rubric gate; tests only as verification,
-    no cycle structure. Out for TDD workflow comparisons.
-  - Ponytail — https://github.com/DietrichGebert/ponytail — **no TDD part**, but
-    orthogonal to the loop: a minimalism ladder applied before writing
-    (YAGNI → reuse → stdlib → native → dependency → one line). Targets
-    `code_mass` directly → additively testable (v6.x with/without, same loop,
-    same kata). Own benchmark: -54 % LOC against an agent baseline (Haiku 4.5,
-    n=4, 12 tickets); earlier -80..94 % withdrawn after criticism (issue #126);
-    they also measure a safety tier (does minimalism cut validation/security?).
-  - Superpowers (obra) `test-driven-development` — per-cycle refactor, inline;
-    closes the confound gap of RQ-4.4 (which varies refactor position AND
-    architecture at once). Open question: does it write all tests at once?
-    Measurable with `measure-tdd-rigour.py`, no marker intervention needed.
   - nWave — Outside-In through the driving port; refactor position unresolved
     (the canon reads RED → GREEN → COMMIT). Expensive to dock: DELIVER needs the
     artifact chain from the preceding waves.
-  - Candidate analysis and measurement design: `research/external-tdd-workflows.md`
 
 * Metrik-Lücke Lesbarkeit (aus RQ-architecture-axis-sol-pi, F-1.11):
   keine der aktuellen Metriken trennt lesbaren von unlesbarem Code.
@@ -50,17 +33,3 @@
   ist trivial gamebar: step1..step10 schneidet gut ab. Gilt fuer jede Metrik,
   die als Qualitaetsmass in einer RQ auftaucht.
 
-* Kleinere Novel-Kata fuer schnelleren Durchsatz.
-  Aus RQ-architecture-axis-sol-pi: claim-office 229-4296 s/Run, game-of-life 140-899 s.
-  claim-office ist der Flaschenhals, game-of-life ist schnell aber trainingsbekannt
-  und differenziert kaum (alle 5 Zellen verification_pct 100 %).
-  Gesucht: klein genug fuer Durchsatz UND novel genug zum Trennen. Ob beides
-  gleichzeitig geht, ist offen. Material in research/kata-design/.
-
-* Konsequenz aus RQ-architecture-axis-sol-pi: der auf Opus gebaute Workflow
-  ist nicht auf Sol uebertragbar. Mechanismus in F-1.10 — Sol produziert den
-  TDD-Zyklus von sich aus (6 Rot-Gruen-Zyklen, Extract Method ohne Aufforderung),
-  Opus nicht (1 Zyklus, ganze Suite auf einmal). Die Architektur ist auf Opus'
-  Defizit gebaut. Auf game-of-life ist v3 die beste Zelle im Feld; auf claim-office
-  kauft v6.6 real etwas (Smell Total 0.0 vs 6.8, cognitive_max 4.4 vs 9.2) bei 6x Kosten.
-  → Workflow-Entwicklung fuer Sol muesste bei v3 anfangen, nicht bei v6.
