@@ -68,10 +68,15 @@ set with repeated `--harness`; override source or target with `--source` and
 `--target`. It validates that the stack profile exists in every tree, OpenCode
 uses a consumer-shaped command config, and no lab vocabulary leaked.
 
-The SOL source is empirically validated on pi. The generated non-pi trees are
-semantic distribution ports, not cross-harness validation claims; preserve that
-caveat in their READMEs. SOL refactoring stays inline under the Four Rules:
-never add the Opus line's refactor subagent, APP objective, or end-refactor pass.
+The default SOL source is empirically validated on pi. The generated non-pi
+trees are semantic distribution ports, not cross-harness validation claims;
+preserve that caveat in their READMEs. Every tree installs two explicit entry
+points side by side: `exact-coding` keeps inline Four-Rules refactoring, while
+`exact-coding-isolated-refactor` delegates the same review after every Green.
+They share one neutral Predictive-TDD core, stack profiles, test-list method, and
+HITL policy under `skills/exact-coding-shared/`. The isolated profile comes from
+the validated v1.1 treatment workflow; it never owns HITL. Neither profile adds
+an APP objective or metric-driven end-refactor pass.
 
 The remainder of this document describes the established `opus` transformation
 path unless a section explicitly says otherwise.

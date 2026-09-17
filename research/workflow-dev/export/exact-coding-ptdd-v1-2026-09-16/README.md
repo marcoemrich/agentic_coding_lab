@@ -12,10 +12,13 @@ Predictive-TDD line.
 | GitHub Copilot | `.github/` | `/exact-coding` or ask for EXACT Coding |
 
 The workflow creates a complete test list, then runs one-test Predictive
-Red-Green-Refactor cycles in one shared context. Before every deterministic
-check it states a falsifiable prediction and compares it with reality.
-Refactoring is inline and follows the Four Rules of Simple Design. It treats domain language as the semantic anchor, tests independently changing policies with a concrete boundary trial, and keeps or narrowly undoes the result based on semantic and behavioral evidence.
-There is no APP mass objective, metric-driven end-refactor, or refactor subagent.
+Red-Green-Refactor cycles. Before every deterministic check it states a
+falsifiable prediction and compares it with reality. Two explicit entry points
+are installed side by side: `exact-coding` refactors inline, while
+`exact-coding-isolated-refactor` delegates the Four Rules review after every
+Green. Both use the same Predictive-TDD core, stack profiles, test-list method,
+and human-checkpoint policy. It treats domain language as the semantic anchor, tests independently changing policies with a concrete boundary trial, and keeps or narrowly undoes the result based on semantic and behavioral evidence. There is no APP mass objective or
+metric-driven end-refactor.
 
 Language and tool details live exclusively in the profiles under
 `skills/predictive-tdd/stacks/`; orchestration and method files are stack-neutral.

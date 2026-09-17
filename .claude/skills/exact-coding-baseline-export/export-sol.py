@@ -64,7 +64,7 @@ def consumer_predictive(text: str, hitl_path: str) -> str:
     text = replace_once(
         text,
         "**In this workflow the refactoring runs in this context.** Open the phase with\nthe `## Refactor` marker (see below) and emit it also when the review concludes\nthat no refactoring improves the code.",
-        f"**In this workflow the refactoring runs in this context.** After the review, consult `{hitl_path}` and apply the Refactor checkpoint for the active Autonomy Level, including when no change improves the code.",
+        f"**The invoking EXACT Coding profile selects the Refactor execution context.** Apply the Four Rules and domain-boundary contract through that profile's inline or isolated mechanism. After the review, consult `{hitl_path}` and apply the Refactor checkpoint for the active Autonomy Level, including when no change improves the code.",
         "refactor marker",
     )
     start = text.index("## Mandatory output markers\n")
@@ -204,6 +204,49 @@ mechanical ports of the same files, not claims of cross-harness validation.
 '''
 
 
+def isolated_coding_skill(body: str, harness: str) -> str:
+    mechanism = {
+        "cc": "the Agent tool with `subagent_type: refactor`",
+        "pi": "the `subagent` tool with `agent: refactor` and `agentScope: both`",
+        "oc": "the Task tool with the `refactor` custom agent",
+        "cursor": "the Task tool with the `refactor` custom agent",
+        "copilot": "the `refactor` custom agent",
+    }[harness]
+    body = body.replace("name: exact-coding\n", "name: exact-coding-isolated-refactor\n", 1)
+    body = body.replace(
+        "# EXACT Coding — Predictive TDD v1",
+        "# EXACT Coding — Predictive TDD v1 — Isolated Refactor",
+        1,
+    )
+    body = body.replace(
+        "Refactoring uses the Four Rules of Simple Design inline.",
+        "Refactoring uses the Four Rules of Simple Design in an isolated subagent.",
+        1,
+    ).replace(
+        "This\nline deliberately has no APP calculation, metric-driven end pass, or refactor\nsubagent.",
+        "This profile deliberately has no APP calculation or metric-driven end pass.",
+        1,
+    )
+    body = body.replace(
+        "   - review and refactor inline under the Four Rules,",
+        f"   - after every Green, delegate the Four Rules review through {mechanism}; invoke it even when Green changed no production code,",
+        1,
+    )
+    body = body.replace(
+        "## Human-in-the-loop",
+        "The subagent never manages checkpoints or waits for the user. The main context reads its report, verifies Green, and applies the shared Refactor checkpoint.\n\n## Human-in-the-loop",
+        1,
+    )
+    return body
+
+
+def agent_for_harness(text: str, harness: str) -> str:
+    text = re.sub(r"^tools:.*\n", "", text, count=1, flags=re.M)
+    if harness == "copilot":
+        text = text.replace("name: refactor\n", "name: refactor\n", 1)
+    return text
+
+
 def hitl(config: str) -> str:
     return '''# Human-in-the-Loop (HITL)
 
@@ -271,10 +314,13 @@ Predictive-TDD line.
 {table}
 
 The workflow creates a complete test list, then runs one-test Predictive
-Red-Green-Refactor cycles in one shared context. Before every deterministic
-check it states a falsifiable prediction and compares it with reality.
-Refactoring is inline and follows the Four Rules of Simple Design.{boundary_summary}
-There is no APP mass objective, metric-driven end-refactor, or refactor subagent.
+Red-Green-Refactor cycles. Before every deterministic check it states a
+falsifiable prediction and compares it with reality. Two explicit entry points
+are installed side by side: `exact-coding` refactors inline, while
+`exact-coding-isolated-refactor` delegates the Four Rules review after every
+Green. Both use the same Predictive-TDD core, stack profiles, test-list method,
+and human-checkpoint policy.{boundary_summary} There is no APP mass objective or
+metric-driven end-refactor.
 
 Language and tool details live exclusively in the profiles under
 `skills/predictive-tdd/stacks/`; orchestration and method files are stack-neutral.
@@ -294,17 +340,11 @@ The Guessing Game and Predictive TDD approach used here is inspired by
 '''
 
 
-def write_harness(target: Path, harness: str, predictive: str, test_list: str, stacks: dict[str, str], stamp: str, source: str) -> None:
+def write_harness(target: Path, harness: str, predictive: str, test_list: str, stacks: dict[str, str], stamp: str, source: str, refactor_agent: str, pi_extension: Path) -> None:
     names = {"cc": ".claude", "pi": ".pi", "oc": ".opencode", "cursor": ".cursor", "copilot": ".github"}
     config = names[harness]
     root = target / config
-    hitl_path = {
-        "cc": ".claude/skills/exact-coding/human-in-the-loop.md",
-        "pi": ".pi/skills/exact-coding/human-in-the-loop.md",
-        "copilot": ".github/skills/exact-coding/human-in-the-loop.md",
-        "oc": ".opencode/rules/human-in-the-loop.md",
-        "cursor": ".cursor/skills/exact-coding/human-in-the-loop.md",
-    }[harness]
+    hitl_path = f"{config}/skills/exact-coding-shared/human-in-the-loop.md"
     pred = consumer_predictive(predictive, hitl_path)
     tests = consumer_test_list(test_list, hitl_path)
     domain_boundary = (
@@ -312,6 +352,7 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
         and "#### Domain responsibility review" in predictive
     )
     body = exact_coding_skill(config, hitl_path, source, domain_boundary)
+    isolated_body = isolated_coding_skill(body, harness)
 
     for rel, content in (
         ("skills/predictive-tdd/SKILL.md", pred),
@@ -325,28 +366,45 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content)
 
-    if harness in ("cc", "pi", "copilot"):
-        (root / "skills/exact-coding").mkdir(parents=True, exist_ok=True)
-        (root / "skills/exact-coding/SKILL.md").write_text(body)
-        (root / "skills/exact-coding/human-in-the-loop.md").write_text(hitl(config))
-    elif harness == "cursor":
-        (root / "skills/exact-coding").mkdir(parents=True, exist_ok=True)
-        (root / "skills/exact-coding/SKILL.md").write_text(body)
-        (root / "skills/exact-coding/human-in-the-loop.md").write_text(hitl(config))
+    shared = root / "skills/exact-coding-shared"
+    shared.mkdir(parents=True, exist_ok=True)
+    (shared / "human-in-the-loop.md").write_text(hitl(config))
+
+    agent_path = {
+        "cc": root / "agents/refactor.md",
+        "pi": root / "agents/refactor.md",
+        "oc": root / "agents/refactor.md",
+        "cursor": root / "agents/refactor.md",
+        "copilot": root / "agents/refactor.agent.md",
+    }[harness]
+    agent_path.parent.mkdir(parents=True, exist_ok=True)
+    agent_path.write_text(agent_for_harness(refactor_agent, harness))
+
+    if harness in ("cc", "pi", "copilot", "cursor"):
+        for name, content in (("exact-coding", body), ("exact-coding-isolated-refactor", isolated_body)):
+            skill = root / "skills" / name
+            skill.mkdir(parents=True, exist_ok=True)
+            (skill / "SKILL.md").write_text(content)
     else:
-        (root / "rules").mkdir(parents=True, exist_ok=True)
         orchestration = re.sub(r"\A---\n.*?\n---\n", "", body, count=1, flags=re.S)
+        isolated_orchestration = re.sub(r"\A---\n.*?\n---\n", "", isolated_body, count=1, flags=re.S)
         config_json = {
             "$schema": "https://opencode.ai/config.json",
             "command": {
                 "exact-coding": {
-                    "description": "Run the SOL-originated EXACT Coding Predictive TDD workflow.",
+                    "description": "Run EXACT Coding Predictive TDD with inline refactoring.",
                     "template": orchestration,
-                }
+                },
+                "exact-coding-isolated-refactor": {
+                    "description": "Run EXACT Coding Predictive TDD with an isolated refactor agent after every Green.",
+                    "template": isolated_orchestration,
+                },
             },
         }
         (root / "opencode.json").write_text(json.dumps(config_json, indent=2) + "\n")
-        (root / "rules/human-in-the-loop.md").write_text(hitl(config))
+
+    if harness == "pi":
+        shutil.copytree(pi_extension, root / "extensions/subagent")
 
     (root / "VERSION").write_text(stamp + "\n")
 
@@ -475,6 +533,9 @@ def main() -> int:
 
     predictive = (src / "skills/predictive-tdd/SKILL.md").read_text()
     test_list = (src / "skills/test-list/SKILL.md").read_text()
+    isolated_src = source_dir("exact-ptdd-v1.1-refactor-subagent-pi") / ".pi"
+    refactor_agent = (isolated_src / "agents/refactor.md").read_text()
+    pi_extension = isolated_src / "extensions/subagent"
     stack_candidates = (
         src / "skills/predictive-tdd/stacks",
         src / "skills/exact-coding-ptdd/stacks",
@@ -489,7 +550,7 @@ def main() -> int:
     if not stacks:
         raise SystemExit(f"SOL source has no stack profiles: {stacks_dir}")
     for harness in harnesses:
-        write_harness(target, harness, predictive, test_list, stacks, args.date, source)
+        write_harness(target, harness, predictive, test_list, stacks, args.date, source, refactor_agent, pi_extension)
     domain_boundary = (
         "## Mandatory domain-boundary trial" in predictive
         and "#### Domain responsibility review" in predictive

@@ -27,7 +27,7 @@ tools belong only to the selected stack profile.
 
 1. Create the complete ordered test list with every future behavior inactive,
    then predict and verify that the inactive list leaves the full suite green.
-2. Apply the Test-List checkpoint from `.claude/skills/exact-coding/human-in-the-loop.md`.
+2. Apply the Test-List checkpoint from `.claude/skills/exact-coding-shared/human-in-the-loop.md`.
 3. For exactly one behavior at a time, follow the Predictive TDD skill:
    - activate one behavior and reach behavioral Red,
    - state falsifiable predictions before deterministic checks and compare them
@@ -52,7 +52,7 @@ before continuing.
 
 ## Human-in-the-loop
 
-`.claude/skills/exact-coding/human-in-the-loop.md` is the single source of truth for checkpoints. Its default
+`.claude/skills/exact-coding-shared/human-in-the-loop.md` is the single source of truth for checkpoints. Its default
 `full-hitl` level stops after Test List, Red, and Refactor, and whenever a
 prediction is wrong. Green has no default stop.
 
