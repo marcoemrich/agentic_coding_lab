@@ -1,59 +1,32 @@
 # TODOs and Ideas - Active
 
+## Weitere Dimensionen
 
-## pi-config agent dirs read-only — done 2026-08-05, open: same hole in other harnesses
-Prio: Medium
-
-* Fixed: `.pi/agents/` and `.pi/agent/agents/` now mounted `:ro` on top of the
-  `:rw` parent, in all three compose services. A blanket `:ro` is **not**
-  possible — pi mkdir's `.pi/agent/sessions/--<cwd>--/` at startup and dies
-  with ENOENT without write access (verified in the image).
-* Background: qwen3-235b rewrote its own refactor agent and the edit escaped
-  into the host repo. See `experiments/docker/pi-config/README.md` and
-  RQ-model-quality-pi F-1.8.
-* **Still open:** the same class of hole for the other harnesses. `claude-config`
-  is mounted `:rw` at `/home/experimenter/.claude` (compose line ~30), and
-  OpenCode/cursor configs should be checked too. Whether an agent can reach
-  something durable there is unverified.
-* Keep doing: `git status --porcelain experiments/docker/pi-config/` before
-  trusting a pi batch — the overlays cover the agent dirs, not `models.json`.
-
+* Programmiersprache: Python, Rust, Haskel, Kotlin
+* Pradigm-Profile: OOP vs FP, base Immutability Profile, Calisthenics
+* FP-Stuff, check for immutabilitym pure functions
 
 ## Problem separation first
 Prio: High
 
+* ATDD Loop with Acceptance Test (matching Journeys, Matching John Oesterhoods Deep Modules)
+* Game of Life: Problem Separation
 * iTDD & more by Ralf Westphal (see his book)
 * https://ralfw.de/test-first-codierung/
 * Anti-Pattern: Pear-Programming / Ship in a bottle
-* ATDD Loop with Acceptance Test (matching Journeys, Matching John Oesterhoods Deep Modules)
 * Integration Segregation Pattern
-
-## Kata Specific Metrics
-Prio: Medium
-
-* Game of Life: Problem Separation
-* Mars Rover: Command-Lamdas
 
 ## weitere Workflows
 
- * explizite Pre + Post-Steps
  * Functional Domain Modelling
-
+ * explizite Pre + Post-Steps
 
 ## Encode well know TDD workflows aka schools in rules
 
 * TDD schools
 * Nullables / Portland School of TDD
 * Ted Young description of TDD
-* TCR and TDD variants of TCR
 * Books: Fields, Roy Osheroove, J.B. Rainsberger,
-
-## Use Architecture Concepts
-
-* Quality Attributes
-* Diagramms
-* Design Styles
-* Arch. Pattterns
 
 ## Add in more Refactoring rules and Security Stuff
 
@@ -61,14 +34,6 @@ Prio: Medium
 * https://github.com/anthropics/skills/tree/main/skills
 * Scanner
 * Research
-
-## Metrics
-
-* Smell-Detect-Agent bauen mit Wissen aus Büchern
-* research from science papers about TDD Studies
-* Typing Strength
-* Interdeps
-
 
 ## PBT
 
@@ -79,11 +44,6 @@ Prio: Medium
 ## Other Tools
 
 * nWave
-
-## Weitere Dimensionen
-
- * Paradimen: FP, OOP (Callisthenics)
- * Programmiersprache: Rust, Haskel, Kotlin, Python
 
 ## Doku-Aufräumen (Phase 2)
 
@@ -112,11 +72,3 @@ Mehr Post-Toolings (test vs. bei jedem Refactoring):
 
 # Optmization Ideas
  * use Hooks
-
-
-## Merge with other science framework or take ideas from it
-Prio: Low
-
-* https://github.com/vercel-labs/agent-eval/
-* /plugin install plugin-eval@claude-code-workflows
-* Harbor https://www.harborframework.com
