@@ -1,19 +1,19 @@
 # RQ-v62-cleanup-validation-v61-with-why — Aggregation
 
-_Veraendern die drei v6.5.1-Audit-Cleanups (Konsistenz, refactor.md-Entkopplung, tdd-experiment-mode-Reframing) — angewendet auf exact-hybrid-v3-with-why-cc — messbar das Workflow-Verhalten auf claim-office, oder ist exact-hybrid-v4-cleaned-cc eine verhalts-aequivalente Hygiene-Variante der neuen Default-Baseline?_
+_Do the three v6.5.1 audit cleanups (consistency, refactor.md decoupling, tdd-experiment-mode reframing) — applied to exact-hybrid-v3-with-why-cc — measurably change workflow behaviour on claim-office, or is exact-hybrid-v4-cleaned-cc a behaviourally equivalent hygiene variant of the new default baseline?_
 
-Generated: 2026-09-11T07:48:52Z
+Generated: 2026-09-17T01:17:54Z
 
 Cells declared: 2 · matched runs: 16 · min_replicates: 8
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
 | claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking | 8 | 8 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-7-portkey-no-thinking | 8 | 8 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

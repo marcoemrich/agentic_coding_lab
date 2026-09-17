@@ -2,11 +2,11 @@
 
 _Does the prompt style (prose/user-story/example-mapping) influence correctness and code quality on a training-known kata (Game of Life) — and is this effect model-dependent?_
 
-Generated: 2026-09-11T07:48:29Z
+Generated: 2026-09-17T01:17:35Z
 
 Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -20,7 +20,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 | game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking | 5 | 5 | ✅ |
 | game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

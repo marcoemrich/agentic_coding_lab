@@ -2,11 +2,11 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in correctness and TDD discipline on claim-office-example-mapping with the exact-hybrid-v4-cleaned-pi workflow?_
 
-Generated: 2026-09-11T07:48:40Z
+Generated: 2026-09-17T01:17:44Z
 
 Cells declared: 18 · matched runs: 90 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -18,8 +18,8 @@ Cells declared: 18 · matched runs: 90 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k2-7 | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k2-7-no-thinking | 5 | 5 | ✅ |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3 | 5 | 2 | ⚠️ nur 2/5 ohne Timeout |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3-no-thinking | 5 | 4 | ⚠️ nur 4/5 ohne Timeout |
+| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3 | 5 | 2 | ⚠️ only 2/5 without timeout |
+| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3-no-thinking | 5 | 4 | ⚠️ only 4/5 without timeout |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | deepseek-v4-pro | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | deepseek-v4-pro-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b | 5 | 5 | ✅ |
@@ -29,7 +29,7 @@ Cells declared: 18 · matched runs: 90 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-terra | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

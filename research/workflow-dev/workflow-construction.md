@@ -1,134 +1,134 @@
 # Workflow Construction
 
-Single Source of Truth für TDD-Workflows in diesem Repo. Drei Ebenen in einem File:
+Single source of truth for TDD workflows in this repo. Three levels in one file:
 
-1. **[Inventar](#inventar)** — welche Workflow-Varianten sind aktiv, wofür?
-2. **[Methodik](#methodik)** — wie baut man einen neuen Workflow / eine Reduktions-RQ?
-3. **[Tragende Befunde](#tragende-befunde)** — welche RQ-Ergebnisse stützen die Methodik?
+1. **[Inventory](#inventory)** — which workflow variants are active, and for what?
+2. **[Methodology](#methodology)** — how do you build a new workflow / a reduction RQ?
+3. **[Supporting findings](#supporting-findings)** — which RQ results back the methodology?
 
-Schwester-Dokus:
-- `experiments/workflows/MARKERS.md` — harte Parser-Anforderungen (Skill-Aufrufe, "Red Phase Complete"-String, Prediction-Lines, `experiment-done.txt`).
-- `research/workflow-dev/model-recommendation-matrix.md` — pro Modell empfohlener Workflow.
-- `research/kata-design/kata-construction.md` — Kata-Methodik.
+Sibling docs:
+- `experiments/workflows/MARKERS.md` — hard parser requirements (skill invocations, "Red Phase Complete" string, prediction lines, `experiment-done.txt`).
+- `research/workflow-dev/model-recommendation-matrix.md` — recommended workflow per model.
+- `research/kata-design/kata-construction.md` — kata methodology.
 
-Die Workflow-Files der vor-hybrid-v2-Generation + erste Reduktions-Kette (v6.5er, v6.6-leaner) liegen unter `experiments/workflows/_archive/`. Die zugehörigen RQ-Verzeichnisse der oneshot-v1-Generation wurden am 2026-08-11 gelöscht (Commit `953841cb`) und sind nur noch über die Git-Historie erreichbar. Befunde aus dieser Kette sind nicht in dieses File übernommen — die Kette war korrektheits-defekt (siehe Anti-Pattern "Bundle-Reduktion ohne Korrektheits-Stichprobe" unten), und alle Folge-Iterationen liefen auf gebrochenem Workflow. Die jetzige hybrid-v2-Linie ist der Neustart auf reparierter Basis.
+The workflow files of the pre-hybrid-v2 generation + the first reduction chain (v6.5.x, v6.6-leaner) live under `experiments/workflows/_archive/`. The corresponding RQ directories of the oneshot-v1 generation were deleted on 2026-08-11 (commit `953841cb`) and are only reachable through the git history. Findings from that chain are not carried into this file — the chain was correctness-defective (see the anti-pattern "Bundle reduction without a correctness sample" below), and all subsequent iterations ran on a broken workflow. The current hybrid-v2 line is the restart on a repaired base.
 
 ---
 
-## Inventar
+## Inventory
 
-### Generationen — Architektur-Achse
+### Generations — architecture axis
 
-| Variante | Mechanik | Status / Verwendung |
+| Variant | Mechanics | Status / use |
 |---|---|---|
-| `baseline-oneshot-v1-cc` | Single-Shot, keine TDD-Struktur | Kontrolle für TDD-Effekt |
-| `baseline-iterative-v1-cc` | Iterativ, keine expliziten Phasen | Kontrolle |
-| `baseline-inline-tdd-v1-cc` | Inline TDD, kein Skill, kein Subagent | TDD-Basislinie |
-| `exact-subagents-v1-cc` / `exact-subagents-v2-testlist-fix-cc` | Alle Phasen als Task-Subagents (isoliert) | maximale Isolation; subagents-v2 hat zusätzlich "Cover every spec example"-Pflicht im test-list |
-| `exact-single-context-v1-cc` / `exact-single-context-v2-testlist-fix-cc` | Alles in einem Context | niedrigste Tokens, Disziplin-Kollaps auf langen Katas |
-| `exact-hybrid-v1-cc` | Red/Green als Skills, Refactor als isolierter Subagent | erste Hybrid-Variante (Korrektheit-defekt nach Skill-Creator-Eingriff in v6.5-lean, siehe Anti-Patterns) |
-| `exact-hybrid-v2-testlist-fix-cc` | exact-hybrid-v1-cc + Test-List-Scope-Fix | **Aktuelle Default-Basis für Reduktions-RQs** |
-| `exact-green-refactor-v1-cc` / `v7.1-...-testlist-scope-fix` | Green und Refactor isoliert | Pareto-dominiert von hybrid-v1 (RQ-context, oneshot-v1-Archiv) |
-| `baseline-end-refactor-only-v1-agent-cc` / `baseline-end-refactor-only-v1-native-cc` | Oneshot + End-Refactor (Vibe-Coding-Kontrolle) | Kontrolle für "periodisches TDD vs End-Refactor" |
-| `basic-sol-tdd-*` (8 Varianten) | Predictive TDD aus dem `sol_tdd`-Projekt. Referenz `exact-sol-v1-pi` (pi-nativ, Refactor inline), Subagent-Arm, vier APP-/Mess-Varianten, Claude-Code-Port, vollständige Stackprofil-Extraktion | Fremd-Methodik-Import, siehe eigener Abschnitt unten |
-| `exact-tcr-v1-pi` | Vollständige inaktive Test-Liste, danach native-Git TCRDD mit Commit-or-Revert für Red, Green und Refactor im gemeinsamen pi-Kontext | First-Party-Lab-Port aus `exact-coding-exercises/.pi` Version `2026-09-13`; autonom, mit P1–P7-Markern; empirische Referenz in RQ-1.7 |
-| `exact-tcr-v1.1-srp-pi` | `exact-tcr-v1-pi` plus qualitative SRP-Prüfung im Refactor; konkrete TypeScript/Vitest- und Java/JUnit/Maven-Anwendung nur in den Stackprofilen | Faktor-isolierte SRP-Variante; `RQ-srp-effect-exact-tcr-sol`: Korrektheit intakt, kein konsistenter Dekompositions-/Komplexitätsgewinn, auf GoL mehr Production LoC, auf claim-office weniger Tokens/Kosten; nicht als Upgrade empfohlen |
-| `exact-tcr-v1.2-domain-responsibility-pi` | Operationalisiert SRP als verpflichtenden Domain-Responsibility-Review: Verantwortung in Ubiquitous Language benennen, unabhängige Policy-Änderungsachsen prüfen und intent-revealing Domain-Grenzen ausdrücklich vor Fewest Elements priorisieren; keine DDD-Pattern-Pflicht, Stackprofile gegenüber v1.1 unverändert | `RQ-srp-effect-exact-tcr-sol`: auf claim-office kürzere durchschnittliche Funktionen und mehr policy-benannte Refactor-Commits als v1.1 bei voller Korrektheit, aber kein Spitzen-Komplexitätsgewinn und Kosten zurück auf v1-Niveau; auf GoL kein Dekompositionsgewinn |
-| `exact-tcr-v1.3-domain-boundary-trial-pi` | v1.2 plus verpflichtender Versuch des stärksten plausiblen Domain-Boundary-Kandidaten durch TCR commit-or-revert; Änderungsgegenprobe gegen breite Oberbegriffe, konkrete semantische Moves und domänenspezifischer Vorher/Nachher-Nachweis; Stackprofile unverändert | `RQ-srp-effect-exact-tcr-sol`: auf claim-office klare Dekomposition (Ø LoC/Funktion 7.03→5.67, Complexity Peak 17.2→14.2, Refactor-Commits 3.8→9.4) bei voller Korrektheit, aber +35 % Dauer und +29 % Production LoC; auf GoL kein aufgelöster Qualitätsgewinn; quality-orientierte Claim-Office-Variante, kein allgemeiner Default |
-| `exact-tcr-v1.4-domain-boundary-app-pi` | v1.3 plus qualitativer APP-Review nach der fachlichen Grenzentscheidung und eigener APP-TCR-Trial; Rules 1–3 und retained domain boundaries haben Vorrang, keine vollständige In-Run-Messung; Stackprofile unverändert | `RQ-srp-effect-exact-tcr-sol` | Kein APP-Gewinn: Code Mass auf claim-office 568.4→571.8, auf GoL 165.8→163.2, jeweils innerhalb der Streuung; volle Correctness und Dekomposition bleiben erhalten, claim-office Production LoC sinkt auf 134.8 bei höherer Varianz. Guard sicher, APP weitgehend inert; kein Default |
+| `baseline-oneshot-v1-cc` | single-shot, no TDD structure | control for the TDD effect |
+| `baseline-iterative-v1-cc` | iterative, no explicit phases | control |
+| `baseline-inline-tdd-v1-cc` | inline TDD, no skill, no subagent | TDD baseline |
+| `exact-subagents-v1-cc` / `exact-subagents-v2-testlist-fix-cc` | all phases as Task subagents (isolated) | maximum isolation; subagents-v2 additionally has the "Cover every spec example" obligation in the test-list |
+| `exact-single-context-v1-cc` / `exact-single-context-v2-testlist-fix-cc` | everything in one context | lowest tokens, discipline collapse on long katas |
+| `exact-hybrid-v1-cc` | red/green as skills, refactor as an isolated subagent | first hybrid variant (correctness-defective after the skill-creator intervention in v6.5-lean, see anti-patterns) |
+| `exact-hybrid-v2-testlist-fix-cc` | exact-hybrid-v1-cc + test-list scope fix | **current default base for reduction RQs** |
+| `exact-green-refactor-v1-cc` / `v7.1-...-testlist-scope-fix` | green and refactor isolated | Pareto-dominated by hybrid-v1 (RQ-context, oneshot-v1 archive) |
+| `baseline-end-refactor-only-v1-agent-cc` / `baseline-end-refactor-only-v1-native-cc` | oneshot + end refactor (vibe-coding control) | control for "periodic TDD vs end refactor" |
+| `basic-sol-tdd-*` (8 variants) | Predictive TDD from the `sol_tdd` project. Reference `exact-sol-v1-pi` (pi-native, refactor inline), subagent arm, four APP/measurement variants, Claude Code port, full stack-profile extraction | foreign-methodology import, see its own section below |
+| `exact-tcr-v1-pi` | complete inactive test list, then native-git TCRDD with commit-or-revert for red, green and refactor in the shared pi context | first-party lab port from `exact-coding-exercises/.pi` version `2026-09-13`; autonomous, with P1–P7 markers; empirical reference in RQ-1.7 |
+| `exact-tcr-v1.1-srp-pi` | `exact-tcr-v1-pi` plus a qualitative SRP check in the refactor; concrete TypeScript/Vitest and Java/JUnit/Maven application only in the stack profiles | factor-isolated SRP variant; `RQ-srp-effect-exact-tcr-sol`: correctness intact, no consistent decomposition/complexity gain, more Production LoC on GoL, fewer tokens/cost on claim-office; not recommended as an upgrade |
+| `exact-tcr-v1.2-domain-responsibility-pi` | operationalises SRP as a mandatory domain-responsibility review: name the responsibility in ubiquitous language, check independent policy change axes and explicitly prioritise intent-revealing domain boundaries over Fewest Elements; no DDD pattern obligation, stack profiles unchanged versus v1.1 | `RQ-srp-effect-exact-tcr-sol`: on claim-office shorter average functions and more policy-named refactor commits than v1.1 at full correctness, but no Complexity Peak gain and cost back at v1 level; no decomposition gain on GoL |
+| `exact-tcr-v1.3-domain-boundary-trial-pi` | v1.2 plus a mandatory trial of the strongest plausible domain-boundary candidate through TCR commit-or-revert; change counter-check against broad umbrella terms, concrete semantic moves and domain-specific before/after evidence; stack profiles unchanged | `RQ-srp-effect-exact-tcr-sol`: on claim-office clear decomposition (avg LoC/function 7.03→5.67, Complexity Peak 17.2→14.2, refactor commits 3.8→9.4) at full correctness, but +35 % duration and +29 % Production LoC; no resolved quality gain on GoL; quality-oriented claim-office variant, not a general default |
+| `exact-tcr-v1.4-domain-boundary-app-pi` | v1.3 plus a qualitative APP review after the domain boundary decision and its own APP TCR trial; rules 1–3 and retained domain boundaries take precedence, no full in-run measurement; stack profiles unchanged | `RQ-srp-effect-exact-tcr-sol` | No APP gain: Code Mass (APP) on claim-office 568.4→571.8, on GoL 165.8→163.2, each within the spread; full correctness and decomposition are preserved, claim-office Production LoC drops to 134.8 at higher variance. Guard safe, APP largely inert; no default |
 
-### `basic-sol-tdd`-Paar (Import aus `sol_tdd`, pi)
+### `basic-sol-tdd` pair (import from `sol_tdd`, pi)
 
-Quelle sind die Skills `predictive-tdd` und `test-list` des `sol_tdd`-Projekts.
-Die Linie steht **außerhalb** der oneshot-v1–v9-Kette: sie ist kein Reduktionsschritt,
-sondern eine unabhängig entstandene TDD-Methodik, die hier messbar gemacht wurde.
+The source is the `predictive-tdd` and `test-list` skills of the `sol_tdd` project.
+The line sits **outside** the oneshot-v1–v9 chain: it is not a reduction step,
+but an independently developed TDD methodology that was made measurable here.
 
-Inhaltliche Unterschiede zur hybrid-v1-Linie:
+Content differences to the hybrid-v1 line:
 
-- **Predictions sind Prosa, kein Formular.** Die Vorschrift lautet "vor jedem
-  deterministischen Check eine falsifizierbare Erwartung nennen", nicht
-  "Compilation/Runtime-Block ausfüllen". Die zwei verbatim-Prediction-Zeilen
-  sind hier nur die *mechanische Zusammenfassung* der Prosa-Erwartung — nötig
-  für P5/P6, aber nicht die Methodik selbst.
-- **Refactor kennt nur die Four Rules of Simple Design.** Keine APP-Mass-Rechnung,
-  kein metric-driven End-Refactor-Pass. Damit fehlt bewusst der unter
-  "Tragende Inhalte" Punkt 4 geschützte Vorher/Nachher-Zwang — ein Unterschied,
-  den ein Vergleich gegen hybrid-v4/hybrid-v5 direkt misst.
-- **Red ist verhaltensdefiniert.** Ein gültiges Red scheitert daran, dass das
-  aktive Verhalten fehlt; das Compilation-Scaffold ist Mittel, keine eigene Phase.
+- **Predictions are prose, not a form.** The rule is "before every
+  deterministic check, state a falsifiable expectation", not
+  "fill in the compilation/runtime block". The two verbatim prediction lines
+  are only the *mechanical summary* of the prose expectation here — needed
+  for P5/P6, but not the methodology itself.
+- **Refactor only knows the Four Rules of Simple Design.** No APP mass computation,
+  no metric-driven end-refactor pass. This deliberately omits the before/after
+  obligation protected under "Supporting content" point 4 — a difference
+  that a comparison against hybrid-v4/hybrid-v5 measures directly.
+- **Red is behaviour-defined.** A valid red fails because the
+  active behaviour is missing; the compilation scaffold is a means, not a phase of its own.
 
-Zwei Lab-Anpassungen gegenüber der Quelle: die Human-in-the-Loop-Autonomie-
-Vereinbarung entfiel (der Harness läuft unbeaufsichtigt; die Eskalationsregeln
-lösen sich stattdessen zu "verteidigbarste Lesart nennen und weitermachen" auf),
-und die Marker aus `MARKERS.md` kamen hinzu. Beides liegt im LAB-ONLY-Block bzw.
-ist dort dokumentiert, sodass ein Export die Quell-Semantik wiederherstellen kann.
+Two lab adaptations versus the source: the human-in-the-loop autonomy
+agreement was dropped (the harness runs unattended; the escalation rules
+instead resolve to "name the most defensible reading and continue"),
+and the markers from `MARKERS.md` were added. Both live in the LAB-ONLY block or
+are documented there, so that an export can restore the source semantics.
 
-Die beiden Varianten unterscheiden sich **ausschließlich** darin, wo der
-Four-Rules-Review läuft — inline im Hauptkontext (`## Refactor`-Textmarker) oder
-in einem isolierten `subagent` (Tool-Call als Signal). Das ist die Architektur-
-Achse, isoliert auf einer fremden Methodik.
+The two variants differ **solely** in where the
+Four-Rules review runs — inline in the main context (`## Refactor` text marker) or
+in an isolated `subagent` (tool call as the signal). That is the architecture
+axis, isolated on a foreign methodology.
 
-#### Verhältnis zu RQ-architecture-axis-sol-pi (1.14) — bindend
+#### Relation to RQ-architecture-axis-sol-pi (1.14) — binding
 
-Die Architektur-Achse ist auf Sol/pi **bereits gemessen**: RQ-1.14, 50 Runs,
-10 Zellen × n=5, inline-tdd-v1 / subagents-v2 / single-context-v2 / hybrid-v2 / hybrid-v6 × claim-office + game-of-life,
-Prompt-Stil `example-mapping`, Modell `gpt-5-6-sol`. Wer das `basic-sol-tdd`-Paar
-auswertet, muss diese RQ zuerst lesen — sie setzt den Rahmen.
+The architecture axis is **already measured** on Sol/pi: RQ-1.14, 50 runs,
+10 cells × n=5, inline-tdd-v1 / subagents-v2 / single-context-v2 / hybrid-v2 / hybrid-v6 × claim-office + game-of-life,
+prompt style `example-mapping`, model `gpt-5-6-sol`. Anyone evaluating the `basic-sol-tdd` pair
+must read that RQ first — it sets the frame.
 
-Ihr Kernbefund (F-1.6) ist schärfer als ein bloßes Caveat: auf game-of-life
-gewinnt **strukturloses inline-tdd-v1 fast jede Qualitätsmetrik** gegen jede Architektur,
-bei 100 % Korrektheit in allen Zellen und 2.8–4.1× geringeren Kosten. Auf
-claim-office erreicht inline-tdd-v1 ebenfalls 100 % `verification_pct` — bei 229 s gegen
-1185 s (hybrid-v2) und $1.18 gegen $9.52. Die RQ hatte diesen Ausgang als H4-Counter-Case
-vorab benannt: dann ist die ehrliche Empfehlung inline-tdd-v1.
+Its core finding (F-1.6) is sharper than a mere caveat: on game-of-life,
+**structureless inline-tdd-v1 wins nearly every quality metric** against every architecture,
+at 100 % correctness in all cells and 2.8–4.1× lower cost. On
+claim-office, inline-tdd-v1 also reaches 100 % `verification_pct` — at 229 s against
+1185 s (hybrid-v2) and $1.18 against $9.52. The RQ had named this outcome in advance as the H4 counter case:
+in that event the honest recommendation is inline-tdd-v1.
 
-**Was das Paar trotzdem hinzufügt.** RQ-1.14 variiert die Architektur *innerhalb*
-der opus-Linie; der Schritt single-context-v2 → hybrid-v2 ändert Refactor-Isolation **und**
-Skill-Struktur zugleich. Das `basic-sol-tdd`-Paar hält eine fremde Methodik
-konstant und variiert **ausschließlich** inline-vs-Subagent. Damit isoliert es
-den Refactor-Isolations-Effekt, der in RQ-1.14 konfundiert ist.
+**What the pair nevertheless adds.** RQ-1.14 varies the architecture *within*
+the opus line; the step single-context-v2 → hybrid-v2 changes refactor isolation **and**
+skill structure at once. The `basic-sol-tdd` pair holds a foreign methodology
+constant and varies **only** inline vs subagent. This isolates
+the refactor-isolation effect that is confounded in RQ-1.14.
 
-Anschluss an eine konkrete offene Stelle in F-1.6: dort liefert der isolierte
-Refactor-Subagent (hybrid-v2) auf Sol *nicht* die Extraktion, für die er existiert —
-inspizierte Runs lassen eine dreifach verschachtelte Schleife stehen, die der
-inline-tdd-v1-Boden benennt. Auf opus-4-7 extrahiert derselbe Subagent (F-1.10). F-1.6 nennt
-das eine Modell-Architektur-Interaktion. Das Paar prüft, ob der Effekt auch
-auftritt, wenn der Refactor-Auftrag aus einer anderen Methodik kommt (Four Rules
-ohne APP statt hybrid-v1-Refactor-Agent).
+Connection to a concrete open point in F-1.6: there the isolated
+refactor subagent (hybrid-v2) does *not* deliver on Sol the extraction it exists for —
+inspected runs leave a triply nested loop standing that the
+inline-tdd-v1 floor names. On opus-4-7 the same subagent extracts (F-1.10). F-1.6 calls
+that a model-architecture interaction. The pair checks whether the effect also
+appears when the refactor brief comes from a different methodology (Four Rules
+without APP instead of the hybrid-v1 refactor agent).
 
-**Treiber-RQ: `RQ-native-sol-workflows-sub`** (`workflow-dev/1.16-native-sol-workflows-subscription/`),
-3 Zellen × 2 Katas × n=5. Sie läuft bewusst **nicht** als Erweiterung von RQ-1.14,
-sondern eigenständig auf der OpenAI-Subscription-Route (`gpt-5-6-sol-codex`):
-RQ-1.14 kontrolliert auf `gpt-5-6-sol` (Requesty), und RQ-route-effect-pi F-1.3.6
-belegt einen echten Routen-Effekt auf genau den hier gemessenen Qualitätsmetriken
-(Complexity Peak 4.0 gegen 8.0/9.0, Smell Total 0.0 gegen 2.0) — nachweislich kein
-Reasoning-Effekt. Ein Mischen würde den Lineage-Vergleich mit dem Transport
-konfundieren, und zwar in genau die Richtung, in die die native Linie erwartet wird.
+**Driver RQ: `RQ-native-sol-workflows-sub`** (`workflow-dev/1.16-native-sol-workflows-subscription/`),
+3 cells × 2 katas × n=5. It deliberately runs **not** as an extension of RQ-1.14,
+but standalone on the OpenAI subscription route (`gpt-5-6-sol-codex`):
+RQ-1.14 controls on `gpt-5-6-sol` (Requesty), and RQ-route-effect-pi F-1.3.6
+documents a real route effect on exactly the quality metrics measured here
+(Complexity Peak 4.0 against 8.0/9.0, Smell Total 0.0 against 2.0) — demonstrably not a
+reasoning effect. Mixing would confound the lineage comparison with the transport,
+and in exactly the direction in which the native line is expected to move.
 
-Deshalb fährt die neue RQ ihren **eigenen inline-tdd-v1-Boden** auf der Sub-Route mit —
-`baseline-inline-tdd-v1-pi × gpt-5-6-sol-codex` hatte null vorhandene Runs, die RQ-1.14-Zahlen
-sind nicht übertragbar. Ohne diesen Boden wäre die Kernfrage („schlägt die native
-Linie inline-tdd-v1?") nicht beantwortbar, denn F-1.6 zeigt: inline-tdd-v1 ist auf Sol kein schwacher
-Vergleichspunkt, sondern der amtierende Sieger.
+That is why the new RQ carries its **own inline-tdd-v1 floor** on the sub route —
+`baseline-inline-tdd-v1-pi × gpt-5-6-sol-codex` had zero existing runs, the RQ-1.14 numbers
+are not transferable. Without that floor the core question ("does the native
+line beat inline-tdd-v1?") would be unanswerable, because F-1.6 shows: on Sol, inline-tdd-v1 is not a weak
+comparison point but the reigning winner.
 
-Die beiden Smoke-Runs (`game-of-life-prose`) gehören in keine Zelle — falscher
-Prompt-Stil, sie belegen nur die Marker-Mechanik.
+The two smoke runs (`game-of-life-prose`) belong to no cell — wrong
+prompt style, they only document the marker mechanics.
 
-**Stand: RQ-1.16 ist beantwortet.** Der inline-tdd-v1-Boden hält *nicht* überall — auf
-claim-office schlägt die native Linie ihn deutlich, auf game-of-life und
-sphinx-score nicht. Die Konsequenzen stehen im nächsten Abschnitt.
+**Status: RQ-1.16 is answered.** The inline-tdd-v1 floor does *not* hold everywhere — on
+claim-office the native line beats it clearly, on game-of-life and
+sphinx-score it does not. The consequences are in the next section.
 
-#### `predictions_total ≈ 2 × cycle_count` gilt hier nicht
+#### `predictions_total ≈ 2 × cycle_count` does not hold here
 
-Die MARKERS.md-Konvention "zwei Prediction-Lines pro Cycle" setzt voraus, dass
-jeder Cycle ein echtes Red durchläuft. Diese Linie erzeugt systematisch
-**already-green-Cycles**: die Quell-Regel verbietet ausdrücklich, ein Failure
-zu fabrizieren, wenn eine frühere Generalisierung den nächsten Test schon
-abdeckt ("do not manufacture a failure"). Solche Cycles zählen in
-`cycle_count`, tragen aber korrekterweise keine Predictions bei.
+The MARKERS.md convention "two prediction lines per cycle" assumes that
+every cycle goes through a real red. This line systematically produces
+**already-green cycles**: the source rule explicitly forbids fabricating a failure
+when an earlier generalisation already covers the next test
+("do not manufacture a failure"). Such cycles count in
+`cycle_count`, but correctly contribute no predictions.
 
-Der Smoke-Run zeigt das deutlich (`game-of-life-prose` × `gpt-5-6-sol-codex`,
-n=1 je Variante):
+The smoke run shows this clearly (`game-of-life-prose` × `gpt-5-6-sol-codex`,
+n=1 per variant):
 
 | | `exact-sol-v1-pi` | `exact-sol-v1.1-subagent-pi` |
 |---|---|---|
@@ -136,231 +136,231 @@ n=1 je Variante):
 | `cycle_count` | 10 | 9 |
 | `refactorings_applied` | 10 | 10 |
 | `predictions_correct` / `_total` | 8 / 8 | 12 / 12 |
-| Red-Phasen gesamt | 10 | 9 |
-| davon mit formalem Prediction-Block | 4 | 6 |
-| davon explizit already-green | 3 | 3 |
-| Rest (Prosa-Prediction ohne die zwei Zeilen) | 3 | 0 |
+| red phases total | 10 | 9 |
+| of those with a formal prediction block | 4 | 6 |
+| of those explicitly already-green | 3 | 3 |
+| rest (prose prediction without the two lines) | 3 | 0 |
 | `verification_pct` | 1.0 | 1.0 |
 | `lines_of_code` | 43 | 37 |
 | `code_mass` | 142 | 144 |
 | `cognitive_max` | 4 | 4 |
-| Wallclock (Batch-Log) | 320 s | 715 s |
+| wallclock (batch log) | 320 s | 715 s |
 | `cost_usd` | 1.18 | 1.43 |
 
-Beide `tests_passing` true, `exit_reason: ok`. Bei n=1 je Zelle ist davon nur
-die Marker-Mechanik belastbar, nicht der Qualitäts- oder Kostenunterschied —
-der Subagent-Arm kostet hier gut das Doppelte an Wallclock, was zur bekannten
-Architektur-Kostenkurve passt, aber bei einem Run keine Aussage trägt.
+Both `tests_passing` true, `exit_reason: ok`. At n=1 per cell only
+the marker mechanics are load-bearing, not the quality or cost difference —
+the subagent arm costs roughly twice the wallclock here, which fits the known
+architecture cost curve but carries no claim at a single run.
 
-Die Lücke zwischen Red-Phasen und Prediction-Blöcken hat **zwei** Ursachen, die
-man auseinanderhalten muss:
+The gap between red phases and prediction blocks has **two** causes that
+must be kept apart:
 
-1. **Already-green (3 von 10 bzw. 3 von 9) — methodisch korrekt.** Die
-   Quell-Regel verbietet, ein Failure zu fabrizieren; der Workflow schreibt
-   für diesen Fall einen eigenen Block ohne Prediction-Zeilen vor.
-2. **Prosa-Prediction ohne die zwei formalen Zeilen (3 von 10 in Variante A,
-   0 in Variante B) — echter Compliance-Verlust.** Das Modell formuliert die
-   Erwartung als Fließtext ("I predict TypeScript resolution succeeds …") und
-   liefert den `Red Phase Complete:`-Block nicht nach. Diese Cycles hätten
-   Predictions tragen müssen.
+1. **Already-green (3 of 10 resp. 3 of 9) — methodologically correct.** The
+   source rule forbids fabricating a failure; for this case the workflow prescribes
+   its own block without prediction lines.
+2. **Prose prediction without the two formal lines (3 of 10 in variant A,
+   0 in variant B) — a genuine compliance loss.** The model states the
+   expectation as running text ("I predict TypeScript resolution succeeds …") and
+   does not follow up with the `Red Phase Complete:` block. These cycles should have
+   carried predictions.
 
-Punkt 2 ist der Preis dafür, dass die Quell-Methodik Predictions als Prosa
-definiert und die zwei Zeilen nur nachträglich aufgesetzt sind — anders als in
-der hybrid-v1-Linie, wo das Formular *die* Prediction ist. Sollte sich das über mehr
-Runs bestätigen, ist der Hebel der verbatim-Hinweis in `red`-Position (siehe
-"Tragende Inhalte" Punkt 2), nicht mehr Prosa.
+Point 2 is the price of the source methodology defining predictions as prose
+while the two lines are only bolted on afterwards — unlike in
+the hybrid-v1 line, where the form *is* the prediction. Should this be confirmed over more
+runs, the lever is the verbatim note in the `red` position (see
+"Supporting content" point 2), not more prose.
 
-Ein niedriges `predictions_total` ist auf dieser Linie also **kein
-Compliance-Bruch**, sondern eine Eigenschaft der Methodik. Wer sie gegen die
-hybrid-v1-Linie vergleicht, muss `predictions_correct_rate` (Anteil) statt
-`predictions_total` (Absolutzahl) verwenden — sonst misst er die Häufigkeit
-already-green-Schritte statt Prediction-Disziplin.
+A low `predictions_total` on this line is therefore **not a
+compliance break** but a property of the methodology. Anyone comparing it against the
+hybrid-v1 line must use `predictions_correct_rate` (share) instead of
+`predictions_total` (absolute count) — otherwise they measure the frequency of
+already-green steps instead of prediction discipline.
 
-Nebenbefund für die pi-Parser-Mechanik: `## Red` und der zugehörige
-`Red Phase Complete:`-Block landen hier in **getrennten** Assistant-Blöcken.
-Nur weil `parse_pi_transcript.py` mit `loose_gate=True` arbeitet, werden die
-Predictions überhaupt gezählt (P5-Hinweis in `MARKERS.md`).
+Side finding for the pi parser mechanics: `## Red` and the associated
+`Red Phase Complete:` block land in **separate** assistant blocks here.
+Only because `parse_pi_transcript.py` works with `loose_gate=True` are the
+predictions counted at all (P5 note in `MARKERS.md`).
 
-#### Varianten der Sol-Linie und ihr Stand (RQ-1.16 bis RQ-1.18, RQ-1.21)
+#### Variants of the Sol line and their status (RQ-1.16 through RQ-1.18, RQ-1.21)
 
-Aus dem Paar sind zehn Workflows geworden. Sie teilen Methodik, Marker und die
-beiden Lab-Anpassungen und unterscheiden sich im Refactor-Auftrag, darin, wo er
-läuft, oder in der Vollständigkeit der bereits vorhandenen Stackprofil-Grenze.
-`exact-sol-v1.3-stack-profile-pi` verändert keinen Refactor-Auftrag: Die Variante
-verschiebt nur die verbliebenen TypeScript/Vitest-Details aus `AGENTS.md` und dem
-Test-List-Skill in das Stackprofil. `RQ-stack-profile-extraction-sol` hat auf zwei
-Katas bei je n=5 pro Zelle keine Korrektheits- oder Completion-Regression gefunden
-und stützt die Variante weiterhin als Lean-/Budget-Linie. Die Zahlen der Refactor-Varianten
-unten stammen aus `claim-office-example-mapping` × `gpt-5-6-sol-codex`
-(OpenAI-Subscription-Route), n=5 je Zelle; der Stackprofil-Befund umfasst zusätzlich
-game-of-life und wird kata-getrennt berichtet.
+The pair has grown into ten workflows. They share the methodology, markers and the
+two lab adaptations and differ in the refactor brief, in where it
+runs, or in the completeness of the already existing stack-profile boundary.
+`exact-sol-v1.3-stack-profile-pi` changes no refactor brief: the variant
+only moves the remaining TypeScript/Vitest details out of `AGENTS.md` and the
+test-list skill into the stack profile. `RQ-stack-profile-extraction-sol` found no
+correctness or completion regression on two katas at n=5 per cell
+and continues to support the variant as the lean/budget line. The numbers of the refactor variants
+below come from `claim-office-example-mapping` × `gpt-5-6-sol-codex`
+(OpenAI subscription route), n=5 per cell; the stack-profile finding additionally covers
+game-of-life and is reported per kata.
 
-| Variante | Was anders vs `exact-sol-v1-pi` | Treiber-RQ | Kernbefund |
+| Variant | What differs vs `exact-sol-v1-pi` | Driver RQ | Core finding |
 |---|---|---|---|
-| `exact-sol-v1-pi` | — (Referenz: Refactor inline, nur Four Rules, keine Mass-Metrik) | [RQ-1.16](1.16-native-sol-workflows-subscription/findings.md), [RQ-1.17](1.17-app-vs-four-rules-sol/findings.md) | Empirische Referenz und Elternvariante der Lean-/Budget-Linie; beste oder gleichauf-beste Dekomposition im ursprünglichen Refactor-Variantenfeld bei 100 % Korrektheit |
-| `exact-sol-v1.1-subagent-pi` | Four-Rules-Review im isolierten `subagent` statt inline | [RQ-1.16](1.16-native-sol-workflows-subscription/findings.md) | **Verworfen.** Kein Qualitätsvorteil auf keiner der drei Katas, 1.9–2.7× Wallclock, letzter Platz bei externer Korrektheit auf beiden novellen Katas (F-1.16.3, F-1.16.4, F-1.16.8) |
-| `exact-sol-v1.2-app-pi` | APP-Mass unter Rule 4 subordiniert, qualitativ; Rule-Reihenfolge explizit als bindend markiert | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Kein Gewinn. Verhindert den APP-Schaden (F-1.17.1), erzeugt aber keinen Vorteil — und ist mit 1226 s die **langsamste** Zelle des Feldes bei den wenigsten Tokens (F-1.18.1, F-1.18.4) |
-| `exact-sol-v1.2.1-measured-model-pi` | + Vorher/Nachher-Messung, Modell rechnet alle drei Metriken von Hand | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Nimmt `cognitive_max`/`cognitive_avg`/`mccabe_max` — für +16 % Wallclock und +25 % Tokens (F-1.18.2) |
-| `exact-sol-v1.2.2-measured-eslint-pi` | + ESLint für cognitive/McCabe, Mass weiter von Hand | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Schlechteste Dekomposition der Mess-Arme bei +31 % Wallclock und +44 % Tokens |
-| `exact-sol-v1.2.3-measured-tool-pi` | + ESLint **und** AST-Skript (`.pi/tools/app-mass.mjs`); Modell rechnet nichts | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Teuerste Zelle (8.22 M Tokens, +78 %) ohne besseres Messergebnis als Handrechnung (F-1.18.3) |
-| `exact-sol-v1-cc` | Port auf Claude Code (`.claude/commands/` + `rules/`) statt `.pi/skills/` | — | Andere Harness und andere Route. Runs existieren auf `opus-5-no-thinking` und `opus-4-8-no-thinking`; **nicht** mit den pi-Zellen poolen |
-| `exact-sol-v1.3-stack-profile-pi` | Verbleibende TS/Vitest-Details in das vorhandene Stackprofil verschoben; keine neue Laufzeitgrenze | [RQ-stack-profile-extraction-sol](1.21-stack-profile-extraction-sol/findings.md) | **Lean-/Budget-Linie.** 20/20 frische Runs intern und extern korrekt; Completion invariant; übrige Unterschiede überwiegend innerhalb der Replikatstreuung, auf claim-office niedrigerer Complexity Peak |
-| `exact-sol-v1.4-domain-boundary-trial-pi` | Auf dem local-Git-kontrollierten v1.3-Snapshot: derselbe Domain-Responsibility-/Boundary-Trial wie exact-tcr-v1.3, aber über Predictive predict/check/undo ohne TCR-Method-Commits; Stackprofile unverändert | `RQ-srp-effect-exact-tcr-sol` | Volle Korrektheit; auf claim-office nützliche, aber variable Zerlegung (13.0 ± 2.2 Funktionen) und schneller als TCR + Trial, während TCR + Trial konsistenter und stärker zerlegt (15.4 ± 0.9, niedrigerer `mccabe_avg`); auf GoL keine aufgelöste Methodendifferenz. Kein allgemeiner Ersatz der Predictive Main Line |
-| `exact-sol-v1.5-tcr-parity-domain-trial-pi` | Direkter Methodentransfer von exact-tcr-v1.3: vollständiger Testlisten-, Domain-Boundary-, Stack- und Lab-Vertrag bleibt erhalten; nur TCR commit-or-revert wird durch Predictive prediction/check/narrow-undo ersetzt; kein APP | `RQ-tcr-ptdd-parity-claim-sol` | **Main Line für große, novelle Specs.** Reproduziert TCR auf claim-office ohne Method-Commits: Ø LoC/Funktion 5.69 vs. 5.67, Funktionen 15.6 vs. 15.4, Code Mass 564.8 vs. 568.4, Zyklen 35.2 vs. 36.0; TCR-Komplexitätsvorteile bleiben innerhalb der Streuung. Nicht-Git-Quellkontext ist der stärkere Mechanismus; Paritätsport übernimmt aber TCRs Tokenprofil |
+| `exact-sol-v1-pi` | — (reference: refactor inline, Four Rules only, no mass metric) | [RQ-1.16](1.16-native-sol-workflows-subscription/findings.md), [RQ-1.17](1.17-app-vs-four-rules-sol/findings.md) | Empirical reference and parent variant of the lean/budget line; best or joint-best decomposition in the original refactor variant field at 100 % correctness |
+| `exact-sol-v1.1-subagent-pi` | Four-Rules review in an isolated `subagent` instead of inline | [RQ-1.16](1.16-native-sol-workflows-subscription/findings.md) | **Rejected.** No quality advantage on any of the three katas, 1.9–2.7× wallclock, last place in Correctness (external) on both novel katas (F-1.16.3, F-1.16.4, F-1.16.8) |
+| `exact-sol-v1.2-app-pi` | APP mass subordinated under Rule 4, qualitative; rule order explicitly marked as binding | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | No gain. Prevents the APP damage (F-1.17.1) but produces no advantage — and at 1226 s is the **slowest** cell in the field at the fewest tokens (F-1.18.1, F-1.18.4) |
+| `exact-sol-v1.2.1-measured-model-pi` | + before/after measurement, model computes all three metrics by hand | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Takes `cognitive_max`/`cognitive_avg`/`mccabe_max` — for +16 % wallclock and +25 % tokens (F-1.18.2) |
+| `exact-sol-v1.2.2-measured-eslint-pi` | + ESLint for cognitive/McCabe, mass still by hand | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Worst decomposition of the measurement arms at +31 % wallclock and +44 % tokens |
+| `exact-sol-v1.2.3-measured-tool-pi` | + ESLint **and** AST script (`.pi/tools/app-mass.mjs`); the model computes nothing | [RQ-1.18](1.18-app-subordination-and-measurement-sol/findings.md) | Most expensive cell (8.22 M tokens, +78 %) without a better measurement result than hand computation (F-1.18.3) |
+| `exact-sol-v1-cc` | Port to Claude Code (`.claude/commands/` + `rules/`) instead of `.pi/skills/` | — | Different harness and different route. Runs exist on `opus-5-no-thinking` and `opus-4-8-no-thinking`; do **not** pool with the pi cells |
+| `exact-sol-v1.3-stack-profile-pi` | Remaining TS/Vitest details moved into the existing stack profile; no new runtime boundary | [RQ-stack-profile-extraction-sol](1.21-stack-profile-extraction-sol/findings.md) | **Lean/budget line.** 20/20 fresh runs internally and externally correct; completion invariant; remaining differences mostly within the replicate spread, lower Complexity Peak on claim-office |
+| `exact-sol-v1.4-domain-boundary-trial-pi` | On the local-git-controlled v1.3 snapshot: the same domain-responsibility/boundary trial as exact-tcr-v1.3, but via predictive predict/check/undo without TCR method commits; stack profiles unchanged | `RQ-srp-effect-exact-tcr-sol` | Full correctness; on claim-office useful but variable decomposition (13.0 ± 2.2 functions) and faster than TCR + trial, while TCR + trial decomposes more consistently and more strongly (15.4 ± 0.9, lower `mccabe_avg`); on GoL no resolved methodological difference. No general replacement for the Predictive main line |
+| `exact-sol-v1.5-tcr-parity-domain-trial-pi` | Direct method transfer from exact-tcr-v1.3: the full test-list, domain-boundary, stack and lab contract is preserved; only TCR commit-or-revert is replaced by predictive prediction/check/narrow-undo; no APP | `RQ-tcr-ptdd-parity-claim-sol` | **Main line for large, novel specs.** Reproduces TCR on claim-office without method commits: avg LoC/function 5.69 vs. 5.67, functions 15.6 vs. 15.4, Code Mass (APP) 564.8 vs. 568.4, cycles 35.2 vs. 36.0; TCR complexity advantages stay within the spread. Non-git source context is the stronger mechanism; the parity port does, however, inherit TCR's token profile |
 
-##### Was die RQs zusammen zeigen
+##### What the RQs show together
 
-**Die Linie schlägt die opus-Linie auf ihrem eigenen Terrain (RQ-1.17).** Bei konstantem
-Modell, Kata und Prompt-Stil gewinnt `exact-sol-v1-pi` jede Dekompositions-Metrik
-gegen `exact-hybrid-v4.2-phase-continuation-pi` — und gegen den inline-tdd-v1-Boden gleich mit:
+**The line beats the opus line on its own turf (RQ-1.17).** With model,
+kata and prompt style held constant, `exact-sol-v1-pi` wins every decomposition metric
+against `exact-hybrid-v4.2-phase-continuation-pi` — and against the inline-tdd-v1 floor as well:
 
-| Metrik | inline-tdd-v1 (Boden) | `exact-sol-v1-pi` | `hybrid-v4.2` (opus-Linie) | Richtung |
+| Metric | inline-tdd-v1 (floor) | `exact-sol-v1-pi` | `hybrid-v4.2` (opus line) | Direction |
 |---|---:|---:|---:|---|
-| `cc_avg_loc_per_function` | 8.45 | **6.60** | 9.52 | kleiner = besser |
-| Complexity Peak | 27.0 | **18.0** | 24.0 | kleiner = besser |
-| `cognitive_max` | 11.4 | **4.0** | 8.2 | kleiner = besser |
-| `mccabe_max` | 9.8 | **5.4** | 6.2 | kleiner = besser |
-| Smell Total | 4.2 | **0.0** | 9.6 | kleiner = besser |
-| Code Mass (APP) | 750.0 | 556.8 | **492.4** | Mechanismus-Zeuge |
+| `cc_avg_loc_per_function` | 8.45 | **6.60** | 9.52 | lower = better |
+| Complexity Peak | 27.0 | **18.0** | 24.0 | lower = better |
+| `cognitive_max` | 11.4 | **4.0** | 8.2 | lower = better |
+| `mccabe_max` | 9.8 | **5.4** | 6.2 | lower = better |
+| Smell Total | 4.2 | **0.0** | 9.6 | lower = better |
+| Code Mass (APP) | 750.0 | 556.8 | **492.4** | mechanism witness |
 
-Der Mechanismus ist der Refactor-Brief selbst. `refactor.md` der opus-Linie bepreist
-Extraktion (**Invocation (Mass: 2)**) — eine extrahierte Funktion wird doppelt
-belastet, einmal fürs Existieren und einmal je Aufrufstelle. Mass-Minimierung
-belohnt also Inlining, und die Zelle tut genau das: wenigster Code, in die wenigsten
-Stücke geschnitten (6.6 Funktionen gegen 9.8). Der eingebaute Schutz dagegen
-("Rule 2 trumps APP: Clarity over low mass") hält auf Sol nicht.
+The mechanism is the refactor brief itself. The opus line's `refactor.md` prices
+extraction (**Invocation (Mass: 2)**) — an extracted function is charged twice,
+once for existing and once per call site. Mass minimisation
+therefore rewards inlining, and the cell does exactly that: least code, cut into the fewest
+pieces (6.6 functions against 9.8). The built-in protection against this
+("Rule 2 trumps APP: Clarity over low mass") does not hold on Sol.
 
-**Nichts, was seither draufgesetzt wurde, hat sich bezahlt gemacht (RQ-1.18).**
-Vier Varianten, alle bei 100 % Korrektheit, keine besser als die nackte Referenz:
-Die Basis hält `cc_avg_loc_per_function` (gleichauf mit Arm A, beide innerhalb 1 σ),
-`cc_median_loc_per_function`, Production LoC und Duration allein. Die Mess-Arme
-nehmen `cognitive_max` und `mccabe_max` — für +16–35 % Wallclock und +25–78 % Tokens
-gegen die Basis. F-1.18.1 in einem Satz: Subordination verhindert den Schaden,
-erzeugt aber keinen Gewinn.
+**Nothing added since then has paid off (RQ-1.18).**
+Four variants, all at 100 % correctness, none better than the bare reference:
+the base holds `cc_avg_loc_per_function` (level with arm A, both within 1 σ),
+`cc_median_loc_per_function`, Production LoC and duration on its own. The measurement arms
+take `cognitive_max` and `mccabe_max` — for +16–35 % wallclock and +25–78 % tokens
+against the base. F-1.18.1 in one sentence: subordination prevents the damage
+but produces no gain.
 
-Zwei Nebenbefunde, die über die Sol-Linie hinaus gelten:
+Two side findings that hold beyond the Sol line:
 
-- **Dauer und Tokens sind auf reasoning-on-Routen keine austauschbaren Kostenproxys
-  (F-1.18.4).** Arm A ist die langsamste Zelle bei den *wenigsten* Tokens: ein
-  längerer, präskriptiverer Brief schlägt sich als Denkzeit nieder, nicht als
-  Output-Volumen. Ein Brief-Längen-Effekt ist in der Token-Spalte unsichtbar.
-- **Prosa-Vorschriften ohne mechanische Durchsetzung werden bestenfalls teilweise
-  befolgt (F-1.18.5).** Alle drei Mess-Arme waren angewiesen, *jedes* Refactoring mit
-  einer Messung zu klammern; ein B1-Run lieferte einen einzigen Messblock auf 30
-  Refactorings, ein anderer 46 auf 32. Die Effekte in F-1.18.2/F-1.18.3 sind damit
-  Untergrenzen. Der Hebel wäre ein Marker pro Messung — so wie die Phasen-Marker,
-  ohne die der Parser einen Run verwirft.
+- **Duration and tokens are not interchangeable cost proxies on reasoning-on routes
+  (F-1.18.4).** Arm A is the slowest cell at the *fewest* tokens: a
+  longer, more prescriptive brief shows up as thinking time, not as
+  output volume. A brief-length effect is invisible in the token column.
+- **Prose rules without mechanical enforcement are followed partially at best
+  (F-1.18.5).** All three measurement arms were instructed to bracket *every* refactoring with
+  a measurement; one B1 run delivered a single measurement block across 30
+  refactorings, another 46 across 32. The effects in F-1.18.2/F-1.18.3 are therefore
+  lower bounds. The lever would be a marker per measurement — like the phase markers,
+  without which the parser discards a run.
 
-##### Empfehlung
+##### Recommendation
 
-- **Große, novelle Specs (claim-office-artig) auf Sol/Subscription: `exact-sol-v1.5-tcr-parity-domain-trial-pi`.**
-  Die Predictive-TDD-Linie übernimmt den vollständigen Testlisten-, Stack- und
-  Domain-Boundary-Vertrag von TCR-v1.3, ersetzt aber commit-or-revert durch
-  prediction/check/narrow-undo. Auf Claim Office hält sie 5/5 vollständige Correctness
-  und erreicht bei praktisch gleicher Wallclock wie die schlanke v1.3-Main-Line eine
-  stärkere fachliche Zerlegung (`cc_avg_loc_per_function` 5.69 statt 7.69); der Preis
-  sind rund 32 % mehr Tokens. RQ-tcr-ptdd-parity-claim-sol zeigt zugleich, dass
-  TCR-Method-Commits für diese durchschnittliche Zerlegung nicht notwendig sind.
-- **Kleine oder trainingsbekannte Katas (game-of-life, sphinx-score) auf Sol/Subscription:
-  `baseline-inline-tdd-v1-pi`.** Die native Linie schlägt den Boden dort nicht und kostet 3.2×
-  (GoL, F-1.16.2) bzw. 3.6× (sphinx, F-1.16.7) mehr. Auf sphinx aus einem anderen Grund
-  als auf GoL: dort lösen die Metriken überhaupt nichts auf.
-- **Die älteren Subagent-, APP- und Messvarianten sind nicht als Default empfohlen.**
-  Der Subagent-Arm ist verworfen, die vier APP-/Messvarianten sind kostenneutral bis
-  teurer ohne Qualitätsgegenwert. Der Domain-Boundary-Trial der v1.5-Main-Line ist
-  davon getrennt: Er materialisiert fachliche Grenzen und ist durch die direkte
-  TCR/PTDD-Paritätsprobe gestützt.
-- **`sphinx-score` nicht für Workflow-Vergleiche auf Sol verwenden** (F-1.16.7). Als
-  billige Korrektheits-Probe bleibt es brauchbar. Vor Zellen auf einem neuen
-  Kata-Modell-Paar: `cc_functions` an einem einzelnen Probe-Run prüfen — ein Mittel
-  nahe 1 heißt, dass keine Dekompositions-Metrik etwas auflösen wird.
+- **Large, novel specs (claim-office-like) on Sol/subscription: `exact-sol-v1.5-tcr-parity-domain-trial-pi`.**
+  The Predictive TDD line takes over the full test-list, stack and
+  domain-boundary contract from TCR-v1.3, but replaces commit-or-revert with
+  prediction/check/narrow-undo. On Claim Office it holds 5/5 full correctness
+  and achieves, at practically the same wallclock as the lean v1.3 main line, a
+  stronger domain decomposition (`cc_avg_loc_per_function` 5.69 instead of 7.69); the price
+  is roughly 32 % more tokens. RQ-tcr-ptdd-parity-claim-sol shows at the same time that
+  TCR method commits are not necessary for this average decomposition.
+- **Small or training-familiar katas (game-of-life, sphinx-score) on Sol/subscription:
+  `baseline-inline-tdd-v1-pi`.** The native line does not beat the floor there and costs 3.2×
+  (GoL, F-1.16.2) resp. 3.6× (sphinx, F-1.16.7) more. On sphinx for a different reason
+  than on GoL: there the metrics resolve nothing at all.
+- **The older subagent, APP and measurement variants are not recommended as a default.**
+  The subagent arm is rejected, the four APP/measurement variants are cost-neutral to
+  more expensive with no quality return. The domain-boundary trial of the v1.5 main line is
+  separate from that: it materialises domain boundaries and is backed by the direct
+  TCR/PTDD parity test.
+- **Do not use `sphinx-score` for workflow comparisons on Sol** (F-1.16.7). As a
+  cheap correctness probe it remains usable. Before cells on a new
+  kata-model pair: check `cc_functions` on a single probe run — a mean
+  near 1 means no decomposition metric will resolve anything.
 
-##### Offene Fronten
+##### Open fronts
 
-- **Modell-Achse.** Alles oben ist auf **einem** Modell gemessen (`gpt-5-6-sol-codex`).
-  [RQ-spark-vs-sol](../questions-pi/1.4-spark-vs-sol/findings.md) hat die Achse auf
-  sphinx geöffnet (Spark hält die Korrektheit nicht),
-  [RQ-astra-native-sol](../questions-pi/1.6-astra-native-sol-line/) öffnet sie auf
-  claim-office für GPT-6 Astra — und prüft damit, ob F-1.17.1 eine Eigenschaft des
-  Briefs oder eine Eigenschaft von Sol ist.
-- **Route.** Ob F-1.16.1 auf der Requesty-Route überlebt oder mit dem Routen-Effekt
-  (F-1.3.6) verschränkt ist, ist offen — die claim-office-Zellen müssten auf
-  `gpt-5-6-sol` neu laufen.
-- **Größe vs. Novelty.** Die Inversion zwischen claim-office und game-of-life ist
-  belegt, ihre Ursache nicht: `sphinx-score` war als Novelty-Kontrolle vorgesehen und
-  hat nichts aufgelöst (F-1.16.7). Eine echte Mittelgröße (`claim-office-lite`) steht aus.
-- **Woher der Vorteil der Referenz kommt** — Methodik oder Abwesenheit von APP — ist
-  nicht getrennt. Der Test wäre, den APP-Brief der opus-Linie bei konstanter Architektur
-  in die native Linie zu tauschen.
+- **Model axis.** Everything above is measured on **one** model (`gpt-5-6-sol-codex`).
+  [RQ-spark-vs-sol](../questions-pi/1.4-spark-vs-sol/findings.md) has opened the axis on
+  sphinx (Spark does not hold correctness),
+  [RQ-astra-native-sol](../questions-pi/1.6-astra-native-sol-line/) opens it on
+  claim-office for GPT-6 Astra — testing whether F-1.17.1 is a property of the
+  brief or a property of Sol.
+- **Route.** Whether F-1.16.1 survives on the Requesty route or is entangled with the route effect
+  (F-1.3.6) is open — the claim-office cells would have to rerun on
+  `gpt-5-6-sol`.
+- **Size vs. novelty.** The inversion between claim-office and game-of-life is
+  documented, its cause is not: `sphinx-score` was intended as a novelty control and
+  resolved nothing (F-1.16.7). A genuine mid-size kata (`claim-office-lite`) is outstanding.
+- **Where the reference's advantage comes from** — methodology or the absence of APP — is
+  not separated. The test would be to swap the opus line's APP brief into the native line
+  at constant architecture.
 
-### hybrid-v2-Reduktionslinie (aktuell aktiv)
+### hybrid-v2 reduction line (currently active)
 
-Alle Varianten leben unter `experiments/workflows/exact-coding/opus/exact-hybrid-v2*` und differieren nur in den fünf Workflow-Files (`commands/test-list.md`, `commands/red.md`, `commands/green.md`, `agents/refactor.md`, `rules/tdd.md`). Settings, Marker und Subagent-Mechanik identisch zu `exact-hybrid-v2-testlist-fix-cc`.
+All variants live under `experiments/workflows/exact-coding/opus/exact-hybrid-v2*` and differ only in the five workflow files (`commands/test-list.md`, `commands/red.md`, `commands/green.md`, `agents/refactor.md`, `rules/tdd.md`). Settings, markers and subagent mechanics are identical to `exact-hybrid-v2-testlist-fix-cc`.
 
-| Variante | Was anders vs Basis | Treiber-RQ | Kernbefund |
+| Variant | What differs vs base | Driver RQ | Core finding |
 |---|---|---|---|
-| `exact-hybrid-v2-testlist-fix-cc` | — (Basis) | — | Vollständige MUST/CRITICAL/🚨-Imperative + PEP + Emoji |
-| `exact-hybrid-v2.1-no-pep-cc` | "Psychological Resistance"-Sektion und motivierende Inline-Kommentare in red/green raus | [RQ-1.1](1.1-pep-effect-v6.1/findings.md) | Korrektheit invariant auf GOL; +67 % Refactorings, +30 % Wallclock. **Auf claim-office −3 pp Korrektheit** (RQ-1.4) |
-| `exact-hybrid-v2.2-no-emoji-cc` | 95 Decoration-Emojis (✅❌🔴🟢🔄📋🚨⚠️) raus | [RQ-1.2](1.2-emoji-effect-v6.1/findings.md) | Korrektheit invariant auf GOL; +29 % Refactorings, **spart KEINE Tokens** (sogar +8.5 %). **Auf claim-office −20 pp Korrektheit** (1× Komplett-Failure, RQ-1.4) |
-| `exact-hybrid-v2.3-no-pep-no-emoji-cc` | beide Reduktionen kombiniert | [RQ-1.3](1.3-pep-emoji-combined-v6.1/findings.md), [RQ-1.4](1.4-pep-emoji-claim-office/findings.md) | Effekte nicht additiv; kombiniert refactoriert *unter* Baseline. **Auf claim-office −5 pp Korrektheit** |
-| `exact-hybrid-v2.9-stack-profile-cc` | alle konkreten TS/Vitest-Details aus Core, Phasen und Refactor-Agent in das vorhandene `tdd_with_ts_and_vitest.md` verschoben; keine neue Datei-Grenze | `RQ-stack-profile-extraction-opus` | **Offen.** Prüft, ob die bestehende Profilgrenze ohne Verhaltensverlust vollständig werden kann |
-| `exact-hybrid-v3-with-why-cc` | 3 Why-Blöcke aus v6.5-lean (green.md, red.md Step 7, rules/tdd.md) **bei voll erhaltenen MUSTs** | [RQ-1.5](1.5-why-block-effect-v6.1/findings.md) | Korrektheit invariant auf claim-office (1× Outlier 0.27); +87 % Refactorings, −87 % Smells, Spitzen-Komplexität −37–43 % bei σ −82–90 %; +53 % Wallclock, +22 % Tokens |
-| `exact-hybrid-v4-cleaned-cc` | exact-hybrid-v3-with-why-cc + 3 Hygiene-Cleanups aus archiviertem v6.5.1-Audit (`pnpm test:unit:basic`→`pnpm test`, rule-file-Hyphen, settings-Permission-Dedup; `refactor.md` role-neutral; `tdd-experiment-mode.md` ohne Phantom-HITL-Framing) | [RQ-1.6](1.6-v62-cleanup-validation-v61-with-why/findings.md) | Korrektheit nicht schlechter (Mean 0.91→0.96 inkl. hybrid-v2-Nudge-Outlier); +34 % Refactorings, cycle_count-Streuung σ 14.2→1.6; +13 % Wallclock, +12 % Tokens. Cleanups verhaltens-äquivalent, **neue Default-Baseline** |
-| `exact-hybrid-v4.3-audit-bundle-cc` | exact-hybrid-v4-cleaned-cc + restliche Audit-Bundle-Items aus archiviertem v6.5.1-Audit: **Klasse 2** Rationale-Ergänzungen (measurement-pipeline-Rationale für Pflicht-Refactoring, Bisectability für ONE-at-a-time, konkreter Drei-Pfad-Bar für "no improvement possible", Green-Phase-Generalization-Rationale in test-list Step 3) + **Klasse 3** Red-Phase-Hardening (Mandatory-Procedure-Preamble, Streichung "STOP and explain" in Steps 3/6, Ersatz "Prediction Failure Protocol" → "Wrong Predictions Are Data"). Plus opt-in `HUMAN-IN-THE-LOOP.md` im Workflow-Root für nicht-autonome Profile (Prediction-Failure → Human-Escalation). | [RQ-1.8](1.8-audit-bundle-effect-v62/findings.md) (GoL) + [RQ-1.9](1.9-audit-bundle-validation-claim-office/findings.md) (claim-office) | **GoL (RQ-1.8):** Korrektheit invariant (100 % `tests_passing`); `tests_passed_immediately` 0.7 → **0** (deterministisch); `refactorings_applied` +10 % bei σ −64 %; Code-Qualität innerhalb 1 σ (leichte Verbesserung Code-Mass/Smell); `predictions_correct_rate` 100 → 97.4 %; +16 % Tokens, Wallclock neutral. **claim-office (RQ-1.9): `verification_pct` kippt 0.96 → 0.35 (bi-modal, 6/8 Runs ≤ 0.30)** — Agent erklärt sich nach 7–14 Cycles fertig statt 37–38 Cycles wie hybrid-v4; `experiment-done.txt` fehlt in 6/8 Runs. **Nicht** als Default-Baseline für claim-office promoten — bleibt GoL-spezifischer Quality-Champion |
-| `exact-hybrid-v4.1-refactor-vocab-cc` (**verworfen**) | exact-hybrid-v4-cleaned-cc + additiver Vokabular-Block in `refactor.md` (Cyclomatic + Cognitive Complexity, Single Responsibility, Smell→Move-Tabelle mit 10 Einträgen) zwischen Naming Evaluation und Rule 3. Naming, APP, Process-Steps, Beispiele, Red-Flags byte-identisch. Keine numerischen Schwellwerte. | [RQ-1.10](1.10-refactor-vocab-effect-v62/findings.md) | **claim-office: `verification_pct` 0.96 → 0.23 (4/5 Runs ≤ 0.13, 1/5 bei 0.93)** — Agent self-terminiert nach 7-22 statt 36-40 Cycles, `code_mass` halbiert. Selbes Bundle-Kata-Asymmetrie-Muster wie exact-hybrid-v4.3-audit-bundle-cc. **GoL:** Komplexitäts-Metriken innerhalb 1 σ der Baseline (kein robuster Gewinn), +12 % `code_mass`, +14 % Wallclock, +15.5 % Tokens. Goodhart-Caveat: `cognitive_*`/`mccabe_*` werden im Block explizit benannt → Compliance-Metriken, asymmetrischer Vergleich. **Verworfen**; exact-hybrid-v4-cleaned-cc bleibt Default |
+| `exact-hybrid-v2-testlist-fix-cc` | — (base) | — | Full MUST/CRITICAL/🚨 imperatives + PEP + emoji |
+| `exact-hybrid-v2.1-no-pep-cc` | "Psychological Resistance" section and motivational inline comments in red/green removed | [RQ-1.1](1.1-pep-effect-v6.1/findings.md) | Correctness invariant on GOL; +67 % refactorings, +30 % wallclock. **On claim-office −3 pp correctness** (RQ-1.4) |
+| `exact-hybrid-v2.2-no-emoji-cc` | 95 decoration emojis (✅❌🔴🟢🔄📋🚨⚠️) removed | [RQ-1.2](1.2-emoji-effect-v6.1/findings.md) | Correctness invariant on GOL; +29 % refactorings, **saves NO tokens** (even +8.5 %). **On claim-office −20 pp correctness** (1× complete failure, RQ-1.4) |
+| `exact-hybrid-v2.3-no-pep-no-emoji-cc` | both reductions combined | [RQ-1.3](1.3-pep-emoji-combined-v6.1/findings.md), [RQ-1.4](1.4-pep-emoji-claim-office/findings.md) | Effects not additive; combined it refactors *below* baseline. **On claim-office −5 pp correctness** |
+| `exact-hybrid-v2.9-stack-profile-cc` | all concrete TS/Vitest details from core, phases and refactor agent moved into the existing `tdd_with_ts_and_vitest.md`; no new file boundary | `RQ-stack-profile-extraction-opus` | **Open.** Tests whether the existing profile boundary can be made complete without behaviour loss |
+| `exact-hybrid-v3-with-why-cc` | 3 why blocks from v6.5-lean (green.md, red.md Step 7, rules/tdd.md) **with MUSTs fully preserved** | [RQ-1.5](1.5-why-block-effect-v6.1/findings.md) | Correctness invariant on claim-office (1× outlier 0.27); +87 % refactorings, −87 % smells, Complexity Peak −37–43 % at σ −82–90 %; +53 % wallclock, +22 % tokens |
+| `exact-hybrid-v4-cleaned-cc` | exact-hybrid-v3-with-why-cc + 3 hygiene cleanups from the archived v6.5.1 audit (`pnpm test:unit:basic`→`pnpm test`, rule-file hyphen, settings permission dedup; `refactor.md` role-neutral; `tdd-experiment-mode.md` without phantom HITL framing) | [RQ-1.6](1.6-v62-cleanup-validation-v61-with-why/findings.md) | Correctness not worse (mean 0.91→0.96 incl. hybrid-v2 nudge outlier); +34 % refactorings, cycle_count spread σ 14.2→1.6; +13 % wallclock, +12 % tokens. Cleanups behaviour-equivalent, **new default baseline** |
+| `exact-hybrid-v4.3-audit-bundle-cc` | exact-hybrid-v4-cleaned-cc + remaining audit-bundle items from the archived v6.5.1 audit: **class 2** rationale additions (measurement-pipeline rationale for mandatory refactoring, bisectability for ONE-at-a-time, concrete three-path bar for "no improvement possible", green-phase generalization rationale in test-list Step 3) + **class 3** red-phase hardening (mandatory-procedure preamble, removal of "STOP and explain" in Steps 3/6, replacement "Prediction Failure Protocol" → "Wrong Predictions Are Data"). Plus an opt-in `HUMAN-IN-THE-LOOP.md` in the workflow root for non-autonomous profiles (prediction failure → human escalation). | [RQ-1.8](1.8-audit-bundle-effect-v62/findings.md) (GoL) + [RQ-1.9](1.9-audit-bundle-validation-claim-office/findings.md) (claim-office) | **GoL (RQ-1.8):** correctness invariant (100 % `tests_passing`); `tests_passed_immediately` 0.7 → **0** (deterministic); `refactorings_applied` +10 % at σ −64 %; code quality within 1 σ (slight improvement in Code Mass (APP)/Smell Total); `predictions_correct_rate` 100 → 97.4 %; +16 % tokens, wallclock neutral. **claim-office (RQ-1.9): `verification_pct` flips 0.96 → 0.35 (bi-modal, 6/8 runs ≤ 0.30)** — the agent declares itself done after 7–14 cycles instead of 37–38 cycles as with hybrid-v4; `experiment-done.txt` is missing in 6/8 runs. Do **not** promote as the default baseline for claim-office — remains a GoL-specific quality champion |
+| `exact-hybrid-v4.1-refactor-vocab-cc` (**rejected**) | exact-hybrid-v4-cleaned-cc + an additive vocabulary block in `refactor.md` (cyclomatic + cognitive complexity, single responsibility, smell→move table with 10 entries) between naming evaluation and Rule 3. Naming, APP, process steps, examples, red flags byte-identical. No numeric thresholds. | [RQ-1.10](1.10-refactor-vocab-effect-v62/findings.md) | **claim-office: `verification_pct` 0.96 → 0.23 (4/5 runs ≤ 0.13, 1/5 at 0.93)** — the agent self-terminates after 7-22 instead of 36-40 cycles, `code_mass` halved. Same bundle-kata asymmetry pattern as exact-hybrid-v4.3-audit-bundle-cc. **GoL:** complexity metrics within 1 σ of the baseline (no robust gain), +12 % `code_mass`, +14 % wallclock, +15.5 % tokens. Goodhart caveat: `cognitive_*`/`mccabe_*` are explicitly named in the block → compliance metrics, asymmetric comparison. **Rejected**; exact-hybrid-v4-cleaned-cc remains the default |
 
-### Tragende Inhalte — vor jeder Reduktion schützen
+### Supporting content — protect before every reduction
 
-1. **Vier Marker aus `MARKERS.md`** (Skill-Tool-Aufrufe; `Red Phase Complete`-Sentinel; Prediction-Lines per Regex `(- |✅ |❌ )(Correct|Incorrect)`; `experiment-done.txt`).
-2. **Predictions-verbatim-Block in `red.md` Step 7** — ohne diesen mergen Cycles die zwei Prediction-Lines zu einer, `predictions_total` halbiert sich.
-3. **"Mandatory refactoring attempt" in `refactor.md`** — ohne explizite Pflicht überspringt das Modell die Refactor-Phase auf einfachen Tests; `refactorings_applied` fällt.
-4. **APP-Mass-Berechnung in `refactor.md`** — nicht für die Metrik (die wird extern berechnet), sondern weil der explizite Vorher/Nachher-Vergleich das Modell zwingt, Refactorings *messbar* zu machen statt nur kosmetisch.
-   - **Modell-Caveat (bindend):** Das gilt für die hybrid-v1-Linie auf Opus. Auf Sol/pi kehrt sich der Effekt um — RQ-1.17 F-1.17.1 misst denselben Brief als *Ursache* der schlechtesten Dekomposition im Feld, schlechter als der strukturlose inline-tdd-v1-Boden, weil die Mass-Tabelle Extraktion bepreist und damit Inlining belohnt. Punkt 4 ist also kein modell-portabler Schutz, sondern eine Opus-Beobachtung. Vor der Übernahme auf ein neues Modell zu validieren.
+1. **Four markers from `MARKERS.md`** (skill tool invocations; `Red Phase Complete` sentinel; prediction lines via regex `(- |✅ |❌ )(Correct|Incorrect)`; `experiment-done.txt`).
+2. **Predictions verbatim block in `red.md` Step 7** — without it, cycles merge the two prediction lines into one and `predictions_total` halves.
+3. **"Mandatory refactoring attempt" in `refactor.md`** — without an explicit obligation the model skips the refactor phase on simple tests; `refactorings_applied` drops.
+4. **APP mass computation in `refactor.md`** — not for the metric (that is computed externally), but because the explicit before/after comparison forces the model to make refactorings *measurable* instead of merely cosmetic.
+   - **Model caveat (binding):** This holds for the hybrid-v1 line on Opus. On Sol/pi the effect inverts — RQ-1.17 F-1.17.1 measures the same brief as the *cause* of the worst decomposition in the field, worse than the structureless inline-tdd-v1 floor, because the mass table prices extraction and thereby rewards inlining. Point 4 is therefore not a model-portable safeguard but an Opus observation. To be validated before adopting it on a new model.
 
-### Aktuelle Front
+### Current front
 
-- **Default für korrekheits-kritische Arbeit (exact-coding baseline) auf opus-5-no-thinking × Claude Code:** `exact-hybrid-v2-testlist-fix-cc` (RQ 4.5 / RQ-workflow-reduction-opus5, Trägerentscheidung aus RQ-1.19). Begründung steht in den Unterpunkten unten — sie ist bewusst aus dieser Zeile herausgehalten, weil der exact-coding-baseline-export-Skill den Workflow-Namen per Backtick-Match aus genau dieser Zeile zieht und sie deshalb genau einen Backtick-Namen tragen darf.
-  - Das exact-coding-Profil ist eine **Abwägung von Qualität gegen Dauer**: hohe Qualität zählt, aber nicht zu jedem Preis. Die hybrid-v2-Linie trifft diesen Punkt auf opus-5 am besten — sie liefert **86 % des Dekompositionsgewinns von hybrid-v6 bei 47 % der Wallclock und 60 % der Tokens** (claim-office: `cc_avg_loc_per_function` 4.04 gegen v6.6s 3.21 bei 9.18 für strukturloses inline-tdd-v1; 44 min gegen 93 min). Der Schritt auf hybrid-v6 kauft die letzten 14 % mit +111 % Wallclock — das ist die Grenze, an der die Abwägung kippt.
-  - **Messgrundlage und Export-Träger sind wieder dieselbe Datei.** Bis 2026-09 war `exact-hybrid-v2.4-lab-split-cc` der Träger, weil sein Dateilayout den Export vereinfachte: Lab-Infrastruktur isoliert in `rules/lab-only.md`, die beim Export nur gelöscht werden musste. RQ-1.19 hat diesen Komfort bepreist und die Wahl zurückgenommen. Der Export geht damit wieder den klassischen Weg — `rules/tdd-experiment-mode.md` wird nicht kopiert, sondern durch `templates/tdd-execution-mode.md` ersetzt, das die Subagent-Prompt-Kontrakte mit reproduziert. Der Skill erkennt das selbst (`SKILL.md` Step 1: kein `lab-only.md` → `LAYOUT=legacy`); es ist kein Umbau nötig.
-  - **Der Regel-Split kostet, und zwar unabhängig vom Textvolumen.** RQ-1.19 (`research/workflow-dev/1.19-lab-split-neutrality/`, vier Workflows, claim-office n=13/10/5/5) misst auf claim-office eine Refactor-Rate von 0.41 (hybrid-v2) gegen 0.52 (hybrid-v2.8), 0.56 (hybrid-v2.7) und 0.69 (hybrid-v2.4), bei praktisch gleicher Zyklenzahl. Entscheidend ist `exact-hybrid-v2.8-pure-split-cc`: eine reine Partition von hybrid-v2 bei **+3,5 % Regeltext**, die trotzdem +27 % Refactorings (Welch p = 0.009) und +20 % Wallclock (p = 0.034) zeigt. Damit ist die Volumen-Erklärung widerlegt — es ist die Aufteilung selbst. Qualitätsgegenwert ist auf keiner Kata messbar (alle Metriken innerhalb 1 σ). Details: F-1.19.1 bis F-1.19.3.
-  - **Der Always-Refactor-Kipper gehört zum Zusatztext von hybrid-v2.4, nicht zum Split.** Läufe, die nach *jedem* Zyklus refaktorieren, sind die teuersten im Feld (claim-office 4860–5923 s gegen 2400–3700 s). Quote über beide Katas: hybrid-v2 0/18, hybrid-v2.8 1/15, hybrid-v2.7 2/10, hybrid-v2.4 4/10 (Fisher gegen hybrid-v2: nur hybrid-v2.4 trennt, p = 0.010). Verdächtig ist die zweite Nennung des Zyklus in `lab-only.md` § "Phase Continuation" ("Red/Green/Refactor for every test", "After Green → launch the refactor subagent") — hybrid-v2.4 zählt den Zyklus zweimal auf, hybrid-v2 einmal. F-1.19.5.
-  - **Korrektheit trennt hier nichts, und die Metrik taugt dafür auch nicht.** Auf claim-office liegen alle vier Workflows bei `verification_pct` 0.95–0.96. Über alle 33 Läufe scheitert ausnahmslos derselbe der 15 Verifikationsfälle (`14-family-steinheim`), immer mit demselben falschen Wert — die Metrik ist auf dieser Kata ein Bit, kein Grad. Die frühere Aussage, hybrid-v2.4 falle korrektheitsseitig ab (2/5 gegen 4/5), war ein n=5-Artefakt: hybrid-v2 liegt bei n=13 selbst nur bei 6/13. F-1.19.4. Wer maximale Code-Qualität ohne Kostenschranke braucht, nimmt weiterhin `exact-hybrid-v6-lab-split-cc` — das ist eine bewusste Profil-Abweichung, kein Upgrade, und erbt den hier gemessenen Split-Aufpreis.
-  - **Externe Loops sind auf dieser Kata korrektheitsseitig nicht schlechter.** RQ-4.7 ersetzt den inneren Loop bei gleichem Example-Mapping-Einstieg durch zwei vendorte Fremd-Skills: `external-superpowers-2026-09-04-cc` und `external-pocock-2026-09-04-cc` erreichen auf claim-office × opus-5-no-thinking beide `verification_pct` 1.00 in 5/5 Läufen — bei 7× kürzerer Wallclock und 10× weniger Tokens. Der Preis ist die Dekomposition: `cc_avg_loc_per_function` 4.49 (hybrid-v2.4) gegen 7.90 (superpowers-2026-09-04) und 10.41 (pocock-2026-09-04). Das ist **keine** Empfehlung, den Export auf einen Fremd-Skill umzustellen — n=5, eine Kata, ein Modell, und beide Fremd-Skills sind Snapshots ohne Pflegezusage. Es begrenzt aber, was der Subagent-Apparat rechtfertigt: er kauft Dekomposition, nicht Korrektheit.
-  - **Harness-Verzweigung bleibt.** Der Export liefert weiterhin pro Harness einen eigenen Config-Teilbaum (`.claude/`, `.opencode/`, `.cursor/`, `.pi/`) im Snapshot-Wurzelverzeichnis; siehe `exact-coding-baseline-2026-07-28` als Referenz. Die Trägerentscheidung betrifft nur, aus welchem Lab-Workflow die Claude-Code-Hälfte erzeugt wird, nicht die Mehr-Harness-Ausgabe.
-  - **Harness-Caveat (bindend):** gemessen ist ausschließlich Claude Code. Für pi existiert `exact-hybrid-v2-testlist-fix-pi`, aber kein einziger opus-5-Run; für OpenCode und cursor existiert hybrid-v2 gar nicht. Auf Sol/pi ist die Architektur-Achse zudem ein Netto-Negativ — dort schlägt strukturloses inline-tdd-v1 jede Architektur (RQ-architecture-axis-sol-pi F-1.6). Diese Empfehlung darf nicht auf andere Harnesse übertragen werden, bis sie dort repliziert ist.
-  - **Modell-Caveat:** gilt für opus-5. Auf opus-4-8 bleibt `exact-hybrid-v5-end-refactor-cc` der Default (RQ-1.13: niedrigste Spitzen-Komplexität auf beiden Katas, cognitive_max claim-office 3.6→2.8, GoL 5.6→2.4, deterministisch smell_total = 0, auf claim-office 5/5 perfekte Korrektheit); auf opus-4-7 ist der Spitzen-Sieger hybrid-v4.4 (Refactor-Hebel ist nicht modell-portabel, siehe unten). exact-hybrid-v4-cleaned-cc bleibt die parsimonische Baseline (minimale code_mass/Kosten) und Vorgänger-Referenz.
-- **Default für Code-Qualität auf trainingsbekannten Katas (GoL) × opus-4-7-portkey-no-thinking:** `exact-hybrid-v4.3-audit-bundle-cc` (RQ-1.8). Eliminiert `tests_passed_immediately` deterministisch, +10 % Refactorings bei σ −64 %. **Nur** auf GoL/saturierter Korrektheit — auf claim-office bricht der Workflow (RQ-1.9).
-- **Default für Speed/Token-Effizienz, trainingsbekannte Katas:** `exact-hybrid-v2.1-no-pep-cc` auf GOL. Auf claim-office nicht empfohlen.
-- **Default für Methoden-Vergleichs-RQs (Reduktions-Kette):** `exact-hybrid-v2-testlist-fix-cc` als Baseline.
-- **Default auf Sol/pi (OpenAI-Subscription-Route):** kata-abhängig, und die opus-Linie ist in beiden Fällen nicht die Antwort. Große novelle Specs → `exact-sol-v1.5-tcr-parity-domain-trial-pi`; kleine oder trainingsbekannte Katas → `baseline-inline-tdd-v1-pi`. Die Promotion von v1.5 stützt RQ-tcr-ptdd-parity-claim-sol: vollständige Correctness, TCR-nahe fachliche Zerlegung ohne Method-Commits und praktisch gleiche Wallclock wie die schlanke v1.3-Main-Line, bei rund 32 % Tokenaufschlag. `exact-sol-v1.3-stack-profile-pi` bleibt die Lean-/Budget-Variante; ihre Stackprofil-Schichtung ist vollständig in v1.5 erhalten.
-- **Metric-driven Refactor lohnt über hybrid-v4, aber der wirksame Hebel-Zeitpunkt ist kata- UND modell-abhängig — kein globaler hybrid-v4-Ersatz.** Validiert in RQ-1.12 (opus-4-7) und RQ-1.13 (opus-4-8), je hybrid-v4 / v6.4-per-cycle / exact-hybrid-v5-end-refactor-cc × claim-office + game-of-life. Korrektheit durchgehend gehalten (kein Bundle-Bruch). Der Spitzen-Komplexitäts-Sieger **wechselt mit dem Modell**:
-  - **opus-4-7:** der per-cycle-Refactor `exact-hybrid-v4.4-metric-refactor-cc` ist auf BEIDEN Katas der robuste Sieger (cognitive_max: claim-office 5.0→2.4, GoL 4.0→2.2; jeweils ≥ 1 σ). `exact-hybrid-v5-end-refactor-cc` wirkt nur auf mehrteiligen Codebasen (claim-office: gleichauf mit hybrid-v4.4 + kleinste code_mass durch Cross-file-Konsolidierung); auf der einteiligen GoL-Library ist hybrid-v5 von hybrid-v4 ununterscheidbar und erhöht code_mass.
-  - **opus-4-8:** `exact-hybrid-v5-end-refactor-cc` hat auf BEIDEN Katas die niedrigste Spitzen-Komplexität (cognitive_max: claim-office 3.6→2.8, GoL 5.6→2.4); `hybrid-v4.4` fällt auf claim-office auf hybrid-v4-Niveau zurück (3.6 = 3.6, kein per-cycle-Gewinn). Der v6.5-Cross-file-Mehrwert aus 4.7 (kleinere code_mass) verschwindet auf 4.8 im σ-Rauschen — auf beiden Katas liegen alle drei code_mass-Means innerhalb 1 σ. Was bleibt, ist eine allgemeine Komplexitäts-Senkung, kein spezifischer Cross-file-Hebel.
-  - Kata-übergreifend robust auf beiden Modellen ist nur `smell_total` = 0 (hybrid-v4.4/hybrid-v5 deterministisch sauber). Kosten steigen monoton mit der Refactor-Intensität (GoL: hybrid-v4.4 +17–18 %, hybrid-v5 +29–48 % Wallclock); hybrid-v4.4 ist auf großen Codebasen kosten-unvorhersehbar (per-cycle-Messung divergiert auf 4.7; auf 4.8 token-sparsamer).
-  - **Empfehlung:** Der Default hängt davon ab, was Vorrang hat. Wenn **Kosten** zählen (parsimonisch, minimale code_mass): `exact-hybrid-v4-cleaned-cc`. Wenn **Korrektheit + Code-Qualität vor Kosten** rangieren (exact-coding-Profil): auf 4.8 `exact-hybrid-v5-end-refactor-cc` (siehe Front-Eintrag oben — niedrigste Spitzen-Komplexität auf beiden Katas, smell_total 0, robusteste claim-office-Korrektheit; Preis ist GoL-Wallclock +29 %), auf 4.7 `hybrid-v4.4` (dortiger robuster Spitzen-Sieger). Der Refactor-Hebel ist nicht modell-portabel und vor Einsatz pro Modell zu validieren. Auf 4.8 ist die nackte hybrid-v4-Baseline auf claim-office zudem weniger robust (1/5 CLI-Vertragsbruch durch Workflow-Umgehung, RQ-1.13 F-1.13.2), den hybrid-v4.4/hybrid-v5 nicht zeigen.
-- **Niemals als Default verwenden:** `exact-hybrid-v2.2-no-emoji-cc`, `exact-hybrid-v2.3-no-pep-no-emoji-cc`, `exact-hybrid-v4.3-audit-bundle-cc`, `exact-hybrid-v4.1-refactor-vocab-cc` auf novel Code mit echten Mehrdeutigkeiten. Alle vier haben dokumentierte Korrektheits-Brüche auf claim-office (RQ-1.4, RQ-1.9, RQ-1.10).
+- **Default for correctness-critical work (exact-coding baseline) on opus-5-no-thinking × Claude Code:** `exact-hybrid-v2-testlist-fix-cc` (RQ 4.5 / RQ-workflow-reduction-opus5, carrier decision from RQ-1.19). The rationale is in the sub-points below — it is deliberately kept out of this line because the exact-coding-baseline-export skill pulls the workflow name from exactly this line by backtick match and it may therefore carry exactly one backtick name.
+  - The exact-coding profile is a **trade-off of quality against duration**: high quality counts, but not at any price. The hybrid-v2 line hits that point best on opus-5 — it delivers **86 % of hybrid-v6's decomposition gain at 47 % of the wallclock and 60 % of the tokens** (claim-office: `cc_avg_loc_per_function` 4.04 against v6.6's 3.21, at 9.18 for structureless inline-tdd-v1; 44 min against 93 min). The step to hybrid-v6 buys the last 14 % with +111 % wallclock — that is the point at which the trade-off tips.
+  - **Measurement basis and export carrier are the same file again.** Until 2026-09, `exact-hybrid-v2.4-lab-split-cc` was the carrier because its file layout simplified the export: lab infrastructure isolated in `rules/lab-only.md`, which only had to be deleted on export. RQ-1.19 priced that convenience and reversed the choice. The export therefore goes the classic route again — `rules/tdd-experiment-mode.md` is not copied but replaced by `templates/tdd-execution-mode.md`, which reproduces the subagent prompt contracts. The skill detects this itself (`SKILL.md` Step 1: no `lab-only.md` → `LAYOUT=legacy`); no rebuild is needed.
+  - **The rule split costs, and does so independently of text volume.** RQ-1.19 (`research/workflow-dev/1.19-lab-split-neutrality/`, four workflows, claim-office n=13/10/5/5) measures on claim-office a refactor rate of 0.41 (hybrid-v2) against 0.52 (hybrid-v2.8), 0.56 (hybrid-v2.7) and 0.69 (hybrid-v2.4), at practically equal cycle counts. The decisive case is `exact-hybrid-v2.8-pure-split-cc`: a pure partition of hybrid-v2 at **+3.5 % rule text**, which nevertheless shows +27 % refactorings (Welch p = 0.009) and +20 % wallclock (p = 0.034). This refutes the volume explanation — it is the split itself. No quality return is measurable on any kata (all metrics within 1 σ). Details: F-1.19.1 through F-1.19.3.
+  - **The always-refactor tipper belongs to hybrid-v2.4's additional text, not to the split.** Runs that refactor after *every* cycle are the most expensive in the field (claim-office 4860–5923 s against 2400–3700 s). Rate across both katas: hybrid-v2 0/18, hybrid-v2.8 1/15, hybrid-v2.7 2/10, hybrid-v2.4 4/10 (Fisher against hybrid-v2: only hybrid-v2.4 separates, p = 0.010). The suspect is the second mention of the cycle in `lab-only.md` § "Phase Continuation" ("Red/Green/Refactor for every test", "After Green → launch the refactor subagent") — hybrid-v2.4 enumerates the cycle twice, hybrid-v2 once. F-1.19.5.
+  - **Correctness separates nothing here, and the metric is not fit for it either.** On claim-office all four workflows sit at `verification_pct` 0.95–0.96. Across all 33 runs the same one of the 15 verification cases fails without exception (`14-family-steinheim`), always with the same wrong value — on this kata the metric is a bit, not a degree. The earlier statement that hybrid-v2.4 falls behind on correctness (2/5 against 4/5) was an n=5 artefact: at n=13, hybrid-v2 itself sits at only 6/13. F-1.19.4. Anyone needing maximum code quality without a cost ceiling still takes `exact-hybrid-v6-lab-split-cc` — that is a deliberate profile deviation, not an upgrade, and it inherits the split premium measured here.
+  - **External loops are not worse on this kata in terms of correctness.** RQ-4.7 replaces the inner loop at the same example-mapping entry point with two vendored foreign skills: `external-superpowers-2026-09-04-cc` and `external-pocock-2026-09-04-cc` both reach `verification_pct` 1.00 in 5/5 runs on claim-office × opus-5-no-thinking — at 7× shorter wallclock and 10× fewer tokens. The price is decomposition: `cc_avg_loc_per_function` 4.49 (hybrid-v2.4) against 7.90 (superpowers-2026-09-04) and 10.41 (pocock-2026-09-04). This is **not** a recommendation to switch the export to a foreign skill — n=5, one kata, one model, and both foreign skills are snapshots with no maintenance commitment. It does, however, bound what the subagent apparatus justifies: it buys decomposition, not correctness.
+  - **Harness branching stays.** The export still delivers a separate config subtree per harness (`.claude/`, `.opencode/`, `.cursor/`, `.pi/`) in the snapshot root directory; see `exact-coding-baseline-2026-07-28` as a reference. The carrier decision only concerns which lab workflow the Claude Code half is generated from, not the multi-harness output.
+  - **Harness caveat (binding):** only Claude Code is measured. For pi, `exact-hybrid-v2-testlist-fix-pi` exists but not a single opus-5 run; for OpenCode and cursor, hybrid-v2 does not exist at all. On Sol/pi the architecture axis is moreover a net negative — there, structureless inline-tdd-v1 beats every architecture (RQ-architecture-axis-sol-pi F-1.6). This recommendation must not be transferred to other harnesses until it has been replicated there.
+  - **Model caveat:** applies to opus-5. On opus-4-8, `exact-hybrid-v5-end-refactor-cc` remains the default (RQ-1.13: lowest Complexity Peak on both katas, cognitive_max claim-office 3.6→2.8, GoL 5.6→2.4, deterministically smell_total = 0, 5/5 perfect correctness on claim-office); on opus-4-7 the peak winner is hybrid-v4.4 (the refactor lever is not model-portable, see below). exact-hybrid-v4-cleaned-cc remains the parsimonious baseline (minimal code_mass/cost) and predecessor reference.
+- **Default for code quality on training-familiar katas (GoL) × opus-4-7-portkey-no-thinking:** `exact-hybrid-v4.3-audit-bundle-cc` (RQ-1.8). Eliminates `tests_passed_immediately` deterministically, +10 % refactorings at σ −64 %. **Only** on GoL/saturated correctness — on claim-office the workflow breaks (RQ-1.9).
+- **Default for speed/token efficiency, training-familiar katas:** `exact-hybrid-v2.1-no-pep-cc` on GOL. Not recommended on claim-office.
+- **Default for method-comparison RQs (reduction chain):** `exact-hybrid-v2-testlist-fix-cc` as the baseline.
+- **Default on Sol/pi (OpenAI subscription route):** kata-dependent, and the opus line is not the answer in either case. Large novel specs → `exact-sol-v1.5-tcr-parity-domain-trial-pi`; small or training-familiar katas → `baseline-inline-tdd-v1-pi`. The promotion of v1.5 is backed by RQ-tcr-ptdd-parity-claim-sol: full correctness, near-TCR domain decomposition without method commits and practically the same wallclock as the lean v1.3 main line, at roughly a 32 % token premium. `exact-sol-v1.3-stack-profile-pi` remains the lean/budget variant; its stack-profile layering is fully preserved in v1.5.
+- **Metric-driven refactor pays off over hybrid-v4, but the effective lever timing is kata- AND model-dependent — no global hybrid-v4 replacement.** Validated in RQ-1.12 (opus-4-7) and RQ-1.13 (opus-4-8), each hybrid-v4 / v6.4-per-cycle / exact-hybrid-v5-end-refactor-cc × claim-office + game-of-life. Correctness held throughout (no bundle break). The Complexity Peak winner **changes with the model**:
+  - **opus-4-7:** the per-cycle refactor `exact-hybrid-v4.4-metric-refactor-cc` is the robust winner on BOTH katas (cognitive_max: claim-office 5.0→2.4, GoL 4.0→2.2; each ≥ 1 σ). `exact-hybrid-v5-end-refactor-cc` only works on multi-part codebases (claim-office: level with hybrid-v4.4 + smallest code_mass through cross-file consolidation); on the single-part GoL library, hybrid-v5 is indistinguishable from hybrid-v4 and increases code_mass.
+  - **opus-4-8:** `exact-hybrid-v5-end-refactor-cc` has the lowest Complexity Peak on BOTH katas (cognitive_max: claim-office 3.6→2.8, GoL 5.6→2.4); `hybrid-v4.4` falls back to hybrid-v4 level on claim-office (3.6 = 3.6, no per-cycle gain). The v6.5 cross-file benefit from 4.7 (smaller code_mass) vanishes into the σ noise on 4.8 — on both katas all three code_mass means lie within 1 σ. What remains is a general complexity reduction, not a specific cross-file lever.
+  - The only cross-kata robust result on both models is `smell_total` = 0 (hybrid-v4.4/hybrid-v5 deterministically clean). Cost rises monotonically with refactor intensity (GoL: hybrid-v4.4 +17–18 %, hybrid-v5 +29–48 % wallclock); hybrid-v4.4 is cost-unpredictable on large codebases (per-cycle measurement diverges on 4.7; more token-frugal on 4.8).
+  - **Recommendation:** The default depends on what takes precedence. If **cost** counts (parsimonious, minimal code_mass): `exact-hybrid-v4-cleaned-cc`. If **correctness + code quality rank above cost** (exact-coding profile): on 4.8 `exact-hybrid-v5-end-refactor-cc` (see the front entry above — lowest Complexity Peak on both katas, smell_total 0, most robust claim-office correctness; the price is GoL wallclock +29 %), on 4.7 `hybrid-v4.4` (the robust peak winner there). The refactor lever is not model-portable and is to be validated per model before use. On 4.8 the bare hybrid-v4 baseline is moreover less robust on claim-office (1/5 CLI contract break through workflow circumvention, RQ-1.13 F-1.13.2), which hybrid-v4.4/hybrid-v5 do not show.
+- **Never use as a default:** `exact-hybrid-v2.2-no-emoji-cc`, `exact-hybrid-v2.3-no-pep-no-emoji-cc`, `exact-hybrid-v4.3-audit-bundle-cc`, `exact-hybrid-v4.1-refactor-vocab-cc` on novel code with genuine ambiguities. All four have documented correctness breaks on claim-office (RQ-1.4, RQ-1.9, RQ-1.10).
 
 ---
 
-## Methodik
+## Methodology
 
-### Leitprinzipien
+### Guiding principles
 
-#### 1. Theory of Mind statt MUSTs (oder neben MUSTs)
+#### 1. Theory of mind instead of MUSTs (or alongside MUSTs)
 
-Direkt aus `~/.claude/skills/skill-creator/SKILL.md` (Zeilen 139, 302):
+Straight from `~/.claude/skills/skill-creator/SKILL.md` (lines 139, 302):
 
 > *"Try to explain to the model why things are important in lieu of heavy-handed musty MUSTs. Use theory of mind and try to make the skill general and not super-narrow to specific examples."*
 >
 > *"Today's LLMs are smart. They have good theory of mind and when given a good harness can go beyond rote instructions."*
 
-Empirisch in [RQ-1.5](1.5-why-block-effect-v6.1/findings.md) bestätigt: Why-Blöcke neben MUSTs (nicht statt) liefern messbar bessere TDD-Disziplin und Code-Qualität. Konkret bei `exact-hybrid-v3-with-why-cc` vs `v6.1-hybrid` auf claim-office:
+Empirically confirmed in [RQ-1.5](1.5-why-block-effect-v6.1/findings.md): why blocks alongside MUSTs (not instead of them) deliver measurably better TDD discipline and code quality. Concretely for `exact-hybrid-v3-with-why-cc` vs `v6.1-hybrid` on claim-office:
 
-- +87 % Refactorings, −87 % Smells
-- Spitzen-Komplexität (`cognitive_max`, `cc_longest_function`, `mccabe_max`) −37 bis −43 % im Mean, **σ −82 bis −90 %**
-- Korrektheit invariant (1× Outlier in 8 Runs, sonst 100 %)
+- +87 % refactorings, −87 % smells
+- Complexity Peak (`cognitive_max`, `cc_longest_function`, `mccabe_max`) −37 to −43 % in the mean, **σ −82 to −90 %**
+- correctness invariant (1× outlier in 8 runs, otherwise 100 %)
 
-Beispiel-Muster — `red.md` Step 7 in `exact-hybrid-v3-with-why-cc`:
+Example pattern — `red.md` Step 7 in `exact-hybrid-v3-with-why-cc`:
 
 ```
 You MUST output the full Step 7 block verbatim with `Correct` or `Incorrect`
@@ -376,48 +376,48 @@ count for this cycle to zero. Format consistency here directly drives a metric
 the experiment measures.
 ```
 
-Das `MUST output … verbatim` bleibt erhalten; der Why-Block steht **zusätzlich**, nicht ersetzend. Wichtige Lehre: **Why-Blöcke ersetzen Imperative nicht — sie kontextualisieren sie.** Reine Why-Variante (lean-Stil, MUSTs raus) ist hier nicht direkt getestet, aber das v6.5-lean-Bundle hat gleichzeitig MUSTs UND PEP entfernt und brach die Korrektheit; die Effekte sind verflochten (siehe Anti-Patterns).
+The `MUST output … verbatim` is preserved; the why block stands **in addition**, not as a replacement. Important lesson: **why blocks do not replace imperatives — they contextualise them.** A pure why variant (lean style, MUSTs removed) is not directly tested here, but the v6.5-lean bundle removed MUSTs AND PEP at the same time and broke correctness; the effects are entangled (see anti-patterns).
 
-#### 2. Reduktion vor Addition
+#### 2. Reduction before addition
 
-Default-Hypothese: ein Workflow-File enthält zu viel, nicht zu wenig. Empirisch bestätigt für mehrere Inhaltsklassen — aber **kata-abhängig**:
+Default hypothesis: a workflow file contains too much, not too little. Empirically confirmed for several content classes — but **kata-dependent**:
 
-- **Pep talks** ([RQ-1.1](1.1-pep-effect-v6.1/findings.md)): "Psychological Resistance", "Trust the process" — auf GOL Code-Qualität invariant, aber Disziplin verschiebt sich (no-pep refactoriert +67 %). Auf claim-office: −3 pp Korrektheit.
-- **Decoration-Emojis** ([RQ-1.2](1.2-emoji-effect-v6.1/findings.md)): ✅❌🔴🟢🔄📋🚨⚠️ — auf GOL invariant, **spart KEINE Tokens** (sogar +8.5 %). Auf claim-office: 1/5 Komplett-Failure (Agent stoppte nach Test-List ohne Implementation), −20 pp im Mittel.
+- **Pep talks** ([RQ-1.1](1.1-pep-effect-v6.1/findings.md)): "Psychological Resistance", "Trust the process" — on GOL code quality invariant, but discipline shifts (no-pep refactors +67 %). On claim-office: −3 pp correctness.
+- **Decoration emojis** ([RQ-1.2](1.2-emoji-effect-v6.1/findings.md)): ✅❌🔴🟢🔄📋🚨⚠️ — invariant on GOL, **saves NO tokens** (even +8.5 %). On claim-office: 1/5 complete failure (the agent stopped after the test list with no implementation), −20 pp on average.
 
-**Konsequenz:** Reduktion vor Addition gilt — aber jede Reduktion braucht **separat eine Korrektheits-Stichprobe auf einer Kata mit externer Verification-Suite** (claim-office × n ≥ 5). Reduktionen, die auf GOL "neutral" wirken, brechen auf novel Code regelmäßig. Siehe auch Anti-Pattern "Bundle-Reduktion ohne Korrektheits-Stichprobe".
+**Consequence:** reduction before addition holds — but every reduction needs **a separate correctness sample on a kata with an external verification suite** (claim-office × n ≥ 5). Reductions that look "neutral" on GOL regularly break on novel code. See also the anti-pattern "Bundle reduction without a correctness sample".
 
-#### 3. Was *nicht* gestrichen werden darf
+#### 3. What may *not* be cut
 
-Siehe "Tragende Inhalte" im Inventar. Vor jeder Reduktion gegenlesen.
+See "Supporting content" in the inventory. Re-read before every reduction.
 
-#### 4. Architektur-Achse: Skill vs Subagent
+#### 4. Architecture axis: skill vs subagent
 
-Orthogonal zur Inhaltsfrage. Der Befund stammt aus der oneshot-v1-RQ-Kette (vor hybrid-v2-Rebuild, RQ-workflow-tradeoff) und ist unter hybrid-v2 nicht re-validiert; das RQ-Verzeichnis wurde in `953841cb` gelöscht. Der Pareto-Befund **exact-hybrid-v1-cc (nur refactor isoliert) > subagents-v1 (alles isoliert) > single-context-v1 (alles single-context)** wird in der aktuellen Linie als Architektur-Default übernommen (`v6.1-*` erbt diese Architektur), eine systematische Re-Validierung auf hybrid-v2-Basis steht aus.
+Orthogonal to the content question. The finding comes from the oneshot-v1 RQ chain (before the hybrid-v2 rebuild, RQ-workflow-tradeoff) and is not re-validated under hybrid-v2; the RQ directory was deleted in `953841cb`. The Pareto finding **exact-hybrid-v1-cc (only refactor isolated) > subagents-v1 (everything isolated) > single-context-v1 (everything single-context)** is adopted as the architecture default in the current line (`v6.1-*` inherits this architecture); a systematic re-validation on a hybrid-v2 base is outstanding.
 
-**Lesart aus der archivierten Kette:** Isolation hilft dort, wo Frische-Perspektive Wert hat (refactor sieht Code mit neuen Augen). Sie schadet dort, wo Kontinuität nötig ist (red→green braucht Test-Listen-Kohärenz). Pauschal "mehr Isolation = besser" ist falsch.
+**Reading from the archived chain:** isolation helps where a fresh perspective has value (refactor sees the code with new eyes). It hurts where continuity is needed (red→green needs test-list coherence). A blanket "more isolation = better" is wrong.
 
-#### 5. Mechanismus: `commands/` mit Skill-Tool — bewusste Entscheidung
+#### 5. Mechanism: `commands/` with the Skill tool — a deliberate decision
 
-Alle hybrid-v1.x-Workflows legen die drei TDD-Phasen als `.claude/commands/{test-list,red,green}.md` ab, ruft sie aber aus `rules/tdd.md` als `Skill({ skill: "..." })` auf. Das ist **kein Mismatch**, sondern bewusste Wahl.
+All hybrid-v1.x workflows place the three TDD phases as `.claude/commands/{test-list,red,green}.md`, but invoke them from `rules/tdd.md` as `Skill({ skill: "..." })`. That is **not a mismatch** but a deliberate choice.
 
-**Grundlage:** Laut [Claude Code Slash-Commands-Doku](https://code.claude.com/docs/en/slash-commands) sind Custom Commands in Skills "merged" — `.claude/commands/<name>.md` und `.claude/skills/<name>/SKILL.md` erzeugen beide `/name` und sind für das Skill-Tool gleichwertig adressierbar. Commands sind explizit **nicht** deprecated ("Your existing `.claude/commands/` files keep working").
+**Basis:** According to the [Claude Code slash commands docs](https://code.claude.com/docs/en/slash-commands), custom commands are "merged" into skills — `.claude/commands/<name>.md` and `.claude/skills/<name>/SKILL.md` both produce `/name` and are equivalently addressable for the Skill tool. Commands are explicitly **not** deprecated ("Your existing `.claude/commands/` files keep working").
 
-**Empirische Bestätigung:** Im RQ-1.5-Baseline-Run mit `commands/` + `Skill({skill: "..."})` waren 61 Skill-Aufrufe (43× `red`, 17× `green`, 1× `test-list`) erfolgreich; alle vier Marker-Metriken (cycle_count=43, predictions_correct_rate=96%, refactorings_applied=17) korrekt populiert.
+**Empirical confirmation:** In the RQ-1.5 baseline run with `commands/` + `Skill({skill: "..."})`, 61 skill invocations (43× `red`, 17× `green`, 1× `test-list`) were successful; all four marker metrics (cycle_count=43, predictions_correct_rate=96%, refactorings_applied=17) were populated correctly.
 
-**Warum nicht auf `skills/<name>/SKILL.md` migrieren?** Skills bieten zusätzlich: Supporting-Files-Verzeichnis, Auto-Invocation via `description`-Frontmatter, `disable-model-invocation`, `paths`-Trigger. Für unsere expliziten `Skill({skill:"..."})`-Aufrufe aus `tdd.md` bringt keine dieser Features einen Mehrwert. Eine Migration wäre kosmetisch und würde das Risiko bergen, dass das `description`-Frontmatter die Skill-Auswahl unbeabsichtigt mit-triggert.
+**Why not migrate to `skills/<name>/SKILL.md`?** Skills additionally offer: a supporting-files directory, auto-invocation via the `description` frontmatter, `disable-model-invocation`, `paths` triggers. For our explicit `Skill({skill:"..."})` invocations from `tdd.md`, none of these features adds value. A migration would be cosmetic and would carry the risk that the `description` frontmatter unintentionally co-triggers skill selection.
 
-**Konsequenz für Reduktions-RQs:** Workflow-Varianten erben die `commands/`-Struktur unverändert. Skill-Tool-Aufrufe in `rules/tdd.md` zählen weiter als Marker-1 (siehe `MARKERS.md`).
+**Consequence for reduction RQs:** workflow variants inherit the `commands/` structure unchanged. Skill tool invocations in `rules/tdd.md` continue to count as marker 1 (see `MARKERS.md`).
 
-**Caveat-Quelle:** Ein archivierter `/blueprint-audit`-Lauf (v6.5.1, 2026-05-17) flaggte `commands/` + Skill-Aufruf als "wrong mechanism = silent zero metric" und empfahl Migration. Diese Behauptung ist durch obigen Befund klar widerlegt — vermutlich basierte sie auf einer früheren Claude-Code-Version, in der die Merge-Semantik noch nicht galt. Der Audit-Befund ist als historisches Artefakt zu lesen, nicht als aktuelle Empfehlung.
+**Source of the caveat:** An archived `/blueprint-audit` run (v6.5.1, 2026-05-17) flagged `commands/` + skill invocation as "wrong mechanism = silent zero metric" and recommended migration. That claim is clearly refuted by the finding above — it was presumably based on an earlier Claude Code version in which the merge semantics did not yet apply. The audit finding is to be read as a historical artefact, not as a current recommendation.
 
-### Vorgehen beim Bauen einer neuen Workflow-Variante
+### Procedure for building a new workflow variant
 
-1. **Hypothese formulieren**: welche *eine* Sache wird geändert? "Mehrere Dinge gleichzeitig" macht die Variante nicht testbar.
-2. **Baseline kopieren** (in der Regel `exact-hybrid-v2-testlist-fix-cc`): `cp -r experiments/workflows/exact-coding/opus/exact-hybrid-v2-testlist-fix-cc experiments/workflows/<new-variant>`.
-3. **Änderung anwenden** — minimal, in einem Satz dokumentierbar, der in die spätere RQ-README passt.
-4. **MARKERS.md gegenlesen** — alle vier Marker noch intakt? Insbesondere bei Reduktionen leicht zu übersehen.
-5. **Smoke-Run** (1× game-of-life-example-mapping × opus-4-7-no-thinking, ~5–8 min):
+1. **State a hypothesis**: which *one* thing is being changed? "Several things at once" makes the variant untestable.
+2. **Copy the baseline** (usually `exact-hybrid-v2-testlist-fix-cc`): `cp -r experiments/workflows/exact-coding/opus/exact-hybrid-v2-testlist-fix-cc experiments/workflows/<new-variant>`.
+3. **Apply the change** — minimal, documentable in one sentence that fits into the later RQ README.
+4. **Re-read MARKERS.md** — are all four markers still intact? Easy to miss, particularly with reductions.
+5. **Smoke run** (1× game-of-life-example-mapping × opus-4-7-no-thinking, ~5–8 min):
    ```bash
    ./experiments/docker/batch.sh <smoke-plan>
    jq '.summary_metrics | {cycle_count, refactorings_applied,
@@ -425,39 +425,39 @@ Alle hybrid-v1.x-Workflows legen die drei TDD-Phasen als `.claude/commands/{test
       experiments/runs/<latest>/metrics.json
    ```
    Healthy: `cycle_count ≥ 3`, `refactorings_applied ≥ 1`, `predictions_total ≈ 2 × cycle_count`.
-6. Falls Marker brechen → fixen, **nicht** in den n=10-Batch gehen.
-7. **n=5 → n=8 oder n=10** in zwei Schritten, nicht in einem Rutsch. Bei n=5 sind Standardabweichungen oft so breit, dass scheinbare Befunde sich bei n=8+ auflösen oder umkehren.
-8. **Wenn die Reduktion strukturell ist (Test-List, Refactor-Mandat) oder die RQ Code-Korrektheit berührt**: zusätzlich Korrektheits-Stichprobe auf claim-office-example-mapping × n ≥ 5. GOL-only-Validierung verbirgt Korrektheits-Brüche systematisch (siehe Anti-Pattern).
+6. If markers break → fix them, do **not** go into the n=10 batch.
+7. **n=5 → n=8 or n=10** in two steps, not in one go. At n=5, standard deviations are often so wide that apparent findings dissolve or invert at n=8+.
+8. **If the reduction is structural (test list, refactor mandate) or the RQ touches code correctness**: additionally a correctness sample on claim-office-example-mapping × n ≥ 5. GOL-only validation systematically hides correctness breaks (see anti-pattern).
 
-### Anti-Patterns aus realen Reduktions-Versuchen
+### Anti-patterns from real reduction attempts
 
-#### Bundle-Reduktion ohne Korrektheits-Stichprobe
+#### Bundle reduction without a correctness sample
 
-Eine RQ, die mehrere Reduktionen gleichzeitig testet (z.B. das archivierte `v6.5-lean` = no-app + no-rules + no-pep + no-emoji + Why-Rewrites), kann nur die Bundle-Wirkung messen — nicht, *welche* Komponente trägt. Das ist OK für eine erste Validierung ("kostet uns das Bundle nichts?"), wird aber zur **Katastrophe**, wenn das Bundle auf GOL gemessen wird und einen Korrektheits-Bruch auf novel Code (claim-office) versteckt.
+An RQ that tests several reductions at once (e.g. the archived `v6.5-lean` = no-app + no-rules + no-pep + no-emoji + why rewrites) can only measure the bundle effect — not *which* component carries it. That is OK for a first validation ("does the bundle cost us anything?"), but becomes a **catastrophe** when the bundle is measured on GOL and hides a correctness break on novel code (claim-office).
 
-**Konkret passiert:** Die v6.5er-Kette (v6.5-lean, .1, .2, .3, .4 + v6.6-leaner) wurde nur auf GOL gemessen und lief ~5 Iterationen auf einem Workflow, der auf claim-office `verification_pct` von 1.00 auf 0.38 senkte. Die gesamte Kette ist als Quelle für Korrektheits-Empfehlungen unbrauchbar; sie steht im Archiv. Die jetzige hybrid-v2-Linie ist der Neustart auf reparierter Basis.
+**What concretely happened:** The v6.5.x chain (v6.5-lean, .1, .2, .3, .4 + v6.6-leaner) was measured only on GOL and ran ~5 iterations on a workflow that lowered `verification_pct` on claim-office from 1.00 to 0.38. The entire chain is unusable as a source for correctness recommendations; it sits in the archive. The current hybrid-v2 line is the restart on a repaired base.
 
-**Lehre:** **Jede Workflow-Iteration braucht eine Korrektheits-Stichprobe auf einer Kata mit externer Verification-Suite** (claim-office-example-mapping × n ≥ 3), auch wenn die RQ primär Code-Qualität misst. Faktor-isolierte RQs (eine Reduktion pro RQ) sind Bundle-RQs vorzuziehen — sie kosten am Ende oft weniger, weil sie die kausalen Pfade direkt liefern.
+**Lesson:** **Every workflow iteration needs a correctness sample on a kata with an external verification suite** (claim-office-example-mapping × n ≥ 3), even if the RQ primarily measures code quality. Factor-isolated RQs (one reduction per RQ) are preferable to bundle RQs — they often cost less in the end because they deliver the causal paths directly.
 
-**Empirisch belegt durch die hybrid-v2-Reduktionslinie:** RQ-1.1 (PEP), 1.2 (Emoji), 1.3 (kombiniert) und 1.4 (claim-office-Stresstest) haben in vier separaten RQs gezeigt, was das v6.5-lean-Bundle in einem Schritt versteckt hatte:
-- Einzeleffekte auf GOL waren neutral (passt zur ursprünglichen Bundle-Lesart)
-- Auf claim-office bricht die Korrektheit moderat (no-pep) bis katastrophal (no-emoji), und das **Disziplin-Muster kehrt sich um** (Refactor-Sieger ist hybrid statt no-pep)
+**Empirically documented by the hybrid-v2 reduction line:** RQ-1.1 (PEP), 1.2 (emoji), 1.3 (combined) and 1.4 (claim-office stress test) showed across four separate RQs what the v6.5-lean bundle had hidden in one step:
+- individual effects on GOL were neutral (consistent with the original bundle reading)
+- on claim-office correctness breaks moderately (no-pep) to catastrophically (no-emoji), and the **discipline pattern inverts** (the refactor winner is hybrid instead of no-pep)
 
-#### Reduktion ohne Marker-Check
+#### Reduction without a marker check
 
-Häufiger Fehler: ein "leaner" Workflow streicht versehentlich den Predictions-verbatim-Block oder die "Mandatory refactoring"-Klausel. Die Runs laufen, aber `predictions_total` oder `refactorings_applied` fallen auf null/halb. Erst beim Aggregieren fällt es auf — dann ist der Batch bereits durch.
+A frequent mistake: a "leaner" workflow accidentally cuts the predictions verbatim block or the "Mandatory refactoring" clause. The runs complete, but `predictions_total` or `refactorings_applied` drop to zero/half. It only surfaces at aggregation time — by then the batch is already done.
 
-**Konsequenz:** nach jeder Reduktion *vor* dem Mehr-Replikat-Batch: Smoke-Run + jq-Check der vier Marker-Metriken (Healthy-Baseline aus MARKERS.md). Siehe Schritt 5–6 in "Vorgehen beim Bauen einer neuen Variante".
+**Consequence:** after every reduction and *before* the multi-replicate batch: smoke run + jq check of the four marker metrics (healthy baseline from MARKERS.md). See steps 5–6 in "Procedure for building a new variant".
 
-#### Subagent ohne Prompt-Kontext
+#### Subagent without prompt context
 
-Wenn green oder refactor als Subagent läuft (subagents-v1, hybrid-v2, green-refactor-v1), bekommt er *keinen* Memory-Zugriff auf den vorhergehenden Skill-State. Der Aufruf-Prompt muss alles enthalten: file paths, failing test name, current error, passing test count, recent green summary.
+When green or refactor runs as a subagent (subagents-v1, hybrid-v2, green-refactor-v1), it gets *no* memory access to the preceding skill state. The invoking prompt must contain everything: file paths, failing test name, current error, passing test count, recent green summary.
 
-In `exact-hybrid-v2-testlist-fix-cc/.claude/rules/tdd.md` ist das als Required-Prompt-Context-Block ausformuliert. Wer ein neues Subagent-Workflow baut, sollte dieses Muster übernehmen — sonst halluziniert der Subagent Files oder verfehlt die aktive Test-Phase.
+In `exact-hybrid-v2-testlist-fix-cc/.claude/rules/tdd.md` this is spelled out as a required-prompt-context block. Anyone building a new subagent workflow should adopt this pattern — otherwise the subagent hallucinates files or misses the active test phase.
 
-#### Shared-context-Files für Red/Green sind kein Korrektheits-Hebel auf 4.7
+#### Shared-context files for red/green are not a correctness lever on 4.7
 
-Die intuitive Annahme, dass Red/Green-Subagents besser performen, wenn sie persistente Spec-Notizen (`example-mapping/<feature>.md`, `tdd-journal.md`, `architecture-notes.md`) zwischen Aufrufen lesen, hält empirisch nicht. Auf claim-office × opus-4-7-portkey-no-thinking (RQ-tdd-correctness, 2026-05-22):
+The intuitive assumption that red/green subagents perform better if they read persistent spec notes (`example-mapping/<feature>.md`, `tdd-journal.md`, `architecture-notes.md`) between invocations does not hold empirically. On claim-office × opus-4-7-portkey-no-thinking (RQ-tdd-correctness, 2026-05-22):
 
 | Workflow | n | verification_pct | duration_s |
 |---|---:|---:|---:|
@@ -466,133 +466,133 @@ Die intuitive Annahme, dass Red/Green-Subagents besser performen, wenn sie persi
 | exact-subagents-v2.1-shared-context-cc | 5 | 0.71 | 4538 |
 | exact-subagents-v2.1.1-fake-it-green-cc | 2 | 0.70 | ~5500 |
 
-subagents-v2 fügt *nur* eine "Cover every spec example"-Pflicht zum test-list-Subagent hinzu — sonst nichts. Damit erreicht es single-context-v1/hybrid-v1-Niveau bei niedriger Streuung. subagents-v2.1 erbt diesen Fix UND fügt shared example-mapping für Red/Green hinzu — trotzdem zurück auf 0.71 mit bimodaler Streuung.
+subagents-v2 adds *only* a "Cover every spec example" obligation to the test-list subagent — nothing else. With that it reaches single-context-v1/hybrid-v1 level at low spread. subagents-v2.1 inherits this fix AND adds shared example mapping for red/green — and still drops back to 0.71 with bimodal spread.
 
-**Lehre:**
-- Wenn ein Subagent-Workflow auf novel kata schlecht performt (`verification_pct` < 0.8), prüfe ZUERST die Test-Listen-Vollständigkeit des `test-list`-Subagents. "Cover every spec example" mit Failure-Mode "Missing an entire operation described in the spec" ist die einfachste und stärkste Intervention.
-- Spec-Sharing in Red/Green-Subagents lädt die Subagents zum Re-Interpretieren der Spec ein, statt sich auf den aktivierten Test zu konzentrieren. Die Spec gehört in die Test-Liste (durch test-list), nicht in Subagent-Memory.
-- subagents-v2.1/subagents-v2.1.1 liegen archiviert in `experiments/workflows/_archive/`. Wer ähnliche Architektur-Ideen testen will: erst den verlinkten Befund lesen, dann begründen warum der Mechanismus diesmal anders ist.
+**Lesson:**
+- If a subagent workflow performs badly on a novel kata (`verification_pct` < 0.8), check the test-list completeness of the `test-list` subagent FIRST. "Cover every spec example" with the failure mode "Missing an entire operation described in the spec" is the simplest and strongest intervention.
+- Spec sharing in red/green subagents invites the subagents to re-interpret the spec instead of focusing on the activated test. The spec belongs in the test list (via test-list), not in subagent memory.
+- subagents-v2.1/subagents-v2.1.1 are archived in `experiments/workflows/_archive/`. Anyone wanting to test similar architecture ideas: read the linked finding first, then justify why the mechanism is different this time.
 
-Verweis: F-model-novel.4 in `research/questions/2.2-model-effect-novel-kata/findings.md`.
+Reference: F-model-novel.4 in `research/questions/2.2-model-effect-novel-kata/findings.md`.
 
-#### Additive Bundles haben dasselbe Bundle-Risiko wie Reduktions-Bundles
+#### Additive bundles carry the same bundle risk as reduction bundles
 
-Das Anti-Pattern "Bundle-Reduktion ohne Korrektheits-Stichprobe" wurde ursprünglich an v6.5-lean (gleichzeitige Entfernung mehrerer Inhalte) festgemacht. RQ-1.9 und RQ-1.10 zeigen: **dieselbe Falle gilt für additive Bundles**, die Inhalt ergänzen statt zu streichen — und das Muster ist mittlerweile zwei Mal unabhängig reproduziert.
+The anti-pattern "Bundle reduction without a correctness sample" was originally tied to v6.5-lean (simultaneous removal of several contents). RQ-1.9 and RQ-1.10 show: **the same trap applies to additive bundles** that add content instead of cutting it — and the pattern has by now been reproduced twice independently.
 
-Konkret 1 — `exact-hybrid-v4.3-audit-bundle-cc`: ergänzt Rationale-Blöcke, Mandatory-Procedure-Preamble, Drei-Pfad-Bar, Wrong-Predictions-Block. Auf GoL (RQ-1.8) klar positiv. Auf claim-office (RQ-1.9) kippt `verification_pct` von 0.96 auf 0.35, weil der Agent in 6/8 Runs vorzeitig stoppt.
+Concretely 1 — `exact-hybrid-v4.3-audit-bundle-cc`: adds rationale blocks, a mandatory-procedure preamble, a three-path bar, a wrong-predictions block. On GoL (RQ-1.8) clearly positive. On claim-office (RQ-1.9) `verification_pct` flips from 0.96 to 0.35 because the agent stops early in 6/8 runs.
 
-Konkret 2 — `exact-hybrid-v4.1-refactor-vocab-cc`: ergänzt rein Refactor-Vokabular (Complexity-Awareness + SRP + Smell→Move-Tabelle), nichts am Prozess. Auf GoL (RQ-1.10) Komplexitäts-Metriken innerhalb 1 σ (kein Gewinn), Kosten +14 %. Auf claim-office (RQ-1.10) bricht `verification_pct` von 0.96 auf 0.23, weil der Agent in 4/5 Runs nach 7-22 statt 36-40 Cycles aufhört und nur halben `code_mass` schreibt.
+Concretely 2 — `exact-hybrid-v4.1-refactor-vocab-cc`: adds purely refactor vocabulary (complexity awareness + SRP + smell→move table), nothing to the process. On GoL (RQ-1.10) complexity metrics within 1 σ (no gain), cost +14 %. On claim-office (RQ-1.10) `verification_pct` breaks from 0.96 to 0.23 because the agent stops after 7-22 instead of 36-40 cycles in 4/5 runs and writes only half the `code_mass`.
 
-Beide Fälle zeigen dasselbe Mikro-Muster auf claim-office: Self-Termination nach <½ der Baseline-Cycles, `code_mass` halbiert, interne `tests_passing = true` (die _geschriebenen_ Tests sind grün), externe `verification_pct` kollabiert. Welche Komponente das Self-Stop-Verhalten triggert, ist mit Bundle-Befunden nicht entscheidbar — kausale Lokalisierung bräuchte isolierte Sub-RQs.
+Both cases show the same micro-pattern on claim-office: self-termination after <½ of the baseline cycles, `code_mass` halved, internal `tests_passing = true` (the _written_ tests are green), external `verification_pct` collapses. Which component triggers the self-stop behaviour cannot be decided from bundle findings — causal localisation would need isolated sub-RQs.
 
-**Lehre:** Jede Workflow-Iteration — additiv wie reduktiv — braucht eine Korrektheits-Stichprobe auf einer Kata mit externer Verification-Suite (claim-office-example-mapping × n ≥ 5). "Wir ergänzen nur Rationales, kann nichts kaputt machen" ist falsch. Inhalt-Additionen können Self-Stop-Verhalten triggern, das auf saturierten Katas (GoL: 9 Tests, schnell durch) unsichtbar bleibt, auf Multi-Iteration-Katas (claim-office: 41 Tests) aber sofort zuschlägt.
+**Lesson:** Every workflow iteration — additive as much as reductive — needs a correctness sample on a kata with an external verification suite (claim-office-example-mapping × n ≥ 5). "We are only adding rationales, that can't break anything" is wrong. Content additions can trigger self-stop behaviour that stays invisible on saturated katas (GoL: 9 tests, quickly done) but strikes immediately on multi-iteration katas (claim-office: 41 tests).
 
-Faktor-isolierte Sub-RQs bleiben Bundle-RQs vorzuziehen, weil sie die kausalen Pfade direkt liefern. Bundle-Validierung ist akzeptabel als erster Schritt, *wenn* die Korrektheits-Stichprobe auf novel Code von Anfang an mit drin ist.
+Factor-isolated sub-RQs remain preferable to bundle RQs because they deliver the causal paths directly. Bundle validation is acceptable as a first step *if* the correctness sample on novel code is included from the start.
 
-#### Disziplin-Muster aus GOL nicht auf andere Katas verallgemeinern
+#### Do not generalise discipline patterns from GOL to other katas
 
-Die GOL-basierten Disziplin-Befunde der hybrid-v2-Linie (RQ-1.1, RQ-1.2, RQ-1.3) sehen klar und konsistent aus: "weniger Drumherum → mehr Refactoring → mehr Disziplin". Auf claim-office (RQ-1.4) **kippt das Muster komplett**:
+The GOL-based discipline findings of the hybrid-v2 line (RQ-1.1, RQ-1.2, RQ-1.3) look clear and consistent: "less framing → more refactoring → more discipline". On claim-office (RQ-1.4) **the pattern flips completely**:
 
-| Metrik | GOL-Sieger (RQ-1.3) | claim-office-Sieger (RQ-1.4) |
+| Metric | GOL winner (RQ-1.3) | claim-office winner (RQ-1.4) |
 |---|---|---|
 | `refactorings_applied` | no-pep (7.0) > hybrid (4.1) | **hybrid (11.6)** > no-pep (6.6) |
-| `refactorings_applied` (kombiniert) | 3.8 (unter Baseline) | 9.8 (zwischen Reduktionen) |
-| `verification_pct` | 100/100/100/100 (alle) | **1.00 nur in hybrid**, sonst 0.80–0.97 |
+| `refactorings_applied` (combined) | 3.8 (below baseline) | 9.8 (between the reductions) |
+| `verification_pct` | 100/100/100/100 (all) | **1.00 only in hybrid**, otherwise 0.80–0.97 |
 
-**Lehre:** Disziplin-Effekte aus trainingsbekannten Katas (GOL) sind kein Beweis für die gleiche Wirkung auf novel Code mit Mehrdeutigkeiten. Vor Recipe-Empfehlungen: auf claim-office gegenchecken.
+**Lesson:** Discipline effects from training-familiar katas (GOL) are no proof of the same effect on novel code with ambiguities. Before recipe recommendations: cross-check on claim-office.
 
-### Wann eine Workflow-RQ keine Antwort liefern kann
+### When a workflow RQ cannot deliver an answer
 
-Bei drei Konstellationen verschwendet ein n=10-Batch Tokens, weil das Signal strukturell fehlt:
+In three constellations an n=10 batch wastes tokens because the signal is structurally absent:
 
-- **Faktor und Kata kollidieren**: z.B. Refactor-Variante auf string-calculator — die Kata ist zu trivial, `smell_total` ist konstant 0, Komplexitäts-Metriken fluktuieren nicht. Code-Quality-Signal nur auf game-of-life und claim-office.
-- **Faktor und Modell kollidieren**: TDD-Disziplin-Faktoren auf Haiku — Haiku hält die Skill-Discipline nicht; alle Workflows kollabieren auf `cycle_count ≈ 3`. Disziplin-Effekte nur sichtbar auf Opus.
-- **Faktor ohne Mechanismus-Hypothese**: "green-refactor-v1 könnte besser sein als hybrid-v1, mal sehen" ist keine RQ. Wenn unklar ist, *welcher* Mechanismus einen Unterschied erzeugen sollte, ist auch unklar, welche Outcomes zu messen sind und welche Cells controlled bleiben müssen. Erst Hypothese, dann Plan.
-
----
-
-## Tragende Befunde
-
-Empirische Stützen für die Leitprinzipien oben. Geordnet nach Design-Achse.
-
-### Theory-of-Mind / Why-Blöcke
-
-- **[RQ-1.5 F-1.1](1.5-why-block-effect-v6.1/findings.md#f-11)** — Why-Blöcke neben MUSTs (exact-hybrid-v3-with-why-cc): kein Korrektheits-Effekt, aber +87 % Refactorings, −87 % Smells, Spitzen-Komplexität −37–43 %, σ −82–90 %. Hypothese H2 aus RQ-1.5 bestätigt. **Theory-of-Mind hat empirische Stütze aus diesem Repo, nicht nur die Anthropic-Skill-Creator-Doku.**
-- **[RQ-1.5 F-1.2](1.5-why-block-effect-v6.1/findings.md#f-12)** — Pro Cycle gleich schnell/teuer; der ~50 % Wallclock-Aufschlag und ~22 % Token-Aufschlag pro Run sind reine Konsequenz des höheren Cycle-Counts, nicht Why-Bloat-Overhead.
-
-### exact-hybrid-v4-cleaned-cc — Hygiene-Cleanups (v6.5.1-Audit-Subset auf exact-hybrid-v3-with-why-cc, RQ-1.6 + RQ-1.7)
-
-Subset des archivierten v6.5.1-Blueprint-Audits, beschränkt auf strukturelle Hygiene ohne MUST-/Why-/Marker-Eingriff:
-
-- **Konsistenz-Renames** in `red.md`: `pnpm test:unit:basic` → `pnpm test` (matched `tdd.md` und Tech-Stack-Rule).
-- **Rule-File-Hyphen-Rename**: `tdd_with_ts_and_vitest.md` → `tdd-with-ts-and-vitest.md` (matched die Hyphen-Konvention aller anderen Rules).
-- **Settings-Permission-Dedup** in `.claude/settings.json`: Entfernung redundanter `Bash(pnpm test:*)`, `Bash(pnpm install:*)`, `Bash(pnpm run:*)` (bereits durch `Bash(pnpm:*)` abgedeckt).
-- **refactor.md-Entkopplung**: Mission-Beschreibung und Steps role-neutral umformuliert ("Guide the requester through a refactoring pass" statt "After Green phase / Proceeding to next test / Skipping refactor"). Agent-File definiert jetzt Rolle/Capability, die TDD-Sequenz lebt nur noch in `tdd.md`. "Build and Tests"-Sektion gestrichen (bereits in `tdd-with-ts-and-vitest.md` abgedeckt).
-- **tdd-experiment-mode.md-Reframing**: Phantom-HITL-Override-Framing entfernt, ersetzt durch positive Aussage der autonomen Default-Mode mit Measurement-Pipeline-Rationale.
-
-Explizit **nicht** Teil dieses Cleanup-Subsets (deshalb Reservierung für späteres hybrid-v4.3-Audit-Bundle): Rationale-Ergänzungen, Red-Phase-Mandatory-Procedure-Preamble, Wrong-Predictions-Block, Mechanism-Migration `commands/` → `skills/`. Siehe `experiments/workflows/exact-coding/opus/exact-hybrid-v4-cleaned-cc/.claude/` für die exakten Files.
-
-- **[RQ-1.6 F-1.1](1.6-v62-cleanup-validation-v61-with-why/findings.md#f-11)** — Drei Hygiene-Cleanups aus dem archivierten v6.5.1-blueprint-audit (Konsistenz-Renames + refactor.md-Entkopplung + tdd-experiment-mode-Reframing) sind auf claim-office × opus-4-7-portkey-no-thinking **verhaltens-äquivalent**. Korrektheits-Bruch klar widerlegt (verification_pct Mean 0.91 → 0.96, tests_passing 100 %/100 %). Damit ist das in [v6.5-correctness-setback](https://) dokumentierte Risiko von skill-creator-Cleanups *für diese spezifische Auswahl* gebannt — die Cleanups haben MUSTs, Why-Blöcke und alle MARKERS unangetastet gelassen.
-- **[RQ-1.6 F-1.2](1.6-v62-cleanup-validation-v61-with-why/findings.md#f-12)** — Disziplin-Drift in eine Richtung: +34 % `refactorings_applied`, `cycle_count`-Streuung kollabiert von σ 14.2 auf σ 1.6 (letzteres teils durch Wegfall des hybrid-v2-Nudge-Outliers). Mechanistisch plausibel: refactor.md-Entkopplung entfernt die "TDD Refactor Phase specialist"-Verkettungs-Hemmung und produziert mehr Refactor-Iterationen.
-- **[RQ-1.6 F-1.4](1.6-v62-cleanup-validation-v61-with-why/findings.md#f-14)** — Kosten-Aufschlag +13 % Wallclock, +12 % Tokens — ausschließlich getrieben durch +7 % Cycles und +34 % Refactorings, **pro Cycle nicht teurer** (+5 % Tokens/Cycle im Noise). Streuung sowohl bei Wallclock als auch Tokens drastisch reduziert (σ ungefähr halbiert).
-- **[RQ-1.7 F-1.1](1.7-v62-cleanup-validation-gol/findings.md#f-11)** — Cleanup-Äquivalenz generalisiert auf game-of-life: 100/100 Korrektheit auf beiden Workflows. Cross-Kata-Validierung der RQ-1.6-Empfehlung ist stabil.
-- **[RQ-1.7 F-1.2](1.7-v62-cleanup-validation-gol/findings.md#f-12)** — Komplexitäts-Streuungs-Kollaps wiederholt sich auf GoL: `cognitive_max` −42 % Mean / σ −81 %; `mccabe_max` −22 % Mean / σ −64 %. Damit ist das in RQ-1.5 erstdokumentierte Muster (σ-Kollaps bei Spitzen-Komplexität durch mehr Refactorings) auch in der nächsten Workflow-Iteration und auf einer zweiten Kata reproduziert — robuster Mechanismus, nicht claim-office-spezifisch.
-- **[RQ-1.7 F-1.4](1.7-v62-cleanup-validation-gol/findings.md#f-14)** — Kosten-Aufschlag auf GoL +13 % Wallclock / +15 % Tokens — fast identisch zu claim-office (+13 % / +12 %). Der "hybrid-v4-Aufpreis" ist also kata-unabhängig.
-
-**Konsequenz für die Methodik:** Cleanups, die strukturell auf "Style-Hygiene" beschränkt bleiben (Renames, role-neutrale Sprache, Reframing ohne MUST-Eingriff), sind in dieser Größenordnung sicher anwendbar. Das ersetzt nicht die Pflicht zur Korrektheits-Stichprobe — bestätigt aber, dass nicht *jeder* Cleanup-Versuch die v6.5-lean-Falle reproduziert. Die Cross-Kata-Validierung in RQ-1.7 stärkt die hybrid-v4-Default-Empfehlung über die ursprüngliche claim-office-only-Aussage hinaus.
-
-### Audit-Bundle (v6.5.1-Audit auf exact-hybrid-v4-cleaned-cc, RQ-1.8 + RQ-1.9)
-
-Bundle aus zwei Item-Klassen, isoliert auf hybrid-v4-Basis getestet:
-- **Klasse 2** — Rationale-Ergänzungen in `refactor.md` (Measurement-Pipeline für Pflicht-Refactoring; Bisectability für ONE-at-a-time; konkreter Drei-Pfad-Bar für "no improvement possible") und in `test-list.md` (Green-Phase-Generalization-Rationale für simple→complex).
-- **Klasse 3** — Red-Phase-Hardening in `red.md` (Mandatory-Procedure-Preamble; Streichung "STOP and explain"-Klausel in Steps 3/6; Ersatz "Prediction Failure Protocol" → "Wrong Predictions Are Data" mit Backfill-Verbot).
-
-Plus eine opt-in `HUMAN-IN-THE-LOOP.md` im Workflow-Root (kein Auto-Load, kein Mess-Effekt) für nicht-autonome Profile, in denen Prediction-Failures an den Menschen eskaliert werden statt als Daten zu zählen.
-
-- **[RQ-1.8 F-1.1](1.8-audit-bundle-effect-v62/findings.md#f-181)** — Mandatory-Procedure-Preamble eliminiert vorzeitige Greens auf GoL deterministisch: `tests_passed_immediately` 0.7 ± 2.21 → **0 ± 0** (10/10 Runs). Pattern identisch zur archivierten v6.5-lean → v6.5.1-Präzedenz; der Effekt repliziert auf MUST/PEP-tragender hybrid-v4-Basis (nicht nur als v6.5-lean-Reparatur).
-- **[RQ-1.8 F-1.2](1.8-audit-bundle-effect-v62/findings.md#f-182)** — Refactor-Rationale + Drei-Pfad-Bar erhöht und stabilisiert Refactoring-Disziplin: `refactorings_applied` 7.9 → 8.7 (+10 %), σ 1.85 → 0.67 (−64 %). Effekt-Größe kleiner als beim v6.5-lean-Bundle (Why-Blöcke in hybrid-v4 tragen bereits einen Teil der Rationale-Wirkung), σ-Reduktion klar.
-- **[RQ-1.8 F-1.4](1.8-audit-bundle-effect-v62/findings.md#f-184)** — Wrong-Predictions-Block macht ehrliche Falsch-Predictions sichtbar: `predictions_correct_rate` 100 % → 97.4 % (auf GoL). Nicht Disziplin-Verlust, sondern intendierter Effekt des Backfill-Verbots. Auf claim-office (RQ-1.9) ebenfalls leichter Drop (97.2 → 94.9 %).
-- **[RQ-1.8 F-1.5](1.8-audit-bundle-effect-v62/findings.md#f-185)** — Bundle kostet +16 % Tokens (replizierte v6.5.1-Präzedenz), aber Wallclock-neutral auf GoL — vermutlich kompensiert durch eingesparte vorzeitige-Green-Detours auf hybrid-v4-Basis.
-- **[RQ-1.9 F-1.1](1.9-audit-bundle-validation-claim-office/findings.md#f-191)** — Cross-Kata-Validierung auf claim-office bricht: `verification_pct` 0.96 → **0.35** (bi-modal). Internal `tests_passing` 100 %, CLI baut — aber Implementation unvollständig.
-- **[RQ-1.9 F-1.2](1.9-audit-bundle-validation-claim-office/findings.md#f-192)** — Bi-modale Vollständigkeit: 6 von 8 hybrid-v4.3-Runs ohne `experiment-done.txt`, mit 7–14 Cycles (vs hybrid-v4: 35–40) und 8–19 min Wallclock (vs hybrid-v4: 37–55 min). Der Agent erklärt sich nach wenigen vollständigen Cycles selbst fertig. Mechanismus-Hypothese: das Audit-Bundle erzeugt mehr Per-Cycle-Aufwand; auf Multi-Iteration-Katas interpretiert der Agent die Pflicht zur disziplinierten Cycle-Vollendung als implizites Fertig-Signal nach wenigen vollen Cycles.
-
-**Konsequenz für die Methodik:** Das Audit-Bundle ist auf GoL eindeutig wirksam (Disziplin + Code-Qualität), aber auf novel Code mit echten Mehrdeutigkeiten brennt es die Vollständigkeit aus. hybrid-v4.3 ist als GoL-spezifischer Quality-Champion empfohlen, **nicht** als allgemeine Default-Baseline. exact-hybrid-v4-cleaned-cc bleibt Default für korrektheits-kritische Arbeit. Das ist die dritte unabhängige Bestätigung des "GoL-Sieger ≠ claim-office-Sieger"-Anti-Patterns (vgl. RQ-1.4 für Reduktionen + F-model-novel.4 für Architektur; jetzt RQ-1.9 für additive Bundles).
-
-### Pep-/Emoji-Reduktion (hybrid-v2-Linie)
-
-- **[RQ-1.1 F-1.1](1.1-pep-effect-v6.1/findings.md#f-11)** — Pep-Talks (`"Psychological Resistance"`, motivierende Inline-Kommentare) auf GOL: Code-Qualität invariant, Disziplin verschiebt sich (`refactorings_applied` +67 %, `tests_passed_immediately` −75 %). +30 % Wallclock, +21 % Tokens.
-- **[RQ-1.2 F-1.1](1.2-emoji-effect-v6.1/findings.md#f-11)** — Decoration-Emojis auf GOL: Code-Qualität invariant, leichte Disziplin-Verschiebung wie bei Pep-Reduktion (+29 % Refactorings, −54 % Sofort-Grün).
-- **[RQ-1.2 F-1.2](1.2-emoji-effect-v6.1/findings.md#f-12)** — Emojis sparen **keine Tokens** (sogar +8.5 % Tokens, +12 % Wallclock). Der erwartete "Compactness-Gewinn" tritt nicht ein, weil die Token-Last der 95 Emojis im Promille-Bereich liegt.
-- **[RQ-1.3 F-1.1](1.3-pep-emoji-combined-v6.1/findings.md#f-11)** — Pep- und Emoji-Effekte **nicht additiv**: kombiniert refactoriert mit 3.8 *unter* Baseline 4.1 (additive Vorhersage wäre ~9.1). `tests_passed_immediately` saturiert bei no-pep-Wert.
-- **[RQ-1.3 F-1.3](1.3-pep-emoji-combined-v6.1/findings.md#f-13)** — Kombinierte Reduktion ist auf GOL die schnellste Zelle (−15 % Wallclock vs Baseline), aber zum Preis der reduzierten Refactor-Aktivität, die die Einzelreduktionen als positiv ausgaben.
-- **[RQ-1.4 F-1.1](1.4-pep-emoji-claim-office/findings.md#f-11)** — Auf claim-office: nur v6.1-hybrid hat 100 % `verification_pct`. no-emoji bricht auf 80 % (1× Komplett-Failure, Agent stoppte nach Test-List), no-pep auf 97 %, kombiniert auf 95 %. **GOL-Korrektheits-Invarianz übersetzt sich NICHT auf novel Code.**
-- **[RQ-1.4 F-1.2](1.4-pep-emoji-claim-office/findings.md#f-12)** — Disziplin-Pattern kehrt sich um: auf claim-office refactoriert hybrid (11.6) am meisten, no-pep (6.6) deutlich weniger. Die GOL-Lesart "weniger Drumherum = mehr Disziplin" ist kata-spezifisch.
-- **[RQ-1.4 F-1.3](1.4-pep-emoji-claim-office/findings.md#f-13)** — Recipe-Empfehlung kata-abhängig: GOL → `exact-hybrid-v2.1-no-pep-cc` als Quality-Choice; claim-office → `v6.1-hybrid` als einzige korrektheits-sichere Wahl.
-
-### Architektur-Achse (auf hybrid-v2 nicht re-validiert)
-
-Die oneshot-v1-RQs (gelöscht in `953841cb`, nur noch in der Git-Historie) etablierten exact-hybrid-v1-cc als Pareto-Optimum: red/green als Skills (Test-Listen-Kohärenz), refactor als isolierter Subagent (Frische-Perspektive). Die jetzige hybrid-v2-Linie erbt diese Architektur, eine systematische Re-Validierung auf hybrid-v2-Basis steht aus.
-
-Falls auf hybrid-v2 re-validiert werden soll: separate RQ aufsetzen mit v6.1-hybrid (Default), v6.1-all-skills, v6.1-all-subagents als Vergleichszellen. Achtung: das ist eine Architektur-Variation, kein Reduktions-Test — sie fällt nicht unter "Reduktion vor Addition".
-
-### Test-List-Vollständigkeit als Korrektheits-Hebel
-
-- **F-model-novel.4** (`research/questions/2.2-model-effect-novel-kata/findings.md`) — "Cover every spec example"-Pflicht im test-list-Subagent ist die stärkste isolierte Intervention für `verification_pct` auf novel Katas. subagents-v2 = subagents-v1 + dieser eine Fix erreicht single-context-v1/hybrid-v1-Niveau (0.96 vs 0.67). Spec-Sharing in Red/Green hingegen verschlechtert das Ergebnis (subagents-v2.1: 0.71).
-
-### Generalisierung über Modelle hinweg
-
-Die oneshot-v1-Archiv-RQ-emoji-cross-model warnt: Reduktionen sind nicht modell-agnostisch. Auf Sonnet-4-6 vervielfacht Emoji-Entfernung die Korrektheits-Rate; auf opus-4-6 versagen beide Varianten gleich. Die hybrid-v2-Linie wurde primär auf opus-4-7 (no-thinking, Direct API und Portkey) gemessen — Übertragung auf andere Modelle braucht separate Replikation. Aktuelle Modell-Empfehlungen: `model-recommendation-matrix.md`.
+- **Factor and kata collide**: e.g. a refactor variant on string-calculator — the kata is too trivial, `smell_total` is constantly 0, complexity metrics do not fluctuate. Code-quality signal only on game-of-life and claim-office.
+- **Factor and model collide**: TDD discipline factors on Haiku — Haiku does not hold skill discipline; all workflows collapse to `cycle_count ≈ 3`. Discipline effects are visible only on Opus.
+- **Factor without a mechanism hypothesis**: "green-refactor-v1 might be better than hybrid-v1, let's see" is not an RQ. If it is unclear *which* mechanism should produce a difference, it is also unclear which outcomes to measure and which cells must stay controlled. Hypothesis first, then plan.
 
 ---
 
-## Verweise
+## Supporting findings
 
-- `experiments/workflows/MARKERS.md` — harte Parser-Anforderungen.
-- `experiments/workflows/_archive/` — verworfene, aber sauber gemessene Workflow-Files (u. a. `exact-hybrid-v4.1-refactor-vocab-cc`, RQ-1.10).
-- `git show 478a0c5e^:experiments/workflows/_archive/` — Workflow-Files der defekten hybrid-v1-Reduktionskette (v6.1-no-app, v6.2-no-rules, v6.3-no-pep, v6.4-no-emoji, v6.5-lean, v6.5.1–.4, v6.6-leaner) samt ihrer 144 Runs. Am 2026-08-17 gelöscht, weil die Kette auf korrektheits-defekter Basis lief und ihre Runs im aktiven Pool nicht als solche erkennbar waren; nur noch in der Git-Historie.
-- `git show 953841cb^:research/_archive/workflow-dev-v1/` — RQs der oneshot-v1-Generation (RQ-context, RQ-workflow-tradeoff, RQ-app/rules/pep/emoji/lean/audit/bullets/targeted/refactor-cut/delayed-refactor). Am 2026-08-11 gelöscht, weil die Kette auf korrektheits-defekter Basis lief; nur noch in der Git-Historie.
-- `research/workflow-dev/1.1-pep-effect-v6.1/` bis `1.5-why-block-effect-v6.1/` — aktuelle Reduktions-RQs auf hybrid-v2-Basis.
-- `research/workflow-dev/v6-reduction-recipe.md` — Reduktions-Rezept (Schritt-für-Schritt-Methodik aus der ersten v6.5er-Kette, jetzt auf hybrid-v2-Basis re-anwendbar).
-- `research/workflow-dev/model-recommendation-matrix.md` — pro Modell empfohlener Workflow.
-- `research/kata-design/kata-construction.md` — Kata-Methodik.
-- `~/.claude/skills/skill-creator/SKILL.md` — Quelle des Theory-of-Mind-Prinzips (Zeilen 139, 302).
+Empirical support for the guiding principles above. Ordered by design axis.
+
+### Theory of mind / why blocks
+
+- **[RQ-1.5 F-1.1](1.5-why-block-effect-v6.1/findings.md#f-11)** — Why blocks alongside MUSTs (exact-hybrid-v3-with-why-cc): no correctness effect, but +87 % refactorings, −87 % smells, Complexity Peak −37–43 %, σ −82–90 %. Hypothesis H2 from RQ-1.5 confirmed. **Theory of mind has empirical support from this repo, not only the Anthropic skill-creator docs.**
+- **[RQ-1.5 F-1.2](1.5-why-block-effect-v6.1/findings.md#f-12)** — Equally fast/expensive per cycle; the ~50 % wallclock premium and ~22 % token premium per run are purely a consequence of the higher cycle count, not why-bloat overhead.
+
+### exact-hybrid-v4-cleaned-cc — hygiene cleanups (v6.5.1 audit subset on exact-hybrid-v3-with-why-cc, RQ-1.6 + RQ-1.7)
+
+Subset of the archived v6.5.1 blueprint audit, limited to structural hygiene without touching MUSTs, why blocks or markers:
+
+- **Consistency renames** in `red.md`: `pnpm test:unit:basic` → `pnpm test` (matches `tdd.md` and the tech-stack rule).
+- **Rule-file hyphen rename**: `tdd_with_ts_and_vitest.md` → `tdd-with-ts-and-vitest.md` (matches the hyphen convention of all other rules).
+- **Settings permission dedup** in `.claude/settings.json`: removal of redundant `Bash(pnpm test:*)`, `Bash(pnpm install:*)`, `Bash(pnpm run:*)` (already covered by `Bash(pnpm:*)`).
+- **refactor.md decoupling**: mission description and steps rephrased role-neutrally ("Guide the requester through a refactoring pass" instead of "After Green phase / Proceeding to next test / Skipping refactor"). The agent file now defines role/capability, the TDD sequence lives only in `tdd.md`. The "Build and Tests" section was cut (already covered in `tdd-with-ts-and-vitest.md`).
+- **tdd-experiment-mode.md reframing**: phantom HITL override framing removed, replaced by a positive statement of the autonomous default mode with a measurement-pipeline rationale.
+
+Explicitly **not** part of this cleanup subset (hence reserved for the later hybrid-v4.3 audit bundle): rationale additions, red-phase mandatory-procedure preamble, wrong-predictions block, mechanism migration `commands/` → `skills/`. See `experiments/workflows/exact-coding/opus/exact-hybrid-v4-cleaned-cc/.claude/` for the exact files.
+
+- **[RQ-1.6 F-1.1](1.6-v62-cleanup-validation-v61-with-why/findings.md#f-11)** — Three hygiene cleanups from the archived v6.5.1 blueprint audit (consistency renames + refactor.md decoupling + tdd-experiment-mode reframing) are **behaviour-equivalent** on claim-office × opus-4-7-portkey-no-thinking. A correctness break is clearly refuted (verification_pct mean 0.91 → 0.96, tests_passing 100 %/100 %). The risk of skill-creator cleanups documented in [v6.5-correctness-setback](https://) is thereby averted *for this specific selection* — the cleanups left MUSTs, why blocks and all MARKERS untouched.
+- **[RQ-1.6 F-1.2](1.6-v62-cleanup-validation-v61-with-why/findings.md#f-12)** — Discipline drift in one direction: +34 % `refactorings_applied`, `cycle_count` spread collapses from σ 14.2 to σ 1.6 (the latter partly through the removal of the hybrid-v2 nudge outlier). Mechanistically plausible: the refactor.md decoupling removes the "TDD Refactor Phase specialist" chaining inhibition and produces more refactor iterations.
+- **[RQ-1.6 F-1.4](1.6-v62-cleanup-validation-v61-with-why/findings.md#f-14)** — Cost premium +13 % wallclock, +12 % tokens — driven exclusively by +7 % cycles and +34 % refactorings, **not more expensive per cycle** (+5 % tokens/cycle, within the noise). Spread drastically reduced for both wallclock and tokens (σ roughly halved).
+- **[RQ-1.7 F-1.1](1.7-v62-cleanup-validation-gol/findings.md#f-11)** — Cleanup equivalence generalises to game-of-life: 100/100 correctness on both workflows. Cross-kata validation of the RQ-1.6 recommendation is stable.
+- **[RQ-1.7 F-1.2](1.7-v62-cleanup-validation-gol/findings.md#f-12)** — The complexity spread collapse repeats on GoL: `cognitive_max` −42 % mean / σ −81 %; `mccabe_max` −22 % mean / σ −64 %. The pattern first documented in RQ-1.5 (σ collapse in Complexity Peak through more refactorings) is thereby reproduced in the next workflow iteration and on a second kata — a robust mechanism, not claim-office-specific.
+- **[RQ-1.7 F-1.4](1.7-v62-cleanup-validation-gol/findings.md#f-14)** — Cost premium on GoL +13 % wallclock / +15 % tokens — almost identical to claim-office (+13 % / +12 %). The "hybrid-v4 premium" is therefore kata-independent.
+
+**Consequence for the methodology:** Cleanups that stay structurally limited to "style hygiene" (renames, role-neutral language, reframing without touching MUSTs) are safely applicable at this magnitude. That does not replace the obligation to take a correctness sample — but it confirms that not *every* cleanup attempt reproduces the v6.5-lean trap. The cross-kata validation in RQ-1.7 strengthens the hybrid-v4 default recommendation beyond the original claim-office-only statement.
+
+### Audit bundle (v6.5.1 audit on exact-hybrid-v4-cleaned-cc, RQ-1.8 + RQ-1.9)
+
+A bundle of two item classes, tested in isolation on a hybrid-v4 base:
+- **Class 2** — rationale additions in `refactor.md` (measurement pipeline for mandatory refactoring; bisectability for ONE-at-a-time; a concrete three-path bar for "no improvement possible") and in `test-list.md` (green-phase generalization rationale for simple→complex).
+- **Class 3** — red-phase hardening in `red.md` (mandatory-procedure preamble; removal of the "STOP and explain" clause in Steps 3/6; replacement "Prediction Failure Protocol" → "Wrong Predictions Are Data" with a backfill ban).
+
+Plus an opt-in `HUMAN-IN-THE-LOOP.md` in the workflow root (no auto-load, no measurement effect) for non-autonomous profiles in which prediction failures are escalated to the human instead of counting as data.
+
+- **[RQ-1.8 F-1.1](1.8-audit-bundle-effect-v62/findings.md#f-181)** — The mandatory-procedure preamble eliminates premature greens on GoL deterministically: `tests_passed_immediately` 0.7 ± 2.21 → **0 ± 0** (10/10 runs). Pattern identical to the archived v6.5-lean → v6.5.1 precedent; the effect replicates on a MUST/PEP-carrying hybrid-v4 base (not only as a v6.5-lean repair).
+- **[RQ-1.8 F-1.2](1.8-audit-bundle-effect-v62/findings.md#f-182)** — Refactor rationale + three-path bar raises and stabilises refactoring discipline: `refactorings_applied` 7.9 → 8.7 (+10 %), σ 1.85 → 0.67 (−64 %). Effect size smaller than with the v6.5-lean bundle (why blocks in hybrid-v4 already carry part of the rationale effect), σ reduction clear.
+- **[RQ-1.8 F-1.4](1.8-audit-bundle-effect-v62/findings.md#f-184)** — The wrong-predictions block makes honest wrong predictions visible: `predictions_correct_rate` 100 % → 97.4 % (on GoL). Not a discipline loss but the intended effect of the backfill ban. On claim-office (RQ-1.9) also a slight drop (97.2 → 94.9 %).
+- **[RQ-1.8 F-1.5](1.8-audit-bundle-effect-v62/findings.md#f-185)** — The bundle costs +16 % tokens (replicated v6.5.1 precedent), but is wallclock-neutral on GoL — presumably compensated by the premature-green detours saved on a hybrid-v4 base.
+- **[RQ-1.9 F-1.1](1.9-audit-bundle-validation-claim-office/findings.md#f-191)** — Cross-kata validation on claim-office breaks: `verification_pct` 0.96 → **0.35** (bi-modal). Internal `tests_passing` 100 %, the CLI builds — but the implementation is incomplete.
+- **[RQ-1.9 F-1.2](1.9-audit-bundle-validation-claim-office/findings.md#f-192)** — Bi-modal completeness: 6 of 8 hybrid-v4.3 runs without `experiment-done.txt`, with 7–14 cycles (vs hybrid-v4: 35–40) and 8–19 min wallclock (vs hybrid-v4: 37–55 min). The agent declares itself finished after a few complete cycles. Mechanism hypothesis: the audit bundle creates more per-cycle effort; on multi-iteration katas the agent interprets the obligation to complete cycles with discipline as an implicit done signal after a few full cycles.
+
+**Consequence for the methodology:** The audit bundle is unambiguously effective on GoL (discipline + code quality), but on novel code with genuine ambiguities it burns out completeness. hybrid-v4.3 is recommended as a GoL-specific quality champion, **not** as a general default baseline. exact-hybrid-v4-cleaned-cc remains the default for correctness-critical work. This is the third independent confirmation of the "GoL winner ≠ claim-office winner" anti-pattern (cf. RQ-1.4 for reductions + F-model-novel.4 for architecture; now RQ-1.9 for additive bundles).
+
+### Pep/emoji reduction (hybrid-v2 line)
+
+- **[RQ-1.1 F-1.1](1.1-pep-effect-v6.1/findings.md#f-11)** — Pep talks (`"Psychological Resistance"`, motivational inline comments) on GOL: code quality invariant, discipline shifts (`refactorings_applied` +67 %, `tests_passed_immediately` −75 %). +30 % wallclock, +21 % tokens.
+- **[RQ-1.2 F-1.1](1.2-emoji-effect-v6.1/findings.md#f-11)** — Decoration emojis on GOL: code quality invariant, slight discipline shift as with the pep reduction (+29 % refactorings, −54 % immediate greens).
+- **[RQ-1.2 F-1.2](1.2-emoji-effect-v6.1/findings.md#f-12)** — Emojis save **no tokens** (even +8.5 % tokens, +12 % wallclock). The expected "compactness gain" does not materialise because the token load of the 95 emojis is in the per-mille range.
+- **[RQ-1.3 F-1.1](1.3-pep-emoji-combined-v6.1/findings.md#f-11)** — Pep and emoji effects are **not additive**: combined it refactors at 3.8, *below* the baseline of 4.1 (the additive prediction would be ~9.1). `tests_passed_immediately` saturates at the no-pep value.
+- **[RQ-1.3 F-1.3](1.3-pep-emoji-combined-v6.1/findings.md#f-13)** — The combined reduction is the fastest cell on GOL (−15 % wallclock vs baseline), but at the price of the reduced refactor activity that the individual reductions reported as positive.
+- **[RQ-1.4 F-1.1](1.4-pep-emoji-claim-office/findings.md#f-11)** — On claim-office: only v6.1-hybrid has 100 % `verification_pct`. no-emoji breaks to 80 % (1× complete failure, the agent stopped after the test list), no-pep to 97 %, combined to 95 %. **GOL correctness invariance does NOT translate to novel code.**
+- **[RQ-1.4 F-1.2](1.4-pep-emoji-claim-office/findings.md#f-12)** — The discipline pattern inverts: on claim-office hybrid refactors the most (11.6), no-pep considerably less (6.6). The GOL reading "less framing = more discipline" is kata-specific.
+- **[RQ-1.4 F-1.3](1.4-pep-emoji-claim-office/findings.md#f-13)** — Recipe recommendation is kata-dependent: GOL → `exact-hybrid-v2.1-no-pep-cc` as the quality choice; claim-office → `v6.1-hybrid` as the only correctness-safe choice.
+
+### Architecture axis (not re-validated on hybrid-v2)
+
+The oneshot-v1 RQs (deleted in `953841cb`, only in the git history) established exact-hybrid-v1-cc as the Pareto optimum: red/green as skills (test-list coherence), refactor as an isolated subagent (fresh perspective). The current hybrid-v2 line inherits this architecture; a systematic re-validation on a hybrid-v2 base is outstanding.
+
+If a re-validation on hybrid-v2 is to happen: set up a separate RQ with v6.1-hybrid (default), v6.1-all-skills, v6.1-all-subagents as comparison cells. Note: that is an architecture variation, not a reduction test — it does not fall under "reduction before addition".
+
+### Test-list completeness as a correctness lever
+
+- **F-model-novel.4** (`research/questions/2.2-model-effect-novel-kata/findings.md`) — The "Cover every spec example" obligation in the test-list subagent is the strongest isolated intervention for `verification_pct` on novel katas. subagents-v2 = subagents-v1 + this one fix reaches single-context-v1/hybrid-v1 level (0.96 vs 0.67). Spec sharing in red/green, by contrast, worsens the result (subagents-v2.1: 0.71).
+
+### Generalisation across models
+
+The oneshot-v1 archive RQ-emoji-cross-model warns: reductions are not model-agnostic. On Sonnet-4-6, emoji removal multiplies the correctness rate; on opus-4-6 both variants fail equally. The hybrid-v2 line was measured primarily on opus-4-7 (no-thinking, direct API and Portkey) — transferring it to other models needs separate replication. Current model recommendations: `model-recommendation-matrix.md`.
+
+---
+
+## References
+
+- `experiments/workflows/MARKERS.md` — hard parser requirements.
+- `experiments/workflows/_archive/` — rejected but cleanly measured workflow files (among them `exact-hybrid-v4.1-refactor-vocab-cc`, RQ-1.10).
+- `git show 478a0c5e^:experiments/workflows/_archive/` — workflow files of the defective hybrid-v1 reduction chain (v6.1-no-app, v6.2-no-rules, v6.3-no-pep, v6.4-no-emoji, v6.5-lean, v6.5.1–.4, v6.6-leaner) together with their 144 runs. Deleted on 2026-08-17 because the chain ran on a correctness-defective base and its runs were not identifiable as such in the active pool; only in the git history now.
+- `git show 953841cb^:research/_archive/workflow-dev-v1/` — RQs of the oneshot-v1 generation (RQ-context, RQ-workflow-tradeoff, RQ-app/rules/pep/emoji/lean/audit/bullets/targeted/refactor-cut/delayed-refactor). Deleted on 2026-08-11 because the chain ran on a correctness-defective base; only in the git history now.
+- `research/workflow-dev/1.1-pep-effect-v6.1/` through `1.5-why-block-effect-v6.1/` — current reduction RQs on a hybrid-v2 base.
+- `research/workflow-dev/v6-reduction-recipe.md` — reduction recipe (step-by-step methodology from the first v6.5.x chain, now re-applicable on a hybrid-v2 base).
+- `research/workflow-dev/model-recommendation-matrix.md` — recommended workflow per model.
+- `research/kata-design/kata-construction.md` — kata methodology.
+- `~/.claude/skills/skill-creator/SKILL.md` — source of the theory-of-mind principle (lines 139, 302).

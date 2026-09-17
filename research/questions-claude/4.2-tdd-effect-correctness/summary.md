@@ -2,11 +2,11 @@
 
 _Does external correctness (verification_pct) differ between TDD workflow variants on the novel claim-office kata?_
 
-Generated: 2026-09-11T07:48:32Z
+Generated: 2026-09-17T01:17:38Z
 
 Cells declared: 7 · matched runs: 36 · min_replicates: 3
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -18,7 +18,7 @@ Cells declared: 7 · matched runs: 36 · min_replicates: 3
 | claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc | opus-4-7-portkey-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

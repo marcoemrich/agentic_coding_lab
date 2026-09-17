@@ -6,7 +6,7 @@ Generated: 2026-09-16T17:28:33Z
 
 Cells declared: 4 · matched runs: 40 · min_replicates: 10
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -15,7 +15,7 @@ Cells declared: 4 · matched runs: 40 · min_replicates: 10
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex | 10 | 10 | ✅ |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi | gpt-5-6-sol-codex | 10 | 10 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

@@ -1,12 +1,12 @@
 # RQ-end-refactor-v62 — Aggregation
 
-_Verbessert ein metric-driven Refactor-Pass die Code-Qualitaet gegenueber dem Per-Cycle-Baseline-Workflow (exact-hybrid-v4-cleaned-cc) — und greift der Hebel als rein per-cycle (exact-hybrid-v4.4-metric-refactor-cc) oder als zusaetzlicher Whole-src-End-Pass (exact-hybrid-v5-end-refactor-cc) — ohne Korrektheit oder TDD-Disziplin zu beschaedigen, und haelt der Befund ueber zwei Kata-Typen (mehrteilige CLI-Codebasis claim-office vs einteilige Library game-of-life)?_
+_Does a metric-driven refactor pass improve code quality over the per-cycle baseline workflow (exact-hybrid-v4-cleaned-cc) — and does the lever work purely per-cycle (exact-hybrid-v4.4-metric-refactor-cc) or as an additional whole-src end pass (exact-hybrid-v5-end-refactor-cc) — without damaging correctness or TDD discipline, and does the result hold across two kata types (the multi-file CLI codebase claim-office vs the single-file library game-of-life)?_
 
-Generated: 2026-09-11T07:48:45Z
+Generated: 2026-09-17T01:17:48Z
 
 Cells declared: 6 · matched runs: 43 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -17,7 +17,7 @@ Cells declared: 6 · matched runs: 43 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc | opus-4-7-portkey-no-thinking | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc | opus-4-7-portkey-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### cognitive_max
 

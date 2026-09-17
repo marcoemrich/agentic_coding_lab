@@ -2,11 +2,11 @@
 
 _Does sphinx-score carry an example-mapping effect — do the pinned examples move correctness relative to the bare prose prompt, and does it do so more sharply than claim-office?_
 
-Generated: 2026-09-11T07:48:54Z
+Generated: 2026-09-17T01:17:34Z
 
 Cells declared: 4 · matched runs: 24 · min_replicates: 6
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -15,7 +15,7 @@ Cells declared: 4 · matched runs: 24 · min_replicates: 6
 | claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking | 6 | 6 | ✅ |
 | claim-office-prose | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking | 6 | 6 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

@@ -6,7 +6,7 @@ Generated: 2026-09-14T19:49:54Z
 
 Cells declared: 4 · matched runs: 18 · min_replicates: 4
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -15,7 +15,7 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 4
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-cc | opus-5-requesty-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-cc | opus-5-requesty-no-thinking | 4 | 4 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

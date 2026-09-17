@@ -2,20 +2,20 @@
 
 _Can sphinx-score replace claim-office as the lab's correctness kata — does it separate a strong from a weak model as sharply, at a lower cost per data point?_
 
-Generated: 2026-09-11T07:48:54Z
+Generated: 2026-09-17T01:17:33Z
 
 Cells declared: 4 · matched runs: 12 · min_replicates: 6
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
 | sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking | 6 | 6 | ✅ |
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | haiku-4-5-no-thinking | 0 | 0 | ❌ keine Runs |
+| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | haiku-4-5-no-thinking | 0 | 0 | ❌ no runs |
 | claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking | 6 | 6 | ✅ |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | haiku-4-5-no-thinking | 0 | 0 | ❌ keine Runs |
+| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | haiku-4-5-no-thinking | 0 | 0 | ❌ no runs |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

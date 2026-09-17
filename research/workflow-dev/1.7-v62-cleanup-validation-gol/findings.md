@@ -1,12 +1,12 @@
 # RQ-1.7: exact-hybrid-v4-cleaned-cc vs exact-hybrid-v3-with-why-cc (game-of-life)
 
-## Übersicht
+## Overview
 
-Baseline (`exact-hybrid-v3-with-why-cc`, n=5) vs. Cleaned (`exact-hybrid-v4-cleaned-cc`, n=5) auf `game-of-life-example-mapping × opus-4-7-portkey-no-thinking`. Richtungen: ↑ = höher besser, ↓ = kleiner besser.
+Baseline (`exact-hybrid-v3-with-why-cc`, n=5) vs. cleaned (`exact-hybrid-v4-cleaned-cc`, n=5) on `game-of-life-example-mapping × opus-4-7-portkey-no-thinking`. Directions: ↑ = higher = better, ↓ = lower = better.
 
-| Metrik | Richtung | exact-hybrid-v3-with-why-cc | exact-hybrid-v4-cleaned-cc |
+| Metric | Direction | exact-hybrid-v3-with-why-cc | exact-hybrid-v4-cleaned-cc |
 |---|---|---:|---:|
-| `tests_passing` rate | ↑ | **100 %** 🏆 | **100 %** 🏆 |
+| `tests_passing` rate (Correctness (internal)) | ↑ | **100 %** 🏆 | **100 %** 🏆 |
 | `completed_within_budget` rate | ↑ | **100 %** 🏆 | **100 %** 🏆 |
 | `predictions_correct_rate` (pooled) | ↑ | 98.8 % | **100 %** 🏆 |
 | `refactorings_applied` mean | ↑ | 6.40 (σ 3.21) | **7.80** 🏆 (σ 2.17) |
@@ -20,95 +20,95 @@ Baseline (`exact-hybrid-v3-with-why-cc`, n=5) vs. Cleaned (`exact-hybrid-v4-clea
 | `duration_seconds` mean | ↓ | **569** 🏆 | 644 (+13 %) |
 | `total_tokens` mean | ↓ | **7.56 M** 🏆 | 8.67 M (+15 %) |
 
-Lesart in zwei Sätzen: Die RQ-1.6-Empfehlung generalisiert auf GoL — hybrid-v4 ist korrektheits-aequivalent (beide 100/100), zeigt eine **deutliche Verbesserung der Spitzen-Komplexitaet** (`cognitive_max` −42 % Mean, σ −81 %; `mccabe_max` −22 % Mean, σ −64 %) und eine moderate Disziplin-Drift (+22 % Refactorings). Kosten-Aufschlag +13 %/+15 % ist im selben Bereich wie auf claim-office.
+Reading in two sentences: the RQ-1.6 recommendation generalizes to GoL — hybrid-v4 is correctness-equivalent (both 100/100), shows a **marked improvement in Complexity Peak** (`cognitive_max` −42 % mean, σ −81 %; `mccabe_max` −22 % mean, σ −64 %) and a moderate discipline drift (+22 % refactorings). The cost surcharge of +13 %/+15 % is in the same range as on claim-office.
 
 ---
 
-## F-1.1 — Cleanup-Aequivalenz generalisiert: keine Korrektheits-Regression auf GoL
+## F-1.1 — Cleanup equivalence generalizes: no correctness regression on GoL
 
-**Statement.** Auf game-of-life-example-mapping bleibt die Korrektheit invariant zwischen exact-hybrid-v3-with-why-cc und exact-hybrid-v4-cleaned-cc: `tests_passing` 100 %/100 %, `completed_within_budget` 100 %/100 %, `predictions_correct_rate` 98.8 % / 100 %. Damit wiederholt sich das Cleanup-Aequivalenz-Bild aus RQ-1.6 (claim-office) — beide Hauptfindings-Achsen bleiben in der Cross-Kata-Validierung stabil.
+**Statement.** On game-of-life-example-mapping, correctness stays invariant between exact-hybrid-v3-with-why-cc and exact-hybrid-v4-cleaned-cc: `tests_passing` 100 %/100 %, `completed_within_budget` 100 %/100 %, `predictions_correct_rate` 98.8 % / 100 %. This repeats the cleanup equivalence picture from RQ-1.6 (claim-office) — both main finding axes stay stable in the cross-kata validation.
 
-**Daten (n=5 pro Zelle).**
+**Data (n=5 per cell).**
 
-| Metrik | exact-hybrid-v3-with-why-cc | exact-hybrid-v4-cleaned-cc |
+| Metric | exact-hybrid-v3-with-why-cc | exact-hybrid-v4-cleaned-cc |
 |---|---|---|
 | `tests_passing` | 5/5 (100 %) | 5/5 (100 %) |
 | `completed_within_budget` | 5/5 (100 %) | 5/5 (100 %) |
 | `predictions_correct_rate` | 98.8 % (83/84) | 100.0 % (90/90) |
 
-**Rationale.** H0 (Aequivalenz auf GoL) bestätigt. Wie erwartet ist `verification_pct` auf GoL nicht informativ, weil interne Vitest-Tests die einzige Korrektheits-Quelle sind — beide Workflows erreichen 100 %. Der Predictions-Rate-Unterschied (98.8 % → 100 %) ist statistisch im Noise (1 falsche Prediction bei hybrid-v2 ueber 84 Predictions), aber direktional konsistent mit dem RQ-1.6-Befund. H1 (Kata-spezifischer Cleanup-Effekt) ist auf der Korrektheits-Achse damit klar widerlegt.
+**Rationale.** H0 (equivalence on GoL) confirmed. As expected, `verification_pct` is not informative on GoL because internal vitest tests are the only correctness source — both workflows reach 100 %. The difference in prediction rate (98.8 % → 100 %) is statistically within the noise (1 wrong prediction for hybrid-v2 across 84 predictions), but directionally consistent with the RQ-1.6 finding. H1 (kata-specific cleanup effect) is thus clearly refuted on the correctness axis.
 
 ---
 
-## F-1.2 — Spitzen-Komplexitaet kollabiert: cognitive_max −42 %, mccabe_max −22 %, Streuung stark gekappt
+## F-1.2 — Complexity Peak collapses: cognitive_max −42 %, mccabe_max −22 %, spread sharply capped
 
-**Statement.** exact-hybrid-v4-cleaned-cc reduziert die Spitzen-Komplexitaet auf GoL deutlich gegenueber exact-hybrid-v3-with-why-cc. `cognitive_max` faellt im Mean von 4.80 auf 2.80 (−42 %) bei einer Streuungs-Reduktion von σ 5.81 auf σ 1.10 (−81 %); `mccabe_max` faellt von 4.60 auf 3.60 (−22 %) bei σ 3.13 → σ 1.14 (−64 %). Die Maxima reduzieren sich entsprechend (cognitive_max 15 → 4, mccabe_max 10 → 5).
+**Statement.** exact-hybrid-v4-cleaned-cc markedly reduces the Complexity Peak on GoL relative to exact-hybrid-v3-with-why-cc. `cognitive_max` falls in the mean from 4.80 to 2.80 (−42 %) with a spread reduction from σ 5.81 to σ 1.10 (−81 %); `mccabe_max` falls from 4.60 to 3.60 (−22 %) with σ 3.13 → σ 1.14 (−64 %). The maxima drop accordingly (cognitive_max 15 → 4, mccabe_max 10 → 5).
 
-**Daten (n=5 pro Zelle).**
+**Data (n=5 per cell).**
 
-| Metrik (↓ = besser) | exact-hybrid-v3-with-why-cc | exact-hybrid-v4-cleaned-cc | Δ |
+| Metric (↓ = better) | exact-hybrid-v3-with-why-cc | exact-hybrid-v4-cleaned-cc | Δ |
 |---|---:|---:|---|
-| `cognitive_max` mean / σ / max | 4.80 / 5.81 / 15 | **2.80 / 1.10 / 4** | −42 % Mean, σ −81 % |
-| `mccabe_max` mean / σ / max | 4.60 / 3.13 / 10 | **3.60 / 1.14 / 5** | −22 % Mean, σ −64 % |
-| `cc_longest_function` mean / σ / max | 9.40 / 8.29 / 22 | 9.40 / 6.80 / 18 | = Mean, σ −18 %, max −18 % |
+| `cognitive_max` mean / σ / max | 4.80 / 5.81 / 15 | **2.80 / 1.10 / 4** | −42 % mean, σ −81 % |
+| `mccabe_max` mean / σ / max | 4.60 / 3.13 / 10 | **3.60 / 1.14 / 5** | −22 % mean, σ −64 % |
+| `cc_longest_function` mean / σ / max | 9.40 / 8.29 / 22 | 9.40 / 6.80 / 18 | = mean, σ −18 %, max −18 % |
 
-**Rationale.** Das Streuung-Kollaps-Pattern ist auffaellig: exact-hybrid-v3-with-why-cc produziert vereinzelt sehr ausreisser-hafte Runs (cognitive_max=15, mccabe_max=10, longest=22), hybrid-v4 nicht. Mechanistisch plausibel: die +22 % Refactorings (siehe F-1.3) treiben die Verteilung der Komplexitaets-Spitzen nach unten. Das gleiche Muster wurde in RQ-1.5 fuer exact-hybrid-v3-with-why-cc vs v6.1-hybrid auf claim-office dokumentiert (σ −82–90 % auf Komplexitaets-Spitzen) und tritt hier in der naechsten Reduktions-Iteration wieder auf.
+**Rationale.** The spread collapse pattern is striking: exact-hybrid-v3-with-why-cc occasionally produces heavy outlier runs (cognitive_max=15, mccabe_max=10, longest=22), hybrid-v4 does not. Mechanistically plausible: the +22 % refactorings (see F-1.3) drive the distribution of complexity peaks downward. The same pattern was documented in RQ-1.5 for exact-hybrid-v3-with-why-cc vs v6.1-hybrid on claim-office (σ −82–90 % on Complexity Peak) and recurs here in the next reduction iteration.
 
-`code_mass` (151.0 → 148.8) und `smell_total` (2.8 → 2.6) zeigen kleine, im Noise liegende Verbesserungen — keine Verschlechterung wie auf claim-office, wo `code_mass` +14 % stieg. Auf der trainings-bekannten GoL-Kata bringt hybrid-v4 also tendenziell *konsistentere und leicht kleinere* Implementierungen, waehrend auf claim-office das Code-Volumen leicht waechst (mehr Tests vollstaendig implementiert).
+`code_mass` (151.0 → 148.8) and `smell_total` (2.8 → 2.6) show small improvements within the noise — no degradation as on claim-office, where `code_mass` rose +14 %. On the training-known GoL kata, hybrid-v4 therefore tends to produce *more consistent and slightly smaller* implementations, while on claim-office the Code Mass (APP) grows slightly (more tests implemented completely).
 
 ---
 
-## F-1.3 — Disziplin-Drift uebertraegt sich auf GoL: +22 % Refactorings (claim-office: +34 %)
+## F-1.3 — Discipline drift carries over to GoL: +22 % refactorings (claim-office: +34 %)
 
-**Statement.** exact-hybrid-v4-cleaned-cc refactoriert auf GoL +22 % haeufiger als exact-hybrid-v3-with-why-cc (6.40 → 7.80 mean, σ 3.21 → 2.17). Der absolute Effekt ist kleiner als auf claim-office (+34 %), die Richtung aber gleich. `cycle_count` ist beinahe identisch (8.40 → 9.00), `tests_passed_immediately` faellt von 2.20 auf 1.40 (mehr Tests werden im Red erst erzeugt statt direkt zu greenen).
+**Statement.** exact-hybrid-v4-cleaned-cc refactors +22 % more often on GoL than exact-hybrid-v3-with-why-cc (6.40 → 7.80 mean, σ 3.21 → 2.17). The absolute effect is smaller than on claim-office (+34 %), but the direction is the same. `cycle_count` is nearly identical (8.40 → 9.00), and `tests_passed_immediately` falls from 2.20 to 1.40 (more tests are actually produced in Red instead of going green directly).
 
-**Daten (n=5 pro Zelle).**
+**Data (n=5 per cell).**
 
-| Metrik (↑ = besser fuer Disziplin) | exact-hybrid-v3-with-why-cc | exact-hybrid-v4-cleaned-cc | Δ |
+| Metric (↑ = better for discipline) | exact-hybrid-v3-with-why-cc | exact-hybrid-v4-cleaned-cc | Δ |
 |---|---:|---:|---|
-| `refactorings_applied` mean / σ | 6.40 / 3.21 | **7.80 / 2.17** | +22 % Mean, σ −32 % |
+| `refactorings_applied` mean / σ | 6.40 / 3.21 | **7.80 / 2.17** | +22 % mean, σ −32 % |
 | `cycle_count` mean / σ / range | 8.40 / 0.55 / 8–9 | 9.00 / 0.71 / 8–10 | +7 % |
-| `tests_passed_immediately` mean | 2.20 | 1.40 | −36 % (Disziplin-Verbesserung) |
+| `tests_passed_immediately` mean | 2.20 | 1.40 | −36 % (discipline improvement) |
 | `predictions_correct_rate` | 98.8 % | **100 %** | +1.2 pp |
 
-**Rationale.** H1 (Kata-spezifischer Cleanup-Effekt) ist auch auf der Disziplin-Achse widerlegt — der refactor.md-Entkopplungs-Effekt ist nicht claim-office-spezifisch, sondern produziert auch auf GoL zusaetzliche Refactor-Subagent-Spawns. Die kleinere Effektgroesse (+22 % vs +34 %) ist plausibel: GoL hat weniger Cycles (mean 9 vs 37 auf claim-office), also weniger absolute Iterationen, in denen sich der Drift aufbauen kann.
+**Rationale.** H1 (kata-specific cleanup effect) is refuted on the discipline axis as well — the refactor.md decoupling effect is not claim-office-specific but also produces additional refactor subagent spawns on GoL. The smaller effect size (+22 % vs +34 %) is plausible: GoL has fewer cycles (mean 9 vs 37 on claim-office), hence fewer absolute iterations in which the drift can build up.
 
-Die `tests_passed_immediately`-Reduktion (2.20 → 1.40, −36 %) zeigt, dass hybrid-v4 *strikter im Red* bleibt — mehr Tests werden tatsaechlich rot, bevor der Green-Skill sie passend macht. Das ist ein qualitativer Disziplin-Gewinn, der in RQ-1.6 auf claim-office nicht sichtbar war (dort waren beide bei ~15).
+The `tests_passed_immediately` reduction (2.20 → 1.40, −36 %) shows that hybrid-v4 stays *stricter in Red* — more tests actually go red before the Green skill makes them pass. This is a qualitative discipline gain that was not visible in RQ-1.6 on claim-office (both were at ~15 there).
 
 ---
 
-## F-1.4 — Kosten-Aufschlag konsistent: +13 % Wallclock, +15 % Tokens
+## F-1.4 — Cost surcharge consistent: +13 % wallclock, +15 % tokens
 
-**Statement.** hybrid-v4 kostet auf GoL +75 s Wallclock (+13 %) und +1.10 M Tokens (+15 %) pro Run. Der Aufschlag liegt im selben Bereich wie auf claim-office (+13 % / +12 % in RQ-1.6).
+**Statement.** hybrid-v4 costs +75 s wallclock (+13 %) and +1.10 M tokens (+15 %) per run on GoL. The surcharge is in the same range as on claim-office (+13 % / +12 % in RQ-1.6).
 
-**Daten (n=5 pro Zelle).**
+**Data (n=5 per cell).**
 
-| Metrik (↓ = besser) | exact-hybrid-v3-with-why-cc | exact-hybrid-v4-cleaned-cc | Δ |
+| Metric (↓ = better) | exact-hybrid-v3-with-why-cc | exact-hybrid-v4-cleaned-cc | Δ |
 |---|---:|---:|---|
 | `duration_seconds` mean | **569** 🏆 (σ 171) | 644 (σ 140) | +13 % |
 | `total_tokens` mean | **7.56 M** 🏆 (σ 1.88 M) | 8.67 M (σ 1.57 M) | +15 % |
 | `cycle_count` mean | 8.40 | 9.00 | +7 % |
 | `total_tokens / cycle` (≈) | 0.90 M | 0.96 M | +7 % |
 
-**Rationale.** H2 (Kosten-Aequivalenz auf GoL) ist widerlegt — hybrid-v4 ist auch auf GoL spuerbar teurer. Der Kosten-Aufschlag pro Cycle ist mit +7 % Tokens/Cycle hoeher als auf claim-office (+5 %), aber immer noch klein. Wie auf claim-office reduziert sich die Streuung sowohl bei `duration_seconds` (σ 171 → 140) als auch bei `total_tokens` (σ 1.88 M → 1.57 M) — hybrid-v4 ist konsistenter in den Kosten, was ein operationaler Vorteil bei Wallclock-Budgetierung ist.
+**Rationale.** H2 (cost equivalence on GoL) is refuted — hybrid-v4 is noticeably more expensive on GoL as well. The cost surcharge per cycle, at +7 % tokens/cycle, is higher than on claim-office (+5 %), but still small. As on claim-office, the spread drops for both `duration_seconds` (σ 171 → 140) and `total_tokens` (σ 1.88 M → 1.57 M) — hybrid-v4 is more consistent in cost, which is an operational advantage for wallclock budgeting.
 
 ---
 
-## Status der Hypothesen
+## Hypothesis status
 
-| Hypothese | Status | Beleg |
+| Hypothesis | Status | Evidence |
 |---|---|---|
-| **H0** Cleanup-Aequivalenz auf GoL | bestaetigt | Korrektheit 100/100, Disziplin-/Code-Qualitaets-Drift in gleicher Richtung wie auf claim-office |
-| **H1** Kata-spezifischer Cleanup-Effekt | klar widerlegt | +22 % refactorings auf GoL (vs +34 % auf claim-office), gleiche Richtung; Code-Qualitaet auf GoL sogar staerker verbessert (cognitive_max −42 %) |
-| **H2** Kosten-Aequivalenz auf GoL | widerlegt | +13 % Wallclock, +15 % Tokens — fast identisch zur claim-office-Differenz |
+| **H0** Cleanup equivalence on GoL | confirmed | correctness 100/100, discipline/code quality drift in the same direction as on claim-office |
+| **H1** Kata-specific cleanup effect | clearly refuted | +22 % refactorings on GoL (vs +34 % on claim-office), same direction; code quality on GoL improved even more strongly (cognitive_max −42 %) |
+| **H2** Cost equivalence on GoL | refuted | +13 % wallclock, +15 % tokens — almost identical to the claim-office difference |
 
-## Konsequenzen
+## Consequences
 
-1. **exact-hybrid-v4-cleaned-cc-Empfehlung haelt fuer GoL.** Die in RQ-1.6 etablierte Default-Baseline ist auch auf der trainings-bekannten Kata verhalts-aequivalent und produziert sogar staerkere Code-Qualitaets-Vorteile (cognitive_max −42 %, mccabe_max −22 %). Die Empfehlung in [`workflow-construction.md`](../workflow-construction.md) bleibt unveraendert; die Cross-Kata-Validierung verstaerkt sie.
-2. **Komplexitaets-Streuungs-Kollaps ist ein wiederkehrendes Muster.** Das in RQ-1.5 (exact-hybrid-v3-with-why-cc vs v6.1-hybrid auf claim-office) zuerst dokumentierte Phaenomen — σ-Reduktion von 80–90 % auf cognitive_max/longest_function — tritt jetzt in der naechsten Workflow-Iteration (hybrid-v4 vs exact-hybrid-v3-with-why-cc) auf GoL erneut auf. Das spricht fuer einen robusten Mechanismus: mehr Refactorings → konsistentere Spitzen-Komplexitaet, kata- und workflow-iterations-unabhaengig.
-3. **Offene Fragen fuer Folge-RQs:**
-   - Halten die Befunde auf anderen Modellen (Sonnet, Haiku, Direct API ohne Portkey)?
-   - Lohnen die +13 % Wallclock — gibt es eine hybrid-v4.3-Variante, die nur eine der drei Cleanup-Achsen behaelt und kostenoptimaler ist?
-   - Sind die +22 % Refactorings auf GoL "echte" Verbesserungen (Code wird besser durch jede Iteration) oder Overshooting (Refactorings ohne marginalen Wert)? Mutation-Score-Messung waere die direkte Pruefung.
+1. **The exact-hybrid-v4-cleaned-cc recommendation holds for GoL.** The default baseline established in RQ-1.6 is behaviourally equivalent on the training-known kata too, and even produces stronger code quality advantages (cognitive_max −42 %, mccabe_max −22 %). The recommendation in [`workflow-construction.md`](../workflow-construction.md) stays unchanged; the cross-kata validation strengthens it.
+2. **The complexity spread collapse is a recurring pattern.** The phenomenon first documented in RQ-1.5 (exact-hybrid-v3-with-why-cc vs v6.1-hybrid on claim-office) — a σ reduction of 80–90 % on cognitive_max/longest_function — now recurs on GoL in the next workflow iteration (hybrid-v4 vs exact-hybrid-v3-with-why-cc). That argues for a robust mechanism: more refactorings → more consistent Complexity Peak, independent of kata and workflow iteration.
+3. **Open questions for follow-up RQs:**
+   - Do the findings hold on other models (Sonnet, Haiku, direct API without Portkey)?
+   - Are the +13 % wallclock worth it — is there a hybrid-v4.3 variant that keeps only one of the three cleanup axes and is more cost-optimal?
+   - Are the +22 % refactorings on GoL "real" improvements (the code gets better with each iteration) or overshooting (refactorings without marginal value)? A Mutation Score measurement would be the direct test.
 
-**Caveat n=5.** Replikate-Anzahl bewusst kleiner als RQ-1.6 (n=8), weil der Test eine Cross-Kata-Validierung des bereits dokumentierten Effekts ist, kein Erstnachweis. Bei n=5 sind alle Effektgroessen-Schaetzungen mit groesseren Konfidenz-Intervallen behaftet; insbesondere die starke `cognitive_max`-Reduktion (−81 % σ) sollte bei Bedarf auf n=8 erweitert werden, bevor sie in eine generelle Methodik-Empfehlung uebernommen wird.
+**Caveat n=5.** The replicate count is deliberately smaller than RQ-1.6 (n=8), because this test is a cross-kata validation of an already documented effect, not a first demonstration. At n=5 all effect size estimates carry larger confidence intervals; the strong `cognitive_max` reduction (−81 % σ) in particular should be extended to n=8 if needed before it is adopted into a general methodology recommendation.

@@ -2,11 +2,11 @@
 
 _How much of the hybrid-v6 architecture can be removed on opus-5 before code quality degrades — and how much of its result comes from the APP subordination patch (hybrid-v7) rather than from the end-refactor phase (hybrid-v8) or the isolated refactor subagent (single-context-v3)?_
 
-## Übersicht
+## Overview
 
 **The reduction chain in order** — each step removes exactly one component from the one above
 it. `cc_avg_loc_per_function` is the primary decomposition metric (mean function length,
-kleiner = besser); n=5 per cell, n=6 for hybrid-v6.
+lower = better); n=5 per cell, n=6 for hybrid-v6.
 
 | Chain position | Workflow | sphinx `cc_avg` | game-of-life `cc_avg` |
 |---|---|---:|---:|
@@ -24,14 +24,14 @@ All outcomes per cell (sphinx-score / game-of-life):
 
 | Outcome | single-context-v2 | single-context-v3 | hybrid-v2 | hybrid-v6 | hybrid-v7 | hybrid-v8 |
 |---|---:|---:|---:|---:|---:|---:|
-| `verification_pct` (höher = besser) | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | 0.92 / 1.00 | **1.00 / 1.00** 🏆 |
-| `cc_avg_loc_per_function` (kleiner = besser) | 6.16 / 4.12 | **3.16** 🏆 / 4.04 | 3.68 / 4.54 | 3.54 / **3.46** 🏆 | 2.96 / 3.83 | 3.24 / 4.67 |
-| `cc_longest_function` (kleiner = besser) | 8.6 / 8.0 | 7.2 / 8.8 | 6.8 / 10.8 | **5.83** 🏆 / 7.5 | 5.8 / **7.2** 🏆 | 7.0 / 11.8 |
-| `total_tokens` (kleiner = besser) | 16.6 M / 11.8 M | 18.8 M / 21.1 M | **10.6 M** 🏆 / **8.0 M** 🏆 | 19.1 M / 15.0 M | 14.7 M / 15.1 M | 12.3 M / 12.2 M |
-| `duration_seconds` (kleiner = besser) | **609 s** 🏆 / **431 s** 🏆 | 745 s / 743 s | 786 s / 621 s | 1475 s / 1145 s | 1264 s / 1183 s | 986 s / 1097 s |
-| `cognitive_max` (kleiner = besser) | 1.4 / 1.8 | 1.4 / 3.2 | **1.0** 🏆 / 1.8 | **1.0** 🏆 / **1.17** 🏆 | 1.0 / 1.4 | 1.4 / 2.8 |
-| `smell_total` (kleiner = besser) | 0.6 / **0.0** 🏆 | 0.4 / **0.0** 🏆 | 0.2 / 1.2 | **0.0** 🏆 / **0.0** 🏆 | 0.0 / 0.6 | 0.0 / 1.6 |
-| `refactorings_applied` (höher = besser) | 5.8 / 4.4 | 9.0 / **9.2** 🏆 | 6.0 / 4.4 | **11.67** 🏆 / 8.83 | 10.4 / 9.0 | 7.8 / **9.2** 🏆 |
+| `verification_pct` (higher = better) | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | 0.92 / 1.00 | **1.00 / 1.00** 🏆 |
+| `cc_avg_loc_per_function` (lower = better) | 6.16 / 4.12 | **3.16** 🏆 / 4.04 | 3.68 / 4.54 | 3.54 / **3.46** 🏆 | 2.96 / 3.83 | 3.24 / 4.67 |
+| `cc_longest_function` (lower = better) | 8.6 / 8.0 | 7.2 / 8.8 | 6.8 / 10.8 | **5.83** 🏆 / 7.5 | 5.8 / **7.2** 🏆 | 7.0 / 11.8 |
+| `total_tokens` (lower = better) | 16.6 M / 11.8 M | 18.8 M / 21.1 M | **10.6 M** 🏆 / **8.0 M** 🏆 | 19.1 M / 15.0 M | 14.7 M / 15.1 M | 12.3 M / 12.2 M |
+| `duration_seconds` (lower = better) | **609 s** 🏆 / **431 s** 🏆 | 745 s / 743 s | 786 s / 621 s | 1475 s / 1145 s | 1264 s / 1183 s | 986 s / 1097 s |
+| `cognitive_max` (lower = better) | 1.4 / 1.8 | 1.4 / 3.2 | **1.0** 🏆 / 1.8 | **1.0** 🏆 / **1.17** 🏆 | 1.0 / 1.4 | 1.4 / 2.8 |
+| `smell_total` (lower = better) | 0.6 / **0.0** 🏆 | 0.4 / **0.0** 🏆 | 0.2 / 1.2 | **0.0** 🏆 / **0.0** 🏆 | 0.0 / 0.6 | 0.0 / 1.6 |
+| `refactorings_applied` (higher = better) | 5.8 / 4.4 | 9.0 / **9.2** 🏆 | 6.0 / 4.4 | **11.67** 🏆 / 8.83 | 10.4 / 9.0 | 7.8 / **9.2** 🏆 |
 
 **Caveats binding for both tables:**
 

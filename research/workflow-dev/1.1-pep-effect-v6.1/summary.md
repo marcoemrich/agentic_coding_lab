@@ -1,19 +1,19 @@
 # RQ-pep-v6.1 — Aggregation
 
-_Liefern psychologische Begruendungen ('pep talks') in den Red- und Green-Skill-Prompts auf hybrid-v2-Basis einen messbaren Code-Qualitaets- oder TDD-Disziplin-Vorteil ueber rein operationale Anweisungen?_
+_Do psychological justifications ('pep talks') in the Red and Green skill prompts on the hybrid-v2 base deliver a measurable code quality or TDD discipline advantage over purely operational instructions?_
 
-Generated: 2026-09-11T07:48:43Z
+Generated: 2026-09-17T01:17:47Z
 
 Cells declared: 2 · matched runs: 10 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc | opus-4-7-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### code_mass
 

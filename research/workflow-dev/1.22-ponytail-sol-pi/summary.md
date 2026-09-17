@@ -2,11 +2,11 @@
 
 _When Ponytail full is forcibly loaded into the Sol-originated EXACT Coding workflow on pi, does it improve code quality without reducing correctness, test strength, TDD discipline or completion reliability, and at what cost?_
 
-Generated: 2026-09-14T09:50:30Z
+Generated: 2026-09-17T01:17:52Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -15,7 +15,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi | gpt-5-6-sol-codex | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi | gpt-5-6-sol-codex | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

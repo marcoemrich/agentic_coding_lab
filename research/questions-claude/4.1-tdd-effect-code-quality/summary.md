@@ -2,11 +2,11 @@
 
 _How does the workflow structure (from oneshot through iterative to strict TDD with subagents) affect code quality, and does TDD strictness make a difference?_
 
-Generated: 2026-09-11T07:48:32Z
+Generated: 2026-09-17T01:17:37Z
 
 Cells declared: 16 · matched runs: 103 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -27,7 +27,7 @@ Cells declared: 16 · matched runs: 103 · min_replicates: 5
 | game-of-life-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### code_mass
 
@@ -273,19 +273,19 @@ Cells declared: 16 · matched runs: 103 · min_replicates: 5
 
 ### tdd_cycles
 
-_Spalte `tdd_cycles` nicht in CSV — wird nicht erhoben oder Tippfehler im Frontmatter._
+_Column `tdd_cycles` not in CSV — either not collected or a typo in the frontmatter._
 
 ### refactorings
 
-_Spalte `refactorings` nicht in CSV — wird nicht erhoben oder Tippfehler im Frontmatter._
+_Column `refactorings` not in CSV — either not collected or a typo in the frontmatter._
 
 ### prediction_accuracy
 
-_Spalte `prediction_accuracy` nicht in CSV — wird nicht erhoben oder Tippfehler im Frontmatter._
+_Column `prediction_accuracy` not in CSV — either not collected or a typo in the frontmatter._
 
 ### tests_immediately_passing
 
-_Spalte `tests_immediately_passing` nicht in CSV — wird nicht erhoben oder Tippfehler im Frontmatter._
+_Column `tests_immediately_passing` not in CSV — either not collected or a typo in the frontmatter._
 
 ### duration_seconds
 

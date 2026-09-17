@@ -1,38 +1,38 @@
 # RQ-end-refactor-v62 — Findings
 
-Liefert ein metric-driven Refactor-Pass einen Code-Qualitaets-Gewinn ueber die hybrid-v4-Per-Cycle-Baseline — und greift der Hebel besser **laufend** (hybrid-v4.4 per-cycle) oder als **einmaliger Whole-src-End-Pass** (hybrid-v5)? Geprueft auf zwei Kata-Typen: mehrteilige CLI-Codebasis **claim-office** (cli.ts + domain.ts) und einteilige Library **game-of-life**.
+Does a metric-driven refactor pass deliver a code quality gain over the hybrid-v4 per-cycle baseline — and does the lever work better **continuously** (hybrid-v4.4 per-cycle) or as a **one-off whole-src end pass** (hybrid-v5)? Tested on two kata types: the multi-file CLI codebase **claim-office** (cli.ts + domain.ts) and the single-file library **game-of-life**.
 
-Daten: 43 Runs, `example-mapping`, opus-4-7. Quelle: [summary.md](summary.md), [runs.csv](runs.csv).
+Data: 43 runs, `example-mapping`, opus-4-7. Source: [summary.md](summary.md), [runs.csv](runs.csv).
 
-**Methodik-Hinweis:** Die beiden Katas werden **nie gemittelt** (claim-office Code-Mass ~800 vs game-of-life ~160) — jede hat ihren eigenen Block, der Workflow-Vergleich findet ausschliesslich *innerhalb* einer Kata statt. opus-4-7 lief ueber zwei Routings (portkey/native), als dasselbe Modell behandelt: Code-Qualitaet und Korrektheit sind routing-invariant, `duration_seconds`/`total_tokens` nicht (Hardware/Caching) → Kosten pro Routing getrennt, Kosten-Trophies nur innerhalb gleichen Routings.
+**Methodology note:** The two katas are **never averaged** (claim-office Code Mass (APP) ~800 vs game-of-life ~160) — each has its own block, and the workflow comparison happens exclusively *within* a kata. opus-4-7 ran over two routings (portkey/native), treated as the same model: code quality and correctness are routing-invariant, `duration_seconds`/`total_tokens` are not (hardware/caching) → costs separated per routing, cost trophies only within the same routing.
 
-## Übersicht
+## Overview
 
-Spitzen-Komplexitaet `cognitive_max` als primaerer Code-Qualitaets-Indikator (kleiner = besser). 🏆 = bester Wert je Kata (Spread ≥ 1 σ).
+Complexity Peak `cognitive_max` as the primary code quality indicator (lower = better). 🏆 = best value per kata (spread ≥ 1 σ).
 
-| Kata | hybrid-v4 (Baseline) | hybrid-v4.4 (per-cycle) | hybrid-v5 (end-refactor) |
+| Kata | hybrid-v4 (baseline) | hybrid-v4.4 (per-cycle) | hybrid-v5 (end-refactor) |
 |---|---:|---:|---:|
 | claim-office | 5.0 | **2.4** 🏆 | 2.8 |
 | game-of-life | 4.0 | **2.2** 🏆 | 3.0 |
 
-Auf **beiden** Katas senkt der per-cycle-Refactor hybrid-v4.4 die Spitzen-Komplexitaet am staerksten. hybrid-v5 liegt dazwischen — auf claim-office nahe hybrid-v4.4, auf GoL nahe der Baseline (F-1.12.1 / F-1.12.2).
+On **both** katas the per-cycle refactor hybrid-v4.4 lowers the Complexity Peak furthest. hybrid-v5 sits in between — close to hybrid-v4.4 on claim-office, close to the baseline on GoL (F-1.12.1 / F-1.12.2).
 
 ---
 
-## Kata claim-office (mehrteilige CLI-Codebasis: cli.ts + domain.ts)
+## Kata claim-office (multi-file CLI codebase: cli.ts + domain.ts)
 
-### Code-Qualität (kleiner = besser)
+### Code quality (lower = better)
 
-| Workflow | `cognitive_max` | `cognitive_avg` | `mccabe_max` | `mccabe_avg` | `cc_longest_function` | `cc_avg_loc_per_function` | Code-Mass (APP) | `smell_total` |
+| Workflow | `cognitive_max` | `cognitive_avg` | `mccabe_max` | `mccabe_avg` | `cc_longest_function` | `cc_avg_loc_per_function` | Code Mass (APP) | `smell_total` |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | exact-hybrid-v4-cleaned-cc | 5.00 | 1.91 | 4.50 | 1.53 | 12.4 | 4.22 | 878.5 | 0.38 |
 | exact-hybrid-v4.4-metric-refactor-cc | **2.40** 🏆 | **1.27** 🏆 | **3.00** 🏆 | 1.40 | 13.0 | 4.37 | 804.6 | **0.00** 🏆 |
 | exact-hybrid-v5-end-refactor-cc | 2.80 | 1.39 | 3.40 | **1.44** | **11.0** 🏆 | **3.66** 🏆 | **780.4** 🏆 | **0.00** 🏆 |
 
-- `mccabe_avg`-Spread 1.53→1.40→1.44 ist < 1 σ — kein Pokal.
-- `smell_total`-Tie: hybrid-v4.4 und hybrid-v5 beide 0; hybrid-v4 hat 3 von 8 Runs mit smell ≥ 1.
+- The `mccabe_avg` spread 1.53→1.40→1.44 is < 1 σ — no trophy.
+- `smell_total` tie: hybrid-v4.4 and hybrid-v5 both at 0; hybrid-v4 has 3 of 8 runs with smell ≥ 1.
 
-### Korrektheit + Disziplin (Korrektheit höher = besser)
+### Correctness + discipline (correctness higher = better)
 
 | Workflow | `tests_passing %` | `verification_pct` (Mean / Min) | `cycle_count` | `refactorings_applied` | `predictions_correct_rate %` |
 |---|---:|---:|---:|---:|---:|
@@ -40,32 +40,32 @@ Auf **beiden** Katas senkt der per-cycle-Refactor hybrid-v4.4 die Spitzen-Komple
 | exact-hybrid-v4.4-metric-refactor-cc | **100** 🏆 | **0.99** 🏆 / 0.93 | 40.2 | 30.4 | 89.6 |
 | exact-hybrid-v5-end-refactor-cc | **100** 🏆 | **0.99** 🏆 / 0.93 | 35.8 | 23.6 | 94.4 |
 
-### Kosten (pro Routing getrennt — kleiner = besser)
+### Cost (separated per routing — lower = better)
 
-| Workflow | Routing | n | `duration_s` | `total_tokens` |
+| Workflow | routing | n | `duration_s` | `total_tokens` |
 |---|---|---:|---:|---:|
 | exact-hybrid-v4-cleaned-cc | portkey | 8 | 2530 | 44.4 M |
 | exact-hybrid-v5-end-refactor-cc | portkey | 5 | 3014 | 42.4 M |
 | exact-hybrid-v4.4-metric-refactor-cc | native | 5 | 5284 | 102.3 M |
 
-Kosten-Trophy bewusst **nicht** vergeben: hybrid-v4.4 lief native, hybrid-v4/hybrid-v5 portkey — kein routing-sauberer Vergleich. Innerhalb portkey ist hybrid-v5 (42.4 M, 3014 s) gegen die hybrid-v4-Baseline (44.4 M, 2530 s) token-gleichauf bei ~+19 % Wallclock — der reine End-Pass-Aufschlag. Der hohe hybrid-v4.4-Absolutwert ist routing-konfundiert, die hohe Streuung aber real (F-1.12.4).
+No cost trophy is awarded, deliberately: hybrid-v4.4 ran native, hybrid-v4/hybrid-v5 portkey — not a routing-clean comparison. Within portkey, hybrid-v5 (42.4 M, 3014 s) is level with the hybrid-v4 baseline (44.4 M, 2530 s) on tokens at ~+19 % wallclock — the pure end-pass surcharge. The high hybrid-v4.4 absolute value is routing-confounded, but its high variance is real (F-1.12.4).
 
 ---
 
-## Kata game-of-life (einteilige Library, kein Cross-file-Hebel)
+## Kata game-of-life (single-file library, no cross-file lever)
 
-### Code-Qualität (kleiner = besser)
+### Code quality (lower = better)
 
-| Workflow | `cognitive_max` | `cognitive_avg` | `mccabe_max` | `cc_longest_function` | `cc_avg_loc_per_function` | Code-Mass (APP) | `smell_total` |
+| Workflow | `cognitive_max` | `cognitive_avg` | `mccabe_max` | `cc_longest_function` | `cc_avg_loc_per_function` | Code Mass (APP) | `smell_total` |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | exact-hybrid-v4-cleaned-cc | 4.00 | 2.83 | 4.13 | 11.47 | 4.75 | **153.8** 🏆 | 2.13 |
 | exact-hybrid-v4.4-metric-refactor-cc | **2.20** 🏆 | **1.83** 🏆 | 3.40 | **8.40** 🏆 | 4.66 | 168.4 | **0.00** 🏆 |
 | exact-hybrid-v5-end-refactor-cc | 3.00 | 2.20 | **3.20** | 9.80 | **4.08** | 168.0 | **0.00** 🏆 |
 
-- `mccabe_max` 4.13→3.40→3.20: alle innerhalb 1 σ → kein robuster Sieger.
-- hybrid-v4 hat die kleinste Code-Mass (beide Refactor-Varianten fuegen auf der winzigen Library netto Code zu).
+- `mccabe_max` 4.13→3.40→3.20: all within 1 σ → no robust winner.
+- hybrid-v4 has the lowest Code Mass (APP) (both refactor variants add net code on the tiny library).
 
-### Korrektheit + Disziplin (Korrektheit höher = besser)
+### Correctness + discipline (correctness higher = better)
 
 | Workflow | `tests_passing %` | `verification_pct` | `cycle_count` | `refactorings_applied` | `predictions_correct_rate %` |
 |---|---:|---:|---:|---:|---:|
@@ -73,62 +73,62 @@ Kosten-Trophy bewusst **nicht** vergeben: hybrid-v4.4 lief native, hybrid-v4/hyb
 | exact-hybrid-v4.4-metric-refactor-cc | **100** 🏆 | **1.0** 🏆 | 9.4 | 9.4 | 98.9 |
 | exact-hybrid-v5-end-refactor-cc | **100** 🏆 | **1.0** 🏆 | 9.6 | 9.6 | **100** 🏆 |
 
-### Kosten (pro Routing getrennt — kleiner = besser)
+### Cost (separated per routing — lower = better)
 
-| Workflow | Routing | n | `duration_s` | `total_tokens` |
+| Workflow | routing | n | `duration_s` | `total_tokens` |
 |---|---|---:|---:|---:|
 | exact-hybrid-v4-cleaned-cc | native | 5 | 898 | 10.1 M |
 | exact-hybrid-v4.4-metric-refactor-cc | native | 5 | 1064 | 11.0 M |
 | exact-hybrid-v5-end-refactor-cc | native | 5 | 1332 | 12.3 M |
 | exact-hybrid-v4-cleaned-cc | portkey | 10 | 627 | 8.3 M |
 
-Unter **native** (vergleichbar): hybrid-v4.4 +18 % Wallclock / +9 % Tokens, hybrid-v5 +48 % / +22 % gegen hybrid-v4 — hybrid-v4.4 holt den Komplexitaets-Gewinn guenstiger. Die portkey-hybrid-v4-Zeile ist nur informativ; die niedrigere Wallclock ist Routing-Effekt (anderes Caching), kein Workflow-Effekt.
+Under **native** (comparable): hybrid-v4.4 +18 % wallclock / +9 % tokens, hybrid-v5 +48 % / +22 % against hybrid-v4 — hybrid-v4.4 buys the complexity gain more cheaply. The portkey hybrid-v4 row is informative only; its lower wallclock is a routing effect (different caching), not a workflow effect.
 
 ---
 
-## F-1.12.1 — Auf beiden Katas ist der per-cycle-Refactor hybrid-v4.4 der robuste Spitzen-Komplexitaets-Sieger
+## F-1.12.1 — On both katas the per-cycle refactor hybrid-v4.4 is the robust Complexity Peak winner
 
-Der laufende metric-driven Refactor (hybrid-v4.4) senkt `cognitive_max` und `cognitive_avg` auf **beiden** Kata-Typen am staerksten unter die hybrid-v4-Baseline:
+The continuous metric-driven refactor (hybrid-v4.4) pushes `cognitive_max` and `cognitive_avg` furthest below the hybrid-v4 baseline on **both** kata types:
 
-| Metrik | Kata | hybrid-v4 | hybrid-v4.4 | hybrid-v5 | hybrid-v4.4 vs hybrid-v4 |
+| Metric | Kata | hybrid-v4 | hybrid-v4.4 | hybrid-v5 | hybrid-v4.4 vs hybrid-v4 |
 |---|---|---:|---:|---:|---|
 | `cognitive_max` | claim-office | 5.0 | **2.4** | 2.8 | −2.6 (≈ 1.5 σ) **robust** |
 | `cognitive_max` | game-of-life | 4.0 | **2.2** | 3.0 | −1.8 (> 1 σ) **robust** |
 | `cognitive_avg` | claim-office | 1.91 | **1.27** | 1.39 | −0.64 (≈ 1 σ) **robust** |
 | `cognitive_avg` | game-of-life | 2.83 | **1.83** | 2.2 | −1.0 (> 1 σ) **robust** |
 
-Der Effekt ist kata-uebergreifend stabil: ein Refactor, der in *jedem* Cycle lokal die gerade entstandene Komplexitaet abbaut, haelt die Spitzen-Komplexitaet niedriger als sowohl die refactor-arme Baseline als auch der einmalige End-Pass. Auf claim-office stuetzt die groessere hybrid-v4-Stichprobe (n=8) den Baseline-Wert; auf GoL hat hybrid-v4.4 die niedrigste Streuung aller drei Arme (σ 0.84) — der Gewinn ist dort stabil ueber alle 5 Runs.
+The effect is stable across katas: a refactor that locally dismantles the complexity just created in *every* cycle keeps the Complexity Peak lower than both the refactor-poor baseline and the one-off end pass. On claim-office the larger hybrid-v4 sample (n=8) supports the baseline value; on GoL hybrid-v4.4 has the lowest variance of all three arms (σ 0.84) — the gain there is stable across all 5 runs.
 
-Korrektheit bleibt dabei unangetastet (F-1.12.3): das Bundle-Bruch-Risiko aus RQ-1.9/1.10 tritt bei keiner Variante auf.
-
----
-
-## F-1.12.2 — Der End-Refactor hybrid-v5 wirkt nur auf der mehrteiligen Codebasis; auf der einteiligen Library ist er Rauschen
-
-Der einmalige Whole-src-End-Pass (hybrid-v5) verhaelt sich kata-abhaengig:
-
-- **claim-office** (cli.ts + domain.ts): hybrid-v5 ist mit hybrid-v4.4 weitgehend gleichauf (`cognitive_max` 2.8 vs 2.4, Spread < 1 σ) und liefert die **kleinste** Code-Mass (780.4 vs hybrid-v4 878.5, −11 %, Δ ≈ 1.1 σ), die **kuerzeste** Funktion (`cc_longest_function` 11.0, −11 %) und die **kompakteste** durchschnittliche Funktion (`cc_avg_loc_per_function` 3.66, −13 %, Δ ≈ 1.5 σ). Hier hat der Whole-src-Blick echte Cross-file-Substanz zu konsolidieren — Funktion-Inlining und Parameter-Destructuring ueber Dateigrenzen sind in den Run-Logs explizit dokumentiert ("inlined `processStep` into `run`", "destructured `processClaim` parameters").
-- **game-of-life** (einteilig): hybrid-v5 `cognitive_max` 3.0 ist von hybrid-v4 (4.0) statistisch ununterscheidbar — gepraegt von einem Ausreisser (4 von 5 Runs = 2, einer = 7; σ 2.24). Code-Mass steigt sogar (168.0 vs 153.8). Auf der winzigen Library gibt es keine Cross-file-Duplication, an der der End-Pass ansetzen koennte.
-
-Der einzige kata-uebergreifend robuste v6.5-Vorteil ist `smell_total` = 0 (deterministisch, wie hybrid-v4.4) gegen die hybrid-v4-Restsmells (claim-office 0.38, GoL 2.13).
-
-Mechanismus-Lesart: hybrid-v4.4 (per-cycle) und hybrid-v5 (whole-src-end) sind auf der mehrteiligen Kata **komplementaer** — hybrid-v4.4 fokussiert lokale Spitzen-Komplexitaet in der gerade beruehrten Funktion, hybrid-v5 die Cross-file-Konsolidierung (kuerzere durchschnittliche Funktion, geringere Code-Mass). Eine Folge-RQ koennte hybrid-v6 = hybrid-v4.4 + End-Refactor testen, ob sich beide Mechanismen addieren.
+Correctness stays untouched throughout (F-1.12.3): the bundle-break risk from RQ-1.9/1.10 occurs in neither variant.
 
 ---
 
-## F-1.12.3 — Korrektheit und TDD-Disziplin überall intakt; kein Bundle-Bruch
+## F-1.12.2 — The end refactor hybrid-v5 works only on the multi-file codebase; on the single-file library it is noise
 
-Keine Zelle bricht: `tests_passing` = 100 % ueberall, `verification_pct` claim-office 0.96–0.99 / GoL 1.0. Auf claim-office schreiben alle 5/5 v6.5-Runs `experiment-done.txt` und erreichen `verification_pct ≥ 0.93` (Mean 0.99, identisch zu hybrid-v4.4). Das in RQ-1.9/RQ-1.10 dokumentierte Bundle-Bruch-Risiko tritt **nicht** auf — beide Refactor-Varianten lassen die Korrektheit unangetastet.
+The one-off whole-src end pass (hybrid-v5) behaves kata-dependently:
 
-Plausibilisierung: der End-Refactor-Pass laeuft ausserhalb der TDD-Cycle-Dynamik mit stabilen Tests als Sicherheitsnetz; ein test-rot faerbendes Refactoring waere auf dem CLI-Verifikationspfad sofort sichtbar.
+- **claim-office** (cli.ts + domain.ts): hybrid-v5 is largely level with hybrid-v4.4 (`cognitive_max` 2.8 vs 2.4, spread < 1 σ) and delivers the **lowest** Code Mass (APP) (780.4 vs hybrid-v4's 878.5, −11 %, Δ ≈ 1.1 σ), the **shortest** function (`cc_longest_function` 11.0, −11 %) and the **most compact** average function (`cc_avg_loc_per_function` 3.66, −13 %, Δ ≈ 1.5 σ). Here the whole-src view has genuine cross-file substance to consolidate — function inlining and parameter destructuring across file boundaries are explicitly documented in the run logs ("inlined `processStep` into `run`", "destructured `processClaim` parameters").
+- **game-of-life** (single-file): hybrid-v5's `cognitive_max` of 3.0 is statistically indistinguishable from hybrid-v4 (4.0) — shaped by one outlier (4 of 5 runs = 2, one = 7; σ 2.24). Code Mass (APP) even rises (168.0 vs 153.8). On the tiny library there is no cross-file duplication for the end pass to work on.
 
-TDD-Disziplin bleibt erhalten. Der Per-Cycle-Anteil von hybrid-v5 ist byte-identisch zu hybrid-v4, und die Cycle-Metriken bestaetigen das (claim-office `cycle_count` 35.8 vs 37.4, `refactorings_applied` 23.6 vs 24.9, `predictions_correct_rate` 94.4 % vs 97.2 % — alle innerhalb 1 σ). Keine Demotivation des Per-Cycle-Refactors durch das Wissen um den End-Pass nachweisbar. Der niedrigere claim-office-v6.4-`predictions_correct_rate` (89.6 % gepoolt) ist Stichproben-Streuung, kein Disziplin-Bruch.
+The only cross-kata robust v6.5 advantage is `smell_total` = 0 (deterministic, as with hybrid-v4.4) against the hybrid-v4 residual smells (claim-office 0.38, GoL 2.13).
+
+Mechanism reading: hybrid-v4.4 (per-cycle) and hybrid-v5 (whole-src end) are **complementary** on the multi-file kata — hybrid-v4.4 focuses on local Complexity Peak in the function just touched, hybrid-v5 on cross-file consolidation (shorter average function, lower Code Mass (APP)). A follow-up RQ could test hybrid-v6 = hybrid-v4.4 + end refactor to see whether the two mechanisms add up.
 
 ---
 
-## F-1.12.4 — Kosten steigen monoton mit der Refactor-Intensität; per-cycle ist auf großen Codebasen kosten-unvorhersehbar
+## F-1.12.3 — Correctness and TDD discipline intact everywhere; no bundle break
 
-Kosten sind nur **innerhalb gleichen Routings** vergleichbar. Auf game-of-life (alle native) steigt die Wallclock monoton mit dem Refactor-Aufwand:
+No cell breaks: `tests_passing` = 100 % everywhere, `verification_pct` claim-office 0.96–0.99 / GoL 1.0. On claim-office all 5/5 v6.5 runs write `experiment-done.txt` and reach `verification_pct ≥ 0.93` (mean 0.99, identical to hybrid-v4.4). The bundle-break risk documented in RQ-1.9/RQ-1.10 does **not** occur — both refactor variants leave correctness untouched.
+
+Plausibility: the end-refactor pass runs outside the TDD cycle dynamics with stable tests as a safety net; a refactoring that turned tests red would be immediately visible on the CLI verification path.
+
+TDD discipline is preserved. The per-cycle part of hybrid-v5 is byte-identical to hybrid-v4, and the cycle metrics confirm it (claim-office `cycle_count` 35.8 vs 37.4, `refactorings_applied` 23.6 vs 24.9, `predictions_correct_rate` 94.4 % vs 97.2 % — all within 1 σ). No demotivation of the per-cycle refactor from knowing about the end pass is detectable. The lower claim-office v6.4 `predictions_correct_rate` (89.6 % pooled) is sampling variance, not a discipline break.
+
+---
+
+## F-1.12.4 — Costs rise monotonically with refactor intensity; per-cycle is cost-unpredictable on large codebases
+
+Costs are comparable only **within the same routing**. On game-of-life (all native) wallclock rises monotonically with refactor effort:
 
 | Workflow (GoL, native) | `duration_s` | vs hybrid-v4 | `total_tokens` | vs hybrid-v4 |
 |---|---:|---|---:|---|
@@ -136,36 +136,36 @@ Kosten sind nur **innerhalb gleichen Routings** vergleichbar. Auf game-of-life (
 | exact-hybrid-v4.4-metric-refactor-cc | 1064 | +18 % | 11.0 M | +9 % |
 | exact-hybrid-v5-end-refactor-cc | 1332 | +48 % | 12.3 M | +22 % |
 
-Auf der kleinen GoL-Library zahlt der End-Pass hybrid-v5 den hoechsten Aufschlag fuer den schwaechsten Effekt (F-1.12.2); hybrid-v4.4 ist dort das guenstigere Vehikel fuer den Komplexitaets-Gewinn.
+On the small GoL library the end pass hybrid-v5 pays the highest surcharge for the weakest effect (F-1.12.2); hybrid-v4.4 is the cheaper vehicle for the complexity gain there.
 
-Auf claim-office ist der Direkt-Vergleich routing-konfundiert (hybrid-v4.4 native, hybrid-v4/hybrid-v5 portkey), aber ein realer Workflow-Effekt bleibt sichtbar: die native-hybrid-v4.4-Zelle verbraucht ~102 M Tokens (max 9197 s Wallclock) mit grosser Streuung (σ 17 M). Der per-cycle-Refactor misst ESLint + McCabe pre/post in *jedem* der ~40 Cycles und schleift jedesmal den vollen Build plus einen Modell-Roundtrip durch — auf der grossen CLI-Codebasis divergiert das stark. Der gedeckelt-iterative End-Pass (hybrid-v5) ist demgegenueber kosten-vorhersehbarer. **Lesart:** per-cycle-Refactor ist auf grossen Codebasen kosten-unvorhersehbarer als der End-Pass — bei harter Token-/Wallclock-Bremse ist hybrid-v5 das berechenbarere Vehikel.
+On claim-office the direct comparison is routing-confounded (hybrid-v4.4 native, hybrid-v4/hybrid-v5 portkey), but a real workflow effect remains visible: the native hybrid-v4.4 cell consumes ~102 M tokens (max 9197 s wallclock) with large variance (σ 17 M). The per-cycle refactor measures ESLint + McCabe pre/post in *every* one of the ~40 cycles and drags the full build plus a model round trip through each time — on the large CLI codebase that diverges strongly. The capped-iterative end pass (hybrid-v5) is by comparison more cost-predictable. **Reading:** per-cycle refactor is more cost-unpredictable than the end pass on large codebases — under a hard token/wallclock brake, hybrid-v5 is the more calculable vehicle.
 
 ---
 
-## F-1.12.5 — Keine globale v6.5-Baseline-Promotion; metric-driven Refactor lohnt, der wirksame Hebel-Zeitpunkt ist kata-abhängig
+## F-1.12.5 — No global v6.5 baseline promotion; metric-driven refactor is worth it, but the effective point of leverage is kata-dependent
 
-Zusammengefuehrt:
+Taken together:
 
-| Achse | claim-office (mehrteilig) | game-of-life (einteilig) |
+| Axis | claim-office (multi-file) | game-of-life (single-file) |
 |---|---|---|
-| bester Komplexitaets-Workflow | hybrid-v4.4 (per-cycle), hybrid-v5 nah dran | hybrid-v4.4 (per-cycle), hybrid-v5 = Rauschen |
-| End-Pass-Mehrwert (hybrid-v5 vs hybrid-v4.4) | gleichauf + kleinste Code-Mass | keiner, Code-Mass steigt |
-| Korrektheit | gehalten (≥ 0.96) | gehalten (1.0) |
-| Kosten | hybrid-v4.4 streut stark; hybrid-v5 berechenbar | hybrid-v4.4 +18 %, hybrid-v5 +48 % (native) |
+| best complexity workflow | hybrid-v4.4 (per-cycle), hybrid-v5 close behind | hybrid-v4.4 (per-cycle), hybrid-v5 = noise |
+| end-pass added value (hybrid-v5 vs hybrid-v4.4) | level + lowest Code Mass (APP) | none, Code Mass (APP) rises |
+| correctness | held (≥ 0.96) | held (1.0) |
+| cost | hybrid-v4.4 varies strongly; hybrid-v5 calculable | hybrid-v4.4 +18 %, hybrid-v5 +48 % (native) |
 
-Beide Refactor-Varianten schlagen die hybrid-v4-Baseline bei der Spitzen-Komplexitaet — **metric-driven Refactor lohnt sich** und bricht die Korrektheit nicht. Aber kein Arm ist globaler Sieger:
+Both refactor variants beat the hybrid-v4 baseline on the Complexity Peak — **metric-driven refactor is worth it** and does not break correctness. But no arm is a global winner:
 
-- Der **per-cycle-Refactor hybrid-v4.4** ist der robusteste Komplexitaets-Hebel ueber beide Kata-Typen — zum Preis hoher, auf grossen Codebasen schlecht vorhersehbarer Kosten.
-- Der **End-Refactor hybrid-v5** zahlt sich nur dort aus, wo es Cross-file-Substanz zu konsolidieren gibt (mehrteilige Codebasen): dort liefert er die kleinste Code-Mass bei berechenbareren Kosten. Auf einteiligen Aufgaben ist er voller Aufschlag fuer keinen robusten Gewinn.
-- **hybrid-v4** bleibt die parsimonischste Wahl, wenn minimale Code-Mass/Kosten Vorrang vor minimaler Spitzen-Komplexitaet haben (besonders auf kleinen Katas).
+- The **per-cycle refactor hybrid-v4.4** is the most robust complexity lever across both kata types — at the price of high costs that are poorly predictable on large codebases.
+- The **end refactor hybrid-v5** pays off only where there is cross-file substance to consolidate (multi-file codebases): there it delivers the lowest Code Mass (APP) at more calculable cost. On single-file tasks it is a full surcharge for no robust gain.
+- **hybrid-v4** remains the most parsimonious choice when minimal Code Mass (APP)/cost takes priority over a minimal Complexity Peak (especially on small katas).
 
-hybrid-v5 ist damit **kein** genereller hybrid-v4-Ersatz. Die Empfehlung ist aufgaben-/kata-abhaengig und reiht sich in das wiederkehrende "Kata-abhaengige Empfehlung"-Muster ein (vgl. RQ-1.4, RQ-1.8/1.9): kein Refactor-Workflow-Sieger generalisiert ueber Kata-Typen.
+hybrid-v5 is therefore **not** a general replacement for hybrid-v4. The recommendation is task-/kata-dependent and joins the recurring "kata-dependent recommendation" pattern (cf. RQ-1.4, RQ-1.8/1.9): no refactor workflow winner generalizes across kata types.
 
 ---
 
-## Operative Lehren (nicht-RQ-Findings)
+## Operational lessons (non-RQ findings)
 
-- **External-Session-Cut blieb sichtbar:** 1 von 6 v6.5-Run-Attempts (16 %) lief in einen externen Session-Cut (Run vom 28-05 00:19; `exit=0`, aber `experiment-done.txt` fehlt, `run.log` mid-Red abgebrochen, 6 min Wallclock vs. 37 min Baseline, `end-refactor` nie aufgerufen). Die `run-batch.sh`-Cap-Detection vom 27-05 hat ihn nicht erkannt, weil keine Cap-Signatur im run.log auftauchte — vermutlich Vertex-side cut. Im Refill-Batch (28-05 06:01) hat dieselbe Detection eine andere Session als external cut erkannt und automatisch retry'd; der Retry lief sauber durch. Detection-Heuristik trifft also einen Teil, nicht alle Fälle.
-- **Aggregator-Skip-Konvention:** Invalidated runs müssen mit `_` *prefixed* werden (z.B. `_invalidated_<original>_<reason>`). Suffix-`__invalidated` reicht nicht — `aggregate-by-query.py` und `batch-plan-from-rq.py` skippen nur Dirs, die mit `_` beginnen.
-- **Container vs. Host analyze-run:** der Refill-Run hatte `analyze_status=ok` im Container, aber `final_metrics.*` waren null. Host-`analyze-run.sh <run_dir>` (mit absolutem Pfad) hat alle Werte nachgetragen. Vor `aggregate-by-query.py` immer mit `jq '.final_metrics.code_mass' …` stichprobenartig prüfen.
-- **Routing-gemischte Zellen (game-of-life):** seit dem Merge mit der vormaligen RQ-1.14 enthalten die GoL-Zellen sowohl native (RQ-1.14-Fill) als auch portkey Runs (aeltere Workflow-Dev-Runs). opus-4-7 wird als dasselbe Modell behandelt; nur Kosten-Metriken werden pro Routing getrennt gelesen. Zwei kaputte GoL-v6.5-portkey-Runs (`model may not exist`, 0 cycles) wurden beim Merge aus dem Pool entfernt.
+- **External session cut remained visible:** 1 of 6 v6.5 run attempts (16 %) ran into an external session cut (run of 05-28 00:19; `exit=0`, but `experiment-done.txt` missing, `run.log` aborted mid-red, 6 min wallclock vs the 37 min baseline, `end-refactor` never called). The `run-batch.sh` cap detection of 05-27 did not catch it because no cap signature appeared in run.log — presumably a Vertex-side cut. In the refill batch (05-28 06:01) the same detection recognized a different session as an external cut and retried automatically; the retry ran cleanly. The detection heuristic therefore catches some cases, not all.
+- **Aggregator skip convention:** Invalidated runs must be *prefixed* with `_` (e.g. `_invalidated_<original>_<reason>`). A `__invalidated` suffix is not enough — `aggregate-by-query.py` and `batch-plan-from-rq.py` skip only dirs that begin with `_`.
+- **Container vs host analyze-run:** the refill run had `analyze_status=ok` in the container, but `final_metrics.*` were null. A host-side `analyze-run.sh <run_dir>` (with an absolute path) filled in all values. Before `aggregate-by-query.py`, always spot-check with `jq '.final_metrics.code_mass' …`.
+- **Routing-mixed cells (game-of-life):** since the merge with the former RQ-1.14, the GoL cells contain both native (RQ-1.14 fill) and portkey runs (older workflow-dev runs). opus-4-7 is treated as the same model; only cost metrics are read separately per routing. Two broken GoL v6.5 portkey runs (`model may not exist`, 0 cycles) were removed from the pool during the merge.

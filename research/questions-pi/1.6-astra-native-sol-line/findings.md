@@ -1,6 +1,6 @@
 # Findings — RQ-astra-native-sol
 
-## Übersicht
+## Overview
 
 Claim Office, example-mapping, pi harness and OpenAI subscription route.
 Eight cells × five runs = 40 runs. Floor = `baseline-inline-tdd-v1-pi`;

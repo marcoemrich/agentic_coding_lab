@@ -1,107 +1,107 @@
 # RQ-1.11 Findings — exact-hybrid-v4.4-metric-refactor-cc vs exact-hybrid-v4-cleaned-cc (claim-office)
 
-## Übersicht
+## Overview
 
-`claim-office-example-mapping × opus-4-7-no-thinking` (Native API für hybrid-v4.4, Portkey-Gateway für hybrid-v4-Baseline; OR-Match via `controls.model: any:`).
+`claim-office-example-mapping × opus-4-7-no-thinking` (native API for hybrid-v4.4, Portkey gateway for the hybrid-v4 baseline; OR-match via `controls.model: any:`).
 
-| Outcome (Richtung) | exact-hybrid-v4-cleaned-cc (n=8) | exact-hybrid-v4.4-metric-refactor-cc (n=5) |
+| Outcome (direction) | exact-hybrid-v4-cleaned-cc (n=8) | exact-hybrid-v4.4-metric-refactor-cc (n=5) |
 |---|---:|---:|
-| `verification_pct` (höher = besser) | 0.96 ± 0.09 | **0.99 ± 0.03** 🏆 |
-| `tests_passing` Rate (höher = besser) | **100 %** 🏆 | **100 %** 🏆 |
-| `completed_within_budget` Rate (höher = besser) | **100 %** 🏆 | **100 %** 🏆 |
-| `cognitive_max` (kleiner = besser) | 5.0 ± 1.77 | **2.4 ± 1.34** 🏆 |
-| `cognitive_avg` (kleiner = besser) | 1.91 ± 0.75 | **1.27 ± 0.27** 🏆 |
-| `mccabe_max` (kleiner = besser) | 4.5 ± 0.76 | **3.0 ± 1.00** 🏆 |
-| `mccabe_avg` (kleiner = besser) | 1.53 ± 0.20 | **1.40 ± 0.13** 🏆 |
-| `code_mass` (kleiner = besser) | 879 ± 91 | **805 ± 64** 🏆 |
-| `smell_total` (kleiner = besser) | 0.38 ± 0.74 | **0.0 ± 0.0** 🏆 |
-| `cc_longest_function` (kleiner = besser) | **12.4 ± 1.4** 🏆 | 13.0 ± 3.1 |
-| `refactorings_applied` (höher = besser) | 24.9 ± 6.9 | **30.4 ± 8.8** 🏆 |
-| `cycle_count` (kontextuell, höher signalisiert vollere TDD-Loops) | 37.4 ± 1.6 | **40.2 ± 2.2** 🏆 |
-| `predictions_correct_rate` (höher = besser) | **97.2 %** 🏆 | 89.6 % |
-| `tests_passed_immediately` (kleiner = besser bei TDD) | 15.1 ± 5.8 | **7.0 ± 9.6** 🏆 |
-| `duration_seconds` (kleiner = besser) | **2530 ± 401** 🏆 | 5284 ± 2337 |
-| `total_tokens` (kleiner = besser) | **44.4M ± 3.4M** 🏆 | 102.3M ± 17.2M |
+| `verification_pct` (higher = better) | 0.96 ± 0.09 | **0.99 ± 0.03** 🏆 |
+| `tests_passing` rate (higher = better) | **100 %** 🏆 | **100 %** 🏆 |
+| `completed_within_budget` rate (higher = better) | **100 %** 🏆 | **100 %** 🏆 |
+| `cognitive_max` (lower = better) | 5.0 ± 1.77 | **2.4 ± 1.34** 🏆 |
+| `cognitive_avg` (lower = better) | 1.91 ± 0.75 | **1.27 ± 0.27** 🏆 |
+| `mccabe_max` (lower = better) | 4.5 ± 0.76 | **3.0 ± 1.00** 🏆 |
+| `mccabe_avg` (lower = better) | 1.53 ± 0.20 | **1.40 ± 0.13** 🏆 |
+| `code_mass` (lower = better) | 879 ± 91 | **805 ± 64** 🏆 |
+| `smell_total` (lower = better) | 0.38 ± 0.74 | **0.0 ± 0.0** 🏆 |
+| `cc_longest_function` (lower = better) | **12.4 ± 1.4** 🏆 | 13.0 ± 3.1 |
+| `refactorings_applied` (higher = better) | 24.9 ± 6.9 | **30.4 ± 8.8** 🏆 |
+| `cycle_count` (contextual, higher signals fuller TDD loops) | 37.4 ± 1.6 | **40.2 ± 2.2** 🏆 |
+| `predictions_correct_rate` (higher = better) | **97.2 %** 🏆 | 89.6 % |
+| `tests_passed_immediately` (lower = better under TDD) | 15.1 ± 5.8 | **7.0 ± 9.6** 🏆 |
+| `duration_seconds` (lower = better) | **2530 ± 401** 🏆 | 5284 ± 2337 |
+| `total_tokens` (lower = better) | **44.4M ± 3.4M** 🏆 | 102.3M ± 17.2M |
 
-Trophy-Konvention: `verification_pct` ist Korrektheits-Gate; beide Workflows liegen am oberen Ende und sind 🏆-fähig für Code-Qualitäts-Metriken. `cc_longest_function` als einzige Quality-Metrik gegen den Trend (Spread innerhalb 1 σ — geht eher als "kein Effekt" durch als als echte Regression). Kosten-Trophies klar Baseline-seitig.
+Trophy convention: `verification_pct` is the correctness gate; both workflows sit at the top end and are 🏆-eligible for code quality metrics. `cc_longest_function` is the only quality metric running against the trend (spread within 1 σ — better read as "no effect" than as a real regression). Cost trophies clearly go to the baseline.
 
 ---
 
-## F-1.1 — Spitzen-Komplexität halbiert ohne Korrektheitskosten
+## F-1.1 — Complexity Peak halved at no cost to correctness
 
-Der metric-driven Refactor-Agent reduziert die Spitzen-Komplexität auf claim-office deutlich und stabilisiert die Korrektheit.
+The metric-driven refactor agent markedly reduces the Complexity Peak on claim-office and stabilizes correctness.
 
-| Metrik (Richtung) | hybrid-v4 (n=8) | hybrid-v4.4 (n=5) | Δ Mean | Δ σ |
+| Metric (direction) | hybrid-v4 (n=8) | hybrid-v4.4 (n=5) | Δ mean | Δ σ |
 |---|---:|---:|---:|---:|
-| `cognitive_max` (kleiner = besser) | 5.0 ± 1.77 | **2.4 ± 1.34** | −52 % | −24 % |
-| `cognitive_avg` (kleiner = besser) | 1.91 ± 0.75 | **1.27 ± 0.27** | −33 % | −64 % |
-| `mccabe_max` (kleiner = besser) | 4.5 ± 0.76 | **3.0 ± 1.00** | −33 % | +32 % |
-| `smell_total` (kleiner = besser) | 0.38 ± 0.74 | **0.0 ± 0.0** | −100 % | −100 % |
-| `code_mass` (kleiner = besser) | 879 ± 91 | **805 ± 64** | −8 % | −30 % |
-| `verification_pct` (höher = besser) | 0.96 ± 0.09 | **0.99 ± 0.03** | +3 pp | −67 % |
+| `cognitive_max` (lower = better) | 5.0 ± 1.77 | **2.4 ± 1.34** | −52 % | −24 % |
+| `cognitive_avg` (lower = better) | 1.91 ± 0.75 | **1.27 ± 0.27** | −33 % | −64 % |
+| `mccabe_max` (lower = better) | 4.5 ± 0.76 | **3.0 ± 1.00** | −33 % | +32 % |
+| `smell_total` (lower = better) | 0.38 ± 0.74 | **0.0 ± 0.0** | −100 % | −100 % |
+| `code_mass` (lower = better) | 879 ± 91 | **805 ± 64** | −8 % | −30 % |
+| `verification_pct` (higher = better) | 0.96 ± 0.09 | **0.99 ± 0.03** | +3 pp | −67 % |
 
-Spitzen-Komplexität (`cognitive_max`, `mccabe_max`) fällt um etwa die Hälfte; Durchschnitts-Komplexität in derselben Richtung mit deutlich engerer Streuung. `smell_total` kollabiert von 0.38 auf 0 (kein einziger ESLint-Smell in 5 hybrid-v4.4-Runs vs 3 Smells in 8 hybrid-v4-Runs). Code-Mass leicht reduziert. **Korrektheit bleibt nicht nur erhalten, sie wird sogar etwas robuster** — Mean ver_pct steigt von 0.96 auf 0.99 und σ fällt von 0.09 auf 0.03. Damit wird H1 (Korrektheit ≥ 0.85) klar erfüllt und H2 (Komplexitäts-Reduktion ≥ 1 σ) auf den Spitzen-Metriken bestätigt.
+The Complexity Peak (`cognitive_max`, `mccabe_max`) falls by roughly half; average complexity moves in the same direction with markedly tighter variance. `smell_total` collapses from 0.38 to 0 (not a single ESLint smell across 5 hybrid-v4.4 runs vs 3 smells across 8 hybrid-v4 runs). Code Mass slightly reduced. **Correctness is not merely preserved, it becomes somewhat more robust** — mean ver_pct rises from 0.96 to 0.99 and σ falls from 0.09 to 0.03. H1 (correctness ≥ 0.85) is thus clearly satisfied and H2 (complexity reduction ≥ 1 σ) confirmed on the peak metrics.
 
-Mechanistische Lesart: das Pre-Measurement zwingt den Agent, die schlechteste Funktion explizit zu identifizieren, bevor er refactoriert. Das Post-Measurement gibt ihm einen objektiven Trigger für Revert/Alternative bei einer schlechteren POST-Zahl. Beides zusammen scheint die "Naming-First, sonst nichts"-Tendenz des Baseline-Refactor-Agents zu durchbrechen.
+Mechanistic reading: the pre-measurement forces the agent to identify the worst function explicitly before refactoring. The post-measurement gives it an objective trigger for revert/alternative when the POST number is worse. Together these appear to break the baseline refactor agent's "naming first, nothing else" tendency.
 
 ---
 
-## F-1.2 — Mehr und engmaschigere Refactor-Zyklen, weniger out-of-the-box-Greens
+## F-1.2 — More and tighter refactor cycles, fewer out-of-the-box greens
 
-Der Pre/Post-Tool-Mechanismus aktiviert zusätzliche Refactor-Iterationen, statt sie zu verdrängen.
+The pre/post tool mechanism activates additional refactor iterations rather than displacing them.
 
-| Metrik (Richtung) | hybrid-v4 (n=8) | hybrid-v4.4 (n=5) | Δ Mean |
+| Metric (direction) | hybrid-v4 (n=8) | hybrid-v4.4 (n=5) | Δ mean |
 |---|---:|---:|---:|
-| `refactorings_applied` (höher = besser) | 24.9 ± 6.9 | **30.4 ± 8.8** | +22 % |
+| `refactorings_applied` (higher = better) | 24.9 ± 6.9 | **30.4 ± 8.8** | +22 % |
 | `cycle_count` | 37.4 ± 1.6 | **40.2 ± 2.2** | +8 % |
-| `tests_passed_immediately` (kleiner = besser) | 15.1 ± 5.8 | **7.0 ± 9.6** | −54 % |
+| `tests_passed_immediately` (lower = better) | 15.1 ± 5.8 | **7.0 ± 9.6** | −54 % |
 
-Der Agent durchläuft im Schnitt 2.8 mehr Cycles und führt 5.5 zusätzliche Refactor-Aktionen aus; gleichzeitig halbiert sich die Zahl der Tests, die "sofort grün" durchgingen (also ohne Green-Phase-Implementation). Das passt zur Lesart aus F-1.1: der Agent macht ernst mit der Refactor-Pflicht, weil die Pre/Post-Messung jeden Cycle eine messbare Verbesserung verlangt. H3 (TDD-Disziplin innerhalb 1 σ stabil) verfehlt — aber in die Richtung "höhere Disziplin", nicht "Loop-Störung".
+The agent runs on average 2.8 more cycles and performs 5.5 additional refactor actions; at the same time the number of tests that went through "green immediately" (that is, without a green-phase implementation) halves. That fits the reading from F-1.1: the agent takes the refactor obligation seriously because the pre/post measurement demands a measurable improvement every cycle. H3 (TDD discipline stable within 1 σ) is missed — but in the direction of "higher discipline", not "loop disturbance".
 
 ---
 
-## F-1.3 — Bundle-Bruch aus RQ-1.9 und RQ-1.10 nicht reproduziert
+## F-1.3 — The bundle break from RQ-1.9 and RQ-1.10 does not reproduce
 
-Deterministische Tool-Messung als Erweiterungs-Mechanismus löst nicht das Self-Stop-Muster aus, das vokabular- und rationale-getriebene Erweiterungen ausgelöst haben.
+Deterministic tool measurement as an extension mechanism does not trigger the self-stop pattern that vocabulary- and rationale-driven extensions triggered.
 
-| RQ | Mechanismus | claim-office `verification_pct` | done.txt | Cycles vs Baseline |
+| RQ | Mechanism | claim-office `verification_pct` | done.txt | cycles vs baseline |
 |---|---|---:|---:|---|
-| RQ-1.9 (exact-hybrid-v4.3-audit-bundle-cc) | Rationale-Blöcke + Red-Phase-Hardening | 0.96 → **0.35** | 6/8 fehlen | 7–14 vs ~37 (Self-Stop) |
-| RQ-1.10 (exact-hybrid-v4.1-refactor-vocab-cc) | Refactor-Vokabular (cognitive/mccabe als Begriff) | 0.96 → **0.23** | 4/5 fehlen | 7–22 vs ~37 (Self-Stop) |
-| **RQ-1.11 (exact-hybrid-v4.4-metric-refactor-cc)** | Pre/Post Tool-Aufrufe + McCabe parallel zu APP | 0.96 → **0.99** | **5/5 vorhanden** | 38–43 vs ~37 (voller Loop) |
+| RQ-1.9 (exact-hybrid-v4.3-audit-bundle-cc) | rationale blocks + red-phase hardening | 0.96 → **0.35** | 6/8 missing | 7–14 vs ~37 (self-stop) |
+| RQ-1.10 (exact-hybrid-v4.1-refactor-vocab-cc) | refactor vocabulary (cognitive/mccabe as terms) | 0.96 → **0.23** | 4/5 missing | 7–22 vs ~37 (self-stop) |
+| **RQ-1.11 (exact-hybrid-v4.4-metric-refactor-cc)** | pre/post tool calls + McCabe alongside APP | 0.96 → **0.99** | **5/5 present** | 38–43 vs ~37 (full loop) |
 
-In RQ-1.9 und RQ-1.10 brach der Agent nach unter ½ der Baseline-Cycles ab; intern `tests_passing = true`, extern `verification_pct` kollabiert. In RQ-1.11 sind alle 5 Runs ≥ 38 Cycles, alle done.txt vorhanden, alle Verifikations-Mehrheiten ≥ 14/15 Szenarien. Das stützt die Mechanismus-Hypothese: **Selfstop wird durch Per-Cycle-Aufwands-Erhöhung getriggert, wenn diese semantisch (Vokabular, Rationale) verläuft. Dieselbe Per-Cycle-Aufwands-Erhöhung über deterministische Tools triggert ihn nicht.** Welche der drei hybrid-v4.4-Komponenten — (a) ESLint-Aufruf, (b) McCabe-Berechnung, (c) Pre/Post-Revert-Klausel — den Unterschied trägt, ist mit diesem Bundle nicht entscheidbar.
+In RQ-1.9 and RQ-1.10 the agent aborted after less than ½ the baseline cycles; internally `tests_passing = true`, externally `verification_pct` collapsed. In RQ-1.11 all 5 runs are ≥ 38 cycles, all done.txt files are present, and all verification majorities are ≥ 14/15 scenarios. This supports the mechanism hypothesis: **self-stop is triggered by raising per-cycle effort when that increase is semantic (vocabulary, rationale). The same per-cycle effort increase via deterministic tools does not trigger it.** Which of the three hybrid-v4.4 components — (a) the ESLint call, (b) the McCabe computation, (c) the pre/post revert clause — carries the difference cannot be decided from this bundle.
 
 ---
 
-## F-1.4 — Kosten-Aufschlag stark und sehr volatil
+## F-1.4 — Cost surcharge is large and highly volatile
 
-Token- und Wallclock-Aufschlag liegt deutlich über der vorab-erwarteten Größenordnung (H4: erwartet +10–20 % Tokens, real +130 %).
+The token and wallclock surcharge is far above the magnitude expected in advance (H4: expected +10–20 % tokens, actual +130 %).
 
-| Metrik (Richtung) | hybrid-v4 (n=8) | hybrid-v4.4 (n=5) | Δ Mean | Δ σ |
+| Metric (direction) | hybrid-v4 (n=8) | hybrid-v4.4 (n=5) | Δ mean | Δ σ |
 |---|---:|---:|---:|---:|
-| `duration_seconds` (kleiner = besser) | **2530 ± 401** | 5284 ± 2337 | +109 % | +482 % |
-| `total_tokens` (kleiner = besser) | **44.4M ± 3.4M** | 102.3M ± 17.2M | +130 % | +405 % |
+| `duration_seconds` (lower = better) | **2530 ± 401** | 5284 ± 2337 | +109 % | +482 % |
+| `total_tokens` (lower = better) | **44.4M ± 3.4M** | 102.3M ± 17.2M | +130 % | +405 % |
 
-Wallclock im Schnitt mehr als verdoppelt, Tokens 2.3× so viel; Streuung dramatisch breiter (σ-Faktor ~5 in beiden Achsen). Mechanistische Lesart: pro Refactor-Aufruf führt der Agent ESLint zweimal aus, parsed das JSON-Output, berechnet APP-Mass und McCabe von Hand für jede Funktion, und vergleicht alle vier Metriken pre/post. Bei 30.4 Refactor-Aufrufen pro Run = ~61 zusätzliche ESLint-Tool-Calls plus deutlich mehr Output-Tokens für die ausführliche Pre/Post-Block-Dokumentation. Der Anstieg von 2.8 Cycles (F-1.2) erklärt nur einen Teil der Kosten-Inflation; der größere Anteil kommt aus dem aufgeblähten Refactor-Subagent selbst.
+Wallclock more than doubles on average, tokens are 2.3× as high; variance is dramatically wider (σ factor ~5 on both axes). Mechanistic reading: per refactor call the agent runs ESLint twice, parses the JSON output, computes APP mass and McCabe by hand for every function, and compares all four metrics pre/post. At 30.4 refactor calls per run that is ~61 additional ESLint tool calls plus markedly more output tokens for the verbose pre/post block documentation. The increase of 2.8 cycles (F-1.2) explains only part of the cost inflation; the larger share comes from the inflated refactor subagent itself.
 
-Die hohe Streuung in beiden Kosten-Metriken kommt überwiegend aus Run 4 (Wallclock 9197 s, Tokens 128M) und Run 1 (Wallclock 5000 s, Tokens 107M) — beide mit ver = 0.93 bzw 1.00 jedoch ohne Self-Stop. Möglich, dass aufwändigere Refactor-Pfade in einigen Runs deutlich mehr Tool-Iterationen triggern als in anderen.
+The high variance in both cost metrics comes predominantly from run 4 (wallclock 9197 s, tokens 128M) and run 1 (wallclock 5000 s, tokens 107M) — both at ver = 0.93 and 1.00 respectively, and neither with a self-stop. It is possible that more elaborate refactor paths trigger markedly more tool iterations in some runs than in others.
 
 ---
 
-## F-1.5 — Predictions-Rate sinkt durch ehrlichere Falschvorhersagen, nicht Format-Bruch
+## F-1.5 — The predictions rate drops through more honest wrong predictions, not a format break
 
-`predictions_correct_rate` fällt von 97.2 % auf 89.6 % (Δ −7.6 pp). Eine Stichprobe-Inspektion zeigt: der Drop kommt aus Mehr-Wenn-Falsch, nicht aus weniger Prediction-Lines.
+`predictions_correct_rate` falls from 97.2 % to 89.6 % (Δ −7.6 pp). A sample inspection shows the drop comes from more-when-wrong, not from fewer prediction lines.
 
 Run `2026-05-27_14-28-32` (ver = 0.93, predictions 62/84 = 73.8 %):
 
-| Signal | Wert |
+| Signal | Value |
 |---|---:|
-| Insgesamt parsierte Prediction-Lines (Correct + Incorrect) | 168 |
-| Davon Correct | 146 |
-| Davon Incorrect | 22 |
-| MARKERS-Format ("Red Phase Complete" + `(- \| ✅ \| ❌) (Correct\|Incorrect)`) intakt | ja |
+| Total parsed prediction lines (Correct + Incorrect) | 168 |
+| of which Correct | 146 |
+| of which Incorrect | 22 |
+| MARKERS format ("Red Phase Complete" + `(- \| ✅ \| ❌) (Correct\|Incorrect)`) intact | yes |
 
-Die 22 Incorrect-Markierungen sind echte Falschvorhersagen, die der Agent ehrlich dokumentiert hat — nicht abgekürzte oder gemergte Prediction-Lines. Die Verteilung über die Cycles ist gleichmäßig (keine Clusterung am Anfang/Ende). Bei hybrid-v4 ist die Rate höher, weil der Baseline-Refactor weniger Tool-Output zu prozessieren hat und die Red-Phase-Predictions damit konsistenter zu der einfacheren Code-Struktur sind, die hybrid-v4 produziert.
+The 22 Incorrect markers are genuine wrong predictions that the agent documented honestly — not abbreviated or merged prediction lines. Their distribution across cycles is even (no clustering at the start or end). In hybrid-v4 the rate is higher because the baseline refactor has less tool output to process, which makes the red-phase predictions more consistent with the simpler code structure hybrid-v4 produces.
 
-Mechanistische Lesart: Pre/Post-Messung verändert die Code-Struktur sichtbar (F-1.1) — der Agent macht in komplexeren Refactor-Pfaden mehr Vorhersagen über Runtime-Verhalten, das er sich aus dem Pre-Measurement abgeleitet hat, und liegt nicht immer richtig. Das ist ein Vertrauens-positives Signal, kein Disziplin-negativer. Vergleichbares Muster in RQ-1.8 dokumentiert (`predictions_correct_rate` 100 → 97.4 % bei exact-hybrid-v4.3-audit-bundle-cc, dort als "intendierter Effekt des Backfill-Verbots" interpretiert).
+Mechanistic reading: pre/post measurement changes the code structure visibly (F-1.1) — along more complex refactor paths the agent makes more predictions about runtime behavior derived from the pre-measurement, and is not always right. That is a confidence-positive signal, not a discipline-negative one. A comparable pattern is documented in RQ-1.8 (`predictions_correct_rate` 100 → 97.4 % for exact-hybrid-v4.3-audit-bundle-cc, interpreted there as the "intended effect of the backfill ban").

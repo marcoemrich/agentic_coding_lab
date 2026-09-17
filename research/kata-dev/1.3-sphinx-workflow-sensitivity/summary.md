@@ -2,11 +2,11 @@
 
 _Does sphinx-score resolve a workflow difference in code quality — does the decomposition gap between a minimal and an elaborate TDD workflow show up as clearly as it does on claim-office?_
 
-Generated: 2026-09-11T07:48:55Z
+Generated: 2026-09-17T01:17:34Z
 
 Cells declared: 6 · matched runs: 36 · min_replicates: 6
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -17,7 +17,7 @@ Cells declared: 6 · matched runs: 36 · min_replicates: 6
 | game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking | 6 | 6 | ✅ |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc | opus-5-no-thinking | 6 | 6 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### cc_longest_function
 

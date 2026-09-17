@@ -2,11 +2,11 @@
 
 _On the OpenAI subscription route, does a refactor brief that optimises APP mass (hybrid-v4.2) decompose worse than one governed by the Four Rules of Simple Design alone (basic-sol-tdd) — at constant model, harness, kata and prompt style?_
 
-Generated: 2026-09-13T18:30:01Z
+Generated: 2026-09-17T01:17:50Z
 
 Cells declared: 3 · matched runs: 15 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -14,7 +14,7 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1-pi | gpt-5-6-sol-codex | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### cc_avg_loc_per_function
 

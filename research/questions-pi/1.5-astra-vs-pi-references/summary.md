@@ -2,11 +2,11 @@
 
 _On the OpenAI subscription route, how does GPT-6 Astra compare to the strongest references reachable on the pi harness — Sol on the same route, Sol on Requesty in both reasoning states, and Opus 5 on Requesty — at constant harness, workflow, kata and prompt style?_
 
-Generated: 2026-09-11T07:48:42Z
+Generated: 2026-09-17T01:17:45Z
 
 Cells declared: 5 · matched runs: 25 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -16,7 +16,7 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### cognitive_max
 

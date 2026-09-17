@@ -8,46 +8,46 @@ Data base: 50 runs, 10 cells × n=5, all `exit_reason: ok`, `completed_within_bu
 `baseline-inline-tdd-v1-pi` is the baseline: TDD with no phase structure, no agents, no skills.
 `exact-hybrid-v6-lab-split-pi` is the current generation: hybrid-v2 plus a dedicated end-refactor phase.
 
-## Übersicht
+## Overview
 
 **claim-office-example-mapping** (correctness kata)
 
 | Metric | inline-tdd-v1 | subagents-v2 | single-context-v2 | hybrid-v2 | hybrid-v6 | Direction |
 |---|---:|---:|---:|---:|---:|---|
-| Correctness (external) `verification_pct` | **100 %** 🏆 | 40 % | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | höher = besser |
-| Correctness (internal) `tests_passing` | 100 % | 100 % | 100 % | 100 % | 100 % | höher = besser |
-| `cognitive_max` | 9.2 | 11.6 | 8.4 | 5.8 | **4.4** 🏆 | kleiner = besser |
-| `cognitive_avg` | 3.65 | 3.70 | 3.58 | 2.65 | **2.45** 🏆 | kleiner = besser |
-| `mccabe_max` | 8.2 | 13.6 | 8.2 | 6.0 | **5.8** 🏆 | kleiner = besser |
-| Smell Total | 6.8 | 28.0 | 12.4 | 15.2 | **0.0** 🏆 | kleiner = besser |
-| Complexity Peak `cc_longest_function` | 21.8 | 43.4 | 23.0 | 23.0 | **21.2** 🏆 | kleiner = besser |
-| `cc_avg_loc_per_function` | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | 11.05 | kleiner = besser |
-| Code Mass (APP) | 678.8 | 646.8 | 524.6 | 446.4 | 466.8 | kleiner = besser (kein 🏆 — s. Caveat) |
+| Correctness (external) `verification_pct` | **100 %** 🏆 | 40 % | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | higher = better |
+| Correctness (internal) `tests_passing` | 100 % | 100 % | 100 % | 100 % | 100 % | higher = better |
+| `cognitive_max` | 9.2 | 11.6 | 8.4 | 5.8 | **4.4** 🏆 | lower = better |
+| `cognitive_avg` | 3.65 | 3.70 | 3.58 | 2.65 | **2.45** 🏆 | lower = better |
+| `mccabe_max` | 8.2 | 13.6 | 8.2 | 6.0 | **5.8** 🏆 | lower = better |
+| Smell Total | 6.8 | 28.0 | 12.4 | 15.2 | **0.0** 🏆 | lower = better |
+| Complexity Peak `cc_longest_function` | 21.8 | 43.4 | 23.0 | 23.0 | **21.2** 🏆 | lower = better |
+| `cc_avg_loc_per_function` | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | 11.05 | lower = better |
+| Code Mass (APP) | 678.8 | 646.8 | 524.6 | 446.4 | 466.8 | lower = better (no 🏆 — see caveat) |
 | `cycle_count` | n/a | 87.4 | 29.6 | 34.2 | **27.8** 🏆 | — |
-| `refactorings_applied` | n/a | 10.2 | **19.6** 🏆 | 15.0 | 15.4 | höher = besser |
-| `predictions_correct_rate` | n/a | 79.0 % | 98.4 % | **98.6 %** 🏆 | 96.7 % | höher = besser |
-| `duration_seconds` | **229** 🏆 | 4296 | 255 | 1185 | 1204 | kleiner = besser |
-| `total_tokens` | **288 k** 🏆 | 14.06 M | 821 k | 4.99 M | 5.08 M | kleiner = besser |
-| `cost_usd` | **$1.18** 🏆 | $38.22 | $1.72 | $9.52 | $7.25 | kleiner = besser |
+| `refactorings_applied` | n/a | 10.2 | **19.6** 🏆 | 15.0 | 15.4 | higher = better |
+| `predictions_correct_rate` | n/a | 79.0 % | 98.4 % | **98.6 %** 🏆 | 96.7 % | higher = better |
+| `duration_seconds` | **229** 🏆 | 4296 | 255 | 1185 | 1204 | lower = better |
+| `total_tokens` | **288 k** 🏆 | 14.06 M | 821 k | 4.99 M | 5.08 M | lower = better |
+| `cost_usd` | **$1.18** 🏆 | $38.22 | $1.72 | $9.52 | $7.25 | lower = better |
 
 **game-of-life-example-mapping** (code-quality kata)
 
 | Metric | inline-tdd-v1 | subagents-v2 | single-context-v2 | hybrid-v2 | hybrid-v6 | Direction |
 |---|---:|---:|---:|---:|---:|---|
-| Correctness (external) `verification_pct` | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | höher = besser |
-| `cognitive_max` | **4.0** 🏆 | 7.0 | 7.4 | 8.6 | 5.6 | kleiner = besser |
-| `cognitive_avg` | **2.35** 🏆 | 3.23 | 4.37 | 6.20 | 5.05 | kleiner = besser |
-| `mccabe_max` | **4.6** 🏆 | 6.0 | 6.2 | 6.6 | 5.8 | kleiner = besser |
-| Smell Total | **0.0** 🏆 | 3.8 | 2.4 | 2.8 | **0.0** 🏆 | kleiner = besser |
-| Complexity Peak `cc_longest_function` | **15.6** 🏆 | 22.0 | 20.6 | 20.8 | 19.8 | kleiner = besser |
-| `cc_avg_loc_per_function` | **8.66** 🏆 | 12.83 | 13.07 | 15.90 | 10.80 | kleiner = besser |
-| Code Mass (APP) | 174.8 | 146.8 | 141.0 | 125.8 | 135.8 | kleiner = besser (kein 🏆 — s. Caveat) |
+| Correctness (external) `verification_pct` | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | higher = better |
+| `cognitive_max` | **4.0** 🏆 | 7.0 | 7.4 | 8.6 | 5.6 | lower = better |
+| `cognitive_avg` | **2.35** 🏆 | 3.23 | 4.37 | 6.20 | 5.05 | lower = better |
+| `mccabe_max` | **4.6** 🏆 | 6.0 | 6.2 | 6.6 | 5.8 | lower = better |
+| Smell Total | **0.0** 🏆 | 3.8 | 2.4 | 2.8 | **0.0** 🏆 | lower = better |
+| Complexity Peak `cc_longest_function` | **15.6** 🏆 | 22.0 | 20.6 | 20.8 | 19.8 | lower = better |
+| `cc_avg_loc_per_function` | **8.66** 🏆 | 12.83 | 13.07 | 15.90 | 10.80 | lower = better |
+| Code Mass (APP) | 174.8 | 146.8 | 141.0 | 125.8 | 135.8 | lower = better (no 🏆 — see caveat) |
 | `cycle_count` | n/a | 22.0 | 9.4 | 9.0 | **8.8** 🏆 | — |
-| `refactorings_applied` | n/a | **10.2** 🏆 | 5.2 | 4.4 | 4.6 | höher = besser |
-| `predictions_correct_rate` | n/a | 84.4 % | 95.9 % | **100 %** 🏆 | 95.8 % | höher = besser |
-| `duration_seconds` | **140** 🏆 | 899 | 198 | 343 | 450 | kleiner = besser |
-| `total_tokens` | **134 k** 🏆 | 1.61 M | 701 k | 803 k | 1.15 M | kleiner = besser |
-| `cost_usd` | **$0.57** 🏆 | $4.84 | $1.58 | $2.18 | $2.35 | kleiner = besser |
+| `refactorings_applied` | n/a | **10.2** 🏆 | 5.2 | 4.4 | 4.6 | higher = better |
+| `predictions_correct_rate` | n/a | 84.4 % | 95.9 % | **100 %** 🏆 | 95.8 % | higher = better |
+| `duration_seconds` | **140** 🏆 | 899 | 198 | 343 | 450 | lower = better |
+| `total_tokens` | **134 k** 🏆 | 1.61 M | 701 k | 803 k | 1.15 M | lower = better |
+| `cost_usd` | **$0.57** 🏆 | $4.84 | $1.58 | $2.18 | $2.35 | lower = better |
 
 Caveats for reading the tables:
 
@@ -232,15 +232,15 @@ earlier claim, not a refutation of it.
 All five cells reach Correctness (external) 100 %. Every architecture is nonetheless worse
 than structureless TDD on every quality metric except one, and on cost.
 
-| Metric | inline-tdd-v1 (baseline) | best structured | Faktor | Direction |
+| Metric | inline-tdd-v1 (baseline) | best structured | Factor | Direction |
 |---|---:|---:|---:|---|
-| `cognitive_max` | **4.0** 🏆 | 5.6 (hybrid-v6) | 1.40× | kleiner = besser |
-| `cognitive_avg` | **2.35** 🏆 | 3.23 (subagents-v2) | 1.37× | kleiner = besser |
-| `mccabe_max` | **4.6** 🏆 | 5.8 (hybrid-v6) | 1.26× | kleiner = besser |
-| Smell Total | **0.0** 🏆 | **0.0** 🏆 (hybrid-v6) | 1.00× | kleiner = besser |
-| Complexity Peak `cc_longest_function` | **15.6** 🏆 | 19.8 (hybrid-v6) | 1.27× | kleiner = besser |
-| `cc_avg_loc_per_function` | **8.66** 🏆 | 10.80 (hybrid-v6) | 1.25× | kleiner = besser |
-| `cost_usd` | **$0.57** 🏆 | $1.58 (single-context-v2) | 2.77× | kleiner = besser |
+| `cognitive_max` | **4.0** 🏆 | 5.6 (hybrid-v6) | 1.40× | lower = better |
+| `cognitive_avg` | **2.35** 🏆 | 3.23 (subagents-v2) | 1.37× | lower = better |
+| `mccabe_max` | **4.6** 🏆 | 5.8 (hybrid-v6) | 1.26× | lower = better |
+| Smell Total | **0.0** 🏆 | **0.0** 🏆 (hybrid-v6) | 1.00× | lower = better |
+| Complexity Peak `cc_longest_function` | **15.6** 🏆 | 19.8 (hybrid-v6) | 1.27× | lower = better |
+| `cc_avg_loc_per_function` | **8.66** 🏆 | 10.80 (hybrid-v6) | 1.25× | lower = better |
+| `cost_usd` | **$0.57** 🏆 | $1.58 (single-context-v2) | 2.77× | lower = better |
 
 hybrid-v6 is the closest any architecture comes to the baseline on this kata — it ties on Smell
 Total and narrows every other gap that hybrid-v2 opened — but it does not overtake the baseline on
@@ -279,7 +279,7 @@ The katas differ. Where game-of-life shows the baseline ahead across the board (
 claim-office splits: hybrid-v6 wins the complexity peaks and the smell count decisively, inline-tdd-v1 wins
 decomposition and cost.
 
-| Metric (claim-office) | inline-tdd-v1 (baseline) | single-context-v2 | hybrid-v2 | hybrid-v6 | Faktor hybrid-v6/inline-tdd-v1 |
+| Metric (claim-office) | inline-tdd-v1 (baseline) | single-context-v2 | hybrid-v2 | hybrid-v6 | Factor hybrid-v6/inline-tdd-v1 |
 |---|---:|---:|---:|---:|---:|
 | Correctness (external) | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | 1.00× |
 | `cognitive_max` | 9.2 | 8.4 | 5.8 | **4.4** 🏆 | **0.48×** |
@@ -347,10 +347,10 @@ Decomposition and Code Mass (APP) rank the cells in opposite directions.
 
 | Kata | inline-tdd-v1 | subagents-v2 | single-context-v2 | hybrid-v2 | hybrid-v6 | Direction |
 |---|---:|---:|---:|---:|---:|---|
-| `cc_avg_loc_per_function` — claim-office | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | 11.05 | kleiner = besser |
-| `cc_avg_loc_per_function` — game-of-life | **8.66** 🏆 | 12.83 | 13.07 | 15.90 | 10.80 | kleiner = besser |
-| Code Mass (APP) — claim-office | 678.8 | 646.8 | 524.6 | 446.4 | 466.8 | kleiner = besser |
-| Code Mass (APP) — game-of-life | 174.8 | 146.8 | 141.0 | 125.8 | 135.8 | kleiner = besser |
+| `cc_avg_loc_per_function` — claim-office | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | 11.05 | lower = better |
+| `cc_avg_loc_per_function` — game-of-life | **8.66** 🏆 | 12.83 | 13.07 | 15.90 | 10.80 | lower = better |
+| Code Mass (APP) — claim-office | 678.8 | 646.8 | 524.6 | 446.4 | 466.8 | lower = better |
+| Code Mass (APP) — game-of-life | 174.8 | 146.8 | 141.0 | 125.8 | 135.8 | lower = better |
 
 On game-of-life the decomposition ordering is monotonic in architecture weight up to hybrid-v2
 (inline-tdd-v1 → subagents-v2 → single-context-v2 → hybrid-v2), and hybrid-v6 breaks the trend — its end-refactor phase recovers
@@ -402,7 +402,7 @@ workflow in this RQ does, so the comparison holds here.
 The inline-tdd-v1 → hybrid-v2 step moves the two models in opposite directions on game-of-life. All four cells
 reach Correctness (external) 100 %.
 
-| Cell | n | `cognitive_max` | Smell Total | `cc_avg_loc_per_function` | Funktionen |
+| Cell | n | `cognitive_max` | Smell Total | `cc_avg_loc_per_function` | Functions |
 |---|---:|---:|---:|---:|---:|
 | Sol inline-tdd-v1 | 5 | **4.0** 🏆 | **0.0** 🏆 | 8.66 | 3.4 |
 | Sol hybrid-v2 | 5 | 8.6 | 2.8 | 15.90 | 1.6 |

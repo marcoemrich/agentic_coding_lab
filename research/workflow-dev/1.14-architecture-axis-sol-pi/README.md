@@ -57,8 +57,8 @@ cost and without a correctness penalty (`RQ-cost-sol-pi-vs-opus-cc`, F-1.1/F-1.2
 The problem is that the entire current workflow line was developed and validated on Opus.
 `model-recommendation-matrix.md` states the constraint plainly:
 
-> Workflow-Optimierungen, die auf opus-4-7 gemessen wurden, gelten **nur für opus-4-7**,
-> bis sie cross-model repliziert sind.
+> Workflow optimisations measured on opus-4-7 apply **only to opus-4-7**
+> until they have been replicated cross-model.
 
 Developing further on Sol without checking this means building on an unverified foundation.
 This RQ verifies the foundation itself — the **architecture axis** — before any of the

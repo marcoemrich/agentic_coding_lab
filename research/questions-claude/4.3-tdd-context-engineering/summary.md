@@ -2,11 +2,11 @@
 
 _Which form of context structuring — isolated subagent contexts per TDD phase (subagents-v2), a shared, accumulated single context (single-context-v2), a hybrid with skill-based red/green in the shared context and an isolated refactor subagent (hybrid-v2), or a hybrid with isolated green and refactor subagents alongside a shared-context test list/red (green-refactor-v2) — leads to better code quality?_
 
-Generated: 2026-09-11T07:48:33Z
+Generated: 2026-09-17T01:17:38Z
 
 Cells declared: 4 · matched runs: 21 · min_replicates: 3
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -15,7 +15,7 @@ Cells declared: 4 · matched runs: 21 · min_replicates: 3
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking | 7 | 7 | ✅ |
 | claim-office-example-mapping | exact-green-refactor-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking | 3 | 3 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### code_mass
 
@@ -100,7 +100,7 @@ Cells declared: 4 · matched runs: 21 · min_replicates: 3
 
 ### mutation_score
 
-_Alle Werte fehlen oder sind nicht numerisch._
+_All values are missing or non-numeric._
 
 ### total_tokens
 

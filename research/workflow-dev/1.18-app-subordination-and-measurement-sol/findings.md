@@ -1,6 +1,6 @@
 # Findings — RQ-app-subordination-measurement-sol
 
-## Übersicht
+## Overview
 
 Claim Office, example-mapping, Sol on the OpenAI subscription route. Five runs
 per cell, 25 total. Basis = `exact-sol-v1-pi`; A = `exact-sol-v1.2-app-pi`;

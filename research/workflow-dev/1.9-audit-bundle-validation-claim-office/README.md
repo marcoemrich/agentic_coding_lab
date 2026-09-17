@@ -1,30 +1,30 @@
 ---
 id: RQ-audit-bundle-claim-office
-question: "Generalisiert der RQ-1.8-Befund (Audit-Bundle wirkt Disziplin-stabilisierend und Code-Qualitaets-neutral auf hybrid-v4-Basis × game-of-life) auch auf die novel claim-office-Kata, oder kippt das Pattern dort wie schon in RQ-1.4 fuer Reduktionen geschehen?"
+question: "Does the RQ-1.8 result (the audit bundle stabilizes discipline and is code-quality-neutral on the hybrid-v4 base × game-of-life) generalize to the novel claim-office kata, or does the pattern flip there as it already did for reductions in RQ-1.4?"
 factors:
   workflow_x_prompt:
-    - {workflow: exact-hybrid-v4-cleaned-cc, prompt: example-mapping}  # Baseline (Default seit RQ-1.6)
-    - {workflow: exact-hybrid-v4.3-audit-bundle-cc,     prompt: example-mapping}  # + Audit-Bundle (Klasse 2 + Klasse 3)
+    - {workflow: exact-hybrid-v4-cleaned-cc, prompt: example-mapping}  # Baseline (default since RQ-1.6)
+    - {workflow: exact-hybrid-v4.3-audit-bundle-cc,     prompt: example-mapping}  # + audit bundle (class 2 + class 3)
 controls:
   model: opus-4-7-portkey-no-thinking
   kata_base: claim-office
 outcomes:
-  # primaer: Korrektheit (claim-office ist die Korrektheits-Kata)
+  # primary: correctness (claim-office is the correctness kata)
   - verification_pct
   - tests_passing
   - completed_within_budget
-  # TDD-Disziplin (Audit-Bundle zielt direkt auf Red-/Refactor-Disziplin)
+  # TDD discipline (the audit bundle targets red/refactor discipline directly)
   - tests_passed_immediately
   - refactorings_applied
   - predictions_correct_rate
   - cycle_count
-  # Code-Qualitaet (Sanity)
+  # code quality (sanity)
   - code_mass
   - smell_total
   - cc_longest_function
   - cognitive_max
   - mccabe_max
-  # Kosten
+  # cost
   - duration_seconds
   - total_tokens
 min_replicates: 8
@@ -33,81 +33,81 @@ status: aktiv
 
 # RQ-1.9: exact-hybrid-v4.3-audit-bundle-cc vs exact-hybrid-v4-cleaned-cc (claim-office)
 
-Generalisiert der RQ-1.8-Befund (Audit-Bundle wirkt Disziplin-stabilisierend und Code-Qualitaets-neutral) auf die novel `claim-office-example-mapping`-Kata, oder kippt das Pattern dort?
+Does the RQ-1.8 result (the audit bundle stabilizes discipline and is code-quality-neutral) generalize to the novel `claim-office-example-mapping` kata, or does the pattern flip there?
 
 ## Motivation
 
-RQ-1.8 hat auf `game-of-life-example-mapping × opus-4-7-portkey-no-thinking` (n=10) gezeigt:
+RQ-1.8 showed, on `game-of-life-example-mapping × opus-4-7-portkey-no-thinking` (n=10):
 
-- `tests_passed_immediately` 0.7 → **0 ± 0** (Mandatory-Procedure-Preamble eliminiert vorzeitige Greens deterministisch).
-- `refactorings_applied` 7.9 → 8.7 bei σ −64 % (Refactor-Rationale + Drei-Pfad-Bar).
-- Code-Qualitaet ±1 σ, Korrektheit 100 % / 100 % bei beiden.
-- Kosten: +16 % Tokens, **Wallclock neutral** (Bruch zur v6.5-lean→v6.5.1-Praezedenz).
+- `tests_passed_immediately` 0.7 → **0 ± 0** (the mandatory-procedure preamble eliminates premature greens deterministically).
+- `refactorings_applied` 7.9 → 8.7 at σ −64 % (refactor rationale + three-path bar).
+- Code quality ±1 σ, correctness 100 % / 100 % for both.
+- Cost: +16 % tokens, **wallclock neutral** (a break with the v6.5-lean→v6.5.1 precedent).
 
-Dieser Befund ist aber auf GoL gemessen — der trainings-bekannten, korrektheits-saturierten Kata. Die hybrid-v2-Reduktionslinie hat wiederholt gezeigt, dass Workflow-Effekte **kata-spezifisch** sind:
+But that result was measured on GoL — the training-familiar, correctness-saturated kata. The hybrid-v2 reduction line has repeatedly shown that workflow effects are **kata-specific**:
 
-- Pep-/Emoji-Reduktion auf GoL korrektheits-invariant, brach auf claim-office (RQ-1.4: −3 bis −20 pp Korrektheit).
-- Cleanup-Bundle auf claim-office staerker wirksam als auf GoL (RQ-1.6 vs RQ-1.7: refactor.md-Entkopplung trieb auf claim-office +34 % Refactorings, auf GoL nur +10 %).
+- Pep/emoji reduction was correctness-invariant on GoL but broke on claim-office (RQ-1.4: −3 to −20 pp correctness).
+- The cleanup bundle was more effective on claim-office than on GoL (RQ-1.6 vs RQ-1.7: the refactor.md decoupling drove +34 % refactorings on claim-office, only +10 % on GoL).
 
-Diese RQ prueft, ob die Audit-Bundle-Wirkung auf claim-office in derselben Richtung wie auf GoL liegt — oder ob die Mandatory-Procedure-Preamble + Drei-Pfad-Bar auf einer Multi-Iteration-Kata mit echten Mehrdeutigkeiten anders skaliert.
+This RQ tests whether the audit bundle effect on claim-office points in the same direction as on GoL — or whether the mandatory-procedure preamble + three-path bar scale differently on a multi-iteration kata with genuine ambiguities.
 
-## Workflow-Definition
+## Workflow definition
 
-Identisch zu RQ-1.8 — exact-hybrid-v4-cleaned-cc (Default-Baseline) vs exact-hybrid-v4.3-audit-bundle-cc (Default-Baseline + restliche Audit-Bundle-Items aus archiviertem v6.5.1-Audit). Voller Diff:
+Identical to RQ-1.8 — exact-hybrid-v4-cleaned-cc (default baseline) vs exact-hybrid-v4.3-audit-bundle-cc (default baseline + the remaining audit-bundle items from the archived v6.5.1 audit). Full diff:
 
 ```
 diff -r experiments/workflows/exact-coding/opus/exact-hybrid-v4-cleaned-cc experiments/workflows/exact-coding/opus/exact-hybrid-v4.3-audit-bundle-cc
 ```
 
-Detail-Begruendungen in `experiments/workflows/exact-coding/opus/exact-hybrid-v4.3-audit-bundle-cc/CHANGES.md`.
+Per-item justifications in `experiments/workflows/exact-coding/opus/exact-hybrid-v4.3-audit-bundle-cc/CHANGES.md`.
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Korrektheit)** — Beide Workflows ≥ 95 % `verification_pct` im Mittel. Audit-Bundle darf nicht regredieren. Anker-Spezifisch: in RQ-1.6 lag exact-hybrid-v4-cleaned-cc bei Mean 0.96; hybrid-v4.3 wird in derselben Region erwartet.
-- **H2 (tests_passed_immediately faellt)** — Identisches Pattern wie auf GoL: hybrid-v4.3 zeigt ≤ 1 Lauf mit vorzeitigem Green; hybrid-v4 zeigt staerkere Variabilitaet (claim-office hat mehr Mehrdeutigkeits-Test-Schritte, also potentiell mehr Gelegenheiten zum Ueber-Implementieren).
-- **H3 (Refactorings-Disziplin)** — `refactorings_applied` steigt um mindestens 10 % bei deutlicher σ-Reduktion. Auf claim-office (mehr Iterations als GoL) koennte der Effekt staerker sein als die +10 % auf GoL.
-- **H4 (Kosten)** — +15–20 % Tokens erwartet (parallel RQ-1.8). Wallclock: ungewiss — wenn die GoL-Wallclock-Neutralitaet durch eingesparte vorzeitige-Green-Detours getrieben war, koennte derselbe Mechanismus auf claim-office ebenfalls greifen. Wenn nicht, +15 % wie in der RQ-audit-Praezedenz.
-- **H5 (Kata-Spezifisches Kippen)** — Falsifizierer: wenn das Audit-Bundle auf claim-office Korrektheit kostet (z.B. weil das Backfill-Verbot in "Wrong Predictions Are Data" den Agenten bei echten Mehrdeutigkeits-Predictions destabilisiert), waere das Bundle nicht auf claim-office promotbar — hybrid-v4.3 bliebe GoL-spezifischer Code-Quality-Champion ohne Default-Baseline-Status.
+- **H1 (correctness)** — Both workflows ≥ 95 % `verification_pct` on average. The audit bundle must not regress. Anchor-specific: in RQ-1.6, exact-hybrid-v4-cleaned-cc came in at mean 0.96; hybrid-v4.3 is expected in the same region.
+- **H2 (tests_passed_immediately drops)** — Identical pattern to GoL: hybrid-v4.3 shows ≤ 1 run with a premature green; hybrid-v4 shows greater variability (claim-office has more ambiguity test steps, hence potentially more opportunities to over-implement).
+- **H3 (refactoring discipline)** — `refactorings_applied` rises by at least 10 % with a marked σ reduction. On claim-office (more iterations than GoL) the effect could be stronger than the +10 % on GoL.
+- **H4 (cost)** — +15–20 % tokens expected (in parallel to RQ-1.8). Wallclock: uncertain — if the GoL wallclock neutrality was driven by saved premature-green detours, the same mechanism could apply on claim-office. If not, +15 % as in the RQ-audit precedent.
+- **H5 (kata-specific flip)** — Falsifier: if the audit bundle costs correctness on claim-office (e.g. because the backfill ban in "Wrong Predictions Are Data" destabilizes the agent on genuine ambiguity predictions), the bundle would not be promotable on claim-office — hybrid-v4.3 would remain a GoL-specific code-quality champion without default-baseline status.
 
 ## Design
 
 ```
-Faktor:    workflow_x_prompt — 2 Stufen, beide example-mapping
-Kontrolle: model            — opus-4-7-portkey-no-thinking
-Kontrolle: kata_base        — claim-office
+Factor:  workflow_x_prompt — 2 levels, both example-mapping
+Control: model            — opus-4-7-portkey-no-thinking
+Control: kata_base        — claim-office
 
-Zellen:    2 (2 Workflows × 1 Kata)
-Replikate: n = 8 je Zelle (matched RQ-1.6)
-Runs:      16 total (8 hybrid-v4 aus RQ-1.6-Pool + 8 neue hybrid-v4.3)
+Cells:      2 (2 workflows × 1 kata)
+Replicates: n = 8 per cell (matched to RQ-1.6)
+Runs:       16 total (8 hybrid-v4 from the RQ-1.6 pool + 8 new hybrid-v4.3)
 ```
 
-Replikate-Anzahl n=8 statt n=10 wie in RQ-1.8, weil claim-office mit ~37 min/Run deutlich teurer ist als GoL (~10 min/Run) und n=8 in RQ-1.6 fuer den Cleanup-Effekt schon eindeutige Aussagen geliefert hat. Falls die Daten eine starke Aussage stuetzen (z.B. eindeutiger Korrektheits-Bruch oder Korrektheits-Plus), kann auf n=10 erweitert werden.
+The replicate count is n=8 rather than the n=10 of RQ-1.8 because claim-office, at ~37 min/run, is far more expensive than GoL (~10 min/run), and n=8 already produced unambiguous statements about the cleanup effect in RQ-1.6. If the data support a strong statement (e.g. an unambiguous correctness break or correctness gain), it can be extended to n=10.
 
-Wegen der laengeren Sessions auf claim-office: single-shard oder maximal 2 Shards (Memory `portkey-shards-external-cut-risk` — 3+ parallele Portkey-Shards mit Opus 4.7 × claim-office koennen Sessions extern abschneiden).
+Because of the longer sessions on claim-office: single-shard or at most 2 shards (memory `portkey-shards-external-cut-risk` — 3+ parallel Portkey shards with Opus 4.7 × claim-office can have sessions cut externally).
 
 ## Caveats
 
-- **Bundle, nicht isolierte Effekte** — wie in RQ-1.8: bei positivem Bundle-Befund bleibt offen, welche Klasse traegt (Klasse 2 Rationales vs Klasse 3 Red-Hardening). Folge-RQs moeglich.
-- **claim-office-Korrektheit ist nicht saturiert** — anders als GoL kann hybrid-v4.3 hier auch nach unten brechen (vgl. RQ-1.4: Reduktionen brachen Korrektheit auf derselben Kata). H1 ist nicht Sanity, sondern echte Differenzierung.
-- **n=8 ist knapp fuer σ-Aussagen** — der σ-Schrumpf-Befund aus RQ-1.8 (`refactorings_applied` σ um Faktor 0.36) braucht n≥10 fuer stabile σ-Vergleiche. n=8 ist ausreichend fuer Mittelwert + Richtungs-Aussage, nicht fuer prazise σ-Reduktion.
-- **predictions_correct_rate-Interpretation** — wenn auf claim-office (mit echten Mehrdeutigkeiten) hybrid-v4.3 deutlich unter hybrid-v4 liegt, ist die Lesart aus RQ-1.8 ("Wrong-Predictions-Block macht ehrliche Falsch-Predictions sichtbar") nicht automatisch uebertragbar. Auf claim-office koennte es auch Disziplin-Verlust bedeuten — das braucht Pro-Run-Inspektion.
+- **Bundle, not isolated effects** — as in RQ-1.8: given a positive bundle result, which class carries it remains open (class-2 rationales vs class-3 red hardening). Follow-up RQs possible.
+- **claim-office correctness is not saturated** — unlike GoL, hybrid-v4.3 can also break downward here (cf. RQ-1.4: reductions broke correctness on the same kata). H1 is not sanity but real differentiation.
+- **n=8 is thin for σ statements** — the variance-shrink result from RQ-1.8 (`refactorings_applied` σ by a factor of 0.36) needs n≥10 for stable σ comparisons. n=8 suffices for a mean plus a direction, not for a precise σ reduction.
+- **predictions_correct_rate interpretation** — if hybrid-v4.3 lands markedly below hybrid-v4 on claim-office (with its genuine ambiguities), the RQ-1.8 reading ("the wrong-predictions block makes honest wrong predictions visible") does not transfer automatically. On claim-office it could equally mean a loss of discipline — that needs per-run inspection.
 
 ## Findings
 
-Siehe [findings.md](findings.md) (folgt nach Batch-Lauf).
+See [findings.md](findings.md) (follows after the batch run).
 
-## Datenquelle
+## Data source
 
-Alle Runs in `experiments/runs/` mit
+All runs in `experiments/runs/` with
 `workflow ∈ {exact-hybrid-v4-cleaned-cc, exact-hybrid-v4.3-audit-bundle-cc}`,
 `kata = claim-office-example-mapping`,
 `model = opus-4-7-portkey-no-thinking`.
 
-hybrid-v4-Baseline-Pool aus RQ-1.6 (n=8) wiederverwendbar; ~8 neue hybrid-v4.3-Runs noetig.
+The hybrid-v4 baseline pool from RQ-1.6 (n=8) is reusable; ~8 new hybrid-v4.3 runs are needed.
 
-## Quellen
+## Sources
 
-- Vorlaufs-RQ auf GoL: [RQ-1.8](../1.8-audit-bundle-effect-v62/findings.md) — Audit-Bundle-Effekt isoliert auf hybrid-v4-Basis.
-- Baseline-RQ: [RQ-1.6](../1.6-v62-cleanup-validation-v61-with-why/findings.md) — hybrid-v4 als Default etabliert auf claim-office.
-- Reduktions-Kippen-Praezedenz: [RQ-1.4](../1.4-pep-emoji-claim-office/findings.md) — Reduktionen auf claim-office brechen Korrektheit.
-- hybrid-v4.3-Workflow-Diff: `experiments/workflows/exact-coding/opus/exact-hybrid-v4.3-audit-bundle-cc/CHANGES.md`.
+- Preceding RQ on GoL: [RQ-1.8](../1.8-audit-bundle-effect-v62/findings.md) — audit-bundle effect isolated on the hybrid-v4 base.
+- Baseline RQ: [RQ-1.6](../1.6-v62-cleanup-validation-v61-with-why/findings.md) — hybrid-v4 established as default on claim-office.
+- Reduction-flip precedent: [RQ-1.4](../1.4-pep-emoji-claim-office/findings.md) — reductions break correctness on claim-office.
+- hybrid-v4.3 workflow diff: `experiments/workflows/exact-coding/opus/exact-hybrid-v4.3-audit-bundle-cc/CHANGES.md`.

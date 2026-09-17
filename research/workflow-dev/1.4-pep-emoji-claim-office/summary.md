@@ -1,12 +1,12 @@
 # RQ-pep-emoji-claim-office — Aggregation
 
-_Haelt der Interaktions-Befund aus RQ-pep-emoji-v6.1 (Pep+Emoji-Reduktion: Anti-Additivitaet bei refactorings_applied, Saettigung bei tests_passed_immediately, Korrektheit invariant) auch auf einer komplexeren Kata mit echten Mehrdeutigkeiten?_
+_Does the interaction finding from RQ-pep-emoji-v6.1 (pep+emoji reduction: anti-additivity for refactorings_applied, saturation for tests_passed_immediately, correctness invariant) also hold on a more complex kata with genuine ambiguities?_
 
-Generated: 2026-09-11T07:48:51Z
+Generated: 2026-09-17T01:17:17Z
 
 Cells declared: 4 · matched runs: 22 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -15,7 +15,7 @@ Cells declared: 4 · matched runs: 22 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc | opus-4-7-portkey-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

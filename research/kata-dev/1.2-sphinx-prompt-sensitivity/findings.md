@@ -6,9 +6,9 @@ on `claim-office`?
 Data base: 24 runs, 4 cells × n=6, all `exit_reason = ok`,
 `exact-hybrid-v6-lab-split-cc` × `opus-5-no-thinking`.
 
-## Übersicht
+## Overview
 
-Correctness (external) — `verification_pct`, höher = besser. Trophy per kata,
+Correctness (external) — `verification_pct`, higher = better. Trophy per kata,
 since the two katas have different verification suites (16 vs. 15 scenarios)
 and their absolute levels are not comparable.
 

@@ -1,6 +1,6 @@
 ---
 id: RQ-emoji-v6.1
-question: "Haben Decoration-Emojis (✅ ❌ 🔴 🟢 🔄 📋 🚨 ⚠️) in den Workflow-Prompts (Skills + Refactor-Agent + rules/tdd.md) auf hybrid-v2-Basis einen messbaren Effekt auf Code-Qualitaet oder TDD-Disziplin?"
+question: "Do decoration emojis (✅ ❌ 🔴 🟢 🔄 📋 🚨 ⚠️) in the workflow prompts (skills + refactor agent + rules/tdd.md) on the hybrid-v2 base have a measurable effect on code quality or TDD discipline?"
 factors:
   workflow_x_prompt:
     - {workflow: exact-hybrid-v2-testlist-fix-cc, prompt: example-mapping}
@@ -9,21 +9,21 @@ controls:
   model: opus-4-7-no-thinking
   kata_base: game-of-life
 outcomes:
-  # primaer: Code-Qualitaet
+  # primary: code quality
   - code_mass
   - smell_total
   - cc_longest_function
   - cognitive_max
   - mccabe_max
-  # TDD-Disziplin (besonders relevant — Predictions sind emoji-markiert)
+  # TDD discipline (especially relevant — predictions are emoji-marked)
   - refactorings_applied
   - cycle_count
   - predictions_correct_rate
   - tests_passed_immediately
-  # Kosten
+  # cost
   - duration_seconds
   - total_tokens
-  # Korrektheit (Sanity)
+  # correctness (sanity)
   - tests_passing
   - verification_pct
   - completed_within_budget
@@ -31,70 +31,70 @@ min_replicates: 5
 status: aktiv
 ---
 
-# RQ-emoji-v6.1: Emoji-Effekt auf hybrid-v2-Basis (Re-Run)
+# RQ-emoji-v6.1: Emoji effect on the hybrid-v2 base (re-run)
 
-Haben die rund 95 Decoration-Emojis (✅ 45×, ❌ 25×, 🚨 6×, 🔴 4×, 🟢 2×, 📋 2×, 🔄 1×, ⚠️ 1×) in den Skill-Commands und im Refactor-Subagent von hybrid-v2 einen messbaren Effekt auf TDD-Disziplin oder Code-Qualitaet — oder sind sie reine Decoration?
+Do the roughly 95 decoration emojis (✅ 45×, ❌ 25×, 🚨 6×, 🔴 4×, 🟢 2×, 📋 2×, 🔄 1×, ⚠️ 1×) in the skill commands and the refactor subagent of hybrid-v2 have a measurable effect on TDD discipline or code quality — or are they pure decoration?
 
 ## Motivation
 
-Wiederholung der alten RQ-emoji (oneshot-v1-Generation, `2.4-emoji-effect`; gelöscht in `953841cb`, nur noch in der Git-Historie) auf der neuen, korrekturgefixten hybrid-v2-Basis. Die alte RQ-emoji baute auf der exact-hybrid-v1-cc-Linie, die spaeter als korrektheits-defekt identifiziert wurde (Bruch exact-hybrid-v1-cc → v6.5-lean). Befunde aus der alten Linie sind potenziell durch den Test-List-Scope-Bug konfundiert — daher Wiederholung auf `exact-hybrid-v2-testlist-fix-cc` als valider Basis (siehe Memory `v6-rebuild-new-base.md`).
+Repetition of the old RQ-emoji (oneshot-v1 generation, `2.4-emoji-effect`; deleted in `953841cb`, now only in the git history) on the new, correctness-fixed hybrid-v2 base. The old RQ-emoji built on the exact-hybrid-v1-cc line, which was later identified as correctness-defective (break exact-hybrid-v1-cc → v6.5-lean). Findings from the old line are potentially confounded by the test-list scope bug — hence the repetition on `exact-hybrid-v2-testlist-fix-cc` as the valid base (see memory `v6-rebuild-new-base.md`).
 
-`MARKERS.md` klassifiziert Emoji-Header (`🔴 / 🟢 / 🔄 / 📋`) und ✅/❌-Status-Marker weiterhin als **decorative content (safe to drop)**. RQ-emoji-v6.1 prueft diese Klassifikation gegen hybrid-v2 — parallel zur Schwester-RQ [RQ-pep-v6.1](../1.1-pep-effect-v6.1/README.md).
+`MARKERS.md` still classifies emoji headers (`🔴 / 🟢 / 🔄 / 📋`) and ✅/❌ status markers as **decorative content (safe to drop)**. RQ-emoji-v6.1 tests this classification against hybrid-v2 — in parallel to the sister RQ [RQ-pep-v6.1](../1.1-pep-effect-v6.1/README.md).
 
-Zusatz-Motivation: CLAUDE.md des Repos verbietet explizit Emojis in eigenen Files (`"Only use emojis if the user explicitly requests it"`). Die Workflow-Prompts widersprechen dieser Regel — RQ-emoji-v6.1 prueft, ob das gerechtfertigt ist.
+Additional motivation: the repo's CLAUDE.md explicitly forbids emojis in our own files (`"Only use emojis if the user explicitly requests it"`). The workflow prompts contradict this rule — RQ-emoji-v6.1 tests whether that is justified.
 
-## Workflow-Definition
+## Workflow definition
 
-- **exact-hybrid-v2-testlist-fix-cc (Kontrolle, n=5)**: vollstaendige Decoration-Emojis ueber alle 5 Workflow-Files (`red.md`, `green.md`, `test-list.md`, `refactor.md`, `rules/tdd.md`).
-- **exact-hybrid-v2.2-no-emoji-cc (neu, n=5)**: identisch zu exact-hybrid-v2-testlist-fix-cc, einzige Aenderungen: Decoration-Emojis entfernt.
-  - **Decoration entfernt** (95 Vorkommen): ✅, ❌, 🚨, 🔴, 🟢, 🔄, 📋, ⚠️ aus Headern, DO/DON'T-Listen, Process-Check-Sub-Steps und Output-Templates ersatzlos.
-  - **Parser-kritisch korrigiert**: `✅ Correct` / `❌ Incorrect` in den Red-Phase-Prediction-Templates → `- Correct` / `- Incorrect`. Der Parser-Regex `(- | ✅ | ❌) (Correct|Incorrect)` akzeptiert beide Varianten (verifiziert in alter v6.4-no-emoji).
-  - **❓ behalten** (8 Vorkommen in `test-list.md`): semantische Referenz auf Spec-Syntax (Clarifying Questions in example-mapping-Prompts wie claim-office). Kein Decoration-Marker — Entfernung wuerde Cross-Reference zur Spec-Syntax verlieren. Im game-of-life-Spec inaktiv, in claim-office aktiv genutzt.
-- **Was bleibt unveraendert**: alle operationalen Anweisungen, Process-Steps, APP, Four Rules, **Pep-Talks (inkl. Psychological Resistance-Sektion)**, Refactor-Subagent-Logik, Prediction-Format inkl. Step-7-Verbatim-Anweisung in red.md, `test-list.md` mit Scope-Fix, alle Rules-Files.
+- **exact-hybrid-v2-testlist-fix-cc (control, n=5)**: complete decoration emojis across all 5 workflow files (`red.md`, `green.md`, `test-list.md`, `refactor.md`, `rules/tdd.md`).
+- **exact-hybrid-v2.2-no-emoji-cc (new, n=5)**: identical to exact-hybrid-v2-testlist-fix-cc, only change: decoration emojis removed.
+  - **Decoration removed** (95 occurrences): ✅, ❌, 🚨, 🔴, 🟢, 🔄, 📋, ⚠️ dropped without replacement from headers, DO/DON'T lists, process check sub-steps and output templates.
+  - **Parser-critical correction**: `✅ Correct` / `❌ Incorrect` in the Red phase prediction templates → `- Correct` / `- Incorrect`. The parser regex `(- | ✅ | ❌) (Correct|Incorrect)` accepts both variants (verified in the old v6.4-no-emoji).
+  - **❓ kept** (8 occurrences in `test-list.md`): semantic reference to spec syntax (clarifying questions in example-mapping prompts such as claim-office). Not a decoration marker — removing it would lose the cross-reference to the spec syntax. Inactive in the game-of-life spec, actively used in claim-office.
+- **What stays unchanged**: all operational instructions, process steps, APP, Four Rules, **pep talks (including the Psychological Resistance section)**, refactor subagent logic, prediction format including the step-7 verbatim instruction in red.md, `test-list.md` with the scope fix, all rules files.
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Emojis wirkungslos auf Code-Qualitaet)**: alle 5 primaeren Metriken (`code_mass`, `smell_total`, `cc_longest_function`, `cognitive_max`, `mccabe_max`) statistisch ununterscheidbar zwischen den Workflows (Median-Differenz innerhalb ±1 σ der hybrid-v2-Streuung).
-  Konsequenz bei H1: Emoji-Decoration ist Prompt-Ballast — MARKERS-Klassifikation bestaetigt, no-emoji kann mit weiteren Reduktionen kombiniert werden.
-- **H2 (Emojis helfen messbar)**: exact-hybrid-v2.2-no-emoji-cc verschlechtert sich auf mindestens zwei der fuenf primaeren Metriken um ≥ +1 σ mit konsistenter Richtung.
-  Konsequenz bei H2: visuelle Marker tragen — MARKERS-Klassifikation muss korrigiert werden.
-- **H3 (Emojis kosten Tokens)**: exact-hybrid-v2.2-no-emoji-cc spart Tokens und/oder Wallclock messbar (≥ 5%). **A-priori klein** erwartet — die ~95 Emojis machen mengenmaessig nur einen Bruchteil der Token-Last aus.
-- **H4 (Prediction-Disziplin-Effekt)**: besonders sensitiv ist `predictions_correct_rate`, weil ✅/❌ direkt im Prediction-Output-Template stehen. RQ-pep-v6.1 F-1.1 zeigte, dass Wortwahl in red.md `predictions_correct_rate` beeinflussen kann (no-pep: 100.0% vs pep: 98.8%). Parallel-Erwartung: Hyphen-Marker statt ✅/❌ koennte aehnliche Drift zeigen.
-- **H5 (Replikation)**: Das Ergebnis-Muster matched die alte RQ-emoji-Linie. Abweichung waere ein Indiz, dass die hybrid-v1-Linie tatsaechlich durch den Test-List-Scope-Bug konfundiert war.
+- **H1 (emojis have no effect on code quality)**: all 5 primary metrics (`code_mass`, `smell_total`, `cc_longest_function`, `cognitive_max`, `mccabe_max`) statistically indistinguishable between the workflows (median difference within ±1 σ of the hybrid-v2 spread).
+  Consequence under H1: emoji decoration is prompt ballast — MARKERS classification confirmed, no-emoji can be combined with further reductions.
+- **H2 (emojis help measurably)**: exact-hybrid-v2.2-no-emoji-cc degrades on at least two of the five primary metrics by ≥ +1 σ with a consistent direction.
+  Consequence under H2: visual markers carry weight — the MARKERS classification must be corrected.
+- **H3 (emojis cost tokens)**: exact-hybrid-v2.2-no-emoji-cc saves tokens and/or wallclock measurably (≥ 5%). **Expected small a priori** — the ~95 emojis are only a fraction of the token load by volume.
+- **H4 (prediction discipline effect)**: `predictions_correct_rate` is particularly sensitive, because ✅/❌ appear directly in the prediction output template. RQ-pep-v6.1 F-1.1 showed that wording in red.md can influence `predictions_correct_rate` (no-pep: 100.0% vs pep: 98.8%). Parallel expectation: hyphen markers instead of ✅/❌ could show a similar drift.
+- **H5 (replication)**: the result pattern matches the old RQ-emoji line. A deviation would be an indication that the hybrid-v1 line was in fact confounded by the test-list scope bug.
 
-**A-priori Erwartung:** MARKERS-Klassifikation + Reduktions-Serie (Four Rules wirkungslos, Pep-Talks ohne Qualitaets-Effekt) sprechen fuer H1 mit moeglicher Disziplin-Verschiebung wie in RQ-pep. RQ-app hat aber gezeigt, dass Null-Effekt nicht der Default sein darf — Daten muessen pruefen.
+**A-priori expectation:** the MARKERS classification + reduction series (Four Rules ineffective, pep talks without a quality effect) argue for H1 with a possible discipline shift as in RQ-pep. But RQ-app has shown that a null effect must not be the default — the data has to decide.
 
 ## Design
 
 ```
-Faktor:    workflow_x_prompt — 2 Stufen (exact-hybrid-v2-testlist-fix-cc, exact-hybrid-v2.2-no-emoji-cc), beide mit example-mapping
-Kontrolle: model            — opus-4-7-no-thinking
-Kontrolle: kata_base        — game-of-life
+Factor:  workflow_x_prompt — 2 levels (exact-hybrid-v2-testlist-fix-cc, exact-hybrid-v2.2-no-emoji-cc), both with example-mapping
+Control: model            — opus-4-7-no-thinking
+Control: kata_base        — game-of-life
 
-Zellen:    2 (2 Workflows x 1 Kata)
-Replikate: n = 5
-Runs:      10 total
-           — 5 exact-hybrid-v2-testlist-fix-cc Runs (wiederverwendbar aus RQ-pep-v6.1, identische Kontroll-Zelle)
-           — 5 exact-hybrid-v2.2-no-emoji-cc Runs (1 Smoke + 4 Batch-Fill)
+Cells:      2 (2 workflows x 1 kata)
+Replicates: n = 5
+Runs:       10 total
+            — 5 exact-hybrid-v2-testlist-fix-cc runs (reusable from RQ-pep-v6.1, identical control cell)
+            — 5 exact-hybrid-v2.2-no-emoji-cc runs (1 smoke + 4 batch fill)
 ```
 
-**Wiederverwendung:** Die Kontroll-Zelle `exact-hybrid-v2-testlist-fix-cc × game-of-life-example-mapping × opus-4-7-no-thinking` ist identisch mit der Kontroll-Zelle aus RQ-pep-v6.1. `aggregate-by-query.py` sammelt alle matching Runs aus `experiments/runs/` — keine Re-Run-Notwendigkeit.
+**Reuse:** the control cell `exact-hybrid-v2-testlist-fix-cc × game-of-life-example-mapping × opus-4-7-no-thinking` is identical to the control cell from RQ-pep-v6.1. `aggregate-by-query.py` collects all matching runs from `experiments/runs/` — no re-run needed.
 
 ## Caveats
 
-- **Single Kata, single Modell, n=5**: identisch zur archivierten RQ-emoji. Erweiterung auf claim-office und groesseres n nach Bedarf.
-- **Asymmetrische Decoration-Last**: ✅/❌-Marker (70 Vorkommen) dominieren — andere Emojis (🔴🟢🔄📋🚨⚠️, 15 Vorkommen) sind selten. Ein Effekt, falls vorhanden, kommt vermutlich primaer aus ✅/❌.
-- **❓ nicht entfernt**: Im game-of-life-Spec ist diese Konvention inaktiv (game-of-life-Spec nutzt kein ❓). Ein zukuenftiger Lauf auf claim-office wuerde fuer eine reine "alle Emojis weg"-Variante das ❓ ebenfalls ersatzlos streichen muessen — und damit eine zusaetzliche Behandlung der Spec-Lesart erfordern.
-- **Parser-Kompatibilitaet bestaetigt**: Hyphen-Variante "- Correct"/"- Incorrect" wird vom Parser korrekt als Prediction erkannt (alte v6.4-no-emoji-Smoke: 18/18 predictions parsed).
-- **Direct-API-Modell**: opus-4-7-no-thinking ohne Portkey-Routing — kein single-shard-Zwang noetig fuer 10 Runs, aber pro Memory-Konvention nicht sharden.
+- **Single kata, single model, n=5**: identical to the archived RQ-emoji. Extension to claim-office and larger n as needed.
+- **Asymmetric decoration load**: ✅/❌ markers (70 occurrences) dominate — the other emojis (🔴🟢🔄📋🚨⚠️, 15 occurrences) are rare. An effect, if present, presumably comes primarily from ✅/❌.
+- **❓ not removed**: in the game-of-life spec this convention is inactive (the game-of-life spec uses no ❓). A future run on claim-office would have to drop the ❓ as well for a pure "all emojis gone" variant — and would therefore require additional handling of the spec reading.
+- **Parser compatibility confirmed**: the hyphen variant "- Correct"/"- Incorrect" is correctly recognized as a prediction by the parser (old v6.4-no-emoji smoke: 18/18 predictions parsed).
+- **Direct-API model**: opus-4-7-no-thinking without Portkey routing — no single-shard requirement for 10 runs, but per the memory convention do not shard.
 
 ## Findings
 
-Siehe [findings.md](findings.md).
+See [findings.md](findings.md).
 
-## Datenquelle
+## Data source
 
-Alle Runs in `experiments/runs/` mit
+All runs in `experiments/runs/` with
 `workflow ∈ {exact-hybrid-v2-testlist-fix-cc, exact-hybrid-v2.2-no-emoji-cc}`,
 `kata = game-of-life-example-mapping`,
 `model = opus-4-7-no-thinking`.

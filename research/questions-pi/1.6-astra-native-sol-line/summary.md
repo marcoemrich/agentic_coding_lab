@@ -2,11 +2,11 @@
 
 _Does the natively-built Sol workflow line (basic-sol-tdd, Predictive TDD) transfer to GPT-6 Astra — or is its advantage over the Opus-derived EXACT line a property of Sol?_
 
-Generated: 2026-09-13T18:30:04Z
+Generated: 2026-09-17T01:17:46Z
 
 Cells declared: 8 · matched runs: 40 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -19,7 +19,7 @@ Cells declared: 8 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

@@ -1,6 +1,6 @@
 # Findings — RQ-native-sol-workflows-sub
 
-## Übersicht
+## Overview
 
 45 runs, nine cells, n=5 each; Sol on the OpenAI subscription route with
 example-mapping prompts. Floor = `baseline-inline-tdd-v1-pi`, Inline =

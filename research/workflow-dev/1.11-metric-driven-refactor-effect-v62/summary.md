@@ -1,19 +1,19 @@
 # RQ-metric-driven-refactor-v62 — Aggregation
 
-_Verbessert ein Refactor-Agent, der deterministische Metriken (ESLint smells, SonarJS cognitive complexity, McCabe cyclomatic complexity) selbst pre/post misst und APP-Mass parallel ausweist, die Code-Qualitaet auf claim-office gegenueber dem Baseline-exact-hybrid-v4-cleaned-cc-Workflow — ohne Korrektheit oder TDD-Disziplin zu beschaedigen?_
+_Does a refactor agent that measures deterministic metrics itself pre/post (ESLint smells, SonarJS cognitive complexity, McCabe cyclomatic complexity) and reports APP mass alongside them improve code quality on claim-office relative to the baseline exact-hybrid-v4-cleaned-cc workflow — without damaging correctness or TDD discipline?_
 
-Generated: 2026-09-11T07:48:45Z
+Generated: 2026-09-17T01:17:18Z
 
 Cells declared: 2 · matched runs: 13 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-7-no-thinking | 8 | 8 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### cognitive_max
 

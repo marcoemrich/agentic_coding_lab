@@ -2,22 +2,22 @@
 
 _Does the quality of a TDD workflow depend on the model — is there a universally best workflow, or do different workflows swap places depending on the model?_
 
-Generated: 2026-09-11T07:48:31Z
+Generated: 2026-09-17T01:17:37Z
 
 Cells declared: 6 · matched runs: 49 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
 | claim-office-example-mapping | exact-subagents-v1-cc | opus-4-7-no-thinking | 10 | 10 | ✅ |
-| claim-office-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey-no-thinking | 5 | 4 | ⚠️ nur 4/5 ohne Timeout |
+| claim-office-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey-no-thinking | 5 | 4 | ⚠️ only 4/5 without timeout |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking | 9 | 9 | ✅ |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v1-cc | opus-4-7-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v1-cc | opus-4-6-portkey-no-thinking | 15 | 15 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

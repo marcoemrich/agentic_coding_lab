@@ -504,7 +504,7 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
     # other RQ's coverage table keeps its existing three-column shape.
     show_harness = any(cell.get("harness_alts") is not None for cell in cells)
 
-    L("## Zell-Coverage")
+    L("## Cell coverage")
     L("")
     L("| kata | workflow | model |" + (" harness |" if show_harness else "")
       + " n | n_ok | status |")
@@ -527,13 +527,13 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
             }:
                 n_ok += 1
         if n == 0:
-            status = "❌ keine Runs"
+            status = "❌ no runs"
         elif n < min_rep:
-            status = f"⚠️ unter min_replicates ({n}/{min_rep})"
+            status = f"⚠️ below min_replicates ({n}/{min_rep})"
         elif n_ok == 0:
-            status = f"⚠️ alle {n} Runs Timeout/rate-limited"
+            status = f"⚠️ all {n} runs timeout/rate-limited"
         elif n_ok < min_rep:
-            status = f"⚠️ nur {n_ok}/{min_rep} ohne Timeout"
+            status = f"⚠️ only {n_ok}/{min_rep} without timeout"
         else:
             status = "✅"
         harness_col = f" {key[3] or '—'} |" if show_harness else ""
@@ -541,13 +541,13 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
     L("")
 
     if df.empty:
-        L("_Keine matching Runs gefunden._")
+        L("_No matching runs found._")
         md_path.write_text("\n".join(lines))
         return
 
     # Per-outcome pivots: numeric → mean/min/max, boolean → rate,
     # pooled rate (suffix _rate with matching _correct/_total cols) → Σ/Σ.
-    L("## Outcome-Pivots (pro Zelle)")
+    L("## Outcome pivots (per cell)")
     L("")
 
     # Group by cell_model (canonical per-cell model name) so list-valued
@@ -572,7 +572,7 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
             if num_col not in df.columns or den_col not in df.columns:
                 L(f"### {outcome}")
                 L("")
-                L(f"_Spalten `{num_col}` und/oder `{den_col}` nicht in CSV._")
+                L(f"_Columns `{num_col}` and/or `{den_col}` not in CSV._")
                 L("")
                 continue
             df_r = df.assign(
@@ -584,7 +584,7 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
             if df_r.empty:
                 L(f"### {outcome} (pooled %)")
                 L("")
-                L(f"_Keine Runs mit `{den_col} > 0`._")
+                L(f"_No runs with `{den_col} > 0`._")
                 L("")
                 continue
             grouped = (df_r.groupby(group_cols)
@@ -604,8 +604,8 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
         if outcome not in df.columns:
             L(f"### {outcome}")
             L("")
-            L(f"_Spalte `{outcome}` nicht in CSV — wird nicht erhoben oder "
-              f"Tippfehler im Frontmatter._")
+            L(f"_Column `{outcome}` not in CSV — either not collected or "
+              f"a typo in the frontmatter._")
             L("")
             continue
 
@@ -638,7 +638,7 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
             if numeric.notna().sum() == 0:
                 L(f"### {outcome}")
                 L("")
-                L(f"_Alle Werte fehlen oder sind nicht numerisch._")
+                L(f"_All values are missing or non-numeric._")
                 L("")
                 continue
             df_num = df.assign(_v=numeric).dropna(subset=["_v"])

@@ -2,11 +2,11 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in code quality and TDD discipline on game-of-life-example-mapping with the exact-hybrid-v4.2-phase-continuation-pi workflow?_
 
-Generated: 2026-09-11T07:48:40Z
+Generated: 2026-09-17T01:17:44Z
 
 Cells declared: 12 · matched runs: 60 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -23,7 +23,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | deepseek-v4-pro | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### code_mass
 

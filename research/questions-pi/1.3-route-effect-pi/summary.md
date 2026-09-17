@@ -2,11 +2,11 @@
 
 _How do transport route and reasoning channel each affect code quality, TDD discipline, throughput and correctness for one and the same model (GPT-5.6 Sol), at constant harness, workflow, kata and prompt style?_
 
-Generated: 2026-09-11T07:48:41Z
+Generated: 2026-09-17T01:17:45Z
 
 Cells declared: 3 · matched runs: 15 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -14,7 +14,7 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### duration_seconds
 

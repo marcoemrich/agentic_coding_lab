@@ -1,44 +1,44 @@
 # RQ-audit-bundle-claim-office Findings
 
-## Übersicht
+## Overview
 
-Primär-Outcomes je Zelle (n=8 je Workflow, opus-4-7-portkey-no-thinking, claim-office-example-mapping). 🏆 = bester Wert pro Outcome; Outcomes, deren hybrid-v4.3-Wert durch frühes Run-Abbruch verzerrt ist, bekommen keinen Pokal.
+Primary outcomes per cell (n=8 per workflow, opus-4-7-portkey-no-thinking, claim-office-example-mapping). 🏆 = best value per outcome; outcomes whose hybrid-v4.3 value is distorted by early run termination get no trophy.
 
-| Outcome (Richtung)                                          | exact-hybrid-v4-cleaned-cc | exact-hybrid-v4.3-audit-bundle-cc              |
+| Outcome (direction)                                          | exact-hybrid-v4-cleaned-cc | exact-hybrid-v4.3-audit-bundle-cc              |
 |-------------------------------------------------------------|-----------------------|--------------------------------|
-| Korrektheit (außen) (`verification_pct`, höher = besser)    | **0.96 ± 0.09** 🏆    | 0.35 ± 0.41 (bi-modal)         |
-| `tests_passing` (Sanity)                                    | 100 %                 | 100 %                          |
-| `completed_within_budget` (Sanity)                          | 100 %                 | 100 %                          |
-| `cycle_count` (für claim-office höher = vollständiger)      | **37.4 ± 1.6** 🏆     | 11.3 ± 6.1                     |
-| `tests_passed_immediately` (kleiner = besser)               | 15.1 ± 5.84           | **0.6 ± 1.41** 🏆 (aber Kontext) |
-| `refactorings_applied` (Kontext-abhängig — folgt cycle_count) | 24.9 ± 6.90         | 12.0 ± 9.97                    |
-| `predictions_correct_rate` (höher = besser, pooled)         | 97.2 %                | 94.9 %                         |
-| Code-Mass (APP) (`code_mass`, hier irreführend)             | 878.5 ± 91.4          | 441.5 ± 335.6 (durch frühen Stopp) |
-| Smell-Summe (`smell_total`, kleiner = besser)               | **0.38 ± 0.74**       | 0.50 ± 0.76                    |
-| Spitzen-Komplexität (`cc_longest_function`)                 | 12.4 ± 1.41           | 13.1 ± 7.06                    |
-| `total_tokens` (durch frühen Stopp niedriger, kein Win)     | 44.4 M ± 3.4          | 16.7 M ± 15.0                  |
-| `duration_seconds` (durch frühen Stopp niedriger, kein Win) | 2530 ± 401            | 1059 ± 943                     |
+| Correctness (external) (`verification_pct`, higher = better) | **0.96 ± 0.09** 🏆    | 0.35 ± 0.41 (bi-modal)         |
+| `tests_passing` (sanity)                                    | 100 %                 | 100 %                          |
+| `completed_within_budget` (sanity)                          | 100 %                 | 100 %                          |
+| `cycle_count` (on claim-office, higher = more complete)     | **37.4 ± 1.6** 🏆     | 11.3 ± 6.1                     |
+| `tests_passed_immediately` (lower = better)                 | 15.1 ± 5.84           | **0.6 ± 1.41** 🏆 (but see context) |
+| `refactorings_applied` (context-dependent — tracks cycle_count) | 24.9 ± 6.90       | 12.0 ± 9.97                    |
+| `predictions_correct_rate` (higher = better, pooled)        | 97.2 %                | 94.9 %                         |
+| Code Mass (APP) (`code_mass`, misleading here)              | 878.5 ± 91.4          | 441.5 ± 335.6 (due to early stop) |
+| Smell Total (`smell_total`, lower = better)                 | **0.38 ± 0.74**       | 0.50 ± 0.76                    |
+| Complexity Peak (`cc_longest_function`)                     | 12.4 ± 1.41           | 13.1 ± 7.06                    |
+| `total_tokens` (lower due to early stop, not a win)         | 44.4 M ± 3.4          | 16.7 M ± 15.0                  |
+| `duration_seconds` (lower due to early stop, not a win)     | 2530 ± 401            | 1059 ± 943                     |
 
 ---
 
-## F-1.9.1 — Audit-Bundle bricht Korrektheit auf claim-office von 96 % auf 35 %
+## F-1.9.1 — The audit bundle breaks correctness on claim-office from 96 % to 35 %
 
-`verification_pct` fällt von 0.96 ± 0.09 (alle Runs ≥ 0.73) auf **0.35 ± 0.41** (bi-modale Verteilung, 6 von 8 Runs unter 0.30).
+`verification_pct` falls from 0.96 ± 0.09 (all runs ≥ 0.73) to **0.35 ± 0.41** (bi-modal distribution, 6 of 8 runs below 0.30).
 
 | workflow | mean | σ | min | max |
 |---|---:|---:|---:|---:|
 | exact-hybrid-v4-cleaned-cc | 0.96 | 0.09 | 0.73 | 1.00 |
 | exact-hybrid-v4.3-audit-bundle-cc     | 0.35 | 0.41 | 0.00 | 1.00 |
 
-Der Bruch ist nicht von der Art "Implementation ist falsch", sondern "Implementation ist unvollständig": die internen `tests_passing` zeigen 100 %, der CLI baut (cli_built=true), aber der Agent erklärt sich mitten in der Kata fertig.
+The break is not of the "implementation is wrong" kind but "implementation is incomplete": internal `tests_passing` shows 100 %, the CLI builds (cli_built=true), but the agent declares itself done in the middle of the kata.
 
-Damit ist H5 (Falsifizierer aus dem RQ-README) eingetreten: das Audit-Bundle ist auf claim-office nicht eigenständig wirksam. hybrid-v4.3 bleibt GoL-spezifischer Code-Quality-Champion ohne claim-office-Default-Baseline-Status.
+H5 (the falsifier from the RQ README) has therefore occurred: the audit bundle is not independently effective on claim-office. hybrid-v4.3 remains a GoL-specific code-quality champion without claim-office default-baseline status.
 
 ---
 
-## F-1.9.2 — Bi-modale Vollständigkeit: 6 von 8 Runs stoppen vorzeitig
+## F-1.9.2 — Bi-modal completeness: 6 of 8 runs stop prematurely
 
-`cycle_count` fällt von 37.4 ± 1.6 (claim-office hat 41 Test-Schritte; hybrid-v4 vollendet alle) auf **11.3 ± 6.1** mit extremer Streuung. `experiment-done.txt` fehlt in 6 von 8 hybrid-v4.3-Runs.
+`cycle_count` falls from 37.4 ± 1.6 (claim-office has 41 test steps; hybrid-v4 completes all of them) to **11.3 ± 6.1** with extreme variance. `experiment-done.txt` is missing in 6 of 8 hybrid-v4.3 runs.
 
 | outcome | hybrid-v4 | hybrid-v4.3 |
 |---|---:|---:|
@@ -46,43 +46,43 @@ Damit ist H5 (Falsifizierer aus dem RQ-README) eingetreten: das Audit-Bundle ist
 | cycle_count σ | 1.6 | 6.1 |
 | duration_seconds mean | 2530 (~42 min) | 1059 (~18 min) |
 | duration_seconds σ | 401 | 943 |
-| `experiment-done.txt` present | 0/8 (hybrid-v4-Konvention) | 2/8 |
+| `experiment-done.txt` present | 0/8 (hybrid-v4 convention) | 2/8 |
 
-Die zwei hybrid-v4.3-Runs mit `experiment-done.txt` erreichen `verification_pct = 1.0` (12 Cycles in 13 min und 25 Cycles in 56 min). Die sechs ohne erreichen 0.00–0.27 mit 7–14 Cycles und 8–19 min Wallclock — der Agent gibt mitten in der Test-Liste auf, ohne expliziten Done-Marker.
+The two hybrid-v4.3 runs with `experiment-done.txt` reach `verification_pct = 1.0` (12 cycles in 13 min and 25 cycles in 56 min). The six without reach 0.00–0.27 with 7–14 cycles and 8–19 min wallclock — the agent gives up in the middle of the test list without an explicit done marker.
 
-Pattern-Hypothese: das Audit-Bundle (Mandatory-Procedure-Preamble + Refactor-Drei-Pfad-Bar + Wrong-Predictions-Block) erzeugt mehr Per-Cycle-Aufwand auf der Multi-Iteration-Kata, und der Agent interpretiert die Pflicht zur disziplinierten Cycle-Vollendung als implizites Fertig-Signal nach wenigen vollständigen Cycles. Auf der kürzeren GoL-Kata (9 Tests) tritt das nicht zutage.
-
----
-
-## F-1.9.3 — Mandatory-Preamble eliminiert vorzeitige Greens, aber Effekt-Größe irrelevant durch frühen Stopp
-
-`tests_passed_immediately` fällt von 15.1 ± 5.84 auf **0.6 ± 1.41**. Pattern identisch zur RQ-1.8-Beobachtung auf GoL — die Preamble wirkt mechanisch wie erwartet.
-
-Die Effekt-Größe ist hier aber kein Disziplin-Gewinn: in 6 von 8 hybrid-v4.3-Runs durchläuft der Agent nur 7–14 Cycles. Vorzeitige Greens hätten dort gar keine Gelegenheit zu entstehen — weil der Agent gar nicht so weit kommt. Die Metrik misst die Preamble-Wirkung, nicht den Disziplin-Zugewinn.
-
-Auf den zwei hybrid-v4.3-Runs, die durchlaufen (cycle_count 12 und 25, ver=1.0), liegt `tests_passed_immediately` bei 0 und 4 — also auch dort niedriger als die hybrid-v4-Baseline.
+Pattern hypothesis: the audit bundle (mandatory-procedure preamble + refactor three-path bar + wrong-predictions block) creates more per-cycle effort on the multi-iteration kata, and the agent interprets the obligation to complete cycles with discipline as an implicit done signal after a few complete cycles. On the shorter GoL kata (9 tests) this does not surface.
 
 ---
 
-## F-1.9.4 — Code-Qualitäts-Metriken niedriger, aber durch Unvollständigkeit verzerrt
+## F-1.9.3 — The mandatory preamble eliminates premature greens, but the effect size is irrelevant given the early stop
 
-| outcome | hybrid-v4 | hybrid-v4.3 | Interpretation |
+`tests_passed_immediately` falls from 15.1 ± 5.84 to **0.6 ± 1.41**. The pattern is identical to the RQ-1.8 observation on GoL — the preamble works mechanically as expected.
+
+But the effect size here is not a discipline gain: in 6 of 8 hybrid-v4.3 runs the agent gets through only 7–14 cycles. Premature greens would have had no opportunity to arise there — because the agent never gets that far. The metric measures the preamble's effect, not a discipline gain.
+
+In the two hybrid-v4.3 runs that do complete (cycle_count 12 and 25, ver=1.0), `tests_passed_immediately` stands at 0 and 4 — so lower than the hybrid-v4 baseline there too.
+
+---
+
+## F-1.9.4 — Code quality metrics lower, but distorted by incompleteness
+
+| outcome | hybrid-v4 | hybrid-v4.3 | interpretation |
 |---|---:|---:|---|
-| Code-Mass (APP) (`code_mass`)               | 878.5 ± 91  | 441.5 ± 336 | hybrid-v4.3 hat halb so viel Code, weil nur ~⅓ der Tests implementiert |
-| `cognitive_max`                             | 5.0 ± 1.77  | 3.4 ± 2.07  | dito — weniger komplexe Funktionen, weil weniger Logik |
-| `mccabe_max`                                | 4.5 ± 0.76  | 3.75 ± 1.67 | dito |
-| Spitzen-Komplexität (`cc_longest_function`) | 12.4 ± 1.41 | 13.1 ± 7.06 | Mittel gleich; σ verfünffacht (bi-modal) |
-| Smell-Summe (`smell_total`)                 | 0.38 ± 0.74 | 0.50 ± 0.76 | beide nahe 0, ununterscheidbar |
+| Code Mass (APP) (`code_mass`)           | 878.5 ± 91  | 441.5 ± 336 | hybrid-v4.3 has half as much code because only ~⅓ of the tests are implemented |
+| `cognitive_max`                         | 5.0 ± 1.77  | 3.4 ± 2.07  | ditto — less complex functions because less logic |
+| `mccabe_max`                            | 4.5 ± 0.76  | 3.75 ± 1.67 | ditto |
+| Complexity Peak (`cc_longest_function`) | 12.4 ± 1.41 | 13.1 ± 7.06 | mean equal; σ five times larger (bi-modal) |
+| Smell Total (`smell_total`)             | 0.38 ± 0.74 | 0.50 ± 0.76 | both near 0, indistinguishable |
 
-Die niedrigeren Komplexitäts-Werte sind kein Code-Qualitäts-Gewinn — sie spiegeln die unvollständige Implementation. Eine fairere Vergleichsbasis wäre die per-Cycle-Komplexität bei gleicher Anzahl implementierter Tests; das misst die Pipeline nicht direkt. Bis dahin sind alle Code-Qualitäts-Outcomes auf dieser Kata zwischen hybrid-v4 und hybrid-v4.3 nicht aussagekräftig vergleichbar.
+The lower complexity values are not a code quality gain — they reflect the incomplete implementation. A fairer comparison base would be per-cycle complexity at an equal number of implemented tests; the pipeline does not measure that directly. Until then, all code quality outcomes on this kata are not meaningfully comparable between hybrid-v4 and hybrid-v4.3.
 
 ---
 
-## F-1.9.5 — Empfehlung: hybrid-v4.3 nicht als Default-Baseline für claim-office promoten
+## F-1.9.5 — Recommendation: do not promote hybrid-v4.3 as the default baseline for claim-office
 
-- exact-hybrid-v4-cleaned-cc bleibt Default-Baseline für korrektheits-kritische Arbeit auf claim-office × opus-4-7-portkey-no-thinking.
-- exact-hybrid-v4.3-audit-bundle-cc ist auf GoL ein klarer Disziplin- und Code-Qualitäts-Gewinn (RQ-1.8), kippt aber auf claim-office in einen bi-modalen Vollständigkeits-Bruch.
-- Folge-Optionen, falls hybrid-v4.3 reparierbar werden soll:
-  - **Isolierte Sub-RQs** für die zwei Audit-Bundle-Klassen (Klasse 2 Rationales vs Klasse 3 Red-Hardening), um zu lokalisieren, welche Klasse das Stopp-Verhalten treibt.
-  - **Done-Gate verschärfen**: `tdd-experiment-mode.md` könnte einen expliziten Test-List-Count-vs-aktive-Tests-Check vor `experiment-done.txt` verlangen (analog zum archivierten Audit-Finding 11d).
-  - **Cross-Kata-RQ**: derselbe Audit-Bundle-Test auf `mars-rover` (mittelschwer, novel) zur Triangulation, ob das Kippen claim-office-spezifisch oder novel-kata-spezifisch ist.
+- exact-hybrid-v4-cleaned-cc remains the default baseline for correctness-critical work on claim-office × opus-4-7-portkey-no-thinking.
+- exact-hybrid-v4.3-audit-bundle-cc is a clear discipline and code quality gain on GoL (RQ-1.8) but flips into a bi-modal completeness break on claim-office.
+- Follow-up options should hybrid-v4.3 be made repairable:
+  - **Isolated sub-RQs** for the two audit-bundle classes (class-2 rationales vs class-3 red hardening), to localize which class drives the stopping behavior.
+  - **Tighten the done gate**: `tdd-experiment-mode.md` could require an explicit test-list-count vs active-tests check before `experiment-done.txt` (analogous to the archived audit finding 11d).
+  - **Cross-kata RQ**: the same audit-bundle test on `mars-rover` (medium difficulty, novel) to triangulate whether the flip is claim-office-specific or novel-kata-specific.

@@ -1,99 +1,99 @@
-# Kimi K3 — Reevaluierung nach Route-Stabilisierung
+# Kimi K3 — Reevaluation after Route Stabilization
 
-**Datum:** 2026-08-05
-**Anlass:** Die K3-Zelle war bis 2026-07-29 auf beiden Requesty-Routen instabil. Nach dem
-Provider-seitigen Fix wurde sie am 2026-08-04 auf `requesty/sference/kimi-k3` neu befüllt
-(5/5 `ok`). Dieser Report ordnet das Ergebnis gegen das Feld ein.
+**Date:** 2026-08-05
+**Background:** The K3 cell was unstable on both Requesty routes through 2026-07-29. After the
+provider-side fix it was refilled on 2026-08-04 via `requesty/sference/kimi-k3`
+(5/5 `ok`). This report places the result against the field.
 
-**Datenbasis:** `game-of-life-example-mapping` × `exact-hybrid-v4.2-phase-continuation-pi`, n=5 pro
-Zelle, pi-Harness über Requesty. Quelle: `findings.md` dieser RQ (12 Zellen, alle gefüllt).
-
----
-
-## Warum neu gemessen wurde
-
-Die früheren `kimi-k3-nebius`-Runs wurden **verworfen, nicht wiederverwendet**. Beide
-Requesty-Routen zu K3 waren im Zeitraum 2026-07-28/29 defekt: sference starb mitten im Run
-mit `502 "problem with the provider stream"`, nebius lief in Timeouts und
-Retry-Erschöpfung. Damit ließ sich nicht trennen, welche Werte das Modell beschreiben und
-welche den Provider — eine Zelle, die keine Modellaussage trägt.
-
-Der Routenwechsel verschiebt zusätzlich die Kostenbasis: sference rechnet mit
-Cache-Rabatt ab, nebius nicht. Ein Vergleich der alten mit den neuen Zahlen wäre auch
-preisseitig nicht sauber gewesen.
+**Data basis:** `game-of-life-example-mapping` × `exact-hybrid-v4.2-phase-continuation-pi`, n=5 per
+cell, pi harness over Requesty. Source: `findings.md` of this RQ (12 cells, all filled).
 
 ---
 
-## Ergebnis im Feldvergleich
+## Why it was remeasured
 
-Alle vier Modelle erreichen `tests_passing` 100 % und Correctness (external) 1.00.
+The earlier `kimi-k3-nebius` runs were **discarded, not reused**. Both
+Requesty routes to K3 were broken in the 2026-07-28/29 window: sference died mid-run
+with `502 "problem with the provider stream"`, nebius ran into timeouts and
+retry exhaustion. That made it impossible to separate which values describe the model and
+which the provider — a cell that carries no statement about the model.
 
-| Modell | Smell Total | `cognitive_max` | `mccabe_max` | Code Mass (APP) | Complexity Peak | Kosten/Run | Wall-Clock |
+The route change also shifts the cost basis: sference bills with a
+cache discount, nebius does not. Comparing the old numbers against the new ones would not have been
+clean on the price side either.
+
+---
+
+## Result in field comparison
+
+All four models reach `tests_passing` 100 % and Correctness (external) 1.00.
+
+| Model | Smell Total | `cognitive_max` | `mccabe_max` | Code Mass (APP) | Complexity Peak | Cost/run | Wall-Clock |
 |---|---|---|---|---|---|---|---|
 | **Opus 5** | 2.0 | **2.4** 🏆 | **3.4** 🏆 | 151.8 | **5.8** 🏆 | $3.10 | 436 s |
 | **GLM 5.2** | **1.0** 🏆 | 7.8 | 6.6 | 178.2 | 22.6 | $2.53 | 883 s |
 | **Kimi K3** | 2.4 | 7.0 | 5.8 | 143.8 | 15.0 | **$0.64** 🏆 | 359 s |
 | **GPT-5.6 SOL** | 3.6 | 13.4 | 9.4 | **134.8** 🏆 | 21.2 | $1.09 | **240 s** 🏆 |
 
-Alle Metriken: kleiner = besser. Pokale gelten gegen das komplette 12-Modell-Feld der RQ —
-mit einer Ausnahme: bei Wall-Clock ist `deepseek-v4-pro` mit 200 s feldweit schneller,
-GPT-5.6 SOL gewinnt nur innerhalb dieser vier.
+All metrics: lower = better. Trophies apply against the full 12-model field of the RQ —
+with one exception: on Wall-Clock, `deepseek-v4-pro` is faster field-wide at 200 s,
+GPT-5.6 SOL only wins within these four.
 
 ---
 
-## Der Versionssprung K2.7 → K3
+## The version jump K2.7 → K3
 
-K3 verbessert **jede** Qualitätsachse gegenüber der Vorgängergeneration, bei praktisch
-unverändertem Preis.
+K3 improves **every** quality axis over the previous generation, at a practically
+unchanged price.
 
-| Modell | Smell Total | `cognitive_max` | `mccabe_max` | Complexity Peak | Kosten/Run | Wall-Clock | Tokens |
+| Model | Smell Total | `cognitive_max` | `mccabe_max` | Complexity Peak | Cost/run | Wall-Clock | Tokens |
 |---|---|---|---|---|---|---|---|
 | Kimi K2.7 | 3.0 | 10.8 | 7.2 | 21.6 | $0.60 | 234 s | 1.34 M |
 | **Kimi K3** | 2.4 | 7.0 | 5.8 | 15.0 | $0.64 | 359 s | 1.02 M |
 
-Der `cognitive_max`-Sprung (10.8 → 7.0) fällt größer aus als der GLM-Schritt 5.1 → 5.2
-(9.6 → 7.8), bleibt aber deutlich hinter dem Anthropic-Sprung 4.8 → 5 zurück (9.6 → 2.4).
-Die Complexity Peak-Verbesserung hebt K3 vom Mittelfeld auf 15.0.
+The `cognitive_max` jump (10.8 → 7.0) is larger than the GLM step 5.1 → 5.2
+(9.6 → 7.8), but stays well behind the Anthropic jump 4.8 → 5 (9.6 → 2.4).
+The Complexity Peak improvement lifts K3 from mid-field to 15.0.
 
-Bezahlt wird der Fortschritt mit Wanduhr: 53 % mehr Laufzeit bei **weniger** Tokens
-(1.34 M → 1.02 M). K3 verbringt also mehr Zeit pro Token, statt mehr zu produzieren.
+The progress is paid for in wall-clock: 53 % more runtime at **fewer** tokens
+(1.34 M → 1.02 M). K3 therefore spends more time per token instead of producing more.
 
-**Ein Confounder bleibt.** Die beiden Generationen laufen über verschiedene Backprovider
-(K2.7 via TensorX, K3 via Sference). Provider-seitige Unterschiede lassen sich nicht vom
-Modellverhalten trennen. Kosten sind kein Confounder mehr — beide Routen rechnen mit
-Cache-Rabatt ab, und die 4-Cent-Differenz liegt innerhalb des Schätzrauschens.
-
----
-
-## Einordnung
-
-**K3 ist der beste All-Arounder und der Preis-Leistungs-Sieger des Felds.** Vierter Platz
-bei Smell Total (2.4) und `cognitive_max` (7.0) für $0.64 — vier Cent über dem billigsten
-Modell der gesamten RQ. Dazu das zweitkleinste Code Mass (143.8) und mit 359 s im schnellen
-Drittel. Keine Achse außer dem Preis gewonnen, aber auf keiner abgeschlagen.
-
-Gegen den Qualitätssieger steht Faktor 4.8 im Preis gegen Faktor drei in der
-Spitzenkomplexität: Opus 5 nimmt alle drei Komplexitätsachsen mit großem Abstand
-(`cognitive_max` 2.4 gegen 6.6 beim nächstbesten Modell des Felds), kostet aber $3.10. Ob
-sich das lohnt, hängt daran, wie sehr Spitzenkomplexität für die Zielcodebasis zählt — auf
-game-of-life sind die Absolutwerte in beide Richtungen klein.
-
-Die Smell-Krone hält GLM 5.2 mit 1.0, allerdings weich: GLM streut über die fünf Runs von
-0 bis 3 (σ = 1.41), während K3 bei σ = 0.55 liegt und Opus 5 jeden Run exakt auf 2 landet
-(σ = 0). Bei n=5 hält die Reihenfolge, die Trennung nicht.
-
-**Auf dieser Kata ist Correctness gesättigt** — neun der zwölf Modelle liegen bei 1.00. Die
-Modellauswahl entscheidet sich hier allein über Qualität, Preis und Zeit, nicht über
-Können. Für die harte Kata (`claim-office`, RQ-model-novel-pi) sieht das Bild anders aus;
-dort trennt Correctness das Feld noch.
+**One confounder remains.** The two generations run over different back-providers
+(K2.7 via TensorX, K3 via Sference). Provider-side differences cannot be separated from
+model behavior. Cost is no longer a confounder — both routes bill with a
+cache discount, and the 4-cent difference lies within the estimation noise.
 
 ---
 
-## Offene Punkte
+## Assessment
 
-- **Backprovider-Confounder K2.7/K3** bleibt bestehen. Auflösbar nur durch eine K2.7-Zelle
-  auf sference — falls die Route das Modell führt.
-- **Opus 5 auf claim-office** liegt als 5 Runs im Pool, ist aber nicht in der
-  RQ-Aggregation und ohne ESLint-Analyse. Für einen Cross-Kata-Vergleich der hier
-  betrachteten vier Modelle müsste die Zelle regulär durch die Pipeline
+**K3 is the best all-rounder and the price-performance winner of the field.** Fourth place
+on Smell Total (2.4) and `cognitive_max` (7.0) for $0.64 — four cents above the cheapest
+model of the entire RQ. On top of that the second-smallest Code Mass (APP) (143.8) and, at 359 s, in the fast
+third. No axis won except price, but not trailing on any either.
+
+Against the quality winner stands a factor of 4.8 in price versus a factor of three in
+Complexity Peak: Opus 5 takes all three complexity axes by a wide margin
+(`cognitive_max` 2.4 against 6.6 for the next-best model in the field), but costs $3.10. Whether
+that pays off depends on how much Complexity Peak matters for the target codebase — on
+game-of-life the absolute values are small in both directions.
+
+GLM 5.2 holds the smell crown at 1.0, though softly: GLM scatters across the five runs from
+0 to 3 (σ = 1.41), while K3 sits at σ = 0.55 and Opus 5 lands every run exactly on 2
+(σ = 0). At n=5 the ordering holds, the separation does not.
+
+**On this kata Correctness is saturated** — nine of the twelve models sit at 1.00. Model
+selection here is decided purely on quality, price and time, not on
+capability. For the hard kata (`claim-office`, RQ-model-novel-pi) the picture looks different;
+there Correctness still separates the field.
+
+---
+
+## Open points
+
+- **Back-provider confounder K2.7/K3** remains. Resolvable only through a K2.7 cell
+  on sference — if the route carries the model.
+- **Opus 5 on claim-office** sits in the pool as 5 runs, but is not in the
+  RQ aggregation and has no ESLint analysis. For a cross-kata comparison of the four
+  models considered here, the cell would have to go through the pipeline regularly
   (`/reanalyze RQ-model-novel-pi`).

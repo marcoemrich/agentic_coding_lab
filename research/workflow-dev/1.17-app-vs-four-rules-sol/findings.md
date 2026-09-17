@@ -1,6 +1,6 @@
 # Findings — RQ-app-vs-four-rules-sol
 
-## Übersicht
+## Overview
 
 Claim Office, example-mapping, OpenAI subscription route, `gpt-5-6-sol-codex`
 (including the documented equivalent label). Three cells, five runs each.

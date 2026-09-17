@@ -1,106 +1,106 @@
 # RQ-audit-bundle-v62 Findings
 
-## Übersicht
+## Overview
 
-Primär-Outcomes je Zelle (n=10 je Workflow, opus-4-7-portkey-no-thinking, game-of-life-example-mapping). 🏆 = bester Wert pro Outcome; Ties bekommen alle den Pokal; reine Rausch-Differenzen (Δ << σ) ohne Pokal.
+Primary outcomes per cell (n=10 per workflow, opus-4-7-portkey-no-thinking, game-of-life-example-mapping). 🏆 = best value per outcome; ties all get the trophy; pure noise differences (Δ << σ) get none.
 
-| Outcome (Richtung)                                          | exact-hybrid-v4-cleaned-cc | exact-hybrid-v4.3-audit-bundle-cc      |
+| Outcome (direction)                                          | exact-hybrid-v4-cleaned-cc | exact-hybrid-v4.3-audit-bundle-cc      |
 |-------------------------------------------------------------|-----------------------|------------------------|
-| `tests_passed_immediately` (kleiner = besser)               | 0.7 ± 2.21 (max 7)    | **0 ± 0** 🏆           |
-| `refactorings_applied` (höher = besser)                     | 7.9 ± 1.85            | **8.7 ± 0.67** 🏆      |
-| `predictions_correct_rate` (höher = besser, pooled)         | **100 %** 🏆          | 97.4 % (185/190)       |
-| `cycle_count` (Informativ, keine eindeutige Richtung)       | 8.5 ± 1.35            | 8.7 ± 0.67             |
-| Code-Mass (APP) (`code_mass`, kleiner = besser)             | 153.3 ± 13.83         | **149.3 ± 12.14** 🏆   |
-| Smell-Summe (`smell_total`, kleiner = besser)               | 2.4 ± 0.52            | **2.2 ± 0.63** 🏆      |
-| Spitzen-Komplexität (`cc_longest_function`, kleiner = besser)| 12.2 ± 6.89          | 12.7 ± 4.32            |
-| `cognitive_max` (kleiner = besser)                          | 4.3 ± 2.79            | 4.5 ± 2.59             |
-| `mccabe_max` (kleiner = besser)                             | 4.2 ± 1.32            | 4.6 ± 1.07             |
+| `tests_passed_immediately` (lower = better)                 | 0.7 ± 2.21 (max 7)    | **0 ± 0** 🏆           |
+| `refactorings_applied` (higher = better)                    | 7.9 ± 1.85            | **8.7 ± 0.67** 🏆      |
+| `predictions_correct_rate` (higher = better, pooled)        | **100 %** 🏆          | 97.4 % (185/190)       |
+| `cycle_count` (informative, no clear direction)             | 8.5 ± 1.35            | 8.7 ± 0.67             |
+| Code Mass (APP) (`code_mass`, lower = better)               | 153.3 ± 13.83         | **149.3 ± 12.14** 🏆   |
+| Smell Total (`smell_total`, lower = better)                 | 2.4 ± 0.52            | **2.2 ± 0.63** 🏆      |
+| Complexity Peak (`cc_longest_function`, lower = better)     | 12.2 ± 6.89           | 12.7 ± 4.32            |
+| `cognitive_max` (lower = better)                            | 4.3 ± 2.79            | 4.5 ± 2.59             |
+| `mccabe_max` (lower = better)                               | 4.2 ± 1.32            | 4.6 ± 1.07             |
 | `tests_passing` / `completed_within_budget`                 | 100 % / 100 %         | 100 % / 100 %          |
-| `total_tokens` (kleiner = besser)                           | **8.32 M ± 1.61** 🏆  | 9.65 M ± 2.34          |
-| `duration_seconds` (kleiner = besser, Δ << σ)               | 627 ± 117             | 631 ± 101              |
+| `total_tokens` (lower = better)                             | **8.32 M ± 1.61** 🏆  | 9.65 M ± 2.34          |
+| `duration_seconds` (lower = better, Δ << σ)                 | 627 ± 117             | 631 ± 101              |
 
-Komplexitäts-Outcomes `cc_longest_function`, `cognitive_max`, `mccabe_max`: Mittelwert-Δ deutlich kleiner als σ → kein Pokal, Workflows ununterscheidbar auf der Spitzen-Komplexitäts-Achse.
+Complexity outcomes `cc_longest_function`, `cognitive_max`, `mccabe_max`: the mean Δ is markedly smaller than σ → no trophy, the workflows are indistinguishable on the Complexity Peak axis.
 
 ---
 
-## F-1.8.1 — Mandatory-Procedure-Preamble eliminiert vorzeitige Greens auch auf hybrid-v4-Basis
+## F-1.8.1 — Mandatory-procedure preamble eliminates premature greens on the hybrid-v4 base too
 
-`tests_passed_immediately` fällt von 0.7 ± 2.21 (max 7) auf **0 ± 0**. In zehn hybrid-v4.3-Runs hat *kein* Test sofort nach dem Red-Switch grün gestanden.
+`tests_passed_immediately` drops from 0.7 ± 2.21 (max 7) to **0 ± 0**. Across ten hybrid-v4.3 runs, *no* test stood green immediately after the red switch.
 
 | workflow | mean | σ | min | max |
 |---|---:|---:|---:|---:|
 | exact-hybrid-v4-cleaned-cc | 0.7 | 2.21 | 0 | 7 |
 | exact-hybrid-v4.3-audit-bundle-cc     | 0   | 0    | 0 | 0 |
 
-Identisches Pattern wie in der RQ-audit-Präzedenz (v6.5-lean → v6.5.1: 1.4 → 0). Die Mandatory-Procedure-Preamble in `commands/red.md` verbietet das Überspringen der sieben Red-Schritte selbst wenn der aktive Test bereits grün steht — Resultat: ein implizit über-implementierender Green der Vorgänger-Iteration wird durch den nächsten Red-Cycle gezwungen, einen echten Fehlschlag zu erzeugen.
+Identical pattern to the RQ-audit precedent (v6.5-lean → v6.5.1: 1.4 → 0). The mandatory-procedure preamble in `commands/red.md` forbids skipping the seven red steps even when the active test already stands green — the result: a green that implicitly over-implemented in the preceding iteration is forced by the next red cycle to produce a genuine failure.
 
-Der Effekt repliziert auf der MUST/PEP-tragenden hybrid-v4-Basis (also ohne v6.5-lean-spezifische Reduktionen). Das Audit-Bundle ist hier eigenständig wirksam, nicht nur Reparatur einer reduzierten Basis.
+The effect replicates on the MUST/PEP-carrying hybrid-v4 base (that is, without v6.5-lean-specific reductions). The audit bundle is independently effective here, not merely the repair of a reduced base.
 
 ---
 
-## F-1.8.2 — Refactor-Rationale + Drei-Pfad-Bar erhöht und stabilisiert Refactoring-Disziplin
+## F-1.8.2 — Refactor rationale + three-path bar raises and stabilizes refactoring discipline
 
-`refactorings_applied` 7.9 ± 1.85 → **8.7 ± 0.67**. Mittel +10 %, σ knapp ein Drittel.
+`refactorings_applied` 7.9 ± 1.85 → **8.7 ± 0.67**. Mean +10 %, σ barely a third.
 
 | workflow | mean | σ | min | max |
 |---|---:|---:|---:|---:|
 | exact-hybrid-v4-cleaned-cc | 7.9 | 1.85 | 4 | 9 |
 | exact-hybrid-v4.3-audit-bundle-cc     | 8.7 | 0.67 | 8 | 10 |
 
-Effekt-Richtung identisch zur RQ-audit-Präzedenz (v6.5-lean → v6.5.1: 6.9 → 7.8, +13 %, σ −82 %). Auf der hybrid-v4-Basis ist die Effekt-Größe wie hypothetisiert kleiner (Why-Bloecke in hybrid-v4 tragen bereits einen Teil der Rationale-Wirkung), aber die σ-Reduktion ist klar.
+The effect direction is identical to the RQ-audit precedent (v6.5-lean → v6.5.1: 6.9 → 7.8, +13 %, σ −82 %). On the hybrid-v4 base the effect size is smaller as hypothesized (why blocks in hybrid-v4 already carry part of the rationale effect), but the σ reduction is clear.
 
-Mechanismen: Measurement-Pipeline-Rationale macht den Refactor-Pflicht-Floor explizit motivisch ("missing attempt drops the signal to zero"); der konkrete Drei-Pfad-Bar (name tightening / APP-Mass-Drop ≥1 / removable smell) verschließt den "code is already optimal"-Eskape und zwingt den Refactor-Subagenten, jeden Pfad explizit zu adressieren.
+Mechanisms: the measurement-pipeline rationale makes the mandatory refactor floor explicitly motivated ("missing attempt drops the signal to zero"); the concrete three-path bar (name tightening / APP mass drop ≥1 / removable smell) closes the "code is already optimal" escape and forces the refactor subagent to address each path explicitly.
 
 ---
 
-## F-1.8.3 — Code-Qualität gleichwertig, kein Regress
+## F-1.8.3 — Code quality equivalent, no regression
 
-Code-Qualitäts-Outcomes liegen je innerhalb 1 σ — keine Verschlechterung.
+Code quality outcomes each stay within 1 σ — no degradation.
 
 | outcome | exact-hybrid-v4-cleaned-cc | exact-hybrid-v4.3-audit-bundle-cc |
 |---|---|---|
-| Code-Mass (APP) (`code_mass`)               | 153.3 ± 13.83 | **149.3 ± 12.14** |
-| Smell-Summe (`smell_total`)                 | 2.4 ± 0.52    | **2.2 ± 0.63**    |
-| Spitzen-Komplexität (`cc_longest_function`) | 12.2 ± 6.89   | 12.7 ± 4.32       |
-| `cognitive_max`                             | 4.3 ± 2.79    | 4.5 ± 2.59        |
-| `mccabe_max`                                | 4.2 ± 1.32    | 4.6 ± 1.07        |
+| Code Mass (APP) (`code_mass`)           | 153.3 ± 13.83 | **149.3 ± 12.14** |
+| Smell Total (`smell_total`)             | 2.4 ± 0.52    | **2.2 ± 0.63**    |
+| Complexity Peak (`cc_longest_function`) | 12.2 ± 6.89   | 12.7 ± 4.32       |
+| `cognitive_max`                         | 4.3 ± 2.79    | 4.5 ± 2.59        |
+| `mccabe_max`                            | 4.2 ± 1.32    | 4.6 ± 1.07        |
 
-Code-Mass und Smell-Summe sinken leicht; Spitzen-Komplexität, Cognitive- und McCabe-Max bleiben statistisch ununterscheidbar (Δ < σ). hybrid-v4.3 zeigt zudem eine engere σ auf der Spitzen-Komplexität (6.89 → 4.32, −37 %), wie in der RQ-audit-Präzedenz beobachtet.
+Code Mass and Smell Total drop slightly; Complexity Peak, cognitive and McCabe max stay statistically indistinguishable (Δ < σ). hybrid-v4.3 also shows a tighter σ on the Complexity Peak (6.89 → 4.32, −37 %), as observed in the RQ-audit precedent.
 
-Korrektheit ist auf GoL bei beiden Workflows saturiert (100 % `tests_passing`, 100 % `completed_within_budget`). H2 (Korrektheit nicht regredieren) erfüllt.
-
----
-
-## F-1.8.4 — Wrong-Predictions-Block zeigt sich in 2.6 pp Predictions-Rate-Drop
-
-`predictions_correct_rate` fällt von 100 % (170/170) auf 97.4 % (185/190). Fünf von 190 Compilation/Runtime-Predictions sind in hybrid-v4.3 explizit als `Incorrect` markiert.
-
-Das ist nicht ein Disziplin-Verlust, sondern der intendierte Effekt des "Wrong Predictions Are Data"-Blocks: das Backfill-Verbot ("do not edit the original prediction to match the observed result") verhindert, dass eine falsche Prediction retroaktiv zur Beobachtung umgeschrieben wird. Die hybrid-v4-Basis erlaubt das implizit (kein explizites Verbot, Red-Phase-STOP-Klausel kann zur Glättung verleiten). Der Rate-Drop misst genau die ehrlichen Falsch-Predictions, die in hybrid-v4 vermutlich teilweise vor der Veröffentlichung "korrigiert" wurden.
-
-Für die Bewertung der TDD-Disziplin ist hybrid-v4.3 hier informativer, auch wenn die Zahl niedriger aussieht.
+Correctness is saturated on GoL for both workflows (100 % `tests_passing`, 100 % `completed_within_budget`). H2 (correctness must not regress) is satisfied.
 
 ---
 
-## F-1.8.5 — Audit-Bundle kostet +16 % Tokens, aber kein Wallclock-Aufschlag
+## F-1.8.4 — The wrong-predictions block shows up as a 2.6 pp predictions-rate drop
+
+`predictions_correct_rate` falls from 100 % (170/170) to 97.4 % (185/190). Five of 190 compilation/runtime predictions are explicitly marked `Incorrect` in hybrid-v4.3.
+
+This is not a loss of discipline but the intended effect of the "Wrong Predictions Are Data" block: the backfill ban ("do not edit the original prediction to match the observed result") prevents a wrong prediction from being retroactively rewritten into the observation. The hybrid-v4 base permits that implicitly (no explicit ban, and the red-phase STOP clause can invite smoothing). The rate drop measures exactly those honest wrong predictions that in hybrid-v4 were presumably "corrected" in part before publication.
+
+For assessing TDD discipline, hybrid-v4.3 is the more informative arm here, even though the number looks lower.
+
+---
+
+## F-1.8.5 — The audit bundle costs +16 % tokens but no wallclock surcharge
 
 | outcome | exact-hybrid-v4-cleaned-cc | exact-hybrid-v4.3-audit-bundle-cc | Δ |
 |---|---:|---:|---:|
 | `total_tokens`     | 8.32 M ± 1.61 | 9.65 M ± 2.34 | +16 % |
 | `duration_seconds` | 627 ± 117     | 631 ± 101     | +0.6 % |
 
-Der Token-Aufschlag (+16 %) repliziert die RQ-audit-Präzedenz (+15 %) fast exakt — das ergänzte Text-Volumen (Mandatory-Preamble, drei Rationale-Blöcke, Drei-Pfad-Bar, Wrong-Predictions-Block) zahlt sich erwartungsgemäß im Token-Verbrauch nieder.
+The token surcharge (+16 %) replicates the RQ-audit precedent (+15 %) almost exactly — the added text volume (mandatory preamble, three rationale blocks, three-path bar, wrong-predictions block) shows up in token consumption as expected.
 
-Die Wallclock-Neutralität (+0.6 %) ist hingegen ein Bruch zur RQ-audit-Präzedenz, die +16 % Wallclock zeigte. Mögliche Erklärungen, unter denen die Token-Wallclock-Entkopplung verständlich wird:
-- hybrid-v4 hat 0.7 vorzeitige Greens im Schnitt, die jeweils einen kompletten "Test passed already"-Detour-Cycle auslösen können; hybrid-v4.3 spart diese ein. Der zusätzliche Text-Verarbeitungs-Aufwand kompensiert sich mit dem eliminierten Detour.
-- v6.5-lean → v6.5.1 startete von einer reduzierten Basis (weniger Pep, weniger Emoji), in der der Detour-Effekt nicht existierte und der Audit-Text-Aufschlag direkt auf die Wallclock durchschlug.
+Wallclock neutrality (+0.6 %), by contrast, breaks with the RQ-audit precedent, which showed +16 % wallclock. Possible explanations under which the token/wallclock decoupling becomes intelligible:
+- hybrid-v4 averages 0.7 premature greens, each of which can trigger a full "test passed already" detour cycle; hybrid-v4.3 saves those. The extra text-processing effort is offset by the eliminated detour.
+- v6.5-lean → v6.5.1 started from a reduced base (less pep, less emoji) in which the detour effect did not exist and the audit text surcharge fed straight through to wallclock.
 
-Die Token-Streuung steigt allerdings (σ 1.61M → 2.34M, +45 %) — ein einzelner hybrid-v4.3-Run mit 16 M Tokens (vs. Cluster bei ~9 M) dominiert. Das deutet auf einen Ausreißer, kein systematischer Drift.
+Token variance does rise, however (σ 1.61M → 2.34M, +45 %) — a single hybrid-v4.3 run at 16 M tokens (vs a cluster around ~9 M) dominates. That points to an outlier, not systematic drift.
 
 ---
 
-## F-1.8.6 — Streuungs-Schrumpf bestätigt sich in Disziplin- und Komplexitäts-Outcomes
+## F-1.8.6 — Variance shrink confirmed in discipline and complexity outcomes
 
-| outcome | σ hybrid-v4 | σ hybrid-v4.3 | Faktor |
+| outcome | σ hybrid-v4 | σ hybrid-v4.3 | factor |
 |---|---:|---:|---:|
 | `tests_passed_immediately` | 2.21 | 0    | 0    |
 | `refactorings_applied`     | 1.85 | 0.67 | 0.36 |
@@ -113,6 +113,6 @@ Die Token-Streuung steigt allerdings (σ 1.61M → 2.34M, +45 %) — ein einzeln
 | `smell_total`              | 0.52 | 0.63 | 1.21 |
 | `total_tokens` (M)         | 1.61 | 2.34 | 1.45 |
 
-Auf den TDD-Disziplin-Outcomes ist der σ-Schrumpf dramatisch (`tests_passed_immediately` σ 2.21 → 0; `refactorings_applied` σ um Faktor 0.36; `cycle_count` halbiert). Die Komplexitäts-Outcomes folgen schwächer in dieselbe Richtung. Smell-Summe und Token-σ steigen — der Token-Anstieg ist auf den oben erwähnten 16M-Outlier-Run zurückführbar; der Smell-σ-Anstieg geht auf einen einzelnen hybrid-v4.3-Run mit 4 Smells (vs. 2 sonst) zurück.
+On the TDD discipline outcomes the σ shrink is dramatic (`tests_passed_immediately` σ 2.21 → 0; `refactorings_applied` σ by a factor of 0.36; `cycle_count` halved). The complexity outcomes follow more weakly in the same direction. Smell Total and token σ rise — the token increase traces back to the 16M outlier run mentioned above; the smell σ increase comes from a single hybrid-v4.3 run with 4 smells (vs 2 otherwise).
 
-Das Audit-Bundle macht den Workflow auf den Disziplin-Achsen *deutlich* planbarer — bei n=10 ist hybrid-v4.3 in `tests_passed_immediately` und `cycle_count` quasi deterministisch.
+The audit bundle makes the workflow *markedly* more predictable on the discipline axes — at n=10, hybrid-v4.3 is near-deterministic in `tests_passed_immediately` and `cycle_count`.

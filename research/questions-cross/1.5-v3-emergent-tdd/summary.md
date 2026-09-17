@@ -2,11 +2,11 @@
 
 _Under a bare 'use TDD' instruction that prescribes no phase markers (inline-tdd-v1), do models actually work test-first and refactor — and how far apart do the models sit once the evidence is hand-validated?_
 
-Generated: 2026-09-11T07:48:38Z
+Generated: 2026-09-17T01:17:42Z
 
 Cells declared: 10 · matched runs: 49 · min_replicates: 3
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -21,7 +21,7 @@ Cells declared: 10 · matched runs: 49 · min_replicates: 3
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc | haiku-4-5-no-thinking | 3 | 3 | ✅ |
 | claim-office-example-mapping | baseline-inline-tdd-v1-cc | haiku-4-5-no-thinking | 3 | 3 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### cycle_count
 

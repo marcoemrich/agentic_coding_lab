@@ -1,100 +1,100 @@
-# hybrid-v1 Reduction Recipe — Konservierte Schritte für Re-Test auf reparierter Basis
+# hybrid-v1 Reduction Recipe — Preserved Steps for Re-Test on a Repaired Base
 
-## Zweck
+## Purpose
 
-Die ursprüngliche hybrid-v1-Reduktionskette (`exact-hybrid-v1-cc` → `v6.5-lean` → … → `v6.6-leaner`) wurde
-weitgehend **auf einer korrektheits-defekten Basis** gemessen. RQ-regression
-([5.1-correctness-regression](5.1-correctness-regression/findings.md), F-regression.1) lokalisiert
-den Bruch am Sprung **exact-hybrid-v1-cc → v6.5-lean**: `verification_pct` auf `claim-office-example-mapping`
-fällt von 1.00 auf 0.38 (opus-4-7-no-thinking) und wird von keiner Folge-Iteration repariert. Alle
-v6.5.x-Quality-Wins sind valide gemessen, aber auf einem Workflow, der auf novel Code systematisch
-falsche Ergebnisse produziert.
+The original hybrid-v1 reduction chain (`exact-hybrid-v1-cc` → `v6.5-lean` → … → `v6.6-leaner`) was
+largely **measured on a correctness-defective base**. RQ-regression
+([5.1-correctness-regression](5.1-correctness-regression/findings.md), F-regression.1) locates
+the break at the jump **exact-hybrid-v1-cc → v6.5-lean**: `verification_pct` on `claim-office-example-mapping`
+drops from 1.00 to 0.38 (opus-4-7-no-thinking) and is not repaired by any subsequent iteration. All
+v6.5.x quality wins are validly measured, but on a workflow that systematically produces
+wrong results on novel code.
 
-Die neue Basis **`exact-hybrid-v2-testlist-fix-cc`** = `exact-hybrid-v1-cc` + testlist-scope-fix (Portierung
-des bewährten subagents-v1→subagents-v2-Fixes in die test-list, siehe [RQ-testlist-fix](5.2-exact-subagents-v2-testlist-fix-cc/findings.md)).
-`exact-hybrid-v1-cc` selbst bleibt aktiv als verifizierte 1.00-Korrektheits-Vollform und Quelle.
+The new base **`exact-hybrid-v2-testlist-fix-cc`** = `exact-hybrid-v1-cc` + testlist-scope-fix (port
+of the proven subagents-v1→subagents-v2 fix into the test-list, see [RQ-testlist-fix](5.2-exact-subagents-v2-testlist-fix-cc/findings.md)).
+`exact-hybrid-v1-cc` itself stays active as the verified 1.00-correctness full form and source.
 
-Der Scope-Fix der neuen Basis betrifft zwei Files (Diff gegen `exact-hybrid-v1-cc`): `commands/test-list.md`
-(„cover every rule/example/❓ + expected values" statt „base functionality ONLY") und `rules/tdd.md`
-(zwei zurückgebliebene „BASE FUNCTIONALITY ONLY"-Reste entfernt, damit die Phasen-Beschreibung konsistent
-zum test-list-Scope ist). Dieselben zwei `tdd.md`-Reste wurden auch in `exact-subagents-v2-testlist-fix-cc` bereinigt
-— der dortige test-list-Agent war scope-gefixt, die `tdd.md`-Beschreibung war es nicht.
+The scope fix of the new base affects two files (diff against `exact-hybrid-v1-cc`): `commands/test-list.md`
+("cover every rule/example/❓ + expected values" instead of "base functionality ONLY") and `rules/tdd.md`
+(two leftover "BASE FUNCTIONALITY ONLY" remnants removed, so that the phase description is consistent
+with the test-list scope). The same two `tdd.md` remnants were also cleaned up in `exact-subagents-v2-testlist-fix-cc`
+— the test-list agent there was scope-fixed, the `tdd.md` description was not.
 
-Dieses Dokument konserviert **jeden Reduktionsschritt der alten Kette als wiederanwendbares Rezept**,
-damit die Schritte auf der neuen Basis erneut getestet werden können. Die archivierten Workflow-Files
-liegen unter `experiments/workflows/_archive/` und bleiben per `diff` gegen die neue Basis nachvollziehbar.
+This document preserves **every reduction step of the old chain as a re-applicable recipe**,
+so that the steps can be tested again on the new base. The archived workflow files
+live under `experiments/workflows/_archive/` and remain traceable via `diff` against the new base.
 
-## Wichtige Vorbedingung
+## Important precondition
 
-Vor jeder Wiederanwendung eines Schritts: `experiments/workflows/MARKERS.md` lesen. Alle archivierten
-Schritte haben ihre Marker-Integrität in den jeweiligen `CHANGES.md` dokumentiert — beim Re-Bau auf
-neuer Basis erneut prüfen.
+Before re-applying any step: read `experiments/workflows/MARKERS.md`. All archived
+steps have documented their marker integrity in their respective `CHANGES.md` — when rebuilding on
+a new base, check again.
 
-## Spannung MARKERS.md ↔ RQ-regression (wichtig)
+## Tension MARKERS.md ↔ RQ-regression (important)
 
-`MARKERS.md` listet „Psychological Resistance"-Sektionen und „Why this discipline works"-Pep-Talks als
-**dekorativ / safe to drop** (rein parser-seitige Sicht: sie treiben keinen Marker). RQ-regression
-(F-regression.3) verdächtigt dagegen genau die **Why-Rewrites** in `tdd.md` / `red.md` Step 7 /
-`green.md` als Korrektheits-Täter (verhaltens-seitige Sicht). Beide stimmen: die Rewrites nullen keine
-Metrik, aber sie verändern das Modell-Verhalten auf novel Katas. Lehre: „parser-safe" ≠ „verhaltens-neutral".
+`MARKERS.md` lists "Psychological Resistance" sections and "Why this discipline works" pep talks as
+**decorative / safe to drop** (purely parser-side view: they drive no marker). RQ-regression
+(F-regression.3), by contrast, suspects exactly the **why rewrites** in `tdd.md` / `red.md` Step 7 /
+`green.md` as the correctness culprits (behaviour-side view). Both are right: the rewrites zero no
+metric, but they change model behaviour on novel katas. Lesson: "parser-safe" ≠ "behaviour-neutral".
 
-## Reduktionsschritte (Reihenfolge = alte Kette)
+## Reduction steps (order = old chain)
 
-Jeder Schritt nennt: betroffene Files + Sektion-Header, ursprüngliche Mess-Basis, bekannter Effekt (RQ),
-und ob er auf der **defekten** Basis gemessen wurde.
+Each step names: affected files + section headers, original measurement base, known effect (RQ),
+and whether it was measured on the **defective** base.
 
-### Einzel-Cuts (Branches von exact-hybrid-v1-cc, je ein Aspekt)
+### Single cuts (branches of exact-hybrid-v1-cc, one aspect each)
 
-| Schritt | Files / Sektion | Effekt | RQ | Basis |
+| Step | Files / section | Effect | RQ | Base |
 |---|---|---|---|---|
-| `-app` | `refactor.md` + `tdd.md`: APP-(Absolute-Priority-Premise)-Massen-Heuristik raus | Korrektheit 1.00 (kein Effekt) | [RQ-app](2.1-app-effect/) | exact-hybrid-v1-cc (intakt) |
-| `-rules` | `refactor.md` + `tdd.md`: Four-Rules-of-Simple-Design-Block raus | Korrektheit 1.00 (kein Effekt) | [RQ-rules](2.2-rules-effect/) | exact-hybrid-v1-cc (intakt) |
-| `-pep` | `green.md` + `red.md`: „Psychological Resistance"-Pep-Talks raus | Korrektheit 1.00 (kein Effekt) | [RQ-pep](2.3-pep-effect/) | exact-hybrid-v1-cc (intakt) |
-| `-emoji` | **5 Files** (`refactor/green/red/test-list/tdd`): Emojis raus — **kein reiner Single-Cut** | marginal (0.93, n=3); cross-model kein Signal | [RQ-emoji](2.4-emoji-effect/), [RQ-emoji-cross-model](2.5-emoji-cross-model/) | exact-hybrid-v1-cc (intakt) |
+| `-app` | `refactor.md` + `tdd.md`: APP (Absolute Priority Premise) mass heuristic removed | correctness 1.00 (no effect) | [RQ-app](2.1-app-effect/) | exact-hybrid-v1-cc (intact) |
+| `-rules` | `refactor.md` + `tdd.md`: Four-Rules-of-Simple-Design block removed | correctness 1.00 (no effect) | [RQ-rules](2.2-rules-effect/) | exact-hybrid-v1-cc (intact) |
+| `-pep` | `green.md` + `red.md`: "Psychological Resistance" pep talks removed | correctness 1.00 (no effect) | [RQ-pep](2.3-pep-effect/) | exact-hybrid-v1-cc (intact) |
+| `-emoji` | **5 files** (`refactor/green/red/test-list/tdd`): emojis removed — **not a pure single cut** | marginal (0.93, n=3); no cross-model signal | [RQ-emoji](2.4-emoji-effect/), [RQ-emoji-cross-model](2.5-emoji-cross-model/) | exact-hybrid-v1-cc (intact) |
 
-Die vier isoliert getesteten Einzel-Cuts halten die Korrektheit auf claim-office (opus-4-7) — sie sind
-**nicht** der Regressions-Täter (F-regression.2). Sie können auf der neuen Basis ohne Korrektheits-Risiko
-wieder angewandt werden.
+The four single cuts tested in isolation hold correctness on claim-office (opus-4-7) — they are
+**not** the regression culprit (F-regression.2). They can be re-applied on the new base without
+correctness risk.
 
-### Der Bundle-Sprung (Regressions-Quelle)
+### The bundle jump (source of the regression)
 
-| Schritt | Files / Sektion | Effekt | RQ | Basis |
+| Step | Files / section | Effect | RQ | Base |
 |---|---|---|---|---|
-| **`-why-rewrites`** | `tdd.md` (Checklist + „Core TDD Principles" + „Remember" raus, „Why skills required"-Block rein), `red.md` Step 7 (Why-Block + Parser-Rationale), `green.md` („Minimal Implementation Strategies" + „Psychological Resistance" → „Why minimality matters") | **Korrektheits-Täter** — 1.00 → 0.38 auf claim-office | [RQ-regression](5.1-correctness-regression/) F-regression.3 | exact-hybrid-v1-cc → **v6.5-lean** |
-| `-project-standards` | `refactor.md`: Hexagonal / DI / Named-exports-Block raus | **nie isoliert getestet** | (offen) | im v6.5-lean-Bundle |
+| **`-why-rewrites`** | `tdd.md` (checklist + "Core TDD Principles" + "Remember" removed, "Why skills required" block added), `red.md` Step 7 (why block + parser rationale), `green.md` ("Minimal Implementation Strategies" + "Psychological Resistance" → "Why minimality matters") | **correctness culprit** — 1.00 → 0.38 on claim-office | [RQ-regression](5.1-correctness-regression/) F-regression.3 | exact-hybrid-v1-cc → **v6.5-lean** |
+| `-project-standards` | `refactor.md`: hexagonal / DI / named-exports block removed | **never tested in isolation** | (open) | inside the v6.5-lean bundle |
 
-`v6.5-lean` bündelte alle vier Einzel-Cuts **plus** diese zwei skill-creator-strukturellen Rewrites in
-**einem** Schritt. Da die Einzel-Cuts unkritisch sind, bleiben die Why-Rewrites (Hauptverdächtiger) und
-der nie-isolierte Project-Standards-Cut als Ursachen. **Beim Re-Bau auf neuer Basis: Why-Rewrites und
-Project-Standards-Cut einzeln und mit claim-office-Smoke testen, nicht erneut bündeln.**
+`v6.5-lean` bundled all four single cuts **plus** these two skill-creator structural rewrites into
+**one** step. Since the single cuts are uncritical, the why rewrites (prime suspect) and
+the never-isolated project-standards cut remain as causes. **When rebuilding on the new base: test the why rewrites and
+the project-standards cut individually and with a claim-office smoke run, do not bundle them again.**
 
-### Optimierungs-Kette nach dem Bruch (alle auf defekter Basis gemessen!)
+### Optimisation chain after the break (all measured on the defective base!)
 
-| Schritt | Files / Sektion | Effekt (auf game-of-life) | RQ | Basis |
+| Step | Files / section | Effect (on game-of-life) | RQ | Base |
 |---|---|---|---|---|
-| commands→skills | `commands/{red,green,test-list}.md` → `skills/<name>/SKILL.md` + Frontmatter; Mandatory-Procedure-Preamble; „Wrong Predictions Are Data"; refactor-Decoupling; Rationale-Additions | Audit-Alignment; **fixte einen latenten Marker-1-Bug** (Skill-Tool fand commands/ nicht) | [RQ-audit](3.1-orchestration-audit/) | v6.5-lean → v6.5.1 |
-| `-bullets` (alle 3) | `refactor.md` „Remember" + „Important Guidelines" DO/DON'T, `red/SKILL.md` DO/DON'T raus | Quality ↑ (cognitive_max −29 %), Kosten −15 %, aber Disziplin-σ ↑ | [RQ-bullets](3.2-bullets-cut/) | v6.5.1 → v6.5.2 |
-| targeted (2 von 3) | wie bullets, aber `refactor.md` „Remember" **behalten** (Floor-Anker-Kandidat) | Quality-Win + Floor zurück, aber pred-rate 95.8 % | [RQ-targeted](3.3-targeted-cuts/) | v6.5.1 → v6.5.3 |
-| refactor-cut (nur 10b) | nur `refactor.md` mid-file DO/DON'T raus; „Remember" + `red/SKILL.md` DO/DON'T behalten | isoliert Quality-Win ohne Floor-/Pred-Verlust → Default-Quality-Champion | [RQ-refactor-cut](3.4-refactor-cut-only/) | v6.5.1 → v6.5.4 |
-| skills→commands-Revert + trim | `skills/` zurück zu `commands/`; AUDIT.md/CHANGES.md raus; `red.md` 138→124, `test-list.md` 110→71, `refactor.md` 254→249 | schlankste Variante | [RQ-lean](2.6-lean-validation/) | v6.5.4 → hybrid-v6 |
+| commands→skills | `commands/{red,green,test-list}.md` → `skills/<name>/SKILL.md` + frontmatter; mandatory-procedure preamble; "Wrong Predictions Are Data"; refactor decoupling; rationale additions | audit alignment; **fixed a latent marker-1 bug** (Skill tool did not find commands/) | [RQ-audit](3.1-orchestration-audit/) | v6.5-lean → v6.5.1 |
+| `-bullets` (all 3) | `refactor.md` "Remember" + "Important Guidelines" DO/DON'T, `red/SKILL.md` DO/DON'T removed | quality ↑ (cognitive_max −29 %), cost −15 %, but discipline σ ↑ | [RQ-bullets](3.2-bullets-cut/) | v6.5.1 → v6.5.2 |
+| targeted (2 of 3) | like bullets, but `refactor.md` "Remember" **kept** (floor-anchor candidate) | quality win + floor back, but pred rate 95.8 % | [RQ-targeted](3.3-targeted-cuts/) | v6.5.1 → v6.5.3 |
+| refactor-cut (only 10b) | only `refactor.md` mid-file DO/DON'T removed; "Remember" + `red/SKILL.md` DO/DON'T kept | isolated quality win without floor/pred loss → default quality champion | [RQ-refactor-cut](3.4-refactor-cut-only/) | v6.5.1 → v6.5.4 |
+| skills→commands revert + trim | `skills/` back to `commands/`; AUDIT.md/CHANGES.md removed; `red.md` 138→124, `test-list.md` 110→71, `refactor.md` 254→249 | leanest variant | [RQ-lean](2.6-lean-validation/) | v6.5.4 → hybrid-v6 |
 
-**Kritische Einschränkung:** Die gesamte Kette ab v6.5.1 wurde nur auf game-of-life gemessen (keine
-externe Verification-Suite, F-regression.4). Ihre Quality-/Disziplin-Befunde sind als Messungen gültig,
-aber der Workflow war korrektheits-defekt. Auf der neuen Basis sind diese Schritte **mit
-claim-office-Korrektheits-Smoke** zu wiederholen, bevor ein „Champion" gekürt wird (F-regression.5).
+**Critical limitation:** The entire chain from v6.5.1 onwards was measured only on game-of-life (no
+external verification suite, F-regression.4). Its quality/discipline findings are valid as measurements,
+but the workflow was correctness-defective. On the new base these steps are to be repeated **with a
+claim-office correctness smoke run** before any "champion" is crowned (F-regression.5).
 
-## Re-Test-Reihenfolge (Vorschlag, noch nicht ausgelöst)
+## Re-test order (proposal, not yet triggered)
 
-1. Neue Basis `exact-hybrid-v2-testlist-fix-cc` auf claim-office-EM × opus-4-7 verifizieren (Ziel ≈ 1.0).
-2. Why-Rewrites isoliert auf neuer Basis (der verdächtige Schritt zuerst).
-3. Project-Standards-Cut isoliert (nie zuvor getestet).
-4. Restliche Optimierungs-Schritte (bullets/targeted/refactor-cut) je mit claim-office-n=3-Smoke.
+1. Verify the new base `exact-hybrid-v2-testlist-fix-cc` on claim-office-EM × opus-4-7 (target ≈ 1.0).
+2. Why rewrites in isolation on the new base (the suspect step first).
+3. Project-standards cut in isolation (never tested before).
+4. Remaining optimisation steps (bullets/targeted/refactor-cut), each with a claim-office n=3 smoke run.
 
-Pro Schritt gilt die Methodik-Lehre aus F-regression.5: **mindestens eine Korrektheits-Stichprobe auf
-einer Kata mit externer Verification-Suite**, auch wenn die RQ primär Code-Qualität untersucht.
+For each step the methodology lesson from F-regression.5 applies: **at least one correctness sample on
+a kata with an external verification suite**, even if the RQ primarily investigates code quality.
 
-## Archiv-Verweise
+## Archive references
 
-Alle alten Workflow-Files: `experiments/workflows/_archive/v6.1-no-app … v6.6-leaner`. Die Schritt-Doku
-liegt zusätzlich in den jeweiligen `CHANGES.md` / `AUDIT.md` (v6.5.1–v6.5.4). Bestehende Runs der alten
-Varianten bleiben in `experiments/runs/` auswertbar (sie tragen ihre `.claude/`-Definition einkopiert).
+All old workflow files: `experiments/workflows/_archive/v6.1-no-app … v6.6-leaner`. The step documentation
+additionally lives in the respective `CHANGES.md` / `AUDIT.md` (v6.5.1–v6.5.4). Existing runs of the old
+variants remain analysable in `experiments/runs/` (they carry their `.claude/` definition copied in).

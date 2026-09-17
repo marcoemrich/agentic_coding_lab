@@ -1,12 +1,12 @@
 # RQ-refactor-vocab-v62 — Aggregation
 
-_Verbessert ein additiver Vokabular-Block im refactor-Agent (Cyclomatic + Cognitive Complexity, Single Responsibility, Smell→Move-Tabelle) die Code-Qualitaet auf exact-hybrid-v4-cleaned-cc-Basis, ohne Korrektheit oder Kosten signifikant zu beeintraechtigen?_
+_Does an additive vocabulary block in the refactor agent (cyclomatic + cognitive complexity, single responsibility, smell→move table) improve code quality on the exact-hybrid-v4-cleaned-cc base without significantly impairing correctness or cost?_
 
-Generated: 2026-09-11T07:48:44Z
+Generated: 2026-09-17T01:17:25Z
 
 Cells declared: 4 · matched runs: 28 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -15,7 +15,7 @@ Cells declared: 4 · matched runs: 28 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.1-refactor-vocab-cc | opus-4-7-portkey-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.1-refactor-vocab-cc | opus-4-7-portkey-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### cognitive_max
 

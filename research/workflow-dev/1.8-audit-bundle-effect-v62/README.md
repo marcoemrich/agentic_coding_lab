@@ -1,29 +1,29 @@
 ---
 id: RQ-audit-bundle-v62
-question: "Reproduziert das Audit-Bundle (Rationale-Ergaenzungen + Red-Phase-Hardening) auf der exact-hybrid-v4-cleaned-cc-Basis die in der archivierten RQ-audit gegen v6.5-lean gemessenen Effekte (Disziplin-Plus, Streuungs-Schrumpf, Token/Wallclock-Aufschlag bei Korrektheits-Erhalt)?"
+question: "Does the audit bundle (rationale additions + red-phase hardening) reproduce, on the exact-hybrid-v4-cleaned-cc base, the effects measured in the archived RQ-audit against v6.5-lean (discipline gain, variance shrink, token/wallclock surcharge while preserving correctness)?"
 factors:
   workflow_x_prompt:
-    - {workflow: exact-hybrid-v4-cleaned-cc, prompt: example-mapping}  # Baseline (aktuelle Default-Basis aus RQ-1.6)
-    - {workflow: exact-hybrid-v4.3-audit-bundle-cc,     prompt: example-mapping}  # + Klasse-2-Rationales + Klasse-3-Red-Hardening
+    - {workflow: exact-hybrid-v4-cleaned-cc, prompt: example-mapping}  # Baseline (current default base from RQ-1.6)
+    - {workflow: exact-hybrid-v4.3-audit-bundle-cc,     prompt: example-mapping}  # + class-2 rationales + class-3 red hardening
 controls:
   model: opus-4-7-portkey-no-thinking
   kata_base: game-of-life
 outcomes:
-  # primaer: TDD-Disziplin (die Klasse-3-Aenderungen zielen direkt auf Red-Phase-Disziplin)
+  # primary: TDD discipline (the class-3 changes target red-phase discipline directly)
   - tests_passed_immediately
   - refactorings_applied
   - predictions_correct_rate
   - cycle_count
-  # Code-Qualitaet (Sanity: Bundle darf nicht verschlechtern)
+  # code quality (sanity: the bundle must not degrade it)
   - code_mass
   - smell_total
   - cc_longest_function
   - cognitive_max
   - mccabe_max
-  # Korrektheit (Sanity)
+  # correctness (sanity)
   - tests_passing
   - completed_within_budget
-  # Kosten (Bundle ergaenzt netto Text; Aufschlag erwartet)
+  # cost (the bundle adds net text; a surcharge is expected)
   - duration_seconds
   - total_tokens
 min_replicates: 10
@@ -32,85 +32,85 @@ status: aktiv
 
 # RQ-1.8: exact-hybrid-v4.3-audit-bundle-cc vs exact-hybrid-v4-cleaned-cc (game-of-life)
 
-Reproduziert das Audit-Bundle die in der alten RQ-audit (oneshot-v1-Generation, `3.1-orchestration-audit`; gelöscht in `953841cb`) gegen v6.5-lean gemessenen Effekte, wenn es stattdessen auf exact-hybrid-v4-cleaned-cc aufgesetzt wird?
+Does the audit bundle reproduce the effects measured in the old RQ-audit (oneshot-v1 generation, `3.1-orchestration-audit`; deleted in `953841cb`) against v6.5-lean, when it is layered onto exact-hybrid-v4-cleaned-cc instead?
 
 ## Motivation
 
-Die archivierte RQ-audit (n=10, opus-4-7-no-thinking, GoL-example-mapping) hat fuer das Audit-Bundle gegenueber v6.5-lean klare Effekte gezeigt:
+The archived RQ-audit (n=10, opus-4-7-no-thinking, GoL example-mapping) showed clear effects for the audit bundle relative to v6.5-lean:
 
-- `tests_passed_immediately` 1.4 ± 2.27 → **0 ± 0** (Mandatory-Procedure-Preamble eliminiert vorzeitige Green-States).
-- `refactorings_applied` 6.9 ± 2.33 → 7.8 ± 0.42 (Refactor-Rationale + konkreter Bar; σ −82 %).
-- Code-Qualitaet innerhalb 1 σ, Smell-Floor sauber 2.0 ± 0.
-- Kosten: +15 % Tokens, +16 % Wallclock.
-- σ schrumpft fast ueberall (Workflow wird deutlich planbarer).
+- `tests_passed_immediately` 1.4 ± 2.27 → **0 ± 0** (the mandatory-procedure preamble eliminates premature green states).
+- `refactorings_applied` 6.9 ± 2.33 → 7.8 ± 0.42 (refactor rationale + concrete bar; σ −82 %).
+- Code quality within 1 σ, smell floor cleanly at 2.0 ± 0.
+- Cost: +15 % tokens, +16 % wallclock.
+- σ shrinks almost everywhere (the workflow becomes markedly more predictable).
 
-Diese Effekte sind aber **bundle-gemessen gegen die archivierte v6.5-lean-Linie** — eine Linie, die ihrerseits andere Reduktionen mitbringt (PEP raus, Emojis raus, MUSTs reduziert) und auf claim-office korrektheits-defekt war (siehe Memory `v6-rebuild-new-base`, `v6.5-correctness-setback`).
+But these effects are **bundle-measured against the archived v6.5-lean line** — a line that itself carries other reductions (PEP removed, emoji removed, MUSTs reduced) and was correctness-defective on claim-office (see memory `v6-rebuild-new-base`, `v6.5-correctness-setback`).
 
-Die aktuelle Default-Basis ist `exact-hybrid-v4-cleaned-cc` (RQ-1.6). Auf dieser Basis sind drei Klassen der Audit-Aenderungen noch nicht eingebaut:
+The current default base is `exact-hybrid-v4-cleaned-cc` (RQ-1.6). Three classes of the audit changes are not yet built into that base:
 
-- **Klasse 2 — Rationale-Ergaenzungen:** measurement-pipeline-Rationale fuer Pflicht-Refactoring, Bisectability-Rationale fuer ONE-at-a-time, konkreter Drei-Pfad-Bar fuer "no improvement possible", Green-Phase-Generalization-Rationale in test-list Step 3.
-- **Klasse 3 — Red-Phase-Hardening:** Mandatory-Procedure-Preamble, Streichung der "STOP and explain"-Klauseln in Steps 3/6, Ersatz des "Prediction Failure Protocol"-Blocks durch "Wrong Predictions Are Data" (Verbot von retroaktivem Backfilling).
-- **Klasse 4 — Agent-Decoupling:** bereits in hybrid-v4 angekommen (refactor.md ist rollenneutral), nicht erneut adressiert.
-- **Mechanism-Alignment (commands→skills):** hybrid-v1-Linien-Entscheidung, bewusst nicht uebernommen (siehe `workflow-construction.md`).
+- **Class 2 — rationale additions:** measurement-pipeline rationale for mandatory refactoring, bisectability rationale for ONE-at-a-time, concrete three-path bar for "no improvement possible", green-phase generalization rationale in test-list step 3.
+- **Class 3 — red-phase hardening:** mandatory-procedure preamble, removal of the "STOP and explain" clauses in steps 3/6, replacement of the "Prediction Failure Protocol" block with "Wrong Predictions Are Data" (ban on retroactive backfilling).
+- **Class 4 — agent decoupling:** already landed in hybrid-v4 (refactor.md is role-neutral), not addressed again.
+- **Mechanism alignment (commands→skills):** a hybrid-v1-line decision, deliberately not adopted (see `workflow-construction.md`).
 
-Diese RQ misst die Klasse-2-+-Klasse-3-Wirkung **isoliert auf der hybrid-v4-Basis** — ohne die in v6.5-lean enthaltenen weiteren Reduktionen. Damit wird die Frage beantwortet: **Ist das Audit-Bundle eine eigenstaendige Verbesserung der aktuellen Default-Basis, oder war der RQ-audit-Effekt nur die Reparatur einer kaputten v6.5-lean-Basis?**
+This RQ measures the class-2 + class-3 effect **in isolation on the hybrid-v4 base** — without the further reductions contained in v6.5-lean. That answers the question: **is the audit bundle a standalone improvement to the current default base, or was the RQ-audit effect merely the repair of a broken v6.5-lean base?**
 
-## Workflow-Definition
+## Workflow definition
 
-- **exact-hybrid-v4-cleaned-cc (Baseline)** — aktuelle Default-Basis aus RQ-1.6. Why-Bloecke + Hygiene-Cleanups, ansonsten volle MUST/CRITICAL-Imperative + PEP + Emoji.
-- **exact-hybrid-v4.3-audit-bundle-cc (neu)** — hybrid-v4 + Klasse-2-Rationales + Klasse-3-Red-Hardening + opt-in `HUMAN-IN-THE-LOOP.md`-Profil (im Workflow-Root, nicht in `.claude/rules/`, daher kein Auto-Load und kein Mess-Effekt im autonomen Default).
+- **exact-hybrid-v4-cleaned-cc (baseline)** — current default base from RQ-1.6. Why blocks + hygiene cleanups, otherwise full MUST/CRITICAL imperatives + PEP + emoji.
+- **exact-hybrid-v4.3-audit-bundle-cc (new)** — hybrid-v4 + class-2 rationales + class-3 red hardening + opt-in `HUMAN-IN-THE-LOOP.md` profile (in the workflow root, not in `.claude/rules/`, hence no auto-load and no measurement effect in the autonomous default).
 
-Voller Diff: `diff -r experiments/workflows/exact-coding/opus/exact-hybrid-v4-cleaned-cc experiments/workflows/exact-coding/opus/exact-hybrid-v4.3-audit-bundle-cc`. Detail-Begruendungen in `experiments/workflows/exact-coding/opus/exact-hybrid-v4.3-audit-bundle-cc/CHANGES.md`.
+Full diff: `diff -r experiments/workflows/exact-coding/opus/exact-hybrid-v4-cleaned-cc experiments/workflows/exact-coding/opus/exact-hybrid-v4.3-audit-bundle-cc`. Per-item justifications in `experiments/workflows/exact-coding/opus/exact-hybrid-v4.3-audit-bundle-cc/CHANGES.md`.
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Disziplin)** — Die in RQ-audit auf v6.5-lean gemessenen Disziplin-Effekte reproduzieren in derselben Richtung auf der hybrid-v4-Basis: `tests_passed_immediately` faellt (Preamble-Wirkung), `refactorings_applied` steigt mit deutlich engerer Streuung (Rationale + Drei-Pfad-Bar). Effektgroesse darf kleiner sein als bei der v6.5-lean-Reparatur, da hybrid-v4 schon Why-Bloecke mitbringt.
-- **H2 (Korrektheit)** — Beide Workflows ≥ 95 % `tests_passing`. Audit-Bundle darf auf GoL nicht regredieren.
-- **H3 (Code-Qualitaet neutral)** — `code_mass`, `cc_longest_function`, `cognitive_max`, `mccabe_max` liegen je innerhalb 1 σ der hybrid-v4-Streuung. Smell-Floor (sofern bei hybrid-v4 noch nicht bei 2.0) verschiebt sich Richtung 2.0.
-- **H4 (Kosten)** — Audit-Bundle ergaenzt netto Text → +10–20 % Tokens und Wallclock erwartet, parallel zur RQ-audit-Beobachtung (+15 % / +16 %).
-- **H5 (Streuungs-Schrumpf)** — Die in RQ-audit fast ueberall beobachtete σ-Reduktion repliziert. Wenn `cycle_count`-σ und `refactorings_applied`-σ deutlich sinken, ist die Hardening-Wirkung bestaetigt; wenn nicht, ist die σ-Reduktion in RQ-audit ein v6.5-lean-Reparatur-Artefakt gewesen.
-- **H0 (Falsifizierer)** — Wenn auf der bereits-MUST/PEP-tragenden hybrid-v4-Basis keiner der Disziplin-Effekte messbar wird, ist das Audit-Bundle empirisch redundant zur MUST/Emoji/PEP-Lage. In dem Fall bleibt hybrid-v4 die Default-Basis; hybrid-v4.3 wird nicht promotet.
+- **H1 (discipline)** — The discipline effects measured in RQ-audit on v6.5-lean reproduce in the same direction on the hybrid-v4 base: `tests_passed_immediately` drops (preamble effect), `refactorings_applied` rises with markedly tighter variance (rationale + three-path bar). The effect size may be smaller than in the v6.5-lean repair, since hybrid-v4 already carries why blocks.
+- **H2 (correctness)** — Both workflows ≥ 95 % `tests_passing`. The audit bundle must not regress on GoL.
+- **H3 (code quality neutral)** — `code_mass`, `cc_longest_function`, `cognitive_max`, `mccabe_max` each stay within 1 σ of the hybrid-v4 variance. The smell floor (if hybrid-v4 is not already at 2.0) shifts toward 2.0.
+- **H4 (cost)** — The audit bundle adds net text → +10–20 % tokens and wallclock expected, in parallel to the RQ-audit observation (+15 % / +16 %).
+- **H5 (variance shrink)** — The σ reduction observed almost everywhere in RQ-audit replicates. If `cycle_count` σ and `refactorings_applied` σ drop markedly, the hardening effect is confirmed; if not, the σ reduction in RQ-audit was a v6.5-lean repair artifact.
+- **H0 (falsifier)** — If none of the discipline effects is measurable on the already-MUST/PEP-carrying hybrid-v4 base, the audit bundle is empirically redundant to the MUST/emoji/PEP situation. In that case hybrid-v4 stays the default base; hybrid-v4.3 is not promoted.
 
 ## Design
 
 ```
-Faktor:    workflow_x_prompt — 2 Stufen, beide example-mapping
-Kontrolle: model            — opus-4-7-portkey-no-thinking
-Kontrolle: kata_base        — game-of-life
+Factor:  workflow_x_prompt — 2 levels, both example-mapping
+Control: model            — opus-4-7-portkey-no-thinking
+Control: kata_base        — game-of-life
 
-Zellen:    2 (2 Workflows × 1 Kata)
-Replikate: n = 10 je Zelle
-Runs:      20 total
+Cells:      2 (2 workflows × 1 kata)
+Replicates: n = 10 per cell
+Runs:       20 total
 ```
 
-Replikate-Anzahl n=10 spiegelt die RQ-audit-Praezedenz und liegt ueber dem RQ-1.7-n=5 (siehe Memory `replicates-n-reliability`: n=5 fuer Sanity, n≥7 fuer mittleres Feld, n=10 fuer enge σ-Vergleiche, die hier zentral sind).
+The replicate count n=10 mirrors the RQ-audit precedent and exceeds the RQ-1.7 n=5 (see memory `replicates-n-reliability`: n=5 for sanity, n≥7 for the middle ground, n=10 for tight σ comparisons, which are central here).
 
-Single-shard sequenziell, parallel als 2 Container OK (GoL kurze Sessions, kein nennenswertes Portkey-Cut-Risiko, vgl. Memory `portkey-shards-external-cut-risk`).
+Single-shard sequential; parallel as 2 containers is fine (GoL has short sessions, no notable Portkey cut risk, cf. memory `portkey-shards-external-cut-risk`).
 
 ## Caveats
 
-- **Bundle, nicht isolierte Effekte** — vier Item-Klassen werden gleichzeitig importiert (Mission-Rationale, Drei-Pfad-Bar, Step-4-Bisectability, test-list-Step-3-Rationale, Red-Preamble, STOP-Streichung, Wrong-Predictions-Block). Bei positivem Bundle-Befund bleibt offen, welcher Anteil traegt. Folge-RQs (Klasse-2-only vs Klasse-3-only) sind moeglich, falls Bundle-Effekt eintritt.
-- **Single Kata, single Modell** — `game-of-life-example-mapping × opus-4-7-portkey-no-thinking`. Cross-Kata-Validierung auf `claim-office-example-mapping` als Folge-RQ, falls hybrid-v4.3 promotet wird (siehe RQ-1.6-Befund: refactor.md-Entkopplung wirkt auf claim-office staerker als auf GoL).
-- **GoL-Korrektheit ist saturiert** — beide Workflows duerften nahe 100 % `tests_passing` liegen. H2 ist Sanity, nicht Differenzierung. Wenn der Bundle-Effekt nur durch Korrektheitsverlust erkauft wird, taeuscht der GoL-Befund — claim-office ist dann zwingend.
-- **hybrid-v4-Basis bringt schon Why-Bloecke** — die Klasse-2-Rationales sind teilweise additiv zur exact-hybrid-v3-with-why-cc-Wirkung. Wenn die exact-hybrid-v3-with-why-cc-Why-Bloecke bereits den groessten Teil der Rationale-Wirkung tragen, ist mit kleineren Effekt-Groessen als in RQ-audit (die gegen v6.5-lean ohne Why-Vollausbau lief) zu rechnen.
-- **HITL.md ist opt-in und auto-load-frei** — die im Default-Run gemessene hybrid-v4.3 enthaelt keine HITL-Mechanik. Wenn spaeter ein HITL-Vergleich gewuenscht ist, braucht es eine separate Variante (`v6.3-hitl`) und einen eigenen RQ.
+- **Bundle, not isolated effects** — four item classes are imported at once (mission rationale, three-path bar, step-4 bisectability, test-list step-3 rationale, red preamble, STOP removal, wrong-predictions block). Given a positive bundle result, which part carries it remains open. Follow-up RQs (class-2 only vs class-3 only) are possible if a bundle effect materializes.
+- **Single kata, single model** — `game-of-life-example-mapping × opus-4-7-portkey-no-thinking`. Cross-kata validation on `claim-office-example-mapping` as a follow-up RQ if hybrid-v4.3 is promoted (see RQ-1.6 result: the refactor.md decoupling acts more strongly on claim-office than on GoL).
+- **GoL correctness is saturated** — both workflows should land near 100 % `tests_passing`. H2 is sanity, not differentiation. If the bundle effect is only bought by a loss of correctness, the GoL result misleads — claim-office then becomes mandatory.
+- **The hybrid-v4 base already carries why blocks** — the class-2 rationales are partly additive to the exact-hybrid-v3-with-why-cc effect. If the exact-hybrid-v3-with-why-cc why blocks already carry most of the rationale effect, expect smaller effect sizes than in RQ-audit (which ran against v6.5-lean without a full why build-out).
+- **HITL.md is opt-in and auto-load-free** — the hybrid-v4.3 measured in the default run contains no HITL mechanics. If a HITL comparison is wanted later, it needs a separate variant (`v6.3-hitl`) and its own RQ.
 
 ## Findings
 
-Siehe [findings.md](findings.md) (folgt nach Batch-Lauf).
+See [findings.md](findings.md) (follows after the batch run).
 
-## Datenquelle
+## Data source
 
-Alle Runs in `experiments/runs/` mit
+All runs in `experiments/runs/` with
 `workflow ∈ {exact-hybrid-v4-cleaned-cc, exact-hybrid-v4.3-audit-bundle-cc}`,
 `kata = game-of-life-example-mapping`,
 `model = opus-4-7-portkey-no-thinking`.
 
-hybrid-v4-Baseline-Runs liegen aus RQ-1.7 bereits (n=5) vor; n=10 bedeutet ggf. +5 Refill-Runs auf hybrid-v4 plus 10 neue Runs auf hybrid-v4.3.
+hybrid-v4 baseline runs already exist from RQ-1.7 (n=5); n=10 may therefore mean +5 refill runs on hybrid-v4 plus 10 new runs on hybrid-v4.3.
 
-## Quellen
+## Sources
 
-- Praezedenz: RQ-audit der oneshot-v1-Generation (`3.1-orchestration-audit`) — Bundle gegen v6.5-lean. Verzeichnis in `953841cb` geloescht, abrufbar via `git show 953841cb^:research/_archive/workflow-dev-v1/3.1-orchestration-audit/findings.md`.
-- hybrid-v4.3-Workflow-Diff: `experiments/workflows/exact-coding/opus/exact-hybrid-v4.3-audit-bundle-cc/CHANGES.md`.
-- HITL-Profil: `experiments/workflows/exact-coding/opus/exact-hybrid-v4.3-audit-bundle-cc/HUMAN-IN-THE-LOOP.md`.
-- Baseline-RQ: [RQ-1.6](../1.6-v62-cleanup-validation-v61-with-why/findings.md) (hybrid-v4 als Default etabliert).
+- Precedent: RQ-audit of the oneshot-v1 generation (`3.1-orchestration-audit`) — bundle against v6.5-lean. Directory deleted in `953841cb`, retrievable via `git show 953841cb^:research/_archive/workflow-dev-v1/3.1-orchestration-audit/findings.md`.
+- hybrid-v4.3 workflow diff: `experiments/workflows/exact-coding/opus/exact-hybrid-v4.3-audit-bundle-cc/CHANGES.md`.
+- HITL profile: `experiments/workflows/exact-coding/opus/exact-hybrid-v4.3-audit-bundle-cc/HUMAN-IN-THE-LOOP.md`.
+- Baseline RQ: [RQ-1.6](../1.6-v62-cleanup-validation-v61-with-why/findings.md) (hybrid-v4 established as default).

@@ -545,37 +545,37 @@ _Data basis: 97 runs · Coverage: 16/16 cells (100 %) at min_replicates=5._
 
 | Metric | v3/o5 | v5.1/o5 | v6.1/o5 | v6.6/o5 | v3/o47 | v5.1/o47 | v6.1/o47 | v6.6/o47 | Direction |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| Correctness (external) | **1.00** 🏆 | 0.79 | 0.99 | 0.95 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | höher = besser |
-| `cc_avg_loc_per_function` | 9.18 | 5.89 | 4.04 | **3.21** 🏆 | 13.07 | 10.03 | 5.75 | 3.67 | kleiner = besser |
-| `cognitive_max` | 5.4 | 2.8 | 2.4 | **2.2** 🏆 | 19.8 | 14.83 | 5.71 | 3.2 | kleiner = besser |
-| `cognitive_avg` | 2.53 | 1.65 | 1.34 | **1.18** 🏆 | 5.77 | 4.62 | 2.32 | 1.35 | kleiner = besser |
-| `mccabe_max` | 5.4 | 3.4 | 3.2 | **3.0** 🏆 | 15.4 | 10.17 | 5.71 | 3.4 | kleiner = besser |
-| Complexity Peak | 24.2 | 18.6 | 17.0 | 14.6 | 51.6 | 32.67 | 18.14 | **12.0** 🏆 | kleiner = besser |
-| Smell Total | **0.0** 🏆 | 0.2 | **0.0** 🏆 | **0.0** 🏆 | 16.8 | 6.83 | 1.29 | **0.0** 🏆 | kleiner = besser |
-| Code Mass (APP) | 759.2 | 569.0 | 861.6 | 1002.8 | 992.4 | 692.7 | 861.3 | 796.0 | kein 🏆 — s. Caveat |
+| Correctness (external) | **1.00** 🏆 | 0.79 | 0.99 | 0.95 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | higher = better |
+| `cc_avg_loc_per_function` | 9.18 | 5.89 | 4.04 | **3.21** 🏆 | 13.07 | 10.03 | 5.75 | 3.67 | lower = better |
+| `cognitive_max` | 5.4 | 2.8 | 2.4 | **2.2** 🏆 | 19.8 | 14.83 | 5.71 | 3.2 | lower = better |
+| `cognitive_avg` | 2.53 | 1.65 | 1.34 | **1.18** 🏆 | 5.77 | 4.62 | 2.32 | 1.35 | lower = better |
+| `mccabe_max` | 5.4 | 3.4 | 3.2 | **3.0** 🏆 | 15.4 | 10.17 | 5.71 | 3.4 | lower = better |
+| Complexity Peak | 24.2 | 18.6 | 17.0 | 14.6 | 51.6 | 32.67 | 18.14 | **12.0** 🏆 | lower = better |
+| Smell Total | **0.0** 🏆 | 0.2 | **0.0** 🏆 | **0.0** 🏆 | 16.8 | 6.83 | 1.29 | **0.0** 🏆 | lower = better |
+| Code Mass (APP) | 759.2 | 569.0 | 861.6 | 1002.8 | 992.4 | 692.7 | 861.3 | 796.0 | no 🏆 — see caveat |
 | `cycle_count` | 4.8 | 27.0 | 42.8 | 45.0 | 3.8 | 5.5 | 28.0 | 25.8 | — |
-| `refactorings_applied` | n/a | 12.2 | 17.4 | **43.4** 🏆 | n/a | 2.2 | 11.0 | 22.6 | höher = besser |
-| `predictions_correct_rate` | n/a | 99.6 % | **100 %** 🏆 | 98.7 % | n/a | **100 %** 🏆 | 96.4 % | 90.0 % | höher = besser |
-| `total_tokens` | 4 M | 83 M | 82 M | 137 M | **3 M** 🏆 | 19 M | 35 M | 60 M | kleiner = besser |
-| `duration_seconds` | 5 min | 23 min | 44 min | 93 min | **5 min** 🏆 | 11 min | 26 min | 76 min | kleiner = besser |
+| `refactorings_applied` | n/a | 12.2 | 17.4 | **43.4** 🏆 | n/a | 2.2 | 11.0 | 22.6 | higher = better |
+| `predictions_correct_rate` | n/a | 99.6 % | **100 %** 🏆 | 98.7 % | n/a | **100 %** 🏆 | 96.4 % | 90.0 % | higher = better |
+| `total_tokens` | 4 M | 83 M | 82 M | 137 M | **3 M** 🏆 | 19 M | 35 M | 60 M | lower = better |
+| `duration_seconds` | 5 min | 23 min | 44 min | 93 min | **5 min** 🏆 | 11 min | 26 min | 76 min | lower = better |
 
 **game-of-life-example-mapping** (code-quality kata)
 
 | Metric | v3/o5 | v5.1/o5 | v6.1/o5 | v6.6/o5 | v3/o47 | v5.1/o47 | v6.1/o47 | v6.6/o47 | Direction |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| Correctness (external) | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | höher = besser |
-| `cc_avg_loc_per_function` | 6.69 | 4.12 | 4.54 | **3.57** 🏆 | 16.52 | 9.58 | 6.56 | 3.62 | kleiner = besser |
-| `cognitive_max` | 7.6 | 1.8 | 1.8 | **1.2** 🏆 | 21.8 | 17.6 | 6.5 | 2.2 | kleiner = besser |
-| `cognitive_avg` | 5.73 | 1.6 | 1.5 | **1.2** 🏆 | 21.8 | 15.4 | 5.17 | 1.9 | kleiner = besser |
-| `mccabe_max` | 6.0 | 2.8 | 3.2 | **2.4** 🏆 | 13.7 | 10.2 | 5.2 | 3.2 | kleiner = besser |
-| Complexity Peak | 14.6 | 8.0 | 10.8 | **7.4** 🏆 | 32.5 | 20.8 | 14.2 | 8.4 | kleiner = besser |
-| Smell Total | **0.0** 🏆 | **0.0** 🏆 | 1.2 | **0.0** 🏆 | 6.0 | 4.8 | 2.4 | **0.0** 🏆 | kleiner = besser |
-| Code Mass (APP) | 193.0 | 176.2 | 181.8 | 194.4 | 165.6 | 154.0 | 153.7 | 169.6 | kein 🏆 — s. Caveat |
+| Correctness (external) | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | higher = better |
+| `cc_avg_loc_per_function` | 6.69 | 4.12 | 4.54 | **3.57** 🏆 | 16.52 | 9.58 | 6.56 | 3.62 | lower = better |
+| `cognitive_max` | 7.6 | 1.8 | 1.8 | **1.2** 🏆 | 21.8 | 17.6 | 6.5 | 2.2 | lower = better |
+| `cognitive_avg` | 5.73 | 1.6 | 1.5 | **1.2** 🏆 | 21.8 | 15.4 | 5.17 | 1.9 | lower = better |
+| `mccabe_max` | 6.0 | 2.8 | 3.2 | **2.4** 🏆 | 13.7 | 10.2 | 5.2 | 3.2 | lower = better |
+| Complexity Peak | 14.6 | 8.0 | 10.8 | **7.4** 🏆 | 32.5 | 20.8 | 14.2 | 8.4 | lower = better |
+| Smell Total | **0.0** 🏆 | **0.0** 🏆 | 1.2 | **0.0** 🏆 | 6.0 | 4.8 | 2.4 | **0.0** 🏆 | lower = better |
+| Code Mass (APP) | 193.0 | 176.2 | 181.8 | 194.4 | 165.6 | 154.0 | 153.7 | 169.6 | no 🏆 — see caveat |
 | `cycle_count` | 3.8 | 7.2 | 10.4 | 10.4 | 1.5 | 7.6 | 8.7 | 9.2 | — |
-| `refactorings_applied` | n/a | 4.4 | 4.4 | **8.6** 🏆 | n/a | 4.8 | 4.1 | 9.2 | höher = besser |
-| `predictions_correct_rate` | n/a | **100 %** 🏆 | **100 %** 🏆 | 99.1 % | n/a | **100 %** 🏆 | 99.4 % | 98.9 % | höher = besser |
-| `total_tokens` | 2 M | 12 M | 8 M | 15 M | **1 M** 🏆 | 8 M | 7 M | 12 M | kleiner = besser |
-| `duration_seconds` | 3 min | 7 min | 10 min | 19 min | **1 min** 🏆 | 5 min | 8 min | 22 min | kleiner = besser |
+| `refactorings_applied` | n/a | 4.4 | 4.4 | **8.6** 🏆 | n/a | 4.8 | 4.1 | 9.2 | higher = better |
+| `predictions_correct_rate` | n/a | **100 %** 🏆 | **100 %** 🏆 | 99.1 % | n/a | **100 %** 🏆 | 99.4 % | 98.9 % | higher = better |
+| `total_tokens` | 2 M | 12 M | 8 M | 15 M | **1 M** 🏆 | 8 M | 7 M | 12 M | lower = better |
+| `duration_seconds` | 3 min | 7 min | 10 min | 19 min | **1 min** 🏆 | 5 min | 8 min | 22 min | lower = better |
 
 Caveats: on claim-office, quality trophies are gated at `verification_pct` 1.00 — the three opus-5 cells below it are exempt for the *quality* columns because their shortfall traces to a single acceptance scenario, not to stub implementations, but they carry no correctness trophy. `cycle_count`, `refactorings_applied` and `predictions_correct_rate` are **n/a for v3**, not zero: v3 prescribes no phase markers, so the parser has nothing to count. Code Mass (APP) carries no trophy — it ranks the cells opposite to decomposition and has no notion of nesting.
 

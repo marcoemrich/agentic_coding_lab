@@ -3,25 +3,25 @@
 / GPT-5.3 Codex Spark vs. GPT-5.6 Sol on the two native Sol workflows,
 sphinx-score-example-mapping, OpenAI subscription route, n=5 per cell.
 
-## Übersicht
+## Overview
 
 Primary outcome is Correctness (external) — the 16-scenario acceptance suite the
 agent never sees. Everything below it is gated on that result.
 
-| Metrik | Richtung | Sol / inline | Sol / subagent | Spark / inline | Spark / subagent |
+| Metric | Direction | Sol / inline | Sol / subagent | Spark / inline | Spark / subagent |
 |---|---|---:|---:|---:|---:|
-| **Correctness (external)** | höher = besser | **0.99** 🏆 | 0.96 | 0.78 | 0.84 |
-| Correctness (internal) | höher = besser | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
-| completed_within_budget | höher = besser | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
-| Complexity Peak (cognitive) | kleiner = besser | 1.8 | **1.6** 🏆 | 3.4 | 4.2 |
-| Complexity Peak (mccabe) | kleiner = besser | 2.8 | **2.6** 🏆 | 4.2 | 4.4 |
-| `cc_longest_function` | kleiner = besser | **13.2** 🏆 | 16.2 | 22.8 | 21.2 |
-| `cc_avg_loc_per_function` | kleiner = besser | **13.2** 🏆 | 15.9 | 19.2 | 19.3 |
-| Smell Total | kleiner = besser | **0** 🏆 | **0** 🏆 | 1.0 | 0.4 |
+| **Correctness (external)** | higher = better | **0.99** 🏆 | 0.96 | 0.78 | 0.84 |
+| Correctness (internal) | higher = better | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
+| completed_within_budget | higher = better | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
+| Complexity Peak (cognitive) | lower = better | 1.8 | **1.6** 🏆 | 3.4 | 4.2 |
+| Complexity Peak (mccabe) | lower = better | 2.8 | **2.6** 🏆 | 4.2 | 4.4 |
+| `cc_longest_function` | lower = better | **13.2** 🏆 | 16.2 | 22.8 | 21.2 |
+| `cc_avg_loc_per_function` | lower = better | **13.2** 🏆 | 15.9 | 19.2 | 19.3 |
+| Smell Total | lower = better | **0** 🏆 | **0** 🏆 | 1.0 | 0.4 |
 | Code Mass (APP) | — | 129.2 | 136.0 | 159.6 | 151.8 |
-| `predictions_correct_rate` | höher = besser | **100 %** 🏆 | **100 %** 🏆 | 80.5 % | 80.5 % |
-| duration_seconds | kleiner = besser | 440 | 946 | 321 | 630 |
-| total_tokens | kleiner = besser | **1.6 M** 🏆 | 2.5 M | 5.1 M | 6.2 M |
+| `predictions_correct_rate` | higher = better | **100 %** 🏆 | **100 %** 🏆 | 80.5 % | 80.5 % |
+| duration_seconds | lower = better | 440 | 946 | 321 | 630 |
+| total_tokens | lower = better | **1.6 M** 🏆 | 2.5 M | 5.1 M | 6.2 M |
 
 **Correctness-gating applies to every quality and cost row.** No Spark cell reaches
 `verification_pct = 1.0`, so no Spark cell is eligible for a 🏆 on complexity, mass,
@@ -58,7 +58,7 @@ invisible from inside the run — it only surfaces against the external suite.
 | Spark / subagent | 5 | 0.84 | 0.69 | 1.00 | 0.14 |
 | Spark / inline | 5 | 0.78 | 0.69 | 0.81 | 0.06 |
 
-*höher = besser*
+*higher = better*
 
 The gap between the model groups (0.96–0.99 vs. 0.78–0.84) is roughly 4σ of the Sol
 cells and is not explained by the workflow axis: both Spark cells sit below both Sol
@@ -96,7 +96,7 @@ about 40 % longer.
 | Spark / inline | 5 | 3.4 | 4.2 | 22.8 | 1.0 |
 | Spark / subagent | 5 | 4.2 | 4.4 | 21.2 | 0.4 |
 
-*kleiner = besser; gated on Correctness (external) = 1.0, which no Spark cell reaches*
+*lower = better; gated on Correctness (external) = 1.0, which no Spark cell reaches*
 
 Sol's Smell Total is 0 in all ten of its runs (σ = 0), Spark's is non-zero in both
 cells with single runs reaching 5. The `cc_longest_function` gap (13.2–16.2 vs.
@@ -125,7 +125,7 @@ predictions across both workflows. Spark reaches 80.5 % in both cells.
 | Spark / inline | 5 | 66 | 82 | 80.5 % |
 | Spark / subagent | 5 | 62 | 77 | 80.5 % |
 
-*höher = besser*
+*higher = better*
 
 A perfect 100 % across 144 predictions is itself worth flagging: it means Sol never
 once mispredicted whether a new test would fail to compile or fail at runtime. Spark

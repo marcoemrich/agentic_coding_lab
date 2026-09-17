@@ -1,23 +1,23 @@
 # RQ-end-refactor-opus48 — Aggregation
 
-_Haelt der exact-hybrid-v5-end-refactor-cc-Befund aus RQ-1.12 (Korrektheit intakt, Code-Qualitaet >= hybrid-v4, Token-Kosten ~hybrid-v4) auf Opus 4.8 (no-thinking) — oder taeuscht der zusaetzliche End-Refactor-Pass auf dem neuen Modell die claim-office-Vollstaendigkeit aus (Bundle-Bruch-Muster aus RQ-1.9/RQ-1.10)?_
+_Does the exact-hybrid-v5-end-refactor-cc result from RQ-1.12 (correctness intact, code quality >= hybrid-v4, token cost ~hybrid-v4) hold on Opus 4.8 (no-thinking) — or does the additional end-refactor pass fake claim-office completeness on the new model (the bundle-break pattern from RQ-1.9/RQ-1.10)?_
 
-Generated: 2026-09-11T07:48:46Z
+Generated: 2026-09-17T01:17:48Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking | 5 | 4 | ⚠️ nur 4/5 ohne Timeout |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking | 5 | 4 | ⚠️ only 4/5 without timeout |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc | opus-4-8-no-thinking | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc | opus-4-8-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

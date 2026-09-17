@@ -2,11 +2,11 @@
 
 _How do Fable 5, Fable 5.1, Opus 5 and Sonnet 5 (each no-thinking, on the Claude Max subscription) differ in correctness and code quality on the novel claim-office kata under the current exact-coding baseline workflow?_
 
-Generated: 2026-09-11T07:48:30Z
+Generated: 2026-09-17T01:17:36Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | harness | n | n_ok | status |
 |---|---|---|---|---:|---:|---|
@@ -15,7 +15,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | fable-5-1-no-thinking | 2.1.267 | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | sonnet-5-native-no-thinking | 2.1.267 | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

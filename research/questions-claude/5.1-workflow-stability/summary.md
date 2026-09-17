@@ -2,11 +2,11 @@
 
 _How stable are code quality and TDD discipline per workflow across replicates, and under which conditions is n=3 a sufficient replicate count?_
 
-Generated: 2026-09-11T07:48:35Z
+Generated: 2026-09-17T01:17:41Z
 
 Cells declared: 6 · matched runs: 59 · min_replicates: 10
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -14,10 +14,10 @@ Cells declared: 6 · matched runs: 59 · min_replicates: 10
 | game-of-life-prose | baseline-iterative-v1-cc | opus-4-7-no-thinking | 10 | 10 | ✅ |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc | opus-4-7-no-thinking | 10 | 10 | ✅ |
 | game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-7-no-thinking | 10 | 10 | ✅ |
-| game-of-life-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking | 9 | 9 | ⚠️ unter min_replicates (9/10) |
+| game-of-life-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking | 9 | 9 | ⚠️ below min_replicates (9/10) |
 | game-of-life-example-mapping | exact-hybrid-v1-cc | opus-4-7-no-thinking | 10 | 10 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### code_mass
 

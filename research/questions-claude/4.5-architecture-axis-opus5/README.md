@@ -54,8 +54,8 @@ status: open
 The current workflow line — hybrid-v2 and everything built on it up to hybrid-v6 — was developed
 and validated on `opus-4-7`. `model-recommendation-matrix.md` states the constraint:
 
-> Workflow-Optimierungen, die auf opus-4-7 gemessen wurden, gelten **nur für opus-4-7**,
-> bis sie cross-model repliziert sind.
+> Workflow optimisations measured on opus-4-7 apply **only to opus-4-7**
+> until they have been replicated cross-model.
 
 Opus 5 is a model generation change, not a routing or sampling change. Two prior findings
 make it likely that the ranking moves with it:

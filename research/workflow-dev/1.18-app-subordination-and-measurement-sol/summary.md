@@ -2,11 +2,11 @@
 
 _On the OpenAI subscription route, does subordinating APP mass to the Four Rules recover the decomposition that the unsubordinated brief suppresses — and does adding pre/post measurement improve the result further, at what cost in duration as the measurement moves from the model to deterministic tools?_
 
-Generated: 2026-09-13T18:30:02Z
+Generated: 2026-09-17T01:17:50Z
 
 Cells declared: 5 · matched runs: 25 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -16,7 +16,7 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.2.2-measured-eslint-pi | gpt-5-6-sol-codex | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-sol-v1.2.3-measured-tool-pi | gpt-5-6-sol-codex | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### cc_avg_loc_per_function
 

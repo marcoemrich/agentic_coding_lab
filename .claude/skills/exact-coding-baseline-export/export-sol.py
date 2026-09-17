@@ -21,7 +21,7 @@ DEFAULT_HARNESSES = ("cc", "pi", "oc", "cursor", "copilot")
 def promoted_source() -> str:
     text = MATRIX.read_text()
     match = re.search(
-        r"`(exact-ptdd-[^`]+)` ist der universelle EXACT-Coding-Default auf GPT-5\.6 SOL/pi", text
+        r"`(exact-ptdd-[^`]+)` is the universal EXACT Coding default on GPT-5\.6 SOL/pi", text
     )
     if not match:
         raise SystemExit("No promoted SOL default found in model-recommendation-matrix.md")

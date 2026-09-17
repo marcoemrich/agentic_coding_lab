@@ -2,11 +2,11 @@
 
 _Does the code-quality profile of Opus (opus-4-8) differ between the Claude Code and the pi harness, each with and without thinking, at a constant workflow generation (hybrid-v4)?_
 
-Generated: 2026-09-11T07:48:37Z
+Generated: 2026-09-17T01:17:42Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -15,7 +15,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8 | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### cognitive_max
 

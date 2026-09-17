@@ -2,11 +2,11 @@
 
 _On the OpenAI subscription route, does a workflow line written natively for Sol (basic-sol-tdd, Predictive TDD) beat structureless TDD (inline-tdd-v1) — the floor that no Opus-derived architecture clears on this model?_
 
-Generated: 2026-09-13T18:30:00Z
+Generated: 2026-09-17T01:17:49Z
 
 Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -20,7 +20,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 | game-of-life-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex | 5 | 5 | ✅ |
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### cognitive_max
 

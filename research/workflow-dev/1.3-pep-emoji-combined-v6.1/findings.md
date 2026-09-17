@@ -1,8 +1,8 @@
 # RQ-pep-emoji-v6.1 — Findings
 
-_Sind die Effekte der pep- und emoji-Reduktionen auf hybrid-v2-Basis additiv (zwei unabhaengige Kanaele) oder gemeinsam getragen (ein 'Prompt-Drumherum'-Mechanismus)?_
+_Are the effects of the pep and emoji reductions on the hybrid-v2 base additive (two independent channels) or jointly carried (a single 'prompt scaffolding' mechanism)?_
 
-## Übersicht (Primär-Outcome Code-Qualität — kleiner = besser)
+## Overview (primary outcome code quality — lower = better)
 
 | Outcome | hybrid (pep+emoji) | no-pep | no-emoji | no-pep-no-emoji |
 |---|---:|---:|---:|---:|
@@ -12,62 +12,62 @@ _Sind die Effekte der pep- und emoji-Reduktionen auf hybrid-v2-Basis additiv (zw
 | `cognitive_max` | 6.5 | **4.6** 🏆 | 6.6 | 7.8 |
 | `mccabe_max` | 5.2 | 4.8 | **4.6** 🏆 | 5.0 |
 
-Die kombinierte Reduktion gewinnt **keine** Code-Qualitäts-Metrik. Alle Δ < 1σ — Code-Qualität bleibt indistinguishable, aber die Trophäen-Verteilung (no-pep 3×, no-emoji 2×, kombiniert 0×) ist konsistent mit dem Disziplin-Interaktions-Befund unten.
+The combined reduction wins **no** code quality metric. All Δ < 1σ — code quality stays indistinguishable, but the trophy distribution (no-pep 3×, no-emoji 2×, combined 0×) is consistent with the discipline interaction finding below.
 
 ---
 
-## F-1.1 — Pep- und Emoji-Reduktion: keine Additivität, sondern Sättigung mit Anti-Effekt
+## F-1.1 — Pep and emoji reduction: no additivity, but saturation with an anti-effect
 
-**Aussage:** Die kombinierte Entfernung von Pep-Talks UND Decoration-Emojis (exact-hybrid-v2.3-no-pep-no-emoji-cc) auf hybrid-v2-Basis verhält sich **nicht additiv** zu den Einzel-Reduktionen aus [RQ-pep-v6.1](../1.1-pep-effect-v6.1/findings.md) und [RQ-emoji-v6.1](../1.2-emoji-effect-v6.1/findings.md). Die Disziplin-Verschiebung saturiert bei `tests_passed_immediately` und **kehrt sich um** bei `refactorings_applied` — die Kombination refactoriert sogar weniger als die Baseline mit Pep+Emoji.
+**Statement:** The combined removal of pep talks AND decoration emojis (exact-hybrid-v2.3-no-pep-no-emoji-cc) on the hybrid-v2 base behaves **non-additively** relative to the single reductions from [RQ-pep-v6.1](../1.1-pep-effect-v6.1/findings.md) and [RQ-emoji-v6.1](../1.2-emoji-effect-v6.1/findings.md). The discipline shift saturates for `tests_passed_immediately` and **reverses** for `refactorings_applied` — the combination even refactors less than the baseline with pep+emoji.
 
-| Metrik (Richtung) | hybrid (Baseline) | no-pep | no-emoji | kombiniert | Additive Vorhersage |
+| Metric (direction) | hybrid (baseline) | no-pep | no-emoji | combined | Additive prediction |
 |---|---:|---:|---:|---:|---:|
-| `refactorings_applied` (höher = aktiver) | 4.1 | **7.0** 🏆 | 5.4 | 3.8 | ~9.1 |
-| `tests_passed_immediately` (kleiner = disziplinierter) | 4.7 | **1.2** 🏆 | 2.2 | **1.2** 🏆 | ~0.6 (multiplikativ) |
+| `refactorings_applied` (higher = more active) | 4.1 | **7.0** 🏆 | 5.4 | 3.8 | ~9.1 |
+| `tests_passed_immediately` (lower = more disciplined) | 4.7 | **1.2** 🏆 | 2.2 | **1.2** 🏆 | ~0.6 (multiplicative) |
 | `cycle_count` | 8.7 | 8.8 | 8.8 | 9.2 | ≈ |
 | `predictions_correct_rate` | 99.4% | **100%** 🏆 | 97.7% | 98.6% | ≈ |
 
-**Begründung:** Die Interaktion ist nicht-monoton: für `tests_passed_immediately` reicht die Pep-Entfernung allein, um den maximalen Disziplin-Gewinn zu erzielen (1.2 = derselbe Wert in no-pep und no-pep-no-emoji). Für `refactorings_applied` *verkehrt* sich der Einzel-Effekt bei kombinierter Anwendung sogar in die Gegenrichtung. Eine plausible Lesart: jede der beiden Reduktionen entfernt eine "Reassurance/Wegweiser"-Schicht, die das Modell zum Refactor-Subagenten-Spawn motiviert. Bei *einer* fehlenden Schicht greift das Modell zur verbleibenden und überkompensiert. Bei *beiden* fehlenden Schichten fehlt der Triggertext für mehr Refactoring komplett — der Workflow läuft schneller durch, mit weniger Refactor-Subagent-Aufrufen. Hypothese A (additiv) ist damit klar **widerlegt**; Hypothese B (gemeinsamer Mechanismus / Sättigung) ist teilweise bestätigt, aber die Anti-Additivität bei `refactorings_applied` zeigt, dass die Kanäle nicht nur denselben Effekt verdoppeln, sondern miteinander interagieren.
+**Rationale:** the interaction is non-monotonic: for `tests_passed_immediately` the pep removal alone suffices to reach the maximum discipline gain (1.2 = the same value in no-pep and no-pep-no-emoji). For `refactorings_applied` the single effect even *inverts* under combined application. A plausible reading: each of the two reductions removes a "reassurance/signpost" layer that motivates the model to spawn the refactor subagent. With *one* layer missing the model falls back on the remaining one and overcompensates. With *both* layers missing the trigger text for more refactoring is absent entirely — the workflow runs through faster, with fewer refactor subagent calls. Hypothesis A (additive) is thus clearly **refuted**; hypothesis B (shared mechanism / saturation) is partially confirmed, but the anti-additivity for `refactorings_applied` shows that the channels do not merely duplicate the same effect but interact with each other.
 
 ---
 
-## F-1.2 — Korrektheit robust gegen alle Reduktionskombinationen
+## F-1.2 — Correctness robust against all reduction combinations
 
-**Aussage:** Alle vier Workflows erreichen 100 % **Korrektheit (innen)** (`tests_passing`) und 100 % **Korrektheit (außen)** (`verification_pct`) sowie 100 % `completed_within_budget`. Weder die Einzel-Reduktionen noch ihre Kombination beschädigen die Korrektheit auf game-of-life-example-mapping.
+**Statement:** All four workflows reach 100 % **Correctness (internal)** (`tests_passing`) and 100 % **Correctness (external)** (`verification_pct`) as well as 100 % `completed_within_budget`. Neither the single reductions nor their combination damage correctness on game-of-life-example-mapping.
 
 | Outcome | hybrid | no-pep | no-emoji | no-pep-no-emoji |
 |---|---:|---:|---:|---:|
-| **Korrektheit (innen)** | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
-| **Korrektheit (außen)** | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
+| **Correctness (internal)** | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
+| **Correctness (external)** | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
 | `completed_within_budget` | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
 
-**Begründung:** Bestätigt H3. Die hybrid-v2-Basis (mit Test-List-Scope-Fix) ist robust gegen die untersuchten Decoration-/Pep-Reduktionen — der Korrektheits-Befund von RQ-pep-v6.1 und RQ-emoji-v6.1 übersetzt sich vollständig in die Kombination.
+**Rationale:** confirms H3. The hybrid-v2 base (with the test-list scope fix) is robust against the decoration/pep reductions examined — the correctness finding from RQ-pep-v6.1 and RQ-emoji-v6.1 carries over fully to the combination.
 
 ---
 
-## F-1.3 — Kombinierte Reduktion läuft schneller mit weniger Refactor-Phasen
+## F-1.3 — Combined reduction runs faster with fewer refactor phases
 
-**Aussage:** exact-hybrid-v2.3-no-pep-no-emoji-cc ist die **schnellste** Zelle (432 s, −15 % vs Baseline 508 s) und liegt bei Tokens unter beiden Einzelreduktionen. Mechanistisch ist das eine Konsequenz von F-1.1: weniger Refactor-Subagent-Spawns (3.8 vs 7.0 in no-pep, 5.4 in no-emoji) → geringere Wallclock- und Token-Last.
+**Statement:** exact-hybrid-v2.3-no-pep-no-emoji-cc is the **fastest** cell (432 s, −15 % vs baseline 508 s) and sits below both single reductions on tokens. Mechanistically this is a consequence of F-1.1: fewer refactor subagent spawns (3.8 vs 7.0 in no-pep, 5.4 in no-emoji) → lower wallclock and token load.
 
-| Metrik (kleiner = besser) | hybrid | no-pep | no-emoji | no-pep-no-emoji |
+| Metric (lower = better) | hybrid | no-pep | no-emoji | no-pep-no-emoji |
 |---|---:|---:|---:|---:|
-| `duration_seconds` (Mittel) | 507.9 | 777.2 | 668.8 | **432.0** 🏆 |
-| `total_tokens` (Mittel) | **6.94 M** 🏆 | 8.66 M | 7.78 M | 7.58 M |
+| `duration_seconds` (mean) | 507.9 | 777.2 | 668.8 | **432.0** 🏆 |
+| `total_tokens` (mean) | **6.94 M** 🏆 | 8.66 M | 7.78 M | 7.58 M |
 
-**Begründung:** Im Gegensatz zur Einzel-Reduktions-Erwartung (no-pep / no-emoji kosten *mehr* Tokens wegen zusätzlicher Refactor-Phasen — siehe RQ-emoji-v6.1 F-1.2) spart die Kombination Zeit, weil der gegenläufige Effekt aus F-1.1 die Refactor-Phasenzahl reduziert. Die Kombination ist also operational günstiger — aber zum Preis der "fehlenden" Refactor-Aktivität, die in den Einzel-Reduktionen als positiver Disziplin-Effekt galt. Was hier "gespart" wird, ist möglicherweise dieselbe Aktivität, die der no-pep-Befund als Vorteil pries — die Kostenrechnung hängt davon ab, wie man "mehr Refactoring" wertet.
+**Rationale:** contrary to the single-reduction expectation (no-pep / no-emoji cost *more* tokens because of additional refactor phases — see RQ-emoji-v6.1 F-1.2), the combination saves time, because the counteracting effect from F-1.1 reduces the number of refactor phases. The combination is therefore operationally cheaper — but at the price of the "missing" refactor activity that counted as a positive discipline effect in the single reductions. What is "saved" here is possibly the same activity that the no-pep finding praised as an advantage — the cost calculation depends on how one values "more refactoring".
 
 ---
 
-## Status der Hypothesen
+## Hypothesis status
 
-| Hypothese | Status | Beleg |
+| Hypothesis | Status | Evidence |
 |---|---|---|
-| **H1** Effekte additiv | widerlegt | `refactorings_applied` kombiniert = 3.8 vs. additive Vorhersage ~9.1; sogar unter Baseline 4.1 |
-| **H2** Effekte saturiert / gemeinsamer Mechanismus | teilweise bestätigt | `tests_passed_immediately` saturiert exakt bei no-pep-Wert; aber Anti-Additivität bei `refactorings_applied` ist mehr als reine Sättigung |
-| **H3** Korrektheit invariant | bestätigt | 100/100/100/100 in beiden Korrektheits-Metriken und `completed_within_budget` |
-| **H4** Code-Qualität indistinguishable | bestätigt | alle Δ < 1σ; Trophäen-Verteilung (no-pep 3×, no-emoji 2×, kombiniert 0×) ohne klarer Sieger |
-| **H5** Token-Kosten kombiniert höher als hybrid | widerlegt (mit umgekehrtem Trend) | kombiniert sogar **schneller** als Baseline (-15 %), weil weniger Refactor-Phasen |
+| **H1** Effects additive | refuted | `refactorings_applied` combined = 3.8 vs. additive prediction ~9.1; even below baseline 4.1 |
+| **H2** Effects saturated / shared mechanism | partially confirmed | `tests_passed_immediately` saturates exactly at the no-pep value; but anti-additivity for `refactorings_applied` is more than pure saturation |
+| **H3** Correctness invariant | confirmed | 100/100/100/100 in both correctness metrics and `completed_within_budget` |
+| **H4** Code quality indistinguishable | confirmed | all Δ < 1σ; trophy distribution (no-pep 3×, no-emoji 2×, combined 0×) without a clear winner |
+| **H5** Token cost combined higher than hybrid | refuted (with inverse trend) | combined is even **faster** than the baseline (-15 %), because of fewer refactor phases |
 
-**Konsequenz für den Reduktions-Recipe:** Pep und Emoji sind **nicht orthogonal** als Reduktionshebel — ihre Kombination produziert qualitativ anderes Verhalten als die Summe der Einzeleffekte. Eine kombinierte exact-hybrid-v2.3-no-pep-no-emoji-cc-Variante ist als "schnellster hybrid-v2-Workflow ohne Korrektheits-Verlust" interessant, opfert aber einen Teil der Refactor-Aktivität, die die Einzel-Reduktionen als positiven Disziplin-Effekt zeigten. Welche dieser Lesarten ("schneller & schlanker" vs. "weniger diszipliniert") überwiegt, hängt vom Anwendungskontext ab und sollte im nächsten Schritt auf einer komplexeren Kata (claim-office) validiert werden, bevor exact-hybrid-v2.3-no-pep-no-emoji-cc als Recipe-Empfehlung übernommen wird.
+**Consequence for the reduction recipe:** pep and emoji are **not orthogonal** as reduction levers — their combination produces qualitatively different behaviour than the sum of the single effects. A combined exact-hybrid-v2.3-no-pep-no-emoji-cc variant is interesting as the "fastest hybrid-v2 workflow without correctness loss", but sacrifices part of the refactor activity that the single reductions showed as a positive discipline effect. Which of these readings ("faster & leaner" vs. "less disciplined") prevails depends on the application context and should be validated on a more complex kata (claim-office) as the next step, before exact-hybrid-v2.3-no-pep-no-emoji-cc is adopted as a recipe recommendation.
 
-**Caveat Routing-Asymmetrie:** Die 5 neuen exact-hybrid-v2.3-no-pep-no-emoji-cc-Runs liefen via Portkey-Gateway, die 15 wiederverwendeten Baseline-Runs direct API. Die `duration_seconds`-Differenz könnte teilweise Routing-Artefakt sein (Portkey-Latenz unterscheidet sich i.d.R. von Direct). Die Disziplin-Befunde (`refactorings_applied`, `tests_passed_immediately`) und Korrektheits-Befunde sollten Routing-unabhängig sein.
+**Caveat routing asymmetry:** the 5 new exact-hybrid-v2.3-no-pep-no-emoji-cc runs went via the Portkey gateway, the 15 reused baseline runs via direct API. The `duration_seconds` difference could partly be a routing artifact (Portkey latency usually differs from direct). The discipline findings (`refactorings_applied`, `tests_passed_immediately`) and correctness findings should be routing-independent.

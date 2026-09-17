@@ -9,6 +9,8 @@ Hinweise für die Workshop-Durchführung.
 ## Setting
 
 Aufgabe: [`prose.md`](prose.md) (Deutsch, narrativer Galaxy-Trucker-Stil).
+Englische Fassung: [`prose-en.md`](prose-en.md), Trainer-Notizen dazu:
+[`trainer-notes-en.md`](trainer-notes-en.md).
 
 Verifikations-Szenarien (zur Wertekontrolle / Demonstration nach dem
 Mapping): [`../../../../experiments/katas/claim-office-verification/`](../../../../experiments/katas/claim-office-verification/).

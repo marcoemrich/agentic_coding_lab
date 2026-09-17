@@ -1,18 +1,18 @@
 ---
 id: RQ-metric-driven-refactor-v62
-question: "Verbessert ein Refactor-Agent, der deterministische Metriken (ESLint smells, SonarJS cognitive complexity, McCabe cyclomatic complexity) selbst pre/post misst und APP-Mass parallel ausweist, die Code-Qualitaet auf claim-office gegenueber dem Baseline-exact-hybrid-v4-cleaned-cc-Workflow — ohne Korrektheit oder TDD-Disziplin zu beschaedigen?"
+question: "Does a refactor agent that measures deterministic metrics itself pre/post (ESLint smells, SonarJS cognitive complexity, McCabe cyclomatic complexity) and reports APP mass alongside them improve code quality on claim-office relative to the baseline exact-hybrid-v4-cleaned-cc workflow — without damaging correctness or TDD discipline?"
 factors:
   workflow_x_prompt:
-    - {workflow: exact-hybrid-v4-cleaned-cc,        prompt: example-mapping}  # Baseline (aktuelle Default-Basis aus RQ-1.6)
-    - {workflow: exact-hybrid-v4.4-metric-refactor-cc,  prompt: example-mapping}  # + Tool-Aufrufe (ESLint pre/post) + McCabe-Berechnung parallel zu APP
+    - {workflow: exact-hybrid-v4-cleaned-cc,        prompt: example-mapping}  # Baseline (current default base from RQ-1.6)
+    - {workflow: exact-hybrid-v4.4-metric-refactor-cc,  prompt: example-mapping}  # + tool calls (ESLint pre/post) + McCabe computation alongside APP
   kata_base: [claim-office]
 controls:
   model:
     any:
-      - opus-4-7-no-thinking          # canonical fuer neue hybrid-v4.4-Fill-Runs (subscription tokens, single-shard)
-      - opus-4-7-portkey-no-thinking  # akzeptiert fuer wiederverwendete hybrid-v4-Baseline-Runs (Portkey-Gateway)
+      - opus-4-7-no-thinking          # canonical for new hybrid-v4.4 fill runs (subscription tokens, single-shard)
+      - opus-4-7-portkey-no-thinking  # accepted for reused hybrid-v4 baseline runs (Portkey gateway)
 outcomes:
-  # primaer: Code-Qualitaet (Metriken treiben den Refactor direkt)
+  # primary: code quality (the metrics drive the refactor directly)
   - cognitive_max
   - cognitive_avg
   - mccabe_max
@@ -22,16 +22,16 @@ outcomes:
   - smell_total
   - smell_complexity
   - code_mass
-  # TDD-Disziplin (Sanity: zusaetzliche Tool-Aufrufe duerfen Refactor-Frequenz nicht stoeren)
+  # TDD discipline (sanity: the extra tool calls must not disturb refactor frequency)
   - refactorings_applied
   - cycle_count
   - predictions_correct_rate
   - tests_passed_immediately
-  # Korrektheit (Sanity: Bundle-Risiko aus RQ-1.9/RQ-1.10 vs claim-office)
+  # correctness (sanity: bundle risk from RQ-1.9/RQ-1.10 vs claim-office)
   - tests_passing
   - verification_pct
   - completed_within_budget
-  # Kosten (Pre/Post-Tool-Aufrufe + groesseres Refactor-Prompt → leichter Aufschlag erwartet)
+  # cost (pre/post tool calls + a larger refactor prompt → slight surcharge expected)
   - duration_seconds
   - total_tokens
 min_replicates: 5
@@ -40,72 +40,72 @@ status: aktiv
 
 # RQ-1.11: exact-hybrid-v4.4-metric-refactor-cc vs exact-hybrid-v4-cleaned-cc (claim-office)
 
-Aendert ein deterministisch messender Refactor-Agent die Code-Qualitaet auf einer novel kata mit echten Mehrdeutigkeiten — ohne in das Bundle-Bruch-Muster aus RQ-1.9 (`exact-hybrid-v4.3-audit-bundle-cc`) und RQ-1.10 (`exact-hybrid-v4.1-refactor-vocab-cc`) zu fallen?
+Does a deterministically measuring refactor agent change code quality on a novel kata with genuine ambiguities — without falling into the bundle-break pattern from RQ-1.9 (`exact-hybrid-v4.3-audit-bundle-cc`) and RQ-1.10 (`exact-hybrid-v4.1-refactor-vocab-cc`)?
 
 ## Motivation
 
-Der `refactor`-Agent in der hybrid-v1.x-Linie ueberlaesst die Beurteilung von Code-Qualitaet bisher dem Modell selbst (APP-Mass-Berechnung, Naming-Evaluation, qualitative Smell-Beschreibung). Zwei vorausgegangene Erweiterungs-Versuche scheiterten auf claim-office:
+The `refactor` agent in the hybrid-v1.x line has so far left the assessment of code quality to the model itself (APP mass computation, naming evaluation, qualitative smell description). Two preceding extension attempts failed on claim-office:
 
-- **RQ-1.9** (`exact-hybrid-v4.3-audit-bundle-cc`): zusaetzliche Rationale-Bloecke + Red-Phase-Hardening. Auf GoL klar positiv, auf claim-office `verification_pct` 0.96 → 0.35 (Self-Stop in 6/8 Runs).
-- **RQ-1.10** (`exact-hybrid-v4.1-refactor-vocab-cc`): rein additiver Vokabular-Block im Refactor-Agent (Complexity-Awareness, SRP, Smell→Move-Tabelle). Auf GoL Code-Qualitaet im 1-σ-Noise, auf claim-office `verification_pct` 0.96 → 0.23 (Self-Stop in 4/5 Runs).
+- **RQ-1.9** (`exact-hybrid-v4.3-audit-bundle-cc`): additional rationale blocks + red-phase hardening. Clearly positive on GoL; on claim-office `verification_pct` 0.96 → 0.35 (self-stop in 6/8 runs).
+- **RQ-1.10** (`exact-hybrid-v4.1-refactor-vocab-cc`): a purely additive vocabulary block in the refactor agent (complexity awareness, SRP, smell→move table). Code quality within 1-σ noise on GoL; on claim-office `verification_pct` 0.96 → 0.23 (self-stop in 4/5 runs).
 
-Beide Faelle zeigen dasselbe Muster: Self-Termination nach < ½ der Baseline-Cycles, internes `tests_passing = true` (die geschriebenen Tests sind gruen), externe `verification_pct` kollabiert. Welche Komponente das Self-Stop-Verhalten triggert, ist mit Bundle-Befunden nicht entscheidbar.
+Both cases show the same pattern: self-termination after < ½ the baseline cycles, internal `tests_passing = true` (the tests written are green), external `verification_pct` collapses. Which component triggers the self-stop behavior cannot be decided from bundle results.
 
-`exact-hybrid-v4.4-metric-refactor-cc` testet eine mechanistisch andere Hypothese: **statt Vokabular zu ergaenzen, ruft der Agent deterministische Tools auf und laesst die Zahlen den Refactor steuern**.
+`exact-hybrid-v4.4-metric-refactor-cc` tests a mechanistically different hypothesis: **instead of adding vocabulary, the agent calls deterministic tools and lets the numbers steer the refactor**.
 
-## Workflow-Definition
+## Workflow definition
 
-`exact-hybrid-v4.4-metric-refactor-cc` lebt unter `experiments/workflows/exact-coding/opus/exact-hybrid-v4.4-metric-refactor-cc/` und unterscheidet sich von `exact-hybrid-v4-cleaned-cc` ausschliesslich in einer Datei: `.claude/agents/refactor.md`. Alle anderen Files (`commands/test-list.md`, `commands/red.md`, `commands/green.md`, `rules/tdd.md`, `rules/tdd-with-ts-and-vitest.md`, `rules/tdd-experiment-mode.md`, `settings.json`) sind byte-identisch zur Baseline. Die vier MARKERS (Skill-Aufrufe, "Red Phase Complete", Prediction-Lines, `experiment-done.txt`) sind unangetastet.
+`exact-hybrid-v4.4-metric-refactor-cc` lives under `experiments/workflows/exact-coding/opus/exact-hybrid-v4.4-metric-refactor-cc/` and differs from `exact-hybrid-v4-cleaned-cc` in exactly one file: `.claude/agents/refactor.md`. All other files (`commands/test-list.md`, `commands/red.md`, `commands/green.md`, `rules/tdd.md`, `rules/tdd-with-ts-and-vitest.md`, `rules/tdd-experiment-mode.md`, `settings.json`) are byte-identical to the baseline. The four MARKERS (skill calls, "Red Phase Complete", prediction lines, `experiment-done.txt`) are untouched.
 
-Die Erweiterungen im `refactor.md` sind:
+The extensions in `refactor.md` are:
 
-| Komponente | Beschreibung | Quelle |
+| Component | Description | Source |
 |---|---|---|
-| **Step 0 — Pre-Measurement (ESLint)** | `pnpm exec eslint src/ --format json` aufrufen; Smells (Liste mit rule-id, location, message) und SonarJS cognitive complexity pro Funktion aus dem Output extrahieren | Tool-Call (Bash-Skill schon erlaubt via `settings.json`) |
-| **Step 3 — McCabe Cyclomatic Complexity** | Pro Funktion: bei 1 starten, +1 fuer jedes if/else-if/case/&&/‖/?:/for/while/catch. Worst-Case-Funktion identifizieren als Refactor-Ziel; Minimierungs-Angles werden im Prompt aufgezaehlt (Guard-Clauses, Lookup-Tables, Polymorphismus) | Agent-interne Berechnung analog zur APP-Mass-Berechnung (Steps 2) |
-| **Step 5 — Post-Measurement (ESLint)** | ESLint erneut aufrufen, Smell- und Cognitive-Delta berechnen | Tool-Call |
-| **Step 6 — Document Decision** | Pre/Post-Block ueber ALLE vier Metriken (Smells, Cognitive, APP, McCabe); explizite Klausel "Wenn eine Metrik schlechter wurde: revert und alternativen Winkel" | Prompt-Inhalt |
-| **APP** | unveraendert beibehalten (parallel, nicht ersetzend) | erbt von Baseline |
+| **Step 0 — pre-measurement (ESLint)** | call `pnpm exec eslint src/ --format json`; extract smells (a list with rule-id, location, message) and SonarJS cognitive complexity per function from the output | tool call (the Bash skill is already permitted via `settings.json`) |
+| **Step 3 — McCabe cyclomatic complexity** | per function: start at 1, +1 for each if/else-if/case/&&/‖/?:/for/while/catch. Identify the worst-case function as the refactor target; minimization angles are enumerated in the prompt (guard clauses, lookup tables, polymorphism) | agent-internal computation, analogous to the APP mass computation (step 2) |
+| **Step 5 — post-measurement (ESLint)** | call ESLint again, compute the smell and cognitive delta | tool call |
+| **Step 6 — document decision** | pre/post block across ALL four metrics (smells, cognitive, APP, McCabe); explicit clause "if a metric got worse: revert and take an alternative angle" | prompt content |
+| **APP** | kept unchanged (alongside, not replacing) | inherited from the baseline |
 
-Bewusst NICHT enthalten (verboten gemaess `CLAUDE.md` → "Keine numerischen Schwellwerte in Workflow-Prompts"):
+Deliberately NOT included (forbidden per `CLAUDE.md` → "Keine numerischen Schwellwerte in Workflow-Prompts"):
 
-- Keine Aussage "if cognitive > 15 then refactor" oder Aehnliches im Prompt.
-- Keine Auto-Revert-Schleife mit Iterationslimit.
-- Keine ESLint-config-Aenderungen (die existierenden Schwellwerte aus `eslint.config.mjs` sind Pipeline-Infrastruktur, nicht Workflow-Inhalt).
+- No statement like "if cognitive > 15 then refactor" or similar in the prompt.
+- No auto-revert loop with an iteration limit.
+- No ESLint config changes (the existing thresholds in `eslint.config.mjs` are pipeline infrastructure, not workflow content).
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Korrektheit, primaer):** hybrid-v4.4 erhaelt die Korrektheit auf claim-office (`verification_pct` ≥ 0.85, `experiment-done.txt` in ≥ 80 % der Runs). Belastet das Bundle-Risiko nicht, weil der Mechanismus deterministisch und nicht vokabular-getrieben ist.
-- **H2 (Code-Qualitaet):** hybrid-v4.4 reduziert `cognitive_max` und `mccabe_max` gegenueber Baseline messbar (mind. 1 σ Effektgroesse), weil das Pre/Post-Messen dem Agent objektive Trigger gibt.
-- **H3 (TDD-Disziplin, Sanity):** `cycle_count`, `refactorings_applied`, `predictions_correct_rate` bleiben innerhalb 1 σ der Baseline. Wenn nicht: Tool-Aufrufe stoeren den TDD-Loop, was ein eigenstaendiger Befund waere.
-- **H4 (Kosten):** Token- und Wallclock-Aufschlag durch zwei Tool-Aufrufe pro Cycle plus McCabe-Berechnung. Erwartet +10–20 % Tokens, Wallclock je nach Cycle-Count.
+- **H1 (correctness, primary):** hybrid-v4.4 preserves correctness on claim-office (`verification_pct` ≥ 0.85, `experiment-done.txt` in ≥ 80 % of runs). It does not incur the bundle risk, because the mechanism is deterministic rather than vocabulary-driven.
+- **H2 (code quality):** hybrid-v4.4 reduces `cognitive_max` and `mccabe_max` measurably against the baseline (at least 1 σ effect size), because pre/post measuring gives the agent objective triggers.
+- **H3 (TDD discipline, sanity):** `cycle_count`, `refactorings_applied`, `predictions_correct_rate` stay within 1 σ of the baseline. If not, the tool calls disturb the TDD loop, which would be an independent result.
+- **H4 (cost):** Token and wallclock surcharge from two tool calls per cycle plus the McCabe computation. Expected +10–20 % tokens, wallclock depending on cycle count.
 
-## Datenlage zu RQ-Beginn
+## Data situation at RQ start
 
-Stichproben-Smoke 2026-05-27 (claim-office-example-mapping × hybrid-v4.4 × opus-4-7-no-thinking, native API, n=2 nach Subscription-Cap-Bereinigung):
+Sample smoke 2026-05-27 (claim-office-example-mapping × hybrid-v4.4 × opus-4-7-no-thinking, native API, n=2 after clearing subscription-cap runs):
 
-| Run | ver_pct | cycles | refactorings | done.txt | Wallclock |
+| Run | ver_pct | cycles | refactorings | done.txt | wallclock |
 |---|---:|---:|---:|---|---:|
 | 2026-05-27_03-39-46 | **1.00** (15/15) | 38 | 37 | ✓ | 5000s |
 | 2026-05-27_14-28-32-2 | **0.93** (14/15) | 42 | n/a | ✓ | 9197s |
 
-Mean ver_pct (n=2) = 0.965, beide done.txt vorhanden. Akzeptanzschwelle 0.85 vorerst erfuellt; H1 ist konsistent mit der Stichprobe, braucht aber n=5 fuer eine belastbare Aussage.
+Mean ver_pct (n=2) = 0.965, both with done.txt present. The 0.85 acceptance threshold is met for now; H1 is consistent with the sample but needs n=5 for a defensible statement.
 
-Zwei weitere Runs der Stichprobe vom 27.05. waren Subscription-Cap- bzw. External-Session-Cut-Artefakte (siehe Memory `v64-stress-postmortem.md`); sie wurden retroaktiv als `subscription-capped` / `external-session-cut` markiert und zaehlen nicht. Der dadurch ausgeloeste Detection-Fix in `run-batch.sh` sollte solche Artefakte ab 2026-05-27 sofort erkennen und in den Retry-Pfad umlenken.
+Two further runs from the 05-27 sample were subscription-cap and external-session-cut artifacts respectively (see memory `v64-stress-postmortem.md`); they were retroactively marked `subscription-capped` / `external-session-cut` and do not count. The detection fix in `run-batch.sh` that they triggered should recognize such artifacts immediately from 2026-05-27 onward and divert them into the retry path.
 
 ## Caveats
 
-- **Routing-Asymmetrie:** Die 18 wiederverwendeten hybrid-v4-Baseline-Runs liegen unter `opus-4-7-portkey-no-thinking` (Portkey-Gateway via Vertex EU). Die hybrid-v4.4-Runs entstehen unter `opus-4-7-no-thinking` (Native API, Subscription-Tokens). Beide Zellen werden via `controls.model: {any: [...]}` zusammengefuehrt — Memory-Notiz `controls-model-or-match.md` deckt diesen Mechanismus. Annahme: das Routing beeinflusst das Outcome auf opus-4-7 nicht. Eine spaetere Replikation einer Zelle ueber-kreuz (hybrid-v4.4 Portkey oder hybrid-v4 native) wuerde die Annahme schaerfer pruefen, ist fuer den primaeren Workflow-Vergleich aber nachrangig.
-- **Single-shard fuer hybrid-v4.4:** Subscription-Tokens stehen unter Last; parallele Shards erhoehen das Cap-Risiko. Ab 2026-05-27 fixt `run-batch.sh` zwar Empty-Log-Cuts (Retry mit Backoff), aber jeder Cut kostet zusaetzliche Wallclock. hybrid-v4.4-Fill-Runs einzeln fahren.
-- **Bundle-Caveat (kausale Lokalisierung):** hybrid-v4.4 kombiniert drei Aenderungen — (a) ESLint-Aufruf, (b) McCabe-Berechnung neben APP, (c) Pre/Post-Disziplin mit Revert-Klausel. Wenn ein Effekt sichtbar wird, sind diese drei nicht voneinander getrennt. Eine spaetere Sub-RQ koennte (a) isoliert testen (nur ESLint, keine McCabe), wenn der Bundle-Effekt eine Ablation rechtfertigt.
-- **claim-office-only:** GoL bleibt fuer eine eventuelle Folge-RQ. GoL-Smoke (n=1) lief sauber (9 cycles, 18/18 predictions, ver 1.0), aber das ist kein Code-Qualitaets-Befund.
+- **Routing asymmetry:** The 18 reused hybrid-v4 baseline runs sit under `opus-4-7-portkey-no-thinking` (Portkey gateway via Vertex EU). The hybrid-v4.4 runs are produced under `opus-4-7-no-thinking` (native API, subscription tokens). Both cells are merged via `controls.model: {any: [...]}` — the memory note `controls-model-or-match.md` covers this mechanism. Assumption: routing does not influence the outcome on opus-4-7. A later cross-replication of one cell (hybrid-v4.4 on Portkey or hybrid-v4 native) would test that assumption more sharply, but is secondary to the primary workflow comparison.
+- **Single-shard for hybrid-v4.4:** Subscription tokens are under load; parallel shards raise the cap risk. From 2026-05-27, `run-batch.sh` does fix empty-log cuts (retry with backoff), but every cut costs additional wallclock. Run hybrid-v4.4 fill runs one at a time.
+- **Bundle caveat (causal localization):** hybrid-v4.4 combines three changes — (a) the ESLint call, (b) the McCabe computation alongside APP, (c) pre/post discipline with a revert clause. If an effect becomes visible, those three are not separated from one another. A later sub-RQ could test (a) in isolation (ESLint only, no McCabe) if the bundle effect justifies an ablation.
+- **claim-office only:** GoL is left for a possible follow-up RQ. The GoL smoke (n=1) ran cleanly (9 cycles, 18/18 predictions, ver 1.0), but that is not a code quality result.
 
-## Status / Naechste Schritte
+## Status / next steps
 
-1. Batch-Plan generieren (`batch-plan-from-rq.py`), die 2 bestehenden hybrid-v4.4-Runs werden als Treffer erkannt, fehlende Runs aufgefuellt.
-2. Fill-Batch single-shard, Native API, `ANTHROPIC_*=""`-Override fuer Subscription-Routing.
-3. Aggregation via `aggregate-by-query.py`, `findings.md` schreiben gemaess `/run-rq` Skill-Konventionen (Trophy-Konvention, Spot-Check vor Aggregation, Plausibilitaets-Cross-Check).
+1. Generate the batch plan (`batch-plan-from-rq.py`); the 2 existing hybrid-v4.4 runs are recognized as hits, missing runs are filled.
+2. Fill batch single-shard, native API, `ANTHROPIC_*=""` override for subscription routing.
+3. Aggregate via `aggregate-by-query.py`, write `findings.md` per the `/run-rq` skill conventions (trophy convention, spot-check before aggregation, plausibility cross-check).
 
 ## Findings
 
-Siehe [findings.md](findings.md) (wird mit Skill `/run-rq` befuellt nachdem n=5 erreicht ist).
+See [findings.md](findings.md) (to be filled with the `/run-rq` skill once n=5 is reached).

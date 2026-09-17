@@ -1,6 +1,6 @@
 # Sol stack-profile extraction — fresh comparison
 
-## Übersicht
+## Overview
 
 Baseline: `exact-sol-v1-pi`. Extracted: `exact-sol-v1.3-stack-profile-pi`.
 Model: `gpt-5-6-sol-codex`, pi 0.81.1, subscription route, example-mapping.

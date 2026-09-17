@@ -2,11 +2,11 @@
 
 _Does example mapping increase correctness compared to prose and user story — and is the effect model-dependent?_
 
-Generated: 2026-09-11T07:48:28Z
+Generated: 2026-09-17T01:17:35Z
 
 Cells declared: 24 · matched runs: 129 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -27,7 +27,7 @@ Cells declared: 24 · matched runs: 129 · min_replicates: 5
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking | 5 | 5 | ✅ |
 | claim-office-user-story | exact-single-context-v1-cc | opus-4-7 | 5 | 5 | ✅ |
-| claim-office-user-story | exact-single-context-v1-cc | opus-4-7-no-thinking | 5 | 3 | ⚠️ nur 3/5 ohne Timeout |
+| claim-office-user-story | exact-single-context-v1-cc | opus-4-7-no-thinking | 5 | 3 | ⚠️ only 3/5 without timeout |
 | claim-office-user-story | exact-single-context-v1-cc | opus-4-6-portkey | 7 | 7 | ✅ |
 | claim-office-user-story | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking | 8 | 8 | ✅ |
 | claim-office-user-story | exact-single-context-v1-cc | sonnet-4-6-portkey | 5 | 5 | ✅ |
@@ -35,7 +35,7 @@ Cells declared: 24 · matched runs: 129 · min_replicates: 5
 | claim-office-user-story | exact-single-context-v1-cc | haiku-4-5-portkey | 5 | 5 | ✅ |
 | claim-office-user-story | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

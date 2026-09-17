@@ -1,19 +1,19 @@
 # RQ-why-block-effect-v6.1 — Aggregation
 
-_Tragen Why-Bloecke (kausale Begruendungen neben MUSTs) auf hybrid-v2-Basis einen messbaren TDD-Disziplin- oder Korrektheits-Vorteil ueber rein imperative Anweisungen — bei voll erhaltenem PEP?_
+_Do why blocks (causal justifications alongside MUSTs) on the hybrid-v2 base carry a measurable TDD discipline or correctness advantage over purely imperative instructions — with PEP fully retained?_
 
-Generated: 2026-09-11T07:48:51Z
+Generated: 2026-09-17T01:17:09Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 8
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking | 7 | 7 | ⚠️ unter min_replicates (7/8) |
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking | 7 | 7 | ⚠️ below min_replicates (7/8) |
 | claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking | 8 | 8 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### predictions_correct_rate (pooled %)
 

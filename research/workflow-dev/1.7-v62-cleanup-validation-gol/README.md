@@ -1,29 +1,29 @@
 ---
 id: RQ-v62-cleanup-validation-gol
-question: "Generalisiert das Cleanup-Aequivalenz-Ergebnis aus RQ-1.6 (claim-office) auch auf die trainings-bekannte game-of-life-Kata, oder zeigt exact-hybrid-v4-cleaned-cc dort einen anderen Effekt als auf claim-office?"
+question: "Does the cleanup equivalence result from RQ-1.6 (claim-office) also generalize to the training-known game-of-life kata, or does exact-hybrid-v4-cleaned-cc show a different effect there than on claim-office?"
 factors:
   workflow_x_prompt:
-    - {workflow: exact-hybrid-v3-with-why-cc,             prompt: example-mapping}  # Baseline (mit Why-Bloecken aus RQ-1.5)
-    - {workflow: exact-hybrid-v4-cleaned-cc,     prompt: example-mapping}  # + Cleanup 2/3/6 aus v6.5.1-Audit
+    - {workflow: exact-hybrid-v3-with-why-cc,             prompt: example-mapping}  # baseline (with why blocks from RQ-1.5)
+    - {workflow: exact-hybrid-v4-cleaned-cc,     prompt: example-mapping}  # + cleanup 2/3/6 from the v6.5.1 audit
 controls:
   model: opus-4-7-portkey-no-thinking
   kata_base: game-of-life
 outcomes:
-  # primaer: Code-Qualitaet (auf GoL ist Korrektheit saturiert)
+  # primary: code quality (on GoL correctness is saturated)
   - code_mass
   - smell_total
   - cc_longest_function
   - cognitive_max
   - mccabe_max
-  # Korrektheit (zur Bestaetigung dass GoL nicht bricht)
+  # correctness (to confirm that GoL does not break)
   - tests_passing
   - completed_within_budget
-  # TDD-Disziplin
+  # TDD discipline
   - predictions_correct_rate
   - refactorings_applied
   - tests_passed_immediately
   - cycle_count
-  # Kosten
+  # cost
   - duration_seconds
   - total_tokens
 min_replicates: 5
@@ -32,40 +32,40 @@ status: aktiv
 
 # RQ-1.7: exact-hybrid-v4-cleaned-cc vs exact-hybrid-v3-with-why-cc (game-of-life)
 
-Generalisiert der RQ-1.6-Befund (Cleanups verhalts-aequivalent zu exact-hybrid-v3-with-why-cc auf claim-office) auch auf die trainings-bekannte `game-of-life-example-mapping`-Kata, oder zeigen sich dort andere Effekte?
+Does the RQ-1.6 finding (cleanups behaviourally equivalent to exact-hybrid-v3-with-why-cc on claim-office) also generalize to the training-known `game-of-life-example-mapping` kata, or do different effects show up there?
 
 ## Motivation
 
-RQ-1.6 hat auf `claim-office-example-mapping × opus-4-7-portkey-no-thinking` festgestellt: exact-hybrid-v4-cleaned-cc ist gegenueber exact-hybrid-v3-with-why-cc verhalts-aequivalent — keine Korrektheits-Regression, leichte Disziplin-Drift (mehr Refactorings, engere Streuung), moderate Kosten (+13 % Wallclock).
+RQ-1.6 established on `claim-office-example-mapping × opus-4-7-portkey-no-thinking`: exact-hybrid-v4-cleaned-cc is behaviourally equivalent to exact-hybrid-v3-with-why-cc — no correctness regression, slight discipline drift (more refactorings, tighter spread), moderate cost (+13 % wallclock).
 
-Die [hybrid-v2-Reduktions-Linie](../1.1-pep-effect-v6.1/findings.md) hat aber wiederholt gezeigt, dass Workflow-Effekte **kata-spezifisch** sind:
-- Pep-/Emoji-Reduktion war auf GoL korrektheits-invariant, brach aber auf claim-office.
-- Disziplin-Pattern (welcher Workflow refactoriert mehr) kehrt sich teilweise zwischen GoL und claim-office um.
+The [hybrid-v2 reduction line](../1.1-pep-effect-v6.1/findings.md) has repeatedly shown, however, that workflow effects are **kata-specific**:
+- The pep/emoji reduction was correctness-invariant on GoL, but broke on claim-office.
+- The discipline pattern (which workflow refactors more) partly inverts between GoL and claim-office.
 
-Diese RQ prueft, ob die Cleanup-Aequivalenz aus RQ-1.6 modell-aequivalent ist oder ob GoL ein anderes Bild liefert.
+This RQ tests whether the cleanup equivalence from RQ-1.6 is model-equivalent or whether GoL yields a different picture.
 
-**Erwartung:** Auf GoL ist `verification_pct` / `tests_passing` typischerweise saturiert (beide Workflows nahe 100 %), sodass die Korrektheits-Achse keine Differenz aufzeigt. Spannend wird der Disziplin- und Code-Qualitaets-Vergleich.
+**Expectation:** on GoL `verification_pct` / `tests_passing` is typically saturated (both workflows near 100 %), so the correctness axis shows no difference. The interesting part is the discipline and code quality comparison.
 
-## Workflow-Definition
+## Workflow definition
 
-Identisch zu RQ-1.6 — exact-hybrid-v4-cleaned-cc ist exact-hybrid-v3-with-why-cc + die drei Hygiene-Cleanups aus dem archivierten v6.5.1-blueprint-audit (Konsistenz-Renames, refactor.md-Entkopplung, tdd-experiment-mode-Reframing). Diff:
+Identical to RQ-1.6 — exact-hybrid-v4-cleaned-cc is exact-hybrid-v3-with-why-cc + the three hygiene cleanups from the archived v6.5.1 blueprint audit (consistency renames, refactor.md decoupling, tdd-experiment-mode reframing). Diff:
 
 ```
 diff -r experiments/workflows/exact-coding/opus/exact-hybrid-v3-with-why-cc experiments/workflows/exact-coding/opus/exact-hybrid-v4-cleaned-cc
 ```
 
-## Hypothesen
+## Hypotheses
 
-- **H0** (Erwartung) — exact-hybrid-v4-cleaned-cc ist auf GoL ebenfalls verhalts-aequivalent zu exact-hybrid-v3-with-why-cc auf Korrektheit, mit eventuell schwacher Disziplin-/Code-Qualitaets-Drift in derselben Richtung wie auf claim-office (mehr Refactorings, leichte Verbesserung der Spitzen-Komplexitaet).
-- **H1** (Kata-Spezifischer Cleanup-Effekt) — Auf GoL zeigt hybrid-v4 *kein* Refactorings-Plus (claim-office: +34 %). Die in RQ-1.6 beobachtete refactor.md-Entkopplungs-Wirkung ist auf die Multi-Iteration-Komplexitaet von claim-office angewiesen.
-- **H2** (Kosten-Aequivalenz) — Auf GoL ist hybrid-v4 nicht teurer als exact-hybrid-v3-with-why-cc, weil die kuerzere Kata weniger Iterationen produziert und der refactor.md-Kopplungs-Effekt sich nicht aufbaut.
+- **H0** (expectation) — exact-hybrid-v4-cleaned-cc is also behaviourally equivalent to exact-hybrid-v3-with-why-cc on GoL for correctness, with a possibly weak discipline/code quality drift in the same direction as on claim-office (more refactorings, slight improvement in Complexity Peak).
+- **H1** (kata-specific cleanup effect) — on GoL hybrid-v4 shows *no* refactorings gain (claim-office: +34 %). The refactor.md decoupling effect observed in RQ-1.6 depends on the multi-iteration complexity of claim-office.
+- **H2** (cost equivalence) — on GoL hybrid-v4 is no more expensive than exact-hybrid-v3-with-why-cc, because the shorter kata produces fewer iterations and the refactor.md coupling effect does not build up.
 
-## Datenstand
+## Data state
 
-n=5 pro Zelle, neu erhoben 2026-05-25:
+n=5 per cell, newly collected 2026-05-25:
 - `exact-hybrid-v3-with-why-cc` (n=5)
 - `exact-hybrid-v4-cleaned-cc` (n=5)
 
-Beide single-shard sequenziell gefahren (parallel als 2 Container, da kurze GoL-Sessions kein nennenswertes Portkey-Cut-Risiko zeigen — siehe Memory `portkey-shards-external-cut-risk`).
+Both run single-shard sequentially (in parallel as 2 containers, since short GoL sessions show no appreciable Portkey cut risk — see memory `portkey-shards-external-cut-risk`).
 
-Replikate-Anzahl: n=5 statt n=8 wie RQ-1.6, weil GoL deutlich kuerzer ist (~10 min/Run vs ~37 min/Run) und damit weniger Aufschluss pro Replikat liefert; n=5 reicht fuer einen Cross-Kata-Validierungs-Sanity-Check. Falls die Daten eine starke Aussage stuetzen (z.B. eindeutige Disziplin-Drift), kann auf n=8 erweitert werden.
+Replicate count: n=5 instead of n=8 as in RQ-1.6, because GoL is considerably shorter (~10 min/run vs ~37 min/run) and therefore yields less information per replicate; n=5 is enough for a cross-kata validation sanity check. If the data support a strong statement (e.g. an unambiguous discipline drift), this can be extended to n=8.

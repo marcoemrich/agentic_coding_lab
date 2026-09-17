@@ -1,19 +1,19 @@
 # RQ-emoji-v6.1 — Aggregation
 
-_Haben Decoration-Emojis (✅ ❌ 🔴 🟢 🔄 📋 🚨 ⚠️) in den Workflow-Prompts (Skills + Refactor-Agent + rules/tdd.md) auf hybrid-v2-Basis einen messbaren Effekt auf Code-Qualitaet oder TDD-Disziplin?_
+_Do decoration emojis (✅ ❌ 🔴 🟢 🔄 📋 🚨 ⚠️) in the workflow prompts (skills + refactor agent + rules/tdd.md) on the hybrid-v2 base have a measurable effect on code quality or TDD discipline?_
 
-Generated: 2026-09-11T07:48:50Z
+Generated: 2026-09-17T01:17:51Z
 
 Cells declared: 2 · matched runs: 10 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc | opus-4-7-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### code_mass
 

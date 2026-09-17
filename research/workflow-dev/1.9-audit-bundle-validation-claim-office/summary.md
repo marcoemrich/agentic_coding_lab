@@ -1,19 +1,19 @@
 # RQ-audit-bundle-claim-office — Aggregation
 
-_Generalisiert der RQ-1.8-Befund (Audit-Bundle wirkt Disziplin-stabilisierend und Code-Qualitaets-neutral auf hybrid-v4-Basis × game-of-life) auch auf die novel claim-office-Kata, oder kippt das Pattern dort wie schon in RQ-1.4 fuer Reduktionen geschehen?_
+_Does the RQ-1.8 result (the audit bundle stabilizes discipline and is code-quality-neutral on the hybrid-v4 base × game-of-life) generalize to the novel claim-office kata, or does the pattern flip there as it already did for reductions in RQ-1.4?_
 
-Generated: 2026-09-11T07:48:53Z
+Generated: 2026-09-17T01:17:54Z
 
 Cells declared: 2 · matched runs: 16 · min_replicates: 8
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-7-portkey-no-thinking | 8 | 8 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking | 8 | 8 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

@@ -2,11 +2,11 @@
 
 _How do five models reachable via the OpenCode harness differ in correctness and TDD discipline on claim-office-example-mapping with the exact-single-context-v2-testlist-fix-oc workflow?_
 
-Generated: 2026-09-11T07:48:39Z
+Generated: 2026-09-17T01:17:44Z
 
 Cells declared: 8 · matched runs: 40 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -19,7 +19,7 @@ Cells declared: 8 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-flash | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-pro | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

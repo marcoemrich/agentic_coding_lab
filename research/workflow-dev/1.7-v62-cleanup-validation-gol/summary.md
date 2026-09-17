@@ -1,19 +1,19 @@
 # RQ-v62-cleanup-validation-gol — Aggregation
 
-_Generalisiert das Cleanup-Aequivalenz-Ergebnis aus RQ-1.6 (claim-office) auch auf die trainings-bekannte game-of-life-Kata, oder zeigt exact-hybrid-v4-cleaned-cc dort einen anderen Effekt als auf claim-office?_
+_Does the cleanup equivalence result from RQ-1.6 (claim-office) also generalize to the training-known game-of-life kata, or does exact-hybrid-v4-cleaned-cc show a different effect there than on claim-office?_
 
-Generated: 2026-09-11T07:48:52Z
+Generated: 2026-09-17T01:17:54Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
 | game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-7-portkey-no-thinking | 10 | 10 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### code_mass
 

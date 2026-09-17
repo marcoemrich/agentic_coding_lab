@@ -2,11 +2,11 @@
 
 _How much of the hybrid-v6 architecture can be removed on opus-5 before code quality degrades — and how much of its result comes from the APP subordination patch (hybrid-v7) rather than from the end-refactor phase (hybrid-v8) or the isolated refactor subagent (single-context-v3)?_
 
-Generated: 2026-09-11T07:48:47Z
+Generated: 2026-09-17T01:17:49Z
 
 Cells declared: 12 · matched runs: 63 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -23,7 +23,7 @@ Cells declared: 12 · matched runs: 63 · min_replicates: 5
 | sphinx-score-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### cc_avg_loc_per_function
 

@@ -9,29 +9,29 @@ cells sit on the OpenAI subscription route (`openai-codex`, Responses API),
 three on Requesty. `codex` in the lab ids names the pi provider through which
 the subscription is reached, not the Codex CLI.
 
-## Übersicht
+## Overview
 
 Means per cell. Direction is stated per row.
 
 | Metric | `astra` subs | `sol` subs | `sol` Requesty | `sol` Req. reasoning | `opus-5` Requesty |
 |---|---:|---:|---:|---:|---:|
-| Complexity Peak — kleiner = besser | 7.0 | 4.4 | 9.0 | 10.6 | **2.4** 🏆 |
-| `cognitive_avg` — kleiner = besser | 2.96 | 2.47 | 4.87 | 5.62 | **2.2** 🏆 |
-| `mccabe_max` — kleiner = besser | 4.6 | 4.6 | 6.8 | 8.0 | **3.4** 🏆 |
-| `cc_longest_function` — kleiner = besser | 19.4 | 20.8 | 18.8 | 21.6 | **5.8** 🏆 |
-| `cc_avg_loc_per_function` — kleiner = besser | 18.0 | 11.53 | 14.14 | 15.3 | **2.62** 🏆 |
-| Smell Total — kleiner = besser | 2.4 | **0.6** 🏆 | 2.4 | 2.8 | 2.0 |
-| `smell_complexity` — kleiner = besser | 0.2 | **0.0** 🏆 | 0.8 | 0.8 | **0.0** 🏆 |
-| Production LoC — kleiner = besser | **22.4** 🏆 | 41.6 | 30.6 | 27.2 | 39.8 |
+| Complexity Peak — lower = better | 7.0 | 4.4 | 9.0 | 10.6 | **2.4** 🏆 |
+| `cognitive_avg` — lower = better | 2.96 | 2.47 | 4.87 | 5.62 | **2.2** 🏆 |
+| `mccabe_max` — lower = better | 4.6 | 4.6 | 6.8 | 8.0 | **3.4** 🏆 |
+| `cc_longest_function` — lower = better | 19.4 | 20.8 | 18.8 | 21.6 | **5.8** 🏆 |
+| `cc_avg_loc_per_function` — lower = better | 18.0 | 11.53 | 14.14 | 15.3 | **2.62** 🏆 |
+| Smell Total — lower = better | 2.4 | **0.6** 🏆 | 2.4 | 2.8 | 2.0 |
+| `smell_complexity` — lower = better | 0.2 | **0.0** 🏆 | 0.8 | 0.8 | **0.0** 🏆 |
+| Production LoC — lower = better | **22.4** 🏆 | 41.6 | 30.6 | 27.2 | 39.8 |
 | Code Mass (APP) — no trophy, see F-1.5.3 | 99.4 | 153.2 | 138.8 | 126.4 | 151.8 |
 | Correctness (external) — saturated | 100 % | 100 % | 100 % | 100 % | 100 % |
 | Correctness (internal) — saturated | 100 % | 100 % | 100 % | 100 % | 100 % |
 | `completed_within_budget` — saturated | 100 % | 100 % | 100 % | 100 % | 100 % |
 | `cycle_count` — ambivalent, no trophy | 14.0 | 9.8 | 8.4 | 8.4 | 10.2 |
-| `refactorings_applied` — höher = besser | 4.0 | **7.0** 🏆 | 5.0 | 4.4 | 3.8 |
-| `predictions_correct_rate` — höher = besser | 96.7 % | 98.5 % | **100 %** 🏆 | 97.7 % | **100 %** 🏆 |
-| `duration_seconds` — kleiner = besser | 496.2 | 615.6 | **252.8** 🏆 | 286.0 | 436.2 |
-| `total_tokens` — kleiner = besser | 970.7 k | 1.26 M | 855.4 k | **823.1 k** 🏆 | 2.22 M |
+| `refactorings_applied` — higher = better | 4.0 | **7.0** 🏆 | 5.0 | 4.4 | 3.8 |
+| `predictions_correct_rate` — higher = better | 96.7 % | 98.5 % | **100 %** 🏆 | 97.7 % | **100 %** 🏆 |
+| `duration_seconds` — lower = better | 496.2 | 615.6 | **252.8** 🏆 | 286.0 | 436.2 |
+| `total_tokens` — lower = better | 970.7 k | 1.26 M | 855.4 k | **823.1 k** 🏆 | 2.22 M |
 
 **Reading the table.** Three rows are saturated at the ceiling across all five
 cells and carry no trophy — there is no contest to win. `cycle_count` gets none
@@ -49,11 +49,11 @@ transport confound — goes against Astra on every structural metric:
 
 | | Astra | Sol | direction |
 |---|---:|---:|---|
-| Complexity Peak | 7.0 | **4.4** | kleiner = besser |
-| `cognitive_avg` | 2.96 | **2.47** | kleiner = besser |
-| Smell Total | 2.4 | **0.6** | kleiner = besser |
-| `cc_avg_loc_per_function` | 18.0 | **11.53** | kleiner = besser |
-| `refactorings_applied` | 4.0 | **7.0** | höher = besser |
+| Complexity Peak | 7.0 | **4.4** | lower = better |
+| `cognitive_avg` | 2.96 | **2.47** | lower = better |
+| Smell Total | 2.4 | **0.6** | lower = better |
+| `cc_avg_loc_per_function` | 18.0 | **11.53** | lower = better |
+| `refactorings_applied` | 4.0 | **7.0** | higher = better |
 
 `mccabe_max` is the one tie (4.6 both), and `cc_longest_function` is the one
 row Astra takes (19.4 vs 20.8) — inside the noise of a metric whose spread is

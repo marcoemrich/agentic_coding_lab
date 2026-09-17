@@ -2,19 +2,19 @@
 
 _How do the models reachable via the cursor-cli harness (Opus 4.8 medium, Composer 2.5, Grok 4.5 medium) differ in code quality and TDD discipline on game-of-life-example-mapping?_
 
-Generated: 2026-09-11T07:48:38Z
+Generated: 2026-09-17T01:17:43Z
 
 Cells declared: 3 · matched runs: 10 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor | 0 | 0 | ❌ keine Runs |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor | 0 | 0 | ❌ no runs |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### code_mass
 
@@ -179,4 +179,4 @@ Cells declared: 3 · matched runs: 10 · min_replicates: 5
 
 ### cost_usd
 
-_Alle Werte fehlen oder sind nicht numerisch._
+_All values are missing or non-numeric._

@@ -2,11 +2,11 @@
 
 _Can all remaining TypeScript/Vitest-specific instructions be moved from the Opus/Hybrid workflow core, phase commands and refactor agent into its existing stack profile without changing correctness, TDD discipline, refactoring behaviour, code quality or cost?_
 
-Generated: 2026-09-13T16:56:28Z
+Generated: 2026-09-17T01:17:51Z
 
 Cells declared: 4 · matched runs: 34 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -15,7 +15,7 @@ Cells declared: 4 · matched runs: 34 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 

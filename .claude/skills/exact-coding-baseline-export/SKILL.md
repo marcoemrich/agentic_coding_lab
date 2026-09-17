@@ -125,12 +125,11 @@ its `.pi/` source tree is missing, abort; never fall back to a historical SOL na
 
 For `opus`, when no explicit source is given, find the current correctness-critical
 default from `research/workflow-dev/workflow-construction.md`. The
-recommendation lives in the "Aktuelle Front" section and starts with the
-prefix **"Default für korrekheits-kritische Arbeit"** (note the typo
-"korrekheits" in the source — keep it in the grep).
+recommendation lives in the "Current front" section and starts with the
+prefix **"Default for correctness-critical work"**.
 
 ```bash
-SRC_NAME=$(grep -E '\*\*Default für korre[kt]+heits-kritische Arbeit' \
+SRC_NAME=$(grep -E '\*\*Default for correctness-critical work' \
              research/workflow-dev/workflow-construction.md \
            | head -1 \
            | sed -E 's/.*`([^`]+)`.*/\1/')

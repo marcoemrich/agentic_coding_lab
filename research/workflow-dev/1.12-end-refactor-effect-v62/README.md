@@ -1,19 +1,19 @@
 ---
 id: RQ-end-refactor-v62
-question: "Verbessert ein metric-driven Refactor-Pass die Code-Qualitaet gegenueber dem Per-Cycle-Baseline-Workflow (exact-hybrid-v4-cleaned-cc) — und greift der Hebel als rein per-cycle (exact-hybrid-v4.4-metric-refactor-cc) oder als zusaetzlicher Whole-src-End-Pass (exact-hybrid-v5-end-refactor-cc) — ohne Korrektheit oder TDD-Disziplin zu beschaedigen, und haelt der Befund ueber zwei Kata-Typen (mehrteilige CLI-Codebasis claim-office vs einteilige Library game-of-life)?"
+question: "Does a metric-driven refactor pass improve code quality over the per-cycle baseline workflow (exact-hybrid-v4-cleaned-cc) — and does the lever work purely per-cycle (exact-hybrid-v4.4-metric-refactor-cc) or as an additional whole-src end pass (exact-hybrid-v5-end-refactor-cc) — without damaging correctness or TDD discipline, and does the result hold across two kata types (the multi-file CLI codebase claim-office vs the single-file library game-of-life)?"
 factors:
   workflow_x_prompt:
-    - {workflow: exact-hybrid-v4-cleaned-cc,        prompt: example-mapping}  # Baseline: Per-Cycle APP-Refactor
-    - {workflow: exact-hybrid-v4.4-metric-refactor-cc,  prompt: example-mapping}  # Per-Cycle metric-driven (ESLint/McCabe pre/post pro Cycle)
-    - {workflow: exact-hybrid-v5-end-refactor-cc,            prompt: example-mapping}  # hybrid-v4 Per-Cycle + zusaetzlicher End-Refactor-Pass (whole src/, iterativ, metric-driven)
-  kata_base: [claim-office, game-of-life]  # claim-office = mehrteilige CLI-Codebasis (cli.ts + domain.ts), game-of-life = einteilige Library
+    - {workflow: exact-hybrid-v4-cleaned-cc,        prompt: example-mapping}  # Baseline: per-cycle APP refactor
+    - {workflow: exact-hybrid-v4.4-metric-refactor-cc,  prompt: example-mapping}  # per-cycle metric-driven (ESLint/McCabe pre/post per cycle)
+    - {workflow: exact-hybrid-v5-end-refactor-cc,            prompt: example-mapping}  # hybrid-v4 per-cycle + an additional end-refactor pass (whole src/, iterative, metric-driven)
+  kata_base: [claim-office, game-of-life]  # claim-office = multi-file CLI codebase (cli.ts + domain.ts), game-of-life = single-file library
 controls:
   model:
     any:
-      - opus-4-7-portkey-no-thinking  # claim-office-Routing (Portkey-Gateway via .env; native opus-4-7-no-thinking gibt 400 ohne x-portkey-provider, siehe RQ-Diary 2026-05-27)
-      - opus-4-7-no-thinking          # game-of-life-Routing (Direct-API / native OAuth) + wiederverwendete v6.4-claim-office-Runs aus RQ-1.11 (selbe .env-Route, anderes Label)
+      - opus-4-7-portkey-no-thinking  # claim-office routing (Portkey gateway via .env; native opus-4-7-no-thinking returns 400 without x-portkey-provider, see RQ diary 2026-05-27)
+      - opus-4-7-no-thinking          # game-of-life routing (direct API / native OAuth) + reused v6.4 claim-office runs from RQ-1.11 (same .env route, different label)
 outcomes:
-  # primaer: Code-Qualitaet (End-Refactor zielt explizit auf whole-src Metriken)
+  # primary: code quality (the end refactor targets whole-src metrics explicitly)
   - cognitive_max
   - cognitive_avg
   - mccabe_max
@@ -23,89 +23,89 @@ outcomes:
   - smell_total
   - smell_complexity
   - code_mass
-  # TDD-Disziplin (Sanity: Per-Cycle-Anteil von hybrid-v5 ist byte-identisch zu hybrid-v4; cycle-Metriken sollten hybrid-v4 entsprechen)
+  # TDD discipline (sanity: the per-cycle part of hybrid-v5 is byte-identical to hybrid-v4; cycle metrics should match hybrid-v4)
   - refactorings_applied
   - cycle_count
   - predictions_correct_rate
   - tests_passed_immediately
-  # Korrektheit (Sanity: End-Refactor darf claim-office-Verification nicht brechen — vgl. Bundle-Risiko aus RQ-1.9/RQ-1.10)
+  # correctness (sanity: the end refactor must not break claim-office verification — cf. the bundle risk from RQ-1.9/RQ-1.10)
   - tests_passing
   - verification_pct
   - completed_within_budget
-  # Kosten (zusaetzlicher End-Pass = iterative ESLint+McCabe-Aufrufe nach dem letzten Cycle)
+  # cost (the additional end pass = iterative ESLint+McCabe calls after the last cycle)
   - duration_seconds
   - total_tokens
 min_replicates: 5
 status: aktiv
 ---
 
-# RQ-1.12: metric-driven Refactor (hybrid-v4.4 per-cycle / hybrid-v5 end) vs hybrid-v4-Baseline — über zwei Kata-Typen
+# RQ-1.12: metric-driven refactor (hybrid-v4.4 per-cycle / hybrid-v5 end) vs the hybrid-v4 baseline — across two kata types
 
-Liefert ein metric-driven Refactor-Pass einen messbaren Code-Qualitaets-Gewinn gegenueber der reinen hybrid-v4-Per-Cycle-Baseline — und greift der Hebel besser **laufend** (hybrid-v4.4, Refactor in jedem Cycle) oder als **einmaliger Whole-src-End-Pass** (hybrid-v5, nach dem letzten Green-Cycle) — ohne in das Bundle-Bruch-Muster aus RQ-1.9 / RQ-1.10 zu fallen? Geprueft auf zwei Kata-Typen: der mehrteiligen CLI-Codebasis **claim-office** (cli.ts + domain.ts, Cross-file-Duplication moeglich) und der einteiligen Library **game-of-life** (kein Cross-file-Hebel).
+Does a metric-driven refactor pass deliver a measurable code quality gain over the plain hybrid-v4 per-cycle baseline — and does the lever work better **continuously** (hybrid-v4.4, refactor in every cycle) or as a **one-off whole-src end pass** (hybrid-v5, after the last green cycle) — without falling into the bundle-break pattern from RQ-1.9 / RQ-1.10? Tested on two kata types: the multi-file CLI codebase **claim-office** (cli.ts + domain.ts, cross-file duplication possible) and the single-file library **game-of-life** (no cross-file lever).
 
 ## Motivation
 
-RQ-1.11 hat gezeigt, dass hybrid-v4.4 (metric-driven **per cycle**) auf claim-office die Korrektheit haelt (siehe `1.11-metric-driven-refactor-effect-v62/findings.md`). Offen blieb: lohnt sich ein **zusaetzlicher** Whole-src-Pass nach dem letzten Green-Cycle? Hypothesen, die diese Frage aufwerfen:
+RQ-1.11 showed that hybrid-v4.4 (metric-driven **per cycle**) preserves correctness on claim-office (see `1.11-metric-driven-refactor-effect-v62/findings.md`). What stayed open: is an **additional** whole-src pass after the last green cycle worth it? Hypotheses that raise the question:
 
-- Per-Cycle-Refactoring sieht in jedem Cycle nur den frisch beruehrten Code. **Cross-file Duplication** (z.B. `cli.ts` ↔ `domain.ts` auf claim-office) und **kumulative Komplexitaet** in einer Funktion, die durch viele kleine Cycles waechst, sind im Per-Cycle-Scope unsichtbar.
-- Naming-Entscheidungen, die ein Per-Cycle-Refactor frueh trifft, basieren auf einem unvollstaendigen Bild der Funktion. Erst nach dem letzten Test ist klar, was die Funktion wirklich tut.
-- Wenn der Per-Cycle-Refactor zu konservativ ist (revertet im Zweifel), kann ein zweiter, fokussierter Pass mit Zugang zur ganzen Codebasis und stabilen Tests mutiger sein.
+- Per-cycle refactoring sees only the freshly touched code in each cycle. **Cross-file duplication** (e.g. `cli.ts` ↔ `domain.ts` on claim-office) and **cumulative complexity** in a function that grows through many small cycles are invisible at per-cycle scope.
+- Naming decisions that a per-cycle refactor makes early rest on an incomplete picture of the function. Only after the last test is it clear what the function really does.
+- If the per-cycle refactor is too conservative (reverting when in doubt), a second, focused pass with access to the whole codebase and stable tests can be bolder.
 
-`exact-hybrid-v5-end-refactor-cc` testet, ob dieser zusaetzliche Pass den erwarteten Gewinn liefert, ohne die in hybrid-v4.4 etablierte Korrektheits-Robustheit zu opfern.
+`exact-hybrid-v5-end-refactor-cc` tests whether this additional pass delivers the expected gain without sacrificing the correctness robustness established in hybrid-v4.4.
 
-## Workflow-Definition
+## Workflow definition
 
-`exact-hybrid-v5-end-refactor-cc` lebt unter `experiments/workflows/exact-coding/opus/exact-hybrid-v5-end-refactor-cc/` und unterscheidet sich von `exact-hybrid-v4-cleaned-cc` in genau drei Dateien:
+`exact-hybrid-v5-end-refactor-cc` lives under `experiments/workflows/exact-coding/opus/exact-hybrid-v5-end-refactor-cc/` and differs from `exact-hybrid-v4-cleaned-cc` in exactly three files:
 
-| Datei | Aenderung gegenueber hybrid-v4 |
+| File | Change relative to hybrid-v4 |
 |---|---|
-| `.claude/agents/refactor.md` | **byte-identisch** (Per-Cycle-Refactor bleibt hybrid-v4-APP-getrieben) |
-| `.claude/agents/end-refactor.md` | **NEU** — Subagent fuer den finalen Pass, mit den deterministischen Mechanismen aus hybrid-v4.4 (ESLint pre/post, McCabe-Berechnung, APP, SonarJS cognitive) auf Whole-src-Scope ausgeweitet; iteriert ONE-change-at-a-time bis keine Metrik mehr verbessert |
-| `.claude/rules/tdd.md` | Tabelle "Which Tool to Use" um End-Refactor-Zeile erweitert; Schritt 6 (End-Refactor-Task-Aufruf) hinzugefuegt |
-| `.claude/rules/tdd-experiment-mode.md` | Autonomous-Workflow um Schritt 4 (End-Refactor) erweitert; Done-Marker erst nach End-Refactor-Return |
+| `.claude/agents/refactor.md` | **byte-identical** (the per-cycle refactor stays hybrid-v4 APP-driven) |
+| `.claude/agents/end-refactor.md` | **NEW** — subagent for the final pass, with the deterministic mechanisms from hybrid-v4.4 (ESLint pre/post, McCabe computation, APP, SonarJS cognitive) extended to whole-src scope; iterates ONE-change-at-a-time until no metric improves further |
+| `.claude/rules/tdd.md` | the "Which Tool to Use" table gains an end-refactor row; step 6 (end-refactor task call) added |
+| `.claude/rules/tdd-experiment-mode.md` | the autonomous workflow gains step 4 (end refactor); the done marker comes only after the end refactor returns |
 
-Bewusst NICHT enthalten (verboten gemaess `CLAUDE.md` → "Keine numerischen Schwellwerte in Workflow-Prompts"):
+Deliberately NOT included (forbidden per `CLAUDE.md` → "Keine numerischen Schwellwerte in Workflow-Prompts"):
 
-- Keine "if cognitive > N then refactor"-Schwellwerte im End-Refactor-Prompt.
-- Kein Iterationslimit (Stop-Kriterium ist qualitativ: "no metric improves further").
-- Keine ESLint-config-Aenderungen.
+- No "if cognitive > N then refactor" thresholds in the end-refactor prompt.
+- No iteration limit (the stop criterion is qualitative: "no metric improves further").
+- No ESLint config changes.
 
-Die vier MARKERS (Skill-Aufrufe `/test-list`, `/red`, `/green`; Task-Aufrufe `refactor`; `experiment-done.txt`) bleiben unangetastet. Der End-Refactor-Aufruf ist ein zusaetzlicher `Task({subagent_type: "end-refactor"})`-Call **vor** dem `experiment-done.txt`-Write.
+The four MARKERS (skill calls `/test-list`, `/red`, `/green`; task calls `refactor`; `experiment-done.txt`) stay untouched. The end-refactor call is an additional `Task({subagent_type: "end-refactor"})` call **before** the `experiment-done.txt` write.
 
-## Hypothesen
+## Hypotheses
 
-- **H1 (Korrektheit, primaer):** hybrid-v5 erhaelt die Korrektheit auf claim-office (`verification_pct` ≥ 0.85, `experiment-done.txt` in ≥ 80 % der Runs). Das Bundle-Risiko aus RQ-1.9 / RQ-1.10 wird vermieden, weil der End-Pass deterministisch und ausserhalb des TDD-Loops laeuft (kein Eingriff in die Cycle-Dynamik).
-- **H2 (Code-Qualitaet vs hybrid-v4):** hybrid-v5 reduziert `cognitive_max`, `mccabe_max` und `cc_longest_function` gegenueber hybrid-v4 messbar (mind. 1 σ Effektgroesse).
-- **H3 (Code-Qualitaet vs hybrid-v4.4):** hybrid-v5 ist gegenueber hybrid-v4.4 zumindest **gleichauf** auf Code-Qualitaets-Metriken; H3' (staerker): Whole-src-Scope sieht zusaetzliche Cross-file-Verbesserungen → noch geringerer `code_mass`-Mean oder weniger `smell_total`.
-- **H4 (TDD-Disziplin, Sanity):** `cycle_count`, `refactorings_applied`, `predictions_correct_rate` bleiben in hybrid-v5 innerhalb 1 σ der hybrid-v4-Baseline — der Per-Cycle-Anteil ist byte-identisch, also sollten die Cycle-Metriken nicht abweichen. Eine Abweichung waere ein Befund (z.B. wenn das Wissen um den End-Pass den Per-Cycle-Refactor demotiviert).
-- **H5 (Kosten):** Token- und Wallclock-Aufschlag gegenueber hybrid-v4 durch den End-Pass; gegenueber hybrid-v4.4 vermutlich vergleichbar oder hoeher (End-Pass iteriert, hybrid-v4.4 misst nur per Cycle). Erwartet je nach iterierten Verbesserungen +5–25 % Tokens.
+- **H1 (correctness, primary):** hybrid-v5 preserves correctness on claim-office (`verification_pct` ≥ 0.85, `experiment-done.txt` in ≥ 80 % of runs). The bundle risk from RQ-1.9 / RQ-1.10 is avoided because the end pass runs deterministically and outside the TDD loop (no interference with cycle dynamics).
+- **H2 (code quality vs hybrid-v4):** hybrid-v5 reduces `cognitive_max`, `mccabe_max` and `cc_longest_function` measurably against hybrid-v4 (at least 1 σ effect size).
+- **H3 (code quality vs hybrid-v4.4):** hybrid-v5 is at least **level** with hybrid-v4.4 on code quality metrics; H3' (stronger): whole-src scope sees additional cross-file improvements → an even lower `code_mass` mean or less `smell_total`.
+- **H4 (TDD discipline, sanity):** `cycle_count`, `refactorings_applied`, `predictions_correct_rate` stay within 1 σ of the hybrid-v4 baseline in hybrid-v5 — the per-cycle part is byte-identical, so the cycle metrics should not diverge. A divergence would itself be a result (e.g. if knowing about the end pass demotivates the per-cycle refactor).
+- **H5 (cost):** Token and wallclock surcharge against hybrid-v4 from the end pass; against hybrid-v4.4 presumably comparable or higher (the end pass iterates, hybrid-v4.4 only measures per cycle). Expected +5–25 % tokens depending on how many improvements are iterated.
 
-## Datenlage
+## Data situation
 
-6 Zellen (3 Workflows × 2 Katas), alle bei ≥ min_replicates=5 — 43 Runs im Pool, keine neuen noetig:
+6 cells (3 workflows × 2 katas), all at ≥ min_replicates=5 — 43 runs in the pool, none new needed:
 
-| Kata | Workflow | n | Routing-Mix |
+| Kata | Workflow | n | routing mix |
 |---|---|---:|---|
-| claim-office | hybrid-v4 / hybrid-v4.4 / hybrid-v5 | 8 / 5 / 5 | alle portkey |
+| claim-office | hybrid-v4 / hybrid-v4.4 / hybrid-v5 | 8 / 5 / 5 | all portkey |
 | game-of-life | hybrid-v4 | 15 | 5 native + 10 portkey |
 | game-of-life | hybrid-v4.4 | 5 | native |
 | game-of-life | hybrid-v5 | 5 | native |
 
-Die game-of-life-Zellen wurden teils nativ (RQ-1.14-Fill), teils portkey (aeltere Workflow-Dev-Runs) gefahren; `controls.model: {any: [...]}` fasst beide als dasselbe Modell zusammen (siehe Caveat).
+The game-of-life cells were run partly native (RQ-1.14 fill), partly portkey (older workflow-dev runs); `controls.model: {any: [...]}` treats both as the same model (see caveat).
 
 ## Caveats
 
-- **Label-Asymmetrie (kein Routing-Unterschied mehr):** Seit 2026-05-25 laeuft jeder Run im Container ueber `experiments/docker/.env` (Portkey-Gateway via Vertex EU). Die Modell-Labels (`opus-4-7-no-thinking` vs `opus-4-7-portkey-no-thinking`) unterscheiden sich nur in `MODEL_CONFIGS` als CLI-Argument: das Portkey-Label setzt `@vertex-eu-global/...`, das Nicht-Portkey-Label das nackte `claude-opus-4-7`. Das nackte Label produziert seit 2026-05-27 ein `400 x-portkey-config required` (Portkey kann den Provider ohne Prefix nicht aufloesen) — daher kanonisches Modell fuer v6.5-Fill `opus-4-7-portkey-no-thinking`. Die 5 wiederverwendeten hybrid-v4.4-Runs aus RQ-1.11 tragen das alte Label `opus-4-7-no-thinking`, gingen aber denselben Portkey-Weg; `controls.model: {any: [...]}` fasst beide zusammen.
-- **Single-shard fuer hybrid-v5:** Lange iterative End-Refactor-Sessions auf Opus 4.7 × claim-office haben unter parallelen Portkey-Shards ein Cut-Risiko (Memory `portkey-shards-external-cut-risk.md`); deswegen Fill-Runs einzeln fahren.
-- **End-Refactor-Pass ist iterativ ohne hartes Limit:** Wenn ein Run viele Verbesserungen findet, kann der End-Pass mehrere Tausend Tokens und Wallclock verbrauchen. Der TDD-Cycle-Anteil ist davon entkoppelt (cycles waren da schon abgeschlossen), aber `duration_seconds` und `total_tokens` werden im Mittel ueber hybrid-v4 liegen.
-- **Bundle-Caveat (kausale Lokalisierung):** Der End-Refactor-Agent kombiniert (a) Whole-src-Scope, (b) iterative Mehrfach-Refactorings, (c) Pre/Post-Messung. Wenn hybrid-v5 hybrid-v4.4 schlaegt, ist nicht voneinander getrennt, ob der zusaetzliche Effekt aus dem Whole-src-Blick oder aus der Mehrfach-Iteration kommt.
-- **Routing-Mix (`any:` über Portkey + native):** opus-4-7 wird ueber beide Routings als **dasselbe Modell** behandelt — Code-Qualitaet und Korrektheit sind routing-invariant (gleiche Gewichte, gleiche Outputs). **Aber `duration_seconds` und `total_tokens` sind es nicht:** unterschiedliche Hardware und Caching-Strategie pro Route. In routing-gemischten Zellen (game-of-life hybrid-v4: 5 native + 10 portkey) ist der Kosten-Mean daher ein Misch-Mean und **nicht** als sauberer Vergleich lesbar. Konsequenz fuer findings: Kosten werden pro Routing getrennt ausgewiesen, Kosten-Trophies nur innerhalb gleichen Routings.
-- **Quervergleich der Absolutwerte zwischen den Katas ist tabu:** claim-office (Code-Mass ~800) und game-of-life (Code-Mass ~160) werden **nie** gemittelt (Repo-Methodik). Jede Kata bekommt in findings einen eigenen Block; der Workflow-Vergleich findet ausschliesslich *innerhalb* einer Kata statt.
+- **Label asymmetry (no routing difference any more):** Since 2026-05-25 every run in the container goes through `experiments/docker/.env` (Portkey gateway via Vertex EU). The model labels (`opus-4-7-no-thinking` vs `opus-4-7-portkey-no-thinking`) differ only as a CLI argument in `MODEL_CONFIGS`: the Portkey label sets `@vertex-eu-global/...`, the non-Portkey label the bare `claude-opus-4-7`. Since 2026-05-27 the bare label produces a `400 x-portkey-config required` (Portkey cannot resolve the provider without the prefix) — hence the canonical model for the v6.5 fill is `opus-4-7-portkey-no-thinking`. The 5 reused hybrid-v4.4 runs from RQ-1.11 carry the old label `opus-4-7-no-thinking` but took the same Portkey path; `controls.model: {any: [...]}` merges both.
+- **Single-shard for hybrid-v5:** Long iterative end-refactor sessions on Opus 4.7 × claim-office carry a cut risk under parallel Portkey shards (memory `portkey-shards-external-cut-risk.md`); run fill runs one at a time.
+- **The end-refactor pass is iterative with no hard limit:** If a run finds many improvements, the end pass can consume several thousand tokens and a lot of wallclock. The TDD cycle part is decoupled from that (the cycles were already complete), but `duration_seconds` and `total_tokens` will on average sit above hybrid-v4.
+- **Bundle caveat (causal localization):** The end-refactor agent combines (a) whole-src scope, (b) iterative multiple refactorings, (c) pre/post measurement. If hybrid-v5 beats hybrid-v4.4, it is not separable whether the extra effect comes from the whole-src view or from the repeated iteration.
+- **Routing mix (`any:` across Portkey + native):** opus-4-7 is treated as the **same model** across both routings — code quality and correctness are routing-invariant (same weights, same outputs). **But `duration_seconds` and `total_tokens` are not:** different hardware and caching strategy per route. In routing-mixed cells (game-of-life hybrid-v4: 5 native + 10 portkey) the cost mean is therefore a mixed mean and **not** readable as a clean comparison. Consequence for the findings: costs are reported separately per routing, cost trophies only within the same routing.
+- **Cross-comparing absolute values between the katas is off limits:** claim-office (Code Mass (APP) ~800) and game-of-life (Code Mass (APP) ~160) are **never** averaged (repo methodology). Each kata gets its own block in the findings; the workflow comparison happens exclusively *within* a kata.
 
-## Status / Naechste Schritte
+## Status / next steps
 
-Abgeschlossen — alle 6 Zellen bei n ≥ 5 (43 Runs). Diese RQ vereint die frueher getrennten claim-office- (RQ-1.12) und game-of-life-Studien (vormals RQ-1.14, jetzt hier aufgegangen). Befund in [findings.md](findings.md): auf **beiden** Katas senkt der per-cycle-Refactor hybrid-v4.4 die Spitzen-Komplexitaet am staerksten unter hybrid-v4; der End-Refactor hybrid-v5 ist auf claim-office gleichauf mit hybrid-v4.4, auf der einteiligen GoL-Library jedoch ohne robusten Gewinn (und teuerster). Korrektheit/Disziplin ueberall intakt. Keine globale v6.5-Promotion ueber hybrid-v4; metric-driven Refactor lohnt, der wirksame Hebel-Zeitpunkt ist kata-abhaengig.
+Complete — all 6 cells at n ≥ 5 (43 runs). This RQ unites the formerly separate claim-office study (RQ-1.12) and game-of-life study (previously RQ-1.14, now merged in here). Result in [findings.md](findings.md): on **both** katas the per-cycle refactor hybrid-v4.4 lowers the Complexity Peak furthest below hybrid-v4; the end refactor hybrid-v5 is level with hybrid-v4.4 on claim-office but shows no robust gain on the single-file GoL library (and is the most expensive there). Correctness/discipline intact everywhere. No global v6.5 promotion over hybrid-v4; metric-driven refactor is worth it, but the effective point of leverage is kata-dependent.
 
 ## Findings
 
-Siehe [findings.md](findings.md).
+See [findings.md](findings.md).

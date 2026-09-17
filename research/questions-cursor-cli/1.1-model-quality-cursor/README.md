@@ -61,7 +61,7 @@ This RQ measures the **model effect on code quality and TDD discipline** in a ha
 **As of 2026-07-26**: cursor-cli is **fully wired into `run-batch.sh` and verified end-to-end** (all five building blocks built, Docker installs `cursor-agent`, smoke run game-of-life × `opus-cursor` cleanly through: cycle_count=9, refactorings=7, predictions 18/18, 9/9 tests green). Details in the [subtree README](../README.md#harness-status-walking-skeleton). This RQ is **open (n=0)** — harness ready, fill batches pending.
 
 Before the first batch:
-0. **Auth (solved 2026-07-26)**: Headless needs a real dashboard `CURSOR_API_KEY` (`crsr_…`), not the OAuth token. Set it in the container via `.env`/docker-compose (analogous to `REQUESTY_API_KEY`). Details: [subtree README](../README.md#recherche-stand-cursor-agent-2026-07-26-smoke-run-durchgeführt).
+0. **Auth (solved 2026-07-26)**: Headless needs a real dashboard `CURSOR_API_KEY` (`crsr_…`), not the OAuth token. Set it in the container via `.env`/docker-compose (analogous to `REQUESTY_API_KEY`). Details: [subtree README](../README.md#research-status-cursor-agent-2026-07-26-smoke-run-completed).
 1. **Model IDs (verified)**: `opus-cursor`→`claude-opus-4-8-medium`, `composer-cursor`→`composer-2.5`, `grok-cursor`→`cursor-grok-4.5-medium`. Wire into building block 4 (`run-batch.sh` case mapping).
 2. Capture the JSON event schema → build `parse_cursor_transcript.py`.
 3. Create the cursor-cli workflow (`.cursor/` markers, four TDD markers from `MARKERS.md`) and enter it in `controls.workflow`.

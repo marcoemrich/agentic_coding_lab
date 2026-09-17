@@ -2,11 +2,11 @@
 
 _How does switching harness (Claude Code vs OpenCode vs pi) affect correctness, code quality, TDD discipline and cost when model (opus-4-8 via Requesty), workflow intention and prompt style are held constant?_
 
-Generated: 2026-09-11T07:48:36Z
+Generated: 2026-09-17T01:17:41Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -17,7 +17,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### tests_passing (rate %)
 

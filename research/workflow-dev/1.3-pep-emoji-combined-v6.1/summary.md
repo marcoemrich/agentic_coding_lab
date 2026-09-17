@@ -1,12 +1,12 @@
 # RQ-pep-emoji-v6.1 — Aggregation
 
-_Sind die Effekte der pep- und emoji-Reduktionen auf hybrid-v2-Basis additiv (zwei unabhaengige Kanaele) oder gemeinsam getragen (ein 'Prompt-Drumherum'-Mechanismus)?_
+_Are the effects of the pep and emoji reductions on the hybrid-v2 base additive (two independent channels) or jointly carried (a single 'prompt scaffolding' mechanism)?_
 
-Generated: 2026-09-11T07:48:50Z
+Generated: 2026-09-17T01:17:53Z
 
 Cells declared: 4 · matched runs: 25 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -15,7 +15,7 @@ Cells declared: 4 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc | opus-4-7-portkey-no-thinking | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### code_mass
 

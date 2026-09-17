@@ -8,26 +8,26 @@ Data base: 31 runs, 6 cells (n=5, one n=6 from the existing pool). Kata
 `claim-office-example-mapping`, native Claude Code, thinking off in every cell.
 All cells `completed_within_budget` 100 % and `tests_passing` 100 %.
 
-## Übersicht
+## Overview
 
 Direction column applies to both model columns. Trophies compare **within a model**,
 i.e. per column pair, since the question is which workflow wins on a given model.
 
 | Metric | inline-tdd-v1 · o4-8 | inline-tdd-v1 · o5 | sol-cc · o4-8 | sol-cc · o5 | hybrid-v4 · o4-8 | hybrid-v4 · o5 | Direction |
 |---|---:|---:|---:|---:|---:|---:|---|
-| Correctness (external) `verification_pct` | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | 80 % | 99 % | höher = besser |
-| Correctness (internal) `tests_passing` | 100 % | 100 % | 100 % | 100 % | 100 % | 100 % | höher = besser |
-| `cc_avg_loc_per_function` | 8.81 ± 1.71 | 8.90 ± 1.65 | **6.65 ± 0.69** 🏆 | 7.86 ± 1.60 | 4.24 ± 0.67 | **4.40 ± 0.42** 🏆 | kleiner = besser |
-| `cc_median_loc_per_function` | 7.70 | 7.17 | **6.00** 🏆 | 6.70 | 2.00 ± 0.00 | **2.00 ± 0.00** 🏆 | kleiner = besser |
-| Complexity Peak `cc_longest_function` | 23.4 | 24.3 | **19.4 ± 3.58** 🏆 | **22.4 ± 4.51** 🏆 | 24.6 | 23.4 | kleiner = besser |
-| `cognitive_max` | 7.0 ± 2.24 | 5.33 ± 1.86 | **4.6 ± 1.82** 🏆 | **3.4 ± 0.89** 🏆 | 3.6 ± 1.14 | 3.6 ± 1.14 | kleiner = besser |
-| `mccabe_max` | 6.0 | 5.33 | **4.4** 🏆 | 4.0 ± 0.71 | 4.0 | **3.8 ± 0.84** 🏆 | kleiner = besser |
-| Smell Total | **0.0** 🏆 | **0.0** 🏆 | **0.0** 🏆 | **0.0** 🏆 | 1.0 | 0.2 | kleiner = besser |
-| Code Mass (APP) | 927.0 | 758.2 | 723.8 | 631.4 | 895.0 | 928.8 | kein 🏆 — s. Caveat |
+| Correctness (external) `verification_pct` | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | 80 % | 99 % | higher = better |
+| Correctness (internal) `tests_passing` | 100 % | 100 % | 100 % | 100 % | 100 % | 100 % | higher = better |
+| `cc_avg_loc_per_function` | 8.81 ± 1.71 | 8.90 ± 1.65 | **6.65 ± 0.69** 🏆 | 7.86 ± 1.60 | 4.24 ± 0.67 | **4.40 ± 0.42** 🏆 | lower = better |
+| `cc_median_loc_per_function` | 7.70 | 7.17 | **6.00** 🏆 | 6.70 | 2.00 ± 0.00 | **2.00 ± 0.00** 🏆 | lower = better |
+| Complexity Peak `cc_longest_function` | 23.4 | 24.3 | **19.4 ± 3.58** 🏆 | **22.4 ± 4.51** 🏆 | 24.6 | 23.4 | lower = better |
+| `cognitive_max` | 7.0 ± 2.24 | 5.33 ± 1.86 | **4.6 ± 1.82** 🏆 | **3.4 ± 0.89** 🏆 | 3.6 ± 1.14 | 3.6 ± 1.14 | lower = better |
+| `mccabe_max` | 6.0 | 5.33 | **4.4** 🏆 | 4.0 ± 0.71 | 4.0 | **3.8 ± 0.84** 🏆 | lower = better |
+| Smell Total | **0.0** 🏆 | **0.0** 🏆 | **0.0** 🏆 | **0.0** 🏆 | 1.0 | 0.2 | lower = better |
+| Code Mass (APP) | 927.0 | 758.2 | 723.8 | 631.4 | 895.0 | 928.8 | no 🏆 — see caveat |
 | `cycle_count` | n/a | n/a | 32.8 | 52.4 | 33.6 | 39.6 | — |
-| `refactorings_applied` | n/a | n/a | 29.6 | **39.8 ± 10.52** 🏆 | 36.0 | 28.0 | höher = besser |
-| `duration_seconds` | **365** 🏆 | **330** 🏆 | 958 | 1016 | 4159 | 3637 | kleiner = besser |
-| `cost_usd` | **$4.87** 🏆 | **$3.89** 🏆 | $17.80 | $17.37 | $95.60 | $59.13 | kleiner = besser |
+| `refactorings_applied` | n/a | n/a | 29.6 | **39.8 ± 10.52** 🏆 | 36.0 | 28.0 | higher = better |
+| `duration_seconds` | **365** 🏆 | **330** 🏆 | 958 | 1016 | 4159 | 3637 | lower = better |
+| `cost_usd` | **$4.87** 🏆 | **$3.89** 🏆 | $17.80 | $17.37 | $95.60 | $59.13 | lower = better |
 
 Caveats for reading the table:
 
@@ -57,7 +57,7 @@ on the same decomposition metric:
 | 2 | `inline-tdd-v1` 8.45 | `exact-sol-v1-cc` 6.65 | `exact-sol-v1-cc` 7.86 |
 | 3 | `hybrid-v4.2` (APP) 9.52 | `inline-tdd-v1` 8.81 | `inline-tdd-v1` 8.90 |
 
-Values are `cc_avg_loc_per_function`, kleiner = besser. The best workflow on Sol is the
+Values are `cc_avg_loc_per_function`, lower = better. The best workflow on Sol is the
 worst on Opus and vice versa — a full reversal, not a reshuffle in the middle.
 
 The two Opus generations agree with each other and disagree with Sol, so this is not
@@ -85,10 +85,10 @@ The decomposition metrics rank the three workflows in the opposite order from
 
 | Metric | inline-tdd-v1 | exact-sol-v1-cc | hybrid-v4 (APP) | Direction |
 |---|---:|---:|---:|---|
-| `cc_avg_loc_per_function` · o4-8 | 8.81 | 6.65 | **4.24** | kleiner = besser |
-| `cc_avg_loc_per_function` · o5 | 8.90 | 7.86 | **4.40** | kleiner = besser |
-| `cc_median_loc_per_function` · o4-8 | 7.70 | 6.00 | **2.00** | kleiner = besser |
-| `cc_median_loc_per_function` · o5 | 7.17 | 6.70 | **2.00** | kleiner = besser |
+| `cc_avg_loc_per_function` · o4-8 | 8.81 | 6.65 | **4.24** | lower = better |
+| `cc_avg_loc_per_function` · o5 | 8.90 | 7.86 | **4.40** | lower = better |
+| `cc_median_loc_per_function` · o4-8 | 7.70 | 6.00 | **2.00** | lower = better |
+| `cc_median_loc_per_function` · o5 | 7.17 | 6.70 | **2.00** | lower = better |
 
 The gap is far outside 1 σ on every row (σ 0.42–1.71) and the median is the sharper
 signal: hybrid-v4 lands at exactly 2.00 with σ = 0.00 in all ten runs across both models.
@@ -111,17 +111,17 @@ style — this is the comparison the recommendation rests on:
 
 | Metric | exact-sol-v1-cc | hybrid-v4 (APP) | Direction |
 |---|---:|---:|---|
-| Correctness (external) | **100 %** 🏆 | 99 % | höher = besser |
-| `cc_avg_loc_per_function` | 7.86 ± 1.60 | **4.40 ± 0.42** 🏆 | kleiner = besser |
-| `cc_median_loc_per_function` | 6.70 | **2.00 ± 0.00** 🏆 | kleiner = besser |
-| Complexity Peak `cc_longest_function` | **22.4 ± 4.51** 🏆 | 23.4 ± 5.81 | kleiner = besser |
-| `cognitive_max` | **3.4 ± 0.89** 🏆 | 3.6 ± 1.14 | kleiner = besser |
-| `mccabe_max` | 4.0 ± 0.71 | **3.8 ± 0.84** 🏆 | kleiner = besser |
-| Smell Total | **0.0 ± 0.00** 🏆 | 0.2 ± 0.45 | kleiner = besser |
-| Code Mass (APP) | **631.4** | 928.8 | kein 🏆 (Blind Spot) |
-| `refactorings_applied` | **39.8 ± 10.52** 🏆 | 28.0 ± 10.12 | höher = besser |
-| `duration_seconds` | **1016** 🏆 | 3637 | kleiner = besser |
-| `cost_usd` | **$17.37** 🏆 | $59.13 | kleiner = besser |
+| Correctness (external) | **100 %** 🏆 | 99 % | higher = better |
+| `cc_avg_loc_per_function` | 7.86 ± 1.60 | **4.40 ± 0.42** 🏆 | lower = better |
+| `cc_median_loc_per_function` | 6.70 | **2.00 ± 0.00** 🏆 | lower = better |
+| Complexity Peak `cc_longest_function` | **22.4 ± 4.51** 🏆 | 23.4 ± 5.81 | lower = better |
+| `cognitive_max` | **3.4 ± 0.89** 🏆 | 3.6 ± 1.14 | lower = better |
+| `mccabe_max` | 4.0 ± 0.71 | **3.8 ± 0.84** 🏆 | lower = better |
+| Smell Total | **0.0 ± 0.00** 🏆 | 0.2 ± 0.45 | lower = better |
+| Code Mass (APP) | **631.4** | 928.8 | no 🏆 (blind spot) |
+| `refactorings_applied` | **39.8 ± 10.52** 🏆 | 28.0 ± 10.12 | higher = better |
+| `duration_seconds` | **1016** 🏆 | 3637 | lower = better |
+| `cost_usd` | **$17.37** 🏆 | $59.13 | lower = better |
 
 Read as three groups:
 
@@ -168,11 +168,11 @@ models, at equal (perfect) correctness:
 
 | Metric | inline-tdd-v1 · o4-8 | sol-cc · o4-8 | inline-tdd-v1 · o5 | sol-cc · o5 | Direction |
 |---|---:|---:|---:|---:|---|
-| `cc_avg_loc_per_function` | 8.81 | **6.65** | 8.90 | **7.86** | kleiner = besser |
-| Complexity Peak | 23.4 | **19.4** | 24.3 | **22.4** | kleiner = besser |
-| `cognitive_max` | 7.0 | **4.6** | 5.33 | **3.4** | kleiner = besser |
-| `mccabe_max` | 6.0 | **4.4** | 5.33 | **4.0** | kleiner = besser |
-| Code Mass (APP) | 927.0 | **723.8** | 758.2 | **631.4** | kleiner = besser |
+| `cc_avg_loc_per_function` | 8.81 | **6.65** | 8.90 | **7.86** | lower = better |
+| Complexity Peak | 23.4 | **19.4** | 24.3 | **22.4** | lower = better |
+| `cognitive_max` | 7.0 | **4.6** | 5.33 | **3.4** | lower = better |
+| `mccabe_max` | 6.0 | **4.4** | 5.33 | **4.0** | lower = better |
+| Code Mass (APP) | 927.0 | **723.8** | 758.2 | **631.4** | lower = better |
 
 So F-1.16.1 does transfer in direction: the native line is a real improvement over
 structureless TDD on Opus too. But the margin is smaller than on Sol, where the same

@@ -2,11 +2,11 @@
 
 _Is the native Sol workflow line (basic-sol-tdd, Predictive TDD, Four Rules refactor) better only on Sol/pi, or does it also beat the opus line on Opus with native Claude Code — and does the APP effect that suppresses decomposition on Sol reproduce there?_
 
-Generated: 2026-09-11T07:48:34Z
+Generated: 2026-09-17T01:17:39Z
 
 Cells declared: 6 · matched runs: 31 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
@@ -14,10 +14,10 @@ Cells declared: 6 · matched runs: 31 · min_replicates: 5
 | claim-office-example-mapping | baseline-inline-tdd-v1-cc | opus-5-no-thinking | 6 | 6 | ✅ |
 | claim-office-example-mapping | exact-sol-v1-cc | opus-4-8-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-sol-v1-cc | opus-5-no-thinking | 5 | 5 | ✅ |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking | 5 | 4 | ⚠️ nur 4/5 ohne Timeout |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking | 5 | 4 | ⚠️ only 4/5 without timeout |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### cc_avg_loc_per_function
 

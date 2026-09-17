@@ -1,13 +1,13 @@
-# RQ-1.5: Why-Block-Effekt auf hybrid-v2-Basis (claim-office)
+# RQ-1.5: Why block effect on the hybrid-v2 base (claim-office)
 
-## Übersicht
+## Overview
 
-Baseline (`exact-hybrid-v2-testlist-fix-cc`, n=8) vs. With-Why (`exact-hybrid-v3-with-why-cc`, n=8) auf `claim-office-example-mapping × opus-4-7-portkey-no-thinking`. Richtungen: ↑ = höher besser, ↓ = kleiner besser.
+Baseline (`exact-hybrid-v2-testlist-fix-cc`, n=8) vs. with-why (`exact-hybrid-v3-with-why-cc`, n=8) on `claim-office-example-mapping × opus-4-7-portkey-no-thinking`. Directions: ↑ = higher = better, ↓ = lower = better.
 
-| Metrik | Richtung | Baseline | with-why |
+| Metric | Direction | Baseline | with-why |
 |---|---|---:|---:|
-| `verification_pct` (Korrektheit) | ↑ | **1.00** 🏆 | 0.91 |
-| `tests_passing` (rate) | ↑ | **100 %** 🏆 | **100 %** 🏆 |
+| `verification_pct` (Correctness (external)) | ↑ | **1.00** 🏆 | 0.91 |
+| `tests_passing` (rate, Correctness (internal)) | ↑ | **100 %** 🏆 | **100 %** 🏆 |
 | `completed_within_budget` | ↑ | **100 %** 🏆 | **100 %** 🏆 |
 | `predictions_correct_rate` | ↑ | **96.5 %** 🏆 | **96.2 %** 🏆 |
 | `refactorings_applied` (mean) | ↑ | 9.88 (σ 5.69) | **18.50** 🏆 (σ 8.42) |
@@ -21,50 +21,50 @@ Baseline (`exact-hybrid-v2-testlist-fix-cc`, n=8) vs. With-Why (`exact-hybrid-v3
 | `duration_seconds` (mean) | ↓ | **1464** 🏆 | 2234 (+53 %) |
 | `total_tokens` (mean) | ↓ | **32.6 M** 🏆 | 39.8 M (+22 %) |
 
-Lesart in zwei Sätzen: with-why ist auf Korrektheit nicht besser (knapp schlechter wegen eines 0-Cycle-Outliers), aber auf **TDD-Disziplin und Code-Qualität deutlich besser bei gleichzeitig viel engerer Streuung**. Der Preis dafür sind ~50 % mehr Wallclock und ~22 % mehr Tokens.
+Reading in two sentences: with-why is not better on correctness (marginally worse because of a 0-cycle outlier), but **considerably better on TDD discipline and code quality with a much tighter spread at the same time**. The price is ~50 % more wallclock and ~22 % more tokens.
 
 ---
 
-## F-1.1 — Why-Blöcke ohne Korrektheits-Effekt, mit deutlichem Disziplin- und Code-Qualitäts-Effekt
+## F-1.1 — Why blocks without a correctness effect, with a marked discipline and code quality effect
 
-**Statement.** Die Hinzufügung der drei lean-Why-Blöcke zu hybrid-v2 (bei voll erhaltenen MUSTs in `commands/red.md` Step 7, `commands/green.md`, `rules/tdd.md`) hat **keinen Korrektheits-Effekt** (verification_pct 1.00 vs 0.91 bei einem einzelnen 0-Cycle-Outlier in with-why; predictions_correct_rate 96.5 % vs 96.2 %), aber **deutliche, gleichgerichtete Effekte auf TDD-Disziplin und Code-Qualität**.
+**Statement.** Adding the three lean why blocks to hybrid-v2 (with MUSTs fully retained in `commands/red.md` step 7, `commands/green.md`, `rules/tdd.md`) has **no correctness effect** (verification_pct 1.00 vs 0.91 with a single 0-cycle outlier in with-why; predictions_correct_rate 96.5 % vs 96.2 %), but **marked, aligned effects on TDD discipline and code quality**.
 
-**Daten (n=8 pro Zelle).**
+**Data (n=8 per cell).**
 
-| Achse | Baseline | with-why | Δ |
+| Axis | Baseline | with-why | Δ |
 |---|---:|---:|---|
-| Refactorings/Run (mean) | 9.88 | **18.50** 🏆 | **+87 %** |
-| Smells/Run (mean) | 2.88 | **0.38** 🏆 | **−87 %** |
-| `cognitive_max` (mean / σ / max) | 7.62 / 6.02 / 21 | **4.38 🏆 / 1.06 / 6** | −43 % Mean, σ −82 % |
-| `cc_longest_function` (mean / σ / max) | 23.38 / 15.5 / 60 | **13.25 🏆 / 1.58 / 15** | −43 % Mean, σ −90 % |
-| `mccabe_max` (mean / σ / max) | 6.75 / 3.65 / 14 | **4.25 🏆 / 0.46 / 5** | −37 % Mean, σ −87 % |
+| Refactorings/run (mean) | 9.88 | **18.50** 🏆 | **+87 %** |
+| Smells/run (mean) | 2.88 | **0.38** 🏆 | **−87 %** |
+| `cognitive_max` (mean / σ / max) | 7.62 / 6.02 / 21 | **4.38 🏆 / 1.06 / 6** | −43 % mean, σ −82 % |
+| `cc_longest_function` (mean / σ / max) | 23.38 / 15.5 / 60 | **13.25 🏆 / 1.58 / 15** | −43 % mean, σ −90 % |
+| `mccabe_max` (mean / σ / max) | 6.75 / 3.65 / 14 | **4.25 🏆 / 0.46 / 5** | −37 % mean, σ −87 % |
 
-**Rationale.** Die Effektgröße auf Code-Qualität (37–43 % Mean-Reduktion bei Spitzen-Komplexitäts-Metriken) übertrifft die Streuung der Baseline um mehrere σ. Besonders auffällig: with-why **streut auf allen Komplexitäts-Achsen um 82–90 % weniger**. Baseline produziert zwei sehr ausreißerhafte Runs (mccabe_max=14, cognitive_max=21, cc_longest=60), with-why nicht. Mechanistisch plausibel: with-why refactoriert fast doppelt so oft (+87 %), das schiebt die Verteilung der Funktionslängen nach unten und kappt Komplexitäts-Spitzen, bevor sie sich aufbauen.
+**Rationale.** The effect size on code quality (37–43 % mean reduction on Complexity Peak metrics) exceeds the baseline spread by several σ. Particularly striking: with-why **spreads 82–90 % less on all complexity axes**. The baseline produces two heavy outlier runs (mccabe_max=14, cognitive_max=21, cc_longest=60), with-why does not. Mechanistically plausible: with-why refactors almost twice as often (+87 %), which pushes the distribution of function lengths downward and caps complexity peaks before they build up.
 
-Hypothese H2 aus dem README (`exact-hybrid-v3-with-why-cc verbessert mindestens eine TDD-Disziplin-Metrik um ≥ +1σ bei invariantem verification_pct`) ist **bestätigt** — und sogar stärker als erwartet, weil der Effekt nicht auf Disziplin beschränkt bleibt, sondern auch die Code-Qualitäts-Metriken voll mitzieht.
+Hypothesis H2 from the README (`exact-hybrid-v3-with-why-cc improves at least one TDD discipline metric by ≥ +1σ with invariant verification_pct`) is **confirmed** — and even more strongly than expected, because the effect is not limited to discipline but pulls the code quality metrics along in full.
 
-**Konsequenz für `workflow-construction.md`.** Das Theory-of-Mind-/Why-Block-Pattern (Zeilen 30–47) hatte bisher nur Anthropic-Skill-Creator-Doku als Stütze. Mit diesem Befund existiert eine empirische Stütze aus diesem Repo: "MUST X. Why: Y." schlägt reines "MUST X." auf einer Korrektheits-stabilen Basis (hybrid-v2) deutlich. Pattern als Default-Empfehlung übernehmen.
+**Consequence for `workflow-construction.md`.** The Theory-of-Mind / why block pattern (lines 30–47) had only the Anthropic skill-creator docs as backing so far. With this finding there is empirical backing from this repo: "MUST X. Why: Y." clearly beats a bare "MUST X." on a correctness-stable base (hybrid-v2). Adopt the pattern as the default recommendation.
 
-**Caveat.** Single Kata (claim-office), single Modell (opus-4-7-portkey-no-thinking). Generalisierung auf andere Katas oder Modelle steht aus. Auch ist offen, ob Why-Blöcke an *allen* MUST-Stellen (statt nur den drei lean-Stellen) den Effekt verstärken oder ob es einen abnehmenden Grenznutzen gibt.
+**Caveat.** Single kata (claim-office), single model (opus-4-7-portkey-no-thinking). Generalization to other katas or models is outstanding. It also remains open whether why blocks at *all* MUST sites (rather than only the three lean sites) amplify the effect, or whether there is a diminishing marginal return.
 
 ---
 
-## F-1.2 — Cost-Trade-off: rund 50 % mehr Wallclock, rund 22 % mehr Tokens — pro Cycle aber gleich schnell
+## F-1.2 — Cost trade-off: around 50 % more wallclock, around 22 % more tokens — but equally fast per cycle
 
-**Statement.** with-why kostet im Mittel **+770 s Wallclock (+53 %)** und **+7.2 M Tokens (+22 %)** pro Run. Pro Cycle ist with-why aber **nicht** langsamer oder teurer als Baseline — der Aufpreis kommt komplett daher, dass with-why **mehr Cycles** macht (Mean 35 vs 25).
+**Statement.** with-why costs on average **+770 s wallclock (+53 %)** and **+7.2 M tokens (+22 %)** per run. Per cycle, however, with-why is **not** slower or more expensive than the baseline — the surcharge comes entirely from with-why running **more cycles** (mean 35 vs 25).
 
-**Daten (n=8 pro Zelle).**
+**Data (n=8 per cell).**
 
-| Achse | Baseline | with-why | Δ |
+| Axis | Baseline | with-why | Δ |
 |---|---:|---:|---|
-| Wallclock/Run (mean) | 1464 s | 2234 s | +53 % |
-| Tokens/Run (mean) | 32.6 M | 39.8 M | +22 % |
-| Cycles/Run (mean) | 25.0 | 35.0 | +40 % |
-| Wallclock/Cycle | ~59 s | ~64 s | +9 % (im σ-Rauschen) |
-| Tokens/Cycle | ~1.30 M | ~1.14 M | **−12 %** |
+| Wallclock/run (mean) | 1464 s | 2234 s | +53 % |
+| Tokens/run (mean) | 32.6 M | 39.8 M | +22 % |
+| Cycles/run (mean) | 25.0 | 35.0 | +40 % |
+| Wallclock/cycle | ~59 s | ~64 s | +9 % (within the σ noise) |
+| Tokens/cycle | ~1.30 M | ~1.14 M | **−12 %** |
 
-**Rationale.** Wenn with-why pro Cycle teurer wäre, wäre das ein Argument gegen Why-Blöcke (Overhead durch Lesen längerer Prompts). Die Daten zeigen das Gegenteil: with-why ist pro Cycle **leicht effizienter in Tokens** und nahezu gleich schnell. Der Aufpreis pro Run ist also kein "Why-Bloat-Overhead", sondern eine **direkte Konsequenz höherer Disziplin** — mehr Cycles bedeutet mehr Refactoring-Subagent-Calls, was wiederum F-1.1 (Refactorings +87 %) erklärt.
+**Rationale.** If with-why were more expensive per cycle, that would be an argument against why blocks (overhead from reading longer prompts). The data show the opposite: with-why is **slightly more token-efficient** per cycle and nearly equally fast. The surcharge per run is therefore not "why bloat overhead" but a **direct consequence of higher discipline** — more cycles means more refactoring subagent calls, which in turn explains F-1.1 (refactorings +87 %).
 
-Praktische Implikation: für Korrektheits-kritische Arbeit ohne Zeitdruck ist with-why klar zu bevorzugen (siehe F-1.1). Für Speed-priorisierte Setups (CI-Smoke-Runs, Iterations-Geschwindigkeit) bleibt Baseline plausibel — mit dem Vorbehalt, dass die Baseline-Streuung in Code-Qualität deutlich größer ist und vereinzelte "Schmuddel-Runs" produziert.
+Practical implication: for correctness-critical work without time pressure, with-why is clearly preferable (see F-1.1). For speed-prioritized setups (CI smoke runs, iteration speed) the baseline stays plausible — with the reservation that the baseline spread in code quality is considerably larger and produces occasional sloppy runs.
 
-**Caveat.** Wallclock-Vergleiche zwischen Portkey-Runs hängen vom Gateway-Load ab. Tokens-Vergleiche sind robuster.
+**Caveat.** Wallclock comparisons between Portkey runs depend on gateway load. Token comparisons are more robust.
