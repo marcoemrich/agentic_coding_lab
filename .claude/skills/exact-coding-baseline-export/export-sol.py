@@ -260,6 +260,36 @@ def optional_skills(harness: str) -> dict[str, str]:
     }
 
 
+PHASE_SKILLS = ("red", "green", "refactor")
+
+
+def phase_control_skills(config: str, hitl_path: str, harness: str) -> dict[str, str]:
+    """Step 2c: `red`, `green`, `refactor` as single-phase manual controls.
+
+    These carry no method content. Each one names the section of
+    `predictive-tdd/SKILL.md` that governs it, states which phase boundary it
+    stops at, and adds the one thing a manual invocation needs and the full
+    cycle does not: that the invocation itself is the checkpoint, so the phase
+    must not run on into the next one regardless of Autonomy Level.
+    """
+    templates = Path(__file__).parent / "templates/phase-skills"
+    execution_context = (
+        "Both refactor profiles ship in this tree. If the human named the "
+        f"isolated profile, delegate the review {refactor_delegation(harness)} and "
+        "verify Green before applying the checkpoint yourself; otherwise refactor "
+        "inline in this context."
+    )
+    out = {}
+    for phase in PHASE_SKILLS:
+        # `refactor` would collide with the subagent template's name.
+        filename = "refactor-phase.md" if phase == "refactor" else f"{phase}.md"
+        body = (templates / filename).read_text()
+        body = body.replace("{config}", config).replace("{hitl}", hitl_path)
+        body = body.replace("{execution_context}", execution_context)
+        out[f"skills/{phase}/SKILL.md"] = body
+    return out
+
+
 def hitl(config: str) -> str:
     return '''# Human-in-the-Loop (HITL)
 
@@ -344,6 +374,27 @@ want more than the inline per-cycle refactor. It is deliberately outside the
 loop — it costs noticeably more time and tokens, and Predictive TDD does not
 depend on it.
 
+### Manual phase control: `red`, `green`, `refactor`
+
+Invoking `exact-coding` runs the whole loop, stopping only where the Autonomy
+Level says to. When you want to drive the cycle yourself, one phase per turn,
+invoke the phases by name instead:
+
+| Skill | Runs | Stops |
+|---|---|---|
+| `red` | Activate one behavior, predict, reach behavioral Red | Before any production change |
+| `green` | Smallest production change that satisfies the active test | Before refactoring |
+| `refactor` | Four Rules review, domain-responsibility review, boundary trial | Before the next behavior |
+
+These carry no method of their own. Each one points at its section of
+`skills/predictive-tdd/SKILL.md` and at the shared human-in-the-loop file, so
+the rules you get are the same rules the full loop applies — predictions,
+mismatch handling, and the boundary trial included. The one thing they add is
+that your invocation *is* the checkpoint: a phase never runs on into the next
+one, even at an Autonomy Level that would not have stopped there. Mix freely with
+`exact-coding` — the phases read and leave the ordinary working tree, with no
+phase commits.
+
 ### Optional: Example Mapping before the loop
 
 Every subtree also ships `skills/example-mapping/SKILL.md`, a conversation that
@@ -395,7 +446,8 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
         "skills/predictive-tdd/SKILL.md": pred,
         "skills/test-list/SKILL.md": tests,
     }
-    for rel, content in {**phase_skills, **optional_skills(harness)}.items():
+    manual_phases = phase_control_skills(config, hitl_path, harness)
+    for rel, content in {**phase_skills, **optional_skills(harness), **manual_phases}.items():
         path = root / rel
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content)
@@ -424,6 +476,18 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
                 },
             },
         }
+        # A skill directory is not an invocation mechanism on OpenCode, so the
+        # manual phase controls need command entries of their own.
+        phase_descriptions = {
+            "red": "Run only the Red phase: activate one behavior and reach a predicted behavioral Red.",
+            "green": "Run only the Green phase: the smallest production change that satisfies the active test.",
+            "refactor": "Run only the Refactor phase: Four Rules review, domain-responsibility review, boundary trial.",
+        }
+        for phase in PHASE_SKILLS:
+            config_json["command"][phase] = {
+                "description": phase_descriptions[phase],
+                "template": strip(manual_phases[f"skills/{phase}/SKILL.md"]),
+            }
         (root / "opencode.json").write_text(json.dumps(config_json, indent=2) + "\n")
     else:
         for skill_name, content in (
@@ -470,6 +534,21 @@ def validate(target: Path, harnesses: tuple[str, ...]) -> None:
             skill = target / config / rel
             if not skill.is_file():
                 raise SystemExit(f"Missing optional skill: {skill}")
+        # Step 2c: the three manual phase controls ship, carry no method of their
+        # own, and never run on into the next phase.
+        for phase in PHASE_SKILLS:
+            skill = target / config / "skills" / phase / "SKILL.md"
+            if not skill.is_file():
+                raise SystemExit(f"Missing manual phase control: {skill}")
+            body = skill.read_text()
+            if "manual phase control, not a separate method" not in body:
+                raise SystemExit(f"Phase control {phase} lost its manual-control framing: {config}")
+            if f"{config}/skills/predictive-tdd/SKILL.md" not in body:
+                raise SystemExit(f"Phase control {phase} no longer defers to the method file: {config}")
+            if "that invocation is the checkpoint" not in body:
+                raise SystemExit(f"Phase control {phase} lost its stop-after-one-phase rule: {config}")
+            if "{config}" in body or "{hitl}" in body or "{execution_context}" in body:
+                raise SystemExit(f"Phase control {phase} has an unfilled placeholder: {config}")
         # end-refactor is a manual extra: no agent file, no orchestration call.
         if (target / config / "agents/end-refactor.md").exists():
             raise SystemExit(f"end-refactor must not ship as an agent: {config}")
@@ -484,9 +563,11 @@ def validate(target: Path, harnesses: tuple[str, ...]) -> None:
             raise SystemExit(f"Missing refactor subagent: {agent}")
         if harness == "oc":
             commands = json.loads((target / config / "opencode.json").read_text())["command"]
-            for key in ("exact-coding", "exact-coding-isolated-refactor"):
+            for key in ("exact-coding", "exact-coding-isolated-refactor", *PHASE_SKILLS):
                 if key not in commands:
                     raise SystemExit(f"OpenCode is missing the {key} command")
+                if "template" not in commands[key]:
+                    raise SystemExit(f"OpenCode command {key} has no template")
         else:
             for profile in ("exact-coding", "exact-coding-isolated-refactor"):
                 skill = target / config / "skills" / profile / "SKILL.md"

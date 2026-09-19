@@ -397,6 +397,44 @@ exported subtree, `agents/end-refactor.md` must not exist, and the
 neither skill — `sync_distribution` then deleted the consumer's copies on
 `sol/main`, because it clears all five config dirs before copying the snapshot.
 
+### Step 2c: manual phase controls (`red`, `green`, `refactor`)
+
+Every exported subtree also ships three **single-phase manual controls** so a
+human can drive Red-Green-Refactor one phase per turn instead of invoking the
+whole loop:
+
+| Skill | Cycle step in `predictive-tdd/SKILL.md` | Stops before |
+|---|---|---|
+| `skills/red/SKILL.md` | 1. Activate one behavior + 2. Reach behavioral Red | any production change |
+| `skills/green/SKILL.md` | 3. Reach Green minimally | refactoring |
+| `skills/refactor/SKILL.md` | 4. Inspect and refactor | the next behavior |
+
+**These carry no method content, by design.** Each one names the section of
+`skills/predictive-tdd/SKILL.md` that governs it, the stack-profile directory,
+and the shared HITL file — then stops. The method stays single-sourced: editing
+the Predictive TDD skill changes what the phase controls do, and nothing needs
+to be kept in sync. Do not copy prediction rules, Four Rules text, or the
+domain-boundary contract into a phase file; the validator rejects a phase file
+that no longer points at the method file.
+
+The one thing they add that the full loop does not have: **the invocation itself
+is the checkpoint.** A phase control must not run on into the next phase even at
+an Autonomy Level that would not have stopped there (`green` in particular has
+no HITL checkpoint at all). That sentence is load-bearing and validated.
+
+`templates/phase-skills/` holds the three sources. `refactor-phase.md` is named
+that way because `templates/refactor-agent.md` already owns `refactor.md`. Each
+template carries `{config}`, `{hitl}` and — for refactor only —
+`{execution_context}`, filled by `phase_control_skills()`; the refactor context
+resolves the per-harness delegation from `refactor_delegation()`, so the phase
+control works under both refactor profiles.
+
+**These are not phases for validation 12 either.** `skills/refactor/` here is a
+manual control that delegates when the isolated profile is named — not the
+2026-07-27 cursor mistake of shipping an inline refactor phase in place of a
+subagent. On OpenCode the three also get `opencode.json` command entries,
+because a skill directory is not an invocation mechanism there.
+
 **OpenCode phase skills come from the cc commands, not from the pi port.** The
 pi port rewrote `✅ Correct` as plain `Correct`; the cc/oc prediction parser
 accepts that form, but the OpenCode lab port (`exact-hybrid-v2-testlist-fix-oc`)
