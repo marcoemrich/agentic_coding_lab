@@ -324,6 +324,42 @@ Copy verbatim from `.claude/skills/exact-coding-baseline-export/templates/`:
 - `templates/human-in-the-loop.md` → `$TARGET/.claude/rules/human-in-the-loop.md`
 - `templates/tdd-execution-mode.md` → `$TARGET/.claude/rules/tdd-execution-mode.md`
 
+### Step 2a: two refactor profiles in every subtree
+
+The SOL line ships the Refactor phase in two forms, and the user picks:
+
+- `skills/exact-coding/SKILL.md` — **the default**, refactoring inline in the
+  main context.
+- `skills/exact-coding-isolated-refactor/SKILL.md` — the same workflow with the
+  Four Rules review delegated to a subagent after every Green.
+
+They differ in exactly four places: the frontmatter `name`, the title, the
+refactor step in the Sequence, and a closing paragraph in "Method boundary"
+stating that the subagent never manages checkpoints. Everything else is shared,
+including one `skills/exact-coding-shared/human-in-the-loop.md` that both point
+at — do not give either profile its own HITL file.
+
+The delegation sentence is harness-specific and must name the real mechanism,
+not describe it. `refactor_delegation()` in `export-sol.py` holds the exact
+strings; pi names the `subagent` tool with `agentScope: both`, cc the Agent
+tool with `subagent_type: refactor`, cursor/oc/copilot their `refactor` custom
+agent.
+
+Both profiles are backed by `agents/refactor.md` (`agents/refactor.agent.md` on
+copilot), taken from the v1.1 sibling of the promoted source with pi's
+`tools:` frontmatter line stripped. pi additionally needs
+`extensions/subagent/`, copied from the same sibling, because it has no native
+subagent mechanism. OpenCode exposes both profiles as commands in
+`opencode.json` instead of skill directories.
+
+`predictive-tdd/SKILL.md` is shared by both profiles, so it must **not** claim
+the refactoring runs in the current context. It defers instead: "The invoking
+EXACT Coding profile selects the Refactor execution context."
+
+`validate()` enforces all of this: both profiles present, the shared HITL file
+present, the agent present under its harness-specific name, pi's extension
+present, the isolated profile still delegating and the default still inline.
+
 ### Step 2b: optional skills in every subtree
 
 Every exported harness subtree also ships two **user-invoked** skills that are

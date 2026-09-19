@@ -17,6 +17,11 @@ of **Predictive TDD v1**, distribution version **{{DATE}}**.
 | OpenCode | `harness/opencode` | `.opencode/` | `/exact-coding` |
 | pi | `harness/pi` | `.pi/` | `/skill:exact-coding`, or ask for EXACT Coding |
 
+Every branch ships **two refactor profiles**. `exact-coding` is the default;
+append `-isolated-refactor` to the same invocation for the subagent variant
+(`/exact-coding-isolated-refactor`, `/skill:exact-coding-isolated-refactor`).
+See "Choosing a refactor profile" below.
+
 ```bash
 git checkout main                 # Claude Code
 git checkout harness/copilot      # GitHub Copilot
@@ -46,6 +51,46 @@ workflow confirms it instead of manufacturing a failure.
 The Predictive TDD loop deliberately has **no APP mass objective, no refactor
 subagent, and no metric-driven end pass**. Those are product-method choices,
 not missing port features.
+
+### Choosing a refactor profile
+
+The Refactor phase can run in the main context or in a separate subagent. Both
+profiles are otherwise the same workflow over the same files.
+
+| | `exact-coding` (default) | `exact-coding-isolated-refactor` |
+|---|---|---|
+| Refactor runs | inline, in the main context | in a subagent with a fresh context |
+| Cost | baseline | 3–4.5× the time, 2.5× the tokens |
+| Structure | good | measurably better |
+
+The subagent sees the code, the tests and the specification, but not the
+reasoning that produced the implementation — so it reviews the result rather
+than defending it. That is where the structural gain comes from, and it is also
+why it costs more: the context has to be rebuilt after every Green.
+
+Measured on Claim Office, ten runs per inline cell and five per isolated cell:
+
+| What we measured | inline | **isolated** | inline | **isolated** |
+|---|---:|---:|---:|---:|
+| | *Opus 5* | *Opus 5* | *SOL* | *SOL* |
+| Hidden acceptance scenarios passed | 99 % | 96 % | 100 % | 100 % |
+| Cognitive complexity, hardest function | 2.8 | **2.2** | 3.9 | **2.6** |
+| Cognitive complexity, average | 1.47 | **1.13** | 1.83 | **1.24** |
+| Average function length (lines) | 5.95 | **4.6** | 6.42 | **4.21** |
+| Longest function (lines) | 18.9 | **15.2** | 18.4 | **15.8** |
+| Code smells found by the linter | 0 | 0 | 0 | 0 |
+| Time per task | 20 min | 92 min | 25 min | 82 min |
+| Tokens used | 21.4 M | 48.4 M | 6.9 M | 17.5 M |
+| Runs that finished in budget | 100 % | 80 % | 100 % | 100 % |
+
+**Use the default** for everyday work and for anything on a clock. **Use the
+isolated profile** when the structure of the result matters more than the bill —
+a kata you want to study afterwards, a piece of code that will be read often, a
+workshop exercise about refactoring.
+
+Two caveats on the isolated profile: on Opus 5 one of five runs hit our time
+budget, and correctness did not improve on either model. It buys structure, not
+correctness.
 
 ### Manual extra: `end-refactor` (not part of the workflow)
 
