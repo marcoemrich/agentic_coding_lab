@@ -204,6 +204,22 @@ mechanical ports of the same files, not claims of cross-harness validation.
 '''
 
 
+def optional_skills(harness: str) -> dict[str, str]:
+    """Step 2b: the two user-invoked skills that are not phases of the workflow.
+
+    `end-refactor` is a manual extra, never invoked automatically and never
+    wired into the orchestration; `example-mapping` is the requirements
+    conversation that runs before the loop. cc keeps the AskUserQuestion and
+    slash-command wording; every other harness gets the neutral port.
+    """
+    templates = Path(__file__).parent / "templates/optional-skills"
+    mapping = "example-mapping-cc.md" if harness == "cc" else "example-mapping-neutral.md"
+    return {
+        "skills/end-refactor/SKILL.md": (templates / "end-refactor.md").read_text(),
+        "skills/example-mapping/SKILL.md": (templates / mapping).read_text(),
+    }
+
+
 def hitl(config: str) -> str:
     return '''# Human-in-the-Loop (HITL)
 
@@ -274,7 +290,26 @@ The workflow creates a complete test list, then runs one-test Predictive
 Red-Green-Refactor cycles in one shared context. Before every deterministic
 check it states a falsifiable prediction and compares it with reality.
 Refactoring is inline and follows the Four Rules of Simple Design.{boundary_summary}
-There is no APP mass objective, metric-driven end-refactor, or refactor subagent.
+The loop itself has no APP mass objective, no metric-driven end pass, and no
+refactor subagent.
+
+### Manual extra: `end-refactor` (not part of the workflow)
+
+> **You have to start this yourself. The workflow never runs it.**
+
+Every subtree ships `skills/end-refactor/SKILL.md`: a measured cleanup across
+the whole `src/` (ESLint smells, cognitive complexity, McCabe, APP mass, one
+change at a time). Ask for it by name when a piece of work is finished and you
+want more than the inline per-cycle refactor. It is deliberately outside the
+loop — it costs noticeably more time and tokens, and Predictive TDD does not
+depend on it.
+
+### Optional: Example Mapping before the loop
+
+Every subtree also ships `skills/example-mapping/SKILL.md`, a conversation that
+collects business rules and concrete examples before any test is written. It
+feeds the test list; it is not a phase of the cycle and is never invoked
+automatically.
 
 Language and tool details live exclusively in the profiles under
 `skills/predictive-tdd/stacks/`; orchestration and method files are stack-neutral.
@@ -313,10 +348,11 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
     )
     body = exact_coding_skill(config, hitl_path, source, domain_boundary)
 
-    for rel, content in (
-        ("skills/predictive-tdd/SKILL.md", pred),
-        ("skills/test-list/SKILL.md", tests),
-    ):
+    phase_skills = {
+        "skills/predictive-tdd/SKILL.md": pred,
+        "skills/test-list/SKILL.md": tests,
+    }
+    for rel, content in {**phase_skills, **optional_skills(harness)}.items():
         path = root / rel
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content)
@@ -362,12 +398,24 @@ def validate(target: Path, harnesses: tuple[str, ...]) -> None:
             if match:
                 raise SystemExit(f"Lab wording {match.group()!r} leaked into {path}")
     required_stacks = ("typescript-vitest.md", "java-junit-maven.md")
+    required_optional = ("skills/end-refactor/SKILL.md", "skills/example-mapping/SKILL.md")
     for harness in harnesses:
         config = {"cc": ".claude", "pi": ".pi", "oc": ".opencode", "cursor": ".cursor", "copilot": ".github"}[harness]
         for filename in required_stacks:
             stack = target / config / "skills/predictive-tdd/stacks" / filename
             if not stack.is_file():
                 raise SystemExit(f"Missing stack profile: {stack}")
+        # Step 2b: both user-invoked skills ship in every subtree.
+        for rel in required_optional:
+            skill = target / config / rel
+            if not skill.is_file():
+                raise SystemExit(f"Missing optional skill: {skill}")
+        # end-refactor is a manual extra: no agent file, no orchestration call.
+        if (target / config / "agents/end-refactor.md").exists():
+            raise SystemExit(f"end-refactor must not ship as an agent: {config}")
+        end_refactor = (target / config / "skills/end-refactor/SKILL.md").read_text()
+        if "optional, manually invoked" not in end_refactor:
+            raise SystemExit(f"end-refactor lost its manual-extra framing: {config}")
     oc = target / ".opencode/opencode.json"
     if oc.exists():
         data = json.loads(oc.read_text())

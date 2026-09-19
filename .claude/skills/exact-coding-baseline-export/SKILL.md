@@ -55,8 +55,12 @@ manually applying the Hybrid-specific steps below:
 ```bash
 python3 .claude/skills/exact-coding-baseline-export/export-sol.py \
   --date "$DATE" \
-  --sync-distribution /home/memrich/EXACT-Coding-Exercises
+  --sync-distribution /home/memrich/sync/work/konferenzen_und_talks/exact_coding/exact-coding-exercises
 ```
+
+The repo name on GitHub is `EXACT-Coding-Exercises`, but the local checkout is
+lowercase and lives under `sync/work/...` — see "The consumer" below, which is
+the authoritative path. There is no `/home/memrich/EXACT-Coding-Exercises`.
 
 The script auto-detects the promoted SOL source from
 `model-recommendation-matrix.md`, reads its native `.pi/` tree, removes the lab
@@ -329,13 +333,28 @@ not phases of the workflow:
   loop. Taken from the consumer (`exact-coding-exercises`), where it was written.
 - `skills/end-refactor/SKILL.md` — the whole-`src/` measured cleanup, as a
   **manual extra**. The frontmatter description must say it is never invoked
-  automatically. Source: the skill form first shipped in the 2026-08-12
-  snapshot; one harness-neutral file serves all four subtrees.
+  automatically. One harness-neutral file serves every subtree.
 
 These do not count as phases for validation 12. In particular, shipping
 `skills/end-refactor/` does **not** port the end-refactor phase into a
 hybrid-v2 export: no `agents/end-refactor.md`, and no orchestration file may
 invoke it. Both READMEs must label it as a manual extra.
+
+**The SOL path reads these from `templates/optional-skills/`**, not from a
+source workflow — the SOL line never had either skill, so there is nothing to
+transform. The templates were lifted from consumer `main`, whose copies are
+newer than the 2026-08-12 snapshot: package-manager-neutral (`npm`/`npx`) and
+without the `🏁` lab marker. `example-mapping` has two variants because cc has
+the `AskUserQuestion` tool and slash commands while the other harnesses do not:
+`example-mapping-cc.md` for cc, `example-mapping-neutral.md` for pi, oc, cursor
+and copilot. `end-refactor.md` is byte-identical everywhere.
+
+`export-sol.py` enforces this in `validate()`: both skills must exist in every
+exported subtree, `agents/end-refactor.md` must not exist, and the
+`end-refactor` body must keep its "optional, manually invoked" framing. The
+2026-09-13/14/15 and ptdd-v1-2026-09-16 SOL snapshots predate the fix and ship
+neither skill — `sync_distribution` then deleted the consumer's copies on
+`sol/main`, because it clears all five config dirs before copying the snapshot.
 
 **OpenCode phase skills come from the cc commands, not from the pi port.** The
 pi port rewrote `✅ Correct` as plain `Correct`; the cc/oc prediction parser
