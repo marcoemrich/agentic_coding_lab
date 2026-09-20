@@ -2,110 +2,163 @@
 
 ## Overview
 
-All values are cell means at `n=5`. Comparisons are only within the same model and kata. Correctness is higher = better; complexity, duration, tokens, and cost are lower = better. Bold values with 🏆 mark the observed winner. Equal or practically indistinguishable cells share the trophy.
+All values are cell means at `n=5`. Comparisons are only within the same model and kata; the three methods are the columns. **Inline** is the minimal inline-TDD instruction, **EXACT v1** the shared-context Predictive TDD workflow, **EXACT v1.1** the same workflow with the Refactor step delegated to an isolated subagent.
 
-| Model | Kata | Correctness (external), Inline | Correctness (external), EXACT | Cognitive Complexity max, Inline | Cognitive Complexity max, EXACT | McCabe max, Inline | McCabe max, EXACT |
+Correctness and budget completion are higher = better; complexity, method size, duration, and cost are lower = better. Bold values with 🏆 mark the winner of that row. A trophy is shared when the gap to the best cell is smaller than that cell's own standard deviation; three trophies in a row therefore read as "no effect".
+
+### Correctness and budget
+
+| Model | Kata | Correctness (external) Inline | EXACT v1 | EXACT v1.1 | Within budget Inline | EXACT v1 | EXACT v1.1 |
 |---|---|---:|---:|---:|---:|---:|---:|
-| GPT-5.6 SOL | Game of Life | **1.00** 🏆 | **1.00** 🏆 | 9.8 | **5.8** 🏆 | 8.2 | **4.2** 🏆 |
-| GPT-5.6 SOL | Claim Office | **1.00** 🏆 | **1.00** 🏆 | 9.8 | **5.8** 🏆 | 10.4 | **7.4** 🏆 |
-| Opus 5 | Game of Life | **1.00** 🏆 | **1.00** 🏆 | **5.0** 🏆 | **4.6** 🏆 | **3.8** 🏆 | **3.8** 🏆 |
-| Opus 5 | Claim Office | **1.00** 🏆 | 0.97 | 6.6 | **4.4** 🏆 | 6.2 | **4.4** 🏆 |
+| GPT-5.6 SOL | Game of Life | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
+| GPT-5.6 SOL | Claim Office | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
+| Opus 5 | Game of Life | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
+| Opus 5 | Claim Office | **1.00** 🏆 | 0.97 | 0.97 | **100 %** 🏆 | **100 %** 🏆 | 80 % |
 
-| Model | Kata | Duration Inline | Duration EXACT | Tokens Inline | Tokens EXACT | Cost Inline | Cost EXACT |
+### Complexity Peak
+
+| Model | Kata | Cognitive max Inline | EXACT v1 | EXACT v1.1 | McCabe max Inline | EXACT v1 | EXACT v1.1 |
 |---|---|---:|---:|---:|---:|---:|---:|
-| GPT-5.6 SOL | Game of Life | **195 s** 🏆 | 916 s | **223k** 🏆 | 2.45 M | **$0.42** 🏆 | $2.21 |
-| GPT-5.6 SOL | Claim Office | **296 s** 🏆 | 1,996 s | **290k** 🏆 | 7.74 M | **$0.58** 🏆 | $5.25 |
-| Opus 5 | Game of Life | **251 s** 🏆 | 756 s | **1.29 M** 🏆 | 6.19 M | **$1.41** 🏆 | $5.88 |
-| Opus 5 | Claim Office | **347 s** 🏆 | 1,313 s | **2.64 M** 🏆 | 19.07 M | **$2.88** 🏆 | $15.33 |
+| GPT-5.6 SOL | Game of Life | 9.8 | **5.8** 🏆 | **6.0** 🏆 | 8.2 | **4.2** 🏆 | **4.4** 🏆 |
+| GPT-5.6 SOL | Claim Office | 9.8 | **5.8** 🏆 | 7.8 | 10.4 | **7.4** 🏆 | **7.8** 🏆 |
+| Opus 5 | Game of Life | **5.0** 🏆 | **4.6** 🏆 | **7.0** 🏆 | **3.8** 🏆 | **3.8** 🏆 | **4.8** 🏆 |
+| Opus 5 | Claim Office | 6.6 | 4.4 | **3.4** 🏆 | 6.2 | **4.4** 🏆 | **4.2** 🏆 |
 
-| Model | Kata | Methods Inline → EXACT | Maximum method NCSS Inline | Maximum method NCSS EXACT |
+### Method size (NCSS)
+
+| Model | Kata | NCSS max Inline | EXACT v1 | EXACT v1.1 | NCSS avg Inline | EXACT v1 | EXACT v1.1 |
+|---|---|---:|---:|---:|---:|---:|---:|
+| GPT-5.6 SOL | Game of Life | 14.0 | **7.4** 🏆 | **7.0** 🏆 | 7.26 | **3.84** 🏆 | **3.62** 🏆 |
+| GPT-5.6 SOL | Claim Office | 32.6 | **24.4** 🏆 | **27.8** 🏆 | 7.75 | 5.64 | **3.71** 🏆 |
+| Opus 5 | Game of Life | **7.0** 🏆 | **7.0** 🏆 | **7.6** 🏆 | **3.65** 🏆 | **3.60** 🏆 | **4.08** 🏆 |
+| Opus 5 | Claim Office | 19.4 | 12.6 | **9.8** 🏆 | 4.89 | 4.05 | **3.10** 🏆 |
+
+### Efficiency
+
+| Model | Kata | Duration Inline | EXACT v1 | EXACT v1.1 | Cost Inline | EXACT v1 | EXACT v1.1 |
+|---|---|---:|---:|---:|---:|---:|---:|
+| GPT-5.6 SOL | Game of Life | **195 s** 🏆 | 916 s | 2,256 s | **$0.42** 🏆 | $2.21 | $5.92 |
+| GPT-5.6 SOL | Claim Office | **296 s** 🏆 | 1,996 s | 6,072 s | **$0.58** 🏆 | $5.25 | $17.78 |
+| Opus 5 | Game of Life | **251 s** 🏆 | 756 s | 2,652 s | **$1.41** 🏆 | $5.88 | $11.22 |
+| Opus 5 | Claim Office | **347 s** 🏆 | 1,313 s | 5,509 s | **$2.88** 🏆 | $15.33 | $33.69 |
+
+Code Mass (APP), Production LoC, Test LoC, test count, method count, and process-marker counts have ambiguous direction and therefore receive no trophy. Smell Total is zero in every cell and has no winner. Every cell clears the correctness gate, so all quality and efficiency rows are eligible.
+
+---
+
+## F-1.8.1 — Neither EXACT Coding variant improves correctness on the Java tasks
+
+Correctness is saturated under inline TDD. GPT-5.6 SOL is perfect under all three methods on both katas, as is Opus 5 on Game of Life. On Claim Office, Opus inline TDD is perfect while both EXACT variants miss one of fifteen scenarios in two of five runs each.
+
+| Model | Kata | Inline | EXACT v1 | EXACT v1.1 |
 |---|---|---:|---:|---:|
-| GPT-5.6 SOL | Game of Life | 6.4 → 9.6 | 14.0 | **7.4** 🏆 |
-| GPT-5.6 SOL | Claim Office | 22.0 → 19.6 | 32.6 | **24.4** 🏆 |
-| Opus 5 | Game of Life | 9.8 → 13.4 | **7.0** 🏆 | **7.0** 🏆 |
-| Opus 5 | Claim Office | 34.0 → 39.4 | 19.4 | **12.6** 🏆 |
+| GPT-5.6 SOL | Game of Life | 1.00 ± 0.00 | 1.00 ± 0.00 | 1.00 ± 0.00 |
+| GPT-5.6 SOL | Claim Office | 1.00 ± 0.00 | 1.00 ± 0.00 | 1.00 ± 0.00 |
+| Opus 5 | Game of Life | 1.00 ± 0.00 | 1.00 ± 0.00 | 1.00 ± 0.00 |
+| Opus 5 | Claim Office | 1.00 ± 0.00 | 0.97 ± 0.04 | 0.97 ± 0.04 |
 
-Code Mass (APP), Production LoC, Test LoC, test count, method count, and process-marker counts have ambiguous direction and therefore receive no trophy. Smell Total is zero in every cell and has no winner. All quality and efficiency cells pass the correctness gate.
-
----
-
-## F-1.8.1 — EXACT Coding does not improve correctness on the Java tasks
-
-Correctness is saturated under inline TDD. GPT-5.6 SOL is perfect under both methods on both katas, as is Opus 5 on Game of Life. On Claim Office, Opus inline TDD is perfect while EXACT Coding misses one of fifteen scenarios in two runs (`verification_pct` mean 0.97, minimum 0.93).
-
-| Model | Kata | Inline TDD | EXACT Coding |
-|---|---|---:|---:|
-| GPT-5.6 SOL | Game of Life | 1.00 ± 0.00 | 1.00 ± 0.00 |
-| GPT-5.6 SOL | Claim Office | 1.00 ± 0.00 | 1.00 ± 0.00 |
-| Opus 5 | Game of Life | 1.00 ± 0.00 | 1.00 ± 0.00 |
-| Opus 5 | Claim Office | 1.00 ± 0.00 | 0.97 ± 0.04 |
-
-Correctness (internal) and completion within budget are 100% in all eight cells. The Java evidence therefore provides no correctness justification for the additional workflow structure. The small Opus Claim Office difference is an observed downside, but at `n=5` it is not evidence of a stable correctness regression.
+Correctness (internal) is 100 % in all twelve cells. The Java evidence therefore provides no correctness justification for either layer of additional workflow structure. That the same small Opus Claim Office shortfall appears in both EXACT arms makes it more likely to be a property of the workflow's reading of the specification than replicate noise, but at `n=5` per cell it remains an observed downside rather than a demonstrated regression.
 
 ---
 
-## F-1.8.2 — EXACT Coding lowers Java complexity clearly on SOL and on Opus Claim Office
+## F-1.8.2 — EXACT Coding lowers Java Complexity Peak; the isolated Refactor subagent adds nothing beyond it
 
-The strongest product-quality effect is lower per-method complexity. On GPT-5.6 SOL, EXACT Coding lowers both Cognitive Complexity and McCabe maxima on both katas. Opus shows the same direction on Claim Office, while Game of Life is indistinguishable within replicate variation.
+The shared-context workflow produces the complexity effect. Delegating the Refactor step to an isolated subagent does not deepen it: on three of four model × kata combinations the peak values are unchanged or slightly worse, and only Opus Claim Office improves further.
 
-| Model | Kata | Cognitive max Inline → EXACT | McCabe max Inline → EXACT | Cognitive avg Inline → EXACT | McCabe avg Inline → EXACT |
+| Model | Kata | Cognitive max Inline → v1 → v1.1 | McCabe max Inline → v1 → v1.1 | Cognitive avg Inline → v1 → v1.1 | McCabe avg Inline → v1 → v1.1 |
 |---|---|---:|---:|---:|---:|
-| GPT-5.6 SOL | Game of Life | 9.8 → 5.8 | 8.2 → 4.2 | 4.73 → 2.24 | 4.38 → 1.64 |
-| GPT-5.6 SOL | Claim Office | 9.8 → 5.8 | 10.4 → 7.4 | 3.24 → 2.22 | 3.52 → 2.71 |
-| Opus 5 | Game of Life | 5.0 → 4.6 | 3.8 → 3.8 | 2.10 → 1.75 | 1.61 → 1.57 |
-| Opus 5 | Claim Office | 6.6 → 4.4 | 6.2 → 4.4 | 2.18 → 1.49 | 2.13 → 1.75 |
+| GPT-5.6 SOL | Game of Life | 9.8 → 5.8 → 6.0 | 8.2 → 4.2 → 4.4 | 4.73 → 2.24 → 2.22 | 4.38 → 1.64 → 1.67 |
+| GPT-5.6 SOL | Claim Office | 9.8 → 5.8 → 7.8 | 10.4 → 7.4 → 7.8 | 3.24 → 2.22 → 1.97 | 3.52 → 2.71 → 1.87 |
+| Opus 5 | Game of Life | 5.0 → 4.6 → 7.0 | 3.8 → 3.8 → 4.8 | 2.10 → 1.75 → 2.08 | 1.61 → 1.57 → 1.86 |
+| Opus 5 | Claim Office | 6.6 → 4.4 → 3.4 | 6.2 → 4.4 → 4.2 | 2.18 → 1.49 → 1.38 | 2.13 → 1.75 → 1.37 |
 
-For SOL, the maximum reductions are larger than or comparable to ordinary within-cell variation and repeat across both tasks and both complexity families. For Opus, the Claim Office effect repeats across all four measures, but the Game of Life differences are smaller than one standard deviation and should be read as a tie.
+For SOL the inline → v1 reductions are larger than ordinary within-cell variation and repeat across both tasks and both complexity families; the v1 → v1.1 step stays inside it. For Opus, Claim Office improves monotonically across all four measures, while Game of Life is a tie between inline and v1 and gets worse under v1.1 — that cell's `cognitive_max` is 7.0 in every single v1.1 run (σ = 0.00) against 4.6 ± 3.29 under v1.
 
----
-
-## F-1.8.3 — SOL produces substantially less Java code under EXACT Coding
-
-On GPT-5.6 SOL, the complexity reduction is accompanied by less Production LoC and lower Code Mass (APP) on both katas. Opus does not reproduce this consistently: Claim Office shrinks, but Game of Life grows.
-
-| Model | Kata | Production LoC Inline → EXACT | Code Mass (APP) Inline → EXACT |
-|---|---|---:|---:|
-| GPT-5.6 SOL | Game of Life | 109.2 → 94.4 | 324.4 → 265.8 |
-| GPT-5.6 SOL | Claim Office | 292.2 → 206.2 | 1,028.6 → 720.4 |
-| Opus 5 | Game of Life | 102.8 → 116.4 | 266.4 → 290.6 |
-| Opus 5 | Claim Office | 397.6 → 376.4 | 1,101.4 → 966.2 |
-
-Code size has no universally preferred direction, so these values are mechanism evidence rather than automatic quality wins. Together with the complexity results, however, the SOL reductions indicate a smaller and structurally simpler implementation rather than a correctness-defective stub: every SOL cell passes all external scenarios.
+The averages tell a friendlier story about v1.1 than the maxima do: `cognitive_avg` and `mccabe_avg` drop under the subagent on both Claim Office cells. The subagent distributes complexity more evenly without pulling the worst method down.
 
 ---
 
-## F-1.8.4 — The Java complexity benefit carries a large efficiency premium
+## F-1.8.3 — The isolated Refactor subagent grows the codebase, most sharply on Opus Claim Office
 
-EXACT Coding is slower and more token-intensive in every model × kata contrast. The premium is much larger than replicate variation and remains even where product quality does not improve.
+The shared-context workflow shrinks SOL's Java code. The subagent variant reverses that on every cell: more Production LoC and more Code Mass (APP) than v1 throughout, with Opus Claim Office more than doubling against its own inline baseline.
 
-| Model | Kata | Duration Inline → EXACT | Tokens Inline → EXACT | Cost Inline → EXACT |
+| Model | Kata | Production LoC Inline → v1 → v1.1 | Code Mass (APP) Inline → v1 → v1.1 | Test LoC Inline → v1 → v1.1 |
 |---|---|---:|---:|---:|
-| GPT-5.6 SOL | Game of Life | 195 s → 916 s | 223k → 2.45 M | $0.42 → $2.21 |
-| GPT-5.6 SOL | Claim Office | 296 s → 1,996 s | 290k → 7.74 M | $0.58 → $5.25 |
-| Opus 5 | Game of Life | 251 s → 756 s | 1.29 M → 6.19 M | $1.41 → $5.88 |
-| Opus 5 | Claim Office | 347 s → 1,313 s | 2.64 M → 19.07 M | $2.88 → $15.33 |
+| GPT-5.6 SOL | Game of Life | 109.2 → 94.4 → 113.4 | 324.4 → 265.8 → 277.4 | 119.2 → 143.8 → 132.2 |
+| GPT-5.6 SOL | Claim Office | 292.2 → 206.2 → 314.6 | 1,028.6 → 720.4 → 828.0 | 130.6 → 195.6 → 158.0 |
+| Opus 5 | Game of Life | 102.8 → 116.4 → 143.6 | 266.4 → 290.6 → 328.8 | 134.8 → 227.4 → 256.2 |
+| Opus 5 | Claim Office | 397.6 → 376.4 → 805.8 | 1,101.4 → 966.2 → 1,316.4 | 425.8 → 536.4 → 614.8 |
 
-The practical trade-off is model-dependent. SOL exchanges roughly five to seven times the duration for repeatable complexity and size reductions. Opus pays roughly three to four times the duration and five to seven times the tokens, but obtains a clear complexity benefit only on Claim Office. Inline TDD is therefore the stronger Java default when correctness and efficiency dominate; EXACT Coding is justified only when the measured complexity reduction is worth the premium.
+Code size has no universally preferred direction, so these values are mechanism evidence rather than automatic quality losses. The Opus Claim Office jump from 376 to 806 Production LoC at unchanged external correctness and a test count that barely moves (53.4 → 51.8) is nevertheless the single largest structural difference in this RQ, and it is produced by a step whose stated purpose is cleanup.
+
+---
+
+## F-1.8.4 — Each layer of structure multiplies the efficiency premium
+
+EXACT Coding is slower and more token-intensive than inline TDD in every contrast, and the isolated Refactor subagent multiplies that premium again. The cost ladder is monotonic in all four model × kata combinations.
+
+| Model | Kata | Duration Inline → v1 → v1.1 | Tokens Inline → v1 → v1.1 | Cost Inline → v1 → v1.1 |
+|---|---|---:|---:|---:|
+| GPT-5.6 SOL | Game of Life | 195 s → 916 s → 2,256 s | 223k → 2.45 M → 4.45 M | $0.42 → $2.21 → $5.92 |
+| GPT-5.6 SOL | Claim Office | 296 s → 1,996 s → 6,072 s | 290k → 7.74 M → 15.68 M | $0.58 → $5.25 → $17.78 |
+| Opus 5 | Game of Life | 251 s → 756 s → 2,652 s | 1.29 M → 6.19 M → 13.82 M | $1.41 → $5.88 → $11.22 |
+| Opus 5 | Claim Office | 347 s → 1,313 s → 5,509 s | 2.64 M → 19.07 M → 51.02 M | $2.88 → $15.33 → $33.69 |
+
+The v1 → v1.1 step alone costs roughly two to three and a half times as much and runs two and a half to four times as long. Against inline TDD, v1.1 costs eight to thirty times as much and runs ten to twenty times as long. The Opus Claim Office cell reaches 51 M tokens and $33.69 per run and is the only cell in the RQ that misses the time budget (one of five runs, `completed_within_budget` 80 %); that run's tests were green and its external verification perfect, so the budget miss is a cost symptom, not a failure.
+
+Inline TDD therefore remains the stronger Java default when correctness and efficiency dominate. EXACT v1 is justified where the measured complexity reduction is worth roughly five times the cost; v1.1's additional premium buys no correctness and, outside Opus Claim Office, no lower Complexity Peak.
 
 ---
 
 ## F-1.8.5 — PMD threshold smells do not discriminate these Java cells
 
-Smell Total is zero in all 40 runs after treating Cognitive Complexity and Cyclomatic Complexity findings as score carriers rather than smells. The configured threshold-oriented PMD rules therefore provide no workflow discrimination on these katas.
+Smell Total is zero in all 60 runs after treating Cognitive Complexity and Cyclomatic Complexity findings as score carriers rather than smells. The configured threshold-oriented PMD rules therefore provide no workflow discrimination on these katas, across all three methods.
 
 The continuous per-method complexity scores remain informative and produce the differences in F-1.8.2. For this Java stack, Cognitive Complexity and McCabe metrics should be preferred over binary PMD smell counts when evaluating small kata implementations.
 
 ---
 
-## F-1.8.6 — EXACT Coding produces smaller Java methods except on Opus Game of Life
+## F-1.8.6 — The isolated Refactor subagent trades many small methods for a lower typical method size
 
-Per-method NCSS measures functional decomposition without conflating method bodies with imports, declarations, or blank lines. EXACT Coding lowers the largest method substantially on both SOL katas and on Opus Claim Office. Opus Game of Life remains tied.
+Per-method NCSS measures functional decomposition without conflating method bodies with imports, declarations, or blank lines. Both EXACT variants lower method size against inline TDD on SOL and on Opus Claim Office. The subagent's distinctive move is quantity: it roughly doubles the method count on both Claim Office cells while cutting typical method size.
 
-| Model | Kata | Methods Inline → EXACT | NCSS max Inline → EXACT | NCSS avg Inline → EXACT | NCSS median Inline → EXACT |
+| Model | Kata | Methods Inline → v1 → v1.1 | NCSS max Inline → v1 → v1.1 | NCSS avg Inline → v1 → v1.1 | NCSS median Inline → v1 → v1.1 |
 |---|---|---:|---:|---:|---:|
-| GPT-5.6 SOL | Game of Life | 6.4 → 9.6 | 14.0 → 7.4 | 7.26 → 3.84 | 6.4 → 3.3 |
-| GPT-5.6 SOL | Claim Office | 22.0 → 19.6 | 32.6 → 24.4 | 7.75 → 5.64 | 4.3 → 4.2 |
-| Opus 5 | Game of Life | 9.8 → 13.4 | 7.0 → 7.0 | 3.65 → 3.60 | 3.3 → 3.1 |
-| Opus 5 | Claim Office | 34.0 → 39.4 | 19.4 → 12.6 | 4.89 → 4.05 | 3.4 → 3.2 |
+| GPT-5.6 SOL | Game of Life | 6.4 → 9.6 → 12.0 | 14.0 → 7.4 → 7.0 | 7.26 → 3.84 → 3.62 | 6.4 → 3.3 → 3.0 |
+| GPT-5.6 SOL | Claim Office | 22.0 → 19.6 → 39.0 | 32.6 → 24.4 → 27.8 | 7.75 → 5.64 → 3.71 | 4.3 → 4.2 → 2.2 |
+| Opus 5 | Game of Life | 9.8 → 13.4 → 13.4 | 7.0 → 7.0 → 7.6 | 3.65 → 3.60 → 4.08 | 3.3 → 3.1 → 4.1 |
+| Opus 5 | Claim Office | 34.0 → 39.4 → 62.0 | 19.4 → 12.6 → 9.8 | 4.89 → 4.05 → 3.10 | 3.4 → 3.2 → 2.2 |
 
-Method count has no monotonic quality direction: decomposition can add focused methods while removing duplication, or reduce methods by eliminating unnecessary indirection. The NCSS distribution supplies the interpretable signal. SOL Game of Life shows the clearest decomposition effect—more methods, with roughly half the maximum and typical method size. SOL Claim Office instead achieves smaller methods with slightly fewer methods, consistent with deletion of unnecessary code. Opus Claim Office adds methods while reducing the largest method; Opus Game of Life shows no material method-size effect.
+Method count has no monotonic quality direction: decomposition can add focused methods while removing duplication, or reduce methods by eliminating unnecessary indirection. The NCSS distribution supplies the interpretable signal. Under v1.1 the median method shrinks to roughly two statements on both Claim Office cells — the decomposition is real, but it arrives together with the code growth of F-1.8.3, so it is redistribution into more, smaller units rather than removal of code.
+
+---
+
+## F-1.8.7 — Predictive accuracy is unaffected by where the Refactor step runs
+
+The Predictive TDD mechanism itself transfers to the isolated-subagent architecture without loss. Prediction accuracy is pooled over all cycles of the five runs per cell.
+
+| Model | Kata | EXACT v1 | EXACT v1.1 |
+|---|---|---:|---:|
+| GPT-5.6 SOL | Game of Life | 97.5 % (158/162) | 99.3 % (140/141) |
+| GPT-5.6 SOL | Claim Office | 99.7 % (390/391) | 99.7 % (321/322) |
+| Opus 5 | Game of Life | 97.3 % (215/221) | 98.6 % (215/218) |
+| Opus 5 | Claim Office | 100 % (543/543) | 99.2 % (499/503) |
+
+All eight cells sit above 97 %, and the differences between the two architectures are within one or two mispredictions per cell. Where the Refactor step runs is therefore independent of how reliably the model predicts its own test outcomes — the prediction discipline lives in the main context in both variants, and moving refactoring out of it neither disturbs nor improves it.
+
+---
+
+## F-1.8.8 — `refactorings_applied` counts different units in the two EXACT arms and must not be compared across them
+
+In `exact-ptdd-v1` the metric comes from the inline `## Refactor` text marker, one per cycle. In `exact-ptdd-v1.1-refactor-subagent` it comes from the delegated subagent sessions, and the resolution chain counts session transcripts. The two numbers are not the same quantity.
+
+| Model | Kata | EXACT v1 | EXACT v1.1 |
+|---|---|---:|---:|
+| GPT-5.6 SOL | Game of Life | 13.8 ± 1.79 | 13.8 ± 1.64 |
+| GPT-5.6 SOL | Claim Office | 39.0 ± 2.92 | 26.8 ± 10.92 |
+| Opus 5 | Game of Life | 21.4 ± 0.89 | 16.8 ± 9.04 |
+| Opus 5 | Claim Office | 52.8 ± 1.30 | 30.6 ± 20.54 |
+
+The σ inflation in the v1.1 cells is a capture artifact, not variance in refactoring behaviour. In two of the ten Claude Code subagent runs the session count collapses to one (`refactorings_applied` = 1 at `cycle_count` 26 and 53) because the whole run's refactoring went through a single reused subagent session; the other eight track `cycle_count` closely. On pi the mapping is nearly one-to-one in nine of ten runs.
+
+Read the metric only within an arm, and read the v1.1 Claude Code cells against `cycle_count` rather than on their own. The product-side evidence for what the subagent actually did is in F-1.8.3 and F-1.8.6, not in this counter.

@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+mvn -q -DskipTests compile >/dev/null 2>&1
+M2=${HOME}/.m2/repository/com/fasterxml/jackson/core
+CP="target/classes:$M2/jackson-databind/2.18.3/jackson-databind-2.18.3.jar:$M2/jackson-core/2.18.3/jackson-core-2.18.3.jar:$M2/jackson-annotations/2.18.3/jackson-annotations-2.18.3.jar"
+exec java -cp "$CP" ClaimOfficeCli
