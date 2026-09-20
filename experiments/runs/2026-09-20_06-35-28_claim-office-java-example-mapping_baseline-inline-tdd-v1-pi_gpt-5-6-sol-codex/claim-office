@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+base_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+cd "$base_dir"
+mvn -q -DskipTests compile dependency:build-classpath \
+  -Dmdep.outputFile=target/claim-office-classpath.txt 1>&2
+classpath=$(cat target/claim-office-classpath.txt)
+exec java -cp "target/classes:$classpath" ClaimOfficeCli "$@"

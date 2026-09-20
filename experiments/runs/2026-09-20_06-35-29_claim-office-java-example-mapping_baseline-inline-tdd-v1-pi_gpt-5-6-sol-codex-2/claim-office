@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+cd "$ROOT"
+if ! mvn -q -DskipTests compile dependency:build-classpath \
+  -Dmdep.outputFile=target/claim-office-classpath.txt >/dev/null 2>&1; then
+  echo "Error: unable to build claim-office" >&2
+  exit 1
+fi
+exec java -cp "target/classes:$(cat target/claim-office-classpath.txt)" ClaimOfficeCli

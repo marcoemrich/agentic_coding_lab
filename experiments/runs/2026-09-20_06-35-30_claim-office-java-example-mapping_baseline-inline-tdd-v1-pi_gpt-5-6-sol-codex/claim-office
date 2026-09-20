@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+if [ ! -f "$ROOT/target/classes/ClaimOfficeCli.class" ]; then
+  (cd "$ROOT" && mvn -q -DskipTests package) >&2
+fi
+REPO=${M2_REPO:-"$HOME/.m2/repository"}
+CP="$ROOT/target/classes:$REPO/com/fasterxml/jackson/core/jackson-databind/2.18.3/jackson-databind-2.18.3.jar:$REPO/com/fasterxml/jackson/core/jackson-core/2.18.3/jackson-core-2.18.3.jar:$REPO/com/fasterxml/jackson/core/jackson-annotations/2.18.3/jackson-annotations-2.18.3.jar"
+exec java -cp "$CP" ClaimOfficeCli "$@"

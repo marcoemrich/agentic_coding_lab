@@ -1,0 +1,6 @@
+{
+  "prepare_command": "mvn -q -DskipTests package dependency:copy-dependencies",
+  "command": "java -cp 'target/classes:target/dependency/*' ClaimOfficeCli",
+  "entry_class": "ClaimOfficeCli",
+  "timeout_seconds": 30
+}

@@ -47,7 +47,7 @@ RUNS_DIR = REPO_ROOT / "experiments" / "runs"
 WORKFLOWS_DIR = REPO_ROOT / "experiments" / "workflows"
 
 CSV_COLUMNS = [
-    "kata", "workflow", "cell_workflow", "model", "cell_model", "cli_model",
+    "kata", "stack", "workflow", "cell_workflow", "model", "cell_model", "cli_model",
     "harness_version", "cell_harness",
     "thinking", "run_id",
     "exit_code", "exit_reason", "rate_limited", "completed_within_budget",
@@ -69,6 +69,8 @@ CSV_COLUMNS = [
     "smell_magic_numbers", "smell_code_quality",
     "mccabe_max", "mccabe_avg", "mccabe_high_count",
     "cognitive_max", "cognitive_avg", "cognitive_high_count",
+    "java_methods", "java_method_ncss_max", "java_method_ncss_avg",
+    "java_method_ncss_median",
     "verification_total", "verification_passed", "verification_pct",
     "cli_built",
 ]
@@ -245,6 +247,10 @@ def harness_of_run(metrics: dict) -> str:
 def matches_cell(metrics: dict, cell: dict) -> bool:
     if metrics.get("kata") != kata_for_cell(cell):
         return False
+    # Stack is an optional control. Historical runs predate the field and are
+    # TypeScript/Vitest by construction.
+    if cell.get("stack") and metrics.get("stack", "typescript-vitest") != cell["stack"]:
+        return False
     # Harness match: only when the cell declares harness_version. Needed when a
     # CLI bump is a live factor — reusing runs from before the bump would
     # confound the CLI version with whatever the RQ actually varies. Accepts
@@ -357,6 +363,7 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
     cc = metrics.get("clean_code") or {}
     cs = metrics.get("code_smells") or {}
     tcr = metrics.get("tcr") or {}
+    java_quality = metrics.get("java_quality") or {}
 
     # A run "completed within budget" iff it neither timed out nor
     # exhausted its retry budget for transient API issues (rate-limit
@@ -380,6 +387,8 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
 
     return {
         "kata":                       metrics.get("kata", ""),
+        # Historical runs predate explicit stack provenance and are all TS.
+        "stack":                      metrics.get("stack", "typescript-vitest"),
         "workflow":                   metrics.get("workflow", ""),
         "cell_workflow":              cell_workflow or metrics.get("workflow", ""),
         "model":                      metrics.get("model", ""),
@@ -455,6 +464,10 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
         "cognitive_max":              fm.get("cognitive_max"),
         "cognitive_avg":              fm.get("cognitive_avg"),
         "cognitive_high_count":       fm.get("cognitive_high_count"),
+        "java_methods":               java_quality.get("methods"),
+        "java_method_ncss_max":       java_quality.get("method_ncss_max"),
+        "java_method_ncss_avg":       java_quality.get("method_ncss_avg"),
+        "java_method_ncss_median":    java_quality.get("method_ncss_median"),
         "verification_total":         fm.get("verification_total"),
         "verification_passed":        fm.get("verification_passed"),
         "verification_pct":           fm.get("verification_pct"),

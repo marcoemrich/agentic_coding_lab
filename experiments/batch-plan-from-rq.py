@@ -201,6 +201,7 @@ def build_plan(fm: dict, cells: list[dict], counts: dict[tuple, int]) -> dict:
                 "kata": key[0],
                 "workflow": key[1],
                 "model": model,
+                "stack": cell.get("stack", "typescript-vitest"),
             })
 
     if relabelled:

@@ -22,32 +22,41 @@ print_header() {
     echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
 }
 
-# Find implementation files (all non-spec .ts in src/, newline-separated).
-# Returns ALL implementation files so multi-file katas (e.g. claim-office:
-# cli.ts + claim-office.ts) get aggregated correctly.
+# Find production and test files for the active stack.
 find_impl_files() {
     local run_dir=$1
-    find "$run_dir/src" -name "*.ts" ! -name "*.spec.ts" 2>/dev/null | sort
+    if [ -f "$run_dir/pom.xml" ]; then
+        find "$run_dir/src/main/java" -name "*.java" 2>/dev/null | sort
+    else
+        find "$run_dir/src" -name "*.ts" ! -name "*.spec.ts" 2>/dev/null | sort
+    fi
 }
 
-# Find test files (ALL of them). The former kata-name pattern list silently fell
-# back to `head -1`, so any workflow that splits its tests across files had only
-# one of them measured (claim-office was never in the list at all).
 find_test_files() {
     local run_dir=$1
-    find "$run_dir/src" -name "*.spec.ts" 2>/dev/null | sort
+    if [ -f "$run_dir/pom.xml" ]; then
+        find "$run_dir/src/test/java" -name "*.java" 2>/dev/null | sort
+    else
+        find "$run_dir/src" -name "*.spec.ts" 2>/dev/null | sort
+    fi
 }
 
-# Active test call sites: it(...) / test(...) plus their .each variants.
-# `.todo` and `.skip` are deliberately excluded — todos are counted separately.
 count_test_cases() {
-    grep -ohE '(^|[^A-Za-z0-9_.])(it|test)(\.each)?[[:space:]]*\(' "$@" 2>/dev/null \
-        | wc -l | tr -d '[:space:]'
+    if [[ "$1" == *.java ]]; then
+        grep -ohE '@Test\b' "$@" 2>/dev/null | wc -l | tr -d '[:space:]'
+    else
+        grep -ohE '(^|[^A-Za-z0-9_.])(it|test)(\.each)?[[:space:]]*\(' "$@" 2>/dev/null \
+            | wc -l | tr -d '[:space:]'
+    fi
 }
 
 count_test_todos() {
-    grep -ohE '(^|[^A-Za-z0-9_.])(it|test)\.todo[[:space:]]*\(' "$@" 2>/dev/null \
-        | wc -l | tr -d '[:space:]'
+    if [[ "$1" == *.java ]]; then
+        grep -ohE '@Disabled\b' "$@" 2>/dev/null | wc -l | tr -d '[:space:]'
+    else
+        grep -ohE '(^|[^A-Za-z0-9_.])(it|test)\.todo[[:space:]]*\(' "$@" 2>/dev/null \
+            | wc -l | tr -d '[:space:]'
+    fi
 }
 
 # Extract metrics from transcript-metrics.json (post-hoc transcript analysis).
@@ -306,7 +315,21 @@ analyze_single_run() {
         fi
     fi
 
-    if [ -f "$run_dir/package.json" ] && [ -d "$run_dir/node_modules" ]; then
+    if [ -f "$run_dir/pom.xml" ]; then
+        local mvn_exit=0
+        set +e
+        test_output=$(cd "$run_dir" && mvn test 2>&1)
+        mvn_exit=$?
+        set -e
+        echo "$test_output"
+        if [ "$mvn_exit" -eq 0 ] && echo "$test_output" | grep -q 'BUILD SUCCESS'; then
+            tests_passed=true
+            report_content+="**Status**: ✅ All tests passing (Maven)\n\n"
+        else
+            report_content+="**Status**: ❌ Tests failed or not runnable\n\n"
+        fi
+        report_content+="\`\`\`\n$test_output\n\`\`\`\n\n"
+    elif [ -f "$run_dir/package.json" ] && [ -d "$run_dir/node_modules" ]; then
         test_output=$(cd "$run_dir" && pnpm test 2>&1) || true
         echo "$test_output"
 
@@ -355,7 +378,7 @@ analyze_single_run() {
             fi
         fi
     else
-        echo -e "  ${YELLOW}Run 'pnpm install' in $run_dir to enable test execution${NC}"
+        echo -e "  ${YELLOW}Project dependencies are unavailable in $run_dir${NC}"
         report_content+="Tests not runnable (dependencies not installed)\n\n"
     fi
 
@@ -509,6 +532,10 @@ analyze_single_run() {
     local smell_duplication=0
     local smell_magic_numbers=0
     local smell_code_quality=0
+    local java_methods=0
+    local java_method_ncss_max=0
+    local java_method_ncss_avg=0
+    local java_method_ncss_median=0
 
     if [ ${#impl_files[@]} -gt 0 ] && [ -f "$run_dir/eslint.config.mjs" ] && [ -d "$run_dir/node_modules" ]; then
         echo -e "\n${YELLOW}Code Smell Detection:${NC}"
@@ -560,6 +587,54 @@ analyze_single_run() {
         fi
     fi
 
+    # Java quality metrics use the canonical stack ruleset. Swap it in only
+    # for analysis, then restore the run's original project file. This lets
+    # older Java runs gain newly added measurements without rewriting their
+    # preserved source tree.
+    local pmd_report="$run_dir/target/pmd.xml"
+    if [ ${#impl_files[@]} -gt 0 ] && [ -f "$run_dir/pom.xml" ] && [ -f "$run_dir/pmd-ruleset.xml" ]; then
+        local canonical_pmd="$EXPERIMENTS_DIR/stacks/java-junit-maven/pmd-ruleset.xml"
+        local saved_pmd="$run_dir/.analysis-pmd-ruleset.original"
+        if [ -f "$canonical_pmd" ]; then
+            cp "$run_dir/pmd-ruleset.xml" "$saved_pmd"
+            cp "$canonical_pmd" "$run_dir/pmd-ruleset.xml"
+        fi
+        (cd "$run_dir" && mvn -q pmd:pmd) >/dev/null 2>&1 || true
+        if [ -f "$saved_pmd" ]; then
+            mv "$saved_pmd" "$run_dir/pmd-ruleset.xml"
+        fi
+        if [ -f "$pmd_report" ]; then
+            local pmd_rules
+            pmd_rules=$(grep -oE 'rule="[^"]+"' "$pmd_report" | cut -d'"' -f2 || true)
+            # Cognitive, Cyclomatic, and NCSS findings are score carriers, not smells.
+            smell_complexity=$(echo "$pmd_rules" | grep -cE 'NPathComplexity|ExcessiveParameterList|AvoidDeeplyNestedIfStmts' || true)
+            smell_duplication=$(echo "$pmd_rules" | grep -c 'AvoidDuplicateLiterals' || true)
+            smell_code_quality=$(echo "$pmd_rules" | grep -cvE '^$|CognitiveComplexity|CyclomaticComplexity|NcssCount|NPathComplexity|ExcessiveParameterList|AvoidDeeplyNestedIfStmts|AvoidDuplicateLiterals' || true)
+            smell_total=$((smell_complexity + smell_duplication + smell_code_quality))
+
+            local java_ncss_scores
+            java_ncss_scores=$(python3 - "$pmd_report" <<'PY'
+import re, sys, xml.etree.ElementTree as ET
+root = ET.parse(sys.argv[1]).getroot()
+for node in root.iter():
+    if node.tag.endswith("violation") and node.attrib.get("rule") == "NcssCount":
+        text = (node.text or "").strip()
+        if not re.search(r"The (method|constructor)", text):
+            continue
+        match = re.search(r"NCSS line count of (\d+)", text)
+        if match:
+            print(match.group(1))
+PY
+)
+            if [ -n "$java_ncss_scores" ]; then
+                java_methods=$(echo "$java_ncss_scores" | wc -l | tr -d '[:space:]')
+                java_method_ncss_max=$(echo "$java_ncss_scores" | sort -n | tail -1)
+                java_method_ncss_avg=$(echo "$java_ncss_scores" | awk '{sum+=$1; n++} END {printf "%.2f", sum/n}')
+                java_method_ncss_median=$(echo "$java_ncss_scores" | sort -n | awk '{a[NR]=$1} END {if (NR%2) printf "%.2f", a[(NR+1)/2]; else printf "%.2f", (a[NR/2]+a[NR/2+1])/2}')
+            fi
+        fi
+    fi
+
     # Numeric Complexity Scores (McCabe + Cognitive)
     # Second ESLint pass with thresholds=0 forces a message for every function,
     # from which we parse the actual numeric score.
@@ -571,7 +646,46 @@ analyze_single_run() {
     local cognitive_high_count=0
     local complexity_threshold=10
 
-    if [ ${#impl_files[@]} -gt 0 ] && [ -f "$run_dir/eslint.config.mjs" ] && [ -d "$run_dir/node_modules" ]; then
+    if [ -f "$run_dir/pom.xml" ] && [ -f "$pmd_report" ]; then
+        local pmd_mccabe_scores
+        local pmd_cognitive_scores
+        pmd_mccabe_scores=$(python3 - "$pmd_report" CyclomaticComplexity <<'PY'
+import re, sys, xml.etree.ElementTree as ET
+root = ET.parse(sys.argv[1]).getroot()
+rule = sys.argv[2]
+for node in root.iter():
+    if node.tag.endswith("violation") and node.attrib.get("rule") == rule:
+        text = (node.text or "").strip()
+        if not re.search(r"The (method|constructor)", text):
+            continue
+        match = re.search(r"cyclomatic complexity of (\d+)", text)
+        if match:
+            print(match.group(1))
+PY
+)
+        pmd_cognitive_scores=$(python3 - "$pmd_report" CognitiveComplexity <<'PY'
+import re, sys, xml.etree.ElementTree as ET
+root = ET.parse(sys.argv[1]).getroot()
+rule = sys.argv[2]
+for node in root.iter():
+    if node.tag.endswith("violation") and node.attrib.get("rule") == rule:
+        text = (node.text or "").strip()
+        match = re.search(r"cognitive complexity of (\d+)", text)
+        if match:
+            print(match.group(1))
+PY
+)
+        if [ -n "$pmd_mccabe_scores" ]; then
+            mccabe_max=$(echo "$pmd_mccabe_scores" | sort -n | tail -1)
+            mccabe_avg=$(echo "$pmd_mccabe_scores" | awk '{sum+=$1; n++} END {printf "%.2f", sum/n}')
+            mccabe_high_count=$(echo "$pmd_mccabe_scores" | awk -v t="$complexity_threshold" '$1 > t' | wc -l | tr -d '[:space:]')
+        fi
+        if [ -n "$pmd_cognitive_scores" ]; then
+            cognitive_max=$(echo "$pmd_cognitive_scores" | sort -n | tail -1)
+            cognitive_avg=$(echo "$pmd_cognitive_scores" | awk '{sum+=$1; n++} END {printf "%.2f", sum/n}')
+            cognitive_high_count=$(echo "$pmd_cognitive_scores" | awk -v t="$complexity_threshold" '$1 > t' | wc -l | tr -d '[:space:]')
+        fi
+    elif [ ${#impl_files[@]} -gt 0 ] && [ -f "$run_dir/eslint.config.mjs" ] && [ -d "$run_dir/node_modules" ]; then
         # Write a temporary override config that re-exports the project config
         # but cranks complexity rules down to 0 so every function reports.
         local override_config="$run_dir/.eslint.complexity.mjs"
@@ -666,6 +780,7 @@ EOF
     local summary_refactorings=0
     local summary_final_mass=0
     local summary_tests_passed_immediately=0
+    local summary_cost_usd=null
 
     # Note: transcript-metrics.json was already (re)generated above, before
     # the Configuration section, so the model version(s) could be displayed.
@@ -819,6 +934,10 @@ EOF
         [[ "$cognitive_max" =~ ^[0-9]+$ ]] || cognitive_max=0
         [[ "$cognitive_high_count" =~ ^[0-9]+$ ]] || cognitive_high_count=0
         [[ "$cognitive_avg" =~ ^[0-9]+(\.[0-9]+)?$ ]] || cognitive_avg=0
+        [[ "$java_methods" =~ ^[0-9]+$ ]] || java_methods=0
+        [[ "$java_method_ncss_max" =~ ^[0-9]+$ ]] || java_method_ncss_max=0
+        [[ "$java_method_ncss_avg" =~ ^[0-9]+(\.[0-9]+)?$ ]] || java_method_ncss_avg=0
+        [[ "$java_method_ncss_median" =~ ^[0-9]+(\.[0-9]+)?$ ]] || java_method_ncss_median=0
 
         # Verification block (for CLI katas with <basename>-verification/)
         # Runs each *.input.json scenario through the CLI defined in
@@ -852,6 +971,11 @@ EOF
             local v_timeout
             v_command=$(jq -r '.command' "$verification_dir/runner.json")
             v_timeout=$(jq -r '.timeout_seconds // 30' "$verification_dir/runner.json")
+            local prepare_command
+            prepare_command=$(jq -r '.prepare_command // empty' "$verification_dir/runner.json")
+            if [ -n "$prepare_command" ]; then
+                (cd "$run_dir" && bash -c "$prepare_command") >>"$run_dir/verification-prepare.log" 2>&1 || true
+            fi
             # Verification suite is present, so we'll have a defined
             # cli_built signal once the loop has run at least once.
             cli_built=true
@@ -953,7 +1077,16 @@ EOF
             # that failure mode.
             local cli_entry
             cli_entry=$(echo "$v_command" | grep -oE '[A-Za-z0-9_./-]+\.(ts|js|mjs|cjs)' | head -1)
-            if [ -n "$cli_entry" ]; then
+            local entry_class
+            entry_class=$(jq -r '.entry_class // empty' "$verification_dir/runner.json")
+            if [ -n "$entry_class" ]; then
+                if find "$run_dir/src/main/java" -name "${entry_class}.java" -print -quit 2>/dev/null | grep -q .; then
+                    cli_built=true
+                else
+                    cli_built=false
+                    echo -e "${RED}CLI entry class missing: $entry_class${NC}"
+                fi
+            elif [ -n "$cli_entry" ]; then
                 if [ -f "$run_dir/$cli_entry" ]; then
                     cli_built=true
                 else
@@ -1060,6 +1193,10 @@ EOF
            --argjson cognitive_max "$cognitive_max" \
            --argjson cognitive_avg "$cognitive_avg" \
            --argjson cognitive_high_count "$cognitive_high_count" \
+           --argjson java_methods "$java_methods" \
+           --argjson java_method_ncss_max "$java_method_ncss_max" \
+           --argjson java_method_ncss_avg "$java_method_ncss_avg" \
+           --argjson java_method_ncss_median "$java_method_ncss_median" \
            --argjson verification_total "$verification_total" \
            --argjson verification_passed "$verification_passed" \
            --argjson verification_pct "$verification_pct" \
@@ -1094,6 +1231,10 @@ EOF
             .final_metrics.cognitive_max = $cognitive_max |
             .final_metrics.cognitive_avg = $cognitive_avg |
             .final_metrics.cognitive_high_count = $cognitive_high_count |
+            .java_quality.methods = $java_methods |
+            .java_quality.method_ncss_max = $java_method_ncss_max |
+            .java_quality.method_ncss_avg = $java_method_ncss_avg |
+            .java_quality.method_ncss_median = $java_method_ncss_median |
             .summary_metrics.total_tokens = $total_tokens |
             .summary_metrics.context_utilization_pct = $context_util |
             .summary_metrics.cycle_count = $cycle_count |

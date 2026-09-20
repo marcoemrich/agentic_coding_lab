@@ -1,0 +1,4 @@
+#!/bin/sh
+# MHPCO claim office CLI: reads a scenario as JSON from stdin, writes results as JSON to stdout.
+dir=$(dirname "$0")
+exec java -cp "$dir/target/classes:$(cat "$dir/target/classpath.txt")" ClaimOfficeCli "$@"

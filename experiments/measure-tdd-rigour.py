@@ -21,16 +21,17 @@ Examples:
 """
 import argparse,json,re,sys
 from pathlib import Path
-TEST=re.compile(r"\.(spec|test)\.(ts|tsx|js|jsx|mjs|cjs)$",re.I)
-SKIP=re.compile(r"(experiment-done|package\.json|tsconfig|eslint|vitest\.config|pnpm-lock)",re.I)
-CASE=re.compile(r"\b(it|test)\s*\(", re.M)
+TEST=re.compile(r"(?:\.(spec|test)\.(ts|tsx|js|jsx|mjs|cjs)|(?:^|/)src/test/java/.+Test\.java)$",re.I)
+SKIP=re.compile(r"(experiment-done|package\.json|pom\.xml|tsconfig|eslint|vitest\.config|pnpm-lock)",re.I)
+CASE=re.compile(r"\b(?:it|test)\s*\(|@Test\b", re.M)
 # Test-runner invocations. Covers the pnpm default plus npm/yarn/bun and direct
 # vitest/jest calls — an external skill may prescribe a different runner than the
 # kata does (the Superpowers skill says `npm test`, our katas use pnpm).
 TEST_RUN=re.compile(
     r"\b(?:pnpm|npm|yarn|bun)\s+(?:run\s+)?test\b"   # pnpm test, npm run test, ...
     r"|\bnpx\s+(?:vitest|jest)\b"                    # npx vitest
-    r"|(?:^|[;&|]\s*)(?:vitest|jest)(?![\w.-])",     # bare vitest/jest as a command
+    r"|(?:^|[;&|]\s*)(?:vitest|jest)(?![\w.-])"      # bare vitest/jest as a command
+    r"|\b(?:mvn|\./mvnw)\b[^\n]*(?:^|\s)test(?:\s|$)", # Maven/JUnit
     re.I|re.M)
 # Explicit protocol-level refactor executions in the TCRDD snapshots. Count
 # tool calls only, never prose mentions from the loaded skill document.

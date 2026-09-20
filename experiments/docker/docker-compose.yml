@@ -12,6 +12,7 @@ services:
     volumes:
       # Experiment definitions (read-only)
       - ../katas:/home/experimenter/experiments/katas:ro
+      - ../stacks:/home/experimenter/experiments/stacks:ro
       - ../workflows:/home/experimenter/experiments/workflows:ro
 
       # Run output (read-write)
@@ -46,8 +47,9 @@ services:
       - ${PI_CONFIG_DIR:-./pi-config}/agents:/home/experimenter/.pi/agents:ro
       - ${PI_CONFIG_DIR:-./pi-config}/agent/agents:/home/experimenter/.pi/agent/agents:ro
 
-      # Persistent pnpm store shared across runs (avoids re-downloading deps)
+      # Persistent dependency caches shared across runs.
       - pnpm-store:/home/experimenter/.local/share/pnpm/store:rw
+      - maven-repo:/home/experimenter/.m2/repository:rw
 
     # Environment
     # .env (docker-Verzeichnis) liefert u.a. ANTHROPIC_BASE_URL,
@@ -96,6 +98,7 @@ services:
 
     volumes:
       - ../katas:/home/experimenter/experiments/katas:ro
+      - ../stacks:/home/experimenter/experiments/stacks:ro
       - ../workflows:/home/experimenter/experiments/workflows:ro
       - ../runs:/home/experimenter/experiments/runs:rw
       - ../record-run.sh:/home/experimenter/experiments/record-run.sh:ro
@@ -128,8 +131,9 @@ services:
       - ${PI_CONFIG_DIR:-./pi-config}/agents:/home/experimenter/.pi/agents:ro
       - ${PI_CONFIG_DIR:-./pi-config}/agent/agents:/home/experimenter/.pi/agent/agents:ro
 
-      # Persistent pnpm store shared across runs (avoids re-downloading deps)
+      # Persistent dependency caches shared across runs.
       - pnpm-store:/home/experimenter/.local/share/pnpm/store:rw
+      - maven-repo:/home/experimenter/.m2/repository:rw
 
     env_file:
       - .env
@@ -192,6 +196,7 @@ services:
 
     volumes:
       - ../katas:/home/experimenter/experiments/katas:ro
+      - ../stacks:/home/experimenter/experiments/stacks:ro
       - ../workflows:/home/experimenter/experiments/workflows:ro
       - ../runs:/home/experimenter/experiments/runs:rw
       - ../record-run.sh:/home/experimenter/experiments/record-run.sh:ro
@@ -258,3 +263,4 @@ volumes:
   # Shared pnpm content-addressable store. Persists across container
   # restarts so subsequent runs reuse already-downloaded packages.
   pnpm-store:
+  maven-repo:

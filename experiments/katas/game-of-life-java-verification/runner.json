@@ -1,0 +1,6 @@
+{
+  "prepare_command": "mvn -q -DskipTests package dependency:copy-dependencies",
+  "command": "java -cp 'target/classes:target/dependency/*' GameOfLifeCli",
+  "entry_class": "GameOfLifeCli",
+  "timeout_seconds": 30
+}

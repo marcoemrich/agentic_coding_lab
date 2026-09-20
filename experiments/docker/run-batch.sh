@@ -8,6 +8,7 @@ set -e
 
 EXPERIMENTS_DIR="/home/experimenter/experiments"
 KATAS_DIR="$EXPERIMENTS_DIR/katas"
+STACKS_DIR="$EXPERIMENTS_DIR/stacks"
 WORKFLOWS_DIR="$EXPERIMENTS_DIR/workflows"
 WORKFLOW_PATHS_FILE="$WORKFLOWS_DIR/PATHS.json"
 WORKFLOW_ALIASES_FILE="$WORKFLOWS_DIR/ALIASES.json"
@@ -447,7 +448,7 @@ if [ -n "$PLAN_FILE" ]; then
     PLAN_NAME=$(jq -r '.name // ""' "$PLAN_FILE")
     PLAN_DESCRIPTION=$(jq -r '.description // ""' "$PLAN_FILE")
 
-    # Pull triples; each line: kata\tworkflow\tmodel
+    # Pull entries; stack defaults to TypeScript for every historical plan.
     triple_count=$(jq '.runs | length' "$PLAN_FILE" 2>/dev/null || echo 0)
     if [ "$triple_count" = "null" ] || [ "$triple_count" = "0" ]; then
         echo -e "${RED}Plan file has no runs: $PLAN_FILE${NC}" >&2
@@ -456,7 +457,8 @@ if [ -n "$PLAN_FILE" ]; then
 
     # --- Validation (fail-fast) ---
     errors=()
-    while IFS=$'\t' read -r kata workflow model; do
+    while IFS=$'\t' read -r kata workflow model stack; do
+        stack="${stack:-typescript-vitest}"
         if [ -z "$kata" ] || [ -z "$workflow" ] || [ -z "$model" ]; then
             errors+=("missing kata/workflow/model in entry: '$kata' '$workflow' '$model'")
             continue
@@ -473,8 +475,11 @@ if [ -n "$PLAN_FILE" ]; then
         if ! lookup_model_config "$model" >/dev/null; then
             errors+=("unknown model: '$model'")
         fi
-        RUN_LIST+=("$kata|$workflow|$model")
-    done < <(jq -r '.runs[] | [.kata, .workflow, .model] | @tsv' "$PLAN_FILE")
+        if [ "$stack" != "typescript-vitest" ] && [ ! -d "$STACKS_DIR/$stack" ]; then
+            errors+=("unknown stack: '$stack'")
+        fi
+        RUN_LIST+=("$kata|$workflow|$model|$stack")
+    done < <(jq -r '.runs[] | [.kata, .workflow, .model, (.stack // "typescript-vitest")] | @tsv' "$PLAN_FILE")
 
     if [ ${#errors[@]} -gt 0 ]; then
         echo -e "${RED}Plan validation failed:${NC}" >&2
@@ -496,7 +501,7 @@ else
         for workflow in "${workflows[@]}"; do
             for cfg in "${MODEL_CONFIGS[@]}"; do
                 model_name=$(echo "$cfg" | cut -d'|' -f1)
-                RUN_LIST+=("$kata|$workflow|$model_name")
+                RUN_LIST+=("$kata|$workflow|$model_name|typescript-vitest")
             done
         done
     done
@@ -586,6 +591,8 @@ for entry in "${RUN_LIST[@]}"; do
     kata=$(echo "$entry" | cut -d'|' -f1)
     workflow=$(echo "$entry" | cut -d'|' -f2)
     model_name=$(echo "$entry" | cut -d'|' -f3)
+    stack=$(echo "$entry" | cut -d'|' -f4)
+    stack="${stack:-typescript-vitest}"
     cfg="$(lookup_model_config "$model_name")"
     cli_model=$(echo "$cfg" | cut -d'|' -f2)
     thinking=$(echo "$cfg" | cut -d'|' -f3)
@@ -609,7 +616,7 @@ for entry in "${RUN_LIST[@]}"; do
     fi
 
     current=$((current + 1))
-    echo -e "${YELLOW}[$current/$total] $kata + $workflow + $model_name${NC}"
+    echo -e "${YELLOW}[$current/$total] $kata + $workflow + $model_name + $stack${NC}"
 
     # Create run directory
     timestamp=$(date +%Y-%m-%d_%H-%M-%S)
@@ -631,7 +638,11 @@ for entry in "${RUN_LIST[@]}"; do
         suffix=$((suffix + 1))
         run_dir="$RUNS_DIR/${run_name}-${suffix}"
     done
-    mkdir -p "$run_dir/src"
+    if [ "$stack" = "typescript-vitest" ]; then
+        mkdir -p "$run_dir/src"
+    else
+        cp -r "$STACKS_DIR/$stack/." "$run_dir/"
+    fi
 
     # Detect harness from workflow definition. .pi/ marks a pi workflow,
     # .opencode/ an OpenCode workflow, .cursor/ a cursor-agent workflow,
@@ -690,7 +701,9 @@ for entry in "${RUN_LIST[@]}"; do
         cp "$KATAS_DIR/$kata/prompt.md" "$run_dir/"
     fi
 
-    # Project files
+    # Project files. Java stacks come from experiments/stacks; the historical
+    # TypeScript stack remains inline for backward-compatible plans.
+    if [ "$stack" = "typescript-vitest" ]; then
     cat > "$run_dir/package.json" << 'EOF'
 {
   "name": "tdd-experiment-run",
@@ -804,6 +817,7 @@ export default [
   },
 ];
 EOF
+    fi
 
     # Harness CLI version, recorded per run. Without it a version bump is
     # invisible after the fact: runs from before and after look identical in
@@ -825,6 +839,7 @@ EOF
   "kata": "$kata",
   "workflow": "$workflow",
   "model": "$model_name",
+  "stack": "$stack",
   "cli_model": "$cli_model",
   "harness_version": "$harness_version",
   "thinking": $thinking,
@@ -840,7 +855,12 @@ EOF
     # --prefer-offline reuses the persistent store. A broken install is an
     # infrastructure failure: stop before invoking the model, not a kata result.
     echo -e "  Installing dependencies..."
-    if ! (cd "$run_dir" && pnpm install --prod=false --prefer-offline); then
+    if [ "$stack" = "typescript-vitest" ]; then
+        install_cmd=(pnpm install --prod=false --prefer-offline)
+    else
+        install_cmd=(mvn -q test-compile)
+    fi
+    if ! (cd "$run_dir" && "${install_cmd[@]}"); then
         echo "Dependency installation failed in $run_dir; aborting batch before model invocation." >&2
         exit 1
     fi

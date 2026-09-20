@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+if [ ! -f "$ROOT/target/classes/ClaimOfficeCli.class" ]; then
+  mvn -q -f "$ROOT/pom.xml" -DskipTests compile dependency:build-classpath \
+    -Dmdep.outputFile="$ROOT/target/runtime-classpath" >&2
+elif [ ! -f "$ROOT/target/runtime-classpath" ]; then
+  mvn -q -f "$ROOT/pom.xml" dependency:build-classpath \
+    -Dmdep.outputFile="$ROOT/target/runtime-classpath" >&2
+fi
+exec java -cp "$ROOT/target/classes:$(cat "$ROOT/target/runtime-classpath")" ClaimOfficeCli

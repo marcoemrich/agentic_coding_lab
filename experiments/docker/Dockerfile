@@ -25,6 +25,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     bash \
     python3 \
     gawk \
+    openjdk-17-jdk-headless \
+    maven \
     && rm -rf /var/lib/apt/lists/*
 
 # Install pnpm
@@ -92,6 +94,7 @@ RUN mkdir -p \
     /home/experimenter/.claude \
     /home/experimenter/.anthropic \
     /home/experimenter/.local/share/pnpm/store \
+    /home/experimenter/.m2/repository \
     && chown -R experimenter:experimenter /home/experimenter
 
 # Provision an empty Claude config file. The CLI 2.1.107 logs a noisy

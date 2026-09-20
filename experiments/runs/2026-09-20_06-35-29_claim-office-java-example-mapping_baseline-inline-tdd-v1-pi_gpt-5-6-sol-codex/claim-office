@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -e
+mvn -q -DskipTests compile dependency:build-classpath \
+  -Dmdep.outputFile=target/claim-office-classpath.txt >/dev/null 2>&1
+exec java -cp "target/classes:$(cat target/claim-office-classpath.txt)" ClaimOfficeCli

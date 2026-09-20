@@ -49,6 +49,7 @@ echo "Reanalyzing ${#run_names[@]} run(s) in $IMAGE"
 # One container for the whole set — startup is paid once, not per run.
 docker run --rm \
     -v "$SCRIPT_DIR/katas:$CONTAINER_EXP/katas:ro" \
+    -v "$SCRIPT_DIR/stacks:$CONTAINER_EXP/stacks:ro" \
     -v "$SCRIPT_DIR/runs:$CONTAINER_EXP/runs:rw" \
     -v "$SCRIPT_DIR/analyze-run.sh:$CONTAINER_EXP/analyze-run.sh:ro" \
     -v "$SCRIPT_DIR/analyze_transcript.py:$CONTAINER_EXP/analyze_transcript.py:ro" \
