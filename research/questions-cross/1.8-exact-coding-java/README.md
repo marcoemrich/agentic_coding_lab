@@ -1,12 +1,14 @@
 ---
 id: RQ-exact-coding-java
-question: "On Java 17 with JUnit 5 and Maven, does EXACT Coding Predictive TDD improve correctness and code quality over unstructured inline TDD on Game of Life and Claim Office, for GPT-5.6 SOL and Opus 5?"
+question: "On Java 17 with JUnit 5 and Maven, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness and code quality for GPT-5.6 SOL and Opus 5?"
 factors:
   model_x_workflow:
     - {model: gpt-5-6-sol-codex, workflow: baseline-inline-tdd-v1-pi}
     - {model: gpt-5-6-sol-codex, workflow: exact-ptdd-v1-pi}
+    - {model: gpt-5-6-sol-codex, workflow: exact-ptdd-v1.1-refactor-subagent-pi}
     - {model: opus-5-no-thinking, workflow: baseline-inline-tdd-v1-cc}
     - {model: opus-5-no-thinking, workflow: exact-ptdd-v1-cc}
+    - {model: opus-5-no-thinking, workflow: exact-ptdd-v1.1-refactor-subagent-cc}
   kata_base:
     - game-of-life-java
     - claim-office-java
@@ -51,9 +53,10 @@ status: open
 
 ## Question
 
-Does the maintained EXACT Coding Predictive TDD workflow improve correctness or
-product-code quality over a minimal inline-TDD instruction when both operate on
-the same Java 17, JUnit 5, Maven, Jackson, and PMD project stack?
+How do the maintained shared-context EXACT Coding Predictive TDD workflow and
+its isolated-Refactor-subagent variant compare with each other and with a
+minimal inline-TDD instruction when all operate on the same Java 17, JUnit 5,
+Maven, Jackson, and PMD project stack?
 
 This is an internal Java-stack comparison. It does not compare Java with
 TypeScript and makes no cross-language claim.
@@ -62,21 +65,28 @@ TypeScript and makes no cross-language claim.
 
 | Factor | Levels |
 |---|---|
-| Method | Inline TDD control; EXACT Coding Predictive TDD v1 |
+| Method | Inline TDD control; EXACT Coding Predictive TDD v1; v1.1 with isolated Refactor subagent |
 | Model/harness bundle | GPT-5.6 SOL via pi; native Opus 5 without extended thinking via Claude Code |
 | Kata | Game of Life; Claim Office |
 | Prompt | Example Mapping |
 | Stack | Java 17 + JUnit 5 + Maven + PMD |
 
-Five replicates are required for each method × model × kata cell: eight cells
-and 40 target runs. Results are reported separately by kata and model; katas
+Five replicates are required for each method × model × kata cell: twelve cells
+and 60 target runs. Results are reported separately by kata and model; katas
 are never averaged.
 
 The model and workflow are paired because the maintained workflow and control
 must use the native port of each harness. The comparison within each model is:
 
-- `baseline-inline-tdd-v1-pi` vs. `exact-ptdd-v1-pi` for GPT-5.6 SOL;
-- `baseline-inline-tdd-v1-cc` vs. `exact-ptdd-v1-cc` for Opus 5.
+- `baseline-inline-tdd-v1-pi` vs. `exact-ptdd-v1-pi` vs.
+  `exact-ptdd-v1.1-refactor-subagent-pi` for GPT-5.6 SOL;
+- `baseline-inline-tdd-v1-cc` vs. `exact-ptdd-v1-cc` vs.
+  `exact-ptdd-v1.1-refactor-subagent-cc` for Opus 5.
+
+The v1-to-v1.1 comparison is factor-isolated: test-list construction, Red,
+Green, predictions, Four Rules, domain-boundary contract, stack profile, and
+lab markers remain unchanged. Only the per-cycle Refactor execution context
+moves from the main context to an isolated subagent.
 
 The inline-TDD control is stack-neutral: it tells the agent to discover and use
 the project's full-suite command rather than naming pnpm, Maven, TypeScript, or
@@ -134,6 +144,9 @@ ESLint/SonarJS values.
   from one model alone.
 - **H5 — workflow overhead:** EXACT Coding uses more time and tokens than inline
   TDD. The overhead is justified only by a correctness or product-quality gain.
+- **H6 — isolated Refactor effect:** Moving only the per-cycle Refactor phase to
+  an isolated subagent improves decomposition or complexity relative to
+  shared-context EXACT Coding, but adds further time and token overhead.
 
 ## Interpretation rules
 
@@ -152,7 +165,7 @@ ESLint/SonarJS values.
 ## Execution sequence
 
 1. Build the updated Docker image containing Java 17 and Maven.
-2. Run one Java smoke test per harness on Game of Life.
+2. Run one Java smoke test per newly introduced workflow port on Game of Life.
 3. Confirm Maven tests, external verification, stack identity, transcript
    metrics, and PMD analysis in `metrics.json`.
 4. Generate the fill plan with
