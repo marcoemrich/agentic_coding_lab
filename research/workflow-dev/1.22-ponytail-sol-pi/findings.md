@@ -11,6 +11,8 @@ Baseline: `exact-sol-v1.3-stack-profile-pi`. Ponytail: `exact-sol-v1.3.1-ponytai
 | Correctness (external) | **100%** 🏆 | **100%** 🏆 |
 | Correctness (internal) | **100%** 🏆 | **100%** 🏆 |
 | Mutation Score | 0.91 ± 0.09 | 0.95 ± 0.04 |
+| Unnoticed Changes | 5.4 ± 6.50 | 2.0 ± 1.41 |
+| Mutant Population | 53.2 ± 11.12 | 39.0 ± 1.87 |
 | Code Mass (APP) | 155.4 ± 9.24 | **139.8 ± 12.03** 🏆 |
 | Production LoC | 34.0 ± 3.32 | **23.4 ± 1.67** 🏆 |
 | `cc_functions` | 4.0 ± 0.71 | 2.2 ± 0.84 |
@@ -40,6 +42,8 @@ Baseline: `exact-sol-v1.3-stack-profile-pi`. Ponytail: `exact-sol-v1.3.1-ponytai
 | Correctness (external) | **100%** 🏆 | **100%** 🏆 |
 | Correctness (internal) | **100%** 🏆 | **100%** 🏆 |
 | Mutation Score | 0.88 ± 0.05 | 0.87 ± 0.05 |
+| Unnoticed Changes | 14.0 ± 8.22 | 15.6 ± 6.80 |
+| Mutant Population | 116.6 ± 17.30 | 116.6 ± 10.64 |
 | Code Mass (APP) | 566.6 ± 51.91 | 532.0 ± 37.85 |
 | Production LoC | 131.6 ± 19.06 | **96.8 ± 11.69** 🏆 |
 | `cc_functions` | 8.4 ± 1.95 | 5.6 ± 1.52 |
@@ -97,7 +101,22 @@ All four cells reach 100% Correctness (internal), 100% Correctness (external), a
 | Game of Life | 0.91 ± 0.09 | 0.95 ± 0.04 | 53.4 ± 8.99 | 45.2 ± 2.95 |
 | Claim Office | 0.88 ± 0.05 | 0.87 ± 0.05 | 192.4 ± 34.31 | 199.8 ± 25.83 |
 
-The smaller Game of Life test suites do not have weaker mutation sensitivity in this sample. Claim Office Test LoC and Mutation Score are effectively unchanged. The observed production-code reduction is therefore not explained by omitted externally verified behavior or an evidently weaker self-written suite.
+The smaller Game of Life test suites do not have weaker mutation sensitivity in this sample. Claim Office Test LoC and Mutation Score are effectively unchanged.
+
+The mutant counts behind the score settle what the ratio alone could not: whether an unchanged score merely reflects less code to defend.
+
+| Kata | Arm | Mutant Population | Unnoticed Changes | Production LoC | Mutants per LoC |
+|---|---|---:|---:|---:|---:|
+| Game of Life | Baseline | 53.2 | 5.4 | 34.0 | 1.56 |
+| Game of Life | Ponytail | 39.0 | 2.0 | 23.4 | 1.67 |
+| Claim Office | Baseline | 116.6 | 14.0 | 131.6 | 0.89 |
+| Claim Office | Ponytail | 116.6 | 15.6 | 96.8 | 1.20 |
+
+On Claim Office the population is identical to the first decimal — 116.6 mutants in both arms — while Production LoC falls by 26%. Ponytail removes lines that carry no mutable behaviour and leaves the mutable logic untouched, which raises mutant density from 0.89 to 1.20 per line. The unchanged score is therefore a like-for-like comparison, not an artefact of a smaller denominator, and the unnoticed changes (14.0 against 15.6) are a tie within replicate variation.
+
+On Game of Life the population falls roughly in proportion to the code (53.2 to 39.0 against 34.0 to 23.4 Production LoC, density 1.56 to 1.67), so part of the score gain there is the smaller denominator. The absolute gap falls as well, from 5.4 to 2.0, but that difference rests on a single baseline run that left 17 mutants unnoticed against 2, 2, 3, 3 for its four siblings. Treat the Game of Life improvement as one outlier, not as an effect.
+
+The observed production-code reduction is therefore not explained by omitted externally verified behavior or an evidently weaker self-written suite.
 
 ## F-1.22.4 — Complexity, smells and operating cost do not show a general improvement
 

@@ -278,3 +278,22 @@ All four are at or below their cell's mean gap, and the run with the strongest s
 
 This is the limit of what mutation testing can tell us. It measures whether the tests constrain the implementation, not whether the implementation is the one the specification asked for. `verification_pct` and `mutants_survived` are answering different questions on this kata, and on these four runs they point in opposite directions.
 
+---
+
+## F-1.8.13 — On Claim Office the Refactor subagent is an Opus-specific gain
+
+Splitting the test-gap reduction into its two steps separates what the workflow does from what the subagent adds, and the two models divide the work differently.
+
+| Model | Inline | → EXACT v1 | → EXACT v1.1 | Step 1 | Step 2 |
+|---|---:|---:|---:|---:|---:|
+| GPT-5.6 SOL | 17.8 | 6.0 | 4.6 | −11.8 | −1.4 |
+| Opus 5 | 8.0 | 5.4 | 3.4 | −2.6 | −2.0 |
+
+For SOL the shared-context workflow does almost everything: the first step removes 11.8 unnoticed changes per run, the subagent a further 1.4. For Opus the two steps are nearly equal, −2.6 and −2.0, so the subagent contributes about as much again as the workflow before it.
+
+The same split appears in Complexity Peak (F-1.8.2). On Claim Office the subagent lowers Opus `cognitive_max` from 4.4 to 3.4, while on SOL it raises it from 5.8 to 7.8. Two independent quality dimensions therefore agree: **the isolated Refactor subagent improves Opus and does not improve SOL.** SOL's gains on this kata come from the Predictive TDD structure itself, not from moving the Refactor step out of the main context.
+
+The starting points explain part of it. SOL's inline baseline is the weakest suite in the RQ and has the most room; once the workflow has removed the bad mode (F-1.8.11), little is left for a further step to find. Opus starts twice as strong and still halves its gap across the two steps, while defending a growing mutant population — 68.4 mutants under inline TDD against 94.8 under v1.1.
+
+For a recommendation, read this together with the cost: the subagent triples duration and cost again (F-1.8.4). On Opus it buys 2.0 fewer unnoticed changes per run and a lower Complexity Peak; on SOL it buys 1.4 fewer unnoticed changes and a worse Complexity Peak. Only the Opus case is a defensible trade.
+

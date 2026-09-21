@@ -2,7 +2,7 @@
 
 _When Ponytail full is forcibly loaded into the Sol-originated EXACT Coding workflow on pi, does it improve code quality without reducing correctness, test strength, TDD discipline or completion reliability, and at what cost?_
 
-Generated: 2026-09-17T01:17:52Z
+Generated: 2026-09-21T14:55:21Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -43,6 +43,24 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |   0.87 |  0.82 |  0.92 |  0.05 |
 | game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |   0.91 |  0.74 |  0.95 |  0.09 |
 | game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |   0.95 |  0.89 |  1    |  0.04 |
+
+### mutants_total
+
+| kata                         | cell_workflow                   | cell_model        |   n |   mean |   min |   max |   std |
+|:-----------------------------|:--------------------------------|:------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |  116.6 |   100 |   145 | 17.3  |
+| claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |  116.6 |   104 |   125 | 10.64 |
+| game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |   53.2 |    41 |    66 | 11.12 |
+| game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |   39   |    37 |    42 |  1.87 |
+
+### mutants_survived
+
+| kata                         | cell_workflow                   | cell_model        |   n |   mean |   min |   max |   std |
+|:-----------------------------|:--------------------------------|:------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |   14   |     4 |    26 |  8.22 |
+| claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |   15.6 |     8 |    23 |  6.8  |
+| game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |    5.4 |     2 |    17 |  6.5  |
+| game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |    2   |     0 |     4 |  1.41 |
 
 ### completed_within_budget (rate %)
 
