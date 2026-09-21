@@ -237,3 +237,44 @@ The two cells that matter most read in opposite directions once the denominator 
 The `never executed` column is the sharpest sub-signal: mutants on lines no test runs at all. Inline TDD leaves 4.8 of them per run on SOL Claim Office and 4.0 on Opus Claim Office; v1.1 leaves 2.4 and 1.2. Dead spots in the suite, not merely weak assertions.
 
 Report the pair, not the ratio alone. `mutation_score` stays the comparable figure across cells of equal size; `mutants_survived` is the one to quote when the arms differ in how much code they produce, which in this RQ they always do.
+
+---
+
+## F-1.8.11 — On Claim Office, inline TDD's test gap is bimodal, and the structured workflows remove the bad mode
+
+The cell mean hides the shape of the distribution. On SOL Claim Office the five inline runs do not scatter around 17.8 unnoticed changes — they fall into two groups with nothing in between, and the split is exactly the split in test count.
+
+| Model | Arm | Unnoticed changes, per run | Tests written, per run |
+|---|---|---|---|
+| GPT-5.6 SOL | Inline | 8 · 10 — 23 · 23 · 25 | 10 · 7 — 4 · 5 · 6 |
+| GPT-5.6 SOL | EXACT v1 | 4 · 4 · 6 · 7 · 9 | 39 · 43 · 37 · 35 · 39 |
+| GPT-5.6 SOL | EXACT v1.1 | 4 · 4 · 5 · 5 · 5 | 38 · 23 · 27 · 33 · 40 |
+| Opus 5 | Inline | 5 · 7 · 9 · 9 · 10 | 76 · 36 · 59 · 35 · 28 |
+| Opus 5 | EXACT v1 | 3 · 3 · 6 · 7 · 8 | 52 · 56 · 53 · 52 · 54 |
+| Opus 5 | EXACT v1.1 | 1 · 2 · 3 · 4 · 7 | 53 · 53 · 51 · 53 · 49 |
+
+The two SOL inline runs that wrote 10 and 7 tests leave 8 and 10 mutants unnoticed. The three that wrote 4, 5 and 6 tests leave 23, 23 and 25 — nearly three times as many. Those three also write *more* production code than the well-tested pair (304, 330, 324 against 235 and 268 Production LoC): the failure mode is not a small implementation that was easy to cover, it is a large implementation nobody constrained. The mean of 17.8 describes no run that actually happened.
+
+Both EXACT arms eliminate the mode rather than shifting the average. Under v1 every SOL run writes 35 to 43 tests; under v1.1 the five results are 4, 4, 5, 5, 5 unnoticed changes — a spread of one mutant across five runs.
+
+Opus never shows the bad mode: its inline runs range from 5 to 10, and its test counts vary widely (28 to 76) without producing a catastrophic run. What the structured workflows do there is shift the whole distribution down and, under v1.1, stretch it: 1 · 2 · 3 · 4 · 7 contains both the strongest suite on this kata and a run that is no better than the Opus v1 average.
+
+The practical reading is about risk, not about averages. On Claim Office with SOL, inline TDD has a roughly even chance per run of producing a suite that misses a quarter of the behaviour, and no signal inside the run says which kind you got — external correctness is 1.00 in all five. That variance, not the mean, is what the workflow buys away.
+
+---
+
+## F-1.8.12 — The Claim Office correctness misses come from suites that are stronger than average, not weaker
+
+Four runs in this RQ miss one of the fifteen acceptance scenarios: two under Opus EXACT v1 and two under Opus EXACT v1.1 (F-1.8.1). If weak testing caused those misses, they should sit at the bad end of their cells. They sit at the good end.
+
+| Arm | Run | Correctness (external) | Unnoticed changes | Cell mean |
+|---|---|---:|---:|---:|
+| EXACT v1 | miss | 0.93 | 3 | 5.4 |
+| EXACT v1 | miss | 0.93 | 3 | 5.4 |
+| EXACT v1.1 | miss | 0.93 | 1 | 3.4 |
+| EXACT v1.1 | miss | 0.93 | 4 | 3.4 |
+
+All four are at or below their cell's mean gap, and the run with the strongest suite on this kata — 1 unnoticed change out of 82 mutants — is one of them. The misses are therefore not a test-strength failure. They are a reading of the specification: the run logs show the agent deciding that a clause has no discriminating example among the scenarios it was given and deliberately writing no unforced code for it. The suite then pins that decision firmly, which is exactly what a strong suite does with a wrong premise.
+
+This is the limit of what mutation testing can tell us. It measures whether the tests constrain the implementation, not whether the implementation is the one the specification asked for. `verification_pct` and `mutants_survived` are answering different questions on this kata, and on these four runs they point in opposite directions.
+
