@@ -101,6 +101,28 @@ subtrees.
 - **CC-Routing ist container-global.** Die `ANTHROPIC_*`-Env-Vars gelten für den ganzen Batch-Container, nicht pro Run. Ein Plan darf darum nicht CC-Runs mit unterschiedlichem CC-Routing mischen (z. B. CC-requesty + CC-nativ) — split in zwei Pläne, sequentiell. Gemischt CC-requesty + OC-requesty + pi-requesty ist dagegen OK (getrennte Routing-Kanäle: `.env` für CC, `opencode.json` für OC, `models.json` für pi).
 - **Run completion signal:** `metrics.json | jq .run_status.exit_reason` — NOT presence of `analysis-report.md`.
 - **Timeouts are findings, not errors.** They count toward `min_replicates` and are not refilled. `completed_within_budget` captures this.
+- **Keine Edits an `run-batch.sh` (oder anderen gemounteten Skripten), solange ein Batch läuft.** Die Skripte sind read-only in den Container gemountet, und bash liest ein Skript inkrementell per Byte-Offset. Eine Änderung verschiebt die Offsets der noch nicht gelesenen Zeilen: der laufende Container bricht mit `syntax error near unexpected token` oder `0: command not found` in einer Zeile ab, die auf der Platte völlig intakt ist (`bash -n` sagt "ok"). Der bereits fertige Run bleibt gültig; die Schleife danach stirbt. Warten, bis der Batch durch ist.
+
+### Stacks
+
+- Ein Stack ist ein Verzeichnis unter `experiments/stacks/<slug>/` mit einem
+  ausführbaren `install.sh`. `run-batch.sh` kopiert den Inhalt in das Run-Verzeichnis
+  (ohne `install.sh` selbst) und ruft das Skript von dort auf — es gibt keine
+  Sprach-Verzweigung mehr im Runner. Drei Stacks: `typescript-vitest`,
+  `java-junit-maven`, `python-pytest`.
+- **Die Sprache eines Runs steht in `metrics.json.stack`**, geschrieben bei der
+  Run-Erzeugung. `analyze-run.sh` (`run_stack`) und `compute-mutation-score.py`
+  dispatchen darauf. Keine neuen `test -f pom.xml`-Prüfungen einbauen: sie
+  widersprechen `metrics.json`, sobald ein Run außerhalb seines Containers
+  analysiert wird, und jede davon ist eine Stelle, die die nächste Sprache anfassen muss.
+  Der Datei-Sniff bleibt nur als Fallback für Runs von vor dem `stack`-Feld.
+- Neue Sprache = Stack-Verzeichnis, Kata-Varianten (`<kata>-<sprache>-example-mapping`
+  plus `-verification`), ein Stack-Profil in den vier gepflegten `exact-ptdd-*`-Workflows,
+  je ein Arm in `analyze-run.sh` und `compute-mutation-score.py`, die vier Regexe in
+  `measure-tdd-rigour.py`, und `required_stacks` in `export-sol.py`.
+- **Qualitätswerte sind nie stackübergreifend vergleichbar.** ESLint/SonarJS, PMD und
+  ruff/complexipy erzeugen unterschiedliche Befundmengen; dasselbe gilt für
+  Stryker/PIT/mutmut. RQ-übergreifend werden nur Richtungen und Reihenfolgen verglichen.
 
 ### Aggregation
 
@@ -113,11 +135,12 @@ subtrees.
 |--------|---------|-----|
 | `cc_*` | **Clean Code** surface metrics (LOC, function count, longest function, avg LOC/function) | McCabe / Cyclomatic |
 | `mccabe_*` | McCabe cyclomatic complexity (max, avg, high_count) | |
-| `cognitive_*` | SonarJS cognitive complexity (max, avg, high_count) | |
+| `cognitive_*` | Cognitive complexity (max, avg, high_count) — SonarJS on TS, PMD on Java, complexipy on Python | |
+| `unit_*` | Size of the smallest named unit: `unit_count`, `unit_size_{max,avg,median}`. PMD NCSS statements on Java, lines per function on TS and Python | the old `java_method_ncss_*` spelling |
 
-- `verification_pct` (0.0–1.0) = external acceptance score for CLI katas (claim-office). `tests_passing` = internal vitest pass/fail.
+- `verification_pct` (0.0–1.0) = external acceptance score for CLI katas (claim-office). `tests_passing` = the internal suite's pass/fail — vitest, Maven Surefire or pytest, depending on the stack.
 - `completed_within_budget` = Boolean derived from `exit_reason`.
-- `mutation_score` (0.0–1.0) = mutation score — Stryker on the TS stack, PIT on the Java stack (`experiments/compute-mutation-score.py` picks the engine per run from the presence of `pom.xml`). **Opt-in per RQ** (must appear in `outcomes:`) and only computed for `tests_passing = true`. Run between batch and aggregation. On TS it is expensive (minutes per run, `pnpm install` per run), so do not add it to `analyze-run.sh` or routine reanalysis; on Java it costs 5–10 s per run. **Java scores are not comparable with TS scores** — PIT's default mutator set is narrower.
+- `mutation_score` (0.0–1.0) = mutation score — Stryker on TS, PIT on Java, mutmut on Python (`experiments/compute-mutation-score.py` picks the engine per run from `metrics.json.stack`). **Opt-in per RQ** (must appear in `outcomes:`) and only computed for `tests_passing = true`. Run between batch and aggregation. On TS it is expensive (minutes per run, `pnpm install` per run), so do not add it to `analyze-run.sh` or routine reanalysis; Java and Python cost seconds per run. **Scores are not comparable across stacks** — the three tools generate different mutant populations, and PIT's default mutator set is the narrowest. TS and Python exclude the CLI adapter from mutation because only the external acceptance suite exercises it; Java deliberately does not, because Java runs often nest the whole domain inside the CLI class.
 - `mutants_total` / `mutants_survived` = the counts behind `mutation_score` (population, and the
   part of it the suite missed). Written by the same script and opt-in the same way. **Report the
   pair, not the ratio alone, whenever the arms differ in code size** — the score's denominator is
@@ -146,6 +169,8 @@ subtrees.
 - **Claude Code CLI: `2.1.170`** — 2.1.37 hangs on `.claude/agents/` dirs; 2.1.126 requires missing `.claude.json`. Do not bump without verifying a subagents-arm workflow end-to-end.
 - **Weitere Harness-Pins:** `opencode-ai@1.15.10`, `@earendil-works/pi-coding-agent@0.81.1`, `cursor-agent` (Dashboard-API-Key). Alle in `experiments/docker/Dockerfile`.
 - **pnpm: `9.15.9`** — pnpm 11 breaks builds via `ERR_PNPM_IGNORED_BUILDS`. Pinned via `npm install -g pnpm@9.15.9` in Dockerfile.
+- **uv: `0.12.17`** — Paketmanager des `python-pytest`-Stacks, gepinnt als `ENV UV_VERSION` im Dockerfile. `uv venv` bringt sein eigenes virtualenv mit und braucht **kein** `python3-venv`; das Paket ist deshalb bewusst nicht installiert. Der uv-Cache wird beim Image-Build aus `experiments/docker/python.cache.txt` vorgewärmt (Spiegel von `experiments/stacks/python-pytest/requirements-dev.txt`, weil der Build-Kontext `experiments/docker/` ist) und liegt im Volume `uv-cache`. Ein Install ist damit offline und dauert ~0,2 s.
+- **`docker compose build experiment` baut nur EIN Image von dreien.** Die Services `experiment`, `batch` und `batch-retry` teilen sich Kontext und Dockerfile, bekommen aber je ein eigenes Tag (`docker-experiment`, `docker-batch`, `docker-batch-retry`). Batches laufen auf `docker-batch` — ein Build nur des `experiment`-Service lässt sie auf einem beliebig alten Image weiterlaufen. Nach jeder Dockerfile-Änderung: `docker compose --profile batch --profile batch-retry build`. Symptom, wenn man es vergisst: ein neu installiertes Tool ist im Batch `command not found`, während es in `docker compose run experiment` vorhanden ist.
 - Container uses `experiments/docker/claude-config/` for Claude config, **not** the host `~/.claude`. This separation is intentional (host config has fish/MCP spawns that hang in the container).
 - **pi-Modelle sind an zwei Stellen verdrahtet, und nur eine davon ist zum Laufen nötig.** `run-batch.sh` (MODEL_CONFIGS + `pi_model`-Case-Map) reicht für einen Run; fehlt der Eintrag in `pi-config/agent/models.json`, läuft er trotzdem — pi loggt `Model "<id>" not found for provider`, reicht die id durch und bepreist ihn dann **mit dem Tarif eines anderen Modells**. `exit_reason` bleibt `ok`, `metrics.json` nennt das richtige Modell, Qualitätsmetriken stimmen; nur `cost_usd` ist frei erfunden. `experiments/check-pi-model-wiring.py` prüft beide Quellen gegeneinander **und** gegen die Preistabelle, und läuft als Pre-Flight-Warnung in `batch.sh`. Neues pi-Modell = drei Einträge: `run-batch.sh`, `models.json`, und `PRICES` in `compute-cost.py`.
 - **`cost_usd` ist ein Listenpreis-Vergleichswert, kein Rechnungsbetrag** — „was hätte das über die API gekostet". Für **alle** pi-Runs auf **beiden** Routen ist `PRICES` in `compute-cost.py` die alleinige Quelle (`cli_model == "pi-only"`); pis eigene Inline-Kosten werden nicht übernommen, weil sie aus unseren Tokenzahlen nicht reproduzierbar sind (Fit über 83 codex-Runs: negativer Input-Preis, 33.6 % Fehler — vermutlich greifen die >272k-Tarifsprünge pro Request). Auf der Flatrate-Subscription wird nichts pro Token abgerechnet; die Zahl bleibt trotzdem der Vergleichswert, **nicht** 0. Langkontext-Tarifsprünge sind bewusst nicht abgebildet — die Werte sind eine konsistente Untergrenze. Tarife und Quellen: `research/model-pricing.md`.
