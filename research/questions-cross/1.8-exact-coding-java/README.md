@@ -45,6 +45,7 @@ outcomes:
   - duration_seconds
   - total_tokens
   - cost_usd
+  - mutation_score
 min_replicates: 5
 status: answered
 ---

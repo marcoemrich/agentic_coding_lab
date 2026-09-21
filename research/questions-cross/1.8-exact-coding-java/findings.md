@@ -42,6 +42,17 @@ Correctness and budget completion are higher = better; complexity, method size, 
 | Opus 5 | Game of Life | **251 s** 🏆 | 756 s | 2,652 s | **$1.41** 🏆 | $5.88 | $11.22 |
 | Opus 5 | Claim Office | **347 s** 🏆 | 1,313 s | 5,509 s | **$2.88** 🏆 | $15.33 | $33.69 |
 
+### Test strength (Mutation Score)
+
+Higher = better. PIT against the run's own JUnit 5 suite, `n=5` per cell.
+
+| Model | Kata | Inline | EXACT v1 | EXACT v1.1 |
+|---|---|---:|---:|---:|
+| GPT-5.6 SOL | Game of Life | 0.86 | **0.90** 🏆 | **0.94** 🏆 |
+| GPT-5.6 SOL | Claim Office | 0.81 | 0.91 | **0.94** 🏆 |
+| Opus 5 | Game of Life | 0.91 | **0.92** 🏆 | **0.93** 🏆 |
+| Opus 5 | Claim Office | 0.88 | 0.93 | **0.96** 🏆 |
+
 Code Mass (APP), Production LoC, Test LoC, test count, method count, and process-marker counts have ambiguous direction and therefore receive no trophy. Smell Total is zero in every cell and has no winner. Every cell clears the correctness gate, so all quality and efficiency rows are eligible.
 
 ---
@@ -57,7 +68,7 @@ Correctness is saturated under inline TDD. GPT-5.6 SOL is perfect under all thre
 | Opus 5 | Game of Life | 1.00 ± 0.00 | 1.00 ± 0.00 | 1.00 ± 0.00 |
 | Opus 5 | Claim Office | 1.00 ± 0.00 | 0.97 ± 0.04 | 0.97 ± 0.04 |
 
-Correctness (internal) is 100 % in all twelve cells. The Java evidence therefore provides no correctness justification for either layer of additional workflow structure. That the same small Opus Claim Office shortfall appears in both EXACT arms makes it more likely to be a property of the workflow's reading of the specification than replicate noise, but at `n=5` per cell it remains an observed downside rather than a demonstrated regression.
+Correctness (internal) is 100 % in all twelve cells. The Java evidence therefore provides no correctness justification for either layer of additional workflow structure — measured against the specification. It does not follow that the suites are equally good: F-1.8.9 shows that the same saturated correctness rests on test suites of clearly different strength. That the same small Opus Claim Office shortfall appears in both EXACT arms makes it more likely to be a property of the workflow's reading of the specification than replicate noise, but at `n=5` per cell it remains an observed downside rather than a demonstrated regression.
 
 ---
 
@@ -162,3 +173,24 @@ In `exact-ptdd-v1` the metric comes from the inline `## Refactor` text marker, o
 The σ inflation in the v1.1 cells is a capture artifact, not variance in refactoring behaviour. In two of the ten Claude Code subagent runs the session count collapses to one (`refactorings_applied` = 1 at `cycle_count` 26 and 53) because the whole run's refactoring went through a single reused subagent session; the other eight track `cycle_count` closely. On pi the mapping is nearly one-to-one in nine of ten runs.
 
 Read the metric only within an arm, and read the v1.1 Claude Code cells against `cycle_count` rather than on their own. The product-side evidence for what the subagent actually did is in F-1.8.3 and F-1.8.6, not in this counter.
+
+---
+
+## F-1.8.9 — Mutation Score rises with every layer of workflow structure
+
+Test strength is the one quality dimension where both layers pay off, and the only outcome in this RQ that orders the three methods the same way in all four model × kata combinations.
+
+| Model | Kata | Inline | EXACT v1 | EXACT v1.1 |
+|---|---|---:|---:|---:|
+| GPT-5.6 SOL | Game of Life | 0.858 ± 0.052 | 0.904 ± 0.085 | 0.937 ± 0.037 |
+| GPT-5.6 SOL | Claim Office | 0.811 ± 0.068 | 0.906 ± 0.034 | 0.943 ± 0.006 |
+| Opus 5 | Game of Life | 0.913 ± 0.014 | 0.924 ± 0.012 | 0.933 ± 0.012 |
+| Opus 5 | Claim Office | 0.882 ± 0.028 | 0.933 ± 0.024 | 0.963 ± 0.029 |
+
+The size of the effect follows the room available. On Claim Office, the larger task, inline TDD leaves 0.08 (Opus) to 0.13 (SOL) of score on the table against v1.1; on Game of Life, where every method is small enough to be covered almost by accident, the whole ladder spans 0.02 on Opus. The SOL Claim Office inline cell is the weakest suite in the RQ at 0.811, and it is also the cell that writes the fewest tests by a wide margin — 6.4 against 38.6 under v1 (F-1.8.6 table). Its external correctness is nevertheless perfect: fifteen acceptance scenarios do not notice that the unit tests behind them barely constrain the implementation.
+
+Variance shrinks along the same ladder in three of the four combinations — most sharply on SOL Claim Office, from σ 0.068 under inline TDD to σ 0.006 under v1.1, the tightest cluster in the RQ. Opus Claim Office is the exception and stays put (σ 0.028 → 0.029). Where the structured workflows raise the score they also, mostly, make it more predictable.
+
+Read this against F-1.8.4 before drawing a recommendation: the step from inline to v1 buys most of the test strength, and v1.1 adds a further 0.01 to 0.04 for roughly triple the cost again.
+
+**Measurement notes.** The score is PIT (`pitest-maven`) against the run's own JUnit 5 suite, killed plus timed-out over all scoreable mutants, with PIT's default mutator set. Two properties limit how far the number travels. First, every production class is mutated, the CLI entry class included — unlike the TypeScript pipeline, which excludes `src/cli.ts`. Several runs nest their whole domain inside the CLI class, so an exclusion by file would have made the score depend on how the agent split its classes, and that split is itself one of the things this RQ measures. Second, PIT's default mutators are narrower than Stryker's: no block removal, no string- or object-literal mutation. Java scores are therefore comparable across the cells of this RQ, but not against the mutation scores of the TypeScript RQs.

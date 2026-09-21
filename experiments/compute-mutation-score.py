@@ -1,11 +1,21 @@
 #!/usr/bin/env python3
-"""Compute Stryker mutation score for every run matching a research question.
+"""Compute the mutation score for every run matching a research question.
 
 Reads the RQ frontmatter, checks whether ``mutation_score`` is requested as
-an outcome, selects matching runs from ``experiments/runs/``, and runs
-Stryker (mutation testing against the implementer's own Vitest suite) for
-each eligible run. The resulting score (0.0-1.0) is written back into the
-run's ``metrics.json`` under ``final_metrics.mutation_score``.
+an outcome, selects matching runs from ``experiments/runs/``, and mutation-
+tests each eligible run against the implementer's own suite. The resulting
+score (0.0-1.0) is written back into the run's ``metrics.json`` under
+``final_metrics.mutation_score``.
+
+Two engines, picked per run from what the run dir contains:
+
+* ``pom.xml``      → PIT (pitest-maven) against JUnit 5, for the Java stack.
+* otherwise        → Stryker against Vitest, for the TypeScript stack.
+
+Both are reduced to the same score definition, so the numbers are
+comparable within a stack. Across stacks they are not: the two tools
+generate different mutant populations, and PIT's default mutator set is
+the more conservative of the two.
 
 Idempotent: runs that already have a numeric ``mutation_score`` are skipped
 unless ``--force`` is passed. Runs without ``tests_passing == true`` are
@@ -86,6 +96,178 @@ def mutation_score_from_report(report: dict) -> float | None:
     if denom == 0:
         return None
     return (killed + timeout) / denom
+
+
+# --- Java / PIT ---------------------------------------------------------
+# PIT mutates the compiled classes and drives the run's own JUnit 5 suite.
+# Versions are pinned for the same reason the Stryker version is: a mutation
+# score is only comparable across runs when the mutant population is.
+PITEST_VERSION = "1.19.1"
+PITEST_JUNIT5_VERSION = "1.2.2"
+POM_NS = "http://maven.apache.org/POM/4.0.0"
+# Generated next to the run's own pom.xml, never replacing it — the recorded
+# artifact must stay exactly as the agent left it.
+PITEST_POM = "pom-pitest.xml"
+# PIT must run on a JDK its bundled ASM can read. The runs are compiled to
+# release 17 in the container (Dockerfile: openjdk-17-jdk-headless), but PIT
+# also reads core classes from the *running* JVM while computing stack-map
+# frames — on a JDK 25 host that fails with "Unsupported class file major
+# version 69" for some runs and not others. Pinning the JVM to the same JDK
+# the container used removes that dependency on the host default.
+JDK_CANDIDATES = [
+    Path("/usr/lib/jvm/java-17-openjdk-amd64"),
+    Path("/usr/lib/jvm/java-21-openjdk-amd64"),
+]
+
+
+def pitest_java_home(log) -> str | None:
+    for candidate in JDK_CANDIDATES:
+        if (candidate / "bin" / "java").is_file():
+            return str(candidate)
+    log("  no pinned JDK found; falling back to the ambient JAVA_HOME "
+        "(a JDK newer than PIT's ASM will fail on some runs)")
+    return None
+
+
+
+def _java_classes(root: Path) -> list[str]:
+    """Fully-qualified names of the top-level classes under `root`."""
+    import re
+    out = []
+    if not root.is_dir():
+        return out
+    for f in sorted(root.rglob("*.java")):
+        text = f.read_text(encoding="utf-8", errors="replace")
+        m = re.search(r"^\s*package\s+([\w.]+)\s*;", text, re.M)
+        out.append((m.group(1) + "." if m else "") + f.stem)
+    return out
+
+
+def write_pitest_pom(run_dir: Path) -> tuple[Path, int]:
+    """Copy the run's pom.xml and add the pitest plugin to the copy.
+
+    Target classes and tests are enumerated rather than globbed: PIT refuses
+    a bare `*` filter (it would mutate itself), and these katas put their
+    classes in the default package, where no package prefix is available to
+    narrow the glob with.
+
+    Every production class is mutated, the CLI entry class included — unlike
+    STRYKER_CONFIG, which excludes `src/cli.ts`. Java runs cannot use that
+    rule: some put the whole domain into nested classes of the CLI class, and
+    PIT's excludedClasses takes the nested classes with it, leaving nothing to
+    mutate. Excluding by file would also make the score depend on how the
+    agent split its classes — and class organisation is one of the things
+    these RQs measure, so it must not leak into the measurement of test
+    strength. Returns (pom path, number of target classes).
+    """
+    import xml.etree.ElementTree as ET
+    ET.register_namespace("", POM_NS)
+    tree = ET.parse(run_dir / "pom.xml")
+    root = tree.getroot()
+    build = root.find(f"{{{POM_NS}}}build")
+    if build is None:
+        build = ET.SubElement(root, f"{{{POM_NS}}}build")
+    plugins = build.find(f"{{{POM_NS}}}plugins")
+    if plugins is None:
+        plugins = ET.SubElement(build, f"{{{POM_NS}}}plugins")
+
+    # Trailing `*` on both sides so inner classes (Outer$Inner) are covered:
+    # @Nested test classes, and production classes that some runs declare as
+    # nested types of a single outer class rather than as separate files.
+    targets = [f"{c}*" for c in _java_classes(run_dir / "src/main/java")]
+    tests = [f"{c}*" for c in _java_classes(run_dir / "src/test/java")]
+    as_params = lambda names: "".join(f"<param>{n}</param>" for n in names)
+
+    plugins.append(ET.fromstring(f"""<plugin xmlns="{POM_NS}">
+  <groupId>org.pitest</groupId>
+  <artifactId>pitest-maven</artifactId>
+  <version>{PITEST_VERSION}</version>
+  <dependencies>
+    <dependency>
+      <groupId>org.pitest</groupId>
+      <artifactId>pitest-junit5-plugin</artifactId>
+      <version>{PITEST_JUNIT5_VERSION}</version>
+    </dependency>
+  </dependencies>
+  <configuration>
+    <targetClasses>{as_params(targets)}</targetClasses>
+    <targetTests>{as_params(tests)}</targetTests>
+    <outputFormats><param>XML</param></outputFormats>
+    <timestampedReports>false</timestampedReports>
+    <threads>2</threads>
+    <timeoutConstant>10000</timeoutConstant>
+    <failWhenNoMutations>false</failWhenNoMutations>
+  </configuration>
+</plugin>"""))
+    pom_path = run_dir / PITEST_POM
+    tree.write(pom_path, encoding="utf-8", xml_declaration=True)
+    return pom_path, len(targets)
+
+
+def mutation_score_from_pit_report(report_path: Path) -> float | None:
+    """Mutation score from PIT's mutations.xml, same shape as the Stryker one.
+
+        score = (KILLED + TIMED_OUT + MEMORY_ERROR)
+                / (KILLED + SURVIVED + TIMED_OUT + MEMORY_ERROR + NO_COVERAGE)
+
+    NON_VIABLE and RUN_ERROR mutants are excluded — they are the PIT
+    equivalent of Stryker's CompileError status and say nothing about the
+    suite. Returns None when no mutant is scoreable.
+    """
+    import xml.etree.ElementTree as ET
+    try:
+        root = ET.parse(report_path).getroot()
+    except ET.ParseError:
+        return None
+    counts: dict[str, int] = {}
+    for mutation in root.findall("mutation"):
+        status = mutation.get("status", "")
+        counts[status] = counts.get(status, 0) + 1
+    detected = (counts.get("KILLED", 0) + counts.get("TIMED_OUT", 0)
+                + counts.get("MEMORY_ERROR", 0))
+    denom = detected + counts.get("SURVIVED", 0) + counts.get("NO_COVERAGE", 0)
+    if denom == 0:
+        return None
+    return detected / denom
+
+
+def run_pitest(run_dir: Path, timeout_seconds: int, log) -> float | None:
+    """Run PIT in run_dir and return mutation_score (0.0-1.0) or None."""
+    pom_path, n_targets = write_pitest_pom(run_dir)
+    if n_targets == 0:
+        log("  no production classes found; score stays null")
+        return None
+
+    report_path = run_dir / "target" / "pit-reports" / "mutations.xml"
+    if report_path.is_file():
+        report_path.unlink()
+    log_path = run_dir / "pit.log"
+    cmd = ["mvn", "-B", "-f", pom_path.name, "test-compile",
+           f"org.pitest:pitest-maven:{PITEST_VERSION}:mutationCoverage"]
+    env = os.environ.copy()
+    java_home = pitest_java_home(log)
+    if java_home:
+        env["JAVA_HOME"] = java_home
+        env["PATH"] = f"{java_home}/bin{os.pathsep}{env.get('PATH', '')}"
+    try:
+        with log_path.open("w") as f:
+            f.write(f"$ JAVA_HOME={java_home or env.get('JAVA_HOME', '')} "
+                    f"{' '.join(cmd)}\n")
+            f.flush()
+            proc = subprocess.run(
+                cmd, cwd=run_dir, stdout=f, stderr=subprocess.STDOUT,
+                timeout=timeout_seconds, env=env,
+            )
+    except subprocess.TimeoutExpired:
+        log(f"  TIMEOUT after {timeout_seconds}s — score stays null")
+        return None
+
+    if proc.returncode != 0:
+        log(f"  mvn exited {proc.returncode}; see pit.log")
+    if not report_path.is_file():
+        log("  no mutations.xml produced; score stays null")
+        return None
+    return mutation_score_from_pit_report(report_path)
 
 
 STRYKER_VERSION = "8.6.0"
@@ -263,9 +445,9 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--limit", type=int, default=None,
                         help="process at most N eligible runs (smoke test)")
     parser.add_argument("--timeout-seconds", type=int, default=1800,
-                        help="Stryker wallclock per run (default 1800)")
+                        help="mutation-testing wallclock per run (default 1800)")
     parser.add_argument("--dry-run", action="store_true",
-                        help="list eligible runs without invoking Stryker")
+                        help="list eligible runs without running mutation tests")
     parser.add_argument("--force", action="store_true",
                         help="recompute even if mutation_score is already set")
     args = parser.parse_args(argv)
@@ -331,6 +513,17 @@ def main(argv: list[str]) -> int:
 
         def log(msg: str, _rid=run_id) -> None:
             print(f"  [{_rid}] {msg}", file=sys.stderr)
+
+        if (run_dir / "pom.xml").is_file():
+            score = run_pitest(run_dir, args.timeout_seconds, log)
+            update_metrics_json(m_file, score)
+            if score is None:
+                n_failed += 1
+                log("score=null (see pit.log)")
+            else:
+                n_executed += 1
+                log(f"score={score:.3f}")
+            continue
 
         ensure_npmrc_hoist(run_dir, log)
 

@@ -117,7 +117,7 @@ subtrees.
 
 - `verification_pct` (0.0–1.0) = external acceptance score for CLI katas (claim-office). `tests_passing` = internal vitest pass/fail.
 - `completed_within_budget` = Boolean derived from `exit_reason`.
-- `mutation_score` (0.0–1.0) = Stryker mutation score. **Opt-in per RQ** (must appear in `outcomes:`) and only computed for `tests_passing = true`. Driven by `experiments/compute-mutation-score.py`, run between batch and aggregation. Mutation testing is expensive (minutes per run), so do not add it to `analyze-run.sh` or routine reanalysis.
+- `mutation_score` (0.0–1.0) = mutation score — Stryker on the TS stack, PIT on the Java stack (`experiments/compute-mutation-score.py` picks the engine per run from the presence of `pom.xml`). **Opt-in per RQ** (must appear in `outcomes:`) and only computed for `tests_passing = true`. Run between batch and aggregation. On TS it is expensive (minutes per run, `pnpm install` per run), so do not add it to `analyze-run.sh` or routine reanalysis; on Java it costs 5–10 s per run. **Java scores are not comparable with TS scores** — PIT's default mutator set is narrower.
 - Full metrics table in README section "Metrics".
 
 ## Host dependencies
@@ -130,6 +130,12 @@ subtrees.
   and no grep over imports reveals the dependency.
 - System Python on this host is PEP 668 externally managed; a plain `pip3 install --user`
   is refused. Use `--break-system-packages` for the user site, or a venv.
+- **Java mutation testing needs a JDK ≤ 21 on the host**, independent of the host default.
+  PIT's bundled ASM cannot read Java 25 class files, and it reads core classes from the
+  *running* JVM — on a JDK 25 host that fails as `Unsupported class file major version 69`
+  for some runs and not others. `compute-mutation-score.py` therefore pins `JAVA_HOME` to
+  `/usr/lib/jvm/java-17-openjdk-amd64` (the same JDK the container compiles with), falling
+  back to java-21 and warning if neither exists.
 
 ## Docker & version pins
 
