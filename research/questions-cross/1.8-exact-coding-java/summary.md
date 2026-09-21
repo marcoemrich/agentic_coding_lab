@@ -2,7 +2,7 @@
 
 _On Java 17 with JUnit 5 and Maven, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness and code quality for GPT-5.6 SOL and Opus 5?_
 
-Generated: 2026-09-21T00:57:20Z
+Generated: 2026-09-21T13:12:08Z
 
 Cells declared: 12 · matched runs: 60 · min_replicates: 5
 
@@ -530,3 +530,37 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-java-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |   0.9  |  0.77 |  0.98 |  0.08 |
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   0.93 |  0.91 |  0.94 |  0.01 |
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   0.94 |  0.9  |  1    |  0.04 |
+
+### mutants_total
+
+| kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
+|:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-java-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |   68.4 |    61 |    90 | 12.56 |
+| claim-office-java-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 |   91.4 |    69 |   116 | 20.86 |
+| claim-office-java-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |   78.8 |    63 |    91 | 11.71 |
+| claim-office-java-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |   65.6 |    53 |    85 | 12.48 |
+| claim-office-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   94.8 |    82 |   108 | 12.54 |
+| claim-office-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   80.6 |    74 |    95 |  8.32 |
+| game-of-life-java-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |   23.4 |    19 |    30 |  4.16 |
+| game-of-life-java-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 |   33   |    19 |    43 |  9.82 |
+| game-of-life-java-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |   31.2 |    28 |    34 |  2.39 |
+| game-of-life-java-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |   35.4 |    25 |    46 |  8.14 |
+| game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   32.6 |    31 |    34 |  1.14 |
+| game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   29   |    24 |    31 |  2.83 |
+
+### mutants_survived
+
+| kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
+|:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-java-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |    8   |     5 |    10 |  2    |
+| claim-office-java-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 |   17.8 |     8 |    25 |  8.11 |
+| claim-office-java-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |    5.4 |     3 |     8 |  2.3  |
+| claim-office-java-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |    6   |     4 |     9 |  2.12 |
+| claim-office-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |    3.4 |     1 |     7 |  2.3  |
+| claim-office-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |    4.6 |     4 |     5 |  0.55 |
+| game-of-life-java-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |    2   |     2 |     2 |  0    |
+| game-of-life-java-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 |    5   |     2 |     8 |  2.83 |
+| game-of-life-java-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |    2.4 |     2 |     3 |  0.55 |
+| game-of-life-java-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |    3   |     1 |     7 |  2.35 |
+| game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |    2.2 |     2 |     3 |  0.45 |
+| game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |    1.8 |     0 |     3 |  1.1  |

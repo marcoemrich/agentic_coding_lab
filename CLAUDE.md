@@ -118,6 +118,10 @@ subtrees.
 - `verification_pct` (0.0–1.0) = external acceptance score for CLI katas (claim-office). `tests_passing` = internal vitest pass/fail.
 - `completed_within_budget` = Boolean derived from `exit_reason`.
 - `mutation_score` (0.0–1.0) = mutation score — Stryker on the TS stack, PIT on the Java stack (`experiments/compute-mutation-score.py` picks the engine per run from the presence of `pom.xml`). **Opt-in per RQ** (must appear in `outcomes:`) and only computed for `tests_passing = true`. Run between batch and aggregation. On TS it is expensive (minutes per run, `pnpm install` per run), so do not add it to `analyze-run.sh` or routine reanalysis; on Java it costs 5–10 s per run. **Java scores are not comparable with TS scores** — PIT's default mutator set is narrower.
+- `mutants_total` / `mutants_survived` = the counts behind `mutation_score` (population, and the
+  part of it the suite missed). Written by the same script and opt-in the same way. **Report the
+  pair, not the ratio alone, whenever the arms differ in code size** — the score's denominator is
+  the mutant population, so it can rise while the absolute gap stands still.
 - Full metrics table in README section "Metrics".
 
 ## Host dependencies

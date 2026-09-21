@@ -53,6 +53,17 @@ Higher = better. PIT against the run's own JUnit 5 suite, `n=5` per cell.
 | Opus 5 | Game of Life | 0.91 | **0.92** 🏆 | **0.93** 🏆 |
 | Opus 5 | Claim Office | 0.88 | 0.93 | **0.96** 🏆 |
 
+Unnoticed behaviour changes per run — mutants the suite let through. Lower = better.
+
+| Model | Kata | Inline | EXACT v1 | EXACT v1.1 |
+|---|---|---:|---:|---:|
+| GPT-5.6 SOL | Game of Life | 5.0 | 3.0 | **1.8** 🏆 |
+| GPT-5.6 SOL | Claim Office | 17.8 | 6.0 | **4.6** 🏆 |
+| Opus 5 | Game of Life | **2.0** 🏆 | **2.4** 🏆 | **2.2** 🏆 |
+| Opus 5 | Claim Office | 8.0 | **5.4** 🏆 | **3.4** 🏆 |
+
+The Opus Game of Life row spans 0.4 mutants and is a tie, not a contest.
+
 Code Mass (APP), Production LoC, Test LoC, test count, method count, and process-marker counts have ambiguous direction and therefore receive no trophy. Smell Total is zero in every cell and has no winner. Every cell clears the correctness gate, so all quality and efficiency rows are eligible.
 
 ---
@@ -194,3 +205,35 @@ Variance shrinks along the same ladder in three of the four combinations — mos
 Read this against F-1.8.4 before drawing a recommendation: the step from inline to v1 buys most of the test strength, and v1.1 adds a further 0.01 to 0.04 for roughly triple the cost again.
 
 **Measurement notes.** The score is PIT (`pitest-maven`) against the run's own JUnit 5 suite, killed plus timed-out over all scoreable mutants, with PIT's default mutator set. Two properties limit how far the number travels. First, every production class is mutated, the CLI entry class included — unlike the TypeScript pipeline, which excludes `src/cli.ts`. Several runs nest their whole domain inside the CLI class, so an exclusion by file would have made the score depend on how the agent split its classes, and that split is itself one of the things this RQ measures. Second, PIT's default mutators are narrower than Stryker's: no block removal, no string- or object-literal mutation. Java scores are therefore comparable across the cells of this RQ, but not against the mutation scores of the TypeScript RQs.
+
+---
+
+## F-1.8.10 — Counted in absolute terms, the test gap closes on three of four cells and not at all on the fourth
+
+Mutation Score is a ratio whose denominator is the mutant population, and that population scales with the amount of code. Between these arms the code differs by up to a factor of two (F-1.8.3), so the ratio alone cannot separate "the tests got stronger" from "there is less to defend". The counts behind it separate the two.
+
+| Model | Kata | Arm | Mutants | Unnoticed | of those, never executed |
+|---|---|---|---:|---:|---:|
+| GPT-5.6 SOL | Game of Life | Inline | 33.0 | 5.0 | 0.2 |
+| | | EXACT v1 | 35.4 | 3.0 | 1.6 |
+| | | EXACT v1.1 | 29.0 | 1.8 | 0.2 |
+| GPT-5.6 SOL | Claim Office | Inline | 91.4 | 17.8 | 4.8 |
+| | | EXACT v1 | 65.6 | 6.0 | 2.4 |
+| | | EXACT v1.1 | 80.6 | 4.6 | 2.4 |
+| Opus 5 | Game of Life | Inline | 23.4 | 2.0 | 0.0 |
+| | | EXACT v1 | 31.2 | 2.4 | 0.2 |
+| | | EXACT v1.1 | 32.6 | 2.2 | 0.2 |
+| Opus 5 | Claim Office | Inline | 68.4 | 8.0 | 4.0 |
+| | | EXACT v1 | 78.8 | 5.4 | 3.0 |
+| | | EXACT v1.1 | 94.8 | 3.4 | 1.2 |
+
+Against inline TDD, v1.1 removes 74 % of the unnoticed changes on SOL Claim Office, 64 % on SOL Game of Life and 57 % on Opus Claim Office. **Opus Game of Life closes nothing**: 2.0 unnoticed changes under inline TDD against 2.2 under v1.1. Its Mutation Score still rises from 0.913 to 0.933, purely because the mutant population grows from 23.4 to 32.6 — the score improves while the absolute gap does not. On that cell the ratio is misleading and the count is not.
+
+The two cells that matter most read in opposite directions once the denominator is visible:
+
+- **Opus Claim Office v1.1 defends 39 % more mutants than the inline baseline** (94.8 against 68.4) and still lets fewer than half as many through. The score understates this result.
+- **SOL Claim Office v1 faces 28 % fewer mutants than its inline baseline** (65.6 against 91.4), because that workflow shrinks the code. Part of its score jump is a smaller denominator. The finding survives anyway — the absolute gap falls from 17.8 to 6.0 — but the ratio flatters it.
+
+The `never executed` column is the sharpest sub-signal: mutants on lines no test runs at all. Inline TDD leaves 4.8 of them per run on SOL Claim Office and 4.0 on Opus Claim Office; v1.1 leaves 2.4 and 1.2. Dead spots in the suite, not merely weak assertions.
+
+Report the pair, not the ratio alone. `mutation_score` stays the comparable figure across cells of equal size; `mutants_survived` is the one to quote when the arms differ in how much code they produce, which in this RQ they always do.

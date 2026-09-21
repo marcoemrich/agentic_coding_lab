@@ -61,7 +61,8 @@ CSV_COLUMNS = [
     "tcr_method_commits", "tcr_red_commits", "tcr_green_commits",
     "tcr_refactor_commits",
     "tests_passing", "tests_total", "todos_remaining",
-    "lines_of_code", "test_lines", "code_mass", "mutation_score", "cost_usd",
+    "lines_of_code", "test_lines", "code_mass", "mutation_score",
+    "mutants_total", "mutants_survived", "cost_usd",
     "coverage_statements_pct", "coverage_branches_pct",
     "cc_loc", "cc_functions", "cc_longest_function",
     "cc_avg_loc_per_function", "cc_median_loc_per_function", "cc_imports",
@@ -444,6 +445,13 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
         "test_lines":                 fm.get("test_lines"),
         "code_mass":                  fm.get("code_mass"),
         "mutation_score":             fm.get("mutation_score"),
+        # Mutant population and the part of it the suite missed
+        # (survived + never executed). Reported next to the score
+        # because the score's denominator scales with the amount of
+        # code, so a ratio alone cannot separate "stronger tests"
+        # from "less code to defend".
+        "mutants_total":              fm.get("mutants_total"),
+        "mutants_survived":           fm.get("mutants_survived"),
         "cost_usd":                   fm.get("cost_usd"),
         "coverage_statements_pct":    cov.get("statements_pct"),
         "coverage_branches_pct":      cov.get("branches_pct"),

@@ -46,6 +46,8 @@ outcomes:
   - total_tokens
   - cost_usd
   - mutation_score
+  - mutants_total
+  - mutants_survived
 min_replicates: 5
 status: answered
 ---

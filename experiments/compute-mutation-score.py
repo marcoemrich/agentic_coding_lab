@@ -34,6 +34,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import collections
 import importlib.util
 import json
 import os
@@ -73,29 +74,44 @@ STRYKER_CONFIG = {
 }
 
 
-def mutation_score_from_report(report: dict) -> float | None:
-    """Compute Stryker mutation score from a mutation-testing-elements report.
+# What a mutation run yields: the score plus the two counts it is made of.
+# The counts are reported in their own right — the score alone cannot be
+# compared between arms that produce different amounts of code, because its
+# denominator is the mutant population and that scales with the code. A
+# workflow can raise the score by writing less code to defend, and it can
+# lower the count of survivors the same way. Only the pair separates "the
+# tests got stronger" from "there is less to test".
+MutationResult = collections.namedtuple(
+    "MutationResult", ["score", "total", "survived"])
+EMPTY_RESULT = MutationResult(None, None, None)
+
+
+def _result_from_counts(detected: int, survived: int) -> MutationResult:
+    total = detected + survived
+    if total == 0:
+        return EMPTY_RESULT
+    return MutationResult(detected / total, total, survived)
+
+
+def mutation_score_from_report(report: dict) -> MutationResult:
+    """Score and mutant counts from a Stryker mutation-testing-elements report.
 
     Formula (Stryker default):
         score = (Killed + Timeout) / (Killed + Survived + Timeout + NoCoverage)
 
-    Compile/runtime errors and Ignored mutants are excluded. Returns ``None``
-    when there are no scoreable mutants (would mean Stryker produced no
-    usable mutants, which is itself a failure to surface).
+    `survived` is the part of that denominator the suite did not catch:
+    Survived plus NoCoverage. Compile/runtime errors and Ignored mutants are
+    excluded. Returns EMPTY_RESULT when there are no scoreable mutants (which
+    would mean Stryker produced nothing usable — itself worth surfacing).
     """
     counts: dict[str, int] = {}
     for file_info in (report.get("files") or {}).values():
         for mutant in file_info.get("mutants", []) or []:
             status = mutant.get("status", "")
             counts[status] = counts.get(status, 0) + 1
-    killed = counts.get("Killed", 0)
-    survived = counts.get("Survived", 0)
-    timeout = counts.get("Timeout", 0)
-    no_coverage = counts.get("NoCoverage", 0)
-    denom = killed + survived + timeout + no_coverage
-    if denom == 0:
-        return None
-    return (killed + timeout) / denom
+    detected = counts.get("Killed", 0) + counts.get("Timeout", 0)
+    survived = counts.get("Survived", 0) + counts.get("NoCoverage", 0)
+    return _result_from_counts(detected, survived)
 
 
 # --- Java / PIT ---------------------------------------------------------
@@ -204,39 +220,37 @@ def write_pitest_pom(run_dir: Path) -> tuple[Path, int]:
     return pom_path, len(targets)
 
 
-def mutation_score_from_pit_report(report_path: Path) -> float | None:
-    """Mutation score from PIT's mutations.xml, same shape as the Stryker one.
+def mutation_score_from_pit_report(report_path: Path) -> MutationResult:
+    """Score and mutant counts from PIT's mutations.xml, same shape as Stryker.
 
         score = (KILLED + TIMED_OUT + MEMORY_ERROR)
                 / (KILLED + SURVIVED + TIMED_OUT + MEMORY_ERROR + NO_COVERAGE)
 
     NON_VIABLE and RUN_ERROR mutants are excluded — they are the PIT
     equivalent of Stryker's CompileError status and say nothing about the
-    suite. Returns None when no mutant is scoreable.
+    suite. Returns EMPTY_RESULT when no mutant is scoreable.
     """
     import xml.etree.ElementTree as ET
     try:
         root = ET.parse(report_path).getroot()
     except ET.ParseError:
-        return None
+        return EMPTY_RESULT
     counts: dict[str, int] = {}
     for mutation in root.findall("mutation"):
         status = mutation.get("status", "")
         counts[status] = counts.get(status, 0) + 1
     detected = (counts.get("KILLED", 0) + counts.get("TIMED_OUT", 0)
                 + counts.get("MEMORY_ERROR", 0))
-    denom = detected + counts.get("SURVIVED", 0) + counts.get("NO_COVERAGE", 0)
-    if denom == 0:
-        return None
-    return detected / denom
+    survived = counts.get("SURVIVED", 0) + counts.get("NO_COVERAGE", 0)
+    return _result_from_counts(detected, survived)
 
 
-def run_pitest(run_dir: Path, timeout_seconds: int, log) -> float | None:
+def run_pitest(run_dir: Path, timeout_seconds: int, log) -> MutationResult:
     """Run PIT in run_dir and return mutation_score (0.0-1.0) or None."""
     pom_path, n_targets = write_pitest_pom(run_dir)
     if n_targets == 0:
         log("  no production classes found; score stays null")
-        return None
+        return EMPTY_RESULT
 
     report_path = run_dir / "target" / "pit-reports" / "mutations.xml"
     if report_path.is_file():
@@ -260,13 +274,13 @@ def run_pitest(run_dir: Path, timeout_seconds: int, log) -> float | None:
             )
     except subprocess.TimeoutExpired:
         log(f"  TIMEOUT after {timeout_seconds}s — score stays null")
-        return None
+        return EMPTY_RESULT
 
     if proc.returncode != 0:
         log(f"  mvn exited {proc.returncode}; see pit.log")
     if not report_path.is_file():
         log("  no mutations.xml produced; score stays null")
-        return None
+        return EMPTY_RESULT
     return mutation_score_from_pit_report(report_path)
 
 
@@ -340,8 +354,8 @@ def ensure_stryker_installed(run_dir: Path, log) -> bool:
     return True
 
 
-def run_stryker(run_dir: Path, timeout_seconds: int, log) -> float | None:
-    """Run Stryker in run_dir and return mutation_score (0.0-1.0) or None."""
+def run_stryker(run_dir: Path, timeout_seconds: int, log) -> MutationResult:
+    """Run Stryker in run_dir and return its MutationResult."""
     cfg_path = run_dir / "stryker.config.json"
     cfg_path.write_text(json.dumps(STRYKER_CONFIG, indent=2))
 
@@ -355,7 +369,7 @@ def run_stryker(run_dir: Path, timeout_seconds: int, log) -> float | None:
     stryker_bin = run_dir / "node_modules" / ".bin" / "stryker"
     if not stryker_bin.exists():
         log("  stryker binary missing in node_modules/.bin; aborting")
-        return None
+        return EMPTY_RESULT
     cmd = [str(stryker_bin), "run", "--logLevel", "info"]
 
     # Prepend node_modules/.bin to PATH so test code that spawns
@@ -388,7 +402,7 @@ def run_stryker(run_dir: Path, timeout_seconds: int, log) -> float | None:
                 )
         except subprocess.TimeoutExpired:
             log(f"  TIMEOUT after {timeout_seconds}s — score stays null")
-            return None
+            return EMPTY_RESULT
     finally:
         if had_pnpm_settings:
             package_path.write_text(original_package)
@@ -400,20 +414,23 @@ def run_stryker(run_dir: Path, timeout_seconds: int, log) -> float | None:
 
     if not report_path.is_file():
         log(f"  no mutation-report.json produced; score stays null")
-        return None
+        return EMPTY_RESULT
 
     try:
         report = json.loads(report_path.read_text())
     except json.JSONDecodeError as e:
         log(f"  malformed mutation-report.json ({e}); score stays null")
-        return None
+        return EMPTY_RESULT
 
     return mutation_score_from_report(report)
 
 
-def update_metrics_json(metrics_path: Path, score: float | None) -> None:
+def update_metrics_json(metrics_path: Path, result: MutationResult) -> None:
     metrics = json.loads(metrics_path.read_text())
-    metrics.setdefault("final_metrics", {})["mutation_score"] = score
+    final = metrics.setdefault("final_metrics", {})
+    final["mutation_score"] = result.score
+    final["mutants_total"] = result.total
+    final["mutants_survived"] = result.survived
     metrics_path.write_text(json.dumps(metrics, indent=2) + "\n")
 
 
@@ -515,21 +532,22 @@ def main(argv: list[str]) -> int:
             print(f"  [{_rid}] {msg}", file=sys.stderr)
 
         if (run_dir / "pom.xml").is_file():
-            score = run_pitest(run_dir, args.timeout_seconds, log)
-            update_metrics_json(m_file, score)
-            if score is None:
+            result = run_pitest(run_dir, args.timeout_seconds, log)
+            update_metrics_json(m_file, result)
+            if result.score is None:
                 n_failed += 1
                 log("score=null (see pit.log)")
             else:
                 n_executed += 1
-                log(f"score={score:.3f}")
+                log(f"score={result.score:.3f} "
+                    f"({result.survived}/{result.total} survived)")
             continue
 
         ensure_npmrc_hoist(run_dir, log)
 
         if not ensure_node_modules(run_dir, log):
             n_failed += 1
-            update_metrics_json(m_file, None)
+            update_metrics_json(m_file, EMPTY_RESULT)
             continue
 
         package_path = run_dir / "package.json"
@@ -537,20 +555,21 @@ def main(argv: list[str]) -> int:
         try:
             if not ensure_stryker_installed(run_dir, log):
                 n_failed += 1
-                update_metrics_json(m_file, None)
+                update_metrics_json(m_file, EMPTY_RESULT)
                 continue
 
-            score = run_stryker(run_dir, args.timeout_seconds, log)
+            result = run_stryker(run_dir, args.timeout_seconds, log)
         finally:
             # Installing the analysis tool must not alter the recorded artifact.
             package_path.write_text(original_package)
-        update_metrics_json(m_file, score)
-        if score is None:
+        update_metrics_json(m_file, result)
+        if result.score is None:
             n_failed += 1
             log("score=null (see stryker.log)")
         else:
             n_executed += 1
-            log(f"score={score:.3f}")
+            log(f"score={result.score:.3f} "
+                f"({result.survived}/{result.total} survived)")
 
     print(f"{rq_id}: executed={n_executed}, failed={n_failed}, "
           f"already={n_already}", file=sys.stderr)
