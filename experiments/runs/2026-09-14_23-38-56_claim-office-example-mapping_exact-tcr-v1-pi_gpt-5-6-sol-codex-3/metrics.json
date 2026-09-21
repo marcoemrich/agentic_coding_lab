@@ -1,0 +1,85 @@
+{
+  "kata": "claim-office-example-mapping",
+  "workflow": "exact-tcr-v1-pi",
+  "model": "gpt-5-6-sol-codex",
+  "cli_model": "pi-only",
+  "harness_version": "0.81.1",
+  "thinking": false,
+  "started_at": "2026-09-14T23:38:58+00:00",
+  "ended_at": "2026-09-14T23:55:47+00:00",
+  "duration_seconds": 1003,
+  "batch_run": true,
+  "plan_file": "/home/experimenter/experiments/batch-plans/rq-tcr-variants-sol-fill.shard2.json",
+  "tcr": {
+    "initial_commit": "b5b9cee00b05ec3da6c65b86aa78fdff20f2f694",
+    "final_commit": "ce7e7b4637f32c6edff9965794ca46b9439d4390",
+    "commits_total": 49,
+    "method_commits": 48,
+    "red_commits": 13,
+    "green_commits": 33,
+    "refactor_commits": 1
+  },
+  "run_status": {
+    "exit_code": 0,
+    "exit_reason": "ok",
+    "rate_limited": false
+  },
+  "final_metrics": {
+    "lines_of_code": 127,
+    "test_lines": 183,
+    "tests_total": 33,
+    "todos_remaining": 0,
+    "code_mass": 553,
+    "tests_passing": true,
+    "verification_total": 15,
+    "verification_passed": 15,
+    "verification_pct": 1,
+    "cli_built": true,
+    "mccabe_max": 4,
+    "mccabe_avg": 1.75,
+    "mccabe_high_count": 0,
+    "cognitive_max": 3,
+    "cognitive_avg": 1.86,
+    "cognitive_high_count": 0,
+    "cost_usd": 3.8622
+  },
+  "coverage": {
+    "statements_pct": 90,
+    "branches_pct": 88
+  },
+  "code_smells": {
+    "total": 0,
+    "complexity": 0,
+    "duplication": 0,
+    "magic_numbers": 0,
+    "code_quality": 0
+  },
+  "clean_code": {
+    "loc": 114,
+    "functions": 9,
+    "longest_function": 15,
+    "avg_loc_per_function": 5.89,
+    "median_loc_per_function": 4,
+    "imports": 1
+  },
+  "summary_metrics": {
+    "total_tokens": 5377695,
+    "context_utilization_pct": 0,
+    "cycle_count": 34,
+    "refactorings_applied": 35,
+    "predictions_correct": 68,
+    "predictions_total": 68,
+    "tests_passed_immediately": 0,
+    "test_blocks": 35,
+    "test_cases_total": 34,
+    "test_cases_first_block": 0,
+    "red_verified": 35,
+    "red_unverified": 0,
+    "tcr_refactor_steps": 1,
+    "avg_cycle_seconds": 0,
+    "avg_red_seconds": 0,
+    "avg_green_seconds": 0,
+    "avg_refactor_seconds": 0
+  },
+  "analyze_status": "ok"
+}

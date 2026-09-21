@@ -1,0 +1,85 @@
+{
+  "kata": "claim-office-example-mapping",
+  "workflow": "exact-ptdd-v1.1-refactor-subagent-cc",
+  "model": "opus-5-no-thinking",
+  "cli_model": "claude-opus-5",
+  "harness_version": "2.1.267 (Claude Code)",
+  "thinking": false,
+  "started_at": "2026-09-17T00:24:43+00:00",
+  "ended_at": "2026-09-17T01:24:26+00:00",
+  "duration_seconds": 3574,
+  "batch_run": true,
+  "plan_file": "/home/experimenter/experiments/batch-plans/rq-ptdd-refactor-subagent-opus-fill.shard2.json",
+  "tcr": {
+    "initial_commit": "e8db273c70b3bfff1b7a13f197e0a44bdd243e2c",
+    "final_commit": "e8db273c70b3bfff1b7a13f197e0a44bdd243e2c",
+    "commits_total": 1,
+    "method_commits": 0,
+    "red_commits": 0,
+    "green_commits": 0,
+    "refactor_commits": 0
+  },
+  "run_status": {
+    "exit_code": 0,
+    "exit_reason": "ok",
+    "rate_limited": false
+  },
+  "final_metrics": {
+    "lines_of_code": 791,
+    "test_lines": 436,
+    "tests_total": 55,
+    "todos_remaining": 0,
+    "code_mass": 1032,
+    "tests_passing": true,
+    "verification_total": 15,
+    "verification_passed": 15,
+    "verification_pct": 1,
+    "cli_built": true,
+    "mccabe_max": 3,
+    "mccabe_avg": 1.22,
+    "mccabe_high_count": 0,
+    "cognitive_max": 2,
+    "cognitive_avg": 1.09,
+    "cognitive_high_count": 0,
+    "cost_usd": 20.2352
+  },
+  "coverage": {
+    "statements_pct": 80,
+    "branches_pct": 96
+  },
+  "code_smells": {
+    "total": 0,
+    "complexity": 0,
+    "duplication": 0,
+    "magic_numbers": 0,
+    "code_quality": 0
+  },
+  "clean_code": {
+    "loc": 636,
+    "functions": 32,
+    "longest_function": 11,
+    "avg_loc_per_function": 5.06,
+    "median_loc_per_function": 3.5,
+    "imports": 22
+  },
+  "summary_metrics": {
+    "total_tokens": 28328974,
+    "context_utilization_pct": 96,
+    "cycle_count": 46,
+    "refactorings_applied": 28,
+    "predictions_correct": 85,
+    "predictions_total": 88,
+    "tests_passed_immediately": 0,
+    "test_blocks": 0,
+    "test_cases_total": 0,
+    "test_cases_first_block": 0,
+    "red_verified": 0,
+    "red_unverified": 0,
+    "tcr_refactor_steps": 0,
+    "avg_cycle_seconds": 88.33,
+    "avg_red_seconds": 0,
+    "avg_green_seconds": 0,
+    "avg_refactor_seconds": 88.33
+  },
+  "analyze_status": "ok"
+}

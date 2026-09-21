@@ -341,9 +341,19 @@ lookup_model_config() {
 # Every arm gets the same isolated repository so merely having Git available is
 # not a TCR-arm confound. Runtime/analysis files are ignored: `git add -A` in a
 # TCR skill must never commit metrics, transcripts, dependencies, or logs.
+#
+# The rules go into .git/info/exclude, not into a .gitignore file. A .gitignore
+# in the run dir is also honoured by the *lab* repo, which then silently drops
+# that run's metrics.json and transcripts from version control — 258 runs were
+# recorded that way before this was found. info/exclude is repo-local, is not a
+# file in the work tree, and disappears with the run repo.
 init_run_git() {
     local run_dir="$1"
-    cat > "$run_dir/.gitignore" <<'EOF'
+    git init --quiet "$run_dir" || {
+        echo "Failed to create isolated Git repository in $run_dir" >&2
+        return 1
+    }
+    cat > "$run_dir/.git/info/exclude" <<'EOF'
 node_modules/
 coverage/
 dist/
@@ -365,7 +375,6 @@ tcr-git-summary.json
 EOF
     (
         cd "$run_dir"
-        git init --quiet
         git config user.name "TCR Experiment"
         git config user.email "tcr-experiment@localhost"
         git add -A
