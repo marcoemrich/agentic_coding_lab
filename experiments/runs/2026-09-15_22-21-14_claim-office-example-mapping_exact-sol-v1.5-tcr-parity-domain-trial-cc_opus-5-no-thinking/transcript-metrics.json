@@ -1,0 +1,62 @@
+{
+  "wall_clock_seconds": 2590.26,
+  "total_tokens": {
+    "input": 87267,
+    "output": 496047,
+    "cache_read": 94804076,
+    "cache_creation": 776074,
+    "total": 96163464
+  },
+  "context_utilization_pct": 164,
+  "context_window_tokens": 200000,
+  "context_peak_tokens": 327798,
+  "cost_usd": null,
+  "message_count": 526,
+  "tool_calls": {
+    "Read": 5,
+    "Bash": 184,
+    "Skill": 3,
+    "Write": 4,
+    "Edit": 116
+  },
+  "skill_invocations": {
+    "exact-coding-ptdd": 1,
+    "test-list": 1,
+    "predictive-tdd": 1
+  },
+  "task_invocations": {},
+  "cycle_count": 93,
+  "predictions_correct": 50,
+  "predictions_total": 52,
+  "model_versions": [
+    "claude-opus-5"
+  ],
+  "subagent_token_total": 0,
+  "phases": [
+    {
+      "phase": "test-list",
+      "tokens": 95942259,
+      "duration_seconds": 2583.22,
+      "start_ts": "2026-09-15T22:21:25.529000+00:00"
+    }
+  ],
+  "phase_source": "skills",
+  "phase_summary": {
+    "by_phase": {
+      "test-list": {
+        "count": 1,
+        "tokens": 95942259,
+        "duration_seconds": 2583.22
+      }
+    },
+    "averages": {
+      "test-list": {
+        "avg_tokens": 95942259.0,
+        "avg_duration_seconds": 2583.22
+      }
+    },
+    "refactorings_applied": 59,
+    "tests_passed_immediately": 0
+  },
+  "refactor_count_source": "text-markers"
+}

@@ -1,0 +1,132 @@
+{
+  "wall_clock_seconds": 243.16,
+  "total_tokens": {
+    "input": 9601,
+    "output": 16873,
+    "cache_read": 2795116,
+    "cache_creation": 75477,
+    "total": 2897067
+  },
+  "context_utilization_pct": 30,
+  "context_window_tokens": 200000,
+  "context_peak_tokens": 59186,
+  "cost_usd": null,
+  "message_count": 62,
+  "tool_calls": {
+    "Read": 1,
+    "Skill": 1,
+    "Bash": 22,
+    "Write": 13,
+    "Edit": 4
+  },
+  "skill_invocations": {
+    "tcr-kentbeck": 1
+  },
+  "task_invocations": {},
+  "cycle_count": 7,
+  "predictions_correct": 0,
+  "predictions_total": 0,
+  "model_versions": [
+    "claude-opus-5"
+  ],
+  "subagent_token_total": 0,
+  "phases": [
+    {
+      "phase": "green",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "red",
+      "tokens": 37891,
+      "duration_seconds": 2.13
+    },
+    {
+      "phase": "green",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "red",
+      "tokens": 40068,
+      "duration_seconds": 1.99
+    },
+    {
+      "phase": "green",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "red",
+      "tokens": 86134,
+      "duration_seconds": 2.87
+    },
+    {
+      "phase": "green",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "red",
+      "tokens": 93081,
+      "duration_seconds": 2.03
+    },
+    {
+      "phase": "green",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "red",
+      "tokens": 49102,
+      "duration_seconds": 1.57
+    },
+    {
+      "phase": "green",
+      "tokens": 0,
+      "duration_seconds": 0.0
+    },
+    {
+      "phase": "red",
+      "tokens": 51827,
+      "duration_seconds": 1.68
+    },
+    {
+      "phase": "red",
+      "tokens": 55250,
+      "duration_seconds": 1.73
+    },
+    {
+      "phase": "green",
+      "tokens": 115017,
+      "duration_seconds": 5.63
+    }
+  ],
+  "phase_source": "inline-tool",
+  "phase_summary": {
+    "by_phase": {
+      "green": {
+        "count": 7,
+        "tokens": 115017,
+        "duration_seconds": 5.63
+      },
+      "red": {
+        "count": 7,
+        "tokens": 413353,
+        "duration_seconds": 14.0
+      }
+    },
+    "averages": {
+      "green": {
+        "avg_tokens": 16431.0,
+        "avg_duration_seconds": 0.8
+      },
+      "red": {
+        "avg_tokens": 59050.43,
+        "avg_duration_seconds": 2.0
+      }
+    },
+    "refactorings_applied": 0,
+    "tests_passed_immediately": 1
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "wall_clock_seconds": 549.18,
+  "total_tokens": {
+    "input": 8230,
+    "output": 39885,
+    "cache_read": 3688454,
+    "cache_creation": 97547,
+    "total": 3834116
+  },
+  "context_utilization_pct": 39,
+  "context_window_tokens": 200000,
+  "context_peak_tokens": 78027,
+  "cost_usd": null,
+  "message_count": 64,
+  "tool_calls": {
+    "Bash": 28,
+    "Agent": 5
+  },
+  "skill_invocations": {},
+  "task_invocations": {
+    "refactor": 5
+  },
+  "cycle_count": 15,
+  "predictions_correct": 29,
+  "predictions_total": 29,
+  "model_versions": [
+    "claude-opus-5"
+  ],
+  "subagent_token_total": 2118771,
+  "phases": [
+    {
+      "phase": "refactor",
+      "tokens": 532167,
+      "duration_seconds": 53.79,
+      "transcript": "agent-afc79999f42eb931b.jsonl",
+      "start_ts": "2026-09-16T22:00:15.913000+00:00"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 336485,
+      "duration_seconds": 49.01,
+      "transcript": "agent-aded2d9e4221226bc.jsonl",
+      "start_ts": "2026-09-16T22:01:48.831000+00:00"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 307684,
+      "duration_seconds": 55.31,
+      "transcript": "agent-ac6c2b79c4ff13c13.jsonl",
+      "start_ts": "2026-09-16T22:03:03.453000+00:00"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 376879,
+      "duration_seconds": 58.29,
+      "transcript": "agent-a8f8948bd9132b1ee.jsonl",
+      "start_ts": "2026-09-16T22:04:43.906000+00:00"
+    },
+    {
+      "phase": "refactor",
+      "tokens": 565556,
+      "duration_seconds": 66.18,
+      "transcript": "agent-aafbf7cf88984f86a.jsonl",
+      "start_ts": "2026-09-16T22:06:48.374000+00:00"
+    }
+  ],
+  "phase_source": "subagents",
+  "phase_summary": {
+    "by_phase": {
+      "refactor": {
+        "count": 5,
+        "tokens": 2118771,
+        "duration_seconds": 282.58
+      }
+    },
+    "averages": {
+      "refactor": {
+        "avg_tokens": 423754.2,
+        "avg_duration_seconds": 56.52
+      }
+    },
+    "refactorings_applied": 5,
+    "tests_passed_immediately": 0
+  }
+}

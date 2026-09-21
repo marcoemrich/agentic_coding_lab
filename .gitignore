@@ -43,6 +43,16 @@ nohup.out
 *.pem
 *.portkey-bak
 experiments/runs/*/transcript-pi.jsonl
+# TCR bookkeeping written by run-batch.sh for every arm (the isolated run
+# repo's commit log, reflog, patch series and final status). Never versioned:
+# the TDD signal the RQs use is parsed out of it into metrics.json at analysis
+# time, and the raw files are large and diff as noise. They were invisible
+# until the stray per-run .gitignore was removed, hence the explicit rules.
+experiments/runs/*/tcr-commits.tsv
+experiments/runs/*/tcr-reflog.tsv
+experiments/runs/*/tcr-history.patch
+experiments/runs/*/tcr-final-status.txt
+experiments/runs/*/tcr-git-summary.json
 experiments/runs/*/analyze.err
 # Console transcript of a run; can balloon to multiple GB when a model
 # spams output (blocks GitHub's 2 GiB push limit). The run's data lives in
