@@ -12,6 +12,18 @@ experiments/runs/*/.npmrc
 experiments/runs/*/stryker.config.json
 experiments/runs/*/stryker.log
 experiments/runs/*/reports/
+# Python stack scaffolding, all regenerated per run: the venv and caches by
+# install.sh and analyze-run.sh, the mutants/ tree by mutmut. Same status as
+# node_modules/, coverage/ and target/.
+experiments/runs/*/.venv/
+experiments/runs/*/.pytest_cache/
+experiments/runs/*/.ruff_cache/
+experiments/runs/*/coverage.json
+experiments/runs/*/.coverage
+experiments/runs/*/uv.lock
+experiments/runs/*/mutants/
+experiments/runs/*/mutmut.log
+experiments/runs/*/.analysis-complexipy.json
 experiments/reanalyze.log
 .claude/scheduled_tasks.lock
 .claude/settings.local.json

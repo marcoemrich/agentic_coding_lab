@@ -32,6 +32,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install pnpm
 RUN npm install -g pnpm@9.15.9
 
+# Install uv — the package manager for the python-pytest stack. Pinned for the
+# same reason pnpm is: a resolver change moves dependency versions, and a
+# mutation, complexity or smell score is only comparable across runs when the
+# tools producing it are identical.
+#
+# `uv venv` bootstraps its own virtualenv, so the distribution's python3-venv
+# package (which node:22-slim does not carry and which would pin us to the
+# distro interpreter) is deliberately NOT installed.
+ENV UV_VERSION=0.12.17
+RUN curl -LsSf "https://astral.sh/uv/${UV_VERSION}/install.sh" | \
+    env UV_INSTALL_DIR=/usr/local/bin INSTALLER_NO_MODIFY_PATH=1 sh \
+    && uv --version
+ENV UV_CACHE_DIR=/home/experimenter/.cache/uv
+
 # Install Claude Code CLI
 # 2.1.107: verified end-to-end, but sends thinking.type.enabled which
 #   Vertex-AI Opus 4.7 rejects (needs thinking.type.adaptive).
@@ -95,6 +109,7 @@ RUN mkdir -p \
     /home/experimenter/.anthropic \
     /home/experimenter/.local/share/pnpm/store \
     /home/experimenter/.m2/repository \
+    /home/experimenter/.cache/uv \
     && chown -R experimenter:experimenter /home/experimenter
 
 # Provision an empty Claude config file. The CLI 2.1.107 logs a noisy
@@ -146,6 +161,17 @@ RUN set -eux; \
 WORKDIR /tmp/cache
 COPY --chown=experimenter:experimenter package.cache.json ./package.json
 RUN pnpm install --prod=false --prefer-offline
+
+# Same idea for the python-pytest stack: warm the uv cache with the pinned
+# tools so the first run of a batch does not pay a cold download. The pins are
+# the ones in experiments/stacks/python-pytest/requirements-dev.txt. The build
+# context is this directory, so they are duplicated here as
+# python.cache.txt — keep the two in step, exactly the way
+# package.cache.json tracks the run package.json.
+COPY --chown=experimenter:experimenter python.cache.txt ./requirements-dev.txt
+RUN uv venv /tmp/cache/.venv \
+    && uv pip install --python /tmp/cache/.venv/bin/python -r requirements-dev.txt \
+    && rm -rf /tmp/cache/.venv
 WORKDIR /home/experimenter/experiments
 
 # Default command

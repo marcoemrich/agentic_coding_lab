@@ -31,10 +31,10 @@ outcomes:
   - cognitive_avg
   - mccabe_max
   - mccabe_avg
-  - java_methods
-  - java_method_ncss_max
-  - java_method_ncss_avg
-  - java_method_ncss_median
+  - unit_count
+  - unit_size_max
+  - unit_size_avg
+  - unit_size_median
   - test_blocks
   - test_cases_total
   - test_cases_first_block

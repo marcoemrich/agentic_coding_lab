@@ -50,6 +50,7 @@ services:
       # Persistent dependency caches shared across runs.
       - pnpm-store:/home/experimenter/.local/share/pnpm/store:rw
       - maven-repo:/home/experimenter/.m2/repository:rw
+      - uv-cache:/home/experimenter/.cache/uv:rw
 
     # Environment
     # .env (docker-Verzeichnis) liefert u.a. ANTHROPIC_BASE_URL,
@@ -134,6 +135,7 @@ services:
       # Persistent dependency caches shared across runs.
       - pnpm-store:/home/experimenter/.local/share/pnpm/store:rw
       - maven-repo:/home/experimenter/.m2/repository:rw
+      - uv-cache:/home/experimenter/.cache/uv:rw
 
     env_file:
       - .env
@@ -229,6 +231,7 @@ services:
 
       # Persistent pnpm store shared across runs (avoids re-downloading deps)
       - pnpm-store:/home/experimenter/.local/share/pnpm/store:rw
+      - uv-cache:/home/experimenter/.cache/uv:rw
 
     env_file:
       - .env
@@ -264,3 +267,6 @@ volumes:
   # restarts so subsequent runs reuse already-downloaded packages.
   pnpm-store:
   maven-repo:
+  # Shared uv cache for the python-pytest stack. Pre-warmed at image build
+  # from python.cache.txt, then reused by every run's `uv pip install`.
+  uv-cache:

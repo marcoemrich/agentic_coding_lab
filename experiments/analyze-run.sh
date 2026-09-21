@@ -22,28 +22,78 @@ print_header() {
     echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
 }
 
+# Resolve the stack of a run. `run-batch.sh` writes `.stack` into metrics.json
+# at run creation, so that is the authoritative answer. Runs recorded before
+# the field existed fall back to sniffing the build file, and finally to the
+# historical TypeScript default — every run without a build file predates the
+# multi-stack era and is TypeScript by construction.
+#
+# Every language branch below dispatches on this one value. Do not reintroduce
+# `test -f pom.xml` checks: they disagree with metrics.json the moment a run is
+# analysed outside its own container, and each one is a place the next stack
+# has to be added.
+run_stack() {
+    local run_dir=$1
+    local stack=""
+    if [ -f "$run_dir/metrics.json" ] && command -v jq &> /dev/null; then
+        stack=$(jq -r '.stack // empty' "$run_dir/metrics.json" 2>/dev/null)
+    fi
+    if [ -z "$stack" ] || [ "$stack" = "null" ]; then
+        if [ -f "$run_dir/pom.xml" ]; then
+            stack="java-junit-maven"
+        elif [ -f "$run_dir/pyproject.toml" ]; then
+            stack="python-pytest"
+        else
+            stack="typescript-vitest"
+        fi
+    fi
+    echo "$stack"
+}
+
 # Find production and test files for the active stack.
 find_impl_files() {
     local run_dir=$1
-    if [ -f "$run_dir/pom.xml" ]; then
-        find "$run_dir/src/main/java" -name "*.java" 2>/dev/null | sort
-    else
-        find "$run_dir/src" -name "*.ts" ! -name "*.spec.ts" 2>/dev/null | sort
-    fi
+    case "$(run_stack "$run_dir")" in
+        java-junit-maven)
+            find "$run_dir/src/main/java" -name "*.java" 2>/dev/null | sort
+            ;;
+        python-pytest)
+            find "$run_dir/src" -name "*.py" ! -name "test_*.py" ! -name "*_test.py" \
+                2>/dev/null | sort
+            ;;
+        *)
+            find "$run_dir/src" -name "*.ts" ! -name "*.spec.ts" 2>/dev/null | sort
+            ;;
+    esac
 }
 
 find_test_files() {
     local run_dir=$1
-    if [ -f "$run_dir/pom.xml" ]; then
-        find "$run_dir/src/test/java" -name "*.java" 2>/dev/null | sort
-    else
-        find "$run_dir/src" -name "*.spec.ts" 2>/dev/null | sort
-    fi
+    case "$(run_stack "$run_dir")" in
+        java-junit-maven)
+            find "$run_dir/src/test/java" -name "*.java" 2>/dev/null | sort
+            ;;
+        python-pytest)
+            # Tests live in tests/, but an agent may also leave a test file
+            # beside the production code; both count.
+            find "$run_dir/tests" "$run_dir/src" \
+                \( -name "test_*.py" -o -name "*_test.py" \) 2>/dev/null | sort
+            ;;
+        *)
+            find "$run_dir/src" -name "*.spec.ts" 2>/dev/null | sort
+            ;;
+    esac
 }
 
+# The two counters dispatch on the file extension rather than the stack: their
+# input is already the stack-correct file list from find_test_files, and an
+# extension is unambiguous where a run directory may be incomplete.
 count_test_cases() {
     if [[ "$1" == *.java ]]; then
         grep -ohE '@Test\b' "$@" 2>/dev/null | wc -l | tr -d '[:space:]'
+    elif [[ "$1" == *.py ]]; then
+        grep -ohE '^[[:space:]]*(async[[:space:]]+)?def[[:space:]]+test_' "$@" 2>/dev/null \
+            | wc -l | tr -d '[:space:]'
     else
         grep -ohE '(^|[^A-Za-z0-9_.])(it|test)(\.each)?[[:space:]]*\(' "$@" 2>/dev/null \
             | wc -l | tr -d '[:space:]'
@@ -53,6 +103,12 @@ count_test_cases() {
 count_test_todos() {
     if [[ "$1" == *.java ]]; then
         grep -ohE '@Disabled\b' "$@" 2>/dev/null | wc -l | tr -d '[:space:]'
+    elif [[ "$1" == *.py ]]; then
+        # The inactive-test convention of the python-pytest profile. `xfail`
+        # counts too: it is the other way a listed-but-unimplemented behaviour
+        # is parked, and leaving it out would understate the remaining list.
+        grep -ohE '@pytest\.mark\.(skip|xfail)\b' "$@" 2>/dev/null \
+            | wc -l | tr -d '[:space:]'
     else
         grep -ohE '(^|[^A-Za-z0-9_.])(it|test)\.todo[[:space:]]*\(' "$@" 2>/dev/null \
             | wc -l | tr -d '[:space:]'
@@ -124,6 +180,11 @@ analyze_single_run() {
     # redirect resolves under the new cwd and silently fails, killing
     # verification entirely.
     run_dir=$(realpath "$run_dir")
+
+    # The one language decision of this script. Everything downstream branches
+    # on this value, never on the presence of a build file.
+    local stack
+    stack=$(run_stack "$run_dir")
 
     local run_name=$(basename "$run_dir")
     local report_file="$run_dir/analysis-report.md"
@@ -306,7 +367,7 @@ analyze_single_run() {
     local cov_statements=0
     local cov_branches=0
 
-    if [ -f "$run_dir/package.json" ] && [ ! -d "$run_dir/node_modules" ]; then
+    if [ "$stack" = "typescript-vitest" ] && [ -f "$run_dir/package.json" ] && [ ! -d "$run_dir/node_modules" ]; then
         echo -e "  ${YELLOW}node_modules missing — running 'pnpm install --prod=false' (shared store)${NC}"
         local store_dir="$(cd "$run_dir/.." && pwd)/.pnpm-store"
         if ! (cd "$run_dir" && pnpm install --prod=false --store-dir "$store_dir" --prefer-offline); then
@@ -315,7 +376,21 @@ analyze_single_run() {
         fi
     fi
 
-    if [ -f "$run_dir/pom.xml" ]; then
+    # Probe the interpreter rather than testing for the file: a .venv built in
+    # the container carries that container's absolute paths, so on a host with
+    # a different repo path (or a different python3) the files are all present
+    # and none of them run. Rebuilding is cheap against the warm uv cache.
+    if [ "$stack" = "python-pytest" ] && \
+       ! "$run_dir/.venv/bin/python" -c 'import pytest' 2>/dev/null; then
+        echo -e "  ${YELLOW}.venv missing or unusable — rebuilding it from requirements-dev.txt${NC}"
+        if ! (cd "$run_dir" && rm -rf .venv && uv venv .venv \
+                && uv pip install --python .venv/bin/python -r requirements-dev.txt); then
+            echo "Dependency installation failed in $run_dir; aborting analysis (infrastructure failure)." >&2
+            return 1
+        fi
+    fi
+
+    if [ "$stack" = "java-junit-maven" ]; then
         local mvn_exit=0
         set +e
         test_output=$(cd "$run_dir" && mvn test 2>&1)
@@ -329,6 +404,52 @@ analyze_single_run() {
             report_content+="**Status**: ❌ Tests failed or not runnable\n\n"
         fi
         report_content+="\`\`\`\n$test_output\n\`\`\`\n\n"
+    elif [ "$stack" = "python-pytest" ]; then
+        # Coverage comes out of the same run as the suite: pytest-cov writes
+        # coverage.json alongside the report, so unlike the TypeScript arm
+        # there is no second full execution to pay for.
+        # Call the venv's pytest directly rather than going through `uv run`:
+        # `uv run` treats the run directory as a uv project, which writes a
+        # uv.lock and may re-sync the environment against [project] — and the
+        # analysis tools are dev pins, not project dependencies, so a sync can
+        # take ruff and complexipy out from under the later measurement steps.
+        local pytest_exit=0
+        set +e
+        test_output=$(cd "$run_dir" && .venv/bin/pytest --cov=src --cov-branch --cov-report=json 2>&1)
+        pytest_exit=$?
+        set -e
+        echo "$test_output"
+
+        # pytest exits 0 only when at least one test ran and all passed;
+        # "no tests collected" is exit 5, so the code alone already rules out
+        # an empty suite. The summary grep is the same belt-and-braces check
+        # the Maven arm makes against BUILD SUCCESS.
+        if [ "$pytest_exit" -eq 0 ] && echo "$test_output" | grep -qE '[0-9]+ passed'; then
+            tests_passed=true
+            local passed_count
+            passed_count=$(echo "$test_output" | grep -oE '[0-9]+ passed' | tail -1)
+            report_content+="**Status**: ✅ All tests passing ($passed_count)\n\n"
+        else
+            report_content+="**Status**: ❌ Tests failed or not runnable\n\n"
+        fi
+        report_content+="\`\`\`\n$test_output\n\`\`\`\n\n"
+
+        if [ "$tests_passed" = true ] && [ -f "$run_dir/coverage.json" ]; then
+            cov_statements=$(python3 -c 'import json,sys; print(int(json.load(open(sys.argv[1]))["totals"]["percent_covered"]))' "$run_dir/coverage.json" 2>/dev/null)
+            cov_branches=$(python3 -c 'import json,sys; t=json.load(open(sys.argv[1]))["totals"]; n=t.get("num_branches") or 0; print(int(100*t.get("covered_branches",0)/n) if n else 0)' "$run_dir/coverage.json" 2>/dev/null)
+            [[ "$cov_statements" =~ ^[0-9]+$ ]] || cov_statements=0
+            [[ "$cov_branches" =~ ^[0-9]+$ ]] || cov_branches=0
+
+            echo -e "  ${CYAN}Coverage:${NC}"
+            echo -e "    Statements: ${cov_statements}%"
+            echo -e "    Branches: ${cov_branches}%"
+
+            report_content+="## Coverage\n\n"
+            report_content+="| Metric | Coverage |\n"
+            report_content+="|--------|----------|\n"
+            report_content+="| Statements | ${cov_statements}% |\n"
+            report_content+="| Branches | ${cov_branches}% |\n\n"
+        fi
     elif [ -f "$run_dir/package.json" ] && [ -d "$run_dir/node_modules" ]; then
         test_output=$(cd "$run_dir" && pnpm test 2>&1) || true
         echo "$test_output"
@@ -404,11 +525,28 @@ analyze_single_run() {
         echo -e "\n${YELLOW}APP Mass Estimation:${NC}"
         report_content+="## APP Mass Estimation\n\n"
 
+        # Constants and invocations are spelled the same in all three stacks.
+        # The remaining three categories are not, so they carry a per-stack
+        # pattern. The TypeScript/Java patterns are frozen byte-for-byte —
+        # changing them would silently restate every historical Code Mass.
+        local re_conditionals='\bif\b|\bswitch\b|\?.*:'
+        local re_loops='\bfor\b|\bwhile\b|\.map\(|\.reduce\(|\.forEach\('
+        local re_assignments='[^=!<>]=[^=]|\+\+|--'
+        if [ "$stack" = "python-pytest" ]; then
+            # No switch and no C-style ternary; `x if c else y` is already
+            # covered by the `if` alternative. No `++`/`--` either, and the
+            # walrus `:=` needs no alternative of its own because `:` is not
+            # in the excluded character class.
+            re_conditionals='\bif\b|\belif\b'
+            re_loops='\bfor\b|\bwhile\b|\bmap\(|\bfilter\(|\breduce\('
+            re_assignments='[^=!<>]=[^=]'
+        fi
+
         constants=$(grep -hoE '\b[0-9]+\b|"[^"]*"|'\''[^'\'']*'\''' "${impl_files[@]}" 2>/dev/null | wc -l | tr -d '[:space:]')
         invocations=$(grep -hoE '\w+\s*\(' "${impl_files[@]}" 2>/dev/null | wc -l | tr -d '[:space:]')
-        conditionals=$(grep -chE '\bif\b|\bswitch\b|\?.*:' "${impl_files[@]}" 2>/dev/null | awk '{s+=$1} END {print s+0}')
-        loops=$(grep -chE '\bfor\b|\bwhile\b|\.map\(|\.reduce\(|\.forEach\(' "${impl_files[@]}" 2>/dev/null | awk '{s+=$1} END {print s+0}')
-        assignments=$(grep -chE '[^=!<>]=[^=]|\+\+|--' "${impl_files[@]}" 2>/dev/null | awk '{s+=$1} END {print s+0}')
+        conditionals=$(grep -chE "$re_conditionals" "${impl_files[@]}" 2>/dev/null | awk '{s+=$1} END {print s+0}')
+        loops=$(grep -chE "$re_loops" "${impl_files[@]}" 2>/dev/null | awk '{s+=$1} END {print s+0}')
+        assignments=$(grep -chE "$re_assignments" "${impl_files[@]}" 2>/dev/null | awk '{s+=$1} END {print s+0}')
 
         # Ensure all variables are valid integers (default to 0 if empty or non-numeric)
         [[ "$constants" =~ ^[0-9]+$ ]] || constants=0
@@ -448,15 +586,62 @@ analyze_single_run() {
         echo -e "\n${YELLOW}Clean Code Metrics:${NC}"
         report_content+="## Clean Code Metrics\n\n"
 
+        # Comment and import syntax differ per stack. As with Code Mass, the
+        # non-Python patterns stay byte-identical so historical runs restate
+        # unchanged.
+        local re_noncode='^\s*$|^\s*//|^\s*/\*|\^\s*\*'
+        local re_import='^\s*import\s+'
+        if [ "$stack" = "python-pytest" ]; then
+            re_noncode='^\s*$|^\s*#'
+            re_import='^\s*(import|from)\s+'
+        fi
+
         # LOC (non-blank, non-comment lines) — sum across all impl files
-        cc_loc=$(grep -hvE '^\s*$|^\s*//|^\s*/\*|\^\s*\*' "${impl_files[@]}" 2>/dev/null | wc -l | tr -d '[:space:]')
+        cc_loc=$(grep -hvE "$re_noncode" "${impl_files[@]}" 2>/dev/null | wc -l | tr -d '[:space:]')
 
         # Count imports — sum across all impl files
-        cc_imports=$(grep -chE '^\s*import\s+' "${impl_files[@]}" 2>/dev/null | awk '{s+=$1} END {print s+0}')
+        cc_imports=$(grep -chE "$re_import" "${impl_files[@]}" 2>/dev/null | awk '{s+=$1} END {print s+0}')
 
         # AWK over all impl files: emits one line per function (its length).
         # We then aggregate (count, max, avg, median) in shell+awk.
+        #
+        # Python needs its own program: the brace counter below has nothing to
+        # count, which is why Java gets no clean_code.functions at all and
+        # relies on the PMD NCSS surrogate instead. Python has no such
+        # surrogate available, and indentation carries the block structure
+        # unambiguously, so it gets a real detector.
         local func_lengths
+        if [ "$stack" = "python-pytest" ]; then
+        func_lengths=$(awk '
+            FNR == 1 {
+                if (in_func && func_lines > 0) print func_lines
+                in_func = 0; func_lines = 0; blanks = 0
+            }
+            {
+                match($0, /^[ \t]*/)
+                indent = RLENGTH
+                stripped = substr($0, indent + 1)
+            }
+            stripped ~ /^(async[ \t]+)?def[ \t]+[A-Za-z_]/ {
+                # A nested def closes the enclosing one, mirroring how the
+                # TypeScript program treats a nested function expression.
+                if (in_func && func_lines > 0) print func_lines
+                in_func = 1; func_indent = indent; func_lines = 1; blanks = 0
+                next
+            }
+            in_func {
+                # Trailing blank lines belong to whatever follows, not to the
+                # function; they only count once the body demonstrably resumes.
+                if (stripped == "") { blanks++; next }
+                if (indent > func_indent) { func_lines += blanks + 1; blanks = 0; next }
+                print func_lines
+                in_func = 0; func_lines = 0; blanks = 0
+            }
+            END {
+                if (in_func && func_lines > 0) print func_lines
+            }
+        ' "${impl_files[@]}" 2>/dev/null)
+        else
         func_lengths=$(awk '
             FNR == 1 {
                 # New file: flush any function still open from previous file
@@ -487,6 +672,7 @@ analyze_single_run() {
                 if (in_func && func_lines > 0) print func_lines
             }
         ' "${impl_files[@]}" 2>/dev/null)
+        fi
 
         if [ -n "$func_lengths" ]; then
             cc_functions=$(echo "$func_lengths" | wc -l | tr -d '[:space:]')
@@ -526,18 +712,23 @@ analyze_single_run() {
         report_content+="| Imports | $cc_imports |\n\n"
     fi
 
-    # Code Smell Detection using ESLint
+    # Code smells and per-unit size. Each stack contributes the same four
+    # smell buckets from its own linter, plus `unit_*`: the size of the
+    # smallest named unit. Java reads it from PMD NcssCount (statements);
+    # TypeScript and Python reuse the function lengths measured above (lines).
+    # The two are not interchangeable across stacks — no RQ compares them.
     local smell_total=0
     local smell_complexity=0
     local smell_duplication=0
     local smell_magic_numbers=0
     local smell_code_quality=0
-    local java_methods=0
-    local java_method_ncss_max=0
-    local java_method_ncss_avg=0
-    local java_method_ncss_median=0
+    local unit_count=0
+    local unit_size_max=0
+    local unit_size_avg=0
+    local unit_size_median=0
 
-    if [ ${#impl_files[@]} -gt 0 ] && [ -f "$run_dir/eslint.config.mjs" ] && [ -d "$run_dir/node_modules" ]; then
+    if [ "$stack" = "typescript-vitest" ] && [ ${#impl_files[@]} -gt 0 ] \
+        && [ -f "$run_dir/eslint.config.mjs" ] && [ -d "$run_dir/node_modules" ]; then
         echo -e "\n${YELLOW}Code Smell Detection:${NC}"
         report_content+="## Code Smells\n\n"
 
@@ -592,7 +783,8 @@ analyze_single_run() {
     # older Java runs gain newly added measurements without rewriting their
     # preserved source tree.
     local pmd_report="$run_dir/target/pmd.xml"
-    if [ ${#impl_files[@]} -gt 0 ] && [ -f "$run_dir/pom.xml" ] && [ -f "$run_dir/pmd-ruleset.xml" ]; then
+    if [ "$stack" = "java-junit-maven" ] && [ ${#impl_files[@]} -gt 0 ] \
+        && [ -f "$run_dir/pom.xml" ] && [ -f "$run_dir/pmd-ruleset.xml" ]; then
         local canonical_pmd="$EXPERIMENTS_DIR/stacks/java-junit-maven/pmd-ruleset.xml"
         local saved_pmd="$run_dir/.analysis-pmd-ruleset.original"
         if [ -f "$canonical_pmd" ]; then
@@ -612,8 +804,8 @@ analyze_single_run() {
             smell_code_quality=$(echo "$pmd_rules" | grep -cvE '^$|CognitiveComplexity|CyclomaticComplexity|NcssCount|NPathComplexity|ExcessiveParameterList|AvoidDeeplyNestedIfStmts|AvoidDuplicateLiterals' || true)
             smell_total=$((smell_complexity + smell_duplication + smell_code_quality))
 
-            local java_ncss_scores
-            java_ncss_scores=$(python3 - "$pmd_report" <<'PY'
+            local ncss_scores
+            ncss_scores=$(python3 - "$pmd_report" <<'PY'
 import re, sys, xml.etree.ElementTree as ET
 root = ET.parse(sys.argv[1]).getroot()
 for node in root.iter():
@@ -626,13 +818,75 @@ for node in root.iter():
             print(match.group(1))
 PY
 )
-            if [ -n "$java_ncss_scores" ]; then
-                java_methods=$(echo "$java_ncss_scores" | wc -l | tr -d '[:space:]')
-                java_method_ncss_max=$(echo "$java_ncss_scores" | sort -n | tail -1)
-                java_method_ncss_avg=$(echo "$java_ncss_scores" | awk '{sum+=$1; n++} END {printf "%.2f", sum/n}')
-                java_method_ncss_median=$(echo "$java_ncss_scores" | sort -n | awk '{a[NR]=$1} END {if (NR%2) printf "%.2f", a[(NR+1)/2]; else printf "%.2f", (a[NR/2]+a[NR/2+1])/2}')
+            if [ -n "$ncss_scores" ]; then
+                unit_count=$(echo "$ncss_scores" | wc -l | tr -d '[:space:]')
+                unit_size_max=$(echo "$ncss_scores" | sort -n | tail -1)
+                unit_size_avg=$(echo "$ncss_scores" | awk '{sum+=$1; n++} END {printf "%.2f", sum/n}')
+                unit_size_median=$(echo "$ncss_scores" | sort -n | awk '{a[NR]=$1} END {if (NR%2) printf "%.2f", a[(NR+1)/2]; else printf "%.2f", (a[NR/2]+a[NR/2+1])/2}')
             fi
         fi
+    fi
+
+    # Python smells come from ruff. The rule selection mirrors the four
+    # TypeScript buckets rather than ruff's own categories, so the columns mean
+    # the same thing within each stack. C901 is excluded here: like PMD's
+    # CognitiveComplexity and CyclomaticComplexity it is a score carrier read
+    # further down, not a smell.
+    if [ "$stack" = "python-pytest" ] && [ ${#impl_files[@]} -gt 0 ] \
+        && [ -x "$run_dir/.venv/bin/ruff" ]; then
+        echo -e "\n${YELLOW}Code Smell Detection:${NC}"
+        report_content+="## Code Smells\n\n"
+
+        local ruff_rules
+        ruff_rules=$(cd "$run_dir" && .venv/bin/ruff check src/ --output-format json 2>/dev/null \
+            | jq -r '.[].code // empty' 2>/dev/null) || true
+
+        if [ -n "$ruff_rules" ]; then
+            # PLR0912 too-many-branches, PLR0915 too-many-statements,
+            # PLR0913 too-many-arguments, PLR1702 too-many-nested-blocks.
+            smell_complexity=$(echo "$ruff_rules" | grep -cE '^(PLR0912|PLR0913|PLR0915|PLR1702)$' 2>/dev/null) || smell_complexity=0
+            # PLR0133/SIM114 repeated comparisons and identical branch bodies;
+            # the nearest ruff has to SonarJS's duplicate-branch family.
+            smell_duplication=$(echo "$ruff_rules" | grep -cE '^(PLR0133|SIM114)$' 2>/dev/null) || smell_duplication=0
+            smell_magic_numbers=$(echo "$ruff_rules" | grep -cE '^PLR2004$' 2>/dev/null) || smell_magic_numbers=0
+            smell_code_quality=$(echo "$ruff_rules" | grep -cvE '^$|^(PLR0912|PLR0913|PLR0915|PLR1702|PLR0133|SIM114|PLR2004|C901)$' 2>/dev/null) || smell_code_quality=0
+        fi
+
+        [[ "$smell_complexity" =~ ^[0-9]+$ ]] || smell_complexity=0
+        [[ "$smell_duplication" =~ ^[0-9]+$ ]] || smell_duplication=0
+        [[ "$smell_magic_numbers" =~ ^[0-9]+$ ]] || smell_magic_numbers=0
+        [[ "$smell_code_quality" =~ ^[0-9]+$ ]] || smell_code_quality=0
+        # Unlike the Java arm, Python has a magic-number rule, so the total is
+        # the same four-term sum the TypeScript arm uses.
+        smell_total=$((smell_complexity + smell_duplication + smell_magic_numbers + smell_code_quality))
+
+        if [ $smell_total -eq 0 ]; then
+            echo -e "  ${GREEN}No code smells detected${NC}"
+        else
+            echo -e "  ${CYAN}Complexity:${NC} $smell_complexity"
+            echo -e "  ${CYAN}Duplication:${NC} $smell_duplication"
+            echo -e "  ${CYAN}Magic Numbers:${NC} $smell_magic_numbers"
+            echo -e "  ${CYAN}Code Quality:${NC} $smell_code_quality"
+            echo -e "  ${YELLOW}Total Smells: $smell_total${NC}"
+        fi
+
+        report_content+="| Category | Count |\n"
+        report_content+="|----------|-------|\n"
+        report_content+="| Complexity | $smell_complexity |\n"
+        report_content+="| Duplication | $smell_duplication |\n"
+        report_content+="| Magic Numbers | $smell_magic_numbers |\n"
+        report_content+="| Code Quality | $smell_code_quality |\n"
+        report_content+="| **Total** | **$smell_total** |\n\n"
+    fi
+
+    # Outside Java the unit size is the function length already measured in the
+    # Clean Code block. Java keeps PMD's NCSS statement count, which is why the
+    # two must never be compared across stacks.
+    if [ "$stack" != "java-junit-maven" ] && [ -n "$func_lengths" ]; then
+        unit_count=$cc_functions
+        unit_size_max=$cc_longest_func
+        unit_size_avg=$cc_avg_loc_func
+        unit_size_median=$cc_median_loc_func
     fi
 
     # Numeric Complexity Scores (McCabe + Cognitive)
@@ -646,7 +900,7 @@ PY
     local cognitive_high_count=0
     local complexity_threshold=10
 
-    if [ -f "$run_dir/pom.xml" ] && [ -f "$pmd_report" ]; then
+    if [ "$stack" = "java-junit-maven" ] && [ -f "$pmd_report" ]; then
         local pmd_mccabe_scores
         local pmd_cognitive_scores
         pmd_mccabe_scores=$(python3 - "$pmd_report" CyclomaticComplexity <<'PY'
@@ -684,6 +938,47 @@ PY
             cognitive_max=$(echo "$pmd_cognitive_scores" | sort -n | tail -1)
             cognitive_avg=$(echo "$pmd_cognitive_scores" | awk '{sum+=$1; n++} END {printf "%.2f", sum/n}')
             cognitive_high_count=$(echo "$pmd_cognitive_scores" | awk -v t="$complexity_threshold" '$1 > t' | wc -l | tr -d '[:space:]')
+        fi
+    elif [ "$stack" = "python-pytest" ] && [ ${#impl_files[@]} -gt 0 ] \
+        && [ -x "$run_dir/.venv/bin/ruff" ]; then
+        # Same trick as the other two stacks: force the threshold to 0 so every
+        # function reports its own score, then parse the number out of the
+        # message. ruff carries McCabe (C901); cognitive complexity is not a
+        # ruff rule and comes from complexipy, which reports per function by
+        # default and needs no threshold override.
+        local ruff_mccabe_scores
+        ruff_mccabe_scores=$(cd "$run_dir" && .venv/bin/ruff check src/ \
+            --select C901 --config 'lint.mccabe.max-complexity = 0' \
+            --output-format json 2>/dev/null \
+            | jq -r '.[].message // empty' 2>/dev/null \
+            | grep -oE '\([0-9]+ > 0\)' | grep -oE '[0-9]+' | grep -v '^0$') || true
+
+        local complexipy_scores=""
+        if [ -x "$run_dir/.venv/bin/complexipy" ]; then
+            # complexipy reports one cognitive-complexity score per function
+            # by default — no threshold override needed, unlike the McCabe
+            # pass above. It writes a flat JSON array of
+            # {complexity, function_name, path} to an explicit output path.
+            local cx_report="$run_dir/.analysis-complexipy.json"
+            (cd "$run_dir" && .venv/bin/complexipy src/ --quiet \
+                --output-format json --output "$cx_report") >/dev/null 2>&1 || true
+            if [ -f "$cx_report" ]; then
+                complexipy_scores=$(jq -r '.[].complexity // empty' "$cx_report" 2>/dev/null)
+                rm -f "$cx_report"
+            fi
+        fi
+
+        if [ -n "$ruff_mccabe_scores" ]; then
+            mccabe_max=$(echo "$ruff_mccabe_scores" | sort -n | tail -1)
+            mccabe_avg=$(echo "$ruff_mccabe_scores" | awk '{sum+=$1; n++} END {if (n>0) printf "%.2f", sum/n; else print "0"}')
+            mccabe_high_count=$(echo "$ruff_mccabe_scores" | awk -v t="$complexity_threshold" '$1 > t' | wc -l | tr -d '[:space:]')
+        fi
+        if [ -n "$complexipy_scores" ]; then
+            cognitive_max=$(echo "$complexipy_scores" | sort -n | tail -1)
+            cognitive_avg=$(echo "$complexipy_scores" | awk '{sum+=$1; n++} END {if (n>0) printf "%.2f", sum/n; else print "0"}')
+            cognitive_high_count=$(echo "$complexipy_scores" | awk -v t="$complexity_threshold" '$1 > t' | wc -l | tr -d '[:space:]')
+        else
+            echo -e "  ${YELLOW}complexipy produced no per-function scores${NC}"
         fi
     elif [ ${#impl_files[@]} -gt 0 ] && [ -f "$run_dir/eslint.config.mjs" ] && [ -d "$run_dir/node_modules" ]; then
         # Write a temporary override config that re-exports the project config
@@ -934,10 +1229,10 @@ EOF
         [[ "$cognitive_max" =~ ^[0-9]+$ ]] || cognitive_max=0
         [[ "$cognitive_high_count" =~ ^[0-9]+$ ]] || cognitive_high_count=0
         [[ "$cognitive_avg" =~ ^[0-9]+(\.[0-9]+)?$ ]] || cognitive_avg=0
-        [[ "$java_methods" =~ ^[0-9]+$ ]] || java_methods=0
-        [[ "$java_method_ncss_max" =~ ^[0-9]+$ ]] || java_method_ncss_max=0
-        [[ "$java_method_ncss_avg" =~ ^[0-9]+(\.[0-9]+)?$ ]] || java_method_ncss_avg=0
-        [[ "$java_method_ncss_median" =~ ^[0-9]+(\.[0-9]+)?$ ]] || java_method_ncss_median=0
+        [[ "$unit_count" =~ ^[0-9]+$ ]] || unit_count=0
+        [[ "$unit_size_max" =~ ^[0-9]+$ ]] || unit_size_max=0
+        [[ "$unit_size_avg" =~ ^[0-9]+(\.[0-9]+)?$ ]] || unit_size_avg=0
+        [[ "$unit_size_median" =~ ^[0-9]+(\.[0-9]+)?$ ]] || unit_size_median=0
 
         # Verification block (for CLI katas with <basename>-verification/)
         # Runs each *.input.json scenario through the CLI defined in
@@ -1000,10 +1295,14 @@ EOF
             # manager, so a host pnpm that differs from the container pin
             # produces failures that have nothing to do with the agent's code.
             # The pin is read from the Dockerfile so there is one source of truth.
-            local pnpm_pin
-            pnpm_pin=$(grep -oE 'pnpm@[0-9]+\.[0-9]+\.[0-9]+' "$EXPERIMENTS_DIR/docker/Dockerfile" 2>/dev/null | head -1 | cut -d@ -f2)
-            local pnpm_here
-            pnpm_here=$(pnpm --version 2>/dev/null || echo "")
+            # Only the TypeScript stack shells out to pnpm; on the other stacks
+            # the warning would be pure noise about an irrelevant tool.
+            local pnpm_pin=""
+            local pnpm_here=""
+            if [ "$stack" = "typescript-vitest" ]; then
+                pnpm_pin=$(grep -oE 'pnpm@[0-9]+\.[0-9]+\.[0-9]+' "$EXPERIMENTS_DIR/docker/Dockerfile" 2>/dev/null | head -1 | cut -d@ -f2)
+                pnpm_here=$(pnpm --version 2>/dev/null || echo "")
+            fi
             if [ -n "$pnpm_pin" ] && [ -n "$pnpm_here" ] && \
                [ "${pnpm_here%%.*}" != "${pnpm_pin%%.*}" ]; then
                 echo -e "  ${YELLOW}WARNING: pnpm $pnpm_here here, container pin is $pnpm_pin.${NC}"
@@ -1076,7 +1375,7 @@ EOF
             # for a run that has no CLI at all. File existence does not have
             # that failure mode.
             local cli_entry
-            cli_entry=$(echo "$v_command" | grep -oE '[A-Za-z0-9_./-]+\.(ts|js|mjs|cjs)' | head -1)
+            cli_entry=$(echo "$v_command" | grep -oE '[A-Za-z0-9_./-]+\.(py|ts|js|mjs|cjs)' | head -1)
             local entry_class
             entry_class=$(jq -r '.entry_class // empty' "$verification_dir/runner.json")
             if [ -n "$entry_class" ]; then
@@ -1193,10 +1492,10 @@ EOF
            --argjson cognitive_max "$cognitive_max" \
            --argjson cognitive_avg "$cognitive_avg" \
            --argjson cognitive_high_count "$cognitive_high_count" \
-           --argjson java_methods "$java_methods" \
-           --argjson java_method_ncss_max "$java_method_ncss_max" \
-           --argjson java_method_ncss_avg "$java_method_ncss_avg" \
-           --argjson java_method_ncss_median "$java_method_ncss_median" \
+           --argjson unit_count "$unit_count" \
+           --argjson unit_size_max "$unit_size_max" \
+           --argjson unit_size_avg "$unit_size_avg" \
+           --argjson unit_size_median "$unit_size_median" \
            --argjson verification_total "$verification_total" \
            --argjson verification_passed "$verification_passed" \
            --argjson verification_pct "$verification_pct" \
@@ -1231,10 +1530,10 @@ EOF
             .final_metrics.cognitive_max = $cognitive_max |
             .final_metrics.cognitive_avg = $cognitive_avg |
             .final_metrics.cognitive_high_count = $cognitive_high_count |
-            .java_quality.methods = $java_methods |
-            .java_quality.method_ncss_max = $java_method_ncss_max |
-            .java_quality.method_ncss_avg = $java_method_ncss_avg |
-            .java_quality.method_ncss_median = $java_method_ncss_median |
+            .unit_quality.units = $unit_count |
+            .unit_quality.size_max = $unit_size_max |
+            .unit_quality.size_avg = $unit_size_avg |
+            .unit_quality.size_median = $unit_size_median |
             .summary_metrics.total_tokens = $total_tokens |
             .summary_metrics.context_utilization_pct = $context_util |
             .summary_metrics.cycle_count = $cycle_count |

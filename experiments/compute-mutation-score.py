@@ -7,15 +7,18 @@ tests each eligible run against the implementer's own suite. The resulting
 score (0.0-1.0) is written back into the run's ``metrics.json`` under
 ``final_metrics.mutation_score``.
 
-Two engines, picked per run from what the run dir contains:
+Three engines, picked per run from ``metrics.json``'s ``stack`` field
+(falling back to sniffing the build file for runs recorded before that
+field existed):
 
-* ``pom.xml``      → PIT (pitest-maven) against JUnit 5, for the Java stack.
-* otherwise        → Stryker against Vitest, for the TypeScript stack.
+* ``java-junit-maven``  → PIT (pitest-maven) against JUnit 5.
+* ``python-pytest``     → mutmut against pytest.
+* ``typescript-vitest`` → Stryker against Vitest.
 
-Both are reduced to the same score definition, so the numbers are
-comparable within a stack. Across stacks they are not: the two tools
-generate different mutant populations, and PIT's default mutator set is
-the more conservative of the two.
+All three are reduced to the same score definition, so the numbers are
+comparable within a stack. Across stacks they are not: the tools generate
+different mutant populations, and PIT's default mutator set is the most
+conservative of the three.
 
 Idempotent: runs that already have a numeric ``mutation_score`` are skipped
 unless ``--force`` is passed. Runs without ``tests_passing == true`` are
@@ -84,6 +87,28 @@ STRYKER_CONFIG = {
 MutationResult = collections.namedtuple(
     "MutationResult", ["score", "total", "survived"])
 EMPTY_RESULT = MutationResult(None, None, None)
+
+
+def run_stack(run_dir: Path, metrics: dict | None = None) -> str:
+    """The stack of a run, from metrics.json, with a build-file fallback.
+
+    Mirrors `run_stack` in analyze-run.sh. Runs recorded before the field
+    existed have no `stack`; every one of those is TypeScript unless it
+    carries a build file that says otherwise.
+    """
+    if metrics is None:
+        try:
+            metrics = json.loads((run_dir / "metrics.json").read_text())
+        except (OSError, json.JSONDecodeError):
+            metrics = {}
+    stack = metrics.get("stack")
+    if stack:
+        return stack
+    if (run_dir / "pom.xml").is_file():
+        return "java-junit-maven"
+    if (run_dir / "pyproject.toml").is_file():
+        return "python-pytest"
+    return "typescript-vitest"
 
 
 def _result_from_counts(detected: int, survived: int) -> MutationResult:
@@ -282,6 +307,139 @@ def run_pitest(run_dir: Path, timeout_seconds: int, log) -> MutationResult:
         log("  no mutations.xml produced; score stays null")
         return EMPTY_RESULT
     return mutation_score_from_pit_report(report_path)
+
+
+# --- Python / mutmut ----------------------------------------------------
+# Pinned for the same reason the other two engines are: a mutation score is
+# only comparable across runs when the mutant population is.
+MUTMUT_VERSION = "3.8.0"
+
+# mutmut reads its configuration from [tool.mutmut] in pyproject.toml. The
+# stack skeleton ships this exact section, but an agent may rewrite
+# pyproject.toml during a run, so whatever is there is replaced by this for
+# the duration of the measurement and the original file restored afterwards.
+# One instrument for every run, or the scores are not comparable.
+# src/cli.py is excluded for the same reason STRYKER_CONFIG excludes
+# src/cli.ts: it is exercised by the external acceptance suite, not by the
+# run's own pytest tests. Measured on a sample run, 26 of 28 survivors came
+# from the CLI adapter alone. The Java stack deliberately mutates its CLI
+# class because Java runs often nest the whole domain inside it; Python
+# modules have no such coupling.
+MUTMUT_CONFIG = """
+[tool.mutmut]
+source_paths = ["src/"]
+pytest_add_cli_args_test_selection = ["tests/"]
+do_not_mutate = ["src/cli.py"]
+"""
+
+MUTMUT_STATS = Path("mutants") / "mutmut-cicd-stats.json"
+
+
+def with_canonical_mutmut_config(pyproject: str) -> str:
+    """Replace any [tool.mutmut] section with the canonical one.
+
+    The analysis must use one instrument across all runs, so a section the
+    agent wrote during the run is dropped rather than honoured — the same
+    reason analyze-run.sh swaps in the canonical PMD ruleset for Java. The
+    caller restores the original file afterwards.
+    """
+    lines = pyproject.splitlines(keepends=True)
+    kept, skipping = [], False
+    for line in lines:
+        stripped = line.strip()
+        if stripped == "[tool.mutmut]":
+            skipping = True
+            continue
+        if skipping:
+            # Any other section header ends the one being dropped.
+            if stripped.startswith("[") and stripped.endswith("]"):
+                skipping = False
+            else:
+                continue
+        kept.append(line)
+    body = "".join(kept).rstrip("\n")
+    return f"{body}\n{MUTMUT_CONFIG}"
+
+
+def mutation_score_from_mutmut_stats(stats_path: Path) -> MutationResult:
+    """Score and mutant counts from mutmut's CI/CD stats, same shape as PIT.
+
+        score = (killed + timeout) / (killed + survived + timeout + no_tests)
+
+    `no_tests` joins `survived` in the denominator for the same reason
+    Stryker's NoCoverage and PIT's NO_COVERAGE do: a mutant no test reaches
+    is one the suite failed to catch. `suspicious`, `skipped`, `segfault`
+    and an interrupted check are excluded — they are mutmut's equivalent of
+    PIT's NON_VIABLE/RUN_ERROR and say nothing about the suite.
+    """
+    try:
+        stats = json.loads(stats_path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return EMPTY_RESULT
+    detected = stats.get("killed", 0) + stats.get("timeout", 0)
+    survived = stats.get("survived", 0) + stats.get("no_tests", 0)
+    return _result_from_counts(detected, survived)
+
+
+def ensure_mutmut_installed(run_dir: Path, log) -> bool:
+    """Install mutmut into the run's venv without touching its pyproject."""
+    if (run_dir / ".venv/bin/mutmut").is_file():
+        return True
+    cmd = ["uv", "pip", "install", f"mutmut=={MUTMUT_VERSION}"]
+    try:
+        proc = subprocess.run(
+            cmd, cwd=run_dir, capture_output=True, text=True, timeout=600,
+            env={**os.environ, "VIRTUAL_ENV": str(run_dir / ".venv")},
+        )
+    except (subprocess.TimeoutExpired, FileNotFoundError) as exc:
+        log(f"  mutmut install failed: {exc}")
+        return False
+    if proc.returncode != 0:
+        log(f"  mutmut install exited {proc.returncode}: "
+            f"{proc.stderr.strip()[:300]}")
+        return False
+    return True
+
+
+def run_mutmut(run_dir: Path, timeout_seconds: int, log) -> MutationResult:
+    """Run mutmut in run_dir and return mutation_score (0.0-1.0) or None."""
+    stats_path = run_dir / MUTMUT_STATS
+    if stats_path.is_file():
+        stats_path.unlink()
+    log_path = run_dir / "mutmut.log"
+    venv_bin = run_dir / ".venv/bin"
+    mutmut = venv_bin / "mutmut"
+
+    # Put the run's venv first on PATH. mutmut instruments every mutated
+    # module with a trampoline that imports `mutmut` at module load, so a test
+    # that shells out to a bare `python3` — a natural way to test a CLI that
+    # reads stdin — would otherwise run under the system interpreter, fail the
+    # import, and take mutmut's clean-test baseline down with it. Scoring then
+    # returns null for a run whose suite is perfectly healthy.
+    env = os.environ.copy()
+    env["PATH"] = f"{venv_bin}{os.pathsep}{env.get('PATH', '')}"
+
+    try:
+        with log_path.open("w") as f:
+            for cmd in ([str(mutmut), "run"], [str(mutmut), "export-cicd-stats"]):
+                f.write(f"$ {' '.join(cmd)}\n")
+                f.flush()
+                proc = subprocess.run(
+                    cmd, cwd=run_dir, stdout=f, stderr=subprocess.STDOUT,
+                    timeout=timeout_seconds, env=env,
+                )
+                # `mutmut run` exits non-zero when mutants survive, which is a
+                # result, not a failure. Only a missing stats file is fatal.
+                if proc.returncode != 0:
+                    log(f"  {cmd[-1]} exited {proc.returncode}; see mutmut.log")
+    except subprocess.TimeoutExpired:
+        log(f"  TIMEOUT after {timeout_seconds}s — score stays null")
+        return EMPTY_RESULT
+
+    if not stats_path.is_file():
+        log("  no mutmut-cicd-stats.json produced; score stays null")
+        return EMPTY_RESULT
+    return mutation_score_from_mutmut_stats(stats_path)
 
 
 STRYKER_VERSION = "8.6.0"
@@ -531,12 +689,38 @@ def main(argv: list[str]) -> int:
         def log(msg: str, _rid=run_id) -> None:
             print(f"  [{_rid}] {msg}", file=sys.stderr)
 
-        if (run_dir / "pom.xml").is_file():
+        stack = run_stack(run_dir)
+
+        if stack == "java-junit-maven":
             result = run_pitest(run_dir, args.timeout_seconds, log)
             update_metrics_json(m_file, result)
             if result.score is None:
                 n_failed += 1
                 log("score=null (see pit.log)")
+            else:
+                n_executed += 1
+                log(f"score={result.score:.3f} "
+                    f"({result.survived}/{result.total} survived)")
+            continue
+
+        if stack == "python-pytest":
+            if not ensure_mutmut_installed(run_dir, log):
+                n_failed += 1
+                update_metrics_json(m_file, EMPTY_RESULT)
+                continue
+            pyproject_path = run_dir / "pyproject.toml"
+            original_pyproject = pyproject_path.read_text()
+            try:
+                pyproject_path.write_text(
+                    with_canonical_mutmut_config(original_pyproject))
+                result = run_mutmut(run_dir, args.timeout_seconds, log)
+            finally:
+                # Measuring must not alter the recorded artifact.
+                pyproject_path.write_text(original_pyproject)
+            update_metrics_json(m_file, result)
+            if result.score is None:
+                n_failed += 1
+                log("score=null (see mutmut.log)")
             else:
                 n_executed += 1
                 log(f"score={result.score:.3f} "

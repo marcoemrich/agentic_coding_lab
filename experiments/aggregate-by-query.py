@@ -70,8 +70,7 @@ CSV_COLUMNS = [
     "smell_magic_numbers", "smell_code_quality",
     "mccabe_max", "mccabe_avg", "mccabe_high_count",
     "cognitive_max", "cognitive_avg", "cognitive_high_count",
-    "java_methods", "java_method_ncss_max", "java_method_ncss_avg",
-    "java_method_ncss_median",
+    "unit_count", "unit_size_max", "unit_size_avg", "unit_size_median",
     "verification_total", "verification_passed", "verification_pct",
     "cli_built",
 ]
@@ -364,7 +363,11 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
     cc = metrics.get("clean_code") or {}
     cs = metrics.get("code_smells") or {}
     tcr = metrics.get("tcr") or {}
-    java_quality = metrics.get("java_quality") or {}
+    # Size of the smallest named unit. PMD NCSS statements on Java, lines
+    # per function on TypeScript and Python. Comparable within a stack,
+    # never across one. `java_quality` is the pre-rename spelling and is
+    # still read so runs analysed before the rename keep their values.
+    unit_quality = metrics.get("unit_quality") or metrics.get("java_quality") or {}
 
     # A run "completed within budget" iff it neither timed out nor
     # exhausted its retry budget for transient API issues (rate-limit
@@ -472,10 +475,10 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
         "cognitive_max":              fm.get("cognitive_max"),
         "cognitive_avg":              fm.get("cognitive_avg"),
         "cognitive_high_count":       fm.get("cognitive_high_count"),
-        "java_methods":               java_quality.get("methods"),
-        "java_method_ncss_max":       java_quality.get("method_ncss_max"),
-        "java_method_ncss_avg":       java_quality.get("method_ncss_avg"),
-        "java_method_ncss_median":    java_quality.get("method_ncss_median"),
+        "unit_count":                 unit_quality.get("units",  unit_quality.get("methods")),
+        "unit_size_max":              unit_quality.get("size_max", unit_quality.get("method_ncss_max")),
+        "unit_size_avg":              unit_quality.get("size_avg", unit_quality.get("method_ncss_avg")),
+        "unit_size_median":           unit_quality.get("size_median", unit_quality.get("method_ncss_median")),
         "verification_total":         fm.get("verification_total"),
         "verification_passed":        fm.get("verification_passed"),
         "verification_pct":           fm.get("verification_pct"),

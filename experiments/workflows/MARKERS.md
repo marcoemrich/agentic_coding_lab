@@ -283,8 +283,8 @@ that skip the text markers entirely.
   `refactorings_applied` from that era are not valid.
 - **Tool-sequence fallback.** When zero `## Red` markers are found,
   `parse_cursor_transcript.py` infers cycles from the `editToolCall` /
-  `shellToolCall` sequence (test-edit → `pnpm test` = red; impl-edit →
-  `pnpm test` = green; later impl-edit = refactor). `transcript-metrics.json`
+  `shellToolCall` sequence (test-edit → full-suite command = red; impl-edit →
+  full-suite command = green; later impl-edit = refactor). `transcript-metrics.json`
   records `marker_source: "tool-sequence-fallback"` when this path is used.
 
 - **`marker_source` tells you which path produced the refactor count:**
@@ -372,9 +372,14 @@ Both parsers reconstruct phases from the **tool sequence** when a run carries no
 marker at all — `infer_phases_from_tool_sequence` in `analyze_transcript.py`,
 imported by `parse_pi_transcript.py` so cc and pi apply the same heuristic:
 
-- test-edit → `pnpm test` = **red**
-- impl-edit → `pnpm test` = **green**
+- test-edit → full-suite command = **red**
+- impl-edit → full-suite command = **green**
 - impl-edit with no fresh test before it = **refactor**
+
+The full-suite command is whatever the run's stack uses — `pnpm test`,
+`mvn test` or `pytest`. `TEST_RUN` in `measure-tdd-rigour.py` is the
+authoritative list; a new stack must be added there, or every one of its runs
+silently infers zero cycles from the fallback path.
 
 `phase_source` records which path produced the numbers — `skills`, `subagents`,
 `skills+subagents` (cc only), `text-markers`, `inline-tool` or `none`; both

@@ -1,0 +1,9 @@
+# Mirror of experiments/stacks/python-pytest/requirements-dev.txt.
+# Docker's build context is experiments/docker/, so the pins cannot be
+# COPYed from the stack directory and are duplicated here instead — the
+# same arrangement package.cache.json has with the run package.json.
+# Keep both files in step when a pin moves.
+pytest==9.1.1
+pytest-cov==7.1.0
+ruff==0.16.8
+complexipy==8.0.1

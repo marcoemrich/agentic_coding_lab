@@ -2,7 +2,7 @@
 
 _On Java 17 with JUnit 5 and Maven, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness and code quality for GPT-5.6 SOL and Opus 5?_
 
-Generated: 2026-09-21T13:12:08Z
+Generated: 2026-09-21T16:11:12Z
 
 Cells declared: 12 · matched runs: 60 · min_replicates: 5
 
@@ -280,7 +280,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   1.86 |  1.38 |  2.15 |  0.3  |
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   1.67 |  1.5  |  1.92 |  0.16 |
 
-### java_methods
+### unit_count
 
 | kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -297,7 +297,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   13.4 |    12 |    16 |  1.52 |
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   12   |    10 |    13 |  1.22 |
 
-### java_method_ncss_max
+### unit_size_max
 
 | kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -314,7 +314,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |    7.6 |     7 |     8 |  0.55 |
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |    7   |     6 |     8 |  0.71 |
 
-### java_method_ncss_avg
+### unit_size_avg
 
 | kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -331,7 +331,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   4.08 |  2.81 |  4.77 |  0.83 |
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   3.62 |  3.23 |  4.08 |  0.3  |
 
-### java_method_ncss_median
+### unit_size_median
 
 | kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|

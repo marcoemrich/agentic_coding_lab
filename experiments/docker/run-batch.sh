@@ -484,7 +484,9 @@ if [ -n "$PLAN_FILE" ]; then
         if ! lookup_model_config "$model" >/dev/null; then
             errors+=("unknown model: '$model'")
         fi
-        if [ "$stack" != "typescript-vitest" ] && [ ! -d "$STACKS_DIR/$stack" ]; then
+        # Every stack, TypeScript included, is now a directory with an
+        # install.sh. No stack is exempt from the check any more.
+        if [ ! -x "$STACKS_DIR/$stack/install.sh" ]; then
             errors+=("unknown stack: '$stack'")
         fi
         RUN_LIST+=("$kata|$workflow|$model|$stack")
@@ -647,11 +649,15 @@ for entry in "${RUN_LIST[@]}"; do
         suffix=$((suffix + 1))
         run_dir="$RUNS_DIR/${run_name}-${suffix}"
     done
-    if [ "$stack" = "typescript-vitest" ]; then
-        mkdir -p "$run_dir/src"
-    else
-        cp -r "$STACKS_DIR/$stack/." "$run_dir/"
-    fi
+    # Every stack is a directory under experiments/stacks. install.sh is the
+    # stack's contract with this script and is invoked from there, so it is
+    # removed from the run directory again: the recorded artifact should
+    # contain the project, not the lab's plumbing.
+    cp -r "$STACKS_DIR/$stack/." "$run_dir/"
+    rm -f "$run_dir/install.sh"
+    # .gitkeep exists only so git can track the stack's empty src/ and tests/
+    # directories. It is not part of the project the agent is handed.
+    find "$run_dir" -name .gitkeep -delete
 
     # Detect harness from workflow definition. .pi/ marks a pi workflow,
     # .opencode/ an OpenCode workflow, .cursor/ a cursor-agent workflow,
@@ -710,124 +716,6 @@ for entry in "${RUN_LIST[@]}"; do
         cp "$KATAS_DIR/$kata/prompt.md" "$run_dir/"
     fi
 
-    # Project files. Java stacks come from experiments/stacks; the historical
-    # TypeScript stack remains inline for backward-compatible plans.
-    if [ "$stack" = "typescript-vitest" ]; then
-    cat > "$run_dir/package.json" << 'EOF'
-{
-  "name": "tdd-experiment-run",
-  "type": "module",
-  "packageManager": "pnpm@9.15.9",
-  "scripts": {
-    "test": "vitest run",
-    "test:unit:basic": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage --coverage.reporter=json-summary"
-  },
-  "devDependencies": {
-    "typescript": "^5.3.0",
-    "tsx": "^4.7.0",
-    "vitest": "^1.0.0",
-    "@vitest/coverage-v8": "^1.0.0",
-    "eslint": "^9.0.0",
-    "eslint-plugin-sonarjs": "^1.0.0",
-    "typescript-eslint": "^8.0.0"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
-  }
-}
-EOF
-
-    cat > "$run_dir/tsconfig.json" << 'EOF'
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "outDir": "./dist"
-  },
-  "include": ["src/**/*"]
-}
-EOF
-
-    cat > "$run_dir/vitest.config.ts" << 'EOF'
-import { defineConfig } from 'vitest/config';
-
-export default defineConfig({
-  test: {
-    include: ['src/**/*.spec.ts'],
-    globals: true,
-    coverage: {
-      provider: 'v8',
-      reporter: ['json-summary', 'text'],
-      include: ['src/**/*.ts'],
-      exclude: ['src/**/*.spec.ts'],
-    },
-  },
-});
-EOF
-
-    cat > "$run_dir/eslint.config.mjs" << 'EOF'
-import sonarjs from "eslint-plugin-sonarjs";
-import tseslint from "typescript-eslint";
-
-export default [
-  {
-    files: ["src/**/*.ts"],
-    ignores: ["src/**/*.spec.ts"],
-    languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        projectService: true,
-      },
-    },
-    plugins: {
-      sonarjs,
-    },
-    rules: {
-      // Complexity smells
-      "sonarjs/cognitive-complexity": ["error", 10],
-      "max-depth": ["error", 3],
-      "max-lines-per-function": ["error", { max: 30, skipBlankLines: true, skipComments: true }],
-      "max-params": ["error", 4],
-
-      // Duplication smells
-      "sonarjs/no-duplicate-string": ["error", { threshold: 3 }],
-      "sonarjs/no-duplicated-branches": "error",
-      "sonarjs/no-identical-functions": "error",
-
-      // Dead code smells
-      "no-unused-vars": "off",
-      "sonarjs/no-unused-collection": "error",
-      "no-unreachable": "error",
-
-      // Magic numbers
-      "no-magic-numbers": ["error", { ignore: [0, 1, -1], ignoreArrayIndexes: true }],
-
-      // Boolean/logic smells
-      "sonarjs/no-redundant-boolean": "error",
-      "sonarjs/no-gratuitous-expressions": "error",
-
-      // Code quality smells
-      "sonarjs/no-collapsible-if": "error",
-      "sonarjs/no-redundant-jump": "error",
-      "sonarjs/no-useless-catch": "error",
-      "sonarjs/prefer-immediate-return": "error",
-      "sonarjs/prefer-single-boolean-return": "error",
-
-      // Nested complexity
-      "sonarjs/no-nested-switch": "error",
-      "sonarjs/no-nested-template-literals": "error",
-    },
-  },
-];
-EOF
-    fi
-
     # Harness CLI version, recorded per run. Without it a version bump is
     # invisible after the fact: runs from before and after look identical in
     # metrics.json, so a CLI change cannot be separated from a model or
@@ -860,16 +748,10 @@ EOF
 }
 EOF
 
-    # Install the test toolchain even when the container sets NODE_ENV=production.
-    # --prefer-offline reuses the persistent store. A broken install is an
+    # Each stack brings its own install command. A broken install is an
     # infrastructure failure: stop before invoking the model, not a kata result.
     echo -e "  Installing dependencies..."
-    if [ "$stack" = "typescript-vitest" ]; then
-        install_cmd=(pnpm install --prod=false --prefer-offline)
-    else
-        install_cmd=(mvn -q test-compile)
-    fi
-    if ! (cd "$run_dir" && "${install_cmd[@]}"); then
+    if ! (cd "$run_dir" && "$STACKS_DIR/$stack/install.sh"); then
         echo "Dependency installation failed in $run_dir; aborting batch before model invocation." >&2
         exit 1
     fi

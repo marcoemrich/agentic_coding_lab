@@ -247,10 +247,13 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
       "explicitly: (1) Harness — the agent CLIs actually used, with versions pinned from "
       "experiments/docker/Dockerfile, headless without HITL; (2) Models — the model families "
       "actually covered (Anthropic with/without thinking plus any third-party models routed "
-      "via the gateway); (3) Target language — exclusively **TypeScript** with a fixed "
-      "pnpm/tsx/Vitest/ESLint+SonarJS stack per run. "
-      "Findings hold **for** this stack; transfer to other target languages "
-      "(Python, Go, Java) or to interactive HITL setups is open and outside this scope. -->")
+      "via the gateway); (3) Target language — the stacks a run can declare, each with a "
+      "fixed toolchain: **TypeScript** (pnpm/tsx/Vitest/ESLint+SonarJS), **Java** "
+      "(Maven/JUnit 5/PMD) and **Python** (uv/pytest/ruff/complexipy). State which of them "
+      "the RQs in THIS snapshot actually cover — read the `stack:` control in the RQ "
+      "frontmatter rather than assuming. Quality-tool output is not comparable across "
+      "stacks, so every finding holds for its own stack; transfer to other target "
+      "languages or to interactive HITL setups is open and outside this scope. -->")
     p("")
     p("### AI Disclosure")
     p("")
