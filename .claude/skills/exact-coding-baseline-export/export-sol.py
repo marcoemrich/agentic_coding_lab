@@ -404,7 +404,8 @@ automatically.
 
 Language and tool details live exclusively in the profiles under
 `skills/predictive-tdd/stacks/`; orchestration and method files are stack-neutral.
-The export currently includes TypeScript/Vitest and Java/JUnit 5/Maven profiles.
+The export currently includes TypeScript/Vitest, Java/JUnit 5/Maven and
+Python/pytest profiles.
 It removes experiment-specific autonomy,
 completion, and measurement content, restores configurable human checkpoints, and gates
 the workflow behind explicit invocation.
@@ -521,7 +522,11 @@ def validate(target: Path, harnesses: tuple[str, ...]) -> None:
             match = leaked.search(path.read_text())
             if match:
                 raise SystemExit(f"Lab wording {match.group()!r} leaked into {path}")
-    required_stacks = ("typescript-vitest.md", "java-junit-maven.md")
+    # Every profile the distribution promises. The collection step globs
+    # *.md, so a new stack is picked up automatically — this tuple is what
+    # makes a MISSING one fail the export instead of shipping silently.
+    required_stacks = (
+        "typescript-vitest.md", "java-junit-maven.md", "python-pytest.md")
     required_optional = ("skills/end-refactor/SKILL.md", "skills/example-mapping/SKILL.md")
     for harness in harnesses:
         config = {"cc": ".claude", "pi": ".pi", "oc": ".opencode", "cursor": ".cursor", "copilot": ".github"}[harness]
