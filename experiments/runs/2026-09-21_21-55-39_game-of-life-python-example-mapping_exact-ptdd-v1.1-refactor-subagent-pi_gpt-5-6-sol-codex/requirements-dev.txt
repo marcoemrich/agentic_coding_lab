@@ -1,0 +1,8 @@
+# Exact pins: a mutation score, a complexity score and a smell count are only
+# comparable across runs when the tools producing them are identical.
+# mutmut is deliberately absent — compute-mutation-score.py installs it per run
+# on demand, the same policy the Dockerfile documents for Stryker and PIT.
+pytest==9.1.1
+pytest-cov==7.1.0
+ruff==0.16.8
+complexipy==8.0.1

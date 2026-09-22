@@ -1,0 +1,56 @@
+# Python stack skeleton for lab runs. The counterpart of the inline
+# package.json/eslint.config.mjs pair on the TypeScript stack and of pom.xml
+# plus pmd-ruleset.xml on the Java stack.
+#
+# The lint selection mirrors the four smell buckets analyze-run.sh reports, so
+# the columns mean the same thing within each stack. They are NOT comparable
+# across stacks: ruff, ESLint/SonarJS and PMD generate different finding
+# populations.
+[project]
+name = "tdd-experiment-run"
+version = "0.0.0"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+# Production code is imported by module name from src/, so tests read the same
+# way they do on the other two stacks: no package prefix, no sys.path juggling
+# in the test file.
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+src = ["src"]
+
+[tool.ruff.lint]
+# C901 is the McCabe carrier. PLR0912/0913/0915/1702 mirror the ESLint
+# complexity gate, PLR2004 mirrors no-magic-numbers, SIM/ARG/F/B/RET carry the
+# dead-code and code-quality buckets.
+select = ["C901", "PLR", "PLW", "SIM", "ARG", "F", "B", "RET", "RUF"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pylint]
+max-args = 4
+max-branches = 12
+max-statements = 30
+max-nested-blocks = 3
+
+# mutmut reads this section. compute-mutation-score.py writes it when a run has
+# dropped it, but shipping it keeps the recorded artifact self-describing.
+[tool.mutmut]
+source_paths = ["src/"]
+pytest_add_cli_args_test_selection = ["tests/"]
+# src/cli.py is exercised by the external acceptance suite (verification_pct),
+# not by the run's own pytest tests. Mutating it would systematically lower the
+# score without saying anything about the strength of the implementer's tests —
+# the same reason STRYKER_CONFIG excludes src/cli.ts. Measured on a sample run:
+# 26 of 28 survivors came from the CLI adapter, dragging 0.96 down to 0.46.
+# The Java stack deliberately does NOT do this, because Java runs often nest the
+# whole domain inside the CLI class; Python modules have no such coupling.
+do_not_mutate = ["src/cli.py"]
+
+[tool.ruff.lint.per-file-ignores]
+# Expected premiums and payouts in tests are quoted from the specification's
+# examples; naming them as constants would hide the very values under test.
+"tests/**" = ["PLR2004"]

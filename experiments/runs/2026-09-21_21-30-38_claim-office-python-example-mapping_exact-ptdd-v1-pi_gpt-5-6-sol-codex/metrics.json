@@ -1,0 +1,95 @@
+{
+  "kata": "claim-office-python-example-mapping",
+  "workflow": "exact-ptdd-v1-pi",
+  "model": "gpt-5-6-sol-codex",
+  "stack": "python-pytest",
+  "cli_model": "pi-only",
+  "harness_version": "0.81.1",
+  "thinking": false,
+  "started_at": "2026-09-21T21:30:39+00:00",
+  "ended_at": "2026-09-21T21:50:33+00:00",
+  "duration_seconds": 1194,
+  "batch_run": true,
+  "plan_file": "/home/experimenter/experiments/batch-plans/rq-exact-coding-python-fill.shard2.json",
+  "tcr": {
+    "initial_commit": "172f371c6ab4213c8bf0d8039e421b2131257b07",
+    "final_commit": "172f371c6ab4213c8bf0d8039e421b2131257b07",
+    "commits_total": 1,
+    "method_commits": 0,
+    "red_commits": 0,
+    "green_commits": 0,
+    "refactor_commits": 0
+  },
+  "run_status": {
+    "exit_code": 0,
+    "exit_reason": "ok",
+    "rate_limited": false
+  },
+  "final_metrics": {
+    "lines_of_code": 174,
+    "test_lines": 262,
+    "tests_total": 20,
+    "todos_remaining": 0,
+    "code_mass": 548,
+    "tests_passing": true,
+    "verification_total": 15,
+    "verification_passed": 15,
+    "verification_pct": 1,
+    "cli_built": true,
+    "mccabe_max": 4,
+    "mccabe_avg": 1.56,
+    "mccabe_high_count": 0,
+    "cognitive_max": 4,
+    "cognitive_avg": 1.39,
+    "cognitive_high_count": 0,
+    "cost_usd": 2.8924,
+    "mutation_score": 0.9166666666666666,
+    "mutants_total": 228,
+    "mutants_survived": 19
+  },
+  "coverage": {
+    "statements_pct": 82,
+    "branches_pct": 75
+  },
+  "code_smells": {
+    "total": 0,
+    "complexity": 0,
+    "duplication": 0,
+    "magic_numbers": 0,
+    "code_quality": 0
+  },
+  "clean_code": {
+    "loc": 133,
+    "functions": 18,
+    "longest_function": 16,
+    "avg_loc_per_function": 5.67,
+    "median_loc_per_function": 4,
+    "imports": 6
+  },
+  "unit_quality": {
+    "units": 18,
+    "size_max": 16,
+    "size_avg": 5.67,
+    "size_median": 4
+  },
+  "summary_metrics": {
+    "total_tokens": 3956453,
+    "context_utilization_pct": 0,
+    "cycle_count": 20,
+    "refactorings_applied": 20,
+    "predictions_correct": 51,
+    "predictions_total": 51,
+    "tests_passed_immediately": 0,
+    "test_blocks": 22,
+    "test_cases_total": 22,
+    "test_cases_first_block": 19,
+    "red_verified": 22,
+    "red_unverified": 0,
+    "tcr_refactor_steps": 0,
+    "avg_cycle_seconds": 0,
+    "avg_red_seconds": 0,
+    "avg_green_seconds": 0,
+    "avg_refactor_seconds": 0
+  },
+  "analyze_status": "ok"
+}

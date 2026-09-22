@@ -405,9 +405,15 @@ analyze_single_run() {
         fi
         report_content+="\`\`\`\n$test_output\n\`\`\`\n\n"
     elif [ "$stack" = "python-pytest" ]; then
-        # Coverage comes out of the same run as the suite: pytest-cov writes
-        # coverage.json alongside the report, so unlike the TypeScript arm
-        # there is no second full execution to pay for.
+        # The verdict comes from a plain run, and coverage from a second,
+        # best-effort one. They are deliberately separate: `pythonpath=["src"]`
+        # puts the agent's own modules ahead of installed packages, so a module
+        # that shares a name with one of them takes the plugin down with it —
+        # `src/coverage.py` is a natural choice on an insurance kata and made
+        # pytest-cov fail at load with "'coverage' is not a package", which read
+        # as a red suite for a run that passed all 15 external scenarios.
+        # A measurement instrument must not be able to fail the thing it measures.
+        #
         # Call the venv's pytest directly rather than going through `uv run`:
         # `uv run` treats the run directory as a uv project, which writes a
         # uv.lock and may re-sync the environment against [project] — and the
@@ -415,7 +421,7 @@ analyze_single_run() {
         # take ruff and complexipy out from under the later measurement steps.
         local pytest_exit=0
         set +e
-        test_output=$(cd "$run_dir" && .venv/bin/pytest --cov=src --cov-branch --cov-report=json 2>&1)
+        test_output=$(cd "$run_dir" && .venv/bin/pytest 2>&1)
         pytest_exit=$?
         set -e
         echo "$test_output"
@@ -433,6 +439,16 @@ analyze_single_run() {
             report_content+="**Status**: ❌ Tests failed or not runnable\n\n"
         fi
         report_content+="\`\`\`\n$test_output\n\`\`\`\n\n"
+
+        if [ "$tests_passed" = true ]; then
+            # Second pass, for coverage only. `|| true`: a plugin failure here
+            # leaves coverage unreported, never the suite red.
+            (cd "$run_dir" && .venv/bin/pytest --cov=src --cov-branch \
+                --cov-report=json -q) >/dev/null 2>&1 || true
+            if [ ! -f "$run_dir/coverage.json" ]; then
+                echo -e "  ${YELLOW}Coverage unavailable (pytest-cov did not produce a report)${NC}"
+            fi
+        fi
 
         if [ "$tests_passed" = true ] && [ -f "$run_dir/coverage.json" ]; then
             cov_statements=$(python3 -c 'import json,sys; print(int(json.load(open(sys.argv[1]))["totals"]["percent_covered"]))' "$run_dir/coverage.json" 2>/dev/null)

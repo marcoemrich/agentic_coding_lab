@@ -325,17 +325,35 @@ MUTMUT_VERSION = "3.8.0"
 # from the CLI adapter alone. The Java stack deliberately mutates its CLI
 # class because Java runs often nest the whole domain inside it; Python
 # modules have no such coupling.
-MUTMUT_CONFIG = """
+MUTMUT_CONFIG_BASE = """
 [tool.mutmut]
 source_paths = ["src/"]
 pytest_add_cli_args_test_selection = ["tests/"]
-do_not_mutate = ["src/cli.py"]
 """
+
+# Excluding the adapter is conditional on there being anything else to mutate.
+# Two claim-office runs put their whole domain into src/cli.py, and the
+# unconditional exclusion left mutmut with "0 files mutated" and no score at
+# all — the same coupling the Java stack cites as its reason for mutating its
+# CLI class. Exclude the adapter when the run separated its domain from it;
+# mutate it when it is the only production code there is.
+MUTMUT_EXCLUDE_CLI = 'do_not_mutate = ["src/cli.py"]\n'
+
+
+def mutmut_config_for(run_dir: Path) -> str:
+    production = sorted(
+        path for path in (run_dir / "src").glob("*.py")
+        if path.name != "__init__.py"
+    )
+    others = [path for path in production if path.name != "cli.py"]
+    if others:
+        return MUTMUT_CONFIG_BASE + MUTMUT_EXCLUDE_CLI
+    return MUTMUT_CONFIG_BASE
 
 MUTMUT_STATS = Path("mutants") / "mutmut-cicd-stats.json"
 
 
-def with_canonical_mutmut_config(pyproject: str) -> str:
+def with_canonical_mutmut_config(pyproject: str, config: str) -> str:
     """Replace any [tool.mutmut] section with the canonical one.
 
     The analysis must use one instrument across all runs, so a section the
@@ -358,7 +376,7 @@ def with_canonical_mutmut_config(pyproject: str) -> str:
                 continue
         kept.append(line)
     body = "".join(kept).rstrip("\n")
-    return f"{body}\n{MUTMUT_CONFIG}"
+    return f"{body}\n{config}"
 
 
 def mutation_score_from_mutmut_stats(stats_path: Path) -> MutationResult:
@@ -711,8 +729,8 @@ def main(argv: list[str]) -> int:
             pyproject_path = run_dir / "pyproject.toml"
             original_pyproject = pyproject_path.read_text()
             try:
-                pyproject_path.write_text(
-                    with_canonical_mutmut_config(original_pyproject))
+                pyproject_path.write_text(with_canonical_mutmut_config(
+                    original_pyproject, mutmut_config_for(run_dir)))
                 result = run_mutmut(run_dir, args.timeout_seconds, log)
             finally:
                 # Measuring must not alter the recorded artifact.

@@ -1,0 +1,95 @@
+{
+  "kata": "claim-office-python-example-mapping",
+  "workflow": "exact-ptdd-v1-cc",
+  "model": "opus-5-no-thinking",
+  "stack": "python-pytest",
+  "cli_model": "claude-opus-5",
+  "harness_version": "2.1.267 (Claude Code)",
+  "thinking": false,
+  "started_at": "2026-09-22T00:29:36+00:00",
+  "ended_at": "2026-09-22T00:45:44+00:00",
+  "duration_seconds": 968,
+  "batch_run": true,
+  "plan_file": "/home/experimenter/experiments/batch-plans/rq-exact-coding-python-fill.shard1.json",
+  "tcr": {
+    "initial_commit": "9fa9fc121cdce30ffe956d3a0b14c3c9d246dcc9",
+    "final_commit": "9fa9fc121cdce30ffe956d3a0b14c3c9d246dcc9",
+    "commits_total": 1,
+    "method_commits": 0,
+    "red_commits": 0,
+    "green_commits": 0,
+    "refactor_commits": 0
+  },
+  "run_status": {
+    "exit_code": 0,
+    "exit_reason": "ok",
+    "rate_limited": false
+  },
+  "final_metrics": {
+    "lines_of_code": 268,
+    "test_lines": 528,
+    "tests_total": 58,
+    "todos_remaining": 0,
+    "code_mass": 754,
+    "tests_passing": true,
+    "verification_total": 15,
+    "verification_passed": 15,
+    "verification_pct": 1,
+    "cli_built": true,
+    "mccabe_max": 3,
+    "mccabe_avg": 1.45,
+    "mccabe_high_count": 0,
+    "cognitive_max": 6,
+    "cognitive_avg": 0.9,
+    "cognitive_high_count": 0,
+    "cost_usd": 16.7466,
+    "mutation_score": 0.9547511312217195,
+    "mutants_total": 221,
+    "mutants_survived": 10
+  },
+  "coverage": {
+    "statements_pct": 90,
+    "branches_pct": 92
+  },
+  "code_smells": {
+    "total": 0,
+    "complexity": 0,
+    "duplication": 0,
+    "magic_numbers": 0,
+    "code_quality": 0
+  },
+  "clean_code": {
+    "loc": 193,
+    "functions": 29,
+    "longest_function": 14,
+    "avg_loc_per_function": 5,
+    "median_loc_per_function": 4,
+    "imports": 6
+  },
+  "unit_quality": {
+    "units": 29,
+    "size_max": 14,
+    "size_avg": 5,
+    "size_median": 4
+  },
+  "summary_metrics": {
+    "total_tokens": 22133853,
+    "context_utilization_pct": 76,
+    "cycle_count": 89,
+    "refactorings_applied": 58,
+    "predictions_correct": 116,
+    "predictions_total": 116,
+    "tests_passed_immediately": 31,
+    "test_blocks": 0,
+    "test_cases_total": 0,
+    "test_cases_first_block": 0,
+    "red_verified": 0,
+    "red_unverified": 0,
+    "tcr_refactor_steps": 0,
+    "avg_cycle_seconds": 0,
+    "avg_red_seconds": 0,
+    "avg_green_seconds": 0,
+    "avg_refactor_seconds": 0
+  },
+  "analyze_status": "ok"
+}

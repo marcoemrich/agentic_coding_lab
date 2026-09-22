@@ -51,7 +51,7 @@ outcomes:
   - mutants_total
   - mutants_survived
 min_replicates: 5
-status: open
+status: answered
 ---
 
 # RQ-exact-coding-python: EXACT Coding on the Python Stack
@@ -192,6 +192,58 @@ a confirmation and a contradiction are equally informative.
   RQ supports conclusions only about variation inside the Python stack. The
   comparison with RQ-exact-coding-java is a comparison of **directions and
   orderings**, never of absolute values.
+
+## Execution provenance — 2026-09-22 refill
+
+Five of the first 60 runs ended without a result through no fault of the
+workflow: four aborted with `API Error: 500 Internal server error` on the Opus
+route, one with pi's internal retries exhausted. They are retained in
+`experiments/runs/` and appear in `runs.csv` with `completed_within_budget =
+false`; five replacement runs were added at the user's explicit request.
+
+This is not the refill of a workflow outcome. A timeout says the workflow did
+not finish inside its budget and is a finding; a provider 500 says nothing
+about the workflow. The replacements are therefore not outcome-dependent
+selection in the sense that invalidated the RQ-stack-profile-extraction-opus
+comparison.
+
+**One caveat qualifies that, and it applies to one cell.** All four HTTP 500s
+fell in `exact-ptdd-v1.1-refactor-subagent-cc`, the only arm that spawns an
+isolated Refactor subagent per cycle and therefore issues by far the most
+requests on the Opus route. Three of them were in the Claim Office cell, which
+consequently stood at n=2. Whether that concentration reflects the arm's own
+load or a provider incident that happened to overlap those runs is not
+established — a run of the same arm survived inside the same window. Repeating
+until success in an arm whose failures may be load-correlated is a selection on
+the failure mode. Read `claim-office` × `exact-ptdd-v1.1-refactor-subagent-cc`
+with that in mind; the other two refilled cells lost one run each and carry no
+such concern.
+
+`batch-plan-from-rq.py` counts a run by cell match, not by `exit_reason`, so it
+reported these cells as full. The refill plan was written by hand
+(`experiments/batch-plans/rq-python-refill.json`).
+
+## Mutation Score coverage
+
+`mutation_score` is absent for eight runs, all on Claim Office and all on the
+pi ports: three of five in `exact-ptdd-v1-pi` and five of five in
+`exact-ptdd-v1.1-refactor-subagent-pi`. Their test suites never import the
+production module — every assertion runs the CLI in a subprocess — and mutmut
+builds its test-to-mutant association by tracing the test process, which cannot
+see a subprocess. It stops with "could not find any test case for any mutant".
+This is a limit of the instrument against that test style, not a configuration
+error: `mutate_only_covered_lines` is already off, and there is no switch for
+it.
+
+The gap is therefore itself a measurement: the same eight runs are exactly the
+ones whose suites are end-to-end only. `coverage_statements_pct` reads 0 for
+them for the same reason and means "the suite exercises the code out of
+process", not "untested".
+
+Consequence for H3: the Mutation Score ordering cannot be evaluated for
+`claim-office` × `exact-ptdd-v1.1-refactor-subagent-pi` at all, and only at
+n=2 for `claim-office` × `exact-ptdd-v1-pi`. Every table reporting Mutation
+Score states n per cell.
 
 ## Execution sequence
 
