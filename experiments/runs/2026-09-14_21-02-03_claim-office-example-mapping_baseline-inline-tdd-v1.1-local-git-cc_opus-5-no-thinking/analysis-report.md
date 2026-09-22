@@ -1,6 +1,6 @@
 # Analysis Report: 2026-09-14_21-02-03_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking
 
-Generated: 2026-09-14T21:07:18+00:00
+Generated: 2026-09-22T16:51:19+02:00
 
 ## Configuration
 
@@ -29,22 +29,23 @@ Generated: 2026-09-14T21:07:18+00:00
 **Status**: ✅ All tests passing (50 passed)
 
 ```
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-09-14_21-02-03_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking
+> tdd-experiment-run@ test /home/memrich/agentic_coding_lab/experiments/runs/2026-09-14_21-02-03_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-09-14_21-02-03_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking
+ RUN  v1.6.1 /home/memrich/agentic_coding_lab/experiments/runs/2026-09-14_21-02-03_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking
 
- ✓ src/claim.spec.ts  (18 tests) 7ms
- ✓ src/cli.spec.ts  (8 tests) 6ms
- ✓ src/premium.spec.ts  (11 tests) 4ms
- ✓ src/pricing.spec.ts  (13 tests) 5ms
+ ✓ src/premium.spec.ts  (11 tests) 6ms
+ ✓ src/cli.spec.ts  (8 tests) 8ms
+ ✓ src/claim.spec.ts  (18 tests) 9ms
+ ✓ src/pricing.spec.ts  (13 tests) 6ms
 
  Test Files  4 passed (4)
       Tests  50 passed (50)
-   Start at  21:07:19
-   Duration  901ms (transform 98ms, setup 0ms, collect 124ms, tests 22ms, environment 1ms, prepare 272ms)
+   Start at  16:51:21
+   Duration  749ms (transform 167ms, setup 0ms, collect 241ms, tests 29ms, environment 1ms, prepare 455ms)
 ```
 
 ## Coverage
@@ -110,7 +111,7 @@ Generated: 2026-09-14T21:07:18+00:00
 | Avg Cycle Time | 8.95s |
 | Avg Red Phase | 2.01s |
 | Avg Green Phase | 6.94s |
-| Avg Refactor Phase | 0s |
+| Avg Refactor Phase | 0.0s |
 
 ### Prediction Accuracy (Guessing Game) — Self-Reported
 

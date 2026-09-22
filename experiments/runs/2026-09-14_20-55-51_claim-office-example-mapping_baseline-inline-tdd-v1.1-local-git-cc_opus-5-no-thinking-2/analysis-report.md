@@ -1,6 +1,6 @@
 # Analysis Report: 2026-09-14_20-55-51_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking-2
 
-Generated: 2026-09-14T21:01:33+00:00
+Generated: 2026-09-22T16:49:49+02:00
 
 ## Configuration
 
@@ -29,23 +29,24 @@ Generated: 2026-09-14T21:01:33+00:00
 **Status**: ✅ All tests passing (52 passed)
 
 ```
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-09-14_20-55-51_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking-2
+> tdd-experiment-run@ test /home/memrich/agentic_coding_lab/experiments/runs/2026-09-14_20-55-51_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking-2
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-09-14_20-55-51_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking-2
+ RUN  v1.6.1 /home/memrich/agentic_coding_lab/experiments/runs/2026-09-14_20-55-51_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking-2
 
- ✓ src/premium.spec.ts  (24 tests) 5ms
- ✓ src/policy.spec.ts  (8 tests) 5ms
- ✓ src/scenario.spec.ts  (5 tests) 6ms
- ✓ src/cli.spec.ts  (4 tests) 2129ms
- ✓ src/claim.spec.ts  (11 tests) 4ms
+ ✓ src/premium.spec.ts  (24 tests) 8ms
+ ✓ src/scenario.spec.ts  (5 tests) 8ms
+ ✓ src/policy.spec.ts  (8 tests) 9ms
+ ✓ src/claim.spec.ts  (11 tests) 5ms
+ ✓ src/cli.spec.ts  (4 tests) 3876ms
 
  Test Files  5 passed (5)
       Tests  52 passed (52)
-   Start at  21:01:34
-   Duration  3.37s (transform 123ms, setup 0ms, collect 170ms, tests 2.15s, environment 1ms, prepare 388ms)
+   Start at  16:49:51
+   Duration  4.75s (transform 235ms, setup 0ms, collect 339ms, tests 3.91s, environment 1ms, prepare 591ms)
 ```
 
 ## Coverage

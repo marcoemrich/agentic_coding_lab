@@ -1,6 +1,6 @@
 # Analysis Report: 2026-09-16_11-59-27_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex-5
 
-Generated: 2026-09-16T12:13:23+00:00
+Generated: 2026-09-22T16:58:20+02:00
 
 ## Configuration
 
@@ -26,30 +26,54 @@ Generated: 2026-09-16T12:13:23+00:00
 
 ## Test Results
 
-**Status**: ✅ All tests passing (41 passed)
+**Status**: ❌ Tests failed or not runnable
 
 ```
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-09-16_11-59-27_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex-5
+> tdd-experiment-run@ test /home/memrich/agentic_coding_lab/experiments/runs/2026-09-16_11-59-27_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex-5
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-09-16_11-59-27_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex-5
+ RUN  v1.6.1 /home/memrich/agentic_coding_lab/experiments/runs/2026-09-16_11-59-27_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex-5
 
- ✓ src/claim-office.spec.ts  (41 tests) 1191ms
+ ❯ src/claim-office.spec.ts  (41 tests | 1 failed) 3862ms
+   ❯ src/claim-office.spec.ts > MHPCO claim office > CLI reads a scenario from stdin and writes only JSON results to stdout
+     → expected { status: +0, …(2) } to deeply equal { status: +0, …(2) }
 
- Test Files  1 passed (1)
-      Tests  41 passed (41)
-   Start at  12:13:24
-   Duration  1.57s (transform 101ms, setup 0ms, collect 116ms, tests 1.19s, environment 0ms, prepare 83ms)
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/claim-office.spec.ts > MHPCO claim office > CLI reads a scenario from stdin and writes only JSON results to stdout
+AssertionError: expected { status: +0, …(2) } to deeply equal { status: +0, …(2) }
+
+- Expected
++ Received
+
+  Object {
+    "status": 0,
+-   "stderr": "",
++   "stderr": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\". See https://pnpm.io/settings for the new home of each setting.
++ ",
+    "stdout": "{\"results\":[{\"premium\":5}]}",
+  }
+
+ ❯ src/claim-office.spec.ts:65:76
+     63|     const input = { customer: { yearsWithMHPCO: 0 }, steps: [{ op: "qu…
+     64|     const run = spawnSync("pnpm", ["exec", "tsx", "src/cli.ts"], { inp…
+     65|     expect({ status: run.status, stdout: run.stdout, stderr: run.stder…
+       |                                                                            ^
+     66|   });
+     67|   it("CLI exits non-zero, writes an error to stderr, and writes no res…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 40 passed (41)
+   Start at  16:58:22
+   Duration  4.28s (transform 64ms, setup 0ms, collect 73ms, tests 3.86s, environment 0ms, prepare 92ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
 ```
-
-## Coverage
-
-| Metric | Coverage |
-|--------|----------|
-| Statements | 87% |
-| Branches | 95% |
 
 ## APP Mass Estimation
 
@@ -105,9 +129,9 @@ Generated: 2026-09-16T12:13:23+00:00
 |--------|-------|
 | Cycle Count | 41 |
 | Avg Cycle Time | 0.00s |
-| Avg Red Phase | 0s |
-| Avg Green Phase | 0s |
-| Avg Refactor Phase | 0s |
+| Avg Red Phase | 0.0s |
+| Avg Green Phase | 0.0s |
+| Avg Refactor Phase | 0.0s |
 
 ### Prediction Accuracy (Guessing Game) — Self-Reported
 

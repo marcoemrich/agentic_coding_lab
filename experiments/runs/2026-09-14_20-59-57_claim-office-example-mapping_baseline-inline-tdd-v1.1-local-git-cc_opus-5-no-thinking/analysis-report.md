@@ -1,6 +1,6 @@
 # Analysis Report: 2026-09-14_20-59-57_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking
 
-Generated: 2026-09-14T21:04:19+00:00
+Generated: 2026-09-22T16:50:38+02:00
 
 ## Configuration
 
@@ -29,22 +29,23 @@ Generated: 2026-09-14T21:04:19+00:00
 **Status**: ✅ All tests passing (40 passed)
 
 ```
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-09-14_20-59-57_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking
+> tdd-experiment-run@ test /home/memrich/agentic_coding_lab/experiments/runs/2026-09-14_20-59-57_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-09-14_20-59-57_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking
+ RUN  v1.6.1 /home/memrich/agentic_coding_lab/experiments/runs/2026-09-14_20-59-57_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking
 
- ✓ src/claim.spec.ts  (16 tests) 6ms
+ ✓ src/claim.spec.ts  (16 tests) 9ms
  ✓ src/premium.spec.ts  (13 tests) 5ms
- ✓ src/scenario.spec.ts  (5 tests) 4ms
- ✓ src/pricing.spec.ts  (6 tests) 4ms
+ ✓ src/scenario.spec.ts  (5 tests) 6ms
+ ✓ src/pricing.spec.ts  (6 tests) 5ms
 
  Test Files  4 passed (4)
       Tests  40 passed (40)
-   Start at  21:04:20
-   Duration  906ms (transform 79ms, setup 0ms, collect 105ms, tests 19ms, environment 1ms, prepare 286ms)
+   Start at  16:50:40
+   Duration  761ms (transform 174ms, setup 0ms, collect 241ms, tests 25ms, environment 1ms, prepare 446ms)
 ```
 
 ## Coverage
@@ -110,7 +111,7 @@ Generated: 2026-09-14T21:04:19+00:00
 | Avg Cycle Time | 14.72s |
 | Avg Red Phase | 9.55s |
 | Avg Green Phase | 5.17s |
-| Avg Refactor Phase | 0s |
+| Avg Refactor Phase | 0.0s |
 
 ### Prediction Accuracy (Guessing Game) — Self-Reported
 

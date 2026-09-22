@@ -1,6 +1,6 @@
 # Analysis Report: 2026-09-16_07-18-02_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-cc_opus-5-no-thinking
 
-Generated: 2026-09-16T07:36:26+00:00
+Generated: 2026-09-22T16:44:36+02:00
 
 ## Configuration
 
@@ -29,19 +29,20 @@ Generated: 2026-09-16T07:36:26+00:00
 **Status**: ✅ All tests passing (63 passed)
 
 ```
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-09-16_07-18-02_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-cc_opus-5-no-thinking
+> tdd-experiment-run@ test /home/memrich/agentic_coding_lab/experiments/runs/2026-09-16_07-18-02_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-cc_opus-5-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-09-16_07-18-02_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-cc_opus-5-no-thinking
+ RUN  v1.6.1 /home/memrich/agentic_coding_lab/experiments/runs/2026-09-16_07-18-02_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-cc_opus-5-no-thinking
 
- ✓ src/claim-office.spec.ts  (63 tests) 1415ms
+ ✓ src/claim-office.spec.ts  (63 tests) 2785ms
 
  Test Files  1 passed (1)
       Tests  63 passed (63)
-   Start at  07:36:26
-   Duration  1.69s (transform 76ms, setup 1ms, collect 75ms, tests 1.42s, environment 0ms, prepare 73ms)
+   Start at  16:44:37
+   Duration  3.22s (transform 105ms, setup 0ms, collect 103ms, tests 2.79s, environment 0ms, prepare 93ms)
 ```
 
 ## Coverage
@@ -105,9 +106,9 @@ Generated: 2026-09-16T07:36:26+00:00
 |--------|-------|
 | Cycle Count | 61 |
 | Avg Cycle Time | 0.00s |
-| Avg Red Phase | 0s |
-| Avg Green Phase | 0s |
-| Avg Refactor Phase | 0s |
+| Avg Red Phase | 0.0s |
+| Avg Green Phase | 0.0s |
+| Avg Refactor Phase | 0.0s |
 
 ### Prediction Accuracy (Guessing Game) — Self-Reported
 

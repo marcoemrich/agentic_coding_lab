@@ -1,6 +1,6 @@
 # Analysis Report: 2026-09-14_15-44-30_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-pi_gpt-5-6-sol-codex-3
 
-Generated: 2026-09-14T16:01:10+00:00
+Generated: 2026-09-22T16:46:59+02:00
 
 ## Configuration
 
@@ -29,20 +29,21 @@ Generated: 2026-09-14T16:01:10+00:00
 **Status**: ✅ All tests passing (23 passed)
 
 ```
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-09-14_15-44-30_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-pi_gpt-5-6-sol-codex-3
+> tdd-experiment-run@ test /home/memrich/agentic_coding_lab/experiments/runs/2026-09-14_15-44-30_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-pi_gpt-5-6-sol-codex-3
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-09-14_15-44-30_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-pi_gpt-5-6-sol-codex-3
+ RUN  v1.6.1 /home/memrich/agentic_coding_lab/experiments/runs/2026-09-14_15-44-30_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-pi_gpt-5-6-sol-codex-3
 
- ✓ src/claim-office.spec.ts  (20 tests) 12ms
- ✓ src/cli.spec.ts  (3 tests) 375ms
+ ✓ src/claim-office.spec.ts  (20 tests) 10ms
+ ✓ src/cli.spec.ts  (3 tests) 972ms
 
  Test Files  2 passed (2)
       Tests  23 passed (23)
-   Start at  16:01:12
-   Duration  744ms (transform 95ms, setup 0ms, collect 124ms, tests 387ms, environment 0ms, prepare 203ms)
+   Start at  16:47:01
+   Duration  1.32s (transform 86ms, setup 1ms, collect 100ms, tests 982ms, environment 0ms, prepare 193ms)
 ```
 
 ## Coverage
@@ -106,9 +107,9 @@ Generated: 2026-09-14T16:01:10+00:00
 |--------|-------|
 | Cycle Count | 5 |
 | Avg Cycle Time | 0.00s |
-| Avg Red Phase | 0s |
-| Avg Green Phase | 0s |
-| Avg Refactor Phase | 0s |
+| Avg Red Phase | 0.0s |
+| Avg Green Phase | 0.0s |
+| Avg Refactor Phase | 0.0s |
 
 ### Prediction Accuracy (Guessing Game) — Self-Reported
 

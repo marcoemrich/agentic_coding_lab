@@ -1,6 +1,6 @@
 # Analysis Report: 2026-09-17_00-24-45_claim-office-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-5-6-sol-codex-3
 
-Generated: 2026-09-17T01:39:02+00:00
+Generated: 2026-09-22T17:13:26+02:00
 
 ## Configuration
 
@@ -26,30 +26,49 @@ Generated: 2026-09-17T01:39:02+00:00
 
 ## Test Results
 
-**Status**: ✅ All tests passing (37 passed)
+**Status**: ❌ Tests failed or not runnable
 
 ```
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-09-17_00-24-45_claim-office-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-5-6-sol-codex-3
+> tdd-experiment-run@ test /home/memrich/agentic_coding_lab/experiments/runs/2026-09-17_00-24-45_claim-office-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-5-6-sol-codex-3
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-09-17_00-24-45_claim-office-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-5-6-sol-codex-3
+ RUN  v1.6.1 /home/memrich/agentic_coding_lab/experiments/runs/2026-09-17_00-24-45_claim-office-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-5-6-sol-codex-3
 
- ✓ src/claim-office.spec.ts  (37 tests) 3806ms
+ ❯ src/claim-office.spec.ts  (37 tests | 1 failed) 11370ms
+   ❯ src/claim-office.spec.ts > MHPCO claim office > outputs one ordered result per step using the binding JSON field names
+     → expected '[WARN] The "pnpm" field in package.js…' to be '' // Object.is equality
 
- Test Files  1 passed (1)
-      Tests  37 passed (37)
-   Start at  01:39:03
-   Duration  4.25s (transform 137ms, setup 0ms, collect 153ms, tests 3.81s, environment 0ms, prepare 104ms)
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/claim-office.spec.ts > MHPCO claim office > outputs one ordered result per step using the binding JSON field names
+AssertionError: expected '[WARN] The "pnpm" field in package.js…' to be '' // Object.is equality
+
+- Expected
++ Received
+
++ [WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
++
+
+ ❯ src/claim-office.spec.ts:94:24
+     92|     expect(run.status).toBe(0);
+     93|     expect(JSON.parse(run.stdout)).toEqual({ results: [{ premium: 5 },…
+     94|     expect(run.stderr).toBe("");
+       |                        ^
+     95|   });
+     96|   it("pays 400 G for standard 500 G sword damage after one 100 G deduc…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 36 passed (37)
+   Start at  17:13:28
+   Duration  11.86s (transform 108ms, setup 0ms, collect 118ms, tests 11.37s, environment 0ms, prepare 114ms)
+
+ ELIFECYCLE  Test failed. See above for more details.
 ```
-
-## Coverage
-
-| Metric | Coverage |
-|--------|----------|
-| Statements | 94% |
-| Branches | 87% |
 
 ## APP Mass Estimation
 
@@ -105,9 +124,9 @@ Generated: 2026-09-17T01:39:02+00:00
 |--------|-------|
 | Cycle Count | 37 |
 | Avg Cycle Time | 0.00s |
-| Avg Red Phase | 0s |
-| Avg Green Phase | 0s |
-| Avg Refactor Phase | 0s |
+| Avg Red Phase | 0.0s |
+| Avg Green Phase | 0.0s |
+| Avg Refactor Phase | 0.0s |
 
 ### Prediction Accuracy (Guessing Game) — Self-Reported
 

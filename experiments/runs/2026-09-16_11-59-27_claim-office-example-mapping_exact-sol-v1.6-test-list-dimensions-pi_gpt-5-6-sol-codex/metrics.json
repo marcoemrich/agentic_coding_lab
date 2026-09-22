@@ -30,10 +30,10 @@
     "tests_total": 48,
     "todos_remaining": 0,
     "code_mass": 704,
-    "tests_passing": true,
+    "tests_passing": false,
     "verification_total": 15,
     "verification_passed": 15,
-    "verification_pct": 1,
+    "verification_pct": 1.0,
     "cli_built": true,
     "mccabe_max": 3,
     "mccabe_avg": 1.5,
@@ -41,11 +41,14 @@
     "cognitive_max": 2,
     "cognitive_avg": 1.25,
     "cognitive_high_count": 0,
-    "cost_usd": 7.3107
+    "cost_usd": 7.3107,
+    "mutation_score": 0.8153846153846154,
+    "mutants_total": 130,
+    "mutants_survived": 24
   },
   "coverage": {
-    "statements_pct": 87,
-    "branches_pct": 84
+    "statements_pct": 0,
+    "branches_pct": 0
   },
   "code_smells": {
     "total": 0,
@@ -59,7 +62,7 @@
     "functions": 15,
     "longest_function": 19,
     "avg_loc_per_function": 5.67,
-    "median_loc_per_function": 5,
+    "median_loc_per_function": 5.0,
     "imports": 1
   },
   "summary_metrics": {
@@ -76,10 +79,16 @@
     "red_verified": 49,
     "red_unverified": 0,
     "tcr_refactor_steps": 0,
-    "avg_cycle_seconds": 0,
-    "avg_red_seconds": 0,
-    "avg_green_seconds": 0,
-    "avg_refactor_seconds": 0
+    "avg_cycle_seconds": 0.0,
+    "avg_red_seconds": 0.0,
+    "avg_green_seconds": 0.0,
+    "avg_refactor_seconds": 0.0
   },
-  "analyze_status": "ok"
+  "analyze_status": "ok",
+  "unit_quality": {
+    "units": 15,
+    "size_max": 19,
+    "size_avg": 5.67,
+    "size_median": 5.0
+  }
 }

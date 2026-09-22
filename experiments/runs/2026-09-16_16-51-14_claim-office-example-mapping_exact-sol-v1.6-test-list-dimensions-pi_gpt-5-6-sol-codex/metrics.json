@@ -33,7 +33,7 @@
     "tests_passing": true,
     "verification_total": 15,
     "verification_passed": 15,
-    "verification_pct": 1,
+    "verification_pct": 1.0,
     "cli_built": true,
     "mccabe_max": 4,
     "mccabe_avg": 1.52,
@@ -41,7 +41,10 @@
     "cognitive_max": 3,
     "cognitive_avg": 1.62,
     "cognitive_high_count": 0,
-    "cost_usd": 0.4561
+    "cost_usd": 0.4561,
+    "mutation_score": 0.0,
+    "mutants_total": 112,
+    "mutants_survived": 112
   },
   "coverage": {
     "statements_pct": 0,
@@ -59,7 +62,7 @@
     "functions": 10,
     "longest_function": 20,
     "avg_loc_per_function": 7.9,
-    "median_loc_per_function": 8,
+    "median_loc_per_function": 8.0,
     "imports": 2
   },
   "summary_metrics": {
@@ -76,10 +79,16 @@
     "red_verified": 40,
     "red_unverified": 0,
     "tcr_refactor_steps": 0,
-    "avg_cycle_seconds": 0,
-    "avg_red_seconds": 0,
-    "avg_green_seconds": 0,
-    "avg_refactor_seconds": 0
+    "avg_cycle_seconds": 0.0,
+    "avg_red_seconds": 0.0,
+    "avg_green_seconds": 0.0,
+    "avg_refactor_seconds": 0.0
   },
-  "analyze_status": "ok"
+  "analyze_status": "ok",
+  "unit_quality": {
+    "units": 10,
+    "size_max": 20,
+    "size_avg": 7.9,
+    "size_median": 8.0
+  }
 }

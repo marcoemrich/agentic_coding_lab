@@ -33,7 +33,7 @@
     "tests_passing": true,
     "verification_total": 15,
     "verification_passed": 15,
-    "verification_pct": 1,
+    "verification_pct": 1.0,
     "cli_built": true,
     "mccabe_max": 5,
     "mccabe_avg": 2.19,
@@ -41,7 +41,10 @@
     "cognitive_max": 6,
     "cognitive_avg": 2.25,
     "cognitive_high_count": 0,
-    "cost_usd": 2.1759
+    "cost_usd": 2.1759,
+    "mutation_score": 0.8920863309352518,
+    "mutants_total": 139,
+    "mutants_survived": 15
   },
   "coverage": {
     "statements_pct": 93,
@@ -58,7 +61,7 @@
     "loc": 261,
     "functions": 14,
     "longest_function": 28,
-    "avg_loc_per_function": 8,
+    "avg_loc_per_function": 8.0,
     "median_loc_per_function": 5.5,
     "imports": 10
   },
@@ -76,10 +79,16 @@
     "red_verified": 0,
     "red_unverified": 0,
     "tcr_refactor_steps": 0,
-    "avg_cycle_seconds": 0,
+    "avg_cycle_seconds": 0.0,
     "avg_red_seconds": 0,
     "avg_green_seconds": 0,
     "avg_refactor_seconds": 0
   },
-  "analyze_status": "ok"
+  "analyze_status": "ok",
+  "unit_quality": {
+    "units": 14,
+    "size_max": 28,
+    "size_avg": 8.0,
+    "size_median": 5.5
+  }
 }

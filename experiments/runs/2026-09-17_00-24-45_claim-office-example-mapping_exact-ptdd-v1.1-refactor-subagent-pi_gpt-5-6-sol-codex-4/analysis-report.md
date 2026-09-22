@@ -1,6 +1,6 @@
 # Analysis Report: 2026-09-17_00-24-45_claim-office-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-5-6-sol-codex-4
 
-Generated: 2026-09-17T02:03:54+00:00
+Generated: 2026-09-22T17:14:17+02:00
 
 ## Configuration
 
@@ -29,19 +29,20 @@ Generated: 2026-09-17T02:03:54+00:00
 **Status**: ✅ All tests passing (41 passed)
 
 ```
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-09-17_00-24-45_claim-office-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-5-6-sol-codex-4
+> tdd-experiment-run@ test /home/memrich/agentic_coding_lab/experiments/runs/2026-09-17_00-24-45_claim-office-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-5-6-sol-codex-4
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-09-17_00-24-45_claim-office-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-5-6-sol-codex-4
+ RUN  v1.6.1 /home/memrich/agentic_coding_lab/experiments/runs/2026-09-17_00-24-45_claim-office-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-5-6-sol-codex-4
 
- ✓ src/claim-office.spec.ts  (41 tests) 2825ms
+ ✓ src/claim-office.spec.ts  (41 tests) 9806ms
 
  Test Files  1 passed (1)
       Tests  41 passed (41)
-   Start at  02:03:55
-   Duration  3.17s (transform 114ms, setup 0ms, collect 130ms, tests 2.83s, environment 0ms, prepare 74ms)
+   Start at  17:14:19
+   Duration  10.35s (transform 124ms, setup 0ms, collect 127ms, tests 9.81s, environment 0ms, prepare 107ms)
 ```
 
 ## Coverage
@@ -105,9 +106,9 @@ Generated: 2026-09-17T02:03:54+00:00
 |--------|-------|
 | Cycle Count | 41 |
 | Avg Cycle Time | 0.00s |
-| Avg Red Phase | 0s |
-| Avg Green Phase | 0s |
-| Avg Refactor Phase | 0s |
+| Avg Red Phase | 0.0s |
+| Avg Green Phase | 0.0s |
+| Avg Refactor Phase | 0.0s |
 
 ### Prediction Accuracy (Guessing Game) — Self-Reported
 

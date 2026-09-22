@@ -1,6 +1,6 @@
 # Analysis Report: 2026-09-16_16-47-59_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-cc_opus-5-no-thinking
 
-Generated: 2026-09-16T17:02:44+00:00
+Generated: 2026-09-22T17:03:51+02:00
 
 ## Configuration
 
@@ -29,19 +29,20 @@ Generated: 2026-09-16T17:02:44+00:00
 **Status**: ✅ All tests passing (71 passed)
 
 ```
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-09-16_16-47-59_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-cc_opus-5-no-thinking
+> tdd-experiment-run@ test /home/memrich/agentic_coding_lab/experiments/runs/2026-09-16_16-47-59_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-cc_opus-5-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-09-16_16-47-59_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-cc_opus-5-no-thinking
+ RUN  v1.6.1 /home/memrich/agentic_coding_lab/experiments/runs/2026-09-16_16-47-59_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-cc_opus-5-no-thinking
 
- ✓ src/claim-office.spec.ts  (71 tests) 3089ms
+ ✓ src/claim-office.spec.ts  (71 tests) 3820ms
 
  Test Files  1 passed (1)
       Tests  71 passed (71)
-   Start at  17:02:45
-   Duration  3.61s (transform 194ms, setup 0ms, collect 194ms, tests 3.09s, environment 0ms, prepare 148ms)
+   Start at  17:03:53
+   Duration  4.23s (transform 89ms, setup 0ms, collect 82ms, tests 3.82s, environment 0ms, prepare 82ms)
 ```
 
 ## Coverage

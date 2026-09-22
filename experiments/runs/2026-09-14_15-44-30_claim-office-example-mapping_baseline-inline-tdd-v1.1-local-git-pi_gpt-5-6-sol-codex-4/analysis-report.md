@@ -1,6 +1,6 @@
 # Analysis Report: 2026-09-14_15-44-30_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-pi_gpt-5-6-sol-codex-4
 
-Generated: 2026-09-14T16:01:30+00:00
+Generated: 2026-09-22T16:47:41+02:00
 
 ## Configuration
 
@@ -29,19 +29,20 @@ Generated: 2026-09-14T16:01:30+00:00
 **Status**: ✅ All tests passing (15 passed)
 
 ```
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
 
-> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-09-14_15-44-30_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-pi_gpt-5-6-sol-codex-4
+> tdd-experiment-run@ test /home/memrich/agentic_coding_lab/experiments/runs/2026-09-14_15-44-30_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-pi_gpt-5-6-sol-codex-4
 > vitest run
 
 
- RUN  v1.6.1 /home/experimenter/experiments/runs/2026-09-14_15-44-30_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-pi_gpt-5-6-sol-codex-4
+ RUN  v1.6.1 /home/memrich/agentic_coding_lab/experiments/runs/2026-09-14_15-44-30_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-pi_gpt-5-6-sol-codex-4
 
- ✓ src/claim-office.spec.ts  (15 tests) 6ms
+ ✓ src/claim-office.spec.ts  (15 tests) 7ms
 
  Test Files  1 passed (1)
       Tests  15 passed (15)
-   Start at  16:01:32
-   Duration  359ms (transform 61ms, setup 0ms, collect 59ms, tests 6ms, environment 0ms, prepare 87ms)
+   Start at  16:47:43
+   Duration  418ms (transform 66ms, setup 0ms, collect 64ms, tests 7ms, environment 0ms, prepare 75ms)
 ```
 
 ## Coverage
@@ -105,9 +106,9 @@ Generated: 2026-09-14T16:01:30+00:00
 |--------|-------|
 | Cycle Count | 4 |
 | Avg Cycle Time | 0.00s |
-| Avg Red Phase | 0s |
-| Avg Green Phase | 0s |
-| Avg Refactor Phase | 0s |
+| Avg Red Phase | 0.0s |
+| Avg Green Phase | 0.0s |
+| Avg Refactor Phase | 0.0s |
 
 ### Prediction Accuracy (Guessing Game) — Self-Reported
 
