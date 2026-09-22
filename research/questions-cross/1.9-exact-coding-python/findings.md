@@ -17,6 +17,13 @@ three trophies in a row read as "no effect".
 no unambiguous direction and receive no trophy; they appear in the individual
 findings as context.
 
+**This table shows Claim Office only.** Game of Life is training-known, and
+under a minimal instruction both models already produce low-complexity code on
+it, so its cells separate almost nowhere and would pad the overview without
+adding to it. The kata remains part of the RQ and its cells are reported in the
+findings below, where they serve as the control that shows the effect depends on
+the specification being novel.
+
 **Correctness guard — passed.** Every one of the twelve cells clears the 0.90
 gate, so every quality row below is eligible. Correctness (internal) and
 completion within budget are 100 % everywhere; Correctness (external) is
@@ -27,32 +34,26 @@ adding workflow costs a scenario, but not enough to disqualify the cell.
 
 ### Cognitive Complexity, hardest function (`cognitive_max`), lower = better
 
-| Kata | Model | Inline | EXACT v1 | EXACT v1.1 |
-|---|---|---:|---:|---:|
-| Game of Life | GPT-5.6 SOL | 10.4 ± 5.5 | 4.2 ± 1.5 | **3.0 ± 0.7** 🏆 |
-| Game of Life | Opus 5 | 5.0 ± 1.9 | 5.4 ± 3.1 | **3.0 ± 0.7** 🏆 |
-| Claim Office | GPT-5.6 SOL | 14.2 ± 3.6 | **5.0 ± 1.0** 🏆 | **4.8 ± 1.3** 🏆 |
-| Claim Office | Opus 5 | 6.2 ± 1.6 | 7.0 ± 0.7 | **4.6 ± 1.3** 🏆 |
+| Model | Inline | EXACT v1 | EXACT v1.1 |
+|---|---:|---:|---:|
+| GPT-5.6 SOL | 14.2 ± 3.6 | **5.0 ± 1.0** 🏆 | **4.8 ± 1.3** 🏆 |
+| Opus 5 | 6.2 ± 1.6 | 7.0 ± 0.7 | **4.6 ± 1.3** 🏆 |
 
 ### Mutation Score, higher = better
 
 `n` differs by cell; see [Mutation Score coverage](README.md#mutation-score-coverage).
 
-| Kata | Model | Inline | EXACT v1 | EXACT v1.1 |
-|---|---|---:|---:|---:|
-| Game of Life | GPT-5.6 SOL | **0.914 ± 0.035** 🏆 | **0.901 ± 0.047** 🏆 | **0.889 ± 0.087** 🏆 |
-| Game of Life | Opus 5 | **0.932 ± 0.015** 🏆 | **0.924 ± 0.050** 🏆 | 0.904 ± 0.072 |
-| Claim Office | GPT-5.6 SOL | 0.738 ± 0.093 | **0.914 ± 0.004** 🏆 *(n=2)* | — *(n=0)* |
-| Claim Office | Opus 5 | **0.916 ± 0.009** 🏆 | **0.938 ± 0.025** 🏆 | **0.925 ± 0.019** 🏆 |
+| Model | Inline | EXACT v1 | EXACT v1.1 |
+|---|---:|---:|---:|
+| GPT-5.6 SOL | 0.738 ± 0.093 | **0.914 ± 0.004** 🏆 *(n=2)* | — *(n=0)* |
+| Opus 5 | **0.916 ± 0.009** 🏆 | **0.938 ± 0.025** 🏆 | **0.925 ± 0.019** 🏆 |
 
 ### List-price cost per run, lower = better
 
-| Kata | Model | Inline | EXACT v1 | EXACT v1.1 |
-|---|---|---:|---:|---:|
-| Game of Life | GPT-5.6 SOL | **$0.37** 🏆 | $1.63 | $4.75 |
-| Game of Life | Opus 5 | **$1.17** 🏆 | $5.62 | $9.11 |
-| Claim Office | GPT-5.6 SOL | **$0.52** 🏆 | $4.60 | $14.61 |
-| Claim Office | Opus 5 | **$2.70** 🏆 | $17.55 | $28.66 |
+| Model | Inline | EXACT v1 | EXACT v1.1 |
+|---|---:|---:|---:|
+| GPT-5.6 SOL | **$0.52** 🏆 | $4.60 | $14.61 |
+| Opus 5 | **$2.70** 🏆 | $17.55 | $28.66 |
 
 ---
 
