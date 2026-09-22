@@ -125,16 +125,25 @@ the acceptance instrument independent of the agent's own pytest tests. The
 specification text of each is byte-identical to its Java and TypeScript
 sibling; only the closing contract section differs.
 
-## Primary outcomes
+## Primary outcome: code quality
 
-1. **Correctness:** Correctness (external), Correctness (internal), and
-   completion within budget.
-2. **Product quality:** Production LoC, Code Mass (APP), ruff findings,
-   Cognitive Complexity, McCabe cyclomatic complexity, function count, and
-   per-function size.
-3. **TDD behaviour:** test-write blocks, verified RED transitions, test count,
-   prediction accuracy, and refactoring records.
-4. **Efficiency:** duration, tokens, and hypothetical list-price cost.
+The question this RQ exists to answer is whether EXACT Coding improves code
+quality on Python the way it did on TypeScript and Java. The outcomes that carry
+that question are Cognitive Complexity, McCabe cyclomatic complexity,
+per-function size, Code Mass (APP), ruff findings and Mutation Score.
+
+**Correctness is a guard, not a result.** That a test-first instruction reaches
+the correctness ceiling on these katas is established across several RQs and two
+stacks; measuring it again produces no finding. It is carried here for one
+purpose: a quality number from a cell that failed verification is meaningless,
+because low complexity is what a stub looks like. So correctness gates every
+quality comparison, and it is reported only when it **breaks** — a cell below
+the 0.90 gate, or any drop from a perfect score, is a signal worth a finding.
+A cell at 1.00 is the expected state and gets a line, not a section.
+
+The remaining outcomes are context: TDD behaviour (test-write blocks, verified
+RED transitions, test count, prediction accuracy, refactoring records) and
+efficiency (duration, tokens, list-price cost).
 
 ruff's `C901` findings and complexipy's per-function scores are measurement
 carriers and are excluded from `smell_total`. Every other configured ruff
@@ -154,13 +163,14 @@ TypeScript ESLint/SonarJS values.
 Each hypothesis is stated as a replication question against the Java result, so
 a confirmation and a contradiction are equally informative.
 
-- **H1 — correctness already saturated:** as on Java, inline TDD reaches the
-  correctness ceiling on both katas and EXACT Coding adds no correctness. A
-  Python-only correctness gain would mean the Java saturation was a property of
-  that stack, not of the task.
+- **H1 — the guard holds:** every cell stays at or above the 0.90 correctness
+  gate, so every quality comparison below is eligible. This is an assumption to
+  be checked, not a question to be answered; a breach is what would be
+  reportable, and it would invalidate that cell's quality numbers rather than
+  produce a finding about correctness.
 - **H2 — complexity and unit-size benefit reproduces:** both EXACT variants
   lower Complexity Peak and per-function size against inline TDD, as they did in
-  all four Java cells.
+  all four Java cells. **This is the load-bearing hypothesis of the RQ.**
 - **H3 — Mutation Score ordering reproduces:** Mutation Score was the only Java
   outcome that ordered the three methods identically in every model × kata
   combination. If that ordering holds on Python it is evidence for a
@@ -181,7 +191,9 @@ a confirmation and a contradiction are equally informative.
 
 - Never average across katas or models.
 - Compare workflows only within the same model/harness bundle.
-- Correctness gates code-quality and efficiency trophies.
+- Correctness gates code-quality and efficiency trophies. It is a filter on
+  eligibility, never a headline: a row of perfect scores is the expected
+  state and is reported as one line, not as a finding.
 - Timeouts are outcomes and are not refilled.
 - Test count, Test LoC, Production LoC, Code Mass (APP), and process-marker
   counts have ambiguous direction and receive no trophy solely for being lower

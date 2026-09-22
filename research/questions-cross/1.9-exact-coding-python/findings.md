@@ -8,27 +8,22 @@ methods are the columns. **Inline** is the minimal inline-TDD instruction,
 **EXACT v1** the shared-context Predictive TDD workflow, **EXACT v1.1** the same
 workflow with the Refactor step delegated to an isolated subagent.
 
-Correctness and Mutation Score are higher = better; complexity and cost are
-lower = better. Bold values with 🏆 mark the winner of that row. A trophy is
-shared when the gap to the best cell is smaller than **the best cell's** own
-standard deviation, so three trophies in a row read as "no effect". Every cell clears the
-0.90 correctness gate, so all quality and cost rows are eligible.
+Complexity and cost are lower = better, Mutation Score higher = better. Bold
+values with 🏆 mark the winner of that row. A trophy is shared when the gap to
+the best cell is smaller than **the best cell's** own standard deviation, so
+three trophies in a row read as "no effect".
 
 `unit_size_max`, `code_mass`, Production LoC and the process-marker counts have
 no unambiguous direction and receive no trophy; they appear in the individual
 findings as context.
 
-### Correctness (external), higher = better
-
-| Kata | Model | Inline | EXACT v1 | EXACT v1.1 |
-|---|---|---:|---:|---:|
-| Game of Life | GPT-5.6 SOL | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 |
-| Game of Life | Opus 5 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 |
-| Claim Office | GPT-5.6 SOL | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 |
-| Claim Office | Opus 5 | **1.00** 🏆 | **1.00** 🏆 | 0.97 ± 0.04 |
-
-Correctness (internal) is 100 % and completion within budget is 100 % in all
-twelve cells.
+**Correctness guard — passed.** Every one of the twelve cells clears the 0.90
+gate, so every quality row below is eligible. Correctness (internal) and
+completion within budget are 100 % everywhere; Correctness (external) is
+1.00 ± 0.00 in eleven cells. The single deviation is Opus 5 on Claim Office
+under EXACT v1.1 at 0.97 ± 0.04, which misses one of fifteen scenarios in two
+of five runs — worth watching, since it is the only place in this RQ where
+adding workflow costs a scenario, but not enough to disqualify the cell.
 
 ### Cognitive Complexity, hardest function (`cognitive_max`), lower = better
 
@@ -61,27 +56,7 @@ twelve cells.
 
 ---
 
-## F-1.9.1 — Neither EXACT Coding variant improves correctness on the Python tasks
-
-Correctness is saturated under inline TDD. Eleven of twelve cells reach 1.00
-external correctness with zero variance, and internal tests pass in all sixty
-runs. The single exception is Opus 5 on Claim Office under EXACT v1.1, which
-misses one of fifteen scenarios in two of five runs.
-
-| Kata | Model | Inline | EXACT v1 | EXACT v1.1 |
-|---|---|---:|---:|---:|
-| Game of Life | GPT-5.6 SOL | 1.00 ± 0.00 | 1.00 ± 0.00 | 1.00 ± 0.00 |
-| Game of Life | Opus 5 | 1.00 ± 0.00 | 1.00 ± 0.00 | 1.00 ± 0.00 |
-| Claim Office | GPT-5.6 SOL | 1.00 ± 0.00 | 1.00 ± 0.00 | 1.00 ± 0.00 |
-| Claim Office | Opus 5 | 1.00 ± 0.00 | 1.00 ± 0.00 | 0.97 ± 0.04 |
-
-This replicates the Java result: the additional structure buys no correctness
-where a test-first instruction already reaches the ceiling. H1 holds, and the
-finding is now observed on two stacks rather than one.
-
----
-
-## F-1.9.2 — The complexity benefit appears only where the inline baseline is weak
+## F-1.9.1 — The complexity benefit appears only where the inline baseline is weak
 
 EXACT Coding lowers Cognitive Complexity substantially in the two cells where
 inline TDD produced complex code, and does nothing measurable in the two where
@@ -106,6 +81,65 @@ Life with Opus, where it reaches 3.0 ± 0.7 against an inline 5.0 ± 1.9. That g
 of 2.0 just exceeds the inline spread and is the only place where the isolated
 subagent separates from inline TDD on a cell the shared-context variant could
 not improve.
+
+---
+
+## F-1.9.2 — Python reproduces the Java pattern; the TypeScript magnitude belonged to an older model
+
+The question this RQ was opened for is whether the code-quality benefit carries
+over to Python as it did on TypeScript and Java. It does — and the three stacks
+disagree far less than their headline numbers suggest, because the effect tracks
+the inline baseline and the baseline is set by the model, not by the language.
+
+Effect on Cognitive Complexity, expressed as the inline mean divided by the
+EXACT mean. Ratios are within-stack and therefore comparable across stacks;
+the absolute values behind them are not, because SonarJS, PMD and complexipy
+produce different finding populations.
+
+| Stack | Model | Kata | Inline | EXACT v1 | Effect |
+|---|---|---|---:|---:|---:|
+| TypeScript | Opus 4.7 | Game of Life | 21.8 | 6.5 | 3.4× |
+| TypeScript | Opus 4.7 | Claim Office | 19.8 | 5.7 | 3.5× |
+| Python | GPT-5.6 SOL | Claim Office | 14.2 | 5.0 | 2.8× |
+| Python | GPT-5.6 SOL | Game of Life | 10.4 | 4.2 | 2.5× |
+| Java | GPT-5.6 SOL | Game of Life | 9.8 | 5.8 | 1.7× |
+| Java | GPT-5.6 SOL | Claim Office | 9.8 | 5.8 | 1.7× |
+| Java | Opus 5 | Claim Office | 6.6 | 4.4 | 1.5× |
+| Java | Opus 5 | Game of Life | 5.0 | 4.6 | 1.1× |
+| Python | Opus 5 | Claim Office | 6.2 | 7.0 | 0.9× |
+| Python | Opus 5 | Game of Life | 5.0 | 5.4 | 0.9× |
+
+Sorted by effect, the rows sort themselves by inline baseline. Two readings
+follow.
+
+**EXACT Coding sets a floor rather than multiplying.** The EXACT column spans
+4.2 to 7.0 across every stack, model and kata in the table — a factor of 1.7
+between the best and worst result — while the inline column spans 5.0 to 21.8,
+a factor of 4.4. The workflow pulls the hardest function down to roughly the
+same complexity wherever it starts. Where the model already produces code at
+that level, there is nothing left to take away, and the shared-context variant
+costs a little instead.
+
+**The TypeScript result is an Opus 4.7 result.** Its 3.4× is the largest effect
+in the lab's data, and it comes from an inline baseline of ~20. On Opus 5 the
+same instruction on Claim Office produces 6.8 on TypeScript (n=4,
+`baseline-inline-tdd-v1.1-local-git-cc`), against 6.6 on Java and 6.2 on Python.
+The inline baseline fell by a factor of three between the two model generations,
+and the room EXACT Coding used to fill fell with it. The comparison is indicative
+rather than exact — that TypeScript cell uses the `v1.1-local-git` control and a
+different tool chain — but three stacks landing within 0.6 of each other on the
+same model, against ~20 on the previous one, is not a coincidence of tooling.
+
+So the answer to "does it bring quality on Python like on Java and TypeScript"
+is: **on the same model, Python behaves like Java.** Both show a clear benefit
+on GPT-5.6 SOL and next to none on Opus 5. Neither reproduces the TypeScript
+magnitude, and neither should be expected to, because that magnitude belongs to
+a model whose unaided output was three times more complex.
+
+The isolated-refactor variant is the exception worth noting: it reaches
+3.0 ± 0.7 on Game of Life with Opus 5 where the shared-context variant reaches
+5.4 ± 3.1, and 4.6 ± 1.3 against 7.0 ± 0.7 on Claim Office. Where EXACT v1 has
+run out of room on a strong model, v1.1 still finds some — at 1.6× its cost.
 
 ---
 
@@ -245,31 +279,47 @@ Mutation Score (F-1.9.3) rows support the extra spend.
 
 ## Overall interpretation
 
-The Python stack carries EXACT Coding: sixty runs, twelve full cells, internal
-correctness everywhere, external correctness at or near the ceiling in every
-cell, and no infrastructure failure in the measured set.
+**The quality benefit carries over to Python, and it behaves as it did on
+Java.** On GPT-5.6 SOL, EXACT Coding thirds Cognitive Complexity on both katas
+— 2.5× and 2.8×, the largest effects in the lab's data outside the TypeScript
+runs on Opus 4.7. On Opus 5 it produces none in the shared-context variant,
+which is exactly what Java showed on the same model. The language is not the
+variable that decides this; the model's unaided output is (F-1.9.2).
 
-What does not carry over is the expectation the Java RQ set. On Python the
-method's measurable benefit concentrates in one of four model × kata
-combinations — the weaker model on the long novel specification — where it
-thirds Cognitive Complexity, cuts Code Mass (APP) by a third and reduces
-unnoticed behaviour changes from 95 to 17 per run. In the other three
-combinations inline TDD already reaches the correctness ceiling with low
-complexity, and EXACT Coding buys a lower Complexity Peak on two of them at
-8–13× the cost. The Mutation Score ordering that held across all four Java cells
-holds in none of the three evaluable Python ones.
+Read that way, the three stacks agree rather than disagree. EXACT Coding drives
+the hardest function to roughly 4–7 wherever it starts, across every stack,
+model and kata measured. The spectacular TypeScript figure came from starting
+at 20. Opus 5 starts at 5–6.6 on both Java and Python, so there is little left
+to take.
+
+The isolated-refactor variant is the one that still finds room on a strong
+model: lowest Cognitive Complexity in three of four cells, including both Opus 5
+cells where EXACT v1 did nothing. It pays for that with 1.6–3.2× the cost of
+v1, a doubled unit count without a smaller longest unit (F-1.9.7), and the only
+correctness deviation in the RQ.
+
+Two results run against expectation. The Mutation Score ordering that held
+across all four Java cells holds in none of the three evaluable Python ones
+(F-1.9.3), which makes the Java finding a property of PIT's mutant population
+rather than of the method. And the cost of the workflow is 8–28× inline TDD
+(F-1.9.5), which only the Claim Office / SOL cell earns back in measured quality
+(F-1.9.4).
 
 Two limits bound these readings. Mutation Score is missing for one of the four
-combinations entirely (F-1.9.6), so H3 is answered on three, not four. And the
-Claim Office / Opus / v1.1 cell was refilled after provider-side aborts
-concentrated in that arm; the provenance note in
+model × kata combinations entirely (F-1.9.6), so that hypothesis is answered on
+three. And the Claim Office / Opus 5 / v1.1 cell was refilled after provider-side
+aborts concentrated in that arm; the provenance note in
 [README.md](README.md#execution-provenance--2026-09-22-refill) states why that
 repetition is not clearly unbiased.
 
-Comparisons with RQ-exact-coding-java are comparisons of directions and
-orderings only. ruff, PMD and ESLint/SonarJS produce different finding
-populations, and mutmut, PIT and Stryker different mutant populations; the
-absolute values are not interchangeable.
+Correctness is a guard here, not a result: all twelve cells clear the gate, so
+all quality comparisons are eligible. The one deviation — Opus 5 on Claim Office
+under v1.1, 0.97 ± 0.04 — is recorded because a drop is the only thing this
+metric is carried to show.
+
+Cross-stack statements in this document compare effect ratios and orderings, never
+absolute values. ruff, PMD and ESLint/SonarJS produce different finding
+populations, and mutmut, PIT and Stryker different mutant populations.
 
 Data and reproducibility: [summary.md](summary.md), [runs.csv](runs.csv), and
 the design in [README.md](README.md).
