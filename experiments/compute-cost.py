@@ -169,6 +169,10 @@ PRICES = {
     # als die Requesty-Zellen, gegen die sie verglichen wird.
     "gpt-6-astra-codex": (10.00, 50.00, 1.00, 0.0),   # openai-codex/gpt-6-astra
     "gpt-6-astra-codex-no-thinking": (10.00, 50.00, 1.00, 0.0),
+    # GPT-6 Sol, Launch 2026-09-22: $2 / $10 / $0.20 cached (OpenAI-Launch,
+    # TechCrunch, VentureBeat). >272k-Tarifsprung wie bei Sol/Astra nicht
+    # abgebildet.
+    "gpt-6-sol-codex": (2.00, 10.00, 0.20, 0.0),   # openai-codex/gpt-6-sol
     "gpt-5-3-codex-spark": (1.75, 14.00, 0.175, 0.0),  # openai-codex/gpt-5.3-codex-spark
     "gpt-5-6-terra":    (2.50,  15.00, 0.25, 0.0),   # azure/gpt-5.6-terra
     "gpt-5-6-terra-no-thinking": (2.50, 15.00, 0.25, 0.0),

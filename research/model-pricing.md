@@ -33,7 +33,7 @@ Notes:
 
 ## OpenAI subscription route (openai-codex, as of 2026-09-05)
 
-The three models that pi reaches over `openai-codex` (`chatgpt.com/backend-api`, OAuth).
+The models that pi reaches over `openai-codex` (`chatgpt.com/backend-api`, OAuth).
 **Nothing is billed per token on this route** — the values
 are pure comparison prices: what the same work would have cost over the API,
 on the same basis as the Requesty cells they are compared against.
@@ -42,6 +42,7 @@ on the same basis as the Requesty cells they are compared against.
 |---|---|---:|---:|---:|---:|
 | gpt-5-6-sol-codex | `openai-codex/gpt-5.6-sol` | $5.00 | $30.00 | $0.50 | $6.25 |
 | gpt-6-astra-codex | `openai-codex/gpt-6-astra` | $10.00 | $50.00 | $1.00 | $12.50 |
+| gpt-6-sol-codex | `openai-codex/gpt-6-sol` | $2.00 | $10.00 | $0.20 | $0 |
 | gpt-5-3-codex-spark | `openai-codex/gpt-5.3-codex-spark` | $1.75 | $14.00 | $0.175 | $0 |
 
 Sources (each independently cross-checked, 2026-09-05): Astra —
@@ -50,6 +51,12 @@ Sources (each independently cross-checked, 2026-09-05): Astra —
 [pi.dev](https://pi.dev/models/openai/gpt-6-astra); Spark —
 [pi.dev](https://pi.dev/models/openai/gpt-5-3-codex-spark),
 [OpenRouter](https://openrouter.ai/openai/gpt-5.3-codex).
+GPT-6 Sol (added 2026-09-22, launch day) —
+[OpenAI API-Docs](https://developers.openai.com/api/docs/models/gpt-6-sol),
+[TechCrunch](https://techcrunch.com/2026/09/22/openai-launches-gpt-6-sol-and-luna/),
+[VentureBeat](https://venturebeat.com/technology/openai-releases-gpt-6-sol-and-luna-models-slashing-api-costs-50-or-more).
+Its `models.json` entry copies Astra's limits (272,000 / 128,000); no source for
+the codex-route limits was reachable yet, so re-check once pi.dev lists the model.
 
 Notes:
 - **Cache write is irrelevant on this route**, even though it is reported: across

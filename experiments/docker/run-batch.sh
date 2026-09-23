@@ -201,6 +201,12 @@ MODEL_CONFIGS=(
     # modelled: flat-rate subscription, and the models.json entry ships
     # without a `cost` block for that reason.
     "gpt-6-astra-codex|pi-only|false"
+    # Same subscription route (provider openai-codex), fourth model: GPT-6
+    # Sol, successor of gpt-5-6-sol. Codex route only for now; the `-codex`
+    # suffix keeps the route explicit, so a later Requesty id can sit next
+    # to it without merging cells. Reasoning is a property of the codex
+    # route (see the 2x2 block below), so there is no -no-thinking arm.
+    "gpt-6-sol-codex|pi-only|false"
     "gpt-5-6-terra|pi-only|false"
     "glm-5-2|pi-only|false"
     "kimi-k2-7|pi-only|false"
@@ -896,6 +902,7 @@ EOF
                 gpt-5-6-sol-codex-no-thinking) pi_model="openai-codex/gpt-5.6-sol" ;;
                 gpt-6-astra-codex)             pi_model="openai-codex/gpt-6-astra" ;;
                 gpt-6-astra-codex-no-thinking) pi_model="openai-codex/gpt-6-astra" ;;
+                gpt-6-sol-codex)               pi_model="openai-codex/gpt-6-sol" ;;
                 # 2x2 matrix arms. The route id is identical to its base arm --
                 # the reasoning difference lives in the pi-config profile, not
                 # in the model string (a made-up model id is rejected upstream:
