@@ -2,7 +2,7 @@
 
 _Does the apparent platform interaction between PTDD v1.5 and v1.6 replicate at n=10 per cell on Claim Office, or was it driven by small-sample variance?_
 
-Generated: 2026-09-16T17:28:33Z
+Generated: 2026-09-23T05:13:14Z
 
 Cells declared: 4 · matched runs: 40 · min_replicates: 10
 
@@ -196,3 +196,39 @@ Cells declared: 4 · matched runs: 40 · min_replicates: 10
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex  |  10 |   4.78 |  1.34 |  6.25 |  1.43 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |  16.1  |  9.39 | 22.71 |  4.28 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |   4.76 |  0.46 |  7.31 |  2.55 |
+
+### mutation_score
+
+| kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |   0.96 |  0.91 |  0.99 |  0.03 |
+| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex  |  10 |   0.89 |  0.8  |  0.96 |  0.05 |
+| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |   0.92 |  0.8  |  0.99 |  0.06 |
+| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |   0.78 |  0    |  0.94 |  0.28 |
+
+### mutants_total
+
+| kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |  125.7 |   116 |   145 | 10.14 |
+| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex  |  10 |  117.4 |    99 |   153 | 15.61 |
+| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |  134.1 |   124 |   159 | 11.57 |
+| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |  130.7 |   110 |   182 | 23.43 |
+
+### mutants_survived
+
+| kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |    4.5 |     1 |    11 |  3.6  |
+| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex  |  10 |   13.3 |     4 |    26 |  5.74 |
+| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |   10.4 |     1 |    26 |  8.68 |
+| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |   27.7 |     8 |   112 | 30.42 |
+
+### mutants_no_coverage
+
+| kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |    1.9 |     0 |     9 |  3.14 |
+| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex  |  10 |    3.8 |     0 |     6 |  1.55 |
+| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |    5.8 |     0 |    19 |  6.61 |
+| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |    4.9 |     0 |    10 |  3.07 |
