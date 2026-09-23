@@ -65,7 +65,7 @@ It removes experiment-specific autonomy,
 completion, and measurement content, restores configurable human checkpoints, and gates
 the workflow behind explicit invocation.
 
-Validated on `gpt-5-6-sol-codex` with pi and native Opus 5 with Claude Code in `RQ-test-list-dimensions-replication` (n=10 per workflow and platform cell on Claim Office). Other harness directories are semantic distribution ports and
+Validated on `gpt-5-6-sol-codex` with pi and native Opus 5 with Claude Code on all three stacks: TypeScript/Vitest in `RQ-test-list-dimensions-replication` (n=10 per workflow and platform cell on Claim Office), Java/JUnit 5/Maven in `RQ-exact-coding-java` and Python/pytest in `RQ-exact-coding-python` (n=5 per cell on Claim Office and Game of Life, each including the isolated-refactor variant). Other harness directories are semantic distribution ports and
 have not yet been validated as independent cross-harness experiment cells.
 
 ## Credits

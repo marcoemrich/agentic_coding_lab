@@ -332,8 +332,12 @@ def readme(source: str, stamp: str, harnesses: tuple[str, ...], domain_boundary:
     )
     validation = (
         "Validated on `gpt-5-6-sol-codex` with pi and native Opus 5 with "
-        "Claude Code in `RQ-test-list-dimensions-replication` (n=10 per "
-        "workflow and platform cell on Claim Office)."
+        "Claude Code on all three stacks: TypeScript/Vitest in "
+        "`RQ-test-list-dimensions-replication` (n=10 per workflow and "
+        "platform cell on Claim Office), Java/JUnit 5/Maven in "
+        "`RQ-exact-coding-java` and Python/pytest in `RQ-exact-coding-python` "
+        "(n=5 per cell on Claim Office and Game of Life, each including the "
+        "isolated-refactor variant)."
         if source == "exact-ptdd-v1-pi"
         else "Validated on `gpt-5-6-sol-codex` with pi in "
         "`RQ-stack-profile-extraction-sol` (20/20 fresh runs internally and "
