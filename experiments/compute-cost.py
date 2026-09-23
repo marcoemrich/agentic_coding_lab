@@ -48,6 +48,14 @@ PRICES = {
     # Anthropic-Listpreis 5.00/25.00/0.50/6.25 — NICHT der Requesty-Tarif.
     "opus-5":           (5.00,  25.00, 0.50, 6.25),
     "opus-5-no-thinking": (5.00, 25.00, 0.50, 6.25),
+    # opus-5-5: nativ (claude-opus-5-5 via OAuth-Bypass), Anthropic-Listpreis
+    # 4.00/20.00/0.20/5.00 (platform.claude.com/docs Models-Overview +
+    # claude.com/pricing, abgerufen 2026-09-23). Der cache_read-Multiplikator
+    # ist 0.05x statt der sonst üblichen 0.1x — auf den cache-lastigen
+    # EXACT-Coding-Workflows entscheidet genau der die Kostenreihenfolge, also
+    # bei jedem opus-5-gegen-opus-5-5-Vergleich zuerst total_tokens lesen.
+    "opus-5-5":         (4.00,  20.00, 0.20, 5.00),
+    "opus-5-5-no-thinking": (4.00, 20.00, 0.20, 5.00),
     # fable-5 / fable-5-1: nativ (bare claude-fable-* via OAuth-Bypass), echter
     # Anthropic-Listpreis 10.00/50.00/*/12.50 (5m-cache-write). Der cache_read
     # unterscheidet die beiden: Fable 5 rechnet den Standard-0.1x-Multiplikator

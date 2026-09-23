@@ -85,6 +85,18 @@ MODEL_CONFIGS=(
     # mounted ~/.claude/.credentials.json (native OAuth) and hits the native
     # Anthropic API at list price. Without the bypass the native alias would be
     # sent to the Requesty route and 403 (see the opus-4-8-requesty note below).
+    # opus-5-5: nativ wie opus-5 (bare claude-* -> OAuth-Bypass, Subscription).
+    # ACHTUNG, das `-no-thinking`-Label ist hier nur noch nominell: Opus 5.5
+    # denkt laut Modell-Seite *adaptive (always on)*, und der manuelle
+    # thinking.type-"enabled"-Modus wird ab 4.6 nicht mehr akzeptiert.
+    # MAX_THINKING_TOKENS=0 bleibt gesetzt (Zeile ~1075), aber ob es die
+    # Reasoning-Blöcke tatsächlich unterdrückt, ist nicht garantiert — Fable 5.1
+    # produzierte trotz thinking=false 37 Thinking-Blöcke (RQ-fable-vs-opus5).
+    # Die Zelle heisst trotzdem `-no-thinking`, damit sie gegen die bestehenden
+    # opus-5-no-thinking-Zellen aggregiert; der Unterschied ist als Caveat in
+    # RQ-opus55-current-workflow dokumentiert, nicht wegdefiniert.
+    "opus-5-5|claude-opus-5-5|true"
+    "opus-5-5-no-thinking|claude-opus-5-5|false"
     "opus-5|claude-opus-5|true"
     "opus-5-no-thinking|claude-opus-5|false"
     "opus-4-8|claude-opus-4-8|true"

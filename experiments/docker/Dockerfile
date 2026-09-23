@@ -61,8 +61,14 @@ ENV UV_CACHE_DIR=/home/experimenter/.cache/uv
 #   ("does not support this model; version 2.1.251 or newer is required"),
 #   the model itself is reachable on the Max subscription. Bumped for
 #   RQ-fable-vs-opus5; see that RQ for the regression evidence.
+# 2.1.280: required for Opus 5.5 — 2.1.267 gets the same hard 400 one
+#   generation on ("does not support this model; version 2.1.280 or newer is
+#   required"), smoke died after 2s. 2.1.267 also does not carry the model in
+#   its catalog, which silently caps auto-compact at 200k on a 1M-context
+#   model. Bumped for RQ-opus55-current-workflow; see that RQ for the gate
+#   evidence and the regression runs.
 # Known bad: 2.1.37 (hangs on .claude/agents/), 2.1.126 (needs ~/.claude.json).
-RUN npm install -g @anthropic-ai/claude-code@2.1.267
+RUN npm install -g @anthropic-ai/claude-code@2.1.280
 
 # Install OpenCode CLI (second harness).
 # 1.15.10: verified end-to-end on 2026-05-25 with v1-oneshot-oc +
