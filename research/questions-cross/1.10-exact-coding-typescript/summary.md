@@ -2,7 +2,7 @@
 
 _On TypeScript with Vitest, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness and code quality for GPT-5.6 SOL and Opus 5?_
 
-Generated: 2026-09-22T15:16:41Z
+Generated: 2026-09-23T04:26:16Z
 
 Cells declared: 6 · matched runs: 40 · min_replicates: 5
 
@@ -379,3 +379,14 @@ Cells declared: 6 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi                      | gpt-5-6-sol-codex  |  10 |  27.7  |     8 |   112 | 30.42 |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-no-thinking |   5 |  18    |     1 |    37 | 15.3  |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi  | gpt-5-6-sol-codex  |   4 |  16.75 |    11 |    24 |  5.44 |
+
+### mutants_no_coverage
+
+| kata                         | cell_workflow                         | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:--------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-cc | opus-5-no-thinking |   5 |    0.8 |     0 |     2 |  1.1  |
+| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-pi | gpt-5-6-sol-codex  |   5 |   12.2 |     0 |    22 |  8.07 |
+| claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-no-thinking |  10 |    5.8 |     0 |    19 |  6.61 |
+| claim-office-example-mapping | exact-ptdd-v1-pi                      | gpt-5-6-sol-codex  |  10 |    4.9 |     0 |    10 |  3.07 |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-no-thinking |   5 |   15.2 |     0 |    33 | 13.95 |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi  | gpt-5-6-sol-codex  |   4 |    4   |     3 |     6 |  1.41 |

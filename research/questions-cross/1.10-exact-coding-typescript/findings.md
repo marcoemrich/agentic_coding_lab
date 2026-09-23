@@ -20,6 +20,12 @@ Production LoC, Code Mass (APP), Test LoC, test count, unit count and
 `mutants_total` have no unambiguous direction and receive no trophy; they appear
 below as context.
 
+`mutants_survived` is split into its two parts. A **Survived** mutant means a
+test ran the mutated line and still passed — a weak assertion. An **uncovered**
+one (`mutants_no_coverage`) means no test reaches the line at all — untested
+code. Mutation Score cannot tell them apart, and on Opus they separate arms
+whose scores are identical (F-1.10.8).
+
 **Correctness guard — passed.** All six cells clear the 0.90 gate, so every
 quality row is eligible. Correctness (internal) is 100 % in all six. Correctness
 (external) is 1.00 ± 0.00 in five cells; the single deviation is Opus 5 under
@@ -48,6 +54,7 @@ timeout.
 | *Test LoC* | 404.2 ± 43.0 | 599.1 ± 258.6 | 415.0 ± 21.2 |
 | *`unit_count`* | 15.8 ± 2.17 | 25.3 ± 4.42 | 40.2 ± 4.82 |
 | *`mutants_total` / survived* | 135 / 13.8 | 134 / 10.4 | 156 / 18.0 |
+| *of those uncovered* | 0.8 ± 1.10 | 5.8 ± 6.61 | 15.2 ± 13.95 |
 | *`total_tokens`* | 2.55 M | 21.4 M | 48.4 M |
 
 ### GPT-5.6 SOL — pi
@@ -72,6 +79,7 @@ timeout.
 | *Test LoC* | 122.6 ± 27.3 | 220.6 ± 71.3 | 266.4 ± 70.8 |
 | *`unit_count`* | 16.4 ± 4.83 | 13.7 ± 4.06 | 32.2 ± 4.66 |
 | *`mutants_total` / survived* | 204 / 47.6 | 133 / 18.3 *(n=9)* | 143 / 16.8 *(n=4)* |
+| *of those uncovered* | 12.2 ± 8.07 | 5.4 ± 2.70 *(n=9)* | 4.0 ± 1.41 *(n=4)* |
 | *`total_tokens`* | 0.34 M | 6.88 M | 17.5 M |
 
 Smell Total is identical at 0.0 in all three GPT-5.6 SOL cells. There is no
@@ -131,6 +139,13 @@ The same shape appears on SOL but far weaker: `unit_count` 13.7 → 32.2 with
 Production LoC 171.5 → 265.2 (+55 %), and Code Mass (APP) actually *rises less*
 than on Opus. On neither model does the extra structure buy correctness: Opus
 loses external correctness (0.99 → 0.96) and SOL stays at 1.00.
+
+The mutation decomposition shows what happens to the added code on Opus. While
+Production LoC doubles, the number of mutants the suite never reaches rises from
+5.8 to 15.2 per run, and the number it reaches but fails to kill *falls* from 4.6
+to 2.8. The suite gets sharper where it looks and stops looking at more of the
+product — see
+[F-1.10.8](#f-1108--on-opus-the-arms-miss-mutants-for-opposite-reasons).
 
 ---
 
@@ -268,6 +283,49 @@ up in shape (F-1.10.1) rather than in test power.
 
 ---
 
+## F-1.10.8 — On Opus the arms miss mutants for opposite reasons
+
+Mutation Score is indistinguishable across the three Opus cells (0.90 / 0.92 /
+0.89, every gap inside every cell's own standard deviation). Splitting the missed
+mutants shows that the three suites are not alike at all.
+
+| Opus, per run | Inline | EXACT v1 | EXACT v1.1 |
+|---|---:|---:|---:|
+| Survived — reached, not killed | 13.0 | 4.6 | 2.8 |
+| Uncovered — never reached | 0.8 ± 1.10 | 5.8 ± 6.61 | 15.2 ± 13.95 |
+| Uncovered share of misses | 6 % | 56 % | 84 % |
+
+The Inline suite reaches essentially all of the product and asserts weakly
+against it: 13.0 mutants per run survive execution, 0.8 go untouched. EXACT v1.1
+is the mirror image: 2.8 survive execution — the sharpest assertions of the three
+— while 15.2 mutants per run are never reached at all. The score averages these
+two failure modes into the same number.
+
+**The uncovered counts are bimodal, not uniform.** Per-run values expose it:
+
+| Arm | Uncovered mutants per run |
+|---|---|
+| Inline | 0, 0, 0, 2, 2 |
+| EXACT v1 | 0, 0, 2, 2, 3, 4, 4, 8, 16, 19 |
+| EXACT v1.1 | 0, 2, 20, 21, 33 |
+
+Two of five EXACT v1.1 runs leave almost nothing uncovered; three leave 20 to 33
+mutants untouched. The cell mean of 15.2 therefore describes a split population
+rather than a typical run, which is what the standard deviation of 13.95 says.
+The reliable part of the finding is the Inline arm's floor — 5 of 5 runs at or
+below 2 — and the fact that uncovered regions appear at all once the structured
+workflow is used.
+
+On SOL the pattern does not reproduce: uncovered shares run 26 % / 30 % / 24 %
+across the three arms, with the Inline arm carrying the *most* uncovered mutants
+(12.2 per run) rather than the fewest.
+
+Practical consequence: on Opus, Mutation Score alone cannot be used to compare
+these arms, and the uncovered count is the part worth acting on — it points at
+product regions no test visits, which is a gap a reader of the score would never
+see.
+
+---
 ## Caveats
 
 - **Single kata.** All conclusions are about Claim Office under Example Mapping.

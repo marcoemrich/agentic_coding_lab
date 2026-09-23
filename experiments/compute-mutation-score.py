@@ -85,8 +85,8 @@ STRYKER_CONFIG = {
 # lower the count of survivors the same way. Only the pair separates "the
 # tests got stronger" from "there is less to test".
 MutationResult = collections.namedtuple(
-    "MutationResult", ["score", "total", "survived"])
-EMPTY_RESULT = MutationResult(None, None, None)
+    "MutationResult", ["score", "total", "survived", "no_coverage"])
+EMPTY_RESULT = MutationResult(None, None, None, None)
 
 
 def run_stack(run_dir: Path, metrics: dict | None = None) -> str:
@@ -111,11 +111,22 @@ def run_stack(run_dir: Path, metrics: dict | None = None) -> str:
     return "typescript-vitest"
 
 
-def _result_from_counts(detected: int, survived: int) -> MutationResult:
+def _result_from_counts(detected: int, survived: int,
+                        no_coverage: int = 0) -> MutationResult:
+    """Assemble a result from the two score terms plus the uncovered part.
+
+    `survived` is the whole part of the denominator the suite did not catch;
+    `no_coverage` is the subset of it that no test even reached. The two are
+    reported separately because they say different things about a suite: a
+    Survived mutant means a test ran the mutated line and still passed (a weak
+    assertion), while an uncovered one means no test goes there at all
+    (untested code). The score cannot tell them apart, and the distinction has
+    separated arms whose scores were identical.
+    """
     total = detected + survived
     if total == 0:
         return EMPTY_RESULT
-    return MutationResult(detected / total, total, survived)
+    return MutationResult(detected / total, total, survived, no_coverage)
 
 
 def mutation_score_from_report(report: dict) -> MutationResult:
@@ -135,8 +146,9 @@ def mutation_score_from_report(report: dict) -> MutationResult:
             status = mutant.get("status", "")
             counts[status] = counts.get(status, 0) + 1
     detected = counts.get("Killed", 0) + counts.get("Timeout", 0)
-    survived = counts.get("Survived", 0) + counts.get("NoCoverage", 0)
-    return _result_from_counts(detected, survived)
+    no_coverage = counts.get("NoCoverage", 0)
+    survived = counts.get("Survived", 0) + no_coverage
+    return _result_from_counts(detected, survived, no_coverage)
 
 
 # --- Java / PIT ---------------------------------------------------------
@@ -266,8 +278,9 @@ def mutation_score_from_pit_report(report_path: Path) -> MutationResult:
         counts[status] = counts.get(status, 0) + 1
     detected = (counts.get("KILLED", 0) + counts.get("TIMED_OUT", 0)
                 + counts.get("MEMORY_ERROR", 0))
-    survived = counts.get("SURVIVED", 0) + counts.get("NO_COVERAGE", 0)
-    return _result_from_counts(detected, survived)
+    no_coverage = counts.get("NO_COVERAGE", 0)
+    survived = counts.get("SURVIVED", 0) + no_coverage
+    return _result_from_counts(detected, survived, no_coverage)
 
 
 def run_pitest(run_dir: Path, timeout_seconds: int, log) -> MutationResult:
@@ -395,8 +408,9 @@ def mutation_score_from_mutmut_stats(stats_path: Path) -> MutationResult:
     except (OSError, json.JSONDecodeError):
         return EMPTY_RESULT
     detected = stats.get("killed", 0) + stats.get("timeout", 0)
-    survived = stats.get("survived", 0) + stats.get("no_tests", 0)
-    return _result_from_counts(detected, survived)
+    no_coverage = stats.get("no_tests", 0)
+    survived = stats.get("survived", 0) + no_coverage
+    return _result_from_counts(detected, survived, no_coverage)
 
 
 def ensure_mutmut_installed(run_dir: Path, log) -> bool:
@@ -607,6 +621,7 @@ def update_metrics_json(metrics_path: Path, result: MutationResult) -> None:
     final["mutation_score"] = result.score
     final["mutants_total"] = result.total
     final["mutants_survived"] = result.survived
+    final["mutants_no_coverage"] = result.no_coverage
     metrics_path.write_text(json.dumps(metrics, indent=2) + "\n")
 
 
@@ -628,6 +643,60 @@ def eligible(metrics: dict, force: bool) -> tuple[bool, str]:
     return True, ""
 
 
+def report_result_for(run_dir: Path) -> MutationResult:
+    """Parse the engine report a previous run left in place, without re-running.
+
+    Returns EMPTY_RESULT when the report is absent or unreadable. Engine
+    reports live under gitignored paths, so they survive only until the working
+    tree is cleaned — which is what makes a backfill from them time-limited
+    rather than always available.
+    """
+    stack = run_stack(run_dir)
+    if stack == "java-junit-maven":
+        path = run_dir / "target" / "pit-reports" / "mutations.xml"
+        return mutation_score_from_pit_report(path) if path.is_file() \
+            else EMPTY_RESULT
+    if stack == "python-pytest":
+        path = run_dir / MUTMUT_STATS
+        return mutation_score_from_mutmut_stats(path) if path.is_file() \
+            else EMPTY_RESULT
+    path = run_dir / "reports" / "mutation" / "mutation-report.json"
+    if not path.is_file():
+        return EMPTY_RESULT
+    try:
+        return mutation_score_from_report(json.loads(path.read_text()))
+    except (OSError, json.JSONDecodeError):
+        return EMPTY_RESULT
+
+
+def backfill_from_reports(rq_id: str, matched: list) -> int:
+    """Rewrite the mutation fields of every matched run from its own report.
+
+    A run whose report is gone is left untouched rather than zeroed: the score
+    it already carries is real, and overwriting it with null would destroy data
+    that cannot be recovered without re-running the engine.
+    """
+    n_written = n_unchanged = n_no_report = 0
+    for m_file, *_rest in matched:
+        run_dir = m_file.parent
+        result = report_result_for(run_dir)
+        if result.score is None:
+            n_no_report += 1
+            print(f"  no usable report, left as is: {run_dir.name}",
+                  file=sys.stderr)
+            continue
+        before = (json.loads(m_file.read_text()).get("final_metrics")
+                  or {}).get("mutants_no_coverage")
+        update_metrics_json(m_file, result)
+        if before == result.no_coverage:
+            n_unchanged += 1
+        else:
+            n_written += 1
+    print(f"{rq_id}: backfilled={n_written}, already current={n_unchanged}, "
+          f"no report={n_no_report}", file=sys.stderr)
+    return 0
+
+
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(
         description=__doc__,
@@ -643,6 +712,10 @@ def main(argv: list[str]) -> int:
                         help="list eligible runs without running mutation tests")
     parser.add_argument("--force", action="store_true",
                         help="recompute even if mutation_score is already set")
+    parser.add_argument("--from-reports", action="store_true",
+                        help="re-derive the counts from each run's existing "
+                             "engine report instead of running the engine; "
+                             "use to backfill fields added after a run scored")
     args = parser.parse_args(argv)
 
     md_in = args.rq_path / "README.md" if args.rq_path.is_dir() else args.rq_path
@@ -660,6 +733,9 @@ def main(argv: list[str]) -> int:
 
     cells = agg.expand_cells(fm)
     matched, _by_cell = agg.collect_runs(cells)
+
+    if args.from_reports:
+        return backfill_from_reports(rq_id, matched)
 
     n_total = len(matched)
     n_already = 0
