@@ -157,6 +157,21 @@ subtrees.
   and no grep over imports reveals the dependency.
 - System Python on this host is PEP 668 externally managed; a plain `pip3 install --user`
   is refused. Use `--break-system-packages` for the user site, or a venv.
+- **Ein Host-pnpm neuer als der Container-Pin macht grüne TS-Runs rot.** pnpm ≥ 10
+  liest den `pnpm`-Key in `package.json` nicht mehr und schreibt darüber eine
+  Warnung auf **stderr**. Suiten, die den CLI per `spawnSync("pnpm", …)` starten
+  und korrekt `stderr === ""` prüfen, fallen dann aus einem Grund, der nichts mit
+  dem Agent-Code zu tun hat: `analyze-run.sh` schreibt `tests_passing: false`
+  **und nullt die Coverage**, `exit_reason` bleibt `ok`, und die Zelle sieht in der
+  Aggregation nach einem Workflow-Befund aus. Gemessen 2026-09-23: Host-pnpm
+  11.25.0 gegen Pin 9.15.9, 4 von 40 Runs gekippt, alle mit CLI-stderr-Assertion;
+  mit pnpm 9.15.9 im PATH dieselbe Suite 41/41 grün.
+  `analyze-run.sh` und `compute-mutation-score.py` entfernen den `pnpm`-Key
+  darum für die Dauer des Testlaufs und stellen die Datei danach wortgleich
+  wieder her. Die Warnung über die Versionsdifferenz bleibt zusätzlich stehen —
+  wer sie in Per-Run-Logs umleitet, sieht sie nicht, also nach einer
+  Host-Reanalyse `tests_passing` und `coverage` gegen den Vorzustand prüfen
+  (`git diff` auf die `metrics.json`) statt nur auf Skript-Fehler zu achten.
 - **Java mutation testing needs a JDK ≤ 21 on the host**, independent of the host default.
   PIT's bundled ASM cannot read Java 25 class files, and it reads core classes from the
   *running* JVM — on a JDK 25 host that fails as `Unsupported class file major version 69`

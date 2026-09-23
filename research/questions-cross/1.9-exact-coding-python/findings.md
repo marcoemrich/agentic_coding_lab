@@ -324,3 +324,39 @@ populations, and mutmut, PIT and Stryker different mutant populations.
 
 Data and reproducibility: [summary.md](summary.md), [runs.csv](runs.csv), and
 the design in [README.md](README.md).
+
+---
+
+## F-1.9.8 — Python's missed mutants are weak assertions, not untested code
+
+`mutants_survived` contains two different failures. A **Survived** mutant means a
+test ran the mutated line and still passed — the assertion is too loose. An
+**uncovered** one means no test reaches the line at all. Mutation Score adds them
+together, and separating them shows that on this stack almost all of the gap is
+the first kind.
+
+| Kata | Model | Inline | EXACT v1 | EXACT v1.1 |
+|---|---|---:|---:|---:|
+| Claim Office | Opus 5 | 0.0 | 0.0 | 0.8 ± 2.04 |
+| Claim Office | GPT-5.6 SOL | **20.8 ± 46.51** | 0.0 *(n=2)* | — |
+| Game of Life | Opus 5 | 0.0 | 1.2 ± 1.64 | 1.6 ± 2.30 |
+| Game of Life | GPT-5.6 SOL | 0.0 | 0.0 | 1.2 ± 1.64 |
+
+Ten of the eleven measurable cells sit at or below 1.6 uncovered mutants per run,
+most of them at exactly zero. The suites in this RQ reach essentially all of the
+production code; where they fail, they fail by asserting too little. That makes
+the score and the absolute survivor count interchangeable here as directional
+evidence, which is not true on every stack.
+
+**The one exception is a single run, and it is real rather than an artefact.** The
+Claim Office / SOL / inline cell's mean of 20.8 comes entirely from one run with
+104 uncovered mutants out of 385; the other four are at zero. That run is also
+the weakest suite in the cell (score 0.57 against 0.72 to 0.80) and its
+`coverage_statements_pct` reads 62 % against 79 to 81 % for its siblings — an
+independent instrument agreeing that a large region is untested. The σ of 46.51
+is the correct warning that this cell describes two different populations.
+
+Read with [F-1.9.6](#f-196--on-claim-office-the-sol-ports-write-end-to-end-suites-and-that-is-measurable):
+the SOL inline arm on Claim Office is the place where suite quality is fragile on
+this stack, and this finding adds that its failure mode is usually a loose
+assertion and occasionally an outright hole.

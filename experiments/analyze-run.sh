@@ -467,6 +467,22 @@ analyze_single_run() {
             report_content+="| Branches | ${cov_branches}% |\n\n"
         fi
     elif [ -f "$run_dir/package.json" ] && [ -d "$run_dir/node_modules" ]; then
+        # A host pnpm newer than the container pin no longer reads the `pnpm`
+        # key in package.json and warns about it on stderr. Suites that spawn
+        # the CLI through pnpm and correctly assert empty stderr then fail for
+        # a reason that has nothing to do with the agent's code, and the run is
+        # recorded as red with its coverage zeroed. The key has already served
+        # its purpose at install time, so hide it while the suite runs and
+        # restore the file verbatim afterwards — the same treatment
+        # compute-mutation-score.py applies around Stryker, for the same reason.
+        local pkg_backup=""
+        if command -v jq &> /dev/null && \
+           jq -e 'has("pnpm")' "$run_dir/package.json" > /dev/null 2>&1; then
+            pkg_backup="$run_dir/.package.json.analyze-backup"
+            cp "$run_dir/package.json" "$pkg_backup"
+            jq 'del(.pnpm)' "$pkg_backup" > "$run_dir/package.json"
+        fi
+
         test_output=$(cd "$run_dir" && pnpm test 2>&1) || true
         echo "$test_output"
 
@@ -513,6 +529,12 @@ analyze_single_run() {
             else
                 echo -e "  ${YELLOW}Coverage data not available${NC}"
             fi
+        fi
+
+        # The recorded artifact must leave this function exactly as the agent
+        # left it, coverage step included — it also shells out to pnpm.
+        if [ -n "$pkg_backup" ] && [ -f "$pkg_backup" ]; then
+            mv "$pkg_backup" "$run_dir/package.json"
         fi
     else
         echo -e "  ${YELLOW}Project dependencies are unavailable in $run_dir${NC}"

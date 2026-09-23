@@ -2,7 +2,7 @@
 
 _On Python with pytest, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness and code quality for GPT-5.6 SOL and Opus 5?_
 
-Generated: 2026-09-22T13:18:31Z
+Generated: 2026-09-23T05:03:53Z
 
 Cells declared: 12 · matched runs: 65 · min_replicates: 5
 
@@ -595,3 +595,19 @@ Cells declared: 12 · matched runs: 65 · min_replicates: 5
 | game-of-life-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |   4.8  |     2 |     9 |  2.95 |
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   3.6  |     2 |     7 |  2.3  |
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   3.2  |     2 |     5 |  1.64 |
+
+### mutants_no_coverage
+
+| kata                                | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
+|:------------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-python-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |   0    |     0 |     0 |  0    |
+| claim-office-python-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 |  20.8  |     0 |   104 | 46.51 |
+| claim-office-python-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |   0    |     0 |     0 |  0    |
+| claim-office-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   2 |   0    |     0 |     0 |  0    |
+| claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   6 |   0.83 |     0 |     5 |  2.04 |
+| game-of-life-python-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |   0    |     0 |     0 |  0    |
+| game-of-life-python-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   6 |   0    |     0 |     0 |  0    |
+| game-of-life-python-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |   1.2  |     0 |     3 |  1.64 |
+| game-of-life-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |   0    |     0 |     0 |  0    |
+| game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   1.6  |     0 |     5 |  2.3  |
+| game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   1.2  |     0 |     3 |  1.64 |

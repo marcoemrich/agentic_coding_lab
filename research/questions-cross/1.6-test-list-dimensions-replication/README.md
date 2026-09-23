@@ -31,6 +31,10 @@ outcomes:
   - duration_seconds
   - total_tokens
   - cost_usd
+  - mutation_score
+  - mutants_total
+  - mutants_survived
+  - mutants_no_coverage
 min_replicates: 10
 status: aktiv
 ---

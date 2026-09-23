@@ -50,6 +50,7 @@ outcomes:
   - mutation_score
   - mutants_total
   - mutants_survived
+  - mutants_no_coverage
 min_replicates: 5
 status: answered
 ---

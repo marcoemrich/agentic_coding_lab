@@ -1,6 +1,6 @@
 # Analysis Report: 2026-09-16_16-54-55_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex
 
-Generated: 2026-09-22T17:06:46+02:00
+Generated: 2026-09-23T06:59:02+02:00
 
 ## Configuration
 
@@ -26,10 +26,9 @@ Generated: 2026-09-22T17:06:46+02:00
 
 ## Test Results
 
-**Status**: ❌ Tests failed or not runnable
+**Status**: ✅ All tests passing (39 passed)
 
 ```
-[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
 
 > tdd-experiment-run@ test /home/memrich/agentic_coding_lab/experiments/runs/2026-09-16_16-54-55_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex
 > vitest run
@@ -37,38 +36,20 @@ Generated: 2026-09-22T17:06:46+02:00
 
  RUN  v1.6.1 /home/memrich/agentic_coding_lab/experiments/runs/2026-09-16_16-54-55_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex
 
- ❯ src/claim-office.spec.ts  (39 tests | 1 failed) 11265ms
-   ❯ src/claim-office.spec.ts > MHPCO claim office > reads the normative quote-then-claim schema from stdin and writes ordered JSON results to stdout
-     → expected '[WARN] The "pnpm" field in package.js…' to be '' // Object.is equality
+ ✓ src/claim-office.spec.ts  (39 tests) 11719ms
 
-⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
-
- FAIL  src/claim-office.spec.ts > MHPCO claim office > reads the normative quote-then-claim schema from stdin and writes ordered JSON results to stdout
-AssertionError: expected '[WARN] The "pnpm" field in package.js…' to be '' // Object.is equality
-
-- Expected
-+ Received
-
-+ [WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
-+
-
- ❯ src/claim-office.spec.ts:246:30
-    244|     ] });
-    245|     expect(execution.status).toBe(0);
-    246|     expect(execution.stderr).toBe("");
-       |                              ^
-    247|     expect(JSON.parse(execution.stdout)).toEqual({ results: [{ premium…
-    248|   });
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
-
- Test Files  1 failed (1)
-      Tests  1 failed | 38 passed (39)
-   Start at  17:06:48
-   Duration  11.67s (transform 82ms, setup 0ms, collect 78ms, tests 11.27s, environment 0ms, prepare 74ms)
-
- ELIFECYCLE  Test failed. See above for more details.
+ Test Files  1 passed (1)
+      Tests  39 passed (39)
+   Start at  06:59:04
+   Duration  12.10s (transform 77ms, setup 0ms, collect 69ms, tests 11.72s, environment 0ms, prepare 83ms)
 ```
+
+## Coverage
+
+| Metric | Coverage |
+|--------|----------|
+| Statements | 90% |
+| Branches | 86% |
 
 ## APP Mass Estimation
 

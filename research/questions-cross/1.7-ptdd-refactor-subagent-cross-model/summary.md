@@ -2,20 +2,20 @@
 
 _Does isolating only the per-cycle Refactor phase improve PTDD v1 product structure enough to justify its context cost on native Opus and GPT-5.6 SOL/pi?_
 
-Generated: 2026-09-17T02:32:41Z
+Generated: 2026-09-23T05:02:15Z
 
 Cells declared: 4 · matched runs: 30 · min_replicates: 5
 
-## Zell-Coverage
+## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-no-thinking | 10 | 10 | ✅ |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking | 5 | 4 | ⚠️ nur 4/5 ohne Timeout |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking | 5 | 4 | ⚠️ only 4/5 without timeout |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-5-6-sol-codex | 10 | 10 | ✅ |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex | 5 | 5 | ✅ |
 
-## Outcome-Pivots (pro Zelle)
+## Outcome pivots (per cell)
 
 ### verification_pct
 
@@ -178,3 +178,39 @@ Cells declared: 4 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |  10 |   4.76 |  0.46 |  7.31 |  2.55 |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |  32.05 | 20.24 | 39.18 |  7.85 |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |  18.27 | 16.41 | 23.6  |  3.05 |
+
+### mutation_score
+
+| kata                         | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |  10 |   0.92 |  0.8  |  0.99 |  0.06 |
+| claim-office-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |  10 |   0.78 |  0    |  0.94 |  0.28 |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   0.89 |  0.75 |  0.99 |  0.1  |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   4 |   0.88 |  0.86 |  0.91 |  0.02 |
+
+### mutants_total
+
+| kata                         | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |  10 |  134.1 |   124 |   159 | 11.57 |
+| claim-office-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |  10 |  130.7 |   110 |   182 | 23.43 |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |  156   |   125 |   175 | 20.59 |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   4 |  143   |   129 |   171 | 19.58 |
+
+### mutants_survived
+
+| kata                         | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |  10 |  10.4  |     1 |    26 |  8.68 |
+| claim-office-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |  10 |  27.7  |     8 |   112 | 30.42 |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |  18    |     1 |    37 | 15.3  |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   4 |  16.75 |    11 |    24 |  5.44 |
+
+### mutants_no_coverage
+
+| kata                         | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
+|:-----------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
+| claim-office-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |  10 |    5.8 |     0 |    19 |  6.61 |
+| claim-office-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |  10 |    4.9 |     0 |    10 |  3.07 |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   15.2 |     0 |    33 | 13.95 |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   4 |    4   |     3 |     6 |  1.41 |
