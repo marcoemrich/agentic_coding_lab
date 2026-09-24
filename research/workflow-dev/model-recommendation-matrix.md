@@ -61,6 +61,40 @@ recommendation spans three stacks; the Opus 5.5 extension spans one, and
 RQ-exact-coding-python already showed that the method's benefit is narrower on
 Python than Java suggested.
 
+### Shared context or isolated Refactor subagent
+
+Both profiles ship side by side in the consumer export
+(`exact-coding` and `exact-coding-isolated-refactor`, all five harness ports),
+so this is a selection rule rather than a ranking. On Claim Office / TypeScript,
+CLI 2.1.280, n=5 per cell (RQ-opus55-current-workflow):
+
+| | `exact-ptdd-v1-cc` | `exact-ptdd-v1.1-refactor-subagent-cc` |
+|---|---|---|
+| Correctness (external), Opus 5.5 | 1.00 | 1.00 |
+| Correctness (external), Opus 5 | 0.99 | 0.97 |
+| Mutation Score, Opus 5.5 | 0.94 ± 0.04 | 0.95 ± 0.04 |
+| `unit_size_avg`, Opus 5.5 | 4.54 ± 0.28 | 4.42 ± 0.35 |
+| `duration_seconds`, Opus 5.5 | 871 ± 89 | 2658 ± 357 |
+| `cost_usd`, Opus 5.5 | $9.96 ± 0.95 | $12.89 ± 0.96 |
+
+**`exact-ptdd-v1-cc` stays the default**, on both models. Every quality
+difference above sits inside the standard deviations, while wall-clock triples
+and list-price cost rises by a third. Isolation is not a correctness upgrade on
+this kata — it did not buy one.
+
+Take `exact-ptdd-v1.1-refactor-subagent-cc` when the fresh-eyes property is
+what is actually wanted: a long session whose cycle history has grown noisy, or
+a judgement that should be made without the memory of how the code got there.
+
+**For workflow development against Opus 5.5 the choice is not free.** The
+isolated arm is the only one in which the refactor discipline can be measured on
+that model at all: `refactorings_applied` is text-derived in the shared-context
+arm and Opus 5.5 does not write the text, so the shared-context reading is not
+merely empty but *directionally wrong* — it reports ≈0 refactors where the
+isolated arm measures ≈48, more than Opus 5 does (F-2.4.6). Any Opus 5.5
+workflow experiment that needs to observe the refactor step must run the
+isolated profile or gate on correctness and code quality instead.
+
 ### Operational notes for Opus 5.5
 
 - **Claude Code ≥ 2.1.280 is mandatory.** 2.1.267 rejects `claude-opus-5-5` with
