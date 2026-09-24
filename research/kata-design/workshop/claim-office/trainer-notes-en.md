@@ -13,6 +13,8 @@ style). German original: [`prose.md`](prose.md).
 
 Verification scenarios (for checking values / demonstrating after the
 mapping): [`../../../../experiments/katas/claim-office-verification/`](../../../../experiments/katas/claim-office-verification/).
+The same fifteen cases in prose, with arithmetic and notes on using
+them in plenary: [`scenarios-en.md`](scenarios-en.md).
 
 ## List of ambiguities
 

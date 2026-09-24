@@ -14,6 +14,8 @@ Englische Fassung: [`prose-en.md`](prose-en.md), Trainer-Notizen dazu:
 
 Verifikations-Szenarien (zur Wertekontrolle / Demonstration nach dem
 Mapping): [`../../../../experiments/katas/claim-office-verification/`](../../../../experiments/katas/claim-office-verification/).
+Dieselben fünfzehn Fälle in Prosa, mit Rechenweg und Hinweisen zum
+Einsatz im Plenum: [`szenarien.md`](szenarien.md).
 
 ## Liste der Mehrdeutigkeiten
 

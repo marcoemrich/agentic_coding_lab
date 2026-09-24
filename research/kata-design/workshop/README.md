@@ -5,7 +5,7 @@ Trainer-Material.
 
 | Verzeichnis | Inhalt |
 |-------------|--------|
-| [`claim-office/`](claim-office/) | Volle Schadenskassen-Kata (mit Cap): Prosa + Trainer-Notizen. |
+| [`claim-office/`](claim-office/) | Volle Schadenskassen-Kata (mit Cap): Prosa, Trainer-Notizen und die 15 Verifikations-Szenarien in Prosa — je auf Deutsch und Englisch. |
 | [`overlords-cards/`](overlords-cards/) | Overlords-Kartenspiel: Prompt, Trainer-Notizen, Art-Prompts. |
 
 ## Ausgelagert
