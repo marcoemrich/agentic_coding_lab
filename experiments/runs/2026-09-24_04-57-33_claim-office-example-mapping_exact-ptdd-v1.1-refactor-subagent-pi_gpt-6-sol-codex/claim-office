@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -e
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+cd "$ROOT"
+exec node --import tsx "$ROOT/src/cli.ts"
