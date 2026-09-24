@@ -31,6 +31,14 @@ outcomes:
   - cc_functions
   - tests_total
   - test_lines
+  # suite strength. Stryker on this stack; not comparable to the PIT/mutmut
+  # numbers in the Java and Python RQs. Report mutants_total/mutants_survived
+  # alongside the ratio — the two models may not produce the same mutant
+  # population, and the score's denominator moves with code size.
+  - mutation_score
+  - mutants_total
+  - mutants_survived
+  - mutants_no_coverage
   # TDD discipline (marker health)
   - cycle_count
   - refactorings_applied
