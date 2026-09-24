@@ -8,8 +8,15 @@ factors:
     # product name for content identical to exact-sol-v1.6-test-list-dimensions-cc
     # (LINEAGE.yaml), so both names resolve to the same cell.
     - {model: opus-5-no-thinking,   workflow: {any: [exact-ptdd-v1-cc, exact-sol-v1.6-test-list-dimensions-cc]}}
+    # Third arm: the same Predictive TDD contract with the per-cycle Refactor
+    # step delegated to an isolated subagent. Added after the first fill — see
+    # "The third arm". The Opus 5 cell is re-measured rather than taken from
+    # RQ-exact-coding-typescript for the same reason the other two were: those
+    # runs are on 2.1.267.
+    - {model: opus-5-no-thinking,   workflow: exact-ptdd-v1.1-refactor-subagent-cc}
     - {model: opus-5-5-no-thinking, workflow: baseline-inline-tdd-v1.1-local-git-cc}
     - {model: opus-5-5-no-thinking, workflow: exact-ptdd-v1-cc}
+    - {model: opus-5-5-no-thinking, workflow: exact-ptdd-v1.1-refactor-subagent-cc}
 controls:
   kata_base: claim-office
   prompt: example-mapping
@@ -50,10 +57,13 @@ outcomes:
   - mutants_total
   - mutants_survived
   - mutants_no_coverage
-  # TDD discipline is deliberately NOT an outcome here. On Opus 5.5 every
-  # text-derived marker zeroes while the discipline demonstrably happens, so
-  # refactorings_applied / predictions_* / red_verified would publish a parser
-  # artefact as a model difference. See "The markers do not survive".
+  # TDD discipline is deliberately NOT an outcome here. On Opus 5.5 the
+  # text-derived markers go erratic in the Inline and EXACT arms while the
+  # discipline demonstrably happens, so refactorings_applied / predictions_* /
+  # red_verified would publish a parser artefact as a model difference. The
+  # subagent arm measures refactorings from Task calls and is unaffected, but
+  # the metric stays out of `outcomes` because it is not comparable ACROSS the
+  # arms. See "The markers do not survive" and F-2.4.6.
   # Context
   - duration_seconds
   - total_tokens
@@ -79,27 +89,48 @@ Opus, and two things could have changed independently:
 
 A model-only comparison answers the first and is silent on the second, which is
 the one that decides whether the recommendation survives. The design is
-therefore a 2×2 over model and workflow, and the quantity of interest is not any
-single cell but the **inline→EXACT delta within each model**.
+therefore a grid over model and workflow — opened as a 2×2 and extended to 2×3
+by the third arm below — and the quantity of interest is not any single cell but
+the **inline→EXACT delta within each model**.
 
-## All four cells are measured fresh
+## All six cells are measured fresh
 
 The design was originally drawn to reuse 20 existing Opus 5 runs from
 RQ-exact-coding-typescript — same kata, prompt and stack — for 10 new runs
 total. The CLI gate below removed that option: those runs are on 2.1.267 and
-Opus 5.5 cannot be. All four cells therefore run on 2.1.280:
+Opus 5.5 cannot be. Every cell therefore runs on 2.1.280:
 
-| model | workflow | n | |
-|---|---|---:|---|
-| `opus-5-no-thinking` | `baseline-inline-tdd-v1.1-local-git-cc` | 0 | to fill |
-| `opus-5-no-thinking` | `exact-ptdd-v1-cc` (+ pre-rename spelling) | 0 | to fill |
-| `opus-5-5-no-thinking` | `baseline-inline-tdd-v1.1-local-git-cc` | 0 | to fill |
-| `opus-5-5-no-thinking` | `exact-ptdd-v1-cc` | 0 | to fill |
+| model | workflow | n |
+|---|---|---:|
+| `opus-5-no-thinking` | `baseline-inline-tdd-v1.1-local-git-cc` | 5 |
+| `opus-5-no-thinking` | `exact-ptdd-v1-cc` (+ pre-rename spelling) | 5 |
+| `opus-5-no-thinking` | `exact-ptdd-v1.1-refactor-subagent-cc` | 5 |
+| `opus-5-5-no-thinking` | `baseline-inline-tdd-v1.1-local-git-cc` | 5 |
+| `opus-5-5-no-thinking` | `exact-ptdd-v1-cc` | 5 |
+| `opus-5-5-no-thinking` | `exact-ptdd-v1.1-refactor-subagent-cc` | 5 |
 
-**20 runs at `min_replicates: 5`**, not 10. Re-measuring the Opus 5 arm is not
-optional: reading a 2.1.280 Opus 5.5 cell against a 2.1.267 Opus 5 cell would
-confound the CLI version with the model factor, which is the failure F-1.19.9
-caught and the reason the `harness_version` axis exists.
+**30 runs at `min_replicates: 5`**, against the 10 the reuse design would have
+needed. Re-measuring the Opus 5 arms is not optional: reading a 2.1.280
+Opus 5.5 cell against a 2.1.267 Opus 5 cell would confound the CLI version with
+the model factor, which is the failure F-1.19.9 caught and the reason the
+`harness_version` axis exists.
+
+### The third arm
+
+The isolated-Refactor-subagent arm was added after the first fill, and it is not
+a symmetry exercise. In the first four cells `refactorings_applied` is
+unreadable on Opus 5.5 (F-2.4.5), and the shared-context arm cannot be fixed:
+it invokes a single entry skill and emits no tool call per phase, so the count
+can only come from assistant text the model does not write.
+
+The subagent arm counts the same quantity from `Task` invocations instead. It
+therefore tests whether the instrument failure is a property of the model or of
+the workflow architecture — a question the original 2×2 could not separate. It
+turned out to be the architecture, and the shared-context reading was not merely
+incomplete but directionally wrong (F-2.4.6).
+
+The Opus 5 cell of this arm is re-measured rather than taken from
+RQ-exact-coding-typescript for the same reason as the other two.
 
 The 20 pre-bump Opus 5 runs stay in the pool and keep serving
 RQ-exact-coding-typescript. They also make a period control available here, at
@@ -316,10 +347,14 @@ readers can see what was predicted rather than only what was found.
   Opus 5.5 spends 70 % *more* tokens under the workflow and still costs 16 %
   less (F-2.4.4). The token and cost axes point in opposite directions, so the
   tariff is not merely part of the story — it is the whole of it.
-- **H5 (the markers survive the model change) — falsified.** Not as a clean
-  zero but as an erratic mix of two measurement mechanisms; the metrics are out
-  of `outcomes` (F-2.4.5). The block profile that the smoke saw at n=1 held
-  across all five fill runs.
+- **H5 (the markers survive the model change) — falsified for the shared-context
+  arm, held for the subagent arm.** In the Inline and EXACT cells the markers go
+  erratic rather than cleanly zero and the metrics are out of `outcomes`
+  (F-2.4.5); the block profile the smoke saw at n=1 held across all five fill
+  runs. The third arm, added afterwards, measures the same quantity from `Task`
+  calls and is unaffected (F-2.4.6) — so the hypothesis was testing a property of
+  the workflow architecture rather than of the model, which the original 2×2
+  could not have shown.
 - **H6 (the CLI gate is clear) — falsified.** `claude-opus-5-5` gets a hard 400
   on 2.1.267 and needs 2.1.280. The RQ was re-scoped to 20 runs with all four
   cells measured fresh; see "The CLI gate".

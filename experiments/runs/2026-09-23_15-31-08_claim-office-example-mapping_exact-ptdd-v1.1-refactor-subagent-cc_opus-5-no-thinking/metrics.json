@@ -1,0 +1,96 @@
+{
+  "kata": "claim-office-example-mapping",
+  "workflow": "exact-ptdd-v1.1-refactor-subagent-cc",
+  "model": "opus-5-no-thinking",
+  "stack": "typescript-vitest",
+  "cli_model": "claude-opus-5",
+  "harness_version": "2.1.280 (Claude Code)",
+  "thinking": false,
+  "started_at": "2026-09-23T15:31:09+00:00",
+  "ended_at": "2026-09-23T16:44:43+00:00",
+  "duration_seconds": 4412,
+  "batch_run": true,
+  "plan_file": "/home/experimenter/experiments/batch-plans/rq-opus55-current-workflow-fill.shard1.json",
+  "tcr": {
+    "initial_commit": "e8611b4896bf5aa4a8971a1c98660d6f872479e1",
+    "final_commit": "e8611b4896bf5aa4a8971a1c98660d6f872479e1",
+    "commits_total": 1,
+    "method_commits": 0,
+    "red_commits": 0,
+    "green_commits": 0,
+    "refactor_commits": 0
+  },
+  "run_status": {
+    "exit_code": 0,
+    "exit_reason": "ok",
+    "rate_limited": false
+  },
+  "final_metrics": {
+    "lines_of_code": 537,
+    "test_lines": 359,
+    "tests_total": 53,
+    "todos_remaining": 0,
+    "code_mass": 929,
+    "tests_passing": true,
+    "verification_total": 15,
+    "verification_passed": 14,
+    "verification_pct": 0.9333,
+    "cli_built": true,
+    "mccabe_max": 3,
+    "mccabe_avg": 1.31,
+    "mccabe_high_count": 0,
+    "cognitive_max": 2,
+    "cognitive_avg": 1.17,
+    "cognitive_high_count": 0,
+    "cost_usd": 24.7229,
+    "mutation_score": 0.9541984732824428,
+    "mutants_total": 131,
+    "mutants_survived": 6,
+    "mutants_no_coverage": 0
+  },
+  "coverage": {
+    "statements_pct": 83,
+    "branches_pct": 98
+  },
+  "code_smells": {
+    "total": 0,
+    "complexity": 0,
+    "duplication": 0,
+    "magic_numbers": 0,
+    "code_quality": 0
+  },
+  "clean_code": {
+    "loc": 417,
+    "functions": 37,
+    "longest_function": 13,
+    "avg_loc_per_function": 4.62,
+    "median_loc_per_function": 3,
+    "imports": 6
+  },
+  "unit_quality": {
+    "units": 37,
+    "size_max": 13,
+    "size_avg": 4.62,
+    "size_median": 3
+  },
+  "summary_metrics": {
+    "total_tokens": 36618495,
+    "context_utilization_pct": 111,
+    "cycle_count": 43,
+    "refactorings_applied": 43,
+    "predictions_correct": 84,
+    "predictions_total": 86,
+    "tests_passed_immediately": 0,
+    "test_blocks": 0,
+    "test_cases_total": 0,
+    "test_cases_first_block": 0,
+    "red_verified": 0,
+    "red_unverified": 0,
+    "tcr_refactor_steps": 0,
+    "avg_cycle_seconds": 75.4,
+    "avg_red_seconds": 0,
+    "avg_green_seconds": 0,
+    "avg_refactor_seconds": 75.4
+  },
+  "analyze_status": "ok"
+}
