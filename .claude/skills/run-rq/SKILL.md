@@ -31,7 +31,7 @@ End-to-end orchestration for advancing a single research question (RQ) in this l
            2>/dev/null | head -1 | xargs -r dirname)
   ```
   On no match → ask the user. On multiple → take the first and inform the user. Pass `"$RQ_DIR"` to all scripts below (they accept any path and write outputs to the dir).
-- Mandatory frontmatter fields: `id, question, factors, controls, outcomes, min_replicates`. There is no `status` field — the state is derived (`experiments/rq-status.py`, rules in `experiments/rq_state.py`). Only an RQ that ends without full data gets `closed: "<reason>"`, and only on the user's decision.
+- Mandatory frontmatter fields: `id, question, factors, controls, outcomes, min_replicates`. There is no `status` field — whether the RQ needs work is read off the data (`experiments/rq-status.py`, rules in `experiments/rq_facts.py`). Only an RQ that ends without full data gets `closed: "<reason>"`, and only on the user's decision.
 - Methodology constraint: `baseline-oneshot-*` / `baseline-iterative-*` only with `prompt: prose`; every other arm with all three styles. If `factors.workflow_x_prompt` exists, no additional `factors.workflow` / `controls.workflow` is allowed.
 - Active katas: `claim-office`, `game-of-life`, `sphinx-score`, `game-of-life-cli`, `claim-office-lite`, `mars-rover`. `controls.kata_base` must be from this set. Each has the three prompt variants (`-prose`, `-user-story`, `-example-mapping`); all but `mars-rover` also have a `<basename>-verification/` suite, so `verification_pct` is available there.
   - The list is not a ranking, but the pool is lopsided in practice: `claim-office` and `game-of-life` carry the bulk of the runs, `sphinx-score` is the established small quality kata, and `mars-rover` is near-unused. Prefer a kata that already has runs in neighbouring RQs — a fill on a fresh kata has no reference cells to compare against.
@@ -65,7 +65,7 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
 Output to user (compact):
 ```
 RQ-N validated: <id>, <#cells> cells × min_replicates=<n> = <target> target runs.
-state: <derived state from summary.md or rq-status.py>
+cells at min_replicates: <full>/<declared> · findings: <n> · runs newer than findings: <n>
 [Portkey routing required — using ~/.claude.portkey/ profile]   ← only if portkey_required
 ```
 

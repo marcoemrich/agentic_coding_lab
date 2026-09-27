@@ -6,8 +6,6 @@ Generated: 2026-09-27T08:48:40Z
 
 Cells declared: 6 · matched runs: 59 · min_replicates: 10
 
-State: **closed** — gap accepted — one game-of-life cell holds 9 of 10 runs
-
 ## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |

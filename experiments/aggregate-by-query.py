@@ -8,8 +8,7 @@ batch produced them.
 
 Outputs into the RQ directory:
   runs.csv     — one row per matched run, all metrics
-  summary.md   — derived RQ state (rq_state.py) and per-cell pivots
-                 (avg/rate) for each declared outcome
+  summary.md   — per-cell pivots (avg/rate) for each declared outcome
 
 `harness_version` is an optional fourth selector axis, as a control or a
 factor. Declare it only when a CLI bump is a live factor — otherwise a cell
@@ -42,7 +41,6 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from workflow_paths import (canonical as canonical_workflow, is_archived,
                             workflow_dir)
-from rq_state import derive_state
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RUNS_DIR = REPO_ROOT / "experiments" / "runs"
@@ -519,10 +517,6 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
     L("")
     L(f"Cells declared: {len(cells)} · matched runs: {len(df)} · "
       f"min_replicates: {min_rep}")
-    L("")
-    state, reason = derive_state(
-        fm, md_path.parent, [len(by_cell.get(cell_key(c), [])) for c in cells])
-    L(f"State: **{state}** — {reason}")
     L("")
 
     # Cell coverage table.

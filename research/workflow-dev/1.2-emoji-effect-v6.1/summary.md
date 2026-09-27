@@ -2,11 +2,9 @@
 
 _Do decoration emojis (✅ ❌ 🔴 🟢 🔄 📋 🚨 ⚠️) in the workflow prompts (skills + refactor agent + rules/tdd.md) on the hybrid-v2 base have a measurable effect on code quality or TDD discipline?_
 
-Generated: 2026-09-27T08:48:49Z
+Generated: 2026-09-27T10:08:06Z
 
 Cells declared: 2 · matched runs: 10 · min_replicates: 5
-
-State: **answered** — all 2 cells full, 2 finding(s)
 
 ## Cell coverage
 

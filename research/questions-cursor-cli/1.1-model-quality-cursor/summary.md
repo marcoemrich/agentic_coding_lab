@@ -6,8 +6,6 @@ Generated: 2026-09-27T08:48:34Z
 
 Cells declared: 3 · matched runs: 10 · min_replicates: 5
 
-State: **closed** — deprecated — cursor-cli line dropped, opus-cursor cell never filled
-
 ## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |

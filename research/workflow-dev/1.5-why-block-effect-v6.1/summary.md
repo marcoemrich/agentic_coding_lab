@@ -6,8 +6,6 @@ Generated: 2026-09-27T08:49:21Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 8
 
-State: **closed** — gap accepted — one claim-office cell holds 7 of 8 runs
-
 ## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |

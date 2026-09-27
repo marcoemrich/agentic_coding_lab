@@ -6,8 +6,6 @@ Generated: 2026-09-27T08:48:41Z
 
 Cells declared: 7 · matched runs: 36 · min_replicates: 3
 
-State: **answered** — all 7 cells full, 4 finding(s)
-
 ## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |

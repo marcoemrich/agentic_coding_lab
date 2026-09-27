@@ -71,8 +71,8 @@ _spec2.loader.exec_module(bpl)  # type: ignore[union-attr]
 # Findings parsing
 # -----------------------------------------------------------------------
 
-# Shared with rq_state.py, which also decides whether an RQ counts as answered.
-from rq_state import FINDING_HEADER_RE  # noqa: E402
+# Shared with rq_facts.py, which counts findings for rq-status.py.
+from rq_facts import FINDING_HEADER_RE  # noqa: E402
 
 
 def parse_findings(findings_md: Path) -> list[dict]:

@@ -6,8 +6,6 @@ Generated: 2026-09-27T08:49:02Z
 
 Cells declared: 4 · matched runs: 12 · min_replicates: 6
 
-State: **closed** — abandoned — weak-probe cells never filled; the sphinx-score line continues in RQ-kata-sphinx-prompt-sensitivity
-
 ## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
