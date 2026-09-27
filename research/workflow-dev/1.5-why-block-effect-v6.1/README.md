@@ -28,7 +28,7 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 8
-status: answered
+closed: "gap accepted — one claim-office cell holds 7 of 8 runs"
 ---
 
 # RQ-why-block-effect-v6.1: Why block effect on the hybrid-v2 base (claim-office)

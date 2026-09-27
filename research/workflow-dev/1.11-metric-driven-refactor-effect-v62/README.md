@@ -35,7 +35,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: answered
 ---
 
 # RQ-1.11: exact-hybrid-v4.4-metric-refactor-cc vs exact-hybrid-v4-cleaned-cc (claim-office)

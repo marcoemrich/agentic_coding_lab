@@ -2,9 +2,11 @@
 
 _Does sphinx-score carry an example-mapping effect — do the pinned examples move correctness relative to the bare prose prompt, and does it do so more sharply than claim-office?_
 
-Generated: 2026-09-17T01:17:34Z
+Generated: 2026-09-27T08:48:33Z
 
 Cells declared: 4 · matched runs: 24 · min_replicates: 6
+
+State: **answered** — all 4 cells full, 4 finding(s)
 
 ## Cell coverage
 

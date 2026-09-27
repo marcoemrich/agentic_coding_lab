@@ -2,9 +2,11 @@
 
 _Can sphinx-score replace claim-office as the lab's correctness kata — does it separate a strong from a weak model as sharply, at a lower cost per data point?_
 
-Generated: 2026-09-17T01:17:33Z
+Generated: 2026-09-27T08:49:02Z
 
 Cells declared: 4 · matched runs: 12 · min_replicates: 6
+
+State: **closed** — abandoned — weak-probe cells never filled; the sphinx-score line continues in RQ-kata-sphinx-prompt-sensitivity
 
 ## Cell coverage
 

@@ -2,9 +2,11 @@
 
 _Do psychological justifications ('pep talks') in the Red and Green skill prompts on the hybrid-v2 base deliver a measurable code quality or TDD discipline advantage over purely operational instructions?_
 
-Generated: 2026-09-17T01:17:47Z
+Generated: 2026-09-27T08:48:48Z
 
 Cells declared: 2 · matched runs: 10 · min_replicates: 5
+
+State: **answered** — all 2 cells full, 1 finding(s)
 
 ## Cell coverage
 

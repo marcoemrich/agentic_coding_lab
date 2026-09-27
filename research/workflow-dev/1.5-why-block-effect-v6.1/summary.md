@@ -2,9 +2,11 @@
 
 _Do why blocks (causal justifications alongside MUSTs) on the hybrid-v2 base carry a measurable TDD discipline or correctness advantage over purely imperative instructions — with PEP fully retained?_
 
-Generated: 2026-09-17T01:17:09Z
+Generated: 2026-09-27T08:49:21Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 8
+
+State: **closed** — gap accepted — one claim-office cell holds 7 of 8 runs
 
 ## Cell coverage
 

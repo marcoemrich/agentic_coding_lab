@@ -36,7 +36,6 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # RQ-native-sol-workflows-sub: Does a Native Sol Workflow Clear the inline-tdd-v1 Floor?

@@ -67,7 +67,6 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # RQ-model-novel-pi: Model effect on a novel kata (pi harness)

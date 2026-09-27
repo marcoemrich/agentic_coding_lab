@@ -2,9 +2,11 @@
 
 _Does the code-quality profile of Opus (opus-4-8) differ between the Claude Code and the pi harness, each with and without thinking, at a constant workflow generation (hybrid-v4)?_
 
-Generated: 2026-09-17T01:17:42Z
+Generated: 2026-09-27T08:49:05Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
+
+State: **answered** — all 4 cells full, 3 finding(s)
 
 ## Cell coverage
 

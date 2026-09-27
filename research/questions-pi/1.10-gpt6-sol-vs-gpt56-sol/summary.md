@@ -2,9 +2,11 @@
 
 _Does GPT-6 Sol match or beat GPT-5.6 Sol on the canonical Predictive TDD workflow (exact-ptdd-v1-pi) — in correctness, code quality and cost?_
 
-Generated: 2026-09-23T15:03:11Z
+Generated: 2026-09-27T08:49:10Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
+
+State: **answered** — all 4 cells full, 4 finding(s)
 
 ## Cell coverage
 

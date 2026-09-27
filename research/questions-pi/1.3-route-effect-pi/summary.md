@@ -2,9 +2,11 @@
 
 _How do transport route and reasoning channel each affect code quality, TDD discipline, throughput and correctness for one and the same model (GPT-5.6 Sol), at constant harness, workflow, kata and prompt style?_
 
-Generated: 2026-09-17T01:17:45Z
+Generated: 2026-09-27T08:48:48Z
 
 Cells declared: 3 · matched runs: 15 · min_replicates: 5
+
+State: **answered** — all 3 cells full, 6 finding(s)
 
 ## Cell coverage
 

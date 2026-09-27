@@ -2,9 +2,11 @@
 
 _How do five models reachable via the OpenCode harness (Opus 4.7 via Portkey + four non-Anthropic models from the Portkey catalog) differ in code quality and TDD discipline on game-of-life-example-mapping with the exact-single-context-v2-testlist-fix-oc workflow?_
 
-Generated: 2026-09-17T01:17:43Z
+Generated: 2026-09-27T08:48:42Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
+
+State: **answered** — all 6 cells full, 7 finding(s)
 
 ## Cell coverage
 

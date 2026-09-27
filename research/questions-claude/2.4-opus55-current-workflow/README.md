@@ -69,7 +69,6 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # RQ-2.4: Opus 5.5 under the Current EXACT Coding Workflow

@@ -2,9 +2,11 @@
 
 _Under a bare 'use TDD' instruction that prescribes no phase markers (inline-tdd-v1), do models actually work test-first and refactor — and how far apart do the models sit once the evidence is hand-validated?_
 
-Generated: 2026-09-17T01:17:42Z
+Generated: 2026-09-27T08:48:44Z
 
 Cells declared: 10 · matched runs: 49 · min_replicates: 3
+
+State: **answered** — all 10 cells full, 5 finding(s)
 
 ## Cell coverage
 

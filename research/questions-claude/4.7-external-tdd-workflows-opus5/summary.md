@@ -2,9 +2,11 @@
 
 _Can the inner TDD loop of EXACT Coding be substituted by an externally authored TDD workflow, and what does the substitution cost or buy? Example mapping stays the entry point; only the implement/test/refactor loop is exchanged. Measured on claim-office-example-mapping against the current exact-coding baseline exact-hybrid-v2.4-lab-split-cc — on correctness, code quality, TDD discipline and cost._
 
-Generated: 2026-09-17T01:17:39Z
+Generated: 2026-09-27T08:48:33Z
 
 Cells declared: 3 · matched runs: 15 · min_replicates: 5
+
+State: **answered** — all 3 cells full, 6 finding(s)
 
 ## Cell coverage
 

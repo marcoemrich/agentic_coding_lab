@@ -2,9 +2,11 @@
 
 _Is the native Sol workflow line (basic-sol-tdd, Predictive TDD, Four Rules refactor) better only on Sol/pi, or does it also beat the opus line on Opus with native Claude Code — and does the APP effect that suppresses decomposition on Sol reproduce there?_
 
-Generated: 2026-09-17T01:17:39Z
+Generated: 2026-09-27T08:49:00Z
 
 Cells declared: 6 · matched runs: 31 · min_replicates: 5
+
+State: **answered** — all 6 cells full, 7 finding(s)
 
 ## Cell coverage
 

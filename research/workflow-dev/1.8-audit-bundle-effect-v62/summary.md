@@ -2,9 +2,11 @@
 
 _Does the audit bundle (rationale additions + red-phase hardening) reproduce, on the exact-hybrid-v4-cleaned-cc base, the effects measured in the archived RQ-audit against v6.5-lean (discipline gain, variance shrink, token/wallclock surcharge while preserving correctness)?_
 
-Generated: 2026-09-17T01:17:18Z
+Generated: 2026-09-27T08:48:47Z
 
 Cells declared: 2 · matched runs: 20 · min_replicates: 10
+
+State: **answered** — all 2 cells full, 6 finding(s)
 
 ## Cell coverage
 

@@ -2,9 +2,11 @@
 
 _On the OpenAI subscription route, does a workflow line written natively for Sol (basic-sol-tdd, Predictive TDD) beat structureless TDD (inline-tdd-v1) — the floor that no Opus-derived architecture clears on this model?_
 
-Generated: 2026-09-17T01:17:49Z
+Generated: 2026-09-27T08:49:19Z
 
 Cells declared: 9 · matched runs: 45 · min_replicates: 5
+
+State: **answered** — all 9 cells full, 8 finding(s)
 
 ## Cell coverage
 

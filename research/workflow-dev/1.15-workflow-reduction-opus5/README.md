@@ -36,7 +36,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: answered
 ---
 
 # RQ-workflow-reduction-opus5: How Far Can the Workflow Be Cut on Opus 5?

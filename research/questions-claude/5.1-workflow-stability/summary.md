@@ -2,9 +2,11 @@
 
 _How stable are code quality and TDD discipline per workflow across replicates, and under which conditions is n=3 a sufficient replicate count?_
 
-Generated: 2026-09-17T01:17:41Z
+Generated: 2026-09-27T08:48:40Z
 
 Cells declared: 6 · matched runs: 59 · min_replicates: 10
+
+State: **closed** — gap accepted — one game-of-life cell holds 9 of 10 runs
 
 ## Cell coverage
 

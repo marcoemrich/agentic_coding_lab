@@ -2,9 +2,11 @@
 
 _On Java 17 with JUnit 5 and Maven, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness and code quality for GPT-5.6 SOL and Opus 5?_
 
-Generated: 2026-09-23T05:03:52Z
+Generated: 2026-09-27T08:49:08Z
 
 Cells declared: 12 · matched runs: 60 · min_replicates: 5
+
+State: **answered** — all 12 cells full, 13 finding(s)
 
 ## Cell coverage
 

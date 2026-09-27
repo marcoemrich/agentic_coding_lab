@@ -2,9 +2,11 @@
 
 _How do five models reachable via the OpenCode harness differ in correctness and TDD discipline on claim-office-example-mapping with the exact-single-context-v2-testlist-fix-oc workflow?_
 
-Generated: 2026-09-17T01:17:44Z
+Generated: 2026-09-27T08:48:43Z
 
 Cells declared: 8 · matched runs: 40 · min_replicates: 5
+
+State: **answered** — all 8 cells full, 8 finding(s)
 
 ## Cell coverage
 

@@ -30,7 +30,6 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # RQ-test-list-dimensions-sol-pi: Test-List Dimensions on SOL/pi

@@ -31,7 +31,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 3
-status: answered
 ---
 
 # RQ-tdd-correctness: Workflow Effect on Correctness (claim-office)

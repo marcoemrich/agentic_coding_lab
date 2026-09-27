@@ -27,7 +27,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 10
-status: answered
 ---
 
 # RQ-1.8: exact-hybrid-v4.3-audit-bundle-cc vs exact-hybrid-v4-cleaned-cc (game-of-life)

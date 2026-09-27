@@ -29,7 +29,6 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # RQ-current-ptdd-vs-exact-opus-native: Current PTDD vs. Default EXACT Coding on Native Opus

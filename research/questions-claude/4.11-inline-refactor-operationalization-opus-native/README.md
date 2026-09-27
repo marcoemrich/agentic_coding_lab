@@ -30,7 +30,6 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # RQ-inline-refactor-operationalization-opus-native: Better Decomposition Without a Refactor Subagent

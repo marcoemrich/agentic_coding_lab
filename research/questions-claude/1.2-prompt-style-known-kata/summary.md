@@ -2,9 +2,11 @@
 
 _Does the prompt style (prose/user-story/example-mapping) influence correctness and code quality on a training-known kata (Game of Life) — and is this effect model-dependent?_
 
-Generated: 2026-09-17T01:17:35Z
+Generated: 2026-09-27T08:48:54Z
 
 Cells declared: 9 · matched runs: 45 · min_replicates: 5
+
+State: **answered** — all 9 cells full, 7 finding(s)
 
 ## Cell coverage
 

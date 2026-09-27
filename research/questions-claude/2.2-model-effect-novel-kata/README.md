@@ -30,7 +30,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: answered
 ---
 
 # RQ-model-novel: Model Effect on a Novel Kata (claim-office)

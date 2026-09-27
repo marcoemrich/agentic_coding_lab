@@ -2,9 +2,11 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in code quality and TDD discipline on game-of-life-example-mapping with the exact-hybrid-v4.2-phase-continuation-pi workflow?_
 
-Generated: 2026-09-17T01:17:44Z
+Generated: 2026-09-27T08:48:46Z
 
 Cells declared: 12 · matched runs: 60 · min_replicates: 5
+
+State: **answered** — all 12 cells full, 8 finding(s)
 
 ## Cell coverage
 

@@ -25,7 +25,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: answered
 ---
 
 # Complete Stack-Profile Extraction on the Opus/Hybrid Workflow

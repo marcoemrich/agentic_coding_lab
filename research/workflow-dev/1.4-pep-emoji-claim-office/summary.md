@@ -2,9 +2,11 @@
 
 _Does the interaction finding from RQ-pep-emoji-v6.1 (pep+emoji reduction: anti-additivity for refactorings_applied, saturation for tests_passed_immediately, correctness invariant) also hold on a more complex kata with genuine ambiguities?_
 
-Generated: 2026-09-17T01:17:17Z
+Generated: 2026-09-27T08:49:20Z
 
 Cells declared: 4 · matched runs: 22 · min_replicates: 5
+
+State: **answered** — all 4 cells full, 3 finding(s)
 
 ## Cell coverage
 

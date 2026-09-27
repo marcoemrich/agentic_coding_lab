@@ -2,9 +2,11 @@
 
 _Do the three v6.5.1 audit cleanups (consistency, refactor.md decoupling, tdd-experiment-mode reframing) — applied to exact-hybrid-v3-with-why-cc — measurably change workflow behaviour on claim-office, or is exact-hybrid-v4-cleaned-cc a behaviourally equivalent hygiene variant of the new default baseline?_
 
-Generated: 2026-09-17T01:17:54Z
+Generated: 2026-09-27T08:49:13Z
 
 Cells declared: 2 · matched runs: 16 · min_replicates: 8
+
+State: **answered** — all 2 cells full, 4 finding(s)
 
 ## Cell coverage
 

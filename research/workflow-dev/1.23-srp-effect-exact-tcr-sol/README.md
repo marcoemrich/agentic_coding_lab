@@ -51,7 +51,6 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # Domain Responsibility and APP in SOL Predictive TDD and EXACT TCR

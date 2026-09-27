@@ -2,9 +2,11 @@
 
 _On the OpenAI subscription route, does subordinating APP mass to the Four Rules recover the decomposition that the unsubordinated brief suppresses — and does adding pre/post measurement improve the result further, at what cost in duration as the measurement moves from the model to deterministic tools?_
 
-Generated: 2026-09-17T01:17:50Z
+Generated: 2026-09-27T08:48:45Z
 
 Cells declared: 5 · matched runs: 25 · min_replicates: 5
+
+State: **answered** — all 5 cells full, 5 finding(s)
 
 ## Cell coverage
 

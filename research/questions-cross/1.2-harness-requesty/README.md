@@ -38,7 +38,6 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # RQ-harness-requesty: Harness effect CC vs OC vs pi (Requesty routing)

@@ -2,9 +2,11 @@
 
 _Does the cleanup equivalence result from RQ-1.6 (claim-office) also generalize to the training-known game-of-life kata, or does exact-hybrid-v4-cleaned-cc show a different effect there than on claim-office?_
 
-Generated: 2026-09-17T01:17:54Z
+Generated: 2026-09-27T08:48:52Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 5
+
+State: **answered** — all 2 cells full, 4 finding(s)
 
 ## Cell coverage
 

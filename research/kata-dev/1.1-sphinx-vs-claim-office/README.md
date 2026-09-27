@@ -33,7 +33,7 @@ outcomes:
   - predictions_correct_rate
   - tests_passed_immediately
 min_replicates: 6
-status: closed
+closed: "abandoned — weak-probe cells never filled; the sphinx-score line continues in RQ-kata-sphinx-prompt-sensitivity"
 ---
 
 # RQ-kata-1.1: Can sphinx-score replace claim-office?

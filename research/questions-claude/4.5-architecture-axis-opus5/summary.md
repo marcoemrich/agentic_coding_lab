@@ -2,9 +2,11 @@
 
 _Does the TDD architecture axis (inline-tdd-v1 structureless / single-context-v2 single context / hybrid-v2 hybrid / hybrid-v6 current generation) still rank the same way on opus-5 as it does on opus-4-7 — and does the decomposition metric change the answer?_
 
-Generated: 2026-09-27T08:35:42Z
+Generated: 2026-09-27T08:49:07Z
 
 Cells declared: 16 · matched runs: 111 · min_replicates: 5
+
+State: **answered** — all 16 cells full, 7 finding(s)
 
 ## Cell coverage
 

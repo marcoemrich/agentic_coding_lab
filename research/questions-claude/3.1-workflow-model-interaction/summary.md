@@ -2,9 +2,11 @@
 
 _Does the quality of a TDD workflow depend on the model — is there a universally best workflow, or do different workflows swap places depending on the model?_
 
-Generated: 2026-09-17T01:17:37Z
+Generated: 2026-09-27T08:48:30Z
 
 Cells declared: 6 · matched runs: 49 · min_replicates: 5
+
+State: **answered** — all 6 cells full, 2 finding(s)
 
 ## Cell coverage
 

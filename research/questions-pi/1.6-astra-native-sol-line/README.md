@@ -60,7 +60,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: answered
 ---
 
 # RQ-astra-native-sol: Does the Native Sol Line Transfer to Astra?

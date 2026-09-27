@@ -24,6 +24,7 @@ from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 _LINEAGE_MOD = None
 
@@ -70,18 +71,8 @@ _spec2.loader.exec_module(bpl)  # type: ignore[union-attr]
 # Findings parsing
 # -----------------------------------------------------------------------
 
-# Finding ids are F-<namespace>.<minor>, where the namespace itself may carry
-# dots. The namespace mirrors the RQ id — a slug since the id→slug migration
-# (F-regression.6), the legacy numeric form (F-19.6, F-3b.1), or the chapter
-# number of the RQ directory (F-4.4.1 in 4.4-external-tdd-workflows,
-# F-1.12.5 in 1.12-end-refactor-effect-v62). Everything up to the LAST dot is
-# the namespace, so any number of dotted segments matches.
-# Do not tighten this to a single dot: chapter-numbered ids were silently
-# dropped that way, which reads downstream as "no findings documented" for an
-# RQ that in fact has a full findings.md.
-FINDING_HEADER_RE = re.compile(
-    r"^##\s+(F-[A-Za-z0-9][A-Za-z0-9.-]*\.\d+)\s+—\s+(.+?)\s*$"
-)
+# Shared with rq_state.py, which also decides whether an RQ counts as answered.
+from rq_state import FINDING_HEADER_RE  # noqa: E402
 
 
 def parse_findings(findings_md: Path) -> list[dict]:

@@ -2,9 +2,11 @@
 
 _How do first-party EXACT Coding TCR, classic TCR, and external TCRDD variants affect correctness, code quality, development behavior, and efficiency for SOL on pi, and how do their native-Git and tool-enforced execution strategies differ?_
 
-Generated: 2026-09-15T00:05:19Z
+Generated: 2026-09-27T08:48:39Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
+
+State: **answered** — all 6 cells full, 4 finding(s)
 
 ## Cell coverage
 

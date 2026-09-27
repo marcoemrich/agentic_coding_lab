@@ -31,7 +31,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: answered
 ---
 
 # RQ-1.10: exact-hybrid-v4.1-refactor-vocab-cc vs exact-hybrid-v4-cleaned-cc (GoL + claim-office)

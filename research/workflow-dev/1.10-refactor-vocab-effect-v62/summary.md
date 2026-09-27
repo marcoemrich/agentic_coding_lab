@@ -2,9 +2,11 @@
 
 _Does an additive vocabulary block in the refactor agent (cyclomatic + cognitive complexity, single responsibility, smell→move table) improve code quality on the exact-hybrid-v4-cleaned-cc base without significantly impairing correctness or cost?_
 
-Generated: 2026-09-17T01:17:25Z
+Generated: 2026-09-27T08:48:51Z
 
 Cells declared: 4 · matched runs: 28 · min_replicates: 5
+
+State: **answered** — all 4 cells full, 3 finding(s)
 
 ## Cell coverage
 

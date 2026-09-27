@@ -26,7 +26,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: answered
 ---
 
 # RQ-prompt-known-kata: Prompt Style Effect on a Training-Known Kata

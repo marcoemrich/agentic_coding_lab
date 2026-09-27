@@ -30,7 +30,6 @@ outcomes:
   - mccabe_max
   - smell_total
 min_replicates: 5
-status: answered
 ---
 
 # RQ-cost-sol-pi-vs-opus-cc: How much cheaper is Sol@pi compared to Opus@Claude-Code?

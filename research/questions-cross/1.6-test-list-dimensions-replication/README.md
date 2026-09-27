@@ -36,7 +36,6 @@ outcomes:
   - mutants_survived
   - mutants_no_coverage
 min_replicates: 10
-status: answered
 ---
 
 # RQ-test-list-dimensions-replication: Replicating the Opus/SOL Interaction

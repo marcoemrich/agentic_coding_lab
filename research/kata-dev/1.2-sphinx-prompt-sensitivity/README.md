@@ -33,7 +33,6 @@ outcomes:
   - mccabe_max
   - smell_total
 min_replicates: 6
-status: answered
 ---
 
 # RQ-kata-1.2: Does sphinx-score carry an example-mapping effect?

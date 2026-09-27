@@ -33,7 +33,6 @@ outcomes:
   - predictions_correct_rate
   - tests_passed_immediately
 min_replicates: 5
-status: answered
 ---
 
 # RQ-1.19: Is the Lab/Product Rule Split Behaviourally Neutral?

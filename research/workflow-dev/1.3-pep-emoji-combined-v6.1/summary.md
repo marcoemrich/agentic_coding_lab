@@ -2,9 +2,11 @@
 
 _Are the effects of the pep and emoji reductions on the hybrid-v2 base additive (two independent channels) or jointly carried (a single 'prompt scaffolding' mechanism)?_
 
-Generated: 2026-09-17T01:17:53Z
+Generated: 2026-09-27T08:49:01Z
 
 Cells declared: 4 · matched runs: 25 · min_replicates: 5
+
+State: **answered** — all 4 cells full, 3 finding(s)
 
 ## Cell coverage
 

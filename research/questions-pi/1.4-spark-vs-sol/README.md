@@ -39,7 +39,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: answered
 ---
 
 # RQ-spark-vs-sol: Does Spark Hold Against Sol on the Native Sol Workflows?

@@ -47,7 +47,6 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # TCR-to-Predictive-TDD Parity Transfer on Claim Office

@@ -35,7 +35,7 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 10
-status: answered
+closed: "gap accepted — one game-of-life cell holds 9 of 10 runs"
 ---
 
 # RQ-stability: Run Stability per Workflow

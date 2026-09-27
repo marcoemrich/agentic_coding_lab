@@ -42,7 +42,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: answered
 ---
 
 # RQ-model-quality-oc: Model effect on code quality (OpenCode harness)

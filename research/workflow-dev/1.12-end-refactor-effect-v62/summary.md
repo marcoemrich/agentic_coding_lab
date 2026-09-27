@@ -2,9 +2,11 @@
 
 _Does a metric-driven refactor pass improve code quality over the per-cycle baseline workflow (exact-hybrid-v4-cleaned-cc) — and does the lever work purely per-cycle (exact-hybrid-v4.4-metric-refactor-cc) or as an additional whole-src end pass (exact-hybrid-v5-end-refactor-cc) — without damaging correctness or TDD discipline, and does the result hold across two kata types (the multi-file CLI codebase claim-office vs the single-file library game-of-life)?_
 
-Generated: 2026-09-17T01:17:48Z
+Generated: 2026-09-27T08:49:09Z
 
 Cells declared: 6 · matched runs: 43 · min_replicates: 5
+
+State: **answered** — all 6 cells full, 5 finding(s)
 
 ## Cell coverage
 

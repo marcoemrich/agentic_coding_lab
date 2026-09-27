@@ -2,9 +2,11 @@
 
 _How do the models reachable via the cursor-cli harness (Opus 4.8 medium, Composer 2.5, Grok 4.5 medium) differ in code quality and TDD discipline on game-of-life-example-mapping?_
 
-Generated: 2026-09-17T01:17:43Z
+Generated: 2026-09-27T08:48:34Z
 
 Cells declared: 3 · matched runs: 10 · min_replicates: 5
+
+State: **closed** — deprecated — cursor-cli line dropped, opus-cursor cell never filled
 
 ## Cell coverage
 

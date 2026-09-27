@@ -36,7 +36,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 3
-status: answered
 ---
 
 # RQ-v3-emergent-tdd: Does "use TDD" alone produce test-first and refactoring?

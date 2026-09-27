@@ -2,9 +2,11 @@
 
 _Does the apparent platform interaction between PTDD v1.5 and v1.6 replicate at n=10 per cell on Claim Office, or was it driven by small-sample variance?_
 
-Generated: 2026-09-23T05:13:14Z
+Generated: 2026-09-27T08:49:04Z
 
 Cells declared: 4 · matched runs: 40 · min_replicates: 10
+
+State: **answered** — all 4 cells full, 4 finding(s)
 
 ## Cell coverage
 

@@ -34,7 +34,6 @@ outcomes:
   - mutants_survived
   - mutants_no_coverage
 min_replicates: 5
-status: answered
 ---
 
 # RQ-ptdd-refactor-subagent-cross-model: Isolated Refactoring in PTDD v1

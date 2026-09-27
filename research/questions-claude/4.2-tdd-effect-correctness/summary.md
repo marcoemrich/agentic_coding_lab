@@ -2,9 +2,11 @@
 
 _Does external correctness (verification_pct) differ between TDD workflow variants on the novel claim-office kata?_
 
-Generated: 2026-09-17T01:17:38Z
+Generated: 2026-09-27T08:48:41Z
 
 Cells declared: 7 · matched runs: 36 · min_replicates: 3
+
+State: **answered** — all 7 cells full, 4 finding(s)
 
 ## Cell coverage
 

@@ -52,7 +52,6 @@ outcomes:
   - mutants_survived
   - mutants_no_coverage
 min_replicates: 5
-status: answered
 ---
 
 # RQ-exact-coding-python: EXACT Coding on the Python Stack

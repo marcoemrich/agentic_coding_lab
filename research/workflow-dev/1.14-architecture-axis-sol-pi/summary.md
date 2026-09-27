@@ -2,9 +2,11 @@
 
 _Does the TDD architecture axis (subagents-v2 isolated subagents / single-context-v2 single context / hybrid-v2 hybrid) rank the same way on gpt-5-6-sol as it does on opus-4-7 — and does any architecture, including the current hybrid-v6 generation, beat structureless TDD (inline-tdd-v1) on Sol?_
 
-Generated: 2026-09-17T01:17:48Z
+Generated: 2026-09-27T08:48:56Z
 
 Cells declared: 10 · matched runs: 50 · min_replicates: 5
+
+State: **answered** — all 10 cells full, 11 finding(s)
 
 ## Cell coverage
 

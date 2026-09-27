@@ -49,7 +49,6 @@ outcomes:
   - completed_within_budget
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # RQ-route-effect-pi: Route effect Requesty vs OpenAI subscription (pi harness)

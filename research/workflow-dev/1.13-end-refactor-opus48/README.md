@@ -33,7 +33,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: answered
 ---
 
 # RQ-1.13: exact-hybrid-v5-end-refactor-cc on Opus 4.8 — does the RQ-1.12 result hold across models? (claim-office)

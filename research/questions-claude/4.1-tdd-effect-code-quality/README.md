@@ -46,7 +46,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: answered
 ---
 
 # RQ-tdd-quality: Workflow Effect on Code Quality

@@ -23,7 +23,6 @@ outcomes:
   - total_tokens
   - completed_within_budget
 min_replicates: 5
-status: answered
 ---
 
 # RQ-prompt-correctness: Prompt Style Effect on Correctness

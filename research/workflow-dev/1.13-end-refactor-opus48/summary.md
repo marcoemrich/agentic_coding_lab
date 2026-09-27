@@ -2,9 +2,11 @@
 
 _Does the exact-hybrid-v5-end-refactor-cc result from RQ-1.12 (correctness intact, code quality >= hybrid-v4, token cost ~hybrid-v4) hold on Opus 4.8 (no-thinking) — or does the additional end-refactor pass fake claim-office completeness on the new model (the bundle-break pattern from RQ-1.9/RQ-1.10)?_
 
-Generated: 2026-09-17T01:17:48Z
+Generated: 2026-09-27T08:49:17Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
+
+State: **answered** — all 6 cells full, 6 finding(s)
 
 ## Cell coverage
 

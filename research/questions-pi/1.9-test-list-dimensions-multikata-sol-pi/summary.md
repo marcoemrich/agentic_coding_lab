@@ -2,9 +2,11 @@
 
 _Across Game of Life and Sphinx Score on GPT-5.6 SOL/pi, does the v1.6 independent-dimensions test-list cross-check justify its overhead relative to the v1.5 SOL default?_
 
-Generated: 2026-09-16T15:11:06Z
+Generated: 2026-09-27T08:48:45Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
+
+State: **answered** — all 4 cells full, 4 finding(s)
 
 ## Cell coverage
 

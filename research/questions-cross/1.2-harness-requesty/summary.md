@@ -2,9 +2,11 @@
 
 _How does switching harness (Claude Code vs OpenCode vs pi) affect correctness, code quality, TDD discipline and cost when model (opus-4-8 via Requesty), workflow intention and prompt style are held constant?_
 
-Generated: 2026-09-17T01:17:41Z
+Generated: 2026-09-27T08:49:11Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
+
+State: **answered** — all 6 cells full, 4 finding(s)
 
 ## Cell coverage
 

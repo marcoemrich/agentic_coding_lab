@@ -2,9 +2,11 @@
 
 _How much of the hybrid-v6 architecture can be removed on opus-5 before code quality degrades — and how much of its result comes from the APP subordination patch (hybrid-v7) rather than from the end-refactor phase (hybrid-v8) or the isolated refactor subagent (single-context-v3)?_
 
-Generated: 2026-09-17T01:17:49Z
+Generated: 2026-09-27T08:49:15Z
 
 Cells declared: 12 · matched runs: 63 · min_replicates: 5
+
+State: **answered** — all 12 cells full, 7 finding(s)
 
 ## Cell coverage
 

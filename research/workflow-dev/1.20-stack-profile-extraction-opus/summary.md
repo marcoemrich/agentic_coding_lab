@@ -2,9 +2,11 @@
 
 _Can all remaining TypeScript/Vitest-specific instructions be moved from the Opus/Hybrid workflow core, phase commands and refactor agent into its existing stack profile without changing correctness, TDD discipline, refactoring behaviour, code quality or cost?_
 
-Generated: 2026-09-27T08:35:45Z
+Generated: 2026-09-27T08:48:56Z
 
 Cells declared: 4 · matched runs: 34 · min_replicates: 5
+
+State: **answered** — all 4 cells full, 4 finding(s)
 
 ## Cell coverage
 

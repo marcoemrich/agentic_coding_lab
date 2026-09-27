@@ -33,7 +33,6 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # RQ-test-list-dimensions-multikata-sol-pi: Multikata Validation of v1.6 on SOL/pi

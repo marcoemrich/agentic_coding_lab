@@ -43,7 +43,7 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: closed
+closed: "deprecated — cursor-cli line dropped, opus-cursor cell never filled"
 ---
 
 # RQ-model-quality-cursor: Model effect on code quality (cursor-cli harness)

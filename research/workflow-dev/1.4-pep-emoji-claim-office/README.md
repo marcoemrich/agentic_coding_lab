@@ -30,7 +30,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: answered
 ---
 
 # RQ-pep-emoji-claim-office: hybrid-v2 reduction series on claim-office (correctness stress test)

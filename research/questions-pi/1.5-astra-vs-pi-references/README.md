@@ -54,7 +54,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: answered
 ---
 
 # RQ-astra-pi: Where Does GPT-6 Astra Sit Against the pi References?

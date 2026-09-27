@@ -41,7 +41,6 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # RQ-architecture-axis-sol-pi: Does the Architecture Axis Rank the Same on Sol?

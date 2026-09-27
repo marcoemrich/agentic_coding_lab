@@ -2,9 +2,11 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in correctness and TDD discipline on claim-office-example-mapping with the exact-hybrid-v4-cleaned-pi workflow?_
 
-Generated: 2026-09-17T01:17:44Z
+Generated: 2026-09-27T08:49:06Z
 
 Cells declared: 18 · matched runs: 90 · min_replicates: 5
+
+State: **answered** — all 18 cells full, 5 finding(s)
 
 ## Cell coverage
 

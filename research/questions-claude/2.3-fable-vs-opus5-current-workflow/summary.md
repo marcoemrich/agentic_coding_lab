@@ -2,9 +2,11 @@
 
 _How do Fable 5, Fable 5.1, Opus 5 and Sonnet 5 (each no-thinking, on the Claude Max subscription) differ in correctness and code quality on the novel claim-office kata under the current exact-coding baseline workflow?_
 
-Generated: 2026-09-17T01:17:36Z
+Generated: 2026-09-27T08:48:32Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
+
+State: **answered** — all 4 cells full, 9 finding(s)
 
 ## Cell coverage
 

@@ -2,9 +2,11 @@
 
 _Does example mapping increase correctness compared to prose and user story — and is the effect model-dependent?_
 
-Generated: 2026-09-17T01:17:35Z
+Generated: 2026-09-27T08:48:58Z
 
 Cells declared: 24 · matched runs: 129 · min_replicates: 5
+
+State: **answered** — all 24 cells full, 5 finding(s)
 
 ## Cell coverage
 

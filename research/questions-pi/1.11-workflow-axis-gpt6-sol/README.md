@@ -51,7 +51,6 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # RQ-workflow-axis-gpt6-sol: The Workflow Axis on GPT-6 Sol

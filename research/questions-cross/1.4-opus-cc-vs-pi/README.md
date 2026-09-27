@@ -48,7 +48,6 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # RQ-model-quality-cc-vs-pi: Opus via the Claude Code vs. pi path

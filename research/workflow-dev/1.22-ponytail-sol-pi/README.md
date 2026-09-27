@@ -46,7 +46,6 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: answered
 ---
 
 # Forced Ponytail on the Sol-Originated EXACT Coding Line

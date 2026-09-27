@@ -33,7 +33,6 @@ outcomes:
   - verification_pct
   - completed_within_budget
 min_replicates: 5
-status: answered
 ---
 
 # RQ-pep-emoji-v6.1: Pep + emoji combined (2×2 interaction test)

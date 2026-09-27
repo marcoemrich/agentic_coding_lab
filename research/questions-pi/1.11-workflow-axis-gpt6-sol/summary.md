@@ -2,9 +2,11 @@
 
 _On GPT-6 Sol, what does EXACT Coding Predictive TDD buy over a plain inline-TDD baseline, and does isolating the Refactor phase in a subagent add anything on top?_
 
-Generated: 2026-09-24T08:27:17Z
+Generated: 2026-09-27T08:48:59Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
+
+State: **answered** — all 6 cells full, 6 finding(s)
 
 ## Cell coverage
 

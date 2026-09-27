@@ -2,9 +2,11 @@
 
 _On Python with pytest, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness and code quality for GPT-5.6 SOL and Opus 5?_
 
-Generated: 2026-09-23T05:03:53Z
+Generated: 2026-09-27T08:48:37Z
 
 Cells declared: 12 · matched runs: 65 · min_replicates: 5
+
+State: **answered** — all 12 cells full, 8 finding(s)
 
 ## Cell coverage
 

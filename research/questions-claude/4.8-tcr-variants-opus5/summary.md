@@ -2,9 +2,11 @@
 
 _How do classic TCR and TCRDD variants affect correctness, code quality, development behavior, and efficiency in autonomous coding agents, and—within TCRDD—does tool-enforced execution with git-gamble differ from native-Git prompt enforcement?_
 
-Generated: 2026-09-14T19:49:54Z
+Generated: 2026-09-27T08:48:31Z
 
 Cells declared: 4 · matched runs: 18 · min_replicates: 4
+
+State: **answered** — all 4 cells full, 4 finding(s)
 
 ## Cell coverage
 

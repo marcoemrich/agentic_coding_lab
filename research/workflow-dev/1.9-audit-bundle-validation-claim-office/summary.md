@@ -2,9 +2,11 @@
 
 _Does the RQ-1.8 result (the audit bundle stabilizes discipline and is code-quality-neutral on the hybrid-v4 base × game-of-life) generalize to the novel claim-office kata, or does the pattern flip there as it already did for reductions in RQ-1.4?_
 
-Generated: 2026-09-17T01:17:54Z
+Generated: 2026-09-27T08:48:53Z
 
 Cells declared: 2 · matched runs: 16 · min_replicates: 8
+
+State: **answered** — all 2 cells full, 5 finding(s)
 
 ## Cell coverage
 

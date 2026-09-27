@@ -28,7 +28,6 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 8
-status: answered
 ---
 
 # RQ-v62-cleanup-validation: exact-hybrid-v4-cleaned-cc vs exact-hybrid-v3-with-why-cc (claim-office)

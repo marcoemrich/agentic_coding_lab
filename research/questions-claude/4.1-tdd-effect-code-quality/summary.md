@@ -2,9 +2,11 @@
 
 _How does the workflow structure (from oneshot through iterative to strict TDD with subagents) affect code quality, and does TDD strictness make a difference?_
 
-Generated: 2026-09-17T01:17:37Z
+Generated: 2026-09-27T08:49:00Z
 
 Cells declared: 16 · matched runs: 103 · min_replicates: 5
+
+State: **answered** — all 16 cells full, 9 finding(s)
 
 ## Cell coverage
 
