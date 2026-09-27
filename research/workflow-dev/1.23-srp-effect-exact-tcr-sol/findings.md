@@ -4,7 +4,8 @@
 
 The primary table shows the controlled 2×2 contrast: SOL Predictive TDD versus
 first-party EXACT TCR, each with its standard Four-Rules refactor review or the
-same domain-boundary trial. Each cell contains five runs. Katas are reported
+same domain-boundary trial. Each cell contains five runs, except TCR on Game of
+Life with six. Katas are reported
 separately and never averaged. Correctness and completion are higher = better;
 function length, cognitive/McCabe complexity, Production LoC, Code Mass (APP),
 duration, tokens, and cost are lower = better. Function count is descriptive,
@@ -30,18 +31,18 @@ have no trophy.
 | Game of Life | Correctness (external) | **1.000 ± 0.000** 🏆 | **1.000 ± 0.000** 🏆 | **1.000 ± 0.000** 🏆 | **1.000 ± 0.000** 🏆 |
 | Game of Life | Correctness (internal) | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 |
 | Game of Life | Completed within budget | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 |
-| Game of Life | `cc_avg_loc_per_function` ↓ | 6.62 ± 0.81 | 5.56 ± 1.24 | 7.05 ± 2.34 | 5.63 ± 1.80 |
-| Game of Life | Functions | 4.2 ± 1.3 | 6.4 ± 0.9 | 3.2 ± 0.4 | 5.8 ± 1.6 |
-| Game of Life | Complexity Peak ↓ | 14.2 ± 3.8 | 12.0 ± 2.8 | 13.8 ± 4.8 | 10.8 ± 4.3 |
-| Game of Life | `cognitive_avg` ↓ | 2.77 ± 0.33 | 2.85 ± 1.17 | 3.26 ± 0.72 | 2.35 ± 1.02 |
-| Game of Life | `mccabe_avg` ↓ | 1.84 ± 0.17 | 1.62 ± 0.22 | 2.25 ± 0.53 | 1.81 ± 0.40 |
-| Game of Life | Production LoC ↓ | 35.2 ± 8.5 | 42.8 ± 5.2 | 28.4 ± 3.6 | 40.6 ± 1.7 |
-| Game of Life | Code Mass (APP) ↓ | 166.4 ± 20.4 | 183.4 ± 13.4 | 159.4 ± 9.3 | 165.8 ± 10.3 |
-| Game of Life | Duration ↓ | 428 ± 38 s | 494 ± 51 s | 447 ± 86 s | 498 ± 44 s |
-| Game of Life | Total tokens ↓ | 1.07 M ± 0.12 M | 1.30 M ± 0.22 M | 1.18 M ± 0.39 M | 1.29 M ± 0.15 M |
-| Game of Life | Cost ↓ | $1.16 ± $0.10 | $1.34 ± $0.21 | $1.23 ± $0.38 | $1.42 ± $0.18 |
+| Game of Life | `cc_avg_loc_per_function` ↓ | 6.62 ± 0.81 | 5.56 ± 1.24 | 7.54 ± 2.42 | 5.63 ± 1.80 |
+| Game of Life | Functions | 4.2 ± 1.3 | 6.4 ± 0.9 | 3.0 ± 0.6 | 5.8 ± 1.6 |
+| Game of Life | Complexity Peak ↓ | 14.2 ± 3.8 | 12.0 ± 2.8 | 14.5 ± 4.6 | 10.8 ± 4.3 |
+| Game of Life | `cognitive_avg` ↓ | 2.77 ± 0.33 | 2.85 ± 1.17 | 3.22 ± 0.66 | 2.35 ± 1.02 |
+| Game of Life | `mccabe_avg` ↓ | 1.84 ± 0.17 | 1.62 ± 0.22 | 2.29 ± 0.49 | 1.81 ± 0.40 |
+| Game of Life | Production LoC ↓ | 35.2 ± 8.5 | 42.8 ± 5.2 | 27.8 ± 3.5 | 40.6 ± 1.7 |
+| Game of Life | Code Mass (APP) ↓ | 166.4 ± 20.4 | 183.4 ± 13.4 | 155.5 ± 12.7 | 165.8 ± 10.3 |
+| Game of Life | Duration ↓ | 428 ± 38 s | 494 ± 51 s | 424 ± 96 s | 498 ± 44 s |
+| Game of Life | Total tokens ↓ | 1.07 M ± 0.12 M | 1.30 M ± 0.22 M | 1.12 M ± 0.37 M | 1.29 M ± 0.15 M |
+| Game of Life | Cost ↓ | $1.16 ± $0.10 | $1.34 ± $0.21 | $1.18 ± $0.36 | $1.42 ± $0.18 |
 
-The qualitative-SRP and domain-review TCR arms remain in the 70-run aggregation
+The qualitative-SRP and domain-review TCR arms remain in the 71-run aggregation
 to preserve the mechanism gradient, but the primary overview focuses on the
 method × trial contrast.
 
@@ -78,7 +79,7 @@ APP extension contrast:
 
 ## F-1.23.1 — Both methods preserve complete correctness under the boundary trial
 
-All 70 runs across the seven declared workflows completed within budget, passed
+All 71 runs across the seven declared workflows completed within budget, passed
 their internal suites, built the CLI, and passed all 15 external verification
 scenarios. Neither the development method, the boundary trial, nor the
 subordinate APP review changes product correctness.
@@ -88,7 +89,7 @@ subordinate APP review changes product correctness.
 | Claim Office | Predictive TDD | 5/5 correct and complete | 5/5 correct and complete |
 | Claim Office | TCR | 5/5 correct and complete | 5/5 correct and complete |
 | Game of Life | Predictive TDD | 5/5 correct and complete | 5/5 correct and complete |
-| Game of Life | TCR | 5/5 correct and complete | 5/5 correct and complete |
+| Game of Life | TCR | 6/6 correct and complete | 5/5 correct and complete |
 
 The additional TCR + trial + APP cells are also 5/5 correct and complete on each
 kata. The Claim Office trial arms also complete comparable amounts of observable
@@ -155,7 +156,7 @@ differences remain within replicate spread.
 |---|---|---:|---:|---:|---:|
 | Predictive TDD | Standard | 4.2 ± 1.3 | 6.62 ± 0.81 | 14.2 ± 3.8 | 35.2 ± 8.5 |
 | Predictive TDD | Trial | 6.4 ± 0.9 | 5.56 ± 1.24 | 12.0 ± 2.8 | 42.8 ± 5.2 |
-| TCR | Standard | 3.2 ± 0.4 | 7.05 ± 2.34 | 13.8 ± 4.8 | 28.4 ± 3.6 |
+| TCR | Standard | 3.0 ± 0.6 | 7.54 ± 2.42 | 14.5 ± 4.6 | 27.8 ± 3.5 |
 | TCR | Trial | 5.8 ± 1.6 | 5.63 ± 1.80 | 10.8 ± 4.3 | 40.6 ± 1.7 |
 
 The added boundaries therefore reveal intent mainly by introducing more named
