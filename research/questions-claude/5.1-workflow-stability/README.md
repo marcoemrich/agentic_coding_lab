@@ -35,7 +35,7 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 10
-status: aktiv
+status: answered
 ---
 
 # RQ-stability: Run Stability per Workflow
@@ -129,3 +129,9 @@ All runs in `experiments/runs/` with
 `workflow ∈ {baseline-oneshot-v1-cc, baseline-iterative-v1-cc, baseline-inline-tdd-v1-cc, exact-subagents-v1-cc, exact-single-context-v1-cc}`,
 `kata ∈ {game-of-life-prose, game-of-life-example-mapping}` (workflow-constrained),
 `model = opus-4-7-no-thinking`.
+
+## Closure — 2026-09-27
+
+Answered with one cell below `min_replicates`: `game-of-life-example-mapping` ×
+`exact-single-context-v1-cc` × `opus-4-7-no-thinking` holds 9 of 10 runs. The
+gap is accepted; the cell will not be refilled.

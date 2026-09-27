@@ -28,7 +28,7 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 8
-status: aktiv
+status: answered
 ---
 
 # RQ-why-block-effect-v6.1: Why block effect on the hybrid-v2 base (claim-office)
@@ -102,3 +102,9 @@ All runs in `experiments/runs/` with
 `workflow ∈ {exact-hybrid-v2-testlist-fix-cc, exact-hybrid-v3-with-why-cc}`,
 `kata = claim-office-example-mapping`,
 `model = opus-4-7-portkey-no-thinking`.
+
+## Closure — 2026-09-27
+
+Answered with one cell below `min_replicates`: `claim-office-example-mapping` ×
+`exact-hybrid-v2-testlist-fix-cc` × `opus-4-7-portkey-no-thinking` holds 7 of 8
+runs. The gap is accepted; the cell will not be refilled.

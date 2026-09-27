@@ -43,7 +43,7 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: aktiv
+status: closed
 ---
 
 # RQ-model-quality-cursor: Model effect on code quality (cursor-cli harness)
@@ -90,3 +90,9 @@ Per model the same rule applies as for pi/oc: inclusion if the autonomous TDD lo
 - `n=5` per cell follows memory [[replicates-n-reliability]] (default for a medium field).
 - TDD discipline metrics (`cycle_count`, `predictions_*`, `refactorings_applied`) depend on `parse_cursor_transcript.py` (building block 5) capturing the four markers from `MARKERS.md` correctly. Verify before the first batch (smoke-test rule).
 - Distinguish in findings: "model A has higher TDD discipline" ≠ "model A uses the marker path more often".
+
+## Closure — 2026-09-27
+
+Closed as deprecated. The `opus-cursor` cell on game-of-life was never filled,
+so the findings cover only the models that were run; their "pending" entries
+will not be completed.
