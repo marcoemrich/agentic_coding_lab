@@ -39,7 +39,7 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: aktiv
+status: answered
 ---
 
 # RQ-model-novel-oc: Model effect on a novel kata (OpenCode harness)

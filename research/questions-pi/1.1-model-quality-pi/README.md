@@ -49,7 +49,7 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: aktiv
+status: answered
 ---
 
 # RQ-model-quality-pi: Model effect on code quality (pi harness)

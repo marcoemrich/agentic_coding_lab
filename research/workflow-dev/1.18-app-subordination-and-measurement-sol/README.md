@@ -44,7 +44,7 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: aktiv
+status: answered
 ---
 
 # RQ-app-subordination-measurement-sol: Can APP Be Rehabilitated, and What Does Measuring Cost?

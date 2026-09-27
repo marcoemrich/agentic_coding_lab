@@ -34,7 +34,7 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 4
-status: geplant
+status: answered
 ---
 
 # RQ-4.8: Classic TCR and TCRDD Variants (opus-5)

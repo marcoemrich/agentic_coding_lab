@@ -36,7 +36,7 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 6
-status: aktiv
+status: answered
 ---
 
 # RQ-kata-1.3: Does sphinx-score resolve a workflow difference?

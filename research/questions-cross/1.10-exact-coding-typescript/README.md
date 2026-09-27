@@ -48,7 +48,7 @@ outcomes:
   - mutants_survived
   - mutants_no_coverage
 min_replicates: 5
-status: aktiv
+status: answered
 ---
 
 # RQ-exact-coding-typescript: EXACT Coding on the TypeScript Stack

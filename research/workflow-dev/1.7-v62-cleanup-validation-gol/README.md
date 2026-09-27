@@ -27,7 +27,7 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: aktiv
+status: answered
 ---
 
 # RQ-1.7: exact-hybrid-v4-cleaned-cc vs exact-hybrid-v3-with-why-cc (game-of-life)

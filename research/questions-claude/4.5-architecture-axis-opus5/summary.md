@@ -2,7 +2,7 @@
 
 _Does the TDD architecture axis (inline-tdd-v1 structureless / single-context-v2 single context / hybrid-v2 hybrid / hybrid-v6 current generation) still rank the same way on opus-5 as it does on opus-4-7 — and does the decomposition metric change the answer?_
 
-Generated: 2026-09-17T01:17:39Z
+Generated: 2026-09-27T08:35:42Z
 
 Cells declared: 16 · matched runs: 111 · min_replicates: 5
 
@@ -369,11 +369,15 @@ Cells declared: 16 · matched runs: 111 · min_replicates: 5
 | claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-5-no-thinking   |   6 |   3.89 |  2.73 |   4.43 |  0.6  |
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-no-thinking |   7 |  23.33 |  7.82 |  30.31 |  7.52 |
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking   |  18 |  49.13 | 31.43 |  71.07 |  9.15 |
+| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |  35.54 | 23.67 |  46.86 | 10.15 |
 | claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 |  78.98 | 70.7  | 101.67 | 11.54 |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-no-thinking |   6 |  12.72 | 10.18 |  19.5  |  3.59 |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking   |   5 |  47.56 |  3.07 |  88.82 | 36.83 |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-no-thinking |  10 |   0.81 |  0.58 |   1.48 |  0.26 |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-5-no-thinking   |   6 |   1.72 |  1.52 |   2.11 |  0.22 |
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-no-thinking |  10 |   5.17 |  4.03 |   7.14 |  0.94 |
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking   |   6 |   5.34 |  3.85 |   7.24 |  1.21 |
+| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |   7.81 |  6.27 |   8.66 |  0.97 |
 | game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 |  10.82 |  6.33 |  14.22 |  2.75 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |   6.48 |  4.69 |   8.96 |  1.94 |
+| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking   |   5 |   8.24 |  5.79 |  10.16 |  1.79 |

@@ -234,7 +234,7 @@ The two cells that matter most read in opposite directions once the denominator 
 - **Opus Claim Office v1.1 defends 39 % more mutants than the inline baseline** (94.8 against 68.4) and still lets fewer than half as many through. The score understates this result.
 - **SOL Claim Office v1 faces 28 % fewer mutants than its inline baseline** (65.6 against 91.4), because that workflow shrinks the code. Part of its score jump is a smaller denominator. The finding survives anyway — the absolute gap falls from 17.8 to 6.0 — but the ratio flatters it.
 
-The `never executed` column is the sharpest sub-signal: mutants on lines no test runs at all. Inline TDD leaves 4.8 of them per run on SOL Claim Office and 4.0 on Opus Claim Office; v1.1 leaves 2.4 and 1.2. Dead spots in the suite, not merely weak assertions.
+The `never executed` column (`mutants_no_coverage`, a subset of `mutants_survived`) is the sharpest sub-signal: mutants on lines no test runs at all. Inline TDD leaves 4.8 of them per run on SOL Claim Office and 4.0 on Opus Claim Office; v1.1 leaves 2.4 and 1.2. Dead spots in the suite, not merely weak assertions.
 
 Report the pair, not the ratio alone. `mutation_score` stays the comparable figure across cells of equal size; `mutants_survived` is the one to quote when the arms differ in how much code they produce, which in this RQ they always do.
 

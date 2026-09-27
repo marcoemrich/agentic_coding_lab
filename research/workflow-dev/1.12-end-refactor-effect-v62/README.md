@@ -36,7 +36,7 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: aktiv
+status: answered
 ---
 
 # RQ-1.12: metric-driven refactor (hybrid-v4.4 per-cycle / hybrid-v5 end) vs the hybrid-v4 baseline — across two kata types

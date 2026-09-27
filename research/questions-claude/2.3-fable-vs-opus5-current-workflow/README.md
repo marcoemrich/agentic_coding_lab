@@ -41,7 +41,7 @@ outcomes:
   # H3: list-price comparison value, dominated by cache_read on this workflow
   - cost_usd
 min_replicates: 5
-status: aktiv
+status: answered
 # NOTE: the 13 pre-bump opus-5-no-thinking runs in the pool are excluded by the
 # harness_version control above, not by hand. They carry no harness_version at
 # all (the field postdates them), so the H5 period control selects them with

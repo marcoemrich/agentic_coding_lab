@@ -42,7 +42,7 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: aktiv
+status: answered
 ---
 
 # RQ-4.7: Substituting the Inner TDD Loop with External Workflows (opus-5)

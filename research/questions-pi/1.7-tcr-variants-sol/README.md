@@ -35,7 +35,7 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
-status: geplant
+status: answered
 ---
 
 # RQ-1.7: First-Party EXACT Coding TCR, Classic TCR, and TCRDD Variants for SOL on pi

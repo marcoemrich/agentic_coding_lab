@@ -2,7 +2,7 @@
 
 _Is exact-hybrid-v2.4-lab-split-cc behaviourally equivalent to exact-hybrid-v2-testlist-fix-cc, as the exact-coding baseline recommendation assumes, and if not, does removing the duplicated cycle enumeration restore neutrality? The production files are byte-identical; the rule layout differs (lab infrastructure isolated in rules/lab-only.md, subagent contracts in rules/subagent-prompts.md), and lab-only.md states the Red/Green/Refactor cycle a second time as an imperative chain whose third link makes refactor an unconditional consequence of green. hybrid-v2.7 removes that second statement and keeps the phase-continuation guard._
 
-Generated: 2026-09-17T01:17:50Z
+Generated: 2026-09-27T08:35:43Z
 
 Cells declared: 8 · matched runs: 59 · min_replicates: 5
 

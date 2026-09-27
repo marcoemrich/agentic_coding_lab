@@ -27,7 +27,7 @@ outcomes:
   - total_tokens
   - duration_seconds
 min_replicates: 3
-status: aktiv
+status: answered
 ---
 
 # RQ-context: Context Engineering — Isolated, Shared and Hybrid Contexts

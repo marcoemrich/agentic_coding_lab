@@ -48,7 +48,7 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: open
+status: answered
 ---
 
 # RQ-gpt6-sol-vs-gpt56-sol: Does GPT-6 Sol Replace GPT-5.6 Sol?

@@ -42,7 +42,7 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: aktiv
+status: answered
 ---
 
 # RQ-app-vs-four-rules-sol: Does the APP Brief Suppress Decomposition on Sol?

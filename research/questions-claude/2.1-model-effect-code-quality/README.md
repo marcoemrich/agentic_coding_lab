@@ -37,7 +37,7 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 3
-status: aktiv
+status: answered
 ---
 
 # RQ-model-quality: Model Effect on Code Quality

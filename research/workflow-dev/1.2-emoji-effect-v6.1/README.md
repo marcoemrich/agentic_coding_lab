@@ -28,7 +28,7 @@ outcomes:
   - verification_pct
   - completed_within_budget
 min_replicates: 5
-status: aktiv
+status: answered
 ---
 
 # RQ-emoji-v6.1: Emoji effect on the hybrid-v2 base (re-run)

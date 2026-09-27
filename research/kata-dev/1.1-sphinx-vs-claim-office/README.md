@@ -33,7 +33,7 @@ outcomes:
   - predictions_correct_rate
   - tests_passed_immediately
 min_replicates: 6
-status: aktiv
+status: closed
 ---
 
 # RQ-kata-1.1: Can sphinx-score replace claim-office?
@@ -196,3 +196,12 @@ makes it a candidate for prompt-style RQs (1.2) and possibly workflow RQs
   [RQ-kata-1.3](../1.3-sphinx-workflow-sensitivity/README.md). Prompt-style
   discrimination is covered by
   [RQ-kata-1.2](../1.2-sphinx-prompt-sensitivity/README.md).
+
+## Closure — 2026-09-27
+
+Closed without findings. Only the strong probe (`opus-5-no-thinking`) was run on
+both katas; the weak-probe cells (`haiku-4-5-no-thinking`) were never filled, so
+the discrimination question this RQ asks cannot be answered from its data. The
+sphinx-score line continues in RQ-kata-sphinx-prompt-sensitivity and
+RQ-kata-sphinx-workflow-sensitivity. The collected Opus runs remain in the pool
+and in `runs.csv`.

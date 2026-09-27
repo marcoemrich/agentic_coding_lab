@@ -28,7 +28,7 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 8
-status: aktiv
+status: answered
 ---
 
 # RQ-1.9: exact-hybrid-v4.3-audit-bundle-cc vs exact-hybrid-v4-cleaned-cc (claim-office)
