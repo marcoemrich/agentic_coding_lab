@@ -44,7 +44,7 @@ outcomes:
   - total_tokens
   - cost_usd
 min_replicates: 5
-status: open
+status: answered
 ---
 
 # RQ-architecture-axis-opus5: Does the Architecture Axis Survive the Model Generation Change?
