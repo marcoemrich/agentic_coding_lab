@@ -137,8 +137,11 @@ extract_transcript_metrics() {
         return
     fi
 
-    local total_tokens context_util cycle_count
+    local total_tokens context_util cycle_count subagent_tokens
+    # .total_tokens.total covers subagents since 2026-09-30; before that it was
+    # the main context alone and every isolated arm read short (F-4.12.5).
     total_tokens=$(jq -r '.total_tokens.total // 0' "$metrics_file")
+    subagent_tokens=$(jq -r '.subagent_token_total // 0' "$metrics_file")
     context_util=$(jq -r '.context_utilization_pct // 0' "$metrics_file")
     cycle_count=$(jq -r '.cycle_count // 0' "$metrics_file")
 
@@ -162,7 +165,7 @@ extract_transcript_metrics() {
         pred_pct=0
     fi
 
-    echo "${total_tokens}|${context_util}|${cycle_count}|${avg_cycle}|${avg_red}|${avg_green}|${avg_refactor}|${pred_correct}|${pred_total}|${pred_pct}|${refactorings}|0|${tests_passed_immediately}"
+    echo "${total_tokens}|${context_util}|${cycle_count}|${avg_cycle}|${avg_red}|${avg_green}|${avg_refactor}|${pred_correct}|${pred_total}|${pred_pct}|${refactorings}|0|${tests_passed_immediately}|${subagent_tokens}"
 }
 
 analyze_single_run() {
@@ -1113,6 +1116,7 @@ EOF
     local summary_refactorings=0
     local summary_final_mass=0
     local summary_tests_passed_immediately=0
+    local summary_subagent_tokens=0
     local summary_cost_usd=null
 
     # Note: transcript-metrics.json was already (re)generated above, before
@@ -1137,6 +1141,7 @@ EOF
         summary_refactorings=$(echo "$summary_metrics" | cut -d'|' -f11)
         summary_final_mass=$(echo "$summary_metrics" | cut -d'|' -f12)
         summary_tests_passed_immediately=$(echo "$summary_metrics" | cut -d'|' -f13)
+        summary_subagent_tokens=$(echo "$summary_metrics" | cut -d'|' -f14)
 
         # Ensure valid numbers (int for counts, float allowed for averages)
         [[ "$summary_total_tokens" =~ ^[0-9]+$ ]] || summary_total_tokens=0
@@ -1146,6 +1151,7 @@ EOF
         [[ "$summary_pred_correct" =~ ^[0-9]+$ ]] || summary_pred_correct=0
         [[ "$summary_pred_total" =~ ^[0-9]+$ ]] || summary_pred_total=0
         [[ "$summary_tests_passed_immediately" =~ ^[0-9]+$ ]] || summary_tests_passed_immediately=0
+        [[ "$summary_subagent_tokens" =~ ^[0-9]+$ ]] || summary_subagent_tokens=0
         [[ "$summary_avg_cycle" =~ ^[0-9]+(\.[0-9]+)?$ ]] || summary_avg_cycle=0
         [[ "$summary_avg_red" =~ ^[0-9]+(\.[0-9]+)?$ ]] || summary_avg_red=0
         [[ "$summary_avg_green" =~ ^[0-9]+(\.[0-9]+)?$ ]] || summary_avg_green=0
@@ -1493,8 +1499,26 @@ EOF
             [ -z "$rigour_json" ] && rigour_json="{}"
         fi
 
+        # Same question from the other side of the loop: what the test runs
+        # said, rather than which edit tool wrote the file. The rigour block
+        # above needs Write/Edit/MultiEdit calls to tell a test-write from an
+        # impl-write, and reports all zeros for a model that edits through the
+        # shell instead (heredocs, sed -i) — indistinguishable from "never
+        # wrote a test". suite_cycles counts observed red->green transitions
+        # and is mechanism-independent. Not a substitute for cycle_count:
+        # it runs at roughly half the marker count (r = 0.82 over 1357 runs),
+        # because consecutive red phases with no green between them collapse
+        # into one transition. Compare within a column, never across.
+        local suite_json="{}"
+        if [ -f "$EXPERIMENTS_DIR/measure-suite-transitions.py" ]; then
+            suite_json=$(python3 "$EXPERIMENTS_DIR/measure-suite-transitions.py" \
+                --run "$run_dir" 2>/dev/null) || suite_json="{}"
+            [ -z "$suite_json" ] && suite_json="{}"
+        fi
+
         jq --argjson impl_loc "$impl_loc" \
            --argjson rigour "$rigour_json" \
+           --argjson suite "$suite_json" \
            --argjson test_loc "$test_loc" \
            --argjson test_count "$test_count" \
            --argjson todo_count "$todo_count" \
@@ -1507,6 +1531,7 @@ EOF
            --argjson pred_correct "$pred_correct_json" \
            --argjson pred_total "$pred_total_json" \
            --argjson tests_passed_immediately "$summary_tests_passed_immediately" \
+           --argjson subagent_tokens "$summary_subagent_tokens" \
            --argjson avg_cycle "$summary_avg_cycle" \
            --argjson avg_red "$summary_avg_red" \
            --argjson avg_green "$summary_avg_green" \
@@ -1579,12 +1604,21 @@ EOF
             .summary_metrics.predictions_correct = $pred_correct |
             .summary_metrics.predictions_total = $pred_total |
             .summary_metrics.tests_passed_immediately = $tests_passed_immediately |
+            .summary_metrics.subagent_token_total = $subagent_tokens |
             .summary_metrics.test_blocks = ($rigour.test_blocks // null) |
             .summary_metrics.test_cases_total = ($rigour.all_cases // null) |
             .summary_metrics.test_cases_first_block = ($rigour.first_cases // null) |
             .summary_metrics.red_verified = ($rigour.verified // null) |
             .summary_metrics.red_unverified = ($rigour.unverified // null) |
             .summary_metrics.tcr_refactor_steps = ($rigour.tcr_refactor_steps // null) |
+            .summary_metrics.suite_runs = ($suite.suite_runs // null) |
+            .summary_metrics.suite_unknown_runs = ($suite.unknown_runs // null) |
+            .summary_metrics.suite_cycles = ($suite.cycles // null) |
+            .summary_metrics.suite_new_failures = ($suite.new_failures // null) |
+            .summary_metrics.suite_opens_red = ($suite.opens_red // null) |
+            .summary_metrics.suite_ends_green = ($suite.ends_green // null) |
+            .summary_metrics.suite_unresolved_red = ($suite.unresolved_red // null) |
+            .summary_metrics.suite_longest_green_streak = ($suite.longest_green_streak // null) |
             .summary_metrics.avg_cycle_seconds = $avg_cycle |
             .summary_metrics.avg_red_seconds = $avg_red |
             .summary_metrics.avg_green_seconds = $avg_green |

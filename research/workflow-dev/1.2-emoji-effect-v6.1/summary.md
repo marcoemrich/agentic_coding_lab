@@ -2,7 +2,7 @@
 
 _Do decoration emojis (✅ ❌ 🔴 🟢 🔄 📋 🚨 ⚠️) in the workflow prompts (skills + refactor agent + rules/tdd.md) on the hybrid-v2 base have a measurable effect on code quality or TDD discipline?_
 
-Generated: 2026-09-27T10:08:06Z
+Generated: 2026-09-30T21:57:14Z
 
 Cells declared: 2 · matched runs: 10 · min_replicates: 5
 
@@ -87,10 +87,10 @@ Cells declared: 2 · matched runs: 10 · min_replicates: 5
 
 ### total_tokens
 
-| kata                         | cell_workflow                   | cell_model           |   n |        mean |     min |     max |         std |
-|:-----------------------------|:--------------------------------|:---------------------|----:|------------:|--------:|--------:|------------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 | 7.16873e+06 | 5264335 | 9796559 | 1.67377e+06 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 | 7.77662e+06 | 6124991 | 9536497 | 1.30671e+06 |
+| kata                         | cell_workflow                   | cell_model           |   n |        mean |     min |      max |         std |
+|:-----------------------------|:--------------------------------|:---------------------|----:|------------:|--------:|---------:|------------:|
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 | 8.58004e+06 | 5906655 | 11755793 | 2.23709e+06 |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 | 9.54578e+06 | 6991297 | 12480191 | 2.20494e+06 |
 
 ### tests_passing (rate %)
 

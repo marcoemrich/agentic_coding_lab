@@ -2,7 +2,7 @@
 
 _Does sphinx-score carry an example-mapping effect — do the pinned examples move correctness relative to the bare prose prompt, and does it do so more sharply than claim-office?_
 
-Generated: 2026-09-27T08:48:33Z
+Generated: 2026-09-30T21:56:58Z
 
 Cells declared: 4 · matched runs: 24 · min_replicates: 6
 
@@ -57,19 +57,19 @@ Cells declared: 4 · matched runs: 24 · min_replicates: 6
 
 | kata                         | cell_workflow                | cell_model         |   n |        mean |       min |       max |         std |
 |:-----------------------------|:-----------------------------|:-------------------|----:|------------:|----------:|----------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 1.3611e+08  | 121120560 | 176135411 | 2.03967e+07 |
-| claim-office-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 8.04432e+07 |  69870929 | 101537473 | 1.14122e+07 |
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 1.9079e+07  |  14796862 |  30728141 | 5.91678e+06 |
-| sphinx-score-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 2.16574e+07 |  11547572 |  48424369 | 1.3916e+07  |
+| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 1.61604e+08 | 145213699 | 206411858 | 2.27384e+07 |
+| claim-office-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 9.48782e+07 |  84690693 | 117006034 | 1.1916e+07  |
+| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 2.51255e+07 |  20215854 |  37623630 | 6.47713e+06 |
+| sphinx-score-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 2.52834e+07 |  13655286 |  53343237 | 1.48089e+07 |
 
 ### cost_usd
 
 | kata                         | cell_workflow                | cell_model         |   n |   mean |   min |    max |   std |
 |:-----------------------------|:-----------------------------|:-------------------|----:|-------:|------:|-------:|------:|
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  78.98 | 70.7  | 101.67 | 11.54 |
-| claim-office-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  47.76 | 41.53 |  60.65 |  6.83 |
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  12.86 | 10.17 |  20.1  |  3.68 |
-| sphinx-score-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  14.64 |  8.04 |  32.03 |  9.02 |
+| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 109.59 | 99.37 | 139.87 | 15.26 |
+| claim-office-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  66.35 | 59.17 |  82.29 |  8.49 |
+| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  20.01 | 16.98 |  28.4  |  4.37 |
+| sphinx-score-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  19.39 | 10.9  |  39.11 | 10.56 |
 
 ### cycle_count
 

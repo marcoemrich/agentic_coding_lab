@@ -2,7 +2,7 @@
 
 _Is exact-hybrid-v2.4-lab-split-cc behaviourally equivalent to exact-hybrid-v2-testlist-fix-cc, as the exact-coding baseline recommendation assumes, and if not, does removing the duplicated cycle enumeration restore neutrality? The production files are byte-identical; the rule layout differs (lab infrastructure isolated in rules/lab-only.md, subagent contracts in rules/subagent-prompts.md), and lab-only.md states the Red/Green/Refactor cycle a second time as an imperative chain whose third link makes refactor an unconditional consequence of green. hybrid-v2.7 removes that second statement and keeps the phase-continuation guard._
 
-Generated: 2026-09-27T08:48:42Z
+Generated: 2026-09-30T21:56:53Z
 
 Cells declared: 8 · matched runs: 59 · min_replicates: 5
 
@@ -64,14 +64,14 @@ Cells declared: 8 · matched runs: 59 · min_replicates: 5
 
 | kata                         | cell_workflow                           | cell_model         |   n |        mean |      min |       max |         std |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|------------:|---------:|----------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |  18 | 8.36653e+07 | 51719658 | 123086078 | 1.64834e+07 |
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-no-thinking |   5 | 1.26165e+08 | 86741467 | 174612025 | 4.19189e+07 |
-| claim-office-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 | 1.16502e+08 | 85610683 | 155677876 | 2.51277e+07 |
-| claim-office-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |  10 | 1.01548e+08 | 80038724 | 150370457 | 2.19317e+07 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   6 | 7.39704e+06 |  4407948 |  10565106 | 2.08784e+06 |
-| game-of-life-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-no-thinking |   5 | 9.79348e+06 |  8088469 |  12077523 | 1.43493e+06 |
-| game-of-life-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 | 9.75839e+06 |  8266007 |  11597131 | 1.29723e+06 |
-| game-of-life-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |   5 | 1.03988e+07 |  6866859 |  14888496 | 3.44057e+06 |
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |  18 | 9.42234e+07 | 63263584 | 136005966 | 1.76387e+07 |
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-no-thinking |   5 | 1.40925e+08 | 98182103 | 194058770 | 4.64453e+07 |
+| claim-office-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 | 1.30442e+08 | 94759188 | 178520567 | 3.02119e+07 |
+| claim-office-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |  10 | 1.13685e+08 | 88686127 | 168300202 | 2.44048e+07 |
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   6 | 9.23738e+06 |  6027200 |  12806973 | 2.2932e+06  |
+| game-of-life-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-no-thinking |   5 | 1.19705e+07 | 10786166 |  15115799 | 1.77506e+06 |
+| game-of-life-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 | 1.18154e+07 |  9955963 |  15068420 | 2.04067e+06 |
+| game-of-life-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |   5 | 1.24772e+07 |  8109392 |  18371405 | 4.21349e+06 |
 
 ### verification_pct
 

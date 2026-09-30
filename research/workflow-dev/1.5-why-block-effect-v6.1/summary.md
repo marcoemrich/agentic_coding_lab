@@ -2,7 +2,7 @@
 
 _Do why blocks (causal justifications alongside MUSTs) on the hybrid-v2 base carry a measurable TDD discipline or correctness advantage over purely imperative instructions — with PEP fully retained?_
 
-Generated: 2026-09-27T08:49:21Z
+Generated: 2026-09-30T21:57:05Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 8
 
@@ -108,7 +108,7 @@ Cells declared: 2 · matched runs: 15 · min_replicates: 8
 
 ### total_tokens
 
-| kata                         | cell_workflow                   | cell_model                   |   n |        mean |     min |      max |         std |
-|:-----------------------------|:--------------------------------|:-----------------------------|----:|------------:|--------:|---------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   7 | 3.45442e+07 | 9306264 | 44845398 | 1.19731e+07 |
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc     | opus-4-7-portkey-no-thinking |   8 | 3.97803e+07 |  349302 | 51081422 | 1.61149e+07 |
+| kata                         | cell_workflow                   | cell_model                   |   n |        mean |      min |      max |         std |
+|:-----------------------------|:--------------------------------|:-----------------------------|----:|------------:|---------:|---------:|------------:|
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   7 | 3.78763e+07 | 10021131 | 49591797 | 1.34521e+07 |
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc     | opus-4-7-portkey-no-thinking |   8 | 4.58038e+07 |   349302 | 61028792 | 1.87383e+07 |

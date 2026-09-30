@@ -2,7 +2,7 @@
 
 _How does the workflow structure (from oneshot through iterative to strict TDD with subagents) affect code quality, and does TDD strictness make a difference?_
 
-Generated: 2026-09-27T08:49:00Z
+Generated: 2026-09-30T21:56:55Z
 
 Cells declared: 16 · matched runs: 103 · min_replicates: 5
 
@@ -312,19 +312,19 @@ _Column `tests_immediately_passing` not in CSV — either not collected or a typ
 
 | kata                         | cell_workflow                           | cell_model                   |   n |             mean |      min |      max |              std |
 |:-----------------------------|:----------------------------------------|:-----------------------------|----:|-----------------:|---------:|---------:|-----------------:|
-| claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   5 |      2.12087e+06 |  1432251 |  3226054 | 695551           |
+| claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   5 |      3.55263e+06 |  3001820 |  4958823 | 808118           |
 | claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   5 |      3.44636e+06 |  2116892 |  5135072 |      1.09186e+06 |
 | claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |   5 |      3.28141e+06 |  2734813 |  4185323 | 545757           |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   7 |      3.45442e+07 |  9306264 | 44845398 |      1.19731e+07 |
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   7 |      3.78763e+07 | 10021131 | 49591797 |      1.34521e+07 |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   6 |      1.87267e+07 | 14120743 | 28366021 |      5.35498e+06 |
-| claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |      1.41003e+07 | 11422803 | 18869365 |      2.99239e+06 |
+| claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |      3.48702e+07 | 28205826 | 43067686 |      6.07042e+06 |
 | claim-office-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |   5 |      2.11557e+06 |  1500227 |  2659631 | 444735           |
 | claim-office-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |   5 |      2.10814e+06 |  1459870 |  3279079 | 736133           |
-| game-of-life-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   5 |      1.1754e+06  |   983991 |  1364864 | 151956           |
+| game-of-life-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   5 |      1.47425e+06 |  1246133 |  1699036 | 202901           |
 | game-of-life-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   5 |      1.3226e+06  |  1156615 |  1521323 | 171935           |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |  10 | 799074           |   595232 |  1263063 | 187141           |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |  10 |      6.94053e+06 |  5264335 |  9796559 |      1.36348e+06 |
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |  10 |      8.14625e+06 |  5906655 | 11755793 |      1.85681e+06 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   5 |      8.40104e+06 |  5208968 | 12953864 |      3.43516e+06 |
-| game-of-life-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |      4.32469e+06 |  3084530 |  5805452 |      1.02328e+06 |
+| game-of-life-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |      1.01462e+07 |  6813277 | 12558312 |      2.09991e+06 |
 | game-of-life-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |  10 | 966999           |   719553 |  1225127 | 175027           |
 | game-of-life-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |  10 | 993521           |   679521 |  1302769 | 223585           |

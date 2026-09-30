@@ -2,7 +2,7 @@
 
 _Which form of context structuring — isolated subagent contexts per TDD phase (subagents-v2), a shared, accumulated single context (single-context-v2), a hybrid with skill-based red/green in the shared context and an isolated refactor subagent (hybrid-v2), or a hybrid with isolated green and refactor subagents alongside a shared-context test list/red (green-refactor-v2) — leads to better code quality?_
 
-Generated: 2026-09-27T08:49:03Z
+Generated: 2026-09-30T21:57:04Z
 
 Cells declared: 4 · matched runs: 21 · min_replicates: 3
 
@@ -106,10 +106,10 @@ _All values are missing or non-numeric._
 
 | kata                         | cell_workflow                           | cell_model                   |   n |        mean |      min |      max |         std |
 |:-----------------------------|:----------------------------------------|:-----------------------------|----:|------------:|---------:|---------:|------------:|
-| claim-office-example-mapping | exact-green-refactor-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   3 | 2.61112e+07 | 20513627 | 32777883 | 6.20163e+06 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   7 | 3.45442e+07 |  9306264 | 44845398 | 1.19731e+07 |
+| claim-office-example-mapping | exact-green-refactor-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   3 | 3.57428e+07 | 26488975 | 47161557 | 1.0505e+07  |
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   7 | 3.78763e+07 | 10021131 | 49591797 | 1.34521e+07 |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   6 | 1.87267e+07 | 14120743 | 28366021 | 5.35498e+06 |
-| claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 | 1.41003e+07 | 11422803 | 18869365 | 2.99239e+06 |
+| claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 | 3.48702e+07 | 28205826 | 43067686 | 6.07042e+06 |
 
 ### duration_seconds
 

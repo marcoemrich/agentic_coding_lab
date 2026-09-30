@@ -2,7 +2,7 @@
 
 _Are the effects of the pep and emoji reductions on the hybrid-v2 base additive (two independent channels) or jointly carried (a single 'prompt scaffolding' mechanism)?_
 
-Generated: 2026-09-27T08:49:01Z
+Generated: 2026-09-30T21:56:58Z
 
 Cells declared: 4 · matched runs: 25 · min_replicates: 5
 
@@ -111,10 +111,10 @@ Cells declared: 4 · matched runs: 25 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model                   |   n |        mean |     min |      max |              std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|------------:|--------:|---------:|-----------------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |  10 | 6.94053e+06 | 5264335 |  9796559 |      1.36348e+06 |
-| game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 | 8.65681e+06 | 5934545 | 10393293 |      1.81888e+06 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 | 7.77662e+06 | 6124991 |  9536497 |      1.30671e+06 |
-| game-of-life-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 | 7.57597e+06 | 7031186 |  7951054 | 384237           |
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |  10 | 8.14625e+06 | 5906655 | 11755793 |      1.85681e+06 |
+| game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 | 1.10634e+07 | 6844461 | 13962148 |      3.04473e+06 |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 | 9.54578e+06 | 6991297 | 12480191 |      2.20494e+06 |
+| game-of-life-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 | 8.55371e+06 | 8035165 |  9148792 | 496493           |
 
 ### tests_passing (rate %)
 

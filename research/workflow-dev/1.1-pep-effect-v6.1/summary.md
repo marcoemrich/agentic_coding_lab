@@ -2,7 +2,7 @@
 
 _Do psychological justifications ('pep talks') in the Red and Green skill prompts on the hybrid-v2 base deliver a measurable code quality or TDD discipline advantage over purely operational instructions?_
 
-Generated: 2026-09-27T08:48:48Z
+Generated: 2026-09-30T21:57:13Z
 
 Cells declared: 2 · matched runs: 10 · min_replicates: 5
 
@@ -89,8 +89,8 @@ Cells declared: 2 · matched runs: 10 · min_replicates: 5
 
 | kata                         | cell_workflow                   | cell_model           |   n |        mean |     min |      max |         std |
 |:-----------------------------|:--------------------------------|:---------------------|----:|------------:|--------:|---------:|------------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 | 7.16873e+06 | 5264335 |  9796559 | 1.67377e+06 |
-| game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc     | opus-4-7-no-thinking |   5 | 8.65681e+06 | 5934545 | 10393293 | 1.81888e+06 |
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 | 8.58004e+06 | 5906655 | 11755793 | 2.23709e+06 |
+| game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc     | opus-4-7-no-thinking |   5 | 1.10634e+07 | 6844461 | 13962148 | 3.04473e+06 |
 
 ### tests_passing (rate %)
 

@@ -2,7 +2,7 @@
 
 _How strongly do the available models (Sonnet 4.6, Opus 4.6, Opus 4.7, Opus 4.8, Fable 5 — each with/without thinking) differ in code quality on a training-known kata under the strongest workflow?_
 
-Generated: 2026-09-27T08:48:29Z
+Generated: 2026-09-30T21:56:53Z
 
 Cells declared: 12 · matched runs: 44 · min_replicates: 3
 
@@ -231,17 +231,17 @@ Cells declared: 12 · matched runs: 44 · min_replicates: 3
 
 ### total_tokens
 
-| kata                         | cell_workflow         | cell_model                   |   n |        mean |     min |     max |              std |
-|:-----------------------------|:----------------------|:-----------------------------|----:|------------:|--------:|--------:|-----------------:|
-| game-of-life-example-mapping | exact-subagents-v1-cc | fable-5                      |   3 | 2.63545e+06 | 2057267 | 3147340 | 548052           |
-| game-of-life-example-mapping | exact-subagents-v1-cc | fable-5-no-thinking          |   3 | 2.25552e+06 | 1963846 | 2526529 | 281910           |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey             |   3 | 2.92588e+06 | 2759447 | 3192684 | 233411           |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey-no-thinking |   3 | 3.86715e+06 | 2456809 | 5761590 |      1.70475e+06 |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-7                     |   3 | 2.48847e+06 | 1868493 | 2918497 | 550171           |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-7-no-thinking         |  10 | 2.56189e+06 | 2023377 | 3201698 | 382603           |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-8                     |   3 | 3.8e+06     | 3237908 | 4562493 | 684656           |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-8-no-thinking         |   4 | 3.17198e+06 | 2812743 | 3822763 | 459273           |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-5                       |   3 | 3.32615e+06 | 2468272 | 4221966 | 877462           |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-5-no-thinking           |   3 | 3.3438e+06  | 2893426 | 3582427 | 390263           |
-| game-of-life-example-mapping | exact-subagents-v1-cc | sonnet-4-6                   |   3 | 2.40718e+06 | 1984762 | 2659370 | 368110           |
-| game-of-life-example-mapping | exact-subagents-v1-cc | sonnet-4-6-no-thinking       |   3 | 2.21178e+06 | 1881808 | 2793688 | 505455           |
+| kata                         | cell_workflow         | cell_model                   |   n |        mean |      min |      max |              std |
+|:-----------------------------|:----------------------|:-----------------------------|----:|------------:|---------:|---------:|-----------------:|
+| game-of-life-example-mapping | exact-subagents-v1-cc | fable-5                      |   3 | 8.95879e+06 |  7798595 |  9925537 |      1.07659e+06 |
+| game-of-life-example-mapping | exact-subagents-v1-cc | fable-5-no-thinking          |   3 | 7.81926e+06 |  7296419 |  8267965 | 489998           |
+| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey             |   3 | 6.64428e+06 |  6307713 |  7295759 | 564299           |
+| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey-no-thinking |   3 | 8.34565e+06 |  5201622 | 12098538 |      3.48854e+06 |
+| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-7                     |   3 | 7.63811e+06 |  6054958 |  9422212 |      1.6926e+06  |
+| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-7-no-thinking         |  10 | 7.28733e+06 |  5864196 |  8969653 |      1.0652e+06  |
+| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-8                     |   3 | 8.63911e+06 |  7869853 |  9315233 | 727177           |
+| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-8-no-thinking         |   4 | 9.3722e+06  |  8386759 | 10047168 | 703636           |
+| game-of-life-example-mapping | exact-subagents-v1-cc | opus-5                       |   3 | 1.29582e+07 | 10274383 | 15428827 |      2.58382e+06 |
+| game-of-life-example-mapping | exact-subagents-v1-cc | opus-5-no-thinking           |   3 | 1.31571e+07 | 11929474 | 13809704 |      1.06383e+06 |
+| game-of-life-example-mapping | exact-subagents-v1-cc | sonnet-4-6                   |   3 | 6.41847e+06 |  6145488 |  6591216 | 239175           |
+| game-of-life-example-mapping | exact-subagents-v1-cc | sonnet-4-6-no-thinking       |   3 | 6.71601e+06 |  5553237 |  7899067 |      1.17305e+06 |

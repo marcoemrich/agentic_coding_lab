@@ -2,7 +2,7 @@
 
 _Is the native Sol workflow line (basic-sol-tdd, Predictive TDD, Four Rules refactor) better only on Sol/pi, or does it also beat the opus line on Opus with native Claude Code — and does the APP effect that suppresses decomposition on Sol reproduce there?_
 
-Generated: 2026-09-27T08:49:00Z
+Generated: 2026-09-30T21:57:09Z
 
 Cells declared: 6 · matched runs: 31 · min_replicates: 5
 
@@ -188,18 +188,18 @@ Cells declared: 6 · matched runs: 31 · min_replicates: 5
 |:-----------------------------|:---------------------------|:---------------------|----:|------------:|---------:|----------:|-----------------:|
 | claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 | 4.88116e+06 |  4017954 |   5638478 | 679348           |
 | claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 | 4.4615e+06  |  3194079 |   5719313 | 834832           |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   5 | 8.22848e+07 | 38381692 | 112785023 |      3.26876e+07 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 | 1.002e+08   | 71227970 | 118819082 |      1.84425e+07 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   5 | 9.80716e+07 | 42947825 | 127612246 |      3.35606e+07 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 | 1.14529e+08 | 82430079 | 141856149 |      2.19666e+07 |
 | claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 | 2.44804e+07 | 21448540 |  26828143 |      2.53647e+06 |
 | claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 | 2.60872e+07 | 17445311 |  37322425 |      7.37643e+06 |
 
 ### cost_usd
 
-| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |    max |   std |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|-------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |   4.87 |  4.2  |   5.62 |  0.59 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |   3.89 |  2.73 |   4.43 |  0.6  |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   5 |  95.6  | 26.44 | 249.03 | 87.64 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |  59.13 | 42.73 |  69.13 | 10.21 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |  17.8  | 15.76 |  19.76 |  1.82 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |  17.37 | 12.06 |  24.07 |  4.44 |
+| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |    max |    std |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|-------:|-------:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |   4.87 |  4.2  |   5.62 |   0.59 |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |   3.89 |  2.73 |   4.43 |   0.6  |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   5 | 126.99 | 33.03 | 339.22 | 121.05 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |  76.31 | 56.09 |  97.97 |  15.11 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |  17.8  | 15.76 |  19.76 |   1.82 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |  17.37 | 12.06 |  24.07 |   4.44 |

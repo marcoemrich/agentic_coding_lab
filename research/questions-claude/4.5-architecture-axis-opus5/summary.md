@@ -2,7 +2,7 @@
 
 _Does the TDD architecture axis (inline-tdd-v1 structureless / single-context-v2 single context / hybrid-v2 hybrid / hybrid-v6 current generation) still rank the same way on opus-5 as it does on opus-4-7 — and does the decomposition metric change the answer?_
 
-Generated: 2026-09-27T08:49:07Z
+Generated: 2026-09-30T21:56:52Z
 
 Cells declared: 16 · matched runs: 111 · min_replicates: 5
 
@@ -346,18 +346,18 @@ Cells declared: 16 · matched runs: 111 · min_replicates: 5
 |:-----------------------------|:----------------------------------------|:---------------------|----:|-----------------:|----------:|----------:|-----------------:|
 | claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-no-thinking |   5 |      3.28141e+06 |   2734813 |   4185323 | 545757           |
 | claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-5-no-thinking   |   6 |      4.4615e+06  |   3194079 |   5719313 | 834832           |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-no-thinking |   7 |      3.45442e+07 |   9306264 |  44845398 |      1.19731e+07 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking   |  18 |      8.36653e+07 |  51719658 | 123086078 |      1.64834e+07 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |      5.96504e+07 |  38510335 |  80833724 |      1.87096e+07 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 |      1.3611e+08  | 121120560 | 176135411 |      2.03967e+07 |
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-no-thinking |   7 |      3.78763e+07 |  10021131 |  49591797 |      1.34521e+07 |
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking   |  18 |      9.42234e+07 |  63263584 | 136005966 |      1.76387e+07 |
+| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |      7.565e+07   |  50539688 | 102579018 |      2.41815e+07 |
+| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 |      1.61604e+08 | 145213699 | 206411858 |      2.27384e+07 |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-no-thinking |   6 |      1.87267e+07 |  14120743 |  28366021 |      5.35498e+06 |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking   |   5 |      8.2553e+07  |   3841157 | 157449550 |      6.59236e+07 |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-no-thinking |  10 | 799074           |    595232 |   1263063 | 187141           |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-5-no-thinking   |   6 |      2.08094e+06 |   1777833 |   2774928 | 361627           |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-no-thinking |  10 |      6.94053e+06 |   5264335 |   9796559 |      1.36348e+06 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking   |   6 |      7.39704e+06 |   4407948 |  10565106 |      2.08784e+06 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |      1.15181e+07 |   9199813 |  12857239 |      1.50078e+06 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 |      1.50243e+07 |   8780237 |  19927182 |      3.69196e+06 |
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-no-thinking |  10 |      8.14625e+06 |   5906655 |  11755793 |      1.85681e+06 |
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking   |   6 |      9.23738e+06 |   6027200 |  12806973 |      2.2932e+06  |
+| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |      1.71973e+07 |  14182401 |  20292835 |      2.23497e+06 |
+| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 |      1.96883e+07 |  11190339 |  24632484 |      4.62056e+06 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      8.40104e+06 |   5208968 |  12953864 |      3.43516e+06 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking   |   5 |      1.18026e+07 |   8095497 |  14837536 |      2.65544e+06 |
 
@@ -367,17 +367,17 @@ Cells declared: 16 · matched runs: 111 · min_replicates: 5
 |:-----------------------------|:----------------------------------------|:---------------------|----:|-------:|------:|-------:|------:|
 | claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-no-thinking |   5 |   2.92 |  2.41 |   3.68 |  0.52 |
 | claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-5-no-thinking   |   6 |   3.89 |  2.73 |   4.43 |  0.6  |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-no-thinking |   7 |  23.33 |  7.82 |  30.31 |  7.52 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking   |  18 |  49.13 | 31.43 |  71.07 |  9.15 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |  35.54 | 23.67 |  46.86 | 10.15 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 |  78.98 | 70.7  | 101.67 | 11.54 |
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-no-thinking |   7 |  29.28 |  9.95 |  38.94 |  9.93 |
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking   |  18 |  61.94 | 45.86 |  86.35 | 10.74 |
+| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |  53.77 | 38.51 |  73    | 16.54 |
+| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 | 109.59 | 99.37 | 139.87 | 15.26 |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-no-thinking |   6 |  12.72 | 10.18 |  19.5  |  3.59 |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking   |   5 |  47.56 |  3.07 |  88.82 | 36.83 |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-no-thinking |  10 |   0.81 |  0.58 |   1.48 |  0.26 |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-5-no-thinking   |   6 |   1.72 |  1.52 |   2.11 |  0.22 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-no-thinking |  10 |   5.17 |  4.03 |   7.14 |  0.94 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking   |   6 |   5.34 |  3.85 |   7.24 |  1.21 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |   7.81 |  6.27 |   8.66 |  0.97 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 |  10.82 |  6.33 |  14.22 |  2.75 |
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-no-thinking |  10 |   6.81 |  4.82 |   9.52 |  1.55 |
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking   |   6 |   7.51 |  6.17 |   9.77 |  1.35 |
+| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |  14.1  | 12.38 |  16.05 |  1.37 |
+| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 |  16.5  |  8.8  |  20.26 |  4.16 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |   6.48 |  4.69 |   8.96 |  1.94 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking   |   5 |   8.24 |  5.79 |  10.16 |  1.79 |

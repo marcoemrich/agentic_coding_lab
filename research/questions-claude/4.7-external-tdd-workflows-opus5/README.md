@@ -6,6 +6,7 @@ factors:
     - {workflow: exact-hybrid-v2.4-lab-split-cc,  prompt: example-mapping}  # internal: current exact-coding baseline, per-cycle refactor via isolated subagent
     - {workflow: external-superpowers-2026-09-04-cc,  prompt: example-mapping}  # external: Superpowers v6.3.0, per-cycle refactor inline
     - {workflow: external-pocock-2026-09-04-cc,       prompt: example-mapping}  # external: Pocock Aug snapshot, no refactor stage
+    - {workflow: external-kesseler-2026-09-30-cc,     prompt: example-mapping}  # external: Kesseler, per-cycle refactor inline + ZOMBIES test plan
 controls:
   model: opus-5-no-thinking
   kata_base: claim-office
@@ -30,6 +31,19 @@ outcomes:
   - test_cases_first_block
   - red_verified
   - red_unverified
+  # Discipline read from the suite outcomes instead of the edit tools
+  # (measure-suite-transitions.py). The test_blocks family above needs
+  # Write/Edit calls; a model that edits through the shell zeroes all of it —
+  # which is exactly what the kesseler smoke run did. suite_cycles counts
+  # observed red->green transitions and survives that. It is a lower bound on
+  # cycle_count (~0.5x, r = 0.82), so read it within a column, not against
+  # cycle_count. suite_unknown_runs is the trust column.
+  - suite_cycles
+  - suite_new_failures
+  - suite_opens_red
+  - suite_unresolved_red
+  - suite_runs
+  - suite_unknown_runs
   # code quality. Decomposition first — cc_avg_loc_per_function is the binding
   # quality metric per RQ-architecture-axis-opus5 F-1.6.
   - cc_avg_loc_per_function
@@ -83,6 +97,7 @@ The three cells vary exactly two things, one at a time:
 | `exact-hybrid-v2.4-lab-split-cc` | phase commands + subagent | **per-cycle** | isolated subagent |
 | `external-superpowers-2026-09-04-cc` | single skill, inline phases | **per-cycle** | inline in the skill |
 | `external-pocock-2026-09-04-cc` | single skill + `code-review` skill | **none** | — |
+| `external-kesseler-2026-09-30-cc` | single skill, inline phases | **per-cycle** | inline in the skill |
 
 - **superpowers-2026-09-04 ↔ pocock-2026-09-04** holds the architecture constant (both are single inline skills)
   and varies the refactor position alone: per cycle against never. This is the
@@ -92,9 +107,26 @@ The three cells vary exactly two things, one at a time:
   one inline skill. This is the clean test of whether the expensive machinery
   buys anything over doing the same thing inline.
 
-Together the two contrasts separate "does refactoring matter" from "does our way
-of refactoring matter" — the question a two-cell comparison cannot answer,
-because it moves both at once.
+- **kesseler ↔ superpowers-2026-09-04** holds the whole architecture row constant
+  — both are single inline skills refactoring per cycle — and varies only *which
+  skill*. That is a replication cell, not a new position on the axis: it asks
+  whether a superpowers result is a property of the architecture or of that one
+  author's prose. Without it, any finding on the architecture row rests on n=1
+  skill.
+
+Together the contrasts separate "does refactoring matter" from "does our way
+of refactoring matter" from "does this particular skill matter" — questions a
+two-cell comparison cannot answer, because it moves several at once.
+
+The kesseler cell carries a second interest of its own. It is the only external
+snapshot whose contract independently converges on EXACT Coding's: an explicit
+test plan walked for completeness against ZOMBIES, stated failure predictions
+before each run, a two-step red phase (compile, then assertion), and a
+justification pass ("does a failing test require this line?") before refactor.
+Superpowers and pocock have none of that. So where superpowers tests *an*
+external loop, kesseler tests an external loop that arrived at our own
+obligations by another route — and whether it pays off without the phase
+commands, subagents and markers that enforce them on our side.
 
 The `pocock-2026-09-04` row needs a word of explanation. Upstream's August restructuring states
 "Refactoring is not part of the loop. It belongs to the review stage (see the
@@ -157,6 +189,29 @@ the skill's three deferrals to a "human partner", example mapping as the approve
 plan, `pnpm test` instead of the skill's `npm test`, and the DONE marker.
 **No RED marker block** — see the caveats.
 
+### external-kesseler-2026-09-30-cc (lexler/skill-factory, commit `474433af2e`)
+
+`SKILL.md` and `references/zombies.md` unmodified, sha256-verified against the
+upstream raw blobs; Apache-2.0 in `LICENSE.upstream`. The rules file carries:
+MODE pinned to `auto` (the skill's own default, and the only place it branches
+on MODE), Core Rule 10's "push back" kept as judgement but without an addressee,
+`prompt.md` as the approved plan, the full-suite command per stack, and the DONE
+marker. **No RED marker block** — see the caveats.
+
+Upstream's `evals/evals.json` is deliberately not vendored. Its `expectations`
+arrays enumerate the scored behaviours in order ("ZOMBIES checklist is
+explicitly walked through", "The two-step red phase is followed"), which in the
+run directory is a rubric the agent can read — that would measure
+compliance-with-a-checklist rather than the skill. Nothing in `SKILL.md`
+references it.
+
+The skill refactors inside the loop (step 13) and announces it with `🧹
+Starting refactoring stage`, which is not a parsed marker, so
+`refactorings_applied` for this cell comes from inference and is an upper bound.
+Its own step 11 obliges the model to confess any test that passed without ever
+being red — a self-reported discipline breach, worth reading in the transcript
+next to `tests_passed_immediately`.
+
 ## Hypotheses
 
 ### Refactor position (superpowers-2026-09-04 ↔ pocock-2026-09-04)
@@ -182,6 +237,23 @@ plan, `pnpm test` instead of the skill's `npm test`, and the DONE marker.
 - **H4 (cost)** — superpowers-2026-09-04 is markedly cheaper than hybrid-v2.4: it refactors per cycle,
   but spawns no subagent and runs no separate phase commands. Expected well below
   the 2661 s / 81.9 M reference, and above pocock-2026-09-04.
+
+### Which skill, not just which architecture (kesseler ↔ superpowers-2026-09-04)
+
+Both cells are single inline skills refactoring per cycle, so on the axis this
+RQ is built around they should land together. If they do, the architecture row
+is a property of the architecture and the finding generalises. If they separate
+— on correctness, decomposition or discipline — then "external inline skill" is
+not one thing, and every conclusion drawn from superpowers alone needs the
+qualifier "this skill", not "this architecture".
+
+Kesseler's extra obligations (ZOMBIES completeness walk, stated predictions,
+two-step red, justification pass) predict it lands closer to hybrid-v2.4 than
+superpowers does on discipline, while staying at superpowers' cost — the
+obligations are prose in one document, not phase commands and subagents. If
+instead it lands at superpowers on discipline too, that is evidence the
+obligations only bind when a harness enforces them, which is the central claim
+of the phase-command architecture.
 
 ### Correctness and discipline
 
@@ -259,10 +331,27 @@ an untested path, and hybrid-v2.4 has never run on claim-office:
   baseline recommendation needs revisiting — report it as a finding in its own
   right, separately from the external-workflow comparison.
 - **Marker-derived metrics are not comparable across cells.** hybrid-v2.4 uses our own
-  markers, pocock-2026-09-04 and superpowers-2026-09-04 have none. `cycle_count`, `predictions_correct_rate` and
-  `refactorings_applied` will be empty for both external cells. Compare
-  discipline across cells only via the transcript-derived set (`test_blocks`,
-  `test_cases_*`, `red_verified`, `red_unverified`).
+  markers, the three external cells have none. `cycle_count`,
+  `predictions_correct_rate` and `refactorings_applied` will be empty or
+  inferred for all three. Compare discipline across cells only via the
+  transcript-derived sets — and note that there are now two of them, measuring
+  from opposite ends of the loop.
+- **The `test_blocks` family can silently read zero.** It reconstructs cycles
+  from `Write`/`Edit`/`MultiEdit` calls. A model that edits through the shell
+  instead — heredocs, `sed -i`, inline `python3` replaces — produces none of
+  those, and `test_blocks`, `test_cases_*`, `red_verified` and `red_unverified`
+  all come out 0, which is indistinguishable from "never wrote a test". This is
+  not hypothetical: the kesseler smoke run (opus-5-5-no-thinking) made 91 Bash
+  calls and not one edit-tool call. `suite_cycles` and its siblings are in
+  `outcomes` for exactly this reason — they read the suite *results*, so they
+  survive any edit mechanism. Check `suite_unknown_runs` before trusting them,
+  and if a cell shows `test_blocks = 0` with `suite_cycles > 0`, the zero is the
+  measurement, not the workflow.
+- **The existing 15 runs predate the suite-transition metrics.** `suite_*` is
+  written by `analyze-run.sh`, so the hybrid-v2.4, superpowers and pocock cells
+  carry nothing in those columns until they are reanalysed. Run `/reanalyze
+  RQ-external-tdd-workflows-opus5` before comparing the new column across
+  cells, or the kesseler cell will be the only one with numbers in it.
 - **No RED marker is inserted into either vendored skill.** An output obligation
   per RED phase creates exactly the structural break the measurement is looking
   for, so both external workflows stay unmodified and `test_blocks` is the figure
@@ -287,6 +376,12 @@ an untested path, and hybrid-v2.4 has never run on claim-office:
 - **Snapshot, not "the tool"** — every finding here describes the vendored
   snapshot at its recorded commit. Both upstreams move. Findings must name the
   snapshot, never the tool in general.
+- **The kesseler smoke run is not a cell.** It ran on `opus-5-5-no-thinking`,
+  this RQ is controlled on `opus-5-no-thinking`, and different models must never
+  be OR-matched into one cell. That run exists to prove the vendoring executes;
+  it counts toward nothing here, and the cell needs its own 5 replicates.
+  Whether the shell-editing behaviour above reproduces on opus-5 is open — the
+  fill answers it.
 - **Single harness, single model.** Claude Code on opus-5-no-thinking only. The
   architecture axis is a net negative on Sol/pi (RQ-architecture-axis-sol-pi
   F-1.6), so nothing here transfers to another harness without replication.

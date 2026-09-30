@@ -2,7 +2,7 @@
 
 _How much cheaper is the GPT model gpt-5-6-sol on the pi harness compared to opus-4-8 on Claude Code — at the same prompt style and an outcome-equivalent TDD workflow, across both katas?_
 
-Generated: 2026-09-27T08:48:55Z
+Generated: 2026-09-30T21:57:11Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -21,18 +21,18 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
 | kata                         | cell_workflow              | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |  32.89 | 25.56 | 37.46 |  4.52 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |  41.09 | 30.85 | 49.78 |  7.1  |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-pi | gpt-5-6-sol       |   5 |   2.54 |  1.87 |  3.55 |  0.65 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |   3.45 |  3.07 |  3.77 |  0.34 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |   5.53 |  4.82 |  6.02 |  0.51 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | gpt-5-6-sol       |   5 |   1.09 |  0.71 |  1.47 |  0.29 |
 
 ### total_tokens
 
 | kata                         | cell_workflow              | cell_model        |   n |             mean |      min |      max |              std |
 |:-----------------------------|:---------------------------|:------------------|----:|-----------------:|---------:|---------:|-----------------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |      4.98975e+07 | 37985796 | 57642271 |      7.38067e+06 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |      5.46502e+07 | 40898732 | 64862907 |      8.82622e+06 |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-pi | gpt-5-6-sol       |   5 |      2.08521e+06 |  1145350 |  3325566 | 801525           |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |      4.09249e+06 |  3434019 |  4609405 | 519750           |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |      5.21111e+06 |  4405302 |  5795526 | 589288           |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | gpt-5-6-sol       |   5 | 661453           |   374855 |   902304 | 237856           |
 
 ### duration_seconds

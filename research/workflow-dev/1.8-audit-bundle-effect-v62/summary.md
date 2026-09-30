@@ -2,7 +2,7 @@
 
 _Does the audit bundle (rationale additions + red-phase hardening) reproduce, on the exact-hybrid-v4-cleaned-cc base, the effects measured in the archived RQ-audit against v6.5-lean (discipline gain, variance shrink, token/wallclock surcharge while preserving correctness)?_
 
-Generated: 2026-09-27T08:48:47Z
+Generated: 2026-09-30T21:57:01Z
 
 Cells declared: 2 · matched runs: 20 · min_replicates: 10
 
@@ -103,5 +103,5 @@ Cells declared: 2 · matched runs: 20 · min_replicates: 10
 
 | kata                         | cell_workflow                     | cell_model                   |   n |        mean |     min |      max |         std |
 |:-----------------------------|:----------------------------------|:-----------------------------|----:|------------:|--------:|---------:|------------:|
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc        | opus-4-7-portkey-no-thinking |  10 | 8.31736e+06 | 4985045 |  9943890 | 1.61451e+06 |
-| game-of-life-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |  10 | 9.65162e+06 | 7630390 | 16032670 | 2.33982e+06 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc        | opus-4-7-portkey-no-thinking |  10 | 1.04769e+07 | 6383827 | 12702538 | 2.07624e+06 |
+| game-of-life-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |  10 | 1.18112e+07 | 9623933 | 18735998 | 2.59966e+06 |

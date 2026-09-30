@@ -2,7 +2,7 @@
 
 _Do the three v6.5.1 audit cleanups (consistency, refactor.md decoupling, tdd-experiment-mode reframing) — applied to exact-hybrid-v3-with-why-cc — measurably change workflow behaviour on claim-office, or is exact-hybrid-v4-cleaned-cc a behaviourally equivalent hygiene variant of the new default baseline?_
 
-Generated: 2026-09-27T08:49:13Z
+Generated: 2026-09-30T21:57:04Z
 
 Cells declared: 2 · matched runs: 16 · min_replicates: 8
 
@@ -110,5 +110,5 @@ Cells declared: 2 · matched runs: 16 · min_replicates: 8
 
 | kata                         | cell_workflow               | cell_model                   |   n |        mean |      min |      max |         std |
 |:-----------------------------|:----------------------------|:-----------------------------|----:|------------:|---------:|---------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 | 3.97803e+07 |   349302 | 51081422 | 1.61149e+07 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 | 4.44426e+07 | 39301139 | 49093278 | 3.40183e+06 |
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 | 4.58038e+07 |   349302 | 61028792 | 1.87383e+07 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 | 5.22518e+07 | 45068216 | 61344477 | 5.60009e+06 |

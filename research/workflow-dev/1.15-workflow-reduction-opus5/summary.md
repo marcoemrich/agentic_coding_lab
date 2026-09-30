@@ -2,7 +2,7 @@
 
 _How much of the hybrid-v6 architecture can be removed on opus-5 before code quality degrades — and how much of its result comes from the APP subordination patch (hybrid-v7) rather than from the end-refactor phase (hybrid-v8) or the isolated refactor subagent (single-context-v3)?_
 
-Generated: 2026-09-27T08:49:15Z
+Generated: 2026-09-30T21:56:54Z
 
 Cells declared: 12 · matched runs: 63 · min_replicates: 5
 
@@ -267,15 +267,15 @@ Cells declared: 12 · matched runs: 63 · min_replicates: 5
 
 | kata                         | cell_workflow                           | cell_model         |   n |        mean |      min |      max |              std |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|------------:|---------:|---------:|-----------------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   6 | 7.39704e+06 |  4407948 | 10565106 |      2.08784e+06 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking |   6 | 1.50243e+07 |  8780237 | 19927182 |      3.69196e+06 |
-| game-of-life-example-mapping | exact-hybrid-v7-app-subordinate-cc      | opus-5-no-thinking |   5 | 1.51037e+07 |  9703302 | 18950101 |      4.09419e+06 |
-| game-of-life-example-mapping | exact-hybrid-v8-no-end-refactor-cc      | opus-5-no-thinking |   5 | 1.22266e+07 |  8873521 | 15713360 |      2.77031e+06 |
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   6 | 9.23738e+06 |  6027200 | 12806973 |      2.2932e+06  |
+| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking |   6 | 1.96883e+07 | 11190339 | 24632484 |      4.62056e+06 |
+| game-of-life-example-mapping | exact-hybrid-v7-app-subordinate-cc      | opus-5-no-thinking |   5 | 1.93744e+07 | 12075504 | 23829529 |      5.00908e+06 |
+| game-of-life-example-mapping | exact-hybrid-v8-no-end-refactor-cc      | opus-5-no-thinking |   5 | 1.57811e+07 | 10918830 | 20900487 |      3.82141e+06 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking |   5 | 1.18026e+07 |  8095497 | 14837536 |      2.65544e+06 |
 | game-of-life-example-mapping | exact-single-context-v3-no-subagent-cc  | opus-5-no-thinking |   5 | 2.11134e+07 | 12482049 | 28733215 |      6.00616e+06 |
-| sphinx-score-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   5 | 1.05637e+07 |  9302858 | 11251467 | 747475           |
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking |   6 | 1.9079e+07  | 14796862 | 30728141 |      5.91678e+06 |
-| sphinx-score-example-mapping | exact-hybrid-v7-app-subordinate-cc      | opus-5-no-thinking |   5 | 1.46813e+07 | 10730323 | 16417988 |      2.28789e+06 |
-| sphinx-score-example-mapping | exact-hybrid-v8-no-end-refactor-cc      | opus-5-no-thinking |   5 | 1.22992e+07 | 10620924 | 14650830 |      1.98567e+06 |
+| sphinx-score-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   5 | 1.24763e+07 | 10985492 | 13179344 | 871959           |
+| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking |   6 | 2.51255e+07 | 20215854 | 37623630 |      6.47713e+06 |
+| sphinx-score-example-mapping | exact-hybrid-v7-app-subordinate-cc      | opus-5-no-thinking |   5 | 1.92745e+07 | 14449831 | 21503154 |      2.86206e+06 |
+| sphinx-score-example-mapping | exact-hybrid-v8-no-end-refactor-cc      | opus-5-no-thinking |   5 | 1.52538e+07 | 12796629 | 18206349 |      2.68513e+06 |
 | sphinx-score-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking |   5 | 1.66434e+07 |  9156744 | 29666022 |      7.98071e+06 |
 | sphinx-score-example-mapping | exact-single-context-v3-no-subagent-cc  | opus-5-no-thinking |   5 | 1.87542e+07 | 12083900 | 24584975 |      4.48638e+06 |

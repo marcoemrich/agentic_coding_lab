@@ -2,7 +2,7 @@
 
 _How do Fable 5, Opus 4.8, Opus 4.7 and Opus 4.6 (each no-thinking) differ in correctness and code quality on a novel kata with ambiguities that differentiates more strongly than the training-known game-of-life?_
 
-Generated: 2026-09-27T08:48:30Z
+Generated: 2026-09-30T21:56:56Z
 
 Cells declared: 5 · matched runs: 30 · min_replicates: 5
 
@@ -142,8 +142,8 @@ Cells declared: 5 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow         | cell_model                   |   n |        mean |      min |      max |         std |
 |:-----------------------------|:----------------------|:-----------------------------|----:|------------:|---------:|---------:|------------:|
-| claim-office-example-mapping | exact-subagents-v1-cc | fable-5-no-thinking          |   5 | 1.34537e+07 |  3162490 | 18013050 | 6.05869e+06 |
-| claim-office-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey-no-thinking |   5 | 1.50647e+07 | 13213114 | 18251612 | 1.97916e+06 |
-| claim-office-example-mapping | exact-subagents-v1-cc | opus-4-7-no-thinking         |  10 | 1.3655e+07  |  9411553 | 16548065 | 2.09204e+06 |
-| claim-office-example-mapping | exact-subagents-v1-cc | opus-4-8-no-thinking         |   5 | 3.09901e+07 | 24182091 | 37202242 | 5.45598e+06 |
-| claim-office-example-mapping | exact-subagents-v1-cc | opus-5-no-thinking           |   5 | 2.45817e+07 | 14843065 | 36565909 | 8.95252e+06 |
+| claim-office-example-mapping | exact-subagents-v1-cc | fable-5-no-thinking          |   5 | 4.45235e+07 | 10173947 | 55275711 | 1.92951e+07 |
+| claim-office-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey-no-thinking |   5 | 3.38985e+07 | 26348427 | 41109283 | 5.85997e+06 |
+| claim-office-example-mapping | exact-subagents-v1-cc | opus-4-7-no-thinking         |  10 | 3.61137e+07 | 17929983 | 45828804 | 7.90853e+06 |
+| claim-office-example-mapping | exact-subagents-v1-cc | opus-4-8-no-thinking         |   5 | 6.19949e+07 | 49260869 | 71818005 | 8.80044e+06 |
+| claim-office-example-mapping | exact-subagents-v1-cc | opus-5-no-thinking           |   5 | 6.89795e+07 | 46847507 | 93720469 | 1.86995e+07 |

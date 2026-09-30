@@ -2,7 +2,7 @@
 
 _Does the code-quality profile of Opus (opus-4-8) differ between the Claude Code and the pi harness, each with and without thinking, at a constant workflow generation (hybrid-v4)?_
 
-Generated: 2026-09-27T08:49:05Z
+Generated: 2026-09-30T21:57:12Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -181,18 +181,18 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
 ### total_tokens
 
-| kata                         | cell_workflow                           | cell_model           |   n |        mean |     min |     max |              std |
-|:-----------------------------|:----------------------------------------|:---------------------|----:|------------:|--------:|--------:|-----------------:|
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-no-thinking |   5 | 7.36288e+06 | 4688656 | 8809447 |      1.67922e+06 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-requesty    |   5 | 4.09249e+06 | 3434019 | 4609405 | 519750           |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8             |   5 | 1.23042e+06 |  992904 | 1651260 | 277681           |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8-no-thinking |   5 | 1.26613e+06 | 1179367 | 1361035 |  76766.8         |
+| kata                         | cell_workflow                           | cell_model           |   n |        mean |     min |      max |              std |
+|:-----------------------------|:----------------------------------------|:---------------------|----:|------------:|--------:|---------:|-----------------:|
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-no-thinking |   5 | 8.96174e+06 | 6249682 | 11288121 |      2.15189e+06 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-requesty    |   5 | 5.21111e+06 | 4405302 |  5795526 | 589288           |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8             |   5 | 1.23042e+06 |  992904 |  1651260 | 277681           |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8-no-thinking |   5 | 1.26613e+06 | 1179367 |  1361035 |  76766.8         |
 
 ### cost_usd
 
 | kata                         | cell_workflow                           | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-no-thinking |   5 |  13.35 |  5.5  | 40.38 | 15.13 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-requesty    |   5 |   3.45 |  3.07 |  3.77 |  0.34 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-no-thinking |   5 |  15.82 |  6.91 | 43.38 | 15.52 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-requesty    |   5 |   5.53 |  4.82 |  6.02 |  0.51 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8             |   5 |   2    |  1.77 |  2.3  |  0.25 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8-no-thinking |   5 |   2    |  1.91 |  2.1  |  0.09 |

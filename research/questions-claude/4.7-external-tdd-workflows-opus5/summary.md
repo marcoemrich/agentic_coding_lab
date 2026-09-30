@@ -2,9 +2,9 @@
 
 _Can the inner TDD loop of EXACT Coding be substituted by an externally authored TDD workflow, and what does the substitution cost or buy? Example mapping stays the entry point; only the implement/test/refactor loop is exchanged. Measured on claim-office-example-mapping against the current exact-coding baseline exact-hybrid-v2.4-lab-split-cc — on correctness, code quality, TDD discipline and cost._
 
-Generated: 2026-09-27T08:48:33Z
+Generated: 2026-09-30T21:57:09Z
 
-Cells declared: 3 · matched runs: 15 · min_replicates: 5
+Cells declared: 4 · matched runs: 15 · min_replicates: 5
 
 ## Cell coverage
 
@@ -13,6 +13,7 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc | opus-5-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | external-pocock-2026-09-04-cc | opus-5-no-thinking | 5 | 5 | ✅ |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc | opus-5-no-thinking | 0 | 0 | ❌ no runs |
 
 ## Outcome pivots (per cell)
 
@@ -110,6 +111,30 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |    0.2 |     0 |     1 |  0.45 |
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |    1   |     0 |     4 |  1.73 |
 
+### suite_cycles
+
+_All values are missing or non-numeric._
+
+### suite_new_failures
+
+_All values are missing or non-numeric._
+
+### suite_opens_red
+
+_All values are missing or non-numeric._
+
+### suite_unresolved_red
+
+_All values are missing or non-numeric._
+
+### suite_runs
+
+_All values are missing or non-numeric._
+
+### suite_unknown_runs
+
+_All values are missing or non-numeric._
+
 ### cc_avg_loc_per_function
 
 | kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
@@ -170,6 +195,6 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 
 | kata                         | cell_workflow                      | cell_model         |   n |        mean |      min |       max |         std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|------------:|---------:|----------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 | 1.26165e+08 | 86741467 | 174612025 | 4.19189e+07 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 | 1.18415e+07 | 10765075 |  13356675 | 1.28787e+06 |
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 | 1.40925e+08 | 98182103 | 194058770 | 4.64453e+07 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 | 1.25898e+07 | 11267894 |  14333416 | 1.44321e+06 |
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 | 1.21539e+07 | 10955398 |  13993515 | 1.28586e+06 |

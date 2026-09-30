@@ -2,7 +2,7 @@
 
 _Does the interaction finding from RQ-pep-emoji-v6.1 (pep+emoji reduction: anti-additivity for refactorings_applied, saturation for tests_passed_immediately, correctness invariant) also hold on a more complex kata with genuine ambiguities?_
 
-Generated: 2026-09-27T08:49:20Z
+Generated: 2026-09-30T21:56:59Z
 
 Cells declared: 4 · matched runs: 22 · min_replicates: 5
 
@@ -138,7 +138,7 @@ Cells declared: 4 · matched runs: 22 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model                   |   n |        mean |      min |      max |         std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|------------:|---------:|---------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 | 3.45442e+07 |  9306264 | 44845398 | 1.19731e+07 |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 | 2.4929e+07  |  7993261 | 42340055 | 1.37152e+07 |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 | 3.04843e+07 |   419163 | 46176730 | 1.96656e+07 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 | 3.54811e+07 | 23673479 | 42994428 | 7.43108e+06 |
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 | 3.78763e+07 | 10021131 | 49591797 | 1.34521e+07 |
+| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 | 2.72635e+07 |  8856536 | 46234947 | 1.53025e+07 |
+| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 | 3.33318e+07 |   419163 | 49706512 | 2.19333e+07 |
+| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 | 3.89401e+07 | 25393862 | 48504371 | 8.83319e+06 |

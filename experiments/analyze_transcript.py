@@ -197,14 +197,24 @@ def extract_assistant_message(event: dict[str, Any]) -> dict[str, Any] | None:
     return None
 
 
-def message_token_total(msg: dict[str, Any]) -> int:
+def message_token_breakdown(msg: dict[str, Any]) -> dict[str, int]:
+    """Per-type token counts for one assistant message.
+
+    Kept separate from the scalar sum because cost is tariffed per type: a
+    cache read is 0.05-0.1x base input while a cache *write* is above it, so a
+    subagent-heavy run cannot be priced from a single total.
+    """
     usage = msg.get("usage") or {}
-    return (
-        int(usage.get("input_tokens") or 0)
-        + int(usage.get("output_tokens") or 0)
-        + int(usage.get("cache_read_input_tokens") or 0)
-        + int(usage.get("cache_creation_input_tokens") or 0)
-    )
+    return {
+        "input": int(usage.get("input_tokens") or 0),
+        "output": int(usage.get("output_tokens") or 0),
+        "cache_read": int(usage.get("cache_read_input_tokens") or 0),
+        "cache_creation": int(usage.get("cache_creation_input_tokens") or 0),
+    }
+
+
+def message_token_total(msg: dict[str, Any]) -> int:
+    return sum(message_token_breakdown(msg).values())
 
 
 def aggregate_main_session(jsonl_path: Path) -> dict[str, Any]:
@@ -689,17 +699,27 @@ def derive_cycle_count(
 
 def aggregate_subagent_phases(
     subagent_dir: Path, task_order: list[str]
-) -> tuple[int, list[dict[str, Any]], int, int, list[str]]:
+) -> tuple[int, list[dict[str, Any]], int, int, list[str], dict[str, int]]:
     """Aggregate per-subagent metrics.
 
     Returns (total_tokens, phase_list, predictions_correct, predictions_total,
-    subagent_model_versions). Predictions are only counted from red-phase
-    agents. Subagent models are returned in first-seen order.
+    subagent_model_versions, token_breakdown). Predictions are only counted
+    from red-phase agents. Subagent models are returned in first-seen order.
+
+    The breakdown is what makes these tokens priceable alongside the main
+    context; the scalar total alone is not, because the types carry different
+    tariffs.
     """
     if not subagent_dir.is_dir():
-        return 0, [], 0, 0, []
+        return 0, [], 0, 0, [], {
+            "input": 0,
+            "output": 0,
+            "cache_read": 0,
+            "cache_creation": 0,
+        }
 
     total = 0
+    breakdown = {"input": 0, "output": 0, "cache_read": 0, "cache_creation": 0}
     pred_correct = 0
     pred_total = 0
     phase_records: list[tuple[float, dict[str, Any]]] = []
@@ -729,7 +749,10 @@ def aggregate_subagent_phases(
             msg = extract_assistant_message(event)
             if msg is None:
                 continue
-            agent_tokens += message_token_total(msg)
+            msg_tokens = message_token_breakdown(msg)
+            agent_tokens += sum(msg_tokens.values())
+            for k, v in msg_tokens.items():
+                breakdown[k] += v
             model_id = msg.get("model")
             if (
                 isinstance(model_id, str)
@@ -782,7 +805,7 @@ def aggregate_subagent_phases(
                 p["phase"] = task_order[idx]
             idx += 1
 
-    return total, phases, pred_correct, pred_total, sub_model_versions
+    return total, phases, pred_correct, pred_total, sub_model_versions, breakdown
 
 
 def summarize_phases(phases: list[dict[str, Any]]) -> dict[str, Any]:
@@ -859,10 +882,29 @@ def main(argv: list[str]) -> int:
         sub_pred_c,
         sub_pred_t,
         sub_model_versions,
+        subagent_token_breakdown,
     ) = aggregate_subagent_phases(
         run_dir / "transcript-subagents", internal["task_order"]
     )
     metrics["subagent_token_total"] = subagent_total
+
+    # `total_tokens` means the whole run, subagents included. It did not until
+    # 2026-09-30: it summed transcript.jsonl alone, so every isolated-subagent
+    # arm was recorded short — and unevenly, because the shortfall scales with
+    # how much the workflow delegates (43 % on a 48-call refactor-subagent arm
+    # against 11 % on a 27-call one, RQ-old-vs-new-exact-line-opus55 F-4.12.5).
+    # That put the bias on the very axis those RQs compare. compute-cost.py
+    # prices from this block, so the cost column inherited the same shortfall.
+    # The main-context split stays available under `main_context_tokens` for
+    # anyone who needs to separate delegated from in-context work.
+    main_tokens = dict(metrics["total_tokens"])
+    metrics["main_context_tokens"] = main_tokens
+    metrics["subagent_tokens"] = dict(subagent_token_breakdown)
+    metrics["total_tokens"] = {
+        key: main_tokens[key] + subagent_token_breakdown[key]
+        for key in ("input", "output", "cache_read", "cache_creation")
+    }
+    metrics["total_tokens"]["total"] = sum(metrics["total_tokens"].values())
 
     # Add predictions reported by red-phase subagents to inline predictions
     # captured from the main session.

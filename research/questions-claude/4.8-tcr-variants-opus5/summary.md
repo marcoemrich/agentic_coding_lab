@@ -2,7 +2,7 @@
 
 _How do classic TCR and TCRDD variants affect correctness, code quality, development behavior, and efficiency in autonomous coding agents, and—within TCRDD—does tool-enforced execution with git-gamble differ from native-Git prompt enforcement?_
 
-Generated: 2026-09-27T08:48:31Z
+Generated: 2026-09-30T21:57:15Z
 
 Cells declared: 4 · matched runs: 18 · min_replicates: 4
 
@@ -201,7 +201,7 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 4
 
 | kata                         | cell_workflow                           | cell_model                  |   n |        mean |      min |      max |         std |
 |:-----------------------------|:----------------------------------------|:----------------------------|----:|------------:|---------:|---------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-requesty-no-thinking |   4 | 5.0024e+07  | 48502422 | 51185739 | 1.11626e+06 |
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-requesty-no-thinking |   4 | 6.31835e+07 | 59428134 | 65313322 | 2.70213e+06 |
 | claim-office-example-mapping | external-tcr-kentbeck-2026-09-14-cc     | opus-5-requesty-no-thinking |   5 | 3.87286e+06 |  2897067 |  5540998 | 1.04179e+06 |
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-cc      | opus-5-requesty-no-thinking |   5 | 1.97785e+07 | 15199937 | 23806188 | 3.27413e+06 |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-cc | opus-5-requesty-no-thinking |   4 | 1.48859e+07 | 12466054 | 18103900 | 2.36278e+06 |
@@ -210,7 +210,7 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 4
 
 | kata                         | cell_workflow                           | cell_model                  |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-requesty-no-thinking |   4 |  37.71 | 35.17 | 40.82 |  2.64 |
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-requesty-no-thinking |   4 |  58.07 | 52.94 | 62.9  |  4.25 |
 | claim-office-example-mapping | external-tcr-kentbeck-2026-09-14-cc     | opus-5-requesty-no-thinking |   5 |   3.38 |  2.57 |  4.39 |  0.7  |
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-cc      | opus-5-requesty-no-thinking |   5 |  13.68 | 10.45 | 15.93 |  2.28 |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-cc | opus-5-requesty-no-thinking |   4 |  10.52 |  9.16 | 12.67 |  1.52 |

@@ -2,7 +2,7 @@
 
 _On TypeScript with Vitest, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness and code quality for GPT-5.6 SOL and Opus 5?_
 
-Generated: 2026-09-27T09:15:46Z
+Generated: 2026-09-30T21:57:10Z
 
 Cells declared: 6 · matched runs: 60 · min_replicates: 5
 
@@ -327,14 +327,14 @@ Cells declared: 6 · matched runs: 60 · min_replicates: 5
 
 ### total_tokens
 
-| kata                         | cell_workflow                         | cell_model         |   n |             mean |      min |      max |              std |
-|:-----------------------------|:--------------------------------------|:-------------------|----:|-----------------:|---------:|---------:|-----------------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-cc | opus-5-no-thinking |  10 |      2.69153e+06 |  1259607 |  4006256 | 844475           |
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-pi | gpt-5-6-sol-codex  |   5 | 335810           |   240067 |   406371 |  65135.9         |
-| claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-no-thinking |  15 |      1.91578e+07 |  8566267 | 34449879 |      6.96491e+06 |
-| claim-office-example-mapping | exact-ptdd-v1-pi                      | gpt-5-6-sol-codex  |  15 |      6.71986e+06 |   767175 | 11127662 |      4.14218e+06 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-no-thinking |  10 |      4.08676e+07 | 25148536 | 60459272 |      1.25328e+07 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi  | gpt-5-6-sol-codex  |   5 |      1.7516e+07  | 15012350 | 24797598 |      4.15925e+06 |
+| kata                         | cell_workflow                         | cell_model         |   n |             mean |      min |       max |              std |
+|:-----------------------------|:--------------------------------------|:-------------------|----:|-----------------:|---------:|----------:|-----------------:|
+| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-cc | opus-5-no-thinking |  10 |      2.69153e+06 |  1259607 |   4006256 | 844475           |
+| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-pi | gpt-5-6-sol-codex  |   5 | 335810           |   240067 |    406371 |  65135.9         |
+| claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-no-thinking |  15 |      1.91578e+07 |  8566267 |  34449879 |      6.96491e+06 |
+| claim-office-example-mapping | exact-ptdd-v1-pi                      | gpt-5-6-sol-codex  |  15 |      6.71986e+06 |   767175 |  11127662 |      4.14218e+06 |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-no-thinking |  10 |      6.64627e+07 | 33908704 | 105380010 |      2.16938e+07 |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi  | gpt-5-6-sol-codex  |   5 |      1.7516e+07  | 15012350 |  24797598 |      4.15925e+06 |
 
 ### cost_usd
 
@@ -344,7 +344,7 @@ Cells declared: 6 · matched runs: 60 · min_replicates: 5
 | claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-pi | gpt-5-6-sol-codex  |   5 |   0.6  |  0.49 |  0.71 |  0.09 |
 | claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-no-thinking |  15 |  14.68 |  7.74 | 22.71 |  4.34 |
 | claim-office-example-mapping | exact-ptdd-v1-pi                      | gpt-5-6-sol-codex  |  15 |   4.67 |  0.46 |  7.47 |  2.62 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-no-thinking |  10 |  27.54 | 18.18 | 39.18 |  7.44 |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-no-thinking |  10 |  61.28 | 31.56 | 96.74 | 18.91 |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi  | gpt-5-6-sol-codex  |   5 |  18.27 | 16.41 | 23.6  |  3.05 |
 
 ### mutation_score

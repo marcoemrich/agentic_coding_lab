@@ -2,7 +2,7 @@
 
 _Does the cleanup equivalence result from RQ-1.6 (claim-office) also generalize to the training-known game-of-life kata, or does exact-hybrid-v4-cleaned-cc show a different effect there than on claim-office?_
 
-Generated: 2026-09-27T08:48:52Z
+Generated: 2026-09-30T21:57:05Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 5
 
@@ -101,7 +101,7 @@ Cells declared: 2 · matched runs: 15 · min_replicates: 5
 
 ### total_tokens
 
-| kata                         | cell_workflow               | cell_model                   |   n |        mean |     min |     max |         std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|------------:|--------:|--------:|------------:|
-| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 | 7.56447e+06 | 4907326 | 9546565 | 1.88171e+06 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 | 8.31736e+06 | 4985045 | 9943890 | 1.61451e+06 |
+| kata                         | cell_workflow               | cell_model                   |   n |        mean |     min |      max |         std |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|------------:|--------:|---------:|------------:|
+| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 | 9.50379e+06 | 5562011 | 11841719 | 2.68066e+06 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 | 1.04769e+07 | 6383827 | 12702538 | 2.07624e+06 |

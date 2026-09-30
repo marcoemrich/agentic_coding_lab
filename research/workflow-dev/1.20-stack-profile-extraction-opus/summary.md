@@ -2,7 +2,7 @@
 
 _Can all remaining TypeScript/Vitest-specific instructions be moved from the Opus/Hybrid workflow core, phase commands and refactor agent into its existing stack profile without changing correctness, TDD discipline, refactoring behaviour, code quality or cost?_
 
-Generated: 2026-09-27T08:48:56Z
+Generated: 2026-09-30T21:56:55Z
 
 Cells declared: 4 · matched runs: 34 · min_replicates: 5
 
@@ -147,7 +147,7 @@ Cells declared: 4 · matched runs: 34 · min_replicates: 5
 
 | kata                         | cell_workflow                      | cell_model         |   n |        mean |      min |       max |         std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|------------:|---------:|----------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |  18 | 8.36653e+07 | 51719658 | 123086078 | 1.64834e+07 |
-| claim-office-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 | 1.92469e+08 |   593821 | 392604505 | 1.42452e+08 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |   6 | 7.39704e+06 |  4407948 |  10565106 | 2.08784e+06 |
-| game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 | 1.48251e+07 |  4977526 |  33636029 | 1.1763e+07  |
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |  18 | 9.42234e+07 | 63263584 | 136005966 | 1.76387e+07 |
+| claim-office-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 | 2.02222e+08 |   593821 | 409064402 | 1.48629e+08 |
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |   6 | 9.23738e+06 |  6027200 |  12806973 | 2.2932e+06  |
+| game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 | 1.68798e+07 |  5924466 |  36684792 | 1.28054e+07 |

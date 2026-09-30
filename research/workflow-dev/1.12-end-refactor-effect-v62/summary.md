@@ -2,7 +2,7 @@
 
 _Does a metric-driven refactor pass improve code quality over the per-cycle baseline workflow (exact-hybrid-v4-cleaned-cc) — and does the lever work purely per-cycle (exact-hybrid-v4.4-metric-refactor-cc) or as an additional whole-src end pass (exact-hybrid-v5-end-refactor-cc) — without damaging correctness or TDD discipline, and does the result hold across two kata types (the multi-file CLI codebase claim-office vs the single-file library game-of-life)?_
 
-Generated: 2026-09-27T08:49:09Z
+Generated: 2026-09-30T21:56:54Z
 
 Cells declared: 6 · matched runs: 43 · min_replicates: 5
 
@@ -208,11 +208,11 @@ Cells declared: 6 · matched runs: 43 · min_replicates: 5
 
 ### total_tokens
 
-| kata                         | cell_workflow                        | cell_model                   |   n |        mean |      min |       max |              std |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|------------:|---------:|----------:|-----------------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-7-portkey-no-thinking |   8 | 4.44426e+07 | 39301139 |  49093278 |      3.40183e+06 |
-| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-portkey-no-thinking |   5 | 1.02322e+08 | 80885778 | 127606173 |      1.7173e+07  |
-| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-7-portkey-no-thinking |   5 | 4.23773e+07 | 34287125 |  47098024 |      5.57341e+06 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-7-portkey-no-thinking |  15 | 8.90504e+06 |  4985045 |  11740349 |      1.69372e+06 |
-| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-portkey-no-thinking |   5 | 1.09748e+07 |  9227612 |  12375589 |      1.54626e+06 |
-| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-7-portkey-no-thinking |   5 | 1.23498e+07 | 11179992 |  13171918 | 963726           |
+| kata                         | cell_workflow                        | cell_model                   |   n |        mean |      min |       max |         std |
+|:-----------------------------|:-------------------------------------|:-----------------------------|----:|------------:|---------:|----------:|------------:|
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-7-portkey-no-thinking |   8 | 5.22518e+07 | 45068216 |  61344477 | 5.60009e+06 |
+| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-portkey-no-thinking |   5 | 1.20136e+08 | 92813315 | 154467968 | 2.26897e+07 |
+| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-7-portkey-no-thinking |   5 | 5.27905e+07 | 42982267 |  63871747 | 7.4886e+06  |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-7-portkey-no-thinking |  15 | 1.13281e+07 |  6383827 |  15560656 | 2.28464e+06 |
+| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-portkey-no-thinking |   5 | 1.53417e+07 | 12262466 |  18097713 | 2.52783e+06 |
+| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-7-portkey-no-thinking |   5 | 1.83304e+07 | 15726383 |  20648430 | 1.98088e+06 |

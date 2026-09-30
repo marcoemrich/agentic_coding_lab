@@ -2,7 +2,7 @@
 
 _On Opus 5.5, does the retired EXACT Coding Opus line still decompose more strongly than the maintained Predictive-TDD line, and does isolating the Refactor step into a subagent help or hurt within each line?_
 
-Generated: 2026-09-30T01:03:58Z
+Generated: 2026-09-30T21:57:08Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -219,16 +219,16 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
 | kata                         | cell_workflow                          | cell_model           | cell_harness   |   n |        mean |      min |       max |         std |
 |:-----------------------------|:---------------------------------------|:---------------------|:---------------|----:|------------:|---------:|----------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc        | opus-5-5-no-thinking | 2.1.280        |   5 | 4.99404e+07 | 47332352 |  52833923 | 2.25794e+06 |
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc        | opus-5-5-no-thinking | 2.1.280        |   5 | 5.44161e+07 | 47993557 |  58770610 | 4.31386e+06 |
 | claim-office-example-mapping | exact-ptdd-v1-cc                       | opus-5-5-no-thinking | 2.1.280        |   5 | 2.4972e+07  | 21135606 |  27059165 | 2.2972e+06  |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc   | opus-5-5-no-thinking | 2.1.280        |   5 | 3.90249e+07 | 33906565 |  42547803 | 3.36611e+06 |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc   | opus-5-5-no-thinking | 2.1.280        |   5 | 5.57483e+07 | 48301663 |  61072254 | 4.64857e+06 |
 | claim-office-example-mapping | exact-single-context-v3-no-subagent-cc | opus-5-5-no-thinking | 2.1.280        |   5 | 1.02623e+08 | 61988748 | 122114276 | 2.35469e+07 |
 
 ### cost_usd
 
 | kata                         | cell_workflow                          | cell_model           | cell_harness   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------------|:---------------------|:---------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc        | opus-5-5-no-thinking | 2.1.280        |   5 |  14.27 | 13.68 | 14.94 |  0.49 |
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc        | opus-5-5-no-thinking | 2.1.280        |   5 |  20.27 | 19.19 | 21.22 |  0.99 |
 | claim-office-example-mapping | exact-ptdd-v1-cc                       | opus-5-5-no-thinking | 2.1.280        |   5 |   9.96 |  8.36 | 10.6  |  0.95 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc   | opus-5-5-no-thinking | 2.1.280        |   5 |  12.89 | 11.74 | 14.34 |  0.96 |
+| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc   | opus-5-5-no-thinking | 2.1.280        |   5 |  28.86 | 26.02 | 32.1  |  2.54 |
 | claim-office-example-mapping | exact-single-context-v3-no-subagent-cc | opus-5-5-no-thinking | 2.1.280        |   5 |  27.86 | 17.7  | 33.03 |  5.94 |

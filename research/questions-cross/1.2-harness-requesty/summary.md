@@ -2,7 +2,7 @@
 
 _How does switching harness (Claude Code vs OpenCode vs pi) affect correctness, code quality, TDD discipline and cost when model (opus-4-8 via Requesty), workflow intention and prompt style are held constant?_
 
-Generated: 2026-09-27T08:49:11Z
+Generated: 2026-09-30T21:57:11Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -188,10 +188,10 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow              | cell_model        |   n |        mean |      min |      max |              std |
 |:-----------------------------|:---------------------------|:------------------|----:|------------:|---------:|---------:|-----------------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 | 4.98975e+07 | 37985796 | 57642271 |      7.38067e+06 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 | 5.46502e+07 | 40898732 | 64862907 |      8.82622e+06 |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 | 3.4057e+07  | 26459386 | 47009694 |      7.87302e+06 |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 | 1.3833e+07  | 10251676 | 18310499 |      3.09284e+06 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 | 4.09249e+06 |  3434019 |  4609405 | 519750           |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 | 5.21111e+06 |  4405302 |  5795526 | 589288           |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 | 1.95775e+06 |  1624297 |  2453524 | 346811           |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 | 1.0667e+06  |   950699 |  1231119 | 111680           |
 
@@ -199,9 +199,9 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow              | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |  32.89 | 25.56 | 37.46 |  4.52 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |  41.09 | 30.85 | 49.78 |  7.1  |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 |  22.3  | 17.61 | 29.77 |  4.64 |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |  14.43 | 11.04 | 18.67 |  2.98 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |   3.45 |  3.07 |  3.77 |  0.34 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |   5.53 |  4.82 |  6.02 |  0.51 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 |   1.99 |  1.67 |  2.32 |  0.3  |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |   1.78 |  1.57 |  2    |  0.16 |

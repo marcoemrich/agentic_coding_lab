@@ -2,7 +2,7 @@
 
 _On Python with pytest, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness and code quality for GPT-5.6 SOL and Opus 5?_
 
-Generated: 2026-09-27T08:48:37Z
+Generated: 2026-09-30T21:57:07Z
 
 Cells declared: 12 · matched runs: 65 · min_replicates: 5
 
@@ -522,13 +522,13 @@ Cells declared: 12 · matched runs: 65 · min_replicates: 5
 | claim-office-python-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 | 256858           |   172355 |   383799 |  78403.6         |
 | claim-office-python-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |      2.29763e+07 | 19119476 | 29366975 |      3.87527e+06 |
 | claim-office-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |      6.65078e+06 |  3956453 |  9023314 |      1.9246e+06  |
-| claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   8 |      2.6889e+07  |        0 | 56729800 |      2.36896e+07 |
+| claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   8 |      4.17102e+07 |        0 | 95181376 |      3.73797e+07 |
 | claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |      1.37922e+07 |  6707640 | 16652571 |      4.01383e+06 |
 | game-of-life-python-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |      1.22285e+06 |  1084249 |  1399787 | 124458           |
 | game-of-life-python-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   6 | 202043           |    70886 |   349237 |  91505.6         |
 | game-of-life-python-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |      6.0471e+06  |  5237285 |  6685577 | 596600           |
 | game-of-life-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |      1.73019e+06 |  1311718 |  2092900 | 310050           |
-| game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   6 |      9.42562e+06 |        0 | 13371479 |      4.79859e+06 |
+| game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   6 |      1.67104e+07 |        0 | 23769725 |      8.44041e+06 |
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |      3.68093e+06 |  3107478 |  3951522 | 329532           |
 
 ### cost_usd
@@ -539,13 +539,13 @@ Cells declared: 12 · matched runs: 65 · min_replicates: 5
 | claim-office-python-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 |   0.52 |  0.44 |  0.7  |  0.1  |
 | claim-office-python-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |  17.55 | 15.04 | 21.96 |  2.69 |
 | claim-office-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |   4.6  |  2.89 |  6.13 |  1.16 |
-| claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   8 |  18.25 |  0    | 38.13 | 15.58 |
+| claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   8 |  38.76 |  0    | 86.48 | 34.22 |
 | claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |  14.61 |  9.23 | 17.35 |  3.13 |
 | game-of-life-python-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |   1.17 |  1.03 |  1.32 |  0.13 |
 | game-of-life-python-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   6 |   0.34 |  0.15 |  0.51 |  0.12 |
 | game-of-life-python-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |   5.62 |  4.88 |  5.89 |  0.42 |
 | game-of-life-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |   1.63 |  1.07 |  1.91 |  0.33 |
-| game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   6 |   7.6  |  0    | 10.49 |  3.84 |
+| game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   6 |  17.45 |  0    | 24.28 |  8.79 |
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   4.75 |  4.13 |  5.11 |  0.38 |
 
 ### mutation_score

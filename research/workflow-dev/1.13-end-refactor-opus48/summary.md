@@ -2,7 +2,7 @@
 
 _Does the exact-hybrid-v5-end-refactor-cc result from RQ-1.12 (correctness intact, code quality >= hybrid-v4, token cost ~hybrid-v4) hold on Opus 4.8 (no-thinking) — or does the additional end-refactor pass fake claim-office completeness on the new model (the bundle-break pattern from RQ-1.9/RQ-1.10)?_
 
-Generated: 2026-09-27T08:49:17Z
+Generated: 2026-09-30T21:56:57Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -210,9 +210,9 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model           |   n |        mean |      min |       max |         std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|------------:|---------:|----------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 | 8.22848e+07 | 38381692 | 112785023 | 3.26876e+07 |
-| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 | 9.169e+07   | 53220050 | 137223961 | 3.14582e+07 |
-| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 | 8.89639e+07 | 73892681 | 107756705 | 1.33517e+07 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 | 7.36288e+06 |  4688656 |   8809447 | 1.67922e+06 |
-| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 | 9.18649e+06 |  7683342 |  11019050 | 1.21111e+06 |
-| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 | 9.0189e+06  |  7379104 |  10580669 | 1.2145e+06  |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 | 9.80716e+07 | 42947825 | 127612246 | 3.35606e+07 |
+| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 | 9.92818e+07 | 57766433 | 149202377 | 3.40069e+07 |
+| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 | 9.83907e+07 | 82194966 | 115081047 | 1.38351e+07 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 | 8.96174e+06 |  6249682 |  11288121 | 2.15189e+06 |
+| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 | 1.13553e+07 |  8435656 |  13719232 | 1.89397e+06 |
+| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 | 1.16075e+07 |  8766112 |  12912790 | 1.64131e+06 |

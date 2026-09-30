@@ -2,7 +2,7 @@
 
 _Can sphinx-score replace claim-office as the lab's correctness kata — does it separate a strong from a weak model as sharply, at a lower cost per data point?_
 
-Generated: 2026-09-27T08:49:02Z
+Generated: 2026-09-30T21:57:06Z
 
 Cells declared: 4 · matched runs: 12 · min_replicates: 6
 
@@ -47,17 +47,17 @@ Cells declared: 4 · matched runs: 12 · min_replicates: 6
 
 ### total_tokens
 
-| kata                         | cell_workflow                | cell_model         |   n |       mean |       min |       max |         std |
-|:-----------------------------|:-----------------------------|:-------------------|----:|-----------:|----------:|----------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 1.3611e+08 | 121120560 | 176135411 | 2.03967e+07 |
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 1.9079e+07 |  14796862 |  30728141 | 5.91678e+06 |
+| kata                         | cell_workflow                | cell_model         |   n |        mean |       min |       max |         std |
+|:-----------------------------|:-----------------------------|:-------------------|----:|------------:|----------:|----------:|------------:|
+| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 1.61604e+08 | 145213699 | 206411858 | 2.27384e+07 |
+| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 2.51255e+07 |  20215854 |  37623630 | 6.47713e+06 |
 
 ### cost_usd
 
 | kata                         | cell_workflow                | cell_model         |   n |   mean |   min |    max |   std |
 |:-----------------------------|:-----------------------------|:-------------------|----:|-------:|------:|-------:|------:|
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  78.98 | 70.7  | 101.67 | 11.54 |
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  12.86 | 10.17 |  20.1  |  3.68 |
+| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 109.59 | 99.37 | 139.87 | 15.26 |
+| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  20.01 | 16.98 |  28.4  |  4.37 |
 
 ### lines_of_code
 
