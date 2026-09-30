@@ -29,7 +29,7 @@ workflow (plain red-green-refactor), `exact-hybrid-v6-lab-split-cc` the elaborat
 | `cycle_count` | — | 1.50 | 11.67 | 7.8× |
 | Correctness (external) | higher = better | 0.97 | **1.00** 🏆 | — |
 | `duration_seconds` | lower = better | **251** 🏆 | 1475 | 5.9× |
-| `cost_usd` | lower = better | **$2.64** 🏆 | $12.86 | 4.9× |
+| `cost_usd` | lower = better | **$2.64** 🏆 | $20.01 | 7.6× |
 
 ### game-of-life (~196 Code Mass (APP))
 
@@ -45,7 +45,7 @@ workflow (plain red-green-refactor), `exact-hybrid-v6-lab-split-cc` the elaborat
 | `cycle_count` | — | 3.67 | 10.33 | 2.8× |
 | Correctness (external) | higher = better | **1.00** 🏆 | **1.00** 🏆 | — |
 | `duration_seconds` | lower = better | **167** 🏆 | 1145 | 6.9× |
-| `cost_usd` | lower = better | **$1.72** 🏆 | $10.82 | 6.3× |
+| `cost_usd` | lower = better | **$1.72** 🏆 | $16.50 | 9.6× |
 
 ### claim-office (758–997 Code Mass (APP))
 
@@ -61,7 +61,7 @@ workflow (plain red-green-refactor), `exact-hybrid-v6-lab-split-cc` the elaborat
 | `cycle_count` | — | 5.17 | 45.83 | 8.9× |
 | Correctness (external) | higher = better | **1.00** 🏆 | 0.94 | — |
 | `duration_seconds` | lower = better | **330** 🏆 | 5514 | 17× |
-| `cost_usd` | lower = better | **$3.89** 🏆 | $78.98 | 20× |
+| `cost_usd` | lower = better | **$3.89** 🏆 | $109.59 | 28× |
 
 **Caveats for reading the tables:**
 - Trophies are awarded **only within a kata**. A cross-kata comparison would be
@@ -157,14 +157,14 @@ and separates better.
 | Kata | Workflow | `duration_seconds` | `cost_usd` | `total_tokens` |
 |---|---|---:|---:|---:|
 | sphinx-score | baseline-inline-tdd-v1-cc | 251 | $2.64 | 2.9 M |
-| sphinx-score | exact-hybrid-v6-lab-split-cc | 1475 | $12.86 | 19.1 M |
+| sphinx-score | exact-hybrid-v6-lab-split-cc | 1475 | $20.01 | 25.1 M |
 | game-of-life | baseline-inline-tdd-v1-cc | 167 | $1.72 | 2.1 M |
-| game-of-life | exact-hybrid-v6-lab-split-cc | 1145 | $10.82 | 15.0 M |
+| game-of-life | exact-hybrid-v6-lab-split-cc | 1145 | $16.50 | 19.7 M |
 | claim-office | baseline-inline-tdd-v1-cc | 330 | $3.89 | 4.5 M |
-| claim-office | exact-hybrid-v6-lab-split-cc | 5514 | $78.98 | 136.1 M |
+| claim-office | exact-hybrid-v6-lab-split-cc | 5514 | $109.59 | 161.6 M |
 
-**Rationale:** a full 2×6 workflow comparison costs about $75 on game-of-life,
-$93 on sphinx and $497 on claim-office. The expensive cell (elaborate workflow)
+**Rationale:** a full 2×6 workflow comparison costs about $109 on game-of-life,
+$136 on sphinx and $681 on claim-office. The expensive cell (elaborate workflow)
 runs 25 min on sphinx and 19 min on game-of-life, against 92 min on claim-office.
 The cost advantage over claim-office is therefore real, but it is no argument
 *for sphinx* — game-of-life delivers it too and separates more sharply (F-1.2).

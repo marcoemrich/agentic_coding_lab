@@ -44,11 +44,11 @@ On **both** katas the per-cycle refactor hybrid-v4.4 lowers the `cognitive_max` 
 
 | Workflow | routing | n | `duration_s` | `total_tokens` |
 |---|---|---:|---:|---:|
-| exact-hybrid-v4-cleaned-cc | portkey | 8 | 2530 | 44.4 M |
-| exact-hybrid-v5-end-refactor-cc | portkey | 5 | 3014 | 42.4 M |
-| exact-hybrid-v4.4-metric-refactor-cc | native | 5 | 5284 | 102.3 M |
+| exact-hybrid-v4-cleaned-cc | portkey | 8 | 2530 | 52.3 M |
+| exact-hybrid-v5-end-refactor-cc | portkey | 5 | 3014 | 52.8 M |
+| exact-hybrid-v4.4-metric-refactor-cc | native | 5 | 5284 | 120.1 M |
 
-No cost trophy is awarded, deliberately: hybrid-v4.4 ran native, hybrid-v4/hybrid-v5 portkey — not a routing-clean comparison. Within portkey, hybrid-v5 (42.4 M, 3014 s) is level with the hybrid-v4 baseline (44.4 M, 2530 s) on tokens at ~+19 % wallclock — the pure end-pass surcharge. The high hybrid-v4.4 absolute value is routing-confounded, but its high variance is real (F-1.12.4).
+No cost trophy is awarded, deliberately: hybrid-v4.4 ran native, hybrid-v4/hybrid-v5 portkey — not a routing-clean comparison. Within portkey, hybrid-v5 (52.8 M, 3014 s) is level with the hybrid-v4 baseline (52.3 M, 2530 s) on tokens at ~+19 % wallclock — the pure end-pass surcharge. The high hybrid-v4.4 absolute value is routing-confounded, but its high variance is real (F-1.12.4).
 
 ---
 
@@ -77,10 +77,10 @@ No cost trophy is awarded, deliberately: hybrid-v4.4 ran native, hybrid-v4/hybri
 
 | Workflow | routing | n | `duration_s` | `total_tokens` |
 |---|---|---:|---:|---:|
-| exact-hybrid-v4-cleaned-cc | native | 5 | 898 | 10.1 M |
-| exact-hybrid-v4.4-metric-refactor-cc | native | 5 | 1064 | 11.0 M |
-| exact-hybrid-v5-end-refactor-cc | native | 5 | 1332 | 12.3 M |
-| exact-hybrid-v4-cleaned-cc | portkey | 10 | 627 | 8.3 M |
+| exact-hybrid-v4-cleaned-cc | native | 5 | 898 | 13.0 M |
+| exact-hybrid-v4.4-metric-refactor-cc | native | 5 | 1064 | 15.3 M |
+| exact-hybrid-v5-end-refactor-cc | native | 5 | 1332 | 18.3 M |
+| exact-hybrid-v4-cleaned-cc | portkey | 10 | 627 | 10.5 M |
 
 Under **native** (comparable): hybrid-v4.4 +18 % wallclock / +9 % tokens, hybrid-v5 +48 % / +22 % against hybrid-v4 — hybrid-v4.4 buys the complexity gain more cheaply. The portkey hybrid-v4 row is informative only; its lower wallclock is a routing effect (different caching), not a workflow effect.
 
@@ -132,13 +132,13 @@ Costs are comparable only **within the same routing**. On game-of-life (all nati
 
 | Workflow (GoL, native) | `duration_s` | vs hybrid-v4 | `total_tokens` | vs hybrid-v4 |
 |---|---:|---|---:|---|
-| exact-hybrid-v4-cleaned-cc | 898 | — | 10.1 M | — |
-| exact-hybrid-v4.4-metric-refactor-cc | 1064 | +18 % | 11.0 M | +9 % |
-| exact-hybrid-v5-end-refactor-cc | 1332 | +48 % | 12.3 M | +22 % |
+| exact-hybrid-v4-cleaned-cc | 898 | — | 13.0 M | — |
+| exact-hybrid-v4.4-metric-refactor-cc | 1064 | +18 % | 15.3 M | +18 % |
+| exact-hybrid-v5-end-refactor-cc | 1332 | +48 % | 18.3 M | +41 % |
 
 On the small GoL library the end pass hybrid-v5 pays the highest surcharge for the weakest effect (F-1.12.2); hybrid-v4.4 is the cheaper vehicle for the complexity gain there.
 
-On claim-office the direct comparison is routing-confounded (hybrid-v4.4 native, hybrid-v4/hybrid-v5 portkey), but a real workflow effect remains visible: the native hybrid-v4.4 cell consumes ~102 M tokens (max 9197 s wallclock) with large variance (σ 17 M). The per-cycle refactor measures ESLint + McCabe pre/post in *every* one of the ~40 cycles and drags the full build plus a model round trip through each time — on the large CLI codebase that diverges strongly. The capped-iterative end pass (hybrid-v5) is by comparison more cost-predictable. **Reading:** per-cycle refactor is more cost-unpredictable than the end pass on large codebases — under a hard token/wallclock brake, hybrid-v5 is the more calculable vehicle.
+On claim-office the direct comparison is routing-confounded (hybrid-v4.4 native, hybrid-v4/hybrid-v5 portkey), but a real workflow effect remains visible: the native hybrid-v4.4 cell consumes ~120 M tokens (max 9197 s wallclock) with large variance (σ 23 M). The per-cycle refactor measures ESLint + McCabe pre/post in *every* one of the ~40 cycles and drags the full build plus a model round trip through each time — on the large CLI codebase that diverges strongly. The capped-iterative end pass (hybrid-v5) is by comparison more cost-predictable. **Reading:** per-cycle refactor is more cost-unpredictable than the end pass on large codebases — under a hard token/wallclock brake, hybrid-v5 is the more calculable vehicle.
 
 ---
 

@@ -29,9 +29,9 @@ F-1.2.4; the comparison that carries a verdict is the correctness table above.
 | Metric | sphinx em | sphinx prose | claim-office em | claim-office prose |
 |---|---:|---:|---:|---:|
 | Correctness (internal) — `tests_passing` | 100 % | 100 % | 100 % | 100 % |
-| `cost_usd` | $12.86 | $14.64 | $78.98 | $47.76 |
+| `cost_usd` | $20.01 | $19.39 | $109.59 | $66.35 |
 | `duration_seconds` | 1475 | 1262 | 5514 | 3605 |
-| `total_tokens` | 19.1 M | 21.7 M | 136.1 M | 80.4 M |
+| `total_tokens` | 25.1 M | 25.3 M | 161.6 M | 94.9 M |
 | `cycle_count` | 11.7 | 15.0 | 45.8 | 35.7 |
 | `cc_longest_function` | 5.8 | 6.3 | 13.8 | 11.8 |
 | `cognitive_max` | 1.0 | 1.0 | 2.0 | 1.5 |
@@ -102,16 +102,16 @@ checking rather than reporting.
 
 | cell | `cost_usd` | `duration_seconds` | `cycle_count` | `refactorings_applied` | `code_mass` |
 |---|---:|---:|---:|---:|---:|
-| sphinx-score-example-mapping | $12.86 | 1475 | 11.7 | 11.7 | 182.8 |
-| sphinx-score-prose | $14.64 | 1262 | 15.0 | 9.8 | 144.2 |
-| claim-office-example-mapping | $78.98 | 5514 | 45.8 | 44.5 | 997.0 |
-| claim-office-prose | $47.76 | 3605 | 35.7 | 31.0 | 808.3 |
+| sphinx-score-example-mapping | $20.01 | 1475 | 11.7 | 11.7 | 182.8 |
+| sphinx-score-prose | $19.39 | 1262 | 15.0 | 9.8 | 144.2 |
+| claim-office-example-mapping | $109.59 | 5514 | 45.8 | 44.5 | 997.0 |
+| claim-office-prose | $66.35 | 3605 | 35.7 | 31.0 | 808.3 |
 
 **H3 is refuted for claim-office and holds for sphinx-score.** On claim-office
-the prose runs cost 40 % less and run 35 % shorter. On sphinx-score cost is
-flat to slightly higher ($12.86 → $14.64) and cycle count actually rises
-(11.7 → 15.0), while duration drops 14 % — all well inside the run-to-run
-spread (σ $9.02 on the prose cell alone).
+the prose runs cost 39 % less and run 35 % shorter. On sphinx-score cost is
+flat ($20.01 → $19.39) and cycle count actually rises (11.7 → 15.0), while
+duration drops 14 % — all well inside the run-to-run spread (σ $10.56 on the
+prose cell alone, more than half its own mean).
 
 The claim-office reduction is not an early stop. The prose runs complete within
 budget (6/6), keep Correctness (internal) at 100 %, and still run 35.7 TDD

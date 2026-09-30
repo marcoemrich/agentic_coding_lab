@@ -49,11 +49,11 @@ Trophy 🏆 = best value in the column (spread ≥ 1 σ); ties all get one. Corr
 
 | Workflow | `duration_seconds` (mean) | `total_tokens` (mean) |
 |---|---:|---:|
-| exact-hybrid-v4-cleaned-cc | 4159 | **82.3 M** 🏆 |
-| exact-hybrid-v4.4-metric-refactor-cc | **3064** 🏆 | 91.7 M |
-| exact-hybrid-v5-end-refactor-cc | 3221 | 89.0 M |
+| exact-hybrid-v4-cleaned-cc | 4159 | **98.1 M** 🏆 |
+| exact-hybrid-v4.4-metric-refactor-cc | **3064** 🏆 | **99.3 M** 🏆 |
+| exact-hybrid-v5-end-refactor-cc | 3221 | **98.4 M** 🏆 |
 
-- All three token means sit within ~1 σ (σ of 13–33 M each); the token trophy for hybrid-v4 is narrow and not robust.
+- All three token means now sit within 1.2 M of each other at σ 14–34 M — a dead heat, so the token row carries three trophies and settles nothing. The earlier spread (82.3 / 91.7 / 89.0 M) came from the subagent tokens being counted unevenly across the three arms.
 - The hybrid-v4 wallclock mean (4159 s) is pulled up by the timeout run (7201 s); the median is lower.
 
 ---
@@ -79,9 +79,9 @@ All 15 runs green (`tests_passing` 5/5, `verification_pct` 1.0, `completed_withi
 
 | Workflow | `duration_seconds` (mean) | `total_tokens` (mean) | σ tokens |
 |---|---:|---:|---:|
-| exact-hybrid-v4-cleaned-cc | **579** 🏆 | **7.4 M** 🏆 | 1.7 M |
-| exact-hybrid-v4.4-metric-refactor-cc | 679 | 9.2 M | 1.2 M |
-| exact-hybrid-v5-end-refactor-cc | 747 | 9.0 M | 1.2 M |
+| exact-hybrid-v4-cleaned-cc | **579** 🏆 | **9.0 M** 🏆 | 2.2 M |
+| exact-hybrid-v4.4-metric-refactor-cc | 679 | 11.4 M | 1.9 M |
+| exact-hybrid-v5-end-refactor-cc | 747 | 11.6 M | 1.6 M |
 
 - Costs rise monotonically with refactor intensity: hybrid-v5 +29 % wallclock / +22 % tokens, hybrid-v4.4 +17 % / +25 % against hybrid-v4. The refactor surcharge is robust (spread > 1 σ).
 
@@ -164,9 +164,9 @@ Robust and cross-kata are only `smell_total` = 0 (hybrid-v4.4/hybrid-v5 determin
 
 | Workflow | `duration_seconds` (mean) | `total_tokens` (mean) | σ tokens |
 |---|---:|---:|---:|
-| exact-hybrid-v4-cleaned-cc | 4159 | 82.3 M | 32.7 M |
-| exact-hybrid-v4.4-metric-refactor-cc | 3064 | 91.7 M | 31.5 M |
-| exact-hybrid-v5-end-refactor-cc | 3221 | 89.0 M | 13.4 M |
+| exact-hybrid-v4-cleaned-cc | 4159 | 98.1 M | 33.6 M |
+| exact-hybrid-v4.4-metric-refactor-cc | 3064 | 99.3 M | 34.0 M |
+| exact-hybrid-v5-end-refactor-cc | 3221 | 98.4 M | 13.8 M |
 
 On claim-office the v6.5 end pass produces **no** notable token surcharge over hybrid-v4 (+8 % in the mean, clearly within σ) and is even cheaper than hybrid-v4 on wallclock (whose mean the timeout run pulls up). v6.4's 4.7 token penalty (~2.4×) does **not** replicate on 4.8 — 4.8 evidently performs the per-cycle measurements far more token-frugally. hybrid-v5 also has by far the tightest token and wallclock variance (σ 13.4 M; wallclock σ 378 s), i.e. the most predictable costs of the three.
 
