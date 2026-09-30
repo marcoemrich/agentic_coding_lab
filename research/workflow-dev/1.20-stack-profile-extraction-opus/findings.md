@@ -32,8 +32,8 @@ candidate's success rate. The baseline cell pools runs from 2026-08-10 to
 | Smell Total | 0.00 | 0.60 |
 | Code Mass (APP) | 859.5 | 706.0 |
 | Duration (seconds), lower = better | **2650.1** 🏆 | 4514.2 |
-| `total_tokens`, lower = better | **83.7 M** 🏆 | 192.5 M |
-| `cost_usd`, lower = better | **$49.13** 🏆 | $121.04 |
+| `total_tokens`, lower = better | **94.2 M** 🏆 | 202.2 M |
+| `cost_usd`, lower = better | **$61.94** 🏆 | $135.33 |
 
 ### Game of Life
 
@@ -53,8 +53,8 @@ candidate's success rate. The baseline cell pools runs from 2026-08-10 to
 | Smell Total | 1.00 | 1.20 |
 | Code Mass (APP) | 179.0 | 178.0 |
 | Duration (seconds) | 580.2 | 1055.8 |
-| `total_tokens` | 7.40 M | 14.83 M |
-| `cost_usd` | $5.34 | $13.09 |
+| `total_tokens` | 9.24 M | 16.88 M |
+| `cost_usd` | $6.81 | $15.28 |
 
 Correctness and prediction accuracy are higher-is-better; complexity, smells,
 duration and tokens are lower-is-better. Trophies are assigned only where the
@@ -94,8 +94,8 @@ overlap with the baseline:
 | Claim Office | Baseline, all (n=18) | Baseline, same harness (n=5) | Extracted, completed (n=4) |
 |---|---:|---:|---:|
 | Duration (seconds) | 2650.1 (1946–3685) | 2552.4 (2188–3471) | 5623.5 (4303–6573) |
-| `total_tokens` | 83.7 M (51.7–123.1 M) | 72.2 M (51.7–81.0 M) | 240.4 M (141.2–392.6 M) |
-| `cost_usd` | $49.13 ($31.43–71.07) | $42.68 ($31.43–47.31) | $150.98 ($91.00–245.25) |
+| `total_tokens` | 94.2 M (63.3–136.0 M) | 84.5 M (63.3–101.2 M) | 252.6 M (149.6–409.1 M) |
+| `cost_usd` | $61.94 ($45.86–86.35) | $58.86 ($46.35–74.32) | $168.84 ($103.20–268.49) |
 
 The fastest completed candidate run is slower than the slowest baseline run, and
 the cheapest one uses more tokens and costs more than the most expensive baseline run. The same
@@ -111,8 +111,8 @@ and equal Code Mass (APP) (178.0 vs 179.0). Smell Total (1.20 vs 1.00),
 opposite directions and stay within replicate variation.
 
 Runtime spreads out rather than shifting uniformly: candidate duration ranges
-from 411 to 1785 seconds (baseline 378–722) and `total_tokens` from 5.0 M to
-33.6 M (baseline 4.4–10.6 M). The two slowest candidate runs are also the two
+from 411 to 1785 seconds (baseline 378–722) and `total_tokens` from 5.9 M to
+36.7 M (baseline 6.0–12.8 M). The two slowest candidate runs are also the two
 with 12 refactorings, against 4–5 in every baseline run; two other candidate runs
 finish in 5 cycles. The extraction thus redistributes effort across the Refactor
 phase instead of removing a marker, as H3 predicted.

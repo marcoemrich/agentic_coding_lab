@@ -29,9 +29,9 @@ All code quality metrics lean slightly toward **no-pep**, but the spreads are la
 | `verification_pct` | **100%** 🏆 | **100%** 🏆 | = |
 | `tests_passing` | **100%** 🏆 | **100%** 🏆 | = |
 | `duration_seconds` (lower = cheaper) | **597** 🏆 | 777 | +30% |
-| `total_tokens` (lower = cheaper) | **7.17M** 🏆 | 8.66M | +21% |
+| `total_tokens` (lower = cheaper) | **8.58M** 🏆 | 11.06M | +29% |
 
-**Rationale:** the a-priori hypothesis H3 predicted the opposite (no-pep → more over-implementation). The inverse pattern is observed — without motivating reassurance the model stays stricter on the minimal Green step and defers extensions to the refactor subagent. Mechanism open: presumably the loss of the "Hardcoded returns are perfectly fine" reassurance shifts the default strategy rather than explicit discipline. **Cost:** no-pep needs +30% wallclock and +21% tokens, driven by the additional refactor cycles. H1 (pep talks have no effect) is confirmed for code quality, but qualified by the H3-inverse TDD discipline pattern.
+**Rationale:** the a-priori hypothesis H3 predicted the opposite (no-pep → more over-implementation). The inverse pattern is observed — without motivating reassurance the model stays stricter on the minimal Green step and defers extensions to the refactor subagent. Mechanism open: presumably the loss of the "Hardcoded returns are perfectly fine" reassurance shifts the default strategy rather than explicit discipline. **Cost:** no-pep needs +30% wallclock and +29% tokens, driven by the additional refactor cycles. H1 (pep talks have no effect) is confirmed for code quality, but qualified by the H3-inverse TDD discipline pattern.
 
 **Consequence:** exact-hybrid-v2.1-no-pep-cc is a valid reduction for code-quality-oriented workflows. For token efficiency v6.1-hybrid remains better. The MARKERS classification as "decorative" holds for output quality, but is imprecise for TDD behaviour.
 

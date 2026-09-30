@@ -35,14 +35,14 @@ Trophies split 3:2 between the workflows, every single difference < 1σ of the r
 
 ## F-1.2 — Decoration emojis save no tokens
 
-**Statement:** Contrary to expectation, `exact-hybrid-v2.2-no-emoji-cc` saves no tokens — both workflows sit in the 7–8 M token range, and the no-emoji trend is even slightly more expensive.
+**Statement:** Contrary to expectation, `exact-hybrid-v2.2-no-emoji-cc` saves no tokens — both workflows sit in the 8–10 M token range, and the no-emoji trend is even slightly more expensive.
 
 | Metric (lower = better) | v6.1-hybrid (emoji) | exact-hybrid-v2.2-no-emoji-cc |
 |---|---:|---:|
-| `total_tokens` (mean) | **7.17 M** 🏆 | 7.78 M |
+| `total_tokens` (mean) | **8.58 M** 🏆 | 9.55 M |
 | `duration_seconds` (mean) | **597 s** 🏆 | 669 s |
 
-**Rationale:** the 95 emojis are only a fraction of the total token load by volume (expected a priori). H3 (≥ 5 % saving) is nonetheless **refuted**. The slightly negative trend (+8.5 % tokens, +12 % wallclock) is presumably due to the larger refactor phases in no-emoji (+29 % `refactorings_applied`); every additional refactor phase costs tokens.
+**Rationale:** the 95 emojis are only a fraction of the total token load by volume (expected a priori). H3 (≥ 5 % saving) is nonetheless **refuted**. The slightly negative trend (+11 % tokens, +12 % wallclock) is presumably due to the larger refactor phases in no-emoji (+29 % `refactorings_applied`); every additional refactor phase costs tokens.
 
 ---
 
@@ -52,7 +52,7 @@ Trophies split 3:2 between the workflows, every single difference < 1σ of the r
 |---|---|---|
 | **H1** Emojis have no effect on code quality | confirmed | 5 metrics split 3:2, all Δ < 1σ |
 | **H2** Emojis help measurably | not confirmed | no consistent directional trend |
-| **H3** Emojis save ≥ 5 % tokens | refuted | +8.5 % tokens, +12 % wallclock in no-emoji |
+| **H3** Emojis save ≥ 5 % tokens | refuted | +11 % tokens, +12 % wallclock in no-emoji |
 | **H4** Prediction discipline effect from ✅/❌ | not confirmed | Δ 1.1 pp trivial; hyphen parser works |
 | **H5** Replication of the old RQ-emoji (hybrid-v1 line) | confirmed | H1 reading consistent; correctness of both workflows 100/100 |
 

@@ -52,7 +52,7 @@ The combined reduction wins **no** code quality metric. All Δ < 1σ — code qu
 | Metric (lower = better) | hybrid | no-pep | no-emoji | no-pep-no-emoji |
 |---|---:|---:|---:|---:|
 | `duration_seconds` (mean) | 507.9 | 777.2 | 668.8 | **432.0** 🏆 |
-| `total_tokens` (mean) | **6.94 M** 🏆 | 8.66 M | 7.78 M | 7.58 M |
+| `total_tokens` (mean) | **8.15 M** 🏆 | 11.06 M | 9.55 M | 8.55 M |
 
 **Rationale:** contrary to the single-reduction expectation (no-pep / no-emoji cost *more* tokens because of additional refactor phases — see RQ-emoji-v6.1 F-1.2), the combination saves time, because the counteracting effect from F-1.1 reduces the number of refactor phases. The combination is therefore operationally cheaper — but at the price of the "missing" refactor activity that counted as a positive discipline effect in the single reductions. What is "saved" here is possibly the same activity that the no-pep finding praised as an advantage — the cost calculation depends on how one values "more refactoring".
 
