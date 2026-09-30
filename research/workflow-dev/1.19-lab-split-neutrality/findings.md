@@ -13,7 +13,7 @@ across all four.
 | `exact-hybrid-v2.7-continuation-guard-cc` | hybrid-v2.4 minus the duplicated cycle enumeration | 10320 B | +43 % |
 | `exact-hybrid-v2.4-lab-split-cc` | derived from the hybrid-v6 lineage | 10625 B | +48 % |
 
-n per cell: hybrid-v2 13 (claim-office) / 5 (GoL), hybrid-v2.8 10 / 5, hybrid-v2.4 and hybrid-v2.7
+n per cell: hybrid-v2 18 (claim-office) / 6 (GoL), hybrid-v2.8 10 / 5, hybrid-v2.4 and hybrid-v2.7
 5 / 5. The hybrid-v2 claim-office cell spans two measurement periods (2026-08 and
 2026-09) that are indistinguishable in cost and refactor rate.
 
@@ -35,7 +35,7 @@ All four cells are 5/5 perfect on Correctness (external), so no gating applies.
 | **Smell Total** — lower = better | 1.20 ± 1.64 | 1.20 ± 1.64 | **0.80 ± 1.10** 🏆 | 1.80 ± 1.64 |
 | **Code Mass (APP)** — lower = better | 182 ± 26 | 177 ± 24 | **156 ± 25** 🏆 | 180 ± 36 |
 | `duration_seconds` — lower = better | **621 ± 90** 🏆 | 679 ± 213 | 640 ± 131 | 687 ± 106 |
-| `total_tokens` — lower = better | **8.0 M ± 1.7 M** 🏆 | 10.4 M ± 3.4 M | 9.8 M ± 1.3 M | 9.8 M ± 1.4 M |
+| `total_tokens` — lower = better | **9.2 M ± 2.3 M** 🏆 | 12.5 M ± 4.2 M | 11.8 M ± 2.0 M | 12.0 M ± 1.8 M |
 | `refactorings_applied` | 4.40 ± 0.55 | 5.60 ± 3.36 | 5.00 ± 2.45 | 6.20 ± 3.11 |
 | `cycle_count` | 10.40 ± 1.52 | 9.80 ± 0.45 | 10.40 ± 1.52 | 10.00 ± 0.71 |
 | **Refactor rate per cycle** | **0.43 ± 0.05** | 0.58 ± 0.35 | 0.50 ± 0.30 | 0.63 ± 0.34 |
@@ -49,21 +49,21 @@ All four cells are 5/5 perfect on Correctness (external), so no gating applies.
 
 ## Overview — claim-office
 
-| Metric | `hybrid-v2` (n=13) | `hybrid-v2.8` (n=10) | `hybrid-v2.7` (n=5) | `hybrid-v2.4` (n=5) |
+| Metric | `hybrid-v2` (n=18) | `hybrid-v2.8` (n=10) | `hybrid-v2.7` (n=5) | `hybrid-v2.4` (n=5) |
 |---|---:|---:|---:|---:|
 | **Correctness (external)** — higher = better | 0.96 ± 0.03 | 0.95 ± 0.03 | 0.96 ± 0.04 | 0.96 ± 0.04 |
-| perfect runs | 6/13 | 2/10 | 2/5 | 2/5 |
-| `cc_avg_loc_per_function` — lower = better | 3.95 ± 0.61 | 4.35 ± 0.87 | 4.47 ± 1.20 | 4.49 ± 0.54 |
-| **`cc_longest_function`** — lower = better | 17.23 ± 5.36 | 20.50 ± 4.88 | 24.00 ± 11.29 | 17.60 ± 4.39 |
-| `cognitive_max` — lower = better | 2.77 ± 1.54 | 3.20 ± 1.03 | 2.80 ± 0.84 | 2.80 ± 0.84 |
-| `mccabe_max` — lower = better | 3.54 ± 0.88 | 3.80 ± 0.79 | 3.40 ± 0.55 | 3.40 ± 0.55 |
+| perfect runs | 7/18 | 2/10 | 2/5 | 2/5 |
+| `cc_avg_loc_per_function` — lower = better | 3.81 ± 0.64 | 4.35 ± 0.87 | 4.47 ± 1.20 | 4.49 ± 0.54 |
+| **`cc_longest_function`** — lower = better | 16.22 ± 5.78 | 20.50 ± 4.88 | 24.00 ± 11.29 | 17.60 ± 4.39 |
+| `cognitive_max` — lower = better | 2.78 ± 1.35 | 3.20 ± 1.03 | 2.80 ± 0.84 | 2.80 ± 0.84 |
+| `mccabe_max` — lower = better | 3.39 ± 0.78 | 3.80 ± 0.79 | 3.40 ± 0.55 | 3.40 ± 0.55 |
 | **Smell Total** — lower = better | 0.00 ± 0.00 | 0.00 ± 0.00 | 0.00 ± 0.00 | 0.00 ± 0.00 |
-| **Code Mass (APP)** — lower = better | 864 ± 108 | 857 ± 177 | 954 ± 136 | 821 ± 111 |
-| `duration_seconds` — lower = better | 2688 ± 455 | 3215 ± 599 | 3521 ± 765 | 3841 ± 1523 |
-| `total_tokens` — lower = better | 88.1 M ± 16.2 M | 101.5 M ± 21.9 M | 116.5 M ± 25.1 M | 126.2 M ± 41.9 M |
-| `refactorings_applied` | 19.00 ± 4.83 | 24.10 ± 4.79 | 26.40 ± 11.61 | 33.00 ± 14.27 |
-| `cycle_count` | 45.69 ± 5.41 | 46.10 ± 3.67 | 46.80 ± 4.76 | 48.00 ± 2.55 |
-| **Refactor rate per cycle** | 0.41 ± 0.10 | 0.52 ± 0.08 | 0.56 ± 0.23 | 0.69 ± 0.29 |
+| **Code Mass (APP)** — lower = better | 860 ± 99 | 857 ± 177 | 954 ± 136 | 821 ± 111 |
+| `duration_seconds` — lower = better | 2650 ± 465 | 3215 ± 599 | 3521 ± 765 | 3841 ± 1523 |
+| `total_tokens` — lower = better | **94.2 M ± 17.6 M** 🏆 | 113.7 M ± 24.4 M | 130.4 M ± 30.2 M | 140.9 M ± 46.4 M |
+| `refactorings_applied` | 21.28 ± 7.55 | 24.10 ± 4.79 | 26.40 ± 11.61 | 33.00 ± 14.27 |
+| `cycle_count` | 45.89 ± 4.93 | 46.10 ± 3.67 | 46.80 ± 4.76 | 48.00 ± 2.55 |
+| **Refactor rate per cycle** | 0.46 ± 0.16 | 0.52 ± 0.08 | 0.56 ± 0.23 | 0.69 ± 0.29 |
 | Runs with rate ≥ 0.95 | 0/13 | 0/10 | 1/5 | 2/5 |
 
 > **No trophies on claim-office.** The correctness gating rule awards trophies
@@ -82,19 +82,26 @@ practically unchanged cycle count.
 
 | claim-office | refactor rate | `refactorings_applied` | `cycle_count` | rule text |
 |---|---:|---:|---:|---:|
-| `hybrid-v2` (n=13) | 0.41 ± 0.10 | 19.00 | 45.69 | 7202 B |
+| `hybrid-v2` (n=18) | 0.46 ± 0.16 | 21.28 | 45.89 | 7202 B |
 | `hybrid-v2.8` (n=10) | 0.52 ± 0.08 | 24.10 | 46.10 | 7451 B |
 | `hybrid-v2.7` (n=5) | 0.56 ± 0.23 | 26.40 | 46.80 | 10320 B |
 | `hybrid-v2.4` (n=5) | 0.69 ± 0.29 | 33.00 | 48.00 | 10625 B |
 
 `hybrid-v2.8` is the defensible case: a pure partition of `hybrid-v2` at +3.5 %
-text. Welch against `hybrid-v2` gives **p = 0.009** for the rate, p = 0.021 for
-`refactorings_applied`, p = 0.83 for `cycle_count`. So it is not that more
-cycles are run, but that refactoring happens more often within the cycles —
-and at a text budget matching that of the measurement basis.
+text. Welch against `hybrid-v2` gives p = 0.220 for the rate, p = 0.239 for
+`refactorings_applied`, p = 0.899 for `cycle_count` — **none of them
+significant.** The cycle count is genuinely unchanged; the rate difference is
+real in direction across all three split variants (0.46 → 0.52 → 0.56 → 0.69)
+but is not separable from the spread at this n. The `hybrid-v2` baseline grew
+from 13 to 18 runs as sister RQs filled the shared cell, and its rate rose from
+0.41 to 0.46 with σ from 0.10 to 0.16, which is what dissolved the earlier
+p = 0.009.
 
-That refutes the obvious explanation — that the split costs because it writes
-more text into every turn. It is the partition itself. The mechanism is open;
+The monotone ordering across the four variants is the part that survives, and it
+still refutes the obvious explanation — that the split costs because it writes
+more text into every turn, since `hybrid-v2.8` adds only 3.5 % text and moves
+with the rest. What it no longer supports is the stronger claim that refactor
+frequency is the measured mechanism behind the cost gap. The mechanism is open;
 one conjecture is framing: in `hybrid-v2` the cycle sequence sits in a file
 named "TDD Experiment Mode (No HITL)" and reads as measurement scaffolding,
 while in the split variants the same list sits under its own heading "Workflow
@@ -102,26 +109,35 @@ Sequence" in a methodology file.
 
 ---
 
-## F-1.19.2 — The split costs around 20 % wallclock, and refactor frequency explains two thirds of it
+## F-1.19.2 — The split costs around 20 % wallclock and 20 % tokens; refactor frequency no longer explains it
 
 | claim-office, `hybrid-v2.8` against `hybrid-v2` | | | Welch p |
 |---|---:|---:|---:|
-| refactor rate | 0.41 → 0.52 | +27 % | **0.009** |
-| `refactorings_applied` | 19.0 → 24.1 | +27 % | 0.021 |
-| `cycle_count` | 45.7 → 46.1 | +1 % | 0.83 |
-| `duration_seconds` | 2688 → 3215 | +20 % | 0.034 |
-| `total_tokens` | 88.1 M → 101.5 M | +15 % | 0.12 |
+| refactor rate | 0.46 → 0.52 | +13 % | 0.220 |
+| `refactorings_applied` | 21.3 → 24.1 | +13 % | 0.239 |
+| `cycle_count` | 45.9 → 46.1 | +0 % | 0.899 |
+| `duration_seconds` | 2650 → 3215 | +21 % | 0.021 |
+| `total_tokens` | 94.2 M → 113.7 M | +21 % | 0.043 |
 
-Arithmetic: 5.1 additional subagent launches per run at a mean refactor
-duration of 66 s give 335 s, against a total gap of 527 s. The rest spreads
-across the remaining phases.
+Arithmetic: 2.8 additional subagent launches per run at a mean refactor
+duration of 66 s give 186 s, against a total gap of 565 s — about a third, not
+two thirds. The rest spreads across the remaining phases and is unexplained.
 
-The defensible test is the rate. Across five comparisons with Bonferroni
-correction (α = 0.01) only it survives; the duration at p = 0.034 is consistent
-with the mechanism but would not stand on its own. The token difference is not
-detectable.
+**No test survives Bonferroni correction (α = 0.01 across five comparisons.)**
+The two that come closest are the cost pair — wallclock at p = 0.021 and tokens
+at p = 0.043 — and the mechanism that was supposed to explain them is the one
+that fails: the refactor rate lands at p = 0.220.
 
-None of this resolves on game-of-life (621 → 679 s, 8.0 → 10.4 M, all σ
+Two things moved this finding. The `hybrid-v2` cell grew from n=13 to n=18 as
+sister RQs filled it, which halved the apparent rate difference and cost it its
+significance; and the token column gained the subagent consumption it had been
+missing, which raised the difference from +15 % to +21 % and brought it from
+undetectable to borderline
+([RQ-old-vs-new-exact-line-opus55 F-4.12.5](../../questions-claude/4.12-old-vs-new-exact-line-opus55/findings.md)).
+The split does cost something on claim-office; what it costs is not accounted
+for by how often it refactors.
+
+None of this resolves on game-of-life (580 → 679 s, 9.2 → 12.5 M, all σ
 overlapping). The kata damps the effect because it acts multiplicatively with
 cycle count and codebase size — over ten cycles, +0.11 rate is roughly one
 additional spawn; over 46 cycles it is five.
