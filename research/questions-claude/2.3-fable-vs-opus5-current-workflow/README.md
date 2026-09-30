@@ -206,7 +206,7 @@ Consequences for reading this RQ:
   case. Falsifier: a Fable cell fails a different case, or fails more than one.
 - **H2 (quality separation is where the models differ)** — if the generations
   differ at all under this workflow, it shows in decomposition
-  (`cc_avg_loc_per_function`, Complexity Peak) rather than in correctness,
+  (`cc_avg_loc_per_function`, `cognitive_max`) rather than in correctness,
   because correctness is saturated and quality is not.
 - **H3 (cost is not comparable across the two Fable versions without the cache
   tariff)** — Fable 5.1's 0.025x cache-read multiplier makes its `cost_usd`

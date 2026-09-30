@@ -18,7 +18,7 @@ Baseline: `exact-sol-v1.3-stack-profile-pi`. Ponytail: `exact-sol-v1.3.1-ponytai
 | `cc_functions` | 4.0 ± 0.71 | 2.2 ± 0.84 |
 | `cc_avg_loc_per_function` | 6.63 ± 1.41 | 9.53 ± 4.27 |
 | `cc_median_loc_per_function` | 4.6 ± 1.52 | 7.6 ± 6.19 |
-| Complexity Peak | 13.0 ± 4.00 | 16.4 ± 1.52 |
+| `cc_longest_function` | 13.0 ± 4.00 | 16.4 ± 1.52 |
 | `cognitive_max` | 4.2 ± 1.79 | 4.0 ± 0.00 |
 | `cognitive_avg` | 2.77 ± 0.52 | 2.87 ± 0.30 |
 | `cognitive_high_count` | 0 | 0 |
@@ -49,7 +49,7 @@ Baseline: `exact-sol-v1.3-stack-profile-pi`. Ponytail: `exact-sol-v1.3.1-ponytai
 | `cc_functions` | 8.4 ± 1.95 | 5.6 ± 1.52 |
 | `cc_avg_loc_per_function` | 7.69 ± 1.42 | 8.70 ± 1.92 |
 | `cc_median_loc_per_function` | 5.7 ± 1.30 | 8.5 ± 3.43 |
-| Complexity Peak | 17.0 ± 2.83 | 17.0 ± 2.45 |
+| `cc_longest_function` | 17.0 ± 2.83 | 17.0 ± 2.45 |
 | `cognitive_max` | 4.2 ± 0.84 | 5.8 ± 2.05 |
 | `cognitive_avg` | 2.16 ± 0.36 | 2.69 ± 0.62 |
 | `cognitive_high_count` | 0 | 0 |
@@ -81,9 +81,9 @@ Code Mass (APP) confirms the effect on Game of Life (155.4 ± 9.24 to 139.8 ± 1
 
 ## F-1.22.2 — The reduction comes from fewer functions, not shorter functions
 
-Ponytail reduces the function count on both katas, but does not improve function-length decomposition. Mean and median function length rise, and Complexity Peak is unchanged on Claim Office and directionally higher on Game of Life.
+Ponytail reduces the function count on both katas, but does not improve function-length decomposition. Mean and median function length rise, and `cc_longest_function` is unchanged on Claim Office and directionally higher on Game of Life.
 
-| Kata | Workflow | Functions | Mean function LoC | Median function LoC | Complexity Peak |
+| Kata | Workflow | Functions | Mean function LoC | Median function LoC | `cc_longest_function` |
 |---|---|---:|---:|---:|---:|
 | Game of Life | Baseline | 4.0 ± 0.71 | 6.63 ± 1.41 | 4.6 ± 1.52 | 13.0 ± 4.00 |
 | Game of Life | Ponytail | 2.2 ± 0.84 | 9.53 ± 4.27 | 7.6 ± 6.19 | 16.4 ± 1.52 |

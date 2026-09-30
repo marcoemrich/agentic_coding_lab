@@ -169,7 +169,7 @@ a confirmation and a contradiction are equally informative.
   reportable, and it would invalidate that cell's quality numbers rather than
   produce a finding about correctness.
 - **H2 — complexity and unit-size benefit reproduces:** both EXACT variants
-  lower Complexity Peak and per-function size against inline TDD, as they did in
+  lower `cognitive_max` and per-function size against inline TDD, as they did in
   all four Java cells. **This is the load-bearing hypothesis of the RQ.**
 - **H3 — Mutation Score ordering reproduces:** Mutation Score was the only Java
   outcome that ordered the three methods identically in every model × kata

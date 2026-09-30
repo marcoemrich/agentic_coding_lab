@@ -43,13 +43,13 @@ quality row is eligible. Correctness (internal) is 100 % in all four.
 |---|---:|---:|
 | Correctness (external) | **0.99 ± 0.02** 🏆 | 0.97 ± 0.06 |
 | Completed within budget | **100 %** 🏆 | 90 % |
-| Complexity Peak (`cognitive_max`) | **2.7 ± 0.88** 🏆 | **2.6 ± 1.07** 🏆 |
+| `cognitive_max` | **2.7 ± 0.88** 🏆 | **2.6 ± 1.07** 🏆 |
 | `cognitive_avg` | 1.44 ± 0.27 | **1.22 ± 0.18** 🏆 |
 | `mccabe_max` | **3.3 ± 0.46** 🏆 | **3.2 ± 0.63** 🏆 |
 | Smell Total | **0.0 ± 0.00** 🏆 | **0.0 ± 0.00** 🏆 |
 | `cc_avg_loc_per_function` | 6.00 ± 1.00 | **4.74 ± 0.37** 🏆 |
 | `cc_median_loc_per_function` | 4.8 ± 1.16 | **3.35 ± 0.63** 🏆 |
-| Complexity Peak of size (`cc_longest_function`) | 18.5 ± 5.13 | **15.0 ± 2.45** 🏆 |
+| `cc_longest_function` | 18.5 ± 5.13 | **15.0 ± 2.45** 🏆 |
 | Mutation Score | **0.91 ± 0.06** 🏆 | **0.90 ± 0.09** 🏆 |
 | `predictions_correct_rate` | **99.0 %** 🏆 | **97.4 %** 🏆 |
 | `duration_seconds` | **1103.0 ± 311.0** 🏆 | 4624.0 ± 1422.5 |
@@ -68,13 +68,13 @@ quality row is eligible. Correctness (internal) is 100 % in all four.
 |---|---:|---:|
 | Correctness (external) | 1.00 ± 0.00 | 1.00 ± 0.00 |
 | Completed within budget | 100 % | 100 % |
-| Complexity Peak (`cognitive_max`) | 4.1 ± 1.22 | **2.6 ± 0.89** 🏆 |
+| `cognitive_max` | 4.1 ± 1.22 | **2.6 ± 0.89** 🏆 |
 | `cognitive_avg` | 1.86 ± 0.35 | **1.24 ± 0.29** 🏆 |
 | `mccabe_max` | 4.7 ± 1.44 | **3.6 ± 0.55** 🏆 |
 | Smell Total | 0.0 ± 0.00 | 0.0 ± 0.00 |
 | `cc_avg_loc_per_function` | 6.14 ± 1.09 | **4.21 ± 0.40** 🏆 |
 | `cc_median_loc_per_function` | 5.0 ± 1.66 | **3.0 ± 0.00** 🏆 |
-| Complexity Peak of size (`cc_longest_function`) | **17.8 ± 2.93** 🏆 | **15.8 ± 3.56** 🏆 |
+| `cc_longest_function` | **17.8 ± 2.93** 🏆 | **15.8 ± 3.56** 🏆 |
 | Mutation Score | **0.86 ± 0.04** 🏆 *(n=14)* | **0.88 ± 0.02** 🏆 *(n=4)* |
 | `predictions_correct_rate` | **99.6 %** 🏆 | **100 %** 🏆 |
 | `duration_seconds` | **1573.9 ± 495.0** 🏆 | 4927.0 ± 610.5 |
@@ -107,7 +107,7 @@ No structural measure moves the wrong way on either platform.
 
 | Measure | Opus: v1 → v1.1 | SOL: v1 → v1.1 |
 |---|---|---|
-| Complexity Peak | 2.73 → 2.60 (−5 %) | 4.07 → 2.60 (−36 %) |
+| `cognitive_max` | 2.73 → 2.60 (−5 %) | 4.07 → 2.60 (−36 %) |
 | `cognitive_avg` | 1.44 → 1.22 (−15 %) | 1.86 → 1.24 (−33 %) |
 | `mccabe_max` | 3.27 → 3.20 (−2 %) | 4.73 → 3.60 (−24 %) |
 | `cc_avg_loc_per_function` | 6.00 → 4.74 (−21 %) | 6.14 → 4.21 (−31 %) |
@@ -115,7 +115,7 @@ No structural measure moves the wrong way on either platform.
 
 The two platforms differ in what the treatment reaches. On SOL it lowers the
 complexity peaks and the per-function size alike. On Opus it shortens functions
-— average and longest by about a fifth — while Complexity Peak and `mccabe_max`
+— average and longest by about a fifth — while `cognitive_max` and `mccabe_max`
 stay where PTDD v1 already puts them; both gaps lie far inside either cell's
 spread. The answer to the RQ's question is therefore not whether the treatment
 improves product structure — it does — but whether the improvement is worth its
@@ -176,12 +176,12 @@ The platforms differ in where PTDD v1 already lands.
 
 | | Opus v1 | SOL v1 |
 |---|---:|---:|
-| Complexity Peak | 2.7 | 4.1 |
+| `cognitive_max` | 2.7 | 4.1 |
 | `mccabe_max` | 3.3 | 4.7 |
 | `cc_median_loc_per_function` | 4.8 | 5.0 |
 
 On Opus, v1 is already near the floor these measures can reach on this kata, so
-the treatment's gain is confined to function size: 0.13 on Complexity Peak and
+the treatment's gain is confined to function size: 0.13 on `cognitive_max` and
 0.07 on `mccabe_max`, both a fraction of v1's own spread. For that it costs 84 %
 more Production LoC, 1.9× the money and one run in ten over budget.
 

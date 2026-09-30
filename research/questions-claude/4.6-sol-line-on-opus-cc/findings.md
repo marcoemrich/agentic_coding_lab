@@ -19,7 +19,7 @@ i.e. per column pair, since the question is which workflow wins on a given model
 | Correctness (internal) `tests_passing` | 100 % | 100 % | 100 % | 100 % | 100 % | 100 % | higher = better |
 | `cc_avg_loc_per_function` | 8.81 ± 1.71 | 8.90 ± 1.65 | **6.65 ± 0.69** 🏆 | 7.86 ± 1.60 | 4.24 ± 0.67 | **4.40 ± 0.42** 🏆 | lower = better |
 | `cc_median_loc_per_function` | 7.70 | 7.17 | **6.00** 🏆 | 6.70 | 2.00 ± 0.00 | **2.00 ± 0.00** 🏆 | lower = better |
-| Complexity Peak `cc_longest_function` | 23.4 | 24.3 | **19.4 ± 3.58** 🏆 | **22.4 ± 4.51** 🏆 | 24.6 | 23.4 | lower = better |
+| `cc_longest_function` | 23.4 | 24.3 | **19.4 ± 3.58** 🏆 | **22.4 ± 4.51** 🏆 | 24.6 | 23.4 | lower = better |
 | `cognitive_max` | 7.0 ± 2.24 | 5.33 ± 1.86 | **4.6 ± 1.82** 🏆 | **3.4 ± 0.89** 🏆 | 3.6 ± 1.14 | 3.6 ± 1.14 | lower = better |
 | `mccabe_max` | 6.0 | 5.33 | **4.4** 🏆 | 4.0 ± 0.71 | 4.0 | **3.8 ± 0.84** 🏆 | lower = better |
 | Smell Total | **0.0** 🏆 | **0.0** 🏆 | **0.0** 🏆 | **0.0** 🏆 | 1.0 | 0.2 | lower = better |
@@ -114,7 +114,7 @@ style — this is the comparison the recommendation rests on:
 | Correctness (external) | **100 %** 🏆 | 99 % | higher = better |
 | `cc_avg_loc_per_function` | 7.86 ± 1.60 | **4.40 ± 0.42** 🏆 | lower = better |
 | `cc_median_loc_per_function` | 6.70 | **2.00 ± 0.00** 🏆 | lower = better |
-| Complexity Peak `cc_longest_function` | **22.4 ± 4.51** 🏆 | 23.4 ± 5.81 | lower = better |
+| `cc_longest_function` | **22.4 ± 4.51** 🏆 | 23.4 ± 5.81 | lower = better |
 | `cognitive_max` | **3.4 ± 0.89** 🏆 | 3.6 ± 1.14 | lower = better |
 | `mccabe_max` | 4.0 ± 0.71 | **3.8 ± 0.84** 🏆 | lower = better |
 | Smell Total | **0.0 ± 0.00** 🏆 | 0.2 ± 0.45 | lower = better |
@@ -128,7 +128,7 @@ Read as three groups:
 - **Decomposition — hybrid-v4, decisively.** 1.8× on the mean, 3.4× on the median, both far
   outside 1 σ. Concretely: 22–34 functions for 238–403 production LoC against 14–20
   larger ones.
-- **Complexity — a tie.** `cognitive_max`, `mccabe_max` and Complexity Peak all sit
+- **Complexity — a tie.** `cognitive_max`, `mccabe_max` and `cc_longest_function` all sit
   within 1 σ of each other and split 2:1 in favour of the native line. These metrics do
   not see the difference the length metrics see, exactly as the blind spot predicts.
 - **Cost and correctness — the native line.** 3.4× cheaper, 3.6× faster, and 5/5 perfect
@@ -169,7 +169,7 @@ models, at equal (perfect) correctness:
 | Metric | inline-tdd-v1 · o4-8 | sol-cc · o4-8 | inline-tdd-v1 · o5 | sol-cc · o5 | Direction |
 |---|---:|---:|---:|---:|---|
 | `cc_avg_loc_per_function` | 8.81 | **6.65** | 8.90 | **7.86** | lower = better |
-| Complexity Peak | 23.4 | **19.4** | 24.3 | **22.4** | lower = better |
+| `cc_longest_function` | 23.4 | **19.4** | 24.3 | **22.4** | lower = better |
 | `cognitive_max` | 7.0 | **4.6** | 5.33 | **3.4** | lower = better |
 | `mccabe_max` | 6.0 | **4.4** | 5.33 | **4.0** | lower = better |
 | Code Mass (APP) | 927.0 | **723.8** | 758.2 | **631.4** | lower = better |
@@ -247,7 +247,7 @@ Two qualifications keep this from being a blanket verdict for the native line:
   opus-5 — and the reason is not that hybrid-v4 improved (4.24 → 4.40, marginally worse) but
   that the native line degraded (6.65 → 7.86). The trend runs against it.
 - **It is a trade-off only on decomposition.** On every other quality metric the native
-  line already wins or ties — `cognitive_max` on opus-5, Complexity Peak on both, Smell
+  line already wins or ties — `cognitive_max` on opus-5, `cc_longest_function` on both, Smell
   Total on both — while also reaching 10/10 perfect external correctness against hybrid-v4's
   80 % / 99 %. There the comparison is not "faster but coarser", it is simply faster and
   at least as good.

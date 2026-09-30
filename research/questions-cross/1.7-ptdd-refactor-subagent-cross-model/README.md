@@ -63,7 +63,7 @@ Compare control and treatment only within platform. Absolute cross-platform toke
 ## Primary contrasts
 
 1. **Correctness gate:** Correctness (external), internal tests, and completion within budget.
-2. **Decomposition:** mean and median LoC/function are primary; longest function, function count, and Complexity Peak are robustness measures.
+2. **Decomposition:** mean and median LoC/function are primary; longest function, function count, and `cognitive_max` are robustness measures.
 3. **Other product quality:** Cognitive Complexity, McCabe, Smell Total, Code Mass (APP), and Production LoC.
 4. **Isolation cost:** duration, tokens, and hypothetical list-price comparison.
 5. **Mechanism:** delegated refactor calls must appear once per completed cycle path rather than falling back to inline `## Refactor` markers. Process counts are descriptive.

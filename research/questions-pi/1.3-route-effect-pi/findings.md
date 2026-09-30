@@ -14,7 +14,7 @@ in this lab). Prose below says "subscription route"; ids keep the literal
 
 Median per cell. Direction per column; ties get a trophy on every winning cell.
 
-| Cell | Route | Reasoning | Throughput (tok/s) höher = besser | Duration (s) kleiner = besser | Complexity Peak kleiner = besser | Smell Total kleiner = besser | Production LoC kleiner = besser | Correctness (external) höher = besser |
+| Cell | Route | Reasoning | Throughput (tok/s) höher = besser | Duration (s) kleiner = besser | `cognitive_max` kleiner = besser | Smell Total kleiner = besser | Production LoC kleiner = besser | Correctness (external) höher = besser |
 |---|---|---|---:|---:|---:|---:|---:|---:|
 | `gpt-5-6-sol-no-thinking` | Requesty | off | **3379** 🏆 | **251** 🏆 | 8.0 | 2.0 | **28** 🏆 | **100 %** 🏆 |
 | `gpt-5-6-sol-reasoning` | Requesty | ON | 2899 | 304 | 9.0 | 2.0 | **28** 🏆 | **100 %** 🏆 |
@@ -28,19 +28,19 @@ the Requesty route does not reproduce the subscription-route profile on any qual
 
 | | Requesty off | Requesty **ON** | subscription ON |
 |---|---:|---:|---:|
-| Complexity Peak | 8.0 | 9.0 | **4.0** |
+| `cognitive_max` | 8.0 | 9.0 | **4.0** |
 | Smell Total | 2.0 | 2.0 | **0.0** |
 | Production LoC | 28 | 28 | 41 |
 | Cycles / Refactorings | 8 / 5 | 8 / 5 | 10 / 7 |
 
 Reasoning was verified active in all five runs of the middle cell (207–1649
-thinking blocks, never zero). Yet Complexity Peak does not improve — it is
+thinking blocks, never zero). Yet `cognitive_max` does not improve — it is
 marginally *worse* — and Smell Total, LoC, cycles and refactorings are
 unchanged. The subscription cell sits apart from both Requesty cells on every one of
 them.
 
 The single-run distributions make the same point more sharply than the medians:
-Requesty ranges 4–17 on Complexity Peak in **both** reasoning states, while
+Requesty ranges 4–17 on `cognitive_max` in **both** reasoning states, while
 the subscription route stays inside 3–7. That is not a gradient along thinking effort; it is a
 different régime.
 
@@ -93,10 +93,10 @@ and it survives the reasoning control.
 
 ## F-1.3.2 — The subscription cell produces the structurally cleaner artefact — on game-of-life
 
-Complexity Peak halves against both Requesty cells (4.0 vs 8.0/9.0), Smell Total
+`cognitive_max` halves against both Requesty cells (4.0 vs 8.0/9.0), Smell Total
 drops to zero (vs 2.0/2.0), `smell_complexity` is 0 in all 5 subscription-route runs.
 
-Variance is part of the finding: Requesty's Complexity Peak spans 4–17 (σ=5.6)
+Variance is part of the finding: Requesty's `cognitive_max` spans 4–17 (σ=5.6)
 with reasoning off and 4–17 with it on, subscription 3–7 (σ=1.5). The subscription cell is
 both better and markedly more predictable. Attribution: route, not reasoning
 (F-1.3.6).
@@ -107,7 +107,7 @@ holds only half of it:
 
 | | game-of-life | sphinx-score |
 |---|---|---|
-| Complexity Peak (Req / subscription) | 8.0 / **4.0** | 2.0 / 2.0 — no difference |
+| `cognitive_max` (Req / subscription) | 8.0 / **4.0** | 2.0 / 2.0 — no difference |
 | Smell Total (Req / subscription) | 2.0 / **0.0** | 3.0 / **0.0** |
 | Production LoC (Req / subscription) | 28 / 41 | 49 / **36** |
 
@@ -122,7 +122,7 @@ of this finding — "the subscription route buys structure with volume" — is t
 supported; the volume relation is kata-dependent, not a property of the route.
 
 Scope: the structural advantage is established for smells across two katas, and
-for Complexity Peak only where the kata generates complexity.
+for `cognitive_max` only where the kata generates complexity.
 
 ## F-1.3.3 — More TDD cycles and refactorings in the subscription cell
 

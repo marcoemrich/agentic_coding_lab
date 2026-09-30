@@ -15,7 +15,7 @@ Primary outcomes per cell (n=8 per workflow, opus-4-7-portkey-no-thinking, claim
 | `predictions_correct_rate` (higher = better, pooled)        | 97.2 %                | 94.9 %                         |
 | Code Mass (APP) (`code_mass`, misleading here)              | 878.5 ± 91.4          | 441.5 ± 335.6 (due to early stop) |
 | Smell Total (`smell_total`, lower = better)                 | **0.38 ± 0.74**       | 0.50 ± 0.76                    |
-| Complexity Peak (`cc_longest_function`)                     | 12.4 ± 1.41           | 13.1 ± 7.06                    |
+| `cc_longest_function`                     | 12.4 ± 1.41           | 13.1 ± 7.06                    |
 | `total_tokens` (lower due to early stop, not a win)         | 44.4 M ± 3.4          | 16.7 M ± 15.0                  |
 | `duration_seconds` (lower due to early stop, not a win)     | 2530 ± 401            | 1059 ± 943                     |
 
@@ -71,7 +71,7 @@ In the two hybrid-v4.3 runs that do complete (cycle_count 12 and 25, ver=1.0), `
 | Code Mass (APP) (`code_mass`)           | 878.5 ± 91  | 441.5 ± 336 | hybrid-v4.3 has half as much code because only ~⅓ of the tests are implemented |
 | `cognitive_max`                         | 5.0 ± 1.77  | 3.4 ± 2.07  | ditto — less complex functions because less logic |
 | `mccabe_max`                            | 4.5 ± 0.76  | 3.75 ± 1.67 | ditto |
-| Complexity Peak (`cc_longest_function`) | 12.4 ± 1.41 | 13.1 ± 7.06 | mean equal; σ five times larger (bi-modal) |
+| `cc_longest_function` | 12.4 ± 1.41 | 13.1 ± 7.06 | mean equal; σ five times larger (bi-modal) |
 | Smell Total (`smell_total`)             | 0.38 ± 0.74 | 0.50 ± 0.76 | both near 0, indistinguishable |
 
 The lower complexity values are not a code quality gain — they reflect the incomplete implementation. A fairer comparison base would be per-cycle complexity at an equal number of implemented tests; the pipeline does not measure that directly. Until then, all code quality outcomes on this kata are not meaningfully comparable between hybrid-v4 and hybrid-v4.3.

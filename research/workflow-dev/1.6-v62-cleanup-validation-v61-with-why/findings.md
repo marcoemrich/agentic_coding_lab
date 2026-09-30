@@ -78,7 +78,7 @@ Prediction correctness rises minimally (+1 pp) and stays within the noise. The t
 | `cognitive_max` mean | **4.38** 🏆 (σ 1.06) | 5.00 (σ 1.77) |
 | `mccabe_max` mean | **4.25** 🏆 (σ 0.46) | 4.50 (σ 0.76) |
 
-**Rationale.** The `code_mass` difference (769 → 879) is substantial, but comes out smaller than the hybrid-v2 spread (σ 197) and may partly stem from more hybrid-v4 runs implementing all tests completely (no "half-finished" outlier like the 0.27 hybrid-v2 run, which pulled the v6.1 Code Mass (APP) down). The Complexity Peak values (`cognitive_max`, `mccabe_max`) rise slightly, but stay in single digits and without `high_count` violations.
+**Rationale.** The `code_mass` difference (769 → 879) is substantial, but comes out smaller than the hybrid-v2 spread (σ 197) and may partly stem from more hybrid-v4 runs implementing all tests completely (no "half-finished" outlier like the 0.27 hybrid-v2 run, which pulled the v6.1 Code Mass (APP) down). The `cognitive_max` and `mccabe_max` values rise slightly, but stay in single digits and without `high_count` violations.
 
 The equality of the smells (0.38 / 0.38) is the strongest signal: the refactor subagent behaviour still caps smells consistently.
 

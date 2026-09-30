@@ -103,7 +103,7 @@ The game-of-life cells were run partly native (RQ-1.14 fill), partly portkey (ol
 
 ## Status / next steps
 
-Complete — all 6 cells at n ≥ 5 (43 runs). This RQ unites the formerly separate claim-office study (RQ-1.12) and game-of-life study (previously RQ-1.14, now merged in here). Result in [findings.md](findings.md): on **both** katas the per-cycle refactor hybrid-v4.4 lowers the Complexity Peak furthest below hybrid-v4; the end refactor hybrid-v5 is level with hybrid-v4.4 on claim-office but shows no robust gain on the single-file GoL library (and is the most expensive there). Correctness/discipline intact everywhere. No global v6.5 promotion over hybrid-v4; metric-driven refactor is worth it, but the effective point of leverage is kata-dependent.
+Complete — all 6 cells at n ≥ 5 (43 runs). This RQ unites the formerly separate claim-office study (RQ-1.12) and game-of-life study (previously RQ-1.14, now merged in here). Result in [findings.md](findings.md): on **both** katas the per-cycle refactor hybrid-v4.4 lowers the `cc_longest_function` furthest below hybrid-v4; the end refactor hybrid-v5 is level with hybrid-v4.4 on claim-office but shows no robust gain on the single-file GoL library (and is the most expensive there). Correctness/discipline intact everywhere. No global v6.5 promotion over hybrid-v4; metric-driven refactor is worth it, but the effective point of leverage is kata-dependent.
 
 ## Findings
 

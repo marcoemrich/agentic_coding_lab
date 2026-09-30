@@ -20,7 +20,7 @@ have no trophy.
 | Claim Office | Completed within budget | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 |
 | Claim Office | `cc_avg_loc_per_function` ↓ | 6.80 ± 0.39 | 6.61 ± 1.81 | 8.00 ± 2.13 | 5.67 ± 0.69 |
 | Claim Office | Functions | 10.6 ± 2.1 | 13.0 ± 2.2 | 8.2 ± 0.8 | 15.4 ± 0.9 |
-| Claim Office | Complexity Peak ↓ | 16.2 ± 1.3 | 15.8 ± 2.8 | 18.2 ± 6.9 | 14.2 ± 2.6 |
+| Claim Office | `cc_longest_function` ↓ | 16.2 ± 1.3 | 15.8 ± 2.8 | 18.2 ± 6.9 | 14.2 ± 2.6 |
 | Claim Office | `cognitive_avg` ↓ | 2.25 ± 0.50 | 1.81 ± 0.48 | 1.72 ± 0.12 | 1.47 ± 0.15 |
 | Claim Office | `mccabe_avg` ↓ | 1.91 ± 0.24 | 2.02 ± 0.36 | 1.63 ± 0.15 | 1.50 ± 0.11 |
 | Claim Office | Production LoC ↓ | 146.0 ± 25.4 | 151.8 ± 8.9 | 129.0 ± 23.4 | 153.2 ± 10.1 |
@@ -33,7 +33,7 @@ have no trophy.
 | Game of Life | Completed within budget | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 |
 | Game of Life | `cc_avg_loc_per_function` ↓ | 6.62 ± 0.81 | 5.56 ± 1.24 | 7.54 ± 2.42 | 5.63 ± 1.80 |
 | Game of Life | Functions | 4.2 ± 1.3 | 6.4 ± 0.9 | 3.0 ± 0.6 | 5.8 ± 1.6 |
-| Game of Life | Complexity Peak ↓ | 14.2 ± 3.8 | 12.0 ± 2.8 | 14.5 ± 4.6 | 10.8 ± 4.3 |
+| Game of Life | `cc_longest_function` ↓ | 14.2 ± 3.8 | 12.0 ± 2.8 | 14.5 ± 4.6 | 10.8 ± 4.3 |
 | Game of Life | `cognitive_avg` ↓ | 2.77 ± 0.33 | 2.85 ± 1.17 | 3.22 ± 0.66 | 2.35 ± 1.02 |
 | Game of Life | `mccabe_avg` ↓ | 1.84 ± 0.17 | 1.62 ± 0.22 | 2.29 ± 0.49 | 1.81 ± 0.40 |
 | Game of Life | Production LoC ↓ | 35.2 ± 8.5 | 42.8 ± 5.2 | 27.8 ± 3.5 | 40.6 ± 1.7 |
@@ -57,7 +57,7 @@ APP extension contrast:
 | Claim Office | Production LoC ↓ | 153.2 ± 10.1 | **134.8 ± 17.9** 🏆 |
 | Claim Office | Functions | 15.4 ± 0.9 | 14.8 ± 2.6 |
 | Claim Office | `cc_avg_loc_per_function` ↓ | 5.67 ± 0.69 | 5.54 ± 0.67 |
-| Claim Office | Complexity Peak ↓ | 14.2 ± 2.6 | 13.4 ± 3.5 |
+| Claim Office | `cc_longest_function` ↓ | 14.2 ± 2.6 | 13.4 ± 3.5 |
 | Claim Office | `cognitive_avg` ↓ | 1.47 ± 0.15 | 1.46 ± 0.45 |
 | Claim Office | `mccabe_avg` ↓ | 1.50 ± 0.11 | 1.50 ± 0.18 |
 | Claim Office | Duration ↓ | 1440 ± 315 s | 1270 ± 342 s |
@@ -70,7 +70,7 @@ APP extension contrast:
 | Game of Life | Production LoC ↓ | 40.6 ± 1.7 | 36.0 ± 5.1 |
 | Game of Life | Functions | 5.8 ± 1.6 | 5.8 ± 1.5 |
 | Game of Life | `cc_avg_loc_per_function` ↓ | 5.63 ± 1.80 | 5.19 ± 0.84 |
-| Game of Life | Complexity Peak ↓ | 10.8 ± 4.3 | 10.2 ± 2.9 |
+| Game of Life | `cc_longest_function` ↓ | 10.8 ± 4.3 | 10.2 ± 2.9 |
 | Game of Life | `cognitive_avg` ↓ | 2.35 ± 1.02 | 2.47 ± 1.28 |
 | Game of Life | `mccabe_avg` ↓ | 1.81 ± 0.40 | 1.76 ± 0.40 |
 | Game of Life | Duration ↓ | 498 ± 44 s | 468 ± 62 s |
@@ -105,7 +105,7 @@ peak function length remain effectively unchanged within replicate spread. TCR
 moves from 8.2 to 15.4 functions, reduces average function length from 8.00 to
 5.67, and reduces average cognitive complexity from 1.72 to 1.47.
 
-| Method | Treatment | Functions | `cc_avg_loc_per_function` | Complexity Peak | `cognitive_avg` | `mccabe_avg` |
+| Method | Treatment | Functions | `cc_avg_loc_per_function` | `cc_longest_function` | `cognitive_avg` | `mccabe_avg` |
 |---|---|---:|---:|---:|---:|---:|
 | Predictive TDD | Standard | 10.6 ± 2.1 | 6.80 ± 0.39 | 16.2 ± 1.3 | 2.25 ± 0.50 | 1.91 ± 0.24 |
 | Predictive TDD | Trial | 13.0 ± 2.2 | 6.61 ± 1.81 | 15.8 ± 2.8 | 1.81 ± 0.48 | 2.02 ± 0.36 |
@@ -152,7 +152,7 @@ trial arms increase function count and settle at almost identical average
 function length: 5.56 under Predictive TDD and 5.63 under TCR. All complexity
 differences remain within replicate spread.
 
-| Method | Treatment | Functions | `cc_avg_loc_per_function` | Complexity Peak | Production LoC |
+| Method | Treatment | Functions | `cc_avg_loc_per_function` | `cc_longest_function` | Production LoC |
 |---|---|---:|---:|---:|---:|
 | Predictive TDD | Standard | 4.2 ± 1.3 | 6.62 ± 0.81 | 14.2 ± 3.8 | 35.2 ± 8.5 |
 | Predictive TDD | Trial | 6.4 ± 0.9 | 5.56 ± 1.24 | 12.0 ± 2.8 | 42.8 ± 5.2 |
@@ -219,7 +219,7 @@ performing complete in-run arithmetic.
 ## F-1.23.7 — APP subordination preserves domain decomposition and reduces Claim Office Production LoC
 
 The priority guard succeeds at its safety objective. Claim Office function count,
-average function length, Complexity Peak, and average cognitive/McCabe complexity
+average function length, `cc_longest_function`, and average cognitive/McCabe complexity
 all remain spread-overlapping with the parent boundary-trial arm. Game of Life
 also retains the same 5.8-function mean and spread-overlapping complexity.
 
@@ -228,7 +228,7 @@ also retains the same 5.8-function mean and spread-overlapping complexity.
 | Claim Office | Production LoC | 153.2 ± 10.1 | 134.8 ± 17.9 |
 | Claim Office | Functions | 15.4 ± 0.9 | 14.8 ± 2.6 |
 | Claim Office | `cc_avg_loc_per_function` | 5.67 ± 0.69 | 5.54 ± 0.67 |
-| Claim Office | Complexity Peak | 14.2 ± 2.6 | 13.4 ± 3.5 |
+| Claim Office | `cc_longest_function` | 14.2 ± 2.6 | 13.4 ± 3.5 |
 | Claim Office | `cognitive_avg` | 1.47 ± 0.15 | 1.46 ± 0.45 |
 | Claim Office | `mccabe_avg` | 1.50 ± 0.11 | 1.50 ± 0.18 |
 | Game of Life | Production LoC | 40.6 ± 1.7 | 36.0 ± 5.1 |

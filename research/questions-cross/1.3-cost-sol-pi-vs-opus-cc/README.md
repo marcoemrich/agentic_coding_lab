@@ -121,7 +121,7 @@ a re-selection of existing data from the batches of 2026-07-25.
   (`verification_pct`=1.0); on claim-office it is close to opus-cc, without
   a systematic collapse despite drastically lower cost.
 - **H3 (quality-cost tradeoff)**: sol-pi buys the price advantage with a higher
-  Complexity Peak (`cognitive_max`/`mccabe_max`) — "cheaper does not mean
+  `cognitive_max` / `mccabe_max` — "cheaper does not mean
   cleaner".
 
 ## Methodological notes

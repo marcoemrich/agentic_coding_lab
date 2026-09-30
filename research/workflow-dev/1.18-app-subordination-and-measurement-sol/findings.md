@@ -13,7 +13,7 @@ B1/B2/B3 = the measured-model/measured-eslint/measured-tool descendants.
 | Completed within budget | 100% | 100% | 100% | 100% | 100% |
 | `cc_avg_loc_per_function` | 7.42 | 6.72 | 7.12 | 7.88 | 7.11 |
 | `cc_median_loc_per_function` | 4.50 | 5.80 | 5.30 | 6.40 | 6.00 |
-| Complexity Peak | 20.8 | 15.8 | 18.0 | 18.2 | 16.2 |
+| `cc_longest_function` | 20.8 | 15.8 | 18.0 | 18.2 | 16.2 |
 | `cognitive_max` | 4.8 | 5.4 | 3.4 | 3.8 | 4.6 |
 | `cognitive_avg` | 2.10 | 2.11 | 2.02 | 2.25 | 2.16 |
 | `mccabe_max` | 5.6 | 5.6 | 4.2 | 4.8 | 4.4 |
@@ -48,7 +48,7 @@ list-price costs; it does not rerun experiments or their analysis pipelines.
 |---|---:|---:|---:|
 | `cc_avg_loc_per_function` | 7.42 ± 1.04 | 6.72 ± 0.34 | −0.70 |
 | `cc_median_loc_per_function` | 4.50 ± 0.87 | 5.80 ± 0.84 | +1.30 |
-| Complexity Peak | 20.8 ± 2.39 | 15.8 ± 2.39 | −5.0 |
+| `cc_longest_function` | 20.8 ± 2.39 | 15.8 ± 2.39 | −5.0 |
 | `cognitive_max` | 4.8 ± 2.39 | 5.4 ± 2.88 | +0.6 |
 | Code Mass (APP) | 562.6 ± 48.81 | 590.6 ± 66.06 | +28.0 |
 
@@ -69,7 +69,7 @@ and median function length is not demonstrated.
 | `cc_avg_loc_per_function` | 6.72 | 7.12 | 7.88 | 7.11 |
 | Code Mass (APP) | 590.6 | 534.8 | 581.2 | 534.4 |
 
-All B arms have lower mean cognitive/McCabe peaks but higher average function
+All B arms have lower mean cognitive/`mccabe_max`s but higher average function
 length than A. This is consistent with attention to branching rather than
 function decomposition. Broad variation (A cognitive SD 2.88) limits the claim:
 measurement is not proven to improve a metric universally. The AST mass used

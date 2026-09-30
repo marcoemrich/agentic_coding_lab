@@ -20,7 +20,7 @@ Baseline (`exact-hybrid-v3-with-why-cc`, n=5) vs. cleaned (`exact-hybrid-v4-clea
 | `duration_seconds` mean | ↓ | **569** 🏆 | 644 (+13 %) |
 | `total_tokens` mean | ↓ | **7.56 M** 🏆 | 8.67 M (+15 %) |
 
-Reading in two sentences: the RQ-1.6 recommendation generalizes to GoL — hybrid-v4 is correctness-equivalent (both 100/100), shows a **marked improvement in Complexity Peak** (`cognitive_max` −42 % mean, σ −81 %; `mccabe_max` −22 % mean, σ −64 %) and a moderate discipline drift (+22 % refactorings). The cost surcharge of +13 %/+15 % is in the same range as on claim-office.
+Reading in two sentences: the RQ-1.6 recommendation generalizes to GoL — hybrid-v4 is correctness-equivalent (both 100/100), shows a **marked improvement in `cognitive_max` and `mccabe_max`** (`cognitive_max` −42 % mean, σ −81 %; `mccabe_max` −22 % mean, σ −64 %) and a moderate discipline drift (+22 % refactorings). The cost surcharge of +13 %/+15 % is in the same range as on claim-office.
 
 ---
 
@@ -40,9 +40,9 @@ Reading in two sentences: the RQ-1.6 recommendation generalizes to GoL — hybri
 
 ---
 
-## F-1.2 — Complexity Peak collapses: cognitive_max −42 %, mccabe_max −22 %, spread sharply capped
+## F-1.2 — `cognitive_max` −42 %, `mccabe_max` −22 %, spread sharply capped
 
-**Statement.** exact-hybrid-v4-cleaned-cc markedly reduces the Complexity Peak on GoL relative to exact-hybrid-v3-with-why-cc. `cognitive_max` falls in the mean from 4.80 to 2.80 (−42 %) with a spread reduction from σ 5.81 to σ 1.10 (−81 %); `mccabe_max` falls from 4.60 to 3.60 (−22 %) with σ 3.13 → σ 1.14 (−64 %). The maxima drop accordingly (cognitive_max 15 → 4, mccabe_max 10 → 5).
+**Statement.** exact-hybrid-v4-cleaned-cc markedly reduces `cognitive_max` and `mccabe_max` on GoL relative to exact-hybrid-v3-with-why-cc. `cognitive_max` falls in the mean from 4.80 to 2.80 (−42 %) with a spread reduction from σ 5.81 to σ 1.10 (−81 %); `mccabe_max` falls from 4.60 to 3.60 (−22 %) with σ 3.13 → σ 1.14 (−64 %). The maxima drop accordingly (cognitive_max 15 → 4, mccabe_max 10 → 5).
 
 **Data (n=5 per cell).**
 
@@ -52,7 +52,7 @@ Reading in two sentences: the RQ-1.6 recommendation generalizes to GoL — hybri
 | `mccabe_max` mean / σ / max | 4.60 / 3.13 / 10 | **3.60 / 1.14 / 5** | −22 % mean, σ −64 % |
 | `cc_longest_function` mean / σ / max | 9.40 / 8.29 / 22 | 9.40 / 6.80 / 18 | = mean, σ −18 %, max −18 % |
 
-**Rationale.** The spread collapse pattern is striking: exact-hybrid-v3-with-why-cc occasionally produces heavy outlier runs (cognitive_max=15, mccabe_max=10, longest=22), hybrid-v4 does not. Mechanistically plausible: the +22 % refactorings (see F-1.3) drive the distribution of complexity peaks downward. The same pattern was documented in RQ-1.5 for exact-hybrid-v3-with-why-cc vs v6.1-hybrid on claim-office (σ −82–90 % on Complexity Peak) and recurs here in the next reduction iteration.
+**Rationale.** The spread collapse pattern is striking: exact-hybrid-v3-with-why-cc occasionally produces heavy outlier runs (cognitive_max=15, mccabe_max=10, longest=22), hybrid-v4 does not. Mechanistically plausible: the +22 % refactorings (see F-1.3) drive the distribution of complexity peaks downward. The same pattern was documented in RQ-1.5 for exact-hybrid-v3-with-why-cc vs v6.1-hybrid on claim-office (σ −82–90 % on the three complexity metrics) and recurs here in the next reduction iteration.
 
 `code_mass` (151.0 → 148.8) and `smell_total` (2.8 → 2.6) show small improvements within the noise — no degradation as on claim-office, where `code_mass` rose +14 %. On the training-known GoL kata, hybrid-v4 therefore tends to produce *more consistent and slightly smaller* implementations, while on claim-office the Code Mass (APP) grows slightly (more tests implemented completely).
 
@@ -105,7 +105,7 @@ The `tests_passed_immediately` reduction (2.20 → 1.40, −36 %) shows that hyb
 ## Consequences
 
 1. **The exact-hybrid-v4-cleaned-cc recommendation holds for GoL.** The default baseline established in RQ-1.6 is behaviourally equivalent on the training-known kata too, and even produces stronger code quality advantages (cognitive_max −42 %, mccabe_max −22 %). The recommendation in [`workflow-construction.md`](../workflow-construction.md) stays unchanged; the cross-kata validation strengthens it.
-2. **The complexity spread collapse is a recurring pattern.** The phenomenon first documented in RQ-1.5 (exact-hybrid-v3-with-why-cc vs v6.1-hybrid on claim-office) — a σ reduction of 80–90 % on cognitive_max/longest_function — now recurs on GoL in the next workflow iteration (hybrid-v4 vs exact-hybrid-v3-with-why-cc). That argues for a robust mechanism: more refactorings → more consistent Complexity Peak, independent of kata and workflow iteration.
+2. **The complexity spread collapse is a recurring pattern.** The phenomenon first documented in RQ-1.5 (exact-hybrid-v3-with-why-cc vs v6.1-hybrid on claim-office) — a σ reduction of 80–90 % on cognitive_max/longest_function — now recurs on GoL in the next workflow iteration (hybrid-v4 vs exact-hybrid-v3-with-why-cc). That argues for a robust mechanism: more refactorings → more consistent `cognitive_max` and `mccabe_max`, independent of kata and workflow iteration.
 3. **Open questions for follow-up RQs:**
    - Do the findings hold on other models (Sonnet, Haiku, direct API without Portkey)?
    - Are the +13 % wallclock worth it — is there a hybrid-v4.3 variant that keeps only one of the three cleanup axes and is more cost-optimal?

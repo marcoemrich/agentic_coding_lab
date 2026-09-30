@@ -130,7 +130,7 @@ estimated figures.
 
 ---
 
-## F-1.3 — Claude Code delivers the leanest Complexity Peak on game-of-life, and it buys that with refactor volume
+## F-1.3 — Claude Code delivers the leanest `cc_longest_function` on game-of-life, and it buys that with refactor volume
 
 On game-of-life (all cells fully correct) CC produces markedly lower
 complexity peaks and applies markedly more refactorings than OC and pi.
@@ -139,7 +139,7 @@ complexity peaks and applies markedly more refactorings than OC and pi.
 |---|---:|---:|---:|
 | `cognitive_max` | 5.0 | 12.6 | 11.0 |
 | `mccabe_max` | 4.6 | 8.8 | 8.0 |
-| `cc_longest_function` (Complexity Peak) | 11.6 | 21.8 | 17.8 |
+| `cc_longest_function` | 11.6 | 21.8 | 17.8 |
 | `smell_total` (Smell Total) | 2.2 | 3.2 | 3.4 |
 | `code_mass` (Code Mass APP) | 158.6 | 154.2 | 150.8 |
 | `refactorings_applied` (higher = better) | 8.8 | 3.2 | 2.8 |
@@ -149,7 +149,7 @@ the replicate spread (CC σ=1.87, OC σ=5.37, pi σ=4.0). In parallel CC applies
 refactorings on average — about 2.8× the other two harnesses, at a spread narrow enough
 (σ=0.45) to be systematic rather than incidental. The plausible mechanism: the refactor
 subagent in the CC workflow engages structurally more often, which pushes down the
-Complexity Peak.
+`cc_longest_function`.
 
 `code_mass` is by contrast harness-close (158.6 / 154.2 / 150.8, all within one σ) — the
 difference lies in the **distribution** of complexity across the code, not in how much
@@ -182,7 +182,7 @@ The basic TDD mechanics (cycles, prediction hit rate) are harness-invariant — 
 count within the spread per kata (claim-office 36.4–40.2, game-of-life 8.4–9.8),
 prediction hit rate 90–100 % everywhere. This confirms H4 for the core discipline across
 all three harnesses. The only robust difference is refactor intensity: on game-of-life
-CC refactors ~2.8× more often than OC/pi, which directly feeds the lower Complexity Peak
+CC refactors ~2.8× more often than OC/pi, which directly feeds the lower `cc_longest_function`
 from F-1.3. On claim-office the same ordering holds but compressed (28.0 / 23.2 / 19.4,
 a 1.4× rather than a 2.8× spread).
 

@@ -26,7 +26,7 @@ not correctness-gated here.
 |---|---:|---:|---:|
 | Code Mass (APP) `code_mass` (↓) | 211.2 | **151.6** 🏆 | pending |
 | Production LoC `lines_of_code` (↓) | 68.2 | **39.2** 🏆 | pending |
-| `cognitive_max` (Complexity Peak, ↓) | **7.8** 🏆 | 9.2 | pending |
+| `cognitive_max` (↓) | **7.8** 🏆 | 9.2 | pending |
 | `cognitive_avg` (↓) | **4.97** 🏆 | 7.9 | pending |
 | `mccabe_max` (↓) | **6.2** 🏆 | 7.8 | pending |
 | `mccabe_avg` (↓) | **2.4** 🏆 | 3.47 | pending |

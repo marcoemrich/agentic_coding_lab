@@ -27,9 +27,9 @@ Trophy convention: `verification_pct` is the correctness gate; both workflows si
 
 ---
 
-## F-1.1 — Complexity Peak halved at no cost to correctness
+## F-1.1 — `cognitive_max` halved at no cost to correctness
 
-The metric-driven refactor agent markedly reduces the Complexity Peak on claim-office and stabilizes correctness.
+The metric-driven refactor agent markedly reduces the `cognitive_max` on claim-office and stabilizes correctness.
 
 | Metric (direction) | hybrid-v4 (n=8) | hybrid-v4.4 (n=5) | Δ mean | Δ σ |
 |---|---:|---:|---:|---:|
@@ -40,7 +40,7 @@ The metric-driven refactor agent markedly reduces the Complexity Peak on claim-o
 | `code_mass` (lower = better) | 879 ± 91 | **805 ± 64** | −8 % | −30 % |
 | `verification_pct` (higher = better) | 0.96 ± 0.09 | **0.99 ± 0.03** | +3 pp | −67 % |
 
-The Complexity Peak (`cognitive_max`, `mccabe_max`) falls by roughly half; average complexity moves in the same direction with markedly tighter variance. `smell_total` collapses from 0.38 to 0 (not a single ESLint smell across 5 hybrid-v4.4 runs vs 3 smells across 8 hybrid-v4 runs). Code Mass slightly reduced. **Correctness is not merely preserved, it becomes somewhat more robust** — mean ver_pct rises from 0.96 to 0.99 and σ falls from 0.09 to 0.03. H1 (correctness ≥ 0.85) is thus clearly satisfied and H2 (complexity reduction ≥ 1 σ) confirmed on the peak metrics.
+The `cognitive_max` and `mccabe_max` falls by roughly half; average complexity moves in the same direction with markedly tighter variance. `smell_total` collapses from 0.38 to 0 (not a single ESLint smell across 5 hybrid-v4.4 runs vs 3 smells across 8 hybrid-v4 runs). Code Mass slightly reduced. **Correctness is not merely preserved, it becomes somewhat more robust** — mean ver_pct rises from 0.96 to 0.99 and σ falls from 0.09 to 0.03. H1 (correctness ≥ 0.85) is thus clearly satisfied and H2 (complexity reduction ≥ 1 σ) confirmed on the peak metrics.
 
 Mechanistic reading: the pre-measurement forces the agent to identify the worst function explicitly before refactoring. The post-measurement gives it an objective trigger for revert/alternative when the POST number is worse. Together these appear to break the baseline refactor agent's "naming first, nothing else" tendency.
 

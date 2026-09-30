@@ -67,7 +67,7 @@ Model, route, reasoning profile, harness, kata, prompt style, shared context, Pr
 1. **External completeness:** compare mean, minimum, and distribution of Correctness (external). Since v1.5 is already perfect in the existing sample, v1.6 must preserve that floor rather than merely improve a mean.
 2. **Test behavior:** compare executable tests and Test LoC. Additional tests are mechanism evidence, not an automatic quality win.
 3. **Efficiency:** compare duration, tokens, and hypothetical list-price estimates. A neutral correctness result favors the lower-cost workflow.
-4. **Product shape:** compare typical function size, function count, Complexity Peak, Cognitive Complexity, McCabe, Smell Total, Code Mass (APP), and Production LoC.
+4. **Product shape:** compare typical function size, function count, `cc_longest_function`, Cognitive Complexity, McCabe, Smell Total, Code Mass (APP), and Production LoC.
 5. **Process evidence:** inspect the visible coverage cross-check and compare refactor markers and prediction accuracy. Marker counts are descriptive rather than quality rankings.
 
 ## Hypotheses

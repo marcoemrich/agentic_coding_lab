@@ -19,7 +19,7 @@ opus-4-7 cells are pre-existing runs (partly Portkey-routed, see README caveat 1
 | `cognitive_max` | 5.4 | 2.8 | 2.4 | **2.2** 🏆 | 19.8 | 14.83 | 5.71 | 3.2 | lower = better |
 | `cognitive_avg` | 2.53 | 1.65 | 1.34 | **1.18** 🏆 | 5.77 | 4.62 | 2.32 | 1.35 | lower = better |
 | `mccabe_max` | 5.4 | 3.4 | 3.2 | **3.0** 🏆 | 15.4 | 10.17 | 5.71 | 3.4 | lower = better |
-| Complexity Peak | 24.2 | 18.6 | 17.0 | 14.6 | 51.6 | 32.67 | 18.14 | **12.0** 🏆 | lower = better |
+| `cc_longest_function` | 24.2 | 18.6 | 17.0 | 14.6 | 51.6 | 32.67 | 18.14 | **12.0** 🏆 | lower = better |
 | Smell Total | **0.0** 🏆 | 0.2 | **0.0** 🏆 | **0.0** 🏆 | 16.8 | 6.83 | 1.29 | **0.0** 🏆 | lower = better |
 | Code Mass (APP) | 759.2 | 569.0 | 861.6 | 1002.8 | 992.4 | 692.7 | 861.3 | 796.0 | no 🏆 — see caveat |
 | `cycle_count` | 4.8 | 27.0 | 42.8 | 45.0 | 3.8 | 5.5 | 28.0 | 25.8 | — |
@@ -37,7 +37,7 @@ opus-4-7 cells are pre-existing runs (partly Portkey-routed, see README caveat 1
 | `cognitive_max` | 7.6 | 1.8 | 1.8 | **1.2** 🏆 | 21.8 | 17.6 | 6.5 | 2.2 | lower = better |
 | `cognitive_avg` | 5.73 | 1.6 | 1.5 | **1.2** 🏆 | 21.8 | 15.4 | 5.17 | 1.9 | lower = better |
 | `mccabe_max` | 6.0 | 2.8 | 3.2 | **2.4** 🏆 | 13.7 | 10.2 | 5.2 | 3.2 | lower = better |
-| Complexity Peak | 14.6 | 8.0 | 10.8 | **7.4** 🏆 | 32.5 | 20.8 | 14.2 | 8.4 | lower = better |
+| `cc_longest_function` | 14.6 | 8.0 | 10.8 | **7.4** 🏆 | 32.5 | 20.8 | 14.2 | 8.4 | lower = better |
 | Smell Total | **0.0** 🏆 | **0.0** 🏆 | 1.2 | **0.0** 🏆 | 6.0 | 4.8 | 2.4 | **0.0** 🏆 | lower = better |
 | Code Mass (APP) | 193.0 | 176.2 | 181.8 | 194.4 | 165.6 | 154.0 | 153.7 | 169.6 | no 🏆 — see caveat |
 | `cycle_count` | 3.8 | 7.2 | 10.4 | 10.4 | 1.5 | 7.6 | 8.7 | 9.2 | — |
@@ -118,7 +118,7 @@ values do not carry over.
 
 ## F-1.3 — hybrid-v6 wins the quality axis on both katas and costs 4–34× the baseline
 
-hybrid-v6 takes the trophy on every quality metric except Complexity Peak on claim-office.
+hybrid-v6 takes the trophy on every quality metric except `cc_longest_function` on claim-office.
 The cost side is where the decision actually sits.
 
 | claim-office | inline-tdd-v1 | hybrid-v6 | Factor |

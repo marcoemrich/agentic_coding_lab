@@ -180,7 +180,7 @@ frontier models show among themselves.
 |---|---:|---:|---:|---:|
 | `cc_avg_loc_per_function` | 3.45 | 3.63 | 4.79 | **6.50** |
 | `cc_longest_function` | 13.6 | 14.4 | 17.6 | **26.2** |
-| `cognitive_max` (Complexity Peak) | 2.8 | 2.6 | 3.2 | **4.2** |
+| `cognitive_max` | 2.8 | 2.6 | 3.2 | **4.2** |
 | `mccabe_max` | 3.0 | 3.2 | 3.8 | **4.4** |
 | `smell_total` (Smell Total) | 0.0 | 0.2 | 0.6 | 0.2 |
 

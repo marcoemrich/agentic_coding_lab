@@ -79,7 +79,7 @@ model** (Sol), at **exactly the controls this RQ uses** —
 
 | | Requesty (reasoning off) | Requesty (reasoning ON) | Subscription |
 |---|---:|---:|---:|
-| Complexity Peak | 8.0 | 9.0 | **4.0** |
+| `cognitive_max` | 8.0 | 9.0 | **4.0** |
 | Smell Total | 2.0 | 2.0 | **0.0** |
 | Production LoC | 28 | 28 | 41 |
 | Cycles / Refactorings | 8 / 5 | 8 / 5 | 10 / 7 |
@@ -177,13 +177,13 @@ context-pressure result.
 ## Hypotheses
 
 **H1 — Astra beats Sol on its own route.** Against
-`gpt-5-6-sol-codex-no-thinking`, Astra improves Complexity Peak and Smell
+`gpt-5-6-sol-codex-no-thinking`, Astra improves `cognitive_max` and Smell
 Total. This is the clean intra-route, intra-vendor comparison and the only one
 in the matrix with no confound at all.
 
 **H2 — Astra clears Opus 5 net of the route delta.** Astra's advantage over
 `opus-5-requesty` on the quality metrics exceeds the Sol-measured route delta
-(Complexity Peak 8.0 → 4.0, Smell Total 2.0 → 0.0). If it does not, the
+(`cognitive_max` 8.0 → 4.0, Smell Total 2.0 → 0.0). If it does not, the
 apparent advantage is the transport, not the model. This is the hypothesis the
 RQ exists for, and the Sol pair is what makes it testable.
 
@@ -235,7 +235,7 @@ where `gpt-5-6-sol-no-thinking` passes the redundant `off`). Both address
 profile, which declares `reasoning: false` — they are the same configuration.
 They do not measure the same:
 
-| id | Complexity Peak (median) | range | Smell Total | Production LoC |
+| id | `cognitive_max` (median) | range | Smell Total | Production LoC |
 |---|---:|---:|---:|---:|
 | `gpt-5-6-sol-no-thinking` | 8.0 | 4–17 | 2.0 | 28 |
 | `gpt-5-6-sol` | 17.0 | 4–17 | 4.0 | 26 |
@@ -243,7 +243,7 @@ They do not measure the same:
 Identical ranges, medians nine points apart at n=5. This is the noise floor of
 `cognitive_max` on this kata, not a configuration effect — and it is larger
 than most of the between-cell differences this RQ is built to detect. Read no
-Complexity Peak gap below roughly this magnitude as real, in either direction.
+`cognitive_max` gap below roughly this magnitude as real, in either direction.
 `gpt-5-6-sol` is deliberately kept **out** of `factors.model`: as a nominal
 duplicate it would enter the trophy table as its own cell and imply a
 difference where there is none. It is recorded here as a variance estimate

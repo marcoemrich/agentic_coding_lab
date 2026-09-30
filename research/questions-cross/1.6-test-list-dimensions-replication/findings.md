@@ -29,7 +29,7 @@ one means no test reaches the line at all — untested code.
 |---|---:|---:|
 | Correctness (external) | 0.96 ± 0.08 | **0.99 ± 0.02** 🏆 |
 | Worst run | 0.73 | **0.93** 🏆 |
-| Complexity Peak (`cognitive_max`) | 2.8 ± 0.63 | 2.8 ± 0.63 |
+| `cognitive_max` | 2.8 ± 0.63 | 2.8 ± 0.63 |
 | `cognitive_avg` | **1.52 ± 0.21** 🏆 | **1.47 ± 0.26** 🏆 |
 | `mccabe_max` | 3.3 ± 0.95 | 3.3 ± 0.48 |
 | Smell Total | 0.0 ± 0.00 | 0.0 ± 0.00 |
@@ -54,7 +54,7 @@ one means no test reaches the line at all — untested code.
 | Metric | v1.5 (n=10) | v1.6 with cross-check (n=10) |
 |---|---:|---:|
 | Correctness (external) | 1.00 ± 0.00 | 1.00 ± 0.00 |
-| Complexity Peak (`cognitive_max`) | **3.7 ± 0.95** 🏆 | **3.9 ± 1.10** 🏆 |
+| `cognitive_max` | **3.7 ± 0.95** 🏆 | **3.9 ± 1.10** 🏆 |
 | `cognitive_avg` | **1.87 ± 0.48** 🏆 | **1.83 ± 0.37** 🏆 |
 | `mccabe_max` | **4.3 ± 1.16** 🏆 | **5.0 ± 1.56** 🏆 |
 | Smell Total | 0.0 ± 0.00 | 0.0 ± 0.00 |
@@ -74,7 +74,7 @@ one means no test reaches the line at all — untested code.
 | *of those uncovered* | 3.8 ± 1.55 | 5.4 ± 2.70 *(n=9)* |
 | *`total_tokens`* | 6.58 M | 6.88 M |
 
-Rows where the two columns are identical (Complexity Peak and `mccabe_max` on
+Rows where the two columns are identical (`cognitive_max` and `mccabe_max` on
 Opus, Smell Total on both) carry no trophy: there is no contest to win.
 
 The SOL v1.6 Mutation Score is reported at n=9. One run in that cell scored 0.00
@@ -143,13 +143,13 @@ structural metrics confirm it.
 
 | Measure | Opus v1.5 → v1.6 | SOL v1.5 → v1.6 |
 |---|---|---|
-| Complexity Peak | 2.8 → 2.8 | 3.7 → 3.9 |
+| `cognitive_max` | 2.8 → 2.8 | 3.7 → 3.9 |
 | `mccabe_max` | 3.3 → 3.3 | 4.3 → 5.0 |
 | `cc_avg_loc_per_function` | 5.53 → 5.95 | 5.72 → 6.42 |
 | `cc_median_loc_per_function` | 4.55 → 4.70 | 4.35 → 5.30 |
 | Production LoC | 236.2 → 245.7 | 150.2 → 152.4 |
 
-On Opus Complexity Peak and `mccabe_max` are *identical* to the second decimal
+On Opus `cognitive_max` and `mccabe_max` are *identical* to the second decimal
 across twenty runs, and the size measures differ by less than either cell's
 spread. Structure is genuinely unaffected.
 

@@ -312,7 +312,7 @@ F-1.6 that the hybrid-v2 refactor subagent does not extract on Sol while it does
 
 **It is a separate RQ, not extra cells here, because it runs on the OpenAI subscription
 route** (`gpt-5-6-sol-codex`) rather than Requesty. `RQ-route-effect-pi` F-1.3.6
-establishes a real route effect on exactly these quality metrics (Complexity Peak 4.0
+establishes a real route effect on exactly these quality metrics (`cognitive_max` 4.0
 vs 8.0/9.0, Smell Total 0.0 vs 2.0) and shows it is not a reasoning effect. Mixing the
 routes would confound the lineage comparison with the transport, in the same direction
 the native line is expected to move. That RQ re-measures its own inline-tdd-v1 floor accordingly.

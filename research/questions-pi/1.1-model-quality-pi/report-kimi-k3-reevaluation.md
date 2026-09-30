@@ -28,7 +28,7 @@ clean on the price side either.
 
 All four models reach `tests_passing` 100 % and Correctness (external) 1.00.
 
-| Model | Smell Total | `cognitive_max` | `mccabe_max` | Code Mass (APP) | Complexity Peak | Cost/run | Wall-Clock |
+| Model | Smell Total | `cognitive_max` | `mccabe_max` | Code Mass (APP) | `cc_longest_function` | Cost/run | Wall-Clock |
 |---|---|---|---|---|---|---|---|
 | **Opus 5** | 2.0 | **2.4** 🏆 | **3.4** 🏆 | 151.8 | **5.8** 🏆 | $3.10 | 436 s |
 | **GLM 5.2** | **1.0** 🏆 | 7.8 | 6.6 | 178.2 | 22.6 | $2.53 | 883 s |
@@ -46,14 +46,14 @@ GPT-5.6 SOL only wins within these four.
 K3 improves **every** quality axis over the previous generation, at a practically
 unchanged price.
 
-| Model | Smell Total | `cognitive_max` | `mccabe_max` | Complexity Peak | Cost/run | Wall-Clock | Tokens |
+| Model | Smell Total | `cognitive_max` | `mccabe_max` | `cc_longest_function` | Cost/run | Wall-Clock | Tokens |
 |---|---|---|---|---|---|---|---|
 | Kimi K2.7 | 3.0 | 10.8 | 7.2 | 21.6 | $0.60 | 234 s | 1.34 M |
 | **Kimi K3** | 2.4 | 7.0 | 5.8 | 15.0 | $0.64 | 359 s | 1.02 M |
 
 The `cognitive_max` jump (10.8 → 7.0) is larger than the GLM step 5.1 → 5.2
 (9.6 → 7.8), but stays well behind the Anthropic jump 4.8 → 5 (9.6 → 2.4).
-The Complexity Peak improvement lifts K3 from mid-field to 15.0.
+The `cc_longest_function` improvement lifts K3 from mid-field to 15.0.
 
 The progress is paid for in wall-clock: 53 % more runtime at **fewer** tokens
 (1.34 M → 1.02 M). K3 therefore spends more time per token instead of producing more.
@@ -73,9 +73,9 @@ model of the entire RQ. On top of that the second-smallest Code Mass (APP) (143.
 third. No axis won except price, but not trailing on any either.
 
 Against the quality winner stands a factor of 4.8 in price versus a factor of three in
-Complexity Peak: Opus 5 takes all three complexity axes by a wide margin
+`cc_longest_function`: Opus 5 takes all three complexity axes by a wide margin
 (`cognitive_max` 2.4 against 6.6 for the next-best model in the field), but costs $3.10. Whether
-that pays off depends on how much Complexity Peak matters for the target codebase — on
+that pays off depends on how much `cc_longest_function` matters for the target codebase — on
 game-of-life the absolute values are small in both directions.
 
 GLM 5.2 holds the smell crown at 1.0, though softly: GLM scatters across the five runs from

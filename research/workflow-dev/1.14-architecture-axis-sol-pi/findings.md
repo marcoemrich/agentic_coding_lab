@@ -20,7 +20,7 @@ Data base: 50 runs, 10 cells × n=5, all `exit_reason: ok`, `completed_within_bu
 | `cognitive_avg` | 3.65 | 3.70 | 3.58 | 2.65 | **2.45** 🏆 | lower = better |
 | `mccabe_max` | 8.2 | 13.6 | 8.2 | 6.0 | **5.8** 🏆 | lower = better |
 | Smell Total | 6.8 | 28.0 | 12.4 | 15.2 | **0.0** 🏆 | lower = better |
-| Complexity Peak `cc_longest_function` | 21.8 | 43.4 | 23.0 | 23.0 | **21.2** 🏆 | lower = better |
+| `cc_longest_function` | 21.8 | 43.4 | 23.0 | 23.0 | **21.2** 🏆 | lower = better |
 | `cc_avg_loc_per_function` | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | 11.05 | lower = better |
 | Code Mass (APP) | 678.8 | 646.8 | 524.6 | 446.4 | 466.8 | lower = better (no 🏆 — see caveat) |
 | `cycle_count` | n/a | 87.4 | 29.6 | 34.2 | **27.8** 🏆 | — |
@@ -39,7 +39,7 @@ Data base: 50 runs, 10 cells × n=5, all `exit_reason: ok`, `completed_within_bu
 | `cognitive_avg` | **2.35** 🏆 | 3.23 | 4.37 | 6.20 | 5.05 | lower = better |
 | `mccabe_max` | **4.6** 🏆 | 6.0 | 6.2 | 6.6 | 5.8 | lower = better |
 | Smell Total | **0.0** 🏆 | 3.8 | 2.4 | 2.8 | **0.0** 🏆 | lower = better |
-| Complexity Peak `cc_longest_function` | **15.6** 🏆 | 22.0 | 20.6 | 20.8 | 19.8 | lower = better |
+| `cc_longest_function` | **15.6** 🏆 | 22.0 | 20.6 | 20.8 | 19.8 | lower = better |
 | `cc_avg_loc_per_function` | **8.66** 🏆 | 12.83 | 13.07 | 15.90 | 10.80 | lower = better |
 | Code Mass (APP) | 174.8 | 146.8 | 141.0 | 125.8 | 135.8 | lower = better (no 🏆 — see caveat) |
 | `cycle_count` | n/a | 22.0 | 9.4 | 9.0 | **8.8** 🏆 | — |
@@ -238,7 +238,7 @@ than structureless TDD on every quality metric except one, and on cost.
 | `cognitive_avg` | **2.35** 🏆 | 3.23 (subagents-v2) | 1.37× | lower = better |
 | `mccabe_max` | **4.6** 🏆 | 5.8 (hybrid-v6) | 1.26× | lower = better |
 | Smell Total | **0.0** 🏆 | **0.0** 🏆 (hybrid-v6) | 1.00× | lower = better |
-| Complexity Peak `cc_longest_function` | **15.6** 🏆 | 19.8 (hybrid-v6) | 1.27× | lower = better |
+| `cc_longest_function` | **15.6** 🏆 | 19.8 (hybrid-v6) | 1.27× | lower = better |
 | `cc_avg_loc_per_function` | **8.66** 🏆 | 10.80 (hybrid-v6) | 1.25× | lower = better |
 | `cost_usd` | **$0.57** 🏆 | $1.58 (single-context-v2) | 2.77× | lower = better |
 
@@ -286,7 +286,7 @@ decomposition and cost.
 | `mccabe_max` | 8.2 | 8.2 | 6.0 | **5.8** 🏆 | **0.71×** |
 | Smell Total | 6.8 | 12.4 | 15.2 | **0.0** 🏆 | **0.00×** |
 | `cc_avg_loc_per_function` | **8.01** 🏆 | 10.48 | 10.72 | 11.05 | 1.38× |
-| Complexity Peak `cc_longest_function` | 21.8 | 23.0 | 23.0 | **21.2** 🏆 | 0.97× |
+| `cc_longest_function` | 21.8 | 23.0 | 23.0 | **21.2** 🏆 | 0.97× |
 | Code Mass (APP) | 678.8 | 524.6 | 446.4 | 466.8 | 0.69× |
 | `cost_usd` | **$1.18** 🏆 | $1.72 | $9.52 | $7.25 | 6.14× |
 

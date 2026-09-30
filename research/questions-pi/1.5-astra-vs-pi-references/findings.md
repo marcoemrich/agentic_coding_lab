@@ -15,7 +15,7 @@ Means per cell. Direction is stated per row.
 
 | Metric | `astra` subs | `sol` subs | `sol` Requesty | `sol` Req. reasoning | `opus-5` Requesty |
 |---|---:|---:|---:|---:|---:|
-| Complexity Peak — lower = better | 7.0 | 4.4 | 9.0 | 10.6 | **2.4** 🏆 |
+| `cognitive_max` — lower = better | 7.0 | 4.4 | 9.0 | 10.6 | **2.4** 🏆 |
 | `cognitive_avg` — lower = better | 2.96 | 2.47 | 4.87 | 5.62 | **2.2** 🏆 |
 | `mccabe_max` — lower = better | 4.6 | 4.6 | 6.8 | 8.0 | **3.4** 🏆 |
 | `cc_longest_function` — lower = better | 19.4 | 20.8 | 18.8 | 21.6 | **5.8** 🏆 |
@@ -49,7 +49,7 @@ transport confound — goes against Astra on every structural metric:
 
 | | Astra | Sol | direction |
 |---|---:|---:|---|
-| Complexity Peak | 7.0 | **4.4** | lower = better |
+| `cognitive_max` | 7.0 | **4.4** | lower = better |
 | `cognitive_avg` | 2.96 | **2.47** | lower = better |
 | Smell Total | 2.4 | **0.6** | lower = better |
 | `cc_avg_loc_per_function` | 18.0 | **11.53** | lower = better |
@@ -60,7 +60,7 @@ row Astra takes (19.4 vs 20.8) — inside the noise of a metric whose spread is
 much larger than that gap.
 
 The per-run distributions separate where the aggregate alone would not settle
-it: Astra `[6, 6, 6, 6, 11]` against Sol `[3, 4, 4, 4, 7]` on Complexity Peak.
+it: Astra `[6, 6, 6, 6, 11]` against Sol `[3, 4, 4, 4, 7]` on `cognitive_max`.
 Four of five Astra runs sit above four of five Sol runs; the overlap is a
 single value on each side. σ is 2.24 and 1.52 — an order tighter than the
 Requesty cells' 5.57/6.11, so on this route the metric does discriminate
@@ -76,7 +76,7 @@ route that RQ-route-effect-pi showed to be the structurally *worse* one:
 
 | | Astra (subscription) | Opus 5 (Requesty) | factor |
 |---|---:|---:|---:|
-| Complexity Peak | 7.0 | **2.4** | 2.9× |
+| `cognitive_max` | 7.0 | **2.4** | 2.9× |
 | `mccabe_max` | 4.6 | **3.4** | 1.4× |
 | `cc_longest_function` | 19.4 | **5.8** | 3.3× |
 | `cc_avg_loc_per_function` | 18.0 | **2.62** | 6.9× |
@@ -119,14 +119,14 @@ Production LoC keeps its trophy — less code passing the same external suite is
 a real result — but it must be read next to `cc_avg_loc_per_function`, never
 alone.
 
-## F-1.5.4 — The noise floor of Complexity Peak is route-dependent, and on Requesty it exceeds most between-cell differences
+## F-1.5.4 — The noise floor of `cognitive_max` is route-dependent, and on Requesty it exceeds most between-cell differences
 
 `RQ-model-quality-pi` carries a second reasoning-off Sol cell under the bare id
 `gpt-5-6-sol` — same route, same `pi-config` profile, same declared
 `reasoning: false`, differing only in whether the redundant `--thinking off` is
 passed. It is the same configuration, and it does not measure the same:
 
-| id | Complexity Peak median | range | Smell Total | Production LoC |
+| id | `cognitive_max` median | range | Smell Total | Production LoC |
 |---|---:|---:|---:|---:|
 | `gpt-5-6-sol-no-thinking` | 8.0 | 4–17 | 2.0 | 28 |
 | `gpt-5-6-sol` | 17.0 | 4–17 | 4.0 | 26 |
@@ -176,7 +176,7 @@ the quality trophies.
 The reasoning channel likewise separates nothing. `gpt-5-6-sol-no-thinking` and
 `gpt-5-6-sol-reasoning` differ only in whether the Requesty profile declares
 `reasoning: true`, and they land within noise of each other on every row
-(Complexity Peak 9.0 vs 10.6, Smell Total 2.4 vs 2.8, Production LoC 30.6 vs
+(`cognitive_max` 9.0 vs 10.6, Smell Total 2.4 vs 2.8, Production LoC 30.6 vs
 27.2) — both inside the floor of F-1.5.4. This reproduces F-1.3.6 on
 independent replicates.
 

@@ -46,7 +46,7 @@ saturated at 1.00 in every cell of RQ-opus55-current-workflow, including the
 minimal inline-TDD comparison arm. The recommendation there rests on three other
 results:
 
-- **The workflow gap is larger on Opus 5.5 than on Opus 5.** Complexity Peak
+- **The workflow gap is larger on Opus 5.5 than on Opus 5.** `cognitive_max`
   falls 76 % against the inline instruction (5 : 54 %), `unit_size_avg` 45 %
   (5 : 29 %), and Mutation Score moves +0.20 where it moves −0.03 on Opus 5.
 - **Unscaffolded, Opus 5.5 is a regression against Opus 5** — worse on every peak
@@ -54,7 +54,7 @@ results:
   newer model does not need less structural guidance on this kata; it needs at
   least as much.
 - Under the workflow, Opus 5.5 is the most reproducible cell measured so far:
-  σ = 0 on Complexity Peak and `mccabe_max` across five runs.
+  σ = 0 on `cognitive_max` and `mccabe_max` across five runs.
 
 **Do not transfer this to Java or Python without measuring.** The Opus 5
 recommendation spans three stacks; the Opus 5.5 extension spans one, and

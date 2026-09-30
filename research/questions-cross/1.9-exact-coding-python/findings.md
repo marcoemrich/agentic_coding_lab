@@ -218,7 +218,7 @@ not invoices.
 Read together with F-1.9.1 and F-1.9.3, the overhead is justified in this data
 only for the Claim Office / SOL cell of F-1.9.4. In the three cells where
 correctness is saturated and complexity is already low, EXACT Coding buys a
-lower Complexity Peak on two of them and pays 8–13× for it.
+lower `cognitive_max` on two of them and pays 8–13× for it.
 
 ---
 

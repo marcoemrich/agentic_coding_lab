@@ -46,7 +46,7 @@ The result does not support a correctness penalty from commit/revert discipline 
 
 ## F-4.8.2 — EXACT Coding buys decomposition and lower peak complexity
 
-EXACT Coding produced substantially smaller functions and lower cognitive and McCabe peaks than every TCR arm. The TCR variants were mutually much closer than any was to EXACT Coding on decomposition.
+EXACT Coding produced substantially smaller functions and lower cognitive and `mccabe_max`s than every TCR arm. The TCR variants were mutually much closer than any was to EXACT Coding on decomposition.
 
 | Workflow | `cc_avg_loc_per_function` | `cc_longest_function` | `cognitive_max` | `mccabe_max` |
 |---|---:|---:|---:|---:|

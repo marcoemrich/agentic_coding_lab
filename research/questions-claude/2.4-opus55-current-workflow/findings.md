@@ -8,7 +8,7 @@ Coding on the newer model:
 
 | | Opus 5: Inline → EXACT | Opus 5.5: Inline → EXACT |
 |---|---|---|
-| Complexity Peak ↓ | 5.6 → 2.6 (−54 %) | 8.2 → 2.0 (**−76 %**) |
+| `cognitive_max` ↓ | 5.6 → 2.6 (−54 %) | 8.2 → 2.0 (**−76 %**) |
 | `mccabe_max` ↓ | 5.6 → 3.2 (−43 %) | 7.8 → 3.0 (**−62 %**) |
 | `unit_size_avg` ↓ | 8.63 → 6.10 (−29 %) | 8.22 → 4.54 (**−45 %**) |
 | `unit_size_median` ↓ | 6.2 → 5.0 (−19 %) | 5.5 → 3.3 (**−40 %**) |
@@ -63,7 +63,7 @@ lower = better.
 |---|---:|---:|---:|---:|---:|---:|
 | Correctness (external) | 1.00 ± 0 | 0.99 ± 0.03 | 0.97 ± 0.04 | 1.00 ± 0 | 1.00 ± 0 | 1.00 ± 0 |
 | Mutation Score | **0.91 ± 0.07** 🏆 | **0.88 ± 0.04** 🏆 | **0.92 ± 0.08** 🏆 | 0.74 ± 0.05 | **0.94 ± 0.04** 🏆 | **0.95 ± 0.04** 🏆 |
-| Complexity Peak | 5.6 ± 1.82 | **2.6 ± 1.34** 🏆 | **3.0 ± 1.41** 🏆 | 8.2 ± 0.84 | **2.0 ± 0** 🏆 | **2.8 ± 1.79** 🏆 |
+| `cognitive_max` | 5.6 ± 1.82 | **2.6 ± 1.34** 🏆 | **3.0 ± 1.41** 🏆 | 8.2 ± 0.84 | **2.0 ± 0** 🏆 | **2.8 ± 1.79** 🏆 |
 | `cognitive_avg` | 2.40 ± 0.54 | **1.37 ± 0.32** 🏆 | **1.30 ± 0.23** 🏆 | 2.49 ± 0.37 | **1.36 ± 0.06** 🏆 | **1.36 ± 0.42** 🏆 |
 | `mccabe_max` | 5.6 ± 1.14 | **3.2 ± 0.45** 🏆 | **3.4 ± 0.89** 🏆 | 7.8 ± 2.05 | **3.0 ± 0** 🏆 | **3.2 ± 0.45** 🏆 |
 | `mccabe_avg` | 2.13 ± 0.24 | 1.56 ± 0.21 | **1.35 ± 0.06** 🏆 | 2.45 ± 0.25 | 1.46 ± 0.10 | **1.39 ± 0.12** 🏆 |
@@ -135,7 +135,7 @@ every complexity and size row lower = better.
 |---|---:|---:|
 | Correctness (external) | 1.00 ± 0 | 1.00 ± 0 |
 | Mutation Score | **0.91 ± 0.07** 🏆 | 0.74 ± 0.05 |
-| Complexity Peak | **5.6 ± 1.82** 🏆 | 8.2 ± 0.84 |
+| `cognitive_max` | **5.6 ± 1.82** 🏆 | 8.2 ± 0.84 |
 | `cognitive_avg` | **2.40 ± 0.54** 🏆 | **2.49 ± 0.37** 🏆 |
 | `mccabe_max` | **5.6 ± 1.14** 🏆 | 7.8 ± 2.05 |
 | `mccabe_avg` | **2.13 ± 0.24** 🏆 | 2.45 ± 0.25 |
@@ -148,7 +148,7 @@ every complexity and size row lower = better.
 |---|---:|---:|
 | Correctness (external) | 0.99 ± 0.03 | 1.00 ± 0 |
 | Mutation Score | 0.88 ± 0.04 | **0.94 ± 0.04** 🏆 |
-| Complexity Peak | **2.6 ± 1.34** 🏆 | **2.0 ± 0** 🏆 |
+| `cognitive_max` | **2.6 ± 1.34** 🏆 | **2.0 ± 0** 🏆 |
 | `cognitive_avg` | **1.37 ± 0.32** 🏆 | **1.36 ± 0.06** 🏆 |
 | `mccabe_max` | **3.2 ± 0.45** 🏆 | **3.0 ± 0** 🏆 |
 | `mccabe_avg` | **1.56 ± 0.21** 🏆 | **1.46 ± 0.10** 🏆 |
@@ -162,7 +162,7 @@ this arm, including the price rows that separate it most sharply, is in F-2.4.7.
 |---|---:|---:|
 | Correctness (external) | 0.97 ± 0.04 | 1.00 ± 0 |
 | Mutation Score | **0.92 ± 0.08** 🏆 | **0.95 ± 0.04** 🏆 |
-| Complexity Peak | **3.0 ± 1.41** 🏆 | **2.8 ± 1.79** 🏆 |
+| `cognitive_max` | **3.0 ± 1.41** 🏆 | **2.8 ± 1.79** 🏆 |
 | `cognitive_avg` | **1.30 ± 0.23** 🏆 | **1.36 ± 0.42** 🏆 |
 | `mccabe_max` | **3.4 ± 0.89** 🏆 | **3.2 ± 0.45** 🏆 |
 | `mccabe_avg` | **1.35 ± 0.06** 🏆 | **1.39 ± 0.12** 🏆 |
@@ -192,7 +192,7 @@ Opus 5.
 
 | metric (lower = better) | Opus 5: Inline → EXACT | Opus 5.5: Inline → EXACT |
 |---|---|---|
-| Complexity Peak | 5.6 → 2.6 (−54 %) | 8.2 → 2.0 (−76 %) |
+| `cognitive_max` | 5.6 → 2.6 (−54 %) | 8.2 → 2.0 (−76 %) |
 | `mccabe_max` | 5.6 → 3.2 (−43 %) | 7.8 → 3.0 (−62 %) |
 | `unit_size_avg` | 8.63 → 6.10 (−29 %) | 8.22 → 4.54 (−45 %) |
 | `unit_size_median` | 6.2 → 5.0 (−19 %) | 5.5 → 3.3 (−40 %) |
@@ -209,7 +209,7 @@ what the scaffolding was compensating for. The recommendation in
 qualifier "on native Opus 5" can be widened rather than tightened.
 
 The Opus 5.5 EXACT cell is also the most reproducible cell in the field:
-σ = 0 on both Complexity Peak and `mccabe_max` across five runs, against
+σ = 0 on both `cognitive_max` and `mccabe_max` across five runs, against
 σ 1.34 and 0.45 on the Opus 5 cell. Under the workflow the newer model does not
 merely land lower, it lands in the same place every time.
 
@@ -222,7 +222,7 @@ complexity measure Opus 5.5 is worse than Opus 5 without the workflow:
 
 | metric (lower = better) | Inline / Opus 5 | Inline / Opus 5.5 |
 |---|---:|---:|
-| Complexity Peak | 5.6 ± 1.82 | 8.2 ± 0.84 |
+| `cognitive_max` | 5.6 ± 1.82 | 8.2 ± 0.84 |
 | `mccabe_max` | 5.6 ± 1.14 | 7.8 ± 2.05 |
 | `cognitive_avg` | 2.40 ± 0.54 | 2.49 ± 0.37 |
 | `mccabe_avg` | 2.13 ± 0.24 | 2.45 ± 0.25 |
@@ -232,7 +232,7 @@ code (Production LoC 236.2 against 300.6, Test LoC 262.2 against 418.0) and 33
 tests against 46. The picture is a model that solves the kata correctly in a
 more compressed, denser form — fewer, larger, more branching units.
 
-The peak gap sits outside the standard deviations on Complexity Peak
+The peak gap sits outside the standard deviations on `cognitive_max`
 (5.6 ± 1.82 against 8.2 ± 0.84) and inside them on the averages, so the
 defensible claim is about peaks, not about the whole distribution.
 
@@ -399,7 +399,7 @@ the model:
 | Mutation Score ↑ | 0.92 ± 0.08 | **0.95 ± 0.04** |
 | `unit_size_avg` ↓ | 4.89 ± 0.39 | **4.42 ± 0.35** |
 | `unit_size_max` ↓ | 14.8 ± 1.48 | **12.4 ± 2.3** |
-| Complexity Peak ↓ | 3.0 ± 1.41 | 2.8 ± 1.79 |
+| `cognitive_max` ↓ | 3.0 ± 1.41 | 2.8 ± 1.79 |
 | `mccabe_max` ↓ | 3.4 ± 0.89 | 3.2 ± 0.45 |
 | `duration_seconds` ↓ | 3749 ± 792 | **2658 ± 357** |
 | `cost_usd` ↓ | $23.03 ± 3.48 | **$12.89 ± 0.96** |

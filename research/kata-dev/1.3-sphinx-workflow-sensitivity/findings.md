@@ -19,7 +19,7 @@ workflow (plain red-green-refactor), `exact-hybrid-v6-lab-split-cc` the elaborat
 
 | Metric | Direction | baseline-inline-tdd-v1-cc | exact-hybrid-v6-lab-split-cc | Factor |
 |---|---|---:|---:|---:|
-| `cc_longest_function` (Complexity Peak) | lower = better | 11.00 | **5.83** 🏆 | 1.9× |
+| `cc_longest_function` | lower = better | 11.00 | **5.83** 🏆 | 1.9× |
 | `cc_avg_loc_per_function` | lower = better | 8.38 | **3.54** 🏆 | 2.4× |
 | `cognitive_max` | lower = better | 1.50 | **1.00** 🏆 | 1.5× |
 | `mccabe_max` | lower = better | 2.33 | **2.00** 🏆 | 1.2× |
@@ -35,7 +35,7 @@ workflow (plain red-green-refactor), `exact-hybrid-v6-lab-split-cc` the elaborat
 
 | Metric | Direction | baseline-inline-tdd-v1-cc | exact-hybrid-v6-lab-split-cc | Factor |
 |---|---|---:|---:|---:|
-| `cc_longest_function` (Complexity Peak) | lower = better | 14.50 | **7.50** 🏆 | 1.9× |
+| `cc_longest_function` | lower = better | 14.50 | **7.50** 🏆 | 1.9× |
 | `cc_avg_loc_per_function` | lower = better | 6.48 | **3.46** 🏆 | 1.9× |
 | `cognitive_max` | lower = better | 7.17 | **1.17** 🏆 | 6.1× |
 | `mccabe_max` | lower = better | 5.67 | **2.50** 🏆 | 2.3× |
@@ -51,7 +51,7 @@ workflow (plain red-green-refactor), `exact-hybrid-v6-lab-split-cc` the elaborat
 
 | Metric | Direction | baseline-inline-tdd-v1-cc | exact-hybrid-v6-lab-split-cc | Factor |
 |---|---|---:|---:|---:|
-| `cc_longest_function` (Complexity Peak) | lower = better | 24.33 | **13.83** 🏆 | 1.8× |
+| `cc_longest_function` | lower = better | 24.33 | **13.83** 🏆 | 1.8× |
 | `cc_avg_loc_per_function` | lower = better | 8.90 | **3.19** 🏆 | 2.8× |
 | `cognitive_max` | lower = better | 5.33 | **2.00** 🏆 | 2.7× |
 | `mccabe_max` | lower = better | 5.33 | **2.83** 🏆 | 1.9× |

@@ -71,7 +71,7 @@ Within each platform:
 1. Correctness (external), its minimum, and the count of perfect runs.
 2. Duration, tokens, and list-price comparison, including medians and ranges from `runs.csv` where long-tailed means are suspected.
 3. Executable tests and Test LoC as evidence that the cross-check changes test planning.
-4. Typical function size, Complexity Peak, Cognitive Complexity, McCabe, Smell Total, Code Mass (APP), and Production LoC.
+4. Typical function size, `cognitive_max`, Cognitive Complexity, McCabe, Smell Total, Code Mass (APP), and Production LoC.
 
 Across platforms, compare the signed v1.6 − v1.5 effect rather than absolute levels.
 

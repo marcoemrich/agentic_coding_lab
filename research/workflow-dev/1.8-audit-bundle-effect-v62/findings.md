@@ -12,14 +12,14 @@ Primary outcomes per cell (n=10 per workflow, opus-4-7-portkey-no-thinking, game
 | `cycle_count` (informative, no clear direction)             | 8.5 ± 1.35            | 8.7 ± 0.67             |
 | Code Mass (APP) (`code_mass`, lower = better)               | 153.3 ± 13.83         | **149.3 ± 12.14** 🏆   |
 | Smell Total (`smell_total`, lower = better)                 | 2.4 ± 0.52            | **2.2 ± 0.63** 🏆      |
-| Complexity Peak (`cc_longest_function`, lower = better)     | 12.2 ± 6.89           | 12.7 ± 4.32            |
+| `cc_longest_function` (lower = better)     | 12.2 ± 6.89           | 12.7 ± 4.32            |
 | `cognitive_max` (lower = better)                            | 4.3 ± 2.79            | 4.5 ± 2.59             |
 | `mccabe_max` (lower = better)                               | 4.2 ± 1.32            | 4.6 ± 1.07             |
 | `tests_passing` / `completed_within_budget`                 | 100 % / 100 %         | 100 % / 100 %          |
 | `total_tokens` (lower = better)                             | **8.32 M ± 1.61** 🏆  | 9.65 M ± 2.34          |
 | `duration_seconds` (lower = better, Δ << σ)                 | 627 ± 117             | 631 ± 101              |
 
-Complexity outcomes `cc_longest_function`, `cognitive_max`, `mccabe_max`: the mean Δ is markedly smaller than σ → no trophy, the workflows are indistinguishable on the Complexity Peak axis.
+Complexity outcomes `cc_longest_function`, `cognitive_max`, `mccabe_max`: the mean Δ is markedly smaller than σ → no trophy, the workflows are indistinguishable on all three.
 
 ---
 
@@ -61,11 +61,11 @@ Code quality outcomes each stay within 1 σ — no degradation.
 |---|---|---|
 | Code Mass (APP) (`code_mass`)           | 153.3 ± 13.83 | **149.3 ± 12.14** |
 | Smell Total (`smell_total`)             | 2.4 ± 0.52    | **2.2 ± 0.63**    |
-| Complexity Peak (`cc_longest_function`) | 12.2 ± 6.89   | 12.7 ± 4.32       |
+| `cc_longest_function` | 12.2 ± 6.89   | 12.7 ± 4.32       |
 | `cognitive_max`                         | 4.3 ± 2.79    | 4.5 ± 2.59        |
 | `mccabe_max`                            | 4.2 ± 1.32    | 4.6 ± 1.07        |
 
-Code Mass and Smell Total drop slightly; Complexity Peak, cognitive and McCabe max stay statistically indistinguishable (Δ < σ). hybrid-v4.3 also shows a tighter σ on the Complexity Peak (6.89 → 4.32, −37 %), as observed in the RQ-audit precedent.
+Code Mass and Smell Total drop slightly; `cc_longest_function`, `cognitive_max` and `mccabe_max` stay statistically indistinguishable (Δ < σ). hybrid-v4.3 also shows a tighter σ on `cc_longest_function` (6.89 → 4.32, −37 %), as observed in the RQ-audit precedent.
 
 Correctness is saturated on GoL for both workflows (100 % `tests_passing`, 100 % `completed_within_budget`). H2 (correctness must not regress) is satisfied.
 

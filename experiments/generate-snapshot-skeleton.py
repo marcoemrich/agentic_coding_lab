@@ -462,7 +462,7 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p("| Metric | Term | What it measures | Direction |")
     p("|---|---|---|---|")
-    p("| `cc_longest_function` | Complexity Peak | Longest function in lines — proxy for the worst spot in the code | lower = better |")
+    p("| `cc_longest_function` | — | Longest function in lines — proxy for the worst spot in the code | lower = better |")
     p("| `cc_avg_loc_per_function` | — | Mean function size in lines | lower = better |")
     p("| `cc_median_loc_per_function` | — | Median function size (robust against single long outliers) | lower = better |")
     p("| `cc_functions` | — | Number of functions | informative |")

@@ -24,7 +24,7 @@ descriptive rather than intrinsically directional, so they receive no trophies.
 | Retained GREEN commits | 0.0 ± 0.0 | 0.0 ± 0.0 | 35.4 ± 2.0 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.0 ± 0.0 |
 | Retained refactor commits | 0.0 ± 0.0 | 0.0 ± 0.0 | 5.2 ± 3.4 | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.0 ± 0.0 |
 | `cc_avg_loc_per_function` ↓ | 7.29 ± 1.23 | **6.80 ± 0.39** 🏆 | 8.00 ± 2.13 | 8.00 ± 1.14 | 9.81 ± 2.85 | 8.31 ± 1.35 |
-| Complexity Peak (`cc_longest_function`) ↓ | 20.2 ± 3.3 | **16.2 ± 1.3** 🏆 | 18.2 ± 6.9 | 22.0 ± 6.4 | 18.6 ± 2.6 | 17.4 ± 1.7 |
+| `cc_longest_function` ↓ | 20.2 ± 3.3 | **16.2 ± 1.3** 🏆 | 18.2 ± 6.9 | 22.0 ± 6.4 | 18.6 ± 2.6 | 17.4 ± 1.7 |
 | `cognitive_max` ↓ | 6.6 ± 2.1 | 4.0 ± 1.2 | **3.2 ± 0.8** 🏆 | 6.8 ± 0.8 | 5.4 ± 1.5 | 6.2 ± 1.8 |
 | `mccabe_max` ↓ | 8.4 ± 3.6 | 4.8 ± 1.3 | **4.0 ± 0.7** 🏆 | 7.4 ± 1.1 | 5.6 ± 0.9 | 6.2 ± 0.4 |
 | Smell Total ↓ | **0.0 ± 0.0** 🏆 | **0.0 ± 0.0** 🏆 | **0.0 ± 0.0** 🏆 | **0.0 ± 0.0** 🏆 | **0.0 ± 0.0** 🏆 | **0.0 ± 0.0** 🏆 |
@@ -90,7 +90,7 @@ EXACT TCR has the lowest measured cognitive and McCabe complexity. Native-Git
 external TCRDD minimizes Code Mass (APP). Basic TDD and Classic TCR are cheaper
 but structurally weaker on most measures.
 
-| Workflow | `cc_avg_loc_per_function` | Complexity Peak (`cc_longest_function`) | `cognitive_max` | `mccabe_max` | Code Mass (APP) |
+| Workflow | `cc_avg_loc_per_function` | `cc_longest_function` | `cognitive_max` | `mccabe_max` | Code Mass (APP) |
 |---|---:|---:|---:|---:|---:|
 | Basic TDD | 7.29 ± 1.23 | 20.2 ± 3.3 | 6.6 ± 2.1 | 8.4 ± 3.6 | 770.2 ± 73.7 |
 | SOL Predictive TDD | 6.80 ± 0.39 | 16.2 ± 1.3 | 4.0 ± 1.2 | 4.8 ± 1.3 | 574.2 ± 34.3 |

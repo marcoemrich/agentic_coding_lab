@@ -19,7 +19,7 @@ Only the prespecified fresh cohort is included; no exclusions or replacements.
 | Prediction accuracy (pooled) | 100% (48/48) | 100% (50/50) |
 | `tests_passed_immediately` (not measured) | 0 | 0 |
 | `cc_avg_loc_per_function` | 7.44 | 6.63 |
-| Complexity Peak | 14.0 | 13.0 |
+| `cc_longest_function` | 14.0 | 13.0 |
 | `cognitive_max` | 4.2 | 4.2 |
 | `mccabe_max` | 4.4 | 4.4 |
 | Smell Total | 0 | 0 |
@@ -40,7 +40,7 @@ Only the prespecified fresh cohort is included; no exclusions or replacements.
 | Prediction accuracy (pooled) | 99.3% (137/138) | 100% (173/173) |
 | `tests_passed_immediately` (not measured) | 0 | 0 |
 | `cc_avg_loc_per_function` | 7.42 | 7.69 |
-| Complexity Peak, lower is better | 20.8 | **17.0** 🏆 |
+| `cc_longest_function`, lower is better | 20.8 | **17.0** 🏆 |
 | `cognitive_max` | 4.8 | 4.2 |
 | `mccabe_max` | 5.6 | 4.6 |
 | Smell Total | 0 | 0 |
@@ -52,12 +52,12 @@ Only the prespecified fresh cohort is included; no exclusions or replacements.
 Values are means unless stated otherwise. Correctness and prediction accuracy
 are higher-is-better; code-size, complexity, smells, duration and cost are
 lower-is-better only for correct solutions. All cells pass the 0.90 correctness
-gate. No cross-kata comparison is made. Only the Complexity Peak contrast
+gate. No cross-kata comparison is made. Only the `cc_longest_function` contrast
 exceeds both cell standard deviations; other differences are tied or below the
 larger within-cell standard deviation, so no winner is assigned there. The trophy
 is descriptive, not a significance test or a general superiority claim.
 
-## F-1.21.3 — Claim Office has a lower Complexity Peak with extraction
+## F-1.21.3 — Claim Office has a lower `cc_longest_function` with extraction
 
 The extracted workflow's longest function averages 3.8 fewer lines (18.3%).
 This exceeds each cell's standard deviation while both arms retain perfect
@@ -65,14 +65,14 @@ internal and external correctness.
 
 | Claim Office outcome | Baseline, mean ± SD | Extracted, mean ± SD |
 |---|---:|---:|
-| Complexity Peak | 20.8 ± 2.39 | 17.0 ± 2.83 |
+| `cc_longest_function` | 20.8 ± 2.39 | 17.0 ± 2.83 |
 | `cc_avg_loc_per_function` | 7.42 ± 1.04 | 7.69 ± 1.42 |
 | Code Mass (APP) | 562.6 ± 48.81 | 566.6 ± 51.91 |
 | `cognitive_max` | 4.8 ± 2.39 | 4.2 ± 0.84 |
 | `mccabe_max` | 5.6 ± 1.52 | 4.6 ± 0.55 |
 
 This is a narrow code-shape signal: neither average function length nor Code
-Mass (APP) shows a similarly separated contrast. Complexity Peak measures lines,
+Mass (APP) shows a similarly separated contrast. `cc_longest_function` measures lines,
 not cognitive complexity. With five runs per cell and multiple outcomes, this
 is exploratory evidence, not proof of a universal improvement.
 
@@ -91,7 +91,7 @@ respectively. These data do not establish a clear runtime or cost penalty.
 
 The results support using the extracted workflow on these two katas: correctness
 is preserved in the observed sample, most measured outcomes are close, and Claim
-Office has a smaller Complexity Peak. They do not prove statistical equivalence,
+Office has a smaller `cc_longest_function`. They do not prove statistical equivalence,
 absence of rare failures, or neutrality on other tasks/models. No equivalence
 margin or formal equivalence test was prespecified. Shard order was balanced by
 rotation, not randomized; service variability remains possible.

@@ -70,7 +70,7 @@ are based on correct code.
 ## F-model-quality.2 — Model Ranking: Fable 5 and Opus 5 Lead on Complexity, Opus 4.8 on Code Mass; All Three Clearly Ahead of Opus 4.6 and Sonnet
 
 **Statement**: Three models with different profiles share the top position.
-**Fable 5** and **Opus 5** deliver the lowest Complexity Peak
+**Fable 5** and **Opus 5** deliver the lowest `cognitive_max`
 (`cognitive_max` 1.0 and 2.0 respectively, `mccabe_max` 2.0 and 3.0 — all near the
 theoretical minimum), **Opus 4.8** the lowest Code Mass and the shortest
 longest function (`code_mass` 145.3, `cc_longest_function` 4.3). Opus 5 additionally
@@ -92,7 +92,7 @@ The gap between the leading group and Opus 4.6 is substantial: on `cognitive_max
 a factor of ~12× separates Fable 5 (1.0) from Opus 4.6 (12.0), on
 `cc_longest_function` a factor of ~4.5× separates Opus 4.8 (4.3) from Opus 4.6 (19.3). The
 three leading profiles are complementary: Fable 5 and Opus 5 keep the
-Complexity Peak trivial but write somewhat more code; Opus 4.8 minimizes
+`cognitive_max` trivial but write somewhat more code; Opus 4.8 minimizes
 the Code Mass but packs the logic more densely (higher `cognitive_max`/`mccabe_max`).
 Opus 5 combines almost trivial complexity with the lowest Smell Total in the
 field and thereby shifts the previous two-way trade-off (Fable complexity vs
@@ -128,7 +128,7 @@ The bold marks the strongest effects: **−45.17** (strongest improvement, Opus 
 and **+6.00** (strongest degradation, Sonnet on `cognitive_max`).
 
 - **Fable 5**: Thinking effect small and inconsistent throughout (all |∆| < 2),
-  effectively neutral. Fable 5 reaches its trivial Complexity Peak equally with and
+  effectively neutral. Fable 5 reaches its trivial `cognitive_max` equally with and
   without thinking — the low `cognitive_max`/`mccabe_max` is
   not a thinking artifact but model-intrinsic.
 - **Opus 4.8**: Thinking acts **strongly on code size** — `code_mass`
@@ -194,7 +194,7 @@ replicates spread strongly upward (pool n=10, max 3923 s).
 **Consequence**: On subagents-v1, model choice is a trade-off between code compactness
 (Opus 4.8 ahead on `code_mass`) and the combination of low complexity
 and token budget (Fable 5 ahead). Fable 5 is the best all-rounder — trivial
-Complexity Peak at a favorable cost; Opus 4.8 pays off when minimal
+`cognitive_max` at a favorable cost; Opus 4.8 pays off when minimal
 Code Mass is the goal and the higher token budget is acceptable.
 
 ---
@@ -248,7 +248,7 @@ a larger n is needed for a stable frequency estimate.
   representation outlier (F-model-quality.5) need replication at
   n=3. Fable 5 reaches its best values on
   `cognitive_max`/`mccabe_max` with σ ≤ 0.58 (very tight), so the low
-  Complexity Peak is stable across the three replicates.
+  `cognitive_max` is stable across the three replicates.
 - **API contract introduced**: All runs in this data basis use the
   explicit API contract in the prompt (commit `0902a4f`). Earlier findings
   about representation choice without an explicit contract are not directly

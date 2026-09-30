@@ -13,9 +13,9 @@ Both cells use `claim-office-example-mapping`, native `opus-5-no-thinking`, and 
 | Median LoC/function ↓ | 4.70 ± 1.27 | 6.20 ± 0.84 |
 | Longest function ↓ | 18.9 ± 5.26 | 22.2 ± 3.83 |
 | Functions | 25.3 ± 4.42 | 21.8 ± 3.63 |
-| Complexity Peak ↓ | 18.9 ± 5.26 | 22.2 ± 3.83 |
-| Cognitive Complexity peak ↓ | 2.80 ± 0.63 | 3.00 ± 0.00 |
-| McCabe peak ↓ | 3.30 ± 0.48 | 3.60 ± 0.55 |
+| `cc_longest_function` ↓ | 18.9 ± 5.26 | 22.2 ± 3.83 |
+| `cognitive_max` ↓ | 2.80 ± 0.63 | 3.00 ± 0.00 |
+| `mccabe_max` ↓ | 3.30 ± 0.48 | 3.60 ± 0.55 |
 | Smell Total ↓ | 0 | 0 |
 | Code Mass (APP) | 714.8 ± 70.1 | 686.0 ± 27.0 |
 | Production LoC | 245.7 ± 32.9 | 242.2 ± 14.2 |
@@ -48,7 +48,7 @@ The two cells have effectively equal duration, token use, and list-price compari
 | Total tokens | 21.4 ± 7.1 M | 21.4 ± 10.8 M |
 | List-price comparison | $16.10 ± $4.28 | $15.84 ± $6.40 |
 
-Production LoC is also tied at 245.7 against 242.2, and both cells have zero Smell Total. Complexity indicators lean against v1.6.1: Complexity Peak rises from 18.9 to 22.2, Cognitive Complexity peak from 2.80 to 3.00, and McCabe peak from 3.30 to 3.60. None resolves beyond the observed spread, but none supports promotion.
+Production LoC is also tied at 245.7 against 242.2, and both cells have zero Smell Total. Complexity indicators lean against v1.6.1: `cc_longest_function` rises from 18.9 to 22.2, `cognitive_max` from 2.80 to 3.00, and `mccabe_max` from 3.30 to 3.60. None resolves beyond the observed spread, but none supports promotion.
 
 ## F-4.11.3 — Correctness is tied; the promotion fails on decomposition alone
 

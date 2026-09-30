@@ -14,7 +14,7 @@ APP = `exact-hybrid-v4.2-phase-continuation-pi`.
 | Completed within budget | 100% | 100% | 100% |
 | `cc_avg_loc_per_function` | 8.45 ± 2.41 | 7.42 ± 1.04 | 9.52 ± 5.69 |
 | `cc_median_loc_per_function` | 6.10 ± 1.82 | 4.50 ± 0.87 | 6.00 ± 3.67 |
-| Complexity Peak | 27.0 ± 11.34 | 20.8 ± 2.39 | 24.0 ± 13.17 |
+| `cc_longest_function` | 27.0 ± 11.34 | 20.8 ± 2.39 | 24.0 ± 13.17 |
 | `cognitive_max` | 11.4 ± 10.01 | 4.8 ± 2.39 | 8.2 ± 4.66 |
 | `cognitive_avg` | 3.40 | 2.10 | 3.55 |
 | `mccabe_max` | 9.8 | 5.6 | 6.2 |
@@ -47,10 +47,10 @@ run identities are in [summary.md](summary.md) and [runs.csv](runs.csv).
 |---|---:|---:|---:|
 | Code Mass (APP) | 750.0 | 562.6 | 492.4 |
 | `cc_avg_loc_per_function` | 8.45 | 7.42 | 9.52 |
-| Complexity Peak | 27.0 | 20.8 | 24.0 |
+| `cc_longest_function` | 27.0 | 20.8 | 24.0 |
 
 The APP arm has the lowest mass and highest average function length, but not
-the highest Complexity Peak. Its refactor brief prices invocations, making
+the highest `cc_longest_function`. Its refactor brief prices invocations, making
 inlining a plausible mechanism. The data do not isolate that cause: architecture,
 phase vocabulary and cohort also differ. The APP average-function contrast with
 Four Rules (2.10 lines) is smaller than the APP cell's SD (5.69). Prefer the

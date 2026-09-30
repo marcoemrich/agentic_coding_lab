@@ -8,14 +8,14 @@ Data: 43 runs, `example-mapping`, opus-4-7. Source: [summary.md](summary.md), [r
 
 ## Overview
 
-Complexity Peak `cognitive_max` as the primary code quality indicator (lower = better). 🏆 = best value per kata (spread ≥ 1 σ).
+`cognitive_max` as the primary code quality indicator (lower = better). 🏆 = best value per kata (spread ≥ 1 σ).
 
 | Kata | hybrid-v4 (baseline) | hybrid-v4.4 (per-cycle) | hybrid-v5 (end-refactor) |
 |---|---:|---:|---:|
 | claim-office | 5.0 | **2.4** 🏆 | 2.8 |
 | game-of-life | 4.0 | **2.2** 🏆 | 3.0 |
 
-On **both** katas the per-cycle refactor hybrid-v4.4 lowers the Complexity Peak furthest. hybrid-v5 sits in between — close to hybrid-v4.4 on claim-office, close to the baseline on GoL (F-1.12.1 / F-1.12.2).
+On **both** katas the per-cycle refactor hybrid-v4.4 lowers the `cognitive_max` furthest. hybrid-v5 sits in between — close to hybrid-v4.4 on claim-office, close to the baseline on GoL (F-1.12.1 / F-1.12.2).
 
 ---
 
@@ -86,7 +86,7 @@ Under **native** (comparable): hybrid-v4.4 +18 % wallclock / +9 % tokens, hybrid
 
 ---
 
-## F-1.12.1 — On both katas the per-cycle refactor hybrid-v4.4 is the robust Complexity Peak winner
+## F-1.12.1 — On both katas the per-cycle refactor hybrid-v4.4 is the robust `cognitive_max` winner
 
 The continuous metric-driven refactor (hybrid-v4.4) pushes `cognitive_max` and `cognitive_avg` furthest below the hybrid-v4 baseline on **both** kata types:
 
@@ -97,7 +97,7 @@ The continuous metric-driven refactor (hybrid-v4.4) pushes `cognitive_max` and `
 | `cognitive_avg` | claim-office | 1.91 | **1.27** | 1.39 | −0.64 (≈ 1 σ) **robust** |
 | `cognitive_avg` | game-of-life | 2.83 | **1.83** | 2.2 | −1.0 (> 1 σ) **robust** |
 
-The effect is stable across katas: a refactor that locally dismantles the complexity just created in *every* cycle keeps the Complexity Peak lower than both the refactor-poor baseline and the one-off end pass. On claim-office the larger hybrid-v4 sample (n=8) supports the baseline value; on GoL hybrid-v4.4 has the lowest variance of all three arms (σ 0.84) — the gain there is stable across all 5 runs.
+The effect is stable across katas: a refactor that locally dismantles the complexity just created in *every* cycle keeps the `cognitive_max` lower than both the refactor-poor baseline and the one-off end pass. On claim-office the larger hybrid-v4 sample (n=8) supports the baseline value; on GoL hybrid-v4.4 has the lowest variance of all three arms (σ 0.84) — the gain there is stable across all 5 runs.
 
 Correctness stays untouched throughout (F-1.12.3): the bundle-break risk from RQ-1.9/1.10 occurs in neither variant.
 
@@ -112,7 +112,7 @@ The one-off whole-src end pass (hybrid-v5) behaves kata-dependently:
 
 The only cross-kata robust v6.5 advantage is `smell_total` = 0 (deterministic, as with hybrid-v4.4) against the hybrid-v4 residual smells (claim-office 0.38, GoL 2.13).
 
-Mechanism reading: hybrid-v4.4 (per-cycle) and hybrid-v5 (whole-src end) are **complementary** on the multi-file kata — hybrid-v4.4 focuses on local Complexity Peak in the function just touched, hybrid-v5 on cross-file consolidation (shorter average function, lower Code Mass (APP)). A follow-up RQ could test hybrid-v6 = hybrid-v4.4 + end refactor to see whether the two mechanisms add up.
+Mechanism reading: hybrid-v4.4 (per-cycle) and hybrid-v5 (whole-src end) are **complementary** on the multi-file kata — hybrid-v4.4 focuses on local `cognitive_max` in the function just touched, hybrid-v5 on cross-file consolidation (shorter average function, lower Code Mass (APP)). A follow-up RQ could test hybrid-v6 = hybrid-v4.4 + end refactor to see whether the two mechanisms add up.
 
 ---
 
@@ -153,11 +153,11 @@ Taken together:
 | correctness | held (≥ 0.96) | held (1.0) |
 | cost | hybrid-v4.4 varies strongly; hybrid-v5 calculable | hybrid-v4.4 +18 %, hybrid-v5 +48 % (native) |
 
-Both refactor variants beat the hybrid-v4 baseline on the Complexity Peak — **metric-driven refactor is worth it** and does not break correctness. But no arm is a global winner:
+Both refactor variants beat the hybrid-v4 baseline on the `cognitive_max` — **metric-driven refactor is worth it** and does not break correctness. But no arm is a global winner:
 
 - The **per-cycle refactor hybrid-v4.4** is the most robust complexity lever across both kata types — at the price of high costs that are poorly predictable on large codebases.
 - The **end refactor hybrid-v5** pays off only where there is cross-file substance to consolidate (multi-file codebases): there it delivers the lowest Code Mass (APP) at more calculable cost. On single-file tasks it is a full surcharge for no robust gain.
-- **hybrid-v4** remains the most parsimonious choice when minimal Code Mass (APP)/cost takes priority over a minimal Complexity Peak (especially on small katas).
+- **hybrid-v4** remains the most parsimonious choice when minimal Code Mass (APP)/cost takes priority over a minimal `cognitive_max` (especially on small katas).
 
 hybrid-v5 is therefore **not** a general replacement for hybrid-v4. The recommendation is task-/kata-dependent and joins the recurring "kata-dependent recommendation" pattern (cf. RQ-1.4, RQ-1.8/1.9): no refactor workflow winner generalizes across kata types.
 

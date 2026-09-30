@@ -70,7 +70,7 @@ For each kata independently:
 1. **Correctness gate:** Correctness (external), internal tests, and completion within budget.
 2. **Efficiency:** duration, tokens, and hypothetical list-price cost.
 3. **Test behavior:** executable tests and Test LoC as mechanism evidence rather than automatic quality wins.
-4. **Product quality:** typical and longest function size, Complexity Peak, Cognitive Complexity, McCabe, Smell Total, Code Mass (APP), and Production LoC.
+4. **Product quality:** typical and longest function size, `cc_longest_function`, Cognitive Complexity, McCabe, Smell Total, Code Mass (APP), and Production LoC.
 5. **Process evidence:** visible cross-check behavior, prediction accuracy, and refactor markers. Marker counts are descriptive.
 
 ## Hypotheses

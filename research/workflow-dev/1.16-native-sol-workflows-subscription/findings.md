@@ -16,7 +16,7 @@ All cells have 100% internal test success and completion within budget.
 | `cognitive_avg` | 3.40 | 2.10 | 2.33 |
 | `mccabe_max` | 9.8 | 5.6 | 5.0 |
 | Smell Total | 4.2 | 0 | 0 |
-| Complexity Peak | 27.0 ± 11.34 | 20.8 ± 2.39 | 18.4 ± 3.65 |
+| `cc_longest_function` | 27.0 ± 11.34 | 20.8 ± 2.39 | 18.4 ± 3.65 |
 | `cc_avg_loc_per_function` | 8.45 | 7.42 | 7.75 |
 | Code Mass (APP) | 750.0 | 562.6 | 618.0 |
 | `cycle_count` | n/a | 33.4 | 33.2 |
@@ -35,7 +35,7 @@ All cells have 100% internal test success and completion within budget.
 | `cognitive_avg` | 2.67 | 3.17 | 3.07 |
 | `mccabe_max` | 4.0 | 4.4 | 4.6 |
 | Smell Total | 0 | 0 | 0 |
-| Complexity Peak | 11.2 | 14.0 | 12.8 |
+| `cc_longest_function` | 11.2 | 14.0 | 12.8 |
 | `cc_avg_loc_per_function` | 6.75 | 7.44 | 7.01 |
 | Code Mass (APP) | 176.4 | 156.8 | 167.4 |
 | `cycle_count` | n/a | 9.8 | 9.0 |
@@ -54,7 +54,7 @@ All cells have 100% internal test success and completion within budget.
 | `cognitive_avg` | 1.90 | 1.80 | 1.60 |
 | `mccabe_max` | 3.2 | 2.8 | 2.6 |
 | Smell Total | 0 | 0 | 0 |
-| Complexity Peak | 15.4 | 13.2 | 16.2 |
+| `cc_longest_function` | 15.4 | 13.2 | 16.2 |
 | `cc_avg_loc_per_function` | 14.5 | 13.2 | 15.9 |
 | Code Mass (APP) | 129.6 | 129.2 | 136.0 |
 | `cycle_count` | n/a | 11.8 | 11.2 |
@@ -82,7 +82,7 @@ are descriptive associations, not proof of a workflow mechanism.
 |---|---:|---:|
 | Correctness (external) | 100% | 100% |
 | `cognitive_max` | 11.4 ± 10.01 | 4.8 ± 2.39 |
-| Complexity Peak | 27.0 ± 11.34 | 20.8 ± 2.39 |
+| `cc_longest_function` | 27.0 ± 11.34 | 20.8 ± 2.39 |
 | Average function length | 8.45 ± 2.41 | 7.42 ± 1.04 |
 | Smell Total | 4.2 ± 9.39 | 0.0 ± 0.00 |
 
@@ -96,7 +96,7 @@ architecture clears the floor. The cohort limitation applies.
 | Outcome | Floor | Inline | Isolated |
 |---|---:|---:|---:|
 | `cognitive_max` | 4.4 | 4.2 | 5.2 |
-| Complexity Peak | 11.2 | 14.0 | 12.8 |
+| `cc_longest_function` | 11.2 | 14.0 | 12.8 |
 | Average function length | 6.75 | 7.44 | 7.01 |
 | Cost | $0.36 | $1.03 | $2.31 |
 
@@ -114,7 +114,7 @@ explanations, not separately tested causes.
 | Sphinx Score | 440.2 | 945.8 | 2.15× |
 
 On Claim Office the cognitive means tie at 4.8; average function length is
-7.42 versus 7.75, while Complexity Peak favours isolation (20.8 versus 18.4).
+7.42 versus 7.75, while `cc_longest_function` favours isolation (20.8 versus 18.4).
 Game of Life similarly has mixed ranks. No consistent quality advantage offsets
 the observed time increase. This does not prove isolation is universally useless,
 particularly with date/environment confounded in two of the three comparisons.
@@ -175,7 +175,7 @@ in 12/15 runs, with mean function counts 1.4 / 1.0 / 1.2 for Floor/Inline/Isolat
 | Sphinx metric | Floor | Inline | Isolated |
 |---|---:|---:|---:|
 | Average function length | 14.5 | 13.2 | 15.9 |
-| Complexity Peak | 15.4 | 13.2 | 16.2 |
+| `cc_longest_function` | 15.4 | 13.2 | 16.2 |
 | `cognitive_max` | 2.2 | 1.8 | 1.6 |
 
 When only one function is counted, average and maximum lengths coincide, so

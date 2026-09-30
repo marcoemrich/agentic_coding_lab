@@ -33,7 +33,7 @@ F-1.2.4; the comparison that carries a verdict is the correctness table above.
 | `duration_seconds` | 1475 | 1262 | 5514 | 3605 |
 | `total_tokens` | 19.1 M | 21.7 M | 136.1 M | 80.4 M |
 | `cycle_count` | 11.7 | 15.0 | 45.8 | 35.7 |
-| Complexity Peak — `cc_longest_function` | 5.8 | 6.3 | 13.8 | 11.8 |
+| `cc_longest_function` | 5.8 | 6.3 | 13.8 | 11.8 |
 | `cognitive_max` | 1.0 | 1.0 | 2.0 | 1.5 |
 | Code Mass (APP) — `code_mass` | 182.8 | 144.2 | 997.0 | 808.3 |
 | Smell Total — `smell_total` | 0 | 0 | 0 | 0 |
@@ -139,7 +139,7 @@ surface.
 
 | Metric | sphinx em | sphinx prose | claim-office em | claim-office prose |
 |---|---:|---:|---:|---:|
-| Complexity Peak — `cc_longest_function` | 5.8 (σ 1.9) | 6.3 (σ 1.0) | 13.8 (σ 3.2) | 11.8 (σ 2.8) |
+| `cc_longest_function` | 5.8 (σ 1.9) | 6.3 (σ 1.0) | 13.8 (σ 3.2) | 11.8 (σ 2.8) |
 | `cc_avg_loc_per_function` | 3.54 (σ 1.11) | 3.28 (σ 0.85) | 3.19 (σ 0.23) | 3.09 (σ 0.23) |
 | `cognitive_max` | 1.0 (σ 0) | 1.0 (σ 0) | 2.0 (σ 1.1) | 1.5 (σ 0.55) |
 | `mccabe_max` | 2.0 (σ 0) | 2.0 (σ 0) | 2.8 (σ 0.75) | 3.0 (σ 0.63) |

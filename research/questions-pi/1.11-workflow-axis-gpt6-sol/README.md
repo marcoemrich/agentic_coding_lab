@@ -90,7 +90,7 @@ averaged.
 ## Hypotheses
 
 - **H1 (structure buys quality):** both EXACT arms beat the inline-TDD
-  baseline on Complexity Peak and per-function size at equal Correctness
+  baseline on `cognitive_max` and per-function size at equal Correctness
   (external).
 - **H2 (isolation replicates):** the isolated-refactor arm improves every
   structural measure over inline PTDD, as it did on GPT-5.6 Sol and native

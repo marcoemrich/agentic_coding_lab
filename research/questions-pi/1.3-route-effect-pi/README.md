@@ -159,7 +159,7 @@ What they establish:
 - **F-1.3.1 replicates**: 3432 vs 2388 tok/s (1.44×), same order as the 1.63×
   measured here. Throughput is the RQ's most robust finding.
 - **F-1.3.2 replicates only in part**: the smell advantage holds (3.0 vs 0.0),
-  the Complexity Peak advantage does not (2.0 vs 2.0 — both at the floor, the
+  the `cognitive_max` advantage does not (2.0 vs 2.0 — both at the floor, the
   kata generates too little structural complexity to discriminate). The LoC
   relation inverts (subscription 36 vs Requesty 49, opposite of game-of-life).
 - **F-1.3.4 holds on a kata that could have broken it**: sphinx-score is built

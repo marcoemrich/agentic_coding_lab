@@ -106,7 +106,7 @@ floor, while the Four-Rules line took every decomposition metric:
 | Metric | inline-tdd-v1 (floor) | basic-sol-tdd | hybrid-v4.2 (EXACT) | Direction |
 |---|---:|---:|---:|---|
 | `cc_avg_loc_per_function` | 8.45 | **6.60** | 9.52 | kleiner = besser |
-| Complexity Peak | 27.0 | **18.0** | 24.0 | kleiner = besser |
+| `cc_longest_function` | 27.0 | **18.0** | 24.0 | kleiner = besser |
 | `cognitive_max` | 11.4 | **4.0** | 8.2 | kleiner = besser |
 | `mccabe_max` | 9.8 | **5.4** | 6.2 | kleiner = besser |
 | Smell Total | 4.2 | **0.0** | 9.6 | kleiner = besser |
@@ -280,7 +280,7 @@ chains scores *better* on all three than the same logic split into named domain
 functions.
 
 **`cc_avg_loc_per_function` is therefore the binding decomposition metric**, with
-`cc_longest_function` (Complexity Peak) secondary. Both are immune to the
+`cc_longest_function` secondary. Both are immune to the
 callback trick. Neither measures naming.
 
 Code Mass (APP) carries **no trophy**. In this RQ it is not a quality metric but

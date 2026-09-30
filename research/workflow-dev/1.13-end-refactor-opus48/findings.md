@@ -8,14 +8,14 @@ Data: 30 runs, `example-mapping`, `opus-4-8-no-thinking` (direct API). Per kata 
 
 ## Overview
 
-Complexity Peak `cognitive_max` as the primary code quality indicator (lower = better). 🏆 = best value per kata (spread ≥ 1 σ).
+`cognitive_max` as the primary code quality indicator (lower = better). 🏆 = best value per kata (spread ≥ 1 σ).
 
 | Kata | hybrid-v4 (baseline) | hybrid-v4.4 (per-cycle) | hybrid-v5 (end-refactor) |
 |---|---:|---:|---:|
 | claim-office | 3.6 | 3.6 | **2.8** 🏆 |
 | game-of-life | 5.6 | 3.2 | **2.4** 🏆 |
 
-On **both** katas hybrid-v5 has the lowest Complexity Peak. On claim-office hybrid-v4.4 is level with the hybrid-v4 baseline (no per-cycle gain); on game-of-life `cognitive_max` falls monotonically hybrid-v4 → hybrid-v4.4 → v6.5. The ranking therefore diverges from the 4.7 study (RQ-1.12, where hybrid-v4.4 was the robust peak winner) — the effective refactor lever is model-dependent too.
+On **both** katas hybrid-v5 has the lowest `cognitive_max`. On claim-office hybrid-v4.4 is level with the hybrid-v4 baseline (no per-cycle gain); on game-of-life `cognitive_max` falls monotonically hybrid-v4 → hybrid-v4.4 → v6.5. The ranking therefore diverges from the 4.7 study (RQ-1.12, where hybrid-v4.4 was the robust peak winner) — the effective refactor lever is model-dependent too.
 
 ---
 
@@ -123,9 +123,9 @@ Plausibility: hybrid-v4.4 and hybrid-v5 inherit the same per-cycle part as hybri
 
 ---
 
-## F-1.13.3 — Metric-driven refactor is worth it on both katas; hybrid-v5 leads on Complexity Peak, hybrid-v4.4/hybrid-v5 are otherwise level — no workflow is strictly better
+## F-1.13.3 — Metric-driven refactor is worth it on both katas; hybrid-v5 leads on `cognitive_max`, hybrid-v4.4/hybrid-v5 are otherwise level — no workflow is strictly better
 
-Both refactor variants push the Complexity Peak below the hybrid-v4 baseline, on both katas — **metric-driven refactor is worth it**. But "strictly better on all quality metrics" holds for neither of them:
+Both refactor variants push the `cognitive_max` below the hybrid-v4 baseline, on both katas — **metric-driven refactor is worth it**. But "strictly better on all quality metrics" holds for neither of them:
 
 **claim-office (multi-file):**
 
@@ -152,7 +152,7 @@ Both refactor variants push the Complexity Peak below the hybrid-v4 baseline, on
 Two points at which the presumption "hybrid-v4.4/hybrid-v5 strictly better than hybrid-v4" breaks:
 
 1. **`code_mass`**: on both katas all three workflows sit within 1 σ — the refactor buys **no** lower Code Mass (APP). (On 4.7/GoL hybrid-v4 even won here; on 4.8 it is a tie.)
-2. **`cognitive_max` on claim-office**: hybrid-v4.4 (3.6) is **level** with hybrid-v4 (3.6) — the per-cycle refactor does not lower the Complexity Peak on the multi-file kata at all; only hybrid-v5 (2.8) does, and only narrowly.
+2. **`cognitive_max` on claim-office**: hybrid-v4.4 (3.6) is **level** with hybrid-v4 (3.6) — the per-cycle refactor does not lower the `cognitive_max` on the multi-file kata at all; only hybrid-v5 (2.8) does, and only narrowly.
 
 Robust and cross-kata are only `smell_total` = 0 (hybrid-v4.4/hybrid-v5 deterministically clean against hybrid-v4's residual smells of 1.0 / 2.0) and v6.5's `cognitive_max`/`mccabe_max` lead. The ranking diverges from 4.7 (RQ-1.12): there hybrid-v4.4 was the robust peak winner on both katas, here it is hybrid-v5 — the effective refactor lever is model-dependent.
 
@@ -213,9 +213,9 @@ Taken together across both katas:
 | correctness | held (hybrid-v5/hybrid-v4.4 5/5; hybrid-v4 3/5) | held (all 5/5) |
 | cost | all three within σ | rising monotonically; hybrid-v5 most expensive |
 
-On both katas hybrid-v4.4/hybrid-v5 beat the hybrid-v4 baseline on Complexity Peak and on `smell_total` — **metric-driven refactor is worth it** and does not break correctness. But no arm is a global winner, and hybrid-v5 is **not** a general replacement for hybrid-v4:
+On both katas hybrid-v4.4/hybrid-v5 beat the hybrid-v4 baseline on `cognitive_max` and on `smell_total` — **metric-driven refactor is worth it** and does not break correctness. But no arm is a global winner, and hybrid-v5 is **not** a general replacement for hybrid-v4:
 
-- The **end pass hybrid-v5** has the lowest Complexity Peak on both katas on 4.8 — unlike on 4.7, where it was pure noise on the single-file GoL library (F-1.12.2). The kata asymmetry found there therefore replicates **only partly**: the `cognitive_max` gain survives on 4.8 on GoL too (2.4 vs 5.6, ≈ 2.3 σ). What does **not** survive is a Code Mass (APP) advantage — on 4.7/claim-office that was the actual end-pass added value (−11 % cross-file consolidation), and on 4.8 `code_mass` sits in the σ noise on both katas. The specific cross-file lever is therefore no longer detectable on 4.8; what remains is a general reduction in complexity.
+- The **end pass hybrid-v5** has the lowest `cognitive_max` on both katas on 4.8 — unlike on 4.7, where it was pure noise on the single-file GoL library (F-1.12.2). The kata asymmetry found there therefore replicates **only partly**: the `cognitive_max` gain survives on 4.8 on GoL too (2.4 vs 5.6, ≈ 2.3 σ). What does **not** survive is a Code Mass (APP) advantage — on 4.7/claim-office that was the actual end-pass added value (−11 % cross-file consolidation), and on 4.8 `code_mass` sits in the σ noise on both katas. The specific cross-file lever is therefore no longer detectable on 4.8; what remains is a general reduction in complexity.
 - The **per-cycle refactor hybrid-v4.4** loses its 4.7 special role on 4.8: on claim-office it does not lower `cognitive_max` against hybrid-v4 at all (3.6 = 3.6), and on GoL it stays behind v6.5.
 - **hybrid-v4** remains the most parsimonious choice when minimal Code Mass (APP)/cost takes priority (especially on GoL, where hybrid-v4 has the lowest costs) — but it is the least robust on claim-office (CLI contract break, F-1.13.2).
 

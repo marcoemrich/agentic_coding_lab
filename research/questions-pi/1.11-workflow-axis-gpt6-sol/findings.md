@@ -9,12 +9,12 @@ structure and price:
 
 | Claim Office | inline TDD | EXACT PTDD | + isolated Refactor |
 |---|---:|---:|---:|
-| Complexity Peak | 35.4 | 4.6 | 5.2 |
+| `cognitive_max` | 35.4 | 4.6 | 5.2 |
 | Smell Total | 23.4 | 0.0 | 0.0 |
 | `cost_usd` | $0.21 | $1.24 | $2.12 |
 
 The inline-TDD baseline produces a working monolith: 2.2 functions, an average
-function of 22.5 lines, a Complexity Peak of 35.4, and 23.4 ESLint/SonarJS
+function of 22.5 lines, a `cognitive_max` of 35.4, and 23.4 ESLint/SonarJS
 findings — at a sixth of the price. The EXACT arms produce a decomposed
 product with zero findings and single-digit complexity.
 
@@ -59,7 +59,7 @@ Mutation Score higher = better; every other trophied row lower = better.
 | Correctness (external) | 1.00 ± 0 | 1.00 ± 0 | 1.00 ± 0 |
 | Correctness (internal) | 100 % | 100 % | 100 % |
 | Smell Total | 23.4 ± 7.83 | **0.0 ± 0** 🏆 | **0.0 ± 0** 🏆 |
-| Complexity Peak (`cognitive_max`) | 35.4 ± 11.2 | **4.6 ± 1.52** 🏆 | **5.2 ± 1.79** 🏆 |
+| `cognitive_max` | 35.4 ± 11.2 | **4.6 ± 1.52** 🏆 | **5.2 ± 1.79** 🏆 |
 | `cognitive_avg` | 12.41 ± 9.27 | **2.10 ± 0.28** 🏆 | **2.38 ± 0.46** 🏆 |
 | `mccabe_max` | 14.4 ± 3.65 | **4.4 ± 0.55** 🏆 | **5.4 ± 1.67** 🏆 |
 | `cc_avg_loc_per_function` | 22.5 ± 10.7 | **5.57 ± 0.69** 🏆 | **5.97 ± 1.24** 🏆 |
@@ -102,7 +102,7 @@ Same directions.
 | Correctness (external) | 1.00 ± 0 | 1.00 ± 0 | 1.00 ± 0 |
 | Correctness (internal) | 100 % | 100 % | 100 % |
 | Smell Total | 3.0 ± 2.74 | **0.0 ± 0** 🏆 | **0.0 ± 0** 🏆 |
-| Complexity Peak (`cognitive_max`) | 14.6 ± 8.02 | **6.0 ± 0.71** 🏆 | **5.0 ± 1.87** 🏆 |
+| `cognitive_max` | 14.6 ± 8.02 | **6.0 ± 0.71** 🏆 | **5.0 ± 1.87** 🏆 |
 | `cognitive_avg` | 12.00 ± 9.43 | **2.77 ± 0.38** 🏆 | **2.23 ± 0.96** 🏆 |
 | `mccabe_max` | 7.8 ± 3.56 | **4.2 ± 0.45** 🏆 | **4.0 ± 0.71** 🏆 |
 | `cc_avg_loc_per_function` | 13.10 ± 7.21 | 6.83 ± 1.03 | **5.09 ± 0.62** 🏆 |
@@ -134,7 +134,7 @@ The separation is entirely structural, and it is large:
 
 | | Claim Office B → P | Game of Life B → P |
 |---|---|---|
-| Complexity Peak | 35.4 → 4.6 (−87 %) | 14.6 → 6.0 (−59 %) |
+| `cognitive_max` | 35.4 → 4.6 (−87 %) | 14.6 → 6.0 (−59 %) |
 | `cognitive_avg` | 12.41 → 2.10 (−83 %) | 12.00 → 2.77 (−77 %) |
 | `mccabe_max` | 14.4 → 4.4 (−69 %) | 7.8 → 4.2 (−46 %) |
 | `cc_avg_loc_per_function` | 22.5 → 5.57 (−75 %) | 13.10 → 6.83 (−48 %) |
@@ -163,14 +163,14 @@ Claim Office has fifteen acceptance scenarios covering premium calculation,
 claim settlement, caps and loyalty discounts. The baseline implements all of
 them correctly across 2.2 functions and 70 Production LoC. It is the smallest
 product in the field on both Production LoC and Code Mass (APP) — and it holds
-its entire domain in one function averaging 22.5 lines with a Complexity Peak
+its entire domain in one function averaging 22.5 lines with a `cognitive_max`
 of 35.4.
 
 That is why Code Mass (APP) and Production LoC carry no trophy in this RQ. The
 lowest value belongs to the arm that decomposed least, so on this factor the
 metric ranks compactness of expression, not economy of design. The same
 inversion appears on Game of Life, where the baseline's 154.2 Code Mass (APP)
-is indistinguishable from PTDD's 154.0 while its Complexity Peak is 2.4× higher.
+is indistinguishable from PTDD's 154.0 while its `cognitive_max` is 2.4× higher.
 
 ---
 
@@ -182,7 +182,7 @@ GPT-6 Sol that result holds only on the small kata, and only in part.
 
 | Measure | Claim Office P → P+S | Game of Life P → P+S |
 |---|---|---|
-| Complexity Peak | 4.6 → 5.2 (worse, inside σ) | 6.0 → 5.0 (−17 %, inside σ) |
+| `cognitive_max` | 4.6 → 5.2 (worse, inside σ) | 6.0 → 5.0 (−17 %, inside σ) |
 | `cognitive_avg` | 2.10 → 2.38 (worse, inside σ) | 2.77 → 2.23 (−19 %, inside σ) |
 | `mccabe_max` | 4.4 → 5.4 (worse, inside σ) | 4.2 → 4.0 (inside σ) |
 | `cc_avg_loc_per_function` | 5.57 → 5.97 (worse, inside σ) | 6.83 → 5.09 (**−25 %**) |

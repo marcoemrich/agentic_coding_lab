@@ -52,7 +52,7 @@ and two runs at 0.93. That cell is the only one that lost a run to a timeout.
 |---|---:|---:|---:|
 | Correctness (external) | 1.00 ± 0.00 | 0.99 ± 0.02 | 0.97 ± 0.06 |
 | Completed within budget | 100 % | 100 % | 90 % |
-| Complexity Peak (`cognitive_max`) | 5.8 ± 1.75 | **2.7 ± 0.88** 🏆 | **2.6 ± 1.07** 🏆 |
+| `cognitive_max` | 5.8 ± 1.75 | **2.7 ± 0.88** 🏆 | **2.6 ± 1.07** 🏆 |
 | `cognitive_avg` | 2.46 ± 0.46 | 1.44 ± 0.27 | **1.22 ± 0.18** 🏆 |
 | `mccabe_max` | 5.4 ± 0.97 | **3.3 ± 0.46** 🏆 | **3.2 ± 0.63** 🏆 |
 | `mccabe_avg` | 2.06 ± 0.20 | 1.58 ± 0.15 | **1.34 ± 0.07** 🏆 |
@@ -77,7 +77,7 @@ and two runs at 0.93. That cell is the only one that lost a run to a timeout.
 |---|---:|---:|---:|
 | Correctness (external) | 1.00 ± 0.00 | 1.00 ± 0.00 | 1.00 ± 0.00 |
 | Completed within budget | 100 % | 100 % | 100 % |
-| Complexity Peak (`cognitive_max`) | 6.6 ± 2.07 | 4.1 ± 1.22 | **2.6 ± 0.89** 🏆 |
+| `cognitive_max` | 6.6 ± 2.07 | 4.1 ± 1.22 | **2.6 ± 0.89** 🏆 |
 | `cognitive_avg` | 2.77 ± 0.74 | 1.86 ± 0.35 | **1.24 ± 0.29** 🏆 |
 | `mccabe_max` | 8.4 ± 3.58 | 4.7 ± 1.44 | **3.6 ± 0.55** 🏆 |
 | `mccabe_avg` | 2.91 ± 0.50 | 1.74 ± 0.27 | **1.37 ± 0.09** 🏆 |
@@ -112,12 +112,12 @@ measure, for both models, and it is monotone across the three methods.
 
 | Measure | Opus: Inline → v1 → v1.1 | SOL: Inline → v1 → v1.1 |
 |---|---|---|
-| Complexity Peak | 5.8 → 2.7 → 2.6 | 6.6 → 4.1 → 2.6 |
+| `cognitive_max` | 5.8 → 2.7 → 2.6 | 6.6 → 4.1 → 2.6 |
 | `cognitive_avg` | 2.46 → 1.44 → 1.22 | 2.77 → 1.86 → 1.24 |
 | `mccabe_max` | 5.4 → 3.3 → 3.2 | 8.4 → 4.7 → 3.6 |
 | `unit_size_avg` | 8.12 → 6.00 → 4.74 | 7.29 → 6.14 → 4.21 |
 
-The first step carries most of it. Complexity Peak more than halves between
+The first step carries most of it. `cognitive_max` more than halves between
 Inline and EXACT v1 on Opus (5.8 → 2.7) and falls by 38 % on SOL (6.6 → 4.1);
 `cognitive_avg` drops by 42 % and 33 % respectively. Every one of these gaps
 exceeds the standard deviation of both cells involved.
@@ -168,15 +168,15 @@ looking at more of the product — see
 Both models improve from Inline to EXACT v1. They differ in what the *second*
 step adds.
 
-| Step | Opus Complexity Peak | SOL Complexity Peak |
+| Step | Opus `cognitive_max` | SOL `cognitive_max` |
 |---|---|---|
 | Inline → v1 | 5.8 → 2.7 (−53 %) | 6.6 → 4.1 (−38 %) |
 | v1 → v1.1 | 2.7 → 2.6 (−5 %) | 4.1 → 2.6 (−36 %) |
 
-On Opus, EXACT v1 already lands at a Complexity Peak of 2.7 and an
+On Opus, EXACT v1 already lands at a `cognitive_max` of 2.7 and an
 `mccabe_max` of 3.3 — close to the floor these measures can reach on this kata.
 The isolated Refactor subagent then has almost nothing left to remove: the 0.1
-it takes off Complexity Peak sits inside both cells' standard deviations and
+it takes off `cognitive_max` sits inside both cells' standard deviations and
 costs a near-doubling of Production LoC, one timeout in ten and 1.9× the money.
 
 On SOL, EXACT v1 stops at 4.1 and `mccabe_max` 4.7, leaving real headroom, and
@@ -351,7 +351,7 @@ see.
   versions. The EXACT v1 third on 2.1.280 runs faster (897 s against 1206 s) and
   leaves more mutants uncovered (10.4 against 5.8). EXACT v1.1 differs most: the 2.1.280 half writes less Production
   LoC (492 against 670), runs faster (3749 s against 5499 s) and leaves fewer
-  mutants uncovered (6.2 against 15.2), but reaches a higher Complexity Peak
+  mutants uncovered (6.2 against 15.2), but reaches a higher `cognitive_max`
   (3.0 against 2.2). Five runs per half cannot separate a CLI effect from
   replicate noise; the pooled Opus v1.1 means blend both.
 - **Metric backfill.** `unit_count` and the `unit_size_*` family are present for

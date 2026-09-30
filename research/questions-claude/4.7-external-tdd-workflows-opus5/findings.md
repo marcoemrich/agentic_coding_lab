@@ -16,7 +16,7 @@ binding quality metric from RQ-architecture-axis-opus5 F-1.6.
 | perfect runs | 2/5 | **5/5** 🏆 | **5/5** 🏆 |
 | Correctness (internal) `tests_passing` | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
 | `cc_avg_loc_per_function` — lower = better | 4.49 ± 0.54 | 7.90 ± 1.15 | 10.41 ± 1.45 |
-| **Complexity Peak** `cc_longest_function` — lower = better | 17.60 ± 4.39 | 23.40 ± 3.13 | 26.60 ± 4.22 |
+| `cc_longest_function` — lower = better | 17.60 ± 4.39 | 23.40 ± 3.13 | 26.60 ± 4.22 |
 | `cognitive_max` — lower = better | 2.80 ± 0.84 | 6.20 ± 2.17 | 6.60 ± 2.41 |
 | `mccabe_max` — lower = better | 3.40 ± 0.55 | 5.20 ± 1.10 | 5.40 ± 1.14 |
 | **Smell Total** — lower = better | 0.00 ± 0.00 | **0.00 ± 0.00** 🏆 | 0.20 ± 0.45 |
@@ -64,13 +64,13 @@ The three `hybrid-v2.4` runs at 0.9333 fail on the same acceptance-scenario patt
 
 Across the three cells all four decomposition and complexity metrics fall monotonically with refactor frequency.
 
-| | `refactorings_applied` | `cc_avg_loc_per_function` | Complexity Peak | `cognitive_max` | `mccabe_max` |
+| | `refactorings_applied` | `cc_avg_loc_per_function` | `cc_longest_function` | `cognitive_max` | `mccabe_max` |
 |---|---:|---:|---:|---:|---:|
 | `hybrid-v2.4` per-cycle, subagent | 33.00 | 4.49 | 17.60 | 2.80 | 3.40 |
 | `superpowers-2026-09-04` per-cycle, inline | 4.20 | 7.90 | 23.40 | 6.20 | 5.20 |
 | `pocock-2026-09-04` no refactor | 0.00 | 10.41 | 26.60 | 6.60 | 5.40 |
 
-The clean test of position is `superpowers-2026-09-04 ↔ pocock-2026-09-04` — same architecture (one inline skill), only the position varies. `cc_avg_loc_per_function` 7.90 against 10.41 is the most robust single result of this pair (gap 2.51 at σ ≈ 1.3). Complexity Peak, `cognitive_max` and `mccabe_max` point the same way but sit within 1 σ.
+The clean test of position is `superpowers-2026-09-04 ↔ pocock-2026-09-04` — same architecture (one inline skill), only the position varies. `cc_avg_loc_per_function` 7.90 against 10.41 is the most robust single result of this pair (gap 2.51 at σ ≈ 1.3). `cc_longest_function`, `cognitive_max` and `mccabe_max` point the same way but sit within 1 σ.
 
 H1 confirmed: a refactor stage has an effect. H2 confirmed: `pocock-2026-09-04` is the field's quality minimum on all four metrics. The design doctrine in the prompt ("deep modules", "small interfaces") does not replace the stage.
 

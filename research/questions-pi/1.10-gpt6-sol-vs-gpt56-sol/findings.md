@@ -54,7 +54,7 @@ Mutation Score higher = better; every other row lower = better.
 | Mutation Score (n=3 / n=5) | **0.77 ± 0.20** 🏆 | **0.87 ± 0.04** 🏆 |
 | Code Mass (APP) | **655.6 ± 272.4** 🏆 | **583.2 ± 65.7** 🏆 |
 | Production LoC | **112.8 ± 31.0** 🏆 | **143.2 ± 33.9** 🏆 |
-| Complexity Peak | **4.6 ± 1.52** 🏆 | **4.4 ± 1.52** 🏆 |
+| `cognitive_max` | **4.6 ± 1.52** 🏆 | **4.4 ± 1.52** 🏆 |
 | `cognitive_avg` | **2.10 ± 0.28** 🏆 | **1.93 ± 0.32** 🏆 |
 | `mccabe_max` | **4.4 ± 0.55** 🏆 | **4.2 ± 1.10** 🏆 |
 | `cc_longest_function` | **20.0 ± 10.3** 🏆 | **16.6 ± 3.85** 🏆 |
@@ -83,7 +83,7 @@ Same directions.
 | Mutation Score | **0.948 ± 0.031** 🏆 | **0.947 ± 0.012** 🏆 |
 | Code Mass (APP) | **154.0 ± 15.9** 🏆 | 183.6 ± 22.4 |
 | Production LoC | **37.0 ± 4.30** 🏆 | 43.8 ± 4.15 |
-| Complexity Peak | **6.0 ± 0.71** 🏆 | **4.6 ± 1.82** 🏆 |
+| `cognitive_max` | **6.0 ± 0.71** 🏆 | **4.6 ± 1.82** 🏆 |
 | `cognitive_avg` | **2.77 ± 0.38** 🏆 | **2.80 ± 1.08** 🏆 |
 | `mccabe_max` | **4.2 ± 0.45** 🏆 | **4.6 ± 0.55** 🏆 |
 | `cc_avg_loc_per_function` | **6.83 ± 1.03** 🏆 | **5.81 ± 0.81** 🏆 |
@@ -93,7 +93,7 @@ Same directions.
 
 Four rows separate here where none but cost did on Claim Office: G6 writes less
 code (Production LoC, Code Mass (APP)) and is faster and cheaper. The quality
-rows stay tied — including Complexity Peak, where G6's higher mean (6.0 vs 4.6)
+rows stay tied — including `cognitive_max`, where G6's higher mean (6.0 vs 4.6)
 sits inside G5.6's 1.82 spread and so is not a difference.
 
 **Shape and discipline** — context, deliberately no trophies. Test counts and

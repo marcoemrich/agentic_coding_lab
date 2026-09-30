@@ -15,10 +15,10 @@ Each cell pools two batches of five runs on Claude Code 2.1.267: this RQ's own b
 | Test LoC | 457.0 ± 131.8 | 599.1 ± 258.6 |
 | Mean LoC/function ↓ | 5.53 ± 0.65 | 5.95 ± 0.93 |
 | Median LoC/function ↓ | 4.55 ± 1.12 | 4.70 ± 1.27 |
-| Complexity Peak ↓ | 17.7 ± 6.25 | 18.9 ± 5.26 |
-| Cognitive Complexity peak ↓ | 2.80 ± 0.63 | 2.80 ± 0.63 |
-| Cognitive Complexity average ↓ | 1.52 ± 0.21 | 1.47 ± 0.26 |
-| McCabe peak ↓ | 3.30 ± 0.95 | 3.30 ± 0.48 |
+| `cc_longest_function` ↓ | 17.7 ± 6.25 | 18.9 ± 5.26 |
+| `cognitive_max` ↓ | 2.80 ± 0.63 | 2.80 ± 0.63 |
+| `cognitive_avg` ↓ | 1.52 ± 0.21 | 1.47 ± 0.26 |
+| `mccabe_max` ↓ | 3.30 ± 0.95 | 3.30 ± 0.48 |
 | Smell Total ↓ | 0 | 0 |
 | Code Mass (APP) | 661.7 ± 26.5 | 714.8 ± 70.1 |
 | Production LoC | 236.2 ± 22.5 | 245.7 ± 32.9 |
@@ -60,16 +60,16 @@ The shift is larger in stability than in the mean. v1.6 stays between 11.1 M and
 
 ## F-4.10.3 — Product shape remains within the prior workflow's spread
 
-The dimensions cross-check changes test planning but produces no resolved static-quality regression. Typical functions are slightly longer in v1.6 and the Complexity Peak is slightly higher, while Cognitive Complexity and McCabe peaks are tied; all differences overlap the run-level spread.
+The dimensions cross-check changes test planning but produces no resolved static-quality regression. Typical functions are slightly longer in v1.6 and the `cc_longest_function` is slightly higher, while Cognitive Complexity and `mccabe_max`s are tied; all differences overlap the run-level spread.
 
 | Product metric | v1.5 | v1.6 |
 |---|---:|---:|
 | Mean LoC/function | 5.53 ± 0.65 | 5.95 ± 0.93 |
 | Median LoC/function | 4.55 ± 1.12 | 4.70 ± 1.27 |
-| Complexity Peak | 17.7 ± 6.25 | 18.9 ± 5.26 |
-| Cognitive Complexity peak | 2.80 ± 0.63 | 2.80 ± 0.63 |
-| Cognitive Complexity average | 1.52 ± 0.21 | 1.47 ± 0.26 |
-| McCabe peak | 3.30 ± 0.95 | 3.30 ± 0.48 |
+| `cc_longest_function` | 17.7 ± 6.25 | 18.9 ± 5.26 |
+| `cognitive_max` | 2.80 ± 0.63 | 2.80 ± 0.63 |
+| `cognitive_avg` | 1.52 ± 0.21 | 1.47 ± 0.26 |
+| `mccabe_max` | 3.30 ± 0.95 | 3.30 ± 0.48 |
 | Smell Total | 0 | 0 |
 | Production LoC | 236.2 ± 22.5 | 245.7 ± 32.9 |
 | Code Mass (APP) | 661.7 ± 26.5 | 714.8 ± 70.1 |

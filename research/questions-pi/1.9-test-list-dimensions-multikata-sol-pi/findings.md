@@ -15,8 +15,8 @@ All cells use `gpt-5-6-sol-codex` through pi and the example-mapping prompt. Tab
 | Test LoC | 55.0 ± 6.7 | 58.2 ± 8.5 |
 | Mean LoC/function ↓ | 5.55 ± 1.07 | 5.91 ± 1.35 |
 | Median LoC/function ↓ | 4.20 ± 0.84 | 4.70 ± 0.97 |
-| Complexity Peak ↓ | 10.8 ± 1.92 | 11.8 ± 3.90 |
-| Cognitive Complexity peak ↓ | 5.00 ± 2.00 | 4.20 ± 1.64 |
+| `cc_longest_function` ↓ | 10.8 ± 1.92 | 11.8 ± 3.90 |
+| `cognitive_max` ↓ | 5.00 ± 2.00 | 4.20 ± 1.64 |
 | Smell Total ↓ | 0 | 0 |
 | Duration ↓ | 8.5 ± 1.0 min | 8.9 ± 0.8 min |
 | Tokens ↓ | 1.03 ± 0.45 M | 1.39 ± 0.25 M |
@@ -35,8 +35,8 @@ No Game of Life trophy is awarded because all differences remain within the obse
 | Test LoC | 117.4 ± 8.0 | 118.8 ± 9.8 |
 | Mean LoC/function ↓ | 4.71 ± 0.50 | 5.34 ± 0.73 |
 | Median LoC/function ↓ | 4.60 ± 1.14 | 5.20 ± 0.84 |
-| Complexity Peak ↓ | 7.20 ± 1.64 | 8.20 ± 1.30 |
-| Cognitive Complexity peak ↓ | 1.00 ± 0.00 | 1.00 ± 0.00 |
+| `cc_longest_function` ↓ | 7.20 ± 1.64 | 8.20 ± 1.30 |
+| `cognitive_max` ↓ | 1.00 ± 0.00 | 1.00 ± 0.00 |
 | Smell Total ↓ | 0 | 0 |
 | Duration ↓ | 11.9 ± 1.3 min | 10.7 ± 1.0 min |
 | Tokens ↓ | 2.25 ± 0.18 M | **1.92 ± 0.28 M** 🏆 |
@@ -72,14 +72,14 @@ This reverses the broad Claim Office direction, where v1.6 means were higher for
 
 The cross-check does not create a mechanical test cross product on either small kata. Game of Life gains 0.2 tests on average and Sphinx Score gains 0.2; Test LoC changes by 3.2 and 1.4 respectively.
 
-| Kata | Workflow | Tests | Test LoC | Mean LoC/function | Complexity Peak | Smell Total |
+| Kata | Workflow | Tests | Test LoC | Mean LoC/function | `cc_longest_function` | Smell Total |
 |---|---|---:|---:|---:|---:|---:|
 | Game of Life | v1.5 | 10.6 ± 0.55 | 55.0 ± 6.7 | 5.55 ± 1.07 | 10.8 ± 1.92 | 0 |
 | Game of Life | v1.6 | 10.8 ± 0.84 | 58.2 ± 8.5 | 5.91 ± 1.35 | 11.8 ± 3.90 | 0 |
 | Sphinx Score | v1.5 | 11.8 ± 0.45 | 117.4 ± 8.0 | 4.71 ± 0.50 | 7.20 ± 1.64 | 0 |
 | Sphinx Score | v1.6 | 12.0 ± 1.00 | 118.8 ± 9.8 | 5.34 ± 0.73 | 8.20 ± 1.30 | 0 |
 
-Typical function size and Complexity Peak lean modestly toward v1.5 on both katas, but all differences overlap the observed spread. Both workflows remain smell-free. v1.6 therefore neither distorts the small solutions substantially nor earns promotion through better product quality.
+Typical function size and `cc_longest_function` lean modestly toward v1.5 on both katas, but all differences overlap the observed spread. Both workflows remain smell-free. v1.6 therefore neither distorts the small solutions substantially nor earns promotion through better product quality.
 
 ## F-1.9.4 — One maintained workflow is not supported by the cross-platform evidence
 

@@ -55,7 +55,7 @@ diff -r experiments/workflows/exact-coding/opus/exact-hybrid-v3-with-why-cc expe
 
 ## Hypotheses
 
-- **H0** (expectation) — exact-hybrid-v4-cleaned-cc is also behaviourally equivalent to exact-hybrid-v3-with-why-cc on GoL for correctness, with a possibly weak discipline/code quality drift in the same direction as on claim-office (more refactorings, slight improvement in Complexity Peak).
+- **H0** (expectation) — exact-hybrid-v4-cleaned-cc is also behaviourally equivalent to exact-hybrid-v3-with-why-cc on GoL for correctness, with a possibly weak discipline/code quality drift in the same direction as on claim-office (more refactorings, slight improvement in `cognitive_max` and `mccabe_max`).
 - **H1** (kata-specific cleanup effect) — on GoL hybrid-v4 shows *no* refactorings gain (claim-office: +34 %). The refactor.md decoupling effect observed in RQ-1.6 depends on the multi-iteration complexity of claim-office.
 - **H2** (cost equivalence) — on GoL hybrid-v4 is no more expensive than exact-hybrid-v3-with-why-cc, because the shorter kata produces fewer iterations and the refactor.md coupling effect does not build up.
 

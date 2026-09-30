@@ -39,7 +39,7 @@ Reading in two sentences: with-why is not better on correctness (marginally wors
 | `cc_longest_function` (mean / σ / max) | 23.38 / 15.5 / 60 | **13.25 🏆 / 1.58 / 15** | −43 % mean, σ −90 % |
 | `mccabe_max` (mean / σ / max) | 6.75 / 3.65 / 14 | **4.25 🏆 / 0.46 / 5** | −37 % mean, σ −87 % |
 
-**Rationale.** The effect size on code quality (37–43 % mean reduction on Complexity Peak metrics) exceeds the baseline spread by several σ. Particularly striking: with-why **spreads 82–90 % less on all complexity axes**. The baseline produces two heavy outlier runs (mccabe_max=14, cognitive_max=21, cc_longest=60), with-why does not. Mechanistically plausible: with-why refactors almost twice as often (+87 %), which pushes the distribution of function lengths downward and caps complexity peaks before they build up.
+**Rationale.** The effect size on code quality (37–43 % mean reduction on the three complexity metrics) exceeds the baseline spread by several σ. Particularly striking: with-why **spreads 82–90 % less on all complexity axes**. The baseline produces two heavy outlier runs (mccabe_max=14, cognitive_max=21, cc_longest=60), with-why does not. Mechanistically plausible: with-why refactors almost twice as often (+87 %), which pushes the distribution of function lengths downward and caps complexity peaks before they build up.
 
 Hypothesis H2 from the README (`exact-hybrid-v3-with-why-cc improves at least one TDD discipline metric by ≥ +1σ with invariant verification_pct`) is **confirmed** — and even more strongly than expected, because the effect is not limited to discipline but pulls the code quality metrics along in full.
 

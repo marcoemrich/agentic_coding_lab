@@ -29,7 +29,7 @@ All four cells are 5/5 perfect on Correctness (external), so no gating applies.
 |---|---:|---:|---:|---:|
 | **Correctness (external)** — higher = better | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 |
 | `cc_avg_loc_per_function` — lower = better | 4.54 ± 1.03 | 5.41 ± 1.54 | **3.17 ± 1.52** 🏆 | 3.05 ± 1.39 |
-| **Complexity Peak** — lower = better | 10.80 ± 3.27 | 13.40 ± 6.35 | 6.20 ± 3.42 | **5.40 ± 4.56** 🏆 |
+| **`cc_longest_function`** — lower = better | 10.80 ± 3.27 | 13.40 ± 6.35 | 6.20 ± 3.42 | **5.40 ± 4.56** 🏆 |
 | `cognitive_max` — lower = better | **1.80 ± 0.84** 🏆 | 3.60 ± 1.95 | 2.20 ± 1.10 | 2.40 ± 2.61 |
 | `mccabe_max` — lower = better | 3.20 ± 0.45 | 3.80 ± 1.48 | 3.00 ± 0.71 | **2.80 ± 1.30** 🏆 |
 | **Smell Total** — lower = better | 1.20 ± 1.64 | 1.20 ± 1.64 | **0.80 ± 1.10** 🏆 | 1.80 ± 1.64 |
@@ -54,7 +54,7 @@ All four cells are 5/5 perfect on Correctness (external), so no gating applies.
 | **Correctness (external)** — higher = better | 0.96 ± 0.03 | 0.95 ± 0.03 | 0.96 ± 0.04 | 0.96 ± 0.04 |
 | perfect runs | 6/13 | 2/10 | 2/5 | 2/5 |
 | `cc_avg_loc_per_function` — lower = better | 3.95 ± 0.61 | 4.35 ± 0.87 | 4.47 ± 1.20 | 4.49 ± 0.54 |
-| **Complexity Peak** — lower = better | 17.23 ± 5.36 | 20.50 ± 4.88 | 24.00 ± 11.29 | 17.60 ± 4.39 |
+| **`cc_longest_function`** — lower = better | 17.23 ± 5.36 | 20.50 ± 4.88 | 24.00 ± 11.29 | 17.60 ± 4.39 |
 | `cognitive_max` — lower = better | 2.77 ± 1.54 | 3.20 ± 1.03 | 2.80 ± 0.84 | 2.80 ± 0.84 |
 | `mccabe_max` — lower = better | 3.54 ± 0.88 | 3.80 ± 0.79 | 3.40 ± 0.55 | 3.40 ± 0.55 |
 | **Smell Total** — lower = better | 0.00 ± 0.00 | 0.00 ± 0.00 | 0.00 ± 0.00 | 0.00 ± 0.00 |
@@ -133,7 +133,7 @@ additional spawn; over 46 cycles it is five.
 On claim-office all quality metrics are indistinguishable within 1 σ across all
 four cells, and `Smell Total` is deterministically 0. The cell with the highest
 refactor rate (`hybrid-v2.4`, 0.69) has neither the best decomposition nor the
-lowest Complexity Peak.
+lowest `cc_longest_function`.
 
 On game-of-life, `hybrid-v2.4` and `hybrid-v2.7` show better decomposition than
 `hybrid-v2` (`cc_avg_loc_per_function` 3.05 and 3.17 against 4.54), while

@@ -144,7 +144,7 @@ condition under which every other arm in this RQ ran:
 *"content-identical TDD control minted under the isolated-local-Git harness
 condition … prevents reuse of pre-Git historical runs."* Pooling them would
 admit the harness condition as an uncontrolled factor. Their quality values sit
-in the same region as the v1.1 runs (Complexity Peak 4–9 against 5–9 on Claim
+in the same region as the v1.1 runs (`cognitive_max` 4–9 against 5–9 on Claim
 Office), so this exclusion is expected to cost precision, not to change a
 direction — but that is an argument for filling a run, not for mixing a control
 level.
@@ -195,7 +195,7 @@ without reaching for another stack's numbers.
   The known risk is `exact-ptdd-v1.1-refactor-subagent-cc`, which already shows
   one timeout at 0.80 among five Opus runs.
 - **H2 — EXACT Coding lowers complexity and unit size:** both EXACT variants
-  produce a lower Complexity Peak and smaller per-function size than inline TDD,
+  produce a lower `cognitive_max` and smaller per-function size than inline TDD,
   in both model cells. **This is the load-bearing hypothesis of the RQ.**
 - **H3 — the three methods order consistently on test strength:** Mutation Score
   ranks the three methods in the same order in both model cells, rather than

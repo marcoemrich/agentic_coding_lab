@@ -15,7 +15,7 @@ Correctness and budget completion are higher = better; complexity, method size, 
 | Opus 5 | Game of Life | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
 | Opus 5 | Claim Office | **1.00** 🏆 | 0.97 | 0.97 | **100 %** 🏆 | **100 %** 🏆 | 80 % |
 
-### Complexity Peak
+### `cognitive_max`
 
 | Model | Kata | Cognitive max Inline | EXACT v1 | EXACT v1.1 | McCabe max Inline | EXACT v1 | EXACT v1.1 |
 |---|---|---:|---:|---:|---:|---:|---:|
@@ -83,7 +83,7 @@ Correctness (internal) is 100 % in all twelve cells. The Java evidence therefore
 
 ---
 
-## F-1.8.2 — EXACT Coding lowers Java Complexity Peak; the isolated Refactor subagent adds nothing beyond it
+## F-1.8.2 — EXACT Coding lowers Java `cognitive_max`; the isolated Refactor subagent adds nothing beyond it
 
 The shared-context workflow produces the complexity effect. Delegating the Refactor step to an isolated subagent does not deepen it: on three of four model × kata combinations the peak values are unchanged or slightly worse, and only Opus Claim Office improves further.
 
@@ -128,7 +128,7 @@ EXACT Coding is slower and more token-intensive than inline TDD in every contras
 
 The v1 → v1.1 step alone costs roughly two to three and a half times as much and runs two and a half to four times as long. Against inline TDD, v1.1 costs eight to thirty times as much and runs ten to twenty times as long. The Opus Claim Office cell reaches 51 M tokens and $33.69 per run and is the only cell in the RQ that misses the time budget (one of five runs, `completed_within_budget` 80 %); that run's tests were green and its external verification perfect, so the budget miss is a cost symptom, not a failure.
 
-Inline TDD therefore remains the stronger Java default when correctness and efficiency dominate. EXACT v1 is justified where the measured complexity reduction is worth roughly five times the cost; v1.1's additional premium buys no correctness and, outside Opus Claim Office, no lower Complexity Peak.
+Inline TDD therefore remains the stronger Java default when correctness and efficiency dominate. EXACT v1 is justified where the measured complexity reduction is worth roughly five times the cost; v1.1's additional premium buys no correctness and, outside Opus Claim Office, no lower `cognitive_max`.
 
 ---
 
@@ -291,9 +291,9 @@ Splitting the test-gap reduction into its two steps separates what the workflow 
 
 For SOL the shared-context workflow does almost everything: the first step removes 11.8 unnoticed changes per run, the subagent a further 1.4. For Opus the two steps are nearly equal, −2.6 and −2.0, so the subagent contributes about as much again as the workflow before it.
 
-The same split appears in Complexity Peak (F-1.8.2). On Claim Office the subagent lowers Opus `cognitive_max` from 4.4 to 3.4, while on SOL it raises it from 5.8 to 7.8. Two independent quality dimensions therefore agree: **the isolated Refactor subagent improves Opus and does not improve SOL.** SOL's gains on this kata come from the Predictive TDD structure itself, not from moving the Refactor step out of the main context.
+The same split appears in `cognitive_max` (F-1.8.2). On Claim Office the subagent lowers Opus `cognitive_max` from 4.4 to 3.4, while on SOL it raises it from 5.8 to 7.8. Two independent quality dimensions therefore agree: **the isolated Refactor subagent improves Opus and does not improve SOL.** SOL's gains on this kata come from the Predictive TDD structure itself, not from moving the Refactor step out of the main context.
 
 The starting points explain part of it. SOL's inline baseline is the weakest suite in the RQ and has the most room; once the workflow has removed the bad mode (F-1.8.11), little is left for a further step to find. Opus starts twice as strong and still halves its gap across the two steps, while defending a growing mutant population — 68.4 mutants under inline TDD against 94.8 under v1.1.
 
-For a recommendation, read this together with the cost: the subagent triples duration and cost again (F-1.8.4). On Opus it buys 2.0 fewer unnoticed changes per run and a lower Complexity Peak; on SOL it buys 1.4 fewer unnoticed changes and a worse Complexity Peak. Only the Opus case is a defensible trade.
+For a recommendation, read this together with the cost: the subagent triples duration and cost again (F-1.8.4). On Opus it buys 2.0 fewer unnoticed changes per run and a lower `cognitive_max`; on SOL it buys 1.4 fewer unnoticed changes and a worse `cognitive_max`. Only the Opus case is a defensible trade.
 

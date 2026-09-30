@@ -13,8 +13,8 @@ agent never sees. Everything below it is gated on that result.
 | **Correctness (external)** | higher = better | **0.99** 🏆 | 0.96 | 0.78 | 0.84 |
 | Correctness (internal) | higher = better | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
 | completed_within_budget | higher = better | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
-| Complexity Peak (cognitive) | lower = better | 1.8 | **1.6** 🏆 | 3.4 | 4.2 |
-| Complexity Peak (mccabe) | lower = better | 2.8 | **2.6** 🏆 | 4.2 | 4.4 |
+| `cognitive_max` (cognitive) | lower = better | 1.8 | **1.6** 🏆 | 3.4 | 4.2 |
+| `cognitive_max` (mccabe) | lower = better | 2.8 | **2.6** 🏆 | 4.2 | 4.4 |
 | `cc_longest_function` | lower = better | **13.2** 🏆 | 16.2 | 22.8 | 21.2 |
 | `cc_avg_loc_per_function` | lower = better | **13.2** 🏆 | 15.9 | 19.2 | 19.3 |
 | Smell Total | lower = better | **0** 🏆 | **0** 🏆 | 1.0 | 0.4 |

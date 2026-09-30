@@ -75,7 +75,7 @@ Model, thinking setting, provider, harness, kata, prompt style, test-list cross-
 
 ## Primary contrasts
 
-1. **Typical decomposition:** `cc_avg_loc_per_function` is primary, with median function size, function count, and Complexity Peak as robustness checks. Improvement means smaller typical functions or more intent-revealing units without a correctness loss; function count alone is not a winner metric.
+1. **Typical decomposition:** `cc_avg_loc_per_function` is primary, with median function size, function count, and `cc_longest_function` as robustness checks. Improvement means smaller typical functions or more intent-revealing units without a correctness loss; function count alone is not a winner metric.
 2. **Correctness gate:** compare Correctness (external), internal tests, and completion within budget. A decomposition gain from incomplete work is disqualified.
 3. **Efficiency boundary:** compare duration, tokens, and list-price estimates. The treatment is useful only if it retains most of v1.6's price/performance advantage.
 4. **Complexity and smells:** compare Cognitive Complexity, McCabe, Smell Total, Code Mass (APP), and Production LoC to detect extraction that merely redistributes or inflates code.
@@ -87,7 +87,7 @@ Model, thinking setting, provider, harness, kata, prompt style, test-list cross-
 
 - mean LoC/function: 3.81;
 - median LoC/function: 2.00;
-- Complexity Peak: 16.22;
+- `cc_longest_function`: 16.22;
 - duration: 44.2 minutes;
 - tokens: 83.7 M;
 - list-price comparison: $49.13.
@@ -97,7 +97,7 @@ No run is generated for that reference, and no causal claim pools it with this R
 ## Hypotheses
 
 - **H1 — inline operationalization improves decomposition.** v1.6.1 lowers mean and median LoC/function relative to v1.6 while preserving complete Correctness (external).
-- **H2 — the cohesion guard prevents fragmentation.** Function count may rise, but Complexity Peak, Cognitive Complexity, Code Mass (APP), and Production LoC do not materially worsen.
+- **H2 — the cohesion guard prevents fragmentation.** Function count may rise, but `cc_longest_function`, Cognitive Complexity, Code Mass (APP), and Production LoC do not materially worsen.
 - **H3 — most of the efficiency advantage remains.** v1.6.1 stays materially below the external Opus-default reference in duration, tokens, and list-price comparison because no subagent context is introduced.
 - **H4 — isolation is the missing mechanism.** v1.6.1 does not improve typical decomposition despite visibly performing naming-first trials and helper extractions. The remaining default advantage then points toward fresh-context refactoring or another bundled default-workflow component.
 - **H5 — forced trials add noise.** v1.6.1 increases code size, complexity, or cost without improving typical decomposition. The operationalization should then remain an experimental branch rather than replacing v1.6.

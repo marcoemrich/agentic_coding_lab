@@ -44,7 +44,7 @@ All metrics in the tables: lower = better. 🏆 = best value per column (also mu
 
 Correctness **differs** between the two katas: on game-of-life all 8 workflows are at `verification_pct=1.00`. On claim-office it varies between 0.28 (oneshot-v1+iterative-v1, vibe coding on a prose spec) and 1.00 (inline-tdd-v1, single-context-v2, hybrid-v2, end-refactor-only-v1-agent) — see F-tdd-quality.4 and F-tdd-quality.8. `mutation_score` was collected only for oneshot-v1/iterative-v1/inline-tdd-v1 on game-of-life (0.95 ± 0.01 in all three).
 
-## F-tdd-quality.1 — Strict Phase-Structured Workflows with a Refactor Phase Lower the Complexity Peaks Drastically
+## F-tdd-quality.1 — Strict Phase-Structured Workflows with a Refactor Phase Lower `cognitive_max` and `cc_longest_function` Drastically
 
 On game-of-life, subagents-v2 and hybrid-v2 reach `cognitive_max ≈ 6–7` and `mccabe_max ≈ 5` — these are ~⅓ of the values of oneshot-v1/iterative-v1/inline-tdd-v1 (`cognitive_max ≈ 16–22`, `mccabe_max ≈ 12–14`). `cc_longest_function` halves accordingly (13–16 vs. 32). `smell_total` also halves (≈2.3 vs. 4–6).
 
@@ -176,7 +176,7 @@ On **game-of-life both mechanisms are practically level**:
 
 All differences lie within 1 σ (e.g. `cognitive_max` σ_v8a=4.93, σ_v8b=4.47); no systematic advantage of either mechanism.
 
-On **claim-office, end-refactor-only-v1-agent (subagent) clearly dominates on Complexity Peak and token efficiency**:
+On **claim-office, end-refactor-only-v1-agent (subagent) clearly dominates on `cognitive_max`, `cc_longest_function` and token efficiency**:
 
 | Metric (lower = better) | end-refactor-only-v1-agent (subagent) | end-refactor-only-v1-native (command) |
 |---|---:|---:|

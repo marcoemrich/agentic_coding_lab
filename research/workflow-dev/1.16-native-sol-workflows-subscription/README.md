@@ -180,7 +180,7 @@ prompt style:
 
 | | Requesty (off) | Requesty (reasoning ON) | subscription |
 |---|---:|---:|---:|
-| Complexity Peak | 8.0 | 9.0 | **4.0** |
+| `cognitive_max` | 8.0 | 9.0 | **4.0** |
 | Smell Total | 2.0 | 2.0 | **0.0** |
 | Production LoC | 28 | 28 | 41 |
 
