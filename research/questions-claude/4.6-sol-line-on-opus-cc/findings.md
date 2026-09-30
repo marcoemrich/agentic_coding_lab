@@ -27,7 +27,7 @@ i.e. per column pair, since the question is which workflow wins on a given model
 | `cycle_count` | n/a | n/a | 32.8 | 52.4 | 33.6 | 39.6 | — |
 | `refactorings_applied` | n/a | n/a | 29.6 | **39.8 ± 10.52** 🏆 | 36.0 | 28.0 | higher = better |
 | `duration_seconds` | **365** 🏆 | **330** 🏆 | 958 | 1016 | 4159 | 3637 | lower = better |
-| `cost_usd` | **$4.87** 🏆 | **$3.89** 🏆 | $17.80 | $17.37 | $95.60 | $59.13 | lower = better |
+| `cost_usd` | **$4.87** 🏆 | **$3.89** 🏆 | $17.80 | $17.37 | $126.99 | $76.31 | lower = better |
 
 Caveats for reading the table:
 
@@ -121,7 +121,7 @@ style — this is the comparison the recommendation rests on:
 | Code Mass (APP) | **631.4** | 928.8 | no 🏆 (blind spot) |
 | `refactorings_applied` | **39.8 ± 10.52** 🏆 | 28.0 ± 10.12 | higher = better |
 | `duration_seconds` | **1016** 🏆 | 3637 | lower = better |
-| `cost_usd` | **$17.37** 🏆 | $59.13 | lower = better |
+| `cost_usd` | **$17.37** 🏆 | $76.31 | lower = better |
 
 Read as three groups:
 
@@ -213,12 +213,12 @@ cell.
 | inline-tdd-v1 · o4-8 | 365 | $4.87 | — |
 | sol-cc · o5 | 1016 | $17.37 | 4.5× |
 | sol-cc · o4-8 | 958 | $17.80 | 3.7× |
-| hybrid-v4 · o5 | 3637 | $59.13 | 15.2× |
-| hybrid-v4 · o4-8 | 4159 | $95.60 | 19.6× |
+| hybrid-v4 · o5 | 3637 | $76.31 | 19.6× |
+| hybrid-v4 · o4-8 | 4159 | $126.99 | 26.1× |
 
 The ordering is stable across both models: the floor is cheapest, the native line costs
-~4×, the opus line 15–20×. The `hybrid-v4 · o4-8` cost figure carries σ 87.64 — one run consumed
-far more than the others — so treat the 19.6× as indicative.
+~4×, the opus line 20–26×. The `hybrid-v4 · o4-8` cost figure carries σ 121.05 — one run consumed
+far more than the others — so treat the 26.1× as indicative.
 
 Against Sol these absolute figures do not transfer (different route, different billing);
 only the internal ordering is comparable, and there the native line was also the middle

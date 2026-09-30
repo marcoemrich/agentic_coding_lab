@@ -19,7 +19,7 @@ Baseline (`exact-hybrid-v3-with-why-cc`, n=8) vs. cleaned (`exact-hybrid-v4-clea
 | `cognitive_max` mean | ↓ | **4.38** 🏆 (σ 1.06) | 5.00 (σ 1.77) |
 | `mccabe_max` mean | ↓ | **4.25** 🏆 (σ 0.46) | 4.50 (σ 0.76) |
 | `duration_seconds` mean | ↓ | **2234** 🏆 | 2530 (+13 %) |
-| `total_tokens` mean | ↓ | **39.78 M** 🏆 | 44.44 M (+12 %) |
+| `total_tokens` mean | ↓ | **45.80 M** 🏆 | 52.25 M (+14 %) |
 
 Reading in two sentences: the three v6.5.1 cleanups (consistency, refactor.md decoupling, tdd-experiment-mode reframing) do **not** damage the exact-hybrid-v3-with-why-cc baseline — all correctness and discipline axes sit within the baseline corridor or slightly above it, with a considerably tighter spread. The price is moderately higher cost (+13 % wallclock, +12 % tokens), driven by +34 % refactorings.
 
@@ -93,7 +93,7 @@ The equality of the smells (0.38 / 0.38) is the strongest signal: the refactor s
 | Metric (↓ = better) | exact-hybrid-v3-with-why-cc | exact-hybrid-v4-cleaned-cc | Δ |
 |---|---:|---:|---|
 | `duration_seconds` mean | **2234** 🏆 (σ 550) | 2530 (σ 401) | +13 % |
-| `total_tokens` mean | **39.78 M** 🏆 (σ 16.1 M) | 44.44 M (σ 3.4 M) | +12 % |
+| `total_tokens` mean | **45.80 M** 🏆 (σ 18.7 M) | 52.25 M (σ 5.6 M) | +14 % |
 | `cycle_count` mean | 35.00 | 37.38 | +7 % |
 | `total_tokens / cycle` (≈) | 1.14 M | 1.19 M | +5 % |
 

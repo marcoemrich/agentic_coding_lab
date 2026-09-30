@@ -21,7 +21,7 @@
 | `predictions_correct_rate` (higher = better) | **97.2 %** 🏆 | 89.6 % |
 | `tests_passed_immediately` (lower = better under TDD) | 15.1 ± 5.8 | **7.0 ± 9.6** 🏆 |
 | `duration_seconds` (lower = better) | **2530 ± 401** 🏆 | 5284 ± 2337 |
-| `total_tokens` (lower = better) | **44.4M ± 3.4M** 🏆 | 102.3M ± 17.2M |
+| `total_tokens` (lower = better) | **52.3M ± 5.6M** 🏆 | 120.1M ± 22.7M |
 
 Trophy convention: `verification_pct` is the correctness gate; both workflows sit at the top end and are 🏆-eligible for code quality metrics. `cc_longest_function` is the only quality metric running against the trend (spread within 1 σ — better read as "no effect" than as a real regression). Cost trophies clearly go to the baseline.
 
@@ -81,7 +81,7 @@ The token and wallclock surcharge is far above the magnitude expected in advance
 | Metric (direction) | hybrid-v4 (n=8) | hybrid-v4.4 (n=5) | Δ mean | Δ σ |
 |---|---:|---:|---:|---:|
 | `duration_seconds` (lower = better) | **2530 ± 401** | 5284 ± 2337 | +109 % | +482 % |
-| `total_tokens` (lower = better) | **44.4M ± 3.4M** | 102.3M ± 17.2M | +130 % | +405 % |
+| `total_tokens` (lower = better) | **52.3M ± 5.6M** | 120.1M ± 22.7M | +130 % | +305 % |
 
 Wallclock more than doubles on average, tokens are 2.3× as high; variance is dramatically wider (σ factor ~5 on both axes). Mechanistic reading: per refactor call the agent runs ESLint twice, parses the JSON output, computes APP mass and McCabe by hand for every function, and compares all four metrics pre/post. At 30.4 refactor calls per run that is ~61 additional ESLint tool calls plus markedly more output tokens for the verbose pre/post block documentation. The increase of 2.8 cycles (F-1.2) explains only part of the cost inflation; the larger share comes from the inflated refactor subagent itself.
 

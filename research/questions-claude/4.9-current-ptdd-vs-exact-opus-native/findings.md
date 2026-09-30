@@ -25,8 +25,8 @@ The PTDD cell pools ten runs from two batches on the same native route and Claud
 | Refactor phases | 45.0 ± 11.2 | 21.3 ± 7.6 |
 | Prediction accuracy ↑ | 97.1% | **99.6%** 🏆 |
 | Duration ↓ | **23.9 ± 8.6 min** 🏆 | 44.2 ± 7.7 min |
-| Tokens ↓ | **30.4 ± 26.0 M** 🏆 | 83.7 ± 16.5 M |
-| List-price comparison ↓ | **$23.12 ± $17.33** 🏆 | $49.13 ± $9.15 |
+| Tokens ↓ | **30.4 ± 26.0 M** 🏆 | 94.2 ± 17.6 M |
+| List-price comparison ↓ | **$23.12 ± $17.33** 🏆 | $61.94 ± $10.74 |
 
 Correctness is statistically indistinguishable at the cell-mean level, so both cells receive the trophy. The PTDD cell remains eligible for quality and efficiency comparison because its mean Correctness (external) is above the 0.90 gate, but its single 0.733 run is treated explicitly in the findings below. No trophy is awarded where the difference is within the observed spread, every cell ties, the metric is ambivalent, or the workflows measure process activity through different execution mechanisms. Production LoC, Test LoC, Code Mass (APP), cycle count, and refactor-phase count are therefore contextual rather than winner metrics. The PTDD cycle count is additionally noisy: one run records a single cycle alongside 132 predictions, a marker-count artefact rather than a one-cycle run.
 
@@ -49,8 +49,8 @@ PTDD completes the same kata with about a third of the tokens and just over half
 | Efficiency metric (lower is better) | PTDD | Opus default | PTDD change |
 |---|---:|---:|---:|
 | Duration | 1434.6 ± 518.4 s | 2650.1 ± 464.9 s | −46% |
-| Total tokens | 30.4 ± 26.0 M | 83.7 ± 16.5 M | −64% |
-| List-price comparison | $23.12 ± $17.33 | $49.13 ± $9.15 | −53% |
+| Total tokens | 30.4 ± 26.0 M | 94.2 ± 17.6 M | −68% |
+| List-price comparison | $23.12 ± $17.33 | $61.94 ± $10.74 | −63% |
 
 The one-context PTDD workflow avoids the default's repeated isolated-refactor context cost. The gain is not stable per run: PTDD ranges from 10.9 M to 96.2 M tokens and from $9.46 to $65.09, whereas the default has a narrower relative spread. PTDD is therefore cheaper in expectation in this sample, not a deterministic low-cost path.
 

@@ -18,7 +18,7 @@ Baseline (`exact-hybrid-v3-with-why-cc`, n=5) vs. cleaned (`exact-hybrid-v4-clea
 | `cognitive_max` mean (σ, max) | ↓ | 4.80 (σ 5.81, max 15) | **2.80** 🏆 (σ 1.10, max 4) |
 | `mccabe_max` mean (σ, max) | ↓ | 4.60 (σ 3.13, max 10) | **3.60** 🏆 (σ 1.14, max 5) |
 | `duration_seconds` mean | ↓ | **569** 🏆 | 644 (+13 %) |
-| `total_tokens` mean | ↓ | **7.56 M** 🏆 | 8.67 M (+15 %) |
+| `total_tokens` mean | ↓ | **9.50 M** 🏆 | 10.48 M (+10 %) |
 
 Reading in two sentences: the RQ-1.6 recommendation generalizes to GoL — hybrid-v4 is correctness-equivalent (both 100/100), shows a **marked improvement in `cognitive_max` and `mccabe_max`** (`cognitive_max` −42 % mean, σ −81 %; `mccabe_max` −22 % mean, σ −64 %) and a moderate discipline drift (+22 % refactorings). The cost surcharge of +13 %/+15 % is in the same range as on claim-office.
 
@@ -86,7 +86,7 @@ The `tests_passed_immediately` reduction (2.20 → 1.40, −36 %) shows that hyb
 | Metric (↓ = better) | exact-hybrid-v3-with-why-cc | exact-hybrid-v4-cleaned-cc | Δ |
 |---|---:|---:|---|
 | `duration_seconds` mean | **569** 🏆 (σ 171) | 644 (σ 140) | +13 % |
-| `total_tokens` mean | **7.56 M** 🏆 (σ 1.88 M) | 8.67 M (σ 1.57 M) | +15 % |
+| `total_tokens` mean | **9.50 M** 🏆 (σ 2.68 M) | 10.48 M (σ 2.08 M) | +10 % |
 | `cycle_count` mean | 8.40 | 9.00 | +7 % |
 | `total_tokens / cycle` (≈) | 0.90 M | 0.96 M | +7 % |
 

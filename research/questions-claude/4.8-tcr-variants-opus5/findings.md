@@ -26,8 +26,8 @@ All cells are correctness-complete enough for quality and efficiency comparison 
 | Smell Total ↓ | 0.50 ± 0.58 | **0.00 ± 0.00** 🏆 | **0.00 ± 0.00** 🏆 | 0.25 ± 0.50 |
 | Code Mass (APP) ↓ | 881.5 ± 102.5 | 702.4 ± 53.6 | 643.0 ± 30.2 | **610.8 ± 54.0** 🏆 |
 | Duration ↓ | 3653 ± 377 s | **280 ± 50 s** 🏆 | 834 ± 111 s | 685 ± 81 s |
-| Total tokens ↓ | 50.0 M ± 1.1 M | **3.9 M ± 1.0 M** 🏆 | 19.8 M ± 3.3 M | 14.9 M ± 2.4 M |
-| Cost per run ↓ | $37.71 ± $2.64 | **$3.38 ± $0.70** 🏆 | $13.68 ± $2.28 | $10.52 ± $1.52 |
+| Total tokens ↓ | 63.2 M ± 2.7 M | **3.9 M ± 1.0 M** 🏆 | 19.8 M ± 3.3 M | 14.9 M ± 2.4 M |
+| Cost per run ↓ | $58.07 ± $4.25 | **$3.38 ± $0.70** 🏆 | $13.68 ± $2.28 | $10.52 ± $1.52 |
 
 Valid replicate counts are 4/5/5/4. One infrastructure-invalid EXACT Coding run and one method-invalid git-gamble run are excluded as documented in the RQ README.
 
@@ -59,11 +59,11 @@ The clearest separation is average function size: EXACT Coding's 3.67 is less th
 
 ## F-4.8.3 — Classic TCR is the efficiency winner
 
-Classic TCR completed in 280 seconds with 3.9 M tokens and an estimated list-price cost of $3.38 per run. Native-Git TCRDD and git-gamble TCRDD were intermediate, while EXACT Coding required 3653 seconds, 50.0 M tokens, and $37.71 per run.
+Classic TCR completed in 280 seconds with 3.9 M tokens and an estimated list-price cost of $3.38 per run. Native-Git TCRDD and git-gamble TCRDD were intermediate, while EXACT Coding required 3653 seconds, 63.2 M tokens, and $58.07 per run.
 
 | Workflow | Duration | Total tokens | Cost per run |
 |---|---:|---:|---:|
-| EXACT Coding | 3653 ± 377 s | 50.0 M ± 1.1 M | $37.71 ± $2.64 |
+| EXACT Coding | 3653 ± 377 s | 63.2 M ± 2.7 M | $58.07 ± $4.25 |
 | Classic TCR | 280 ± 50 s | 3.9 M ± 1.0 M | $3.38 ± $0.70 |
 | Native-Git TCRDD | 834 ± 111 s | 19.8 M ± 3.3 M | $13.68 ± $2.28 |
 | git-gamble TCRDD | 685 ± 81 s | 14.9 M ± 2.4 M | $10.52 ± $1.52 |

@@ -43,7 +43,15 @@ The H0 falsifier from the RQ README is triggered: "correctness regresses on clai
 
 ## F-1.10.2 — game-of-life: no discernible code quality gain
 
-On game-of-life all primary complexity metrics sit within 1σ of the baseline. `code_mass` rises by 12 %, `duration_seconds` by 14 %, `total_tokens` by 15.5 %.
+On game-of-life all primary complexity metrics sit within 1σ of the baseline. `code_mass` rises by 12 %, `duration_seconds` by 14 %, `total_tokens` by 17.1 %.
+
+The token figures here were recomputed by hand from the run pool rather than by
+`aggregate-by-query.py`, which refuses this RQ: its selector names
+`exact-hybrid-v4.1-refactor-vocab-cc`, and that workflow now lives under
+`_archive/` with `status: discarded`. The refusal predates the subagent-token
+correction ([RQ-old-vs-new-exact-line-opus55 F-4.12.5](../../questions-claude/4.12-old-vs-new-exact-line-opus55/findings.md))
+and is a separate open item — `runs.csv` and `summary.md` for this RQ cannot be
+regenerated at all until the selector or the workflow's status is decided.
 
 | metric                  | exact-hybrid-v4-cleaned-cc (n=10) | exact-hybrid-v4.1-refactor-vocab-cc (n=5) | Δ        |
 |---|---:|---:|---:|
@@ -57,9 +65,11 @@ On game-of-life all primary complexity metrics sit within 1σ of the baseline. `
 | smell_total (mean)      | 2.4 (σ 0.5)                  | 2.2 (σ 0.5)               | -0.2     |
 | refactorings_applied    | 7.9 (σ 1.9)                  | 9.2 (σ 0.8)               | +1.3     |
 | duration_seconds        | **627** (σ 117)              | 716 (σ 70)                | +14 %    |
-| total_tokens            | **8.32 M**                   | 9.60 M                    | +15.5 %  |
+| total_tokens            | **10.48 M**                  | 12.27 M                   | +17.1 %  |
 
 All complexity differences sit within 1σ of the baseline variance — no robust gain. `refactorings_applied` rises slightly (+1.3): the agent acts on the additional vocabulary as an occasion to refactor, without the measured metrics moving. Trophies only for unambiguously better columns (`code_mass`, `duration_seconds`, `total_tokens`); on the complexity columns the spread is under 1σ → no trophy ("tie").
+
+Directions unchanged by the token correction: the vocabulary block still costs more on every cost column and still buys no measurable complexity gain.
 
 **Goodhart caveat** (per the README's "Goodhart's Law"): `cognitive_*` and `mccabe_*` are named explicitly in the new `refactor.md` — for exact-hybrid-v4.1-refactor-vocab-cc they are **compliance metrics**, while for exact-hybrid-v4-cleaned-cc they stay independent. A cross-workflow comparison on these metrics is therefore asymmetric and tinted in refactor-vocab's favor. The fact that no gain is visible even _with_ that tint reinforces H0. `mutation_score` (a hidden metric) would be the clean test, but it is not enabled for this RQ.
 

@@ -19,7 +19,7 @@ Baseline (`exact-hybrid-v2-testlist-fix-cc`, n=8) vs. with-why (`exact-hybrid-v3
 | `cognitive_max` (mean) | ↓ | 7.62 (σ 6.0, max 21) | **4.38** 🏆 (σ 1.06, max 6) |
 | `mccabe_max` (mean) | ↓ | 6.75 (σ 3.7, max 14) | **4.25** 🏆 (σ 0.46, max 5) |
 | `duration_seconds` (mean) | ↓ | **1464** 🏆 | 2234 (+53 %) |
-| `total_tokens` (mean) | ↓ | **32.6 M** 🏆 | 39.8 M (+22 %) |
+| `total_tokens` (mean) | ↓ | **37.9 M** 🏆 | 45.8 M (+21 %) |
 
 Reading in two sentences: with-why is not better on correctness (marginally worse because of a 0-cycle outlier), but **considerably better on TDD discipline and code quality with a much tighter spread at the same time**. The price is ~50 % more wallclock and ~22 % more tokens.
 
@@ -58,7 +58,7 @@ Hypothesis H2 from the README (`exact-hybrid-v3-with-why-cc improves at least on
 | Axis | Baseline | with-why | Δ |
 |---|---:|---:|---|
 | Wallclock/run (mean) | 1464 s | 2234 s | +53 % |
-| Tokens/run (mean) | 32.6 M | 39.8 M | +22 % |
+| Tokens/run (mean) | 37.9 M | 45.8 M | +21 % |
 | Cycles/run (mean) | 25.0 | 35.0 | +40 % |
 | Wallclock/cycle | ~59 s | ~64 s | +9 % (within the σ noise) |
 | Tokens/cycle | ~1.30 M | ~1.14 M | **−12 %** |
