@@ -108,10 +108,10 @@ On game-of-life all 8 workflows are at 100 % (15/15 verification scenarios) — 
 | baseline-oneshot-v1-cc              | 88 | 994 k |
 | baseline-iterative-v1-cc            | 83 | 967 k |
 | baseline-inline-tdd-v1-cc            | **75** 🏆 | **799 k** 🏆 |
-| exact-subagents-v2-testlist-fix-cc | 838 | 4.32 M |
+| exact-subagents-v2-testlist-fix-cc | 838 | 10.15 M |
 | exact-single-context-v2-testlist-fix-cc | 293 | 8.40 M |
-| v6.1-hybrid-…           | 508 | 6.94 M |
-| baseline-end-refactor-only-v1-agent-cc  | 143 | 1.18 M |
+| v6.1-hybrid-…           | 508 | 8.15 M |
+| baseline-end-refactor-only-v1-agent-cc  | 143 | 1.47 M |
 | baseline-end-refactor-only-v1-native-cc | 116 | 1.32 M |
 
 ### claim-office
@@ -121,15 +121,15 @@ On game-of-life all 8 workflows are at 100 % (15/15 verification scenarios) — 
 | baseline-oneshot-v1-cc              | 231 | **2.11 M** 🏆 |
 | baseline-iterative-v1-cc            | 244 | 2.12 M |
 | baseline-inline-tdd-v1-cc            | 312 | 3.28 M |
-| exact-subagents-v2-testlist-fix-cc | 3229 | 14.10 M |
+| exact-subagents-v2-testlist-fix-cc | 3229 | 34.87 M |
 | exact-single-context-v2-testlist-fix-cc | 641 | 18.73 M |
-| v6.1-hybrid-…           | 1569 | 34.54 M ⚠️ |
-| baseline-end-refactor-only-v1-agent-cc  | 308 | 2.12 M |
+| v6.1-hybrid-…           | 1569 | 37.88 M ⚠️ |
+| baseline-end-refactor-only-v1-agent-cc  | 308 | 3.55 M |
 | baseline-end-refactor-only-v1-native-cc | **276** 🏆 | 3.45 M |
 
-On claim-office, the strict TDD workflows cost **3–10× more** than on game-of-life — and hybrid-v2 has the largest token range (σ=12 M, max 44.85 M). On claim-office, subagents-v2 takes on average **54 minutes per run** — combined with the bimodal risk (F-tdd-quality.9), the worst cost-quality trade-off of the entire matrix.
+On claim-office, the strict TDD workflows cost **2–5× more** than on game-of-life — and hybrid-v2 has the largest token range (σ=13.5 M, max 49.59 M). On claim-office, subagents-v2 takes on average **54 minutes per run** — combined with the bimodal risk (F-tdd-quality.9), the worst cost-quality trade-off of the entire matrix.
 
-On both katas, end-refactor-only-v1-agent/end-refactor-only-v1-native are at the oneshot-v1/iterative-v1/inline-tdd-v1 cost level (~1–3 M tokens, 2–5 min) and deliver (on claim-office) considerably better branching complexity than oneshot-v1/iterative-v1/inline-tdd-v1 and correctness comparable to the strict TDD workflows — see F-tdd-quality.6 and F-tdd-quality.8.
+On both katas, end-refactor-only-v1-agent/end-refactor-only-v1-native are at the oneshot-v1/iterative-v1/inline-tdd-v1 cost level (~1–4 M tokens, 2–5 min) and deliver (on claim-office) considerably better branching complexity than oneshot-v1/iterative-v1/inline-tdd-v1 and correctness comparable to the strict TDD workflows — see F-tdd-quality.6 and F-tdd-quality.8.
 
 ## F-tdd-quality.6 — Vibe + End Refactoring Reaches the Volume Level of the Strict TDD Workflows at Non-TDD Cost; Branching Complexity Remains Weaker
 
@@ -139,18 +139,18 @@ The non-TDD control group end-refactor-only-v1-agent/end-refactor-only-v1-native
 
 | Workflow | `code_mass` | `cc_longest_function` | `cognitive_max` | `duration_s` | `total_tokens` |
 |---|---:|---:|---:|---:|---:|
-| subagents-v2 (periodic refactor) | 156.6 | 16.4 | **6.4** 🏆 | 838 | 4.32 M |
-| hybrid-v2 (periodic refactor) | 153.7 | **14.2** 🏆 | 6.5 | 508 | 6.94 M |
-| **end-refactor-only-v1-agent (end refactor, agent)** | **142.0** 🏆 | 17.6 | 10.6 | 143 | **1.18 M** 🏆 |
+| subagents-v2 (periodic refactor) | 156.6 | 16.4 | **6.4** 🏆 | 838 | 10.15 M |
+| hybrid-v2 (periodic refactor) | 153.7 | **14.2** 🏆 | 6.5 | 508 | 8.15 M |
+| **end-refactor-only-v1-agent (end refactor, agent)** | **142.0** 🏆 | 17.6 | 10.6 | 143 | **1.47 M** 🏆 |
 | **end-refactor-only-v1-native (end refactor, command)** | 145.8 | 17.6 | 9.0 | **116** 🏆 | 1.32 M |
 
 ### claim-office
 
 | Workflow | `code_mass` | `cc_longest_function` | `cognitive_max` | `duration_s` | `total_tokens` |
 |---|---:|---:|---:|---:|---:|
-| subagents-v2 (periodic refactor) | **621.6** 🏆 | 40.8 | 26.8 ⚠️ | 3229 | 14.10 M |
-| hybrid-v2 (periodic refactor) | 861.3 | **18.1** 🏆 | **5.7** 🏆 | 1569 | 34.54 M |
-| **end-refactor-only-v1-agent (end refactor, agent)** | 813.8 | 28.4 | 7.4 | 308 | **2.12 M** 🏆 |
+| subagents-v2 (periodic refactor) | **621.6** 🏆 | 40.8 | 26.8 ⚠️ | 3229 | 34.87 M |
+| hybrid-v2 (periodic refactor) | 861.3 | **18.1** 🏆 | **5.7** 🏆 | 1569 | 37.88 M |
+| **end-refactor-only-v1-agent (end refactor, agent)** | 813.8 | 28.4 | 7.4 | 308 | **3.55 M** 🏆 |
 | **end-refactor-only-v1-native (end refactor, command)** | 780.2 | 35.8 | 11.0 | **276** 🏆 | 3.45 M |
 
 H5 (the periodicity of refactoring matters) is **kata-dependent**:
@@ -171,7 +171,7 @@ On **game-of-life both mechanisms are practically level**:
 | `mccabe_max` mean | 7.4 (max 9) | **6.8** (max 11) |
 | `cc_longest_function` mean | 17.6 (max 27) | 17.6 (max 27) |
 | `smell_total` mean | 3.0 | **2.4** |
-| `total_tokens` mean | **1.18 M** | 1.32 M |
+| `total_tokens` mean | 1.47 M | **1.32 M** |
 | `code_mass` mean | **142.0** | 145.8 |
 
 All differences lie within 1 σ (e.g. `cognitive_max` σ_v8a=4.93, σ_v8b=4.47); no systematic advantage of either mechanism.
@@ -270,12 +270,12 @@ This quality is **not free**. On claim-office:
 
 | Workflow | `cognitive_max` | `total_tokens` | `duration_s` | Token ratio |
 |---|---:|---:|---:|---:|
-| v8a-delayed (agent) | 7.4 | **2.12 M** | 308 | 1.0× |
-| v8b-delayed (command) | 11.0 | 3.45 M | **276** | 1.6× |
-| v6.1-hybrid | **5.7** | 34.54 M | 1569 | **16×** |
-| v4.1-strict | 26.8 ⚠️ | 14.10 M | 3229 | 7× |
+| v8a-delayed (agent) | 7.4 | **3.55 M** | 308 | 1.0× |
+| v8b-delayed (command) | 11.0 | 3.45 M | **276** | 1.0× |
+| v6.1-hybrid | **5.7** | 37.88 M | 1569 | **11×** |
+| v4.1-strict | 26.8 ⚠️ | 34.87 M | 3229 | 10× |
 
-hybrid-v2 costs **16× more tokens and ~5× more wallclock** than end-refactor-only-v1-agent for a reduction of 7.4 → 5.7 in `cognitive_max` (and further improvements on `cc_longest`, `smell_total`, `cc_loc`). That is the honest balance sheet.
+hybrid-v2 costs **11× more tokens and ~5× more wallclock** than end-refactor-only-v1-agent for a reduction of 7.4 → 5.7 in `cognitive_max` (and further improvements on `cc_longest`, `smell_total`, `cc_loc`). That is the honest balance sheet.
 
 ### Recommendation by Use Case
 
@@ -284,7 +284,7 @@ hybrid-v2 costs **16× more tokens and ~5× more wallclock** than end-refactor-o
 | **Long-lived production code** — read, refactored, extended often; onboarding-relevant | **v6.1-hybrid** | Best branching complexity on both katas; the token surcharge amortizes over the code's lifetime |
 | **Maintenance-critical code** with high correctness demands that is not changed frequently | **v6.1-hybrid** or **single-context-v2** | On claim-office, single-context-v2 is the second-best TDD workflow on `cognitive_max` (14.8) at ~½ the tokens of hybrid-v2 |
 | **Prototyping / throwaway code** — touched rarely or never again | **baseline-end-refactor-only-v1-native-cc** | Lowest wallclock among the example-mapping workflows; correctness 0.97 level with subagents-v2; `cognitive_max` (11.0) is acceptable for a short lifetime |
-| **High iteration frequency** under a token budget — many small tasks, frequent re-runs | **baseline-end-refactor-only-v1-agent-cc** | ~16× cheaper than hybrid-v2; `cognitive_max` 7.4 (vs hybrid-v2 5.7) is not ideal but acceptable for a short lifetime; 100 % correctness on claim-office |
+| **High iteration frequency** under a token budget — many small tasks, frequent re-runs | **baseline-end-refactor-only-v1-agent-cc** | ~11× cheaper than hybrid-v2; `cognitive_max` 7.4 (vs hybrid-v2 5.7) is not ideal but acceptable for a short lifetime; 100 % correctness on claim-office |
 | **Coding from a prose spec** | **Not recommended for novel problems** | oneshot-v1/iterative-v1 on prose break down to 28 % correctness on a novel kata — and TDD on prose does no better (21 %, RQ-prompt-correctness). Concrete examples in the spec are the insurance, not the test phase (F-tdd-quality.8) |
 | **Correctness counts more than quality** (e.g. scripts, tooling, glue code) | **baseline-inline-tdd-v1-cc** | 100 % correctness on claim-office at 3.28 M tokens — the cheapest correctness workflow; accepts the worst code quality (cog 19.8, largest `code_mass`) as the price |
 

@@ -27,7 +27,7 @@ All outcomes per cell (sphinx-score / game-of-life):
 | `verification_pct` (higher = better) | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | 0.92 / 1.00 | **1.00 / 1.00** 🏆 |
 | `cc_avg_loc_per_function` (lower = better) | 6.16 / 4.12 | **3.16** 🏆 / 4.04 | 3.68 / 4.54 | 3.54 / **3.46** 🏆 | 2.96 / 3.83 | 3.24 / 4.67 |
 | `cc_longest_function` (lower = better) | 8.6 / 8.0 | 7.2 / 8.8 | 6.8 / 10.8 | **5.83** 🏆 / 7.5 | 5.8 / **7.2** 🏆 | 7.0 / 11.8 |
-| `total_tokens` (lower = better) | 16.6 M / 11.8 M | 18.8 M / 21.1 M | **10.6 M** 🏆 / **8.0 M** 🏆 | 19.1 M / 15.0 M | 14.7 M / 15.1 M | 12.3 M / 12.2 M |
+| `total_tokens` (lower = better) | 16.6 M / 11.8 M | 18.8 M / 21.1 M | **12.5 M** 🏆 / **9.2 M** 🏆 | 25.1 M / 19.7 M | 19.3 M / 19.4 M | 15.3 M / 15.8 M |
 | `duration_seconds` (lower = better) | **609 s** 🏆 / **431 s** 🏆 | 745 s / 743 s | 786 s / 621 s | 1475 s / 1145 s | 1264 s / 1183 s | 986 s / 1097 s |
 | `cognitive_max` (lower = better) | 1.4 / 1.8 | 1.4 / 3.2 | **1.0** 🏆 / 1.8 | **1.0** 🏆 / **1.17** 🏆 | 1.0 / 1.4 | 1.4 / 2.8 |
 | `smell_total` (lower = better) | 0.6 / **0.0** 🏆 | 0.4 / **0.0** 🏆 | 0.2 / 1.2 | **0.0** 🏆 / **0.0** 🏆 | 0.0 / 0.6 | 0.0 / 1.6 |
@@ -100,8 +100,8 @@ APP patch. The phase costs measurably and returns nothing on the primary metric.
 
 | Cell | `total_tokens` | `duration_seconds` | `cc_avg` sphinx | `cc_avg` game-of-life |
 |---|---:|---:|---:|---:|
-| hybrid-v7 (with end-refactor) | 14.7 M / 15.1 M | 1264 s / 1183 s | 2.96 | 3.83 |
-| hybrid-v8 (without) | 12.3 M / 12.2 M | 986 s / 1097 s | 3.24 | 4.67 |
+| hybrid-v7 (with end-refactor) | 19.3 M / 19.4 M | 1264 s / 1183 s | 2.96 | 3.83 |
+| hybrid-v8 (without) | 15.3 M / 15.8 M | 986 s / 1097 s | 3.24 | 4.67 |
 | Δ | −16 % / −19 % | −22 % / −7 % | +0.28 | +0.84 |
 
 On sphinx-score the decomposition difference (0.28) sits well inside σ (0.68 / 0.44) — the
@@ -195,8 +195,8 @@ refactoring.
 
 | Kata | `cycle_count` | `refactorings_applied` | `duration_seconds` | `total_tokens` |
 |---|---:|---:|---:|---:|
-| game-of-life hybrid-v2 → hybrid-v8 | 10.4 → 10.6 | 4.4 → 9.2 (2.09×) | 621 → 1097 s (1.77×) | 8.0 → 12.2 M (1.53×) |
-| sphinx-score hybrid-v2 → hybrid-v8 | 10.4 → 10.2 | 6.0 → 7.8 (1.30×) | 786 → 986 s (1.25×) | 10.6 → 12.3 M (1.16×) |
+| game-of-life hybrid-v2 → hybrid-v8 | 10.4 → 10.6 | 4.4 → 9.2 (2.09×) | 621 → 1097 s (1.77×) | 9.2 → 15.8 M (1.72×) |
+| sphinx-score hybrid-v2 → hybrid-v8 | 10.4 → 10.2 | 6.0 → 7.8 (1.30×) | 786 → 986 s (1.25×) | 12.5 → 15.3 M (1.22×) |
 
 `cycle_count` is unchanged, so the entire difference arises *inside* the refactor phase, and
 the refactoring factor predicts the duration factor closely on both katas.
@@ -208,8 +208,8 @@ holds architecture constant — and there the effect runs the other way:
 
 | Kata | `refactorings_applied` hybrid-v6 → hybrid-v7 | `duration_seconds` | `total_tokens` |
 |---|---:|---:|---:|
-| sphinx-score | 11.67 → 10.4 | 1475 → 1264 s | 19.1 → 14.7 M |
-| game-of-life | 8.83 → 9.0 | 1145 → 1183 s | 15.0 → 15.1 M |
+| sphinx-score | 11.67 → 10.4 | 1475 → 1264 s | 25.1 → 19.3 M |
+| game-of-life | 8.83 → 9.0 | 1145 → 1183 s | 19.7 → 19.4 M |
 
 Adding the patch to an otherwise identical workflow lowers refactoring volume on sphinx-score
 and leaves it flat on game-of-life. It does not buy its decomposition behaviour with extra
