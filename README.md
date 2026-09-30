@@ -654,8 +654,9 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 | `experiments/parse_opencode_transcript.py` | Parse OpenCode session exports into `transcript-metrics.json`. Used for **OpenCode** runs. |
 | `experiments/parse_cursor_transcript.py` | Parse `transcript-cursor.jsonl` (the `stream-json` NDJSON event stream that `run-batch.sh` extracts from `run.log`) into `transcript-metrics.json`. Used for **cursor-cli** runs. Same output schema as the pi and OpenCode parsers. |
 | `experiments/tdd-report.py` | Derive the TDD phase chain and its metrics from the stack reporter's `tdd-events.jsonl` — reads no marker, no tool call and no commit, so it reads the same on every workflow and harness. Default output is the readable markdown report (`analyze-run.sh` writes it to `tdd-report.md` in the run dir); `--chain` prints the one-line chain, `--json` the metrics object that gets folded into `metrics.json`. Empty object for runs predating the reporter. See "Phase chain metrics". |
-| `experiments/measure-suite-transitions.py` | The retroactive approximation of the above: derives the same red/green state sequence from the transcript instead of the reporter, so it works on the existing corpus and doubles as an independent cross-check on new runs. `--run <dir>` emits one JSON object; batch mode takes the same filters as `measure-tdd-rigour.py` plus `--compare`. |
-| `experiments/measure-tdd-rigour.py` | Classify TDD rigour from the tool sequence alone — no phase markers required, so it works on vendored external skills that must stay unmodified. `--run <dir>` emits one JSON object (this is how `analyze-run.sh` folds `test_blocks`, `test_cases_*` and `red_verified/unverified` into `metrics.json`); without it, batch mode scans `runs/` and takes `--pattern`, `--workflow` and `--kata-suffix` filters. Handles Claude Code and pi transcripts; OpenCode/cursor formats are skipped and counted. |
+| `experiments/migrate-legacy-discipline.py` | One-shot: renames the 17 superseded TDD-discipline metrics to `legacy_*` in every run's `metrics.json`, so a legacy number can never be read as a current one. `--dry-run` reports without writing. Already applied to the corpus (1843 runs, 2026-10). |
+| `experiments/measure-suite-transitions.py` | **Legacy tool, not in the pipeline.** Derives the red/green sequence from the transcript instead of the reporter. Kept because it is the only route that runs on pre-reporter runs, and because it was the independent cross-check that validated the reporter (82/82 on a real run). `--run <dir>` emits one JSON object; batch mode takes the same filters as `measure-tdd-rigour.py` plus `--compare`. |
+| `experiments/measure-tdd-rigour.py` | **Legacy tool, not in the pipeline.** Classify TDD rigour from the tool sequence alone — no phase markers required, so it works on vendored external skills that must stay unmodified. `--run <dir>` emits one JSON object (this is how `analyze-run.sh` folds `test_blocks`, `test_cases_*` and `red_verified/unverified` into `metrics.json`); without it, batch mode scans `runs/` and takes `--pattern`, `--workflow` and `--kata-suffix` filters. Handles Claude Code and pi transcripts; OpenCode/cursor formats are skipped and counted. |
 
 ### Aggregation
 
@@ -878,14 +879,29 @@ The phase markers that drive these counts are documented in [`experiments/workfl
 
 **Why pi uses text markers instead of tool calls:** pi skills are auto-loaded documents, not tool calls. The model reads each `SKILL.md` once and then follows its instructions directly ("freihand"). There is no `Skill({skill: "red"})` tool invocation per cycle. Instead, the parser counts `## Red` headings in the assistant output (one per cycle) and `Red Phase Complete:` blocks with prediction lines. The `derive_cycle_count()` function in `analyze_transcript.py` uses text markers as a tertiary fallback (after Skill and Task tool calls), so both parsers agree on the same priority chain.
 
-TDD discipline has **two independent sources**. Marker-derived metrics rely on
-phase markers the workflow emits; transcript-derived metrics read only the tool
-sequence and work on skills we cannot modify. Where the two disagree on cycle
-counting, prefer the transcript — see [Cycle discipline is measured from the
-transcript, not from markers](#cycle-discipline-is-measured-from-the-transcript-not-from-markers).
+> **Since 2026-10 TDD discipline has exactly one source: the phase chain.**
+> Everything in this subsection is **legacy** — kept so the findings written
+> from it stay reproducible, no longer computed for new runs, and available only
+> under a `legacy_` prefix. Jump to [Phase chain metrics](#phase-chain-metrics)
+> for the current source.
+>
+> Why they were retired: each keyed on something the workflow had to supply, so
+> each fell silent somewhere. Markers are absent from vendored external skills
+> by policy. The `test_blocks` family needed `Write`/`Edit`/`MultiEdit` calls and
+> read 0 for any model that writes files through the shell —
+> indistinguishable from "never wrote a test". And `cycle_count` had a fallback
+> chain ending in a count of `pnpm test` invocations, i.e. a suite-run counter
+> under a cycle counter's name: on one measured run it reported 82 cycles where
+> the chain found 26 closed ones.
+>
+> `experiments/migrate-legacy-discipline.py` performed the rename across the
+> existing corpus. `aggregate-by-query.py` still resolves a bare name in an
+> RQ's `outcomes:` to its legacy column, and warns — because **migrating an RQ
+> onto the current metrics means re-running its runs, not reanalysing them**:
+> the event stream the chain reads cannot be reconstructed after the fact.
 
-Names below are the exact column names in `runs.csv`, i.e. what an RQ writes
-under `outcomes:`.
+Names below are the historical column names; in `runs.csv` each now carries the
+`legacy_` prefix.
 
 | Metric | Source | Description |
 |--------|--------|-------------|
@@ -910,14 +926,12 @@ the minimal code to pass was written; over-implementation shows up indirectly in
 
 ### Phase chain metrics
 
-A third source, and the only one that reads **nothing the workflow has to
-supply**. Both sources above key on something optional: marker metrics need the
-workflow to emit phase markers, and the `test_blocks` family needs
-`Write`/`Edit`/`MultiEdit` tool calls. Each therefore falls silent somewhere —
-vendored external skills carry no markers by policy, and a model that edits
-through the shell (heredocs, `sed -i`, inline `python3` replaces) makes no
-edit-tool calls at all, which zeroes `test_blocks`, `red_verified` and their
-siblings in a way indistinguishable from "never wrote a test".
+**The source of TDD discipline.** It is the only one that reads nothing the
+workflow has to supply, which is why the three routes above were retired to
+`legacy_` in 2026-10 rather than kept alongside it: parallel routes measuring
+one construct from different sources produced columns with confusingly similar
+names (`cycle_count`, `suite_cycles`, `cycles_closed`) and a standing question
+about which to believe.
 
 The one event no TDD workflow can avoid is **running the tests**. Each stack
 therefore carries a test-framework reporter that the framework itself invokes —
@@ -993,6 +1007,8 @@ Column names as they appear in `runs.csv`.
 | `red_batch_max` | The largest such batch. Catches a single big-bang opener that the median absorbs — report the pair, not either alone. |
 | `red_batch_unmeasurable` | Red events whose batch size could not be read, because a file failing to compile contributes no test names. A trust column. |
 | `green_batch_size` | The mirror: median tests turned green by one implementation step. Separates from `red_batch_size` when a workflow writes several tests up front and then implements them one by one — red high, green 1. |
+| `refactor_events` | Raw `Refactor` count — the direct replacement for `refactorings_applied`. |
+| `skip_events` | Raw `Skip` count: tests that arrived already passing. The direct replacement for `tests_passed_immediately`. Lower is better. |
 | `refactor_per_cycle` | `Refactor / cycles_closed`. **Ambivalent — no trophy:** frequent refactoring can be discipline or nervousness. |
 | `green_attempts` | `(Green? + Green?(c)) / cycles_closed` — how often the first implementation attempt missed. **Ambivalent — no trophy.** |
 | `chain_deviations` | `Both + Skip + Drop + Break + Break(c)`. The per-cell flag for "go read `tdd-report.md`". Lower is better. |
@@ -1036,13 +1052,19 @@ Reference values from the fixtures used to build this:
 | a stream that never closed a cycle | **0.0** | closure component is 0, so the product is 0 |
 
 **These metrics exist only for runs produced after the reporter landed.** The
-event stream cannot be reconstructed retroactively, so the ~1350 older runs
-carry nothing in these columns and cannot be backfilled by a `reanalyze` pass —
-unlike the two sources above. An RQ adopting them needs fresh runs. The
-`suite_*` family from `measure-suite-transitions.py` remains the retroactive
-approximation for the existing corpus, and a useful cross-check on new runs:
-it derives the same red/green state sequence from the transcript instead of
-from the reporter, so the two are independent readings of one thing.
+event stream cannot be reconstructed retroactively: no reanalysis pass produces
+it, so the ~1840 older runs carry nothing in these columns. **Migration means
+re-running.** An RQ still listing a superseded outcome aggregates from its
+`legacy_` column and gets a warning; bringing it onto the current metrics
+requires refilling every cell, because a cell mixing legacy and current runs
+compares two different constructs.
+
+Validated against the transcript before the old route was retired: on a real
+82-invocation run, `measure-suite-transitions.py` — which derived the same
+red/green sequence from the transcript instead of the reporter — agreed with the
+reporter on the count and on every single state, 82/82. That script and
+`measure-tdd-rigour.py` remain in the tree as manual tools, but nothing in the
+pipeline calls them.
 
 **Still outside this source, by construction:** `predictions_*` — no artifact
 state can reconstruct a prediction that was never spoken, so it stays

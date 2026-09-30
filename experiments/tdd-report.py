@@ -304,6 +304,12 @@ def metrics(rows):
         "red_batch_unmeasurable": unmeasurable,
         # the mirror: how many tests one implementation step turns green
         "green_batch_size": _median(green_batches),
+        # Raw counts, the direct analogues of the marker columns this route
+        # replaces: `refactor_events` for refactorings_applied, `skip_events`
+        # for tests_passed_immediately (a test that arrived already passing is
+        # exactly what that marker metric was counting).
+        "refactor_events": g("Refactor", 0),
+        "skip_events": g("Skip", 0),
         # ambivalent — no trophy (run-rq SKILL.md trophy convention)
         "refactor_per_cycle": round(g("Refactor", 0) / closed, 3) if closed else None,
         "green_attempts": round(attempts / closed, 3) if closed else None,

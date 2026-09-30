@@ -1490,34 +1490,16 @@ EOF
                 ;;
         esac
 
-        # Marker-free TDD rigour from the tool sequence. Works on vendored
-        # external skills that carry no RED marker block — see README,
-        # "Cycle discipline is measured from the transcript, not from markers".
-        # Falls back to {} so the jq merge below stays valid either way.
-        local rigour_json="{}"
-        if [ -f "$EXPERIMENTS_DIR/measure-tdd-rigour.py" ]; then
-            rigour_json=$(python3 "$EXPERIMENTS_DIR/measure-tdd-rigour.py" \
-                --run "$run_dir" 2>/dev/null) || rigour_json="{}"
-            [ -z "$rigour_json" ] && rigour_json="{}"
-        fi
-
-        # Same question from the other side of the loop: what the test runs
-        # said, rather than which edit tool wrote the file. The rigour block
-        # above needs Write/Edit/MultiEdit calls to tell a test-write from an
-        # impl-write, and reports all zeros for a model that edits through the
-        # shell instead (heredocs, sed -i) — indistinguishable from "never
-        # wrote a test". suite_cycles counts observed red->green transitions
-        # and is mechanism-independent. Not a substitute for cycle_count:
-        # it runs at roughly half the marker count (r = 0.82 over 1357 runs),
-        # because consecutive red phases with no green between them collapse
-        # into one transition. Compare within a column, never across.
-        local suite_json="{}"
-        if [ -f "$EXPERIMENTS_DIR/measure-suite-transitions.py" ]; then
-            suite_json=$(python3 "$EXPERIMENTS_DIR/measure-suite-transitions.py" \
-                --run "$run_dir" 2>/dev/null) || suite_json="{}"
-            [ -z "$suite_json" ] && suite_json="{}"
-        fi
-
+        # TDD discipline has one source: the phase chain over the stack
+        # reporter's event stream, folded in below. The two scripts that used
+        # to run here — measure-tdd-rigour.py (cycles from Write/Edit calls)
+        # and measure-suite-transitions.py (suite state from transcript text)
+        # — measured the same construct from weaker sources and each read zero
+        # or wrong somewhere: the first for any model that edits through the
+        # shell, the second whenever a bundled type-check landed in the same
+        # output as a clean test run. Their columns survive on existing runs
+        # under a legacy_ prefix (experiments/migrate-legacy-discipline.py) so
+        # old findings stay reproducible; nothing writes them any more.
         # The phase chain's derived metrics, from the stack reporter's event
         # stream. One source for every workflow and harness: no marker, no edit
         # tool, no commit is read, so nothing here can fall silent because a
@@ -1531,8 +1513,6 @@ EOF
         fi
 
         jq --argjson impl_loc "$impl_loc" \
-           --argjson rigour "$rigour_json" \
-           --argjson suite "$suite_json" \
            --argjson chain "$chain_json" \
            --argjson test_loc "$test_loc" \
            --argjson test_count "$test_count" \
@@ -1614,26 +1594,9 @@ EOF
             .unit_quality.size_median = $unit_size_median |
             .summary_metrics.total_tokens = $total_tokens |
             .summary_metrics.context_utilization_pct = $context_util |
-            .summary_metrics.cycle_count = $cycle_count |
-            .summary_metrics.refactorings_applied = $refactorings |
             .summary_metrics.predictions_correct = $pred_correct |
             .summary_metrics.predictions_total = $pred_total |
-            .summary_metrics.tests_passed_immediately = $tests_passed_immediately |
             .summary_metrics.subagent_token_total = $subagent_tokens |
-            .summary_metrics.test_blocks = ($rigour.test_blocks // null) |
-            .summary_metrics.test_cases_total = ($rigour.all_cases // null) |
-            .summary_metrics.test_cases_first_block = ($rigour.first_cases // null) |
-            .summary_metrics.red_verified = ($rigour.verified // null) |
-            .summary_metrics.red_unverified = ($rigour.unverified // null) |
-            .summary_metrics.tcr_refactor_steps = ($rigour.tcr_refactor_steps // null) |
-            .summary_metrics.suite_runs = ($suite.suite_runs // null) |
-            .summary_metrics.suite_unknown_runs = ($suite.unknown_runs // null) |
-            .summary_metrics.suite_cycles = ($suite.cycles // null) |
-            .summary_metrics.suite_new_failures = ($suite.new_failures // null) |
-            .summary_metrics.suite_opens_red = ($suite.opens_red // null) |
-            .summary_metrics.suite_ends_green = ($suite.ends_green // null) |
-            .summary_metrics.suite_unresolved_red = ($suite.unresolved_red // null) |
-            .summary_metrics.suite_longest_green_streak = ($suite.longest_green_streak // null) |
             .summary_metrics.cycles_total = ($chain.cycles_total // null) |
             .summary_metrics.cycles_closed = ($chain.cycles_closed // null) |
             .summary_metrics.test_first_rate = ($chain.test_first_rate // null) |
@@ -1641,6 +1604,8 @@ EOF
             .summary_metrics.red_batch_max = ($chain.red_batch_max // null) |
             .summary_metrics.red_batch_unmeasurable = ($chain.red_batch_unmeasurable // null) |
             .summary_metrics.green_batch_size = ($chain.green_batch_size // null) |
+            .summary_metrics.refactor_events = ($chain.refactor_events // null) |
+            .summary_metrics.skip_events = ($chain.skip_events // null) |
             .summary_metrics.refactor_per_cycle = ($chain.refactor_per_cycle // null) |
             .summary_metrics.green_attempts = ($chain.green_attempts // null) |
             .summary_metrics.chain_deviations = ($chain.deviations // null) |
@@ -1752,11 +1717,11 @@ compare_runs() {
                 # New metrics
                 local tokens=$(jq -r '.summary_metrics.total_tokens // 0' "$run_dir/metrics.json")
                 local ctx_util=$(jq -r '.summary_metrics.context_utilization_pct // 0' "$run_dir/metrics.json")
-                local cycles=$(jq -r '.summary_metrics.cycle_count // 0' "$run_dir/metrics.json")
-                local refacts=$(jq -r '.summary_metrics.refactorings_applied // 0' "$run_dir/metrics.json")
+                local cycles=$(jq -r '.summary_metrics.cycles_closed // .summary_metrics.legacy_cycle_count // 0' "$run_dir/metrics.json")
+                local refacts=$(jq -r '.summary_metrics.refactor_events // .summary_metrics.legacy_refactorings_applied // 0' "$run_dir/metrics.json")
                 local pred_c=$(jq -r '.summary_metrics.predictions_correct // 0' "$run_dir/metrics.json")
                 local pred_t=$(jq -r '.summary_metrics.predictions_total // 0' "$run_dir/metrics.json")
-                local immed=$(jq -r '.summary_metrics.tests_passed_immediately // 0' "$run_dir/metrics.json")
+                local immed=$(jq -r '.summary_metrics.skip_events // .summary_metrics.legacy_tests_passed_immediately // 0' "$run_dir/metrics.json")
                 # Coverage metrics (statements and branches only)
                 local cov_statements=$(jq -r '.coverage.statements_pct // 0' "$run_dir/metrics.json")
                 local cov_branches=$(jq -r '.coverage.branches_pct // 0' "$run_dir/metrics.json")
@@ -2314,11 +2279,11 @@ analyze_all() {
                 # New metrics
                 local tokens=$(jq -r '.summary_metrics.total_tokens // 0' "$run/metrics.json")
                 local ctx_util=$(jq -r '.summary_metrics.context_utilization_pct // 0' "$run/metrics.json")
-                local cycles=$(jq -r '.summary_metrics.cycle_count // 0' "$run/metrics.json")
-                local refacts=$(jq -r '.summary_metrics.refactorings_applied // 0' "$run/metrics.json")
+                local cycles=$(jq -r '.summary_metrics.cycles_closed // .summary_metrics.legacy_cycle_count // 0' "$run/metrics.json")
+                local refacts=$(jq -r '.summary_metrics.refactor_events // .summary_metrics.legacy_refactorings_applied // 0' "$run/metrics.json")
                 local pred_c=$(jq -r '.summary_metrics.predictions_correct // 0' "$run/metrics.json")
                 local pred_t=$(jq -r '.summary_metrics.predictions_total // 0' "$run/metrics.json")
-                local immed=$(jq -r '.summary_metrics.tests_passed_immediately // 0' "$run/metrics.json")
+                local immed=$(jq -r '.summary_metrics.skip_events // .summary_metrics.legacy_tests_passed_immediately // 0' "$run/metrics.json")
                 # Coverage metrics (statements and branches only)
                 local cov_statements=$(jq -r '.coverage.statements_pct // 0' "$run/metrics.json")
                 local cov_branches=$(jq -r '.coverage.branches_pct // 0' "$run/metrics.json")

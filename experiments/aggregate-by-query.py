@@ -53,15 +53,16 @@ CSV_COLUMNS = [
     "exit_code", "exit_reason", "rate_limited", "completed_within_budget",
     "analyze_status",
     "duration_seconds", "total_tokens", "context_utilization_pct",
-    "cycle_count", "avg_cycle_seconds", "avg_red_seconds",
-    "avg_green_seconds", "avg_refactor_seconds", "refactorings_applied",
-    "predictions_correct", "predictions_total", "tests_passed_immediately",
-    "test_blocks", "test_cases_total", "test_cases_first_block",
-    "red_verified", "red_unverified", "tcr_refactor_steps",
-    "suite_runs", "suite_unknown_runs", "suite_cycles", "suite_new_failures",
-    "suite_opens_red", "suite_ends_green", "suite_unresolved_red",
-    "suite_longest_green_streak",
+    "legacy_cycle_count", "avg_cycle_seconds", "avg_red_seconds",
+    "avg_green_seconds", "avg_refactor_seconds", "legacy_refactorings_applied",
+    "predictions_correct", "predictions_total", "legacy_tests_passed_immediately",
+    "legacy_test_blocks", "legacy_test_cases_total", "legacy_test_cases_first_block",
+    "legacy_red_verified", "legacy_red_unverified", "legacy_tcr_refactor_steps",
+    "legacy_suite_runs", "legacy_suite_unknown_runs", "legacy_suite_cycles", "legacy_suite_new_failures",
+    "legacy_suite_opens_red", "legacy_suite_ends_green", "legacy_suite_unresolved_red",
+    "legacy_suite_longest_green_streak",
     "cycles_total", "cycles_closed", "test_first_rate",
+    "refactor_events", "skip_events",
     "red_batch_size", "red_batch_max", "red_batch_unmeasurable",
     "green_batch_size", "refactor_per_cycle", "green_attempts",
     "chain_deviations", "chain_opens_red", "chain_ends_green",
@@ -425,27 +426,27 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
         "duration_seconds":           metrics.get("duration_seconds"),
         "total_tokens":               sm.get("total_tokens"),
         "context_utilization_pct":    sm.get("context_utilization_pct"),
-        "cycle_count":                sm.get("cycle_count"),
+        "legacy_cycle_count":                sm.get("legacy_cycle_count"),
         "avg_cycle_seconds":          sm.get("avg_cycle_seconds"),
         "avg_red_seconds":            sm.get("avg_red_seconds"),
         "avg_green_seconds":          sm.get("avg_green_seconds"),
         "avg_refactor_seconds":       sm.get("avg_refactor_seconds"),
-        "refactorings_applied":       sm.get("refactorings_applied"),
+        "legacy_refactorings_applied":       sm.get("legacy_refactorings_applied"),
         "predictions_correct":        sm.get("predictions_correct"),
         "predictions_total":          sm.get("predictions_total"),
-        "tests_passed_immediately":   sm.get("tests_passed_immediately"),
+        "legacy_tests_passed_immediately":   sm.get("legacy_tests_passed_immediately"),
         # Marker-free TDD rigour (measure-tdd-rigour.py, folded in by
         # analyze-run.sh). test_blocks == 1 means big bang; the ratio
         # test_cases_total / test_blocks says how coarse the steps were.
         # Preferred over cycle_count for vendored external workflows, where
         # the inserted RED marker undercounts — see README, "Cycle discipline
         # is measured from the transcript, not from markers".
-        "test_blocks":                sm.get("test_blocks"),
-        "test_cases_total":           sm.get("test_cases_total"),
-        "test_cases_first_block":     sm.get("test_cases_first_block"),
-        "red_verified":               sm.get("red_verified"),
-        "red_unverified":             sm.get("red_unverified"),
-        "tcr_refactor_steps":          sm.get("tcr_refactor_steps"),
+        "legacy_test_blocks":                sm.get("legacy_test_blocks"),
+        "legacy_test_cases_total":           sm.get("legacy_test_cases_total"),
+        "legacy_test_cases_first_block":     sm.get("legacy_test_cases_first_block"),
+        "legacy_red_verified":               sm.get("legacy_red_verified"),
+        "legacy_red_unverified":             sm.get("legacy_red_unverified"),
+        "legacy_tcr_refactor_steps":          sm.get("legacy_tcr_refactor_steps"),
         # TDD rigour read from the suite outcomes instead of the edit tools
         # (measure-suite-transitions.py, folded in by analyze-run.sh).
         # suite_cycles counts observed red->green transitions, so unlike the
@@ -455,18 +456,20 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
         # distinct construct — do not put the two in one column.
         # suite_unknown_runs is the trust column: it says how many suite
         # invocations could not be classified at all.
-        "suite_runs":                 sm.get("suite_runs"),
-        "suite_unknown_runs":         sm.get("suite_unknown_runs"),
-        "suite_cycles":               sm.get("suite_cycles"),
-        "suite_new_failures":         sm.get("suite_new_failures"),
-        "suite_opens_red":            sm.get("suite_opens_red"),
-        "suite_ends_green":           sm.get("suite_ends_green"),
-        "suite_unresolved_red":       sm.get("suite_unresolved_red"),
-        "suite_longest_green_streak": sm.get("suite_longest_green_streak"),
+        "legacy_suite_runs":                 sm.get("legacy_suite_runs"),
+        "legacy_suite_unknown_runs":         sm.get("legacy_suite_unknown_runs"),
+        "legacy_suite_cycles":               sm.get("legacy_suite_cycles"),
+        "legacy_suite_new_failures":         sm.get("legacy_suite_new_failures"),
+        "legacy_suite_opens_red":            sm.get("legacy_suite_opens_red"),
+        "legacy_suite_ends_green":           sm.get("legacy_suite_ends_green"),
+        "legacy_suite_unresolved_red":       sm.get("legacy_suite_unresolved_red"),
+        "legacy_suite_longest_green_streak": sm.get("legacy_suite_longest_green_streak"),
         # Phase-chain metrics (tdd-report.py over the stack reporter's event
         # stream). The one discipline source that reads no marker, no edit tool
         # and no commit, so it cannot fall silent because a workflow declined
         # to emit something. README, "Phase chain metrics", has the vocabulary.
+        "refactor_events":            sm.get("refactor_events"),
+        "skip_events":                sm.get("skip_events"),
         "cycles_total":               sm.get("cycles_total"),
         "cycles_closed":              sm.get("cycles_closed"),
         "test_first_rate":            sm.get("test_first_rate"),
@@ -549,11 +552,47 @@ def _nested(d, keys):
 # Summary writer
 # -----------------------------------------------------------------------
 
+# TDD-discipline columns superseded by the phase chain in 2026-10. They still
+# aggregate, so findings written from them stay reproducible, but only under
+# their legacy_ name — a legacy number must never be readable as a current one.
+# An RQ that still asks for the bare name gets resolved and warned about: the
+# run's event stream cannot be reconstructed, so bringing that RQ onto the
+# current metrics means **re-running its runs**, not reanalysing them. See
+# README, "Phase chain metrics".
+SUPERSEDED_OUTCOMES = {
+    "cycle_count", "refactorings_applied", "tests_passed_immediately",
+    "test_blocks", "test_cases_total", "test_cases_first_block",
+    "red_verified", "red_unverified", "tcr_refactor_steps",
+    "suite_runs", "suite_unknown_runs", "suite_cycles", "suite_new_failures",
+    "suite_opens_red", "suite_ends_green", "suite_unresolved_red",
+    "suite_longest_green_streak",
+}
+
+
+def resolve_outcomes(outcomes: list, rq_id: str) -> list:
+    """Map superseded outcome names onto their legacy_ columns, and say so."""
+    out, hit = [], []
+    for o in outcomes:
+        if o in SUPERSEDED_OUTCOMES:
+            hit.append(o)
+            out.append(f"legacy_{o}")
+        else:
+            out.append(o)
+    if hit:
+        print(f"WARNING: {rq_id} asks for {len(hit)} superseded discipline "
+              f"outcome(s): {', '.join(sorted(hit))}", file=sys.stderr)
+        print(f"  Aggregated from the legacy_ columns. The phase chain "
+              f"(tdd_discipline and siblings) is the current source; its event "
+              f"stream cannot be reconstructed, so migrating this RQ means "
+              f"re-running its runs, not reanalysing them.", file=sys.stderr)
+    return out
+
+
 def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
                   cells: list[dict], by_cell: dict) -> None:
     rq_id = fm.get("id", "?")
     question = fm.get("question", "")
-    outcomes = fm.get("outcomes") or []
+    outcomes = resolve_outcomes(fm.get("outcomes") or [], rq_id)
     min_rep = fm.get("min_replicates", 1)
 
     lines: list[str] = []
