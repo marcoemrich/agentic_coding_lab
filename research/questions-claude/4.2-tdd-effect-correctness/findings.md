@@ -29,14 +29,17 @@ The effort profiles per workflow. 🏆 = best value per column. Directions: `pre
 | Workflow | `cycle_count` | `refactorings_applied` | `predictions_correct_rate` | `tests_passed_immediately` | `duration_seconds` | `total_tokens` |
 |---|---:|---:|---:|---:|---:|---:|
 | baseline-inline-tdd-v1-cc                  |  3.8 |  1.8 |   —             | **0.6** 🏆 | **312** 🏆 | **3.28 M** 🏆 |
-| exact-subagents-v2-testlist-fix-cc       | 44.6 |  6.8 |  92.9 %         | 22.2 | 3 229 | 14.10 M |
+| exact-subagents-v2-testlist-fix-cc       | 44.6 |  6.8 |  92.9 %         | 22.2 | 3 229 | 34.87 M |
 | exact-single-context-v2-testlist-fix-cc       |  5.5 |  2.2 | **100.0 %** 🏆  |  1.7 |   641 | 18.73 M |
-| v6.1-hybrid-…                 | 24.7 | 10.7 |  94.9 %         | 13.0 | 1 424 | 30.16 M |
-| v7.1-hybrid-green-refactor-…  | 18.3 | 14.0 | **100.0 %** 🏆  |  6.3 | 1 970 | 26.11 M |
+| v6.1-hybrid-…                 | 28.0 | 11.0 |  96.4 %         | 13.6 | 1 569 | 37.88 M |
+| v7.1-hybrid-green-refactor-…  | 18.3 | 14.0 | **100.0 %** 🏆  |  6.3 | 1 970 | 35.74 M |
 
-subagents-v2 runs on average **44.6 TDD cycles** per run (vs. 3.8 for inline-tdd-v1, 5.5 for single-context-v2), at comparable correctness. The wallclock is at ~54 min per run against ~10 min for single-context-v2 and ~5 min for inline-tdd-v1. Tokens 14 M (subagents-v2) vs. 3.3 M (inline-tdd-v1). Despite this effort, subagents-v2 is the only setup with a 0.8 outlier.
+subagents-v2 runs on average **44.6 TDD cycles** per run (vs. 3.8 for inline-tdd-v1, 5.5 for single-context-v2), at comparable correctness. The wallclock is at ~54 min per run against ~10 min for single-context-v2 and ~5 min for inline-tdd-v1. Tokens 34.9 M (subagents-v2) vs. 3.3 M (inline-tdd-v1), a factor of 10.6. Despite this effort, subagents-v2 is the only setup with a 0.8 outlier.
 
-hybrid-v2 and green-refactor-v2 both run considerably more refactor steps than single-context-v2 (10.7 / 14.0 vs. 2.2) — the isolated refactor subagent visibly "works" more; green-refactor-v2 reaches the highest refactor rate of all workflows. Despite the hybrid constructions, both pay for stability, not for a better correctness mean.
+The token column counts subagent consumption; until 2026-09-30 it did not, and the three isolating arms here were the ones it understated — subagents-v2 most of all, at 14.10 M against a true 34.87 M
+([RQ-old-vs-new-exact-line-opus55 F-4.12.5](../4.12-old-vs-new-exact-line-opus55/findings.md)). The finding's own point is sharpened by it: the effort subagents-v2 spends for its correctness is 2.5× what was recorded.
+
+hybrid-v2 and green-refactor-v2 both run considerably more refactor steps than single-context-v2 (11.0 / 14.0 vs. 2.2) — the isolated refactor subagent visibly "works" more; green-refactor-v2 reaches the highest refactor rate of all workflows. Despite the hybrid constructions, both pay for stability, not for a better correctness mean.
 
 ## F-tdd-correctness.3 — The Predictions Rate Comparison Is Distorted by an Unequal Prediction Base
 
@@ -44,13 +47,13 @@ hybrid-v2 and green-refactor-v2 both run considerably more refactor steps than s
 
 Hypothesis H3 from RQ-tdd-quality ("subagents-v2 has higher prediction_accuracy") is not confirmed under this reading. The comparison only becomes robust once the predictions are normalized per cycle — currently not directly derivable from the metrics.
 
-## F-tdd-correctness.4 — The Wallclock Range Is 10×, the Token Range 9×; No Correlation with Correctness
+## F-tdd-correctness.4 — The Wallclock Range Is 10×, the Token Range 12×; No Correlation with Correctness
 
 Across the five TDD workflows:
 
 - cheapest workflow by tokens: **inline-tdd-v1 (3.28 M)** — at 100 % correctness
 - cheapest workflow by wallclock: **inline-tdd-v1 (5 min)**
-- most expensive workflow by tokens: **hybrid-v2 (30.16 M, σ=18.6 M)** — at 100 % correctness
+- most expensive workflow by tokens: **hybrid-v2 (37.88 M, σ=13.5 M)** — at 100 % correctness
 - most expensive workflow by wallclock: **subagents-v2 (54 min, σ=15 min)** — at 0.96 correctness
 
-green-refactor-v2 slots in the middle (33 min wallclock, 26 M tokens, 0.98 correctness). For claim-office under Opus 4.7, correctness is not a scarce good; the workflow choice determines almost exclusively effort and spread. inline-tdd-v1 dominates the correctness-per-token rating on this kata. Structured workflows do not justify themselves on claim-office through correctness — their value lies in code quality (see RQ-context F-context.1/2 for the complexity and smell differences on the same kata).
+The three arms that isolate a phase are a token tie at the top of the range (34.87 / 35.74 / 37.88 M, every pairwise gap inside its σ), so the range is really two steps rather than five: 3.3–3.6 M without isolation, 18.7 M with a shared context, and ~35 M once any phase is isolated. green-refactor-v2 slots in on wallclock (33 min) but not on tokens (35.74 M, level with the other isolating arms). For claim-office under Opus 4.7, correctness is not a scarce good; the workflow choice determines almost exclusively effort and spread. inline-tdd-v1 dominates the correctness-per-token rating on this kata. Structured workflows do not justify themselves on claim-office through correctness — their value lies in code quality (see RQ-context F-context.1/2 for the complexity and smell differences on the same kata).
