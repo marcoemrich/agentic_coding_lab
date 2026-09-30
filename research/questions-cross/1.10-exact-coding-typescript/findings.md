@@ -62,14 +62,14 @@ and two runs at 0.93. That cell is the only one that lost a run to a timeout.
 | `unit_size_median` | 5.55 ± 1.07 | 4.80 ± 1.16 | **3.35 ± 0.63** 🏆 |
 | Mutation Score | **0.90 ± 0.06** 🏆 | **0.91 ± 0.06** 🏆 | **0.90 ± 0.09** 🏆 |
 | `duration_seconds` | **260.0 ± 49.8** 🏆 | 1103.0 ± 311.0 | 4624.0 ± 1422.5 |
-| `cost_usd` | **3.14 ± 0.86** 🏆 | 14.68 ± 4.34 | 27.54 ± 7.44 |
+| `cost_usd` | **3.14 ± 0.86** 🏆 | 14.68 ± 4.34 | 61.28 ± 18.91 |
 | *Production LoC* | 305.0 ± 43.7 | 300.5 ± 37.9 | 581.3 ± 153.6 |
 | *Code Mass (APP)* | 717.8 ± 67.8 | 706.7 ± 62.1 | 921.1 ± 137.6 |
 | *Test LoC* | 411.1 ± 46.4 | 597.1 ± 249.0 | 423.6 ± 64.6 |
 | *`unit_count`* | 14.8 ± 3.05 | 25.2 ± 4.38 | 38.4 ± 4.62 |
 | *`mutants_total` / survived* | 135 / 13.7 | 134 / 12.1 | 154 / 15.4 |
 | *of those uncovered* | 1.0 ± 1.94 | 7.3 ± 6.73 | 10.7 ± 12.59 |
-| *`total_tokens`* | 2.69 M | 19.2 M | 40.9 M |
+| *`total_tokens`* | 2.69 M | 19.2 M | 66.5 M |
 
 ### GPT-5.6 SOL — pi
 
@@ -198,9 +198,15 @@ The treatment is the same on both platforms; its cost is not.
 | Completed within budget | 100 % | **90 %** | 100 % | 100 % |
 | Correctness (external) | 0.99 | 0.97 | 1.00 | 1.00 |
 | `duration_seconds` | 1103 | 4624 | 1574 | 4927 |
-| `cost_usd` | 14.68 | 27.54 | 4.67 | 18.27 |
+| `cost_usd` | 14.68 | 61.28 | 4.67 | 18.27 |
 
 Both platforms pay a similar multiple in wall-clock — 4.2× on Opus, 3.1× on SOL.
+On price they no longer match: Opus pays 4.2× for the isolation against SOL's
+3.9×, and in absolute terms $61.28 against $18.27. The Opus column rose on
+2026-09-30 because `analyze_transcript.py` omitted subagent tokens until then
+while `parse_pi_transcript.py` had always counted them, so this contrast was
+previously read on an unequal basis
+([RQ-old-vs-new-exact-line-opus55 F-4.12.5](../../questions-claude/4.12-old-vs-new-exact-line-opus55/findings.md)).
 Only Opus converts that into a lost run: one of ten hits the timeout and ends at
 0.80, the lowest correctness value in the RQ. Two further Opus v1.1 runs miss one
 scenario each (0.93), which together pull the cell to 0.97 ± 0.06.
@@ -217,13 +223,13 @@ of magnitude.
 
 | | Inline | EXACT v1 | EXACT v1.1 |
 |---|---:|---:|---:|
-| Opus `cost_usd` | **3.14** 🏆 | 14.68 (4.7×) | 27.54 (8.8×) |
+| Opus `cost_usd` | **3.14** 🏆 | 14.68 (4.7×) | 61.28 (19.5×) |
 | SOL `cost_usd` | **0.60** 🏆 | 4.67 (7.7×) | 18.27 (30.3×) |
-| Opus `total_tokens` | 2.69 M | 19.2 M | 40.9 M |
+| Opus `total_tokens` | 2.69 M | 19.2 M | 66.5 M |
 | SOL `total_tokens` | 0.34 M | 6.72 M | 17.5 M |
 
 Inline TDD reaches the correctness ceiling on this kata in both models, at
-roughly a fifth to an eighth of the price of EXACT v1 and a ninth to a
+roughly a fifth to an eighth of the price of EXACT v1 and a twentieth to a
 thirtieth of EXACT v1.1. What the money buys is structure, not working software:
 halved complexity, smaller units and — on SOL — a markedly stronger test suite
 (F-1.10.7).

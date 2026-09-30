@@ -53,14 +53,14 @@ quality row is eligible. Correctness (internal) is 100 % in all four.
 | Mutation Score | **0.91 ± 0.06** 🏆 | **0.90 ± 0.09** 🏆 |
 | `predictions_correct_rate` | **99.0 %** 🏆 | **97.4 %** 🏆 |
 | `duration_seconds` | **1103.0 ± 311.0** 🏆 | 4624.0 ± 1422.5 |
-| `cost_usd` | **14.68 ± 4.34** 🏆 | 27.54 ± 7.44 |
+| `cost_usd` | **14.68 ± 4.34** 🏆 | 61.28 ± 18.91 |
 | *Production LoC* | 243.9 ± 32.8 | 447.9 ± 142.7 |
 | *Code Mass (APP)* | 706.7 ± 62.1 | 921.1 ± 137.6 |
 | *`cc_functions`* | 25.2 ± 4.38 | 38.4 ± 4.62 |
 | *`refactorings_applied`* | 47.2 ± 15.3 | 39.6 ± 13.6 |
 | *`mutants_total` / survived* | 134 / 12.1 | 154 / 15.4 |
 | *of those uncovered* | 7.3 ± 6.73 | 10.7 ± 12.59 |
-| *`total_tokens`* | 19.2 M | 40.9 M |
+| *`total_tokens`* | 19.2 M | 66.5 M |
 
 ### GPT-5.6 SOL / pi
 

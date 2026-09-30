@@ -94,8 +94,8 @@ result; and the cost ranking is decided by a tariff rather than by consumption
 | | Inline / O5 | EXACT / O5 | Sub / O5 | Inline / O5.5 | EXACT / O5.5 | Sub / O5.5 |
 |---|---:|---:|---:|---:|---:|---:|
 | `duration_seconds` | 255 ± 43 | 897 ± 176 | 3749 ± 792 | 124 ± 8 | 871 ± 89 | 2658 ± 357 |
-| `total_tokens` | 2.83 M ± 0.70 M | 14.7 M ± 4.4 M | 33.3 M ± 5.9 M | 1.27 M ± 0.24 M | 25.0 M ± 2.3 M | 39.0 M ± 3.4 M |
-| `cost_usd` | $2.94 ± 0.56 | $11.83 ± 3.08 | $23.03 ± 3.48 | $1.13 ± 0.12 | $9.96 ± 0.95 | $12.89 ± 0.96 |
+| `total_tokens` | 2.83 M ± 0.70 M | 14.7 M ± 4.4 M | 53.2 M ± 12.0 M | 1.27 M ± 0.24 M | 25.0 M ± 2.3 M | 55.7 M ± 4.6 M |
+| `cost_usd` | $2.94 ± 0.56 | $11.83 ± 3.08 | $50.54 ± 12.00 | $1.13 ± 0.12 | $9.96 ± 0.95 | $28.86 ± 2.54 |
 | Production LoC | 300.6 ± 42.97 | 292.6 ± 41.14 | 492.2 ± 86.43 | 236.2 ± 11.26 | 237.0 ± 16.84 | 279.8 ± 48.16 |
 | Test LoC | 418.0 ± 53.65 | 593.2 ± 257.99 | 432.2 ± 93.60 | 262.2 ± 21.94 | 266.4 ± 22.24 | 270.6 ± 12.50 |
 | Code Mass (APP) | 713.6 ± 83.71 | 690.6 ± 43.96 | 874.2 ± 107.92 | 782.4 ± 69.26 | 642.4 ± 55.19 | 670.6 ± 21.62 |
@@ -402,8 +402,8 @@ the model:
 | `cognitive_max` ↓ | 3.0 ± 1.41 | 2.8 ± 1.79 |
 | `mccabe_max` ↓ | 3.4 ± 0.89 | 3.2 ± 0.45 |
 | `duration_seconds` ↓ | 3749 ± 792 | **2658 ± 357** |
-| `cost_usd` ↓ | $23.03 ± 3.48 | **$12.89 ± 0.96** |
-| `total_tokens` | 33.3 M ± 5.9 M | 39.0 M ± 3.4 M |
+| `cost_usd` ↓ | $50.54 ± 12.00 | **$28.86 ± 2.54** |
+| `total_tokens` | 53.2 M ± 12.0 M | **55.7 M ± 4.6 M** |
 | Production LoC | 492.2 ± 86.4 | 279.8 ± 48.2 |
 | Code Mass (APP) | 874.2 ± 107.9 | 670.6 ± 21.6 |
 | `unit_count` | 36.6 ± 4.1 | 29.2 ± 5.1 |
@@ -414,14 +414,19 @@ Bold marks a gap larger than the larger of the two standard deviations; the
 unmarked complexity rows are ties.
 
 Two things separate this arm from the other two. **Cost is nearly halved
-($23.03 → $12.89) while token consumption goes up** (33.3 M → 39.0 M) — the same
-tariff inversion as F-2.4.4, but here the wall-clock moves with the cost rather
-than against it (3749 s → 2658 s), so the arm is genuinely faster as well as
-nominally cheaper. And **this is the only arm where Opus 5 misses full
+($50.54 → $28.86) while token consumption holds level** (53.2 M → 55.7 M, inside
+the larger σ) — the same tariff inversion as F-2.4.4, but here the wall-clock
+moves with the cost rather than against it (3749 s → 2658 s), so the arm is
+genuinely faster as well as nominally cheaper. The token row is the one this
+correction changed: it had read 33.3 M against 39.0 M, an apparent rise, because
+subagent tokens were absent from the figure and this arm spends more of them on
+Opus 5.5 (48 calls) than on Opus 5. Counted, the two models draw the same amount
+and only the tariff separates them (F-4.12.5 in
+[RQ-old-vs-new-exact-line-opus55](../4.12-old-vs-new-exact-line-opus55/findings.md)). And **this is the only arm where Opus 5 misses full
 correctness** (0.97, minimum 0.93) while Opus 5.5 holds 1.00 across five runs.
 
 The arm is also the most expensive of the three in absolute terms on both models
-— $12.89 against $9.96 for shared context and $1.13 for the inline instruction
+— $28.86 against $9.96 for shared context and $1.13 for the inline instruction
 on Opus 5.5. Isolation is not free; what this finding says is that its price
 falls markedly on the newer model.
 
