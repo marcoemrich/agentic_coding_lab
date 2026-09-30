@@ -27,8 +27,8 @@ core cost metric `cost_usd` (lower = better), per harness × kata.
 |---|---:|---:|---:|
 | `verification_pct` (higher) | 0.93 | 0.88 | **0.99** 🏆 |
 | `tests_passing` rate (higher) | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
-| `cost_usd` $ (lower) | 32.89 | 22.30 | **14.43** 🏆 |
-| `total_tokens` (lower) | 49.9 M | 34.1 M | **13.8 M** 🏆 |
+| `cost_usd` $ (lower) | 41.09 | 22.30 | **14.43** 🏆 |
+| `total_tokens` (lower) | 54.7 M | 34.1 M | **13.8 M** 🏆 |
 | `duration_seconds` (lower) | 3149 | 2393 | **1884** 🏆 |
 | `code_mass` (lower) | 862.8 | 920.6 | **782.0** 🏆 |
 | `cognitive_max` (lower) | **3.0** 🏆 | 4.6 | 3.6 |
@@ -42,8 +42,8 @@ core cost metric `cost_usd` (lower = better), per harness × kata.
 | Metric (direction) | CC | OC | pi |
 |---|---:|---:|---:|
 | `verification_pct` (higher) | **1.0** 🏆 | **1.0** 🏆 | **1.0** 🏆 |
-| `cost_usd` $ (lower) | 3.45 | 1.99 | **1.78** 🏆 |
-| `total_tokens` (lower) | 4.09 M | 1.96 M | **1.07 M** 🏆 |
+| `cost_usd` $ (lower) | 5.53 | 1.99 | **1.78** 🏆 |
+| `total_tokens` (lower) | 5.21 M | 1.96 M | **1.07 M** 🏆 |
 | `cognitive_max` (lower) | **5.0** 🏆 | 12.6 | 11.0 |
 | `mccabe_max` (lower) | **4.6** 🏆 | 8.8 | 8.0 |
 | `cc_longest_function` (lower) | **11.6** 🏆 | 21.8 | 17.8 |
@@ -92,7 +92,7 @@ implementations.
 
 ---
 
-## F-1.2 — pi is the cheapest and fastest harness, by a factor of 2.3 on the expensive kata
+## F-1.2 — pi is the cheapest and fastest harness, by a factor of 2.8 on the expensive kata
 
 Under uniform token×price measurement, `cost_usd` ranks on both katas
 **pi < OC < CC**. The ordering is identical on cost, tokens and wallclock — the three
@@ -100,18 +100,24 @@ axes do not trade off against each other here.
 
 | Kata | Metric | CC | OC | pi |
 |---|---|---:|---:|---:|
-| claim-office | `cost_usd` $ | 32.89 | 22.30 | **14.43** |
-| claim-office | `total_tokens` | 49.9 M | 34.1 M | **13.8 M** |
+| claim-office | `cost_usd` $ | 41.09 | 22.30 | **14.43** |
+| claim-office | `total_tokens` | 54.7 M | 34.1 M | **13.8 M** |
 | claim-office | `duration_seconds` | 3149 | 2393 | **1884** |
-| game-of-life | `cost_usd` $ | 3.45 | 1.99 | **1.78** |
-| game-of-life | `total_tokens` | 4.09 M | 1.96 M | **1.07 M** |
+| game-of-life | `cost_usd` $ | 5.53 | 1.99 | **1.78** |
+| game-of-life | `total_tokens` | 5.21 M | 1.96 M | **1.07 M** |
 | game-of-life | `duration_seconds` | 719 | 350 | **326** |
 
-The spread is widest on the expensive kata: on claim-office CC costs 2.3× pi
-($32.89 vs $14.43) and draws 3.6× the tokens (49.9 M vs 13.8 M). On game-of-life the
-cost gap narrows to 1.9× while the token gap stays at 3.8× — CC's overhead is
-proportionally larger on the small kata, but the absolute amounts are small enough
-that the tariff dominates less.
+The spread is widest on the expensive kata: on claim-office CC costs 2.8× pi
+($41.09 vs $14.43) and draws 4.0× the tokens (54.7 M vs 13.8 M). On game-of-life the
+cost gap is 3.1× and the token gap 4.9× — CC's overhead is proportionally larger on
+the small kata, and on the corrected figures it no longer narrows there.
+
+The CC column rose on 2026-09-30 and the OC and pi columns did not, which is a
+measurement correction rather than a harness change. `analyze_transcript.py` omitted
+subagent tokens until then, while `parse_pi_transcript.py` had always added them, so
+this RQ's headline factor was **understated**: the harness gap is larger than the
+2.3× originally published, not smaller. See
+[RQ-old-vs-new-exact-line-opus55 F-4.12.5](../../questions-claude/4.12-old-vs-new-exact-line-opus55/findings.md).
 
 Since all three arms run the same model on the same Requesty route and tariff, this is
 a **pure harness effect**, not a pricing artifact: the harnesses differ in how many

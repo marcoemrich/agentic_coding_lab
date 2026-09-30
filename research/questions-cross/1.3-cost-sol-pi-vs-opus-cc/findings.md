@@ -27,8 +27,8 @@ Primary outcome **cost** `cost_usd` (lower = better) + Correctness (external)
 
 | Metric (direction) | sol-pi | opus-cc |
 |---|---:|---:|
-| `cost_usd` $ (lower) | **2.54** 🏆 | 32.89 |
-| `total_tokens` (lower) | **2.09 M** 🏆 | 49.9 M |
+| `cost_usd` $ (lower) | **2.54** 🏆 | 41.09 |
+| `total_tokens` (lower) | **2.09 M** 🏆 | 54.7 M |
 | `duration_seconds` (lower) | **503** 🏆 | 3149 |
 | `verification_pct` (higher) | **1.00** 🏆 | 0.93 |
 | `tests_passing` rate (higher) | **100 %** 🏆 | **100 %** 🏆 |
@@ -40,8 +40,8 @@ Primary outcome **cost** `cost_usd` (lower = better) + Correctness (external)
 
 | Metric (direction) | sol-pi | opus-cc |
 |---|---:|---:|
-| `cost_usd` $ (lower) | **1.09** 🏆 | 3.45 |
-| `total_tokens` (lower) | **0.66 M** 🏆 | 4.09 M |
+| `cost_usd` $ (lower) | **1.09** 🏆 | 5.53 |
+| `total_tokens` (lower) | **0.66 M** 🏆 | 5.21 M |
 | `duration_seconds` (lower) | **240** 🏆 | 719 |
 | `verification_pct` (higher) | **1.0** 🏆 | **1.0** 🏆 |
 | `cognitive_max` (lower) | 13.4 | **5.0** 🏆 |
@@ -55,20 +55,26 @@ both bundles satisfy `tests_passing` = 100 % (and on game-of-life both
 
 ---
 
-## F-1.1 — sol-pi is drastically cheaper on both katas — ~13× on the expensive kata
+## F-1.1 — sol-pi is drastically cheaper on both katas — ~16× on the expensive kata
 
-sol-pi's cost advantage scales with the kata's token load: ~3.2× on the
-cheap game-of-life, ~13× on the token-heavy claim-office.
+sol-pi's cost advantage scales with the kata's token load: ~5.1× on the
+cheap game-of-life, ~16× on the token-heavy claim-office.
 
 | Kata | sol-pi `cost_usd` | opus-cc `cost_usd` | Factor | Savings |
 |---|---:|---:|---:|---:|
-| claim-office | 2.54 | 32.89 | **~13.0×** | ~92 % |
-| game-of-life | 1.09 | 3.45 | **~3.2×** | ~68 % |
+| claim-office | 2.54 | 41.09 | **~16.2×** | ~94 % |
+| game-of-life | 1.09 | 5.53 | **~5.1×** | ~80 % |
 
 The advantage comes from two aligned levers: sol-pi consumes **massively
-fewer tokens** (claim-office 2.09 M vs 49.9 M = ~4 %, game-of-life 0.66 M vs
-4.09 M = ~16 %) and runs on the cheaper model tariff. The token gap is
-extreme on claim-office — opus-cc processes ~24× as much there. Since the two
+fewer tokens** (claim-office 2.09 M vs 54.7 M = ~4 %, game-of-life 0.66 M vs
+5.21 M = ~13 %) and runs on the cheaper model tariff. The token gap is
+extreme on claim-office — opus-cc processes ~26× as much there.
+
+The opus-cc column rose on 2026-09-30 and the sol-pi column did not, which is a
+measurement correction: `analyze_transcript.py` omitted subagent tokens until then,
+while `parse_pi_transcript.py` had always added them. This RQ's advantage for sol-pi
+was therefore **understated**
+([RQ-old-vs-new-exact-line-opus55 F-4.12.5](../../questions-claude/4.12-old-vs-new-exact-line-opus55/findings.md)). Since the two
 bundles carry different tariffs, the $ factor is not purely token-driven, but
 the token ranking dominates the order of magnitude. sol-pi is additionally
 much faster (claim-office 503 s vs 3149 s, game-of-life 240 s vs 719 s). H1
