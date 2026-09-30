@@ -45,41 +45,61 @@ _spec.loader.exec_module(_rigour)
 TEST_RUN = _rigour.TEST_RUN
 
 # --- Outcome classification, per stack -------------------------------------
-# Order matters: RED is checked first, so a run reporting both failures and
-# passes ("Tests  3 failed | 12 passed") is red. Models frequently pipe the
-# output through grep, so every pattern must survive on filtered lines alone.
-RED = re.compile(
-    r"\bTests?\s+\d+\s+failed"                       # vitest summary
-    r"|\bTest Files\s+\d+\s+failed"                   # vitest file summary
-    r"|^\s*FAIL\b|\bFAIL\s+src/"                      # vitest per-file
-    r"|\bAssertionError\b|\bexpected .* to (?:be|equal)\b"
-    r"|\bTests run:\s*\d+,\s*Failures:\s*(?!0\b)\d+"  # surefire, failures > 0
+# Two tiers, and the order between them is load-bearing.
+#
+# A runner's own summary line is authoritative: it is the framework reporting
+# on its own run. The heuristics below it are guesses from surrounding text,
+# and they can be fooled — models routinely bundle a type-check and the suite
+# into one shell command, so a `tsc` failure lands in the same output as a
+# clean test run. Measured on a real run (2026-09-30 kesseler, invocation 80):
+# `TS2307: Cannot find module 'node:child_process'` next to
+# `Tests  47 passed (47)`. Reading the heuristic first calls that red; the
+# framework's own reporter calls it green, and the framework is right — vitest
+# transpiles without type-checking, so a tsc error does not fail a suite.
+#
+# Models also pipe output through grep, so every pattern must survive on
+# filtered lines alone.
+FAIL_SUMMARY = re.compile(
+    r"\bTests?\s+\d+\s+failed"                       # vitest
+    r"|\bTest Files\s+\d+\s+failed"
+    r"|\bTests run:\s*\d+,\s*Failures:\s*(?!0\b)\d+"  # surefire
     r"|\bTests run:\s*\d+,\s*Failures:\s*\d+,\s*Errors:\s*(?!0\b)\d+"
-    r"|\bBUILD FAILURE\b"                             # maven, incl. compile error
-    r"|\bCOMPILATION ERROR\b"
-    r"|\b\d+ failed\b"                                # pytest short summary
-    r"|^=+ .*\b\d+ (?:failed|error)"                  # pytest header line
-    r"|\bERRORS?\b.*\bcollecting\b|\bcollection error\b"
-    r"|\bTS\d{4}:|\bTransform failed\b|\bSyntaxError\b"  # did not compile
-    r"|\bcannot find (?:module|symbol)\b",
+    r"|^=+ .*\b\d+ (?:failed|error)"                  # pytest header
+    r"|\b\d+ failed\b",                              # pytest short summary
     re.I | re.M)
-GREEN = re.compile(
-    r"\bTests?\s+\d+\s+passed\b"                      # vitest
+PASS_SUMMARY = re.compile(
+    r"\bTests?\s+\d+\s+passed\b"                     # vitest
     r"|\bTest Files\s+\d+\s+passed\b"
     r"|\bTests run:\s*\d+,\s*Failures:\s*0,\s*Errors:\s*0"   # surefire clean
-    r"|\bBUILD SUCCESS\b"
     r"|^=+ .*\b\d+ passed"                            # pytest header
-    r"|\b\d+ passed\b",                               # pytest short summary
+    r"|\b\d+ passed\b",                              # pytest short summary
     re.I | re.M)
+# Fallbacks only: no summary line was emitted at all, usually because the suite
+# never got far enough to produce one.
+RED_HEURISTIC = re.compile(
+    r"^\s*FAIL\b|\bFAIL\s+src/"                       # vitest per-file
+    r"|\bAssertionError\b|\bexpected .* to (?:be|equal)\b"
+    r"|\bBUILD FAILURE\b|\bCOMPILATION ERROR\b"       # maven
+    r"|\bERRORS?\b.*\bcollecting\b|\bcollection error\b"
+    r"|\bTS\d{4}:|\bTransform failed\b|\bSyntaxError\b"
+    r"|\bcannot find (?:module|symbol)\b",
+    re.I | re.M)
+GREEN_HEURISTIC = re.compile(r"\bBUILD SUCCESS\b", re.I)
 
 
 def classify(result_text):
     """red / green / unknown for one suite invocation's output."""
     if not result_text:
         return "unknown"
-    if RED.search(result_text):
+    # Tier 1 — the runner's own verdict.
+    if FAIL_SUMMARY.search(result_text):
         return "red"
-    if GREEN.search(result_text):
+    if PASS_SUMMARY.search(result_text):
+        return "green"
+    # Tier 2 — no summary line; guess from the surrounding text.
+    if RED_HEURISTIC.search(result_text):
+        return "red"
+    if GREEN_HEURISTIC.search(result_text):
         return "green"
     return "unknown"
 
