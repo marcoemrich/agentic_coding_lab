@@ -158,44 +158,64 @@ replication is desirable.
 
 ---
 
-## F-model-quality.4 — Token Costs: Fable 5 and Sonnet/Opus 4.7 the Cheapest, Opus 4.8 the Most Expensive; Wallclock Uniform
+## F-model-quality.4 — Token Costs: Sonnet 4.6 and Opus 4.6 the Cheapest, Opus 5 the Most Expensive; Wallclock Uniform
 
 **Statement**: Token consumption (mean) and wallclock time by model:
 
 | Model | `total_tokens` (mean) | `duration_seconds` (mean) |
 |---|---:|---:|
-| sonnet-4-6-no-thinking | 2.21 M | 1116.7 |
-| fable-5-no-thinking | **2.26 M** 🏆 | 1158.0 |
-| sonnet-4-6 | 2.41 M | 846.3 |
-| opus-4-7 | 2.49 M | **827.7** 🏆 |
-| opus-4-7-no-thinking | 2.56 M | 1162.9 |
-| fable-5 | 2.64 M | 1269.0 |
-| opus-4-6-portkey | 2.93 M | 956.3 |
-| opus-4-8-no-thinking | 3.17 M | 1045.5 |
-| opus-4-8 | 3.80 M | 1017.0 |
-| opus-4-6-portkey-no-thinking | 3.87 M | 1160.7 |
+| sonnet-4-6 | **6.42 M ± 0.24** 🏆 | 846.3 |
+| opus-4-6-portkey | **6.64 M ± 0.56** 🏆 | 956.3 |
+| sonnet-4-6-no-thinking | (6.72 M ± 1.17) | 1116.7 |
+| opus-4-7-no-thinking | **7.29 M ± 1.07** 🏆 | 1162.9 |
+| opus-4-7 | **7.64 M ± 1.69** 🏆 | **827.7** 🏆 |
+| fable-5-no-thinking | 7.82 M ± 0.49 | 1158.0 |
+| opus-4-6-portkey-no-thinking | 8.35 M ± 3.49 | 1160.7 |
+| opus-4-8 | 8.64 M ± 0.73 | 1017.0 |
+| fable-5 | 8.96 M ± 1.08 | 1269.0 |
+| opus-4-8-no-thinking | 9.37 M ± 0.70 | 1045.5 |
+| opus-5 | 12.96 M ± 2.58 | 1526.3 |
+| opus-5-no-thinking | 13.16 M ± 1.06 | 1467.7 |
 
-Lower = better; 🏆 = best model per column, correctness-gated
-(sonnet-4-6-no-thinking with `verification_pct = 0.73` is not trophy-eligible despite the lowest
-token value — the low consumption partly reflects a
-faulty run, not genuine frugality; the token trophy therefore goes to
-fable-5-no-thinking as the cheapest correct cell).
+Lower = better; 🏆 = best model per column, correctness-gated.
+sonnet-4-6-no-thinking (`verification_pct = 0.73`) is not trophy-eligible: its
+low consumption partly reflects a faulty run rather than genuine frugality, so
+its value is shown in parentheses. Four trophies on the token column rather than
+one, because the leading cluster is tight — every gap from sonnet-4-6 up to
+opus-4-7 sits inside the larger of the two standard deviations involved. Read
+them as one group, not a ranking.
 
-The spread between the cheapest correct model (fable-5-no-thinking ~2.3 M) and
-the most expensive (opus-4-6-no-thinking ~3.9 M, opus-4-8 ~3.8 M) is a factor of ~1.7×.
-**Fable 5 combines the lowest complexity (F-model-quality.2) with a cheap
-token budget** — unlike Opus 4.8, whose compact output (lowest
-Code Mass) is bought with the highest inference budget (~1.4× compared to
-Fable 5).
+The spread between the cheapest correct model (sonnet-4-6 6.42 M) and the most
+expensive (opus-5-no-thinking 13.16 M) is a factor of ~2.1×; across the 4.x
+generation alone it is ~1.5×, which is narrow enough that the token axis barely
+separates those models at all.
+
+**Fable 5's cheap-token claim does not survive.** It sits 6th and 9th of twelve
+(7.82 M and 8.96 M), so its complexity advantage from F-model-quality.2 is
+bought at an ordinary inference budget, not a low one. Opus 4.8's compact output
+(lowest Code Mass) likewise costs an above-average budget, which is the part of
+the old reading that holds.
+
+This finding was re-derived after the subagent-token correction
+([RQ-old-vs-new-exact-line-opus55 F-4.12.5](../4.12-old-vs-new-exact-line-opus55/findings.md)):
+`exact-subagents-v1-cc` isolates all four phases, so every cell here was
+recorded short. **The correction was not uniform, which is why it re-ranked the
+field** — it multiplies opus-4-6-portkey by 2.3× and Fable 5 by 3.4×, because
+the models differ in how much they delegate. A model that spawns more subagent
+work was hidden more. Any earlier token ranking across models on a
+subagent workflow is unsafe for the same reason.
 
 Wallclock is predominantly at ~14–21 min/run; individual opus-4-7-no-thinking
 replicates spread strongly upward (pool n=10, max 3923 s).
 
-**Consequence**: On subagents-v1, model choice is a trade-off between code compactness
-(Opus 4.8 ahead on `code_mass`) and the combination of low complexity
-and token budget (Fable 5 ahead). Fable 5 is the best all-rounder — trivial
-`cognitive_max` at a favorable cost; Opus 4.8 pays off when minimal
-Code Mass is the goal and the higher token budget is acceptable.
+**Consequence**: On subagents-v1, model choice is a trade-off between code
+compactness (Opus 4.8 ahead on `code_mass`) and low complexity (Fable 5 ahead).
+The token budget no longer sides with either: Fable 5 and Opus 4.8 sit within
+0.4–0.7 M of each other in the upper half of the field, and the cheapest cells
+are Sonnet 4.6 and Opus 4.6, which lead on neither quality axis. Fable 5
+remains the pick for trivial `cognitive_max`, Opus 4.8 for minimal Code Mass —
+but the choice is now quality against quality, with cost close to flat across
+the 4.x generation.
 
 ---
 
