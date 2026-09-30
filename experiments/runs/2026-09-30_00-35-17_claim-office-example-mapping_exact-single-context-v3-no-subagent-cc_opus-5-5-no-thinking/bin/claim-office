@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# claim-office: reads a scenario JSON from stdin, writes results JSON to stdout.
+DIR="$(cd "$(dirname "$0")/.." && pwd)"
+exec "$DIR/node_modules/.bin/tsx" "$DIR/src/cli.ts"
