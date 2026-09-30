@@ -22,7 +22,7 @@ binding quality metric from RQ-architecture-axis-opus5 F-1.6.
 | **Smell Total** — lower = better | 0.00 ± 0.00 | **0.00 ± 0.00** 🏆 | 0.20 ± 0.45 |
 | **Code Mass (APP)** — lower = better | 821 ± 111 | 666 ± 26 | **600 ± 60** 🏆 |
 | `duration_seconds` — lower = better | 3841 ± 1523 | **548 ± 57** 🏆 | **582 ± 66** 🏆 |
-| `total_tokens` — lower = better | 126.2 M ± 42 M | **12.2 M ± 1.3 M** 🏆 | **11.8 M ± 1.3 M** 🏆 |
+| `total_tokens` — lower = better | 140.9 M ± 46 M | **12.2 M ± 1.3 M** 🏆 | **12.6 M ± 1.4 M** 🏆 |
 | `refactorings_applied` — design characteristic | 33.00 ± 14.27 | 4.20 ± 3.42 | 0.00 ± 0.00 |
 | `test_blocks` | 48.40 ± 2.07 | 13.40 ± 2.51 | 19.00 ± 2.74 |
 | `test_cases_total` | 49.00 ± 2.00 | 45.00 ± 11.51 | 36.80 ± 5.26 |
@@ -82,9 +82,9 @@ H1 confirmed: a refactor stage has an effect. H2 confirmed: `pocock-2026-09-04` 
 
 | | `cc_avg_loc_per_function` | `duration_seconds` | `total_tokens` | `refactorings_applied` |
 |---|---:|---:|---:|---:|
-| `hybrid-v2.4` phase commands + subagent | 4.49 ± 0.54 | 3841 ± 1523 | 126.2 M ± 42 M | 33.00 ± 14.27 |
+| `hybrid-v2.4` phase commands + subagent | 4.49 ± 0.54 | 3841 ± 1523 | 140.9 M ± 46 M | 33.00 ± 14.27 |
 | `superpowers-2026-09-04` one inline skill | 7.90 ± 1.15 | 548 ± 57 | 12.2 M ± 1.3 M | 4.20 ± 3.42 |
-| Factor | 0.57× | **7.0×** | **10.3×** | 7.9× |
+| Factor | 0.57× | **7.0×** | **11.6×** | 7.9× |
 
 The answer to the RQ's guiding question is therefore twofold: the subagent apparatus **does buy** measurably better decomposition (4.49 against 7.90, ≈ 3 σ) — but at the price of 7× wallclock and 10× tokens, with worse Correctness (external) at the same time. H3 in the variant "per-cycle refactoring alone suffices" is refuted: `superpowers-2026-09-04` refactors per cycle and still lands clearly outside the `hybrid-v2.4` level. H4 confirmed (`superpowers-2026-09-04` markedly cheaper than `hybrid-v2.4`).
 
@@ -99,9 +99,11 @@ The σ values are part of the result: relative to its mean, `hybrid-v2.4` spread
 | | `duration_seconds` | `total_tokens` |
 |---|---:|---:|
 | `superpowers-2026-09-04` per-cycle refactor, no review | **548 ± 57** | **12.2 M ± 1.3 M** |
-| `pocock-2026-09-04` no refactor, two review subagents | 582 ± 66 | 11.8 M ± 1.3 M |
+| `pocock-2026-09-04` no refactor, two review subagents | 582 ± 66 | 12.6 M ± 1.4 M |
 
-H8 (`pocock-2026-09-04` is the cheapest cell) is **not confirmed**: `pocock-2026-09-04` sits above `superpowers-2026-09-04` on wallclock and just below it on tokens, both gaps within 1 σ. Reading: the two review subagents cost about as much as the saved per-cycle refactoring yields — and deliver no code, because by construction they only report. Dropping the review stage would give the cheapest variant of the field; with it, `pocock-2026-09-04` is cost-neutral against `superpowers-2026-09-04` and worse on every quality metric.
+H8 (`pocock-2026-09-04` is the cheapest cell) is **not confirmed**: `pocock-2026-09-04` sits above `superpowers-2026-09-04` on both wallclock and tokens, both gaps within 1 σ. Reading: the two review subagents cost about as much as the saved per-cycle refactoring yields — and deliver no code, because by construction they only report.
+
+The token row is the one this RQ had to re-measure: `pocock-2026-09-04` spends its review budget inside two subagents, and until 2026-09-30 subagent tokens were absent from `total_tokens` entirely (RQ-old-vs-new-exact-line-opus55 F-4.12.5). On the uncorrected figure this cell read 11.8 M and undercut `superpowers-2026-09-04`, which is the one arrangement of the numbers that would have argued against this finding. Dropping the review stage would give the cheapest variant of the field; with it, `pocock-2026-09-04` is cost-neutral against `superpowers-2026-09-04` and worse on every quality metric.
 
 ---
 
