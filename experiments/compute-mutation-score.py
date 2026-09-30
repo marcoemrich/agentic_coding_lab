@@ -698,6 +698,13 @@ def backfill_from_reports(rq_id: str, matched: list) -> int:
 
 
 def main(argv: list[str]) -> int:
+    # Mutation testing runs the suite once per mutant — hundreds of
+    # invocations. The stack's TDD event reporter must stay out of all of them,
+    # or tdd-events.jsonl stops describing the agent's exercise and starts
+    # describing ours. Set once here: every engine below inherits the
+    # environment through os.environ.copy().
+    os.environ["TDD_REPORTER_OFF"] = "1"
+
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,

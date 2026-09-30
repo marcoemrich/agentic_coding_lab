@@ -58,6 +58,15 @@ CSV_COLUMNS = [
     "predictions_correct", "predictions_total", "tests_passed_immediately",
     "test_blocks", "test_cases_total", "test_cases_first_block",
     "red_verified", "red_unverified", "tcr_refactor_steps",
+    "suite_runs", "suite_unknown_runs", "suite_cycles", "suite_new_failures",
+    "suite_opens_red", "suite_ends_green", "suite_unresolved_red",
+    "suite_longest_green_streak",
+    "cycles_total", "cycles_closed", "test_first_rate",
+    "red_batch_size", "red_batch_max", "red_batch_unmeasurable",
+    "green_batch_size", "refactor_per_cycle", "green_attempts",
+    "chain_deviations", "chain_opens_red", "chain_ends_green",
+    "tdd_discipline", "tdd_discipline_test_first",
+    "tdd_discipline_step", "tdd_discipline_closure",
     "tcr_method_commits", "tcr_red_commits", "tcr_green_commits",
     "tcr_refactor_commits",
     "tests_passing", "tests_total", "todos_remaining",
@@ -437,6 +446,47 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
         "red_verified":               sm.get("red_verified"),
         "red_unverified":             sm.get("red_unverified"),
         "tcr_refactor_steps":          sm.get("tcr_refactor_steps"),
+        # TDD rigour read from the suite outcomes instead of the edit tools
+        # (measure-suite-transitions.py, folded in by analyze-run.sh).
+        # suite_cycles counts observed red->green transitions, so unlike the
+        # test_blocks family above it also produces numbers for a model that
+        # edits through the shell, and unlike cycle_count it needs no markers.
+        # It is a lower bound on cycle_count (~0.5x, r = 0.82), a related but
+        # distinct construct — do not put the two in one column.
+        # suite_unknown_runs is the trust column: it says how many suite
+        # invocations could not be classified at all.
+        "suite_runs":                 sm.get("suite_runs"),
+        "suite_unknown_runs":         sm.get("suite_unknown_runs"),
+        "suite_cycles":               sm.get("suite_cycles"),
+        "suite_new_failures":         sm.get("suite_new_failures"),
+        "suite_opens_red":            sm.get("suite_opens_red"),
+        "suite_ends_green":           sm.get("suite_ends_green"),
+        "suite_unresolved_red":       sm.get("suite_unresolved_red"),
+        "suite_longest_green_streak": sm.get("suite_longest_green_streak"),
+        # Phase-chain metrics (tdd-report.py over the stack reporter's event
+        # stream). The one discipline source that reads no marker, no edit tool
+        # and no commit, so it cannot fall silent because a workflow declined
+        # to emit something. README, "Phase chain metrics", has the vocabulary.
+        "cycles_total":               sm.get("cycles_total"),
+        "cycles_closed":              sm.get("cycles_closed"),
+        "test_first_rate":            sm.get("test_first_rate"),
+        "red_batch_size":             sm.get("red_batch_size"),
+        "red_batch_max":              sm.get("red_batch_max"),
+        "red_batch_unmeasurable":     sm.get("red_batch_unmeasurable"),
+        "green_batch_size":           sm.get("green_batch_size"),
+        "refactor_per_cycle":         sm.get("refactor_per_cycle"),
+        "green_attempts":             sm.get("green_attempts"),
+        "chain_deviations":           sm.get("chain_deviations"),
+        "chain_opens_red":            sm.get("chain_opens_red"),
+        "chain_ends_green":           sm.get("chain_ends_green"),
+        # The consolidated discipline score, 0..1, higher is better. Geometric
+        # mean of test-first / step-size / cycle-closure, so it is conjunctive:
+        # a zero in any one sends the score to 0. Always report the three
+        # components with it — they are what makes a 0 diagnosable.
+        "tdd_discipline":             sm.get("tdd_discipline"),
+        "tdd_discipline_test_first":  sm.get("tdd_discipline_test_first"),
+        "tdd_discipline_step":        sm.get("tdd_discipline_step"),
+        "tdd_discipline_closure":     sm.get("tdd_discipline_closure"),
         "tcr_method_commits":          tcr.get("method_commits"),
         "tcr_red_commits":             tcr.get("red_commits"),
         "tcr_green_commits":           tcr.get("green_commits"),

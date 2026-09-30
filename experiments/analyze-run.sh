@@ -486,7 +486,9 @@ analyze_single_run() {
             jq 'del(.pnpm)' "$pkg_backup" > "$run_dir/package.json"
         fi
 
-        test_output=$(cd "$run_dir" && pnpm test 2>&1) || true
+        # TDD_REPORTER_OFF: this run of the suite is the analyzer's, not the
+        # agent's, and must not land in tdd-events.jsonl.
+        test_output=$(cd "$run_dir" && TDD_REPORTER_OFF=1 pnpm test 2>&1) || true
         echo "$test_output"
 
         # Check if tests passed. Vitest summary line:
@@ -509,7 +511,7 @@ analyze_single_run() {
         # Run coverage if tests passed
         if [ "$tests_passed" = true ]; then
             echo -e "\n${YELLOW}Running Coverage Analysis...${NC}"
-            (cd "$run_dir" && pnpm test:coverage 2>&1) > /dev/null || true
+            (cd "$run_dir" && TDD_REPORTER_OFF=1 pnpm test:coverage 2>&1) > /dev/null || true
 
             # Extract coverage from json-summary (statements and branches only)
             if [ -f "$run_dir/coverage/coverage-summary.json" ] && command -v jq &> /dev/null; then
@@ -1516,9 +1518,22 @@ EOF
             [ -z "$suite_json" ] && suite_json="{}"
         fi
 
+        # The phase chain's derived metrics, from the stack reporter's event
+        # stream. One source for every workflow and harness: no marker, no edit
+        # tool, no commit is read, so nothing here can fall silent because a
+        # workflow declined to emit something. Empty for runs predating the
+        # reporter — see README, "Phase chain metrics".
+        local chain_json="{}"
+        if [ -f "$EXPERIMENTS_DIR/tdd-report.py" ]; then
+            chain_json=$(python3 "$EXPERIMENTS_DIR/tdd-report.py" \
+                "$run_dir" --json 2>/dev/null) || chain_json="{}"
+            [ -z "$chain_json" ] && chain_json="{}"
+        fi
+
         jq --argjson impl_loc "$impl_loc" \
            --argjson rigour "$rigour_json" \
            --argjson suite "$suite_json" \
+           --argjson chain "$chain_json" \
            --argjson test_loc "$test_loc" \
            --argjson test_count "$test_count" \
            --argjson todo_count "$todo_count" \
@@ -1619,6 +1634,22 @@ EOF
             .summary_metrics.suite_ends_green = ($suite.ends_green // null) |
             .summary_metrics.suite_unresolved_red = ($suite.unresolved_red // null) |
             .summary_metrics.suite_longest_green_streak = ($suite.longest_green_streak // null) |
+            .summary_metrics.cycles_total = ($chain.cycles_total // null) |
+            .summary_metrics.cycles_closed = ($chain.cycles_closed // null) |
+            .summary_metrics.test_first_rate = ($chain.test_first_rate // null) |
+            .summary_metrics.red_batch_size = ($chain.red_batch_size // null) |
+            .summary_metrics.red_batch_max = ($chain.red_batch_max // null) |
+            .summary_metrics.red_batch_unmeasurable = ($chain.red_batch_unmeasurable // null) |
+            .summary_metrics.green_batch_size = ($chain.green_batch_size // null) |
+            .summary_metrics.refactor_per_cycle = ($chain.refactor_per_cycle // null) |
+            .summary_metrics.green_attempts = ($chain.green_attempts // null) |
+            .summary_metrics.chain_deviations = ($chain.deviations // null) |
+            .summary_metrics.chain_opens_red = ($chain.opens_red // null) |
+            .summary_metrics.chain_ends_green = ($chain.ends_green // null) |
+            .summary_metrics.tdd_discipline = ($chain.tdd_discipline // null) |
+            .summary_metrics.tdd_discipline_test_first = ($chain.tdd_discipline_test_first // null) |
+            .summary_metrics.tdd_discipline_step = ($chain.tdd_discipline_step // null) |
+            .summary_metrics.tdd_discipline_closure = ($chain.tdd_discipline_closure // null) |
             .summary_metrics.avg_cycle_seconds = $avg_cycle |
             .summary_metrics.avg_red_seconds = $avg_red |
             .summary_metrics.avg_green_seconds = $avg_green |
@@ -1633,6 +1664,20 @@ EOF
     # Save report
     echo -e "$report_content" > "$report_file"
     echo -e "${GREEN}Saved report to: $report_file${NC}"
+
+    # Readable TDD phase chain, derived from the stack reporter's event stream
+    # rather than from markers, tool calls or commits — so it reads the same on
+    # every workflow and harness. Absent for every run that predates the
+    # reporter, which is not an error: no stream, no report, analysis continues.
+    if [ -f "$run_dir/tdd-events.jsonl" ] && [ -f "$EXPERIMENTS_DIR/tdd-report.py" ]; then
+        if python3 "$EXPERIMENTS_DIR/tdd-report.py" "$run_dir" \
+               -o "$run_dir/tdd-report.md" 2>/dev/null; then
+            echo -e "${GREEN}Saved TDD phase chain to: $run_dir/tdd-report.md${NC}"
+            echo -e "  $(python3 "$EXPERIMENTS_DIR/tdd-report.py" "$run_dir" --chain 2>/dev/null | cut -c1-160)"
+        else
+            echo -e "${YELLOW}TDD phase chain could not be rendered${NC}"
+        fi
+    fi
 
     # Mark the analysis as successfully completed. Reaching this line
     # means every preceding step ran without `set -e` aborting us. If

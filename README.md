@@ -653,6 +653,8 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 | `experiments/parse_pi_transcript.py` | Parse `transcript-pi.jsonl` for the same TDD-cycle metrics. Used for **pi** runs, where skills are auto-loaded documents (not tool calls) and cycle counting relies on text markers (`## Red` headers) in assistant output instead of `Skill` tool invocations. Writes `transcript-metrics.json`. |
 | `experiments/parse_opencode_transcript.py` | Parse OpenCode session exports into `transcript-metrics.json`. Used for **OpenCode** runs. |
 | `experiments/parse_cursor_transcript.py` | Parse `transcript-cursor.jsonl` (the `stream-json` NDJSON event stream that `run-batch.sh` extracts from `run.log`) into `transcript-metrics.json`. Used for **cursor-cli** runs. Same output schema as the pi and OpenCode parsers. |
+| `experiments/tdd-report.py` | Derive the TDD phase chain and its metrics from the stack reporter's `tdd-events.jsonl` — reads no marker, no tool call and no commit, so it reads the same on every workflow and harness. Default output is the readable markdown report (`analyze-run.sh` writes it to `tdd-report.md` in the run dir); `--chain` prints the one-line chain, `--json` the metrics object that gets folded into `metrics.json`. Empty object for runs predating the reporter. See "Phase chain metrics". |
+| `experiments/measure-suite-transitions.py` | The retroactive approximation of the above: derives the same red/green state sequence from the transcript instead of the reporter, so it works on the existing corpus and doubles as an independent cross-check on new runs. `--run <dir>` emits one JSON object; batch mode takes the same filters as `measure-tdd-rigour.py` plus `--compare`. |
 | `experiments/measure-tdd-rigour.py` | Classify TDD rigour from the tool sequence alone — no phase markers required, so it works on vendored external skills that must stay unmodified. `--run <dir>` emits one JSON object (this is how `analyze-run.sh` folds `test_blocks`, `test_cases_*` and `red_verified/unverified` into `metrics.json`); without it, batch mode scans `runs/` and takes `--pattern`, `--workflow` and `--kata-suffix` filters. Handles Claude Code and pi transcripts; OpenCode/cursor formats are skipped and counted. |
 
 ### Aggregation
@@ -905,6 +907,147 @@ populated.
 **Not covered by either source:** GREEN discipline. Nothing measures whether only
 the minimal code to pass was written; over-implementation shows up indirectly in
 `cognitive_max` / `code_mass`, but there is no direct metric for it.
+
+### Phase chain metrics
+
+A third source, and the only one that reads **nothing the workflow has to
+supply**. Both sources above key on something optional: marker metrics need the
+workflow to emit phase markers, and the `test_blocks` family needs
+`Write`/`Edit`/`MultiEdit` tool calls. Each therefore falls silent somewhere —
+vendored external skills carry no markers by policy, and a model that edits
+through the shell (heredocs, `sed -i`, inline `python3` replaces) makes no
+edit-tool calls at all, which zeroes `test_blocks`, `red_verified` and their
+siblings in a way indistinguishable from "never wrote a test".
+
+The one event no TDD workflow can avoid is **running the tests**. Each stack
+therefore carries a test-framework reporter that the framework itself invokes —
+`experiments/stacks/typescript-vitest/tdd-reporter.mjs` — appending one event
+per suite invocation to `tdd-events.jsonl`: the outcome, the test names, and a
+content hash per source file. `tdd-report.py` derives the phase of each event
+from **what changed since the previous invocation and what the suite then did**,
+so the vocabulary is identical across workflows, harnesses and edit mechanisms.
+
+`analyze-run.sh` writes the readable chain to `tdd-report.md` in the run
+directory and folds the metrics into `metrics.json`. The pipeline's own test
+runs are excluded via `TDD_REPORTER_OFF` — without it, `analyze-run.sh` would
+append its own events and mutation testing would add one per mutant.
+
+#### The label vocabulary
+
+A chain reads e.g. `Red -> Green -> Refactor -> Red -> Green`. The vocabulary is
+deliberately wider than red/green/refactor, because the interesting runs are the
+ones that do something else: collapsing `Both` into "red" would hide exactly the
+finding. Five labels make up a healthy cycle, six are deviations.
+
+| Label | Derivation | Healthy |
+|---|---|:-:|
+| `Red` | test file changed, suite fails | ✓ |
+| `Red(c)` | same, but does not compile yet — step 1 of a two-step red phase | ✓ |
+| `Green` | implementation changed, suite went from fail to pass | ✓ |
+| `Refactor` | implementation changed, suite stayed green | ✓ |
+| `Verify` | nothing changed, suite re-run | ✓ |
+| `Start` | first invocation; green means tests *and* implementation existed before anything ran | ✓ |
+| `Green?` | implementation changed, still failing — the attempt missed | ✗ |
+| `Green?(c)` | implementation changed, does not compile | ✗ |
+| `Both` | test **and** implementation changed together — **no verified red** | ✗ |
+| `Skip` | test arrived and passed immediately — was never red | ✗ |
+| `Drop` | tests were removed | ✗ |
+| `Break` / `Break(c)` | an implementation change broke a green suite | ✗ |
+
+`Skip` and `Drop` are told apart by the test count in the event, not by the
+diff: a test-file change that leaves the suite green means either "a new test
+passed at once" or "tests were deleted", and those are two different findings.
+
+Two rules in the classifier are worth knowing, because both were defects first:
+
+- **A green is judged against the tests the current cycle put in the red, not
+  against the whole suite.** A run that leaves one unrelated test failing keeps
+  the suite red for the rest of the run, and a global check then labels every
+  later implementation step `Green?` and drives `cycles_closed` to 0 on a run
+  doing textbook TDD on the current test. Measured on a six-invocation fixture:
+  the global check read `Red -> Red(c) -> Green? -> Red -> Green? -> Green?`
+  where two cycles had in fact closed. A permanently red test shows up in
+  `chain_ends_green` instead, which is where it belongs.
+- **A `Red(c)` carries its red forward.** An invocation that fails to compile
+  reports no test names, so the new test cannot enter the open set. The next
+  invocation that can report names is that same red becoming visible — usually
+  after a stub makes the code compile so the assertion can fail, i.e. step two
+  of a two-step red. Without that carry-forward, step two reads as `Break`
+  ("broke a green suite") when nothing was ever green. It does not double-count
+  a cycle: a cycle opens only on a red whose predecessor was passing.
+
+A **cycle** opens at the first test-touching label following a green suite and
+runs until the next one. That is presentation only — no label is merged or
+dropped, so the full chain stays authoritative.
+
+#### The derived metrics
+
+Column names as they appear in `runs.csv`.
+
+| Metric | Description |
+|---|---|
+| `suite_runs` | Suite invocations. **A denominator, never read alone.** 0 means the run never tested, which is a finding, not a measurement gap. |
+| `cycles_total` / `cycles_closed` | Cycles, and those containing a `Green`. Their ratio is the completion rate. |
+| `test_first_rate` | `(Red + Red(c)) / (Red + Red(c) + Both + Skip)` — share of cycles that began with a **verified** failure. The core discipline metric, and the one `red_verified` was trying to be before shell edits could silence it. Higher is better. |
+| `red_batch_size` | Median number of tests that newly fail when a red arrives. **1 = one failing test at a time**; higher means a batch was authored before any implementation existed. Lower is better. |
+| `red_batch_max` | The largest such batch. Catches a single big-bang opener that the median absorbs — report the pair, not either alone. |
+| `red_batch_unmeasurable` | Red events whose batch size could not be read, because a file failing to compile contributes no test names. A trust column. |
+| `green_batch_size` | The mirror: median tests turned green by one implementation step. Separates from `red_batch_size` when a workflow writes several tests up front and then implements them one by one — red high, green 1. |
+| `refactor_per_cycle` | `Refactor / cycles_closed`. **Ambivalent — no trophy:** frequent refactoring can be discipline or nervousness. |
+| `green_attempts` | `(Green? + Green?(c)) / cycles_closed` — how often the first implementation attempt missed. **Ambivalent — no trophy.** |
+| `chain_deviations` | `Both + Skip + Drop + Break + Break(c)`. The per-cell flag for "go read `tdd-report.md`". Lower is better. |
+| `chain_opens_red` / `chain_ends_green` | Did the first suite run fail, and did the run end green? |
+
+#### The consolidated score
+
+`tdd_discipline` is one number, 0..1, higher is better — the geometric mean of
+three components, each 0..1, each with an agreed direction:
+
+| Component | From | Ideal |
+|---|---|---|
+| `tdd_discipline_test_first` | `test_first_rate` | 1.0 — every cycle opened on a verified failure |
+| `tdd_discipline_step` | `1 / red_batch_size` | 1.0 — one failing test at a time |
+| `tdd_discipline_closure` | `cycles_closed / cycles_total` | 1.0 — every cycle reached a green |
+
+**Geometric, not arithmetic, and that is the point.** The score is conjunctive:
+all three must hold. A run that never saw a failing test before writing the code
+did not do TDD, and must not score 0.67 because its steps were small and its
+cycles closed. An arithmetic mean would let any one component buy off a zero in
+another.
+
+The cost is deliberate: several distinct failure modes all land on 0.0, so the
+score does not rank the bottom of the field. That is what the three components
+are reported for — a 0 is always diagnosable. Read the score with them, never
+alone.
+
+The two ambivalent metrics (`refactor_per_cycle`, `green_attempts`) are
+deliberately **excluded**: folding a metric with no agreed direction into a
+score smuggles one back in. They stay separate and take no trophy.
+
+`tdd_discipline` is null, not 0, when any component is unmeasurable —
+unmeasurable is not the same as undisciplined.
+
+Reference values from the fixtures used to build this:
+
+| Sequence | Score | Why |
+|---|---:|---|
+| `Red(c) -> Red -> Green -> Red -> Green -> Refactor` | **1.0** | two cycles, one test each, both closed |
+| the same with one unrelated test left permanently red | **0.737** | cycle still closes; the stray red surfaces as `chain_ends_green: false` |
+| a stream that never closed a cycle | **0.0** | closure component is 0, so the product is 0 |
+
+**These metrics exist only for runs produced after the reporter landed.** The
+event stream cannot be reconstructed retroactively, so the ~1350 older runs
+carry nothing in these columns and cannot be backfilled by a `reanalyze` pass —
+unlike the two sources above. An RQ adopting them needs fresh runs. The
+`suite_*` family from `measure-suite-transitions.py` remains the retroactive
+approximation for the existing corpus, and a useful cross-check on new runs:
+it derives the same red/green state sequence from the transcript instead of
+from the reporter, so the two are independent readings of one thing.
+
+**Still outside this source, by construction:** `predictions_*` — no artifact
+state can reconstruct a prediction that was never spoken, so it stays
+marker-dependent and workflow-specific. Per-phase tokens and durations likewise
+need a marker to say where a phase begins.
 
 ### Run status
 

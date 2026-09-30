@@ -23,6 +23,8 @@ services:
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
       - ../analyze_transcript.py:/home/experimenter/experiments/analyze_transcript.py:ro
       - ../measure-tdd-rigour.py:/home/experimenter/experiments/measure-tdd-rigour.py:ro
+      - ../measure-suite-transitions.py:/home/experimenter/experiments/measure-suite-transitions.py:ro
+      - ../tdd-report.py:/home/experimenter/experiments/tdd-report.py:ro
       - ../parse_opencode_transcript.py:/home/experimenter/experiments/parse_opencode_transcript.py:ro
       - ../parse_pi_transcript.py:/home/experimenter/experiments/parse_pi_transcript.py:ro
       - ../parse_cursor_transcript.py:/home/experimenter/experiments/parse_cursor_transcript.py:ro
@@ -106,6 +108,8 @@ services:
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
       - ../analyze_transcript.py:/home/experimenter/experiments/analyze_transcript.py:ro
       - ../measure-tdd-rigour.py:/home/experimenter/experiments/measure-tdd-rigour.py:ro
+      - ../measure-suite-transitions.py:/home/experimenter/experiments/measure-suite-transitions.py:ro
+      - ../tdd-report.py:/home/experimenter/experiments/tdd-report.py:ro
       - ../parse_opencode_transcript.py:/home/experimenter/experiments/parse_opencode_transcript.py:ro
       - ../parse_pi_transcript.py:/home/experimenter/experiments/parse_pi_transcript.py:ro
       - ../parse_cursor_transcript.py:/home/experimenter/experiments/parse_cursor_transcript.py:ro
@@ -205,6 +209,8 @@ services:
       - ../analyze-run.sh:/home/experimenter/experiments/analyze-run.sh:ro
       - ../analyze_transcript.py:/home/experimenter/experiments/analyze_transcript.py:ro
       - ../measure-tdd-rigour.py:/home/experimenter/experiments/measure-tdd-rigour.py:ro
+      - ../measure-suite-transitions.py:/home/experimenter/experiments/measure-suite-transitions.py:ro
+      - ../tdd-report.py:/home/experimenter/experiments/tdd-report.py:ro
       - ../parse_opencode_transcript.py:/home/experimenter/experiments/parse_opencode_transcript.py:ro
       - ../parse_pi_transcript.py:/home/experimenter/experiments/parse_pi_transcript.py:ro
       - ../parse_cursor_transcript.py:/home/experimenter/experiments/parse_cursor_transcript.py:ro
