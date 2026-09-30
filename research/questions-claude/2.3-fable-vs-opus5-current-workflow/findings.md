@@ -15,10 +15,10 @@ and cost (`total_tokens`/`cost_usd`/`duration_seconds`, lower = better).
 
 | Model | n | verification_pct ↑ | σ | cc_avg_loc ↓ | cc_longest ↓ | cognitive_max ↓ | mccabe_max ↓ | smell_total ↓ | code_mass ↓ | total_tokens ↓ | cost_usd ↓ | duration_s ↓ |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| opus-5-no-thinking | 5 | **0.95** 🏆 | 0.03 | **3.45** 🏆 | **13.6** 🏆 | 2.8 | **3.0** 🏆 | **0.0** 🏆 | 848.4 | 72.2 M | 42.68 | **2552** 🏆 |
-| fable-5-1-no-thinking | 5 | **0.93** 🏆 | 0.08 | 3.63 | 14.4 | **2.6** 🏆 | 3.2 | 0.2 | **805.2** 🏆 | **61.3 M** 🏆 | **29.44** 🏆 | 4042 |
-| fable-5-no-thinking | 5 | 0.87 | 0.12 | 4.79 | 17.6 | 3.2 | 3.8 | 0.6 | (659.0) | 63.0 M | 76.93 | 4950 |
-| sonnet-5-native-no-thinking | 5 | 0.85 | 0.21 | 6.50 | 26.2 | 4.2 | 4.4 | 0.2 | 817.2 | 101.8 M | (23.39) | (2277) |
+| opus-5-no-thinking | 5 | **0.95** 🏆 | 0.03 | **3.45** 🏆 | **13.6** 🏆 | 2.8 | **3.0** 🏆 | **0.0** 🏆 | 848.4 | 84.5 M | 58.86 | **2552** 🏆 |
+| fable-5-1-no-thinking | 5 | **0.93** 🏆 | 0.08 | 3.63 | 14.4 | **2.6** 🏆 | 3.2 | 0.2 | **805.2** 🏆 | **66.9 M** 🏆 | **43.72** 🏆 | 4042 |
+| fable-5-no-thinking | 5 | 0.87 | 0.12 | 4.79 | 17.6 | 3.2 | 3.8 | 0.6 | (659.0) | 75.0 M | 109.96 | 4950 |
+| sonnet-5-native-no-thinking | 5 | 0.85 | 0.21 | 6.50 | 26.2 | 4.2 | 4.4 | 0.2 | 817.2 | 110.6 M | (28.28) | (2277) |
 
 `verification_pct`: opus-5 (0.95) and fable-5-1 (0.93) differ by 0.02 — far
 below 1 σ of either cell → both 🏆. fable-5 (0.87) and sonnet-5-native (0.85)
@@ -38,7 +38,7 @@ leading number must not be read as parsimony: 3 of its 5 runs silently drop an
 entire class of scenarios (F-fable-vs-opus5.2), so the smaller Code Mass (APP)
 is missing coverage, not economy of expression.
 
-sonnet-5-native's `cost_usd` (23.39) and `duration_seconds` (2277) are
+sonnet-5-native's `cost_usd` (28.28) and `duration_seconds` (2277) are
 parenthesized for the opposite reason: both are the **best raw values in the
 field**, and the gate — not the numbers — is what withholds the trophy. Unlike
 fable-5's Code Mass (APP), they are not an artifact of unfinished work; both
@@ -48,10 +48,10 @@ correctness gate", and that distinction is the whole point of reading the
 caveat rather than the table.
 
 **Cost trophies are gated the same way.** `total_tokens` goes to fable-5-1
-(61.3 M) ahead of opus-5 (72.2 M); `cost_usd` to fable-5-1 ($29.44) — but read
+(66.9 M) ahead of opus-5 (84.5 M); `cost_usd` to fable-5-1 ($43.72) — but read
 F-fable-vs-opus5.7 before quoting the dollar figures, because on this workflow
 they are almost entirely a cache-read tariff, and sonnet-5-native is the proof:
-it consumes the **most** tokens of any cell (101.8 M, 1.4× opus-5) and still
+it consumes the **most** tokens of any cell (110.6 M, 1.3× opus-5) and still
 produces the lowest dollar figure. `duration_seconds` goes to opus-5 (2552 s),
 the fastest *eligible* cell — fable-5-1 needs 1.6× and fable-5 1.9× as long.
 
@@ -275,15 +275,15 @@ this the cleanest generation comparison in the RQ.
 | block failure (F-fable-vs-opus5.2) | 1 / 5 runs | 3 / 5 runs |
 | `cc_avg_loc_per_function` | 3.63 | 4.79 |
 | `smell_total` | 0.2 | 0.6 |
-| `total_tokens` | 61.3 M | 63.0 M |
+| `total_tokens` | 66.9 M | 75.0 M |
 | `duration_seconds` | 4042 | 4950 |
 
 Fable 5.1 is better on correctness, on every decomposition metric, on tokens and
 on wallclock, and it produces the block failure a third as often. Nothing in this
 RQ favours Fable 5.
 
-On cost the gap is far larger than on tokens — $29.44 against $76.93, a factor
-of 2.6 — but that factor is a tariff, not a model property; see
+On cost the gap is far larger than on tokens — $43.72 against $109.96, a factor
+of 2.5 — but that factor is a tariff, not a model property; see
 F-fable-vs-opus5.7.
 
 ---
@@ -320,10 +320,10 @@ the cell that makes an ETA unreliable.
 
 | Model | cost_usd ↓ | σ | total_tokens | cache-read share |
 |---|---:|---:|---:|---:|
-| sonnet-5-native-no-thinking | (23.39) | 6.56 | **101.8 M** | ~99 % |
-| fable-5-1-no-thinking | **29.44** 🏆 | 2.62 | 61.3 M | ~99 % |
-| opus-5-no-thinking | 42.68 | 6.48 | 72.2 M | ~99 % |
-| fable-5-no-thinking | 76.93 | 4.68 | 63.0 M | ~99 % |
+| sonnet-5-native-no-thinking | (28.28) | 6.56 | **110.6 M** | ~99 % |
+| fable-5-1-no-thinking | **43.72** 🏆 | 2.62 | 66.9 M | ~99 % |
+| opus-5-no-thinking | 58.86 | 6.48 | 84.5 M | ~99 % |
+| fable-5-no-thinking | 109.96 | 4.68 | 75.0 M | ~99 % |
 
 The hybrid-v2 workflow is overwhelmingly cache-driven. A representative run splits as
 input 108.5 k, output 162.6 k, cache-creation 460.7 k, **cache-read 60.7 M** —
@@ -340,17 +340,18 @@ tariffs, not about four models:
 | opus-5 | 0.50 | 0.1× |
 | fable-5 | 1.00 | 0.1× |
 
-Fable 5.1 and Fable 5 consume near-identical token volume (61.3 M vs 63.0 M,
-a 2.7 % difference) yet differ by 2.6× in dollars, because their cache-read rates
-differ by 4×. **H3 is confirmed but not tested**: the hypothesis says the tariff
+Fable 5.1 and Fable 5 consume similar token volume (66.9 M vs 75.0 M, a 12 %
+difference) yet differ by 2.5× in dollars, because their cache-read rates differ
+by 4×. **H3 is confirmed but not tested**: the hypothesis says the tariff
 asymmetry drives the cost difference, and `cost_usd` is computed *from* that
 asymmetry, so the calculation cannot falsify it. What the data does add is the
-empirical half — the token volumes are close enough that the tariff is the whole
-story rather than being confounded with different consumption.
+empirical half — a 12 % consumption gap cannot produce a 2.5× price gap, so the
+tariff carries it, even though the two volumes are no longer as close as the
+uncorrected figures suggested (2.7 %).
 
 **sonnet-5-native is the sharpest demonstration that token count and cost are
-different questions.** It consumes 101.8 M tokens — the most of any cell, 1.4×
-opus-5 and 1.7× fable-5-1 — and still produces the lowest dollar figure in the
+different questions.** It consumes 110.6 M tokens — the most of any cell, 1.3×
+opus-5 and 1.65× fable-5-1 — and still produces the lowest dollar figure in the
 field, because its cache-read rate is the lowest ($0.20 against $0.25 / $0.50 /
 $1.00). A reader who takes `cost_usd` as a proxy for "how much work did this
 model make the machine do" gets the ranking exactly backwards here. This is H7
@@ -358,8 +359,8 @@ as stated: compare `total_tokens` first, `cost_usd` second, and never treat one
 as a stand-in for the other.
 
 The same point holds across the frontier cells: opus-5 consumes more tokens than
-either Fable version (72.2 M) and is still cheaper than fable-5 ($42.68 vs
-$76.93), because its whole price sheet is half of Fable's ($5/$25 base against
+either Fable version (84.5 M) and is still cheaper than fable-5 ($58.86 vs
+$109.96), because its whole price sheet is half of Fable's ($5/$25 base against
 $10/$50, and $0.50 against $1.00 on cache reads).
 
 **These are list-price comparison values, not invoices.** All 20 runs are native
@@ -441,7 +442,7 @@ sonnet-5-native to its three perfect runs:
 | | full cell (n=5) | perfect runs only (n=3) | opus-5 (n=5) |
 |---|---:|---:|---:|
 | `duration_seconds` | 2277 | 2105 | 2552 |
-| `cost_usd` | 23.39 | 22.93 | 42.68 |
+| `cost_usd` | 28.28 | 27.40 | 58.86 |
 | `cc_avg_loc_per_function` | 6.50 | 6.52 | 3.45 |
 
 The speed and cost figures barely move — those three runs are faster and cheaper

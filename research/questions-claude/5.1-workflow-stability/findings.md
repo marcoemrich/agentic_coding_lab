@@ -179,17 +179,21 @@ would have remained undetected at n=3.
 | baseline-inline-tdd-v1-cc | 799 074 | 187 141 | 0.234 |
 | baseline-oneshot-v1-cc | 993 521 | 223 585 | 0.225 |
 | baseline-iterative-v1-cc | 966 999 | 175 027 | 0.181 |
-| exact-subagents-v1-cc | 2 561 890 | 382 603 | 0.149 |
-| exact-single-context-v1-cc | 8 355 280 | 2 889 180 | 0.346 |
+| exact-subagents-v1-cc | 7 287 333 | 1 065 203 | 0.146 |
+| exact-single-context-v1-cc | 9 047 277 | 2 637 077 | 0.291 |
 
 **single-context-v1 is both the most expensive in absolute terms and the most unstable in relative terms**:
-individual single-context-v1 runs fluctuate between 4.6 M and 11.7 M tokens. subagents-v1 has
+individual single-context-v1 runs fluctuate between 4.6 M and 12.2 M tokens. subagents-v1 has
 relative stability (CV 0.15), but its **wallclock σ** is very
 high at 984 s (max run = 3923 s ≈ 65 min vs. a typical ~14 min) — a single
 subagents-v1 run took almost 5× as long as the median.
 
 **Consequence for cost planning**: single-context-v1 token budgets must be laid out
-generously (worst case ~12 M); subagents-v1 wallclock budgets likewise
+generously (worst case ~12 M); note that subagents-v1's absolute token figure is
+2.8× what this table previously recorded — its subagent consumption was missing
+from the column entirely, so the two workflows are much closer in absolute cost
+than they appeared (7.3 M against 9.0 M, not 2.6 M against 8.4 M). The relative
+stability ranking is unaffected. subagents-v1 wallclock budgets likewise
 generously (worst case ~65 min). For commercial use of both
 workflows, these tails must be budgeted for.
 

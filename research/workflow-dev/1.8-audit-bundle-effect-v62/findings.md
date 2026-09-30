@@ -16,7 +16,7 @@ Primary outcomes per cell (n=10 per workflow, opus-4-7-portkey-no-thinking, game
 | `cognitive_max` (lower = better)                            | 4.3 ± 2.79            | 4.5 ± 2.59             |
 | `mccabe_max` (lower = better)                               | 4.2 ± 1.32            | 4.6 ± 1.07             |
 | `tests_passing` / `completed_within_budget`                 | 100 % / 100 %         | 100 % / 100 %          |
-| `total_tokens` (lower = better)                             | **8.32 M ± 1.61** 🏆  | 9.65 M ± 2.34          |
+| `total_tokens` (lower = better)                             | **10.48 M ± 2.08** 🏆  | 11.81 M ± 2.60          |
 | `duration_seconds` (lower = better, Δ << σ)                 | 627 ± 117             | 631 ± 101              |
 
 Complexity outcomes `cc_longest_function`, `cognitive_max`, `mccabe_max`: the mean Δ is markedly smaller than σ → no trophy, the workflows are indistinguishable on all three.
@@ -85,7 +85,7 @@ For assessing TDD discipline, hybrid-v4.3 is the more informative arm here, even
 
 | outcome | exact-hybrid-v4-cleaned-cc | exact-hybrid-v4.3-audit-bundle-cc | Δ |
 |---|---:|---:|---:|
-| `total_tokens`     | 8.32 M ± 1.61 | 9.65 M ± 2.34 | +16 % |
+| `total_tokens`     | 10.48 M ± 2.08 | 11.81 M ± 2.60 | +13 % |
 | `duration_seconds` | 627 ± 117     | 631 ± 101     | +0.6 % |
 
 The token surcharge (+16 %) replicates the RQ-audit precedent (+15 %) almost exactly — the added text volume (mandatory preamble, three rationale blocks, three-path bar, wrong-predictions block) shows up in token consumption as expected.

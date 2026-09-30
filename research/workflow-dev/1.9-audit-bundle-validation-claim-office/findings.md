@@ -16,7 +16,7 @@ Primary outcomes per cell (n=8 per workflow, opus-4-7-portkey-no-thinking, claim
 | Code Mass (APP) (`code_mass`, misleading here)              | 878.5 ± 91.4          | 441.5 ± 335.6 (due to early stop) |
 | Smell Total (`smell_total`, lower = better)                 | **0.38 ± 0.74**       | 0.50 ± 0.76                    |
 | `cc_longest_function`                     | 12.4 ± 1.41           | 13.1 ± 7.06                    |
-| `total_tokens` (lower due to early stop, not a win)         | 44.4 M ± 3.4          | 16.7 M ± 15.0                  |
+| `total_tokens` (lower due to early stop, not a win)         | 52.3 M ± 5.6          | 20.4 M ± 18.9                  |
 | `duration_seconds` (lower due to early stop, not a win)     | 2530 ± 401            | 1059 ± 943                     |
 
 ---
