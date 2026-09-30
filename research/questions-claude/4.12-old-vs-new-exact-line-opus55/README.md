@@ -140,7 +140,12 @@ that is the intended pooling, not a duplication.
   an outcome that ranks the arms.
 - **`cost_usd` is a list-price comparison value, not an invoice**, and Opus 5.5's
   cache-read tariff (0.05× base input against Opus 5's 0.1×) makes it a poor
-  primary axis. Compare `total_tokens` first.
+  primary axis. Compare total tokens first.
+- **The `total_tokens` and `cost_usd` columns in `runs.csv` count the main
+  context only** and omit every subagent invocation, understating the two
+  isolated arms by 43 % and 11 % — unevenly, and along the factor under study.
+  `findings.md` recomputes both from the subagent transcripts; do not quote the
+  aggregated columns for this RQ until the pipeline is fixed (F-4.12.5).
 - **`cost_usd` is missing from the Opus 5 `v5.2-no-subagent-cc` runs** (all ten
   are from 2026-08-11, before cost computation existed). Any Opus 5 back-comparison
   on price needs `experiments/compute-cost.py` run over them first.
