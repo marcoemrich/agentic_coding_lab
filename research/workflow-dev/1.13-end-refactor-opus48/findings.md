@@ -174,11 +174,11 @@ On claim-office the v6.5 end pass produces **no** notable token surcharge over h
 
 | Workflow | `duration_seconds` (mean) | `total_tokens` (mean) | vs hybrid-v4 |
 |---|---:|---:|---|
-| exact-hybrid-v4-cleaned-cc | 579 | 7.4 M | — |
-| exact-hybrid-v4.4-metric-refactor-cc | 679 | 9.2 M | +17 % s / +25 % tok |
-| exact-hybrid-v5-end-refactor-cc | 747 | 9.0 M | +29 % s / +22 % tok |
+| exact-hybrid-v4-cleaned-cc | 579 | 9.0 M | — |
+| exact-hybrid-v4.4-metric-refactor-cc | 679 | 11.4 M | +17 % s / +27 % tok |
+| exact-hybrid-v5-end-refactor-cc | 747 | 11.6 M | +29 % s / +30 % tok |
 
-On GoL the refactor therefore pays a clear surcharge — and the end pass (hybrid-v5) is the most expensive here, for a complexity gain that sits within σ of hybrid-v4.4. The missing cost spread on claim-office follows from the per-cycle dynamics dominating there (~35–41 cycles) plus high run-to-run variance, which makes the refactor surcharge vanish into the noise.
+On GoL the refactor therefore pays a clear surcharge — and the end pass (hybrid-v5) is the most expensive here on both axes, for a complexity gain that sits within σ of hybrid-v4.4. The missing cost spread on claim-office follows from the per-cycle dynamics dominating there (~35–41 cycles) plus high run-to-run variance, which makes the refactor surcharge vanish into the noise.
 
 ---
 
