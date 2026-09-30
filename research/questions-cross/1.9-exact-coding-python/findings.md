@@ -53,7 +53,7 @@ adding workflow costs a scenario, but not enough to disqualify the cell.
 | Model | Inline | EXACT v1 | EXACT v1.1 |
 |---|---:|---:|---:|
 | GPT-5.6 SOL | **$0.52** 🏆 | $4.60 | $14.61 |
-| Opus 5 | **$2.70** 🏆 | $17.55 | $28.66 |
+| Opus 5 | **$2.70** 🏆 | $17.55 | $38.76 |
 
 ---
 
@@ -202,18 +202,25 @@ The Mutation Score figures rest on `n=2` and the caveat in F-1.9.6 applies.
 
 ---
 
-## F-1.9.5 — The workflow costs four to eleven times inline TDD for the same correctness
+## F-1.9.5 — The workflow costs eight to twenty-eight times inline TDD for the same correctness
 
 | Kata | Model | Inline | EXACT v1 | EXACT v1.1 | v1.1 / inline |
 |---|---|---:|---:|---:|---:|
 | Game of Life | GPT-5.6 SOL | $0.37 | $1.63 | $4.75 | 12.7× |
-| Game of Life | Opus 5 | $1.17 | $5.62 | $9.11 | 7.8× |
+| Game of Life | Opus 5 | $1.17 | $5.62 | $17.45 | 14.9× |
 | Claim Office | GPT-5.6 SOL | $0.52 | $4.60 | $14.61 | 27.9× |
-| Claim Office | Opus 5 | $2.70 | $17.55 | $28.66 | 10.6× |
+| Claim Office | Opus 5 | $2.70 | $17.55 | $38.76 | 14.4× |
 
 Wall-clock follows the same shape: Claim Office with SOL runs 341 s under inline
 TDD and 5686 s under EXACT v1.1. Costs are token-derived list-price equivalents,
 not invoices.
+
+**The Opus v1.1 column rose on 2026-09-30 and the SOL one did not**, which is a
+measurement correction, not a behaviour change. `analyze_transcript.py` omitted
+subagent tokens entirely until then, while `parse_pi_transcript.py` had always
+added them, so the Claude-Code-against-SOL cost comparison was biased in favour
+of Claude Code on exactly the arm that delegates. See
+[RQ-old-vs-new-exact-line-opus55 F-4.12.5](../../questions-claude/4.12-old-vs-new-exact-line-opus55/findings.md).
 
 Read together with F-1.9.1 and F-1.9.3, the overhead is justified in this data
 only for the Claim Office / SOL cell of F-1.9.4. In the three cells where

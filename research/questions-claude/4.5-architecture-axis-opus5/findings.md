@@ -25,7 +25,7 @@ opus-4-7 cells are pre-existing runs (partly Portkey-routed, see README caveat 1
 | `cycle_count` | 4.8 | 27.0 | 42.8 | 45.0 | 3.8 | 5.5 | 28.0 | 25.8 | — |
 | `refactorings_applied` | n/a | 12.2 | 17.4 | **43.4** 🏆 | n/a | 2.2 | 11.0 | 22.6 | higher = better |
 | `predictions_correct_rate` | n/a | 99.6 % | **100 %** 🏆 | 98.7 % | n/a | **100 %** 🏆 | 96.4 % | 90.0 % | higher = better |
-| `total_tokens` | 4 M | 83 M | 82 M | 137 M | **3 M** 🏆 | 19 M | 35 M | 60 M | lower = better |
+| `total_tokens` | 4 M | 83 M | 94 M | 162 M | **3 M** 🏆 | 19 M | 38 M | 76 M | lower = better |
 | `duration_seconds` | 5 min | 23 min | 44 min | 93 min | **5 min** 🏆 | 11 min | 26 min | 76 min | lower = better |
 
 **game-of-life-example-mapping** (code-quality kata)
@@ -43,7 +43,7 @@ opus-4-7 cells are pre-existing runs (partly Portkey-routed, see README caveat 1
 | `cycle_count` | 3.8 | 7.2 | 10.4 | 10.4 | 1.5 | 7.6 | 8.7 | 9.2 | — |
 | `refactorings_applied` | n/a | 4.4 | 4.4 | **8.6** 🏆 | n/a | 4.8 | 4.1 | 9.2 | higher = better |
 | `predictions_correct_rate` | n/a | **100 %** 🏆 | **100 %** 🏆 | 99.1 % | n/a | **100 %** 🏆 | 99.4 % | 98.9 % | higher = better |
-| `total_tokens` | 2 M | 12 M | 8 M | 15 M | **1 M** 🏆 | 8 M | 7 M | 12 M | lower = better |
+| `total_tokens` | 2 M | 12 M | 9 M | 20 M | **1 M** 🏆 | 8 M | 8 M | 17 M | lower = better |
 | `duration_seconds` | 3 min | 7 min | 10 min | 19 min | **1 min** 🏆 | 5 min | 8 min | 22 min | lower = better |
 
 Caveats for reading the tables:
@@ -116,7 +116,7 @@ values do not carry over.
 
 ---
 
-## F-1.3 — hybrid-v6 wins the quality axis on both katas and costs 4–34× the baseline
+## F-1.3 — hybrid-v6 wins the quality axis on both katas and costs 6–36× the baseline
 
 hybrid-v6 takes the trophy on every quality metric except `cc_longest_function` on claim-office.
 The cost side is where the decision actually sits.
@@ -127,7 +127,7 @@ The cost side is where the decision actually sits.
 | `cognitive_max` | 5.4 | **2.2** 🏆 | 0.41× |
 | `mccabe_max` | 5.4 | **3.0** 🏆 | 0.56× |
 | Correctness (external) | **1.00** 🏆 | 0.95 | 0.95× |
-| `total_tokens` | **4 M** 🏆 | 137 M | **34×** |
+| `total_tokens` | **4 M** 🏆 | 162 M | **36×** |
 | `duration_seconds` | **5 min** 🏆 | 93 min | **19×** |
 
 | game-of-life | inline-tdd-v1 | hybrid-v6 | Factor |
@@ -135,17 +135,23 @@ The cost side is where the decision actually sits.
 | `cc_avg_loc_per_function` | 6.69 | **3.57** 🏆 | 0.53× |
 | `cognitive_max` | 7.6 | **1.2** 🏆 | 0.16× |
 | Correctness (external) | **1.00** 🏆 | **1.00** 🏆 | 1.00× |
-| `total_tokens` | **2 M** 🏆 | 15 M | **8×** |
+| `total_tokens` | **2 M** 🏆 | 20 M | **9.5×** |
 | `duration_seconds` | **3 min** 🏆 | 19 min | **6×** |
 
 Rationale: the quality gain is real and consistent, but its size (0.16–0.56×) is an order
-of magnitude smaller than the cost (6–34×). On game-of-life, where correctness is tied at
-1.00 across all cells, the trade is 8× the tokens for a 1.9× better decomposition. On
-claim-office it is 34× the tokens for 2.9× — and 0.95 instead of 1.00 external correctness.
+of magnitude smaller than the cost (6–36×). On game-of-life, where correctness is tied at
+1.00 across all cells, the trade is 9.5× the tokens for a 1.9× better decomposition. On
+claim-office it is 36× the tokens for 2.9× — and 0.95 instead of 1.00 external correctness.
 
 The intermediate cells are the interesting ones for practice: hybrid-v2 reaches
-`cc_avg_loc_per_function` 4.04 on claim-office at 82 M tokens — 60 % of hybrid-v6's cost for
+`cc_avg_loc_per_function` 4.04 on claim-office at 94 M tokens — 58 % of hybrid-v6's cost for
 80 % of its decomposition gain over inline-tdd-v1.
+
+Token figures here count subagent consumption; the three structured arms all spawn
+subagents and were recorded short until 2026-09-30
+([RQ-old-vs-new-exact-line-opus55 F-4.12.5](../4.12-old-vs-new-exact-line-opus55/findings.md)).
+The correction widens every factor in this finding rather than narrowing it, because
+the baseline arm spawns none.
 
 ---
 
@@ -186,9 +192,9 @@ task complete after 2 cycles. hybrid-v2 and hybrid-v6, which isolate the refacto
 it in 10 runs. This is the same instability the Sol RQ documented for single-context-v2 (F-1.4 there,
 `refactorings_applied` σ 17.4) and it reproduces on a different model and harness.
 
-Against that, hybrid-v2 delivers 82 M tokens and 44 minutes for `cc_avg_loc_per_function` 4.04
-— against hybrid-v6's 137 M and 93 minutes for 3.21. The marginal decomposition gain from hybrid-v2
-to hybrid-v6 (0.83 LoC per function) costs 67 % more tokens and 111 % more wallclock.
+Against that, hybrid-v2 delivers 94 M tokens and 44 minutes for `cc_avg_loc_per_function` 4.04
+— against hybrid-v6's 162 M and 93 minutes for 3.21. The marginal decomposition gain from hybrid-v2
+to hybrid-v6 (0.83 LoC per function) costs 72 % more tokens and 111 % more wallclock.
 
 ---
 

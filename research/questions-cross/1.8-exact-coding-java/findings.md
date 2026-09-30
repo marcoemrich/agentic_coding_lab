@@ -39,8 +39,8 @@ Correctness and budget completion are higher = better; complexity, method size, 
 |---|---|---:|---:|---:|---:|---:|---:|
 | GPT-5.6 SOL | Game of Life | **195 s** 🏆 | 916 s | 2,256 s | **$0.42** 🏆 | $2.21 | $5.92 |
 | GPT-5.6 SOL | Claim Office | **296 s** 🏆 | 1,996 s | 6,072 s | **$0.58** 🏆 | $5.25 | $17.78 |
-| Opus 5 | Game of Life | **251 s** 🏆 | 756 s | 2,652 s | **$1.41** 🏆 | $5.88 | $11.22 |
-| Opus 5 | Claim Office | **347 s** 🏆 | 1,313 s | 5,509 s | **$2.88** 🏆 | $15.33 | $33.69 |
+| Opus 5 | Game of Life | **251 s** 🏆 | 756 s | 2,652 s | **$1.41** 🏆 | $5.88 | $27.49 |
+| Opus 5 | Claim Office | **347 s** 🏆 | 1,313 s | 5,509 s | **$2.88** 🏆 | $15.33 | $76.76 |
 
 ### Test strength (Mutation Score)
 
@@ -123,12 +123,16 @@ EXACT Coding is slower and more token-intensive than inline TDD in every contras
 |---|---|---:|---:|---:|
 | GPT-5.6 SOL | Game of Life | 195 s → 916 s → 2,256 s | 223k → 2.45 M → 4.45 M | $0.42 → $2.21 → $5.92 |
 | GPT-5.6 SOL | Claim Office | 296 s → 1,996 s → 6,072 s | 290k → 7.74 M → 15.68 M | $0.58 → $5.25 → $17.78 |
-| Opus 5 | Game of Life | 251 s → 756 s → 2,652 s | 1.29 M → 6.19 M → 13.82 M | $1.41 → $5.88 → $11.22 |
-| Opus 5 | Claim Office | 347 s → 1,313 s → 5,509 s | 2.64 M → 19.07 M → 51.02 M | $2.88 → $15.33 → $33.69 |
+| Opus 5 | Game of Life | 251 s → 756 s → 2,652 s | 1.29 M → 6.19 M → 29.94 M | $1.41 → $5.88 → $27.49 |
+| Opus 5 | Claim Office | 347 s → 1,313 s → 5,509 s | 2.64 M → 19.07 M → 98.05 M | $2.88 → $15.33 → $76.76 |
 
-The v1 → v1.1 step alone costs roughly two to three and a half times as much and runs two and a half to four times as long. Against inline TDD, v1.1 costs eight to thirty times as much and runs ten to twenty times as long. The Opus Claim Office cell reaches 51 M tokens and $33.69 per run and is the only cell in the RQ that misses the time budget (one of five runs, `completed_within_budget` 80 %); that run's tests were green and its external verification perfect, so the budget miss is a cost symptom, not a failure.
+The v1 → v1.1 step alone costs roughly three to five times as much and runs two and a half to four times as long. Against inline TDD, v1.1 costs fourteen to thirty times as much and runs ten to twenty times as long. The Opus Claim Office cell reaches 98 M tokens and $76.76 per run and is the only cell in the RQ that misses the time budget (one of five runs, `completed_within_budget` 80 %); that run's tests were green and its external verification perfect, so the budget miss is a cost symptom, not a failure.
 
-Inline TDD therefore remains the stronger Java default when correctness and efficiency dominate. EXACT v1 is justified where the measured complexity reduction is worth roughly five times the cost; v1.1's additional premium buys no correctness and, outside Opus Claim Office, no lower `cognitive_max`.
+**The Claude Code v1.1 figures rose sharply on 2026-09-30 and the pi ones did not**, which is a measurement correction rather than a change in behaviour. `analyze_transcript.py` omitted subagent tokens entirely until then, while `parse_pi_transcript.py` had always added them
+(`_subagent_usage_totals`, with a docstring noting that ignoring them undercounts token efficiency by an order of magnitude). The CC-against-pi cost comparison in this RQ was therefore **biased in favour of Claude Code** on exactly the arm that delegates — the CC/pi premium on Claim Office v1.1 was recorded as 3.3× and is in fact 6.3×. See
+[RQ-old-vs-new-exact-line-opus55 F-4.12.5](../../questions-claude/4.12-old-vs-new-exact-line-opus55/findings.md).
+
+Inline TDD therefore remains the stronger Java default when correctness and efficiency dominate. EXACT v1 is justified where the measured complexity reduction is worth roughly five times the cost; v1.1's additional premium — now a further three- to fivefold on Claude Code — buys no correctness and, outside Opus Claim Office, no lower `cognitive_max`.
 
 ---
 
