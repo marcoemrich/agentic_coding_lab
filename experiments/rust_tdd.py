@@ -577,19 +577,70 @@ def record(root, rc, lines, partial=False):
         }) + "\n")
 
 
+DIAG_FILE = "tdd-shim-diag.log"
+
+
+def _is_test_shaped(args):
+    """`cargo test ...` by position, ignoring every record/skip decision."""
+    try:
+        i = subcommand_index(args)
+        return i is not None and args[i] in ("test", "t")
+    except Exception:
+        return False
+
+
+def _diag(reason):
+    """Leave a breadcrumb when an invocation that SHOULD have recorded did not.
+
+    The two swallow points below must never fail a run, which used to mean they
+    left no trace either: a run then arrived with no tdd-events.jsonl at all and
+    every TDD-discipline column silently null (seen 2026-10-01 in two
+    exact-ptdd-v1.1-refactor-subagent-pi runs, cause unreconstructible). This
+    writes the reason next to the events file instead. Best-effort by the same
+    rule: a diagnostic that throws would reintroduce the bug it documents.
+    Nothing is written for the ordinary non-recording case (cargo clippy, build,
+    fmt, --no-run) -- only for an invocation that wanted to record and could not.
+    """
+    try:
+        root = find_root(os.getcwd()) or Path(os.getcwd())
+        with (root / DIAG_FILE).open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps({
+                "ts": datetime.now(timezone.utc).isoformat(),
+                "cwd": os.getcwd(),
+                "argv": sys.argv[2:],
+                "reason": reason,
+            }) + "\n")
+    except Exception:
+        pass
+
+
 def shim(args):
     try:
-        recording = wants_record(args) and find_root(os.getcwd()) is not None
-    except Exception:
+        wanted = wants_record(args)
+        root = find_root(os.getcwd())
+        recording = wanted and root is not None
+        # Log every test-shaped invocation, including the ones that decline to
+        # record. Declining is the branch that loses a whole run's events
+        # without a trace, so staying silent here is exactly the blind spot
+        # that made the 2026-10-01 case unreconstructible.
+        if _is_test_shaped(args):
+            _diag("recording" if recording else (
+                "no Cargo.toml in cwd or any parent" if wanted
+                else "declined: TDD_REPORTER_OFF"
+                     if os.environ.get("TDD_REPORTER_OFF")
+                     else "declined by wants_record"))
+    except Exception as exc:
         recording = False
+        _diag(f"gate raised {type(exc).__name__}: {exc}")
     if not recording:
         os.execv(REAL_CARGO, [REAL_CARGO, *args])
     rc, lines = run_and_capture([REAL_CARGO, *instrument(args)])
     try:
         record(find_root(os.getcwd()), rc, lines, is_partial(args))
-    except Exception:
-        # Recording failed. Losing one event is acceptable; failing the run is not.
-        pass
+    except Exception as exc:
+        # Recording failed. Losing one event is acceptable; failing the run is
+        # not -- but the reason is now on record.
+        _diag(f"record raised {type(exc).__name__}: {exc}")
     return rc
 
 

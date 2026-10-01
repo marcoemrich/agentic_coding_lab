@@ -1,0 +1,38 @@
+# Rust stack skeleton for lab runs. The counterpart of pyproject.toml on the
+# Python stack and of pom.xml plus pmd-ruleset.xml on the Java stack.
+#
+# The crate is a library (src/lib.rs) with the kata CLI as its binary
+# (src/main.rs, binary name `kata`). Unit tests live inline under
+# `#[cfg(test)]`, which rust_tdd.py and analyze-run.sh split off so a test
+# module never counts as production code.
+#
+# Dependencies are pinned exactly and resolved offline from the registry baked
+# into the image (see experiments/docker/rust.cache/). serde/serde_json are the
+# JSON support the CLI contracts need — the Java stack's Jackson, the stdlib
+# `json` module on Python.
+[package]
+name = "kata"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.151"
+
+# The lint selection mirrors the four smell buckets analyze-run.sh reports, so
+# the columns mean the same thing within each stack. They are NOT comparable
+# across stacks: clippy, ruff, ESLint/SonarJS and PMD generate different
+# finding populations. Clippy's default groups stay on; the lints below add the
+# size and nesting gates the other stacks carry (thresholds in clippy.toml) and
+# the duplication carriers. clippy has no magic-number lint, so that bucket is
+# empty on this stack, as it is on Java. `cognitive_complexity` is deliberately
+# not enabled: complexity is measured by rust-code-analysis, not counted as a
+# smell.
+[lints.clippy]
+too_many_lines = "warn"
+excessive_nesting = "warn"
+match_same_arms = "warn"
+needless_pass_by_value = "warn"
+unused_self = "warn"
+redundant_else = "warn"
