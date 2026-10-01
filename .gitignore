@@ -1,37 +1,41 @@
 __pycache__/
 node_modules/
-experiments/runs/*/coverage/
-experiments/runs/*/target/
-experiments/runs/*/verification-prepare.log
-experiments/runs/*/.analysis-pmd-ruleset.xml
-experiments/runs/*/pnpm-lock.yaml
+# Per-run scaffolding below uses ** so the rules keep matching after a run
+# is moved into runs/_archive/. A single-level experiments/runs/*/ glob stops
+# matching there, which is how 105 coverage/stryker/mutation-report files from
+# 36 archived runs reached the index in 3cbb887c8.
+experiments/runs/**/coverage/
+experiments/runs/**/target/
+experiments/runs/**/verification-prepare.log
+experiments/runs/**/.analysis-pmd-ruleset.xml
+experiments/runs/**/pnpm-lock.yaml
 experiments/runs/.pnpm-store/
 # Stryker mutation-testing scaffolding (regenerated per run by
 # experiments/compute-mutation-score.py). Same status as coverage/.
-experiments/runs/*/.npmrc
-experiments/runs/*/stryker.config.json
-experiments/runs/*/stryker.log
-experiments/runs/*/reports/
+experiments/runs/**/.npmrc
+experiments/runs/**/stryker.config.json
+experiments/runs/**/stryker.log
+experiments/runs/**/reports/
 # Python stack scaffolding, all regenerated per run: the venv and caches by
 # install.sh and analyze-run.sh, the mutants/ tree by mutmut. Same status as
 # node_modules/, coverage/ and target/.
-experiments/runs/*/.venv/
-experiments/runs/*/.pytest_cache/
-experiments/runs/*/.ruff_cache/
-experiments/runs/*/coverage.json
-experiments/runs/*/.coverage
-experiments/runs/*/uv.lock
-experiments/runs/*/mutants/
-experiments/runs/*/mutmut.log
-experiments/runs/*/.analysis-complexipy.json
+experiments/runs/**/.venv/
+experiments/runs/**/.pytest_cache/
+experiments/runs/**/.ruff_cache/
+experiments/runs/**/coverage.json
+experiments/runs/**/.coverage
+experiments/runs/**/uv.lock
+experiments/runs/**/mutants/
+experiments/runs/**/mutmut.log
+experiments/runs/**/.analysis-complexipy.json
 # Rust stack scaffolding, regenerated per run by analyze-run.sh (the test/impl
 # split, rust-code-analysis and coverage reports) and compute-mutation-score.py
 # (cargo-mutants). target/ is covered above.
-experiments/runs/*/.analysis-rust/
-experiments/runs/*/.analysis-rca.json
-experiments/runs/*/.analysis-lcov.info
-experiments/runs/*/.analysis-mutants/
-experiments/runs/*/cargo-mutants.log
+experiments/runs/**/.analysis-rust/
+experiments/runs/**/.analysis-rca.json
+experiments/runs/**/.analysis-lcov.info
+experiments/runs/**/.analysis-mutants/
+experiments/runs/**/cargo-mutants.log
 experiments/reanalyze.log
 .claude/scheduled_tasks.lock
 .claude/settings.local.json
@@ -62,18 +66,18 @@ nohup.out
 *.key
 *.pem
 *.portkey-bak
-experiments/runs/*/transcript-pi.jsonl
+experiments/runs/**/transcript-pi.jsonl
 # TCR bookkeeping written by run-batch.sh for every arm (the isolated run
 # repo's commit log, reflog, patch series and final status). Never versioned:
 # the TDD signal the RQs use is parsed out of it into metrics.json at analysis
 # time, and the raw files are large and diff as noise. They were invisible
 # until the stray per-run .gitignore was removed, hence the explicit rules.
-experiments/runs/*/tcr-commits.tsv
-experiments/runs/*/tcr-reflog.tsv
-experiments/runs/*/tcr-history.patch
-experiments/runs/*/tcr-final-status.txt
-experiments/runs/*/tcr-git-summary.json
-experiments/runs/*/analyze.err
+experiments/runs/**/tcr-commits.tsv
+experiments/runs/**/tcr-reflog.tsv
+experiments/runs/**/tcr-history.patch
+experiments/runs/**/tcr-final-status.txt
+experiments/runs/**/tcr-git-summary.json
+experiments/runs/**/analyze.err
 # Console transcript of a run; can balloon to multiple GB when a model
 # spams output (blocks GitHub's 2 GiB push limit). The run's data lives in
 # metrics.json / transcript.jsonl — run.log is not needed in the repo.
@@ -92,8 +96,8 @@ research/reports/*.pdf
 #   python3 -m pip install --target .pylibs tabulate
 # and run:  PYTHONPATH=.pylibs python3 experiments/aggregate-by-query.py <rq>
 .pylibs/
-experiments/runs/*/pom-pitest.xml
-experiments/runs/*/pit.log
+experiments/runs/**/pom-pitest.xml
+experiments/runs/**/pit.log
 
 # Stryker sandbox leftovers from aborted mutation runs
 .stryker-tmp/
