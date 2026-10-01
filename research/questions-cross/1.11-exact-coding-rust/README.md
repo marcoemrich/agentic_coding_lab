@@ -28,10 +28,12 @@ outcomes:
   - cognitive_avg
   - mccabe_max
   - mccabe_avg
-  - unit_count
-  - unit_size_max
-  - unit_size_avg
-  - unit_size_median
+  # function length. unit_* is deliberately absent: off Java it is a copy of
+  # these (lines per function), and listing both doubles every column.
+  - cc_longest_function
+  - cc_avg_loc_per_function
+  - cc_median_loc_per_function
+  - cc_functions
   - mutation_score
   - mutants_total
   - mutants_survived
@@ -194,8 +196,8 @@ Refactor`, `tdd_discipline` 1.0, 15/15 external scenarios, Mutation Score
 
 The question this RQ exists to answer is whether EXACT Coding improves code
 quality on Rust the way it did on TypeScript, Java and Python. The outcomes
-that carry that question are `cognitive_max`, `mccabe_max`, per-function size,
-Code Mass (APP), clippy findings and Mutation Score — reported with
+that carry that question are `cognitive_max`, `mccabe_max`,
+Code Mass (APP), clippy findings, `cc_longest_function`, `cc_avg_loc_per_function` and Mutation Score — reported with
 `mutants_total` and `mutants_survived` whenever the arms differ in code size.
 
 **Correctness is a guard, not a result.** A quality number from a cell that
@@ -221,7 +223,7 @@ under the model caveat above.
   that cell's quality numbers rather than producing a finding about
   correctness.
 - **H2 — complexity and unit-size benefit reproduces:** both EXACT variants
-  lower `cognitive_max` and per-function size against inline TDD, as they did
+  lower `cognitive_max`, `cc_longest_function` and `cc_avg_loc_per_function` against inline TDD, as they did
   on Java. **This is the load-bearing hypothesis of the RQ.**
 - **H3 — Mutation Score ordering reproduces:** the three methods are ordered
   as on Java and Python.
