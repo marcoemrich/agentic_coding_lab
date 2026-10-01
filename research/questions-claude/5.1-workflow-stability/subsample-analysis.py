@@ -63,7 +63,7 @@ def outlier_rate(xs: list[float]) -> float:
 def stability_per_metric(cells: dict) -> None:
     """Print per-cell stability table per metric."""
     for metric in METRICS:
-        print(f"\n### Stabilitäts-Kennzahlen für `{metric}` (n=10 pro Zelle)\n")
+        print(f"\n### Stability metrics for `{metric}` (n=10 per cell)\n")
         print("| Workflow | n | mean | σ | CV (σ/μ) | IQR | outlier_rate | reprod_score |")
         print("|---|---:|---:|---:|---:|---:|---:|---:|")
         for wf, by_metric in sorted(cells.items()):
@@ -122,12 +122,12 @@ def ranking_stability(cells: dict, metric: str, sub_n: int = 3,
 
 def main() -> None:
     cells = load_cells()
-    print("# RQ-stability Subsampling-Analyse — generiert\n")
-    print("Datenquelle: `runs.csv` (n=10 pro Zelle, v5 ggf. ergänzt).\n")
+    print("# RQ-stability subsampling analysis — generated\n")
+    print("Data source: `runs.csv` (n=10 per cell, v5 topped up where needed).\n")
     stability_per_metric(cells)
 
-    print("\n### Ranking-Stabilität bei n=3-Subsamples (1000 Trials)\n")
-    print("| Metrik | P(n=3-Ranking = n=10-Ranking) | n=10-Ranking |")
+    print("\n### Ranking stability for n=3 subsamples (1000 trials)\n")
+    print("| Metric | P(n=3 ranking = n=10 ranking) | n=10 ranking |")
     print("|---|---:|---|")
     for metric in METRICS:
         p, ranking = ranking_stability(cells, metric)

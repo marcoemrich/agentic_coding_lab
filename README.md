@@ -57,7 +57,7 @@ The current model decouples three concerns:
 RQ directories live in six subtrees: `research/questions-claude/` (Claude Code RQs),
 `research/questions-opencode/` (OpenCode RQs), `research/questions-pi/` (pi RQs),
 `research/questions-cursor-cli/` (cursor-cli RQs), `research/questions-cross/`
-(harness-übergreifende RQs), and `research/workflow-dev/` (workflow-evolution chain).
+(cross-harness RQs), and `research/workflow-dev/` (workflow-evolution chain).
 **Adding a new subtree requires registering it in `RQ_TREES` in
 `experiments/generate-snapshot-skeleton.py`** — the script has no auto-discovery and
 silently omits unregistered subtrees from snapshots. Each dir carries a `<chapter>-slug`

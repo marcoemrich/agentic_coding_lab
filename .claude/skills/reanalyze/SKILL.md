@@ -113,13 +113,13 @@ Run sequentially. On errors in any phase, **stop and ask the user**, do not skip
 
 ### Phase 4 — Findings update (write-first)
 
-**Write directly to `findings.md`, then notify the user to review.** Markdown tables and trophy assignments are much easier to evaluate as rendered output than as a chat proposal; reverting is cheap (it's only markdown). After writing, send one line: "geschrieben — lies drüber" with a brief list of what changed (STALE / STATUS / NEW).
+**Write directly to `findings.md`, then notify the user to review.** Markdown tables and trophy assignments are much easier to evaluate as rendered output than as a chat proposal; reverting is cheap (it's only markdown). After writing, send one line (in the user's language), e.g. "written — please review", with a brief list of what changed (STALE / STATUS / NEW).
 
 Exception: **deletions** of existing findings still require explicit user confirmation before the `Edit` — losing a documented finding is more expensive than re-reading a fresh write.
 
 `findings.md` shows **only the current state**. No legacy comparisons, no "previously X" references, no "revised"/"confirmed" tags. Header form: `## F-x.y — Title` (no trailing suffix). The namespace before the last dot may carry dots itself (`F-4.4.1`, `F-1.12.5` are valid). Keep the em-dash `—`: the snapshot generator parses on it and drops non-matching headers silently.
 
-**Trophy convention (🏆) in overview tables**: When refreshing the `## Overview` table at the top of `findings.md`, append 🏆 to the best value per outcome row alongside the bolded winner. Metric direction matters — note it in the column header or row label (`smell_total`, complexity-Metriken → "lower = better"; `refactorings_applied`, `predictions_correct_rate` → "higher = better"). Award 🏆 only where the spread is meaningful — if all values lie within 1 σ and the framing is "no effect", either award 🏆 to all tied or to none, don't fabricate winners from rounding noise. Trophies are for findings docs only; workflow files stay emoji-free.
+**Trophy convention (🏆) in overview tables**: When refreshing the `## Overview` table at the top of `findings.md`, append 🏆 to the best value per outcome row alongside the bolded winner. Metric direction matters — note it in the column header or row label (`smell_total`, complexity metrics → "lower = better"; `refactorings_applied`, `predictions_correct_rate` → "higher = better"). Award 🏆 only where the spread is meaningful — if all values lie within 1 σ and the framing is "no effect", either award 🏆 to all tied or to none, don't fabricate winners from rounding noise. Trophies are for findings docs only; workflow files stay emoji-free.
 
 1. Read current `findings.md` and fresh `summary.md`.
 2. For each existing finding (`## F-x.y`):
@@ -162,10 +162,10 @@ Exception: **deletions** of existing findings still require explicit user confir
 
 6. After verifying, send one short line summarizing what changed:
    ```
-   geschrieben — STALE: F-x.y, F-a.b · NEW: F-x.z · OK: F-c.d, F-e.f. Lies drüber.
+   written — STALE: F-x.y, F-a.b · NEW: F-x.z · OK: F-c.d, F-e.f. Please review.
    ```
 
-**Glossary discipline**: use terms from the README glossary ("Code-Mass (APP)", "Produktiv-LoC", "Korrektheit (außen)", etc.) or metric IDs in backticks. Synonyms like "Code-Volumen" or "LoC-Größe" are forbidden.
+**Glossary discipline**: use terms from the README glossary ("Code Mass (APP)", "Production LoC", "Correctness (external)", etc.) or metric IDs in backticks. Synonyms like "Code-Volumen" or "LoC-Größe" are forbidden.
 
 ---
 

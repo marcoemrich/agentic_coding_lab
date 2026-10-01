@@ -14,7 +14,7 @@ in this lab). Prose below says "subscription route"; ids keep the literal
 
 Median per cell. Direction per column; ties get a trophy on every winning cell.
 
-| Cell | Route | Reasoning | Throughput (tok/s) höher = besser | Duration (s) kleiner = besser | `cognitive_max` kleiner = besser | Smell Total kleiner = besser | Production LoC kleiner = besser | Correctness (external) höher = besser |
+| Cell | Route | Reasoning | Throughput (tok/s) higher = better | Duration (s) lower = better | `cognitive_max` lower = better | Smell Total lower = better | Production LoC lower = better | Correctness (external) higher = better |
 |---|---|---|---:|---:|---:|---:|---:|---:|
 | `gpt-5-6-sol-no-thinking` | Requesty | off | **3379** 🏆 | **251** 🏆 | 8.0 | 2.0 | **28** 🏆 | **100 %** 🏆 |
 | `gpt-5-6-sol-reasoning` | Requesty | ON | 2899 | 304 | 9.0 | 2.0 | **28** 🏆 | **100 %** 🏆 |

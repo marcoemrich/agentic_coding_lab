@@ -1,46 +1,46 @@
 # Notes
 
-## v6.5 Korrektheits-Rückschlag (Optimierungs-Kette 16.-18.05.2026, Rebuild 22.05.2026)
+## v6.5 correctness setback (optimization chain 16.-18.05.2026, rebuild 22.05.2026)
 
-Lange Quality-Optimierungskette **exact-hybrid-v1-cc → v6.5-lean → v6.5.1-audited → v6.5.2-bullets-cut → v6.5.3-targeted-cuts → v6.5.4-refactor-cut-only** (mit v6.6-leaner) lief vom **16.05. bis 18.05.2026** auf game-of-life und verbesserte Code-Qualität kontinuierlich — v6.5.4 wurde "Quality-Champion" (cognitive_max −29 %, 100 % Pred-Rate).
+A long quality optimization chain **exact-hybrid-v1-cc → v6.5-lean → v6.5.1-audited → v6.5.2-bullets-cut → v6.5.3-targeted-cuts → v6.5.4-refactor-cut-only** (with v6.6-leaner) ran from **16.05. to 18.05.2026** on game-of-life and improved code quality continuously — v6.5.4 became the "quality champion" (cognitive_max −29 %, 100 % pred rate).
 
-**Der Rückschlag (entdeckt 18.05.2026):** Erste claim-office-Verifikation von v6.5-lean × opus-4-7 zeigte `verification_pct`-Kollaps von **1.00 (exact-hybrid-v1-cc) auf 0.38 (v6.5-lean)**, defekt in der gesamten Folgekette (0.36–0.73). Die ~5 Iterationen Quality-Tuning liefen auf einem Workflow, der auf novel Code systematisch falsche Ergebnisse produzierte. Debug auf claim-office war nötig, um das Problem überhaupt zu finden — game-of-life-only-Messung der Kette hatte den Bruch zwei Tage lang versteckt.
+**The setback (discovered 18.05.2026):** The first claim-office verification of v6.5-lean × opus-4-7 showed a `verification_pct` collapse from **1.00 (exact-hybrid-v1-cc) to 0.38 (v6.5-lean)**, broken across the entire follow-up chain (0.36–0.73). The ~5 iterations of quality tuning ran on a workflow that systematically produced wrong results on novel code. Debugging on claim-office was necessary to find the problem at all — measuring the chain on game-of-life only had hidden the break for two days.
 
-### Täter 1 — skill-creator SKILL
+### Culprit 1 — skill-creator SKILL
 
-v6.5-lean wurde mit dem `skill-creator`-Skill umgeschrieben (Ziel: Theory-of-Mind statt Imperative). Konkret entfernt/umformuliert:
+v6.5-lean was rewritten with the `skill-creator` skill (goal: Theory-of-Mind instead of imperatives). Concretely removed/reworded:
 
-- `⚠️ CRITICAL: Skill + Subagent Usage is MANDATORY` → "Why skills are required"-Begründungsblock
-- `MUST verbatim`-Anweisung für Predictions → Why-Block zur Parser-Mechanik
-- `🚨 INVOKE SKILL` / `DO NOT write...` → schlichte Invoke-Anweisungen
-- Checklist + "Remember"-Sektion + TDD-Pep raus
-- Four Rules of Simple Design + Integration-with-Project-Standards aus refactor.md raus
+- `⚠️ CRITICAL: Skill + Subagent Usage is MANDATORY` → "Why skills are required" rationale block
+- `MUST verbatim` instruction for predictions → Why-block on the parser mechanics
+- `🚨 INVOKE SKILL` / `DO NOT write...` → plain invoke instructions
+- Checklist + "Remember" section + TDD pep removed
+- Four Rules of Simple Design + Integration-with-Project-Standards removed from refactor.md
 
-Parser-seitig alles safe (keine Marker zerstört). Verhaltens-seitig: Bruch. **Lehre: "parser-safe" ≠ "verhaltens-neutral".**
+Parser-wise everything safe (no markers destroyed). Behavior-wise: break. **Lesson: "parser-safe" ≠ "behavior-neutral".**
 
-### Täter 2 (unabhängig) — test-list-scope-fix
+### Culprit 2 (independent) — test-list-scope-fix
 
-Parallel hatte v4 vs v4.1 gezeigt, dass `commands/test-list.md` mit Scope "base functionality ONLY / 3-6 tests" zu wenig Coverage erzwingt; v4.1 nutzt "cover every rule/example/❓ + expected values". Derselbe Fix musste in die neue v6-Basis portiert werden (`exact-hybrid-v2-testlist-fix-cc`) — sonst gefixt-gegen-ungefixt-Confound in RQ 4.x.
+In parallel, v4 vs v4.1 had shown that `commands/test-list.md` with the scope "base functionality ONLY / 3-6 tests" enforces too little coverage; v4.1 uses "cover every rule/example/❓ + expected values". The same fix had to be ported into the new v6 base (`exact-hybrid-v2-testlist-fix-cc`) — otherwise a fixed-vs-unfixed confound in RQ 4.x.
 
-### Aufräum-Run (neuer langer Optimierungs-Lauf)
+### Cleanup run (new long optimization run)
 
-- Alte v6.5-Kette → `experiments/workflows/_archive/` (Lookup ignoriert `_`-Präfix)
-- Alte RQs (2.x/3.x) → `research/_archive/workflow-dev-v1/` (dieses Archiv am 2026-08-11 in `953841cb` gelöscht; nur noch über die Git-Historie erreichbar)
-- Neue Basis `exact-hybrid-v2-testlist-fix-cc` = exact-hybrid-v1-cc + test-list-scope-fix (Diff = nur 2 Files: `test-list.md` + zwei "BASE FUNCTIONALITY ONLY"-Reste in `tdd.md`)
-- Rezept jedes alten Cuts in `research/workflow-dev/v6-reduction-recipe.md` zur Wiederanwendung auf reparierter Basis
-- Neue RQs `1.1-pep-effect-v6.1` … `1.5-why-block-effect-v6.1` re-validieren die Cuts isoliert auf neuer Basis, **mit** claim-office-Smoke (gestartet 23.-24.05.2026)
+- Old v6.5 chain → `experiments/workflows/_archive/` (lookup ignores the `_` prefix)
+- Old RQs (2.x/3.x) → `research/_archive/workflow-dev-v1/` (this archive was deleted on 2026-08-11 in `953841cb`; only reachable via the Git history)
+- New base `exact-hybrid-v2-testlist-fix-cc` = exact-hybrid-v1-cc + test-list-scope-fix (diff = only 2 files: `test-list.md` + two "BASE FUNCTIONALITY ONLY" leftovers in `tdd.md`)
+- Recipe of every old cut in `research/workflow-dev/v6-reduction-recipe.md` for re-application on the repaired base
+- New RQs `1.1-pep-effect-v6.1` … `1.5-why-block-effect-v6.1` re-validate the cuts in isolation on the new base, **with** claim-office smoke (started 23.-24.05.2026)
 
-### Lehren
+### Lessons
 
-1. **skill-creator nicht blind auf Workflow-Prompts loslassen.** "MUST"/"CRITICAL"/Imperative wirken bei TDD-Workflows als verhaltens-tragend, nicht nur als Pep — Entfernen kann Korrektheit auf novel Code zerstören, ohne dass Marker oder game-of-life-Metriken etwas merken.
-2. **Bundle-Sprünge vermeiden.** v6.5-lean bündelte 4 Einzel-Cuts + Why-Rewrites + Project-Standards-Cut in **einem** Schritt → Täter erst durch Re-Test isolierbar. Einzeln rollen.
-3. **Jede Reduktions-Iteration braucht claim-office-Smoke (n≥3)**, auch wenn die RQ primär Code-Qualität untersucht. Game-of-life-only ist methodisch ungenügend.
+1. **Do not let skill-creator loose on workflow prompts blindly.** "MUST"/"CRITICAL"/imperatives act as behavior-bearing in TDD workflows, not just as pep — removing them can destroy correctness on novel code without markers or game-of-life metrics noticing anything.
+2. **Avoid bundle jumps.** v6.5-lean bundled 4 individual cuts + Why rewrites + the Project-Standards cut in **one** step → culprits only isolatable through re-testing. Roll them out one at a time.
+3. **Every reduction iteration needs a claim-office smoke (n≥3)**, even if the RQ primarily studies code quality. Game-of-life only is methodologically insufficient.
 
-## Opus 4.6 ≠ Opus 4.7 auf Workflows (Wechsel-Zwang ab ~16.05.2026, RQ 3.1 ausgewertet 22.05.2026)
+## Opus 4.6 ≠ Opus 4.7 on workflows (forced switch from ~16.05.2026, RQ 3.1 evaluated 22.05.2026)
 
-Arbeitsannahme war: Opus 4.6 und 4.7 liefern auf den Workflows grundsätzlich gleiche Ergebnisse, nur verschoben (4.7 stärker). Daher hätte ein temporärer Modell-Wechsel die Workflow-Befunde nicht verzerren dürfen.
+The working assumption was: Opus 4.6 and 4.7 deliver fundamentally the same results on the workflows, just shifted (4.7 stronger). Hence a temporary model switch should not have distorted the workflow findings.
 
-**Stimmt nicht** (RQ 3.1 / `research/questions/3.1-workflow-model-interaction/`, F-workflow-model.1): v4 und v6 **tauschen je nach Modell die Plätze** auf `verification_pct` (claim-office-example-mapping):
+**Not true** (RQ 3.1 / `research/questions/3.1-workflow-model-interaction/`, F-workflow-model.1): v4 and v6 **swap places depending on the model** on `verification_pct` (claim-office-example-mapping):
 
 | Workflow | opus-4-7 | opus-4-6 |
 |---|---:|---:|
@@ -48,231 +48,231 @@ Arbeitsannahme war: Opus 4.6 und 4.7 liefern auf den Workflows grundsätzlich gl
 | exact-single-context-v1-cc | 0.87 | 0.87 |
 | exact-hybrid-v1-cc | **1.00** | 0.68 |
 
-Mechanismus (F-workflow-model.2): exact-hybrid-v1-cc delegiert Orchestrierung an das Modell (Skill-Invocation im shared Context) — das beherrscht 4.7, 4.6 verliert in ~40 % der Runs die Claim-Hälfte. v4 gibt jeder Phase einen expliziten Subagent-Prompt — stützt 4.6, macht 4.7 auf Mehrdeutigkeiten "überkreativ".
+Mechanism (F-workflow-model.2): exact-hybrid-v1-cc delegates orchestration to the model (skill invocation in the shared context) — 4.7 masters that, 4.6 loses the claim half in ~40 % of runs. v4 gives each phase an explicit subagent prompt — supports 4.6, makes 4.7 "overcreative" on ambiguities.
 
-**Warum der Wechsel überhaupt nötig war:** Portkey hatte zu dem Zeitpunkt nur 4.6 verfügbar. Mein Direct-API-4.7-Account war nach 2-3 Tagen aktiver v6.5-Optimierungs-Arbeit (15.-18.05.) durch das **Wochen-Ratelimit** aufgebraucht — erste Portkey-4.6-Runs starteten am 16.05., voller Wechsel ab 19.05. (claim-office-Verifikation lief nur noch auf Portkey-4.6). 4.7-Zugriff erst wieder ab ~22.05. Workflow-Arbeit unter Zeitdruck zwang den Wechsel.
+**Why the switch was necessary at all:** Portkey only had 4.6 available at that time. My Direct-API 4.7 account was used up by the **weekly rate limit** after 2-3 days of active v6.5 optimization work (15.-18.05.) — first Portkey 4.6 runs started on 16.05., full switch from 19.05. (claim-office verification ran only on Portkey 4.6). 4.7 access only again from ~22.05. Workflow work under time pressure forced the switch.
 
-**Konsequenz:** Modell-Wechsel innerhalb einer Workflow-Optimierungs-Kette ist **keine kostenlose Substitution**. Pinning des Modells gehört zur Methodik dieser RQs; ein erzwungener Wechsel ist als Confound zu dokumentieren, nicht als "weiterarbeiten mit dem zweitstärksten Opus". Praxis-Empfehlung pro Modell jetzt in `research/workflow-dev/model-recommendation-matrix.md`.
+**Consequence:** A model switch within a workflow optimization chain is **not a free substitution**. Pinning the model belongs to the methodology of these RQs; a forced switch must be documented as a confound, not as "keep working with the second-strongest Opus". Practical recommendation per model is now in `research/workflow-dev/model-recommendation-matrix.md`.
 
-**Lehre für Kapazitätsplanung:** Wochen-Ratelimit auf Direct-API 4.7 ist real und bricht in 2-3 Tagen ein, wenn aktiv reduziert/optimiert wird. Bei Workflow-Arbeit, die strikt 4.7 braucht: entweder Kapazitäts-Puffer einplanen oder vorab klären, ob Portkey die nötige Modellversion anbietet — sonst zwingt die Lage Methodik-Kompromisse.
+**Lesson for capacity planning:** The weekly rate limit on Direct-API 4.7 is real and hits within 2-3 days when actively reducing/optimizing. For workflow work that strictly needs 4.7: either plan a capacity buffer or clarify in advance whether Portkey offers the required model version — otherwise the situation forces methodology compromises.
 
-## n=3 zu klein, "verlässlich ab n=?" (Konsolidierung aus RQ-stability vom 15.05.2026)
+## n=3 too small, "reliable from n=?" (consolidation from RQ-stability of 15.05.2026)
 
-Praktische Beobachtung: n=3 ist in vielen Zellen **nicht aussagefähig** — Mittelwerte kippen zwischen Wiederholungen, einzelne Runs dominieren die Statistik. n=5 ist deutlich besser, aber auch noch nicht überall belastbar.
+Practical observation: n=3 is **not conclusive** in many cells — means flip between repetitions, individual runs dominate the statistics. n=5 is considerably better, but still not robust everywhere.
 
-**Was die Daten aus RQ-stability (`research/questions/5.1-workflow-stability/`, n=10 pro Zelle, opus-4-7-no-thinking, game-of-life) sagen:**
+**What the data from RQ-stability (`research/questions/5.1-workflow-stability/`, n=10 per cell, opus-4-7-no-thinking, game-of-life) say:**
 
-- **F-stability.3:** Bei n=3 stimmt die *volle* Workflow-Rangordnung nur in **15-62 %** der Fälle mit der n=10-Wahrheit überein (1000 Trials Subsampling):
+- **F-stability.3:** At n=3, the *full* workflow ranking matches the n=10 truth in only **15-62 %** of cases (1000 trials subsampling):
   - `code_mass` 15.9 %, `smell_total` 25.2 %, `cc_longest_function` 23.6 %, `mccabe_max` 62.5 %, `cognitive_max` 50.5 %.
-  - v4 als "Bester" ist robust erkennbar (>90 %), mittleres Feld (v1/v2/v5) ist mit n=3 nicht trennbar.
-- **F-stability.5:** Für Tail-Charakterisierung (P95/P99 von Tokens/Wallclock) ist selbst n=10 zu knapp; **n=30+** wäre nötig.
-- **F-stability.7:** `mutation_score`-σ klein genug, dass n=5-7 reicht; v5 ist Ausreißer (σ=0.036, Range 0.84-0.97 → n≥10).
+  - v4 as "best" is robustly detectable (>90 %), the middle field (v1/v2/v5) cannot be separated with n=3.
+- **F-stability.5:** For tail characterization (P95/P99 of tokens/wallclock) even n=10 is too tight; **n=30+** would be needed.
+- **F-stability.7:** `mutation_score` σ small enough that n=5-7 suffices; v5 is an outlier (σ=0.036, range 0.84-0.97 → n≥10).
 
-**Faustregel (aus den vorhandenen Subsampling-Daten, GoL/4-7):**
+**Rule of thumb (from the existing subsampling data, GoL/4-7):**
 
-| Aussage-Typ | Notwendiges n |
+| Claim type | Required n |
 |---|---|
-| "Workflow A ist Sieger" bei großem Abstand (Faktor ≥3 in μ) | n=3 reicht |
-| Drei-Workflow-Vergleich, mittleres Feld | n≥7 |
-| Volle Rangordnung über 5+ Workflows | n=10 zeigt schon Restunsicherheit |
-| Tail-Quantile (P95/P99, Worst-Case-Budget) | n≥30 |
-| Hoch-σ-Workflows (v5 auf Tokens, v5 auf mutation_score) | n≥10 |
-| Korrektheits-Smoke (binär, claim-office unter exact-hybrid-v1-cc) | n=3 reicht wenn alle grün; bei Mix muss n≥5 |
+| "Workflow A is the winner" with a large gap (factor ≥3 in μ) | n=3 suffices |
+| Three-workflow comparison, middle field | n≥7 |
+| Full ranking over 5+ workflows | n=10 already shows residual uncertainty |
+| Tail quantiles (P95/P99, worst-case budget) | n≥30 |
+| High-σ workflows (v5 on tokens, v5 on mutation_score) | n≥10 |
+| Correctness smoke (binary, claim-office under exact-hybrid-v1-cc) | n=3 suffices if all green; with a mix, n≥5 is required |
 
-**Was offen ist:** Die Subsampling-Antwort ("ab welchem n verlässlich") ist **modell-, kata- und metrik-spezifisch**. RQ-stability-Daten gelten für opus-4-7-no-thinking × game-of-life × Code-Komplexität. Übertragung auf claim-office (Korrektheit) und andere Modelle ist nicht gemessen — Caveats (a)/(b) im RQ-README dokumentieren das.
+**What is open:** The subsampling answer ("from which n is it reliable") is **model-, kata- and metric-specific**. RQ-stability data apply to opus-4-7-no-thinking × game-of-life × code complexity. Transfer to claim-office (correctness) and other models has not been measured — caveats (a)/(b) in the RQ README document this.
 
-**Konsequenz für Praxis:**
-- Default für neue RQs: `min_replicates: 5` statt 3. n=3 nur für binäre Sanity-Checks ("läuft überhaupt grün?").
-- Bei kleinen erwarteten Effekten oder Vergleich im mittleren Feld: n=7-10 einplanen.
-- Bei Tail-Aussagen (Budget-Planung, Worst-Case-Latenz): n=30+ oder explizit als "grobe Schätzung" markieren.
-- Bei Workflow-Optimierungs-Iteration mit kleinem n vorsichtig sein — F-stability.3 zeigt, dass mittlere Rangwechsel zwischen Iterationen reines Sampling-Artefakt sein können (Bezug zum v6.5-Setback oben: dort hat v6.5.3 mit n=1 angeblich gewonnen, war aber statistisch leer).
+**Consequence for practice:**
+- Default for new RQs: `min_replicates: 5` instead of 3. n=3 only for binary sanity checks ("does it run green at all?").
+- For small expected effects or comparisons in the middle field: plan n=7-10.
+- For tail claims (budget planning, worst-case latency): n=30+ or mark explicitly as a "rough estimate".
+- Be careful with workflow optimization iterations at small n — F-stability.3 shows that middle rank changes between iterations can be pure sampling artifacts (relation to the v6.5 setback above: there v6.5.3 supposedly won with n=1, but was statistically empty).
 
-## v4-Wallclock × Single-Shard-Pflicht = zähe Arbeit (akut während v6.5-Optimierung 16.-22.05.2026)
+## v4 wallclock × single-shard requirement = slow going (acute during v6.5 optimization 16.-22.05.2026)
 
-exact-subagents-v1-cc ist auf Wallclock der teuerste Workflow: typisch ~14 min/Run, Worst-Case **~65 min/Run** (RQ-stability F-stability.5, wallclock-σ=984 s, einzelner Run 3923 s = 5× Median). Grund: vier Phasen (test-list/red/green/refactor) als isolierte Task-Subagents, jede mit eigenem Context-Cold-Start.
+exact-subagents-v1-cc is the most expensive workflow on wallclock: typically ~14 min/run, worst case **~65 min/run** (RQ-stability F-stability.5, wallclock σ=984 s, single run 3923 s = 5× median). Reason: four phases (test-list/red/green/refactor) as isolated Task subagents, each with its own context cold start.
 
-**Sharding-Constraint:** Direct-API-Batches müssen single-shard laufen ([[feedback-direct-single-shard]]) — bei Rate-Limit-Hit verliert man sonst alle parallelen Container synchron (Backoff 60 s → 5 min → 30 min → 1 h → 2 h). Risiko, viele Runs zu verlieren, ist bei v4 besonders hoch, weil jeder verlorene Run teuer nachzuholen ist.
+**Sharding constraint:** Direct-API batches must run single-shard ([[feedback-direct-single-shard]]) — otherwise a rate-limit hit loses all parallel containers synchronously (backoff 60 s → 5 min → 30 min → 1 h → 2 h). The risk of losing many runs is especially high with v4, because every lost run is expensive to redo.
 
-**Konsequenz für eine v4-RQ-Zelle (n=5):**
-- Sequenziell: 5 × 14 min = **70 min** typisch, Worst-Case 5 × 65 min ≈ **5,4 h**.
-- Plus Subagent-Schwergewicht (~2,5 M Tokens/Run) frisst Wochen-Ratelimit doppelt.
-- Mehrere Modelle/Prompts in einer RQ → leicht **Tage** Wallclock pro Refill.
+**Consequence for a v4 RQ cell (n=5):**
+- Sequential: 5 × 14 min = **70 min** typical, worst case 5 × 65 min ≈ **5.4 h**.
+- Plus subagent heavyweight (~2.5 M tokens/run) eats the weekly rate limit twice as fast.
+- Several models/prompts in one RQ → easily **days** of wallclock per refill.
 
-**Praktischer Pain:** lange Wartefenster (oft mehrere Stunden bis zum nächsten Zwischenergebnis), kein paralleles Vorankommen, jeder Rate-Limit-Hit verlängert um 1-2 h. Bei v6.5-Setback (oben) zwang das zusätzlich den Modell-Wechsel auf Portkey-4.6 — was wiederum die Workflow-Befunde verzerrte (siehe Opus-4.6-vs-4.7-Block).
+**Practical pain:** long waiting windows (often several hours until the next intermediate result), no parallel progress, every rate-limit hit adds 1-2 h. In the v6.5 setback (above) this additionally forced the model switch to Portkey 4.6 — which in turn distorted the workflow findings (see the Opus 4.6 vs 4.7 block).
 
-**Lehren / Mitigations:**
-- v4-Zellen früh planen, nicht ans Ende einer RQ-Pipeline; bei Verzögerung blockiert v4 die ganze RQ.
-- Wenn die RQ es zulässt: v4-Zellen auf Portkey-Variante umziehen (`opus-4-7-no-thinking-portkey`), dann sharden. Vorab prüfen, ob die exakte Modellversion auf Portkey verfügbar ist (siehe Opus-4.6-vs-4.7-Block — Modellwechsel innerhalb einer RQ ist nicht frei).
-- Bei n-Hochstufung (siehe vorherigen Block) den v4-Multiplier beachten: n=10 für v4-Direct = sehr großes Zeitbudget. Eventuell v4 bei niedrigerem n belassen, andere Workflows höher.
-- v4-Workflow-Iterationen vermeiden, wenn die Änderung nicht spezifisch v4 betrifft — dieselbe Reduktion zuerst auf v5/v6 testen (kürzere Wallclock), dann gezielt v4 verifizieren.
+**Lessons / mitigations:**
+- Plan v4 cells early, not at the end of an RQ pipeline; when delayed, v4 blocks the whole RQ.
+- If the RQ allows it: move v4 cells to the Portkey variant (`opus-4-7-no-thinking-portkey`), then shard. Check in advance whether the exact model version is available on Portkey (see the Opus 4.6 vs 4.7 block — a model switch within an RQ is not free).
+- When raising n (see the previous block), mind the v4 multiplier: n=10 for v4 Direct = a very large time budget. Possibly leave v4 at a lower n, others higher.
+- Avoid v4 workflow iterations if the change does not specifically concern v4 — test the same reduction on v5/v6 first (shorter wallclock), then verify v4 specifically.
 
-## Kata-Aufarbeitung — von Trainings-bekannten Trivial-Katas zu novel + externer Verifikation (April-Mai 2026)
+## Kata rework — from training-known trivial katas to novel + external verification (April-May 2026)
 
-Ausgangspunkt der ganzen Aufarbeitung war: die ursprüngliche Kata-Auswahl war methodisch schwach. Drei verkettete Probleme:
+The starting point of the whole rework was: the original kata selection was methodologically weak. Three chained problems:
 
-**(1) Triviale Katas → One-Shot statt TDD-Messung (Drop am 04.05.2026):** string-calculator und pixel-art-scaler waren so klein (string-calculator ~3 LoC Lösung), dass alle Workflows — auch baseline-oneshot-v1-cc — sie korrekt one-shotten konnten. Damit messen sie keinen TDD-Effekt: jeder Workflow erreicht 100 % Korrektheit, Smell-Counts sind 0, kein Signal zwischen den Zellen. Zusätzlich nie-gelaufene Katas (chimera-score, diamond, word-score) raus. Reduktion 137 Runs → 68 Runs.
+**(1) Trivial katas → one-shot instead of TDD measurement (dropped on 04.05.2026):** string-calculator and pixel-art-scaler were so small (string-calculator ~3 LoC solution) that all workflows — including baseline-oneshot-v1-cc — could one-shot them correctly. So they measure no TDD effect: every workflow reaches 100 % correctness, smell counts are 0, no signal between the cells. Additionally, never-run katas (chimera-score, diamond, word-score) removed. Reduction 137 runs → 68 runs.
 
-**(2) Trainings-Bekanntheit → Lösungs-Verzerrung (game-of-life ist Trainingsdaten):** Game of Life ist eine der bekanntesten Katas; die kanonische Lösung steht in Trainingsdaten praktisch jedes LLM. Konsequenzen:
-  - Workflow-Effekte können durch "Modell kennt die Lösung schon"-Bias maskiert werden — baseline-oneshot-v1-cc funktioniert auf GoL ungewöhnlich gut.
-  - TDD-Hints in Prompts wirken als Trigger (Data-Poisoning); deshalb **10.04. TDD-Hints entfernt**, **02.05. zusätzlich vitest-Hints entfernt**.
-  - **Trotzdem nutzbar** für Untersuchungen, die genau diesen Bias kontrollieren oder nicht treffen: Code-Qualitäts-Vergleiche (Form der Lösung) bei konstantem Kata, Reduktions-Validierungen (Bias konstant über Iterationen).
-  - **Untauglich** für Korrektheits-Aussagen über "kann der Workflow novel code?" — dafür braucht es novel Katas.
+**(2) Training familiarity → solution bias (game-of-life is training data):** Game of Life is one of the best-known katas; the canonical solution is in the training data of practically every LLM. Consequences:
+  - Workflow effects can be masked by a "model already knows the solution" bias — baseline-oneshot-v1-cc works unusually well on GoL.
+  - TDD hints in prompts act as triggers (data poisoning); therefore **10.04. TDD hints removed**, **02.05. vitest hints removed as well**.
+  - **Still usable** for studies that control for exactly this bias or are not affected by it: code quality comparisons (shape of the solution) at a constant kata, reduction validations (bias constant across iterations).
+  - **Unsuitable** for correctness claims about "can the workflow do novel code?" — that requires novel katas.
 
-**(3) Interne Tests sind nicht verlässlich genug — externe Verification-Suite nötig:** Internes Vitest aus dem Run misst, ob das Modell seine eigenen Tests grün bekommt, nicht ob die Lösung korrekt ist. Beobachtetes Failure-Pattern: Modell schreibt nur Tests für die einfache Hälfte der Spec, implementiert nur diese Hälfte, alle Tests grün — Korrektheit aber 50 %. `tests_passing = true` bei `verification_pct = 0.5` ist real (siehe RQ 3.1 / claim-office, wo opus-4-6 in ~40 % der v6-Runs die Claim-Hälfte komplett auslässt; `tests_total` 19-23 weil interne Tests nur Quote abdecken).
+**(3) Internal tests are not reliable enough — external verification suite needed:** The run's internal Vitest measures whether the model gets its own tests green, not whether the solution is correct. Observed failure pattern: the model writes tests only for the easy half of the spec, implements only that half, all tests green — but Correctness (external) is 50 %. `tests_passing = true` at `verification_pct = 0.5` is real (see RQ 3.1 / claim-office, where opus-4-6 completely omits the claim half in ~40 % of the v6 runs; `tests_total` 19-23 because internal tests only cover quote).
 
-**Lösung: claim-office-Kata + Verification-Suite (08.05.2026):**
-  - Eigens entwickelte Versicherungs-Domäne (HPSMV/MHPCO), garantiert nicht in Trainingsdaten.
-  - CLI-basiert (stdin/stdout JSON), zwei Operationen (`quote` + `claim`) mit konstruierten Mehrdeutigkeiten.
-  - Externe Verifikations-Suite (`experiments/katas/claim-office-verification/`): 15 Szenarien `*.input.json`/`*.expected.json` (+ Stories), läuft auf dem Host nach dem Container-Run, der Agent sieht die Suite nie.
-  - Generischer Mechanismus für CLI-Katas (`runner.json` + `scenarios/`); analog für GoL-CLI nachgezogen (13.05./14.05.).
-  - Metrik `verification_pct` (Float 0.0-1.0) als externes Korrektheits-Maß **zusätzlich** zu `tests_passing`.
+**Solution: claim-office kata + verification suite (08.05.2026):**
+  - Purpose-built insurance domain (HPSMV/MHPCO), guaranteed not in training data.
+  - CLI-based (stdin/stdout JSON), two operations (`quote` + `claim`) with constructed ambiguities.
+  - External verification suite (`experiments/katas/claim-office-verification/`): 15 scenarios `*.input.json`/`*.expected.json` (+ stories), runs on the host after the container run, the agent never sees the suite.
+  - Generic mechanism for CLI katas (`runner.json` + `scenarios/`); added for the GoL CLI analogously (13.05./14.05.).
+  - Metric `verification_pct` (float 0.0-1.0) as an external correctness measure **in addition to** `tests_passing`.
 
-**Lehre:** Ohne externe Verifikation hätten die v6.5-Quality-Wins als methodisch sauber gegolten — der Korrektheits-Bruch (siehe ersten Block) wurde nur sichtbar, weil claim-office eine externe Suite hat. Auf game-of-life-only (interne Tests) waren v6.5.x alle grün.
+**Lesson:** Without external verification, the v6.5 quality wins would have counted as methodologically clean — the correctness break (see the first block) only became visible because claim-office has an external suite. On game-of-life only (internal tests), all v6.5.x were green.
 
-**Aktive Kata-Rollen (Stand 24.05.2026):**
+**Active kata roles (as of 24.05.2026):**
 
-| Kata | Eigenschaft | Geeignet für |
+| Kata | Property | Suitable for |
 |---|---|---|
-| `claim-office` | novel, externe Verification-Suite | Korrektheits-Messung, Workflow-Smoke auf novel Code |
-| `claim-office-lite` | novel, reduzierte Suite (10 Szenarien) | Code-Qualität auf novel Code (nicht für Korrektheit — saturiert/kollabiert je nach Stil) |
-| `game-of-life` | trainings-bekannt, externe Suite | Code-Qualität, Reduktions-Validierung (Bias kontrollieren) |
-| `mars-rover` | trainings-bekannt | bisher kaum genutzt |
+| `claim-office` | novel, external verification suite | correctness measurement, workflow smoke on novel code |
+| `claim-office-lite` | novel, reduced suite (10 scenarios) | code quality on novel code (not for correctness — saturates/collapses depending on style) |
+| `game-of-life` | training-known, external suite | code quality, reduction validation (controlling the bias) |
+| `mars-rover` | training-known | hardly used so far |
 
-**Konsequenz für RQ-Design:** Kata-Zuordnung explizit nach Forschungsfrage (siehe CLAUDE.md): claim-office → Korrektheit, game-of-life → Code-Qualität. Nie Workflow-Optimierungen rein auf game-of-life messen ohne claim-office-Smoke (Lehre aus v6.5-Setback).
+**Consequence for RQ design:** Kata assignment explicitly by research question (see CLAUDE.md): claim-office → correctness, game-of-life → code quality. Never measure workflow optimizations purely on game-of-life without a claim-office smoke (lesson from the v6.5 setback).
 
-## Anfangs keine RQ-Disziplin → Full-Matrix-Falle (Februar 2026, RQ-Struktur eingeführt 04.05.2026)
+## No RQ discipline at first → full-matrix trap (February 2026, RQ structure introduced 04.05.2026)
 
-In der Initialphase (Februar 2026) gab es keine explizit formulierten Forschungsfragen. Stattdessen wurde versucht, **alle Parameter mit allen zu kombinieren** — Workflows × Katas × Prompt-Styles × Modelle × n=3 Replikate als ein großer Matrix-Run. Resultierende Größenordnung der Voll-Matrix:
+In the initial phase (February 2026) there were no explicitly formulated research questions. Instead, the attempt was to **combine all parameters with all others** — workflows × katas × prompt styles × models × n=3 replicates as one big matrix run. Resulting order of magnitude of the full matrix:
 
 ```
-7 Katas × 3 Prompts × 5 Workflows × 2 Modelle × n=3 = 630 Runs
+7 Katas × 3 Prompts × 5 Workflows × 2 Models × n=3 = 630 Runs
 ```
 
-Tatsächlich gelaufen wurden ~235 Runs (alte Studie, Stand 11.02.2026, archiviert in `old_runs/all-runs-statistics-*.md`) — die volle 630er-Matrix wurde nie vollendet. Mit Direct-API-Wochen-Ratelimit (siehe Opus-4.6-vs-4.7-Block oben: ~2-3 Tage aktive Arbeit, dann Wochen-Wartezeit) wären für 630 Runs **mehrere Wochen Wallclock** nötig gewesen — Hinzunahme von v4 (~14 min typisch, 65 min worst-case) und die Single-Shard-Pflicht (siehe v4-Wallclock-Block) hätten das nochmal mehrfach gestreckt.
+Actually run were ~235 runs (old study, as of 11.02.2026, archived in `old_runs/all-runs-statistics-*.md`) — the full 630 matrix was never completed. With the Direct-API weekly rate limit (see the Opus 4.6 vs 4.7 block above: ~2-3 days of active work, then weeks of waiting), 630 runs would have needed **several weeks of wallclock** — adding v4 (~14 min typical, 65 min worst case) and the single-shard requirement (see the v4 wallclock block) would have stretched that several times over again.
 
-**Was an einer Full-Matrix ohne RQ-Disziplin schief geht:**
-- **Falsche Frage-Vielfalt:** Eine Matrix beantwortet keine spezifische Frage, sondern liefert eine n-dimensionale Tabelle, die jeden möglichen Interaktions-Effekt vermengt. Ohne RQ ist nicht klar, welche Confounds kontrolliert werden müssten.
-- **Kosten skalieren multiplikativ:** Jede zusätzliche Faktor-Stufe kostet ×N Runs. Eine isolierte Frage ("Workflow-Effekt bei festem Modell und Kata") kostet 5×3 = 15 Runs statt 630.
-- **Befunde lassen sich nicht sauber zuordnen:** Im 235-Run-Bestand wurden im Nachhinein 21 Befunde aus den Daten extrahiert (`research/_archive/findings-validation-2026-05-04/old-findings.md`, gelöscht in `953841cb`). Diese mussten am 04.05.2026 mühsam auf neue RQs verteilt und gegen frische Daten re-validiert werden (✅ haltbar / ⚠️ revidiert / ❌ verworfen / 🚫 nicht prüfbar pro Befund).
-- **Trivial-Kata-Anteil bleibt unsichtbar:** Wenn pixel-art-scaler und string-calculator dasselbe Gewicht in der Matrix haben wie game-of-life, dominieren sie die Mittelwerte und maskieren echte Workflow-Unterschiede (Lehre aus Kata-Block oben).
+**What goes wrong with a full matrix without RQ discipline:**
+- **Wrong variety of questions:** A matrix answers no specific question, but delivers an n-dimensional table that mixes every possible interaction effect. Without an RQ it is unclear which confounds would need to be controlled.
+- **Costs scale multiplicatively:** Every additional factor level costs ×N runs. An isolated question ("workflow effect at fixed model and kata") costs 5×3 = 15 runs instead of 630.
+- **Findings cannot be attributed cleanly:** In the 235-run set, 21 findings were extracted from the data after the fact (`research/_archive/findings-validation-2026-05-04/old-findings.md`, deleted in `953841cb`). On 04.05.2026 these had to be laboriously distributed to new RQs and re-validated against fresh data (✅ holds / ⚠️ revised / ❌ discarded / 🚫 not testable per finding).
+- **The trivial-kata share stays invisible:** If pixel-art-scaler and string-calculator carry the same weight in the matrix as game-of-life, they dominate the means and mask real workflow differences (lesson from the kata block above).
 
-**Wende am 04.05.2026 — RQ-driven Struktur:**
-- Fünf initiale RQs eingeführt, jede mit explizitem Faktor + Kontrolle + Outcomes-Liste im Frontmatter.
-- `batch-plan-from-rq.py` generiert nur die für die jeweilige RQ benötigten Runs (typisch 15-50 statt 630).
-- `aggregate-by-query.py` zieht runs aus dem flachen Pool, die zum RQ-Selektor passen — Re-Use von Runs über RQs hinweg ist explizit.
-- Findings werden pro RQ geführt, nicht als Master-Tabelle.
-- Pre-existierende 235-Run-Daten in `research/_archive/findings-validation-2026-05-04/`, alte Befunde re-evaluiert und auf RQs verteilt (Verzeichnis in `953841cb` gelöscht; die Methoden-Übersicht daraus liegt als `research/reports/experiment-overview-v2-2026-05-04.md` weiter vor).
+**Turnaround on 04.05.2026 — RQ-driven structure:**
+- Five initial RQs introduced, each with an explicit factor + controls + outcomes list in the frontmatter.
+- `batch-plan-from-rq.py` generates only the runs needed for the respective RQ (typically 15-50 instead of 630).
+- `aggregate-by-query.py` pulls runs from the flat pool that match the RQ selector — reuse of runs across RQs is explicit.
+- Findings are kept per RQ, not as a master table.
+- Pre-existing 235-run data in `research/_archive/findings-validation-2026-05-04/`, old findings re-evaluated and distributed to RQs (directory deleted in `953841cb`; the methods overview from it is still available as `research/reports/experiment-overview-v2-2026-05-04.md`).
 
-**Lehre:** Vor jedem Refill **erst RQ formulieren** (Frage + ein Faktor + Kontrollen + erwartete Outcomes), dann minimalen Plan generieren. Voll-Matrix-Denken ist bei Rate-Limit-beschränkter API praktisch undurchführbar und liefert methodisch schwächere Befunde als gezielte Einzel-RQs. Faktor-Produkt × n × v4-Wallclock vorher rechnen — wenn > 1-2 Tage Wallclock, RQ enger schneiden oder auf Portkey-Routing umziehen.
+**Lesson:** Before every refill, **formulate the RQ first** (question + one factor + controls + expected outcomes), then generate a minimal plan. Full-matrix thinking is practically infeasible with a rate-limited API and yields methodologically weaker findings than targeted individual RQs. Compute factor product × n × v4 wallclock in advance — if > 1-2 days of wallclock, cut the RQ narrower or move to Portkey routing.
 
-## Wiederkehrende Mess-Bugs → stille Null-Werte in Metriken (laufendes Thema Feb-Mai 2026)
+## Recurring measurement bugs → silent zero values in metrics (ongoing topic Feb-May 2026)
 
-Über die gesamte Projektlaufzeit wiederkehrend: einzelne Metriken zeigen 0 oder null, **manchmal korrekt** (Workflow misst die Phase wirklich nicht), aber **meist Mess-Bug**. Charakteristisch: der Bug schreit nicht — Batches laufen sauber durch, Aggregation produziert Zahlen, nur eben falsche. Erkennen geht nur über Sanity-Checks (plötzliche Schritte zwischen Workflows / Versions / Container-Builds) oder durch RQ-Befunde, die zu seltsam aussehen, um echt zu sein.
+Recurring over the entire project duration: individual metrics show 0 or null, **sometimes correctly** (the workflow really does not measure the phase), but **mostly a measurement bug**. Characteristic: the bug does not scream — batches run through cleanly, aggregation produces numbers, just wrong ones. Detection only works via sanity checks (sudden steps between workflows / versions / container builds) or through RQ findings that look too strange to be real.
 
-**Konkret aufgetretene Bug-Klassen (chronologisch, Auswahl der lehrreichen Fälle):**
+**Bug classes that actually occurred (chronological, a selection of the instructive cases):**
 
-| Datum | Bug | Symptom | Ursache | Folge |
+| Date | Bug | Symptom | Cause | Consequence |
 |---|---|---|---|---|
-| 02.05.2026 | Transcript-JSONLs nicht in Run-Dir kopiert | TDD-Metriken null in 91/93 Runs (smart-subset) | `save_transcript()` fehlte in `run-batch.sh` | post-hoc enrich nötig |
-| 02.05.2026 | ESLint+SonarJS im Container nicht installiert | `smell_*=0` in 89/89 Runs | `package.json`-Heredoc ohne eslint-Deps | post-hoc nachgerüstet, später ins Image gebacken |
-| 03.05.2026 | Rate-Limit-False-Positive | Runs als rate-limited markiert | Timestamp `backup.<ms>.json` enthielt Ziffernfolge `429` | Match-Pattern auf `\b429\b` + `claude_exit != 0` |
-| 09.05.2026 | awk PCRE im Container | `cc_functions=0` in **allen** Container-Runs | analyze-run.sh nutzte `\s`/`\w` (PCRE), Container-`mawk` nur POSIX | Fix POSIX-Klassen + `gawk` als Doppelabsicherung |
-| 09.05.2026 | v3 Phase-Inferenz fehlte | `cycle_count`/`refactorings_applied=0` für v3 | kein Phasen-Extraktor für inline-TDD (kein Skill, kein Subagent) | `infer_phases_from_tool_sequence()` neu |
-| 09.05.2026 | v5 Predictions-Regex | `predictions_correct=0` | Plan-Patch emittierte `✅ Correct`, Regex matchte nur `- Correct` | `(?:-\|✅\|❌)` als Alternative; v5-Runs rerun |
-| 09.05.2026 | v4 Predictions-Compliance | v4 ~0.7 Predictions/Cycle vs. v5 ~2.0 (Compliance-Artefakt, kein Disziplin-Signal) | v4 `red.md` Step 7 hatte nur eine Prediction-Zeile + kein "MUST verbatim" | Step-7 + Subagent-Spawn-Templates erweitert; v4-Runs rerun |
-| 10.05.2026 | claim-office cc_* nur aus `cli.ts` | Single-File-Aggregation versteckt Multi-File-Code | analyze-run.sh aggregierte nicht über alle non-spec `.ts` | Multi-File-Aggregation + neues Feld `median_loc_per_function` |
-| 10.05.2026 | `tests_passing` grep `"passed"` matchte `"X failed \| Y passed"` | tests_passing=true bei tatsächlich roten Tests (2 Runs betroffen) | grep ohne Vitest-Summary-Anker | Match auf `^\s*Tests\s+.*passed` UND nicht `failed` |
-| 10.05.2026 | Container-pnpm 11 blockt esbuild-Build | `tests_passing=false` in 27 real grünen Runs | pnpm@latest=11 + `ERR_PNPM_IGNORED_BUILDS` | `pnpm.onlyBuiltDependencies` in Templates; pnpm 9.15.9 pin |
-| 12.05.2026 | `cli_built=false`-Artefakt | claim-office-Runs ohne CLI als Test-Failure markiert | Prompt erzwang `src/cli.ts` nicht hart genug | Prompt-Hardening + Nudge im analyze-run |
-| 14.05.2026 | analyze-run installierte pnpm-Deps nicht automatisch | tests_passing=null bei Re-Analyse alter Runs | fehlende `node_modules` → vitest crash | auto-install in analyze-run.sh |
+| 02.05.2026 | Transcript JSONLs not copied into run dir | TDD metrics null in 91/93 runs (smart-subset) | `save_transcript()` missing in `run-batch.sh` | post-hoc enrich needed |
+| 02.05.2026 | ESLint+SonarJS not installed in the container | `smell_*=0` in 89/89 runs | `package.json` heredoc without eslint deps | retrofitted post-hoc, later baked into the image |
+| 03.05.2026 | Rate-limit false positive | runs marked as rate-limited | timestamp `backup.<ms>.json` contained the digit sequence `429` | match pattern on `\b429\b` + `claude_exit != 0` |
+| 09.05.2026 | awk PCRE in the container | `cc_functions=0` in **all** container runs | analyze-run.sh used `\s`/`\w` (PCRE), container `mawk` only POSIX | fix POSIX classes + `gawk` as a double safeguard |
+| 09.05.2026 | v3 phase inference missing | `cycle_count`/`refactorings_applied=0` for v3 | no phase extractor for inline TDD (no skill, no subagent) | new `infer_phases_from_tool_sequence()` |
+| 09.05.2026 | v5 predictions regex | `predictions_correct=0` | plan patch emitted `✅ Correct`, regex only matched `- Correct` | `(?:-\|✅\|❌)` as alternative; v5 runs rerun |
+| 09.05.2026 | v4 predictions compliance | v4 ~0.7 predictions/cycle vs. v5 ~2.0 (compliance artifact, not a discipline signal) | v4 `red.md` Step 7 had only one prediction line + no "MUST verbatim" | Step 7 + subagent spawn templates extended; v4 runs rerun |
+| 10.05.2026 | claim-office cc_* only from `cli.ts` | single-file aggregation hides multi-file code | analyze-run.sh did not aggregate over all non-spec `.ts` | multi-file aggregation + new field `median_loc_per_function` |
+| 10.05.2026 | `tests_passing` grep `"passed"` matched `"X failed \| Y passed"` | tests_passing=true with actually red tests (2 runs affected) | grep without Vitest summary anchor | match on `^\s*Tests\s+.*passed` AND not `failed` |
+| 10.05.2026 | Container pnpm 11 blocks esbuild build | `tests_passing=false` in 27 actually green runs | pnpm@latest=11 + `ERR_PNPM_IGNORED_BUILDS` | `pnpm.onlyBuiltDependencies` in templates; pnpm 9.15.9 pin |
+| 12.05.2026 | `cli_built=false` artifact | claim-office runs without CLI marked as test failure | prompt did not enforce `src/cli.ts` hard enough | prompt hardening + nudge in analyze-run |
+| 14.05.2026 | analyze-run did not install pnpm deps automatically | tests_passing=null on reanalysis of old runs | missing `node_modules` → vitest crash | auto-install in analyze-run.sh |
 
-**Strukturelle Ursachen (wiederkehrend, nicht datums-spezifisch):**
+**Structural causes (recurring, not date-specific):**
 
-- **Workflow-Marker fehlt → stille Null** (siehe `experiments/workflows/MARKERS.md`): Vier hardcoded Marker treiben alle TDD-Metriken. Wird einer beim Workflow-Edit übersehen, läuft der Batch sauber, Aggregation zeigt die Spalte als 0 — kein Fehler-Signal. Pre-Edit-Check `MARKERS.md` lesen ist Pflicht.
-- **Container ≠ Host:** Tools im Container (`mawk` statt `gawk`, anderes `pnpm`, kein Host-`~/.claude`) müssen explizit gepinnt werden. Bugs treten in Container-Runs auf, nicht beim lokalen Test.
-- **Workflow-Änderung verändert Metrik-Output:** v4/v5-Beispiele zeigen, dass derselbe Parser-Regex je nach Workflow-Generation andere Hit-Raten produziert. Workflow- und analyze-run-Änderungen versionieren sich gemeinsam — Cross-Version-Vergleiche brauchen Pipeline-Audit.
+- **Workflow marker missing → silent zero** (see `experiments/workflows/MARKERS.md`): Four hardcoded markers drive all TDD metrics. If one is overlooked during a workflow edit, the batch runs cleanly, aggregation shows the column as 0 — no error signal. Reading `MARKERS.md` as a pre-edit check is mandatory.
+- **Container ≠ host:** Tools in the container (`mawk` instead of `gawk`, a different `pnpm`, no host `~/.claude`) must be pinned explicitly. Bugs appear in container runs, not in the local test.
+- **Workflow change alters metric output:** The v4/v5 examples show that the same parser regex produces different hit rates depending on the workflow generation. Workflow and analyze-run changes are versioned together — cross-version comparisons need a pipeline audit.
 
-**Debug-Pattern (was wiederholt funktioniert hat):**
+**Debug pattern (what has worked repeatedly):**
 
-1. **Spot-Check vor Aggregation:** `jq '.summary_metrics + .final_metrics | {cycle_count, refactorings_applied, predictions_correct, predictions_total, tests_passing}'` auf den letzten Run. Die Block-Addition ist notwendig: die vier TDD-Marker stehen in `summary_metrics`, nur `tests_passing` in `final_metrics` — `.final_metrics` allein liefert vier `null` und lässt gesunde Runs defekt aussehen. Healthy für TDD-Workflows: `cycle_count≥3`, `refactorings_applied≥1`, `predictions_total ~ 2 × cycle_count`. Alles 0 → Bug oder echter Workflow-Ausfall.
-- 2. **"Plötzliche Schritte"-Diagnose:** Wenn Metrik X zwischen zwei Workflow-Versionen / Container-Builds sprunghaft auf 0 fällt, ist es fast immer Pipeline, nicht Verhalten.
-3. **Erst Pipeline prüfen, dann Befund glauben:** Vor "v4/v5 verhält sich plötzlich anders"-Schluss immer `analyze-run.sh`-Diff und Container-Image-Diff zum letzten gesunden Stand prüfen (steht so auch in MEMORY.md).
-4. **Run-Completion-Signal ist `metrics.json | jq .run_status.exit_reason`**, nicht `analysis-report.md`-Existenz. Beim Aufräumen unfertiger Runs sonst Datenverlust.
+1. **Spot check before aggregation:** `jq '.summary_metrics + .final_metrics | {cycle_count, refactorings_applied, predictions_correct, predictions_total, tests_passing}'` on the latest run. The block addition is necessary: the four TDD markers live in `summary_metrics`, only `tests_passing` in `final_metrics` — `.final_metrics` alone returns four `null`s and makes healthy runs look broken. Healthy for TDD workflows: `cycle_count≥3`, `refactorings_applied≥1`, `predictions_total ~ 2 × cycle_count`. Everything 0 → bug or a real workflow failure.
+- 2. **"Sudden steps" diagnosis:** If metric X drops abruptly to 0 between two workflow versions / container builds, it is almost always the pipeline, not behavior.
+3. **Check the pipeline first, then believe the finding:** Before concluding "v4/v5 suddenly behaves differently", always check the `analyze-run.sh` diff and the container image diff against the last healthy state (also stated this way in MEMORY.md).
+4. **The run completion signal is `metrics.json | jq .run_status.exit_reason`**, not the existence of `analysis-report.md`. Otherwise data loss when cleaning up unfinished runs.
 
-**Lehre:** Mess-Pipeline ist genauso Forschungsobjekt wie der Workflow. Jeder Pipeline-Fix invalidiert die zuvor erhobenen Werte der betroffenen Metrik — entweder rerun oder explizit als "vor Fix X" markieren. Stille Nullen sind der teuerste Bug-Typ, weil sie nie als Fehler erscheinen, nur als "Workflow ist halt schwach hier".
+**Lesson:** The measurement pipeline is as much a research object as the workflow. Every pipeline fix invalidates the previously collected values of the affected metric — either rerun or mark explicitly as "before fix X". Silent zeros are the most expensive bug type, because they never appear as errors, only as "the workflow is just weak here".
 
-## Claude-Code-CLI-Version-Pinning-Hölle (Februar-Mai 2026, aktueller Pin 2.1.107)
+## Claude Code CLI version pinning hell (February-May 2026, current pin 2.1.107)
 
-Jeder CLI-Version-Bump bricht etwas anderes, und das Symptom ist nie ein klarer Fehler. Konkrete Inzidenten:
+Every CLI version bump breaks something different, and the symptom is never a clear error. Concrete incidents:
 
-- **2.1.37 (Februar 2026):** Hängt indefinit auf `claude --print`, wenn cwd ein `.claude/agents/`-Verzeichnis enthält (exact-subagents-v1-cc-Workflow). Symptom: `run.log` 0 bytes, exit 124 nach Timeout. Betrifft Haiku, Sonnet, Opus gleichermaßen — also kein Modell-Issue, sondern CLI-Bug. Tage verloren mit falschen "Modell-ist-defekt"-Hypothesen, bevor die CLI als Täter klar war.
-- **2.1.126 (Ende April):** Regrediert; will `~/.claude.json` als Datei (Geschwister von `.claude/`-Verzeichnis), die wir nicht provisionieren → silent exit ohne Output. Wieder kein Error-Signal, nur leerer Output.
-- **2.1.107 (aktueller Pin):** Verifiziert: Smoke-Test v3+Sonnet 28 s, v4+Opus-4.7+thinking 569 s — alle OK.
+- **2.1.37 (February 2026):** Hangs indefinitely on `claude --print` when the cwd contains a `.claude/agents/` directory (exact-subagents-v1-cc workflow). Symptom: `run.log` 0 bytes, exit 124 after timeout. Affects Haiku, Sonnet, Opus equally — so not a model issue but a CLI bug. Days lost with wrong "model is broken" hypotheses before the CLI was clear as the culprit.
+- **2.1.126 (end of April):** Regresses; wants `~/.claude.json` as a file (sibling of the `.claude/` directory), which we do not provision → silent exit without output. Again no error signal, only empty output.
+- **2.1.107 (current pin):** Verified: smoke test v3+Sonnet 28 s, v4+Opus-4.7+thinking 569 s — all OK.
 
-**Lehre:** Beim Image-Rebuild **immer** `docker compose build batch && docker run --rm --entrypoint claude docker-batch --version` zur Verifikation, dann v3-Smoke + v4-Smoke (v4 hat den Subagent-Code-Pfad, der vom CLI-Bug 2.1.37 getroffen wurde). Version-Bump nicht ohne diesen End-to-End-Test einchecken. CLI-Versions-Fehler präsentieren sich als stille Hänger / leerer Output — das Pattern "es läuft, aber Ergebnis ist null" gilt auch hier (siehe Stille-Null-Block oben).
+**Lesson:** On image rebuild **always** run `docker compose build batch && docker run --rm --entrypoint claude docker-batch --version` for verification, then a v3 smoke + v4 smoke (v4 has the subagent code path that was hit by CLI bug 2.1.37). Do not check in a version bump without this end-to-end test. CLI version errors present as silent hangs / empty output — the pattern "it runs, but the result is null" applies here too (see the silent-zero block above).
 
-## Workflow-Pipeline-Kopplung → erzwungene Reruns (09.05.2026)
+## Workflow-pipeline coupling → forced reruns (09.05.2026)
 
-Workflow-Definition und Metrik-Parser sind gekoppelt. Wenn der Parser-Regex ändert, muss der Workflow das Format produzieren, das er erwartet — und umgekehrt. Konkret betroffen am 09.05.2026:
+Workflow definition and metric parser are coupled. If the parser regex changes, the workflow must produce the format it expects — and vice versa. Concretely affected on 09.05.2026:
 
-- **v4-Predictions-Compliance:** v4 `red.md` Step 7 hatte nur **eine** Prediction-Zeile + kein "MUST verbatim". Resultat: v4 markierte ~0.7 Predictions/Cycle vs. v5 ~2.0. Der vermeintliche v4-vs-v5-Disziplin-Unterschied war reines Compliance-Artefakt, kein Verhaltens-Signal. Fix erforderte **Rerun aller v4-Runs** für gültige Predictions-Vergleiche.
-- **v5-Predictions-Regex:** Plan-Patch erzeugte `✅ Correct`-Format, Regex matchte nur `- Correct` (v4-Style). Fix `(?:-|✅|❌)` als Alternative, Workflow-File-Erweiterung für zwei Prediction-Zeilen — **Rerun aller v5-Runs** nötig.
+- **v4 predictions compliance:** v4 `red.md` Step 7 had only **one** prediction line + no "MUST verbatim". Result: v4 marked ~0.7 predictions/cycle vs. v5 ~2.0. The supposed v4-vs-v5 discipline difference was a pure compliance artifact, not a behavior signal. The fix required a **rerun of all v4 runs** for valid prediction comparisons.
+- **v5 predictions regex:** The plan patch produced the `✅ Correct` format, the regex only matched `- Correct` (v4 style). Fix `(?:-|✅|❌)` as alternative, workflow file extension for two prediction lines — **rerun of all v5 runs** needed.
 
-**Doppelte Kosten:** Pipeline-Fix selbst ist billig (Minuten Code-Change), die invalidierten Runs müssen aber komplett neu gefahren werden. Mit v4-Wallclock-Multiplier (siehe v4-Block oben) und Direct-API-Single-Shard-Pflicht waren das mehrere Tage Nach-Arbeit pro Fix. Vorher-Werte bleiben in den Run-Dirs liegen und müssen explizit als "vor Pipeline-Fix X" markiert werden, sonst kontaminieren sie spätere Aggregationen.
+**Double costs:** The pipeline fix itself is cheap (minutes of code change), but the invalidated runs must be run again completely. With the v4 wallclock multiplier (see the v4 block above) and the Direct-API single-shard requirement, that was several days of rework per fix. Before-values remain in the run dirs and must be marked explicitly as "before pipeline fix X", otherwise they contaminate later aggregations.
 
-**Lehre:** Pipeline-Fix-Kosten enthalten den Rerun, nicht nur die Code-Änderung. Bei Plan-Änderungen am Workflow, die das Output-Format betreffen, vor dem Commit klären: welche Metriken werden invalidiert, welche Runs müssen rerunnen, lohnt sich der Fix bei der erforderlichen Wallclock überhaupt? Bei v4-Reruns: zuerst auf v5/v6 verifizieren (kürzere Wallclock), v4 nur gezielt zum Schluss.
+**Lesson:** Pipeline fix costs include the rerun, not just the code change. For plan changes to the workflow that affect the output format, clarify before committing: which metrics are invalidated, which runs must rerun, is the fix worth it at all given the required wallclock? For v4 reruns: verify on v5/v6 first (shorter wallclock), v4 only selectively at the end.
 
-## Container-Setup-Falle: Host-`~/.claude` lässt Container still hängen
+## Container setup trap: host `~/.claude` makes the container hang silently
 
-Erste Container-Runs hingen indefinit (Symptom: `run.log` 0 bytes, Timeout nach 1800 s). Ursache nicht sofort sichtbar — Container baut sauber, startet sauber, nur kein Output.
+The first container runs hung indefinitely (symptom: `run.log` 0 bytes, timeout after 1800 s). Cause not immediately visible — the container builds cleanly, starts cleanly, just no output.
 
-**Ursache:** Default-Bind-Mount würde Host-`~/.claude` in den Container reichen. Host-`settings.json` enthält fish-MCP-Spawns + Host-Pfade in `additionalDirectories` → im `node:22-slim`-Container kein fish vorhanden, MCP-Init hängt still ohne Fehler. Ähnlich: `.credentials.json`-Symlink mit Host-absoluten Pfaden zeigt im Container ins Leere.
+**Cause:** The default bind mount would pass the host `~/.claude` into the container. The host `settings.json` contains fish MCP spawns + host paths in `additionalDirectories` → no fish available in the `node:22-slim` container, MCP init hangs silently without an error. Similarly: a `.credentials.json` symlink with host-absolute paths points to nothing in the container.
 
 **Fix:**
-- Dedizierter `experiments/docker/claude-config/`-Verzeichnis-Mount, eingecheckt mit nativer `settings.json` (`mcpServers: {}`).
-- `.credentials.json` per **separatem Bind-Mount** (`~/.claude/.credentials.json:/home/experimenter/.claude/.credentials.json`), nicht als Symlink im Config-Dir.
-- Override-Vars für lokales Debugging: `CLAUDE_CONFIG_DIR=~/.claude` / `CLAUDE_CREDENTIALS_FILE=...`.
+- Dedicated `experiments/docker/claude-config/` directory mount, checked in with a native `settings.json` (`mcpServers: {}`).
+- `.credentials.json` via a **separate bind mount** (`~/.claude/.credentials.json:/home/experimenter/.claude/.credentials.json`), not as a symlink in the config dir.
+- Override vars for local debugging: `CLAUDE_CONFIG_DIR=~/.claude` / `CLAUDE_CREDENTIALS_FILE=...`.
 
-**Lehre:** Container-Umgebung ≠ Host-Umgebung, auch wenn beide "Linux" sind. Host-Configs mit Tool-Spawns (fish, MCP-Server, IDE-Hooks) gehen davon aus, dass die Tools verfügbar sind — im minimalen Container sind sie es nicht, und das Ergebnis ist oft ein stiller Hänger statt eines Fehlers. Container braucht eigene minimale Config, eingecheckt und versioniert.
+**Lesson:** Container environment ≠ host environment, even if both are "Linux". Host configs with tool spawns (fish, MCP servers, IDE hooks) assume the tools are available — in the minimal container they are not, and the result is often a silent hang instead of an error. The container needs its own minimal config, checked in and versioned.
 
-## Kata-Konstruktion ist schwerer als gedacht (HPSMV-Pre-Test-Befunde, 08.05.2026)
+## Kata construction is harder than expected (HPSMV pre-test findings, 08.05.2026)
 
-Die erste claim-office-Version (HPSMV) hatte zwei Anti-Pattern-Patzer, die ohne systematischen Vortest in der Studie gelandet wären:
+The first claim-office version (HPSMV) had two anti-pattern blunders that would have landed in the study without a systematic pre-test:
 
-- **Eingabe-Schema verriet Lesart:** Ursprüngliches `existingContracts`-Feld im Input-JSON pinnte die kunden-bezogene Lesart von "Erstversicherung" (Kunde hatte vorher keinen Vertrag) — und schloss die alternative item-bezogene Lesart (für dieses Item gab es noch keinen Vertrag) faktisch aus. Die konstruierte Mehrdeutigkeit war im Prompt-Text drin, aber durch das Schema schon entschieden. Feld musste raus, Input neutral machen.
-- **Numerische Inkonsistenz:** Bonus-Preis 80 G war als "Aufschlag" beschrieben, war aber bei 3 × 25 = 75 G Basis nur 5 G Aufschlag — kein erkennbarer Bonus-Effekt. Korrigiert auf 60 G (= 80 G total). Wäre als "kein Effekt"-Befund durchgegangen, in Wahrheit war die Zahl falsch gewählt.
+- **Input schema gave away the reading:** The original `existingContracts` field in the input JSON pinned the customer-related reading of "first insurance" (the customer had no contract before) — and effectively excluded the alternative item-related reading (there was no contract yet for this item). The constructed ambiguity was in the prompt text, but already decided by the schema. The field had to go, making the input neutral.
+- **Numerical inconsistency:** The bonus price of 80 G was described as a "surcharge", but with a 3 × 25 = 75 G base it was only a 5 G surcharge — no recognizable bonus effect. Corrected to 60 G (= 80 G total). It would have passed as a "no effect" finding, when in truth the number was chosen wrongly.
 
-**Detektion:** Vortest-Skript `kata-builder/ambiguity-probe/probe.py` — schickt Regel+Frage an Opus/Sonnet/Haiku (mit/ohne thinking) × n=5 mit Default-Temperatur, klassifiziert manuell durch Lesen der Roh-Antworten. Ohne diesen Vortest wären die Patzer in der Studie gelandet.
+**Detection:** Pre-test script `kata-builder/ambiguity-probe/probe.py` — sends rule+question to Opus/Sonnet/Haiku (with/without thinking) × n=5 at default temperature, classified manually by reading the raw answers. Without this pre-test the blunders would have landed in the study.
 
-**Lehre:** Kata-Erstellung ist nicht fertig, wenn der Prompt steht. Pre-Publish-Checklist nötig (Methodik in `kata-builder/kata-construction.md`):
-- Eingabe-Schema verrät keine Lesart — auf Feldnamen achten, die eine Interpretation pinnen.
-- Numerische Konsistenz prüfen — alle Werte durchrechnen, Bonus/Aufschlag/Rabatt müssen Zahlen-mäßig auch das tun, was die Sprache verspricht.
-- Vortest mit n≥3 Modellen, klassifizierte Antworten lesen, nicht nur Pass-Rate zählen.
-- Wegweiser-Vokabular vermeiden ("im Zweifelsfall", "kann beeinflussen", "in jedem Fall", "ausgenommen") — antagonisiert das Modell statt Mehrdeutigkeiten zu konstruieren.
-- Aufgaben-Kohärenz: alle Operationen auf gemeinsamem Zustand, keine Lifecycle-Operation, deren einziger Zweck eine Mehrdeutigkeit ist.
+**Lesson:** Kata creation is not finished when the prompt is written. A pre-publish checklist is needed (methodology in `kata-builder/kata-construction.md`):
+- The input schema gives away no reading — watch for field names that pin an interpretation.
+- Check numerical consistency — compute all values; bonus/surcharge/discount must also do numerically what the language promises.
+- Pre-test with n≥3 models, read the classified answers, do not just count the pass rate.
+- Avoid signpost vocabulary ("im Zweifelsfall", "kann beeinflussen", "in jedem Fall", "ausgenommen") — it antagonizes the model instead of constructing ambiguities.
+- Task coherence: all operations on a shared state, no lifecycle operation whose only purpose is an ambiguity.
 
-## Tooling-Tracking-Falle: `nohup ./batch.sh &` mit `run_in_background:true`
+## Tooling tracking trap: `nohup ./batch.sh &` with `run_in_background:true`
 
-Beim Starten langer Batches verlockend, `nohup ./batch.sh <plan> &` mit Tool-Parameter `run_in_background: true` zu kombinieren — fühlt sich an wie "doppelt sicher im Hintergrund". Tatsächlich: das `&` returniert sofort, das Tool meldet "completed" nach Sekunden, obwohl der Container weiterläuft. Tracking verloren.
+When starting long batches, it is tempting to combine `nohup ./batch.sh <plan> &` with the tool parameter `run_in_background: true` — it feels like "doubly safe in the background". In fact: the `&` returns immediately, the tool reports "completed" after seconds, although the container keeps running. Tracking lost.
 
-**Konsequenzen:**
-- Tool meldet vermeintlichen "Erfolg", obwohl Batch noch Stunden läuft.
-- Status-Check über Bash-Tool funktioniert nicht mehr — der ursprüngliche Prozess ist tot, der Container weitergelaufen.
-- Mehrfach passiert: ich (Claude) dachte, der Batch sei fertig, habe an den Run-Dirs weitergearbeitet, während noch frische Runs erzeugt wurden.
+**Consequences:**
+- The tool reports supposed "success" although the batch runs for hours more.
+- Status checks via the Bash tool no longer work — the original process is dead, the container kept running.
+- Happened several times: I (Claude) thought the batch was finished and kept working on the run dirs while fresh runs were still being produced.
 
-**Korrekt:** `./batch.sh <plan>` direkt mit `run_in_background: true` aufrufen (ohne nohup, ohne `&`). Dann trackt das Tool den `docker compose run`-Prozess korrekt bis Batch-Ende. Status während Lauf via `docker logs -f docker-batch-run-<hash>` oder `tail -f experiments/docker/batch.<plan>.log`. Stop via `docker stop docker-batch-run-<hash>`.
+**Correct:** Call `./batch.sh <plan>` directly with `run_in_background: true` (without nohup, without `&`). Then the tool tracks the `docker compose run` process correctly until the batch ends. Status during the run via `docker logs -f docker-batch-run-<hash>` or `tail -f experiments/docker/batch.<plan>.log`. Stop via `docker stop docker-batch-run-<hash>`.
 
-**Lehre:** Tool-Mechanik vs. Shell-Mechanik nicht doppelt anwenden. Wenn das Harness "im Hintergrund laufen lassen" anbietet, nicht zusätzlich `nohup`/`&` in den Command einbauen — die Konzepte überlagern sich destruktiv und die Verlierer-Information ist immer das Tracking.
+**Lesson:** Do not apply tool mechanics and shell mechanics twice. If the harness offers "run in the background", do not additionally build `nohup`/`&` into the command — the concepts overlap destructively and the losing information is always the tracking.
 
-## Reanalyze-Disziplin nach Pipeline-Fix (laufendes Risiko)
+## Reanalyze discipline after a pipeline fix (ongoing risk)
 
-Pipeline-Fix invalidiert betroffene Metriken in allen vorher gelaufenen Runs. Wer nach dem Fix einfach weiterläuft und neue Runs einsammelt, erzeugt **Mischkohorten** (alt mit falschem Wert, neu mit korrektem Wert) — Aggregation glättet die zu unsinnigen Mittelwerten und produziert Befunde, die niemand reproduzieren kann.
+A pipeline fix invalidates affected metrics in all previously run runs. Whoever simply keeps going after the fix and collects new runs creates **mixed cohorts** (old with wrong value, new with correct value) — aggregation smooths them into nonsensical means and produces findings that nobody can reproduce.
 
-**Wiederholt aufgetretene Varianten:**
-- analyze-run.sh multi-file fix (10.05.): claim-office cc_*-Werte vor/nach Fix unterschiedlich → ältere Runs zeigten nur cli.ts, neue zeigten Multi-File-Aggregat. Ohne Reanalyze waren claim-office-Aggregationen vor 10.05. systematisch zu niedrig.
-- Container pnpm-11-bug: 27 Runs vom 10.05. mit `tests_passing=false` obwohl real grün — wenn nicht explizit reanalyzed, wären sie als "Workflow X schafft die Tests nicht" in die Findings gerutscht.
-- v4/v5 Predictions-Regex/Compliance (09.05.): Reruns nötig statt Reanalyze (Workflow erzeugt das Format jetzt anders) — andere Klasse von Pipeline-Fix.
+**Variants that occurred repeatedly:**
+- analyze-run.sh multi-file fix (10.05.): claim-office cc_* values differ before/after the fix → older runs showed only cli.ts, new ones showed the multi-file aggregate. Without reanalyze, claim-office aggregations before 10.05. were systematically too low.
+- Container pnpm 11 bug: 27 runs from 10.05. with `tests_passing=false` although actually green — if not explicitly reanalyzed, they would have slipped into the findings as "workflow X does not pass the tests".
+- v4/v5 predictions regex/compliance (09.05.): reruns needed instead of reanalyze (the workflow now produces the format differently) — a different class of pipeline fix.
 
-**Skill `/reanalyze` existiert genau deshalb:** Re-Run der Analyse-Pipeline auf alle Runs, die zu einer RQ matchen, Reaggregation, Findings-Update-Vorschlag. War aber nicht von Anfang an Routine — frühe Pipeline-Fixes wurden mehrfach vergessen zu propagieren.
+**The `/reanalyze` skill exists precisely for this:** re-run of the analysis pipeline on all runs that match an RQ, reaggregation, findings update proposal. But it was not routine from the start — early pipeline fixes were repeatedly forgotten to be propagated.
 
-**Lehre:** Pipeline-Fix-Workflow ist immer dreistufig: (1) Fix einchecken, (2) `/reanalyze` der betroffenen RQs ODER expliziter Rerun (wenn der Fix das Output-Format ändert), (3) Findings-Update mit Hinweis auf die invalidierten Vorher-Werte. Schritt 2 wird unter Zeitdruck am häufigsten übersprungen — gerade dann gilt: ein Fix ohne Reanalyze ist kein Fix, sondern eine neue Datenquelle.
+**Lesson:** The pipeline fix workflow is always three-stage: (1) check in the fix, (2) `/reanalyze` the affected RQs OR an explicit rerun (if the fix changes the output format), (3) findings update with a note on the invalidated before-values. Step 2 is skipped most often under time pressure — precisely then the rule is: a fix without reanalyze is not a fix, but a new data source.

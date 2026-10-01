@@ -77,12 +77,11 @@ export the harnesses that do exist rather than aborting the whole run.
 
 When no explicit source is given, find the current correctness-critical
 default from `research/workflow-dev/workflow-construction.md`. The
-recommendation lives in the "Aktuelle Front" section and starts with the
-prefix **"Default für korrekheits-kritische Arbeit"** (note the typo
-"korrekheits" in the source — keep it in the grep).
+recommendation line starts with the prefix
+**"Default for correctness-critical work"**.
 
 ```bash
-SRC_NAME=$(grep -E '\*\*Default für korre[kt]+heits-kritische Arbeit' \
+SRC_NAME=$(grep -E '\*\*Default for correctness-critical work' \
              research/workflow-dev/workflow-construction.md \
            | head -1 \
            | sed -E 's/.*`([^`]+)`.*/\1/')
@@ -92,8 +91,8 @@ The first backtick-quoted workflow name on that line is the recommendation.
 Verify the directory exists:
 
 ```bash
-# Workflows liegen in Kategorie-Unterordnern; PATHS.json loest den Leaf-Namen
-# auf und akzeptiert dabei auch Alt-Namen (ALIASES.json).
+# Workflows live in category subfolders; PATHS.json resolves the leaf name
+# and also accepts former names (ALIASES.json).
 SRC_DIR="experiments/workflows/$(jq -r --arg n "$SRC_NAME" \
     '.[$n] // $n' experiments/workflows/ALIASES.json \
   | xargs -I{} jq -r --arg n {} '.[$n] // $n' experiments/workflows/PATHS.json)"

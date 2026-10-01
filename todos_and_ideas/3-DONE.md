@@ -1,21 +1,21 @@
 # DONE
 
-* H: custom Kata für Example-Mapping  nötig, andere Kata können aber Quality messen
-* H: Opus schneller als Sonnet
-* H: Streuung geringer bei v4 als v5
-* mischung aus v4 und v5 subagent nur für Refactoring
-* Parallelisierung (Problem: Rate-Limit?)
+* H: custom kata needed for Example Mapping, but other katas can measure quality
+* H: Opus faster than Sonnet
+* H: spread lower for v4 than v5
+* mix of v4 and v5: subagent only for refactoring
+* Parallelization (problem: rate limit?)
 * reduce workflow rules
 * remove reasoning
 ## Mutation Testing
 * Mutation Testing as metric
-* Manuelle Reduktion ()
-* Optimze Skill mit: https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md
+* Manual reduction ()
+* Optimize skill with: https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md
 ## EXACT-Coding workflow optmization, Chris Meta Framework: https://github.com/chdalski/claude_orchestration
 Reanalyze-Skill
-* Game of Life reicht evtl. für alle Fragen ausser Example Mapping
+* Game of Life may be enough for all questions except Example Mapping
 * Distinguish between General Research and Workflow Optmization
-* Control-Workflow: oneshot+review und/oder Refactoring am ende
+* Control workflow: oneshot+review and/or refactoring at the end
 * Stryker
 * reiterate optmization:
  * pep-talk,
@@ -39,3 +39,4 @@ Reanalyze-Skill
   - https://github.com/xpepper/tcr-skill
   - https://www.skill.fish/skill/tcr-practice-test-commit-revert
 * Claim Office reduced for workshop use (`claim-office-lite`)
+* Lab switched to English throughout (RQ corpus, glossary, docs, skills, code comments, todos); German kata-design and workshop material moved to the sister repo kata-builder

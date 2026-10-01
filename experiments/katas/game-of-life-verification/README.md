@@ -1,7 +1,7 @@
-# Verification suite for game-of-life (Library-Form)
+# Verification suite for game-of-life (library form)
 
-Externe Akzeptanz-Suite für die Library-Kata `game-of-life-{prose,user-story,example-mapping}`.
+External acceptance suite for the library kata `game-of-life-{prose,user-story,example-mapping}`.
 
-`adapter.ts` und `scenarios/` sind Symlinks auf das Schwester-Verzeichnis `game-of-life-cli-verification/` — die 15 Szenarien und der module-import-Adapter sind identisch. Unterschied zur CLI-Variante: hier wird kein `src/cli.ts` erwartet, der Adapter importiert die `evolve`/`nextGeneration`-Funktion direkt aus `src/game-of-life.{ts,…}` und ruft sie pro Szenario `steps` mal auf.
+`adapter.ts` and `scenarios/` are symlinks to the sister directory `game-of-life-cli-verification/` — the 15 scenarios and the module-import adapter are identical. Difference from the CLI variant: no `src/cli.ts` is expected here; the adapter imports the `evolve`/`nextGeneration` function directly from `src/game-of-life.{ts,…}` and calls it `steps` times per scenario.
 
-So bleibt die Außen-Korrektheit (`verification_pct`) auf der Library-Kata messbar, ohne den CLI-Overhead in die Code-Qualitäts-Metriken zu mischen.
+This keeps Correctness (external) (`verification_pct`) measurable on the library kata without mixing the CLI overhead into the code quality metrics.

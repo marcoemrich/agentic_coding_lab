@@ -10,12 +10,12 @@ Prices are sourced from ``research/model-pricing.md`` (manually maintained
 from Anthropic, OpenRouter, and Portkey list prices). The script does NOT
 fetch live prices.
 
-Caveat: pi-/Requesty-Runs tragen den Requesty-Katalogpreis (Upstream-Provider-Tarif,
-kein Markup laut Anbieter) — nahe am tatsächlich abgerechneten Betrag, aber ohne
-workspace-spezifische Rabatte / Smart-Routing-Ersparnis. Requesty liefert KEINE Kosten
-inline (usage=null im Response), darum bleibt Token×Preis der einzige Weg. Auf den
-vertex-Anthropic-Routen liegt Requesty ~10 % über dem nativen Anthropic-Listpreis. Treat
-cost_usd als "list-price baseline", nicht als abgerechneten Betrag.
+Caveat: pi/Requesty runs carry the Requesty catalogue price (upstream provider tariff,
+no markup according to the vendor) — close to the amount actually billed, but without
+workspace-specific discounts / smart-routing savings. Requesty returns NO cost
+inline (usage=null in the response), so tokens×price remains the only way. On the
+vertex Anthropic routes Requesty sits ~10 % above the native Anthropic list price. Treat
+cost_usd as a "list-price baseline", not as the billed amount.
 
 Idempotent: runs with a numeric cost_usd are recomputed unless --skip-existing
 is passed (recomputation is cheap, so default is to refresh).
@@ -41,51 +41,51 @@ import sys
 from pathlib import Path
 
 
-# Prices in USD per 1M tokens. Source: research/model-pricing.md (Stand 2026-05-29).
+# Prices in USD per 1M tokens. Source: research/model-pricing.md (as of 2026-05-29).
 # input / output / cache_read / cache_write
 PRICES = {
-    # opus-5: nativ (claude-opus-5 via OAuth-Bypass in run-batch.sh), echter
-    # Anthropic-Listpreis 5.00/25.00/0.50/6.25 — NICHT der Requesty-Tarif.
+    # opus-5: native (claude-opus-5 via OAuth bypass in run-batch.sh), real
+    # Anthropic list price 5.00/25.00/0.50/6.25 — NOT the Requesty tariff.
     "opus-5":           (5.00,  25.00, 0.50, 6.25),
     "opus-5-no-thinking": (5.00, 25.00, 0.50, 6.25),
-    # opus-5-5: nativ (claude-opus-5-5 via OAuth-Bypass), Anthropic-Listpreis
-    # 4.00/20.00/0.20/5.00 (platform.claude.com/docs Models-Overview +
-    # claude.com/pricing, abgerufen 2026-09-23). Der cache_read-Multiplikator
-    # ist 0.05x statt der sonst üblichen 0.1x — auf den cache-lastigen
-    # EXACT-Coding-Workflows entscheidet genau der die Kostenreihenfolge, also
-    # bei jedem opus-5-gegen-opus-5-5-Vergleich zuerst total_tokens lesen.
+    # opus-5-5: native (claude-opus-5-5 via OAuth bypass), Anthropic list price
+    # 4.00/20.00/0.20/5.00 (platform.claude.com/docs models overview +
+    # claude.com/pricing, retrieved 2026-09-23). The cache_read multiplier
+    # is 0.05x instead of the usual 0.1x — on the cache-heavy EXACT Coding
+    # workflows that alone decides the cost ranking, so in every opus-5 vs.
+    # opus-5-5 comparison read total_tokens first.
     "opus-5-5":         (4.00,  20.00, 0.20, 5.00),
     "opus-5-5-no-thinking": (4.00, 20.00, 0.20, 5.00),
-    # fable-5 / fable-5-1: nativ (bare claude-fable-* via OAuth-Bypass), echter
-    # Anthropic-Listpreis 10.00/50.00/*/12.50 (5m-cache-write). Der cache_read
-    # unterscheidet die beiden: Fable 5 rechnet den Standard-0.1x-Multiplikator
-    # (1.00), Fable 5.1 laut Preisseite 0.025x (0.25). Auf der Max-Subscription
-    # wird nichts pro Token abgerechnet — die Zahl ist der Listenpreis-
-    # Vergleichswert, nicht der Rechnungsbetrag (siehe CLAUDE.md).
+    # fable-5 / fable-5-1: native (bare claude-fable-* via OAuth bypass), real
+    # Anthropic list price 10.00/50.00/*/12.50 (5m cache write). cache_read
+    # separates the two: Fable 5 uses the standard 0.1x multiplier (1.00),
+    # Fable 5.1 per the pricing page 0.025x (0.25). On the Max subscription
+    # nothing is billed per token — the number is the list-price comparison
+    # value, not the invoice amount (see CLAUDE.md).
     "fable-5":          (10.00, 50.00, 1.00, 12.50),
     "fable-5-no-thinking": (10.00, 50.00, 1.00, 12.50),
     "fable-5-1":        (10.00, 50.00, 0.25, 12.50),
     "fable-5-1-no-thinking": (10.00, 50.00, 0.25, 12.50),
-    # opus-cursor: cursor-agent-Route, Modell claude-opus-4-8-medium (nativ, medium
-    # effort). cost_usd=null im cursor-stream-json → Token×Preis nötig. Native
-    # Listpreise (cursor routet direkt, kein Requesty-Aufschlag).
+    # opus-cursor: cursor-agent route, model claude-opus-4-8-medium (native, medium
+    # effort). cost_usd=null in cursor stream-json → tokens×price needed. Native
+    # list prices (cursor routes directly, no Requesty markup).
     "opus-cursor":      (5.00,  25.00, 0.50, 6.25),
-    # opus-4-8: im aktuellen Run-Pool AUSSCHLIESSLICH Requesty-geroutet (pi-Harness) →
-    # Requesty-vertex-Tarif 5.50/27.50/0.55 (~10 % über Anthropic-nativ). Falls je native
-    # Anthropic-opus-4-8-Runs dazukommen, brauchen die eine route-abhängige Unterscheidung.
+    # opus-4-8: in the current run pool routed EXCLUSIVELY via Requesty (pi harness) →
+    # Requesty vertex tariff 5.50/27.50/0.55 (~10 % above Anthropic native). If native
+    # Anthropic opus-4-8 runs are ever added, they need a route-dependent distinction.
     "opus-4-8":         (5.50,  27.50, 0.55, 6.25),
     "opus-4-8-no-thinking": (5.50, 27.50, 0.55, 6.25),
-    # CC/OC-Label desselben Modells auf derselben vertex/claude-opus-4-8@eu-Route
-    # (RQ-harness-requesty § Preis-Baseline): identischer Requesty-Tarif wie opus-4-8.
-    # Requesty liefert auf dieser Route kein inline cost mehr → Token×Preis-Schätzung
-    # für alle drei Harnesse, konsistent gemessen.
+    # CC/OC label of the same model on the same vertex/claude-opus-4-8@eu route
+    # (RQ-harness-requesty § price baseline): identical Requesty tariff to opus-4-8.
+    # Requesty no longer returns inline cost on this route → tokens×price estimate
+    # for all three harnesses, measured consistently.
     "opus-4-8-requesty":         (5.50,  27.50, 0.55, 6.25),
     "opus-4-8-requesty-no-thinking": (5.50, 27.50, 0.55, 6.25),
-    # opus-5-requesty: vertex/claude-opus-5@eu über pi/Requesty. Input/Output/
-    # cache_read identisch zu opus-4-8-requesty, cache_write liegt höher
-    # (6.88 statt 6.25) — Werte aus dem Live-Katalog 2026-08-05. Der bare
-    # opus-5-Eintrag oben ist die native Direct-API-Route zum Anthropic-Listpreis
-    # und darf nicht mit dieser Zelle vermischt werden.
+    # opus-5-requesty: vertex/claude-opus-5@eu via pi/Requesty. Input/output/
+    # cache_read identical to opus-4-8-requesty, cache_write is higher
+    # (6.88 instead of 6.25) — values from the live catalogue 2026-08-05. The bare
+    # opus-5 entry above is the native direct-API route at the Anthropic list price
+    # and must not be mixed with this cell.
     "opus-5-requesty":         (5.50,  27.50, 0.55, 6.88),
     "opus-5-requesty-no-thinking": (5.50, 27.50, 0.55, 6.88),
     "opus-4-8-portkey": (5.00, 25.00, 0.50, 6.25),
@@ -98,10 +98,10 @@ PRICES = {
     "opus-4-6-no-thinking": (15.00, 75.00, 1.50, 18.75),
     "opus-4-6-portkey": (15.00, 75.00, 1.50, 18.75),
     "opus-4-6-portkey-no-thinking": (15.00, 75.00, 1.50, 18.75),
-    # sonnet-5-native: nativ (claude-sonnet-5 via OAuth-Bypass), echter
-    # Anthropic-Listpreis 2.00/10.00/0.20/2.50 (cache_read 0.1x, cache_write
-    # 1.25x). Der `sonnet-5`-Eintrag weiter unten ist die pi/Requesty-Route
-    # (2.20/11.00/0.22) und darf nicht mit dieser Zelle vermischt werden.
+    # sonnet-5-native: native (claude-sonnet-5 via OAuth bypass), real
+    # Anthropic list price 2.00/10.00/0.20/2.50 (cache_read 0.1x, cache_write
+    # 1.25x). The `sonnet-5` entry further down is the pi/Requesty route
+    # (2.20/11.00/0.22) and must not be mixed with this cell.
     "sonnet-5-native":  (2.00,  10.00, 0.20, 2.50),
     "sonnet-5-native-no-thinking": (2.00, 10.00, 0.20, 2.50),
     "sonnet-4-6":       (3.00,  15.00, 0.30, 3.75),
@@ -116,67 +116,67 @@ PRICES = {
     "minimax-m2-7":     (0.28,  1.20,  0.0,  0.0),
     "gemini-2-5-pro":   (1.25,  10.00, 0.31, 0.0),
     "gemini-3-5-flash": (0.30,  2.50,  0.075, 0.0),
-    # pi-/Requesty-Modelle. Preise = Live-Requesty-Katalog
-    # (curl https://router.eu.requesty.ai/v1/models, Stand 2026-07-25), pro Route
-    # aus der pi_model-Map in experiments/docker/run-batch.sh. Requesty berechnet den
-    # Upstream-Provider-Preis; auf den vertex-Anthropic-Routen liegt der ~10 % über dem
-    # Anthropic-Listpreis (opus-4-8 5.50/27.50 statt 5.00/25.00) — deshalb weicht dieser
-    # Block bewusst von den nativen opus-/sonnet-Einträgen oben ab. cache_write auf den
-    # OpenAI-/GLM-/Kimi-Routen nicht separat ausgewiesen → 0.
-    # Modelle mit supports_caching=false (qwen3-235b, glm-5-1) rechnen cache_read zum
-    # vollen Input-Preis ab → cache_read = input.
+    # pi/Requesty models. Prices = live Requesty catalogue
+    # (curl https://router.eu.requesty.ai/v1/models, as of 2026-07-25), per route
+    # from the pi_model map in experiments/docker/run-batch.sh. Requesty charges the
+    # upstream provider price; on the vertex Anthropic routes that is ~10 % above the
+    # Anthropic list price (opus-4-8 5.50/27.50 instead of 5.00/25.00) — so this
+    # block deliberately differs from the native opus/sonnet entries above. cache_write
+    # on the OpenAI/GLM/Kimi routes is not listed separately → 0.
+    # Models with supports_caching=false (qwen3-235b, glm-5-1) bill cache_read at the
+    # full input price → cache_read = input.
     "kimi-k2-7":        (1.25,  4.50,  0.31, 0.0),   # tensorx/kimi-k2.7-code
     "kimi-k2-7-no-thinking": (1.25, 4.50, 0.31, 0.0),
-    # kimi-k3: zwei Routen mit unterschiedlichem Tarif und Cache-Verhalten.
-    # sference (Primaerroute) ist billiger und cached; nebius hat
-    # supports_caching=false → cache_read = input. Die Route steckt im Namen.
-    # Die alte bare ID "kimi-k3" (= sference) wurde 2026-08-04 zurueckgezogen;
-    # ihre Runs liegen unter runs/_archive/kimi-k3-preroute-fix-2026-08-04/.
+    # kimi-k3: two routes with different tariff and cache behaviour.
+    # sference (primary route) is cheaper and caches; nebius has
+    # supports_caching=false → cache_read = input. The route is in the name.
+    # The old bare ID "kimi-k3" (= sference) was retired 2026-08-04;
+    # its runs live under runs/_archive/kimi-k3-preroute-fix-2026-08-04/.
     "kimi-k3-sference": (2.25,  11.25, 0.225, 0.0),  # sference/kimi-k3
     "kimi-k3-sference-no-thinking": (2.25, 11.25, 0.225, 0.0),
-    "kimi-k3-nebius":   (3.00,  15.00, 3.00, 0.0),   # nebius/kimi-k3 (kein Cache-Rabatt: cr=in)
+    "kimi-k3-nebius":   (3.00,  15.00, 3.00, 0.0),   # nebius/kimi-k3 (no cache discount: cr=in)
     "kimi-k3-nebius-no-thinking": (3.00, 15.00, 3.00, 0.0),
     "minimax-m3":       (0.40,  2.00,  0.10, 0.0),   # tensorx/minimax-m3
     "minimax-m3-no-thinking": (0.40, 2.00, 0.10, 0.0),
     "deepseek-v4-pro":  (1.75,  3.50,  0.44, 0.0),   # tensorx/deepseek-v4-pro
     "deepseek-v4-pro-no-thinking": (1.75, 3.50, 0.44, 0.0),
-    "qwen3-235b":       (0.20,  0.60,  0.20, 0.0),   # nebius/… (kein Cache-Rabatt: cr=in)
+    "qwen3-235b":       (0.20,  0.60,  0.20, 0.0),   # nebius/… (no cache discount: cr=in)
     "qwen3-235b-no-thinking": (0.20, 0.60, 0.20, 0.0),
-    "glm-5-1":          (1.40,  4.40,  1.40, 0.0),   # nebius/zai-org/glm-5.1 (kein Cache-Rabatt: cr=in)
+    "glm-5-1":          (1.40,  4.40,  1.40, 0.0),   # nebius/zai-org/glm-5.1 (no cache discount: cr=in)
     "glm-5-1-no-thinking": (1.40, 4.40, 1.40, 0.0),
     "glm-5-2":          (1.50,  4.50,  0.38, 0.0),   # tensorx/glm-5.2
     "glm-5-2-no-thinking": (1.50, 4.50, 0.38, 0.0),
     "gpt-5-6-sol":      (5.00,  30.00, 0.50, 0.0),   # azure/gpt-5.6-sol
     "gpt-5-6-sol-no-thinking": (5.00, 30.00, 0.50, 0.0),
-    # Gleiche Requesty-Route wie gpt-5-6-sol, nur das pi-config-Profil
-    # unterscheidet sich (reasoning: true) -> gleicher Tarif.
+    # Same Requesty route as gpt-5-6-sol, only the pi-config profile
+    # differs (reasoning: true) -> same tariff.
     "gpt-5-6-sol-reasoning": (5.00, 30.00, 0.50, 0.0),
-    # OpenAI-Subscription-Route (openai-codex). Kein per-Token-Billing — die
-    # Werte sind reine Vergleichspreise ("was haette das ueber die API
-    # gekostet"), auf derselben Basis wie die Requesty-Zellen, gegen die sie
-    # verglichen werden. Bewusst OHNE cacheWrite und ohne den >272k-Tarifsprung
-    # aus models.json: sonst rechnete die Subscription-Zelle anders als jede
-    # Requesty-Zelle im selben Vergleich.
+    # OpenAI subscription route (openai-codex). No per-token billing — the
+    # values are pure comparison prices ("what would this have cost over the
+    # API"), on the same basis as the Requesty cells they are compared
+    # against. Deliberately WITHOUT cacheWrite and without the >272k tariff step
+    # from models.json: otherwise the subscription cell would be priced
+    # differently from every Requesty cell in the same comparison.
     "gpt-5-6-sol-codex": (5.00, 30.00, 0.50, 0.0),   # openai-codex/gpt-5.6-sol
     "gpt-5-6-sol-codex-no-thinking": (5.00, 30.00, 0.50, 0.0),
     "gpt-5-6-sol-codex-noreason": (5.00, 30.00, 0.50, 0.0),
-    # Tarife online verifiziert 2026-09-05 gegen je drei unabhaengige Quellen
-    # (OpenAI-Docs / OpenRouter / pi.dev fuer Astra; Suche / pi.dev / OpenRouter
-    # fuer Spark). cache_write ist auf dieser Route belanglos: in allen 119
-    # codex-Runs im Pool ist cache_write = 0 Tokens.
-    # Astras >272k-Tarifsprung (2x input/cache, 1.5x output) ist bewusst NICHT
-    # abgebildet -- derselbe Grund wie bei Sol: sonst rechnete die Zelle anders
-    # als die Requesty-Zellen, gegen die sie verglichen wird.
+    # Tariffs verified online 2026-09-05 against three independent sources each
+    # (OpenAI docs / OpenRouter / pi.dev for Astra; search / pi.dev / OpenRouter
+    # for Spark). cache_write is irrelevant on this route: in all 119
+    # codex runs in the pool cache_write = 0 tokens.
+    # Astra's >272k tariff step (2x input/cache, 1.5x output) is deliberately NOT
+    # modelled -- same reason as for Sol: otherwise the cell would be priced
+    # differently from the Requesty cells it is compared against.
     "gpt-6-astra-codex": (10.00, 50.00, 1.00, 0.0),   # openai-codex/gpt-6-astra
     "gpt-6-astra-codex-no-thinking": (10.00, 50.00, 1.00, 0.0),
-    # GPT-6 Sol, Launch 2026-09-22: $2 / $10 / $0.20 cached (OpenAI-Launch,
-    # TechCrunch, VentureBeat). >272k-Tarifsprung wie bei Sol/Astra nicht
-    # abgebildet.
+    # GPT-6 Sol, launch 2026-09-22: $2 / $10 / $0.20 cached (OpenAI launch,
+    # TechCrunch, VentureBeat). >272k tariff step not modelled, as for
+    # Sol/Astra.
     "gpt-6-sol-codex": (2.00, 10.00, 0.20, 0.0),   # openai-codex/gpt-6-sol
     "gpt-5-3-codex-spark": (1.75, 14.00, 0.175, 0.0),  # openai-codex/gpt-5.3-codex-spark
     "gpt-5-6-terra":    (2.50,  15.00, 0.25, 0.0),   # azure/gpt-5.6-terra
     "gpt-5-6-terra-no-thinking": (2.50, 15.00, 0.25, 0.0),
-    "sonnet-5":         (2.20,  11.00, 0.22, 0.0),   # vertex/claude-sonnet-5@eu (Requesty-Tarif)
+    "sonnet-5":         (2.20,  11.00, 0.22, 0.0),   # vertex/claude-sonnet-5@eu (Requesty tariff)
     "sonnet-5-no-thinking": (2.20, 11.00, 0.22, 0.0),
 }
 

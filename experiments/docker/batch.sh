@@ -127,15 +127,15 @@ if [ -x "$SCRIPT_DIR/../check-pi-model-wiring.py" ]; then
     fi
 fi
 
-# LINEAGE.yaml ist die Quelle fuer Kategorie, Arm, Abstammung und Alt-Namen
-# jedes Workflows; PATHS.json/ALIASES.json werden daraus generiert und von
-# run-batch.sh bzw. der Aggregation gelesen. Driftet die Quelle gegen den
-# Bestand (Workflow angelegt und nicht eingetragen, Praefix passt nicht zur
-# Kategorie, status: discarded ohne _archive/), dann loest run-batch.sh
-# Workflows nicht mehr auf oder die Aggregation matcht die falsche Zelle.
-# Anders als die pi-Wiring-Warnung blockiert das: der Schaden trifft nicht nur
-# eine Spalte, sondern die Zuordnung selbst -- und die Pruefung kostet nichts,
-# waehrend der Batch Stunden laeuft.
+# LINEAGE.yaml is the source for category, arm, lineage and old names of
+# every workflow; PATHS.json/ALIASES.json are generated from it and read by
+# run-batch.sh and the aggregation respectively. If the source drifts from the
+# inventory (workflow created but not registered, prefix does not match the
+# category, status: discarded without _archive/), run-batch.sh no longer
+# resolves workflows or the aggregation matches the wrong cell.
+# Unlike the pi wiring warning this blocks: the damage hits not just one
+# column but the mapping itself -- and the check costs nothing, while the
+# batch runs for hours.
 if [ -x "$SCRIPT_DIR/../workflow-lineage.py" ]; then
     if ! lineage_out="$("$SCRIPT_DIR/../workflow-lineage.py" --check 2>&1)"; then
         echo "ERROR: workflow lineage is inconsistent -- aborting before the batch"
@@ -145,12 +145,12 @@ if [ -x "$SCRIPT_DIR/../workflow-lineage.py" ]; then
     fi
 fi
 
-# Portkey routing wird seit 2026-05-25 ausschließlich über
-# experiments/docker/.env gesteuert (env_file-Directive in
-# docker-compose.yml, Variablen ANTHROPIC_BASE_URL, ANTHROPIC_AUTH_TOKEN,
-# ANTHROPIC_CUSTOM_HEADERS). Der frühere CLAUDE_CONFIG_DIR=~/.claude.portkey
-# Auto-Detect ist entfernt; die Modell-IDs mit `-portkey`-Suffix bleiben
-# als Label-Konvention, beeinflussen aber nicht mehr die Config-Auswahl.
+# Since 2026-05-25 Portkey routing is controlled exclusively via
+# experiments/docker/.env (env_file directive in
+# docker-compose.yml, variables ANTHROPIC_BASE_URL, ANTHROPIC_AUTH_TOKEN,
+# ANTHROPIC_CUSTOM_HEADERS). The former CLAUDE_CONFIG_DIR=~/.claude.portkey
+# auto-detect is removed; model IDs with a `-portkey` suffix remain
+# a label convention but no longer affect config selection.
 
 # ---------------------------------------------------------------------------
 # Single-shard mode (sequential, backward-compat)
