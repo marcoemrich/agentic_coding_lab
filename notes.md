@@ -242,9 +242,9 @@ Die erste claim-office-Version (HPSMV) hatte zwei Anti-Pattern-Patzer, die ohne 
 - **Eingabe-Schema verriet Lesart:** Ursprüngliches `existingContracts`-Feld im Input-JSON pinnte die kunden-bezogene Lesart von "Erstversicherung" (Kunde hatte vorher keinen Vertrag) — und schloss die alternative item-bezogene Lesart (für dieses Item gab es noch keinen Vertrag) faktisch aus. Die konstruierte Mehrdeutigkeit war im Prompt-Text drin, aber durch das Schema schon entschieden. Feld musste raus, Input neutral machen.
 - **Numerische Inkonsistenz:** Bonus-Preis 80 G war als "Aufschlag" beschrieben, war aber bei 3 × 25 = 75 G Basis nur 5 G Aufschlag — kein erkennbarer Bonus-Effekt. Korrigiert auf 60 G (= 80 G total). Wäre als "kein Effekt"-Befund durchgegangen, in Wahrheit war die Zahl falsch gewählt.
 
-**Detektion:** Vortest-Skript `research/kata-design/ambiguity-probe/probe.py` — schickt Regel+Frage an Opus/Sonnet/Haiku (mit/ohne thinking) × n=5 mit Default-Temperatur, klassifiziert manuell durch Lesen der Roh-Antworten. Ohne diesen Vortest wären die Patzer in der Studie gelandet.
+**Detektion:** Vortest-Skript `kata-builder/ambiguity-probe/probe.py` — schickt Regel+Frage an Opus/Sonnet/Haiku (mit/ohne thinking) × n=5 mit Default-Temperatur, klassifiziert manuell durch Lesen der Roh-Antworten. Ohne diesen Vortest wären die Patzer in der Studie gelandet.
 
-**Lehre:** Kata-Erstellung ist nicht fertig, wenn der Prompt steht. Pre-Publish-Checklist nötig (Methodik in `research/kata-design/kata-construction.md`):
+**Lehre:** Kata-Erstellung ist nicht fertig, wenn der Prompt steht. Pre-Publish-Checklist nötig (Methodik in `kata-builder/kata-construction.md`):
 - Eingabe-Schema verrät keine Lesart — auf Feldnamen achten, die eine Interpretation pinnen.
 - Numerische Konsistenz prüfen — alle Werte durchrechnen, Bonus/Aufschlag/Rabatt müssen Zahlen-mäßig auch das tun, was die Sprache verspricht.
 - Vortest mit n≥3 Modellen, klassifizierte Antworten lesen, nicht nur Pass-Rate zählen.

@@ -9,7 +9,7 @@ Single source of truth for TDD workflows in this repo. Three levels in one file:
 Sibling docs:
 - `experiments/workflows/MARKERS.md` — hard parser requirements (skill invocations, "Red Phase Complete" string, prediction lines, `experiment-done.txt`).
 - `research/workflow-dev/model-recommendation-matrix.md` — recommended workflow per model.
-- `research/kata-design/kata-construction.md` — kata methodology.
+- `kata-builder/kata-construction.md` (sister repo, https://github.com/marcoemrich/kata-builder/blob/main/kata-construction.md) — kata methodology.
 
 The workflow files of the pre-hybrid-v2 generation + the first reduction chain (v6.5.x, v6.6-leaner) live under `experiments/workflows/_archive/`. The corresponding RQ directories of the oneshot-v1 generation were deleted on 2026-08-11 (commit `953841cb`) and are only reachable through the git history. Findings from that chain are not carried into this file — the chain was correctness-defective (see the anti-pattern "Bundle reduction without a correctness sample" below), and all subsequent iterations ran on a broken workflow. The current hybrid-v2 line is the restart on a repaired base.
 
@@ -594,5 +594,5 @@ The oneshot-v1 archive RQ-emoji-cross-model warns: reductions are not model-agno
 - `research/workflow-dev/1.1-pep-effect-v6.1/` through `1.5-why-block-effect-v6.1/` — current reduction RQs on a hybrid-v2 base.
 - `research/workflow-dev/v6-reduction-recipe.md` — reduction recipe (step-by-step methodology from the first v6.5.x chain, now re-applicable on a hybrid-v2 base).
 - `research/workflow-dev/model-recommendation-matrix.md` — recommended workflow per model.
-- `research/kata-design/kata-construction.md` — kata methodology.
+- `kata-builder/kata-construction.md` (sister repo, https://github.com/marcoemrich/kata-builder/blob/main/kata-construction.md) — kata methodology.
 - `~/.claude/skills/skill-creator/SKILL.md` — source of the theory-of-mind principle (lines 139, 302).

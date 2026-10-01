@@ -36,7 +36,7 @@ ambiguities depend on.
 <br clear="right">
 
 Design rationale, pinned readings and pre-test findings:
-[`research/kata-design/overlords-mehrdeutigkeiten.md`](../../../research/kata-design/overlords-mehrdeutigkeiten.md).
+[`kata-builder/overlords-mehrdeutigkeiten.md`](https://github.com/marcoemrich/kata-builder/blob/main/overlords-mehrdeutigkeiten.md).
 
 ## Pinned interpretations
 

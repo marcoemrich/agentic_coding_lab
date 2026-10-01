@@ -53,7 +53,7 @@ Prio: High
    der Gelegenheit ebenfalls eindeutschen oder englische Pendants
    einführen — dann auch in der Top-README anpassen und Skill-Dateien
    nachziehen.
- * research/kata-design/* bleibt bewusst Deutsch (Workshop-Material).
+ * kata-design ist ins Schwester-Repo kata-builder umgezogen (bleibt dort bewusst Deutsch).
 
 ## Verwendbarkeit für andere
 

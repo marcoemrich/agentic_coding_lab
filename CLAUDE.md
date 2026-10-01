@@ -48,7 +48,8 @@ research/
   questions/        Generic research RQs (prompt/model/TDD/context effects); dirs <chapter>-slug
   workflow-dev/     Workflow-evolution RQs (hybrid-Reduktionskette, subagents-v1→v2) + methodology docs + model-recommendation-matrix.md
   reports/          Published experiment-overview snapshots (md; pdf gitignored, built on demand)
-  kata-design/      Kata construction guidelines, ambiguity probe, workshop variant
+  kata-dev/         Kata validation RQs (methodology, ambiguity probe and workshop material live in the
+                    sister repo kata-builder: github.com/marcoemrich/kata-builder)
 ```
 
 Each RQ dir holds `README.md`, `findings.md`, `runs.csv`, `summary.md`. The `<chapter>` prefix
