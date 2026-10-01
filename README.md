@@ -227,13 +227,19 @@ When in doubt, list the named metrics in the workflow's `README.md` / header so 
 
 #### Cycle discipline is measured from the transcript, not from markers
 
+> **Superseded in 2026-10 by the [phase chain](#phase-chain-metrics).** The
+> transcript route below replaced markers for cycle discipline and was itself
+> retired: it read 0 for any model that writes files through the shell. Its
+> columns survive only under the `legacy_` prefix. The argument against markers
+> still holds and is why the phase chain reads test-runner events instead.
+
 A verbatim `Red Phase Complete` block is **not a neutral probe**. An output
 obligation once per RED phase creates exactly the structural break that separates
 one cycle from the next — so measuring cycle discipline through markers partly
 manufactures the discipline it reports. This is the marker equivalent of the
 Goodhart problem above: the instrument is part of the workflow.
 
-**Default from now on:** cycle discipline comes from `experiments/measure-tdd-rigour.py`,
+**Default until 2026-10:** cycle discipline came from `experiments/measure-tdd-rigour.py`,
 which reads only the tool sequence (test-file edits, `src/` edits, test-runner
 invocations) and needs no markers at all:
 
@@ -655,7 +661,7 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 | `experiments/tdd-report.py` | Derive the TDD phase chain and its metrics from the stack reporter's `tdd-events.jsonl` — reads no marker, no tool call and no commit, so it reads the same on every workflow and harness. Default output is the readable markdown report (`analyze-run.sh` writes it to `tdd-report.md` in the run dir); `--chain` prints the one-line chain, `--json` the metrics object that gets folded into `metrics.json`. Empty object for runs predating the reporter. See "Phase chain metrics". |
 | `experiments/migrate-legacy-discipline.py` | One-shot: renames the 17 superseded TDD-discipline metrics to `legacy_*` in every run's `metrics.json`, so a legacy number can never be read as a current one. `--dry-run` reports without writing. Already applied to the corpus (1843 runs, 2026-10). |
 | `experiments/measure-suite-transitions.py` | **Legacy tool, not in the pipeline.** Derives the red/green sequence from the transcript instead of the reporter. Kept because it is the only route that runs on pre-reporter runs, and because it was the independent cross-check that validated the reporter (82/82 on a real run). `--run <dir>` emits one JSON object; batch mode takes the same filters as `measure-tdd-rigour.py` plus `--compare`. |
-| `experiments/measure-tdd-rigour.py` | **Legacy tool, not in the pipeline.** Classify TDD rigour from the tool sequence alone — no phase markers required, so it works on vendored external skills that must stay unmodified. `--run <dir>` emits one JSON object (this is how `analyze-run.sh` folds `test_blocks`, `test_cases_*` and `red_verified/unverified` into `metrics.json`); without it, batch mode scans `runs/` and takes `--pattern`, `--workflow` and `--kata-suffix` filters. Handles Claude Code and pi transcripts; OpenCode/cursor formats are skipped and counted. |
+| `experiments/measure-tdd-rigour.py` | **Legacy tool, not in the pipeline.** Classify TDD rigour from the tool sequence alone — no phase markers required, so it works on vendored external skills that must stay unmodified. `--run <dir>` emits one JSON object (this is how `analyze-run.sh` folded `test_blocks`, `test_cases_*` and `red_verified/unverified` into `metrics.json` until 2026-10; those columns now carry the `legacy_` prefix); without it, batch mode scans `runs/` and takes `--pattern`, `--workflow` and `--kata-suffix` filters. Handles Claude Code and pi transcripts; OpenCode/cursor formats are skipped and counted. |
 
 ### Aggregation
 
@@ -914,10 +920,9 @@ Names below are the historical column names; in `runs.csv` each now carries the
 | `test_cases_first_block` | transcript | Test cases in the very first block — was the entry into the kata already coarse? |
 | `red_verified` / `red_unverified` | transcript | Whether a test run happened between writing a test and writing implementation. `red_unverified > 0` means code was written without ever seeing the test fail. |
 
-The transcript metrics come from `measure-tdd-rigour.py`, which `analyze-run.sh`
-folds into `metrics.json`. They exist **only for runs analysed after that
-integration** — older runs need a `reanalyze` pass before the columns are
-populated.
+The transcript metrics came from `measure-tdd-rigour.py`, which `analyze-run.sh`
+folded into `metrics.json` until 2026-10. The pipeline no longer calls it, so
+runs produced since then carry none of these columns.
 
 **Not covered by either source:** GREEN discipline. Nothing measures whether only
 the minimal code to pass was written; over-implementation shows up indirectly in
