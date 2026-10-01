@@ -533,9 +533,16 @@ def run_cargo_mutants(run_dir: Path, timeout_seconds: int, log) -> MutationResul
     out_dir = run_dir / CARGO_MUTANTS_OUT
     shutil.rmtree(out_dir, ignore_errors=True)
     log_path = run_dir / "cargo-mutants.log"
+    # The stack runs Cargo offline against the registry baked into the image.
+    # This script runs on the host, whose registry may lack the pinned crates,
+    # so the network is allowed here; Cargo.lock (with --locked on the fetch)
+    # keeps the versions identical to the run's.
+    env = {**os.environ, "CARGO_NET_OFFLINE": "false"}
     try:
+        subprocess.run(["cargo", "fetch", "--locked"], cwd=run_dir, env=env,
+                       capture_output=True, timeout=600)
         ver = subprocess.run(["cargo", "mutants", "--version"], cwd=run_dir,
-                             capture_output=True, text=True, timeout=60)
+                             capture_output=True, text=True, timeout=60, env=env)
         if CARGO_MUTANTS_VERSION not in ver.stdout:
             log(f"  WARNING: cargo-mutants is {ver.stdout.strip()!r}, "
                 f"pinned {CARGO_MUTANTS_VERSION}")
@@ -543,7 +550,7 @@ def run_cargo_mutants(run_dir: Path, timeout_seconds: int, log) -> MutationResul
             cmd = cargo_mutants_args(run_dir)
             f.write(f"$ {' '.join(cmd)}\n")
             f.flush()
-            proc = subprocess.run(cmd, cwd=run_dir, stdout=f,
+            proc = subprocess.run(cmd, cwd=run_dir, stdout=f, env=env,
                                   stderr=subprocess.STDOUT, timeout=timeout_seconds)
     except subprocess.TimeoutExpired:
         log(f"  TIMEOUT after {timeout_seconds}s — score stays null")
