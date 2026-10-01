@@ -55,7 +55,14 @@ find_impl_files() {
     local run_dir=$1
     case "$(run_stack "$run_dir")" in
         java-junit-maven)
-            find "$run_dir/src/main/java" -name "*.java" 2>/dev/null | sort
+            # */lab/* is lab infrastructure on the test classpath (the JUnit
+            # TddEventListener), not part of the exercise. It cannot live
+            # outside src/test/java without build-helper-maven-plugin, which is
+            # not in the container's Maven cache, so it is excluded by path
+            # here instead — the same intent as removing install.sh from the
+            # recorded artifact.
+            find "$run_dir/src/main/java" -name "*.java" ! -path "*/lab/*" \
+                2>/dev/null | sort
             ;;
         python-pytest)
             find "$run_dir/src" -name "*.py" ! -name "test_*.py" ! -name "*_test.py" \
@@ -71,7 +78,9 @@ find_test_files() {
     local run_dir=$1
     case "$(run_stack "$run_dir")" in
         java-junit-maven)
-            find "$run_dir/src/test/java" -name "*.java" 2>/dev/null | sort
+            # See find_impl_files: */lab/* is the lab's event listener.
+            find "$run_dir/src/test/java" -name "*.java" ! -path "*/lab/*" \
+                2>/dev/null | sort
             ;;
         python-pytest)
             # Tests live in tests/, but an agent may also leave a test file
@@ -1597,6 +1606,7 @@ EOF
             .summary_metrics.predictions_correct = $pred_correct |
             .summary_metrics.predictions_total = $pred_total |
             .summary_metrics.subagent_token_total = $subagent_tokens |
+            .summary_metrics.chain_suite_runs = ($chain.suite_runs // null) |
             .summary_metrics.cycles_total = ($chain.cycles_total // null) |
             .summary_metrics.cycles_closed = ($chain.cycles_closed // null) |
             .summary_metrics.test_first_rate = ($chain.test_first_rate // null) |

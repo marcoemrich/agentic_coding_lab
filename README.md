@@ -941,6 +941,33 @@ content hash per source file. `tdd-report.py` derives the phase of each event
 from **what changed since the previous invocation and what the suite then did**,
 so the vocabulary is identical across workflows, harnesses and edit mechanisms.
 
+All three stacks are wired, each through its framework's own hook:
+
+| Stack | Hook | Lives in |
+|---|---|---|
+| `typescript-vitest` | custom reporter in `test.reporters` | `tdd-reporter.mjs` at the run root |
+| `python-pytest` | `pytest_runtest_logreport` + `pytest_sessionfinish` | `conftest.py` at the run root |
+| `java-junit-maven` | JUnit `TestExecutionListener` via ServiceLoader | `src/test/java/lab/` + `src/test/resources/META-INF/services/` |
+
+**Java has one structural gap.** `mvn test` runs `test-compile` first, so when
+production code does not compile the build aborts before JUnit starts and the
+listener never runs — measured: zero events for that invocation. That is exactly
+the `Red(c)` step of a two-step red phase, so on Java a two-step red appears as
+a single `Red` once it compiles, and `red_batch_unmeasurable` reads 0 where
+TypeScript would read more. The chain stays valid; the compile step is invisible
+rather than mislabelled. Closing it would need a Maven lifecycle extension,
+which means shipping a jar.
+
+Two Java specifics worth knowing before touching that stack. The listener needs
+`junit-platform-launcher` as a test dependency — Surefire supplies the launcher
+at runtime but not to the test compiler — pinned to the version pre-warmed in
+the `maven-repo` volume, because an uncached version makes every Java run
+attempt a network fetch and fail offline. And it lives under `src/test/java/lab/`
+rather than outside the test source root, because the clean placement needs
+`build-helper-maven-plugin`, which is not in that cache; `analyze-run.sh`
+therefore excludes any path with a `lab` segment from the Java source and test
+LoC counts so it cannot inflate Test LoC.
+
 `analyze-run.sh` writes the readable chain to `tdd-report.md` in the run
 directory and folds the metrics into `metrics.json`. The pipeline's own test
 runs are excluded via `TDD_REPORTER_OFF` — without it, `analyze-run.sh` would
@@ -1000,7 +1027,7 @@ Column names as they appear in `runs.csv`.
 
 | Metric | Description |
 |---|---|
-| `suite_runs` | Suite invocations. **A denominator, never read alone.** 0 means the run never tested, which is a finding, not a measurement gap. |
+| `chain_suite_runs` | Suite invocations. **A denominator, never read alone.** It is `null`, never 0, for a run that never tested: `tdd-report.py` emits an empty object for a missing or empty `tdd-events.jsonl`, so there is no value standing for "the suite was never run" — that run reads null across every column in this table. |
 | `cycles_total` / `cycles_closed` | Cycles, and those containing a `Green`. Their ratio is the completion rate. |
 | `test_first_rate` | `(Red + Red(c)) / (Red + Red(c) + Both + Skip)` — share of cycles that began with a **verified** failure. The core discipline metric, and the one `red_verified` was trying to be before shell edits could silence it. Higher is better. |
 | `red_batch_size` | Median number of tests that newly fail when a red arrives. **1 = one failing test at a time**; higher means a batch was authored before any implementation existed. Lower is better. |
@@ -1013,6 +1040,14 @@ Column names as they appear in `runs.csv`.
 | `green_attempts` | `(Green? + Green?(c)) / cycles_closed` — how often the first implementation attempt missed. **Ambivalent — no trophy.** |
 | `chain_deviations` | `Both + Skip + Drop + Break + Break(c)`. The per-cell flag for "go read `tdd-report.md`". Lower is better. |
 | `chain_opens_red` / `chain_ends_green` | Did the first suite run fail, and did the run end green? |
+
+**Why four columns carry a `chain_` prefix.** `tdd-report.py`'s own vocabulary
+calls them `suite_runs`, `deviations`, `opens_red` and `ends_green`; three of
+those names were already taken by the retired `suite_*` family, and a bare
+`suite_runs` in an RQ's `outcomes:` still resolves to `legacy_suite_runs` by
+design. The prefix is what keeps a chain number from being readable as a legacy
+one. The JSON keys `tdd-report.py` prints are unprefixed; `analyze-run.sh` adds
+the prefix when it folds them into `metrics.json`.
 
 #### The consolidated score
 
