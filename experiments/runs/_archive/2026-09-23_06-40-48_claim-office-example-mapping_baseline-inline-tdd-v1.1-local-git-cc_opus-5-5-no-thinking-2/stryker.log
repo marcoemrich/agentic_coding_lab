@@ -1,0 +1,442 @@
+$ /home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_06-40-48_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-5-no-thinking-2/node_modules/.bin/stryker run --logLevel info
+[32m09:37:19 (989328) INFO ProjectReader[39m Found 4 of 32 file(s) to be mutated.
+[32m09:37:20 (989328) INFO Instrumenter[39m Instrumented 4 source file(s) with 206 mutant(s)
+[32m09:37:20 (989328) INFO ConcurrencyTokenProvider[39m Creating 2 test runner process(es).
+[32m09:37:21 (989328) INFO DryRunExecutor[39m Starting initial test run (vitest test runner with "perTest" coverage analysis). This may take a while.
+[32m09:37:23 (989328) INFO DryRunExecutor[39m Initial test run succeeded. Ran 42 tests in 1 second (net 947 ms, overhead 877 ms).
+[33m09:37:23 (989328) WARN MutantTestPlanner[39m Detected 8 static mutants (4% of total) that are estimated to take 87% of the time running the tests!
+  You might want to enable "ignoreStatic" to ignore these static mutants for your next run. 
+  For more information about static mutants visit: https://stryker-mutator.io/docs/mutation-testing-elements/static-mutants
+  (disable "warnings.slow" to ignore this warning)
+
+All tests
+  claim.spec.ts
+    ✓ Policy cap sword + amulet → cap 3200 (killed 7)
+    ~ Policy cap two swords → cap 4000 (covered 6)
+    ~ Policy cap cursed sword → cap 2000 (covered 6)
+    ✓ Policy cap sword + 3 runes → cap 3500 (killed 2)
+    ✓ processClaim standard reimbursement minus deductible (killed 28)
+    ~ processClaim rune damage 200 → 100 (covered 54)
+    ~ processClaim deductible per damaged item (covered 54)
+    ✓ processClaim dragon sword enchantment 8 damage 1000 → 400 (killed 4)
+    ~ processClaim dragon sword enchantment 9 damage 1000 → 400 (covered 55)
+    ~ processClaim dragon sword enchantment 5 damage 800 → 700 (covered 54)
+    ~ processClaim steel sword enchantment 9 damage 1000 → 400 (covered 55)
+    ~ processClaim damage below deductible pays nothing (covered 54)
+    ~ processClaim rounds payout down (covered 55)
+    ~ processClaim cap exhaustion across successive claims (covered 54)
+    ~ processClaim two sword damages on two insured swords each get a deductible (covered 54)
+    ~ processClaim matches damages to items of the same type in order (covered 55)
+    ~ processClaim rejects more damages of a type than insured (covered 42)
+    ✓ processClaim rejects damage to uninsured or unknown item (killed 3)
+    ✓ processClaim rejects negative amount (killed 4)
+    ~ processClaim rejected claim does not consume cap (covered 42)
+  cli.spec.ts
+    ✓ runScenario handles the schema example (killed 48)
+    ✓ runScenario applies the follow-up discount on the second quote (killed 1)
+    ~ runScenario rejects a claim referencing a non-quote step (covered 51)
+    ~ runScenario rejects unknown op (covered 43)
+    ✘ cli writes results JSON to stdout (covered 0)
+    ✘ cli exits non-zero with stderr on unknown item type (covered 0)
+    ✘ cli exits non-zero on invalid JSON (covered 0)
+  premium.spec.ts
+    ✓ component base premium 2 runes → 50 G (killed 12)
+    ✓ component base premium 3 runes → 60 G (killed 1)
+    ~ component base premium 4 runes → 100 G (covered 14)
+    ~ component base premium 7 runes → 175 G (covered 14)
+    ✓ component base premium 2 runes + 1 moonstone → 75 G (different types, no block) (killed 1)
+    ~ component base premium 3 runes + 3 moonstones → 120 G (two blocks) (covered 13)
+    ✓ quotePremium empty item list → 5 G fee only (killed 5)
+    ✓ quotePremium newcomer with a cursed sword → 165 G (killed 28)
+    ✓ quotePremium long-standing customer second contract, cursed ench 7 sword → 160 G (killed 7)
+    ✓ quotePremium curse surcharge applies only to the cursed item (killed 2)
+    ✓ quotePremium exactly 2 years → loyalty discount applies (killed 1)
+    ✓ quotePremium enchantment 5 → high enchantment surcharge; with curse both apply (killed 1)
+    ~ quotePremium enchantment 4 → no high enchantment surcharge (covered 53)
+    ✓ quotePremium rounds fractional premium up (killed 2)
+    ✓ quotePremium rejects unknown item type (killed 7)
+
+[Survived] ConditionalExpression
+src/catalog.ts:33:7
+-     if (typeof type !== 'string' || !isKnownType(type)) {
++     if (false || !isKnownType(type)) {
+Tests ran:
+    processClaim standard reimbursement minus deductible
+    processClaim rune damage 200 → 100
+    processClaim deductible per damaged item
+  and 23 more tests!
+
+
+[Survived] ObjectLiteral
+src/catalog.ts:14:11
+-     potion: { value: 400, premium: 40 },
++     potion: {},
+Ran all tests for this mutant.
+
+[NoCoverage] StringLiteral
+src/claim.ts:50:58
+-     if (!Array.isArray(damages)) throw new ValidationError('damages must be an array');
++     if (!Array.isArray(damages)) throw new ValidationError("");
+
+[Survived] EqualityOperator
+src/claim.ts:38:45
+-       if (!Number.isInteger(damage.amount) || damage.amount < 0) {
++       if (!Number.isInteger(damage.amount) || damage.amount <= 0) {
+Tests ran:
+    processClaim standard reimbursement minus deductible
+    processClaim rune damage 200 → 100
+    processClaim deductible per damaged item
+  and 14 more tests!
+
+
+[Survived] StringLiteral
+src/claim.ts:39:33
+-         throw new ValidationError(`Invalid damage amount: ${String(damage.amount)}`);
++         throw new ValidationError(``);
+Tests ran:
+    processClaim rejects negative amount
+
+
+[Survived] StringLiteral
+src/claim.ts:43:33
+-         throw new ValidationError(`Damaged item not covered by policy: ${damage.itemType}`);
++         throw new ValidationError(``);
+Tests ran:
+    processClaim rejects more damages of a type than insured
+    processClaim rejects damage to uninsured or unknown item
+    processClaim rejected claim does not consume cap
+
+
+[Survived] ConditionalExpression
+src/claim.ts:50:7
+-     if (!Array.isArray(damages)) throw new ValidationError('damages must be an array');
++     if (false) throw new ValidationError('damages must be an array');
+Tests ran:
+    processClaim standard reimbursement minus deductible
+    processClaim rune damage 200 → 100
+    processClaim deductible per damaged item
+  and 14 more tests!
+
+
+[Survived] MethodExpression
+src/premium.ts:38:35
+-     for (const count of countByType(items.filter((i) => isComponent(i.type))).values()) {
++     for (const count of countByType(items).values()) {
+Tests ran:
+    component base premium 2 runes → 50 G
+    component base premium 3 runes → 60 G
+    component base premium 4 runes → 100 G
+  and 3 more tests!
+
+
+[Survived] LogicalOperator
+src/premium.ts:49:19
+-       const count = counts.get(item.type) ?? 1;
++       const count = counts.get(item.type) && 1;
+Tests ran:
+    quotePremium rounds fractional premium up
+
+
+[Survived] ArithmeticOperator
+src/premium.ts:50:12
+-       return groupPremium(count) / count;
++       return groupPremium(count) * count;
+Tests ran:
+    quotePremium rounds fractional premium up
+
+
+[NoCoverage] StringLiteral
+src/scenario.ts:12:56
+-     if (!Array.isArray(value)) throw new ValidationError(`${name} must be an array`);
++     if (!Array.isArray(value)) throw new ValidationError(``);
+
+[NoCoverage] StringLiteral
+src/scenario.ts:18:52
+-       if (!isObject(item)) throw new ValidationError('item must be an object');
++       if (!isObject(item)) throw new ValidationError("");
+
+[NoCoverage] StringLiteral
+src/scenario.ts:24:54
+-     if (!isObject(incident)) throw new ValidationError('incident must be an object');
++     if (!isObject(incident)) throw new ValidationError("");
+
+[NoCoverage] StringLiteral
+src/scenario.ts:26:54
+-       if (!isObject(damage)) throw new ValidationError('damage must be an object');
++       if (!isObject(damage)) throw new ValidationError("");
+
+[NoCoverage] StringLiteral
+src/scenario.ts:32:80
+-     if (!isObject(input) || !isObject(input.customer)) throw new ValidationError('customer is required');
++     if (!isObject(input) || !isObject(input.customer)) throw new ValidationError("");
+
+[NoCoverage] BlockStatement
+src/scenario.ts:34:61
+-     if (typeof years !== 'number' || !Number.isFinite(years)) {
+-       throw new ValidationError('customer.yearsWithMHPCO must be a number');
+-     }
++     if (typeof years !== 'number' || !Number.isFinite(years)) {}
+
+[NoCoverage] StringLiteral
+src/scenario.ts:35:31
+-       throw new ValidationError('customer.yearsWithMHPCO must be a number');
++       throw new ValidationError("");
+
+[NoCoverage] StringLiteral
+src/scenario.ts:42:52
+-       if (!isObject(step)) throw new ValidationError(`step ${index} must be an object`);
++       if (!isObject(step)) throw new ValidationError(``);
+
+[Survived] ConditionalExpression
+src/scenario.ts:8:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return true;
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+    runScenario rejects a claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:8:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return typeof value === 'object' && value !== null || !Array.isArray(value);
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+    runScenario rejects a claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:8:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return true && !Array.isArray(value);
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+    runScenario rejects a claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:8:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return typeof value === 'object' || value !== null && !Array.isArray(value);
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+    runScenario rejects a claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:8:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return true && value !== null && !Array.isArray(value);
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+    runScenario rejects a claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:8:39
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return typeof value === 'object' && true && !Array.isArray(value);
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+    runScenario rejects a claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:12:7
+-     if (!Array.isArray(value)) throw new ValidationError(`${name} must be an array`);
++     if (false) throw new ValidationError(`${name} must be an array`);
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+    runScenario rejects a claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] StringLiteral
+src/scenario.ts:17:30
+-     return requireArray(value, 'items').map((item) => {
++     return requireArray(value, "").map((item) => {
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:18:9
+-       if (!isObject(item)) throw new ValidationError('item must be an object');
++       if (false) throw new ValidationError('item must be an object');
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:24:7
+-     if (!isObject(incident)) throw new ValidationError('incident must be an object');
++     if (false) throw new ValidationError('incident must be an object');
+Tests ran:
+    runScenario handles the schema example
+
+
+[Survived] StringLiteral
+src/scenario.ts:25:41
+-     return requireArray(incident.damages, 'damages').map((damage) => {
++     return requireArray(incident.damages, "").map((damage) => {
+Tests ran:
+    runScenario handles the schema example
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:26:9
+-       if (!isObject(damage)) throw new ValidationError('damage must be an object');
++       if (false) throw new ValidationError('damage must be an object');
+Tests ran:
+    runScenario handles the schema example
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:32:7
+-     if (!isObject(input) || !isObject(input.customer)) throw new ValidationError('customer is required');
++     if (false) throw new ValidationError('customer is required');
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+    runScenario rejects a claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:32:7
+-     if (!isObject(input) || !isObject(input.customer)) throw new ValidationError('customer is required');
++     if (!isObject(input) && !isObject(input.customer)) throw new ValidationError('customer is required');
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+    runScenario rejects a claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:34:7
+-     if (typeof years !== 'number' || !Number.isFinite(years)) {
++     if (false) {
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+    runScenario rejects a claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:34:7
+-     if (typeof years !== 'number' || !Number.isFinite(years)) {
++     if (false || !Number.isFinite(years)) {
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+    runScenario rejects a claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:34:7
+-     if (typeof years !== 'number' || !Number.isFinite(years)) {
++     if (typeof years !== 'number' && !Number.isFinite(years)) {
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+    runScenario rejects a claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] StringLiteral
+src/scenario.ts:37:43
+-     const steps = requireArray(input.steps, 'steps');
++     const steps = requireArray(input.steps, "");
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+    runScenario rejects a claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:42:9
+-       if (!isObject(step)) throw new ValidationError(`step ${index} must be an object`);
++       if (false) throw new ValidationError(`step ${index} must be an object`);
+Tests ran:
+    runScenario handles the schema example
+    runScenario applies the follow-up discount on the second quote
+    runScenario rejects a claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:50:9
+-       if (step.op === 'claim') {
++       if (true) {
+Tests ran:
+    runScenario handles the schema example
+    runScenario rejects a claim referencing a non-quote step
+    runScenario rejects unknown op
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:51:22
+-         const policy = typeof step.policy === 'number' ? policies.get(step.policy) : undefined;
++         const policy = true ? policies.get(step.policy) : undefined;
+Tests ran:
+    runScenario handles the schema example
+    runScenario rejects a claim referencing a non-quote step
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:52:11
+-         if (!policy) throw new ValidationError(`step ${index} references unknown policy ${String(step.policy)}`);
++         if (false) throw new ValidationError(`step ${index} references unknown policy ${String(step.policy)}`);
+Tests ran:
+    runScenario handles the schema example
+    runScenario rejects a claim referencing a non-quote step
+
+
+[Survived] StringLiteral
+src/scenario.ts:55:31
+-       throw new ValidationError(`step ${index} has unknown op ${String(step.op)}`);
++       throw new ValidationError(``);
+Tests ran:
+    runScenario rejects unknown op
+
+
+[Survived] StringLiteral
+src/scenario.ts:52:46
+-         if (!policy) throw new ValidationError(`step ${index} references unknown policy ${String(step.policy)}`);
++         if (!policy) throw new ValidationError(``);
+Tests ran:
+    runScenario rejects a claim referencing a non-quote step
+
+
+Ran 2.92 tests per mutant on average.
+-------------|------------------|----------|-----------|------------|----------|----------|
+             | % Mutation score |          |           |            |          |          |
+File         |  total | covered | # killed | # timeout | # survived | # no cov | # errors |
+-------------|--------|---------|----------|-----------|------------|----------|----------|
+All files    |  79.61 |   83.25 |      164 |         0 |         33 |        9 |        0 |
+ catalog.ts  |  92.00 |   92.00 |       23 |         0 |          2 |        0 |        0 |
+ claim.ts    |  89.13 |   91.11 |       41 |         0 |          4 |        1 |        0 |
+ premium.ts  |  94.55 |   94.55 |       52 |         0 |          3 |        0 |        0 |
+ scenario.ts |  60.00 |   66.67 |       48 |         0 |         24 |        8 |        0 |
+-------------|--------|---------|----------|-----------|------------|----------|----------|
+[32m09:37:58 (989328) INFO JsonReporter[39m Your report can be found at: file:///home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_06-40-48_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-5-no-thinking-2/reports/mutation/mutation-report.json
+[32m09:37:58 (989328) INFO MutationTestExecutor[39m Done in 38 seconds.

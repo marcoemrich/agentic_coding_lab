@@ -1,0 +1,91 @@
+$ /home/memrich/agentic_coding_lab/experiments/runs/2026-09-30_00-12-44_claim-office-example-mapping_exact-hybrid-v2-testlist-fix-cc_opus-5-5-no-thinking-5/node_modules/.bin/stryker run --logLevel info
+[32m03:00:49 (2723900) INFO ProjectReader[39m Found 1 of 88 file(s) to be mutated.
+[32m03:00:49 (2723900) INFO Instrumenter[39m Instrumented 1 source file(s) with 128 mutant(s)
+[32m03:00:49 (2723900) INFO ConcurrencyTokenProvider[39m Creating 2 test runner process(es).
+[32m03:00:51 (2723900) INFO DryRunExecutor[39m Starting initial test run (vitest test runner with "perTest" coverage analysis). This may take a while.
+[32m03:00:52 (2723900) INFO DryRunExecutor[39m Initial test run succeeded. Ran 46 tests in 1 second (net 937 ms, overhead 394 ms).
+[33m03:00:52 (2723900) WARN MutantTestPlanner[39m Detected 26 static mutants (20% of total) that are estimated to take 95% of the time running the tests!
+  You might want to enable "ignoreStatic" to ignore these static mutants for your next run. 
+  For more information about static mutants visit: https://stryker-mutator.io/docs/mutation-testing-elements/static-mutants
+  (disable "warnings.slow" to ignore this warning)
+
+All tests/claim-office.spec.ts
+  ✓ MHPCO Claim Office quote — base premiums empty item list → premium 5 G (only the processing fee) (killed 20)
+  ✓ MHPCO Claim Office quote — base premiums plain sword for a newcomer → 100 base + 10 first insurance + 5 fee = 115 G (killed 25)
+  ✓ MHPCO Claim Office quote — base premiums plain amulet for a newcomer → 60 + 6 + 5 = 71 G (killed 1)
+  ✓ MHPCO Claim Office quote — base premiums plain staff for a newcomer → 80 + 8 + 5 = 93 G (killed 1)
+  ✓ MHPCO Claim Office quote — base premiums plain potion for a newcomer → 40 + 4 + 5 = 49 G (killed 1)
+  ✓ MHPCO Claim Office quote — base premiums single rune → 25 G base premium (25 + 2.5 + 5 = 32.5 → 33 G) (killed 5)
+  ~ MHPCO Claim Office quote — building block of 3 alike components 2 runes → 50 G base premium (premium 60 G) (covered 57)
+  ✓ MHPCO Claim Office quote — building block of 3 alike components 3 runes → 60 G base premium, block applies (premium 71 G) (killed 3)
+  ~ MHPCO Claim Office quote — building block of 3 alike components 4 runes → 100 G base premium, no block (premium 115 G) (covered 57)
+  ~ MHPCO Claim Office quote — building block of 3 alike components 7 runes → 175 G base premium (premium 197.5 → 198 G) (covered 57)
+  ✓ MHPCO Claim Office quote — building block of 3 alike components 2 runes + 1 moonstone → 75 G base premium, different types (premium 87.5 → 88 G) (killed 1)
+  ✓ MHPCO Claim Office quote — building block of 3 alike components 3 runes + 3 moonstones → 120 G base premium, two separate blocks (premium 137 G) (killed 1)
+  ✓ MHPCO Claim Office quote — item-specific modifiers cursed sword for a newcomer → 100 + 50 curse + 10 first + 5 fee = 165 G (killed 3)
+  ✓ MHPCO Claim Office quote — item-specific modifiers sword with enchantment exactly 5 → high-enchantment surcharge applies (100 + 30 + 10 + 5 = 145 G) (killed 5)
+  ~ MHPCO Claim Office quote — item-specific modifiers cursed sword with enchantment 5 → both surcharges apply (100 + 50 + 30 + 10 + 5 = 195 G) (covered 57)
+  ~ MHPCO Claim Office quote — item-specific modifiers sword with enchantment 4 → no high-enchantment surcharge (115 G) (covered 57)
+  ~ MHPCO Claim Office quote — item-specific modifiers cursed sword with enchantment 4 → only curse surcharge (165 G) (covered 57)
+  ~ MHPCO Claim Office quote — item-specific modifiers cursed sword + plain amulet → surcharge only on the sword: 160 base + 50 curse + 16 first + 5 fee = 231 G (covered 57)
+  ✓ MHPCO Claim Office quote — policy-wide modifiers customer with exactly 2 years → loyalty discount applies (100 − 20 + 10 + 5 = 95 G) (killed 4)
+  ~ MHPCO Claim Office quote — policy-wide modifiers customer with 1 year → no loyalty discount (115 G) (covered 57)
+  ✓ MHPCO Claim Office quote — policy-wide modifiers second quote in a scenario gets 15 % follow-up discount (100 + 10 − 15 + 5 = 100 G) (killed 2)
+  ~ MHPCO Claim Office quote — policy-wide modifiers long-standing customer's second contract, cursed sword enchantment 7 → 160 G (covered 57)
+  ~ MHPCO Claim Office quote — policy-wide modifiers premium fractions are rounded up in the MHPCO's favor (loyal customer, 1 rune: 27.5 → 28 G) (covered 57)
+  ✓ MHPCO Claim Office claim — reimbursement regular steel sword enchantment 3, damage 500 G → payout 400 G, remainingCap 1600 G (killed 30)
+  ~ MHPCO Claim Office claim — reimbursement rune damaged by 200 G → payout 100 G (cap 2 × 250 = 500, remaining 400) (covered 99)
+  ✓ MHPCO Claim Office claim — reimbursement steel sword enchantment 9, damage 1000 G → payout 400 G (50 % then deductible) (killed 3)
+  ✓ MHPCO Claim Office claim — reimbursement dragon-material sword enchantment 8, damage 1000 G → payout 400 G (killed 1)
+  ~ MHPCO Claim Office claim — reimbursement dragon-material sword enchantment 9, damage 1000 G → payout 400 G (50 % rule wins) (covered 99)
+  ~ MHPCO Claim Office claim — reimbursement dragon-material sword enchantment 5, damage 800 G → payout 700 G (covered 99)
+  ~ MHPCO Claim Office claim — reimbursement damage smaller than the deductible → payout 0 G (covered 99)
+  ~ MHPCO Claim Office claim — reimbursement payout fractions are rounded down in the MHPCO's favor (enchantment 9, damage 901 → 350.5 → 350 G) (covered 99)
+  ~ MHPCO Claim Office claim — deductible per damaged item dragon attack damages sword (500) and amulet (300) → payout 600 G (covered 99)
+  ~ MHPCO Claim Office claim — deductible per damaged item two swords insured, both damaged → each entry has its own deductible (400 + 200 = 600, remaining 3400) (covered 99)
+  ~ MHPCO Claim Office claim — cap sword + amulet policy → cap 3200 G (remainingCap after small claim reflects it) (covered 99)
+  ~ MHPCO Claim Office claim — cap cursed sword → cap 2000 G based on unmodified insurance value (covered 99)
+  ~ MHPCO Claim Office claim — cap sword + 3 runes → insurance sum 1750 G, cap 3500 G (covered 99)
+  ~ MHPCO Claim Office claim — cap two swords → insurance sum 2000 G, cap 4000 G (covered 99)
+  ~ MHPCO Claim Office claim — cap two successive claims of 1500 G on a sword → payouts 1400 then 600, remainingCap 600 then 0 (covered 99)
+  ✓ MHPCO Claim Office errors quote with unknown item type (broomstick) → throws (killed 4)
+  ✓ MHPCO Claim Office errors claim for an item not in the policy (amulet when only a sword is insured) → throws (killed 11)
+  ~ MHPCO Claim Office errors claim for an unknown item type → throws (covered 83)
+  ~ MHPCO Claim Office errors claim with more damages of a type than insured (two swords, one insured) → throws (covered 83)
+  ✓ MHPCO Claim Office errors claim with negative amount (-200) → throws (killed 5)
+  ~ MHPCO Claim Office scenario schema example: returns results for quote and claim steps in order (covered 99)
+  ✘ MHPCO Claim Office scenario CLI: reads scenario JSON from stdin and writes results JSON to stdout (covered 0)
+  ✘ MHPCO Claim Office scenario CLI: invalid scenario → non-zero exit code, error on stderr, nothing on stdout (covered 0)
+
+[Survived] EqualityOperator
+src/claim-office.ts:127:50
+-     const invalidDamage = damages.find((damage) => damage.amount < 0);
++     const invalidDamage = damages.find((damage) => damage.amount <= 0);
+Tests ran:
+    MHPCO Claim Office claim — reimbursement regular steel sword enchantment 3, damage 500 G → payout 400 G, remainingCap 1600 G
+    MHPCO Claim Office claim — reimbursement rune damaged by 200 G → payout 100 G (cap 2 × 250 = 500, remaining 400)
+    MHPCO Claim Office claim — reimbursement steel sword enchantment 9, damage 1000 G → payout 400 G (50 % then deductible)
+  and 17 more tests!
+
+
+[Survived] ConditionalExpression
+src/claim-office.ts:144:51
+-     const damagedItem = insuredItems.find((item) => item.type === damage.itemType)!;
++     const damagedItem = insuredItems.find((item) => true)!;
+Tests ran:
+    MHPCO Claim Office claim — reimbursement regular steel sword enchantment 3, damage 500 G → payout 400 G, remainingCap 1600 G
+    MHPCO Claim Office claim — reimbursement rune damaged by 200 G → payout 100 G (cap 2 × 250 = 500, remaining 400)
+    MHPCO Claim Office claim — reimbursement steel sword enchantment 9, damage 1000 G → payout 400 G (50 % then deductible)
+  and 13 more tests!
+
+
+Ran 7.75 tests per mutant on average.
+-----------------|------------------|----------|-----------|------------|----------|----------|
+                 | % Mutation score |          |           |            |          |          |
+File             |  total | covered | # killed | # timeout | # survived | # no cov | # errors |
+-----------------|--------|---------|----------|-----------|------------|----------|----------|
+All files        |  98.44 |   98.44 |      126 |         0 |          2 |        0 |        0 |
+ claim-office.ts |  98.44 |   98.44 |      126 |         0 |          2 |        0 |        0 |
+-----------------|--------|---------|----------|-----------|------------|----------|----------|
+[32m03:01:12 (2723900) INFO JsonReporter[39m Your report can be found at: file:///home/memrich/agentic_coding_lab/experiments/runs/2026-09-30_00-12-44_claim-office-example-mapping_exact-hybrid-v2-testlist-fix-cc_opus-5-5-no-thinking-5/reports/mutation/mutation-report.json
+[32m03:01:12 (2723900) INFO MutationTestExecutor[39m Done in 23 seconds.

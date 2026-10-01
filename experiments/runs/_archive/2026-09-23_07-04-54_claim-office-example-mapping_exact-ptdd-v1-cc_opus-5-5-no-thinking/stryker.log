@@ -1,0 +1,150 @@
+$ /home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_07-04-54_claim-office-example-mapping_exact-ptdd-v1-cc_opus-5-5-no-thinking/node_modules/.bin/stryker run --logLevel info
+[32m09:42:01 (1010658) INFO ProjectReader[39m Found 6 of 39 file(s) to be mutated.
+[32m09:42:01 (1010658) INFO Instrumenter[39m Instrumented 6 source file(s) with 121 mutant(s)
+[32m09:42:02 (1010658) INFO ConcurrencyTokenProvider[39m Creating 2 test runner process(es).
+[32m09:42:03 (1010658) INFO DryRunExecutor[39m Starting initial test run (vitest test runner with "perTest" coverage analysis). This may take a while.
+[32m09:42:07 (1010658) INFO DryRunExecutor[39m Initial test run succeeded. Ran 41 tests in 3 seconds (net 2943 ms, overhead 652 ms).
+[33m09:42:07 (1010658) WARN MutantTestPlanner[39m Detected 14 static mutants (12% of total) that are estimated to take 98% of the time running the tests!
+  You might want to enable "ignoreStatic" to ignore these static mutants for your next run. 
+  For more information about static mutants visit: https://stryker-mutator.io/docs/mutation-testing-elements/static-mutants
+  (disable "warnings.slow" to ignore this warning)
+
+All tests
+  claimOffice.spec.ts
+    ✓ claim office quote empty item list -> premium 5 (fee only) (killed 14)
+    ✓ claim office quote plain sword (base 100) -> premium 115 (killed 23)
+    ✓ claim office quote plain amulet (base 60) -> premium 71 (killed 1)
+    ✓ claim office quote plain staff (base 80) -> premium 93 (killed 1)
+    ✓ claim office quote plain potion (base 40) -> premium 49 (killed 1)
+    ✓ claim office quote single moonstone (base 25) -> premium 33 (32.5 rounded up) (killed 17)
+    ✓ claim office quote 2 runes (base 50) -> premium 60 (killed 1)
+    ✓ claim office quote 3 runes form a block (base 60) -> premium 71 (killed 1)
+    ~ claim office quote 4 runes get no block (base 100) -> premium 115 (covered 56)
+    ~ claim office quote 7 runes (base 175) -> premium 198 (197.5 rounded up in MHPCO's favor) (covered 56)
+    ~ claim office quote 2 runes + 1 moonstone are not alike (base 75) -> premium 88 (covered 56)
+    ~ claim office quote 3 runes + 3 moonstones form two blocks (base 120) -> premium 137 (covered 55)
+    ✓ claim office quote cursed steel sword enchantment 3, newcomer -> premium 165 (killed 3)
+    ~ claim office quote sword with enchantment 4 -> no high-enchantment surcharge -> premium 115 (covered 60)
+    ✓ claim office quote sword with exactly enchantment 5 -> high-enchantment surcharge -> premium 145 (killed 5)
+    ~ claim office quote cursed sword with enchantment 5 -> both surcharges -> premium 195 (covered 60)
+    ~ claim office quote cursed sword + plain amulet -> curse applies to the sword only (210 before policy modifiers) -> premium 231 (covered 60)
+    ~ claim office quote customer with 1 year -> no loyalty discount on a sword -> premium 115 (covered 60)
+    ✓ claim office quote customer with exactly 2 years -> loyalty discount on a sword -> premium 95 (killed 5)
+    ✓ claim office quote newcomer's second quote for a sword -> 15 % follow-up discount -> premium 100 (killed 3)
+    ~ claim office quote 3-year customer's second quote for a cursed steel sword enchantment 7 -> premium 160 (covered 62)
+    ✓ claim office claim regular steel sword enchantment 3, damage 500 -> payout 400, remaining cap 1600 (killed 33)
+    ~ claim office claim rune, damage 200 -> payout 100, remaining cap 400 (covered 88)
+    ✓ claim office claim steel sword enchantment 9, damage 1000 -> payout 400 (50 % clause) (killed 3)
+    ~ claim office claim dragon-material sword enchantment 5, damage 800 -> payout 700 (full reimbursement) (covered 92)
+    ~ claim office claim dragon-material sword enchantment 9, damage 1000 -> payout 400 (50 % rule wins) (covered 93)
+    ✓ claim office claim dragon-material sword exactly enchantment 8, damage 1000 -> payout 400 (killed 1)
+    ~ claim office claim sword enchantment 9, damage 901 -> payout 350 (350.5 rounded down) (covered 93)
+    ~ claim office claim sword 500 + amulet 300 in one incident -> payout 600 (deductible per item), remaining cap 2600 (covered 92)
+    ~ claim office claim staff (insurance value 800), damage 500 -> payout 400, remaining cap 1200 (covered 92)
+    ~ claim office claim potion (insurance value 400), damage 500 -> payout 400, remaining cap 400 (covered 92)
+    ~ claim office claim two swords both damaged 500 -> payout 800 (own deductible each), remaining cap 3200 (cap 4000) (covered 92)
+    ~ claim office claim cursed sword policy -> cap 2000 from unmodified insurance value: damage 1500 -> payout 1400, remaining cap 600 (covered 92)
+    ~ claim office claim sword + 3 runes block -> insurance sum 1750, cap 3500: sword damage 500 -> remaining cap 3100 (covered 100)
+    ~ claim office claim sword, two successive claims of 1500 -> payouts 1400 then 600 (reduced to remaining cap), remaining cap 600 then 0 (covered 92)
+  cli.spec.ts
+    ✘ claim-office CLI schema example (5-year customer, silver amulet quote + fire claim 200) -> results [{premium: 59}, {payout: 100, remainingCap: 1100}] (covered 0)
+    ✘ claim-office CLI quote with unknown item type broomstick -> non-zero exit, stderr, no results (covered 0)
+    ✘ claim-office CLI claim damaging an amulet when only a sword is insured -> non-zero exit, stderr (covered 0)
+    ✘ claim-office CLI claim damaging an item of unknown type -> non-zero exit, stderr (covered 0)
+    ✘ claim-office CLI claim with damage amount -200 -> non-zero exit, stderr (covered 0)
+    ✘ claim-office CLI claim with two sword damages but one sword insured -> non-zero exit, whole claim rejected (covered 0)
+
+[NoCoverage] StringLiteral
+src/claimSettlement.ts:17:42
+-     if (damage.amount < 0) throw new Error(`Damage amount must not be negative: ${damage.amount}`);
++     if (damage.amount < 0) throw new Error(``);
+
+[NoCoverage] StringLiteral
+src/claimSettlement.ts:28:37
+-     if (index === -1) throw new Error(`Damaged item is not insured by the policy: ${damage.itemType}`);
++     if (index === -1) throw new Error(``);
+
+[Survived] ConditionalExpression
+src/claimSettlement.ts:17:7
+-     if (damage.amount < 0) throw new Error(`Damage amount must not be negative: ${damage.amount}`);
++     if (false) throw new Error(`Damage amount must not be negative: ${damage.amount}`);
+Tests ran:
+    claim office claim regular steel sword enchantment 3, damage 500 -> payout 400, remaining cap 1600
+    claim office claim rune, damage 200 -> payout 100, remaining cap 400
+    claim office claim steel sword enchantment 9, damage 1000 -> payout 400 (50 % clause)
+  and 11 more tests!
+
+
+[Survived] EqualityOperator
+src/claimSettlement.ts:17:7
+-     if (damage.amount < 0) throw new Error(`Damage amount must not be negative: ${damage.amount}`);
++     if (damage.amount <= 0) throw new Error(`Damage amount must not be negative: ${damage.amount}`);
+Tests ran:
+    claim office claim regular steel sword enchantment 3, damage 500 -> payout 400, remaining cap 1600
+    claim office claim rune, damage 200 -> payout 100, remaining cap 400
+    claim office claim steel sword enchantment 9, damage 1000 -> payout 400 (50 % clause)
+  and 11 more tests!
+
+
+[Survived] ConditionalExpression
+src/claimSettlement.ts:27:52
+-     const index = undamagedItems.findIndex((item) => item.type === damage.itemType);
++     const index = undamagedItems.findIndex((item) => true);
+Tests ran:
+    claim office claim regular steel sword enchantment 3, damage 500 -> payout 400, remaining cap 1600
+    claim office claim rune, damage 200 -> payout 100, remaining cap 400
+    claim office claim steel sword enchantment 9, damage 1000 -> payout 400 (50 % clause)
+  and 11 more tests!
+
+
+[Survived] ConditionalExpression
+src/claimSettlement.ts:28:7
+-     if (index === -1) throw new Error(`Damaged item is not insured by the policy: ${damage.itemType}`);
++     if (false) throw new Error(`Damaged item is not insured by the policy: ${damage.itemType}`);
+Tests ran:
+    claim office claim regular steel sword enchantment 3, damage 500 -> payout 400, remaining cap 1600
+    claim office claim rune, damage 200 -> payout 100, remaining cap 400
+    claim office claim steel sword enchantment 9, damage 1000 -> payout 400 (50 % clause)
+  and 11 more tests!
+
+
+[Survived] UnaryOperator
+src/claimSettlement.ts:28:17
+-     if (index === -1) throw new Error(`Damaged item is not insured by the policy: ${damage.itemType}`);
++     if (index === +1) throw new Error(`Damaged item is not insured by the policy: ${damage.itemType}`);
+Tests ran:
+    claim office claim regular steel sword enchantment 3, damage 500 -> payout 400, remaining cap 1600
+    claim office claim rune, damage 200 -> payout 100, remaining cap 400
+    claim office claim steel sword enchantment 9, damage 1000 -> payout 400 (50 % clause)
+  and 11 more tests!
+
+
+[NoCoverage] StringLiteral
+src/priceList.ts:17:31
+-     if (!entry) throw new Error(`Unknown item type: ${type}`);
++     if (!entry) throw new Error(``);
+
+[Survived] ConditionalExpression
+src/priceList.ts:17:7
+-     if (!entry) throw new Error(`Unknown item type: ${type}`);
++     if (false) throw new Error(`Unknown item type: ${type}`);
+Tests ran:
+    claim office quote plain sword (base 100) -> premium 115
+    claim office quote plain amulet (base 60) -> premium 71
+    claim office quote plain staff (base 80) -> premium 93
+  and 23 more tests!
+
+
+Ran 5.47 tests per mutant on average.
+--------------------|------------------|----------|-----------|------------|----------|----------|
+                    | % Mutation score |          |           |            |          |          |
+File                |  total | covered | # killed | # timeout | # survived | # no cov | # errors |
+--------------------|--------|---------|----------|-----------|------------|----------|----------|
+All files           |  92.56 |   94.92 |      112 |         0 |          6 |        3 |        0 |
+ claimOffice.ts     | 100.00 |  100.00 |       14 |         0 |          0 |        0 |        0 |
+ claimSettlement.ts |  82.05 |   86.49 |       32 |         0 |          5 |        2 |        0 |
+ premium.ts         | 100.00 |  100.00 |       52 |         0 |          0 |        0 |        0 |
+ priceList.ts       |  87.50 |   93.33 |       14 |         0 |          1 |        1 |        0 |
+--------------------|--------|---------|----------|-----------|------------|----------|----------|
+[32m09:42:27 (1010658) INFO JsonReporter[39m Your report can be found at: file:///home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_07-04-54_claim-office-example-mapping_exact-ptdd-v1-cc_opus-5-5-no-thinking/reports/mutation/mutation-report.json
+[32m09:42:27 (1010658) INFO MutationTestExecutor[39m Done in 25 seconds.

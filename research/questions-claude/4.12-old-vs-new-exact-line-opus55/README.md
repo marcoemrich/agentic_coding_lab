@@ -58,7 +58,11 @@ min_replicates: 5
 
 # RQ-4.12: The Retired Opus Line against the Maintained PTDD Line on Opus 5.5
 
-> **The `exact-hybrid-v2-testlist-fix-cc` cell is being replaced.** Its five runs
+> **Three of the four cells are being replaced.** `exact-hybrid-v2-testlist-fix-cc` first, then
+> `exact-ptdd-v1-cc` and `exact-ptdd-v1.1-refactor-subagent-cc` when the two maintained-line
+> cells were added to RQ-4.13. Only `exact-single-context-v3-no-subagent-cc` keeps its
+> original runs — this RQ lists no discipline outcomes, so a cell of pre-reporter runs beside
+> three refilled ones costs it nothing but a re-derivation. Its five runs
 > predate the vitest TDD reporter, so they carry no phase-chain discipline
 > columns. They matched the selector of
 > [RQ-4.13](../4.13-tdd-workflow-comparison-opus55/) too, where that made the

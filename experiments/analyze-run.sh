@@ -1838,8 +1838,8 @@ EOF
             .summary_metrics.refactor_per_cycle = ($chain.refactor_per_cycle // null) |
             .summary_metrics.green_attempts = ($chain.green_attempts // null) |
             .summary_metrics.chain_deviations = ($chain.deviations // null) |
-            .summary_metrics.chain_opens_red = ($chain.opens_red // null) |
-            .summary_metrics.chain_ends_green = ($chain.ends_green // null) |
+            .summary_metrics.chain_opens_red = (if ($chain | has("opens_red")) then $chain.opens_red else null end) |
+            .summary_metrics.chain_ends_green = (if ($chain | has("ends_green")) then $chain.ends_green else null end) |
             .summary_metrics.tdd_discipline = ($chain.tdd_discipline // null) |
             .summary_metrics.tdd_discipline_test_first = ($chain.tdd_discipline_test_first // null) |
             .summary_metrics.tdd_discipline_step = ($chain.tdd_discipline_step // null) |

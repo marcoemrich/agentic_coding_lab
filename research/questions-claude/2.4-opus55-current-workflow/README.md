@@ -50,20 +50,40 @@ outcomes:
   # Test suite shape
   - tests_total
   - test_lines
-  - test_blocks
-  - test_cases_total
-  - test_cases_first_block
   - mutation_score
   - mutants_total
   - mutants_survived
   - mutants_no_coverage
-  # TDD discipline is deliberately NOT an outcome here. On Opus 5.5 the
-  # text-derived markers go erratic in the Inline and EXACT arms while the
-  # discipline demonstrably happens, so refactorings_applied / predictions_* /
-  # red_verified would publish a parser artefact as a model difference. The
-  # subagent arm measures refactorings from Task calls and is unaffected, but
-  # the metric stays out of `outcomes` because it is not comparable ACROSS the
-  # arms. See "The markers do not survive" and F-2.4.6.
+  # TDD discipline — an outcome again, from the phase chain. It was excluded
+  # while the only sources were text markers and edit-tool calls: on Opus 5.5
+  # those go erratic in the Inline and EXACT arms while the discipline
+  # demonstrably happens, so refactorings_applied / predictions_* / red_verified
+  # would have published a parser artefact as a model difference ("The markers
+  # do not survive", F-2.4.6). The chain reads the test framework's own event
+  # stream — no marker, no tool call, no commit — so the same number means the
+  # same thing in all six arms. The three retired suite-shape columns
+  # (test_blocks, test_cases_total, test_cases_first_block) are gone from this
+  # list for the same reason, and because the pipeline no longer produces them.
+  - tdd_discipline
+  - tdd_discipline_test_first
+  - tdd_discipline_step
+  - tdd_discipline_closure
+  - test_first_rate
+  - red_batch_size
+  - red_batch_max
+  - red_batch_unmeasurable
+  - green_batch_size
+  - chain_suite_runs
+  - cycles_total
+  - cycles_closed
+  - refactor_events
+  - skip_events
+  # ambivalent — no trophy
+  - refactor_per_cycle
+  - green_attempts
+  - chain_deviations
+  - chain_opens_red
+  - chain_ends_green
   # Context
   - duration_seconds
   - total_tokens
@@ -72,6 +92,29 @@ min_replicates: 5
 ---
 
 # RQ-2.4: Opus 5.5 under the Current EXACT Coding Workflow
+
+> **All 30 runs are being replaced, and TDD discipline becomes an outcome
+> again.** This RQ had to exclude discipline because the only sources were text
+> markers and edit-tool calls, and on Opus 5.5 both go erratic while the
+> discipline demonstrably happens — measuring it would have published a parser
+> artefact as a model difference (see "The markers do not survive" and F-2.4.6).
+> The phase chain removed that obstacle: it derives each cycle's phase from the
+> test framework's own event stream, so the same number means the same thing in
+> all six arms.
+>
+> That stream cannot be reconstructed after a run, so every cell is being
+> refilled rather than reanalysed. The three retired suite-shape outcomes
+> (`test_blocks`, `test_cases_total`, `test_cases_first_block`) are out of
+> `outcomes:` — the pipeline no longer produces them — and the nineteen
+> phase-chain columns are in. The ten Predictive-TDD runs on Opus 5.5 are shared
+> with [RQ-4.13](../4.13-tdd-workflow-comparison-opus55/), whose fill produces
+> them.
+>
+> Until the batch is through, the cells read 0 runs and the findings below carry
+> the old figures. Re-derive them against the new runs; the correctness and
+> code-quality conclusions are expected to hold, the numbers will move within
+> the noise, and the discipline question is newly open rather than newly
+> answered.
 
 ## Question
 

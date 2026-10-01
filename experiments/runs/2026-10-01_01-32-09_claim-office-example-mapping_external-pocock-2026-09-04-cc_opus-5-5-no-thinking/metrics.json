@@ -1,0 +1,103 @@
+{
+  "kata": "claim-office-example-mapping",
+  "workflow": "external-pocock-2026-09-04-cc",
+  "model": "opus-5-5-no-thinking",
+  "stack": "typescript-vitest",
+  "cli_model": "claude-opus-5-5",
+  "harness_version": "2.1.280 (Claude Code)",
+  "thinking": false,
+  "started_at": "2026-10-01T01:32:09+00:00",
+  "ended_at": "2026-10-01T01:36:46+00:00",
+  "duration_seconds": 274,
+  "batch_run": true,
+  "plan_file": "/home/experimenter/experiments/batch-plans/rq-tdd-workflow-comparison-opus55-fill.shard2.json",
+  "tcr": {
+    "initial_commit": "b8112d99e0a96149e01db1cc609f9f9954f26728",
+    "final_commit": "b8112d99e0a96149e01db1cc609f9f9954f26728",
+    "commits_total": 1,
+    "method_commits": 0,
+    "red_commits": 0,
+    "green_commits": 0,
+    "refactor_commits": 0
+  },
+  "run_status": {
+    "exit_code": 0,
+    "exit_reason": "ok",
+    "rate_limited": false
+  },
+  "final_metrics": {
+    "lines_of_code": 156,
+    "test_lines": 262,
+    "tests_total": 34,
+    "todos_remaining": 0,
+    "code_mass": 595,
+    "tests_passing": true,
+    "verification_total": 15,
+    "verification_passed": 15,
+    "verification_pct": 1,
+    "cli_built": true,
+    "mccabe_max": 10,
+    "mccabe_avg": 2.71,
+    "mccabe_high_count": 0,
+    "cognitive_max": 12,
+    "cognitive_avg": 3.75,
+    "cognitive_high_count": 1,
+    "cost_usd": 2.6574
+  },
+  "coverage": {
+    "statements_pct": 92,
+    "branches_pct": 98
+  },
+  "code_smells": {
+    "total": 1,
+    "complexity": 1,
+    "duplication": 0,
+    "magic_numbers": 0,
+    "code_quality": 0
+  },
+  "clean_code": {
+    "loc": 134,
+    "functions": 9,
+    "longest_function": 19,
+    "avg_loc_per_function": 8.56,
+    "median_loc_per_function": 5,
+    "imports": 1
+  },
+  "unit_quality": {
+    "units": 9,
+    "size_max": 19,
+    "size_avg": 8.56,
+    "size_median": 5
+  },
+  "summary_metrics": {
+    "total_tokens": 4717277,
+    "context_utilization_pct": 37,
+    "predictions_correct": 0,
+    "predictions_total": 0,
+    "subagent_token_total": 328125,
+    "chain_suite_runs": 36,
+    "cycles_total": 19,
+    "cycles_closed": 14,
+    "test_first_rate": 0.737,
+    "red_batch_size": 1,
+    "red_batch_max": 4,
+    "red_batch_unmeasurable": 1,
+    "green_batch_size": 1,
+    "refactor_events": 1,
+    "skip_events": 5,
+    "refactor_per_cycle": 0.071,
+    "green_attempts": 0,
+    "chain_deviations": 5,
+    "chain_opens_red": true,
+    "chain_ends_green": true,
+    "tdd_discipline": 0.816,
+    "tdd_discipline_test_first": 0.737,
+    "tdd_discipline_step": 1,
+    "tdd_discipline_closure": 0.737,
+    "avg_cycle_seconds": 0,
+    "avg_red_seconds": 0,
+    "avg_green_seconds": 0,
+    "avg_refactor_seconds": 0
+  },
+  "analyze_status": "ok"
+}

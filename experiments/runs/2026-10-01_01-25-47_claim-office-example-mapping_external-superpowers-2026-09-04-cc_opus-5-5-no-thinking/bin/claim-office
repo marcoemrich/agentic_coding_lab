@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Runs the MHPCO claim office CLI: JSON scenario on stdin, JSON results on stdout.
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+exec "$ROOT/node_modules/.bin/tsx" "$ROOT/src/cli.ts"

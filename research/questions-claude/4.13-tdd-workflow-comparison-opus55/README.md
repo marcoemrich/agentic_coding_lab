@@ -1,11 +1,17 @@
 ---
 id: RQ-tdd-workflow-comparison-opus55
-question: "How do five TDD workflows compare on correctness, TDD discipline, code quality and cost — two lab-grown EXACT Coding variants against three vendored third-party TDD skills, measured on claim-office-example-mapping × opus-5-5-no-thinking × Claude Code?"
+question: "How do seven TDD workflows compare on correctness, TDD discipline, code quality and cost? Three lines meet on one kata: the maintained EXACT Coding Predictive-TDD pair (with and without an isolated refactor subagent), the retired Opus hybrid pair, and three vendored third-party TDD skills — measured on claim-office-example-mapping × opus-5-5-no-thinking × Claude Code."
 factors:
   workflow:
-    # Lab line: the current exact-coding baseline for correctness-critical work
+    # Maintained line (SOL-derived Predictive TDD), shared context — the
+    # workflow the consumer export promotes as `exact-coding`
+    - exact-ptdd-v1-cc
+    # Maintained line, per-cycle Refactor delegated to an isolated subagent —
+    # exported as `exact-coding-isolated-refactor`
+    - exact-ptdd-v1.1-refactor-subagent-cc
+    # Retired Opus line, kept as the historical reference point
     - exact-hybrid-v2-testlist-fix-cc
-    # Lab line: the same content in the split file layout, which refactors more
+    # Retired Opus line, same content in the split file layout
     - exact-hybrid-v2.4-lab-split-cc
     # Vendor: Superpowers v6.3.0 — one inline skill, refactor per cycle
     - external-superpowers-2026-09-04-cc
@@ -70,12 +76,12 @@ outcomes:
 min_replicates: 5
 ---
 
-# RQ-4.13: Five TDD Workflows Compared (opus-5.5)
+# RQ-4.13: Seven TDD Workflows Compared (opus-5.5)
 
-How do five TDD workflows compare on correctness, TDD discipline, code quality
-and cost? Two of them grew in this lab, three are vendored snapshots of
-third-party TDD skills. All five get the same kata, the same prompt, the same
-model and the same harness.
+How do seven TDD workflows compare on correctness, TDD discipline, code quality
+and cost? Four grew in this lab across two generations, three are vendored
+snapshots of third-party TDD skills. All seven get the same kata, the same
+prompt, the same model and the same harness.
 
 This is a flat comparison of the field, not a test of one workflow against a
 baseline. No cell is privileged, and nothing here is framed as a substitution
@@ -109,44 +115,72 @@ in every cell.
 
 ## The field
 
-| Cell | Origin | Loop architecture | Refactor position |
+| Cell | Line | Loop architecture | Refactor position |
 |---|---|---|---|
-| `exact-hybrid-v2-testlist-fix-cc` | lab | phase commands + refactor subagent | per cycle |
-| `exact-hybrid-v2.4-lab-split-cc` | lab | same, split file layout | per cycle |
+| `exact-ptdd-v1-cc` | lab, maintained | one skill, shared context | per cycle, inline |
+| `exact-ptdd-v1.1-refactor-subagent-cc` | lab, maintained | one skill + refactor subagent | per cycle, isolated |
+| `exact-hybrid-v2-testlist-fix-cc` | lab, retired | phase commands + refactor subagent | per cycle, isolated |
+| `exact-hybrid-v2.4-lab-split-cc` | lab, retired | same, split file layout | per cycle, isolated |
 | `external-superpowers-2026-09-04-cc` | vendor | one inline skill | per cycle, inline |
 | `external-pocock-2026-09-04-cc` | vendor | one inline skill + `code-review` | none |
 | `external-kesseler-2026-09-30-cc` | vendor | one inline skill | per cycle, inline |
 
-Four contrasts are readable in that table, and each is held clean by the row
-above or below it:
+Five contrasts are readable in that table, and each is held clean by the rows
+around it:
 
-- **lab against vendor** — four cells refactor per cycle; two of them do it
-  with phase commands and an isolated subagent, two with prose in a single
-  skill file.
+- **the subagent, isolated** — `exact-ptdd-v1-cc` against
+  `exact-ptdd-v1.1-refactor-subagent-cc`. Same contract, same prose, same
+  refactor position; the only difference is whether the Refactor step runs in
+  the main context or in an isolated subagent. This is the cleanest test in the
+  field of what the subagent apparatus buys, and the only one where nothing
+  else moves with it.
+- **maintained against retired** — the PTDD pair against the hybrid pair. Both
+  lab lines, two generations apart, and the hybrid line is no longer the
+  recommendation for anything on this model. It is in the field as the
+  historical reference point, not as a candidate.
+- **lab against vendor** — six cells refactor per cycle; four do it inside a
+  lab contract, two with prose in a single vendored skill file.
 - **refactor position** — `pocock` against `superpowers` and `kesseler` holds
   the architecture constant (one inline skill) and varies only whether a
   refactor stage exists at all.
 - **which vendor skill** — `superpowers` against `kesseler` holds the whole
   architecture row constant and varies only the author. It is what keeps any
   statement about "an external inline skill" from resting on n=1 skill.
-- **the lab line's internal spread** — `hybrid-v2` against `hybrid-v2.4`.
-  RQ-1.19 measured a refactor rate of 0.41 against 0.69 at +20 % wallclock
-  from the rule split alone, with no measurable quality return. The phase
-  chain can now say whether that extra refactoring shows up as discipline or
-  only as cost.
+
+The retired pair carries one contrast of its own: `hybrid-v2` against
+`hybrid-v2.4`. RQ-1.19 measured a refactor rate of 0.41 against 0.69 at +20 %
+wallclock from the rule split alone, with no measurable quality return. The
+phase chain can now say whether that extra refactoring shows up as discipline
+or only as cost.
 
 ### The cells in detail
 
-**`exact-hybrid-v2-testlist-fix-cc`** — named in `workflow-construction.md`
-§ "Current front" as the default for correctness-critical work on opus-5 ×
-Claude Code, and the export carrier. Separate `/red` and `/green` phase
-commands, a refactor subagent per cycle, no end-refactor phase.
+**`exact-ptdd-v1-cc`** — the maintained line: SOL-derived Predictive TDD, one
+entry skill, red/green/refactor in shared context. This is the workflow the
+consumer export ships as the `exact-coding` skill
+(`research/workflow-dev/export/2026-09-21-exact-coding-ptdd-v1/`, promoted from
+`exact-ptdd-v1-pi`). It emits no tool call per phase — it invokes a single skill
+and then follows it, which is exactly why marker-derived discipline was
+unreadable for it and why the phase chain matters here.
+
+**`exact-ptdd-v1.1-refactor-subagent-cc`** — the same contract with the
+per-cycle Refactor step delegated to an isolated subagent, exported as
+`exact-coding-isolated-refactor`. Against `exact-ptdd-v1-cc` it isolates the
+subagent as a single variable: same prose, same phases, same refactor position.
+
+**`exact-hybrid-v2-testlist-fix-cc`** — the retired Opus line, kept as the
+historical reference point rather than as a candidate. Separate `/red` and
+`/green` phase commands, a refactor subagent per cycle, no end-refactor phase.
+`workflow-construction.md` § "Current front" still names it the default for
+correctness-critical work on opus-5 × Claude Code; the export and RQ-4.12 treat
+the PTDD line as the maintained one. That tension is not resolved here — this RQ
+measures both and says nothing about which document is right.
 
 **`exact-hybrid-v2.4-lab-split-cc`** — content-identical to hybrid-v2 in the
 hybrid-v6 file layout: lab infrastructure isolated in `rules/lab-only.md`,
 subagent contracts in `rules/subagent-prompts.md`. Production files are
 byte-identical. It was the export carrier until RQ-1.19 priced the split and
-reversed the choice.
+reversed the choice. Also retired.
 
 **`external-superpowers-2026-09-04-cc`** (v6.3.0, commit `b36e0829`) — skill
 unmodified, checksum-verified. The project rules file carries only: HITL
@@ -182,8 +216,8 @@ agent can read — that measures compliance-with-a-checklist, not the skill.
 
 ### Discipline
 
-- **H1 (the lab line is the more disciplined one)** — `tdd_discipline` is
-  higher for both hybrid cells than for the three vendor cells. The phase
+- **H1 (the lab lines are the more disciplined ones)** — `tdd_discipline` is
+  higher for all four lab cells than for the three vendor cells. The phase
   commands make the red phase a separate, named step; the vendor skills ask for
   the same thing in prose. Falsifier: a vendor cell matches or beats the
   hybrid cells, which would mean the enforcement apparatus buys no discipline
@@ -208,9 +242,38 @@ agent can read — that measures compliance-with-a-checklist, not the skill.
   visible in any correctness or quality metric, and is the kind of thing only
   this source reports.
 
+### The isolated refactor subagent
+
+- **H11 (the subagent buys decomposition, not discipline)** —
+  `exact-ptdd-v1.1-refactor-subagent-cc` lands better than `exact-ptdd-v1-cc` on
+  `cc_avg_loc_per_function` and level with it on `tdd_discipline`. The subagent
+  changes where the Refactor step runs, not whether a failing test preceded the
+  code, so the discipline components have no mechanism by which to move.
+  Falsifier either way is interesting: if discipline *does* move, the isolated
+  context is doing something to the cycle itself; if decomposition does *not*
+  move, the apparatus has no measurable product on this kata and its cost is
+  unjustified. This is the cleanest single-variable contrast in the field —
+  same contract, same prose, same refactor position.
+- **H12 (`refactor_events` reads the architecture, not the effort)** — the two
+  PTDD cells differ in `refactor_events` even where decomposition does not,
+  because an isolated subagent returns a changed tree in one step where the
+  inline variant may touch the code repeatedly. Read it against
+  `cc_avg_loc_per_function`, never alone: this is the column where "more
+  refactorings" and "better decomposition" are least likely to agree.
+
+### Two generations of the lab line
+
+- **H13 (the maintained line is at least level with the retired one)** — the
+  PTDD pair matches or beats the hybrid pair on `verification_pct` and on
+  decomposition. If the retired line wins on either, the promotion of the PTDD
+  line rests on something this kata does not measure — portability across
+  harnesses and models — and that should be said in the findings rather than
+  left implicit. The hybrid pair is in the field as the reference point; it is
+  not a candidate for anything on this model.
+
 ### Correctness
 
-- **H5 (all five cells deliver)** — every cell reaches ≥ 0.90
+- **H5 (all seven cells deliver)** — every cell reaches ≥ 0.90
   `verification_pct`. claim-office is the correctness kata; a cell below this is
   failing the task, not trading correctness for something else, and its quality
   numbers must then not be read as parsimony (see the gating rule in the
@@ -250,52 +313,64 @@ agent can read — that measures compliance-with-a-checklist, not the skill.
 ## Design
 
 ```
-Factor:    workflow         — 5 levels
+Factor:    workflow         — 7 levels
 Control:   model            — opus-5-5-no-thinking (native subscription route)
 Control:   kata_base        — claim-office
 Control:   prompt           — example-mapping
 Control:   harness_version  — 2.1.280
 
-Cells:      5
+Cells:      7
 Replicates: n = 5 per cell (min_replicates)
 ```
 
-**Run inventory at setup time** (2026-10-01):
+**Run inventory** (2026-10-01, after the first fill):
 
-| Cell | runs in pool | with phase-chain data | to fill |
-|---|---:|---:|---:|
-| `exact-hybrid-v2-testlist-fix-cc` | 0 | 0 | 5 |
-| `exact-hybrid-v2.4-lab-split-cc` | 0 | 0 | 5 |
-| `external-superpowers-2026-09-04-cc` | 0 | 0 | 5 |
-| `external-pocock-2026-09-04-cc` | 0 | 0 | 5 |
-| `external-kesseler-2026-09-30-cc` | 1 | 1 | 4 |
+| Cell | runs with phase-chain data | to fill |
+|---|---:|---:|
+| `exact-ptdd-v1-cc` | 0 | 5 |
+| `exact-ptdd-v1.1-refactor-subagent-cc` | 0 | 5 |
+| `exact-hybrid-v2-testlist-fix-cc` | 5 | — |
+| `exact-hybrid-v2.4-lab-split-cc` | 5 | — |
+| `external-superpowers-2026-09-04-cc` | 5 | — |
+| `external-pocock-2026-09-04-cc` | 5 | — |
+| `external-kesseler-2026-09-30-cc` | 5 | — |
 
-**Every cell is one population, and that took an archiving step.** Six
+The two PTDD cells were added after the first fill, which is why they are the
+only ones outstanding.
+
+**Every cell is one population, and that took an archiving step.** Sixteen
 pre-reporter runs matched this RQ's selector and were moved to
-`experiments/runs/_archive/` before the fill: five `exact-hybrid-v2-testlist-fix-cc`
-runs and one kesseler vendoring smoke test. None carries a `tdd-events.jsonl`,
-and `batch-plan-from-rq.py` counts runs rather than event streams — left in the
-pool, the hybrid-v2 cell would have reported itself full while its primary axis
+`experiments/runs/_archive/`: five `exact-hybrid-v2-testlist-fix-cc`, five
+`exact-ptdd-v1-cc`, five `exact-ptdd-v1.1-refactor-subagent-cc` and one kesseler
+vendoring smoke test. None carries a `tdd-events.jsonl`, and
+`batch-plan-from-rq.py` counts runs rather than event streams — left in the pool,
+those three cells would have reported themselves full while the primary axis
 stayed empty, and no row of the findings table would have had a single n. With
-them out, the generated fill plan covers all 24 runs and nothing here needs a
-hand-written plan.
+them out, the generated fill plan covers every outstanding run and nothing here
+needs a hand-written plan.
 
-**The archiving reaches into RQ-4.12.** Those five hybrid-v2 runs were also read
-by [RQ-4.12](../4.12-old-vs-new-exact-line-opus55/), where they carry the token,
-cost and subagent tables. The fill lands on identical cell coordinates — same
-workflow, model, kata, prompt and harness — so that RQ regains its cell with
-phase-chain data, and its findings are re-derived against the new runs once the
-batch is through. That re-derivation belongs to this fill, not to a later
-clean-up.
+**The archiving reaches into two other RQs, and the refill repairs both.**
+[RQ-4.12](../4.12-old-vs-new-exact-line-opus55/) read all fifteen lab runs — they
+carry its token, cost and subagent tables — and
+[RQ-2.4](../2.4-opus55-current-workflow/) read the ten PTDD ones. Every fill
+lands on identical cell coordinates (same workflow, model, kata, prompt, harness
+2.1.280), so both RQs regain their cells with phase-chain data; their findings
+are re-derived against the new runs once the batch is through, and that
+re-derivation belongs to this fill rather than to a later clean-up. RQ-2.4 is
+being refilled completely for the same reason and swaps its three retired
+suite-shape outcomes for the phase chain — the discipline question it had to
+abandon as a parser artefact becomes answerable there. Two cross-harness RQs
+(RQ-1.7, RQ-1.10) also read some of those runs but pin no `harness_version` and
+pool across batches, so no cell of theirs drops below `min_replicates`.
 
-**Budget.** 24 runs. From the inherited durations (hybrid-v2 ~1320 s, kesseler
-~770 s) and hybrid-v2.4's measured 1.44× premium over hybrid-v2 on opus-5:
-~7 h serial, ~2 h at 5 shards. Opus routes have repeatedly hit rate limits, so
-3 shards is the safer setting; `batch.sh` retries with backoff either way.
+**Budget.** The first fill ran 24 runs in 51 min at 5 shards — Opus 5.5 is
+markedly faster than the opus-5 reference band (hybrid-v2 at 1117 s measured
+here against 2661 s on opus-5), and the five shards drew no rate-limit retry.
+The two PTDD cells add 10 runs, which travel inside RQ-2.4's complete refill of
+30; expect ~2 h at 5 shards for that batch. `batch.sh` retries with backoff.
 
-**Smoke checks on the first run of each new cell.** All four new cells are
-unmeasured on this model, and three of them have never produced phase-chain
-data at all:
+**Smoke checks on the first run of each new cell.** Every cell was unmeasured on
+this model, and none had ever produced phase-chain data:
 
 1. **`tdd-events.jsonl` exists and is non-empty** in every run directory, and
    `tdd_discipline` is non-null in `metrics.json`. A cell that produces no
@@ -305,6 +380,11 @@ data at all:
    `refactorings_applied`, `predictions_total ~ 2 × cycle_count` under their
    `legacy_` names). They are not outcomes here, but a marker break is the
    signal that something else about the workflow broke too.
+2b. **`exact-ptdd-v1.1-refactor-subagent-cc`:** the refactor subagent actually
+   spawns (Task tool ≥ 1 per cycle). Its whole contrast against
+   `exact-ptdd-v1-cc` is the isolation; a run where the subagent never fires is
+   a second `exact-ptdd-v1-cc` run under the wrong label. The shared-context
+   variant is the opposite check: no Task spawn for refactoring.
 3. **`superpowers`:** does the model call `pnpm test` (rules file) or `npm test`
    (the skill's examples)? A failing `npm test` distorts the run itself. And
    does skill discovery fire — Skill tool-use count ≥ 1 at the start?
@@ -330,7 +410,7 @@ data at all:
 - **Phase-chain data cannot be backfilled.** The event stream is written during
   the run. No reanalysis pass produces it, so a run that predates the reporter
   can never carry a discipline column. This is why the predecessor RQ was closed
-  rather than extended, and why six pre-reporter runs had to leave the pool
+  rather than extended, and why sixteen pre-reporter runs had to leave the pool
   rather than count toward a cell they cannot serve.
 - **`tdd_discipline` is null, not 0, when unmeasurable.** Unmeasurable is not
   the same as undisciplined. The score is a geometric mean, so it is
@@ -382,7 +462,7 @@ See [findings.md](findings.md) — no runs yet.
 ## Data Source
 
 All runs in `experiments/runs/` with
-`workflow ∈ {exact-hybrid-v2-testlist-fix-cc, exact-hybrid-v2.4-lab-split-cc, external-superpowers-2026-09-04-cc, external-pocock-2026-09-04-cc, external-kesseler-2026-09-30-cc}`,
+`workflow ∈ {exact-ptdd-v1-cc, exact-ptdd-v1.1-refactor-subagent-cc, exact-hybrid-v2-testlist-fix-cc, exact-hybrid-v2.4-lab-split-cc, external-superpowers-2026-09-04-cc, external-pocock-2026-09-04-cc, external-kesseler-2026-09-30-cc}`,
 `kata = claim-office-example-mapping`, `model = opus-5-5-no-thinking`,
 `harness_version = 2.1.280`.
 

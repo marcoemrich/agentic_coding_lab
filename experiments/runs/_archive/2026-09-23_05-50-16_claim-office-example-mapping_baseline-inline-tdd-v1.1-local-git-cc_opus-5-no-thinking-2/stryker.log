@@ -1,0 +1,161 @@
+$ /home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_05-50-16_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking-2/node_modules/.bin/stryker run --logLevel info
+[32m09:30:25 (959066) INFO ProjectReader[39m Found 3 of 31 file(s) to be mutated.
+[32m09:30:25 (959066) INFO Instrumenter[39m Instrumented 3 source file(s) with 126 mutant(s)
+[32m09:30:25 (959066) INFO ConcurrencyTokenProvider[39m Creating 2 test runner process(es).
+[32m09:30:27 (959066) INFO DryRunExecutor[39m Starting initial test run (vitest test runner with "perTest" coverage analysis). This may take a while.
+[32m09:30:31 (959066) INFO DryRunExecutor[39m Initial test run succeeded. Ran 48 tests in 4 seconds (net 2881 ms, overhead 1156 ms).
+[33m09:30:31 (959066) WARN MutantTestPlanner[39m Detected 8 static mutants (6% of total) that are estimated to take 97% of the time running the tests!
+  You might want to enable "ignoreStatic" to ignore these static mutants for your next run. 
+  For more information about static mutants visit: https://stryker-mutator.io/docs/mutation-testing-elements/static-mutants
+  (disable "warnings.slow" to ignore this warning)
+
+All tests
+  claim.spec.ts
+    ✓ standard reimbursement reimburses damage in full minus the deductible (killed 18)
+    ~ standard reimbursement reimburses a component with no enchantment or material in full minus the deductible (covered 27)
+    ✓ special reimbursement clauses halves damage to items with enchantment 8 or above (killed 3)
+    ✓ special reimbursement clauses applies the high-enchantment clause at exactly 8 (killed 1)
+    ~ special reimbursement clauses reimburses dragon material in full (covered 27)
+    ~ special reimbursement clauses lets the 50 % rule win when both clauses apply (covered 28)
+    ~ deductible per damage event applies the deductible once per damaged item (covered 27)
+    ✓ cap exhaustion pays out successive claims until the cap is exhausted (killed 1)
+    ~ rounding in the MHPCO favour rounds the final payout down (covered 28)
+    ✓ rejected claims rejects a damage to an item that is not part of the policy (killed 4)
+    ~ rejected claims rejects a damage to an unknown item type (covered 17)
+    ~ rejected claims rejects more damages of a type than the policy covers (covered 26)
+    ✓ rejected claims rejects a negative damage amount (killed 2)
+    ~ multiple items of the same type treats each damage entry as a separate damage with its own deductible (covered 27)
+  cli.spec.ts
+    ✘ claim-office CLI writes the results of a scenario to stdout (covered 0)
+    ✘ claim-office CLI exits non-zero with an error on stderr for an unknown item type (covered 0)
+    ✘ claim-office CLI exits non-zero for a negative damage amount (covered 0)
+  premium.spec.ts
+    ✓ base premiums charges only the processing fee for an empty item list (killed 3)
+    ✓ base premiums charges the sword base premium plus first insurance and fee (killed 19)
+    ✓ base premiums charges the amulet base premium plus first insurance and fee (killed 1)
+    ✓ base premiums charges the staff base premium plus first insurance and fee (killed 1)
+    ✓ base premiums charges the potion base premium plus first insurance and fee (killed 1)
+    ✓ component base premiums charges 2 runes as 50 G base premium (killed 8)
+    ✓ component base premiums charges 3 runes as 60 G base premium (killed 5)
+    ~ component base premiums charges 4 runes as 100 G base premium (covered 15)
+    ~ component base premiums charges 7 runes as 175 G base premium (covered 15)
+    ✓ component base premiums does not form a block from different component types (killed 1)
+    ~ component base premiums forms one block per component type (covered 16)
+    ✓ item-specific modifiers adds the curse surcharge only to the cursed item, not the policy total (killed 4)
+    ✓ item-specific modifiers adds the high-enchantment surcharge from enchantment 5 upwards (killed 6)
+    ~ item-specific modifiers adds no high-enchantment surcharge below enchantment 5 (covered 33)
+    ~ item-specific modifiers stacks curse and high-enchantment surcharges (covered 38)
+    ✓ policy-wide modifiers grants the loyalty discount from 2 years of business (killed 5)
+    ~ policy-wide modifiers grants no loyalty discount below 2 years (covered 33)
+    ✓ policy-wide modifiers grants the follow-up discount on each contract after the first (killed 4)
+    ~ policy-wide modifiers applies policy-wide modifiers to the policy base premium (covered 39)
+    ~ rounding in the MHPCO favour rounds the final premium up (covered 43)
+    ~ integration examples quotes a newcomer with a cursed sword at 165 G (covered 35)
+    ~ integration examples quotes a long-standing customer's second contract at 160 G (covered 44)
+  scenario.spec.ts
+    ✓ insurance sum and cap sums the insurance values of all items and caps at twice the sum (killed 19)
+    ✓ insurance sum and cap bases the cap on unmodified insurance values, not on premium modifiers (killed 1)
+    ✓ insurance sum and cap counts the full insurance sum of a component block (killed 3)
+    ~ scenario sequencing applies the follow-up discount from the second quote on (covered 62)
+    ~ scenario sequencing carries the remaining cap across successive claims on the same policy (covered 82)
+    ✓ rejected scenarios rejects a quote with an unknown item type (killed 5)
+    ✓ rejected scenarios rejects a claim referring to a step that is not a quote (killed 2)
+    ~ multiple items of the same type sums the insurance values of two swords (covered 82)
+    ~ multiple items of the same type rejects more sword damages than swords insured (covered 86)
+
+[Survived] EqualityOperator
+src/claim.ts:47:9
+-       if (damage.amount < 0) {
++       if (damage.amount <= 0) {
+Tests ran:
+    standard reimbursement reimburses damage in full minus the deductible
+    standard reimbursement reimburses a component with no enchantment or material in full minus the deductible
+    special reimbursement clauses halves damage to items with enchantment 8 or above
+  and 17 more tests!
+
+
+[Survived] StringLiteral
+src/claim.ts:48:28
+-         throw new ClaimError(`Negative damage amount for ${damage.itemType}: ${damage.amount}`);
++         throw new ClaimError(``);
+Tests ran:
+    rejected claims rejects a negative damage amount
+
+
+[Survived] StringLiteral
+src/claim.ts:54:28
+-         throw new ClaimError(`Damaged item is not covered by the policy: ${damage.itemType}`);
++         throw new ClaimError(``);
+Tests ran:
+    rejected claims rejects a damage to an item that is not part of the policy
+    rejected claims rejects a damage to an unknown item type
+    rejected claims rejects more damages of a type than the policy covers
+  and 1 more test!
+
+
+[Survived] StringLiteral
+src/premium.ts:42:11
+-       super(`Unknown item type: ${type}`);
++       super(``);
+Tests ran:
+    rejected scenarios rejects a quote with an unknown item type
+
+
+[Survived] ConditionalExpression
+src/premium.ts:49:7
+-     if (COMPONENT_TYPES.has(item.type)) return COMPONENT_VALUE;
++     if (true) return COMPONENT_VALUE;
+Tests ran:
+    insurance sum and cap counts the full insurance sum of a component block
+
+
+[Survived] ConditionalExpression
+src/premium.ts:71:9
+-       if (!COMPONENT_TYPES.has(item.type)) throw new UnknownItemTypeError(item.type);
++       if (false) throw new UnknownItemTypeError(item.type);
+Tests ran:
+    insurance sum and cap counts the full insurance sum of a component block
+    rejected scenarios rejects a quote with an unknown item type
+    component base premiums charges 2 runes as 50 G base premium
+  and 6 more tests!
+
+
+[Survived] StringLiteral
+src/scenario.ts:63:33
+-           throw new ScenarioError(`Step ${step.policy} did not create a policy`);
++           throw new ScenarioError(``);
+Tests ran:
+    rejected scenarios rejects a claim referring to a step that is not a quote
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:69:11
+-         if (error instanceof UnknownItemTypeError || error instanceof ClaimError) {
++         if (true) {
+Tests ran:
+    rejected scenarios rejects a quote with an unknown item type
+    rejected scenarios rejects a claim referring to a step that is not a quote
+    multiple items of the same type rejects more sword damages than swords insured
+
+
+[Survived] StringLiteral
+src/scenario.ts:70:33
+-           throw new ScenarioError(`Step ${index}: ${error.message}`);
++           throw new ScenarioError(``);
+Tests ran:
+    rejected scenarios rejects a quote with an unknown item type
+    multiple items of the same type rejects more sword damages than swords insured
+
+
+Ran 2.90 tests per mutant on average.
+-------------|------------------|----------|-----------|------------|----------|----------|
+             | % Mutation score |          |           |            |          |          |
+File         |  total | covered | # killed | # timeout | # survived | # no cov | # errors |
+-------------|--------|---------|----------|-----------|------------|----------|----------|
+All files    |  92.86 |   92.86 |      117 |         0 |          9 |        0 |        0 |
+ claim.ts    |  90.63 |   90.63 |       29 |         0 |          3 |        0 |        0 |
+ premium.ts  |  95.52 |   95.52 |       64 |         0 |          3 |        0 |        0 |
+ scenario.ts |  88.89 |   88.89 |       24 |         0 |          3 |        0 |        0 |
+-------------|--------|---------|----------|-----------|------------|----------|----------|
+[32m09:30:52 (959066) INFO JsonReporter[39m Your report can be found at: file:///home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_05-50-16_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-no-thinking-2/reports/mutation/mutation-report.json
+[32m09:30:52 (959066) INFO MutationTestExecutor[39m Done in 27 seconds.

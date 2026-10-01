@@ -1,0 +1,235 @@
+$ /home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_05-59-59_claim-office-example-mapping_exact-ptdd-v1-cc_opus-5-no-thinking/node_modules/.bin/stryker run --logLevel info
+[32m09:33:33 (973105) INFO ProjectReader[39m Found 13 of 45 file(s) to be mutated.
+[32m09:33:33 (973105) INFO Instrumenter[39m Instrumented 13 source file(s) with 150 mutant(s)
+[32m09:33:33 (973105) INFO ConcurrencyTokenProvider[39m Creating 2 test runner process(es).
+[32m09:33:35 (973105) INFO DryRunExecutor[39m Starting initial test run (vitest test runner with "perTest" coverage analysis). This may take a while.
+[32m09:33:39 (973105) INFO DryRunExecutor[39m Initial test run succeeded. Ran 55 tests in 4 seconds (net 3861 ms, overhead 465 ms).
+[33m09:33:39 (973105) WARN MutantTestPlanner[39m Detected 7 static mutants (5% of total) that are estimated to take 98% of the time running the tests!
+  You might want to enable "ignoreStatic" to ignore these static mutants for your next run. 
+  For more information about static mutants visit: https://stryker-mutator.io/docs/mutation-testing-elements/static-mutants
+  (disable "warnings.slow" to ignore this warning)
+
+All tests/claim-office.spec.ts
+  ✓ MHPCO Claim Office quotes an empty item list as 5 G (processing fee only) (killed 7)
+  ✓ MHPCO Claim Office prices a single plain sword at base premium 100 G (killed 28)
+  ✓ MHPCO Claim Office prices a single plain amulet at base premium 60 G (killed 1)
+  ✓ MHPCO Claim Office prices a single plain staff at base premium 80 G (killed 1)
+  ✓ MHPCO Claim Office prices a single plain potion at base premium 40 G (killed 1)
+  ✓ MHPCO Claim Office prices a single plain rune at base premium 25 G (killed 1)
+  ✓ MHPCO Claim Office prices a single plain moonstone at base premium 25 G (killed 1)
+  ~ MHPCO Claim Office prices a plain sword and a plain amulet at base premium 160 G (covered 46)
+  ~ MHPCO Claim Office prices 2 runes at base premium 50 G (no block) (covered 46)
+  ✓ MHPCO Claim Office prices 3 runes at base premium 60 G (block applies) (killed 4)
+  ~ MHPCO Claim Office prices 4 runes at base premium 100 G (no block -- block requires exactly 3) (covered 46)
+  ~ MHPCO Claim Office prices 7 runes at base premium 175 G (no block) (covered 46)
+  ~ MHPCO Claim Office prices 2 runes + 1 moonstone at base premium 75 G (no block: alike means same type) (covered 46)
+  ~ MHPCO Claim Office prices 3 runes + 3 moonstones at base premium 120 G (two separate blocks) (covered 46)
+  ✓ MHPCO Claim Office adds a 50 % curse surcharge to a cursed item -- cursed sword base premium 150 G (killed 9)
+  ✓ MHPCO Claim Office adds a 30 % high-enchantment surcharge at enchantment exactly 5 -- sword base premium 130 G (killed 7)
+  ~ MHPCO Claim Office adds no high-enchantment surcharge at enchantment 4 -- sword base premium 100 G (covered 46)
+  ~ MHPCO Claim Office applies both surcharges to a cursed sword with enchantment 5 -- base premium 180 G (covered 50)
+  ~ MHPCO Claim Office applies item surcharges only to the affected item -- cursed sword + plain amulet = 210 G (covered 48)
+  ✓ MHPCO Claim Office applies the 20 % loyalty discount at exactly 2 years -- sword premium 95 G (killed 12)
+  ✓ MHPCO Claim Office applies no loyalty discount at 1 year -- sword premium 115 G (killed 2)
+  ~ MHPCO Claim Office applies the 10 % first-insurance surcharge -- sword premium 115 G (covered 65)
+  ✓ MHPCO Claim Office applies the 15 % follow-up discount to a second quote -- sword premium 100 G (killed 6)
+  ✓ MHPCO Claim Office applies the first-insurance surcharge again on a follow-up contract -- cursed sword ench 7, 3 years, second quote = 160 G (killed 1)
+  ~ MHPCO Claim Office rounds a fractional premium up (MHPCO's favor) -- 117.5 G becomes 118 G (covered 69)
+  ~ MHPCO Claim Office keeps intermediate amounts fractional and rounds only the final premium -- cursed rune, 1 year, first quote = 45 G (staged rounding would give 46 G) (covered 67)
+  ~ MHPCO Claim Office quotes the newcomer's cursed sword (0 years, steel, ench 3) as 165 G (covered 67)
+  ~ MHPCO Claim Office quotes the long-standing customer's second contract (3 years, cursed sword ench 7) as 160 G (covered 73)
+  ✓ MHPCO Claim Office rejects an unknown item type even when three alike ones would form a block (killed 3)
+  ~ MHPCO Claim Office rejects a quote containing an unknown item type -- throws an Error naming the type (covered 16)
+  ✓ MHPCO Claim Office derives insurance sum 1600 G and cap 3200 G for a sword and an amulet (killed 5)
+  ~ MHPCO Claim Office derives insurance sum 2000 G and cap 4000 G for two swords (covered 9)
+  ~ MHPCO Claim Office derives insurance sum 1750 G for a sword + 3 runes (block affects premium only) (covered 9)
+  ~ MHPCO Claim Office bases the cap on the unmodified insurance value -- cursed sword has cap 2000 G (covered 9)
+  ✓ MHPCO Claim Office pays 400 G for a steel sword (ench 3) with 500 G damage -- minus 100 G deductible (killed 25)
+  ~ MHPCO Claim Office pays 100 G for a damaged rune (200 G damage) -- no enchantment or material (covered 47)
+  ✓ MHPCO Claim Office reports the remaining cap -- sword policy cap 2000 G, payout 400 G, remainingCap 1600 G (killed 1)
+  ✓ MHPCO Claim Office reimburses 50 % at enchantment exactly 8 -- dragon sword, 1000 G damage, payout 400 G (killed 7)
+  ~ MHPCO Claim Office fully reimburses a dragon-material item -- dragon sword ench 5, 800 G damage, payout 700 G (covered 47)
+  ~ MHPCO Claim Office applies the 50 % rule when both clauses apply -- dragon sword ench 9, 1000 G damage, payout 400 G (covered 48)
+  ~ MHPCO Claim Office applies only the high-enchantment clause to a steel sword ench 9 -- 1000 G damage, payout 400 G (covered 48)
+  ~ MHPCO Claim Office applies the 100 G deductible once per damaged item -- sword 500 G + amulet 300 G, payout 600 G (covered 47)
+  ~ MHPCO Claim Office treats two damage entries of the same type as separate damages -- two swords, 500 G each, payout 800 G (covered 47)
+  ~ MHPCO Claim Office floors a per-damage reimbursement at 0 G -- sword 500 G + amulet 50 G damage, payout 400 G (covered 47)
+  ~ MHPCO Claim Office pays 1400 G and leaves 600 G cap for a first 1500 G claim (cap 2000 G) (covered 47)
+  ~ MHPCO Claim Office reduces a second 1500 G claim to the remaining cap -- payout 600 G, remainingCap 0 G (covered 38)
+  ~ MHPCO Claim Office rounds a fractional payout down (MHPCO's favor) -- 300.5 G becomes 300 G (covered 48)
+  ✓ MHPCO Claim Office rejects a claim whose damaged item is not insured -- amulet damaged, only sword insured (killed 5)
+  ~ MHPCO Claim Office rejects a claim referencing an unknown item type (covered 30)
+  ~ MHPCO Claim Office rejects more damage entries of a type than the policy covers -- two sword damages, one sword insured (covered 30)
+  ✓ MHPCO Claim Office rejects a claim with a negative damage amount (-200) (killed 4)
+  ✘ MHPCO Claim Office CLI reads a scenario from stdin and writes results in step order (covered 0)
+  ✘ MHPCO Claim Office CLI processes the schema example -- amulet quote then 200 G amulet claim (covered 0)
+  ✘ MHPCO Claim Office CLI resolves a claim's policy field to the zero-based index of its quote step (covered 0)
+  ✘ MHPCO Claim Office CLI exits non-zero with a stderr message and no stdout results on an invalid scenario (covered 0)
+
+[Survived] EqualityOperator
+src/damage-matching.ts:9:7
+-     if (damage.amount < 0) {
++     if (damage.amount <= 0) {
+Tests ran:
+    MHPCO Claim Office pays 400 G for a steel sword (ench 3) with 500 G damage -- minus 100 G deductible
+    MHPCO Claim Office pays 100 G for a damaged rune (200 G damage) -- no enchantment or material
+    MHPCO Claim Office reports the remaining cap -- sword policy cap 2000 G, payout 400 G, remainingCap 1600 G
+  and 14 more tests!
+
+
+[Survived] ArithmeticOperator
+src/item-pricing.ts:31:24
+-     const sharePerItem = alikeBasePremium(alike) / alike.length;
++     const sharePerItem = alikeBasePremium(alike) * alike.length;
+Tests ran:
+    MHPCO Claim Office prices a single plain sword at base premium 100 G
+    MHPCO Claim Office prices a single plain amulet at base premium 60 G
+    MHPCO Claim Office prices a single plain staff at base premium 80 G
+  and 24 more tests!
+
+
+[NoCoverage] BlockStatement
+src/policy-register.ts:12:31
+-     get contractCount(): number {
+-       return this.policies.size;
+-     }
++     get contractCount(): number {}
+
+[NoCoverage] BlockStatement
+src/policy-register.ts:16:52
+-     register(stepIndex: number, items: Item[]): void {
+-       this.policies.set(stepIndex, { items, remainingCap: payoutCap(items) });
+-     }
++     register(stepIndex: number, items: Item[]): void {}
+
+[NoCoverage] ObjectLiteral
+src/policy-register.ts:17:34
+-       this.policies.set(stepIndex, { items, remainingCap: payoutCap(items) });
++       this.policies.set(stepIndex, {});
+
+[NoCoverage] BlockStatement
+src/policy-register.ts:20:56
+-     policyCreatedBy(stepIndex: number): RegisteredPolicy {
+-       const policy = this.policies.get(stepIndex);
+-       if (policy === undefined) {
+-         throw new Error(`Claim refers to step ${stepIndex}, which created no policy`);
+-       }
+-       return policy;
+-     }
++     policyCreatedBy(stepIndex: number): RegisteredPolicy {}
+
+[NoCoverage] ConditionalExpression
+src/policy-register.ts:22:9
+-       if (policy === undefined) {
++       if (true) {
+
+[NoCoverage] ConditionalExpression
+src/policy-register.ts:22:9
+-       if (policy === undefined) {
++       if (false) {
+
+[NoCoverage] EqualityOperator
+src/policy-register.ts:22:9
+-       if (policy === undefined) {
++       if (policy !== undefined) {
+
+[NoCoverage] BlockStatement
+src/policy-register.ts:22:31
+-       if (policy === undefined) {
+-         throw new Error(`Claim refers to step ${stepIndex}, which created no policy`);
+-       }
++       if (policy === undefined) {}
+
+[NoCoverage] StringLiteral
+src/policy-register.ts:23:23
+-         throw new Error(`Claim refers to step ${stepIndex}, which created no policy`);
++         throw new Error(``);
+
+[NoCoverage] BlockStatement
+src/scenario.ts:28:63
+-   export function runScenario(scenario: Scenario): StepResult[] {
+-     const policies = new PolicyRegister();
+-     return scenario.steps.map((step, index) => {
+-       if (step.op === "quote") {
+-         const premium = quote(scenario.customer, step.items, policies.contractCount);
+-         policies.register(index, step.items);
+-         return { premium };
+-       }
+-       const policy = policies.policyCreatedBy(step.policy);
+-       const result = claim(policy.items, step.incident, policy.remainingCap);
+-       policy.remainingCap = result.remainingCap;
+-       return result;
+-     });
+-   }
++   export function runScenario(scenario: Scenario): StepResult[] {}
+
+[NoCoverage] BlockStatement
+src/scenario.ts:30:46
+-     return scenario.steps.map((step, index) => {
+-       if (step.op === "quote") {
+-         const premium = quote(scenario.customer, step.items, policies.contractCount);
+-         policies.register(index, step.items);
+-         return { premium };
+-       }
+-       const policy = policies.policyCreatedBy(step.policy);
+-       const result = claim(policy.items, step.incident, policy.remainingCap);
+-       policy.remainingCap = result.remainingCap;
+-       return result;
+-     });
++     return scenario.steps.map((step, index) => {});
+
+[NoCoverage] ConditionalExpression
+src/scenario.ts:31:9
+-       if (step.op === "quote") {
++       if (true) {
+
+[NoCoverage] ConditionalExpression
+src/scenario.ts:31:9
+-       if (step.op === "quote") {
++       if (false) {
+
+[NoCoverage] EqualityOperator
+src/scenario.ts:31:9
+-       if (step.op === "quote") {
++       if (step.op !== "quote") {
+
+[NoCoverage] StringLiteral
+src/scenario.ts:31:21
+-       if (step.op === "quote") {
++       if (step.op === "") {
+
+[NoCoverage] BlockStatement
+src/scenario.ts:31:30
+-       if (step.op === "quote") {
+-         const premium = quote(scenario.customer, step.items, policies.contractCount);
+-         policies.register(index, step.items);
+-         return { premium };
+-       }
++       if (step.op === "quote") {}
+
+[NoCoverage] ObjectLiteral
+src/scenario.ts:34:14
+-         return { premium };
++         return {};
+
+Ran 3.59 tests per mutant on average.
+-----------------------|------------------|----------|-----------|------------|----------|----------|
+                       | % Mutation score |          |           |            |          |          |
+File                   |  total | covered | # killed | # timeout | # survived | # no cov | # errors |
+-----------------------|--------|---------|----------|-----------|------------|----------|----------|
+All files              |  87.33 |   98.50 |      131 |         0 |          2 |       17 |        0 |
+ claim.ts              | 100.00 |  100.00 |       10 |         0 |          0 |        0 |        0 |
+ customer-modifiers.ts | 100.00 |  100.00 |       19 |         0 |          0 |        0 |        0 |
+ damage-matching.ts    |  95.45 |   95.45 |       21 |         0 |          1 |        0 |        0 |
+ item-pricing.ts       |  96.00 |   96.00 |       24 |         0 |          1 |        0 |        0 |
+ mhpco-rounding.ts     | 100.00 |  100.00 |        2 |         0 |          0 |        0 |        0 |
+ policy-register.ts    |   0.00 |    0.00 |        0 |         0 |          0 |        9 |        0 |
+ policy.ts             | 100.00 |  100.00 |        5 |         0 |          0 |        0 |        0 |
+ price-list.ts         | 100.00 |  100.00 |       13 |         0 |          0 |        0 |        0 |
+ quote.ts              | 100.00 |  100.00 |        7 |         0 |          0 |        0 |        0 |
+ reimbursement.ts      | 100.00 |  100.00 |       10 |         0 |          0 |        0 |        0 |
+ risk-surcharges.ts    | 100.00 |  100.00 |       20 |         0 |          0 |        0 |        0 |
+ scenario.ts           |   0.00 |    0.00 |        0 |         0 |          0 |        8 |        0 |
+-----------------------|--------|---------|----------|-----------|------------|----------|----------|
+[32m09:34:00 (973105) INFO JsonReporter[39m Your report can be found at: file:///home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_05-59-59_claim-office-example-mapping_exact-ptdd-v1-cc_opus-5-no-thinking/reports/mutation/mutation-report.json
+[32m09:34:00 (973105) INFO MutationTestExecutor[39m Done in 27 seconds.

@@ -1,0 +1,3880 @@
+From 150cd856e3b6809853d3f9cb4e8fdbab91b3d033 Mon Sep 17 00:00:00 2001
+From: TCR Experiment <tcr-experiment@localhost>
+Date: Wed, 23 Sep 2026 05:50:20 +0000
+Subject: [PATCH 1/4] Initial kata state
+
+---
+ .claude/rules/experiment-mode.md |   16 +
+ .claude/settings.json            |   22 +
+ eslint.config.mjs                |   53 +
+ package.json                     |   23 +
+ pnpm-lock.yaml                   | 2465 ++++++++++++++++++++++++++++++
+ prompt.md                        |  390 +++++
+ tsconfig.json                    |   12 +
+ vitest.config.ts                 |   14 +
+ 8 files changed, 2995 insertions(+)
+ create mode 100644 .claude/rules/experiment-mode.md
+ create mode 100644 .claude/settings.json
+ create mode 100644 eslint.config.mjs
+ create mode 100644 package.json
+ create mode 100644 pnpm-lock.yaml
+ create mode 100644 prompt.md
+ create mode 100644 tsconfig.json
+ create mode 100644 vitest.config.ts
+
+diff --git a/.claude/rules/experiment-mode.md b/.claude/rules/experiment-mode.md
+new file mode 100644
+index 0000000..3741738
+--- /dev/null
++++ b/.claude/rules/experiment-mode.md
+@@ -0,0 +1,16 @@
++# TDD Experiment Mode
++
++## Instructions
++
++Complete the TDD exercise **autonomously** using Test-Driven Development.
++
++- Do NOT wait for human approval between phases
++- Run the full TDD cycle until all tests pass
++
++## Running Tests
++
++Use `pnpm test` to run tests.
++
++## Done Marker
++
++When you are finished, write a file `experiment-done.txt` with the single word `DONE` as its only content. Do not write any other summary or report file.
+diff --git a/.claude/settings.json b/.claude/settings.json
+new file mode 100644
+index 0000000..3f41e85
+--- /dev/null
++++ b/.claude/settings.json
+@@ -0,0 +1,22 @@
++{
++  "permissions": {
++    "allow": [
++      "Read",
++      "Write",
++      "Edit",
++      "Glob",
++      "Grep",
++      "Bash(pnpm:*)",
++      "Bash(pnpm test:*)",
++      "Bash(pnpm install:*)",
++      "Bash(pnpm run:*)",
++      "Bash(ls:*)",
++      "Bash(cat:*)",
++      "Bash(mkdir:*)",
++      "Task",
++      "Skill"
++    ],
++    "deny": [],
++    "ask": []
++  }
++}
+diff --git a/eslint.config.mjs b/eslint.config.mjs
+new file mode 100644
+index 0000000..f326469
+--- /dev/null
++++ b/eslint.config.mjs
+@@ -0,0 +1,53 @@
++import sonarjs from "eslint-plugin-sonarjs";
++import tseslint from "typescript-eslint";
++
++export default [
++  {
++    files: ["src/**/*.ts"],
++    ignores: ["src/**/*.spec.ts"],
++    languageOptions: {
++      parser: tseslint.parser,
++      parserOptions: {
++        projectService: true,
++      },
++    },
++    plugins: {
++      sonarjs,
++    },
++    rules: {
++      // Complexity smells
++      "sonarjs/cognitive-complexity": ["error", 10],
++      "max-depth": ["error", 3],
++      "max-lines-per-function": ["error", { max: 30, skipBlankLines: true, skipComments: true }],
++      "max-params": ["error", 4],
++
++      // Duplication smells
++      "sonarjs/no-duplicate-string": ["error", { threshold: 3 }],
++      "sonarjs/no-duplicated-branches": "error",
++      "sonarjs/no-identical-functions": "error",
++
++      // Dead code smells
++      "no-unused-vars": "off",
++      "sonarjs/no-unused-collection": "error",
++      "no-unreachable": "error",
++
++      // Magic numbers
++      "no-magic-numbers": ["error", { ignore: [0, 1, -1], ignoreArrayIndexes: true }],
++
++      // Boolean/logic smells
++      "sonarjs/no-redundant-boolean": "error",
++      "sonarjs/no-gratuitous-expressions": "error",
++
++      // Code quality smells
++      "sonarjs/no-collapsible-if": "error",
++      "sonarjs/no-redundant-jump": "error",
++      "sonarjs/no-useless-catch": "error",
++      "sonarjs/prefer-immediate-return": "error",
++      "sonarjs/prefer-single-boolean-return": "error",
++
++      // Nested complexity
++      "sonarjs/no-nested-switch": "error",
++      "sonarjs/no-nested-template-literals": "error",
++    },
++  },
++];
+diff --git a/package.json b/package.json
+new file mode 100644
+index 0000000..c533a39
+--- /dev/null
++++ b/package.json
+@@ -0,0 +1,23 @@
++{
++  "name": "tdd-experiment-run",
++  "type": "module",
++  "packageManager": "pnpm@9.15.9",
++  "scripts": {
++    "test": "vitest run",
++    "test:unit:basic": "vitest run",
++    "test:watch": "vitest",
++    "test:coverage": "vitest run --coverage --coverage.reporter=json-summary"
++  },
++  "devDependencies": {
++    "typescript": "^5.3.0",
++    "tsx": "^4.7.0",
++    "vitest": "^1.0.0",
++    "@vitest/coverage-v8": "^1.0.0",
++    "eslint": "^9.0.0",
++    "eslint-plugin-sonarjs": "^1.0.0",
++    "typescript-eslint": "^8.0.0"
++  },
++  "pnpm": {
++    "onlyBuiltDependencies": ["esbuild"]
++  }
++}
+diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
+new file mode 100644
+index 0000000..ef74ce2
+--- /dev/null
++++ b/pnpm-lock.yaml
+@@ -0,0 +1,2465 @@
++lockfileVersion: '9.0'
++
++settings:
++  autoInstallPeers: true
++  excludeLinksFromLockfile: false
++
++importers:
++
++  .:
++    devDependencies:
++      '@vitest/coverage-v8':
++        specifier: ^1.0.0
++        version: 1.6.1(vitest@1.6.1)
++      eslint:
++        specifier: ^9.0.0
++        version: 9.39.5
++      eslint-plugin-sonarjs:
++        specifier: ^1.0.0
++        version: 1.0.4(eslint@9.39.5)
++      tsx:
++        specifier: ^4.7.0
++        version: 4.23.15
++      typescript:
++        specifier: ^5.3.0
++        version: 5.9.3
++      typescript-eslint:
++        specifier: ^8.0.0
++        version: 8.70.1(eslint@9.39.5)(typescript@5.9.3)
++      vitest:
++        specifier: ^1.0.0
++        version: 1.6.1
++
++packages:
++
++  '@ampproject/remapping@2.3.0':
++    resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
++    engines: {node: '>=6.0.0'}
++
++  '@babel/helper-string-parser@7.29.7':
++    resolution: {integrity: sha512-Pb5ijPrZ89GDH8223L4UP8i6QApWxs04RbPQJTeWDV0/keR2E36MeKnyr6LYmUUvqRRI+Iv87SuF1W6ErINzYw==}
++    engines: {node: '>=6.9.0'}
++
++  '@babel/helper-validator-identifier@7.29.7':
++    resolution: {integrity: sha512-qehxGkRj55h/ff8EMaJ+cYhyaKlHIxqYDn682wQD7RNp9UujOQsHog2uS0r2vzr4pW+sXf90NeeayjcNaX3fFg==}
++    engines: {node: '>=6.9.0'}
++
++  '@babel/parser@7.29.9':
++    resolution: {integrity: sha512-CjXrNHTnvqBVqHgdBysY3vk2T8tpJHb5/RMeHJBTyVa9xgugCB0CJTx/3oO8RV2QRQP391RWpB7D6hLjm8V9uA==}
++    engines: {node: '>=6.0.0'}
++    hasBin: true
++
++  '@babel/types@7.29.8':
++    resolution: {integrity: sha512-Vj1jF3cPfxg7OAfoI7QnVKLoILlm2JF9pnVHrX8qx7AHMiYWT+NDAA7jChlNgRS4WTLc/fD1lXLmPixluj+3Gg==}
++    engines: {node: '>=6.9.0'}
++
++  '@bcoe/v8-coverage@0.2.3':
++    resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
++
++  '@esbuild/aix-ppc64@0.21.5':
++    resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
++    engines: {node: '>=12'}
++    cpu: [ppc64]
++    os: [aix]
++
++  '@esbuild/aix-ppc64@0.28.2':
++    resolution: {integrity: sha512-XExcO+dvLKvVtNTibSTBej1NCAbaGhWn9Ww1ZPx80qsahhPFe/8jgWP0IchNe0F3HwkU7n8ejhH8bjonqht8mQ==}
++    engines: {node: '>=18'}
++    cpu: [ppc64]
++    os: [aix]
++
++  '@esbuild/android-arm64@0.21.5':
++    resolution: {integrity: sha512-c0uX9VAUBQ7dTDCjq+wdyGLowMdtR/GoC2U5IYk/7D1H1JYC0qseD7+11iMP2mRLN9RcCMRcjC4YMclCzGwS/A==}
++    engines: {node: '>=12'}
++    cpu: [arm64]
++    os: [android]
++
++  '@esbuild/android-arm64@0.28.2':
++    resolution: {integrity: sha512-5YfKeeI8qWfBZIX+u2xZC3Zlb3Os/gLS2sbEKM+I4ZOcsWmHS2WLysCcQZDAFRslDUU5Oiq44gf6PYN1vGwG5A==}
++    engines: {node: '>=18'}
++    cpu: [arm64]
++    os: [android]
++
++  '@esbuild/android-arm@0.21.5':
++    resolution: {integrity: sha512-vCPvzSjpPHEi1siZdlvAlsPxXl7WbOVUBBAowWug4rJHb68Ox8KualB+1ocNvT5fjv6wpkX6o/iEpbDrf68zcg==}
++    engines: {node: '>=12'}
++    cpu: [arm]
++    os: [android]
++
++  '@esbuild/android-arm@0.28.2':
++    resolution: {integrity: sha512-kXXoiPVVGQcnIYGOeaovwOURpniDBpSq4A03qkQ+BMQqtGG6HYap3xne9C1O1yo4TR3qxlCX5IqqmX6fFo2Lqg==}
++    engines: {node: '>=18'}
++    cpu: [arm]
++    os: [android]
++
++  '@esbuild/android-x64@0.21.5':
++    resolution: {integrity: sha512-D7aPRUUNHRBwHxzxRvp856rjUHRFW1SdQATKXH2hqA0kAZb1hKmi02OpYRacl0TxIGz/ZmXWlbZgjwWYaCakTA==}
++    engines: {node: '>=12'}
++    cpu: [x64]
++    os: [android]
++
++  '@esbuild/android-x64@0.28.2':
++    resolution: {integrity: sha512-O387ite7SzUyCcy3JQX4P4bLtEA7bLLkx+esve5JHnyYfNTxcVpXZo9jhdB0lTKN44gztELTdU7nS8Nr16Fs1Q==}
++    engines: {node: '>=18'}
++    cpu: [x64]
++    os: [android]
++
++  '@esbuild/darwin-arm64@0.21.5':
++    resolution: {integrity: sha512-DwqXqZyuk5AiWWf3UfLiRDJ5EDd49zg6O9wclZ7kUMv2WRFr4HKjXp/5t8JZ11QbQfUS6/cRCKGwYhtNAY88kQ==}
++    engines: {node: '>=12'}
++    cpu: [arm64]
++    os: [darwin]
++
++  '@esbuild/darwin-arm64@0.28.2':
++    resolution: {integrity: sha512-n4KqkOQrraxHJcgjM1RvwbigfQKIKJVpM7xp+KsxiyUSrRdIXnt73VhrPAx0fV44hgfmIVKjxMN9J1t5jySVkw==}
++    engines: {node: '>=18'}
++    cpu: [arm64]
++    os: [darwin]
++
++  '@esbuild/darwin-x64@0.21.5':
++    resolution: {integrity: sha512-se/JjF8NlmKVG4kNIuyWMV/22ZaerB+qaSi5MdrXtd6R08kvs2qCN4C09miupktDitvh8jRFflwGFBQcxZRjbw==}
++    engines: {node: '>=12'}
++    cpu: [x64]
++    os: [darwin]
++
++  '@esbuild/darwin-x64@0.28.2':
++    resolution: {integrity: sha512-uq6suIWYP37qzGddBKPw5QEQPi6HiLGsO7UmkpfyaYNQ3D+rN6w6WfwH+nuqcGXWvawGwxOEroO4YGnFh95azw==}
++    engines: {node: '>=18'}
++    cpu: [x64]
++    os: [darwin]
++
++  '@esbuild/freebsd-arm64@0.21.5':
++    resolution: {integrity: sha512-5JcRxxRDUJLX8JXp/wcBCy3pENnCgBR9bN6JsY4OmhfUtIHe3ZW0mawA7+RDAcMLrMIZaf03NlQiX9DGyB8h4g==}
++    engines: {node: '>=12'}
++    cpu: [arm64]
++    os: [freebsd]
++
++  '@esbuild/freebsd-arm64@0.28.2':
++    resolution: {integrity: sha512-n+I0BTSRIoy+d6RPKnEVwql5UwBJolytvY4mAOIEJorKlqgPII8ix6slVVrfZ5Tnj7glIZvloylbB/EJPMWEXw==}
++    engines: {node: '>=18'}
++    cpu: [arm64]
++    os: [freebsd]
++
++  '@esbuild/freebsd-x64@0.21.5':
++    resolution: {integrity: sha512-J95kNBj1zkbMXtHVH29bBriQygMXqoVQOQYA+ISs0/2l3T9/kj42ow2mpqerRBxDJnmkUDCaQT/dfNXWX/ZZCQ==}
++    engines: {node: '>=12'}
++    cpu: [x64]
++    os: [freebsd]
++
++  '@esbuild/freebsd-x64@0.28.2':
++    resolution: {integrity: sha512-78XJTJkvPs0kz2w61301PJjXl4g7q3JqiYMZ/M/yVI73EHBrCRTgkhu9oqG7vPqq+a/yadEW8aD+agKlk5xrmg==}
++    engines: {node: '>=18'}
++    cpu: [x64]
++    os: [freebsd]
++
++  '@esbuild/linux-arm64@0.21.5':
++    resolution: {integrity: sha512-ibKvmyYzKsBeX8d8I7MH/TMfWDXBF3db4qM6sy+7re0YXya+K1cem3on9XgdT2EQGMu4hQyZhan7TeQ8XkGp4Q==}
++    engines: {node: '>=12'}
++    cpu: [arm64]
++    os: [linux]
++
++  '@esbuild/linux-arm64@0.28.2':
++    resolution: {integrity: sha512-pW4AC0P3it8c7do9MVM4p51FzHzdM/TZrerurgRcHJ2WTa1VQ1CIq18xncfpBJw4ojkiZZrKW2yIBWBP92j6Ug==}
++    engines: {node: '>=18'}
++    cpu: [arm64]
++    os: [linux]
++
++  '@esbuild/linux-arm@0.21.5':
++    resolution: {integrity: sha512-bPb5AHZtbeNGjCKVZ9UGqGwo8EUu4cLq68E95A53KlxAPRmUyYv2D6F0uUI65XisGOL1hBP5mTronbgo+0bFcA==}
++    engines: {node: '>=12'}
++    cpu: [arm]
++    os: [linux]
++
++  '@esbuild/linux-arm@0.28.2':
++    resolution: {integrity: sha512-XlDnu2q5yoqems+xay6wSAcg9DDD7K9RLKZEBOMZm3ckNpJBvOX20tSfby8KfrrhINDyv9V2YVZKY/SpoGJI8w==}
++    engines: {node: '>=18'}
++    cpu: [arm]
++    os: [linux]
++
++  '@esbuild/linux-ia32@0.21.5':
++    resolution: {integrity: sha512-YvjXDqLRqPDl2dvRODYmmhz4rPeVKYvppfGYKSNGdyZkA01046pLWyRKKI3ax8fbJoK5QbxblURkwK/MWY18Tg==}
++    engines: {node: '>=12'}
++    cpu: [ia32]
++    os: [linux]
++
++  '@esbuild/linux-ia32@0.28.2':
++    resolution: {integrity: sha512-CYbnj78HsIeA+DhgUKgFCfvNsTHFhMMrinUrMZpDXJXKN8T3XViTZ/+wtHeVxEWY8ewSzTFN+nRmSwO2tZaLUQ==}
++    engines: {node: '>=18'}
++    cpu: [ia32]
++    os: [linux]
++
++  '@esbuild/linux-loong64@0.21.5':
++    resolution: {integrity: sha512-uHf1BmMG8qEvzdrzAqg2SIG/02+4/DHB6a9Kbya0XDvwDEKCoC8ZRWI5JJvNdUjtciBGFQ5PuBlpEOXQj+JQSg==}
++    engines: {node: '>=12'}
++    cpu: [loong64]
++    os: [linux]
++
++  '@esbuild/linux-loong64@0.28.2':
++    resolution: {integrity: sha512-buwkd8nsph4R+ajRvw0qM5Hja/TXQow3ptzWO2EbG/cqcIkHloRrdlBtQlshyYGTNFvfkfJ5tpPLVkY4DtsPfQ==}
++    engines: {node: '>=18'}
++    cpu: [loong64]
++    os: [linux]
++
++  '@esbuild/linux-mips64el@0.21.5':
++    resolution: {integrity: sha512-IajOmO+KJK23bj52dFSNCMsz1QP1DqM6cwLUv3W1QwyxkyIWecfafnI555fvSGqEKwjMXVLokcV5ygHW5b3Jbg==}
++    engines: {node: '>=12'}
++    cpu: [mips64el]
++    os: [linux]
++
++  '@esbuild/linux-mips64el@0.28.2':
++    resolution: {integrity: sha512-ZVykbDyk7519VwiNb9Lcj9m8XM6v5V9uKPvrEMkkEedVewf+0itkhahp4HDpgERXhwLRpWFypsGbG/J8s0QjJA==}
++    engines: {node: '>=18'}
++    cpu: [mips64el]
++    os: [linux]
++
++  '@esbuild/linux-ppc64@0.21.5':
++    resolution: {integrity: sha512-1hHV/Z4OEfMwpLO8rp7CvlhBDnjsC3CttJXIhBi+5Aj5r+MBvy4egg7wCbe//hSsT+RvDAG7s81tAvpL2XAE4w==}
++    engines: {node: '>=12'}
++    cpu: [ppc64]
++    os: [linux]
++
++  '@esbuild/linux-ppc64@0.28.2':
++    resolution: {integrity: sha512-CAXl+Dtd9UUuJd8pKKdwh6MLm3MUMiqMPmhZ3tTSXPqfyQ3vDl6R5hZdZ/kYojK4ofXtdfSv1tFq8XzWx3heNQ==}
++    engines: {node: '>=18'}
++    cpu: [ppc64]
++    os: [linux]
++
++  '@esbuild/linux-riscv64@0.21.5':
++    resolution: {integrity: sha512-2HdXDMd9GMgTGrPWnJzP2ALSokE/0O5HhTUvWIbD3YdjME8JwvSCnNGBnTThKGEB91OZhzrJ4qIIxk/SBmyDDA==}
++    engines: {node: '>=12'}
++    cpu: [riscv64]
++    os: [linux]
++
++  '@esbuild/linux-riscv64@0.28.2':
++    resolution: {integrity: sha512-GeXCej4IQtU1B+QlDV8W/RRvbzI3O/Stss+/bCXv4lZls5WGRtu2a+3JkA3i4qIUlMXpcHebWpF8AkJhATowuA==}
++    engines: {node: '>=18'}
++    cpu: [riscv64]
++    os: [linux]
++
++  '@esbuild/linux-s390x@0.21.5':
++    resolution: {integrity: sha512-zus5sxzqBJD3eXxwvjN1yQkRepANgxE9lgOW2qLnmr8ikMTphkjgXu1HR01K4FJg8h1kEEDAqDcZQtbrRnB41A==}
++    engines: {node: '>=12'}
++    cpu: [s390x]
++    os: [linux]
++
++  '@esbuild/linux-s390x@0.28.2':
++    resolution: {integrity: sha512-3H1weTYZPxt/WOhByszQZybS9w5lKzUn1FDMsgEChbHWQwHYQQRfBxgCcZvPhjHfKyJjIievvMmEUawJrdY9Dg==}
++    engines: {node: '>=18'}
++    cpu: [s390x]
++    os: [linux]
++
++  '@esbuild/linux-x64@0.21.5':
++    resolution: {integrity: sha512-1rYdTpyv03iycF1+BhzrzQJCdOuAOtaqHTWJZCWvijKD2N5Xu0TtVC8/+1faWqcP9iBCWOmjmhoH94dH82BxPQ==}
++    engines: {node: '>=12'}
++    cpu: [x64]
++    os: [linux]
++
++  '@esbuild/linux-x64@0.28.2':
++    resolution: {integrity: sha512-4xTZr1FUmSoQW4XIWmit3tzQrUTZM+N3P0XV8xROKYF50XfI7xeO90+1bZvNwxIufQ9hDQVRJH5YhgPVF8A/HQ==}
++    engines: {node: '>=18'}
++    cpu: [x64]
++    os: [linux]
++
++  '@esbuild/netbsd-arm64@0.28.2':
++    resolution: {integrity: sha512-sSATRjPeDBg3pdgHoQfoYBob11Kk1FGa9lui5RIHZCoCkJa9QKlvl3/vKz2usCmYYjs7ymJR/2Nnsqe+Hjt5nw==}
++    engines: {node: '>=18'}
++    cpu: [arm64]
++    os: [netbsd]
++
++  '@esbuild/netbsd-x64@0.21.5':
++    resolution: {integrity: sha512-Woi2MXzXjMULccIwMnLciyZH4nCIMpWQAs049KEeMvOcNADVxo0UBIQPfSmxB3CWKedngg7sWZdLvLczpe0tLg==}
++    engines: {node: '>=12'}
++    cpu: [x64]
++    os: [netbsd]
++
++  '@esbuild/netbsd-x64@0.28.2':
++    resolution: {integrity: sha512-lqnzCV+mM0gIADaKihiCg6ifgfU2L3h5E33rNQBN1Y4MaVGnzryzmvvf7UHxprpQdE8hpqLolJ9Rl+SkIRDpyw==}
++    engines: {node: '>=18'}
++    cpu: [x64]
++    os: [netbsd]
++
++  '@esbuild/openbsd-arm64@0.28.2':
++    resolution: {integrity: sha512-AL2qJILH7lNjrDmCQDvdxMfAUIv8KMNZOvrwAQ8i8//ntL9FflhOyMJ8OZSMBb8/AWXe3/5v5S20y3zCoZWKoQ==}
++    engines: {node: '>=18'}
++    cpu: [arm64]
++    os: [openbsd]
++
++  '@esbuild/openbsd-x64@0.21.5':
++    resolution: {integrity: sha512-HLNNw99xsvx12lFBUwoT8EVCsSvRNDVxNpjZ7bPn947b8gJPzeHWyNVhFsaerc0n3TsbOINvRP2byTZ5LKezow==}
++    engines: {node: '>=12'}
++    cpu: [x64]
++    os: [openbsd]
++
++  '@esbuild/openbsd-x64@0.28.2':
++    resolution: {integrity: sha512-QtiuPytchRyC4rwUKhexJdQKvDuZ6hWloi3igqPQNUJCS1/v9EiO3UTOXR6A3FoMo4fnAKbWJdqaIwhOzh8qEw==}
++    engines: {node: '>=18'}
++    cpu: [x64]
++    os: [openbsd]
++
++  '@esbuild/openharmony-arm64@0.28.2':
++    resolution: {integrity: sha512-WkhYDmpTjLvGlScA1rwjRUmhl4k8oXR3cIbtqWmELgU/dFeHHlEllxDvdWcNJV9rbzCexB5vz8gtNewWLgCT7Q==}
++    engines: {node: '>=18'}
++    cpu: [arm64]
++    os: [openharmony]
++
++  '@esbuild/sunos-x64@0.21.5':
++    resolution: {integrity: sha512-6+gjmFpfy0BHU5Tpptkuh8+uw3mnrvgs+dSPQXQOv3ekbordwnzTVEb4qnIvQcYXq6gzkyTnoZ9dZG+D4garKg==}
++    engines: {node: '>=12'}
++    cpu: [x64]
++    os: [sunos]
++
++  '@esbuild/sunos-x64@0.28.2':
++    resolution: {integrity: sha512-GPMSkTOtMnv2U2F8gxe4Io6qmVs+YKyp832Etqqxr0hFngmXQ3rzwytelm3GIn7T4VviRUlf3sOgBOiTdvaf7g==}
++    engines: {node: '>=18'}
++    cpu: [x64]
++    os: [sunos]
++
++  '@esbuild/win32-arm64@0.21.5':
++    resolution: {integrity: sha512-Z0gOTd75VvXqyq7nsl93zwahcTROgqvuAcYDUr+vOv8uHhNSKROyU961kgtCD1e95IqPKSQKH7tBTslnS3tA8A==}
++    engines: {node: '>=12'}
++    cpu: [arm64]
++    os: [win32]
++
++  '@esbuild/win32-arm64@0.28.2':
++    resolution: {integrity: sha512-PIhhEkE9uPBleRBrQEJpUn7MBnibZzbGzYWPmY3x+YoVg/95zbjB4CxPPOQ8l5tYYM4mMaCthF8/1DIfBQQyWQ==}
++    engines: {node: '>=18'}
++    cpu: [arm64]
++    os: [win32]
++
++  '@esbuild/win32-ia32@0.21.5':
++    resolution: {integrity: sha512-SWXFF1CL2RVNMaVs+BBClwtfZSvDgtL//G/smwAc5oVK/UPu2Gu9tIaRgFmYFFKrmg3SyAjSrElf0TiJ1v8fYA==}
++    engines: {node: '>=12'}
++    cpu: [ia32]
++    os: [win32]
++
++  '@esbuild/win32-ia32@0.28.2':
++    resolution: {integrity: sha512-YmJbfTlvU7Sdn9BB+4PRES4oB6pxgS37MAONj+hBr/cpXS1aBPKXxNnDbu+QCWPj0o9dgyxeq79g6c5P8KeuYA==}
++    engines: {node: '>=18'}
++    cpu: [ia32]
++    os: [win32]
++
++  '@esbuild/win32-x64@0.21.5':
++    resolution: {integrity: sha512-tQd/1efJuzPC6rCFwEvLtci/xNFcTZknmXs98FYDfGE4wP9ClFV98nyKrzJKVPMhdDnjzLhdUyMX4PsQAPjwIw==}
++    engines: {node: '>=12'}
++    cpu: [x64]
++    os: [win32]
++
++  '@esbuild/win32-x64@0.28.2':
++    resolution: {integrity: sha512-5ebpxr3nWMzrL/rnUI755Jkuee0bHL/Gq0WTF9lvcpv73wAp5eu8MfBUgWK9bhWvZjj7yX8etf/8tI8Ney695g==}
++    engines: {node: '>=18'}
++    cpu: [x64]
++    os: [win32]
++
++  '@eslint-community/eslint-utils@4.10.1':
++    resolution: {integrity: sha512-cuadcxVFE8sDK6iWJbs8Sn0av2Nrh2QSGQhVlBW9AaAHqHwjWsZHT8LJ4hFGPh7ASBV2deFdM7H/DPjulmh8rg==}
++    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
++    peerDependencies:
++      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
++
++  '@eslint-community/regexpp@4.12.2':
++    resolution: {integrity: sha512-EriSTlt5OC9/7SXkRSCAhfSxxoSUgBm33OH+IkwbdpgoqsSsUg7y3uh+IICI/Qg4BBWr3U2i39RpmycbxMq4ew==}
++    engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
++
++  '@eslint/config-array@0.21.2':
++    resolution: {integrity: sha512-nJl2KGTlrf9GjLimgIru+V/mzgSK0ABCDQRvxw5BjURL7WfH5uoWmizbH7QB6MmnMBd8cIC9uceWnezL1VZWWw==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++
++  '@eslint/config-helpers@0.4.2':
++    resolution: {integrity: sha512-gBrxN88gOIf3R7ja5K9slwNayVcZgK6SOUORm2uBzTeIEfeVaIhOpCtTox3P6R7o2jLFwLFTLnC7kU/RGcYEgw==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++
++  '@eslint/core@0.17.0':
++    resolution: {integrity: sha512-yL/sLrpmtDaFEiUj1osRP4TI2MDz1AddJL+jZ7KSqvBuliN4xqYY54IfdN8qD8Toa6g1iloph1fxQNkjOxrrpQ==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++
++  '@eslint/eslintrc@3.3.7':
++    resolution: {integrity: sha512-F42g89Qd5oAWtp0k0nnSrjziAKza7w8SVT4mStc18LZMaRb4J1HQAHLCalEtDCxrTuksx7NU9qsmeLwpOfPqWw==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++
++  '@eslint/js@9.39.5':
++    resolution: {integrity: sha512-QywQuszQh77pIXCsq998c8hbhSTI/azTty1Z6N53dmAudKHhy573j3yvRLsX2BSp8YpLtoCEG8E9DJe+8zUh4A==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++
++  '@eslint/object-schema@2.1.7':
++    resolution: {integrity: sha512-VtAOaymWVfZcmZbp6E2mympDIHvyjXs/12LqWYjVw6qjrfF+VK+fyG33kChz3nnK+SU5/NeHOqrTEHS8sXO3OA==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++
++  '@eslint/plugin-kit@0.4.1':
++    resolution: {integrity: sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++
++  '@humanfs/core@0.19.2':
++    resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
++    engines: {node: '>=18.18.0'}
++
++  '@humanfs/node@0.16.8':
++    resolution: {integrity: sha512-gE1eQNZ3R++kTzFUpdGlpmy8kDZD/MLyHqDwqjkVQI0JMdI1D51sy1H958PNXYkM2rAac7e5/CnIKZrHtPh3BQ==}
++    engines: {node: '>=18.18.0'}
++
++  '@humanfs/types@0.15.0':
++    resolution: {integrity: sha512-ZZ1w0aoQkwuUuC7Yf+7sdeaNfqQiiLcSRbfI08oAxqLtpXQr9AIVX7Ay7HLDuiLYAaFPu8oBYNq/QIi9URHJ3Q==}
++    engines: {node: '>=18.18.0'}
++
++  '@humanwhocodes/module-importer@1.0.1':
++    resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
++    engines: {node: '>=12.22'}
++
++  '@humanwhocodes/retry@0.4.3':
++    resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
++    engines: {node: '>=18.18'}
++
++  '@istanbuljs/schema@0.1.6':
++    resolution: {integrity: sha512-+Sg6GCR/wy1oSmQDFq4LQDAhm3ETKnorxN+y5nbLULOR3P0c14f2Wurzj3/xqPXtasLFfHd5iRFQ7AJt4KH2cw==}
++    engines: {node: '>=8'}
++
++  '@jest/schemas@29.6.3':
++    resolution: {integrity: sha512-mo5j5X+jIZmJQveBKeS/clAueipV7KgiX1vMgCxam1RNYiqE1w62n0/tJJnHtjW8ZHcQco5gY85jA3mi0L+nSA==}
++    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
++
++  '@jridgewell/gen-mapping@0.3.13':
++    resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
++
++  '@jridgewell/resolve-uri@3.1.2':
++    resolution: {integrity: sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw==}
++    engines: {node: '>=6.0.0'}
++
++  '@jridgewell/sourcemap-codec@1.6.0':
++    resolution: {integrity: sha512-T7jf+5zgsZHwNJ4lvQ7/aezbyk0nNX+zJVWpmHA7VYsEx7a7qr5Rg5IbtJFqkgze5Y2sruq1RUY8Q837Od7iFw==}
++
++  '@jridgewell/trace-mapping@0.3.31':
++    resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
++
++  '@napi-rs/lzma-linux-x64-gnu@1.5.1':
++    resolution: {integrity: sha512-oTXEIha4SsuXdTA4Iyskj0kpdx2yVXdhd75c2v3xGrHFfVMsbhTPZU/nMPL4sWKo4pBHm3aucLaqGlF696dTyQ==}
++    engines: {node: ^22.20 || ^24.12 || >=25}
++    cpu: [x64]
++    os: [linux]
++
++  '@rollup/rollup-android-arm-eabi@4.63.4':
++    resolution: {integrity: sha512-I+BSHzTAhKN2n7ZwGZsegGcZjDpLqFOMAtJz/u6uFGe0pUFbq56dEHjqJV/ZUdRJtNXNxA+hREUatZBvMR3Oiw==}
++    cpu: [arm]
++    os: [android]
++
++  '@rollup/rollup-android-arm64@4.63.4':
++    resolution: {integrity: sha512-pu3BdjS2LtEzRu2elmGzS3fIeWSZy4BMDIaLNwjorO76+k2d0LMluijhsDx3KQyQBQ/lLUZCQA9/s6csvUfuhw==}
++    cpu: [arm64]
++    os: [android]
++
++  '@rollup/rollup-darwin-arm64@4.63.4':
++    resolution: {integrity: sha512-xfSrj9MHnWK9GaSqT9U0ImHtH/N8WZlHLx4cZHiuLcqs640hvZ3hLPd5UR2AZS57FaE8HrRUSpltbZdWRxHiDA==}
++    cpu: [arm64]
++    os: [darwin]
++
++  '@rollup/rollup-darwin-x64@4.63.4':
++    resolution: {integrity: sha512-bqU99PLJb/dqb3S0GIMdeuyAEETSUgZBoqXYd3Sd+WCsV+MmPhnN6JrotWyir31+QgH7EvvE5/mwGJlEoci8Fw==}
++    cpu: [x64]
++    os: [darwin]
++
++  '@rollup/rollup-freebsd-arm64@4.63.4':
++    resolution: {integrity: sha512-JinsFZ5G40oXQb+sUuiA5x689vhr6dDYK0H0NL+rwKdL6CqnmYN8PE4ZwfRSoIjrCxqTQG/SLfTtSvHeGxoVlw==}
++    cpu: [arm64]
++    os: [freebsd]
++
++  '@rollup/rollup-freebsd-x64@4.63.4':
++    resolution: {integrity: sha512-GAdA4UxpiNm27cLHr2GqXBpAD0x9FqwYBY7/YSP0Ss0/PNi4k8gbviqpIpYbVSRBaS2ZcegXEzgTQMbRNCwxCw==}
++    cpu: [x64]
++    os: [freebsd]
++
++  '@rollup/rollup-linux-arm-gnueabihf@4.63.4':
++    resolution: {integrity: sha512-qDd6NoA1znaLjp4jR5U/KWCdLAKDJNB8W9ChbbDaKbo0xA+Atln5HK6LFCZ4oJQpemtRZA288DCirFRjrspptw==}
++    cpu: [arm]
++    os: [linux]
++
++  '@rollup/rollup-linux-arm-musleabihf@4.63.4':
++    resolution: {integrity: sha512-WtB5Tz5KTNINb8ZA+8sQ7bmjuS1JrRT7YverYIhUGdWWDlpzVWmIwuZE+jidkEXUn1l0zrEkaIMa8dHF3NGcsA==}
++    cpu: [arm]
++    os: [linux]
++
++  '@rollup/rollup-linux-arm64-gnu@4.63.4':
++    resolution: {integrity: sha512-VcQ3L1tjnkKzWjryAVaFhHEWcqOfICX9uxVVoDzm2t0DpgKRHd2zOpVrJc0xsWeBZcBFyYROCIBdyR/fS174pg==}
++    cpu: [arm64]
++    os: [linux]
++
++  '@rollup/rollup-linux-arm64-musl@4.63.4':
++    resolution: {integrity: sha512-6+ZQX6P5s0cMDN2Ypb8Lbm2+/sZYmZjdaYny992ujUU9UKi/4CWoJWsl1pNvjWJHNHGK51m+jKGLlh1ylb2ifQ==}
++    cpu: [arm64]
++    os: [linux]
++
++  '@rollup/rollup-linux-loong64-gnu@4.63.4':
++    resolution: {integrity: sha512-D72ZnvkFkBXOfzMMQLcwfPLyGkKb7HZ9/mf97B7v6/P5Lbv4oFOtSY/uHbS8lH6uKUOxoKiuokdb50XZSzzbJw==}
++    cpu: [loong64]
++    os: [linux]
++
++  '@rollup/rollup-linux-loong64-musl@4.63.4':
++    resolution: {integrity: sha512-piU6BxeqA3O9KSu3kRCIQQtNqFFaTu21SEV4FwaRZowpnj3bLaWPZHw+xFqCs0XlJ+aOH3PTRWGoglH+mKA/OA==}
++    cpu: [loong64]
++    os: [linux]
++
++  '@rollup/rollup-linux-ppc64-gnu@4.63.4':
++    resolution: {integrity: sha512-/5PGpHwqt2EEEOUs1XwzubE/ucr0dWDQ+to3zqi4Ds7EWpwtQ79wXc4JBoxqj/OwpawTsKWzJxHfSuBOq3DrWA==}
++    cpu: [ppc64]
++    os: [linux]
++
++  '@rollup/rollup-linux-ppc64-musl@4.63.4':
++    resolution: {integrity: sha512-cX3beZDLWt7G2oJF+nhChiT+qtaihs+S2xi7ziGmVB+2pwPng6D0Ed0HmElQOgv2UsUmSJJLGwpBao/3TDx3VA==}
++    cpu: [ppc64]
++    os: [linux]
++
++  '@rollup/rollup-linux-riscv64-gnu@4.63.4':
++    resolution: {integrity: sha512-1uz2mGWHyptR7DgHHrlbdRAjXK7v7elGZ9lMja910/RP+ZYbX6xAmCiU9UZSX4hqmgtHMv6lr5l3kq1HIOpcag==}
++    cpu: [riscv64]
++    os: [linux]
++
++  '@rollup/rollup-linux-riscv64-musl@4.63.4':
++    resolution: {integrity: sha512-nLS8topojxyz7SRpKR2IODRpQ0XPZ+xaOXvT3+hqK/Uy8Lo5HFgkkIBiIrCu5tL5YqzTvgovGw55PwpahTAGig==}
++    cpu: [riscv64]
++    os: [linux]
++
++  '@rollup/rollup-linux-s390x-gnu@4.63.4':
++    resolution: {integrity: sha512-gs7DRKotr3l3q+jGPQBjH0ng1FjlEDm5ueQrkw5JtQvtLyEIcLASqAEaor56BhkKRzk+IcQzrcanBdb/bBQn8g==}
++    cpu: [s390x]
++    os: [linux]
++
++  '@rollup/rollup-linux-x64-gnu@4.63.4':
++    resolution: {integrity: sha512-791ET7W17NnScOZM7h4dX5hYspxE28htPFsb1awY/NRR8+PRNkS53e475rDdxXXDrP+kwnCcNWg9CX5ztn/Aqw==}
++    cpu: [x64]
++    os: [linux]
++
++  '@rollup/rollup-linux-x64-musl@4.63.4':
++    resolution: {integrity: sha512-iwZQRcmj7g88g3tzefIrQY7qvmuA/cfYwhrDtTBhsmukO4U2huVO5W+86XacUMRvdSFVAc6kZUZy21JaRwiB9w==}
++    cpu: [x64]
++    os: [linux]
++
++  '@rollup/rollup-openbsd-x64@4.63.4':
++    resolution: {integrity: sha512-dVHFp9gRWrdTpnqQuGfCwd7hOQDatK1VCP2iWhLY/cGrOQs/ucFzJ6A5SRqbXX12ZDI8EUuejSM5kwg+ja7Png==}
++    cpu: [x64]
++    os: [openbsd]
++
++  '@rollup/rollup-openharmony-arm64@4.63.4':
++    resolution: {integrity: sha512-t3NlauOW6gxZVVFcBEnO62Cb4wbyDFL416gTg1uFI/2tgqYQlf69FbSE115Ajre9I+c26Lk4mcmdFUsS/DGifQ==}
++    cpu: [arm64]
++    os: [openharmony]
++
++  '@rollup/rollup-win32-arm64-msvc@4.63.4':
++    resolution: {integrity: sha512-xWuIaSye5FWZF8+UYtVEcHtRJDN5kN9Kfgxx3Kq8XIov9KSKbc1fiqQCm90SKrgQbUXZelbnUhnlUJmfSE7P9A==}
++    cpu: [arm64]
++    os: [win32]
++
++  '@rollup/rollup-win32-ia32-msvc@4.63.4':
++    resolution: {integrity: sha512-9ALJJUOg/ZflMJepVo2PlgsGxSaxN7SQ4Z8GoZfVlarWr6r3rkHUNsd/zAio7p4YMtChSMXPionxej4Hkf6CXQ==}
++    cpu: [ia32]
++    os: [win32]
++
++  '@rollup/rollup-win32-x64-gnu@4.63.4':
++    resolution: {integrity: sha512-blj9z5qx/Pv4WU0W1NMFDB97e0JH5ed+aZGywW8WCvp/NhWX/4PFAq5uu6Q0AebNn+Vo6KzUYDT++JzTT5ojlQ==}
++    cpu: [x64]
++    os: [win32]
++
++  '@rollup/rollup-win32-x64-msvc@4.63.4':
++    resolution: {integrity: sha512-Erx822VRBwLa124shbj+wNXe//BOgMEctDV0m1aqTQdNO1S69DgNUCFKC1RCeZfixs1J31l6igk1ziyXErbigQ==}
++    cpu: [x64]
++    os: [win32]
++
++  '@sinclair/typebox@0.27.12':
++    resolution: {integrity: sha512-hhyNJ+nbR6ZR7pToHvllEFun9TL0sbL+tk/ON75lo+Xas054uez98qRbsuNt7MBCyZKK4+8Yli/OAGZhmfBZ/g==}
++
++  '@types/estree@1.0.9':
++    resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
++
++  '@types/json-schema@7.0.15':
++    resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
++
++  '@typescript-eslint/eslint-plugin@8.70.1':
++    resolution: {integrity: sha512-nDNrUQ/4ruSNYbu749TRY7cfrzPtoLHEXSNBI8aaNY32LlZCajixqRf3FqcKC4p5Cam4VOHYx/t+i5+nKXvrqA==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++    peerDependencies:
++      '@typescript-eslint/parser': ^8.70.1
++      eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
++      typescript: '>=4.8.4 <6.1.0'
++
++  '@typescript-eslint/parser@8.70.1':
++    resolution: {integrity: sha512-nO974WLllwhSFWQXnMLj6nDGa8f0khKEz1JzpPJ1u7Vm/4X1X6ZHajpoknU4bb41vJyMB0HHVyS2GqdhWfIXZw==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++    peerDependencies:
++      eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
++      typescript: '>=4.8.4 <6.1.0'
++
++  '@typescript-eslint/project-service@8.70.1':
++    resolution: {integrity: sha512-62xOgboPfwc3/IgPSX/W6oQR3ZbF04194FPGUGH8HL8iLFHbt/456/8Ph1wLNUgVF+s94FlHoipBsz+v7+LMnA==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++    peerDependencies:
++      typescript: '>=4.8.4 <6.1.0'
++
++  '@typescript-eslint/scope-manager@8.70.1':
++    resolution: {integrity: sha512-Pa0EeSeAusQc1WbjQMac+YfenewYTBu0KjgYvkUKwhXaHUKbFog23Dm/rp0DX/6tyYOQ3Xl1a+3EcFNZynGHCw==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++
++  '@typescript-eslint/tsconfig-utils@8.70.1':
++    resolution: {integrity: sha512-jumze1fPI+sDOaM2TWGQdn39PDxTr7TZGeuyLkAbNyx2vtMT3uRnVKChN0hfht5V2TugphJzF6bYXvBcE09qqg==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++    peerDependencies:
++      typescript: '>=4.8.4 <6.1.0'
++
++  '@typescript-eslint/type-utils@8.70.1':
++    resolution: {integrity: sha512-7zKTnyvaVWqzLZHPFQtX1hVHqgkMC+WebPWakNCSyrQVbIP1AM0L0TlBZtACldIRb6PptI8Odk+jyZ5kP3B1VA==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++    peerDependencies:
++      eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
++      typescript: '>=4.8.4 <6.1.0'
++
++  '@typescript-eslint/types@8.70.1':
++    resolution: {integrity: sha512-Dm1ypdhhrGCTyyehxElhgJ6kgk8MVCv5qXdoOVqPr1uqk42jX8KjrZqhROvdShczA8qrDoYiOWn1ykWlx2k81Q==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++
++  '@typescript-eslint/typescript-estree@8.70.1':
++    resolution: {integrity: sha512-TU8PwyGN0PQJUcE96mw8eCQ44SmxGdQlJmlWakHaHQ15eIuuvye5yNtmh/i6oS88jzXVQB71xdNkbkB/fMwL0g==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++    peerDependencies:
++      typescript: '>=4.8.4 <6.1.0'
++
++  '@typescript-eslint/utils@8.70.1':
++    resolution: {integrity: sha512-Esgul8MsnKnRLdYU2Eb2cRV9bS5HJYtKj1ByJnOzzG2M58DGdSUQ1jUuILxipqcpB2h9WLrbD5GijIWUjX/Tqw==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++    peerDependencies:
++      eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
++      typescript: '>=4.8.4 <6.1.0'
++
++  '@typescript-eslint/visitor-keys@8.70.1':
++    resolution: {integrity: sha512-Vwj9lUIW5Xq3wQ9w6gv3R86g1hMK8f2zNOdGTAgeXUMMXFK78G9ruCjjqutHMNJc0+CH7LYRnHeUB9IT8wFmcw==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++
++  '@vitest/coverage-v8@1.6.1':
++    resolution: {integrity: sha512-6YeRZwuO4oTGKxD3bijok756oktHSIm3eczVVzNe3scqzuhLwltIF3S9ZL/vwOVIpURmU6SnZhziXXAfw8/Qlw==}
++    peerDependencies:
++      vitest: 1.6.1
++
++  '@vitest/expect@1.6.1':
++    resolution: {integrity: sha512-jXL+9+ZNIJKruofqXuuTClf44eSpcHlgj3CiuNihUF3Ioujtmc0zIa3UJOW5RjDK1YLBJZnWBlPuqhYycLioog==}
++
++  '@vitest/runner@1.6.1':
++    resolution: {integrity: sha512-3nSnYXkVkf3mXFfE7vVyPmi3Sazhb/2cfZGGs0JRzFsPFvAMBEcrweV1V1GsrstdXeKCTXlJbvnQwGWgEIHmOA==}
++
++  '@vitest/snapshot@1.6.1':
++    resolution: {integrity: sha512-WvidQuWAzU2p95u8GAKlRMqMyN1yOJkGHnx3M1PL9Raf7AQ1kwLKg04ADlCa3+OXUZE7BceOhVZiuWAbzCKcUQ==}
++
++  '@vitest/spy@1.6.1':
++    resolution: {integrity: sha512-MGcMmpGkZebsMZhbQKkAf9CX5zGvjkBTqf8Zx3ApYWXr3wG+QvEu2eXWfnIIWYSJExIp4V9FCKDEeygzkYrXMw==}
++
++  '@vitest/utils@1.6.1':
++    resolution: {integrity: sha512-jOrrUvXM4Av9ZWiG1EajNto0u96kWAhJ1LmPmJhXXQx/32MecEKd10pOLYgS2BQx1TgkGhloPU1ArDW2vvaY6g==}
++
++  acorn-jsx@5.3.2:
++    resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
++    peerDependencies:
++      acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
++
++  acorn-walk@8.3.5:
++    resolution: {integrity: sha512-HEHNfbars9v4pgpW6SO1KSPkfoS0xVOM/9UzkJltjlsHZmJasxg8aXkuZa7SMf8vKGIBhpUsPluQSqhJFCqebw==}
++    engines: {node: '>=0.4.0'}
++
++  acorn@8.18.0:
++    resolution: {integrity: sha512-lGq+9yr1/GuAWaVYIHRjvvySG5/4VfKIvC8EWxStPdcDh/Ka7FG3twP6v4d5BkravUilhIAsG4Qj83t02LWUPQ==}
++    engines: {node: '>=0.4.0'}
++    hasBin: true
++
++  ajv@6.15.0:
++    resolution: {integrity: sha512-fgFx7Hfoq60ytK2c7DhnF8jIvzYgOMxfugjLOSMHjLIPgenqa7S7oaagATUq99mV6IYvN2tRmC0wnTYX6iPbMw==}
++
++  ansi-styles@4.3.0:
++    resolution: {integrity: sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==}
++    engines: {node: '>=8'}
++
++  ansi-styles@5.2.0:
++    resolution: {integrity: sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA==}
++    engines: {node: '>=10'}
++
++  argparse@2.0.1:
++    resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
++
++  assertion-error@1.1.0:
++    resolution: {integrity: sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==}
++
++  balanced-match@1.0.2:
++    resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
++
++  balanced-match@4.0.4:
++    resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
++    engines: {node: 18 || 20 || >=22}
++
++  brace-expansion@1.1.21:
++    resolution: {integrity: sha512-9zeA+KLZNNzglF2TPKRQEDyx6Yby7daAkuy8MiPzpXPsYDWi/DRM8jmwUDxokQjYqBpv5DgPiwD4h4ZZSy1Ujw==}
++
++  brace-expansion@5.0.12:
++    resolution: {integrity: sha512-YovQ3rzhaLMIrDjNDMkNS01tea93qhEhG5xy8f6+R0l+dw3Ki+5sCoIoI942iuLZTHWogWktgwVDhU09iNEimQ==}
++    engines: {node: 20 || >=22}
++
++  cac@6.7.14:
++    resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
++    engines: {node: '>=8'}
++
++  callsites@3.1.0:
++    resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
++    engines: {node: '>=6'}
++
++  chai@4.5.0:
++    resolution: {integrity: sha512-RITGBfijLkBddZvnn8jdqoTypxvqbOLYQkGGxXzeFjVHvudaPw0HNFD9x928/eUwYWd2dPCugVqspGALTZZQKw==}
++    engines: {node: '>=4'}
++
++  chalk@4.1.2:
++    resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
++    engines: {node: '>=10'}
++
++  check-error@1.0.3:
++    resolution: {integrity: sha512-iKEoDYaRmd1mxM90a2OEfWhjsjPpYPuQ+lMYsoxB126+t8fw7ySEO48nmDg5COTjxDI65/Y2OWpeEHk3ZOe8zg==}
++
++  color-convert@2.0.1:
++    resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
++    engines: {node: '>=7.0.0'}
++
++  color-name@1.1.4:
++    resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
++
++  concat-map@0.0.1:
++    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
++
++  confbox@0.1.8:
++    resolution: {integrity: sha512-RMtmw0iFkeR4YV+fUOSucriAQNb9g8zFR52MWCtl+cCZOFRNL6zeB395vPzFhEjjn4fMxXudmELnl/KF/WrK6w==}
++
++  cross-spawn@7.0.6:
++    resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
++    engines: {node: '>= 8'}
++
++  debug@4.4.3:
++    resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
++    engines: {node: '>=6.0'}
++    peerDependencies:
++      supports-color: '*'
++    peerDependenciesMeta:
++      supports-color:
++        optional: true
++
++  deep-eql@4.1.4:
++    resolution: {integrity: sha512-SUwdGfqdKOwxCPeVYjwSyRpJ7Z+fhpwIAtmCUdZIWZ/YP5R9WAsyuSgpLVDi9bjWoN2LXHNss/dk3urXtdQxGg==}
++    engines: {node: '>=6'}
++
++  deep-is@0.1.4:
++    resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
++
++  diff-sequences@29.6.3:
++    resolution: {integrity: sha512-EjePK1srD3P08o2j4f0ExnylqRs5B9tJjcp9t1krH2qRi8CCdsYfwe9JgSLurFBWwq4uOlipzfk5fHNvwFKr8Q==}
++    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
++
++  esbuild@0.21.5:
++    resolution: {integrity: sha512-mg3OPMV4hXywwpoDxu3Qda5xCKQi+vCTZq8S9J/EpkhB2HzKXq4SNFZE3+NK93JYxc8VMSep+lOUSC/RVKaBqw==}
++    engines: {node: '>=12'}
++    hasBin: true
++
++  esbuild@0.28.2:
++    resolution: {integrity: sha512-HKVLS8dvII+xoKW9kmqxbRKrnWEXfJJr/FZhhJmiqIB0e053QNYFqOBouTMO/k5sID4MvCiUCvv8b9M4h32wIA==}
++    engines: {node: '>=18'}
++    hasBin: true
++
++  escape-string-regexp@4.0.0:
++    resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
++    engines: {node: '>=10'}
++
++  eslint-plugin-sonarjs@1.0.4:
++    resolution: {integrity: sha512-jF0eGCUsq/HzMub4ExAyD8x1oEgjOyB9XVytYGyWgSFvdiJQJp6IuP7RmtauCf06o6N/kZErh+zW4b10y1WZ+Q==}
++    engines: {node: '>=16'}
++    peerDependencies:
++      eslint: ^8.0.0 || ^9.0.0
++
++  eslint-scope@8.4.0:
++    resolution: {integrity: sha512-sNXOfKCn74rt8RICKMvJS7XKV/Xk9kA7DyJr8mJik3S7Cwgy3qlkkmyS2uQB3jiJg6VNdZd/pDBJu0nvG2NlTg==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++
++  eslint-visitor-keys@3.4.3:
++    resolution: {integrity: sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag==}
++    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
++
++  eslint-visitor-keys@4.2.1:
++    resolution: {integrity: sha512-Uhdk5sfqcee/9H/rCOJikYz67o0a2Tw2hGRPOG2Y1R2dg7brRe1uG0yaNQDHu+TO/uQPF/5eCapvYSmHUjt7JQ==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++
++  eslint-visitor-keys@5.0.1:
++    resolution: {integrity: sha512-tD40eHxA35h0PEIZNeIjkHoDR4YjjJp34biM0mDvplBe//mB+IHCqHDGV7pxF+7MklTvighcCPPZC7ynWyjdTA==}
++    engines: {node: ^20.19.0 || ^22.13.0 || >=24}
++
++  eslint@9.39.5:
++    resolution: {integrity: sha512-DgZS62aPLXKlnxILS/AYCoRvHaZeXceIzlXPkkGGzJWSow1aEk0lbTlxUSlyjC8jcaKxAdOnTDz+o1JFSBsyjw==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
++    hasBin: true
++    peerDependencies:
++      jiti: '*'
++    peerDependenciesMeta:
++      jiti:
++        optional: true
++
++  espree@10.4.0:
++    resolution: {integrity: sha512-j6PAQ2uUr79PZhBjP5C5fhl8e39FmRnOjsD5lGnWrFU8i2G776tBK7+nP8KuQUTTyAZUwfQqXAgrVH5MbH9CYQ==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++
++  esquery@1.7.0:
++    resolution: {integrity: sha512-Ap6G0WQwcU/LHsvLwON1fAQX9Zp0A2Y6Y/cJBl9r/JbW90Zyg4/zbG6zzKa2OTALELarYHmKu0GhpM5EO+7T0g==}
++    engines: {node: '>=0.10'}
++
++  esrecurse@4.3.0:
++    resolution: {integrity: sha512-KmfKL3b6G+RXvP8N1vr3Tq1kL/oCFgn2NYXEtqP8/L3pKapUA4G8cFVaoF3SU323CD4XypR/ffioHmkti6/Tag==}
++    engines: {node: '>=4.0'}
++
++  estraverse@5.3.0:
++    resolution: {integrity: sha512-MMdARuVEQziNTeJD8DgMqmhwR11BRQ/cBP+pLtYdSTnf3MIO8fFeiINEbX36ZdNlfU/7A9f3gUw49B3oQsvwBA==}
++    engines: {node: '>=4.0'}
++
++  estree-walker@3.0.3:
++    resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
++
++  esutils@2.0.3:
++    resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
++    engines: {node: '>=0.10.0'}
++
++  execa@8.0.1:
++    resolution: {integrity: sha512-VyhnebXciFV2DESc+p6B+y0LjSm0krU4OgJN44qFAhBY0TJ+1V61tYD2+wHusZ6F9n5K+vl8k0sTy7PEfV4qpg==}
++    engines: {node: '>=16.17'}
++
++  fast-deep-equal@3.1.3:
++    resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
++
++  fast-json-stable-stringify@2.1.0:
++    resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
++
++  fast-levenshtein@2.0.6:
++    resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
++
++  fdir@6.5.0:
++    resolution: {integrity: sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==}
++    engines: {node: '>=12.0.0'}
++    peerDependencies:
++      picomatch: ^3 || ^4
++    peerDependenciesMeta:
++      picomatch:
++        optional: true
++
++  file-entry-cache@8.0.0:
++    resolution: {integrity: sha512-XXTUwCvisa5oacNGRP9SfNtYBNAMi+RPwBFmblZEF7N7swHYQS6/Zfk7SRwx4D5j3CH211YNRco1DEMNVfZCnQ==}
++    engines: {node: '>=16.0.0'}
++
++  find-up@5.0.0:
++    resolution: {integrity: sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng==}
++    engines: {node: '>=10'}
++
++  flat-cache@4.0.1:
++    resolution: {integrity: sha512-f7ccFPK3SXFHpx15UIGyRJ/FJQctuKZ0zVuN3frBo4HnK3cay9VEW0R6yPYFHC0AgqhukPzKjq22t5DmAyqGyw==}
++    engines: {node: '>=16'}
++
++  flatted@3.4.4:
++    resolution: {integrity: sha512-5+ybhBZANEJxaH3X5evAFatUxLfEHSr7n6kYJ+1Qd0mUqr4eu9gIf6GDbWHf8RJijHrjjO8G+la14SlL2SeS1Q==}
++
++  fs.realpath@1.0.0:
++    resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
++
++  fsevents@2.3.3:
++    resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
++    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
++    os: [darwin]
++
++  get-func-name@2.0.2:
++    resolution: {integrity: sha512-8vXOvuE167CtIc3OyItco7N/dpRtBbYOsPsXCz7X/PMnlGjYjSGuZJgM1Y7mmew7BKf9BqvLX2tnOVy1BBUsxQ==}
++
++  get-stream@8.0.1:
++    resolution: {integrity: sha512-VaUJspBffn/LMCJVoMvSAdmscJyS1auj5Zulnn5UoYcY531UWmdwhRWkcGKnGU93m5HSXP9LP2usOryrBtQowA==}
++    engines: {node: '>=16'}
++
++  glob-parent@6.0.2:
++    resolution: {integrity: sha512-XxwI8EOhVQgWp6iDL+3b0r86f4d6AX6zSU55HfB4ydCEuXLXc5FcYeOu+nnGftS4TEju/11rt4KJPTMgbfmv4A==}
++    engines: {node: '>=10.13.0'}
++
++  glob@7.2.3:
++    resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
++    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
++
++  globals@14.0.0:
++    resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
++    engines: {node: '>=18'}
++
++  has-flag@4.0.0:
++    resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
++    engines: {node: '>=8'}
++
++  html-escaper@2.0.2:
++    resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
++
++  human-signals@5.0.0:
++    resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
++    engines: {node: '>=16.17.0'}
++
++  ignore@5.3.2:
++    resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
++    engines: {node: '>= 4'}
++
++  ignore@7.0.10:
++    resolution: {integrity: sha512-HpbUakT7xp5miBUywCHf36ZEuAJNklBJDDsGpUIjMzOSmM8ELSfA9Sa/QDPeNeqeoN31u+UTCkL4klCOVvRm4Q==}
++    engines: {node: '>= 4'}
++
++  import-fresh@3.3.1:
++    resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
++    engines: {node: '>=6'}
++
++  imurmurhash@0.1.4:
++    resolution: {integrity: sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==}
++    engines: {node: '>=0.8.19'}
++
++  inflight@1.0.6:
++    resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
++    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
++
++  inherits@2.0.4:
++    resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
++
++  is-extglob@2.1.1:
++    resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
++    engines: {node: '>=0.10.0'}
++
++  is-glob@4.0.3:
++    resolution: {integrity: sha512-xelSayHH36ZgE7ZWhli7pW34hNbNl8Ojv5KVmkJD4hBdD3th8Tfk9vYasLM+mXWOZhFkgZfxhLSnrwRr4elSSg==}
++    engines: {node: '>=0.10.0'}
++
++  is-stream@3.0.0:
++    resolution: {integrity: sha512-LnQR4bZ9IADDRSkvpqMGvt/tEJWclzklNgSw48V5EAaAeDd6qGvN8ei6k5p0tvxSR171VmGyHuTiAOfxAbr8kA==}
++    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
++
++  isexe@2.0.0:
++    resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
++
++  istanbul-lib-coverage@3.2.2:
++    resolution: {integrity: sha512-O8dpsF+r0WV/8MNRKfnmrtCWhuKjxrq2w+jpzBL5UZKTi2LeVWnWOmWRxFlesJONmc+wLAGvKQZEOanko0LFTg==}
++    engines: {node: '>=8'}
++
++  istanbul-lib-report@3.0.1:
++    resolution: {integrity: sha512-GCfE1mtsHGOELCU8e/Z7YWzpmybrx/+dSTfLrvY8qRmaY6zXTKWn6WQIjaAFw069icm6GVMNkgu0NzI4iPZUNw==}
++    engines: {node: '>=10'}
++
++  istanbul-lib-source-maps@5.0.6:
++    resolution: {integrity: sha512-yg2d+Em4KizZC5niWhQaIomgf5WlL4vOOjZ5xGCmF8SnPE/mDWWXgvRExdcpCgh9lLRRa1/fSYp2ymmbJ1pI+A==}
++    engines: {node: '>=10'}
++
++  istanbul-reports@3.2.0:
++    resolution: {integrity: sha512-HGYWWS/ehqTV3xN10i23tkPkpH46MLCIMFNCaaKNavAXTF1RkqxawEPtnjnGZ6XKSInBKkiOA5BKS+aZiY3AvA==}
++    engines: {node: '>=8'}
++
++  js-tokens@9.0.1:
++    resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
++
++  js-yaml@4.3.2:
++    resolution: {integrity: sha512-SFNOvSJ+Dgf/9An904Yx+CgSlIPCkIpao4qo51lpee25TIRejdH3rhR4EZMGoNx3/TP3O+wzWuiTFl4sqbltzA==}
++    hasBin: true
++
++  json-buffer@3.0.1:
++    resolution: {integrity: sha512-4bV5BfR2mqfQTJm+V5tPPdf+ZpuhiIvTuAB5g8kcrXOZpTT/QwwVRWBywX1ozr6lEuPdbHxwaJlm9G6mI2sfSQ==}
++
++  json-schema-traverse@0.4.1:
++    resolution: {integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==}
++
++  json-stable-stringify-without-jsonify@1.0.1:
++    resolution: {integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==}
++
++  keyv@4.5.4:
++    resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
++
++  levn@0.4.1:
++    resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
++    engines: {node: '>= 0.8.0'}
++
++  local-pkg@0.5.1:
++    resolution: {integrity: sha512-9rrA30MRRP3gBD3HTGnC6cDFpaE1kVDWxWgqWJUN0RvDNAo+Nz/9GxB+nHOH0ifbVFy0hSA1V6vFDvnx54lTEQ==}
++    engines: {node: '>=14'}
++
++  locate-path@6.0.0:
++    resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
++    engines: {node: '>=10'}
++
++  lodash.merge@4.6.2:
++    resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
++
++  loupe@2.3.7:
++    resolution: {integrity: sha512-zSMINGVYkdpYSOBmLi0D1Uo7JU9nVdQKrHxC8eYlV+9YKK9WePqAlL7lSlorG/U2Fw1w0hTBmaa/jrQ3UbPHtA==}
++
++  magic-string@0.30.21:
++    resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
++
++  magicast@0.3.5:
++    resolution: {integrity: sha512-L0WhttDl+2BOsybvEOLK7fW3UA0OQ0IQ2d6Zl2x/a6vVRs3bAY0ECOSHHeL5jD+SbOpOCUEi0y1DgHEn9Qn1AQ==}
++
++  make-dir@4.0.0:
++    resolution: {integrity: sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==}
++    engines: {node: '>=10'}
++
++  merge-stream@2.0.0:
++    resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==}
++
++  mimic-fn@4.0.0:
++    resolution: {integrity: sha512-vqiC06CuhBTUdZH+RYl8sFrL096vA45Ok5ISO6sE/Mr1jRbGH4Csnhi8f3wKVl7x8mO4Au7Ir9D3Oyv1VYMFJw==}
++    engines: {node: '>=12'}
++
++  minimatch@10.2.6:
++    resolution: {integrity: sha512-vpLQEs+VLCr1nU0BXS07maYoFwlDAH0gngQuuttxIwutDFEMHq2blX+8vpgxDdK3J1PwjCJiep77OitTZ4Ll1A==}
++    engines: {node: 18 || 20 || >=22}
++
++  minimatch@3.1.5:
++    resolution: {integrity: sha512-VgjWUsnnT6n+NUk6eZq77zeFdpW2LWDzP6zFGrCbHXiYNul5Dzqk2HHQ5uFH2DNW5Xbp8+jVzaeNt94ssEEl4w==}
++
++  mlly@1.8.2:
++    resolution: {integrity: sha512-d+ObxMQFmbt10sretNDytwt85VrbkhhUA/JBGm1MPaWJ65Cl4wOgLaB1NYvJSZ0Ef03MMEU/0xpPMXUIQ29UfA==}
++
++  ms@2.1.3:
++    resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
++
++  nanoid@3.3.19:
++    resolution: {integrity: sha512-Y2tUNy4ouw6tq5oDSKeQYGOyhkUBhNOcGV/02KC+6kd9eDGqdZd++mjMiIDilrBYvjEnCYvVtsuHCuP+okSfug==}
++    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
++    hasBin: true
++
++  natural-compare@1.4.0:
++    resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
++
++  npm-run-path@5.3.0:
++    resolution: {integrity: sha512-ppwTtiJZq0O/ai0z7yfudtBpWIoxM8yE6nHi1X47eFR2EWORqfbu6CnPlNsjeN683eT0qG6H/Pyf9fCcvjnnnQ==}
++    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
++
++  once@1.4.0:
++    resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}
++
++  onetime@6.0.0:
++    resolution: {integrity: sha512-1FlR+gjXK7X+AsAHso35MnyN5KqGwJRi/31ft6x0M194ht7S+rWAvd7PHss9xSKMzE0asv1pyIHaJYq+BbacAQ==}
++    engines: {node: '>=12'}
++
++  optionator@0.9.4:
++    resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
++    engines: {node: '>= 0.8.0'}
++
++  p-limit@3.1.0:
++    resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
++    engines: {node: '>=10'}
++
++  p-limit@5.0.0:
++    resolution: {integrity: sha512-/Eaoq+QyLSiXQ4lyYV23f14mZRQcXnxfHrN0vCai+ak9G0pp9iEQukIIZq5NccEvwRB8PUnZT0KsOoDCINS1qQ==}
++    engines: {node: '>=18'}
++
++  p-locate@5.0.0:
++    resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
++    engines: {node: '>=10'}
++
++  parent-module@1.0.1:
++    resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
++    engines: {node: '>=6'}
++
++  path-exists@4.0.0:
++    resolution: {integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==}
++    engines: {node: '>=8'}
++
++  path-is-absolute@1.0.1:
++    resolution: {integrity: sha512-AVbw3UJ2e9bq64vSaS9Am0fje1Pa8pbGqTTsmXfaIiMpnr5DlDhfJOuLj9Sf95ZPVDAUerDfEk88MPmPe7UCQg==}
++    engines: {node: '>=0.10.0'}
++
++  path-key@3.1.1:
++    resolution: {integrity: sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==}
++    engines: {node: '>=8'}
++
++  path-key@4.0.0:
++    resolution: {integrity: sha512-haREypq7xkM7ErfgIyA0z+Bj4AGKlMSdlQE2jvJo6huWD1EdkKYV+G/T4nq0YEF2vgTT8kqMFKo1uHn950r4SQ==}
++    engines: {node: '>=12'}
++
++  pathe@1.1.2:
++    resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
++
++  pathe@2.0.3:
++    resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
++
++  pathval@1.1.1:
++    resolution: {integrity: sha512-Dp6zGqpTdETdR63lehJYPeIOqpiNBNtc7BpWSLrOje7UaIsE5aY92r/AunQA7rsXvet3lrJ3JnZX29UPTKXyKQ==}
++
++  picocolors@1.1.1:
++    resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
++
++  picomatch@4.0.7:
++    resolution: {integrity: sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA==}
++    engines: {node: '>=12'}
++
++  pkg-types@1.3.1:
++    resolution: {integrity: sha512-/Jm5M4RvtBFVkKWRu2BLUTNP8/M2a+UwuAX+ae4770q1qVGtfjG+WTCupoZixokjmHiry8uI+dlY8KXYV5HVVQ==}
++
++  postcss@8.5.28:
++    resolution: {integrity: sha512-RRuzqDtt5Y9h3quz5hWhK+TPnsmVs6WwSU6LkJMeY4HstUEDuYTG8UJSdawMRzmzAtV+KEoG8N3Qg2qLy5vM/A==}
++    engines: {node: ^10 || ^12 || >=14}
++
++  prelude-ls@1.2.1:
++    resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
++    engines: {node: '>= 0.8.0'}
++
++  pretty-format@29.7.0:
++    resolution: {integrity: sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==}
++    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
++
++  punycode@2.3.1:
++    resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
++    engines: {node: '>=6'}
++
++  react-is@18.3.1:
++    resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
++
++  resolve-from@4.0.0:
++    resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
++    engines: {node: '>=4'}
++
++  rollup@4.63.4:
++    resolution: {integrity: sha512-4U0liVayNIoLp3GFl1FcI8561WepLnZ1rqfraGh7S9B3Ur5F9S283y8Futii7RUU2C/97tOBmBy7nYvhoiOpbQ==}
++    engines: {node: '>=18.0.0', npm: '>=8.0.0'}
++    hasBin: true
++
++  semver@7.8.5:
++    resolution: {integrity: sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA==}
++    engines: {node: '>=10'}
++    hasBin: true
++
++  shebang-command@2.0.0:
++    resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
++    engines: {node: '>=8'}
++
++  shebang-regex@3.0.0:
++    resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
++    engines: {node: '>=8'}
++
++  siginfo@2.0.0:
++    resolution: {integrity: sha512-ybx0WO1/8bSBLEWXZvEd7gMW3Sn3JFlW3TvX1nREbDLRNQNaeNN8WK0meBwPdAaOI7TtRRRJn/Es1zhrrCHu7g==}
++
++  signal-exit@4.1.0:
++    resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
++    engines: {node: '>=14'}
++
++  source-map-js@1.2.1:
++    resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
++    engines: {node: '>=0.10.0'}
++
++  stackback@0.0.2:
++    resolution: {integrity: sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw==}
++
++  std-env@3.10.0:
++    resolution: {integrity: sha512-5GS12FdOZNliM5mAOxFRg7Ir0pWz8MdpYm6AY6VPkGpbA7ZzmbzNcBJQ0GPvvyWgcY7QAhCgf9Uy89I03faLkg==}
++
++  strip-final-newline@3.0.0:
++    resolution: {integrity: sha512-dOESqjYr96iWYylGObzd39EuNTa5VJxyvVAEm5Jnh7KGo75V43Hk1odPQkNDyXNmUR6k+gEiDVXnjB8HJ3crXw==}
++    engines: {node: '>=12'}
++
++  strip-json-comments@3.1.1:
++    resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
++    engines: {node: '>=8'}
++
++  strip-literal@2.1.1:
++    resolution: {integrity: sha512-631UJ6O00eNGfMiWG78ck80dfBab8X6IVFB51jZK5Icd7XAs60Z5y7QdSd/wGIklnWvRbUNloVzhOKKmutxQ6Q==}
++
++  supports-color@7.2.0:
++    resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
++    engines: {node: '>=8'}
++
++  test-exclude@6.0.0:
++    resolution: {integrity: sha512-cAGWPIyOHU6zlmg88jwm7VRyXnMN7iV68OGAbYDk/Mh/xC/pzVPlQtY6ngoIH/5/tciuhGfvESU8GrHrcxD56w==}
++    engines: {node: '>=8'}
++
++  tinybench@2.9.0:
++    resolution: {integrity: sha512-0+DUvqWMValLmha6lr4kD8iAMK1HzV0/aKnCtWb9v9641TnP/MFb7Pc2bxoxQjTXAErryXVgUOfv2YqNllqGeg==}
++
++  tinyglobby@0.2.17:
++    resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
++    engines: {node: '>=12.0.0'}
++
++  tinypool@0.8.4:
++    resolution: {integrity: sha512-i11VH5gS6IFeLY3gMBQ00/MmLncVP7JLXOw1vlgkytLmJK7QnEr7NXf0LBdxfmNPAeyetukOk0bOYrJrFGjYJQ==}
++    engines: {node: '>=14.0.0'}
++
++  tinyspy@2.2.1:
++    resolution: {integrity: sha512-KYad6Vy5VDWV4GH3fjpseMQ/XU2BhIYP7Vzd0LG44qRWm/Yt2WCOTicFdvmgo6gWaqooMQCawTtILVQJupKu7A==}
++    engines: {node: '>=14.0.0'}
++
++  ts-api-utils@2.5.0:
++    resolution: {integrity: sha512-OJ/ibxhPlqrMM0UiNHJ/0CKQkoKF243/AEmplt3qpRgkW8VG7IfOS41h7V8TjITqdByHzrjcS/2si+y4lIh8NA==}
++    engines: {node: '>=18.12'}
++    peerDependencies:
++      typescript: '>=4.8.4'
++
++  tsx@4.23.15:
++    resolution: {integrity: sha512-Yiex1Ovn8z2xPpOWckIiysV1SSyRMY9BkLF++q0yKiDxCqRhosKfMg3janKkiLBwZ5c/YryloKwGZcrEmtwxKw==}
++    engines: {node: '>=18.0.0'}
++    hasBin: true
++
++  type-check@0.4.0:
++    resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
++    engines: {node: '>= 0.8.0'}
++
++  type-detect@4.1.0:
++    resolution: {integrity: sha512-Acylog8/luQ8L7il+geoSxhEkazvkslg7PSNKOX59mbB9cOveP5aq9h74Y7YU8yDpJwetzQQrfIwtf4Wp4LKcw==}
++    engines: {node: '>=4'}
++
++  typescript-eslint@8.70.1:
++    resolution: {integrity: sha512-AcWG7KDjZ2THNXsgwttMaGmzVi0VFRlFYfqFHYQRbDpF3owuYbuiL8c7UUrd2k8s3PoSfIQrWfrGXfcElrWLYA==}
++    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
++    peerDependencies:
++      eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
++      typescript: '>=4.8.4 <6.1.0'
++
++  typescript@5.9.3:
++    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
++    engines: {node: '>=14.17'}
++    hasBin: true
++
++  ufo@1.6.4:
++    resolution: {integrity: sha512-JFNbkD1Svwe0KvGi8GOeLcP4kAWQ609twvCdcHxq1oSL8svv39ZuSvajcD8B+5D0eL4+s1Is2D/O6KN3qcTeRA==}
++
++  uri-js@4.4.1:
++    resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
++
++  vite-node@1.6.1:
++    resolution: {integrity: sha512-YAXkfvGtuTzwWbDSACdJSg4A4DZiAqckWe90Zapc/sEX3XvHcw1NdurM/6od8J207tSDqNbSsgdCacBgvJKFuA==}
++    engines: {node: ^18.0.0 || >=20.0.0}
++    hasBin: true
++
++  vite@5.4.21:
++    resolution: {integrity: sha512-o5a9xKjbtuhY6Bi5S3+HvbRERmouabWbyUcpXXUA1u+GNUKoROi9byOJ8M0nHbHYHkYICiMlqxkg1KkYmm25Sw==}
++    engines: {node: ^18.0.0 || >=20.0.0}
++    hasBin: true
++    peerDependencies:
++      '@types/node': ^18.0.0 || >=20.0.0
++      less: '*'
++      lightningcss: ^1.21.0
++      sass: '*'
++      sass-embedded: '*'
++      stylus: '*'
++      sugarss: '*'
++      terser: ^5.4.0
++    peerDependenciesMeta:
++      '@types/node':
++        optional: true
++      less:
++        optional: true
++      lightningcss:
++        optional: true
++      sass:
++        optional: true
++      sass-embedded:
++        optional: true
++      stylus:
++        optional: true
++      sugarss:
++        optional: true
++      terser:
++        optional: true
++
++  vitest@1.6.1:
++    resolution: {integrity: sha512-Ljb1cnSJSivGN0LqXd/zmDbWEM0RNNg2t1QW/XUhYl/qPqyu7CsqeWtqQXHVaJsecLPuDoak2oJcZN2QoRIOag==}
++    engines: {node: ^18.0.0 || >=20.0.0}
++    hasBin: true
++    peerDependencies:
++      '@edge-runtime/vm': '*'
++      '@types/node': ^18.0.0 || >=20.0.0
++      '@vitest/browser': 1.6.1
++      '@vitest/ui': 1.6.1
++      happy-dom: '*'
++      jsdom: '*'
++    peerDependenciesMeta:
++      '@edge-runtime/vm':
++        optional: true
++      '@types/node':
++        optional: true
++      '@vitest/browser':
++        optional: true
++      '@vitest/ui':
++        optional: true
++      happy-dom:
++        optional: true
++      jsdom:
++        optional: true
++
++  which@2.0.2:
++    resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
++    engines: {node: '>= 8'}
++    hasBin: true
++
++  why-is-node-running@2.3.0:
++    resolution: {integrity: sha512-hUrmaWBdVDcxvYqnyh09zunKzROWjbZTiNy8dBEjkS7ehEDQibXJ7XvlmtbwuTclUiIyN+CyXQD4Vmko8fNm8w==}
++    engines: {node: '>=8'}
++    hasBin: true
++
++  word-wrap@1.2.5:
++    resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
++    engines: {node: '>=0.10.0'}
++
++  wrappy@1.0.2:
++    resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
++
++  yocto-queue@0.1.0:
++    resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
++    engines: {node: '>=10'}
++
++  yocto-queue@1.2.2:
++    resolution: {integrity: sha512-4LCcse/U2MHZ63HAJVE+v71o7yOdIe4cZ70Wpf8D/IyjDKYQLV5GD46B+hSTjJsvV5PztjvHoU580EftxjDZFQ==}
++    engines: {node: '>=12.20'}
++
++snapshots:
++
++  '@ampproject/remapping@2.3.0':
++    dependencies:
++      '@jridgewell/gen-mapping': 0.3.13
++      '@jridgewell/trace-mapping': 0.3.31
++
++  '@babel/helper-string-parser@7.29.7': {}
++
++  '@babel/helper-validator-identifier@7.29.7': {}
++
++  '@babel/parser@7.29.9':
++    dependencies:
++      '@babel/types': 7.29.8
++
++  '@babel/types@7.29.8':
++    dependencies:
++      '@babel/helper-string-parser': 7.29.7
++      '@babel/helper-validator-identifier': 7.29.7
++
++  '@bcoe/v8-coverage@0.2.3': {}
++
++  '@esbuild/aix-ppc64@0.21.5':
++    optional: true
++
++  '@esbuild/aix-ppc64@0.28.2':
++    optional: true
++
++  '@esbuild/android-arm64@0.21.5':
++    optional: true
++
++  '@esbuild/android-arm64@0.28.2':
++    optional: true
++
++  '@esbuild/android-arm@0.21.5':
++    optional: true
++
++  '@esbuild/android-arm@0.28.2':
++    optional: true
++
++  '@esbuild/android-x64@0.21.5':
++    optional: true
++
++  '@esbuild/android-x64@0.28.2':
++    optional: true
++
++  '@esbuild/darwin-arm64@0.21.5':
++    optional: true
++
++  '@esbuild/darwin-arm64@0.28.2':
++    optional: true
++
++  '@esbuild/darwin-x64@0.21.5':
++    optional: true
++
++  '@esbuild/darwin-x64@0.28.2':
++    optional: true
++
++  '@esbuild/freebsd-arm64@0.21.5':
++    optional: true
++
++  '@esbuild/freebsd-arm64@0.28.2':
++    optional: true
++
++  '@esbuild/freebsd-x64@0.21.5':
++    optional: true
++
++  '@esbuild/freebsd-x64@0.28.2':
++    optional: true
++
++  '@esbuild/linux-arm64@0.21.5':
++    optional: true
++
++  '@esbuild/linux-arm64@0.28.2':
++    optional: true
++
++  '@esbuild/linux-arm@0.21.5':
++    optional: true
++
++  '@esbuild/linux-arm@0.28.2':
++    optional: true
++
++  '@esbuild/linux-ia32@0.21.5':
++    optional: true
++
++  '@esbuild/linux-ia32@0.28.2':
++    optional: true
++
++  '@esbuild/linux-loong64@0.21.5':
++    optional: true
++
++  '@esbuild/linux-loong64@0.28.2':
++    optional: true
++
++  '@esbuild/linux-mips64el@0.21.5':
++    optional: true
++
++  '@esbuild/linux-mips64el@0.28.2':
++    optional: true
++
++  '@esbuild/linux-ppc64@0.21.5':
++    optional: true
++
++  '@esbuild/linux-ppc64@0.28.2':
++    optional: true
++
++  '@esbuild/linux-riscv64@0.21.5':
++    optional: true
++
++  '@esbuild/linux-riscv64@0.28.2':
++    optional: true
++
++  '@esbuild/linux-s390x@0.21.5':
++    optional: true
++
++  '@esbuild/linux-s390x@0.28.2':
++    optional: true
++
++  '@esbuild/linux-x64@0.21.5':
++    optional: true
++
++  '@esbuild/linux-x64@0.28.2':
++    optional: true
++
++  '@esbuild/netbsd-arm64@0.28.2':
++    optional: true
++
++  '@esbuild/netbsd-x64@0.21.5':
++    optional: true
++
++  '@esbuild/netbsd-x64@0.28.2':
++    optional: true
++
++  '@esbuild/openbsd-arm64@0.28.2':
++    optional: true
++
++  '@esbuild/openbsd-x64@0.21.5':
++    optional: true
++
++  '@esbuild/openbsd-x64@0.28.2':
++    optional: true
++
++  '@esbuild/openharmony-arm64@0.28.2':
++    optional: true
++
++  '@esbuild/sunos-x64@0.21.5':
++    optional: true
++
++  '@esbuild/sunos-x64@0.28.2':
++    optional: true
++
++  '@esbuild/win32-arm64@0.21.5':
++    optional: true
++
++  '@esbuild/win32-arm64@0.28.2':
++    optional: true
++
++  '@esbuild/win32-ia32@0.21.5':
++    optional: true
++
++  '@esbuild/win32-ia32@0.28.2':
++    optional: true
++
++  '@esbuild/win32-x64@0.21.5':
++    optional: true
++
++  '@esbuild/win32-x64@0.28.2':
++    optional: true
++
++  '@eslint-community/eslint-utils@4.10.1(eslint@9.39.5)':
++    dependencies:
++      eslint: 9.39.5
++      eslint-visitor-keys: 3.4.3
++
++  '@eslint-community/regexpp@4.12.2': {}
++
++  '@eslint/config-array@0.21.2':
++    dependencies:
++      '@eslint/object-schema': 2.1.7
++      debug: 4.4.3
++      minimatch: 3.1.5
++    transitivePeerDependencies:
++      - supports-color
++
++  '@eslint/config-helpers@0.4.2':
++    dependencies:
++      '@eslint/core': 0.17.0
++
++  '@eslint/core@0.17.0':
++    dependencies:
++      '@types/json-schema': 7.0.15
++
++  '@eslint/eslintrc@3.3.7':
++    dependencies:
++      ajv: 6.15.0
++      debug: 4.4.3
++      espree: 10.4.0
++      globals: 14.0.0
++      ignore: 5.3.2
++      import-fresh: 3.3.1
++      js-yaml: 4.3.2
++      minimatch: 3.1.5
++      strip-json-comments: 3.1.1
++    transitivePeerDependencies:
++      - supports-color
++
++  '@eslint/js@9.39.5': {}
++
++  '@eslint/object-schema@2.1.7': {}
++
++  '@eslint/plugin-kit@0.4.1':
++    dependencies:
++      '@eslint/core': 0.17.0
++      levn: 0.4.1
++
++  '@humanfs/core@0.19.2':
++    dependencies:
++      '@humanfs/types': 0.15.0
++
++  '@humanfs/node@0.16.8':
++    dependencies:
++      '@humanfs/core': 0.19.2
++      '@humanfs/types': 0.15.0
++      '@humanwhocodes/retry': 0.4.3
++
++  '@humanfs/types@0.15.0': {}
++
++  '@humanwhocodes/module-importer@1.0.1': {}
++
++  '@humanwhocodes/retry@0.4.3': {}
++
++  '@istanbuljs/schema@0.1.6': {}
++
++  '@jest/schemas@29.6.3':
++    dependencies:
++      '@sinclair/typebox': 0.27.12
++
++  '@jridgewell/gen-mapping@0.3.13':
++    dependencies:
++      '@jridgewell/sourcemap-codec': 1.6.0
++      '@jridgewell/trace-mapping': 0.3.31
++
++  '@jridgewell/resolve-uri@3.1.2': {}
++
++  '@jridgewell/sourcemap-codec@1.6.0': {}
++
++  '@jridgewell/trace-mapping@0.3.31':
++    dependencies:
++      '@jridgewell/resolve-uri': 3.1.2
++      '@jridgewell/sourcemap-codec': 1.6.0
++
++  '@napi-rs/lzma-linux-x64-gnu@1.5.1':
++    optional: true
++
++  '@rollup/rollup-android-arm-eabi@4.63.4':
++    optional: true
++
++  '@rollup/rollup-android-arm64@4.63.4':
++    optional: true
++
++  '@rollup/rollup-darwin-arm64@4.63.4':
++    optional: true
++
++  '@rollup/rollup-darwin-x64@4.63.4':
++    optional: true
++
++  '@rollup/rollup-freebsd-arm64@4.63.4':
++    optional: true
++
++  '@rollup/rollup-freebsd-x64@4.63.4':
++    optional: true
++
++  '@rollup/rollup-linux-arm-gnueabihf@4.63.4':
++    optional: true
++
++  '@rollup/rollup-linux-arm-musleabihf@4.63.4':
++    optional: true
++
++  '@rollup/rollup-linux-arm64-gnu@4.63.4':
++    optional: true
++
++  '@rollup/rollup-linux-arm64-musl@4.63.4':
++    optional: true
++
++  '@rollup/rollup-linux-loong64-gnu@4.63.4':
++    optional: true
++
++  '@rollup/rollup-linux-loong64-musl@4.63.4':
++    optional: true
++
++  '@rollup/rollup-linux-ppc64-gnu@4.63.4':
++    optional: true
++
++  '@rollup/rollup-linux-ppc64-musl@4.63.4':
++    optional: true
++
++  '@rollup/rollup-linux-riscv64-gnu@4.63.4':
++    optional: true
++
++  '@rollup/rollup-linux-riscv64-musl@4.63.4':
++    optional: true
++
++  '@rollup/rollup-linux-s390x-gnu@4.63.4':
++    optional: true
++
++  '@rollup/rollup-linux-x64-gnu@4.63.4':
++    optional: true
++
++  '@rollup/rollup-linux-x64-musl@4.63.4':
++    optional: true
++
++  '@rollup/rollup-openbsd-x64@4.63.4':
++    optional: true
++
++  '@rollup/rollup-openharmony-arm64@4.63.4':
++    optional: true
++
++  '@rollup/rollup-win32-arm64-msvc@4.63.4':
++    optional: true
++
++  '@rollup/rollup-win32-ia32-msvc@4.63.4':
++    optional: true
++
++  '@rollup/rollup-win32-x64-gnu@4.63.4':
++    optional: true
++
++  '@rollup/rollup-win32-x64-msvc@4.63.4':
++    optional: true
++
++  '@sinclair/typebox@0.27.12': {}
++
++  '@types/estree@1.0.9': {}
++
++  '@types/json-schema@7.0.15': {}
++
++  '@typescript-eslint/eslint-plugin@8.70.1(@typescript-eslint/parser@8.70.1(eslint@9.39.5)(typescript@5.9.3))(eslint@9.39.5)(typescript@5.9.3)':
++    dependencies:
++      '@eslint-community/regexpp': 4.12.2
++      '@typescript-eslint/parser': 8.70.1(eslint@9.39.5)(typescript@5.9.3)
++      '@typescript-eslint/scope-manager': 8.70.1
++      '@typescript-eslint/type-utils': 8.70.1(eslint@9.39.5)(typescript@5.9.3)
++      '@typescript-eslint/utils': 8.70.1(eslint@9.39.5)(typescript@5.9.3)
++      '@typescript-eslint/visitor-keys': 8.70.1
++      eslint: 9.39.5
++      ignore: 7.0.10
++      natural-compare: 1.4.0
++      ts-api-utils: 2.5.0(typescript@5.9.3)
++      typescript: 5.9.3
++    transitivePeerDependencies:
++      - supports-color
++
++  '@typescript-eslint/parser@8.70.1(eslint@9.39.5)(typescript@5.9.3)':
++    dependencies:
++      '@typescript-eslint/scope-manager': 8.70.1
++      '@typescript-eslint/types': 8.70.1
++      '@typescript-eslint/typescript-estree': 8.70.1(typescript@5.9.3)
++      '@typescript-eslint/visitor-keys': 8.70.1
++      debug: 4.4.3
++      eslint: 9.39.5
++      typescript: 5.9.3
++    transitivePeerDependencies:
++      - supports-color
++
++  '@typescript-eslint/project-service@8.70.1(typescript@5.9.3)':
++    dependencies:
++      '@typescript-eslint/tsconfig-utils': 8.70.1(typescript@5.9.3)
++      '@typescript-eslint/types': 8.70.1
++      debug: 4.4.3
++      typescript: 5.9.3
++    transitivePeerDependencies:
++      - supports-color
++
++  '@typescript-eslint/scope-manager@8.70.1':
++    dependencies:
++      '@typescript-eslint/types': 8.70.1
++      '@typescript-eslint/visitor-keys': 8.70.1
++
++  '@typescript-eslint/tsconfig-utils@8.70.1(typescript@5.9.3)':
++    dependencies:
++      typescript: 5.9.3
++
++  '@typescript-eslint/type-utils@8.70.1(eslint@9.39.5)(typescript@5.9.3)':
++    dependencies:
++      '@typescript-eslint/types': 8.70.1
++      '@typescript-eslint/typescript-estree': 8.70.1(typescript@5.9.3)
++      '@typescript-eslint/utils': 8.70.1(eslint@9.39.5)(typescript@5.9.3)
++      debug: 4.4.3
++      eslint: 9.39.5
++      ts-api-utils: 2.5.0(typescript@5.9.3)
++      typescript: 5.9.3
++    transitivePeerDependencies:
++      - supports-color
++
++  '@typescript-eslint/types@8.70.1': {}
++
++  '@typescript-eslint/typescript-estree@8.70.1(typescript@5.9.3)':
++    dependencies:
++      '@typescript-eslint/project-service': 8.70.1(typescript@5.9.3)
++      '@typescript-eslint/tsconfig-utils': 8.70.1(typescript@5.9.3)
++      '@typescript-eslint/types': 8.70.1
++      '@typescript-eslint/visitor-keys': 8.70.1
++      debug: 4.4.3
++      minimatch: 10.2.6
++      semver: 7.8.5
++      tinyglobby: 0.2.17
++      ts-api-utils: 2.5.0(typescript@5.9.3)
++      typescript: 5.9.3
++    transitivePeerDependencies:
++      - supports-color
++
++  '@typescript-eslint/utils@8.70.1(eslint@9.39.5)(typescript@5.9.3)':
++    dependencies:
++      '@eslint-community/eslint-utils': 4.10.1(eslint@9.39.5)
++      '@typescript-eslint/scope-manager': 8.70.1
++      '@typescript-eslint/types': 8.70.1
++      '@typescript-eslint/typescript-estree': 8.70.1(typescript@5.9.3)
++      eslint: 9.39.5
++      typescript: 5.9.3
++    transitivePeerDependencies:
++      - supports-color
++
++  '@typescript-eslint/visitor-keys@8.70.1':
++    dependencies:
++      '@typescript-eslint/types': 8.70.1
++      eslint-visitor-keys: 5.0.1
++
++  '@vitest/coverage-v8@1.6.1(vitest@1.6.1)':
++    dependencies:
++      '@ampproject/remapping': 2.3.0
++      '@bcoe/v8-coverage': 0.2.3
++      debug: 4.4.3
++      istanbul-lib-coverage: 3.2.2
++      istanbul-lib-report: 3.0.1
++      istanbul-lib-source-maps: 5.0.6
++      istanbul-reports: 3.2.0
++      magic-string: 0.30.21
++      magicast: 0.3.5
++      picocolors: 1.1.1
++      std-env: 3.10.0
++      strip-literal: 2.1.1
++      test-exclude: 6.0.0
++      vitest: 1.6.1
++    transitivePeerDependencies:
++      - supports-color
++
++  '@vitest/expect@1.6.1':
++    dependencies:
++      '@vitest/spy': 1.6.1
++      '@vitest/utils': 1.6.1
++      chai: 4.5.0
++
++  '@vitest/runner@1.6.1':
++    dependencies:
++      '@vitest/utils': 1.6.1
++      p-limit: 5.0.0
++      pathe: 1.1.2
++
++  '@vitest/snapshot@1.6.1':
++    dependencies:
++      magic-string: 0.30.21
++      pathe: 1.1.2
++      pretty-format: 29.7.0
++
++  '@vitest/spy@1.6.1':
++    dependencies:
++      tinyspy: 2.2.1
++
++  '@vitest/utils@1.6.1':
++    dependencies:
++      diff-sequences: 29.6.3
++      estree-walker: 3.0.3
++      loupe: 2.3.7
++      pretty-format: 29.7.0
++
++  acorn-jsx@5.3.2(acorn@8.18.0):
++    dependencies:
++      acorn: 8.18.0
++
++  acorn-walk@8.3.5:
++    dependencies:
++      acorn: 8.18.0
++
++  acorn@8.18.0: {}
++
++  ajv@6.15.0:
++    dependencies:
++      fast-deep-equal: 3.1.3
++      fast-json-stable-stringify: 2.1.0
++      json-schema-traverse: 0.4.1
++      uri-js: 4.4.1
++
++  ansi-styles@4.3.0:
++    dependencies:
++      color-convert: 2.0.1
++
++  ansi-styles@5.2.0: {}
++
++  argparse@2.0.1: {}
++
++  assertion-error@1.1.0: {}
++
++  balanced-match@1.0.2: {}
++
++  balanced-match@4.0.4: {}
++
++  brace-expansion@1.1.21:
++    dependencies:
++      balanced-match: 1.0.2
++      concat-map: 0.0.1
++
++  brace-expansion@5.0.12:
++    dependencies:
++      balanced-match: 4.0.4
++
++  cac@6.7.14: {}
++
++  callsites@3.1.0: {}
++
++  chai@4.5.0:
++    dependencies:
++      assertion-error: 1.1.0
++      check-error: 1.0.3
++      deep-eql: 4.1.4
++      get-func-name: 2.0.2
++      loupe: 2.3.7
++      pathval: 1.1.1
++      type-detect: 4.1.0
++
++  chalk@4.1.2:
++    dependencies:
++      ansi-styles: 4.3.0
++      supports-color: 7.2.0
++
++  check-error@1.0.3:
++    dependencies:
++      get-func-name: 2.0.2
++
++  color-convert@2.0.1:
++    dependencies:
++      color-name: 1.1.4
++
++  color-name@1.1.4: {}
++
++  concat-map@0.0.1: {}
++
++  confbox@0.1.8: {}
++
++  cross-spawn@7.0.6:
++    dependencies:
++      path-key: 3.1.1
++      shebang-command: 2.0.0
++      which: 2.0.2
++
++  debug@4.4.3:
++    dependencies:
++      ms: 2.1.3
++
++  deep-eql@4.1.4:
++    dependencies:
++      type-detect: 4.1.0
++
++  deep-is@0.1.4: {}
++
++  diff-sequences@29.6.3: {}
++
++  esbuild@0.21.5:
++    optionalDependencies:
++      '@esbuild/aix-ppc64': 0.21.5
++      '@esbuild/android-arm': 0.21.5
++      '@esbuild/android-arm64': 0.21.5
++      '@esbuild/android-x64': 0.21.5
++      '@esbuild/darwin-arm64': 0.21.5
++      '@esbuild/darwin-x64': 0.21.5
++      '@esbuild/freebsd-arm64': 0.21.5
++      '@esbuild/freebsd-x64': 0.21.5
++      '@esbuild/linux-arm': 0.21.5
++      '@esbuild/linux-arm64': 0.21.5
++      '@esbuild/linux-ia32': 0.21.5
++      '@esbuild/linux-loong64': 0.21.5
++      '@esbuild/linux-mips64el': 0.21.5
++      '@esbuild/linux-ppc64': 0.21.5
++      '@esbuild/linux-riscv64': 0.21.5
++      '@esbuild/linux-s390x': 0.21.5
++      '@esbuild/linux-x64': 0.21.5
++      '@esbuild/netbsd-x64': 0.21.5
++      '@esbuild/openbsd-x64': 0.21.5
++      '@esbuild/sunos-x64': 0.21.5
++      '@esbuild/win32-arm64': 0.21.5
++      '@esbuild/win32-ia32': 0.21.5
++      '@esbuild/win32-x64': 0.21.5
++
++  esbuild@0.28.2:
++    optionalDependencies:
++      '@esbuild/aix-ppc64': 0.28.2
++      '@esbuild/android-arm': 0.28.2
++      '@esbuild/android-arm64': 0.28.2
++      '@esbuild/android-x64': 0.28.2
++      '@esbuild/darwin-arm64': 0.28.2
++      '@esbuild/darwin-x64': 0.28.2
++      '@esbuild/freebsd-arm64': 0.28.2
++      '@esbuild/freebsd-x64': 0.28.2
++      '@esbuild/linux-arm': 0.28.2
++      '@esbuild/linux-arm64': 0.28.2
++      '@esbuild/linux-ia32': 0.28.2
++      '@esbuild/linux-loong64': 0.28.2
++      '@esbuild/linux-mips64el': 0.28.2
++      '@esbuild/linux-ppc64': 0.28.2
++      '@esbuild/linux-riscv64': 0.28.2
++      '@esbuild/linux-s390x': 0.28.2
++      '@esbuild/linux-x64': 0.28.2
++      '@esbuild/netbsd-arm64': 0.28.2
++      '@esbuild/netbsd-x64': 0.28.2
++      '@esbuild/openbsd-arm64': 0.28.2
++      '@esbuild/openbsd-x64': 0.28.2
++      '@esbuild/openharmony-arm64': 0.28.2
++      '@esbuild/sunos-x64': 0.28.2
++      '@esbuild/win32-arm64': 0.28.2
++      '@esbuild/win32-ia32': 0.28.2
++      '@esbuild/win32-x64': 0.28.2
++
++  escape-string-regexp@4.0.0: {}
++
++  eslint-plugin-sonarjs@1.0.4(eslint@9.39.5):
++    dependencies:
++      eslint: 9.39.5
++
++  eslint-scope@8.4.0:
++    dependencies:
++      esrecurse: 4.3.0
++      estraverse: 5.3.0
++
++  eslint-visitor-keys@3.4.3: {}
++
++  eslint-visitor-keys@4.2.1: {}
++
++  eslint-visitor-keys@5.0.1: {}
++
++  eslint@9.39.5:
++    dependencies:
++      '@eslint-community/eslint-utils': 4.10.1(eslint@9.39.5)
++      '@eslint-community/regexpp': 4.12.2
++      '@eslint/config-array': 0.21.2
++      '@eslint/config-helpers': 0.4.2
++      '@eslint/core': 0.17.0
++      '@eslint/eslintrc': 3.3.7
++      '@eslint/js': 9.39.5
++      '@eslint/plugin-kit': 0.4.1
++      '@humanfs/node': 0.16.8
++      '@humanwhocodes/module-importer': 1.0.1
++      '@humanwhocodes/retry': 0.4.3
++      '@types/estree': 1.0.9
++      ajv: 6.15.0
++      chalk: 4.1.2
++      cross-spawn: 7.0.6
++      debug: 4.4.3
++      escape-string-regexp: 4.0.0
++      eslint-scope: 8.4.0
++      eslint-visitor-keys: 4.2.1
++      espree: 10.4.0
++      esquery: 1.7.0
++      esutils: 2.0.3
++      fast-deep-equal: 3.1.3
++      file-entry-cache: 8.0.0
++      find-up: 5.0.0
++      glob-parent: 6.0.2
++      ignore: 5.3.2
++      imurmurhash: 0.1.4
++      is-glob: 4.0.3
++      json-stable-stringify-without-jsonify: 1.0.1
++      lodash.merge: 4.6.2
++      minimatch: 3.1.5
++      natural-compare: 1.4.0
++      optionator: 0.9.4
++    transitivePeerDependencies:
++      - supports-color
++
++  espree@10.4.0:
++    dependencies:
++      acorn: 8.18.0
++      acorn-jsx: 5.3.2(acorn@8.18.0)
++      eslint-visitor-keys: 4.2.1
++
++  esquery@1.7.0:
++    dependencies:
++      estraverse: 5.3.0
++
++  esrecurse@4.3.0:
++    dependencies:
++      estraverse: 5.3.0
++
++  estraverse@5.3.0: {}
++
++  estree-walker@3.0.3:
++    dependencies:
++      '@types/estree': 1.0.9
++
++  esutils@2.0.3: {}
++
++  execa@8.0.1:
++    dependencies:
++      cross-spawn: 7.0.6
++      get-stream: 8.0.1
++      human-signals: 5.0.0
++      is-stream: 3.0.0
++      merge-stream: 2.0.0
++      npm-run-path: 5.3.0
++      onetime: 6.0.0
++      signal-exit: 4.1.0
++      strip-final-newline: 3.0.0
++
++  fast-deep-equal@3.1.3: {}
++
++  fast-json-stable-stringify@2.1.0: {}
++
++  fast-levenshtein@2.0.6: {}
++
++  fdir@6.5.0(picomatch@4.0.7):
++    optionalDependencies:
++      picomatch: 4.0.7
++
++  file-entry-cache@8.0.0:
++    dependencies:
++      flat-cache: 4.0.1
++
++  find-up@5.0.0:
++    dependencies:
++      locate-path: 6.0.0
++      path-exists: 4.0.0
++
++  flat-cache@4.0.1:
++    dependencies:
++      flatted: 3.4.4
++      keyv: 4.5.4
++
++  flatted@3.4.4: {}
++
++  fs.realpath@1.0.0: {}
++
++  fsevents@2.3.3:
++    optional: true
++
++  get-func-name@2.0.2: {}
++
++  get-stream@8.0.1: {}
++
++  glob-parent@6.0.2:
++    dependencies:
++      is-glob: 4.0.3
++
++  glob@7.2.3:
++    dependencies:
++      fs.realpath: 1.0.0
++      inflight: 1.0.6
++      inherits: 2.0.4
++      minimatch: 3.1.5
++      once: 1.4.0
++      path-is-absolute: 1.0.1
++
++  globals@14.0.0: {}
++
++  has-flag@4.0.0: {}
++
++  html-escaper@2.0.2: {}
++
++  human-signals@5.0.0: {}
++
++  ignore@5.3.2: {}
++
++  ignore@7.0.10: {}
++
++  import-fresh@3.3.1:
++    dependencies:
++      parent-module: 1.0.1
++      resolve-from: 4.0.0
++
++  imurmurhash@0.1.4: {}
++
++  inflight@1.0.6:
++    dependencies:
++      once: 1.4.0
++      wrappy: 1.0.2
++
++  inherits@2.0.4: {}
++
++  is-extglob@2.1.1: {}
++
++  is-glob@4.0.3:
++    dependencies:
++      is-extglob: 2.1.1
++
++  is-stream@3.0.0: {}
++
++  isexe@2.0.0: {}
++
++  istanbul-lib-coverage@3.2.2: {}
++
++  istanbul-lib-report@3.0.1:
++    dependencies:
++      istanbul-lib-coverage: 3.2.2
++      make-dir: 4.0.0
++      supports-color: 7.2.0
++
++  istanbul-lib-source-maps@5.0.6:
++    dependencies:
++      '@jridgewell/trace-mapping': 0.3.31
++      debug: 4.4.3
++      istanbul-lib-coverage: 3.2.2
++    transitivePeerDependencies:
++      - supports-color
++
++  istanbul-reports@3.2.0:
++    dependencies:
++      html-escaper: 2.0.2
++      istanbul-lib-report: 3.0.1
++
++  js-tokens@9.0.1: {}
++
++  js-yaml@4.3.2:
++    dependencies:
++      argparse: 2.0.1
++
++  json-buffer@3.0.1: {}
++
++  json-schema-traverse@0.4.1: {}
++
++  json-stable-stringify-without-jsonify@1.0.1: {}
++
++  keyv@4.5.4:
++    dependencies:
++      json-buffer: 3.0.1
++
++  levn@0.4.1:
++    dependencies:
++      prelude-ls: 1.2.1
++      type-check: 0.4.0
++
++  local-pkg@0.5.1:
++    dependencies:
++      mlly: 1.8.2
++      pkg-types: 1.3.1
++
++  locate-path@6.0.0:
++    dependencies:
++      p-locate: 5.0.0
++
++  lodash.merge@4.6.2: {}
++
++  loupe@2.3.7:
++    dependencies:
++      get-func-name: 2.0.2
++
++  magic-string@0.30.21:
++    dependencies:
++      '@jridgewell/sourcemap-codec': 1.6.0
++
++  magicast@0.3.5:
++    dependencies:
++      '@babel/parser': 7.29.9
++      '@babel/types': 7.29.8
++      source-map-js: 1.2.1
++
++  make-dir@4.0.0:
++    dependencies:
++      semver: 7.8.5
++
++  merge-stream@2.0.0: {}
++
++  mimic-fn@4.0.0: {}
++
++  minimatch@10.2.6:
++    dependencies:
++      brace-expansion: 5.0.12
++
++  minimatch@3.1.5:
++    dependencies:
++      brace-expansion: 1.1.21
++
++  mlly@1.8.2:
++    dependencies:
++      acorn: 8.18.0
++      pathe: 2.0.3
++      pkg-types: 1.3.1
++      ufo: 1.6.4
++
++  ms@2.1.3: {}
++
++  nanoid@3.3.19: {}
++
++  natural-compare@1.4.0: {}
++
++  npm-run-path@5.3.0:
++    dependencies:
++      path-key: 4.0.0
++
++  once@1.4.0:
++    dependencies:
++      wrappy: 1.0.2
++
++  onetime@6.0.0:
++    dependencies:
++      mimic-fn: 4.0.0
++
++  optionator@0.9.4:
++    dependencies:
++      deep-is: 0.1.4
++      fast-levenshtein: 2.0.6
++      levn: 0.4.1
++      prelude-ls: 1.2.1
++      type-check: 0.4.0
++      word-wrap: 1.2.5
++
++  p-limit@3.1.0:
++    dependencies:
++      yocto-queue: 0.1.0
++
++  p-limit@5.0.0:
++    dependencies:
++      yocto-queue: 1.2.2
++
++  p-locate@5.0.0:
++    dependencies:
++      p-limit: 3.1.0
++
++  parent-module@1.0.1:
++    dependencies:
++      callsites: 3.1.0
++
++  path-exists@4.0.0: {}
++
++  path-is-absolute@1.0.1: {}
++
++  path-key@3.1.1: {}
++
++  path-key@4.0.0: {}
++
++  pathe@1.1.2: {}
++
++  pathe@2.0.3: {}
++
++  pathval@1.1.1: {}
++
++  picocolors@1.1.1: {}
++
++  picomatch@4.0.7: {}
++
++  pkg-types@1.3.1:
++    dependencies:
++      confbox: 0.1.8
++      mlly: 1.8.2
++      pathe: 2.0.3
++
++  postcss@8.5.28:
++    dependencies:
++      nanoid: 3.3.19
++      picocolors: 1.1.1
++      source-map-js: 1.2.1
++
++  prelude-ls@1.2.1: {}
++
++  pretty-format@29.7.0:
++    dependencies:
++      '@jest/schemas': 29.6.3
++      ansi-styles: 5.2.0
++      react-is: 18.3.1
++
++  punycode@2.3.1: {}
++
++  react-is@18.3.1: {}
++
++  resolve-from@4.0.0: {}
++
++  rollup@4.63.4:
++    dependencies:
++      '@types/estree': 1.0.9
++    optionalDependencies:
++      '@napi-rs/lzma-linux-x64-gnu': 1.5.1
++      '@rollup/rollup-android-arm-eabi': 4.63.4
++      '@rollup/rollup-android-arm64': 4.63.4
++      '@rollup/rollup-darwin-arm64': 4.63.4
++      '@rollup/rollup-darwin-x64': 4.63.4
++      '@rollup/rollup-freebsd-arm64': 4.63.4
++      '@rollup/rollup-freebsd-x64': 4.63.4
++      '@rollup/rollup-linux-arm-gnueabihf': 4.63.4
++      '@rollup/rollup-linux-arm-musleabihf': 4.63.4
++      '@rollup/rollup-linux-arm64-gnu': 4.63.4
++      '@rollup/rollup-linux-arm64-musl': 4.63.4
++      '@rollup/rollup-linux-loong64-gnu': 4.63.4
++      '@rollup/rollup-linux-loong64-musl': 4.63.4
++      '@rollup/rollup-linux-ppc64-gnu': 4.63.4
++      '@rollup/rollup-linux-ppc64-musl': 4.63.4
++      '@rollup/rollup-linux-riscv64-gnu': 4.63.4
++      '@rollup/rollup-linux-riscv64-musl': 4.63.4
++      '@rollup/rollup-linux-s390x-gnu': 4.63.4
++      '@rollup/rollup-linux-x64-gnu': 4.63.4
++      '@rollup/rollup-linux-x64-musl': 4.63.4
++      '@rollup/rollup-openbsd-x64': 4.63.4
++      '@rollup/rollup-openharmony-arm64': 4.63.4
++      '@rollup/rollup-win32-arm64-msvc': 4.63.4
++      '@rollup/rollup-win32-ia32-msvc': 4.63.4
++      '@rollup/rollup-win32-x64-gnu': 4.63.4
++      '@rollup/rollup-win32-x64-msvc': 4.63.4
++      fsevents: 2.3.3
++
++  semver@7.8.5: {}
++
++  shebang-command@2.0.0:
++    dependencies:
++      shebang-regex: 3.0.0
++
++  shebang-regex@3.0.0: {}
++
++  siginfo@2.0.0: {}
++
++  signal-exit@4.1.0: {}
++
++  source-map-js@1.2.1: {}
++
++  stackback@0.0.2: {}
++
++  std-env@3.10.0: {}
++
++  strip-final-newline@3.0.0: {}
++
++  strip-json-comments@3.1.1: {}
++
++  strip-literal@2.1.1:
++    dependencies:
++      js-tokens: 9.0.1
++
++  supports-color@7.2.0:
++    dependencies:
++      has-flag: 4.0.0
++
++  test-exclude@6.0.0:
++    dependencies:
++      '@istanbuljs/schema': 0.1.6
++      glob: 7.2.3
++      minimatch: 3.1.5
++
++  tinybench@2.9.0: {}
++
++  tinyglobby@0.2.17:
++    dependencies:
++      fdir: 6.5.0(picomatch@4.0.7)
++      picomatch: 4.0.7
++
++  tinypool@0.8.4: {}
++
++  tinyspy@2.2.1: {}
++
++  ts-api-utils@2.5.0(typescript@5.9.3):
++    dependencies:
++      typescript: 5.9.3
++
++  tsx@4.23.15:
++    dependencies:
++      esbuild: 0.28.2
++    optionalDependencies:
++      fsevents: 2.3.3
++
++  type-check@0.4.0:
++    dependencies:
++      prelude-ls: 1.2.1
++
++  type-detect@4.1.0: {}
++
++  typescript-eslint@8.70.1(eslint@9.39.5)(typescript@5.9.3):
++    dependencies:
++      '@typescript-eslint/eslint-plugin': 8.70.1(@typescript-eslint/parser@8.70.1(eslint@9.39.5)(typescript@5.9.3))(eslint@9.39.5)(typescript@5.9.3)
++      '@typescript-eslint/parser': 8.70.1(eslint@9.39.5)(typescript@5.9.3)
++      '@typescript-eslint/typescript-estree': 8.70.1(typescript@5.9.3)
++      '@typescript-eslint/utils': 8.70.1(eslint@9.39.5)(typescript@5.9.3)
++      eslint: 9.39.5
++      typescript: 5.9.3
++    transitivePeerDependencies:
++      - supports-color
++
++  typescript@5.9.3: {}
++
++  ufo@1.6.4: {}
++
++  uri-js@4.4.1:
++    dependencies:
++      punycode: 2.3.1
++
++  vite-node@1.6.1:
++    dependencies:
++      cac: 6.7.14
++      debug: 4.4.3
++      pathe: 1.1.2
++      picocolors: 1.1.1
++      vite: 5.4.21
++    transitivePeerDependencies:
++      - '@types/node'
++      - less
++      - lightningcss
++      - sass
++      - sass-embedded
++      - stylus
++      - sugarss
++      - supports-color
++      - terser
++
++  vite@5.4.21:
++    dependencies:
++      esbuild: 0.21.5
++      postcss: 8.5.28
++      rollup: 4.63.4
++    optionalDependencies:
++      fsevents: 2.3.3
++
++  vitest@1.6.1:
++    dependencies:
++      '@vitest/expect': 1.6.1
++      '@vitest/runner': 1.6.1
++      '@vitest/snapshot': 1.6.1
++      '@vitest/spy': 1.6.1
++      '@vitest/utils': 1.6.1
++      acorn-walk: 8.3.5
++      chai: 4.5.0
++      debug: 4.4.3
++      execa: 8.0.1
++      local-pkg: 0.5.1
++      magic-string: 0.30.21
++      pathe: 1.1.2
++      picocolors: 1.1.1
++      std-env: 3.10.0
++      strip-literal: 2.1.1
++      tinybench: 2.9.0
++      tinypool: 0.8.4
++      vite: 5.4.21
++      vite-node: 1.6.1
++      why-is-node-running: 2.3.0
++    transitivePeerDependencies:
++      - less
++      - lightningcss
++      - sass
++      - sass-embedded
++      - stylus
++      - sugarss
++      - supports-color
++      - terser
++
++  which@2.0.2:
++    dependencies:
++      isexe: 2.0.0
++
++  why-is-node-running@2.3.0:
++    dependencies:
++      siginfo: 2.0.0
++      stackback: 0.0.2
++
++  word-wrap@1.2.5: {}
++
++  wrappy@1.0.2: {}
++
++  yocto-queue@0.1.0: {}
++
++  yocto-queue@1.2.2: {}
+diff --git a/prompt.md b/prompt.md
+new file mode 100644
+index 0000000..8e0171d
+--- /dev/null
++++ b/prompt.md
+@@ -0,0 +1,390 @@
++# MHPCO Claim Office Kata
++
++## Setting
++
++You are building the policy management system for the **Most Honorable
++Privileged Claims Office for Magical Risks and Cursed Items** (MHPCO),
++an old-fashioned insurance institution that covers magical items —
++swords, amulets, staves, potions, and components such as runes and
++moonstones. The MHPCO is bureaucratic, slightly stingy, and proud of
++its venerable traditions.
++
++## Feature
++
++The system supports two operations: **quote** computes the premium for
++a list of items a customer wishes to insure, and **claim** processes a
++damage report against an existing policy.
++
++## Rules
++
++### Item values and base premiums
++
++Each main item has an insurance value and a base premium according to
++the MHPCO price list:
++
++- Sword: 1000 G insurance value, 100 G base premium
++- Amulet: 600 G / 60 G
++- Staff: 800 G / 80 G
++- Potion: 400 G / 40 G
++
++Components — for example runes and moonstones — are insured at 250 G
++each, with a base premium of 25 G per component. A building block of
++3 alike components is offered at a special base premium of 60 G.
++
++### Premium modifiers
++
++- Cursed items add a 50 % risk surcharge.
++- Highly enchanted items (enchantment level ≥ 5) add a 30 % risk
++  surcharge.
++- Long-standing customers (≥ 2 years of business with MHPCO) receive a
++  20 % loyalty discount.
++- A first insurance carries a 10 % initial assessment surcharge.
++- Customers receive a 15 % discount on each contract after their first.
++- A 5 G processing fee is added to every premium.
++
++All amounts are rounded to whole G in the MHPCO's favor.
++
++### Claim processing
++
++A deductible of 100 G applies per damage event. The total payout per
++policy is capped at twice the insurance sum.
++
++- Damage to items with enchantment level ≥ 8 is reimbursed at 50 % of
++  the damage amount.
++- Damage to items made of dragon material is fully reimbursed.
++
++## Examples
++
++The examples below illustrate single rules in isolation. Values shown
++are base premiums or raw payout amounts before integration with other
++modifiers, unless stated otherwise.
++
++### Building block of 3 alike components
++
++- 2 runes → 50 G base premium
++- 3 runes → 60 G base premium (block applies)
++- 4 runes → 100 G base premium (no block — block requires exactly 3)
++- 7 runes → 175 G base premium
++
++### "Alike" components
++
++> ❓ Hmm — "alike" components: does that mean exactly the same type,
++> or just the same family (rune-y, gemstone-y)?
++
++- 2 runes + 1 moonstone → 75 G base premium (no block: different types)
++- 3 runes + 3 moonstones → 120 G base premium (two separate blocks)
++
++### Modifier scope on multi-item policies
++
++> ❓ A policy with several items: does the cursed surcharge apply to
++> the whole policy, or just to the cursed item?
++
++- a policy covers a cursed sword (base premium 100 G) and a plain
++  amulet (base premium 60 G) → policy base premium 160 G; the cursed
++  surcharge adds 50 G (50 % of the cursed sword's base premium, not
++  of the policy total) → 210 G before further modifiers and fee
++- item-specific modifiers (cursed, high enchantment) apply to the
++  base premium of the affected item; policy-wide modifiers (loyalty,
++  first insurance, follow-up contract) apply to the policy base
++  premium (the sum of all item base premiums); the processing fee is
++  added at the very end
++
++### Modifier thresholds
++
++- customer with exactly 2 years with MHPCO → loyalty discount applies
++- sword with exactly enchantment 5 → high-enchantment surcharge
++  applies; if cursed, both surcharges apply
++- sword with enchantment 4 → no high-enchantment surcharge; curse
++  surcharge applies only if cursed
++- dragon-material sword with exactly enchantment 8, damage 1000 G →
++  payout 400 G (high-enchantment clause applies, then deductible)
++
++### Deductible per damage event
++
++- a dragon attack damages an insured sword (500 G) and an insured
++  amulet (300 G); payout = 600 G (the 100 G deductible applies once
++  per damaged item)
++
++### Standard reimbursement (no special clauses)
++
++- regular sword (steel, enchantment 3), damage 500 G → payout 400 G
++  (full reimbursement minus 100 G deductible; no special clause applies)
++- damage to a rune (insurance value 250 G), damage 200 G → payout
++  100 G (full reimbursement minus 100 G deductible; runes have no
++  enchantment level or material, so no special clause applies)
++
++### Enchantment threshold vs. dragon material
++
++- dragon-material sword, enchantment 9, damage 1000 G → payout 400 G
++  (both clauses apply; the 50 % rule wins, then deductible: 500 − 100)
++- dragon-material sword, enchantment 5, damage 800 G → payout 700 G
++  (only the dragon-material clause applies: full reimbursement,
++  then deductible: 800 − 100)
++- steel sword, enchantment 9, damage 1000 G → payout 400 G
++  (only the high-enchantment clause applies: 50 % first, then
++  deductible: 500 − 100)
++
++### Multiple items of the same type
++
++> ❓ What if a customer brings two of the same item — one in hand,
++> one in the backpack? Or just two swords because they fight with
++> two?
++
++- a policy covers two swords → insurance sum 2000 G (= 2×1000),
++  cap 4000 G
++- a dragon attack damages both swords; `damages` contains two
++  `{itemType: "sword", ...}` entries → each entry is treated as a
++  separate damage with its own deductible
++- if the `damages` array contains more entries of a given type than
++  the policy actually covers (e.g. two sword damages but only one
++  sword insured) → the CLI exits with a non-zero status code; the
++  whole claim is rejected
++
++### Cap exhaustion
++
++- a policy covers a sword and an amulet → insurance sum 1600 G
++  (= 1000 + 600, the sum of the items' insurance values), cap 3200 G
++- a cursed sword (insurance value 1000 G, premium with modifiers
++  165 G) → cap 2000 G (based on the unmodified insurance value;
++  premium modifiers do not raise the cap)
++- a policy covers a sword and 3 runes (a block) → insurance sum
++  1750 G (= 1000 + 3×250); the block discount affects the premium
++  only, not the insurance sum
++- a sword is insured (insurance sum 1000 G, cap 2000 G); two successive
++  claims of 1500 G each
++- first claim → payout 1400 G, cap remaining 600 G
++- second claim → payout 600 G, cap remaining 0 G (the desired 1400 G
++  is reduced to the remaining cap)
++
++### Rounding in the MHPCO's favor
++
++- a premium calculation that yields 197.5 G → final premium 198 G
++  (rounded up)
++- a payout calculation that yields 350.5 G → final payout 350 G
++  (rounded down)
++- intermediate amounts during a calculation are kept as fractions;
++  only the final premium or payout is rounded
++
++### Edge cases
++
++- empty item list → premium 5 G (only the processing fee)
++- quote includes an item with an unknown type (e.g.
++  `{type: "broomstick"}`) → the CLI exits with a non-zero status code
++  and writes an error description to stderr; no `results` are written
++  to stdout
++- claim references a damage entry whose item is not part of the policy
++  (e.g. an amulet damaged when only a sword is insured, or an item
++  with an unknown type) → the CLI exits with a non-zero status code
++  and writes an error description to stderr
++- claim contains a damage entry with `amount: -200` → the CLI exits
++  with a non-zero status code and writes an error description to
++  stderr
++
++## Integration examples
++
++The following two examples combine multiple rules to clarify how
++modifiers stack and how customer history affects the premium.
++
++### Newcomer with a cursed sword
++
++- customer: 0 years with MHPCO, no previous contract
++- item: a cursed sword (steel, enchantment 3)
++- premium: 165 G
++- (100 G base + 50 G curse + 10 G first insurance = 160 G + 5 G fee = 165 G)
++
++### Long-standing customer's second contract
++
++> ❓ Wait — does "first insurance" mean the customer's first ever
++> contract, or the first time we see this particular item? A
++> long-standing customer with a brand-new sword: does the first
++> insurance surcharge still apply?
++
++- customer: 3 years with MHPCO; this is the customer's second `quote`
++  in the scenario
++- item: a cursed sword (steel, enchantment 7)
++- premium: 160 G
++- (100 G base + 50 G curse + 30 G high enchantment − 20 G loyalty
++  + 10 G first insurance − 15 G follow-up contract = 155 G + 5 G fee
++  = 160 G)
++- The first insurance surcharge still applies to the new sword, even
++  though the customer is on a follow-up contract — each item in a
++  `quote` is treated as a first insurance, regardless of customer
++  history.
++
++## CLI input/output format
++
++The implementation must be exposed as a command-line executable
++`claim-office`. It reads a JSON document from stdin describing a
++scenario and writes a JSON document with the corresponding results to
++stdout.
++
++A scenario is a JSON object with a `customer` object and a `steps`
++array. The `customer` describes the single customer for the whole
++scenario. Each step has an `op` field (`"quote"` or `"claim"`) and the
++operation-specific input fields. Steps are processed sequentially;
++later `claim` steps refer to a policy created by an earlier `quote`
++step via its zero-based step index in a `policy` field.
++
++Stdout receives a JSON object with a `results` array of the same length
++and order as the input `steps`. Each result contains:
++
++- For a `quote` step: `premium` (integer, total premium in G).
++- For a `claim` step: `payout` (integer, payout in G) and
++  `remainingCap` (integer, cap remaining on the policy after this
++  claim).
++
++### JSON Schema (normative)
++
++The field names below are **binding**. Your implementation must use
++exactly these names; do not rename or restructure them.
++
++**Input (stdin):**
++
++```json
++{
++  "type": "object",
++  "required": ["customer", "steps"],
++  "properties": {
++    "customer": {
++      "type": "object",
++      "required": ["yearsWithMHPCO"],
++      "properties": {
++        "yearsWithMHPCO": { "type": "integer" }
++      }
++    },
++    "steps": {
++      "type": "array",
++      "items": {
++        "oneOf": [
++          {
++            "description": "Quote step",
++            "required": ["op", "items"],
++            "properties": {
++              "op": { "const": "quote" },
++              "items": {
++                "type": "array",
++                "items": {
++                  "type": "object",
++                  "required": ["type"],
++                  "properties": {
++                    "type":        { "type": "string", "description": "sword | amulet | staff | potion | rune | moonstone" },
++                    "material":    { "type": "string" },
++                    "enchantment": { "type": "integer" },
++                    "cursed":      { "type": "boolean" }
++                  }
++                }
++              }
++            }
++          },
++          {
++            "description": "Claim step",
++            "required": ["op", "policy", "incident"],
++            "properties": {
++              "op":     { "const": "claim" },
++              "policy": { "type": "integer", "description": "zero-based index of the quote step that created the policy" },
++              "incident": {
++                "type": "object",
++                "required": ["cause", "damages"],
++                "properties": {
++                  "cause": { "type": "string" },
++                  "damages": {
++                    "type": "array",
++                    "items": {
++                      "type": "object",
++                      "required": ["itemType", "amount"],
++                      "properties": {
++                        "itemType": { "type": "string" },
++                        "amount":   { "type": "integer" }
++                      }
++                    }
++                  }
++                }
++              }
++            }
++          }
++        ]
++      }
++    }
++  }
++}
++```
++
++**Output (stdout):**
++
++```json
++{
++  "type": "object",
++  "required": ["results"],
++  "properties": {
++    "results": {
++      "type": "array",
++      "items": {
++        "oneOf": [
++          {
++            "description": "Quote result",
++            "required": ["premium"],
++            "properties": {
++              "premium": { "type": "integer" }
++            }
++          },
++          {
++            "description": "Claim result",
++            "required": ["payout", "remainingCap"],
++            "properties": {
++              "payout":       { "type": "integer" },
++              "remainingCap": { "type": "integer" }
++            }
++          }
++        ]
++      }
++    }
++  }
++}
++```
++
++### Schema example
++
++Stdin:
++
++```json
++{
++  "customer": {"yearsWithMHPCO": 5},
++  "steps": [
++    {
++      "op": "quote",
++      "items": [
++        {"type": "amulet", "material": "silver", "enchantment": 2, "cursed": false}
++      ]
++    },
++    {
++      "op": "claim",
++      "policy": 0,
++      "incident": {
++        "cause": "fire",
++        "damages": [
++          {"itemType": "amulet", "amount": 200}
++        ]
++      }
++    }
++  ]
++}
++```
++
++Stdout shape:
++
++```json
++{"results": [{"premium": <integer>}, {"payout": <integer>, "remainingCap": <integer>}]}
++```
++
++## Expected Output Files
++
++- Source files implementing the logic and the `claim-office` CLI
++- Test files
++- CLI entry point at `src/cli.ts` (reads JSON from stdin, writes JSON to stdout)
++
++## Constraints
++
++- Use TypeScript for the implementation
++- The CLI must read JSON from stdin and write JSON to stdout
++- The CLI entry point must be at `src/cli.ts`
++- Internal data structures and module organization are free
+diff --git a/tsconfig.json b/tsconfig.json
+new file mode 100644
+index 0000000..1828557
+--- /dev/null
++++ b/tsconfig.json
+@@ -0,0 +1,12 @@
++{
++  "compilerOptions": {
++    "target": "ES2022",
++    "module": "ESNext",
++    "moduleResolution": "Node",
++    "strict": true,
++    "esModuleInterop": true,
++    "skipLibCheck": true,
++    "outDir": "./dist"
++  },
++  "include": ["src/**/*"]
++}
+diff --git a/vitest.config.ts b/vitest.config.ts
+new file mode 100644
+index 0000000..17a00f9
+--- /dev/null
++++ b/vitest.config.ts
+@@ -0,0 +1,14 @@
++import { defineConfig } from 'vitest/config';
++
++export default defineConfig({
++  test: {
++    include: ['src/**/*.spec.ts'],
++    globals: true,
++    coverage: {
++      provider: 'v8',
++      reporter: ['json-summary', 'text'],
++      include: ['src/**/*.ts'],
++      exclude: ['src/**/*.spec.ts'],
++    },
++  },
++});
+
+From 4103d2841b02bb3b518854e112e538cf55b6a014 Mon Sep 17 00:00:00 2001
+From: TCR Experiment <tcr-experiment@localhost>
+Date: Wed, 23 Sep 2026 05:51:55 +0000
+Subject: [PATCH 2/4] Add premium calculation for quotes
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+---
+ src/premium.spec.ts | 109 ++++++++++++++++++++++++++++++++++++++++++
+ src/premium.ts      | 114 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 223 insertions(+)
+ create mode 100644 src/premium.spec.ts
+ create mode 100644 src/premium.ts
+
+diff --git a/src/premium.spec.ts b/src/premium.spec.ts
+new file mode 100644
+index 0000000..ef1765e
+--- /dev/null
++++ b/src/premium.spec.ts
+@@ -0,0 +1,109 @@
++import { describe, it, expect } from 'vitest';
++import { quotePremium, itemBasePremiums, type Item, type Customer } from './premium';
++
++const NEWCOMER: Customer = { yearsWithMHPCO: 0 };
++
++const item = (type: string, extra: Partial<Item> = {}): Item => ({ type, ...extra });
++const items = (type: string, count: number): Item[] =>
++  Array.from({ length: count }, () => item(type));
++
++const totalBase = (list: Item[]): number =>
++  itemBasePremiums(list).reduce((sum, entry) => sum + entry.basePremium, 0);
++
++describe('base premiums', () => {
++  it('charges only the processing fee for an empty item list', () => {
++    expect(quotePremium([], NEWCOMER, 0)).toBe(5);
++  });
++
++  it.each([
++    ['sword', 100],
++    ['amulet', 60],
++    ['staff', 80],
++    ['potion', 40],
++  ])('charges the %s base premium plus first insurance and fee', (type, base) => {
++    expect(quotePremium([item(type)], NEWCOMER, 0)).toBe(base + base * 0.1 + 5);
++  });
++});
++
++describe('component base premiums', () => {
++  it.each([
++    [2, 50],
++    [3, 60],
++    [4, 100],
++    [7, 175],
++  ])('charges %i runes as %i G base premium', (count, expected) => {
++    expect(totalBase(items('rune', count))).toBe(expected);
++  });
++
++  it('does not form a block from different component types', () => {
++    expect(totalBase([...items('rune', 2), item('moonstone')])).toBe(75);
++  });
++
++  it('forms one block per component type', () => {
++    expect(totalBase([...items('rune', 3), ...items('moonstone', 3)])).toBe(120);
++  });
++});
++
++describe('item-specific modifiers', () => {
++  it('adds the curse surcharge only to the cursed item, not the policy total', () => {
++    const policy = [item('sword', { cursed: true }), item('amulet')];
++    // 160 base + 50 curse + 16 first insurance + 5 fee
++    expect(quotePremium(policy, NEWCOMER, 0)).toBe(160 + 50 + 16 + 5);
++  });
++
++  it('adds the high-enchantment surcharge from enchantment 5 upwards', () => {
++    expect(quotePremium([item('sword', { enchantment: 5 })], NEWCOMER, 0)).toBe(
++      100 + 30 + 10 + 5,
++    );
++  });
++
++  it('adds no high-enchantment surcharge below enchantment 5', () => {
++    expect(quotePremium([item('sword', { enchantment: 4 })], NEWCOMER, 0)).toBe(100 + 10 + 5);
++  });
++
++  it('stacks curse and high-enchantment surcharges', () => {
++    const cursedEnchanted = item('sword', { enchantment: 5, cursed: true });
++    expect(quotePremium([cursedEnchanted], NEWCOMER, 0)).toBe(100 + 50 + 30 + 10 + 5);
++  });
++});
++
++describe('policy-wide modifiers', () => {
++  const LOYAL: Customer = { yearsWithMHPCO: 2 };
++
++  it('grants the loyalty discount from 2 years of business', () => {
++    expect(quotePremium([item('sword')], LOYAL, 0)).toBe(100 - 20 + 10 + 5);
++  });
++
++  it('grants no loyalty discount below 2 years', () => {
++    expect(quotePremium([item('sword')], { yearsWithMHPCO: 1 }, 0)).toBe(100 + 10 + 5);
++  });
++
++  it('grants the follow-up discount on each contract after the first', () => {
++    expect(quotePremium([item('sword')], NEWCOMER, 1)).toBe(100 - 15 + 10 + 5);
++  });
++
++  it('applies policy-wide modifiers to the policy base premium', () => {
++    const policy = [item('sword'), item('amulet')];
++    expect(quotePremium(policy, LOYAL, 1)).toBe(160 - 32 - 24 + 16 + 5);
++  });
++});
++
++describe('rounding in the MHPCO favour', () => {
++  it('rounds the final premium up', () => {
++    // 3 potions: base 120, loyalty -24, first insurance +12 => 108 + 5 = 113
++    // use a fraction: 1 potion + 1 rune with loyalty => base 65, -13, +6.5 => 58.5 + 5
++    expect(quotePremium([item('potion'), item('rune')], { yearsWithMHPCO: 2 }, 0)).toBe(64);
++  });
++});
++
++describe('integration examples', () => {
++  it('quotes a newcomer with a cursed sword at 165 G', () => {
++    const cursedSword = item('sword', { material: 'steel', enchantment: 3, cursed: true });
++    expect(quotePremium([cursedSword], NEWCOMER, 0)).toBe(165);
++  });
++
++  it("quotes a long-standing customer's second contract at 160 G", () => {
++    const cursedSword = item('sword', { material: 'steel', enchantment: 7, cursed: true });
++    expect(quotePremium([cursedSword], { yearsWithMHPCO: 3 }, 1)).toBe(160);
++  });
++});
+diff --git a/src/premium.ts b/src/premium.ts
+new file mode 100644
+index 0000000..1da97de
+--- /dev/null
++++ b/src/premium.ts
+@@ -0,0 +1,114 @@
++export interface Item {
++  type: string;
++  material?: string;
++  enchantment?: number;
++  cursed?: boolean;
++}
++
++export interface Customer {
++  yearsWithMHPCO: number;
++}
++
++export interface ItemBasePremium {
++  item: Item;
++  basePremium: number;
++}
++
++const PROCESSING_FEE = 5;
++const FIRST_INSURANCE_SURCHARGE = 0.1;
++const CURSE_SURCHARGE = 0.5;
++const HIGH_ENCHANTMENT_SURCHARGE = 0.3;
++const HIGH_ENCHANTMENT_THRESHOLD = 5;
++const LOYALTY_DISCOUNT = 0.2;
++const LOYALTY_THRESHOLD_YEARS = 2;
++const FOLLOW_UP_DISCOUNT = 0.15;
++
++const COMPONENT_VALUE = 250;
++const COMPONENT_PREMIUM = 25;
++const BLOCK_SIZE = 3;
++const BLOCK_PREMIUM = 60;
++
++const MAIN_ITEMS: Record<string, { value: number; premium: number }> = {
++  sword: { value: 1000, premium: 100 },
++  amulet: { value: 600, premium: 60 },
++  staff: { value: 800, premium: 80 },
++  potion: { value: 400, premium: 40 },
++};
++
++const COMPONENT_TYPES = new Set(['rune', 'moonstone']);
++
++export class UnknownItemTypeError extends Error {
++  constructor(type: string) {
++    super(`Unknown item type: ${type}`);
++  }
++}
++
++export function isKnownItemType(type: string): boolean {
++  return type in MAIN_ITEMS || COMPONENT_TYPES.has(type);
++}
++
++export function insuranceValueOf(item: Item): number {
++  const main = MAIN_ITEMS[item.type];
++  if (main) return main.value;
++  if (COMPONENT_TYPES.has(item.type)) return COMPONENT_VALUE;
++  throw new UnknownItemTypeError(item.type);
++}
++
++function countByType(items: Item[]): Map<string, number> {
++  const counts = new Map<string, number>();
++  for (const item of items) {
++    counts.set(item.type, (counts.get(item.type) ?? 0) + 1);
++  }
++  return counts;
++}
++
++/**
++ * Base premium per item. A block of exactly BLOCK_SIZE alike components is
++ * charged at BLOCK_PREMIUM; the discount is spread evenly over the block so
++ * that item-specific modifiers keep a per-item base to apply to.
++ */
++export function itemBasePremiums(items: Item[]): ItemBasePremium[] {
++  const counts = countByType(items);
++  return items.map((item) => {
++    const main = MAIN_ITEMS[item.type];
++    if (main) return { item, basePremium: main.premium };
++    if (!COMPONENT_TYPES.has(item.type)) throw new UnknownItemTypeError(item.type);
++    const isBlock = counts.get(item.type) === BLOCK_SIZE;
++    return { item, basePremium: isBlock ? BLOCK_PREMIUM / BLOCK_SIZE : COMPONENT_PREMIUM };
++  });
++}
++
++/** Surcharges that attach to a single item's own base premium. */
++function itemSurcharges({ item, basePremium }: ItemBasePremium): number {
++  let surcharge = 0;
++  if (item.cursed) surcharge += basePremium * CURSE_SURCHARGE;
++  if ((item.enchantment ?? 0) >= HIGH_ENCHANTMENT_THRESHOLD) {
++    surcharge += basePremium * HIGH_ENCHANTMENT_SURCHARGE;
++  }
++  return surcharge;
++}
++
++export function quotePremium(
++  items: Item[],
++  customer: Customer,
++  previousContracts: number,
++): number {
++  const entries = itemBasePremiums(items);
++  const policyBase = entries.reduce((sum, entry) => sum + entry.basePremium, 0);
++
++  let premium = policyBase;
++  for (const entry of entries) {
++    premium += itemSurcharges(entry);
++    // Each item in a quote counts as a first insurance, regardless of history.
++    premium += entry.basePremium * FIRST_INSURANCE_SURCHARGE;
++  }
++
++  if (customer.yearsWithMHPCO >= LOYALTY_THRESHOLD_YEARS) {
++    premium -= policyBase * LOYALTY_DISCOUNT;
++  }
++  if (previousContracts > 0) {
++    premium -= policyBase * FOLLOW_UP_DISCOUNT;
++  }
++
++  return Math.ceil(premium + PROCESSING_FEE);
++}
+
+From b1a6a472b9f27efae7f391a0ea0241025b4122a2 Mon Sep 17 00:00:00 2001
+From: TCR Experiment <tcr-experiment@localhost>
+Date: Wed, 23 Sep 2026 05:53:13 +0000
+Subject: [PATCH 3/4] Add claim settlement with clauses, cap and validation
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+---
+ src/claim.spec.ts | 140 ++++++++++++++++++++++++++++++++++++++++++++++
+ src/claim.ts      |  61 ++++++++++++++++++++
+ 2 files changed, 201 insertions(+)
+ create mode 100644 src/claim.spec.ts
+ create mode 100644 src/claim.ts
+
+diff --git a/src/claim.spec.ts b/src/claim.spec.ts
+new file mode 100644
+index 0000000..4173954
+--- /dev/null
++++ b/src/claim.spec.ts
+@@ -0,0 +1,140 @@
++import { describe, it, expect } from 'vitest';
++import { settleClaim, ClaimError, type Damage, type Policy } from './claim';
++import { type Item } from './premium';
++
++const item = (type: string, extra: Partial<Item> = {}): Item => ({ type, ...extra });
++
++const policyOf = (items: Item[]): Policy => ({
++  items,
++  insuranceSum: 0,
++  remainingCap: Number.POSITIVE_INFINITY,
++});
++
++describe('standard reimbursement', () => {
++  it('reimburses damage in full minus the deductible', () => {
++    const policy = policyOf([item('sword', { material: 'steel', enchantment: 3 })]);
++    const result = settleClaim(policy, { cause: 'fire', damages: [{ itemType: 'sword', amount: 500 }] });
++    expect(result.payout).toBe(400);
++  });
++
++  it('reimburses a component with no enchantment or material in full minus the deductible', () => {
++    const policy = policyOf([item('rune')]);
++    const result = settleClaim(policy, { cause: 'fire', damages: [{ itemType: 'rune', amount: 200 }] });
++    expect(result.payout).toBe(100);
++  });
++});
++
++describe('special reimbursement clauses', () => {
++  const claim = (damagedItem: Item, amount: number) =>
++    settleClaim(policyOf([damagedItem]), {
++      cause: 'dragon attack',
++      damages: [{ itemType: damagedItem.type, amount }],
++    }).payout;
++
++  it('halves damage to items with enchantment 8 or above', () => {
++    expect(claim(item('sword', { material: 'steel', enchantment: 9 }), 1000)).toBe(400);
++  });
++
++  it('applies the high-enchantment clause at exactly 8', () => {
++    expect(claim(item('sword', { material: 'dragon', enchantment: 8 }), 1000)).toBe(400);
++  });
++
++  it('reimburses dragon material in full', () => {
++    expect(claim(item('sword', { material: 'dragon', enchantment: 5 }), 800)).toBe(700);
++  });
++
++  it('lets the 50 % rule win when both clauses apply', () => {
++    expect(claim(item('sword', { material: 'dragon', enchantment: 9 }), 1000)).toBe(400);
++  });
++});
++
++describe('deductible per damage event', () => {
++  it('applies the deductible once per damaged item', () => {
++    const policy = policyOf([item('sword'), item('amulet')]);
++    const result = settleClaim(policy, {
++      cause: 'dragon attack',
++      damages: [
++        { itemType: 'sword', amount: 500 },
++        { itemType: 'amulet', amount: 300 },
++      ],
++    });
++    expect(result.payout).toBe(600);
++  });
++});
++
++describe('cap exhaustion', () => {
++  const swordPolicy = (): Policy => ({
++    items: [item('sword')],
++    insuranceSum: 1000,
++    remainingCap: 2000,
++  });
++
++  it('pays out successive claims until the cap is exhausted', () => {
++    const policy = swordPolicy();
++    const first = settleClaim(policy, {
++      cause: 'fire',
++      damages: [{ itemType: 'sword', amount: 1500 }],
++    });
++    expect(first).toEqual({ payout: 1400, remainingCap: 600 });
++
++    const second = settleClaim(
++      { ...policy, remainingCap: first.remainingCap },
++      { cause: 'fire', damages: [{ itemType: 'sword', amount: 1500 }] },
++    );
++    expect(second).toEqual({ payout: 600, remainingCap: 0 });
++  });
++});
++
++describe('rounding in the MHPCO favour', () => {
++  it('rounds the final payout down', () => {
++    const policy = policyOf([item('sword', { enchantment: 9 })]);
++    const result = settleClaim(policy, {
++      cause: 'fire',
++      damages: [{ itemType: 'sword', amount: 901 }],
++    });
++    expect(result.payout).toBe(350);
++  });
++});
++
++describe('rejected claims', () => {
++  const claimOn = (policyItems: Item[], damages: Damage[]) => () =>
++    settleClaim(policyOf(policyItems), { cause: 'fire', damages });
++
++  it('rejects a damage to an item that is not part of the policy', () => {
++    expect(claimOn([item('sword')], [{ itemType: 'amulet', amount: 200 }])).toThrow(ClaimError);
++  });
++
++  it('rejects a damage to an unknown item type', () => {
++    expect(claimOn([item('sword')], [{ itemType: 'broomstick', amount: 200 }])).toThrow(ClaimError);
++  });
++
++  it('rejects more damages of a type than the policy covers', () => {
++    expect(
++      claimOn(
++        [item('sword')],
++        [
++          { itemType: 'sword', amount: 200 },
++          { itemType: 'sword', amount: 200 },
++        ],
++      ),
++    ).toThrow(ClaimError);
++  });
++
++  it('rejects a negative damage amount', () => {
++    expect(claimOn([item('sword')], [{ itemType: 'sword', amount: -200 }])).toThrow(ClaimError);
++  });
++});
++
++describe('multiple items of the same type', () => {
++  it('treats each damage entry as a separate damage with its own deductible', () => {
++    const policy = policyOf([item('sword'), item('sword')]);
++    const result = settleClaim(policy, {
++      cause: 'dragon attack',
++      damages: [
++        { itemType: 'sword', amount: 500 },
++        { itemType: 'sword', amount: 300 },
++      ],
++    });
++    expect(result.payout).toBe(600);
++  });
++});
+diff --git a/src/claim.ts b/src/claim.ts
+new file mode 100644
+index 0000000..8cb3fda
+--- /dev/null
++++ b/src/claim.ts
+@@ -0,0 +1,61 @@
++import { type Item } from './premium';
++
++export interface Damage {
++  itemType: string;
++  amount: number;
++}
++
++export interface Incident {
++  cause: string;
++  damages: Damage[];
++}
++
++export interface Policy {
++  items: Item[];
++  insuranceSum: number;
++  remainingCap: number;
++}
++
++export interface ClaimResult {
++  payout: number;
++  remainingCap: number;
++}
++
++export class ClaimError extends Error {}
++
++const DEDUCTIBLE = 100;
++const HIGH_ENCHANTMENT_THRESHOLD = 8;
++const HIGH_ENCHANTMENT_REIMBURSEMENT = 0.5;
++
++/**
++ * The high-enchantment clause halves the damage and wins over the
++ * dragon-material clause when both apply. Dragon material grants full
++ * reimbursement, which is what a damage without any clause gets anyway.
++ * The deductible is taken afterwards, once per damage entry.
++ */
++function reimbursementFor(item: Item, amount: number): number {
++  const highlyEnchanted = (item.enchantment ?? 0) >= HIGH_ENCHANTMENT_THRESHOLD;
++  const reimbursed = highlyEnchanted ? amount * HIGH_ENCHANTMENT_REIMBURSEMENT : amount;
++  return Math.max(0, reimbursed - DEDUCTIBLE);
++}
++
++export function settleClaim(policy: Policy, incident: Incident): ClaimResult {
++  const available = [...policy.items];
++
++  let desired = 0;
++  for (const damage of incident.damages) {
++    if (damage.amount < 0) {
++      throw new ClaimError(`Negative damage amount for ${damage.itemType}: ${damage.amount}`);
++    }
++    // Each damage entry consumes one insured item of that type, so a policy
++    // can never be claimed for more items than it actually covers.
++    const index = available.findIndex((candidate) => candidate.type === damage.itemType);
++    if (index === -1) {
++      throw new ClaimError(`Damaged item is not covered by the policy: ${damage.itemType}`);
++    }
++    const [item] = available.splice(index, 1);
++    desired += reimbursementFor(item, damage.amount);
++  }
++  const payout = Math.floor(Math.min(desired, policy.remainingCap));
++  return { payout, remainingCap: policy.remainingCap - payout };
++}
+
+From d79ac897dff9c63d06d38b168b67acbf887da61a Mon Sep 17 00:00:00 2001
+From: TCR Experiment <tcr-experiment@localhost>
+Date: Wed, 23 Sep 2026 05:54:30 +0000
+Subject: [PATCH 4/4] Add scenario runner and claim-office CLI
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+---
+ src/cli.spec.ts      |  63 +++++++++++++++++++++++
+ src/cli.ts           |  20 ++++++++
+ src/premium.ts       |   4 --
+ src/scenario.spec.ts | 119 +++++++++++++++++++++++++++++++++++++++++++
+ src/scenario.ts      |  77 ++++++++++++++++++++++++++++
+ 5 files changed, 279 insertions(+), 4 deletions(-)
+ create mode 100644 src/cli.spec.ts
+ create mode 100644 src/cli.ts
+ create mode 100644 src/scenario.spec.ts
+ create mode 100644 src/scenario.ts
+
+diff --git a/src/cli.spec.ts b/src/cli.spec.ts
+new file mode 100644
+index 0000000..15f747b
+--- /dev/null
++++ b/src/cli.spec.ts
+@@ -0,0 +1,63 @@
++import { describe, it, expect } from 'vitest';
++import { execFile } from 'node:child_process';
++import { promisify } from 'node:util';
++import { fileURLToPath } from 'node:url';
++
++const execFileAsync = promisify(execFile);
++const CLI = fileURLToPath(new URL('./cli.ts', import.meta.url));
++
++interface CliOutcome {
++  code: number;
++  stdout: string;
++  stderr: string;
++}
++
++async function runCli(input: unknown): Promise<CliOutcome> {
++  const child = execFileAsync('npx', ['tsx', CLI], { encoding: 'utf8' });
++  child.child.stdin!.end(JSON.stringify(input));
++  try {
++    const { stdout, stderr } = await child;
++    return { code: 0, stdout, stderr };
++  } catch (error) {
++    const failure = error as { code?: number; stdout: string; stderr: string };
++    return { code: failure.code ?? 1, stdout: failure.stdout, stderr: failure.stderr };
++  }
++}
++
++describe('claim-office CLI', () => {
++  it('writes the results of a scenario to stdout', async () => {
++    const { code, stdout } = await runCli({
++      customer: { yearsWithMHPCO: 5 },
++      steps: [
++        { op: 'quote', items: [{ type: 'amulet', material: 'silver', enchantment: 2, cursed: false }] },
++        { op: 'claim', policy: 0, incident: { cause: 'fire', damages: [{ itemType: 'amulet', amount: 200 }] } },
++      ],
++    });
++    expect(code).toBe(0);
++    expect(JSON.parse(stdout)).toEqual({
++      results: [{ premium: 59 }, { payout: 100, remainingCap: 1100 }],
++    });
++  });
++
++  it('exits non-zero with an error on stderr for an unknown item type', async () => {
++    const { code, stdout, stderr } = await runCli({
++      customer: { yearsWithMHPCO: 0 },
++      steps: [{ op: 'quote', items: [{ type: 'broomstick' }] }],
++    });
++    expect(code).not.toBe(0);
++    expect(stderr).not.toBe('');
++    expect(stdout).not.toContain('results');
++  });
++
++  it('exits non-zero for a negative damage amount', async () => {
++    const { code, stderr } = await runCli({
++      customer: { yearsWithMHPCO: 0 },
++      steps: [
++        { op: 'quote', items: [{ type: 'sword' }] },
++        { op: 'claim', policy: 0, incident: { cause: 'fire', damages: [{ itemType: 'sword', amount: -200 }] } },
++      ],
++    });
++    expect(code).not.toBe(0);
++    expect(stderr).not.toBe('');
++  });
++});
+diff --git a/src/cli.ts b/src/cli.ts
+new file mode 100644
+index 0000000..081de93
+--- /dev/null
++++ b/src/cli.ts
+@@ -0,0 +1,20 @@
++#!/usr/bin/env node
++import { runScenario, type Scenario } from './scenario';
++
++async function readStdin(): Promise<string> {
++  const chunks: Buffer[] = [];
++  for await (const chunk of process.stdin) chunks.push(Buffer.from(chunk));
++  return Buffer.concat(chunks).toString('utf8');
++}
++
++async function main(): Promise<void> {
++  const input = await readStdin();
++  const scenario = JSON.parse(input) as Scenario;
++  const results = runScenario(scenario);
++  process.stdout.write(`${JSON.stringify({ results })}\n`);
++}
++
++main().catch((error: unknown) => {
++  process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);
++  process.exitCode = 1;
++});
+diff --git a/src/premium.ts b/src/premium.ts
+index 1da97de..693442b 100644
+--- a/src/premium.ts
++++ b/src/premium.ts
+@@ -43,10 +43,6 @@ export class UnknownItemTypeError extends Error {
+   }
+ }
+ 
+-export function isKnownItemType(type: string): boolean {
+-  return type in MAIN_ITEMS || COMPONENT_TYPES.has(type);
+-}
+-
+ export function insuranceValueOf(item: Item): number {
+   const main = MAIN_ITEMS[item.type];
+   if (main) return main.value;
+diff --git a/src/scenario.spec.ts b/src/scenario.spec.ts
+new file mode 100644
+index 0000000..521d993
+--- /dev/null
++++ b/src/scenario.spec.ts
+@@ -0,0 +1,119 @@
++import { describe, it, expect } from 'vitest';
++import { runScenario, ScenarioError } from './scenario';
++
++describe('insurance sum and cap', () => {
++  it('sums the insurance values of all items and caps at twice the sum', () => {
++    const results = runScenario({
++      customer: { yearsWithMHPCO: 0 },
++      steps: [
++        { op: 'quote', items: [{ type: 'sword' }, { type: 'amulet' }] },
++        { op: 'claim', policy: 0, incident: { cause: 'fire', damages: [{ itemType: 'sword', amount: 100 }] } },
++      ],
++    });
++    expect(results[1]).toEqual({ payout: 0, remainingCap: 3200 });
++  });
++
++  it('bases the cap on unmodified insurance values, not on premium modifiers', () => {
++    const results = runScenario({
++      customer: { yearsWithMHPCO: 0 },
++      steps: [
++        { op: 'quote', items: [{ type: 'sword', cursed: true }] },
++        { op: 'claim', policy: 0, incident: { cause: 'fire', damages: [{ itemType: 'sword', amount: 100 }] } },
++      ],
++    });
++    expect(results[0]).toEqual({ premium: 165 });
++    expect(results[1]).toEqual({ payout: 0, remainingCap: 2000 });
++  });
++
++  it('counts the full insurance sum of a component block', () => {
++    const results = runScenario({
++      customer: { yearsWithMHPCO: 0 },
++      steps: [
++        { op: 'quote', items: [{ type: 'sword' }, { type: 'rune' }, { type: 'rune' }, { type: 'rune' }] },
++        { op: 'claim', policy: 0, incident: { cause: 'fire', damages: [{ itemType: 'rune', amount: 100 }] } },
++      ],
++    });
++    expect(results[1]).toEqual({ payout: 0, remainingCap: 3500 });
++  });
++});
++
++describe('scenario sequencing', () => {
++  it('applies the follow-up discount from the second quote on', () => {
++    const results = runScenario({
++      customer: { yearsWithMHPCO: 3 },
++      steps: [
++        { op: 'quote', items: [{ type: 'sword', material: 'steel', enchantment: 3, cursed: true }] },
++        { op: 'quote', items: [{ type: 'sword', material: 'steel', enchantment: 7, cursed: true }] },
++      ],
++    });
++    expect(results[1]).toEqual({ premium: 160 });
++  });
++
++  it('carries the remaining cap across successive claims on the same policy', () => {
++    const results = runScenario({
++      customer: { yearsWithMHPCO: 0 },
++      steps: [
++        { op: 'quote', items: [{ type: 'sword' }] },
++        { op: 'claim', policy: 0, incident: { cause: 'fire', damages: [{ itemType: 'sword', amount: 1500 }] } },
++        { op: 'claim', policy: 0, incident: { cause: 'fire', damages: [{ itemType: 'sword', amount: 1500 }] } },
++      ],
++    });
++    expect(results[1]).toEqual({ payout: 1400, remainingCap: 600 });
++    expect(results[2]).toEqual({ payout: 600, remainingCap: 0 });
++  });
++});
++
++describe('rejected scenarios', () => {
++  it('rejects a quote with an unknown item type', () => {
++    expect(() =>
++      runScenario({
++        customer: { yearsWithMHPCO: 0 },
++        steps: [{ op: 'quote', items: [{ type: 'broomstick' }] }],
++      }),
++    ).toThrow(ScenarioError);
++  });
++
++  it('rejects a claim referring to a step that is not a quote', () => {
++    expect(() =>
++      runScenario({
++        customer: { yearsWithMHPCO: 0 },
++        steps: [{ op: 'claim', policy: 0, incident: { cause: 'fire', damages: [] } }],
++      }),
++    ).toThrow(ScenarioError);
++  });
++});
++
++describe('multiple items of the same type', () => {
++  it('sums the insurance values of two swords', () => {
++    const results = runScenario({
++      customer: { yearsWithMHPCO: 0 },
++      steps: [
++        { op: 'quote', items: [{ type: 'sword' }, { type: 'sword' }] },
++        { op: 'claim', policy: 0, incident: { cause: 'fire', damages: [{ itemType: 'sword', amount: 100 }] } },
++      ],
++    });
++    expect(results[1]).toEqual({ payout: 0, remainingCap: 4000 });
++  });
++
++  it('rejects more sword damages than swords insured', () => {
++    expect(() =>
++      runScenario({
++        customer: { yearsWithMHPCO: 0 },
++        steps: [
++          { op: 'quote', items: [{ type: 'sword' }] },
++          {
++            op: 'claim',
++            policy: 0,
++            incident: {
++              cause: 'dragon attack',
++              damages: [
++                { itemType: 'sword', amount: 500 },
++                { itemType: 'sword', amount: 500 },
++              ],
++            },
++          },
++        ],
++      }),
++    ).toThrow(ScenarioError);
++  });
++});
+diff --git a/src/scenario.ts b/src/scenario.ts
+new file mode 100644
+index 0000000..9ecdade
+--- /dev/null
++++ b/src/scenario.ts
+@@ -0,0 +1,77 @@
++import {
++  quotePremium,
++  insuranceValueOf,
++  UnknownItemTypeError,
++  type Customer,
++  type Item,
++} from './premium';
++import { settleClaim, ClaimError, type Incident, type Policy } from './claim';
++
++export interface QuoteStep {
++  op: 'quote';
++  items: Item[];
++}
++
++export interface ClaimStep {
++  op: 'claim';
++  policy: number;
++  incident: Incident;
++}
++
++export type Step = QuoteStep | ClaimStep;
++
++export interface Scenario {
++  customer: Customer;
++  steps: Step[];
++}
++
++export interface QuoteResult {
++  premium: number;
++}
++
++export interface ClaimResultOutput {
++  payout: number;
++  remainingCap: number;
++}
++
++export type StepResult = QuoteResult | ClaimResultOutput;
++
++export class ScenarioError extends Error {}
++
++const CAP_FACTOR = 2;
++
++function openPolicy(items: Item[]): Policy {
++  const insuranceSum = items.reduce((sum, item) => sum + insuranceValueOf(item), 0);
++  return { items, insuranceSum, remainingCap: insuranceSum * CAP_FACTOR };
++}
++
++export function runScenario(scenario: Scenario): StepResult[] {
++  const policies = new Map<number, Policy>();
++  const results: StepResult[] = [];
++
++  scenario.steps.forEach((step, index) => {
++    try {
++      if (step.op === 'quote') {
++        const premium = quotePremium(step.items, scenario.customer, policies.size);
++        policies.set(index, openPolicy(step.items));
++        results.push({ premium });
++        return;
++      }
++
++      const policy = policies.get(step.policy);
++      if (!policy) {
++        throw new ScenarioError(`Step ${step.policy} did not create a policy`);
++      }
++      const { payout, remainingCap } = settleClaim(policy, step.incident);
++      policy.remainingCap = remainingCap;
++      results.push({ payout, remainingCap });
++    } catch (error) {
++      if (error instanceof UnknownItemTypeError || error instanceof ClaimError) {
++        throw new ScenarioError(`Step ${index}: ${error.message}`);
++      }
++      throw error;
++    }
++  });
++
++  return results;
++}

@@ -1,0 +1,4 @@
+#!/bin/sh
+# Command-line entry point: reads a scenario JSON from stdin, writes results JSON to stdout.
+DIR="$(dirname "$(readlink -f "$0")")"
+exec "$DIR/node_modules/.bin/tsx" "$DIR/src/cli.ts" "$@"

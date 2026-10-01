@@ -1,0 +1,578 @@
+$ /home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_06-40-48_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-5-no-thinking/node_modules/.bin/stryker run --logLevel info
+[32m09:36:20 (984637) INFO ProjectReader[39m Found 4 of 32 file(s) to be mutated.
+[32m09:36:21 (984637) INFO Instrumenter[39m Instrumented 4 source file(s) with 212 mutant(s)
+[32m09:36:21 (984637) INFO ConcurrencyTokenProvider[39m Creating 2 test runner process(es).
+[32m09:36:23 (984637) INFO DryRunExecutor[39m Starting initial test run (vitest test runner with "perTest" coverage analysis). This may take a while.
+[32m09:36:26 (984637) INFO DryRunExecutor[39m Initial test run succeeded. Ran 46 tests in 3 seconds (net 2871 ms, overhead 943 ms).
+[33m09:36:26 (984637) WARN MutantTestPlanner[39m Detected 13 static mutants (6% of total) that are estimated to take 97% of the time running the tests!
+  You might want to enable "ignoreStatic" to ignore these static mutants for your next run. 
+  For more information about static mutants visit: https://stryker-mutator.io/docs/mutation-testing-elements/static-mutants
+  (disable "warnings.slow" to ignore this warning)
+
+All tests
+  claim.spec.ts
+    ✓ claim processing standard reimbursement minus deductible (killed 27)
+    ✓ claim processing rune damage (killed 1)
+    ~ claim processing deductible applies per damaged item (covered 45)
+    ✓ claim processing dragon sword enchantment 8 damage 1000 -> 400 (killed 3)
+    ~ claim processing dragon sword enchantment 9 damage 1000 -> 400 (covered 44)
+    ~ claim processing dragon sword enchantment 5 damage 800 -> 700 (covered 45)
+    ~ claim processing steel sword enchantment 9 damage 1000 -> 400 (covered 44)
+    ~ claim processing damage below deductible pays nothing (covered 45)
+    ~ claim processing rounds payout down (covered 44)
+    ✓ claim processing two swords are two separate damages with own enchantment (killed 2)
+    ~ claim processing cap is exhausted across successive claims (covered 45)
+    ~ claim processing insurance sum ignores block discount (covered 9)
+    ✓ claim processing rejects damage to uninsured item (killed 1)
+    ~ claim processing rejects more damages of a type than insured, without consuming cap (covered 32)
+    ✓ claim processing rejects negative amount (killed 4)
+  cli.spec.ts
+    ✓ scenario schema example (killed 60)
+    ✓ scenario second quote gets follow-up discount (killed 2)
+    ~ scenario claims against the same policy share the cap (covered 168)
+    ~ scenario rejects claim referencing a non-quote step (covered 59)
+    ~ scenario rejects unknown op (covered 38)
+    ✘ cli writes results JSON to stdout (covered 0)
+    ✘ cli fails with non-zero status and stderr for unknown item type (covered 0)
+    ✘ cli fails on invalid JSON (covered 0)
+  premium.spec.ts
+    ✓ base premium sword has base premium 100 (killed 7)
+    ~ base premium amulet has base premium 60 (covered 15)
+    ✓ base premium staff has base premium 80 (killed 1)
+    ✓ base premium potion has base premium 40 (killed 1)
+    ✓ base premium rune has base premium 25 (killed 3)
+    ✓ base premium moonstone has base premium 25 (killed 1)
+    ~ base premium 2 runes -> 50 (covered 20)
+    ✓ base premium 3 runes -> 60 (killed 9)
+    ~ base premium 4 runes -> 100 (covered 20)
+    ~ base premium 7 runes -> 175 (covered 20)
+    ~ base premium alike means same type (covered 20)
+    ✓ base premium two separate blocks (killed 1)
+    ✓ base premium rejects unknown item type (killed 3)
+    ✓ quote premium empty item list -> fee only (killed 4)
+    ✓ quote premium newcomer with a cursed sword -> 165 (killed 18)
+    ✓ quote premium long-standing customer second contract -> 160 (killed 7)
+    ✓ quote premium curse surcharge applies only to cursed item (killed 1)
+    ✓ quote premium enchantment exactly 5 adds surcharge (killed 1)
+    ~ quote premium enchantment 5 and cursed stacks both (covered 42)
+    ~ quote premium enchantment 4 adds no surcharge (covered 40)
+    ✓ quote premium exactly 2 years gets loyalty discount (killed 1)
+    ~ quote premium 1 year gets no loyalty discount (covered 40)
+    ~ quote premium rounds up fractional premiums (covered 45)
+
+[Survived] BooleanLiteral
+src/catalog.ts:17:63
+-     sword: { insuranceValue: 1000, basePremium: 100, component: false },
++     sword: { insuranceValue: 1000, basePremium: 100, component: true },
+Ran all tests for this mutant.
+
+[Survived] BooleanLiteral
+src/catalog.ts:18:62
+-     amulet: { insuranceValue: 600, basePremium: 60, component: false },
++     amulet: { insuranceValue: 600, basePremium: 60, component: true },
+Ran all tests for this mutant.
+
+[Survived] BooleanLiteral
+src/catalog.ts:19:61
+-     staff: { insuranceValue: 800, basePremium: 80, component: false },
++     staff: { insuranceValue: 800, basePremium: 80, component: true },
+Ran all tests for this mutant.
+
+[Survived] BooleanLiteral
+src/catalog.ts:20:62
+-     potion: { insuranceValue: 400, basePremium: 40, component: false },
++     potion: { insuranceValue: 400, basePremium: 40, component: true },
+Ran all tests for this mutant.
+
+[Survived] EqualityOperator
+src/claim.ts:44:47
+-         if (!Number.isInteger(damage.amount) || damage.amount < 0) {
++         if (!Number.isInteger(damage.amount) || damage.amount <= 0) {
+Tests ran:
+    claim processing standard reimbursement minus deductible
+    claim processing rune damage
+    claim processing deductible applies per damaged item
+  and 13 more tests!
+
+
+[Survived] StringLiteral
+src/claim.ts:45:35
+-           throw new ValidationError(`Invalid damage amount: ${damage.amount}`);
++           throw new ValidationError(``);
+Tests ran:
+    claim processing rejects negative amount
+
+
+[Survived] ConditionalExpression
+src/claim.ts:48:11
+-         if (index < 0) {
++         if (false) {
+Tests ran:
+    claim processing standard reimbursement minus deductible
+    claim processing rune damage
+    claim processing deductible applies per damaged item
+  and 12 more tests!
+
+
+[Survived] StringLiteral
+src/claim.ts:49:35
+-           throw new ValidationError(`Damaged item not covered by policy: ${damage.itemType}`);
++           throw new ValidationError(``);
+Tests ran:
+    claim processing rejects damage to uninsured item
+    claim processing rejects more damages of a type than insured, without consuming cap
+
+
+[Survived] BlockStatement
+src/claim.ts:48:22
+-         if (index < 0) {
+-           throw new ValidationError(`Damaged item not covered by policy: ${damage.itemType}`);
+-         }
++         if (index < 0) {}
+Tests ran:
+    claim processing rejects damage to uninsured item
+    claim processing rejects more damages of a type than insured, without consuming cap
+
+
+[Survived] ConditionalExpression
+src/premium.ts:21:9
+-       if (catalogEntry(item.type).component) {
++       if (true) {
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+  and 22 more tests!
+
+
+[NoCoverage] StringLiteral
+src/scenario.ts:21:49
+-     if (!isObject(raw)) throw new ValidationError(`Step ${index} is not an object`);
++     if (!isObject(raw)) throw new ValidationError(``);
+
+[NoCoverage] BlockStatement
+src/scenario.ts:23:115
+-       if (!Array.isArray(raw.items) || !raw.items.every((item) => isObject(item) && typeof item.type === 'string')) {
+-         throw new ValidationError(`Step ${index}: invalid items`);
+-       }
++       if (!Array.isArray(raw.items) || !raw.items.every((item) => isObject(item) && typeof item.type === 'string')) {}
+
+[NoCoverage] StringLiteral
+src/scenario.ts:24:33
+-         throw new ValidationError(`Step ${index}: invalid items`);
++         throw new ValidationError(``);
+
+[NoCoverage] BlockStatement
+src/scenario.ts:35:7
+-       ) {
+-         throw new ValidationError(`Step ${index}: invalid claim`);
+-       }
++       ) {}
+
+[NoCoverage] StringLiteral
+src/scenario.ts:36:33
+-         throw new ValidationError(`Step ${index}: invalid claim`);
++         throw new ValidationError(``);
+
+[NoCoverage] BlockStatement
+src/scenario.ts:44:85
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
+-       throw new ValidationError('Scenario requires a customer object and a steps array');
+-     }
++     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {}
+
+[NoCoverage] StringLiteral
+src/scenario.ts:45:31
+-       throw new ValidationError('Scenario requires a customer object and a steps array');
++       throw new ValidationError("");
+
+[NoCoverage] BlockStatement
+src/scenario.ts:48:51
+-     if (!Number.isInteger(customer.yearsWithMHPCO)) {
+-       throw new ValidationError('customer.yearsWithMHPCO must be an integer');
+-     }
++     if (!Number.isInteger(customer.yearsWithMHPCO)) {}
+
+[NoCoverage] StringLiteral
+src/scenario.ts:49:31
+-       throw new ValidationError('customer.yearsWithMHPCO must be an integer');
++       throw new ValidationError("");
+
+[Survived] ConditionalExpression
+src/scenario.ts:17:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return true;
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+  and 2 more tests!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:17:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return typeof value === 'object' && value !== null || !Array.isArray(value);
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+  and 2 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:17:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return true && !Array.isArray(value);
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+  and 2 more tests!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:17:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return typeof value === 'object' || value !== null && !Array.isArray(value);
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+  and 2 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:17:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return true && value !== null && !Array.isArray(value);
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+  and 2 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:17:39
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return typeof value === 'object' && true && !Array.isArray(value);
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+  and 2 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:21:7
+-     if (!isObject(raw)) throw new ValidationError(`Step ${index} is not an object`);
++     if (false) throw new ValidationError(`Step ${index} is not an object`);
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+  and 2 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:23:9
+-       if (!Array.isArray(raw.items) || !raw.items.every((item) => isObject(item) && typeof item.type === 'string')) {
++       if (false) {
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+
+
+[Survived] LogicalOperator
+src/scenario.ts:23:9
+-       if (!Array.isArray(raw.items) || !raw.items.every((item) => isObject(item) && typeof item.type === 'string')) {
++       if (!Array.isArray(raw.items) && !raw.items.every(item => isObject(item) && typeof item.type === 'string')) {
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+
+
+[Survived] MethodExpression
+src/scenario.ts:23:39
+-       if (!Array.isArray(raw.items) || !raw.items.every((item) => isObject(item) && typeof item.type === 'string')) {
++       if (!Array.isArray(raw.items) || !raw.items.some(item => isObject(item) && typeof item.type === 'string')) {
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:23:65
+-       if (!Array.isArray(raw.items) || !raw.items.every((item) => isObject(item) && typeof item.type === 'string')) {
++       if (!Array.isArray(raw.items) || !raw.items.every((item) => true)) {
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+
+
+[Survived] LogicalOperator
+src/scenario.ts:23:65
+-       if (!Array.isArray(raw.items) || !raw.items.every((item) => isObject(item) && typeof item.type === 'string')) {
++       if (!Array.isArray(raw.items) || !raw.items.every((item) => isObject(item) || typeof item.type === 'string')) {
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:23:83
+-       if (!Array.isArray(raw.items) || !raw.items.every((item) => isObject(item) && typeof item.type === 'string')) {
++       if (!Array.isArray(raw.items) || !raw.items.every((item) => isObject(item) && true)) {
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:28:7
+-     if (raw.op === 'claim') {
++     if (true) {
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+    scenario rejects claim referencing a non-quote step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:31:7
+-         !Number.isInteger(raw.policy) ||
+-         !isObject(incident) ||
+-         !Array.isArray(incident.damages) ||
+-         !incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')
++         false
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+    scenario rejects claim referencing a non-quote step
+
+
+[Survived] LogicalOperator
+src/scenario.ts:31:7
+-         !Number.isInteger(raw.policy) ||
+-         !isObject(incident) ||
+-         !Array.isArray(incident.damages) ||
+-         !incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')
++         (!Number.isInteger(raw.policy) || !isObject(incident) || !Array.isArray(incident.damages)) && !incident.damages.every(d => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+    scenario rejects claim referencing a non-quote step
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:31:7
+-         !Number.isInteger(raw.policy) ||
+-         !isObject(incident) ||
+-         !Array.isArray(incident.damages) ||
++         false ||
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+    scenario rejects claim referencing a non-quote step
+
+
+[Survived] LogicalOperator
+src/scenario.ts:31:7
+-         !Number.isInteger(raw.policy) ||
+-         !isObject(incident) ||
+-         !Array.isArray(incident.damages) ||
++         (!Number.isInteger(raw.policy) || !isObject(incident)) && !Array.isArray(incident.damages) ||
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+    scenario rejects claim referencing a non-quote step
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:31:7
+-         !Number.isInteger(raw.policy) ||
+-         !isObject(incident) ||
++         false ||
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+    scenario rejects claim referencing a non-quote step
+
+
+[Survived] LogicalOperator
+src/scenario.ts:31:7
+-         !Number.isInteger(raw.policy) ||
+-         !isObject(incident) ||
++         !Number.isInteger(raw.policy) && !isObject(incident) ||
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+    scenario rejects claim referencing a non-quote step
+
+
+[Survived] MethodExpression
+src/scenario.ts:34:8
+-         !incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')
++         !incident.damages.some(d => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+    scenario rejects claim referencing a non-quote step
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:34:38
+-         !incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')
++         !incident.damages.every((d) => true)
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+
+
+[Survived] LogicalOperator
+src/scenario.ts:34:38
+-         !incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')
++         !incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' || typeof d.amount === 'number')
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:34:38
+-         !incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')
++         !incident.damages.every((d) => true && typeof d.amount === 'number')
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+
+
+[Survived] LogicalOperator
+src/scenario.ts:34:38
+-         !incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')
++         !incident.damages.every((d) => isObject(d) || typeof d.itemType === 'string' && typeof d.amount === 'number')
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:34:53
+-         !incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')
++         !incident.damages.every((d) => isObject(d) && true && typeof d.amount === 'number')
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:34:87
+-         !incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')
++         !incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && true)
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+
+
+[Survived] StringLiteral
+src/scenario.ts:40:29
+-     throw new ValidationError(`Step ${index}: unknown op ${String(raw.op)}`);
++     throw new ValidationError(``);
+Tests ran:
+    scenario rejects unknown op
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:44:7
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
++     if (false) {
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+  and 2 more tests!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:44:7
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
++     if ((!isObject(input) || !isObject(input.customer)) && !Array.isArray(input.steps)) {
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+  and 2 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:44:7
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
++     if (false || !Array.isArray(input.steps)) {
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+  and 2 more tests!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:44:7
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
++     if (!isObject(input) && !isObject(input.customer) || !Array.isArray(input.steps)) {
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+  and 2 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:48:7
+-     if (!Number.isInteger(customer.yearsWithMHPCO)) {
++     if (false) {
+Tests ran:
+    scenario schema example
+    scenario second quote gets follow-up discount
+    scenario claims against the same policy share the cap
+  and 2 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:63:9
+-       if (!policy) throw new ValidationError(`Step ${index}: no policy created at step ${step.policy}`);
++       if (false) throw new ValidationError(`Step ${index}: no policy created at step ${step.policy}`);
+Tests ran:
+    scenario schema example
+    scenario claims against the same policy share the cap
+    scenario rejects claim referencing a non-quote step
+
+
+[Survived] StringLiteral
+src/scenario.ts:63:44
+-       if (!policy) throw new ValidationError(`Step ${index}: no policy created at step ${step.policy}`);
++       if (!policy) throw new ValidationError(``);
+Tests ran:
+    scenario rejects claim referencing a non-quote step
+
+
+Ran 3.78 tests per mutant on average.
+-------------|------------------|----------|-----------|------------|----------|----------|
+             | % Mutation score |          |           |            |          |          |
+File         |  total | covered | # killed | # timeout | # survived | # no cov | # errors |
+-------------|--------|---------|----------|-----------|------------|----------|----------|
+All files    |  74.53 |   77.83 |      158 |         0 |         45 |        9 |        0 |
+ catalog.ts  |  81.82 |   81.82 |       18 |         0 |          4 |        0 |        0 |
+ claim.ts    |  88.10 |   88.10 |       37 |         0 |          5 |        0 |        0 |
+ premium.ts  |  98.00 |   98.00 |       49 |         0 |          1 |        0 |        0 |
+ scenario.ts |  55.10 |   60.67 |       54 |         0 |         35 |        9 |        0 |
+-------------|--------|---------|----------|-----------|------------|----------|----------|
+[32m09:37:13 (984637) INFO JsonReporter[39m Your report can be found at: file:///home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_06-40-48_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-5-no-thinking/reports/mutation/mutation-report.json
+[32m09:37:13 (984637) INFO MutationTestExecutor[39m Done in 52 seconds.

@@ -1,0 +1,479 @@
+$ /home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_06-43-20_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-5-no-thinking/node_modules/.bin/stryker run --logLevel info
+[32m09:38:39 (995395) INFO ProjectReader[39m Found 4 of 33 file(s) to be mutated.
+[32m09:38:40 (995395) INFO Instrumenter[39m Instrumented 4 source file(s) with 191 mutant(s)
+[32m09:38:40 (995395) INFO ConcurrencyTokenProvider[39m Creating 2 test runner process(es).
+[32m09:38:42 (995395) INFO DryRunExecutor[39m Starting initial test run (vitest test runner with "perTest" coverage analysis). This may take a while.
+[32m09:38:45 (995395) INFO DryRunExecutor[39m Initial test run succeeded. Ran 45 tests in 2 seconds (net 1567 ms, overhead 1340 ms).
+[33m09:38:45 (995395) WARN MutantTestPlanner[39m Detected 11 static mutants (6% of total) that are estimated to take 94% of the time running the tests!
+  You might want to enable "ignoreStatic" to ignore these static mutants for your next run. 
+  For more information about static mutants visit: https://stryker-mutator.io/docs/mutation-testing-elements/static-mutants
+  (disable "warnings.slow" to ignore this warning)
+
+All tests
+  claim.spec.ts
+    ✓ policy cap cap of [{"type":"sword"},{"type":"sword"}] is 4000 (killed 6)
+    ~ policy cap cap of [{"type":"sword"},{"type":"amulet"}] is 3200 (covered 9)
+    ~ policy cap cap of [{"type":"sword","cursed":true}] is 2000 (covered 9)
+    ~ policy cap cap of [{"type":"sword"},{"type":"rune"},{"type":"rune"},{"type":"rune"}] is 3500 (covered 9)
+    ✓ claim payout reimburses a regular sword minus deductible (killed 21)
+    ~ claim payout reimburses a rune minus deductible (covered 40)
+    ~ claim payout applies deductible per damaged item (covered 40)
+    ✓ claim payout dragon sword enchantment 8 damage 1000 -> 400 (killed 4)
+    ~ claim payout dragon sword enchantment 9 damage 1000 -> 400 (covered 40)
+    ~ claim payout dragon sword enchantment 5 damage 800 -> 700 (covered 40)
+    ~ claim payout steel sword enchantment 9 damage 1000 -> 400 (covered 40)
+    ~ claim payout treats each damage to same-type items separately (covered 40)
+    ~ claim payout never pays negative amounts for damages below the deductible (covered 40)
+    ~ claim payout rounds fractional payouts down (covered 40)
+    ~ claim payout limits successive claims to the remaining cap (covered 40)
+    ~ claim payout rejects more damages of a type than insured (covered 38)
+    ✓ claim payout rejects damage to an uninsured item (killed 2)
+    ✓ claim payout rejects negative damage amounts (killed 4)
+    ~ claim payout does not consume cap when a claim is rejected (covered 38)
+  cli.spec.ts
+    ✘ claim-office CLI writes results JSON to stdout (covered 0)
+    ✘ claim-office CLI exits non-zero with an error on stderr for invalid scenarios (covered 0)
+    ✘ claim-office CLI exits non-zero for invalid JSON (covered 0)
+  premium.spec.ts
+    ✓ base premium 2 runes -> 50 G (killed 14)
+    ✓ base premium 3 runes -> 60 G (killed 3)
+    ~ base premium 4 runes -> 100 G (covered 17)
+    ~ base premium 7 runes -> 175 G (covered 17)
+    ~ base premium does not form a block from different component types (covered 17)
+    ~ base premium forms separate blocks per component type (covered 16)
+    ✓ base premium uses the price list for main items (killed 6)
+    ✓ base premium rejects unknown item types (killed 3)
+    ✓ quote premium charges only the processing fee for an empty item list (killed 2)
+    ✓ quote premium newcomer with a cursed sword pays 165 G (killed 16)
+    ✓ quote premium long-standing customer second contract pays 160 G (killed 10)
+    ✓ quote premium applies cursed surcharge only to the cursed item (killed 1)
+    ✓ quote premium applies loyalty discount at exactly 2 years (killed 1)
+    ~ quote premium does not apply loyalty discount below 2 years (covered 33)
+    ✓ quote premium applies high enchantment surcharge at exactly 5 (killed 1)
+    ~ quote premium does not apply high enchantment surcharge at 4 (covered 33)
+    ~ quote premium rounds fractional premiums up (covered 40)
+  scenario.spec.ts
+    ✓ runScenario runs the schema example (killed 50)
+    ✓ runScenario applies follow-up discount from the second quote on (killed 1)
+    ~ runScenario tracks the cap per policy across claims (covered 146)
+    ~ runScenario rejects unknown item types in a quote (covered 52)
+    ~ runScenario rejects claims referencing a step that is not a quote (covered 70)
+    ✓ runScenario rejects unknown operations and malformed input (killed 1)
+
+[Survived] EqualityOperator
+src/claim.ts:36:46
+-         if (!Number.isFinite(damage.amount) || damage.amount < 0) {
++         if (!Number.isFinite(damage.amount) || damage.amount <= 0) {
+Tests ran:
+    claim payout reimburses a regular sword minus deductible
+    claim payout reimburses a rune minus deductible
+    claim payout applies deductible per damaged item
+  and 14 more tests!
+
+
+[Survived] StringLiteral
+src/claim.ts:37:37
+-           throw new InvalidClaimError(`Invalid damage amount ${damage.amount} for ${damage.itemType}`);
++           throw new InvalidClaimError(``);
+Tests ran:
+    claim payout rejects negative damage amounts
+
+
+[Survived] StringLiteral
+src/claim.ts:40:50
+-         if (index < 0) throw new InvalidClaimError(`Damaged item ${damage.itemType} is not covered by the policy`);
++         if (index < 0) throw new InvalidClaimError(``);
+Tests ran:
+    claim payout rejects more damages of a type than insured
+    claim payout rejects damage to an uninsured item
+    claim payout does not consume cap when a claim is rejected
+
+
+[Survived] BooleanLiteral
+src/items.ts:17:63
+-     sword: { insuranceValue: 1000, basePremium: 100, component: false },
++     sword: { insuranceValue: 1000, basePremium: 100, component: true },
+Ran all tests for this mutant.
+
+[Survived] BooleanLiteral
+src/items.ts:18:62
+-     amulet: { insuranceValue: 600, basePremium: 60, component: false },
++     amulet: { insuranceValue: 600, basePremium: 60, component: true },
+Ran all tests for this mutant.
+
+[Survived] BooleanLiteral
+src/items.ts:19:61
+-     staff: { insuranceValue: 800, basePremium: 80, component: false },
++     staff: { insuranceValue: 800, basePremium: 80, component: true },
+Ran all tests for this mutant.
+
+[Survived] BooleanLiteral
+src/items.ts:20:62
+-     potion: { insuranceValue: 400, basePremium: 40, component: false },
++     potion: { insuranceValue: 400, basePremium: 40, component: true },
+Ran all tests for this mutant.
+
+[Survived] ConditionalExpression
+src/premium.ts:22:9
+-       if (price.component) {
++       if (true) {
+Tests ran:
+    base premium 2 runes -> 50 G
+    base premium 3 runes -> 60 G
+    base premium 4 runes -> 100 G
+  and 15 more tests!
+
+
+[NoCoverage] StringLiteral
+src/scenario.ts:18:35
+-     if (!Array.isArray(value)) fail(`Step ${stepIndex}: items must be an array`);
++     if (!Array.isArray(value)) fail(``);
+
+[NoCoverage] StringLiteral
+src/scenario.ts:20:64
+-       if (!isObject(item) || typeof item.type !== 'string') fail(`Step ${stepIndex}: each item needs a type`);
++       if (!isObject(item) || typeof item.type !== 'string') fail(``);
+
+[NoCoverage] StringLiteral
+src/scenario.ts:27:63
+-     if (!isObject(value) || !Array.isArray(value.damages)) fail(`Step ${stepIndex}: incident.damages must be an array`);
++     if (!isObject(value) || !Array.isArray(value.damages)) fail(``);
+
+[NoCoverage] BlockStatement
+src/scenario.ts:29:104
+-       if (!isObject(damage) || typeof damage.itemType !== 'string' || typeof damage.amount !== 'number') {
+-         fail(`Step ${stepIndex}: each damage needs an itemType and a numeric amount`);
+-       }
++       if (!isObject(damage) || typeof damage.itemType !== 'string' || typeof damage.amount !== 'number') {}
+
+[NoCoverage] StringLiteral
+src/scenario.ts:30:12
+-         fail(`Step ${stepIndex}: each damage needs an itemType and a numeric amount`);
++         fail(``);
+
+[NoCoverage] StringLiteral
+src/scenario.ts:41:48
+-     if (typeof yearsWithMHPCO !== 'number') fail('customer.yearsWithMHPCO must be a number');
++     if (typeof yearsWithMHPCO !== 'number') fail("");
+
+[NoCoverage] StringLiteral
+src/scenario.ts:47:31
+-       if (!isObject(step)) fail(`Step ${index} must be an object`);
++       if (!isObject(step)) fail(``);
+
+[Survived] ConditionalExpression
+src/scenario.ts:14:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return true;
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 3 more tests!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:14:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return typeof value === 'object' && value !== null || !Array.isArray(value);
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 3 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:14:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return true && !Array.isArray(value);
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 3 more tests!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:14:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return typeof value === 'object' || value !== null && !Array.isArray(value);
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 3 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:14:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return true && value !== null && !Array.isArray(value);
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 3 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:14:39
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return typeof value === 'object' && true && !Array.isArray(value);
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 3 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:18:7
+-     if (!Array.isArray(value)) fail(`Step ${stepIndex}: items must be an array`);
++     if (false) fail(`Step ${stepIndex}: items must be an array`);
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 2 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:20:9
+-       if (!isObject(item) || typeof item.type !== 'string') fail(`Step ${stepIndex}: each item needs a type`);
++       if (false) fail(`Step ${stepIndex}: each item needs a type`);
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 1 more test!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:20:9
+-       if (!isObject(item) || typeof item.type !== 'string') fail(`Step ${stepIndex}: each item needs a type`);
++       if (!isObject(item) && typeof item.type !== 'string') fail(`Step ${stepIndex}: each item needs a type`);
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:20:28
+-       if (!isObject(item) || typeof item.type !== 'string') fail(`Step ${stepIndex}: each item needs a type`);
++       if (!isObject(item) || false) fail(`Step ${stepIndex}: each item needs a type`);
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:27:7
+-     if (!isObject(value) || !Array.isArray(value.damages)) fail(`Step ${stepIndex}: incident.damages must be an array`);
++     if (false) fail(`Step ${stepIndex}: incident.damages must be an array`);
+Tests ran:
+    runScenario runs the schema example
+    runScenario tracks the cap per policy across claims
+
+
+[Survived] LogicalOperator
+src/scenario.ts:27:7
+-     if (!isObject(value) || !Array.isArray(value.damages)) fail(`Step ${stepIndex}: incident.damages must be an array`);
++     if (!isObject(value) && !Array.isArray(value.damages)) fail(`Step ${stepIndex}: incident.damages must be an array`);
+Tests ran:
+    runScenario runs the schema example
+    runScenario tracks the cap per policy across claims
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:29:9
+-       if (!isObject(damage) || typeof damage.itemType !== 'string' || typeof damage.amount !== 'number') {
++       if (false) {
+Tests ran:
+    runScenario runs the schema example
+    runScenario tracks the cap per policy across claims
+
+
+[Survived] LogicalOperator
+src/scenario.ts:29:9
+-       if (!isObject(damage) || typeof damage.itemType !== 'string' || typeof damage.amount !== 'number') {
++       if ((!isObject(damage) || typeof damage.itemType !== 'string') && typeof damage.amount !== 'number') {
+Tests ran:
+    runScenario runs the schema example
+    runScenario tracks the cap per policy across claims
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:29:9
+-       if (!isObject(damage) || typeof damage.itemType !== 'string' || typeof damage.amount !== 'number') {
++       if (false || typeof damage.amount !== 'number') {
+Tests ran:
+    runScenario runs the schema example
+    runScenario tracks the cap per policy across claims
+
+
+[Survived] LogicalOperator
+src/scenario.ts:29:9
+-       if (!isObject(damage) || typeof damage.itemType !== 'string' || typeof damage.amount !== 'number') {
++       if (!isObject(damage) && typeof damage.itemType !== 'string' || typeof damage.amount !== 'number') {
+Tests ran:
+    runScenario runs the schema example
+    runScenario tracks the cap per policy across claims
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:29:30
+-       if (!isObject(damage) || typeof damage.itemType !== 'string' || typeof damage.amount !== 'number') {
++       if (!isObject(damage) || false || typeof damage.amount !== 'number') {
+Tests ran:
+    runScenario runs the schema example
+    runScenario tracks the cap per policy across claims
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:29:69
+-       if (!isObject(damage) || typeof damage.itemType !== 'string' || typeof damage.amount !== 'number') {
++       if (!isObject(damage) || typeof damage.itemType !== 'string' || false) {
+Tests ran:
+    runScenario runs the schema example
+    runScenario tracks the cap per policy across claims
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:37:7
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
++     if (false) {
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 3 more tests!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:37:7
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
++     if ((!isObject(input) || !isObject(input.customer)) && !Array.isArray(input.steps)) {
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 3 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:37:7
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
++     if (false || !Array.isArray(input.steps)) {
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 3 more tests!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:37:7
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
++     if (!isObject(input) && !isObject(input.customer) || !Array.isArray(input.steps)) {
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 3 more tests!
+
+
+[Survived] BlockStatement
+src/scenario.ts:37:85
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
+-       fail('Scenario must contain a customer and a steps array');
+-     }
++     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {}
+Tests ran:
+    runScenario rejects unknown operations and malformed input
+
+
+[Survived] StringLiteral
+src/scenario.ts:38:10
+-       fail('Scenario must contain a customer and a steps array');
++       fail("");
+Tests ran:
+    runScenario rejects unknown operations and malformed input
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:41:7
+-     if (typeof yearsWithMHPCO !== 'number') fail('customer.yearsWithMHPCO must be a number');
++     if (false) fail('customer.yearsWithMHPCO must be a number');
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 3 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:47:9
+-       if (!isObject(step)) fail(`Step ${index} must be an object`);
++       if (false) fail(`Step ${index} must be an object`);
+Tests ran:
+    runScenario runs the schema example
+    runScenario applies follow-up discount from the second quote on
+    runScenario tracks the cap per policy across claims
+  and 3 more tests!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:55:9
+-       if (step.op === 'claim') {
++       if (true) {
+Tests ran:
+    runScenario runs the schema example
+    runScenario tracks the cap per policy across claims
+    runScenario rejects claims referencing a step that is not a quote
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:57:11
+-         if (!policy) fail(`Step ${index}: policy ${String(step.policy)} does not refer to an earlier quote step`);
++         if (false) fail(`Step ${index}: policy ${String(step.policy)} does not refer to an earlier quote step`);
+Tests ran:
+    runScenario runs the schema example
+    runScenario tracks the cap per policy across claims
+    runScenario rejects claims referencing a step that is not a quote
+
+
+[Survived] StringLiteral
+src/scenario.ts:57:25
+-         if (!policy) fail(`Step ${index}: policy ${String(step.policy)} does not refer to an earlier quote step`);
++         if (!policy) fail(``);
+Tests ran:
+    runScenario rejects claims referencing a step that is not a quote
+
+
+[Survived] StringLiteral
+src/scenario.ts:60:10
+-       fail(`Step ${index}: unknown op ${String(step.op)}`);
++       fail(``);
+Tests ran:
+    runScenario rejects unknown operations and malformed input
+
+
+Ran 3.62 tests per mutant on average.
+-------------|------------------|----------|-----------|------------|----------|----------|
+             | % Mutation score |          |           |            |          |          |
+File         |  total | covered | # killed | # timeout | # survived | # no cov | # errors |
+-------------|--------|---------|----------|-----------|------------|----------|----------|
+All files    |  76.44 |   79.35 |      146 |         0 |         38 |        7 |        0 |
+ claim.ts    |  91.67 |   91.67 |       33 |         0 |          3 |        0 |        0 |
+ items.ts    |  80.00 |   80.00 |       16 |         0 |          4 |        0 |        0 |
+ premium.ts  |  97.83 |   97.83 |       45 |         0 |          1 |        0 |        0 |
+ scenario.ts |  58.43 |   63.41 |       52 |         0 |         30 |        7 |        0 |
+-------------|--------|---------|----------|-----------|------------|----------|----------|
+[32m09:39:22 (995395) INFO JsonReporter[39m Your report can be found at: file:///home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_06-43-20_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-5-no-thinking/reports/mutation/mutation-report.json
+[32m09:39:22 (995395) INFO MutationTestExecutor[39m Done in 42 seconds.

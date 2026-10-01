@@ -1,0 +1,558 @@
+$ /home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_06-45-41_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-5-no-thinking/node_modules/.bin/stryker run --logLevel info
+[32m09:39:29 (999249) INFO ProjectReader[39m Found 4 of 32 file(s) to be mutated.
+[32m09:39:29 (999249) INFO Instrumenter[39m Instrumented 4 source file(s) with 214 mutant(s)
+[32m09:39:29 (999249) INFO ConcurrencyTokenProvider[39m Creating 2 test runner process(es).
+[32m09:39:31 (999249) INFO DryRunExecutor[39m Starting initial test run (vitest test runner with "perTest" coverage analysis). This may take a while.
+[32m09:39:35 (999249) INFO DryRunExecutor[39m Initial test run succeeded. Ran 36 tests in 3 seconds (net 2954 ms, overhead 973 ms).
+[33m09:39:35 (999249) WARN MutantTestPlanner[39m Detected 13 static mutants (6% of total) that are estimated to take 97% of the time running the tests!
+  You might want to enable "ignoreStatic" to ignore these static mutants for your next run. 
+  For more information about static mutants visit: https://stryker-mutator.io/docs/mutation-testing-elements/static-mutants
+  (disable "warnings.slow" to ignore this warning)
+
+All tests
+  claim.spec.ts
+    ✓ claim processing standard reimbursement minus deductible (killed 23)
+    ~ claim processing deductible applies per damaged item (covered 45)
+    ✓ claim processing dragon sword enchantment 9 damage 1000 -> 400 (killed 3)
+    ✓ claim processing dragon sword enchantment 8 damage 1000 -> 400 (killed 1)
+    ~ claim processing dragon sword enchantment 5 damage 800 -> 700 (covered 45)
+    ~ claim processing steel sword enchantment 9 damage 1000 -> 400 (covered 45)
+    ~ claim processing damage below deductible pays nothing (covered 45)
+    ~ claim processing cap is twice the unmodified insurance sum (covered 9)
+    ✓ claim processing successive claims exhaust the cap (killed 2)
+    ~ claim processing two insured swords can each be damaged with separate deductibles (covered 45)
+    ~ claim processing rounds the final payout down (covered 45)
+    ✓ claim processing rejects more damages of a type than insured without changing the cap (killed 1)
+    ✓ claim processing rejects item not in the policy without changing the cap (killed 1)
+    ~ claim processing rejects unknown item type without changing the cap (covered 23)
+    ✓ claim processing rejects negative amount without changing the cap (killed 4)
+  cli.spec.ts
+    ✓ scenario counts earlier quotes as previous contracts (killed 39)
+    ✓ scenario claims against a policy created by an earlier quote (killed 28)
+    ~ scenario rejects claims referencing a missing step (covered 62)
+    ~ scenario rejects claims referencing a non-quote step (covered 62)
+    ✘ claim-office CLI writes results for the schema example (covered 0)
+    ✘ claim-office CLI fails with stderr and no stdout on unknown item type (covered 0)
+    ✘ claim-office CLI fails on invalid JSON (covered 0)
+  premium.spec.ts
+    ✓ base premium uses price list for main items (killed 11)
+    ✓ base premium 2 runes -> 50 G (killed 3)
+    ✓ base premium 3 runes -> 60 G (killed 8)
+    ~ base premium 4 runes -> 100 G (covered 19)
+    ~ base premium 7 runes -> 175 G (covered 19)
+    ✓ base premium only blocks components of the exact same type (killed 2)
+    ✓ base premium rejects unknown item types (killed 2)
+    ✓ quote premium with modifiers empty item list costs only the processing fee (killed 3)
+    ✓ quote premium with modifiers newcomer with a cursed sword pays 165 G (killed 18)
+    ✓ quote premium with modifiers long-standing customer second contract, cursed enchanted sword pays 160 G (killed 7)
+    ✓ quote premium with modifiers curse surcharge only applies to the cursed item (killed 1)
+    ✓ quote premium with modifiers enchantment threshold is inclusive at 5 (killed 1)
+    ✓ quote premium with modifiers loyalty discount applies at exactly 2 years (killed 1)
+    ~ quote premium with modifiers rounds the final premium up (covered 45)
+
+[Survived] BooleanLiteral
+src/catalog.ts:15:50
+-     sword: { value: 1000, premium: 100, component: false },
++     sword: { value: 1000, premium: 100, component: true },
+Ran all tests for this mutant.
+
+[Survived] BooleanLiteral
+src/catalog.ts:16:49
+-     amulet: { value: 600, premium: 60, component: false },
++     amulet: { value: 600, premium: 60, component: true },
+Ran all tests for this mutant.
+
+[Survived] BooleanLiteral
+src/catalog.ts:17:48
+-     staff: { value: 800, premium: 80, component: false },
++     staff: { value: 800, premium: 80, component: true },
+Ran all tests for this mutant.
+
+[Survived] BooleanLiteral
+src/catalog.ts:18:49
+-     potion: { value: 400, premium: 40, component: false },
++     potion: { value: 400, premium: 40, component: true },
+Ran all tests for this mutant.
+
+[Survived] EqualityOperator
+src/claim.ts:51:47
+-         if (!Number.isInteger(damage.amount) || damage.amount < 0) {
++         if (!Number.isInteger(damage.amount) || damage.amount <= 0) {
+Tests ran:
+    claim processing standard reimbursement minus deductible
+    claim processing deductible applies per damaged item
+    claim processing dragon sword enchantment 9 damage 1000 -> 400
+  and 12 more tests!
+
+
+[Survived] StringLiteral
+src/claim.ts:52:35
+-           throw new ValidationError(`Invalid damage amount: ${damage.amount}`);
++           throw new ValidationError(``);
+Tests ran:
+    claim processing rejects negative amount without changing the cap
+
+
+[Survived] StringLiteral
+src/claim.ts:56:48
+-         if (index < 0) throw new ValidationError(`Damaged item not covered by policy: ${damage.itemType}`);
++         if (index < 0) throw new ValidationError(``);
+Tests ran:
+    claim processing rejects more damages of a type than insured without changing the cap
+    claim processing rejects item not in the policy without changing the cap
+
+
+[Survived] ConditionalExpression
+src/premium.ts:7:9
+-       if (lookup(item.type).component) counts.set(item.type, (counts.get(item.type) ?? 0) + 1);
++       if (true) counts.set(item.type, (counts.get(item.type) ?? 0) + 1);
+Tests ran:
+    base premium uses price list for main items
+    base premium 2 runes -> 50 G
+    base premium 3 runes -> 60 G
+  and 12 more tests!
+
+
+[NoCoverage] StringLiteral
+src/scenario.ts:21:50
+-     if (!isObject(step)) throw new ValidationError(`Step ${i} must be an object`);
++     if (!isObject(step)) throw new ValidationError(``);
+
+[NoCoverage] BlockStatement
+src/scenario.ts:23:117
+-       if (!Array.isArray(step.items) || !step.items.every((item) => isObject(item) && typeof item.type === 'string')) {
+-         throw new ValidationError(`Step ${i}: quote requires an items array of typed items`);
+-       }
++       if (!Array.isArray(step.items) || !step.items.every((item) => isObject(item) && typeof item.type === 'string')) {}
+
+[NoCoverage] StringLiteral
+src/scenario.ts:24:33
+-         throw new ValidationError(`Step ${i}: quote requires an items array of typed items`);
++         throw new ValidationError(``);
+
+[NoCoverage] StringLiteral
+src/scenario.ts:28:54
+-     if (step.op !== 'claim') throw new ValidationError(`Step ${i}: unknown op ${String(step.op)}`);
++     if (step.op !== 'claim') throw new ValidationError(``);
+
+[NoCoverage] BlockStatement
+src/scenario.ts:30:99
+-     if (typeof step.policy !== 'number' || !isObject(incident) || !Array.isArray(incident.damages)) {
+-       throw new ValidationError(`Step ${i}: claim requires a policy index and an incident with damages`);
+-     }
++     if (typeof step.policy !== 'number' || !isObject(incident) || !Array.isArray(incident.damages)) {}
+
+[NoCoverage] StringLiteral
+src/scenario.ts:31:31
+-       throw new ValidationError(`Step ${i}: claim requires a policy index and an incident with damages`);
++       throw new ValidationError(``);
+
+[NoCoverage] BlockStatement
+src/scenario.ts:33:118
+-     if (!incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')) {
+-       throw new ValidationError(`Step ${i}: each damage requires itemType and amount`);
+-     }
++     if (!incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')) {}
+
+[NoCoverage] StringLiteral
+src/scenario.ts:34:31
+-       throw new ValidationError(`Step ${i}: each damage requires itemType and amount`);
++       throw new ValidationError(``);
+
+[NoCoverage] BlockStatement
+src/scenario.ts:39:85
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
+-       throw new ValidationError('Scenario requires a customer object and a steps array');
+-     }
++     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {}
+
+[NoCoverage] StringLiteral
+src/scenario.ts:40:31
+-       throw new ValidationError('Scenario requires a customer object and a steps array');
++       throw new ValidationError("");
+
+[NoCoverage] BlockStatement
+src/scenario.ts:42:58
+-     if (typeof input.customer.yearsWithMHPCO !== 'number') {
+-       throw new ValidationError('customer.yearsWithMHPCO must be a number');
+-     }
++     if (typeof input.customer.yearsWithMHPCO !== 'number') {}
+
+[NoCoverage] StringLiteral
+src/scenario.ts:43:31
+-       throw new ValidationError('customer.yearsWithMHPCO must be a number');
++       throw new ValidationError("");
+
+[Survived] ConditionalExpression
+src/scenario.ts:17:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return true;
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+  and 1 more test!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:17:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return typeof value === 'object' && value !== null || !Array.isArray(value);
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:17:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return true && !Array.isArray(value);
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+  and 1 more test!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:17:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return typeof value === 'object' || value !== null && !Array.isArray(value);
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:17:10
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return true && value !== null && !Array.isArray(value);
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:17:39
+-     return typeof value === 'object' && value !== null && !Array.isArray(value);
++     return typeof value === 'object' && true && !Array.isArray(value);
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+  and 1 more test!
+
+
+[Survived] BlockStatement
+src/scenario.ts:20:55
+-   function validateStep(step: unknown, i: number): void {
+-     if (!isObject(step)) throw new ValidationError(`Step ${i} must be an object`);
+-     if (step.op === 'quote') {
+-       if (!Array.isArray(step.items) || !step.items.every((item) => isObject(item) && typeof item.type === 'string')) {
+-         throw new ValidationError(`Step ${i}: quote requires an items array of typed items`);
+-       }
+-       return;
+-     }
+-     if (step.op !== 'claim') throw new ValidationError(`Step ${i}: unknown op ${String(step.op)}`);
+-     const incident = step.incident;
+-     if (typeof step.policy !== 'number' || !isObject(incident) || !Array.isArray(incident.damages)) {
+-       throw new ValidationError(`Step ${i}: claim requires a policy index and an incident with damages`);
+-     }
+-     if (!incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')) {
+-       throw new ValidationError(`Step ${i}: each damage requires itemType and amount`);
+-     }
+-   }
++   function validateStep(step: unknown, i: number): void {}
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:21:7
+-     if (!isObject(step)) throw new ValidationError(`Step ${i} must be an object`);
++     if (false) throw new ValidationError(`Step ${i} must be an object`);
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:23:9
+-       if (!Array.isArray(step.items) || !step.items.every((item) => isObject(item) && typeof item.type === 'string')) {
++       if (false) {
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+
+
+[Survived] LogicalOperator
+src/scenario.ts:23:9
+-       if (!Array.isArray(step.items) || !step.items.every((item) => isObject(item) && typeof item.type === 'string')) {
++       if (!Array.isArray(step.items) && !step.items.every(item => isObject(item) && typeof item.type === 'string')) {
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+
+
+[Survived] MethodExpression
+src/scenario.ts:23:40
+-       if (!Array.isArray(step.items) || !step.items.every((item) => isObject(item) && typeof item.type === 'string')) {
++       if (!Array.isArray(step.items) || !step.items.some(item => isObject(item) && typeof item.type === 'string')) {
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:23:67
+-       if (!Array.isArray(step.items) || !step.items.every((item) => isObject(item) && typeof item.type === 'string')) {
++       if (!Array.isArray(step.items) || !step.items.every((item) => true)) {
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+
+
+[Survived] LogicalOperator
+src/scenario.ts:23:67
+-       if (!Array.isArray(step.items) || !step.items.every((item) => isObject(item) && typeof item.type === 'string')) {
++       if (!Array.isArray(step.items) || !step.items.every((item) => isObject(item) || typeof item.type === 'string')) {
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:23:85
+-       if (!Array.isArray(step.items) || !step.items.every((item) => isObject(item) && typeof item.type === 'string')) {
++       if (!Array.isArray(step.items) || !step.items.every((item) => isObject(item) && true)) {
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:28:7
+-     if (step.op !== 'claim') throw new ValidationError(`Step ${i}: unknown op ${String(step.op)}`);
++     if (false) throw new ValidationError(`Step ${i}: unknown op ${String(step.op)}`);
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+    scenario rejects claims referencing a non-quote step
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:30:7
+-     if (typeof step.policy !== 'number' || !isObject(incident) || !Array.isArray(incident.damages)) {
++     if (false) {
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+    scenario rejects claims referencing a non-quote step
+
+
+[Survived] LogicalOperator
+src/scenario.ts:30:7
+-     if (typeof step.policy !== 'number' || !isObject(incident) || !Array.isArray(incident.damages)) {
++     if ((typeof step.policy !== 'number' || !isObject(incident)) && !Array.isArray(incident.damages)) {
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+    scenario rejects claims referencing a non-quote step
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:30:7
+-     if (typeof step.policy !== 'number' || !isObject(incident) || !Array.isArray(incident.damages)) {
++     if (false || !Array.isArray(incident.damages)) {
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+    scenario rejects claims referencing a non-quote step
+
+
+[Survived] LogicalOperator
+src/scenario.ts:30:7
+-     if (typeof step.policy !== 'number' || !isObject(incident) || !Array.isArray(incident.damages)) {
++     if (typeof step.policy !== 'number' && !isObject(incident) || !Array.isArray(incident.damages)) {
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+    scenario rejects claims referencing a non-quote step
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:30:7
+-     if (typeof step.policy !== 'number' || !isObject(incident) || !Array.isArray(incident.damages)) {
++     if (false || !isObject(incident) || !Array.isArray(incident.damages)) {
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+    scenario rejects claims referencing a non-quote step
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:33:7
+-     if (!incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')) {
++     if (false) {
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+    scenario rejects claims referencing a non-quote step
+
+
+[Survived] MethodExpression
+src/scenario.ts:33:8
+-     if (!incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')) {
++     if (!incident.damages.some(d => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')) {
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+    scenario rejects claims referencing a non-quote step
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:33:38
+-     if (!incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')) {
++     if (!incident.damages.every((d) => true)) {
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+
+
+[Survived] LogicalOperator
+src/scenario.ts:33:38
+-     if (!incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')) {
++     if (!incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' || typeof d.amount === 'number')) {
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:33:38
+-     if (!incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')) {
++     if (!incident.damages.every((d) => true && typeof d.amount === 'number')) {
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+
+
+[Survived] LogicalOperator
+src/scenario.ts:33:38
+-     if (!incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')) {
++     if (!incident.damages.every((d) => isObject(d) || typeof d.itemType === 'string' && typeof d.amount === 'number')) {
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:33:53
+-     if (!incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')) {
++     if (!incident.damages.every((d) => isObject(d) && true && typeof d.amount === 'number')) {
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:33:87
+-     if (!incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && typeof d.amount === 'number')) {
++     if (!incident.damages.every((d) => isObject(d) && typeof d.itemType === 'string' && true)) {
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:39:7
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
++     if (false) {
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+  and 1 more test!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:39:7
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
++     if ((!isObject(input) || !isObject(input.customer)) && !Array.isArray(input.steps)) {
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:39:7
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
++     if (false || !Array.isArray(input.steps)) {
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+  and 1 more test!
+
+
+[Survived] LogicalOperator
+src/scenario.ts:39:7
+-     if (!isObject(input) || !isObject(input.customer) || !Array.isArray(input.steps)) {
++     if (!isObject(input) && !isObject(input.customer) || !Array.isArray(input.steps)) {
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:42:7
+-     if (typeof input.customer.yearsWithMHPCO !== 'number') {
++     if (false) {
+Tests ran:
+    scenario counts earlier quotes as previous contracts
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+  and 1 more test!
+
+
+[Survived] ConditionalExpression
+src/scenario.ts:65:9
+-       if (!policy) throw new ValidationError(`Step ${index}: no policy created at step ${step.policy}`);
++       if (false) throw new ValidationError(`Step ${index}: no policy created at step ${step.policy}`);
+Tests ran:
+    scenario claims against a policy created by an earlier quote
+    scenario rejects claims referencing a missing step
+    scenario rejects claims referencing a non-quote step
+
+
+[Survived] StringLiteral
+src/scenario.ts:65:44
+-       if (!policy) throw new ValidationError(`Step ${index}: no policy created at step ${step.policy}`);
++       if (!policy) throw new ValidationError(``);
+Tests ran:
+    scenario rejects claims referencing a missing step
+    scenario rejects claims referencing a non-quote step
+
+
+Ran 3.06 tests per mutant on average.
+-------------|------------------|----------|-----------|------------|----------|----------|
+             | % Mutation score |          |           |            |          |          |
+File         |  total | covered | # killed | # timeout | # survived | # no cov | # errors |
+-------------|--------|---------|----------|-----------|------------|----------|----------|
+All files    |  74.30 |   78.71 |      159 |         0 |         43 |       12 |        0 |
+ catalog.ts  |  80.95 |   80.95 |       17 |         0 |          4 |        0 |        0 |
+ claim.ts    |  92.68 |   92.68 |       38 |         0 |          3 |        0 |        0 |
+ premium.ts  |  97.92 |   97.92 |       47 |         0 |          1 |        0 |        0 |
+ scenario.ts |  54.81 |   61.96 |       57 |         0 |         35 |       12 |        0 |
+-------------|--------|---------|----------|-----------|------------|----------|----------|
+[32m09:40:22 (999249) INFO JsonReporter[39m Your report can be found at: file:///home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_06-45-41_claim-office-example-mapping_baseline-inline-tdd-v1.1-local-git-cc_opus-5-5-no-thinking/reports/mutation/mutation-report.json
+[32m09:40:22 (999249) INFO MutationTestExecutor[39m Done in 53 seconds.

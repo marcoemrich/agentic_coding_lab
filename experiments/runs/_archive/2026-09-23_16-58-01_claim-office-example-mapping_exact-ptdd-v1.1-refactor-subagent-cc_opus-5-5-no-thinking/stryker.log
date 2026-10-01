@@ -1,0 +1,100 @@
+$ /home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_16-58-01_claim-office-example-mapping_exact-ptdd-v1.1-refactor-subagent-cc_opus-5-5-no-thinking/node_modules/.bin/stryker run --logLevel info
+[32m20:17:37 (1746196) INFO ProjectReader[39m Found 4 of 140 file(s) to be mutated.
+[32m20:17:37 (1746196) INFO Instrumenter[39m Instrumented 4 source file(s) with 131 mutant(s)
+[32m20:17:38 (1746196) INFO ConcurrencyTokenProvider[39m Creating 2 test runner process(es).
+[32m20:17:39 (1746196) INFO DryRunExecutor[39m Starting initial test run (vitest test runner with "perTest" coverage analysis). This may take a while.
+[32m20:17:43 (1746196) INFO DryRunExecutor[39m Initial test run succeeded. Ran 51 tests in 3 seconds (net 2472 ms, overhead 713 ms).
+[33m20:17:43 (1746196) WARN MutantTestPlanner[39m Detected 9 static mutants (7% of total) that are estimated to take 95% of the time running the tests!
+  You might want to enable "ignoreStatic" to ignore these static mutants for your next run. 
+  For more information about static mutants visit: https://stryker-mutator.io/docs/mutation-testing-elements/static-mutants
+  (disable "warnings.slow" to ignore this warning)
+
+All tests
+  claimOffice.spec.ts
+    ✓ quote empty item list -> premium 5 G (only the processing fee) (killed 18)
+    ✓ quote newcomer, plain steel sword (enchantment 3) -> 100 base + 10 first insurance + 5 fee = 115 G (killed 25)
+    ✓ quote newcomer, plain amulet -> 60 + 6 + 5 = 71 G (killed 1)
+    ✓ quote newcomer, plain staff -> 80 + 8 + 5 = 93 G (killed 1)
+    ✓ quote newcomer, plain potion -> 40 + 4 + 5 = 49 G (killed 1)
+    ✓ quote newcomer, 1 rune -> 25 + 2.5 + 5 = 32.5 -> rounded up to 33 G (killed 9)
+    ✓ quote newcomer, 1 moonstone -> 25 base like any component -> 33 G (killed 1)
+    ~ quote 2 runes -> base 50 G -> 50 + 5 + 5 = 60 G (covered 48)
+    ✓ quote 3 runes -> block base 60 G -> 60 + 6 + 5 = 71 G (killed 1)
+    ~ quote 4 runes -> base 100 G (no block, block requires exactly 3) -> 100 + 10 + 5 = 115 G (covered 48)
+    ~ quote 7 runes -> base 175 G -> 175 + 17.5 + 5 = 197.5 -> 198 G (covered 48)
+    ~ quote 2 runes + 1 moonstone -> base 75 G (no block: different types) -> 75 + 7.5 + 5 = 87.5 -> 88 G (covered 48)
+    ~ quote 3 runes + 3 moonstones -> base 120 G (two blocks) -> 120 + 12 + 5 = 137 G (covered 47)
+    ✓ quote newcomer, cursed steel sword (enchantment 3) -> 100 + 50 curse + 10 first + 5 = 165 G (killed 2)
+    ~ quote sword with enchantment 4, not cursed -> no high-enchantment surcharge -> 115 G (covered 67)
+    ✓ quote sword with exactly enchantment 5 -> 30 % surcharge -> 100 + 30 + 10 + 5 = 145 G (killed 6)
+    ~ quote cursed sword with exactly enchantment 5 -> both surcharges -> 100 + 50 + 30 + 10 + 5 = 195 G (covered 67)
+    ~ quote cursed sword with enchantment 4 -> only curse surcharge -> 165 G (covered 67)
+    ~ quote cursed sword + plain amulet -> curse applies to sword only: 160 + 50 + 16 first + 5 = 231 G (covered 67)
+    ~ quote customer with 1 year, plain sword -> no loyalty discount -> 115 G (covered 67)
+    ✓ quote customer with exactly 2 years, plain sword -> 20 % loyalty discount on policy base: 100 - 20 + 10 + 5 = 95 G (killed 5)
+    ✓ quote second quote in scenario gets 15 % follow-up discount on policy base: newcomer plain sword twice -> 115 G, then 100 + 10 - 15 + 5 = 100 G (killed 7)
+    ~ quote long-standing customer (3 years), second quote, cursed steel sword enchantment 7 -> 160 G (first insurance still applies) (covered 73)
+    ~ quote 2 years, cursed sword enchantment 5 + rune -> 125 + 50 + 30 - 25 + 12.5 + 5 = 197.5 -> rounded up to 198 G (covered 68)
+    ✓ claim regular steel sword (enchantment 3), damage 500 G -> payout 400 G, remainingCap 1600 G (killed 36)
+    ✓ claim rune (insurance value 250 G), damage 200 G -> payout 100 G, remainingCap 400 G (killed 2)
+    ~ claim amulet damage 200 G -> payout 100 G, remainingCap 1100 G (cap = 2 x 600) (covered 109)
+    ~ claim staff damage 200 G -> payout 100 G, remainingCap 1500 G (cap = 2 x 800) (covered 109)
+    ~ claim potion damage 200 G -> payout 100 G, remainingCap 700 G (cap = 2 x 400) (covered 109)
+    ~ claim moonstone damage 200 G -> payout 100 G, remainingCap 400 G (cap = 2 x 250) (covered 96)
+    ✓ claim steel sword enchantment 9, damage 1000 G -> 50 % then deductible -> payout 400 G (killed 2)
+    ~ claim dragon sword enchantment 9, damage 1000 G -> 50 % rule wins -> payout 400 G (covered 109)
+    ✓ claim dragon sword exactly enchantment 8, damage 1000 G -> payout 400 G (killed 1)
+    ~ claim dragon sword enchantment 5, damage 800 G -> full reimbursement -> payout 700 G (covered 109)
+    ~ claim sword enchantment 8, damage 901 G -> 450.5 - 100 = 350.5 -> rounded down to 350 G (covered 109)
+    ~ claim sword (500 G) and amulet (300 G) damaged in one event -> deductible per item -> payout 600 G, remainingCap 2600 G (covered 109)
+    ~ claim two swords insured -> cap 4000 G; both damaged 500 G each -> payout 800 G, remainingCap 3200 G (covered 109)
+    ~ claim cursed sword -> cap 2000 G based on unmodified insurance value: damage 500 G -> remainingCap 1600 G (covered 109)
+    ~ claim sword + 3 runes (block) -> insurance sum 1750 G, cap 3500 G: sword damage 500 G -> remainingCap 3100 G (covered 110)
+    ~ claim sword, two successive claims of 1500 G -> payouts 1400 G (cap 600) then 600 G (cap 0) (covered 109)
+    ~ claim claim references the policy by its quote step index when several policies exist (covered 114)
+    ✓ rejections (throws Error with a description) quote with unknown item type 'broomstick' throws (killed 3)
+    ✓ rejections (throws Error with a description) claim damaging an amulet when only a sword is insured throws (killed 4)
+    ~ rejections (throws Error with a description) claim damaging an unknown item type throws (covered 99)
+    ~ rejections (throws Error with a description) claim with two sword damages but only one sword insured throws (covered 99)
+    ✓ rejections (throws Error with a description) claim with damage amount -200 throws (killed 4)
+  cli.spec.ts
+    ✘ claim-office CLI schema example (5 years, silver amulet quote + fire claim 200) -> stdout {results:[{premium:59},{payout:100,remainingCap:1100}]}, exit 0 (covered 0)
+    ✘ claim-office CLI unknown item type 'broomstick' -> non-zero exit, error on stderr, no results on stdout (covered 0)
+    ✘ claim-office CLI damage for an item not in the policy -> non-zero exit, error on stderr, no results on stdout (covered 0)
+    ✘ claim-office CLI more sword damages than insured swords -> non-zero exit, error on stderr, no results on stdout (covered 0)
+    ✘ claim-office CLI damage amount -200 -> non-zero exit, error on stderr, no results on stdout (covered 0)
+
+[Survived] ConditionalExpression
+src/claimOffice.ts:27:38
+-     return earlierSteps.some((step) => step.op === "quote");
++     return earlierSteps.some((step) => true);
+Tests ran:
+    quote second quote in scenario gets 15 % follow-up discount on policy base: newcomer plain sword twice -> 115 G, then 100 + 10 - 15 + 5 = 100 G
+    quote long-standing customer (3 years), second quote, cursed steel sword enchantment 7 -> 160 G (first insurance still applies)
+    claim claim references the policy by its quote step index when several policies exist
+
+
+[Survived] EqualityOperator
+src/claimSettlement.ts:47:7
+-     if (damage.amount < 0) {
++     if (damage.amount <= 0) {
+Tests ran:
+    claim regular steel sword (enchantment 3), damage 500 G -> payout 400 G, remainingCap 1600 G
+    claim rune (insurance value 250 G), damage 200 G -> payout 100 G, remainingCap 400 G
+    claim amulet damage 200 G -> payout 100 G, remainingCap 1100 G (cap = 2 x 600)
+  and 18 more tests!
+
+
+Ran 4.69 tests per mutant on average.
+--------------------|------------------|----------|-----------|------------|----------|----------|
+                    | % Mutation score |          |           |            |          |          |
+File                |  total | covered | # killed | # timeout | # survived | # no cov | # errors |
+--------------------|--------|---------|----------|-----------|------------|----------|----------|
+All files           |  98.47 |   98.47 |      129 |         0 |          2 |        0 |        0 |
+ claimOffice.ts     |  94.74 |   94.74 |       18 |         0 |          1 |        0 |        0 |
+ claimSettlement.ts |  97.62 |   97.62 |       41 |         0 |          1 |        0 |        0 |
+ itemCatalog.ts     | 100.00 |  100.00 |       43 |         0 |          0 |        0 |        0 |
+ premiumQuote.ts    | 100.00 |  100.00 |       27 |         0 |          0 |        0 |        0 |
+--------------------|--------|---------|----------|-----------|------------|----------|----------|
+[32m20:18:03 (1746196) INFO JsonReporter[39m Your report can be found at: file:///home/memrich/agentic_coding_lab/experiments/runs/2026-09-23_16-58-01_claim-office-example-mapping_exact-ptdd-v1.1-refactor-subagent-cc_opus-5-5-no-thinking/reports/mutation/mutation-report.json
+[32m20:18:03 (1746196) INFO MutationTestExecutor[39m Done in 26 seconds.
