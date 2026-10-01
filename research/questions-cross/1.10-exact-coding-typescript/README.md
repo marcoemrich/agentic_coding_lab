@@ -33,12 +33,16 @@ outcomes:
   - unit_size_max
   - unit_size_avg
   - unit_size_median
-  - test_blocks
-  - test_cases_total
-  - test_cases_first_block
-  - red_verified
-  - red_unverified
-  - refactorings_applied
+  # TDD discipline is deliberately NOT an outcome here, and cannot become one.
+  # The six transcript- and marker-derived columns this RQ used to declare
+  # (test_blocks, test_cases_total, test_cases_first_block, red_verified,
+  # red_unverified, refactorings_applied) were retired in 2026-10 and are no
+  # longer produced. The phase chain that replaced them reads an event stream
+  # written during the run, so it exists only for runs made after the stack
+  # reporter landed: the opus-5 cells were refilled and carry it, the
+  # gpt-5-6-sol-codex cells predate it and never will without a refill of the
+  # pi side. Neither family of columns spans this RQ's central comparison, so
+  # no discipline claim is made here. None of the findings below rested on them.
   - predictions_correct_rate
   - duration_seconds
   - total_tokens

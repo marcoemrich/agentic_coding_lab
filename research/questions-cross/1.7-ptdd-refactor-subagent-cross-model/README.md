@@ -24,7 +24,12 @@ outcomes:
   - smell_total
   - code_mass
   - cc_loc
-  - refactorings_applied
+  # refactorings_applied was dropped in 2026-10: it came from the retired marker
+  # route and now exists for only part of each Opus cell (10 of 15, 5 of 10) while
+  # both SOL cells still carry it in full. A mean over two thirds of one column
+  # against a whole other column would read as a treatment difference. The phase
+  # chain's refactor_events exists only on the refilled Opus halves and does not
+  # span the comparison either, so this RQ makes no discipline claim.
   - predictions_correct_rate
   - duration_seconds
   - total_tokens
