@@ -764,7 +764,7 @@ def main() -> int:
     source = args.source or promoted_source()
     src = source_dir(source) / ".pi"
     harnesses = tuple(args.harness or DEFAULT_HARNESSES)
-    target = args.target or ROOT / f"research/workflow-dev/export/exact-coding-ptdd-v1-{args.date}"
+    target = args.target or ROOT / f"research/workflow-dev/export/{args.date}-exact-coding-ptdd-v1"
     if target.exists():
         if not args.force:
             raise SystemExit(f"Target exists: {target}; pass --force to replace")

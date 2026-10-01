@@ -2,7 +2,7 @@
 
 _Does sphinx-score resolve a workflow difference in code quality — does the decomposition gap between a minimal and an elaborate TDD workflow show up as clearly as it does on claim-office?_
 
-Generated: 2026-09-30T21:57:02Z
+Generated: 2026-10-01T00:43:26Z
 
 Cells declared: 6 · matched runs: 36 · min_replicates: 6
 

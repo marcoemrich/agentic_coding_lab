@@ -168,9 +168,9 @@ def expand_cells(fm: dict) -> list[dict]:
         # the SAME cell. First entry is canonical (cell label + plan gen);
         # all entries match in aggregation.
         normalize_alts(cell, "workflow")
-        # Alt-Namen auf die aktuellen ziehen. Eine RQ darf weiter
-        # exact-hybrid-v2-testlist-fix-cc nennen; gematcht und beschriftet
-        # wird trotzdem exact-hybrid-v2-testlist-fix-cc.
+        # Map old names to current ones. An RQ may keep naming
+        # exact-hybrid-v2-testlist-fix-cc; matching and labelling still
+        # use exact-hybrid-v2-testlist-fix-cc.
         cell["workflow_alts"] = [canonical_workflow(w) for w in cell["workflow_alts"]]
         cell["workflow"] = cell["workflow_alts"][0]
 
@@ -297,13 +297,13 @@ def check_archived_workflows(cells: list[dict], allow_archived: bool) -> int:
     the run proceeds anyway (RQ-1.10 legitimately evaluates a rejected
     workflow); without it, the caller aborts.
     """
-    # Archiv-Zugehoerigkeit kommt aus PATHS.json (status: discarded <=> Pfad
-    # unter _archive/), nicht mehr aus einem flachen iterdir() -- das Archiv
-    # spiegelt seit dem Lineage-Umbau die Kategorie-Struktur und ist verschachtelt.
+    # Archive membership comes from PATHS.json (status: discarded <=> path
+    # under _archive/), no longer from a flat iterdir() -- since the lineage
+    # rework the archive mirrors the category structure and is nested.
     #
-    # Geprueft werden ALLE Alts, nicht nur der kanonische erste Eintrag: der im
-    # Docstring benannte Hauptfall ist gerade der, dass in einem {any: [...]}
-    # ein archivierter Name mitlaeuft und uebersehen wird.
+    # ALL alts are checked, not just the canonical first entry: the main case
+    # named in the docstring is exactly an archived name riding along in an
+    # {any: [...]} and being overlooked.
     hits = sorted({w for c in cells for w in (c.get("workflow_alts") or [c.get("workflow")])
                    if w and is_archived(w)})
     if not hits:

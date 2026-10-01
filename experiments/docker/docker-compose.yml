@@ -27,11 +27,11 @@ services:
       - ../parse_pi_transcript.py:/home/experimenter/experiments/parse_pi_transcript.py:ro
       - ../parse_cursor_transcript.py:/home/experimenter/experiments/parse_cursor_transcript.py:ro
 
-      # Claude config — schlankes Container-Profil (./claude-config), kein
-      # MCP, keine Host-Pfade. Override via CLAUDE_CONFIG_DIR=~/.claude.
+      # Claude config — slim container profile (./claude-config), no
+      # MCP, no host paths. Override via CLAUDE_CONFIG_DIR=~/.claude.
       - ${CLAUDE_CONFIG_DIR:-./claude-config}:/home/experimenter/.claude:rw
-      # OAuth-Token aus dem Host bind-mounten (separat, weil Symlinks im
-      # Bind-Mount-Verzeichnis im Container ins Leere zeigen würden).
+      # Bind-mount the OAuth token from the host (separately, because symlinks in
+      # the bind-mounted directory would dangle inside the container).
       - ${CLAUDE_CREDENTIALS_FILE:-~/.claude/.credentials.json}:/home/experimenter/.claude/.credentials.json:rw
       # pi config — slim container profile (./pi-config). Carries models.json
       # (Portkey provider) and the subagent extension. Workflows add their
@@ -53,15 +53,15 @@ services:
       - uv-cache:/home/experimenter/.cache/uv:rw
 
     # Environment
-    # .env (docker-Verzeichnis) liefert u.a. ANTHROPIC_BASE_URL,
-    # ANTHROPIC_AUTH_TOKEN, ANTHROPIC_CUSTOM_HEADERS und die
-    # ANTHROPIC_DEFAULT_*_MODEL-Routen für Portkey-Routing.
+    # .env (docker directory) supplies among others ANTHROPIC_BASE_URL,
+    # ANTHROPIC_AUTH_TOKEN, ANTHROPIC_CUSTOM_HEADERS and the
+    # ANTHROPIC_DEFAULT_*_MODEL routes for Portkey routing.
     env_file:
       - .env
     environment:
       - CLAUDE_THINKING=${CLAUDE_THINKING:-true}
       - NODE_ENV=development
-      # Explicit pass-through (env_file lädt sie schon, hier nur dokumentiert)
+      # Explicit pass-through (env_file already loads them, documented here only)
       - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-}
       - ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN:-${REQUESTY_API_KEY:-}}
       - ANTHROPIC_CUSTOM_HEADERS=${ANTHROPIC_CUSTOM_HEADERS:-}
@@ -112,11 +112,11 @@ services:
       - ./run-batch.sh:/home/experimenter/experiments/run-batch.sh:ro
       # Batch plan files (e.g. smoke-test.json, hybrid-matrix.json)
       - ../batch-plans:/home/experimenter/experiments/batch-plans:ro
-      # Claude config — schlankes Container-Profil (./claude-config), kein
-      # MCP, keine Host-Pfade. Override via CLAUDE_CONFIG_DIR=~/.claude.
+      # Claude config — slim container profile (./claude-config), no
+      # MCP, no host paths. Override via CLAUDE_CONFIG_DIR=~/.claude.
       - ${CLAUDE_CONFIG_DIR:-./claude-config}:/home/experimenter/.claude:rw
-      # OAuth-Token aus dem Host bind-mounten (separat, weil Symlinks im
-      # Bind-Mount-Verzeichnis im Container ins Leere zeigen würden).
+      # Bind-mount the OAuth token from the host (separately, because symlinks in
+      # the bind-mounted directory would dangle inside the container).
       - ${CLAUDE_CREDENTIALS_FILE:-~/.claude/.credentials.json}:/home/experimenter/.claude/.credentials.json:rw
       # pi config — slim container profile (./pi-config). Carries models.json
       # (Portkey provider) and the subagent extension. Workflows add their
@@ -150,7 +150,7 @@ services:
       # routinely exceed 90 min on slower models (esp. Opus 4.6 portkey).
       # Methodological budget, see top-level README.md → "Timeouts as a research finding".
       - CLAUDE_TIMEOUT_SECONDS=${CLAUDE_TIMEOUT_SECONDS:-7200}
-      # Portkey routing pass-through (env_file lädt sie schon)
+      # Portkey routing pass-through (env_file already loads them)
       - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-}
       - ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN:-${REQUESTY_API_KEY:-}}
       - ANTHROPIC_CUSTOM_HEADERS=${ANTHROPIC_CUSTOM_HEADERS:-}
@@ -209,11 +209,11 @@ services:
       - ../parse_pi_transcript.py:/home/experimenter/experiments/parse_pi_transcript.py:ro
       - ../parse_cursor_transcript.py:/home/experimenter/experiments/parse_cursor_transcript.py:ro
       - ./run-batch-retry.sh:/home/experimenter/experiments/run-batch-retry.sh:ro
-      # Claude config — schlankes Container-Profil (./claude-config), kein
-      # MCP, keine Host-Pfade. Override via CLAUDE_CONFIG_DIR=~/.claude.
+      # Claude config — slim container profile (./claude-config), no
+      # MCP, no host paths. Override via CLAUDE_CONFIG_DIR=~/.claude.
       - ${CLAUDE_CONFIG_DIR:-./claude-config}:/home/experimenter/.claude:rw
-      # OAuth-Token aus dem Host bind-mounten (separat, weil Symlinks im
-      # Bind-Mount-Verzeichnis im Container ins Leere zeigen würden).
+      # Bind-mount the OAuth token from the host (separately, because symlinks in
+      # the bind-mounted directory would dangle inside the container).
       - ${CLAUDE_CREDENTIALS_FILE:-~/.claude/.credentials.json}:/home/experimenter/.claude/.credentials.json:rw
       # pi config — slim container profile (./pi-config). Carries models.json
       # (Portkey provider) and the subagent extension. Workflows add their

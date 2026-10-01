@@ -57,7 +57,7 @@ The current model decouples three concerns:
 RQ directories live in six subtrees: `research/questions-claude/` (Claude Code RQs),
 `research/questions-opencode/` (OpenCode RQs), `research/questions-pi/` (pi RQs),
 `research/questions-cursor-cli/` (cursor-cli RQs), `research/questions-cross/`
-(harness-übergreifende RQs), and `research/workflow-dev/` (workflow-evolution chain).
+(cross-harness RQs), and `research/workflow-dev/` (workflow-evolution chain).
 **Adding a new subtree requires registering it in `RQ_TREES` in
 `experiments/generate-snapshot-skeleton.py`** — the script has no auto-discovery and
 silently omits unregistered subtrees from snapshots. Each dir carries a `<chapter>-slug`
@@ -365,7 +365,6 @@ Consequences for analysis and data collection:
 │   │   └── summary.md            #   generated: pivot tables per outcome × cell
 │   ├── RQ-prompt-known-kata-prompt-style/
 │   ├── ...                       # one directory per active RQ
-│   ├── kata-design/              # kata construction guidelines
 │   └── reports/                  # published experiment-overview snapshots (md; pdf built on demand)
 ├── HUMAN-IN-THE-LOOP.md          # Optional HITL checkpoint guide
 └── todos_and_ideas.txt           # Future research directions
@@ -526,7 +525,7 @@ Currently maintained kata families, grouped by training-data exposure:
 
 Older classic katas (string-calculator, pixel-art-scaler, diamond) were dropped because training-data contamination collapses the code-quality signal — see [Methodology constraints](#code-quality-signal-limited-to-game-of-life-and-mars-rover).
 
-For deeper guidance on building good katas (ambiguity construction, ruling strategies, test-suite distribution, anti-patterns), see `research/kata-design/kata-construction.md`.
+For deeper guidance on building good katas (ambiguity construction, ruling strategies, test-suite distribution, anti-patterns), see [`kata-construction.md`](https://github.com/marcoemrich/kata-builder/blob/main/kata-construction.md) in the sister repo [kata-builder](https://github.com/marcoemrich/kata-builder).
 
 ### CLI katas with external acceptance suite
 
@@ -1125,7 +1124,7 @@ Create `experiments/katas/<kata-name>/prompt.md` with:
 - Expected file paths
 - Constraints
 
-The directory name typically ends with one of `-prose`, `-user-story`, or `-example-mapping` (the prompt style); the part before is the **basename**. For CLI katas with an external acceptance suite, see [CLI katas with external acceptance suite](#cli-katas-with-external-acceptance-suite). For deeper kata-design guidance, see `research/kata-design/kata-construction.md`.
+The directory name typically ends with one of `-prose`, `-user-story`, or `-example-mapping` (the prompt style); the part before is the **basename**. For CLI katas with an external acceptance suite, see [CLI katas with external acceptance suite](#cli-katas-with-external-acceptance-suite). For deeper kata-design guidance, see [`kata-construction.md`](https://github.com/marcoemrich/kata-builder/blob/main/kata-construction.md) in the sister repo [kata-builder](https://github.com/marcoemrich/kata-builder).
 
 ### New workflow variant
 

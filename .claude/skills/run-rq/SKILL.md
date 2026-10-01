@@ -20,7 +20,7 @@ End-to-end orchestration for advancing a single research question (RQ) in this l
 
 ## Repo conventions (from the top-level `README.md` and memory)
 
-- RQ dirs live in four subtrees: `research/questions-claude/<chapter>-*/` (Claude-Code RQs), `research/questions-opencode/<chapter>-*/` (OpenCode RQs), `research/questions-cross/<chapter>-*/` (harness-übergreifende RQs), and `research/workflow-dev/<chapter>-*/` (workflow evolution). The `<chapter>` prefix (e.g. `2.6`) is an **ordering label, not an id** — the stable identity is the frontmatter `id:` (e.g. `RQ-lean`). Each RQ dir holds `README.md`, `findings.md`, `runs.csv`, `summary.md`.
+- RQ dirs live in four subtrees: `research/questions-claude/<chapter>-*/` (Claude-Code RQs), `research/questions-opencode/<chapter>-*/` (OpenCode RQs), `research/questions-cross/<chapter>-*/` (cross-harness RQs), and `research/workflow-dev/<chapter>-*/` (workflow evolution). The `<chapter>` prefix (e.g. `2.6`) is an **ordering label, not an id** — the stable identity is the frontmatter `id:` (e.g. `RQ-lean`). Each RQ dir holds `README.md`, `findings.md`, `runs.csv`, `summary.md`.
 - **Resolving an `RQ-<slug>` id to a path** (the dir name carries a chapter number, not the id): grep all subtrees for the frontmatter `id:`. Anchor with `^id:` and a trailing boundary so the whole slug must match exactly (no slug is a prefix of another, so an exact-line match is unambiguous):
   ```bash
   RQ_DIR=$(grep -rlE "^id:[[:space:]]*RQ-model-quality[[:space:]]*$" \
@@ -210,7 +210,7 @@ cells at min_replicates: <full>/<declared> · findings: <n> · runs newer than f
 
 ### Phase 6 — Findings (write-first)
 
-**Write directly to `findings.md`, then notify the user to review.** Markdown tables and trophy assignments are much easier to evaluate as rendered output than as a chat proposal; reverting is cheap (it's only markdown). After writing, send one line: "geschrieben — lies drüber".
+**Write directly to `findings.md`, then notify the user to review.** Markdown tables and trophy assignments are much easier to evaluate as rendered output than as a chat proposal; reverting is cheap (it's only markdown). After writing, send one line (in the user's language), e.g. "written — please review",.
 
 Exception: **deletions** of existing findings still require explicit user confirmation before the `Edit` — losing a documented finding is more expensive than re-reading a fresh write.
 
@@ -239,8 +239,8 @@ Exception: **deletions** of existing findings still require explicit user confir
 2. Three possible actions per effect:
    - **New finding**: cell/factor group with Δ ≥ 1σ over the other groups AND the effect is not yet covered in `findings.md` → new `F-{N}.{M+1}` block (M = highest existing finding number). Write directly.
    - **Update**: an existing finding covers the same effect, but cell values or interpretation have shifted → `Edit` the existing block directly. Rewrite table and rationale, **without** old/new diff, **without** "previously X", **without** reference to archive snapshots.
-   - **Deletion**: data contradicts the finding → ask the user first ("Finding F-x.y wird durch neue Daten widerlegt — entfernen?"), then remove the block including its `---` separator on confirmation. Do not mark as "widerlegt".
-3. Data gap: if an effect is suspected but coverage is too small for `n ≥ min_replicates` → note in `todos_and_ideas.txt` (section "Re-Check ungeprüfter Hypothesen aus alten findings.md") as a bullet with a concrete re-check target. **Do not** create as a finding in `findings.md`.
+   - **Deletion**: data contradicts the finding → ask the user first ("Finding F-x.y is contradicted by new data — remove it?"), then remove the block including its `---` separator on confirmation. Do not mark it as "refuted".
+3. Data gap: if an effect is suspected but coverage is too small for `n ≥ min_replicates` → note in `todos_and_ideas/1-IN.md` as a bullet with a concrete re-check target. **Do not** create as a finding in `findings.md`.
 4. Format per block: statement / data-base table / rationale. Header `## F-x.y — title` with no suffix. The namespace before the last dot may carry dots itself (`F-4.4.1`, `F-1.12.5` — chapter-numbered ids are in use and valid). The em-dash `—` is load-bearing: `generate-snapshot-skeleton.py` parses headers on it and silently skips any it cannot match, which then reads as "no findings documented" in the snapshot for an RQ that has a full findings.md.
    **Glossary discipline**: terms like `code_mass`, `cc_loc`, `cc_longest_function`, `smell_total`, `verification_pct` are to be used only in the form from the glossary in the top-level `README.md` ("Code Mass (APP)", "Production LoC", "Smell Total", "Correctness (external)") or directly via the metric ID in backticks. Synonyms like "Code-Volumen", "Code-Gesamtvolumen", "LoC-Größe" are forbidden — they are ambiguous or collide with established definitions (APP). The three complexity metrics carry **no** prose name at all: write `cc_longest_function`, `cognitive_max`, `cognitive_avg` or `mccabe_max` in backticks. "Complexity Peak", "Spitzen-Komplexität", "Cognitive Complexity peak" and "McCabe peak" are forbidden; the first had been used for three different metrics at once. Before writing, read the glossary once and check every term used in the block against the table.
 5. **Number formatting in `findings.md`:** large counts (typically `total_tokens`, `subagent_token_total`, cache stats) get the `M`-suffix (millions) or `k`-suffix (thousands), not scientific notation. `summary.md` keeps the pandas-default `e+07` form — only `findings.md` gets reformatted. Examples: `44.4 M` (good), `4.44e+07` (bad in findings, fine in summary), `1023 ms` or `1.0 s` (good for duration). σ-Werte werden im selben Format dargestellt wie der Mean (`σ ≈ 5 M`, nicht `σ ≈ 5e+06`). Rationale: M/k ist auf einen Blick lesbar, e+07 zwingt zum Kopfrechnen.
@@ -265,7 +265,7 @@ Exception: **deletions** of existing findings still require explicit user confir
    and treat magnitude as a sanity anchor — claim-office is the large kata
    (`code_mass` ~666, `cycle_count` ~47), game-of-life the small one (~144, ~15).
 
-7. After verifying, send one short line to the user: "geschrieben — lies drüber". The user reviews the rendered markdown directly.
+7. After verifying, send one short line to the user (in their language), e.g. "written — please review". The user reviews the rendered markdown directly.
 
 ---
 

@@ -13,12 +13,12 @@ WORKFLOWS_DIR="$EXPERIMENTS_DIR/workflows"
 WORKFLOW_PATHS_FILE="$WORKFLOWS_DIR/PATHS.json"
 WORKFLOW_ALIASES_FILE="$WORKFLOWS_DIR/ALIASES.json"
 
-# Workflows liegen seit dem Lineage-Umbau in Kategorie-Unterordnern
-# (exact-coding/opus/, baselines/, external/, _archive/...), der Plan nennt aber
-# weiterhin nur den Leaf-Namen -- er muss slash-frei bleiben, weil er direkt in
-# den Run-Ordnernamen wandert. Aufgeloest wird deshalb ueber PATHS.json, das
-# workflow-lineage.py aus LINEAGE.yaml generiert. Kein Verzeichnis-Suchlauf:
-# so ist ein Tippfehler ein Fehler und kein Zufallstreffer.
+# Since the lineage rework workflows live in category subfolders
+# (exact-coding/opus/, baselines/, external/, _archive/...), but the plan still
+# names only the leaf name -- it must stay slash-free because it goes straight
+# into the run folder name. Resolution therefore goes through PATHS.json, which
+# workflow-lineage.py generates from LINEAGE.yaml. No directory search:
+# that way a typo is an error, not a random hit.
 wf_canonical() {
     local name="$1"
     [ -f "$WORKFLOW_ALIASES_FILE" ] || { echo "$name"; return; }
@@ -32,10 +32,10 @@ wf_path() {
 }
 
 wf_list() {
-    # Archiv am PFAD filtern, nicht am Namen: verworfene Workflows heissen
-    # exact-hybrid-v4.1-refactor-vocab-cc, liegen aber unter _archive/. Das
-    # alte list_enabled sprang ueber das Verzeichnis _archive -- dieselbe
-    # Semantik, nur eine Ebene tiefer.
+    # Filter the archive by PATH, not by name: discarded workflows are named
+    # exact-hybrid-v4.1-refactor-vocab-cc but live under _archive/. The
+    # old list_enabled skipped the _archive directory -- same
+    # semantics, just one level deeper.
     jq -r 'to_entries[] | select(.value | startswith("_") | not) | .key' \
         "$WORKFLOW_PATHS_FILE" 2>/dev/null || true
 }
@@ -85,16 +85,16 @@ MODEL_CONFIGS=(
     # mounted ~/.claude/.credentials.json (native OAuth) and hits the native
     # Anthropic API at list price. Without the bypass the native alias would be
     # sent to the Requesty route and 403 (see the opus-4-8-requesty note below).
-    # opus-5-5: nativ wie opus-5 (bare claude-* -> OAuth-Bypass, Subscription).
-    # ACHTUNG, das `-no-thinking`-Label ist hier nur noch nominell: Opus 5.5
-    # denkt laut Modell-Seite *adaptive (always on)*, und der manuelle
-    # thinking.type-"enabled"-Modus wird ab 4.6 nicht mehr akzeptiert.
-    # MAX_THINKING_TOKENS=0 bleibt gesetzt (Zeile ~1075), aber ob es die
-    # Reasoning-Blöcke tatsächlich unterdrückt, ist nicht garantiert — Fable 5.1
-    # produzierte trotz thinking=false 37 Thinking-Blöcke (RQ-fable-vs-opus5).
-    # Die Zelle heisst trotzdem `-no-thinking`, damit sie gegen die bestehenden
-    # opus-5-no-thinking-Zellen aggregiert; der Unterschied ist als Caveat in
-    # RQ-opus55-current-workflow dokumentiert, nicht wegdefiniert.
+    # opus-5-5: native like opus-5 (bare claude-* -> OAuth bypass, subscription).
+    # CAUTION, the `-no-thinking` label is only nominal here: per the model page
+    # Opus 5.5 thinks *adaptive (always on)*, and the manual
+    # thinking.type "enabled" mode is no longer accepted from 4.6 on.
+    # MAX_THINKING_TOKENS=0 stays set (line ~1075), but whether it actually
+    # suppresses the reasoning blocks is not guaranteed — Fable 5.1
+    # produced 37 thinking blocks despite thinking=false (RQ-fable-vs-opus5).
+    # The cell is still called `-no-thinking` so it aggregates against the
+    # existing opus-5-no-thinking cells; the difference is documented as a caveat
+    # in RQ-opus55-current-workflow, not defined away.
     "opus-5-5|claude-opus-5-5|true"
     "opus-5-5-no-thinking|claude-opus-5-5|false"
     "opus-5|claude-opus-5|true"
@@ -110,16 +110,16 @@ MODEL_CONFIGS=(
     "opus-4-8-requesty-no-thinking|vertex/claude-opus-4-8@eu|false"
     "fable-5|claude-fable-5|true"
     "fable-5-no-thinking|claude-fable-5|false"
-    # fable-5-1: nativ wie fable-5 (bare claude-* → OAuth-Bypass, Subscription).
-    # Nur der undatierte Alias existiert; claude-fable-5-1-<datum> gibt 404.
+    # fable-5-1: native like fable-5 (bare claude-* → OAuth bypass, subscription).
+    # Only the undated alias exists; claude-fable-5-1-<date> returns 404.
     "fable-5-1|claude-fable-5-1|true"
     "fable-5-1-no-thinking|claude-fable-5-1|false"
-    # sonnet-5-native: nativ wie opus-5/fable-5 (bare claude-* -> OAuth-Bypass,
-    # Subscription). Der blanke Name `sonnet-5` ist NICHT frei -- er gehoert der
-    # pi/Requesty-Route (vertex/claude-sonnet-5@eu) weiter unten, und 15 Runs
-    # plus zwei pi-RQs und zwei eingefrorene Reports tragen ihn bereits. Daher
-    # traegt hier die native Route das Suffix, umgekehrt zur opus-5-Aufteilung.
-    # Andere Route, anderer Tarif -- die beiden Zellen nie zusammenfassen.
+    # sonnet-5-native: native like opus-5/fable-5 (bare claude-* -> OAuth bypass,
+    # subscription). The bare name `sonnet-5` is NOT free -- it belongs to the
+    # pi/Requesty route (vertex/claude-sonnet-5@eu) further down, and 15 runs
+    # plus two pi RQs and two frozen reports already carry it. So here the
+    # native route carries the suffix, the reverse of the opus-5 split.
+    # Different route, different tariff -- never merge the two cells.
     "sonnet-5-native|claude-sonnet-5|true"
     "sonnet-5-native-no-thinking|claude-sonnet-5|false"
     "opus-4-7|claude-opus-4-7|true"
@@ -493,8 +493,8 @@ if [ -n "$PLAN_FILE" ]; then
         if [ ! -d "$KATAS_DIR/$kata" ]; then
             errors+=("unknown kata: '$kata'")
         fi
-        # Alt-Namen zulassen, aber kanonisch weiterreichen: neue Runs tragen
-        # damit immer den aktuellen Namen in Ordner und metrics.json.
+        # Accept old names but pass on the canonical one: new runs thus
+        # always carry the current name in folder and metrics.json.
         workflow=$(wf_canonical "$workflow")
         if [ ! -d "$(wf_path "$workflow")" ]; then
             errors+=("unknown workflow: '$workflow'")

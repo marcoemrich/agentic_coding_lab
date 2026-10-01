@@ -76,7 +76,7 @@ workflow (plain red-green-refactor), `exact-hybrid-v6-lab-split-cc` the elaborat
 
 ---
 
-## F-1.1 — sphinx-score resolves the workflow difference in decomposition
+## F-1.3.1 — sphinx-score resolves the workflow difference in decomposition
 
 `sphinx-score` separates the minimal from the elaborate workflow variant on all
 four decomposition metrics, in the same direction as the two established katas.
@@ -99,7 +99,7 @@ peak 7 was a hybrid-v6 value, and inline-tdd-v1 lands systematically above it.
 
 ---
 
-## F-1.2 — The size gap is not the reason: game-of-life resolves more at the same size
+## F-1.3.2 — The size gap is not the reason: game-of-life resolves more at the same size
 
 H2 (smaller gap because the kata is smaller) is **refuted**.
 `game-of-life` has practically the same Code Mass (APP) as `sphinx-score`
@@ -126,7 +126,7 @@ depth that these metrics could reflect.
 
 ---
 
-## F-1.3 — The refactoring mechanism separates on all three katas
+## F-1.3.3 — The refactoring mechanism separates on all three katas
 
 H3 is confirmed. `refactorings_applied` separates the workflows everywhere, but
 the amplitude does not follow kata size.
@@ -148,7 +148,7 @@ on all three katas, for a kata comparison it is not.
 
 ---
 
-## F-1.4 — sphinx-score has no cost advantage over game-of-life
+## F-1.3.4 — sphinx-score has no cost advantage over game-of-life
 
 As a pre-screen for workflow effects, `sphinx-score` costs about a sixth of
 `claim-office` — but `game-of-life` is slightly cheaper still at the same size
@@ -167,11 +167,11 @@ and separates better.
 $136 on sphinx and $681 on claim-office. The expensive cell (elaborate workflow)
 runs 25 min on sphinx and 19 min on game-of-life, against 92 min on claim-office.
 The cost advantage over claim-office is therefore real, but it is no argument
-*for sphinx* — game-of-life delivers it too and separates more sharply (F-1.2).
+*for sphinx* — game-of-life delivers it too and separates more sharply (F-1.3.2).
 
 ---
 
-## F-1.5 — Correctness stays saturated and does not separate the workflows
+## F-1.3.5 — Correctness stays saturated and does not separate the workflows
 
 On none of the three katas is Correctness (external) usable as a separating
 metric for this workflow comparison.
@@ -196,7 +196,7 @@ measured on the quality axis, not on the Correctness (external) axis.
 
 By the assessment grid in the README, row 2 applies: **gap present, but smaller
 than on the reference** — not because of kata size, but because the sphinx task
-is structurally flat (F-1.2).
+is structurally flat (F-1.3.2).
 
 `sphinx-score` is usable for workflow RQs, with two restrictions:
 
@@ -205,5 +205,8 @@ is structurally flat (F-1.2).
   `mccabe_max` (floor at σ = 0 in the hybrid-v6 cell), `smell_total` (0 everywhere).
 - **Role:** for workflow RQs targeting complexity metrics, `game-of-life` is the
   better choice — same size, same cost, markedly more resolution. `sphinx-score`
-  stays in use for correctness and prompt RQs (RQ-1.1, RQ-1.2), where its
-  unambiguity is an advantage.
+  is the stronger carrier for prompt-style RQs: RQ-kata-sphinx-prompt-sensitivity
+  shows its pinned examples move Correctness (external) from 0.15 to 1.00. Whether
+  it can also carry the correctness role across models is unmeasured —
+  RQ-kata-sphinx-vs-claim-office closed without its weak-model cells, and on
+  `opus-5-no-thinking` sphinx-score saturates at 1.00 (F-1.3.5).

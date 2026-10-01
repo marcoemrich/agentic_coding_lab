@@ -1,9 +1,9 @@
 # Workflow Markers — What the Pipeline Actually Reads
 
-> **Inhalts-Design** (Theory-of-Mind, Why-Block-Pattern, Reduktions-
-> Erfahrungen aus RQ-rules/RQ-pep/RQ-emoji/RQ-lean, Subagent-Architektur-Gradient):
-> siehe `research/workflow-dev/workflow-construction.md`. Diese
-> Datei hier deckt nur die harten Parser-Anforderungen ab.
+> **Content design** (Theory-of-Mind, Why-Block pattern, reduction
+> learnings from RQ-rules/RQ-pep/RQ-emoji/RQ-lean, subagent architecture gradient):
+> see `research/workflow-dev/workflow-construction.md`. This
+> file only covers the hard parser requirements.
 
 
 When you derive a new workflow (e.g. `single-context-v2`, `hybrid`) by reducing or rewriting
@@ -126,7 +126,7 @@ but are matched by no parser and never were.
 |---|---|---|---|---|
 | 1 | `Skill` tool-use with `skill ∈ {test-list, red, green, refactor}` | Tool calls during the run | Phase recognition, `cycle_count`, `refactorings_applied`, per-phase tokens/duration | `analyze_transcript.py` ~line 233 (`if tool_name == "Skill"`) and `aggregate_skill_phases` |
 
-> **Skill-Tool findet auch `.claude/commands/<name>.md`.** Commands sind in Skills "merged" (Claude-Code-Doku, Slash-Commands-Sektion) und nicht deprecated. Die hybrid.x-Linie liegt bewusst unter `commands/` — Begründung in `research/workflow-dev/workflow-construction.md` §"Mechanismus: commands/ mit Skill-Tool".
+> **The Skill tool also finds `.claude/commands/<name>.md`.** Commands are "merged" into skills (Claude Code docs, slash-commands section) and not deprecated. The hybrid.x line deliberately lives under `commands/` — rationale in `research/workflow-dev/workflow-construction.md` §"Mechanismus: commands/ mit Skill-Tool".
 
 | # | Marker | Where it must appear | Drives | Where in parser |
 |---|---|---|---|---|

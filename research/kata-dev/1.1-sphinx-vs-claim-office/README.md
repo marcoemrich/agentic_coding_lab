@@ -51,7 +51,7 @@ known distance the kata must be able to resolve.
 ## Why the question arises
 
 `sphinx-score` was built on 2026-08-11 from the Overlords Sphinx card
-(design: [`../../kata-design/overlords-mehrdeutigkeiten.md`](../../kata-design/overlords-mehrdeutigkeiten.md)).
+(design: [`kata-builder/overlords-mehrdeutigkeiten.md`](https://github.com/marcoemrich/kata-builder/blob/main/overlords-mehrdeutigkeiten.md)).
 It is novel, carries four pinned ambiguities, and exposes the same CLI +
 JSON contract as `claim-office`, so `verification_pct` is available.
 

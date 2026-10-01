@@ -30,7 +30,7 @@ _LINEAGE_MOD = None
 
 
 def _lineage():
-    """workflow-lineage.py laden (Bindestrich im Namen -> kein normaler Import)."""
+    """Load workflow-lineage.py (hyphen in the name -> no regular import)."""
     global _LINEAGE_MOD
     if _LINEAGE_MOD is None:
         spec = importlib.util.spec_from_file_location(
@@ -303,11 +303,11 @@ def emit_skeleton(rqs: list[dict], total: int, today: str) -> str:
     p("")
     p("**Workflow** — six generations (details: `research/workflow-dev/workflow-construction.md` — inventory):")
     p("")
-    # Inventar aus experiments/workflows/LINEAGE.yaml statt hartkodiert. Die
-    # frueher hier stehende Tabelle listete 14 von 59 Workflows und behauptete
-    # zuletzt, v6.2-v6.6 und eine "hybrid-v5.x line" laegen im Archiv -- beides
-    # falsch, und in drei publizierten Snapshots mitgedruckt. Generiert kann
-    # das nicht mehr auseinanderlaufen.
+    # Inventory from experiments/workflows/LINEAGE.yaml instead of hard-coded. The
+    # table that used to sit here listed 14 of 59 workflows and finally claimed
+    # that v6.2-v6.6 and a "hybrid-v5.x line" were archived -- both wrong,
+    # and printed in three published snapshots. Generated, it can no longer
+    # drift apart.
     for line in _workflow_inventory_rows():
         p(line)
     p("")

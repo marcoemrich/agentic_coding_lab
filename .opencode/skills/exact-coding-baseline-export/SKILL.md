@@ -1,7 +1,7 @@
 ---
 name: exact-coding-baseline-export
 description: |
-  Mint a new exact-coding-baseline-YYYY-MM-DD snapshot under
+  Mint a new YYYY-MM-DD-exact-coding-baseline snapshot under
   research/workflow-dev/export/. Detects the current best correctness-
   oriented workflow from research/workflow-dev/workflow-construction.md
   (or takes an explicit source-workflow argument) and transforms it from a
@@ -16,7 +16,7 @@ description: |
 # Skill: exact-coding-baseline-export
 
 Mint a dated, consumer-ready snapshot of the current best TDD workflow into
-`research/workflow-dev/export/exact-coding-baseline-<YYYY-MM-DD>/`.
+`research/workflow-dev/export/<YYYY-MM-DD>-exact-coding-baseline/`.
 
 This is a **true transformation skill** — it reads a source workflow
 (immutable) and applies three transformations on top of it (see "The three
@@ -31,7 +31,7 @@ alongside this file under `templates/`, and the harness research lives in
   `research/workflow-dev/export/`. Does not touch source workflows under
   `experiments/workflows/`, consumer repos, or anything else.
 - **Single artifact**: a new directory at
-  `research/workflow-dev/export/exact-coding-baseline-<DATE>/`, containing
+  `research/workflow-dev/export/<DATE>-exact-coding-baseline/`, containing
   one subtree per exported harness.
 - **Idempotent within a date**: refuses to overwrite an existing
   same-date snapshot unless the user explicitly says "overwrite" / "force".
@@ -77,12 +77,11 @@ export the harnesses that do exist rather than aborting the whole run.
 
 When no explicit source is given, find the current correctness-critical
 default from `research/workflow-dev/workflow-construction.md`. The
-recommendation lives in the "Aktuelle Front" section and starts with the
-prefix **"Default für korrekheits-kritische Arbeit"** (note the typo
-"korrekheits" in the source — keep it in the grep).
+recommendation line starts with the prefix
+**"Default for correctness-critical work"**.
 
 ```bash
-SRC_NAME=$(grep -E '\*\*Default für korre[kt]+heits-kritische Arbeit' \
+SRC_NAME=$(grep -E '\*\*Default for correctness-critical work' \
              research/workflow-dev/workflow-construction.md \
            | head -1 \
            | sed -E 's/.*`([^`]+)`.*/\1/')
@@ -92,8 +91,8 @@ The first backtick-quoted workflow name on that line is the recommendation.
 Verify the directory exists:
 
 ```bash
-# Workflows liegen in Kategorie-Unterordnern; PATHS.json loest den Leaf-Namen
-# auf und akzeptiert dabei auch Alt-Namen (ALIASES.json).
+# Workflows live in category subfolders; PATHS.json resolves the leaf name
+# and also accepts former names (ALIASES.json).
 SRC_DIR="experiments/workflows/$(jq -r --arg n "$SRC_NAME" \
     '.[$n] // $n' experiments/workflows/ALIASES.json \
   | xargs -I{} jq -r --arg n {} '.[$n] // $n' experiments/workflows/PATHS.json)"
@@ -111,7 +110,7 @@ detection can be aborted.
 ## Target
 
 ```bash
-TARGET="research/workflow-dev/export/exact-coding-baseline-$DATE"
+TARGET="research/workflow-dev/export/$DATE-exact-coding-baseline"
 [ -e "$TARGET" ] && { echo "Exists; pass 'overwrite' to replace"; exit 1; }
 ```
 
@@ -119,7 +118,7 @@ Each exported harness gets its own config subtree at the snapshot root, so
 a consumer copies the one directory their harness reads:
 
 ```
-exact-coding-baseline-<DATE>/
+<DATE>-exact-coding-baseline/
   README.md   # snapshot-level: which harnesses, how to install
   VERSION
   .claude/    # cc      skills/tdd/SKILL.md · commands/{test-list,red,green}.md
@@ -971,7 +970,7 @@ After successful validation:
 | `/exact-coding-baseline-export overwrite` | Same as default, but allow clobber |
 
 Single output: a new directory at
-`research/workflow-dev/export/exact-coding-baseline-<DATE>/`, with one
+`research/workflow-dev/export/<DATE>-exact-coding-baseline/`, with one
 config subtree per exported harness. Validation must pass before reporting
 success.
 

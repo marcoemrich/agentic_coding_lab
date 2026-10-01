@@ -5,7 +5,7 @@ workflows for autonomous runs. Use this as a reference to re-enable HITL
 checkpoints when human oversight is desired.
 
 A ready-to-copy variant of this is shipped in
-`research/workflow-dev/export/exact-coding-baseline-2026-05-25/.claude/rules/human-in-the-loop.md`
+`research/workflow-dev/export/2026-05-25-exact-coding-baseline/.claude/rules/human-in-the-loop.md`
 — that version is structured as a single configurable rule file with an
 Autonomy Level switch and is referenced from the phase files. The notes
 below are the canonical reference; the export is the consumable form.
@@ -282,7 +282,7 @@ In `full-hitl` mode:
 ```
 
 The full exported version with all templates is in
-`research/workflow-dev/export/exact-coding-baseline-2026-05-25/.claude/rules/human-in-the-loop.md`.
+`research/workflow-dev/export/2026-05-25-exact-coding-baseline/.claude/rules/human-in-the-loop.md`.
 
 ---
 

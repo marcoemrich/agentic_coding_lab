@@ -1,71 +1,71 @@
-# Workflow-Lineage — die Quelle für Abstammung, Status und Alt-Namen.
+# Workflow lineage — the source for ancestry, status and old names.
 #
-# Diese Datei ist die einzige Wahrheit über Kategorie, Arm, Version, Elternteil
-# und Status eines Workflows. ALIASES.json, PATHS.json und die Inventar-Tabelle
-# der Snapshot-Reports werden daraus generiert — nie von Hand nachgezogen.
-#   Regenerieren + prüfen:  experiments/workflow-lineage.py --check --emit
-#
-# ---------------------------------------------------------------------------
-# Namenskonvention
-# ---------------------------------------------------------------------------
-#   <präfix>-<arm>-v<MAJOR>[.<N>…][-<slug>]-<harness>
-#
-# Präfix       exact- | baseline- | external-, muss zur Kategorie passen.
-#              Der Ordnerpfad reist nicht: in metrics.json, Run-Ordnernamen,
-#              runs.csv und findings-Tabellen steht nur dieser Leaf-Name.
-#              Deshalb trägt der Name die Kategorie, nicht nur der Ordner.
-#
-# Arm          Was der Workflow DAUERHAFT IST (hybrid, single-context, sol …).
-# Slug         Was sich IN DIESEM SCHRITT geändert hat (end-refactor, no-pep …).
-#              Daher ist "end-refactor-only" ein Arm (Refactor nur am Ende, kein
-#              Zyklus), "end-refactor" ein Slug (dieser Schritt fügt ihn hinzu)
-#              und "no-end-refactor" ein Slug (dieser Schritt nimmt ihn weg).
-#              Entfällt nur bei v1 eines Arms, wo der Arm-Name schon alles sagt.
-#
-# Version      MAJOR steigt NUR, wenn auf dieser Variante weitergebaut wurde.
-#              Ein Arm, der nie Basis eines nächsten Schritts war, bleibt ein
-#              .N-Zweig — auch wenn er gut gemessen hat. Die Nummer ist damit
-#              Entwicklungstiefe, nicht Güte und nicht Empfehlung.
-#              Welcher Workflow Default ist, steht ausschliesslich in
-#              research/workflow-dev/model-recommendation-matrix.md — der Default
-#              gabelt pro Modell und läuft auch rückwärts.
-#
-# Harness      cc | oc | pi | cursor. Immer explizit, nie implizit.
+# This file is the single truth about category, arm, version, parent
+# and status of a workflow. ALIASES.json, PATHS.json and the inventory table
+# of the snapshot reports are generated from it — never updated by hand.
+#   Regenerate + check:  experiments/workflow-lineage.py --check --emit
 #
 # ---------------------------------------------------------------------------
-# Ordner
+# Naming convention
 # ---------------------------------------------------------------------------
-#   exact-coding/   die vier EXACT-Coding-Bausteine (test-list, red, green,
-#                   refactor) existieren als eigene commands/skills/agents.
-#                   Genau das prüft --check; es ist kein Geschmacksurteil.
-#     opus/         gebaut auf Claude Code mit Sonnet/Opus
-#     sol/          gebaut auf pi mit SOL
+#   <prefix>-<arm>-v<MAJOR>[.<N>…][-<slug>]-<harness>
 #
-#     ACHTUNG: Der Ordnername sagt, WO DIE LINIE GEBAUT WURDE, nicht wo sie
-#     läuft. exact-hybrid-v6-lab-split-pi liegt unter opus/, exact-sol-v1-cc
-#     unter sol/. Beides ist richtig. Inhaltliche Achsen (APP vs Four Rules,
-#     Prediction-Formular vs Prosa) taugen NICHT als Ordner: jede einzelne ist
-#     von einer RQ absichtlich überquert worden — exact-sol-v1.2-app-pi trägt
-#     APP in die Sol-Linie. Nur die Herkunft kann nicht mehr falsch werden.
+# Prefix       exact- | baseline- | external-, must match the category.
+#              The folder path does not travel: metrics.json, run folder names,
+#              runs.csv and findings tables carry only this leaf name.
+#              That is why the name carries the category, not just the folder.
 #
-#   baselines/      Vergleichs-Workflows OHNE EXACT-Coding-Bausteine.
-#   external/       vendorte Fremd-Skills. Versionsstelle = Vendoring-Datum aus
-#                   der Git-History, denn LICENSE.upstream nennt keine Upstream-
-#                   Version. "v1/v2" würde Autorschaft an Fremdcode behaupten.
-#   _archive/       spiegelt den Baum. Ausschliesslich status: discarded.
+# Arm          What the workflow PERMANENTLY IS (hybrid, single-context, sol …).
+# Slug         What changed IN THIS STEP (end-refactor, no-pep …).
+#              Hence "end-refactor-only" is an arm (refactor only at the end, no
+#              cycle), "end-refactor" a slug (this step adds it)
+#              and "no-end-refactor" a slug (this step removes it).
+#              Omitted only for v1 of an arm, where the arm name already says it all.
+#
+# Version      MAJOR increases ONLY when this variant was built upon.
+#              An arm that was never the base of a next step stays a
+#              .N branch — even if it measured well. The number is thus
+#              development depth, not quality and not a recommendation.
+#              Which workflow is the default is stated exclusively in
+#              research/workflow-dev/model-recommendation-matrix.md — the default
+#              forks per model and also runs backwards.
+#
+# Harness      cc | oc | pi | cursor. Always explicit, never implicit.
+#
+# ---------------------------------------------------------------------------
+# Folders
+# ---------------------------------------------------------------------------
+#   exact-coding/   the four EXACT Coding building blocks (test-list, red, green,
+#                   refactor) exist as separate commands/skills/agents.
+#                   That is exactly what --check verifies; it is no matter of taste.
+#     opus/         built on Claude Code with Sonnet/Opus
+#     sol/          built on pi with SOL
+#
+#     CAUTION: the folder name says WHERE THE LINE WAS BUILT, not where it
+#     runs. exact-hybrid-v6-lab-split-pi lives under opus/, exact-sol-v1-cc
+#     under sol/. Both are correct. Content axes (APP vs Four Rules,
+#     prediction form vs prose) do NOT work as folders: every single one has
+#     been crossed on purpose by some RQ — exact-sol-v1.2-app-pi carries
+#     APP into the Sol line. Only the origin can no longer become wrong.
+#
+#   baselines/      comparison workflows WITHOUT EXACT Coding building blocks.
+#   external/       vendored third-party skills. Version slot = vendoring date from
+#                   the git history, because LICENSE.upstream names no upstream
+#                   version. "v1/v2" would claim authorship of third-party code.
+#   _archive/       mirrors the tree. Exclusively status: discarded.
 #
 # ---------------------------------------------------------------------------
 # status
 # ---------------------------------------------------------------------------
-#   trunk       Basis, auf der weitergebaut wurde
-#   branch      Zweig; beantwortet eine RQ, wurde nicht weitergebaut
-#   superseded  von einem Trunk-Nachfolger abgelöst, bleibt reproduzierbar
-#   discarded   verworfen — liegt unter _archive/, aggregate-by-query bricht ab
-#   vendored    Fremdcode, keine eigene Entwicklungslinie
+#   trunk       base that was built upon
+#   branch      branch; answers an RQ, was not built upon
+#   superseded  replaced by a trunk successor, stays reproducible
+#   discarded   rejected — lives under _archive/, aggregate-by-query aborts
+#   vendored    third-party code, no own development line
 #
-# parent ist Pflicht ausser bei Wurzeln. Weicht der Arm des Elternteils vom
-# eigenen Arm ab, ist das ein Arm-Sprung: --check meldet ihn als solchen, statt
-# ihn stillschweigend durchzuwinken. Siehe exact-single-context-v3-no-subagent-cc.
+# parent is mandatory except for roots. If the parent's arm differs from the
+# own arm, that is an arm jump: --check reports it as such instead of
+# silently waving it through. See exact-single-context-v3-no-subagent-cc.
 
 categories:
 
@@ -81,13 +81,13 @@ categories:
       exact-single-context-v2-testlist-fix-cc:    {arm: single-context, version: "2",     harness: cc,     parent: exact-single-context-v1-cc,             status: trunk,      alias: [v5.1-testlist-scope-fix]}
       exact-single-context-v2-testlist-fix-oc:    {arm: single-context, version: "2",     harness: oc,     parent: exact-single-context-v2-testlist-fix-cc, status: trunk,     alias: [v5.1-testlist-scope-fix-oc], port_of: exact-single-context-v2-testlist-fix-cc}
       exact-single-context-v2-testlist-fix-pi:    {arm: single-context, version: "2",     harness: pi,     parent: exact-single-context-v2-testlist-fix-cc, status: trunk,     alias: [v5.1-testlist-scope-fix-pi], port_of: exact-single-context-v2-testlist-fix-cc}
-      exact-single-context-v3-no-subagent-cc:     {arm: single-context, version: "3",     harness: cc,     parent: exact-hybrid-v8-no-end-refactor-cc,     status: branch,     alias: [v5.2-no-subagent-cc], note: "Arm-Sprung: Elternteil ist der hybrid-Arm. Minimaler Workflow, der noch EXACT Coding ist — alle vier Bausteine, geteilter Kontext, kein isolierter Subagent. RQ-1.15 F-1.4 misst ihn mindestens so gut wie exact-hybrid-v8."}
+      exact-single-context-v3-no-subagent-cc:     {arm: single-context, version: "3",     harness: cc,     parent: exact-hybrid-v8-no-end-refactor-cc,     status: branch,     alias: [v5.2-no-subagent-cc], note: "Arm jump: the parent is the hybrid arm. Minimal workflow that is still EXACT Coding — all four building blocks, shared context, no isolated subagent. RQ-1.15 F-1.4 measures it at least as good as exact-hybrid-v8."}
 
       exact-hybrid-v1-cc:                         {arm: hybrid,         version: "1",     harness: cc,     parent: null,                                   status: superseded, alias: [v6-hybrid]}
-      exact-hybrid-v2-testlist-fix-cc:            {arm: hybrid,         version: "2",     harness: cc,     parent: exact-hybrid-v1-cc,                     status: superseded, alias: [v6.1-hybrid-testlist-scope-fix], note: "Ehemaliger correctness-orientierter Opus-Default; durch exact-ptdd-v1-cc als deutlich günstigeren universellen Default abgelöst. Bleibt reproduzierbare Dekompositionsreferenz."}
+      exact-hybrid-v2-testlist-fix-cc:            {arm: hybrid,         version: "2",     harness: cc,     parent: exact-hybrid-v1-cc,                     status: superseded, alias: [v6.1-hybrid-testlist-scope-fix], note: "Former correctness-oriented Opus default; replaced by exact-ptdd-v1-cc as a much cheaper universal default. Remains a reproducible decomposition reference."}
       exact-hybrid-v2-testlist-fix-pi:            {arm: hybrid,         version: "2",     harness: pi,     parent: exact-hybrid-v2-testlist-fix-cc,        status: trunk,      alias: [v6.1-hybrid-testlist-scope-fix-pi], port_of: exact-hybrid-v2-testlist-fix-cc}
-      exact-hybrid-v2-testlist-fix-oc:            {arm: hybrid,         version: "2",     harness: oc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: trunk,      alias: [], port_of: exact-hybrid-v2-testlist-fix-cc, note: "Port 2026-09-13 fuer den exact-coding-baseline-Export; Mechanik aus exact-hybrid-v6-lab-split-oc, Inhalt aus cc/pi. Kein end-refactor."}
-      exact-hybrid-v2-testlist-fix-cursor:        {arm: hybrid,         version: "2",     harness: cursor, parent: exact-hybrid-v2-testlist-fix-cc,        status: trunk,      alias: [], port_of: exact-hybrid-v2-testlist-fix-cc, note: "Port 2026-09-13 fuer den exact-coding-baseline-Export; Mechanik aus exact-hybrid-v6-lab-split-cursor, Inhalt aus cc/pi. Kein end-refactor."}
+      exact-hybrid-v2-testlist-fix-oc:            {arm: hybrid,         version: "2",     harness: oc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: trunk,      alias: [], port_of: exact-hybrid-v2-testlist-fix-cc, note: "Port 2026-09-13 for the exact-coding-baseline export; mechanics from exact-hybrid-v6-lab-split-oc, content from cc/pi. No end-refactor."}
+      exact-hybrid-v2-testlist-fix-cursor:        {arm: hybrid,         version: "2",     harness: cursor, parent: exact-hybrid-v2-testlist-fix-cc,        status: trunk,      alias: [], port_of: exact-hybrid-v2-testlist-fix-cc, note: "Port 2026-09-13 for the exact-coding-baseline export; mechanics from exact-hybrid-v6-lab-split-cursor, content from cc/pi. No end-refactor."}
       exact-hybrid-v2.1-no-pep-cc:                {arm: hybrid,         version: "2.1",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1-no-pep]}
       exact-hybrid-v2.2-no-emoji-cc:              {arm: hybrid,         version: "2.2",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1-no-emoji]}
       exact-hybrid-v2.3-no-pep-no-emoji-cc:       {arm: hybrid,         version: "2.3",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1-no-pep-no-emoji]}
@@ -96,17 +96,17 @@ categories:
       exact-hybrid-v2.6-refactor-gate-cc:         {arm: hybrid,         version: "2.6",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.3-refactor-gate-cc]}
       exact-hybrid-v2.7-continuation-guard-cc:    {arm: hybrid,         version: "2.7",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.4-continuation-guard-cc]}
       exact-hybrid-v2.8-pure-split-cc:            {arm: hybrid,         version: "2.8",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.5-pure-split-cc]}
-      exact-hybrid-v2.9-stack-profile-cc:         {arm: hybrid,         version: "2.9",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.6-stack-profile-cc], note: "Alle verbleibenden TypeScript/Vitest-Details aus Core, Phasen und Refactor-Agent in das bestehende Stackprofil verschoben; Treiber-RQ RQ-stack-profile-extraction-opus."}
+      exact-hybrid-v2.9-stack-profile-cc:         {arm: hybrid,         version: "2.9",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.6-stack-profile-cc], note: "Moved all remaining TypeScript/Vitest details from core, phases and refactor agent into the existing stack profile; driver RQ RQ-stack-profile-extraction-opus."}
       exact-hybrid-v3-with-why-cc:                {arm: hybrid,         version: "3",     harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: trunk,      alias: [v6.1-with-why]}
       exact-hybrid-v4-cleaned-cc:                 {arm: hybrid,         version: "4",     harness: cc,     parent: exact-hybrid-v3-with-why-cc,            status: trunk,      alias: [v6.2-with-why-cleaned]}
       exact-hybrid-v4-cleaned-oc:                 {arm: hybrid,         version: "4",     harness: oc,     parent: exact-hybrid-v4-cleaned-cc,             status: trunk,      alias: [v6.2-with-why-cleaned-oc], port_of: exact-hybrid-v4-cleaned-cc}
       exact-hybrid-v4-cleaned-pi:                 {arm: hybrid,         version: "4",     harness: pi,     parent: exact-hybrid-v4-cleaned-cc,             status: trunk,      alias: [v6.2-with-why-cleaned-pi], port_of: exact-hybrid-v4-cleaned-cc}
       exact-hybrid-v4.2-phase-continuation-pi:    {arm: hybrid,         version: "4.2",   harness: pi,     parent: exact-hybrid-v4-cleaned-pi,             status: branch,     alias: [v6.2.1-phase-continuation-pi]}
       exact-hybrid-v4.2-phase-continuation-cursor: {arm: hybrid,        version: "4.2",   harness: cursor, parent: exact-hybrid-v4-cleaned-cc,             status: branch,     alias: [v6.2.1-phase-continuation-cursor]}
-      exact-hybrid-v4.3-audit-bundle-cc:          {arm: hybrid,         version: "4.3",   harness: cc,     parent: exact-hybrid-v4-cleaned-cc,             status: branch,     alias: [v6.3-audit-bundle], note: "Nicht verworfen, aber kata-spezifisch: GoL-Qualitaets-Champion, bricht auf claim-office (RQ-1.9, verification_pct 0.96 -> 0.35)."}
+      exact-hybrid-v4.3-audit-bundle-cc:          {arm: hybrid,         version: "4.3",   harness: cc,     parent: exact-hybrid-v4-cleaned-cc,             status: branch,     alias: [v6.3-audit-bundle], note: "Not discarded, but kata-specific: GoL quality champion, breaks on claim-office (RQ-1.9, verification_pct 0.96 -> 0.35)."}
       exact-hybrid-v4.4-metric-refactor-cc:       {arm: hybrid,         version: "4.4",   harness: cc,     parent: exact-hybrid-v4-cleaned-cc,             status: branch,     alias: [v6.4-metric-driven-refactor]}
       exact-hybrid-v5-end-refactor-cc:            {arm: hybrid,         version: "5",     harness: cc,     parent: exact-hybrid-v4-cleaned-cc,             status: trunk,      alias: [v6.5-end-refactor]}
-      exact-hybrid-v6-lab-split-cc:               {arm: hybrid,         version: "6",     harness: cc,     parent: exact-hybrid-v5-end-refactor-cc,        status: trunk,      alias: [v6.6-lab-split-cc], note: "Slug meint das Herausziehen der Lab-Infrastruktur nach rules/lab-only.md, keine Linien-Zugehoerigkeit."}
+      exact-hybrid-v6-lab-split-cc:               {arm: hybrid,         version: "6",     harness: cc,     parent: exact-hybrid-v5-end-refactor-cc,        status: trunk,      alias: [v6.6-lab-split-cc], note: "The slug means pulling the lab infrastructure out into rules/lab-only.md, not line membership."}
       exact-hybrid-v6-lab-split-pi:               {arm: hybrid,         version: "6",     harness: pi,     parent: exact-hybrid-v6-lab-split-cc,           status: trunk,      alias: [v6.6-lab-split-pi], port_of: exact-hybrid-v6-lab-split-cc}
       exact-hybrid-v6-lab-split-oc:               {arm: hybrid,         version: "6",     harness: oc,     parent: exact-hybrid-v6-lab-split-cc,           status: trunk,      alias: [v6.6-lab-split-oc], port_of: exact-hybrid-v6-lab-split-cc}
       exact-hybrid-v6-lab-split-cursor:           {arm: hybrid,         version: "6",     harness: cursor, parent: exact-hybrid-v6-lab-split-cc,           status: trunk,      alias: [v6.6-lab-split-cursor], port_of: exact-hybrid-v6-lab-split-cc}
@@ -121,32 +121,32 @@ categories:
     prefix: exact
     origin: {harness: pi, model: sol}
     workflows:
-      exact-sol-v1-pi:                            {arm: sol,            version: "1",     harness: pi,     parent: null,                                   status: trunk,      alias: [basic-sol-tdd-pi], note: "Referenz-Import der predictive-tdd/test-list-Skills aus dem sol_tdd-Projekt."}
+      exact-sol-v1-pi:                            {arm: sol,            version: "1",     harness: pi,     parent: null,                                   status: trunk,      alias: [basic-sol-tdd-pi], note: "Reference import of the predictive-tdd/test-list skills from the sol_tdd project."}
       exact-sol-v1-cc:                            {arm: sol,            version: "1",     harness: cc,     parent: exact-sol-v1-pi,                        status: trunk,      alias: [basic-sol-tdd-cc], port_of: exact-sol-v1-pi}
       exact-sol-v1.1-subagent-pi:                 {arm: sol,            version: "1.1",   harness: pi,     parent: exact-sol-v1-pi,                        status: branch,     alias: [basic-sol-tdd-subagent-pi]}
       exact-sol-v1.2-app-pi:                      {arm: sol,            version: "1.2",   harness: pi,     parent: exact-sol-v1-pi,                        status: branch,     alias: [basic-sol-tdd-app-pi]}
       exact-sol-v1.2.1-measured-model-pi:         {arm: sol,            version: "1.2.1", harness: pi,     parent: exact-sol-v1.2-app-pi,                  status: branch,     alias: [basic-sol-tdd-app-measured-model-pi]}
       exact-sol-v1.2.2-measured-eslint-pi:        {arm: sol,            version: "1.2.2", harness: pi,     parent: exact-sol-v1.2-app-pi,                  status: branch,     alias: [basic-sol-tdd-app-measured-eslint-pi]}
       exact-sol-v1.2.3-measured-tool-pi:          {arm: sol,            version: "1.2.3", harness: pi,     parent: exact-sol-v1.2-app-pi,                  status: branch,     alias: [basic-sol-tdd-app-measured-tool-pi]}
-      exact-sol-v1.3-stack-profile-pi:            {arm: sol,            version: "1.3",   harness: pi,     parent: exact-sol-v1-pi,                        status: branch,     alias: [basic-sol-tdd-stack-profile-pi], note: "Lean-/Budget-Variante der SOL-Linie: verbliebene TypeScript/Vitest-Details aus AGENTS.md und test-list in das bestehende Stackprofil verschoben; validiert durch RQ-stack-profile-extraction-sol. Ehemaliger Default, durch exact-sol-v1.5-tcr-parity-domain-trial-pi für große, novelle Specs abgelöst."}
+      exact-sol-v1.3-stack-profile-pi:            {arm: sol,            version: "1.3",   harness: pi,     parent: exact-sol-v1-pi,                        status: branch,     alias: [basic-sol-tdd-stack-profile-pi], note: "Lean/budget variant of the SOL line: remaining TypeScript/Vitest details moved from AGENTS.md and test-list into the existing stack profile; validated by RQ-stack-profile-extraction-sol. Former default, replaced by exact-sol-v1.5-tcr-parity-domain-trial-pi for large, novel specs."}
       exact-sol-v1.3.1-ponytail-pi:                {arm: sol,            version: "1.3.1", harness: pi,     parent: exact-sol-v1.3-stack-profile-pi,        status: branch,     alias: [], note: "Forced Ponytail full augmentation; vendored upstream skill plus lab-authored load overlay. Driver: RQ-ponytail-sol-pi."}
       exact-sol-v1.3.2-local-git-control-pi:        {arm: sol,            version: "1.3.2", harness: pi,     parent: exact-sol-v1.3-stack-profile-pi,        status: branch,     alias: [], note: "Content-identical SOL control minted under the isolated-local-Git harness condition for RQ-tcr-variants-sol; prevents reuse of pre-Git historical runs."}
-      exact-sol-v1.4-domain-boundary-trial-pi:       {arm: sol,            version: "1.4",   harness: pi,     parent: exact-sol-v1.3.2-local-git-control-pi,  status: branch,     alias: [], note: "Predictive-TDD-Port des Domain-Boundary-Trials aus exact-tcr-v1.3: identischer semantischer Review, Änderungsgegenprobe und Vorher/Nachher-Nachweis; Predictive predict/check/undo statt TCR method commits; Stackprofile unverändert. Driver: RQ-srp-effect-exact-tcr-sol."}
-      exact-sol-v1.5-tcr-parity-domain-trial-pi:     {arm: sol,            version: "1.5",   harness: pi,     parent: exact-tcr-v1.3-domain-boundary-trial-pi, status: superseded, alias: [], note: "Ehemaliger SOL-Default. Vollständig korrekt und teils schlanker als v1.6, aber zugunsten einer einzigen gepflegten Predictive-TDD-Linie durch exact-ptdd-v1-pi abgelöst."}
-      exact-sol-v1.5-tcr-parity-domain-trial-cc:     {arm: sol,            version: "1.5",   harness: cc,     parent: exact-sol-v1.5-tcr-parity-domain-trial-pi, status: superseded, alias: [], port_of: exact-sol-v1.5-tcr-parity-domain-trial-pi, note: "Historischer Claude-Code-Port für RQ-current-ptdd-vs-exact-opus-native und die Replikation; durch exact-ptdd-v1-cc abgelöst."}
-      exact-sol-v1.6-test-list-dimensions-pi:         {arm: sol,            version: "1.6",   harness: pi,     parent: exact-sol-v1.5-tcr-parity-domain-trial-pi, status: superseded, alias: [], note: "Gemessene Quelle des kanonischen exact-ptdd-v1-pi. Validiert auf Claim Office, Game of Life und Sphinx Score; unter altem Forschungsnamen reproduzierbar."}
-      exact-sol-v1.6-test-list-dimensions-cc:         {arm: sol,            version: "1.6",   harness: cc,     parent: exact-sol-v1.6-test-list-dimensions-pi, status: superseded, alias: [], port_of: exact-sol-v1.6-test-list-dimensions-pi, note: "Gemessene Claude-Code-Quelle des kanonischen exact-ptdd-v1-cc; validiert durch RQ-test-list-dimensions-opus-native und RQ-test-list-dimensions-replication."}
-      exact-ptdd-v1-pi:                              {arm: ptdd,           version: "1",     harness: pi,     parent: exact-sol-v1.6-test-list-dimensions-pi, status: trunk,      alias: [], note: "Kanonischer universeller EXACT Coding Predictive-TDD-Default. Inhaltlich identisch zur validierten v1.6-Quelle; neuer stabiler Produktname für künftige versionierte Weiterentwicklung."}
-      exact-ptdd-v1-cc:                              {arm: ptdd,           version: "1",     harness: cc,     parent: exact-ptdd-v1-pi,                     status: trunk,      alias: [], port_of: exact-ptdd-v1-pi, note: "Claude-Code-Port des universellen Predictive-TDD-Defaults; Inhalt aus der validierten exact-sol-v1.6-test-list-dimensions-cc-Quelle."}
-      exact-ptdd-v1.1-refactor-subagent-pi:           {arm: ptdd,           version: "1.1",   harness: pi,     parent: exact-ptdd-v1-pi,                     status: branch,     alias: [], note: "Faktor-isolierter Zweig: nur der per-cycle Four-Rules- und Domain-Boundary-Refactor läuft in einem isolierten Subagenten; Driver: RQ-ptdd-refactor-subagent-cross-model."}
-      exact-ptdd-v1.1-refactor-subagent-cc:           {arm: ptdd,           version: "1.1",   harness: cc,     parent: exact-ptdd-v1.1-refactor-subagent-pi, status: branch,     alias: [], port_of: exact-ptdd-v1.1-refactor-subagent-pi, note: "Claude-Code-Port des isolierten Refactor-Treatments; Task-Subagent statt pi-subagent-Extension."}
-      exact-sol-v1.6.1-naming-refactor-trial-cc:       {arm: sol,            version: "1.6.1", harness: cc,     parent: exact-sol-v1.6-test-list-dimensions-cc, status: branch,     alias: [], note: "Kostenbewusster Inline-Refactor-Zweig: verpflichtender konkreter Trial, Naming-first und explizite Helper-Extraction als Option; Domain-Cohesion-Guard bleibt, kein Subagent. Driver: RQ-inline-refactor-operationalization-opus-native."}
+      exact-sol-v1.4-domain-boundary-trial-pi:       {arm: sol,            version: "1.4",   harness: pi,     parent: exact-sol-v1.3.2-local-git-control-pi,  status: branch,     alias: [], note: "Predictive-TDD port of the domain-boundary trial from exact-tcr-v1.3: identical semantic review, change counter-check and before/after evidence; predictive predict/check/undo instead of TCR method commits; stack profiles unchanged. Driver: RQ-srp-effect-exact-tcr-sol."}
+      exact-sol-v1.5-tcr-parity-domain-trial-pi:     {arm: sol,            version: "1.5",   harness: pi,     parent: exact-tcr-v1.3-domain-boundary-trial-pi, status: superseded, alias: [], note: "Former SOL default. Fully correct and partly leaner than v1.6, but replaced by exact-ptdd-v1-pi in favour of a single maintained Predictive-TDD line."}
+      exact-sol-v1.5-tcr-parity-domain-trial-cc:     {arm: sol,            version: "1.5",   harness: cc,     parent: exact-sol-v1.5-tcr-parity-domain-trial-pi, status: superseded, alias: [], port_of: exact-sol-v1.5-tcr-parity-domain-trial-pi, note: "Historical Claude Code port for RQ-current-ptdd-vs-exact-opus-native and the replication; replaced by exact-ptdd-v1-cc."}
+      exact-sol-v1.6-test-list-dimensions-pi:         {arm: sol,            version: "1.6",   harness: pi,     parent: exact-sol-v1.5-tcr-parity-domain-trial-pi, status: superseded, alias: [], note: "Measured source of the canonical exact-ptdd-v1-pi. Validated on Claim Office, Game of Life and Sphinx Score; reproducible under the old research name."}
+      exact-sol-v1.6-test-list-dimensions-cc:         {arm: sol,            version: "1.6",   harness: cc,     parent: exact-sol-v1.6-test-list-dimensions-pi, status: superseded, alias: [], port_of: exact-sol-v1.6-test-list-dimensions-pi, note: "Measured Claude Code source of the canonical exact-ptdd-v1-cc; validated by RQ-test-list-dimensions-opus-native and RQ-test-list-dimensions-replication."}
+      exact-ptdd-v1-pi:                              {arm: ptdd,           version: "1",     harness: pi,     parent: exact-sol-v1.6-test-list-dimensions-pi, status: trunk,      alias: [], note: "Canonical universal EXACT Coding Predictive-TDD default. Content-identical to the validated v1.6 source; new stable product name for future versioned development."}
+      exact-ptdd-v1-cc:                              {arm: ptdd,           version: "1",     harness: cc,     parent: exact-ptdd-v1-pi,                     status: trunk,      alias: [], port_of: exact-ptdd-v1-pi, note: "Claude Code port of the universal Predictive-TDD default; content from the validated exact-sol-v1.6-test-list-dimensions-cc source."}
+      exact-ptdd-v1.1-refactor-subagent-pi:           {arm: ptdd,           version: "1.1",   harness: pi,     parent: exact-ptdd-v1-pi,                     status: branch,     alias: [], note: "Factor-isolated branch: only the per-cycle Four-Rules and domain-boundary refactor runs in an isolated subagent; driver: RQ-ptdd-refactor-subagent-cross-model."}
+      exact-ptdd-v1.1-refactor-subagent-cc:           {arm: ptdd,           version: "1.1",   harness: cc,     parent: exact-ptdd-v1.1-refactor-subagent-pi, status: branch,     alias: [], port_of: exact-ptdd-v1.1-refactor-subagent-pi, note: "Claude Code port of the isolated refactor treatment; Task subagent instead of the pi-subagent extension."}
+      exact-sol-v1.6.1-naming-refactor-trial-cc:       {arm: sol,            version: "1.6.1", harness: cc,     parent: exact-sol-v1.6-test-list-dimensions-cc, status: branch,     alias: [], note: "Cost-conscious inline-refactor branch: mandatory concrete trial, naming first and explicit helper extraction as an option; domain-cohesion guard stays, no subagent. Driver: RQ-inline-refactor-operationalization-opus-native."}
 
       exact-tcr-v1-pi:                             {arm: tcr,            version: "1",     harness: pi,     parent: null,                                   status: trunk,      alias: [], note: "First-party lab adaptation of exact-coding-exercises/.pi version 2026-09-13: complete inactive test list plus native-Git TCRDD; HITL set to autonomous and pi phase/prediction/done markers added."}
-      exact-tcr-v1.1-srp-pi:                       {arm: tcr,            version: "1.1",   harness: pi,     parent: exact-tcr-v1-pi,                        status: branch,     alias: [], note: "Faktor-isolierte Refactor-Variante: ergänzt SRP qualitativ im generischen TCRDD-Review; TypeScript/Vitest- und Java/JUnit/Maven-Anwendungshinweise liegen ausschließlich in den jeweiligen Stackprofilen."}
-      exact-tcr-v1.2-domain-responsibility-pi:     {arm: tcr,            version: "1.2",   harness: pi,     parent: exact-tcr-v1.1-srp-pi,                 status: branch,     alias: [], note: "Operationalisiert SRP als verpflichtenden Domain-Responsibility-Review: Ubiquitous Language als semantischer DDD-Anker, unabhängige Policy-Änderungsachsen und expliziter Vorrang intent-revealing Domain-Grenzen vor Fewest Elements; keine DDD-Pattern-Pflicht, Stackprofile unverändert."}
-      exact-tcr-v1.3-domain-boundary-trial-pi:      {arm: tcr,            version: "1.3",   harness: pi,     parent: exact-tcr-v1.2-domain-responsibility-pi, status: branch,     alias: [], note: "Ergänzt einen verpflichtenden Domain-Boundary-Trial: breite Verantwortungsnamen werden per Änderungsgegenprobe geprüft, der stärkste semantische Kandidat durchläuft TCR commit-or-revert, und ein domänenspezifischer Vorher/Nachher-Nachweis dokumentiert das Ergebnis; Stackprofile unverändert."}
-      exact-tcr-v1.4-domain-boundary-app-pi:        {arm: tcr,            version: "1.4",   harness: pi,     parent: exact-tcr-v1.3-domain-boundary-trial-pi, status: branch,     alias: [], note: "Ergänzt nach dem Domain-Boundary-Trial einen qualitativen APP-Review mit eigenem commit-or-revert-Versuch; Rules 1–3 und fachliche Grenzen haben explizit Vorrang, keine In-Run-Vollmessung, Stackprofile unverändert. Driver: RQ-srp-effect-exact-tcr-sol."}
+      exact-tcr-v1.1-srp-pi:                       {arm: tcr,            version: "1.1",   harness: pi,     parent: exact-tcr-v1-pi,                        status: branch,     alias: [], note: "Factor-isolated refactor variant: adds SRP qualitatively to the generic TCRDD review; TypeScript/Vitest and Java/JUnit/Maven usage notes live exclusively in the respective stack profiles."}
+      exact-tcr-v1.2-domain-responsibility-pi:     {arm: tcr,            version: "1.2",   harness: pi,     parent: exact-tcr-v1.1-srp-pi,                 status: branch,     alias: [], note: "Operationalises SRP as a mandatory domain-responsibility review: Ubiquitous Language as the semantic DDD anchor, independent policy change axes and explicit precedence of intent-revealing domain boundaries over Fewest Elements; no mandatory DDD patterns, stack profiles unchanged."}
+      exact-tcr-v1.3-domain-boundary-trial-pi:      {arm: tcr,            version: "1.3",   harness: pi,     parent: exact-tcr-v1.2-domain-responsibility-pi, status: branch,     alias: [], note: "Adds a mandatory domain-boundary trial: broad responsibility names are checked by a change counter-check, the strongest semantic candidate goes through TCR commit-or-revert, and a domain-specific before/after record documents the result; stack profiles unchanged."}
+      exact-tcr-v1.4-domain-boundary-app-pi:        {arm: tcr,            version: "1.4",   harness: pi,     parent: exact-tcr-v1.3-domain-boundary-trial-pi, status: branch,     alias: [], note: "Adds a qualitative APP review with its own commit-or-revert attempt after the domain-boundary trial; Rules 1–3 and domain boundaries explicitly take precedence, no full in-run measurement, stack profiles unchanged. Driver: RQ-srp-effect-exact-tcr-sol."}
 
   baselines:
     prefix: baseline
@@ -155,11 +155,11 @@ categories:
       baseline-oneshot-v1-oc:                     {arm: oneshot,           version: "1",  harness: oc,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v1-oneshot-oc], port_of: baseline-oneshot-v1-cc}
       baseline-oneshot-v1-pi:                     {arm: oneshot,           version: "1",  harness: pi,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v1-oneshot-pi], port_of: baseline-oneshot-v1-cc}
       baseline-iterative-v1-cc:                   {arm: iterative,         version: "1",  harness: cc,     parent: null,                                   status: branch,     alias: [v2-iterative]}
-      baseline-inline-tdd-v1-cc:                  {arm: inline-tdd,        version: "1",  harness: cc,     parent: null,                                   status: branch,     alias: [v3-basic-tdd], note: "TDD-Boden ohne jede Struktur — nur rules/experiment-mode.md. Auf Sol schlaegt er jede Architektur (RQ-1.14 F-1.6)."}
+      baseline-inline-tdd-v1-cc:                  {arm: inline-tdd,        version: "1",  harness: cc,     parent: null,                                   status: branch,     alias: [v3-basic-tdd], note: "TDD floor without any structure — only rules/experiment-mode.md. On Sol it beats every architecture (RQ-1.14 F-1.6)."}
       baseline-inline-tdd-v1-pi:                  {arm: inline-tdd,        version: "1",  harness: pi,     parent: baseline-inline-tdd-v1-cc,              status: branch,     alias: [v3-basic-tdd-pi], port_of: baseline-inline-tdd-v1-cc}
       baseline-inline-tdd-v1.1-local-git-cc:       {arm: inline-tdd,        version: "1.1", harness: cc,    parent: baseline-inline-tdd-v1-cc,              status: branch,     alias: [], note: "Content-identical TDD control minted under the isolated-local-Git harness condition for RQ-tcr-variants-opus5; prevents reuse of pre-Git historical runs."}
       baseline-inline-tdd-v1.1-local-git-pi:       {arm: inline-tdd,        version: "1.1", harness: pi,    parent: baseline-inline-tdd-v1.1-local-git-cc,   status: branch,     alias: [], port_of: baseline-inline-tdd-v1.1-local-git-cc, note: "Content-identical basic-TDD control minted under the isolated-local-Git harness condition for RQ-tcr-variants-sol; prevents reuse of pre-Git historical runs."}
-      baseline-end-refactor-only-v1-agent-cc:     {arm: end-refactor-only, version: "1",  harness: cc,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v8a-delayed-refactor-agent], note: "Kein Zyklus: drei sequentielle Phasen, Refactor nur am Ende. Isoliert das Refactor-Timing, nicht die Refactor-Mechanik."}
+      baseline-end-refactor-only-v1-agent-cc:     {arm: end-refactor-only, version: "1",  harness: cc,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v8a-delayed-refactor-agent], note: "No cycle: three sequential phases, refactor only at the end. Isolates refactor timing, not refactor mechanics."}
       baseline-end-refactor-only-v1-native-cc:    {arm: end-refactor-only, version: "1",  harness: cc,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v8b-delayed-refactor-native]}
 
   external:
@@ -181,4 +181,4 @@ categories:
       exact-subagents-v2.1-shared-context-cc:     {arm: subagents,      version: "2.1",   harness: cc,     parent: exact-subagents-v2-testlist-fix-cc,     status: discarded,  alias: [v4.2-shared-context]}
       exact-subagents-v2.1.1-fake-it-green-cc:    {arm: subagents,      version: "2.1.1", harness: cc,     parent: exact-subagents-v2.1-shared-context-cc, status: discarded,  alias: [v4.2.1-fake-it-green]}
       exact-single-context-v2.1-minimized-cc:     {arm: single-context, version: "2.1",   harness: cc,     parent: exact-single-context-v2-testlist-fix-cc, status: discarded, alias: [v5.1-minimized]}
-      exact-hybrid-v4.1-refactor-vocab-cc:        {arm: hybrid,         version: "4.1",   harness: cc,     parent: exact-hybrid-v4-cleaned-cc,             status: discarded,  alias: [v6.2.1-refactor-vocab], note: "Verworfen: claim-office verification_pct 0.96 -> 0.23 (RQ-1.10)."}
+      exact-hybrid-v4.1-refactor-vocab-cc:        {arm: hybrid,         version: "4.1",   harness: cc,     parent: exact-hybrid-v4-cleaned-cc,             status: discarded,  alias: [v6.2.1-refactor-vocab], note: "Discarded: claim-office verification_pct 0.96 -> 0.23 (RQ-1.10)."}

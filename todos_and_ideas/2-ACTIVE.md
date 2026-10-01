@@ -1,8 +1,8 @@
 # TODOs and Ideas - Active
 
-## Weitere Dimensionen
+## Further dimensions
 
-* Programmiersprache: Python, Rust, Haskel, Kotlin
+* Programming language: Python, Rust, Haskel, Kotlin
 * Pradigm-Profile: OOP vs FP, base Immutability Profile, Calisthenics
 * FP-Stuff, check for immutabilitym pure functions
 
@@ -16,10 +16,10 @@ Prio: High
 * Anti-Pattern: Pear-Programming / Ship in a bottle
 * Integration Segregation Pattern
 
-## weitere Workflows
+## More workflows
 
  * Functional Domain Modelling
- * explizite Pre + Post-Steps
+ * explicit pre + post steps
 
 ## Encode well know TDD workflows aka schools in rules
 
@@ -45,26 +45,16 @@ Prio: High
 
 * nWave
 
-## Doku-Aufräumen (Phase 2)
+## Usability for others
 
- * RQ-Korpus auf Englisch migrieren: alle research/RQ-*/README.md +
-   findings.md + summary.md (Header aus aggregate-by-query.py).
-   Glossar-Termini (Code-Mass (APP), Korrektheit (innen/außen), ...) bei
-   der Gelegenheit ebenfalls eindeutschen oder englische Pendants
-   einführen — dann auch in der Top-README anpassen und Skill-Dateien
-   nachziehen.
- * research/kata-design/* bleibt bewusst Deutsch (Workshop-Material).
+Currently this is tailored very much to my setup,
+e.g. Portkey + Anthropic subs,
+with paths etc. -> needs to be generalized
 
-## Verwendbarkeit für andere
-
-Aktuell ist das sehr auf mein Setup
-zugeschnitten, z.B. Portkey + Antrophic Subs.
-mit Pfaden etc. -> muss veralgemeinert werden
-
-Mehr Post-Toolings (test vs. bei jedem Refactoring):
+More post-tooling (test vs. on every refactoring):
 
  * https://github.com/fallow-rs/fallow
- * Agents für Refactoring nach verschiedenen Prinzipien
+ * Agents for refactoring according to different principles
 
  Refactorstep vs. Postprocessing Steps
    * use other metrics in refactor step

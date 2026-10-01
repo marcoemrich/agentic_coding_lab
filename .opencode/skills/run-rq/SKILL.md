@@ -20,7 +20,7 @@ End-to-end orchestration for advancing a single research question (RQ) in this l
 
 ## Repo conventions (from the top-level `README.md` and memory)
 
-- RQ dirs live in four subtrees: `research/questions-claude/<chapter>-*/` (Claude-Code RQs), `research/questions-opencode/<chapter>-*/` (OpenCode RQs), `research/questions-cross/<chapter>-*/` (harness-übergreifende RQs), and `research/workflow-dev/<chapter>-*/` (workflow evolution). The `<chapter>` prefix (e.g. `2.6`) is an **ordering label, not an id** — the stable identity is the frontmatter `id:` (e.g. `RQ-lean`). Each RQ dir holds `README.md`, `findings.md`, `runs.csv`, `summary.md`.
+- RQ dirs live in four subtrees: `research/questions-claude/<chapter>-*/` (Claude-Code RQs), `research/questions-opencode/<chapter>-*/` (OpenCode RQs), `research/questions-cross/<chapter>-*/` (cross-harness RQs), and `research/workflow-dev/<chapter>-*/` (workflow evolution). The `<chapter>` prefix (e.g. `2.6`) is an **ordering label, not an id** — the stable identity is the frontmatter `id:` (e.g. `RQ-lean`). Each RQ dir holds `README.md`, `findings.md`, `runs.csv`, `summary.md`.
 - **Resolving an `RQ-<slug>` id to a path** (the dir name carries a chapter number, not the id): grep all subtrees for the frontmatter `id:`. Anchor with `^id:` and a trailing boundary so the whole slug must match exactly (no slug is a prefix of another, so an exact-line match is unambiguous):
   ```bash
   RQ_DIR=$(grep -rlE "^id:[[:space:]]*RQ-model-quality[[:space:]]*$" \
@@ -162,17 +162,17 @@ status: <status>
 
 ### Phase 6 — Findings (write-first)
 
-**Write directly to `findings.md`, then notify the user to review.** Markdown tables and trophy assignments are much easier to evaluate as rendered output than as a chat proposal; reverting is cheap (it's only markdown). After writing, send one line: "geschrieben — lies drüber".
+**Write directly to `findings.md`, then notify the user to review.** Markdown tables and trophy assignments are much easier to evaluate as rendered output than as a chat proposal; reverting is cheap (it's only markdown). After writing, send one line (in the user's language), e.g. "written — please review",.
 
 Exception: **deletions** of existing findings still require explicit user confirmation before the `edit` — losing a documented finding is more expensive than re-reading a fresh write.
 
 `findings.md` shows **only the current state**. No status tags (`✅ stabil` / `⚠️ bedingt` / `🚫 offen` / `❌ widerlegt`), no comparisons with archive snapshots or older studies, no "previously X, corrected" hints in the prose. Header form: `## F-x.y — title` (no `· …` suffix).
 
-**Overview table**: `findings.md` starts with a `## Übersicht` section containing a pivot table of the primary outcome across all factor levels (all models, all prompt styles, etc.) — before the individual `F-x.y` blocks. This table gives readers the full picture at a glance; individual findings then zoom in on specific effects. Update this table whenever findings are added or updated.
+**Overview table**: `findings.md` starts with a `## Overview` section containing a pivot table of the primary outcome across all factor levels (all models, all prompt styles, etc.) — before the individual `F-x.y` blocks. This table gives readers the full picture at a glance; individual findings then zoom in on specific effects. Update this table whenever findings are added or updated.
 
 **Trophy convention (🏆) in overview tables**: append 🏆 to the best value per outcome row. Conventions:
 
-- The direction is metric-dependent — note it in the column header or row label (`smell_total` etc. → "kleiner = besser"; `refactorings_applied`, `predictions_correct_rate` → "höher = besser"). Don't assume.
+- The direction is metric-dependent — note it in the column header or row label (`smell_total` etc. → "lower = better"; `refactorings_applied`, `predictions_correct_rate` → "higher = better"). Don't assume.
 - Use 🏆 only where there is a meaningful winner. If the spread is below 1 σ and the framing is "no effect", award 🏆 to all near-tied values (or to none if the table message is "indistinguishable") — don't fabricate a winner from rounding noise.
 - Multiple 🏆 are fine for ties. Three 🏆 across a row signal "no effect", which is itself a useful reading aid.
 - Always bold the winner value too — 🏆 is in addition to, not instead of, the bold.
@@ -185,11 +185,11 @@ Exception: **deletions** of existing findings still require explicit user confir
 2. Three possible actions per effect:
    - **New finding**: cell/factor group with Δ ≥ 1σ over the other groups AND the effect is not yet covered in `findings.md` → new `F-{N}.{M+1}` block (M = highest existing finding number). Write directly.
    - **Update**: an existing finding covers the same effect, but cell values or interpretation have shifted → `edit` the existing block directly. Rewrite table and rationale, **without** old/new diff, **without** "previously X", **without** reference to archive snapshots.
-   - **Deletion**: data contradicts the finding → ask the user first ("Finding F-x.y wird durch neue Daten widerlegt — entfernen?"), then remove the block including its `---` separator on confirmation. Do not mark as "widerlegt".
-3. Data gap: if an effect is suspected but coverage is too small for `n ≥ min_replicates` → note in `todos_and_ideas.txt` (section "Re-Check ungeprüfter Hypothesen aus alten findings.md") as a bullet with a concrete re-check target. **Do not** create as a finding in `findings.md`.
+   - **Deletion**: data contradicts the finding → ask the user first ("Finding F-x.y is contradicted by new data — remove it?"), then remove the block including its `---` separator on confirmation. Do not mark it as "refuted".
+3. Data gap: if an effect is suspected but coverage is too small for `n ≥ min_replicates` → note in `todos_and_ideas/1-IN.md` as a bullet with a concrete re-check target. **Do not** create as a finding in `findings.md`.
 4. Format per block: statement / data-base table / rationale. Header `## F-x.y — title` with no suffix. The namespace before the last dot may carry dots itself (`F-4.4.1`, `F-1.12.5` — chapter-numbered ids are in use and valid). The em-dash `—` is load-bearing: `generate-snapshot-skeleton.py` parses headers on it and silently skips any it cannot match, which then reads as "no findings documented" in the snapshot for an RQ that has a full findings.md.
    **Glossary discipline**: terms like `code_mass`, `cc_loc`, `cc_longest_function`, `smell_total`, `verification_pct` are to be used only in the form from the glossary in the top-level `README.md` ("Code Mass (APP)", "Production LoC", "Smell Total", "Correctness (external)") or directly via the metric ID in backticks. Synonyms like "Code-Volumen", "Code-Gesamtvolumen", "LoC-Größe" are forbidden — they are ambiguous or collide with established definitions (APP). The three complexity metrics carry **no** prose name at all: write `cc_longest_function`, `cognitive_max`, `cognitive_avg` or `mccabe_max` in backticks. "Complexity Peak", "Spitzen-Komplexität", "Cognitive Complexity peak" and "McCabe peak" are forbidden; the first had been used for three different metrics at once. Before writing, read the glossary once and check every term used in the block against the table.
-5. After writing all new/updated blocks, send one short line to the user: "geschrieben — lies drüber". The user reviews the rendered markdown directly.
+5. After writing all new/updated blocks, send one short line to the user (in their language), e.g. "written — please review". The user reviews the rendered markdown directly.
 
 ---
 
