@@ -58,6 +58,20 @@ min_replicates: 5
 
 # RQ-4.12: The Retired Opus Line against the Maintained PTDD Line on Opus 5.5
 
+> **The `exact-hybrid-v2-testlist-fix-cc` cell is being replaced.** Its five runs
+> predate the vitest TDD reporter, so they carry no phase-chain discipline
+> columns. They matched the selector of
+> [RQ-4.13](../4.13-tdd-workflow-comparison-opus55/) too, where that made the
+> cell report itself full while the RQ's primary axis stayed empty, so they were
+> moved to `experiments/runs/_archive/` and are being refilled on identical cell
+> coordinates — same workflow, model, kata, prompt and harness 2.1.280.
+>
+> Until that batch is through, this cell reads 0 runs and the findings below
+> still carry its old figures. The token, cost and subagent tables are the ones
+> that rest on it. Re-derive them against the new runs before reading them
+> again; the correctness and decomposition conclusions are expected to hold, but
+> the numbers will move within the noise.
+
 ## Question
 
 Two independent claims about EXACT Coding on Opus currently rest on Opus 5 data

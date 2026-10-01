@@ -23,9 +23,10 @@ alone is informative.
 | Candidate | Loop isolable | Refactor position | Status |
 |---|---|---|---|
 | **Own workflow** (hybrid-v1.x) | — (baseline) | **per-cycle**, isolated subagent | baseline |
-| **Superpowers** `test-driven-development` | yes, confirmed | **per-cycle**, inline in the skill | vendored as superpowers-2026-09-04, measured in RQ-4.7 |
+| **Superpowers** `test-driven-development` | yes, confirmed | **per-cycle**, inline in the skill | vendored as superpowers-2026-09-04, measured in RQ-4.13 |
 | **Pocock** `tdd`, May snapshot | yes | **tail** (step 5: "After all tests pass") | withdrawn — see "The withdrawn May snapshot" |
-| **Pocock** `tdd`, Aug snapshot | yes, vendored as pocock-2026-09-04 | **report-only** — no refactor in loop or review | measured in RQ-4.7 |
+| **Pocock** `tdd`, Aug snapshot | yes, vendored as pocock-2026-09-04 | **report-only** — no refactor in loop or review | measured in RQ-4.13 |
+| **Kesseler** `tdd` (lexler/skill-factory) | yes, vendored as kesseler-2026-09-30 | **per-cycle**, inline in the skill | measured in RQ-4.13 |
 | **nWave** DELIVER | loop yes, but needs artifact chain | **open** (indication: none) | candidate, unresolved |
 | ~~ATDD plugin~~ | **no** | — | dropped → augmentation track |
 
@@ -54,18 +55,30 @@ Where a workflow refactors — every cycle, once at the end, or never — varies
 independently of prompt quality and skill mechanics.
 
 Currently measured by
-[RQ-4.7](questions-claude/4.7-external-tdd-workflows-opus5/) on
-`claim-office-example-mapping` × `opus-5-no-thinking`, with three cells that
-span the axis and give two single-variable contrasts:
+[RQ-4.13](questions-claude/4.13-tdd-workflow-comparison-opus55/) on
+`claim-office-example-mapping` × `opus-5-5-no-thinking`, with five cells:
 
-| Cell | Loop architecture | Refactor position | Mechanism |
+| Cell | Origin | Loop architecture | Refactor position |
 |---|---|---|---|
-| `exact-hybrid-v2.4-lab-split-cc` | phase commands + subagent | per-cycle | isolated subagent |
-| `external-superpowers-2026-09-04-cc` | single skill, inline phases | per-cycle | inline in the skill |
-| `external-pocock-2026-09-04-cc` | skill + `code-review` skill | none | — |
+| `exact-hybrid-v2-testlist-fix-cc` | lab | phase commands + subagent | per-cycle |
+| `exact-hybrid-v2.4-lab-split-cc` | lab | same, split file layout | per-cycle |
+| `external-superpowers-2026-09-04-cc` | vendor | single skill, inline phases | per-cycle |
+| `external-pocock-2026-09-04-cc` | vendor | skill + `code-review` skill | none |
+| `external-kesseler-2026-09-30-cc` | vendor | single skill, inline phases | per-cycle |
 
-- **superpowers-2026-09-04 ↔ pocock-2026-09-04** varies refactor position at constant architecture.
-- **hybrid-v2.4 ↔ superpowers-2026-09-04** varies architecture and mechanism at constant position.
+- **superpowers ↔ pocock** varies refactor position at constant architecture.
+- **hybrid ↔ superpowers** varies architecture and mechanism at constant position.
+- **superpowers ↔ kesseler** varies only the author, so no statement about
+  "an external inline skill" rests on n=1 skill.
+- **hybrid-v2 ↔ hybrid-v2.4** is the lab line's own spread (RQ-1.19).
+
+The predecessor [RQ-4.7](questions-claude/4.7-external-tdd-workflows-opus5/) ran
+the first three of those cells on `opus-5-no-thinking` and is closed. Its
+correctness, decomposition and cost findings stand; its discipline columns came
+from the marker and transcript routes retired in 2026-10, and were never
+comparable across cells for exactly the reason this page keeps running into — a
+vendored skill emits no markers. The phase chain removed that limit, and it
+cannot be backfilled, so the field is re-measured rather than extended.
 
 ### The withdrawn May snapshot
 
@@ -78,9 +91,9 @@ questions, not results:
 
 - A tail refactor may fire only once and leave complexity where the initial
   implementation put it. `pocock-2026-09-04` (no refactor stage) is the floor case for this
-  in RQ-4.7.
+  in RQ-4.13.
 - That comparison varied refactor position *and* loop architecture at the same
-  time, so it could not say which produced its effect. RQ-4.7's two contrasts
+  time, so it could not say which produced its effect. RQ-4.13's contrasts
   above exist to separate them.
 
 The May snapshot also carried a lab-inserted RED marker block, which is not a
@@ -97,7 +110,7 @@ the variable the withdrawn May study could not:
 > Does the isolated refactor subagent buy anything over inline refactoring —
 > at equal refactor position?
 
-This is the `hybrid-v2.4 ↔ superpowers-2026-09-04` contrast in RQ-4.7.
+This is the `hybrid ↔ superpowers` contrast in RQ-4.13.
 
 ## Open question: does Superpowers hold cycle discipline?
 
@@ -113,33 +126,38 @@ implementing". The red flags even list "Test passes immediately" as a
 start-over condition. Batching would be a deviation from the skill, not its
 design.
 
-**Measurable without touching markers.** `experiments/measure-tdd-rigour.py`
-classifies TDD rigour purely from the tool sequence in the transcript:
-
-- `test_blocks` — number of test-write blocks (**1 = big bang**, >1 = incremental)
-- `first_cases` / `all_cases` — test cases in the first block vs. total
-- `verified` / `unverified` — was there a test run between writing a test and
-  writing implementation?
+**Measurable without touching the skill.** The figure is `red_batch_size` from
+the phase chain: the median number of tests that newly fail when a red arrives.
+1 means one failing test at a time; higher means a batch was authored before any
+implementation existed. Report `red_batch_max` with it — a single big-bang opener
+hides inside a median of 1. `green_batch_size` is the mirror and separates the
+interesting case: a workflow that writes several tests up front and then
+implements them one at a time reads red high, green 1.
 
 This resolves a methodological problem: the verbatim RED marker block from
 `MARKERS.md` is **not a neutral probe** — an output obligation per RED phase
 creates exactly the structural break whose absence encourages batching. Measuring
 cycle discipline through markers partly manufactures it. It applied to the
-May Pocock snapshot too, where the RED block was *inserted* for the lab. `measure-tdd-rigour.py` does not need it — so Superpowers can be vendored
-unmodified (only the DONE marker stays necessary, otherwise container timeout).
+May Pocock snapshot too, where the RED block was *inserted* for the lab. The
+phase chain needs nothing of the kind: it reads the test framework's own event
+stream, so Superpowers can be vendored unmodified (only the DONE marker stays
+necessary, otherwise container timeout).
 
-This is now lab-wide policy, not a suggestion for this study: see `README.md` →
-"Cycle discipline is measured from the transcript, not from markers", and the
-corresponding section in `experiments/workflows/MARKERS.md`.
+This is lab-wide policy, not a suggestion for this study: see `README.md` →
+"Phase chain metrics", and the corresponding section in
+`experiments/workflows/MARKERS.md`.
 
-**Two obstacles when setting this up:**
+**One obstacle when setting this up.** The Superpowers skill consistently uses
+`npm test` in its examples while the stack is driven by `pnpm`. The phase chain
+is indifferent — the reporter fires from inside vitest however the suite was
+started — but a failing `npm test` distorts the run itself. The project rules
+file therefore pins `pnpm test`; verify on a smoke run that the model follows it.
 
-1. The script's `__main__` is hardwired to `*_baseline-inline-tdd-v1-cc*` — parameterise the
-   glob to apply it to other workflows.
-2. Test runs are only detected via `pnpm test` / `pnpm run test`. The Superpowers
-   skill consistently uses `npm test` in its examples. If the model adopts that,
-   `verified`/`unverified` come out empty and look like "never verified". Check on
-   a smoke run before the batch.
+An earlier measurement route for this question — `test_blocks` and
+`red_verified`/`red_unverified` from `measure-tdd-rigour.py` — was retired in
+2026-10. It keyed on `Write`/`Edit`/`MultiEdit` calls and read 0 for any model
+that writes files through the shell, which is indistinguishable from "never
+wrote a test". The script is still in the tree as a manual tool.
 
 ## external-pocock-2026-09-04-cc: upstream moved the refactor out of the loop
 

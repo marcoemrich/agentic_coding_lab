@@ -2,7 +2,7 @@
 
 _Can the inner TDD loop of EXACT Coding be substituted by an externally authored TDD workflow, and what does the substitution cost or buy? Example mapping stays the entry point; only the implement/test/refactor loop is exchanged. Measured on claim-office-example-mapping against the current exact-coding baseline exact-hybrid-v2.4-lab-split-cc — on correctness, code quality, TDD discipline and cost._
 
-Generated: 2026-09-30T21:57:09Z
+Generated: 2026-10-01T00:26:17Z
 
 Cells declared: 4 · matched runs: 15 · min_replicates: 5
 
@@ -41,7 +41,7 @@ Cells declared: 4 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |       5 |      100 |
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |       5 |      100 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -49,7 +49,7 @@ Cells declared: 4 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |    0   |     0 |     0 |  0    |
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |    4.2 |     1 |    10 |  3.42 |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -63,7 +63,7 @@ Cells declared: 4 · matched runs: 15 · min_replicates: 5
 |:-----------------------------|:-------------------------------|:-------------------|----:|----------:|--------:|---------:|
 | claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc | opus-5-no-thinking |   5 |       478 |     480 |     99.6 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -71,7 +71,7 @@ Cells declared: 4 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |   35.2 |    33 |    39 |  2.28 |
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |   13.4 |    11 |    16 |  2.51 |
 
-### test_blocks
+### legacy_test_blocks
 
 | kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -79,7 +79,7 @@ Cells declared: 4 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |   19   |    16 |    23 |  2.74 |
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |   13.4 |    11 |    16 |  2.51 |
 
-### test_cases_total
+### legacy_test_cases_total
 
 | kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -87,7 +87,7 @@ Cells declared: 4 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |   36.8 |    30 |    44 |  5.26 |
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |   45   |    26 |    55 | 11.51 |
 
-### test_cases_first_block
+### legacy_test_cases_first_block
 
 | kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -95,7 +95,7 @@ Cells declared: 4 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      1 |     1 |     1 |     0 |
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      1 |     1 |     1 |     0 |
 
-### red_verified
+### legacy_red_verified
 
 | kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -103,7 +103,7 @@ Cells declared: 4 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |   18.8 |    16 |    22 |  2.39 |
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |   12.4 |     7 |    16 |  3.58 |
 
-### red_unverified
+### legacy_red_unverified
 
 | kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -111,27 +111,27 @@ Cells declared: 4 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |    0.2 |     0 |     1 |  0.45 |
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |    1   |     0 |     4 |  1.73 |
 
-### suite_cycles
+### legacy_suite_cycles
 
 _All values are missing or non-numeric._
 
-### suite_new_failures
+### legacy_suite_new_failures
 
 _All values are missing or non-numeric._
 
-### suite_opens_red
+### legacy_suite_opens_red
 
 _All values are missing or non-numeric._
 
-### suite_unresolved_red
+### legacy_suite_unresolved_red
 
 _All values are missing or non-numeric._
 
-### suite_runs
+### legacy_suite_runs
 
 _All values are missing or non-numeric._
 
-### suite_unknown_runs
+### legacy_suite_unknown_runs
 
 _All values are missing or non-numeric._
 

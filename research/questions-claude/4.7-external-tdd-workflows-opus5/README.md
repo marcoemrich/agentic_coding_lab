@@ -56,9 +56,32 @@ outcomes:
   - duration_seconds
   - total_tokens
 min_replicates: 5
+closed: "superseded by RQ-tdd-workflow-comparison-opus55 — the kesseler cell was never filled, and phase-chain discipline cannot be reconstructed for these runs"
 ---
 
 # RQ-4.7: Substituting the Inner TDD Loop with External Workflows (opus-5)
+
+> **Closed, superseded by
+> [RQ-4.13](../4.13-tdd-workflow-comparison-opus55/).** Two reasons, and only
+> the second is about this RQ's design.
+>
+> The `external-kesseler-2026-09-30-cc` cell was added late and never filled, so
+> the replication question it was there to answer — is the architecture row a
+> property of the architecture or of one author's prose — stays open here.
+>
+> More importantly, every discipline number below comes from a source that was
+> retired in 2026-10. The marker and transcript routes each keyed on something
+> the workflow had to supply, which is why this RQ had to declare its discipline
+> columns not comparable across cells in the first place. The phase chain
+> (`tdd_discipline` and siblings) reads the test framework's own event stream
+> instead and is identical across workflows — but that stream cannot be
+> reconstructed after a run, so these 15 runs can never carry it. The successor
+> therefore re-measures the whole field rather than extending this one.
+>
+> The 15 runs stay in the pool and stay valid for what they measure. The
+> correctness, decomposition and cost findings below are unaffected by the
+> retirement; `exact-hybrid-v2.4-lab-split-cc`'s claim-office cell is also read
+> by [RQ-1.19](../../workflow-dev/1.19-lab-split-neutrality/).
 
 Can the implement/test/refactor loop of EXACT Coding be replaced by an externally
 authored TDD workflow, keeping example mapping as the entry point? And what does

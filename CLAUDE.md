@@ -182,7 +182,7 @@ subtrees.
 
 ## Docker & version pins
 
-- **Claude Code CLI: `2.1.170`** — 2.1.37 hangs on `.claude/agents/` dirs; 2.1.126 requires missing `.claude.json`. Do not bump without verifying a subagents-arm workflow end-to-end.
+- **Claude Code CLI: `2.1.280`** — jede Modellgeneration hat die Untergrenze hochgezogen, und zwar als harter API-400, nicht als stiller Fallback: 2.1.170 für Fable 5, 2.1.267 für Fable 5.1, 2.1.280 für Opus 5.5 (Smoke auf 2.1.267 starb nach 2 s). 2.1.267 führt Opus 5.5 außerdem nicht im Katalog und kappt damit Auto-Compact still bei 200k auf einem 1M-Kontext-Modell. Known bad: 2.1.37 hängt auf `.claude/agents/`-Verzeichnissen, 2.1.126 braucht ein fehlendes `.claude.json`. Nicht bumpen, ohne einen Subagents-Arm-Workflow end-to-end zu verifizieren. Die Begründung pro Version steht kommentiert in `experiments/docker/Dockerfile` — das ist die Quelle, diese Zeile ist die Zusammenfassung.
 - **Weitere Harness-Pins:** `opencode-ai@1.15.10`, `@earendil-works/pi-coding-agent@0.81.1`, `cursor-agent` (Dashboard-API-Key). Alle in `experiments/docker/Dockerfile`.
 - **pnpm: `9.15.9`** — pnpm 11 breaks builds via `ERR_PNPM_IGNORED_BUILDS`. Pinned via `npm install -g pnpm@9.15.9` in Dockerfile.
 - **uv: `0.12.17`** — Paketmanager des `python-pytest`-Stacks, gepinnt als `ENV UV_VERSION` im Dockerfile. `uv venv` bringt sein eigenes virtualenv mit und braucht **kein** `python3-venv`; das Paket ist deshalb bewusst nicht installiert. Der uv-Cache wird beim Image-Build aus `experiments/docker/python.cache.txt` vorgewärmt (Spiegel von `experiments/stacks/python-pytest/requirements-dev.txt`, weil der Build-Kontext `experiments/docker/` ist) und liegt im Volume `uv-cache`. Ein Install ist damit offline und dauert ~0,2 s.
