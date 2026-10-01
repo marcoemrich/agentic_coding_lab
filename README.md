@@ -1016,6 +1016,14 @@ finding. Five labels make up a healthy cycle, six are deviations.
 `Skip` and `Drop` are told apart by the test count in the event, not by the
 diff: a test-file change that leaves the suite green means either "a new test
 passed at once" or "tests were deleted", and those are two different findings.
+The count is compared with the last invocation that ran the **whole** suite.
+A filtered run (`cargo test --lib`, `pytest -k`, an explicit test path) reports
+fewer tests without any being deleted, and in the first real Rust run two of
+five deviations were exactly that: the agent alternated `cargo test --lib` and
+`cargo test`. The Rust and Python reporters therefore mark such an event
+`partial: true`; it is never a `Drop` and never the reference. The TypeScript
+and Java reporters do not mark filtered runs yet, so on those stacks a filtered
+invocation following a full one can still read as `Drop`.
 
 Two rules in the classifier are worth knowing, because both were defects first:
 

@@ -91,6 +91,32 @@ def pytest_collectreport(report):
         pass
 
 
+def _is_partial(config) -> bool:
+    """Did this session run less than the whole suite?
+
+    `pytest -k`, `-m`, `--lf`, `--deselect` or an explicit test path report
+    fewer tests without any being deleted; tdd-report.py must not read the
+    smaller count as a `Drop`. A path argument naming the configured
+    testpaths themselves is still the whole suite.
+    """
+    try:
+        opt = config.option
+        if getattr(opt, "keyword", "") or getattr(opt, "markexpr", ""):
+            return True
+        if getattr(opt, "lf", False) or getattr(opt, "deselect", None):
+            return True
+        whole = {str(Path(t)) for t in (config.getini("testpaths") or [])} | {".", ""}
+        for a in config.invocation_params.args:
+            a = str(a)
+            if a.startswith("-"):
+                continue
+            if str(Path(a.split("::", 1)[0])).rstrip("/") not in whole:
+                return True
+        return False
+    except Exception:
+        return False
+
+
 def pytest_sessionfinish(session, exitstatus):
     try:
         if os.environ.get("TDD_REPORTER_OFF"):
@@ -122,6 +148,9 @@ def pytest_sessionfinish(session, exitstatus):
                 # carries the current format marker and tdd-report.py uses the
                 # precise failure rule rather than the legacy fallback.
                 "files_failed": 0,
+                # A filtered session; tdd-report.py does not read its smaller
+                # test count as deleted tests.
+                "partial": _is_partial(session.config),
                 "failed_tests": sorted(failed),
                 "passed_tests": sorted(passed),
                 "duration_ms": None,

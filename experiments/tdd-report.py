@@ -110,7 +110,15 @@ def classify(prev, cur, state):
 
     test_ch = [q for q in changed if is_test(q)]
     impl_ch = [q for q in changed if not is_test(q)]
-    n_prev = (prev.get("tests") or {}).get("total") or 0
+    # The count a smaller suite is measured against: the last invocation that
+    # ran the whole suite. A filtered run (`cargo test --lib`, `pytest -k`)
+    # reports fewer tests without any being deleted, so it neither serves as
+    # the reference nor can itself be a `Drop`. Reporters that do not mark
+    # filtered runs leave `partial` absent, and the reference is then the
+    # predecessor, exactly as before the field existed.
+    n_prev = state.get("full_total")
+    if n_prev is None:
+        n_prev = (prev.get("tests") or {}).get("total") or 0
     n_cur = (cur.get("tests") or {}).get("total") or 0
 
     if not changed:
@@ -154,7 +162,8 @@ def classify(prev, cur, state):
             # make every later cycle unclosable. `ends_green` and `deviations`
             # are where a permanently red test shows up.
             return commit("Red", grew)
-        return commit("Drop" if n_cur < n_prev else "Skip", set())
+        dropped = n_cur < n_prev and not cur.get("partial")
+        return commit("Drop" if dropped else "Skip", set())
 
     # implementation only
     if compile_broken:
@@ -173,10 +182,13 @@ def build(events):
     # Carried across events because a cycle spans several invocations:
     # `open` = the tests the current cycle put in the red, `clean` = the
     # failing set as last actually observed.
-    state = {"open": set(), "clean": set(), "pending_red": False}
+    # `full_total` = test count of the last invocation not marked partial.
+    state = {"open": set(), "clean": set(), "pending_red": False, "full_total": None}
     for ev in events:
         label, changed = classify(prev, ev, state)
         rows.append({"ev": ev, "label": label, "changed": changed})
+        if not ev.get("partial"):
+            state["full_total"] = (ev.get("tests") or {}).get("total") or 0
         prev = ev
     return rows
 

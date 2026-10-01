@@ -34,9 +34,11 @@ The shim's hard constraints are the ones the other two reporters carry:
   testing run the suite too, and neither belongs in a record of what the agent
   did.
 
-One intervention is deliberate: libtest output is forced to the pretty format
-(`test name ... ok`), also when the agent asked for `-q`. The phase chain judges
-a green by *which* tests pass, and terse output prints dots instead of names.
+Two interventions are deliberate (see `instrument`): libtest output is forced
+to the pretty format, also when the agent asked for `-q`, because the phase
+chain judges a green by *which* tests pass and terse output prints dots; and
+`--no-fail-fast` is added, so a failing test binary does not hide the rest of
+the suite. Neither changes what passes or fails.
 
 Usage:
   rust_tdd.py shim <cargo args...>     # what /usr/local/bin/cargo execs
@@ -403,18 +405,89 @@ def wants_record(args):
     return True
 
 
-def force_pretty(args):
-    """Force libtest's pretty format so test names are printed.
+# cargo-side flags of `cargo test` that do not change which tests run. Anything
+# else on the cargo side — a target selector (--lib, --bin, --test, --doc, ...)
+# or a positional name filter — makes the invocation partial.
+_NEUTRAL = {"-q", "--quiet", "-v", "-vv", "--verbose", "--offline", "--frozen",
+            "--locked", "--release", "--no-fail-fast", "--all-features",
+            "--no-default-features", "--workspace", "--message-format"}
+_NEUTRAL_WITH_VALUE = {"--color", "-j", "--jobs", "--features", "-F",
+                       "--profile", "--target-dir", "--config", "-Z",
+                       "--message-format", "--manifest-path"}
+# libtest-side flags that change the selection.
+_HARNESS_SELECTING = {"--exact", "--skip", "--ignored"}
 
-    `cargo test -q` makes cargo pass `--quiet` to libtest, which prints dots.
-    An explicit `--format pretty` after `--` overrides it on stable.
+
+def is_partial(args):
+    """Did this invocation run less than the whole suite?
+
+    A filtered run (`cargo test --lib`, `cargo test some_name`) reports fewer
+    tests than the suite holds. tdd-report.py would otherwise read the smaller
+    count as tests deleted and label the step `Drop`. Seen in the first real
+    Rust run: the agent alternated `cargo test --lib` (9 tests) and
+    `cargo test` (12), and two of its five deviations were that artefact.
     """
-    if "--" in args:
-        k = args.index("--")
-        harness = [a for a in args[k + 1:] if a not in ("-q", "--quiet")]
-        harness = [a for a in harness if not a.startswith("--format")]
-        return args[:k + 1] + harness + ["--format", "pretty"]
-    return args + ["--", "--format", "pretty"]
+    i = subcommand_index(args)
+    rest = args[i + 1:] if i is not None else []
+    cargo_side = rest[:rest.index("--")] if "--" in rest else rest
+    harness = rest[rest.index("--") + 1:] if "--" in rest else []
+    j = 0
+    while j < len(cargo_side):
+        a = cargo_side[j]
+        if a in _NEUTRAL_WITH_VALUE:
+            j += 2
+            continue
+        if a.split("=", 1)[0] in _NEUTRAL | _NEUTRAL_WITH_VALUE:
+            j += 1
+            continue
+        return True                  # a target selector or a name filter
+    k = 0
+    while k < len(harness):
+        a = harness[k]
+        if a in _HARNESS_SELECTING or a.startswith("--skip="):
+            return True
+        if a == "--format" or a in ("--test-threads", "--color"):
+            k += 2
+            continue
+        if not a.startswith("-"):
+            return True              # a positional name filter
+        k += 1
+    return False
+
+
+def instrument(args):
+    """The arguments actually passed to cargo.
+
+    Two interventions, both invisible in what the suite decides:
+
+    - libtest's pretty format, so test names are printed. `cargo test -q`
+      makes cargo pass `--quiet` to libtest, which prints dots; an explicit
+      `--format pretty` after `--` overrides it on stable.
+    - `--no-fail-fast`. Without it cargo stops at the first failing test
+      binary and never runs the rest, so a red event under-reports the suite
+      and its smaller count reads like deleted tests.
+    """
+    i = subcommand_index(args)
+    head, rest = args[:i + 1], args[i + 1:]
+    if "--" in rest:
+        k = rest.index("--")
+        cargo_side, harness = rest[:k], rest[k + 1:]
+    else:
+        cargo_side, harness = rest, []
+    if "--no-fail-fast" not in cargo_side:
+        cargo_side = cargo_side + ["--no-fail-fast"]
+    harness = [a for a in harness if a not in ("-q", "--quiet")]
+    out, k = [], 0
+    while k < len(harness):
+        if harness[k] == "--format":
+            k += 2
+            continue
+        if harness[k].startswith("--format="):
+            k += 1
+            continue
+        out.append(harness[k])
+        k += 1
+    return head + cargo_side + ["--"] + out + ["--format", "pretty"]
 
 
 def find_root(start):
@@ -471,7 +544,7 @@ def parse(lines):
     return outcomes, compile_errors
 
 
-def record(root, rc, lines):
+def record(root, rc, lines, partial=False):
     outcomes, compile_errors = parse(lines)
     passed = sorted(n for n, o in outcomes.items() if o == "passed")
     failed = sorted(n for n, o in outcomes.items() if o == "failed")
@@ -494,6 +567,9 @@ def record(root, rc, lines):
                       "skipped": len(skipped), "total": len(outcomes)},
             "collection_errors": compile_errors,
             "files_failed": files_failed,
+            # A filtered invocation; tdd-report.py does not read its smaller
+            # test count as deleted tests.
+            "partial": partial,
             "failed_tests": failed,
             "passed_tests": passed,
             "duration_ms": None,
@@ -508,9 +584,9 @@ def shim(args):
         recording = False
     if not recording:
         os.execv(REAL_CARGO, [REAL_CARGO, *args])
-    rc, lines = run_and_capture([REAL_CARGO, *force_pretty(args)])
+    rc, lines = run_and_capture([REAL_CARGO, *instrument(args)])
     try:
-        record(find_root(os.getcwd()), rc, lines)
+        record(find_root(os.getcwd()), rc, lines, is_partial(args))
     except Exception:
         # Recording failed. Losing one event is acceptable; failing the run is not.
         pass
