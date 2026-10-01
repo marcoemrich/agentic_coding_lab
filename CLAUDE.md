@@ -122,10 +122,20 @@ subtrees.
   contradict `metrics.json` as soon as a run is analyzed outside its container,
   and each of them is one more place the next language has to touch.
   The file sniff remains only as a fallback for runs from before the `stack` field.
-- New language = stack directory, kata variants (`<kata>-<language>-example-mapping`
+- New language = stack directory **including a TDD event reporter** hooked into the
+  test framework, kata variants (`<kata>-<language>-example-mapping`
   plus `-verification`), a stack profile in the four maintained `exact-ptdd-*` workflows,
-  one arm each in `analyze-run.sh` and `compute-mutation-score.py`, the four regexes in
-  `measure-tdd-rigour.py`, and `required_stacks` in `export-sol.py`.
+  one arm each in `analyze-run.sh` and `compute-mutation-score.py`, and `required_stacks`
+  in `export-sol.py`.
+- **Without the reporter every TDD-discipline column is `null`, silently.** The phase
+  chain is the only source of TDD discipline, and it reads nothing but the
+  `tdd-events.jsonl` the stack's reporter appends on each suite invocation. The run
+  still completes and every quality metric is filled, so nothing fails — this is exactly
+  how Java and Python looked until 2026-10-01. The reporter must honour
+  `TDD_REPORTER_OFF` (otherwise `analyze-run.sh` and mutation testing append their own
+  events), write nothing to stdout/stderr, and swallow its own exceptions. Existing
+  hooks per stack and the Java compile-step gap: README, "Phase chain metrics".
+  The regexes in `measure-tdd-rigour.py` only feed that legacy tool and are optional.
 - **Quality values are never comparable across stacks.** ESLint/SonarJS, PMD and
   ruff/complexipy produce different sets of findings; the same holds for
   Stryker/PIT/mutmut. Across RQs only directions and orderings are compared.
