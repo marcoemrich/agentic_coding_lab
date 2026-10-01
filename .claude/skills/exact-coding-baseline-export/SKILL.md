@@ -1,7 +1,7 @@
 ---
 name: exact-coding-baseline-export
 description: |
-  Mint a new exact-coding-baseline-YYYY-MM-DD snapshot under
+  Mint a new YYYY-MM-DD-exact-coding-baseline snapshot under
   research/workflow-dev/export/. Detects the current best correctness-
   oriented workflow from research/workflow-dev/workflow-construction.md
   (or takes an explicit source-workflow argument) and transforms it from a
@@ -17,7 +17,7 @@ description: |
 # Skill: exact-coding-baseline-export
 
 Mint a dated, consumer-ready snapshot of the current best TDD workflow into
-`research/workflow-dev/export/exact-coding-baseline-<YYYY-MM-DD>/`.
+`research/workflow-dev/export/<YYYY-MM-DD>-exact-coding-baseline/`.
 
 This is a **true transformation skill** — it reads a source workflow
 (immutable) and applies three transformations on top of it (see "The three
@@ -34,8 +34,8 @@ alongside this file under `templates/`, and the harness research lives in
   or update the canonical `main` and `harness/*` branches in `EXACT-Coding-Exercises` when
   `--sync-distribution <repo>` is passed. It commits locally and never pushes.
 - **One artifact per line and date**: Opus writes
-  `exact-coding-baseline-<DATE>/`; SOL writes
-  `exact-coding-ptdd-v1-<DATE>/`. Each contains one subtree per exported
+  `<DATE>-exact-coding-baseline/`; SOL writes
+  `<DATE>-exact-coding-ptdd-v1/`. Each contains one subtree per exported
   harness.
 - **Idempotent within a date and line**: refuses to overwrite an existing
   same-date snapshot unless the user explicitly says "overwrite" / "force".
@@ -46,8 +46,8 @@ The distribution has two parallel lines. Do not replace one with the other:
 
 | Line | Default source | Native harness | Snapshot name |
 |---|---|---|---|
-| `opus` | the correctness-critical Opus/Hybrid recommendation in `workflow-construction.md` | Claude Code | `exact-coding-baseline-<DATE>` |
-| `sol` | the universal PTDD default in `model-recommendation-matrix.md` | pi | `exact-coding-ptdd-v1-<DATE>` |
+| `opus` | the correctness-critical Opus/Hybrid recommendation in `workflow-construction.md` | Claude Code | `<DATE>-exact-coding-baseline` |
+| `sol` | the universal PTDD default in `model-recommendation-matrix.md` | pi | `<DATE>-exact-coding-ptdd-v1` |
 
 When the requested line is `sol`, run the checked-in exporter rather than
 manually applying the Hybrid-specific steps below:
@@ -167,7 +167,7 @@ detection can be aborted.
 ## Target
 
 ```bash
-TARGET="research/workflow-dev/export/exact-coding-baseline-$DATE"
+TARGET="research/workflow-dev/export/$DATE-exact-coding-baseline"
 [ -e "$TARGET" ] && { echo "Exists; pass 'overwrite' to replace"; exit 1; }
 ```
 
@@ -175,7 +175,7 @@ Each exported harness gets its own config subtree at the snapshot root, so
 a consumer copies the one directory their harness reads:
 
 ```
-exact-coding-baseline-<DATE>/
+<DATE>-exact-coding-baseline/
   README.md   # snapshot-level: which harnesses, how to install
   VERSION
   .claude/    # cc      skills/tdd/SKILL.md · commands/{test-list,red,green}.md
@@ -1358,8 +1358,8 @@ After successful validation:
 | `/exact-coding-baseline-export sol sync` | Export PTDD v1 and update local `main` / `harness/*` distribution branches; never push |
 
 Output is line-specific: Opus writes
-`research/workflow-dev/export/exact-coding-baseline-<DATE>/`; SOL writes
-`research/workflow-dev/export/exact-coding-ptdd-v1-<DATE>/`. Validation
+`research/workflow-dev/export/<DATE>-exact-coding-baseline/`; SOL writes
+`research/workflow-dev/export/<DATE>-exact-coding-ptdd-v1/`. Validation
 must pass before reporting success.
 
 **Every export applies all three transformations** — lab-content removal,
