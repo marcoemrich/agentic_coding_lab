@@ -30,6 +30,7 @@ Usage:
 from __future__ import annotations
 
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from itertools import product
@@ -589,11 +590,84 @@ def resolve_outcomes(outcomes: list, rq_id: str) -> list:
     return out
 
 
+# Outcomes whose value depends on the `Skip` label of the phase chain. A
+# test-list workflow produces Skips by contract: a test activated from a
+# pre-written list that already passes is legitimate evidence under its own rules
+# ("A test already satisfied by an earlier generalization is legitimate
+# evidence. Do not manufacture a failure."), while a strict-red workflow treats
+# the same event as a reason to start over. Skip sits in the denominator of
+# `test_first_rate` and opens a cycle that has no failure to close, so it
+# depresses two of the three `tdd_discipline` components. Comparing these
+# columns across the boundary measures the architecture, not the discipline —
+# RQ-tdd-workflow-comparison-opus55 F-4.13.4.
+SKIP_SENSITIVE_OUTCOMES = {
+    "tdd_discipline", "tdd_discipline_test_first", "tdd_discipline_closure",
+    "test_first_rate", "skip_events", "cycles_total", "chain_deviations",
+}
+
+# The three phrasings every test-list workflow in the corpus uses, in every
+# harness port. A filename check does not work: the Claude Code ports carry
+# `commands/test-list.md` while the pi ports put the same contract in an
+# auto-loaded skill under a different name.
+_TEST_LIST_PATTERN = re.compile(
+    r"inactive test|it\.todo|keep every listed test", re.I)
+
+
+def uses_test_list(workflow: str) -> bool | None:
+    """Whether a workflow's own text prescribes a pre-written test list.
+
+    None when the workflow directory cannot be resolved — an unknown workflow is
+    not evidence either way, and must not silence the warning for the others.
+    """
+    try:
+        d = workflow_dir(workflow)
+    except Exception:
+        return None
+    for f in d.rglob("*"):
+        if not f.is_file() or f.suffix not in (".md", ".json", ".txt"):
+            continue
+        try:
+            if _TEST_LIST_PATTERN.search(f.read_text(errors="ignore")):
+                return True
+        except OSError:
+            continue
+    return False
+
+
+def warn_on_test_list_boundary(fm: dict, cells: list[dict]) -> None:
+    """Warn when a Skip-sensitive outcome spans the test-list boundary."""
+    hit = sorted(set(fm.get("outcomes") or []) & SKIP_SENSITIVE_OUTCOMES)
+    if not hit:
+        return
+    groups: dict[bool, set[str]] = {}
+    for cell in cells:
+        for w in cell.get("workflow_alts", []):
+            verdict = uses_test_list(w)
+            if verdict is not None:
+                groups.setdefault(verdict, set()).add(w)
+    if len(groups) < 2:
+        return
+    rq_id = fm.get("id", "?")
+    print(f"WARNING: {rq_id} compares {len(hit)} Skip-sensitive discipline "
+          f"outcome(s) across the test-list boundary: {', '.join(hit)}",
+          file=sys.stderr)
+    print(f"  test-list workflows:  {', '.join(sorted(groups[True]))}",
+          file=sys.stderr)
+    print(f"  ad-hoc workflows:     {', '.join(sorted(groups[False]))}",
+          file=sys.stderr)
+    print("  A Skip is compliance in the first group and a deviation in the "
+          "second, so these columns measure the architecture rather than the "
+          "discipline. Report them within a group, never across one, and say so "
+          "in findings.md. See README \"Phase chain metrics\" and "
+          "RQ-tdd-workflow-comparison-opus55 F-4.13.4.", file=sys.stderr)
+
+
 def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
                   cells: list[dict], by_cell: dict) -> None:
     rq_id = fm.get("id", "?")
     question = fm.get("question", "")
     outcomes = resolve_outcomes(fm.get("outcomes") or [], rq_id)
+    warn_on_test_list_boundary(fm, cells)
     min_rep = fm.get("min_replicates", 1)
 
     lines: list[str] = []

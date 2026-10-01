@@ -2,7 +2,7 @@
 
 _On Opus 5.5, does the retired EXACT Coding Opus line still decompose more strongly than the maintained Predictive-TDD line, and does isolating the Refactor step into a subagent help or hurt within each line?_
 
-Generated: 2026-10-01T12:01:51Z
+Generated: 2026-10-01T16:04:20Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 

@@ -172,6 +172,8 @@ Exception: **deletions** of existing findings still require explicit user confir
 
 **Trophy convention (🏆) in overview tables**: append 🏆 to the best value per outcome row. Conventions:
 
+- **The test-list boundary is a comparability failure, not a close call.** Before awarding a trophy on `tdd_discipline`, `tdd_discipline_test_first`, `tdd_discipline_closure`, `test_first_rate`, `skip_events`, `cycles_total` or `chain_deviations`, check whether the row's cells differ in whether a test list is written up front. A `Skip` is compliance in a test-list workflow and a start-over condition in a strict-red one, so those columns then measure the architecture. Split the table by group and award within each, as RQ-tdd-workflow-comparison-opus55 does — never one trophy across the boundary. `aggregate-by-query.py` prints a warning naming both groups when an RQ is in this situation; treat it as binding. `red_batch_max` is the column that does compare everywhere, and on the measured field it orders the cells the opposite way from the score.
+
 - The direction is metric-dependent — note it in the column header or row label (`smell_total` etc. → "lower = better"; `refactorings_applied`, `predictions_correct_rate` → "higher = better"). Don't assume.
 - Use 🏆 only where there is a meaningful winner. If the spread is below 1 σ and the framing is "no effect", award 🏆 to all near-tied values (or to none if the table message is "indistinguishable") — don't fabricate a winner from rounding noise.
 - Multiple 🏆 are fine for ties. Three 🏆 across a row signal "no effect", which is itself a useful reading aid.

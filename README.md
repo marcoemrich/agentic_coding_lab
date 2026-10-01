@@ -1104,6 +1104,52 @@ score smuggles one back in. They stay separate and take no trophy.
 `tdd_discipline` is null, not 0, when any component is unmeasurable —
 unmeasurable is not the same as undisciplined.
 
+#### Comparability: the test-list boundary
+
+**`tdd_discipline` and its Skip-fed columns are not comparable across workflows
+that differ in whether a test list is written up front.** The affected set is
+`tdd_discipline`, `tdd_discipline_test_first`, `tdd_discipline_closure`,
+`test_first_rate`, `skip_events`, `cycles_total` and `chain_deviations`.
+
+A `Skip` — a test that arrived and passed immediately — means opposite things in
+the two families. EXACT Coding's Predictive TDD writes the complete test list as
+inactive tests first and then activates them one at a time; its rules say *"A
+test already satisfied by an earlier generalization is legitimate evidence. Do
+not manufacture a failure."* Superpowers lists the same event under "Red Flags —
+STOP and Start Over" and answers it with *"Delete code"*. Kesseler takes a middle
+position, obliging the model to pause and name which earlier step satisfied the
+test for free; the hybrid line and Pocock state no rule at all.
+
+The doctrine wording does not predict the numbers — the silent group spans both
+families. **The test list does.** Measured on `claim-office-example-mapping` ×
+`opus-5-5-no-thinking`, n=5 per cell: 16.6 to 25.8 Skips per run in the four
+test-list workflows against 2.4 to 8.2 in the three ad-hoc ones, at comparable
+and sometimes higher red counts. `test-list.md` Step 5 is the cause — it requires
+a cross-check over independent specification dimensions, and a generalisation
+written for one cell necessarily satisfies cells of other dimensions. The more
+complete the list, the more tests pass on activation. **The metric penalises
+test-list completeness.**
+
+Skip hits the score twice: it sits in the denominator of `test_first_rate`, and
+it is a cycle opener, so it opens a cycle with no failure to close and depresses
+`tdd_discipline_closure`. Those are exactly the two components in which the
+test-list workflows trail; the third, `tdd_discipline_step`, is unaffected.
+
+This is not a defect in `tdd-report.py`. The chain reads artifact state, and a
+*prediction* leaves none — the same reason `predictions_*` stays
+marker-dependent. The rule is therefore procedural:
+
+- Report these columns **within** an architecture group, never across one.
+- `aggregate-by-query.py` warns when an RQ declares one of them and its cells
+  span the boundary; it classifies each workflow by its own text, so the warning
+  works across harness ports.
+- The columns that stay comparable everywhere: `tdd_discipline_step`,
+  `red_batch_size`, `red_batch_max`, `green_batch_size`, `refactor_events`,
+  `cycles_closed`, `chain_suite_runs`, `chain_opens_red`, `chain_ends_green`.
+  `red_batch_max` is the one to use for "one test at a time" — on the measured
+  field it is 1.00 ± 0.00 in every test-list workflow and 2.6 to 4.8 in the
+  ad-hoc ones, which is the opposite order from the score.
+
 Reference values from the fixtures used to build this:
 
 | Sequence | Score | Why |

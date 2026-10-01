@@ -2,7 +2,7 @@
 
 _Does the maintained EXACT Coding Predictive TDD workflow still change code quality on Opus 5.5 the way it does on Opus 5, and does Opus 5.5 still need it at all compared with a minimal inline-TDD instruction?_
 
-Generated: 2026-10-01T11:59:11Z
+Generated: 2026-10-01T16:04:19Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 

@@ -165,6 +165,14 @@ Exception: **deletions** of existing findings still require explicit user confir
    written — STALE: F-x.y, F-a.b · NEW: F-x.z · OK: F-c.d, F-e.f. Please review.
    ```
 
+**Discipline-metric comparability**: if the RQ declares `tdd_discipline` or any of
+its Skip-fed siblings (`tdd_discipline_test_first`, `tdd_discipline_closure`,
+`test_first_rate`, `skip_events`, `cycles_total`, `chain_deviations`), check
+whether its cells span the test-list boundary — `aggregate-by-query.py` warns and
+names both groups. Those columns then measure the architecture rather than the
+discipline, so they are reported within a group and never carry a trophy across
+one. Full argument: README "Comparability: the test-list boundary".
+
 **Glossary discipline**: use terms from the README glossary ("Code Mass (APP)", "Production LoC", "Correctness (external)", etc.) or metric IDs in backticks. Synonyms like "Code-Volumen" or "LoC-Größe" are forbidden.
 
 ---

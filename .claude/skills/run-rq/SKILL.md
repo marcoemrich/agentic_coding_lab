@@ -221,6 +221,18 @@ Exception: **deletions** of existing findings still require explicit user confir
 **Trophy convention (🏆) in overview tables**: append 🏆 to the best value per outcome row. Conventions:
 
 - **Comparability first — a 🏆 needs an actual contest.** Before awarding anything, ask what varies across the columns of that row. Trophies are only meaningful when the cells differ in the factor under study and are otherwise alike. If a row spans cells that differ in *task size* rather than in the factor, drop the trophies for that table entirely and say so in the caveat block. The clearest case is an RQ with `kata_base` as a factor: `sphinx-score` (~183 Code Mass, ~12 cycles) against `claim-office` (~997, ~46) — the small kata always "wins" on cost, complexity and Code Mass (APP), which measures the kata, not the work. Same for any cross-kata cost or shape row. Options in order of preference: split the table so each row compares within one kata, restrict trophies to the rows that carry a real contrast, or omit them and label the table as context. This test comes **before** correctness-gating: gating narrows an existing field of competitors, it never creates one.
+- **The test-list boundary is a comparability failure, not a close call.** Before
+  awarding a trophy on `tdd_discipline`, `tdd_discipline_test_first`,
+  `tdd_discipline_closure`, `test_first_rate`, `skip_events`, `cycles_total` or
+  `chain_deviations`, check whether the row's cells differ in whether a test list
+  is written up front. A `Skip` is compliance in a test-list workflow and a
+  start-over condition in a strict-red one, so those columns then measure the
+  architecture. Split the table by group and award within each, as
+  RQ-tdd-workflow-comparison-opus55 does — never one trophy across the boundary.
+  `aggregate-by-query.py` prints a warning naming both groups when an RQ is in
+  this situation; treat it as binding. `red_batch_max` is the column that does
+  compare everywhere, and on the measured field it orders the cells the opposite
+  way from the score.
 - The direction is metric-dependent — note it in the column header or row label (`smell_total` etc. → "lower = better"; `refactorings_applied`, `predictions_correct_rate` → "higher = better"). Don't assume.
 - **Check the trophy against its own row after writing.** The winner must be the best value *in that row* under the stated direction. Gating rules constrain which cells are eligible, but they never move the trophy onto a worse value: if the only eligible cell is not the row's best, that row gets no trophy. Two failure modes to look for — a 🏆 on a higher number in a "lower = better" row, and a 🏆 in a row where every cell is identical (no contest, so no winner).
 - Use 🏆 only where there is a meaningful winner. If the spread is below 1 σ and the framing is "no effect", award 🏆 to all near-tied values (or to none if the table message is "indistinguishable") — don't fabricate a winner from rounding noise.
