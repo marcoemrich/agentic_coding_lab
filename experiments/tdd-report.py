@@ -96,7 +96,7 @@ def classify(prev, cur, state):
         # No predecessor to diff against. A first invocation that already
         # passes means tests and implementation both existed before anything
         # ran — the big-bang opening, which `Red` would misreport.
-        if cur.get("suite_failed"):
+        if suite_failed_of(cur):
             if compile_broken:
                 state["pending_red"] = True
             return commit("Red(c)" if compile_broken else "Red", now_failing)
@@ -125,6 +125,14 @@ def classify(prev, cur, state):
         if grew:
             state["pending_red"] = False
             return commit("Red", grew)
+        # The stub that made it compile also made it pass. The pending red is
+        # closed, not absent — labelling this `Refactor` (the impl-only branch
+        # below, with nothing open) claimed a green suite was tidied when in
+        # fact the cycle just completed. Seen as `Red(c) -> Refactor` at the
+        # opening of a TCR run.
+        if not suite_failed_of(cur) and now_passing - _names(prev, "passed_tests"):
+            state["pending_red"] = False
+            return commit("Green", set())
     if test_ch:
         if compile_broken:
             # Step one of a two-step red: the test is in, the code does not
@@ -190,7 +198,7 @@ def cycles(rows):
     out, cur = [], []
     for i, r in enumerate(rows):
         opens = r["label"] in CYCLE_OPENERS and (
-            i == 0 or not rows[i - 1]["ev"].get("suite_failed"))
+            i == 0 or not suite_failed_of(rows[i - 1]["ev"]))
         if opens and cur:
             out.append(cur)
             cur = []
@@ -198,6 +206,44 @@ def cycles(rows):
     if cur:
         out.append(cur)
     return out
+
+
+def suite_failed_of(ev):
+    """Did this invocation fail? Derived from the counts, not from the flag.
+
+    The reporter stores a `suite_failed` flag, but the rule behind it belongs
+    here: an event stream cannot be regenerated, so a correction to the rule
+    must reach streams already on disk. The flag is the fallback for an event
+    that carries no counts.
+
+    A suite fails if a test failed, if a file could not be collected, if any
+    file is marked failed, or if tests were declared and none of them ran. The
+    last case was the defect this function exists for: when the module under
+    test does not exist yet the import throws, every `it` stays resultless, and
+    `failed == 0` made a run that executed nothing read as green. On a
+    test-list workflow that is the *first* invocation, so the mislabel
+    propagated through the whole chain as a flood of `Skip`.
+    """
+    t = ev.get("tests")
+    if not isinstance(t, dict):
+        return bool(ev.get("suite_failed"))
+    passed = t.get("passed") or 0
+    failed = t.get("failed") or 0
+    skipped = t.get("skipped") or 0
+    total = t.get("total") or 0
+    if failed > 0 or (ev.get("collection_errors") or 0) > 0:
+        return True
+    if "files_failed" in ev:
+        # Current event format. `files_failed` marks a file the runner could
+        # not finish, and an unrun test — one that is neither passed, failed
+        # nor skipped — means some file never executed. Both are failures.
+        unrun = total - (passed + failed + skipped)
+        return bool(ev["files_failed"] or unrun > 0)
+    # Legacy format, recorded before the reporter counted `it.todo`/`it.skip`
+    # as skipped: an inactive test is indistinguishable from an unrun one, so
+    # the unrun test cannot be used. Fall back to the coarser signal — tests
+    # were declared and not one of them produced any result.
+    return bool(total > 0 and passed + failed == 0)
 
 
 def _names(ev, key):
@@ -316,7 +362,7 @@ def metrics(rows):
         # pathologies, summed; the chain in tdd-report.md has the detail
         "deviations": deviations,
         "opens_red": rows[0]["label"] in ("Red", "Red(c)") if rows else None,
-        "ends_green": (not rows[-1]["ev"].get("suite_failed")) if rows else None,
+        "ends_green": (not suite_failed_of(rows[-1]["ev"])) if rows else None,
         # one number, 0..1, higher = more disciplined. Null when any component
         # is unmeasurable. Always report the three components with it.
         "tdd_discipline": discipline,
@@ -375,7 +421,7 @@ def render(run_dir, rows):
             "|---:|---|---|---|---|"]
     for i, r in enumerate(rows):
         ev, t = r["ev"], r["ev"].get("tests", {})
-        state = "fail" if ev.get("suite_failed") else "pass"
+        state = "fail" if suite_failed_of(ev) else "pass"
         if ev.get("collection_errors"):
             state += f" ({ev['collection_errors']} collect err)"
         if i == 0:
@@ -387,7 +433,7 @@ def render(run_dir, rows):
         out.append(f"| {ev.get('seq', '?')} | {r['label']} | {state} | "
                    f"{t.get('passed', '?')}/{t.get('failed', '?')} | {ch} |")
     out += [""]
-    final = "pass" if not ev_last.get("suite_failed") else "fail"
+    final = "pass" if not suite_failed_of(ev_last) else "fail"
     out += [f"Final suite state: **{final}**.", ""]
     return "\n".join(out)
 

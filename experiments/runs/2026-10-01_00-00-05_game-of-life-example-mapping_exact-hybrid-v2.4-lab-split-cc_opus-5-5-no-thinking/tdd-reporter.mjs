@@ -76,17 +76,8 @@ function snapshotTree(cwd) {
 function collectTests(tasks, prefix, acc) {
   for (const t of tasks || []) {
     const name = prefix ? `${prefix} > ${t.name}` : t.name;
-    if (t.type === "suite") {
-      collectTests(t.tasks, name, acc);
-      continue;
-    }
-    // `mode` before `result`: a test declared `it.todo` or `it.skip` carries no
-    // result at all, so reading only result.state filed it as "unknown" — it
-    // counted towards `total` but towards no bucket. A test-list workflow
-    // declares its whole list up front and activates one entry per cycle, so
-    // that made every invocation look like it had tests that failed to run.
-    const mode = t.mode === "todo" || t.mode === "skip" ? "skip" : null;
-    acc.push({ name, state: mode ?? t.result?.state ?? "unknown" });
+    if (t.type === "suite") collectTests(t.tasks, name, acc);
+    else acc.push({ name, state: t.result?.state ?? "unknown" });
   }
   return acc;
 }
@@ -122,20 +113,14 @@ export default class TddEventReporter {
       const failed = tests.filter((t) => t.state === "fail").length;
       const skipped = tests.filter((t) => t.state === "skip" || t.state === "todo").length;
 
-      // A file can fail without any single test failing, and in two ways that
-      // both matter. It may report no tasks at all (nothing could be
-      // collected), or it may declare its tasks and run none of them — the
-      // case when the module under test does not exist yet, so the import
-      // throws and every `it` stays resultless. The second shape is the one a
-      // test-list workflow produces on its very first invocation: ten tests
-      // collected, none executed. Counting only the first shape made that read
-      // as a clean green and turned the whole opening of the run into noise.
-      const filesFailed = (files || []).filter(
-        (f) => f.result?.state === "fail",
-      ).length;
-      const collectionErrors = (errors || []).length + (files || []).filter(
+      // A file that failed to transform or collect reports no tasks at all.
+      // This is the first step of a two-step red phase (the code does not even
+      // compile yet), so it must count as a failing invocation — otherwise the
+      // most disciplined red of all reads as "nothing ran".
+      const unparsable = (files || []).filter(
         (f) => f.result?.state === "fail" && collectTests(f.tasks, "", []).length === 0,
       ).length;
+      const collectionErrors = (errors || []).length + unparsable;
 
       appendFileSync(
         join(cwd, EVENTS_FILE),
@@ -144,14 +129,9 @@ export default class TddEventReporter {
           ts: new Date().toISOString(),
           // The single unambiguous observation. Everything else is descriptive
           // so the derived metrics stay a separate, revisable decision.
-          // Derived here for convenience; tdd-report.py recomputes it from
-          // the counts below so a fix to this rule reaches existing streams.
-          // Tests declared but none executed is not a pass.
-          suite_failed: failed > 0 || collectionErrors > 0 || filesFailed > 0
-            || (tests.length > 0 && passed + failed === 0),
+          suite_failed: failed > 0 || collectionErrors > 0,
           tests: { passed, failed, skipped, total: tests.length },
           collection_errors: collectionErrors,
-          files_failed: filesFailed,
           failed_tests: tests.filter((t) => t.state === "fail").map((t) => t.name),
           passed_tests: tests.filter((t) => t.state === "pass").map((t) => t.name),
           duration_ms: this.startedAt ? Date.now() - this.startedAt : null,

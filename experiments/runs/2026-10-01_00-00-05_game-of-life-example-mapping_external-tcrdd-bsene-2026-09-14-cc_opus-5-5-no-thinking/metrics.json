@@ -1,0 +1,101 @@
+{
+  "kata": "game-of-life-example-mapping",
+  "workflow": "external-tcrdd-bsene-2026-09-14-cc",
+  "model": "opus-5-5-no-thinking",
+  "stack": "typescript-vitest",
+  "cli_model": "claude-opus-5-5",
+  "harness_version": "2.1.280 (Claude Code)",
+  "thinking": false,
+  "started_at": "2026-10-01T00:00:05+00:00",
+  "ended_at": "2026-10-01T00:02:06+00:00",
+  "duration_seconds": 116,
+  "batch_run": true,
+  "plan_file": "/home/experimenter/experiments/batch-plans/smoke-chain-three-arms.shard1.json",
+  "tcr": {
+    "initial_commit": "cd80cbd0648e0e2e913c5fc86644d872668e4006",
+    "final_commit": "836b321229bee8444c6ef6b38798443cab6025c8",
+    "commits_total": 14,
+    "method_commits": 13,
+    "red_commits": 4,
+    "green_commits": 4,
+    "refactor_commits": 3
+  },
+  "run_status": {
+    "exit_code": 0,
+    "exit_reason": "ok",
+    "rate_limited": false
+  },
+  "final_metrics": {
+    "lines_of_code": 39,
+    "test_lines": 61,
+    "tests_total": 8,
+    "todos_remaining": 0,
+    "code_mass": 185,
+    "tests_passing": true,
+    "verification_total": 15,
+    "verification_passed": 15,
+    "verification_pct": 1.0000,
+    "cli_built": true,
+    "mccabe_max": 4,
+    "mccabe_avg": 2.17,
+    "mccabe_high_count": 0,
+    "cognitive_max": 3,
+    "cognitive_avg": 1.67,
+    "cognitive_high_count": 0
+  },
+  "coverage": {
+    "statements_pct": 100,
+    "branches_pct": 100
+  },
+  "code_smells": {
+    "total": 0,
+    "complexity": 0,
+    "duplication": 0,
+    "magic_numbers": 0,
+    "code_quality": 0
+  },
+  "clean_code": {
+    "loc": 34,
+    "functions": 3,
+    "longest_function": 12,
+    "avg_loc_per_function": 8.67,
+    "median_loc_per_function": 12.00,
+    "imports": 0
+  },
+  "unit_quality": {
+    "units": 3,
+    "size_max": 12,
+    "size_avg": 8.67,
+    "size_median": 12.00
+  },
+  "summary_metrics": {
+    "total_tokens": 1801281,
+    "context_utilization_pct": 28,
+    "predictions_correct": 0,
+    "predictions_total": 0,
+    "subagent_token_total": 0,
+    "cycles_total": 6,
+    "cycles_closed": 4,
+    "test_first_rate": 0.667,
+    "red_batch_size": 1.0,
+    "red_batch_max": 1,
+    "red_batch_unmeasurable": 1,
+    "green_batch_size": 1.0,
+    "refactor_events": 1,
+    "skip_events": 1,
+    "refactor_per_cycle": 0.25,
+    "green_attempts": 0.0,
+    "chain_deviations": 2,
+    "chain_opens_red": true,
+    "chain_ends_green": true,
+    "tdd_discipline": 0.763,
+    "tdd_discipline_test_first": 0.667,
+    "tdd_discipline_step": 1.0,
+    "tdd_discipline_closure": 0.667,
+    "avg_cycle_seconds": 0.00,
+    "avg_red_seconds": 0,
+    "avg_green_seconds": 0,
+    "avg_refactor_seconds": 0
+  },
+  "analyze_status": "ok"
+}
