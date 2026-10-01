@@ -9,10 +9,8 @@ factors:
     - {model: opus-5-5-no-thinking, workflow: baseline-inline-tdd-v1-cc}
     - {model: opus-5-5-no-thinking, workflow: exact-ptdd-v1-cc}
     - {model: opus-5-5-no-thinking, workflow: exact-ptdd-v1.1-refactor-subagent-cc}
-  kata_base:
-    - game-of-life-rust
-    - claim-office-rust
 controls:
+  kata_base: claim-office-rust
   prompt: example-mapping
   stack: rust-cargo
 outcomes:
@@ -93,13 +91,18 @@ TypeScript, Java or Python and makes no cross-language claim.
 |---|---|
 | Method | Inline TDD control; EXACT Coding Predictive TDD v1; v1.1 with isolated Refactor subagent |
 | Model/harness bundle | GPT-6 SOL via pi (`openai-codex` route); native Opus 5.5 without extended thinking via Claude Code |
-| Kata | Game of Life; Claim Office |
+| Kata | Claim Office |
 | Prompt | Example Mapping |
 | Stack | Rust 1.98.1 + Cargo + clippy |
 
-Five replicates are required for each method × model × kata cell: twelve cells
-and 60 target runs. Results are reported separately by kata and model; katas
-are never averaged.
+Five replicates are required for each method × model cell: six cells and 30
+target runs. Results are reported separately by model.
+
+Claim Office only. The sister RQs ran Game of Life as a second kata; it is
+dropped here, so H2–H6 are tested on one kata and a direction that held on Game
+of Life elsewhere has no Rust counterpart to compare with. The
+`game-of-life-rust-example-mapping` contract and its verification suite exist
+and served as the stack's smoke kata.
 
 The method, kata, prompt and replicate design mirrors
 [RQ-exact-coding-java](../1.8-exact-coding-java/README.md),
@@ -143,14 +146,10 @@ offline against the registry baked into the image, and a clippy lint
 selection plus thresholds in `clippy.toml` mirroring the Python stack's size
 and nesting gates.
 
-Rust runs use dedicated kata contracts:
-
-- `game-of-life-rust-example-mapping`
-- `claim-office-rust-example-mapping`
-
-Both expose `src/main.rs` solely for hidden external verification, built with
+Rust runs use a dedicated kata contract, `claim-office-rust-example-mapping`.
+It exposes `src/main.rs` solely for hidden external verification, built with
 `cargo build --release` and invoked as `target/release/kata`. The specification
-text of each is byte-identical to its Python sibling and the scenarios are the
+text is byte-identical to its Python sibling and the scenarios are the
 same files; only the closing contract section differs.
 
 ## Measurement specifics of this stack
@@ -243,7 +242,7 @@ under the model caveat above.
 
 ## Interpretation rules
 
-- Never average across katas or models.
+- Never average across models.
 - Compare workflows only within the same model/harness bundle.
 - Correctness gates code-quality and efficiency trophies. It is a filter on
   eligibility, never a headline.
@@ -262,7 +261,7 @@ under the model caveat above.
 1. Build the batch images (`docker compose --profile batch --profile
    batch-retry build`) so they carry the Rust toolchain, the analysis tools
    and the cargo launcher.
-2. Run one Rust smoke test per workflow port on Game of Life — at minimum
+2. Run one Rust smoke test per workflow port — at minimum
    `exact-ptdd-v1-cc` and `exact-ptdd-v1-pi`.
 3. Confirm in `metrics.json`: `stack = "rust-cargo"`, `tests_passing`, external
    verification, `cognitive_max` and `mccabe_max` non-null (otherwise
@@ -278,5 +277,5 @@ under the model caveat above.
    `mutants_total` and `mutants_survived`.
 7. Generate the fill plan with `/run-rq RQ-exact-coding-rust` only after the
    smoke tests pass.
-8. Aggregate and interpret each model × kata contrast independently, then
+8. Aggregate and interpret each model's contrast independently, then
    compare directions against the sister RQs.
