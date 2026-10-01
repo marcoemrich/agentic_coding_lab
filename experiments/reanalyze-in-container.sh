@@ -54,6 +54,7 @@ docker run --rm \
     -v "$SCRIPT_DIR/analyze-run.sh:$CONTAINER_EXP/analyze-run.sh:ro" \
     -v "$SCRIPT_DIR/analyze_transcript.py:$CONTAINER_EXP/analyze_transcript.py:ro" \
     -v "$SCRIPT_DIR/tdd-report.py:$CONTAINER_EXP/tdd-report.py:ro" \
+    -v "$SCRIPT_DIR/rust_tdd.py:$CONTAINER_EXP/rust_tdd.py:ro" \
     -v "$SCRIPT_DIR/parse_opencode_transcript.py:$CONTAINER_EXP/parse_opencode_transcript.py:ro" \
     -v "$SCRIPT_DIR/parse_pi_transcript.py:$CONTAINER_EXP/parse_pi_transcript.py:ro" \
     -v "$SCRIPT_DIR/parse_cursor_transcript.py:$CONTAINER_EXP/parse_cursor_transcript.py:ro" \

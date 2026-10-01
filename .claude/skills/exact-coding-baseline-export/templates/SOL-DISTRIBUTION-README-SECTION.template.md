@@ -150,12 +150,13 @@ automatically.
 
 Workflow methodology and language/tooling are separate. Test syntax, inactive-test
 conventions, commands, compiler behavior, and lint advice live only in the stack
-profiles. Every branch ships three:
+profiles. Every branch ships four:
 
 ```text
 <agent-config>/skills/predictive-tdd/stacks/typescript-vitest.md
 <agent-config>/skills/predictive-tdd/stacks/java-junit-maven.md
 <agent-config>/skills/predictive-tdd/stacks/python-pytest.md
+<agent-config>/skills/predictive-tdd/stacks/rust-cargo.md
 ```
 
 | Profile | Reads | Test command | Quality gate | Inactive test |
@@ -163,15 +164,18 @@ profiles. Every branch ships three:
 | TypeScript + Vitest | `package.json` | the project's `test` script | type check, lint, smell rules | `it.todo()` |
 | Java + JUnit 5 + Maven | `pom.xml` | `mvn test` (wrapper if present) | `mvn pmd:check` | `@Disabled` |
 | Python + pytest | `pyproject.toml` | `pytest` | `ruff check` | `@pytest.mark.skip` |
+| Rust + Cargo | `Cargo.toml` | `cargo test` | `cargo clippy` | `#[ignore]` |
 
 The TDD orchestration reads the project's manifest first — `package.json`,
-`pom.xml` or `pyproject.toml` — and selects the matching profile before
+`pom.xml`, `pyproject.toml` or `Cargo.toml` — and selects the matching profile before
 changing code. It uses only gates the project actually declares — a profile
 never invents a plugin or rewrites the build to get a check it prefers.
 
 The exercises in this repository are set up per stack: `./setup.sh
 typescript-vitest`, `./setup.sh java-junit-maven` or `./setup.sh python-pytest`
 installs the matching skeleton, and the profile follows from what it finds.
+Rust has no exercise skeleton yet; point the workflow at an existing Cargo
+project and the Rust profile is selected the same way.
 Each profile works just as well in any other project on that stack that you
 point the workflow at. Adding another language means one more stack profile and
 one more template, not another copy of the workflow.
@@ -267,8 +271,8 @@ first, and it has held across every model and workflow we have measured it on.)*
   **TypeScript** stack. We have measured the same workflow separately on
   **Java**; those results are their own comparison and are not averaged in
   here, because quality tools do not produce comparable numbers across
-  languages. The Python profile ships with the same method but is not yet
-  covered by measurements of its own.
+  languages. The Python and Rust profiles ship with the same method but are
+  not yet covered by measurements of their own.
 - Results are **per model**. Rankings between workflows have flipped between
   model versions before — including within this workflow line.
 

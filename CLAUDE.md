@@ -114,8 +114,8 @@ subtrees.
 - A stack is a directory under `experiments/stacks/<slug>/` with an
   executable `install.sh`. `run-batch.sh` copies its content into the run directory
   (without `install.sh` itself) and calls the script from there — there is no longer any
-  language branching in the runner. Three stacks: `typescript-vitest`,
-  `java-junit-maven`, `python-pytest`.
+  language branching in the runner. Four stacks: `typescript-vitest`,
+  `java-junit-maven`, `python-pytest`, `rust-cargo`.
 - **A run's language is in `metrics.json.stack`**, written when the run is
   created. `analyze-run.sh` (`run_stack`) and `compute-mutation-score.py`
   dispatch on it. Do not add new `test -f pom.xml` checks: they
@@ -136,9 +136,10 @@ subtrees.
   events), write nothing to stdout/stderr, and swallow its own exceptions. Existing
   hooks per stack and the Java compile-step gap: README, "Phase chain metrics".
   The regexes in `measure-tdd-rigour.py` only feed that legacy tool and are optional.
-- **Quality values are never comparable across stacks.** ESLint/SonarJS, PMD and
-  ruff/complexipy produce different sets of findings; the same holds for
-  Stryker/PIT/mutmut. Across RQs only directions and orderings are compared.
+- **Quality values are never comparable across stacks.** ESLint/SonarJS, PMD,
+  ruff/complexipy and clippy/rust-code-analysis produce different sets of findings;
+  the same holds for Stryker/PIT/mutmut/cargo-mutants. Across RQs only directions and
+  orderings are compared.
 
 ### Aggregation
 
@@ -151,12 +152,12 @@ subtrees.
 |--------|---------|-----|
 | `cc_*` | **Clean Code** surface metrics (LOC, function count, longest function, avg LOC/function) | McCabe / Cyclomatic |
 | `mccabe_*` | McCabe cyclomatic complexity (max, avg, high_count) | |
-| `cognitive_*` | Cognitive complexity (max, avg, high_count) — SonarJS on TS, PMD on Java, complexipy on Python | |
-| `unit_*` | Size of the smallest named unit: `unit_count`, `unit_size_{max,avg,median}`. PMD NCSS statements on Java, lines per function on TS and Python | the old `java_method_ncss_*` spelling |
+| `cognitive_*` | Cognitive complexity (max, avg, high_count) — SonarJS on TS, PMD on Java, complexipy on Python, rust-code-analysis on Rust | |
+| `unit_*` | Size of the smallest named unit: `unit_count`, `unit_size_{max,avg,median}`. PMD NCSS statements on Java, lines per function on TS, Python and Rust | the old `java_method_ncss_*` spelling |
 
-- `verification_pct` (0.0–1.0) = external acceptance score for CLI katas (claim-office). `tests_passing` = the internal suite's pass/fail — vitest, Maven Surefire or pytest, depending on the stack.
+- `verification_pct` (0.0–1.0) = external acceptance score for CLI katas (claim-office). `tests_passing` = the internal suite's pass/fail — vitest, Maven Surefire, pytest or `cargo test`, depending on the stack.
 - `completed_within_budget` = Boolean derived from `exit_reason`.
-- `mutation_score` (0.0–1.0) = mutation score — Stryker on TS, PIT on Java, mutmut on Python (`experiments/compute-mutation-score.py` picks the engine per run from `metrics.json.stack`). **Opt-in per RQ** (must appear in `outcomes:`) and only computed for `tests_passing = true`. Run between batch and aggregation. On TS it is expensive (minutes per run, `pnpm install` per run), so do not add it to `analyze-run.sh` or routine reanalysis; Java and Python cost seconds per run. **Scores are not comparable across stacks** — the three tools generate different mutant populations, and PIT's default mutator set is the narrowest. TS and Python exclude the CLI adapter from mutation because only the external acceptance suite exercises it; Java deliberately does not, because Java runs often nest the whole domain inside the CLI class.
+- `mutation_score` (0.0–1.0) = mutation score — Stryker on TS, PIT on Java, mutmut on Python, cargo-mutants on Rust (`experiments/compute-mutation-score.py` picks the engine per run from `metrics.json.stack`). **Opt-in per RQ** (must appear in `outcomes:`) and only computed for `tests_passing = true`. Run between batch and aggregation. On TS it is expensive (minutes per run, `pnpm install` per run), so do not add it to `analyze-run.sh` or routine reanalysis; Java, Python and Rust cost seconds per run. **Scores are not comparable across stacks** — the four tools generate different mutant populations, and PIT's default mutator set is the narrowest. TS, Python and Rust exclude the CLI adapter from mutation because only the external acceptance suite exercises it; Java deliberately does not, because Java runs often nest the whole domain inside the CLI class.
 - `mutants_total` / `mutants_survived` = the counts behind `mutation_score` (population, and the
   part of it the suite missed). Written by the same script and opt-in the same way. **Report the
   pair, not the ratio alone, whenever the arms differ in code size** — the score's denominator is
@@ -194,9 +195,16 @@ subtrees.
   for some runs and not others. `compute-mutation-score.py` therefore pins `JAVA_HOME` to
   `/usr/lib/jvm/java-17-openjdk-amd64` (the same JDK the container compiles with), falling
   back to java-21 and warning if neither exists.
+- **Rust analysis and mutation testing need the Rust tools on the host**, or run in the
+  container. `analyze-run.sh` needs clippy, `cargo-llvm-cov` and `rust-code-analysis-cli`
+  (`reanalyze-in-container.sh` has them); `compute-mutation-score.py` runs on the host
+  and needs `cargo-mutants` there — `cargo install --locked cargo-mutants@27.1.0` with the
+  host toolchain at the image's `1.98.1`. It warns on a version mismatch rather than mixing
+  engines silently.
 
 ## Docker & version pins
 
+- **Rust: `1.98.1`**, with `cargo-mutants@27.1.0`, `cargo-llvm-cov@0.9.1` and `rust-code-analysis-cli@0.0.25`, all built in the Dockerfile's `rust-tools` stage. The registry is baked into the image from `experiments/docker/rust.cache/` (a mirror of the stack's `Cargo.toml`/`Cargo.lock`, kept in step like `python.cache.txt`) and the stack runs Cargo offline. `/usr/local/bin/cargo` is a launcher for the mounted `experiments/rust_tdd.py`, which records `cargo test` as TDD events — so a fix to the recorder needs no rebuild, but **a container without that mount records nothing, silently.**
 - **Claude Code CLI: `2.1.280`** — every model generation has raised the floor, and as a hard API 400 rather than a silent fallback: 2.1.170 for Fable 5, 2.1.267 for Fable 5.1, 2.1.280 for Opus 5.5 (a smoke run on 2.1.267 died after 2 s). 2.1.267 also does not carry Opus 5.5 in its catalog, which silently caps auto-compact at 200k on a 1M-context model. Known bad: 2.1.37 hangs on `.claude/agents/` dirs, 2.1.126 requires a missing `.claude.json`. Do not bump without verifying a subagents-arm workflow end-to-end. The reason per version is commented in `experiments/docker/Dockerfile` — that is the source, this line is the summary.
 - **Other harness pins:** `opencode-ai@1.15.10`, `@earendil-works/pi-coding-agent@0.81.1`, `cursor-agent` (dashboard API key). All in `experiments/docker/Dockerfile`.
 - **pnpm: `9.15.9`** — pnpm 11 breaks builds via `ERR_PNPM_IGNORED_BUILDS`. Pinned via `npm install -g pnpm@9.15.9` in Dockerfile.

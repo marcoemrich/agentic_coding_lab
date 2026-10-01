@@ -13,9 +13,10 @@ field existed):
 
 * ``java-junit-maven``  → PIT (pitest-maven) against JUnit 5.
 * ``python-pytest``     → mutmut against pytest.
+* ``rust-cargo``        → cargo-mutants against ``cargo test``.
 * ``typescript-vitest`` → Stryker against Vitest.
 
-All three are reduced to the same score definition, so the numbers are
+All four are reduced to the same score definition, so the numbers are
 comparable within a stack. Across stacks they are not: the tools generate
 different mutant populations, and PIT's default mutator set is the most
 conservative of the three.
@@ -108,6 +109,8 @@ def run_stack(run_dir: Path, metrics: dict | None = None) -> str:
         return "java-junit-maven"
     if (run_dir / "pyproject.toml").is_file():
         return "python-pytest"
+    if (run_dir / "Cargo.toml").is_file():
+        return "rust-cargo"
     return "typescript-vitest"
 
 
@@ -474,6 +477,91 @@ def run_mutmut(run_dir: Path, timeout_seconds: int, log) -> MutationResult:
     return mutation_score_from_mutmut_stats(stats_path)
 
 
+# cargo-mutants is installed in the image (Dockerfile, rust-tools stage); this
+# pin is only checked, so a drifted image is reported rather than mixed in.
+CARGO_MUTANTS_VERSION = "27.1.0"
+CARGO_MUTANTS_OUT = Path(".analysis-mutants")
+
+
+def cargo_mutants_args(run_dir: Path) -> list[str]:
+    """The canonical invocation, independent of any config the agent wrote.
+
+    `--no-config` ignores a `.cargo/mutants.toml` from the run, for the reason
+    with_canonical_mutmut_config drops an agent-written [tool.mutmut]. The CLI
+    in src/main.rs is excluded when the run separated its domain from it, as
+    on TypeScript and Python: only the external acceptance suite exercises the
+    adapter. When main.rs is the only production code it is mutated, the same
+    escape hatch mutmut_config_for has.
+    """
+    args = ["cargo", "mutants", "--no-config", "--no-shuffle",
+            "--output", str(CARGO_MUTANTS_OUT)]
+    others = [p for p in (run_dir / "src").rglob("*.rs") if p.name != "main.rs"]
+    has_domain = False
+    for p in others:
+        try:
+            if p.read_text(errors="replace").strip():
+                has_domain = True
+                break
+        except OSError:
+            continue
+    if has_domain:
+        args += ["--exclude", "src/main.rs"]
+    return args
+
+
+def mutation_score_from_cargo_mutants(outcomes_path: Path) -> MutationResult:
+    """Score and counts from cargo-mutants' outcomes.json.
+
+        score = (caught + timeout) / (caught + timeout + missed)
+
+    `unviable` mutants (the mutated code does not compile) are excluded, like
+    PIT's NON_VIABLE. cargo-mutants has no coverage notion — a missed mutant
+    may or may not have been reached — so `no_coverage` is null, not 0.
+    """
+    try:
+        data = json.loads(outcomes_path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return EMPTY_RESULT
+    detected = (data.get("caught") or 0) + (data.get("timeout") or 0)
+    survived = data.get("missed") or 0
+    return _result_from_counts(detected, survived, None)
+
+
+def run_cargo_mutants(run_dir: Path, timeout_seconds: int, log) -> MutationResult:
+    """Run cargo-mutants in run_dir and return the result."""
+    import shutil
+    out_dir = run_dir / CARGO_MUTANTS_OUT
+    shutil.rmtree(out_dir, ignore_errors=True)
+    log_path = run_dir / "cargo-mutants.log"
+    try:
+        ver = subprocess.run(["cargo", "mutants", "--version"], cwd=run_dir,
+                             capture_output=True, text=True, timeout=60)
+        if CARGO_MUTANTS_VERSION not in ver.stdout:
+            log(f"  WARNING: cargo-mutants is {ver.stdout.strip()!r}, "
+                f"pinned {CARGO_MUTANTS_VERSION}")
+        with log_path.open("w") as f:
+            cmd = cargo_mutants_args(run_dir)
+            f.write(f"$ {' '.join(cmd)}\n")
+            f.flush()
+            proc = subprocess.run(cmd, cwd=run_dir, stdout=f,
+                                  stderr=subprocess.STDOUT, timeout=timeout_seconds)
+    except subprocess.TimeoutExpired:
+        log(f"  TIMEOUT after {timeout_seconds}s — score stays null")
+        return EMPTY_RESULT
+    except FileNotFoundError as exc:
+        log(f"  cargo-mutants unavailable: {exc}")
+        return EMPTY_RESULT
+    # Exit 2 means mutants were missed: a result, not a failure. Only a
+    # missing outcomes file is fatal.
+    if proc.returncode not in (0, 2, 3):
+        log(f"  cargo mutants exited {proc.returncode}; see cargo-mutants.log")
+    outcomes = out_dir / "mutants.out" / "outcomes.json"
+    if not outcomes.is_file():
+        log("  no outcomes.json produced; score stays null")
+        return EMPTY_RESULT
+    return mutation_score_from_cargo_mutants(outcomes)
+
+
 STRYKER_VERSION = "8.6.0"
 STRYKER_PKGS = [
     f"@stryker-mutator/core@{STRYKER_VERSION}",
@@ -660,6 +748,10 @@ def report_result_for(run_dir: Path) -> MutationResult:
         path = run_dir / MUTMUT_STATS
         return mutation_score_from_mutmut_stats(path) if path.is_file() \
             else EMPTY_RESULT
+    if stack == "rust-cargo":
+        path = run_dir / CARGO_MUTANTS_OUT / "mutants.out" / "outcomes.json"
+        return mutation_score_from_cargo_mutants(path) if path.is_file() \
+            else EMPTY_RESULT
     path = run_dir / "reports" / "mutation" / "mutation-report.json"
     if not path.is_file():
         return EMPTY_RESULT
@@ -798,6 +890,18 @@ def main(argv: list[str]) -> int:
             if result.score is None:
                 n_failed += 1
                 log("score=null (see pit.log)")
+            else:
+                n_executed += 1
+                log(f"score={result.score:.3f} "
+                    f"({result.survived}/{result.total} survived)")
+            continue
+
+        if stack == "rust-cargo":
+            result = run_cargo_mutants(run_dir, args.timeout_seconds, log)
+            update_metrics_json(m_file, result)
+            if result.score is None:
+                n_failed += 1
+                log("score=null (see cargo-mutants.log)")
             else:
                 n_executed += 1
                 log(f"score={result.score:.3f} "

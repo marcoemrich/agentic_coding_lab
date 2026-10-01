@@ -603,7 +603,8 @@ def validate(target: Path, harnesses: tuple[str, ...]) -> None:
     # *.md, so a new stack is picked up automatically — this tuple is what
     # makes a MISSING one fail the export instead of shipping silently.
     required_stacks = (
-        "typescript-vitest.md", "java-junit-maven.md", "python-pytest.md")
+        "typescript-vitest.md", "java-junit-maven.md", "python-pytest.md",
+        "rust-cargo.md")
     required_optional = ("skills/end-refactor/SKILL.md", "skills/example-mapping/SKILL.md")
     for harness in harnesses:
         config = {"cc": ".claude", "pi": ".pi", "oc": ".opencode", "cursor": ".cursor", "copilot": ".github"}[harness]

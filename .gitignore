@@ -24,6 +24,14 @@ experiments/runs/*/uv.lock
 experiments/runs/*/mutants/
 experiments/runs/*/mutmut.log
 experiments/runs/*/.analysis-complexipy.json
+# Rust stack scaffolding, regenerated per run by analyze-run.sh (the test/impl
+# split, rust-code-analysis and coverage reports) and compute-mutation-score.py
+# (cargo-mutants). target/ is covered above.
+experiments/runs/*/.analysis-rust/
+experiments/runs/*/.analysis-rca.json
+experiments/runs/*/.analysis-lcov.info
+experiments/runs/*/.analysis-mutants/
+experiments/runs/*/cargo-mutants.log
 experiments/reanalyze.log
 .claude/scheduled_tasks.lock
 .claude/settings.local.json

@@ -25,10 +25,16 @@ import argparse, json, sys
 from pathlib import Path
 
 TEST_MARKERS = (".spec.", ".test.", "_test.", "test_")
+# A virtual tree entry for the test part of a file that holds both. The Rust
+# reporter (rust_tdd.py) publishes `src/x.rs` and `src/x.rs#test` separately,
+# because Rust unit tests live inside the source file under `#[cfg(test)]`.
+SPLIT_TEST_SUFFIX = "#test"
 
 
 def is_test(path):
     p = path.lower()
+    if p.endswith(SPLIT_TEST_SUFFIX):
+        return True
     return any(m in p for m in TEST_MARKERS) or "/test/" in p or p.startswith("test/")
 
 

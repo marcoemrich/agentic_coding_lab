@@ -43,11 +43,43 @@ run_stack() {
             stack="java-junit-maven"
         elif [ -f "$run_dir/pyproject.toml" ]; then
             stack="python-pytest"
+        elif [ -f "$run_dir/Cargo.toml" ]; then
+            stack="rust-cargo"
         else
             stack="typescript-vitest"
         fi
     fi
     echo "$stack"
+}
+
+# Rust keeps unit tests inside the source file under `#[cfg(test)]`, so a file
+# list cannot separate production from test code. rust_tdd.py writes the two
+# halves of every file to .analysis-rust/{impl,test}/, and every file-based
+# metric below (LoC, Code Mass, function lengths, rust-code-analysis) reads
+# those copies. Regenerated on every call: it is cheap, and a stale split would
+# silently measure an older tree.
+rust_split_dir() {
+    local run_dir=$1
+    python3 "$EXPERIMENTS_DIR/rust_tdd.py" split-tree "$run_dir" \
+        "$run_dir/.analysis-rust" >/dev/null 2>&1
+    echo "$run_dir/.analysis-rust"
+}
+
+# rust-code-analysis over the production half of the split, as one JSON array
+# of file reports. Cached per analysis in .analysis-rca.json; the function
+# lengths and the cognitive/McCabe step both read it.
+rust_rca_report() {
+    local run_dir=$1
+    local out="$run_dir/.analysis-rca.json"
+    if [ ! -s "$out" ]; then
+        local impl_dir
+        impl_dir="$(rust_split_dir "$run_dir")/impl"
+        if command -v rust-code-analysis-cli &> /dev/null && [ -d "$impl_dir" ]; then
+            rust-code-analysis-cli -m -O json -p "$impl_dir" 2>/dev/null \
+                | jq -s '.' > "$out" 2>/dev/null || rm -f "$out"
+        fi
+    fi
+    [ -s "$out" ] && cat "$out" || echo '[]'
 }
 
 # Find production and test files for the active stack.
@@ -67,6 +99,9 @@ find_impl_files() {
         python-pytest)
             find "$run_dir/src" -name "*.py" ! -name "test_*.py" ! -name "*_test.py" \
                 2>/dev/null | sort
+            ;;
+        rust-cargo)
+            find "$(rust_split_dir "$run_dir")/impl" -name "*.rs" 2>/dev/null | sort
             ;;
         *)
             find "$run_dir/src" -name "*.ts" ! -name "*.spec.ts" 2>/dev/null | sort
@@ -88,6 +123,12 @@ find_test_files() {
             find "$run_dir/tests" "$run_dir/src" \
                 \( -name "test_*.py" -o -name "*_test.py" \) 2>/dev/null | sort
             ;;
+        rust-cargo)
+            # Inline `#[cfg(test)]` modules, top-level `#[test]` functions,
+            # external test modules and tests/ — everything rust_tdd.py puts
+            # on the test side of the split.
+            find "$(rust_split_dir "$run_dir")/test" -name "*.rs" 2>/dev/null | sort
+            ;;
         *)
             find "$run_dir/src" -name "*.spec.ts" 2>/dev/null | sort
             ;;
@@ -103,6 +144,9 @@ count_test_cases() {
     elif [[ "$1" == *.py ]]; then
         grep -ohE '^[[:space:]]*(async[[:space:]]+)?def[[:space:]]+test_' "$@" 2>/dev/null \
             | wc -l | tr -d '[:space:]'
+    elif [[ "$1" == *.rs ]]; then
+        grep -ohE '#[[:space:]]*\[[[:space:]]*test[[:space:]]*\]' "$@" 2>/dev/null \
+            | wc -l | tr -d '[:space:]'
     else
         grep -ohE '(^|[^A-Za-z0-9_.])(it|test)(\.each)?[[:space:]]*\(' "$@" 2>/dev/null \
             | wc -l | tr -d '[:space:]'
@@ -117,6 +161,10 @@ count_test_todos() {
         # counts too: it is the other way a listed-but-unimplemented behaviour
         # is parked, and leaving it out would understate the remaining list.
         grep -ohE '@pytest\.mark\.(skip|xfail)\b' "$@" 2>/dev/null \
+            | wc -l | tr -d '[:space:]'
+    elif [[ "$1" == *.rs ]]; then
+        # The inactive-test convention of the rust-cargo profile.
+        grep -ohE '#[[:space:]]*\[[[:space:]]*ignore\b' "$@" 2>/dev/null \
             | wc -l | tr -d '[:space:]'
     else
         grep -ohE '(^|[^A-Za-z0-9_.])(it|test)\.todo[[:space:]]*\(' "$@" 2>/dev/null \
@@ -197,6 +245,8 @@ analyze_single_run() {
     # on this value, never on the presence of a build file.
     local stack
     stack=$(run_stack "$run_dir")
+    # A cached report from an earlier analysis would measure an older tree.
+    [ "$stack" = "rust-cargo" ] && rm -f "$run_dir/.analysis-rca.json"
 
     local run_name=$(basename "$run_dir")
     local report_file="$run_dir/analysis-report.md"
@@ -405,7 +455,8 @@ analyze_single_run() {
     if [ "$stack" = "java-junit-maven" ]; then
         local mvn_exit=0
         set +e
-        test_output=$(cd "$run_dir" && mvn test 2>&1)
+        # TDD_REPORTER_OFF: the analyzer's run, not the agent's (see the TS arm).
+        test_output=$(cd "$run_dir" && TDD_REPORTER_OFF=1 mvn test 2>&1)
         mvn_exit=$?
         set -e
         echo "$test_output"
@@ -433,7 +484,8 @@ analyze_single_run() {
         # take ruff and complexipy out from under the later measurement steps.
         local pytest_exit=0
         set +e
-        test_output=$(cd "$run_dir" && .venv/bin/pytest 2>&1)
+        # TDD_REPORTER_OFF: the analyzer's run, not the agent's (see the TS arm).
+        test_output=$(cd "$run_dir" && TDD_REPORTER_OFF=1 .venv/bin/pytest 2>&1)
         pytest_exit=$?
         set -e
         echo "$test_output"
@@ -455,7 +507,7 @@ analyze_single_run() {
         if [ "$tests_passed" = true ]; then
             # Second pass, for coverage only. `|| true`: a plugin failure here
             # leaves coverage unreported, never the suite red.
-            (cd "$run_dir" && .venv/bin/pytest --cov=src --cov-branch \
+            (cd "$run_dir" && TDD_REPORTER_OFF=1 .venv/bin/pytest --cov=src --cov-branch \
                 --cov-report=json -q) >/dev/null 2>&1 || true
             if [ ! -f "$run_dir/coverage.json" ]; then
                 echo -e "  ${YELLOW}Coverage unavailable (pytest-cov did not produce a report)${NC}"
@@ -477,6 +529,47 @@ analyze_single_run() {
             report_content+="|--------|----------|\n"
             report_content+="| Statements | ${cov_statements}% |\n"
             report_content+="| Branches | ${cov_branches}% |\n\n"
+        fi
+    elif [ "$stack" = "rust-cargo" ]; then
+        local cargo_exit=0
+        set +e
+        test_output=$(cd "$run_dir" && TDD_REPORTER_OFF=1 cargo test 2>&1)
+        cargo_exit=$?
+        set -e
+        echo "$test_output"
+
+        # cargo exits 0 for an empty suite too, so require at least one passed
+        # test across all test binaries (lib, bin, tests/, doc-tests).
+        local rust_passed
+        rust_passed=$(echo "$test_output" | grep -oE 'test result: ok\. [0-9]+ passed' \
+            | grep -oE '[0-9]+ passed' | awk '{s+=$1} END {print s+0}')
+        if [ "$cargo_exit" -eq 0 ] && [ "${rust_passed:-0}" -gt 0 ]; then
+            tests_passed=true
+            report_content+="**Status**: ✅ All tests passing (${rust_passed} passed)\n\n"
+        else
+            report_content+="**Status**: ❌ Tests failed or not runnable\n\n"
+        fi
+        report_content+="\`\`\`\n$test_output\n\`\`\`\n\n"
+
+        # Coverage from a second, best-effort run. Lines only: branch coverage
+        # needs a nightly toolchain, so branches stay 0 as on the Java stack.
+        # rust_tdd.py drops the lines inside inline test modules, which are
+        # executed by definition and would inflate the number.
+        if [ "$tests_passed" = true ] && command -v cargo-llvm-cov &> /dev/null; then
+            local lcov="$run_dir/.analysis-lcov.info"
+            if (cd "$run_dir" && TDD_REPORTER_OFF=1 cargo llvm-cov --lcov \
+                    --output-path "$lcov" -q) >/dev/null 2>&1 && [ -f "$lcov" ]; then
+                cov_statements=$(python3 "$EXPERIMENTS_DIR/rust_tdd.py" coverage "$run_dir" "$lcov" 2>/dev/null)
+                [[ "$cov_statements" =~ ^[0-9]+$ ]] || cov_statements=0
+                echo -e "  ${CYAN}Coverage:${NC}"
+                echo -e "    Lines (production only): ${cov_statements}%"
+                report_content+="## Coverage\n\n"
+                report_content+="| Metric | Coverage |\n"
+                report_content+="|--------|----------|\n"
+                report_content+="| Lines (production only) | ${cov_statements}% |\n\n"
+            else
+                echo -e "  ${YELLOW}Coverage unavailable (cargo llvm-cov did not produce a report)${NC}"
+            fi
         fi
     elif [ -f "$run_dir/package.json" ] && [ -d "$run_dir/node_modules" ]; then
         # A host pnpm newer than the container pin no longer reads the `pnpm`
@@ -592,6 +685,14 @@ analyze_single_run() {
             re_conditionals='\bif\b|\belif\b'
             re_loops='\bfor\b|\bwhile\b|\bmap\(|\bfilter\(|\breduce\('
             re_assignments='[^=!<>]=[^=]'
+        elif [ "$stack" = "rust-cargo" ]; then
+            # `match` is the switch; an `if let` is still one `if`. `loop` is
+            # Rust's third loop keyword, and the iterator adapters stand in for
+            # the TypeScript array methods. `=>` (a match arm) is excluded from
+            # assignments; compound `+=` etc. still match.
+            re_conditionals='\bif\b|\bmatch\b'
+            re_loops='\bfor\b|\bwhile\b|\bloop\b|\.map\(|\.filter\(|\.fold\(|\.for_each\('
+            re_assignments='[^=!<>]=[^=>]'
         fi
 
         constants=$(grep -hoE '\b[0-9]+\b|"[^"]*"|'\''[^'\'']*'\''' "${impl_files[@]}" 2>/dev/null | wc -l | tr -d '[:space:]')
@@ -646,6 +747,8 @@ analyze_single_run() {
         if [ "$stack" = "python-pytest" ]; then
             re_noncode='^\s*$|^\s*#'
             re_import='^\s*(import|from)\s+'
+        elif [ "$stack" = "rust-cargo" ]; then
+            re_import='^\s*(pub\s+)?use\s+'
         fi
 
         # LOC (non-blank, non-comment lines) — sum across all impl files
@@ -663,7 +766,16 @@ analyze_single_run() {
         # surrogate available, and indentation carries the block structure
         # unambiguously, so it gets a real detector.
         local func_lengths
-        if [ "$stack" = "python-pytest" ]; then
+        if [ "$stack" = "rust-cargo" ]; then
+        # rust-code-analysis knows where every fn starts and ends — in impl
+        # blocks, with where-clauses, around closures — which a brace counter
+        # does not. Closures are not counted as functions, as on TypeScript:
+        # rca reports them as kind "function" named "<anonymous>".
+        # The same report feeds cognitive/McCabe further down.
+        func_lengths=$(rust_rca_report "$run_dir" | jq -r '
+            .. | objects | select(.kind? == "function" and .name != "<anonymous>")
+            | (.end_line - .start_line + 1)' 2>/dev/null)
+        elif [ "$stack" = "python-pytest" ]; then
         func_lengths=$(awk '
             FNR == 1 {
                 if (in_func && func_lines > 0) print func_lines
@@ -931,6 +1043,70 @@ PY
         report_content+="| **Total** | **$smell_total** |\n\n"
     fi
 
+    # Rust smells come from clippy. `cargo clippy` without --tests does not
+    # compile `#[cfg(test)]` code, so only production code is linted. The lint
+    # selection and thresholds are the stack's canonical ones, passed on the
+    # command line and via CLIPPY_CONF_DIR — command-line levels come after
+    # Cargo.toml's [lints], so a run that loosened its own manifest is still
+    # measured against the same gate, the way the Java arm swaps in the
+    # canonical PMD ruleset. In-source `#[allow]` attributes do win; that is
+    # the agent's code and is measured as written.
+    if [ "$stack" = "rust-cargo" ] && [ ${#impl_files[@]} -gt 0 ]; then
+        echo -e "\n${YELLOW}Code Smell Detection:${NC}"
+        report_content+="## Code Smells\n\n"
+
+        local rust_stack_dir="$EXPERIMENTS_DIR/stacks/rust-cargo"
+        local clippy_flags
+        clippy_flags=$(python3 -c '
+import sys, tomllib
+lints = tomllib.load(open(sys.argv[1], "rb")).get("lints", {}).get("clippy", {})
+print(" ".join(f"-W clippy::{k}" for k, v in lints.items() if v in ("warn", "deny")))
+' "$rust_stack_dir/Cargo.toml" 2>/dev/null) || clippy_flags=""
+
+        local clippy_rules
+        # shellcheck disable=SC2086
+        clippy_rules=$(cd "$run_dir" && CLIPPY_CONF_DIR="$rust_stack_dir" \
+            cargo clippy --message-format=json -q -- $clippy_flags 2>/dev/null \
+            | jq -r 'select(.reason == "compiler-message")
+                     | select(.message.level == "warning")
+                     | .message.code.code // empty' 2>/dev/null) || true
+
+        if [ -n "$clippy_rules" ]; then
+            # Size and nesting gates, mirroring the PLR09xx/PLR1702 bucket.
+            smell_complexity=$(echo "$clippy_rules" | grep -cE '^clippy::(too_many_lines|too_many_arguments|excessive_nesting|type_complexity)$' 2>/dev/null) || smell_complexity=0
+            # Identical arms and branch bodies — clippy's duplicate-branch family.
+            smell_duplication=$(echo "$clippy_rules" | grep -cE '^clippy::(match_same_arms|if_same_then_else|branches_sharing_code|same_functions_in_if_condition|ifs_same_cond)$' 2>/dev/null) || smell_duplication=0
+            # Everything else, rustc's own warnings (dead_code, unused_*)
+            # included. cognitive_complexity is a score carrier, not a smell.
+            smell_code_quality=$(echo "$clippy_rules" | grep -cvE '^$|^clippy::(too_many_lines|too_many_arguments|excessive_nesting|type_complexity|match_same_arms|if_same_then_else|branches_sharing_code|same_functions_in_if_condition|ifs_same_cond|cognitive_complexity)$' 2>/dev/null) || smell_code_quality=0
+        fi
+
+        [[ "$smell_complexity" =~ ^[0-9]+$ ]] || smell_complexity=0
+        [[ "$smell_duplication" =~ ^[0-9]+$ ]] || smell_duplication=0
+        [[ "$smell_code_quality" =~ ^[0-9]+$ ]] || smell_code_quality=0
+        # clippy has no magic-number lint, so as on Java the bucket stays 0
+        # and the total is three terms.
+        smell_magic_numbers=0
+        smell_total=$((smell_complexity + smell_duplication + smell_code_quality))
+
+        if [ $smell_total -eq 0 ]; then
+            echo -e "  ${GREEN}No code smells detected${NC}"
+        else
+            echo -e "  ${CYAN}Complexity:${NC} $smell_complexity"
+            echo -e "  ${CYAN}Duplication:${NC} $smell_duplication"
+            echo -e "  ${CYAN}Code Quality:${NC} $smell_code_quality"
+            echo -e "  ${YELLOW}Total Smells: $smell_total${NC}"
+        fi
+
+        report_content+="| Category | Count |\n"
+        report_content+="|----------|-------|\n"
+        report_content+="| Complexity | $smell_complexity |\n"
+        report_content+="| Duplication | $smell_duplication |\n"
+        report_content+="| Magic Numbers | n/a (clippy has no rule) |\n"
+        report_content+="| Code Quality | $smell_code_quality |\n"
+        report_content+="| **Total** | **$smell_total** |\n\n"
+    fi
+
     # Outside Java the unit size is the function length already measured in the
     # Clean Code block. Java keeps PMD's NCSS statement count, which is why the
     # two must never be compared across stacks.
@@ -1031,6 +1207,28 @@ PY
             cognitive_high_count=$(echo "$complexipy_scores" | awk -v t="$complexity_threshold" '$1 > t' | wc -l | tr -d '[:space:]')
         else
             echo -e "  ${YELLOW}complexipy produced no per-function scores${NC}"
+        fi
+    elif [ "$stack" = "rust-cargo" ] && [ ${#impl_files[@]} -gt 0 ]; then
+        # rust-code-analysis reports both scores per function, over the
+        # production half of the split (test functions never enter). Closures
+        # are folded into their enclosing function, as SonarJS does.
+        local rca_json rca_mccabe_scores rca_cognitive_scores
+        rca_json=$(rust_rca_report "$run_dir")
+        rca_mccabe_scores=$(echo "$rca_json" | jq -r '.. | objects
+            | select(.kind? == "function" and .name != "<anonymous>") | .metrics.cyclomatic.sum | floor' 2>/dev/null)
+        rca_cognitive_scores=$(echo "$rca_json" | jq -r '.. | objects
+            | select(.kind? == "function" and .name != "<anonymous>") | .metrics.cognitive.sum | floor' 2>/dev/null)
+        if [ -n "$rca_mccabe_scores" ]; then
+            mccabe_max=$(echo "$rca_mccabe_scores" | sort -n | tail -1)
+            mccabe_avg=$(echo "$rca_mccabe_scores" | awk '{sum+=$1; n++} END {if (n>0) printf "%.2f", sum/n; else print "0"}')
+            mccabe_high_count=$(echo "$rca_mccabe_scores" | awk -v t="$complexity_threshold" '$1 > t' | wc -l | tr -d '[:space:]')
+        fi
+        if [ -n "$rca_cognitive_scores" ]; then
+            cognitive_max=$(echo "$rca_cognitive_scores" | sort -n | tail -1)
+            cognitive_avg=$(echo "$rca_cognitive_scores" | awk '{sum+=$1; n++} END {if (n>0) printf "%.2f", sum/n; else print "0"}')
+            cognitive_high_count=$(echo "$rca_cognitive_scores" | awk -v t="$complexity_threshold" '$1 > t' | wc -l | tr -d '[:space:]')
+        else
+            echo -e "  ${YELLOW}rust-code-analysis produced no per-function scores${NC}"
         fi
     elif [ ${#impl_files[@]} -gt 0 ] && [ -f "$run_dir/eslint.config.mjs" ] && [ -d "$run_dir/node_modules" ]; then
         # Write a temporary override config that re-exports the project config
@@ -1431,8 +1629,12 @@ EOF
             # that failure mode.
             local cli_entry
             cli_entry=$(echo "$v_command" | grep -oE '[A-Za-z0-9_./-]+\.(py|ts|js|mjs|cjs)' | head -1)
-            local entry_class
+            local entry_class entry_file
             entry_class=$(jq -r '.entry_class // empty' "$verification_dir/runner.json")
+            # A compiled CLI (Rust) is invoked as a binary, so the command
+            # names no source file; runner.json then names it explicitly.
+            entry_file=$(jq -r '.entry_file // empty' "$verification_dir/runner.json")
+            [ -n "$entry_file" ] && cli_entry=$entry_file
             if [ -n "$entry_class" ]; then
                 if find "$run_dir/src/main/java" -name "${entry_class}.java" -print -quit 2>/dev/null | grep -q .; then
                     cli_built=true

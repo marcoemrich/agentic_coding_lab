@@ -10,6 +10,24 @@ RUN git clone --quiet --depth 1 --branch v2.14.6 \
     && test "$(git rev-parse HEAD)" = "648266b4cf89e586cdb6e8c6f7f99c9577bb5482" \
     && cargo build --locked --release --bin git-gamble
 
+# Rust toolchain and analysis tools for the rust-cargo stack. Built here and
+# copied into the final image, so the final stage needs no network for them.
+# Pins: toolchain 1.98.1 (the image tag tracks patch releases, so the exact
+# version is asserted), cargo-mutants (Mutation Score), cargo-llvm-cov
+# (coverage, needs llvm-tools-preview), rust-code-analysis-cli (cognitive and
+# McCabe per function; last released 2023, verified to parse 2024-edition code).
+# The registry is warmed from rust.cache/, a mirror of the stack's
+# Cargo.toml/Cargo.lock, so runs resolve every pinned crate offline.
+FROM rust:1.98-bookworm AS rust-tools
+RUN test "$(rustc --version | cut -d' ' -f2)" = "1.98.1" \
+    && rustup component add clippy llvm-tools-preview \
+    && cargo install --locked cargo-mutants@27.1.0 \
+    && cargo install --locked cargo-llvm-cov@0.9.1 \
+    && cargo install --locked rust-code-analysis-cli@0.0.25 \
+    && rm -rf /usr/local/cargo/registry/src /usr/local/cargo/registry/cache
+COPY rust.cache/ /tmp/rust-cache/
+RUN cd /tmp/rust-cache && cargo fetch --locked && rm -rf /tmp/rust-cache
+
 FROM node:22-slim
 COPY --from=git-gamble-builder /src/git-gamble/target/release/git-gamble /usr/local/bin/git-gamble
 
@@ -27,6 +45,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gawk \
     openjdk-17-jdk-headless \
     maven \
+    gcc \
+    libc6-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install pnpm
@@ -45,6 +65,18 @@ RUN curl -LsSf "https://astral.sh/uv/${UV_VERSION}/install.sh" | \
     env UV_INSTALL_DIR=/usr/local/bin INSTALLER_NO_MODIFY_PATH=1 sh \
     && uv --version
 ENV UV_CACHE_DIR=/home/experimenter/.cache/uv
+
+# Rust (rust-cargo stack). gcc/libc6-dev above are the linker rustc needs.
+# The real cargo stays in /usr/local/cargo/bin, which is appended to PATH; the
+# shim at /usr/local/bin/cargo comes first and records `cargo test` invocations
+# as TDD events (experiments/rust_tdd.py). CARGO_HOME is chowned to the
+# experimenter below because cargo takes a lock in the registry on every build.
+COPY --from=rust-tools /usr/local/rustup /usr/local/rustup
+COPY --from=rust-tools /usr/local/cargo /usr/local/cargo
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH="$PATH:/usr/local/cargo/bin"
+COPY cargo-shim.sh /usr/local/bin/cargo
 
 # Install Claude Code CLI
 # 2.1.107: verified end-to-end, but sends thinking.type.enabled which
@@ -116,7 +148,8 @@ RUN mkdir -p \
     /home/experimenter/.local/share/pnpm/store \
     /home/experimenter/.m2/repository \
     /home/experimenter/.cache/uv \
-    && chown -R experimenter:experimenter /home/experimenter
+    && chown -R experimenter:experimenter /home/experimenter \
+    && chown -R experimenter:experimenter /usr/local/cargo
 
 # Provision an empty Claude config file. The CLI 2.1.107 logs a noisy
 # "Claude configuration file not found at: /home/experimenter/.claude.json"

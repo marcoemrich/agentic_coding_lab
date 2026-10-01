@@ -375,6 +375,8 @@ init_run_git() {
 node_modules/
 coverage/
 dist/
+.venv/
+target/
 metrics.json
 metrics.tmp
 run.log
