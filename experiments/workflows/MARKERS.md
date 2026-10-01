@@ -42,17 +42,83 @@ own workflows it tracks the transcript; on vendored ones it may or may not
 likewise agrees: `cycle_count` 37.4 against `test_blocks` 38.5.
 
 The point is not that vendored skills always diverge — `superpowers` matches exactly.
-It is that you cannot tell in advance which case you are in, so `test_blocks`
-is the figure to use whenever markers 2/3 are absent.
+It is that you cannot tell in advance which case you are in.
 
-Measure cycle discipline for those runs with `experiments/measure-tdd-rigour.py`
-instead: it reads only the tool sequence and needs no markers. Full rule and
-evidence in `README.md` → "Cycle discipline is measured from the transcript, not
-from markers".
+**Since 2026-10 none of that is the route to take.** Both figures in the table
+above are legacy: marker `cycle_count` keyed on markers the vendored skill does
+not emit, and `test_blocks` keyed on `Write`/`Edit`/`MultiEdit` calls, which a
+model writing files through the shell never produces. Measure cycle discipline
+from the **phase chain** instead — `tdd_discipline` and siblings, derived by
+`experiments/tdd-report.py` from the test framework's own event stream. It reads
+no marker, no tool call and no commit, so a vendored skill and one of ours are
+measured by the same instrument and the divergence question above does not
+arise. Full vocabulary and metric list in `README.md` → "Phase chain metrics".
+`measure-tdd-rigour.py` and `measure-suite-transitions.py` remain in the tree as
+manual tools; nothing in the pipeline calls them.
 
-What you still lose without markers 1–3: `refactorings_applied`,
-`predictions_correct_rate`, and per-phase tokens/duration. Accept that for
-external baselines, or measure those separately.
+The numbers in the table are from RQ-4.7, which is closed for exactly this
+reason — its runs predate the reporter and the event stream cannot be
+reconstructed. The successor re-measures the same field on the phase chain:
+`research/questions-claude/4.13-tdd-workflow-comparison-opus55/`.
+
+What you still lose without markers 1–3: `predictions_correct_rate` and
+per-phase tokens/duration. Both need a marker to say where a phase begins, and
+no artifact state can reconstruct a prediction that was never spoken. The
+refactor count is **not** in that list any more — the phase chain reports it as
+`refactor_events`, read from the suite staying green across an implementation
+change.
+
+## What still carries a metric, and what does not
+
+**Read this before deriving a workflow.** The tables below are the historical
+marker contract and still describe what each parser matches, but since the
+2026-10 phase-chain migration most of what they demand feeds only a `legacy_*`
+column. A new workflow that implements the full table takes on output
+obligations that nothing reads.
+
+| Marker | Status | Why |
+|---|---|---|
+| `experiment-done.txt` containing `DONE` | **live** | Clean-termination detection. Without it the container hits its timeout. |
+| `Red Phase Complete` | **live** | Gates prediction parsing — `predictions_correct` / `predictions_total`. No artifact measurement can reconstruct a prediction that was never spoken. |
+| prediction lines ending `Correct` / `Incorrect` | **live** | Same pair. |
+| `Skill` tool call per phase | **live, but it is the architecture** | Feeds `avg_red/green/refactor/cycle_seconds`. Not an output obligation you add; it is what invoking `/red` and `/green` *is*. On pi these durations are 0.0 by construction (`parse_pi_transcript.py`), so there the text markers below buy nothing at all. |
+| `## Red` / `## Green` / `## Refactor` | **legacy for the parser, keep for the reader** | Fed the text-marker path of `cycle_count`, now `legacy_cycle_count`. They remain the only thing that makes a cycle visible in a transcript, and emitting one is itself a per-cycle structural break — a plausible behavioural effect that is unmeasured. The consumer export reframes their table header from "What the Parser Counts" to "What It Makes Visible" for exactly this reason. |
+| emoji phase prefixes (`🔴` `🟢` `🔄` `📋`) | **never parsed, keep** | No parser has ever matched them. They carry the same reader value as the headings and are cheap. |
+| `Test List Created:` *and* `Test List Phase Complete` | **legacy, and duplicated** | Both match `_PHASE_TEXT_MARKERS_RE["test-list"]`; `## Test List` never did (see the P3 note below). A workflow needs at most one. |
+| `Green Phase Complete` / `Refactor Phase Complete` | **never parsed** | No parser matches either — only `Red Phase Complete` is read. |
+
+Current discipline metrics come from `experiments/tdd-report.py` over the stack
+reporter's event stream and read **no** marker; full list in `README.md` →
+"Phase chain metrics". So the healthy-baseline checklist at the end of this file
+checks the wrong things for a new workflow: use `tdd_discipline`,
+`cycles_closed` and `red_batch_size` from `tdd-report.md` instead.
+
+**Removing a marker is a workflow change, not cleanup.** Every obligation in a
+prompt costs something, and the reduction line (RQ-rules, RQ-pep, RQ-emoji,
+RQ-lean) exists because the cost is not always what intuition predicts.
+
+**On the maintained line there is nothing to remove, and that was checked.**
+`exact-ptdd-v1-cc` — the universal default on native Opus 5 / 5.5 per
+`research/workflow-dev/model-recommendation-matrix.md` — emits `## Red`,
+`## Green`, `## Refactor`, `## Test List`, `Test List Created:`, the
+`Red Phase Complete:` block with both prediction lines, and the done-marker.
+Everything in that list except the last two is legacy for the parser, and every
+one of them is reader-facing structure. There is no obligation there that is
+both legacy *and* useless to a human.
+
+The redundancy that does exist — each phase emitting a structured block *and* a
+standalone "`<Phase>` Complete. Proceeding to X." line — lives only in the
+hybrid branch `exact-hybrid-v3..v8-cc`. Those descend from
+`exact-hybrid-v2-testlist-fix-cc`, which is `superseded`: a reproducible
+decomposition reference, not a product profile. A reduction measured there
+would not transfer to the line anyone ships, which is why it was not pursued.
+
+Two cautions for whoever reads the tables below as a checklist. A `##` string
+inside a command file is often a *document* heading, not an output obligation —
+`## Green Phase Rules` in the hybrid line's `green.md` is section structure, and
+counting it as a marker misreads what the workflow asks the model to emit. And
+`Green Phase Complete` / `Refactor Phase Complete` appear in archived workflows
+but are matched by no parser and never were.
 
 ## Hard requirements — Claude Code / OpenCode
 

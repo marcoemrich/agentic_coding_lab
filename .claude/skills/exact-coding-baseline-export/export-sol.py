@@ -48,28 +48,59 @@ def replace_once(text: str, old: str, new: str, label: str) -> str:
 
 
 def consumer_predictive(text: str, hitl_path: str) -> str:
+    """Add the HITL checkpoints without removing the phase markers.
+
+    Earlier versions stripped `## Red`, `## Green`, `## Refactor` and the
+    `Red Phase Complete:` block on the reasoning that a human checkpoint
+    replaces the marker as the structural break per cycle. Two problems with
+    that. At the `autonomous` Autonomy Level the checkpoint does not stop for
+    anything, so removing the marker leaves no break at all — and the exported
+    workflow then behaves differently from the one the lab validated, which is
+    the one claim an export must not break. And the headings carry their own
+    value for whoever reads along: they are what makes the cycle visible in a
+    transcript, which is why the Opus/Hybrid export keeps them and reframes
+    their table header to "What It Makes Visible".
+
+    So the markers stay verbatim and the checkpoints are additive. What still
+    changes is the *framing*: the consumer is told what a marker makes visible,
+    never that a pipeline counts it.
+    """
     text = replace_once(
         text,
-        'Open the phase with the `## Red` marker (see "Mandatory output markers" below), then inspect',
-        "Inspect",
-        "predictive red marker",
+        "Predictions and phases are read mechanically from your output text. Emit these markers verbatim.",
+        "Each phase opens with a heading, so the cycle is visible to anyone reading\n"
+        "along and the structure holds even at an Autonomy Level that never stops\n"
+        "for approval. Emit them verbatim.",
+        "markers intro framing",
     )
     text = replace_once(
         text,
         "Close the phase with the `Red Phase Complete:` block and both prediction lines.",
-        f"After comparing the prediction with reality, consult `{hitl_path}` and apply the Red checkpoint for the active Autonomy Level.",
+        f"Close the phase with the `Red Phase Complete:` block and both prediction "
+        f"lines. Then consult `{hitl_path}` and apply the Red checkpoint for the "
+        f"active Autonomy Level.",
         "predictive red close",
     )
-    text = replace_once(text, "Open the phase with the `## Green` marker. ", "", "green marker")
     text = replace_once(
         text,
         "**In this workflow the refactoring runs in this context.** Open the phase with\nthe `## Refactor` marker (see below) and emit it also when the review concludes\nthat no refactoring improves the code.",
-        f"**The invoking EXACT Coding profile selects the Refactor execution context.** Apply the Four Rules and domain-boundary contract through that profile's inline or isolated mechanism. After the review, consult `{hitl_path}` and apply the Refactor checkpoint for the active Autonomy Level, including when no change improves the code.",
+        f"**The invoking EXACT Coding profile selects the Refactor execution context.**\n"
+        f"Apply the Four Rules and domain-boundary contract through that profile's\n"
+        f"inline or isolated mechanism. Open the phase with the `## Refactor` marker\n"
+        f"(see below) and emit it also when the review concludes that no refactoring\n"
+        f"improves the code. After the review, consult `{hitl_path}` and apply the\n"
+        f"Refactor checkpoint for the active Autonomy Level.",
         "refactor marker",
     )
-    start = text.index("## Mandatory output markers\n")
-    end = text.index("## Prediction mismatch\n", start)
-    text = text[:start] + text[end:]
+    text = replace_once(
+        text,
+        "This heading is the only signal that the Four Rules review happened. Emit it\nevery cycle, including the cycles where the review changes nothing.",
+        "This heading is the only signal that the Four Rules review happened. Emit it\n"
+        "every cycle, including the cycles where the review changes nothing — a cycle\n"
+        "with no heading is indistinguishable from a cycle where the review was\n"
+        "skipped.",
+        "refactor heading rationale",
+    )
     text = replace_once(
         text,
         "2. Stop feature implementation.\n3. Use the smallest deterministic check",
@@ -549,7 +580,18 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
 
 def validate(target: Path, harnesses: tuple[str, ...]) -> None:
     leaked = re.compile(
-        r"LAB-ONLY|experiment-done|measurement pipeline|predictions_correct|predictions_total|cycle_count|refactorings_applied|What the Parser Counts|parsed mechanically|Run autonomously",
+        # Lab wording that must never reach a consumer export. Two generations
+        # of metric names: the ones the 2026-10 phase-chain migration retired
+        # (cycle_count, refactorings_applied, predictions_* — now legacy_* in
+        # the corpus) and the ones that replaced them. The guard needs both.
+        # Without the second group a workflow mentioning `tdd_discipline` or
+        # `red_batch_size` would ship untouched — the names changed, the
+        # obligation not to tell the consumer they are being measured did not.
+        r"LAB-ONLY|experiment-done|tdd-events|measurement pipeline"
+        r"|predictions_correct|predictions_total|cycle_count|refactorings_applied"
+        r"|tdd_discipline|test_first_rate|red_batch_|green_batch_|cycles_closed"
+        r"|cycles_total|chain_deviations|refactor_events|skip_events|suite_cycles"
+        r"|What the Parser Counts|parsed mechanically|Run autonomously",
         re.I,
     )
     for path in target.rglob("*"):

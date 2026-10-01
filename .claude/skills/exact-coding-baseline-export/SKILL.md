@@ -625,7 +625,15 @@ force-fitting it.
 > | prediction lines "are **parsed mechanically**" | "scoring each prediction separately is what makes the Guessing Game worth playing" |
 >
 > Do **not** touch the marker strings themselves (`## Red`, `Red Phase
-> Complete:`, the two `Prediction` lines) — those are the MARKERS contract
+> Complete:`, the two `Prediction` lines). Since the 2026-10 phase-chain
+> migration this is no longer a measurement argument — only `Red Phase
+> Complete` and the prediction lines still feed a live metric, and the lab
+> reads discipline from the test framework's event stream instead
+> (`MARKERS.md` → "What still carries a metric"). They stay for the consumer's
+> sake: the headings are what makes a cycle visible to someone reading along,
+> and the structure has to hold at an Autonomy Level that never stops for
+> approval. The SOL export keeps them for the same reason and adds the HITL
+> checkpoints on top rather than replacing them
 > and validation 3 checks them.
 
 > **Shell trap.** Several patch anchors contain backticks
