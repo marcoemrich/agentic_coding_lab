@@ -1,14 +1,14 @@
 ---
 id: RQ-exact-coding-rust
-question: "On Rust with Cargo, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness, TDD discipline and code quality for GPT-6 SOL and Opus 5.5?"
+question: "On Rust with Cargo, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness, TDD discipline and code quality for GPT-6 SOL and Opus 5?"
 factors:
   model_x_workflow:
     - {model: gpt-6-sol-codex, workflow: baseline-inline-tdd-v1-pi}
     - {model: gpt-6-sol-codex, workflow: exact-ptdd-v1-pi}
     - {model: gpt-6-sol-codex, workflow: exact-ptdd-v1.1-refactor-subagent-pi}
-    - {model: opus-5-5-no-thinking, workflow: baseline-inline-tdd-v1-cc}
-    - {model: opus-5-5-no-thinking, workflow: exact-ptdd-v1-cc}
-    - {model: opus-5-5-no-thinking, workflow: exact-ptdd-v1.1-refactor-subagent-cc}
+    - {model: opus-5-no-thinking, workflow: baseline-inline-tdd-v1-cc}
+    - {model: opus-5-no-thinking, workflow: exact-ptdd-v1-cc}
+    - {model: opus-5-no-thinking, workflow: exact-ptdd-v1.1-refactor-subagent-cc}
 controls:
   kata_base: claim-office-rust
   prompt: example-mapping
@@ -92,7 +92,7 @@ TypeScript, Java or Python and makes no cross-language claim.
 | Factor | Levels |
 |---|---|
 | Method | Inline TDD control; EXACT Coding Predictive TDD v1; v1.1 with isolated Refactor subagent |
-| Model/harness bundle | GPT-6 SOL via pi (`openai-codex` route); native Opus 5.5 without extended thinking via Claude Code |
+| Model/harness bundle | GPT-6 SOL via pi (`openai-codex` route); native Opus 5 without extended thinking via Claude Code |
 | Kata | Claim Office |
 | Prompt | Example Mapping |
 | Stack | Rust 1.98.1 + Cargo + clippy |
@@ -110,11 +110,20 @@ The method, kata, prompt and replicate design mirrors
 [RQ-exact-coding-java](../1.8-exact-coding-java/README.md),
 [RQ-exact-coding-python](../1.9-exact-coding-python/README.md) and
 [RQ-exact-coding-typescript](../1.10-exact-coding-typescript/README.md).
-**The models do not.** Those three ran GPT-5.6 SOL and Opus 5; this RQ uses the
-current generation, GPT-6 SOL and Opus 5.5. A direction that differs from the
-sister RQs can therefore be a stack effect or a model-generation effect, and
-this RQ alone cannot tell which. Reading its result against them is a
-comparison of directions under a changed model, not a replication.
+**One model does not.** The sister RQs ran GPT-5.6 SOL and Opus 5; this RQ
+keeps Opus 5 and moves the pi arm to the current generation, GPT-6 SOL. On the
+Opus arm a direction that differs from the sister RQs is a stack effect; on the
+GPT arm it can be a stack effect or a model-generation effect, and this RQ
+alone cannot tell which.
+
+**Why not Opus 5.5.** The design started on Opus 5.5. Both smoke runs of
+`exact-ptdd-v1-cc` on the Rust stack (one per kata, 2026-10-01) were cut off
+after three to four minutes by the API with `Opus 5.5's safeguards flagged this
+message … [reasoning_extraction]`, mid-cycle, on ordinary test output and
+prediction text. The same workflow had run six times on Opus 5.5 on TypeScript
+without it. At that rate most Opus cells would stay empty, and refilling them
+until a run survives selects on the failure mode. Opus 5 is the model the sister
+RQs used, so the switch also makes the Opus arm directly comparable.
 
 The model and workflow are paired because the maintained workflow and control
 must use the native port of each harness. The comparison within each model is:
@@ -122,7 +131,7 @@ must use the native port of each harness. The comparison within each model is:
 - `baseline-inline-tdd-v1-pi` vs. `exact-ptdd-v1-pi` vs.
   `exact-ptdd-v1.1-refactor-subagent-pi` for GPT-6 SOL;
 - `baseline-inline-tdd-v1-cc` vs. `exact-ptdd-v1-cc` vs.
-  `exact-ptdd-v1.1-refactor-subagent-cc` for Opus 5.5.
+  `exact-ptdd-v1.1-refactor-subagent-cc` for Opus 5.
 
 The v1-to-v1.1 comparison is factor-isolated: test-list construction, Red,
 Green, predictions, Four Rules, domain-boundary contract, stack profile, and
@@ -228,7 +237,7 @@ under the model caveat above.
 - **H3 — Mutation Score ordering reproduces:** the three methods are ordered
   as on Java and Python.
 - **H4 — model interaction:** the size or direction of the method effect
-  differs between GPT-6 SOL and Opus 5.5.
+  differs between GPT-6 SOL and Opus 5.
 - **H5 — workflow overhead:** EXACT Coding uses more time and tokens than
   inline TDD. The overhead is justified only by a correctness or
   product-quality gain.
@@ -255,8 +264,8 @@ under the model caveat above.
 - The inline-TDD arm controls for test-first intent. The measured treatment is
   the additional EXACT Coding structure, not TDD versus one-shot generation.
 - The comparison with the sister RQs is a comparison of **directions and
-  orderings**, never of absolute values, and confounded by the model
-  generation.
+  orderings**, never of absolute values. On the GPT arm it is also confounded
+  by the model generation.
 
 ## Execution sequence
 
