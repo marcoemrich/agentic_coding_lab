@@ -4,11 +4,6 @@
 
 * TDD-Micro-Cycle, assertion-first
 
-* Skills to investigate:
-  - nWave — Outside-In through the driving port; refactor position unresolved
-    (the canon reads RED → GREEN → COMMIT). Expensive to dock: DELIVER needs the
-    artifact chain from the preceding waves.
-
 * Metric gap readability (from RQ-architecture-axis-sol-pi, F-1.11):
   none of the current metrics separates readable from unreadable code.
   3 of 10 cells have Smell Total 0.0 on code manually rated as bad.
@@ -20,15 +15,6 @@
     Caution: once it is a metric, it is gameable via the workflow prompt (README "Compliance metrics"),
     and "a reduce chain is better than a clear loop" is debatable on the merits.
 
-## Merge with other science framework or take ideas from it
-Prio: Low
-
-* https://github.com/vercel-labs/agent-eval/
-* /plugin install plugin-eval@claude-code-workflows
-* Harbor https://www.harborframework.com
-
-## UI for Run-Filtering->Statistics
-
 ## Use Architecture Concepts
 
 * Quality Attributes
@@ -38,7 +24,19 @@ Prio: Low
 
 ## Metrics
 
-* Build a smell-detection agent with knowledge from books
+* Build a smell-detection agent with knowledge from books, maybe use JEV-like
 * research from science papers about TDD Studies
 * Typing Strength
 * Interdeps
+
+## Skills/Workflows to investigate
+  - nWave — Outside-In through the driving port; refactor position unresolved
+    (the canon reads RED → GREEN → COMMIT). Expensive to dock: DELIVER needs the
+    artifact chain from the preceding waves.
+
+## Merge with other science framework or take ideas from it
+
+* https://github.com/vercel-labs/agent-eval/
+* /plugin install plugin-eval@claude-code-workflows
+* Harbor https://www.harborframework.com
+

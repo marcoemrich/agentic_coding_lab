@@ -1,10 +1,12 @@
 # TODOs and Ideas - Active
 
-## Further dimensions
+## UI for Run-Filtering->Statistics
+(Maybe get rid of sloppy finding)
 
-* Programming language: Python, Rust, Haskel, Kotlin
-* Pradigm-Profile: OOP vs FP, base Immutability Profile, Calisthenics
-* FP-Stuff, check for immutabilitym pure functions
+## More workflows
+
+ * Functional Domain Modelling
+ * explicit pre + post steps
 
 ## Problem separation first
 Prio: High
@@ -16,10 +18,6 @@ Prio: High
 * Anti-Pattern: Pear-Programming / Ship in a bottle
 * Integration Segregation Pattern
 
-## More workflows
-
- * Functional Domain Modelling
- * explicit pre + post steps
 
 ## Encode well know TDD workflows aka schools in rules
 
@@ -27,6 +25,12 @@ Prio: High
 * Nullables / Portland School of TDD
 * Ted Young description of TDD
 * Books: Fields, Roy Osheroove, J.B. Rainsberger,
+
+## Further dimensions
+
+* Pradigm-Profile: OOP vs FP, base Immutability Profile, Calisthenics
+* FP-Stuff, check for immutabilitym pure functions
+
 
 ## Add in more Refactoring rules and Security Stuff
 
@@ -41,9 +45,6 @@ Prio: High
 
 * https://arxiv.org/html/2510.03029v1##S6
 
-## Other Tools
-
-* nWave
 
 ## Usability for others
 

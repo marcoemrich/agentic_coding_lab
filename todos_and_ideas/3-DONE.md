@@ -1,5 +1,6 @@
 # DONE
 
+* Programming language: Python, Rust
 * H: custom kata needed for Example Mapping, but other katas can measure quality
 * H: Opus faster than Sonnet
 * H: spread lower for v4 than v5
