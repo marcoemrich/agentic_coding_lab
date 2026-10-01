@@ -196,12 +196,26 @@ subtrees.
   for some runs and not others. `compute-mutation-score.py` therefore pins `JAVA_HOME` to
   `/usr/lib/jvm/java-17-openjdk-amd64` (the same JDK the container compiles with), falling
   back to java-21 and warning if neither exists.
-- **Rust analysis and mutation testing need the Rust tools on the host**, or run in the
-  container. `analyze-run.sh` needs clippy, `cargo-llvm-cov` and `rust-code-analysis-cli`
-  (`reanalyze-in-container.sh` has them); `compute-mutation-score.py` runs on the host
-  and needs `cargo-mutants` there — `cargo install --locked cargo-mutants@27.1.0` with the
-  host toolchain at the image's `1.98.1`. It warns on a version mismatch rather than mixing
-  engines silently.
+- **Rust analysis and mutation testing run in the container, not on the host.** The Rust
+  toolchain is the one stack's toolchain this host is not expected to carry, so both
+  wrappers exist: `reanalyze-in-container.sh` for `analyze-run.sh` (clippy,
+  `cargo-llvm-cov`, `rust-code-analysis-cli`) and **`mutation-in-container.sh <rq_dir>`**
+  for `compute-mutation-score.py` (`cargo-mutants`). Both use the image the runs were
+  produced with, so the engine version cannot drift from a second hand-maintained pin.
+  Then run `aggregate-by-query.py` **on the host** so the new fields reach `summary.md` —
+  writing the pivots is the one step that needs pandas.
+- **A host install is still possible but is the worse path.** `cargo install --locked
+  cargo-mutants@27.1.0` against a host toolchain at the image's `1.98.1` works, and
+  `compute-mutation-score.py` warns on a version mismatch rather than mixing engines
+  silently. It needs a full Rust toolchain on the host and pins the engine in a second
+  place. On TypeScript, Java and Python the host path stays the cheaper default — no
+  container start.
+- **`compute-mutation-score.py` must stay importable without pandas.** It reaches
+  `parse_frontmatter()` in `aggregate-by-query.py`, which therefore imports pandas
+  **lazily** (`_pd()`); PyYAML is a hard import and is installed as `python3-yaml` in the
+  image. Moving `import pandas` back to module scope silently breaks every in-container
+  analysis with `ModuleNotFoundError`, and nothing else notices, because the host has
+  pandas.
 
 ## Docker & version pins
 

@@ -42,6 +42,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     jq \
     bash \
     python3 \
+    # PyYAML: compute-mutation-score.py reaches parse_frontmatter() in
+    # aggregate-by-query.py, and Rust is the one stack whose toolchain lives
+    # only in here, so that script has to be runnable in the container. pandas
+    # is deliberately NOT added -- it is imported lazily and only the host
+    # writes the pivot tables.
+    python3-yaml \
     gawk \
     openjdk-17-jdk-headless \
     maven \

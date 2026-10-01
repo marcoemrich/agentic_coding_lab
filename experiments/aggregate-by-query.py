@@ -36,7 +36,6 @@ from datetime import datetime, timezone
 from itertools import product
 from pathlib import Path
 
-import pandas as pd
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -99,6 +98,21 @@ ALTS_NAME = {"harness_version": "harness"}
 # -----------------------------------------------------------------------
 # Frontmatter parsing
 # -----------------------------------------------------------------------
+
+def _pd():
+    """pandas, imported on first use.
+
+    Only write_summary() and the DataFrame in main() need it, and both run on
+    the host. Importing it at module scope made every importer of this file
+    need pandas too -- which broke compute-mutation-score.py inside the batch
+    container, the only place the Rust toolchain exists. The container has no
+    pandas and does not need one: it runs the engine, not the pivot tables.
+    PyYAML stays a hard import because parse_frontmatter() below is on that
+    shared path.
+    """
+    import pandas as pd
+    return pd
+
 
 def parse_frontmatter(md_path: Path) -> dict:
     text = md_path.read_text()
@@ -662,7 +676,7 @@ def warn_on_test_list_boundary(fm: dict, cells: list[dict]) -> None:
           "RQ-tdd-workflow-comparison-opus55 F-4.13.4.", file=sys.stderr)
 
 
-def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
+def write_summary(md_path: Path, fm: dict, df: "object",
                   cells: list[dict], by_cell: dict) -> None:
     rq_id = fm.get("id", "?")
     question = fm.get("question", "")
@@ -765,8 +779,8 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
                 L("")
                 continue
             df_r = df.assign(
-                _num=pd.to_numeric(df[num_col], errors="coerce"),
-                _den=pd.to_numeric(df[den_col], errors="coerce"),
+                _num=_pd().to_numeric(df[num_col], errors="coerce"),
+                _den=_pd().to_numeric(df[den_col], errors="coerce"),
             )
             df_r = df_r.dropna(subset=["_den"])
             df_r = df_r[df_r["_den"] > 0]
@@ -808,7 +822,7 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
         # when the numbers matter most.
         nn = col.dropna()
         is_bool = len(nn) > 0 and (
-            pd.api.types.is_bool_dtype(col)
+            _pd().api.types.is_bool_dtype(col)
             or nn.map(lambda v: isinstance(v, bool) or v in ("True", "False")).all()
         )
 
@@ -823,7 +837,7 @@ def write_summary(md_path: Path, fm: dict, df: pd.DataFrame,
             L(grouped.to_markdown(index=False))
             L("")
         else:
-            numeric = pd.to_numeric(col, errors="coerce")
+            numeric = _pd().to_numeric(col, errors="coerce")
             if numeric.notna().sum() == 0:
                 L(f"### {outcome}")
                 L("")
@@ -884,7 +898,7 @@ def main(argv: list[str]) -> int:
         rows.append(metrics_to_row(metrics, run_id, cell_model, cell_workflow,
                                    cell_harness))
 
-    df = pd.DataFrame(rows, columns=CSV_COLUMNS)
+    df = _pd().DataFrame(rows, columns=CSV_COLUMNS)
     csv_path = out_dir / "runs.csv"
     df.to_csv(csv_path, index=False)
     print(f"  wrote {csv_path} ({len(df)} rows)", file=sys.stderr)

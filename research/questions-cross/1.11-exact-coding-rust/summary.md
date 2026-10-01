@@ -2,7 +2,7 @@
 
 _On Rust with Cargo, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness, TDD discipline and code quality for GPT-6 SOL and Opus 5?_
 
-Generated: 2026-10-01T17:38:16Z
+Generated: 2026-10-01T19:36:01Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
