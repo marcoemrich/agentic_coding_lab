@@ -207,6 +207,11 @@ MODEL_CONFIGS=(
     # to it without merging cells. Reasoning is a property of the codex
     # route (see the 2x2 block below), so there is no -no-thinking arm.
     "gpt-6-sol-codex|pi-only|false"
+    # Fifth model on the same route: GPT-6.1 Sol, successor of gpt-6-sol.
+    # Same conventions -- `-codex` suffix for the route, no -no-thinking arm.
+    # The upstream id carries a dot (`gpt-6.1-sol`); the lab id uses a dash
+    # like every other version number here.
+    "gpt-6-1-sol-codex|pi-only|false"
     "gpt-5-6-terra|pi-only|false"
     "glm-5-2|pi-only|false"
     "kimi-k2-7|pi-only|false"
@@ -905,6 +910,7 @@ EOF
                 gpt-6-astra-codex)             pi_model="openai-codex/gpt-6-astra" ;;
                 gpt-6-astra-codex-no-thinking) pi_model="openai-codex/gpt-6-astra" ;;
                 gpt-6-sol-codex)               pi_model="openai-codex/gpt-6-sol" ;;
+                gpt-6-1-sol-codex)             pi_model="openai-codex/gpt-6.1-sol" ;;
                 # 2x2 matrix arms. The route id is identical to its base arm --
                 # the reasoning difference lives in the pi-config profile, not
                 # in the model string (a made-up model id is rejected upstream:

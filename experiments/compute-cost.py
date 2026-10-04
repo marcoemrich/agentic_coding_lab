@@ -173,6 +173,10 @@ PRICES = {
     # TechCrunch, VentureBeat). >272k tariff step not modelled, as for
     # Sol/Astra.
     "gpt-6-sol-codex": (2.00, 10.00, 0.20, 0.0),   # openai-codex/gpt-6-sol
+    # GPT-6.1 Sol: $2 / $10 like 6 Sol, but cached input drops to $0.10 (5 %
+    # of input, against 10 % for 6 Sol) -- OpenAI model docs, verified
+    # 2026-10-05. >272k tariff step not modelled, as for Sol/Astra.
+    "gpt-6-1-sol-codex": (2.00, 10.00, 0.10, 0.0),   # openai-codex/gpt-6.1-sol
     "gpt-5-3-codex-spark": (1.75, 14.00, 0.175, 0.0),  # openai-codex/gpt-5.3-codex-spark
     "gpt-5-6-terra":    (2.50,  15.00, 0.25, 0.0),   # azure/gpt-5.6-terra
     "gpt-5-6-terra-no-thinking": (2.50, 15.00, 0.25, 0.0),

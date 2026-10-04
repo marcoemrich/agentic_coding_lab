@@ -43,6 +43,7 @@ on the same basis as the Requesty cells they are compared against.
 | gpt-5-6-sol-codex | `openai-codex/gpt-5.6-sol` | $5.00 | $30.00 | $0.50 | $6.25 |
 | gpt-6-astra-codex | `openai-codex/gpt-6-astra` | $10.00 | $50.00 | $1.00 | $12.50 |
 | gpt-6-sol-codex | `openai-codex/gpt-6-sol` | $2.00 | $10.00 | $0.20 | $0 |
+| gpt-6-1-sol-codex | `openai-codex/gpt-6.1-sol` | $2.00 | $10.00 | $0.10 | $0 |
 | gpt-5-3-codex-spark | `openai-codex/gpt-5.3-codex-spark` | $1.75 | $14.00 | $0.175 | $0 |
 
 Sources (each independently cross-checked, 2026-09-05): Astra —
@@ -57,6 +58,13 @@ GPT-6 Sol (added 2026-09-22, launch day) —
 [VentureBeat](https://venturebeat.com/technology/openai-releases-gpt-6-sol-and-luna-models-slashing-api-costs-50-or-more).
 Its `models.json` entry copies Astra's limits (272,000 / 128,000); no source for
 the codex-route limits was reachable yet, so re-check once pi.dev lists the model.
+GPT-6.1 Sol (added 2026-10-05) —
+[OpenAI API-Docs](https://developers.openai.com/api/docs/models/gpt-6.1-sol),
+[Requesty](https://www.requesty.ai/models/openai/gpt-6.1-sol). Cached input is
+5 % of input ($0.10), half of 6 Sol's rate. The API lists a 1,050,000 context
+window; the `models.json` entry keeps the 272,000 codex-route limit of the other
+Sol entries, which the API's >272k tariff step also points to. pi.dev does not
+list the model yet.
 
 Notes:
 - **Cache write is irrelevant on this route**, even though it is reported: across
