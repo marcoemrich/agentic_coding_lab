@@ -42,19 +42,21 @@ when quoting this section.
 | Stacks | TypeScript, Java, Python | TypeScript only |
 
 On Opus 5.5 the correctness argument is unavailable: Correctness (external) is
-saturated at 1.00 in every cell of RQ-opus55-current-workflow, including the
-minimal inline-TDD comparison arm. The recommendation there rests on three other
-results:
+saturated at 1.00 in RQ-opus55-current-workflow for both `exact-ptdd-v1-cc` and
+the minimal inline-TDD comparison arm. The recommendation there rests on three
+other results:
 
-- **The workflow gap is larger on Opus 5.5 than on Opus 5.** `cognitive_max`
-  falls 76 % against the inline instruction (5 : 54 %), `unit_size_avg` 45 %
-  (5 : 29 %), and Mutation Score moves +0.20 where it moves −0.03 on Opus 5.
-- **Unscaffolded, Opus 5.5 is a regression against Opus 5** — worse on every peak
-  complexity measure and 0.17 lower on Mutation Score, at full correctness. The
-  newer model does not need less structural guidance on this kata; it needs at
-  least as much.
-- Under the workflow, Opus 5.5 is the most reproducible cell measured so far:
-  σ = 0 on `cognitive_max` and `mccabe_max` across five runs.
+- **The workflow gap is larger on Opus 5.5 than on Opus 5.** Against the inline
+  instruction, `exact-ptdd-v1-cc` lowers `cognitive_max` by 68 % (Opus 5: 42 %)
+  and `unit_size_avg` by 36 % (Opus 5: 30 %), and raises Mutation Score by +0.18
+  where it moves +0.01 on Opus 5.
+- **Unscaffolded, Opus 5.5 is a regression against Opus 5** — worse on
+  `cognitive_max` and `mccabe_max` and 0.20 lower on Mutation Score, at full
+  correctness. The newer model does not need less structural guidance on this
+  kata; it needs at least as much.
+- Under the workflow the spread collapses: `cognitive_max` and `mccabe_max` vary
+  by σ = 0.55 in the default arm and σ = 0 in the isolated-refactor arm, against
+  σ = 2.07 and 1.52 for the inline instruction.
 
 **Do not transfer this to Java or Python without measuring.** The Opus 5
 recommendation spans three stacks; the Opus 5.5 extension spans one, and
@@ -70,30 +72,29 @@ CLI 2.1.280, n=5 per cell (RQ-opus55-current-workflow):
 
 | | `exact-ptdd-v1-cc` | `exact-ptdd-v1.1-refactor-subagent-cc` |
 |---|---|---|
-| Correctness (external), Opus 5.5 | 1.00 | 1.00 |
-| Correctness (external), Opus 5 | 0.99 | 0.97 |
-| Mutation Score, Opus 5.5 | 0.94 ± 0.04 | 0.95 ± 0.04 |
-| `unit_size_avg`, Opus 5.5 | 4.54 ± 0.28 | 4.42 ± 0.35 |
-| `duration_seconds`, Opus 5.5 | 871 ± 89 | 2658 ± 357 |
-| `cost_usd`, Opus 5.5 | $9.96 ± 0.95 | $12.89 ± 0.96 |
+| Correctness (external), Opus 5.5 | 1.00 | 0.96 |
+| Correctness (external), Opus 5 | 1.00 | 0.79 |
+| Mutation Score, Opus 5.5 | 0.94 ± 0.05 | 0.95 ± 0.03 |
+| `unit_size_avg`, Opus 5.5 | 4.81 ± 0.62 | 4.46 ± 0.40 |
+| `duration_seconds`, Opus 5.5 | 922 ± 80 | 2664 ± 433 |
+| `cost_usd`, Opus 5.5 | $9.79 ± 0.49 | $28.34 ± 3.30 |
 
 **`exact-ptdd-v1-cc` stays the default**, on both models. Every quality
-difference above sits inside the standard deviations, while wall-clock triples
-and list-price cost rises by a third. Isolation is not a correctness upgrade on
-this kata — it did not buy one.
+difference above sits inside the standard deviations, while wall-clock and
+list-price cost both rise by a factor of 2.9. Isolation is not a correctness
+upgrade on this kata either: on Opus 5.5 one of five runs ends at 0.80, and on
+Opus 5 the isolated arm hits the two-hour budget in 2 of 5 runs (F-2.4.7).
 
 Take `exact-ptdd-v1.1-refactor-subagent-cc` when the fresh-eyes property is
 what is actually wanted: a long session whose cycle history has grown noisy, or
 a judgement that should be made without the memory of how the code got there.
 
-**For workflow development against Opus 5.5 the choice is not free.** The
-isolated arm is the only one in which the refactor discipline can be measured on
-that model at all: `refactorings_applied` is text-derived in the shared-context
-arm and Opus 5.5 does not write the text, so the shared-context reading is not
-merely empty but *directionally wrong* — it reports ≈0 refactors where the
-isolated arm measures ≈48, more than Opus 5 does (F-2.4.6). Any Opus 5.5
-workflow experiment that needs to observe the refactor step must run the
-isolated profile or gate on correctness and code quality instead.
+**For workflow development against Opus 5.5, measure the refactor step on the
+phase chain.** `refactorings_applied` is text-derived, and in the shared-context
+arm Opus 5.5 does not write the text, so that reading is unusable there. The
+phase chain's `refactor_events` reads the test framework's event stream and is
+populated in both arms: 16.6 ± 2.4 shared-context against 30.6 ± 9.7 isolated
+(F-2.4.5). Neither profile is needed just to make the step observable.
 
 ### Operational notes for Opus 5.5
 
@@ -103,15 +104,15 @@ isolated profile or gate on correctness and code quality instead.
   model — a silent context confound, not just a warning.
 - **Cost comparisons against Opus 5 are decided by the tariff, not by the model.**
   Opus 5.5 prices cache reads at 0.05× base input ($0.20/MTok) against Opus 5's
-  0.1× ($0.50). Under this workflow Opus 5.5 spends 70 % *more* tokens and still
-  costs 16 % less. Read `total_tokens` before `cost_usd`.
-- **The TDD-discipline instrumentation does not measure on Opus 5.5.** It emits
-  6–9 text blocks against 131–153 thinking blocks, where Opus 5 emits 75–99 text
-  and no thinking at all; thinking content is encrypted in the transcript. The
-  text-derived markers therefore go erratic rather than cleanly absent
-  (`predictions_total` 2/0/2/8/0, `cycle_count` 1/100/1/1/2 across five runs).
-  Anyone developing a workflow against Opus 5.5 must gate on correctness and
-  code quality, not on `refactorings_applied` or `predictions_correct_rate`.
+  0.1× ($0.50). Under this workflow Opus 5.5 spends 8 % *more* tokens and still
+  costs 42 % less (F-2.4.4). Read `total_tokens` before `cost_usd`.
+- **The text-derived TDD markers do not measure on Opus 5.5; the phase chain
+  does.** In the shared-context arm Opus 5.5 emits 7–14 text blocks against
+  134–145 thinking blocks, where Opus 5 emits 102–126 text blocks and no
+  thinking at all; thinking content is encrypted in the transcript. Gate on the
+  phase-chain columns (`red_batch_max`, `tdd_discipline_step`,
+  `refactor_events`), correctness and code quality, not on
+  `refactorings_applied`, `predictions_*` or `cycle_count` (F-2.4.5).
 
 `exact-ptdd-v1-cc` is the canonical product name for the content measured as
 `exact-sol-v1.6-test-list-dimensions-cc`. The rename changes no
