@@ -74,12 +74,19 @@ subtrees.
 - **Read `experiments/workflows/MARKERS.md` first** (hard parser requirements — four markers drive all TDD metrics; altering one silently zeros the corresponding metric, no error). **For content design** (Theory-of-Mind / Why-Block pattern, reduction learnings from RQ-rules/RQ-pep/RQ-emoji/RQ-lean, Skill-vs-Subagent architecture gradient): `research/workflow-dev/workflow-construction.md`.
 - Smoke-test after every workflow change:
   ```bash
-  jq '.summary_metrics + .final_metrics | {cycle_count, refactorings_applied, predictions_correct, predictions_total, tests_passing}' experiments/runs/<latest>/metrics.json
+  jq '.summary_metrics + .final_metrics | {cycles_closed, refactor_events, red_batch_max, predictions_correct, predictions_total, tests_passing}' experiments/runs/<latest>/metrics.json
   ```
-  Healthy: `cycle_count >= 3`, `refactorings_applied >= 1`, `predictions_total ~ 2 * cycle_count`.
-  The block merge is load-bearing: the four TDD markers live in `summary_metrics`,
-  only `tests_passing` in `final_metrics`. Querying `.final_metrics` alone returns
-  four `null`s and makes every healthy run look broken.
+  Healthy: `cycles_closed >= 3`, `refactor_events >= 1`, `red_batch_max == 1` for
+  workflows that write one test at a time, `predictions_total ~ 2 * cycles_closed`
+  for predictive workflows. A Predictive-TDD run on GPT-6.1 Sol / Claim Office reads
+  e.g. 26 / 19 / 1 / 97 / 100.
+  The first three come from the phase chain (the stack's TDD event reporter); `null`
+  there means the reporter wrote nothing, not that the agent skipped TDD.
+  `cycle_count` and `refactorings_applied` are gone from new runs — older runs carry
+  them as `legacy_cycle_count` / `legacy_refactorings_applied`, so querying the old
+  names returns `null` on every healthy run.
+  The block merge is load-bearing: the TDD fields live in `summary_metrics`, only
+  `tests_passing` in `final_metrics`.
 
 ### Writing findings
 

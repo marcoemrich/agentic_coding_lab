@@ -377,25 +377,34 @@ After reducing/changing a workflow, run **one** smoke run and check
 `metrics.json`:
 
 ```bash
-jq '.final_metrics | {
-  cycle_count, refactorings_applied,
+jq '.summary_metrics + .final_metrics | {
+  cycles_closed, refactor_events, red_batch_max,
   predictions_correct, predictions_total,
   tests_passing
 }' experiments/runs/<latest-smoke-run>/metrics.json
 ```
 
+The merge matters: the TDD fields live in `summary_metrics`, `tests_passing`
+in `final_metrics`.
+
 Healthy baseline (game-of-life, 4–6 tests):
 
-- `cycle_count >= 3` — phases were detected
-- `refactorings_applied >= 1` — refactor skill fired
-- `predictions_total ≈ 2 × cycle_count` — both prediction lines made it
+- `cycles_closed >= 3` — the phase chain saw Red→Green cycles close
+- `refactor_events >= 1` — a refactor happened between green suite runs
+- `red_batch_max == 1` — one failing test at a time, for workflows that
+  demand it
+- `predictions_total ≈ 2 × cycles_closed` — both prediction lines made it
   through (does **not** apply to workflows permitting already-green cycles,
   e.g. `basic-sol-tdd-*` — see the exception under "Convention for marker 3")
 - `predictions_correct / predictions_total` plausible (not 0/0)
 - `tests_passing == true`
 
-If any of these are zero or null while the run otherwise looks fine, a
-marker is broken — fix it before launching the n=3 batch.
+The first three come from the phase chain, which reads the stack's TDD event
+reporter rather than these markers; a `null` there points at the reporter,
+not at the workflow. If the prediction fields are zero or null while the run
+otherwise looks fine, a marker is broken — fix it before launching the
+batch. `cycle_count` and `refactorings_applied` are no longer written; older
+runs carry them as `legacy_cycle_count` / `legacy_refactorings_applied`.
 
 ## Cross-reference
 
