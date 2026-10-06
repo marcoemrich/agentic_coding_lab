@@ -1844,6 +1844,9 @@ EOF
             .summary_metrics.tdd_discipline_test_first = ($chain.tdd_discipline_test_first // null) |
             .summary_metrics.tdd_discipline_step = ($chain.tdd_discipline_step // null) |
             .summary_metrics.tdd_discipline_closure = ($chain.tdd_discipline_closure // null) |
+            .summary_metrics.verification_tests = ($chain.verification_tests // null) |
+            .summary_metrics.verification_red = ($chain.verification_red // null) |
+            .summary_metrics.tdd_after_cutoff = ($chain.tdd_after_cutoff // null) |
             .summary_metrics.avg_cycle_seconds = $avg_cycle |
             .summary_metrics.avg_red_seconds = $avg_red |
             .summary_metrics.avg_green_seconds = $avg_green |

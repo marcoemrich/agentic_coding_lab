@@ -113,6 +113,36 @@ hybrid branch `exact-hybrid-v3..v8-cc`. Those descend from
 decomposition reference, not a product profile. A reduction measured there
 would not transfer to the line anyone ships, which is why it was not pursued.
 
+### The `verification` group — a marker in the test code, not in the output
+
+One marker lives in the **tests the agent writes**, not in its assistant text,
+and it is read by `tdd-report.py`, not by a transcript parser: a test-list
+workflow may place tests it expects to pass in a group named `verification`,
+after all driving tests. The first suite run in which such a test runs ends
+the TDD part of the phase chain; `tdd_discipline` and the cycle metrics read
+only what comes before it. Full rule: `README.md` → "Verification tests and
+the cutoff".
+
+| Stack | The group must be | Read from the test name as |
+|---|---|---|
+| `typescript-vitest` | `describe("verification", …)` | `… > verification > …` |
+| `python-pytest` | `class TestVerification` | `…::TestVerification::…` |
+| `java-junit-maven` | `@Nested class Verification` | `[nested-class:Verification]` |
+| `rust-cargo` | `mod verification` | `…::verification::…` |
+
+The match is on the **container**, ignoring case, separators and a
+`test`/`tests` prefix or suffix. A translated or extended name
+(`describe("verifikation")`, `class CombinationVerification`) is not
+recognised, and nothing fails: the verification tests then arrive as
+ordinary `Skip`s and the run scores exactly like a workflow without the split.
+The four stack profiles of `exact-ptdd-v1.2-verification-split-*` therefore
+say "named exactly" and "do not translate or extend it". A workflow that
+copies the split must keep that wording.
+
+Check after a smoke run: `jq '.summary_metrics.verification_tests'` on the
+run's `metrics.json` should be above zero; 0 with a visibly split test file
+means the name did not match.
+
 Two cautions for whoever reads the tables below as a checklist. A `##` string
 inside a command file is often a *document* heading, not an output obligation —
 `## Green Phase Rules` in the hybrid line's `green.md` is section structure, and

@@ -1104,6 +1104,47 @@ score smuggles one back in. They stay separate and take no trophy.
 `tdd_discipline` is null, not 0, when any component is unmeasurable —
 unmeasurable is not the same as undisciplined.
 
+#### Verification tests and the cutoff
+
+A test-list workflow can separate the tests that drive the implementation from
+**verification tests** — tests written to confirm behaviour the TDD part already
+built, typically combinations across specification dimensions, and therefore
+expected to arrive green. The workflow runs the TDD tests first and the
+verification tests after them.
+
+`tdd-report.py` recognises a verification test by a **container** named
+`verification`, never by the leaf name (a TDD test may be called
+`test_verification_of_input`). Per stack:
+
+| Stack | Convention | Appears in the event as |
+|---|---|---|
+| `typescript-vitest` | `describe("verification", …)` | `src/x.spec.ts > verification > …` |
+| `python-pytest` | `class TestVerification` or `test_verification.py` | `tests/x.py::TestVerification::test_a` |
+| `java-junit-maven` | `@Nested class Verification` | `[…]/[nested-class:Verification] > a()` |
+| `rust-cargo` | `mod verification` | `tests::verification::a` |
+
+The match ignores case, separators and a `test`/`tests` prefix or suffix, so
+`Verification Tests` and `VerificationTest` count as well.
+
+**The cutoff.** The first suite invocation at which a verification test arrives
+— runs for the first time, green or red — ends the TDD part. The cycle metrics
+and the score read only the invocations before it. A verification test arriving
+green is labelled `Verified` (healthy) instead of `Skip`. Reclassifying a test as
+verification is legitimate as long as it happens before the test first runs: a
+test that already ran green as a TDD test is a `Skip` in an event that is
+already written, and renaming it afterwards does not change that event.
+
+| Metric | Description |
+|---|---|
+| `verification_tests` | Distinct verification tests that ran. How much the score leaves out — always report it alongside `tdd_discipline`. |
+| `verification_red` | Verification tests that arrived red and needed a cycle after all. The hit rate of the split. Lower is better. |
+| `tdd_after_cutoff` | Non-verification tests that arrived only after verification began: TDD work the score does not see. Lower is better. |
+
+Read the whole run, not just the TDD part: `chain_suite_runs`,
+`chain_opens_red`, `chain_ends_green` and `refactor_events` (a refactor in the
+verification part is still a refactor). For a workflow without a verification
+group the cutoff never fires and every column reads exactly as before.
+
 #### Comparability: the test-list boundary
 
 **`tdd_discipline` and its Skip-fed columns are not comparable across workflows

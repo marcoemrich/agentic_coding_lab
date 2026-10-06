@@ -21,7 +21,7 @@ Usage:
   ./tdd-report.py <run-dir> --chain      # just the one-line chain
   ./tdd-report.py <run-dir> -o FILE      # write to FILE
 """
-import argparse, json, sys
+import argparse, json, re, sys
 from pathlib import Path
 
 TEST_MARKERS = (".spec.", ".test.", "_test.", "test_")
@@ -38,6 +38,34 @@ def is_test(path):
     return any(m in p for m in TEST_MARKERS) or "/test/" in p or p.startswith("test/")
 
 
+# Verification tests: written to confirm behaviour the TDD part already built,
+# so they are *expected* to arrive green. A test-list workflow puts them after
+# the tests that drive the implementation, and the discipline score stops where
+# they begin — a green arrival there is the plan working, not a `Skip`.
+#
+# Recognised by a container named "verification", never by the leaf name: a
+# TDD test may well be called `test_verification_of_input`. The container is
+# whatever the stack groups by, and each reporter already writes the full path:
+#   vitest   `src/x.spec.ts > verification > ...`      describe("verification")
+#   pytest   `tests/x.py::TestVerification::test_a`    class TestVerification
+#   JUnit    `[...]/[nested-class:Verification] > a()` @Nested class Verification
+#   cargo    `tests::verification::a`                  mod verification
+SEGMENT_SPLIT = re.compile(r" > |::|/")
+
+
+def _container_is_verification(seg):
+    seg = seg.strip("[]").rsplit(":", 1)[-1]        # JUnit `[nested-class:X]`
+    seg = re.sub(r"\.\w+$", "", seg)                # file extension
+    s = re.sub(r"[\s_-]", "", seg.lower())
+    s = re.sub(r"^tests?", "", s)
+    s = re.sub(r"tests?$", "", s)
+    return s == "verification"
+
+
+def is_verification(name):
+    return any(_container_is_verification(s) for s in SEGMENT_SPLIT.split(name)[:-1])
+
+
 # label -> (symbol, meaning). `ok` marks the four labels that make up a healthy
 # cycle; everything else is a deviation worth seeing in the chain.
 LABELS = {
@@ -51,6 +79,7 @@ LABELS = {
     "Break(c)": ("Break(c)", "implementation change broke compilation of a green suite", False),
     "Both":     ("Both",     "test and implementation changed together — no verified red", False),
     "Skip":     ("Skip",     "test arrived and passed immediately — never red",    False),
+    "Verified": ("Verified", "verification test arrived and passed, as planned",   True),
     "Drop":     ("Drop",     "tests were removed",                                 False),
     "Break":    ("Break",    "implementation change broke a green suite",          False),
     "Start":    ("Start",    "first invocation",                                   True),
@@ -163,7 +192,12 @@ def classify(prev, cur, state):
             # are where a permanently red test shows up.
             return commit("Red", grew)
         dropped = n_cur < n_prev and not cur.get("partial")
-        return commit("Drop" if dropped else "Skip", set())
+        if dropped:
+            return commit("Drop", set())
+        arrived = (now_passing | now_failing) - state["seen"]
+        if arrived and all(is_verification(n) for n in arrived):
+            return commit("Verified", set())
+        return commit("Skip", set())
 
     # implementation only
     if compile_broken:
@@ -183,14 +217,34 @@ def build(events):
     # `open` = the tests the current cycle put in the red, `clean` = the
     # failing set as last actually observed.
     # `full_total` = test count of the last invocation not marked partial.
-    state = {"open": set(), "clean": set(), "pending_red": False, "full_total": None}
+    # `seen` = every test name that has run so far; a name outside it at an
+    # event is a test that arrived there.
+    state = {"open": set(), "clean": set(), "pending_red": False, "full_total": None,
+             "seen": set()}
     for ev in events:
         label, changed = classify(prev, ev, state)
-        rows.append({"ev": ev, "label": label, "changed": changed})
+        ran = _names(ev, "passed_tests") | _names(ev, "failed_tests")
+        rows.append({"ev": ev, "label": label, "changed": changed,
+                     "arrived": ran - state["seen"]})
+        state["seen"] |= ran
         if not ev.get("partial"):
             state["full_total"] = (ev.get("tests") or {}).get("total") or 0
         prev = ev
     return rows
+
+
+def verification_cutoff(rows):
+    """Index of the first row at which a verification test arrived, else len.
+
+    Everything before it is the TDD part and is what the discipline score
+    reads. A verification test arriving red cuts here too: it was planned as
+    verification, so its cycle belongs to the verification part and shows up
+    in `verification_red`, not in the score.
+    """
+    for i, r in enumerate(rows):
+        if any(is_verification(n) for n in r["arrived"]):
+            return i
+    return len(rows)
 
 
 def chain(rows, collapse_verify=True):
@@ -290,7 +344,23 @@ def _median(xs):
 
 
 def metrics(rows):
-    """The derived metric set. One source, one derivation, no markers."""
+    """The derived metric set. One source, one derivation, no markers.
+
+    The cycle metrics and the score read only the TDD part — the rows before
+    the first verification test (`verification_cutoff`). For a workflow without
+    a verification group that is the whole run, so nothing changes for it.
+    Run-level facts (`suite_runs`, `opens_red`, `ends_green`) and
+    `refactor_events` read the whole run: a refactor in the verification part
+    is still a refactor.
+    """
+    cut = verification_cutoff(rows)
+    full, rows = rows, rows[:cut]
+    after = full[cut:]
+    v_arrived = [n for r in after for n in r["arrived"] if is_verification(n)]
+    v_red = [n for r in after for n in r["arrived"]
+             if is_verification(n) and n in _names(r["ev"], "failed_tests")]
+    tdd_late = [n for r in after for n in r["arrived"] if not is_verification(n)]
+
     counts = {}
     for r in rows:
         counts[r["label"]] = counts.get(r["label"], 0) + 1
@@ -356,7 +426,7 @@ def metrics(rows):
 
     return {
         # denominators — never read the rates without them
-        "suite_runs": len(rows),
+        "suite_runs": len(full),
         "cycles_total": len(cyc),
         "cycles_closed": closed,
         # the discipline metric: did a verified failure precede the code?
@@ -372,15 +442,23 @@ def metrics(rows):
         # replaces: `refactor_events` for refactorings_applied, `skip_events`
         # for tests_passed_immediately (a test that arrived already passing is
         # exactly what that marker metric was counting).
-        "refactor_events": g("Refactor", 0),
+        "refactor_events": sum(1 for r in full if r["label"] == "Refactor"),
         "skip_events": g("Skip", 0),
         # ambivalent — no trophy (run-rq SKILL.md trophy convention)
         "refactor_per_cycle": round(g("Refactor", 0) / closed, 3) if closed else None,
         "green_attempts": round(attempts / closed, 3) if closed else None,
         # pathologies, summed; the chain in tdd-report.md has the detail
         "deviations": deviations,
-        "opens_red": rows[0]["label"] in ("Red", "Red(c)") if rows else None,
-        "ends_green": (not suite_failed_of(rows[-1]["ev"])) if rows else None,
+        "opens_red": full[0]["label"] in ("Red", "Red(c)") if full else None,
+        "ends_green": (not suite_failed_of(full[-1]["ev"])) if full else None,
+        # The verification part, after the cutoff. `verification_red` are
+        # tests planned as verification that needed a cycle after all — the
+        # hit rate of the split. `tdd_after_cutoff` are non-verification tests
+        # that arrived only after verification began: TDD work the score does
+        # not see, which is why it is reported rather than dropped.
+        "verification_tests": len(set(v_arrived)),
+        "verification_red": len(set(v_red)),
+        "tdd_after_cutoff": len(set(tdd_late)),
         # one number, 0..1, higher = more disciplined. Null when any component
         # is unmeasurable. Always report the three components with it.
         "tdd_discipline": discipline,
@@ -407,6 +485,13 @@ def render(run_dir, rows):
             f"`{d}` ×{counts[d]} ({LABELS[d][1]})" for d in sorted(deviations)), ""]
     else:
         out += ["No deviations — every invocation falls in the healthy vocabulary.", ""]
+
+    cut = verification_cutoff(rows)
+    if cut < len(rows):
+        out += [f"Verification part begins at invocation "
+                f"{rows[cut]['ev'].get('seq', cut + 1)}. The cycle metrics and "
+                f"`tdd_discipline` read only the invocations before it; the "
+                f"cycle list below shows the whole run.", ""]
 
     m = metrics(rows)
     out += ["## Metrics", "", "| Metric | Value |", "|---|---:|"]
