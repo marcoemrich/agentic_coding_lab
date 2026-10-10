@@ -63,6 +63,16 @@
 #   discarded   rejected — lives under _archive/, aggregate-by-query aborts
 #   vendored    third-party code, no own development line
 #
+# ---------------------------------------------------------------------------
+# description vs. note
+# ---------------------------------------------------------------------------
+#   description  Optional prose for outsiders, shown on the results site: what
+#                kind of workflow this is, its arm and what sets it apart.
+#                No RQ ids, no metric values. Long text may switch the entry
+#                to block style.
+#   note         Lab-facing remark (driver RQ, measured effect, caveat).
+#                Never shown on the results site.
+#
 # parent is mandatory except for roots. If the parent's arm differs from the
 # own arm, that is an arm jump: --check reports it as such instead of
 # silently waving it through. See exact-single-context-v3-no-subagent-cc.

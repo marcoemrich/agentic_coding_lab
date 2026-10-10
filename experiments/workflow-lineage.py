@@ -92,6 +92,10 @@ def check(data, index):
         if e.get("harness") not in VALID_HARNESS:
             errors.append(f"{name}: unknown harness {e.get('harness')!r}")
 
+        desc = e.get("description")
+        if desc is not None and not (isinstance(desc, str) and desc.strip()):
+            errors.append(f"{name}: description must be non-empty text")
+
         parent = e.get("parent")
         if parent and parent not in index:
             errors.append(f"{name}: parent {parent!r} does not exist")
