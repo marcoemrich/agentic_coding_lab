@@ -19,11 +19,11 @@ outcomes:
   - completed_within_budget
   # Complete code-quality surface currently provided by the pipeline
   - code_mass
-  - cc_loc
-  - cc_functions
-  - cc_avg_loc_per_function
-  - cc_median_loc_per_function
-  - cc_longest_function
+  - production_loc
+  - functions
+  - avg_loc_per_function
+  - median_loc_per_function
+  - longest_function
   - cognitive_max
   - cognitive_avg
   - cognitive_high_count
@@ -102,7 +102,7 @@ model and container image.
 
 All code-quality metrics currently emitted by the analysis pipeline are included:
 Code Mass (APP), Production LoC, function count and length distribution,
-`cc_longest_function`, cognitive complexity, McCabe complexity, Smell Total and all
+`longest_function`, cognitive complexity, McCabe complexity, Smell Total and all
 smell sub-counters. Test LoC is included because Ponytail explicitly advocates a
 single smallest runnable check and could otherwise shrink tests rather than
 production code.
@@ -130,7 +130,7 @@ batch plan; do not add it after seeing results.
   at least part of the function-shape, cognitive, McCabe or smell surface rather
   than merely reducing line count.
 - **H3 — compression trade-off:** Ponytail lowers mass or LoC but worsens
-  `cc_longest_function`, average/median function length, cognitive complexity, McCabe
+  `longest_function`, average/median function length, cognitive complexity, McCabe
   complexity or smells. This is compression, not an unqualified quality gain.
 - **H4 — safety/test erosion:** Ponytail reduces external correctness, Mutation
   Score or Test LoC enough to explain apparent production-code gains. In that

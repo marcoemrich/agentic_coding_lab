@@ -22,8 +22,8 @@ outcomes:
   - cost_usd
   # is the kata substantial enough to show refactoring effects?
   - lines_of_code
-  - cc_longest_function
-  - cc_avg_loc_per_function
+  - longest_function
+  - avg_loc_per_function
   - cognitive_max
   - mccabe_max
   - smell_total
@@ -129,7 +129,7 @@ claim-office `baseline-inline-tdd-v1-cc` scores **1.00 in all five runs** (5 min
 tokens) while `exact-hybrid-v6-lab-split-cc` scores 0.947 (86 min, 128 M tokens).
 
 The two workflows *do* separate — but on decomposition
-(`cc_longest_function` 25 vs 14, `cognitive_max` 5 vs 3,
+(`longest_function` 25 vs 14, `cognitive_max` 5 vs 3,
 `refactorings_applied` 2 vs 42), not on correctness. Since this RQ asks
 whether the kata can carry the **correctness** role, a probe that does not
 move correctness is useless here. That workflow gap is the subject of

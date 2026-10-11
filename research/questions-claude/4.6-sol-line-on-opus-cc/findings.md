@@ -17,9 +17,9 @@ i.e. per column pair, since the question is which workflow wins on a given model
 |---|---:|---:|---:|---:|---:|---:|---|
 | Correctness (external) `verification_pct` | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | 80 % | 99 % | higher = better |
 | Correctness (internal) `tests_passing` | 100 % | 100 % | 100 % | 100 % | 100 % | 100 % | higher = better |
-| `cc_avg_loc_per_function` | 8.81 ± 1.71 | 8.90 ± 1.65 | **6.65 ± 0.69** 🏆 | 7.86 ± 1.60 | 4.24 ± 0.67 | **4.40 ± 0.42** 🏆 | lower = better |
-| `cc_median_loc_per_function` | 7.70 | 7.17 | **6.00** 🏆 | 6.70 | 2.00 ± 0.00 | **2.00 ± 0.00** 🏆 | lower = better |
-| `cc_longest_function` | 23.4 | 24.3 | **19.4 ± 3.58** 🏆 | **22.4 ± 4.51** 🏆 | 24.6 | 23.4 | lower = better |
+| `avg_loc_per_function` | 8.81 ± 1.71 | 8.90 ± 1.65 | **6.65 ± 0.69** 🏆 | 7.86 ± 1.60 | 4.24 ± 0.67 | **4.40 ± 0.42** 🏆 | lower = better |
+| `median_loc_per_function` | 7.70 | 7.17 | **6.00** 🏆 | 6.70 | 2.00 ± 0.00 | **2.00 ± 0.00** 🏆 | lower = better |
+| `longest_function` | 23.4 | 24.3 | **19.4 ± 3.58** 🏆 | **22.4 ± 4.51** 🏆 | 24.6 | 23.4 | lower = better |
 | `cognitive_max` | 7.0 ± 2.24 | 5.33 ± 1.86 | **4.6 ± 1.82** 🏆 | **3.4 ± 0.89** 🏆 | 3.6 ± 1.14 | 3.6 ± 1.14 | lower = better |
 | `mccabe_max` | 6.0 | 5.33 | **4.4** 🏆 | 4.0 ± 0.71 | 4.0 | **3.8 ± 0.84** 🏆 | lower = better |
 | Smell Total | **0.0** 🏆 | **0.0** 🏆 | **0.0** 🏆 | **0.0** 🏆 | 1.0 | 0.2 | lower = better |
@@ -57,7 +57,7 @@ on the same decomposition metric:
 | 2 | `inline-tdd-v1` 8.45 | `exact-sol-v1-cc` 6.65 | `exact-sol-v1-cc` 7.86 |
 | 3 | `hybrid-v4.2` (APP) 9.52 | `inline-tdd-v1` 8.81 | `inline-tdd-v1` 8.90 |
 
-Values are `cc_avg_loc_per_function`, lower = better. The best workflow on Sol is the
+Values are `avg_loc_per_function`, lower = better. The best workflow on Sol is the
 worst on Opus and vice versa — a full reversal, not a reshuffle in the middle.
 
 The two Opus generations agree with each other and disagree with Sol, so this is not
@@ -85,10 +85,10 @@ The decomposition metrics rank the three workflows in the opposite order from
 
 | Metric | inline-tdd-v1 | exact-sol-v1-cc | hybrid-v4 (APP) | Direction |
 |---|---:|---:|---:|---|
-| `cc_avg_loc_per_function` · o4-8 | 8.81 | 6.65 | **4.24** | lower = better |
-| `cc_avg_loc_per_function` · o5 | 8.90 | 7.86 | **4.40** | lower = better |
-| `cc_median_loc_per_function` · o4-8 | 7.70 | 6.00 | **2.00** | lower = better |
-| `cc_median_loc_per_function` · o5 | 7.17 | 6.70 | **2.00** | lower = better |
+| `avg_loc_per_function` · o4-8 | 8.81 | 6.65 | **4.24** | lower = better |
+| `avg_loc_per_function` · o5 | 8.90 | 7.86 | **4.40** | lower = better |
+| `median_loc_per_function` · o4-8 | 7.70 | 6.00 | **2.00** | lower = better |
+| `median_loc_per_function` · o5 | 7.17 | 6.70 | **2.00** | lower = better |
 
 The gap is far outside 1 σ on every row (σ 0.42–1.71) and the median is the sharper
 signal: hybrid-v4 lands at exactly 2.00 with σ = 0.00 in all ten runs across both models.
@@ -97,7 +97,7 @@ production LoC, i.e. half of them are two lines or shorter, while the native lin
 builds 14–20 larger functions from a comparable spec.
 
 On Sol the same comparison ran the other way: `exact-sol-v1-pi` reached
-`cc_avg_loc_per_function` 6.60 against 9.52 for `exact-hybrid-v4.2-phase-continuation-pi`
+`avg_loc_per_function` 6.60 against 9.52 for `exact-hybrid-v4.2-phase-continuation-pi`
 (F-1.17.1). **The workflow that decomposes worst on Sol decomposes best on Opus.**
 
 This supports H2: the APP mass table is not inherently decomposition-hostile. Both
@@ -112,9 +112,9 @@ style — this is the comparison the recommendation rests on:
 | Metric | exact-sol-v1-cc | hybrid-v4 (APP) | Direction |
 |---|---:|---:|---|
 | Correctness (external) | **100 %** 🏆 | 99 % | higher = better |
-| `cc_avg_loc_per_function` | 7.86 ± 1.60 | **4.40 ± 0.42** 🏆 | lower = better |
-| `cc_median_loc_per_function` | 6.70 | **2.00 ± 0.00** 🏆 | lower = better |
-| `cc_longest_function` | **22.4 ± 4.51** 🏆 | 23.4 ± 5.81 | lower = better |
+| `avg_loc_per_function` | 7.86 ± 1.60 | **4.40 ± 0.42** 🏆 | lower = better |
+| `median_loc_per_function` | 6.70 | **2.00 ± 0.00** 🏆 | lower = better |
+| `longest_function` | **22.4 ± 4.51** 🏆 | 23.4 ± 5.81 | lower = better |
 | `cognitive_max` | **3.4 ± 0.89** 🏆 | 3.6 ± 1.14 | lower = better |
 | `mccabe_max` | 4.0 ± 0.71 | **3.8 ± 0.84** 🏆 | lower = better |
 | Smell Total | **0.0 ± 0.00** 🏆 | 0.2 ± 0.45 | lower = better |
@@ -128,7 +128,7 @@ Read as three groups:
 - **Decomposition — hybrid-v4, decisively.** 1.8× on the mean, 3.4× on the median, both far
   outside 1 σ. Concretely: 22–34 functions for 238–403 production LoC against 14–20
   larger ones.
-- **Complexity — a tie.** `cognitive_max`, `mccabe_max` and `cc_longest_function` all sit
+- **Complexity — a tie.** `cognitive_max`, `mccabe_max` and `longest_function` all sit
   within 1 σ of each other and split 2:1 in favour of the native line. These metrics do
   not see the difference the length metrics see, exactly as the blind spot predicts.
 - **Cost and correctness — the native line.** 3.4× cheaper, 3.6× faster, and 5/5 perfect
@@ -143,7 +143,7 @@ The APP brief exists to minimise Code Mass. On Sol it succeeded at that and paid
 in structure — lowest mass (492) and worst decomposition of the field (F-1.17.1). On
 Opus it achieves neither:
 
-| Cell | Code Mass (APP) | `cc_avg_loc_per_function` |
+| Cell | Code Mass (APP) | `avg_loc_per_function` |
 |---|---:|---:|
 | hybrid-v4 · o4-8 | 895.0 | 4.24 |
 | hybrid-v4 · o5 | 928.8 | 4.40 |
@@ -168,8 +168,8 @@ models, at equal (perfect) correctness:
 
 | Metric | inline-tdd-v1 · o4-8 | sol-cc · o4-8 | inline-tdd-v1 · o5 | sol-cc · o5 | Direction |
 |---|---:|---:|---:|---:|---|
-| `cc_avg_loc_per_function` | 8.81 | **6.65** | 8.90 | **7.86** | lower = better |
-| `cc_longest_function` | 23.4 | **19.4** | 24.3 | **22.4** | lower = better |
+| `avg_loc_per_function` | 8.81 | **6.65** | 8.90 | **7.86** | lower = better |
+| `longest_function` | 23.4 | **19.4** | 24.3 | **22.4** | lower = better |
 | `cognitive_max` | 7.0 | **4.6** | 5.33 | **3.4** | lower = better |
 | `mccabe_max` | 6.0 | **4.4** | 5.33 | **4.0** | lower = better |
 | Code Mass (APP) | 927.0 | **723.8** | 758.2 | **631.4** | lower = better |
@@ -229,7 +229,7 @@ option at 6.9× the floor (F-1.16.1).
 F-4.6.2 establishes that hybrid-v4 decomposes better on Opus. It does not come free, and the
 exchange rate is unfavourable on both models. Comparing the two structured lines directly
 — inline-tdd-v1 is not a reference here, its quality is inadequate on Opus and its wide spread
-(`cc_avg_loc_per_function` σ 1.65–1.71) makes it a poor baseline for a marginal figure:
+(`avg_loc_per_function` σ 1.65–1.71) makes it a poor baseline for a marginal figure:
 
 | Model | hybrid-v4 duration | vs. native line | Decomposition gain | **Seconds per point** |
 |---|---:|---:|---:|---:|
@@ -238,7 +238,7 @@ exchange rate is unfavourable on both models. Comparing the two structured lines
 
 Duration grows faster than quality on both models: roughly four times the wallclock buys
 about one and a half times the decomposition. Expressed per unit, each point of
-`cc_avg_loc_per_function` costs 12.6 minutes of additional runtime on opus-5 and 22.1
+`avg_loc_per_function` costs 12.6 minutes of additional runtime on opus-5 and 22.1
 minutes on opus-4-8.
 
 Two qualifications keep this from being a blanket verdict for the native line:
@@ -247,7 +247,7 @@ Two qualifications keep this from being a blanket verdict for the native line:
   opus-5 — and the reason is not that hybrid-v4 improved (4.24 → 4.40, marginally worse) but
   that the native line degraded (6.65 → 7.86). The trend runs against it.
 - **It is a trade-off only on decomposition.** On every other quality metric the native
-  line already wins or ties — `cognitive_max` on opus-5, `cc_longest_function` on both, Smell
+  line already wins or ties — `cognitive_max` on opus-5, `longest_function` on both, Smell
   Total on both — while also reaching 10/10 perfect external correctness against hybrid-v4's
   80 % / 99 %. There the comparison is not "faster but coarser", it is simply faster and
   at least as good.
@@ -263,12 +263,12 @@ decision: hybrid-v4 for structure, the native line for throughput.
   is a plausible candidate on the next, not a recommendation — re-rank it against the
   floor and the incumbent before adopting it.
 - **On Opus, for claim-office-like work: `exact-hybrid-v4-cleaned-cc` on `opus-5-no-thinking`.**
-  Best decomposition in the field (`cc_avg_loc_per_function` 4.40, median 2.00) at 99 %
+  Best decomposition in the field (`avg_loc_per_function` 4.40, median 2.00) at 99 %
   correctness. Not on `opus-4-8-no-thinking` — that cell shows a total verification
   failure in one of four runs (F-4.6.5).
 - **`exact-sol-v1-cc` wins on duration/quality on both models** (F-4.6.7): hybrid-v4 needs
   3.6–4.3× the wallclock for 1.6–1.8× the decomposition, i.e. 12.6–22.1 minutes per point of
-  `cc_avg_loc_per_function`. It is also 3.4× cheaper on opus-5, reaches perfect external
+  `avg_loc_per_function`. It is also 3.4× cheaper on opus-5, reaches perfect external
   correctness in 10/10 runs, and wins or ties every quality metric except decomposition.
   Choose it whenever throughput matters or decomposition is not the binding goal.
 

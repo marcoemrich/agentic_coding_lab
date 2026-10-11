@@ -16,8 +16,8 @@ outcomes:
   - refactorings_applied
   - predictions_correct_rate
   - tests_passed_immediately
-  - cc_avg_loc_per_function
-  - cc_longest_function
+  - avg_loc_per_function
+  - longest_function
   - cognitive_max
   - mccabe_max
   - smell_total

@@ -28,8 +28,8 @@ outcomes:
   - cognitive_avg
   - mccabe_max
   - mccabe_avg
-  - cc_longest_function
-  - cc_avg_loc_per_function
+  - longest_function
+  - avg_loc_per_function
   - lines_of_code
   - code_mass
   - smell_total

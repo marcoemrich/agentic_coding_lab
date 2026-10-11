@@ -62,16 +62,16 @@ Mutation Score higher = better; every other trophied row lower = better.
 | `cognitive_max` | 35.4 ± 11.2 | **4.6 ± 1.52** 🏆 | **5.2 ± 1.79** 🏆 |
 | `cognitive_avg` | 12.41 ± 9.27 | **2.10 ± 0.28** 🏆 | **2.38 ± 0.46** 🏆 |
 | `mccabe_max` | 14.4 ± 3.65 | **4.4 ± 0.55** 🏆 | **5.4 ± 1.67** 🏆 |
-| `cc_avg_loc_per_function` | 22.5 ± 10.7 | **5.57 ± 0.69** 🏆 | **5.97 ± 1.24** 🏆 |
-| `cc_median_loc_per_function` | 19.3 ± 14.6 | **3.6 ± 1.08** 🏆 | **4.2 ± 1.10** 🏆 |
-| `cc_longest_function` | 36.0 ± 6.16 | **20.0 ± 10.3** 🏆 | **19.4 ± 2.61** 🏆 |
+| `avg_loc_per_function` | 22.5 ± 10.7 | **5.57 ± 0.69** 🏆 | **5.97 ± 1.24** 🏆 |
+| `median_loc_per_function` | 19.3 ± 14.6 | **3.6 ± 1.08** 🏆 | **4.2 ± 1.10** 🏆 |
+| `longest_function` | 36.0 ± 6.16 | **20.0 ± 10.3** 🏆 | **19.4 ± 2.61** 🏆 |
 | Mutation Score | **0.94 ± 0.03** 🏆 *(n=5)* | **0.77 ± 0.20** 🏆 *(n=3)* | not measurable *(n=0)* |
 | `duration_seconds` | **221 ± 34** 🏆 | 1301 ± 589 | 1825 ± 1839 |
 | `total_tokens` | **435 k** 🏆 | 4.20 M | 5.11 M |
 | `cost_usd` | **$0.21 ± 0.03** 🏆 | $1.24 ± 0.56 | $2.12 ± 2.42 |
 | *Production LoC* | 70.2 ± 10.3 | 112.8 ± 31.0 | 119.8 ± 27.2 |
 | *Code Mass (APP)* | 414.6 ± 17.7 | 655.6 ± 272.4 | 580.6 ± 101.3 |
-| *`cc_functions`* | 2.2 ± 0.84 | 12.2 ± 3.96 | 13.6 ± 8.26 |
+| *`functions`* | 2.2 ± 0.84 | 12.2 ± 3.96 | 13.6 ± 8.26 |
 | *Test LoC* | 123.4 ± 17.2 | 93.2 ± 53.3 | 114.0 ± 28.8 |
 | *`cycle_count`* | 6.8 ± 1.79 | 31.0 ± 18.0 | 13.0 ± 17.7 |
 | *`refactorings_applied`* | 0.6 ± 0.55 | 28.0 ± 16.6 | 13.4 ± 17.4 |
@@ -105,16 +105,16 @@ Same directions.
 | `cognitive_max` | 14.6 ± 8.02 | **6.0 ± 0.71** 🏆 | **5.0 ± 1.87** 🏆 |
 | `cognitive_avg` | 12.00 ± 9.43 | **2.77 ± 0.38** 🏆 | **2.23 ± 0.96** 🏆 |
 | `mccabe_max` | 7.8 ± 3.56 | **4.2 ± 0.45** 🏆 | **4.0 ± 0.71** 🏆 |
-| `cc_avg_loc_per_function` | 13.10 ± 7.21 | 6.83 ± 1.03 | **5.09 ± 0.62** 🏆 |
-| `cc_median_loc_per_function` | 13.1 ± 7.21 | **5.8 ± 2.68** 🏆 | **3.8 ± 0.84** 🏆 |
-| `cc_longest_function` | 17.8 ± 9.68 | **12.2 ± 2.17** 🏆 | **10.8 ± 1.79** 🏆 |
+| `avg_loc_per_function` | 13.10 ± 7.21 | 6.83 ± 1.03 | **5.09 ± 0.62** 🏆 |
+| `median_loc_per_function` | 13.1 ± 7.21 | **5.8 ± 2.68** 🏆 | **3.8 ± 0.84** 🏆 |
+| `longest_function` | 17.8 ± 9.68 | **12.2 ± 2.17** 🏆 | **10.8 ± 1.79** 🏆 |
 | Mutation Score | **0.95 ± 0.00** 🏆 | **0.95 ± 0.03** 🏆 | **0.95 ± 0.02** 🏆 |
 | `duration_seconds` | **118 ± 33** 🏆 | 573 ± 38 | 1258 ± 89 |
 | `total_tokens` | **158 k** 🏆 | 1.45 M | 3.03 M |
 | `cost_usd` | **$0.09 ± 0.03** 🏆 | $0.49 ± 0.05 | $1.41 ± 0.12 |
 | *Production LoC* | 24.2 ± 3.70 | 37.0 ± 4.30 | 45.2 ± 3.77 |
 | *Code Mass (APP)* | 154.2 ± 24.2 | 154.0 ± 15.9 | 168.8 ± 14.8 |
-| *`cc_functions`* | 1.6 ± 0.55 | 4.8 ± 1.10 | 8.4 ± 1.14 |
+| *`functions`* | 1.6 ± 0.55 | 4.8 ± 1.10 | 8.4 ± 1.14 |
 | *Test LoC* | 67.2 ± 9.31 | 56.2 ± 3.27 | 51.0 ± 7.58 |
 | *`cycle_count`* | 6.4 ± 2.70 | 14.0 ± 0.71 | 12.4 ± 1.34 |
 | *`refactorings_applied`* | 0.2 ± 0.45 | 14.0 ± 0.71 | 12.4 ± 1.34 |
@@ -137,7 +137,7 @@ The separation is entirely structural, and it is large:
 | `cognitive_max` | 35.4 → 4.6 (−87 %) | 14.6 → 6.0 (−59 %) |
 | `cognitive_avg` | 12.41 → 2.10 (−83 %) | 12.00 → 2.77 (−77 %) |
 | `mccabe_max` | 14.4 → 4.4 (−69 %) | 7.8 → 4.2 (−46 %) |
-| `cc_avg_loc_per_function` | 22.5 → 5.57 (−75 %) | 13.10 → 6.83 (−48 %) |
+| `avg_loc_per_function` | 22.5 → 5.57 (−75 %) | 13.10 → 6.83 (−48 %) |
 | Smell Total | 23.4 → 0.0 | 3.0 → 0.0 |
 
 This is the answer to the RQ's first half. EXACT Coding PTDD on GPT-6 Sol does
@@ -153,9 +153,9 @@ They describe a different artefact.
 
 | | B | P | P+S |
 |---|---:|---:|---:|
-| `cc_functions` (Claim Office) | 2.2 | 12.2 | 13.6 |
-| `cc_avg_loc_per_function` | 22.5 | 5.57 | 5.97 |
-| `cc_longest_function` | 36.0 | 20.0 | 19.4 |
+| `functions` (Claim Office) | 2.2 | 12.2 | 13.6 |
+| `avg_loc_per_function` | 22.5 | 5.57 | 5.97 |
+| `longest_function` | 36.0 | 20.0 | 19.4 |
 | Production LoC | 70.2 | 112.8 | 119.8 |
 | Code Mass (APP) | 414.6 | 655.6 | 580.6 |
 
@@ -185,18 +185,18 @@ GPT-6 Sol that result holds only on the small kata, and only in part.
 | `cognitive_max` | 4.6 → 5.2 (worse, inside σ) | 6.0 → 5.0 (−17 %, inside σ) |
 | `cognitive_avg` | 2.10 → 2.38 (worse, inside σ) | 2.77 → 2.23 (−19 %, inside σ) |
 | `mccabe_max` | 4.4 → 5.4 (worse, inside σ) | 4.2 → 4.0 (inside σ) |
-| `cc_avg_loc_per_function` | 5.57 → 5.97 (worse, inside σ) | 6.83 → 5.09 (**−25 %**) |
-| `cc_median_loc_per_function` | 3.6 → 4.2 (worse, inside σ) | 5.8 → 3.8 (−34 %, inside σ) |
-| `cc_longest_function` | 20.0 → 19.4 (inside σ) | 12.2 → 10.8 (inside σ) |
+| `avg_loc_per_function` | 5.57 → 5.97 (worse, inside σ) | 6.83 → 5.09 (**−25 %**) |
+| `median_loc_per_function` | 3.6 → 4.2 (worse, inside σ) | 5.8 → 3.8 (−34 %, inside σ) |
+| `longest_function` | 20.0 → 19.4 (inside σ) | 12.2 → 10.8 (inside σ) |
 
 On Claim Office every structural axis moves the *wrong* way, all of them within
 one standard deviation — the honest reading is "no effect", not "harm". On Game
-of Life every axis moves the right way, but only `cc_avg_loc_per_function`
+of Life every axis moves the right way, but only `avg_loc_per_function`
 clears its standard deviation.
 
 The mechanism that did carry over is the one F-1.7.2 described: the improvement
 comes from splitting the product, not from shrinking it. On Game of Life
-`cc_functions` rises 4.8 → 8.4 (+75 %) and Code Mass (APP) 154.0 → 168.8 (+10 %)
+`functions` rises 4.8 → 8.4 (+75 %) and Code Mass (APP) 154.0 → 168.8 (+10 %)
 while the average function shrinks by a quarter.
 
 What has changed is the price of that split. On GPT-5.6 Sol the treatment cost

@@ -151,7 +151,7 @@ Exception: **deletions** of existing findings still require explicit user confir
    different kata sit in context and get written from memory instead of looked up. Cell
    names and metric names are identical across RQs — only the ranges differ, and a
    foreign value is often plausible enough to survive proofreading. (Real case,
-   2026-08-04: `cc_longest_function = 15.0` from the game-of-life RQ landed in the
+   2026-08-04: `longest_function = 15.0` from the game-of-life RQ landed in the
    claim-office RQ, where 21.4 was correct — wrong trophy, plus an interpretation
    sentence built on the wrong figure.)
 

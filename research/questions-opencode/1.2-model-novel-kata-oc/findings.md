@@ -13,7 +13,7 @@ Correctness (external) (`verification_pct`, higher = better) as primary outcome;
 | `smell_total` (mean) | lower | **0.8** 🏆 | 4.0 | 23.6 | 20 | 18 | 13.4 | 16.6 | 10.2 |
 | `cognitive_max` (mean) | lower | **9.8** 🏆 | 12.2 | 74.8 | 21.8 | 40.2 | 11.6 | 17.4 | 11.4 |
 | `mccabe_max` (mean) | lower | **7.6** 🏆 | 9.2 | 33.6 | 17.6 | 23.4 | 9.2 | 11.0 | 7.6 |
-| `cc_longest_function` (mean) | lower | **25.4** 🏆 | 28.8 | 120 | 54.4 | 98.4 | 31.6 | 42.2 | 30.0 |
+| `longest_function` (mean) | lower | **25.4** 🏆 | 28.8 | 120 | 54.4 | 98.4 | 31.6 | 42.2 | 30.0 |
 | `code_mass` (mean) | lower (at equal correctness) | **759.6** 🏆 | 816 | 712.6 | 741 | 526 | 566.2 | 554.6 | 364.4 |
 | `total_tokens` (mean) | lower (at equal correctness) | **8.06 M** 🏆 | 10.97 M | 13.65 M | 6.65 M | 7.02 M | 6.77 M | 4.46 M | 8.48 M |
 | `cost_usd` (mean, $/run) | lower (at equal correctness) | $5.90 | **$2.10** 🏆 | $24.69 † | $2.78 | $2.23 | $0.28 ‡ | $0.11 ‡ | $2.40 |
@@ -27,7 +27,7 @@ Correctness (external) (`verification_pct`, higher = better) as primary outcome;
 
 † Mistral cost is dominated by missing OpenCode prompt caching (no `prompt_cache_key`); with caching active the value would be ~$3.25/run instead of $24.69. Details in the cost section and F-1.7.
 
-**Trophy rule on correctness gating**: Trophies for quality/efficiency metrics (`smell_*`, `cognitive_*`, `mccabe_*`, `cc_*`, `duration_seconds`, `total_tokens`, `cost_usd`) are awarded only to models with `verification_pct = 1.0`. Rationale: low complexity / short duration / low cost with a non-correct implementation does not measure what the metric claims to measure, but stub or abort artifacts. In this study Opus and GLM 5.1 are vpt=1.0 — both qualify. Trophy allocation within this pool: Opus wins code quality (smells, complexity, code mass) and wallclock; GLM 5.1 wins cost. `total_tokens` to Opus (8.06 M vs 10.97 M). Mistral at vpt=0.95 narrowly drops out of the pool — see F-1.7 for the Mistral-specific profile (high correctness paired with clearly higher complexity and cost values).
+**Trophy rule on correctness gating**: Trophies for quality/efficiency metrics (`smell_*`, `cognitive_*`, `mccabe_*`, clean-code metrics (`production_loc`, `functions`, `longest_function`, `avg_loc_per_function`, `median_loc_per_function`), `duration_seconds`, `total_tokens`, `cost_usd`) are awarded only to models with `verification_pct = 1.0`. Rationale: low complexity / short duration / low cost with a non-correct implementation does not measure what the metric claims to measure, but stub or abort artifacts. In this study Opus and GLM 5.1 are vpt=1.0 — both qualify. Trophy allocation within this pool: Opus wins code quality (smells, complexity, code mass) and wallclock; GLM 5.1 wins cost. `total_tokens` to Opus (8.06 M vs 10.97 M). Mistral at vpt=0.95 narrowly drops out of the pool — see F-1.7 for the Mistral-specific profile (high correctness paired with clearly higher complexity and cost values).
 
 **Cost calculation**: per run from `transcript-metrics.json.total_tokens` × pricing per 1M tokens. Sources 2026-05-26: Anthropic pricing page (Opus), OpenRouter API `/api/oneshot-v1/models` (GLM/Kimi/MiniMax), Vertex Standard (Gemini Flash), Mistral Docs model card (Mistral Medium 3.5).
 
@@ -86,7 +86,7 @@ Two models achieve perfect correctness (external) across all 5 replicates (15/15
 | smell_total mean ± std | 0.8 ± 0.45 | 4.0 ± 6.16 | Opus 5× better |
 | cognitive_max mean ± std | 9.8 ± 1.79 | 12.2 ± 4.15 | Opus 24 % lower |
 | mccabe_max mean | 7.6 | 9.2 | Opus 21 % lower |
-| cc_longest_function mean | 25.4 | 28.8 | Opus 12 % lower |
+| longest_function mean | 25.4 | 28.8 | Opus 12 % lower |
 | code_mass mean ± std | 759.6 ± 33.8 | 816 ± 68.6 | Opus 7 % smaller, half the spread |
 | duration_seconds mean | 664 | 1726 | Opus 2.6× faster |
 | **cost_usd / run** | **$5.90** | **$2.10** | **GLM 2.8× cheaper** |
@@ -208,7 +208,7 @@ On the three perfect runs both models are correctness-stable and produce code qu
 | `smell_total` mean | 17.3 | 21.7 |
 | `cognitive_max` mean | 13.3 | 22.0 |
 | `mccabe_max` mean | 10.7 | 14.0 |
-| `cc_longest_function` mean | 40.7 | 51.3 |
+| `longest_function` mean | 40.7 | 51.3 |
 | `code_mass` mean | 738 | 702 |
 | `duration_seconds` mean | 1576 | 1163 |
 | `cycle_count` mean | 4.3 | 2.7 |
@@ -232,7 +232,7 @@ Mistral Medium 3.5 reaches `verification_pct = 0.95 ± 0.09` over n=5 replicates
 | `verification_pct` mean ± std | 0.95 ± 0.09 | 1.00 ± 0.00 | 1.00 ± 0.00 |
 | `cognitive_max` mean (range) | 74.8 (54–107) | 9.8 (8–12) | 12.2 (8–18) |
 | `mccabe_max` mean (range) | 33.6 (27–44) | 7.6 (6–9) | 9.2 (7–14) |
-| `cc_longest_function` mean (range) | 120 (0–242) | 25.4 (22–31) | 28.8 (23–39) |
+| `longest_function` mean (range) | 120 (0–242) | 25.4 (22–31) | 28.8 (23–39) |
 | `smell_total` mean | 23.6 | 0.8 | 4.0 |
 | `cycle_count` mean | 1.2 | 1.2 | 2.0 |
 | `tests_total` mean (range) | 41 (23–66) | 25.6 (4–39) | 40.2 (35–44) |
@@ -241,7 +241,7 @@ Mistral Medium 3.5 reaches `verification_pct = 0.95 ± 0.09` over n=5 replicates
 
 Observations:
 
-1. **Complexity 6–8× above Opus/GLM**: `cognitive_max` 74.8, `mccabe_max` 33.6, `cc_longest_function` 120. Mistral achieves correctness through heavily nested and long code — the single longest function blows past the outlier range at 242 LoC, twice as long as the next-highest model mean.
+1. **Complexity 6–8× above Opus/GLM**: `cognitive_max` 74.8, `mccabe_max` 33.6, `longest_function` 120. Mistral achieves correctness through heavily nested and long code — the single longest function blows past the outlier range at 242 LoC, twice as long as the next-highest model mean.
 2. **Many tests, few cycles**: 41 tests per run (GLM/Kimi level) at only 1.2 cycle calls — Mistral writes tests in large batches instead of classic TDD cycles. The workflow skill calls (red/green/refactor) are largely skipped; effectively a single-shot pattern with test-first preparation.
 3. **Highest wallclock**: ~67 min per run, 6× Opus, 2.3× GLM. Combined with the cost ($24.69/run in the current OpenCode setup), this yields the weakest efficiency point of the model set in the vpt ≥ 0.8 pool — with the caveat that the cost component is integration-driven (see below).
 

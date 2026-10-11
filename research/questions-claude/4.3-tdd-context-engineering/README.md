@@ -14,8 +14,8 @@ outcomes:
   # primary: code quality
   - code_mass
   - smell_total
-  - cc_longest_function
-  - cc_loc
+  - longest_function
+  - production_loc
   - mccabe_max
   - cognitive_max
   # secondary: correctness (internal + external + test strength)
@@ -91,7 +91,7 @@ Runs:       12 total — to be collected entirely anew (single-context-v2 and gr
 
 ## Hypotheses
 
-- **H1 (code quality)**: Isolated subagent contexts (subagents-v2) produce lower complexity metrics (`cognitive_max`, `mccabe_max`, `cc_longest_function`, `smell_total`) than the single context (single-context-v2). hybrid-v2 lies in between, closer to subagents-v2 — because the cost-intensive refactor phase runs isolated and thereby inherits the main mechanism of subagents-v2. green-refactor-v2 lies even closer to subagents-v2 than hybrid-v2, because the green-drift mechanism additionally takes effect.
+- **H1 (code quality)**: Isolated subagent contexts (subagents-v2) produce lower complexity metrics (`cognitive_max`, `mccabe_max`, `longest_function`, `smell_total`) than the single context (single-context-v2). hybrid-v2 lies in between, closer to subagents-v2 — because the cost-intensive refactor phase runs isolated and thereby inherits the main mechanism of subagents-v2. green-refactor-v2 lies even closer to subagents-v2 than hybrid-v2, because the green-drift mechanism additionally takes effect.
   Plausible mechanic: without accumulated history the green phase cannot "abstract in anticipation" and delivers the minimally necessary implementation; without refactor drift the refactor phase stays focused on pure structural improvement. With hybrid-v2 only the second mechanism acts, with green-refactor-v2 both.
 - **H2 (correctness)**: All four architectures reach similar `tests_passing` and `verification_pct` on claim-office. Correctness is not the primary bottleneck — the context-architecture effect shows up (if present) in code quality and cost, not in external correctness. Falsification: one architecture systematically hits fewer acceptance scenarios.
 - **H3 (token consumption)**: subagents-v2 consumes *fewer* tokens than single-context-v2, because isolated subagent contexts do overlap but each subagent grows linearly and briefly — whereas the single-context-v2 single context accumulates the tokens of all phases. hybrid-v2 pays for the refactor subagent in addition to the accumulated single context and therefore lies above single-context-v2 in token terms. green-refactor-v2 pays for two subagent phases (green + refactor) in addition to the single context and, as expected, lies above hybrid-v2 as well.

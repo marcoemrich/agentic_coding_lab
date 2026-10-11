@@ -8,7 +8,7 @@
 
 ## Overview — code quality, lower = better (only cells with `tests_passing` = 100 %)
 
-| Model | `smell_total` | `cognitive_max` | `mccabe_max` | `code_mass` | `cc_longest_function` | `tests_passing` |
+| Model | `smell_total` | `cognitive_max` | `mccabe_max` | `code_mass` | `longest_function` | `tests_passing` |
 |---|---|---|---|---|---|---|
 | opus-5-requesty | 2.0 | **2.4** 🏆 | **3.4** 🏆 | 151.8 | **5.8** 🏆 | 100 % |
 | glm-5-2 | **1.0** 🏆 | 7.8 | 6.6 | 178.2 | 22.6 | 100 % |
@@ -24,15 +24,15 @@
 | gpt-5-6-terra | 6.0 | 7.8 | 6.0 | 136.4 | 23.2 | 80 % |
 | qwen3-235b | 1.8 | 6.4 | 3.4 | 248.0 | 46.6 | 0 % |
 
-Direction: all five quality metrics **lower = better** (`smell_total` = **Smell Total**, `code_mass` = **Code Mass (APP)**, `cc_longest_function`). Trophies only among the correctness-complete cells (`tests_passing` = 100 %). `opus-5-requesty` takes three of the five axes outright. **Smell Total** stays with glm-5-2 (1.0 against 2.0), though the margin is soft: glm-5-2's runs range 0–3 at σ = 1.41 while every Opus 5 run landed on exactly 2 (σ = 0). At `code_mass` gpt-5-6-sol leads (134.8); opus-5-requesty is mid-field there (151.8) — it writes an ordinary amount of code, but structures it far more simply.
+Direction: all five quality metrics **lower = better** (`smell_total` = **Smell Total**, `code_mass` = **Code Mass (APP)**, `longest_function`). Trophies only among the correctness-complete cells (`tests_passing` = 100 %). `opus-5-requesty` takes three of the five axes outright. **Smell Total** stays with glm-5-2 (1.0 against 2.0), though the margin is soft: glm-5-2's runs range 0–3 at σ = 1.41 while every Opus 5 run landed on exactly 2 (σ = 0). At `code_mass` gpt-5-6-sol leads (134.8); opus-5-requesty is mid-field there (151.8) — it writes an ordinary amount of code, but structures it far more simply.
 
 ---
 
 ## F-1.1 — opus-5 breaks the complexity field, glm-5-2 holds the smell crown
 
-`opus-5-requesty` takes all three complexity axes by a wide margin: `cognitive_max` 2.4 against 6.6 for the next-best correctness-complete cell, `mccabe_max` 3.4 against 5.0, `cc_longest_function` 5.8 against 15.0. The gaps are far larger than the spread among the other green models, which sit between 6.6 and 14.0 on `cognitive_max` — a band Opus 5 undercuts by a factor of nearly three. On **Smell Total** it places second (2.0) behind `glm-5-2` (1.0).
+`opus-5-requesty` takes all three complexity axes by a wide margin: `cognitive_max` 2.4 against 6.6 for the next-best correctness-complete cell, `mccabe_max` 3.4 against 5.0, `longest_function` 5.8 against 15.0. The gaps are far larger than the spread among the other green models, which sit between 6.6 and 14.0 on `cognitive_max` — a band Opus 5 undercuts by a factor of nearly three. On **Smell Total** it places second (2.0) behind `glm-5-2` (1.0).
 
-| Model | `smell_total` | `cognitive_max` | `mccabe_max` | `cc_longest_function` | `code_mass` |
+| Model | `smell_total` | `cognitive_max` | `mccabe_max` | `longest_function` | `code_mass` |
 |---|---|---|---|---|---|
 | opus-5-requesty | 2.0 | 2.4 | 3.4 | 5.8 | 152 |
 | glm-5-2 | 1.0 | 7.8 | 6.6 | 22.6 | 178 |
@@ -42,11 +42,11 @@ Direction: all five quality metrics **lower = better** (`smell_total` = **Smell 
 
 **Interpretation.** The models spread measurably on game-of-life over `smell_total` and `cognitive_max` (H2 confirmed: the pi harness is discriminating). Among the pre-Opus-5 field the quality axes are partly orthogonal — glm-5-2 is smell-poor but sits at `cognitive_max` 7.8, sonnet is complexity-poor but at smell 2.2. `opus-5-requesty` weakens that pattern without dissolving it: it leads all three complexity axes while placing second on smell, so a model can be strong on both — but the smell crown still sits elsewhere.
 
-Two things make the complexity lead unusually solid. Its σ values are the smallest among the correctness-complete cells (`cognitive_max` σ = 0.89 against 2.12 for the next-tightest, `mccabe_max` σ = 0.89 against 1.14, `smell_total` σ = 0 — all five runs scored exactly 2), and `code_mass` stays mid-field at 151.8, so the simple structure is not bought by writing less code. `cc_median_loc_per_function` is 2.0 at σ = 0 against 2.7–13.7 across the other correctness-complete cells: functions are consistently tiny, which is what drives every complexity measure down at unchanged volume.
+Two things make the complexity lead unusually solid. Its σ values are the smallest among the correctness-complete cells (`cognitive_max` σ = 0.89 against 2.12 for the next-tightest, `mccabe_max` σ = 0.89 against 1.14, `smell_total` σ = 0 — all five runs scored exactly 2), and `code_mass` stays mid-field at 151.8, so the simple structure is not bought by writing less code. `median_loc_per_function` is 2.0 at σ = 0 against 2.7–13.7 across the other correctness-complete cells: functions are consistently tiny, which is what drives every complexity measure down at unchanged volume.
 
 The **Smell Total** ranking deserves a caveat: glm-5-2's mean of 1.0 is genuinely lower, but its runs range 0–3 while every Opus 5 run landed on exactly 2. glm-5-2 is cleaner on average and sometimes perfect, Opus 5 is never worse than 2 — at n=5 the ordering holds, the margin does not separate the two reliably.
 
-Within the Anthropic family the version jump 4.8 → 5 is the largest intra-family move in this RQ — `cognitive_max` 9.6 → 2.4, `cc_longest_function` 17.4 → 5.8 — and unlike the GLM and Kimi comparisons it carries no backprovider confound: both route over Vertex EU.
+Within the Anthropic family the version jump 4.8 → 5 is the largest intra-family move in this RQ — `cognitive_max` 9.6 → 2.4, `longest_function` 17.4 → 5.8 — and unlike the GLM and Kimi comparisons it carries no backprovider confound: both route over Vertex EU.
 
 ---
 
@@ -129,29 +129,29 @@ Direction: `cost_usd`, `duration_seconds` (wall clock), `total_tokens` — lower
 
 ## F-1.6 — The kimi version jump improves every quality axis at the same price
 
-`kimi-k3-sference` improves over `kimi-k2-7` on every quality axis — `cognitive_max` 7.0 vs. 10.8, `mccabe_max` 5.8 vs. 7.2, `smell_total` 2.4 vs. 3.0, `cc_longest_function` 15.0 vs. 21.6 — while both reach `verification_pct = 1.00` and 100 % `tests_passing`. Run cost is effectively unchanged ($0.64 vs. $0.60) at 24 % fewer tokens.
+`kimi-k3-sference` improves over `kimi-k2-7` on every quality axis — `cognitive_max` 7.0 vs. 10.8, `mccabe_max` 5.8 vs. 7.2, `smell_total` 2.4 vs. 3.0, `longest_function` 15.0 vs. 21.6 — while both reach `verification_pct = 1.00` and 100 % `tests_passing`. Run cost is effectively unchanged ($0.64 vs. $0.60) at 24 % fewer tokens.
 
-| Model | `smell_total` | `cognitive_max` | `mccabe_max` | `cc_longest_function` | `cost_usd` | `duration_seconds` | `total_tokens` |
+| Model | `smell_total` | `cognitive_max` | `mccabe_max` | `longest_function` | `cost_usd` | `duration_seconds` | `total_tokens` |
 |---|---|---|---|---|---|---|---|
 | kimi-k2-7 | 3.0 | 10.8 | 7.2 | 21.6 | $0.60 | 234 | 1.34 M |
 | kimi-k3-sference | 2.4 | 7.0 | 5.8 | 15.0 | $0.64 | 359 | 1.02 M |
 
-**Interpretation.** H1c holds: the newer Kimi generation writes measurably less complex code, and the `cognitive_max` gap (10.8 → 7.0) is larger than the GLM 5.1 → 5.2 step, though smaller than the Anthropic 4.8 → 5 jump (9.6 → 2.4, F-1.7). The `cc_longest_function` improvement moves it from mid-field to 15.0. One confound remains: the two versions route through different backproviders (K2.7 via TensorX, K3 via Sference), so provider-side differences cannot be separated from model behaviour. Cost is no longer a confound — both routes bill with a cache discount, and the 4-cent gap is inside estimate noise. The improvement costs 53 % more wall clock (234 → 359 s) while consuming fewer tokens, i.e. K3 spends longer per token rather than producing more. `cycle_count` rises from 9.6 to 14.6 while `predictions_total` falls from 13.6 to 8.2 — more marked TDD cycles carrying fewer predictions, consistent with F-1.4 (marker compliance ≠ result quality).
+**Interpretation.** H1c holds: the newer Kimi generation writes measurably less complex code, and the `cognitive_max` gap (10.8 → 7.0) is larger than the GLM 5.1 → 5.2 step, though smaller than the Anthropic 4.8 → 5 jump (9.6 → 2.4, F-1.7). The `longest_function` improvement moves it from mid-field to 15.0. One confound remains: the two versions route through different backproviders (K2.7 via TensorX, K3 via Sference), so provider-side differences cannot be separated from model behaviour. Cost is no longer a confound — both routes bill with a cache discount, and the 4-cent gap is inside estimate noise. The improvement costs 53 % more wall clock (234 → 359 s) while consuming fewer tokens, i.e. K3 spends longer per token rather than producing more. `cycle_count` rises from 9.6 to 14.6 while `predictions_total` falls from 13.6 to 8.2 — more marked TDD cycles carrying fewer predictions, consistent with F-1.4 (marker compliance ≠ result quality).
 
 ---
 
 ## F-1.7 — The Anthropic version jump is the cleanest intra-family comparison and the largest
 
-`opus-5-requesty` improves over `opus-4-8` on every quality axis: `cognitive_max` 2.4 vs. 9.6, `mccabe_max` 3.4 vs. 6.8, **Smell Total** 2.0 vs. 3.4, `cc_longest_function` 5.8 vs. 17.4. Both reach `verification_pct = 1.00` at 100 % `tests_passing`. The improvement costs 55 % more per run ($3.10 vs. $2.00) at 80 % more tokens and 29 % more wall clock.
+`opus-5-requesty` improves over `opus-4-8` on every quality axis: `cognitive_max` 2.4 vs. 9.6, `mccabe_max` 3.4 vs. 6.8, **Smell Total** 2.0 vs. 3.4, `longest_function` 5.8 vs. 17.4. Both reach `verification_pct = 1.00` at 100 % `tests_passing`. The improvement costs 55 % more per run ($3.10 vs. $2.00) at 80 % more tokens and 29 % more wall clock.
 
-| Model | `smell_total` | `cognitive_max` | `mccabe_max` | `cc_longest_function` | `code_mass` | `cost_usd` | `duration_seconds` | `total_tokens` |
+| Model | `smell_total` | `cognitive_max` | `mccabe_max` | `longest_function` | `code_mass` | `cost_usd` | `duration_seconds` | `total_tokens` |
 |---|---|---|---|---|---|---|---|---|
 | opus-4-8 | 3.4 | 9.6 | 6.8 | 17.4 | 149.2 | $2.00 | 339 | 1.23 M |
 | opus-5-requesty | 2.0 | 2.4 | 3.4 | 5.8 | 151.8 | $3.10 | 436 | 2.22 M |
 
 **Interpretation.** This is the third intra-family version comparison in the RQ, alongside GLM 5.1 → 5.2 and Kimi K2.7 → K3 — and the only one **without a backprovider confound**: both Anthropic cells route over `vertex/…@eu`, so the difference is attributable to the model rather than to provider-side behaviour. It is also the largest: `cognitive_max` falls by a factor of four, against 10.8 → 7.0 for Kimi and 9.6 → 7.8 for GLM.
 
-`code_mass` stays effectively unchanged (149.2 → 151.8, well inside σ), so the newer version is not writing less — it is writing the same amount of code in smaller, simpler units. `cc_median_loc_per_function` drops from 2.7 to 2.0 at σ = 0, and `cc_avg_loc_per_function` from 6.89 to 2.62.
+`code_mass` stays effectively unchanged (149.2 → 151.8, well inside σ), so the newer version is not writing less — it is writing the same amount of code in smaller, simpler units. `median_loc_per_function` drops from 2.7 to 2.0 at σ = 0, and `avg_loc_per_function` from 6.89 to 2.62.
 
 The price of the improvement is real and one-directional: +$1.10 per run at this kata size, driven by token volume (1.23 M → 2.22 M) on an identical tariff. Whether that trade pays depends on whether peak complexity matters for the target codebase — on game-of-life the absolute numbers are small either way (9.6 vs. 2.4), but the ratio should scale with kata size, which claim-office in RQ-model-novel-pi can test.
 

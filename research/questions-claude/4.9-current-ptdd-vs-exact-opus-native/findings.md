@@ -13,7 +13,7 @@ The PTDD cell pools ten runs from two batches on the same native route and Claud
 | Completed within budget | 100% | 100% |
 | Mean LoC/function ↓ | 5.53 ± 0.65 | **3.81 ± 0.64** 🏆 |
 | Median LoC/function ↓ | 4.55 ± 1.12 | **2.00 ± 0.00** 🏆 |
-| `cc_longest_function` ↓ | 17.7 ± 6.25 | 16.22 ± 5.78 |
+| `longest_function` ↓ | 17.7 ± 6.25 | 16.22 ± 5.78 |
 | `cognitive_max` ↓ | 2.80 ± 0.63 | 2.78 ± 1.35 |
 | `cognitive_avg` ↓ | 1.52 ± 0.21 | 1.30 ± 0.29 |
 | `mccabe_max` ↓ | 3.30 ± 0.95 | 3.39 ± 0.78 |
@@ -32,15 +32,15 @@ Correctness is statistically indistinguishable at the cell-mean level, so both c
 
 ## F-4.9.1 — The Opus default decomposes more strongly than the transferred PTDD workflow
 
-The default EXACT Coding workflow produces substantially smaller functions than the current SOL PTDD workflow on native Opus 5. The separation is clear in both the mean and median function-size measures, while the `cc_longest_function` remains within the broad run-level spread.
+The default EXACT Coding workflow produces substantially smaller functions than the current SOL PTDD workflow on native Opus 5. The separation is clear in both the mean and median function-size measures, while the `longest_function` remains within the broad run-level spread.
 
 | Metric (lower is better) | PTDD | Opus default | Difference |
 |---|---:|---:|---:|
 | Mean LoC/function | 5.53 ± 0.65 | 3.81 ± 0.64 | PTDD +45% |
 | Median LoC/function | 4.55 ± 1.12 | 2.00 ± 0.00 | PTDD +128% |
-| `cc_longest_function` | 17.7 ± 6.25 | 16.22 ± 5.78 | PTDD +9% |
+| `longest_function` | 17.7 ± 6.25 | 16.22 ± 5.78 | PTDD +9% |
 
-The mean-function gap of 1.72 LoC exceeds the standard deviation of either cell, and the median gap is larger still. The near-tie in `cc_longest_function` means the distinction is distributional: the default consistently creates more small functions rather than merely suppressing the single largest function. The mandatory domain-boundary trial in PTDD therefore does not reproduce the default workflow's finer-grained decomposition when transferred to Opus.
+The mean-function gap of 1.72 LoC exceeds the standard deviation of either cell, and the median gap is larger still. The near-tie in `longest_function` means the distinction is distributional: the default consistently creates more small functions rather than merely suppressing the single largest function. The mandatory domain-boundary trial in PTDD therefore does not reproduce the default workflow's finer-grained decomposition when transferred to Opus.
 
 ## F-4.9.2 — PTDD trades decomposition for lower runtime and token use
 

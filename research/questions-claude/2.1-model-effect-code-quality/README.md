@@ -23,8 +23,8 @@ outcomes:
   # primary: code quality
   - code_mass
   - smell_total
-  - cc_longest_function
-  - cc_loc
+  - longest_function
+  - production_loc
   - mccabe_max
   - cognitive_max
   # secondary: correctness (internal + external)
@@ -101,7 +101,7 @@ Runs:       30 total
 ## Hypotheses
 
 - **H1** (correctness sanity): `tests_passing` *and* `verification_pct` are at 100 % for all eight models (3/3 per cell). A cell below 100 % invalidates the code-quality comparison for that model or indicates a representation-adherence gap.
-- **H2** (model ranking on code quality): On `code_mass`, `smell_total`, `cc_longest_function`, `mccabe_max`, `cognitive_max` a consistent ranking Fable 5 ≤ Opus 4.8 ≤ Opus 4.7 ≤ Opus 4.6 ≤ Sonnet 4.6 emerges (lower = better; Fable 5 expected at the top as the newest model, without a numeric prediction).
+- **H2** (model ranking on code quality): On `code_mass`, `smell_total`, `longest_function`, `mccabe_max`, `cognitive_max` a consistent ranking Fable 5 ≤ Opus 4.8 ≤ Opus 4.7 ≤ Opus 4.6 ≤ Sonnet 4.6 emerges (lower = better; Fable 5 expected at the top as the newest model, without a numeric prediction).
 - **H3** (thinking effect): Within each model, thinking improves code quality (lower `code_mass`, `cognitive_max`); the effect is stronger on Opus than on Sonnet (cf. F-3.x from the v1-generation RQ-3-model-and-thinking, deleted in `953841cb`).
 
 **Falsification of H2** (no consistent ranking across the quality outcomes): the model effect on code quality is not stable on subagents-v1 → other workflows could show different model rankings.

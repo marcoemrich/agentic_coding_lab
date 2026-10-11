@@ -8,7 +8,7 @@ _Do decoration emojis (✅ ❌ 🔴 🟢 🔄 📋 🚨 ⚠️) in the workflow 
 |---|---:|---:|
 | `code_mass` (APP) | **147.6** 🏆 | 156.8 |
 | `smell_total` | 2.6 | **2.0** 🏆 |
-| `cc_longest_function` | 15.0 | **11.4** 🏆 |
+| `longest_function` | 15.0 | **11.4** 🏆 |
 | `cognitive_max` | **6.2** 🏆 | 6.6 |
 | `mccabe_max` | 5.2 | **4.6** 🏆 |
 

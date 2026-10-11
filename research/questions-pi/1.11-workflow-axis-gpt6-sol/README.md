@@ -23,14 +23,14 @@ outcomes:
   # primary: code quality
   - code_mass
   - smell_total
-  - cc_loc
+  - production_loc
   - cognitive_max
   - cognitive_avg
   - mccabe_max
-  - cc_avg_loc_per_function
-  - cc_median_loc_per_function
-  - cc_longest_function
-  - cc_functions
+  - avg_loc_per_function
+  - median_loc_per_function
+  - longest_function
+  - functions
   - tests_total
   - test_lines
   # suite strength. Stryker on this stack; not comparable to the PIT/mutmut

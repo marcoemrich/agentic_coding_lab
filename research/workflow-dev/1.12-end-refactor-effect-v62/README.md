@@ -18,8 +18,8 @@ outcomes:
   - cognitive_avg
   - mccabe_max
   - mccabe_avg
-  - cc_longest_function
-  - cc_avg_loc_per_function
+  - longest_function
+  - avg_loc_per_function
   - smell_total
   - smell_complexity
   - code_mass
@@ -74,7 +74,7 @@ The four MARKERS (skill calls `/test-list`, `/red`, `/green`; task calls `refact
 ## Hypotheses
 
 - **H1 (correctness, primary):** hybrid-v5 preserves correctness on claim-office (`verification_pct` ≥ 0.85, `experiment-done.txt` in ≥ 80 % of runs). The bundle risk from RQ-1.9 / RQ-1.10 is avoided because the end pass runs deterministically and outside the TDD loop (no interference with cycle dynamics).
-- **H2 (code quality vs hybrid-v4):** hybrid-v5 reduces `cognitive_max`, `mccabe_max` and `cc_longest_function` measurably against hybrid-v4 (at least 1 σ effect size).
+- **H2 (code quality vs hybrid-v4):** hybrid-v5 reduces `cognitive_max`, `mccabe_max` and `longest_function` measurably against hybrid-v4 (at least 1 σ effect size).
 - **H3 (code quality vs hybrid-v4.4):** hybrid-v5 is at least **level** with hybrid-v4.4 on code quality metrics; H3' (stronger): whole-src scope sees additional cross-file improvements → an even lower `code_mass` mean or less `smell_total`.
 - **H4 (TDD discipline, sanity):** `cycle_count`, `refactorings_applied`, `predictions_correct_rate` stay within 1 σ of the hybrid-v4 baseline in hybrid-v5 — the per-cycle part is byte-identical, so the cycle metrics should not diverge. A divergence would itself be a result (e.g. if knowing about the end pass demotivates the per-cycle refactor).
 - **H5 (cost):** Token and wallclock surcharge against hybrid-v4 from the end pass; against hybrid-v4.4 presumably comparable or higher (the end pass iterates, hybrid-v4.4 only measures per cycle). Expected +5–25 % tokens depending on how many improvements are iterated.
@@ -103,7 +103,7 @@ The game-of-life cells were run partly native (RQ-1.14 fill), partly portkey (ol
 
 ## Status / next steps
 
-Complete — all 6 cells at n ≥ 5 (43 runs). This RQ unites the formerly separate claim-office study (RQ-1.12) and game-of-life study (previously RQ-1.14, now merged in here). Result in [findings.md](findings.md): on **both** katas the per-cycle refactor hybrid-v4.4 lowers the `cc_longest_function` furthest below hybrid-v4; the end refactor hybrid-v5 is level with hybrid-v4.4 on claim-office but shows no robust gain on the single-file GoL library (and is the most expensive there). Correctness/discipline intact everywhere. No global v6.5 promotion over hybrid-v4; metric-driven refactor is worth it, but the effective point of leverage is kata-dependent.
+Complete — all 6 cells at n ≥ 5 (43 runs). This RQ unites the formerly separate claim-office study (RQ-1.12) and game-of-life study (previously RQ-1.14, now merged in here). Result in [findings.md](findings.md): on **both** katas the per-cycle refactor hybrid-v4.4 lowers the `longest_function` furthest below hybrid-v4; the end refactor hybrid-v5 is level with hybrid-v4.4 on claim-office but shows no robust gain on the single-file GoL library (and is the most expensive there). Correctness/discipline intact everywhere. No global v6.5 promotion over hybrid-v4; metric-driven refactor is worth it, but the effective point of leverage is kata-dependent.
 
 ## Findings
 

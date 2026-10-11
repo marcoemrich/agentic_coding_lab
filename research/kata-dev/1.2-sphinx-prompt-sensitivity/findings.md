@@ -33,7 +33,7 @@ F-1.2.4; the comparison that carries a verdict is the correctness table above.
 | `duration_seconds` | 1475 | 1262 | 5514 | 3605 |
 | `total_tokens` | 25.1 M | 25.3 M | 161.6 M | 94.9 M |
 | `cycle_count` | 11.7 | 15.0 | 45.8 | 35.7 |
-| `cc_longest_function` | 5.8 | 6.3 | 13.8 | 11.8 |
+| `longest_function` | 5.8 | 6.3 | 13.8 | 11.8 |
 | `cognitive_max` | 1.0 | 1.0 | 2.0 | 1.5 |
 | Code Mass (APP) — `code_mass` | 182.8 | 144.2 | 997.0 | 808.3 |
 | Smell Total — `smell_total` | 0 | 0 | 0 | 0 |
@@ -116,7 +116,7 @@ prose cell alone, more than half its own mean).
 The claim-office reduction is not an early stop. The prose runs complete within
 budget (6/6), keep Correctness (internal) at 100 %, and still run 35.7 TDD
 cycles with 31 refactorings — a full, disciplined run. What shrinks is the
-*specified surface*: Code Mass (APP) falls from 997 to 808 and `cc_functions`
+*specified surface*: Code Mass (APP) falls from 997 to 808 and `functions`
 from 38 to 29.3, because the examples in the example-mapping prompt name
 scenarios that the prose text leaves implicit. Fewer pinned scenarios mean
 fewer tests to write and fewer branches to implement. The agent does the same
@@ -139,21 +139,21 @@ surface.
 
 | Metric | sphinx em | sphinx prose | claim-office em | claim-office prose |
 |---|---:|---:|---:|---:|
-| `cc_longest_function` | 5.8 (σ 1.9) | 6.3 (σ 1.0) | 13.8 (σ 3.2) | 11.8 (σ 2.8) |
-| `cc_avg_loc_per_function` | 3.54 (σ 1.11) | 3.28 (σ 0.85) | 3.19 (σ 0.23) | 3.09 (σ 0.23) |
+| `longest_function` | 5.8 (σ 1.9) | 6.3 (σ 1.0) | 13.8 (σ 3.2) | 11.8 (σ 2.8) |
+| `avg_loc_per_function` | 3.54 (σ 1.11) | 3.28 (σ 0.85) | 3.19 (σ 0.23) | 3.09 (σ 0.23) |
 | `cognitive_max` | 1.0 (σ 0) | 1.0 (σ 0) | 2.0 (σ 1.1) | 1.5 (σ 0.55) |
 | `mccabe_max` | 2.0 (σ 0) | 2.0 (σ 0) | 2.8 (σ 0.75) | 3.0 (σ 0.63) |
 | Smell Total — `smell_total` | 0 | 0 | 0 | 0 |
 | `lines_of_code` | 57.5 | 43.0 | 523.0 | 358.8 |
-| `cc_functions` | 6.5 | 6.0 | 38.0 | 29.3 |
+| `functions` | 6.5 | 6.0 | 38.0 | 29.3 |
 
 **H4 confirmed.** Every per-unit structure metric lands within 1 σ across prompt
-styles on both katas — `cc_avg_loc_per_function` moves by 0.26 and 0.10 at
+styles on both katas — `avg_loc_per_function` moves by 0.26 and 0.10 at
 σ 0.85–1.11 and σ 0.23; `cognitive_max` and `mccabe_max` are identical on
 sphinx-score and differ by 0.5 and 0.2 on claim-office at comparable σ.
 Smell Total is 0 in all 24 runs.
 
-What does move are the totals — `lines_of_code` and `cc_functions` drop with the
+What does move are the totals — `lines_of_code` and `functions` drop with the
 smaller specified surface, consistent with F-1.2.3. So the two axes separate
 cleanly: the examples pin *which* rule gets implemented and *how much* of it,
 the workflow governs *how well* it is factored. Prompt quality and workflow

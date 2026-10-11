@@ -11,7 +11,7 @@ Smell Total finding at all. What still separates the arms:
 | Claim Office | inline TDD | EXACT PTDD | + isolated Refactor |
 |---|---:|---:|---:|
 | `cognitive_avg` | 3.23 | 1.47 | 1.33 |
-| `cc_longest_function` | 20.4 | 12.0 | 14.2 |
+| `longest_function` | 20.4 | 12.0 | 14.2 |
 | Mutation Score | 0.71 | 0.90 *(n=3)* | 0.91 *(n=3)* |
 | `red_batch_max` | 9.8 | 1.0 | 1.0 |
 | `cost_usd` | $0.33 | $1.47 | $4.44 |
@@ -66,9 +66,9 @@ row lower = better.
 | `cognitive_max` | **9.00 ± 6.63** 🏆 | **3.00 ± 1.41** 🏆 | **2.40 ± 0.55** 🏆 |
 | `cognitive_avg` | 3.23 ± 0.91 | **1.47 ± 0.32** 🏆 | **1.33 ± 0.15** 🏆 |
 | `mccabe_max` | 6.40 ± 1.95 | **3.80 ± 1.10** 🏆 | **3.20 ± 0.45** 🏆 |
-| `cc_avg_loc_per_function` | 7.55 ± 0.94 | **4.56 ± 0.41** 🏆 | **4.36 ± 0.26** 🏆 |
-| `cc_median_loc_per_function` | 6.20 ± 1.60 | **3.50 ± 0.61** 🏆 | **3.20 ± 0.45** 🏆 |
-| `cc_longest_function` | 20.40 ± 4.93 | **12.00 ± 1.87** 🏆 | **14.20 ± 3.03** 🏆 |
+| `avg_loc_per_function` | 7.55 ± 0.94 | **4.56 ± 0.41** 🏆 | **4.36 ± 0.26** 🏆 |
+| `median_loc_per_function` | 6.20 ± 1.60 | **3.50 ± 0.61** 🏆 | **3.20 ± 0.45** 🏆 |
+| `longest_function` | 20.40 ± 4.93 | **12.00 ± 1.87** 🏆 | **14.20 ± 3.03** 🏆 |
 | Mutation Score | 0.706 ± 0.093 *(n=5)* | **0.898 ± 0.024** 🏆 *(n=3)* | **0.910 ± 0.017** 🏆 *(n=3)* |
 | `red_batch_max` | 9.80 ± 2.68 | **1.00 ± 0** 🏆 | **1.00 ± 0** 🏆 |
 | `tdd_discipline_step` | 0.18 ± 0.03 | **1.00 ± 0** 🏆 | **1.00 ± 0** 🏆 |
@@ -77,7 +77,7 @@ row lower = better.
 | `cost_usd` | **$0.33 ± 0.02** 🏆 | $1.47 ± 0.58 | $4.44 ± 0.35 |
 | *Production LoC* | 142.2 ± 13.1 | 130.2 ± 8.0 | 150.6 ± 8.8 |
 | *Code Mass (APP)* | 615.8 ± 19.8 | 561.2 ± 18.1 | 582.0 ± 14.9 |
-| *`cc_functions`* | 12.4 ± 2.3 | 18.6 ± 2.0 | 25.2 ± 2.6 |
+| *`functions`* | 12.4 ± 2.3 | 18.6 ± 2.0 | 25.2 ± 2.6 |
 | *`tests_total`* | 24.2 ± 3.0 | 48.8 ± 1.1 | 42.4 ± 0.5 |
 | *Test LoC* | 185.2 ± 34.1 | 148.2 ± 54.7 | 186.8 ± 19.3 |
 | *`mutants_total` / survived* | 181.8 / 53.2 | 114.3 / 11.7 *(n=3)* | 122.7 / 11.0 *(n=3)* |
@@ -110,9 +110,9 @@ Same directions.
 | `cognitive_max` | 15.20 ± 4.02 | **7.00 ± 0** 🏆 | **5.40 ± 1.95** 🏆 |
 | `cognitive_avg` | 15.10 ± 4.25 | 3.40 ± 0.72 | **2.49 ± 0.59** 🏆 |
 | `mccabe_max` | 10.40 ± 1.34 | 5.00 ± 0 | **4.20 ± 0.45** 🏆 |
-| `cc_avg_loc_per_function` | 17.53 ± 6.51 | **6.00 ± 1.10** 🏆 | **5.38 ± 0.69** 🏆 |
-| `cc_median_loc_per_function` | 17.20 ± 6.98 | **5.00 ± 2.55** 🏆 | **4.10 ± 0.74** 🏆 |
-| `cc_longest_function` | 23.80 ± 2.17 | **10.60 ± 1.67** 🏆 | **10.40 ± 2.19** 🏆 |
+| `avg_loc_per_function` | 17.53 ± 6.51 | **6.00 ± 1.10** 🏆 | **5.38 ± 0.69** 🏆 |
+| `median_loc_per_function` | 17.20 ± 6.98 | **5.00 ± 2.55** 🏆 | **4.10 ± 0.74** 🏆 |
+| `longest_function` | 23.80 ± 2.17 | **10.60 ± 1.67** 🏆 | **10.40 ± 2.19** 🏆 |
 | Mutation Score | **0.954 ± 0.001** 🏆 | **0.947 ± 0.014** 🏆 | **0.944 ± 0.013** 🏆 |
 | `red_batch_max` | 1.00 ± 0 | 1.00 ± 0 | 1.00 ± 0 |
 | `tdd_discipline_step` | 1.00 ± 0 | 1.00 ± 0 | 1.00 ± 0 |
@@ -121,7 +121,7 @@ Same directions.
 | `cost_usd` | **$0.13 ± 0.02** 🏆 | $0.39 ± 0.03 | $1.10 ± 0.09 |
 | *Production LoC* | 26.4 ± 4.5 | 40.6 ± 3.4 | 48.2 ± 3.8 |
 | *Code Mass (APP)* | 149.8 ± 9.0 | 171.4 ± 10.3 | 172.2 ± 17.3 |
-| *`cc_functions`* | 1.8 ± 0.8 | 6.0 ± 0.7 | 8.8 ± 1.5 |
+| *`functions`* | 1.8 ± 0.8 | 6.0 ± 0.7 | 8.8 ± 1.5 |
 | *`tests_total`* | 13.0 ± 0.7 | 15.2 ± 0.4 | 13.8 ± 1.1 |
 | *Test LoC* | 93.4 ± 4.3 | 72.4 ± 5.9 | 69.2 ± 4.2 |
 | *`mutants_total` / survived* | 43.6 / 2.0 | 49.4 / 2.6 | 63.0 / 3.6 |
@@ -139,8 +139,8 @@ row is a three-way tie — on this kata the suites are equally strong.
 ## F-1.12.1 — Structure still buys smaller units, but the baseline is no longer a monolith
 
 Both EXACT arms beat the baseline on every per-function measure on both katas:
-`cognitive_avg`, `mccabe_max`, `cc_avg_loc_per_function`,
-`cc_median_loc_per_function` and `cc_longest_function`. On Game of Life the gap
+`cognitive_avg`, `mccabe_max`, `avg_loc_per_function`,
+`median_loc_per_function` and `longest_function`. On Game of Life the gap
 is large — `cognitive_avg` 15.10 against 3.40 and 2.49, a baseline of 1.8
 functions against 6.0 and 8.8.
 
@@ -150,12 +150,12 @@ On Claim Office the gap is narrower than the Game of Life numbers suggest:
 |---|---:|---:|---:|---:|---:|
 | Smell Total | 19 | 0 | 0 | 0 | 0 |
 | `cognitive_max` | 20 | 10 | 4 | 7 | 4 |
-| `cc_functions` | 9 | 14 | 12 | 12 | 15 |
+| `functions` | 9 | 14 | 12 | 12 | 15 |
 
 Four of five baseline runs produce a decomposed product with no findings and a
 `cognitive_max` of 4–10, against 2–5 in the EXACT runs. One run
 writes a larger block with 19 findings. The per-function averages still
-separate cleanly (`cc_avg_loc_per_function` 7.55 ± 0.94 against 4.56 and 4.36),
+separate cleanly (`avg_loc_per_function` 7.55 ± 0.94 against 4.56 and 4.36),
 so EXACT keeps its advantage on unit size; on the peak and on Smell Total it
 holds only on average.
 
@@ -173,15 +173,15 @@ unscaffolded starting point is better, not because the EXACT arms got worse.
 |---|---:|---:|---:|---:|
 | `cognitive_avg` | 1.47 ± 0.32 | 1.33 ± 0.15 | 3.40 ± 0.72 | 2.49 ± 0.59 |
 | `mccabe_max` | 3.80 ± 1.10 | 3.20 ± 0.45 | 5.00 ± 0 | 4.20 ± 0.45 |
-| `cc_longest_function` | 12.00 ± 1.87 | 14.20 ± 3.03 | 10.60 ± 1.67 | 10.40 ± 2.19 |
-| `cc_functions` | 18.6 | 25.2 | 6.0 | 8.8 |
+| `longest_function` | 12.00 ± 1.87 | 14.20 ± 3.03 | 10.60 ± 1.67 | 10.40 ± 2.19 |
+| `functions` | 18.6 | 25.2 | 6.0 | 8.8 |
 | `cost_usd` | $1.47 | $4.44 (3.0×) | $0.39 | $1.10 (2.8×) |
 | `duration_seconds` | 2171 | 4683 (2.2×) | 649 | 1405 (2.2×) |
 
 On Claim Office every structural difference between P and P+S sits inside one
-standard deviation, and `cc_longest_function` points the other way. On Game of
+standard deviation, and `longest_function` points the other way. On Game of
 Life P+S wins `cognitive_avg` and `mccabe_max` modestly. In both katas the
-isolated arm splits the product further (`cc_functions` +35 % and +47 %) and
+isolated arm splits the product further (`functions` +35 % and +47 %) and
 records more `refactor_events` (31.0 against 19.6, 8.6 against 5.2) — the
 subagent refactors more, and the product barely changes.
 

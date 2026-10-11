@@ -10,10 +10,10 @@ route and a different cell.
 ## Overview
 
 Primary outcome `verification_pct` (Correctness (external), higher = better);
-secondary code quality (`cc_avg_loc_per_function`/`cc_longest_function`/`cognitive_max`/`mccabe_max`/`smell_total`/`code_mass`, lower = better)
+secondary code quality (`avg_loc_per_function`/`longest_function`/`cognitive_max`/`mccabe_max`/`smell_total`/`code_mass`, lower = better)
 and cost (`total_tokens`/`cost_usd`/`duration_seconds`, lower = better).
 
-| Model | n | verification_pct ↑ | σ | cc_avg_loc ↓ | cc_longest ↓ | cognitive_max ↓ | mccabe_max ↓ | smell_total ↓ | code_mass ↓ | total_tokens ↓ | cost_usd ↓ | duration_s ↓ |
+| Model | n | verification_pct ↑ | σ | avg_loc_per_function ↓ | longest_function ↓ | cognitive_max ↓ | mccabe_max ↓ | smell_total ↓ | code_mass ↓ | total_tokens ↓ | cost_usd ↓ | duration_s ↓ |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | opus-5-no-thinking | 5 | **0.95** 🏆 | 0.03 | **3.45** 🏆 | **13.6** 🏆 | 2.8 | **3.0** 🏆 | **0.0** 🏆 | 848.4 | 84.5 M | 58.86 | **2552** 🏆 |
 | fable-5-1-no-thinking | 5 | **0.93** 🏆 | 0.08 | 3.63 | 14.4 | **2.6** 🏆 | 3.2 | 0.2 | **805.2** 🏆 | **66.9 M** 🏆 | **43.72** 🏆 | 4042 |
@@ -178,8 +178,8 @@ frontier models show among themselves.
 
 | Metric (lower = better) | opus-5 | fable-5-1 | fable-5 | sonnet-5-native |
 |---|---:|---:|---:|---:|
-| `cc_avg_loc_per_function` | 3.45 | 3.63 | 4.79 | **6.50** |
-| `cc_longest_function` | 13.6 | 14.4 | 17.6 | **26.2** |
+| `avg_loc_per_function` | 3.45 | 3.63 | 4.79 | **6.50** |
+| `longest_function` | 13.6 | 14.4 | 17.6 | **26.2** |
 | `cognitive_max` | 2.8 | 2.6 | 3.2 | **4.2** |
 | `mccabe_max` | 3.0 | 3.2 | 3.8 | **4.4** |
 | `smell_total` (Smell Total) | 0.0 | 0.2 | 0.6 | 0.2 |
@@ -192,14 +192,14 @@ inside the spread and does not carry a ranking.
 **sonnet-5-native is last on four of the five axes, and not narrowly.** Its
 average function is 1.9× opus-5's and its longest function 1.9× as long (26.2
 against 13.6, with a σ of 11.9 and a maximum of 36). The spread between the
-three frontier cells on `cc_avg_loc_per_function` is 1.34 LoC; the gap from the
+three frontier cells on `avg_loc_per_function` is 1.34 LoC; the gap from the
 best of them to sonnet-5-native is 3.05 LoC — more than twice as large as the
 entire frontier spread. This is the clearest tier signal in the RQ, and it sits
 on the quality axes, not the correctness axis.
 
 **The quality deficit is not an artifact of the two broken runs.** Restricting
-sonnet-5-native to its three 15/15 runs gives `cc_avg_loc_per_function` 6.52 and
-`cc_longest_function` 28.7 — indistinguishable from the full-cell 6.50 / 26.2,
+sonnet-5-native to its three 15/15 runs gives `avg_loc_per_function` 6.52 and
+`longest_function` 28.7 — indistinguishable from the full-cell 6.50 / 26.2,
 and if anything worse on the longest function. The correctness gate that
 withholds this cell's trophies therefore hides nothing here: Sonnet 5 decomposes
 worse *even when it solves the entire spec correctly*. That is the opposite of
@@ -273,7 +273,7 @@ this the cleanest generation comparison in the RQ.
 |---|---:|---:|
 | `verification_pct` | 0.93 (σ 0.08) | 0.87 (σ 0.12) |
 | block failure (F-fable-vs-opus5.2) | 1 / 5 runs | 3 / 5 runs |
-| `cc_avg_loc_per_function` | 3.63 | 4.79 |
+| `avg_loc_per_function` | 3.63 | 4.79 |
 | `smell_total` | 0.2 | 0.6 |
 | `total_tokens` | 66.9 M | 75.0 M |
 | `duration_seconds` | 4042 | 4950 |
@@ -443,7 +443,7 @@ sonnet-5-native to its three perfect runs:
 |---|---:|---:|---:|
 | `duration_seconds` | 2277 | 2105 | 2552 |
 | `cost_usd` | 28.28 | 27.40 | 58.86 |
-| `cc_avg_loc_per_function` | 6.50 | 6.52 | 3.45 |
+| `avg_loc_per_function` | 6.50 | 6.52 | 3.45 |
 
 The speed and cost figures barely move — those three runs are faster and cheaper
 than opus-5 while implementing the whole spec. The decomposition figures also

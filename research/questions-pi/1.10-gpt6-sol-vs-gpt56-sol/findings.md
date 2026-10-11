@@ -57,7 +57,7 @@ Mutation Score higher = better; every other row lower = better.
 | `cognitive_max` | **4.6 ± 1.52** 🏆 | **4.4 ± 1.52** 🏆 |
 | `cognitive_avg` | **2.10 ± 0.28** 🏆 | **1.93 ± 0.32** 🏆 |
 | `mccabe_max` | **4.4 ± 0.55** 🏆 | **4.2 ± 1.10** 🏆 |
-| `cc_longest_function` | **20.0 ± 10.3** 🏆 | **16.6 ± 3.85** 🏆 |
+| `longest_function` | **20.0 ± 10.3** 🏆 | **16.6 ± 3.85** 🏆 |
 | `duration_seconds` | **1301 ± 589** 🏆 | **1750 ± 537** 🏆 |
 | `cost_usd` | **$1.24 ± 0.56** 🏆 | $4.49 ± 3.04 |
 
@@ -86,8 +86,8 @@ Same directions.
 | `cognitive_max` | **6.0 ± 0.71** 🏆 | **4.6 ± 1.82** 🏆 |
 | `cognitive_avg` | **2.77 ± 0.38** 🏆 | **2.80 ± 1.08** 🏆 |
 | `mccabe_max` | **4.2 ± 0.45** 🏆 | **4.6 ± 0.55** 🏆 |
-| `cc_avg_loc_per_function` | **6.83 ± 1.03** 🏆 | **5.81 ± 0.81** 🏆 |
-| `cc_longest_function` | **12.2 ± 2.17** 🏆 | **12.8 ± 1.10** 🏆 |
+| `avg_loc_per_function` | **6.83 ± 1.03** 🏆 | **5.81 ± 0.81** 🏆 |
+| `longest_function` | **12.2 ± 2.17** 🏆 | **12.8 ± 1.10** 🏆 |
 | `duration_seconds` | **573 ± 38** 🏆 | 727 ± 33 |
 | `cost_usd` | **$0.49 ± 0.05** 🏆 | $1.49 ± 0.15 |
 
@@ -103,7 +103,7 @@ unit counts have no unambiguous direction, and `tests_total` is unreliable here
 | | G6 / Claim | G5.6 / Claim | G6 / GoL | G5.6 / GoL |
 |---|---:|---:|---:|---:|
 | Smell Total | 0 ± 0 | 0 ± 0 | 0 ± 0 | 0 ± 0 |
-| `cc_functions` | 12.2 ± 3.96 | 16.4 ± 5.27 | 4.8 ± 1.10 | 6.4 ± 1.34 |
+| `functions` | 12.2 ± 3.96 | 16.4 ± 5.27 | 4.8 ± 1.10 | 6.4 ± 1.34 |
 | `tests_total` | 34.6 ± 18.9 | 39.6 ± 2.51 | 14.0 ± 0.71 | 11.2 ± 0.84 |
 | Test LoC | 93.2 ± 53.3 | 211.6 ± 99.5 | 56.2 ± 3.27 | 58.2 ± 4.38 |
 | `cycle_count` | 31.0 ± 18.0 | 39.8 ± 2.49 | 14.0 ± 0.71 | 11.2 ± 0.84 |

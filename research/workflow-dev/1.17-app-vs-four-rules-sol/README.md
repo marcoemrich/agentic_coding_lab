@@ -17,9 +17,9 @@ controls:
   prompt: example-mapping
 outcomes:
   # primary: decomposition — the axis the APP brief is expected to move
-  - cc_avg_loc_per_function
-  - cc_median_loc_per_function
-  - cc_longest_function
+  - avg_loc_per_function
+  - median_loc_per_function
+  - longest_function
   # mechanism witness: APP mass is what the hybrid-v4.2 brief optimises. Expected to
   # run *against* the decomposition metrics. Reported without trophy.
   - code_mass
@@ -65,7 +65,7 @@ methodology or from the removal of APP?"*
 The observation that motivates it sits across two RQs rather than inside one. On
 `game-of-life-example-mapping`, same model, same route, same kata, same prompt style:
 
-| Cell | `cc_avg_loc_per_function` | Code Mass (APP) | Refactor brief |
+| Cell | `avg_loc_per_function` | Code Mass (APP) | Refactor brief |
 |---|---:|---:|---|
 | `baseline-inline-tdd-v1-pi` | 6.75 | 176.4 | — (no brief) |
 | `exact-sol-v1-pi` | 7.27 | 162.8 | Four Rules of Simple Design |
@@ -91,12 +91,12 @@ the kata where the effect has room to show.
 `claim-office` is the only kata in this lab where decomposition metrics measure
 decomposition rather than function length. RQ-1.16's sphinx rows make the contrast
 concrete — there, every cell produces essentially **one** production function, so
-`cc_avg`, `cc_median` and `cc_longest` collapse onto the same number:
+`avg_loc_per_function`, `median_loc_per_function` and `longest_function` collapse onto the same number:
 
 | | sphinx | game-of-life | claim-office |
 |---|---:|---:|---:|
 | function count (`basic-sol-tdd`) | 1.0 | ~6 | 9.8 |
-| `cc_avg` vs `cc_median` | identical | close | 6.60 vs 4.70 |
+| `avg_loc_per_function` vs `median_loc_per_function` | identical | close | 6.60 vs 4.70 |
 
 On claim-office the two diverge, i.e. there is a real length distribution and real
 structure to be judged. It is also the kata where RQ-1.16 found its one decisive
@@ -142,7 +142,7 @@ split into named domain functions.
 In those RQs that is a limitation to work around. **Here it is part of the prediction.**
 If the mechanism is what this RQ claims, the metrics should split into two groups:
 
-- `cc_avg_loc_per_function`, `cc_median_loc_per_function`, `cc_longest_function`
+- `avg_loc_per_function`, `median_loc_per_function`, `longest_function`
   separate — the APP cell decomposes worse.
 - `cognitive_max`, `mccabe_max`, `code_mass` do **not** separate against the APP cell,
   or separate in its favour — because they are the metrics the callback trick defeats.
@@ -150,7 +150,7 @@ If the mechanism is what this RQ claims, the metrics should split into two group
 A result where all metrics move together would falsify the mechanism and point at a
 plain quality difference between the two workflow lines instead.
 
-`cc_avg_loc_per_function` is the binding decision metric, `cc_median_loc_per_function`
+`avg_loc_per_function` is the binding decision metric, `median_loc_per_function`
 the robustness check against outliers. Neither measures naming. `code_mass` is
 reported without a trophy — here explicitly as the mechanism witness, not as a
 quality ranking.
@@ -166,7 +166,7 @@ externally from the source tree.
 ## Hypotheses
 
 - **H1 (APP suppresses decomposition).** `exact-hybrid-v4.2-phase-continuation-pi` lands worse
-  than `exact-sol-v1-pi` on `cc_avg_loc_per_function` and `cc_median_loc_per_function`
+  than `exact-sol-v1-pi` on `avg_loc_per_function` and `median_loc_per_function`
   by more than 1 σ, while reaching **lower** Code Mass, and does not separate against
   it on `cognitive_max`/`mccabe_max`.
   → The APP brief is the driver. RQ-1.16's open question is answered: the native line's
@@ -214,7 +214,7 @@ models or routes. Only ranking and direction *within this RQ* are evaluated.
 - Does the effect reproduce on the Requesty route, where F-1.3.6 documents a route
   effect on exactly these metrics? → the same three cells on `gpt-5-6-sol`.
 - Does it appear on Opus, or is it Sol-specific? `hybrid-v4.2` × `opus-5-requesty` reaches
-  `cc_avg_loc_per_function` 2.62 on game-of-life — the best value in the comparison,
+  `avg_loc_per_function` 2.62 on game-of-life — the best value in the comparison,
   with the same APP brief. That suggests Opus weighs the "clarity trumps APP" guard
   that Sol appears to ignore, which would make this an instruction-following finding
   rather than a brief-design finding.

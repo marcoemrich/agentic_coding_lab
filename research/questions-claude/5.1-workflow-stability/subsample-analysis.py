@@ -23,7 +23,7 @@ from collections import defaultdict
 from pathlib import Path
 
 CSV_PATH = Path(__file__).resolve().parent / "runs.csv"
-METRICS = ["code_mass", "smell_total", "cc_longest_function",
+METRICS = ["code_mass", "smell_total", "longest_function",
            "mccabe_max", "cognitive_max"]
 
 

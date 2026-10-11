@@ -17,7 +17,7 @@ vitest tests written by the agent, external view via the module-import adapter
 
 ## Overview: Code Quality by Model (means)
 
-| Model | `code_mass` | `smell_total` | `mccabe_max` | `cognitive_max` | `cc_longest_function` | `verification_pct` | n |
+| Model | `code_mass` | `smell_total` | `mccabe_max` | `cognitive_max` | `longest_function` | `verification_pct` | n |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | opus-5 | 172.67 | 1.67 | 3.00 | 2.00 | 6.33 | **1.00** 🏆 | 3 |
 | opus-5-no-thinking | 149.33 | **1.67** 🏆 | 2.67 | 1.67 | 5.33 | **1.00** 🏆 | 3 |
@@ -41,7 +41,7 @@ are trophy-eligible (sonnet-4-6-no-thinking with 0.73 excluded).
 Opus 5 and Fable 5 share the complexity peak: Fable 5 (with thinking)
 holds `cognitive_max` 1.0 and `mccabe_max` 2.0 narrowly ahead of Opus 5, while Opus 5 sets
 the lowest Smell Total (1.67). Opus 4.8 (with thinking) remains the **most compact
-code** (`code_mass` 145.3, `cc_longest_function` 4.3). Three complementary
+code** (`code_mass` 145.3, `longest_function` 4.3). Three complementary
 quality winners: Fable 5 / Opus 5 for the lowest complexity, Opus 4.8 for
 the lowest Code Mass.
 
@@ -73,14 +73,14 @@ are based on correct code.
 **Fable 5** and **Opus 5** deliver the lowest `cognitive_max`
 (`cognitive_max` 1.0 and 2.0 respectively, `mccabe_max` 2.0 and 3.0 — all near the
 theoretical minimum), **Opus 4.8** the lowest Code Mass and the shortest
-longest function (`code_mass` 145.3, `cc_longest_function` 4.3). Opus 5 additionally
+longest function (`code_mass` 145.3, `longest_function` 4.3). Opus 5 additionally
 sets the lowest Smell Total (1.67). All three are clearly ahead of Opus 4.7
 (solid midfield) and considerably ahead of Opus 4.6 and Sonnet:
 
 | Metric (with thinking) | fable-5 | opus-5 | opus-4-8 | opus-4-7 | opus-4-6-portkey | sonnet-4-6 |
 |---|---:|---:|---:|---:|---:|---:|
 | `code_mass` | 163.00 | 172.67 | **145.33** 🏆 | 159.00 | 173.00 | 178.00 |
-| `cc_longest_function` | 8.33 | 6.33 | **4.33** 🏆 | 7.00 | 19.33 | 21.67 |
+| `longest_function` | 8.33 | 6.33 | **4.33** 🏆 | 7.00 | 19.33 | 21.67 |
 | `smell_total` | 3.00 | **1.67** 🏆 | 2.67 | 2.33 | 4.33 | 5.67 |
 | `mccabe_max` | **2.00** 🏆 | 3.00 | 4.33 | 3.33 | 6.67 | 6.33 |
 | `cognitive_max` | **1.00** 🏆 | 2.00 | 5.33 | 3.00 | 12.00 | 11.00 |
@@ -90,7 +90,7 @@ Lower = better; 🏆 = best model per metric (row), correctness-gated
 
 The gap between the leading group and Opus 4.6 is substantial: on `cognitive_max`
 a factor of ~12× separates Fable 5 (1.0) from Opus 4.6 (12.0), on
-`cc_longest_function` a factor of ~4.5× separates Opus 4.8 (4.3) from Opus 4.6 (19.3). The
+`longest_function` a factor of ~4.5× separates Opus 4.8 (4.3) from Opus 4.6 (19.3). The
 three leading profiles are complementary: Fable 5 and Opus 5 keep the
 `cognitive_max` trivial but write somewhat more code; Opus 4.8 minimizes
 the Code Mass but packs the logic more densely (higher `cognitive_max`/`mccabe_max`).
@@ -115,7 +115,7 @@ thinking even degrades).
 **Statement**: Within-model deltas (thinking vs. no-thinking, ∆ negative = better
 with thinking):
 
-| Model | ∆ `code_mass` | ∆ `smell_total` | ∆ `mccabe_max` | ∆ `cognitive_max` | ∆ `cc_longest_function` |
+| Model | ∆ `code_mass` | ∆ `smell_total` | ∆ `mccabe_max` | ∆ `cognitive_max` | ∆ `longest_function` |
 |---|---:|---:|---:|---:|---:|
 | fable-5 | −0.33 | +0.67 | −0.67 | −0.67 | +1.66 |
 | opus-4-8 | **−45.17** | −0.33 | +0.08 | +0.58 | −7.17 |

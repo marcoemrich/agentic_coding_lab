@@ -15,8 +15,8 @@ agent never sees. Everything below it is gated on that result.
 | completed_within_budget | higher = better | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
 | `cognitive_max` (cognitive) | lower = better | 1.8 | **1.6** 🏆 | 3.4 | 4.2 |
 | `cognitive_max` (mccabe) | lower = better | 2.8 | **2.6** 🏆 | 4.2 | 4.4 |
-| `cc_longest_function` | lower = better | **13.2** 🏆 | 16.2 | 22.8 | 21.2 |
-| `cc_avg_loc_per_function` | lower = better | **13.2** 🏆 | 15.9 | 19.2 | 19.3 |
+| `longest_function` | lower = better | **13.2** 🏆 | 16.2 | 22.8 | 21.2 |
+| `avg_loc_per_function` | lower = better | **13.2** 🏆 | 15.9 | 19.2 | 19.3 |
 | Smell Total | lower = better | **0** 🏆 | **0** 🏆 | 1.0 | 0.4 |
 | Code Mass (APP) | — | 129.2 | 136.0 | 159.6 | 151.8 |
 | `predictions_correct_rate` | higher = better | **100 %** 🏆 | **100 %** 🏆 | 80.5 % | 80.5 % |
@@ -89,7 +89,7 @@ Where Correctness already separates the models, code quality separates them agai
 the same direction. Spark produces roughly twice the complexity peak and functions
 about 40 % longer.
 
-| cell | n | cognitive_max | mccabe_max | `cc_longest_function` | Smell Total |
+| cell | n | cognitive_max | mccabe_max | `longest_function` | Smell Total |
 |---|---:|---:|---:|---:|---:|
 | Sol / subagent | 5 | **1.6** 🏆 | **2.6** 🏆 | 16.2 | **0** 🏆 |
 | Sol / inline | 5 | 1.8 | 2.8 | **13.2** 🏆 | **0** 🏆 |
@@ -99,7 +99,7 @@ about 40 % longer.
 *lower = better; gated on Correctness (external) = 1.0, which no Spark cell reaches*
 
 Sol's Smell Total is 0 in all ten of its runs (σ = 0), Spark's is non-zero in both
-cells with single runs reaching 5. The `cc_longest_function` gap (13.2–16.2 vs.
+cells with single runs reaching 5. The `longest_function` gap (13.2–16.2 vs.
 21.2–22.8) says Spark extracts less: it writes one long function where Sol writes
 several short ones.
 

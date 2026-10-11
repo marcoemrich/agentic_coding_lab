@@ -17,7 +17,7 @@ outcomes:
   # code quality (sanity: the bundle must not degrade it)
   - code_mass
   - smell_total
-  - cc_longest_function
+  - longest_function
   - cognitive_max
   - mccabe_max
   # correctness (sanity)
@@ -65,7 +65,7 @@ Full diff: `diff -r experiments/workflows/exact-coding/opus/exact-hybrid-v4-clea
 
 - **H1 (discipline)** — The discipline effects measured in RQ-audit on v6.5-lean reproduce in the same direction on the hybrid-v4 base: `tests_passed_immediately` drops (preamble effect), `refactorings_applied` rises with markedly tighter variance (rationale + three-path bar). The effect size may be smaller than in the v6.5-lean repair, since hybrid-v4 already carries why blocks.
 - **H2 (correctness)** — Both workflows ≥ 95 % `tests_passing`. The audit bundle must not regress on GoL.
-- **H3 (code quality neutral)** — `code_mass`, `cc_longest_function`, `cognitive_max`, `mccabe_max` each stay within 1 σ of the hybrid-v4 variance. The smell floor (if hybrid-v4 is not already at 2.0) shifts toward 2.0.
+- **H3 (code quality neutral)** — `code_mass`, `longest_function`, `cognitive_max`, `mccabe_max` each stay within 1 σ of the hybrid-v4 variance. The smell floor (if hybrid-v4 is not already at 2.0) shifts toward 2.0.
 - **H4 (cost)** — The audit bundle adds net text → +10–20 % tokens and wallclock expected, in parallel to the RQ-audit observation (+15 % / +16 %).
 - **H5 (variance shrink)** — The σ reduction observed almost everywhere in RQ-audit replicates. If `cycle_count` σ and `refactorings_applied` σ drop markedly, the hardening effect is confirmed; if not, the σ reduction in RQ-audit was a v6.5-lean repair artifact.
 - **H0 (falsifier)** — If none of the discipline effects is measurable on the already-MUST/PEP-carrying hybrid-v4 base, the audit bundle is empirically redundant to the MUST/emoji/PEP situation. In that case hybrid-v4 stays the default base; hybrid-v4.3 is not promoted.

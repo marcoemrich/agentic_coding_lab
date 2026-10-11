@@ -8,7 +8,7 @@ _Do psychological justifications ('pep talks') in the Red and Green skill prompt
 |---|---:|---:|
 | `code_mass` (APP) | 147.6 | **144.6** 🏆 |
 | `smell_total` | 2.6 | **2.0** 🏆 |
-| `cc_longest_function` | 15.0 | **13.2** 🏆 |
+| `longest_function` | 15.0 | **13.2** 🏆 |
 | `cognitive_max` | 6.2 | **4.6** 🏆 |
 | `mccabe_max` | 5.2 | **4.8** 🏆 |
 

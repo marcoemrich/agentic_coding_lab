@@ -23,8 +23,8 @@ outcomes:
   - tests_passing
   - completed_within_budget
   # code quality — the reason the refactor subagent exists at all
-  - cc_avg_loc_per_function
-  - cc_longest_function
+  - avg_loc_per_function
+  - longest_function
   - cognitive_max
   - mccabe_max
   - smell_total
@@ -246,7 +246,7 @@ therefore factors here, not a control.
   indistinguishable between the two. A rule-layout change must not cost
   completeness. A drop here would be a much more serious problem than cost.
 - **H5 (quality is unchanged or better)** — if hybrid-v2.4 refactors more, its
-  decomposition metrics (`cc_avg_loc_per_function`, `cc_longest_function`)
+  decomposition metrics (`avg_loc_per_function`, `longest_function`)
   should be equal or better. If it refactors more and the code is *not* better,
   the extra refactor passes are pure cost.
 - **H6 (markers stay healthy)** — hybrid-v2.4 produces `predictions_total ≈ 2 ×

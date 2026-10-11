@@ -15,7 +15,7 @@
 | `mccabe_avg` (lower = better) | 1.53 ± 0.20 | **1.40 ± 0.13** 🏆 |
 | `code_mass` (lower = better) | 879 ± 91 | **805 ± 64** 🏆 |
 | `smell_total` (lower = better) | 0.38 ± 0.74 | **0.0 ± 0.0** 🏆 |
-| `cc_longest_function` (lower = better) | **12.4 ± 1.4** 🏆 | 13.0 ± 3.1 |
+| `longest_function` (lower = better) | **12.4 ± 1.4** 🏆 | 13.0 ± 3.1 |
 | `refactorings_applied` (higher = better) | 24.9 ± 6.9 | **30.4 ± 8.8** 🏆 |
 | `cycle_count` (contextual, higher signals fuller TDD loops) | 37.4 ± 1.6 | **40.2 ± 2.2** 🏆 |
 | `predictions_correct_rate` (higher = better) | **97.2 %** 🏆 | 89.6 % |
@@ -23,7 +23,7 @@
 | `duration_seconds` (lower = better) | **2530 ± 401** 🏆 | 5284 ± 2337 |
 | `total_tokens` (lower = better) | **52.3M ± 5.6M** 🏆 | 120.1M ± 22.7M |
 
-Trophy convention: `verification_pct` is the correctness gate; both workflows sit at the top end and are 🏆-eligible for code quality metrics. `cc_longest_function` is the only quality metric running against the trend (spread within 1 σ — better read as "no effect" than as a real regression). Cost trophies clearly go to the baseline.
+Trophy convention: `verification_pct` is the correctness gate; both workflows sit at the top end and are 🏆-eligible for code quality metrics. `longest_function` is the only quality metric running against the trend (spread within 1 σ — better read as "no effect" than as a real regression). Cost trophies clearly go to the baseline.
 
 ---
 

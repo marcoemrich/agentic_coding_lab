@@ -22,14 +22,14 @@ outcomes:
   - cognitive_avg
   - mccabe_max
   - mccabe_avg
-  - cc_longest_function
+  - longest_function
   - smell_total
   - code_mass
   # decomposition — added 2026-08-10 because none of the metrics above detect
   # missing abstraction: cognitive_max resets its nesting counter at every
   # callback boundary, and code_mass has no notion of nesting at all.
   # See "Metric blind spot" below.
-  - cc_avg_loc_per_function
+  - avg_loc_per_function
   # TDD discipline — does Sol keep the mechanics alive in each architecture?
   # NOT measurable on the inline-tdd-v1 baseline cell (it prescribes no phase markers) —
   # see "Measurement limit" below. Read that row as n/a, not as zero.
@@ -180,8 +180,8 @@ Sol/hybrid-v2/claim-office averages 4.6 functions per run, and the one run inspe
 scores `cognitive_max` 4 against 6 for a 28-function opus-4-7 implementation of the same
 kata, while carrying 14 smells against 1.
 
-**`cc_avg_loc_per_function` is therefore the binding decomposition metric for this RQ**, with
-`cc_longest_function` as a secondary. Both are immune to the callback trick: a 30-line
+**`avg_loc_per_function` is therefore the binding decomposition metric for this RQ**, with
+`longest_function` as a secondary. Both are immune to the callback trick: a 30-line
 function stays 30 lines regardless of its internal shape.
 
 Two limits, stated so they are not rediscovered later:
@@ -190,7 +190,7 @@ Two limits, stated so they are not rediscovered later:
 - Both are gameable the moment a workflow prompt names them (README §"Compliance metrics").
   No workflow in this RQ names them, so cross-workflow comparison is valid here.
 - Function *count* is deliberately **not** an outcome. More functions is not better — only
-  the same work better decomposed is better, and `cc_avg_loc_per_function` captures that while a
+  the same work better decomposed is better, and `avg_loc_per_function` captures that while a
   raw count would reward splintering.
 
 ## Two open gaps this RQ closes

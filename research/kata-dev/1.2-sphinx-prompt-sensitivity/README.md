@@ -26,9 +26,9 @@ outcomes:
   # not just whether it is correct
   - lines_of_code
   - code_mass
-  - cc_longest_function
-  - cc_avg_loc_per_function
-  - cc_functions
+  - longest_function
+  - avg_loc_per_function
+  - functions
   - cognitive_max
   - mccabe_max
   - smell_total
@@ -82,7 +82,7 @@ scoring question, not a full TDD run.
   rather than exploring.*
 - **H4 (code quality):** Decomposition is prompt-invariant too — the
   examples pin *which* rule gets implemented, not *how well* it is
-  factored. `cc_longest_function`, `cc_avg_loc_per_function` and
+  factored. `longest_function`, `avg_loc_per_function` and
   `cognitive_max` should land in the same range for both prompts.
   *If they do not,* an unclear spec also degrades code structure, which
   would be a finding beyond this kata: it would mean prompt quality and

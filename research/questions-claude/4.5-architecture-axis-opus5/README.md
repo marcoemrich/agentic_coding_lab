@@ -21,8 +21,8 @@ outcomes:
   # RQ-architecture-axis-sol-pi (F-1.9). Listed first because it is the reason
   # this RQ exists at all: cognitive_max alone read hybrid-v2 as the cleanest cell
   # while it produced the least-decomposed code.
-  - cc_avg_loc_per_function
-  - cc_longest_function
+  - avg_loc_per_function
+  - longest_function
   # code quality — the metrics the original axis was ranked on
   - cognitive_max
   - cognitive_avg
@@ -122,11 +122,11 @@ of how many constructs occur. That is not a bug — Micah Martin's premise is ex
 "more compact is better", a sensible and different question from "is this well decomposed".
 
 The practical consequence was visible in the Sol data: `cognitive_max` read hybrid-v2 as the
-cleanest cell on claim-office (5.8) while `cc_avg_loc_per_function` read it as among the
+cleanest cell on claim-office (5.8) while `avg_loc_per_function` read it as among the
 worst (10.72), averaging 1.6 functions per implementation on game-of-life.
 
-**`cc_avg_loc_per_function` is therefore the binding decomposition metric for this RQ**,
-with `cc_longest_function` as secondary. Both are immune to the callback trick: a 30-line
+**`avg_loc_per_function` is therefore the binding decomposition metric for this RQ**,
+with `longest_function` as secondary. Both are immune to the callback trick: a 30-line
 function stays 30 lines regardless of its internal shape.
 
 Three limits, stated so they are not rediscovered later:
@@ -135,7 +135,7 @@ Three limits, stated so they are not rediscovered later:
 - Both are gameable the moment a workflow prompt names them (README §"Compliance metrics").
   None of the four workflows in this RQ names them, so cross-workflow comparison is valid here.
 - Function *count* is deliberately **not** an outcome. More functions is not better — only
-  the same work better decomposed is, which is what `cc_avg_loc_per_function` captures while
+  the same work better decomposed is, which is what `avg_loc_per_function` captures while
   a raw count would reward splintering.
 
 **Code Mass (APP) carries no trophy in this RQ**, for the reason above. It stays in the
@@ -148,7 +148,7 @@ example-mapping prompt, `*-no-thinking` variants only:
 
 **claim-office-example-mapping:**
 
-| Workflow | n | verification_pct | cognitive_max | cc_avg_loc_per_function | cc_longest_function | smell_total | code_mass |
+| Workflow | n | verification_pct | cognitive_max | avg_loc_per_function | longest_function | smell_total | code_mass |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | baseline-inline-tdd-v1-cc | 5 | 1.00 | 19.8 | 13.07 | 51.6 | 16.8 | 992.4 |
 | single-context-v2 | 6 | 1.00 | 14.83 | 10.03 | 32.67 | 6.83 | 692.7 |
@@ -157,7 +157,7 @@ example-mapping prompt, `*-no-thinking` variants only:
 
 **game-of-life-example-mapping:**
 
-| Workflow | n | verification_pct | cognitive_max | cc_avg_loc_per_function | cc_longest_function | smell_total | code_mass |
+| Workflow | n | verification_pct | cognitive_max | avg_loc_per_function | longest_function | smell_total | code_mass |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | baseline-inline-tdd-v1-cc | 10 | 1.00 | 21.8 | 16.52 | 32.5 | 6.0 | 165.6 |
 | single-context-v2 | 5 | 1.00 | 17.6 | 9.58 | 20.8 | 4.8 | 154.0 |
@@ -167,7 +167,7 @@ example-mapping prompt, `*-no-thinking` variants only:
 Two properties of this baseline drive the design:
 
 - **On opus-4-7 all four quality metrics agree.** hybrid-v2 wins `cognitive_max`,
-  `cc_avg_loc_per_function`, `cc_longest_function` *and* `smell_total` on both katas, mostly
+  `avg_loc_per_function`, `longest_function` *and* `smell_total` on both katas, mostly
   by a wide margin (against inline-tdd-v1: 2.3–3.4× on complexity, 2.3–2.5× on decomposition, 2.5–13×
   on smells). This is the opposite of the Sol picture, where the metric groups came apart —
   `cognitive_max` favouring hybrid-v2 while decomposition and smells favoured inline-tdd-v1. On opus-4-7 the
@@ -179,19 +179,19 @@ Two properties of this baseline drive the design:
 
 ## Hypotheses
 
-- **H1 (ranking holds).** hybrid-v2/hybrid-v6 lead on `cc_avg_loc_per_function` and `cognitive_max`
+- **H1 (ranking holds).** hybrid-v2/hybrid-v6 lead on `avg_loc_per_function` and `cognitive_max`
   on both katas, as on opus-4-7. → The workflow line transfers to Opus 5; the current
   recommendation stands.
 - **H2 (Sol pattern).** Opus 5 iterates enough on its own that inline-tdd-v1 closes the gap or wins,
   as it did on Sol (F-1.6/F-1.10). → The architecture's value was specific to opus-4-7's
   lack of self-directed cycling, and the default recommendation needs revising for Opus 5.
 - **H3 (metric split).** The ranking holds on `cognitive_max` but inverts on
-  `cc_avg_loc_per_function`, as it did on Sol. → The historical opus-4-7 ranking was partly
+  `avg_loc_per_function`, as it did on Sol. → The historical opus-4-7 ranking was partly
   an artefact of the blind spot in F-1.9, and every RQ that ranked cells on `cognitive_max`
   or Code Mass alone needs re-reading.
 - **H4 (hybrid-v6 earns its addition).** hybrid-v6 beats hybrid-v2 on decomposition — the end-refactor
   phase is what should produce extraction. → The reduction chain's latest step transfers.
-  **Counter-case worth naming:** if hybrid-v6 lands at or below hybrid-v2 on `cc_avg_loc_per_function`
+  **Counter-case worth naming:** if hybrid-v6 lands at or below hybrid-v2 on `avg_loc_per_function`
   on both models, the end-refactor phase adds cost without adding structure, and that is a
   finding about the workflow rather than about the model.
 

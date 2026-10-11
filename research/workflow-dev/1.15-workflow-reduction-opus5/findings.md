@@ -5,10 +5,10 @@ _How much of the hybrid-v6 architecture can be removed on opus-5 before code qua
 ## Overview
 
 **The reduction chain in order** — each step removes exactly one component from the one above
-it. `cc_avg_loc_per_function` is the primary decomposition metric (mean function length,
+it. `avg_loc_per_function` is the primary decomposition metric (mean function length,
 lower = better); n=5 per cell, n=6 for hybrid-v6.
 
-| Chain position | Workflow | sphinx `cc_avg` | game-of-life `cc_avg` |
+| Chain position | Workflow | sphinx `avg_loc_per_function` | game-of-life `avg_loc_per_function` |
 |---|---|---:|---:|
 | upper bound | exact-hybrid-v6-lab-split-cc | 3.54 | **3.46** 🏆 |
 | + APP patch | exact-hybrid-v7-app-subordinate-cc | 2.96 ⚠ | 3.83 |
@@ -25,8 +25,8 @@ All outcomes per cell (sphinx-score / game-of-life):
 | Outcome | single-context-v2 | single-context-v3 | hybrid-v2 | hybrid-v6 | hybrid-v7 | hybrid-v8 |
 |---|---:|---:|---:|---:|---:|---:|
 | `verification_pct` (higher = better) | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | **1.00 / 1.00** 🏆 | 0.92 / 1.00 | **1.00 / 1.00** 🏆 |
-| `cc_avg_loc_per_function` (lower = better) | 6.16 / 4.12 | **3.16** 🏆 / 4.04 | 3.68 / 4.54 | 3.54 / **3.46** 🏆 | 2.96 / 3.83 | 3.24 / 4.67 |
-| `cc_longest_function` (lower = better) | 8.6 / 8.0 | 7.2 / 8.8 | 6.8 / 10.8 | **5.83** 🏆 / 7.5 | 5.8 / **7.2** 🏆 | 7.0 / 11.8 |
+| `avg_loc_per_function` (lower = better) | 6.16 / 4.12 | **3.16** 🏆 / 4.04 | 3.68 / 4.54 | 3.54 / **3.46** 🏆 | 2.96 / 3.83 | 3.24 / 4.67 |
+| `longest_function` (lower = better) | 8.6 / 8.0 | 7.2 / 8.8 | 6.8 / 10.8 | **5.83** 🏆 / 7.5 | 5.8 / **7.2** 🏆 | 7.0 / 11.8 |
 | `total_tokens` (lower = better) | 16.6 M / 11.8 M | 18.8 M / 21.1 M | **12.5 M** 🏆 / **9.2 M** 🏆 | 25.1 M / 19.7 M | 19.3 M / 19.4 M | 15.3 M / 15.8 M |
 | `duration_seconds` (lower = better) | **609 s** 🏆 / **431 s** 🏆 | 745 s / 743 s | 786 s / 621 s | 1475 s / 1145 s | 1264 s / 1183 s | 986 s / 1097 s |
 | `cognitive_max` (lower = better) | 1.4 / 1.8 | 1.4 / 3.2 | **1.0** 🏆 / 1.8 | **1.0** 🏆 / **1.17** 🏆 | 1.0 / 1.4 | 1.4 / 2.8 |
@@ -35,7 +35,7 @@ All outcomes per cell (sphinx-score / game-of-life):
 
 **Caveats binding for both tables:**
 
-- **Correctness-gating.** `hybrid-v7` is the only cell below `verification_pct` 1.00 (0.92 on sphinx-score). Per the gating rule, it receives no trophy for quality or efficiency metrics on that kata — including `cc_avg_loc_per_function` 2.96, which is the best raw value in the row. See F-1.2.
+- **Correctness-gating.** `hybrid-v7` is the only cell below `verification_pct` 1.00 (0.92 on sphinx-score). Per the gating rule, it receives no trophy for quality or efficiency metrics on that kata — including `avg_loc_per_function` 2.96, which is the best raw value in the row. See F-1.2.
 - **Trophies are per-kata, never across katas.** sphinx-score and game-of-life differ in task shape; a cross-kata comparison would measure the kata, not the workflow.
 - Code Mass (APP) carries no trophy — per `RQ-architecture-axis-opus5` F-1.6 it ranks opposite to decomposition. It stays as context.
 - σ ranges from 0.44 to 2.88 on the primary metric. Most adjacent chain steps overlap within 1 σ; the finding blocks name which differences survive.
@@ -48,7 +48,7 @@ Removing components from hybrid-v6 does not produce a monotone decline in decomp
 hybrid-v6 → hybrid-v7 → hybrid-v8 → single-context-v3 orders differently on the two katas, and on neither does it fall
 step by step.
 
-| Chain step | sphinx-score `cc_avg` | game-of-life `cc_avg` |
+| Chain step | sphinx-score `avg_loc_per_function` | game-of-life `avg_loc_per_function` |
 |---|---:|---:|
 | hybrid-v6 (upper bound) | 3.54 | 3.46 |
 | hybrid-v7 (+ APP patch) | 2.96 | 3.83 |
@@ -62,7 +62,7 @@ On sphinx-score the leanest cell (single-context-v3) is statistically indistingu
 **Rationale.** Both katas are small enough that the architecture has limited room to
 differentiate: the inline-tdd-v1 → hybrid-v6 span on sphinx is a factor 2.4, and every chain cell sits in the
 lower half of it. Once decomposition is good, further architecture adds variance rather than
-gain. The inversion at hybrid-v8/game-of-life is consistent with its `cc_longest_function` of 11.8
+gain. The inversion at hybrid-v8/game-of-life is consistent with its `longest_function` of 11.8
 (σ 6.72, max 23) — a single long function drags the mean without the end-refactor phase to
 catch it.
 
@@ -70,8 +70,8 @@ catch it.
 
 ## F-1.2 — hybrid-v7 buys its decomposition lead with the only correctness loss in the field
 
-`exact-hybrid-v7-app-subordinate-cc` has the best raw `cc_avg_loc_per_function` on sphinx-score (2.96,
-σ 0.68) and the lowest `cc_longest_function` (5.8). It is also the only cell in all twelve
+`exact-hybrid-v7-app-subordinate-cc` has the best raw `avg_loc_per_function` on sphinx-score (2.96,
+σ 0.68) and the lowest `longest_function` (5.8). It is also the only cell in all twelve
 that falls below `verification_pct` 1.00.
 
 | Cell | n | `verification_pct` | per-run values |
@@ -86,7 +86,7 @@ is green (`tests_passing` 100 % across the cell).
 told that rising mass is normal and must not revert an extraction for it. On sphinx-score the
 result is the field's finest-grained decomposition — and, in two runs, a structure whose
 self-written tests no longer catch what the external suite checks. This is the failure mode
-caveat 3 of the RQ README anticipated for `cc_avg_loc_per_function`: the metric rewards
+caveat 3 of the RQ README anticipated for `avg_loc_per_function`: the metric rewards
 splitting without judging whether the split is appropriate. The same patch on game-of-life
 produces no correctness loss (1.00 across five runs) and no decomposition lead (3.83 against
 hybrid-v6's 3.46), so the effect is not a property of the patch alone but of patch × kata.
@@ -98,7 +98,7 @@ hybrid-v6's 3.46), so the effect is not a property of the patch alone but of pat
 hybrid-v7 and hybrid-v8 differ in exactly one component — the end-refactor phase — and both carry the
 APP patch. The phase costs measurably and returns nothing on the primary metric.
 
-| Cell | `total_tokens` | `duration_seconds` | `cc_avg` sphinx | `cc_avg` game-of-life |
+| Cell | `total_tokens` | `duration_seconds` | `avg_loc_per_function` sphinx | `avg_loc_per_function` game-of-life |
 |---|---:|---:|---:|---:|
 | hybrid-v7 (with end-refactor) | 19.3 M / 19.4 M | 1264 s / 1183 s | 2.96 | 3.83 |
 | hybrid-v8 (without) | 15.3 M / 15.8 M | 986 s / 1097 s | 3.24 | 4.67 |
@@ -106,7 +106,7 @@ APP patch. The phase costs measurably and returns nothing on the primary metric.
 
 On sphinx-score the decomposition difference (0.28) sits well inside σ (0.68 / 0.44) — the
 phase buys nothing measurable there. On game-of-life the difference is larger (0.84) but still
-inside hybrid-v8's σ of 1.81, and it appears in the peak rather than the mean: `cc_longest_function`
+inside hybrid-v8's σ of 1.81, and it appears in the peak rather than the mean: `longest_function`
 7.2 with the phase against 11.8 without.
 
 **Rationale.** The end phase is a safety net for outliers, not a driver of average quality. Where
@@ -121,7 +121,7 @@ happens on game-of-life, not on sphinx-score.
 hybrid-v8 and single-context-v3 differ only in whether refactoring runs in a fresh context (subagent) or the
 shared one (skill). Removing the isolated context does not degrade decomposition on either kata.
 
-| Cell | sphinx `cc_avg` | gol `cc_avg` | sphinx `cognitive_max` | gol `cognitive_max` | `refactorings_applied` |
+| Cell | sphinx `avg_loc_per_function` | gol `avg_loc_per_function` | sphinx `cognitive_max` | gol `cognitive_max` | `refactorings_applied` |
 |---|---:|---:|---:|---:|---:|
 | hybrid-v8 (subagent) | 3.24 | 4.67 | 1.4 | 2.8 | 7.8 / 9.2 |
 | single-context-v3 (shared ctx) | 3.16 | 4.04 | 1.0 | 3.2 | 9.0 / 9.2 |
@@ -163,7 +163,7 @@ reasons. Deciding H4 requires a follow-up RQ on claim-office at that kata's pric
 decomposition, which motivated the APP subordination patch. On sphinx-score and game-of-life
 that inversion does not reproduce.
 
-| Cell | sphinx APP | sphinx `cc_avg` | gol APP | gol `cc_avg` |
+| Cell | sphinx APP | sphinx `avg_loc_per_function` | gol APP | gol `avg_loc_per_function` |
 |---|---:|---:|---:|---:|
 | single-context-v2 | 159.8 | 6.16 | 176.2 | 4.12 |
 | single-context-v3 | 194.6 | 3.16 | 199.2 | 4.04 |
@@ -175,7 +175,7 @@ that inversion does not reproduce.
 On sphinx-score the worst-decomposing cell (single-context-v2, 6.16) also has the *lowest* mass (159.8),
 which is the inversion — but the best-decomposing cell (hybrid-v7, 2.96) sits mid-field at 178.0
 rather than at the top, and the highest mass belongs to hybrid-v8 (198.4), a mid-field decomposer.
-On game-of-life the spread is 176–199 across all six cells, against a `cc_avg` spread of
+On game-of-life the spread is 176–199 across all six cells, against a `avg_loc_per_function` spread of
 3.46–4.67; mass barely moves and its top value (single-context-v3, 199.2) belongs to a mid-field cell.
 
 **Rationale.** The inversion was measured on claim-office, where the architecture has room to

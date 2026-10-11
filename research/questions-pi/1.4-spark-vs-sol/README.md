@@ -18,8 +18,8 @@ outcomes:
   - cognitive_max
   - cognitive_avg
   - mccabe_max
-  - cc_longest_function
-  - cc_avg_loc_per_function
+  - longest_function
+  - avg_loc_per_function
   - smell_total
   # code mass — reported without trophy, see "Metric blind spot" in RQ-1.14:
   # APP has no notion of nesting and rewards one long function.
@@ -66,7 +66,7 @@ demonstrably need it.
 kata with 16 external scenarios covering threshold logic and special cases.
 
 **H2 — Spark holds correctness but pays in code quality.** Same
-`verification_pct`, worse `cognitive_max` / `smell_total` / `cc_longest_function`.
+`verification_pct`, worse `cognitive_max` / `smell_total` / `longest_function`.
 
 **H3 — Spark holds both.** Then the workflow, not the model, is doing the work on
 this kata, and the cheaper tier is the honest recommendation for this cell.

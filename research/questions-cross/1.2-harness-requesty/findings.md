@@ -33,7 +33,7 @@ core cost metric `cost_usd` (lower = better), per harness × kata.
 | `code_mass` (lower) | 862.8 | 920.6 | **782.0** 🏆 |
 | `cognitive_max` (lower) | **3.0** 🏆 | 4.6 | 3.6 |
 | `mccabe_max` (lower) | **3.8** 🏆 | 4.4 | **3.8** 🏆 |
-| `cc_longest_function` (lower) | **15.0** 🏆 | 18.4 | 22.0 |
+| `longest_function` (lower) | **15.0** 🏆 | 18.4 | 22.0 |
 | `smell_total` (lower) | **0.0** 🏆 | 0.2 | 0.4 |
 | `refactorings_applied` (higher) | **28.0** 🏆 | 23.2 | 19.4 |
 
@@ -46,7 +46,7 @@ core cost metric `cost_usd` (lower = better), per harness × kata.
 | `total_tokens` (lower) | 5.21 M | 1.96 M | **1.07 M** 🏆 |
 | `cognitive_max` (lower) | **5.0** 🏆 | 12.6 | 11.0 |
 | `mccabe_max` (lower) | **4.6** 🏆 | 8.8 | 8.0 |
-| `cc_longest_function` (lower) | **11.6** 🏆 | 21.8 | 17.8 |
+| `longest_function` (lower) | **11.6** 🏆 | 21.8 | 17.8 |
 | `smell_total` (lower) | **2.2** 🏆 | 3.2 | 3.4 |
 | `code_mass` (lower) | 158.6 | 154.2 | **150.8** 🏆 |
 | `refactorings_applied` (higher) | **8.8** 🏆 | 3.2 | 2.8 |
@@ -136,7 +136,7 @@ estimated figures.
 
 ---
 
-## F-1.3 — Claude Code delivers the leanest `cc_longest_function` on game-of-life, and it buys that with refactor volume
+## F-1.3 — Claude Code delivers the leanest `longest_function` on game-of-life, and it buys that with refactor volume
 
 On game-of-life (all cells fully correct) CC produces markedly lower
 complexity peaks and applies markedly more refactorings than OC and pi.
@@ -145,7 +145,7 @@ complexity peaks and applies markedly more refactorings than OC and pi.
 |---|---:|---:|---:|
 | `cognitive_max` | 5.0 | 12.6 | 11.0 |
 | `mccabe_max` | 4.6 | 8.8 | 8.0 |
-| `cc_longest_function` | 11.6 | 21.8 | 17.8 |
+| `longest_function` | 11.6 | 21.8 | 17.8 |
 | `smell_total` (Smell Total) | 2.2 | 3.2 | 3.4 |
 | `code_mass` (Code Mass APP) | 158.6 | 154.2 | 150.8 |
 | `refactorings_applied` (higher = better) | 8.8 | 3.2 | 2.8 |
@@ -155,7 +155,7 @@ the replicate spread (CC σ=1.87, OC σ=5.37, pi σ=4.0). In parallel CC applies
 refactorings on average — about 2.8× the other two harnesses, at a spread narrow enough
 (σ=0.45) to be systematic rather than incidental. The plausible mechanism: the refactor
 subagent in the CC workflow engages structurally more often, which pushes down the
-`cc_longest_function`.
+`longest_function`.
 
 `code_mass` is by contrast harness-close (158.6 / 154.2 / 150.8, all within one σ) — the
 difference lies in the **distribution** of complexity across the code, not in how much
@@ -163,7 +163,7 @@ code gets written. All three arms produce a comparable amount of functionality; 
 spreads it across flatter structures.
 
 On claim-office the advantage shrinks and partly reverses (`cognitive_max` CC 3.0 <
-pi 3.6 < OC 4.6, but `cc_longest_function` CC 15.0 < OC 18.4 < pi 22.0, and `code_mass`
+pi 3.6 < OC 4.6, but `longest_function` CC 15.0 < OC 18.4 < pi 22.0, and `code_mass`
 pi 782.0 < CC 862.8 < OC 920.6). The clear CC lead is therefore game-of-life-specific.
 A plausible reading: on the larger kata every arm refactors heavily (19–28 refactorings
 against 2.8–8.8), so CC's refactor surplus no longer distinguishes it.
@@ -188,7 +188,7 @@ The basic TDD mechanics (cycles, prediction hit rate) are harness-invariant — 
 count within the spread per kata (claim-office 36.4–40.2, game-of-life 8.4–9.8),
 prediction hit rate 90–100 % everywhere. This confirms H4 for the core discipline across
 all three harnesses. The only robust difference is refactor intensity: on game-of-life
-CC refactors ~2.8× more often than OC/pi, which directly feeds the lower `cc_longest_function`
+CC refactors ~2.8× more often than OC/pi, which directly feeds the lower `longest_function`
 from F-1.3. On claim-office the same ordering holds but compressed (28.0 / 23.2 / 19.4,
 a 1.4× rather than a 2.8× spread).
 

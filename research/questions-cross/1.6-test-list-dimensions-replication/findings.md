@@ -33,9 +33,9 @@ one means no test reaches the line at all — untested code.
 | `cognitive_avg` | **1.52 ± 0.21** 🏆 | **1.47 ± 0.26** 🏆 |
 | `mccabe_max` | 3.3 ± 0.95 | 3.3 ± 0.48 |
 | Smell Total | 0.0 ± 0.00 | 0.0 ± 0.00 |
-| `cc_avg_loc_per_function` | **5.53 ± 0.65** 🏆 | **5.95 ± 0.93** 🏆 |
-| `cc_median_loc_per_function` | **4.55 ± 1.12** 🏆 | **4.70 ± 1.27** 🏆 |
-| `cc_longest_function` | **17.7 ± 6.25** 🏆 | **18.9 ± 5.26** 🏆 |
+| `avg_loc_per_function` | **5.53 ± 0.65** 🏆 | **5.95 ± 0.93** 🏆 |
+| `median_loc_per_function` | **4.55 ± 1.12** 🏆 | **4.70 ± 1.27** 🏆 |
+| `longest_function` | **17.7 ± 6.25** 🏆 | **18.9 ± 5.26** 🏆 |
 | Mutation Score | **0.96 ± 0.03** 🏆 | 0.92 ± 0.06 |
 | `predictions_correct_rate` | 97.1 % | **98.9 %** 🏆 |
 | `duration_seconds` | **1434.6 ± 518.4** 🏆 | **1206.1 ± 318.1** 🏆 |
@@ -44,7 +44,7 @@ one means no test reaches the line at all — untested code.
 | *Test LoC* | 457.0 ± 131.8 | 599.1 ± 258.6 |
 | *Production LoC* | 236.2 ± 22.5 | 245.7 ± 32.9 |
 | *Code Mass (APP)* | 661.7 ± 26.5 | 714.8 ± 70.1 |
-| *`cc_functions`* | 25.4 ± 3.03 | 25.3 ± 4.42 |
+| *`functions`* | 25.4 ± 3.03 | 25.3 ± 4.42 |
 | *`mutants_total` / survived* | 126 / 4.5 | 134 / 10.4 |
 | *of those uncovered* | 1.9 ± 3.14 | 5.8 ± 6.61 |
 | *`total_tokens`* | 30.4 M | 21.4 M |
@@ -58,9 +58,9 @@ one means no test reaches the line at all — untested code.
 | `cognitive_avg` | **1.87 ± 0.48** 🏆 | **1.83 ± 0.37** 🏆 |
 | `mccabe_max` | **4.3 ± 1.16** 🏆 | **5.0 ± 1.56** 🏆 |
 | Smell Total | 0.0 ± 0.00 | 0.0 ± 0.00 |
-| `cc_avg_loc_per_function` | **5.72 ± 0.52** 🏆 | 6.42 ± 1.24 |
-| `cc_median_loc_per_function` | **4.35 ± 0.58** 🏆 | 5.30 ± 1.96 |
-| `cc_longest_function` | **16.8 ± 1.69** 🏆 | **18.4 ± 2.37** 🏆 |
+| `avg_loc_per_function` | **5.72 ± 0.52** 🏆 | 6.42 ± 1.24 |
+| `median_loc_per_function` | **4.35 ± 0.58** 🏆 | 5.30 ± 1.96 |
+| `longest_function` | **16.8 ± 1.69** 🏆 | **18.4 ± 2.37** 🏆 |
 | Mutation Score | **0.89 ± 0.05** 🏆 | **0.86 ± 0.05** 🏆 *(n=9)* |
 | `predictions_correct_rate` | 98.9 % | **99.6 %** 🏆 |
 | `duration_seconds` | **1263.4 ± 351.0** 🏆 | **1486.0 ± 476.7** 🏆 |
@@ -69,7 +69,7 @@ one means no test reaches the line at all — untested code.
 | *Test LoC* | 218.3 ± 47.8 | 220.6 ± 71.3 |
 | *Production LoC* | 150.2 ± 27.2 | 152.4 ± 28.1 |
 | *Code Mass (APP)* | 578.2 ± 35.7 | 633.1 ± 94.7 |
-| *`cc_functions`* | 15.3 ± 4.03 | 13.7 ± 4.06 |
+| *`functions`* | 15.3 ± 4.03 | 13.7 ± 4.06 |
 | *`mutants_total` / survived* | 117 / 13.3 | 133 / 18.3 *(n=9)* |
 | *of those uncovered* | 3.8 ± 1.55 | 5.4 ± 2.70 *(n=9)* |
 | *`total_tokens`* | 6.58 M | 6.88 M |
@@ -145,8 +145,8 @@ structural metrics confirm it.
 |---|---|---|
 | `cognitive_max` | 2.8 → 2.8 | 3.7 → 3.9 |
 | `mccabe_max` | 3.3 → 3.3 | 4.3 → 5.0 |
-| `cc_avg_loc_per_function` | 5.53 → 5.95 | 5.72 → 6.42 |
-| `cc_median_loc_per_function` | 4.55 → 4.70 | 4.35 → 5.30 |
+| `avg_loc_per_function` | 5.53 → 5.95 | 5.72 → 6.42 |
+| `median_loc_per_function` | 4.55 → 4.70 | 4.35 → 5.30 |
 | Production LoC | 236.2 → 245.7 | 150.2 → 152.4 |
 
 On Opus `cognitive_max` and `mccabe_max` are *identical* to the second decimal
@@ -154,8 +154,8 @@ across twenty runs, and the size measures differ by less than either cell's
 spread. Structure is genuinely unaffected.
 
 On SOL the two size measures move against v1.6 by more than the better cell's
-standard deviation — `cc_avg_loc_per_function` 5.72 → 6.42 (σ 0.52) and
-`cc_median_loc_per_function` 4.35 → 5.30 (σ 0.58). Combined with F-1.6.1, this
+standard deviation — `avg_loc_per_function` 5.72 → 6.42 (σ 0.52) and
+`median_loc_per_function` 4.35 → 5.30 (σ 0.58). Combined with F-1.6.1, this
 makes v1.6 a cell with no correctness benefit and a mild structural cost on that
 platform.
 

@@ -26,8 +26,8 @@ outcomes:
   - tcr_red_commits
   - tcr_green_commits
   - tcr_refactor_commits
-  - cc_avg_loc_per_function
-  - cc_longest_function
+  - avg_loc_per_function
+  - longest_function
   - cognitive_max
   - mccabe_max
   - smell_total

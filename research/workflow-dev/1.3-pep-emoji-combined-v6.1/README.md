@@ -17,7 +17,7 @@ outcomes:
   # primary: code quality
   - code_mass
   - smell_total
-  - cc_longest_function
+  - longest_function
   - cognitive_max
   - mccabe_max
   # TDD discipline (interaction between pep & emoji expected)

@@ -17,7 +17,7 @@ outcomes:
   # evaluated for spread and stability
   - code_mass
   - smell_total
-  - cc_longest_function
+  - longest_function
   - mccabe_max
   - cognitive_max
   # test strength: an additional stability dimension alongside code quality
@@ -97,7 +97,7 @@ The subsampling analysis is documented numerically in the findings file.
 
 - **H1 (workflow stability ranking)**: σ_cognitive_max grows in the order subagents-v1 < iterative-v1 ≈ oneshot-v1 < inline-tdd-v1 < single-context-v1. Phase isolation (subagents-v1) delivers the most stable signal; single-context-v1 with a shared context is the most volatile, because path-dependent context accumulation lets the form of the solution spread.
 - **H2 (n=3 suffices for subagents-v1)**: The subsampling analysis on subagents-v1 shows ≥ 95 % agreement of the n=3 ranking with the n=10 ranking for all complexity outcomes.
-- **H3 (n=3 does NOT suffice for single-context-v1)**: The subsampling analysis on single-context-v1 shows < 80 % agreement for `cognitive_max` and `cc_longest_function`.
+- **H3 (n=3 does NOT suffice for single-context-v1)**: The subsampling analysis on single-context-v1 shows < 80 % agreement for `cognitive_max` and `longest_function`.
 - **H4 (the main RQ-tdd-quality finding holds at n=10)**: F-tdd-quality.1 ("strict TDD subagents-v1 clearly better") and F-tdd-quality.2 ("inline-tdd-v1 worse than non-TDD") replicate at n=10 with the same sign and the same order of magnitude.
 
 **Falsification of H4** would be particularly important: if the ranking flips at n=10 (e.g. inline-tdd-v1 no longer last), F-tdd-quality.1/F-tdd-quality.2 would be a finding only at n=3 — which would undermine the whole of RQ-tdd-quality.

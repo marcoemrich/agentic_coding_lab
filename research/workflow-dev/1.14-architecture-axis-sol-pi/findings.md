@@ -20,8 +20,8 @@ Data base: 50 runs, 10 cells × n=5, all `exit_reason: ok`, `completed_within_bu
 | `cognitive_avg` | 3.65 | 3.70 | 3.58 | 2.65 | **2.45** 🏆 | lower = better |
 | `mccabe_max` | 8.2 | 13.6 | 8.2 | 6.0 | **5.8** 🏆 | lower = better |
 | Smell Total | 6.8 | 28.0 | 12.4 | 15.2 | **0.0** 🏆 | lower = better |
-| `cc_longest_function` | 21.8 | 43.4 | 23.0 | 23.0 | **21.2** 🏆 | lower = better |
-| `cc_avg_loc_per_function` | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | 11.05 | lower = better |
+| `longest_function` | 21.8 | 43.4 | 23.0 | 23.0 | **21.2** 🏆 | lower = better |
+| `avg_loc_per_function` | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | 11.05 | lower = better |
 | Code Mass (APP) | 678.8 | 646.8 | 524.6 | 446.4 | 466.8 | lower = better (no 🏆 — see caveat) |
 | `cycle_count` | n/a | 87.4 | 29.6 | 34.2 | **27.8** 🏆 | — |
 | `refactorings_applied` | n/a | 10.2 | **19.6** 🏆 | 15.0 | 15.4 | higher = better |
@@ -39,8 +39,8 @@ Data base: 50 runs, 10 cells × n=5, all `exit_reason: ok`, `completed_within_bu
 | `cognitive_avg` | **2.35** 🏆 | 3.23 | 4.37 | 6.20 | 5.05 | lower = better |
 | `mccabe_max` | **4.6** 🏆 | 6.0 | 6.2 | 6.6 | 5.8 | lower = better |
 | Smell Total | **0.0** 🏆 | 3.8 | 2.4 | 2.8 | **0.0** 🏆 | lower = better |
-| `cc_longest_function` | **15.6** 🏆 | 22.0 | 20.6 | 20.8 | 19.8 | lower = better |
-| `cc_avg_loc_per_function` | **8.66** 🏆 | 12.83 | 13.07 | 15.90 | 10.80 | lower = better |
+| `longest_function` | **15.6** 🏆 | 22.0 | 20.6 | 20.8 | 19.8 | lower = better |
+| `avg_loc_per_function` | **8.66** 🏆 | 12.83 | 13.07 | 15.90 | 10.80 | lower = better |
 | Code Mass (APP) | 174.8 | 146.8 | 141.0 | 125.8 | 135.8 | lower = better (no 🏆 — see caveat) |
 | `cycle_count` | n/a | 22.0 | 9.4 | 9.0 | **8.8** 🏆 | — |
 | `refactorings_applied` | n/a | **10.2** 🏆 | 5.2 | 4.4 | 4.6 | higher = better |
@@ -64,7 +64,7 @@ Caveats for reading the tables:
   least. APP measures compactness (Micah Martin's premise), which is a different question from
   "is this well decomposed" — and it has no notion of nesting, so a 30-line callback chain and
   the same logic split across named functions are indistinguishable to it. The values stay in
-  the table as context; the decomposition reading belongs to `cc_avg_loc_per_function`.
+  the table as context; the decomposition reading belongs to `avg_loc_per_function`.
 - Where the spread stays inside 1 σ, all near-tied values carry a trophy — the reading is
   "no effect", not a winner.
 - `cycle_count` is ambivalent (neither high nor low is per se better) and carries a trophy only
@@ -178,7 +178,7 @@ correctness question.
 | `cognitive_max` | 8.4 | **5.8** 🏆 | 1.4× |
 | `mccabe_max` | 8.2 | **6.0** 🏆 | 1.4× |
 | Smell Total | **12.4** 🏆 | 15.2 | 1.2× |
-| `cc_avg_loc_per_function` | **10.48** 🏆 | 10.72 | 1.0× |
+| `avg_loc_per_function` | **10.48** 🏆 | 10.72 | 1.0× |
 | Code Mass (APP) | 524.6 | 446.4 | 1.2× |
 
 Rationale: single-context-v2 runs everything in one shared context and pays for it once; hybrid-v2 isolates the
@@ -238,8 +238,8 @@ than structureless TDD on every quality metric except one, and on cost.
 | `cognitive_avg` | **2.35** 🏆 | 3.23 (subagents-v2) | 1.37× | lower = better |
 | `mccabe_max` | **4.6** 🏆 | 5.8 (hybrid-v6) | 1.26× | lower = better |
 | Smell Total | **0.0** 🏆 | **0.0** 🏆 (hybrid-v6) | 1.00× | lower = better |
-| `cc_longest_function` | **15.6** 🏆 | 19.8 (hybrid-v6) | 1.27× | lower = better |
-| `cc_avg_loc_per_function` | **8.66** 🏆 | 10.80 (hybrid-v6) | 1.25× | lower = better |
+| `longest_function` | **15.6** 🏆 | 19.8 (hybrid-v6) | 1.27× | lower = better |
+| `avg_loc_per_function` | **8.66** 🏆 | 10.80 (hybrid-v6) | 1.25× | lower = better |
 | `cost_usd` | **$0.57** 🏆 | $1.58 (single-context-v2) | 2.77× | lower = better |
 
 hybrid-v6 is the closest any architecture comes to the baseline on this kata — it ties on Smell
@@ -251,7 +251,7 @@ Against hybrid-v2 — the previous default — the baseline gaps are wider: `cog
 
 Code Mass (APP) runs the other way: hybrid-v2 produces the lowest value (125.8 against inline-tdd-v1's
 174.8). On this kata that ranking is an artefact of the metric, not a counter-result — hybrid-v2
-also has the *worst* decomposition in the field (`cc_avg_loc_per_function` 15.90, averaging
+also has the *worst* decomposition in the field (`avg_loc_per_function` 15.90, averaging
 1.6 functions per run). It scores low on APP because it writes one long function, not because
 it writes compact code. See F-1.9.
 
@@ -285,13 +285,13 @@ decomposition and cost.
 | `cognitive_max` | 9.2 | 8.4 | 5.8 | **4.4** 🏆 | **0.48×** |
 | `mccabe_max` | 8.2 | 8.2 | 6.0 | **5.8** 🏆 | **0.71×** |
 | Smell Total | 6.8 | 12.4 | 15.2 | **0.0** 🏆 | **0.00×** |
-| `cc_avg_loc_per_function` | **8.01** 🏆 | 10.48 | 10.72 | 11.05 | 1.38× |
-| `cc_longest_function` | 21.8 | 23.0 | 23.0 | **21.2** 🏆 | 0.97× |
+| `avg_loc_per_function` | **8.01** 🏆 | 10.48 | 10.72 | 11.05 | 1.38× |
+| `longest_function` | 21.8 | 23.0 | 23.0 | **21.2** 🏆 | 0.97× |
 | Code Mass (APP) | 678.8 | 524.6 | 446.4 | 466.8 | 0.69× |
 | `cost_usd` | **$1.18** 🏆 | $1.72 | $9.52 | $7.25 | 6.14× |
 
 **hybrid-v6 is the quality optimum on this kata**, and by a wider margin than hybrid-v2 was: it takes
-`cognitive_max`, `mccabe_max`, `cc_longest_function` and Smell Total, the last one at 0.0
+`cognitive_max`, `mccabe_max`, `longest_function` and Smell Total, the last one at 0.0
 against hybrid-v2's 15.2. The end-refactor phase is what separates it from hybrid-v2, and on the
 metrics the pipeline scores it works.
 
@@ -347,8 +347,8 @@ Decomposition and Code Mass (APP) rank the cells in opposite directions.
 
 | Kata | inline-tdd-v1 | subagents-v2 | single-context-v2 | hybrid-v2 | hybrid-v6 | Direction |
 |---|---:|---:|---:|---:|---:|---|
-| `cc_avg_loc_per_function` — claim-office | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | 11.05 | lower = better |
-| `cc_avg_loc_per_function` — game-of-life | **8.66** 🏆 | 12.83 | 13.07 | 15.90 | 10.80 | lower = better |
+| `avg_loc_per_function` — claim-office | **8.01** 🏆 | 6.96 | 10.48 | 10.72 | 11.05 | lower = better |
+| `avg_loc_per_function` — game-of-life | **8.66** 🏆 | 12.83 | 13.07 | 15.90 | 10.80 | lower = better |
 | Code Mass (APP) — claim-office | 678.8 | 646.8 | 524.6 | 446.4 | 466.8 | lower = better |
 | Code Mass (APP) — game-of-life | 174.8 | 146.8 | 141.0 | 125.8 | 135.8 | lower = better |
 
@@ -356,7 +356,7 @@ On game-of-life the decomposition ordering is monotonic in architecture weight u
 (inline-tdd-v1 → subagents-v2 → single-context-v2 → hybrid-v2), and hybrid-v6 breaks the trend — its end-refactor phase recovers
 decomposition to 10.80, the best of the structured cells there. On claim-office subagents-v2 breaks the
 ordering the other way, scoring best on this metric while being worst on `cognitive_max` and
-`cc_longest_function`; hybrid-v6 is last.
+`longest_function`; hybrid-v6 is last.
 
 The two rows per kata rank the cells in reverse. hybrid-v2 has the lowest Code Mass (APP) on both
 katas and the worst decomposition on both. On game-of-life it averages 1.6 functions per run —
@@ -378,20 +378,20 @@ callbacks reports the maximum of one callback. APP fails differently: it has no 
 nesting at all, only of how many constructs occur.
 
 Rationale: this is why `cognitive_max` reads hybrid-v2 as the cleanest cell on claim-office (5.8)
-while `cc_avg_loc_per_function` reads it as among the worst (10.72). Both are correct about
+while `avg_loc_per_function` reads it as among the worst (10.72). Both are correct about
 what they measure. A single long function built from callback chains genuinely has a low
 cognitive peak — and genuinely lacks abstraction. Spot-checking one Sol/hybrid-v2/claim-office run
 against an opus-4-7 implementation of the same kata makes the gap concrete: 3 functions against
 28, `cognitive_max` 4 against 6, Smell Total 14 against 1. The metric that tracked the readable
 difference was Smell Total; the metric that inverted it was `cognitive_max`.
 
-Consequence: `cc_avg_loc_per_function` is a required outcome for any RQ comparing architectures,
+Consequence: `avg_loc_per_function` is a required outcome for any RQ comparing architectures,
 and Code Mass (APP) should not be read as a quality metric. Both limits are recorded in the RQ
 README under "Metric blind spot". The finding is about the metrics, not about Sol — nothing here
 suggests the effect is model-specific, and the same blind spot applies to every RQ in the repo
 that ranks cells by Code Mass (APP) or `cognitive_max` alone.
 
-Caveat: `cc_avg_loc_per_function` measures decomposition, not naming. A function split into
+Caveat: `avg_loc_per_function` measures decomposition, not naming. A function split into
 `step1`…`step10` would score well. It is also gameable once a workflow prompt names it — no
 workflow in this RQ does, so the comparison holds here.
 
@@ -402,7 +402,7 @@ workflow in this RQ does, so the comparison holds here.
 The inline-tdd-v1 → hybrid-v2 step moves the two models in opposite directions on game-of-life. All four cells
 reach Correctness (external) 100 %.
 
-| Cell | n | `cognitive_max` | Smell Total | `cc_avg_loc_per_function` | Functions |
+| Cell | n | `cognitive_max` | Smell Total | `avg_loc_per_function` | Functions |
 |---|---:|---:|---:|---:|---:|
 | Sol inline-tdd-v1 | 5 | **4.0** 🏆 | **0.0** 🏆 | 8.66 | 3.4 |
 | Sol hybrid-v2 | 5 | 8.6 | 2.8 | 15.90 | 1.6 |
@@ -455,11 +455,11 @@ Caveats, both load-bearing:
 ## F-1.11 — None of the declared outcomes separates readable code from unreadable code
 
 Manual inspection of four median runs (chosen by proximity to their cell mean on
-`cc_avg_loc_per_function`) produced two judgements the metrics only partly reproduce.
+`avg_loc_per_function`) produced two judgements the metrics only partly reproduce.
 
 | Judgement | Metric agreement |
 |---|---|
-| inline-tdd-v1 is cut into better domain concepts than hybrid-v6 — clearly on claim-office, marginally on game-of-life | partial: `cc_avg_loc_per_function` 8.01 vs. 11.05 (claim-office) and 8.66 vs. 10.80 (game-of-life) |
+| inline-tdd-v1 is cut into better domain concepts than hybrid-v6 — clearly on claim-office, marginally on game-of-life | partial: `avg_loc_per_function` 8.01 vs. 11.05 (claim-office) and 8.66 vs. 10.80 (game-of-life) |
 | All four implementations are poor code: deep nesting, `for` loops where higher-order functions belong | **none**: three of the four cells score `Smell Total` 0.0 and `cognitive_max` 4.4–5.6 |
 
 The second row is the finding. Code that reads as poor scores as clean.
@@ -489,21 +489,21 @@ methods.
 |---|---:|---:|---:|
 | Production LoC | 34 | 32 | 53 |
 | Functions | 9 | 3 | 14 |
-| `cc_avg_loc_per_function` | 7.25 | 11.00 | **4.89** 🏆 |
+| `avg_loc_per_function` | 7.25 | 11.00 | **4.89** 🏆 |
 | `cognitive_max` | 4 | 4 | **1** 🏆 |
 | `mccabe_max` | 4 | 5 | **2** 🏆 |
 | Smell Total | **0** 🏆 | **0** 🏆 | **0** 🏆 |
 | `for` loops : array methods | 2 : 7 | 2 : 3 | **1 : 7** 🏆 |
 
 Its nesting is barely flatter — `unique()` still holds a loop — but naming and cut are in a
-different class. The metrics that track it are `cc_avg_loc_per_function` and `cognitive_max`;
+different class. The metrics that track it are `avg_loc_per_function` and `cognitive_max`;
 `Smell Total` reports zero for all three and separates nothing.
 
 Rationale: the readable difference decomposes into three properties with very different
-measurability. **Cut** is covered by `cc_avg_loc_per_function` (F-1.9). **Declarative style** is
+measurability. **Cut** is covered by `avg_loc_per_function` (F-1.9). **Declarative style** is
 measurable but unmeasured — the loop-to-array-method ratio in the last row is computed by hand
 here, not by the pipeline. **Naming** has no proxy at all: identifier length rewards
-`processDataHelper2`, prompt-vocabulary overlap rewards copying, and `cc_avg_loc_per_function`
+`processDataHelper2`, prompt-vocabulary overlap rewards copying, and `avg_loc_per_function`
 scores a function sawn into `step1`…`step10` well (its stated limit in the RQ README).
 
 Consequence: this RQ's quality rankings hold only inside what the metrics see. "hybrid-v6 has zero

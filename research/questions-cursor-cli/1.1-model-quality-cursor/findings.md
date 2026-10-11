@@ -30,8 +30,8 @@ not correctness-gated here.
 | `cognitive_avg` (↓) | **4.97** 🏆 | 7.9 | pending |
 | `mccabe_max` (↓) | **6.2** 🏆 | 7.8 | pending |
 | `mccabe_avg` (↓) | **2.4** 🏆 | 3.47 | pending |
-| `cc_longest_function` (↓) | 25.4 | **21.8** 🏆 | pending |
-| `cc_median_loc_per_function` (↓) | **3.3** 🏆 | 8.2 | pending |
+| `longest_function` (↓) | 25.4 | **21.8** 🏆 | pending |
+| `median_loc_per_function` (↓) | **3.3** 🏆 | 8.2 | pending |
 | Smell Total `smell_total` (↓) | **3.0** 🏆 | **2.8** 🏆 | pending |
 | Correctness (internal) `tests_passing` (↑) | **100 %** 🏆 | **100 %** 🏆 | pending |
 | Correctness (external) `verification_pct` (↑) | **100 %** 🏆 | **100 %** 🏆 | pending |
@@ -59,7 +59,7 @@ The two models split cleanly across two opposing quality axes.
 Grok wins volume decisively (both > 2σ). Composer wins the complexity axis, but
 only weakly — `cognitive_avg` is inside one σ and `mccabe_avg` sits right at it.
 
-The one sharp structural difference is `cc_median_loc_per_function`: composer
+The one sharp structural difference is `median_loc_per_function`: composer
 3.3 vs grok 8.2 (σ 0.27 / 3.63). Composer decomposes into many very small
 functions; grok writes fewer, longer ones. That single choice explains both
 columns — many small functions raise total LoC and mass while lowering

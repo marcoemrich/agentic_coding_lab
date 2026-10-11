@@ -61,10 +61,10 @@ outcomes:
   - chain_opens_red
   - chain_ends_green
   # code quality: decomposition first
-  # cc_avg_loc_per_function is the binding quality metric per
+  # avg_loc_per_function is the binding quality metric per
   # RQ-architecture-axis-opus5 F-1.6.
-  - cc_avg_loc_per_function
-  - cc_longest_function
+  - avg_loc_per_function
+  - longest_function
   - cognitive_max
   - mccabe_max
   - smell_total
@@ -246,7 +246,7 @@ agent can read — that measures compliance-with-a-checklist, not the skill.
 
 - **H11 (the subagent buys decomposition, not discipline)** —
   `exact-ptdd-v1.1-refactor-subagent-cc` lands better than `exact-ptdd-v1-cc` on
-  `cc_avg_loc_per_function` and level with it on `tdd_discipline`. The subagent
+  `avg_loc_per_function` and level with it on `tdd_discipline`. The subagent
   changes where the Refactor step runs, not whether a failing test preceded the
   code, so the discipline components have no mechanism by which to move.
   Falsifier either way is interesting: if discipline *does* move, the isolated
@@ -258,7 +258,7 @@ agent can read — that measures compliance-with-a-checklist, not the skill.
   PTDD cells differ in `refactor_events` even where decomposition does not,
   because an isolated subagent returns a changed tree in one step where the
   inline variant may touch the code repeatedly. Read it against
-  `cc_avg_loc_per_function`, never alone: this is the column where "more
+  `avg_loc_per_function`, never alone: this is the column where "more
   refactorings" and "better decomposition" are least likely to agree.
 
 ### Two generations of the lab line
@@ -286,7 +286,7 @@ agent can read — that measures compliance-with-a-checklist, not the skill.
 
 ### Code quality
 
-- **H7 (refactor position orders decomposition)** — `cc_avg_loc_per_function`
+- **H7 (refactor position orders decomposition)** — `avg_loc_per_function`
   rises monotonically as refactoring gets rarer: the hybrid cells lowest,
   `superpowers` and `kesseler` in the middle, `pocock` highest. The clean test
   is `pocock` against the two inline per-cycle skills, which varies position

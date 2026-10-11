@@ -22,9 +22,9 @@ controls:
 outcomes:
   # Decomposition — the axis on which the two lines actually separated on Opus 5
   # (RQ-current-ptdd-vs-exact-opus-native F-4.9.1)
-  - cc_avg_loc_per_function
-  - cc_median_loc_per_function
-  - cc_longest_function
+  - avg_loc_per_function
+  - median_loc_per_function
+  - longest_function
   - unit_count
   - unit_size_max
   - unit_size_avg

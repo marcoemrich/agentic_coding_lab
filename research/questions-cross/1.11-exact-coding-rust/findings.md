@@ -11,7 +11,7 @@ measure the model, not the method.
 **Trophy rules applied here.** Quality and efficiency trophies go only to cells
 with mean Correctness (external) ≥ 0.90; `exact-ptdd-v1.1-refactor-subagent-cc`
 is at 0.79 and is therefore **excluded from every quality and efficiency row** of
-the Opus table — its values are printed in parentheses. `cc_functions` and
+the Opus table — its values are printed in parentheses. `functions` and
 `mutants_total` are ambivalent in direction and carry no trophy. `smell_total` on
 Opus is identically 0 in all three arms: no contest, so no winner.
 
@@ -25,10 +25,10 @@ Opus is identically 0 in all three arms: no contest, so no winner.
 | `cognitive_avg` | lower = better | 0.78 | **0.63** 🏆 | (0.48) |
 | `mccabe_max` | lower = better | 8.6 | **8.0** 🏆 | (7.0) |
 | `mccabe_avg` | lower = better | 2.96 | **2.56** 🏆 | (2.04) |
-| `cc_longest_function` | lower = better | 28.2 | **24.6** 🏆 | (23.8) |
-| `cc_avg_loc_per_function` | lower = better | 8.75 | **7.93** 🏆 | (6.35) |
-| `cc_median_loc_per_function` | lower = better | 7.0 | **6.8** 🏆 | (6.0) |
-| `cc_functions` | ambivalent | 33.2 | 36.0 | (46.6) |
+| `longest_function` | lower = better | 28.2 | **24.6** 🏆 | (23.8) |
+| `avg_loc_per_function` | lower = better | 8.75 | **7.93** 🏆 | (6.35) |
+| `median_loc_per_function` | lower = better | 7.0 | **6.8** 🏆 | (6.0) |
+| `functions` | ambivalent | 33.2 | 36.0 | (46.6) |
 | Smell Total | lower = better | 0 | 0 | (0) |
 | Mutation Score | higher = better | 0.96 | **0.98** 🏆 | (0.98) |
 | `mutants_total` | ambivalent | 101.0 | 117.2 | (113.2) |
@@ -51,10 +51,10 @@ guard rather than an outcome to win.
 | `cognitive_avg` | lower = better | 4.33 | **2.03** 🏆 | **1.96** 🏆 |
 | `mccabe_max` | lower = better | **12.0** 🏆 | **11.8** 🏆 | **13.6** 🏆 |
 | `mccabe_avg` | lower = better | 8.24 | **5.72** 🏆 | **5.78** 🏆 |
-| `cc_longest_function` | lower = better | **28.6** 🏆 | **25.8** 🏆 | **27.4** 🏆 |
-| `cc_avg_loc_per_function` | lower = better | 18.04 | **10.52** 🏆 | **10.72** 🏆 |
-| `cc_median_loc_per_function` | lower = better | 18.4 | **8.9** 🏆 | **10.0** 🏆 |
-| `cc_functions` | ambivalent | 5.6 | 11.4 | 11.4 |
+| `longest_function` | lower = better | **28.6** 🏆 | **25.8** 🏆 | **27.4** 🏆 |
+| `avg_loc_per_function` | lower = better | 18.04 | **10.52** 🏆 | **10.72** 🏆 |
+| `median_loc_per_function` | lower = better | 18.4 | **8.9** 🏆 | **10.0** 🏆 |
+| `functions` | ambivalent | 5.6 | 11.4 | 11.4 |
 | Smell Total | lower = better | 0.6 | **0** 🏆 | 0.4 |
 | Mutation Score | higher = better | **0.99** 🏆 | **0.98** 🏆 | **0.99** 🏆 |
 | `mutants_total` | ambivalent | 77.0 | 101.4 | 86.2 |
@@ -63,10 +63,10 @@ guard rather than an outcome to win.
 | `total_tokens` | lower = better | **318 k** 🏆 | 2.84 M | 2.07 M |
 | `cost_usd` | lower = better | **$0.19** 🏆 | $0.94 | $1.04 |
 
-Rows with three trophies (`mccabe_max`, `cc_longest_function`, Mutation Score)
+Rows with three trophies (`mccabe_max`, `longest_function`, Mutation Score)
 mean "no effect": the widest gap in the row is smaller than one σ, so the table's
 message is that the three arms are indistinguishable on that column. For
-`cc_longest_function` that gap is 2.8 lines against σ 2.39–3.58.
+`longest_function` that gap is 2.8 lines against σ 2.39–3.58.
 
 ### Comparability constraints
 
@@ -101,15 +101,15 @@ the control already writes 33 functions, and the same method buys a few percent.
 
 | Outcome | SOL control | SOL `exact-ptdd-v1` | Opus control | Opus `exact-ptdd-v1` |
 |---|---|---|---|---|
-| `cc_functions` | 5.6 | 11.4 | 33.2 | 36.0 |
-| `cc_avg_loc_per_function` | 18.04 | 10.52 | 8.75 | 7.93 |
-| `cc_median_loc_per_function` | 18.4 | 8.9 | 7.0 | 6.8 |
+| `functions` | 5.6 | 11.4 | 33.2 | 36.0 |
+| `avg_loc_per_function` | 18.04 | 10.52 | 8.75 | 7.93 |
+| `median_loc_per_function` | 18.4 | 8.9 | 7.0 | 6.8 |
 | `cognitive_avg` | 4.33 | 2.03 | 0.78 | 0.63 |
 | `cognitive_max` | 11.8 | 4.8 | 4.6 | 3.0 |
 | `mccabe_avg` | 8.24 | 5.72 | 2.96 | 2.56 |
 
 On SOL the effect is far outside the noise: `cognitive_avg` 4.33 → 2.03 against
-σ 0.70 and 0.33, `cc_median_loc_per_function` 18.4 → 8.9 against σ 5.41 and 1.95.
+σ 0.70 and 0.33, `median_loc_per_function` 18.4 → 8.9 against σ 5.41 and 1.95.
 On Opus every one of these deltas is inside one σ, so the Opus column is a
 direction without a demonstrated effect.
 
@@ -128,8 +128,8 @@ lands on top of the shared-context arm.
 
 | Outcome | Opus `v1` | Opus `v1.1` | SOL `v1` | SOL `v1.1` |
 |---|---|---|---|---|
-| `cc_functions` | 36.0 | 46.6 | 11.4 | 11.4 |
-| `cc_avg_loc_per_function` | 7.93 | 6.35 | 10.52 | 10.72 |
+| `functions` | 36.0 | 46.6 | 11.4 | 11.4 |
+| `avg_loc_per_function` | 7.93 | 6.35 | 10.52 | 10.72 |
 | `cognitive_avg` | 0.63 | 0.48 | 2.03 | 1.96 |
 | `mccabe_avg` | 2.56 | 2.04 | 5.72 | 5.78 |
 | `refactor_events` | 13.2 | 67.6 | 6.0 | 9.33 |
@@ -139,7 +139,7 @@ subagent performs 67.6 refactorings per run against 13.2 in shared context, a
 factor of 5. On SOL the same architecture produces 9.33 against 6.0.
 
 The Opus `v1.1` numbers carry a caveat beyond the correctness gate: σ is large
-(`cc_functions` σ 19.68, Code Mass (APP) σ 411.13) because the cell contains the
+(`functions` σ 19.68, Code Mass (APP) σ 411.13) because the cell contains the
 budget-exhausted run of F-1.11.4, whose truncated code reads as extreme
 flatness. The direction holds without that run, the magnitude does not.
 

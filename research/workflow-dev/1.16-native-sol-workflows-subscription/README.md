@@ -14,9 +14,9 @@ outcomes:
   - cognitive_max
   - cognitive_avg
   - mccabe_max
-  - cc_longest_function
+  - longest_function
   - smell_total
-  - cc_avg_loc_per_function
+  - avg_loc_per_function
   # correctness — gate, not differentiator: inline-tdd-v1 already reaches 100 % on both katas
   # on the Requesty route (RQ-architecture-axis-sol-pi). A native cell that drops
   # below that disqualifies itself regardless of its quality numbers.
@@ -148,8 +148,8 @@ survive:
 
 | Metric | sphinx (183) | game-of-life (196) | claim-office (758–997) |
 |---|---:|---:|---:|
-| `cc_longest_function` | 1.9× | 1.9× | 1.8× |
-| `cc_avg_loc_per_function` | 2.4× | 1.9× | 2.8× |
+| `longest_function` | 1.9× | 1.9× | 1.8× |
+| `avg_loc_per_function` | 2.4× | 1.9× | 2.8× |
 | `cognitive_max` | 1.5× | 6.1× | 2.7× |
 | `mccabe_max` | 1.2× | 2.3× | 1.9× |
 
@@ -157,13 +157,13 @@ survive:
 sphinx cells decide nothing at all.** The plan was to fall back on the length metrics,
 which separate 2.4× / 1.9× on `opus-5-no-thinking`. On Sol that fallback is unavailable:
 the kata produces a single function in 12 of 15 runs, which makes
-`cc_avg_loc_per_function` numerically identical to `cc_longest_function` and turns both
+`avg_loc_per_function` numerically identical to `longest_function` and turns both
 into a file-length measure. No quality metric in the sphinx table carries a trophy. See
 F-1.16.7.
 
 The transferability assumption behind the table above is what failed: those factors were
 measured on `opus-5-no-thinking`, and the floor turned out to be a property of the
-kata-model pair, not of the kata alone. **Pre-check `cc_functions` on a single probe run
+kata-model pair, not of the kata alone. **Pre-check `functions` on a single probe run
 before committing cells on a new kata-model pair** — a mean near 1 means no decomposition
 metric will resolve anything.
 
@@ -263,8 +263,8 @@ resets its nesting counter at every function boundary and APP has no notion of n
 at all. A single long function built from callback chains scores *better* on all three
 than the same logic split into named domain functions.
 
-**`cc_avg_loc_per_function` is therefore the binding decomposition metric**, with
-`cc_longest_function` secondary. Both are immune to the callback trick. Neither
+**`avg_loc_per_function` is therefore the binding decomposition metric**, with
+`longest_function` secondary. Both are immune to the callback trick. Neither
 measures naming. No workflow in this RQ names either metric, so cross-workflow
 comparison is valid here.
 
@@ -273,7 +273,7 @@ comparison is valid here.
 ## Hypotheses
 
 - **H1 (native line clears the floor).** Both `basic-sol-tdd-*` cells beat
-  `baseline-inline-tdd-v1-pi` on `cc_avg_loc_per_function` and `cognitive_max` on at least
+  `baseline-inline-tdd-v1-pi` on `avg_loc_per_function` and `cognitive_max` on at least
   game-of-life, at 100 % `verification_pct`.
   → Reading 2 holds: architecture *can* pay on Sol, and F-1.6 measured a transfer
   failure of the Opus-derived line rather than a property of the model. Workflow
@@ -295,7 +295,7 @@ comparison is valid here.
 
 - **H5 (novelty, not size, drives the inversion).** On `sphinx-score` — size twin of
   game-of-life, novel like claim-office — the native line beats `baseline-inline-tdd-v1-pi` on
-  `cc_avg_loc_per_function` and `cc_longest_function`, i.e. it patterns with claim-office
+  `avg_loc_per_function` and `longest_function`, i.e. it patterns with claim-office
   rather than with its own size class.
   → F-1.16.5 is wrong as written: architecture pays against unfamiliarity, not against
   spec size. The recommendation splits by novelty, and game-of-life's tie becomes a

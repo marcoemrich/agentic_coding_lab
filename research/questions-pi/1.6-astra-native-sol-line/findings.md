@@ -15,16 +15,16 @@ and completion within budget.
 | Outcome | Floor | Inline | Isolated | EXACT |
 |---|---:|---:|---:|---:|
 | Correctness (external) | 100% | 100% | 100% | 100% |
-| `cc_avg_loc_per_function` | 27.93 | 6.17 | 7.34 | 12.83 |
-| `cc_median_loc_per_function` | 26.8 | 4.8 | 6.9 | 11.8 |
-| `cc_longest_function` | 32.6 | 13.4 | 14.0 | 19.8 |
+| `avg_loc_per_function` | 27.93 | 6.17 | 7.34 | 12.83 |
+| `median_loc_per_function` | 26.8 | 4.8 | 6.9 | 11.8 |
+| `longest_function` | 32.6 | 13.4 | 14.0 | 19.8 |
 | `cognitive_max` | 13.8 | 3.2 | 4.0 | 5.2 |
 | `cognitive_avg` | 6.10 | 2.36 | 2.48 | 2.64 |
 | `mccabe_max` | 8.6 | 4.2 | 5.0 | 6.2 |
 | Smell Total, lower is better | 16.6 | **0.0** 🏆 | **0.0** 🏆 | 15.4 |
 | Production LoC | 59.4 | 73.6 | 72.2 | 58.0 |
 | Code Mass (APP) | 367.6 | 426.2 | 440.4 | 348.2 |
-| `cc_functions` | 1.8 | 7.4 | 5.6 | 2.8 |
+| `functions` | 1.8 | 7.4 | 5.6 | 2.8 |
 | `cycle_count` | n/a | 40.4 | 39.4 | 42.4 |
 | Refactor markers | n/a | 40.4 | 39.4 | 23.6 |
 | Prediction accuracy, pooled | n/a | 98.7% | 99.2% | 99.7% |
@@ -36,16 +36,16 @@ and completion within budget.
 | Outcome | Floor | Inline | Isolated | EXACT |
 |---|---:|---:|---:|---:|
 | Correctness (external) | 100% | 100% | 93% | 100% |
-| `cc_avg_loc_per_function` | 8.45 | 7.42 | 7.75 | 9.52 |
-| `cc_median_loc_per_function` | 6.1 | 4.5 | 5.9 | 6.0 |
-| `cc_longest_function` | 27.0 | 20.8 | 18.4 | 24.0 |
+| `avg_loc_per_function` | 8.45 | 7.42 | 7.75 | 9.52 |
+| `median_loc_per_function` | 6.1 | 4.5 | 5.9 | 6.0 |
+| `longest_function` | 27.0 | 20.8 | 18.4 | 24.0 |
 | `cognitive_max` | 11.4 | 4.8 | 4.8 | 8.2 |
 | `cognitive_avg` | 3.40 | 2.10 | 2.33 | 3.55 |
 | `mccabe_max` | 9.8 | 5.6 | 5.0 | 6.2 |
 | Smell Total | 4.2 | 0.0 | 0.0 | 9.6 |
 | Production LoC | 164.0 | 117.6 | 161.0 | 110.4 |
 | Code Mass (APP) | 750.0 | 562.6 | 618.0 | 492.4 |
-| `cc_functions` | 14.2 | 8.4 | 11.6 | 6.6 |
+| `functions` | 14.2 | 8.4 | 11.6 | 6.6 |
 | `cycle_count` | n/a | 33.4 | 33.2 | 28.0 |
 | Refactor markers | n/a | 33.2 | 32.2 | 14.2 |
 | Prediction accuracy, pooled | n/a | 99.3% | 99.4% | 99.3% |
@@ -73,7 +73,7 @@ for this update; existing metrics were reaggregated and costs recomputed.
 |---|---:|---:|---:|---:|
 | Average function length | 6.17 | 12.83 | 7.42 | 9.52 |
 | Median function length | 4.8 | 11.8 | 4.5 | 6.0 |
-| `cc_longest_function` | 13.4 | 19.8 | 20.8 | 24.0 |
+| `longest_function` | 13.4 | 19.8 | 20.8 | 24.0 |
 | `cognitive_max` | 3.2 | 5.2 | 4.8 | 8.2 |
 | `mccabe_max` | 4.2 | 6.2 | 5.6 | 6.2 |
 | Smell Total | 0.0 | 15.4 | 0.0 | 9.6 |
@@ -105,7 +105,7 @@ The explicit clarity guard is not a guarantee that output stays decomposed.
 |---|---:|---:|
 | Functions | 1.8 | 14.2 |
 | Average function length | 27.93 | 8.45 |
-| `cc_longest_function` | 32.6 | 27.0 |
+| `longest_function` | 32.6 | 27.0 |
 | Smell Total | 16.6 | 4.2 |
 
 The documented source inspection found domain logic inside nested callback chains
@@ -119,7 +119,7 @@ requires another controlled experiment.
 | Astra outcome | Inline | Isolated |
 |---|---:|---:|
 | Average function length | 6.17 | 7.34 |
-| `cc_longest_function` | 13.4 | 14.0 |
+| `longest_function` | 13.4 | 14.0 |
 | `cognitive_max` | 3.2 | 4.0 |
 | Duration, seconds | 1801.6 | 4186.2 |
 | Tokens | 7.459 M | 12.230 M |
@@ -165,7 +165,7 @@ model-speed estimate.
 | Isolated | 72.2 | 161.0 | 0.45 |
 | EXACT | 58.0 | 110.4 | 0.53 |
 
-Astra's Inline `cc_longest_function` is 13.4 ± 2.79 versus Sol's 20.8 ± 2.39, but
+Astra's Inline `longest_function` is 13.4 ± 2.79 versus Sol's 20.8 ± 2.39, but
 average function lengths (6.17 ± 1.59 versus 7.42 ± 1.04) overlap variation.
 The source is shorter without losing observed external correctness in these
 Inline cells. In Floor/EXACT, low LoC accompanies fewer, longer functions; it

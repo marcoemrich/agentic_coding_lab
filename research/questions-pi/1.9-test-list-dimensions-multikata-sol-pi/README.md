@@ -17,16 +17,16 @@ outcomes:
   - completed_within_budget
   - tests_total
   - test_lines
-  - cc_avg_loc_per_function
-  - cc_median_loc_per_function
-  - cc_longest_function
-  - cc_functions
+  - avg_loc_per_function
+  - median_loc_per_function
+  - longest_function
+  - functions
   - cognitive_max
   - cognitive_avg
   - mccabe_max
   - smell_total
   - code_mass
-  - cc_loc
+  - production_loc
   - refactorings_applied
   - predictions_correct_rate
   - duration_seconds
@@ -70,7 +70,7 @@ For each kata independently:
 1. **Correctness gate:** Correctness (external), internal tests, and completion within budget.
 2. **Efficiency:** duration, tokens, and hypothetical list-price cost.
 3. **Test behavior:** executable tests and Test LoC as mechanism evidence rather than automatic quality wins.
-4. **Product quality:** typical and longest function size, `cc_longest_function`, Cognitive Complexity, McCabe, Smell Total, Code Mass (APP), and Production LoC.
+4. **Product quality:** typical and longest function size, `longest_function`, Cognitive Complexity, McCabe, Smell Total, Code Mass (APP), and Production LoC.
 5. **Process evidence:** visible cross-check behavior, prediction accuracy, and refactor markers. Marker counts are descriptive.
 
 ## Hypotheses

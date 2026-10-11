@@ -12,14 +12,14 @@ Primary outcomes per cell (n=10 per workflow, opus-4-7-portkey-no-thinking, game
 | `cycle_count` (informative, no clear direction)             | 8.5 ± 1.35            | 8.7 ± 0.67             |
 | Code Mass (APP) (`code_mass`, lower = better)               | 153.3 ± 13.83         | **149.3 ± 12.14** 🏆   |
 | Smell Total (`smell_total`, lower = better)                 | 2.4 ± 0.52            | **2.2 ± 0.63** 🏆      |
-| `cc_longest_function` (lower = better)     | 12.2 ± 6.89           | 12.7 ± 4.32            |
+| `longest_function` (lower = better)     | 12.2 ± 6.89           | 12.7 ± 4.32            |
 | `cognitive_max` (lower = better)                            | 4.3 ± 2.79            | 4.5 ± 2.59             |
 | `mccabe_max` (lower = better)                               | 4.2 ± 1.32            | 4.6 ± 1.07             |
 | `tests_passing` / `completed_within_budget`                 | 100 % / 100 %         | 100 % / 100 %          |
 | `total_tokens` (lower = better)                             | **10.48 M ± 2.08** 🏆  | 11.81 M ± 2.60          |
 | `duration_seconds` (lower = better, Δ << σ)                 | 627 ± 117             | 631 ± 101              |
 
-Complexity outcomes `cc_longest_function`, `cognitive_max`, `mccabe_max`: the mean Δ is markedly smaller than σ → no trophy, the workflows are indistinguishable on all three.
+Complexity outcomes `longest_function`, `cognitive_max`, `mccabe_max`: the mean Δ is markedly smaller than σ → no trophy, the workflows are indistinguishable on all three.
 
 ---
 
@@ -61,11 +61,11 @@ Code quality outcomes each stay within 1 σ — no degradation.
 |---|---|---|
 | Code Mass (APP) (`code_mass`)           | 153.3 ± 13.83 | **149.3 ± 12.14** |
 | Smell Total (`smell_total`)             | 2.4 ± 0.52    | **2.2 ± 0.63**    |
-| `cc_longest_function` | 12.2 ± 6.89   | 12.7 ± 4.32       |
+| `longest_function` | 12.2 ± 6.89   | 12.7 ± 4.32       |
 | `cognitive_max`                         | 4.3 ± 2.79    | 4.5 ± 2.59        |
 | `mccabe_max`                            | 4.2 ± 1.32    | 4.6 ± 1.07        |
 
-Code Mass and Smell Total drop slightly; `cc_longest_function`, `cognitive_max` and `mccabe_max` stay statistically indistinguishable (Δ < σ). hybrid-v4.3 also shows a tighter σ on `cc_longest_function` (6.89 → 4.32, −37 %), as observed in the RQ-audit precedent.
+Code Mass and Smell Total drop slightly; `longest_function`, `cognitive_max` and `mccabe_max` stay statistically indistinguishable (Δ < σ). hybrid-v4.3 also shows a tighter σ on `longest_function` (6.89 → 4.32, −37 %), as observed in the RQ-audit precedent.
 
 Correctness is saturated on GoL for both workflows (100 % `tests_passing`, 100 % `completed_within_budget`). H2 (correctness must not regress) is satisfied.
 
@@ -105,7 +105,7 @@ Token variance does rise, however (σ 1.61M → 2.34M, +45 %) — a single hybri
 | `tests_passed_immediately` | 2.21 | 0    | 0    |
 | `refactorings_applied`     | 1.85 | 0.67 | 0.36 |
 | `cycle_count`              | 1.35 | 0.67 | 0.50 |
-| `cc_longest_function`      | 6.89 | 4.32 | 0.63 |
+| `longest_function`      | 6.89 | 4.32 | 0.63 |
 | `mccabe_max`               | 1.32 | 1.07 | 0.81 |
 | `cognitive_max`            | 2.79 | 2.59 | 0.93 |
 | `code_mass`                | 13.83| 12.14| 0.88 |

@@ -16,7 +16,7 @@ All metrics in the tables: lower = better. 🏆 = best value per column (also mu
 
 ### Kata: game-of-life
 
-| Workflow | n | `cognitive_max` | `mccabe_max` | `cc_longest_function` | `smell_total` | `cc_loc` | `code_mass` |
+| Workflow | n | `cognitive_max` | `mccabe_max` | `longest_function` | `smell_total` | `production_loc` | `code_mass` |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | baseline-oneshot-v1-cc              | 10 | 18.8 | 12.8 | 31.7 | 4.8 | 33.6 | 155.0 |
 | baseline-iterative-v1-cc            | 10 | 16.2 | 11.6 | 32.1 | 4.1 | 32.5 | 157.8 |
@@ -29,7 +29,7 @@ All metrics in the tables: lower = better. 🏆 = best value per column (also mu
 
 ### Kata: claim-office
 
-| Workflow | n | `cognitive_max` | `mccabe_max` | `cc_longest_function` | `smell_total` | `cc_loc` | `code_mass` |
+| Workflow | n | `cognitive_max` | `mccabe_max` | `longest_function` | `smell_total` | `production_loc` | `code_mass` |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | baseline-oneshot-v1-cc              |  5 | 12.2 | 8.4 | 40.4 | 11.6 | 269.4 | 835.4 |
 | baseline-iterative-v1-cc            |  5 | 11.4 | 8.4 | 41.4 | 15.8 | 268.6 | 851.0 |
@@ -44,19 +44,19 @@ All metrics in the tables: lower = better. 🏆 = best value per column (also mu
 
 Correctness **differs** between the two katas: on game-of-life all 8 workflows are at `verification_pct=1.00`. On claim-office it varies between 0.28 (oneshot-v1+iterative-v1, vibe coding on a prose spec) and 1.00 (inline-tdd-v1, single-context-v2, hybrid-v2, end-refactor-only-v1-agent) — see F-tdd-quality.4 and F-tdd-quality.8. `mutation_score` was collected only for oneshot-v1/iterative-v1/inline-tdd-v1 on game-of-life (0.95 ± 0.01 in all three).
 
-## F-tdd-quality.1 — Strict Phase-Structured Workflows with a Refactor Phase Lower `cognitive_max` and `cc_longest_function` Drastically
+## F-tdd-quality.1 — Strict Phase-Structured Workflows with a Refactor Phase Lower `cognitive_max` and `longest_function` Drastically
 
-On game-of-life, subagents-v2 and hybrid-v2 reach `cognitive_max ≈ 6–7` and `mccabe_max ≈ 5` — these are ~⅓ of the values of oneshot-v1/iterative-v1/inline-tdd-v1 (`cognitive_max ≈ 16–22`, `mccabe_max ≈ 12–14`). `cc_longest_function` halves accordingly (13–16 vs. 32). `smell_total` also halves (≈2.3 vs. 4–6).
+On game-of-life, subagents-v2 and hybrid-v2 reach `cognitive_max ≈ 6–7` and `mccabe_max ≈ 5` — these are ~⅓ of the values of oneshot-v1/iterative-v1/inline-tdd-v1 (`cognitive_max ≈ 16–22`, `mccabe_max ≈ 12–14`). `longest_function` halves accordingly (13–16 vs. 32). `smell_total` also halves (≈2.3 vs. 4–6).
 
-On claim-office the pattern holds **even more clearly** for hybrid-v2: `cognitive_max` 5.7, `mccabe_max` 5.7, `cc_longest_function` 18.1 — all the lowest values of the entire matrix. subagents-v2, by contrast, breaks down on claim-office (see F-tdd-quality.9) — it does stay at the top on `code_mass` and `cc_loc` (621.6/156.8, each the best across all workflows), but collapses on branching complexity.
+On claim-office the pattern holds **even more clearly** for hybrid-v2: `cognitive_max` 5.7, `mccabe_max` 5.7, `longest_function` 18.1 — all the lowest values of the entire matrix. subagents-v2, by contrast, breaks down on claim-office (see F-tdd-quality.9) — it does stay at the top on `code_mass` and `production_loc` (621.6/156.8, each the best across all workflows), but collapses on branching complexity.
 
-Plausible mechanic: subagents-v2 and hybrid-v2 prescribe a dedicated refactor phase per cycle that explicitly reduces complexity — and both separate implementation (green) and refactor architecturally (subagents-v2 via an isolated subagent, hybrid-v2 via a dedicated refactor subagent in the hybrid). The refactor discipline shows up directly in the complexity peaks, not in `cc_loc` — the code does not become shorter, but flatter.
+Plausible mechanic: subagents-v2 and hybrid-v2 prescribe a dedicated refactor phase per cycle that explicitly reduces complexity — and both separate implementation (green) and refactor architecturally (subagents-v2 via an isolated subagent, hybrid-v2 via a dedicated refactor subagent in the hybrid). The refactor discipline shows up directly in the complexity peaks, not in `production_loc` — the code does not become shorter, but flatter.
 
 ## F-tdd-quality.2 — Naive "use TDD" (inline-tdd-v1) Brings No Complexity Advantage over Non-TDD (oneshot-v1/iterative-v1) on game-of-life
 
-On game-of-life, inline-tdd-v1 is at or slightly above oneshot-v1/iterative-v1 in *all* complexity metrics: `cognitive_max` 21.8 (inline-tdd-v1) vs. 18.8/16.2 (oneshot-v1/iterative-v1), `mccabe_max` 13.7 vs. 12.8/11.6, `smell_total` 6.0 vs. 4.8/4.1, `code_mass` 165.6 vs. 155/157.8. Function sizes (`cc_longest_function`, `cc_loc`) are comparable.
+On game-of-life, inline-tdd-v1 is at or slightly above oneshot-v1/iterative-v1 in *all* complexity metrics: `cognitive_max` 21.8 (inline-tdd-v1) vs. 18.8/16.2 (oneshot-v1/iterative-v1), `mccabe_max` 13.7 vs. 12.8/11.6, `smell_total` 6.0 vs. 4.8/4.1, `code_mass` 165.6 vs. 155/157.8. Function sizes (`longest_function`, `production_loc`) are comparable.
 
-On claim-office, inline-tdd-v1 is even **clearly worse** than oneshot-v1/iterative-v1 in almost all metrics: `cognitive_max` 19.8 vs. 12.2/11.4, `mccabe_max` 15.4 vs. 8.4/8.4, `cc_longest_function` 51.6 vs. 40.4/41.4, `cc_loc` 317.4 vs. 269.4/268.6, `code_mass` 992.4 vs. 835.4/851.0. The naive "use TDD" approach produces the heaviest code of the whole matrix on the novel kata — the test-first increments drive the implementation into a fragmented structure without a structured cleanup rhythm.
+On claim-office, inline-tdd-v1 is even **clearly worse** than oneshot-v1/iterative-v1 in almost all metrics: `cognitive_max` 19.8 vs. 12.2/11.4, `mccabe_max` 15.4 vs. 8.4/8.4, `longest_function` 51.6 vs. 40.4/41.4, `production_loc` 317.4 vs. 269.4/268.6, `code_mass` 992.4 vs. 835.4/851.0. The naive "use TDD" approach produces the heaviest code of the whole matrix on the novel kata — the test-first increments drive the implementation into a fragmented structure without a structured cleanup rhythm.
 
 Plausible mechanic: inline-tdd-v1 is a single agent with the minimal instruction "use TDD" and without an enforced red-green-refactor rhythm — no isolated refactor step, no phase structure. On a training-known kata the model produces an orderly solution even without TDD; on a novel kata inline-tdd-v1 appends test satisfaction to test satisfaction incrementally — without periodic refactoring the result becomes clunkier than even a poor oneshot solution. The measurable quality advantage only comes from the structured refactor discipline of the strict workflows (F-tdd-quality.1). The "use TDD" label alone does not suffice — the lever is the enforced refactor step in the rhythm, not the test-first instruction.
 
@@ -72,7 +72,7 @@ On **game-of-life**, single-context-v2 shows values at the oneshot-v1/iterative-
 |---|---:|---:|---:|
 | `cognitive_max` | **6.4** 🏆 | 17.6 | 2.8× |
 | `mccabe_max`    | **5.0** 🏆 | 10.2 | 2.0× |
-| `cc_longest_function` | **16.4** 🏆 | 20.8 | 1.3× |
+| `longest_function` | **16.4** 🏆 | 20.8 | 1.3× |
 | `smell_total`   | **2.4** 🏆 | 4.8 | 2.0× |
 
 On **claim-office the ordering reverses** — single-context-v2 clearly beats subagents-v2:
@@ -81,7 +81,7 @@ On **claim-office the ordering reverses** — single-context-v2 clearly beats su
 |---|---:|---:|
 | `cognitive_max` | 26.8 ⚠️ | **14.8** 🏆 |
 | `mccabe_max`    | 16.0 ⚠️ | **10.2** 🏆 |
-| `cc_longest_function` | 40.8 | **32.7** 🏆 |
+| `longest_function` | 40.8 | **32.7** 🏆 |
 | `smell_total`   | 13.2 | **6.8** 🏆 |
 
 Plausible mechanic: on the short game-of-life test list the fresh subagent context helps, because each phase can survey the whole test list in isolation; on the long claim-office test list the fresh context loses coherence per cycle and re-interprets spec ambiguities differently. single-context-v2 with its shared context benefits from spec consistency within a session. The hybrid hybrid-v2 (skill red/green in the shared context + isolated refactor subagent) combines both strengths and dominates claim-office across the branching and size metrics — see RQ-context (4.3) F-context.1 for the explicit decomposition.
@@ -137,7 +137,7 @@ The non-TDD control group end-refactor-only-v1-agent/end-refactor-only-v1-native
 
 ### game-of-life
 
-| Workflow | `code_mass` | `cc_longest_function` | `cognitive_max` | `duration_s` | `total_tokens` |
+| Workflow | `code_mass` | `longest_function` | `cognitive_max` | `duration_s` | `total_tokens` |
 |---|---:|---:|---:|---:|---:|
 | subagents-v2 (periodic refactor) | 156.6 | 16.4 | **6.4** 🏆 | 838 | 10.15 M |
 | hybrid-v2 (periodic refactor) | 153.7 | **14.2** 🏆 | 6.5 | 508 | 8.15 M |
@@ -146,7 +146,7 @@ The non-TDD control group end-refactor-only-v1-agent/end-refactor-only-v1-native
 
 ### claim-office
 
-| Workflow | `code_mass` | `cc_longest_function` | `cognitive_max` | `duration_s` | `total_tokens` |
+| Workflow | `code_mass` | `longest_function` | `cognitive_max` | `duration_s` | `total_tokens` |
 |---|---:|---:|---:|---:|---:|
 | subagents-v2 (periodic refactor) | **621.6** 🏆 | 40.8 | 26.8 ⚠️ | 3229 | 34.87 M |
 | hybrid-v2 (periodic refactor) | 861.3 | **18.1** 🏆 | **5.7** 🏆 | 1569 | 37.88 M |
@@ -154,8 +154,8 @@ The non-TDD control group end-refactor-only-v1-agent/end-refactor-only-v1-native
 | **end-refactor-only-v1-native (end refactor, command)** | 780.2 | 35.8 | 11.0 | **276** 🏆 | 3.45 M |
 
 H5 (the periodicity of refactoring matters) is **kata-dependent**:
-- On game-of-life: end-refactor-only-v1-agent/end-refactor-only-v1-native are almost level with subagents-v2/hybrid-v2 on `code_mass` and `cc_longest_function`; `cognitive_max` remains subagents-v2/v6.1-dominated (6.4/6.5 vs 9.0/10.6).
-- On claim-office: hybrid-v2 clearly dominates on branching complexity (`cognitive_max` 5.7 vs end-refactor-only-v1-agent/b 7.4/11.0) and function size (`cc_longest_function` 18.1 vs 28.4/35.8). subagents-v2 (the code-volume champion at 621.6), by contrast, delivers the worst branching complexity (26.8 ⚠️) — no workflow dominates *all* metrics on claim-office.
+- On game-of-life: end-refactor-only-v1-agent/end-refactor-only-v1-native are almost level with subagents-v2/hybrid-v2 on `code_mass` and `longest_function`; `cognitive_max` remains subagents-v2/v6.1-dominated (6.4/6.5 vs 9.0/10.6).
+- On claim-office: hybrid-v2 clearly dominates on branching complexity (`cognitive_max` 5.7 vs end-refactor-only-v1-agent/b 7.4/11.0) and function size (`longest_function` 18.1 vs 28.4/35.8). subagents-v2 (the code-volume champion at 621.6), by contrast, delivers the worst branching complexity (26.8 ⚠️) — no workflow dominates *all* metrics on claim-office.
 
 Reading: a single end refactoring after vibe-coding reduces code volume comparably to periodic refactoring, but not the branching depth within individual functions. On a complex kata with longer functions the periodicity advantage becomes more visible — the TDD refactor per cycle decomposes functions early, while an end refactor only smooths them superficially. Consistent with RQ-delayed-refactor "the TDD advantage is branching complexity, not substance".
 
@@ -169,26 +169,26 @@ On **game-of-life both mechanisms are practically level**:
 |---|---:|---:|
 | `cognitive_max` mean | 10.6 (max 15) | **9.0** (max 17) |
 | `mccabe_max` mean | 7.4 (max 9) | **6.8** (max 11) |
-| `cc_longest_function` mean | 17.6 (max 27) | 17.6 (max 27) |
+| `longest_function` mean | 17.6 (max 27) | 17.6 (max 27) |
 | `smell_total` mean | 3.0 | **2.4** |
 | `total_tokens` mean | 1.47 M | **1.32 M** |
 | `code_mass` mean | **142.0** | 145.8 |
 
 All differences lie within 1 σ (e.g. `cognitive_max` σ_v8a=4.93, σ_v8b=4.47); no systematic advantage of either mechanism.
 
-On **claim-office, end-refactor-only-v1-agent (subagent) clearly dominates on `cognitive_max`, `cc_longest_function` and token efficiency**:
+On **claim-office, end-refactor-only-v1-agent (subagent) clearly dominates on `cognitive_max`, `longest_function` and token efficiency**:
 
 | Metric (lower = better) | end-refactor-only-v1-agent (subagent) | end-refactor-only-v1-native (command) |
 |---|---:|---:|
 | `cognitive_max` mean | **7.4** (max 10) | 11.0 (max 19) |
 | `mccabe_max` mean | **6.6** (max 9) | 8.0 (max 13) |
-| `cc_longest_function` mean | **28.4** (max 30) | 35.8 (max 49) |
+| `longest_function` mean | **28.4** (max 30) | 35.8 (max 49) |
 | `smell_total` mean | **4.0** | 6.2 |
 | `total_tokens` mean | **2.12 M** | 3.45 M |
 | `verification_pct` mean | **1.00** | 0.97 |
 | `code_mass` mean | 813.8 | **780.2** |
 
-end-refactor-only-v1-agent leads on 6 of 7 metrics; on `cc_longest_function` the range is particularly tight (end-refactor-only-v1-agent max 30, end-refactor-only-v1-native max 49 — the subagent prevents the outlier functions). end-refactor-only-v1-native needs 63 % more tokens and produces wider distributions.
+end-refactor-only-v1-agent leads on 6 of 7 metrics; on `longest_function` the range is particularly tight (end-refactor-only-v1-agent max 30, end-refactor-only-v1-native max 49 — the subagent prevents the outlier functions). end-refactor-only-v1-native needs 63 % more tokens and produces wider distributions.
 
 **H6 (subagent delivery matters independently of the content) confirmed on claim-office; no separation on game-of-life.** Plausible mechanic: the fresh subagent context relieves the refactor of anchoring bias from phases 1/2 — on the small, training-known game-of-life codebase the bias effect is small and both mechanisms deliver similarly; on the larger novel claim-office codebase with 240+ LoC per solution, the inline command (end-refactor-only-v1-native) carries implicit assumptions from the preceding phases into the refactor, whereas the subagent (end-refactor-only-v1-agent) starts afresh with the refactor. Consistent with RQ-delayed-refactor / F-delayed-refactor.2 (the refactor mechanism is non-trivial), now cleanly isolated from content effects.
 
@@ -257,12 +257,12 @@ The original research motivation was: *is the TDD cycle with continuous refactor
 |---|---:|---:|---:|---|
 | `cognitive_max` | **5.7** | 7.4 | 11.0 | **hybrid-v2** |
 | `mccabe_max` | **5.7** | 6.6 | 8.0 | **hybrid-v2** |
-| `cc_longest_function` | **18.1** | 28.4 | 35.8 | **hybrid-v2** |
+| `longest_function` | **18.1** | 28.4 | 35.8 | **hybrid-v2** |
 | `smell_total` | **1.3** | 4.0 | 6.2 | **hybrid-v2** |
-| `cc_loc` | **191** | 246 | 239 | **hybrid-v2** |
+| `production_loc` | **191** | 246 | 239 | **hybrid-v2** |
 | `code_mass` | 861 | 814 | **780** | end-refactor-only-v1-native (narrowly) |
 
-hybrid-v2 dominates the branching and structure metrics throughout; end-refactor-only-v1-native wins only narrowly on `code_mass` (a reduction of ~9 %). On game-of-life the pattern is consistent (hybrid-v2 `cognitive_max` 6.5 vs end-refactor-only-v1-agent/end-refactor-only-v1-native 10.6/9.0; `cc_longest` 14.2 vs 17.6/17.6). The periodicity thesis holds uniformly.
+hybrid-v2 dominates the branching and structure metrics throughout; end-refactor-only-v1-native wins only narrowly on `code_mass` (a reduction of ~9 %). On game-of-life the pattern is consistent (hybrid-v2 `cognitive_max` 6.5 vs end-refactor-only-v1-agent/end-refactor-only-v1-native 10.6/9.0; `longest_function` 14.2 vs 17.6/17.6). The periodicity thesis holds uniformly.
 
 ### The Trade-off: Token and Wallclock Price
 
@@ -275,7 +275,7 @@ This quality is **not free**. On claim-office:
 | v6.1-hybrid | **5.7** | 37.88 M | 1569 | **11×** |
 | v4.1-strict | 26.8 ⚠️ | 34.87 M | 3229 | 10× |
 
-hybrid-v2 costs **11× more tokens and ~5× more wallclock** than end-refactor-only-v1-agent for a reduction of 7.4 → 5.7 in `cognitive_max` (and further improvements on `cc_longest`, `smell_total`, `cc_loc`). That is the honest balance sheet.
+hybrid-v2 costs **11× more tokens and ~5× more wallclock** than end-refactor-only-v1-agent for a reduction of 7.4 → 5.7 in `cognitive_max` (and further improvements on `longest_function`, `smell_total`, `production_loc`). That is the honest balance sheet.
 
 ### Recommendation by Use Case
 

@@ -13,7 +13,7 @@ API contract. Stability analysis via subsampling
 
 ## Overview: Code Quality by Workflow (n=10)
 
-| Workflow | `code_mass` | `smell_total` | `mccabe_max` | `cognitive_max` | `cc_longest_function` | n |
+| Workflow | `code_mass` | `smell_total` | `mccabe_max` | `cognitive_max` | `longest_function` | n |
 |---|---:|---:|---:|---:|---:|---:|
 | baseline-oneshot-v1-cc (prose) | 155.00 | 4.80 | 12.80 | 18.80 | 31.70 | 10 |
 | baseline-iterative-v1-cc (prose) | 157.80 | 4.10 | 11.60 | 16.20 | 32.10 | 10 |
@@ -36,7 +36,7 @@ fully confirmed:
 | `cognitive_max` subagents-v1 best | 2.83 | 4.40 | unchanged (subagents-v1 strongly ahead) |
 | `cognitive_max` inline-tdd-v1 worst | 23.33 | 21.80 | unchanged (inline-tdd-v1 at the back) |
 | `mccabe_max` subagents-v1 best | 4.00 | 4.50 | unchanged |
-| `cc_longest_function` subagents-v1 best | 9.33 | 8.10 | unchanged |
+| `longest_function` subagents-v1 best | 9.33 | 8.10 | unchanged |
 | `smell_total` subagents-v1 best | 2.50 | 2.60 | unchanged |
 
 subagents-v1 remains clearly first on all four complexity outcomes, inline-tdd-v1 remains
@@ -122,7 +122,7 @@ ranking results:
 |---|---:|---|
 | `code_mass` | 15.9 % | single-context-v1 < oneshot-v1 < iterative-v1 < inline-tdd-v1 < subagents-v1 |
 | `smell_total` | 25.2 % | subagents-v1 < iterative-v1 ≈ single-context-v1 < oneshot-v1 < inline-tdd-v1 |
-| `cc_longest_function` | 23.6 % | subagents-v1 < single-context-v1 < oneshot-v1 < iterative-v1 < inline-tdd-v1 |
+| `longest_function` | 23.6 % | subagents-v1 < single-context-v1 < oneshot-v1 < iterative-v1 < inline-tdd-v1 |
 | `mccabe_max` | 62.5 % | subagents-v1 < single-context-v1 < iterative-v1 < oneshot-v1 < inline-tdd-v1 |
 | `cognitive_max` | 50.5 % | subagents-v1 < single-context-v1 < iterative-v1 < oneshot-v1 < inline-tdd-v1 |
 
@@ -131,7 +131,7 @@ All values are therefore far above chance.
 
 Nevertheless: **the full 5-workflow ordering cannot be reliably
 reconstructed with n=3**, particularly in the middle of the field (oneshot-v1, iterative-v1, single-context-v1
-on cognitive_max). For `cc_longest_function` and `smell_total`,
+on cognitive_max). For `longest_function` and `smell_total`,
 n=3 suffices in only ~25 % of cases.
 
 That does not mean, however, that all statements from n=3 are worthless:

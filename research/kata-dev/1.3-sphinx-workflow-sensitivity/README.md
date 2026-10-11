@@ -14,11 +14,11 @@ controls:
   model: opus-5-no-thinking
 outcomes:
   # primary: decomposition — this is where the workflows actually differ
-  - cc_longest_function
-  - cc_avg_loc_per_function
+  - longest_function
+  - avg_loc_per_function
   - cognitive_max
   - mccabe_max
-  - cc_functions
+  - functions
   - smell_total
   - code_mass
   - lines_of_code
@@ -60,8 +60,8 @@ elaborate workflow is actually built to move:
 
 | Metric | baseline-inline-tdd-v1-cc | exact-hybrid-v6-lab-split-cc | ratio |
 |---|---:|---:|---|
-| `cc_longest_function` | 25.0 | **14.0** | 1.8× |
-| `cc_avg_loc_per_function` | 8.4 | **3.2** | 2.6× |
+| `longest_function` | 25.0 | **14.0** | 1.8× |
+| `avg_loc_per_function` | 8.4 | **3.2** | 2.6× |
 | `cognitive_max` | 5.0 | **3.0** | 1.7× |
 | `mccabe_max` | 5.0 | **3.0** | 1.7× |
 | `refactorings_applied` | 2.0 | **42.0** | 21× |
@@ -77,7 +77,7 @@ complexity at the price of nearly twice the code and 21× the refactorings.
 
 ## The question for sphinx-score
 
-The smoke run produced 48 LoC, `cc_longest_function` 7, `cognitive_max` 1,
+The smoke run produced 48 LoC, `longest_function` 7, `cognitive_max` 1,
 `mccabe_max` 2 — already near the floor of what these metrics can express.
 If `baseline-inline-tdd-v1-cc` lands in the same place, the kata has **no headroom** for
 workflow effects: there is nothing left to decompose in a 48-line solution.
@@ -91,7 +91,7 @@ models on correctness and still be useless for workflow research.
 - **H1 (decomposition gap):** On `sphinx-score`, `baseline-inline-tdd-v1-cc` produces
   measurably longer functions and higher complexity than
   `exact-hybrid-v6-lab-split-cc`, in the same direction as on claim-office.
-  *Refuted if both cells sit at `cc_longest_function` ≈ 7 and
+  *Refuted if both cells sit at `longest_function` ≈ 7 and
   `cognitive_max` ≈ 1.*
 - **H2 (relative resolution):** The gap is *smaller* on `sphinx-score`
   than on claim-office, simply because the solution is an order of
@@ -114,7 +114,7 @@ models on correctness and still be useless for workflow research.
 ## Caveats
 
 - **48 LoC is very little room.** `cognitive_max` 1 and
-  `cc_longest_function` 7 leave almost no space below them. A null result
+  `longest_function` 7 leave almost no space below them. A null result
   here is more likely to mean "the kata is too small" than "the workflow
   does not matter", and the RQ cannot distinguish those two on its own.
 - **The claim-office cells are pre-filled (n=5 each), the sphinx cells are

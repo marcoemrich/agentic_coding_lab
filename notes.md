@@ -63,7 +63,7 @@ Practical observation: n=3 is **not conclusive** in many cells — means flip be
 **What the data from RQ-stability (`research/questions/5.1-workflow-stability/`, n=10 per cell, opus-4-7-no-thinking, game-of-life) say:**
 
 - **F-stability.3:** At n=3, the *full* workflow ranking matches the n=10 truth in only **15-62 %** of cases (1000 trials subsampling):
-  - `code_mass` 15.9 %, `smell_total` 25.2 %, `cc_longest_function` 23.6 %, `mccabe_max` 62.5 %, `cognitive_max` 50.5 %.
+  - `code_mass` 15.9 %, `smell_total` 25.2 %, `longest_function` 23.6 %, `mccabe_max` 62.5 %, `cognitive_max` 50.5 %.
   - v4 as "best" is robustly detectable (>90 %), the middle field (v1/v2/v5) cannot be separated with n=3.
 - **F-stability.5:** For tail characterization (P95/P99 of tokens/wallclock) even n=10 is too tight; **n=30+** would be needed.
 - **F-stability.7:** `mutation_score` σ small enough that n=5-7 suffices; v5 is an outlier (σ=0.036, range 0.84-0.97 → n≥10).
@@ -176,11 +176,11 @@ Recurring over the entire project duration: individual metrics show 0 or null, *
 | 02.05.2026 | Transcript JSONLs not copied into run dir | TDD metrics null in 91/93 runs (smart-subset) | `save_transcript()` missing in `run-batch.sh` | post-hoc enrich needed |
 | 02.05.2026 | ESLint+SonarJS not installed in the container | `smell_*=0` in 89/89 runs | `package.json` heredoc without eslint deps | retrofitted post-hoc, later baked into the image |
 | 03.05.2026 | Rate-limit false positive | runs marked as rate-limited | timestamp `backup.<ms>.json` contained the digit sequence `429` | match pattern on `\b429\b` + `claude_exit != 0` |
-| 09.05.2026 | awk PCRE in the container | `cc_functions=0` in **all** container runs | analyze-run.sh used `\s`/`\w` (PCRE), container `mawk` only POSIX | fix POSIX classes + `gawk` as a double safeguard |
+| 09.05.2026 | awk PCRE in the container | `functions=0` in **all** container runs | analyze-run.sh used `\s`/`\w` (PCRE), container `mawk` only POSIX | fix POSIX classes + `gawk` as a double safeguard |
 | 09.05.2026 | v3 phase inference missing | `cycle_count`/`refactorings_applied=0` for v3 | no phase extractor for inline TDD (no skill, no subagent) | new `infer_phases_from_tool_sequence()` |
 | 09.05.2026 | v5 predictions regex | `predictions_correct=0` | plan patch emitted `✅ Correct`, regex only matched `- Correct` | `(?:-\|✅\|❌)` as alternative; v5 runs rerun |
 | 09.05.2026 | v4 predictions compliance | v4 ~0.7 predictions/cycle vs. v5 ~2.0 (compliance artifact, not a discipline signal) | v4 `red.md` Step 7 had only one prediction line + no "MUST verbatim" | Step 7 + subagent spawn templates extended; v4 runs rerun |
-| 10.05.2026 | claim-office cc_* only from `cli.ts` | single-file aggregation hides multi-file code | analyze-run.sh did not aggregate over all non-spec `.ts` | multi-file aggregation + new field `median_loc_per_function` |
+| 10.05.2026 | claim-office clean-code metrics only from `cli.ts` | single-file aggregation hides multi-file code | analyze-run.sh did not aggregate over all non-spec `.ts` | multi-file aggregation + new field `median_loc_per_function` |
 | 10.05.2026 | `tests_passing` grep `"passed"` matched `"X failed \| Y passed"` | tests_passing=true with actually red tests (2 runs affected) | grep without Vitest summary anchor | match on `^\s*Tests\s+.*passed` AND not `failed` |
 | 10.05.2026 | Container pnpm 11 blocks esbuild build | `tests_passing=false` in 27 actually green runs | pnpm@latest=11 + `ERR_PNPM_IGNORED_BUILDS` | `pnpm.onlyBuiltDependencies` in templates; pnpm 9.15.9 pin |
 | 12.05.2026 | `cli_built=false` artifact | claim-office runs without CLI marked as test failure | prompt did not enforce `src/cli.ts` hard enough | prompt hardening + nudge in analyze-run |
@@ -269,7 +269,7 @@ When starting long batches, it is tempting to combine `nohup ./batch.sh <plan> &
 A pipeline fix invalidates affected metrics in all previously run runs. Whoever simply keeps going after the fix and collects new runs creates **mixed cohorts** (old with wrong value, new with correct value) — aggregation smooths them into nonsensical means and produces findings that nobody can reproduce.
 
 **Variants that occurred repeatedly:**
-- analyze-run.sh multi-file fix (10.05.): claim-office cc_* values differ before/after the fix → older runs showed only cli.ts, new ones showed the multi-file aggregate. Without reanalyze, claim-office aggregations before 10.05. were systematically too low.
+- analyze-run.sh multi-file fix (10.05.): claim-office clean-code values differ before/after the fix → older runs showed only cli.ts, new ones showed the multi-file aggregate. Without reanalyze, claim-office aggregations before 10.05. were systematically too low.
 - Container pnpm 11 bug: 27 runs from 10.05. with `tests_passing=false` although actually green — if not explicitly reanalyzed, they would have slipped into the findings as "workflow X does not pass the tests".
 - v4/v5 predictions regex/compliance (09.05.): reruns needed instead of reanalyze (the workflow now produces the format differently) — a different class of pipeline fix.
 

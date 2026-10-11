@@ -20,9 +20,9 @@ no trophy.
 | Correctness (external) | **1.000 ± 0.000** 🏆 | **1.000 ± 0.000** 🏆 | **1.000 ± 0.000** 🏆 |
 | Correctness (internal) | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 |
 | Completed within budget | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 |
-| `cc_avg_loc_per_function` ↓ | 5.67 ± 0.69 | 6.61 ± 1.81 | 5.72 ± 0.52 |
-| `cc_median_loc_per_function` ↓ | 4.70 ± 0.67 | 6.00 ± 2.67 | 4.35 ± 0.58 |
-| `cc_longest_function` ↓ | 14.2 ± 2.6 | 15.8 ± 2.8 | 16.8 ± 1.7 |
+| `avg_loc_per_function` ↓ | 5.67 ± 0.69 | 6.61 ± 1.81 | 5.72 ± 0.52 |
+| `median_loc_per_function` ↓ | 4.70 ± 0.67 | 6.00 ± 2.67 | 4.35 ± 0.58 |
+| `longest_function` ↓ | 14.2 ± 2.6 | 15.8 ± 2.8 | 16.8 ± 1.7 |
 | Functions | 15.4 ± 0.9 | 13.0 ± 2.2 | 15.3 ± 4.0 |
 | `cognitive_avg` ↓ | 1.47 ± 0.15 | 1.81 ± 0.48 | 1.87 ± 0.48 |
 | `cognitive_max` ↓ | 3.0 ± 0.7 | 3.4 ± 2.1 | 3.7 ± 1.0 |
@@ -62,8 +62,8 @@ function count by 0.1, Production LoC by 3.0, and Code Mass (APP) by 9.8.
 
 | Outcome | TCR + trial | Semantic-only PTDD port | TCR-parity PTDD port |
 |---|---:|---:|---:|
-| `cc_avg_loc_per_function` | 5.67 ± 0.69 | 6.61 ± 1.81 | 5.72 ± 0.52 |
-| `cc_median_loc_per_function` | 4.70 ± 0.67 | 6.00 ± 2.67 | 4.35 ± 0.58 |
+| `avg_loc_per_function` | 5.67 ± 0.69 | 6.61 ± 1.81 | 5.72 ± 0.52 |
+| `median_loc_per_function` | 4.70 ± 0.67 | 6.00 ± 2.67 | 4.35 ± 0.58 |
 | Functions | 15.4 ± 0.9 | 13.0 ± 2.2 | 15.3 ± 4.0 |
 | Production LoC | 153.2 ± 10.1 | 151.8 ± 8.9 | 150.2 ± 27.2 |
 | Code Mass (APP) | 568.4 ± 26.1 | 600.8 ± 43.6 | 578.2 ± 35.7 |
@@ -84,7 +84,7 @@ retained clause.
 ## F-1.24.3 — TCR retains a small complexity and consistency advantage
 
 TCR has the lowest average cognitive and McCabe complexity and the lowest
-`cc_longest_function`. Against the pooled parity cell, the `mccabe_avg` gap (1.50
+`longest_function`. Against the pooled parity cell, the `mccabe_avg` gap (1.50
 against 1.85) exceeds both cell standard deviations (0.11 and 0.31), and TCR's
 value also separates from the semantic-only port (2.02 ± 0.36). The Complexity
 Peak gap (14.2 against 16.8) exceeds both standard deviations only by a margin
@@ -95,7 +95,7 @@ absolute terms.
 
 | Outcome | TCR + trial | TCR-parity PTDD port |
 |---|---:|---:|
-| `cc_longest_function` | 14.2 ± 2.6 | 16.8 ± 1.7 |
+| `longest_function` | 14.2 ± 2.6 | 16.8 ± 1.7 |
 | `cognitive_avg` | 1.47 ± 0.15 | 1.87 ± 0.48 |
 | `cognitive_max` | 3.0 ± 0.7 | 3.7 ± 1.0 |
 | `mccabe_avg` | **1.50 ± 0.11** 🏆 | 1.85 ± 0.31 |

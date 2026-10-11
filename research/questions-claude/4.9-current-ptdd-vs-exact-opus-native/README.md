@@ -12,15 +12,15 @@ outcomes:
   - verification_pct
   - tests_passing
   - completed_within_budget
-  - cc_avg_loc_per_function
-  - cc_median_loc_per_function
-  - cc_longest_function
+  - avg_loc_per_function
+  - median_loc_per_function
+  - longest_function
   - cognitive_max
   - cognitive_avg
   - mccabe_max
   - smell_total
   - code_mass
-  - cc_loc
+  - production_loc
   - test_lines
   - cycle_count
   - refactorings_applied
@@ -75,7 +75,7 @@ A port is a possible confound until smoke-tested. Before fill runs, run one `gam
 ## Primary contrasts
 
 1. **Correctness:** compare `verification_pct`, `tests_passing`, and completion within budget. Correctness is a gate; code-quality wins from incomplete runs are not actionable.
-2. **Decomposition:** `cc_avg_loc_per_function` is primary, with median and longest function as robustness checks. Katas are never averaged.
+2. **Decomposition:** `avg_loc_per_function` is primary, with median and longest function as robustness checks. Katas are never averaged.
 3. **Complexity and smells:** compare Cognitive Complexity, McCabe, and Smell Total after checking correctness distributions.
 4. **Process:** compare prediction accuracy and refactoring behavior, while recognizing that the PTDD cell records inline phase markers and the default cell uses command/subagent events. Raw cycle counts describe each workflow and are not interpreted as an architecture-neutral amount of discipline.
 5. **Efficiency:** compare wallclock, tokens, and native Anthropic list-price estimates. `cost_usd` is a comparison value, not a subscription invoice.

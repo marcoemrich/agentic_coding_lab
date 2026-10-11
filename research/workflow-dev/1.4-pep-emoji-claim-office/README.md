@@ -18,7 +18,7 @@ outcomes:
   # secondary: code quality
   - code_mass
   - smell_total
-  - cc_longest_function
+  - longest_function
   - cognitive_max
   - mccabe_max
   # TDD discipline (interaction confirmation expected if the finding is kata-stable)

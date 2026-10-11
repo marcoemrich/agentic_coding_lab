@@ -25,8 +25,8 @@ candidate's success rate. The baseline cell pools runs from 2026-08-10 to
 | `refactorings_applied` | 21.28 | 16.00 |
 | Prediction accuracy (pooled) | 99.6% (1608/1614) | 99.8% (401/402) |
 | `tests_passed_immediately` | 24.28 | 23.60 |
-| `cc_avg_loc_per_function` | 3.81 | 4.45 |
-| `cc_longest_function` | 16.22 | 19.60 |
+| `avg_loc_per_function` | 3.81 | 4.45 |
+| `longest_function` | 16.22 | 19.60 |
 | `cognitive_max` | 2.78 | 3.20 |
 | `mccabe_max` | 3.39 | 3.60 |
 | Smell Total | 0.00 | 0.60 |
@@ -46,8 +46,8 @@ candidate's success rate. The baseline cell pools runs from 2026-08-10 to
 | `refactorings_applied` | 4.33 | 6.40 |
 | Prediction accuracy (pooled) | 100% (124/124) | 100% (84/84) |
 | `tests_passed_immediately` | 7.33 | 4.60 |
-| `cc_avg_loc_per_function` | 4.23 | 4.13 |
-| `cc_longest_function` | 10.17 | 7.40 |
+| `avg_loc_per_function` | 4.23 | 4.13 |
+| `longest_function` | 10.17 | 7.40 |
 | `cognitive_max` | 1.83 | 3.00 |
 | `mccabe_max` | 3.17 | 3.60 |
 | Smell Total | 1.00 | 1.20 |
@@ -101,13 +101,13 @@ The fastest completed candidate run is slower than the slowest baseline run, and
 the cheapest one uses more tokens and costs more than the most expensive baseline run. The same
 harness subset shows the gap is not a harness-version artefact. Code quality of
 the completed runs sits in the baseline's range: Code Mass (APP) 882.5,
-`cognitive_max` 4.0, `cc_longest_function` 24.5, Smell Total 0.75.
+`cognitive_max` 4.0, `longest_function` 24.5, Smell Total 0.75.
 
 ## F-1.20.3 — On Game of Life extraction is neutral for correctness and quality, with a noisier runtime
 
 Both arms reach full external and internal correctness, full prediction accuracy
 and equal Code Mass (APP) (178.0 vs 179.0). Smell Total (1.20 vs 1.00),
-`cognitive_max` (3.00 vs 1.83) and `cc_longest_function` (7.40 vs 10.17) move in
+`cognitive_max` (3.00 vs 1.83) and `longest_function` (7.40 vs 10.17) move in
 opposite directions and stay within replicate variation.
 
 Runtime spreads out rather than shifting uniformly: candidate duration ranges

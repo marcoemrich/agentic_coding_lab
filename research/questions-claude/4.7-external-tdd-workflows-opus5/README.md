@@ -44,10 +44,10 @@ outcomes:
   - suite_unresolved_red
   - suite_runs
   - suite_unknown_runs
-  # code quality. Decomposition first — cc_avg_loc_per_function is the binding
+  # code quality. Decomposition first — avg_loc_per_function is the binding
   # quality metric per RQ-architecture-axis-opus5 F-1.6.
-  - cc_avg_loc_per_function
-  - cc_longest_function
+  - avg_loc_per_function
+  - longest_function
   - cognitive_max
   - mccabe_max
   - smell_total
@@ -177,8 +177,8 @@ n=5 — the measurement basis of this cell):
 | | mean ± σ |
 |---|---:|
 | `verification_pct` | 0.99 ± 0.03 |
-| `cc_avg_loc_per_function` | 4.04 ± 0.58 |
-| `cc_longest_function` | 17.0 ± 4.5 |
+| `avg_loc_per_function` | 4.04 ± 0.58 |
+| `longest_function` | 17.0 ± 4.5 |
 | `cognitive_max` | 2.40 ± 0.89 |
 | `mccabe_max` | 3.20 ± 0.45 |
 | `smell_total` | 0.00 ± 0.00 |
@@ -240,7 +240,7 @@ next to `tests_passed_immediately`.
 ### Refactor position (superpowers-2026-09-04 ↔ pocock-2026-09-04)
 
 - **H1 (a refactor stage matters)** — superpowers-2026-09-04 lands clearly better than pocock-2026-09-04 on
-  `cc_avg_loc_per_function`, `cc_longest_function`, `cognitive_max`, `mccabe_max`
+  `avg_loc_per_function`, `longest_function`, `cognitive_max`, `mccabe_max`
   and `smell_total`, at constant architecture. Falsifier: pocock-2026-09-04 comes out level
   with or cleaner than superpowers-2026-09-04, which would mean quality on this kata is driven by
   the design doctrine in the prompt (Pocock's "deep modules" / "small

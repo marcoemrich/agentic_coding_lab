@@ -19,8 +19,8 @@ outcomes:
   - cli_built
   - code_mass
   - smell_total
-  - cc_longest_function
-  - cc_loc
+  - longest_function
+  - production_loc
   - mccabe_max
   - cognitive_max
   - duration_seconds
@@ -93,7 +93,7 @@ Runs:       27 total
 ## Hypotheses
 
 - **H1** (correctness): Per model, the spread of `verification_pct` between the three styles is less than 10 percentage points — the kata is known from the training material, style differences are compensated by prior knowledge.
-- **H2** (code quality): There is no consistent style ranking on `code_mass`, `smell_total`, `cc_longest_function`, `mccabe_max`, `cognitive_max` that is stable across models — style-induced quality variation is noise on a known kata.
+- **H2** (code quality): There is no consistent style ranking on `code_mass`, `smell_total`, `longest_function`, `mccabe_max`, `cognitive_max` that is stable across models — style-induced quality variation is noise on a known kata.
 - **H3** (model ranking): `code_mass` and complexity outcomes continue to follow the model ranking Opus < Sonnet < Haiku (cf. F-3.1 in the v1-generation RQ-3-model-and-thinking, deleted in `953841cb`), independently of the prompt style.
 
 - **H4** (ambiguity hypothesis): On training-known katas the example-mapping advantage does not take effect, because there are no domain-specific ambiguities that would need to be resolved by examples. Instead, concrete examples can activate the trained pattern (library form) so strongly that the actual task contract (CLI) is displaced — example mapping becomes *counterproductive*. This phenomenon does not occur on domain-novel katas (claim-office), because there no competing prior knowledge exists.
@@ -108,7 +108,7 @@ Runs:       27 total
 
 - **(a) Thinking off**: Findings apply only to the no-thinking mode. With thinking, correctness or quality results could shift — on Opus in particular, RQ-model-quality-v1 shows a clear thinking effect on code quality (cognitive_max −42 %). A separate RQ would be needed for the thinking dimension.
 - **(b) Opus 4.6 via Portkey, not 4.7**: The `*-portkey` variants route Opus 4.6. Findings about `opus-4-6-portkey-no-thinking` are *not* automatically transferable to Opus 4.7 or Direct-API Opus 4.6.
-- **(c) CLI overhead bias**: The `game-of-life-cli-*` kata pins JSON IO + dispatcher in `src/cli.ts`. Code-quality metrics (`code_mass`, `smell_total`, `cc_*`, `mccabe_*`, `cognitive_*`) contain a CLI overhead share that the existing library variant `game-of-life-*` does not have. Cross-kata comparisons between `game-of-life-cli-*` and `game-of-life-*` on code quality are therefore not directly valid. Within RQ-prompt-known-kata (variation only over prompt × model) the bias is constant across all cells and does not disturb the style comparison.
+- **(c) CLI overhead bias**: The `game-of-life-cli-*` kata pins JSON IO + dispatcher in `src/cli.ts`. Code-quality metrics (`code_mass`, `smell_total`, clean-code metrics (`production_loc`, `functions`, `longest_function`, `avg_loc_per_function`, `median_loc_per_function`), `mccabe_*`, `cognitive_*`) contain a CLI overhead share that the existing library variant `game-of-life-*` does not have. Cross-kata comparisons between `game-of-life-cli-*` and `game-of-life-*` on code quality are therefore not directly valid. Within RQ-prompt-known-kata (variation only over prompt × model) the bias is constant across all cells and does not disturb the style comparison.
 - **(d) Single workflow point**: exact-single-context-v1-cc as the sole workflow. No workflow generalization — other workflows could produce different style effects.
 
 ## Findings

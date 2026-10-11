@@ -15,11 +15,11 @@ opus-4-7 cells are pre-existing runs (partly Portkey-routed, see README caveat 1
 | Metric | inline-tdd-v1/o5 | single-context-v2/o5 | hybrid-v2/o5 | hybrid-v6/o5 | inline-tdd-v1/o47 | single-context-v2/o47 | hybrid-v2/o47 | hybrid-v6/o47 | Direction |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---|
 | Correctness (external) | **1.00** 🏆 | 0.79 | 0.99 | 0.95 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | higher = better |
-| `cc_avg_loc_per_function` | 9.18 | 5.89 | 4.04 | **3.21** 🏆 | 13.07 | 10.03 | 5.75 | 3.67 | lower = better |
+| `avg_loc_per_function` | 9.18 | 5.89 | 4.04 | **3.21** 🏆 | 13.07 | 10.03 | 5.75 | 3.67 | lower = better |
 | `cognitive_max` | 5.4 | 2.8 | 2.4 | **2.2** 🏆 | 19.8 | 14.83 | 5.71 | 3.2 | lower = better |
 | `cognitive_avg` | 2.53 | 1.65 | 1.34 | **1.18** 🏆 | 5.77 | 4.62 | 2.32 | 1.35 | lower = better |
 | `mccabe_max` | 5.4 | 3.4 | 3.2 | **3.0** 🏆 | 15.4 | 10.17 | 5.71 | 3.4 | lower = better |
-| `cc_longest_function` | 24.2 | 18.6 | 17.0 | 14.6 | 51.6 | 32.67 | 18.14 | **12.0** 🏆 | lower = better |
+| `longest_function` | 24.2 | 18.6 | 17.0 | 14.6 | 51.6 | 32.67 | 18.14 | **12.0** 🏆 | lower = better |
 | Smell Total | **0.0** 🏆 | 0.2 | **0.0** 🏆 | **0.0** 🏆 | 16.8 | 6.83 | 1.29 | **0.0** 🏆 | lower = better |
 | Code Mass (APP) | 759.2 | 569.0 | 861.6 | 1002.8 | 992.4 | 692.7 | 861.3 | 796.0 | no 🏆 — see caveat |
 | `cycle_count` | 4.8 | 27.0 | 42.8 | 45.0 | 3.8 | 5.5 | 28.0 | 25.8 | — |
@@ -33,11 +33,11 @@ opus-4-7 cells are pre-existing runs (partly Portkey-routed, see README caveat 1
 | Metric | inline-tdd-v1/o5 | single-context-v2/o5 | hybrid-v2/o5 | hybrid-v6/o5 | inline-tdd-v1/o47 | single-context-v2/o47 | hybrid-v2/o47 | hybrid-v6/o47 | Direction |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---|
 | Correctness (external) | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | higher = better |
-| `cc_avg_loc_per_function` | 6.69 | 4.12 | 4.54 | **3.57** 🏆 | 16.52 | 9.58 | 6.56 | 3.62 | lower = better |
+| `avg_loc_per_function` | 6.69 | 4.12 | 4.54 | **3.57** 🏆 | 16.52 | 9.58 | 6.56 | 3.62 | lower = better |
 | `cognitive_max` | 7.6 | 1.8 | 1.8 | **1.2** 🏆 | 21.8 | 17.6 | 6.5 | 2.2 | lower = better |
 | `cognitive_avg` | 5.73 | 1.6 | 1.5 | **1.2** 🏆 | 21.8 | 15.4 | 5.17 | 1.9 | lower = better |
 | `mccabe_max` | 6.0 | 2.8 | 3.2 | **2.4** 🏆 | 13.7 | 10.2 | 5.2 | 3.2 | lower = better |
-| `cc_longest_function` | 14.6 | 8.0 | 10.8 | **7.4** 🏆 | 32.5 | 20.8 | 14.2 | 8.4 | lower = better |
+| `longest_function` | 14.6 | 8.0 | 10.8 | **7.4** 🏆 | 32.5 | 20.8 | 14.2 | 8.4 | lower = better |
 | Smell Total | **0.0** 🏆 | **0.0** 🏆 | 1.2 | **0.0** 🏆 | 6.0 | 4.8 | 2.4 | **0.0** 🏆 | lower = better |
 | Code Mass (APP) | 193.0 | 176.2 | 181.8 | 194.4 | 165.6 | 154.0 | 153.7 | 169.6 | no 🏆 — see caveat |
 | `cycle_count` | 3.8 | 7.2 | 10.4 | 10.4 | 1.5 | 7.6 | 8.7 | 9.2 | — |
@@ -66,7 +66,7 @@ Caveats for reading the tables:
 
 ## F-1.1 — H1 confirmed: the architecture ranking holds on opus-5, on both katas
 
-The inline-tdd-v1 → single-context-v2 → hybrid-v2 → hybrid-v6 ordering on `cc_avg_loc_per_function` is monotone on
+The inline-tdd-v1 → single-context-v2 → hybrid-v2 → hybrid-v6 ordering on `avg_loc_per_function` is monotone on
 claim-office and near-monotone on game-of-life, exactly as on opus-4-7.
 
 | Kata | inline-tdd-v1 | single-context-v2 | hybrid-v2 | hybrid-v6 | Monotone? |
@@ -96,7 +96,7 @@ H2 (Sol pattern) and H3 (metric split) are both refuted for this model.
 Structureless TDD on opus-5 reaches complexity levels that on opus-4-7 required the full
 architecture.
 
-| Cell | `cognitive_max` | `cc_avg_loc_per_function` | Smell Total |
+| Cell | `cognitive_max` | `avg_loc_per_function` | Smell Total |
 |---|---:|---:|---:|
 | inline-tdd-v1 / claim-office / opus-4-7 | 19.8 | 13.07 | 16.8 |
 | inline-tdd-v1 / claim-office / opus-5 | **5.4** | 9.18 | **0.0** |
@@ -118,12 +118,12 @@ values do not carry over.
 
 ## F-1.3 — hybrid-v6 wins the quality axis on both katas and costs 6–36× the baseline
 
-hybrid-v6 takes the trophy on every quality metric except `cc_longest_function` on claim-office.
+hybrid-v6 takes the trophy on every quality metric except `longest_function` on claim-office.
 The cost side is where the decision actually sits.
 
 | claim-office | inline-tdd-v1 | hybrid-v6 | Factor |
 |---|---:|---:|---:|
-| `cc_avg_loc_per_function` | 9.18 | **3.21** 🏆 | 0.35× |
+| `avg_loc_per_function` | 9.18 | **3.21** 🏆 | 0.35× |
 | `cognitive_max` | 5.4 | **2.2** 🏆 | 0.41× |
 | `mccabe_max` | 5.4 | **3.0** 🏆 | 0.56× |
 | Correctness (external) | **1.00** 🏆 | 0.95 | 0.95× |
@@ -132,7 +132,7 @@ The cost side is where the decision actually sits.
 
 | game-of-life | inline-tdd-v1 | hybrid-v6 | Factor |
 |---|---:|---:|---:|
-| `cc_avg_loc_per_function` | 6.69 | **3.57** 🏆 | 0.53× |
+| `avg_loc_per_function` | 6.69 | **3.57** 🏆 | 0.53× |
 | `cognitive_max` | 7.6 | **1.2** 🏆 | 0.16× |
 | Correctness (external) | **1.00** 🏆 | **1.00** 🏆 | 1.00× |
 | `total_tokens` | **2 M** 🏆 | 20 M | **9.5×** |
@@ -144,7 +144,7 @@ of magnitude smaller than the cost (6–36×). On game-of-life, where correctnes
 claim-office it is 36× the tokens for 2.9× — and 0.95 instead of 1.00 external correctness.
 
 The intermediate cells are the interesting ones for practice: hybrid-v2 reaches
-`cc_avg_loc_per_function` 4.04 on claim-office at 94 M tokens — 58 % of hybrid-v6's cost for
+`avg_loc_per_function` 4.04 on claim-office at 94 M tokens — 58 % of hybrid-v6's cost for
 80 % of its decomposition gain over inline-tdd-v1.
 
 Token figures here count subagent consumption; the three structured arms all spawn
@@ -192,7 +192,7 @@ task complete after 2 cycles. hybrid-v2 and hybrid-v6, which isolate the refacto
 it in 10 runs. This is the same instability the Sol RQ documented for single-context-v2 (F-1.4 there,
 `refactorings_applied` σ 17.4) and it reproduces on a different model and harness.
 
-Against that, hybrid-v2 delivers 94 M tokens and 44 minutes for `cc_avg_loc_per_function` 4.04
+Against that, hybrid-v2 delivers 94 M tokens and 44 minutes for `avg_loc_per_function` 4.04
 — against hybrid-v6's 162 M and 93 minutes for 3.21. The marginal decomposition gain from hybrid-v2
 to hybrid-v6 (0.83 LoC per function) costs 72 % more tokens and 111 % more wallclock.
 
@@ -202,9 +202,9 @@ to hybrid-v6 (0.83 LoC per function) costs 72 % more tokens and 111 % more wallc
 
 | Kata | metric | inline-tdd-v1 | single-context-v2 | hybrid-v2 | hybrid-v6 |
 |---|---|---:|---:|---:|---:|
-| claim-office | `cc_avg_loc_per_function` (lower = better) | 9.18 | 5.89 | 4.04 | **3.21** |
+| claim-office | `avg_loc_per_function` (lower = better) | 9.18 | 5.89 | 4.04 | **3.21** |
 | claim-office | Code Mass (APP) | 759.2 | **569.0** | 861.6 | 1002.8 |
-| game-of-life | `cc_avg_loc_per_function` | 6.69 | 4.12 | 4.54 | **3.57** |
+| game-of-life | `avg_loc_per_function` | 6.69 | 4.12 | 4.54 | **3.57** |
 | game-of-life | Code Mass (APP) | 193.0 | **176.2** | 181.8 | 194.4 |
 
 Rationale: the cell with the best decomposition carries the highest Code Mass on both

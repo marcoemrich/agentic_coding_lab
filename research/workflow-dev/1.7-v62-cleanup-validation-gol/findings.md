@@ -14,7 +14,7 @@ Baseline (`exact-hybrid-v3-with-why-cc`, n=5) vs. cleaned (`exact-hybrid-v4-clea
 | `cycle_count` mean (σ) | — | 8.40 (σ 0.55) | 9.00 (σ 0.71) |
 | `code_mass` mean | ↓ | 151.0 (σ 11) | **148.8** 🏆 (σ 10) |
 | `smell_total` mean | ↓ | 2.80 (σ 0.84) | **2.60** 🏆 (σ 0.55) |
-| `cc_longest_function` mean (σ, max) | ↓ | **9.40** 🏆 (σ 8.29, max 22) | **9.40** 🏆 (σ 6.80, max 18) |
+| `longest_function` mean (σ, max) | ↓ | **9.40** 🏆 (σ 8.29, max 22) | **9.40** 🏆 (σ 6.80, max 18) |
 | `cognitive_max` mean (σ, max) | ↓ | 4.80 (σ 5.81, max 15) | **2.80** 🏆 (σ 1.10, max 4) |
 | `mccabe_max` mean (σ, max) | ↓ | 4.60 (σ 3.13, max 10) | **3.60** 🏆 (σ 1.14, max 5) |
 | `duration_seconds` mean | ↓ | **569** 🏆 | 644 (+13 %) |
@@ -50,7 +50,7 @@ Reading in two sentences: the RQ-1.6 recommendation generalizes to GoL — hybri
 |---|---:|---:|---|
 | `cognitive_max` mean / σ / max | 4.80 / 5.81 / 15 | **2.80 / 1.10 / 4** | −42 % mean, σ −81 % |
 | `mccabe_max` mean / σ / max | 4.60 / 3.13 / 10 | **3.60 / 1.14 / 5** | −22 % mean, σ −64 % |
-| `cc_longest_function` mean / σ / max | 9.40 / 8.29 / 22 | 9.40 / 6.80 / 18 | = mean, σ −18 %, max −18 % |
+| `longest_function` mean / σ / max | 9.40 / 8.29 / 22 | 9.40 / 6.80 / 18 | = mean, σ −18 %, max −18 % |
 
 **Rationale.** The spread collapse pattern is striking: exact-hybrid-v3-with-why-cc occasionally produces heavy outlier runs (cognitive_max=15, mccabe_max=10, longest=22), hybrid-v4 does not. Mechanistically plausible: the +22 % refactorings (see F-1.3) drive the distribution of complexity peaks downward. The same pattern was documented in RQ-1.5 for exact-hybrid-v3-with-why-cc vs v6.1-hybrid on claim-office (σ −82–90 % on the three complexity metrics) and recurs here in the next reduction iteration.
 

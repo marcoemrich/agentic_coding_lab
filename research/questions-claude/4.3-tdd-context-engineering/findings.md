@@ -4,9 +4,9 @@ Kata: `claim-office-example-mapping` (novel). Model: `opus-4-7-no-thinking` (Por
 
 ## Overview — Code Quality, Correctness, Cost
 
-🏆 = best value per column. Directions: `cognitive_max`/`mccabe_max`/`cc_longest_function`/`smell_total`/`code_mass`/`cc_loc`/`duration_seconds`/`total_tokens` lower = better; `verification_pct` higher = better. Where spreads are smaller than 1 σ, 🏆 is distributed across all nearby values.
+🏆 = best value per column. Directions: `cognitive_max`/`mccabe_max`/`longest_function`/`smell_total`/`code_mass`/`production_loc`/`duration_seconds`/`total_tokens` lower = better; `verification_pct` higher = better. Where spreads are smaller than 1 σ, 🏆 is distributed across all nearby values.
 
-| Workflow | n | `cognitive_max` | `mccabe_max` | `cc_longest_function` | `smell_total` | `code_mass` | `cc_loc` | `verification_pct` | `duration_seconds` | `total_tokens` |
+| Workflow | n | `cognitive_max` | `mccabe_max` | `longest_function` | `smell_total` | `code_mass` | `production_loc` | `verification_pct` | `duration_seconds` | `total_tokens` |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | subagents-v2 (all isolated) | 5 | 26.8 ± 24.1 | 16.0 ± 9.0 | 40.8 ± 27.1 | 13.2 ± 7.5 | **621.6 ± 65.6** 🏆 | **156.8 ± 38.0** 🏆 | 0.96 ± 0.09 | 3 229 ± 920 | 34.87 M ± 6.07 |
 | single-context-v2 (all shared) | 6 | 14.8 ± 4.2 | 10.2 ± 2.6 | 32.7 ± 10.2 | 6.8 ± 7.6 | 692.7 ± 78.8 | 167.2 ± 27.9 | **1.00 ± 0** 🏆 | **641 ± 122** 🏆 | **18.73 M ± 5.35** 🏆 |
@@ -18,11 +18,11 @@ Kata: `claim-office-example-mapping` (novel). Model: `opus-4-7-no-thinking` (Por
 Token figures count subagent consumption. Until 2026-09-30 they did not, and this RQ was the one most distorted by that: subagents-v2 isolates all four phases, so it was understated by 147 % and held the token trophy at 14.10 M while actually being the second most expensive arm. See
 [RQ-old-vs-new-exact-line-opus55 F-4.12.5](../4.12-old-vs-new-exact-line-opus55/findings.md).
 
-On `cc_longest_function` the subagents-v2 cell has a σ of 27.1, wide enough that its 40.8 would formally tie with hybrid-v2's 18.1 under the spread rule. It carries no trophy because that width is its own instability, not agreement with the hybrids — its five runs range from the field's best to far past its worst.
+On `longest_function` the subagents-v2 cell has a σ of 27.1, wide enough that its 40.8 would formally tie with hybrid-v2's 18.1 under the spread rule. It carries no trophy because that width is its own instability, not agreement with the hybrids — its five runs range from the field's best to far past its worst.
 
 ## F-context.1 — The Refactor Subagent Delivers the Complexity Advantage; Additional Green Isolation Does Not Change the Picture
 
-hybrid-v2 and green-refactor-v2 — both with an isolated refactor subagent, green-refactor-v2 additionally with an isolated green subagent — reach practically identical complexity peaks: `cognitive_max` 5.71 / 5.00, `mccabe_max` 5.71 / 4.67, `cc_longest_function` 18.1 / 19.3, `smell_total` 1.29 / 2.33. All pairwise differences lie within their σ. single-context-v2 (all phases shared) is clearly above (cognitive_max 14.8, mccabe_max 10.2), subagents-v2 (all isolated) is the worst and has the largest spread (σ cognitive_max=24.1).
+hybrid-v2 and green-refactor-v2 — both with an isolated refactor subagent, green-refactor-v2 additionally with an isolated green subagent — reach practically identical complexity peaks: `cognitive_max` 5.71 / 5.00, `mccabe_max` 5.71 / 4.67, `longest_function` 18.1 / 19.3, `smell_total` 1.29 / 2.33. All pairwise differences lie within their σ. single-context-v2 (all phases shared) is clearly above (cognitive_max 14.8, mccabe_max 10.2), subagents-v2 (all isolated) is the worst and has the largest spread (σ cognitive_max=24.1).
 
 The plausible reading is sharpened by green-refactor-v2: the architecture advantage arises exclusively from the **isolated refactor subagent**, the shared element of hybrid-v2 and green-refactor-v2. Additionally isolating the green phase (green-refactor-v2) brings no further complexity lift. When all four phases run isolated (subagents-v2), this hurts on claim-office — the isolated subagents have to reconstruct the overall architecture again and again without context and accumulate structural complexity over the 44.6 cycles (F-context.4) that no single phase sees as a whole.
 

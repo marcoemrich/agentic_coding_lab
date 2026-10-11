@@ -8,7 +8,7 @@ _Are the effects of the pep and emoji reductions on the hybrid-v2 base additive 
 |---|---:|---:|---:|---:|
 | `code_mass` (APP) | 153.7 | **144.6** 🏆 | 156.8 | 153.2 |
 | `smell_total` | 2.4 | **2.0** 🏆 | **2.0** 🏆 | 2.2 |
-| `cc_longest_function` | 14.2 | 13.2 | **11.4** 🏆 | 16.2 |
+| `longest_function` | 14.2 | 13.2 | **11.4** 🏆 | 16.2 |
 | `cognitive_max` | 6.5 | **4.6** 🏆 | 6.6 | 7.8 |
 | `mccabe_max` | 5.2 | 4.8 | **4.6** 🏆 | 5.0 |
 

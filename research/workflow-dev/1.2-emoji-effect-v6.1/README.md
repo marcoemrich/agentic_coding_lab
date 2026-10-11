@@ -12,7 +12,7 @@ outcomes:
   # primary: code quality
   - code_mass
   - smell_total
-  - cc_longest_function
+  - longest_function
   - cognitive_max
   - mccabe_max
   # TDD discipline (especially relevant — predictions are emoji-marked)
@@ -53,7 +53,7 @@ Additional motivation: the repo's CLAUDE.md explicitly forbids emojis in our own
 
 ## Hypotheses
 
-- **H1 (emojis have no effect on code quality)**: all 5 primary metrics (`code_mass`, `smell_total`, `cc_longest_function`, `cognitive_max`, `mccabe_max`) statistically indistinguishable between the workflows (median difference within ±1 σ of the hybrid-v2 spread).
+- **H1 (emojis have no effect on code quality)**: all 5 primary metrics (`code_mass`, `smell_total`, `longest_function`, `cognitive_max`, `mccabe_max`) statistically indistinguishable between the workflows (median difference within ±1 σ of the hybrid-v2 spread).
   Consequence under H1: emoji decoration is prompt ballast — MARKERS classification confirmed, no-emoji can be combined with further reductions.
 - **H2 (emojis help measurably)**: exact-hybrid-v2.2-no-emoji-cc degrades on at least two of the five primary metrics by ≥ +1 σ with a consistent direction.
   Consequence under H2: visual markers carry weight — the MARKERS classification must be corrected.

@@ -83,7 +83,7 @@ What has to be built before fill runs are possible:
 2. **Config copy** `.cursor/` → `run_dir` (~line 462).
 3. **Invocation branch** `harness = cursor`: `cursor-agent -p --force --output-format json --model "$cursor_model" --workspace "$run_dir" …` inside the `timeout` wrapper (analogous to the pi branch ~line 649). **Requires `CURSOR_API_KEY` in the container env** (real dashboard key, see blocker above) — via `.env`/docker-compose, analogous to `REQUESTY_API_KEY`.
 4. **Model mapping** lab variant → cursor `--model` string (`case "$model_name"`, analogous to pi ~line 682). Registration of the lab variants in `MODEL_CONFIGS` with a `cursor-only` placeholder (analogous to `pi-only`/`oc-only`).
-5. **Transcript parser** `experiments/parse_cursor_transcript.py` — translates the cursor JSON event stream into the lab metrics (four TDD markers from `MARKERS.md`, `cc_*`/`mccabe_*`/`cognitive_*`, tool calls). Dispatch in `analyze-run.sh` by harness.
+5. **Transcript parser** `experiments/parse_cursor_transcript.py` — translates the cursor JSON event stream into the lab metrics (four TDD markers from `MARKERS.md`, the clean-code metrics, `mccabe_*`/`cognitive_*`, tool calls). Dispatch in `analyze-run.sh` by harness.
 
 Additionally on the RQ documentation side: at least one cursor-cli workflow in `experiments/workflows/` (suffix `-cursor`, with a `.cursor/` marker) that emits the four TDD markers from `experiments/workflows/MARKERS.md` cleanly.
 

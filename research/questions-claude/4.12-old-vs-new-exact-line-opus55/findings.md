@@ -15,8 +15,8 @@ Two lines, each in a shared-context and an isolated-Refactor variant:
 ## Overview
 
 Decomposition is the axis on which the two lines separated on Opus 5
-(RQ-current-ptdd-vs-exact-opus-native F-4.9.1). On TypeScript `cc_longest_function`
-and `unit_size_max` are the same measure, as are `cc_avg_loc_per_function` and
+(RQ-current-ptdd-vs-exact-opus-native F-4.9.1). On TypeScript `longest_function`
+and `unit_size_max` are the same measure, as are `avg_loc_per_function` and
 `unit_size_avg`; only one of each pair is tabled.
 
 | Metric | `ptdd-v1` | `ptdd-v1.1` +Sub | `hybrid-v2` +Sub | `single-context-v3` |
@@ -25,9 +25,9 @@ and `unit_size_max` are the same measure, as are `cc_avg_loc_per_function` and
 | perfect runs | **5/5** 🏆 | 4/5 | 4/5 | **5/5** 🏆 |
 | Correctness (internal) | 5/5 | 5/5 | 5/5 | 5/5 |
 | `completed_within_budget` | 5/5 | 5/5 | 5/5 | 5/5 |
-| `cc_avg_loc_per_function` — lower = better | 4.81 ± 0.62 | 4.46 ± 0.40 | **2.92 ± 0.46** 🏆 | 3.74 ± 0.68 |
-| `cc_median_loc_per_function` — lower = better | 3.80 ± 1.10 | 3.30 ± 0.67 | **2.00 ± 0.00** 🏆 | 2.40 ± 0.89 |
-| `cc_longest_function` — lower = better | **13.00 ± 1.58** 🏆 | 14.20 ± 2.17 | **11.00 ± 4.36** 🏆 | **13.00 ± 2.45** 🏆 |
+| `avg_loc_per_function` — lower = better | 4.81 ± 0.62 | 4.46 ± 0.40 | **2.92 ± 0.46** 🏆 | 3.74 ± 0.68 |
+| `median_loc_per_function` — lower = better | 3.80 ± 1.10 | 3.30 ± 0.67 | **2.00 ± 0.00** 🏆 | 2.40 ± 0.89 |
+| `longest_function` — lower = better | **13.00 ± 1.58** 🏆 | 14.20 ± 2.17 | **11.00 ± 4.36** 🏆 | **13.00 ± 2.45** 🏆 |
 | `unit_count` — higher = better | 22.80 ± 2.77 | **34.40 ± 9.86** 🏆 | **26.80 ± 3.19** 🏆 | 24.60 ± 6.19 |
 | `cognitive_max` — lower = better | **2.40 ± 0.55** 🏆 | **2.00 ± 0.00** 🏆 | **2.40 ± 0.89** 🏆 | 4.00 ± 2.83 |
 | `cognitive_avg` — lower = better | 1.43 ± 0.21 | **1.23 ± 0.12** 🏆 | **1.25 ± 0.17** 🏆 | 1.62 ± 0.42 |
@@ -61,7 +61,7 @@ and `unit_size_max` are the same measure, as are `cc_avg_loc_per_function` and
 The retired line decomposes more finely than the maintained one in both of its
 variants, isolated and shared alike.
 
-| | `cc_avg_loc_per_function` | `cc_median_loc_per_function` | line |
+| | `avg_loc_per_function` | `median_loc_per_function` | line |
 |---|---:|---:|---|
 | `exact-hybrid-v2-testlist-fix-cc` | 2.92 ± 0.46 | 2.00 ± 0.00 | retired, isolated |
 | `exact-single-context-v3-no-subagent-cc` | 3.74 ± 0.68 | 2.40 ± 0.89 | retired, shared |
@@ -158,7 +158,7 @@ worse than its sibling on every axis that separates at all.
 | `mccabe_max` | 4.20 ± 1.79 | worst, second-widest σ |
 | `cognitive_avg` | 1.62 ± 0.42 | worst |
 | `mccabe_avg` | 1.46 ± 0.14 | worst |
-| `cc_avg_loc_per_function` | 3.74 ± 0.68 | second best |
+| `avg_loc_per_function` | 3.74 ± 0.68 | second best |
 | **Production LoC** | 182 ± 25 | lowest |
 
 It writes the least production code of the field and still spends the most

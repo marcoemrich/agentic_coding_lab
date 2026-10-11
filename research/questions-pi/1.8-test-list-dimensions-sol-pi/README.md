@@ -14,16 +14,16 @@ outcomes:
   - completed_within_budget
   - tests_total
   - test_lines
-  - cc_avg_loc_per_function
-  - cc_median_loc_per_function
-  - cc_longest_function
-  - cc_functions
+  - avg_loc_per_function
+  - median_loc_per_function
+  - longest_function
+  - functions
   - cognitive_max
   - cognitive_avg
   - mccabe_max
   - smell_total
   - code_mass
-  - cc_loc
+  - production_loc
   - refactorings_applied
   - predictions_correct_rate
   - duration_seconds
@@ -67,7 +67,7 @@ Model, route, reasoning profile, harness, kata, prompt style, shared context, Pr
 1. **External completeness:** compare mean, minimum, and distribution of Correctness (external). Since v1.5 is already perfect in the existing sample, v1.6 must preserve that floor rather than merely improve a mean.
 2. **Test behavior:** compare executable tests and Test LoC. Additional tests are mechanism evidence, not an automatic quality win.
 3. **Efficiency:** compare duration, tokens, and hypothetical list-price estimates. A neutral correctness result favors the lower-cost workflow.
-4. **Product shape:** compare typical function size, function count, `cc_longest_function`, Cognitive Complexity, McCabe, Smell Total, Code Mass (APP), and Production LoC.
+4. **Product shape:** compare typical function size, function count, `longest_function`, Cognitive Complexity, McCabe, Smell Total, Code Mass (APP), and Production LoC.
 5. **Process evidence:** inspect the visible coverage cross-check and compare refactor markers and prediction accuracy. Marker counts are descriptive rather than quality rankings.
 
 ## Hypotheses

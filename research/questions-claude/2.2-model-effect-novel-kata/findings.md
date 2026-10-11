@@ -4,7 +4,7 @@ Model comparison of Fable 5 vs opus-4-8-no-thinking vs opus-4-7-no-thinking vs o
 
 ## Overview
 
-Primary outcome `verification_pct` (Correctness (external), higher = better); secondary code quality (`cognitive_max`/`mccabe_max`/`smell_total`/`cc_longest_function`, lower = better) and cost (`total_tokens`/`duration_seconds`, lower = better).
+Primary outcome `verification_pct` (Correctness (external), higher = better); secondary code quality (`cognitive_max`/`mccabe_max`/`smell_total`/`longest_function`, lower = better) and cost (`total_tokens`/`duration_seconds`, lower = better).
 
 | Model | n | verification_pct ↑ | σ | cognitive_max ↓ | mccabe_max ↓ | smell_total ↓ | total_tokens ↓ | duration_s ↓ |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -90,7 +90,7 @@ On opus-4-7 the dominant failure mode in subagents-v1 is **an incomplete test li
 
 ## F-model-novel.5 — opus-4-8 Buys the Best Code Quality at ~2× the Token Cost
 
-At almost the same correctness as opus-4-6 (0.92 vs 0.93), opus-4-8 delivers the best code quality of all three models: `cognitive_max` 7.4 (vs 4-6: 22.2, 4-7: 10.5), `mccabe_max` 7.0 (vs 10.6 / 7.9), `smell_total` 1.2 (vs 5.6 / 1.8). The ``cognitive_max`` (`cc_longest_function`) is at 28.4, close to 4-7 (25.0) and clearly below 4-6 (50.8). opus-4-8 thereby unites the spec fidelity of 4-6 with code quality that reaches or exceeds 4-7 — the trade-off "conservatively correct (4-6) vs. clean but unreliable" from the two-model picture dissolves on the newest generation.
+At almost the same correctness as opus-4-6 (0.92 vs 0.93), opus-4-8 delivers the best code quality of all three models: `cognitive_max` 7.4 (vs 4-6: 22.2, 4-7: 10.5), `mccabe_max` 7.0 (vs 10.6 / 7.9), `smell_total` 1.2 (vs 5.6 / 1.8). The ``cognitive_max`` (`longest_function`) is at 28.4, close to 4-7 (25.0) and clearly below 4-6 (50.8). opus-4-8 thereby unites the spec fidelity of 4-6 with code quality that reaches or exceeds 4-7 — the trade-off "conservatively correct (4-6) vs. clean but unreliable" from the two-model picture dissolves on the newest generation.
 
 The price is on the cost axis: opus-4-8 consumes on average **62.0 M** `total_tokens` — about 1.8× as much as 4-6 (33.9 M) and 4-7 (36.1 M) — and takes the longest at 5264 s (vs 4416 / 3693 s). At the same time it writes the most code (`code_mass` 820, `lines_of_code` 303 vs. 4-7: 626 / 194) at the lowest complexity per function — i.e. the extra volume is distributed over more, simpler functions, not over a few complex ones. For correctness- and quality-critical work on subagents-v1, opus-4-8 is the strongest choice; where token budget or latency binds, opus-4-6 remains the cheaper option at comparable correctness.
 
@@ -100,7 +100,7 @@ Limitation: n=5. The `cognitive_max` mean (7.4) is pulled up by one outlier run 
 
 On claim-office, fable-5 shows an internally consistent but paradoxical profile: it writes **by far the cleanest code** of all four models and at the same time the **least spec-complete** among the usable models.
 
-- **Quality (leading, but un-trophied):** `cognitive_max` 4.0 and `mccabe_max` 4.2 are the lowest in the RQ — about one fifth of opus-4-6 (22.2 / 10.6) and clearly below opus-4-8 (7.4 / 7.0). `cc_longest_function` 14.8 (vs. 4-8: 28.4, 4-6: 50.8) and `smell_total` 0.2 (vs. 4-8: 1.2, 4-6: 5.6) are also best values. The code is at the same time thoroughly tested (all runs `tests_passing=true`, up to 45 tests) on the most compact code base (`lines_of_code` 257.6, `code_mass` 743).
+- **Quality (leading, but un-trophied):** `cognitive_max` 4.0 and `mccabe_max` 4.2 are the lowest in the RQ — about one fifth of opus-4-6 (22.2 / 10.6) and clearly below opus-4-8 (7.4 / 7.0). `longest_function` 14.8 (vs. 4-8: 28.4, 4-6: 50.8) and `smell_total` 0.2 (vs. 4-8: 1.2, 4-6: 5.6) are also best values. The code is at the same time thoroughly tested (all runs `tests_passing=true`, up to 45 tests) on the most compact code base (`lines_of_code` 257.6, `code_mass` 743).
 - **Correctness (midfield):** `verification_pct` 0.83 (σ 0.10, 0.73–0.93) — on average 12.4 of 15 external checks, max 14/15, **never 15/15**. fable-5 is thereby above opus-4-7 (0.67) but below opus-4-6/4-8 (~0.92). The internal tests are green but do not cover the full spec: the same "tests green, spec gappy" pattern as with opus-4-6 on hybrid-v1 (F-model-novel.2) and opus-4-7 on subagents-v1 (F-model-novel.4) — but more mildly pronounced with fable-5 (no total loss of an entire operation, rather individual missing edge cases).
 - **Cost:** mid-field at 44.5 M `total_tokens` (above opus-4-6's 33.9 M and 4-7's 36.1 M, below opus-4-8's 62.0 M), with the **largest token spread of the RQ** at σ 19.3. And with 7826 s the **longest wallclock** of the RQ; one run ran into the 7200 s timeout (n_ok=4/5), and two runs experienced rate-limit backoff, which inflates the wallclock further. Cost is therefore not an argument for this model here: it is neither the cheapest nor the most predictable, and it is the slowest.
 - **Variable cycle granularity:** The five runs range from 7 to 46 RGR cycles (pred/cycle ratio consistently 2.0, markers healthy). fable-5 partly batches several `it.todo`s per cycle instead of strictly one per test — not a quality deficit, but a difference in TDD rhythm compared to the Opus models.

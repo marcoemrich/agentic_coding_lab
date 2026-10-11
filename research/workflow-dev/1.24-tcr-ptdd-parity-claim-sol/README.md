@@ -16,10 +16,10 @@ outcomes:
   - tests_passing
   - completed_within_budget
   # Primary decomposition outcomes
-  - cc_avg_loc_per_function
-  - cc_median_loc_per_function
-  - cc_longest_function
-  - cc_functions
+  - avg_loc_per_function
+  - median_loc_per_function
+  - longest_function
+  - functions
   - cognitive_max
   - cognitive_avg
   - mccabe_max
@@ -28,7 +28,7 @@ outcomes:
   - smell_code_quality
   # Compactness witnesses
   - code_mass
-  - cc_loc
+  - production_loc
   - test_lines
   # Method execution and audit trail
   - test_blocks

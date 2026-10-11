@@ -24,7 +24,7 @@ outcomes:
   - code_mass
   - cognitive_max
   - mccabe_max
-  - cc_longest_function
+  - longest_function
   - lines_of_code
   - smell_total
   # tertiary: TDD discipline (v5.1-oc provides these thanks to parse_opencode_transcript)

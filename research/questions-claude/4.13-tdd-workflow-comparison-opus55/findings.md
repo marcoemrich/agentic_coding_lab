@@ -16,8 +16,8 @@ by line: maintained lab, retired lab, vendor.
 | **Correctness (external)** — higher = better | **1.00 ± 0.00** 🏆 | 0.96 ± 0.09 | 0.96 ± 0.09 | 0.96 ± 0.09 | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 |
 | perfect runs | **5/5** 🏆 | 4/5 | 4/5 | 4/5 | **5/5** 🏆 | **5/5** 🏆 | **5/5** 🏆 |
 | Correctness (internal) | 100 % | 100 % | 100 % | 100 % | 100 % | 100 % | 100 % |
-| `cc_avg_loc_per_function` — lower = better | 4.81 ± 0.62 | 4.46 ± 0.40 | **2.92 ± 0.46** 🏆 | **3.32 ± 0.27** 🏆 | 6.23 ± 1.51 | 6.48 ± 0.82 | 9.46 ± 1.11 |
-| `cc_longest_function` — lower = better, no winner | 13.00 ± 1.58 | 14.20 ± 2.17 | 11.00 ± 4.36 | 14.20 ± 6.38 | 14.80 ± 1.64 | 15.80 ± 1.30 | 19.20 ± 1.92 |
+| `avg_loc_per_function` — lower = better | 4.81 ± 0.62 | 4.46 ± 0.40 | **2.92 ± 0.46** 🏆 | **3.32 ± 0.27** 🏆 | 6.23 ± 1.51 | 6.48 ± 0.82 | 9.46 ± 1.11 |
+| `longest_function` — lower = better, no winner | 13.00 ± 1.58 | 14.20 ± 2.17 | 11.00 ± 4.36 | 14.20 ± 6.38 | 14.80 ± 1.64 | 15.80 ± 1.30 | 19.20 ± 1.92 |
 | `cognitive_max` — lower = better | **2.40 ± 0.55** 🏆 | **2.00 ± 0.00** 🏆 | **2.40 ± 0.89** 🏆 | **2.40 ± 1.14** 🏆 | 3.60 ± 1.34 | 4.00 ± 1.41 | 7.20 ± 3.42 |
 | `mccabe_max` — lower = better | **3.40 ± 0.55** 🏆 | **3.00 ± 0.00** 🏆 | **3.20 ± 0.45** 🏆 | **3.20 ± 0.45** 🏆 | 4.40 ± 0.89 | 4.40 ± 0.55 | 6.40 ± 2.30 |
 | **Smell Total** — lower = better | **0.00 ± 0.00** 🏆 | **0.00 ± 0.00** 🏆 | 0.80 ± 0.45 | 0.80 ± 0.45 | **0.00 ± 0.00** 🏆 | **0.00 ± 0.00** 🏆 | 2.20 ± 3.35 |
@@ -35,14 +35,14 @@ by line: maintained lab, retired lab, vendor.
 > trophies. Multiple trophies in a row mark values that are indistinguishable at
 > 1 σ, not a fabricated tie.
 >
-> **`cc_longest_function` carries no trophy at all.** Six of the seven cells lie
+> **`longest_function` carries no trophy at all.** Six of the seven cells lie
 > between 11.00 and 15.80 with overlapping σ bands — `hybrid-v2`'s band alone
 > spans 6.64 to 15.36 and covers both `kesseler` and `superpowers`. The only
 > separation in that row is `pocock` at the top end. Awarding a winner inside
 > that band would be rounding noise.
 >
 > **Read Code Mass (APP) with the decomposition rows, never alone.** The two
-> trophy cells sit at opposite ends of `cc_avg_loc_per_function`: `kesseler` at
+> trophy cells sit at opposite ends of `avg_loc_per_function`: `kesseler` at
 > 6.23 and `pocock` at 9.46, the worst in the field. Both solved the full
 > specification (5/5 perfect), so neither is disqualified — but the low value
 > means compacted, not parsimonious. F-4.13.6.
@@ -120,10 +120,10 @@ delegate — plus `exact-ptdd-v1-cc`, which refactors inline — are perfect in
 
 ## F-4.13.2 — Decomposition follows refactor frequency, and the lab contract leads
 
-`cc_avg_loc_per_function` orders the field almost exactly inversely to
+`avg_loc_per_function` orders the field almost exactly inversely to
 `refactor_events`.
 
-| | `refactor_events` | `cc_avg_loc_per_function` | `cognitive_max` | `mccabe_max` |
+| | `refactor_events` | `avg_loc_per_function` | `cognitive_max` | `mccabe_max` |
 |---|---:|---:|---:|---:|
 | `exact-hybrid-v2-testlist-fix-cc` | 24.8 | 2.92 ± 0.46 | 2.40 | 3.20 |
 | `exact-hybrid-v2.4-lab-split-cc` | 29.6 | 3.32 ± 0.27 | 2.40 | 3.20 |
@@ -135,7 +135,7 @@ delegate — plus `exact-ptdd-v1-cc`, which refactors inline — are perfect in
 
 The clean test of refactor position is `pocock` against `superpowers` and
 `kesseler` — same architecture (one inline skill), only the stage varies.
-`cc_avg_loc_per_function` 9.46 against 6.48 and 6.23 is a gap of ≈ 3 σ, and
+`avg_loc_per_function` 9.46 against 6.48 and 6.23 is a gap of ≈ 3 σ, and
 `cognitive_max` 7.20 against 4.00 and 3.60 points the same way. H7 confirmed:
 a refactor stage has an effect, and the design doctrine in Pocock's prompt
 ("deep modules", "small interfaces") does not replace it.
@@ -160,7 +160,7 @@ isolated subagent.
 |---|---:|---:|---:|
 | `cognitive_max` | 2.40 ± 0.55 | 2.00 ± 0.00 | — |
 | `mccabe_max` | 3.40 ± 0.55 | 3.00 ± 0.00 | — |
-| `cc_avg_loc_per_function` | 4.81 ± 0.62 | 4.46 ± 0.40 | 0.93× |
+| `avg_loc_per_function` | 4.81 ± 0.62 | 4.46 ± 0.40 | 0.93× |
 | Correctness (external) | 1.00 ± 0.00 (5/5) | 0.96 ± 0.09 (4/5) | — |
 | `tdd_discipline` | 0.63 ± 0.01 | 0.62 ± 0.03 | 0.98× |
 | `refactor_events` | 16.6 ± 2.4 | 30.6 ± 9.7 | 1.8× |
@@ -173,14 +173,14 @@ What the subagent buys is **determinism, not a lower mean**: `cognitive_max`
 drops 2.40 → 2.00 and `mccabe_max` 3.40 → 3.00, each at σ = 0.00 against σ = 0.55.
 Every one of the five subagent runs lands on the same value; the shared-context
 cell scatters. The decomposition metric the architecture is usually argued on,
-`cc_avg_loc_per_function`, moves 4.81 → 4.46 — well inside 1 σ, so no gain is
+`avg_loc_per_function`, moves 4.81 → 4.46 — well inside 1 σ, so no gain is
 demonstrated there.
 
 H11 confirmed in its discipline half and refuted in its decomposition half:
 `tdd_discipline` is unchanged (0.63 against 0.62, both σ ≤ 0.03), exactly as
 predicted, because the subagent changes where the Refactor step runs and not
 whether a failing test preceded the code. But the predicted decomposition gain
-does not appear on `cc_avg_loc_per_function`; what appears instead is a
+does not appear on `avg_loc_per_function`; what appears instead is a
 deterministic ceiling on the two complexity metrics.
 
 The price is the finding's other half. 2.9× wallclock, 2.3× tokens and 2.9× list
@@ -278,7 +278,7 @@ arrive incrementally.
 
 ## F-4.13.6 — Cost spans a factor of ten, and Code Mass (APP) runs opposite to decomposition
 
-| | `cost_usd` | `duration_seconds` | `total_tokens` | Code Mass (APP) | `cc_avg_loc_per_function` |
+| | `cost_usd` | `duration_seconds` | `total_tokens` | Code Mass (APP) | `avg_loc_per_function` |
 |---|---:|---:|---:|---:|---:|
 | `external-pocock-2026-09-04-cc` | 2.97 ± 0.33 | 310 ± 44 | 5.3 M | 585 ± 15 | 9.46 |
 | `external-superpowers-2026-09-04-cc` | 3.45 ± 0.25 | 372 ± 45 | 7.3 M | 634 ± 30 | 6.48 |
@@ -296,7 +296,7 @@ metrics despite its two review sub-agents. The review stage costs less than the
 per-cycle refactor stage it replaces.
 
 Code Mass (APP) does not follow quality. `pocock` writes 585 lines into the
-longest and most complex functions in the field (`cc_avg_loc_per_function` 9.46,
+longest and most complex functions in the field (`avg_loc_per_function` 9.46,
 `cognitive_max` 7.20); `hybrid-v2` writes 742 and distributes them most finely
 (2.92, 2.40). Read alone, the column would present `pocock` as the leaner result;
 it is the compacted one. `kesseler` holds the lowest value at 560 and sits
@@ -315,7 +315,7 @@ over the native subscription route. Sources: `research/model-pricing.md`.
 | | `exact-ptdd-v1-cc` | `exact-hybrid-v2-testlist-fix-cc` | `exact-hybrid-v2.4-lab-split-cc` |
 |---|---:|---:|---:|
 | Correctness (external) | 1.00 ± 0.00 (5/5) | 0.96 ± 0.09 (4/5) | 0.96 ± 0.09 (4/5) |
-| `cc_avg_loc_per_function` | 4.81 ± 0.62 | 2.92 ± 0.46 | 3.32 ± 0.27 |
+| `avg_loc_per_function` | 4.81 ± 0.62 | 2.92 ± 0.46 | 3.32 ± 0.27 |
 | `cognitive_max` | 2.40 ± 0.55 | 2.40 ± 0.89 | 2.40 ± 1.14 |
 | Smell Total | 0.00 ± 0.00 | 0.80 ± 0.45 | 0.80 ± 0.45 |
 | Code Mass (APP) | 632 ± 36 | 742 ± 62 | 733 ± 105 |
@@ -323,7 +323,7 @@ over the native subscription route. Sources: `research/model-pricing.md`.
 | `tdd_discipline` | 0.63 ± 0.01 | 0.71 ± 0.02 | 0.70 ± 0.01 |
 
 H13 is **not confirmed as stated**. The retired line decomposes measurably
-better — 2.92 against 4.81 on `cc_avg_loc_per_function` is ≈ 3 σ — so the
+better — 2.92 against 4.81 on `avg_loc_per_function` is ≈ 3 σ — so the
 maintained line does not match it on the axis the promotion is usually argued on.
 What the maintained line holds instead: perfect Correctness (external) in 5/5
 runs where hybrid manages 4/5, `Smell Total` deterministically 0.00 against 0.80,

@@ -33,9 +33,9 @@ outcomes:
   - completed_within_budget
   # primary: decomposition — the axis on which the native line beat the EXACT
   # line on Sol (F-1.17.1). This is what "transfer" means for this RQ.
-  - cc_avg_loc_per_function
-  - cc_median_loc_per_function
-  - cc_longest_function
+  - avg_loc_per_function
+  - median_loc_per_function
+  - longest_function
   # secondary quality. cognitive_* and mccabe_* are blind to missing
   # abstraction (see "Metric blind spot") and are read as witnesses, not as
   # the decision.
@@ -47,8 +47,8 @@ outcomes:
   # what the native line does not name at all. Expected to run *against* the
   # decomposition metrics. Reported without trophy — see RQ-1.17.
   - code_mass
-  - cc_functions
-  - cc_loc
+  - functions
+  - production_loc
   # TDD discipline. n/a on the inline-tdd-v1 cell (no phase markers). Never read
   # predictions_total on this line or this model — see "Marker caveats".
   - cycle_count
@@ -105,8 +105,8 @@ floor, while the Four-Rules line took every decomposition metric:
 
 | Metric | inline-tdd-v1 (floor) | basic-sol-tdd | hybrid-v4.2 (EXACT) | Direction |
 |---|---:|---:|---:|---|
-| `cc_avg_loc_per_function` | 8.45 | **6.60** | 9.52 | kleiner = besser |
-| `cc_longest_function` | 27.0 | **18.0** | 24.0 | kleiner = besser |
+| `avg_loc_per_function` | 8.45 | **6.60** | 9.52 | kleiner = besser |
+| `longest_function` | 27.0 | **18.0** | 24.0 | kleiner = besser |
 | `cognitive_max` | 11.4 | **4.0** | 8.2 | kleiner = besser |
 | `mccabe_max` | 9.8 | **5.4** | 6.2 | kleiner = besser |
 | Smell Total | 4.2 | **0.0** | 9.6 | kleiner = besser |
@@ -212,8 +212,8 @@ Inherited from `RQ-route-effect-pi` and `RQ-native-sol-workflows-sub`, unchanged
 ## Hypotheses
 
 **H1 — The native line transfers.** On Astra, `exact-sol-v1-pi` beats
-`exact-hybrid-v4.2-phase-continuation-pi` on `cc_avg_loc_per_function` and
-`cc_longest_function`, in the same direction and of comparable magnitude to the
+`exact-hybrid-v4.2-phase-continuation-pi` on `avg_loc_per_function` and
+`longest_function`, in the same direction and of comparable magnitude to the
 Sol row, at 100 % `verification_pct`.
 → F-1.17.1 is a property of the APP refactor brief, not of Sol. The brief's
 inlining incentive is real across models and the EXACT line needs the fix that
@@ -279,8 +279,8 @@ APP has no notion of nesting at all. A single long function built from callback
 chains scores *better* on all three than the same logic split into named domain
 functions.
 
-**`cc_avg_loc_per_function` is therefore the binding decomposition metric**, with
-`cc_longest_function` secondary. Both are immune to the
+**`avg_loc_per_function` is therefore the binding decomposition metric**, with
+`longest_function` secondary. Both are immune to the
 callback trick. Neither measures naming.
 
 Code Mass (APP) carries **no trophy**. In this RQ it is not a quality metric but

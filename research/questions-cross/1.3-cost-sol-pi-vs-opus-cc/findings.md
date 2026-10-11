@@ -123,7 +123,7 @@ opus-cc's `cognitive_max` sits at ~30–40 % of the sol-pi values; on claim-offi
 opus-cc produces **zero** smells against 15.4 for sol-pi. This matches
 `RQ-model-quality-pi` F-1.2 (gpt-5-6-sol carries `cognitive_max` 13.4 on
 game-of-life — identical value, since these are the same runs) and
-`RQ-harness-requesty` F-1.3 (CC pushes down `cc_longest_function` via more frequent
+`RQ-harness-requesty` F-1.3 (CC pushes down `longest_function` via more frequent
 refactoring). Both effects add up here: the weaker model AND the
 refactor-poorer harness pull in the same direction. H3 confirmed.
 

@@ -23,7 +23,7 @@ On **both** katas the per-cycle refactor hybrid-v4.4 lowers the `cognitive_max` 
 
 ### Code quality (lower = better)
 
-| Workflow | `cognitive_max` | `cognitive_avg` | `mccabe_max` | `mccabe_avg` | `cc_longest_function` | `cc_avg_loc_per_function` | Code Mass (APP) | `smell_total` |
+| Workflow | `cognitive_max` | `cognitive_avg` | `mccabe_max` | `mccabe_avg` | `longest_function` | `avg_loc_per_function` | Code Mass (APP) | `smell_total` |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | exact-hybrid-v4-cleaned-cc | 5.00 | 1.91 | 4.50 | 1.53 | 12.4 | 4.22 | 878.5 | 0.38 |
 | exact-hybrid-v4.4-metric-refactor-cc | **2.40** 🏆 | **1.27** 🏆 | **3.00** 🏆 | 1.40 | 13.0 | 4.37 | 804.6 | **0.00** 🏆 |
@@ -56,7 +56,7 @@ No cost trophy is awarded, deliberately: hybrid-v4.4 ran native, hybrid-v4/hybri
 
 ### Code quality (lower = better)
 
-| Workflow | `cognitive_max` | `cognitive_avg` | `mccabe_max` | `cc_longest_function` | `cc_avg_loc_per_function` | Code Mass (APP) | `smell_total` |
+| Workflow | `cognitive_max` | `cognitive_avg` | `mccabe_max` | `longest_function` | `avg_loc_per_function` | Code Mass (APP) | `smell_total` |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | exact-hybrid-v4-cleaned-cc | 4.00 | 2.83 | 4.13 | 11.47 | 4.75 | **153.8** 🏆 | 2.13 |
 | exact-hybrid-v4.4-metric-refactor-cc | **2.20** 🏆 | **1.83** 🏆 | 3.40 | **8.40** 🏆 | 4.66 | 168.4 | **0.00** 🏆 |
@@ -107,7 +107,7 @@ Correctness stays untouched throughout (F-1.12.3): the bundle-break risk from RQ
 
 The one-off whole-src end pass (hybrid-v5) behaves kata-dependently:
 
-- **claim-office** (cli.ts + domain.ts): hybrid-v5 is largely level with hybrid-v4.4 (`cognitive_max` 2.8 vs 2.4, spread < 1 σ) and delivers the **lowest** Code Mass (APP) (780.4 vs hybrid-v4's 878.5, −11 %, Δ ≈ 1.1 σ), the **shortest** function (`cc_longest_function` 11.0, −11 %) and the **most compact** average function (`cc_avg_loc_per_function` 3.66, −13 %, Δ ≈ 1.5 σ). Here the whole-src view has genuine cross-file substance to consolidate — function inlining and parameter destructuring across file boundaries are explicitly documented in the run logs ("inlined `processStep` into `run`", "destructured `processClaim` parameters").
+- **claim-office** (cli.ts + domain.ts): hybrid-v5 is largely level with hybrid-v4.4 (`cognitive_max` 2.8 vs 2.4, spread < 1 σ) and delivers the **lowest** Code Mass (APP) (780.4 vs hybrid-v4's 878.5, −11 %, Δ ≈ 1.1 σ), the **shortest** function (`longest_function` 11.0, −11 %) and the **most compact** average function (`avg_loc_per_function` 3.66, −13 %, Δ ≈ 1.5 σ). Here the whole-src view has genuine cross-file substance to consolidate — function inlining and parameter destructuring across file boundaries are explicitly documented in the run logs ("inlined `processStep` into `run`", "destructured `processClaim` parameters").
 - **game-of-life** (single-file): hybrid-v5's `cognitive_max` of 3.0 is statistically indistinguishable from hybrid-v4 (4.0) — shaped by one outlier (4 of 5 runs = 2, one = 7; σ 2.24). Code Mass (APP) even rises (168.0 vs 153.8). On the tiny library there is no cross-file duplication for the end pass to work on.
 
 The only cross-kata robust v6.5 advantage is `smell_total` = 0 (deterministic, as with hybrid-v4.4) against the hybrid-v4 residual smells (claim-office 0.38, GoL 2.13).

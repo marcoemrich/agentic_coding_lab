@@ -14,8 +14,8 @@ outcomes:
   - cognitive_avg
   - mccabe_max
   - mccabe_avg
-  - cc_longest_function
-  - cc_avg_loc_per_function
+  - longest_function
+  - avg_loc_per_function
   - smell_total
   - smell_complexity
   - code_mass
@@ -39,7 +39,7 @@ Does an additive vocabulary block in the `refactor` agent — cyclomatic/cogniti
 
 ## Motivation
 
-The `refactor` agent in hybrid-v4 carries only **Naming Evaluation** + **Simple Design Rules** + **APP mass** as its central refactor vocabulary. Complexity (McCabe, cognitive), single responsibility and the classic smell→move mapping (Fowler vocabulary) are not named. The agent therefore lacks part of the vocabulary in which structural problems can be framed — and the lab measures exactly those problems later (`cognitive_*`, `mccabe_*`, `cc_longest_function`, `smell_complexity`).
+The `refactor` agent in hybrid-v4 carries only **Naming Evaluation** + **Simple Design Rules** + **APP mass** as its central refactor vocabulary. Complexity (McCabe, cognitive), single responsibility and the classic smell→move mapping (Fowler vocabulary) are not named. The agent therefore lacks part of the vocabulary in which structural problems can be framed — and the lab measures exactly those problems later (`cognitive_*`, `mccabe_*`, `longest_function`, `smell_complexity`).
 
 An earlier attempt (the archived RQ-19-refactor-vocab-extended) was invalid because it built on a hybrid-v1.x line since recognized as correctness-defective (see memory `v6-rebuild-new-base`, `v6.5-correctness-setback`). The now-stable default base is `exact-hybrid-v4-cleaned-cc` (RQ-1.6 / RQ-1.7). That is what makes the retry on the same, healthy substrate meaningful at all.
 
@@ -57,7 +57,7 @@ Full diff: `diff -r experiments/workflows/exact-coding/opus/exact-hybrid-v4-clea
 
 ## Hypotheses
 
-- **H1 (code quality)** — On game-of-life at least one of the primary complexity metrics (`cognitive_max`, `cognitive_avg`, `mccabe_max`) drops measurably against the baseline without another primary metric rising markedly at the same time. The SRP vocabulary and smell table additionally tend to push `cc_longest_function` and `cc_avg_loc_per_function` down (more extracted helpers).
+- **H1 (code quality)** — On game-of-life at least one of the primary complexity metrics (`cognitive_max`, `cognitive_avg`, `mccabe_max`) drops measurably against the baseline without another primary metric rising markedly at the same time. The SRP vocabulary and smell table additionally tend to push `longest_function` and `avg_loc_per_function` down (more extracted helpers).
 - **H2 (correctness)** — `tests_passing ≥ 95 %` on game-of-life; `verification_pct` on claim-office within 1 σ of the hybrid-v4 baseline. The additive vocabulary block must not regress correctness — a smoke test against the bundle risk seen in RQ-1.8/1.9 (see memory `audit-bundle-kata-asymmetry`).
 - **H3 (TDD discipline neutral)** — `refactorings_applied`, `cycle_count`, `predictions_correct_rate` each within 1 σ of the baseline. The block adds vocabulary, it does not change the process.
 - **H4 (cost)** — Additive text (~41 lines) → +5–10 % `total_tokens`, wallclock largely unchanged (no additional tool call).
@@ -83,7 +83,7 @@ Portkey routing, shards possible (GoL has short sessions, claim-office medium; n
 ## Caveats
 
 - **Bundle, three sub-blocks at once** — complexity awareness + SRP + smell table are added in one step. Given a positive result, which sub-block carries it remains open. Follow-up RQs (complexity-only, SRP-only, smell-table-only) are possible if a bundle effect materializes and disambiguation becomes important.
-- **Goodhart risk (training bias)** — the complexity definitions ("Each `if`, `else if`, ...") name constructs that appear in the measurement metrics. The model could avoid those constructs mechanically without any structural gain (e.g. replacing an `if` chain with a wider lookup table that inflates `cc_loc`). Hence the cross-check: if `cognitive_max` drops but `cc_loc` rises proportionally, the result is Goodhart-tinted. The block is deliberately worded so the "cognitive vs McCabe" trade-off is named explicitly — but that does not eliminate the risk.
+- **Goodhart risk (training bias)** — the complexity definitions ("Each `if`, `else if`, ...") name constructs that appear in the measurement metrics. The model could avoid those constructs mechanically without any structural gain (e.g. replacing an `if` chain with a wider lookup table that inflates `production_loc`). Hence the cross-check: if `cognitive_max` drops but `production_loc` rises proportionally, the result is Goodhart-tinted. The block is deliberately worded so the "cognitive vs McCabe" trade-off is named explicitly — but that does not eliminate the risk.
 - **Kata asymmetry** — game-of-life is code-quality-primary, claim-office correctness-primary. The vocabulary block is a code quality intervention; claim-office comes along in this RQ as **sanity**. If a code quality gain appears on claim-office without a loss of correctness: strong; if only GoL benefits: expected (kata fit); if correctness falls on claim-office: stop.
 - **Mass vs cognitive conflict** — APP mass and cognitive complexity can point in different directions (e.g. helper extraction lowers cognitive but adds `invocation` mass). The block adds cognitive as a second lens without demoting APP. The effect on `code_mass` is therefore open — it can rise or fall.
 - **Single model** — `opus-4-7-portkey-no-thinking`. Memory `opus-46-vs-47-not-equivalent` warns against switching models within a workflow chain; cross-model validation on Sonnet or Haiku is reserved for a follow-up RQ should a bundle effect materialize.

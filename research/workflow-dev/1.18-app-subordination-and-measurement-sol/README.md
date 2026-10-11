@@ -18,9 +18,9 @@ controls:
   prompt: example-mapping
 outcomes:
   # primary: decomposition — the axis the subordinated brief should recover
-  - cc_avg_loc_per_function
-  - cc_median_loc_per_function
-  - cc_longest_function
+  - avg_loc_per_function
+  - median_loc_per_function
+  - longest_function
   # decomposition witnesses — these are what B1/B2/B3 measure during the run
   - cognitive_max
   - cognitive_avg
@@ -29,8 +29,8 @@ outcomes:
   # mechanism witness: mass is what the brief subordinates. Expected to rise
   # where decomposition improves. Reported without trophy — see RQ-1.17.
   - code_mass
-  - cc_functions
-  - cc_loc
+  - functions
+  - production_loc
   # correctness — gate, not differentiator
   - verification_pct
   - tests_passing
@@ -62,7 +62,7 @@ This refresh reaggregated metrics and costs without new experiments or pipeline 
 
 `RQ-app-vs-four-rules-sol` (workflow-dev/1.17) established that on Sol the APP
 brief actively harms decomposition: the APP-optimising cell reached the **lowest**
-Code Mass and the **worst** `cc_avg_loc_per_function` in the field — behind even the
+Code Mass and the **worst** `avg_loc_per_function` in the field — behind even the
 structureless inline-tdd-v1 floor. Its refactor brief did carry a guard ("Rule 2 trumps APP:
 Clarity over low mass"), and Sol optimised past it.
 
@@ -167,7 +167,7 @@ Reading rules that follow:
 ## Hypotheses
 
 - **H1 (subordination works).** `-app` beats `exact-sol-v1-pi` on
-  `cc_avg_loc_per_function` and `cc_median_loc_per_function` by more than 1 σ.
+  `avg_loc_per_function` and `median_loc_per_function` by more than 1 σ.
   → Stating APP's rank is enough on Sol; the RQ-1.17 damage came from an
   under-specified brief, not from APP as such. The cheapest available fix for the
   opus line on Sol is a brief rewrite, not removing the metric.

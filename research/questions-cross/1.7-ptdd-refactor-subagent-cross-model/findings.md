@@ -60,16 +60,16 @@ eligible. Correctness (internal) is 100 % in all four.
 | `cognitive_avg` | **1.48 ± 0.24** 🏆 | (1.25 ± 0.14) |
 | `mccabe_max` | **3.33 ± 0.49** 🏆 | (3.00 ± 0.00) |
 | Smell Total | **0.00 ± 0.00** 🏆 | (0.00 ± 0.00) |
-| `cc_avg_loc_per_function` | **5.82 ± 0.78** 🏆 | (4.67 ± 0.38) |
-| `cc_median_loc_per_function` | **4.63 ± 1.16** 🏆 | (3.30 ± 0.42) |
-| `cc_longest_function` | **17.93 ± 4.93** 🏆 | (13.90 ± 2.92) |
+| `avg_loc_per_function` | **5.82 ± 0.78** 🏆 | (4.67 ± 0.38) |
+| `median_loc_per_function` | **4.63 ± 1.16** 🏆 | (3.30 ± 0.42) |
+| `longest_function` | **17.93 ± 4.93** 🏆 | (13.90 ± 2.92) |
 | Mutation Score | **0.94 ± 0.05** 🏆 | (0.91 ± 0.08) |
 | `predictions_correct_rate` | **98.9 %** 🏆 | (98.2 %) |
 | `duration_seconds` | **1234.40 ± 267.31** 🏆 | (5483.70 ± 1589.67) |
 | `cost_usd` | **16.38 ± 3.65** 🏆 | (66.35 ± 21.55) |
 | *Production LoC* | 308.27 ± 36.23 | 558.70 ± 184.85 |
 | *Code Mass (APP)* | 712.67 ± 70.77 | 873.90 ± 189.30 |
-| *`cc_functions`* | 25.87 ± 4.03 | 35.40 ± 9.08 |
+| *`functions`* | 25.87 ± 4.03 | 35.40 ± 9.08 |
 | *`mutants_total` / survived* | 135.20 / 8.40 | 147.00 / 14.50 |
 | *of those uncovered* | 4.27 ± 5.79 | 10.00 ± 11.99 |
 | *`total_tokens`* | 21.77 M | 71.42 M |
@@ -89,16 +89,16 @@ three of its ten runs did not finish. F-1.7.3.
 | `cognitive_avg` | 1.86 ± 0.35 | **1.24 ± 0.29** 🏆 |
 | `mccabe_max` | 4.73 ± 1.44 | **3.60 ± 0.55** 🏆 |
 | Smell Total | 0.00 ± 0.00 | 0.00 ± 0.00 |
-| `cc_avg_loc_per_function` | 6.14 ± 1.09 | **4.21 ± 0.40** 🏆 |
-| `cc_median_loc_per_function` | 5.00 ± 1.66 | **3.00 ± 0.00** 🏆 |
-| `cc_longest_function` | **17.80 ± 2.93** 🏆 | **15.80 ± 3.56** 🏆 |
+| `avg_loc_per_function` | 6.14 ± 1.09 | **4.21 ± 0.40** 🏆 |
+| `median_loc_per_function` | 5.00 ± 1.66 | **3.00 ± 0.00** 🏆 |
+| `longest_function` | **17.80 ± 2.93** 🏆 | **15.80 ± 3.56** 🏆 |
 | Mutation Score | **0.863 ± 0.045** 🏆 *(n=14)* | **0.88 ± 0.02** 🏆 *(n=4)* |
 | `predictions_correct_rate` | **99.6 %** 🏆 | **100 %** 🏆 |
 | `duration_seconds` | **1573.93 ± 495.01** 🏆 | 4927.00 ± 610.52 |
 | `cost_usd` | **4.67 ± 2.62** 🏆 | 18.27 ± 3.05 |
 | *Production LoC* | 169.00 ± 34.15 | 265.20 ± 32.51 |
 | *Code Mass (APP)* | 616.47 ± 87.10 | 685.40 ± 63.25 |
-| *`cc_functions`* | 14.60 ± 4.50 | 32.20 ± 4.66 |
+| *`functions`* | 14.60 ± 4.50 | 32.20 ± 4.66 |
 | *`mutants_total` / survived* | 128.00 / 17.6 *(n=14)* | 143.00 / 16.8 *(n=4)* |
 | *of those uncovered* | 4.9 ± 2.34 *(n=14)* | 4.00 ± 1.41 *(n=4)* |
 | *`total_tokens`* | 6.72 M | 17.52 M |
@@ -125,12 +125,12 @@ No structural measure moves the wrong way on either platform.
 | `cognitive_max` | 3.07 → 2.50 (−19 %) | 4.07 → 2.60 (−36 %) |
 | `cognitive_avg` | 1.48 → 1.25 (−16 %) | 1.86 → 1.24 (−33 %) |
 | `mccabe_max` | 3.33 → 3.00 (−10 %) | 4.73 → 3.60 (−24 %) |
-| `cc_avg_loc_per_function` | 5.82 → 4.67 (−20 %) | 6.14 → 4.21 (−31 %) |
-| `cc_longest_function` | 17.93 → 13.90 (−22 %) | 17.80 → 15.80 (−11 %) |
+| `avg_loc_per_function` | 5.82 → 4.67 (−20 %) | 6.14 → 4.21 (−31 %) |
+| `longest_function` | 17.93 → 13.90 (−22 %) | 17.80 → 15.80 (−11 %) |
 
 The two platforms differ in what the treatment reaches. On SOL it lowers
 `cognitive_max` and `mccabe_max` as well as the per-function size, and every gap except
-`cc_longest_function` exceeds the smaller cell's spread. On Opus it shortens
+`longest_function` exceeds the smaller cell's spread. On Opus it shortens
 functions — average and longest by about a fifth — while the `cognitive_max` and
 `mccabe_max` gaps stay inside either cell's spread.
 
@@ -146,10 +146,10 @@ Every per-function measure improves while the product itself grows.
 
 | | Opus v1 | Opus v1.1 | SOL v1 | SOL v1.1 |
 |---|---:|---:|---:|---:|
-| `cc_functions` | 25.87 | 35.40 (+37 %) | 14.60 | 32.20 (+121 %) |
+| `functions` | 25.87 | 35.40 (+37 %) | 14.60 | 32.20 (+121 %) |
 | Production LoC | 308.27 | 558.70 (+81 %) | 169.00 | 265.20 (+57 %) |
 | Code Mass (APP) | 712.67 | 873.90 (+23 %) | 616.47 | 685.40 (+11 %) |
-| `cc_avg_loc_per_function` | 5.82 | 4.67 | 6.14 | 4.21 |
+| `avg_loc_per_function` | 5.82 | 4.67 | 6.14 | 4.21 |
 
 On Opus the function count rises by 37 % and Production LoC by 81 % — the average
 function shrinks because there are far more of them, and there is substantially
@@ -157,7 +157,7 @@ more code overall. On SOL the function count more than doubles while Production
 LoC rises by 57 % and Code Mass (APP) by 11 %, which is much closer to
 redistribution than to addition.
 
-This is why `cc_functions`, Production LoC and Code Mass (APP) carry no trophy: a
+This is why `functions`, Production LoC and Code Mass (APP) carry no trophy: a
 per-function metric rewards splitting and cannot distinguish it from
 simplification. The isolated Refactor agent sees one behaviour at a time and no
 Red/Green reasoning, which is a plausible mechanism — it optimises the unit in
@@ -201,7 +201,7 @@ The platforms differ in where PTDD v1 already lands.
 |---|---:|---:|
 | `cognitive_max` | 3.07 | 4.07 |
 | `mccabe_max` | 3.33 | 4.73 |
-| `cc_median_loc_per_function` | 4.63 | 5.00 |
+| `median_loc_per_function` | 4.63 | 5.00 |
 
 On Opus, v1 is already close to the floor these measures can reach on this kata,
 so the treatment's gain on the peaks is 0.57 on `cognitive_max` and 0.33 on
@@ -209,7 +209,7 @@ so the treatment's gain on the peaks is 0.57 on `cognitive_max` and 0.33 on
 LoC, 4.1× the money and three runs in ten over budget.
 
 On SOL, v1 stops well short of the floor, and the treatment closes most of the
-gap: `mccabe_max` 4.73 → 3.60, `cc_avg_loc_per_function` 6.14 → 4.21, at 5 of 5
+gap: `mccabe_max` 4.73 → 3.60, `avg_loc_per_function` 6.14 → 4.21, at 5 of 5
 within budget and a perfect correctness score.
 
 **The answer to the RQ is therefore platform-conditional.** The isolated Refactor

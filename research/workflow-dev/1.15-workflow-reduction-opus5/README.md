@@ -16,8 +16,8 @@ controls:
   model: opus-5-no-thinking
 outcomes:
   # primary: decomposition — the binding quality metric per RQ-architecture-axis-opus5 F-1.6
-  - cc_avg_loc_per_function
-  - cc_longest_function
+  - avg_loc_per_function
+  - longest_function
   # code quality
   - cognitive_max
   - cognitive_avg
@@ -46,7 +46,7 @@ min_replicates: 5
 on opus-5 (F-1.1) — more architecture yields better decomposition on both katas. But it
 also quantified the price, and the price is where the decision actually sits:
 
-| claim-office (RQ 4.5) | `cc_avg_loc_per_function` | share of the hybrid-v6 gain | tokens | share of hybrid-v6 cost |
+| claim-office (RQ 4.5) | `avg_loc_per_function` | share of the hybrid-v6 gain | tokens | share of hybrid-v6 cost |
 |---|---:|---:|---:|---:|
 | inline-tdd-v1 (baseline) | 9.18 | 0 % | 4 M | 3 % |
 | single-context-v2 | 5.89 | 55 % | 83 M | 60 % |
@@ -71,7 +71,7 @@ would cost roughly 1.8–2.5 Bn tokens; on sphinx it is ~0.5 Bn, for *more* cell
 
 Sphinx is a viable substitute rather than a downgrade: it is the newer novel kata with a
 CLI contract and an external verification suite, and hybrid-v6 already reaches
-`cc_avg_loc_per_function` 3.54 there against 3.21 on claim-office, at `verification_pct`
+`avg_loc_per_function` 3.54 there against 3.21 on claim-office, at `verification_pct`
 1.00 against 0.95. The architecture differentiates on it in the same direction and to a
 similar degree.
 
@@ -122,7 +122,7 @@ because single-context-v2 is where the failure mode of H4 was observed.
 ## The APP subordination patch
 
 `RQ-architecture-axis-opus5` F-1.6 replicated a finding first made on Sol: Code Mass (APP)
-ranks the cells **opposite** to decomposition. hybrid-v6 has the best `cc_avg_loc_per_function`
+ranks the cells **opposite** to decomposition. hybrid-v6 has the best `avg_loc_per_function`
 on both katas *and* the highest APP mass (claim-office 1002.8 against single-context-v2's 569.0).
 
 The hybrid-v6 refactor agents nonetheless instruct "Lower mass = Better code (generally)" and
@@ -154,7 +154,7 @@ was switched.
 
 ## Hypotheses
 
-- **H0 (the APP patch does something).** hybrid-v7 beats hybrid-v6 on `cc_avg_loc_per_function` at
+- **H0 (the APP patch does something).** hybrid-v7 beats hybrid-v6 on `avg_loc_per_function` at
   comparable cost — the refactor agents, no longer told to minimise mass, stop trading
   extraction for compactness.
   → The patch is worth carrying in every downstream workflow. If hybrid-v7 ≈ hybrid-v6 instead, the
@@ -185,7 +185,7 @@ was switched.
 **sphinx-score-example-mapping** — only the two ends of the chain exist; single-context-v2 and hybrid-v2 are
 filled by this RQ:
 
-| Workflow | n | verification_pct | cc_avg_loc_per_function | cognitive_max | smell_total | tokens | duration |
+| Workflow | n | verification_pct | avg_loc_per_function | cognitive_max | smell_total | tokens | duration |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | inline-tdd-v1 (context, not a cell) | 6 | 0.97 | 8.38 | 1.5 | 0.0 | 3 M | 4 min |
 | single-context-v2 | — | — | — | — | — | — | — |
@@ -194,7 +194,7 @@ filled by this RQ:
 
 **game-of-life-example-mapping** — complete:
 
-| Workflow | n | verification_pct | cc_avg_loc_per_function | cognitive_max | smell_total | tokens | duration |
+| Workflow | n | verification_pct | avg_loc_per_function | cognitive_max | smell_total | tokens | duration |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | inline-tdd-v1 (context, not a cell) | 6 | 1.00 | 6.48 | 7.17 | 0.0 | 2 M | 3 min |
 | single-context-v2 | 5 | 1.00 | 4.12 | 1.8 | 0.0 | 12 M | 7 min |
@@ -223,7 +223,7 @@ Three properties of this baseline shape the design:
 2. **The reference cells carry no APP patch.** They were produced under
    `RQ-architecture-axis-opus5` with the original "Lower mass = Better code" wording.
    hybrid-v7 is the cell that makes this measurable rather than a caveat.
-3. **`cc_avg_loc_per_function` measures decomposition, not its appropriateness.** A function
+3. **`avg_loc_per_function` measures decomposition, not its appropriateness.** A function
    sawn into `step1`…`step10` scores well. On game-of-life, where the whole implementation
    is 30–60 LoC, a cell can win this metric by splintering. Read it together with
    `cognitive_max` and Smell Total, and treat a large jump in function count on the small

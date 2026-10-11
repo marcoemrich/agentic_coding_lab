@@ -117,7 +117,7 @@ not a measured effect)
 ## F-prompt-known-kata.5 — H2 Cannot Be Assessed: Code Quality Comparable Only on Working Runs
 
 **Statement**: Code-quality outcomes (code_mass, smell_total,
-cc_longest_function, mccabe_max, cognitive_max) are meaningful only on runs
+longest_function, mccabe_max, cognitive_max) are meaningful only on runs
 with vpct > 0. On Haiku, 7/15 runs drop out
 (code_mass=0, the agent implemented nothing). For Opus and Sonnet
 (all vpct=1.00):

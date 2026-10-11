@@ -18,8 +18,8 @@ Means per cell. Direction is stated per row.
 | `cognitive_max` — lower = better | 7.0 | 4.4 | 9.0 | 10.6 | **2.4** 🏆 |
 | `cognitive_avg` — lower = better | 2.96 | 2.47 | 4.87 | 5.62 | **2.2** 🏆 |
 | `mccabe_max` — lower = better | 4.6 | 4.6 | 6.8 | 8.0 | **3.4** 🏆 |
-| `cc_longest_function` — lower = better | 19.4 | 20.8 | 18.8 | 21.6 | **5.8** 🏆 |
-| `cc_avg_loc_per_function` — lower = better | 18.0 | 11.53 | 14.14 | 15.3 | **2.62** 🏆 |
+| `longest_function` — lower = better | 19.4 | 20.8 | 18.8 | 21.6 | **5.8** 🏆 |
+| `avg_loc_per_function` — lower = better | 18.0 | 11.53 | 14.14 | 15.3 | **2.62** 🏆 |
 | Smell Total — lower = better | 2.4 | **0.6** 🏆 | 2.4 | 2.8 | 2.0 |
 | `smell_complexity` — lower = better | 0.2 | **0.0** 🏆 | 0.8 | 0.8 | **0.0** 🏆 |
 | Production LoC — lower = better | **22.4** 🏆 | 41.6 | 30.6 | 27.2 | 39.8 |
@@ -52,10 +52,10 @@ transport confound — goes against Astra on every structural metric:
 | `cognitive_max` | 7.0 | **4.4** | lower = better |
 | `cognitive_avg` | 2.96 | **2.47** | lower = better |
 | Smell Total | 2.4 | **0.6** | lower = better |
-| `cc_avg_loc_per_function` | 18.0 | **11.53** | lower = better |
+| `avg_loc_per_function` | 18.0 | **11.53** | lower = better |
 | `refactorings_applied` | 4.0 | **7.0** | higher = better |
 
-`mccabe_max` is the one tie (4.6 both), and `cc_longest_function` is the one
+`mccabe_max` is the one tie (4.6 both), and `longest_function` is the one
 row Astra takes (19.4 vs 20.8) — inside the noise of a metric whose spread is
 much larger than that gap.
 
@@ -78,8 +78,8 @@ route that RQ-route-effect-pi showed to be the structurally *worse* one:
 |---|---:|---:|---:|
 | `cognitive_max` | 7.0 | **2.4** | 2.9× |
 | `mccabe_max` | 4.6 | **3.4** | 1.4× |
-| `cc_longest_function` | 19.4 | **5.8** | 3.3× |
-| `cc_avg_loc_per_function` | 18.0 | **2.62** | 6.9× |
+| `longest_function` | 19.4 | **5.8** | 3.3× |
+| `avg_loc_per_function` | 18.0 | **2.62** | 6.9× |
 
 The last row is the finding. Opus 5 decomposes: mean function length 2.62
 lines, longest 5.8. The whole GPT branch — both routes, both reasoning states —
@@ -101,13 +101,13 @@ Opus 5 the faster of the two as well.
 
 Astra takes Production LoC at 22.4 against 27.2–41.6, and shows the lowest Code
 Mass (APP) at 99.4 against 126.4–153.2. It simultaneously holds the *worst*
-`cc_avg_loc_per_function` in the field at 18.0.
+`avg_loc_per_function` in the field at 18.0.
 
 These are the same artefact seen twice. Astra concentrates the solution into
 few long functions: fewest lines overall, most lines per function. APP has no
 notion of nesting and counts a single long function as cheap, so Code Mass reads
 Astra as the most parsimonious cell in the matrix while `cognitive_avg`,
-`cc_longest_function` and `cc_avg_loc_per_function` all say it is the least
+`longest_function` and `avg_loc_per_function` all say it is the least
 structured of the low-LoC cells.
 
 Code Mass (APP) therefore carries **no trophy** in the overview table. This is
@@ -116,7 +116,7 @@ caveat: the metric would have crowned the cell that F-1.5.1 and F-1.5.2 both
 rank last on structure.
 
 Production LoC keeps its trophy — less code passing the same external suite is
-a real result — but it must be read next to `cc_avg_loc_per_function`, never
+a real result — but it must be read next to `avg_loc_per_function`, never
 alone.
 
 ## F-1.5.4 — The noise floor of `cognitive_max` is route-dependent, and on Requesty it exceeds most between-cell differences

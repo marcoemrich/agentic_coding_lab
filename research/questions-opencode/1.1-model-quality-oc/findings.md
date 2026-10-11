@@ -17,9 +17,9 @@ Code quality as primary outcome (lower = better except where noted); correctness
 | `cognitive_avg` (mean) | lower | **8.03** 🏆 | **7.8** 🏆 | 14.07 | 8.4 | 8.78 | 10.6 |
 | `mccabe_max` (mean) | lower | 7.6 | **7.0** 🏆 | 10.4 | 7.6 | 9.4 | 8.6 |
 | `mccabe_avg` (mean) | lower | **2.91** 🏆 | 3.39 | 6.0 | 4.85 | 3.99 | 3.28 |
-| `cc_longest_function` (mean) | lower | **18.6** 🏆 | 19.8 | **18.6** 🏆 | 15.2 | 27.6 | 15.0 |
-| `cc_avg_loc_per_function` (mean) | lower | **7.59** 🏆 | 10.05 | 15.63 | 9.9 | 13.10 | 9.53 |
-| `cc_median_loc_per_function` (mean) | lower | **3.3** 🏆 | 8.5 | 14.9 | 8.3 | 9.8 | 7.0 |
+| `longest_function` (mean) | lower | **18.6** 🏆 | 19.8 | **18.6** 🏆 | 15.2 | 27.6 | 15.0 |
+| `avg_loc_per_function` (mean) | lower | **7.59** 🏆 | 10.05 | 15.63 | 9.9 | 13.10 | 9.53 |
+| `median_loc_per_function` (mean) | lower | **3.3** 🏆 | 8.5 | 14.9 | 8.3 | 9.8 | 7.0 |
 | `lines_of_code` (mean) | lower (at equal correctness) | **38.2** 🏆 | 46.4 | 52.2 | 22.4 | 44.8 | 24.6 |
 | `tests_total` (mean) | higher | **9.4** 🏆 | **9.8** 🏆 | 8.4 | 7.0 | **9.2** 🏆 | 8.6 |
 | `cycle_count` (mean) | — | 3.0 | 2.2 | 7.0 | 5.0 | 5.4 | 7.6 |
@@ -32,7 +32,7 @@ Code quality as primary outcome (lower = better except where noted); correctness
 
 **Trophy rule on correctness gating**: Trophies for quality/efficiency metrics go only to models with `verification_pct = 1.0`. Kimi-K2 drops out of the pool at 0.57 mean (3 of 5 runs below 0.5) — its low `cognitive_max` (9.4), low `lines_of_code` (22.4) and short functions are partly stub artifacts (too few tests). DeepSeek-V4-Pro narrowly drops out of the pool at 0.85 — 4/5 runs are perfect, but 1 run timed out at 0.27 verification, so its low `code_mass` (124) and `lines_of_code` (24.6) do not count as clean winners. `cycle_count` and `refactorings_applied` are ambivalent (more cycles ≠ better, depending on skill compliance) — no trophy. `predictions_total` is exceptionally noted with a direction here: it measures compliance with the single-context-v2 skill format.
 
-`cognitive_max`, `cognitive_avg` and `cc_longest_function`: Opus and GLM are separated by less than 1 σ — spread rule → both 🏆. At `cc_longest_function` Flash is exactly level with Opus (18.6) → third 🏆.
+`cognitive_max`, `cognitive_avg` and `longest_function`: Opus and GLM are separated by less than 1 σ — spread rule → both 🏆. At `longest_function` Flash is exactly level with Opus (18.6) → third 🏆.
 
 **Cost calculation**: per run from `transcript-metrics.json.total_tokens` × pricing per 1M tokens. Sources 2026-05-28: Anthropic pricing page (Opus), OpenRouter API (GLM/Kimi/DeepSeek), Vertex Standard (Gemini Flash). `reasoning` tokens are billed at the output rate. DeepSeek cache read is not explicitly stated on OpenRouter; conservative estimate 25 % of the input price.
 
@@ -64,9 +64,9 @@ Portkey gateway markup not included.
 
 ## F-1.1 — Opus 4.7 writes the most compact implementation
 
-Opus delivers the shortest solution across all code-volume and function-size metrics (LoC, code_mass, cc_avg/median_loc_per_function) **at full external correctness** and at the same time has the lowest token consumption (1.82 M vs 2.28–2.96 M for the other models with `verification_pct = 1.0`).
+Opus delivers the shortest solution across all code-volume and function-size metrics (LoC, code_mass, avg/median_loc_per_function) **at full external correctness** and at the same time has the lowest token consumption (1.82 M vs 2.28–2.96 M for the other models with `verification_pct = 1.0`).
 
-| Model | lines_of_code | cc_avg_loc | cc_median_loc | total_tokens |
+| Model | lines_of_code | avg_loc_per_function | median_loc_per_function | total_tokens |
 |---|---|---|---|---|
 | **opus-4-7-portkey** | **38.2** 🏆 | **7.59** 🏆 | **3.3** 🏆 | **1.82 M** 🏆 |
 | glm-5-1 | 46.4 | 10.05 | 8.5 | 2.96 M |
@@ -77,7 +77,7 @@ Opus delivers the shortest solution across all code-volume and function-size met
 
 \* not trophy-eligible (verification_pct < 1.0).
 
-The median LoC/function of 3.3 (vs 7.0–14.9 for the others) means: Opus consistently extracts small helpers. At `cc_avg_loc_per_function` Opus, at 7.59, is about half the size of Gemini Flash (15.63) and 40 % more compact than DeepSeek-V4-Flash (13.10).
+The median LoC/function of 3.3 (vs 7.0–14.9 for the others) means: Opus consistently extracts small helpers. At `avg_loc_per_function` Opus, at 7.59, is about half the size of Gemini Flash (15.63) and 40 % more compact than DeepSeek-V4-Flash (13.10).
 
 ---
 
@@ -115,7 +115,7 @@ Pattern: Kimi minimizes the test list and then implements only what its own redu
 
 ## F-1.4 — Gemini 3.5 Flash: fast, but the most complex code
 
-At 153 s/run Flash is by far the fastest (Opus 231 s, deepseek-flash 612 s, GLM 835 s, Kimi 1083 s, deepseek-pro 2381 s) and reaches full correctness, but writes the most complex code: highest `cognitive_max` (16), `cognitive_avg` (14.07), `mccabe_max` (10.4), `mccabe_avg` (6.0) and the longest functions on average (cc_avg 15.63 vs Opus 7.59). Trade-off: speed against maintainability.
+At 153 s/run Flash is by far the fastest (Opus 231 s, deepseek-flash 612 s, GLM 835 s, Kimi 1083 s, deepseek-pro 2381 s) and reaches full correctness, but writes the most complex code: highest `cognitive_max` (16), `cognitive_avg` (14.07), `mccabe_max` (10.4), `mccabe_avg` (6.0) and the longest functions on average (avg_loc_per_function 15.63 vs Opus 7.59). Trade-off: speed against maintainability.
 
 ---
 

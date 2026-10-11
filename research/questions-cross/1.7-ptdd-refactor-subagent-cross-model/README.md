@@ -14,16 +14,16 @@ outcomes:
   - verification_pct
   - tests_passing
   - completed_within_budget
-  - cc_avg_loc_per_function
-  - cc_median_loc_per_function
-  - cc_longest_function
-  - cc_functions
+  - avg_loc_per_function
+  - median_loc_per_function
+  - longest_function
+  - functions
   - cognitive_max
   - cognitive_avg
   - mccabe_max
   - smell_total
   - code_mass
-  - cc_loc
+  - production_loc
   # refactorings_applied was dropped in 2026-10: it came from the retired marker
   # route and now exists for only part of each Opus cell (10 of 15, 5 of 10) while
   # both SOL cells still carry it in full. A mean over two thirds of one column

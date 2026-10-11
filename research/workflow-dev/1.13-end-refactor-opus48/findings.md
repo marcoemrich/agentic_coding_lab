@@ -36,14 +36,14 @@ Trophy 🏆 = best value in the column (spread ≥ 1 σ); ties all get one. Corr
 
 ### Code quality (lower = better)
 
-| Workflow | `cognitive_max` | `mccabe_max` | `cc_longest_function` | `cc_avg_loc_per_function` | `code_mass` | `smell_total` |
+| Workflow | `cognitive_max` | `mccabe_max` | `longest_function` | `avg_loc_per_function` | `code_mass` | `smell_total` |
 |---|---:|---:|---:|---:|---:|---:|
 | exact-hybrid-v4-cleaned-cc | 3.6 | 4.0 | 24.6 | 4.24 | 895 | 1.0 |
 | exact-hybrid-v4.4-metric-refactor-cc | 3.6 | 4.0 | **15.6** 🏆 | 4.44 | **843** 🏆 | **0.0** 🏆 |
 | exact-hybrid-v5-end-refactor-cc | **2.8** 🏆 | **3.2** 🏆 | 16.0 | **3.81** 🏆 | 872.6 | **0.0** 🏆 |
 
 - `mccabe_avg` (1.47 / 1.48 / 1.47) and `smell_complexity` (0/0/0) are practically identical across all three workflows — no trophy, omitted from the table.
-- `cc_longest_function`: hybrid-v4.4 (15.6) and hybrid-v5 (16.0) are within 1 σ of each other; both markedly below hybrid-v4 (24.6, σ 7.64).
+- `longest_function`: hybrid-v4.4 (15.6) and hybrid-v5 (16.0) are within 1 σ of each other; both markedly below hybrid-v4 (24.6, σ 7.64).
 
 ### Cost (lower = better)
 
@@ -64,7 +64,7 @@ All 15 runs green (`tests_passing` 5/5, `verification_pct` 1.0, `completed_withi
 
 ### Code quality (lower = better)
 
-| Workflow | `cognitive_max` | `cognitive_avg` | `mccabe_max` | `cc_longest_function` | `cc_avg_loc_per_function` | `code_mass` | `smell_total` |
+| Workflow | `cognitive_max` | `cognitive_avg` | `mccabe_max` | `longest_function` | `avg_loc_per_function` | `code_mass` | `smell_total` |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | exact-hybrid-v4-cleaned-cc | 5.6 | 3.87 | 5.0 | 11.8 | 4.89 | 171.8 | 2.0 |
 | exact-hybrid-v4.4-metric-refactor-cc | 3.2 | 2.7 | **3.6** 🏆 | **8.6** 🏆 | 4.75 | **164.2** 🏆 | **0.0** 🏆 |
@@ -73,7 +73,7 @@ All 15 runs green (`tests_passing` 5/5, `verification_pct` 1.0, `completed_withi
 - `cognitive_max` 5.6 → 3.2 → 2.4 falls monotonically; the v6.5 lead over hybrid-v4 is ≈ 2.3 σ (robust).
 - `mccabe_max` 3.6 vs 3.4 (hybrid-v4.4/hybrid-v5) are within 1 σ of each other; both below hybrid-v4 (5.0, σ 1.41).
 - `code_mass` 171.8 / 164.2 / 168.4: all within 1 σ (σ 10–19) — on the small library there is **no** Code Mass (APP) difference between the workflows.
-- `cc_avg_loc_per_function` 4.89 / 4.75 / 4.76: practically identical.
+- `avg_loc_per_function` 4.89 / 4.75 / 4.76: practically identical.
 
 ### Cost (lower = better)
 
@@ -133,8 +133,8 @@ Both refactor variants push the `cognitive_max` below the hybrid-v4 baseline, on
 |---|---:|---:|---:|---|
 | `cognitive_max` | 3.6 | 3.6 | **2.8** | hybrid-v4.4 = hybrid-v4 (no per-cycle gain!); hybrid-v5 ahead |
 | `mccabe_max` | 4.0 | 4.0 | **3.2** | hybrid-v5 ahead (σ 0–0.71) |
-| `cc_longest_function` | 24.6 | **15.6** | 16.0 | hybrid-v4.4 ≈ hybrid-v5, both ≪ hybrid-v4 |
-| `cc_avg_loc_per_function` | 4.24 | 4.44 | **3.81** | hybrid-v5 ahead |
+| `longest_function` | 24.6 | **15.6** | 16.0 | hybrid-v4.4 ≈ hybrid-v5, both ≪ hybrid-v4 |
+| `avg_loc_per_function` | 4.24 | 4.44 | **3.81** | hybrid-v5 ahead |
 | `code_mass` | 895 | **843** | 872.6 | within σ (53–102) — weak |
 | `smell_total` | 1.0 | **0.0** | **0.0** | hybrid-v4.4 = hybrid-v5 |
 
@@ -145,7 +145,7 @@ Both refactor variants push the `cognitive_max` below the hybrid-v4 baseline, on
 | `cognitive_max` | 5.6 | 3.2 | **2.4** | falls monotonically; hybrid-v5 ≈ 2.3 σ below hybrid-v4 (robust) |
 | `cognitive_avg` | 3.87 | 2.7 | **2.1** | falls monotonically |
 | `mccabe_max` | 5.0 | **3.6** | 3.4 | hybrid-v4.4 ≈ hybrid-v5, both ≪ hybrid-v4 |
-| `cc_longest_function` | 11.8 | **8.6** | 9.4 | hybrid-v4.4 ≈ hybrid-v5 |
+| `longest_function` | 11.8 | **8.6** | 9.4 | hybrid-v4.4 ≈ hybrid-v5 |
 | `code_mass` | 171.8 | **164.2** | 168.4 | within σ (10–19) — no difference |
 | `smell_total` | 2.0 | **0.0** | **0.0** | hybrid-v4.4 = hybrid-v5 |
 

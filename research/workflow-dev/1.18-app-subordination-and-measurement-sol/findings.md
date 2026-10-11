@@ -11,15 +11,15 @@ B1/B2/B3 = the measured-model/measured-eslint/measured-tool descendants.
 | Correctness (external) | 100% | 100% | 100% | 100% | 100% |
 | Correctness (internal) | 100% | 100% | 100% | 100% | 100% |
 | Completed within budget | 100% | 100% | 100% | 100% | 100% |
-| `cc_avg_loc_per_function` | 7.42 | 6.72 | 7.12 | 7.88 | 7.11 |
-| `cc_median_loc_per_function` | 4.50 | 5.80 | 5.30 | 6.40 | 6.00 |
-| `cc_longest_function` | 20.8 | 15.8 | 18.0 | 18.2 | 16.2 |
+| `avg_loc_per_function` | 7.42 | 6.72 | 7.12 | 7.88 | 7.11 |
+| `median_loc_per_function` | 4.50 | 5.80 | 5.30 | 6.40 | 6.00 |
+| `longest_function` | 20.8 | 15.8 | 18.0 | 18.2 | 16.2 |
 | `cognitive_max` | 4.8 | 5.4 | 3.4 | 3.8 | 4.6 |
 | `cognitive_avg` | 2.10 | 2.11 | 2.02 | 2.25 | 2.16 |
 | `mccabe_max` | 5.6 | 5.6 | 4.2 | 4.8 | 4.4 |
 | Smell Total | 0 | 0 | 0 | 0 | 0 |
 | Production LoC | 117.6 | 148.8 | 141.2 | 141.2 | 130.4 |
-| `cc_functions` | 8.4 | 11.0 | 10.2 | 9.2 | 8.6 |
+| `functions` | 8.4 | 11.0 | 10.2 | 9.2 | 8.6 |
 | Code Mass (APP) | 562.6 | 590.6 | 534.8 | 581.2 | 534.4 |
 | `cycle_count` | 33.4 | 30.6 | 31.6 | 32.4 | 34.8 |
 | `refactorings_applied`, markers | 33.2 | 30.6 | 31.6 | 32.6 | 34.8 |
@@ -46,9 +46,9 @@ list-price costs; it does not rerun experiments or their analysis pipelines.
 
 | Metric | Basis, mean ± SD | A, mean ± SD | A minus Basis |
 |---|---:|---:|---:|
-| `cc_avg_loc_per_function` | 7.42 ± 1.04 | 6.72 ± 0.34 | −0.70 |
-| `cc_median_loc_per_function` | 4.50 ± 0.87 | 5.80 ± 0.84 | +1.30 |
-| `cc_longest_function` | 20.8 ± 2.39 | 15.8 ± 2.39 | −5.0 |
+| `avg_loc_per_function` | 7.42 ± 1.04 | 6.72 ± 0.34 | −0.70 |
+| `median_loc_per_function` | 4.50 ± 0.87 | 5.80 ± 0.84 | +1.30 |
+| `longest_function` | 20.8 ± 2.39 | 15.8 ± 2.39 | −5.0 |
 | `cognitive_max` | 4.8 ± 2.39 | 5.4 ± 2.88 | +0.6 |
 | Code Mass (APP) | 562.6 ± 48.81 | 590.6 ± 66.06 | +28.0 |
 
@@ -66,7 +66,7 @@ and median function length is not demonstrated.
 |---|---:|---:|---:|---:|
 | `cognitive_max` | 5.4 | 3.4 | 3.8 | 4.6 |
 | `mccabe_max` | 5.6 | 4.2 | 4.8 | 4.4 |
-| `cc_avg_loc_per_function` | 6.72 | 7.12 | 7.88 | 7.11 |
+| `avg_loc_per_function` | 6.72 | 7.12 | 7.88 | 7.11 |
 | Code Mass (APP) | 590.6 | 534.8 | 581.2 | 534.4 |
 
 All B arms have lower mean cognitive/`mccabe_max`s but higher average function

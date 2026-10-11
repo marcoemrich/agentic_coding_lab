@@ -15,7 +15,7 @@ Baseline (`exact-hybrid-v3-with-why-cc`, n=8) vs. cleaned (`exact-hybrid-v4-clea
 | `cycle_count` mean (σ, min) | — | 35.00 (σ 14.22, min 0) | 37.38 (σ 1.60, min 35) |
 | `code_mass` mean | ↓ | **769.12** 🏆 (σ 197) | 878.50 (σ 91) |
 | `smell_total` mean | ↓ | **0.38** 🏆 | **0.38** 🏆 |
-| `cc_longest_function` mean | ↓ | 13.25 (σ 1.58) | **12.38** 🏆 (σ 1.41) |
+| `longest_function` mean | ↓ | 13.25 (σ 1.58) | **12.38** 🏆 (σ 1.41) |
 | `cognitive_max` mean | ↓ | **4.38** 🏆 (σ 1.06) | 5.00 (σ 1.77) |
 | `mccabe_max` mean | ↓ | **4.25** 🏆 (σ 0.46) | 4.50 (σ 0.76) |
 | `duration_seconds` mean | ↓ | **2234** 🏆 | 2530 (+13 %) |
@@ -66,7 +66,7 @@ Prediction correctness rises minimally (+1 pp) and stays within the noise. The t
 
 ## F-1.3 — Code quality neutral to slightly worse; smells unchanged
 
-**Statement.** The code quality metrics show a mixed picture: `smell_total` is identical (both 0.38), `cc_longest_function` slightly better in hybrid-v4 (12.38 vs 13.25), but `code_mass` (+14 %), `cognitive_max` (+14 %) and `mccabe_max` (+6 %) are slightly raised in hybrid-v4. None of the increases exceeds 1σ of the respective spread.
+**Statement.** The code quality metrics show a mixed picture: `smell_total` is identical (both 0.38), `longest_function` slightly better in hybrid-v4 (12.38 vs 13.25), but `code_mass` (+14 %), `cognitive_max` (+14 %) and `mccabe_max` (+6 %) are slightly raised in hybrid-v4. None of the increases exceeds 1σ of the respective spread.
 
 **Data (n=8 per cell).**
 
@@ -74,7 +74,7 @@ Prediction correctness rises minimally (+1 pp) and stays within the noise. The t
 |---|---:|---:|
 | `code_mass` mean | **769.12** 🏆 (σ 197) | 878.50 (σ 91) |
 | `smell_total` mean | **0.38** 🏆 | **0.38** 🏆 |
-| `cc_longest_function` mean | 13.25 (σ 1.58) | **12.38** 🏆 (σ 1.41) |
+| `longest_function` mean | 13.25 (σ 1.58) | **12.38** 🏆 (σ 1.41) |
 | `cognitive_max` mean | **4.38** 🏆 (σ 1.06) | 5.00 (σ 1.77) |
 | `mccabe_max` mean | **4.25** 🏆 (σ 0.46) | 4.50 (σ 0.76) |
 

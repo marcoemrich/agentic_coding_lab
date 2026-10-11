@@ -20,9 +20,9 @@ outcomes:
   - cognitive_avg
   - mccabe_max
   - mccabe_avg
-  - cc_longest_function
-  - cc_avg_loc_per_function
-  - cc_median_loc_per_function
+  - longest_function
+  - avg_loc_per_function
+  - median_loc_per_function
   - lines_of_code
   - smell_total
   - smell_complexity

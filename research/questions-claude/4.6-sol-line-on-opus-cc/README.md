@@ -13,9 +13,9 @@ controls:
   kata_base: claim-office
 outcomes:
   # primary: decomposition — the axis on which the two lines separate on Sol
-  - cc_avg_loc_per_function
-  - cc_median_loc_per_function
-  - cc_longest_function
+  - avg_loc_per_function
+  - median_loc_per_function
+  - longest_function
   # mechanism witness: APP mass is what the hybrid-v4 refactor brief optimises.
   # On Sol it runs *against* decomposition (F-1.17.1). Reported without trophy.
   - code_mass
@@ -65,7 +65,7 @@ opposite predictions for this lab's main platform:
    its own workflow family.
 
 Reading 2 already has one data point in its favour, from outside this RQ: `hybrid-v4.2` ×
-`opus-5-requesty` reaches `cc_avg_loc_per_function` 2.62 on game-of-life — the best value
+`opus-5-requesty` reaches `avg_loc_per_function` 2.62 on game-of-life — the best value
 in that comparison, with the same APP brief that collapses structure on Sol. That is a
 different kata and harness, so it is suggestive, not decisive.
 
@@ -80,7 +80,7 @@ default recommendation. Routing runs through the container's native-bypass path;
 **claim-office** is the only kata in this lab where the decomposition metrics measure
 decomposition rather than function length. F-1.16.7 establishes the contrast: on
 `sphinx-score` every cell collapses to a single production function, which makes
-`cc_avg_loc_per_function` numerically identical to `cc_longest_function`. On claim-office
+`avg_loc_per_function` numerically identical to `longest_function`. On claim-office
 the two diverge (6.60 against 4.70 for `exact-sol-v1-pi`), i.e. there is a real length
 distribution and real structure to judge. It is also where both source findings were
 measured, so this RQ sits next to a known, non-tied contrast rather than opening a new one.
@@ -170,9 +170,9 @@ function boundary and APP has no notion of nesting at all. A single long functio
 from callback chains scores *better* on all three than the same logic split into named
 domain functions.
 
-**`cc_avg_loc_per_function` is therefore the binding decomposition metric**, with
-`cc_median_loc_per_function` as the robustness check against outliers and
-`cc_longest_function` secondary.
+**`avg_loc_per_function` is therefore the binding decomposition metric**, with
+`median_loc_per_function` as the robustness check against outliers and
+`longest_function` secondary.
 
 `code_mass` is reported **without a trophy** and, as in RQ-1.17, primarily as the
 mechanism witness: it is what the hybrid-v4 refactor brief optimises. A hybrid-v4 cell that wins on
@@ -186,7 +186,7 @@ itself evidence against the mechanism.
 ## Hypotheses
 
 - **H1 (line property — the Sol line wins on Opus too).** `exact-sol-v1-cc` beats
-  `exact-hybrid-v4-cleaned-cc` on `cc_avg_loc_per_function` and `cc_median_loc_per_function`
+  `exact-hybrid-v4-cleaned-cc` on `avg_loc_per_function` and `median_loc_per_function`
   by more than 1 σ on both models, at equal correctness.
   → F-1.17.1 is a brief-design finding, not a model finding. The APP mass table is a
   liability wherever it is read, and the lab's default refactor brief needs revising.

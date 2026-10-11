@@ -15,7 +15,7 @@ Baseline (`exact-hybrid-v2-testlist-fix-cc`, n=8) vs. with-why (`exact-hybrid-v3
 | `tests_passed_immediately` (mean) | ↑ | 12.0 (σ 9.1) | **15.4** 🏆 (σ 7.3) |
 | `code_mass` (mean) | ↓ | 840.75 | **769.12** 🏆 |
 | `smell_total` (mean) | ↓ | 2.88 (σ 4.7) | **0.38** 🏆 (σ 0.52) |
-| `cc_longest_function` (mean) | ↓ | 23.38 (σ 15.5, max 60) | **13.25** 🏆 (σ 1.58, max 15) |
+| `longest_function` (mean) | ↓ | 23.38 (σ 15.5, max 60) | **13.25** 🏆 (σ 1.58, max 15) |
 | `cognitive_max` (mean) | ↓ | 7.62 (σ 6.0, max 21) | **4.38** 🏆 (σ 1.06, max 6) |
 | `mccabe_max` (mean) | ↓ | 6.75 (σ 3.7, max 14) | **4.25** 🏆 (σ 0.46, max 5) |
 | `duration_seconds` (mean) | ↓ | **1464** 🏆 | 2234 (+53 %) |
@@ -36,10 +36,10 @@ Reading in two sentences: with-why is not better on correctness (marginally wors
 | Refactorings/run (mean) | 9.88 | **18.50** 🏆 | **+87 %** |
 | Smells/run (mean) | 2.88 | **0.38** 🏆 | **−87 %** |
 | `cognitive_max` (mean / σ / max) | 7.62 / 6.02 / 21 | **4.38 🏆 / 1.06 / 6** | −43 % mean, σ −82 % |
-| `cc_longest_function` (mean / σ / max) | 23.38 / 15.5 / 60 | **13.25 🏆 / 1.58 / 15** | −43 % mean, σ −90 % |
+| `longest_function` (mean / σ / max) | 23.38 / 15.5 / 60 | **13.25 🏆 / 1.58 / 15** | −43 % mean, σ −90 % |
 | `mccabe_max` (mean / σ / max) | 6.75 / 3.65 / 14 | **4.25 🏆 / 0.46 / 5** | −37 % mean, σ −87 % |
 
-**Rationale.** The effect size on code quality (37–43 % mean reduction on the three complexity metrics) exceeds the baseline spread by several σ. Particularly striking: with-why **spreads 82–90 % less on all complexity axes**. The baseline produces two heavy outlier runs (mccabe_max=14, cognitive_max=21, cc_longest=60), with-why does not. Mechanistically plausible: with-why refactors almost twice as often (+87 %), which pushes the distribution of function lengths downward and caps complexity peaks before they build up.
+**Rationale.** The effect size on code quality (37–43 % mean reduction on the three complexity metrics) exceeds the baseline spread by several σ. Particularly striking: with-why **spreads 82–90 % less on all complexity axes**. The baseline produces two heavy outlier runs (mccabe_max=14, cognitive_max=21, longest_function=60), with-why does not. Mechanistically plausible: with-why refactors almost twice as often (+87 %), which pushes the distribution of function lengths downward and caps complexity peaks before they build up.
 
 Hypothesis H2 from the README (`exact-hybrid-v3-with-why-cc improves at least one TDD discipline metric by ≥ +1σ with invariant verification_pct`) is **confirmed** — and even more strongly than expected, because the effect is not limited to discipline but pulls the code quality metrics along in full.
 

@@ -21,7 +21,7 @@ outcomes:
   # code quality (secondary)
   - code_mass
   - smell_total
-  - cc_longest_function
+  - longest_function
   - cognitive_max
   - mccabe_max
   # cost

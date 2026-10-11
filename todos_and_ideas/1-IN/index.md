@@ -7,7 +7,7 @@
 * Metric gap readability (from RQ-architecture-axis-sol-pi, F-1.11):
   none of the current metrics separates readable from unreadable code.
   3 of 10 cells have Smell Total 0.0 on code manually rated as bad.
-  - Decomposition: covered by cc_avg_loc_per_function, ok
+  - Decomposition: covered by avg_loc_per_function, ok
   - Declarative instead of imperative: measurable, but unmeasured — ratio of for/while
     to map/filter/reduce/some/flatMap. A simple AST counter in analyze-run.sh
     is enough; eslint-plugin-unicorn would be overkill (no-for-loop does not hit for...of at all,

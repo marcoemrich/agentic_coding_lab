@@ -15,7 +15,7 @@ Both cells use `claim-office-example-mapping` with `gpt-5-6-sol-codex` through p
 | Test LoC | 218.3 ± 47.8 | 220.6 ± 71.3 |
 | Mean LoC/function ↓ | 5.72 ± 0.52 | 6.42 ± 1.24 |
 | Median LoC/function ↓ | 4.35 ± 0.58 | 5.30 ± 1.96 |
-| `cc_longest_function` ↓ | 16.8 ± 1.69 | 18.4 ± 2.37 |
+| `longest_function` ↓ | 16.8 ± 1.69 | 18.4 ± 2.37 |
 | `cognitive_max` ↓ | 3.70 ± 0.95 | 3.90 ± 1.10 |
 | `mccabe_max` ↓ | 4.30 ± 1.16 | 5.00 ± 1.56 |
 | Smell Total ↓ | 0 | 0 |
@@ -64,7 +64,7 @@ The v1.6 product has slightly longer functions and slightly higher peak metrics,
 |---|---:|---:|
 | Mean LoC/function | 5.72 ± 0.52 | 6.42 ± 1.24 |
 | Median LoC/function | 4.35 ± 0.58 | 5.30 ± 1.96 |
-| `cc_longest_function` | 16.8 ± 1.69 | 18.4 ± 2.37 |
+| `longest_function` | 16.8 ± 1.69 | 18.4 ± 2.37 |
 | `cognitive_max` | 3.70 ± 0.95 | 3.90 ± 1.10 |
 | `mccabe_max` | 4.30 ± 1.16 | 5.00 ± 1.56 |
 | Smell Total | 0 | 0 |

@@ -12,7 +12,7 @@ outcomes:
   # primary: code quality (on GoL correctness is saturated)
   - code_mass
   - smell_total
-  - cc_longest_function
+  - longest_function
   - cognitive_max
   - mccabe_max
   # correctness (to confirm that GoL does not break)

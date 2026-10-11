@@ -59,8 +59,8 @@ regenerated at all until the selector or the workflow's status is decided.
 | cognitive_avg (mean)    | 2.9 (σ 1.7)                  | 2.9 (σ 0.8)               | 0        |
 | mccabe_max (mean)       | 4.2 (σ 1.3)                  | 3.8 (σ 0.5)               | -0.4     |
 | mccabe_avg (mean)       | 2.01 (σ 0.58)                | 1.67 (σ 0.42)             | -0.34    |
-| cc_longest_function     | 12.2 (σ 6.9)                 | 10.0 (σ 5.6)              | -2.2     |
-| cc_avg_loc_per_function | 5.2 (σ 2.0)                  | 4.4 (σ 2.2)               | -0.8     |
+| longest_function     | 12.2 (σ 6.9)                 | 10.0 (σ 5.6)              | -2.2     |
+| avg_loc_per_function | 5.2 (σ 2.0)                  | 4.4 (σ 2.2)               | -0.8     |
 | code_mass (mean)        | **153** (σ 14)               | 172 (σ 26)                | +12 %    |
 | smell_total (mean)      | 2.4 (σ 0.5)                  | 2.2 (σ 0.5)               | -0.2     |
 | refactorings_applied    | 7.9 (σ 1.9)                  | 9.2 (σ 0.8)               | +1.3     |

@@ -23,8 +23,8 @@ outcomes:
   # primary: code quality
   - code_mass
   - smell_total
-  - cc_longest_function
-  - cc_loc
+  - longest_function
+  - production_loc
   - mccabe_max
   - cognitive_max
   # test strength: operationalizes the core hypothesis of whether TDD workflows
@@ -71,7 +71,7 @@ end-refactor-only-v1-agent and end-refactor-only-v1-native are not TDD workflows
 - **baseline-end-refactor-only-v1-agent-cc** — Phase 1: implementation without tests. Phase 2: test suite against `prompt.md` (with the "Cover every spec example" obligation, same as the test-list-scope-fix). Phase 3: a single refactor via subagent (`refactor.md` identical in content to hybrid-v2/green-refactor-v2 — Four Rules of Simple Design + APP + naming + mandatory attempt).
 - **baseline-end-refactor-only-v1-native-cc** — identical to end-refactor-only-v1-agent in phases 1+2 **and in the content of phase 3** (Four Rules + APP + naming + mandatory attempt), but phase 3 is executed via the slash command `/refactor` (`.claude/commands/refactor.md`) **inline in the main session context** instead of being spawned as a fresh subagent. Structurally symmetric to end-refactor-only-v1-agent (`.claude/agents/refactor.md`): both workflows externalize the refactor spec into a separate file, the only difference being the delivery mechanism (agent spawn vs command invocation). end-refactor-only-v1-agent vs end-refactor-only-v1-native thereby isolates the **subagent mechanism** (fresh specialist context vs slash command in the same context) at otherwise identical refactor content and identical timing.
 
-The TDD discipline metrics (`tdd_cycles`, `refactorings`, `prediction_accuracy`, `tests_immediately_passing`) are **null by design** in the v8 arms — they lie outside the comparison. The outcome comparison against the TDD arms runs exclusively via code quality (`cognitive_max`, `mccabe_max`, `smell_total`, `cc_longest_function`, `code_mass`), test strength (`mutation_score`), correctness and cost.
+The TDD discipline metrics (`tdd_cycles`, `refactorings`, `prediction_accuracy`, `tests_immediately_passing`) are **null by design** in the v8 arms — they lie outside the comparison. The outcome comparison against the TDD arms runs exclusively via code quality (`cognitive_max`, `mccabe_max`, `smell_total`, `longest_function`, `code_mass`), test strength (`mutation_score`), correctness and cost.
 
 ## Model and Kata Choice
 
@@ -104,7 +104,7 @@ Runs:       80 total
 ## Hypotheses
 
 - **H1 (TDD effect present)**: inline-tdd-v1/subagents-v2/single-context-v2 show lower `cognitive_max`, `mccabe_max`, `smell_total` than oneshot-v1/iterative-v1 — TDD disciplines function size and complexity, because each test makes an incremental design specification.
-- **H2 (strictness improves further)**: subagents-v2/single-context-v2 (phase-structured) deliver stricter code quality than inline-tdd-v1 (minimal TDD). In particular subagents-v2 (phase-isolated subagents) produces the shortest functions (`cc_longest_function`), because each green phase runs isolated in a fresh context and has no incentive to over-implement.
+- **H2 (strictness improves further)**: subagents-v2/single-context-v2 (phase-structured) deliver stricter code quality than inline-tdd-v1 (minimal TDD). In particular subagents-v2 (phase-isolated subagents) produces the shortest functions (`longest_function`), because each green phase runs isolated in a fresh context and has no incentive to over-implement.
 - **H3 (subagents-v2 vs single-context-v2 differ)**: subagents-v2 vs single-context-v2 show different discipline patterns — subagents-v2 has higher `prediction_accuracy` (the fresh context forces an explicit state description), single-context-v2 has higher `refactorings` (the shared context allows opportunistic cleanup).
 - **H4 (external correctness independent of the workflow)**: `verification_pct` is at 1.00 for all cells — the representation effect from F-model-quality.5 is model-driven (Opus = tuple), not workflow-driven. Falsification: a workflow systematically produces different representations.
 - **H5 (the periodicity of refactoring matters)**: inline-tdd-v1/subagents-v2/single-context-v2/hybrid-v2 (periodic refactor per cycle) show lower `cognitive_max`/`mccabe_max` and a higher `mutation_score` than end-refactor-only-v1-agent/end-refactor-only-v1-native (a single end refactoring after vibe-coding). Falsification: end-refactor-only-v1-agent/end-refactor-only-v1-native lie within 1 σ of the TDD arms — then the TDD advantage is not the periodicity, but either the test-first pressure (against oneshot-v1/iterative-v1) or not present at all.
