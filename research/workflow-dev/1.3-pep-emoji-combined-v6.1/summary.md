@@ -2,7 +2,7 @@
 
 _Are the effects of the pep and emoji reductions on the hybrid-v2 base additive (two independent channels) or jointly carried (a single 'prompt scaffolding' mechanism)?_
 
-Generated: 2026-09-30T21:56:58Z
+Generated: 2026-10-11T14:41:45Z
 
 Cells declared: 4 · matched runs: 25 · min_replicates: 5
 
@@ -35,7 +35,7 @@ Cells declared: 4 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |    2   |     2 |     2 |  0    |
 | game-of-life-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |    2.2 |     2 |     3 |  0.45 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -62,7 +62,7 @@ Cells declared: 4 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |    4.6 |     4 |     6 |  0.89 |
 | game-of-life-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |    5   |     4 |     7 |  1.41 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -71,7 +71,7 @@ Cells declared: 4 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |    5.4 |     3 |     9 |  2.88 |
 | game-of-life-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |    3.8 |     3 |     5 |  0.84 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -89,7 +89,7 @@ Cells declared: 4 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |        86 |      88 |     97.7 |
 | game-of-life-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |        71 |      72 |     98.6 |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|

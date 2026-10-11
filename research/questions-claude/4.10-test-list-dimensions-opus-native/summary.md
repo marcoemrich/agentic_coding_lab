@@ -2,7 +2,7 @@
 
 _On native Opus 5, does an independent-dimensions cross-check in the SOL PTDD test-list phase improve external completeness without sacrificing the workflow's efficiency advantage or code quality?_
 
-Generated: 2026-09-27T09:15:44Z
+Generated: 2026-10-11T14:41:23Z
 
 Cells declared: 2 · matched runs: 20 · min_replicates: 5
 
@@ -50,21 +50,21 @@ Cells declared: 2 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |  457   |   302 |   718 | 131.76 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |  599.1 |   308 |   937 | 258.57 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |   5.53 |  4.54 |  6.65 |  0.65 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |   5.95 |  4.89 |  7.95 |  0.93 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |   4.55 |     3 |     6 |  1.12 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |   4.7  |     3 |     7 |  1.27 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -106,21 +106,21 @@ Cells declared: 2 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |  661.7 |   632 |   698 | 26.47 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |  714.8 |   646 |   896 | 70.12 |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |  236.2 |   197 |   274 | 22.51 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |  245.7 |   215 |   310 | 32.92 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |   54.3 |     1 |    93 | 26.46 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |   14.8 |     1 |    61 | 24.12 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|

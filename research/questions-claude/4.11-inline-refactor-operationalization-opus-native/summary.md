@@ -2,7 +2,7 @@
 
 _On native Opus 5, can naming-first and a mandatory inline refactoring trial improve SOL PTDD v1.6 decomposition without paying the isolated-subagent cost of the Opus default?_
 
-Generated: 2026-09-27T09:15:45Z
+Generated: 2026-10-11T14:41:23Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 5
 
@@ -50,28 +50,28 @@ Cells declared: 2 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |  599.1 |   308 |   937 | 258.57 |
 | claim-office-example-mapping | exact-sol-v1.6.1-naming-refactor-trial-cc | opus-5-no-thinking |   5 |  692.8 |   332 |   917 | 300.6  |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |   5.95 |  4.89 |  7.95 |  0.93 |
 | claim-office-example-mapping | exact-sol-v1.6.1-naming-refactor-trial-cc | opus-5-no-thinking |   5 |   6.76 |  6.38 |  7.77 |  0.59 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |    4.7 |     3 |     7 |  1.27 |
 | claim-office-example-mapping | exact-sol-v1.6.1-naming-refactor-trial-cc | opus-5-no-thinking |   5 |    6.2 |     5 |     7 |  0.84 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |   18.9 |     9 |    25 |  5.26 |
 | claim-office-example-mapping | exact-sol-v1.6.1-naming-refactor-trial-cc | opus-5-no-thinking |   5 |   22.2 |    18 |    27 |  3.83 |
 
-### cc_functions
+### functions
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -113,14 +113,14 @@ Cells declared: 2 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |  714.8 |   646 |   896 | 70.12 |
 | claim-office-example-mapping | exact-sol-v1.6.1-naming-refactor-trial-cc | opus-5-no-thinking |   5 |  686   |   640 |   706 | 27.03 |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |  245.7 |   215 |   310 | 32.92 |
 | claim-office-example-mapping | exact-sol-v1.6.1-naming-refactor-trial-cc | opus-5-no-thinking |   5 |  242.2 |   223 |   258 | 14.2  |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|

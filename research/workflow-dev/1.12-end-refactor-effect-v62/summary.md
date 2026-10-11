@@ -2,7 +2,7 @@
 
 _Does a metric-driven refactor pass improve code quality over the per-cycle baseline workflow (exact-hybrid-v4-cleaned-cc) — and does the lever work purely per-cycle (exact-hybrid-v4.4-metric-refactor-cc) or as an additional whole-src end pass (exact-hybrid-v5-end-refactor-cc) — without damaging correctness or TDD discipline, and does the result hold across two kata types (the multi-file CLI codebase claim-office vs the single-file library game-of-life)?_
 
-Generated: 2026-09-30T21:56:54Z
+Generated: 2026-10-11T14:41:40Z
 
 Cells declared: 6 · matched runs: 43 · min_replicates: 5
 
@@ -63,7 +63,7 @@ Cells declared: 6 · matched runs: 43 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-portkey-no-thinking |   5 |   1.67 |  1.08 |  3    |  0.8  |
 | game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-7-portkey-no-thinking |   5 |   1.63 |  1.2  |  2.75 |  0.64 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -74,7 +74,7 @@ Cells declared: 6 · matched runs: 43 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-portkey-no-thinking |   5 |   8.4  |     5 |    12 |  3.36 |
 | game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-7-portkey-no-thinking |   5 |   9.8  |     6 |    13 |  2.59 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -118,7 +118,7 @@ Cells declared: 6 · matched runs: 43 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-portkey-no-thinking |   5 |  168.4 |   162 |   181 |  7.44 |
 | game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-7-portkey-no-thinking |   5 |  168   |   153 |   174 |  8.6  |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -129,7 +129,7 @@ Cells declared: 6 · matched runs: 43 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-portkey-no-thinking |   5 |   9.4  |     8 |    10 |  0.89 |
 | game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-7-portkey-no-thinking |   5 |   9.6  |     9 |    11 |  0.89 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -151,7 +151,7 @@ Cells declared: 6 · matched runs: 43 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-portkey-no-thinking |   5 |        93 |      94 |     98.9 |
 | game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-7-portkey-no-thinking |   5 |        96 |      96 |    100   |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|

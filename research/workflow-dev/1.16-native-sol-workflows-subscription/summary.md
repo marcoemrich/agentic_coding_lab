@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, does a workflow line written natively for Sol (basic-sol-tdd, Predictive TDD) beat structureless TDD (inline-tdd-v1) — the floor that no Opus-derived architecture clears on this model?_
 
-Generated: 2026-09-27T08:49:19Z
+Generated: 2026-10-11T14:41:42Z
 
 Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
@@ -64,7 +64,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex |   5 |    2.8 |     2 |     3 |  0.45 |
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |    2.6 |     1 |     4 |  1.14 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow              | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -92,7 +92,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex |   5 |    0   |     0 |     0 |  0    |
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |    0   |     0 |     0 |  0    |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow              | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -162,7 +162,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex |   5 |  129.2 |   117 |   143 |  11.67 |
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |  136   |   124 |   150 |  10.02 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow              | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -176,7 +176,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex |   5 |   11.8 |    11 |    13 |  0.84 |
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |   11.2 |    11 |    12 |  0.45 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow              | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:------------------|----:|-------:|------:|------:|------:|

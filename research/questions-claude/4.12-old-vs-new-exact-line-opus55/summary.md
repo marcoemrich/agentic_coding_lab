@@ -2,7 +2,7 @@
 
 _On Opus 5.5, does the retired EXACT Coding Opus line still decompose more strongly than the maintained Predictive-TDD line, and does isolating the Refactor step into a subagent help or hurt within each line?_
 
-Generated: 2026-10-01T16:04:20Z
+Generated: 2026-10-11T14:41:24Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -17,7 +17,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
 ## Outcome pivots (per cell)
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                          | cell_model           | cell_harness   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------------|:---------------------|:---------------|----:|-------:|------:|------:|------:|
@@ -26,7 +26,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc   | opus-5-5-no-thinking | 2.1.280        |   5 |   4.46 |  3.98 |  5.09 |  0.4  |
 | claim-office-example-mapping | exact-single-context-v3-no-subagent-cc | opus-5-5-no-thinking | 2.1.280        |   5 |   3.74 |  2.71 |  4.58 |  0.68 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                          | cell_model           | cell_harness   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------------|:---------------------|:---------------|----:|-------:|------:|------:|------:|
@@ -35,7 +35,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc   | opus-5-5-no-thinking | 2.1.280        |   5 |    3.3 |     3 |   4.5 |  0.67 |
 | claim-office-example-mapping | exact-single-context-v3-no-subagent-cc | opus-5-5-no-thinking | 2.1.280        |   5 |    2.4 |     2 |   4   |  0.89 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                          | cell_model           | cell_harness   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------------------|:---------------------|:---------------|----:|-------:|------:|------:|------:|

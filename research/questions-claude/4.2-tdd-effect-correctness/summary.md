@@ -2,7 +2,7 @@
 
 _Does external correctness (verification_pct) differ between TDD workflow variants on the novel claim-office kata?_
 
-Generated: 2026-09-30T21:57:00Z
+Generated: 2026-10-11T14:41:25Z
 
 Cells declared: 7 · matched runs: 36 · min_replicates: 3
 
@@ -80,7 +80,7 @@ Cells declared: 7 · matched runs: 36 · min_replicates: 3
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   6 |       6 |      100 |
 | claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -92,7 +92,7 @@ Cells declared: 7 · matched runs: 36 · min_replicates: 3
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   6 |   5.5  |     2 |    19 |  6.66 |
 | claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |  44.6  |    34 |    55 |  8.59 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -113,7 +113,7 @@ Cells declared: 7 · matched runs: 36 · min_replicates: 3
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   6 |        39 |      39 |    100   |
 | claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |       302 |     325 |     92.9 |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                           | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|

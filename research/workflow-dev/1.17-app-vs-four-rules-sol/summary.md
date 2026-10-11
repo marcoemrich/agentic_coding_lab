@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, does a refactor brief that optimises APP mass (hybrid-v4.2) decompose worse than one governed by the Four Rules of Simple Design alone (basic-sol-tdd) — at constant model, harness, kata and prompt style?_
 
-Generated: 2026-09-27T08:49:14Z
+Generated: 2026-10-11T14:41:42Z
 
 Cells declared: 3 · matched runs: 15 · min_replicates: 5
 
@@ -16,7 +16,7 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 
 ## Outcome pivots (per cell)
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -24,7 +24,7 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex |   5 |   9.52 |  5.75 | 19.33 |  5.69 |
 | claim-office-example-mapping | exact-sol-v1-pi                         | gpt-5-6-sol-codex |   5 |   7.42 |  5.92 |  8.71 |  1.04 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -32,7 +32,7 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex |   5 |    6   |     2 |    12 |  3.67 |
 | claim-office-example-mapping | exact-sol-v1-pi                         | gpt-5-6-sol-codex |   5 |    4.5 |     4 |     6 |  0.87 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -104,7 +104,7 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
 | claim-office-example-mapping | exact-sol-v1-pi                         | gpt-5-6-sol-codex |   5 |       5 |      100 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -112,7 +112,7 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex |   5 |   28   |    22 |    34 |  5.34 |
 | claim-office-example-mapping | exact-sol-v1-pi                         | gpt-5-6-sol-codex |   5 |   33.4 |    29 |    37 |  2.97 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|

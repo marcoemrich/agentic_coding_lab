@@ -2,7 +2,7 @@
 
 _Does the interaction finding from RQ-pep-emoji-v6.1 (pep+emoji reduction: anti-additivity for refactorings_applied, saturation for tests_passed_immediately, correctness invariant) also hold on a more complex kata with genuine ambiguities?_
 
-Generated: 2026-09-30T21:56:59Z
+Generated: 2026-10-11T14:41:46Z
 
 Cells declared: 4 · matched runs: 22 · min_replicates: 5
 
@@ -62,7 +62,7 @@ Cells declared: 4 · matched runs: 22 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |   1.6  |     0 |     4 |  2.19 |
 | claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |   0.6  |     0 |     3 |  1.34 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -89,7 +89,7 @@ Cells declared: 4 · matched runs: 22 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |   4.2  |     0 |     7 |  2.68 |
 | claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |   4.6  |     4 |     6 |  0.89 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -98,7 +98,7 @@ Cells declared: 4 · matched runs: 22 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |    8.8 |     0 |    17 |  7.46 |
 | claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |    9.8 |     4 |    17 |  4.87 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -116,7 +116,7 @@ Cells declared: 4 · matched runs: 22 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   4 |       208 |     212 |     98.1 |
 | claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |       239 |     242 |     98.8 |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|

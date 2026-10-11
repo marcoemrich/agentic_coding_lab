@@ -2,7 +2,7 @@
 
 _Do decoration emojis (✅ ❌ 🔴 🟢 🔄 📋 🚨 ⚠️) in the workflow prompts (skills + refactor agent + rules/tdd.md) on the hybrid-v2 base have a measurable effect on code quality or TDD discipline?_
 
-Generated: 2026-09-30T21:57:14Z
+Generated: 2026-10-11T14:41:43Z
 
 Cells declared: 2 · matched runs: 10 · min_replicates: 5
 
@@ -29,7 +29,7 @@ Cells declared: 2 · matched runs: 10 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |    2.6 |     2 |     3 |  0.55 |
 | game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |    2   |     2 |     2 |  0    |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                   | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -50,14 +50,14 @@ Cells declared: 2 · matched runs: 10 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |    5.2 |     3 |     8 |  1.92 |
 | game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |    4.6 |     4 |     6 |  0.89 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                   | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |    4.2 |     2 |     7 |  2.28 |
 | game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |    5.4 |     3 |     9 |  2.88 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                   | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -71,7 +71,7 @@ Cells declared: 2 · matched runs: 10 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |        82 |      83 |     98.8 |
 | game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |        86 |      88 |     97.7 |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                   | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|------:|

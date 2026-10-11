@@ -2,7 +2,7 @@
 
 _Does the code-quality profile of Opus (opus-4-8) differ between the Claude Code and the pi harness, each with and without thinking, at a constant workflow generation (hybrid-v4)?_
 
-Generated: 2026-09-30T21:57:12Z
+Generated: 2026-10-11T14:41:30Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -53,7 +53,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8             |   5 |   2.9  |  2.33 |  3.4  |  0.39 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8-no-thinking |   5 |   3.13 |  2.4  |  4.33 |  0.8  |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -62,7 +62,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8             |   5 |   17.4 |    10 |    22 |  5.5  |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8-no-thinking |   5 |   17.8 |    12 |    22 |  5.31 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -125,7 +125,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8             |   5 |      1 |     1 |     1 |     0 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8-no-thinking |   5 |      1 |     1 |     1 |     0 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -134,7 +134,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8             |   5 |    8.6 |     8 |     9 |  0.55 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8-no-thinking |   5 |    8.8 |     8 |     9 |  0.45 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:---------------------|----:|-------:|------:|------:|------:|

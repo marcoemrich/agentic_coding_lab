@@ -2,7 +2,7 @@
 
 _On Rust with Cargo, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness, TDD discipline and code quality for GPT-6 SOL and Opus 5?_
 
-Generated: 2026-10-01T19:36:01Z
+Generated: 2026-10-11T14:41:28Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -151,7 +151,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   2.04 |  1.85 |  2.35 |  0.19 |
 | claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-sol-codex    |   5 |   5.78 |  4.27 |  7.11 |  1.19 |
 
-### cc_longest_function
+### longest_function
 
 | kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -162,7 +162,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   23.8 |     9 |    34 |  9.36 |
 | claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-sol-codex    |   5 |   27.4 |    22 |    29 |  3.05 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -173,7 +173,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   6.35 |  5.38 |  7.04 |  0.7  |
 | claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-sol-codex    |   5 |  10.72 |  8.6  | 12.44 |  1.66 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -184,7 +184,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |    6   |     6 |   6   |  0    |
 | claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-sol-codex    |   5 |   10   |     6 |  13   |  2.74 |
 
-### cc_functions
+### functions
 
 | kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|

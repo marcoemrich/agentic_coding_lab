@@ -2,7 +2,7 @@
 
 _Does the TDD architecture axis (inline-tdd-v1 structureless / single-context-v2 single context / hybrid-v2 hybrid / hybrid-v6 current generation) still rank the same way on opus-5 as it does on opus-4-7 — and does the decomposition metric change the answer?_
 
-Generated: 2026-09-30T21:56:52Z
+Generated: 2026-10-11T14:41:26Z
 
 Cells declared: 16 · matched runs: 111 · min_replicates: 5
 
@@ -29,7 +29,7 @@ Cells declared: 16 · matched runs: 111 · min_replicates: 5
 
 ## Outcome pivots (per cell)
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -50,7 +50,7 @@ Cells declared: 16 · matched runs: 111 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |   9.58 |  7.75 | 12.5  |  1.77 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking   |   5 |   4.12 |  3    |  5.78 |  1.12 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -260,7 +260,7 @@ Cells declared: 16 · matched runs: 111 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |       5 |      100 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking   |   5 |       5 |      100 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -281,7 +281,7 @@ Cells declared: 16 · matched runs: 111 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |   7.6  |     6 |     9 |  1.52 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking   |   5 |   7.2  |     5 |    10 |  2.59 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:---------------------|----:|-------:|------:|------:|------:|

@@ -2,7 +2,7 @@
 
 _Does isolating only the per-cycle Refactor phase improve PTDD v1 product structure enough to justify its context cost on native Opus and GPT-5.6 SOL/pi?_
 
-Generated: 2026-10-01T16:04:21Z
+Generated: 2026-10-11T14:41:31Z
 
 Cells declared: 4 · matched runs: 45 · min_replicates: 5
 
@@ -44,7 +44,7 @@ Cells declared: 4 · matched runs: 45 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |  10 |       7 |       70 |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |       5 |      100 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -53,7 +53,7 @@ Cells declared: 4 · matched runs: 45 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |  10 |   4.67 |  3.98 |  5.13 |  0.38 |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   4.21 |  3.62 |  4.66 |  0.4  |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -62,7 +62,7 @@ Cells declared: 4 · matched runs: 45 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |  10 |   3.3  |     3 |     4 |  0.42 |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   3    |     3 |     3 |  0    |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -71,7 +71,7 @@ Cells declared: 4 · matched runs: 45 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |  10 |  13.9  |    10 |    19 |  2.92 |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |  15.8  |    12 |    19 |  3.56 |
 
-### cc_functions
+### functions
 
 | kata                         | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -125,7 +125,7 @@ Cells declared: 4 · matched runs: 45 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |  10 | 873.9  |   480 |  1152 | 189.3  |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 | 685.4  |   628 |   776 |  63.25 |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow                        | cell_model         |   n |   mean |   min |   max |    std |
 |:-----------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|-------:|

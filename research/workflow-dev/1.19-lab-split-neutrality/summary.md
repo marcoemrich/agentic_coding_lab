@@ -2,7 +2,7 @@
 
 _Is exact-hybrid-v2.4-lab-split-cc behaviourally equivalent to exact-hybrid-v2-testlist-fix-cc, as the exact-coding baseline recommendation assumes, and if not, does removing the duplicated cycle enumeration restore neutrality? The production files are byte-identical; the rule layout differs (lab infrastructure isolated in rules/lab-only.md, subagent contracts in rules/subagent-prompts.md), and lab-only.md states the Red/Green/Refactor cycle a second time as an imperative chain whose third link makes refactor an unconditional consequence of green. hybrid-v2.7 removes that second statement and keeps the phase-continuation guard._
 
-Generated: 2026-09-30T21:56:53Z
+Generated: 2026-10-11T14:41:43Z
 
 Cells declared: 8 · matched runs: 59 · min_replicates: 5
 
@@ -21,7 +21,7 @@ Cells declared: 8 · matched runs: 59 · min_replicates: 5
 
 ## Outcome pivots (per cell)
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -34,7 +34,7 @@ Cells declared: 8 · matched runs: 59 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 |   5    |     3 |     9 |  2.45 |
 | game-of-life-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |   5 |   5.6  |     2 |    10 |  3.36 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -112,7 +112,7 @@ Cells declared: 8 · matched runs: 59 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 |       5 |      100 |
 | game-of-life-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |   5 |       5 |      100 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -125,7 +125,7 @@ Cells declared: 8 · matched runs: 59 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 |   3.17 |  1.86 |  5.6  |  1.52 |
 | game-of-life-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |   5 |   5.41 |  3.89 |  7.5  |  1.54 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -203,7 +203,7 @@ Cells declared: 8 · matched runs: 59 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 |       103 |     104 |     99   |
 | game-of-life-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |   5 |        98 |      98 |    100   |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                           | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|------:|------:|------:|

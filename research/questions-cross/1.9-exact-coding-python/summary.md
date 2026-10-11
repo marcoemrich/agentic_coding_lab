@@ -2,7 +2,7 @@
 
 _On Python with pytest, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness and code quality for GPT-5.6 SOL and Opus 5?_
 
-Generated: 2026-09-30T21:57:07Z
+Generated: 2026-10-11T14:41:32Z
 
 Cells declared: 12 · matched runs: 65 · min_replicates: 5
 
@@ -382,7 +382,7 @@ Cells declared: 12 · matched runs: 65 · min_replicates: 5
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   6 |  47.83 |     0 |    60 | 23.58 |
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |  53.2  |    50 |    57 |  2.59 |
 
-### test_blocks
+### legacy_test_blocks
 
 | kata                                | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:------------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -399,7 +399,7 @@ Cells declared: 12 · matched runs: 65 · min_replicates: 5
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   0    |     0 |     0 |  0    |
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |  15    |    13 |    16 |  1.22 |
 
-### test_cases_total
+### legacy_test_cases_total
 
 | kata                                | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:------------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -416,7 +416,7 @@ Cells declared: 12 · matched runs: 65 · min_replicates: 5
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   0    |     0 |     0 |  0    |
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |  19.8  |    15 |    28 |  5.85 |
 
-### test_cases_first_block
+### legacy_test_cases_first_block
 
 | kata                                | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:------------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -433,7 +433,7 @@ Cells declared: 12 · matched runs: 65 · min_replicates: 5
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   0    |     0 |     0 |  0    |
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |  13.8  |    12 |    15 |  1.1  |
 
-### red_verified
+### legacy_red_verified
 
 | kata                                | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:------------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -450,7 +450,7 @@ Cells declared: 12 · matched runs: 65 · min_replicates: 5
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |   0    |     0 |     0 |  0    |
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |  14.8  |    13 |    16 |  1.3  |
 
-### red_unverified
+### legacy_red_unverified
 
 | kata                                | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:------------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -467,7 +467,7 @@ Cells declared: 12 · matched runs: 65 · min_replicates: 5
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |    0   |     0 |     0 |  0    |
 | game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |    0.2 |     0 |     1 |  0.45 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                                | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:------------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|

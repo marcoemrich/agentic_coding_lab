@@ -2,7 +2,7 @@
 
 _Do why blocks (causal justifications alongside MUSTs) on the hybrid-v2 base carry a measurable TDD discipline or correctness advantage over purely imperative instructions — with PEP fully retained?_
 
-Generated: 2026-09-30T21:57:05Z
+Generated: 2026-10-11T14:41:46Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 8
 
@@ -22,21 +22,21 @@ Cells declared: 2 · matched runs: 15 · min_replicates: 8
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   7 |       292 |     303 |     96.4 |
 | claim-office-example-mapping | exact-hybrid-v3-with-why-cc     | opus-4-7-portkey-no-thinking |   7 |       530 |     551 |     96.2 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                   | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   7 |   11   |     4 |    17 |  5.1  |
 | claim-office-example-mapping | exact-hybrid-v3-with-why-cc     | opus-4-7-portkey-no-thinking |   8 |   18.5 |     0 |    30 |  8.42 |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                   | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   7 |  13.57 |     1 |    26 |  8.62 |
 | claim-office-example-mapping | exact-hybrid-v3-with-why-cc     | opus-4-7-portkey-no-thinking |   8 |  15.38 |     0 |    21 |  7.27 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                   | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -78,7 +78,7 @@ Cells declared: 2 · matched runs: 15 · min_replicates: 8
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   7 |   1.29 |     0 |     4 |  1.5  |
 | claim-office-example-mapping | exact-hybrid-v3-with-why-cc     | opus-4-7-portkey-no-thinking |   8 |   0.38 |     0 |     1 |  0.52 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                   | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|

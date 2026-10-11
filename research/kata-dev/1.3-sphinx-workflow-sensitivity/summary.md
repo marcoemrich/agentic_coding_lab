@@ -2,7 +2,7 @@
 
 _Does sphinx-score resolve a workflow difference in code quality — does the decomposition gap between a minimal and an elaborate TDD workflow show up as clearly as it does on claim-office?_
 
-Generated: 2026-10-01T00:43:26Z
+Generated: 2026-10-11T14:41:19Z
 
 Cells declared: 6 · matched runs: 36 · min_replicates: 6
 
@@ -19,7 +19,7 @@ Cells declared: 6 · matched runs: 36 · min_replicates: 6
 
 ## Outcome pivots (per cell)
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -30,7 +30,7 @@ Cells declared: 6 · matched runs: 36 · min_replicates: 6
 | sphinx-score-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |  11    |     8 |    13 |  1.9  |
 | sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |   5.83 |     2 |     7 |  1.94 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -63,7 +63,7 @@ Cells declared: 6 · matched runs: 36 · min_replicates: 6
 | sphinx-score-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |   2.33 |     2 |     3 |  0.52 |
 | sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |   2    |     2 |     2 |  0    |
 
-### cc_functions
+### functions
 
 | kata                         | cell_workflow                | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -107,7 +107,7 @@ Cells declared: 6 · matched runs: 36 · min_replicates: 6
 | sphinx-score-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |  77.5  |    65 |    93 |  9.14 |
 | sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  57.5  |    47 |    74 | 11.18 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -118,7 +118,7 @@ Cells declared: 6 · matched runs: 36 · min_replicates: 6
 | sphinx-score-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |   2.67 |     1 |     4 |  1.03 |
 | sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  11.67 |    10 |    16 |  2.16 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -137,7 +137,7 @@ Cells declared: 6 · matched runs: 36 · min_replicates: 6
 | game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |       124 |     126 |     98.4 |
 | sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |       139 |     140 |     99.3 |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:-------------------|----:|-------:|------:|------:|------:|

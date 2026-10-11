@@ -2,7 +2,7 @@
 
 _How do seven TDD workflows compare on correctness, TDD discipline, code quality and cost? Three lines meet on one kata: the maintained EXACT Coding Predictive-TDD pair (with and without an isolated refactor subagent), the retired Opus hybrid pair, and three vendored third-party TDD skills — measured on claim-office-example-mapping × opus-5-5-no-thinking × Claude Code._
 
-Generated: 2026-10-01T16:04:19Z
+Generated: 2026-10-11T14:41:24Z
 
 Cells declared: 7 · matched runs: 35 · min_replicates: 5
 
@@ -284,7 +284,7 @@ Cells declared: 7 · matched runs: 35 · min_replicates: 5
 | claim-office-example-mapping | external-pocock-2026-09-04-cc        | opus-5-5-no-thinking | 2.1.280        |   5 |       5 |      100 |
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc   | opus-5-5-no-thinking | 2.1.280        |   5 |       5 |      100 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                        | cell_model           | cell_harness   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|:---------------|----:|-------:|------:|------:|------:|
@@ -296,7 +296,7 @@ Cells declared: 7 · matched runs: 35 · min_replicates: 5
 | claim-office-example-mapping | external-pocock-2026-09-04-cc        | opus-5-5-no-thinking | 2.1.280        |   5 |   9.46 |  8.25 | 10.75 |  1.11 |
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc   | opus-5-5-no-thinking | 2.1.280        |   5 |   6.48 |  5.2  |  7.29 |  0.82 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                        | cell_model           | cell_harness   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|:---------------|----:|-------:|------:|------:|------:|

@@ -2,7 +2,7 @@
 
 _When Ponytail full is forcibly loaded into the Sol-originated EXACT Coding workflow on pi, does it improve code quality without reducing correctness, test strength, TDD discipline or completion reliability, and at what cost?_
 
-Generated: 2026-09-27T08:49:19Z
+Generated: 2026-10-11T14:41:44Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -80,7 +80,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |  155.4 |   146 |   169 |  9.24 |
 | game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |  139.8 |   125 |   152 | 12.03 |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow                   | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -89,7 +89,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |   34   |    30 |    39 |  3.32 |
 | game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |   23.4 |    21 |    25 |  1.67 |
 
-### cc_functions
+### functions
 
 | kata                         | cell_workflow                   | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -98,7 +98,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |    4   |     3 |     5 |  0.71 |
 | game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |    2.2 |     1 |     3 |  0.84 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                   | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -107,7 +107,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |   6.63 |  4.5  |  8.33 |  1.41 |
 | game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |   9.53 |  6.67 | 17    |  4.27 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                   | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -116,7 +116,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |    4.6 |     3 |   7   |  1.52 |
 | game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |    7.6 |     2 |  17   |  6.19 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                   | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -233,7 +233,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |   53.4 |    47 |    69 |  8.99 |
 | game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |   45.2 |    42 |    50 |  2.95 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                   | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -242,7 +242,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |    9.8 |     9 |    11 |  0.84 |
 | game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |    9.6 |     9 |    11 |  0.89 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                   | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -260,7 +260,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |        50 |      50 |    100   |
 | game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |        42 |      42 |    100   |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                   | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:------------------|----:|-------:|------:|------:|------:|

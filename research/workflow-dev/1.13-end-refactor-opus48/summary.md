@@ -2,7 +2,7 @@
 
 _Does the exact-hybrid-v5-end-refactor-cc result from RQ-1.12 (correctness intact, code quality >= hybrid-v4, token cost ~hybrid-v4) hold on Opus 4.8 (no-thinking) — or does the additional end-refactor pass fake claim-office completeness on the new model (the bundle-break pattern from RQ-1.9/RQ-1.10)?_
 
-Generated: 2026-09-30T21:56:57Z
+Generated: 2026-10-11T14:41:40Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -96,7 +96,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   1.7  |  1.18 |  2.4  |  0.56 |
 | game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   1.76 |  1.2  |  3.25 |  0.84 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -107,7 +107,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |    8.6 |     2 |    14 |  4.67 |
 | game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |    9.4 |     8 |    12 |  1.67 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -151,7 +151,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |  164.2 |   147 |   172 |   9.96 |
 | game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |  168.4 |   145 |   194 |  18.01 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -162,7 +162,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |    7.6 |     3 |     9 |  2.61 |
 | game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |    7.2 |     2 |     9 |  2.95 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -184,7 +184,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |        90 |      90 |    100   |
 | game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |        83 |      85 |     97.6 |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|

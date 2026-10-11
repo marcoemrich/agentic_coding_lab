@@ -2,7 +2,7 @@
 
 _How do the models reachable via the cursor-cli harness (Opus 4.8 medium, Composer 2.5, Grok 4.5 medium) differ in code quality and TDD discipline on game-of-life-example-mapping?_
 
-Generated: 2026-09-27T08:48:34Z
+Generated: 2026-10-11T14:41:33Z
 
 Cells declared: 3 · matched runs: 10 · min_replicates: 5
 
@@ -51,21 +51,21 @@ Cells declared: 3 · matched runs: 10 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |   2.4  |  1.43 |   3.6 |  0.85 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |   3.47 |  2.75 |   5   |  0.92 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |   25.4 |    14 |    31 |  6.73 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |   21.8 |    20 |    24 |  1.64 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |   7.39 |  4.12 |  9.5  |  2.02 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |  11    |  9    | 12.67 |  1.49 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
@@ -128,14 +128,14 @@ Cells declared: 3 · matched runs: 10 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |    8.4 |     8 |     9 |  0.55 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |    7.8 |     7 |     8 |  0.45 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |    7.4 |     5 |     9 |  1.52 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |    8.4 |     6 |    11 |  2.07 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|

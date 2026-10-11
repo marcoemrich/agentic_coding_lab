@@ -2,7 +2,7 @@
 
 _How do transport route and reasoning channel each affect code quality, TDD discipline, throughput and correctness for one and the same model (GPT-5.6 Sol), at constant harness, workflow, kata and prompt style?_
 
-Generated: 2026-09-27T08:48:48Z
+Generated: 2026-10-11T14:41:36Z
 
 Cells declared: 3 · matched runs: 15 · min_replicates: 5
 
@@ -72,7 +72,7 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |   2.82 |   2   |  4.67 |  1.08 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |   3.29 |   2.2 |  4    |  0.69 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
@@ -80,7 +80,7 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |   18.8 |    13 |    23 |  3.7  |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |   21.6 |    16 |    24 |  3.36 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
@@ -88,7 +88,7 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |  14.14 |  6.2  |  23   |  7.05 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |  15.3  | 11.5  |  23   |  4.6  |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
@@ -160,7 +160,7 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |    8.4 |     8 |     9 |  0.55 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |    8.4 |     7 |    10 |  1.52 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
@@ -168,7 +168,7 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |    8.4 |     8 |     9 |  0.55 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |    8.4 |     7 |    10 |  1.52 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|

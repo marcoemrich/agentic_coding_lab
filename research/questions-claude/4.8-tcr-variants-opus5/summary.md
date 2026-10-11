@@ -2,7 +2,7 @@
 
 _How do classic TCR and TCRDD variants affect correctness, code quality, development behavior, and efficiency in autonomous coding agents, and—within TCRDD—does tool-enforced execution with git-gamble differ from native-Git prompt enforcement?_
 
-Generated: 2026-09-30T21:57:15Z
+Generated: 2026-10-11T14:41:27Z
 
 Cells declared: 4 · matched runs: 18 · min_replicates: 4
 
@@ -44,7 +44,7 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 4
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-cc      | opus-5-requesty-no-thinking |   5 |       5 |      100 |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-cc | opus-5-requesty-no-thinking |   4 |       4 |      100 |
 
-### test_blocks
+### legacy_test_blocks
 
 | kata                         | cell_workflow                           | cell_model                  |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:----------------------------|----:|-------:|------:|------:|------:|
@@ -53,7 +53,7 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 4
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-cc      | opus-5-requesty-no-thinking |   5 |  28    |    15 |    37 |  8    |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-cc | opus-5-requesty-no-thinking |   4 |  26.25 |    24 |    28 |  1.71 |
 
-### test_cases_total
+### legacy_test_cases_total
 
 | kata                         | cell_workflow                           | cell_model                  |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:----------------------------|----:|-------:|------:|------:|------:|
@@ -62,7 +62,7 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 4
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-cc      | opus-5-requesty-no-thinking |   5 |  44.2  |    31 |    57 |  9.76 |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-cc | opus-5-requesty-no-thinking |   4 |  29.75 |    26 |    38 |  5.68 |
 
-### test_cases_first_block
+### legacy_test_cases_first_block
 
 | kata                         | cell_workflow                           | cell_model                  |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:----------------------------|----:|-------:|------:|------:|------:|
@@ -71,7 +71,7 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 4
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-cc      | opus-5-requesty-no-thinking |   5 |    1   |     1 |     1 |  0    |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-cc | opus-5-requesty-no-thinking |   4 |    1   |     1 |     1 |  0    |
 
-### red_verified
+### legacy_red_verified
 
 | kata                         | cell_workflow                           | cell_model                  |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:----------------------------|----:|-------:|------:|------:|------:|
@@ -80,7 +80,7 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 4
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-cc      | opus-5-requesty-no-thinking |   5 |  28    |    15 |    37 |  8    |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-cc | opus-5-requesty-no-thinking |   4 |  25.75 |    24 |    28 |  1.71 |
 
-### red_unverified
+### legacy_red_unverified
 
 | kata                         | cell_workflow                           | cell_model                  |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:----------------------------|----:|-------:|------:|------:|------:|
@@ -89,7 +89,7 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 4
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-cc      | opus-5-requesty-no-thinking |   5 |    0   |     0 |     0 |  0    |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-cc | opus-5-requesty-no-thinking |   4 |    0.5 |     0 |     1 |  0.58 |
 
-### tcr_refactor_steps
+### legacy_tcr_refactor_steps
 
 | kata                         | cell_workflow                           | cell_model                  |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:----------------------------|----:|-------:|------:|------:|------:|
@@ -134,7 +134,7 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 4
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-cc      | opus-5-requesty-no-thinking |   5 |    2.8 |     0 |     6 |  2.77 |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-cc | opus-5-requesty-no-thinking |   4 |    0   |     0 |     0 |  0    |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model                  |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:----------------------------|----:|-------:|------:|------:|------:|
@@ -143,7 +143,7 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 4
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-cc      | opus-5-requesty-no-thinking |   5 |   8.6  |  8    |  9.73 |  0.7  |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-cc | opus-5-requesty-no-thinking |   4 |  10.96 |  8.92 | 14.5  |  2.46 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model                  |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:----------------------------|----:|-------:|------:|------:|------:|

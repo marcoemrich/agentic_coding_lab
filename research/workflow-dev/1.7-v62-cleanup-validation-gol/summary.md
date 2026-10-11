@@ -2,7 +2,7 @@
 
 _Does the cleanup equivalence result from RQ-1.6 (claim-office) also generalize to the training-known game-of-life kata, or does exact-hybrid-v4-cleaned-cc show a different effect there than on claim-office?_
 
-Generated: 2026-09-30T21:57:05Z
+Generated: 2026-10-11T14:41:47Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 5
 
@@ -29,7 +29,7 @@ Cells declared: 2 · matched runs: 15 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |    2.8 |     2 |     4 |  0.84 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |    2.4 |     2 |     3 |  0.52 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -71,21 +71,21 @@ Cells declared: 2 · matched runs: 15 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |        83 |      84 |     98.8 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |       170 |     170 |    100   |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |    6.4 |     2 |     9 |  3.21 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |    7.9 |     4 |     9 |  1.85 |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |    2.2 |     0 |     6 |  3.03 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |    0.7 |     0 |     7 |  2.21 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|

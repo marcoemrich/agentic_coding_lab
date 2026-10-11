@@ -2,7 +2,7 @@
 
 _Does the prompt style (prose/user-story/example-mapping) influence correctness and code quality on a training-known kata (Game of Life) — and is this effect model-dependent?_
 
-Generated: 2026-09-27T08:48:54Z
+Generated: 2026-10-11T14:41:20Z
 
 Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
@@ -134,7 +134,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 | game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |    4.4 |     4 |     6 |  0.89 |
 | game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |    3.2 |     2 |     4 |  0.84 |
 
-### cc_longest_function
+### longest_function
 
 | kata                             | cell_workflow              | cell_model                     |   n |   mean |   min |   max |   std |
 |:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
@@ -148,7 +148,7 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 | game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   24.2 |    23 |    28 |  2.17 |
 | game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   19   |     8 |    26 |  8.12 |
 
-### cc_loc
+### production_loc
 
 | kata                             | cell_workflow              | cell_model                     |   n |   mean |   min |   max |   std |
 |:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|------:|

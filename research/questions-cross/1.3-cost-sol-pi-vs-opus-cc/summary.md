@@ -2,7 +2,7 @@
 
 _How much cheaper is the GPT model gpt-5-6-sol on the pi harness compared to opus-4-8 on Claude Code — at the same prompt style and an outcome-equivalent TDD workflow, across both katas?_
 
-Generated: 2026-09-30T21:57:11Z
+Generated: 2026-10-11T14:41:30Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 

@@ -2,7 +2,7 @@
 
 _How much of the hybrid-v6 architecture can be removed on opus-5 before code quality degrades — and how much of its result comes from the APP subordination patch (hybrid-v7) rather than from the end-refactor phase (hybrid-v8) or the isolated refactor subagent (single-context-v3)?_
 
-Generated: 2026-09-30T21:56:54Z
+Generated: 2026-10-11T14:41:41Z
 
 Cells declared: 12 · matched runs: 63 · min_replicates: 5
 
@@ -25,7 +25,7 @@ Cells declared: 12 · matched runs: 63 · min_replicates: 5
 
 ## Outcome pivots (per cell)
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -42,7 +42,7 @@ Cells declared: 12 · matched runs: 63 · min_replicates: 5
 | sphinx-score-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking |   5 |   6.16 |  3.67 | 11    |  2.88 |
 | sphinx-score-example-mapping | exact-single-context-v3-no-subagent-cc  | opus-5-no-thinking |   5 |   3.16 |  2.38 |  4.43 |  0.76 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -195,7 +195,7 @@ Cells declared: 12 · matched runs: 63 · min_replicates: 5
 | sphinx-score-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking |   5 |       5 |      100 |
 | sphinx-score-example-mapping | exact-single-context-v3-no-subagent-cc  | opus-5-no-thinking |   5 |       5 |      100 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -212,7 +212,7 @@ Cells declared: 12 · matched runs: 63 · min_replicates: 5
 | sphinx-score-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking |   5 |  10.8  |    10 |    13 |  1.3  |
 | sphinx-score-example-mapping | exact-single-context-v3-no-subagent-cc  | opus-5-no-thinking |   5 |  10.2  |    10 |    11 |  0.45 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|------:|------:|------:|

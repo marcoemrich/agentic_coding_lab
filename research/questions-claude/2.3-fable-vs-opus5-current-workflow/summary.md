@@ -2,7 +2,7 @@
 
 _How do Fable 5, Fable 5.1, Opus 5 and Sonnet 5 (each no-thinking, on the Claude Max subscription) differ in correctness and code quality on the novel claim-office kata under the current exact-coding baseline workflow?_
 
-Generated: 2026-09-30T21:57:00Z
+Generated: 2026-10-11T14:41:21Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -44,7 +44,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-5-no-thinking          | 2.1.267        |   5 |     15 |    15 |    15 |     0 |
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | sonnet-5-native-no-thinking | 2.1.267        |   5 |     15 |    15 |    15 |     0 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                   | cell_model                  | cell_harness   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:----------------------------|:---------------|----:|-------:|------:|------:|------:|
@@ -53,7 +53,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-5-no-thinking          | 2.1.267        |   5 |   3.45 |  2.64 |  4.28 |  0.64 |
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | sonnet-5-native-no-thinking | 2.1.267        |   5 |   6.5  |  4.68 |  8.29 |  1.39 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                   | cell_model                  | cell_harness   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:----------------------------|:---------------|----:|-------:|------:|------:|------:|
@@ -98,7 +98,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-5-no-thinking          | 2.1.267        |   5 |  848.4 |   734 |   949 | 79.93 |
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | sonnet-5-native-no-thinking | 2.1.267        |   5 |  817.2 |   734 |   885 | 73.36 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                   | cell_model                  | cell_harness   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:----------------------------|:---------------|----:|-------:|------:|------:|------:|
@@ -107,7 +107,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-5-no-thinking          | 2.1.267        |   5 |   27.2 |    21 |    46 | 10.57 |
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | sonnet-5-native-no-thinking | 2.1.267        |   5 |   21.4 |    10 |    27 |  6.91 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                   | cell_model                  | cell_harness   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------------|:----------------------------|:---------------|----:|-------:|------:|------:|------:|

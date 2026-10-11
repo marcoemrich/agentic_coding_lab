@@ -2,7 +2,7 @@
 
 _How stable are code quality and TDD discipline per workflow across replicates, and under which conditions is n=3 a sufficient replicate count?_
 
-Generated: 2026-09-30T21:57:01Z
+Generated: 2026-10-11T14:41:28Z
 
 Cells declared: 6 · matched runs: 59 · min_replicates: 10
 
@@ -41,7 +41,7 @@ Cells declared: 6 · matched runs: 59 · min_replicates: 10
 | game-of-life-prose           | baseline-iterative-v1-cc   | opus-4-7-no-thinking |  10 |   4.1  |     2 |     6 |  1.29 |
 | game-of-life-prose           | baseline-oneshot-v1-cc     | opus-4-7-no-thinking |  10 |   4.8  |     2 |     6 |  1.23 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -93,7 +93,7 @@ Cells declared: 6 · matched runs: 59 · min_replicates: 10
 | game-of-life-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking |   9 |       132 |     132 |    100   |
 | game-of-life-example-mapping | exact-subagents-v1-cc      | opus-4-7-no-thinking |  10 |        99 |     101 |     98   |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -104,7 +104,7 @@ Cells declared: 6 · matched runs: 59 · min_replicates: 10
 | game-of-life-prose           | baseline-iterative-v1-cc   | opus-4-7-no-thinking |  10 |   0    |     0 |     0 |  0    |
 | game-of-life-prose           | baseline-oneshot-v1-cc     | opus-4-7-no-thinking |  10 |   0    |     0 |     0 |  0    |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -115,7 +115,7 @@ Cells declared: 6 · matched runs: 59 · min_replicates: 10
 | game-of-life-prose           | baseline-iterative-v1-cc   | opus-4-7-no-thinking |  10 |   1    |     1 |     1 |  0    |
 | game-of-life-prose           | baseline-oneshot-v1-cc     | opus-4-7-no-thinking |  10 |   1    |     1 |     1 |  0    |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|

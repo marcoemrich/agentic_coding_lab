@@ -2,7 +2,7 @@
 
 _On Claim Office with SOL/pi, does a TCR-source-parity transfer of the domain-boundary workflow to Predictive TDD reproduce TCR's decomposition when all non-method-specific test-list, domain-review, stack, and lab contracts are retained, or does the commit-or-revert phase mechanism still separate the methods?_
 
-Generated: 2026-09-27T09:15:50Z
+Generated: 2026-10-11T14:41:45Z
 
 Cells declared: 3 · matched runs: 20 · min_replicates: 5
 
@@ -40,7 +40,7 @@ Cells declared: 3 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |      10 |      100 |
 | claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |       5 |      100 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -48,7 +48,7 @@ Cells declared: 3 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |   5.72 |  5.21 |  6.78 |  0.52 |
 | claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |   5.67 |  4.64 |  6.56 |  0.69 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -56,7 +56,7 @@ Cells declared: 3 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |   4.35 |   3.5 |   5   |  0.58 |
 | claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |   4.7  |   3.5 |   5   |  0.67 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -64,7 +64,7 @@ Cells declared: 3 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |   16.8 |    15 |    20 |  1.69 |
 | claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |   14.2 |    11 |    18 |  2.59 |
 
-### cc_functions
+### functions
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -128,7 +128,7 @@ Cells declared: 3 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |  578.2 |   529 |   660 | 35.65 |
 | claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |  568.4 |   541 |   605 | 26.09 |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -144,7 +144,7 @@ Cells declared: 3 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |  218.3 |   113 |   279 | 47.84 |
 | claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |  218.4 |   146 |   262 | 44.72 |
 
-### test_blocks
+### legacy_test_blocks
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -152,7 +152,7 @@ Cells declared: 3 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |   34.8 |     9 |    40 |  9.25 |
 | claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |   37.6 |    36 |    41 |  1.95 |
 
-### red_verified
+### legacy_red_verified
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -160,7 +160,7 @@ Cells declared: 3 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |   32.6 |     5 |    40 | 11.64 |
 | claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |   37.4 |    35 |    41 |  2.19 |
 
-### red_unverified
+### legacy_red_unverified
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -168,7 +168,7 @@ Cells declared: 3 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |    2.2 |     0 |    17 |  5.35 |
 | claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |    0.2 |     0 |     1 |  0.45 |
 
-### tcr_refactor_steps
+### legacy_tcr_refactor_steps
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -208,7 +208,7 @@ Cells declared: 3 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |    0   |     0 |     0 |  0    |
 | claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |    9.4 |     2 |    14 |  4.93 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -216,7 +216,7 @@ Cells declared: 3 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |   36   |    34 |    38 |  1.49 |
 | claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |   36   |    34 |    40 |  2.35 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|

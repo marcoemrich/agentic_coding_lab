@@ -2,7 +2,7 @@
 
 _How does the workflow structure (from oneshot through iterative to strict TDD with subagents) affect code quality, and does TDD strictness make a difference?_
 
-Generated: 2026-09-30T21:56:55Z
+Generated: 2026-10-11T14:41:23Z
 
 Cells declared: 16 · matched runs: 103 · min_replicates: 5
 
@@ -71,7 +71,7 @@ Cells declared: 16 · matched runs: 103 · min_replicates: 5
 | game-of-life-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |  10 |   4.1  |     2 |     6 |  1.29 |
 | game-of-life-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |  10 |   4.8  |     2 |     6 |  1.23 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -92,7 +92,7 @@ Cells declared: 16 · matched runs: 103 · min_replicates: 5
 | game-of-life-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |  10 |  32.1  |    24 |    39 |  4.61 |
 | game-of-life-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |  10 |  31.7  |    28 |    38 |  3.3  |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow                           | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|

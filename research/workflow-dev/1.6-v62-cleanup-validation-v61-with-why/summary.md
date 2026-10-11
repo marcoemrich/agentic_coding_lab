@@ -2,7 +2,7 @@
 
 _Do the three v6.5.1 audit cleanups (consistency, refactor.md decoupling, tdd-experiment-mode reframing) — applied to exact-hybrid-v3-with-why-cc — measurably change workflow behaviour on claim-office, or is exact-hybrid-v4-cleaned-cc a behaviourally equivalent hygiene variant of the new default baseline?_
 
-Generated: 2026-09-30T21:57:04Z
+Generated: 2026-10-11T14:41:47Z
 
 Cells declared: 2 · matched runs: 16 · min_replicates: 8
 
@@ -43,21 +43,21 @@ Cells declared: 2 · matched runs: 16 · min_replicates: 8
 | claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   7 |       530 |     551 |     96.2 |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |       581 |     598 |     97.2 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |  18.5  |     0 |    30 |  8.42 |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |  24.88 |    18 |    37 |  6.9  |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |  15.38 |     0 |    21 |  7.27 |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |  15.12 |     1 |    19 |  5.84 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -78,7 +78,7 @@ Cells declared: 2 · matched runs: 16 · min_replicates: 8
 | claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |   0.38 |     0 |     1 |  0.52 |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |   0.38 |     0 |     2 |  0.74 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|

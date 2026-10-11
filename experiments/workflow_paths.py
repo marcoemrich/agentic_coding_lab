@@ -59,3 +59,30 @@ def is_archived(name: str) -> bool:
     """
     _load()
     return _paths.get(canonical(name), "").startswith("_archive/")
+
+
+# Harness marker dir → the model-name suffix that harness's run-batch.sh branch
+# can resolve. Mirrors the harness detection in run-batch.sh (~line 450), which
+# keys off the same marker dirs.
+_HARNESS_MARKERS = (
+    (".pi", "pi"),
+    (".opencode", "opencode"),
+    (".cursor", "cursor"),
+    (".claude", "claude"),
+)
+
+
+def harness_of(workflow: str) -> str | None:
+    """Which harness runs this workflow, from its marker dir.
+
+    Returns None when the workflow dir is absent (plan generation should not
+    fail on that — run-batch.sh reports it per run).
+
+    Resolved through workflow_dir, so both the current name and any old name
+    an RQ still carries land on the same directory.
+    """
+    wf_dir = workflow_dir(workflow)
+    for marker, harness in _HARNESS_MARKERS:
+        if (wf_dir / marker).is_dir():
+            return harness
+    return None

@@ -2,7 +2,7 @@
 
 _Does the TDD architecture axis (subagents-v2 isolated subagents / single-context-v2 single context / hybrid-v2 hybrid) rank the same way on gpt-5-6-sol as it does on opus-4-7 — and does any architecture, including the current hybrid-v6 generation, beat structureless TDD (inline-tdd-v1) on Sol?_
 
-Generated: 2026-09-27T08:48:56Z
+Generated: 2026-10-11T14:41:41Z
 
 Cells declared: 10 · matched runs: 50 · min_replicates: 5
 
@@ -128,7 +128,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-pi | gpt-5-6-sol  |   5 |   2.57 |  1.8  |  4.25 |  0.98 |
 | game-of-life-example-mapping | exact-subagents-v2-testlist-fix-pi      | gpt-5-6-sol  |   5 |   2.44 |  2    |  2.83 |  0.32 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------|----:|-------:|------:|------:|------:|
@@ -173,7 +173,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-pi | gpt-5-6-sol  |   5 |  141   |   109 |   173 |  24.63 |
 | game-of-life-example-mapping | exact-subagents-v2-testlist-fix-pi      | gpt-5-6-sol  |   5 |  146.8 |   120 |   165 |  18.29 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------|----:|-------:|------:|------:|------:|
@@ -188,7 +188,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-pi | gpt-5-6-sol  |   5 |  13.07 |  8.33 | 26    |  7.29 |
 | game-of-life-example-mapping | exact-subagents-v2-testlist-fix-pi      | gpt-5-6-sol  |   5 |  12.83 |  8.67 | 17    |  3.44 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------|----:|-------:|------:|------:|------:|
@@ -203,7 +203,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-pi | gpt-5-6-sol  |   5 |    9.4 |     8 |    11 |  1.14 |
 | game-of-life-example-mapping | exact-subagents-v2-testlist-fix-pi      | gpt-5-6-sol  |   5 |   22   |    17 |    28 |  4.3  |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------|----:|-------:|------:|------:|------:|

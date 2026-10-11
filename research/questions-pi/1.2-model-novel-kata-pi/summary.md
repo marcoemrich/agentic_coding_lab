@@ -2,7 +2,7 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in correctness and TDD discipline on claim-office-example-mapping with the exact-hybrid-v4-cleaned-pi workflow?_
 
-Generated: 2026-09-27T08:49:06Z
+Generated: 2026-10-11T14:41:36Z
 
 Cells declared: 18 · matched runs: 90 · min_replicates: 5
 
@@ -169,7 +169,7 @@ Cells declared: 18 · matched runs: 90 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5                    |   5 |    4.8 |     4 |     6 |  0.84 |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5-no-thinking        |   5 |    4.8 |     4 |     7 |  1.3  |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model                  |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:----------------------------|----:|-------:|------:|------:|------:|
@@ -238,7 +238,7 @@ Cells declared: 18 · matched runs: 90 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5                    |   5 |    0.8 |     0 |     2 |  0.84 |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5-no-thinking        |   5 |    0.8 |     0 |     4 |  1.79 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model                  |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:----------------------------|----:|-------:|------:|------:|------:|
@@ -261,7 +261,7 @@ Cells declared: 18 · matched runs: 90 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5                    |   5 |   47.4 |     1 |    69 | 26.67 |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5-no-thinking        |   5 |   48.6 |    34 |    62 | 10.09 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model                  |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:----------------------------|----:|-------:|------:|------:|------:|

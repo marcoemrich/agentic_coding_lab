@@ -2,7 +2,7 @@
 
 _Does GPT-6 Sol match or beat GPT-5.6 Sol on the canonical Predictive TDD workflow (exact-ptdd-v1-pi) — in correctness, code quality and cost?_
 
-Generated: 2026-09-27T08:49:10Z
+Generated: 2026-10-11T14:41:34Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -62,7 +62,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-5-6-sol-codex |   5 |      0 |     0 |     0 |     0 |
 | game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-6-sol-codex   |   5 |      0 |     0 |     0 |     0 |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow    | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------|:------------------|----:|-------:|------:|------:|------:|
@@ -98,7 +98,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-5-6-sol-codex |   5 |    4.6 |     4 |     5 |  0.55 |
 | game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-6-sol-codex   |   5 |    4.2 |     4 |     5 |  0.45 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow    | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------|:------------------|----:|-------:|------:|------:|------:|
@@ -107,7 +107,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-5-6-sol-codex |   5 |   5.81 |  5.14 |  7.2  |  0.81 |
 | game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-6-sol-codex   |   5 |   6.83 |  6.2  |  8.67 |  1.03 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow    | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------|:------------------|----:|-------:|------:|------:|------:|
@@ -116,7 +116,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-5-6-sol-codex |   5 |   12.8 |    12 |    14 |  1.1  |
 | game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-6-sol-codex   |   5 |   12.2 |     9 |    15 |  2.17 |
 
-### cc_functions
+### functions
 
 | kata                         | cell_workflow    | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------|:------------------|----:|-------:|------:|------:|------:|
@@ -179,7 +179,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-5-6-sol-codex |   5 |    0   |     0 |     0 |  0    |
 | game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-6-sol-codex   |   5 |    0   |     0 |     0 |  0    |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow    | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------|:------------------|----:|-------:|------:|------:|------:|
@@ -188,7 +188,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-5-6-sol-codex |   5 |   11.2 |    10 |    12 |  0.84 |
 | game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-6-sol-codex   |   5 |   14   |    13 |    15 |  0.71 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow    | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------|:------------------|----:|-------:|------:|------:|------:|

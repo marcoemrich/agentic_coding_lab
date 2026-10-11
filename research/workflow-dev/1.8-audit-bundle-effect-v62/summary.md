@@ -2,7 +2,7 @@
 
 _Does the audit bundle (rationale additions + red-phase hardening) reproduce, on the exact-hybrid-v4-cleaned-cc base, the effects measured in the archived RQ-audit against v6.5-lean (discipline gain, variance shrink, token/wallclock surcharge while preserving correctness)?_
 
-Generated: 2026-09-30T21:57:01Z
+Generated: 2026-10-11T14:41:47Z
 
 Cells declared: 2 · matched runs: 20 · min_replicates: 10
 
@@ -15,14 +15,14 @@ Cells declared: 2 · matched runs: 20 · min_replicates: 10
 
 ## Outcome pivots (per cell)
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                     | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc        | opus-4-7-portkey-no-thinking |  10 |    0.7 |     0 |     7 |  2.21 |
 | game-of-life-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |  10 |    0   |     0 |     0 |  0    |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                     | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -36,7 +36,7 @@ Cells declared: 2 · matched runs: 20 · min_replicates: 10
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc        | opus-4-7-portkey-no-thinking |  10 |       170 |     170 |    100   |
 | game-of-life-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |  10 |       185 |     190 |     97.4 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                     | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -57,7 +57,7 @@ Cells declared: 2 · matched runs: 20 · min_replicates: 10
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc        | opus-4-7-portkey-no-thinking |  10 |    2.4 |     2 |     3 |  0.52 |
 | game-of-life-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |  10 |    2.2 |     2 |     4 |  0.63 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                     | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|

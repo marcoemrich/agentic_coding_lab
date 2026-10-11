@@ -39,17 +39,17 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from workflow_paths import (canonical as canonical_workflow, is_archived,
-                            workflow_dir)
+from workflow_paths import (canonical as canonical_workflow, harness_of,
+                            is_archived, workflow_dir)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RUNS_DIR = REPO_ROOT / "experiments" / "runs"
 WORKFLOWS_DIR = REPO_ROOT / "experiments" / "workflows"
 
 CSV_COLUMNS = [
-    "kata", "stack", "workflow", "cell_workflow", "model", "cell_model", "cli_model",
-    "harness_version", "cell_harness",
-    "thinking", "run_id",
+    "kata", "prompt_style", "stack", "workflow", "cell_workflow", "model", "cell_model",
+    "cli_model", "harness", "harness_version", "cell_harness",
+    "thinking", "run_id", "started_at",
     "exit_code", "exit_reason", "rate_limited", "completed_within_budget",
     "analyze_status",
     "duration_seconds", "total_tokens", "context_utilization_pct",
@@ -378,6 +378,13 @@ def collect_runs(
 # CSV emission
 # -----------------------------------------------------------------------
 
+PROMPT_STYLES = ("example-mapping", "user-story", "prose")
+
+
+def _prompt_style(kata: str) -> str:
+    return next((p for p in PROMPT_STYLES if kata.endswith("-" + p)), "")
+
+
 def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
                    cell_workflow: str = "", cell_harness: str = "") -> dict:
     g = lambda d, *keys: _nested(d, keys)
@@ -417,6 +424,9 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
 
     return {
         "kata":                       metrics.get("kata", ""),
+        # The kata id ends in its prompt variant; the run stores only the
+        # combined id. Empty for a kata without a variant suffix.
+        "prompt_style":               _prompt_style(metrics.get("kata", "")),
         # Historical runs predate explicit stack provenance and are all TS.
         "stack":                      metrics.get("stack", "typescript-vitest"),
         "workflow":                   metrics.get("workflow", ""),
@@ -424,6 +434,9 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
         "model":                      metrics.get("model", ""),
         "cell_model":                 cell_model or metrics.get("model", ""),
         "cli_model":                  metrics.get("cli_model", ""),
+        # Derived from the workflow's marker dir, the same source run-batch.sh
+        # dispatches on; runs carry no harness field of their own.
+        "harness":                    harness_of(metrics.get("workflow", "")) or "",
         # Empty for every run recorded before harness_version was captured
         # (run-batch.sh, 2026-09). An empty value means "not recorded", not
         # "same version" — a CLI period control must read the run date for
@@ -434,6 +447,7 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
         "cell_harness":               cell_harness,
         "thinking":                   metrics.get("thinking"),
         "run_id":                     run_id,
+        "started_at":                 metrics.get("started_at", ""),
         "exit_code":                  rs.get("exit_code"),
         "exit_reason":                exit_reason,
         "rate_limited":               rs.get("rate_limited", False),

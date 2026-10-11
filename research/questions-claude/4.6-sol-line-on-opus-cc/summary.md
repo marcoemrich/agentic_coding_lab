@@ -2,7 +2,7 @@
 
 _Is the native Sol workflow line (basic-sol-tdd, Predictive TDD, Four Rules refactor) better only on Sol/pi, or does it also beat the opus line on Opus with native Claude Code — and does the APP effect that suppresses decomposition on Sol reproduce there?_
 
-Generated: 2026-09-30T21:57:09Z
+Generated: 2026-10-11T14:41:26Z
 
 Cells declared: 6 · matched runs: 31 · min_replicates: 5
 
@@ -19,7 +19,7 @@ Cells declared: 6 · matched runs: 31 · min_replicates: 5
 
 ## Outcome pivots (per cell)
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -30,7 +30,7 @@ Cells declared: 6 · matched runs: 31 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |   6.65 |  5.91 |  7.45 |  0.69 |
 | claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |   7.86 |  5.9  |  9.57 |  1.6  |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -41,7 +41,7 @@ Cells declared: 6 · matched runs: 31 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |   6    |   5   |     7 |  0.71 |
 | claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |   6.7  |   5   |     8 |  1.4  |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -140,7 +140,7 @@ Cells declared: 6 · matched runs: 31 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |       5 |      100 |
 | claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |       5 |      100 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -151,7 +151,7 @@ Cells declared: 6 · matched runs: 31 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |  32.8  |    19 |    50 | 11.19 |
 | claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |  52.4  |    29 |    92 | 27.04 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|

@@ -2,7 +2,7 @@
 
 _How do first-party EXACT Coding TCR, classic TCR, and external TCRDD variants affect correctness, code quality, development behavior, and efficiency for SOL on pi, and how do their native-Git and tool-enforced execution strategies differ?_
 
-Generated: 2026-09-27T08:48:39Z
+Generated: 2026-10-11T14:41:38Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -52,7 +52,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |       5 |      100 |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
 
-### test_blocks
+### legacy_test_blocks
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -63,7 +63,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |   17.2 |    14 |    19 |  1.92 |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |   12.2 |     7 |    16 |  3.56 |
 
-### test_cases_total
+### legacy_test_cases_total
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -74,7 +74,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |   29   |    16 |    36 |  7.68 |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |   19.8 |     6 |    31 |  9.39 |
 
-### test_cases_first_block
+### legacy_test_cases_first_block
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -85,7 +85,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |    1   |     1 |     1 |  0    |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |    0.8 |     0 |     1 |  0.45 |
 
-### red_verified
+### legacy_red_verified
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -96,7 +96,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |   17.2 |    14 |    19 |  1.92 |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |   12.2 |     7 |    16 |  3.56 |
 
-### red_unverified
+### legacy_red_unverified
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -107,7 +107,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |    0   |     0 |     0 |  0    |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |    0   |     0 |     0 |  0    |
 
-### tcr_refactor_steps
+### legacy_tcr_refactor_steps
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -162,7 +162,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |    0   |     0 |     0 |  0    |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |    0   |     0 |     0 |  0    |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -173,7 +173,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |   9.81 |  5.78 | 12.75 |  2.85 |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |   8.31 |  6.6  | 10    |  1.35 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|

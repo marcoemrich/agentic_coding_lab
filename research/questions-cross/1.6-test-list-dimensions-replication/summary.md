@@ -2,7 +2,7 @@
 
 _Does the apparent platform interaction between PTDD v1.5 and v1.6 replicate at n=10 per cell on Claim Office, or was it driven by small-sample variance?_
 
-Generated: 2026-09-27T08:49:04Z
+Generated: 2026-10-11T14:41:31Z
 
 Cells declared: 4 · matched runs: 40 · min_replicates: 10
 
@@ -62,7 +62,7 @@ Cells declared: 4 · matched runs: 40 · min_replicates: 10
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |  599.1 |   308 |   937 | 258.57 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |  220.6 |    74 |   292 |  71.3  |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -71,7 +71,7 @@ Cells declared: 4 · matched runs: 40 · min_replicates: 10
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |   5.95 |  4.89 |  7.95 |  0.93 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |   6.42 |  4.53 |  8    |  1.24 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -80,7 +80,7 @@ Cells declared: 4 · matched runs: 40 · min_replicates: 10
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |   4.7  |   3   |     7 |  1.27 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |   5.3  |   2   |     8 |  1.96 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -89,7 +89,7 @@ Cells declared: 4 · matched runs: 40 · min_replicates: 10
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |   18.9 |     9 |    25 |  5.26 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |   18.4 |    15 |    23 |  2.37 |
 
-### cc_functions
+### functions
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -143,7 +143,7 @@ Cells declared: 4 · matched runs: 40 · min_replicates: 10
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |  714.8 |   646 |   896 | 70.12 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |  633.1 |   546 |   834 | 94.67 |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -152,7 +152,7 @@ Cells declared: 4 · matched runs: 40 · min_replicates: 10
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |  245.7 |   215 |   310 | 32.92 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |  152.4 |   120 |   195 | 28.12 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|

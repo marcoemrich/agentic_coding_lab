@@ -2,7 +2,7 @@
 
 _Does the RQ-1.8 result (the audit bundle stabilizes discipline and is code-quality-neutral on the hybrid-v4 base × game-of-life) generalize to the novel claim-office kata, or does the pattern flip there as it already did for reductions in RQ-1.4?_
 
-Generated: 2026-09-30T21:57:03Z
+Generated: 2026-10-11T14:41:48Z
 
 Cells declared: 2 · matched runs: 16 · min_replicates: 8
 
@@ -36,14 +36,14 @@ Cells declared: 2 · matched runs: 16 · min_replicates: 8
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc        | opus-4-7-portkey-no-thinking |   8 |       8 |      100 |
 | claim-office-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |   8 |       8 |      100 |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                     | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc        | opus-4-7-portkey-no-thinking |   8 |  15.12 |     1 |    19 |  5.84 |
 | claim-office-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |   8 |   0.62 |     0 |     4 |  1.41 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                     | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -57,7 +57,7 @@ Cells declared: 2 · matched runs: 16 · min_replicates: 8
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc        | opus-4-7-portkey-no-thinking |   8 |       581 |     598 |     97.2 |
 | claim-office-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |   8 |       203 |     214 |     94.9 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                     | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -78,7 +78,7 @@ Cells declared: 2 · matched runs: 16 · min_replicates: 8
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc        | opus-4-7-portkey-no-thinking |   8 |   0.38 |     0 |     2 |  0.74 |
 | claim-office-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |   8 |   0.5  |     0 |     2 |  0.76 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                     | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|

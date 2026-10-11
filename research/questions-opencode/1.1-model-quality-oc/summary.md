@@ -2,7 +2,7 @@
 
 _How do five models reachable via the OpenCode harness (Opus 4.7 via Portkey + four non-Anthropic models from the Portkey catalog) differ in code quality and TDD discipline on game-of-life-example-mapping with the exact-single-context-v2-testlist-fix-oc workflow?_
 
-Generated: 2026-09-27T08:48:42Z
+Generated: 2026-10-11T14:41:33Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -74,7 +74,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | kimi-k2-6         |   5 |   4.85 |  3    | 10    |  3    |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey  |   5 |   2.91 |  1.56 |  4.33 |  1    |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -85,7 +85,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | kimi-k2-6         |   5 |   15.2 |     5 |    29 | 12.66 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey  |   5 |   18.6 |    13 |    21 |  3.58 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -96,7 +96,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | kimi-k2-6         |   5 |   9.9  |  5    | 19.5  |  6.09 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey  |   5 |   7.59 |  5    |  9.33 |  1.76 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -195,7 +195,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | kimi-k2-6         |   5 |    7   |     4 |     9 |  2.74 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey  |   5 |    9.4 |     9 |    10 |  0.55 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -206,7 +206,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | kimi-k2-6         |   5 |    5   |     2 |     9 |  2.65 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey  |   5 |    3   |     1 |    10 |  3.94 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|

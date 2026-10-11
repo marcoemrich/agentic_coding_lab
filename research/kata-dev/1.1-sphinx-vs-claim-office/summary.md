@@ -2,7 +2,7 @@
 
 _Can sphinx-score replace claim-office as the lab's correctness kata — does it separate a strong from a weak model as sharply, at a lower cost per data point?_
 
-Generated: 2026-09-30T21:57:06Z
+Generated: 2026-10-11T14:41:19Z
 
 Cells declared: 4 · matched runs: 12 · min_replicates: 6
 
@@ -66,14 +66,14 @@ Cells declared: 4 · matched runs: 12 · min_replicates: 6
 | claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  523   |   411 |   618 | 86.38 |
 | sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |   57.5 |    47 |    74 | 11.18 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:-------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  13.83 |    10 |    18 |  3.19 |
 | sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |   5.83 |     2 |     7 |  1.94 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -101,14 +101,14 @@ Cells declared: 4 · matched runs: 12 · min_replicates: 6
 | claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |     0 |     0 |     0 |
 | sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |     0 |     0 |     0 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:-------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  45.83 |    36 |    57 |  7.08 |
 | sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |  11.67 |    10 |    16 |  2.16 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -122,7 +122,7 @@ Cells declared: 4 · matched runs: 12 · min_replicates: 6
 | claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |       544 |     550 |     98.9 |
 | sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |       139 |     140 |     99.3 |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------|:-------------------|----:|-------:|------:|------:|------:|

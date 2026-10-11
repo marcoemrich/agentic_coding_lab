@@ -2,7 +2,7 @@
 
 _On GPT-6.1 Sol, what does EXACT Coding Predictive TDD buy over a plain inline-TDD baseline, and does isolating the Refactor phase in a subagent add anything on top?_
 
-Generated: 2026-10-05T08:51:23Z
+Generated: 2026-10-11T14:41:35Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -74,7 +74,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-ptdd-v1-pi                     | gpt-6-1-sol-codex |   5 |    0   |     0 |     0 |  0    |
 | game-of-life-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-1-sol-codex |   5 |    0   |     0 |     0 |  0    |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow                        | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -118,7 +118,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-ptdd-v1-pi                     | gpt-6-1-sol-codex |   5 |    5   |     5 |     5 |  0    |
 | game-of-life-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-1-sol-codex |   5 |    4.2 |     4 |     5 |  0.45 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                        | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -129,7 +129,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-ptdd-v1-pi                     | gpt-6-1-sol-codex |   5 |   6    |  4.67 |  7.6  |  1.1  |
 | game-of-life-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-1-sol-codex |   5 |   5.38 |  4.64 |  6.14 |  0.69 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                        | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -140,7 +140,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-ptdd-v1-pi                     | gpt-6-1-sol-codex |   5 |    5   |     3 |   9   |  2.55 |
 | game-of-life-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-1-sol-codex |   5 |    4.1 |     3 |   5   |  0.74 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                        | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -151,7 +151,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-ptdd-v1-pi                     | gpt-6-1-sol-codex |   5 |   10.6 |     9 |    13 |  1.67 |
 | game-of-life-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-1-sol-codex |   5 |   10.4 |     9 |    14 |  2.19 |
 
-### cc_functions
+### functions
 
 | kata                         | cell_workflow                        | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:------------------|----:|-------:|------:|------:|------:|

@@ -2,7 +2,7 @@
 
 _On GPT-5.6 SOL via pi, does the independent-dimensions test-list cross-check improve the current SOL PTDD default's external completeness without sacrificing its efficiency or product quality?_
 
-Generated: 2026-09-27T09:15:48Z
+Generated: 2026-10-11T14:41:38Z
 
 Cells declared: 2 · matched runs: 20 · min_replicates: 5
 
@@ -50,28 +50,28 @@ Cells declared: 2 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |  218.3 |   113 |   279 | 47.84 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |  10 |  220.6 |    74 |   292 | 71.3  |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |   5.72 |  5.21 |  6.78 |  0.52 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |  10 |   6.42 |  4.53 |  8    |  1.24 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |   4.35 |   3.5 |     5 |  0.58 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |  10 |   5.3  |   2   |     8 |  1.96 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |   16.8 |    15 |    20 |  1.69 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |  10 |   18.4 |    15 |    23 |  2.37 |
 
-### cc_functions
+### functions
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -113,14 +113,14 @@ Cells declared: 2 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |  578.2 |   529 |   660 | 35.65 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |  10 |  633.1 |   546 |   834 | 94.67 |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |  150.2 |   101 |   196 | 27.18 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |  10 |  152.4 |   120 |   195 | 28.12 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|

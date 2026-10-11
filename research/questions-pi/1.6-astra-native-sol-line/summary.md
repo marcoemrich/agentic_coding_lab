@@ -2,7 +2,7 @@
 
 _Does the natively-built Sol workflow line (basic-sol-tdd, Predictive TDD) transfer to GPT-6 Astra — or is its advantage over the Opus-derived EXACT line a property of Sol?_
 
-Generated: 2026-09-27T08:49:14Z
+Generated: 2026-10-11T14:41:37Z
 
 Cells declared: 8 · matched runs: 40 · min_replicates: 5
 
@@ -60,7 +60,7 @@ Cells declared: 8 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-5-6-sol-codex             |   5 |       5 |      100 |
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-6-astra-codex-no-thinking |   5 |       5 |      100 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
@@ -73,7 +73,7 @@ Cells declared: 8 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-5-6-sol-codex             |   5 |   7.75 |  6.77 |  9.71 |  1.2  |
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-6-astra-codex-no-thinking |   5 |   7.34 |  4    | 15    |  4.38 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
@@ -86,7 +86,7 @@ Cells declared: 8 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-5-6-sol-codex             |   5 |    5.9 |     5 |   9   |  1.75 |
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-6-astra-codex-no-thinking |   5 |    6.9 |     3 |  15   |  4.67 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
@@ -164,7 +164,7 @@ Cells declared: 8 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-5-6-sol-codex             |   5 |  618   |   491 |   867 | 145.16 |
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-6-astra-codex-no-thinking |   5 |  440.4 |   403 |   491 |  34.33 |
 
-### cc_functions
+### functions
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
@@ -177,7 +177,7 @@ Cells declared: 8 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-5-6-sol-codex             |   5 |   11.6 |     7 |    20 |  5.18 |
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-6-astra-codex-no-thinking |   5 |    5.6 |     4 |     7 |  1.14 |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
@@ -190,7 +190,7 @@ Cells declared: 8 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-5-6-sol-codex             |   5 |  161   |   112 |   268 | 61.76 |
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-6-astra-codex-no-thinking |   5 |   72.2 |    63 |    84 |  7.82 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
@@ -203,7 +203,7 @@ Cells declared: 8 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-5-6-sol-codex             |   5 |   33.2 |    30 |    37 |  3.11 |
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-6-astra-codex-no-thinking |   5 |   39.4 |    35 |    44 |  3.78 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|

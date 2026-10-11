@@ -2,7 +2,7 @@
 
 _How strongly do the available models (Sonnet 4.6, Opus 4.6, Opus 4.7, Opus 4.8, Fable 5 — each with/without thinking) differ in code quality on a training-known kata under the strongest workflow?_
 
-Generated: 2026-09-30T21:56:53Z
+Generated: 2026-10-11T14:41:21Z
 
 Cells declared: 12 · matched runs: 44 · min_replicates: 3
 
@@ -59,7 +59,7 @@ Cells declared: 12 · matched runs: 44 · min_replicates: 3
 | game-of-life-example-mapping | exact-subagents-v1-cc | sonnet-4-6                   |   3 |   5.67 |     3 |     8 |  2.52 |
 | game-of-life-example-mapping | exact-subagents-v1-cc | sonnet-4-6-no-thinking       |   3 |   3.33 |     3 |     4 |  0.58 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow         | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------|:-----------------------------|----:|-------:|------:|------:|------:|
@@ -76,7 +76,7 @@ Cells declared: 12 · matched runs: 44 · min_replicates: 3
 | game-of-life-example-mapping | exact-subagents-v1-cc | sonnet-4-6                   |   3 |  21.67 |    16 |    33 |  9.81 |
 | game-of-life-example-mapping | exact-subagents-v1-cc | sonnet-4-6-no-thinking       |   3 |  15    |    10 |    24 |  7.81 |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow         | cell_model                   |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------|:-----------------------------|----:|-------:|------:|------:|------:|

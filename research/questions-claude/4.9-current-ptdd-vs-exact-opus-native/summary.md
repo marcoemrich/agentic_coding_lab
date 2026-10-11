@@ -2,7 +2,7 @@
 
 _On native Opus 5, how does the current SOL Predictive-TDD workflow compare with the default EXACT Coding workflow on correctness, decomposition, development behavior, and efficiency?_
 
-Generated: 2026-09-30T21:57:02Z
+Generated: 2026-10-11T14:41:27Z
 
 Cells declared: 2 · matched runs: 28 · min_replicates: 5
 
@@ -36,21 +36,21 @@ Cells declared: 2 · matched runs: 28 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc           | opus-5-no-thinking |  18 |      18 |      100 |
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |      10 |      100 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc           | opus-5-no-thinking |  18 |   3.81 |  2.64 |  5    |  0.64 |
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |   5.53 |  4.54 |  6.65 |  0.65 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc           | opus-5-no-thinking |  18 |   2    |     2 |     2 |  0    |
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |   4.55 |     3 |     6 |  1.12 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -92,7 +92,7 @@ Cells declared: 2 · matched runs: 28 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc           | opus-5-no-thinking |  18 |  859.5 |   725 |  1114 | 99.25 |
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |  661.7 |   632 |   698 | 26.47 |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -106,14 +106,14 @@ Cells declared: 2 · matched runs: 28 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc           | opus-5-no-thinking |  18 | 765.39 |   587 |  1009 | 111.87 |
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 | 457    |   302 |   718 | 131.76 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc           | opus-5-no-thinking |  18 |  45.89 |    38 |    52 |  4.93 |
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |  54.3  |     1 |    93 | 26.46 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                             | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|------:|------:|------:|

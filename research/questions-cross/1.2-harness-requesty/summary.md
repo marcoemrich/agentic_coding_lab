@@ -2,7 +2,7 @@
 
 _How does switching harness (Claude Code vs OpenCode vs pi) affect correctness, code quality, TDD discipline and cost when model (opus-4-8 via Requesty), workflow intention and prompt style are held constant?_
 
-Generated: 2026-09-30T21:57:11Z
+Generated: 2026-10-11T14:41:29Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -96,7 +96,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 |    8.8 |     5 |    11 |  2.49 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |    8   |     6 |    10 |  1.87 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow              | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -129,7 +129,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 |    3.2 |     2 |     4 |  1.1  |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |    3.4 |     2 |     5 |  1.34 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow              | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -151,7 +151,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 |        76 |      84 |     90.5 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |        40 |      41 |     97.6 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow              | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:------------------|----:|-------:|------:|------:|------:|

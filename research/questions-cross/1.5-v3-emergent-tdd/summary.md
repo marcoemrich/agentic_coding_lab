@@ -2,7 +2,7 @@
 
 _Under a bare 'use TDD' instruction that prescribes no phase markers (inline-tdd-v1), do models actually work test-first and refactor — and how far apart do the models sit once the evidence is hand-validated?_
 
-Generated: 2026-09-27T08:48:44Z
+Generated: 2026-10-11T14:41:30Z
 
 Cells declared: 10 · matched runs: 49 · min_replicates: 3
 
@@ -23,7 +23,7 @@ Cells declared: 10 · matched runs: 49 · min_replicates: 3
 
 ## Outcome pivots (per cell)
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow             | cell_model             |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------|:-----------------------|----:|-------:|------:|------:|------:|
@@ -38,7 +38,7 @@ Cells declared: 10 · matched runs: 49 · min_replicates: 3
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc | sonnet-4-6-no-thinking |   3 |   1    |     1 |     1 |  0    |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-pi | gpt-5-6-sol            |   5 |   4.2  |     2 |     6 |  1.48 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow             | cell_model             |   n |   mean |   min |   max |   std |
 |:-----------------------------|:--------------------------|:-----------------------|----:|-------:|------:|------:|------:|

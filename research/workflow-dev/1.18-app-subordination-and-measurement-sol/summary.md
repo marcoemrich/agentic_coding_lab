@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, does subordinating APP mass to the Four Rules recover the decomposition that the unsubordinated brief suppresses — and does adding pre/post measurement improve the result further, at what cost in duration as the measurement moves from the model to deterministic tools?_
 
-Generated: 2026-09-27T08:48:45Z
+Generated: 2026-10-11T14:41:42Z
 
 Cells declared: 5 · matched runs: 25 · min_replicates: 5
 
@@ -18,7 +18,7 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 
 ## Outcome pivots (per cell)
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                       | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -28,7 +28,7 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.2.2-measured-eslint-pi | gpt-5-6-sol-codex |   5 |   7.88 |  6.88 |  9.71 |  1.12 |
 | claim-office-example-mapping | exact-sol-v1.2.3-measured-tool-pi   | gpt-5-6-sol-codex |   5 |   7.11 |  5.91 |  8    |  0.81 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                       | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -38,7 +38,7 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.2.2-measured-eslint-pi | gpt-5-6-sol-codex |   5 |    6.4 |   5   |   8   |  1.34 |
 | claim-office-example-mapping | exact-sol-v1.2.3-measured-tool-pi   | gpt-5-6-sol-codex |   5 |    6   |   4   |   7.5 |  1.46 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                       | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -98,7 +98,7 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.2.2-measured-eslint-pi | gpt-5-6-sol-codex |   5 |  581.2 |   508 |   646 | 63.59 |
 | claim-office-example-mapping | exact-sol-v1.2.3-measured-tool-pi   | gpt-5-6-sol-codex |   5 |  534.4 |   497 |   570 | 27.46 |
 
-### cc_functions
+### functions
 
 | kata                         | cell_workflow                       | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -108,7 +108,7 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.2.2-measured-eslint-pi | gpt-5-6-sol-codex |   5 |    9.2 |     7 |    11 |  1.79 |
 | claim-office-example-mapping | exact-sol-v1.2.3-measured-tool-pi   | gpt-5-6-sol-codex |   5 |    8.6 |     6 |    11 |  1.95 |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow                       | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -148,7 +148,7 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.2.2-measured-eslint-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
 | claim-office-example-mapping | exact-sol-v1.2.3-measured-tool-pi   | gpt-5-6-sol-codex |   5 |       5 |      100 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                       | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -158,7 +158,7 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.2.2-measured-eslint-pi | gpt-5-6-sol-codex |   5 |   32.4 |    23 |    40 |  6.43 |
 | claim-office-example-mapping | exact-sol-v1.2.3-measured-tool-pi   | gpt-5-6-sol-codex |   5 |   34.8 |    30 |    37 |  2.95 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                       | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------|:------------------|----:|-------:|------:|------:|------:|

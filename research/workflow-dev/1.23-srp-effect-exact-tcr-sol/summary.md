@@ -2,7 +2,7 @@
 
 _How does the same domain-boundary refactoring trial interact with SOL Predictive TDD versus EXACT TCR, and can a subordinate APP review lower Code Mass in the strongest TCR trial arm without erasing its decomposition, correctness, discipline, or efficiency?_
 
-Generated: 2026-09-27T09:15:49Z
+Generated: 2026-10-11T14:41:45Z
 
 Cells declared: 14 · matched runs: 71 · min_replicates: 5
 
@@ -84,7 +84,7 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
 | game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |       5 |      100 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -103,7 +103,7 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |   5.63 |  4.14 |  8.25 |  1.8  |
 | game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |   5.19 |  3.75 |  5.8  |  0.84 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -122,7 +122,7 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |   4.6  |   3   |   6.5 |  1.39 |
 | game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |   3.7  |   2   |   5   |  1.2  |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -141,7 +141,7 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |   10.8 |     6 |    17 |  4.32 |
 | game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |   10.2 |     6 |    14 |  2.86 |
 
-### cc_functions
+### functions
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -293,7 +293,7 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |  165.8 |   156 |   182 | 10.26 |
 | game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |  163.2 |   142 |   187 | 19.36 |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -331,7 +331,7 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |  51.8  |    45 |    55 |  4.15 |
 | game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |  43.4  |    37 |    48 |  4.04 |
 
-### test_blocks
+### legacy_test_blocks
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -350,7 +350,7 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |   12.4 |    12 |    13 |  0.55 |
 | game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |   11.4 |    11 |    12 |  0.55 |
 
-### red_verified
+### legacy_red_verified
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -369,7 +369,7 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |  11.8  |    11 |    13 |  0.84 |
 | game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |  11.2  |    11 |    12 |  0.45 |
 
-### red_unverified
+### legacy_red_unverified
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -388,7 +388,7 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |   0.6  |     0 |     1 |  0.55 |
 | game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |   0.2  |     0 |     1 |  0.45 |
 
-### tcr_refactor_steps
+### legacy_tcr_refactor_steps
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -483,7 +483,7 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |    3   |     2 |     4 |  1    |
 | game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |    2.6 |     2 |     4 |  0.89 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -502,7 +502,7 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |  10    |     9 |    11 |  0.71 |
 | game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |   9.6  |     8 |    10 |  0.89 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|------:|------:|------:|

@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, how does GPT-6 Astra compare to the strongest references reachable on the pi harness — Sol on the same route, Sol on Requesty in both reasoning states, and Opus 5 on Requesty — at constant harness, workflow, kata and prompt style?_
 
-Generated: 2026-09-27T08:49:11Z
+Generated: 2026-10-11T14:41:37Z
 
 Cells declared: 5 · matched runs: 25 · min_replicates: 5
 
@@ -58,7 +58,7 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-6-astra-codex-no-thinking |   5 |   3.15 |  2.6  |  3.4  |  0.31 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty               |   5 |   1.31 |  1.18 |  1.75 |  0.24 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
@@ -68,7 +68,7 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-6-astra-codex-no-thinking |   5 |   19.4 |    17 |    25 |  3.21 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty               |   5 |    5.8 |     2 |    11 |  3.63 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
@@ -78,7 +78,7 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-6-astra-codex-no-thinking |   5 |  18    | 11    |  25   |  5    |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty               |   5 |   2.62 |  2    |   3.5 |  0.62 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
@@ -178,7 +178,7 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-6-astra-codex-no-thinking |   5 |   14   |    13 |    15 |  0.71 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty               |   5 |   10.2 |    10 |    11 |  0.45 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
@@ -188,7 +188,7 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-6-astra-codex-no-thinking |   5 |   14   |    13 |    15 |  0.71 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty               |   5 |   10.2 |    10 |    11 |  0.45 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|

@@ -2,7 +2,7 @@
 
 _How do five models reachable via the OpenCode harness differ in correctness and TDD discipline on claim-office-example-mapping with the exact-single-context-v2-testlist-fix-oc workflow?_
 
-Generated: 2026-09-27T08:48:43Z
+Generated: 2026-10-11T14:41:34Z
 
 Cells declared: 8 · matched runs: 40 · min_replicates: 5
 
@@ -99,7 +99,7 @@ Cells declared: 8 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | mistral-medium-3-5 |   5 |   34.6 |    27 |    44 |  6.8  |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey   |   5 |    7.6 |     6 |     9 |  1.14 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model         |   n |   mean |   min |   max |    std |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|------:|------:|-------:|
@@ -138,7 +138,7 @@ Cells declared: 8 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | mistral-medium-3-5 |   5 |   23.8 |    19 |    32 |  5.63 |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey   |   5 |    0.8 |     0 |     1 |  0.45 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -151,7 +151,7 @@ Cells declared: 8 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | mistral-medium-3-5 |   5 |    1.4 |     1 |     2 |  0.55 |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey   |   5 |    1.2 |     1 |     2 |  0.45 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|------:|------:|------:|

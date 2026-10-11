@@ -2,7 +2,7 @@
 
 _Across Game of Life and Sphinx Score on GPT-5.6 SOL/pi, does the v1.6 independent-dimensions test-list cross-check justify its overhead relative to the v1.5 SOL default?_
 
-Generated: 2026-09-27T08:48:45Z
+Generated: 2026-10-11T14:41:38Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -62,7 +62,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |   5 |  117.4 |   110 |   131 |  8.02 |
 | sphinx-score-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |   5 |  118.8 |   108 |   133 |  9.78 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -71,7 +71,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |   5 |   4.71 |  4    |   5.4 |  0.5  |
 | sphinx-score-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |   5 |   5.34 |  4.8  |   6.5 |  0.73 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -80,7 +80,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |   5 |    4.6 |   3   |     6 |  1.14 |
 | sphinx-score-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |   5 |    5.2 |   4   |     6 |  0.84 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -89,7 +89,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |   5 |    7.2 |     6 |     9 |  1.64 |
 | sphinx-score-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |   5 |    8.2 |     7 |    10 |  1.3  |
 
-### cc_functions
+### functions
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -143,7 +143,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |   5 |  143.8 |   117 |   159 | 18.62 |
 | sphinx-score-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |   5 |  150   |   139 |   166 | 11.25 |
 
-### cc_loc
+### production_loc
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|
@@ -152,7 +152,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |   5 |   41   |    37 |    50 |  5.34 |
 | sphinx-score-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |   5 |   47.6 |    38 |    58 |  7.27 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                             | cell_model        |   n |   mean |   min |   max |   std |
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|------:|------:|------:|

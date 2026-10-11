@@ -2,7 +2,7 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in code quality and TDD discipline on game-of-life-example-mapping with the exact-hybrid-v4.2-phase-continuation-pi workflow?_
 
-Generated: 2026-09-27T08:48:46Z
+Generated: 2026-10-11T14:41:34Z
 
 Cells declared: 12 · matched runs: 60 · min_replicates: 5
 
@@ -110,7 +110,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b       |   5 |   1.33 |  0    |  6.67 |  2.98 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5         |   5 |   2.2  |  1.55 |  2.67 |  0.55 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                           | cell_model       |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-----------------|----:|-------:|------:|------:|------:|
@@ -127,7 +127,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b       |   5 |   46.6 |    24 |    60 | 13.58 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5         |   5 |   19.6 |    14 |    27 |  5.68 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model       |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-----------------|----:|-------:|------:|------:|------:|
@@ -144,7 +144,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b       |   5 |  34.5  | 13.5  | 60    | 19.36 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5         |   5 |   7.94 |  6.38 | 10.5  |  1.69 |
 
-### cc_median_loc_per_function
+### median_loc_per_function
 
 | kata                         | cell_workflow                           | cell_model       |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-----------------|----:|-------:|------:|------:|------:|
@@ -297,7 +297,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b       |   5 |    8.8 |     7 |    10 |  1.3  |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5         |   5 |    9.8 |     9 |    10 |  0.45 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                           | cell_model       |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-----------------|----:|-------:|------:|------:|------:|
@@ -314,7 +314,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b       |   5 |    7.4 |     1 |    10 |  3.65 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5         |   5 |   14.8 |     9 |    18 |  4.09 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                           | cell_model       |   n |   mean |   min |   max |   std |
 |:-----------------------------|:----------------------------------------|:-----------------|----:|-------:|------:|------:|------:|

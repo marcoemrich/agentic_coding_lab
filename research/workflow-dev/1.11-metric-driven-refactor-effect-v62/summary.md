@@ -2,7 +2,7 @@
 
 _Does a refactor agent that measures deterministic metrics itself pre/post (ESLint smells, SonarJS cognitive complexity, McCabe cyclomatic complexity) and reports APP mass alongside them improve code quality on claim-office relative to the baseline exact-hybrid-v4-cleaned-cc workflow — without damaging correctness or TDD discipline?_
 
-Generated: 2026-09-30T21:57:06Z
+Generated: 2026-10-11T14:41:40Z
 
 Cells declared: 2 · matched runs: 13 · min_replicates: 5
 
@@ -43,14 +43,14 @@ Cells declared: 2 · matched runs: 13 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-7-no-thinking |   8 |   1.53 |  1.33 |  2    |  0.2  |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-no-thinking |   5 |   1.4  |  1.23 |  1.57 |  0.13 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-7-no-thinking |   8 |  12.38 |    10 |    15 |  1.41 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-no-thinking |   5 |  13    |    10 |    17 |  3.08 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -78,14 +78,14 @@ Cells declared: 2 · matched runs: 13 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-7-no-thinking |   8 |  878.5 |   783 |  1066 | 91.44 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-no-thinking |   5 |  804.6 |   730 |   876 | 64.33 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-7-no-thinking |   8 |  24.88 |    18 |    37 |  6.9  |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-no-thinking |   5 |  30.4  |    22 |    42 |  8.79 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
@@ -99,7 +99,7 @@ Cells declared: 2 · matched runs: 13 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-7-no-thinking |   8 |       581 |     598 |     97.2 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-no-thinking |   5 |       360 |     402 |     89.6 |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|

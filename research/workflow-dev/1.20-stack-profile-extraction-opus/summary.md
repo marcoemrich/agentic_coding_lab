@@ -2,7 +2,7 @@
 
 _Can all remaining TypeScript/Vitest-specific instructions be moved from the Opus/Hybrid workflow core, phase commands and refactor agent into its existing stack profile without changing correctness, TDD discipline, refactoring behaviour, code quality or cost?_
 
-Generated: 2026-09-30T21:56:55Z
+Generated: 2026-10-11T14:41:43Z
 
 Cells declared: 4 · matched runs: 34 · min_replicates: 5
 
@@ -44,7 +44,7 @@ Cells declared: 4 · matched runs: 34 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |   6 |       6 |      100 |
 | game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |       5 |      100 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -53,7 +53,7 @@ Cells declared: 4 · matched runs: 34 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |   6 |  10.33 |     9 |    13 |  1.37 |
 | game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |   8.8  |     5 |    13 |  3.63 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -71,7 +71,7 @@ Cells declared: 4 · matched runs: 34 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |   6 |       124 |     124 |    100   |
 | game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |        84 |      84 |    100   |
 
-### tests_passed_immediately
+### legacy_tests_passed_immediately
 
 | kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -80,7 +80,7 @@ Cells declared: 4 · matched runs: 34 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |   6 |   7.33 |     6 |     9 |  1.03 |
 | game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |   4.6  |     1 |     8 |  3.21 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -89,7 +89,7 @@ Cells declared: 4 · matched runs: 34 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |   6 |   4.23 |  2.71 |  5.33 |  1.19 |
 | game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |   4.13 |  1.83 |  6.8  |  2.06 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|

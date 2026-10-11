@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, how does GPT-5.3 Codex Spark compare to GPT-5.6 Sol on the two native Sol workflows — does the smaller, cheaper-tier model hold correctness and code quality, or does it only look competitive because the workflow carries it?_
 
-Generated: 2026-09-27T08:49:07Z
+Generated: 2026-10-11T14:41:36Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -71,7 +71,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-3-codex-spark |   5 |    4.4 |     2 |     8 |  2.3  |
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex   |   5 |    2.6 |     1 |     4 |  1.14 |
 
-### cc_longest_function
+### longest_function
 
 | kata                         | cell_workflow              | cell_model          |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:--------------------|----:|-------:|------:|------:|------:|
@@ -80,7 +80,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-3-codex-spark |   5 |   21.2 |    10 |    29 |  8.04 |
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex   |   5 |   16.2 |     7 |    21 |  5.63 |
 
-### cc_avg_loc_per_function
+### avg_loc_per_function
 
 | kata                         | cell_workflow              | cell_model          |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:--------------------|----:|-------:|------:|------:|------:|
@@ -107,7 +107,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-3-codex-spark |   5 |  151.8 |   122 |   184 | 22.79 |
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex   |   5 |  136   |   124 |   150 | 10.02 |
 
-### cycle_count
+### legacy_cycle_count
 
 | kata                         | cell_workflow              | cell_model          |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:--------------------|----:|-------:|------:|------:|------:|
@@ -116,7 +116,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-3-codex-spark |   5 |   13.4 |    11 |    22 |  4.83 |
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex   |   5 |   11.2 |    11 |    12 |  0.45 |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                         | cell_workflow              | cell_model          |   n |   mean |   min |   max |   std |
 |:-----------------------------|:---------------------------|:--------------------|----:|-------:|------:|------:|------:|

@@ -2,7 +2,7 @@
 
 _On Java 17 with JUnit 5 and Maven, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness and code quality for GPT-5.6 SOL and Opus 5?_
 
-Generated: 2026-09-30T21:57:13Z
+Generated: 2026-10-11T14:41:32Z
 
 Cells declared: 12 · matched runs: 60 · min_replicates: 5
 
@@ -348,7 +348,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |    4.1 |   2   |   5   |  1.34 |
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |    3   |   2   |   4.5 |  1.06 |
 
-### test_blocks
+### legacy_test_blocks
 
 | kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -365,7 +365,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |    0   |     0 |     0 |  0    |
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   15.2 |    13 |    18 |  2.17 |
 
-### test_cases_total
+### legacy_test_cases_total
 
 | kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -382,7 +382,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |    0   |     0 |     0 |  0    |
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   27.8 |    25 |    32 |  3.03 |
 
-### test_cases_first_block
+### legacy_test_cases_first_block
 
 | kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -399,7 +399,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |    0   |     0 |     0 |  0    |
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   13.8 |    12 |    16 |  1.64 |
 
-### red_verified
+### legacy_red_verified
 
 | kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -416,7 +416,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |    0   |     0 |     0 |  0    |
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |   15.2 |    13 |    18 |  2.17 |
 
-### red_unverified
+### legacy_red_unverified
 
 | kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
@@ -433,7 +433,7 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |    0   |     0 |     0 |  0    |
 | game-of-life-java-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |    0   |     0 |     0 |  0    |
 
-### refactorings_applied
+### legacy_refactorings_applied
 
 | kata                              | cell_workflow                        | cell_model         |   n |   mean |   min |   max |   std |
 |:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|------:|------:|------:|
