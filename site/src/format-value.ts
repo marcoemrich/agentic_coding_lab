@@ -99,12 +99,8 @@ const unitFormatters: Record<string, (cell: NumericCell) => FormattedValue> = {
 
 export function formatValue(metric: string, cell: ValueCell): FormattedValue {
   if (cell.kind === "num") {
-    const unitFormatter = unitFormatters[metric];
-    if (unitFormatter) return unitFormatter(cell);
-    return isPercentageMetric(metric) ? formatPercentage(cell) : formatPlainNumber(cell);
+    const formatter = unitFormatters[metric] ?? (isPercentageMetric(metric) ? formatPercentage : formatPlainNumber);
+    return formatter(cell);
   }
-  if (cell.kind === "bool") {
-    return formatCountedOutcome(cell.value, cell.k, cell.n);
-  }
-  return formatCountedOutcome(cell.value, cell.k, cell.t);
+  return formatCountedOutcome(cell.value, cell.k, cell.kind === "bool" ? cell.n : cell.t);
 }
