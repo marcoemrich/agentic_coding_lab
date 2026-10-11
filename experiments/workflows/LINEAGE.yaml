@@ -70,6 +70,13 @@
 #                kind of workflow this is, its arm and what sets it apart.
 #                No RQ ids, no metric values. Long text may switch the entry
 #                to block style.
+#                Write it so it stays true as the lab moves on: no "default",
+#                "current", "latest" or other standing — that is status: and
+#                model-recommendation-matrix.md. A workflow dir is frozen, so a
+#                description of what it does never has to change.
+#                Name the building blocks (test list, dimension cross-check,
+#                refactoring rules, context architecture); do not explain
+#                established methods such as Red-Green-Refactor or Predictive TDD.
 #   note         Lab-facing remark (driver RQ, measured effect, caveat).
 #                Never shown on the results site.
 #
@@ -83,40 +90,126 @@ categories:
     prefix: exact
     origin: {harness: claude-code, model: sonnet/opus}
     workflows:
-      exact-subagents-v1-cc:                      {arm: subagents,      version: "1",     harness: cc,     parent: null,                                   status: superseded, alias: [v4-exact-subagents]}
-      exact-subagents-v2-testlist-fix-cc:         {arm: subagents,      version: "2",     harness: cc,     parent: exact-subagents-v1-cc,                  status: trunk,      alias: [v4.1-testlist-scope-fix]}
+      exact-subagents-v1-cc:                      {arm: subagents,      version: "1",     harness: cc,     parent: null,                                   status: superseded, alias: [v4-exact-subagents],
+        description: "An EXACT Coding workflow for Claude Code (arm: subagents). The main context
+          only orchestrates: test list, Red, Green and Refactor each run in their own isolated
+          subagent with a fresh context, and get the file paths and current state from the
+          orchestrator. The test list is limited to base functionality and not cross-checked. Red
+          predicts compilation and runtime failures, and Refactor must attempt an improvement every
+          cycle under the Four Rules of Simple Design and APP mass."}
+      exact-subagents-v2-testlist-fix-cc:         {arm: subagents,      version: "2",     harness: cc,     parent: exact-subagents-v1-cc,                  status: trunk,      alias: [v4.1-testlist-scope-fix],
+        description: "A variant of exact-subagents-v1 (arm: subagents) that changes the test list:
+          it covers every rule, example and clarifying question in the specification, with expected
+          values in each description, instead of base functionality only. It also removes the generic
+          project-convention sections (hexagonal architecture, named exports, arrow functions) from
+          the phase subagents. Every phase stays isolated in its own subagent, and the refactoring
+          rules are unchanged."}
       exact-subagents-v2-testlist-fix-pi:         {arm: subagents,      version: "2",     harness: pi,     parent: exact-subagents-v2-testlist-fix-cc,     status: trunk,      alias: [v4.1-testlist-scope-fix-pi], port_of: exact-subagents-v2-testlist-fix-cc}
 
-      exact-single-context-v1-cc:                 {arm: single-context, version: "1",     harness: cc,     parent: null,                                   status: superseded, alias: [v5-exact-single-context]}
-      exact-single-context-v2-testlist-fix-cc:    {arm: single-context, version: "2",     harness: cc,     parent: exact-single-context-v1-cc,             status: trunk,      alias: [v5.1-testlist-scope-fix]}
-      exact-single-context-v2-testlist-fix-oc:    {arm: single-context, version: "2",     harness: oc,     parent: exact-single-context-v2-testlist-fix-cc, status: trunk,     alias: [v5.1-testlist-scope-fix-oc], port_of: exact-single-context-v2-testlist-fix-cc}
+      exact-single-context-v1-cc:                 {arm: single-context, version: "1",     harness: cc,     parent: null,                                   status: superseded, alias: [v5-exact-single-context],
+        description: "An EXACT Coding workflow for Claude Code (arm: single-context). It starts with
+          a short, inactive test list limited to base functionality, ordered simple to complex and not
+          cross-checked, then works through it one test at a time. Red predicts the compilation
+          failure and then the runtime failure before each test run. Refactor must attempt at least
+          one improvement per cycle, using the Four Rules of Simple Design and APP mass. All four
+          phases are slash commands running in one shared context, without subagents."}
+      exact-single-context-v2-testlist-fix-cc:    {arm: single-context, version: "2",     harness: cc,     parent: exact-single-context-v1-cc,             status: trunk,      alias: [v5.1-testlist-scope-fix],
+        description: "A variant of exact-single-context-v1 (arm: single-context) that changes one
+          thing: the test list covers every rule, example and clarifying question in the specification
+          instead of base functionality only. Each test description carries the expected value, and
+          the finished list is reviewed against the spec. The phase commands are reworded and
+          expanded, but the phase structure, the shared context and the refactoring rules are
+          unchanged."}
+      exact-single-context-v2-testlist-fix-oc:    {arm: single-context, version: "2",     harness: oc,     parent: exact-single-context-v2-testlist-fix-cc, status: trunk,     alias: [v5.1-testlist-scope-fix-oc], port_of: exact-single-context-v2-testlist-fix-cc,
+        description: "The OpenCode port of exact-single-context-v2-testlist-fix (arm:
+          single-context). Same method and content as the Claude Code version; only the packaging
+          differs: OpenCode skills and an AGENTS.md instead of slash commands and rules, plain-text
+          markers instead of emoji, and the subagent (task) tool disabled."}
       exact-single-context-v2-testlist-fix-pi:    {arm: single-context, version: "2",     harness: pi,     parent: exact-single-context-v2-testlist-fix-cc, status: trunk,     alias: [v5.1-testlist-scope-fix-pi], port_of: exact-single-context-v2-testlist-fix-cc}
-      exact-single-context-v3-no-subagent-cc:     {arm: single-context, version: "3",     harness: cc,     parent: exact-hybrid-v8-no-end-refactor-cc,     status: branch,     alias: [v5.2-no-subagent-cc], note: "Arm jump: the parent is the hybrid arm. Minimal workflow that is still EXACT Coding — all four building blocks, shared context, no isolated subagent. RQ-1.15 F-1.4 measures it at least as good as exact-hybrid-v8."}
+      exact-single-context-v3-no-subagent-cc:     {arm: single-context, version: "3",     harness: cc,     parent: exact-hybrid-v8-no-end-refactor-cc,     status: branch,     alias: [v5.2-no-subagent-cc], note: "Arm jump: the parent is the hybrid arm. Minimal workflow that is still EXACT Coding — all four building blocks, shared context, no isolated subagent. RQ-1.15 F-1.4 measures it at least as good as exact-hybrid-v8.",
+        description: "An EXACT Coding workflow for Claude Code (arm: single-context). It starts with
+          a complete, inactive test list covering every rule, example and clarifying question in the
+          specification, not cross-checked against independent dimensions, then runs
+          Red–Green–Refactor one test at a time with failure predictions in Red. Each cycle must
+          attempt a refactoring under the Four Rules of Simple Design; APP mass only breaks ties and
+          never outranks intent. All phases are skills in one shared context, with no subagents and no
+          final whole-codebase refactoring pass."}
 
-      exact-hybrid-v1-cc:                         {arm: hybrid,         version: "1",     harness: cc,     parent: null,                                   status: superseded, alias: [v6-hybrid]}
-      exact-hybrid-v2-testlist-fix-cc:            {arm: hybrid,         version: "2",     harness: cc,     parent: exact-hybrid-v1-cc,                     status: superseded, alias: [v6.1-hybrid-testlist-scope-fix], note: "Former correctness-oriented Opus default; replaced by exact-ptdd-v1-cc as a much cheaper universal default. Remains a reproducible decomposition reference."}
+      exact-hybrid-v1-cc:                         {arm: hybrid,         version: "1",     harness: cc,     parent: null,                                   status: superseded, alias: [v6-hybrid],
+        description: "An EXACT Coding workflow for Claude Code (arm: hybrid). It starts with a
+          short, inactive test list that covers base functionality only and leaves out edge cases and
+          advanced features; the list is not cross-checked. Test list, Red (with compile and runtime
+          predictions) and Green run as slash-command skills in one shared main context. Each Refactor
+          runs in an isolated subagent that checks naming first, applies the Four Rules of Simple
+          Design in priority order and compares APP mass before and after."}
+      exact-hybrid-v2-testlist-fix-cc:            {arm: hybrid,         version: "2",     harness: cc,     parent: exact-hybrid-v1-cc,                     status: superseded, alias: [v6.1-hybrid-testlist-scope-fix], note: "Former correctness-oriented Opus default; replaced by exact-ptdd-v1-cc as a much cheaper universal default. Remains a reproducible decomposition reference.",
+        description: "A variant of exact-hybrid-v1-cc (arm: hybrid) whose main change is the test
+          list: it is derived from the whole specification instead of base functionality only. Every
+          rule, every example and every clarifying question gets at least one inactive test, with the
+          expected value in its description. It is ordered from single rules to combinations and
+          multi-step scenarios, and it is not cross-checked. In addition, the refactoring subagent
+          loses its generic project-standards section (TypeScript conventions, hexagonal
+          architecture, build commands)."}
       exact-hybrid-v2-testlist-fix-pi:            {arm: hybrid,         version: "2",     harness: pi,     parent: exact-hybrid-v2-testlist-fix-cc,        status: trunk,      alias: [v6.1-hybrid-testlist-scope-fix-pi], port_of: exact-hybrid-v2-testlist-fix-cc}
       exact-hybrid-v2-testlist-fix-oc:            {arm: hybrid,         version: "2",     harness: oc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: trunk,      alias: [], port_of: exact-hybrid-v2-testlist-fix-cc, note: "Port 2026-09-13 for the exact-coding-baseline export; mechanics from exact-hybrid-v6-lab-split-oc, content from cc/pi. No end-refactor."}
       exact-hybrid-v2-testlist-fix-cursor:        {arm: hybrid,         version: "2",     harness: cursor, parent: exact-hybrid-v2-testlist-fix-cc,        status: trunk,      alias: [], port_of: exact-hybrid-v2-testlist-fix-cc, note: "Port 2026-09-13 for the exact-coding-baseline export; mechanics from exact-hybrid-v6-lab-split-cursor, content from cc/pi. No end-refactor."}
       exact-hybrid-v2.1-no-pep-cc:                {arm: hybrid,         version: "2.1",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1-no-pep]}
       exact-hybrid-v2.2-no-emoji-cc:              {arm: hybrid,         version: "2.2",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1-no-emoji]}
       exact-hybrid-v2.3-no-pep-no-emoji-cc:       {arm: hybrid,         version: "2.3",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1-no-pep-no-emoji]}
-      exact-hybrid-v2.4-lab-split-cc:             {arm: hybrid,         version: "2.4",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.1-lab-split-cc]}
+      exact-hybrid-v2.4-lab-split-cc:             {arm: hybrid,         version: "2.4",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.1-lab-split-cc],
+        description: "A variant of exact-hybrid-v2-testlist-fix-cc (arm: hybrid) that moves the lab
+          infrastructure (autonomous-execution mandate, done marker, phase-continuation note) into a
+          separate lab-only rules file and the refactor-subagent prompt contract into its own rules
+          file. The agent-facing method is unchanged."}
       exact-hybrid-v2.5-no-continuation-cc:       {arm: hybrid,         version: "2.5",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.2-no-continuation-cc]}
       exact-hybrid-v2.6-refactor-gate-cc:         {arm: hybrid,         version: "2.6",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.3-refactor-gate-cc]}
       exact-hybrid-v2.7-continuation-guard-cc:    {arm: hybrid,         version: "2.7",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.4-continuation-guard-cc]}
       exact-hybrid-v2.8-pure-split-cc:            {arm: hybrid,         version: "2.8",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.5-pure-split-cc]}
       exact-hybrid-v2.9-stack-profile-cc:         {arm: hybrid,         version: "2.9",   harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: branch,     alias: [v6.1.6-stack-profile-cc], note: "Moved all remaining TypeScript/Vitest details from core, phases and refactor agent into the existing stack profile; driver RQ RQ-stack-profile-extraction-opus."}
       exact-hybrid-v3-with-why-cc:                {arm: hybrid,         version: "3",     harness: cc,     parent: exact-hybrid-v2-testlist-fix-cc,        status: trunk,      alias: [v6.1-with-why]}
-      exact-hybrid-v4-cleaned-cc:                 {arm: hybrid,         version: "4",     harness: cc,     parent: exact-hybrid-v3-with-why-cc,            status: trunk,      alias: [v6.2-with-why-cleaned]}
-      exact-hybrid-v4-cleaned-oc:                 {arm: hybrid,         version: "4",     harness: oc,     parent: exact-hybrid-v4-cleaned-cc,             status: trunk,      alias: [v6.2-with-why-cleaned-oc], port_of: exact-hybrid-v4-cleaned-cc}
-      exact-hybrid-v4-cleaned-pi:                 {arm: hybrid,         version: "4",     harness: pi,     parent: exact-hybrid-v4-cleaned-cc,             status: trunk,      alias: [v6.2-with-why-cleaned-pi], port_of: exact-hybrid-v4-cleaned-cc}
-      exact-hybrid-v4.2-phase-continuation-pi:    {arm: hybrid,         version: "4.2",   harness: pi,     parent: exact-hybrid-v4-cleaned-pi,             status: branch,     alias: [v6.2.1-phase-continuation-pi]}
-      exact-hybrid-v4.2-phase-continuation-cursor: {arm: hybrid,        version: "4.2",   harness: cursor, parent: exact-hybrid-v4-cleaned-cc,             status: branch,     alias: [v6.2.1-phase-continuation-cursor]}
+      exact-hybrid-v4-cleaned-cc:                 {arm: hybrid,         version: "4",     harness: cc,     parent: exact-hybrid-v3-with-why-cc,            status: trunk,      alias: [v6.2-with-why-cleaned],
+        description: "An EXACT Coding workflow for Claude Code (arm: hybrid). Derived from the
+          hybrid line, it starts with an inactive test list covering every rule, example and
+          clarifying question of the specification; the list is not cross-checked. Test list, Red
+          (with compile and runtime predictions) and Green run as slash-command skills in one shared
+          context. Short \"Why\" blocks explain why Green stays minimal, why the prediction format
+          matters and why every phase must be delegated. Refactoring runs in an isolated subagent,
+          framed as a standalone refactoring task: naming first, the Four Rules of Simple Design, and
+          APP mass before and after."}
+      exact-hybrid-v4-cleaned-oc:                 {arm: hybrid,         version: "4",     harness: oc,     parent: exact-hybrid-v4-cleaned-cc,             status: trunk,      alias: [v6.2-with-why-cleaned-oc], port_of: exact-hybrid-v4-cleaned-cc,
+        description: "The OpenCode port of exact-hybrid-v4-cleaned-cc (arm: hybrid). Same method and
+          content; only the harness packaging differs. Test list, Red and Green are OpenCode skills,
+          and Refactor is an OpenCode subagent with restricted permissions that is called through the
+          task tool."}
+      exact-hybrid-v4-cleaned-pi:                 {arm: hybrid,         version: "4",     harness: pi,     parent: exact-hybrid-v4-cleaned-cc,             status: trunk,      alias: [v6.2-with-why-cleaned-pi], port_of: exact-hybrid-v4-cleaned-cc,
+        description: "The pi port of exact-hybrid-v4-cleaned-cc (arm: hybrid). Test list, Red and
+          Green are pi skill documents that the agent reads and follows in the main context, and
+          Refactor runs in an isolated subagent through a bundled subagent extension. Because pi skill
+          phases are not tool calls, the port has the agent mark each phase with fixed headings in its
+          output. One rule goes beyond packaging: when a newly activated test already passes, the
+          cycle skips Green and Refactor."}
+      exact-hybrid-v4.2-phase-continuation-pi:    {arm: hybrid,         version: "4.2",   harness: pi,     parent: exact-hybrid-v4-cleaned-pi,             status: branch,     alias: [v6.2.1-phase-continuation-pi],
+        description: "A variant of exact-hybrid-v4-cleaned-pi (arm: hybrid) that changes one thing:
+          it tells the agent to treat every phase-completion line as a checkpoint, not as the end of
+          its turn. The emphasis is on the step from test list to the first Red, and the run may only
+          end once the work is complete. Method and content are otherwise unchanged."}
+      exact-hybrid-v4.2-phase-continuation-cursor: {arm: hybrid,        version: "4.2",   harness: cursor, parent: exact-hybrid-v4-cleaned-cc,             status: branch,     alias: [v6.2.1-phase-continuation-cursor],
+        description: "The Cursor port of exact-hybrid-v4-cleaned-cc (arm: hybrid). Same method and
+          content: test list, Red and Green are Cursor skill documents followed in the main context,
+          and Refactor runs as an isolated Cursor subagent. Beyond packaging, it adds visible text
+          markers for the skill phases and the same phase-continuation instructions as the pi v4.2
+          variant, so that a finished phase or a returning subagent does not end the turn."}
       exact-hybrid-v4.3-audit-bundle-cc:          {arm: hybrid,         version: "4.3",   harness: cc,     parent: exact-hybrid-v4-cleaned-cc,             status: branch,     alias: [v6.3-audit-bundle], note: "Not discarded, but kata-specific: GoL quality champion, breaks on claim-office (RQ-1.9, verification_pct 0.96 -> 0.35)."}
       exact-hybrid-v4.4-metric-refactor-cc:       {arm: hybrid,         version: "4.4",   harness: cc,     parent: exact-hybrid-v4-cleaned-cc,             status: branch,     alias: [v6.4-metric-driven-refactor]}
       exact-hybrid-v5-end-refactor-cc:            {arm: hybrid,         version: "5",     harness: cc,     parent: exact-hybrid-v4-cleaned-cc,             status: trunk,      alias: [v6.5-end-refactor]}
-      exact-hybrid-v6-lab-split-cc:               {arm: hybrid,         version: "6",     harness: cc,     parent: exact-hybrid-v5-end-refactor-cc,        status: trunk,      alias: [v6.6-lab-split-cc], note: "The slug means pulling the lab infrastructure out into rules/lab-only.md, not line membership."}
+      exact-hybrid-v6-lab-split-cc:               {arm: hybrid,         version: "6",     harness: cc,     parent: exact-hybrid-v5-end-refactor-cc,        status: trunk,      alias: [v6.6-lab-split-cc], note: "The slug means pulling the lab infrastructure out into rules/lab-only.md, not line membership.",
+        description: "An EXACT Coding workflow for Claude Code (arm: hybrid). Derived from the
+          hybrid line, it has a spec-complete inactive test list that is not cross-checked. Test list,
+          Red (with predictions) and Green run as skills in a shared context, and each Refactor runs
+          in an isolated subagent (naming first, the Four Rules of Simple Design, APP mass). After the
+          last cycle, a second isolated end-refactor subagent makes one pass over the whole production
+          code. It works one change at a time, guided by measured smells, cognitive and McCabe
+          complexity and APP mass. Lab infrastructure lives in a separate rules file."}
       exact-hybrid-v6-lab-split-pi:               {arm: hybrid,         version: "6",     harness: pi,     parent: exact-hybrid-v6-lab-split-cc,           status: trunk,      alias: [v6.6-lab-split-pi], port_of: exact-hybrid-v6-lab-split-cc}
       exact-hybrid-v6-lab-split-oc:               {arm: hybrid,         version: "6",     harness: oc,     parent: exact-hybrid-v6-lab-split-cc,           status: trunk,      alias: [v6.6-lab-split-oc], port_of: exact-hybrid-v6-lab-split-cc}
       exact-hybrid-v6-lab-split-cursor:           {arm: hybrid,         version: "6",     harness: cursor, parent: exact-hybrid-v6-lab-split-cc,           status: trunk,      alias: [v6.6-lab-split-cursor], port_of: exact-hybrid-v6-lab-split-cc}
@@ -125,36 +218,112 @@ categories:
       exact-hybrid-v8-no-end-refactor-cc:         {arm: hybrid,         version: "8",     harness: cc,     parent: exact-hybrid-v7-app-subordinate-cc,     status: trunk,      alias: [v6.8-no-end-refactor-cc]}
 
       exact-green-refactor-v1-cc:                 {arm: green-refactor, version: "1",     harness: cc,     parent: null,                                   status: superseded, alias: [v7-hybrid-green-refactor]}
-      exact-green-refactor-v2-testlist-fix-cc:    {arm: green-refactor, version: "2",     harness: cc,     parent: exact-green-refactor-v1-cc,             status: trunk,      alias: [v7.1-hybrid-green-refactor-testlist-scope-fix]}
+      exact-green-refactor-v2-testlist-fix-cc:    {arm: green-refactor, version: "2",     harness: cc,     parent: exact-green-refactor-v1-cc,             status: trunk,      alias: [v7.1-hybrid-green-refactor-testlist-scope-fix],
+        description: "An EXACT Coding workflow for Claude Code (arm: green-refactor). Derived from
+          the hybrid line, it starts with an inactive test list covering every rule, example and
+          clarifying question of the specification; the list is not cross-checked. Test list and Red
+          (with compile and runtime predictions) run as skills in the main context. Green and Refactor
+          each run in their own isolated subagent: Green writes the minimal passing code, and Refactor
+          checks naming first, applies the Four Rules of Simple Design and compares APP mass."}
 
   exact-coding/sol:
     prefix: exact
     origin: {harness: pi, model: sol}
     workflows:
-      exact-sol-v1-pi:                            {arm: sol,            version: "1",     harness: pi,     parent: null,                                   status: trunk,      alias: [basic-sol-tdd-pi], note: "Reference import of the predictive-tdd/test-list skills from the sol_tdd project."}
-      exact-sol-v1-cc:                            {arm: sol,            version: "1",     harness: cc,     parent: exact-sol-v1-pi,                        status: trunk,      alias: [basic-sol-tdd-cc], port_of: exact-sol-v1-pi}
-      exact-sol-v1.1-subagent-pi:                 {arm: sol,            version: "1.1",   harness: pi,     parent: exact-sol-v1-pi,                        status: branch,     alias: [basic-sol-tdd-subagent-pi]}
+      exact-sol-v1-pi:                            {arm: sol,            version: "1",     harness: pi,     parent: null,                                   status: trunk,      alias: [basic-sol-tdd-pi], note: "Reference import of the predictive-tdd/test-list skills from the sol_tdd project.",
+        description: "An EXACT Coding workflow for the pi harness (arm: sol). It starts with an
+          ordered list of inactive tests covering every rule and example in the specification. The
+          list is not cross-checked against independent dimensions. The workflow then goes through the
+          list one test at a time in predictive Red–Green–Refactor cycles, where a valid Red has to
+          fail because the behavior is missing. Refactoring applies only the Four Rules of Simple
+          Design: no domain-boundary trial, no APP. Everything runs in one shared context, without
+          subagents."}
+      exact-sol-v1-cc:                            {arm: sol,            version: "1",     harness: cc,     parent: exact-sol-v1-pi,                        status: trunk,      alias: [basic-sol-tdd-cc], port_of: exact-sol-v1-pi,
+        description: "The Claude Code port of exact-sol-v1-pi (arm: sol). It uses the same method
+          and content as the pi version; only the packaging differs: slash commands and rules instead
+          of pi skills."}
+      exact-sol-v1.1-subagent-pi:                 {arm: sol,            version: "1.1",   harness: pi,     parent: exact-sol-v1-pi,                        status: branch,     alias: [basic-sol-tdd-subagent-pi],
+        description: "A variant of exact-sol-v1-pi (arm: sol) for pi that changes one thing: the
+          Refactor phase runs in an isolated refactoring subagent with a fresh context, while test
+          list, Red and Green stay in the main context. The refactoring contract is unchanged: the
+          Four Rules of Simple Design, one refactoring at a time."}
       exact-sol-v1.2-app-pi:                      {arm: sol,            version: "1.2",   harness: pi,     parent: exact-sol-v1-pi,                        status: branch,     alias: [basic-sol-tdd-app-pi]}
       exact-sol-v1.2.1-measured-model-pi:         {arm: sol,            version: "1.2.1", harness: pi,     parent: exact-sol-v1.2-app-pi,                  status: branch,     alias: [basic-sol-tdd-app-measured-model-pi]}
       exact-sol-v1.2.2-measured-eslint-pi:        {arm: sol,            version: "1.2.2", harness: pi,     parent: exact-sol-v1.2-app-pi,                  status: branch,     alias: [basic-sol-tdd-app-measured-eslint-pi]}
       exact-sol-v1.2.3-measured-tool-pi:          {arm: sol,            version: "1.2.3", harness: pi,     parent: exact-sol-v1.2-app-pi,                  status: branch,     alias: [basic-sol-tdd-app-measured-tool-pi]}
       exact-sol-v1.3-stack-profile-pi:            {arm: sol,            version: "1.3",   harness: pi,     parent: exact-sol-v1-pi,                        status: branch,     alias: [basic-sol-tdd-stack-profile-pi], note: "Lean/budget variant of the SOL line: remaining TypeScript/Vitest details moved from AGENTS.md and test-list into the existing stack profile; validated by RQ-stack-profile-extraction-sol. Former default, replaced by exact-sol-v1.5-tcr-parity-domain-trial-pi for large, novel specs."}
       exact-sol-v1.3.1-ponytail-pi:                {arm: sol,            version: "1.3.1", harness: pi,     parent: exact-sol-v1.3-stack-profile-pi,        status: branch,     alias: [], note: "Forced Ponytail full augmentation; vendored upstream skill plus lab-authored load overlay. Driver: RQ-ponytail-sol-pi."}
-      exact-sol-v1.3.2-local-git-control-pi:        {arm: sol,            version: "1.3.2", harness: pi,     parent: exact-sol-v1.3-stack-profile-pi,        status: branch,     alias: [], note: "Content-identical SOL control minted under the isolated-local-Git harness condition for RQ-tcr-variants-sol; prevents reuse of pre-Git historical runs."}
+      exact-sol-v1.3.2-local-git-control-pi:        {arm: sol,            version: "1.3.2", harness: pi,     parent: exact-sol-v1.3-stack-profile-pi,        status: branch,     alias: [], note: "Content-identical SOL control minted under the isolated-local-Git harness condition for RQ-tcr-variants-sol; prevents reuse of pre-Git historical runs.",
+        description: "A pi workflow (arm: sol) derived from exact-sol-v1.3-stack-profile-pi. It is
+          content-identical to that workflow and runs under a different harness condition: the run
+          directory is an isolated local Git repository."}
       exact-sol-v1.4-domain-boundary-trial-pi:       {arm: sol,            version: "1.4",   harness: pi,     parent: exact-sol-v1.3.2-local-git-control-pi,  status: branch,     alias: [], note: "Predictive-TDD port of the domain-boundary trial from exact-tcr-v1.3: identical semantic review, change counter-check and before/after evidence; predictive predict/check/undo instead of TCR method commits; stack profiles unchanged. Driver: RQ-srp-effect-exact-tcr-sol."}
-      exact-sol-v1.5-tcr-parity-domain-trial-pi:     {arm: sol,            version: "1.5",   harness: pi,     parent: exact-tcr-v1.3-domain-boundary-trial-pi, status: superseded, alias: [], note: "Former SOL default. Fully correct and partly leaner than v1.6, but replaced by exact-ptdd-v1-pi in favour of a single maintained Predictive-TDD line."}
-      exact-sol-v1.5-tcr-parity-domain-trial-cc:     {arm: sol,            version: "1.5",   harness: cc,     parent: exact-sol-v1.5-tcr-parity-domain-trial-pi, status: superseded, alias: [], port_of: exact-sol-v1.5-tcr-parity-domain-trial-pi, note: "Historical Claude Code port for RQ-current-ptdd-vs-exact-opus-native and the replication; replaced by exact-ptdd-v1-cc."}
-      exact-sol-v1.6-test-list-dimensions-pi:         {arm: sol,            version: "1.6",   harness: pi,     parent: exact-sol-v1.5-tcr-parity-domain-trial-pi, status: superseded, alias: [], note: "Measured source of the canonical exact-ptdd-v1-pi. Validated on Claim Office, Game of Life and Sphinx Score; reproducible under the old research name."}
-      exact-sol-v1.6-test-list-dimensions-cc:         {arm: sol,            version: "1.6",   harness: cc,     parent: exact-sol-v1.6-test-list-dimensions-pi, status: superseded, alias: [], port_of: exact-sol-v1.6-test-list-dimensions-pi, note: "Measured Claude Code source of the canonical exact-ptdd-v1-cc; validated by RQ-test-list-dimensions-opus-native and RQ-test-list-dimensions-replication."}
-      exact-ptdd-v1-pi:                              {arm: ptdd,           version: "1",     harness: pi,     parent: exact-sol-v1.6-test-list-dimensions-pi, status: trunk,      alias: [], note: "Canonical universal EXACT Coding Predictive-TDD default. Content-identical to the validated v1.6 source; new stable product name for future versioned development."}
-      exact-ptdd-v1-cc:                              {arm: ptdd,           version: "1",     harness: cc,     parent: exact-ptdd-v1-pi,                     status: trunk,      alias: [], port_of: exact-ptdd-v1-pi, note: "Claude Code port of the universal Predictive-TDD default; content from the validated exact-sol-v1.6-test-list-dimensions-cc source."}
-      exact-ptdd-v1.1-refactor-subagent-pi:           {arm: ptdd,           version: "1.1",   harness: pi,     parent: exact-ptdd-v1-pi,                     status: branch,     alias: [], note: "Factor-isolated branch: only the per-cycle Four-Rules and domain-boundary refactor runs in an isolated subagent; driver: RQ-ptdd-refactor-subagent-cross-model."}
-      exact-ptdd-v1.1-refactor-subagent-cc:           {arm: ptdd,           version: "1.1",   harness: cc,     parent: exact-ptdd-v1.1-refactor-subagent-pi, status: branch,     alias: [], port_of: exact-ptdd-v1.1-refactor-subagent-pi, note: "Claude Code port of the isolated refactor treatment; Task subagent instead of the pi-subagent extension."}
-      exact-ptdd-v1.2-verification-split-pi:          {arm: ptdd,           version: "1.2",   harness: pi,     parent: exact-ptdd-v1-pi,                     status: branch,     alias: [], note: "Factor-isolated branch: test list split into driving tests and a trailing `verification` group; each driving test is re-examined before activation and may be moved there. tdd-report.py ends the scored TDD part at the first verification test; driver: RQ-ptdd-verification-split."}
-      exact-ptdd-v1.2-verification-split-cc:          {arm: ptdd,           version: "1.2",   harness: cc,     parent: exact-ptdd-v1.2-verification-split-pi, status: branch,     alias: [], port_of: exact-ptdd-v1.2-verification-split-pi, note: "Claude Code port of the driving/verification test-list split."}
-      exact-sol-v1.6.1-naming-refactor-trial-cc:       {arm: sol,            version: "1.6.1", harness: cc,     parent: exact-sol-v1.6-test-list-dimensions-cc, status: branch,     alias: [], note: "Cost-conscious inline-refactor branch: mandatory concrete trial, naming first and explicit helper extraction as an option; domain-cohesion guard stays, no subagent. Driver: RQ-inline-refactor-operationalization-opus-native."}
+      exact-sol-v1.5-tcr-parity-domain-trial-pi:     {arm: sol,            version: "1.5",   harness: pi,     parent: exact-tcr-v1.3-domain-boundary-trial-pi, status: superseded, alias: [], note: "Former SOL default. Fully correct and partly leaner than v1.6, but replaced by exact-ptdd-v1-pi in favour of a single maintained Predictive-TDD line.",
+        description: "An EXACT Coding workflow for the pi harness (arm: sol), derived from the TCR
+          workflow exact-tcr-v1.3-domain-boundary-trial-pi. It keeps that workflow's complete,
+          inactive test list, which is not cross-checked against independent dimensions, and works
+          through it one test at a time in predictive Red–Green–Refactor cycles. Where TCR commits or
+          reverts each phase, this workflow predicts, checks and narrowly undoes changes instead.
+          Refactoring applies the Four Rules of Simple Design, a domain-responsibility review and a
+          mandatory domain-boundary trial, with no APP. Everything runs in one shared context, without
+          subagents."}
+      exact-sol-v1.5-tcr-parity-domain-trial-cc:     {arm: sol,            version: "1.5",   harness: cc,     parent: exact-sol-v1.5-tcr-parity-domain-trial-pi, status: superseded, alias: [], port_of: exact-sol-v1.5-tcr-parity-domain-trial-pi, note: "Historical Claude Code port for RQ-current-ptdd-vs-exact-opus-native and the replication; replaced by exact-ptdd-v1-cc.",
+        description: "The Claude Code port of exact-sol-v1.5-tcr-parity-domain-trial-pi (arm: sol).
+          It uses the same method and content as the pi version; only the packaging differs: slash
+          commands and rules instead of pi skills."}
+      exact-sol-v1.6-test-list-dimensions-pi:         {arm: sol,            version: "1.6",   harness: pi,     parent: exact-sol-v1.5-tcr-parity-domain-trial-pi, status: superseded, alias: [], note: "Measured source of the canonical exact-ptdd-v1-pi. Validated on Claim Office, Game of Life and Sphinx Score; reproducible under the old research name.",
+        description: "A variant of exact-sol-v1.5-tcr-parity-domain-trial-pi (arm: sol) for pi that
+          changes one thing: before the test list counts as complete, it is cross-checked against the
+          specification's independent dimensions (operations, variants, policy attributes, parallel
+          catalogues), and a test is added for every cell that could drift unnoticed. A mechanical
+          Cartesian product of all dimensions is explicitly ruled out."}
+      exact-sol-v1.6-test-list-dimensions-cc:         {arm: sol,            version: "1.6",   harness: cc,     parent: exact-sol-v1.6-test-list-dimensions-pi, status: superseded, alias: [], port_of: exact-sol-v1.6-test-list-dimensions-pi, note: "Measured Claude Code source of the canonical exact-ptdd-v1-cc; validated by RQ-test-list-dimensions-opus-native and RQ-test-list-dimensions-replication.",
+        description: "The Claude Code port of exact-sol-v1.6-test-list-dimensions-pi (arm: sol). It
+          uses the same method and content as the pi version; only the packaging differs: slash
+          commands and rules instead of pi skills."}
+      exact-ptdd-v1-pi:                              {arm: ptdd,           version: "1",     harness: pi,     parent: exact-sol-v1.6-test-list-dimensions-pi, status: trunk,      alias: [], note: "Canonical universal EXACT Coding Predictive-TDD default. Content-identical to the validated v1.6 source; new stable product name for future versioned development.",
+        description: "An EXACT Coding workflow for the pi harness. Arm: Predictive TDD (ptdd). It
+          starts with a complete, inactive test list derived from the specification and cross-checked
+          against its independent dimensions, then works through it one test at a time in predictive
+          Red–Green–Refactor cycles. Refactoring applies the Four Rules of Simple Design plus a
+          mandatory domain-boundary trial. Everything runs in one shared context, without subagents."}
+      exact-ptdd-v1-cc:                              {arm: ptdd,           version: "1",     harness: cc,     parent: exact-ptdd-v1-pi,                     status: trunk,      alias: [], port_of: exact-ptdd-v1-pi, note: "Claude Code port of the universal Predictive-TDD default; content from the validated exact-sol-v1.6-test-list-dimensions-cc source.",
+        description: "The Claude Code port of exact-ptdd-v1 (arm: ptdd). Same method and content as
+          the pi version; only the harness packaging differs — slash commands and rules instead of pi
+          skills."}
+      exact-ptdd-v1.1-refactor-subagent-pi:           {arm: ptdd,           version: "1.1",   harness: pi,     parent: exact-ptdd-v1-pi,                     status: branch,     alias: [], note: "Factor-isolated branch: only the per-cycle Four-Rules and domain-boundary refactor runs in an isolated subagent; driver: RQ-ptdd-refactor-subagent-cross-model.",
+        description: "A variant of exact-ptdd-v1 (arm: ptdd) that changes one thing: the Refactor
+          phase runs in an isolated refactoring subagent with a fresh context, while test list, Red
+          and Green stay in the main context. The refactoring contract — Four Rules of Simple Design
+          plus mandatory domain-boundary trial — is unchanged."}
+      exact-ptdd-v1.1-refactor-subagent-cc:           {arm: ptdd,           version: "1.1",   harness: cc,     parent: exact-ptdd-v1.1-refactor-subagent-pi, status: branch,     alias: [], port_of: exact-ptdd-v1.1-refactor-subagent-pi, note: "Claude Code port of the isolated refactor treatment; Task subagent instead of the pi-subagent extension.",
+        description: "The Claude Code port of exact-ptdd-v1.1-refactor-subagent-pi (arm: ptdd). Same
+          method and content; only the packaging differs — the isolated refactoring runs as a Claude
+          Code Task subagent instead of through the pi subagent extension."}
+      exact-ptdd-v1.2-verification-split-pi:          {arm: ptdd,           version: "1.2",   harness: pi,     parent: exact-ptdd-v1-pi,                     status: branch,     alias: [], note: "Factor-isolated branch: test list split into driving tests and a trailing `verification` group; each driving test is re-examined before activation and may be moved there. tdd-report.py ends the scored TDD part at the first verification test; driver: RQ-ptdd-verification-split.",
+        description: "A variant of exact-ptdd-v1 (arm: ptdd) for pi that changes one thing: the test
+          list is split into driving tests and a trailing verification group. Before activation, each
+          driving test is checked again and moved to the verification group if an earlier test already
+          covers it. Verification tests are activated only after every driving test is green, each
+          predicted to pass. The dimensions cross-check and the domain-boundary trial are unchanged."}
+      exact-ptdd-v1.2-verification-split-cc:          {arm: ptdd,           version: "1.2",   harness: cc,     parent: exact-ptdd-v1.2-verification-split-pi, status: branch,     alias: [], port_of: exact-ptdd-v1.2-verification-split-pi, note: "Claude Code port of the driving/verification test-list split.",
+        description: "The Claude Code port of exact-ptdd-v1.2-verification-split-pi (arm: ptdd). It
+          uses the same method and content as the pi version; only the packaging differs: slash
+          commands and rules instead of pi skills."}
+      exact-sol-v1.6.1-naming-refactor-trial-cc:       {arm: sol,            version: "1.6.1", harness: cc,     parent: exact-sol-v1.6-test-list-dimensions-cc, status: branch,     alias: [], note: "Cost-conscious inline-refactor branch: mandatory concrete trial, naming first and explicit helper extraction as an option; domain-cohesion guard stays, no subagent. Driver: RQ-inline-refactor-operationalization-opus-native.",
+        description: "A variant of exact-sol-v1.6-test-list-dimensions-cc (arm: sol) for Claude Code
+          that changes one thing: every Refactor phase evaluates naming first, then has to try and
+          verify one concrete behavior-preserving refactoring, with helper extraction named as an
+          explicit option. Refactoring stays in the shared context, without a subagent. The Four Rules
+          and the domain-boundary trial are unchanged."}
 
-      exact-tcr-v1-pi:                             {arm: tcr,            version: "1",     harness: pi,     parent: null,                                   status: trunk,      alias: [], note: "First-party lab adaptation of exact-coding-exercises/.pi version 2026-09-13: complete inactive test list plus native-Git TCRDD; HITL set to autonomous and pi phase/prediction/done markers added."}
+      exact-tcr-v1-pi:                             {arm: tcr,            version: "1",     harness: pi,     parent: null,                                   status: trunk,      alias: [], note: "First-party lab adaptation of exact-coding-exercises/.pi version 2026-09-13: complete inactive test list plus native-Git TCRDD; HITL set to autonomous and pi phase/prediction/done markers added.",
+        description: "An EXACT Coding workflow for the pi harness (arm: tcr). It starts with a
+          complete, inactive test list derived from the specification and not cross-checked against
+          independent dimensions, and commits that list. It then works through one behavior at a time
+          in Red–Green–Refactor cycles, committing or reverting every phase and every single
+          refactoring with native Git. Refactoring applies only the Four Rules of Simple Design,
+          without a domain-boundary trial. Everything runs in one shared context, without subagents."}
       exact-tcr-v1.1-srp-pi:                       {arm: tcr,            version: "1.1",   harness: pi,     parent: exact-tcr-v1-pi,                        status: branch,     alias: [], note: "Factor-isolated refactor variant: adds SRP qualitatively to the generic TCRDD review; TypeScript/Vitest and Java/JUnit/Maven usage notes live exclusively in the respective stack profiles."}
       exact-tcr-v1.2-domain-responsibility-pi:     {arm: tcr,            version: "1.2",   harness: pi,     parent: exact-tcr-v1.1-srp-pi,                 status: branch,     alias: [], note: "Operationalises SRP as a mandatory domain-responsibility review: Ubiquitous Language as the semantic DDD anchor, independent policy change axes and explicit precedence of intent-revealing domain boundaries over Fewest Elements; no mandatory DDD patterns, stack profiles unchanged."}
       exact-tcr-v1.3-domain-boundary-trial-pi:      {arm: tcr,            version: "1.3",   harness: pi,     parent: exact-tcr-v1.2-domain-responsibility-pi, status: branch,     alias: [], note: "Adds a mandatory domain-boundary trial: broad responsibility names are checked by a change counter-check, the strongest semantic candidate goes through TCR commit-or-revert, and a domain-specific before/after record documents the result; stack profiles unchanged."}
@@ -163,29 +332,121 @@ categories:
   baselines:
     prefix: baseline
     workflows:
-      baseline-oneshot-v1-cc:                     {arm: oneshot,           version: "1",  harness: cc,     parent: null,                                   status: branch,     alias: [v1-oneshot]}
+      baseline-oneshot-v1-cc:                     {arm: oneshot,           version: "1",  harness: cc,     parent: null,                                   status: branch,     alias: [v1-oneshot],
+        description: "A one-shot baseline for Claude Code (arm: oneshot). The agent reads the
+          exercise, implements the solution in a single autonomous pass and runs whatever verification
+          it finds appropriate. Tests are not required. There is no test list, no phase structure, no
+          refactoring rules and no subagents."}
       baseline-oneshot-v1-oc:                     {arm: oneshot,           version: "1",  harness: oc,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v1-oneshot-oc], port_of: baseline-oneshot-v1-cc}
       baseline-oneshot-v1-pi:                     {arm: oneshot,           version: "1",  harness: pi,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v1-oneshot-pi], port_of: baseline-oneshot-v1-cc}
-      baseline-iterative-v1-cc:                   {arm: iterative,         version: "1",  harness: cc,     parent: null,                                   status: branch,     alias: [v2-iterative]}
-      baseline-inline-tdd-v1-cc:                  {arm: inline-tdd,        version: "1",  harness: cc,     parent: null,                                   status: branch,     alias: [v3-basic-tdd], note: "TDD floor without any structure — only rules/experiment-mode.md. On Sol it beats every architecture (RQ-1.14 F-1.6)."}
-      baseline-inline-tdd-v1-pi:                  {arm: inline-tdd,        version: "1",  harness: pi,     parent: baseline-inline-tdd-v1-cc,              status: branch,     alias: [v3-basic-tdd-pi], port_of: baseline-inline-tdd-v1-cc}
-      baseline-inline-tdd-v1.1-local-git-cc:       {arm: inline-tdd,        version: "1.1", harness: cc,    parent: baseline-inline-tdd-v1-cc,              status: branch,     alias: [], note: "Content-identical TDD control minted under the isolated-local-Git harness condition for RQ-tcr-variants-opus5; prevents reuse of pre-Git historical runs."}
-      baseline-inline-tdd-v1.1-local-git-pi:       {arm: inline-tdd,        version: "1.1", harness: pi,    parent: baseline-inline-tdd-v1.1-local-git-cc,   status: branch,     alias: [], port_of: baseline-inline-tdd-v1.1-local-git-cc, note: "Content-identical basic-TDD control minted under the isolated-local-Git harness condition for RQ-tcr-variants-sol; prevents reuse of pre-Git historical runs."}
-      baseline-end-refactor-only-v1-agent-cc:     {arm: end-refactor-only, version: "1",  harness: cc,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v8a-delayed-refactor-agent], note: "No cycle: three sequential phases, refactor only at the end. Isolates refactor timing, not refactor mechanics."}
-      baseline-end-refactor-only-v1-native-cc:    {arm: end-refactor-only, version: "1",  harness: cc,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v8b-delayed-refactor-native]}
+      baseline-iterative-v1-cc:                   {arm: iterative,         version: "1",  harness: cc,     parent: null,                                   status: branch,     alias: [v2-iterative],
+        description: "A plan-and-checklist baseline for Claude Code (arm: iterative). The agent
+          breaks the exercise into a checklist of discrete steps, works through it one item at a time
+          and ticks each one off. It runs whatever verification it finds appropriate. Tests are not
+          required, and there are no TDD phases, no refactoring rules and no subagents; everything
+          runs in one context."}
+      baseline-inline-tdd-v1-cc:                  {arm: inline-tdd,        version: "1",  harness: cc,     parent: null,                                   status: branch,     alias: [v3-basic-tdd], note: "TDD floor without any structure — only rules/experiment-mode.md. On Sol it beats every architecture (RQ-1.14 F-1.6).",
+        description: "A minimal TDD baseline for Claude Code (arm: inline-tdd). The agent is only
+          told to solve the exercise test-driven and autonomously. No test list, no phase structure,
+          no refactoring rules, no subagents — how TDD is done is left to the model."}
+      baseline-inline-tdd-v1-pi:                  {arm: inline-tdd,        version: "1",  harness: pi,     parent: baseline-inline-tdd-v1-cc,              status: branch,     alias: [v3-basic-tdd-pi], port_of: baseline-inline-tdd-v1-cc,
+        description: "The pi port of baseline-inline-tdd-v1 (arm: inline-tdd). It gives the same
+          minimal instruction to solve the exercise test-driven and autonomously. Only the packaging
+          differs: a pi AGENTS.md replaces the Claude Code rules file, and it adds a line to work test
+          by test plus a note on the CLI entry-point contract."}
+      baseline-inline-tdd-v1.1-local-git-cc:       {arm: inline-tdd,        version: "1.1", harness: cc,    parent: baseline-inline-tdd-v1-cc,              status: branch,     alias: [], note: "Content-identical TDD control minted under the isolated-local-Git harness condition for RQ-tcr-variants-opus5; prevents reuse of pre-Git historical runs.",
+        description: "The same minimal TDD instruction as baseline-inline-tdd-v1-cc (arm:
+          inline-tdd, Claude Code), run under a different harness condition: the run directory is an
+          isolated local Git repository with an initial commit."}
+      baseline-inline-tdd-v1.1-local-git-pi:       {arm: inline-tdd,        version: "1.1", harness: pi,    parent: baseline-inline-tdd-v1.1-local-git-cc,   status: branch,     alias: [], port_of: baseline-inline-tdd-v1.1-local-git-cc, note: "Content-identical basic-TDD control minted under the isolated-local-Git harness condition for RQ-tcr-variants-sol; prevents reuse of pre-Git historical runs.",
+        description: "The same minimal TDD instruction as baseline-inline-tdd-v1-pi (arm:
+          inline-tdd, pi), run under a different harness condition: the run directory is an isolated
+          local Git repository with an initial commit."}
+      baseline-end-refactor-only-v1-agent-cc:     {arm: end-refactor-only, version: "1",  harness: cc,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v8a-delayed-refactor-agent], note: "No cycle: three sequential phases, refactor only at the end. Isolates refactor timing, not refactor mechanics.",
+        description: "A test-after baseline for Claude Code (arm: end-refactor-only). It has three
+          sequential phases and no cycle. First the agent implements the solution without tests. Then
+          it writes a test suite from the specification, with a test for every spec example and every
+          clarifying question, and gets it green. Last comes a single refactoring pass. That pass runs
+          in an isolated refactoring subagent with a fresh context and applies the Four Rules of
+          Simple Design, the Absolute Priority Premise, a naming evaluation and a mandatory
+          refactoring attempt."}
+      baseline-end-refactor-only-v1-native-cc:    {arm: end-refactor-only, version: "1",  harness: cc,     parent: baseline-oneshot-v1-cc,                 status: branch,     alias: [v8b-delayed-refactor-native],
+        description: "A variant of baseline-end-refactor-only-v1-agent (arm: end-refactor-only) that
+          changes one thing: the final refactoring pass runs as a slash command inside the main
+          session instead of in a subagent. The refactoring content, the phase order and the timing
+          are unchanged."}
 
   external:
     prefix: external
     workflows:
-      external-pocock-2026-09-04-cc:              {arm: pocock,        vendored: "2026-09-04", harness: cc, parent: null,                                  status: vendored,   alias: [v10-pocock-tdd]}
-      external-superpowers-2026-09-04-cc:         {arm: superpowers,   vendored: "2026-09-04", harness: cc, parent: null,                                  status: vendored,   alias: [v11-superpowers-tdd]}
-      external-tcr-kentbeck-2026-09-14-cc:        {arm: tcr-kentbeck,  vendored: "2026-09-14", harness: cc, parent: null,                                  status: vendored,   alias: [], note: "Classic TCR from xpepper/tcr-skill commit 48c16c0; test-first is not required."}
-      external-tcrdd-git-gamble-2026-09-14-cc:    {arm: tcrdd-gamble,  vendored: "2026-09-14", harness: cc, parent: null,                                  status: vendored,   alias: [], note: "TCRDD via git-gamble 2.14.6; skill from xpepper/tcr-skill commit 48c16c0."}
-      external-tcrdd-bsene-2026-09-14-cc:         {arm: tcrdd-bsene,   vendored: "2026-09-14", harness: cc, parent: null,                                  status: vendored,   alias: [], note: "Native-Git TCRDD from bsene/skills commit 81a792d; upstream snapshot has no declared license."}
-      external-kesseler-2026-09-30-cc:            {arm: kesseler,      vendored: "2026-09-30", harness: cc, parent: null,                                  status: vendored,   alias: [], note: "TDD skill from lexler/skill-factory commit 474433af2e (output_skills/testing/tdd); Apache-2.0. evals/ deliberately not vendored."}
-      external-tcr-kentbeck-2026-09-14-pi:        {arm: tcr-kentbeck,  vendored: "2026-09-14", harness: pi, parent: external-tcr-kentbeck-2026-09-14-cc,     status: vendored,   alias: [], port_of: external-tcr-kentbeck-2026-09-14-cc}
-      external-tcrdd-git-gamble-2026-09-14-pi:    {arm: tcrdd-gamble,  vendored: "2026-09-14", harness: pi, parent: external-tcrdd-git-gamble-2026-09-14-cc, status: vendored,   alias: [], port_of: external-tcrdd-git-gamble-2026-09-14-cc}
-      external-tcrdd-bsene-2026-09-14-pi:         {arm: tcrdd-bsene,   vendored: "2026-09-14", harness: pi, parent: external-tcrdd-bsene-2026-09-14-cc,      status: vendored,   alias: [], port_of: external-tcrdd-bsene-2026-09-14-cc, note: "Upstream snapshot has no declared license."}
+      external-pocock-2026-09-04-cc:              {arm: pocock,        vendored: "2026-09-04", harness: cc, parent: null,                                  status: vendored,   alias: [v10-pocock-tdd],
+        description: "An external workflow for Claude Code (arm: pocock): the tdd, code-review and
+          codebase-design skills from Matt Pocock's mattpocock/skills, commit 6654f6b6 (MIT), vendored
+          unchanged. Red–Green works in vertical slices, one test at a time, at seams agreed in
+          advance. There is no up-front test list, and refactoring is explicitly not part of the loop.
+          Once the suite is green, a code review runs in two parallel subagents, one for coding
+          standards and one for the spec, and reports its findings without acting on them. The lab
+          adds autonomous execution, takes the seams from the prompt, points the review at the written
+          files and the prompt instead of a Git diff and an issue tracker, and supplies the test
+          command."}
+      external-superpowers-2026-09-04-cc:         {arm: superpowers,   vendored: "2026-09-04", harness: cc, parent: null,                                  status: vendored,   alias: [v11-superpowers-tdd],
+        description: "An external workflow for Claude Code (arm: superpowers): the
+          test-driven-development skill from Jesse Vincent's Superpowers collection, release v6.3.0
+          (MIT), vendored unchanged. Red–Green–Refactor under a strict test-first rule — code written
+          before its test is deleted. No up-front test list; the next test is chosen as work proceeds,
+          all inline in one context. The lab only replaces the human-in-the-loop checkpoints with
+          autonomous execution."}
+      external-tcr-kentbeck-2026-09-14-cc:        {arm: tcr-kentbeck,  vendored: "2026-09-14", harness: cc, parent: null,                                  status: vendored,   alias: [], note: "Classic TCR from xpepper/tcr-skill commit 48c16c0; test-first is not required.",
+        description: "An external workflow for Claude Code (arm: tcr-kentbeck): the tcr-kentbeck
+          skill from Pietro Di Bello's xpepper/tcr-skill, commit 48c16c0 (MIT), vendored unchanged. It
+          is classic TCR: tiny steps, each run against the full suite, and every reverted step is
+          appended to a failure log. Test-first is not required. There is no test list, no phase
+          structure and no refactoring rules, and everything runs in one context. The lab adds only
+          autonomous execution, the test command and an isolated local Git repository to commit
+          into."}
+      external-tcrdd-git-gamble-2026-09-14-cc:    {arm: tcrdd-gamble,  vendored: "2026-09-14", harness: cc, parent: null,                                  status: vendored,   alias: [], note: "TCRDD via git-gamble 2.14.6; skill from xpepper/tcr-skill commit 48c16c0.",
+        description: "An external workflow for Claude Code (arm: tcrdd-gamble): the tcr skill from
+          Pietro Di Bello's xpepper/tcr-skill, commit 48c16c0 (MIT), vendored unchanged. It is TCRDD
+          driven by the git-gamble tool. Every Red, Green and Refactor step bets on its expected test
+          outcome, then commits if the bet holds and reverts if it does not; a new test that passes
+          straight away is reverted too. There is no up-front test list and no refactoring rules
+          beyond keeping behaviour unchanged, and everything runs in one context. The lab adds
+          autonomous execution, the test command, an installed git-gamble and an isolated local Git
+          repository."}
+      external-tcrdd-bsene-2026-09-14-cc:         {arm: tcrdd-bsene,   vendored: "2026-09-14", harness: cc, parent: null,                                  status: vendored,   alias: [], note: "Native-Git TCRDD from bsene/skills commit 81a792d; upstream snapshot has no declared license.",
+        description: "An external workflow for Claude Code (arm: tcrdd-bsene): the tcrdd skill from
+          the bsene/skills repository, commit 81a792d, vendored unchanged; that upstream snapshot
+          declares no license. It is TCRDD on plain Git with no external tool. Each Red, Green and
+          Refactor phase stages all changes and runs the suite. It commits when the result is what the
+          phase expects; otherwise it hard-resets and logs the failure. Green follows a
+          transformation-priority ladder. There is no up-front test list, and everything runs in one
+          context. The lab runs the skill in its own autonomous mode with the approval gates skipped
+          and supplies the test command."}
+      external-kesseler-2026-09-30-cc:            {arm: kesseler,      vendored: "2026-09-30", harness: cc, parent: null,                                  status: vendored,   alias: [], note: "TDD skill from lexler/skill-factory commit 474433af2e (output_skills/testing/tdd); Apache-2.0. evals/ deliberately not vendored.",
+        description: "An external workflow for Claude Code (arm: kesseler): Lada Kesseler's TDD
+          skill from lexler/skill-factory, commit 474433af2e (Apache-2.0), vendored unchanged together
+          with its ZOMBIES reference; the upstream eval files are not included. Tests are planned up
+          front as one-line test comments and checked for completeness against ZOMBIES. They are then
+          worked through one at a time, with predicted failures, a two-step Red (first a compile
+          failure, then an assertion failure), a simplify step and a refactor at every green. A final
+          evaluation looks for missed tests and hardcoded values. Everything runs inline in one
+          context. The lab runs the skill in its auto mode, treats the prompt as the approved plan and
+          supplies the test command."}
+      external-tcr-kentbeck-2026-09-14-pi:        {arm: tcr-kentbeck,  vendored: "2026-09-14", harness: pi, parent: external-tcr-kentbeck-2026-09-14-cc,     status: vendored,   alias: [], port_of: external-tcr-kentbeck-2026-09-14-cc,
+        description: "The pi port of external-tcr-kentbeck-2026-09-14 (arm: tcr-kentbeck). It uses
+          the same vendored skill and the same method. Only the packaging differs: the skill sits
+          under pi skills, and the lab adaptation lives in AGENTS.md, which adds a reminder that a
+          checkpoint does not end the run."}
+      external-tcrdd-git-gamble-2026-09-14-pi:    {arm: tcrdd-gamble,  vendored: "2026-09-14", harness: pi, parent: external-tcrdd-git-gamble-2026-09-14-cc, status: vendored,   alias: [], port_of: external-tcrdd-git-gamble-2026-09-14-cc,
+        description: "The pi port of external-tcrdd-git-gamble-2026-09-14 (arm: tcrdd-gamble). It
+          uses the same vendored skill and the same method. Only the packaging differs: the skill sits
+          under pi skills, and the lab adaptation lives in AGENTS.md, which adds a reminder that a
+          phase checkpoint does not end the turn."}
+      external-tcrdd-bsene-2026-09-14-pi:         {arm: tcrdd-bsene,   vendored: "2026-09-14", harness: pi, parent: external-tcrdd-bsene-2026-09-14-cc,      status: vendored,   alias: [], port_of: external-tcrdd-bsene-2026-09-14-cc, note: "Upstream snapshot has no declared license.",
+        description: "The pi port of external-tcrdd-bsene-2026-09-14 (arm: tcrdd-bsene). It uses the
+          same vendored skill and the same method. Only the packaging differs: the skill sits under pi
+          skills, and the lab adaptation lives in AGENTS.md, which adds a reminder that a phase
+          checkpoint does not end the turn."}
 
   _archive/exact-coding/opus:
     prefix: exact

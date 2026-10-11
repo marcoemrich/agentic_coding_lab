@@ -18,3 +18,6 @@
   `LINEAGE.yaml`: outsider prose covering what the workflow is, its arm and what sets it apart.
   Kept separate from the lab-facing `note:`. Structured traits per arm (an `arms:` block) were
   considered and dropped as too complex for a first step.
+- **Workflow descriptions, scope.** First step covers only workflows named in the frontmatter
+  of a main RQ (`research/questions-*/`): 49 of 90 as of 2026-10-11. The rest — referenced
+  only by workflow-dev or kata-dev RQs, or by none — is deferred along with those RQs.
