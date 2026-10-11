@@ -50,8 +50,11 @@ RQs split along the same line: general RQs vs. workflow-development RQs.
 
 ## First iteration (deliberately lightweight)
 
-- Static HTML pages, e.g. GitHub Pages. Little architectural overhead, zero effort for readers.
-- A **curated** set of RQs, separated into general and workflow-development RQs.
+Detailed decisions: [open-questions.md](open-questions.md#decided).
+
+- Static pages on GitHub Pages, generated locally with Astro and React islands. Little
+  architectural overhead, zero effort for readers.
+- All 46 main RQs (`research/questions-*/`); workflow-development RQs come later.
 - Per RQ page: question, factors, controls, and **the table**, formatted consistently.
 - **Gaps made visible**: metric not collected at the time vs. combination never run.
 - When the runs happened is visible.
@@ -69,3 +72,4 @@ RQs split along the same line: general RQs vs. workflow-development RQs.
 - Before/after view for workflow tuning; the workflow tree with a change description per edge.
 - Tracing a finding's conclusion back to the metrics; a human approval step for findings.
 - The form of answers — classic hypotheses may not be the right shape.
+- A thematic index instead of the per-harness-subtree grouping, together with curation.
