@@ -1,0 +1,287 @@
+<title>Agentic Coding Lab Results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a lab report. The research question is the page's headline; tables are the body, dense and quiet. */
+:root {
+  --paper: #fbfcfd;
+  --ink: #1d2733;
+  --ink-2: #4a5666;
+  --ink-3: #7a8594;
+  --rule: #dde3ea;
+  --rule-2: #eef1f5;
+  --accent: #2c6a8a;
+  --win: #fff4cc;
+  --warn: #9a6500;
+  --warn-bg: #fff6e0;
+  --closed-bg: #f3eef9;
+  --closed-ink: #57407a;
+  --gap: #f2f4f7;
+  --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #141a21; --ink: #e4e9ef; --ink-2: #aeb8c4; --ink-3: #7e8996;
+    --rule: #2c3540; --rule-2: #1d242d; --accent: #7fb8d6; --win: #3a3216;
+    --warn: #f0b952; --warn-bg: #33290f; --closed-bg: #2a2236; --closed-ink: #c9b4ea;
+    --gap: #1a2028; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #141a21; --ink: #e4e9ef; --ink-2: #aeb8c4; --ink-3: #7e8996;
+  --rule: #2c3540; --rule-2: #1d242d; --accent: #7fb8d6; --win: #3a3216;
+  --warn: #f0b952; --warn-bg: #33290f; --closed-bg: #2a2236; --closed-ink: #c9b4ea;
+  --gap: #1a2028; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 15px/1.5 var(--sans); }
+.wrap { margin: 0 auto; padding-inline: 24px; padding-block: 0 64px; }
+.wrap > .proto, .wrap > header.top { max-width: none; }
+.index, .wfs, article > .meta, article > .banner { max-width: 1240px; }
+@media (max-width: 600px) { .wrap { padding-inline: 16px; } }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible, summary:focus-visible, th:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+header.top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px; padding-block: 20px 14px; border-bottom: 1px solid var(--rule); margin-bottom: 32px; }
+header.top .name { font-family: var(--serif); font-size: 20px; font-weight: 500; color: var(--ink); text-decoration: none; }
+header.top nav { display: flex; gap: 18px; }
+header.top nav a { text-decoration: none; color: var(--ink-2); }
+header.top nav a[aria-current="page"] { color: var(--ink); font-weight: 600; }
+header.top .stamp { margin-left: auto; color: var(--ink-3); font-size: 13px; }
+.proto { background: var(--warn-bg); color: var(--warn); font-size: 13px; padding: 6px 12px; border-radius: 4px; margin-bottom: 24px; }
+h1.q { font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 2.6vw, 30px); line-height: 1.3; max-width: 46em; margin: 4px 0 16px; text-wrap: balance; }
+h2 { font-family: var(--serif); font-weight: 500; font-size: 22px; margin: 40px 0 12px; }
+h3 { font-size: 15px; font-weight: 600; margin: 28px 0 8px; }
+.rqid { color: var(--ink-3); font-size: 13px; }
+.meta { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; font-size: 14px; margin: 0 0 8px; }
+.meta dt { color: var(--ink-3); }
+.meta dd { margin: 0; min-width: 0; }
+.banner { padding: 10px 14px; border-radius: 4px; margin: 0 0 20px; font-size: 14px; max-width: 70em; }
+.banner.closed { background: var(--closed-bg); color: var(--closed-ink); }
+.banner.warn { background: var(--warn-bg); color: var(--warn); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 13px; color: var(--ink-2); margin: 12px 0 10px; }
+.scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 4px; }
+table.res { border-collapse: separate; border-spacing: 0; font-size: 13.5px; font-variant-numeric: tabular-nums; min-width: 100%; }
+table.res th, table.res td { padding: 5px 7px; border-bottom: 1px solid var(--rule-2); white-space: nowrap; text-align: right; vertical-align: top; }
+table.res thead th { background: var(--paper); font-weight: 500; color: var(--ink-2); vertical-align: bottom; position: sticky; top: 0; }
+table.res thead tr.groups th { font-weight: 600; color: var(--ink); text-align: left; border-bottom: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+table.res thead tr.cols th { border-bottom: 1px solid var(--rule); cursor: pointer; white-space: normal; min-width: 72px; max-width: 110px; line-height: 1.25; }
+table.res thead tr.cols th.gstart, table.res td.gstart { border-left: 1px solid var(--rule); }
+table.res .lab { text-align: left; position: sticky; left: 0; background: var(--paper); z-index: 1; min-width: 210px; border-right: 1px solid var(--rule); }
+table.res thead .lab { z-index: 2; }
+table.res tr:hover td { background: var(--rule-2); }
+table.res tr:hover td.lab { background: var(--rule-2); }
+.dir { color: var(--ink-3); font-size: 12px; margin-left: 2px; }
+.sd { color: var(--ink-3); }
+.sub { display: block; color: var(--ink-3); font-size: 12px; }
+td.win { background: var(--win); font-weight: 600; }
+td.nc { color: var(--ink-3); font-style: italic; }
+tr.notrun td { background: var(--gap); color: var(--ink-3); }
+tr.notrun td.lab { background: var(--gap); }
+.tag { display: inline-block; font-size: 11.5px; color: var(--ink-2); border: 1px solid var(--rule); border-radius: 3px; padding: 0 5px; margin-left: 6px; vertical-align: 1px; }
+.warnmark { color: var(--warn); cursor: help; }
+details.find { margin-top: 40px; border-top: 1px solid var(--rule); padding-top: 16px; }
+details.find summary, details.runs summary { cursor: pointer; font-weight: 600; }
+details.runs { margin-top: 10px; font-size: 13px; }
+details.runs ul { columns: 2 320px; padding-left: 18px; }
+.md { max-width: 72em; }
+.md table { border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; display: block; overflow-x: auto; }
+.md th, .md td { border: 1px solid var(--rule); padding: 4px 8px; }
+.md h1, .md h2 { font-family: var(--serif); font-weight: 500; }
+.md p, .md li { max-width: 80ch; }
+.md code { font-size: 12.5px; }
+.group { margin-bottom: 36px; }
+.group h2 { margin-top: 0; }
+ul.rqs { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--rule); }
+ul.rqs li { display: grid; grid-template-columns: 56px 1fr auto; gap: 4px 16px; padding: 12px 0; border-bottom: 1px solid var(--rule-2); }
+ul.rqs .ch { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+ul.rqs .qt { min-width: 0; max-width: 62em; }
+ul.rqs .qt a, ul.rqs .qt span.t { font-family: var(--serif); font-size: 17px; line-height: 1.35; }
+ul.rqs .qt span.t { color: var(--ink-2); }
+ul.rqs .facts { text-align: right; font-size: 13px; color: var(--ink-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+@media (max-width: 700px) {
+  ul.rqs li { grid-template-columns: 40px 1fr; }
+  ul.rqs .facts { grid-column: 2; text-align: left; }
+}
+.wf { padding: 14px 0; border-bottom: 1px solid var(--rule-2); max-width: 72em; }
+.wf h3 { margin: 0 0 4px; font-family: var(--sans); }
+.wf p { margin: 4px 0 0; max-width: 80ch; }
+.wf:target { background: var(--win); }
+@media (prefers-reduced-motion: no-preference) { .wf:target { transition: background 1.2s; } }
+</style>
+
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script id="data" type="application/json">__DATA__</script>
+<script>
+const DATA = JSON.parse(document.getElementById("data").textContent);
+const h = React.createElement, { useState, useEffect, useMemo } = React;
+const REG = DATA.registry;
+const GH = "https://github.com/marcoemrich/agentic_coding_lab/tree/main/";
+const SUBTREES = [
+  ["questions-claude", "Claude Code"], ["questions-pi", "pi"], ["questions-opencode", "OpenCode"],
+  ["questions-cursor-cli", "Cursor CLI"], ["questions-cross", "Across harnesses"]];
+const DIR = { higher: "↑", lower: "↓", informative: "○" };
+const DIR_TXT = { higher: "higher is better", lower: "lower is better", informative: "informative, no winner" };
+
+function useHash() {
+  const [hash, set] = useState(location.hash.slice(1));
+  useEffect(() => { const f = () => { set(location.hash.slice(1)); window.scrollTo(0, 0); }; addEventListener("hashchange", f); return () => removeEventListener("hashchange", f); }, []);
+  return hash;
+}
+
+function fmtNum(x, unit) {
+  if (x == null) return "";
+  if (unit === "%") return Math.round(x * 100) + "%";
+  if (unit === "USD") return "$" + x.toFixed(2);
+  if (unit === "tokens") return x >= 1e6 ? (x / 1e6).toFixed(1) + "M" : Math.round(x / 1e3) + "k";
+  const a = Math.abs(x);
+  const d = a >= 100 ? 0 : a >= 10 ? 1 : 2;
+  return x.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+}
+function fmtSd(x, unit) {
+  if (x == null) return null;
+  if (unit === "%") return Math.round(x * 100);
+  if (unit === "USD") return x.toFixed(2);
+  if (unit === "tokens") return x >= 1e6 ? (x / 1e6).toFixed(1) + "M" : Math.round(x / 1e3) + "k";
+  return fmtNum(x, "");
+}
+const span = s => !s ? "" : s[0] === s[1] ? s[0] : s[0] + " → " + (s[0].slice(0, 4) === s[1].slice(0, 4) ? s[1].slice(5) : s[1]);
+
+function Cell({ v, unit, gstart }) {
+  const cls = [gstart ? "gstart" : ""];
+  if (!v || v.state === "not_collected")
+    return h("td", { className: cls.concat("nc").join(" "), title: "Not collected: no run in this cell has this metric (not measured at the time)." }, "n/c");
+  let main, sub = null;
+  if (v.kind === "bool") { main = Math.round(v.value * 100) + "%"; sub = v.k + "/" + v.n_used; }
+  else if (v.kind === "rate") { main = Math.round(v.value * 100) + "%"; sub = v.k + "/" + v.t; }
+  else { main = fmtNum(v.value, unit); const s = fmtSd(v.sd, unit); if (s != null) main = [main, h("span", { className: "sd", key: "s" }, " ± " + s)]; }
+  if (v.state === "partial") sub = (sub ? sub + ", " : "") + "n=" + v.n_used + "/" + v.n;
+  if (v.trophy) cls.push("win");
+  const title = v.state === "partial" ? `Partial: only ${v.n_used} of ${v.n} runs carry this metric.` : v.gated ? "No trophy: cell is below 90% external correctness." : undefined;
+  return h("td", { className: cls.join(" "), title }, main, v.trophy ? " 🏆" : null, sub ? h("span", { className: "sub" }, sub) : null);
+}
+
+function ResultTable({ table, d, rq }) {
+  const outs = d.outcomes;
+  const [sort, setSort] = useState(null);
+  const rows = useMemo(() => {
+    const r = table.rows.slice();
+    if (!sort) return r;
+    const dir = REG[sort.o].direction === "lower" ? 1 : -1;
+    return r.sort((a, b) => {
+      const x = a.values[sort.o]?.value, y = b.values[sort.o]?.value;
+      if (x == null) return 1; if (y == null) return -1;
+      return sort.flip ? (x - y) * -dir : (x - y) * dir;
+    });
+  }, [table, sort]);
+  const groups = [];
+  outs.forEach((o, i) => { const g = REG[o].group; if (!groups.length || groups[groups.length - 1].g !== g) groups.push({ g, n: 1, i }); else groups[groups.length - 1].n++; });
+  const gstarts = new Set(groups.map(g => g.i));
+  const label = r => d.varying.map(k => {
+    const val = r.labels[k];
+    if (k === "workflow") return h("span", { key: k }, h("a", { href: "#workflows" }, val),
+      r.test_list != null ? h("span", { className: "tag", title: r.test_list ? "Writes a test list up front" : "Picks the next test ad hoc" }, r.test_list ? "test list" : "ad hoc") : null);
+    return h("span", { key: k }, k + ": " + val);
+  });
+  return h("div", null,
+    h("div", { className: "scroll" },
+      h("table", { className: "res" },
+        h("thead", null,
+          h("tr", { className: "groups" }, h("th", { className: "lab", rowSpan: 2 }, d.varying.join(" × "), h("span", { className: "sub" }, "n, run dates")),
+            groups.map(g => h("th", { key: g.g, colSpan: g.n }, g.g))),
+          h("tr", { className: "cols" }, outs.map((o, i) => {
+            const m = REG[o]; const warn = m.flags.includes("testlist");
+            const suppressed = warn && d.spans_test_list_boundary;
+            return h("th", { key: o, tabIndex: 0, className: gstarts.has(i) ? "gstart" : "",
+              title: `${o}\n${DIR_TXT[m.direction]}${warn ? "\nNot comparable across the test-list boundary: a skipped test is compliance in a test-list workflow and a violation in an ad-hoc one." + (suppressed ? " This RQ spans the boundary, so no trophy." : "") : ""}\nClick to sort.`,
+              onClick: () => setSort(s => s && s.o === o ? { o, flip: !s.flip } : { o }),
+              onKeyDown: e => { if (e.key === "Enter") setSort(s => s && s.o === o ? { o, flip: !s.flip } : { o }); } },
+              m.name, h("span", { className: "dir" }, DIR[m.direction]), warn ? h("span", { className: "warnmark" }, " ⚠") : null);
+          }))),
+        h("tbody", null, rows.map(r => r.n === 0
+          ? h("tr", { key: r.key, className: "notrun" }, h("td", { className: "lab" }, label(r), h("span", { className: "sub" }, "0 runs")),
+              h("td", { colSpan: outs.length, style: { textAlign: "left" }, title: "Declared in the RQ, never run." }, "Not run"))
+          : h("tr", { key: r.key },
+              h("td", { className: "lab" }, label(r), h("span", { className: "sub" }, `n = ${r.n}, ${span(r.span)}`)),
+              outs.map((o, i) => h(Cell, { key: o, v: r.values[o], unit: REG[o].unit, gstart: gstarts.has(i) }))))))),
+    h("details", { className: "runs" }, h("summary", null, "Runs behind each row"),
+      table.rows.filter(r => r.n).map(r => h("div", { key: r.key }, h("h3", null, Object.values(r.labels).join(" × ")),
+        h("ul", null, r.run_ids.map(id => h("li", { key: id }, h("a", { href: GH + "experiments/runs/" + id }, id))))))));
+}
+
+function RQPage({ rq }) {
+  const d = rq.detail;
+  const controls = Object.entries(d.controls).map(([k, v]) => k + ": " + (typeof v === "object" ? JSON.stringify(v) : v)).join(", ");
+  return h("article", null,
+    h("div", { className: "rqid" }, rq.id),
+    h("h1", { className: "q" }, rq.question),
+    rq.closed ? h("div", { className: "banner closed" }, h("strong", null, "Closed. "), rq.closed) : null,
+    h("dl", { className: "meta" },
+      h("dt", null, "Varies"), h("dd", null, d.varying.join(", ")),
+      h("dt", null, "Held fixed"), h("dd", null, controls),
+      h("dt", null, "Runs"), h("dd", null, `${rq.runs} runs, ${span(rq.span)}; ${rq.cells_full} of ${rq.cells} cells at ${rq.min_replicates} replicates`),
+      h("dt", null, "Source"), h("dd", null, h("a", { href: GH + rq.dir }, rq.dir))),
+    d.spans_test_list_boundary ? h("div", { className: "banner warn" }, "⚠ This RQ compares test-list and ad-hoc workflows. Columns marked ⚠ measure the architecture as much as the discipline, so they get no trophy here.") : null,
+    d.tables.map(t => h("section", { key: t.kata },
+      h("h2", null, t.kata),
+      h("div", { className: "legend" },
+        h("span", null, "↑ higher is better"), h("span", null, "↓ lower is better"), h("span", null, "○ informative"),
+        h("span", null, "🏆 best in column"), h("span", null, "value ± sd"), h("span", null, "n/c not collected"),
+        h("span", null, "Code quality and cost trophies need ≥ 90% external correctness")),
+      h(ResultTable, { table: t, d, rq }))),
+    rq.findings_md ? h("details", { className: "find" },
+      h("summary", null, "Findings and hypotheses"),
+      h("div", { className: "banner warn", style: { marginTop: 12 } }, "AI-generated, not human-validated. Read the table above first."),
+      h("div", { className: "md", dangerouslySetInnerHTML: { __html: marked.parse(rq.findings_md) } })) : null);
+}
+
+function Index() {
+  return h("div", { className: "index" },
+    h("h1", { className: "q" }, "What the lab measured, one research question at a time"),
+    h("p", { style: { maxWidth: "70ch", color: "var(--ink-2)", marginTop: 0 } },
+      "Each question fixes some factors, varies others, and runs coding agents against a kata until every cell has enough replicates. The tables are computed from the runs; the findings below them are AI-generated."),
+    SUBTREES.map(([key, title]) => {
+      const list = DATA.rqs.filter(r => r.subtree === key);
+      if (!list.length) return null;
+      return h("section", { className: "group", key },
+        h("h2", null, title),
+        h("ul", { className: "rqs" }, list.map(r => h("li", { key: r.id },
+          h("span", { className: "ch" }, r.chapter),
+          h("div", { className: "qt" },
+            r.detail ? h("a", { href: "#" + r.id }, r.question) : h("span", { className: "t" }, r.question),
+            h("span", { className: "sub" }, r.id, r.closed ? h("span", { className: "tag" }, "closed") : null, !r.detail && r.runs ? h("span", { className: "tag" }, "page not in prototype") : null)),
+          h("div", { className: "facts" }, r.runs ? [`${r.cells_full}/${r.cells} cells`, h("br", { key: "b" }), span(r.span)] : "no data yet")))));
+    }));
+}
+
+function Workflows() {
+  const all = {};
+  DATA.rqs.filter(r => r.detail).forEach(r => Object.assign(all, r.detail.workflows));
+  return h("div", { className: "wfs" },
+    h("h1", { className: "q" }, "Workflows"),
+    h("p", { style: { maxWidth: "70ch", color: "var(--ink-2)", marginTop: 0 } }, "Every workflow that appears in a table. In the prototype: the workflows of the two sample questions."),
+    Object.entries(all).sort().map(([name, w]) => h("div", { className: "wf", id: "wf-" + name, key: name },
+      h("h3", null, name, w.arm ? h("span", { className: "tag" }, w.arm) : null, w.test_list != null ? h("span", { className: "tag" }, w.test_list ? "test list" : "ad hoc") : null, w.status ? h("span", { className: "tag" }, w.status) : null),
+      h("p", null, w.description || "No description yet."))));
+}
+
+function App() {
+  const hash = useHash();
+  const rq = DATA.rqs.find(r => r.id === hash && r.detail);
+  const page = hash === "workflows" ? "workflows" : rq ? "rq" : "index";
+  return h("div", { className: "wrap" },
+    h("header", { className: "top" },
+      h("a", { className: "name", href: "#" }, "Agentic Coding Lab"),
+      h("nav", null,
+        h("a", { href: "#", "aria-current": page === "index" ? "page" : undefined }, "Questions"),
+        h("a", { href: "#workflows", "aria-current": page === "workflows" ? "page" : undefined }, "Workflows")),
+      h("span", { className: "stamp" }, `Data as of ${DATA.generated.replace("T", " ")}, ${DATA.pool_size} runs`)),
+    h("div", { className: "proto" }, "Prototype. Two questions have full pages; the rest of the index is real but not linked yet."),
+    page === "rq" ? h(RQPage, { rq }) : page === "workflows" ? h(Workflows) : h(Index));
+}
+ReactDOM.createRoot(document.getElementById("app")).render(h(App));
+</script>

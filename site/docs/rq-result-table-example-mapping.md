@@ -1,7 +1,7 @@
 # Example Mapping: RQ result table
 
-Source material: the approved prototype
-(<https://claude.ai/artifact/97iGMHZ2vrDKjEhdgLVquf>) and the design decisions in
+Source material: the approved prototype ([`../prototype/`](../prototype/README.md)) and
+the design decisions in
 `todos_and_ideas/2-ACTIVE/results-site/open-questions.md`. Examples use real cells from
 RQ-tdd-workflow-comparison-opus55 (4.13), RQ-external-tdd-workflows-opus5 (4.7) and
 RQ-architecture-axis-opus5.
