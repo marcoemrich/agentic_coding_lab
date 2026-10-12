@@ -6,7 +6,10 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint:json": "eslint 'src/**/*.{ts,tsx}' --format json",
+    "complexity:json": "eslint 'src/**/*.{ts,tsx}' --config eslint.complexity.config.mjs --format json"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.2",
@@ -14,8 +17,11 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "^9.39.5",
+    "eslint-plugin-sonarjs": "^4.2.2",
     "happy-dom": "^20.14.6",
-    "typescript": "^7.0.2",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.1",
     "vitest": "^5.0.3"
   },
   "dependencies": {

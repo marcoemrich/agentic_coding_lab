@@ -24,8 +24,18 @@ export interface RateCell {
 export type ValueCell = NumericCell | BooleanCell | RateCell;
 export interface FormattedValue { main: string; sub?: string }
 
+const WHOLE_NUMBER_AT = 100;
+const ONE_DECIMAL_AT = 10;
+const SINGLE_RUN_INTEGER_ABOVE = 10;
+const PLAIN_NUMBER_PRECISION = 2;
+const USD_PRECISION = 2;
+const PERCENT_SCALE = 100;
+const TOKENS_PER_MILLION = 1_000_000;
+const TOKENS_PER_THOUSAND = 1_000;
+const SECONDS_PER_MINUTE = 60;
+
 function formatByMagnitude(value: number): string {
-  return value >= 100 ? value.toFixed(0) : value >= 10 ? value.toFixed(1) : value.toFixed(2);
+  return value >= WHOLE_NUMBER_AT ? value.toFixed(0) : value >= ONE_DECIMAL_AT ? value.toFixed(1) : value.toFixed(PLAIN_NUMBER_PRECISION);
 }
 
 function standardDeviationForDisplay(cell: NumericCell): number | undefined {
@@ -33,7 +43,7 @@ function standardDeviationForDisplay(cell: NumericCell): number | undefined {
 }
 
 function wholePercentagePoints(value: number): number {
-  return Math.round(value * 100);
+  return Math.round(value * PERCENT_SCALE);
 }
 
 function formatPercent(value: number): string {
@@ -51,7 +61,7 @@ function formatPercentage(cell: NumericCell): FormattedValue {
 }
 
 function formatPlainMean(cell: NumericCell): string {
-  return cell.n === 1 && cell.value > 10 && Number.isInteger(cell.value)
+  return cell.n === 1 && cell.value > SINGLE_RUN_INTEGER_ABOVE && Number.isInteger(cell.value)
     ? String(cell.value)
     : formatByMagnitude(cell.value);
 }
@@ -59,7 +69,7 @@ function formatPlainMean(cell: NumericCell): string {
 function formatPlainNumber(cell: NumericCell): FormattedValue {
   const mean = formatPlainMean(cell);
   const sd = standardDeviationForDisplay(cell);
-  return withDeviation(mean, sd === undefined ? undefined : sd.toFixed(2));
+  return withDeviation(mean, sd === undefined ? undefined : sd.toFixed(PLAIN_NUMBER_PRECISION));
 }
 
 function formatCountedOutcome(value: number, count: number, total: number): FormattedValue {
@@ -67,7 +77,7 @@ function formatCountedOutcome(value: number, count: number, total: number): Form
 }
 
 function formatTokenCount(tokens: number): string {
-  return tokens >= 1_000_000 ? `${(tokens / 1_000_000).toFixed(1)}M` : `${(tokens / 1000).toFixed(0)}k`;
+  return tokens >= TOKENS_PER_MILLION ? `${(tokens / TOKENS_PER_MILLION).toFixed(1)}M` : `${(tokens / TOKENS_PER_THOUSAND).toFixed(0)}k`;
 }
 
 function formatTokenValue(cell: NumericCell): FormattedValue {
@@ -77,13 +87,13 @@ function formatTokenValue(cell: NumericCell): FormattedValue {
 
 function formatDurationValue(cell: NumericCell): FormattedValue {
   const sd = standardDeviationForDisplay(cell);
-  const mean = (cell.value / 60).toFixed(1);
-  const deviation = sd === undefined ? undefined : (sd / 60).toFixed(1);
+  const mean = (cell.value / SECONDS_PER_MINUTE).toFixed(1);
+  const deviation = sd === undefined ? undefined : (sd / SECONDS_PER_MINUTE).toFixed(1);
   return { main: `${withDeviation(mean, deviation).main} min` };
 }
 
 function formatCostAmount(amount: number): string {
-  return amount.toFixed(2);
+  return amount.toFixed(USD_PRECISION);
 }
 
 function formatCostValue(cell: NumericCell): FormattedValue {

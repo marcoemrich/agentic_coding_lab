@@ -31,19 +31,15 @@ function notRunRowAppearance(row: ReturnType<typeof buildResultTables>[number]["
   return isNotRun(row) ? { className: "not-run", style: { opacity: 0.5 } } : {};
 }
 
-function isMetricNotCollected(row: ReturnType<typeof buildResultTables>[number]["rows"][number], metric: string): boolean {
-  return row.values?.[metric] == null;
-}
-
 type ResultRow = ReturnType<typeof buildResultTables>[number]["rows"][number];
 
 function MetricValue({ row, metric }: { row: ResultRow; metric: string }) {
   if (isNotRun(row)) return "Not run";
-  if (isMetricNotCollected(row, metric)) return <i title="not collected — not measured at the time">n/c</i>;
-  const value = row.values![metric]!;
+  const value = row.values?.[metric];
+  if (value == null) return <i title="not collected — not measured at the time">n/c</i>;
   if (value.value === undefined) return null;
-  const cell: ValueCell = "kind" in value && value.kind
-    ? value as ValueCell : { kind: "num", n: value.n ?? row.n, value: value.value, sd: value.sd };
+  const cell: ValueCell = "kind" in value
+    ? value : { kind: "num", n: value.n ?? row.n, value: value.value, sd: value.sd };
   const formatted = formatValue(metric, cell);
   const partialRunCount = partialMetricRunCount(value, row.n);
   return <>{formatted.main}{formatted.sub && <small>{formatted.sub}</small>}

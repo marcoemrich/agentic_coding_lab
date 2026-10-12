@@ -33,8 +33,13 @@ function columnsForOutcomes(outcomes: ResultTableInput["outcomes"]): string[] {
   return outcomes.includes("cost_usd") ? outcomes : [...outcomes, "cost_usd"];
 }
 
+const ISO_YEAR_END = 4;
+const ISO_MONTH_START = 5;
+const ISO_DATE_END = 10;
+const SORT_DIRECTIONS = 2;
+
 function endDateForSpan(first: string, last: string): string {
-  return first.slice(0, 4) === last.slice(0, 4) ? last.slice(5) : last;
+  return first.slice(0, ISO_YEAR_END) === last.slice(0, ISO_YEAR_END) ? last.slice(ISO_MONTH_START) : last;
 }
 
 function formatRunDateSpan(first: string, last: string): string {
@@ -42,7 +47,7 @@ function formatRunDateSpan(first: string, last: string): string {
 }
 
 function runDateSpanFor(cell: ResultTableInput["cells"][number]): string | undefined {
-  const dates = (cell.runs ?? []).flatMap(run => run.started_at ? [run.started_at.slice(0, 10)] : []).sort();
+  const dates = (cell.runs ?? []).flatMap(run => run.started_at ? [run.started_at.slice(0, ISO_DATE_END)] : []).sort();
   if (!dates.length) return undefined;
   return formatRunDateSpan(dates[0], dates.at(-1)!);
 }
@@ -81,7 +86,7 @@ function compareMetricAvailability(a: ResultTableInput["cells"][number], b: Resu
 }
 
 function cellsSortedByMetric(cells: ResultTableInput["cells"], sort: NonNullable<ResultTableInput["sort"]>) {
-  const direction = sort.clicks % 2 === 0 ? -1 : 1;
+  const direction = sort.clicks % SORT_DIRECTIONS === 0 ? -1 : 1;
   return [...cells].sort((a, b) => {
     return compareRunParticipation(a, b) || compareMetricAvailability(a, b, sort.metric) || direction * compareMetricMeansBestFirst(sort.metric, a.values?.[sort.metric]?.value ?? 0, b.values?.[sort.metric]?.value ?? 0);
   });
