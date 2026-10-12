@@ -62,6 +62,9 @@ CLAUDE_TIMEOUT_SECONDS="${CLAUDE_TIMEOUT_SECONDS:-7200}"
 #   BATCH_CONSECUTIVE_GIVEUP  consecutive runs that exhausted retries before
 #                             aborting the whole batch (default 10).
 BATCH_RATELIMIT_RETRIES="${BATCH_RATELIMIT_RETRIES:-5}"
+# Immediate retries after a provider refusal (safeguard flag), on top of the
+# first attempt. Taken from the same attempt budget as the backoff ladder.
+REFUSAL_RETRIES=2
 BATCH_CONSECUTIVE_GIVEUP="${BATCH_CONSECUTIVE_GIVEUP:-10}"
 
 # Colors
@@ -565,6 +568,83 @@ echo -e "${BLUE}Rate-limit retries:${NC} ${BATCH_RATELIMIT_RETRIES} per run, abo
 echo
 
 # ---------------------------------------------------------------------------
+# classify_failed_run: sets the failure flags for a run that exited non-zero,
+# from the signatures in its run.log. Order matters: quota and setup errors
+# come first because the broad rate-limit pattern would otherwise swallow
+# them. A message no branch recognises leaves every flag false and the run
+# ends as error-<code>; it is still excluded from the statistics, which use
+# ok runs only. Add a pattern only for a message observed in a real run.
+# ---------------------------------------------------------------------------
+classify_failed_run() {
+    local run_log=$1
+    # SETUP ERROR — the configuration cannot work, so the agent never wrote a
+    # line and every later run with the same configuration fails the same
+    # way. Not retried; the caller stops the shard. Observed messages:
+    #   OpenCode:    "Model not found: portkey/@openrouter-eval/deepseek/…"
+    #   Claude Code: "There's an issue with the selected model (…)"
+    #   Claude Code: "API Error: 400 Claude Code 2.1.267 does not support
+    #                 this model; version 2.1.280 or newer is required"
+    # OpenCode's bare "Unexpected server error" is deliberately absent: it
+    # appeared both with and without a missing model, so its cause is
+    # ambiguous and it stays error-<code>.
+    if grep -qiE "Model not found: |There's an issue with the selected model|does not support this model; version [0-9.]+ or newer is required" "$run_log" 2>/dev/null; then
+        setup_error="true"
+        echo -e "  ${RED}Setup error — not retryable; this shard stops after this run.${NC}"
+        grep -oiE "Model not found: [^ ]+|There's an issue with the selected model \([^)]*\)|does not support this model; version [0-9.]+ or newer is required" "$run_log" 2>/dev/null | head -1 | sed 's/^/    /'
+        return
+    fi
+    # PROVIDER REFUSAL — the provider's safeguard flagged a message mid-run.
+    # Claude Code: "API Error: Opus 5's safeguards flagged this message …
+    # This sometimes happens with safe, normal conversations." The same run
+    # may pass on a fresh start, so the caller retries it at once, without
+    # backoff — waiting does not change a refusal.
+    if grep -qiE "safeguards flagged this message" "$run_log" 2>/dev/null; then
+        provider_refusal="true"
+        transient_reason="Provider refusal"
+        return
+    fi
+
+    # NON-RETRYABLE QUOTA EXHAUSTION — check before the rate-limit
+    # branch, whose "usage limit" pattern would otherwise swallow it.
+    #
+    # cursor-agent raises ActionRequiredError when the Cursor plan's
+    # monthly model allowance is spent:
+    #   "ActionRequiredError: You've hit your usage limit for Opus …
+    #    Your usage limits will reset when your monthly cycle ends
+    #    on 8/2/2026."
+    # This does NOT clear within a batch — the reset is days away and
+    # needs a plan change or a spend limit. Retrying burns the whole
+    # backoff ladder (60s→5min→30min→1h→2h ≈ 3.7h per run) for an
+    # error that is guaranteed to still be there at the end of it.
+    # Fail fast so the operator sees it immediately.
+    if grep -qiE "ActionRequiredError|usage limits will reset|set a Spend Limit" "$run_log" 2>/dev/null; then
+        quota_exhausted="true"
+        transient_reason="Plan quota exhausted (non-retryable)"
+        echo -e "  ${RED}Plan quota exhausted — not retryable. Stopping this run.${NC}"
+        grep -oiE "You've hit your usage limit for [A-Za-z0-9.-]+" "$run_log" 2>/dev/null | head -1 | sed 's/^/    /'
+        grep -oiE "reset when your monthly cycle ends on [0-9/]+" "$run_log" 2>/dev/null | head -1 | sed 's/^/    /'
+    # "hit your limit" / "resets <time>" is the Anthropic
+    # subscription-quota signature shown by the Claude CLI when
+    # the daily/weekly cap is reached (different from API
+    # 429/529). Treated as rate-limit so the retry/backoff path
+    # waits it out instead of failing the batch.
+    elif grep -qiE "rate.?limit|\b429\b|\b529\b|usage limit|overloaded|hit your limit|resets [0-9]+(:[0-9]+)?\s*[ap]m" "$run_log" 2>/dev/null; then
+        rate_limited="true"
+        transient_reason="Rate-limit"
+    # "API Error: terminated" is the Anthropic CLI's signature for
+    # an upstream connection drop, as is "API Error: Connection closed
+    # mid-response". "API Error: 500 Internal server error" is a server-side
+    # failure the CLI gives up on; the next attempt usually passes.
+    # ECONN/EAI/socket errors are the underlying network-stack
+    # equivalents. None of these come from model output, so substring
+    # matching is safe.
+    elif grep -qiE "API Error: terminated|API Error: Connection error|API Error: Connection closed mid-response|API Error: 500|ECONNRESET|ECONNREFUSED|EAI_AGAIN|socket hang up" "$run_log" 2>/dev/null; then
+        transient_api_error="true"
+        transient_reason="Transient API error"
+    fi
+}
+
+# ---------------------------------------------------------------------------
 # save_transcript: copy Claude session JSONL + subagent transcripts into
 # the run dir so analyze-run.sh / analyze_transcript.py can pick them up.
 # Ported from experiments/record-run.sh:401-445.
@@ -809,6 +889,8 @@ EOF
     claude_exit=0
     rate_limited="false"
     transient_api_error="false"
+    provider_refusal="false"
+    refusal_retries=0
     retry_attempts=0
     transient_reason=""
 
@@ -831,6 +913,8 @@ EOF
                 4) backoff=3600 ;;
                 *) backoff=7200 ;;
             esac
+            # A refusal is retried at once: waiting does not change it.
+            [ "$provider_refusal" = "true" ] && backoff=0
             echo -e "  ${YELLOW}${transient_reason} detected; retry $attempt/$BATCH_RATELIMIT_RETRIES after ${backoff}s backoff...${NC}"
             sleep "$backoff"
             # A transiently cut TCR session may already have committed partial
@@ -1133,43 +1217,11 @@ EOF
         transient_api_error="false"
         quota_exhausted="false"
         pi_retries_exhausted="false"
+        setup_error="false"
+        provider_refusal="false"
         transient_reason=""
         if [ "$claude_exit" -ne 0 ]; then
-            # NON-RETRYABLE QUOTA EXHAUSTION — check before the rate-limit
-            # branch, whose "usage limit" pattern would otherwise swallow it.
-            #
-            # cursor-agent raises ActionRequiredError when the Cursor plan's
-            # monthly model allowance is spent:
-            #   "ActionRequiredError: You've hit your usage limit for Opus …
-            #    Your usage limits will reset when your monthly cycle ends
-            #    on 8/2/2026."
-            # This does NOT clear within a batch — the reset is days away and
-            # needs a plan change or a spend limit. Retrying burns the whole
-            # backoff ladder (60s→5min→30min→1h→2h ≈ 3.7h per run) for an
-            # error that is guaranteed to still be there at the end of it.
-            # Fail fast so the operator sees it immediately.
-            if grep -qiE "ActionRequiredError|usage limits will reset|set a Spend Limit" "$run_log" 2>/dev/null; then
-                quota_exhausted="true"
-                transient_reason="Plan quota exhausted (non-retryable)"
-                echo -e "  ${RED}Plan quota exhausted — not retryable. Stopping this run.${NC}"
-                grep -oiE "You've hit your usage limit for [A-Za-z0-9.-]+" "$run_log" 2>/dev/null | head -1 | sed 's/^/    /'
-                grep -oiE "reset when your monthly cycle ends on [0-9/]+" "$run_log" 2>/dev/null | head -1 | sed 's/^/    /'
-            # "hit your limit" / "resets <time>" is the Anthropic
-            # subscription-quota signature shown by the Claude CLI when
-            # the daily/weekly cap is reached (different from API
-            # 429/529). Treated as rate-limit so the retry/backoff path
-            # waits it out instead of failing the batch.
-            elif grep -qiE "rate.?limit|\b429\b|\b529\b|usage limit|overloaded|hit your limit|resets [0-9]+(:[0-9]+)?\s*[ap]m" "$run_log" 2>/dev/null; then
-                rate_limited="true"
-                transient_reason="Rate-limit"
-            # "API Error: terminated" is the Anthropic CLI's signature for
-            # an upstream connection drop. ECONN/EAI/socket errors are the
-            # underlying network-stack equivalents. None of these come
-            # from model output, so substring matching is safe.
-            elif grep -qiE "API Error: terminated|API Error: Connection error|ECONNRESET|ECONNREFUSED|EAI_AGAIN|socket hang up" "$run_log" 2>/dev/null; then
-                transient_api_error="true"
-                transient_reason="Transient API error"
-            fi
+            classify_failed_run "$run_log"
         else
             # Exit-0 cap signatures. Only checked for Claude harness — pi
             # and OpenCode have their own end-of-session conventions.
@@ -1221,7 +1273,13 @@ EOF
         # Leave the loop unless we hit a known transient signature.
         # Non-matching failures (timeout, real bugs) and successes both
         # exit immediately — only transient API issues warrant a retry.
-        if [ "$rate_limited" = "false" ] && [ "$transient_api_error" = "false" ]; then
+        # A provider refusal gets $REFUSAL_RETRIES immediate retries of its
+        # own (counted inside the same attempt budget), then the run is
+        # recorded as provider-refusal.
+        if [ "$provider_refusal" = "true" ]; then
+            [ "$refusal_retries" -ge "$REFUSAL_RETRIES" ] && break
+            refusal_retries=$((refusal_retries + 1))
+        elif [ "$rate_limited" = "false" ] && [ "$transient_api_error" = "false" ]; then
             break
         fi
         retry_attempts=$attempt
@@ -1379,6 +1437,11 @@ EOF
     # cycle reset, so no amount of waiting inside this batch helps. Kept as
     # its own reason so aggregation does not read it as a transient blip.
     [ "$quota_exhausted" = "true" ]     && exit_reason="quota-exhausted"
+    # The provider's safeguard refused on every attempt.
+    [ "$provider_refusal" = "true" ]    && exit_reason="provider-refusal"
+    # The configuration cannot work (model missing or inaccessible, CLI too
+    # old for the model). The run is kept so the failure stays visible.
+    [ "$setup_error" = "true" ]         && exit_reason="setup-error"
     # Backwards compat for downstream consumers that still reference
     # rate_limit_attempts in the old single-class retry log line.
     rate_limit_attempts=$retry_attempts
@@ -1466,6 +1529,15 @@ EOF
     fi
 
     echo
+
+    # A setup error repeats on every remaining run with the same
+    # configuration, so this shard stops. The run above stays in the pool as
+    # setup-error; the next RQ fill run replaces it once the setup is fixed.
+    if [ "$setup_error" = "true" ]; then
+        echo -e "  ${RED}Setup error — stopping this shard. Fix the configuration and re-run the plan.${NC}"
+        echo
+        break
+    fi
 
     # Brief pause between runs
     sleep 5

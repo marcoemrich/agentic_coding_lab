@@ -3,7 +3,7 @@
 Status: open
 Source: [results-site decisions](../../open-questions.md#pipeline).
 Depends on: [Python test infrastructure](2026-10-12_07_python-test-infrastructure.md),
-[exit reason classification](2026-10-12_01_exit-reason-classification.md),
+[exit reason classification](../done/2026-10-12_01_exit-reason-classification.md),
 [drop completed_within_budget](2026-10-12_02_drop-completed-within-budget.md),
 [usable-run replicates](2026-10-12_05_usable-run-replicates.md).
 
@@ -17,7 +17,7 @@ Mapped with the domain expert on 2026-10-12.
 
 ### R1 — Only `ok` runs enter a statistic
 
-A run whose exit reason is anything but `ok` — a timeout, an infrastructure abort (setup error, API 500, rate limit, quota or retries exhausted), a provider refusal or an unrecognised `error-N` — does not enter `mean`, `sd`, `n`, rates or `cost_usd`. This holds for `summary.md` and `summary.json` alike — one statistics implementation. Classification: [exit reason classification](2026-10-12_01_exit-reason-classification.md).
+A run whose exit reason is anything but `ok` — a timeout, an infrastructure abort (setup error, API 500, rate limit, quota or retries exhausted), a provider refusal or an unrecognised `error-N` — does not enter `mean`, `sd`, `n`, rates or `cost_usd`. This holds for `summary.md` and `summary.json` alike — one statistics implementation. Classification: [exit reason classification](../done/2026-10-12_01_exit-reason-classification.md).
 
 - A cell has 5 runs: 4 × `ok` with `mccabe_max` 4, 5, 6, 5 and 1 × `timeout` with 12 → `n = 4`, `mean = 5.0`.
 - A cell has 3 runs, all `timeout` → no mean; the cell has runs but none usable, and its coverage reads "below `min_replicates`".
