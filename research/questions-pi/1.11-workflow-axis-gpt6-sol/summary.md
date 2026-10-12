@@ -2,7 +2,7 @@
 
 _On GPT-6 Sol, what does EXACT Coding Predictive TDD buy over a plain inline-TDD baseline, and does isolating the Refactor phase in a subagent add anything on top?_
 
-Generated: 2026-10-11T14:41:35Z
+Generated: 2026-10-12T07:27:57Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -31,17 +31,6 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-sol-codex |   5 |      1 |     1 |     1 |     0 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                        | cell_model      |   n |   match |   rate_% |
-|:-----------------------------|:-------------------------------------|:----------------|----:|--------:|---------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi            | gpt-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-ptdd-v1-pi                     | gpt-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-pi            | gpt-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-ptdd-v1-pi                     | gpt-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-sol-codex |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                        | cell_model      |   n |   match |   rate_% |
 |:-----------------------------|:-------------------------------------|:----------------|----:|--------:|---------:|

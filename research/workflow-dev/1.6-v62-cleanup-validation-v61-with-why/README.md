@@ -12,7 +12,6 @@ outcomes:
   # primary: correctness (claim-office with genuine ambiguities)
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # TDD discipline (should stay unchanged — cleanups are no-behavior-change-intended)
   - predictions_correct_rate
   - refactorings_applied

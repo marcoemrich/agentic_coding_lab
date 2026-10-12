@@ -2,7 +2,7 @@
 
 _Do decoration emojis (✅ ❌ 🔴 🟢 🔄 📋 🚨 ⚠️) in the workflow prompts (skills + refactor agent + rules/tdd.md) on the hybrid-v2 base have a measurable effect on code quality or TDD discipline?_
 
-Generated: 2026-10-11T14:41:43Z
+Generated: 2026-10-12T07:28:05Z
 
 Cells declared: 2 · matched runs: 10 · min_replicates: 5
 
@@ -105,10 +105,3 @@ Cells declared: 2 · matched runs: 10 · min_replicates: 5
 |:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      1 |     1 |     1 |     0 |
 | game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |      1 |     1 |     1 |     0 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                   | cell_model           |   n |   match |   rate_% |
-|:-----------------------------|:--------------------------------|:---------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |       5 |      100 |

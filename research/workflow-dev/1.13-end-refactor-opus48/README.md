@@ -13,7 +13,6 @@ outcomes:
   # primary: correctness (the bundle-break risk shows up here first; cf. RQ-1.9/RQ-1.10)
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # code quality (the end refactor targets whole-src metrics explicitly)
   - cognitive_max
   - cognitive_avg

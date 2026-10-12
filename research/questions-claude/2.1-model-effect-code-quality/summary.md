@@ -2,7 +2,7 @@
 
 _How strongly do the available models (Sonnet 4.6, Opus 4.6, Opus 4.7, Opus 4.8, Fable 5 — each with/without thinking) differ in code quality on a training-known kata under the strongest workflow?_
 
-Generated: 2026-10-11T14:41:21Z
+Generated: 2026-10-12T07:27:43Z
 
 Cells declared: 12 · matched runs: 44 · min_replicates: 3
 
@@ -194,23 +194,6 @@ Cells declared: 12 · matched runs: 44 · min_replicates: 3
 | game-of-life-example-mapping | exact-subagents-v1-cc | opus-5-no-thinking           |   3 |     15 |    15 |    15 |     0 |
 | game-of-life-example-mapping | exact-subagents-v1-cc | sonnet-4-6                   |   3 |     15 |    15 |    15 |     0 |
 | game-of-life-example-mapping | exact-subagents-v1-cc | sonnet-4-6-no-thinking       |   3 |     15 |    15 |    15 |     0 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow         | cell_model                   |   n |   match |   rate_% |
-|:-----------------------------|:----------------------|:-----------------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | exact-subagents-v1-cc | fable-5                      |   3 |       3 |      100 |
-| game-of-life-example-mapping | exact-subagents-v1-cc | fable-5-no-thinking          |   3 |       3 |      100 |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey             |   3 |       3 |      100 |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey-no-thinking |   3 |       3 |      100 |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-7                     |   3 |       3 |      100 |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-7-no-thinking         |  10 |      10 |      100 |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-8                     |   3 |       3 |      100 |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-4-8-no-thinking         |   4 |       4 |      100 |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-5                       |   3 |       3 |      100 |
-| game-of-life-example-mapping | exact-subagents-v1-cc | opus-5-no-thinking           |   3 |       3 |      100 |
-| game-of-life-example-mapping | exact-subagents-v1-cc | sonnet-4-6                   |   3 |       3 |      100 |
-| game-of-life-example-mapping | exact-subagents-v1-cc | sonnet-4-6-no-thinking       |   3 |       3 |      100 |
 
 ### duration_seconds
 

@@ -41,7 +41,6 @@ outcomes:
   # Correctness — gate, not signal: all Opus 5.5 cells measured so far sit at 1.00
   - verification_pct
   - tests_passing
-  - completed_within_budget
   - mutation_score
   - mutants_total
   - mutants_survived

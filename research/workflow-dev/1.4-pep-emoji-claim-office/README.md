@@ -14,7 +14,6 @@ outcomes:
   # primary: correctness (claim-office has genuine ambiguities, verification_pct scales non-trivially)
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # secondary: code quality
   - code_mass
   - smell_total

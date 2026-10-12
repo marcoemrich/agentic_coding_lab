@@ -15,7 +15,6 @@ outcomes:
   # primary: correctness — carries the subagents-v1<->hybrid-v1 swap (only visible on claim-office)
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # code quality — measured on BOTH katas: the architecture axis inverts between them
   # (subagents-v2 rank 1 on game-of-life, rank 8 on claim-office; F-tdd-quality.9)
   - cognitive_max

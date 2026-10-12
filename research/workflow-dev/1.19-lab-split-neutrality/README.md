@@ -21,7 +21,6 @@ outcomes:
   # correctness must be held: a layout change may not cost completeness
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # code quality — the reason the refactor subagent exists at all
   - avg_loc_per_function
   - longest_function

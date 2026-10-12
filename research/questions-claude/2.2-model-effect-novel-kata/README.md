@@ -26,7 +26,6 @@ outcomes:
   # context
   - tests_passing
   - tests_total
-  - completed_within_budget
   - duration_seconds
   - total_tokens
 min_replicates: 5

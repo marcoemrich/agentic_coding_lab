@@ -32,7 +32,6 @@ outcomes:
   - verification_pct
   - verification_passed
   - verification_total
-  - completed_within_budget
   # context
   - duration_seconds
   - total_tokens

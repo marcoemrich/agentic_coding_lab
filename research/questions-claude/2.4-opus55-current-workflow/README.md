@@ -30,7 +30,6 @@ outcomes:
   # primary outcome": both Opus 5 cells sit at 0.99–1.00 on this kata.
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # Code quality — where the workflow effect is actually visible
   - lines_of_code
   - code_mass

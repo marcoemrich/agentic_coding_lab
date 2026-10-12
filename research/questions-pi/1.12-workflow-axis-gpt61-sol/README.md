@@ -21,7 +21,6 @@ outcomes:
   # regardless of its quality numbers.
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # primary: code quality
   - code_mass
   - smell_total

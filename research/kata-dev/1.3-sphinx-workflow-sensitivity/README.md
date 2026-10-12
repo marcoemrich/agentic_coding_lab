@@ -30,7 +30,6 @@ outcomes:
   # correctness — saturated on this model, kept as a guard rail
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # what the elaborate workflow costs
   - duration_seconds
   - total_tokens

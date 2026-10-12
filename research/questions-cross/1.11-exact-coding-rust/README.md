@@ -17,7 +17,6 @@ outcomes:
   # correctness: a gate, not a result (see "Primary outcome")
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # code quality: the question this RQ exists to answer
   - code_mass
   - smell_total

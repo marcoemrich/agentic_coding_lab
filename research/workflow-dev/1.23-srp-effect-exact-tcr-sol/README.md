@@ -18,7 +18,6 @@ outcomes:
   # Correctness and completion gates
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # Primary SRP-sensitive code shape
   - avg_loc_per_function
   - median_loc_per_function

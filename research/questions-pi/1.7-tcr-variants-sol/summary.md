@@ -2,7 +2,7 @@
 
 _How do first-party EXACT Coding TCR, classic TCR, and external TCRDD variants affect correctness, code quality, development behavior, and efficiency for SOL on pi, and how do their native-Git and tool-enforced execution strategies differ?_
 
-Generated: 2026-10-11T14:41:38Z
+Generated: 2026-10-12T07:28:00Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -31,17 +31,6 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |      1 |     1 |     1 |     0 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                           | cell_model        |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:------------------|----:|--------:|---------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-pi   | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | external-tcr-kentbeck-2026-09-14-pi     | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                           | cell_model        |   n |   match |   rate_% |
 |:-----------------------------|:----------------------------------------|:------------------|----:|--------:|---------:|

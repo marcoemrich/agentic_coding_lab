@@ -2,7 +2,7 @@
 
 _How do seven TDD workflows compare on correctness, TDD discipline, code quality and cost? Three lines meet on one kata: the maintained EXACT Coding Predictive-TDD pair (with and without an isolated refactor subagent), the retired Opus hybrid pair, and three vendored third-party TDD skills — measured on claim-office-example-mapping × opus-5-5-no-thinking × Claude Code._
 
-Generated: 2026-10-11T14:41:24Z
+Generated: 2026-10-12T07:27:47Z
 
 Cells declared: 7 · matched runs: 35 · min_replicates: 5
 
@@ -33,18 +33,6 @@ Cells declared: 7 · matched runs: 35 · min_replicates: 5
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc   | opus-5-5-no-thinking | 2.1.280        |   5 |   1    |   1   |     1 |  0    |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                        | cell_model           | cell_harness   |   n |   match |   rate_% |
-|:-----------------------------|:-------------------------------------|:---------------------|:---------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-5-5-no-thinking | 2.1.280        |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc       | opus-5-5-no-thinking | 2.1.280        |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-ptdd-v1-cc                     | opus-5-5-no-thinking | 2.1.280        |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-5-no-thinking | 2.1.280        |   5 |       5 |      100 |
-| claim-office-example-mapping | external-kesseler-2026-09-30-cc      | opus-5-5-no-thinking | 2.1.280        |   5 |       5 |      100 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc        | opus-5-5-no-thinking | 2.1.280        |   5 |       5 |      100 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc   | opus-5-5-no-thinking | 2.1.280        |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                        | cell_model           | cell_harness   |   n |   match |   rate_% |
 |:-----------------------------|:-------------------------------------|:---------------------|:---------------|----:|--------:|---------:|

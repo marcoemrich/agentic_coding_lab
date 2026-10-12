@@ -2,7 +2,7 @@
 
 _How does the same domain-boundary refactoring trial interact with SOL Predictive TDD versus EXACT TCR, and can a subordinate APP review lower Code Mass in the strongest TCR trial arm without erasing its decomposition, correctness, discipline, or efficiency?_
 
-Generated: 2026-10-11T14:41:45Z
+Generated: 2026-10-12T07:28:07Z
 
 Cells declared: 14 · matched runs: 71 · min_replicates: 5
 
@@ -47,25 +47,6 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      1 |     1 |     1 |     0 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                           | cell_model        |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   6 |       6 |      100 |
-| game-of-life-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                           | cell_model        |   n |   match |   rate_% |
 |:-----------------------------|:----------------------------------------|:------------------|----:|--------:|---------:|

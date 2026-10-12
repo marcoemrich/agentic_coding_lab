@@ -2,7 +2,7 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in code quality and TDD discipline on game-of-life-example-mapping with the exact-hybrid-v4.2-phase-continuation-pi workflow?_
 
-Generated: 2026-10-11T14:41:34Z
+Generated: 2026-10-12T07:27:56Z
 
 Cells declared: 12 · matched runs: 60 · min_replicates: 5
 
@@ -364,23 +364,6 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty  |   5 |    6.4 |     6 |     8 |  0.89 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b       |   5 |   15.2 |     8 |    20 |  5.22 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5         |   5 |    4.8 |     4 |     6 |  1.1  |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                           | cell_model       |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:-----------------|----:|--------:|---------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | deepseek-v4-pro  |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | glm-5-1          |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | glm-5-2          |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol      |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-terra    |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k2-7        |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k3-sference |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3       |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8         |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty  |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b       |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5         |   5 |       5 |      100 |
 
 ### duration_seconds
 

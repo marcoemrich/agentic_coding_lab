@@ -14,7 +14,6 @@ outcomes:
   # Correctness and completion gates
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # Primary decomposition outcomes
   - avg_loc_per_function
   - median_loc_per_function

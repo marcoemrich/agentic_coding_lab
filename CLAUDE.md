@@ -164,7 +164,6 @@ subtrees.
 | `unit_*` | Size of the smallest named unit: `unit_count`, `unit_size_{max,avg,median}`. PMD NCSS statements on Java, lines per function on TS, Python and Rust | the old `java_method_ncss_*` spelling |
 
 - `verification_pct` (0.0–1.0) = external acceptance score for CLI katas (claim-office). `tests_passing` = the internal suite's pass/fail — vitest, Maven Surefire, pytest or `cargo test`, depending on the stack.
-- `completed_within_budget` = Boolean derived from `exit_reason`.
 - `mutation_score` (0.0–1.0) = mutation score — Stryker on TS, PIT on Java, mutmut on Python, cargo-mutants on Rust (`experiments/compute-mutation-score.py` picks the engine per run from `metrics.json.stack`). **Opt-in per RQ** (must appear in `outcomes:`) and only computed for `tests_passing = true`. Run between batch and aggregation. On TS it is expensive (minutes per run, `pnpm install` per run), so do not add it to `analyze-run.sh` or routine reanalysis; Java, Python and Rust cost seconds per run. **Scores are not comparable across stacks** — the four tools generate different mutant populations, and PIT's default mutator set is the narrowest. TS, Python and Rust exclude the CLI adapter from mutation because only the external acceptance suite exercises it; Java deliberately does not, because Java runs often nest the whole domain inside the CLI class.
 - `mutants_total` / `mutants_survived` = the counts behind `mutation_score` (population, and the
   part of it the suite missed). Written by the same script and opt-in the same way. **Report the

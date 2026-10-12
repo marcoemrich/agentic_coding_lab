@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, how does GPT-5.3 Codex Spark compare to GPT-5.6 Sol on the two native Sol workflows — does the smaller, cheaper-tier model hold correctness and code quality, or does it only look competitive because the workflow carries it?_
 
-Generated: 2026-10-11T14:41:36Z
+Generated: 2026-10-12T07:27:59Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -27,15 +27,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex   |   5 |   0.96 |  0.94 |  1    |  0.03 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow              | cell_model          |   n |   match |   rate_% |
-|:-----------------------------|:---------------------------|:--------------------|----:|--------:|---------:|
-| sphinx-score-example-mapping | exact-sol-v1-pi            | gpt-5-3-codex-spark |   5 |       5 |      100 |
-| sphinx-score-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex   |   5 |       5 |      100 |
-| sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-3-codex-spark |   5 |       5 |      100 |
-| sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex   |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow              | cell_model          |   n |   match |   rate_% |
 |:-----------------------------|:---------------------------|:--------------------|----:|--------:|---------:|

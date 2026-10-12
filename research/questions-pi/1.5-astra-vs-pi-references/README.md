@@ -50,7 +50,6 @@ outcomes:
   # reason is asymmetric rather than uniform: the Sol codex cell carries
   # measured inline costs, the Astra entry ships without a `cost` block, the
   # Requesty cells are computed from list prices. See "Marker caveats".
-  - completed_within_budget
   - duration_seconds
   - total_tokens
 min_replicates: 5

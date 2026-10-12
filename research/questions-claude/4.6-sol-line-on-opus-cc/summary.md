@@ -2,7 +2,7 @@
 
 _Is the native Sol workflow line (basic-sol-tdd, Predictive TDD, Four Rules refactor) better only on Sol/pi, or does it also beat the opus line on Opus with native Claude Code — and does the APP effect that suppresses decomposition on Sol reproduce there?_
 
-Generated: 2026-10-12T02:33:03Z
+Generated: 2026-10-12T07:27:48Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -119,17 +119,6 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |   1    |  1    |     1 |  0    |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow              | cell_model           |   n |   match |   rate_% |
-|:-----------------------------|:---------------------------|:---------------------|----:|--------:|---------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |       6 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |       4 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow              | cell_model           |   n |   match |   rate_% |
 |:-----------------------------|:---------------------------|:---------------------|----:|--------:|---------:|

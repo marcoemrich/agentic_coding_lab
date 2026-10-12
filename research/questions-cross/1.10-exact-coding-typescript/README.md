@@ -15,7 +15,6 @@ controls:
 outcomes:
   - verification_pct
   - tests_passing
-  - completed_within_budget
   - tests_total
   - test_lines
   - lines_of_code

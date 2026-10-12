@@ -2,7 +2,7 @@
 
 _Under a bare 'use TDD' instruction that prescribes no phase markers (inline-tdd-v1), do models actually work test-first and refactor — and how far apart do the models sit once the evidence is hand-validated?_
 
-Generated: 2026-10-11T14:41:30Z
+Generated: 2026-10-12T07:27:53Z
 
 Cells declared: 10 · matched runs: 49 · min_replicates: 3
 
@@ -80,21 +80,6 @@ Cells declared: 10 · matched runs: 49 · min_replicates: 3
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc | opus-4-7-no-thinking   |  10 |   1    |  1    |     1 |  0    |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc | opus-5-no-thinking     |   6 |   1    |  1    |     1 |  0    |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-pi | gpt-5-6-sol            |   5 |   1    |  1    |     1 |  0    |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow             | cell_model             |   n |   match |   rate_% |
-|:-----------------------------|:--------------------------|:-----------------------|----:|--------:|---------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc | haiku-4-5-no-thinking  |   3 |       3 |      100 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc | opus-4-7-no-thinking   |   5 |       5 |      100 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc | opus-5-no-thinking     |   6 |       6 |      100 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc | sonnet-4-6-no-thinking |   3 |       3 |      100 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi | gpt-5-6-sol            |   5 |       5 |      100 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc | haiku-4-5-no-thinking  |   3 |       3 |      100 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc | opus-4-7-no-thinking   |  10 |      10 |      100 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc | opus-5-no-thinking     |   6 |       6 |      100 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc | sonnet-4-6-no-thinking |   3 |       3 |      100 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-pi | gpt-5-6-sol            |   5 |       5 |      100 |
 
 ### duration_seconds
 

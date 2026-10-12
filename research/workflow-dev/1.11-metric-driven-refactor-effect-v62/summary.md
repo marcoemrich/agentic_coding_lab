@@ -2,7 +2,7 @@
 
 _Does a refactor agent that measures deterministic metrics itself pre/post (ESLint smells, SonarJS cognitive complexity, McCabe cyclomatic complexity) and reports APP mass alongside them improve code quality on claim-office relative to the baseline exact-hybrid-v4-cleaned-cc workflow — without damaging correctness or TDD discipline?_
 
-Generated: 2026-10-11T14:41:40Z
+Generated: 2026-10-12T07:28:02Z
 
 Cells declared: 2 · matched runs: 13 · min_replicates: 5
 
@@ -119,13 +119,6 @@ Cells declared: 2 · matched runs: 13 · min_replicates: 5
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-7-no-thinking |   8 |   0.96 |  0.73 |     1 |  0.09 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-no-thinking |   5 |   0.99 |  0.93 |     1 |  0.03 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                        | cell_model           |   n |   match |   rate_% |
-|:-----------------------------|:-------------------------------------|:---------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-7-no-thinking |   8 |       8 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-no-thinking |   5 |       5 |      100 |
 
 ### duration_seconds
 

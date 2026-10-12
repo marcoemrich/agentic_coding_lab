@@ -15,7 +15,6 @@ outcomes:
   # primary: does the kata separate a strong from a weak model?
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # the reason for replacing: cost per data point
   - duration_seconds
   - total_tokens

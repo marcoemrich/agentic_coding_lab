@@ -34,7 +34,6 @@ outcomes:
   # correctness — gate, not differentiator
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # TDD discipline
   - cycle_count
   - refactorings_applied

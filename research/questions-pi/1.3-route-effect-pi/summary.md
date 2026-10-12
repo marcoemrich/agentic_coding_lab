@@ -2,7 +2,7 @@
 
 _How do transport route and reasoning channel each affect code quality, TDD discipline, throughput and correctness for one and the same model (GPT-5.6 Sol), at constant harness, workflow, kata and prompt style?_
 
-Generated: 2026-10-11T14:41:36Z
+Generated: 2026-10-12T07:27:58Z
 
 Cells declared: 3 · matched runs: 15 · min_replicates: 5
 
@@ -191,14 +191,6 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |   13.2 |    10 |    16 |  2.28 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |   10   |     6 |    12 |  2.45 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |    8.8 |     6 |    10 |  1.79 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                           | cell_model                    |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |       5 |      100 |
 
 ### cost_usd
 

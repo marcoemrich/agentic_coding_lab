@@ -11,7 +11,6 @@ controls:
 outcomes:
   - verification_pct
   - tests_passing
-  - completed_within_budget
   - avg_loc_per_function
   - median_loc_per_function
   - longest_function

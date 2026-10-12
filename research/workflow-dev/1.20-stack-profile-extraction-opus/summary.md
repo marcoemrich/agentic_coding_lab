@@ -2,7 +2,7 @@
 
 _Can all remaining TypeScript/Vitest-specific instructions be moved from the Opus/Hybrid workflow core, phase commands and refactor agent into its existing stack profile without changing correctness, TDD discipline, refactoring behaviour, code quality or cost?_
 
-Generated: 2026-10-11T14:41:43Z
+Generated: 2026-10-12T07:28:06Z
 
 Cells declared: 4 · matched runs: 34 · min_replicates: 5
 
@@ -32,15 +32,6 @@ Cells declared: 4 · matched runs: 34 · min_replicates: 5
 |:-----------------------------|:-----------------------------------|:-------------------|----:|--------:|---------:|
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |  18 |      18 |      100 |
 | claim-office-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |       4 |       80 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |   6 |       6 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                      | cell_model         |   n |   match |   rate_% |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |  18 |      18 |      100 |
-| claim-office-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |       5 |      100 |
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |   6 |       6 |      100 |
 | game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |       5 |      100 |
 

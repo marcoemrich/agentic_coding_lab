@@ -21,7 +21,6 @@ outcomes:
   # secondary: correctness (internal + external + test strength)
   - tests_passing
   - verification_pct
-  - completed_within_budget
   - mutation_score
   # context efficiency
   - total_tokens

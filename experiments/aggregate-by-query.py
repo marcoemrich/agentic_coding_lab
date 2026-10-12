@@ -50,7 +50,7 @@ CSV_COLUMNS = [
     "kata", "prompt_style", "stack", "workflow", "cell_workflow", "model", "cell_model",
     "cli_model", "harness", "harness_version", "cell_harness",
     "thinking", "run_id", "started_at",
-    "exit_code", "exit_reason", "rate_limited", "completed_within_budget",
+    "exit_code", "exit_reason", "rate_limited",
     "analyze_status",
     "duration_seconds", "total_tokens", "context_utilization_pct",
     "legacy_cycle_count", "avg_cycle_seconds", "avg_red_seconds",
@@ -402,25 +402,7 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
     # still read so runs analysed before the rename keep their values.
     unit_quality = metrics.get("unit_quality") or metrics.get("java_quality") or {}
 
-    # A run "completed within budget" iff it neither timed out nor
-    # exhausted its retry budget for transient API issues (rate-limit
-    # / 529 overload / "API Error: terminated"). All three are
-    # legitimate research findings about practicality — they signal a
-    # (workflow, model, kata) cell whose cost or fragility exceeds the
-    # per-run budget. The metric is a bool so RQ outcome-pivots can
-    # compute a per-cell completion rate.
     exit_reason = rs.get("exit_reason", "")
-    completed = exit_reason not in {
-        "timeout", "timeout-killed",
-        "rate-limited", "transient-api-error",
-        # Infrastructure aborts, not model behaviour: the run never got a
-        # fair attempt at the kata, so it must not count as a completion.
-        # quota-exhausted (cursor plan allowance) and pi-retries-exhausted
-        # (pi gave up after its own retry ladder, e.g. Requesty 502) both
-        # exit 0 and would otherwise be filed as clean runs with zero
-        # cycles — visually identical to a model that failed the task.
-        "quota-exhausted", "pi-retries-exhausted",
-    }
 
     return {
         "kata":                       metrics.get("kata", ""),
@@ -451,7 +433,6 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
         "exit_code":                  rs.get("exit_code"),
         "exit_reason":                exit_reason,
         "rate_limited":               rs.get("rate_limited", False),
-        "completed_within_budget":    completed,
         "analyze_status":             metrics.get("analyze_status", ""),
         "duration_seconds":           metrics.get("duration_seconds"),
         "total_tokens":               sm.get("total_tokens"),

@@ -17,7 +17,6 @@ outcomes:
   - mccabe_max
   # correctness (to confirm that GoL does not break)
   - tests_passing
-  - completed_within_budget
   # TDD discipline
   - predictions_correct_rate
   - refactorings_applied

@@ -11,7 +11,6 @@ controls:
 outcomes:
   - verification_pct
   - tests_passing
-  - completed_within_budget
   - cycle_count
   - refactorings_applied
   - predictions_correct_rate

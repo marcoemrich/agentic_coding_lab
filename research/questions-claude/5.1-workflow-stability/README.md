@@ -30,7 +30,6 @@ outcomes:
   # secondary: correctness (sanity, should stay at 100 %)
   - tests_passing
   - verification_pct
-  - completed_within_budget
   # context
   - duration_seconds
   - total_tokens

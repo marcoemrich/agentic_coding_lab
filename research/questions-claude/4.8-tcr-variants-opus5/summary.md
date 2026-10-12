@@ -2,7 +2,7 @@
 
 _How do classic TCR and TCRDD variants affect correctness, code quality, development behavior, and efficiency in autonomous coding agents, and—within TCRDD—does tool-enforced execution with git-gamble differ from native-Git prompt enforcement?_
 
-Generated: 2026-10-11T14:41:27Z
+Generated: 2026-10-12T07:27:49Z
 
 Cells declared: 4 · matched runs: 18 · min_replicates: 4
 
@@ -27,15 +27,6 @@ Cells declared: 4 · matched runs: 18 · min_replicates: 4
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-cc | opus-5-requesty-no-thinking |   4 |   1    |  1    |     1 |  0    |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                           | cell_model                  |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:----------------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-requesty-no-thinking |   4 |       4 |      100 |
-| claim-office-example-mapping | external-tcr-kentbeck-2026-09-14-cc     | opus-5-requesty-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-cc      | opus-5-requesty-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-cc | opus-5-requesty-no-thinking |   4 |       4 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                           | cell_model                  |   n |   match |   rate_% |
 |:-----------------------------|:----------------------------------------|:----------------------------|----:|--------:|---------:|

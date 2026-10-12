@@ -2,7 +2,7 @@
 
 _On Claim Office with SOL/pi, does a TCR-source-parity transfer of the domain-boundary workflow to Predictive TDD reproduce TCR's decomposition when all non-method-specific test-list, domain-review, stack, and lab contracts are retained, or does the commit-or-revert phase mechanism still separate the methods?_
 
-Generated: 2026-10-11T14:41:45Z
+Generated: 2026-10-12T07:28:08Z
 
 Cells declared: 3 · matched runs: 20 · min_replicates: 5
 
@@ -25,14 +25,6 @@ Cells declared: 3 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      1 |     1 |     1 |     0 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                             | cell_model        |   n |   match |   rate_% |
-|:-----------------------------|:------------------------------------------|:------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |      10 |      100 |
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                             | cell_model        |   n |   match |   rate_% |
 |:-----------------------------|:------------------------------------------|:------------------|----:|--------:|---------:|

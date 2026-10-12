@@ -2,7 +2,7 @@
 
 _How does the workflow structure (from oneshot through iterative to strict TDD with subagents) affect code quality, and does TDD strictness make a difference?_
 
-Generated: 2026-10-11T14:41:23Z
+Generated: 2026-10-12T07:27:45Z
 
 Cells declared: 16 · matched runs: 103 · min_replicates: 5
 
@@ -249,27 +249,6 @@ Cells declared: 16 · matched runs: 103 · min_replicates: 5
 | game-of-life-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |     15 |    15 |    15 |     0 |
 | game-of-life-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |  10 |     15 |    15 |    15 |     0 |
 | game-of-life-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |  10 |     15 |    15 |    15 |     0 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                           | cell_model                   |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:-----------------------------|----:|--------:|---------:|
-| claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   7 |       7 |      100 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   6 |       6 |      100 |
-| claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| claim-office-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| claim-office-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |  10 |      10 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |  10 |      10 |      100 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| game-of-life-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |  10 |      10 |      100 |
-| game-of-life-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |  10 |      10 |      100 |
 
 ### tdd_cycles
 

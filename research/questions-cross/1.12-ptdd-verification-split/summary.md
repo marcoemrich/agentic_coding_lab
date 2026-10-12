@@ -2,7 +2,7 @@
 
 _Does splitting the PTDD v1 test list into driving tests and a trailing verification group keep Correctness, safety net and code quality at least at the v1 level on Opus 5.5 and GPT-6.1 Sol, while making the phase-chain discipline readable for a test-list workflow?_
 
-Generated: 2026-10-11T14:41:29Z
+Generated: 2026-10-12T07:27:51Z
 
 Cells declared: 4 · matched runs: 11 · min_replicates: 5
 
@@ -26,14 +26,6 @@ Cells declared: 4 · matched runs: 11 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1.2-verification-split-pi | gpt-6-1-sol-codex    |   1 |      1 |     1 |     1 |   nan |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                         | cell_model           |   n |   match |   rate_% |
-|:-----------------------------|:--------------------------------------|:---------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-5-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-ptdd-v1-pi                      | gpt-6-1-sol-codex    |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-ptdd-v1.2-verification-split-pi | gpt-6-1-sol-codex    |   1 |       1 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                         | cell_model           |   n |   match |   rate_% |
 |:-----------------------------|:--------------------------------------|:---------------------|----:|--------:|---------:|

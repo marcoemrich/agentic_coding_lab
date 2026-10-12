@@ -2,7 +2,7 @@
 
 _Can the inner TDD loop of EXACT Coding be substituted by an externally authored TDD workflow, and what does the substitution cost or buy? Example mapping stays the entry point; only the implement/test/refactor loop is exchanged. Measured on claim-office-example-mapping against the current exact-coding baseline exact-hybrid-v2.4-lab-split-cc — on correctness, code quality, TDD discipline and cost._
 
-Generated: 2026-10-11T14:41:26Z
+Generated: 2026-10-12T07:27:49Z
 
 Cells declared: 4 · matched runs: 15 · min_replicates: 5
 
@@ -26,14 +26,6 @@ Cells declared: 4 · matched runs: 15 · min_replicates: 5
 | claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |   1    |  1    |     1 |  0    |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                      | cell_model         |   n |   match |   rate_% |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                      | cell_model         |   n |   match |   rate_% |
 |:-----------------------------|:-----------------------------------|:-------------------|----:|--------:|---------:|

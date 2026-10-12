@@ -2,7 +2,7 @@
 
 _Is exact-hybrid-v2.4-lab-split-cc behaviourally equivalent to exact-hybrid-v2-testlist-fix-cc, as the exact-coding baseline recommendation assumes, and if not, does removing the duplicated cycle enumeration restore neutrality? The production files are byte-identical; the rule layout differs (lab infrastructure isolated in rules/lab-only.md, subagent contracts in rules/subagent-prompts.md), and lab-only.md states the Red/Green/Refactor cycle a second time as an imperative chain whose third link makes refactor an unconditional consequence of green. hybrid-v2.7 removes that second statement and keeps the phase-continuation guard._
 
-Generated: 2026-10-11T14:41:43Z
+Generated: 2026-10-12T07:28:05Z
 
 Cells declared: 8 · matched runs: 59 · min_replicates: 5
 
@@ -87,19 +87,6 @@ Cells declared: 8 · matched runs: 59 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |   5 |   1    |  1    |     1 |  0    |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                           | cell_model         |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:-------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |  18 |      18 |      100 |
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |  10 |      10 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   6 |       6 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                           | cell_model         |   n |   match |   rate_% |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|--------:|---------:|

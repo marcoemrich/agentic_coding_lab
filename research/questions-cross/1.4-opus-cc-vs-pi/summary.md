@@ -2,7 +2,7 @@
 
 _Does the code-quality profile of Opus (opus-4-8) differ between the Claude Code and the pi harness, each with and without thinking, at a constant workflow generation (hybrid-v4)?_
 
-Generated: 2026-10-11T14:41:30Z
+Generated: 2026-10-12T07:27:52Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -160,15 +160,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-requesty    |   5 |   17.6 |    16 |    18 |  0.89 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8             |   5 |   19.4 |    16 |    29 |  5.46 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8-no-thinking |   5 |   16.8 |    12 |    18 |  2.68 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                           | cell_model           |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:---------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-requesty    |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8             |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8-no-thinking |   5 |       5 |      100 |
 
 ### duration_seconds
 

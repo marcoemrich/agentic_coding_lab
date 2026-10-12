@@ -16,7 +16,6 @@ outcomes:
   - mutation_score
   - mutants_total
   - mutants_survived
-  - completed_within_budget
   # Complete code-quality surface currently provided by the pipeline
   - code_mass
   - production_loc

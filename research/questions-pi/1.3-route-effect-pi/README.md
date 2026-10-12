@@ -46,7 +46,6 @@ outcomes:
   - predictions_correct
   - predictions_total
   # context
-  - completed_within_budget
   - cost_usd
 min_replicates: 5
 ---

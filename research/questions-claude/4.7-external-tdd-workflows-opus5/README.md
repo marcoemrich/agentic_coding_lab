@@ -14,7 +14,6 @@ outcomes:
   # primary: correctness (claim-office is the correctness kata)
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # TDD discipline, marker-derived — NOT comparable across cells. hybrid-v2.4 carries
   # the four markers from MARKERS.md; pocock-2026-09-04 and superpowers-2026-09-04 are vendored byte-identical and
   # have none, so cycle_count / predictions_correct_rate / refactorings_applied

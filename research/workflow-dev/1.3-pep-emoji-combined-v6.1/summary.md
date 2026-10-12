@@ -2,7 +2,7 @@
 
 _Are the effects of the pep and emoji reductions on the hybrid-v2 base additive (two independent channels) or jointly carried (a single 'prompt scaffolding' mechanism)?_
 
-Generated: 2026-10-11T14:41:45Z
+Generated: 2026-10-12T07:28:08Z
 
 Cells declared: 4 · matched runs: 25 · min_replicates: 5
 
@@ -133,12 +133,3 @@ Cells declared: 4 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      1 |     1 |     1 |     0 |
 | game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      1 |     1 |     1 |     0 |
 | game-of-life-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      1 |     1 |     1 |     0 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                        | cell_model                   |   n |   match |   rate_% |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |  10 |      10 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |

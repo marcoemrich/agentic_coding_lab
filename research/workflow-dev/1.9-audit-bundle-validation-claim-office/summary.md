@@ -2,7 +2,7 @@
 
 _Does the RQ-1.8 result (the audit bundle stabilizes discipline and is code-quality-neutral on the hybrid-v4 base × game-of-life) generalize to the novel claim-office kata, or does the pattern flip there as it already did for reductions in RQ-1.4?_
 
-Generated: 2026-10-11T14:41:48Z
+Generated: 2026-10-12T07:28:11Z
 
 Cells declared: 2 · matched runs: 16 · min_replicates: 8
 
@@ -23,13 +23,6 @@ Cells declared: 2 · matched runs: 16 · min_replicates: 8
 | claim-office-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |   8 |   0.35 |  0    |     1 |  0.41 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                     | cell_model                   |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------|:-----------------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc        | opus-4-7-portkey-no-thinking |   8 |       8 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |   8 |       8 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                     | cell_model                   |   n |   match |   rate_% |
 |:-----------------------------|:----------------------------------|:-----------------------------|----:|--------:|---------:|

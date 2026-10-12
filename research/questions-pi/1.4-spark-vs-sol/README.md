@@ -12,7 +12,6 @@ outcomes:
   # A model that loses here disqualifies itself regardless of its quality numbers.
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # code quality — the second axis. sphinx-score is a quality kata, so these
   # differentiate rather than gate.
   - cognitive_max

@@ -30,7 +30,6 @@ outcomes:
   # correctness (sanity: bundle risk from RQ-1.9/RQ-1.10 vs claim-office)
   - tests_passing
   - verification_pct
-  - completed_within_budget
   # cost (pre/post tool calls + a larger refactor prompt → slight surcharge expected)
   - duration_seconds
   - total_tokens

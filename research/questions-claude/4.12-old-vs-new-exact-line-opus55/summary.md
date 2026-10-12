@@ -2,7 +2,7 @@
 
 _On Opus 5.5, does the retired EXACT Coding Opus line still decompose more strongly than the maintained Predictive-TDD line, and does isolating the Refactor step into a subagent help or hurt within each line?_
 
-Generated: 2026-10-11T14:41:24Z
+Generated: 2026-10-12T07:27:46Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -162,15 +162,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-single-context-v3-no-subagent-cc | opus-5-5-no-thinking | 2.1.280        |   5 |   1    |   1   |     1 |  0    |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                          | cell_model           | cell_harness   |   n |   match |   rate_% |
-|:-----------------------------|:---------------------------------------|:---------------------|:---------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc        | opus-5-5-no-thinking | 2.1.280        |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-ptdd-v1-cc                       | opus-5-5-no-thinking | 2.1.280        |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc   | opus-5-5-no-thinking | 2.1.280        |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-single-context-v3-no-subagent-cc | opus-5-5-no-thinking | 2.1.280        |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                          | cell_model           | cell_harness   |   n |   match |   rate_% |
 |:-----------------------------|:---------------------------------------|:---------------------|:---------------|----:|--------:|---------:|

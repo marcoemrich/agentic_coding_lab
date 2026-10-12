@@ -2,7 +2,7 @@
 
 _Does sphinx-score carry an example-mapping effect — do the pinned examples move correctness relative to the bare prose prompt, and does it do so more sharply than claim-office?_
 
-Generated: 2026-10-11T14:41:19Z
+Generated: 2026-10-12T07:27:41Z
 
 Cells declared: 4 · matched runs: 24 · min_replicates: 6
 
@@ -27,15 +27,6 @@ Cells declared: 4 · matched runs: 24 · min_replicates: 6
 | sphinx-score-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |   0.15 |  0.06 |  0.25 |  0.06 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                | cell_model         |   n |   match |   rate_% |
-|:-----------------------------|:-----------------------------|:-------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |       6 |      100 |
-| claim-office-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |       6 |      100 |
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |       6 |      100 |
-| sphinx-score-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |       6 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                | cell_model         |   n |   match |   rate_% |
 |:-----------------------------|:-----------------------------|:-------------------|----:|--------:|---------:|

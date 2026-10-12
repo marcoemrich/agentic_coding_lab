@@ -38,7 +38,6 @@ outcomes:
   - predictions_correct
   - predictions_total
   # context
-  - completed_within_budget
   - duration_seconds
   - total_tokens
 min_replicates: 5

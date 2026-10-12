@@ -22,7 +22,6 @@ outcomes:
   - mccabe_max
   # correctness (sanity)
   - tests_passing
-  - completed_within_budget
   # cost (the bundle adds net text; a surcharge is expected)
   - duration_seconds
   - total_tokens

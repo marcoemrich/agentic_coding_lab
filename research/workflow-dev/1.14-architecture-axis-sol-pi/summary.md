@@ -2,7 +2,7 @@
 
 _Does the TDD architecture axis (subagents-v2 isolated subagents / single-context-v2 single context / hybrid-v2 hybrid) rank the same way on gpt-5-6-sol as it does on opus-4-7 — and does any architecture, including the current hybrid-v6 generation, beat structureless TDD (inline-tdd-v1) on Sol?_
 
-Generated: 2026-10-11T14:41:41Z
+Generated: 2026-10-12T07:28:03Z
 
 Cells declared: 10 · matched runs: 50 · min_replicates: 5
 
@@ -39,21 +39,6 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 | game-of-life-example-mapping | exact-subagents-v2-testlist-fix-pi      | gpt-5-6-sol  |   5 |    1   |     1 |     1 |  0    |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                           | cell_model   |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:-------------|----:|--------:|---------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi               | gpt-5-6-sol  |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-pi         | gpt-5-6-sol  |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-pi            | gpt-5-6-sol  |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-pi | gpt-5-6-sol  |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-subagents-v2-testlist-fix-pi      | gpt-5-6-sol  |   5 |       5 |      100 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-pi               | gpt-5-6-sol  |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-pi         | gpt-5-6-sol  |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-pi            | gpt-5-6-sol  |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-pi | gpt-5-6-sol  |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-subagents-v2-testlist-fix-pi      | gpt-5-6-sol  |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                           | cell_model   |   n |   match |   rate_% |
 |:-----------------------------|:----------------------------------------|:-------------|----:|--------:|---------:|

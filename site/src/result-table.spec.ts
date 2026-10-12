@@ -97,14 +97,14 @@ describe("Result table layout", () => {
   });
 
   // Rule 3: columns in frontmatter order, grouped
-  it("orders columns as declared in outcomes: -- 4.13 -> starts verification_pct, tests_passing, completed_within_budget, tdd_discipline", () => {
-    const outcomes = ["verification_pct", "tests_passing", "completed_within_budget", "tdd_discipline"];
+  it("orders columns as declared in outcomes: -- 4.13 -> starts verification_pct, tests_passing, tdd_discipline", () => {
+    const outcomes = ["verification_pct", "tests_passing", "tdd_discipline"];
     expect(buildResultTables({ katas: ["claim-office-example-mapping"], cells: [], outcomes }))
       .toMatchObject([{ columns: [...outcomes, "cost_usd"] }]);
   });
-  it("spans one group header over each run of same-group columns -- 4.13 -> Correctness 3, TDD discipline 19, Code quality 6, Cost 3", () => {
+  it("spans one group header over each run of same-group columns -- 4.13 -> Correctness 2, TDD discipline 19, Code quality 6, Cost 3", () => {
     const outcomes = [
-      "verification_pct", "tests_passing", "completed_within_budget",
+      "verification_pct", "tests_passing",
       "tdd_discipline", "tdd_discipline_test_first", "tdd_discipline_step", "tdd_discipline_closure", "test_first_rate",
       "red_batch_size", "red_batch_max", "red_batch_unmeasurable", "green_batch_size", "chain_suite_runs", "cycles_total",
       "cycles_closed", "refactor_events", "skip_events", "refactor_per_cycle", "green_attempts", "chain_deviations",
@@ -114,7 +114,7 @@ describe("Result table layout", () => {
     ];
     expect(buildResultTables({ katas: ["claim-office-example-mapping"], cells: [], outcomes }))
       .toMatchObject([{ groups: [
-        { name: "Correctness", colSpan: 3 }, { name: "TDD discipline", colSpan: 19 },
+        { name: "Correctness", colSpan: 2 }, { name: "TDD discipline", colSpan: 19 },
         { name: "Code quality", colSpan: 6 }, { name: "Cost", colSpan: 3 },
       ] }]);
   });

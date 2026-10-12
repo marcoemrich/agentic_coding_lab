@@ -2,7 +2,7 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in correctness and TDD discipline on claim-office-example-mapping with the exact-hybrid-v4-cleaned-pi workflow?_
 
-Generated: 2026-10-11T14:41:36Z
+Generated: 2026-10-12T07:27:58Z
 
 Cells declared: 18 · matched runs: 90 · min_replicates: 5
 
@@ -375,29 +375,6 @@ Cells declared: 18 · matched runs: 90 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |    9.8 |     1 |    18 |  8.17 |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5                    |   5 |   23.4 |     5 |    42 | 14.69 |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5-no-thinking        |   5 |   21.4 |     5 |    39 | 13.79 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                           | cell_model                  |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:----------------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | deepseek-v4-pro             |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | deepseek-v4-pro-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | glm-5-2                     |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol                 |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-terra               |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k2-7                   |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k2-7-no-thinking       |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k3-sference            |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3                  |   5 |       2 |       40 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3-no-thinking      |   5 |       4 |       80 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8                    |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8-no-thinking        |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty             |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b                  |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5                    |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5-no-thinking        |   5 |       5 |      100 |
 
 ### duration_seconds
 

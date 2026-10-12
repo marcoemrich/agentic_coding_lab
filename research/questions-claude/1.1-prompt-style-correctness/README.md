@@ -21,7 +21,6 @@ outcomes:
   - verification_total
   - duration_seconds
   - total_tokens
-  - completed_within_budget
 min_replicates: 5
 ---
 

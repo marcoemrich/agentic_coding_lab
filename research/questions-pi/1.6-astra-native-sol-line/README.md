@@ -30,7 +30,6 @@ outcomes:
   # A cell that drops here disqualifies itself regardless of its quality numbers.
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # primary: decomposition — the axis on which the native line beat the EXACT
   # line on Sol (F-1.17.1). This is what "transfer" means for this RQ.
   - avg_loc_per_function

@@ -32,7 +32,6 @@ outcomes:
   # correctness: claim-office is the correctness kata
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # TDD discipline, phase chain
   # The point of this RQ. Derived from the vitest reporter's own event stream,
   # so the vocabulary is identical for a lab workflow with four markers and a

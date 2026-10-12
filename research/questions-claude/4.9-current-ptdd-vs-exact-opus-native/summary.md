@@ -2,7 +2,7 @@
 
 _On native Opus 5, how does the current SOL Predictive-TDD workflow compare with the default EXACT Coding workflow on correctness, decomposition, development behavior, and efficiency?_
 
-Generated: 2026-10-11T14:41:27Z
+Generated: 2026-10-12T07:27:50Z
 
 Cells declared: 2 · matched runs: 28 · min_replicates: 5
 
@@ -23,13 +23,6 @@ Cells declared: 2 · matched runs: 28 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |   0.96 |  0.73 |     1 |  0.08 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                             | cell_model         |   n |   match |   rate_% |
-|:-----------------------------|:------------------------------------------|:-------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc           | opus-5-no-thinking |  18 |      18 |      100 |
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |      10 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                             | cell_model         |   n |   match |   rate_% |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|--------:|---------:|

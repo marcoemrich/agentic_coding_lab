@@ -2,7 +2,7 @@
 
 _Does sphinx-score resolve a workflow difference in code quality — does the decomposition gap between a minimal and an elaborate TDD workflow show up as clearly as it does on claim-office?_
 
-Generated: 2026-10-11T14:41:19Z
+Generated: 2026-10-12T07:27:41Z
 
 Cells declared: 6 · matched runs: 36 · min_replicates: 6
 
@@ -160,17 +160,6 @@ Cells declared: 6 · matched runs: 36 · min_replicates: 6
 | sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |   1    |  1    |     1 |  0    |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                | cell_model         |   n |   match |   rate_% |
-|:-----------------------------|:-----------------------------|:-------------------|----:|--------:|---------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |       6 |      100 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |       6 |      100 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |       6 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |       6 |      100 |
-| sphinx-score-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |       6 |      100 |
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |       6 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                | cell_model         |   n |   match |   rate_% |
 |:-----------------------------|:-----------------------------|:-------------------|----:|--------:|---------:|

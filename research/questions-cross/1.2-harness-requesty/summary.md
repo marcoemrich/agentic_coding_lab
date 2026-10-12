@@ -2,7 +2,7 @@
 
 _How does switching harness (Claude Code vs OpenCode vs pi) affect correctness, code quality, TDD discipline and cost when model (opus-4-8 via Requesty), workflow intention and prompt style are held constant?_
 
-Generated: 2026-10-11T14:41:29Z
+Generated: 2026-10-12T07:27:52Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -161,17 +161,6 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |    8.8 |     8 |     9 |  0.45 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 |    3.2 |     3 |     4 |  0.45 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |    2.8 |     2 |     3 |  0.45 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow              | cell_model        |   n |   match |   rate_% |
-|:-----------------------------|:---------------------------|:------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |       5 |      100 |
 
 ### duration_seconds
 

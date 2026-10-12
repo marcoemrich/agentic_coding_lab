@@ -2,7 +2,7 @@
 
 _When Ponytail full is forcibly loaded into the Sol-originated EXACT Coding workflow on pi, does it improve code quality without reducing correctness, test strength, TDD discipline or completion reliability, and at what cost?_
 
-Generated: 2026-10-11T14:41:44Z
+Generated: 2026-10-12T07:28:07Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -61,15 +61,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |   15.6 |     8 |    23 |  6.8  |
 | game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |    5.4 |     2 |    17 |  6.5  |
 | game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |    2   |     0 |     4 |  1.41 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                   | cell_model        |   n |   match |   rate_% |
-|:-----------------------------|:--------------------------------|:------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |       5 |      100 |
 
 ### code_mass
 

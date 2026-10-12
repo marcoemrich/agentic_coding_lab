@@ -2,7 +2,7 @@
 
 _Does the cleanup equivalence result from RQ-1.6 (claim-office) also generalize to the training-known game-of-life kata, or does exact-hybrid-v4-cleaned-cc show a different effect there than on claim-office?_
 
-Generated: 2026-10-11T14:41:47Z
+Generated: 2026-10-12T07:28:10Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 5
 
@@ -51,13 +51,6 @@ Cells declared: 2 · matched runs: 15 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |    4.2 |     2 |     6 |  1.32 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow               | cell_model                   |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |      10 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow               | cell_model                   |   n |   match |   rate_% |
 |:-----------------------------|:----------------------------|:-----------------------------|----:|--------:|---------:|

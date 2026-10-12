@@ -316,10 +316,9 @@ A cell that systematically hits the budget still says something about the varian
 Consequences for analysis and data collection:
 
 - **Timeout runs are not deleted.** Their `metrics.json` is preserved with `run_status.exit_reason = "timeout"`. `tests_passing`, `verification_pct`, `code_mass`, etc. are `null`.
-- **Exhausted retry budgets** (`exit_reason = "rate-limited"` or `"transient-api-error"`) are also folded into `completed_within_budget = false` — not because the wallclock ran out, but because a (workflow, model, kata) cell that repeatedly trips rate limits or transient API errors is *practically* unusable inside the lab's cost/availability envelope. Configurable via `BATCH_RATELIMIT_RETRIES` (default 5).
+- **Exhausted retry budgets** (`exit_reason = "rate-limited"` or `"transient-api-error"`) are treated the same way: the run is not a replicate. Configurable via `BATCH_RATELIMIT_RETRIES` (default 5).
 - **They do not count toward `min_replicates`.** `batch-plan-from-rq.py` plans a replacement for every run that did not end `ok` and reports how many it found.
-- **`completed_within_budget`** (Boolean, derived from `exit_reason`) is available as an outcome and reports the share of "finished within budget" per cell. Sensible as an outcome in any RQ whose factors vary workflow or model.
-- **`n_ok` column** in the cell coverage table of `summary.md` only counts successful runs; a "3 timeouts, 0 OK" cell is flagged ⚠️ even when `min_replicates` is formally met.
+- **`n_ok` column** in the cell coverage table of `summary.md` counts the runs that ended `ok`; `n` counts every run, so the gap between them is the cell's timeout and abort count.
 
 ### Findings status legend
 
@@ -1227,7 +1226,6 @@ need a marker to say where a phase begins.
 |-------|-------------|
 | `run_status.exit_code` | Process exit code |
 | `run_status.exit_reason` | `ok`, `timeout`, `rate-limited`, `transient-api-error`, `provider-refusal`, `setup-error`, etc. Only `ok` counts toward `min_replicates` |
-| `completed_within_budget` | Boolean derived from `exit_reason`; available as an outcome in any RQ |
 
 ## Adding New Experiments
 

@@ -33,7 +33,6 @@ outcomes:
   # correctness (internal + external)
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # TDD discipline — NOT measurable on the inline-tdd-v1 cells (no phase markers);
   # see "Measurement limit" below. Read those rows as n/a, not as zero.
   - cycle_count

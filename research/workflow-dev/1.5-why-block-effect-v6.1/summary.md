@@ -2,7 +2,7 @@
 
 _Do why blocks (causal justifications alongside MUSTs) on the hybrid-v2 base carry a measurable TDD discipline or correctness advantage over purely imperative instructions — with PEP fully retained?_
 
-Generated: 2026-10-11T14:41:46Z
+Generated: 2026-10-12T07:28:09Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 8
 
@@ -51,13 +51,6 @@ Cells declared: 2 · matched runs: 15 · min_replicates: 8
 | claim-office-example-mapping | exact-hybrid-v3-with-why-cc     | opus-4-7-portkey-no-thinking |   8 |   0.91 |  0.27 |     1 |  0.26 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                   | cell_model                   |   n |   match |   rate_% |
-|:-----------------------------|:--------------------------------|:-----------------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   7 |       7 |      100 |
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc     | opus-4-7-portkey-no-thinking |   8 |       8 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                   | cell_model                   |   n |   match |   rate_% |
 |:-----------------------------|:--------------------------------|:-----------------------------|----:|--------:|---------:|

@@ -11,7 +11,6 @@ controls:
 outcomes:
   - verification_pct
   - tests_passing
-  - completed_within_budget
   - tests_total
   - test_lines
   - avg_loc_per_function

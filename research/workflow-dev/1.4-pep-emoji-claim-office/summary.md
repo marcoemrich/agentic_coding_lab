@@ -2,7 +2,7 @@
 
 _Does the interaction finding from RQ-pep-emoji-v6.1 (pep+emoji reduction: anti-additivity for refactorings_applied, saturation for tests_passed_immediately, correctness invariant) also hold on a more complex kata with genuine ambiguities?_
 
-Generated: 2026-10-11T14:41:46Z
+Generated: 2026-10-12T07:28:09Z
 
 Cells declared: 4 · matched runs: 22 · min_replicates: 5
 
@@ -33,15 +33,6 @@ Cells declared: 4 · matched runs: 22 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |       7 |      100 |
 | claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
 | claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |       4 |       80 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                        | cell_model                   |   n |   match |   rate_% |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |       7 |      100 |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
 | claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
 
 ### code_mass

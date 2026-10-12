@@ -22,7 +22,6 @@ outcomes:
   # below that disqualifies itself regardless of its quality numbers.
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # code mass — reported without trophy, see "Metric blind spot" in RQ-1.14:
   # APP has no notion of nesting and rewards one long function
   - code_mass

@@ -32,7 +32,6 @@ outcomes:
   # correctness — gate, not differentiator
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # TDD discipline — n/a on the inline-tdd-v1 cell (no phase markers)
   - cycle_count
   - refactorings_applied

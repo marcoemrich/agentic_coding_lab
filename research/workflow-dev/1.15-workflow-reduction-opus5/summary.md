@@ -2,7 +2,7 @@
 
 _How much of the hybrid-v6 architecture can be removed on opus-5 before code quality degrades — and how much of its result comes from the APP subordination patch (hybrid-v7) rather than from the end-refactor phase (hybrid-v8) or the isolated refactor subagent (single-context-v3)?_
 
-Generated: 2026-10-11T14:41:41Z
+Generated: 2026-10-12T07:28:03Z
 
 Cells declared: 12 · matched runs: 63 · min_replicates: 5
 
@@ -162,23 +162,6 @@ Cells declared: 12 · matched runs: 63 · min_replicates: 5
 | sphinx-score-example-mapping | exact-single-context-v3-no-subagent-cc  | opus-5-no-thinking |   5 |   1    |  1    |     1 |   0   |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                           | cell_model         |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:-------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   6 |       6 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking |   6 |       6 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v7-app-subordinate-cc      | opus-5-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v8-no-end-refactor-cc      | opus-5-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-single-context-v3-no-subagent-cc  | opus-5-no-thinking |   5 |       5 |      100 |
-| sphinx-score-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   5 |       5 |      100 |
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking |   6 |       6 |      100 |
-| sphinx-score-example-mapping | exact-hybrid-v7-app-subordinate-cc      | opus-5-no-thinking |   5 |       5 |      100 |
-| sphinx-score-example-mapping | exact-hybrid-v8-no-end-refactor-cc      | opus-5-no-thinking |   5 |       5 |      100 |
-| sphinx-score-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking |   5 |       5 |      100 |
-| sphinx-score-example-mapping | exact-single-context-v3-no-subagent-cc  | opus-5-no-thinking |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                           | cell_model         |   n |   match |   rate_% |
 |:-----------------------------|:----------------------------------------|:-------------------|----:|--------:|---------:|

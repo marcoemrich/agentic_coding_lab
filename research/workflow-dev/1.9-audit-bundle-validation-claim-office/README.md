@@ -12,7 +12,6 @@ outcomes:
   # primary: correctness (claim-office is the correctness kata)
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # TDD discipline (the audit bundle targets red/refactor discipline directly)
   - tests_passed_immediately
   - refactorings_applied

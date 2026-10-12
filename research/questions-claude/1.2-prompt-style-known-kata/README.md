@@ -15,7 +15,6 @@ outcomes:
   - verification_passed
   - verification_total
   - tests_passing
-  - completed_within_budget
   - cli_built
   - code_mass
   - smell_total

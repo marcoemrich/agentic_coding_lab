@@ -2,7 +2,7 @@
 
 _Does the apparent platform interaction between PTDD v1.5 and v1.6 replicate at n=10 per cell on Claim Office, or was it driven by small-sample variance?_
 
-Generated: 2026-10-11T14:41:31Z
+Generated: 2026-10-12T07:27:53Z
 
 Cells declared: 4 · matched runs: 40 · min_replicates: 10
 
@@ -27,15 +27,6 @@ Cells declared: 4 · matched runs: 40 · min_replicates: 10
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |   1    |  1    |     1 |  0    |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                             | cell_model         |   n |   match |   rate_% |
-|:-----------------------------|:------------------------------------------|:-------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |      10 |      100 |
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex  |  10 |      10 |      100 |
-| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |      10 |      100 |
-| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |      10 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                             | cell_model         |   n |   match |   rate_% |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|--------:|---------:|

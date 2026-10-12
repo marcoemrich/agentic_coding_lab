@@ -31,7 +31,6 @@ outcomes:
   # correctness (sanity)
   - tests_passing
   - verification_pct
-  - completed_within_budget
 min_replicates: 5
 ---
 

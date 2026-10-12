@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, does subordinating APP mass to the Four Rules recover the decomposition that the unsubordinated brief suppresses — and does adding pre/post measurement improve the result further, at what cost in duration as the measurement moves from the model to deterministic tools?_
 
-Generated: 2026-10-11T14:41:42Z
+Generated: 2026-10-12T07:28:05Z
 
 Cells declared: 5 · matched runs: 25 · min_replicates: 5
 
@@ -129,16 +129,6 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.2.3-measured-tool-pi   | gpt-5-6-sol-codex |   5 |      1 |     1 |     1 |     0 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                       | cell_model        |   n |   match |   rate_% |
-|:-----------------------------|:------------------------------------|:------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-sol-v1-pi                     | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1.2-app-pi               | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1.2.1-measured-model-pi  | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1.2.2-measured-eslint-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1.2.3-measured-tool-pi   | gpt-5-6-sol-codex |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                       | cell_model        |   n |   match |   rate_% |
 |:-----------------------------|:------------------------------------|:------------------|----:|--------:|---------:|

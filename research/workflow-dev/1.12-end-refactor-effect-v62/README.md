@@ -31,7 +31,6 @@ outcomes:
   # correctness (sanity: the end refactor must not break claim-office verification — cf. the bundle risk from RQ-1.9/RQ-1.10)
   - tests_passing
   - verification_pct
-  - completed_within_budget
   # cost (the additional end pass = iterative ESLint+McCabe calls after the last cycle)
   - duration_seconds
   - total_tokens

@@ -2,7 +2,7 @@
 
 _How do five models reachable via the OpenCode harness (Opus 4.7 via Portkey + four non-Anthropic models from the Portkey catalog) differ in code quality and TDD discipline on game-of-life-example-mapping with the exact-single-context-v2-testlist-fix-oc workflow?_
 
-Generated: 2026-10-11T14:41:33Z
+Generated: 2026-10-12T07:27:55Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -238,17 +238,6 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | glm-5-1           |   5 |    4.4 |     2 |     8 |  2.19 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | kimi-k2-6         |   5 |    2   |     0 |    10 |  4.47 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey  |   5 |    4.8 |     2 |    11 |  3.7  |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                           | cell_model        |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-flash |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-pro   |   5 |       4 |       80 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | gemini-3-5-flash  |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | glm-5-1           |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | kimi-k2-6         |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey  |   5 |       5 |      100 |
 
 ### duration_seconds
 

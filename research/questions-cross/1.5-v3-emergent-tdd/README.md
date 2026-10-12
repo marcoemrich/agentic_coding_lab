@@ -31,7 +31,6 @@ outcomes:
   # correctness / completion — measured from the source tree, unaffected
   - tests_passing
   - verification_pct
-  - completed_within_budget
   # cost of the bare instruction, for reference against instrumented workflows
   - duration_seconds
   - total_tokens

@@ -2,7 +2,7 @@
 
 _Which form of context structuring — isolated subagent contexts per TDD phase (subagents-v2), a shared, accumulated single context (single-context-v2), a hybrid with skill-based red/green in the shared context and an isolated refactor subagent (hybrid-v2), or a hybrid with isolated green and refactor subagents alongside a shared-context test list/red (green-refactor-v2) — leads to better code quality?_
 
-Generated: 2026-10-11T14:41:25Z
+Generated: 2026-10-12T07:27:47Z
 
 Cells declared: 4 · matched runs: 21 · min_replicates: 3
 
@@ -88,15 +88,6 @@ Cells declared: 4 · matched runs: 21 · min_replicates: 3
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   7 |   1    |  1    |     1 |  0    |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   6 |   1    |  1    |     1 |  0    |
 | claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |   0.96 |  0.8  |     1 |  0.09 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                           | cell_model                   |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:-----------------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-green-refactor-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   3 |       3 |      100 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   7 |       7 |      100 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   6 |       6 |      100 |
-| claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
 
 ### mutation_score
 

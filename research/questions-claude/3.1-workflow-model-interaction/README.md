@@ -16,7 +16,6 @@ outcomes:
   - verification_pct
   - verification_passed
   - tests_passing
-  - completed_within_budget
 min_replicates: 5
 ---
 

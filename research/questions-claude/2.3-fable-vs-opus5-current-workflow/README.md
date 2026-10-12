@@ -35,7 +35,6 @@ outcomes:
   - cycle_count
   # context
   - tests_passing
-  - completed_within_budget
   - duration_seconds
   - total_tokens
   # H3: list-price comparison value, dominated by cache_read on this workflow

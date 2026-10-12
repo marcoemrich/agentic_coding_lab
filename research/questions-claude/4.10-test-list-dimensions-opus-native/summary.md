@@ -2,7 +2,7 @@
 
 _On native Opus 5, does an independent-dimensions cross-check in the SOL PTDD test-list phase improve external completeness without sacrificing the workflow's efficiency advantage or code quality?_
 
-Generated: 2026-10-11T14:41:23Z
+Generated: 2026-10-12T07:27:45Z
 
 Cells declared: 2 · matched runs: 20 · min_replicates: 5
 
@@ -23,13 +23,6 @@ Cells declared: 2 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |   0.99 |  0.93 |     1 |  0.02 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                             | cell_model         |   n |   match |   rate_% |
-|:-----------------------------|:------------------------------------------|:-------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |      10 |      100 |
-| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |      10 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                             | cell_model         |   n |   match |   rate_% |
 |:-----------------------------|:------------------------------------------|:-------------------|----:|--------:|---------:|

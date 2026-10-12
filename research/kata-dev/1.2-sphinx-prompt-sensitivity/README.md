@@ -15,7 +15,6 @@ outcomes:
   # primary: the example-mapping lever
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # does removing the examples change how much work the run is?
   - duration_seconds
   - total_tokens

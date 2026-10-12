@@ -17,7 +17,6 @@ outcomes:
   # correctness (claim-office has genuine ambiguities)
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # code quality (secondary)
   - code_mass
   - smell_total

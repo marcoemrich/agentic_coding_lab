@@ -2,7 +2,7 @@
 
 _Does the natively-built Sol workflow line (basic-sol-tdd, Predictive TDD) transfer to GPT-6 Astra — or is its advantage over the Opus-derived EXACT line a property of Sol?_
 
-Generated: 2026-10-11T14:41:37Z
+Generated: 2026-10-12T07:27:59Z
 
 Cells declared: 8 · matched runs: 40 · min_replicates: 5
 
@@ -35,19 +35,6 @@ Cells declared: 8 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-6-astra-codex-no-thinking |   5 |   1    |  1    |     1 |  0    |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                           | cell_model                    |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|--------:|---------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi               | gpt-5-6-sol-codex             |   5 |       5 |      100 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi               | gpt-6-astra-codex-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex             |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-6-astra-codex-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1-pi                         | gpt-5-6-sol-codex             |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1-pi                         | gpt-6-astra-codex-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-5-6-sol-codex             |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-6-astra-codex-no-thinking |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                           | cell_model                    |   n |   match |   rate_% |
 |:-----------------------------|:----------------------------------------|:------------------------------|----:|--------:|---------:|

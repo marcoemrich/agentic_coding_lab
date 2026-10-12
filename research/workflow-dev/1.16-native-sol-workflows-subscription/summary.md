@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, does a workflow line written natively for Sol (basic-sol-tdd, Predictive TDD) beat structureless TDD (inline-tdd-v1) — the floor that no Opus-derived architecture clears on this model?_
 
-Generated: 2026-10-11T14:41:42Z
+Generated: 2026-10-12T07:28:04Z
 
 Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
@@ -121,20 +121,6 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |   0.96 |  0.94 |     1 |  0.03 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow              | cell_model        |   n |   match |   rate_% |
-|:-----------------------------|:---------------------------|:------------------|----:|--------:|---------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi  | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-pi  | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| sphinx-score-example-mapping | baseline-inline-tdd-v1-pi  | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| sphinx-score-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow              | cell_model        |   n |   match |   rate_% |
 |:-----------------------------|:---------------------------|:------------------|----:|--------:|---------:|

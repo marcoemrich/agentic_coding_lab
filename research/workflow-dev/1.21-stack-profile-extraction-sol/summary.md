@@ -2,7 +2,7 @@
 
 _Can all remaining TypeScript/Vitest-specific instructions be moved from the Sol-originated Predictive TDD orchestration and test-list skill into its existing stack profile without changing correctness, TDD discipline, refactoring behaviour, code quality or cost?_
 
-Generated: 2026-10-11T14:41:44Z
+Generated: 2026-10-12T07:28:06Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -27,15 +27,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      1 |     1 |     1 |     0 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                   | cell_model        |   n |   match |   rate_% |
-|:-----------------------------|:--------------------------------|:------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-sol-v1-pi                 | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-sol-v1-pi                 | gpt-5-6-sol-codex |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                   | cell_model        |   n |   match |   rate_% |
 |:-----------------------------|:--------------------------------|:------------------|----:|--------:|---------:|

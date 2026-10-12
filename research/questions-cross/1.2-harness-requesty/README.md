@@ -33,7 +33,6 @@ outcomes:
   - predictions_correct_rate
   - refactorings_applied
   # context + cost (cache-inclusive, same tariff across all harnesses; source per harness see § Cost comparison)
-  - completed_within_budget
   - duration_seconds
   - total_tokens
   - cost_usd

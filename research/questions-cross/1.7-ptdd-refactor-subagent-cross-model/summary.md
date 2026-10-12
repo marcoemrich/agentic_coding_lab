@@ -2,7 +2,7 @@
 
 _Does isolating only the per-cycle Refactor phase improve PTDD v1 product structure enough to justify its context cost on native Opus and GPT-5.6 SOL/pi?_
 
-Generated: 2026-10-11T14:41:31Z
+Generated: 2026-10-12T07:27:53Z
 
 Cells declared: 4 · matched runs: 45 · min_replicates: 5
 
@@ -33,15 +33,6 @@ Cells declared: 4 · matched runs: 45 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |  15 |      15 |      100 |
 | claim-office-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |  15 |      15 |      100 |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |  10 |      10 |      100 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                        | cell_model         |   n |   match |   rate_% |
-|:-----------------------------|:-------------------------------------|:-------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |  15 |      15 |      100 |
-| claim-office-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |  15 |      15 |      100 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |  10 |       7 |       70 |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |       5 |      100 |
 
 ### avg_loc_per_function

@@ -2,7 +2,7 @@
 
 _Does external correctness (verification_pct) differ between TDD workflow variants on the novel claim-office kata?_
 
-Generated: 2026-10-11T14:41:25Z
+Generated: 2026-10-12T07:27:47Z
 
 Cells declared: 7 · matched runs: 36 · min_replicates: 3
 
@@ -57,18 +57,6 @@ Cells declared: 7 · matched runs: 36 · min_replicates: 3
 | claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |     15 |    15 |    15 |     0 |
 
 ### tests_passing (rate %)
-
-| kata                         | cell_workflow                           | cell_model                   |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:-----------------------------|----:|--------:|---------:|
-| claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-green-refactor-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   3 |       3 |      100 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   7 |       7 |      100 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   6 |       6 |      100 |
-| claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-
-### completed_within_budget (rate %)
 
 | kata                         | cell_workflow                           | cell_model                   |   n |   match |   rate_% |
 |:-----------------------------|:----------------------------------------|:-----------------------------|----:|--------:|---------:|

@@ -27,7 +27,6 @@ outcomes:
   # correctness — single-context-v2 has a documented failure mode (F-1.5), single-context-v3 inherits its architecture
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # TDD discipline
   - cycle_count
   - refactorings_applied

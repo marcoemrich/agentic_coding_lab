@@ -14,7 +14,6 @@ outcomes:
   # Correctness — the non-inferiority gate. Both control cells sit at 1.00.
   - verification_pct
   - tests_passing
-  - completed_within_budget
   # Safety net — the split must not thin the suite. Report the pair with the
   # score: the population moves with code size. See "Mutation caveat".
   - tests_total

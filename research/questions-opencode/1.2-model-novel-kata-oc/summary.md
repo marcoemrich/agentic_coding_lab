@@ -2,7 +2,7 @@
 
 _How do five models reachable via the OpenCode harness differ in correctness and TDD discipline on claim-office-example-mapping with the exact-single-context-v2-testlist-fix-oc workflow?_
 
-Generated: 2026-10-12T02:57:18Z
+Generated: 2026-10-12T07:27:56Z
 
 Cells declared: 8 · matched runs: 38 · min_replicates: 5
 
@@ -215,19 +215,6 @@ Cells declared: 8 · matched runs: 38 · min_replicates: 5
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | minimax-m2-7       |   5 |  30.8  |     2 |    54 | 19.69 |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | mistral-medium-3-5 |   5 |  42.8  |    23 |    66 | 19.02 |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey   |   5 |  25.6  |     4 |    39 | 17.16 |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                           | cell_model         |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:-------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-flash  |   4 |       4 |      100 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-pro    |   4 |       4 |      100 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | gemini-3-5-flash   |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | glm-5-1            |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | kimi-k2-6          |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | minimax-m2-7       |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | mistral-medium-3-5 |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey   |   5 |       5 |      100 |
 
 ### duration_seconds
 

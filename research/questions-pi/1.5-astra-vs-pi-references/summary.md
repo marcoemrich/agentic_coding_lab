@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, how does GPT-6 Astra compare to the strongest references reachable on the pi harness — Sol on the same route, Sol on Requesty in both reasoning states, and Opus 5 on Requesty — at constant harness, workflow, kata and prompt style?_
 
-Generated: 2026-10-11T14:41:37Z
+Generated: 2026-10-12T07:27:59Z
 
 Cells declared: 5 · matched runs: 25 · min_replicates: 5
 
@@ -207,16 +207,6 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |        43 |      44 |     97.7 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-6-astra-codex-no-thinking |   5 |       118 |     122 |     96.7 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty               |   5 |        32 |      32 |    100   |
-
-### completed_within_budget (rate %)
-
-| kata                         | cell_workflow                           | cell_model                    |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-6-astra-codex-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty               |   5 |       5 |      100 |
 
 ### duration_seconds
 

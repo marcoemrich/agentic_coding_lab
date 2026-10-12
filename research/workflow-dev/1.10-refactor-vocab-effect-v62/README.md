@@ -26,7 +26,6 @@ outcomes:
   # correctness (sanity)
   - tests_passing
   - verification_pct
-  - completed_within_budget
   # cost (additive text → slight surcharge expected)
   - duration_seconds
   - total_tokens

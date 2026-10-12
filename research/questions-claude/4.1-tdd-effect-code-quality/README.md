@@ -36,7 +36,6 @@ outcomes:
   - verification_pct
   - verification_passed
   - verification_total
-  - completed_within_budget
   # TDD discipline (meaningful only for inline-tdd-v1/subagents-v2/single-context-v2/hybrid-v2)
   - tdd_cycles
   - refactorings
