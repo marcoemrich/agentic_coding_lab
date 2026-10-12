@@ -1,10 +1,11 @@
+import yaml from "@rollup/plugin-yaml";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
 // Pure logic runs in node; rendered components (*.spec.tsx) run in happy-dom
 // with Testing Library, which needs an explicit cleanup without vitest globals.
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), yaml()],
   test: {
     projects: [
       {

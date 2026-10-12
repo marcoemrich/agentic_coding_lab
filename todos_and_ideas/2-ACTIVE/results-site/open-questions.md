@@ -50,8 +50,11 @@
   schema check of the JSON remains.
 - **Site export:** `experiments/export-site-data.py` reads `summary.json`, the RQ frontmatter,
   `LINEAGE.yaml` and the metric registry, and writes JSON (one file per RQ plus
-  `workflows.json`, `metrics.json`, `meta.json`) to `site/src/data/`, gitignored. Python
-  computes everything including trophies and gap states; React only presents.
+  `workflows.json`, `meta.json`) to `site/src/data/`, gitignored.
+- **Statistics in Python, presentation in TypeScript.** Python computes every statistic
+  (`mean`, `sd`, `n`, null counts, coverage) — one implementation shared with `summary.md`.
+  Trophies, sort order and gap states are presentation decisions and live in the site's
+  TypeScript, under its tests. This replaces the earlier "Python computes everything".
 - **Strict on missing metadata.** The build fails when a declared outcome has no registry entry
   or a workflow in a table has no `description:`, instead of shipping placeholders.
 - **No build during a batch.** The build aborts while a `batch`/`batch-retry` container is
@@ -73,6 +76,9 @@
   the test-list boundary" and "not comparable across stacks". It drives column names, tooltips,
   trophies and warnings; later `generate-snapshot-skeleton.py` should read it instead of its
   hard-coded prose table (`:440–497`).
+- **Both sides read the YAML file directly.** Python for the export's strictness check; the
+  site imports it through a Vite YAML plugin, bundled at build time, so `pnpm test` runs
+  without a prior export and tests check against the real registry. No `metrics.json` export.
 
 ### RQ page
 

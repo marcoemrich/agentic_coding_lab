@@ -1,10 +1,7 @@
-const testListBoundaryMetrics = new Set([
-  "tdd_discipline", "tdd_discipline_test_first", "tdd_discipline_closure", "test_first_rate",
-  "skip_events", "cycles_total", "chain_deviations",
-]);
+import { metricEntry } from "./metric-registry.js";
 
 export function crossesTestListBoundary(metric: string): boolean {
-  return testListBoundaryMetrics.has(metric);
+  return metricEntry(metric)?.not_comparable_across?.includes("test-list-boundary") ?? false;
 }
 
 export function workflowStyleFor(workflow: string | undefined, styles: Record<string, "test list" | "ad hoc" | null> | undefined) {

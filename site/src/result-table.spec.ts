@@ -57,7 +57,7 @@ describe("Result table layout", () => {
         { labels: { model: "sonnet-4-6", workflow: "external-pocock-2026-09-04-cc" } },
       ] }]);
   });
-  it("leaves out a paired member that is constant, -- 4.7 (workflow_x_prompt, prompt always example-mapping) -> ['workflow']", () => {
+  it("leaves out a paired member that is constant -- 4.7 (workflow_x_prompt, prompt always example-mapping) -> ['workflow']", () => {
     const cells = [
       { kata: "claim-office-example-mapping", workflow: "superpowers", prompt: "example-mapping" },
       { kata: "claim-office-example-mapping", workflow: "external-pocock-2026-09-04-cc", prompt: "example-mapping" },
@@ -155,7 +155,7 @@ describe("Result table layout", () => {
     expect(buildResultTables({ katas: ["claim-office-example-mapping"], cells, outcomes: [] }))
       .toMatchObject([{ rows: [{ span: "2026-09-30 → 10-01" }] }]);
   });
-  it("keeps the full end date across a year boundary, -- 2025-12-30 to 2026-01-02 -> '2025-12-30 → 2026-01-02'", () => {
+  it("keeps the full end date across a year boundary -- 2025-12-30 to 2026-01-02 -> '2025-12-30 → 2026-01-02'", () => {
     const cells = [{ kata: "claim-office-example-mapping", runs: [
       { id: "early", started_at: "2025-12-30T14:00:00Z" },
       { id: "late", started_at: "2026-01-02T03:00:00Z" },
@@ -177,7 +177,7 @@ describe("Result table layout", () => {
       workflowStyles: { "external-pocock-2026-09-04-cc": "ad hoc" },
     })).toMatchObject([{ rows: [{ tddStyle: "ad hoc" }] }]);
   });
-  it("shows no tag when the TDD style cannot be determined, -- unresolvable workflow -> no tag", () => {
+  it("shows no tag when the TDD style cannot be determined -- unresolvable workflow -> no tag", () => {
     expect(buildResultTables({ katas: ["claim-office-example-mapping"], outcomes: [],
       cells: [{ kata: "claim-office-example-mapping", workflow: "unknown-workflow" }],
       workflowStyles: { "unknown-workflow": null },
@@ -226,7 +226,7 @@ describe("Result table layout", () => {
       { labels: { workflow: "smaller" } }, { labels: { workflow: "larger" } },
     ] }]);
   });
-  it("sorts an informative column highest first, -- 4.13 by refactor_events -> largest mean first", () => {
+  it("sorts an informative column highest first -- 4.13 by refactor_events -> largest mean first", () => {
     const cells = [
       { kata: "claim-office-example-mapping", workflow: "fewer", values: { refactor_events: { value: 2 } } },
       { kata: "claim-office-example-mapping", workflow: "more", values: { refactor_events: { value: 9 } } },
@@ -274,7 +274,7 @@ describe("Result table layout", () => {
         href: `https://github.com/marcoemrich/agentic_coding_lab/tree/main/experiments/runs/${id}`,
       })) }] }]);
   });
-  it("lists no runs for a row that was never run, -- 4.7, external-kesseler-2026-09-30-cc -> not listed", () => {
+  it("lists no runs for a row that was never run -- 4.7, external-kesseler-2026-09-30-cc -> not listed", () => {
     const kata = "claim-office-example-mapping";
     const cells = [{ kata, workflow: "external-kesseler-2026-09-30-cc", runs: [] }];
     expect(buildResultTables({ katas: [kata], cells, outcomes: [] }))

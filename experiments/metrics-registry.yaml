@@ -1,0 +1,122 @@
+# One entry per metric: the properties the results site and the lab's reports
+# need to present it. Read directly by site/ (Vite YAML import) and by the
+# site export. A metric missing here is unknown to the site.
+#
+# group:      result-table column group
+# direction:  higher | lower | informative (informative: no winner, no trophy)
+# scale:      fraction — a 0–1 share, shown as percent
+# not_comparable_across: test-list-boundary — Skip-sensitive, see README
+#             "Comparability: the test-list boundary"
+
+verification_pct:
+  group: Correctness
+  direction: higher
+  scale: fraction
+tests_passing:
+  group: Correctness
+  direction: higher
+completed_within_budget:
+  group: Correctness
+  direction: higher
+tdd_discipline:
+  group: TDD discipline
+  direction: higher
+  scale: fraction
+  not_comparable_across: [test-list-boundary]
+tdd_discipline_test_first:
+  group: TDD discipline
+  direction: higher
+  scale: fraction
+  not_comparable_across: [test-list-boundary]
+tdd_discipline_step:
+  group: TDD discipline
+  direction: higher
+  scale: fraction
+tdd_discipline_closure:
+  group: TDD discipline
+  direction: higher
+  scale: fraction
+  not_comparable_across: [test-list-boundary]
+test_first_rate:
+  group: TDD discipline
+  direction: higher
+  scale: fraction
+  not_comparable_across: [test-list-boundary]
+red_batch_size:
+  group: TDD discipline
+  direction: lower
+red_batch_max:
+  group: TDD discipline
+  direction: lower
+red_batch_unmeasurable:
+  group: TDD discipline
+  direction: lower
+green_batch_size:
+  group: TDD discipline
+  direction: lower
+chain_suite_runs:
+  group: TDD discipline
+  direction: informative
+cycles_total:
+  group: TDD discipline
+  direction: informative
+  not_comparable_across: [test-list-boundary]
+cycles_closed:
+  group: TDD discipline
+  direction: informative
+refactor_events:
+  group: TDD discipline
+  direction: informative
+skip_events:
+  group: TDD discipline
+  direction: informative
+  not_comparable_across: [test-list-boundary]
+refactor_per_cycle:
+  group: TDD discipline
+  direction: informative
+green_attempts:
+  group: TDD discipline
+  direction: informative
+chain_deviations:
+  group: TDD discipline
+  direction: lower
+  not_comparable_across: [test-list-boundary]
+chain_opens_red:
+  group: TDD discipline
+  direction: higher
+chain_ends_green:
+  group: TDD discipline
+  direction: higher
+predictions_correct_rate:
+  group: TDD discipline
+  direction: higher
+avg_loc_per_function:
+  group: Code quality
+  direction: lower
+longest_function:
+  group: Code quality
+  direction: lower
+cognitive_max:
+  group: Code quality
+  direction: lower
+mccabe_max:
+  group: Code quality
+  direction: lower
+smell_total:
+  group: Code quality
+  direction: lower
+code_mass:
+  group: Code quality
+  direction: lower
+duration_seconds:
+  group: Cost
+  direction: lower
+total_tokens:
+  group: Cost
+  direction: lower
+cost_usd:
+  group: Cost
+  direction: lower
+mutation_score:
+  direction: informative
+  scale: fraction
