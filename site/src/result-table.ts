@@ -1,17 +1,32 @@
 import { groupedHeaders } from "./group-headers.js";
+import { incompleteRunReasonsFor } from "./incomplete-run-reasons.js";
+import { compareMetricMeansBestFirst } from "./metric-direction.js";
+import { workflowStyleFor } from "./metric-comparability.js";
+import type { ValueCell } from "./format-value.js";
 import { rqVaryingLabelColumnsFor } from "./rq-factor-variation.js";
 import { labelsFor } from "./row-labels.js";
 
+type AggregatedMetric = ValueCell | { value?: number; n?: number; sd?: number };
+
 export interface ResultTableInput {
   katas: string[];
-  cells: { kata: string; model?: string; workflow?: string; prompt?: string; runs?: { id: string; started_at?: string }[]; values?: Record<string, { value?: number } | null> }[];
+  cells: { kata: string; model?: string; workflow?: string; prompt?: string; runs?: { id: string; started_at?: string; exit_reason?: string }[]; values?: Record<string, AggregatedMetric | null> }[];
   outcomes: string[];
+  min_replicates?: number;
   workflowStyles?: Record<string, "test list" | "ad hoc" | null>;
   sort?: { metric: string; clicks: number };
 }
 
+export function partialMetricRunCount(value: AggregatedMetric, cellRunCount: number): number | undefined {
+  return "n" in value && value.n !== undefined && value.n < cellRunCount ? value.n : undefined;
+}
+
 function runCountFor(cell: ResultTableInput["cells"][number]): number {
   return cell.runs?.length ?? 0;
+}
+
+export function isUnderReplicated(runCount: number, minReplicates: number | undefined): boolean {
+  return minReplicates !== undefined && runCount > 0 && runCount < minReplicates;
 }
 
 function columnsForOutcomes(outcomes: ResultTableInput["outcomes"]): string[] {
@@ -32,10 +47,6 @@ function runDateSpanFor(cell: ResultTableInput["cells"][number]): string | undef
   return formatRunDateSpan(dates[0], dates.at(-1)!);
 }
 
-function knownWorkflowTddStyle(workflow: string | undefined, styles: ResultTableInput["workflowStyles"]) {
-  return workflow ? styles?.[workflow] ?? undefined : undefined;
-}
-
 function githubRunDirectoryHref(runId: string): string {
   return `https://github.com/marcoemrich/agentic_coding_lab/tree/main/experiments/runs/${encodeURIComponent(runId)}`;
 }
@@ -49,23 +60,16 @@ function listedRunLinksFor(cell: ResultTableInput["cells"][number]) {
 
 function resultRowFor(cell: ResultTableInput["cells"][number], labelColumns: ReturnType<typeof rqVaryingLabelColumnsFor>, styles: ResultTableInput["workflowStyles"]) {
   const span = runDateSpanFor(cell);
-  const tddStyle = knownWorkflowTddStyle(cell.workflow, styles);
+  const tddStyle = workflowStyleFor(cell.workflow, styles);
   const runLinks = listedRunLinksFor(cell);
+  const incompleteRunReasons = incompleteRunReasonsFor(cell.runs);
   return {
-    labels: labelsFor(cell, labelColumns), n: runCountFor(cell),
+    labels: labelsFor(cell, labelColumns), n: runCountFor(cell), values: cell.values,
     ...(span ? { span } : {}),
+    ...(incompleteRunReasons.length ? { incompleteRunReasons } : {}),
     ...(tddStyle ? { tddStyle } : {}),
     ...(runLinks ? { runLinks } : {}),
   };
-}
-
-function lowerIsBetter(metric: string): boolean {
-  return metric === "cognitive_max";
-}
-
-function compareBestFirstValues(a: ResultTableInput["cells"][number], b: ResultTableInput["cells"][number], metric: string): number {
-  const higherFirst = (b.values?.[metric]?.value ?? 0) - (a.values?.[metric]?.value ?? 0);
-  return lowerIsBetter(metric) ? -higherFirst : higherFirst;
 }
 
 function compareRunParticipation(a: ResultTableInput["cells"][number], b: ResultTableInput["cells"][number]): number {
@@ -79,7 +83,7 @@ function compareMetricAvailability(a: ResultTableInput["cells"][number], b: Resu
 function cellsSortedByMetric(cells: ResultTableInput["cells"], sort: NonNullable<ResultTableInput["sort"]>) {
   const direction = sort.clicks % 2 === 0 ? -1 : 1;
   return [...cells].sort((a, b) => {
-    return compareRunParticipation(a, b) || compareMetricAvailability(a, b, sort.metric) || direction * compareBestFirstValues(a, b, sort.metric);
+    return compareRunParticipation(a, b) || compareMetricAvailability(a, b, sort.metric) || direction * compareMetricMeansBestFirst(sort.metric, a.values?.[sort.metric]?.value ?? 0, b.values?.[sort.metric]?.value ?? 0);
   });
 }
 

@@ -13,9 +13,9 @@ describe("Rendered result table", () => {
       { kata, workflow: "100 %", runs: [{ id: "b" }], values: { verification_pct: { value: 1 } } },
     ] }} />);
     const dataRows = () => within(screen.getByRole("table")).getAllByRole("row").slice(1);
-    expect(dataRows().map(row => row.textContent)).toEqual(["96 %", "100 %"]);
+    expect(dataRows().map(row => row.querySelector("td a")?.textContent)).toEqual(["96 %", "100 %"]);
     fireEvent.click(screen.getByRole("button", { name: "verification_pct" }));
-    expect(dataRows().map(row => row.textContent)).toEqual(["100 %", "96 %"]);
+    expect(dataRows().map(row => row.querySelector("td a")?.textContent)).toEqual(["100 %", "96 %"]);
   });
   it("reverses the order when the same header is clicked again -- 4.13, click verification_pct twice -> 96 % rows first", () => {
     const kata = "claim-office-example-mapping";
@@ -24,7 +24,7 @@ describe("Rendered result table", () => {
       { kata, workflow: "100 %", runs: [{ id: "b" }], values: { verification_pct: { value: 1 } } },
     ] }} />);
     const header = screen.getByRole("button", { name: "verification_pct" });
-    const rows = () => within(screen.getByRole("table")).getAllByRole("row").slice(1).map(row => row.textContent);
+    const rows = () => within(screen.getByRole("table")).getAllByRole("row").slice(1).map(row => row.querySelector("td a")?.textContent);
     fireEvent.click(header);
     expect(rows()).toEqual(["100 %", "96 %"]);
     fireEvent.click(header);
