@@ -87,14 +87,16 @@ marked as such. Done stories have no Example Mapping section.
   - [Findings section](stories/open/2026-10-11_08_findings-section.md)
   - [Workflow page](stories/open/2026-10-11_09_workflow-page.md)
 - **Open stories from the site data export mapping** (2026-10-12). Exit reason
-  classification, dropping `completed_within_budget` and usable-run replicates block the
-  site data export; the others stand beside it.
+  classification, dropping `completed_within_budget`, usable-run replicates and the Python
+  test infrastructure block the site data export; the infrastructure also blocks the build
+  command. The others stand beside it.
   - [Exit reason classification](stories/open/2026-10-12_01_exit-reason-classification.md)
   - [Drop completed_within_budget](stories/open/2026-10-12_02_drop-completed-within-budget.md)
   - [Normalise the completed exit reason](stories/open/2026-10-12_03_normalise-completed-exit-reason.md)
   - [Build command](stories/open/2026-10-12_04_build-command.md)
   - [Usable-run replicates](stories/open/2026-10-12_05_usable-run-replicates.md)
   - [Broken-run cleanup](stories/open/2026-10-12_06_broken-run-cleanup.md)
+  - [Python test infrastructure](stories/open/2026-10-12_07_python-test-infrastructure.md)
 
 ## Later
 

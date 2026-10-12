@@ -4,7 +4,7 @@ This file is the single source of truth for Predictive TDD checkpoints.
 
 ## Autonomy Level
 
-**Current setting:** `full-hitl`
+**Current setting:** `task-end`
 
 | Level | Stops after |
 |---|---|

@@ -2,7 +2,8 @@
 
 Status: open
 Source: [results-site decisions](../../open-questions.md#pipeline).
-Depends on: [exit reason classification](2026-10-12_01_exit-reason-classification.md),
+Depends on: [Python test infrastructure](2026-10-12_07_python-test-infrastructure.md),
+[exit reason classification](2026-10-12_01_exit-reason-classification.md),
 [drop completed_within_budget](2026-10-12_02_drop-completed-within-budget.md),
 [usable-run replicates](2026-10-12_05_usable-run-replicates.md).
 
