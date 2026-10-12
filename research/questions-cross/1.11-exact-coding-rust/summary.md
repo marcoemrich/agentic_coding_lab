@@ -2,7 +2,7 @@
 
 _On Rust with Cargo, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness, TDD discipline and code quality for GPT-6 SOL and Opus 5?_
 
-Generated: 2026-10-12T10:46:33Z
+Generated: 2026-10-12T16:44:04Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -59,39 +59,6 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-rust-example-mapping | baseline-inline-tdd-v1-pi            | gpt-6-sol-codex    |   5 |      0 |    0.6 | 0.89 |
 | claim-office-rust-example-mapping | exact-ptdd-v1-pi                     | gpt-6-sol-codex    |   5 |      0 |    0   | 0    |
 | claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-sol-codex    |   5 |      0 |    0.4 | 0.89 |
-| claim-office-rust-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |      0 |    0   | 0    |
-| claim-office-rust-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |      0 |    0   | 0    |
-| claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   4 |      0 |    0   | 0    |
-
-### smell_complexity
-
-| kata                              | cell_workflow                        | cell_model         |   n |   null |   mean |   sd |
-|:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|-------:|-----:|
-| claim-office-rust-example-mapping | baseline-inline-tdd-v1-pi            | gpt-6-sol-codex    |   5 |      0 |    0.4 | 0.89 |
-| claim-office-rust-example-mapping | exact-ptdd-v1-pi                     | gpt-6-sol-codex    |   5 |      0 |    0   | 0    |
-| claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-sol-codex    |   5 |      0 |    0.2 | 0.45 |
-| claim-office-rust-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |      0 |    0   | 0    |
-| claim-office-rust-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |      0 |    0   | 0    |
-| claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   4 |      0 |    0   | 0    |
-
-### smell_duplication
-
-| kata                              | cell_workflow                        | cell_model         |   n |   null |   mean |   sd |
-|:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|-------:|-----:|
-| claim-office-rust-example-mapping | baseline-inline-tdd-v1-pi            | gpt-6-sol-codex    |   5 |      0 |      0 |    0 |
-| claim-office-rust-example-mapping | exact-ptdd-v1-pi                     | gpt-6-sol-codex    |   5 |      0 |      0 |    0 |
-| claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-sol-codex    |   5 |      0 |      0 |    0 |
-| claim-office-rust-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-rust-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   4 |      0 |      0 |    0 |
-
-### smell_code_quality
-
-| kata                              | cell_workflow                        | cell_model         |   n |   null |   mean |   sd |
-|:----------------------------------|:-------------------------------------|:-------------------|----:|-------:|-------:|-----:|
-| claim-office-rust-example-mapping | baseline-inline-tdd-v1-pi            | gpt-6-sol-codex    |   5 |      0 |    0.2 | 0.45 |
-| claim-office-rust-example-mapping | exact-ptdd-v1-pi                     | gpt-6-sol-codex    |   5 |      0 |    0   | 0    |
-| claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-sol-codex    |   5 |      0 |    0.2 | 0.45 |
 | claim-office-rust-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |      0 |    0   | 0    |
 | claim-office-rust-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |      0 |    0   | 0    |
 | claim-office-rust-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   4 |      0 |    0   | 0    |

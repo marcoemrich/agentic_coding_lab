@@ -28,7 +28,6 @@ outcomes:
   - mccabe_max
   - mccabe_avg
   - smell_total
-  - smell_code_quality
   # Size and tests: witnesses for useful separation versus abstraction growth
   - code_mass
   - production_loc

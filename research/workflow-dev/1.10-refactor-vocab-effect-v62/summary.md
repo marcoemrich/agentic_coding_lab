@@ -2,7 +2,7 @@
 
 _Does an additive vocabulary block in the refactor agent (cyclomatic + cognitive complexity, single responsibility, smell→move table) improve code quality on the exact-hybrid-v4-cleaned-cc base without significantly impairing correctness or cost?_
 
-Generated: 2026-10-12T10:46:43Z
+Generated: 2026-10-12T16:44:07Z
 
 Cells declared: 4 · matched runs: 28 · min_replicates: 5
 
@@ -79,15 +79,6 @@ Cells declared: 4 · matched runs: 28 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc          | opus-4-7-portkey-no-thinking |   8 |      0 |   0.38 | 0.74 |
 | game-of-life-example-mapping | exact-hybrid-v4.1-refactor-vocab-cc | opus-4-7-portkey-no-thinking |   5 |      0 |   2.2  | 0.45 |
 | claim-office-example-mapping | exact-hybrid-v4.1-refactor-vocab-cc | opus-4-7-portkey-no-thinking |   5 |      0 |   0    | 0    |
-
-### smell_complexity
-
-| kata                         | cell_workflow                       | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:------------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc          | opus-4-7-portkey-no-thinking |  10 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc          | opus-4-7-portkey-no-thinking |   8 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-hybrid-v4.1-refactor-vocab-cc | opus-4-7-portkey-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-hybrid-v4.1-refactor-vocab-cc | opus-4-7-portkey-no-thinking |   5 |      0 |      0 |    0 |
 
 ### code_mass
 

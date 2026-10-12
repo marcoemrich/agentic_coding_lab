@@ -37,10 +37,6 @@ outcomes:
   - verification_passed
   - verification_total
   # TDD discipline (meaningful only for inline-tdd-v1/subagents-v2/single-context-v2/hybrid-v2)
-  - tdd_cycles
-  - refactorings
-  - prediction_accuracy
-  - tests_immediately_passing
   # context
   - duration_seconds
   - total_tokens

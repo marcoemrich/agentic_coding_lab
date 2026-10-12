@@ -2,7 +2,7 @@
 
 _How do the models reachable via the cursor-cli harness (Opus 4.8 medium, Composer 2.5, Grok 4.5 medium) differ in code quality and TDD discipline on game-of-life-example-mapping?_
 
-Generated: 2026-10-12T10:46:37Z
+Generated: 2026-10-12T16:44:05Z
 
 Cells declared: 3 · matched runs: 10 · min_replicates: 5
 
@@ -95,30 +95,6 @@ Cells declared: 3 · matched runs: 10 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    3   |   0.71 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    2.8 |   0.84 |
-
-### smell_complexity
-
-| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    0.4 |   0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    0.2 |   0.45 |
-
-### smell_magic_numbers
-
-| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    2.6 |   0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    2.4 |   0.55 |
-
-### smell_duplication
-
-| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    0   |   0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    0.2 |   0.45 |
 
 ### verification_pct
 

@@ -2,7 +2,7 @@
 
 _Does a metric-driven refactor pass improve code quality over the per-cycle baseline workflow (exact-hybrid-v4-cleaned-cc) — and does the lever work purely per-cycle (exact-hybrid-v4.4-metric-refactor-cc) or as an additional whole-src end pass (exact-hybrid-v5-end-refactor-cc) — without damaging correctness or TDD discipline, and does the result hold across two kata types (the multi-file CLI codebase claim-office vs the single-file library game-of-life)?_
 
-Generated: 2026-10-12T10:46:43Z
+Generated: 2026-10-12T16:44:07Z
 
 Cells declared: 6 · matched runs: 43 · min_replicates: 5
 
@@ -95,17 +95,6 @@ Cells declared: 6 · matched runs: 43 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-portkey-no-thinking |   5 |      0 |   0    | 0    |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-7-portkey-no-thinking |   5 |      0 |   0    | 0    |
 | game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-7-portkey-no-thinking |   5 |      0 |   0    | 0    |
-
-### smell_complexity
-
-| kata                         | cell_workflow                        | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-7-portkey-no-thinking |   8 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-7-portkey-no-thinking |  15 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-portkey-no-thinking |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-7-portkey-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-7-portkey-no-thinking |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-7-portkey-no-thinking |   5 |      0 |      0 |    0 |
 
 ### code_mass
 

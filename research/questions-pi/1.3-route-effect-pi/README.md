@@ -33,9 +33,6 @@ outcomes:
   - median_loc_per_function
   - lines_of_code
   - smell_total
-  - smell_complexity
-  - smell_magic_numbers
-  - smell_duplication
   # correctness as a counterweight
   - verification_pct  # external (game-of-life-verification)
   - tests_passing     # internal (vitest)

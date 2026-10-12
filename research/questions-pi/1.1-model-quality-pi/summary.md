@@ -2,7 +2,7 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in code quality and TDD discipline on game-of-life-example-mapping with the exact-hybrid-v4.2-phase-continuation-pi workflow?_
 
-Generated: 2026-10-12T10:46:38Z
+Generated: 2026-10-12T16:44:06Z
 
 Cells declared: 12 · matched runs: 60 · min_replicates: 5
 
@@ -194,57 +194,6 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3       |   5 |      0 |    8.4 | 13.83 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | deepseek-v4-pro  |   5 |      0 |    4   |  1    |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b       |   5 |      0 |    1.8 |  4.02 |
-
-### smell_complexity
-
-| kata                         | cell_workflow                           | cell_model       |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:-----------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8         |   5 |      0 |    0.8 | 1.1  |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty  |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5         |   5 |      0 |    0.4 | 0.89 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol      |   5 |      0 |    1.6 | 0.89 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-terra    |   5 |      0 |    0.8 | 1.1  |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | glm-5-1          |   5 |      0 |    0.6 | 0.89 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | glm-5-2          |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k2-7        |   5 |      0 |    0.6 | 0.89 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k3-sference |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3       |   5 |      0 |    0.4 | 0.89 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | deepseek-v4-pro  |   5 |      0 |    1.2 | 1.1  |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b       |   5 |      0 |    1   | 2.24 |
-
-### smell_magic_numbers
-
-| kata                         | cell_workflow                           | cell_model       |   n |   null |   mean |    sd |
-|:-----------------------------|:----------------------------------------|:-----------------|----:|-------:|-------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8         |   5 |      0 |    2.6 |  0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty  |   5 |      0 |    2   |  0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5         |   5 |      0 |    1.8 |  1.64 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol      |   5 |      0 |    2   |  0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-terra    |   5 |      0 |    5.2 |  5.07 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | glm-5-1          |   5 |      0 |    2.6 |  0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | glm-5-2          |   5 |      0 |    1   |  1.41 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k2-7        |   5 |      0 |    2.4 |  0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k3-sference |   5 |      0 |    2.4 |  0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3       |   5 |      0 |    8   | 14.02 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | deepseek-v4-pro  |   5 |      0 |    2.8 |  0.45 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b       |   5 |      0 |    0.6 |  1.34 |
-
-### smell_duplication
-
-| kata                         | cell_workflow                           | cell_model       |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:-----------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8         |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty  |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5         |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol      |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-terra    |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | glm-5-1          |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | glm-5-2          |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k2-7        |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k3-sference |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3       |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | deepseek-v4-pro  |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b       |   5 |      0 |    0.2 | 0.45 |
 
 ### verification_pct
 

@@ -2,7 +2,7 @@
 
 _On Python with pytest, how do inline TDD, shared-context EXACT Coding Predictive TDD, and EXACT Coding with an isolated Refactor subagent compare on correctness and code quality for GPT-5.6 SOL and Opus 5?_
 
-Generated: 2026-10-12T10:46:37Z
+Generated: 2026-10-12T16:44:05Z
 
 Cells declared: 12 · matched runs: 60 · min_replicates: 5
 
@@ -128,74 +128,6 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |      0 | 1013.2 | 85.87 |
 
 ### smell_total
-
-| kata                                | cell_workflow                        | cell_model         |   n |   null |   mean |   sd |
-|:------------------------------------|:-------------------------------------|:-------------------|----:|-------:|-------:|-----:|
-| game-of-life-python-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-
-### smell_complexity
-
-| kata                                | cell_workflow                        | cell_model         |   n |   null |   mean |   sd |
-|:------------------------------------|:-------------------------------------|:-------------------|----:|-------:|-------:|-----:|
-| game-of-life-python-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-
-### smell_duplication
-
-| kata                                | cell_workflow                        | cell_model         |   n |   null |   mean |   sd |
-|:------------------------------------|:-------------------------------------|:-------------------|----:|-------:|-------:|-----:|
-| game-of-life-python-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-
-### smell_magic_numbers
-
-| kata                                | cell_workflow                        | cell_model         |   n |   null |   mean |   sd |
-|:------------------------------------|:-------------------------------------|:-------------------|----:|-------:|-------:|-----:|
-| game-of-life-python-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | baseline-inline-tdd-v1-pi            | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1-pi                     | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-5-6-sol-codex  |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | baseline-inline-tdd-v1-cc            | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1-cc                     | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| game-of-life-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-python-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc | opus-5-no-thinking |   5 |      0 |      0 |    0 |
-
-### smell_code_quality
 
 | kata                                | cell_workflow                        | cell_model         |   n |   null |   mean |   sd |
 |:------------------------------------|:-------------------------------------|:-------------------|----:|-------:|-------:|-----:|

@@ -24,7 +24,6 @@ outcomes:
   - mccabe_max
   - mccabe_avg
   - smell_total
-  - smell_code_quality
   # Compactness witnesses
   - code_mass
   - production_loc

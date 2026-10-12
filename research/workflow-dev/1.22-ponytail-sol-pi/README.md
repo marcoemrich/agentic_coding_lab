@@ -30,10 +30,6 @@ outcomes:
   - mccabe_avg
   - mccabe_high_count
   - smell_total
-  - smell_complexity
-  - smell_duplication
-  - smell_magic_numbers
-  - smell_code_quality
   # Test-suite size and TDD mechanism controls
   - test_lines
   - predictions_correct_rate

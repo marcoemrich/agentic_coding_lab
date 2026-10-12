@@ -2,7 +2,7 @@
 
 _How does the same domain-boundary refactoring trial interact with SOL Predictive TDD versus EXACT TCR, and can a subordinate APP review lower Code Mass in the strongest TCR trial arm without erasing its decomposition, correctness, discipline, or efficiency?_
 
-Generated: 2026-10-12T10:46:47Z
+Generated: 2026-10-12T16:44:08Z
 
 Cells declared: 14 · matched runs: 71 · min_replicates: 5
 
@@ -218,25 +218,6 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | claim-office-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |   1.5  | 0.18 |
 
 ### smell_total
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   6 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-
-### smell_code_quality
 
 | kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
 |:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|

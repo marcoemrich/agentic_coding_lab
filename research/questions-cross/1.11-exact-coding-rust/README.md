@@ -20,9 +20,6 @@ outcomes:
   # code quality: the question this RQ exists to answer
   - code_mass
   - smell_total
-  - smell_complexity
-  - smell_duplication
-  - smell_code_quality
   - cognitive_max
   - cognitive_avg
   - mccabe_max

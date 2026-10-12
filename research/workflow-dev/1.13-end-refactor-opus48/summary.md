@@ -2,7 +2,7 @@
 
 _Does the exact-hybrid-v5-end-refactor-cc result from RQ-1.12 (correctness intact, code quality >= hybrid-v4, token cost ~hybrid-v4) hold on Opus 4.8 (no-thinking) — or does the additional end-refactor pass fake claim-office completeness on the new model (the bundle-break pattern from RQ-1.9/RQ-1.10)?_
 
-Generated: 2026-10-12T10:46:44Z
+Generated: 2026-10-12T16:44:08Z
 
 Cells declared: 6 · matched runs: 29 · min_replicates: 5
 
@@ -117,17 +117,6 @@ Cells declared: 6 · matched runs: 29 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |      0 |   0    | 0    |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |      0 |   0    | 0    |
 | game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |      0 |   0    | 0    |
-
-### smell_complexity
-
-| kata                         | cell_workflow                        | cell_model           |   n |   null |   mean |   sd |
-|:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |      0 |      0 |    0 |
 
 ### code_mass
 

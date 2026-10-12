@@ -23,9 +23,6 @@ outcomes:
   - lines_of_code
   - code_mass
   - smell_total
-  - smell_complexity
-  - smell_duplication
-  - smell_code_quality
   - cognitive_max
   - cognitive_avg
   - mccabe_max

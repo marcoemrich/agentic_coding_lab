@@ -2,7 +2,7 @@
 
 _How does the workflow structure (from oneshot through iterative to strict TDD with subagents) affect code quality, and does TDD strictness make a difference?_
 
-Generated: 2026-10-12T10:46:28Z
+Generated: 2026-10-12T16:44:03Z
 
 Cells declared: 16 · matched runs: 103 · min_replicates: 5
 
@@ -259,90 +259,6 @@ Cells declared: 16 · matched runs: 103 · min_replicates: 5
 | claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   5 |      0 |     15 |    0 |
 | game-of-life-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   5 |      0 |     15 |    0 |
 | claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   5 |      0 |     15 |    0 |
-
-### tdd_cycles
-
-| kata                         | cell_workflow                           | cell_model                   |   n |   null | mean   | sd   |
-|:-----------------------------|:----------------------------------------|:-----------------------------|----:|-------:|:-------|:-----|
-| game-of-life-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   0 |      6 |        |      |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   0 |      7 |        |      |
-| game-of-life-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-
-### refactorings
-
-| kata                         | cell_workflow                           | cell_model                   |   n |   null | mean   | sd   |
-|:-----------------------------|:----------------------------------------|:-----------------------------|----:|-------:|:-------|:-----|
-| game-of-life-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   0 |      6 |        |      |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   0 |      7 |        |      |
-| game-of-life-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-
-### prediction_accuracy
-
-| kata                         | cell_workflow                           | cell_model                   |   n |   null | mean   | sd   |
-|:-----------------------------|:----------------------------------------|:-----------------------------|----:|-------:|:-------|:-----|
-| game-of-life-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   0 |      6 |        |      |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   0 |      7 |        |      |
-| game-of-life-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-
-### tests_immediately_passing
-
-| kata                         | cell_workflow                           | cell_model                   |   n |   null | mean   | sd   |
-|:-----------------------------|:----------------------------------------|:-----------------------------|----:|-------:|:-------|:-----|
-| game-of-life-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-prose           | baseline-oneshot-v1-cc                  | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-prose           | baseline-iterative-v1-cc                | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   0 |      6 |        |      |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   0 |     10 |        |      |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   0 |      7 |        |      |
-| game-of-life-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| game-of-life-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   0 |      5 |        |      |
 
 ### duration_seconds
 

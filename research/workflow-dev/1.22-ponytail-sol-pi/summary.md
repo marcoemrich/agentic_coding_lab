@@ -2,7 +2,7 @@
 
 _When Ponytail full is forcibly loaded into the Sol-originated EXACT Coding workflow on pi, does it improve code quality without reducing correctness, test strength, TDD discipline or completion reliability, and at what cost?_
 
-Generated: 2026-10-12T10:46:47Z
+Generated: 2026-10-12T16:44:08Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -171,42 +171,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
 
 ### smell_total
-
-| kata                         | cell_workflow                   | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-
-### smell_complexity
-
-| kata                         | cell_workflow                   | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-
-### smell_duplication
-
-| kata                         | cell_workflow                   | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-
-### smell_magic_numbers
-
-| kata                         | cell_workflow                   | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-
-### smell_code_quality
 
 | kata                         | cell_workflow                   | cell_model        |   n |   null |   mean |   sd |
 |:-----------------------------|:--------------------------------|:------------------|----:|-------:|-------:|-----:|

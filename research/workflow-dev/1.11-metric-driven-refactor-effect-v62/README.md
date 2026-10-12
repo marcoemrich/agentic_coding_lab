@@ -20,7 +20,6 @@ outcomes:
   - longest_function
   - avg_loc_per_function
   - smell_total
-  - smell_complexity
   - code_mass
   # TDD discipline (sanity: the extra tool calls must not disturb refactor frequency)
   - predictions_correct_rate

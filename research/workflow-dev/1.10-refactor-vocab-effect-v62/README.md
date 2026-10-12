@@ -17,7 +17,6 @@ outcomes:
   - longest_function
   - avg_loc_per_function
   - smell_total
-  - smell_complexity
   - code_mass
   # TDD discipline (sanity: the additive block must not disturb refactor behavior)
   - predictions_correct_rate

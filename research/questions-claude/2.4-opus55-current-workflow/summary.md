@@ -2,7 +2,7 @@
 
 _Does the maintained EXACT Coding Predictive TDD workflow still change code quality on Opus 5.5 the way it does on Opus 5, and does Opus 5.5 still need it at all compared with a minimal inline-TDD instruction?_
 
-Generated: 2026-10-12T10:46:28Z
+Generated: 2026-10-12T16:44:03Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -73,50 +73,6 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-cc | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |    0.4 | 0.89 |
 | claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |    0   | 0    |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |    0   | 0    |
-
-### smell_complexity
-
-| kata                         | cell_workflow                         | cell_model           | cell_harness   |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------------|:---------------------|:---------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-cc | opus-5-no-thinking   | 2.1.280        |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-no-thinking   | 2.1.280        |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-no-thinking   | 2.1.280        |   3 |      0 |      0 |    0 |
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-cc | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |      0 |    0 |
-
-### smell_duplication
-
-| kata                         | cell_workflow                         | cell_model           | cell_harness   |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------------|:---------------------|:---------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-cc | opus-5-no-thinking   | 2.1.280        |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-no-thinking   | 2.1.280        |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-no-thinking   | 2.1.280        |   3 |      0 |      0 |    0 |
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-cc | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |      0 |    0 |
-
-### smell_magic_numbers
-
-| kata                         | cell_workflow                         | cell_model           | cell_harness   |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------------|:---------------------|:---------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-cc | opus-5-no-thinking   | 2.1.280        |   5 |      0 |    0   | 0    |
-| claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-no-thinking   | 2.1.280        |   5 |      0 |    0   | 0    |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-no-thinking   | 2.1.280        |   3 |      0 |    0   | 0    |
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-cc | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |    0.4 | 0.89 |
-| claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |    0   | 0    |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |    0   | 0    |
-
-### smell_code_quality
-
-| kata                         | cell_workflow                         | cell_model           | cell_harness   |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------------|:---------------------|:---------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-cc | opus-5-no-thinking   | 2.1.280        |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-no-thinking   | 2.1.280        |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-no-thinking   | 2.1.280        |   3 |      0 |      0 |    0 |
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-cc | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-cc  | opus-5-5-no-thinking | 2.1.280        |   5 |      0 |      0 |    0 |
 
 ### cognitive_max
 

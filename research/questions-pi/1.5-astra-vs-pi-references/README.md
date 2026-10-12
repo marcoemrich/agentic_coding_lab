@@ -26,9 +26,6 @@ outcomes:
   - avg_loc_per_function
   - median_loc_per_function
   - smell_total
-  - smell_complexity
-  - smell_magic_numbers
-  - smell_duplication
   - lines_of_code
   # Code Mass (APP) — reported without trophy: APP has no notion of nesting
   # and rewards one long function. See RQ-architecture-axis-sol-pi,
