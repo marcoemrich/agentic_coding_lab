@@ -119,6 +119,14 @@ describe("Result table layout", () => {
       ] }]);
   });
 
+  it("spans its own group headers over size and test-quality columns -- production_loc, tests_total, mutation_score -> Size 2, Test quality 1", () => {
+    const outcomes = ["production_loc", "tests_total", "mutation_score"];
+    expect(buildResultTables({ katas: ["game-of-life-prose"], cells: [], outcomes }))
+      .toMatchObject([{ groups: [
+        { name: "Size", colSpan: 2 }, { name: "Test quality", colSpan: 1 }, { name: "Cost", colSpan: 1 },
+      ] }]);
+  });
+
   // Rule 4: n under the label, cost_usd exactly once
   it("puts the cell's run count under the row label -- 4.13, exact-ptdd-v1-cc -> 'n = 5'", () => {
     const cells = [{ kata: "claim-office-example-mapping", workflow: "exact-ptdd-v1-cc", runs: [

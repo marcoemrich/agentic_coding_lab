@@ -3,7 +3,9 @@
 # site export. A metric missing here is unknown to the site.
 #
 # group:      result-table column group
-# direction:  higher | lower | informative (informative: no winner, no trophy)
+# direction:  higher | lower | informative (informative: no winner, no trophy).
+#             Only a consolidated metric is rated; the counts and components
+#             behind it are informative, and an RQ may still declare them.
 # scale:      fraction — a 0–1 share, shown as percent
 # not_comparable_across: test-list-boundary — Skip-sensitive, see README
 #             "Comparability: the test-list boundary"
@@ -15,6 +17,15 @@ verification_pct:
 tests_passing:
   group: Correctness
   direction: higher
+cli_built:
+  group: Correctness
+  direction: higher
+verification_passed:
+  group: Correctness
+  direction: informative
+verification_total:
+  group: Correctness
+  direction: informative
 tdd_discipline:
   group: TDD discipline
   direction: higher
@@ -22,35 +33,35 @@ tdd_discipline:
   not_comparable_across: [test-list-boundary]
 tdd_discipline_test_first:
   group: TDD discipline
-  direction: higher
+  direction: informative
   scale: fraction
   not_comparable_across: [test-list-boundary]
 tdd_discipline_step:
   group: TDD discipline
-  direction: higher
+  direction: informative
   scale: fraction
 tdd_discipline_closure:
   group: TDD discipline
-  direction: higher
+  direction: informative
   scale: fraction
   not_comparable_across: [test-list-boundary]
 test_first_rate:
   group: TDD discipline
-  direction: higher
+  direction: informative
   scale: fraction
   not_comparable_across: [test-list-boundary]
 red_batch_size:
   group: TDD discipline
-  direction: lower
+  direction: informative
 red_batch_max:
   group: TDD discipline
-  direction: lower
+  direction: informative
 red_batch_unmeasurable:
   group: TDD discipline
-  direction: lower
+  direction: informative
 green_batch_size:
   group: TDD discipline
-  direction: lower
+  direction: informative
 chain_suite_runs:
   group: TDD discipline
   direction: informative
@@ -76,17 +87,44 @@ green_attempts:
   direction: informative
 chain_deviations:
   group: TDD discipline
-  direction: lower
+  direction: informative
   not_comparable_across: [test-list-boundary]
 chain_opens_red:
   group: TDD discipline
-  direction: higher
+  direction: informative
 chain_ends_green:
   group: TDD discipline
-  direction: higher
+  direction: informative
 predictions_correct_rate:
   group: TDD discipline
   direction: higher
+predictions_correct:
+  group: TDD discipline
+  direction: informative
+predictions_total:
+  group: TDD discipline
+  direction: informative
+verification_tests:
+  group: TDD discipline
+  direction: informative
+verification_red:
+  group: TDD discipline
+  direction: informative
+tdd_after_cutoff:
+  group: TDD discipline
+  direction: informative
+tcr_red_commits:
+  group: TDD discipline
+  direction: informative
+tcr_green_commits:
+  group: TDD discipline
+  direction: informative
+tcr_refactor_commits:
+  group: TDD discipline
+  direction: informative
+tcr_method_commits:
+  group: TDD discipline
+  direction: informative
 avg_loc_per_function:
   group: Code quality
   direction: lower
@@ -105,6 +143,70 @@ smell_total:
 code_mass:
   group: Code quality
   direction: lower
+cognitive_avg:
+  group: Code quality
+  direction: lower
+mccabe_avg:
+  group: Code quality
+  direction: lower
+median_loc_per_function:
+  group: Code quality
+  direction: lower
+unit_size_avg:
+  group: Code quality
+  direction: lower
+unit_size_max:
+  group: Code quality
+  direction: lower
+unit_size_median:
+  group: Code quality
+  direction: lower
+smell_complexity:
+  group: Code quality
+  direction: informative
+smell_duplication:
+  group: Code quality
+  direction: informative
+smell_magic_numbers:
+  group: Code quality
+  direction: informative
+smell_code_quality:
+  group: Code quality
+  direction: informative
+production_loc:
+  group: Size
+  direction: informative
+lines_of_code:
+  group: Size
+  direction: informative
+test_lines:
+  group: Size
+  direction: informative
+tests_total:
+  group: Size
+  direction: informative
+functions:
+  group: Size
+  direction: informative
+unit_count:
+  group: Size
+  direction: informative
+mutation_score:
+  group: Test quality
+  direction: higher
+  scale: fraction
+mutants_total:
+  group: Test quality
+  direction: informative
+mutants_survived:
+  group: Test quality
+  direction: lower
+mutants_no_coverage:
+  group: Test quality
+  direction: lower
+coverage_statements_pct:
+  group: Test quality
+  direction: higher
 duration_seconds:
   group: Cost
   direction: lower
@@ -114,6 +216,3 @@ total_tokens:
 cost_usd:
   group: Cost
   direction: lower
-mutation_score:
-  direction: informative
-  scale: fraction

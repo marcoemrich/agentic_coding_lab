@@ -1,6 +1,6 @@
 import { metricEntry } from "./metric-registry.js";
 
-export type MetricGroup = "Correctness" | "TDD discipline" | "Code quality" | "Cost";
+export type MetricGroup = "Correctness" | "TDD discipline" | "Code quality" | "Size" | "Test quality" | "Cost";
 
 export function metricGroup(metric: string): MetricGroup {
   const group = metricEntry(metric)?.group;

@@ -134,16 +134,24 @@ describe("Trophies and comparability", () => {
     expect(screen.queryByText(/spans the test-list boundary/i)).toBeNull();
     expect(within(screen.getAllByRole("row")[1]).getAllByRole("cell")[1].textContent).toContain("🏆");
   });
-  it("leaves tdd_discipline_step unflagged and awards its winner even across the boundary", () => {
+  it("leaves predictions_correct_rate unflagged and awards its winner even across the boundary -- list 0.9, adhoc 0.5 -> list 🏆, no ⚠", () => {
     const kata = "claim-office";
-    render(<ResultTable input={{ katas: [kata], outcomes: ["tdd_discipline_step"],
+    render(<ResultTable input={{ katas: [kata], outcomes: ["predictions_correct_rate"],
       workflowStyles: { list: "test list", adhoc: "ad hoc" }, cells: [
-        { kata, workflow: "list", runs: [{ id: "a" }], values: { tdd_discipline_step: { value: 0.9 } } },
-        { kata, workflow: "adhoc", runs: [{ id: "b" }], values: { tdd_discipline_step: { value: 0.5 } } },
+        { kata, workflow: "list", runs: [{ id: "a" }], values: { predictions_correct_rate: { value: 0.9 } } },
+        { kata, workflow: "adhoc", runs: [{ id: "b" }], values: { predictions_correct_rate: { value: 0.5 } } },
       ] }} />);
-    const header = screen.getByRole("button", { name: "tdd_discipline_step" }).closest("th")!;
+    const header = screen.getByRole("button", { name: "predictions_correct_rate" }).closest("th")!;
     expect(header.textContent).not.toContain("⚠");
     expect(header.getAttribute("title")).toBeNull();
     expect(within(screen.getAllByRole("row")[1]).getAllByRole("cell")[1].textContent).toContain("🏆");
+  });
+  it("awards no trophy to an informative TDD component -- red_batch_max 1 vs 3 -> no 🏆", () => {
+    const kata = "claim-office";
+    render(<ResultTable input={{ katas: [kata], outcomes: ["red_batch_max"], cells: [
+      { kata, workflow: "one", runs: [{ id: "a" }], values: { red_batch_max: { value: 1 } } },
+      { kata, workflow: "many", runs: [{ id: "b" }], values: { red_batch_max: { value: 3 } } },
+    ] }} />);
+    expect(screen.queryByText(/🏆/)).toBeNull();
   });
 });

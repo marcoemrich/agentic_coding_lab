@@ -80,21 +80,20 @@ marked as such. Done stories have no Example Mapping section.
   - [Value formatting](stories/done/2026-10-11_02_value-formatting.md)
   - [Gaps and coverage](stories/done/2026-10-11_03_gaps-and-coverage.md)
   - [Trophies and comparability](stories/done/2026-10-11_04_trophies-and-comparability.md)
-  - [Site data export](stories/done/2026-10-11_05_site-data-export.md) — export built; stops on the incomplete metric registry
+  - [Site data export](stories/done/2026-10-11_05_site-data-export.md)
 - **Done, lab side:**
   - [Exit reason classification](stories/done/2026-10-12_01_exit-reason-classification.md)
   - [Drop completed_within_budget](stories/done/2026-10-12_02_drop-completed-within-budget.md)
   - [Normalise the completed exit reason](stories/done/2026-10-12_03_normalise-completed-exit-reason.md)
   - [Usable-run replicates](stories/done/2026-10-12_05_usable-run-replicates.md)
   - [Python test infrastructure](stories/done/2026-10-12_07_python-test-infrastructure.md)
+  - [Complete the metric registry](stories/done/2026-10-12_08_complete-metric-registry.md)
 - **Open stories for the first iteration:**
   - [RQ page header](stories/open/2026-10-11_06_rq-page-header.md)
   - [RQ index](stories/open/2026-10-11_07_rq-index.md)
   - [Findings section](stories/open/2026-10-11_08_findings-section.md)
   - [Workflow page](stories/open/2026-10-11_09_workflow-page.md)
-- **Open stories from the site data export** (2026-10-12). Completing the metric
-  registry blocks a real export.
-  - [Complete the metric registry](stories/open/2026-10-12_08_complete-metric-registry.md)
+- **Open stories from the site data export** (2026-10-12).
   - [Build command](stories/open/2026-10-12_04_build-command.md)
   - [Broken-run cleanup](stories/open/2026-10-12_06_broken-run-cleanup.md)
 
