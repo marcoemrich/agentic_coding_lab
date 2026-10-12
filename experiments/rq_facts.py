@@ -44,13 +44,16 @@ FINDING_HEADER_RE = re.compile(
 _RUN_TS_RE = re.compile(r"^(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})")
 
 
-def is_replicate(metrics: dict) -> bool:
-    """A run counts toward min_replicates only when it ended `ok`.
+def is_usable(exit_reason: str | None) -> bool:
+    """Only a run that ended `ok` enters a statistic. Timeouts, infrastructure
+    aborts, provider refusals and unrecognised `error-N` do not."""
+    return exit_reason == "ok"
 
-    Timeouts, infrastructure aborts, provider refusals and unrecognised
-    `error-N` leave the statistics and are refilled; a run still executing (no
-    exit_reason yet) is not a replicate either."""
-    return (metrics.get("run_status") or {}).get("exit_reason") == "ok"
+
+def is_replicate(metrics: dict) -> bool:
+    """A run counts toward min_replicates only when it is usable; it is
+    refilled otherwise. A run still executing has no exit_reason yet."""
+    return is_usable((metrics.get("run_status") or {}).get("exit_reason"))
 
 
 def count_findings(findings_md: Path) -> int:

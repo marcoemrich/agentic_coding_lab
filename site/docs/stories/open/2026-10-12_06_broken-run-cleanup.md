@@ -1,7 +1,7 @@
 # Broken-run cleanup
 
 Status: open
-Source: [site data export mapping](2026-10-11_05_site-data-export.md), 2026-10-12.
+Source: [site data export mapping](../done/2026-10-11_05_site-data-export.md), 2026-10-12.
 
 ## Story
 

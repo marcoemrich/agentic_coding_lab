@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import json
 import re
+import statistics
 import sys
 from datetime import datetime, timezone
 from itertools import product
@@ -39,6 +40,7 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from rq_facts import is_usable
 from workflow_paths import (canonical as canonical_workflow, harness_of,
                             is_archived, workflow_dir)
 
@@ -677,184 +679,191 @@ def warn_on_test_list_boundary(fm: dict, cells: list[dict]) -> None:
           "RQ-tdd-workflow-comparison-opus55 F-4.13.4.", file=sys.stderr)
 
 
-def write_summary(md_path: Path, fm: dict, df: "object",
-                  cells: list[dict], by_cell: dict) -> None:
+# A run killed after its budget is still a timeout; every other reason that is
+# neither ok, a timeout nor a provider refusal counts as an infrastructure abort.
+TIMEOUT_EXIT_REASONS = {"timeout", "timeout-killed"}
+
+
+def run_counts(exit_reasons: list[str]) -> dict:
+    """How many runs a cell has, and why the ones that did not end `ok` left
+    its statistics."""
+    timeouts = sum(1 for r in exit_reasons if r in TIMEOUT_EXIT_REASONS)
+    refusals = sum(1 for r in exit_reasons if r == "provider-refusal")
+    infra = len(exit_reasons) - timeouts - refusals - exit_reasons.count("ok")
+    return {"runs": len(exit_reasons), "timeouts": timeouts, "infra": infra,
+            "provider_refusals": refusals}
+
+
+def numeric_stats(values: list) -> dict:
+    """n, mean and sample sd of a numeric outcome over a cell's usable runs.
+    A mean needs one value, an sd two; without them the key is absent."""
+    stats = {"kind": "num", "n": len(values)}
+    if values:
+        stats["mean"] = statistics.mean(values)
+    if len(values) > 1:
+        stats["sd"] = statistics.stdev(values)
+    return stats
+
+
+def outcome_value(row: dict, outcome: str):
+    """A run's value for one outcome. A pooled rate (`<stem>_correct_rate`) is
+    the pair (`<stem>_correct`, `<stem>_total`), null when the total is null
+    or 0."""
+    if not outcome.endswith("_correct_rate"):
+        return row.get(outcome)
+    stem = outcome[: -len("_correct_rate")]
+    total = row.get(f"{stem}_total")
+    return (row.get(f"{stem}_correct"), total) if total else None
+
+
+def rate_stats(pairs: list) -> dict:
+    """A pooled rate over a cell's usable runs: k correct of t in total."""
+    return {"kind": "rate", "n": len(pairs), "k": sum(k for k, _ in pairs),
+            "t": sum(t for _, t in pairs)}
+
+
+def boolean_stats(values: list) -> dict:
+    """How many of a cell's usable runs had a true boolean outcome (k of n)."""
+    return {"kind": "bool", "n": len(values), "k": sum(values)}
+
+
+def outcome_stats(values: list) -> dict:
+    """One outcome over a cell's usable runs. A null leaves n and is counted."""
+    present = [v for v in values if v is not None]
+    if present and all(isinstance(v, tuple) for v in present):
+        stats = rate_stats(present)
+    elif present and all(isinstance(v, bool) for v in present):
+        stats = boolean_stats(present)
+    else:
+        stats = numeric_stats(present)
+    return {**stats, "null_count": len(values) - len(present)}
+
+
+def cell_summary(rows: list[dict], outcomes: list[str]) -> dict:
+    usable = [row for row in rows if is_usable(row["exit_reason"])]
+    # cost_usd is a column of every result table, declared or not.
+    summarised = outcomes if "cost_usd" in outcomes else [*outcomes, "cost_usd"]
+    stats = {outcome: outcome_stats([outcome_value(row, outcome) for row in usable])
+             for outcome in summarised}
+    return {"counts": run_counts([row["exit_reason"] for row in rows]),
+            "runs": [{"id": row["run_id"], "started_at": row["started_at"],
+                      "exit_reason": row["exit_reason"]} for row in rows],
+            "outcomes": stats}
+
+
+def pivot_columns(stats: dict) -> dict:
+    """summary.md columns for one outcome's statistics in one cell."""
+    n, nulls = stats["n"], stats["null_count"]
+    if stats["kind"] == "bool":
+        rate = round(100 * stats["k"] / n) if n else None
+        return {"n": n, "k": stats["k"], "null": nulls, "rate_%": rate}
+    if stats["kind"] == "rate":
+        rate = round(100 * stats["k"] / stats["t"], 1) if n else None
+        return {"n": n, "k": stats["k"], "t": stats["t"], "null": nulls, "rate_%": rate}
+    return {"n": n, "null": nulls,
+            "mean": round(stats["mean"], 2) if "mean" in stats else None,
+            "sd": round(stats["sd"], 2) if "sd" in stats else None}
+
+
+def rows_by_cell(rows: list[dict], by_cell: dict) -> dict:
+    """The runs.csv rows of each cell, keyed like by_cell."""
+    row_of_run = {row["run_id"]: row for row in rows}
+    return {key: [row_of_run[m_file.parent.name] for m_file in files]
+            for key, files in by_cell.items()}
+
+
+def summary_document(fm: dict, cells: list[dict], cell_rows: dict) -> dict:
+    """summary.json: every declared cell, run or not, with its statistics.
+    Outcomes are keyed by their declared name, also when a superseded one is
+    read from its legacy_ column."""
+    declared = fm.get("outcomes") or []
+    column_of = dict(zip(declared, resolve_outcomes(declared, fm.get("id", "?")), strict=True))
+    cells_out = []
+    for cell in cells:
+        summary = cell_summary(cell_rows.get(cell_key(cell), []), list(column_of.values()))
+        summary["outcomes"] = {name: summary["outcomes"][column]
+                               for name, column in {**column_of, "cost_usd": "cost_usd"}.items()}
+        cells_out.append({"kata": kata_for_cell(cell), "workflow": cell["workflow"],
+                          "model": cell["model"], **summary})
+    return {"cells": cells_out}
+
+
+def outcome_pivot(outcome: str, cells: list[dict], document: dict,
+                  show_harness: bool) -> str:
+    """One outcome per cell, from the same statistics as summary.json: only ok
+    runs, nulls left out of n and counted."""
+    group_cols = ["kata", "cell_workflow", "cell_model"]
+    if show_harness:
+        group_cols.append("cell_harness")
+    records = []
+    for cell, summary in zip(cells, document["cells"], strict=True):
+        record = dict(zip(group_cols, cell_key(cell)[:len(group_cols)], strict=True))
+        record.update(pivot_columns(summary["outcomes"][outcome]))
+        records.append(record)
+    return _pd().DataFrame(records).to_markdown(index=False)
+
+
+def coverage_table(cells: list[dict], document: dict, min_rep: int,
+                   show_harness: bool) -> list[str]:
+    """summary.md's cell coverage: every run (n) against the ok runs (n_ok)
+    that count toward min_replicates."""
+    lines = ["| kata | workflow | model |" + (" harness |" if show_harness else "")
+             + " n | n_ok | status |",
+             "|---|---|---|" + ("---|" if show_harness else "") + "---:|---:|---|"]
+    for cell, summary in zip(cells, document["cells"], strict=True):
+        key = cell_key(cell)
+        counts = summary["counts"]
+        n = counts["runs"]
+        n_ok = n - counts["timeouts"] - counts["infra"] - counts["provider_refusals"]
+        if n == 0:
+            status = "❌ no runs"
+        elif n_ok < min_rep:
+            status = f"⚠️ below min_replicates ({n_ok}/{min_rep})"
+        else:
+            status = "✅"
+        harness_col = f" {key[3] or '—'} |" if show_harness else ""
+        lines.append(f"| {key[0]} | {key[1]} | {key[2]} |{harness_col} {n} | {n_ok} | {status} |")
+    return lines
+
+
+def write_summary(md_path: Path, fm: dict, cells: list[dict], document: dict) -> None:
     rq_id = fm.get("id", "?")
     question = fm.get("question", "")
-    outcomes = resolve_outcomes(fm.get("outcomes") or [], rq_id)
+    outcomes = fm.get("outcomes") or []
     warn_on_test_list_boundary(fm, cells)
     min_rep = fm.get("min_replicates", 1)
 
-    lines: list[str] = []
+    matched_runs = sum(cell["counts"]["runs"] for cell in document["cells"])
+    lines = [f"# {rq_id} — Aggregation", "", f"_{question}_", "",
+             f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}", "",
+             f"Cells declared: {len(cells)} · matched runs: {matched_runs} · "
+             f"min_replicates: {min_rep}", ""]
     L = lines.append
 
-    L(f"# {rq_id} — Aggregation")
-    L("")
-    L(f"_{question}_")
-    L("")
-    L(f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}")
-    L("")
-    L(f"Cells declared: {len(cells)} · matched runs: {len(df)} · "
-      f"min_replicates: {min_rep}")
-    L("")
-
-    # Cell coverage table.
-    # n counts every run with metrics.json; n_ok excludes timeouts and
-    # rate-limit-exhausted runs. Timeouts still count toward
-    # min_replicates (they are legitimate "ran but didn't finish" data
-    # points), but the n_ok column makes it visible when a cell has e.g.
-    # 3 timeouts and 0 successful completions.
+    # Cell coverage table. n counts every run; n_ok only the runs that ended
+    # ok, the only ones that enter a statistic and count toward
+    # min_replicates. The gap between them is the cell's timeouts and aborts.
     # The harness column only appears for RQs that select on it, so every
     # other RQ's coverage table keeps its existing three-column shape.
     show_harness = any(cell.get("harness_alts") is not None for cell in cells)
 
     L("## Cell coverage")
     L("")
-    L("| kata | workflow | model |" + (" harness |" if show_harness else "")
-      + " n | n_ok | status |")
-    L("|---|---|---|" + ("---|" if show_harness else "") + "---:|---:|---|")
-    for cell in cells:
-        key = cell_key(cell)
-        run_files = by_cell.get(key, [])
-        n = len(run_files)
-        n_ok = 0
-        for m_file in run_files:
-            try:
-                metrics = json.loads(m_file.read_text())
-            except json.JSONDecodeError:
-                continue
-            reason = (metrics.get("run_status") or {}).get("exit_reason", "")
-            if reason not in {
-                "timeout", "timeout-killed",
-                "rate-limited", "transient-api-error",
-                "quota-exhausted", "pi-retries-exhausted",
-            }:
-                n_ok += 1
-        if n == 0:
-            status = "❌ no runs"
-        elif n < min_rep:
-            status = f"⚠️ below min_replicates ({n}/{min_rep})"
-        elif n_ok == 0:
-            status = f"⚠️ all {n} runs timeout/rate-limited"
-        elif n_ok < min_rep:
-            status = f"⚠️ only {n_ok}/{min_rep} without timeout"
-        else:
-            status = "✅"
-        harness_col = f" {key[3] or '—'} |" if show_harness else ""
-        L(f"| {key[0]} | {key[1]} | {key[2]} |{harness_col} {n} | {n_ok} | {status} |")
+    lines.extend(coverage_table(cells, document, min_rep, show_harness))
     L("")
 
-    if df.empty:
+    if not matched_runs:
         L("_No matching runs found._")
         md_path.write_text("\n".join(lines))
         return
 
-    # Per-outcome pivots: numeric → mean/min/max, boolean → rate,
-    # pooled rate (suffix _rate with matching _correct/_total cols) → Σ/Σ.
     L("## Outcome pivots (per cell)")
     L("")
-
-    # Group by cell_model (canonical per-cell model name) so list-valued
-    # controls.model aggregates as one cell, and by cell_workflow (canonical
-    # per-cell workflow) so an OR-matched outcome-neutral workflow bugfix
-    # (v6.2 + v6.2.1) aggregates as one cell too. The real per-run `model`
-    # and `workflow` are still in the CSV for provider-level debugging.
-    # cell_harness joins the grouping only for RQs that select on it —
-    # otherwise it is a constant empty column and every existing RQ's pivots
-    # would grow a meaningless level.
-    group_cols = ["kata", "cell_workflow", "cell_model"]
-    if show_harness:
-        group_cols.append("cell_harness")
-
     for outcome in outcomes:
-        # Pooled rate: outcome name ends with "_correct_rate" → derive
-        # numerator/denominator column names.
-        if outcome.endswith("_correct_rate"):
-            stem = outcome[: -len("_correct_rate")]
-            num_col = f"{stem}_correct"
-            den_col = f"{stem}_total"
-            if num_col not in df.columns or den_col not in df.columns:
-                L(f"### {outcome}")
-                L("")
-                L(f"_Columns `{num_col}` and/or `{den_col}` not in CSV._")
-                L("")
-                continue
-            df_r = df.assign(
-                _num=_pd().to_numeric(df[num_col], errors="coerce"),
-                _den=_pd().to_numeric(df[den_col], errors="coerce"),
-            )
-            df_r = df_r.dropna(subset=["_den"])
-            df_r = df_r[df_r["_den"] > 0]
-            if df_r.empty:
-                L(f"### {outcome} (pooled %)")
-                L("")
-                L(f"_No runs with `{den_col} > 0`._")
-                L("")
-                continue
-            grouped = (df_r.groupby(group_cols)
-                            .agg(n=("_num", "size"),
-                                 correct=("_num", "sum"),
-                                 total=("_den", "sum"))
-                            .reset_index())
-            grouped["rate_%"] = (
-                100 * grouped["correct"] / grouped["total"]
-            ).round(1)
-            L(f"### {outcome} (pooled %)")
-            L("")
-            L(grouped.to_markdown(index=False))
-            L("")
-            continue
-
-        if outcome not in df.columns:
-            L(f"### {outcome}")
-            L("")
-            L(f"_Column `{outcome}` not in CSV — either not collected or "
-              f"a typo in the frontmatter._")
-            L("")
-            continue
-
-        col = df[outcome]
-        # Treat as boolean rate if the values are genuinely boolean.
-        # Decide on the type, not on the values: pandas compares 1 == True, so
-        # `isin([True, False])` also matches an integer column that happens to
-        # hold only 0/1 — a count metric would then be rendered as a rate and
-        # read as "share of runs" instead of "mean per run". That bites exactly
-        # when a count is small (test_cases_first_block, red_unverified), i.e.
-        # when the numbers matter most.
-        nn = col.dropna()
-        is_bool = len(nn) > 0 and (
-            _pd().api.types.is_bool_dtype(col)
-            or nn.map(lambda v: isinstance(v, bool) or v in ("True", "False")).all()
-        )
-
-        if is_bool:
-            L(f"### {outcome} (rate %)")
-            L("")
-            grouped = (df.groupby(group_cols)[outcome]
-                         .agg(n="size",
-                              match=lambda s: int(s.fillna(False).sum()))
-                         .reset_index())
-            grouped["rate_%"] = (100 * grouped["match"] / grouped["n"]).round(0)
-            L(grouped.to_markdown(index=False))
-            L("")
-        else:
-            numeric = _pd().to_numeric(col, errors="coerce")
-            if numeric.notna().sum() == 0:
-                L(f"### {outcome}")
-                L("")
-                L(f"_All values are missing or non-numeric._")
-                L("")
-                continue
-            df_num = df.assign(_v=numeric).dropna(subset=["_v"])
-            L(f"### {outcome}")
-            L("")
-            grouped = (df_num.groupby(group_cols)["_v"]
-                            .agg(n="size", mean="mean",
-                                 min="min", max="max", std="std")
-                            .round(2)
-                            .reset_index())
-            L(grouped.to_markdown(index=False))
-            L("")
+        L(f"### {outcome}")
+        L("")
+        L(outcome_pivot(outcome, cells, document, show_harness))
+        L("")
 
     md_path.write_text("\n".join(lines))
 
@@ -904,9 +913,10 @@ def main(argv: list[str]) -> int:
     df.to_csv(csv_path, index=False)
     print(f"  wrote {csv_path} ({len(df)} rows)", file=sys.stderr)
 
-    md_out = out_dir / "summary.md"
-    write_summary(md_out, fm, df, cells, by_cell)
-    print(f"  wrote {md_out}", file=sys.stderr)
+    document = summary_document(fm, cells, rows_by_cell(rows, by_cell))
+    (out_dir / "summary.json").write_text(json.dumps(document, indent=2) + "\n")
+    write_summary(out_dir / "summary.md", fm, cells, document)
+    print(f"  wrote {out_dir / 'summary.json'} and summary.md", file=sys.stderr)
 
     return 0
 

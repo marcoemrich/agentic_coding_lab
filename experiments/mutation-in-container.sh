@@ -50,6 +50,7 @@ docker run --rm \
     -v "$SCRIPT_DIR/compute-mutation-score.py:$CONTAINER_EXP/compute-mutation-score.py:ro" \
     -v "$SCRIPT_DIR/aggregate-by-query.py:$CONTAINER_EXP/aggregate-by-query.py:ro" \
     -v "$SCRIPT_DIR/workflow_paths.py:$CONTAINER_EXP/workflow_paths.py:ro" \
+    -v "$SCRIPT_DIR/rq_facts.py:$CONTAINER_EXP/rq_facts.py:ro" \
     -v "$SCRIPT_DIR/rust_tdd.py:$CONTAINER_EXP/rust_tdd.py:ro" \
     -v "$SCRIPT_DIR/workflows:$CONTAINER_EXP/workflows:ro" \
     -v "$REPO_ROOT/research:/home/experimenter/research:ro" \

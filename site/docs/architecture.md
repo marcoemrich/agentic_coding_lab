@@ -15,17 +15,17 @@ flowchart LR
     runs[("experiments/runs/*/metrics.json<br/>run pool")]
     rq["research/questions-*/*/README.md<br/>RQ frontmatter"]
     lin["experiments/workflows/LINEAGE.yaml<br/>workflow descriptions"]
-    reg["experiments/metrics-registry.yaml<br/>(planned)"]
+    reg["experiments/metrics-registry.yaml"]
     agg["aggregate-by-query.py"]
-    exp["export-site-data.py<br/>(planned)"]
+    exp["export-site-data.py"]
   end
   subgraph rqdir["per RQ directory"]
     csv["runs.csv"]
     md["summary.md"]
-    sj["summary.json<br/>(planned)"]
+    sj["summary.json"]
   end
   subgraph site["Site (TypeScript, site/)"]
-    data["site/src/data/*.json<br/>(planned, gitignored)"]
+    data["site/src/data/*.json<br/>(gitignored)"]
     astro["Astro pages + React islands<br/>(planned)"]
     dist["site/dist/<br/>(gitignored)"]
   end
@@ -85,11 +85,11 @@ numbers in that commit's `runs.csv` / `summary.md`.
 | RQ definition | `research/questions-*/<chapter>-<slug>/README.md` | by hand | yes | built |
 | Per-run rows | `<rq-dir>/runs.csv` (incl. `started_at`, `harness`, `prompt_style`) | `aggregate-by-query.py` | yes | built |
 | Human summary | `<rq-dir>/summary.md` | `aggregate-by-query.py` | yes | built |
-| Machine summary | `<rq-dir>/summary.json`: per cell × outcome `mean`, `sd`, `n`, null count; per cell run counters and run list; coverage incl. unrun cells | `aggregate-by-query.py` | yes | planned |
+| Machine summary | `<rq-dir>/summary.json`: per cell × outcome `mean`, `sd`, `n`, null count (only `ok` runs); per cell run counters and run list; every declared cell, unrun ones included | `aggregate-by-query.py` | yes | built |
 | Findings | `<rq-dir>/findings.md` (shown collapsed, "AI-generated") | `/run-rq`, `/reanalyze` | yes | built |
 | Workflow descriptions | `experiments/workflows/LINEAGE.yaml` → `description:` | by hand | yes | built |
-| Metric registry | `experiments/metrics-registry.yaml`: group, direction, scale, comparability flags; read by the export and imported by the site | by hand | yes | planned |
-| Site data | `site/src/data/rq/<rq-id>.json`, `workflows.json` | `export-site-data.py` | no | planned |
+| Metric registry | `experiments/metrics-registry.yaml`: group, direction, scale, comparability flags; read by the export and imported by the site. Incomplete: 51 outcomes of the main RQs lack an entry | by hand | yes | built |
+| Site data | `site/src/data/rq/<rq-id>.json`, `workflows.json` | `export-site-data.py` | no | built |
 | Site build | `site/dist/` | Astro | no | planned |
 | Prototype | `site/prototype/` (approved look, self-contained HTML) | `site/prototype/extract.py` | yes | built |
 
@@ -101,7 +101,7 @@ site/
 ├── docs/architecture.md    this file
 ├── prototype/              approved prototype: extract.py, template.html, built HTML
 ├── src/                    UI logic and components, each with its *.spec.ts(x)
-│   └── data/               export output (planned, gitignored)
+│   └── data/               export output (gitignored)
 ├── package.json            pnpm 10.30.2, vitest, typescript, react
 ├── vitest.config.ts        projects: unit (node, *.spec.ts), dom (happy-dom, *.spec.tsx)
 └── vitest.setup.ts         Testing Library cleanup

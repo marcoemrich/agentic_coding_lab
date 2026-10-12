@@ -44,6 +44,11 @@ target-version = "py310"
 # of this directory predates the gate and is not cleaned up wholesale.
 select = ["C901", "PLR", "PLW", "SIM", "ARG", "F", "B", "RET", "RUF"]
 
+[tool.ruff.lint.per-file-ignores]
+# Tests state specification inputs and outputs as literals, and fixture
+# builders take the handful of fields an example needs.
+"tests/*" = ["PLR2004", "PLR0913"]
+
 [tool.ruff.lint.mccabe]
 max-complexity = 10
 

@@ -45,7 +45,7 @@
   shared module rather than copied.
 - **`summary.json` next to `summary.md`**, written from the same pandas pivots: per cell and
   outcome `mean`, `sd`, `n`, plus coverage including declared-but-unrun cells and the null
-  count. Rules and examples: [site data export](stories/open/2026-10-11_05_site-data-export.md#example-mapping).
+  count. Rules and examples: [site data export](stories/done/2026-10-11_05_site-data-export.md#example-mapping).
   There is exactly one statistics implementation; the site export does no statistics of
   its own. A cross-check test between two implementations is therefore unnecessary — only a
   schema check of the JSON remains.
