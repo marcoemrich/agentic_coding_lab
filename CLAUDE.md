@@ -174,13 +174,20 @@ subtrees.
 ## Host dependencies
 
 - The analysis scripts are stdlib-only **except `aggregate-by-query.py`**, which needs
-  `pandas`, `PyYAML` and `tabulate`. Declared in `experiments/requirements.txt`.
+  `pandas`, `PyYAML` and `tabulate`. Declared, pinned to the host's versions, in
+  `experiments/pyproject.toml` (uv, lock in `experiments/uv.lock`, venv in the gitignored
+  `experiments/.venv`). On a machine without them:
+  `uv run --project experiments python experiments/aggregate-by-query.py <rq-dir>`.
+- **Tests for the scripts:** `cd experiments && uv run pytest`. Hyphenated scripts load
+  through `load_script()` in `experiments/tests/conftest.py`; do not rename them. ruff
+  (`uv run ruff check <files>`, the Python stack's lab rules) gates only the files a change
+  touches — the rest of `experiments/` predates the gate.
 - **`tabulate` is never imported by our code** — pandas pulls it in for
   `DataFrame.to_markdown()`, which writes `summary.md`. Missing it fails the
   aggregation *after* `runs.csv` is already written, so the run looks half-successful
   and no grep over imports reveals the dependency.
 - System Python on this host is PEP 668 externally managed; a plain `pip3 install --user`
-  is refused. Use `--break-system-packages` for the user site, or a venv.
+  is refused. Use the uv environment above instead.
 - **A host pnpm newer than the container pin turns green TS runs red.** pnpm ≥ 10
   no longer reads the `pnpm` key in `package.json` and writes a warning about it to
   **stderr**. Suites that start the CLI via `spawnSync("pnpm", …)` and correctly
