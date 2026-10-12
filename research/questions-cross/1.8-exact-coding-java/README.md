@@ -156,7 +156,7 @@ ESLint/SonarJS values.
 - Never average across katas or models.
 - Compare workflows only within the same model/harness bundle.
 - Correctness gates code-quality and efficiency trophies.
-- Timeouts are outcomes and are not refilled.
+- Only `ok` runs count toward `min_replicates`; a timeout or an aborted run is refilled on the next fill run.
 - Test count, Test LoC, Production LoC, Code Mass (APP), and process-marker
   counts have ambiguous direction and receive no trophy solely for being lower
   or higher.

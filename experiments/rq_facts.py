@@ -16,7 +16,9 @@ A hand-kept status field drifted (44 of 68 RQs wrong on 2026-09-27) and was
 dropped. The one thing a human still records is a decision the data cannot
 show: `closed: "<reason>"` for an RQ that ends without full data.
 
-Timeouts count toward min_replicates, as everywhere else in the lab.
+Only `ok` runs count toward min_replicates (`is_replicate`). A timeout or an
+aborted run is refilled on the next fill run; whether to start one is the
+user's call.
 Stdlib only.
 """
 from __future__ import annotations
@@ -40,6 +42,15 @@ FINDING_HEADER_RE = re.compile(
 )
 
 _RUN_TS_RE = re.compile(r"^(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})")
+
+
+def is_replicate(metrics: dict) -> bool:
+    """A run counts toward min_replicates only when it ended `ok`.
+
+    Timeouts, infrastructure aborts, provider refusals and unrecognised
+    `error-N` leave the statistics and are refilled; a run still executing (no
+    exit_reason yet) is not a replicate either."""
+    return (metrics.get("run_status") or {}).get("exit_reason") == "ok"
 
 
 def count_findings(findings_md: Path) -> int:

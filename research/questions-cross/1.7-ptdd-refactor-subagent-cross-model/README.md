@@ -85,7 +85,7 @@ Compare control and treatment only within platform. Absolute cross-platform toke
 
 - Existing control runs and fresh treatment runs are pooled query-wise; no cross-kata averaging occurs.
 - Correctness gates quality and efficiency trophies.
-- Timeouts count and are not refilled.
+- Only `ok` runs count toward `min_replicates`; a timeout or an aborted run is refilled on the next fill run.
 - Compare treatment effects within platform; harness differences are controls, not a ranking.
 - Function count, Code Mass (APP), Production LoC, and refactor-call counts have ambiguous direction.
 - A treatment run without parser-visible delegated refactor calls is an architecture-compliance failure and must be inspected before aggregation.

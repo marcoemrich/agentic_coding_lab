@@ -32,22 +32,13 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_PLANS_DIR = REPO_ROOT / "experiments" / "batch-plans"
 
 
-# exit_reason values that mean the run finished without a clean completion.
-# They still count as replicates: a timeout or an exhausted quota is a finding
-# about the cell's practicality, not a missing data point (see CLAUDE.md,
-# "Timeouts are findings, not errors"). Mirrors the set in
-# aggregate-by-query.py's completed_within_budget.
-UNCLEAN_EXIT_REASONS = {
-    "timeout", "timeout-killed", "rate-limited", "transient-api-error",
-    "quota-exhausted", "pi-retries-exhausted",
-}
-
-
 def count_runs_per_cell(cells: list[dict]) -> tuple[dict[tuple, int], int, int]:
-    """Return ({cell_key: n_existing}, n_unfinished, n_unclean).
+    """Return ({cell_key: n_existing}, n_unfinished, n_aborted).
 
-    A run counts as a replicate only once it has finished, i.e. once
-    run_status.exit_reason is set. `metrics.json` is created with the run
+    A run counts as a replicate only when it ended `ok` (rq_facts.is_replicate).
+    A timeout or an aborted run is not a replicate, so the plan refills it;
+    whether to start that fill run is the user's decision. A run still
+    executing has no exit_reason yet and is not counted either. `metrics.json` is created with the run
     directory and filled at the end, so a run that is still executing — or one
     whose batch was aborted — leaves a stub whose every metric is null. Counting
     those silently overstates a cell: measured 2026-10-01, five stubs from an
@@ -55,16 +46,11 @@ def count_runs_per_cell(cells: list[dict]) -> tuple[dict[tuple, int], int, int]:
     dropped from 28 runs to 23, which would have left that cell with no real
     runs at all. Three concurrently executing runs did the same to a second
     cell's aggregation a few hours later.
-
-    Deliberately NOT filtered: a finished run whose exit_reason is a failure or
-    one of UNCLEAN_EXIT_REASONS. Whether an `error-*` run is a replicate or a
-    refill candidate is a per-RQ research judgement, so it is counted and
-    reported rather than decided here.
     """
     counts: dict[tuple, int] = {}
     for cell in cells:
         counts[agg.cell_key(cell)] = 0
-    n_unfinished = n_unclean = 0
+    n_unfinished = n_aborted = 0
 
     for run_dir in sorted(agg.RUNS_DIR.iterdir()):
         if run_dir.name.startswith("_"):
@@ -82,19 +68,21 @@ def count_runs_per_cell(cells: list[dict]) -> tuple[dict[tuple, int], int, int]:
         if not reason:
             n_unfinished += 1
             continue
-        if reason in UNCLEAN_EXIT_REASONS or str(reason).startswith("error"):
-            n_unclean += 1
+        if not is_replicate(metrics):
+            n_aborted += 1
+            continue
         for cell in cells:
             if agg.matches_cell(metrics, cell):
                 counts[agg.cell_key(cell)] += 1
                 break
-    return counts, n_unfinished, n_unclean
+    return counts, n_unfinished, n_aborted
 
 
 WORKFLOWS_DIR = REPO_ROOT / "experiments" / "workflows"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from workflow_paths import harness_of
+from rq_facts import is_replicate
 
 
 RUN_BATCH = REPO_ROOT / "experiments" / "docker" / "run-batch.sh"
@@ -255,7 +243,7 @@ def main(argv: list[str]) -> int:
 
     fm = agg.parse_frontmatter(md_in)
     cells = agg.expand_cells(fm)
-    counts, n_unfinished, n_unclean = count_runs_per_cell(cells)
+    counts, n_unfinished, n_aborted = count_runs_per_cell(cells)
     plan = build_plan(fm, cells, counts)
 
     rq_id = fm.get("id", "rq")
@@ -270,11 +258,10 @@ def main(argv: list[str]) -> int:
         print(f"  note: {n_unfinished} matching run(s) not counted — no "
               f"exit_reason yet (still executing, or a stub from an aborted "
               f"batch). Re-run this once the batch is done.", file=sys.stderr)
-    if n_unclean:
-        print(f"  note: {n_unclean} counted run(s) finished without a clean "
-              f"completion (timeout / error / rate-limited). They count as "
-              f"replicates; delete them first if you want them refilled.",
-              file=sys.stderr)
+    if n_aborted:
+        print(f"  note: {n_aborted} matching run(s) ended without `ok` "
+              f"(timeout / abort / refusal). Not counted as replicates; the "
+              f"plan refills them.", file=sys.stderr)
 
     if args.dry_run:
         print(json.dumps(plan, indent=2))

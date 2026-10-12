@@ -85,7 +85,7 @@ For each kata independently:
 
 - Never average across katas.
 - Internally green but externally incomplete runs remain valid outcomes.
-- Timeouts count and are not refilled.
+- Only `ok` runs count toward `min_replicates`; a timeout or an aborted run is refilled on the next fill run.
 - Correctness gates efficiency and quality trophies.
 - Test count, Test LoC, function count, Production LoC, Code Mass (APP), and refactor markers have ambiguous direction and receive no trophy solely for being lower or higher.
 - On Sphinx Score, decomposition metrics may collapse to a single production function. In that case average function size is not evidence of abstraction quality; longest function and complexity are reported descriptively.

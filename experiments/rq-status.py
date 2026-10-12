@@ -25,7 +25,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from rq_facts import count_findings, findings_timestamp, run_timestamp  # noqa: E402
+from rq_facts import (count_findings, findings_timestamp, is_replicate,  # noqa: E402
+                      run_timestamp)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -70,12 +71,15 @@ def facts(agg, readme: Path, runs: list[tuple[str, dict]]) -> dict:
     min_rep = fm.get("min_replicates", 1)
 
     # Same first-match rule as collect_runs: a run belongs to one cell only.
+    # Every matched run counts for "runs newer than findings"; only ok runs
+    # fill a cell.
     counts = [0] * len(cells)
     matched: list[str] = []
     for run_id, metrics in runs:
         for i, cell in enumerate(cells):
             if agg.matches_cell(metrics, cell):
-                counts[i] += 1
+                if is_replicate(metrics):
+                    counts[i] += 1
                 matched.append(run_id)
                 break
 

@@ -257,7 +257,7 @@ under the model caveat above.
 - Compare workflows only within the same model/harness bundle.
 - Correctness gates code-quality and efficiency trophies. It is a filter on
   eligibility, never a headline.
-- Timeouts are outcomes and are not refilled.
+- Only `ok` runs count toward `min_replicates`; a timeout or an aborted run is refilled on the next fill run.
 - Test count, Test LoC, Production LoC, Code Mass (APP), coverage,
   `refactor_per_cycle` and `green_attempts` have ambiguous direction and
   receive no trophy solely for being lower or higher.

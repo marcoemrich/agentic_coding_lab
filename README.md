@@ -307,15 +307,17 @@ Under the pi harness with Requesty routing, whether a model reasons is **not** s
   ```
 - A trivial prompt makes every model look non-reasoning. Probe with a task that actually demands reasoning, otherwise the measurement is an artifact.
 
-### Timeouts as a research finding
+### Timeouts and aborted runs
 
-Each run has a hard wallclock budget (default 90 min, set via `CLAUDE_TIMEOUT_SECONDS=5400` in `run-batch.sh`). When a `(workflow, model, kata)` cell systematically hits this limit, that's **not a data error** — it is itself the finding: the variant is impractical within the chosen cost frame.
+Each run has a hard wallclock budget (default 90 min, set via `CLAUDE_TIMEOUT_SECONDS=5400` in `run-batch.sh`). Only runs that ended `ok` count toward `min_replicates` (`is_replicate()` in `experiments/rq_facts.py`). A timeout, an infrastructure abort (`setup-error`, `rate-limited`, `transient-api-error`, `quota-exhausted`, `pi-retries-exhausted`), a `provider-refusal` or an unrecognised `error-N` is not a replicate: the next fill run plans a replacement. Nothing refills automatically and there is no cap — when a cell keeps timing out, whether to fill it again, raise the budget or set `closed:` is the user's call. A timeout is not retried inside the batch.
+
+A cell that systematically hits the budget still says something about the variant: refilling keeps only the runs that finished, so the timeout share per cell has to be reported next to its means.
 
 Consequences for analysis and data collection:
 
 - **Timeout runs are not deleted.** Their `metrics.json` is preserved with `run_status.exit_reason = "timeout"`. `tests_passing`, `verification_pct`, `code_mass`, etc. are `null`.
 - **Exhausted retry budgets** (`exit_reason = "rate-limited"` or `"transient-api-error"`) are also folded into `completed_within_budget = false` — not because the wallclock ran out, but because a (workflow, model, kata) cell that repeatedly trips rate limits or transient API errors is *practically* unusable inside the lab's cost/availability envelope. Configurable via `BATCH_RATELIMIT_RETRIES` (default 5).
-- **They count toward `min_replicates`.** `batch-plan-from-rq.py` treats a timeout as a legitimate data point — no refill is generated for timeout cells.
+- **They do not count toward `min_replicates`.** `batch-plan-from-rq.py` plans a replacement for every run that did not end `ok` and reports how many it found.
 - **`completed_within_budget`** (Boolean, derived from `exit_reason`) is available as an outcome and reports the share of "finished within budget" per cell. Sensible as an outcome in any RQ whose factors vary workflow or model.
 - **`n_ok` column** in the cell coverage table of `summary.md` only counts successful runs; a "3 timeouts, 0 OK" cell is flagged ⚠️ even when `min_replicates` is formally met.
 
@@ -759,7 +761,7 @@ Plan file schema:
 
 ### Per-run hardening
 
-Each run is wrapped with a 90-minute timeout (override via `CLAUDE_TIMEOUT_SECONDS=...`). Stdout/stderr is captured to `runs/<run>/run.log`. Transient API errors (rate limits, 429, overloaded) are retried with backoff up to 5 times; if they persist, the run is recorded with `exit_reason = "rate-limited"` or `"transient-api-error"` and the batch continues. Each `metrics.json` gets a `run_status` block with `exit_code`, `exit_reason`, and `rate_limited`.
+Each run is wrapped with a 90-minute timeout (override via `CLAUDE_TIMEOUT_SECONDS=...`). Stdout/stderr is captured to `runs/<run>/run.log`. Transient API errors (rate limits, 429, overloaded, API 500, dropped connections) are retried with backoff up to 5 times; if they persist, the run is recorded with `exit_reason = "rate-limited"` or `"transient-api-error"` and the batch continues. A provider refusal (safeguard flag) is retried twice without backoff, then recorded as `"provider-refusal"`. A setup error (model not found or inaccessible, CLI too old for the model) is not retried: the run is recorded as `"setup-error"` and the shard stops. Each `metrics.json` gets a `run_status` block with `exit_code`, `exit_reason`, and `rate_limited`.
 
 ### Container details
 
@@ -1224,7 +1226,7 @@ need a marker to say where a phase begins.
 | Field | Description |
 |-------|-------------|
 | `run_status.exit_code` | Process exit code |
-| `run_status.exit_reason` | `ok`, `timeout`, `rate-limited`, `transient-api-error`, etc. |
+| `run_status.exit_reason` | `ok`, `timeout`, `rate-limited`, `transient-api-error`, `provider-refusal`, `setup-error`, etc. Only `ok` counts toward `min_replicates` |
 | `completed_within_budget` | Boolean derived from `exit_reason`; available as an outcome in any RQ |
 
 ## Adding New Experiments

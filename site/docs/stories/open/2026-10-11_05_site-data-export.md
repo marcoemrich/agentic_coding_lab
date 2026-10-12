@@ -5,7 +5,7 @@ Source: [results-site decisions](../../open-questions.md#pipeline).
 Depends on: [Python test infrastructure](2026-10-12_07_python-test-infrastructure.md),
 [exit reason classification](../done/2026-10-12_01_exit-reason-classification.md),
 [drop completed_within_budget](2026-10-12_02_drop-completed-within-budget.md),
-[usable-run replicates](2026-10-12_05_usable-run-replicates.md).
+[usable-run replicates](../done/2026-10-12_05_usable-run-replicates.md).
 
 ## Story
 
@@ -58,6 +58,6 @@ Every RQ under `research/questions-*/` gets a file, also one without runs (the i
 
 ### Decided along the way
 
-- Timeouts are no longer findings: they are excluded and refilled like infrastructure aborts ([usable-run replicates](2026-10-12_05_usable-run-replicates.md)).
+- Timeouts are no longer findings: they are excluded and refilled like infrastructure aborts ([usable-run replicates](../done/2026-10-12_05_usable-run-replicates.md)).
 - `completed_within_budget` is dropped; a cell shows its timeout and infra counters instead ([drop completed_within_budget](2026-10-12_02_drop-completed-within-budget.md)).
 - Broken runs are deleted regularly so a re-run of the RQ refills them ([broken-run cleanup](2026-10-12_06_broken-run-cleanup.md)).

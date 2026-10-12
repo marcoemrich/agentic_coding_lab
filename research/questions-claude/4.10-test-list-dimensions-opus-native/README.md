@@ -104,7 +104,7 @@ Both the pi source and CC port have passed marker smokes. This RQ measures only 
 
 - Katas are never averaged; this RQ has one kata.
 - Internally green but externally incomplete runs remain valid workflow outcomes, not refill candidates.
-- Timeouts count toward the target and are evaluated through `completed_within_budget`.
+- Only `ok` runs count toward `min_replicates`; a timeout or an aborted run is refilled on the next fill run.
 - A single v1.6 failure is inspected for mechanism before drawing a general conclusion, but it is not removed unless caused by infrastructure rather than the workflow.
 - Code-quality and efficiency trophies are correctness-gated according to the repository convention.
 - Code Mass (APP), Production LoC, Test LoC, test count, cycles, and refactor phases are contextual metrics and receive no trophy when their direction is ambiguous or their constructs are not directly rankable.

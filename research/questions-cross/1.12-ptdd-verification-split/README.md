@@ -174,7 +174,7 @@ of that run stand.
 
 - No cross-kata averaging; this RQ has one kata.
 - Correctness gates quality and efficiency trophies.
-- Timeouts count and are not refilled.
+- Only `ok` runs count toward `min_replicates`; a timeout or an aborted run is refilled on the next fill run.
 - Code Mass (APP), Production LoC and `tests_total` are reported without a
   trophy where their direction is ambivalent; `tests_total` below control is a
   regression signal under H2, above it is not by itself a gain.

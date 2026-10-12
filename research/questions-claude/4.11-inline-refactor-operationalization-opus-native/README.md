@@ -106,7 +106,7 @@ No run is generated for that reference, and no causal claim pools it with this R
 
 - Katas are never averaged; this RQ has one kata.
 - Internally green but externally incomplete runs remain valid workflow outcomes.
-- Timeouts count toward the target and are not refilled.
+- Only `ok` runs count toward `min_replicates`; a timeout or an aborted run is refilled on the next fill run.
 - Code-quality and efficiency trophies are correctness-gated.
 - Function count, Code Mass (APP), Production LoC, Test LoC, test count, and refactor markers are contextual metrics and receive no trophy when their direction is ambiguous.
 - The `cycle_count` metric is excluded because the single-command CC parser path was inconsistent with refactor markers in the v1.6 dataset.

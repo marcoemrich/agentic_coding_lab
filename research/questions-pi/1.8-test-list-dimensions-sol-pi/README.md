@@ -82,7 +82,7 @@ Model, route, reasoning profile, harness, kata, prompt style, shared context, Pr
 
 - Katas are never averaged; this RQ has one kata.
 - Internally green but externally incomplete runs remain valid workflow outcomes.
-- Timeouts count and are not refilled.
+- Only `ok` runs count toward `min_replicates`; a timeout or an aborted run is refilled on the next fill run.
 - Code-quality and efficiency trophies are correctness-gated.
 - Test count, Test LoC, function count, Code Mass (APP), Production LoC, and refactor markers are contextual metrics when their direction is ambiguous.
 - The pi marker parser must report healthy cycle, refactor, prediction, and completion signals before aggregation. Process counts are not compared to CC runs.

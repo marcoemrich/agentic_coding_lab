@@ -88,7 +88,7 @@ Across platforms, compare the signed v1.6 − v1.5 effect rather than absolute l
 - Existing and new runs are pooled query-wise to n=10 per exact cell.
 - Correctness gates quality and efficiency trophies.
 - Internal-green external failures remain valid outcomes.
-- Timeouts count and are not refilled.
+- Only `ok` runs count toward `min_replicates`; a timeout or an aborted run is refilled on the next fill run.
 - Compare workflows within a platform; never award a cross-platform cost or quality trophy where harness/provider differences are uncontrolled.
 - Test count, Test LoC, function count, Code Mass (APP), Production LoC, and refactor markers have ambiguous direction.
 - Report medians and ranges for duration, tokens, and cost in findings because the original n=5 cells contain substantial skew.

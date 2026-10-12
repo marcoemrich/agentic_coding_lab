@@ -38,7 +38,7 @@ End-to-end orchestration for advancing a single research question (RQ) in this l
   - **Check the actual kata dir before rejecting an RQ on this list.** The list is hand-maintained and has lagged behind the repo before (`sphinx-score` was in use in three RQs while still missing here). `ls experiments/katas/` is the authority; this line is a convenience copy.
 - Model IDs are **lab-variant IDs** (`opus-4-7`, `opus-4-7-no-thinking`, `opus-4-6-portkey`, `opus-4-6-portkey-no-thinking`, `sonnet-4-6`, `sonnet-4-6-no-thinking`, `sonnet-4-6-portkey`, `sonnet-4-6-portkey-no-thinking`, `haiku-4-5`, `haiku-4-5-no-thinking`, `haiku-4-5-portkey`, `haiku-4-5-portkey-no-thinking`). The `-portkey` suffix marks models routed via the Portkey gateway.
 - Aggregation is query-based: ALL runs in `experiments/runs/` matching the selector query count — regardless of which batch produced them.
-- Batch plan is idempotent: counts existing matches and only fills missing replicates up to `min_replicates`.
+- Batch plan is idempotent: counts existing matches and only fills missing replicates up to `min_replicates`. Only `ok` runs count as replicates, so a timeout or aborted run is planned again.
 
 ## Phases
 

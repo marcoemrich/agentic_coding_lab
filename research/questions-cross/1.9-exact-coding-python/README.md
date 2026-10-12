@@ -194,7 +194,7 @@ a confirmation and a contradiction are equally informative.
 - Correctness gates code-quality and efficiency trophies. It is a filter on
   eligibility, never a headline: a row of perfect scores is the expected
   state and is reported as one line, not as a finding.
-- Timeouts are outcomes and are not refilled.
+- Only `ok` runs count toward `min_replicates`; a timeout or an aborted run is refilled on the next fill run.
 - Test count, Test LoC, Production LoC, Code Mass (APP), and process-marker
   counts have ambiguous direction and receive no trophy solely for being lower
   or higher.
