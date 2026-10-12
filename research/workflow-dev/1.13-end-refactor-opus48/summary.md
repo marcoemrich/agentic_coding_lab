@@ -2,15 +2,15 @@
 
 _Does the exact-hybrid-v5-end-refactor-cc result from RQ-1.12 (correctness intact, code quality >= hybrid-v4, token cost ~hybrid-v4) hold on Opus 4.8 (no-thinking) — or does the additional end-refactor pass fake claim-office completeness on the new model (the bundle-break pattern from RQ-1.9/RQ-1.10)?_
 
-Generated: 2026-10-11T14:41:40Z
+Generated: 2026-10-12T02:33:04Z
 
-Cells declared: 6 · matched runs: 30 · min_replicates: 5
+Cells declared: 6 · matched runs: 29 · min_replicates: 5
 
 ## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking | 5 | 4 | ⚠️ only 4/5 without timeout |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking | 4 | 4 | ⚠️ below min_replicates (4/5) |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking | 5 | 5 | ✅ |
@@ -23,18 +23,18 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |    0.8 |     0 |     1 |  0.45 |
-| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |    1   |     1 |     1 |  0    |
-| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |    1   |     1 |     1 |  0    |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |    1   |     1 |     1 |  0    |
-| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |    1   |     1 |     1 |  0    |
-| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |    1   |     1 |     1 |  0    |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |   0.75 |     0 |     1 |   0.5 |
+| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   1    |     1 |     1 |   0   |
+| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   1    |     1 |     1 |   0   |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   1    |     1 |     1 |   0   |
+| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   1    |     1 |     1 |   0   |
+| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   1    |     1 |     1 |   0   |
 
 ### tests_passing (rate %)
 
 | kata                         | cell_workflow                        | cell_model           |   n |   match |   rate_% |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |       5 |      100 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |       4 |      100 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |       5 |      100 |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |       5 |      100 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |       5 |      100 |
@@ -45,7 +45,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model           |   n |   match |   rate_% |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |       4 |       80 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |       4 |      100 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |       5 |      100 |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |       5 |      100 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |       5 |      100 |
@@ -56,18 +56,18 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |    3.6 |     2 |     5 |  1.14 |
-| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |    3.6 |     2 |     4 |  0.89 |
-| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |    2.8 |     2 |     4 |  0.84 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |    5.6 |     4 |     7 |  1.52 |
-| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |    3.2 |     2 |     5 |  1.3  |
-| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |    2.4 |     1 |     4 |  1.34 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |   3.25 |     2 |     4 |  0.96 |
+| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   3.6  |     2 |     4 |  0.89 |
+| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   2.8  |     2 |     4 |  0.84 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   5.6  |     4 |     7 |  1.52 |
+| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   3.2  |     2 |     5 |  1.3  |
+| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   2.4  |     1 |     4 |  1.34 |
 
 ### cognitive_avg
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   1.46 |  1.17 |  1.86 |  0.26 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |   1.46 |  1.17 |  1.86 |  0.31 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   1.62 |  1.21 |  2    |  0.29 |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   1.4  |  1.08 |  2.25 |  0.49 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   3.87 |  2.33 |  6    |  1.43 |
@@ -78,18 +78,18 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |    4   |     3 |     5 |  0.71 |
-| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |    4   |     4 |     4 |  0    |
-| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |    3.2 |     3 |     4 |  0.45 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |    5   |     4 |     7 |  1.41 |
-| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |    3.6 |     3 |     5 |  0.89 |
-| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |    3.4 |     2 |     5 |  1.14 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |   3.75 |     3 |     4 |  0.5  |
+| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   4    |     4 |     4 |  0    |
+| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   3.2  |     3 |     4 |  0.45 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   5    |     4 |     7 |  1.41 |
+| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   3.6  |     3 |     5 |  0.89 |
+| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   3.4  |     2 |     5 |  1.14 |
 
 ### mccabe_avg
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   1.47 |  1.36 |  1.62 |  0.12 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |   1.5  |  1.36 |  1.62 |  0.12 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   1.48 |  1.35 |  1.8  |  0.19 |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   1.47 |  1.3  |  1.75 |  0.17 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   2.11 |  1.4  |  3.6  |  0.88 |
@@ -100,7 +100,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   24.6 |    12 |    31 |  7.64 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |   23.5 |    12 |    31 |  8.35 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   15.6 |    12 |    19 |  3.05 |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   16   |    10 |    21 |  4.74 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   11.8 |     2 |    19 |  6.5  |
@@ -111,7 +111,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   4.24 |  3.35 |  4.8  |  0.67 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |   4.38 |  3.35 |  4.8  |  0.69 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   4.44 |  3.22 |  6.88 |  1.41 |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   3.81 |  3.21 |  4.3  |  0.48 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   4.89 |  2    |  7.8  |  2.06 |
@@ -122,18 +122,18 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |      1 |     0 |     2 |  0.71 |
-| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |      0 |     0 |     0 |  0    |
-| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |      0 |     0 |     0 |  0    |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |      2 |     0 |     3 |  1.22 |
-| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |      0 |     0 |     0 |  0    |
-| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |      0 |     0 |     0 |  0    |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |   1.25 |     1 |     2 |  0.5  |
+| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   0    |     0 |     0 |  0    |
+| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   0    |     0 |     0 |  0    |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   2    |     0 |     3 |  1.22 |
+| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   0    |     0 |     0 |  0    |
+| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   0    |     0 |     0 |  0    |
 
 ### smell_complexity
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |      0 |     0 |     0 |     0 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |      0 |     0 |     0 |     0 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |      0 |     0 |     0 |     0 |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |      0 |     0 |     0 |     0 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |      0 |     0 |     0 |     0 |
@@ -144,7 +144,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |    std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|-------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |  895   |   722 |   964 | 101.84 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |  882   |   722 |   964 | 112.7  |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |  843   |   769 |   907 |  53.4  |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |  872.6 |   760 |   993 |  91.61 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |  171.8 |   150 |   198 |  19.41 |
@@ -155,7 +155,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   36   |    16 |    45 | 11.51 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |   35.5 |    16 |    45 | 13.23 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   25.8 |    14 |    45 | 12.44 |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   28   |    20 |    40 |  9.3  |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |    5.6 |     3 |     9 |  3.13 |
@@ -166,12 +166,12 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   33.6 |    17 |    45 | 12.03 |
-| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   40.8 |    34 |    45 |  4.44 |
-| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   37.8 |    36 |    40 |  1.79 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |    8.8 |     8 |     9 |  0.45 |
-| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |    9   |     8 |    10 |  0.71 |
-| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |    8.4 |     8 |     9 |  0.55 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |  37.75 |    25 |    45 |  8.85 |
+| claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |  40.8  |    34 |    45 |  4.44 |
+| claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |  37.8  |    36 |    40 |  1.79 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   8.8  |     8 |     9 |  0.45 |
+| game-of-life-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   9    |     8 |    10 |  0.71 |
+| game-of-life-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   8.4  |     8 |     9 |  0.55 |
 
 ### predictions_correct_rate (pooled %)
 
@@ -188,7 +188,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |   std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |   16.2 |     7 |    26 |  8.04 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 |   18.5 |     9 |    26 |  7.14 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 |   12   |     0 |    22 | 11.02 |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 |   11.2 |     0 |    20 | 10.26 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |    3.8 |     0 |     7 |  3.56 |
@@ -199,7 +199,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model           |   n |   mean |   min |   max |     std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|-------:|------:|------:|--------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 | 4159.4 |  1846 |  7201 | 1924.8  |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 | 3399   |  1846 |  4056 | 1041.67 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 | 3064.2 |  2130 |  4306 |  836.22 |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 | 3220.6 |  2715 |  3642 |  378.15 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 |  579.2 |   453 |   757 |  157.85 |
@@ -210,7 +210,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 | kata                         | cell_workflow                        | cell_model           |   n |        mean |      min |       max |         std |
 |:-----------------------------|:-------------------------------------|:---------------------|----:|------------:|---------:|----------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 | 9.80716e+07 | 42947825 | 127612246 | 3.35606e+07 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   4 | 9.98548e+07 | 42947825 | 127612246 | 3.84779e+07 |
 | claim-office-example-mapping | exact-hybrid-v4.4-metric-refactor-cc | opus-4-8-no-thinking |   5 | 9.92818e+07 | 57766433 | 149202377 | 3.40069e+07 |
 | claim-office-example-mapping | exact-hybrid-v5-end-refactor-cc      | opus-4-8-no-thinking |   5 | 9.83907e+07 | 82194966 | 115081047 | 1.38351e+07 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc           | opus-4-8-no-thinking |   5 | 8.96174e+06 |  6249682 |  11288121 | 2.15189e+06 |
