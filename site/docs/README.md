@@ -80,6 +80,8 @@ marked as such. Done stories have no Example Mapping section.
   - [Value formatting](stories/done/2026-10-11_02_value-formatting.md)
   - [Gaps and coverage](stories/done/2026-10-11_03_gaps-and-coverage.md)
   - [Trophies and comparability](stories/done/2026-10-11_04_trophies-and-comparability.md)
+- **Done, lab side:**
+  - [Normalise the completed exit reason](stories/done/2026-10-12_03_normalise-completed-exit-reason.md)
 - **Open stories for the first iteration:**
   - [Site data export](stories/open/2026-10-11_05_site-data-export.md)
   - [RQ page header](stories/open/2026-10-11_06_rq-page-header.md)
@@ -92,7 +94,6 @@ marked as such. Done stories have no Example Mapping section.
   command. The others stand beside it.
   - [Exit reason classification](stories/open/2026-10-12_01_exit-reason-classification.md)
   - [Drop completed_within_budget](stories/open/2026-10-12_02_drop-completed-within-budget.md)
-  - [Normalise the completed exit reason](stories/open/2026-10-12_03_normalise-completed-exit-reason.md)
   - [Build command](stories/open/2026-10-12_04_build-command.md)
   - [Usable-run replicates](stories/open/2026-10-12_05_usable-run-replicates.md)
   - [Broken-run cleanup](stories/open/2026-10-12_06_broken-run-cleanup.md)
