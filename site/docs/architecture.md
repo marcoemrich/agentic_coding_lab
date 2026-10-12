@@ -85,11 +85,11 @@ numbers in that commit's `runs.csv` / `summary.md`.
 | RQ definition | `research/questions-*/<chapter>-<slug>/README.md` | by hand | yes | built |
 | Per-run rows | `<rq-dir>/runs.csv` (incl. `started_at`, `harness`, `prompt_style`) | `aggregate-by-query.py` | yes | built |
 | Human summary | `<rq-dir>/summary.md` | `aggregate-by-query.py` | yes | built |
-| Machine summary | `<rq-dir>/summary.json`: per cell × outcome `mean`, `sd`, `n`, null count; coverage incl. unrun cells | `aggregate-by-query.py` | yes | planned |
+| Machine summary | `<rq-dir>/summary.json`: per cell × outcome `mean`, `sd`, `n`, null count; per cell run counters and run list; coverage incl. unrun cells | `aggregate-by-query.py` | yes | planned |
 | Findings | `<rq-dir>/findings.md` (shown collapsed, "AI-generated") | `/run-rq`, `/reanalyze` | yes | built |
 | Workflow descriptions | `experiments/workflows/LINEAGE.yaml` → `description:` | by hand | yes | built |
 | Metric registry | `experiments/metrics-registry.yaml`: group, direction, scale, comparability flags; read by the export and imported by the site | by hand | yes | planned |
-| Site data | `site/src/data/rq/<rq-id>.json`, `workflows.json`, `meta.json` | `export-site-data.py` | no | planned |
+| Site data | `site/src/data/rq/<rq-id>.json`, `workflows.json` | `export-site-data.py` | no | planned |
 | Site build | `site/dist/` | Astro | no | planned |
 | Prototype | `site/prototype/` (approved look, self-contained HTML) | `site/prototype/extract.py` | yes | built |
 

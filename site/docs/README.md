@@ -68,7 +68,7 @@ Detailed decisions: [open-questions.md](open-questions.md#decided).
 
 Each story has its own file in [`stories/open/`](stories/open/) or
 [`stories/done/`](stories/done/), named `<date>_<sequence>_<story-name>.md`. The date
-`2026-10-11` records the source session, not the completion date; the sequence
+records the source session, not the completion date; the sequence
 runs across open and done stories for that date. Open story files
 keep their Example Mapping in the same file once discussed; pending mappings are
 marked as such. Done stories have no Example Mapping section.
@@ -86,6 +86,15 @@ marked as such. Done stories have no Example Mapping section.
   - [RQ index](stories/open/2026-10-11_07_rq-index.md)
   - [Findings section](stories/open/2026-10-11_08_findings-section.md)
   - [Workflow page](stories/open/2026-10-11_09_workflow-page.md)
+- **Open stories from the site data export mapping** (2026-10-12). Exit reason
+  classification, dropping `completed_within_budget` and usable-run replicates block the
+  site data export; the others stand beside it.
+  - [Exit reason classification](stories/open/2026-10-12_01_exit-reason-classification.md)
+  - [Drop completed_within_budget](stories/open/2026-10-12_02_drop-completed-within-budget.md)
+  - [Normalise the completed exit reason](stories/open/2026-10-12_03_normalise-completed-exit-reason.md)
+  - [Build command](stories/open/2026-10-12_04_build-command.md)
+  - [Usable-run replicates](stories/open/2026-10-12_05_usable-run-replicates.md)
+  - [Broken-run cleanup](stories/open/2026-10-12_06_broken-run-cleanup.md)
 
 ## Later
 
@@ -96,3 +105,5 @@ marked as such. Done stories have no Example Mapping section.
 - Tracing a finding's conclusion back to the metrics; a human approval step for findings.
 - The form of answers — classic hypotheses may not be the right shape.
 - A thematic index instead of the per-harness-subtree grouping, together with curation.
+- Keeping the git state and the site export in sync automatically (the site shows which
+  commit it was built from).

@@ -45,12 +45,21 @@
   shared module rather than copied.
 - **`summary.json` next to `summary.md`**, written from the same pandas pivots: per cell and
   outcome `mean`, `sd`, `n`, plus coverage including declared-but-unrun cells and the null
-  count. There is exactly one statistics implementation; the site export does no statistics of
+  count. Rules and examples: [site data export](stories/open/2026-10-11_05_site-data-export.md#example-mapping).
+  There is exactly one statistics implementation; the site export does no statistics of
   its own. A cross-check test between two implementations is therefore unnecessary — only a
   schema check of the JSON remains.
 - **Site export:** `experiments/export-site-data.py` reads `summary.json`, the RQ frontmatter,
   `LINEAGE.yaml` and the metric registry, and writes JSON (one file per RQ plus
-  `workflows.json`, `meta.json`) to `site/src/data/`, gitignored.
+  `workflows.json`) to `site/src/data/`, gitignored. No `meta.json`: git state and export
+  are kept in sync by hand for now.
+- **Aborted runs stay out of every statistic** (decided 2026-10-12). Timeouts, infrastructure
+  aborts and provider refusals enter neither `mean`/`sd`/`n` nor `cost_usd`, in `summary.md`
+  and `summary.json` alike; each cell counts them separately instead. Timeouts are no longer
+  findings: `min_replicates` counts usable runs only and timeouts are refilled.
+  `completed_within_budget` is dropped.
+- **A `null` leaves `n` and is counted** as `null_count`, for numeric, boolean and pooled
+  outcomes alike (decided 2026-10-12). Booleans previously counted `null` as `false`.
 - **Statistics in Python, presentation in TypeScript.** Python computes every statistic
   (`mean`, `sd`, `n`, null counts, coverage) — one implementation shared with `summary.md`.
   Trophies, sort order and gap states are presentation decisions and live in the site's
