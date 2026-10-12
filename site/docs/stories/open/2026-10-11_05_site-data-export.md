@@ -15,16 +15,16 @@ Extend `aggregate-by-query.py` to write `summary.json` alongside `summary.md` fr
 
 Mapped with the domain expert on 2026-10-12.
 
-### R1 — Aborted runs stay out of every statistic
+### R1 — Only `ok` runs enter a statistic
 
-Runs that ended in a timeout, an infrastructure abort (setup error, API 500, rate limit, quota or retries exhausted) or a provider refusal do not enter `mean`, `sd`, `n`, rates or `cost_usd`. This holds for `summary.md` and `summary.json` alike — one statistics implementation.
+A run whose exit reason is anything but `ok` — a timeout, an infrastructure abort (setup error, API 500, rate limit, quota or retries exhausted), a provider refusal or an unrecognised `error-N` — does not enter `mean`, `sd`, `n`, rates or `cost_usd`. This holds for `summary.md` and `summary.json` alike — one statistics implementation. Classification: [exit reason classification](2026-10-12_01_exit-reason-classification.md).
 
 - A cell has 5 runs: 4 × `ok` with `mccabe_max` 4, 5, 6, 5 and 1 × `timeout` with 12 → `n = 4`, `mean = 5.0`.
 - A cell has 3 runs, all `timeout` → no mean; the cell has runs but none usable, and its coverage reads "below `min_replicates`".
 
 ### R2 — Each cell counts its runs and why runs were excluded
 
-Counters per cell: `runs` (all), `timeouts`, `infra`, `provider_refusals`.
+Counters per cell: `runs` (all), `timeouts`, `infra`, `provider_refusals`. `infra` covers every other exit reason that is not `ok`, an unrecognised `error-N` included.
 
 - 6 runs: 4 × `ok`, 1 × `timeout`, 1 × API 500 → `runs 6, timeouts 1, infra 1, provider_refusals 0`.
 

@@ -53,8 +53,8 @@
   `LINEAGE.yaml` and the metric registry, and writes JSON (one file per RQ plus
   `workflows.json`) to `site/src/data/`, gitignored. No `meta.json`: git state and export
   are kept in sync by hand for now.
-- **Aborted runs stay out of every statistic** (decided 2026-10-12). Timeouts, infrastructure
-  aborts and provider refusals enter neither `mean`/`sd`/`n` nor `cost_usd`, in `summary.md`
+- **Only `ok` runs enter a statistic** (decided 2026-10-12). Timeouts, infrastructure
+  aborts, provider refusals and unrecognised `error-N` enter neither `mean`/`sd`/`n` nor `cost_usd`, in `summary.md`
   and `summary.json` alike; each cell counts them separately instead. Timeouts are no longer
   findings: `min_replicates` counts usable runs only and timeouts are refilled.
   `completed_within_budget` is dropped.
