@@ -2,9 +2,9 @@
 
 _Does example mapping increase correctness compared to prose and user story — and is the effect model-dependent?_
 
-Generated: 2026-10-11T14:41:20Z
+Generated: 2026-10-12T02:57:18Z
 
-Cells declared: 24 · matched runs: 129 · min_replicates: 5
+Cells declared: 24 · matched runs: 128 · min_replicates: 5
 
 ## Cell coverage
 
@@ -20,7 +20,7 @@ Cells declared: 24 · matched runs: 129 · min_replicates: 5
 | claim-office-prose | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7 | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking | 9 | 9 | ✅ |
-| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey | 5 | 5 | ✅ |
+| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey | 4 | 4 | ⚠️ below min_replicates (4/5) |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking | 5 | 5 | ✅ |
@@ -43,7 +43,7 @@ Cells declared: 24 · matched runs: 129 · min_replicates: 5
 |:-----------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey              |   5 |   0    |  0    |  0    |  0    |
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   0    |  0    |  0    |  0    |
-| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey               |   5 |   0.57 |  0    |  1    |  0.46 |
+| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey               |   4 |   0.72 |  0.2  |  1    |  0.38 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   0.87 |  0.33 |  1    |  0.3  |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7                       |   5 |   0.95 |  0.73 |  1    |  0.12 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking           |   9 |   0.97 |  0.73 |  1    |  0.09 |
@@ -72,7 +72,7 @@ Cells declared: 24 · matched runs: 129 · min_replicates: 5
 |:-----------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey              |   5 |   0    |     0 |     0 |  0    |
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   0    |     0 |     0 |  0    |
-| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey               |   5 |   8.6  |     0 |    15 |  6.88 |
+| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey               |   4 |  10.75 |     3 |    15 |  5.68 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |  13    |     5 |    15 |  4.47 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7                       |   5 |  14.2  |    11 |    15 |  1.79 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking           |   9 |  14.56 |    11 |    15 |  1.33 |
@@ -101,7 +101,7 @@ Cells declared: 24 · matched runs: 129 · min_replicates: 5
 |:-----------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey              |   5 |     15 |    15 |    15 |     0 |
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |     15 |    15 |    15 |     0 |
-| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey               |   5 |     15 |    15 |    15 |     0 |
+| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey               |   4 |     15 |    15 |    15 |     0 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |     15 |    15 |    15 |     0 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7                       |   5 |     15 |    15 |    15 |     0 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking           |   9 |     15 |    15 |    15 |     0 |
@@ -130,7 +130,7 @@ Cells declared: 24 · matched runs: 129 · min_replicates: 5
 |:-----------------------------|:---------------------------|:-------------------------------|----:|--------:|------:|------:|--------:|
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey              |   5 |   31.8  |    29 |    35 |    2.28 |
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |  171.6  |    17 |   424 |  209.2  |
-| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey               |   5 | 1852.6  |     2 |  2755 | 1079.16 |
+| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey               |   4 | 2315.25 |  1905 |  2755 |  354.7  |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 | 2321.2  |  1942 |  2867 |  390.83 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7                       |   5 | 1128.2  |   891 |  1435 |  206.09 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking           |   9 |  688.22 |   526 |   822 |   97.14 |
@@ -159,7 +159,7 @@ Cells declared: 24 · matched runs: 129 · min_replicates: 5
 |:-----------------------------|:---------------------------|:-------------------------------|----:|-----------------:|---------:|---------:|----------------:|
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey              |   5 | 462331           |   443413 |   487975 | 23032.7         |
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      6.54494e+06 |   302839 | 16405850 |     8.5145e+06  |
-| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey               |   5 |      3.86993e+07 |        0 | 55584203 |     2.24075e+07 |
+| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey               |   4 |      4.83741e+07 | 39292918 | 55584203 |     6.74151e+06 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      5.14164e+07 | 46713470 | 56812750 |     4.06108e+06 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7                       |   5 |      3.48997e+07 | 29059380 | 41935771 |     4.8014e+06  |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking           |   9 |      1.46868e+07 |  7282501 | 23265439 |     5.33619e+06 |
@@ -188,7 +188,7 @@ Cells declared: 24 · matched runs: 129 · min_replicates: 5
 |:-----------------------------|:---------------------------|:-------------------------------|----:|--------:|---------:|
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey              |   5 |       5 |      100 |
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey               |   5 |       5 |      100 |
+| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey               |   4 |       4 |      100 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |       5 |      100 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7                       |   5 |       5 |      100 |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking           |   9 |       9 |      100 |
