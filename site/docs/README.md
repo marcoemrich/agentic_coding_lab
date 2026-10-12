@@ -94,7 +94,8 @@ marked as such. Done stories have no Example Mapping section.
   - [Findings section](stories/open/2026-10-11_08_findings-section.md)
   - [Workflow page](stories/open/2026-10-11_09_workflow-page.md)
 - **Open stories from the site data export** (2026-10-12).
-  - [Build command](stories/open/2026-10-12_04_build-command.md)
+  - [Stable aggregator output](stories/open/2026-10-12_09_stable-aggregator-output.md)
+  - [Build command](stories/open/2026-10-12_04_build-command.md) — waits for the RQ page header (Astro)
   - [Broken-run cleanup](stories/open/2026-10-12_06_broken-run-cleanup.md)
 
 ## Later
