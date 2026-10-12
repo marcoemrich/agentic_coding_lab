@@ -2,7 +2,8 @@
 
 A static site that publishes the lab's research questions (RQs) as consistently formatted
 result tables. It is built locally from the run pool and pushed to GitHub Pages.
-Design decisions: `todos_and_ideas/2-ACTIVE/results-site/open-questions.md`.
+Design decisions: [open-questions.md](open-questions.md).
+Story status and pending Example Mappings: [README.md](README.md#progress).
 
 Status markers: **built** exists and is tested; **planned** is decided, not yet built.
 

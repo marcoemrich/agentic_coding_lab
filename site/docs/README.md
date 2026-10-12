@@ -66,15 +66,26 @@ Detailed decisions: [open-questions.md](open-questions.md#decided).
 
 ## Progress
 
+Each story has its own file in [`stories/open/`](stories/open/) or
+[`stories/done/`](stories/done/), named `<date>_<sequence>_<story-name>.md`. The date
+`2026-10-11` records the source session, not the completion date; the sequence
+runs across open and done stories for that date. Open story files
+keep their Example Mapping in the same file once discussed; pending mappings are
+marked as such. Done stories have no Example Mapping section.
+
 - **Done:** the RQ result table (layout, value formatting, gaps, trophies and
   comparability), built with EXACT Coding in `site/src/`. Its tests are the specification;
-  the Example Mapping it came from was removed once implemented.
-- **Open stories for the first iteration**, sliced out of that Example Mapping:
-  - RQ page header: question, varied and fixed factors, run span, source link, closed banner
-  - Findings section: collapsed `findings.md` under an "AI-generated" warning
-  - RQ index grouped by harness subtree
-  - Workflow page with profiles from `LINEAGE.yaml`
-  - Site data export: `summary.json` from the aggregator and `export-site-data.py`
+  the original Example Mapping was removed once implemented.
+  - [Result table layout](stories/done/2026-10-11_01_result-table-layout.md)
+  - [Value formatting](stories/done/2026-10-11_02_value-formatting.md)
+  - [Gaps and coverage](stories/done/2026-10-11_03_gaps-and-coverage.md)
+  - [Trophies and comparability](stories/done/2026-10-11_04_trophies-and-comparability.md)
+- **Open stories for the first iteration:**
+  - [Site data export](stories/open/2026-10-11_05_site-data-export.md)
+  - [RQ page header](stories/open/2026-10-11_06_rq-page-header.md)
+  - [RQ index](stories/open/2026-10-11_07_rq-index.md)
+  - [Findings section](stories/open/2026-10-11_08_findings-section.md)
+  - [Workflow page](stories/open/2026-10-11_09_workflow-page.md)
 
 ## Later
 
