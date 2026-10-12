@@ -14,9 +14,6 @@ outcomes:
   - tests_passing
   # TDD discipline (should stay unchanged — cleanups are no-behavior-change-intended)
   - predictions_correct_rate
-  - refactorings_applied
-  - tests_passed_immediately
-  - cycle_count
   # code quality
   - code_mass
   - smell_total

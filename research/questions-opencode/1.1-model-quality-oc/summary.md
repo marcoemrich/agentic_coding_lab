@@ -2,7 +2,7 @@
 
 _How do five models reachable via the OpenCode harness (Opus 4.7 via Portkey + four non-Anthropic models from the Portkey catalog) differ in code quality and TDD discipline on game-of-life-example-mapping with the exact-single-context-v2-testlist-fix-oc workflow?_
 
-Generated: 2026-10-12T08:37:47Z
+Generated: 2026-10-12T10:46:37Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -194,28 +194,6 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | gemini-3-5-flash  |   5 |      0 |   8.4  | 0.55 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-flash |   5 |      0 |   9.2  | 0.45 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-pro   |   4 |      0 |   8.75 | 2.22 |
-
-### cycle_count
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey  |   5 |      0 |    3   | 3.94 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | kimi-k2-6         |   5 |      0 |    5   | 2.65 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | glm-5-1           |   5 |      0 |    2.2 | 1.1  |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | gemini-3-5-flash  |   5 |      0 |    7   | 3.39 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-flash |   5 |      0 |    5.4 | 2.7  |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-pro   |   4 |      0 |    7.5 | 1.29 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey  |   5 |      0 |    1.6 | 1.34 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | kimi-k2-6         |   5 |      0 |    3.4 | 1.67 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | glm-5-1           |   5 |      0 |    2.4 | 1.14 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | gemini-3-5-flash  |   5 |      0 |    3.6 | 1.52 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-flash |   5 |      0 |    4.8 | 3.03 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-pro   |   4 |      0 |    4.5 | 1.73 |
 
 ### predictions_correct
 

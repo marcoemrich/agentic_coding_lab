@@ -11,10 +11,7 @@ controls:
 outcomes:
   - verification_pct
   - tests_passing
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
-  - tests_passed_immediately
   - avg_loc_per_function
   - longest_function
   - cognitive_max

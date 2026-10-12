@@ -2,7 +2,7 @@
 
 _Does GPT-6 Sol match or beat GPT-5.6 Sol on the canonical Predictive TDD workflow (exact-ptdd-v1-pi) — in correctness, code quality and cost?_
 
-Generated: 2026-10-12T08:37:48Z
+Generated: 2026-10-12T10:46:39Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -169,24 +169,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-6-sol-codex   |   5 |      0 |    0   |  0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-5-6-sol-codex |   5 |      0 |    4   |  1.22 |
 | game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-5-6-sol-codex |   5 |      0 |    0   |  0    |
-
-### cycle_count
-
-| kata                         | cell_workflow    | cell_model        |   n |   null |   mean |    sd |
-|:-----------------------------|:-----------------|:------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-sol-codex   |   5 |      0 |   31   | 17.99 |
-| game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-6-sol-codex   |   5 |      0 |   14   |  0.71 |
-| claim-office-example-mapping | exact-ptdd-v1-pi | gpt-5-6-sol-codex |   5 |      0 |   39.8 |  2.49 |
-| game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-5-6-sol-codex |   5 |      0 |   11.2 |  0.84 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow    | cell_model        |   n |   null |   mean |    sd |
-|:-----------------------------|:-----------------|:------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-sol-codex   |   5 |      0 |   28   | 16.57 |
-| game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-6-sol-codex   |   5 |      0 |   14   |  0.71 |
-| claim-office-example-mapping | exact-ptdd-v1-pi | gpt-5-6-sol-codex |   5 |      0 |   40   |  2.92 |
-| game-of-life-example-mapping | exact-ptdd-v1-pi | gpt-5-6-sol-codex |   5 |      0 |   11.4 |  1.14 |
 
 ### predictions_correct_rate
 

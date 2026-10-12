@@ -2,7 +2,7 @@
 
 _Is exact-hybrid-v2.4-lab-split-cc behaviourally equivalent to exact-hybrid-v2-testlist-fix-cc, as the exact-coding baseline recommendation assumes, and if not, does removing the duplicated cycle enumeration restore neutrality? The production files are byte-identical; the rule layout differs (lab infrastructure isolated in rules/lab-only.md, subagent contracts in rules/subagent-prompts.md), and lab-only.md states the Red/Green/Refactor cycle a second time as an imperative chain whose third link makes refactor an unconditional consequence of green. hybrid-v2.7 removes that second statement and keeps the phase-continuation guard._
 
-Generated: 2026-10-12T08:37:57Z
+Generated: 2026-10-12T10:46:46Z
 
 Cells declared: 8 · matched runs: 59 · min_replicates: 5
 
@@ -20,32 +20,6 @@ Cells declared: 8 · matched runs: 59 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2.8-pure-split-cc | opus-5-no-thinking | 10 | 10 | ✅ |
 
 ## Outcome pivots (per cell)
-
-### refactorings_applied
-
-| kata                         | cell_workflow                           | cell_model         |   n |   null |   mean |    sd |
-|:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|-------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   6 |      0 |   4.33 |  0.52 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |  18 |      0 |  21.28 |  7.55 |
-| game-of-life-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-no-thinking |   5 |      0 |   6.2  |  3.11 |
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-no-thinking |   5 |      0 |  33    | 14.27 |
-| game-of-life-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 |      0 |   5    |  2.45 |
-| claim-office-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 |      0 |  26.4  | 11.61 |
-| game-of-life-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |   5 |      0 |   5.6  |  3.36 |
-| claim-office-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |  10 |      0 |  24.1  |  4.79 |
-
-### cycle_count
-
-| kata                         | cell_workflow                           | cell_model         |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   6 |      0 |  10.33 | 1.37 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |  18 |      0 |  45.89 | 4.93 |
-| game-of-life-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-no-thinking |   5 |      0 |  10    | 0.71 |
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-no-thinking |   5 |      0 |  48    | 2.55 |
-| game-of-life-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 |      0 |  10.4  | 1.52 |
-| claim-office-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 |      0 |  46.8  | 4.76 |
-| game-of-life-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |   5 |      0 |   9.8  | 0.45 |
-| claim-office-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |  10 |      0 |  46.1  | 3.67 |
 
 ### duration_seconds
 
@@ -189,16 +163,3 @@ Cells declared: 8 · matched runs: 59 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 |  463 |  469 |      0 |     98.7 |
 | game-of-life-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |   5 |   98 |   98 |      0 |    100   |
 | claim-office-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |  10 |  920 |  924 |      0 |     99.6 |
-
-### tests_passed_immediately
-
-| kata                         | cell_workflow                           | cell_model         |   n |   null |   mean |    sd |
-|:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|-------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   6 |      0 |   7.33 |  1.03 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |  18 |      0 |  24.28 |  5.18 |
-| game-of-life-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-no-thinking |   5 |      0 |   6    |  3.39 |
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc          | opus-5-no-thinking |   5 |      0 |  20.4  | 11.84 |
-| game-of-life-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 |      0 |   6.2  |  3.9  |
-| claim-office-example-mapping | exact-hybrid-v2.7-continuation-guard-cc | opus-5-no-thinking |   5 |      0 |  24.8  |  3.7  |
-| game-of-life-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |   5 |      0 |   4.8  |  3.96 |
-| claim-office-example-mapping | exact-hybrid-v2.8-pure-split-cc         | opus-5-no-thinking |  10 |      0 |  24.4  |  3.27 |

@@ -42,8 +42,6 @@ outcomes:
   - mutants_no_coverage
   # TDD discipline (marker health). The baseline arm has no prediction
   # markers, so predictions_correct_rate is structurally empty there.
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
   # cost
   - duration_seconds

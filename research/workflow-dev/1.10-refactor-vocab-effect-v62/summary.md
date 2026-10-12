@@ -2,7 +2,7 @@
 
 _Does an additive vocabulary block in the refactor agent (cyclomatic + cognitive complexity, single responsibility, smell→move table) improve code quality on the exact-hybrid-v4-cleaned-cc base without significantly impairing correctness or cost?_
 
-Generated: 2026-10-12T08:37:53Z
+Generated: 2026-10-12T10:46:43Z
 
 Cells declared: 4 · matched runs: 28 · min_replicates: 5
 
@@ -97,24 +97,6 @@ Cells declared: 4 · matched runs: 28 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc          | opus-4-7-portkey-no-thinking |   8 |      0 |  878.5 |  91.44 |
 | game-of-life-example-mapping | exact-hybrid-v4.1-refactor-vocab-cc | opus-4-7-portkey-no-thinking |   5 |      0 |  171.6 |  26.02 |
 | claim-office-example-mapping | exact-hybrid-v4.1-refactor-vocab-cc | opus-4-7-portkey-no-thinking |   5 |      0 |  372   | 232.12 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                       | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:------------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc          | opus-4-7-portkey-no-thinking |  10 |      0 |   7.9  | 1.85 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc          | opus-4-7-portkey-no-thinking |   8 |      0 |  24.88 | 6.9  |
-| game-of-life-example-mapping | exact-hybrid-v4.1-refactor-vocab-cc | opus-4-7-portkey-no-thinking |   5 |      0 |   9.2  | 0.84 |
-| claim-office-example-mapping | exact-hybrid-v4.1-refactor-vocab-cc | opus-4-7-portkey-no-thinking |   5 |      0 |  12    | 6.2  |
-
-### cycle_count
-
-| kata                         | cell_workflow                       | cell_model                   |   n |   null |   mean |    sd |
-|:-----------------------------|:------------------------------------|:-----------------------------|----:|-------:|-------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc          | opus-4-7-portkey-no-thinking |  10 |      0 |   8.5  |  1.35 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc          | opus-4-7-portkey-no-thinking |   8 |      0 |  37.38 |  1.6  |
-| game-of-life-example-mapping | exact-hybrid-v4.1-refactor-vocab-cc | opus-4-7-portkey-no-thinking |   5 |      0 |   9.2  |  0.84 |
-| claim-office-example-mapping | exact-hybrid-v4.1-refactor-vocab-cc | opus-4-7-portkey-no-thinking |   5 |      0 |  16    | 12.31 |
 
 ### predictions_correct_rate
 

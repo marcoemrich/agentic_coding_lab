@@ -2,7 +2,7 @@
 
 _On GPT-5.6 SOL via pi, does the independent-dimensions test-list cross-check improve the current SOL PTDD default's external completeness without sacrificing its efficiency or product quality?_
 
-Generated: 2026-10-12T08:37:51Z
+Generated: 2026-10-12T10:46:42Z
 
 Cells declared: 2 · matched runs: 20 · min_replicates: 5
 
@@ -112,13 +112,6 @@ Cells declared: 2 · matched runs: 20 · min_replicates: 5
 |:-----------------------------|:------------------------------------------|:------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |      0 |  150.2 | 27.18 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |  10 |      0 |  152.4 | 28.12 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                             | cell_model        |   n |   null |   mean |    sd |
-|:-----------------------------|:------------------------------------------|:------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |      0 |   36.2 |  1.32 |
-| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |  10 |      0 |   39.2 | 10.54 |
 
 ### predictions_correct_rate
 

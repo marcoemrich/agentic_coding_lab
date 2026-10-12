@@ -50,8 +50,6 @@ outcomes:
   - production_loc
   # TDD discipline. n/a on the inline-tdd-v1 cell (no phase markers). Never read
   # predictions_total on this line or this model — see "Marker caveats".
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
   # cost. cost_usd is deliberately NOT an outcome: Astra ships without a `cost`
   # block and reads a structural 0 against Sol's measured inline costs, which

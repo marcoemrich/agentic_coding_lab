@@ -23,10 +23,7 @@ outcomes:
   - verification_passed
   - verification_total
   - tests_passing
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
-  - tests_passed_immediately
   - duration_seconds
   - total_tokens
 min_replicates: 3

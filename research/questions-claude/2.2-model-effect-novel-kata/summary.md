@@ -2,7 +2,7 @@
 
 _How do Fable 5, Opus 4.8, Opus 4.7 and Opus 4.6 (each no-thinking) differ in correctness and code quality on a novel kata with ambiguities that differentiates more strongly than the training-known game-of-life?_
 
-Generated: 2026-10-12T08:37:35Z
+Generated: 2026-10-12T10:46:27Z
 
 Cells declared: 5 · matched runs: 30 · min_replicates: 5
 

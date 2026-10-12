@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, does a workflow line written natively for Sol (basic-sol-tdd, Predictive TDD) beat structureless TDD (inline-tdd-v1) — the floor that no Opus-derived architecture clears on this model?_
 
-Generated: 2026-10-12T08:37:55Z
+Generated: 2026-10-12T10:46:45Z
 
 Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
@@ -147,34 +147,6 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |      0 |  618   | 145.16 |
 | game-of-life-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |      0 |  167.4 |  29.91 |
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |      0 |  136   |  10.02 |
-
-### cycle_count
-
-| kata                         | cell_workflow              | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:---------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi  | gpt-5-6-sol-codex |   5 |      0 |    3   | 0.71 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-pi  | gpt-5-6-sol-codex |   5 |      0 |    4.6 | 2.7  |
-| sphinx-score-example-mapping | baseline-inline-tdd-v1-pi  | gpt-5-6-sol-codex |   5 |      0 |    2.4 | 0.55 |
-| claim-office-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex |   5 |      0 |   33.4 | 2.97 |
-| game-of-life-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex |   5 |      0 |    9.8 | 0.45 |
-| sphinx-score-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex |   5 |      0 |   11.8 | 0.84 |
-| claim-office-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |      0 |   33.2 | 3.11 |
-| game-of-life-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |      0 |    9   | 1    |
-| sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |      0 |   11.2 | 0.45 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow              | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:---------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi  | gpt-5-6-sol-codex |   5 |      0 |    0.4 | 0.55 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-pi  | gpt-5-6-sol-codex |   5 |      0 |    0.2 | 0.45 |
-| sphinx-score-example-mapping | baseline-inline-tdd-v1-pi  | gpt-5-6-sol-codex |   5 |      0 |    1.6 | 0.89 |
-| claim-office-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex |   5 |      0 |   33.2 | 2.68 |
-| game-of-life-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex |   5 |      0 |    9.8 | 0.45 |
-| sphinx-score-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex |   5 |      0 |   12   | 0.71 |
-| claim-office-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |      0 |   32.2 | 7.56 |
-| game-of-life-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |      0 |    9.8 | 1.3  |
-| sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex |   5 |      0 |   11.6 | 0.55 |
 
 ### predictions_correct_rate
 

@@ -13,10 +13,7 @@ outcomes:
   - verification_pct
   - tests_passing
   # TDD discipline (the audit bundle targets red/refactor discipline directly)
-  - tests_passed_immediately
-  - refactorings_applied
   - predictions_correct_rate
-  - cycle_count
   # code quality (sanity)
   - code_mass
   - smell_total

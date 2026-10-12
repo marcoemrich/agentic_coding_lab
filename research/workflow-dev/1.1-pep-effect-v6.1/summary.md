@@ -2,7 +2,7 @@
 
 _Do psychological justifications ('pep talks') in the Red and Green skill prompts on the hybrid-v2 base deliver a measurable code quality or TDD discipline advantage over purely operational instructions?_
 
-Generated: 2026-10-12T08:37:52Z
+Generated: 2026-10-12T10:46:42Z
 
 Cells declared: 2 · matched runs: 10 · min_replicates: 5
 
@@ -50,33 +50,12 @@ Cells declared: 2 · matched runs: 10 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |    5.2 | 1.92 |
 | game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc     | opus-4-7-no-thinking |   5 |      0 |    4.8 | 2.05 |
 
-### refactorings_applied
-
-| kata                         | cell_workflow                   | cell_model           |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |    4.2 | 2.28 |
-| game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc     | opus-4-7-no-thinking |   5 |      0 |    7   | 3.24 |
-
-### cycle_count
-
-| kata                         | cell_workflow                   | cell_model           |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |    8.4 | 0.89 |
-| game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc     | opus-4-7-no-thinking |   5 |      0 |    8.8 | 0.84 |
-
 ### predictions_correct_rate
 
 | kata                         | cell_workflow                   | cell_model           |   n |   k |   t |   null |   rate_% |
 |:-----------------------------|:--------------------------------|:---------------------|----:|----:|----:|-------:|---------:|
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |  82 |  83 |      0 |     98.8 |
 | game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc     | opus-4-7-no-thinking |   5 |  79 |  79 |      0 |    100   |
-
-### tests_passed_immediately
-
-| kata                         | cell_workflow                   | cell_model           |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |    4.8 | 2.95 |
-| game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc     | opus-4-7-no-thinking |   5 |      0 |    1.2 | 2.68 |
 
 ### duration_seconds
 

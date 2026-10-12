@@ -24,10 +24,7 @@ outcomes:
   - smell_complexity
   - code_mass
   # TDD discipline (sanity: the per-cycle part of hybrid-v5 is byte-identical to hybrid-v4; cycle metrics should match hybrid-v4)
-  - refactorings_applied
-  - cycle_count
   - predictions_correct_rate
-  - tests_passed_immediately
   # correctness (sanity: the end refactor must not break claim-office verification — cf. the bundle risk from RQ-1.9/RQ-1.10)
   - tests_passing
   - verification_pct

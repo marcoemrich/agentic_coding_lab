@@ -43,8 +43,6 @@ outcomes:
   - tests_total
   # tertiary: TDD discipline. predictions_correct_rate only, never
   # predictions_total — see "Marker caveats".
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
   # context / throughput. cost_usd is deliberately NOT an outcome, and the
   # reason is asymmetric rather than uniform: the Sol codex cell carries

@@ -2,7 +2,7 @@
 
 _How do five models reachable via the OpenCode harness differ in correctness and TDD discipline on claim-office-example-mapping with the exact-single-context-v2-testlist-fix-oc workflow?_
 
-Generated: 2026-10-12T08:37:47Z
+Generated: 2026-10-12T10:46:38Z
 
 Cells declared: 8 · matched runs: 38 · min_replicates: 5
 
@@ -137,32 +137,6 @@ Cells declared: 8 · matched runs: 38 · min_replicates: 5
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | mistral-medium-3-5 |   5 |      0 |  23.8  |  5.63 |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-flash  |   4 |      0 |  16.75 |  2.36 |
 | claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-pro    |   4 |      0 |  20.75 |  3.86 |
-
-### cycle_count
-
-| kata                         | cell_workflow                           | cell_model         |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey   |   5 |      0 |   1.2  | 0.45 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | kimi-k2-6          |   5 |      0 |   2    | 0.71 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | minimax-m2-7       |   5 |      0 |   4.8  | 7.4  |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | gemini-3-5-flash   |   5 |      0 |   2.2  | 1.1  |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | glm-5-1            |   5 |      0 |   2    | 0.71 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | mistral-medium-3-5 |   5 |      0 |   1.4  | 0.55 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-flash  |   4 |      0 |   4    | 2.16 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-pro    |   4 |      0 |   3.25 | 1.26 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                           | cell_model         |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | opus-4-7-portkey   |   5 |      0 |   1    | 0    |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | kimi-k2-6          |   5 |      0 |   1.8  | 0.45 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | minimax-m2-7       |   5 |      0 |   1.4  | 0.55 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | gemini-3-5-flash   |   5 |      0 |   2.4  | 1.34 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | glm-5-1            |   5 |      0 |   2.8  | 1.92 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | mistral-medium-3-5 |   5 |      0 |   1.2  | 0.45 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-flash  |   4 |      0 |   2.75 | 0.96 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-pro    |   4 |      0 |   1.5  | 0.58 |
 
 ### predictions_correct
 

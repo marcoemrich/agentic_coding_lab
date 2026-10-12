@@ -26,8 +26,6 @@ outcomes:
   # TDD discipline — inferred from the tool sequence, not from markers.
   # Read together with the caveats below; cycle_count is not comparable to
   # marker-based counts, refactorings_applied is an upper bound.
-  - cycle_count
-  - refactorings_applied
   # correctness / completion — measured from the source tree, unaffected
   - tests_passing
   - verification_pct

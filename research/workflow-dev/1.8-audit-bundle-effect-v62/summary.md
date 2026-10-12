@@ -2,7 +2,7 @@
 
 _Does the audit bundle (rationale additions + red-phase hardening) reproduce, on the exact-hybrid-v4-cleaned-cc base, the effects measured in the archived RQ-audit against v6.5-lean (discipline gain, variance shrink, token/wallclock surcharge while preserving correctness)?_
 
-Generated: 2026-10-12T08:38:01Z
+Generated: 2026-10-12T10:46:50Z
 
 Cells declared: 2 · matched runs: 20 · min_replicates: 10
 
@@ -15,33 +15,12 @@ Cells declared: 2 · matched runs: 20 · min_replicates: 10
 
 ## Outcome pivots (per cell)
 
-### tests_passed_immediately
-
-| kata                         | cell_workflow                     | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc        | opus-4-7-portkey-no-thinking |  10 |      0 |    0.7 | 2.21 |
-| game-of-life-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |  10 |      0 |    0   | 0    |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                     | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc        | opus-4-7-portkey-no-thinking |  10 |      0 |    7.9 | 1.85 |
-| game-of-life-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |  10 |      0 |    8.7 | 0.67 |
-
 ### predictions_correct_rate
 
 | kata                         | cell_workflow                     | cell_model                   |   n |   k |   t |   null |   rate_% |
 |:-----------------------------|:----------------------------------|:-----------------------------|----:|----:|----:|-------:|---------:|
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc        | opus-4-7-portkey-no-thinking |  10 | 170 | 170 |      0 |    100   |
 | game-of-life-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |  10 | 185 | 190 |      0 |     97.4 |
-
-### cycle_count
-
-| kata                         | cell_workflow                     | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc        | opus-4-7-portkey-no-thinking |  10 |      0 |    8.5 | 1.35 |
-| game-of-life-example-mapping | exact-hybrid-v4.3-audit-bundle-cc | opus-4-7-portkey-no-thinking |  10 |      0 |    8.7 | 0.67 |
 
 ### code_mass
 

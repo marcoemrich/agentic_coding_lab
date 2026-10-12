@@ -11,9 +11,6 @@ controls:
 outcomes:
   # primary: TDD discipline (where why blocks are most likely to act)
   - predictions_correct_rate
-  - refactorings_applied
-  - tests_passed_immediately
-  - cycle_count
   # correctness (claim-office has genuine ambiguities)
   - verification_pct
   - tests_passing

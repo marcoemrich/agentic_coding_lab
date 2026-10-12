@@ -2,7 +2,7 @@
 
 _Does the code-quality profile of Opus (opus-4-8) differ between the Claude Code and the pi harness, each with and without thinking, at a constant workflow generation (hybrid-v4)?_
 
-Generated: 2026-10-12T08:37:44Z
+Generated: 2026-10-12T10:46:35Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -124,24 +124,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-no-thinking |   5 |      0 |      1 |    0 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8             |   5 |      0 |      1 |    0 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8-no-thinking |   5 |      0 |      1 |    0 |
-
-### cycle_count
-
-| kata                         | cell_workflow                           | cell_model           |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:---------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-requesty    |   5 |      0 |    8.8 | 0.45 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-no-thinking |   5 |      0 |    8.8 | 0.45 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8             |   5 |      0 |    8.6 | 0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8-no-thinking |   5 |      0 |    8.8 | 0.45 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                           | cell_model           |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:---------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-requesty    |   5 |      0 |    8.8 | 0.45 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc              | opus-4-8-no-thinking |   5 |      0 |    5.6 | 3.13 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8             |   5 |      0 |    3   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8-no-thinking |   5 |      0 |    3   | 0    |
 
 ### predictions_correct
 

@@ -2,7 +2,7 @@
 
 _How do first-party EXACT Coding TCR, classic TCR, and external TCRDD variants affect correctness, code quality, development behavior, and efficiency for SOL on pi, and how do their native-Git and tool-enforced execution strategies differ?_
 
-Generated: 2026-10-12T08:37:51Z
+Generated: 2026-10-12T10:46:41Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -40,72 +40,6 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | external-tcr-kentbeck-2026-09-14-pi     | gpt-5-6-sol-codex |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |   5 |      0 |      100 |
-
-### test_blocks
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-pi   | gpt-5-6-sol-codex |   5 |      0 |    3.8 | 0.84 |
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |   25.2 | 8.67 |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |      0 |   37   | 1.58 |
-| claim-office-example-mapping | external-tcr-kentbeck-2026-09-14-pi     | gpt-5-6-sol-codex |   5 |      0 |    7.8 | 2.49 |
-| claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |      0 |   17.2 | 1.92 |
-| claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |      0 |   12.2 | 3.56 |
-
-### test_cases_total
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-pi   | gpt-5-6-sol-codex |   5 |      0 |   12.4 | 3.21 |
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |   29.8 | 6.38 |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |      0 |   36.4 | 2.61 |
-| claim-office-example-mapping | external-tcr-kentbeck-2026-09-14-pi     | gpt-5-6-sol-codex |   5 |      0 |   26   | 7.65 |
-| claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |      0 |   29   | 7.68 |
-| claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |      0 |   19.8 | 9.39 |
-
-### test_cases_first_block
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-pi   | gpt-5-6-sol-codex |   5 |      0 |    2.8 | 2.49 |
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |    1   | 0    |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |      0 |    0   | 0    |
-| claim-office-example-mapping | external-tcr-kentbeck-2026-09-14-pi     | gpt-5-6-sol-codex |   5 |      0 |    1.8 | 1.1  |
-| claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |      0 |    1   | 0    |
-| claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |      0 |    0.8 | 0.45 |
-
-### red_verified
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-pi   | gpt-5-6-sol-codex |   5 |      0 |    2.8 | 1.3  |
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |    9.8 | 7.33 |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |      0 |   36.8 | 1.79 |
-| claim-office-example-mapping | external-tcr-kentbeck-2026-09-14-pi     | gpt-5-6-sol-codex |   5 |      0 |    6.2 | 3.11 |
-| claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |      0 |   17.2 | 1.92 |
-| claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |      0 |   12.2 | 3.56 |
-
-### red_unverified
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-pi   | gpt-5-6-sol-codex |   5 |      0 |    1   | 0.71 |
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |   15.4 | 2.3  |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |      0 |    0.2 | 0.45 |
-| claim-office-example-mapping | external-tcr-kentbeck-2026-09-14-pi     | gpt-5-6-sol-codex |   5 |      0 |    1.6 | 3.05 |
-| claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |      0 |    0   | 0    |
-| claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |      0 |    0   | 0    |
-
-### tcr_refactor_steps
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1.1-local-git-pi   | gpt-5-6-sol-codex |   5 |      0 |    0   | 0    |
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |    0   | 0    |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |      0 |    5.6 | 4.16 |
-| claim-office-example-mapping | external-tcr-kentbeck-2026-09-14-pi     | gpt-5-6-sol-codex |   5 |      0 |    0   | 0    |
-| claim-office-example-mapping | external-tcrdd-bsene-2026-09-14-pi      | gpt-5-6-sol-codex |   5 |      0 |    6.6 | 2.61 |
-| claim-office-example-mapping | external-tcrdd-git-gamble-2026-09-14-pi | gpt-5-6-sol-codex |   5 |      0 |    2.8 | 0.84 |
 
 ### tcr_method_commits
 

@@ -21,8 +21,6 @@ outcomes:
   - code_mass
   - production_loc
   - test_lines
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
   - duration_seconds
   - total_tokens

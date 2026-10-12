@@ -2,7 +2,7 @@
 
 _Do why blocks (causal justifications alongside MUSTs) on the hybrid-v2 base carry a measurable TDD discipline or correctness advantage over purely imperative instructions — with PEP fully retained?_
 
-Generated: 2026-10-12T08:38:00Z
+Generated: 2026-10-12T10:46:49Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 8
 
@@ -21,27 +21,6 @@ Cells declared: 2 · matched runs: 15 · min_replicates: 8
 |:-----------------------------|:--------------------------------|:-----------------------------|----:|----:|----:|-------:|---------:|
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   7 | 292 | 303 |      0 |     96.4 |
 | claim-office-example-mapping | exact-hybrid-v3-with-why-cc     | opus-4-7-portkey-no-thinking |   7 | 530 | 551 |      1 |     96.2 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                   | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   7 |      0 |   11   | 5.1  |
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc     | opus-4-7-portkey-no-thinking |   8 |      0 |   18.5 | 8.42 |
-
-### tests_passed_immediately
-
-| kata                         | cell_workflow                   | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   7 |      0 |  13.57 | 8.62 |
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc     | opus-4-7-portkey-no-thinking |   8 |      0 |  15.38 | 7.27 |
-
-### cycle_count
-
-| kata                         | cell_workflow                   | cell_model                   |   n |   null |   mean |    sd |
-|:-----------------------------|:--------------------------------|:-----------------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   7 |      0 |     28 | 12.96 |
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc     | opus-4-7-portkey-no-thinking |   8 |      0 |     35 | 14.22 |
 
 ### verification_pct
 

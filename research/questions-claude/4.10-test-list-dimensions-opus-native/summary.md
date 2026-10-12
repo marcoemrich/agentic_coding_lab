@@ -2,7 +2,7 @@
 
 _On native Opus 5, does an independent-dimensions cross-check in the SOL PTDD test-list phase improve external completeness without sacrificing the workflow's efficiency advantage or code quality?_
 
-Generated: 2026-10-12T08:37:37Z
+Generated: 2026-10-12T10:46:29Z
 
 Cells declared: 2 · matched runs: 20 · min_replicates: 5
 
@@ -105,20 +105,6 @@ Cells declared: 2 · matched runs: 20 · min_replicates: 5
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |      0 |  236.2 | 22.51 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |      0 |  245.7 | 32.92 |
-
-### cycle_count
-
-| kata                         | cell_workflow                             | cell_model         |   n |   null |   mean |    sd |
-|:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |      0 |   54.3 | 26.46 |
-| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |      0 |   14.8 | 24.12 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                             | cell_model         |   n |   null |   mean |    sd |
-|:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |      0 |   45   | 11.21 |
-| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |      0 |   51.5 | 13.81 |
 
 ### predictions_correct_rate
 

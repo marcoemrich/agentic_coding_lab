@@ -2,7 +2,7 @@
 
 _Which form of context structuring — isolated subagent contexts per TDD phase (subagents-v2), a shared, accumulated single context (single-context-v2), a hybrid with skill-based red/green in the shared context and an isolated refactor subagent (hybrid-v2), or a hybrid with isolated green and refactor subagents alongside a shared-context test list/red (green-refactor-v2) — leads to better code quality?_
 
-Generated: 2026-10-12T08:37:39Z
+Generated: 2026-10-12T10:46:31Z
 
 Cells declared: 4 · matched runs: 21 · min_replicates: 3
 

@@ -35,8 +35,6 @@ outcomes:
   - tests_passing
   # TDD discipline — NOT measurable on the inline-tdd-v1 cells (no phase markers);
   # see "Measurement limit" below. Read those rows as n/a, not as zero.
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
   # cost/throughput context
   - duration_seconds

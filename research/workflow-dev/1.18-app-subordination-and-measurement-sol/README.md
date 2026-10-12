@@ -35,8 +35,6 @@ outcomes:
   - verification_pct
   - tests_passing
   # TDD discipline
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
   # cost — the second half of the question, and the axis the gradient is built on
   - duration_seconds

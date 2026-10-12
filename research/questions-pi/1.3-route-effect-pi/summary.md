@@ -2,7 +2,7 @@
 
 _How do transport route and reasoning channel each affect code quality, TDD discipline, throughput and correctness for one and the same model (GPT-5.6 Sol), at constant harness, workflow, kata and prompt style?_
 
-Generated: 2026-10-12T08:37:49Z
+Generated: 2026-10-12T10:46:40Z
 
 Cells declared: 3 · matched runs: 15 · min_replicates: 5
 
@@ -159,22 +159,6 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |    8.4 | 0.55 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    8.4 | 1.52 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |    9.8 | 1.3  |
-
-### cycle_count
-
-| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |    8.4 | 0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    8.4 | 1.52 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |    9.8 | 1.3  |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |    5   | 1.22 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    4.4 | 0.89 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |    7   | 1.58 |
 
 ### predictions_correct
 

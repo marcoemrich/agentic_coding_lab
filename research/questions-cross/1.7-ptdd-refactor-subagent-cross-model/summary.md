@@ -2,7 +2,7 @@
 
 _Does isolating only the per-cycle Refactor phase improve PTDD v1 product structure enough to justify its context cost on native Opus and GPT-5.6 SOL/pi?_
 
-Generated: 2026-10-12T08:37:45Z
+Generated: 2026-10-12T10:46:36Z
 
 Cells declared: 4 · matched runs: 45 · min_replicates: 5
 

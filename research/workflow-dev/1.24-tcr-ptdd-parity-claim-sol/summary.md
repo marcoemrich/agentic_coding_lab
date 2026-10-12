@@ -2,7 +2,7 @@
 
 _On Claim Office with SOL/pi, does a TCR-source-parity transfer of the domain-boundary workflow to Predictive TDD reproduce TCR's decomposition when all non-method-specific test-list, domain-review, stack, and lab contracts are retained, or does the commit-or-revert phase mechanism still separate the methods?_
 
-Generated: 2026-10-12T08:37:59Z
+Generated: 2026-10-12T10:46:48Z
 
 Cells declared: 3 · matched runs: 20 · min_replicates: 5
 
@@ -136,38 +136,6 @@ Cells declared: 3 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |  186.8 | 27.22 |
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |      0 |  218.3 | 47.84 |
 
-### test_blocks
-
-| kata                         | cell_workflow                             | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:------------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |   37.6 | 1.95 |
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |   21.8 | 8.32 |
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |      0 |   34.8 | 9.25 |
-
-### red_verified
-
-| kata                         | cell_workflow                             | cell_model        |   n |   null |   mean |    sd |
-|:-----------------------------|:------------------------------------------|:------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |   37.4 |  2.19 |
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |    8.6 |  7.64 |
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |      0 |   32.6 | 11.64 |
-
-### red_unverified
-
-| kata                         | cell_workflow                             | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:------------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |    0.2 | 0.45 |
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |   13.2 | 0.84 |
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |      0 |    2.2 | 5.35 |
-
-### tcr_refactor_steps
-
-| kata                         | cell_workflow                             | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:------------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |   10.6 | 4.16 |
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |    0   | 0    |
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |      0 |    0   | 0    |
-
 ### tcr_method_commits
 
 | kata                         | cell_workflow                             | cell_model        |   n |   null |   mean |   sd |
@@ -199,22 +167,6 @@ Cells declared: 3 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |    9.4 | 4.93 |
 | claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |    0   | 0    |
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |      0 |    0   | 0    |
-
-### cycle_count
-
-| kata                         | cell_workflow                             | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:------------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |   36   | 2.35 |
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |   27.2 | 4.44 |
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |      0 |   36   | 1.49 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                             | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:------------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |   37.4 | 2.07 |
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi   | gpt-5-6-sol-codex |   5 |      0 |   27.2 | 4.44 |
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |  10 |      0 |   36.2 | 1.32 |
 
 ### predictions_correct_rate
 

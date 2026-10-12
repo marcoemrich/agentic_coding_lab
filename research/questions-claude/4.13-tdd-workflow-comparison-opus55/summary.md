@@ -2,7 +2,7 @@
 
 _How do seven TDD workflows compare on correctness, TDD discipline, code quality and cost? Three lines meet on one kata: the maintained EXACT Coding Predictive-TDD pair (with and without an isolated refactor subagent), the retired Opus hybrid pair, and three vendored third-party TDD skills — measured on claim-office-example-mapping × opus-5-5-no-thinking × Claude Code._
 
-Generated: 2026-10-12T08:37:38Z
+Generated: 2026-10-12T10:46:30Z
 
 Cells declared: 7 · matched runs: 35 · min_replicates: 5
 

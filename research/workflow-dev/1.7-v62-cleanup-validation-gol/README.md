@@ -19,9 +19,6 @@ outcomes:
   - tests_passing
   # TDD discipline
   - predictions_correct_rate
-  - refactorings_applied
-  - tests_passed_immediately
-  - cycle_count
   # cost
   - duration_seconds
   - total_tokens

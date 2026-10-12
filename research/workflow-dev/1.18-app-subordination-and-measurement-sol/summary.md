@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, does subordinating APP mass to the Four Rules recover the decomposition that the unsubordinated brief suppresses — and does adding pre/post measurement improve the result further, at what cost in duration as the measurement moves from the model to deterministic tools?_
 
-Generated: 2026-10-12T08:37:56Z
+Generated: 2026-10-12T10:46:45Z
 
 Cells declared: 5 · matched runs: 25 · min_replicates: 5
 
@@ -137,26 +137,6 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.2.1-measured-model-pi  | gpt-5-6-sol-codex |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | exact-sol-v1.2.2-measured-eslint-pi | gpt-5-6-sol-codex |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | exact-sol-v1.2.3-measured-tool-pi   | gpt-5-6-sol-codex |   5 |   5 |      0 |      100 |
-
-### cycle_count
-
-| kata                         | cell_workflow                       | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-sol-v1-pi                     | gpt-5-6-sol-codex |   5 |      0 |   33.4 | 2.97 |
-| claim-office-example-mapping | exact-sol-v1.2-app-pi               | gpt-5-6-sol-codex |   5 |      0 |   30.6 | 7.23 |
-| claim-office-example-mapping | exact-sol-v1.2.1-measured-model-pi  | gpt-5-6-sol-codex |   5 |      0 |   31.6 | 1.67 |
-| claim-office-example-mapping | exact-sol-v1.2.2-measured-eslint-pi | gpt-5-6-sol-codex |   5 |      0 |   32.4 | 6.43 |
-| claim-office-example-mapping | exact-sol-v1.2.3-measured-tool-pi   | gpt-5-6-sol-codex |   5 |      0 |   34.8 | 2.95 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                       | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-sol-v1-pi                     | gpt-5-6-sol-codex |   5 |      0 |   33.2 | 2.68 |
-| claim-office-example-mapping | exact-sol-v1.2-app-pi               | gpt-5-6-sol-codex |   5 |      0 |   30.6 | 7.23 |
-| claim-office-example-mapping | exact-sol-v1.2.1-measured-model-pi  | gpt-5-6-sol-codex |   5 |      0 |   31.6 | 1.67 |
-| claim-office-example-mapping | exact-sol-v1.2.2-measured-eslint-pi | gpt-5-6-sol-codex |   5 |      0 |   32.6 | 6.47 |
-| claim-office-example-mapping | exact-sol-v1.2.3-measured-tool-pi   | gpt-5-6-sol-codex |   5 |      0 |   34.8 | 2.95 |
 
 ### predictions_correct_rate
 

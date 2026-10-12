@@ -2,7 +2,7 @@
 
 _On native Opus 5, can naming-first and a mandatory inline refactoring trial improve SOL PTDD v1.6 decomposition without paying the isolated-subagent cost of the Opus default?_
 
-Generated: 2026-10-12T08:37:37Z
+Generated: 2026-10-12T10:46:29Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 5
 
@@ -112,13 +112,6 @@ Cells declared: 2 · matched runs: 15 · min_replicates: 5
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |      0 |  245.7 | 32.92 |
 | claim-office-example-mapping | exact-sol-v1.6.1-naming-refactor-trial-cc | opus-5-no-thinking |   5 |      0 |  242.2 | 14.2  |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                             | cell_model         |   n |   null |   mean |    sd |
-|:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |      0 |   51.5 | 13.81 |
-| claim-office-example-mapping | exact-sol-v1.6.1-naming-refactor-trial-cc | opus-5-no-thinking |   5 |      0 |   36.4 | 15.08 |
 
 ### predictions_correct_rate
 

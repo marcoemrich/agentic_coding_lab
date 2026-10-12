@@ -2,7 +2,7 @@
 
 _How do the models reachable via the cursor-cli harness (Opus 4.8 medium, Composer 2.5, Grok 4.5 medium) differ in code quality and TDD discipline on game-of-life-example-mapping?_
 
-Generated: 2026-10-12T08:37:46Z
+Generated: 2026-10-12T10:46:37Z
 
 Cells declared: 3 · matched runs: 10 · min_replicates: 5
 
@@ -143,22 +143,6 @@ Cells declared: 3 · matched runs: 10 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    8.4 |   0.55 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    7.8 |   0.45 |
-
-### cycle_count
-
-| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    7.4 |   1.52 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    8.4 |   2.07 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    3.6 |   1.52 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    5   |   0.71 |
 
 ### predictions_correct
 

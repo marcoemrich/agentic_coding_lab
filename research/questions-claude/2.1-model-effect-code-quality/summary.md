@@ -2,7 +2,7 @@
 
 _How strongly do the available models (Sonnet 4.6, Opus 4.6, Opus 4.7, Opus 4.8, Fable 5 — each with/without thinking) differ in code quality on a training-known kata under the strongest workflow?_
 
-Generated: 2026-10-12T08:37:34Z
+Generated: 2026-10-12T10:46:27Z
 
 Cells declared: 12 · matched runs: 44 · min_replicates: 3
 

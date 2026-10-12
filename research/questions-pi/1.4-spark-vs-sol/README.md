@@ -25,8 +25,6 @@ outcomes:
   - code_mass
   # TDD discipline. predictions_correct_rate only, never predictions_total --
   # see the marker caveat below before reading these.
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
   # cost. cost_usd is NOT an outcome here, but the original reason expired on
   # 2026-09-05: both models were unpriced, so the field was a constant 0 that

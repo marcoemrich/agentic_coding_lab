@@ -36,10 +36,7 @@ outcomes:
   - smell_code_quality
   # Test-suite size and TDD mechanism controls
   - test_lines
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
-  - tests_passed_immediately
   # Operational cost
   - duration_seconds
   - total_tokens

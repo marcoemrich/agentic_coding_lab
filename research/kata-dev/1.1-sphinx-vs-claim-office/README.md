@@ -27,10 +27,7 @@ outcomes:
   - mccabe_max
   - smell_total
   # TDD markers must stay healthy on the new kata
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
-  - tests_passed_immediately
 min_replicates: 6
 closed: "abandoned — weak-probe cells never filled; the sphinx-score line continues in RQ-kata-sphinx-prompt-sensitivity"
 ---

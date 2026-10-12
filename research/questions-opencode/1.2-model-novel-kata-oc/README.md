@@ -28,8 +28,6 @@ outcomes:
   - lines_of_code
   - smell_total
   # tertiary: TDD discipline (v5.1-oc provides these thanks to parse_opencode_transcript)
-  - cycle_count
-  - refactorings_applied
   - predictions_correct
   - predictions_total
   # context

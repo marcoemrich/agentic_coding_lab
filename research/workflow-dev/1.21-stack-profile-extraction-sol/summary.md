@@ -2,7 +2,7 @@
 
 _Can all remaining TypeScript/Vitest-specific instructions be moved from the Sol-originated Predictive TDD orchestration and test-list skill into its existing stack profile without changing correctness, TDD discipline, refactoring behaviour, code quality or cost?_
 
-Generated: 2026-10-12T08:37:58Z
+Generated: 2026-10-12T10:46:47Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -35,24 +35,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |   5 |      0 |      100 |
 
-### cycle_count
-
-| kata                         | cell_workflow                   | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1-pi                 | gpt-5-6-sol-codex |   5 |      0 |    9.8 | 0.45 |
-| claim-office-example-mapping | exact-sol-v1-pi                 | gpt-5-6-sol-codex |   5 |      0 |   33.4 | 2.97 |
-| game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |    9.8 | 0.84 |
-| claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |   32.6 | 2.3  |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                   | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1-pi                 | gpt-5-6-sol-codex |   5 |      0 |    9.8 | 0.45 |
-| claim-office-example-mapping | exact-sol-v1-pi                 | gpt-5-6-sol-codex |   5 |      0 |   33.2 | 2.68 |
-| game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |    9.8 | 0.84 |
-| claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |   32.6 | 2.3  |
-
 ### predictions_correct_rate
 
 | kata                         | cell_workflow                   | cell_model        |   n |   k |   t |   null |   rate_% |
@@ -61,15 +43,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1-pi                 | gpt-5-6-sol-codex |   5 | 137 | 138 |      0 |     99.3 |
 | game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |  50 |  50 |      0 |    100   |
 | claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 | 173 | 173 |      0 |    100   |
-
-### tests_passed_immediately
-
-| kata                         | cell_workflow                   | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1-pi                 | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-sol-v1-pi                 | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
 
 ### avg_loc_per_function
 

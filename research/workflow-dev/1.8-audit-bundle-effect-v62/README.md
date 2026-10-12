@@ -10,10 +10,7 @@ controls:
   kata_base: game-of-life
 outcomes:
   # primary: TDD discipline (the class-3 changes target red-phase discipline directly)
-  - tests_passed_immediately
-  - refactorings_applied
   - predictions_correct_rate
-  - cycle_count
   # code quality (sanity: the bundle must not degrade it)
   - code_mass
   - smell_total

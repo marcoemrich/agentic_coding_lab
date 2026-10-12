@@ -55,8 +55,6 @@ outcomes:
   - lines_of_code
   - smell_total
   # tertiary: TDD discipline
-  - cycle_count
-  - refactorings_applied
   - predictions_correct
   - predictions_total
   # context

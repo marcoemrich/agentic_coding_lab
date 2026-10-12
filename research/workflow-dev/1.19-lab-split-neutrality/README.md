@@ -13,8 +13,6 @@ controls:
 outcomes:
   # the primary outcome — this is the metric the original control run omitted,
   # and the one that diverged. Read as a rate against cycle_count, not alone.
-  - refactorings_applied
-  - cycle_count
   # cost, where the consequence of a changed refactor rate shows up
   - duration_seconds
   - total_tokens
@@ -30,7 +28,6 @@ outcomes:
   - code_mass
   # marker health: hybrid-v2.4 must produce the same four markers as hybrid-v2
   - predictions_correct_rate
-  - tests_passed_immediately
 min_replicates: 5
 ---
 

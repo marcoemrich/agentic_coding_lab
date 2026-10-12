@@ -28,8 +28,6 @@ outcomes:
   - verification_pct
   - tests_passing
   # TDD discipline — n/a on the inline-tdd-v1 cells (no phase markers)
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
   # cost
   - duration_seconds

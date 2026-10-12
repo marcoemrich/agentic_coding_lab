@@ -2,7 +2,7 @@
 
 _Does external correctness (verification_pct) differ between TDD workflow variants on the novel claim-office kata?_
 
-Generated: 2026-10-12T08:37:38Z
+Generated: 2026-10-12T10:46:30Z
 
 Cells declared: 7 · matched runs: 36 · min_replicates: 3
 
@@ -68,30 +68,6 @@ Cells declared: 7 · matched runs: 36 · min_replicates: 3
 | claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   5 |   5 |      0 |      100 |
 
-### cycle_count
-
-| kata                         | cell_workflow                           | cell_model                   |   n |   null |   mean |    sd |
-|:-----------------------------|:----------------------------------------|:-----------------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |   5 |      0 |   3.8  |  1.3  |
-| claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |      0 |  44.6  |  8.59 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   6 |      0 |   5.5  |  6.66 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   7 |      0 |  28    | 12.96 |
-| claim-office-example-mapping | exact-green-refactor-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   3 |      0 |  18.33 |  8.33 |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   5 |      0 |   3.6  |  1.14 |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   5 |      0 |   5.4  |  1.95 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                           | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |   5 |      0 |   1.8  | 0.45 |
-| claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |      0 |   6.8  | 7.09 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   6 |      0 |   2.17 | 0.75 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   7 |      0 |  11    | 5.1  |
-| claim-office-example-mapping | exact-green-refactor-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   3 |      0 |  14    | 9    |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   5 |      0 |   1    | 0    |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   5 |      0 |   1    | 0    |
-
 ### predictions_correct_rate
 
 | kata                         | cell_workflow                           | cell_model                   |   n |   null |   mean |   sd |   k |   t |   rate_% |
@@ -103,18 +79,6 @@ Cells declared: 7 · matched runs: 36 · min_replicates: 3
 | claim-office-example-mapping | exact-green-refactor-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   3 |      0 |    nan |  nan |  99 |  99 |    100   |
 | claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   0 |      5 |    nan |  nan | nan | nan |    nan   |
 | claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   0 |      5 |    nan |  nan | nan | nan |    nan   |
-
-### tests_passed_immediately
-
-| kata                         | cell_workflow                           | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-portkey-no-thinking |   5 |      0 |   0.6  | 0.89 |
-| claim-office-example-mapping | exact-subagents-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   5 |      0 |  22.2  | 6.14 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   6 |      0 |   1.67 | 3.61 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-portkey-no-thinking |   7 |      0 |  13.57 | 8.62 |
-| claim-office-example-mapping | exact-green-refactor-v2-testlist-fix-cc | opus-4-7-portkey-no-thinking |   3 |      0 |   6.33 | 5.03 |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-agent-cc  | opus-4-7-portkey-no-thinking |   5 |      0 |   0    | 0    |
-| claim-office-example-mapping | baseline-end-refactor-only-v1-native-cc | opus-4-7-portkey-no-thinking |   5 |      0 |   0    | 0    |
 
 ### duration_seconds
 

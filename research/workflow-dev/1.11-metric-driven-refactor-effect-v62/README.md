@@ -23,10 +23,7 @@ outcomes:
   - smell_complexity
   - code_mass
   # TDD discipline (sanity: the extra tool calls must not disturb refactor frequency)
-  - refactorings_applied
-  - cycle_count
   - predictions_correct_rate
-  - tests_passed_immediately
   # correctness (sanity: bundle risk from RQ-1.9/RQ-1.10 vs claim-office)
   - tests_passing
   - verification_pct

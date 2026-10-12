@@ -32,8 +32,6 @@ outcomes:
   # TDD discipline — does Sol keep the mechanics alive in each architecture?
   # NOT measurable on the inline-tdd-v1 baseline cell (it prescribes no phase markers) —
   # see "Measurement limit" below. Read that row as n/a, not as zero.
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
   # cost/throughput context (Sol's selling point is speed)
   - duration_seconds

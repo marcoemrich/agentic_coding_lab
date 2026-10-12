@@ -33,8 +33,6 @@ outcomes:
   - tests_passing     # internal (vitest)
   - tests_total
   # tertiary: TDD discipline
-  - cycle_count
-  - refactorings_applied
   - predictions_correct
   - predictions_total
   # context

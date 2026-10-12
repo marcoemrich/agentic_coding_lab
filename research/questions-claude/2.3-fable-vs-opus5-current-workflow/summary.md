@@ -2,7 +2,7 @@
 
 _How do Fable 5, Fable 5.1, Opus 5 and Sonnet 5 (each no-thinking, on the Claude Max subscription) differ in correctness and code quality on the novel claim-office kata under the current exact-coding baseline workflow?_
 
-Generated: 2026-10-12T08:37:35Z
+Generated: 2026-10-12T10:46:27Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -97,24 +97,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | fable-5-no-thinking         | 2.1.267        |   5 |      0 |  659   | 12.92 |
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | fable-5-1-no-thinking       | 2.1.267        |   5 |      0 |  805.2 | 61.41 |
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | sonnet-5-native-no-thinking | 2.1.267        |   5 |      0 |  817.2 | 73.36 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                   | cell_model                  | cell_harness   |   n |   null |   mean |    sd |
-|:-----------------------------|:--------------------------------|:----------------------------|:---------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-5-no-thinking          | 2.1.267        |   5 |      0 |   27.2 | 10.57 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | fable-5-no-thinking         | 2.1.267        |   5 |      0 |   23.8 |  1.48 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | fable-5-1-no-thinking       | 2.1.267        |   5 |      0 |   25.4 |  1.95 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | sonnet-5-native-no-thinking | 2.1.267        |   5 |      0 |   21.4 |  6.91 |
-
-### cycle_count
-
-| kata                         | cell_workflow                   | cell_model                  | cell_harness   |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:----------------------------|:---------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-5-no-thinking          | 2.1.267        |   5 |      0 |   46.4 | 3.91 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | fable-5-no-thinking         | 2.1.267        |   5 |      0 |   38.6 | 1.95 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | fable-5-1-no-thinking       | 2.1.267        |   5 |      0 |   43.8 | 1.64 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc | sonnet-5-native-no-thinking | 2.1.267        |   5 |      0 |   41.6 | 4.28 |
 
 ### tests_passing
 

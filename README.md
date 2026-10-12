@@ -230,7 +230,7 @@ When in doubt, list the named metrics in the workflow's `README.md` / header so 
 > **Superseded in 2026-10 by the [phase chain](#phase-chain-metrics).** The
 > transcript route below replaced markers for cycle discipline and was itself
 > retired: it read 0 for any model that writes files through the shell. Its
-> columns survive only under the `legacy_` prefix. The argument against markers
+> fields survive only under the `legacy_` prefix in each run's `metrics.json`. The argument against markers
 > still holds and is why the phase chain reads test-runner events instead.
 
 A verbatim `Red Phase Complete` block is **not a neutral probe**. An output
@@ -908,8 +908,9 @@ The phase markers that drive these counts are documented in [`experiments/workfl
 > onto the current metrics means re-running its runs, not reanalysing them**:
 > the event stream the chain reads cannot be reconstructed after the fact.
 
-Names below are the historical column names; in `runs.csv` each now carries the
-`legacy_` prefix.
+Names below are the historical column names. They survive with a `legacy_`
+prefix in each run's `metrics.json` only; no RQ declares them and `runs.csv` no
+longer carries them.
 
 | Metric | Source | Description |
 |--------|--------|-------------|
@@ -1072,10 +1073,8 @@ Column names as they appear in `runs.csv`.
 
 **Why four columns carry a `chain_` prefix.** `tdd-report.py`'s own vocabulary
 calls them `suite_runs`, `deviations`, `opens_red` and `ends_green`; three of
-those names were already taken by the retired `suite_*` family, and a bare
-`suite_runs` in an RQ's `outcomes:` still resolves to `legacy_suite_runs` by
-design. The prefix is what keeps a chain number from being readable as a legacy
-one. The JSON keys `tdd-report.py` prints are unprefixed; `analyze-run.sh` adds
+those names were already taken by the retired `suite_*` family. The prefix is
+what keeps a chain number from being readable as a legacy one. The JSON keys `tdd-report.py` prints are unprefixed; `analyze-run.sh` adds
 the prefix when it folds them into `metrics.json`.
 
 #### The consolidated score
@@ -1205,10 +1204,11 @@ Reference values from the fixtures used to build this:
 **These metrics exist only for runs produced after the reporter landed.** The
 event stream cannot be reconstructed retroactively: no reanalysis pass produces
 it, so the ~1840 older runs carry nothing in these columns. **Migration means
-re-running.** An RQ still listing a superseded outcome aggregates from its
-`legacy_` column and gets a warning; bringing it onto the current metrics
-requires refilling every cell, because a cell mixing legacy and current runs
-compares two different constructs.
+re-running.** The superseded outcomes were removed from every RQ on
+2026-10-12, and the aggregator no longer reads `legacy_` columns; they remain in
+each run's `metrics.json` only. An RQ that needs TDD discipline on old runs has
+to refill its cells, because a cell mixing legacy and current runs compares two
+different constructs.
 
 Validated against the transcript before the old route was retired: on a real
 82-invocation run, `measure-suite-transitions.py` — which derived the same

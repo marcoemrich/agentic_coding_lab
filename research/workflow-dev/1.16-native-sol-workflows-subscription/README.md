@@ -27,8 +27,6 @@ outcomes:
   - code_mass
   # TDD discipline — n/a on the inline-tdd-v1 cell (no phase markers). On the native cells,
   # compare predictions_correct_rate ONLY, never predictions_total; see below.
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
   # cost — the native line must earn its overhead against a floor that is cheap
   - duration_seconds

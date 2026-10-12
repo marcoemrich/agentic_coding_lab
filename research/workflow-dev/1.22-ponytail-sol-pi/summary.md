@@ -2,7 +2,7 @@
 
 _When Ponytail full is forcibly loaded into the Sol-originated EXACT Coding workflow on pi, does it improve code quality without reducing correctness, test strength, TDD discipline or completion reliability, and at what cost?_
 
-Generated: 2026-10-12T08:37:58Z
+Generated: 2026-10-12T10:46:47Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -224,24 +224,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |   45.2 |  2.95 |
 | claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |  199.8 | 25.83 |
 
-### cycle_count
-
-| kata                         | cell_workflow                   | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |    9.8 | 0.84 |
-| claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |   32.6 | 2.3  |
-| game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |    9.6 | 0.89 |
-| claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |   31.4 | 4.39 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                   | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |    9.8 | 0.84 |
-| claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |   32.6 | 2.3  |
-| game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |    9.6 | 0.89 |
-| claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |   31.4 | 4.39 |
-
 ### predictions_correct_rate
 
 | kata                         | cell_workflow                   | cell_model        |   n |   k |   t |   null |   rate_% |
@@ -250,15 +232,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 | 173 | 173 |      0 |    100   |
 | game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |  42 |  42 |      0 |    100   |
 | claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 | 140 | 142 |      0 |     98.6 |
-
-### tests_passed_immediately
-
-| kata                         | cell_workflow                   | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-sol-v1.3-stack-profile-pi | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| game-of-life-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
-| claim-office-example-mapping | exact-sol-v1.3.1-ponytail-pi    | gpt-5-6-sol-codex |   5 |      0 |      0 |    0 |
 
 ### duration_seconds
 

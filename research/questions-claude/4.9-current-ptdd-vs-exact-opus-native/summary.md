@@ -2,7 +2,7 @@
 
 _On native Opus 5, how does the current SOL Predictive-TDD workflow compare with the default EXACT Coding workflow on correctness, decomposition, development behavior, and efficiency?_
 
-Generated: 2026-10-12T08:37:41Z
+Generated: 2026-10-12T10:46:32Z
 
 Cells declared: 2 · matched runs: 28 · min_replicates: 5
 
@@ -98,20 +98,6 @@ Cells declared: 2 · matched runs: 28 · min_replicates: 5
 |:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|-------:|-------:|
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |      0 | 457    | 131.76 |
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc           | opus-5-no-thinking |  18 |      0 | 765.39 | 111.87 |
-
-### cycle_count
-
-| kata                         | cell_workflow                             | cell_model         |   n |   null |   mean |    sd |
-|:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |      0 |  54.3  | 26.46 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc           | opus-5-no-thinking |  18 |      0 |  45.89 |  4.93 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                             | cell_model         |   n |   null |   mean |    sd |
-|:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |      0 |  45    | 11.21 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc           | opus-5-no-thinking |  18 |      0 |  21.28 |  7.55 |
 
 ### predictions_correct_rate
 

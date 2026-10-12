@@ -20,8 +20,6 @@ outcomes:
   - smell_complexity
   - code_mass
   # TDD discipline (sanity: the additive block must not disturb refactor behavior)
-  - refactorings_applied
-  - cycle_count
   - predictions_correct_rate
   # correctness (sanity)
   - tests_passing

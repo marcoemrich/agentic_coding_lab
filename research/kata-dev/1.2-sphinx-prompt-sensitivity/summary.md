@@ -2,7 +2,7 @@
 
 _Does sphinx-score carry an example-mapping effect — do the pinned examples move correctness relative to the bare prose prompt, and does it do so more sharply than claim-office?_
 
-Generated: 2026-10-12T08:37:33Z
+Generated: 2026-10-12T10:46:25Z
 
 Cells declared: 4 · matched runs: 24 · min_replicates: 6
 
@@ -61,24 +61,6 @@ Cells declared: 4 · matched runs: 24 · min_replicates: 6
 | sphinx-score-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  19.39 | 10.56 |
 | claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 | 109.59 | 15.26 |
 | claim-office-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  66.35 |  8.49 |
-
-### cycle_count
-
-| kata                         | cell_workflow                | cell_model         |   n |   null |   mean |   sd |
-|:-----------------------------|:-----------------------------|:-------------------|----:|-------:|-------:|-----:|
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  11.67 | 2.16 |
-| sphinx-score-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  15    | 4.47 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  45.83 | 7.08 |
-| claim-office-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  35.67 | 4.08 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                | cell_model         |   n |   null |   mean |   sd |
-|:-----------------------------|:-----------------------------|:-------------------|----:|-------:|-------:|-----:|
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  11.67 | 2.16 |
-| sphinx-score-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |   9.83 | 6.18 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  44.5  | 8.02 |
-| claim-office-prose           | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  31    | 6.2  |
 
 ### lines_of_code
 

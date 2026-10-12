@@ -21,10 +21,7 @@ outcomes:
   - cognitive_max
   - mccabe_max
   # TDD discipline (interaction confirmation expected if the finding is kata-stable)
-  - refactorings_applied
-  - cycle_count
   - predictions_correct_rate
-  - tests_passed_immediately
   # cost
   - duration_seconds
   - total_tokens

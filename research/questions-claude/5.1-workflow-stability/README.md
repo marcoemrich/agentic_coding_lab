@@ -24,9 +24,6 @@ outcomes:
   - mutation_score
   # new: TDD discipline bands per workflow
   - predictions_correct_rate    # pooled rate from predictions_correct/predictions_total
-  - refactorings_applied        # refactor discipline (per run)
-  - cycle_count                 # cycle granularity
-  - tests_passed_immediately    # over-implementation indicator
   # secondary: correctness (sanity, should stay at 100 %)
   - tests_passing
   - verification_pct

@@ -2,7 +2,7 @@
 
 _Can all remaining TypeScript/Vitest-specific instructions be moved from the Opus/Hybrid workflow core, phase commands and refactor agent into its existing stack profile without changing correctness, TDD discipline, refactoring behaviour, code quality or cost?_
 
-Generated: 2026-10-12T08:37:57Z
+Generated: 2026-10-12T10:46:46Z
 
 Cells declared: 4 · matched runs: 34 · min_replicates: 5
 
@@ -35,24 +35,6 @@ Cells declared: 4 · matched runs: 34 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |   4 |      0 |       80 |
 
-### cycle_count
-
-| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |    sd |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |   6 |      0 |  10.33 |  1.37 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |  18 |      0 |  45.89 |  4.93 |
-| game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |      0 |   8.8  |  3.63 |
-| claim-office-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |      0 |  40.4  | 22.3  |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |   sd |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |   6 |      0 |   4.33 | 0.52 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |  18 |      0 |  21.28 | 7.55 |
-| game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |      0 |   6.4  | 5.13 |
-| claim-office-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |      0 |  16    | 9.22 |
-
 ### predictions_correct_rate
 
 | kata                         | cell_workflow                      | cell_model         |   n |    k |    t |   null |   rate_% |
@@ -61,15 +43,6 @@ Cells declared: 4 · matched runs: 34 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |  18 | 1608 | 1614 |      0 |     99.6 |
 | game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |   84 |   84 |      0 |    100   |
 | claim-office-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   4 |  401 |  402 |      1 |     99.8 |
-
-### tests_passed_immediately
-
-| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |    sd |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |   6 |      0 |   7.33 |  1.03 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc    | opus-5-no-thinking |  18 |      0 |  24.28 |  5.18 |
-| game-of-life-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |      0 |   4.6  |  3.21 |
-| claim-office-example-mapping | exact-hybrid-v2.9-stack-profile-cc | opus-5-no-thinking |   5 |      0 |  23.6  | 13.46 |
 
 ### avg_loc_per_function
 

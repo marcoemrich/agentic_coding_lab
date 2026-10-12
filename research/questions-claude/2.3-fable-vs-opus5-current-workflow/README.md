@@ -31,8 +31,6 @@ outcomes:
   - smell_total
   - code_mass
   # TDD discipline — the workflow's own mechanism, read as a rate
-  - refactorings_applied
-  - cycle_count
   # context
   - tests_passing
   - duration_seconds

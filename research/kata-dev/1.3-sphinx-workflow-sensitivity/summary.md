@@ -2,7 +2,7 @@
 
 _Does sphinx-score resolve a workflow difference in code quality — does the decomposition gap between a minimal and an elaborate TDD workflow show up as clearly as it does on claim-office?_
 
-Generated: 2026-10-12T08:37:33Z
+Generated: 2026-10-12T10:46:26Z
 
 Cells declared: 6 · matched runs: 36 · min_replicates: 6
 
@@ -107,28 +107,6 @@ Cells declared: 6 · matched runs: 36 · min_replicates: 6
 | game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  53.5  | 11.29 |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |      0 |  55    |  8.65 |
 
-### refactorings_applied
-
-| kata                         | cell_workflow                | cell_model         |   n |   null |   mean |   sd |
-|:-----------------------------|:-----------------------------|:-------------------|----:|-------:|-------:|-----:|
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  11.67 | 2.16 |
-| sphinx-score-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |      0 |   2.67 | 1.03 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  44.5  | 8.02 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |      0 |   2    | 0.89 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |   8.83 | 3.37 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |      0 |   0.33 | 0.82 |
-
-### cycle_count
-
-| kata                         | cell_workflow                | cell_model         |   n |   null |   mean |   sd |
-|:-----------------------------|:-----------------------------|:-------------------|----:|-------:|-------:|-----:|
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  11.67 | 2.16 |
-| sphinx-score-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |      0 |   1.5  | 0.55 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  45.83 | 7.08 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |      0 |   5.17 | 2.32 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  10.33 | 0.52 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |      0 |   3.67 | 1.37 |
-
 ### predictions_correct_rate
 
 | kata                         | cell_workflow                | cell_model         |   n |   k |   t |   null |   rate_% |   mean |   sd |
@@ -139,17 +117,6 @@ Cells declared: 6 · matched runs: 36 · min_replicates: 6
 | claim-office-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   0 | nan | nan |      6 |    nan   |    nan |  nan |
 | game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 | 124 | 126 |      0 |     98.4 |    nan |  nan |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   0 | nan | nan |      6 |    nan   |    nan |  nan |
-
-### tests_passed_immediately
-
-| kata                         | cell_workflow                | cell_model         |   n |   null |   mean |    sd |
-|:-----------------------------|:-----------------------------|:-------------------|----:|-------:|-------:|------:|
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |   2    |  2.19 |
-| sphinx-score-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |      0 |   0.33 |  0.52 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |  20.33 | 11.17 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |      0 |   1.17 |  1.17 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc | opus-5-no-thinking |   6 |      0 |   1.5  |  3.67 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc    | opus-5-no-thinking |   6 |      0 |   0.5  |  0.55 |
 
 ### verification_pct
 

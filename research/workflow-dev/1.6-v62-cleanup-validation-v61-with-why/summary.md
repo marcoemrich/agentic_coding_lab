@@ -2,7 +2,7 @@
 
 _Do the three v6.5.1 audit cleanups (consistency, refactor.md decoupling, tdd-experiment-mode reframing) — applied to exact-hybrid-v3-with-why-cc — measurably change workflow behaviour on claim-office, or is exact-hybrid-v4-cleaned-cc a behaviourally equivalent hygiene variant of the new default baseline?_
 
-Generated: 2026-10-12T08:38:01Z
+Generated: 2026-10-12T10:46:49Z
 
 Cells declared: 2 · matched runs: 16 · min_replicates: 8
 
@@ -35,27 +35,6 @@ Cells declared: 2 · matched runs: 16 · min_replicates: 8
 |:-----------------------------|:----------------------------|:-----------------------------|----:|----:|----:|-------:|---------:|
 | claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   7 | 530 | 551 |      1 |     96.2 |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 | 581 | 598 |      0 |     97.2 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |      0 |  18.5  | 8.42 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |      0 |  24.88 | 6.9  |
-
-### tests_passed_immediately
-
-| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |      0 |  15.38 | 7.27 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |      0 |  15.12 | 5.84 |
-
-### cycle_count
-
-| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |    sd |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |      0 |  35    | 14.22 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |      0 |  37.38 |  1.6  |
 
 ### code_mass
 

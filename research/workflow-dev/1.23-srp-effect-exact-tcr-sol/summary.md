@@ -2,7 +2,7 @@
 
 _How does the same domain-boundary refactoring trial interact with SOL Predictive TDD versus EXACT TCR, and can a subordinate APP review lower Code Mass in the strongest TCR trial arm without erasing its decomposition, correctness, discipline, or efficiency?_
 
-Generated: 2026-10-12T08:37:59Z
+Generated: 2026-10-12T10:46:47Z
 
 Cells declared: 14 · matched runs: 71 · min_replicates: 5
 
@@ -312,82 +312,6 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |  43.4  |  4.04 |
 | claim-office-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 | 234.8  | 44.64 |
 
-### test_blocks
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |   10.6 | 1.67 |
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |   25.2 | 8.67 |
-| game-of-life-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   11   | 1    |
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   21.8 | 8.32 |
-| game-of-life-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   6 |      0 |   13   | 0.89 |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |      0 |   37   | 1.58 |
-| game-of-life-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |      0 |   11.8 | 1.3  |
-| claim-office-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |      0 |   35   | 6.82 |
-| game-of-life-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |      0 |   12.2 | 0.45 |
-| claim-office-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |      0 |   36.8 | 1.48 |
-| game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   12.4 | 0.55 |
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   37.6 | 1.95 |
-| game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |   11.4 | 0.55 |
-| claim-office-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |   32.2 | 7.53 |
-
-### red_verified
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |   5.4  | 2.51 |
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |   9.8  | 7.33 |
-| game-of-life-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   5    | 1.58 |
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   8.6  | 7.64 |
-| game-of-life-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   6 |      0 |  12.83 | 0.75 |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |      0 |  36.8  | 1.79 |
-| game-of-life-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |      0 |  11.8  | 1.3  |
-| claim-office-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |      0 |  35    | 6.82 |
-| game-of-life-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |      0 |  12.2  | 0.45 |
-| claim-office-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |      0 |  36.8  | 1.48 |
-| game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |  11.8  | 0.84 |
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |  37.4  | 2.19 |
-| game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |  11.2  | 0.45 |
-| claim-office-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |  32    | 7.45 |
-
-### red_unverified
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |   5.2  | 1.3  |
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |  15.4  | 2.3  |
-| game-of-life-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   6    | 1.41 |
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |  13.2  | 0.84 |
-| game-of-life-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   6 |      0 |   0.17 | 0.41 |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |      0 |   0.2  | 0.45 |
-| game-of-life-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |      0 |   0    | 0    |
-| claim-office-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |      0 |   0    | 0    |
-| game-of-life-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |      0 |   0    | 0    |
-| claim-office-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |      0 |   0    | 0    |
-| game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   0.6  | 0.55 |
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   0.2  | 0.45 |
-| game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |   0.2  | 0.45 |
-| claim-office-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |   0.2  | 0.45 |
-
-### tcr_refactor_steps
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |    0   | 0    |
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |    0   | 0    |
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |    0   | 0    |
-| game-of-life-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   6 |      0 |    2.5 | 2.81 |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |      0 |    5.6 | 4.16 |
-| game-of-life-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |      0 |    2.6 | 0.55 |
-| claim-office-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |      0 |    1.8 | 1.1  |
-| game-of-life-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |      0 |    2   | 0.71 |
-| claim-office-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |      0 |    4   | 2    |
-| game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |    4   | 1.41 |
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   10.6 | 4.16 |
-| game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |    2.8 | 0.84 |
-| claim-office-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |    9.8 | 4.09 |
-
 ### tcr_method_commits
 
 | kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
@@ -463,44 +387,6 @@ Cells declared: 14 · matched runs: 71 · min_replicates: 5
 | claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |    9.4 | 4.93 |
 | game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |    2.6 | 0.89 |
 | claim-office-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |    9.2 | 3.77 |
-
-### cycle_count
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |  10.2  | 1.92 |
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |  30.8  | 5.07 |
-| game-of-life-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |  10.6  | 0.55 |
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |  27.2  | 4.44 |
-| game-of-life-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   6 |      0 |  10.83 | 0.41 |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |      0 |  35.6  | 1.67 |
-| game-of-life-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |      0 |   9.8  | 0.84 |
-| claim-office-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |      0 |  36    | 1.58 |
-| game-of-life-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |      0 |  10.6  | 0.55 |
-| claim-office-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |      0 |  35.4  | 1.34 |
-| game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |  10    | 0.71 |
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |  36    | 2.35 |
-| game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |   9.6  | 0.89 |
-| claim-office-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |  33.2  | 3.11 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                           | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |   10.2 | 1.92 |
-| claim-office-example-mapping | exact-sol-v1.3.2-local-git-control-pi   | gpt-5-6-sol-codex |   5 |      0 |   30.8 | 5.07 |
-| game-of-life-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   10.6 | 0.55 |
-| claim-office-example-mapping | exact-sol-v1.4-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   27.2 | 4.44 |
-| game-of-life-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   6 |      0 |   12.5 | 1.97 |
-| claim-office-example-mapping | exact-tcr-v1-pi                         | gpt-5-6-sol-codex |   5 |      0 |   36.8 | 1.64 |
-| game-of-life-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |      0 |   10.6 | 1.14 |
-| claim-office-example-mapping | exact-tcr-v1.1-srp-pi                   | gpt-5-6-sol-codex |   5 |      0 |   37.2 | 1.64 |
-| game-of-life-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |      0 |   13   | 0.71 |
-| claim-office-example-mapping | exact-tcr-v1.2-domain-responsibility-pi | gpt-5-6-sol-codex |   5 |      0 |   37   | 2.12 |
-| game-of-life-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   12.4 | 1.95 |
-| claim-office-example-mapping | exact-tcr-v1.3-domain-boundary-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   37.4 | 2.07 |
-| game-of-life-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |   10.2 | 1.1  |
-| claim-office-example-mapping | exact-tcr-v1.4-domain-boundary-app-pi   | gpt-5-6-sol-codex |   5 |      0 |   33.4 | 3.13 |
 
 ### predictions_correct_rate
 

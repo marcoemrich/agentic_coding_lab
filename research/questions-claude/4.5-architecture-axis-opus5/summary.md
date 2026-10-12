@@ -2,7 +2,7 @@
 
 _Does the TDD architecture axis (inline-tdd-v1 structureless / single-context-v2 single context / hybrid-v2 hybrid / hybrid-v6 current generation) still rank the same way on opus-5 as it does on opus-4-7 — and does the decomposition metric change the answer?_
 
-Generated: 2026-10-12T08:37:39Z
+Generated: 2026-10-12T10:46:31Z
 
 Cells declared: 16 · matched runs: 111 · min_replicates: 5
 
@@ -238,48 +238,6 @@ Cells declared: 16 · matched runs: 111 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |   5 |      0 |      100 |
 | game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 |   6 |      0 |      100 |
 | game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |   5 |      0 |      100 |
-
-### cycle_count
-
-| kata                         | cell_workflow                           | cell_model           |   n |   null |   mean |    sd |
-|:-----------------------------|:----------------------------------------|:---------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-5-no-thinking   |   6 |      0 |   5.17 |  2.32 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-no-thinking |   5 |      0 |   3.8  |  1.3  |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-5-no-thinking   |   6 |      0 |   3.67 |  1.37 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-no-thinking |  10 |      0 |   1.5  |  0.97 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking   |   5 |      0 |  27    | 20.94 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-no-thinking |   6 |      0 |   5.5  |  6.66 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking   |   5 |      0 |   7.2  |  2.59 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |   7.6  |  1.52 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking   |  18 |      0 |  45.89 |  4.93 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-no-thinking |   7 |      0 |  28    | 12.96 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking   |   6 |      0 |  10.33 |  1.37 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-no-thinking |  10 |      0 |   8.7  |  0.67 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 |      0 |  45.83 |  7.08 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |      0 |  25.8  |  6.87 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 |      0 |  10.33 |  0.52 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |      0 |   9.2  |  0.45 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                           | cell_model           |   n |   null |   mean |    sd |
-|:-----------------------------|:----------------------------------------|:---------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-5-no-thinking   |   6 |      0 |   2    |  0.89 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-no-thinking |   5 |      0 |   1.8  |  0.45 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-5-no-thinking   |   6 |      0 |   0.33 |  0.82 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc               | opus-4-7-no-thinking |  10 |      0 |   0.1  |  0.32 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking   |   5 |      0 |  12.2  | 12.3  |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-no-thinking |   6 |      0 |   2.17 |  0.75 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking   |   5 |      0 |   4.4  |  0.89 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |   4.8  |  3.42 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking   |  18 |      0 |  21.28 |  7.55 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-no-thinking |   7 |      0 |  11    |  5.1  |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking   |   6 |      0 |   4.33 |  0.52 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-4-7-no-thinking |  10 |      0 |   4.1  |  1.97 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 |      0 |  44.5  |  8.02 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |      0 |  22.6  |  8.82 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking   |   6 |      0 |   8.83 |  3.37 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-4-7-no-thinking |   5 |      0 |   9.2  |  0.45 |
 
 ### predictions_correct_rate
 

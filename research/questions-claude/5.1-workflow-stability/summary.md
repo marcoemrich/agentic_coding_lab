@@ -2,7 +2,7 @@
 
 _How stable are code quality and TDD discipline per workflow across replicates, and under which conditions is n=3 a sufficient replicate count?_
 
-Generated: 2026-10-12T08:37:41Z
+Generated: 2026-10-12T10:46:33Z
 
 Cells declared: 6 · matched runs: 59 · min_replicates: 10
 
@@ -95,39 +95,6 @@ Cells declared: 6 · matched runs: 59 · min_replicates: 10
 | game-of-life-example-mapping | exact-subagents-v1-cc      | opus-4-7-no-thinking |  10 |      0 |    nan |  nan |  99 | 101 |     98   |
 | game-of-life-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking |   9 |      0 |    nan |  nan | 132 | 132 |    100   |
 | game-of-life-example-mapping | exact-hybrid-v1-cc         | opus-4-7-no-thinking |  10 |      0 |    nan |  nan | 169 | 170 |     99.4 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |   sd |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|-----:|
-| game-of-life-prose           | baseline-oneshot-v1-cc     | opus-4-7-no-thinking |  10 |      0 |   0    | 0    |
-| game-of-life-prose           | baseline-iterative-v1-cc   | opus-4-7-no-thinking |  10 |      0 |   0    | 0    |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-7-no-thinking |  10 |      0 |   0.1  | 0.32 |
-| game-of-life-example-mapping | exact-subagents-v1-cc      | opus-4-7-no-thinking |  10 |      0 |   5.9  | 2.02 |
-| game-of-life-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking |   9 |      0 |   6.67 | 2.4  |
-| game-of-life-example-mapping | exact-hybrid-v1-cc         | opus-4-7-no-thinking |  10 |      0 |   4    | 1.63 |
-
-### cycle_count
-
-| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |   sd |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|-----:|
-| game-of-life-prose           | baseline-oneshot-v1-cc     | opus-4-7-no-thinking |  10 |      0 |   1    | 0    |
-| game-of-life-prose           | baseline-iterative-v1-cc   | opus-4-7-no-thinking |  10 |      0 |   1    | 0    |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-7-no-thinking |  10 |      0 |   1.5  | 0.97 |
-| game-of-life-example-mapping | exact-subagents-v1-cc      | opus-4-7-no-thinking |  10 |      0 |   7.8  | 0.92 |
-| game-of-life-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking |   9 |      0 |   7.44 | 1.33 |
-| game-of-life-example-mapping | exact-hybrid-v1-cc         | opus-4-7-no-thinking |  10 |      0 |   8.3  | 0.82 |
-
-### tests_passed_immediately
-
-| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |   sd |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|-----:|
-| game-of-life-prose           | baseline-oneshot-v1-cc     | opus-4-7-no-thinking |  10 |      0 |    1   | 0    |
-| game-of-life-prose           | baseline-iterative-v1-cc   | opus-4-7-no-thinking |  10 |      0 |    1   | 0    |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-7-no-thinking |  10 |      0 |    0.5 | 0.97 |
-| game-of-life-example-mapping | exact-subagents-v1-cc      | opus-4-7-no-thinking |  10 |      0 |    3.3 | 2.87 |
-| game-of-life-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking |   9 |      0 |    1   | 1.73 |
-| game-of-life-example-mapping | exact-hybrid-v1-cc         | opus-4-7-no-thinking |  10 |      0 |    3.3 | 3.02 |
 
 ### tests_passing
 

@@ -19,8 +19,6 @@ outcomes:
   - duration_seconds
   - total_tokens
   - cost_usd
-  - cycle_count
-  - refactorings_applied
   # code quality — an unclear prompt may also change how the code is shaped,
   # not just whether it is correct
   - lines_of_code

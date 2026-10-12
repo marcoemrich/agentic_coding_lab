@@ -23,7 +23,6 @@ outcomes:
   - smell_total
   - code_mass
   - production_loc
-  - refactorings_applied
   - predictions_correct_rate
   - duration_seconds
   - total_tokens

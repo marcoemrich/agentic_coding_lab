@@ -38,8 +38,6 @@ outcomes:
   - tests_total
   - verification_pct
   # tertiary: TDD discipline
-  - cycle_count
-  - refactorings_applied
   - predictions_correct
   - predictions_total
   # context

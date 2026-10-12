@@ -2,7 +2,7 @@
 
 _Does the natively-built Sol workflow line (basic-sol-tdd, Predictive TDD) transfer to GPT-6 Astra — or is its advantage over the Opus-derived EXACT line a property of Sol?_
 
-Generated: 2026-10-12T08:37:51Z
+Generated: 2026-10-12T10:46:41Z
 
 Cells declared: 8 · matched runs: 40 · min_replicates: 5
 
@@ -176,32 +176,6 @@ Cells declared: 8 · matched runs: 40 · min_replicates: 5
 | claim-office-example-mapping | exact-sol-v1-pi                         | gpt-5-6-sol-codex             |   5 |      0 |  117.6 | 20.21 |
 | claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-5-6-sol-codex             |   5 |      0 |  161   | 61.76 |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex             |   5 |      0 |  110.4 | 15.24 |
-
-### cycle_count
-
-| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi               | gpt-6-astra-codex-no-thinking |   5 |      0 |    6.8 | 1.1  |
-| claim-office-example-mapping | exact-sol-v1-pi                         | gpt-6-astra-codex-no-thinking |   5 |      0 |   40.4 | 1.67 |
-| claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-6-astra-codex-no-thinking |   5 |      0 |   39.4 | 3.78 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-6-astra-codex-no-thinking |   5 |      0 |   42.4 | 2.07 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi               | gpt-5-6-sol-codex             |   5 |      0 |    3   | 0.71 |
-| claim-office-example-mapping | exact-sol-v1-pi                         | gpt-5-6-sol-codex             |   5 |      0 |   33.4 | 2.97 |
-| claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-5-6-sol-codex             |   5 |      0 |   33.2 | 3.11 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex             |   5 |      0 |   28   | 5.34 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi               | gpt-6-astra-codex-no-thinking |   5 |      0 |    0.8 | 0.45 |
-| claim-office-example-mapping | exact-sol-v1-pi                         | gpt-6-astra-codex-no-thinking |   5 |      0 |   40.4 | 1.67 |
-| claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-6-astra-codex-no-thinking |   5 |      0 |   39.4 | 3.78 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-6-astra-codex-no-thinking |   5 |      0 |   23.6 | 1.52 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi               | gpt-5-6-sol-codex             |   5 |      0 |    0.4 | 0.55 |
-| claim-office-example-mapping | exact-sol-v1-pi                         | gpt-5-6-sol-codex             |   5 |      0 |   33.2 | 2.68 |
-| claim-office-example-mapping | exact-sol-v1.1-subagent-pi              | gpt-5-6-sol-codex             |   5 |      0 |   32.2 | 7.56 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex             |   5 |      0 |   14.2 | 3.11 |
 
 ### predictions_correct_rate
 

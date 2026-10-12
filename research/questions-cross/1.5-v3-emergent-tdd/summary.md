@@ -2,7 +2,7 @@
 
 _Under a bare 'use TDD' instruction that prescribes no phase markers (inline-tdd-v1), do models actually work test-first and refactor — and how far apart do the models sit once the evidence is hand-validated?_
 
-Generated: 2026-10-12T08:37:44Z
+Generated: 2026-10-12T10:46:35Z
 
 Cells declared: 10 · matched runs: 49 · min_replicates: 3
 
@@ -22,36 +22,6 @@ Cells declared: 10 · matched runs: 49 · min_replicates: 3
 | claim-office-example-mapping | baseline-inline-tdd-v1-cc | haiku-4-5-no-thinking | 3 | 3 | ✅ |
 
 ## Outcome pivots (per cell)
-
-### cycle_count
-
-| kata                         | cell_workflow             | cell_model             |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------|:-----------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc | opus-5-no-thinking     |   6 |      0 |   3.67 | 1.37 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc | opus-5-no-thinking     |   6 |      0 |   5.17 | 2.32 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-pi | gpt-5-6-sol            |   5 |      0 |   4.2  | 1.48 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi | gpt-5-6-sol            |   5 |      0 |   3.6  | 2.07 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc | opus-4-7-no-thinking   |  10 |      0 |   1.5  | 0.97 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc | opus-4-7-no-thinking   |   5 |      0 |   3.8  | 1.3  |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc | sonnet-4-6-no-thinking |   3 |      0 |   1    | 0    |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc | sonnet-4-6-no-thinking |   3 |      0 |   3    | 1    |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc | haiku-4-5-no-thinking  |   3 |      0 |   2.33 | 0.58 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc | haiku-4-5-no-thinking  |   3 |      0 |   4.67 | 1.53 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow             | cell_model             |   n |   null |   mean |   sd |
-|:-----------------------------|:--------------------------|:-----------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc | opus-5-no-thinking     |   6 |      0 |   0.33 | 0.82 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc | opus-5-no-thinking     |   6 |      0 |   2    | 0.89 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-pi | gpt-5-6-sol            |   5 |      0 |   0.4  | 0.55 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi | gpt-5-6-sol            |   5 |      0 |   1    | 1    |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc | opus-4-7-no-thinking   |  10 |      0 |   0.1  | 0.32 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc | opus-4-7-no-thinking   |   5 |      0 |   1.8  | 0.45 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc | sonnet-4-6-no-thinking |   3 |      0 |   0    | 0    |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc | sonnet-4-6-no-thinking |   3 |      0 |   0    | 0    |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-cc | haiku-4-5-no-thinking  |   3 |      0 |   0    | 0    |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc | haiku-4-5-no-thinking  |   3 |      0 |   1    | 1.73 |
 
 ### tests_passing
 

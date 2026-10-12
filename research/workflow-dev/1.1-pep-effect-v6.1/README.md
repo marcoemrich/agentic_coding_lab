@@ -16,10 +16,7 @@ outcomes:
   - cognitive_max
   - mccabe_max
   # TDD discipline (especially relevant for Green phase reduction)
-  - refactorings_applied
-  - cycle_count
   - predictions_correct_rate
-  - tests_passed_immediately
   # cost
   - duration_seconds
   - total_tokens

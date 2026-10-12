@@ -29,9 +29,7 @@ outcomes:
   - lines_of_code
   - smell_total
   # TDD discipline
-  - cycle_count
   - predictions_correct_rate
-  - refactorings_applied
   # context + cost (cache-inclusive, same tariff across all harnesses; source per harness see § Cost comparison)
   - duration_seconds
   - total_tokens

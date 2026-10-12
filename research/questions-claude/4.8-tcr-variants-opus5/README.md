@@ -13,12 +13,6 @@ controls:
 outcomes:
   - verification_pct
   - tests_passing
-  - test_blocks
-  - test_cases_total
-  - test_cases_first_block
-  - red_verified
-  - red_unverified
-  - tcr_refactor_steps
   - tcr_method_commits
   - tcr_red_commits
   - tcr_green_commits

@@ -2,7 +2,7 @@
 
 _Are the effects of the pep and emoji reductions on the hybrid-v2 base additive (two independent channels) or jointly carried (a single 'prompt scaffolding' mechanism)?_
 
-Generated: 2026-10-12T08:37:59Z
+Generated: 2026-10-12T10:46:48Z
 
 Cells declared: 4 · matched runs: 25 · min_replicates: 5
 
@@ -62,24 +62,6 @@ Cells declared: 4 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 |    4.6 | 0.89 |
 | game-of-life-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 |    5   | 1.41 |
 
-### refactorings_applied
-
-| kata                         | cell_workflow                        | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |  10 |      0 |    4.1 | 1.97 |
-| game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      0 |    7   | 3.24 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 |    5.4 | 2.88 |
-| game-of-life-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 |    3.8 | 0.84 |
-
-### cycle_count
-
-| kata                         | cell_workflow                        | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |  10 |      0 |    8.7 | 0.67 |
-| game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      0 |    8.8 | 0.84 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 |    8.8 | 0.45 |
-| game-of-life-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 |    9.2 | 0.45 |
-
 ### predictions_correct_rate
 
 | kata                         | cell_workflow                        | cell_model                   |   n |   k |   t |   null |   rate_% |
@@ -88,15 +70,6 @@ Cells declared: 4 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |  79 |  79 |      0 |    100   |
 | game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |  86 |  88 |      0 |     97.7 |
 | game-of-life-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |  71 |  72 |      0 |     98.6 |
-
-### tests_passed_immediately
-
-| kata                         | cell_workflow                        | cell_model                   |   n |   null |   mean |   sd |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |  10 |      0 |    4.7 | 2.75 |
-| game-of-life-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      0 |    1.2 | 2.68 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 |    2.2 | 3.03 |
-| game-of-life-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 |    1.2 | 2.68 |
 
 ### duration_seconds
 

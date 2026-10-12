@@ -168,8 +168,3 @@ def test_summary_md_shows_a_pooled_rate_as_k_of_t(tmp_path):
     # columns: n | k | t | null | rate_%
     assert "| 2 | 8 | 10 | 0 | 80 |" in re.sub(r" +", " ", md)
 
-
-def test_summarises_a_superseded_outcome_under_its_declared_name():
-    fm = {"id": "RQ-x", "question": "Q?", "min_replicates": 1, "outcomes": ["cycle_count"]}
-    document = agg.summary_document(fm, [CELL], {agg.cell_key(CELL): [run(legacy_cycle_count=3)]})
-    assert document["cells"][0]["outcomes"]["cycle_count"]["mean"] == 3

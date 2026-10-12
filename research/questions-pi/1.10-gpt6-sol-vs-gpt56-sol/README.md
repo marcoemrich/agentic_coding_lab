@@ -39,8 +39,6 @@ outcomes:
   - mutants_survived
   - mutants_no_coverage
   # TDD discipline (marker health)
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
   # cost
   - duration_seconds

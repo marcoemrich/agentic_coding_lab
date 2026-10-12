@@ -23,10 +23,7 @@ outcomes:
   - code_mass
   - lines_of_code
   # the mechanism the elaborate workflow adds
-  - refactorings_applied
-  - cycle_count
   - predictions_correct_rate
-  - tests_passed_immediately
   # correctness — saturated on this model, kept as a guard rail
   - verification_pct
   - tests_passing

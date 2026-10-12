@@ -2,7 +2,7 @@
 
 _Across Game of Life and Sphinx Score on GPT-5.6 SOL/pi, does the v1.6 independent-dimensions test-list cross-check justify its overhead relative to the v1.5 SOL default?_
 
-Generated: 2026-10-12T08:37:52Z
+Generated: 2026-10-12T10:46:42Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -142,15 +142,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   41   | 5.34 |
 | game-of-life-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |   5 |      0 |   42.6 | 4.16 |
 | sphinx-score-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |   5 |      0 |   47.6 | 7.27 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                             | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:------------------------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   10.6 | 0.55 |
-| sphinx-score-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex |   5 |      0 |   12.2 | 0.84 |
-| game-of-life-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |   5 |      0 |   10.8 | 0.84 |
-| sphinx-score-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex |   5 |      0 |   12   | 1    |
 
 ### predictions_correct_rate
 

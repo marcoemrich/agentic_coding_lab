@@ -30,16 +30,10 @@ outcomes:
   - production_loc
   - test_lines
   # Method execution and audit trail
-  - test_blocks
-  - red_verified
-  - red_unverified
-  - tcr_refactor_steps
   - tcr_method_commits
   - tcr_red_commits
   - tcr_green_commits
   - tcr_refactor_commits
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
   # Efficiency
   - duration_seconds

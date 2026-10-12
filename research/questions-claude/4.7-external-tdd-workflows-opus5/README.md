@@ -18,18 +18,10 @@ outcomes:
   # the four markers from MARKERS.md; pocock-2026-09-04 and superpowers-2026-09-04 are vendored byte-identical and
   # have none, so cycle_count / predictions_correct_rate / refactorings_applied
   # stay empty for both. Read them within a cell, not across.
-  - refactorings_applied
-  - tests_passed_immediately
   - predictions_correct_rate
-  - cycle_count
   # Marker-free cycle discipline from the tool sequence — the cross-cell comparable
   # set, and the only discipline numbers pocock-2026-09-04 and superpowers-2026-09-04 produce. test_cases_total /
   # test_blocks is the step size; test_blocks = 1 means all tests in one go.
-  - test_blocks
-  - test_cases_total
-  - test_cases_first_block
-  - red_verified
-  - red_unverified
   # Discipline read from the suite outcomes instead of the edit tools
   # (measure-suite-transitions.py). The test_blocks family above needs
   # Write/Edit calls; a model that edits through the shell zeroes all of it —
@@ -37,12 +29,6 @@ outcomes:
   # observed red->green transitions and survives that. It is a lower bound on
   # cycle_count (~0.5x, r = 0.82), so read it within a column, not against
   # cycle_count. suite_unknown_runs is the trust column.
-  - suite_cycles
-  - suite_new_failures
-  - suite_opens_red
-  - suite_unresolved_red
-  - suite_runs
-  - suite_unknown_runs
   # code quality. Decomposition first — avg_loc_per_function is the binding
   # quality metric per RQ-architecture-axis-opus5 F-1.6.
   - avg_loc_per_function

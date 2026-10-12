@@ -28,8 +28,6 @@ outcomes:
   - verification_pct
   - tests_passing
   # TDD discipline
-  - cycle_count
-  - refactorings_applied
   - predictions_correct_rate
   # the whole point of the reduction — cost
   - duration_seconds

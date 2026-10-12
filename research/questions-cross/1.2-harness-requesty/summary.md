@@ -2,7 +2,7 @@
 
 _How does switching harness (Claude Code vs OpenCode vs pi) affect correctness, code quality, TDD discipline and cost when model (opus-4-8 via Requesty), workflow intention and prompt style are held constant?_
 
-Generated: 2026-10-12T08:37:43Z
+Generated: 2026-10-12T10:46:34Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -129,17 +129,6 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |      0 |    0.4 | 0.89 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |      0 |    3.4 | 1.34 |
 
-### cycle_count
-
-| kata                         | cell_workflow              | cell_model        |   n |   null |   mean |   sd |
-|:-----------------------------|:---------------------------|:------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |      0 |   39.8 | 3.7  |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |      0 |    8.8 | 0.45 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 |      0 |   36.4 | 2.88 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 |      0 |    8.4 | 0.55 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |      0 |   40.2 | 4.76 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |      0 |    9.8 | 3.03 |
-
 ### predictions_correct_rate
 
 | kata                         | cell_workflow              | cell_model        |   n |   k |   t |   null |   rate_% |
@@ -150,17 +139,6 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 |  76 |  84 |      0 |     90.5 |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 | 348 | 350 |      0 |     99.4 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |  40 |  41 |      0 |     97.6 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow              | cell_model        |   n |   null |   mean |    sd |
-|:-----------------------------|:---------------------------|:------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |      0 |   28   | 12.47 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |      0 |    8.8 |  0.45 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 |      0 |   23.2 |  9.47 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-oc | opus-4-8-requesty |   5 |      0 |    3.2 |  0.45 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |      0 |   19.4 |  5.18 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | opus-4-8-requesty |   5 |      0 |    2.8 |  0.45 |
 
 ### duration_seconds
 

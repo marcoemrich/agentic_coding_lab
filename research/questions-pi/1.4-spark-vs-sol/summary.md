@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, how does GPT-5.3 Codex Spark compare to GPT-5.6 Sol on the two native Sol workflows — does the smaller, cheaper-tier model hold correctness and code quality, or does it only look competitive because the workflow carries it?_
 
-Generated: 2026-10-12T08:37:50Z
+Generated: 2026-10-12T10:46:40Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -97,24 +97,6 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex   |   5 |      0 |  136   | 10.02 |
 | sphinx-score-example-mapping | exact-sol-v1-pi            | gpt-5-3-codex-spark |   5 |      0 |  159.6 | 22.74 |
 | sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-3-codex-spark |   5 |      0 |  151.8 | 22.79 |
-
-### cycle_count
-
-| kata                         | cell_workflow              | cell_model          |   n |   null |   mean |   sd |
-|:-----------------------------|:---------------------------|:--------------------|----:|-------:|-------:|-----:|
-| sphinx-score-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex   |   5 |      0 |   11.8 | 0.84 |
-| sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex   |   5 |      0 |   11.2 | 0.45 |
-| sphinx-score-example-mapping | exact-sol-v1-pi            | gpt-5-3-codex-spark |   5 |      0 |   10   | 3.94 |
-| sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-3-codex-spark |   5 |      0 |   13.4 | 4.83 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow              | cell_model          |   n |   null |   mean |   sd |
-|:-----------------------------|:---------------------------|:--------------------|----:|-------:|-------:|-----:|
-| sphinx-score-example-mapping | exact-sol-v1-pi            | gpt-5-6-sol-codex   |   5 |      0 |   12   | 0.71 |
-| sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-6-sol-codex   |   5 |      0 |   11.6 | 0.55 |
-| sphinx-score-example-mapping | exact-sol-v1-pi            | gpt-5-3-codex-spark |   5 |      0 |   10   | 3.94 |
-| sphinx-score-example-mapping | exact-sol-v1.1-subagent-pi | gpt-5-3-codex-spark |   5 |      0 |   10.6 | 5.59 |
 
 ### predictions_correct_rate
 

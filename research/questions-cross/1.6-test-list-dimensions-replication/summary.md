@@ -2,7 +2,7 @@
 
 _Does the apparent platform interaction between PTDD v1.5 and v1.6 replicate at n=10 per cell on Claim Office, or was it driven by small-sample variance?_
 
-Generated: 2026-10-12T08:37:44Z
+Generated: 2026-10-12T10:46:36Z
 
 Cells declared: 4 · matched runs: 40 · min_replicates: 10
 
@@ -142,15 +142,6 @@ Cells declared: 4 · matched runs: 40 · min_replicates: 10
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |      0 |  245.7 | 32.92 |
 | claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex  |  10 |      0 |  150.2 | 27.18 |
 | claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |      0 |  152.4 | 28.12 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                             | cell_model         |   n |   null |   mean |    sd |
-|:-----------------------------|:------------------------------------------|:-------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-cc | opus-5-no-thinking |  10 |      0 |   45   | 11.21 |
-| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-cc    | opus-5-no-thinking |  10 |      0 |   51.5 | 13.81 |
-| claim-office-example-mapping | exact-sol-v1.5-tcr-parity-domain-trial-pi | gpt-5-6-sol-codex  |  10 |      0 |   36.2 |  1.32 |
-| claim-office-example-mapping | exact-sol-v1.6-test-list-dimensions-pi    | gpt-5-6-sol-codex  |  10 |      0 |   39.2 | 10.54 |
 
 ### predictions_correct_rate
 

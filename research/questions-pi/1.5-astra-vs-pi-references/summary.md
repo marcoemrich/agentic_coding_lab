@@ -2,7 +2,7 @@
 
 _On the OpenAI subscription route, how does GPT-6 Astra compare to the strongest references reachable on the pi harness — Sol on the same route, Sol on Requesty in both reasoning states, and Opus 5 on Requesty — at constant harness, workflow, kata and prompt style?_
 
-Generated: 2026-10-12T08:37:50Z
+Generated: 2026-10-12T10:46:41Z
 
 Cells declared: 5 · matched runs: 25 · min_replicates: 5
 
@@ -177,26 +177,6 @@ Cells declared: 5 · matched runs: 25 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |    8.4 | 0.55 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    8.4 | 1.52 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty               |   5 |      0 |   10.2 | 0.45 |
-
-### cycle_count
-
-| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-6-astra-codex-no-thinking |   5 |      0 |   14   | 0.71 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |    9.8 | 1.3  |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |    8.4 | 0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    8.4 | 1.52 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty               |   5 |      0 |   10.2 | 0.45 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-6-astra-codex-no-thinking |   5 |      0 |    4   | 0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |    7   | 1.58 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |    5   | 1.22 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    4.4 | 0.89 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty               |   5 |      0 |    3.8 | 0.45 |
 
 ### predictions_correct_rate
 

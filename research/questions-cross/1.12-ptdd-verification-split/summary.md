@@ -2,7 +2,7 @@
 
 _Does splitting the PTDD v1 test list into driving tests and a trailing verification group keep Correctness, safety net and code quality at least at the v1 level on Opus 5.5 and GPT-6.1 Sol, while making the phase-chain discipline readable for a test-list workflow?_
 
-Generated: 2026-10-12T08:37:42Z
+Generated: 2026-10-12T10:46:34Z
 
 Cells declared: 4 · matched runs: 11 · min_replicates: 5
 

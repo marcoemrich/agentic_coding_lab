@@ -24,10 +24,7 @@ outcomes:
   - smell_complexity
   - code_mass
   # TDD discipline (sanity: the per-cycle part of hybrid-v5 is byte-identical to hybrid-v4)
-  - refactorings_applied
-  - cycle_count
   - predictions_correct_rate
-  - tests_passed_immediately
   # cost
   - duration_seconds
   - total_tokens

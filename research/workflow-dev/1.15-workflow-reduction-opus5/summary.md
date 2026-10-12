@@ -2,7 +2,7 @@
 
 _How much of the hybrid-v6 architecture can be removed on opus-5 before code quality degrades — and how much of its result comes from the APP subordination patch (hybrid-v7) rather than from the end-refactor phase (hybrid-v8) or the isolated refactor subagent (single-context-v3)?_
 
-Generated: 2026-10-12T08:37:55Z
+Generated: 2026-10-12T10:46:44Z
 
 Cells declared: 12 · matched runs: 63 · min_replicates: 5
 
@@ -177,40 +177,6 @@ Cells declared: 12 · matched runs: 63 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   6 |   6 |      0 |      100 |
 | sphinx-score-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking |   5 |   5 |      0 |      100 |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking |   5 |   5 |      0 |      100 |
-
-### cycle_count
-
-| kata                         | cell_workflow                           | cell_model         |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|-------:|-----:|
-| sphinx-score-example-mapping | exact-hybrid-v7-app-subordinate-cc      | opus-5-no-thinking |   5 |      0 |  10.6  | 0.89 |
-| game-of-life-example-mapping | exact-hybrid-v7-app-subordinate-cc      | opus-5-no-thinking |   5 |      0 |  10.2  | 1.64 |
-| sphinx-score-example-mapping | exact-hybrid-v8-no-end-refactor-cc      | opus-5-no-thinking |   5 |      0 |  10.2  | 0.45 |
-| game-of-life-example-mapping | exact-hybrid-v8-no-end-refactor-cc      | opus-5-no-thinking |   5 |      0 |  10.6  | 0.89 |
-| sphinx-score-example-mapping | exact-single-context-v3-no-subagent-cc  | opus-5-no-thinking |   5 |      0 |  10.2  | 0.45 |
-| game-of-life-example-mapping | exact-single-context-v3-no-subagent-cc  | opus-5-no-thinking |   5 |      0 |  10.2  | 1.79 |
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking |   6 |      0 |  11.67 | 2.16 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking |   6 |      0 |  10.33 | 0.52 |
-| sphinx-score-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   5 |      0 |  10.4  | 0.55 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   6 |      0 |  10.33 | 1.37 |
-| sphinx-score-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking |   5 |      0 |  10.8  | 1.3  |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking |   5 |      0 |   7.2  | 2.59 |
-
-### refactorings_applied
-
-| kata                         | cell_workflow                           | cell_model         |   n |   null |   mean |   sd |
-|:-----------------------------|:----------------------------------------|:-------------------|----:|-------:|-------:|-----:|
-| sphinx-score-example-mapping | exact-hybrid-v7-app-subordinate-cc      | opus-5-no-thinking |   5 |      0 |  10.4  | 1.14 |
-| game-of-life-example-mapping | exact-hybrid-v7-app-subordinate-cc      | opus-5-no-thinking |   5 |      0 |   9    | 3.67 |
-| sphinx-score-example-mapping | exact-hybrid-v8-no-end-refactor-cc      | opus-5-no-thinking |   5 |      0 |   7.8  | 2.05 |
-| game-of-life-example-mapping | exact-hybrid-v8-no-end-refactor-cc      | opus-5-no-thinking |   5 |      0 |   9.2  | 2.39 |
-| sphinx-score-example-mapping | exact-single-context-v3-no-subagent-cc  | opus-5-no-thinking |   5 |      0 |   9    | 2.24 |
-| game-of-life-example-mapping | exact-single-context-v3-no-subagent-cc  | opus-5-no-thinking |   5 |      0 |   9.2  | 2.28 |
-| sphinx-score-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking |   6 |      0 |  11.67 | 2.16 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-cc            | opus-5-no-thinking |   6 |      0 |   8.83 | 3.37 |
-| sphinx-score-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   5 |      0 |   6    | 0.71 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc         | opus-5-no-thinking |   6 |      0 |   4.33 | 0.52 |
-| sphinx-score-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking |   5 |      0 |   5.8  | 4.49 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-cc | opus-5-no-thinking |   5 |      0 |   4.4  | 0.89 |
 
 ### predictions_correct_rate
 
