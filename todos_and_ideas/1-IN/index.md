@@ -30,6 +30,13 @@
 * Interdeps
 
 ## Skills/Workflows to investigate
+  - End-refactor: prevent metric gaming when resolving `no-magic-numbers`. Replacing
+    `toFixed(2)` with `TWO_DECIMAL_PLACES` only moves the literal into a name;
+    it does not explain why that precision is required. Before introducing a
+    constant, identify the rule it represents and name the purpose (e.g.
+    `PLAIN_NUMBER_PRECISION` versus `USD_PRECISION`), or keep a clear literal
+    when no shared rule exists. Do not treat a lower smell count as evidence of
+    better design if the new abstraction adds noise or couples unrelated rules.
   - nWave — Outside-In through the driving port; refactor position unresolved
     (the canon reads RED → GREEN → COMMIT). Expensive to dock: DELIVER needs the
     artifact chain from the preceding waves.
