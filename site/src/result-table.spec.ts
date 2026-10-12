@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { buildResultTables } from "./result-table.js";
 
-// Story A of the RQ result table: site/docs/rq-result-table-a-table-layout-example-mapping.md
+// Story A of the RQ result table: table layout and interaction.
 // What tables, rows and columns an RQ produces, independent of rendering.
 describe("Result table layout", () => {
   // Rule 1: one table per kata, always headed

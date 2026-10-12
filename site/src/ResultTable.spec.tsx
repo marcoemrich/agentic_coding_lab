@@ -2,8 +2,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { ResultTable } from "./ResultTable.js";
 
-// Story A of the RQ result table, the parts only a rendered table shows:
-// site/docs/rq-result-table-a-table-layout-example-mapping.md
+// Story A of the RQ result table: the parts only a rendered table shows.
 describe("Rendered result table", () => {
   // Rule 22: clicking a header sorts
   it("sorts by a column when its header is clicked -- 4.13, click verification_pct -> 100 % rows first", () => {

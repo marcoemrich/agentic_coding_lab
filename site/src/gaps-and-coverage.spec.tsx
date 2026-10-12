@@ -2,7 +2,7 @@ import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { ResultTable } from "./ResultTable.js";
 
-// Story C: docs/rq-result-table-c-gaps-and-coverage-example-mapping.md
+// Story C of the RQ result table: gaps and coverage.
 // Aggregated values carry their own n; runs provide the cell denominator and exit reasons.
 describe("RQ result table gaps and coverage", () => {
   // Rule 11

@@ -64,6 +64,18 @@ Detailed decisions: [open-questions.md](open-questions.md#decided).
   special about it, how it differs from the others — so outsiders can read the comparison.
 - Tables only; no drill-down below the cell.
 
+## Progress
+
+- **Done:** the RQ result table (layout, value formatting, gaps, trophies and
+  comparability), built with EXACT Coding in `site/src/`. Its tests are the specification;
+  the Example Mapping it came from was removed once implemented.
+- **Open stories for the first iteration**, sliced out of that Example Mapping:
+  - RQ page header: question, varied and fixed factors, run span, source link, closed banner
+  - Findings section: collapsed `findings.md` under an "AI-generated" warning
+  - RQ index grouped by harness subtree
+  - Workflow page with profiles from `LINEAGE.yaml`
+  - Site data export: `summary.json` from the aggregator and `export-site-data.py`
+
 ## Later
 
 - Charts: distributions, curves, metrics over time.

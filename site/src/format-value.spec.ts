@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { formatValue } from "./format-value.js";
 
-// Story B of the RQ result table: site/docs/rq-result-table-b-value-formatting-example-mapping.md
+// Story B of the RQ result table: value formatting.
 // A formatted cell has a main text and, for counted outcomes, a sub text shown below it.
 describe("Value formatting", () => {
   // Rule 7 and rule 6: plain numeric metrics

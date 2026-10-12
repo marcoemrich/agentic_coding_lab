@@ -12,7 +12,7 @@ function winners(metric: string, entries: { value: number; sd?: number }[]) {
   return rows.map(row => trophyWinners(rows, metric).has(row));
 }
 
-// Story D: docs/rq-result-table-d-trophies-and-comparability-example-mapping.md
+// Story D of the RQ result table: trophies and comparability.
 describe("Trophies and comparability", () => {
   it("sorts a ↓ cost column with the lower mean first, consistent with its header", () => {
     const kata = "claim-office";

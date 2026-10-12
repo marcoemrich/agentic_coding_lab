@@ -1,8 +1,8 @@
 # Results-site prototype
 
-The approved look-and-feel prototype for the results site, approved 2026-10-11. It is the
-visual reference for the Example Mapping in [`../docs/`](../docs/) and is not the
-production pipeline.
+The approved look-and-feel prototype for the results site, approved 2026-10-11. It was the
+visual reference for the RQ result table, whose behaviour the tests in `../src/` now
+specify. It is not the production pipeline.
 
 Open `results-site-prototype.html` in a browser. It is one self-contained file: the data is
 inlined, React 18.3.1 and marked 12.0.2 load from cdnjs, the fonts from Google Fonts.
@@ -23,10 +23,10 @@ A published copy lives at <https://claude.ai/artifact/97iGMHZ2vrDKjEhdgLVquf> (p
 - Data comes straight from the run pool via `aggregate-by-query.py`'s functions, not from
   re-aggregated `runs.csv` plus `summary.json`.
 - The metric registry is an inline dict in `extract.py`, not `metrics-registry.yaml`.
-- Trophies go to the best mean rounded to two decimals. The decided rule (within one sd)
-  is in the Example Mapping, story D.
-- Durations show in seconds and only `verification_pct` shows as percent. The Example
-  Mapping, story B, decides minutes and percent for every 0–1 metric.
+- Trophies go to the best mean rounded to two decimals. The site gives one to every cell
+  within one sd of the best (`src/trophies-and-comparability.spec.tsx`).
+- Durations show in seconds and only `verification_pct` shows as percent. The site shows
+  minutes and percent for every 0–1 metric (`src/format-value.spec.ts`).
 - Workflow links go to the workflow page, not to the workflow's entry.
 
 ## Rebuild
