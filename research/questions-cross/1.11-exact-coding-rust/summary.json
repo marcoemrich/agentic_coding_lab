@@ -1,0 +1,2112 @@
+{
+  "cells": [
+    {
+      "kata": "claim-office-rust-example-mapping",
+      "workflow": "baseline-inline-tdd-v1-pi",
+      "model": "gpt-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-10-01_12-11-12_claim-office-rust-example-mapping_baseline-inline-tdd-v1-pi_gpt-6-sol-codex",
+          "started_at": "2026-10-01T12:11:15+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-11-12_claim-office-rust-example-mapping_baseline-inline-tdd-v1-pi_gpt-6-sol-codex-3",
+          "started_at": "2026-10-01T12:11:15+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-11-12_claim-office-rust-example-mapping_baseline-inline-tdd-v1-pi_gpt-6-sol-codex-4",
+          "started_at": "2026-10-01T12:11:16+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-11-13_claim-office-rust-example-mapping_baseline-inline-tdd-v1-pi_gpt-6-sol-codex",
+          "started_at": "2026-10-01T12:11:16+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_14-35-25_claim-office-rust-example-mapping_baseline-inline-tdd-v1-pi_gpt-6-sol-codex",
+          "started_at": "2026-10-01T14:35:27+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 517.4,
+          "sd": 34.55141096974189,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.6,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "smell_complexity": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.4,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "smell_duplication": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.8,
+          "sd": 1.3038404810405297,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.332,
+          "sd": 0.7004784079470259,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12,
+          "sd": 2.345207879911715,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.244,
+          "sd": 1.6027569996727515,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 28.6,
+          "sd": 3.5777087639996634,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 18.041999999999998,
+          "sd": 2.747966520902319,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 18.4,
+          "sd": 5.412947441089743,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.6,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.9869323828071732,
+          "sd": 0.0011705835413867174,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 77,
+          "sd": 6.6332495807108,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.4,
+          "sd": 1.9493588689617927,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 127,
+          "sd": 28.583211855912904,
+          "null_count": 0
+        },
+        "lines_of_code": {
+          "kind": "num",
+          "n": 5,
+          "mean": 156,
+          "sd": 22.147234590350102,
+          "null_count": 0
+        },
+        "coverage_statements_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 99.2,
+          "sd": 1.0954451150103321,
+          "null_count": 0
+        },
+        "tdd_discipline": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.517,
+          "sd": 0.1732527056065792,
+          "null_count": 0
+        },
+        "tdd_discipline_test_first": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.6966,
+          "sd": 0.1415372742425118,
+          "null_count": 0
+        },
+        "tdd_discipline_step": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.3368,
+          "sd": 0.2050041462995322,
+          "null_count": 0
+        },
+        "tdd_discipline_closure": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.62,
+          "sd": 0.16431676725154987,
+          "null_count": 0
+        },
+        "test_first_rate": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.6966,
+          "sd": 0.1415372742425118,
+          "null_count": 0
+        },
+        "red_batch_size": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.8,
+          "sd": 1.823458252881047,
+          "null_count": 0
+        },
+        "red_batch_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4,
+          "sd": 1.5811388300841898,
+          "null_count": 0
+        },
+        "red_batch_unmeasurable": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "green_batch_size": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.4,
+          "sd": 3.7980258029665888,
+          "null_count": 0
+        },
+        "chain_suite_runs": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.2,
+          "sd": 1.6431676725154984,
+          "null_count": 0
+        },
+        "cycles_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4,
+          "sd": 1.224744871391589,
+          "null_count": 0
+        },
+        "cycles_closed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.6,
+          "sd": 1.3416407864998738,
+          "null_count": 0
+        },
+        "refactor_events": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.4,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "skip_events": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "refactor_per_cycle": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.15,
+          "sd": 0.22360679774997896,
+          "null_count": 0
+        },
+        "green_attempts": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.4,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "chain_deviations": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.6,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "chain_opens_red": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "chain_ends_green": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 281.6,
+          "sd": 150.62967835058268,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 317841.2,
+          "sd": 77052.23096510574,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.19354,
+          "sd": 0.030018627550239537,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-rust-example-mapping",
+      "workflow": "exact-ptdd-v1-pi",
+      "model": "gpt-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-10-01_02-28-23_claim-office-rust-example-mapping_exact-ptdd-v1-pi_gpt-6-sol-codex",
+          "started_at": "2026-10-01T02:28:24+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-11-12_claim-office-rust-example-mapping_exact-ptdd-v1-pi_gpt-6-sol-codex",
+          "started_at": "2026-10-01T12:11:16+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-11-12_claim-office-rust-example-mapping_exact-ptdd-v1-pi_gpt-6-sol-codex-3",
+          "started_at": "2026-10-01T12:11:15+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-11-12_claim-office-rust-example-mapping_exact-ptdd-v1-pi_gpt-6-sol-codex-4",
+          "started_at": "2026-10-01T12:11:16+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_14-35-25_claim-office-rust-example-mapping_exact-ptdd-v1-pi_gpt-6-sol-codex",
+          "started_at": "2026-10-01T14:35:27+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 595.2,
+          "sd": 27.752477366894656,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_complexity": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_duplication": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.8,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.0340000000000003,
+          "sd": 0.33065087327875003,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.8,
+          "sd": 2.7748873851023217,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.716,
+          "sd": 0.7673525917073585,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 25.8,
+          "sd": 2.3874672772626644,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.522,
+          "sd": 1.7352434987632144,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.9,
+          "sd": 1.9493588689617927,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.4,
+          "sd": 2.073644135332772,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.9802873819912198,
+          "sd": 0.006912845234153847,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 101.4,
+          "sd": 4.219004621945797,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 43.2,
+          "sd": 2.3874672772626644,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 110,
+          "sd": 36.871398129173244,
+          "null_count": 0
+        },
+        "lines_of_code": {
+          "kind": "num",
+          "n": 5,
+          "mean": 136.6,
+          "sd": 10.691117808723277,
+          "null_count": 0
+        },
+        "coverage_statements_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 98,
+          "sd": 1.224744871391589,
+          "null_count": 0
+        },
+        "tdd_discipline": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.4134,
+          "sd": 0.22505177182150776,
+          "null_count": 0
+        },
+        "tdd_discipline_test_first": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.2978,
+          "sd": 0.20910571489081783,
+          "null_count": 0
+        },
+        "tdd_discipline_step": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_discipline_closure": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.2842,
+          "sd": 0.1982743049414119,
+          "null_count": 0
+        },
+        "test_first_rate": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.2978,
+          "sd": 0.20910571489081783,
+          "null_count": 0
+        },
+        "red_batch_size": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "red_batch_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "red_batch_unmeasurable": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "green_batch_size": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.7,
+          "sd": 5.06951674225463,
+          "null_count": 0
+        },
+        "chain_suite_runs": {
+          "kind": "num",
+          "n": 5,
+          "mean": 86.8,
+          "sd": 38.277930978567795,
+          "null_count": 0
+        },
+        "cycles_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 41.6,
+          "sd": 11.349008767288886,
+          "null_count": 0
+        },
+        "cycles_closed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.2,
+          "sd": 8.67179335547152,
+          "null_count": 0
+        },
+        "refactor_events": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6,
+          "sd": 3.082207001484488,
+          "null_count": 0
+        },
+        "skip_events": {
+          "kind": "num",
+          "n": 5,
+          "mean": 28.6,
+          "sd": 13.575713609236164,
+          "null_count": 0
+        },
+        "refactor_per_cycle": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.9678,
+          "sd": 1.1400406571697346,
+          "null_count": 0
+        },
+        "green_attempts": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.0518,
+          "sd": 0.08669602066992464,
+          "null_count": 0
+        },
+        "chain_deviations": {
+          "kind": "num",
+          "n": 5,
+          "mean": 29.6,
+          "sd": 13.575713609236164,
+          "null_count": 0
+        },
+        "chain_opens_red": {
+          "kind": "bool",
+          "n": 4,
+          "k": 0,
+          "null_count": 1
+        },
+        "chain_ends_green": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 243,
+          "t": 246,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 684.4,
+          "sd": 148.82976852767055,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2839588.6,
+          "sd": 1662115.8409061925,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.93858,
+          "sd": 0.43572943669208297,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-rust-example-mapping",
+      "workflow": "exact-ptdd-v1.1-refactor-subagent-pi",
+      "model": "gpt-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-10-01_12-12-08_claim-office-rust-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-6-sol-codex",
+          "started_at": "2026-10-01T12:12:09+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-15-39_claim-office-rust-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-6-sol-codex",
+          "started_at": "2026-10-01T12:15:40+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-16-09_claim-office-rust-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-6-sol-codex",
+          "started_at": "2026-10-01T12:16:10+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-16-10_claim-office-rust-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-6-sol-codex",
+          "started_at": "2026-10-01T12:16:11+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_14-39-03_claim-office-rust-example-mapping_exact-ptdd-v1.1-refactor-subagent-pi_gpt-6-sol-codex",
+          "started_at": "2026-10-01T14:39:04+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 605.6,
+          "sd": 55.05724293859982,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.4,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "smell_complexity": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "smell_duplication": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.4,
+          "sd": 1.51657508881031,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.956,
+          "sd": 0.31643324730502015,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.6,
+          "sd": 2.3021728866442674,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.776,
+          "sd": 1.1887935060387909,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 27.4,
+          "sd": 3.0495901363953815,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.724,
+          "sd": 1.66423556024981,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10,
+          "sd": 2.7386127875258306,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.4,
+          "sd": 2.3021728866442674,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.9873521984551397,
+          "sd": 0.009395104991279631,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 86.2,
+          "sd": 26.789923478800755,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.2,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 45.2,
+          "sd": 2.588435821108957,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 114.4,
+          "sd": 36.05967276612476,
+          "null_count": 0
+        },
+        "lines_of_code": {
+          "kind": "num",
+          "n": 5,
+          "mean": 156.2,
+          "sd": 17.767948671695333,
+          "null_count": 0
+        },
+        "coverage_statements_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 79.4,
+          "sd": 44.388061458009176,
+          "null_count": 0
+        },
+        "tdd_discipline": {
+          "kind": "num",
+          "n": 3,
+          "mean": 0.42233333333333334,
+          "sd": 0.23182824101764077,
+          "null_count": 2
+        },
+        "tdd_discipline_test_first": {
+          "kind": "num",
+          "n": 3,
+          "mean": 0.31433333333333335,
+          "sd": 0.19860849260123126,
+          "null_count": 2
+        },
+        "tdd_discipline_step": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 2
+        },
+        "tdd_discipline_closure": {
+          "kind": "num",
+          "n": 3,
+          "mean": 0.2823333333333333,
+          "sd": 0.20901993525339474,
+          "null_count": 2
+        },
+        "test_first_rate": {
+          "kind": "num",
+          "n": 3,
+          "mean": 0.31433333333333335,
+          "sd": 0.19860849260123126,
+          "null_count": 2
+        },
+        "red_batch_size": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 2
+        },
+        "red_batch_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 2
+        },
+        "red_batch_unmeasurable": {
+          "kind": "num",
+          "n": 3,
+          "mean": 0.3333333333333333,
+          "sd": 0.5773502691896257,
+          "null_count": 2
+        },
+        "green_batch_size": {
+          "kind": "num",
+          "n": 3,
+          "mean": 2.5,
+          "sd": 0.5,
+          "null_count": 2
+        },
+        "chain_suite_runs": {
+          "kind": "num",
+          "n": 3,
+          "mean": 46,
+          "sd": 35.79106033634656,
+          "null_count": 2
+        },
+        "cycles_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 20.333333333333332,
+          "sd": 22.233608194203057,
+          "null_count": 2
+        },
+        "cycles_closed": {
+          "kind": "num",
+          "n": 3,
+          "mean": 2.6666666666666665,
+          "sd": 0.5773502691896257,
+          "null_count": 2
+        },
+        "refactor_events": {
+          "kind": "num",
+          "n": 3,
+          "mean": 9.333333333333334,
+          "sd": 5.507570547286102,
+          "null_count": 2
+        },
+        "skip_events": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 23.388031127053,
+          "null_count": 2
+        },
+        "refactor_per_cycle": {
+          "kind": "num",
+          "n": 3,
+          "mean": 3.9443333333333332,
+          "sd": 3.190109141288638,
+          "null_count": 2
+        },
+        "green_attempts": {
+          "kind": "num",
+          "n": 3,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 2
+        },
+        "chain_deviations": {
+          "kind": "num",
+          "n": 3,
+          "mean": 17,
+          "sd": 22.516660498395403,
+          "null_count": 2
+        },
+        "chain_opens_red": {
+          "kind": "bool",
+          "n": 3,
+          "k": 0,
+          "null_count": 2
+        },
+        "chain_ends_green": {
+          "kind": "bool",
+          "n": 3,
+          "k": 3,
+          "null_count": 2
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 37,
+          "t": 38,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1430.4,
+          "sd": 537.8315721487536,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2072268,
+          "sd": 681615.1264159268,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.03986,
+          "sd": 0.3264868956022584,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-rust-example-mapping",
+      "workflow": "baseline-inline-tdd-v1-cc",
+      "model": "opus-5-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-10-01_12-12-08_claim-office-rust-example-mapping_baseline-inline-tdd-v1-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T12:12:08+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-21-23_claim-office-rust-example-mapping_baseline-inline-tdd-v1-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T12:21:23+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-21-27_claim-office-rust-example-mapping_baseline-inline-tdd-v1-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T12:21:27+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-21-28_claim-office-rust-example-mapping_baseline-inline-tdd-v1-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T12:21:28+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-27-11_claim-office-rust-example-mapping_baseline-inline-tdd-v1-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T12:27:11+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.97334,
+          "sd": 0.059613572280144383,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1059.6,
+          "sd": 169.59746460369036,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_complexity": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_duplication": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.6,
+          "sd": 2.701851217221259,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.782,
+          "sd": 0.1886001060445089,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.6,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.964,
+          "sd": 0.4368981574692206,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 28.2,
+          "sd": 7.463243262818116,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.75,
+          "sd": 1.2222724737144337,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7,
+          "sd": 1.224744871391589,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 33.2,
+          "sd": 10.917875251164945,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.9593070970850461,
+          "sd": 0.028901329885423564,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 101,
+          "sd": 19.53202498462461,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4,
+          "sd": 2.5495097567963922,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 55.4,
+          "sd": 21.69792616818483,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 587.2,
+          "sd": 205.94586667374512,
+          "null_count": 0
+        },
+        "lines_of_code": {
+          "kind": "num",
+          "n": 5,
+          "mean": 577.2,
+          "sd": 138.00434775759786,
+          "null_count": 0
+        },
+        "coverage_statements_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 93.4,
+          "sd": 6.767569726275452,
+          "null_count": 0
+        },
+        "tdd_discipline": {
+          "kind": "num",
+          "n": 3,
+          "mean": 0.19866666666666669,
+          "sd": 0.23563177488049727,
+          "null_count": 2
+        },
+        "tdd_discipline_test_first": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.1512,
+          "sd": 0.15959542599961943,
+          "null_count": 0
+        },
+        "tdd_discipline_step": {
+          "kind": "num",
+          "n": 3,
+          "mean": 0.6666666666666666,
+          "sd": 0.28867513459481287,
+          "null_count": 2
+        },
+        "tdd_discipline_closure": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.14479999999999998,
+          "sd": 0.1969586250967446,
+          "null_count": 0
+        },
+        "test_first_rate": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.1512,
+          "sd": 0.15959542599961943,
+          "null_count": 0
+        },
+        "red_batch_size": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1.6666666666666667,
+          "sd": 0.5773502691896257,
+          "null_count": 2
+        },
+        "red_batch_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1.6666666666666667,
+          "sd": 0.5773502691896257,
+          "null_count": 2
+        },
+        "red_batch_unmeasurable": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.8,
+          "sd": 1.0954451150103321,
+          "null_count": 0
+        },
+        "green_batch_size": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15.5,
+          "sd": 23.817010727629107,
+          "null_count": 2
+        },
+        "chain_suite_runs": {
+          "kind": "num",
+          "n": 5,
+          "mean": 23.8,
+          "sd": 8.28854631404084,
+          "null_count": 0
+        },
+        "cycles_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12.6,
+          "sd": 2.8809720581775866,
+          "null_count": 0
+        },
+        "cycles_closed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.2,
+          "sd": 3.3466401061363023,
+          "null_count": 0
+        },
+        "refactor_events": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6,
+          "sd": 3.6742346141747673,
+          "null_count": 0
+        },
+        "skip_events": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.2,
+          "sd": 1.3038404810405297,
+          "null_count": 0
+        },
+        "refactor_per_cycle": {
+          "kind": "num",
+          "n": 3,
+          "mean": 5.25,
+          "sd": 5.238081709939241,
+          "null_count": 2
+        },
+        "green_attempts": {
+          "kind": "num",
+          "n": 3,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 2
+        },
+        "chain_deviations": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.8,
+          "sd": 1.6431676725154984,
+          "null_count": 0
+        },
+        "chain_opens_red": {
+          "kind": "bool",
+          "n": 5,
+          "k": 1,
+          "null_count": 0
+        },
+        "chain_ends_green": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 489.8,
+          "sd": 256.68891678450007,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3593251.4,
+          "sd": 936216.610680616,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.84462,
+          "sd": 0.5403441930843711,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-rust-example-mapping",
+      "workflow": "exact-ptdd-v1-cc",
+      "model": "opus-5-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-10-01_02-34-42_claim-office-rust-example-mapping_exact-ptdd-v1-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T02:34:42+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-12-08_claim-office-rust-example-mapping_exact-ptdd-v1-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T12:12:08+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-43-20_claim-office-rust-example-mapping_exact-ptdd-v1-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T12:43:20+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-43-48_claim-office-rust-example-mapping_exact-ptdd-v1-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T12:43:48+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-48-19_claim-office-rust-example-mapping_exact-ptdd-v1-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T12:48:19+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 929.2,
+          "sd": 41.32432697576574,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_complexity": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_duplication": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.628,
+          "sd": 0.16664333169977127,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8,
+          "sd": 1.0,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.564,
+          "sd": 0.353595814454866,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 24.6,
+          "sd": 5.224940191045253,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7.926,
+          "sd": 0.9184116723996926,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.8,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 36,
+          "sd": 5.787918451395113,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.9768167095541064,
+          "sd": 0.025529324346059735,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 117.2,
+          "sd": 21.741665069630706,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3,
+          "sd": 3.9370039370059056,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 51.8,
+          "sd": 3.8987177379235853,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 644.6,
+          "sd": 159.06382366836274,
+          "null_count": 0
+        },
+        "lines_of_code": {
+          "kind": "num",
+          "n": 5,
+          "mean": 536,
+          "sd": 45.09434554353794,
+          "null_count": 0
+        },
+        "coverage_statements_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 89.6,
+          "sd": 9.343446901438462,
+          "null_count": 0
+        },
+        "tdd_discipline": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.5634,
+          "sd": 0.02260088493842661,
+          "null_count": 0
+        },
+        "tdd_discipline_test_first": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.4424,
+          "sd": 0.0345152140367114,
+          "null_count": 0
+        },
+        "tdd_discipline_step": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_discipline_closure": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.405,
+          "sd": 0.024959967948697367,
+          "null_count": 0
+        },
+        "test_first_rate": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.4424,
+          "sd": 0.0345152140367114,
+          "null_count": 0
+        },
+        "red_batch_size": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "red_batch_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "red_batch_unmeasurable": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.2,
+          "sd": 4.324349662087931,
+          "null_count": 0
+        },
+        "green_batch_size": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.4,
+          "sd": 7.257754473664702,
+          "null_count": 0
+        },
+        "chain_suite_runs": {
+          "kind": "num",
+          "n": 5,
+          "mean": 110,
+          "sd": 13.656500283747663,
+          "null_count": 0
+        },
+        "cycles_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 55,
+          "sd": 4.242640687119285,
+          "null_count": 0
+        },
+        "cycles_closed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 22.2,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "refactor_events": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.2,
+          "sd": 4.08656334834051,
+          "null_count": 0
+        },
+        "skip_events": {
+          "kind": "num",
+          "n": 5,
+          "mean": 31.2,
+          "sd": 3.7682887362833544,
+          "null_count": 0
+        },
+        "refactor_per_cycle": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.5954,
+          "sd": 0.18314147536808806,
+          "null_count": 0
+        },
+        "green_attempts": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.009,
+          "sd": 0.020124611797498106,
+          "null_count": 0
+        },
+        "chain_deviations": {
+          "kind": "num",
+          "n": 5,
+          "mean": 35.4,
+          "sd": 3.847076812334269,
+          "null_count": 0
+        },
+        "chain_opens_red": {
+          "kind": "bool",
+          "n": 4,
+          "k": 0,
+          "null_count": 1
+        },
+        "chain_ends_green": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 520,
+          "t": 525,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1500,
+          "sd": 584.6648612666918,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 27210502.6,
+          "sd": 5625500.202081527,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 20.44034,
+          "sd": 3.4338282532765088,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-rust-example-mapping",
+      "workflow": "exact-ptdd-v1.1-refactor-subagent-cc",
+      "model": "opus-5-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 1,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-10-01_12-17-52_claim-office-rust-example-mapping_exact-ptdd-v1.1-refactor-subagent-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T12:17:52+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-27-33_claim-office-rust-example-mapping_exact-ptdd-v1.1-refactor-subagent-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T12:27:34+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-27-53_claim-office-rust-example-mapping_exact-ptdd-v1.1-refactor-subagent-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T12:27:53+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-01_12-29-51_claim-office-rust-example-mapping_exact-ptdd-v1.1-refactor-subagent-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T12:29:51+00:00",
+          "exit_reason": "timeout"
+        },
+        {
+          "id": "2026-10-01_12-33-47_claim-office-rust-example-mapping_exact-ptdd-v1.1-refactor-subagent-cc_opus-5-no-thinking",
+          "started_at": "2026-10-01T12:33:47+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0.983325,
+          "sd": 0.03334999999999999,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 4,
+          "k": 4,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 4,
+          "mean": 1155.75,
+          "sd": 94.89423937556307,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_complexity": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_duplication": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 4,
+          "mean": 3.5,
+          "sd": 1.2909944487358056,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0.45,
+          "sd": 0.12463279397226615,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 4,
+          "mean": 7.25,
+          "sd": 1.2583057392117916,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 4,
+          "mean": 2.09,
+          "sd": 0.18165902124584957,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 4,
+          "mean": 27.5,
+          "sd": 5.066228051190222,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 4,
+          "mean": 6.5925,
+          "sd": 0.5189332005823742,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 4,
+          "mean": 6,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 4,
+          "mean": 55,
+          "sd": 6.782329983125268,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0.9744007601532754,
+          "sd": 0.012316434033494363,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 4,
+          "mean": 128,
+          "sd": 29.87752778706208,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 4,
+          "mean": 3.25,
+          "sd": 1.8929694486000912,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 4,
+          "mean": 50.75,
+          "sd": 5.123475382979799,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 4,
+          "mean": 578.25,
+          "sd": 129.9676241736123,
+          "null_count": 0
+        },
+        "lines_of_code": {
+          "kind": "num",
+          "n": 4,
+          "mean": 819.5,
+          "sd": 80.62051021090518,
+          "null_count": 0
+        },
+        "coverage_statements_pct": {
+          "kind": "num",
+          "n": 4,
+          "mean": 94.25,
+          "sd": 0.9574271077563381,
+          "null_count": 0
+        },
+        "tdd_discipline": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0.56025,
+          "sd": 0.03130894440890651,
+          "null_count": 0
+        },
+        "tdd_discipline_test_first": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0.44575,
+          "sd": 0.04326179993173346,
+          "null_count": 0
+        },
+        "tdd_discipline_step": {
+          "kind": "num",
+          "n": 4,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_discipline_closure": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0.39549999999999996,
+          "sd": 0.03268536879604288,
+          "null_count": 0
+        },
+        "test_first_rate": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0.44575,
+          "sd": 0.04326179993173346,
+          "null_count": 0
+        },
+        "red_batch_size": {
+          "kind": "num",
+          "n": 4,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "red_batch_max": {
+          "kind": "num",
+          "n": 4,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "red_batch_unmeasurable": {
+          "kind": "num",
+          "n": 4,
+          "mean": 14,
+          "sd": 4.242640687119285,
+          "null_count": 0
+        },
+        "green_batch_size": {
+          "kind": "num",
+          "n": 4,
+          "mean": 7.125,
+          "sd": 4.40407008724127,
+          "null_count": 0
+        },
+        "chain_suite_runs": {
+          "kind": "num",
+          "n": 4,
+          "mean": 263.5,
+          "sd": 14.479871085982314,
+          "null_count": 0
+        },
+        "cycles_total": {
+          "kind": "num",
+          "n": 4,
+          "mean": 60.75,
+          "sd": 12.365947867699695,
+          "null_count": 0
+        },
+        "cycles_closed": {
+          "kind": "num",
+          "n": 4,
+          "mean": 23.75,
+          "sd": 2.9860788111948193,
+          "null_count": 0
+        },
+        "refactor_events": {
+          "kind": "num",
+          "n": 4,
+          "mean": 79.25,
+          "sd": 4.9916597106239795,
+          "null_count": 0
+        },
+        "skip_events": {
+          "kind": "num",
+          "n": 4,
+          "mean": 32.25,
+          "sd": 7.58836829188814,
+          "null_count": 0
+        },
+        "refactor_per_cycle": {
+          "kind": "num",
+          "n": 4,
+          "mean": 3.38375,
+          "sd": 0.522187306752408,
+          "null_count": 0
+        },
+        "green_attempts": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0.089,
+          "sd": 0.08681781691181444,
+          "null_count": 0
+        },
+        "chain_deviations": {
+          "kind": "num",
+          "n": 4,
+          "mean": 42,
+          "sd": 10.862780491200215,
+          "null_count": 0
+        },
+        "chain_opens_red": {
+          "kind": "bool",
+          "n": 4,
+          "k": 0,
+          "null_count": 0
+        },
+        "chain_ends_green": {
+          "kind": "bool",
+          "n": 4,
+          "k": 4,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 4,
+          "k": 399,
+          "t": 403,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 4,
+          "mean": 6065,
+          "sd": 534.8513812265983,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 4,
+          "mean": 98621950.25,
+          "sd": 12655026.731395088,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 4,
+          "mean": 89.299025,
+          "sd": 10.018147585714974,
+          "null_count": 0
+        }
+      }
+    }
+  ]
+}

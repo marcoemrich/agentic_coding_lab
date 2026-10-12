@@ -1,0 +1,1007 @@
+{
+  "cells": [
+    {
+      "kata": "game-of-life-prose",
+      "workflow": "baseline-oneshot-v1-cc",
+      "model": "opus-4-7-no-thinking",
+      "counts": {
+        "runs": 10,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-14_21-27-32_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:27:32+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-29-54_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:29:54+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-31-17_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:31:17+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-33-30_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:33:30+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-35-11_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:35:11+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-37-10_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:37:10+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-38-50_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:38:50+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-41-02_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:41:02+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-43-02_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:43:02+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-44-37_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:44:37+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 10,
+          "mean": 155,
+          "sd": 8.055363982396381,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 4.8,
+          "sd": 1.2292725943057183,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 31.7,
+          "sd": 3.3015148038438356,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 12.8,
+          "sd": 1.8135294011647258,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 18.8,
+          "sd": 3.5839146815241634,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.9532664628056281,
+          "sd": 0.008852298379395641,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passed_immediately": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 10,
+          "k": 10,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 10,
+          "mean": 87.7,
+          "sd": 21.919296420176344,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 10,
+          "mean": 993521.3,
+          "sd": 223584.88606445552,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.94872,
+          "sd": 0.2153717757223025,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-prose",
+      "workflow": "baseline-iterative-v1-cc",
+      "model": "opus-4-7-no-thinking",
+      "counts": {
+        "runs": 10,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-14_21-32-37_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:32:37+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-34-20_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:34:20+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-36-00_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:36:00+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-45-58_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:45:58+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-47-30_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:47:30+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-49-23_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:49:23+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-51-06_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:51:06+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-52-29_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:52:29+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-54-40_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:54:40+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-56-15_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:56:15+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 10,
+          "mean": 157.8,
+          "sd": 8.715248450592533,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 4.1,
+          "sd": 1.286683937707919,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 32.1,
+          "sd": 4.605552204797066,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 11.6,
+          "sd": 1.505545305418162,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 16.2,
+          "sd": 3.5839146815241634,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.9536601115673772,
+          "sd": 0.005752609819932554,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passed_immediately": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 10,
+          "k": 10,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 10,
+          "mean": 83.3,
+          "sd": 13.41682194527121,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 10,
+          "mean": 966999,
+          "sd": 175027.11340944993,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.86737,
+          "sd": 0.113810652206002,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "baseline-inline-tdd-v1-cc",
+      "model": "opus-4-7-no-thinking",
+      "counts": {
+        "runs": 10,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-14_21-37-40_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:37:40+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-38-56_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:38:56+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-40-35_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:40:35+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-57-46_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:57:46+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-59-06_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:59:06+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_00-00-24_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T00:00:24+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_00-02-10_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T00:02:10+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_00-03-37_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T00:03:37+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_00-05-17_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T00:05:17+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_00-06-39_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T00:06:40+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 10,
+          "mean": 165.6,
+          "sd": 13.882042757141727,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 6,
+          "sd": 1.4142135623730951,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 32.5,
+          "sd": 5.835713800003866,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 13.7,
+          "sd": 1.5670212364724212,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 21.8,
+          "sd": 3.6147844564602556,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.9492892894390685,
+          "sd": 0.009335346088247024,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.1,
+          "sd": 0.31622776601683794,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1.5,
+          "sd": 0.97182531580755,
+          "null_count": 0
+        },
+        "tests_passed_immediately": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.5,
+          "sd": 0.97182531580755,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 10,
+          "k": 10,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 10,
+          "mean": 75.1,
+          "sd": 20.999735448069075,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 10,
+          "mean": 799074.4,
+          "sd": 187141.19965725226,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.81289,
+          "sd": 0.25631321745950686,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-subagents-v1-cc",
+      "model": "opus-4-7-no-thinking",
+      "counts": {
+        "runs": 10,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-14_19-06-13_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T19:06:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_19-17-31_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T19:17:31+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_19-30-50_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T19:30:50+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-41-52_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:41:52+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_22-00-54_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T22:00:54+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_22-12-59_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T22:12:59+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_00-09-03_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T00:09:03+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_01-14-45_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T01:14:45+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_01-25-07_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T01:25:07+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_01-40-00_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T01:40:01+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 10,
+          "mean": 166.6,
+          "sd": 17.652195330892983,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 2.6,
+          "sd": 0.699205898780101,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 8.1,
+          "sd": 4.04007700696685,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 4.5,
+          "sd": 2.41522945769824,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 4.4,
+          "sd": 4.477102237434884,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.9076601848062021,
+          "sd": 0.0795840354859188,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 10,
+          "k": 99,
+          "t": 101,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 10,
+          "mean": 5.9,
+          "sd": 2.0248456731316584,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 10,
+          "mean": 7.8,
+          "sd": 0.9189365834726815,
+          "null_count": 0
+        },
+        "tests_passed_immediately": {
+          "kind": "num",
+          "n": 10,
+          "mean": 3.3,
+          "sd": 2.869378562220979,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 10,
+          "k": 10,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1162.9,
+          "sd": 984.45726164217,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 10,
+          "mean": 7287333,
+          "sd": 1065203.0545801532,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 10,
+          "mean": 7.58437,
+          "sd": 1.0727167753471143,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-single-context-v1-cc",
+      "model": "opus-4-7-no-thinking",
+      "counts": {
+        "runs": 9,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-14_22-28-39_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T22:28:39+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_22-33-10_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T22:33:10+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_22-37-08_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T22:37:08+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_01-57-35_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T01:57:35+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_02-04-22_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T02:04:22+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_02-13-08_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T02:13:08+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_02-26-11_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T02:26:11+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_02-34-45_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T02:34:45+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_02-40-53_game-of-life-example-mapping_v5-exact-single-context_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T02:40:53+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 9,
+          "mean": 154.44444444444446,
+          "sd": 13.323955035115429,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 9,
+          "mean": 4.333333333333333,
+          "sd": 1.7320508075688772,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 9,
+          "mean": 17.11111111111111,
+          "sd": 9.765301383526834,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 9,
+          "mean": 9,
+          "sd": 2.179449471770337,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 9,
+          "mean": 15.11111111111111,
+          "sd": 4.702245326555294,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 9,
+          "mean": 0.9443535199464658,
+          "sd": 0.03827863637205684,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 9,
+          "k": 132,
+          "t": 132,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 9,
+          "mean": 6.666666666666667,
+          "sd": 2.3979157616563596,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 9,
+          "mean": 7.444444444444445,
+          "sd": 1.3333333333333333,
+          "null_count": 0
+        },
+        "tests_passed_immediately": {
+          "kind": "num",
+          "n": 9,
+          "mean": 1,
+          "sd": 1.7320508075688772,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 9,
+          "k": 9,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 9,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 9,
+          "mean": 379.55555555555554,
+          "sd": 100.78828194675101,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 9,
+          "mean": 9047276.888888888,
+          "sd": 2637076.811359429,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 9,
+          "mean": 6.433222222222222,
+          "sd": 1.8298267689714356,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-hybrid-v1-cc",
+      "model": "opus-4-7-no-thinking",
+      "counts": {
+        "runs": 10,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-15_08-54-01_game-of-life-example-mapping_v6-hybrid_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T08:54:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_09-37-35_game-of-life-example-mapping_v6-hybrid_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T09:37:35+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_09-45-00_game-of-life-example-mapping_v6-hybrid_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T09:45:00+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_09-53-18_game-of-life-example-mapping_v6-hybrid_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T09:53:18+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_10-03-42_game-of-life-example-mapping_v6-hybrid_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T10:03:42+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_15-27-17_game-of-life-example-mapping_v6-hybrid_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T15:27:17+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_15-38-01_game-of-life-example-mapping_v6-hybrid_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T15:38:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_15-45-50_game-of-life-example-mapping_v6-hybrid_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T15:45:50+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_15-54-13_game-of-life-example-mapping_v6-hybrid_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T15:54:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_16-02-01_game-of-life-example-mapping_v6-hybrid_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T16:02:01+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 10,
+          "mean": 158.6,
+          "sd": 15.137884778117304,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 2.2,
+          "sd": 0.4216370213557839,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 13.1,
+          "sd": 5.97122730730924,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 4.5,
+          "sd": 1.509230856356236,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 5.2,
+          "sd": 2.2997584414213788,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.9526079754532115,
+          "sd": 0.004845578279800392,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 10,
+          "k": 169,
+          "t": 170,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 10,
+          "mean": 4,
+          "sd": 1.632993161855452,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 10,
+          "mean": 8.3,
+          "sd": 0.8232726023485646,
+          "null_count": 0
+        },
+        "tests_passed_immediately": {
+          "kind": "num",
+          "n": 10,
+          "mean": 3.3,
+          "sd": 3.020301677353145,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 10,
+          "k": 10,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 10,
+          "mean": 521.4,
+          "sd": 95.47914257400234,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 10,
+          "mean": 7855064,
+          "sd": 1601803.9291986465,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 10,
+          "mean": 6.63152,
+          "sd": 1.2020244754394793,
+          "null_count": 0
+        }
+      }
+    }
+  ]
+}

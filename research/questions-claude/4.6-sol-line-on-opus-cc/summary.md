@@ -2,7 +2,7 @@
 
 _Is the native Sol workflow line (basic-sol-tdd, Predictive TDD, Four Rules refactor) better only on Sol/pi, or does it also beat the opus line on Opus with native Claude Code — and does the APP effect that suppresses decomposition on Sol reproduce there?_
 
-Generated: 2026-10-12T07:27:48Z
+Generated: 2026-10-12T08:37:40Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -21,174 +21,176 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
 ### avg_loc_per_function
 
-| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |   8.81 |  6.12 | 10.42 |  1.71 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |   8.9  |  7.44 | 11.54 |  1.65 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |   4.38 |  3.35 |  4.8  |  0.69 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |   4.4  |  3.76 |  4.87 |  0.42 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |   6.65 |  5.91 |  7.45 |  0.69 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |   7.86 |  5.9  |  9.57 |  1.6  |
+| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |      0 |   8.81 | 1.71 |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |      0 |   8.9  | 1.65 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 |   6.65 | 0.69 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 |   7.86 | 1.6  |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 |   4.38 | 0.69 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 |   4.4  | 0.42 |
 
 ### median_loc_per_function
 
-| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |   7.7  |   5.5 |     9 |  1.48 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |   7.17 |   5   |    10 |  2.32 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |   2    |   2   |     2 |  0    |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |   2    |   2   |     2 |  0    |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |   6    |   5   |     7 |  0.71 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |   6.7  |   5   |     8 |  1.4  |
+| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |      0 |   7.7  | 1.48 |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |      0 |   7.17 | 2.32 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 |   6    | 0.71 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 |   6.7  | 1.4  |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 |   2    | 0    |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 |   2    | 0    |
 
 ### longest_function
 
-| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |  23.4  |    14 |    30 |  6.99 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |  24.33 |    19 |    27 |  2.8  |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |  23.5  |    12 |    31 |  8.35 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |  23.4  |    16 |    32 |  5.81 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |  19.4  |    15 |    24 |  3.58 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |  22.4  |    17 |    26 |  4.51 |
+| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |      0 |  23.4  | 6.99 |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |      0 |  24.33 | 2.8  |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 |  19.4  | 3.58 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 |  22.4  | 4.51 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 |  23.5  | 8.35 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 |  23.4  | 5.81 |
 
 ### code_mass
 
-| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |    std |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|-------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 | 927    |   812 |  1039 | 100.47 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 | 758.17 |   674 |   881 |  95.71 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 | 882    |   722 |   964 | 112.7  |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 | 928.8  |   830 |  1025 |  78.78 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 | 723.8  |   682 |   769 |  36.38 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 | 631.4  |   582 |   703 |  48.64 |
+| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |     sd |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |      0 | 927    | 100.47 |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |      0 | 758.17 |  95.71 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 | 723.8  |  36.38 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 | 631.4  |  48.64 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 | 882    | 112.7  |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 | 928.8  |  78.78 |
 
 ### cognitive_max
 
-| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |   7    |     4 |    10 |  2.24 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |   5.33 |     4 |     9 |  1.86 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |   3.25 |     2 |     4 |  0.96 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |   3.6  |     2 |     5 |  1.14 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |   4.6  |     3 |     7 |  1.82 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |   3.4  |     3 |     5 |  0.89 |
+| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |      0 |   7    | 2.24 |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |      0 |   5.33 | 1.86 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 |   4.6  | 1.82 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 |   3.4  | 0.89 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 |   3.25 | 0.96 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 |   3.6  | 1.14 |
 
 ### cognitive_avg
 
-| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |   2.49 |  1.76 |  3.23 |  0.58 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |   2.55 |  2.2  |  3.67 |  0.58 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |   1.46 |  1.17 |  1.86 |  0.31 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |   1.43 |  1.17 |  1.8  |  0.24 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |   1.7  |  1.31 |  2.08 |  0.38 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |   1.91 |  1.58 |  2.25 |  0.27 |
+| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |      0 |   2.49 | 0.58 |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |      0 |   2.55 | 0.58 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 |   1.7  | 0.38 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 |   1.91 | 0.27 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 |   1.47 | 0.31 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 |   1.43 | 0.24 |
 
 ### mccabe_max
 
-| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |   6    |     5 |     7 |  1    |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |   5.33 |     4 |     7 |  1.03 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |   3.75 |     3 |     4 |  0.5  |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |   3.8  |     3 |     5 |  0.84 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |   4.4  |     3 |     6 |  1.14 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |   4    |     3 |     5 |  0.71 |
+| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |      0 |   6    | 1    |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |      0 |   5.33 | 1.03 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 |   4.4  | 1.14 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 |   4    | 0.71 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 |   3.75 | 0.5  |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 |   3.8  | 0.84 |
 
 ### smell_total
 
-| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |   0    |     0 |     0 |  0    |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |   0    |     0 |     0 |  0    |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |   1.25 |     1 |     2 |  0.5  |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |   0.2  |     0 |     1 |  0.45 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |   0    |     0 |     0 |  0    |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |   0    |     0 |     0 |  0    |
+| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |      0 |   0    | 0    |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |      0 |   0    | 0    |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 |   0    | 0    |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 |   0    | 0    |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 |   1.25 | 0.5  |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 |   0.2  | 0.45 |
 
 ### verification_pct
 
-| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |   1    |  1    |     1 |  0    |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |   1    |  1    |     1 |  0    |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |   0.75 |  0    |     1 |  0.5  |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |   0.99 |  0.93 |     1 |  0.03 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |   1    |  1    |     1 |  0    |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |   1    |  1    |     1 |  0    |
+| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |      0 |   1    | 0    |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |      0 |   1    | 0    |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 |   1    | 0    |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 |   1    | 0    |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 |   0.75 | 0.5  |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 |   0.99 | 0.03 |
 
-### tests_passing (rate %)
+### tests_passing
 
-| kata                         | cell_workflow              | cell_model           |   n |   match |   rate_% |
-|:-----------------------------|:---------------------------|:---------------------|----:|--------:|---------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |       6 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |       4 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |       5 |      100 |
+| kata                         | cell_workflow              | cell_model           |   n |   k |   null |   rate_% |
+|:-----------------------------|:---------------------------|:---------------------|----:|----:|-------:|---------:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |   5 |      0 |      100 |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |   6 |      0 |      100 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |   5 |      0 |      100 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |   5 |      0 |      100 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |   4 |      0 |      100 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |   5 |      0 |      100 |
 
-### legacy_cycle_count
+### cycle_count
 
-| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |   6    |     4 |     9 |  2    |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |   5.17 |     2 |     8 |  2.32 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |  37.75 |    25 |    45 |  8.85 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |  39.6  |    26 |    46 |  8.02 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |  32.8  |    19 |    50 | 11.19 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |  52.4  |    29 |    92 | 27.04 |
+| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |    sd |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|------:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |      0 |   6    |  2    |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |      0 |   5.17 |  2.32 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 |  32.8  | 11.19 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 |  52.4  | 27.04 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 |  37.75 |  8.85 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 |  39.6  |  8.02 |
 
-### legacy_refactorings_applied
+### refactorings_applied
 
-| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |    1   |     0 |     2 |  0.71 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |    2   |     1 |     3 |  0.89 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |   35.5 |    16 |    45 | 13.23 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |   28   |    22 |    46 | 10.12 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |   29.6 |    24 |    32 |  3.36 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |   39.8 |    29 |    54 | 10.52 |
+| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |    sd |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|------:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |      0 |    1   |  0.71 |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |      0 |    2   |  0.89 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 |   29.6 |  3.36 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 |   39.8 | 10.52 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 |   35.5 | 13.23 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 |   28   | 10.12 |
 
-### predictions_correct_rate (pooled %)
+### predictions_correct_rate
 
-| kata                         | cell_workflow              | cell_model           |   n |   correct |   total |   rate_% |
-|:-----------------------------|:---------------------------|:---------------------|----:|----------:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |       298 |     299 |     99.7 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |       394 |     396 |     99.5 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |       249 |     251 |     99.2 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |       173 |     176 |     98.3 |
+| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |   sd |   k |   t |   rate_% |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|-----:|----:|----:|---------:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   0 |      5 |    nan |  nan | nan | nan |    nan   |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   0 |      6 |    nan |  nan | nan | nan |    nan   |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 |    nan |  nan | 249 | 251 |     99.2 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 |    nan |  nan | 173 | 176 |     98.3 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 |    nan |  nan | 298 | 299 |     99.7 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 |    nan |  nan | 394 | 396 |     99.5 |
 
 ### duration_seconds
 
-| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |     std |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|--------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |  365.2 |   301 |   460 |   64.15 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |  329.5 |   258 |   453 |   65.09 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 | 3399   |  1846 |  4056 | 1041.67 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 | 3636.6 |  2739 |  5188 |  917.14 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |  958   |   860 |  1038 |   78.24 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 | 1015.8 |   742 |  1606 |  345.44 |
+| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |      sd |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|--------:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |      0 |  365.2 |   64.15 |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |      0 |  329.5 |   65.09 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 |  958   |   78.24 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 | 1015.8 |  345.44 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 | 3399   | 1041.67 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 | 3636.6 |  917.14 |
 
 ### total_tokens
 
-| kata                         | cell_workflow              | cell_model           |   n |        mean |      min |       max |              std |
-|:-----------------------------|:---------------------------|:---------------------|----:|------------:|---------:|----------:|-----------------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 | 4.88116e+06 |  4017954 |   5638478 | 679348           |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 | 4.4615e+06  |  3194079 |   5719313 | 834832           |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 | 9.98548e+07 | 42947825 | 127612246 |      3.84779e+07 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 | 1.14529e+08 | 82430079 | 141856149 |      2.19666e+07 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 | 2.44804e+07 | 21448540 |  26828143 |      2.53647e+06 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 | 2.60872e+07 | 17445311 |  37322425 |      7.37643e+06 |
+| kata                         | cell_workflow              | cell_model           |   n |   null |        mean |               sd |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------------:|-----------------:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |      0 | 4.88116e+06 | 679348           |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |      0 | 4.4615e+06  | 834832           |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 | 2.44804e+07 |      2.53647e+06 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 | 2.60872e+07 |      7.37643e+06 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 | 9.98548e+07 |      3.84779e+07 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 | 1.14529e+08 |      2.19666e+07 |
 
 ### cost_usd
 
-| kata                         | cell_workflow              | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |   4.87 |  4.2  |  5.62 |  0.59 |
-| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |   3.89 |  2.73 |  4.43 |  0.6  |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |  73.93 | 33.03 | 94.4  | 27.73 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |  76.31 | 56.09 | 97.97 | 15.11 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |  17.8  | 15.76 | 19.76 |  1.82 |
-| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |  17.37 | 12.06 | 24.07 |  4.44 |
+| kata                         | cell_workflow              | cell_model           |   n |   null |   mean |    sd |
+|:-----------------------------|:---------------------------|:---------------------|----:|-------:|-------:|------:|
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-8-no-thinking |   5 |      0 |   4.87 |  0.59 |
+| claim-office-example-mapping | baseline-inline-tdd-v1-cc  | opus-5-no-thinking   |   6 |      0 |   3.89 |  0.6  |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-4-8-no-thinking |   5 |      0 |  17.8  |  1.82 |
+| claim-office-example-mapping | exact-sol-v1-cc            | opus-5-no-thinking   |   5 |      0 |  17.37 |  4.44 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-no-thinking |   4 |      0 |  73.93 | 27.73 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-5-no-thinking   |   5 |      0 |  76.31 | 15.11 |

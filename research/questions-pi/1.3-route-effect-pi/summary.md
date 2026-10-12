@@ -2,7 +2,7 @@
 
 _How do transport route and reasoning channel each affect code quality, TDD discipline, throughput and correctness for one and the same model (GPT-5.6 Sol), at constant harness, workflow, kata and prompt style?_
 
-Generated: 2026-10-12T07:27:58Z
+Generated: 2026-10-12T08:37:49Z
 
 Cells declared: 3 · matched runs: 15 · min_replicates: 5
 
@@ -18,184 +18,184 @@ Cells declared: 3 · matched runs: 15 · min_replicates: 5
 
 ### duration_seconds
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |    std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|-------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |  615.6 |   459 |   732 | 106.46 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |  252.8 |   170 |   299 |  52.16 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |  286   |   209 |   342 |  55.93 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |     sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |  252.8 |  52.16 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |  286   |  55.93 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |  615.6 | 106.46 |
 
 ### total_tokens
 
-| kata                         | cell_workflow                           | cell_model                    |   n |             mean |    min |     max |    std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-----------------:|-------:|--------:|-------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      1.25998e+06 | 845905 | 1581393 | 278297 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 | 855358           | 574492 |  995817 | 165796 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 | 823081           | 712625 |  968650 | 103790 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |             mean |     sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-----------------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 | 855358           | 165796 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 | 823081           | 103790 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |      1.25998e+06 | 278297 |
 
 ### code_mass
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |  153.2 |   146 |   162 |  6.72 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |  138.8 |   118 |   165 | 16.8  |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |  126.4 |    95 |   147 | 21.49 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |    sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |  138.8 | 16.8  |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |  126.4 | 21.49 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |  153.2 |  6.72 |
 
 ### cognitive_max
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |    4.4 |     3 |     7 |  1.52 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |    9   |     4 |    17 |  5.57 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |   10.6 |     4 |    17 |  6.11 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |    9   | 5.57 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |   10.6 | 6.11 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |    4.4 | 1.52 |
 
 ### cognitive_avg
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |   2.47 |  2    |   3.5 |  0.62 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |   4.87 |  2.33 |   9   |  2.96 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |   5.62 |  2.33 |   9   |  3.25 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |   4.87 | 2.96 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |   5.62 | 3.25 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |   2.47 | 0.62 |
 
 ### mccabe_max
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |    4.6 |     4 |     5 |  0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |    6.8 |     4 |    11 |  2.77 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |    8   |     4 |    12 |  3.81 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |    6.8 | 2.77 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    8   | 3.81 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |    4.6 | 0.55 |
 
 ### mccabe_avg
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |   2.38 |   2   |  2.6  |  0.24 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |   2.82 |   2   |  4.67 |  1.08 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |   3.29 |   2.2 |  4    |  0.69 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |   2.82 | 1.08 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |   3.29 | 0.69 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |   2.38 | 0.24 |
 
 ### longest_function
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |   20.8 |    11 |    26 |  6.22 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |   18.8 |    13 |    23 |  3.7  |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |   21.6 |    16 |    24 |  3.36 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |   18.8 | 3.7  |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |   21.6 | 3.36 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |   20.8 | 6.22 |
 
 ### avg_loc_per_function
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |  11.53 |  5.67 |  14.5 |  3.67 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |  14.14 |  6.2  |  23   |  7.05 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |  15.3  | 11.5  |  23   |  4.6  |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |  14.14 | 7.05 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |  15.3  | 4.6  |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |  11.53 | 3.67 |
 
 ### median_loc_per_function
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |   11.1 |   3.5 |  14.5 |  4.56 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |   13.7 |   4   |  23   |  7.71 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |   15.3 |  11.5 |  23   |  4.6  |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |   13.7 | 7.71 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |   15.3 | 4.6  |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |   11.1 | 4.56 |
 
 ### lines_of_code
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |   41.6 |    36 |    51 |  5.77 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |   30.6 |    24 |    46 |  8.93 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |   27.2 |    24 |    31 |  2.77 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |   30.6 | 8.93 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |   27.2 | 2.77 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |   41.6 | 5.77 |
 
 ### smell_total
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |    0.6 |     0 |     3 |  1.34 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |    2.4 |     0 |     4 |  1.67 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |    2.8 |     2 |     4 |  1.1  |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |    2.4 | 1.67 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    2.8 | 1.1  |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |    0.6 | 1.34 |
 
 ### smell_complexity
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |    0   |     0 |     0 |   0   |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |    0.8 |     0 |     2 |   1.1 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |    0.8 |     0 |     2 |   1.1 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |    0.8 |  1.1 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    0.8 |  1.1 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |    0   |  0   |
 
 ### smell_magic_numbers
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |    0.6 |     0 |     3 |  1.34 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |    1.6 |     0 |     2 |  0.89 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |    2   |     2 |     2 |  0    |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |    1.6 | 0.89 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    2   | 0    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |    0.6 | 1.34 |
 
 ### smell_duplication
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |     0 |     0 |     0 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |     0 |     0 |     0 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |     0 |     0 |     0 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |      0 |    0 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |      0 |    0 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |      0 |    0 |
 
 ### verification_pct
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      1 |     1 |     1 |     0 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      1 |     1 |     1 |     0 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      1 |     1 |     1 |     0 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |      1 |    0 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |      1 |    0 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |      1 |    0 |
 
-### tests_passing (rate %)
+### tests_passing
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |       5 |      100 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   k |   null |   rate_% |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|----:|-------:|---------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |   5 |      0 |      100 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |   5 |      0 |      100 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |   5 |      0 |      100 |
 
 ### tests_total
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |    9.8 |     8 |    11 |  1.3  |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |    8.4 |     8 |     9 |  0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |    8.4 |     7 |    10 |  1.52 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |    8.4 | 0.55 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    8.4 | 1.52 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |    9.8 | 1.3  |
 
-### legacy_cycle_count
+### cycle_count
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |    9.8 |     8 |    11 |  1.3  |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |    8.4 |     8 |     9 |  0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |    8.4 |     7 |    10 |  1.52 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |    8.4 | 0.55 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    8.4 | 1.52 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |    9.8 | 1.3  |
 
-### legacy_refactorings_applied
+### refactorings_applied
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |    7   |     5 |     9 |  1.58 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |    5   |     3 |     6 |  1.22 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |    4.4 |     3 |     5 |  0.89 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |    5   | 1.22 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    4.4 | 0.89 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |    7   | 1.58 |
 
 ### predictions_correct
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |   13   |     9 |    16 |  2.65 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |   10   |     6 |    12 |  2.45 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |    8.6 |     6 |    10 |  1.67 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |   10   | 2.45 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    8.6 | 1.67 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |   13   | 2.65 |
 
 ### predictions_total
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |   13.2 |    10 |    16 |  2.28 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |   10   |     6 |    12 |  2.45 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |    8.8 |     6 |    10 |  1.79 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |   10   | 2.45 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |    8.8 | 1.79 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |   13.2 | 2.28 |
 
 ### cost_usd
 
-| kata                         | cell_workflow                           | cell_model                    |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |   2.02 |  1.48 |  2.47 |  0.39 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |   0.96 |  0.67 |  1.13 |  0.18 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |   0.95 |  0.78 |  1.11 |  0.12 |
+| kata                         | cell_workflow                           | cell_model                    |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------------------|:------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-no-thinking       |   5 |      0 |   0.96 | 0.18 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-reasoning         |   5 |      0 |   0.95 | 0.12 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol-codex-no-thinking |   5 |      0 |   2.02 | 0.39 |

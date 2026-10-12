@@ -2,7 +2,7 @@
 
 _Does the interaction finding from RQ-pep-emoji-v6.1 (pep+emoji reduction: anti-additivity for refactorings_applied, saturation for tests_passed_immediately, correctness invariant) also hold on a more complex kata with genuine ambiguities?_
 
-Generated: 2026-10-12T07:28:09Z
+Generated: 2026-10-12T08:38:00Z
 
 Cells declared: 4 · matched runs: 22 · min_replicates: 5
 
@@ -19,117 +19,117 @@ Cells declared: 4 · matched runs: 22 · min_replicates: 5
 
 ### verification_pct
 
-| kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |   1    |  1    |     1 |  0    |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |   0.97 |  0.87 |     1 |  0.06 |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |   0.8  |  0    |     1 |  0.45 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |   0.95 |  0.73 |     1 |  0.12 |
+| kata                         | cell_workflow                        | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |      0 |   1    | 0    |
+| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      0 |   0.97 | 0.06 |
+| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 |   0.8  | 0.45 |
+| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 |   0.95 | 0.12 |
 
-### tests_passing (rate %)
+### tests_passing
 
-| kata                         | cell_workflow                        | cell_model                   |   n |   match |   rate_% |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |       7 |      100 |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |       4 |       80 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
+| kata                         | cell_workflow                        | cell_model                   |   n |   k |   null |   rate_% |
+|:-----------------------------|:-------------------------------------|:-----------------------------|----:|----:|-------:|---------:|
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |   7 |      0 |      100 |
+| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |   5 |      0 |      100 |
+| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |   4 |      0 |       80 |
+| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |   5 |      0 |      100 |
 
 ### code_mass
 
-| kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |    std |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|-------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 | 861.29 |   759 |   982 |  74.51 |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 | 842.8  |   762 |   905 |  53.9  |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 | 654    |     0 |   861 | 367.15 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 | 866.8  |   791 |   955 |  63.77 |
+| kata                         | cell_workflow                        | cell_model                   |   n |   null |   mean |     sd |
+|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |      0 | 861.29 |  74.51 |
+| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      0 | 842.8  |  53.9  |
+| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 | 654    | 367.15 |
+| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 | 866.8  |  63.77 |
 
 ### smell_total
 
-| kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |   1.29 |     0 |     4 |  1.5  |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |   3.4  |     0 |    12 |  5.08 |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |   1.6  |     0 |     4 |  2.19 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |   0.6  |     0 |     3 |  1.34 |
+| kata                         | cell_workflow                        | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |      0 |   1.29 | 1.5  |
+| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      0 |   3.4  | 5.08 |
+| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 |   1.6  | 2.19 |
+| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 |   0.6  | 1.34 |
 
 ### longest_function
 
-| kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |  18.14 |    11 |    25 |  5.11 |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |  17.4  |    11 |    25 |  6.66 |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |  12.8  |     0 |    22 |  8.04 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |  13.2  |    11 |    15 |  1.79 |
+| kata                         | cell_workflow                        | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |      0 |  18.14 | 5.11 |
+| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      0 |  17.4  | 6.66 |
+| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 |  12.8  | 8.04 |
+| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 |  13.2  | 1.79 |
 
 ### cognitive_max
 
-| kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |   5.71 |     3 |    11 |  2.87 |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |   7    |     4 |    13 |  3.67 |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |   4    |     0 |     7 |  2.74 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |   4.6  |     3 |     6 |  1.34 |
+| kata                         | cell_workflow                        | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |      0 |   5.71 | 2.87 |
+| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      0 |   7    | 3.67 |
+| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 |   4    | 2.74 |
+| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 |   4.6  | 1.34 |
 
 ### mccabe_max
 
-| kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |   5.71 |     4 |    10 |  2.36 |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |   6.4  |     4 |    11 |  2.88 |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |   4.2  |     0 |     7 |  2.68 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |   4.6  |     4 |     6 |  0.89 |
+| kata                         | cell_workflow                        | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |      0 |   5.71 | 2.36 |
+| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      0 |   6.4  | 2.88 |
+| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 |   4.2  | 2.68 |
+| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 |   4.6  | 0.89 |
 
-### legacy_refactorings_applied
+### refactorings_applied
 
-| kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |   11   |     4 |    17 |  5.1  |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |    6.6 |     3 |    13 |  4.62 |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |    8.8 |     0 |    17 |  7.46 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |    9.8 |     4 |    17 |  4.87 |
+| kata                         | cell_workflow                        | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |      0 |   11   | 5.1  |
+| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      0 |    6.6 | 4.62 |
+| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 |    8.8 | 7.46 |
+| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 |    9.8 | 4.87 |
 
-### legacy_cycle_count
+### cycle_count
 
-| kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |   28   |     5 |    43 | 12.96 |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |   15.4 |     4 |    43 | 16.82 |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |   22.6 |     0 |    42 | 19.57 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |   29.6 |     6 |    39 | 13.74 |
+| kata                         | cell_workflow                        | cell_model                   |   n |   null |   mean |    sd |
+|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|-------:|------:|
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |      0 |   28   | 12.96 |
+| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      0 |   15.4 | 16.82 |
+| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 |   22.6 | 19.57 |
+| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 |   29.6 | 13.74 |
 
-### predictions_correct_rate (pooled %)
+### predictions_correct_rate
 
-| kata                         | cell_workflow                        | cell_model                   |   n |   correct |   total |   rate_% |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|----------:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |       292 |     303 |     96.4 |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |       126 |     126 |    100   |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   4 |       208 |     212 |     98.1 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |       239 |     242 |     98.8 |
+| kata                         | cell_workflow                        | cell_model                   |   n |   k |   t |   null |   rate_% |
+|:-----------------------------|:-------------------------------------|:-----------------------------|----:|----:|----:|-------:|---------:|
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 | 292 | 303 |      0 |     96.4 |
+| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 | 126 | 126 |      0 |    100   |
+| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   4 | 208 | 212 |      1 |     98.1 |
+| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 | 239 | 242 |      0 |     98.8 |
 
-### legacy_tests_passed_immediately
+### tests_passed_immediately
 
-| kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |  13.57 |     1 |    26 |  8.62 |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |   8.2  |     0 |    32 | 13.72 |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |   8.4  |     0 |    22 |  8.91 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |  13.8  |     0 |    19 |  7.95 |
+| kata                         | cell_workflow                        | cell_model                   |   n |   null |   mean |    sd |
+|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|-------:|------:|
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |      0 |  13.57 |  8.62 |
+| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      0 |   8.2  | 13.72 |
+| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 |   8.4  |  8.91 |
+| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 |  13.8  |  7.95 |
 
 ### duration_seconds
 
-| kata                         | cell_workflow                        | cell_model                   |   n |   mean |   min |   max |    std |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------:|------:|-------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 | 1569   |   556 |  2071 | 519.28 |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 | 1103.4 |   524 |  1731 | 562.03 |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 | 1319.2 |    55 |  2000 | 858.22 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 | 1546.4 |   959 |  2104 | 421.86 |
+| kata                         | cell_workflow                        | cell_model                   |   n |   null |   mean |     sd |
+|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |      0 | 1569   | 519.28 |
+| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      0 | 1103.4 | 562.03 |
+| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 | 1319.2 | 858.22 |
+| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 | 1546.4 | 421.86 |
 
 ### total_tokens
 
-| kata                         | cell_workflow                        | cell_model                   |   n |        mean |      min |      max |         std |
-|:-----------------------------|:-------------------------------------|:-----------------------------|----:|------------:|---------:|---------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 | 3.78763e+07 | 10021131 | 49591797 | 1.34521e+07 |
-| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 | 2.72635e+07 |  8856536 | 46234947 | 1.53025e+07 |
-| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 | 3.33318e+07 |   419163 | 49706512 | 2.19333e+07 |
-| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 | 3.89401e+07 | 25393862 | 48504371 | 8.83319e+06 |
+| kata                         | cell_workflow                        | cell_model                   |   n |   null |        mean |          sd |
+|:-----------------------------|:-------------------------------------|:-----------------------------|----:|-------:|------------:|------------:|
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-cc      | opus-4-7-portkey-no-thinking |   7 |      0 | 3.78763e+07 | 1.34521e+07 |
+| claim-office-example-mapping | exact-hybrid-v2.1-no-pep-cc          | opus-4-7-portkey-no-thinking |   5 |      0 | 2.72635e+07 | 1.53025e+07 |
+| claim-office-example-mapping | exact-hybrid-v2.2-no-emoji-cc        | opus-4-7-portkey-no-thinking |   5 |      0 | 3.33318e+07 | 2.19333e+07 |
+| claim-office-example-mapping | exact-hybrid-v2.3-no-pep-no-emoji-cc | opus-4-7-portkey-no-thinking |   5 |      0 | 3.89401e+07 | 8.83319e+06 |

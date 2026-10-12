@@ -2,7 +2,7 @@
 
 _Do the three v6.5.1 audit cleanups (consistency, refactor.md decoupling, tdd-experiment-mode reframing) — applied to exact-hybrid-v3-with-why-cc — measurably change workflow behaviour on claim-office, or is exact-hybrid-v4-cleaned-cc a behaviourally equivalent hygiene variant of the new default baseline?_
 
-Generated: 2026-10-12T07:28:10Z
+Generated: 2026-10-12T08:38:01Z
 
 Cells declared: 2 · matched runs: 16 · min_replicates: 8
 
@@ -17,91 +17,91 @@ Cells declared: 2 · matched runs: 16 · min_replicates: 8
 
 ### verification_pct
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |   0.91 |  0.27 |     1 |  0.26 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |   0.96 |  0.73 |     1 |  0.09 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |      0 |   0.91 | 0.26 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |      0 |   0.96 | 0.09 |
 
-### tests_passing (rate %)
+### tests_passing
 
-| kata                         | cell_workflow               | cell_model                   |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |       8 |      100 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |       8 |      100 |
+| kata                         | cell_workflow               | cell_model                   |   n |   k |   null |   rate_% |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|----:|-------:|---------:|
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |   8 |      0 |      100 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |   8 |      0 |      100 |
 
-### predictions_correct_rate (pooled %)
+### predictions_correct_rate
 
-| kata                         | cell_workflow               | cell_model                   |   n |   correct |   total |   rate_% |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|----------:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   7 |       530 |     551 |     96.2 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |       581 |     598 |     97.2 |
+| kata                         | cell_workflow               | cell_model                   |   n |   k |   t |   null |   rate_% |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|----:|----:|-------:|---------:|
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   7 | 530 | 551 |      1 |     96.2 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 | 581 | 598 |      0 |     97.2 |
 
-### legacy_refactorings_applied
+### refactorings_applied
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |  18.5  |     0 |    30 |  8.42 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |  24.88 |    18 |    37 |  6.9  |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |      0 |  18.5  | 8.42 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |      0 |  24.88 | 6.9  |
 
-### legacy_tests_passed_immediately
+### tests_passed_immediately
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |  15.38 |     0 |    21 |  7.27 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |  15.12 |     1 |    19 |  5.84 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |      0 |  15.38 | 7.27 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |      0 |  15.12 | 5.84 |
 
-### legacy_cycle_count
+### cycle_count
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |  35    |     0 |    42 | 14.22 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |  37.38 |    35 |    40 |  1.6  |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |    sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|------:|
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |      0 |  35    | 14.22 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |      0 |  37.38 |  1.6  |
 
 ### code_mass
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |    std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|-------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 | 769.12 |   296 |   901 | 197.25 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 | 878.5  |   783 |  1066 |  91.44 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |     sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |      0 | 769.12 | 197.25 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |      0 | 878.5  |  91.44 |
 
 ### smell_total
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |   0.38 |     0 |     1 |  0.52 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |   0.38 |     0 |     2 |  0.74 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |      0 |   0.38 | 0.52 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |      0 |   0.38 | 0.74 |
 
 ### longest_function
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |  13.25 |    10 |    15 |  1.58 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |  12.38 |    10 |    15 |  1.41 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |      0 |  13.25 | 1.58 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |      0 |  12.38 | 1.41 |
 
 ### cognitive_max
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |   4.38 |     3 |     6 |  1.06 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |   5    |     3 |     8 |  1.77 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |      0 |   4.38 | 1.06 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |      0 |   5    | 1.77 |
 
 ### mccabe_max
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |   4.25 |     4 |     5 |  0.46 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |   4.5  |     3 |     5 |  0.76 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |      0 |   4.25 | 0.46 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |      0 |   4.5  | 0.76 |
 
 ### duration_seconds
 
-| kata                         | cell_workflow               | cell_model                   |   n |    mean |   min |   max |    std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|--------:|------:|------:|-------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 | 2234.25 |  1030 |  2973 | 549.95 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 | 2530.38 |  2194 |  3285 | 401.16 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |    mean |     sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|--------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |      0 | 2234.25 | 549.95 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |      0 | 2530.38 | 401.16 |
 
 ### total_tokens
 
-| kata                         | cell_workflow               | cell_model                   |   n |        mean |      min |      max |         std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|------------:|---------:|---------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 | 4.58038e+07 |   349302 | 61028792 | 1.87383e+07 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 | 5.22518e+07 | 45068216 | 61344477 | 5.60009e+06 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |        mean |          sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------------:|------------:|
+| claim-office-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   8 |      0 | 4.58038e+07 | 1.87383e+07 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |   8 |      0 | 5.22518e+07 | 5.60009e+06 |

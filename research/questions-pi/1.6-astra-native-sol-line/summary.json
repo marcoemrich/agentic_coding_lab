@@ -1,0 +1,1320 @@
+{
+  "cells": [
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "baseline-inline-tdd-v1-pi",
+      "model": "gpt-6-astra-codex-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-05_12-42-00_claim-office-example-mapping_v3-basic-tdd-pi_gpt-6-astra-codex-no-thinking",
+          "started_at": "2026-09-05T12:42:00+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_12-42-00_claim-office-example-mapping_v3-basic-tdd-pi_gpt-6-astra-codex-no-thinking-2",
+          "started_at": "2026-09-05T12:42:00+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_12-42-00_claim-office-example-mapping_v3-basic-tdd-pi_gpt-6-astra-codex-no-thinking-3",
+          "started_at": "2026-09-05T12:42:00+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_12-42-01_claim-office-example-mapping_v3-basic-tdd-pi_gpt-6-astra-codex-no-thinking",
+          "started_at": "2026-09-05T12:42:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_12-42-01_claim-office-example-mapping_v3-basic-tdd-pi_gpt-6-astra-codex-no-thinking-2",
+          "started_at": "2026-09-05T12:42:01+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 27.934,
+          "sd": 14.910794076775389,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 26.8,
+          "sd": 17.123083834403193,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 32.6,
+          "sd": 8.763560920082657,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.8,
+          "sd": 13.627178724886527,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.1,
+          "sd": 2.792848008753788,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.6,
+          "sd": 3.646916505762094,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 16.6,
+          "sd": 2.073644135332772,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 367.6,
+          "sd": 13.758633653092156,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.8,
+          "sd": 1.0954451150103321,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 59.4,
+          "sd": 4.61519230368573,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.8,
+          "sd": 1.0954451150103321,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 343.8,
+          "sd": 44.81294455846435,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 528580,
+          "sd": 86921.31371246066,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.25046,
+          "sd": 0.12710699430007777,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-sol-v1-pi",
+      "model": "gpt-6-astra-codex-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-05_12-42-01_claim-office-example-mapping_basic-sol-tdd-pi_gpt-6-astra-codex-no-thinking",
+          "started_at": "2026-09-05T12:42:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_12-42-01_claim-office-example-mapping_basic-sol-tdd-pi_gpt-6-astra-codex-no-thinking-2",
+          "started_at": "2026-09-05T12:42:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_12-42-01_claim-office-example-mapping_basic-sol-tdd-pi_gpt-6-astra-codex-no-thinking-3",
+          "started_at": "2026-09-05T12:42:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_12-42-01_claim-office-example-mapping_basic-sol-tdd-pi_gpt-6-astra-codex-no-thinking-4",
+          "started_at": "2026-09-05T12:42:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_12-42-01_claim-office-example-mapping_basic-sol-tdd-pi_gpt-6-astra-codex-no-thinking-5",
+          "started_at": "2026-09-05T12:42:01+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.168,
+          "sd": 1.5921589116667971,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.8,
+          "sd": 1.4832396974191326,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.4,
+          "sd": 2.792848008753788,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.362,
+          "sd": 0.28349603171825877,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 426.2,
+          "sd": 18.226354544998845,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7.4,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 73.6,
+          "sd": 4.33589667773576,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 40.4,
+          "sd": 1.6733200530681511,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 40.4,
+          "sd": 1.6733200530681511,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 227,
+          "t": 230,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1801.6,
+          "sd": 107.31402517844533,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7459259.8,
+          "sd": 681454.6217542295,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.75314,
+          "sd": 0.7795624080213208,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-sol-v1.1-subagent-pi",
+      "model": "gpt-6-astra-codex-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-05_12-47-20_claim-office-example-mapping_basic-sol-tdd-subagent-pi_gpt-6-astra-codex-no-thinking",
+          "started_at": "2026-09-05T12:47:20+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_12-48-21_claim-office-example-mapping_basic-sol-tdd-subagent-pi_gpt-6-astra-codex-no-thinking",
+          "started_at": "2026-09-05T12:48:21+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_12-48-36_claim-office-example-mapping_basic-sol-tdd-subagent-pi_gpt-6-astra-codex-no-thinking",
+          "started_at": "2026-09-05T12:48:36+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_12-49-01_claim-office-example-mapping_basic-sol-tdd-subagent-pi_gpt-6-astra-codex-no-thinking",
+          "started_at": "2026-09-05T12:49:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_12-49-16_claim-office-example-mapping_basic-sol-tdd-subagent-pi_gpt-6-astra-codex-no-thinking",
+          "started_at": "2026-09-05T12:49:16+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7.342,
+          "sd": 4.375479402305535,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.9,
+          "sd": 4.669047011971501,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 14,
+          "sd": 8.093207028119323,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.484,
+          "sd": 0.401907949660118,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 440.4,
+          "sd": 34.33365695640358,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.6,
+          "sd": 1.140175425099138,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 72.2,
+          "sd": 7.8230428862431785,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 39.4,
+          "sd": 3.7815340802378077,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 39.4,
+          "sd": 3.7815340802378077,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 234,
+          "t": 236,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4186.2,
+          "sd": 483.1295892408164,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12229725.6,
+          "sd": 2001143.22711664,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 20.65192,
+          "sd": 2.871009196606656,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-hybrid-v4.2-phase-continuation-pi",
+      "model": "gpt-6-astra-codex-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-05_13-09-59_claim-office-example-mapping_v6.2.1-phase-continuation-pi_gpt-6-astra-codex-no-thinking",
+          "started_at": "2026-09-05T13:09:59+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_13-12-44_claim-office-example-mapping_v6.2.1-phase-continuation-pi_gpt-6-astra-codex-no-thinking",
+          "started_at": "2026-09-05T13:12:44+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_13-13-49_claim-office-example-mapping_v6.2.1-phase-continuation-pi_gpt-6-astra-codex-no-thinking",
+          "started_at": "2026-09-05T13:13:49+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_13-14-15_claim-office-example-mapping_v6.2.1-phase-continuation-pi_gpt-6-astra-codex-no-thinking",
+          "started_at": "2026-09-05T13:14:15+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-05_13-14-21_claim-office-example-mapping_v6.2.1-phase-continuation-pi_gpt-6-astra-codex-no-thinking",
+          "started_at": "2026-09-05T13:14:21+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12.832,
+          "sd": 7.6106287519494735,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.8,
+          "sd": 7.8787689393711755,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 19.8,
+          "sd": 10.73312629199899,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.2,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.642,
+          "sd": 0.6287050182716852,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.2,
+          "sd": 1.0954451150103321,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15.4,
+          "sd": 4.929503017546495,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 348.2,
+          "sd": 28.612934138252932,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.8,
+          "sd": 1.9235384061671346,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 58,
+          "sd": 14.177446878757825,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 42.4,
+          "sd": 2.073644135332772,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 23.6,
+          "sd": 1.51657508881031,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 355,
+          "t": 356,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2565.4,
+          "sd": 226.00730076703275,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7162638.8,
+          "sd": 789707.2203802495,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12.5061,
+          "sd": 1.4085096307799954,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "baseline-inline-tdd-v1-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-08-16_21-17-00_claim-office-example-mapping_v3-basic-tdd-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T21:17:00+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_21-17-00_claim-office-example-mapping_v3-basic-tdd-pi_gpt-5-6-sol-codex-2",
+          "started_at": "2026-08-16T21:17:00+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_21-17-00_claim-office-example-mapping_v3-basic-tdd-pi_gpt-5-6-sol-codex-3",
+          "started_at": "2026-08-16T21:17:00+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_21-17-00_claim-office-example-mapping_v3-basic-tdd-pi_gpt-5-6-sol-codex-4",
+          "started_at": "2026-08-16T21:17:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_21-17-01_claim-office-example-mapping_v3-basic-tdd-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T21:17:01+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.454,
+          "sd": 2.409321481247366,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.1,
+          "sd": 1.816590212458495,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 27,
+          "sd": 11.335784048754634,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.4,
+          "sd": 10.014988766843425,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.396,
+          "sd": 1.4128977316140048,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.8,
+          "sd": 5.357238094391549,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 9.391485505499118,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 750,
+          "sd": 83.39364484179835,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 14.2,
+          "sd": 3.5637059362410923,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 164,
+          "sd": 21.342445970413046,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.4,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 218.2,
+          "sd": 35.35109616405126,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 271848.8,
+          "sd": 67725.81289803762,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.5806,
+          "sd": 0.08834262844176641,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-sol-v1-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-13_17-09-03_claim-office-example-mapping_exact-sol-v1-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-13T17:09:05+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-13_17-16-56_claim-office-example-mapping_exact-sol-v1-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-13T17:16:58+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-13_17-23-53_claim-office-example-mapping_exact-sol-v1-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-13T17:23:54+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-13_17-25-01_claim-office-example-mapping_exact-sol-v1-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-13T17:25:02+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-13_17-44-34_claim-office-example-mapping_exact-sol-v1-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-13T17:44:35+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7.416,
+          "sd": 1.0426552642172775,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.5,
+          "sd": 0.8660254037844386,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 20.8,
+          "sd": 2.3874672772626644,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.8,
+          "sd": 2.3874672772626644,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.098,
+          "sd": 0.2903790626061045,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.6,
+          "sd": 1.51657508881031,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 562.6,
+          "sd": 48.80881068004014,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.4,
+          "sd": 2.3021728866442674,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 117.6,
+          "sd": 20.206434618705003,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 33.4,
+          "sd": 2.9664793948382653,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 33.2,
+          "sd": 2.6832815729997477,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 137,
+          "t": 138,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1083.8,
+          "sd": 251.7721191871729,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4869037,
+          "sd": 1616943.8267572871,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.65552,
+          "sd": 1.028026734574544,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-sol-v1.1-subagent-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-08-16_21-42-23_claim-office-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T21:42:23+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_21-43-24_claim-office-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T21:43:24+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_21-44-45_claim-office-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T21:44:45+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_21-45-42_claim-office-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T21:45:42+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_21-46-53_claim-office-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T21:46:53+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.93334,
+          "sd": 0.14905629138013599,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7.75,
+          "sd": 1.1974347581392488,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.9,
+          "sd": 1.746424919657298,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 18.4,
+          "sd": 3.646916505762094,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.8,
+          "sd": 2.3874672772626644,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.332,
+          "sd": 0.9710664240926055,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5,
+          "sd": 1.8708286933869707,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 618,
+          "sd": 145.15853402401115,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.6,
+          "sd": 5.176871642217914,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 161,
+          "sd": 61.75759062657804,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 33.2,
+          "sd": 3.1144823004794873,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 32.2,
+          "sd": 7.563068160475615,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 175,
+          "t": 176,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2397.2,
+          "sd": 637.8273277306328,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7126219,
+          "sd": 3955750.5583181684,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7.3968,
+          "sd": 2.7392438053229218,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-hybrid-v4.2-phase-continuation-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-08-17_00-01-03_claim-office-example-mapping_v6.2.1-phase-continuation-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-17T00:01:03+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-17_00-01-03_claim-office-example-mapping_v6.2.1-phase-continuation-pi_gpt-5-6-sol-codex-2",
+          "started_at": "2026-08-17T00:01:03+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-17_00-19-21_claim-office-example-mapping_v6.2.1-phase-continuation-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-17T00:19:21+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-17_00-24-28_claim-office-example-mapping_v6.2.1-phase-continuation-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-17T00:24:28+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-17_00-40-26_claim-office-example-mapping_v6.2.1-phase-continuation-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-17T00:40:26+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.52,
+          "sd": 5.693803649582587,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6,
+          "sd": 3.6742346141747673,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 24,
+          "sd": 13.171939872319491,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.2,
+          "sd": 4.658325879540846,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.546,
+          "sd": 2.0073813788117096,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.2,
+          "sd": 2.04939015319192,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.6,
+          "sd": 9.016651263079881,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 492.4,
+          "sd": 62.69609238222108,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.6,
+          "sd": 4.505552130427524,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 110.4,
+          "sd": 15.241391012633985,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 28,
+          "sd": 5.338539126015656,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 14.2,
+          "sd": 3.1144823004794873,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 137,
+          "t": 138,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1265.6,
+          "sd": 125.46433756251216,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4609639,
+          "sd": 894834.5296039374,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.84148,
+          "sd": 0.8103092354157148,
+          "null_count": 0
+        }
+      }
+    }
+  ]
+}

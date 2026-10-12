@@ -1,0 +1,3397 @@
+{
+  "cells": [
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-sol-v1.3.2-local-git-control-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-15_14-25-18_game-of-life-example-mapping_exact-sol-v1.3.2-local-git-control-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T14:25:20+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_14-25-19_game-of-life-example-mapping_exact-sol-v1.3.2-local-git-control-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T14:25:21+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_14-25-19_game-of-life-example-mapping_exact-sol-v1.3.2-local-git-control-pi_gpt-5-6-sol-codex-2",
+          "started_at": "2026-09-15T14:25:21+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_14-25-19_game-of-life-example-mapping_exact-sol-v1.3.2-local-git-control-pi_gpt-5-6-sol-codex-3",
+          "started_at": "2026-09-15T14:25:21+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_14-25-19_game-of-life-example-mapping_exact-sol-v1.3.2-local-git-control-pi_gpt-5-6-sol-codex-4",
+          "started_at": "2026-09-15T14:25:21+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.624,
+          "sd": 0.8069262667679123,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 1.6431676725154984,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 14.2,
+          "sd": 3.8340579025361627,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 1.3038404810405297,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.766,
+          "sd": 0.32600613491159947,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.842,
+          "sd": 0.1712308383440319,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 166.4,
+          "sd": 20.378910667648555,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 35.2,
+          "sd": 8.526429498916883,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 55.6,
+          "sd": 10.21273714534943,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.6,
+          "sd": 1.6733200530681511,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.4,
+          "sd": 2.5099800796022267,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.2,
+          "sd": 1.3038404810405297,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.2,
+          "sd": 1.9235384061671346,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.2,
+          "sd": 1.9235384061671346,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 52,
+          "t": 52,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 428.4,
+          "sd": 37.79285646785646,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1071037.6,
+          "sd": 118935.3591611847,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.15802,
+          "sd": 0.10296342554519063,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-sol-v1.3.2-local-git-control-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-14_13-51-49_claim-office-example-mapping_exact-sol-v1.3.2-local-git-control-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-14T13:51:52+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_13-51-49_claim-office-example-mapping_exact-sol-v1.3.2-local-git-control-pi_gpt-5-6-sol-codex-2",
+          "started_at": "2026-09-14T13:51:52+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_13-51-49_claim-office-example-mapping_exact-sol-v1.3.2-local-git-control-pi_gpt-5-6-sol-codex-3",
+          "started_at": "2026-09-14T13:51:52+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_13-51-49_claim-office-example-mapping_exact-sol-v1.3.2-local-git-control-pi_gpt-5-6-sol-codex-4",
+          "started_at": "2026-09-14T13:51:52+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_13-51-49_claim-office-example-mapping_exact-sol-v1.3.2-local-git-control-pi_gpt-5-6-sol-codex-5",
+          "started_at": "2026-09-14T13:51:52+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.802,
+          "sd": 0.3915609786482815,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.6,
+          "sd": 1.2942179105544784,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 16.2,
+          "sd": 1.3038404810405297,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.6,
+          "sd": 2.073644135332772,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4,
+          "sd": 1.224744871391589,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.2520000000000002,
+          "sd": 0.5048465113279481,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.8,
+          "sd": 1.3038404810405297,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.91,
+          "sd": 0.23706539182259395,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 574.2,
+          "sd": 34.31034829318991,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 146,
+          "sd": 25.347583711273153,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 196,
+          "sd": 34.978564864785405,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 25.2,
+          "sd": 8.67179335547152,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.8,
+          "sd": 7.328028384224504,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15.4,
+          "sd": 2.3021728866442674,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 30.8,
+          "sd": 5.06951674225463,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 30.8,
+          "sd": 5.06951674225463,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 153,
+          "t": 156,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1388.4,
+          "sd": 303.2264830122857,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5481608,
+          "sd": 1258182.1325509674,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.15674,
+          "sd": 0.8518290280332081,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-sol-v1.4-domain-boundary-trial-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-15_14-14-44_game-of-life-example-mapping_exact-sol-v1.4-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T14:14:46+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_14-32-14_game-of-life-example-mapping_exact-sol-v1.4-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T14:32:15+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_14-32-41_game-of-life-example-mapping_exact-sol-v1.4-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T14:32:42+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_14-33-01_game-of-life-example-mapping_exact-sol-v1.4-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T14:33:02+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_14-33-52_game-of-life-example-mapping_exact-sol-v1.4-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T14:33:53+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.564,
+          "sd": 1.242851559921779,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 1.4832396974191326,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12,
+          "sd": 2.8284271247461903,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.4,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.6,
+          "sd": 1.9493588689617927,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.85,
+          "sd": 1.1672617529928753,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.618,
+          "sd": 0.2216303228351211,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 183.4,
+          "sd": 13.390294993016397,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 42.8,
+          "sd": 5.167204273105526,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 54.8,
+          "sd": 6.978538528947161,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11,
+          "sd": 1.0,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5,
+          "sd": 1.5811388300841898,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6,
+          "sd": 1.4142135623730951,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 54,
+          "t": 54,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 493.8,
+          "sd": 51.494659917315694,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1295374.2,
+          "sd": 217904.46500289984,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.3417,
+          "sd": 0.21426306261229436,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-sol-v1.4-domain-boundary-trial-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-15_14-33-08_claim-office-example-mapping_exact-sol-v1.4-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T14:33:09+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_14-40-15_claim-office-example-mapping_exact-sol-v1.4-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T14:40:16+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_14-41-05_claim-office-example-mapping_exact-sol-v1.4-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T14:41:06+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_14-41-16_claim-office-example-mapping_exact-sol-v1.4-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T14:41:17+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_14-43-15_claim-office-example-mapping_exact-sol-v1.4-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T14:43:16+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.614,
+          "sd": 1.8148911813108792,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.0,
+          "sd": 2.669269563007828,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15.8,
+          "sd": 2.7748873851023217,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13,
+          "sd": 2.23606797749979,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.4,
+          "sd": 2.073644135332772,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.806,
+          "sd": 0.4797707786016151,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.6,
+          "sd": 1.51657508881031,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.022,
+          "sd": 0.3618977756217907,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 600.8,
+          "sd": 43.56259863690411,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 151.8,
+          "sd": 8.927485648266257,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 186.8,
+          "sd": 27.22498852157701,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 21.8,
+          "sd": 8.318653737234168,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.6,
+          "sd": 7.635443667528429,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.2,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 27.2,
+          "sd": 4.43846820423443,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 27.2,
+          "sd": 4.43846820423443,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 125,
+          "t": 130,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1087.8,
+          "sd": 198.2982602041682,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4768837.6,
+          "sd": 1364161.6276967698,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.65442,
+          "sd": 0.8553471646062786,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-tcr-v1-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 6,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-14_23-23-30_game-of-life-example-mapping_exact-tcr-v1-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-14T23:23:31+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_08-32-41_game-of-life-example-mapping_exact-tcr-v1-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T08:32:43+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_08-32-41_game-of-life-example-mapping_exact-tcr-v1-pi_gpt-5-6-sol-codex-2",
+          "started_at": "2026-09-15T08:32:44+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_08-32-41_game-of-life-example-mapping_exact-tcr-v1-pi_gpt-5-6-sol-codex-3",
+          "started_at": "2026-09-15T08:32:44+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_08-32-41_game-of-life-example-mapping_exact-tcr-v1-pi_gpt-5-6-sol-codex-4",
+          "started_at": "2026-09-15T08:32:44+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_08-32-42_game-of-life-example-mapping_exact-tcr-v1-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T08:32:44+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 6,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 6,
+          "k": 6,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 6,
+          "mean": 7.541666666666667,
+          "sd": 2.4166043670130755,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 6,
+          "mean": 6.666666666666667,
+          "sd": 4.412104562073146,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 6,
+          "mean": 14.5,
+          "sd": 4.5934736311423405,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 6,
+          "mean": 3,
+          "sd": 0.6324555320336759,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 6,
+          "mean": 5.5,
+          "sd": 1.6431676725154984,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 6,
+          "mean": 3.22,
+          "sd": 0.6550114502815962,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 6,
+          "mean": 5,
+          "sd": 1.0954451150103321,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 6,
+          "mean": 2.2933333333333334,
+          "sd": 0.48820760611308245,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 6,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 6,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 6,
+          "mean": 155.5,
+          "sd": 12.692517480783708,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 6,
+          "mean": 27.833333333333332,
+          "sd": 3.488074922742725,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 6,
+          "mean": 53.333333333333336,
+          "sd": 8.262364471909155,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 6,
+          "mean": 13,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 6,
+          "mean": 12.833333333333334,
+          "sd": 0.752772652709081,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 6,
+          "mean": 0.16666666666666666,
+          "sd": 0.408248290463863,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 6,
+          "mean": 2.5,
+          "sd": 2.8106938645110393,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 6,
+          "mean": 19.166666666666668,
+          "sd": 3.65604522218567,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 6,
+          "mean": 5.166666666666667,
+          "sd": 1.7224014243685084,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 6,
+          "mean": 10.5,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 6,
+          "mean": 2.5,
+          "sd": 2.8106938645110393,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 6,
+          "mean": 10.833333333333334,
+          "sd": 0.408248290463863,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 6,
+          "mean": 12.5,
+          "sd": 1.9748417658131499,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 6,
+          "k": 128,
+          "t": 130,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 6,
+          "mean": 423.8333333333333,
+          "sd": 96.40833297317545,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 6,
+          "mean": 1122895.5,
+          "sd": 374010.69605226535,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 6,
+          "mean": 1.18195,
+          "sd": 0.360708678853171,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-tcr-v1-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-14_23-38-56_claim-office-example-mapping_exact-tcr-v1-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-14T23:38:58+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_23-38-56_claim-office-example-mapping_exact-tcr-v1-pi_gpt-5-6-sol-codex-2",
+          "started_at": "2026-09-14T23:38:58+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_23-38-56_claim-office-example-mapping_exact-tcr-v1-pi_gpt-5-6-sol-codex-3",
+          "started_at": "2026-09-14T23:38:58+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_23-38-56_claim-office-example-mapping_exact-tcr-v1-pi_gpt-5-6-sol-codex-4",
+          "started_at": "2026-09-14T23:38:58+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_23-38-56_claim-office-example-mapping_exact-tcr-v1-pi_gpt-5-6-sol-codex-5",
+          "started_at": "2026-09-14T23:38:58+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7.9959999999999996,
+          "sd": 2.126318414537202,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.5,
+          "sd": 1.6583123951777,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 18.2,
+          "sd": 6.906518659932803,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.2,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.2,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.72,
+          "sd": 0.12165525060596444,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.632,
+          "sd": 0.14973309587395836,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 553.6,
+          "sd": 29.12559012277691,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 129,
+          "sd": 23.39871791359518,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 214.6,
+          "sd": 31.22178726466504,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 37,
+          "sd": 1.5811388300841898,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 36.8,
+          "sd": 1.7888543819998317,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.6,
+          "sd": 4.159326868617084,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 58.8,
+          "sd": 7.726577508832744,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 17.2,
+          "sd": 2.949576240750525,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 35.4,
+          "sd": 1.9493588689617927,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.2,
+          "sd": 3.420526275297414,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 35.6,
+          "sd": 1.6733200530681511,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 36.8,
+          "sd": 1.6431676725154984,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 356,
+          "t": 356,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1082,
+          "sd": 141.1736519326464,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6292277.4,
+          "sd": 653246.6920890607,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.54146,
+          "sd": 0.44071177429245056,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-tcr-v1.1-srp-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-15_07-54-12_game-of-life-example-mapping_exact-tcr-v1.1-srp-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T07:54:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_08-39-42_game-of-life-example-mapping_exact-tcr-v1.1-srp-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T08:39:43+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_08-40-49_game-of-life-example-mapping_exact-tcr-v1.1-srp-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T08:40:50+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_08-41-36_game-of-life-example-mapping_exact-tcr-v1.1-srp-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T08:41:37+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_08-42-24_game-of-life-example-mapping_exact-tcr-v1.1-srp-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T08:42:25+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7.11,
+          "sd": 1.2886038956948718,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.3,
+          "sd": 1.9235384061671346,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12.4,
+          "sd": 3.1304951684997055,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.2,
+          "sd": 1.3038404810405297,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.998,
+          "sd": 0.8164986221666268,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.122,
+          "sd": 0.3451376536977674,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 162.2,
+          "sd": 16.146206984923733,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 37,
+          "sd": 4.301162633521313,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 48.2,
+          "sd": 6.3796551630946325,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.8,
+          "sd": 1.3038404810405297,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.8,
+          "sd": 1.3038404810405297,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 17.6,
+          "sd": 1.6733200530681511,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.4,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.8,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.4,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.8,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.6,
+          "sd": 1.140175425099138,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 98,
+          "t": 98,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 410.8,
+          "sd": 31.091799561942373,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 893640.6,
+          "sd": 153444.5079851345,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.98654,
+          "sd": 0.14193245928962128,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-tcr-v1.1-srp-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-15_08-38-47_claim-office-example-mapping_exact-tcr-v1.1-srp-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T08:38:48+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_08-46-34_claim-office-example-mapping_exact-tcr-v1.1-srp-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T08:46:35+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_08-48-27_claim-office-example-mapping_exact-tcr-v1.1-srp-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T08:48:28+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_08-49-04_claim-office-example-mapping_exact-tcr-v1.1-srp-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T08:49:05+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_08-50-17_claim-office-example-mapping_exact-tcr-v1.1-srp-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T08:50:18+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.58,
+          "sd": 0.7029935988328766,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7.7,
+          "sd": 0.6708203932499369,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 17.2,
+          "sd": 2.588435821108957,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.8,
+          "sd": 1.6431676725154984,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3,
+          "sd": 1.0,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.82,
+          "sd": 0.4451965857910414,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.8,
+          "sd": 1.4832396974191326,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.914,
+          "sd": 0.27382476148076895,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 546.8,
+          "sd": 25.33179819910146,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 106.8,
+          "sd": 13.179529581893277,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 191,
+          "sd": 30.72458299147443,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 35,
+          "sd": 6.819090848492928,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 35,
+          "sd": 6.819090848492928,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.8,
+          "sd": 1.0954451150103321,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 54,
+          "sd": 2.9154759474226504,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15.2,
+          "sd": 2.3874672772626644,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 36,
+          "sd": 1.5811388300841898,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.8,
+          "sd": 1.0954451150103321,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 36,
+          "sd": 1.5811388300841898,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 37.2,
+          "sd": 1.6431676725154984,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 357,
+          "t": 360,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 973.4,
+          "sd": 121.91103313482336,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4659878.4,
+          "sd": 1339456.774166789,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.69528,
+          "sd": 0.759359020490308,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-tcr-v1.2-domain-responsibility-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-15_10-16-50_game-of-life-example-mapping_exact-tcr-v1.2-domain-responsibility-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T10:16:53+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_10-16-50_game-of-life-example-mapping_exact-tcr-v1.2-domain-responsibility-pi_gpt-5-6-sol-codex-2",
+          "started_at": "2026-09-15T10:16:52+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_10-16-50_game-of-life-example-mapping_exact-tcr-v1.2-domain-responsibility-pi_gpt-5-6-sol-codex-3",
+          "started_at": "2026-09-15T10:16:52+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_10-16-50_game-of-life-example-mapping_exact-tcr-v1.2-domain-responsibility-pi_gpt-5-6-sol-codex-4",
+          "started_at": "2026-09-15T10:16:52+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_10-16-50_game-of-life-example-mapping_exact-tcr-v1.2-domain-responsibility-pi_gpt-5-6-sol-codex-5",
+          "started_at": "2026-09-15T10:16:53+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.78,
+          "sd": 1.2617448236470004,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.1,
+          "sd": 2.073644135332772,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.6,
+          "sd": 2.5099800796022267,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.6,
+          "sd": 1.51657508881031,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 1.6431676725154984,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.534,
+          "sd": 0.711182114510763,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.73,
+          "sd": 0.20112185361118767,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 182.4,
+          "sd": 42.64739147943283,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 38.6,
+          "sd": 6.4265076052238514,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 50.2,
+          "sd": 5.761944116355173,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 18.4,
+          "sd": 1.6733200530681511,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.8,
+          "sd": 1.7888543819998317,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 106,
+          "t": 106,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 416.8,
+          "sd": 53.90918289122921,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1081398,
+          "sd": 284244.8662271669,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.1407800000000001,
+          "sd": 0.2543586581974359,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-tcr-v1.2-domain-responsibility-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-15_10-23-14_claim-office-example-mapping_exact-tcr-v1.2-domain-responsibility-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T10:23:16+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_10-24-00_claim-office-example-mapping_exact-tcr-v1.2-domain-responsibility-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T10:24:02+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_10-24-12_claim-office-example-mapping_exact-tcr-v1.2-domain-responsibility-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T10:24:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_10-24-41_claim-office-example-mapping_exact-tcr-v1.2-domain-responsibility-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T10:24:42+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_10-25-40_claim-office-example-mapping_exact-tcr-v1.2-domain-responsibility-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T10:25:41+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7.032,
+          "sd": 0.6848868519689952,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6,
+          "sd": 1.7320508075688772,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 17.2,
+          "sd": 2.16794833886788,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.934,
+          "sd": 0.4289288985368088,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.912,
+          "sd": 0.3923263947276553,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 553.2,
+          "sd": 16.330952207388275,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 118.4,
+          "sd": 13.011533345459329,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 223.8,
+          "sd": 12.676750372236569,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 36.8,
+          "sd": 1.4832396974191326,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 36.8,
+          "sd": 1.4832396974191326,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4,
+          "sd": 2.0,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 57.6,
+          "sd": 2.792848008753788,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 17.4,
+          "sd": 2.3021728866442674,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 35.4,
+          "sd": 1.3416407864998738,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.8,
+          "sd": 1.7888543819998317,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 35.4,
+          "sd": 1.3416407864998738,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 37,
+          "sd": 2.1213203435596424,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 350,
+          "t": 354,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1064.6,
+          "sd": 59.37844726834813,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5956261.6,
+          "sd": 883630.9476825153,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.543,
+          "sd": 0.47450421494439843,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-tcr-v1.3-domain-boundary-trial-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-15_12-49-48_game-of-life-example-mapping_exact-tcr-v1.3-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T12:49:50+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_12-49-48_game-of-life-example-mapping_exact-tcr-v1.3-domain-boundary-trial-pi_gpt-5-6-sol-codex-2",
+          "started_at": "2026-09-15T12:49:50+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_12-49-48_game-of-life-example-mapping_exact-tcr-v1.3-domain-boundary-trial-pi_gpt-5-6-sol-codex-3",
+          "started_at": "2026-09-15T12:49:50+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_12-49-48_game-of-life-example-mapping_exact-tcr-v1.3-domain-boundary-trial-pi_gpt-5-6-sol-codex-4",
+          "started_at": "2026-09-15T12:49:50+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_12-49-48_game-of-life-example-mapping_exact-tcr-v1.3-domain-boundary-trial-pi_gpt-5-6-sol-codex-5",
+          "started_at": "2026-09-15T12:49:50+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.628,
+          "sd": 1.801449416442216,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.6,
+          "sd": 1.3874436925511608,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.8,
+          "sd": 4.324349662087931,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.8,
+          "sd": 1.6431676725154984,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4,
+          "sd": 1.8708286933869707,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.35,
+          "sd": 1.02469507659596,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.4,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.808,
+          "sd": 0.40332369134480556,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 165.8,
+          "sd": 10.256705123966467,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 40.6,
+          "sd": 1.6733200530681511,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 51.8,
+          "sd": 4.147288270665544,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12.4,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.8,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4,
+          "sd": 1.4142135623730951,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 18.8,
+          "sd": 1.4832396974191326,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.8,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3,
+          "sd": 1.0,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12.4,
+          "sd": 1.9493588689617927,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 101,
+          "t": 102,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 497.6,
+          "sd": 44.24138334184409,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1285897,
+          "sd": 152934.74429801753,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.423,
+          "sd": 0.1795232853977444,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-tcr-v1.3-domain-boundary-trial-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-15_12-57-25_claim-office-example-mapping_exact-tcr-v1.3-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T12:57:26+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_12-58-34_claim-office-example-mapping_exact-tcr-v1.3-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T12:58:35+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_12-58-38_claim-office-example-mapping_exact-tcr-v1.3-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T12:58:39+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_12-59-08_claim-office-example-mapping_exact-tcr-v1.3-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T12:59:09+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_12-59-17_claim-office-example-mapping_exact-tcr-v1.3-domain-boundary-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T12:59:18+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.6739999999999995,
+          "sd": 0.6891153749554569,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.7,
+          "sd": 0.6708203932499369,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 14.2,
+          "sd": 2.588435821108957,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15.4,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.468,
+          "sd": 0.1523811011904035,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 1.6431676725154984,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.504,
+          "sd": 0.10502380682492898,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 568.4,
+          "sd": 26.092144411680692,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 153.2,
+          "sd": 10.134100848126586,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 218.4,
+          "sd": 44.72471352619265,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 37.6,
+          "sd": 1.9493588689617927,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 37.4,
+          "sd": 2.1908902300206643,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.6,
+          "sd": 4.159326868617084,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 62,
+          "sd": 9.055385138137417,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15.6,
+          "sd": 3.9749213828703582,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 36,
+          "sd": 2.345207879911715,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.4,
+          "sd": 4.929503017546495,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 36,
+          "sd": 2.345207879911715,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 37.4,
+          "sd": 2.073644135332772,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 360,
+          "t": 362,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1439.8,
+          "sd": 314.56827557781475,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6648168.8,
+          "sd": 2500595.805862915,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.82606,
+          "sd": 1.715879597465976,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-tcr-v1.4-domain-boundary-app-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-15_15-26-30_game-of-life-example-mapping_exact-tcr-v1.4-domain-boundary-app-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T15:26:31+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_15-34-33_game-of-life-example-mapping_exact-tcr-v1.4-domain-boundary-app-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T15:34:35+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_15-34-33_game-of-life-example-mapping_exact-tcr-v1.4-domain-boundary-app-pi_gpt-5-6-sol-codex-2",
+          "started_at": "2026-09-15T15:34:35+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_15-34-33_game-of-life-example-mapping_exact-tcr-v1.4-domain-boundary-app-pi_gpt-5-6-sol-codex-3",
+          "started_at": "2026-09-15T15:34:35+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_15-34-33_game-of-life-example-mapping_exact-tcr-v1.4-domain-boundary-app-pi_gpt-5-6-sol-codex-4",
+          "started_at": "2026-09-15T15:34:35+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.194,
+          "sd": 0.8449437851123588,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.7,
+          "sd": 1.2041594578792296,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.2,
+          "sd": 2.8635642126552705,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.8,
+          "sd": 1.4832396974191326,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.8,
+          "sd": 2.16794833886788,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.466,
+          "sd": 1.280714644251404,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4,
+          "sd": 1.0,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.758,
+          "sd": 0.4010860256852637,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 163.2,
+          "sd": 19.357169214531343,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 36,
+          "sd": 5.0990195135927845,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 43.4,
+          "sd": 4.03732584763727,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.4,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.8,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 17.4,
+          "sd": 1.140175425099138,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.6,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.6,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.6,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.2,
+          "sd": 1.0954451150103321,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 96,
+          "t": 96,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 468.2,
+          "sd": 61.90476556776546,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1139638.4,
+          "sd": 132481.62771041124,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.2391,
+          "sd": 0.16587463639749148,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-tcr-v1.4-domain-boundary-app-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-15_15-34-33_claim-office-example-mapping_exact-tcr-v1.4-domain-boundary-app-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T15:34:35+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_15-41-48_claim-office-example-mapping_exact-tcr-v1.4-domain-boundary-app-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T15:41:49+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_15-42-18_claim-office-example-mapping_exact-tcr-v1.4-domain-boundary-app-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T15:42:19+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_15-43-41_claim-office-example-mapping_exact-tcr-v1.4-domain-boundary-app-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T15:43:42+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_15-44-11_claim-office-example-mapping_exact-tcr-v1.4-domain-boundary-app-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T15:44:13+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.538,
+          "sd": 0.6727332309318456,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.5,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.4,
+          "sd": 3.5071355833500366,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 5,
+          "mean": 14.8,
+          "sd": 2.588435821108957,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.6,
+          "sd": 1.140175425099138,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.462,
+          "sd": 0.4479062401887252,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.4,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.504,
+          "sd": 0.17840964099509862,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "smell_code_quality": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 571.8,
+          "sd": 29.878085614710994,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 134.8,
+          "sd": 17.8801565988668,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 234.8,
+          "sd": 44.63966845755017,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 32.2,
+          "sd": 7.52994023880668,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 32,
+          "sd": 7.44983221287567,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.8,
+          "sd": 4.08656334834051,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 59.6,
+          "sd": 7.368853370776216,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 16.2,
+          "sd": 2.3874672772626644,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 33.2,
+          "sd": 3.1144823004794873,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.2,
+          "sd": 3.7682887362833544,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 33.2,
+          "sd": 3.1144823004794873,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 33.4,
+          "sd": 3.1304951684997055,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 327,
+          "t": 332,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1270.4,
+          "sd": 341.54399423793126,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6204987.2,
+          "sd": 2453531.194052401,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.57344,
+          "sd": 1.3920929128474149,
+          "null_count": 0
+        }
+      }
+    }
+  ]
+}

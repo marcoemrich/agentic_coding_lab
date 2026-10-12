@@ -2,7 +2,7 @@
 
 _Does the cleanup equivalence result from RQ-1.6 (claim-office) also generalize to the training-known game-of-life kata, or does exact-hybrid-v4-cleaned-cc show a different effect there than on claim-office?_
 
-Generated: 2026-10-12T07:28:10Z
+Generated: 2026-10-12T08:38:01Z
 
 Cells declared: 2 · matched runs: 15 · min_replicates: 5
 
@@ -17,84 +17,84 @@ Cells declared: 2 · matched runs: 15 · min_replicates: 5
 
 ### code_mass
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |  151   |   139 |   166 | 11.25 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |  153.3 |   129 |   170 | 13.83 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |    sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|------:|
+| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |      0 |  151   | 11.25 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |      0 |  153.3 | 13.83 |
 
 ### smell_total
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |    2.8 |     2 |     4 |  0.84 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |    2.4 |     2 |     3 |  0.52 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |      0 |    2.8 | 0.84 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |      0 |    2.4 | 0.52 |
 
 ### longest_function
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |    9.4 |     2 |    22 |  8.29 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |   12.2 |     2 |    24 |  6.89 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |      0 |    9.4 | 8.29 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |      0 |   12.2 | 6.89 |
 
 ### cognitive_max
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |    4.8 |     1 |    15 |  5.81 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |    4.3 |     1 |    10 |  2.79 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |      0 |    4.8 | 5.81 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |      0 |    4.3 | 2.79 |
 
 ### mccabe_max
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |    4.6 |     2 |    10 |  3.13 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |    4.2 |     2 |     6 |  1.32 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |      0 |    4.6 | 3.13 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |      0 |    4.2 | 1.32 |
 
-### tests_passing (rate %)
+### tests_passing
 
-| kata                         | cell_workflow               | cell_model                   |   n |   match |   rate_% |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |      10 |      100 |
+| kata                         | cell_workflow               | cell_model                   |   n |   k |   null |   rate_% |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|----:|-------:|---------:|
+| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |   5 |      0 |      100 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |  10 |      0 |      100 |
 
-### predictions_correct_rate (pooled %)
+### predictions_correct_rate
 
-| kata                         | cell_workflow               | cell_model                   |   n |   correct |   total |   rate_% |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|----------:|--------:|---------:|
-| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |        83 |      84 |     98.8 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |       170 |     170 |    100   |
+| kata                         | cell_workflow               | cell_model                   |   n |   k |   t |   null |   rate_% |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|----:|----:|-------:|---------:|
+| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |  83 |  84 |      0 |     98.8 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 | 170 | 170 |      0 |    100   |
 
-### legacy_refactorings_applied
+### refactorings_applied
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |    6.4 |     2 |     9 |  3.21 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |    7.9 |     4 |     9 |  1.85 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |      0 |    6.4 | 3.21 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |      0 |    7.9 | 1.85 |
 
-### legacy_tests_passed_immediately
+### tests_passed_immediately
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |    2.2 |     0 |     6 |  3.03 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |    0.7 |     0 |     7 |  2.21 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |      0 |    2.2 | 3.03 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |      0 |    0.7 | 2.21 |
 
-### legacy_cycle_count
+### cycle_count
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |    8.4 |     8 |     9 |  0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |    8.5 |     5 |    10 |  1.35 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |      0 |    8.4 | 0.55 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |      0 |    8.5 | 1.35 |
 
 ### duration_seconds
 
-| kata                         | cell_workflow               | cell_model                   |   n |   mean |   min |   max |    std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------:|------:|-------:|
-| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |  568.6 |   321 |   713 | 171.02 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |  627   |   442 |   783 | 117.15 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |   mean |     sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |      0 |  568.6 | 171.02 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |      0 |  627   | 117.15 |
 
 ### total_tokens
 
-| kata                         | cell_workflow               | cell_model                   |   n |        mean |     min |      max |         std |
-|:-----------------------------|:----------------------------|:-----------------------------|----:|------------:|--------:|---------:|------------:|
-| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 | 9.50379e+06 | 5562011 | 11841719 | 2.68066e+06 |
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 | 1.04769e+07 | 6383827 | 12702538 | 2.07624e+06 |
+| kata                         | cell_workflow               | cell_model                   |   n |   null |        mean |          sd |
+|:-----------------------------|:----------------------------|:-----------------------------|----:|-------:|------------:|------------:|
+| game-of-life-example-mapping | exact-hybrid-v3-with-why-cc | opus-4-7-portkey-no-thinking |   5 |      0 | 9.50379e+06 | 2.68066e+06 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc  | opus-4-7-portkey-no-thinking |  10 |      0 | 1.04769e+07 | 2.07624e+06 |

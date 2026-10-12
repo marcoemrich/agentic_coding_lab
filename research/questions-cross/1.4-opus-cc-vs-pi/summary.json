@@ -1,0 +1,692 @@
+{
+  "cells": [
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-hybrid-v4-cleaned-cc",
+      "model": "opus-4-8-requesty",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-07-25_18-58-58_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-requesty",
+          "started_at": "2026-07-25T18:58:58+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-25_19-40-01_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-requesty",
+          "started_at": "2026-07-25T19:40:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-25_19-45-16_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-requesty",
+          "started_at": "2026-07-25T19:45:16+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-25_19-47-30_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-requesty",
+          "started_at": "2026-07-25T19:47:30+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-25_20-04-57_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-requesty",
+          "started_at": "2026-07-25T20:04:57+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5,
+          "sd": 1.8708286933869707,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.168,
+          "sd": 0.7626729312097028,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.6,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.158,
+          "sd": 0.6141416774653875,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.6,
+          "sd": 1.51657508881031,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.44,
+          "sd": 1.4280231090567126,
+          "null_count": 0
+        },
+        "lines_of_code": {
+          "kind": "num",
+          "n": 5,
+          "mean": 44.6,
+          "sd": 8.203657720797473,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 158.6,
+          "sd": 13.575713609236164,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "predictions_correct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 17.6,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "predictions_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 17.6,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 718.6,
+          "sd": 32.53152317368494,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5211109,
+          "sd": 589287.6790274,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.5297,
+          "sd": 0.5118424171559054,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-hybrid-v4-cleaned-cc",
+      "model": "opus-4-8-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-30_19-40-38_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking",
+          "started_at": "2026-05-30T19:40:38+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-30_19-53-34_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking",
+          "started_at": "2026-05-30T19:53:34+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-30_20-01-27_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking",
+          "started_at": "2026-05-30T20:01:27+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-30_20-09-18_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking",
+          "started_at": "2026-05-30T20:09:18+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-30_20-17-41_game-of-life-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking",
+          "started_at": "2026-05-30T20:17:41+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.6,
+          "sd": 1.51657508881031,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.866,
+          "sd": 1.431705276933769,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5,
+          "sd": 1.4142135623730951,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.11,
+          "sd": 0.8776958470905512,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.8,
+          "sd": 6.496152707564686,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.894,
+          "sd": 2.059898055729943,
+          "null_count": 0
+        },
+        "lines_of_code": {
+          "kind": "num",
+          "n": 5,
+          "mean": 40,
+          "sd": 5.70087712549569,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 171.8,
+          "sd": 19.40876090841453,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2,
+          "sd": 1.224744871391589,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.6,
+          "sd": 3.1304951684997055,
+          "null_count": 0
+        },
+        "predictions_correct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.8,
+          "sd": 7.758865896508329,
+          "null_count": 0
+        },
+        "predictions_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 14,
+          "sd": 7.874007874011811,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 579.2,
+          "sd": 157.84549407569415,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8961737.6,
+          "sd": 2151892.3582317727,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15.8163,
+          "sd": 15.522455387437905,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-hybrid-v4.2-phase-continuation-pi",
+      "model": "opus-4-8",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-07-25_05-52-18_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_opus-4-8",
+          "started_at": "2026-07-25T05:52:18+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-25_05-52-18_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_opus-4-8-2",
+          "started_at": "2026-07-25T05:52:18+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-25_05-57-24_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_opus-4-8",
+          "started_at": "2026-07-25T05:57:24+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-25_05-59-26_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_opus-4-8",
+          "started_at": "2026-07-25T05:59:26+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-25_06-03-04_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_opus-4-8",
+          "started_at": "2026-07-25T06:03:04+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.6,
+          "sd": 3.714835124201342,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.566,
+          "sd": 1.8652828203787222,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.8,
+          "sd": 1.4832396974191326,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.896,
+          "sd": 0.39284857133506285,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 17.4,
+          "sd": 5.504543577809154,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.892,
+          "sd": 1.694069065888401,
+          "null_count": 0
+        },
+        "lines_of_code": {
+          "kind": "num",
+          "n": 5,
+          "mean": 35.2,
+          "sd": 2.7748873851023217,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 149.2,
+          "sd": 13.0843417870369,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.4,
+          "sd": 1.51657508881031,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "predictions_correct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 19.4,
+          "sd": 5.458937625582473,
+          "null_count": 0
+        },
+        "predictions_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 19.4,
+          "sd": 5.458937625582473,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 339.4,
+          "sd": 45.719798774710284,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1230419.6,
+          "sd": 277680.6404132272,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.99686,
+          "sd": 0.2463362295725092,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-hybrid-v4.2-phase-continuation-pi",
+      "model": "opus-4-8-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-07-26_10-06-47_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_opus-4-8-no-thinking",
+          "started_at": "2026-07-26T10:06:47+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-26_10-12-16_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_opus-4-8-no-thinking",
+          "started_at": "2026-07-26T10:12:16+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-26_10-17-34_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_opus-4-8-no-thinking",
+          "started_at": "2026-07-26T10:17:34+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-26_10-23-28_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_opus-4-8-no-thinking",
+          "started_at": "2026-07-26T10:23:28+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-26_10-29-29_game-of-life-example-mapping_v6.2.1-phase-continuation-pi_opus-4-8-no-thinking",
+          "started_at": "2026-07-26T10:29:29+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.2,
+          "sd": 5.357238094391549,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7.4,
+          "sd": 5.89915248150105,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.6,
+          "sd": 2.9664793948382653,
+          "null_count": 0
+        },
+        "mccabe_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.132,
+          "sd": 0.7985424221667876,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 17.8,
+          "sd": 5.310367218940701,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.186,
+          "sd": 2.01344977588218,
+          "null_count": 0
+        },
+        "lines_of_code": {
+          "kind": "num",
+          "n": 5,
+          "mean": 42.2,
+          "sd": 10.2810505299799,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 159.6,
+          "sd": 17.643695757975426,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.2,
+          "sd": 1.7888543819998317,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "predictions_correct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 16.8,
+          "sd": 2.6832815729997477,
+          "null_count": 0
+        },
+        "predictions_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 16.8,
+          "sd": 2.6832815729997477,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 318,
+          "sd": 21.714050750608465,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1266131.8,
+          "sd": 76766.81592459074,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.9989,
+          "sd": 0.09325990564009803,
+          "null_count": 0
+        }
+      }
+    }
+  ]
+}

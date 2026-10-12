@@ -1,0 +1,493 @@
+{
+  "cells": [
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-subagents-v2-testlist-fix-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-20_21-58-27_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-20T21:58:27+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-20_22-41-54_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-20T22:41:54+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-20_23-32-48_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-20T23:32:48+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-21_08-35-47_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-21T08:35:47+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_08-52-17_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T08:52:17+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 621.6,
+          "sd": 65.5842969010113,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.2,
+          "sd": 7.52994023880668,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 40.8,
+          "sd": 27.12379029560581,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 156.8,
+          "sd": 37.95655411124672,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 16,
+          "sd": 8.972179222463181,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 26.8,
+          "sd": 24.066574330386118,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.96,
+          "sd": 0.08944271909999157,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 34870175.8,
+          "sd": 6070424.589876988,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3228.8,
+          "sd": 919.9275514952251,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 36.256299999999996,
+          "sd": 5.7571180507264215,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-single-context-v2-testlist-fix-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 6,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-22_19-44-24_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:44:24+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-44-26_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:44:26+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-47-05_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:47:05+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-48-07_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:48:07+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-55-03_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:55:03+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_20-01-47_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T20:01:47+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 6,
+          "mean": 692.6666666666666,
+          "sd": 78.80270722929934,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 6,
+          "mean": 6.833333333333333,
+          "sd": 7.547626558506102,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 6,
+          "mean": 32.666666666666664,
+          "sd": 10.191499726078918,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 6,
+          "mean": 167.16666666666666,
+          "sd": 27.91713929948172,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 6,
+          "mean": 10.166666666666666,
+          "sd": 2.6394443859772205,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 6,
+          "mean": 14.833333333333334,
+          "sd": 4.167333280008532,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 6,
+          "k": 6,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 6,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 6
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 6,
+          "mean": 18726675.5,
+          "sd": 5354982.338778597,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 6,
+          "mean": 641,
+          "sd": 122.01967054536739,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 6,
+          "mean": 12.7191,
+          "sd": 3.5926924655472523,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-hybrid-v2-testlist-fix-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 7,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-22_19-29-21_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:29:21+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-43-46_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:43:46+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-44-03_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:44:03+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_09-06-31_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-23T09:06:31+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_11-00-44_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-23T11:00:44+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-24_03-09-37_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-24T03:09:37+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-24_03-09-37_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking-2",
+          "started_at": "2026-05-24T03:09:37+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 7,
+          "mean": 861.2857142857143,
+          "sd": 74.50663121654405,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 7,
+          "mean": 1.2857142857142858,
+          "sd": 1.4960264830861913,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 7,
+          "mean": 18.142857142857142,
+          "sd": 5.11300861947808,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 7,
+          "mean": 191.14285714285714,
+          "sd": 20.317714532139775,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 7,
+          "mean": 5.714285714285714,
+          "sd": 2.3603873774083293,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 7,
+          "mean": 5.714285714285714,
+          "sd": 2.8702082220799308,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 7,
+          "k": 7,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 7,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 7
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 7,
+          "mean": 37876285.571428575,
+          "sd": 13452070.691474069,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 7,
+          "mean": 1569,
+          "sd": 519.2796292300839,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 7,
+          "mean": 29.279985714285715,
+          "sd": 9.934423038678622,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-green-refactor-v2-testlist-fix-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 3,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-22_21-54-21_claim-office-example-mapping_v7.1-hybrid-green-refactor-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T21:54:21+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_22-25-01_claim-office-example-mapping_v7.1-hybrid-green-refactor-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T22:25:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_22-47-39_claim-office-example-mapping_v7.1-hybrid-green-refactor-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T22:47:39+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 3,
+          "mean": 801,
+          "sd": 3.605551275463989,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 2.3333333333333335,
+          "sd": 2.309401076758503,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 3,
+          "mean": 19.333333333333332,
+          "sd": 2.516611478423583,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 3,
+          "mean": 187.33333333333334,
+          "sd": 29.160475533388226,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 4.666666666666667,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 5,
+          "sd": 1.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 3,
+          "k": 3,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 3,
+          "mean": 0.9777666666666667,
+          "sd": 0.038509262954948026,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 3
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 3,
+          "mean": 35742755.333333336,
+          "sd": 10504970.236370131,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1969.6666666666667,
+          "sd": 715.028903844686,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 3,
+          "mean": 34.229866666666666,
+          "sd": 11.673304833822055,
+          "null_count": 0
+        }
+      }
+    }
+  ]
+}

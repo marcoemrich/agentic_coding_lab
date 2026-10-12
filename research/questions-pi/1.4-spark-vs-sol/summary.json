@@ -1,0 +1,580 @@
+{
+  "cells": [
+    {
+      "kata": "sphinx-score-example-mapping",
+      "workflow": "exact-sol-v1-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-08-16_23-21-42_sphinx-score-example-mapping_basic-sol-tdd-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T23:21:42+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_23-21-59_sphinx-score-example-mapping_basic-sol-tdd-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T23:21:59+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_23-22-01_sphinx-score-example-mapping_basic-sol-tdd-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T23:22:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_23-22-03_sphinx-score-example-mapping_basic-sol-tdd-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T23:22:03+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_23-22-37_sphinx-score-example-mapping_basic-sol-tdd-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T23:22:37+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.9875,
+          "sd": 0.02795084971874737,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.2,
+          "sd": 2.3874672772626644,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.2,
+          "sd": 2.3874672772626644,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 129.2,
+          "sd": 11.670475568716126,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.8,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 68,
+          "t": 68,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 440.2,
+          "sd": 14.771594362153328,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1571677,
+          "sd": 200749.3161943522,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.64904,
+          "sd": 0.1024717668433603,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "sphinx-score-example-mapping",
+      "workflow": "exact-sol-v1.1-subagent-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-08-16_23-29-31_sphinx-score-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T23:29:31+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_23-29-36_sphinx-score-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T23:29:36+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_23-29-36_sphinx-score-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-6-sol-codex-2",
+          "started_at": "2026-08-16T23:29:36+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_23-29-48_sphinx-score-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T23:29:48+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-16_23-30-18_sphinx-score-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-08-16T23:30:18+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.9625,
+          "sd": 0.03423265984407288,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.6,
+          "sd": 1.140175425099138,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.6,
+          "sd": 1.140175425099138,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.6,
+          "sd": 1.140175425099138,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 16.2,
+          "sd": 5.630275304103699,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15.9,
+          "sd": 6.248999919987197,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 136,
+          "sd": 10.024968827881711,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 76,
+          "t": 76,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 945.8,
+          "sd": 103.47560098883214,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2476156,
+          "sd": 752929.5540742839,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.18472,
+          "sd": 0.768914869800292,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "sphinx-score-example-mapping",
+      "workflow": "exact-sol-v1-pi",
+      "model": "gpt-5-3-codex-spark",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-08-17_00-37-28_sphinx-score-example-mapping_basic-sol-tdd-pi_gpt-5-3-codex-spark",
+          "started_at": "2026-08-17T00:37:28+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-17_00-37-28_sphinx-score-example-mapping_basic-sol-tdd-pi_gpt-5-3-codex-spark-2",
+          "started_at": "2026-08-17T00:37:28+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-17_00-37-28_sphinx-score-example-mapping_basic-sol-tdd-pi_gpt-5-3-codex-spark-3",
+          "started_at": "2026-08-17T00:37:28+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-17_00-37-28_sphinx-score-example-mapping_basic-sol-tdd-pi_gpt-5-3-codex-spark-4",
+          "started_at": "2026-08-17T00:37:28+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-17_00-37-28_sphinx-score-example-mapping_basic-sol-tdd-pi_gpt-5-3-codex-spark-5",
+          "started_at": "2026-08-17T00:37:28+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.775,
+          "sd": 0.05590169943749474,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.4,
+          "sd": 1.6733200530681511,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.3,
+          "sd": 1.6431676725154984,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 1.6431676725154984,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 22.8,
+          "sd": 2.16794833886788,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 19.166,
+          "sd": 6.41484840039108,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 2.23606797749979,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 159.6,
+          "sd": 22.744230037528197,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10,
+          "sd": 3.9370039370059056,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10,
+          "sd": 3.9370039370059056,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 66,
+          "t": 82,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 320.6,
+          "sd": 96.4717575251949,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5112735,
+          "sd": 3401887.2102799793,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.56348,
+          "sd": 0.8873545469540346,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "sphinx-score-example-mapping",
+      "workflow": "exact-sol-v1.1-subagent-pi",
+      "model": "gpt-5-3-codex-spark",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-08-17_00-17-09_sphinx-score-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-3-codex-spark",
+          "started_at": "2026-08-17T00:17:09+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-17_00-17-09_sphinx-score-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-3-codex-spark-2",
+          "started_at": "2026-08-17T00:17:09+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-17_00-40-26_sphinx-score-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-3-codex-spark",
+          "started_at": "2026-08-17T00:40:26+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-17_00-43-07_sphinx-score-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-3-codex-spark",
+          "started_at": "2026-08-17T00:43:07+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-08-17_00-43-42_sphinx-score-example-mapping_basic-sol-tdd-subagent-pi_gpt-5-3-codex-spark",
+          "started_at": "2026-08-17T00:43:42+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.8375,
+          "sd": 0.14388580541526672,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 2.7748873851023217,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.734,
+          "sd": 3.0852520156382686,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.4,
+          "sd": 2.3021728866442674,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 21.2,
+          "sd": 8.043631020876083,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 19.3,
+          "sd": 9.243916918709298,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.4,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 151.8,
+          "sd": 22.785960589801782,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.4,
+          "sd": 4.8270073544588685,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.6,
+          "sd": 5.594640292279746,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 62,
+          "t": 77,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 630.2,
+          "sd": 211.61687078302617,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6212748.4,
+          "sd": 3847318.0898488625,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.6066,
+          "sd": 1.6881849691310487,
+          "null_count": 0
+        }
+      }
+    }
+  ]
+}

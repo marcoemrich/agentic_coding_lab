@@ -2,7 +2,7 @@
 
 _How do the models reachable via the cursor-cli harness (Opus 4.8 medium, Composer 2.5, Grok 4.5 medium) differ in code quality and TDD discipline on game-of-life-example-mapping?_
 
-Generated: 2026-10-12T07:27:55Z
+Generated: 2026-10-12T08:37:46Z
 
 Cells declared: 3 · matched runs: 10 · min_replicates: 5
 
@@ -18,158 +18,184 @@ Cells declared: 3 · matched runs: 10 · min_replicates: 5
 
 ### code_mass
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |  211.2 |   181 |   246 | 24.59 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |  151.6 |   130 |   180 | 23.2  |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |  211.2 |  24.59 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |  151.6 |  23.2  |
 
 ### cognitive_max
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |    7.8 |     2 |    12 |  4.27 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |    9.2 |     7 |    11 |  1.48 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    7.8 |   4.27 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    9.2 |   1.48 |
 
 ### cognitive_avg
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |   4.97 |   1.2 |  11   |  3.69 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |   7.9  |   4.5 |  10.5 |  2.38 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 | nan    | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |   4.97 |   3.69 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |   7.9  |   2.38 |
 
 ### mccabe_max
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |    6.2 |     3 |     9 |  2.39 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |    7.8 |     6 |     9 |  1.1  |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    6.2 |   2.39 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    7.8 |   1.1  |
 
 ### mccabe_avg
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |   2.4  |  1.43 |   3.6 |  0.85 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |   3.47 |  2.75 |   5   |  0.92 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 | nan    | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |   2.4  |   0.85 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |   3.47 |   0.92 |
 
 ### longest_function
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |   25.4 |    14 |    31 |  6.73 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |   21.8 |    20 |    24 |  1.64 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |   25.4 |   6.73 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |   21.8 |   1.64 |
 
 ### avg_loc_per_function
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |   7.39 |  4.12 |  9.5  |  2.02 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |  11    |  9    | 12.67 |  1.49 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 | nan    | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |   7.39 |   2.02 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |  11    |   1.49 |
 
 ### median_loc_per_function
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |    3.3 |     3 |   3.5 |  0.27 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |    8.2 |     4 |  12   |  3.63 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    3.3 |   0.27 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    8.2 |   3.63 |
 
 ### lines_of_code
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |   68.2 |    55 |    86 | 11.73 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |   39.2 |    33 |    44 |  4.32 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |   68.2 |  11.73 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |   39.2 |   4.32 |
 
 ### smell_total
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |    3   |     2 |     4 |  0.71 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |    2.8 |     2 |     4 |  0.84 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    3   |   0.71 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    2.8 |   0.84 |
 
 ### smell_complexity
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |    0.4 |     0 |     1 |  0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |    0.2 |     0 |     1 |  0.45 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    0.4 |   0.55 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    0.2 |   0.45 |
 
 ### smell_magic_numbers
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |    2.6 |     2 |     3 |  0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |    2.4 |     2 |     3 |  0.55 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    2.6 |   0.55 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    2.4 |   0.55 |
 
 ### smell_duplication
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |    0   |     0 |     0 |  0    |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |    0.2 |     0 |     1 |  0.45 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    0   |   0    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    0.2 |   0.45 |
 
 ### verification_pct
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      1 |     1 |     1 |     0 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      1 |     1 |     1 |     0 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |   sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |    nan |  nan |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |      1 |    0 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |      1 |    0 |
 
-### tests_passing (rate %)
+### tests_passing
 
-| kata                         | cell_workflow                               | cell_model      |   n |   match |   rate_% |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|--------:|---------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |       5 |      100 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |   sd |   k |   rate_% |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-----:|----:|---------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |    nan |  nan | nan |      nan |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    nan |  nan |   5 |      100 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    nan |  nan |   5 |      100 |
 
 ### tests_total
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |    8.4 |     8 |     9 |  0.55 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |    7.8 |     7 |     8 |  0.45 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    8.4 |   0.55 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    7.8 |   0.45 |
 
-### legacy_cycle_count
+### cycle_count
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |    7.4 |     5 |     9 |  1.52 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |    8.4 |     6 |    11 |  2.07 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    7.4 |   1.52 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    8.4 |   2.07 |
 
-### legacy_refactorings_applied
+### refactorings_applied
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |    3.6 |     2 |     6 |  1.52 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |    5   |     4 |     6 |  0.71 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    3.6 |   1.52 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |    5   |   0.71 |
 
 ### predictions_correct
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |    6.4 |     4 |     8 |  1.67 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |   14.8 |    10 |    16 |  2.68 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    6.4 |   1.67 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |   14.8 |   2.68 |
 
 ### predictions_total
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |    6.4 |     4 |     8 |  1.67 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |   14.8 |    10 |    16 |  2.68 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |    6.4 |   1.67 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |   14.8 |   2.68 |
 
 ### duration_seconds
 
-| kata                         | cell_workflow                               | cell_model      |   n |   mean |   min |   max |    std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|------:|------:|-------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |  330.8 |   244 |   534 | 115.89 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |  584.8 |   487 |   683 |  88.14 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |  nan   | nan    |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |  330.8 | 115.89 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |  584.8 |  88.14 |
 
 ### total_tokens
 
-| kata                         | cell_workflow                               | cell_model      |   n |        mean |     min |     max |    std |
-|:-----------------------------|:--------------------------------------------|:----------------|----:|------------:|--------:|--------:|-------:|
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 | 1.13088e+06 |  799400 | 1537175 | 266402 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 | 1.32566e+06 | 1141791 | 1629875 | 198297 |
+| kata                         | cell_workflow                               | cell_model      |   n |   null |          mean |     sd |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|--------------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 | nan           |    nan |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   5 |      0 |   1.13088e+06 | 266402 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   5 |      0 |   1.32566e+06 | 198297 |
 
 ### cost_usd
 
-_All values are missing or non-numeric._
+| kata                         | cell_workflow                               | cell_model      |   n |   null | mean   | sd   |
+|:-----------------------------|:--------------------------------------------|:----------------|----:|-------:|:-------|:-----|
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | opus-cursor     |   0 |      0 |        |      |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | composer-cursor |   0 |      5 |        |      |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-cursor | grok-cursor     |   0 |      5 |        |      |

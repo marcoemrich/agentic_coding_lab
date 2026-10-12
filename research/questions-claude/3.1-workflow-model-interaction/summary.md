@@ -2,7 +2,7 @@
 
 _Does the quality of a TDD workflow depend on the model — is there a universally best workflow, or do different workflows swap places depending on the model?_
 
-Generated: 2026-10-12T07:27:44Z
+Generated: 2026-10-12T08:37:36Z
 
 Cells declared: 6 · matched runs: 49 · min_replicates: 5
 
@@ -11,7 +11,7 @@ Cells declared: 6 · matched runs: 49 · min_replicates: 5
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
 | claim-office-example-mapping | exact-subagents-v1-cc | opus-4-7-no-thinking | 10 | 10 | ✅ |
-| claim-office-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey-no-thinking | 5 | 4 | ⚠️ only 4/5 without timeout |
+| claim-office-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey-no-thinking | 5 | 4 | ⚠️ below min_replicates (4/5) |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking | 9 | 9 | ✅ |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v1-cc | opus-4-7-no-thinking | 5 | 5 | ✅ |
@@ -21,33 +21,33 @@ Cells declared: 6 · matched runs: 49 · min_replicates: 5
 
 ### verification_pct
 
-| kata                         | cell_workflow              | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v1-cc         | opus-4-6-portkey-no-thinking |  15 |   0.68 |  0.27 |     1 |  0.33 |
-| claim-office-example-mapping | exact-hybrid-v1-cc         | opus-4-7-no-thinking         |   5 |   1    |  1    |     1 |  0    |
-| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking |   5 |   0.87 |  0.33 |     1 |  0.3  |
-| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking         |   9 |   0.97 |  0.73 |     1 |  0.09 |
-| claim-office-example-mapping | exact-subagents-v1-cc      | opus-4-6-portkey-no-thinking |   5 |   0.93 |  0.8  |     1 |  0.08 |
-| claim-office-example-mapping | exact-subagents-v1-cc      | opus-4-7-no-thinking         |  10 |   0.67 |  0.2  |     1 |  0.36 |
+| kata                         | cell_workflow              | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:---------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-subagents-v1-cc      | opus-4-7-no-thinking         |  10 |      0 |   0.67 | 0.36 |
+| claim-office-example-mapping | exact-subagents-v1-cc      | opus-4-6-portkey-no-thinking |   4 |      0 |   0.92 | 0.08 |
+| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking         |   9 |      0 |   0.97 | 0.09 |
+| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking |   5 |      0 |   0.87 | 0.3  |
+| claim-office-example-mapping | exact-hybrid-v1-cc         | opus-4-7-no-thinking         |   5 |      0 |   1    | 0    |
+| claim-office-example-mapping | exact-hybrid-v1-cc         | opus-4-6-portkey-no-thinking |  15 |      0 |   0.68 | 0.33 |
 
 ### verification_passed
 
-| kata                         | cell_workflow              | cell_model                   |   n |   mean |   min |   max |   std |
-|:-----------------------------|:---------------------------|:-----------------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v1-cc         | opus-4-6-portkey-no-thinking |  15 |  10.13 |     4 |    15 |  4.9  |
-| claim-office-example-mapping | exact-hybrid-v1-cc         | opus-4-7-no-thinking         |   5 |  15    |    15 |    15 |  0    |
-| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking |   5 |  13    |     5 |    15 |  4.47 |
-| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking         |   9 |  14.56 |    11 |    15 |  1.33 |
-| claim-office-example-mapping | exact-subagents-v1-cc      | opus-4-6-portkey-no-thinking |   5 |  14    |    12 |    15 |  1.22 |
-| claim-office-example-mapping | exact-subagents-v1-cc      | opus-4-7-no-thinking         |  10 |  10    |     3 |    15 |  5.33 |
+| kata                         | cell_workflow              | cell_model                   |   n |   null |   mean |   sd |
+|:-----------------------------|:---------------------------|:-----------------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-subagents-v1-cc      | opus-4-7-no-thinking         |  10 |      0 |  10    | 5.33 |
+| claim-office-example-mapping | exact-subagents-v1-cc      | opus-4-6-portkey-no-thinking |   4 |      0 |  13.75 | 1.26 |
+| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking         |   9 |      0 |  14.56 | 1.33 |
+| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking |   5 |      0 |  13    | 4.47 |
+| claim-office-example-mapping | exact-hybrid-v1-cc         | opus-4-7-no-thinking         |   5 |      0 |  15    | 0    |
+| claim-office-example-mapping | exact-hybrid-v1-cc         | opus-4-6-portkey-no-thinking |  15 |      0 |  10.13 | 4.9  |
 
-### tests_passing (rate %)
+### tests_passing
 
-| kata                         | cell_workflow              | cell_model                   |   n |   match |   rate_% |
-|:-----------------------------|:---------------------------|:-----------------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v1-cc         | opus-4-6-portkey-no-thinking |  15 |      13 |       87 |
-| claim-office-example-mapping | exact-hybrid-v1-cc         | opus-4-7-no-thinking         |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking         |   9 |       9 |      100 |
-| claim-office-example-mapping | exact-subagents-v1-cc      | opus-4-6-portkey-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | exact-subagents-v1-cc      | opus-4-7-no-thinking         |  10 |      10 |      100 |
+| kata                         | cell_workflow              | cell_model                   |   n |   k |   null |   rate_% |
+|:-----------------------------|:---------------------------|:-----------------------------|----:|----:|-------:|---------:|
+| claim-office-example-mapping | exact-subagents-v1-cc      | opus-4-7-no-thinking         |  10 |  10 |      0 |      100 |
+| claim-office-example-mapping | exact-subagents-v1-cc      | opus-4-6-portkey-no-thinking |   4 |   4 |      0 |      100 |
+| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking         |   9 |   9 |      0 |      100 |
+| claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking |   5 |   5 |      0 |      100 |
+| claim-office-example-mapping | exact-hybrid-v1-cc         | opus-4-7-no-thinking         |   5 |   5 |      0 |      100 |
+| claim-office-example-mapping | exact-hybrid-v1-cc         | opus-4-6-portkey-no-thinking |  15 |  13 |      0 |       87 |

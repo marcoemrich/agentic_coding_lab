@@ -2,7 +2,7 @@
 
 _Can the inner TDD loop of EXACT Coding be substituted by an externally authored TDD workflow, and what does the substitution cost or buy? Example mapping stays the entry point; only the implement/test/refactor loop is exchanged. Measured on claim-office-example-mapping against the current exact-coding baseline exact-hybrid-v2.4-lab-split-cc — on correctness, code quality, TDD discipline and cost._
 
-Generated: 2026-10-12T07:27:49Z
+Generated: 2026-10-12T08:37:40Z
 
 Cells declared: 4 · matched runs: 15 · min_replicates: 5
 
@@ -19,174 +19,225 @@ Cells declared: 4 · matched runs: 15 · min_replicates: 5
 
 ### verification_pct
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |   0.96 |  0.93 |     1 |  0.04 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |   1    |  1    |     1 |  0    |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |   1    |  1    |     1 |  0    |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |     sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |   0.96 |   0.04 |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |   1    |   0    |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |   1    |   0    |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 | nan    | nan    |
 
-### tests_passing (rate %)
+### tests_passing
 
-| kata                         | cell_workflow                      | cell_model         |   n |   match |   rate_% |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |       5 |      100 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |       5 |      100 |
+| kata                         | cell_workflow                      | cell_model         |   n |   k |   null |   rate_% |   mean |   sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|----:|-------:|---------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |   5 |      0 |      100 |    nan |  nan |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |   5 |      0 |      100 |    nan |  nan |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |   5 |      0 |      100 |    nan |  nan |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 | nan |      0 |      nan |    nan |  nan |
 
-### legacy_refactorings_applied
+### refactorings_applied
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |   33   |    21 |    50 | 14.27 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |    0   |     0 |     0 |  0    |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |    4.2 |     1 |    10 |  3.42 |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |     sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |   33   |  14.27 |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |    4.2 |   3.42 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |    0   |   0    |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |  nan   | nan    |
 
-### legacy_tests_passed_immediately
+### tests_passed_immediately
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |   20.4 |     0 |    29 | 11.84 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |    0   |     0 |     0 |  0    |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |    2   |     1 |     4 |  1.22 |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |     sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |   20.4 |  11.84 |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |    2   |   1.22 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |    0   |   0    |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |  nan   | nan    |
 
-### predictions_correct_rate (pooled %)
+### predictions_correct_rate
 
-| kata                         | cell_workflow                  | cell_model         |   n |   correct |   total |   rate_% |
-|:-----------------------------|:-------------------------------|:-------------------|----:|----------:|--------:|---------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc | opus-5-no-thinking |   5 |       478 |     480 |     99.6 |
+| kata                         | cell_workflow                      | cell_model         |   n |   k |   t |   null |   rate_% |   mean |   sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|----:|----:|-------:|---------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 | 478 | 480 |      0 |     99.6 |    nan |  nan |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   0 | nan | nan |      5 |    nan   |    nan |  nan |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   0 | nan | nan |      5 |    nan   |    nan |  nan |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 | nan | nan |      0 |    nan   |    nan |  nan |
 
-### legacy_cycle_count
+### cycle_count
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |   48   |    44 |    50 |  2.55 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |   35.2 |    33 |    39 |  2.28 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |   13.4 |    11 |    16 |  2.51 |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |     sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |   48   |   2.55 |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |   13.4 |   2.51 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |   35.2 |   2.28 |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |  nan   | nan    |
 
-### legacy_test_blocks
+### test_blocks
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |   48.4 |    45 |    50 |  2.07 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |   19   |    16 |    23 |  2.74 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |   13.4 |    11 |    16 |  2.51 |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |     sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |   48.4 |   2.07 |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |   13.4 |   2.51 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |   19   |   2.74 |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |  nan   | nan    |
 
-### legacy_test_cases_total
+### test_cases_total
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |   49   |    46 |    51 |  2    |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |   36.8 |    30 |    44 |  5.26 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |   45   |    26 |    55 | 11.51 |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |     sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |   49   |   2    |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |   45   |  11.51 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |   36.8 |   5.26 |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |  nan   | nan    |
 
-### legacy_test_cases_first_block
+### test_cases_first_block
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      1 |     1 |     1 |     0 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      1 |     1 |     1 |     0 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      1 |     1 |     1 |     0 |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |   sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |      1 |    0 |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |      1 |    0 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |      1 |    0 |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |    nan |  nan |
 
-### legacy_red_verified
+### red_verified
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |   48.4 |    45 |    50 |  2.07 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |   18.8 |    16 |    22 |  2.39 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |   12.4 |     7 |    16 |  3.58 |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |     sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |   48.4 |   2.07 |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |   12.4 |   3.58 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |   18.8 |   2.39 |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |  nan   | nan    |
 
-### legacy_red_unverified
+### red_unverified
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |    0   |     0 |     0 |  0    |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |    0.2 |     0 |     1 |  0.45 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |    1   |     0 |     4 |  1.73 |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |     sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |    0   |   0    |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |    1   |   1.73 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |    0.2 |   0.45 |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |  nan   | nan    |
 
-### legacy_suite_cycles
+### suite_cycles
 
-_All values are missing or non-numeric._
+| kata                         | cell_workflow                      | cell_model         |   n |   null | mean   | sd   |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|:-------|:-----|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |        |      |
 
-### legacy_suite_new_failures
+### suite_new_failures
 
-_All values are missing or non-numeric._
+| kata                         | cell_workflow                      | cell_model         |   n |   null | mean   | sd   |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|:-------|:-----|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |        |      |
 
-### legacy_suite_opens_red
+### suite_opens_red
 
-_All values are missing or non-numeric._
+| kata                         | cell_workflow                      | cell_model         |   n |   null | mean   | sd   |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|:-------|:-----|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |        |      |
 
-### legacy_suite_unresolved_red
+### suite_unresolved_red
 
-_All values are missing or non-numeric._
+| kata                         | cell_workflow                      | cell_model         |   n |   null | mean   | sd   |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|:-------|:-----|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |        |      |
 
-### legacy_suite_runs
+### suite_runs
 
-_All values are missing or non-numeric._
+| kata                         | cell_workflow                      | cell_model         |   n |   null | mean   | sd   |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|:-------|:-----|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |        |      |
 
-### legacy_suite_unknown_runs
+### suite_unknown_runs
 
-_All values are missing or non-numeric._
+| kata                         | cell_workflow                      | cell_model         |   n |   null | mean   | sd   |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|:-------|:-----|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   0 |      5 |        |      |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |        |      |
 
 ### avg_loc_per_function
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |   4.49 |  3.97 |  5.24 |  0.54 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |  10.41 |  8.92 | 12.2  |  1.45 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |   7.9  |  7    |  9.23 |  1.15 |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |     sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |   4.49 |   0.54 |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |   7.9  |   1.15 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |  10.41 |   1.45 |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 | nan    | nan    |
 
 ### longest_function
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |   17.6 |    14 |    25 |  4.39 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |   26.6 |    20 |    30 |  4.22 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |   23.4 |    18 |    26 |  3.13 |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |     sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |   17.6 |   4.39 |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |   23.4 |   3.13 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |   26.6 |   4.22 |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |  nan   | nan    |
 
 ### cognitive_max
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |    2.8 |     2 |     4 |  0.84 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |    6.6 |     4 |    10 |  2.41 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |    6.2 |     3 |     8 |  2.17 |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |     sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |    2.8 |   0.84 |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |    6.2 |   2.17 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |    6.6 |   2.41 |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |  nan   | nan    |
 
 ### mccabe_max
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |    3.4 |     3 |     4 |  0.55 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |    5.4 |     4 |     7 |  1.14 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |    5.2 |     4 |     6 |  1.1  |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |     sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |    3.4 |   0.55 |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |    5.2 |   1.1  |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |    5.4 |   1.14 |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |  nan   | nan    |
 
 ### smell_total
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |   std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |    0   |     0 |     0 |  0    |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |    0.2 |     0 |     1 |  0.45 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |    0   |     0 |     0 |  0    |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |     sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |    0   |   0    |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |    0   |   0    |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |    0.2 |   0.45 |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |  nan   | nan    |
 
 ### code_mass
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |    std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|-------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |  821.2 |   703 |   963 | 110.71 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |  599.8 |   534 |   692 |  59.52 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |  666.4 |   637 |   697 |  25.53 |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |     sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|-------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |  821.2 | 110.71 |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |  666.4 |  25.53 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |  599.8 |  59.52 |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |  nan   | nan    |
 
 ### duration_seconds
 
-| kata                         | cell_workflow                      | cell_model         |   n |   mean |   min |   max |     std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|------:|------:|--------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 | 3841   |  2685 |  5923 | 1522.52 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |  582.4 |   527 |   681 |   66.41 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |  548.4 |   483 |   631 |   56.73 |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |   mean |      sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|-------:|--------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 | 3841   | 1522.52 |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |  548.4 |   56.73 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |  582.4 |   66.41 |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 |  nan   |  nan    |
 
 ### total_tokens
 
-| kata                         | cell_workflow                      | cell_model         |   n |        mean |      min |       max |         std |
-|:-----------------------------|:-----------------------------------|:-------------------|----:|------------:|---------:|----------:|------------:|
-| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 | 1.40925e+08 | 98182103 | 194058770 | 4.64453e+07 |
-| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 | 1.25898e+07 | 11267894 |  14333416 | 1.44321e+06 |
-| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 | 1.21539e+07 | 10955398 |  13993515 | 1.28586e+06 |
+| kata                         | cell_workflow                      | cell_model         |   n |   null |          mean |            sd |
+|:-----------------------------|:-----------------------------------|:-------------------|----:|-------:|--------------:|--------------:|
+| claim-office-example-mapping | exact-hybrid-v2.4-lab-split-cc     | opus-5-no-thinking |   5 |      0 |   1.40925e+08 |   4.64453e+07 |
+| claim-office-example-mapping | external-superpowers-2026-09-04-cc | opus-5-no-thinking |   5 |      0 |   1.21539e+07 |   1.28586e+06 |
+| claim-office-example-mapping | external-pocock-2026-09-04-cc      | opus-5-no-thinking |   5 |      0 |   1.25898e+07 |   1.44321e+06 |
+| claim-office-example-mapping | external-kesseler-2026-09-30-cc    | opus-5-no-thinking |   0 |      0 | nan           | nan           |

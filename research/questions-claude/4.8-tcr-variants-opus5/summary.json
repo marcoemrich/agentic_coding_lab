@@ -1,0 +1,738 @@
+{
+  "cells": [
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-hybrid-v2.4-lab-split-cc",
+      "model": "opus-5-requesty-no-thinking",
+      "counts": {
+        "runs": 4,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-14_17-35-07_claim-office-example-mapping_exact-hybrid-v2.4-lab-split-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T17:35:07+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_17-35-07_claim-office-example-mapping_exact-hybrid-v2.4-lab-split-cc_opus-5-requesty-no-thinking-2",
+          "started_at": "2026-09-14T17:35:07+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_17-35-07_claim-office-example-mapping_exact-hybrid-v2.4-lab-split-cc_opus-5-requesty-no-thinking-3",
+          "started_at": "2026-09-14T17:35:07+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_17-35-07_claim-office-example-mapping_exact-hybrid-v2.4-lab-split-cc_opus-5-requesty-no-thinking-5",
+          "started_at": "2026-09-14T17:35:08+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0.96665,
+          "sd": 0.038509262954948026,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 4,
+          "k": 4,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 4,
+          "mean": 50,
+          "sd": 1.4142135623730951,
+          "null_count": 0
+        },
+        "test_cases_total": {
+          "kind": "num",
+          "n": 4,
+          "mean": 50.5,
+          "sd": 1.2909944487358056,
+          "null_count": 0
+        },
+        "test_cases_first_block": {
+          "kind": "num",
+          "n": 4,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 4,
+          "mean": 50,
+          "sd": 1.4142135623730951,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 4,
+          "mean": 3.6725,
+          "sd": 0.30357591033106257,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 4,
+          "mean": 19,
+          "sd": 3.7416573867739413,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 4,
+          "mean": 3.5,
+          "sd": 1.9148542155126762,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 4,
+          "mean": 3.75,
+          "sd": 0.9574271077563381,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0.5,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 4,
+          "mean": 881.5,
+          "sd": 102.50365847129555,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 4,
+          "mean": 3652.5,
+          "sd": 377.38088628510764,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 4,
+          "mean": 63183496.75,
+          "sd": 2702128.110556736,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 4,
+          "mean": 58.068525,
+          "sd": 4.253501635417575,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "external-tcr-kentbeck-2026-09-14-cc",
+      "model": "opus-5-requesty-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-14_17-11-19_claim-office-example-mapping_external-tcr-kentbeck-2026-09-14-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T17:11:19+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_17-58-27_claim-office-example-mapping_external-tcr-kentbeck-2026-09-14-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T17:58:27+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_18-30-31_claim-office-example-mapping_external-tcr-kentbeck-2026-09-14-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T18:30:31+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_18-40-12_claim-office-example-mapping_external-tcr-kentbeck-2026-09-14-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T18:40:12+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_18-43-25_claim-office-example-mapping_external-tcr-kentbeck-2026-09-14-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T18:43:25+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.2,
+          "sd": 3.7013511046643495,
+          "null_count": 0
+        },
+        "test_cases_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 35.8,
+          "sd": 16.70927885936434,
+          "null_count": 0
+        },
+        "test_cases_first_block": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8,
+          "sd": 3.391164991562634,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11,
+          "sd": 2.345207879911715,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.656,
+          "sd": 2.3253343845563372,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 21.4,
+          "sd": 3.0495901363953815,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.4,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.2,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 702.4,
+          "sd": 53.5518440392112,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 280.2,
+          "sd": 50.15176965970393,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3872862,
+          "sd": 1041792.9610690408,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.3829,
+          "sd": 0.7030578354587906,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "external-tcrdd-bsene-2026-09-14-cc",
+      "model": "opus-5-requesty-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-14_17-11-19_claim-office-example-mapping_external-tcrdd-bsene-2026-09-14-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T17:11:19+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_18-05-04_claim-office-example-mapping_external-tcrdd-bsene-2026-09-14-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T18:05:04+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_18-32-04_claim-office-example-mapping_external-tcrdd-bsene-2026-09-14-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T18:32:04+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_18-35-10_claim-office-example-mapping_external-tcrdd-bsene-2026-09-14-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T18:35:10+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_18-44-59_claim-office-example-mapping_external-tcrdd-bsene-2026-09-14-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T18:44:59+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 5,
+          "mean": 28,
+          "sd": 8.0,
+          "null_count": 0
+        },
+        "test_cases_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 44.2,
+          "sd": 9.757048734120374,
+          "null_count": 0
+        },
+        "test_cases_first_block": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 28,
+          "sd": 8.0,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 1.6431676725154984,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 38.2,
+          "sd": 34.07638478477434,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15.6,
+          "sd": 14.293355099485915,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15.6,
+          "sd": 14.293355099485915,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.8,
+          "sd": 2.7748873851023217,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.6,
+          "sd": 0.7018903048197777,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 20.6,
+          "sd": 3.0495901363953815,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6,
+          "sd": 1.4142135623730951,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 643,
+          "sd": 30.224162519414826,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 833.6,
+          "sd": 111.03287801367665,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 19778478.4,
+          "sd": 3274130.6448712917,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.678519999999999,
+          "sd": 2.281021733127504,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "external-tcrdd-git-gamble-2026-09-14-cc",
+      "model": "opus-5-requesty-no-thinking",
+      "counts": {
+        "runs": 4,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-14_17-11-19_claim-office-example-mapping_external-tcrdd-git-gamble-2026-09-14-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T17:11:19+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_18-21-01_claim-office-example-mapping_external-tcrdd-git-gamble-2026-09-14-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T18:21:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_18-48-00_claim-office-example-mapping_external-tcrdd-git-gamble-2026-09-14-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T18:48:00+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-14_18-50-29_claim-office-example-mapping_external-tcrdd-git-gamble-2026-09-14-cc_opus-5-requesty-no-thinking",
+          "started_at": "2026-09-14T18:50:29+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 4,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 4,
+          "k": 4,
+          "null_count": 0
+        },
+        "test_blocks": {
+          "kind": "num",
+          "n": 4,
+          "mean": 26.25,
+          "sd": 1.707825127659933,
+          "null_count": 0
+        },
+        "test_cases_total": {
+          "kind": "num",
+          "n": 4,
+          "mean": 29.75,
+          "sd": 5.678908345800274,
+          "null_count": 0
+        },
+        "test_cases_first_block": {
+          "kind": "num",
+          "n": 4,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "red_verified": {
+          "kind": "num",
+          "n": 4,
+          "mean": 25.75,
+          "sd": 1.707825127659933,
+          "null_count": 0
+        },
+        "red_unverified": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0.5,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "tcr_refactor_steps": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0.5,
+          "sd": 1.0,
+          "null_count": 0
+        },
+        "tcr_method_commits": {
+          "kind": "num",
+          "n": 4,
+          "mean": 35,
+          "sd": 11.105554165971787,
+          "null_count": 0
+        },
+        "tcr_red_commits": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_green_commits": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tcr_refactor_commits": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 4,
+          "mean": 10.96,
+          "sd": 2.4599728995797223,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 4,
+          "mean": 26.25,
+          "sd": 2.0615528128088303,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 4,
+          "mean": 7,
+          "sd": 1.4142135623730951,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 4,
+          "mean": 5.75,
+          "sd": 0.5,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 4,
+          "mean": 0.25,
+          "sd": 0.5,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 4,
+          "mean": 610.75,
+          "sd": 54.014658504273946,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 4,
+          "mean": 684.75,
+          "sd": 81.39359106629138,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 4,
+          "mean": 14885941.25,
+          "sd": 2362780.4492435567,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 4,
+          "mean": 10.518225,
+          "sd": 1.5220853707441424,
+          "null_count": 0
+        }
+      }
+    }
+  ]
+}

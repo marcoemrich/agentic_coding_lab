@@ -2,7 +2,7 @@
 
 _Do decoration emojis (✅ ❌ 🔴 🟢 🔄 📋 🚨 ⚠️) in the workflow prompts (skills + refactor agent + rules/tdd.md) on the hybrid-v2 base have a measurable effect on code quality or TDD discipline?_
 
-Generated: 2026-10-12T07:28:05Z
+Generated: 2026-10-12T08:37:57Z
 
 Cells declared: 2 · matched runs: 10 · min_replicates: 5
 
@@ -17,91 +17,91 @@ Cells declared: 2 · matched runs: 10 · min_replicates: 5
 
 ### code_mass
 
-| kata                         | cell_workflow                   | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |  147.6 |   133 |   174 | 15.5  |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |  156.8 |   146 |   172 | 10.06 |
+| kata                         | cell_workflow                   | cell_model           |   n |   null |   mean |    sd |
+|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|-------:|------:|
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |  147.6 | 15.5  |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |      0 |  156.8 | 10.06 |
 
 ### smell_total
 
-| kata                         | cell_workflow                   | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |    2.6 |     2 |     3 |  0.55 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |    2   |     2 |     2 |  0    |
+| kata                         | cell_workflow                   | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |    2.6 | 0.55 |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |      0 |    2   | 0    |
 
 ### longest_function
 
-| kata                         | cell_workflow                   | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |   15   |     2 |    25 |  8.72 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |   11.4 |     4 |    15 |  4.34 |
+| kata                         | cell_workflow                   | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |   15   | 8.72 |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |      0 |   11.4 | 4.34 |
 
 ### cognitive_max
 
-| kata                         | cell_workflow                   | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |    6.2 |     2 |    12 |  4.49 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |    6.6 |     4 |    10 |  2.3  |
+| kata                         | cell_workflow                   | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |    6.2 | 4.49 |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |      0 |    6.6 | 2.3  |
 
 ### mccabe_max
 
-| kata                         | cell_workflow                   | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |    5.2 |     3 |     8 |  1.92 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |    4.6 |     4 |     6 |  0.89 |
+| kata                         | cell_workflow                   | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |    5.2 | 1.92 |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |      0 |    4.6 | 0.89 |
 
-### legacy_refactorings_applied
+### refactorings_applied
 
-| kata                         | cell_workflow                   | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |    4.2 |     2 |     7 |  2.28 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |    5.4 |     3 |     9 |  2.88 |
+| kata                         | cell_workflow                   | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |    4.2 | 2.28 |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |      0 |    5.4 | 2.88 |
 
-### legacy_cycle_count
+### cycle_count
 
-| kata                         | cell_workflow                   | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |    8.4 |     7 |     9 |  0.89 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |    8.8 |     8 |     9 |  0.45 |
+| kata                         | cell_workflow                   | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |    8.4 | 0.89 |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |      0 |    8.8 | 0.45 |
 
-### predictions_correct_rate (pooled %)
+### predictions_correct_rate
 
-| kata                         | cell_workflow                   | cell_model           |   n |   correct |   total |   rate_% |
-|:-----------------------------|:--------------------------------|:---------------------|----:|----------:|--------:|---------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |        82 |      83 |     98.8 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |        86 |      88 |     97.7 |
+| kata                         | cell_workflow                   | cell_model           |   n |   k |   t |   null |   rate_% |
+|:-----------------------------|:--------------------------------|:---------------------|----:|----:|----:|-------:|---------:|
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |  82 |  83 |      0 |     98.8 |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |  86 |  88 |      0 |     97.7 |
 
-### legacy_tests_passed_immediately
+### tests_passed_immediately
 
-| kata                         | cell_workflow                   | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |    4.8 |     0 |     7 |  2.95 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |    2.2 |     0 |     6 |  3.03 |
+| kata                         | cell_workflow                   | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |    4.8 | 2.95 |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |      0 |    2.2 | 3.03 |
 
 ### duration_seconds
 
-| kata                         | cell_workflow                   | cell_model           |   n |   mean |   min |   max |    std |
-|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|-------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |  597.2 |   426 |   727 | 142.43 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |  668.8 |   493 |   896 | 200.58 |
+| kata                         | cell_workflow                   | cell_model           |   n |   null |   mean |     sd |
+|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|-------:|-------:|
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |  597.2 | 142.43 |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |      0 |  668.8 | 200.58 |
 
 ### total_tokens
 
-| kata                         | cell_workflow                   | cell_model           |   n |        mean |     min |      max |         std |
-|:-----------------------------|:--------------------------------|:---------------------|----:|------------:|--------:|---------:|------------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 | 8.58004e+06 | 5906655 | 11755793 | 2.23709e+06 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 | 9.54578e+06 | 6991297 | 12480191 | 2.20494e+06 |
+| kata                         | cell_workflow                   | cell_model           |   n |   null |    mean |          sd |
+|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|--------:|------------:|
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 | 8580042 | 2.23709e+06 |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |      0 | 9545780 | 2.20494e+06 |
 
-### tests_passing (rate %)
+### tests_passing
 
-| kata                         | cell_workflow                   | cell_model           |   n |   match |   rate_% |
-|:-----------------------------|:--------------------------------|:---------------------|----:|--------:|---------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |       5 |      100 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |       5 |      100 |
+| kata                         | cell_workflow                   | cell_model           |   n |   k |   null |   rate_% |
+|:-----------------------------|:--------------------------------|:---------------------|----:|----:|-------:|---------:|
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |   5 |      0 |      100 |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |   5 |      0 |      100 |
 
 ### verification_pct
 
-| kata                         | cell_workflow                   | cell_model           |   n |   mean |   min |   max |   std |
-|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|------:|------:|------:|
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      1 |     1 |     1 |     0 |
-| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |      1 |     1 |     1 |     0 |
+| kata                         | cell_workflow                   | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:--------------------------------|:---------------------|----:|-------:|-------:|-----:|
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-cc | opus-4-7-no-thinking |   5 |      0 |      1 |    0 |
+| game-of-life-example-mapping | exact-hybrid-v2.2-no-emoji-cc   | opus-4-7-no-thinking |   5 |      0 |      1 |    0 |

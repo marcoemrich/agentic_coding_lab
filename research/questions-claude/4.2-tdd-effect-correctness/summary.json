@@ -1,0 +1,815 @@
+{
+  "cells": [
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "baseline-inline-tdd-v1-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-08_11-36-07_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-08T11:36:07+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-08_11-42-20_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-08T11:42:20+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-08_11-46-55_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-08T11:46:55+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-16_09-56-09_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-16T09:56:09+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-16_10-01-04_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-16T10:01:04+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.8,
+          "sd": 1.3038404810405297,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_passed_immediately": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.6,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 312.4,
+          "sd": 53.35541209661866,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3281414.6,
+          "sd": 545757.309685633,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.91776,
+          "sd": 0.5210706890624343,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-subagents-v2-testlist-fix-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-20_21-58-27_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-20T21:58:27+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-20_22-41-54_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-20T22:41:54+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-20_23-32-48_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-20T23:32:48+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-21_08-35-47_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-21T08:35:47+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_08-52-17_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T08:52:17+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.96,
+          "sd": 0.08944271909999157,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 14.4,
+          "sd": 1.3416407864998738,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 44.6,
+          "sd": 8.590692637965812,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.8,
+          "sd": 7.085195833567341,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 5,
+          "k": 302,
+          "t": 325,
+          "null_count": 0
+        },
+        "tests_passed_immediately": {
+          "kind": "num",
+          "n": 5,
+          "mean": 22.2,
+          "sd": 6.1400325732035,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3228.8,
+          "sd": 919.9275514952251,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 34870175.8,
+          "sd": 6070424.589876988,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 36.256299999999996,
+          "sd": 5.7571180507264215,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-single-context-v2-testlist-fix-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 6,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-22_19-44-24_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:44:24+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-44-26_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:44:26+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-47-05_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:47:05+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-48-07_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:48:07+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-55-03_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:55:03+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_20-01-47_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T20:01:47+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 6,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 6,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 6,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 6,
+          "k": 6,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 6,
+          "mean": 5.5,
+          "sd": 6.6558245169174945,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 6,
+          "mean": 2.1666666666666665,
+          "sd": 0.752772652709081,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 6,
+          "k": 39,
+          "t": 39,
+          "null_count": 0
+        },
+        "tests_passed_immediately": {
+          "kind": "num",
+          "n": 6,
+          "mean": 1.6666666666666667,
+          "sd": 3.6147844564602556,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 6,
+          "mean": 641,
+          "sd": 122.01967054536739,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 6,
+          "mean": 18726675.5,
+          "sd": 5354982.338778597,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 6,
+          "mean": 12.7191,
+          "sd": 3.5926924655472523,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-hybrid-v2-testlist-fix-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 7,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-22_19-29-21_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:29:21+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-43-46_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:43:46+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-44-03_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:44:03+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_09-06-31_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-23T09:06:31+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_11-00-44_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-23T11:00:44+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-24_03-09-37_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-24T03:09:37+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-24_03-09-37_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking-2",
+          "started_at": "2026-05-24T03:09:37+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 7,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 7,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 7,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 7,
+          "k": 7,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 7,
+          "mean": 28,
+          "sd": 12.96148139681572,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 7,
+          "mean": 11,
+          "sd": 5.0990195135927845,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 7,
+          "k": 292,
+          "t": 303,
+          "null_count": 0
+        },
+        "tests_passed_immediately": {
+          "kind": "num",
+          "n": 7,
+          "mean": 13.571428571428571,
+          "sd": 8.618916073713347,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 7,
+          "mean": 1569,
+          "sd": 519.2796292300839,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 7,
+          "mean": 37876285.571428575,
+          "sd": 13452070.691474069,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 7,
+          "mean": 29.279985714285715,
+          "sd": 9.934423038678622,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-green-refactor-v2-testlist-fix-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 3,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-22_21-54-21_claim-office-example-mapping_v7.1-hybrid-green-refactor-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T21:54:21+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_22-25-01_claim-office-example-mapping_v7.1-hybrid-green-refactor-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T22:25:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_22-47-39_claim-office-example-mapping_v7.1-hybrid-green-refactor-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T22:47:39+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 3,
+          "mean": 0.9777666666666667,
+          "sd": 0.038509262954948026,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 3,
+          "mean": 14.666666666666666,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 3,
+          "k": 3,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 3,
+          "mean": 18.333333333333332,
+          "sd": 8.32666399786453,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 3,
+          "mean": 14,
+          "sd": 9.0,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 3,
+          "k": 99,
+          "t": 99,
+          "null_count": 0
+        },
+        "tests_passed_immediately": {
+          "kind": "num",
+          "n": 3,
+          "mean": 6.333333333333333,
+          "sd": 5.033222956847166,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1969.6666666666667,
+          "sd": 715.028903844686,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 3,
+          "mean": 35742755.333333336,
+          "sd": 10504970.236370131,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 3,
+          "mean": 34.229866666666666,
+          "sd": 11.673304833822055,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "baseline-end-refactor-only-v1-agent-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-25_18-36-34_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:36:34+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-38-19_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:38:19+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-39-36_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:39:36+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-41-56_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:41:56+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-43-17_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:43:17+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.6,
+          "sd": 1.140175425099138,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_passed_immediately": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 307.8,
+          "sd": 35.102706448363776,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3552633.4,
+          "sd": 808118.1784722455,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.01812,
+          "sd": 0.7465031527060018,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "baseline-end-refactor-only-v1-native-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-25_18-49-39_claim-office-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:49:39+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-51-36_claim-office-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:51:36+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-51-39_claim-office-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:51:39+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-54-44_claim-office-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:54:44+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-58-01_claim-office-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:58:01+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.97334,
+          "sd": 0.059613572280144383,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 14.6,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "cycle_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.4,
+          "sd": 1.9493588689617927,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_passed_immediately": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 276.4,
+          "sd": 53.16765934287497,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3446360,
+          "sd": 1091860.8009043552,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.52924,
+          "sd": 0.6144008121739424,
+          "null_count": 0
+        }
+      }
+    }
+  ]
+}

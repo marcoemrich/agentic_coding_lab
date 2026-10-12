@@ -1,0 +1,398 @@
+{
+  "cells": [
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-sol-v1.5-tcr-parity-domain-trial-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 10,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-15_16-34-57_claim-office-example-mapping_exact-sol-v1.5-tcr-parity-domain-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T16:34:58+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_16-55-12_claim-office-example-mapping_exact-sol-v1.5-tcr-parity-domain-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-15T16:55:14+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_16-55-12_claim-office-example-mapping_exact-sol-v1.5-tcr-parity-domain-trial-pi_gpt-5-6-sol-codex-2",
+          "started_at": "2026-09-15T16:55:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_16-55-12_claim-office-example-mapping_exact-sol-v1.5-tcr-parity-domain-trial-pi_gpt-5-6-sol-codex-3",
+          "started_at": "2026-09-15T16:55:14+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-15_16-55-12_claim-office-example-mapping_exact-sol-v1.5-tcr-parity-domain-trial-pi_gpt-5-6-sol-codex-4",
+          "started_at": "2026-09-15T16:55:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-16_16-24-41_claim-office-example-mapping_exact-sol-v1.5-tcr-parity-domain-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-16T16:24:46+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-16_16-24-41_claim-office-example-mapping_exact-sol-v1.5-tcr-parity-domain-trial-pi_gpt-5-6-sol-codex-2",
+          "started_at": "2026-09-16T16:24:46+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-16_16-24-42_claim-office-example-mapping_exact-sol-v1.5-tcr-parity-domain-trial-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-16T16:24:46+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-16_16-24-42_claim-office-example-mapping_exact-sol-v1.5-tcr-parity-domain-trial-pi_gpt-5-6-sol-codex-2",
+          "started_at": "2026-09-16T16:24:47+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-16_16-24-42_claim-office-example-mapping_exact-sol-v1.5-tcr-parity-domain-trial-pi_gpt-5-6-sol-codex-3",
+          "started_at": "2026-09-16T16:24:47+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 10,
+          "k": 10,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 35.8,
+          "sd": 1.5491933384829668,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 10,
+          "mean": 218.3,
+          "sd": 47.83780466906436,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 5.725,
+          "sd": 0.5191713482934983,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 4.35,
+          "sd": 0.5797509043642028,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 16.8,
+          "sd": 1.6865480854231356,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 10,
+          "mean": 15.3,
+          "sd": 4.029061098237818,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 3.7,
+          "sd": 0.9486832980505138,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1.8699999999999999,
+          "sd": 0.4777028364998474,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 4.3,
+          "sd": 1.1595018087284057,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 10,
+          "mean": 578.2,
+          "sd": 35.64890523486583,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 10,
+          "mean": 150.2,
+          "sd": 27.181693185753613,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 10,
+          "mean": 36.2,
+          "sd": 1.3165611772087666,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 10,
+          "k": 713,
+          "t": 721,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1263.4,
+          "sd": 351.0059195448925,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 10,
+          "mean": 6582230.6,
+          "sd": 2243871.575889226,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 10,
+          "mean": 4.7807,
+          "sd": 1.4330785323910202,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-sol-v1.6-test-list-dimensions-pi",
+      "model": "gpt-5-6-sol-codex",
+      "counts": {
+        "runs": 10,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-09-16_11-59-27_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-16T11:59:29+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-16_11-59-27_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex-2",
+          "started_at": "2026-09-16T11:59:29+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-16_11-59-27_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex-3",
+          "started_at": "2026-09-16T11:59:29+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-16_11-59-27_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex-4",
+          "started_at": "2026-09-16T11:59:29+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-16_11-59-27_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex-5",
+          "started_at": "2026-09-16T11:59:29+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-16_16-33-57_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-16T16:33:58+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-16_16-46-52_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-16T16:46:55+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-16_16-51-14_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-16T16:51:15+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-16_16-52-58_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-16T16:52:59+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-09-16_16-54-55_claim-office-example-mapping_exact-sol-v1.6-test-list-dimensions-pi_gpt-5-6-sol-codex",
+          "started_at": "2026-09-16T16:54:57+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1.0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 10,
+          "k": 10,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 42,
+          "sd": 3.5901098714230026,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 10,
+          "mean": 220.6,
+          "sd": 71.29936886116174,
+          "null_count": 0
+        },
+        "avg_loc_per_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 6.424,
+          "sd": 1.2395267914275458,
+          "null_count": 0
+        },
+        "median_loc_per_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 5.3,
+          "sd": 1.960725489313699,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 18.4,
+          "sd": 2.3664319132398464,
+          "null_count": 0
+        },
+        "functions": {
+          "kind": "num",
+          "n": 10,
+          "mean": 13.7,
+          "sd": 4.056544780420347,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 3.9,
+          "sd": 1.1005049346146119,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1.83,
+          "sd": 0.36884203182994807,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 5,
+          "sd": 1.5634719199411433,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 10,
+          "mean": 633.1,
+          "sd": 94.66954220984816,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 10,
+          "mean": 152.4,
+          "sd": 28.115634243048635,
+          "null_count": 0
+        },
+        "refactorings_applied": {
+          "kind": "num",
+          "n": 10,
+          "mean": 39.2,
+          "sd": 10.538817137927134,
+          "null_count": 0
+        },
+        "predictions_correct_rate": {
+          "kind": "rate",
+          "n": 10,
+          "k": 809,
+          "t": 812,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1486,
+          "sd": 476.69463787395154,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 10,
+          "mean": 6875679,
+          "sd": 4136604.039990587,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 10,
+          "mean": 4.7612,
+          "sd": 2.5516307447939597,
+          "null_count": 0
+        }
+      }
+    }
+  ]
+}

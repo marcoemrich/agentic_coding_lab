@@ -1,0 +1,2611 @@
+{
+  "cells": [
+    {
+      "kata": "game-of-life-prose",
+      "workflow": "baseline-oneshot-v1-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 10,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-14_21-27-32_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:27:32+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-29-54_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:29:54+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-31-17_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:31:17+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-33-30_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:33:30+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-35-11_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:35:11+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-37-10_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:37:10+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-38-50_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:38:50+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-41-02_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:41:02+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-43-02_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:43:02+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-44-37_game-of-life-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:44:37+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 10,
+          "mean": 155,
+          "sd": 8.055363982396381,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 4.8,
+          "sd": 1.2292725943057183,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 31.7,
+          "sd": 3.3015148038438356,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 10,
+          "mean": 33.6,
+          "sd": 1.776388345929897,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 12.8,
+          "sd": 1.8135294011647258,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 18.8,
+          "sd": 3.5839146815241634,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.9532664628056281,
+          "sd": 0.008852298379395641,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 10,
+          "k": 10,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 10,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 10,
+          "mean": 87.7,
+          "sd": 21.919296420176344,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 10,
+          "mean": 993521.3,
+          "sd": 223584.88606445552,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.94872,
+          "sd": 0.2153717757223025,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-prose",
+      "workflow": "baseline-oneshot-v1-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-16_09-13-36_claim-office-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-16T09:13:36+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-16_09-17-37_claim-office-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-16T09:17:37+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-16_09-21-15_claim-office-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-16T09:21:15+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-16_09-26-53_claim-office-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-16T09:26:53+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-16_09-29-58_claim-office-prose_v1-oneshot_opus-4-7-no-thinking",
+          "started_at": "2026-05-16T09:29:58+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 835.4,
+          "sd": 69.1939303696502,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.6,
+          "sd": 7.569676347110224,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 40.4,
+          "sd": 7.231873892705818,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 269.4,
+          "sd": 31.149638842208105,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.4,
+          "sd": 1.140175425099138,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12.2,
+          "sd": 3.8987177379235853,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.8613261291587219,
+          "sd": 0.07604006943601656,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.27999999999999997,
+          "sd": 0.0557574210307471,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 231,
+          "sd": 57.34544445725397,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2108144.8,
+          "sd": 736132.8910262738,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.01308,
+          "sd": 0.4741184735907262,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-prose",
+      "workflow": "baseline-iterative-v1-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 10,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-14_21-32-37_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:32:37+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-34-20_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:34:20+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-36-00_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:36:00+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-45-58_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:45:58+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-47-30_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:47:30+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-49-23_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:49:23+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-51-06_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:51:06+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-52-29_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:52:29+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-54-40_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:54:40+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-56-15_game-of-life-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:56:15+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 10,
+          "mean": 157.8,
+          "sd": 8.715248450592533,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 4.1,
+          "sd": 1.286683937707919,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 32.1,
+          "sd": 4.605552204797066,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 10,
+          "mean": 32.5,
+          "sd": 2.798809270624444,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 11.6,
+          "sd": 1.505545305418162,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 16.2,
+          "sd": 3.5839146815241634,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.9536601115673772,
+          "sd": 0.005752609819932554,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 10,
+          "k": 10,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 10,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 10,
+          "mean": 83.3,
+          "sd": 13.41682194527121,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 10,
+          "mean": 966999,
+          "sd": 175027.11340944993,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.86737,
+          "sd": 0.113810652206002,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-prose",
+      "workflow": "baseline-iterative-v1-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-16_09-34-18_claim-office-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-16T09:34:18+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-16_09-38-15_claim-office-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-16T09:38:15+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-16_09-42-34_claim-office-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-16T09:42:34+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-16_09-48-02_claim-office-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-16T09:48:02+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-16_09-52-33_claim-office-prose_v2-iterative_opus-4-7-no-thinking",
+          "started_at": "2026-05-16T09:52:33+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 851,
+          "sd": 46.17899955607527,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15.8,
+          "sd": 3.7013511046643495,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 41.4,
+          "sd": 5.319774431308154,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 268.6,
+          "sd": 10.502380682492898,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.4,
+          "sd": 2.6076809620810595,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.4,
+          "sd": 4.774934554525329,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.8715482622246783,
+          "sd": 0.037702505375569885,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.27999999999999997,
+          "sd": 0.0557574210307471,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 0.8366600265340756,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 244.2,
+          "sd": 42.38749815688583,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2115572,
+          "sd": 444735.12588281126,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.84054,
+          "sd": 0.29010179765041105,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "baseline-inline-tdd-v1-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 10,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-14_21-37-40_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:37:40+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-38-56_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:38:56+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-40-35_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:40:35+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-57-46_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:57:46+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_23-59-06_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T23:59:06+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_00-00-24_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T00:00:24+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_00-02-10_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T00:02:10+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_00-03-37_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T00:03:37+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_00-05-17_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T00:05:17+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_00-06-39_game-of-life-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T00:06:40+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 10,
+          "mean": 165.6,
+          "sd": 13.882042757141727,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 6,
+          "sd": 1.4142135623730951,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 32.5,
+          "sd": 5.835713800003866,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 10,
+          "mean": 31.9,
+          "sd": 3.478505426185217,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 13.7,
+          "sd": 1.5670212364724212,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 21.8,
+          "sd": 3.6147844564602556,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.9492892894390685,
+          "sd": 0.009335346088247024,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 10,
+          "k": 10,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 10,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 10,
+          "mean": 75.1,
+          "sd": 20.999735448069075,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 10,
+          "mean": 799074.4,
+          "sd": 187141.19965725226,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 10,
+          "mean": 0.81289,
+          "sd": 0.25631321745950686,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "baseline-inline-tdd-v1-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-08_11-36-07_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-08T11:36:07+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-08_11-42-20_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-08T11:42:20+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-08_11-46-55_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-08T11:46:55+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-16_09-56-09_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-16T09:56:09+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-16_10-01-04_claim-office-example-mapping_v3-basic-tdd_opus-4-7-no-thinking",
+          "started_at": "2026-05-16T10:01:04+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 992.4,
+          "sd": 50.707987536481866,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 16.8,
+          "sd": 6.220932405998316,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 51.6,
+          "sd": 17.155174146594955,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 317.4,
+          "sd": 25.08585258666725,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15.4,
+          "sd": 5.079370039680118,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 19.8,
+          "sd": 5.848076606885378,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.7767564422876078,
+          "sd": 0.0162571268791315,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 312.4,
+          "sd": 53.35541209661866,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3281414.6,
+          "sd": 545757.309685633,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.91776,
+          "sd": 0.5210706890624343,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-subagents-v2-testlist-fix-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-22_19-39-13_game-of-life-example-mapping_v4.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:39:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-39-13_game-of-life-example-mapping_v4.1-testlist-scope-fix_opus-4-7-portkey-no-thinking-2",
+          "started_at": "2026-05-22T19:39:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-39-13_game-of-life-example-mapping_v4.1-testlist-scope-fix_opus-4-7-portkey-no-thinking-3",
+          "started_at": "2026-05-22T19:39:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_01-28-56_game-of-life-example-mapping_v4.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-23T01:28:56+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_01-28-56_game-of-life-example-mapping_v4.1-testlist-scope-fix_opus-4-7-portkey-no-thinking-2",
+          "started_at": "2026-05-23T01:28:56+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 156.6,
+          "sd": 18.063775906493085,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.4,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 16.4,
+          "sd": 5.176871642217914,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 32,
+          "sd": 4.301162633521313,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5,
+          "sd": 1.4142135623730951,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.4,
+          "sd": 2.5099800796022267,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 837.6,
+          "sd": 186.9967914163235,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10146222.8,
+          "sd": 2099912.658566708,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12.8601,
+          "sd": 2.8643295166583056,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-subagents-v2-testlist-fix-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-20_21-58-27_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-20T21:58:27+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-20_22-41-54_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-20T22:41:54+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-20_23-32-48_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-20T23:32:48+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-21_08-35-47_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-21T08:35:47+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_08-52-17_claim-office-example-mapping_v4.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T08:52:17+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 621.6,
+          "sd": 65.5842969010113,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 13.2,
+          "sd": 7.52994023880668,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 40.8,
+          "sd": 27.12379029560581,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 156.8,
+          "sd": 37.95655411124672,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 16,
+          "sd": 8.972179222463181,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 26.8,
+          "sd": 24.066574330386118,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.96,
+          "sd": 0.08944271909999157,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 14.4,
+          "sd": 1.3416407864998738,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3228.8,
+          "sd": 919.9275514952251,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 34870175.8,
+          "sd": 6070424.589876988,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 36.256299999999996,
+          "sd": 5.7571180507264215,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-single-context-v2-testlist-fix-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-22_19-39-13_game-of-life-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:39:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-39-13_game-of-life-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking-2",
+          "started_at": "2026-05-22T19:39:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-39-13_game-of-life-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking-3",
+          "started_at": "2026-05-22T19:39:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_01-28-56_game-of-life-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-23T01:28:56+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_01-45-30_game-of-life-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-23T01:45:30+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 154,
+          "sd": 11.811011811017716,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.8,
+          "sd": 0.4472135954999579,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 20.8,
+          "sd": 4.43846820423443,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 26.6,
+          "sd": 2.8809720581775866,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.2,
+          "sd": 2.280350850198276,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 17.6,
+          "sd": 3.4351128074635335,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 292.6,
+          "sd": 53.327291324424124,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8401040.2,
+          "sd": 3435160.768683498,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.47898,
+          "sd": 1.94143871059583,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-single-context-v2-testlist-fix-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 6,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-22_19-44-24_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:44:24+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-44-26_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:44:26+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-47-05_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:47:05+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-48-07_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:48:07+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-55-03_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:55:03+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_20-01-47_claim-office-example-mapping_v5.1-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T20:01:47+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 6,
+          "mean": 692.6666666666666,
+          "sd": 78.80270722929934,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 6,
+          "mean": 6.833333333333333,
+          "sd": 7.547626558506102,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 6,
+          "mean": 32.666666666666664,
+          "sd": 10.191499726078918,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 6,
+          "mean": 167.16666666666666,
+          "sd": 27.91713929948172,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 6,
+          "mean": 10.166666666666666,
+          "sd": 2.6394443859772205,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 6,
+          "mean": 14.833333333333334,
+          "sd": 4.167333280008532,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 6
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 6,
+          "k": 6,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 6,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 6,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 6,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 6
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 6
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 6
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 6
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 6,
+          "mean": 641,
+          "sd": 122.01967054536739,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 6,
+          "mean": 18726675.5,
+          "sd": 5354982.338778597,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 6,
+          "mean": 12.7191,
+          "sd": 3.5926924655472523,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-hybrid-v2-testlist-fix-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 10,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-22_19-39-13_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:39:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-39-13_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking-2",
+          "started_at": "2026-05-22T19:39:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-54-57_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:54:57+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_01-33-35_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-23T01:33:35+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_01-43-13_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-23T01:43:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_13-58-28_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-23T13:58:28+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_14-10-52_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-23T14:10:52+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_14-18-49_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-23T14:18:49+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_14-26-12_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-23T14:26:12+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_14-38-06_game-of-life-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-no-thinking",
+          "started_at": "2026-05-23T14:38:06+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 10,
+          "mean": 153.7,
+          "sd": 18.78563280807969,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 2.4,
+          "sd": 0.5163977794943222,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 14.2,
+          "sd": 6.250333324444918,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 10,
+          "mean": 29.2,
+          "sd": 5.533734925185902,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 5.2,
+          "sd": 1.6865480854231356,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 6.5,
+          "sd": 3.24037034920393,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 10,
+          "k": 10,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 10,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 10
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 10,
+          "mean": 507.9,
+          "sd": 147.12538114743418,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 10,
+          "mean": 8146254.2,
+          "sd": 1856806.29155702,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 10,
+          "mean": 6.80749,
+          "sd": 1.5519585614814446,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-hybrid-v2-testlist-fix-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 7,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-22_19-29-21_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:29:21+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-43-46_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:43:46+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-22_19-44-03_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-22T19:44:03+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_09-06-31_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-23T09:06:31+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-23_11-00-44_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-23T11:00:44+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-24_03-09-37_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-24T03:09:37+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-24_03-09-37_claim-office-example-mapping_v6.1-hybrid-testlist-scope-fix_opus-4-7-portkey-no-thinking-2",
+          "started_at": "2026-05-24T03:09:37+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 7,
+          "mean": 861.2857142857143,
+          "sd": 74.50663121654405,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 7,
+          "mean": 1.2857142857142858,
+          "sd": 1.4960264830861913,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 7,
+          "mean": 18.142857142857142,
+          "sd": 5.11300861947808,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 7,
+          "mean": 191.14285714285714,
+          "sd": 20.317714532139775,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 7,
+          "mean": 5.714285714285714,
+          "sd": 2.3603873774083293,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 7,
+          "mean": 5.714285714285714,
+          "sd": 2.8702082220799308,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 7
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 7,
+          "k": 7,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 7,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 7,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 7,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 7
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 7
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 7
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 7
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 7,
+          "mean": 1569,
+          "sd": 519.2796292300839,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 7,
+          "mean": 37876285.571428575,
+          "sd": 13452070.691474069,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 7,
+          "mean": 29.279985714285715,
+          "sd": 9.934423038678622,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "baseline-end-refactor-only-v1-agent-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-25_18-33-42_game-of-life-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:33:42+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-33-42_game-of-life-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking-2",
+          "started_at": "2026-05-25T18:33:42+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-33-42_game-of-life-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking-3",
+          "started_at": "2026-05-25T18:33:42+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-36-01_game-of-life-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:36:01+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-36-46_game-of-life-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:36:46+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 142,
+          "sd": 14.053469322555197,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3,
+          "sd": 1.0,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 17.6,
+          "sd": 6.268971207462991,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 31.2,
+          "sd": 3.5637059362410923,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7.4,
+          "sd": 2.073644135332772,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 10.6,
+          "sd": 4.929503017546495,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 142.8,
+          "sd": 20.656718035544756,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1474248.8,
+          "sd": 202901.0401395222,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.16706,
+          "sd": 0.39253897003991844,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "baseline-end-refactor-only-v1-agent-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-25_18-36-34_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:36:34+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-38-19_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:38:19+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-39-36_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:39:36+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-41-56_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:41:56+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-43-17_claim-office-example-mapping_v8a-delayed-refactor-agent_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:43:17+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 813.8,
+          "sd": 81.39533156145995,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4,
+          "sd": 4.69041575982343,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 28.4,
+          "sd": 1.51657508881031,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 245.6,
+          "sd": 33.4858178935501,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.6,
+          "sd": 1.9493588689617927,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7.4,
+          "sd": 2.3021728866442674,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 307.8,
+          "sd": 35.102706448363776,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3552633.4,
+          "sd": 808118.1784722455,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.01812,
+          "sd": 0.7465031527060018,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "baseline-end-refactor-only-v1-native-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-25_18-44-40_game-of-life-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:44:40+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-47-16_game-of-life-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:47:16+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-47-31_game-of-life-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:47:31+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-49-02_game-of-life-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:49:02+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-49-43_game-of-life-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:49:43+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 145.8,
+          "sd": 6.723094525588644,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.4,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 17.6,
+          "sd": 6.465291950097845,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 31,
+          "sd": 4.847679857416329,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.8,
+          "sd": 2.3874672772626644,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9,
+          "sd": 4.47213595499958,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 115.8,
+          "sd": 27.70739973364516,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1322602.2,
+          "sd": 171935.32989237554,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.92458,
+          "sd": 0.4254480191515762,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "baseline-end-refactor-only-v1-native-cc",
+      "model": "opus-4-7-portkey-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-25_18-49-39_claim-office-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:49:39+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-51-36_claim-office-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:51:36+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-51-39_claim-office-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:51:39+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-54-44_claim-office-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:54:44+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-25_18-58-01_claim-office-example-mapping_v8b-delayed-refactor-native_opus-4-7-portkey-no-thinking",
+          "started_at": "2026-05-25T18:58:01+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 780.2,
+          "sd": 75.34387831801598,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.2,
+          "sd": 5.449770637375485,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 35.8,
+          "sd": 11.519548602267365,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 238.8,
+          "sd": 26.855167100578615,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8,
+          "sd": 2.9154759474226504,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11,
+          "sd": 4.636809247747852,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.97334,
+          "sd": 0.059613572280144383,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 14.6,
+          "sd": 0.8944271909999159,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tdd_cycles": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "refactorings": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "prediction_accuracy": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "tests_immediately_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 276.4,
+          "sd": 53.16765934287497,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3446360,
+          "sd": 1091860.8009043552,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.52924,
+          "sd": 0.6144008121739424,
+          "null_count": 0
+        }
+      }
+    }
+  ]
+}

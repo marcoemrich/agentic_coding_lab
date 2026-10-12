@@ -2,7 +2,7 @@
 
 _Does the prompt style (prose/user-story/example-mapping) influence correctness and code quality on a training-known kata (Game of Life) — and is this effect model-dependent?_
 
-Generated: 2026-10-12T07:27:42Z
+Generated: 2026-10-12T08:37:34Z
 
 Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
@@ -24,182 +24,182 @@ Cells declared: 9 · matched runs: 45 · min_replicates: 5
 
 ### verification_pct
 
-| kata                             | cell_workflow              | cell_model                     |   n |   mean |   min |   max |   std |
-|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   0.63 |     0 |     1 |  0.51 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   1    |     1 |     1 |  0    |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   1    |     1 |     1 |  0    |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   0.24 |     0 |     1 |  0.43 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   1    |     1 |     1 |  0    |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   1    |     1 |     1 |  0    |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   0    |     0 |     0 |  0    |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   1    |     1 |     1 |  0    |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   1    |     1 |     1 |  0    |
+| kata                             | cell_workflow              | cell_model                     |   n |   null |   mean |   sd |
+|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   1    | 0    |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   1    | 0    |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |   0.24 | 0.43 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   1    | 0    |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   1    | 0    |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |   0    | 0    |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   1    | 0    |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   1    | 0    |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |   0.63 | 0.51 |
 
 ### verification_passed
 
-| kata                             | cell_workflow              | cell_model                     |   n |   mean |   min |   max |   std |
-|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    9.4 |     0 |    15 |   7.7 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   15   |    15 |    15 |   0   |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   15   |    15 |    15 |   0   |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    3.6 |     0 |    15 |   6.5 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   15   |    15 |    15 |   0   |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   15   |    15 |    15 |   0   |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    0   |     0 |     0 |   0   |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   15   |    15 |    15 |   0   |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   15   |    15 |    15 |   0   |
+| kata                             | cell_workflow              | cell_model                     |   n |   null |   mean |   sd |
+|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   15   |  0   |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   15   |  0   |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    3.6 |  6.5 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   15   |  0   |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   15   |  0   |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    0   |  0   |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   15   |  0   |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   15   |  0   |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    9.4 |  7.7 |
 
 ### verification_total
 
-| kata                             | cell_workflow              | cell_model                     |   n |   mean |   min |   max |   std |
-|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |     15 |    15 |    15 |     0 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |     15 |    15 |    15 |     0 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |     15 |    15 |    15 |     0 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |     15 |    15 |    15 |     0 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |     15 |    15 |    15 |     0 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |     15 |    15 |    15 |     0 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |     15 |    15 |    15 |     0 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |     15 |    15 |    15 |     0 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |     15 |    15 |    15 |     0 |
+| kata                             | cell_workflow              | cell_model                     |   n |   null |   mean |   sd |
+|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |     15 |    0 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |     15 |    0 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |     15 |    0 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |     15 |    0 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |     15 |    0 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |     15 |    0 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |     15 |    0 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |     15 |    0 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |     15 |    0 |
 
-### tests_passing (rate %)
+### tests_passing
 
-| kata                             | cell_workflow              | cell_model                     |   n |   match |   rate_% |
-|:---------------------------------|:---------------------------|:-------------------------------|----:|--------:|---------:|
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |       4 |       80 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |       5 |      100 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |       5 |      100 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |       2 |       40 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |       5 |      100 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |       5 |      100 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |       0 |        0 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |       5 |      100 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |       5 |      100 |
+| kata                             | cell_workflow              | cell_model                     |   n |   k |   null |   rate_% |
+|:---------------------------------|:---------------------------|:-------------------------------|----:|----:|-------:|---------:|
+| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   5 |      0 |      100 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   5 |      0 |      100 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   2 |      0 |       40 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   5 |      0 |      100 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   5 |      0 |      100 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   0 |      0 |        0 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   5 |      0 |      100 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   5 |      0 |      100 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   4 |      0 |       80 |
 
-### cli_built (rate %)
+### cli_built
 
-| kata                             | cell_workflow              | cell_model                     |   n |   match |   rate_% |
-|:---------------------------------|:---------------------------|:-------------------------------|----:|--------:|---------:|
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |       5 |      100 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |       5 |      100 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |       5 |      100 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |       5 |      100 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |       5 |      100 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |       5 |      100 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |       5 |      100 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |       5 |      100 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |       5 |      100 |
+| kata                             | cell_workflow              | cell_model                     |   n |   k |   null |   rate_% |
+|:---------------------------------|:---------------------------|:-------------------------------|----:|----:|-------:|---------:|
+| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   5 |      0 |      100 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   5 |      0 |      100 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   5 |      0 |      100 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   5 |      0 |      100 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   5 |      0 |      100 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   5 |      0 |      100 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   5 |      0 |      100 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   5 |      0 |      100 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   5 |      0 |      100 |
 
 ### code_mass
 
-| kata                             | cell_workflow              | cell_model                     |   n |   mean |   min |   max |    std |
-|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|-------:|
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |  224.2 |     0 |   318 | 127.59 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |  221.6 |   159 |   282 |  48.71 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |  222.8 |   191 |   265 |  26.63 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   82.8 |     0 |   281 | 123.83 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |  249.2 |   219 |   358 |  60.96 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |  237.6 |   225 |   250 |   8.88 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    2   |     0 |     5 |   2.74 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |  230.2 |   211 |   287 |  32.27 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |  249.8 |   218 |   307 |  35.17 |
+| kata                             | cell_workflow              | cell_model                     |   n |   null |   mean |     sd |
+|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|-------:|-------:|
+| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |  249.2 |  60.96 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |  237.6 |   8.88 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |   82.8 | 123.83 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |  230.2 |  32.27 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |  249.8 |  35.17 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    2   |   2.74 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |  221.6 |  48.71 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |  222.8 |  26.63 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |  224.2 | 127.59 |
 
 ### smell_total
 
-| kata                             | cell_workflow              | cell_model                     |   n |   mean |   min |   max |   std |
-|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    4.8 |     0 |    12 |  4.44 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |    4   |     3 |     6 |  1.22 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |    3.4 |     2 |     6 |  1.67 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    1.4 |     0 |     5 |  2.19 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |    3.8 |     3 |     4 |  0.45 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |    3   |     2 |     4 |  1    |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    0   |     0 |     0 |  0    |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |    4.4 |     4 |     6 |  0.89 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |    3.2 |     2 |     4 |  0.84 |
+| kata                             | cell_workflow              | cell_model                     |   n |   null |   mean |   sd |
+|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |    3.8 | 0.45 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |    3   | 1    |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    1.4 | 2.19 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |    4.4 | 0.89 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |    3.2 | 0.84 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    0   | 0    |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |    4   | 1.22 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |    3.4 | 1.67 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    4.8 | 4.44 |
 
 ### longest_function
 
-| kata                             | cell_workflow              | cell_model                     |   n |   mean |   min |   max |   std |
-|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   16.8 |     0 |    34 | 14.53 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   20   |     7 |    27 |  8    |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   19.4 |    12 |    25 |  4.72 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    5.6 |     0 |    13 |  5.03 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   23.4 |    19 |    25 |  2.51 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   21.8 |    16 |    26 |  3.77 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    1.6 |     0 |     4 |  2.19 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   24.2 |    23 |    28 |  2.17 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   19   |     8 |    26 |  8.12 |
+| kata                             | cell_workflow              | cell_model                     |   n |   null |   mean |    sd |
+|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|-------:|------:|
+| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   23.4 |  2.51 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   21.8 |  3.77 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    5.6 |  5.03 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   24.2 |  2.17 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   19   |  8.12 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    1.6 |  2.19 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   20   |  8    |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   19.4 |  4.72 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |   16.8 | 14.53 |
 
 ### production_loc
 
-| kata                             | cell_workflow              | cell_model                     |   n |   mean |   min |   max |   std |
-|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   41.6 |     0 |    66 | 25.77 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   36.2 |    24 |    46 |  9.26 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   39.6 |    35 |    46 |  4.88 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   25.6 |     0 |    81 | 34.32 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   43.6 |    36 |    65 | 12.1  |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   39.6 |    37 |    45 |  3.29 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    1.8 |     0 |     6 |  2.68 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   39.4 |    35 |    53 |  7.64 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   43.8 |    35 |    56 |  8.23 |
+| kata                             | cell_workflow              | cell_model                     |   n |   null |   mean |    sd |
+|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|-------:|------:|
+| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   43.6 | 12.1  |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   39.6 |  3.29 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |   25.6 | 34.32 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   39.4 |  7.64 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   43.8 |  8.23 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    1.8 |  2.68 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   36.2 |  9.26 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   39.6 |  4.88 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |   41.6 | 25.77 |
 
 ### mccabe_max
 
-| kata                             | cell_workflow              | cell_model                     |   n |   mean |   min |   max |   std |
-|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    6.8 |     0 |    10 |  4.09 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |    7.4 |     4 |    12 |  3.21 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |    8.6 |     7 |    12 |  1.95 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    2.6 |     0 |    10 |  4.34 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |    9.2 |     6 |    11 |  2.49 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |    8.8 |     7 |    11 |  1.64 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    0   |     0 |     0 |  0    |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   10.6 |     9 |    11 |  0.89 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |    8.4 |     5 |    13 |  3.78 |
+| kata                             | cell_workflow              | cell_model                     |   n |   null |   mean |   sd |
+|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |    9.2 | 2.49 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |    8.8 | 1.64 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    2.6 | 4.34 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   10.6 | 0.89 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |    8.4 | 3.78 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    0   | 0    |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |    7.4 | 3.21 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |    8.6 | 1.95 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    6.8 | 4.09 |
 
 ### cognitive_max
 
-| kata                             | cell_workflow              | cell_model                     |   n |   mean |   min |   max |   std |
-|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|------:|
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    8.8 |     0 |    14 |  5.26 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   12.2 |     6 |    18 |  5.76 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   12.8 |     9 |    18 |  3.96 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    2.8 |     0 |    11 |  4.76 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   14.4 |     9 |    17 |  3.71 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   11.4 |     8 |    17 |  3.91 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |    0   |     0 |     0 |  0    |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |   17.2 |    17 |    18 |  0.45 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |   12   |     7 |    19 |  6    |
+| kata                             | cell_workflow              | cell_model                     |   n |   null |   mean |   sd |
+|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|-------:|-----:|
+| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   14.4 | 3.71 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   11.4 | 3.91 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    2.8 | 4.76 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   17.2 | 0.45 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   12   | 6    |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    0   | 0    |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |   12.2 | 5.76 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |   12.8 | 3.96 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |    8.8 | 5.26 |
 
 ### duration_seconds
 
-| kata                             | cell_workflow              | cell_model                     |   n |   mean |   min |   max |    std |
-|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|------:|------:|-------:|
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |  390.8 |    12 |   710 | 258.06 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |  677.8 |   509 |   897 | 139.75 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |  537.8 |   414 |   620 |  94.29 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |  148.6 |    14 |   374 | 182.96 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |  618.8 |   477 |   769 | 135.49 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |  485.4 |   432 |   531 |  37.68 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |   15   |    13 |    17 |   1.58 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |  724.2 |   543 |   896 | 129.77 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |  691.2 |   495 |  1024 | 224.43 |
+| kata                             | cell_workflow              | cell_model                     |   n |   null |   mean |     sd |
+|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|-------:|-------:|
+| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |  618.8 | 135.49 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |  485.4 |  37.68 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |  148.6 | 182.96 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |  724.2 | 129.77 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |  691.2 | 224.43 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |   15   |   1.58 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |  677.8 | 139.75 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |  537.8 |  94.29 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |  390.8 | 258.06 |
 
 ### total_tokens
 
-| kata                             | cell_workflow              | cell_model                     |   n |             mean |     min |      max |             std |
-|:---------------------------------|:---------------------------|:-------------------------------|----:|-----------------:|--------:|---------:|----------------:|
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      1.08445e+07 |  287857 | 16698499 |     6.4818e+06  |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      1.32846e+07 | 9103184 | 19631161 |     3.88712e+06 |
-| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      9.34068e+06 | 7040519 | 11500220 |     1.90832e+06 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      5.12989e+06 |  286398 | 14659709 |     6.76229e+06 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      1.21395e+07 | 7856703 | 16746952 |     3.66431e+06 |
-| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      8.42725e+06 | 6494907 | 10239016 |     1.38081e+06 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 | 320017           |  285726 |   370968 | 46444.7         |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      1.37844e+07 | 9941566 | 17273059 |     3.20806e+06 |
-| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      1.29674e+07 | 9293089 | 20607403 |     4.78364e+06 |
+| kata                             | cell_workflow              | cell_model                     |   n |   null |             mean |              sd |
+|:---------------------------------|:---------------------------|:-------------------------------|----:|-------:|-----------------:|----------------:|
+| game-of-life-cli-prose           | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |      1.21395e+07 |     3.66431e+06 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |      8.42725e+06 |     1.38081e+06 |
+| game-of-life-cli-prose           | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |      5.12989e+06 |     6.76229e+06 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |      1.37844e+07 |     3.20806e+06 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |      1.29674e+07 |     4.78364e+06 |
+| game-of-life-cli-user-story      | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 | 320017           | 46444.7         |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking   |   5 |      0 |      1.32846e+07 |     3.88712e+06 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | sonnet-4-6-portkey-no-thinking |   5 |      0 |      9.34068e+06 |     1.90832e+06 |
+| game-of-life-cli-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking  |   5 |      0 |      1.08445e+07 |     6.4818e+06  |

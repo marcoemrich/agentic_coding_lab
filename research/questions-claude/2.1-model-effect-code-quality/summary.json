@@ -1,0 +1,1484 @@
+{
+  "cells": [
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-subagents-v1-cc",
+      "model": "fable-5",
+      "counts": {
+        "runs": 3,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-06-09_23-29-15_game-of-life-example-mapping_v4-exact-subagents_fable-5",
+          "started_at": "2026-06-09T23:29:15+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-06-09_23-53-17_game-of-life-example-mapping_v4-exact-subagents_fable-5",
+          "started_at": "2026-06-09T23:53:17+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-06-10_00-15-59_game-of-life-example-mapping_v4-exact-subagents_fable-5",
+          "started_at": "2026-06-10T00:15:59+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 3,
+          "mean": 163,
+          "sd": 13.076696830622021,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 3,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 3,
+          "mean": 8.333333333333334,
+          "sd": 2.0816659994661326,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 3,
+          "mean": 29.333333333333332,
+          "sd": 2.516611478423583,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 2,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 3,
+          "k": 3,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1269,
+          "sd": 204.1102643180886,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 3,
+          "mean": 8958793.333333334,
+          "sd": 1076586.781863094,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 3,
+          "mean": 23.32593333333333,
+          "sd": 3.546055619041153,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-subagents-v1-cc",
+      "model": "fable-5-no-thinking",
+      "counts": {
+        "runs": 3,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-06-09_22-57-45_game-of-life-example-mapping_v4-exact-subagents_fable-5-no-thinking",
+          "started_at": "2026-06-09T22:57:45+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-06-10_00-33-34_game-of-life-example-mapping_v4-exact-subagents_fable-5-no-thinking",
+          "started_at": "2026-06-10T00:33:34+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-06-10_00-55-40_game-of-life-example-mapping_v4-exact-subagents_fable-5-no-thinking",
+          "started_at": "2026-06-10T00:55:40+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 3,
+          "mean": 163.33333333333334,
+          "sd": 17.897858344878397,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 2.3333333333333335,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 3,
+          "mean": 6.666666666666667,
+          "sd": 2.516611478423583,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 3,
+          "mean": 29.333333333333332,
+          "sd": 8.504900548115382,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 2.6666666666666665,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1.6666666666666667,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 3,
+          "k": 3,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1158,
+          "sd": 169.28378540191025,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 3,
+          "mean": 7819264.333333333,
+          "sd": 489998.4502274812,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 3,
+          "mean": 20.697366666666667,
+          "sd": 1.3510975402735863,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-subagents-v1-cc",
+      "model": "opus-5",
+      "counts": {
+        "runs": 3,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-07-25_23-19-54_game-of-life-example-mapping_v4-exact-subagents_opus-5",
+          "started_at": "2026-07-25T23:19:54+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-25_23-41-36_game-of-life-example-mapping_v4-exact-subagents_opus-5",
+          "started_at": "2026-07-25T23:41:36+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-25_23-41-36_game-of-life-example-mapping_v4-exact-subagents_opus-5-2",
+          "started_at": "2026-07-25T23:41:36+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 3,
+          "mean": 172.66666666666666,
+          "sd": 33.005050118630834,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1.6666666666666667,
+          "sd": 1.5275252316519468,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 3,
+          "mean": 6.333333333333333,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 3,
+          "mean": 37.333333333333336,
+          "sd": 4.163331998932265,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 3,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 2,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 3,
+          "k": 3,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1526.3333333333333,
+          "sd": 285.80646132187655,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 3,
+          "mean": 12958173.666666666,
+          "sd": 2583823.5000536186,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15.343266666666667,
+          "sd": 2.5145539611098697,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-subagents-v1-cc",
+      "model": "opus-5-no-thinking",
+      "counts": {
+        "runs": 3,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-07-25_23-41-36_game-of-life-example-mapping_v4-exact-subagents_opus-5-no-thinking",
+          "started_at": "2026-07-25T23:41:36+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-25_23-41-36_game-of-life-example-mapping_v4-exact-subagents_opus-5-no-thinking-2",
+          "started_at": "2026-07-25T23:41:36+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-07-25_23-41-37_game-of-life-example-mapping_v4-exact-subagents_opus-5-no-thinking",
+          "started_at": "2026-07-25T23:41:37+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 3,
+          "mean": 149.33333333333334,
+          "sd": 10.598742063723098,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 2.6666666666666665,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 3,
+          "mean": 5.333333333333333,
+          "sd": 1.1547005383792515,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 3,
+          "mean": 32,
+          "sd": 4.358898943540674,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 2.6666666666666665,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1.6666666666666667,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 3,
+          "k": 3,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1467.6666666666667,
+          "sd": 65.05638579980702,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 3,
+          "mean": 13157060,
+          "sd": 1063830.31576845,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15.319033333333334,
+          "sd": 1.2365341982061522,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-subagents-v1-cc",
+      "model": "opus-4-8",
+      "counts": {
+        "runs": 3,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-29_16-24-49_game-of-life-example-mapping_v4-exact-subagents_opus-4-8",
+          "started_at": "2026-05-29T16:24:49+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-29_16-46-11_game-of-life-example-mapping_v4-exact-subagents_opus-4-8",
+          "started_at": "2026-05-29T16:46:11+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-29_17-00-27_game-of-life-example-mapping_v4-exact-subagents_opus-4-8",
+          "started_at": "2026-05-29T17:00:27+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 3,
+          "mean": 145.33333333333334,
+          "sd": 11.015141094572204,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 2.6666666666666665,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 3,
+          "mean": 4.333333333333333,
+          "sd": 4.041451884327381,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 3,
+          "mean": 31.333333333333332,
+          "sd": 6.658328118479393,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 4.333333333333333,
+          "sd": 1.5275252316519468,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 5.333333333333333,
+          "sd": 2.0816659994661326,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 3,
+          "k": 3,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1017,
+          "sd": 221.70475863183452,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 3,
+          "mean": 8639111,
+          "sd": 727177.1255835816,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 3,
+          "mean": 11.568066666666667,
+          "sd": 2.785323342689917,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-subagents-v1-cc",
+      "model": "opus-4-8-no-thinking",
+      "counts": {
+        "runs": 4,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-29_17-16-32_game-of-life-example-mapping_v4-exact-subagents_opus-4-8-no-thinking",
+          "started_at": "2026-05-29T17:16:32+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-29_17-35-47_game-of-life-example-mapping_v4-exact-subagents_opus-4-8-no-thinking",
+          "started_at": "2026-05-29T17:35:47+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-29_17-53-43_game-of-life-example-mapping_v4-exact-subagents_opus-4-8-no-thinking",
+          "started_at": "2026-05-29T17:53:43+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-06-09_22-40-18_game-of-life-example-mapping_v4-exact-subagents_opus-4-8-no-thinking",
+          "started_at": "2026-06-09T22:40:18+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 4,
+          "mean": 190.5,
+          "sd": 18.484227510682363,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 4,
+          "mean": 3,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 4,
+          "mean": 11.5,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 4,
+          "mean": 40.75,
+          "sd": 5.123475382979799,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 4,
+          "mean": 4.25,
+          "sd": 0.9574271077563381,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 4,
+          "mean": 4.75,
+          "sd": 2.6299556396765835,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 4,
+          "k": 4,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 4,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 4,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 4,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 4,
+          "mean": 1045.5,
+          "sd": 73.88955722337674,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 4,
+          "mean": 9372198.75,
+          "sd": 703635.9833068872,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 4,
+          "mean": 11.687925,
+          "sd": 0.9397633013158153,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-subagents-v1-cc",
+      "model": "opus-4-7",
+      "counts": {
+        "runs": 3,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-14_18-23-58_game-of-life-example-mapping_v4-exact-subagents_opus-4-7",
+          "started_at": "2026-05-14T18:23:58+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_18-41-51_game-of-life-example-mapping_v4-exact-subagents_opus-4-7",
+          "started_at": "2026-05-14T18:41:51+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_18-55-19_game-of-life-example-mapping_v4-exact-subagents_opus-4-7",
+          "started_at": "2026-05-14T18:55:19+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 3,
+          "mean": 159,
+          "sd": 5.291502622129181,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 2.3333333333333335,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 3,
+          "mean": 7,
+          "sd": 7.0,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 3,
+          "mean": 25.666666666666668,
+          "sd": 1.1547005383792515,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 3.3333333333333335,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 3,
+          "sd": 1.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 3,
+          "k": 3,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 3,
+          "mean": 827.6666666666666,
+          "sd": 211.3985178125271,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 3,
+          "mean": 7638113.666666667,
+          "sd": 1692596.6269593986,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 3,
+          "mean": 8.397266666666667,
+          "sd": 2.0981342696151106,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-subagents-v1-cc",
+      "model": "opus-4-7-no-thinking",
+      "counts": {
+        "runs": 10,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-14_19-06-13_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T19:06:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_19-17-31_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T19:17:31+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_19-30-50_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T19:30:50+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-41-52_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T21:41:52+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_22-00-54_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T22:00:54+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_22-12-59_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-14T22:12:59+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_00-09-03_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T00:09:03+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_01-14-45_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T01:14:45+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_01-25-07_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T01:25:07+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-15_01-40-00_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking",
+          "started_at": "2026-05-15T01:40:01+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 10,
+          "mean": 166.6,
+          "sd": 17.652195330892983,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 2.6,
+          "sd": 0.699205898780101,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 10,
+          "mean": 8.1,
+          "sd": 4.04007700696685,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 10,
+          "mean": 31.1,
+          "sd": 6.740425308044985,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 4.5,
+          "sd": 2.41522945769824,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 10,
+          "mean": 4.4,
+          "sd": 4.477102237434884,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 10,
+          "k": 10,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 10,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 10,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 10,
+          "mean": 1162.9,
+          "sd": 984.45726164217,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 10,
+          "mean": 7287333,
+          "sd": 1065203.0545801532,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 10,
+          "mean": 7.58437,
+          "sd": 1.0727167753471143,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-subagents-v1-cc",
+      "model": "opus-4-6-portkey",
+      "counts": {
+        "runs": 3,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-14_18-23-44_game-of-life-example-mapping_v4-exact-subagents_opus-4-6-portkey",
+          "started_at": "2026-05-14T18:23:44+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_18-23-44_game-of-life-example-mapping_v4-exact-subagents_opus-4-6-portkey-2",
+          "started_at": "2026-05-14T18:23:44+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_18-23-44_game-of-life-example-mapping_v4-exact-subagents_opus-4-6-portkey-3",
+          "started_at": "2026-05-14T18:23:44+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 3,
+          "mean": 173,
+          "sd": 29.597297173897484,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 4.333333333333333,
+          "sd": 1.5275252316519468,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 3,
+          "mean": 19.333333333333332,
+          "sd": 6.110100926607787,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 3,
+          "mean": 28.333333333333332,
+          "sd": 7.371114795831994,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 6.666666666666667,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 12,
+          "sd": 3.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 3,
+          "k": 3,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 3,
+          "mean": 956.3333333333334,
+          "sd": 125.786856759096,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 3,
+          "mean": 6644282.666666667,
+          "sd": 564299.0174210242,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 3,
+          "mean": 21.440033333333332,
+          "sd": 1.735083416822756,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-subagents-v1-cc",
+      "model": "opus-4-6-portkey-no-thinking",
+      "counts": {
+        "runs": 3,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-14_18-23-44_game-of-life-example-mapping_v4-exact-subagents_opus-4-6-portkey-no-thinking",
+          "started_at": "2026-05-14T18:23:44+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_18-38-28_game-of-life-example-mapping_v4-exact-subagents_opus-4-6-portkey-no-thinking",
+          "started_at": "2026-05-14T18:38:28+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_18-42-22_game-of-life-example-mapping_v4-exact-subagents_opus-4-6-portkey-no-thinking",
+          "started_at": "2026-05-14T18:42:22+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 3,
+          "mean": 175.66666666666666,
+          "sd": 43.55838993045236,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 4.333333333333333,
+          "sd": 1.5275252316519468,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 3,
+          "mean": 18.666666666666668,
+          "sd": 7.505553499465135,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 3,
+          "mean": 31.333333333333332,
+          "sd": 8.144527815247077,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 7.666666666666667,
+          "sd": 3.0550504633038935,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 13,
+          "sd": 5.291502622129181,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 3,
+          "k": 3,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1160.6666666666667,
+          "sd": 461.092543133516,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 3,
+          "mean": 8345645.666666667,
+          "sd": 3488538.858562469,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 3,
+          "mean": 25.517033333333334,
+          "sd": 9.860982401532484,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-subagents-v1-cc",
+      "model": "sonnet-4-6",
+      "counts": {
+        "runs": 3,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-14_19-47-42_game-of-life-example-mapping_v4-exact-subagents_sonnet-4-6",
+          "started_at": "2026-05-14T19:47:42+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_20-02-52_game-of-life-example-mapping_v4-exact-subagents_sonnet-4-6",
+          "started_at": "2026-05-14T20:02:52+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_20-17-13_game-of-life-example-mapping_v4-exact-subagents_sonnet-4-6",
+          "started_at": "2026-05-14T20:17:13+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 3,
+          "mean": 178,
+          "sd": 24.269322199023193,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 5.666666666666667,
+          "sd": 2.516611478423583,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 3,
+          "mean": 21.666666666666668,
+          "sd": 9.814954576223638,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 3,
+          "mean": 32.666666666666664,
+          "sd": 4.725815626252608,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 6.333333333333333,
+          "sd": 2.0816659994661326,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 11,
+          "sd": 7.810249675906654,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 3,
+          "k": 3,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 3,
+          "mean": 846.3333333333334,
+          "sd": 46.090490703976386,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 3,
+          "mean": 6418473.333333333,
+          "sd": 239175.26348126668,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 3,
+          "mean": 4.185433333333333,
+          "sd": 0.04064385972485059,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "game-of-life-example-mapping",
+      "workflow": "exact-subagents-v1-cc",
+      "model": "sonnet-4-6-no-thinking",
+      "counts": {
+        "runs": 3,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-05-14_20-30-52_game-of-life-example-mapping_v4-exact-subagents_sonnet-4-6-no-thinking",
+          "started_at": "2026-05-14T20:30:52+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_20-48-46_game-of-life-example-mapping_v4-exact-subagents_sonnet-4-6-no-thinking",
+          "started_at": "2026-05-14T20:48:46+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-05-14_21-09-13_game-of-life-example-mapping_v4-exact-subagents_sonnet-4-6-no-thinking",
+          "started_at": "2026-05-14T21:09:13+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "code_mass": {
+          "kind": "num",
+          "n": 3,
+          "mean": 166.66666666666666,
+          "sd": 2.886751345948129,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 3.3333333333333335,
+          "sd": 0.5773502691896257,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 7.810249675906654,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 3,
+          "mean": 31.333333333333332,
+          "sd": 3.0550504633038935,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 6,
+          "sd": 3.4641016151377544,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 3,
+          "mean": 5,
+          "sd": 5.196152422706632,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 3,
+          "k": 3,
+          "null_count": 0
+        },
+        "verification_pct": {
+          "kind": "num",
+          "n": 3,
+          "mean": 0.7333333333333334,
+          "sd": 0.4618802153517006,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 3,
+          "mean": 11,
+          "sd": 6.928203230275509,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 3,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 3,
+          "mean": 1116.6666666666667,
+          "sd": 82.64583070750352,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 3,
+          "mean": 6716014,
+          "sd": 1173046.43316324,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 3,
+          "mean": 4.512866666666667,
+          "sd": 0.5443918104943659,
+          "null_count": 0
+        }
+      }
+    }
+  ]
+}
