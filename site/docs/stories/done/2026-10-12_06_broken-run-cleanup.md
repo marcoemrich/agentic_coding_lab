@@ -13,7 +13,7 @@ Broken runs are deleted regularly so a re-run of the RQ refills them. A script r
 
 It holds the aggregator's batch lock. Afterwards it re-aggregates every RQ whose selector matched a deleted run; an RQ naming an archived workflow is skipped with a note. It commits the tracked deleted run directories and the re-aggregated RQ files in one commit of exactly those paths, on the current branch, without pushing. Subject: the count ("Delete 18 broken runs"); body: each run id with its exit reason (`unfinished` for a stub) and the re-aggregated RQ ids. With nothing broken it says "no broken runs", commits nothing and exits 0. A failed re-aggregation, or an RQ whose README cannot be read, is named, the rest is committed, and the exit code is 1.
 
-On the pool of 2026-10-13 a read-only preview found 18 broken runs (all committed), 16 leftovers and 10 affected RQs, none archived. Tests: `experiments/tests/test_clean_broken_runs.py` (27), against a throwaway git repository with re-aggregation injected.
+First run, 2026-10-13 (commit `016b9f37f`, "Delete 18 broken runs"): 18 broken runs deleted (15 `timeout`, 2 `rate-limited`, 1 `quota-exhausted`, all committed, none `ok` per the parent commit), 16 leftovers deleted, 10 RQs re-aggregated, none skipped as archived; 1,901 `ok` runs remain and the site data export still exits 0. The cells now short of `min_replicates` were short before as well — non-`ok` runs never counted. Tests: `experiments/tests/test_clean_broken_runs.py` (27), against a throwaway git repository with re-aggregation injected.
 
 Two rules were added after the mapping, when the preview hit the real pool: dot-prefixed directories are outside the pool, and untracked metrics-less directories are deleted as leftovers.
 
