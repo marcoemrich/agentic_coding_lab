@@ -89,6 +89,7 @@ marked as such. Done stories have no Example Mapping section.
   - [Python test infrastructure](stories/done/2026-10-12_07_python-test-infrastructure.md)
   - [Complete the metric registry](stories/done/2026-10-12_08_complete-metric-registry.md)
   - [Stable aggregator output](stories/done/2026-10-12_09_stable-aggregator-output.md)
+  - [Broken-run cleanup](stories/done/2026-10-12_06_broken-run-cleanup.md)
 - **Open stories for the first iteration:**
   - [RQ page header](stories/open/2026-10-11_06_rq-page-header.md)
   - [RQ index](stories/open/2026-10-11_07_rq-index.md)
@@ -96,7 +97,6 @@ marked as such. Done stories have no Example Mapping section.
   - [Workflow page](stories/open/2026-10-11_09_workflow-page.md)
 - **Open stories from the site data export** (2026-10-12).
   - [Build command](stories/open/2026-10-12_04_build-command.md) — waits for the RQ page header (Astro)
-  - [Broken-run cleanup](stories/open/2026-10-12_06_broken-run-cleanup.md)
 
 ## Later
 

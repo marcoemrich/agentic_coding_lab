@@ -13,4 +13,4 @@ Source: [build command](../open/2026-10-12_04_build-command.md), split off on 20
 
 Re-aggregating all 73 RQs produced no diff: the pool was already walked in directory order, which is `run_id` order, and it held no stubs. A second pass wrote none of the 219 files. Tests: `experiments/tests/test_stable_aggregator_output.py` (14). The Docker query is injected by replacing `running_containers()` or by a fake `docker` on the `PATH`.
 
-Decided along the way: the lock is absolute (an override may come later); the aggregator stays on the host; stubs are deleted by the [broken-run cleanup](../open/2026-10-12_06_broken-run-cleanup.md), not by the aggregator.
+Decided along the way: the lock is absolute (an override may come later); the aggregator stays on the host; stubs are deleted by the [broken-run cleanup](2026-10-12_06_broken-run-cleanup.md), not by the aggregator.
