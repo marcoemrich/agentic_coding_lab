@@ -60,8 +60,8 @@ sequenceDiagram
   participant S as Astro build
   participant D as deploy (planned)
   U->>B: build
-  B->>B: abort if a batch container runs
   B->>A: re-aggregate every RQ
+  A->>A: refuse if a batch container runs or Docker is unreachable
   A-->>B: runs.csv, summary.md, summary.json (rewritten only on change)
   B->>E: export
   E-->>B: site/src/data/*.json, abort on missing registry entry or description
@@ -83,9 +83,9 @@ numbers in that commit's `runs.csv` / `summary.md`.
 |---|---|---|---|---|
 | Run metrics | `experiments/runs/<run-id>/metrics.json` | `analyze-run.sh` | yes | built |
 | RQ definition | `research/questions-*/<chapter>-<slug>/README.md` | by hand | yes | built |
-| Per-run rows | `<rq-dir>/runs.csv` (incl. `started_at`, `harness`, `prompt_style`) | `aggregate-by-query.py` | yes | built |
+| Per-run rows | `<rq-dir>/runs.csv` (incl. `started_at`, `harness`, `prompt_style`), sorted by `run_id`; unfinished runs (no `exit_reason`) left out | `aggregate-by-query.py` | yes | built |
 | Human summary | `<rq-dir>/summary.md` | `aggregate-by-query.py` | yes | built |
-| Machine summary | `<rq-dir>/summary.json`: per cell × outcome `mean`, `sd`, `n`, null count (only `ok` runs); per cell run counters and run list; every declared cell, unrun ones included | `aggregate-by-query.py` | yes | built |
+| Machine summary | `<rq-dir>/summary.json`: per cell × outcome `mean`, `sd`, `n`, null count (only `ok` runs); per cell run counters and run list (sorted by `run_id`); every declared cell, unrun ones included | `aggregate-by-query.py` | yes | built |
 | Findings | `<rq-dir>/findings.md` (shown collapsed, "AI-generated") | `/run-rq`, `/reanalyze` | yes | built |
 | Workflow descriptions | `experiments/workflows/LINEAGE.yaml` → `description:` | by hand | yes | built |
 | Metric registry | `experiments/metrics-registry.yaml`: group, direction, scale, comparability flags; read by the export and imported by the site. Covers every outcome a main RQ declares; only consolidated metrics are rated | by hand | yes | built |

@@ -153,6 +153,8 @@ subtrees.
 
 - **Never average across katas.** string-calculator (3 LoC) vs. game-of-life (30+ LoC) would smear the signal.
 - Aggregation is query-based: all runs in `experiments/runs/` matching the RQ selector count, regardless of which batch produced them.
+- **`aggregate-by-query.py` refuses while a batch runs.** It asks Docker for containers of the compose services `batch`/`batch-retry` (they have no fixed name) and aborts with exit 1, writing nothing, while one runs — and also when Docker cannot be reached. The interactive `experiment` container does not block. Aggregate after the batch, not during it. The check lives in `main()` only, never at import time, because `compute-mutation-score.py` imports the aggregator inside a container without Docker.
+- **A re-aggregation without new runs leaves no diff.** Each of `runs.csv`, `summary.json`, `summary.md` is written only when its content changed (`summary.md`'s `Generated:` line does not count); rows are sorted by `run_id`. Runs without an `exit_reason` (still executing, or stubs of an aborted batch) are skipped everywhere and reported as "N unfinished run(s) skipped".
 
 ## Metrics quick reference
 
@@ -178,6 +180,9 @@ subtrees.
   `experiments/pyproject.toml` (uv, lock in `experiments/uv.lock`, venv in the gitignored
   `experiments/.venv`). On a machine without them:
   `uv run --project experiments python experiments/aggregate-by-query.py <rq-dir>`.
+- **`aggregate-by-query.py` also needs a reachable Docker daemon.** It asks `docker ps`
+  whether a batch is running and refuses when it cannot get an answer (see Aggregation).
+  It therefore runs on the host, not inside a container.
 - **Tests for the scripts:** `cd experiments && uv run pytest`. Hyphenated scripts load
   through `load_script()` in `experiments/tests/conftest.py`; do not rename them. ruff
   (`uv run ruff check <files>`, the Python stack's lab rules) gates only the files a change

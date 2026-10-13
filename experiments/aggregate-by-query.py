@@ -8,7 +8,13 @@ batch produced them.
 
 Outputs into the RQ directory:
   runs.csv     — one row per matched run, all metrics
+  summary.json — per-cell statistics, run counters and run list
   summary.md   — per-cell pivots (avg/rate) for each declared outcome
+
+Each file is written only when its content changed (summary.md's Generated:
+line aside); rows are in run_id order. Runs without an exit_reason are
+skipped and reported. Refuses while a batch or batch-retry container is
+running, and when Docker cannot be reached.
 
 `harness_version` is an optional fourth selector axis, as a control or a
 factor. Declare it only when a CLI bump is a live factor — otherwise a cell
@@ -32,6 +38,7 @@ from __future__ import annotations
 import json
 import re
 import statistics
+import subprocess
 import sys
 from datetime import datetime, timezone
 from itertools import product
@@ -40,7 +47,7 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from rq_facts import is_usable
+from rq_facts import is_finished, is_usable
 from workflow_paths import (canonical as canonical_workflow, harness_of,
                             is_archived, workflow_dir)
 
@@ -336,6 +343,14 @@ def check_archived_workflows(cells: list[dict], allow_archived: bool) -> int:
 def collect_runs(
     cells: list[dict],
 ) -> tuple[list[tuple[Path, str, str, str]], dict[tuple, list[Path]]]:
+    """match_runs() without the count of unfinished runs it skipped."""
+    matched, by_cell, _unfinished = match_runs(cells)
+    return matched, by_cell
+
+
+def match_runs(
+    cells: list[dict], runs_dir: Path | None = None,
+) -> tuple[list[tuple[Path, str, str, str]], dict[tuple, list[Path]], int]:
     """Walk runs dir, return matched (metrics_path, cell_model, cell_workflow,
     cell_harness) + per-cell index.
 
@@ -345,11 +360,16 @@ def collect_runs(
     in summary.md pivots so list-valued cells aggregate as one row.
 
     Index key = cell_key(cell).
+
+    A matching run without an exit_reason is left out and only counted: it is
+    still executing, or a stub from an aborted batch whose every metric is
+    null. Kept, it would land in runs.csv and count as an infrastructure abort.
     """
     matched: list[tuple[Path, str, str, str]] = []
     by_cell: dict[tuple, list[Path]] = {}
+    unfinished = 0
 
-    for run_dir in sorted(RUNS_DIR.iterdir()):
+    for run_dir in sorted((runs_dir or RUNS_DIR).iterdir()):
         if run_dir.name.startswith("_"):
             continue  # skip _archive/ and other underscore-prefixed dirs
         m_file = run_dir / "metrics.json"
@@ -360,14 +380,18 @@ def collect_runs(
         except json.JSONDecodeError:
             continue
 
-        for cell in cells:
-            if matches_cell(metrics, cell):
-                matched.append((m_file, cell["model"], cell["workflow"],
-                                cell.get("harness_version", "")))
-                by_cell.setdefault(cell_key(cell), []).append(m_file)
-                break  # a run can only match one cell
+        cell = next((c for c in cells if matches_cell(metrics, c)), None)
+        if cell is None:
+            continue
+        if not is_finished(metrics):
+            unfinished += 1
+            continue
+        # A run can only match one cell: the first.
+        matched.append((m_file, cell["model"], cell["workflow"],
+                        cell.get("harness_version", "")))
+        by_cell.setdefault(cell_key(cell), []).append(m_file)
 
-    return matched, by_cell
+    return matched, by_cell, unfinished
 
 
 # -----------------------------------------------------------------------
@@ -536,6 +560,17 @@ def metrics_to_row(metrics: dict, run_id: str, cell_model: str = "",
     }
 
 
+def by_run_id(rows: list[dict]) -> list[dict]:
+    """Rows in run_id order, so a re-aggregation never reorders its output --
+    runs.csv and each cell's run list in summary.json alike."""
+    return sorted(rows, key=lambda row: row["run_id"])
+
+
+def write_runs_csv(csv_path: Path, rows: list[dict]) -> bool:
+    table = _pd().DataFrame(by_run_id(rows), columns=CSV_COLUMNS)
+    return write_if_changed(csv_path, table.to_csv(index=False))
+
+
 def _nested(d, keys):
     for k in keys:
         if not isinstance(d, dict):
@@ -688,7 +723,7 @@ def cell_summary(rows: list[dict], outcomes: list[str]) -> dict:
              for outcome in summarised}
     return {"counts": run_counts([row["exit_reason"] for row in rows]),
             "runs": [{"id": row["run_id"], "started_at": row["started_at"],
-                      "exit_reason": row["exit_reason"]} for row in rows],
+                      "exit_reason": row["exit_reason"]} for row in by_run_id(rows)],
             "outcomes": stats}
 
 
@@ -760,7 +795,21 @@ def coverage_table(cells: list[dict], document: dict, min_rep: int,
     return lines
 
 
-def write_summary(md_path: Path, fm: dict, cells: list[dict], document: dict) -> None:
+# summary.md's timestamp. It changes on every call, so it is no evidence that
+# the aggregation did.
+GENERATED_LINE = re.compile(r"^Generated: .*$", re.M)
+
+
+def write_if_changed(path: Path, text: str) -> bool:
+    """Write text unless the file already holds it, apart from the Generated:
+    line. An RQ re-aggregated without new runs then leaves no diff."""
+    if path.is_file() and GENERATED_LINE.sub("", path.read_text()) == GENERATED_LINE.sub("", text):
+        return False
+    path.write_text(text)
+    return True
+
+
+def write_summary(md_path: Path, fm: dict, cells: list[dict], document: dict) -> bool:
     rq_id = fm.get("id", "?")
     question = fm.get("question", "")
     outcomes = fm.get("outcomes") or []
@@ -786,20 +835,67 @@ def write_summary(md_path: Path, fm: dict, cells: list[dict], document: dict) ->
     lines.extend(coverage_table(cells, document, min_rep, show_harness))
     L("")
 
-    if not matched_runs:
+    if matched_runs:
+        L("## Outcome pivots (per cell)")
+        L("")
+        for outcome in outcomes:
+            L(f"### {outcome}")
+            L("")
+            L(outcome_pivot(outcome, cells, document, show_harness))
+            L("")
+    else:
         L("_No matching runs found._")
-        md_path.write_text("\n".join(lines))
-        return
 
-    L("## Outcome pivots (per cell)")
-    L("")
-    for outcome in outcomes:
-        L(f"### {outcome}")
-        L("")
-        L(outcome_pivot(outcome, cells, document, show_harness))
-        L("")
+    return write_if_changed(md_path, "\n".join(lines))
 
-    md_path.write_text("\n".join(lines))
+
+# -----------------------------------------------------------------------
+# Batch lock
+# -----------------------------------------------------------------------
+#
+# A running batch writes runs, so an aggregation during it reads a moving pool.
+# The lock is absolute, and checked only from main(): compute-mutation-score.py
+# imports this file inside a batch container, where there is no Docker.
+
+# Compose services whose containers write runs. They start via `docker compose
+# --profile batch run --rm batch` and carry no fixed name, so they are
+# recognised by their service label. The interactive `experiment` service does
+# not block.
+BATCH_SERVICES = ("batch", "batch-retry")
+
+
+class DockerUnreachable(RuntimeError):
+    """Docker could not say whether a batch is running."""
+
+
+def running_containers() -> list[tuple[str, str]]:
+    """(name, compose service) of every running container."""
+    try:
+        result = subprocess.run(
+            ["docker", "ps", "--format",
+             '{{.Names}}\t{{.Label "com.docker.compose.service"}}'],
+            capture_output=True, text=True, check=False)
+    except OSError as e:
+        raise DockerUnreachable(str(e)) from e
+    if result.returncode != 0:
+        raise DockerUnreachable(result.stderr.strip())
+    return [tuple(line.split("\t", 1)) for line in result.stdout.splitlines()]
+
+
+def running_batch_containers() -> list[str]:
+    """Names of the running containers that write runs."""
+    return [name for name, service in running_containers() if service in BATCH_SERVICES]
+
+
+def batch_lock_refusal() -> str | None:
+    """Why the aggregation may not run now, or None when it may."""
+    try:
+        batch = running_batch_containers()
+    except DockerUnreachable as e:
+        return f"cannot ask Docker whether a batch is running: {e}"
+    if batch:
+        return f"a batch is running ({', '.join(batch)}); aggregate once it is done."
+    return None
 
 
 # -----------------------------------------------------------------------
@@ -822,6 +918,11 @@ def main(argv: list[str]) -> int:
         print(f"Not found: {md_in}", file=sys.stderr)
         return 1
 
+    refusal = batch_lock_refusal()
+    if refusal:
+        print(f"ERROR: {refusal}", file=sys.stderr)
+        return 1
+
     out_dir = md_in.parent
 
     fm = parse_frontmatter(md_in)
@@ -830,10 +931,14 @@ def main(argv: list[str]) -> int:
     if check_archived_workflows(cells, allow_archived) and not allow_archived:
         return 1
 
-    matched, by_cell = collect_runs(cells)
+    matched, by_cell, unfinished = match_runs(cells)
 
     print(f"{fm.get('id', '?')}: {len(cells)} cells declared, "
           f"{len(matched)} runs matched", file=sys.stderr)
+    if unfinished:
+        print(f"  note: {unfinished} unfinished run{'s' if unfinished > 1 else ''} "
+              f"skipped — no exit_reason yet (still executing, or a stub from an "
+              f"aborted batch).", file=sys.stderr)
 
     rows = []
     for m_file, cell_model, cell_workflow, cell_harness in matched:
@@ -842,15 +947,15 @@ def main(argv: list[str]) -> int:
         rows.append(metrics_to_row(metrics, run_id, cell_model, cell_workflow,
                                    cell_harness))
 
-    df = _pd().DataFrame(rows, columns=CSV_COLUMNS)
-    csv_path = out_dir / "runs.csv"
-    df.to_csv(csv_path, index=False)
-    print(f"  wrote {csv_path} ({len(df)} rows)", file=sys.stderr)
-
     document = summary_document(fm, cells, rows_by_cell(rows, by_cell))
-    (out_dir / "summary.json").write_text(json.dumps(document, indent=2) + "\n")
-    write_summary(out_dir / "summary.md", fm, cells, document)
-    print(f"  wrote {out_dir / 'summary.json'} and summary.md", file=sys.stderr)
+    written = {
+        "runs.csv": write_runs_csv(out_dir / "runs.csv", rows),
+        "summary.json": write_if_changed(out_dir / "summary.json",
+                                         json.dumps(document, indent=2) + "\n"),
+        "summary.md": write_summary(out_dir / "summary.md", fm, cells, document),
+    }
+    for name, changed in written.items():
+        print(f"  {'wrote' if changed else 'unchanged'} {out_dir / name}", file=sys.stderr)
 
     return 0
 

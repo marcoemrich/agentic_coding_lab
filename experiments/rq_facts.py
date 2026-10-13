@@ -56,6 +56,13 @@ def is_replicate(metrics: dict) -> bool:
     return is_usable((metrics.get("run_status") or {}).get("exit_reason"))
 
 
+def is_finished(metrics: dict) -> bool:
+    """A run has ended once it carries an exit_reason. Before that its
+    metrics.json is a stub: the run is still executing, or its batch was
+    aborted."""
+    return bool((metrics.get("run_status") or {}).get("exit_reason"))
+
+
 def count_findings(findings_md: Path) -> int:
     if not findings_md.is_file():
         return 0

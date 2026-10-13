@@ -95,7 +95,7 @@ Mixing values into a control (e.g. running additional `opus-4-6` replicates into
 
 ### Two tools, one frontmatter
 
-- **`aggregate-by-query.py`** reads the frontmatter, selects every matching run from `experiments/runs/`, and writes `runs.csv` (raw data) + `summary.md` (pivots per outcome) into the RQ directory. Re-runs the moment new replicates land — no plan editing required.
+- **`aggregate-by-query.py`** reads the frontmatter, selects every matching run from `experiments/runs/`, and writes `runs.csv` (raw data) + `summary.md` (pivots per outcome) + `summary.json` into the RQ directory. Re-runs the moment new replicates land — no plan editing required. A file is rewritten only when its content changed (ignoring `summary.md`'s `Generated:` line), rows are sorted by `run_id`, and runs without an `exit_reason` are skipped and reported. It refuses to run while a `batch`/`batch-retry` container is running or Docker is unreachable.
 - **`batch-plan-from-rq.py`** reads the same frontmatter, counts existing matches per cell, and emits `experiments/batch-plans/<rq>-fill.json` containing exactly the missing `(kata, workflow, model)` triples needed to reach `min_replicates`. Idempotent: if everything is already covered, the plan is empty.
 
 Together: declare the question once → fill the gaps → re-aggregate.
@@ -357,7 +357,7 @@ Consequences for analysis and data collection:
 │   ├── record-run.sh                     # Run a single experiment interactively
 │   ├── analyze-run.sh                    # Generate analysis-report.md + metrics.json for a run
 │   ├── reanalyze-all-runs.sh             # Backfill metrics across every existing run
-│   ├── aggregate-by-query.py             # RQ frontmatter → runs.csv + summary.md
+│   ├── aggregate-by-query.py             # RQ frontmatter → runs.csv + summary.md + summary.json
 │   ├── batch-plan-from-rq.py             # RQ frontmatter → batch plan filling missing cells
 │   ├── rq-status.py                      # Per RQ: cell coverage, findings, runs newer than findings
 │   ├── rq_facts.py                       # Rules behind rq-status.py; finding-header regex shared with the snapshot
@@ -669,7 +669,7 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 
 | Script | Purpose |
 |--------|---------|
-| `experiments/aggregate-by-query.py` | Reads an RQ frontmatter, selects matching runs from the pool, writes `runs.csv`, `summary.md` and `summary.json` into the RQ directory. The canonical aggregator. |
+| `experiments/aggregate-by-query.py` | Reads an RQ frontmatter, selects matching runs from the pool, writes `runs.csv`, `summary.md` and `summary.json` into the RQ directory, each only when its content changed (`summary.md`'s `Generated:` line aside), rows sorted by `run_id`. Skips and reports runs without an `exit_reason`. Refuses (exit 1, nothing written) while a `batch` or `batch-retry` container runs or when Docker is unreachable. The canonical aggregator. |
 | `experiments/export-site-data.py` | Turns every main RQ's `summary.json`, frontmatter, `LINEAGE.yaml` descriptions and the metric registry into the results site's JSON under `site/src/data/` (gitignored). Stops with exit 1, writing nothing, when an outcome has no registry entry or a workflow no description. |
 | `experiments/rq-status.py` | Prints per RQ: cells at `min_replicates` / declared, matched runs, findings, runs newer than `findings.md` (rules in `rq_facts.py`), plus the reason for any `closed:` RQ. Read-only; `--open` restricts to RQs with a short cell, no findings, or newer runs. |
 | `experiments/batch-plan-from-rq.py` | Reads an RQ frontmatter, computes missing cells against `min_replicates`, writes `experiments/batch-plans/<rq-id>-fill.json`. Idempotent — empty plan if everything is covered. |
