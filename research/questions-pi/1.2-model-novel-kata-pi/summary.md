@@ -2,9 +2,9 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in correctness and TDD discipline on claim-office-example-mapping with the exact-hybrid-v4-cleaned-pi workflow?_
 
-Generated: 2026-10-12T10:46:40Z
+Generated: 2026-10-13T13:28:30Z
 
-Cells declared: 18 · matched runs: 90 · min_replicates: 5
+Cells declared: 18 · matched runs: 86 · min_replicates: 5
 
 ## Cell coverage
 
@@ -18,8 +18,8 @@ Cells declared: 18 · matched runs: 90 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k2-7 | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k2-7-no-thinking | 5 | 5 | ✅ |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3 | 5 | 2 | ⚠️ below min_replicates (2/5) |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3-no-thinking | 5 | 4 | ⚠️ below min_replicates (4/5) |
+| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3 | 2 | 2 | ⚠️ below min_replicates (2/5) |
+| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3-no-thinking | 4 | 4 | ⚠️ below min_replicates (4/5) |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | deepseek-v4-pro | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | deepseek-v4-pro-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b | 5 | 5 | ✅ |

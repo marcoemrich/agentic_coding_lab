@@ -2,9 +2,9 @@
 
 _Does example mapping increase correctness compared to prose and user story — and is the effect model-dependent?_
 
-Generated: 2026-10-12T10:46:26Z
+Generated: 2026-10-13T13:28:26Z
 
-Cells declared: 24 · matched runs: 128 · min_replicates: 5
+Cells declared: 24 · matched runs: 126 · min_replicates: 5
 
 ## Cell coverage
 
@@ -27,7 +27,7 @@ Cells declared: 24 · matched runs: 128 · min_replicates: 5
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-single-context-v1-cc | haiku-4-5-portkey-no-thinking | 5 | 5 | ✅ |
 | claim-office-user-story | exact-single-context-v1-cc | opus-4-7 | 5 | 5 | ✅ |
-| claim-office-user-story | exact-single-context-v1-cc | opus-4-7-no-thinking | 5 | 3 | ⚠️ below min_replicates (3/5) |
+| claim-office-user-story | exact-single-context-v1-cc | opus-4-7-no-thinking | 3 | 3 | ⚠️ below min_replicates (3/5) |
 | claim-office-user-story | exact-single-context-v1-cc | opus-4-6-portkey | 7 | 7 | ✅ |
 | claim-office-user-story | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking | 8 | 8 | ✅ |
 | claim-office-user-story | exact-single-context-v1-cc | sonnet-4-6-portkey | 5 | 5 | ✅ |

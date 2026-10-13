@@ -2,16 +2,16 @@
 
 _Does the quality of a TDD workflow depend on the model — is there a universally best workflow, or do different workflows swap places depending on the model?_
 
-Generated: 2026-10-12T10:46:28Z
+Generated: 2026-10-13T13:28:27Z
 
-Cells declared: 6 · matched runs: 49 · min_replicates: 5
+Cells declared: 6 · matched runs: 48 · min_replicates: 5
 
 ## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
 | claim-office-example-mapping | exact-subagents-v1-cc | opus-4-7-no-thinking | 10 | 10 | ✅ |
-| claim-office-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey-no-thinking | 5 | 4 | ⚠️ below min_replicates (4/5) |
+| claim-office-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey-no-thinking | 4 | 4 | ⚠️ below min_replicates (4/5) |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking | 9 | 9 | ✅ |
 | claim-office-example-mapping | exact-single-context-v1-cc | opus-4-6-portkey-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-hybrid-v1-cc | opus-4-7-no-thinking | 5 | 5 | ✅ |

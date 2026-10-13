@@ -2,9 +2,9 @@
 
 _How do five models reachable via the OpenCode harness (Opus 4.7 via Portkey + four non-Anthropic models from the Portkey catalog) differ in code quality and TDD discipline on game-of-life-example-mapping with the exact-single-context-v2-testlist-fix-oc workflow?_
 
-Generated: 2026-10-12T16:44:05Z
+Generated: 2026-10-13T13:28:29Z
 
-Cells declared: 6 · matched runs: 30 · min_replicates: 5
+Cells declared: 6 · matched runs: 29 · min_replicates: 5
 
 ## Cell coverage
 
@@ -15,7 +15,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | glm-5-1 | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | gemini-3-5-flash | 5 | 5 | ✅ |
 | game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-flash | 5 | 5 | ✅ |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-pro | 5 | 4 | ⚠️ below min_replicates (4/5) |
+| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-oc | deepseek-v4-pro | 4 | 4 | ⚠️ below min_replicates (4/5) |
 
 ## Outcome pivots (per cell)
 

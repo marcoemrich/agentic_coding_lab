@@ -2,19 +2,19 @@
 
 _How do Fable 5, Opus 4.8, Opus 4.7 and Opus 4.6 (each no-thinking) differ in correctness and code quality on a novel kata with ambiguities that differentiates more strongly than the training-known game-of-life?_
 
-Generated: 2026-10-12T10:46:27Z
+Generated: 2026-10-13T13:28:27Z
 
-Cells declared: 5 · matched runs: 30 · min_replicates: 5
+Cells declared: 5 · matched runs: 27 · min_replicates: 5
 
 ## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
-| claim-office-example-mapping | exact-subagents-v1-cc | fable-5-no-thinking | 5 | 4 | ⚠️ below min_replicates (4/5) |
-| claim-office-example-mapping | exact-subagents-v1-cc | opus-5-no-thinking | 5 | 4 | ⚠️ below min_replicates (4/5) |
+| claim-office-example-mapping | exact-subagents-v1-cc | fable-5-no-thinking | 4 | 4 | ⚠️ below min_replicates (4/5) |
+| claim-office-example-mapping | exact-subagents-v1-cc | opus-5-no-thinking | 4 | 4 | ⚠️ below min_replicates (4/5) |
 | claim-office-example-mapping | exact-subagents-v1-cc | opus-4-8-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-subagents-v1-cc | opus-4-7-no-thinking | 10 | 10 | ✅ |
-| claim-office-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey-no-thinking | 5 | 4 | ⚠️ below min_replicates (4/5) |
+| claim-office-example-mapping | exact-subagents-v1-cc | opus-4-6-portkey-no-thinking | 4 | 4 | ⚠️ below min_replicates (4/5) |
 
 ## Outcome pivots (per cell)
 
