@@ -12,9 +12,9 @@ Depends on: [RQ page header](2026-10-11_06_rq-page-header.md) (the first page, w
 
 - A Python script, `experiments/build-site.py`, built with `exact-coding`.
 - Aggregates all RQs, not only the main ones.
-- Aborts while a `batch` or `batch-retry` container runs, and aborts when Docker cannot be reached.
+- The batch lock lives in the aggregator ([stable aggregator output](2026-10-12_09_stable-aggregator-output.md)), so the build inherits it.
 - Stops at the first failing step with a non-zero exit code.
-- Open: whether `git diff --stat` covers only `research/` (recommended: the only tracked files the build writes) or the whole repository.
+- `git diff --stat` covers only `research/`, the only tracked files the build writes; the whole repository would mix in unrelated uncommitted edits.
 
 ## Example Mapping
 
