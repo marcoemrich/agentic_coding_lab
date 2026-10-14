@@ -7,6 +7,7 @@ export interface MetricEntry {
   direction: MetricDirection;
   scale?: "fraction";
   not_comparable_across?: "test-list-boundary"[];
+  description?: string;
 }
 
 const entries = registry as Record<string, MetricEntry>;

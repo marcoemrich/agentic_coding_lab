@@ -167,3 +167,18 @@ describe("Result table labels", () => {
       .map(cell => (cell as HTMLTableCellElement).colSpan)).toEqual([2, 1]);
   });
 });
+
+// Metric tooltips: the header keeps the metric id and explains it in one sentence from the registry.
+describe("Metric tooltips", () => {
+  it("explains a metric in its header tooltip -- verification_pct -> 'Share of the hidden acceptance scenarios that the finished program passes.'", () => {
+    render(<ResultTable input={{ katas: ["claim-office"], outcomes: ["verification_pct"], cells: [] }} />);
+    expect(screen.getByRole("button", { name: "verification_pct" }).closest("th")!.getAttribute("title"))
+      .toBe("Share of the hidden acceptance scenarios that the finished program passes.");
+  });
+  it("keeps the test-list warning after the explanation -- tdd_discipline -> explanation, then '⚠ not comparable across the test-list boundary …'", () => {
+    render(<ResultTable input={{ katas: ["claim-office"], outcomes: ["tdd_discipline"], cells: [] }} />);
+    expect(screen.getByRole("button", { name: "tdd_discipline" }).closest("th")!.getAttribute("title")).toBe(
+      "TDD discipline score: verified test-first starts, one failing test at a time and closed cycles, combined so that any one at zero makes it zero.\n"
+      + "⚠ not comparable across the test-list boundary: a skipped test is compliance in a test-list workflow and a violation in an ad-hoc workflow");
+  });
+});

@@ -149,7 +149,7 @@ describe("Trophies and comparability", () => {
       ] }} />);
     const header = screen.getByRole("button", { name: "predictions_correct_rate" }).closest("th")!;
     expect(header.textContent).not.toContain("⚠");
-    expect(header.getAttribute("title")).toBeNull();
+    expect(header.getAttribute("title")).not.toMatch(/not comparable across the test-list boundary/i);
     expect(within(bodyRows()[0]).getAllByRole("cell")[1].textContent).toContain("🏆");
   });
   it("awards no trophy to an informative TDD component -- red_batch_max 1 vs 3 -> no 🏆", () => {

@@ -88,7 +88,7 @@ numbers in that commit's `runs.csv` / `summary.md`.
 | Machine summary | `<rq-dir>/summary.json`: per cell × outcome `mean`, `sd`, `n`, null count (only `ok` runs); per cell run counters and run list (sorted by `run_id`); every declared cell, unrun ones included | `aggregate-by-query.py` | yes | built |
 | Findings | `<rq-dir>/findings.md` (shown collapsed, "AI-generated") | `/run-rq`, `/reanalyze` | yes | built |
 | Workflow descriptions | `experiments/workflows/LINEAGE.yaml` → `description:` | by hand | yes | built |
-| Metric registry | `experiments/metrics-registry.yaml`: group, direction, scale, comparability flags; read by the export and imported by the site. Covers every outcome a main RQ declares; only consolidated metrics are rated | by hand | yes | built |
+| Metric registry | `experiments/metrics-registry.yaml`: group, direction, scale, comparability flags, a one-sentence description for the header tooltip; read by the export and imported by the site. Covers every outcome a main RQ declares; only consolidated metrics are rated | by hand | yes | built |
 | Site data | `site/src/data/rq/<rq-id>.json`, `workflows.json` | `export-site-data.py` | no | built |
 | Site build | `site/dist/` | Astro | no | planned |
 | Prototype | `site/prototype/` (approved look, self-contained HTML) | `site/prototype/extract.py` | yes | built |

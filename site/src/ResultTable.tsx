@@ -2,6 +2,7 @@ import { useState } from "react";
 import { buildResultTables, isUnderReplicated, partialMetricRunCount, type ResultTableInput } from "./result-table.js";
 import { DEVIATION_SEPARATOR, formatValue, type ValueCell } from "./format-value.js";
 import { metricDirection, type MetricDirection } from "./metric-direction.js";
+import { metricEntry } from "./metric-registry.js";
 import { boundaryExplanation, crossesTestListBoundary, hasMixedWorkflowStyles, workflowStyleFor } from "./metric-comparability.js";
 import { correctnessGateReason } from "./external-correctness-eligibility.js";
 import { orderedRunLinks } from "./run-links.js";
@@ -89,9 +90,15 @@ function RowLabel({ row, minReplicates }: { row: ResultRow; minReplicates: numbe
   </td>;
 }
 
+/** The metric's one-sentence explanation, followed by the test-list warning where it applies. */
+function headerTooltip(metric: string): string | undefined {
+  const lines = [metricEntry(metric)?.description, crossesTestListBoundary(metric) && `⚠ ${boundaryExplanation}`];
+  return lines.filter(Boolean).join("\n") || undefined;
+}
+
 function MetricHeader({ metric, onSort, startsGroup }: { metric: string; onSort: (metric: string) => void; startsGroup: boolean }) {
   const warnsAcrossTestListBoundary = crossesTestListBoundary(metric);
-  return <th scope="col" title={warnsAcrossTestListBoundary ? boundaryExplanation : undefined} className={startsGroup ? "gstart" : undefined}>
+  return <th scope="col" title={headerTooltip(metric)} className={startsGroup ? "gstart" : undefined}>
     <button type="button" onClick={() => onSort(metric)}>{metric}</button> <span className="dir">{directionDisplay[metricDirection(metric)].mark}</span>{warnsAcrossTestListBoundary && <span className="warnmark"> ⚠</span>}
   </th>;
 }

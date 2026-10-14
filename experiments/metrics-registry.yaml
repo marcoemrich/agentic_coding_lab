@@ -9,210 +9,276 @@
 # scale:      fraction — a 0–1 share, shown as percent
 # not_comparable_across: test-list-boundary — Skip-sensitive, see README
 #             "Comparability: the test-list boundary"
+# description: one sentence for the column header's tooltip, written for
+#             readers outside the lab (README "Metrics" is the source)
 
 verification_pct:
   group: Correctness
   direction: higher
   scale: fraction
+  description: "Share of the hidden acceptance scenarios that the finished program passes."
 tests_passing:
   group: Correctness
   direction: higher
+  description: "Whether the test suite the agent wrote during the run passes at the end."
 cli_built:
   group: Correctness
   direction: higher
+  description: "Whether the command-line program the acceptance scenarios call could be started at all."
 verification_passed:
   group: Correctness
   direction: informative
+  description: "Number of hidden acceptance scenarios the finished program passes."
 verification_total:
   group: Correctness
   direction: informative
+  description: "Number of hidden acceptance scenarios the program was checked against."
 tdd_discipline:
   group: TDD discipline
   direction: higher
   scale: fraction
   not_comparable_across: [test-list-boundary]
+  description: "TDD discipline score: verified test-first starts, one failing test at a time and closed cycles, combined so that any one at zero makes it zero."
 tdd_discipline_test_first:
   group: TDD discipline
   direction: informative
   scale: fraction
   not_comparable_across: [test-list-boundary]
+  description: "Score component: share of TDD cycles that began with a test seen failing."
 tdd_discipline_step:
   group: TDD discipline
   direction: informative
   scale: fraction
+  description: "Score component: one over the median number of tests that newly fail at once, so 1 means one failing test at a time."
 tdd_discipline_closure:
   group: TDD discipline
   direction: informative
   scale: fraction
   not_comparable_across: [test-list-boundary]
+  description: "Score component: share of TDD cycles that reached a passing suite."
 test_first_rate:
   group: TDD discipline
   direction: informative
   scale: fraction
   not_comparable_across: [test-list-boundary]
+  description: "Share of TDD cycles that began with a test seen failing before any implementation was written."
 red_batch_size:
   group: TDD discipline
   direction: informative
+  description: "Median number of tests that newly fail when a failing step arrives; 1 means one test at a time."
 red_batch_max:
   group: TDD discipline
   direction: informative
+  description: "Largest number of tests that newly failed in a single step."
 red_batch_unmeasurable:
   group: TDD discipline
   direction: informative
+  description: "Failing steps whose number of new tests could not be read, because the code did not compile."
 green_batch_size:
   group: TDD discipline
   direction: informative
+  description: "Median number of tests turned green by one implementation step."
 chain_suite_runs:
   group: TDD discipline
   direction: informative
+  description: "Number of times the test suite was run during the session."
 cycles_total:
   group: TDD discipline
   direction: informative
   not_comparable_across: [test-list-boundary]
+  description: "Number of TDD cycles, each opened by a test change after a passing suite."
 cycles_closed:
   group: TDD discipline
   direction: informative
+  description: "Number of TDD cycles that reached a passing suite."
 refactor_events:
   group: TDD discipline
   direction: informative
+  description: "Number of implementation changes made while the suite stayed green, i.e. refactorings."
 skip_events:
   group: TDD discipline
   direction: informative
   not_comparable_across: [test-list-boundary]
+  description: "Number of tests that passed the first time they ran, without ever failing."
 refactor_per_cycle:
   group: TDD discipline
   direction: informative
+  description: "Refactorings per closed TDD cycle."
 green_attempts:
   group: TDD discipline
   direction: informative
+  description: "Missed implementation attempts per closed TDD cycle: how often the first try left the test failing."
 chain_deviations:
   group: TDD discipline
   direction: informative
   not_comparable_across: [test-list-boundary]
+  description: "Number of steps outside the healthy red-green-refactor pattern, such as test and code changed together or tests removed."
 chain_opens_red:
   group: TDD discipline
   direction: informative
+  description: "Whether the session's first test run failed, as test-first work would expect."
 chain_ends_green:
   group: TDD discipline
   direction: informative
+  description: "Whether the session's last test run passed."
 predictions_correct_rate:
   group: TDD discipline
   direction: higher
+  description: "Share of the agent's predictions about how a new test would fail that turned out correct."
 predictions_correct:
   group: TDD discipline
   direction: informative
+  description: "Number of correct predictions about how a new test would fail."
 predictions_total:
   group: TDD discipline
   direction: informative
+  description: "Number of predictions the agent made about how a new test would fail."
 verification_tests:
   group: TDD discipline
   direction: informative
+  description: "Number of verification tests: tests written after the TDD part to confirm behaviour already built, outside the discipline score."
 verification_red:
   group: TDD discipline
   direction: informative
+  description: "Verification tests that failed on arrival and needed an implementation change after all."
 tdd_after_cutoff:
   group: TDD discipline
   direction: informative
+  description: "Ordinary TDD tests that arrived only after the verification part had begun, unseen by the discipline score."
 tcr_red_commits:
   group: TDD discipline
   direction: informative
+  description: "Commits marked as a failing-test step in a test-commit-revert run."
 tcr_green_commits:
   group: TDD discipline
   direction: informative
+  description: "Commits marked as a passing step in a test-commit-revert run."
 tcr_refactor_commits:
   group: TDD discipline
   direction: informative
+  description: "Commits marked as a refactoring step in a test-commit-revert run."
 tcr_method_commits:
   group: TDD discipline
   direction: informative
+  description: "Commits made during a test-commit-revert run, not counting the initial one."
 avg_loc_per_function:
   group: Code quality
   direction: lower
+  description: "Mean function length in lines."
 longest_function:
   group: Code quality
   direction: lower
+  description: "Length of the longest function in lines."
 cognitive_max:
   group: Code quality
   direction: lower
+  description: "Highest cognitive complexity of any function, a measure that weighs nesting and breaks in control flow."
 mccabe_max:
   group: Code quality
   direction: lower
+  description: "Highest McCabe cyclomatic complexity of any function: the most independent paths through one function."
 smell_total:
   group: Code quality
   direction: lower
+  description: "Number of code-smell findings from the stack's linter, measurement-only rules excluded."
 code_mass:
   group: Code quality
   direction: lower
+  description: "Weighted sum of code constructs, heavier for more complex ones (Absolute Priority Premise): a size measure beyond raw lines."
 cognitive_avg:
   group: Code quality
   direction: lower
+  description: "Mean cognitive complexity per function."
 mccabe_avg:
   group: Code quality
   direction: lower
+  description: "Mean McCabe cyclomatic complexity per function."
 median_loc_per_function:
   group: Code quality
   direction: lower
+  description: "Median function length in lines, robust against a single long outlier."
 unit_size_avg:
   group: Code quality
   direction: lower
+  description: "Mean size of the smallest named unit: statements per method on Java, lines per function elsewhere."
 unit_size_max:
   group: Code quality
   direction: lower
+  description: "Size of the largest named unit: statements per method on Java, lines per function elsewhere."
 unit_size_median:
   group: Code quality
   direction: lower
+  description: "Median size of the smallest named unit: statements per method on Java, lines per function elsewhere."
 smell_complexity:
   group: Code quality
   direction: informative
+  description: "Code-smell findings about complexity, such as deep nesting, long functions or many parameters."
 smell_duplication:
   group: Code quality
   direction: informative
+  description: "Code-smell findings about duplication, such as repeated string literals."
 smell_magic_numbers:
   group: Code quality
   direction: informative
+  description: "Code-smell findings about unexplained literal numbers in the code."
 smell_code_quality:
   group: Code quality
   direction: informative
+  description: "Other code-smell findings, such as collapsible conditions, redundant jumps or unreachable code."
 production_loc:
   group: Size
   direction: informative
+  description: "Lines of production code, tests excluded."
 lines_of_code:
   group: Size
   direction: informative
+  description: "Plain line count of the production source files, tests excluded."
 test_lines:
   group: Size
   direction: informative
+  description: "Lines of test code."
 tests_total:
   group: Size
   direction: informative
+  description: "Number of tests the agent wrote."
 functions:
   group: Size
   direction: informative
+  description: "Number of functions in the production code."
 unit_count:
   group: Size
   direction: informative
+  description: "Number of named units: methods on Java, functions elsewhere."
 mutation_score:
   group: Test quality
   direction: higher
   scale: fraction
+  description: "Share of small deliberate code changes (mutants) that the agent's own tests catch."
 mutants_total:
   group: Test quality
   direction: informative
+  description: "Number of mutants generated for the run, the denominator of the mutation score."
 mutants_survived:
   group: Test quality
   direction: lower
+  description: "Mutants the agent's tests did not catch: single behaviour changes that go unnoticed."
 mutants_no_coverage:
   group: Test quality
   direction: lower
+  description: "Mutants in code that no test executes at all."
 coverage_statements_pct:
   group: Test quality
   direction: higher
+  description: "Share of production statements executed by the agent's own tests."
 duration_seconds:
   group: Cost
   direction: lower
+  description: "Wall-clock time of the whole run."
 total_tokens:
   group: Cost
   direction: lower
+  description: "Tokens the run consumed, input, output and cache together, subagents included."
 cost_usd:
   group: Cost
   direction: lower
+  description: "What the run's tokens would cost at the provider's list price: a comparison value, not an invoice."

@@ -98,6 +98,7 @@ marked as such. Done stories have no Example Mapping section.
   - [Result table look](stories/done/2026-10-14_02_result-table-look.md) — the prototype's table styles, light and dark
   - [Result table labels](stories/done/2026-10-14_03_result-table-labels.md) — every varying factor per row, run dates, tags, group header row
   - [Group order and header terms](stories/done/2026-10-14_04_group-order-and-header-terms.md) — one header per metric group; Factor(s) / Control(s) with tooltips
+  - [Metric tooltips](stories/done/2026-10-14_05_metric-tooltips.md) — a one-sentence explanation per metric header, from the registry
 - **Open stories for the first iteration:**
   - [RQ index](stories/open/2026-10-11_07_rq-index.md)
   - [Findings section](stories/open/2026-10-11_08_findings-section.md)
