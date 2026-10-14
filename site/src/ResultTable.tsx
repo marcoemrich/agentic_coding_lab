@@ -159,7 +159,8 @@ export function ResultTable({ input }: { input: ResultTableInput }) {
           <RowLabel row={row} minReplicates={input.min_replicates} />
           {table.columns.map((metric, index) => {
             const winner = trophyWinners(table.rows, metric, table.columns, mixedStyles).has(row);
-            const classes = [winner && "win", groupStartColumns(table).has(index) && "gstart"].filter(Boolean).join(" ");
+            const classes = [winner && "win", groupStartColumns(table).has(index) && "gstart", sort?.metric === metric && "sorted"]
+              .filter(Boolean).join(" ");
             return <td key={metric} title={correctnessGateReason(row, metric, table.columns)}
               className={classes || undefined}>
               <MetricValue row={row} metric={metric} winner={winner} />

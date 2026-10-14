@@ -3,7 +3,7 @@
   --paper: #fbfcfd; --ink: #1d2733; --ink-2: #4a5666; --ink-3: #7a8594;
   --rule: #dde3ea; --rule-2: #eef1f5; --accent: #2c6a8a;
   --closed-bg: #f3eef9; --closed-ink: #57407a;
-  --win: #fff4cc; --warn: #9a6500; --warn-bg: #fff6e0; --gap: #f2f4f7;
+  --win: #fff4cc; --warn: #9a6500; --warn-bg: #fff6e0; --gap: #f2f4f7; --sorted: #e8f1f6;
   --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
   --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
@@ -12,14 +12,14 @@
     --paper: #141a21; --ink: #e4e9ef; --ink-2: #aeb8c4; --ink-3: #7e8996;
     --rule: #2c3540; --rule-2: #1d242d; --accent: #7fb8d6;
     --closed-bg: #2a2236; --closed-ink: #c9b4ea; color-scheme: dark;
-    --win: #3a3216; --warn: #f0b952; --warn-bg: #33290f; --gap: #1a2028;
+    --win: #3a3216; --warn: #f0b952; --warn-bg: #33290f; --gap: #1a2028; --sorted: #1b2a35;
   }
 }
 :root[data-theme="dark"] {
   --paper: #141a21; --ink: #e4e9ef; --ink-2: #aeb8c4; --ink-3: #7e8996;
   --rule: #2c3540; --rule-2: #1d242d; --accent: #7fb8d6;
   --closed-bg: #2a2236; --closed-ink: #c9b4ea; color-scheme: dark;
-  --win: #3a3216; --warn: #f0b952; --warn-bg: #33290f; --gap: #1a2028;
+  --win: #3a3216; --warn: #f0b952; --warn-bg: #33290f; --gap: #1a2028; --sorted: #1b2a35;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 var(--sans); }
@@ -53,8 +53,12 @@ table.res thead tr.groups th { font-weight: 600; color: var(--ink); text-align: 
 table.res thead tr.groups th.lab { border-left: 0; font-weight: 500; color: var(--ink-2); }
 table.res .gstart { border-left: 1px solid var(--rule); }
 table.res thead th button:hover { color: var(--ink); text-decoration: underline; }
-table.res thead th[aria-sort] { color: var(--ink); background: var(--rule-2); }
+/* The sorted column: accent header with a bar beneath, and the whole column framed so the mark survives trophy cells. */
+table.res thead th[aria-sort] { color: var(--accent); background: var(--sorted); box-shadow: inset 2px 0 var(--accent), inset -2px 0 var(--accent), inset 0 -3px 0 var(--accent); }
 table.res thead th[aria-sort] button { font-weight: 600; }
+table.res td.sorted { box-shadow: inset 2px 0 var(--accent), inset -2px 0 var(--accent); }
+table.res td.sorted:not(.win) { background: var(--sorted); }
+table.res tbody tr:last-child td.sorted { box-shadow: inset 2px 0 var(--accent), inset -2px 0 var(--accent), inset 0 -2px var(--accent); }
 table.res .lab { text-align: left; position: sticky; left: 0; background: var(--paper); z-index: 1; min-width: 210px; max-width: none; border-right: 1px solid var(--rule); }
 table.res thead .lab { z-index: 2; }
 table.res tr:hover td, table.res tr:hover td.lab { background: var(--rule-2); }
