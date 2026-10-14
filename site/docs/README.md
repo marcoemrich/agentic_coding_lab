@@ -99,6 +99,7 @@ marked as such. Done stories have no Example Mapping section.
   - [Result table labels](stories/done/2026-10-14_03_result-table-labels.md) — every varying factor per row, run dates, tags, group header row
   - [Group order and header terms](stories/done/2026-10-14_04_group-order-and-header-terms.md) — one header per metric group; Factor(s) / Control(s) with tooltips
   - [Metric tooltips](stories/done/2026-10-14_05_metric-tooltips.md) — a one-sentence explanation per metric header, from the registry
+  - [Sort reset](stories/done/2026-10-14_06_sort-reset.md) — the label header restores the RQ's order; the sorted column is marked
 - **Open stories for the first iteration:**
   - [RQ index](stories/open/2026-10-11_07_rq-index.md)
   - [Findings section](stories/open/2026-10-11_08_findings-section.md)

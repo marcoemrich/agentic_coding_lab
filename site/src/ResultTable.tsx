@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { buildResultTables, isUnderReplicated, partialMetricRunCount, type ResultTableInput } from "./result-table.js";
+import { buildResultTables, isUnderReplicated, partialMetricRunCount, sortsBestFirst, type ResultTableInput } from "./result-table.js";
 import { DEVIATION_SEPARATOR, formatValue, type ValueCell } from "./format-value.js";
 import { metricDirection, type MetricDirection } from "./metric-direction.js";
 import { metricEntry } from "./metric-registry.js";
@@ -17,6 +17,12 @@ const directionDisplay: Record<MetricDirection, { mark: string; meaning: string 
 const directionLegend = Object.values(directionDisplay).map(({ mark, meaning }) => `${mark} ${meaning}`).join(" · ");
 
 type ColumnSort = { metric: string; clicks: number };
+
+/** The numeric order a sorted column shows: best first is ascending for a lower-is-better metric. */
+function sortedOrder(sort: ColumnSort | undefined, metric: string): "ascending" | "descending" | undefined {
+  if (sort?.metric !== metric) return undefined;
+  return sortsBestFirst(sort) === (metricDirection(metric) === "lower") ? "ascending" : "descending";
+}
 
 function nextColumnSort(previous: ColumnSort | undefined, metric: string): ColumnSort {
   return { metric, clicks: previous?.metric === metric ? previous.clicks + 1 : 1 };
@@ -96,9 +102,9 @@ function headerTooltip(metric: string): string | undefined {
   return lines.filter(Boolean).join("\n") || undefined;
 }
 
-function MetricHeader({ metric, onSort, startsGroup }: { metric: string; onSort: (metric: string) => void; startsGroup: boolean }) {
+function MetricHeader({ metric, onSort, startsGroup, sorted }: { metric: string; onSort: (metric: string) => void; startsGroup: boolean; sorted?: "ascending" | "descending" }) {
   const warnsAcrossTestListBoundary = crossesTestListBoundary(metric);
-  return <th scope="col" title={headerTooltip(metric)} className={startsGroup ? "gstart" : undefined}>
+  return <th scope="col" title={headerTooltip(metric)} className={startsGroup ? "gstart" : undefined} aria-sort={sorted}>
     <button type="button" onClick={() => onSort(metric)}>{metric}</button> <span className="dir">{directionDisplay[metricDirection(metric)].mark}</span>{warnsAcrossTestListBoundary && <span className="warnmark"> ⚠</span>}
   </th>;
 }
@@ -113,14 +119,17 @@ function groupStartColumns(table: KataTable): Set<number> {
 }
 
 /** Group names over their metric columns, the metric headers beneath, and one label header spanning both. */
-function TableHead({ table, onSort }: { table: KataTable; onSort: (metric: string) => void }) {
+function TableHead({ table, sort, onSort, onReset }: { table: KataTable; sort: ColumnSort | undefined; onSort: (metric: string) => void; onReset: () => void }) {
   return <thead>
     <tr className="groups">
-      <th scope="col" rowSpan={2} className="lab">{table.labelColumns.join(" × ")} <small>n, run dates</small></th>
+      <th scope="col" rowSpan={2} className="lab">
+        {table.labelColumns.length > 0 && <button type="button" title="Back to the RQ's order" onClick={onReset}>{table.labelColumns.join(" × ")}</button>} <small>n, run dates</small>
+      </th>
       {table.groups.map(group => <th key={group.name} scope="colgroup" colSpan={group.colSpan}>{group.name}</th>)}
     </tr>
     <tr className="cols">{table.columns.map((metric, index) =>
-      <MetricHeader key={metric} metric={metric} onSort={onSort} startsGroup={groupStartColumns(table).has(index)} />)}</tr>
+      <MetricHeader key={metric} metric={metric} onSort={onSort} startsGroup={groupStartColumns(table).has(index)}
+        sorted={sortedOrder(sort, metric)} />)}</tr>
   </thead>;
 }
 
@@ -144,7 +153,8 @@ export function ResultTable({ input }: { input: ResultTableInput }) {
       <div className="legend">{directionLegend}</div>
       {mixedStyles && <p role="note" className="banner warn">This RQ spans the test-list boundary; flagged metrics are not comparable and receive no trophies.</p>}
       <div className="scroll"><table className="res">
-        <TableHead table={table} onSort={metric => setSort(previous => nextColumnSort(previous, metric))} />
+        <TableHead table={table} sort={sort} onSort={metric => setSort(previous => nextColumnSort(previous, metric))}
+          onReset={() => setSort(undefined)} />
         <tbody>{table.rows.map((row, index) => <tr key={index} {...notRunRowAppearance(row)}>
           <RowLabel row={row} minReplicates={input.min_replicates} />
           {table.columns.map((metric, index) => {

@@ -182,3 +182,44 @@ describe("Metric tooltips", () => {
       + "⚠ not comparable across the test-list boundary: a skipped test is compliance in a test-list workflow and a violation in an ad-hoc workflow");
   });
 });
+
+// Sort reset and marking: the RQ's own order can always be restored, and a sorted column says so.
+describe("Sort reset and marking", () => {
+  function renderTwoWorkflows() {
+    const kata = "claim-office-example-mapping";
+    render(<ResultTable input={{ katas: [kata], outcomes: ["verification_pct"], cells: [
+      { kata, workflow: "96 %", runs: [{ id: "a" }], values: { verification_pct: { value: 0.96 }, cost_usd: { value: 2 } } },
+      { kata, workflow: "100 %", runs: [{ id: "b" }], values: { verification_pct: { value: 1 }, cost_usd: { value: 1 } } },
+    ] }} />);
+  }
+  const order = () => bodyRows().map(row => row.querySelector("td a")?.textContent);
+  const header = (metric: string) => screen.getByRole("button", { name: metric }).closest("th")!;
+
+  it("restores the RQ's order when the label header is clicked -- sort by verification_pct, click 'workflow' -> 96 %, 100 % again", () => {
+    renderTwoWorkflows();
+    fireEvent.click(screen.getByRole("button", { name: "verification_pct" }));
+    expect(order()).toEqual(["100 %", "96 %"]);
+    fireEvent.click(screen.getByRole("button", { name: "workflow" }));
+    expect(order()).toEqual(["96 %", "100 %"]);
+  });
+  it("marks the sorted header -- verification_pct clicked once -> aria-sort 'descending' on it, none on cost_usd", () => {
+    renderTwoWorkflows();
+    fireEvent.click(screen.getByRole("button", { name: "verification_pct" }));
+    expect([header("verification_pct").getAttribute("aria-sort"), header("cost_usd").getAttribute("aria-sort")])
+      .toEqual(["descending", null]);
+  });
+  it("marks a lower-is-better column 'ascending' when sorted best first and flips it on the second click -- cost_usd -> ascending, then descending", () => {
+    renderTwoWorkflows();
+    const sortByCost = () => fireEvent.click(screen.getByRole("button", { name: "cost_usd" }));
+    sortByCost();
+    expect(header("cost_usd").getAttribute("aria-sort")).toBe("ascending");
+    sortByCost();
+    expect(header("cost_usd").getAttribute("aria-sort")).toBe("descending");
+  });
+  it("drops the mark when the RQ's order is restored", () => {
+    renderTwoWorkflows();
+    fireEvent.click(screen.getByRole("button", { name: "verification_pct" }));
+    fireEvent.click(screen.getByRole("button", { name: "workflow" }));
+    expect(header("verification_pct").getAttribute("aria-sort")).toBeNull();
+  });
+});

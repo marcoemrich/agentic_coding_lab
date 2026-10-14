@@ -75,8 +75,13 @@ function compareMetricAvailability(a: ResultTableInput["cells"][number], b: Resu
   return Number(a.values?.[metric]?.value === undefined) - Number(b.values?.[metric]?.value === undefined);
 }
 
+/** The first click on a header sorts best first, the next reverses it, and so on. */
+export function sortsBestFirst(sort: NonNullable<ResultTableInput["sort"]>): boolean {
+  return sort.clicks % SORT_DIRECTIONS === 1;
+}
+
 function cellsSortedByMetric(cells: ResultTableInput["cells"], sort: NonNullable<ResultTableInput["sort"]>) {
-  const direction = sort.clicks % SORT_DIRECTIONS === 0 ? -1 : 1;
+  const direction = sortsBestFirst(sort) ? 1 : -1;
   return [...cells].sort((a, b) => {
     return compareRunParticipation(a, b) || compareMetricAvailability(a, b, sort.metric) || direction * compareMetricMeansBestFirst(sort.metric, a.values?.[sort.metric]?.value ?? 0, b.values?.[sort.metric]?.value ?? 0);
   });

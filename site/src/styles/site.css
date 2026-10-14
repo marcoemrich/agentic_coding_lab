@@ -53,6 +53,8 @@ table.res thead tr.groups th { font-weight: 600; color: var(--ink); text-align: 
 table.res thead tr.groups th.lab { border-left: 0; font-weight: 500; color: var(--ink-2); }
 table.res .gstart { border-left: 1px solid var(--rule); }
 table.res thead th button:hover { color: var(--ink); text-decoration: underline; }
+table.res thead th[aria-sort] { color: var(--ink); background: var(--rule-2); }
+table.res thead th[aria-sort] button { font-weight: 600; }
 table.res .lab { text-align: left; position: sticky; left: 0; background: var(--paper); z-index: 1; min-width: 210px; max-width: none; border-right: 1px solid var(--rule); }
 table.res thead .lab { z-index: 2; }
 table.res tr:hover td, table.res tr:hover td.lab { background: var(--rule-2); }
