@@ -31,7 +31,7 @@ an archived workflow on purpose.
 Usage:
   experiments/aggregate-by-query.py research/questions-claude/2.1-model-effect-code-quality/
   experiments/aggregate-by-query.py research/questions-claude/2.1-model-effect-code-quality/README.md
-  experiments/aggregate-by-query.py research/workflow-dev/1.10-refactor-vocab-effect-v62/ --allow-archived
+  experiments/aggregate-by-query.py <rq-dir> --allow-archived
 """
 from __future__ import annotations
 
