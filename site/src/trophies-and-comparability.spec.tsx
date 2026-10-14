@@ -4,6 +4,11 @@ import { ResultTable } from "./ResultTable.js";
 import { buildResultTables } from "./result-table.js";
 import { trophyWinners } from "./trophy.js";
 
+/** The table's data rows, however many header rows sit above them. */
+function bodyRows(): HTMLElement[] {
+  return [...screen.getByRole("table").querySelectorAll<HTMLElement>("tbody tr")];
+}
+
 function winners(metric: string, entries: { value: number; sd?: number }[]) {
   const kata = "claim-office";
   const rows = buildResultTables({ katas: [kata], outcomes: [metric], cells: entries.map((value, index) => ({
@@ -39,7 +44,7 @@ describe("Trophies and comparability", () => {
       { kata, workflow: "best", runs: [{ id: "a" }, { id: "b" }], values: { verification_pct: { value: 1, sd: 0 } } },
       { kata, workflow: "near", runs: [{ id: "c" }, { id: "d" }], values: { verification_pct: { value: 0.96, sd: 0.05 } } },
     ] }} />);
-    const rows = within(screen.getByRole("table")).getAllByRole("row").slice(1);
+    const rows = bodyRows();
     for (const row of rows) {
       const cell = within(row).getAllByRole("cell")[1];
       expect(cell.textContent).toContain("🏆");
@@ -65,7 +70,7 @@ describe("Trophies and comparability", () => {
       { kata, workflow: "incorrect", runs: [{ id: "a" }], values: { verification_pct: { value: 0.85 }, cognitive_max: { value: 1 } } },
       { kata, workflow: "correct", runs: [{ id: "b" }], values: { verification_pct: { value: 0.90 }, cognitive_max: { value: 5 } } },
     ] }} />);
-    const rows = within(screen.getByRole("table")).getAllByRole("row").slice(1);
+    const rows = bodyRows();
     const gated = within(rows[0]).getAllByRole("cell")[2];
     expect(gated.textContent).toContain("1.00");
     expect(gated.textContent).not.toContain("🏆");
@@ -78,7 +83,7 @@ describe("Trophies and comparability", () => {
       { kata, workflow: "low", runs: [{ id: "a" }], values: { cognitive_max: { value: 2 } } },
       { kata, workflow: "high", runs: [{ id: "b" }], values: { cognitive_max: { value: 9 } } },
     ] }} />);
-    const rows = within(screen.getByRole("table")).getAllByRole("row").slice(1);
+    const rows = bodyRows();
     expect(within(rows[0]).getAllByRole("cell")[1].textContent).toContain("🏆");
     expect(within(rows[0]).getAllByRole("cell")[1].getAttribute("title")).toBeNull();
   });
@@ -88,7 +93,7 @@ describe("Trophies and comparability", () => {
       { kata, runs: [{ id: "a" }], values: { verification_pct: null, cost_usd: { value: 1 } } },
       { kata, runs: [{ id: "b" }], values: { verification_pct: { value: 0.95 }, cost_usd: { value: 10 } } },
     ] }} />);
-    const cells = within(screen.getByRole("table")).getAllByRole("row").slice(1).map(row => within(row).getAllByRole("cell")[2]);
+    const cells = bodyRows().map(row => within(row).getAllByRole("cell")[2]);
     expect(cells[0].textContent).not.toContain("🏆");
     expect(cells[0].getAttribute("title")).toBe("external correctness not collected");
     expect(cells[1].textContent).toContain("🏆");
@@ -100,7 +105,7 @@ describe("Trophies and comparability", () => {
       { kata, runs: [{ id: "a" }], values: { verification_pct: { value: 0.85 }, cost_usd: { value: 1 } } },
       { kata, runs: [{ id: "b" }], values: { verification_pct: { value: 0.95 }, cost_usd: { value: 10 } } },
     ] }} />);
-    const cells = within(screen.getByRole("table")).getAllByRole("row").slice(1).map(row => within(row).getAllByRole("cell")[2]);
+    const cells = bodyRows().map(row => within(row).getAllByRole("cell")[2]);
     expect(cells[0].textContent).not.toContain("🏆");
     expect(cells[0].getAttribute("title")).toBe("below 90 % external correctness");
     expect(cells[1].textContent).toContain("🏆");
@@ -122,7 +127,7 @@ describe("Trophies and comparability", () => {
         { kata, workflow: "adhoc", runs: [{ id: "b" }], values: { tdd_discipline: { value: 0.5 } } },
       ] }} />);
     expect(screen.getByText(/spans the test-list boundary/i)).toBeTruthy();
-    const rows = within(screen.getByRole("table")).getAllByRole("row").slice(1);
+    const rows = bodyRows();
     for (const row of rows) expect(within(row).getAllByRole("cell")[1].textContent).not.toContain("🏆");
   });
   it("does not show a mixed-style banner when workflows share a style", () => {
@@ -133,7 +138,7 @@ describe("Trophies and comparability", () => {
         { kata, workflow: "second", runs: [{ id: "b" }], values: { tdd_discipline: { value: 0.5 } } },
       ] }} />);
     expect(screen.queryByText(/spans the test-list boundary/i)).toBeNull();
-    expect(within(screen.getAllByRole("row")[1]).getAllByRole("cell")[1].textContent).toContain("🏆");
+    expect(within(bodyRows()[0]).getAllByRole("cell")[1].textContent).toContain("🏆");
   });
   it("leaves predictions_correct_rate unflagged and awards its winner even across the boundary -- list 0.9, adhoc 0.5 -> list 🏆, no ⚠", () => {
     const kata = "claim-office";
@@ -145,7 +150,7 @@ describe("Trophies and comparability", () => {
     const header = screen.getByRole("button", { name: "predictions_correct_rate" }).closest("th")!;
     expect(header.textContent).not.toContain("⚠");
     expect(header.getAttribute("title")).toBeNull();
-    expect(within(screen.getAllByRole("row")[1]).getAllByRole("cell")[1].textContent).toContain("🏆");
+    expect(within(bodyRows()[0]).getAllByRole("cell")[1].textContent).toContain("🏆");
   });
   it("awards no trophy to an informative TDD component -- red_batch_max 1 vs 3 -> no 🏆", () => {
     const kata = "claim-office";

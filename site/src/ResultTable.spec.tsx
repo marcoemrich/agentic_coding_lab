@@ -2,6 +2,11 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { ResultTable } from "./ResultTable.js";
 
+/** The table's data rows, however many header rows sit above them. */
+function bodyRows(): HTMLElement[] {
+  return [...screen.getByRole("table").querySelectorAll<HTMLElement>("tbody tr")];
+}
+
 // Story A of the RQ result table: the parts only a rendered table shows.
 describe("Rendered result table", () => {
   // Rule 22: clicking a header sorts
@@ -11,7 +16,7 @@ describe("Rendered result table", () => {
       { kata, workflow: "96 %", runs: [{ id: "a" }], values: { verification_pct: { value: 0.96 } } },
       { kata, workflow: "100 %", runs: [{ id: "b" }], values: { verification_pct: { value: 1 } } },
     ] }} />);
-    const dataRows = () => within(screen.getByRole("table")).getAllByRole("row").slice(1);
+    const dataRows = () => bodyRows();
     expect(dataRows().map(row => row.querySelector("td a")?.textContent)).toEqual(["96 %", "100 %"]);
     fireEvent.click(screen.getByRole("button", { name: "verification_pct" }));
     expect(dataRows().map(row => row.querySelector("td a")?.textContent)).toEqual(["100 %", "96 %"]);
@@ -23,7 +28,7 @@ describe("Rendered result table", () => {
       { kata, workflow: "100 %", runs: [{ id: "b" }], values: { verification_pct: { value: 1 } } },
     ] }} />);
     const header = screen.getByRole("button", { name: "verification_pct" });
-    const rows = () => within(screen.getByRole("table")).getAllByRole("row").slice(1).map(row => row.querySelector("td a")?.textContent);
+    const rows = () => bodyRows().map(row => row.querySelector("td a")?.textContent);
     fireEvent.click(header);
     expect(rows()).toEqual(["100 %", "96 %"]);
     fireEvent.click(header);
@@ -104,9 +109,61 @@ describe("Result table look", () => {
       { kata, workflow: "exact-ptdd-v1-cc", runs: [{ id: "a" }], values: { code_mass: { value: 155 }, cost_usd: { value: 5 } } },
       { kata, workflow: "baseline-oneshot-v1-cc", runs: [{ id: "b" }], values: { code_mass: { value: 160 }, cost_usd: { value: 4 } } },
     ] }} />);
-    const [header, row] = within(screen.getByRole("table")).getAllByRole("row");
-    expect([header.children.length, row.children.length]).toEqual([3, 3]);
-    expect(within(header).getAllByRole("columnheader").map(cell => cell.textContent?.split(" ")[0]))
+    const headerRows = [...screen.getByRole("table").querySelectorAll<HTMLElement>("thead tr")];
+    const labelHeader = headerRows[0].querySelector<HTMLTableCellElement>("th")!;
+    const metricHeaders = [...headerRows.at(-1)!.querySelectorAll("th")].filter(cell => cell !== labelHeader);
+    expect(labelHeader.rowSpan).toBe(headerRows.length);
+    expect([labelHeader, ...metricHeaders].map(cell => cell.textContent?.split(" ")[0]))
       .toEqual(["workflow", "code_mass", "cost_usd"]);
+    expect(bodyRows()[0].children).toHaveLength(3);
+  });
+});
+
+// Result table labels: row data buildResultTables already provides, rendered the prototype's way.
+describe("Result table labels", () => {
+  it("labels each row with every varying factor -- model and workflow vary -> 'model: opus-4-8' beside the workflow link", () => {
+    const kata = "game-of-life-example-mapping";
+    render(<ResultTable input={{ katas: [kata], outcomes: [], cells: [
+      { kata, model: "opus-4-8", workflow: "exact-ptdd-v1-cc", runs: [{ id: "a" }] },
+      { kata, model: "fable-5", workflow: "baseline-oneshot-v1-cc", runs: [{ id: "b" }] },
+    ] }} />);
+    const label = screen.getByRole("table").querySelector<HTMLElement>("tbody tr td")!;
+    expect(within(label).getByText("model: opus-4-8")).toBeTruthy();
+    expect(within(label).getByRole("link").textContent).toBe("exact-ptdd-v1-cc");
+  });
+  it("shows the run dates after the run count -- 2026-09-30 and 10-01 runs -> 'n = 2, 2026-09-30 → 10-01'", () => {
+    const kata = "claim-office-example-mapping";
+    render(<ResultTable input={{ katas: [kata], outcomes: [], cells: [
+      { kata, workflow: "external-kesseler-2026-09-30-cc", runs: [
+        { id: "a", started_at: "2026-09-30T21:00:00+00:00" }, { id: "b", started_at: "2026-10-01T08:00:00+00:00" }] },
+    ] }} />);
+    const label = screen.getByRole("table").querySelector<HTMLElement>("tbody tr td")!;
+    expect(within(label).getByText("n = 2, 2026-09-30 → 10-01")).toBeTruthy();
+  });
+  it("tags a workflow as 'test list' or 'ad hoc' beside its link", () => {
+    const kata = "claim-office-example-mapping";
+    render(<ResultTable input={{ katas: [kata], outcomes: [],
+      workflowStyles: { "exact-ptdd-v1-cc": "test list", "external-pocock-2026-09-04-cc": "ad hoc" }, cells: [
+        { kata, workflow: "exact-ptdd-v1-cc", runs: [{ id: "a" }] },
+        { kata, workflow: "external-pocock-2026-09-04-cc", runs: [{ id: "b" }] },
+      ] }} />);
+    const labels = [...screen.getByRole("table").querySelectorAll<HTMLElement>("tbody tr td:first-child")];
+    expect(labels.map(label => within(label).getByText(/^(test list|ad hoc)$/).textContent)).toEqual(["test list", "ad hoc"]);
+  });
+  it("dims the standard deviation while the value still reads '82% ± 5'", () => {
+    const kata = "claim-office";
+    render(<ResultTable input={{ katas: [kata], outcomes: ["verification_pct"], cells: [
+      { kata, runs: [1, 2, 3].map(id => ({ id: String(id) })), values: { verification_pct: { kind: "num", n: 3, value: 0.82, sd: 0.05 } } },
+    ] }} />);
+    const cell = screen.getByRole("table").querySelectorAll("tbody tr td")[1];
+    expect(cell.textContent).toBe("82% ± 5");
+    expect(cell.querySelector(".sd")?.textContent).toBe(" ± 5");
+  });
+  it("spans metric group headers over their columns -- code_mass, smell_total, cost_usd -> Code quality 2, Cost 1", () => {
+    const kata = "game-of-life-prose";
+    render(<ResultTable input={{ katas: [kata], outcomes: ["code_mass", "smell_total", "cost_usd"], cells: [] }} />);
+    const header = screen.getByRole("table").querySelector("thead")!;
+    expect([within(header).getByText("Code quality"), within(header).getByText("Cost")]
+      .map(cell => (cell as HTMLTableCellElement).colSpan)).toEqual([2, 1]);
   });
 });

@@ -24,6 +24,9 @@ export interface RateCell {
 export type ValueCell = NumericCell | BooleanCell | RateCell;
 export interface FormattedValue { main: string; sub?: string }
 
+/** Between a mean and its standard deviation in a formatted value: "82% ± 5". */
+export const DEVIATION_SEPARATOR = " ± ";
+
 const WHOLE_NUMBER_AT = 100;
 const ONE_DECIMAL_AT = 10;
 const SINGLE_RUN_INTEGER_ABOVE = 10;
@@ -51,7 +54,7 @@ function formatPercent(value: number): string {
 }
 
 function withDeviation(mean: string, deviation?: string): FormattedValue {
-  return { main: deviation === undefined ? mean : `${mean} ± ${deviation}` };
+  return { main: deviation === undefined ? mean : `${mean}${DEVIATION_SEPARATOR}${deviation}` };
 }
 
 function formatPercentage(cell: NumericCell): FormattedValue {
