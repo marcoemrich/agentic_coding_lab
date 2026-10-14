@@ -91,6 +91,7 @@ marked as such. Done stories have no Example Mapping section.
   - [Stable aggregator output](stories/done/2026-10-12_09_stable-aggregator-output.md)
   - [Broken-run cleanup](stories/done/2026-10-12_06_broken-run-cleanup.md)
 - **Open stories for the first iteration:**
+  - [Export the header fields](stories/open/2026-10-14_01_export-header-fields.md) — blocks the RQ page header
   - [RQ page header](stories/open/2026-10-11_06_rq-page-header.md)
   - [RQ index](stories/open/2026-10-11_07_rq-index.md)
   - [Findings section](stories/open/2026-10-11_08_findings-section.md)
