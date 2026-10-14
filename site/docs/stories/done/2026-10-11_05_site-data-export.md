@@ -9,7 +9,7 @@ Depended on: [Python test infrastructure](2026-10-12_07_python-test-infrastructu
 
 ## Story
 
-Extend `aggregate-by-query.py` to write `summary.json` alongside `summary.md` from the same pandas pivots: per cell and outcome `mean`, `sd`, `n` and null count, per cell its run counters and run list, and coverage including declared but unrun cells. `export-site-data.py` reads this, the RQ frontmatter, `LINEAGE.yaml` and the metric registry, and writes one JSON file per main RQ plus `workflows.json` under gitignored `site/src/data/`. Statistics belong to Python, presentation to TypeScript. The build command and its batch guard are a separate story ([build command](../open/2026-10-12_04_build-command.md)).
+Extend `aggregate-by-query.py` to write `summary.json` alongside `summary.md` from the same pandas pivots: per cell and outcome `mean`, `sd`, `n` and null count, per cell its run counters and run list, and coverage including declared but unrun cells. `export-site-data.py` reads this, the RQ frontmatter, `LINEAGE.yaml` and the metric registry, and writes one JSON file per main RQ plus `workflows.json` under gitignored `site/src/data/`. Statistics belong to Python, presentation to TypeScript. The build command and its batch guard are a separate story ([build command](2026-10-12_04_build-command.md)).
 
 ## Built
 

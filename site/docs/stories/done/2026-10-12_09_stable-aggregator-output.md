@@ -1,7 +1,7 @@
 # Stable aggregator output
 
 Status: done
-Source: [build command](../open/2026-10-12_04_build-command.md), split off on 2026-10-12.
+Source: [build command](2026-10-12_04_build-command.md), split off on 2026-10-12.
 
 ## Story
 

@@ -92,14 +92,13 @@ marked as such. Done stories have no Example Mapping section.
   - [Broken-run cleanup](stories/done/2026-10-12_06_broken-run-cleanup.md)
 - **Done, site data:**
   - [Export the header fields](stories/done/2026-10-14_01_export-header-fields.md)
+  - [Build command](stories/done/2026-10-12_04_build-command.md) — `experiments/build-site.py`: aggregate, export, Astro build
 - **Done, site pages:**
   - [RQ page header](stories/done/2026-10-11_06_rq-page-header.md) — sets up Astro, one page per main RQ
 - **Open stories for the first iteration:**
   - [RQ index](stories/open/2026-10-11_07_rq-index.md)
   - [Findings section](stories/open/2026-10-11_08_findings-section.md)
   - [Workflow page](stories/open/2026-10-11_09_workflow-page.md)
-- **Open stories from the site data export** (2026-10-12).
-  - [Build command](stories/open/2026-10-12_04_build-command.md) — mapped, next to implement
 
 ## Later
 
