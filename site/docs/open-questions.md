@@ -8,10 +8,6 @@
 - **Workflow-development RQs.** Out of scope for the first step. This also defers the question
   whether they get their own page shape (predecessor vs. successor, "this is what changed")
   and a per-workflow `change:` field to feed it.
-- **Aggregator filtering on run status.** `collect_runs` (`experiments/aggregate-by-query.py`)
-  takes every run with a readable `metrics.json`, finished or not. Filtering on
-  `run_status.exit_reason` would be the thorough fix but changes lab behaviour for every RQ —
-  a decision of its own. Until then the site build refuses to run during a batch.
 
 ## Decided
 
