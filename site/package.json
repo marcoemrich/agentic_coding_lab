@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:site": "uv run --project ../experiments python ../experiments/build-site.py",
     "preview": "astro preview",
     "test": "vitest run",
     "test:watch": "vitest",

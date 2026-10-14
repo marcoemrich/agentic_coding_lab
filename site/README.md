@@ -3,9 +3,9 @@
 ## Pages
 
 ```bash
-uv run --project ../experiments python ../experiments/build-site.py
-                                             # all of it: re-aggregate every RQ, export, pnpm build;
+pnpm build:site                              # all of it: re-aggregate every RQ, export, pnpm build;
                                              # durations, git diff --stat over research/; refuses during a batch
+                                             # (runs experiments/build-site.py in the uv environment)
 python3 ../experiments/export-site-data.py   # writes src/data/ (needs PyYAML; or uv run --project ../experiments)
 pnpm dev                                     # dev server, pages at /rq/<id>/
 pnpm build                                   # static pages under dist/
