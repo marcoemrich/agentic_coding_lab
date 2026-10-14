@@ -95,6 +95,7 @@ marked as such. Done stories have no Example Mapping section.
   - [Build command](stories/done/2026-10-12_04_build-command.md) — `experiments/build-site.py`: aggregate, export, Astro build
 - **Done, site pages:**
   - [RQ page header](stories/done/2026-10-11_06_rq-page-header.md) — sets up Astro, one page per main RQ
+  - [Result table look](stories/done/2026-10-14_02_result-table-look.md) — the prototype's table styles, light and dark
 - **Open stories for the first iteration:**
   - [RQ index](stories/open/2026-10-11_07_rq-index.md)
   - [Findings section](stories/open/2026-10-11_08_findings-section.md)

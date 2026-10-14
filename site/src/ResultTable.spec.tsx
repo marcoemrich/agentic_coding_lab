@@ -95,3 +95,18 @@ describe("Run list under a kata table", () => {
       .toEqual([["game-of-life-prose", ["prose-run"]], ["game-of-life-example-mapping", ["example-mapping-run"]]]);
   });
 });
+
+// Result table look: the approved prototype's styles, carried by classes instead of fixed inline colours.
+describe("Result table look", () => {
+  it("puts a header cell above the row labels, so each metric header sits above its values -- 2 metrics -> 3 header cells, 3 cells per row", () => {
+    const kata = "game-of-life-prose";
+    render(<ResultTable input={{ katas: [kata], outcomes: ["code_mass", "cost_usd"], cells: [
+      { kata, workflow: "exact-ptdd-v1-cc", runs: [{ id: "a" }], values: { code_mass: { value: 155 }, cost_usd: { value: 5 } } },
+      { kata, workflow: "baseline-oneshot-v1-cc", runs: [{ id: "b" }], values: { code_mass: { value: 160 }, cost_usd: { value: 4 } } },
+    ] }} />);
+    const [header, row] = within(screen.getByRole("table")).getAllByRole("row");
+    expect([header.children.length, row.children.length]).toEqual([3, 3]);
+    expect(within(header).getAllByRole("columnheader").map(cell => cell.textContent?.split(" ")[0]))
+      .toEqual(["workflow", "code_mass", "cost_usd"]);
+  });
+});

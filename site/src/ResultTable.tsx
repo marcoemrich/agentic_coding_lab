@@ -31,7 +31,7 @@ function notRunRowAppearance(row: ReturnType<typeof buildResultTables>[number]["
 
 type ResultRow = ReturnType<typeof buildResultTables>[number]["rows"][number];
 
-function MetricValue({ row, metric }: { row: ResultRow; metric: string }) {
+function MetricValue({ row, metric, winner }: { row: ResultRow; metric: string; winner: boolean }) {
   if (isNotRun(row)) return "Not run";
   const value = row.values?.[metric];
   if (value == null) return <i title="not collected — not measured at the time">n/c</i>;
@@ -40,7 +40,7 @@ function MetricValue({ row, metric }: { row: ResultRow; metric: string }) {
     ? value : { kind: "num", n: value.n ?? row.n, value: value.value, sd: value.sd };
   const formatted = formatValue(metric, cell);
   const partialRunCount = partialMetricRunCount(value, row.n);
-  return <>{formatted.main}{formatted.sub && <small>{formatted.sub}</small>}
+  return <>{formatted.main}{winner && " 🏆"}{formatted.sub && <small>{formatted.sub}</small>}
     {partialRunCount !== undefined && <small>n={partialRunCount}/{row.n}</small>}</>;
 }
 
@@ -50,8 +50,7 @@ function incompleteReasonLabel(reasons: NonNullable<ResultRow["incompleteRunReas
 
 function RowLabel({ row, minReplicates }: { row: ResultRow; minReplicates: number | undefined }) {
   const underReplicated = isUnderReplicated(row.n, minReplicates);
-  return <td className={underReplicated ? "under-replicated" : undefined}
-    style={underReplicated ? { backgroundColor: "rgb(255, 237, 213)" } : undefined}>
+  return <td className={underReplicated ? "lab under-replicated" : "lab"}>
     {row.labels.workflow && <a href={workflowEntryHref(row.labels.workflow)}>{row.labels.workflow}</a>}
     {isNotRun(row) ? <small>0 runs</small> : <small>n = {row.n}{underReplicated ? ` of ${minReplicates}` : ""}{row.incompleteRunReasons ? ` (${incompleteReasonLabel(row.incompleteRunReasons)})` : ""}</small>}
   </td>;
@@ -60,12 +59,12 @@ function RowLabel({ row, minReplicates }: { row: ResultRow; minReplicates: numbe
 function MetricHeader({ metric, onSort }: { metric: string; onSort: (metric: string) => void }) {
   const warnsAcrossTestListBoundary = crossesTestListBoundary(metric);
   return <th scope="col" title={warnsAcrossTestListBoundary ? boundaryExplanation : undefined}>
-    <button type="button" onClick={() => onSort(metric)}>{metric}</button> {directionDisplay[metricDirection(metric)].mark}{warnsAcrossTestListBoundary && " ⚠"}
+    <button type="button" onClick={() => onSort(metric)}>{metric}</button> <span className="dir">{directionDisplay[metricDirection(metric)].mark}</span>{warnsAcrossTestListBoundary && <span className="warnmark"> ⚠</span>}
   </th>;
 }
 
 function RunProvenance({ rows }: { rows: ReturnType<typeof buildResultTables>[number]["rows"] }) {
-  return <details>
+  return <details className="runs">
     <summary>Runs behind this table</summary>
     <ul>{orderedRunLinks(rows).map(run =>
       <li key={run.id}><a href={run.href}>{run.id}</a>{run.exitReason && ` (${run.exitReason})`}</li>
@@ -81,22 +80,22 @@ export function ResultTable({ input }: { input: ResultTableInput }) {
   return <>
     {tables.map(table => <section key={table.kata}>
       <h2>{table.kata}</h2>
-      <div>{directionLegend}</div>
-      {mixedStyles && <p role="note">This RQ spans the test-list boundary; flagged metrics are not comparable and receive no trophies.</p>}
-      <table>
-        <thead><tr>{table.columns.map(metric => <MetricHeader key={metric} metric={metric}
+      <div className="legend">{directionLegend}</div>
+      {mixedStyles && <p role="note" className="banner warn">This RQ spans the test-list boundary; flagged metrics are not comparable and receive no trophies.</p>}
+      <div className="scroll"><table className="res">
+        <thead><tr><th scope="col" className="lab">{table.labelColumns.join(" × ")}</th>{table.columns.map(metric => <MetricHeader key={metric} metric={metric}
           onSort={metric => setSort(previous => nextColumnSort(previous, metric))} />)}</tr></thead>
         <tbody>{table.rows.map((row, index) => <tr key={index} {...notRunRowAppearance(row)}>
           <RowLabel row={row} minReplicates={input.min_replicates} />
           {table.columns.map(metric => {
             const winner = trophyWinners(table.rows, metric, table.columns, mixedStyles).has(row);
             return <td key={metric} title={correctnessGateReason(row, metric, table.columns)}
-              style={winner ? { backgroundColor: "rgb(254, 243, 199)" } : undefined}>
-              <MetricValue row={row} metric={metric} />{winner && " 🏆"}
+              className={winner ? "win" : undefined}>
+              <MetricValue row={row} metric={metric} winner={winner} />
             </td>;
           })}
         </tr>)}</tbody>
-      </table>
+      </table></div>
       <RunProvenance rows={table.rows} />
     </section>)}
   </>;

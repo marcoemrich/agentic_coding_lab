@@ -63,7 +63,7 @@ describe("RQ result table gaps and coverage", () => {
     const row = within(screen.getByRole("table")).getAllByRole("row")[1];
     const label = row.querySelectorAll("td")[0];
     expect(label.className).toContain("under-replicated");
-    expect(label.style.backgroundColor).toBe("rgb(255, 237, 213)");
+    expect(label.style.backgroundColor).toBe("");
     expect(within(label).getByText("n = 3 of 5")).toBeTruthy();
     expect(within(row).getByText("82% ± 5")).toBeTruthy();
   });

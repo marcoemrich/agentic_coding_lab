@@ -43,7 +43,8 @@ describe("Trophies and comparability", () => {
     for (const row of rows) {
       const cell = within(row).getAllByRole("cell")[1];
       expect(cell.textContent).toContain("🏆");
-      expect(cell.style.backgroundColor).not.toBe("");
+      expect(cell.classList.contains("win")).toBe(true);
+      expect(cell.style.backgroundColor).toBe("");
     }
   });
   it("awards only the best highlighted 🏆 when best 100% ± 0 and other 90% ± 5 differ by 10", () => {

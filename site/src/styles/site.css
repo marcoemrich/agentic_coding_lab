@@ -1,8 +1,9 @@
-/* Tokens and header styles taken from the approved prototype (prototype/template.html). */
+/* Tokens, header and result-table styles taken from the approved prototype (prototype/template.html). */
 :root {
   --paper: #fbfcfd; --ink: #1d2733; --ink-2: #4a5666; --ink-3: #7a8594;
   --rule: #dde3ea; --rule-2: #eef1f5; --accent: #2c6a8a;
   --closed-bg: #f3eef9; --closed-ink: #57407a;
+  --win: #fff4cc; --warn: #9a6500; --warn-bg: #fff6e0; --gap: #f2f4f7;
   --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
   --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
@@ -11,12 +12,14 @@
     --paper: #141a21; --ink: #e4e9ef; --ink-2: #aeb8c4; --ink-3: #7e8996;
     --rule: #2c3540; --rule-2: #1d242d; --accent: #7fb8d6;
     --closed-bg: #2a2236; --closed-ink: #c9b4ea; color-scheme: dark;
+    --win: #3a3216; --warn: #f0b952; --warn-bg: #33290f; --gap: #1a2028;
   }
 }
 :root[data-theme="dark"] {
   --paper: #141a21; --ink: #e4e9ef; --ink-2: #aeb8c4; --ink-3: #7e8996;
   --rule: #2c3540; --rule-2: #1d242d; --accent: #7fb8d6;
   --closed-bg: #2a2236; --closed-ink: #c9b4ea; color-scheme: dark;
+  --win: #3a3216; --warn: #f0b952; --warn-bg: #33290f; --gap: #1a2028;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 var(--sans); }
@@ -32,6 +35,27 @@ h2 { font-family: var(--serif); font-weight: 500; font-size: 22px; margin: 40px 
 .meta ul { list-style: none; margin: 0; padding: 0; }
 .banner { padding: 10px 14px; border-radius: 4px; margin: 0 0 20px; font-size: 14px; max-width: 70em; }
 .banner.closed { background: var(--closed-bg); color: var(--closed-ink); }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.banner.warn { background: var(--warn-bg); color: var(--warn); }
 details summary { cursor: pointer; font-weight: 600; }
 details { margin-top: 10px; font-size: 13px; }
 details ul { columns: 2 320px; padding-left: 18px; }
+
+/* Result table */
+.legend { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 13px; color: var(--ink-2); margin: 12px 0 10px; }
+.scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 4px; }
+table.res { border-collapse: separate; border-spacing: 0; font-size: 13.5px; font-variant-numeric: tabular-nums; min-width: 100%; }
+table.res th, table.res td { padding: 5px 7px; border-bottom: 1px solid var(--rule-2); white-space: nowrap; text-align: right; vertical-align: top; }
+table.res thead th { background: var(--paper); font-weight: 500; color: var(--ink-2); vertical-align: bottom; position: sticky; top: 0; border-bottom: 1px solid var(--rule); min-width: 72px; line-height: 1.25; }
+table.res thead th button { all: unset; cursor: pointer; }
+table.res thead th button:hover { color: var(--ink); text-decoration: underline; }
+table.res .lab { text-align: left; position: sticky; left: 0; background: var(--paper); z-index: 1; min-width: 210px; max-width: none; border-right: 1px solid var(--rule); }
+table.res thead .lab { z-index: 2; }
+table.res tr:hover td, table.res tr:hover td.lab { background: var(--rule-2); }
+table.res small { display: block; color: var(--ink-3); font-size: 12px; }
+table.res i { color: var(--ink-3); }
+.dir { color: var(--ink-3); font-size: 12px; margin-left: 2px; }
+.warnmark { color: var(--warn); cursor: help; }
+table.res td.win { background: var(--win); font-weight: 600; }
+table.res td.lab.under-replicated { background: var(--warn-bg); }
+table.res tr.not-run td { background: var(--gap); color: var(--ink-3); }
