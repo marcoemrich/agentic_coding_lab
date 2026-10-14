@@ -1,4 +1,4 @@
-import { groupedHeaders } from "./group-headers.js";
+import { gatheredByGroup, groupedHeaders } from "./group-headers.js";
 import { incompleteRunReasonsFor } from "./incomplete-run-reasons.js";
 import { compareMetricMeansBestFirst } from "./metric-direction.js";
 import { workflowStyleFor } from "./metric-comparability.js";
@@ -31,7 +31,7 @@ export function isUnderReplicated(runCount: number, minReplicates: number | unde
 }
 
 function columnsForOutcomes(outcomes: ResultTableInput["outcomes"]): string[] {
-  return outcomes.includes("cost_usd") ? outcomes : [...outcomes, "cost_usd"];
+  return gatheredByGroup(outcomes.includes("cost_usd") ? outcomes : [...outcomes, "cost_usd"]);
 }
 
 const ISO_YEAR_END = 4;

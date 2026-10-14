@@ -10,7 +10,7 @@ As a reader outside the lab, I want each RQ page to open with the question, what
 
 ## Built
 
-Implemented with the `exact-coding` skill; the specification is `src/RqHeader.spec.tsx` (25 tests, R1–R7) and the "Run list under a kata table" block in `src/ResultTable.spec.tsx` (R8), 28 new tests in all. `RqHeader.tsx` renders title, question, closed banner and the meta list (`Varies`, `Held fixed`, `Runs`, `Source`); the Runs line lives in `rq-runs-summary.ts` (ok runs only, UTC dates, coverage on ok runs), the run lists in `run-links.ts`. Astro 7 with `@astrojs/react` builds one page per exported RQ from `src/pages/rq/[id].astro`; the result table is a `client:load` island so its column sort works. `pnpm build` writes all 46 pages; the browser `<title>` was checked in the built HTML rather than by a test.
+Implemented with the `exact-coding` skill; the specification is `src/RqHeader.spec.tsx` (25 tests, R1–R7) and the "Run list under a kata table" block in `src/ResultTable.spec.tsx` (R8), 28 new tests in all. `RqHeader.tsx` renders title, question, closed banner and the meta list (`Varies`, `Held fixed`, `Runs`, `Source`; the first two since renamed `Factor(s)` and `Control(s)`, see [group order and header terms](2026-10-14_04_group-order-and-header-terms.md)); the Runs line lives in `rq-runs-summary.ts` (ok runs only, UTC dates, coverage on ok runs), the run lists in `run-links.ts`. Astro 7 with `@astrojs/react` builds one page per exported RQ from `src/pages/rq/[id].astro`; the result table is a `client:load` island so its column sort works. `pnpm build` writes all 46 pages; the browser `<title>` was checked in the built HTML rather than by a test.
 
 Deviations and side effects:
 

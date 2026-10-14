@@ -96,13 +96,13 @@ describe("Result table layout", () => {
     ]);
   });
 
-  // Rule 3: columns in frontmatter order, grouped
+  // Rule 3: columns in frontmatter order within their group, groups in order of first appearance
   it("orders columns as declared in outcomes: -- 4.13 -> starts verification_pct, tests_passing, tdd_discipline", () => {
     const outcomes = ["verification_pct", "tests_passing", "tdd_discipline"];
     expect(buildResultTables({ katas: ["claim-office-example-mapping"], cells: [], outcomes }))
       .toMatchObject([{ columns: [...outcomes, "cost_usd"] }]);
   });
-  it("spans one group header over each run of same-group columns -- 4.13 -> Correctness 2, TDD discipline 19, Code quality 6, Cost 3", () => {
+  it("spans one group header over each group's columns -- 4.13 -> Correctness 2, TDD discipline 19, Code quality 6, Cost 3", () => {
     const outcomes = [
       "verification_pct", "tests_passing",
       "tdd_discipline", "tdd_discipline_test_first", "tdd_discipline_step", "tdd_discipline_closure", "test_first_rate",
@@ -119,6 +119,12 @@ describe("Result table layout", () => {
       ] }]);
   });
 
+  it("gathers a group's columns under one header when outcomes interleave groups -- code_mass, production_loc, mccabe_max -> code_mass, mccabe_max, production_loc; Code quality 2, Size 1", () => {
+    expect(buildResultTables({ katas: ["game-of-life-example-mapping"], cells: [], outcomes: ["code_mass", "production_loc", "mccabe_max"] }))
+      .toMatchObject([{ columns: ["code_mass", "mccabe_max", "production_loc", "cost_usd"], groups: [
+        { name: "Code quality", colSpan: 2 }, { name: "Size", colSpan: 1 }, { name: "Cost", colSpan: 1 },
+      ] }]);
+  });
   it("spans its own group headers over size and test-quality columns -- production_loc, tests_total, mutation_score -> Size 2, Test quality 1", () => {
     const outcomes = ["production_loc", "tests_total", "mutation_score"];
     expect(buildResultTables({ katas: ["game-of-life-prose"], cells: [], outcomes }))

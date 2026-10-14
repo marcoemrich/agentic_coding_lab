@@ -59,10 +59,10 @@ export function RqHeader({ rq }: { rq: RqHeaderInput }) {
     <p className="question">{rq.question}</p>
     {rq.closed && <div className="banner closed"><strong>Closed.</strong> {rq.closed}</div>}
     <dl className="meta">
-      <dt>Varies</dt>
+      <dt title="Factors are what this RQ varies to compare its cells.">Factor(s)</dt>
       <dd>{Object.entries(rq.factors).map(([name, levels]) => <Factor key={name} name={name} levels={levels} />)}</dd>
       {rq.controls && <>
-        <dt>Held fixed</dt>
+        <dt title="Controls are what stays fixed in every run.">Control(s)</dt>
         <dd><ul>{Object.entries(rq.controls).map(([name, choice]) => <li key={name}>{name}: <ChoiceView name={name} choice={choice} /></li>)}</ul></dd>
       </>}
       <dt>Runs</dt>

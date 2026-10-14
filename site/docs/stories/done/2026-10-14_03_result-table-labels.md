@@ -13,4 +13,4 @@ Implemented with the `exact-coding` skill; five tests in `src/ResultTable.spec.t
 
 Test changes: the run-count test from [result table look](2026-10-14_02_result-table-look.md) now states its claim for a two-row head (the label header spans every header row, and label header plus metric headers match a data row's cells). Twenty-one row queries in three spec files read `tbody` rows through a local `bodyRows()` instead of "row 1 is the first data row". Five `getByText("82% ± 5")` queries check the cell's or row's text instead, because the value is now two text nodes. No expectation changed.
 
-Left open: group headers follow the RQ's outcome order, so a group can appear twice (RQ-model-quality: Code quality, Size, Code quality). Readable metric names instead of ids are not in the metric registry yet.
+Left open: group headers followed the RQ's outcome order, so a group could appear twice (RQ-model-quality: Code quality, Size, Code quality); fixed in [group order and header terms](2026-10-14_04_group-order-and-header-terms.md). Readable metric names instead of ids are not in the metric registry yet.

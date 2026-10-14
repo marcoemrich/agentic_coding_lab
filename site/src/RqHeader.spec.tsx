@@ -92,10 +92,18 @@ describe("RQ page header", () => {
     expect(container.textContent).not.toContain("Closed.");
   });
 
-  // R3 — Varies
-  it("lists a paired factor under 'Varies' as heading 'workflow × prompt' and one line per pair -- RQ-stability -> 'baseline-oneshot-v1-cc · prose' … 'exact-hybrid-v1-cc · example-mapping'", () => {
+  it("names the factors row 'Factor(s)' with the tooltip 'Factors are what this RQ varies to compare its cells.'", () => {
     render(<RqHeader rq={stability()} />);
-    const varies = metaValue("Varies");
+    expect(screen.getByText("Factor(s)", { selector: "dt" }).title).toBe("Factors are what this RQ varies to compare its cells.");
+  });
+  it("names the controls row 'Control(s)' with the tooltip 'Controls are what stays fixed in every run.'", () => {
+    render(<RqHeader rq={stability()} />);
+    expect(screen.getByText("Control(s)", { selector: "dt" }).title).toBe("Controls are what stays fixed in every run.");
+  });
+  // R3 — Factor(s)
+  it("lists a paired factor under 'Factor(s)' as heading 'workflow × prompt' and one line per pair -- RQ-stability -> 'baseline-oneshot-v1-cc · prose' … 'exact-hybrid-v1-cc · example-mapping'", () => {
+    render(<RqHeader rq={stability()} />);
+    const varies = metaValue("Factor(s)");
     expect(within(varies).getByText("workflow × prompt")).toBeTruthy();
     expect(lines(varies)).toEqual([
       "baseline-oneshot-v1-cc · prose",
@@ -110,38 +118,38 @@ describe("RQ page header", () => {
     render(<RqHeader rq={stability({ factors: { model_x_workflow: [
       { model: "gpt-5-6-sol-codex", workflow: { any: ["exact-ptdd-v1-pi", "exact-sol-v1.6-test-list-dimensions-pi"] } },
     ] } })} />);
-    expect(lines(metaValue("Varies"))).toEqual([
+    expect(lines(metaValue("Factor(s)"))).toEqual([
       "gpt-5-6-sol-codex · exact-ptdd-v1-pi / exact-sol-v1.6-test-list-dimensions-pi"]);
   });
   it("shows a plain factor on one line -- 'kata_base: claim-office, game-of-life'", () => {
     render(<RqHeader rq={stability({ factors: { kata_base: ["claim-office", "game-of-life"] } })} />);
-    expect(within(metaValue("Varies")).getByText("kata_base: claim-office, game-of-life")).toBeTruthy();
+    expect(within(metaValue("Factor(s)")).getByText("kata_base: claim-office, game-of-life")).toBeTruthy();
   });
   it("joins any: alternatives in a plain factor with ' / ' -- 'model: opus-5-no-thinking, opus-4-7-no-thinking / opus-4-7-portkey-no-thinking'", () => {
     render(<RqHeader rq={stability({ factors: { model: [
       "opus-5-no-thinking", { any: ["opus-4-7-no-thinking", "opus-4-7-portkey-no-thinking"] }] } })} />);
-    expect(within(metaValue("Varies"))
+    expect(within(metaValue("Factor(s)"))
       .getByText("model: opus-5-no-thinking, opus-4-7-no-thinking / opus-4-7-portkey-no-thinking")).toBeTruthy();
   });
   it("keeps the factors in frontmatter order -- RQ-architecture-axis-opus5 -> workflow × prompt, kata_base, model", () => {
     render(<RqHeader rq={architectureAxis()} />);
-    const factorTexts = Array.from(metaValue("Varies").children).map(factor => factor.textContent ?? "");
+    const factorTexts = Array.from(metaValue("Factor(s)").children).map(factor => factor.textContent ?? "");
     expect(factorTexts.map((text, index) => text.startsWith(["workflow × prompt", "kata_base:", "model:"][index])))
       .toEqual([true, true, true]);
   });
 
-  // R4 — Held fixed
-  it("lists the controls under 'Held fixed' as raw key: value lines -- 'model: opus-4-7-no-thinking', 'kata_base: game-of-life'", () => {
+  // R4 — Control(s)
+  it("lists the controls under 'Control(s)' as raw key: value lines -- 'model: opus-4-7-no-thinking', 'kata_base: game-of-life'", () => {
     render(<RqHeader rq={stability()} />);
-    expect(lines(metaValue("Held fixed"))).toEqual(["model: opus-4-7-no-thinking", "kata_base: game-of-life"]);
+    expect(lines(metaValue("Control(s)"))).toEqual(["model: opus-4-7-no-thinking", "kata_base: game-of-life"]);
   });
   it("joins any: alternatives in a control with ' / ' -- 'model: opus-4-7-no-thinking / opus-4-7-no-thinking-portkey'", () => {
     render(<RqHeader rq={stability({ controls: { model: { any: ["opus-4-7-no-thinking", "opus-4-7-no-thinking-portkey"] } } })} />);
-    expect(lines(metaValue("Held fixed"))).toEqual(["model: opus-4-7-no-thinking / opus-4-7-no-thinking-portkey"]);
+    expect(lines(metaValue("Control(s)"))).toEqual(["model: opus-4-7-no-thinking / opus-4-7-no-thinking-portkey"]);
   });
-  it("drops the 'Held fixed' row without controls -- RQ-architecture-axis-opus5", () => {
+  it("drops the 'Control(s)' row without controls -- RQ-architecture-axis-opus5", () => {
     render(<RqHeader rq={architectureAxis()} />);
-    expect(screen.queryByText("Held fixed")).toBeNull();
+    expect(screen.queryByText("Control(s)")).toBeNull();
   });
 
   // R5 — workflow links
@@ -162,7 +170,7 @@ describe("RQ page header", () => {
       controls: { workflow: "exact-hybrid-v1-cc" } })} />);
     expect(workflowLinks().map(link => link.textContent)).toEqual([
       "exact-ptdd-v1-cc", "baseline-inline-tdd-v1-cc", "exact-hybrid-v1-cc"]);
-    expect(within(metaValue("Varies")).getByText("exact-ptdd-v1-cc", { exact: false }).closest("div")?.textContent)
+    expect(within(metaValue("Factor(s)")).getByText("exact-ptdd-v1-cc", { exact: false }).closest("div")?.textContent)
       .toBe("workflow: exact-ptdd-v1-cc, baseline-inline-tdd-v1-cc");
   });
   it("does not link values that are not workflows -- prose, opus-4-7-no-thinking, game-of-life stay plain text", () => {
