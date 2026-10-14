@@ -33,6 +33,11 @@ REGISTRY = REPO_ROOT / "experiments" / "metrics-registry.yaml"
 OUT_DIR = REPO_ROOT / "site" / "src" / "data"
 
 
+# Frontmatter fields the RQ file carries only when they are set; the site
+# reads a missing key as "not set".
+OPTIONAL_FIELDS = ("controls", "closed")
+
+
 class ExportError(Exception):
     """Metadata the site needs is missing; the export writes nothing."""
 
@@ -69,12 +74,14 @@ def site_cell(cell: dict) -> dict:
                        for outcome, stats in cell["outcomes"].items()}}
 
 
-def rq_document(fm: dict, summary: dict) -> dict:
-    """One RQ in the shape the site's result table reads."""
+def rq_document(fm: dict, summary: dict, path: str) -> dict:
+    """One RQ in the shape the site's result table and page header read."""
     cells = summary["cells"]
-    return {
+    document = {
         "id": fm["id"],
+        "path": path,
         "question": fm["question"],
+        "factors": fm["factors"],
         "min_replicates": fm["min_replicates"],
         "outcomes": fm["outcomes"],
         "katas": list(dict.fromkeys(cell["kata"] for cell in cells)),
@@ -82,6 +89,14 @@ def rq_document(fm: dict, summary: dict) -> dict:
         "workflowStyles": {workflow: workflow_style(workflow)
                            for workflow in dict.fromkeys(cell["workflow"] for cell in cells)},
     }
+    document.update({field: fm[field] for field in OPTIONAL_FIELDS if fm.get(field)})
+    return document
+
+
+def repo_path(rq_dir: Path) -> str:
+    """A main RQ's directory relative to the repo root; main RQs always sit at
+    research/<subtree>/<dir>, so the path is its last three parts."""
+    return "/".join(rq_dir.parts[-3:])
 
 
 def main_rq_dirs(research_root: Path) -> list[Path]:
@@ -103,6 +118,13 @@ def check_registry(fm: dict, registry: dict, registry_name: str) -> None:
     for outcome in fm["outcomes"]:
         if outcome not in registry:
             raise ExportError(f"{fm['id']}: outcome {outcome} has no entry in {registry_name}")
+
+
+def check_factors(fm: dict) -> None:
+    """The page header states what the RQ varies; an RQ that varies nothing
+    has no table to explain."""
+    if not fm.get("factors"):
+        raise ExportError(f"{fm['id']}: no factors")
 
 
 def site_workflows(referenced: list[str], descriptions: dict, lineage_name: str) -> dict:
@@ -129,7 +151,9 @@ def export(rq_dirs: list[Path], lineage_path: Path, registry_path: Path,
     for rq_dir in rq_dirs:
         fm = agg.parse_frontmatter(rq_dir / "README.md")
         check_registry(fm, registry, registry_path.name)
-        documents.append(rq_document(fm, json.loads((rq_dir / "summary.json").read_text())))
+        check_factors(fm)
+        documents.append(rq_document(fm, json.loads((rq_dir / "summary.json").read_text()),
+                                     repo_path(rq_dir)))
     referenced = list(dict.fromkeys(cell["workflow"] for document in documents
                                     for cell in document["cells"]))
     workflows = site_workflows(referenced, workflow_descriptions(lineage_path),

@@ -28,12 +28,17 @@ def summary_cell(workflow="wf-a", kata="game-of-life-prose", outcomes=None, runs
             "outcomes": outcomes or {}}
 
 
-def make_rq(research, rq_id, cells, outcomes=("mccabe_max",), tree="questions-claude"):
+DEFAULT_DESIGN = "factors:\n  workflow: [wf-a]\n"
+
+
+def make_rq(research, rq_id, cells, outcomes=("mccabe_max",), tree="questions-claude",
+            design=DEFAULT_DESIGN):
+    """`design` is the frontmatter's factors/controls/closed block, verbatim."""
     rq_dir = research / tree / f"1.1-{rq_id.lower()}"
     rq_dir.mkdir(parents=True)
     listed = "".join(f"  - {o}\n" for o in outcomes)
     rq_dir.joinpath("README.md").write_text(
-        f"---\nid: {rq_id}\nquestion: Does it help?\nmin_replicates: 5\n"
+        f"---\nid: {rq_id}\nquestion: Does it help?\nmin_replicates: 5\n{design}"
         f"outcomes:\n{listed}---\n\nBody.\n")
     rq_dir.joinpath("summary.json").write_text(json.dumps({"cells": cells}))
     return rq_dir
@@ -153,6 +158,80 @@ def test_finds_only_main_rqs_under_the_questions_subtrees(lab):
     pi = make_rq(lab["research"], "RQ-p", [], tree="questions-pi")
     make_rq(lab["research"], "RQ-w", [], tree="workflow-dev")
     assert export_site_data().main_rq_dirs(lab["research"]) == [claude, pi]
+
+
+# Header fields (site/docs/stories/open/2026-10-14_01_export-header-fields.md).
+# Reading adopted for R3: a main RQ always lives at research/<subtree>/<dir>, so
+# its path is the last three parts of its directory.
+def exported(lab, design):
+    rq = make_rq(lab["research"], "RQ-x", [summary_cell()], design=design)
+    return json.loads((run_export(lab, [rq]) / "rq" / "RQ-x.json").read_text())
+
+
+def test_carries_the_rq_directory_relative_to_the_repo_root(lab):
+    assert exported(lab, DEFAULT_DESIGN)["path"] == "research/questions-claude/1.1-rq-x"
+
+
+def test_passes_a_plain_factor_through(lab):
+    design = "factors:\n  workflow: [wf-a, wf-b]\n"
+    assert exported(lab, design)["factors"] == {"workflow": ["wf-a", "wf-b"]}
+
+
+def test_passes_paired_factors_and_any_lists_through_without_comments(lab):
+    design = ("factors:\n"
+              "  workflow_x_prompt:\n"
+              "    - {workflow: wf-a, prompt: example-mapping}  # baseline\n"
+              "  model:\n"
+              "    - opus-5-no-thinking\n"
+              "    - {any: [opus-4-7-no-thinking, opus-4-7-portkey-no-thinking]}\n")
+    assert exported(lab, design)["factors"] == {
+        "workflow_x_prompt": [{"workflow": "wf-a", "prompt": "example-mapping"}],
+        "model": ["opus-5-no-thinking",
+                  {"any": ["opus-4-7-no-thinking", "opus-4-7-portkey-no-thinking"]}]}
+
+
+def test_passes_the_controls_through(lab):
+    design = (DEFAULT_DESIGN
+              + "controls:\n  model: opus-4-7-no-thinking\n  kata_base: game-of-life\n")
+    assert exported(lab, design)["controls"] == {
+        "model": "opus-4-7-no-thinking", "kata_base": "game-of-life"}
+
+
+def test_carries_the_closed_reason(lab):
+    reason = "gap accepted — one game-of-life cell holds 9 of 10 runs"
+    assert exported(lab, DEFAULT_DESIGN + f'closed: "{reason}"\n')["closed"] == reason
+
+
+def test_leaves_closed_out_when_not_set(lab):
+    assert "closed" not in exported(lab, DEFAULT_DESIGN)
+
+
+def test_leaves_empty_controls_out(lab):
+    assert "controls" not in exported(lab, DEFAULT_DESIGN + "controls:\n")
+
+
+def test_leaves_undeclared_controls_out(lab):
+    assert "controls" not in exported(lab, DEFAULT_DESIGN)
+
+
+def test_stops_on_an_rq_without_factors(lab):
+    rq = make_rq(lab["research"], "RQ-x", [summary_cell()], design="")
+    module = export_site_data()
+    with pytest.raises(module.ExportError, match="^RQ-x: no factors$"):
+        module.export([rq], lab["lineage"], lab["registry"], lab["out"])
+
+
+def test_the_command_line_reports_missing_factors_and_writes_nothing(lab, monkeypatch, capsys):
+    make_rq(lab["research"], "RQ-a", [summary_cell()])
+    make_rq(lab["research"], "RQ-x", [summary_cell()], design="")
+    module = export_site_data()
+    monkeypatch.setattr(module, "RESEARCH_DIR", lab["research"])
+    monkeypatch.setattr(module, "LINEAGE", lab["lineage"])
+    monkeypatch.setattr(module, "REGISTRY", lab["registry"])
+    monkeypatch.setattr(module, "OUT_DIR", lab["out"])
+    assert module.main() == 1
+    assert capsys.readouterr().err == "export-site-data: RQ-x: no factors\n"
+    assert not lab["out"].exists()
 
 
 # R8 — stop at the first missing metadata and write nothing

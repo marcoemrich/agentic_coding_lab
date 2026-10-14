@@ -2,7 +2,7 @@
 
 Status: open
 Source: [results-site decisions](../../open-questions.md#rq-page).
-Depends on: [export the header fields](2026-10-14_01_export-header-fields.md) (factors, controls, `closed`, RQ directory), sliced out during the mapping.
+Depends on: [export the header fields](../done/2026-10-14_01_export-header-fields.md) (factors, controls, `closed`, RQ directory), sliced out during the mapping.
 
 ## Story
 
@@ -96,4 +96,4 @@ Under each kata table, one flat list of all of that table's runs, collapsed by d
 - Workflow links are emitted now; their targets arrive with the [workflow page](2026-10-11_09_workflow-page.md).
 - The coverage in the Runs line overlaps with the [RQ index](2026-10-11_07_rq-index.md); accepted.
 - Labels follow the prototype: `Varies`, `Held fixed`, `Runs`, `Source`.
-- The export lacks factors, controls, `closed` and the RQ directory; adding them is a story of its own that 06 depends on ([export the header fields](2026-10-14_01_export-header-fields.md)).
+- The export lacks factors, controls, `closed` and the RQ directory; adding them is a story of its own that 06 depends on ([export the header fields](../done/2026-10-14_01_export-header-fields.md)).
