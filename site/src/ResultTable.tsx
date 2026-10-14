@@ -4,7 +4,9 @@ import { formatValue, type ValueCell } from "./format-value.js";
 import { metricDirection, type MetricDirection } from "./metric-direction.js";
 import { boundaryExplanation, crossesTestListBoundary, hasMixedWorkflowStyles, workflowStyleFor } from "./metric-comparability.js";
 import { correctnessGateReason } from "./external-correctness-eligibility.js";
+import { orderedRunLinks } from "./run-links.js";
 import { trophyWinners } from "./trophy.js";
+import { workflowEntryHref } from "./workflow-link.js";
 
 const directionDisplay: Record<MetricDirection, { mark: string; meaning: string }> = {
   higher: { mark: "↑", meaning: "higher is better" },
@@ -17,10 +19,6 @@ type ColumnSort = { metric: string; clicks: number };
 
 function nextColumnSort(previous: ColumnSort | undefined, metric: string): ColumnSort {
   return { metric, clicks: previous?.metric === metric ? previous.clicks + 1 : 1 };
-}
-
-function workflowEntryHref(workflow: string): string {
-  return `/workflows#${encodeURIComponent(workflow)}`;
 }
 
 function isNotRun(row: ReturnType<typeof buildResultTables>[number]["rows"][number]): boolean {
@@ -68,9 +66,9 @@ function MetricHeader({ metric, onSort }: { metric: string; onSort: (metric: str
 
 function RunProvenance({ rows }: { rows: ReturnType<typeof buildResultTables>[number]["rows"] }) {
   return <details>
-    <summary>Runs</summary>
-    <ul>{rows.flatMap(row => row.runLinks ?? []).map(run =>
-      <li key={run.id}><a href={run.href}>{run.id}</a></li>
+    <summary>Runs behind this table</summary>
+    <ul>{orderedRunLinks(rows).map(run =>
+      <li key={run.id}><a href={run.href}>{run.id}</a>{run.exitReason && ` (${run.exitReason})`}</li>
     )}</ul>
   </details>;
 }

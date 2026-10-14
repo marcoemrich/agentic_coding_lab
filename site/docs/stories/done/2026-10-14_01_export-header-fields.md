@@ -1,8 +1,8 @@
 # Export the header fields
 
 Status: done
-Source: sliced out of the [RQ page header](../open/2026-10-11_06_rq-page-header.md) mapping on 2026-10-14.
-Blocked: [RQ page header](../open/2026-10-11_06_rq-page-header.md).
+Source: sliced out of the [RQ page header](2026-10-11_06_rq-page-header.md) mapping on 2026-10-14.
+Blocked: [RQ page header](2026-10-11_06_rq-page-header.md).
 
 ## Story
 

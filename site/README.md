@@ -1,5 +1,13 @@
 # Results site
 
+## Pages
+
+```bash
+python3 ../experiments/export-site-data.py   # writes src/data/ (needs PyYAML; or uv run --project ../experiments)
+pnpm dev                                     # dev server, pages at /rq/<id>/
+pnpm build                                   # static pages under dist/
+```
+
 ## Checks
 
 ```bash

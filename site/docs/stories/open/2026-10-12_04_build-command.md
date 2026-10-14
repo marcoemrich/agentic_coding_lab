@@ -2,7 +2,7 @@
 
 Status: open
 Source: [results-site decisions](../../open-questions.md#pipeline), split from the site data export on 2026-10-12.
-Depends on: [RQ page header](2026-10-11_06_rq-page-header.md) (the first page, which sets up Astro), [stable aggregator output](../done/2026-10-12_09_stable-aggregator-output.md).
+Depends on: [RQ page header](../done/2026-10-11_06_rq-page-header.md) (the first page, which sets up Astro), [stable aggregator output](../done/2026-10-12_09_stable-aggregator-output.md).
 
 ## Story
 

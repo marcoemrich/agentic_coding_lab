@@ -1,0 +1,22 @@
+---
+import Page from "../../layouts/Page.astro";
+import { ResultTable } from "../../ResultTable.tsx";
+import { RqHeader, type RqHeaderInput } from "../../RqHeader.tsx";
+import type { ResultTableInput } from "../../result-table.ts";
+import { rqPageTitle } from "../../rq-page-title.ts";
+
+type RqData = RqHeaderInput & ResultTableInput;
+
+export function getStaticPaths() {
+  const files = import.meta.glob<RqData>("../../data/rq/*.json", { eager: true, import: "default" });
+  return Object.values(files).map(rq => ({ params: { id: rq.id }, props: { rq } }));
+}
+
+const { rq } = Astro.props as { rq: RqData };
+---
+<Page title={rqPageTitle(rq.id)}>
+  <article>
+    <RqHeader rq={rq} />
+    <ResultTable client:load input={rq} />
+  </article>
+</Page>

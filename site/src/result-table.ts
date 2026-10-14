@@ -5,6 +5,7 @@ import { workflowStyleFor } from "./metric-comparability.js";
 import type { ValueCell } from "./format-value.js";
 import { rqVaryingLabelColumnsFor } from "./rq-factor-variation.js";
 import { labelsFor } from "./row-labels.js";
+import { listedRunLinksFor } from "./run-links.js";
 
 type AggregatedMetric = ValueCell | { value?: number; n?: number; sd?: number };
 
@@ -50,17 +51,6 @@ function runDateSpanFor(cell: ResultTableInput["cells"][number]): string | undef
   const dates = (cell.runs ?? []).flatMap(run => run.started_at ? [run.started_at.slice(0, ISO_DATE_END)] : []).sort();
   if (!dates.length) return undefined;
   return formatRunDateSpan(dates[0], dates.at(-1)!);
-}
-
-function githubRunDirectoryHref(runId: string): string {
-  return `https://github.com/marcoemrich/agentic_coding_lab/tree/main/experiments/runs/${encodeURIComponent(runId)}`;
-}
-
-function listedRunLinksFor(cell: ResultTableInput["cells"][number]) {
-  return cell.runs?.length ? cell.runs.map(run => ({
-    id: run.id,
-    href: githubRunDirectoryHref(run.id),
-  })) : undefined;
 }
 
 function resultRowFor(cell: ResultTableInput["cells"][number], labelColumns: ReturnType<typeof rqVaryingLabelColumnsFor>, styles: ResultTableInput["workflowStyles"]) {
