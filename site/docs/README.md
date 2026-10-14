@@ -99,7 +99,7 @@ marked as such. Done stories have no Example Mapping section.
   - [Findings section](stories/open/2026-10-11_08_findings-section.md)
   - [Workflow page](stories/open/2026-10-11_09_workflow-page.md)
 - **Open stories from the site data export** (2026-10-12).
-  - [Build command](stories/open/2026-10-12_04_build-command.md) — unblocked; Example Mapping pending
+  - [Build command](stories/open/2026-10-12_04_build-command.md) — mapped, next to implement
 
 ## Later
 
