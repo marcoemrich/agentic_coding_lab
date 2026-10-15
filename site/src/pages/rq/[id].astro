@@ -4,12 +4,13 @@ import { ResultTable } from "../../ResultTable.tsx";
 import { RqHeader, type RqHeaderInput } from "../../RqHeader.tsx";
 import type { ResultTableInput } from "../../result-table.ts";
 import { rqPageTitle } from "../../rq-page-title.ts";
+import { rqsWithPages } from "../../rq-pages.ts";
 
 type RqData = RqHeaderInput & ResultTableInput;
 
 export function getStaticPaths() {
   const files = import.meta.glob<RqData>("../../data/rq/*.json", { eager: true, import: "default" });
-  return Object.values(files).map(rq => ({ params: { id: rq.id }, props: { rq } }));
+  return rqsWithPages(Object.values(files)).map(rq => ({ params: { id: rq.id }, props: { rq } }));
 }
 
 const { rq } = Astro.props as { rq: RqData };

@@ -1,0 +1,10 @@
+---
+import Page from "../layouts/Page.astro";
+import { RqIndex } from "../RqIndex.tsx";
+import type { IndexRq } from "../rq-index.ts";
+
+const rqs = Object.values(import.meta.glob<IndexRq>("../data/rq/*.json", { eager: true, import: "default" }));
+---
+<Page title="Agentic Coding Lab" current="questions">
+  <RqIndex rqs={rqs} />
+</Page>

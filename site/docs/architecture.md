@@ -26,7 +26,7 @@ flowchart LR
   end
   subgraph site["Site (TypeScript, site/)"]
     data["site/src/data/*.json<br/>(gitignored)"]
-    astro["Astro pages + React islands<br/>(planned)"]
+    astro["Astro pages + React islands"]
     dist["site/dist/<br/>(gitignored)"]
   end
   pages[("gh-pages branch<br/>marcoemrich.github.io/agentic_coding_lab")]
@@ -54,7 +54,7 @@ Nothing runs in CI. Both steps run on the host, on the user's explicit call.
 ```mermaid
 sequenceDiagram
   actor U as User
-  participant B as build (planned)
+  participant B as build (build-site.py)
   participant A as aggregate-by-query.py
   participant E as export-site-data.py
   participant S as Astro build
@@ -90,7 +90,7 @@ numbers in that commit's `runs.csv` / `summary.md`.
 | Workflow descriptions | `experiments/workflows/LINEAGE.yaml` → `description:` | by hand | yes | built |
 | Metric registry | `experiments/metrics-registry.yaml`: group, direction, scale, comparability flags, a one-sentence description for the header tooltip; read by the export and imported by the site. Covers every outcome a main RQ declares; only consolidated metrics are rated | by hand | yes | built |
 | Site data | `site/src/data/rq/<rq-id>.json`, `workflows.json` | `export-site-data.py` | no | built |
-| Site build | `site/dist/` | Astro | no | planned |
+| Site build | `site/dist/` | Astro | no | built |
 | Prototype | `site/prototype/` (approved look, self-contained HTML) | `site/prototype/extract.py` | yes | built |
 
 ## Directory layout
@@ -109,8 +109,8 @@ site/
 
 ## UI
 
-The tests in `site/src/*.spec.ts(x)` are the specification (82 tests, four stories: layout,
-value formatting, gaps and coverage, trophies and comparability).
+The tests in `site/src/*.spec.ts(x)` are the specification (148 tests; one done story each
+under `docs/stories/done/`).
 
 ```mermaid
 flowchart TD
@@ -145,14 +145,23 @@ flowchart TD
 aggregated `values`, `min_replicates`, `workflowStyles`). Pure functions do the work;
 the component holds only the sort state.
 
-### Pages (planned)
+### Pages
+
+The index and the RQ pages are built; findings and the workflow page are planned.
 
 ```mermaid
 flowchart LR
-  idx["/ — RQ index<br/>grouped by harness subtree"] --> rqp["/rq/&lt;rq-id&gt;<br/>header, ResultTable per kata, findings"]
-  rqp --> wf["/workflows#&lt;name&gt;<br/>workflow profiles"]
+  idx["/ — RQ index<br/>grouped by harness subtree"] --> rqp["/rq/&lt;rq-id&gt;<br/>header, ResultTable per kata, findings (planned)"]
+  rqp --> wf["/workflows#&lt;name&gt;<br/>workflow profiles (planned)"]
   rqp --> gh["GitHub: RQ dir, run dirs"]
 ```
+
+`pages/index.astro` renders `RqIndex` (markup) over `rq-index.ts` (groups by subtree, order
+by chapter label); `pages/rq/[id].astro` builds a page only for an RQ that `hasPage()` in
+`rq-pages.ts` admits — one with runs. `layouts/Page.astro` puts `TopBar` (site name, nav,
+data stamp) on every page. The run facts — ok runs, coverage, span — are one implementation
+in `rq-runs-summary.ts`, shared by `RqHeader`, the index and the stamp; page URLs live in
+`rq-link.ts`.
 
 Astro renders each page to static HTML; only interactive parts (`ResultTable` sorting,
 collapsible sections) hydrate as React islands.

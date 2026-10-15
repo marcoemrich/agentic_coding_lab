@@ -15,6 +15,10 @@
     Caution: once it is a metric, it is gameable via the workflow prompt (README "Compliance metrics"),
     and "a reduce chain is better than a clear loop" is debatable on the merits.
 
+* Probably drop the RQ `closed:` field altogether, and with it the results site's
+  closed banner on the RQ page (2026-10-15, while mapping the RQ index, which
+  shows no closed badge).
+
 ## Use Architecture Concepts
 
 * Quality Attributes

@@ -1,8 +1,11 @@
 ---
 import "../styles/site.css";
+import { TopBar, type TopBarProps } from "../TopBar.tsx";
 
-interface Props { title: string }
-const { title } = Astro.props;
+interface Props { title: string; current?: TopBarProps["current"] }
+const { title, current } = Astro.props;
+const rqs = Object.values(import.meta.glob<TopBarProps["rqs"][number]>("../data/rq/*.json", { eager: true, import: "default" }));
+const builtAt = new Date();
 ---
 <!doctype html>
 <html lang="en">
@@ -15,6 +18,9 @@ const { title } = Astro.props;
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Public+Sans:wght@400;500;600&display=swap" />
   </head>
   <body>
-    <main class="wrap"><slot /></main>
+    <main class="wrap">
+      <TopBar current={current} builtAt={builtAt} rqs={rqs} />
+      <slot />
+    </main>
   </body>
 </html>

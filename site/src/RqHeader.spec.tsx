@@ -199,18 +199,9 @@ describe("RQ page header", () => {
     render(<RqHeader rq={stability({ cells })} />);
     expect(metaValue("Runs").textContent).toBe("59 runs, 2026-05-14 → 2026-05-15; 5 of 6 cells at 10 replicates");
   });
-  it("shows a single date when all ok runs fall on one day -- 2026-08-10", () => {
-    render(<RqHeader rq={stability({ cells: [{ runs: runs(10, "2026-08-10T15:25:37+00:00") }] })} />);
-    expect(metaValue("Runs").textContent).toBe("10 runs, 2026-08-10; 1 of 1 cells at 10 replicates");
-  });
   it("takes the UTC date of started_at -- 2026-08-11T01:00:00+02:00 -> 2026-08-10", () => {
     render(<RqHeader rq={stability({ cells: [{ runs: runs(2, "2026-08-11T01:00:00+02:00") }] })} />);
-    expect(metaValue("Runs").textContent).toBe("2 runs, 2026-08-10; 0 of 1 cells at 10 replicates");
-  });
-  it("says '1 run' for a single ok run -- '1 run, 2026-08-10; 0 of 6 cells at 10 replicates'", () => {
-    const cells = [{ runs: runs(1, "2026-08-10T15:25:37+00:00") }, ...Array.from({ length: 5 }, () => ({ runs: [] }))];
-    render(<RqHeader rq={stability({ cells })} />);
-    expect(metaValue("Runs").textContent).toBe("1 run, 2026-08-10; 0 of 6 cells at 10 replicates");
+    expect(metaValue("Runs").textContent).toBe("2 runs, 2026-08-10 → 2026-08-10; 0 of 1 cells at 10 replicates");
   });
   it("says 'no runs yet' for an RQ without runs -- 'no runs yet; 0 of 6 cells at 10 replicates'", () => {
     render(<RqHeader rq={stability({ cells: Array.from({ length: 6 }, () => ({ runs: [] })) })} />);
@@ -220,6 +211,17 @@ describe("RQ page header", () => {
     const cells = [{ runs: runs(2, "2026-08-10T15:25:37+00:00", "timeout") }, ...Array.from({ length: 5 }, () => ({ runs: [] }))];
     render(<RqHeader rq={stability({ cells })} />);
     expect(metaValue("Runs").textContent).toBe("no ok runs yet; 0 of 6 cells at 10 replicates");
+  });
+
+  // Story 07, rule 7 — the header follows the index's span format and singular
+  it("repeats a single day in the span -- '10 runs, 2026-08-10 → 2026-08-10; 1 of 1 cells at 10 replicates'", () => {
+    render(<RqHeader rq={stability({ cells: [{ runs: runs(10, "2026-08-10T15:25:37+00:00") }] })} />);
+    expect(metaValue("Runs").textContent).toBe("10 runs, 2026-08-10 → 2026-08-10; 1 of 1 cells at 10 replicates");
+  });
+  it("has no singular -- '1 runs, 2026-08-10 → 2026-08-10; 0 of 6 cells at 10 replicates'", () => {
+    const cells = [{ runs: runs(1, "2026-08-10T15:25:37+00:00") }, ...Array.from({ length: 5 }, () => ({ runs: [] }))];
+    render(<RqHeader rq={stability({ cells })} />);
+    expect(metaValue("Runs").textContent).toBe("1 runs, 2026-08-10 → 2026-08-10; 0 of 6 cells at 10 replicates");
   });
 
   // R7 — Source
