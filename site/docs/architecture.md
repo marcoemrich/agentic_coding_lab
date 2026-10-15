@@ -91,7 +91,7 @@ numbers in that commit's `runs.csv` / `summary.md`.
 | Findings | `<rq-dir>/findings.md` (shown collapsed, "AI-generated") | `/run-rq`, `/reanalyze` | yes | built |
 | Workflow descriptions | `experiments/workflows/LINEAGE.yaml` → `description:` | by hand | yes | built |
 | Metric registry | `experiments/metrics-registry.yaml`: group, direction, scale, comparability flags, a one-sentence description for the header tooltip; read by the export and imported by the site. Covers every outcome a main RQ declares; only consolidated metrics are rated | by hand | yes | built |
-| Site data | `site/src/data/rq/<rq-id>.json`, `workflows.json` | `export-site-data.py` | no | built |
+| Site data | `site/src/data/rq/<rq-id>.json`, `workflows.json` (per referenced workflow: description, arm, harness, status, category, version, parent, style; LINEAGE order) | `export-site-data.py` | no | built |
 | Site build | `site/dist/` | Astro | no | built |
 | Prototype | `site/prototype/` (approved look, self-contained HTML) | `site/prototype/extract.py` | yes | built |
 
@@ -111,7 +111,7 @@ site/
 
 ## UI
 
-The tests in `site/src/*.spec.ts(x)` are the specification (172 tests; one done story each
+The tests in `site/src/*.spec.ts(x)` are the specification (205 tests; one done story each
 under `docs/stories/done/`).
 
 ```mermaid
@@ -149,13 +149,14 @@ the component holds only the sort state.
 
 ### Pages
 
-The index, the RQ pages and their findings section are built; the workflow page is planned.
+The index, the RQ pages with their findings section, the workflow page and the concept page are built.
 
 ```mermaid
 flowchart LR
   idx["/ — RQ index<br/>grouped by harness subtree"] --> rqp["/rq/&lt;rq-id&gt;<br/>header, ResultTable per kata, findings"]
-  rqp --> wf["/workflows#&lt;name&gt;<br/>workflow profiles (planned)"]
+  rqp --> wf["/workflows#&lt;name&gt;<br/>workflow profiles in a lineage tree"]
   rqp --> gh["GitHub: RQ dir, run dirs"]
+  wf --> cp["/concepts#&lt;concept&gt;<br/>Predictive TDD, EXACT Coding"]
 ```
 
 `pages/index.astro` renders `RqIndex` (markup) over `rq-index.ts` (groups by subtree, order
@@ -166,7 +167,10 @@ exported into its JSON, rendered by `render-findings.ts` (`marked`, GitHub headi
 links pointed at the site by `findings-links.ts`; `open-findings.ts` opens the section for an
 address that points into it. The run facts — ok runs, coverage, span — are one implementation
 in `rq-runs-summary.ts`, shared by `RqHeader`, the index and the stamp; page URLs live in
-`rq-link.ts`.
+`site-links.ts`. `pages/workflows.astro` renders `WorkflowPage` over `workflows.json`;
+`workflow-catalog.ts` orders it — one section per LINEAGE category, children beneath their
+parent, siblings by version and harness. `pages/concepts.astro` renders the hand-written
+`ConceptPage`, which EXACT Coding profiles link to.
 
 Astro renders each page to static HTML; only interactive parts (`ResultTable` sorting,
 collapsible sections) hydrate as React islands.

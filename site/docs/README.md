@@ -102,10 +102,10 @@ marked as such. Done stories have no Example Mapping section.
   - [Sort reset](stories/done/2026-10-14_06_sort-reset.md) — the label header restores the RQ's order; the sorted column is marked
   - [RQ index](stories/done/2026-10-11_07_rq-index.md) — the start page, grouped by harness subtree; a top bar with the data stamp on every page
   - [Findings section](stories/done/2026-10-11_08_findings-section.md) — `findings.md` collapsed beneath the tables, behind an "AI-generated" banner; links resolved to the site
+  - [Workflow page](stories/done/2026-10-11_09_workflow-page.md) — a profile per workflow in a lineage tree, linked from every table; a concept page for Predictive TDD and EXACT Coding
 - **Done, publishing:**
   - [Deploy](stories/done/2026-10-15_01_deploy.md) — `pnpm deploy:site` to GitHub Pages; one base path everywhere, the commit in the stamp
-- **Open stories for the first iteration:**
-  - [Workflow page](stories/open/2026-10-11_09_workflow-page.md)
+- **First iteration complete.** No open stories.
 
 ## Later
 

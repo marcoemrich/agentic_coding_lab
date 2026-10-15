@@ -111,11 +111,11 @@ def main_rq_dirs(research_root: Path) -> list[Path]:
     return sorted(readme.parent for readme in research_root.glob("questions-*/*/README.md"))
 
 
-def workflow_descriptions(lineage_path: Path) -> dict[str, str | None]:
-    """Every workflow in LINEAGE.yaml with its outsider description, if any."""
+def lineage_entries(lineage_path: Path) -> dict[str, dict]:
+    """Every workflow in LINEAGE.yaml with its entry and category, in file order."""
     lineage = yaml.safe_load(lineage_path.read_text())
-    return {name: (entry or {}).get("description")
-            for category in lineage["categories"].values()
+    return {name: {**(entry or {}), "category": category_name}
+            for category_name, category in lineage["categories"].items()
             for name, entry in (category.get("workflows") or {}).items()}
 
 
@@ -133,12 +133,27 @@ def check_factors(fm: dict) -> None:
         raise ExportError(f"{fm['id']}: no factors")
 
 
-def site_workflows(referenced: list[str], descriptions: dict, lineage_name: str) -> dict:
-    """workflows.json: the description of every workflow a table names."""
+# What a profile on the workflow page shows of a LINEAGE entry; the site decides
+# order, links and labels. A root has no parent, a vendored workflow no version;
+# the rest must be there, or the page would drop a trait silently.
+REQUIRED_FIELDS = ("description", "arm", "harness", "status")
+PROFILE_FIELDS = (*REQUIRED_FIELDS, "category", "version", "parent")
+
+
+def check_workflows(referenced: list[str], entries: dict, lineage_name: str) -> None:
+    """Every workflow a table names needs a full profile on the workflow page."""
     for name in referenced:
-        if not descriptions.get(name):
-            raise ExportError(f"workflow {name} has no description in {lineage_name}")
-    return {name: {"description": descriptions[name]} for name in sorted(referenced)}
+        for field in REQUIRED_FIELDS:
+            if not entries.get(name, {}).get(field):
+                raise ExportError(f"workflow {name} has no {field} in {lineage_name}")
+
+
+def site_workflows(referenced: list[str], entries: dict) -> dict:
+    """workflows.json: the profile of every workflow a table names, in
+    LINEAGE.yaml's order, which the page keeps for its roots."""
+    return {name: {**{field: entries[name].get(field) for field in PROFILE_FIELDS},
+                   "style": workflow_style(name)}
+            for name in entries if name in referenced}
 
 
 def write_site_data(out_dir: Path, documents: list[dict], workflows: dict) -> None:
@@ -166,8 +181,9 @@ def export(rq_dirs: list[Path], lineage_path: Path, registry_path: Path,
         documents.append(document)
     referenced = list(dict.fromkeys(cell["workflow"] for document in documents
                                     for cell in document["cells"]))
-    workflows = site_workflows(referenced, workflow_descriptions(lineage_path),
-                               lineage_path.name)
+    entries = lineage_entries(lineage_path)
+    check_workflows(referenced, entries, lineage_path.name)
+    workflows = site_workflows(referenced, entries)
     write_site_data(out_dir, documents, workflows)
 
 

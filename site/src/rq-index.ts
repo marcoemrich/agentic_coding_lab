@@ -1,3 +1,4 @@
+import { byDottedNumber } from "./dotted-number.js";
 import type { RunCell } from "./rq-runs-summary.js";
 
 // The index's order: RQs grouped by harness subtree, then by chapter label.
@@ -20,14 +21,8 @@ function rqLocation(rq: IndexRq): { subtree: string; chapter: string } {
 }
 
 // The chapter label (`4.10` in `4.10-test-list-dimensions-opus-native`) orders RQs; it is no id.
-function chapterParts(rq: IndexRq): number[] {
-  return rqLocation(rq).chapter.split(".").map(Number);
-}
-
 function byChapter(a: IndexRq, b: IndexRq): number {
-  const [left, right] = [chapterParts(a), chapterParts(b)];
-  const differing = left.findIndex((part, index) => part !== right[index]);
-  return differing === -1 ? left.length - right.length : left[differing] - (right[differing] ?? 0);
+  return byDottedNumber(rqLocation(a).chapter, rqLocation(b).chapter);
 }
 
 // The index groups RQs by harness subtree, in a fixed order; a subtree without RQs is left out.

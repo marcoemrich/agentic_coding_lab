@@ -1,0 +1,8 @@
+---
+import Page from "../layouts/Page.astro";
+import { WorkflowPage } from "../WorkflowPage.tsx";
+import workflows from "../data/workflows.json";
+---
+<Page title="Workflows — Agentic Coding Lab" current="workflows">
+  <WorkflowPage workflows={workflows} />
+</Page>

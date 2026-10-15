@@ -50,10 +50,18 @@ def lab(tmp_path):
     lineage = tmp_path / "LINEAGE.yaml"
     lineage.write_text(
         "categories:\n  baselines:\n    workflows:\n"
-        "      wf-a: {description: \"Workflow A.\"}\n"
-        "      wf-b: {description: \"Workflow B.\"}\n"
-        "      wf-unused: {description: \"Never referenced.\"}\n"
-        "      wf-bare: {arm: none}\n")
+        "      wf-a: {arm: oneshot, harness: cc, status: branch, parent: null,"
+        " description: \"Workflow A.\"}\n"
+        "      wf-b: {arm: inline-tdd, version: \"1.1\", harness: pi, status: trunk,"
+        " parent: wf-a, description: \"Workflow B.\"}\n"
+        "      wf-unused: {arm: oneshot, harness: cc, status: branch,"
+        " description: \"Never referenced.\"}\n"
+        "      wf-bare: {arm: none}\n"
+        "  exact-coding/sol:\n    workflows:\n"
+        "      wf-c: {arm: sol, version: \"1\", harness: pi, status: trunk,"
+        " description: \"Workflow C.\"}\n"
+        "      wf-0: {arm: sol, version: \"2\", harness: cc, status: branch,"
+        " description: \"Listed last, named first.\"}\n")
     registry = tmp_path / "metrics-registry.yaml"
     registry.write_text(
         "mccabe_max: {group: Code quality, direction: lower}\n"
@@ -144,8 +152,68 @@ def test_writes_the_description_of_every_referenced_workflow(lab):
     first = make_rq(lab["research"], "RQ-a", [summary_cell("wf-a")])
     second = make_rq(lab["research"], "RQ-b", [summary_cell("wf-b"), summary_cell("wf-a")])
     workflows = json.loads((run_export(lab, [first, second]) / "workflows.json").read_text())
-    assert workflows == {"wf-a": {"description": "Workflow A."},
-                         "wf-b": {"description": "Workflow B."}}
+    assert {name: entry["description"] for name, entry in workflows.items()} == {
+        "wf-a": "Workflow A.", "wf-b": "Workflow B."}
+
+
+# Workflow page (site/docs/stories/open/2026-10-11_09_workflow-page.md).
+# Reading adopted: the export carries each referenced workflow's LINEAGE traits
+# as written; the site decides order, links and labels. Keys follow LINEAGE.yaml,
+# whose order is the order of roots on the page.
+def exported_workflows(lab, names):
+    rq = make_rq(lab["research"], "RQ-x", [summary_cell(name) for name in names])
+    return json.loads((run_export(lab, [rq]) / "workflows.json").read_text())
+
+
+def test_writes_the_traits_of_a_referenced_workflow(lab):
+    """Rule 2 and 3: wf-a -> arm oneshot, harness cc, status branch, category
+    baselines, no version, no parent."""
+    entry = exported_workflows(lab, ["wf-a"])["wf-a"]
+    assert {key: entry[key] for key in ("arm", "harness", "status", "category", "version", "parent")} == {
+        "arm": "oneshot", "harness": "cc", "status": "branch", "category": "baselines",
+        "version": None, "parent": None}
+
+
+def test_writes_the_version_and_parent_as_written(lab):
+    """Rule 3 and 5: wf-b -> version '1.1', parent wf-a."""
+    entry = exported_workflows(lab, ["wf-b"])["wf-b"]
+    assert (entry["version"], entry["parent"]) == ("1.1", "wf-a")
+
+
+def test_writes_each_workflows_test_list_style(lab, monkeypatch):
+    """Rule 2: wf-a with a test list -> 'test list'; wf-b without -> 'ad hoc'."""
+    rq = make_rq(lab["research"], "RQ-x", [summary_cell("wf-a"), summary_cell("wf-b")])
+    module = export_site_data()
+    monkeypatch.setattr(module.agg, "uses_test_list", {"wf-a": True, "wf-b": False}.get)
+    module.export([rq], lab["lineage"], lab["registry"], lab["out"])
+    workflows = json.loads((lab["out"] / "workflows.json").read_text())
+    assert (workflows["wf-a"]["style"], workflows["wf-b"]["style"]) == ("test list", "ad hoc")
+
+
+def test_names_the_category_of_each_workflow(lab):
+    """Rule 4 and 6: wf-c -> category 'exact-coding/sol'."""
+    assert exported_workflows(lab, ["wf-c"])["wf-c"]["category"] == "exact-coding/sol"
+
+
+def test_writes_workflows_in_lineage_order(lab):
+    """Rule 5: referenced as wf-0, wf-c, wf-b, wf-a -> keys wf-a, wf-b, wf-c, wf-0,
+    as LINEAGE.yaml lists them (not by name, not by first reference)."""
+    assert list(exported_workflows(lab, ["wf-0", "wf-c", "wf-b", "wf-a"])) == [
+        "wf-a", "wf-b", "wf-c", "wf-0"]
+
+
+@pytest.mark.parametrize("trait", ["arm", "harness", "status"])
+def test_stops_on_a_workflow_without_a_trait(lab, trait):
+    """Rule 9: wf-x without status -> 'workflow wf-x has no status in LINEAGE.yaml'."""
+    traits = {"arm": "sol", "harness": "pi", "status": "trunk"}
+    del traits[trait]
+    listed = ", ".join(f"{key}: {value}" for key, value in traits.items())
+    lab["lineage"].write_text(lab["lineage"].read_text()
+                              + f"      wf-x: {{{listed}, description: \"X.\"}}\n")
+    rq = make_rq(lab["research"], "RQ-x", [summary_cell("wf-x")])
+    module = export_site_data()
+    with pytest.raises(module.ExportError, match=f"^workflow wf-x has no {trait} in LINEAGE.yaml$"):
+        module.export([rq], lab["lineage"], lab["registry"], lab["out"])
 
 
 def test_writes_no_meta_json(lab):

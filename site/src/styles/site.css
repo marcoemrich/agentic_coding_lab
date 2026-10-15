@@ -112,3 +112,28 @@ details.find summary { cursor: pointer; font-weight: 600; font-size: 15px; }
 .md hr { border: 0; border-top: 1px solid var(--rule-2); margin: 24px 0; }
 /* The run lists' two columns (details ul) are not meant for findings' prose lists. */
 .md ul, .md ol { columns: auto; padding-left: 22px; }
+
+/* Workflow page, from the prototype (.wfs, .wf, .wf:target); a profile indents beneath its parent. */
+.wfs { max-width: 1240px; }
+.wf { padding: 14px 0; border-bottom: 1px solid var(--rule-2); max-width: 72em; scroll-margin-top: 16px; }
+.wf h3 { margin: 0 0 4px; font-family: var(--sans); font-size: 15px; overflow-wrap: anywhere; }
+.wf h3 .tag:first-of-type { margin-left: 10px; }
+.wf h3 .tag { font-weight: 400; }
+.wf h3 .tag[title] { cursor: help; }
+.wf h3 a.tag { color: var(--accent); text-decoration: none; }
+.wf p { margin: 4px 0 0; max-width: 80ch; }
+.wf:target { background: var(--win); padding-inline: 10px; }
+@media (prefers-reduced-motion: no-preference) { .wf:target { transition: background 1.2s; } }
+.wf[data-indent="1"] { margin-left: 1.5em; }
+.wf[data-indent="2"] { margin-left: 3em; }
+.wf[data-indent="3"] { margin-left: 4.5em; }
+.wf[data-indent]:not([data-indent="0"]) { padding-left: 12px; border-left: 2px solid var(--rule); }
+@media (max-width: 600px) {
+  .wf[data-indent="1"] { margin-left: 0.75em; }
+  .wf[data-indent="2"] { margin-left: 1.5em; }
+  .wf[data-indent="3"] { margin-left: 2.25em; }
+}
+
+/* Concept page */
+.concepts { max-width: 72em; }
+.concepts p { max-width: 72ch; }

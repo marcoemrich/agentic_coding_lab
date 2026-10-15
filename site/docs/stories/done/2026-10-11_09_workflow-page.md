@@ -1,0 +1,14 @@
+# Workflow page
+
+Status: done
+Source: [results-site decisions](../../open-questions.md#workflow-descriptions); mapped with the user on 2026-10-15.
+
+## Story
+
+As a reader of an RQ result table, I want to click a workflow name and land on a short profile of that workflow, and to read the underlying concepts once on a concept page, so that I can follow a comparison without knowing the lab's naming.
+
+`/workflows/` holds one profile per workflow a main RQ names, anchored by its name and highlighted when targeted; the page is headed "Workflows" without an intro. A profile shows the name, the `description:` and its traits as tags: the arm as written, the harness spelled out (Claude Code, pi, OpenCode, Cursor), test list or ad hoc, the status with its meaning from `LINEAGE.yaml`'s header as tooltip, and the parent — linked when it has a profile on the page, plain text otherwise, absent for a root. Sections run Baselines, External skills, EXACT Coding — Opus line, EXACT Coding — SOL line; an empty one is left out. Children sit indented beneath their parent, at most three steps deep. Roots keep `LINEAGE.yaml`'s order, external skills go by name; siblings go by version (numerically), then harness (cc, pi, oc, cursor), then file order. Profiles of both EXACT Coding lines carry an "EXACT Coding" tag linking to `/concepts/#exact-coding`; the concept page explains Predictive TDD (`#predictive-tdd`) and EXACT Coding. The top bar reads Questions · Workflows · Concepts. The export stops on a referenced workflow without description, arm, harness or status.
+
+## Built
+
+Implemented with the `exact-coding` skill; 33 new Vitest tests — 11 in `src/workflow-catalog.spec.ts`, 14 in `src/WorkflowPage.spec.tsx`, 2 in `src/ConceptPage.spec.tsx`, 3 each in `src/site-links.spec.ts` and `src/TopBar.spec.tsx` — and 8 pytest cases in `experiments/tests/test_export_site_data.py` (205 Vitest and 137 Python tests in all). `export-site-data.py` now writes each referenced workflow's LINEAGE traits (`description`, `arm`, `harness`, `status`, `category`, `version`, `parent`) plus its `style` into `workflows.json`, in `LINEAGE.yaml`'s order; `check_workflows()` holds the strictness. The order lives in `workflow-catalog.ts` (sections, roots, siblings, indentation cap, which categories are EXACT Coding); `WorkflowPage.tsx` holds the markup, `ConceptPage.tsx` the hand-written concept text. Comparing dotted numbers moved into `dotted-number.ts`, now shared by the RQ index's chapter order and the workflow versions. Readings adopted: a parent counts as "on the page" when any section holds it, so a link would still work across categories; roots are taken per category. Deviations: none in behavior; a targeted profile got horizontal padding so its highlight does not touch the text. The concept page text is a draft from the README credits, the test-list section and `LINEAGE.yaml`'s header, for the user's review.

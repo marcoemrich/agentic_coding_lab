@@ -9,6 +9,11 @@ function bar(overrides: Partial<TopBarProps> = {}): TopBarProps {
   return { builtAt, commit, rqs: [], ...overrides };
 }
 
+function currentPages(): (string | null)[] {
+  return within(screen.getByRole("navigation")).getAllByRole("link")
+    .filter(link => link.getAttribute("aria-current") === "page").map(link => link.textContent);
+}
+
 function stampText(): string {
   return screen.getByText(/^Data as of/).textContent ?? "";
 }
@@ -53,5 +58,21 @@ describe("Top bar", () => {
     const rqs = [{ cells: [{ runs: shared }] }, { cells: [{ runs: [...shared, ...runs("late", 1, "timeout")] }] }];
     render(<TopBar {...bar({ rqs })} />);
     expect(stampText()).toBe("Data as of 2026-10-15 14:02 UTC, 2 runs, commit d53bae3");
+  });
+
+  // Workflow page (docs/stories/open/2026-10-11_09_workflow-page.md), rule 8: navigation.
+  it("reads Questions · Workflows · Concepts in the nav, linking /agentic_coding_lab/, /agentic_coding_lab/workflows/ and /agentic_coding_lab/concepts/", () => {
+    render(<TopBar {...bar()} />);
+    const links = within(screen.getByRole("navigation")).getAllByRole("link");
+    expect(links.map(link => [link.textContent, link.getAttribute("href")])).toEqual([
+      ["Questions", "/agentic_coding_lab/"], ["Workflows", "/agentic_coding_lab/workflows/"], ["Concepts", "/agentic_coding_lab/concepts/"]]);
+  });
+  it("marks only 'Workflows' as current on the workflow page", () => {
+    render(<TopBar {...bar({ current: "workflows" })} />);
+    expect(currentPages()).toEqual(["Workflows"]);
+  });
+  it("marks only 'Concepts' as current on the concept page", () => {
+    render(<TopBar {...bar({ current: "concepts" })} />);
+    expect(currentPages()).toEqual(["Concepts"]);
   });
 });
