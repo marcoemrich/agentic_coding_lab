@@ -82,11 +82,21 @@ def rq_outcome(code: int, report: str) -> tuple[str, bool]:
     return "unchanged", False
 
 
+def rq_label(rq_dir: Path) -> str:
+    """The RQ's id, or its directory under research/ when the README has no
+    frontmatter or no id in it; a missing frontmatter the aggregator then
+    reports as the failure."""
+    try:
+        rq_id = (agg.parse_frontmatter(rq_dir / "README.md") or {}).get("id")
+    except SystemExit:
+        rq_id = None
+    return rq_id or str(rq_dir.relative_to(RESEARCH_DIR))
+
+
 def aggregate_rq(rq_dir: Path) -> bool:
     """Aggregate one RQ, print its line, and say whether it failed."""
-    rq_id = agg.parse_frontmatter(rq_dir / "README.md")["id"]
     outcome, failed = rq_outcome(*run_aggregator(rq_dir))
-    print(f"{rq_id}  {outcome}", flush=True)
+    print(f"{rq_label(rq_dir)}  {outcome}", flush=True)
     return failed
 
 

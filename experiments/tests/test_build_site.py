@@ -195,6 +195,59 @@ def test_the_rqs_after_a_failure_are_still_aggregated(lab, capfd):
             in capfd.readouterr().out.splitlines())
 
 
+# A README the build cannot read an id from (left open in the build-command story).
+
+def add_bare_rq(repo, rel_dir):
+    rq_dir = repo / "research" / rel_dir
+    rq_dir.mkdir(parents=True)
+    (rq_dir / "README.md").write_text("# An RQ without frontmatter\n")
+    return rq_dir
+
+
+def test_a_readme_without_frontmatter_is_failed_under_its_directory(lab, capfd):
+    """'questions-x/a-bare  FAILED — <path>/README.md: no YAML frontmatter (must start with ---)'."""
+    rq_dir = add_bare_rq(lab, "questions-x/a-bare")
+
+    run_build()
+
+    assert (f"questions-x/a-bare  FAILED — {rq_dir}/README.md: no YAML frontmatter (must start with ---)"
+            in capfd.readouterr().out.splitlines())
+
+
+def test_the_rqs_after_a_readme_without_frontmatter_are_still_aggregated(lab, capfd):
+    """the build goes on to RQ-fine and the step exits with 1."""
+    add_bare_rq(lab, "questions-x/a-bare")
+    add_rq(lab, "questions-x/b-fine", "RQ-fine")
+
+    assert build.aggregate_all(lab / "research") == 1
+    assert ("RQ-fine  wrote runs.csv, summary.json, summary.md"
+            in capfd.readouterr().out.splitlines())
+
+
+def test_an_rq_without_an_id_is_aggregated_under_its_directory(lab, capfd):
+    """frontmatter without id: -> 'questions-x/no-id  wrote runs.csv, summary.json, summary.md'."""
+    rq_dir = add_rq(lab, "questions-x/no-id", "RQ-unused")
+    readme_path = rq_dir / "README.md"
+    readme_path.write_text(readme_path.read_text().replace("id: RQ-unused\n", ""))
+
+    run_build()
+
+    assert ("questions-x/no-id  wrote runs.csv, summary.json, summary.md"
+            in capfd.readouterr().out.splitlines())
+
+
+def test_an_empty_frontmatter_is_named_by_its_directory(lab, capfd):
+    """'---\\n---\\n' parses to None -> the line still names 'questions-x/empty'."""
+    rq_dir = lab / "research" / "questions-x" / "empty"
+    rq_dir.mkdir(parents=True)
+    (rq_dir / "README.md").write_text("---\n---\n")
+
+    run_build()
+
+    assert any(line.startswith("questions-x/empty  FAILED — ")
+               for line in capfd.readouterr().out.splitlines())
+
+
 def export_marker(lab, monkeypatch):
     """Replace the export with a command that leaves a file behind."""
     marker = lab.parent / "exported"
