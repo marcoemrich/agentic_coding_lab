@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-13_05-43-50_game-of-life-cli-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
-Generated: 2026-05-13T11:35:50+02:00
+Generated: 2026-10-15T08:14:09+00:00
 
 ## Configuration
 
@@ -19,9 +19,9 @@ Generated: 2026-05-13T11:35:50+02:00
 
 - **Implementation files**: cli.ts, game-of-life.ts
 - **Implementation LOC** (total): 40
-- **Test file**: game-of-life.spec.ts
-- **Test file LOC**: 37
-- **Active tests**: 8
+- **Test files**: cli.spec.ts, game-of-life.spec.ts
+- **Test LOC** (total): 50
+- **Active tests**: 9
 - **Remaining todos**: 0
 
 ## Test Results
@@ -30,22 +30,19 @@ Generated: 2026-05-13T11:35:50+02:00
 
 ```
 
-> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-13_05-43-50_game-of-life-cli-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-13_05-43-50_game-of-life-cli-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-13_05-43-50_game-of-life-cli-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-13_05-43-50_game-of-life-cli-user-story_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
- ✓ src/game-of-life.spec.ts  (8 tests) 6ms
-npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
-npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
-npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
- ✓ src/cli.spec.ts  (1 test) 337ms
+ ✓ src/game-of-life.spec.ts  (8 tests) 9ms
+ ✓ src/cli.spec.ts  (1 test) 488ms
 
  Test Files  2 passed (2)
       Tests  9 passed (9)
-   Start at  11:35:50
-   Duration  695ms (transform 33ms, setup 0ms, collect 35ms, tests 343ms, environment 0ms, prepare 205ms)
+   Start at  08:14:09
+   Duration  846ms (transform 51ms, setup 0ms, collect 65ms, tests 497ms, environment 0ms, prepare 164ms)
 ```
 
 ## Coverage

@@ -17,7 +17,7 @@ directly, no CLI contract needed).
 |---|---|---|---|
 | opus-4-6-portkey-no-thinking | **1.00** 🏆 (σ=0) | **1.00** 🏆 (σ=0) | **1.00** 🏆 (σ=0) |
 | sonnet-4-6-portkey-no-thinking | **1.00** 🏆 (σ=0) | **1.00** 🏆 (σ=0) | **1.00** 🏆 (σ=0) |
-| haiku-4-5-portkey-no-thinking | 0.24 (σ=0.43) | 0.00 (σ=0) | **0.63** 🏆 (σ=0.51) |
+| haiku-4-5-portkey-no-thinking | 0.32 (σ=0.39) | 0.01 (σ=0.03) | **0.63** 🏆 (σ=0.51) |
 
 Higher = better; 🏆 = best style per row (Opus/Sonnet: all three styles tied at 1.00 → ties, all 🏆).
 
@@ -37,7 +37,7 @@ compensate for style differences from their prior knowledge. The
 Conway rules are omnipresent in the training — no prompt style can
 improve or degrade that.
 
-**Status**: ✅ stable (n=30, σ=0)
+**Evidence**: n=30, σ=0
 
 ---
 
@@ -48,15 +48,17 @@ distinct modes on game-of-life:
 
 1. **Immediate quitters** (dur=12–17s, code_mass=0–5): the agent writes only
    a spec file and gives up. Affects all user-story runs (5/5)
-   and most prose runs (4/5).
+   and 3 of 5 prose runs. A quitter's stub still passes the trivial
+   scenarios (empty board, a single cell dying, a block after 0 steps):
+   two prose quitters reach vpct=0.20, one user-story quitter 0.07.
 2. **Completers** (dur=299–710s, code_mass=129–318): the agent works
    through the task completely. With example mapping 3/5 runs are perfect
    (vpct=1.00), with prose 1/5.
 
 | Style | n | vpct mean | Completers | Immediate quitters |
 |---|---:|---:|---:|---:|
-| prose | 5 | 0.24 | 2 (1× vpct=1, 1× vpct=0.2) | 3 |
-| user-story | 5 | 0.00 | 0 | 5 |
+| prose | 5 | 0.32 | 2 (1× vpct=1, 1× vpct=0.2) | 3 (2× vpct=0.2) |
+| user-story | 5 | 0.01 | 0 | 5 (1× vpct=0.07) |
 | example-mapping | 5 | **0.63** 🏆 | 4 (3× vpct=1, 1× vpct=0.13) | 1 |
 
 Higher = better (vpct mean); 🏆 = best style. The remaining columns are descriptive counts, not a competition.
@@ -67,7 +69,7 @@ gives the weakest model enough concrete context to get into
 working mode. User story (abstract, no examples) supplies
 too few anchors — Haiku does not recognize the task as feasible.
 
-**Status**: ✅ stable (bimodal pattern reproducible across n=5)
+**Evidence**: bimodal pattern reproducible across n=5
 
 ---
 
@@ -76,14 +78,12 @@ too few anchors — Haiku does not recognize the task as feasible.
 **Statement**: H1 ("per model, the verification_pct spread between
 styles is < 10 pp") is fully confirmed for Opus and Sonnet
 (spread = 0 pp). For Haiku, H1 is trivially falsified
-(spread = 63 pp), but the cause is not style sensitivity
+(spread = 62 pp), but the cause is not style sensitivity
 but capacity-related instability (F-prompt-known-kata.2).
 
 **Implication for code-quality RQs**: Prompt style can be fixed as a
 control on game-of-life (e.g. prose or
 example mapping) without a correctness confound on Opus/Sonnet.
-
-**Status**: ✅ stable
 
 ---
 
@@ -108,9 +108,9 @@ does *not* improve correctness on training-known katas
 for strong models. On Haiku it helps, but via a different
 mechanism (activation, not disambiguation).
 
-**Status**: ⚠️ conditional (the Haiku finding is robust, but the
+**Caveat**: the Haiku finding is robust, but the
 mechanistic explanation "activation anchor" is a hypothesis,
-not a measured effect)
+not a measured effect.
 
 ---
 
@@ -118,8 +118,9 @@ not a measured effect)
 
 **Statement**: Code-quality outcomes (code_mass, smell_total,
 longest_function, mccabe_max, cognitive_max) are meaningful only on runs
-with vpct > 0. On Haiku, 7/15 runs drop out
-(code_mass=0, the agent implemented nothing). For Opus and Sonnet
+on runs that implemented something. On Haiku, 9 of 15 runs are
+quitters (code_mass 0–5, the agent implemented nothing); vpct > 0 does
+not separate them, because a stub passes the trivial scenarios. For Opus and Sonnet
 (all vpct=1.00):
 
 | Model | prose mass | user-story mass | ex-mapping mass |
@@ -133,7 +134,7 @@ of run-to-run variance. **H2 qualitatively confirmed**: on training-known
 katas, prompt style induces no systematic
 code-quality ranking.
 
-**Status**: ⚠️ conditional (only Opus/Sonnet, n=5 per cell)
+**Caveat**: only Opus/Sonnet, n=5 per cell.
 
 ---
 
@@ -148,8 +149,6 @@ across all styles, code quality does not vary systematically.
 game-of-life can fix prompt style as a control without risking a
 style confound — provided Haiku is excluded or
 handled separately.
-
-**Status**: ✅ stable
 
 ---
 
@@ -172,4 +171,4 @@ verification suite should test the core directly — not the
 interface wrapper. Otherwise `verification_pct` measures
 interface compliance, not rule correctness.
 
-**Status**: ✅ stable (methodological insight)
+**Evidence**: methodological insight.

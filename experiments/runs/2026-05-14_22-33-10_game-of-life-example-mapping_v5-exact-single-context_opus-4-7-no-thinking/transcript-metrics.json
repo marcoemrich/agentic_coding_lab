@@ -10,6 +10,7 @@
   "context_utilization_pct": 8,
   "context_window_tokens": 1000000,
   "context_peak_tokens": 78354,
+  "cost_usd": null,
   "message_count": 74,
   "tool_calls": {
     "Read": 3,
@@ -32,51 +33,73 @@
     "claude-opus-4-7"
   ],
   "subagent_token_total": 0,
+  "main_context_tokens": {
+    "input": 148,
+    "output": 22749,
+    "cache_read": 4483064,
+    "cache_creation": 88552,
+    "total": 4594513
+  },
+  "subagent_tokens": {
+    "input": 0,
+    "output": 0,
+    "cache_read": 0,
+    "cache_creation": 0
+  },
   "phases": [
     {
       "phase": "test-list",
       "tokens": 184766,
-      "duration_seconds": 13.03
+      "duration_seconds": 13.03,
+      "start_ts": "2026-05-14T22:33:27.816000+00:00"
     },
     {
       "phase": "red",
       "tokens": 597604,
-      "duration_seconds": 31.36
+      "duration_seconds": 31.36,
+      "start_ts": "2026-05-14T22:33:40.846000+00:00"
     },
     {
       "phase": "green",
       "tokens": 268068,
-      "duration_seconds": 14.95
+      "duration_seconds": 14.95,
+      "start_ts": "2026-05-14T22:34:12.205000+00:00"
     },
     {
       "phase": "refactor",
       "tokens": 114338,
-      "duration_seconds": 7.91
+      "duration_seconds": 7.91,
+      "start_ts": "2026-05-14T22:34:27.155000+00:00"
     },
     {
       "phase": "red",
       "tokens": 601702,
-      "duration_seconds": 28.28
+      "duration_seconds": 28.28,
+      "start_ts": "2026-05-14T22:34:35.062000+00:00"
     },
     {
       "phase": "green",
       "tokens": 320136,
-      "duration_seconds": 18.47
+      "duration_seconds": 18.47,
+      "start_ts": "2026-05-14T22:35:03.346000+00:00"
     },
     {
       "phase": "refactor",
       "tokens": 341779,
-      "duration_seconds": 21.72
+      "duration_seconds": 21.72,
+      "start_ts": "2026-05-14T22:35:21.815000+00:00"
     },
     {
       "phase": "red",
       "tokens": 354896,
-      "duration_seconds": 13.81
+      "duration_seconds": 13.81,
+      "start_ts": "2026-05-14T22:35:43.531000+00:00"
     },
     {
       "phase": "red",
       "tokens": 1595063,
-      "duration_seconds": 53.28
+      "duration_seconds": 53.28,
+      "start_ts": "2026-05-14T22:35:57.341000+00:00"
     }
   ],
   "phase_source": "skills",

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-14_19-06-13_game-of-life-example-mapping_v4-exact-subagents_opus-4-7-no-thinking
 
-Generated: 2026-05-14T19:17:15+00:00
+Generated: 2026-10-15T07:55:23+00:00
 
 ## Configuration
 
@@ -19,8 +19,8 @@ Generated: 2026-05-14T19:17:15+00:00
 
 - **Implementation files**: game-of-life.ts
 - **Implementation LOC** (total): 60
-- **Test file**: game-of-life.spec.ts
-- **Test file LOC**: 44
+- **Test files**: game-of-life.spec.ts
+- **Test LOC** (total): 44
 - **Active tests**: 8
 - **Remaining todos**: 0
 
@@ -40,8 +40,8 @@ Generated: 2026-05-14T19:17:15+00:00
 
  Test Files  1 passed (1)
       Tests  8 passed (8)
-   Start at  19:17:16
-   Duration  146ms (transform 23ms, setup 1ms, collect 21ms, tests 4ms, environment 0ms, prepare 40ms)
+   Start at  07:55:24
+   Duration  305ms (transform 34ms, setup 0ms, collect 25ms, tests 4ms, environment 0ms, prepare 74ms)
 ```
 
 ## Coverage
@@ -96,7 +96,7 @@ Generated: 2026-05-14T19:17:15+00:00
 
 | Metric | Value |
 |--------|-------|
-| Total Tokens | 2023377 |
+| Total Tokens | 5864196 |
 | Context Utilization | 7% |
 
 ### TDD Cycle Metrics
@@ -113,9 +113,9 @@ Generated: 2026-05-14T19:17:15+00:00
 
 | Metric | Value |
 |--------|-------|
-| Predictions Correct | 6 |
-| Predictions Total | 6 |
-| Accuracy | 100% |
+| Predictions Correct | 15 |
+| Predictions Total | 16 |
+| Accuracy | 93% |
 
 _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._
 

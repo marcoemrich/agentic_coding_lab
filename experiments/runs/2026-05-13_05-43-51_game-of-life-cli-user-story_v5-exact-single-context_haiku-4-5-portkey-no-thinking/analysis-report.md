@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-13_05-43-51_game-of-life-cli-user-story_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 
-Generated: 2026-05-13T11:36:21+02:00
+Generated: 2026-10-15T08:14:48+00:00
 
 ## Configuration
 
@@ -18,8 +18,8 @@ Generated: 2026-05-13T11:36:21+02:00
 ## Code Metrics
 
 - **Implementation**: Not found
-- **Test file**: game-of-life.spec.ts
-- **Test file LOC**: 40
+- **Test files**: game-of-life.spec.ts
+- **Test LOC** (total): 40
 - **Active tests**: 0
 - **Remaining todos**: 12
 
@@ -29,7 +29,7 @@ Generated: 2026-05-13T11:36:21+02:00
 
 ```
 
-> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-13_05-43-51_game-of-life-cli-user-story_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-13_05-43-51_game-of-life-cli-user-story_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 > vitest run
 
 sh: 1: vitest: not found

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_22-43-03_game-of-life-cli-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking-2
 
-Generated: 2026-05-13T11:31:46+02:00
+Generated: 2026-10-15T08:08:29+00:00
 
 ## Configuration
 
@@ -19,8 +19,8 @@ Generated: 2026-05-13T11:31:46+02:00
 
 - **Implementation files**: cli.ts, game-of-life.ts
 - **Implementation LOC** (total): 79
-- **Test file**: game-of-life.spec.ts
-- **Test file LOC**: 45
+- **Test files**: game-of-life.spec.ts
+- **Test LOC** (total): 45
 - **Active tests**: 8
 - **Remaining todos**: 0
 
@@ -30,18 +30,18 @@ Generated: 2026-05-13T11:31:46+02:00
 
 ```
 
-> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_22-43-03_game-of-life-cli-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking-2
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_22-43-03_game-of-life-cli-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking-2
 > vitest run
 
 
- RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_22-43-03_game-of-life-cli-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking-2
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_22-43-03_game-of-life-cli-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking-2
 
- ✓ src/game-of-life.spec.ts  (8 tests) 4ms
+ ✓ src/game-of-life.spec.ts  (8 tests) 7ms
 
  Test Files  1 passed (1)
       Tests  8 passed (8)
-   Start at  11:31:46
-   Duration  375ms (transform 26ms, setup 0ms, collect 22ms, tests 4ms, environment 0ms, prepare 88ms)
+   Start at  08:08:30
+   Duration  400ms (transform 45ms, setup 0ms, collect 37ms, tests 7ms, environment 0ms, prepare 98ms)
 ```
 
 ## Coverage
@@ -113,8 +113,8 @@ Generated: 2026-05-13T11:31:46+02:00
 
 | Metric | Value |
 |--------|-------|
-| Predictions Correct | 2 |
-| Predictions Total | 2 |
+| Predictions Correct | 16 |
+| Predictions Total | 16 |
 | Accuracy | 100% |
 
 _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._

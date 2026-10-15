@@ -10,6 +10,7 @@
   "context_utilization_pct": 11,
   "context_window_tokens": 1000000,
   "context_peak_tokens": 108090,
+  "cost_usd": null,
   "message_count": 114,
   "tool_calls": {
     "Read": 2,
@@ -34,6 +35,19 @@
     "claude-opus-4-7"
   ],
   "subagent_token_total": 1358712,
+  "main_context_tokens": {
+    "input": 308,
+    "output": 34430,
+    "cache_read": 8375625,
+    "cache_creation": 147558,
+    "total": 8557921
+  },
+  "subagent_tokens": {
+    "input": 116,
+    "output": 13614,
+    "cache_read": 1236998,
+    "cache_creation": 107984
+  },
   "phases": [
     {
       "phase": "test-list",
@@ -241,18 +255,5 @@
     },
     "refactorings_applied": 5,
     "tests_passed_immediately": 0
-  },
-  "main_context_tokens": {
-    "input": 308,
-    "output": 34430,
-    "cache_read": 8375625,
-    "cache_creation": 147558,
-    "total": 8557921
-  },
-  "subagent_tokens": {
-    "input": 116,
-    "output": 13614,
-    "cache_read": 1236998,
-    "cache_creation": 107984
   }
 }

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-13_05-43-51_game-of-life-cli-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 
-Generated: 2026-05-13T11:36:01+02:00
+Generated: 2026-10-15T08:14:22+00:00
 
 ## Configuration
 
@@ -19,8 +19,8 @@ Generated: 2026-05-13T11:36:01+02:00
 
 - **Implementation files**: gameOfLife.ts
 - **Implementation LOC** (total): 50
-- **Test file**: gameOfLife.spec.ts
-- **Test file LOC**: 68
+- **Test files**: gameOfLife.spec.ts
+- **Test LOC** (total): 68
 - **Active tests**: 9
 - **Remaining todos**: 0
 
@@ -30,18 +30,18 @@ Generated: 2026-05-13T11:36:01+02:00
 
 ```
 
-> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-13_05-43-51_game-of-life-cli-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-13_05-43-51_game-of-life-cli-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-13_05-43-51_game-of-life-cli-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-13_05-43-51_game-of-life-cli-example-mapping_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 
- ✓ src/gameOfLife.spec.ts  (9 tests) 3ms
+ ✓ src/gameOfLife.spec.ts  (9 tests) 4ms
 
  Test Files  1 passed (1)
       Tests  9 passed (9)
-   Start at  11:36:01
-   Duration  382ms (transform 25ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 76ms)
+   Start at  08:14:23
+   Duration  334ms (transform 29ms, setup 0ms, collect 28ms, tests 4ms, environment 0ms, prepare 78ms)
 ```
 
 ## Coverage

@@ -10,6 +10,7 @@
   "context_utilization_pct": 45,
   "context_window_tokens": 200000,
   "context_peak_tokens": 89458,
+  "cost_usd": null,
   "message_count": 118,
   "tool_calls": {
     "Read": 12,
@@ -34,46 +35,67 @@
     "claude-opus-4-6"
   ],
   "subagent_token_total": 0,
+  "main_context_tokens": {
+    "input": 138,
+    "output": 40823,
+    "cache_read": 7705129,
+    "cache_creation": 110613,
+    "total": 7856703
+  },
+  "subagent_tokens": {
+    "input": 0,
+    "output": 0,
+    "cache_read": 0,
+    "cache_creation": 0
+  },
   "phases": [
     {
       "phase": "test-list",
       "tokens": 721538,
-      "duration_seconds": 78.02
+      "duration_seconds": 78.02,
+      "start_ts": "2026-05-13T05:59:18.270000+00:00"
     },
     {
       "phase": "red",
       "tokens": 713320,
-      "duration_seconds": 38.4
+      "duration_seconds": 38.4,
+      "start_ts": "2026-05-13T06:00:36.287000+00:00"
     },
     {
       "phase": "green",
       "tokens": 409404,
-      "duration_seconds": 18.41
+      "duration_seconds": 18.41,
+      "start_ts": "2026-05-13T06:01:14.682000+00:00"
     },
     {
       "phase": "refactor",
       "tokens": 624352,
-      "duration_seconds": 39.02
+      "duration_seconds": 39.02,
+      "start_ts": "2026-05-13T06:01:33.089000+00:00"
     },
     {
       "phase": "red",
       "tokens": 1003493,
-      "duration_seconds": 66.79
+      "duration_seconds": 66.79,
+      "start_ts": "2026-05-13T06:02:12.105000+00:00"
     },
     {
       "phase": "green",
       "tokens": 502743,
-      "duration_seconds": 29.51
+      "duration_seconds": 29.51,
+      "start_ts": "2026-05-13T06:03:18.891000+00:00"
     },
     {
       "phase": "refactor",
       "tokens": 692963,
-      "duration_seconds": 59.59
+      "duration_seconds": 59.59,
+      "start_ts": "2026-05-13T06:03:48.402000+00:00"
     },
     {
       "phase": "red",
       "tokens": 2822953,
-      "duration_seconds": 127.27
+      "duration_seconds": 127.27,
+      "start_ts": "2026-05-13T06:04:47.992000+00:00"
     }
   ],
   "phase_source": "skills",

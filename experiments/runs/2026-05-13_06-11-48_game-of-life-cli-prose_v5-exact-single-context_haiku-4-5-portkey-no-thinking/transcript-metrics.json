@@ -10,6 +10,7 @@
   "context_utilization_pct": 21,
   "context_window_tokens": 200000,
   "context_peak_tokens": 42129,
+  "cost_usd": null,
   "message_count": 9,
   "tool_calls": {
     "Read": 1,
@@ -27,11 +28,25 @@
     "claude-haiku-4-5-20251001"
   ],
   "subagent_token_total": 0,
+  "main_context_tokens": {
+    "input": 37,
+    "output": 2101,
+    "cache_read": 284233,
+    "cache_creation": 83989,
+    "total": 370360
+  },
+  "subagent_tokens": {
+    "input": 0,
+    "output": 0,
+    "cache_read": 0,
+    "cache_creation": 0
+  },
   "phases": [
     {
       "phase": "test-list",
       "tokens": 210102,
-      "duration_seconds": 10.51
+      "duration_seconds": 10.51,
+      "start_ts": "2026-05-13T06:11:55.010000+00:00"
     }
   ],
   "phase_source": "skills",

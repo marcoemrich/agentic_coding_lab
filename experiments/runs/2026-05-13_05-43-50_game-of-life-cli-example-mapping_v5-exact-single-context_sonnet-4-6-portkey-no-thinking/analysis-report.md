@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-13_05-43-50_game-of-life-cli-example-mapping_v5-exact-single-context_sonnet-4-6-portkey-no-thinking
 
-Generated: 2026-05-13T11:35:40+02:00
+Generated: 2026-10-15T08:13:56+00:00
 
 ## Configuration
 
@@ -19,8 +19,8 @@ Generated: 2026-05-13T11:35:40+02:00
 
 - **Implementation files**: cli.ts, game-of-life.ts
 - **Implementation LOC** (total): 59
-- **Test file**: game-of-life.spec.ts
-- **Test file LOC**: 24
+- **Test files**: game-of-life.spec.ts
+- **Test LOC** (total): 24
 - **Active tests**: 6
 - **Remaining todos**: 0
 
@@ -30,18 +30,18 @@ Generated: 2026-05-13T11:35:40+02:00
 
 ```
 
-> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-13_05-43-50_game-of-life-cli-example-mapping_v5-exact-single-context_sonnet-4-6-portkey-no-thinking
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-13_05-43-50_game-of-life-cli-example-mapping_v5-exact-single-context_sonnet-4-6-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-13_05-43-50_game-of-life-cli-example-mapping_v5-exact-single-context_sonnet-4-6-portkey-no-thinking
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-13_05-43-50_game-of-life-cli-example-mapping_v5-exact-single-context_sonnet-4-6-portkey-no-thinking
 
- ✓ src/game-of-life.spec.ts  (6 tests) 3ms
+ ✓ src/game-of-life.spec.ts  (6 tests) 4ms
 
  Test Files  1 passed (1)
       Tests  6 passed (6)
-   Start at  11:35:40
-   Duration  364ms (transform 23ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 59ms)
+   Start at  08:13:57
+   Duration  407ms (transform 53ms, setup 0ms, collect 48ms, tests 4ms, environment 0ms, prepare 96ms)
 ```
 
 ## Coverage

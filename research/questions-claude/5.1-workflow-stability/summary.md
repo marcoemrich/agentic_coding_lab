@@ -2,7 +2,7 @@
 
 _How stable are code quality and TDD discipline per workflow across replicates, and under which conditions is n=3 a sufficient replicate count?_
 
-Generated: 2026-10-12T10:46:33Z
+Generated: 2026-10-15T08:19:14Z
 
 Cells declared: 6 · matched runs: 59 · min_replicates: 10
 
@@ -92,7 +92,7 @@ Cells declared: 6 · matched runs: 59 · min_replicates: 10
 | game-of-life-prose           | baseline-oneshot-v1-cc     | opus-4-7-no-thinking |   0 |     10 |    nan |  nan | nan | nan |    nan   |
 | game-of-life-prose           | baseline-iterative-v1-cc   | opus-4-7-no-thinking |   0 |     10 |    nan |  nan | nan | nan |    nan   |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-cc  | opus-4-7-no-thinking |   0 |     10 |    nan |  nan | nan | nan |    nan   |
-| game-of-life-example-mapping | exact-subagents-v1-cc      | opus-4-7-no-thinking |  10 |      0 |    nan |  nan |  99 | 101 |     98   |
+| game-of-life-example-mapping | exact-subagents-v1-cc      | opus-4-7-no-thinking |  10 |      0 |    nan |  nan | 152 | 155 |     98.1 |
 | game-of-life-example-mapping | exact-single-context-v1-cc | opus-4-7-no-thinking |   9 |      0 |    nan |  nan | 132 | 132 |    100   |
 | game-of-life-example-mapping | exact-hybrid-v1-cc         | opus-4-7-no-thinking |  10 |      0 |    nan |  nan | 169 | 170 |     99.4 |
 

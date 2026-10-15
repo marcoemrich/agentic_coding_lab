@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_23-10-28_game-of-life-cli-prose_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 
-Generated: 2026-05-13T11:32:36+02:00
+Generated: 2026-10-15T08:09:36+00:00
 
 ## Configuration
 
@@ -19,8 +19,8 @@ Generated: 2026-05-13T11:32:36+02:00
 
 - **Implementation files**: gameOfLife.ts
 - **Implementation LOC** (total): 44
-- **Test file**: cli.spec.ts
-- **Test file LOC**: 66
+- **Test files**: cli.spec.ts
+- **Test LOC** (total): 66
 - **Active tests**: 9
 - **Remaining todos**: 0
 
@@ -30,18 +30,18 @@ Generated: 2026-05-13T11:32:36+02:00
 
 ```
 
-> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_23-10-28_game-of-life-cli-prose_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_23-10-28_game-of-life-cli-prose_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_23-10-28_game-of-life-cli-prose_v5-exact-single-context_haiku-4-5-portkey-no-thinking
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_23-10-28_game-of-life-cli-prose_v5-exact-single-context_haiku-4-5-portkey-no-thinking
 
- ✓ src/cli.spec.ts  (9 tests) 3ms
+ ✓ src/cli.spec.ts  (9 tests) 5ms
 
  Test Files  1 passed (1)
       Tests  9 passed (9)
-   Start at  11:32:36
-   Duration  356ms (transform 25ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 72ms)
+   Start at  08:09:37
+   Duration  386ms (transform 43ms, setup 0ms, collect 37ms, tests 5ms, environment 0ms, prepare 84ms)
 ```
 
 ## Coverage

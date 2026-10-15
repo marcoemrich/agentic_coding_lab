@@ -26,7 +26,7 @@ Best value per column in bold. Lower = better.
 
 ---
 
-## F-stability.1 — The Main RQ-tdd-quality Finding (subagents-v1 Dominates Code Complexity, inline-tdd-v1 Is Last) Replicates at n=10 with the Same Sign ✅ stable
+## F-stability.1 — The Main RQ-tdd-quality Finding (subagents-v1 Dominates Code Complexity, inline-tdd-v1 Is Last) Replicates at n=10 with the Same Sign
 
 **Statement**: At n=10 the pattern observed in RQ-tdd-quality with n=3 is
 fully confirmed:
@@ -59,7 +59,7 @@ indication that n=3 is ranking-unstable for workflows with a high spread (see F-
 
 ---
 
-## F-stability.2 — Workflow Stability Is Not Uniform; subagents-v1 Has a 10 % Outlier Rate Despite a Low Typical Value; single-context-v1 Is the Broadest Workflow ✅ stable
+## F-stability.2 — Workflow Stability Is Not Uniform; subagents-v1 Has a 10 % Outlier Rate Despite a Low Typical Value; single-context-v1 Is the Broadest Workflow
 
 **Statement**: Stability indicators per cell (cognitive_max as the main example):
 
@@ -111,7 +111,7 @@ refactor subagent phase.
 
 ---
 
-## F-stability.3 — At n=3 the Full Workflow Ranking Is Correct in Only ~25–60 % of Cases; subagents-v1 as the "Best" Is More Robust ✅ stable
+## F-stability.3 — At n=3 the Full Workflow Ranking Is Correct in Only ~25–60 % of Cases; subagents-v1 as the "Best" Is More Robust
 
 **Statement**: From 1000 random trials in which a three-element subsample
 is drawn from each cell and the workflow ranking is computed from it,
@@ -158,7 +158,7 @@ not discriminable with n=3.
 
 ---
 
-## F-stability.4 — Correctness Stays at 100 % Independently of Model/Workflow at n=10 ✅ stable
+## F-stability.4 — Correctness Stays at 100 % Independently of Model/Workflow at n=10
 
 **Statement**: Across all 60 runs (including the 10 new exact-hybrid-v1-cc runs),
 every workflow reaches `tests_passing = 100 %` and `verification_pct = 1.00`.
@@ -170,7 +170,7 @@ would have remained undetected at n=3.
 
 ---
 
-## F-stability.5 — Token Consumption Shows an Extremely High Spread for subagents-v1 and single-context-v1 ⚠️ conditional
+## F-stability.5 — Token Consumption Shows an Extremely High Spread for subagents-v1 and single-context-v1
 
 **Statement**: Token consumption (n=10):
 
@@ -197,12 +197,12 @@ stability ranking is unaffected. subagents-v1 wallclock budgets likewise
 generously (worst case ~65 min). For commercial use of both
 workflows, these tails must be budgeted for.
 
-**Condition**: ⚠️ conditional — n=10 is tight for tail characterization;
+**Condition**: n=10 is tight for tail characterization;
 robust tail quantiles (P99, P95) would need n=30+.
 
 ---
 
-## F-stability.6 — TDD Discipline Forms Workflow-Characteristic Bands ✅ stable
+## F-stability.6 — TDD Discipline Forms Workflow-Characteristic Bands
 
 **Statement**: The four TDD discipline indicators (`cycle_count`,
 `refactorings_applied`, `predictions_correct_rate`, `tests_passed_immediately`)
@@ -214,7 +214,7 @@ separate the six workflows into **four discipline classes**:
 | baseline-iterative-v1-cc | 1.0 ± 0 | 0.0 ± 0 | — | 1.0 ± 0 | **structurally empty** |
 | baseline-inline-tdd-v1-cc | 1.5 ± 0.97 | 0.1 ± 0.32 | — | 0.5 ± 0.97 | **phantom TDD** |
 | exact-single-context-v1-cc | 6.7 ± **2.67** | 6.0 ± **3.09** | 100.0 % | 0.9 ± 1.66 | **broadband discipline** |
-| exact-subagents-v1-cc | 7.8 ± 0.92 | 5.9 ± 2.02 | 98.0 % | 3.3 ± 2.87 | **narrow bands, strict discipline** |
+| exact-subagents-v1-cc | 7.8 ± 0.92 | 5.9 ± 2.02 | 98.1 % | 3.3 ± 2.87 | **narrow bands, strict discipline** |
 | exact-hybrid-v1-cc | **8.3 ± 0.82** | 4.0 ± 1.63 | 99.4 % | 3.3 ± 3.02 | **narrowest bands, strictest discipline** |
 
 **Rationale**: The four classes are consistently defined across three
@@ -266,7 +266,7 @@ broad spread, hybrid-v1 reaches similar means with the narrowest spread. If
 
 ---
 
-## F-stability.7 — Test Strength (`mutation_score`) Has Its Own Stability Profile; exact-hybrid-v1-cc Is the Most Stable Workflow, subagents-v1 the Least Stable ✅ stable
+## F-stability.7 — Test Strength (`mutation_score`) Has Its Own Stability Profile; exact-hybrid-v1-cc Is the Most Stable Workflow, subagents-v1 the Least Stable
 
 **Statement**: The mutation score (the share of killed mutants, Stryker) shows a
 **different** stability ranking than the code-complexity metrics from

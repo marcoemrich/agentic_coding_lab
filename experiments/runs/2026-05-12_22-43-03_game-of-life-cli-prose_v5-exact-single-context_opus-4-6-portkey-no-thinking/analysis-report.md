@@ -1,6 +1,6 @@
 # Analysis Report: 2026-05-12_22-43-03_game-of-life-cli-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
-Generated: 2026-05-13T11:31:36+02:00
+Generated: 2026-10-15T08:08:15+00:00
 
 ## Configuration
 
@@ -19,8 +19,8 @@ Generated: 2026-05-13T11:31:36+02:00
 
 - **Implementation files**: cli.ts, game-of-life.ts
 - **Implementation LOC** (total): 42
-- **Test file**: game-of-life.spec.ts
-- **Test file LOC**: 52
+- **Test files**: game-of-life.spec.ts
+- **Test LOC** (total): 52
 - **Active tests**: 8
 - **Remaining todos**: 0
 
@@ -30,18 +30,18 @@ Generated: 2026-05-13T11:31:36+02:00
 
 ```
 
-> tdd-experiment-run@ test /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_22-43-03_game-of-life-cli-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-05-12_22-43-03_game-of-life-cli-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/memrich/sync/workspace/agentic_coding_lab_project/main/experiments/runs/2026-05-12_22-43-03_game-of-life-cli-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-05-12_22-43-03_game-of-life-cli-prose_v5-exact-single-context_opus-4-6-portkey-no-thinking
 
- ✓ src/game-of-life.spec.ts  (8 tests) 3ms
+ ✓ src/game-of-life.spec.ts  (8 tests) 6ms
 
  Test Files  1 passed (1)
       Tests  8 passed (8)
-   Start at  11:31:36
-   Duration  374ms (transform 27ms, setup 0ms, collect 21ms, tests 3ms, environment 0ms, prepare 60ms)
+   Start at  08:08:16
+   Duration  399ms (transform 39ms, setup 0ms, collect 33ms, tests 6ms, environment 0ms, prepare 92ms)
 ```
 
 ## Coverage
@@ -113,8 +113,8 @@ Generated: 2026-05-13T11:31:36+02:00
 
 | Metric | Value |
 |--------|-------|
-| Predictions Correct | 2 |
-| Predictions Total | 2 |
+| Predictions Correct | 16 |
+| Predictions Total | 16 |
 | Accuracy | 100% |
 
 _Counts come from the red-phase agent's own 'Correct'/'Incorrect' markers and may be biased._
