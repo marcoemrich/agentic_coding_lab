@@ -40,10 +40,35 @@
   - nWave — Outside-In through the driving port; refactor position unresolved
     (the canon reads RED → GREEN → COMMIT). Expensive to dock: DELIVER needs the
     artifact chain from the preceding waves.
+  - TDD-MCP (Chris Lucian) — https://github.com/ChrisLucian-HunterIndustries/TDD-MCP
+    Enforces TDD mechanically instead of by prompt: the MCP server is the only write
+    path for code (built-in Edit/Write denied), state machine plan → red → green →
+    refactor. `plan_tests` requires a test list with name/arrange/act/assert; red
+    advances only with exactly one failing test; tests locked in green; branch-coverage
+    gate on changed lines removes speculative code; commit per step; no comments.
+    Supports pytest + vitest. Candidate workflow: feed the EXACT test list (from
+    Example Mapping) into `plan_tests`, use the server as the enforcement layer.
+    Open: no human checkpoint on the plan (autonomy levels), does not force
+    triangulation (hardcoding per case still passes), fit with the lab's harness.
 
 ## Merge with other science framework or take ideas from it
 
 * https://github.com/vercel-labs/agent-eval/
 * /plugin install plugin-eval@claude-code-workflows
 * Harbor https://www.harborframework.com
+* SlopCodeBench (SCBench) — https://github.com/SprocketLab/slop-code-bench,
+  https://www.scbench.ai, paper https://arxiv.org/abs/2603.24755 (MIT)
+  Multi-checkpoint tasks: the agent extends its own code as the spec grows
+  (36 problems, 196 checkpoints, Python track, black-box CLI/API tests).
+  Metrics: Erosion = share of CC × √SLOC mass held by functions with CC > 10;
+  Verbosity = lines hit by 137 AST-grep rules or clones / LoC.
+  Their finding: erosion rises in 77 % of trajectories; anti-slop and plan-first
+  prompts only lower the starting point, the slope stays (~1.3 pp per checkpoint).
+  Idea for us: a multi-checkpoint RQ measuring the erosion *slope* per checkpoint —
+  does a TDD workflow with an enforced refactor phase flatten the curve, or only
+  shift the start like a prompt does? Single-shot katas cannot answer this.
+  Erosion as a plain column on current katas is not worth it: ~90 % of runs have
+  no function above CC 10 (floor effect).
+  Open: how to implement in the lab — staged existing kata (claim-office?) vs.
+  porting SCBench problems; run-batch.sh has no follow-up turns on the same workspace yet.
 
