@@ -65,7 +65,7 @@ describe("Rendered result table", () => {
   });
 });
 
-// Story 06, R8 — run lists under each kata table (docs/stories/open/2026-10-11_06_rq-page-header.md).
+// Story 06, R8 — run lists under each kata table (docs/stories/done/2026-10-11_06_rq-page-header.md).
 describe("Run list under a kata table", () => {
   it("lists every run, ok or not, and shows a non-ok run's exit reason -- '<run_id> (timeout)'; an ok run shows its id only", () => {
     const kata = "claim-office-example-mapping";

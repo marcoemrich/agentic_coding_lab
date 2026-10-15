@@ -28,7 +28,7 @@ function ids(): string[] {
   return screen.getAllByText(/^RQ-/).map(id => id.textContent ?? "");
 }
 
-// Story 07, RQ index (docs/stories/open/2026-10-11_07_rq-index.md).
+// Story 07, RQ index (docs/stories/done/2026-10-11_07_rq-index.md).
 describe("RQ index", () => {
   it("titles the index 'What the lab measured, one research question at a time' and introduces it without a findings sentence", () => {
     render(<RqIndex rqs={[rq()]} />);

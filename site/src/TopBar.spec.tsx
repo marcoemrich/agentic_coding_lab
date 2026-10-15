@@ -12,7 +12,7 @@ function runs(prefix: string, count: number, exitReason = "ok") {
   return Array.from({ length: count }, (_, index) => ({ id: `${prefix}-${index}`, started_at: "2026-08-10T09:00:00+00:00", exit_reason: exitReason }));
 }
 
-// Story 07, RQ index (docs/stories/open/2026-10-11_07_rq-index.md), rule 6: the page frame.
+// Story 07, RQ index (docs/stories/done/2026-10-11_07_rq-index.md), rule 6: the page frame.
 describe("Top bar", () => {
   it("links 'Agentic Coding Lab' to the index at /", () => {
     render(<TopBar {...bar()} />);

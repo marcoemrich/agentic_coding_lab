@@ -61,7 +61,7 @@ function lines(element: HTMLElement): string[] {
   return within(element).getAllByRole("listitem").map(item => item.textContent ?? "");
 }
 
-// Story 06, RQ page header (docs/stories/open/2026-10-11_06_rq-page-header.md).
+// Story 06, RQ page header (docs/stories/done/2026-10-11_06_rq-page-header.md).
 // The browser <title> is Astro wiring and is checked in the built page, not here.
 describe("RQ page header", () => {
   // R1 — title
