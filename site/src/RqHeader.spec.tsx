@@ -54,7 +54,7 @@ function metaValue(label: string): HTMLElement {
 }
 
 function workflowLinks(): HTMLElement[] {
-  return screen.getAllByRole("link").filter(link => link.getAttribute("href")?.startsWith("/workflows/"));
+  return screen.getAllByRole("link").filter(link => link.getAttribute("href")?.startsWith("/agentic_coding_lab/workflows/"));
 }
 
 function lines(element: HTMLElement): string[] {
@@ -153,17 +153,17 @@ describe("RQ page header", () => {
   });
 
   // R5 — workflow links
-  it("links a workflow in a pair to its workflow page entry -- baseline-oneshot-v1-cc -> /workflows/#baseline-oneshot-v1-cc", () => {
+  it("links a workflow in a pair to its workflow page entry -- baseline-oneshot-v1-cc -> /agentic_coding_lab/workflows/#baseline-oneshot-v1-cc", () => {
     render(<RqHeader rq={stability()} />);
     expect(screen.getByRole("link", { name: "baseline-oneshot-v1-cc" }).getAttribute("href"))
-      .toBe("/workflows/#baseline-oneshot-v1-cc");
+      .toBe("/agentic_coding_lab/workflows/#baseline-oneshot-v1-cc");
   });
   it("links every any: alternative separately -- exact-ptdd-v1-pi and exact-sol-v1.6-test-list-dimensions-pi each get a link", () => {
     render(<RqHeader rq={stability({ factors: { model_x_workflow: [
       { model: "gpt-5-6-sol-codex", workflow: { any: ["exact-ptdd-v1-pi", "exact-sol-v1.6-test-list-dimensions-pi"] } },
     ] } })} />);
     expect(workflowLinks().map(link => link.getAttribute("href"))).toEqual([
-      "/workflows/#exact-ptdd-v1-pi", "/workflows/#exact-sol-v1.6-test-list-dimensions-pi"]);
+      "/agentic_coding_lab/workflows/#exact-ptdd-v1-pi", "/agentic_coding_lab/workflows/#exact-sol-v1.6-test-list-dimensions-pi"]);
   });
   it("links workflows of a plain workflow factor and of a workflow control", () => {
     render(<RqHeader rq={stability({ factors: { workflow: ["exact-ptdd-v1-cc", "baseline-inline-tdd-v1-cc"] },

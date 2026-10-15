@@ -361,7 +361,15 @@ pnpm preview        # serve site/dist/ locally
 2. turns `summary.json`, the RQ frontmatter, the workflow descriptions in `LINEAGE.yaml` and the metric registry (`experiments/metrics-registry.yaml`) into JSON under `site/src/data/` with `export-site-data.py` — it stops when an outcome has no registry entry or a workflow no description,
 3. builds the Astro site into `site/dist/` (both gitignored),
 
-and closes with `git diff --stat` over `research/`. A build without new runs leaves no diff. Statistics are computed once, in Python; the site's TypeScript only presents them. Design decisions, architecture and the story log: [`site/docs/`](site/docs/README.md).
+and closes with `git diff --stat` over `research/`. A build without new runs leaves no diff. Statistics are computed once, in Python; the site's TypeScript only presents them. Every page is served beneath `/agentic_coding_lab/`, the local preview included, and its stamp names the commit it was built from.
+
+To publish, commit and push `main`, then:
+
+```bash
+pnpm deploy:site    # build, then push site/dist/ to the gh-pages branch
+```
+
+`experiments/deploy-site.py` refuses off `main`, with uncommitted changes under `research/` or `site/`, or while `main` is not pushed; it publishes nothing if its own build changes `research/`. So the published site always matches a pushed commit. Design decisions, architecture and the story log: [`site/docs/`](site/docs/README.md).
 
 ## Repository Structure
 
@@ -695,6 +703,7 @@ All scripts are designed to be run from the repo root unless noted otherwise. `.
 |--------|---------|
 | `experiments/aggregate-by-query.py` | Reads an RQ frontmatter, selects matching runs from the pool, writes `runs.csv`, `summary.md` and `summary.json` into the RQ directory, each only when its content changed (`summary.md`'s `Generated:` line aside), rows sorted by `run_id`. Skips and reports runs without an `exit_reason`. Refuses (exit 1, nothing written) while a `batch` or `batch-retry` container runs or when Docker is unreachable. The canonical aggregator. |
 | `experiments/build-site.py` | Builds the results site: re-aggregates every RQ, runs `export-site-data.py` and the Astro build, prints each step's duration and a final `git diff --stat` over `research/`. Stops at the first failing step; refuses while a batch runs. Run as `pnpm build:site` from `site/`. |
+| `experiments/deploy-site.py` | Publishes the results site: refuses off `main`, with uncommitted changes under `research/` or `site/`, or while HEAD is not on `origin/main`; runs `build-site.py`, publishes nothing if that build changed `research/`, else commits `site/dist/` plus `.nojekyll` onto `gh-pages` as `Deploy <sha>: <subject>` and pushes. Run as `pnpm deploy:site` from `site/`. |
 | `experiments/export-site-data.py` | Turns every main RQ's `summary.json`, frontmatter, `LINEAGE.yaml` descriptions and the metric registry into the results site's JSON under `site/src/data/` (gitignored). Stops with exit 1, writing nothing, when an outcome has no registry entry or a workflow no description. |
 | `experiments/rq-status.py` | Prints per RQ: cells at `min_replicates` / declared, matched runs, findings, runs newer than `findings.md` (rules in `rq_facts.py`), plus the reason for any `closed:` RQ. Read-only; `--open` restricts to RQs with a short cell, no findings, or newer runs. |
 | `experiments/clean-broken-runs.py` | Deletes every broken run from the pool — any `exit_reason` other than `ok`, and stubs without one — plus leftover run directories git tracks nothing in. Re-aggregates the RQs that selected a deleted run (skipping, with a note, one that names an archived workflow) and commits the deleted runs and re-aggregated RQ files in one commit, nothing else; no push. `_`/`.`-prefixed directories stay untouched. Same batch lock as the aggregator. Runs on the user's call only; the next fill run refills the deleted runs. |

@@ -38,10 +38,10 @@ describe("RQ index", () => {
   });
 
   // R3 — an entry
-  it("links the question to its RQ page and shows the id beneath it -- RQ-stability -> /rq/RQ-stability/", () => {
+  it("links the question to its RQ page and shows the id beneath it -- RQ-stability -> /agentic_coding_lab/rq/RQ-stability/", () => {
     render(<RqIndex rqs={[rq()]} />);
     const question = screen.getByRole("link", { name: rq().question });
-    expect(question.getAttribute("href")).toBe("/rq/RQ-stability/");
+    expect(question.getAttribute("href")).toBe("/agentic_coding_lab/rq/RQ-stability/");
     const id = screen.getByText("RQ-stability");
     expect(question.compareDocumentPosition(id) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
@@ -80,7 +80,7 @@ describe("RQ index", () => {
   it("shows 'no ok runs yet' for an RQ whose only runs are 3 timeouts, its question linked", () => {
     render(<RqIndex rqs={[rq({ cells: [{ runs: runs(3, "2026-09-10T00:51:00+00:00", "timeout") }] })]} />);
     expect(screen.getByText("no ok runs yet")).toBeTruthy();
-    expect(screen.getByRole("link", { name: rq().question }).getAttribute("href")).toBe("/rq/RQ-stability/");
+    expect(screen.getByRole("link", { name: rq().question }).getAttribute("href")).toBe("/agentic_coding_lab/rq/RQ-stability/");
   });
 
   // R1 — groups

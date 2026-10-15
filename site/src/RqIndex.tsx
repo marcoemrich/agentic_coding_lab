@@ -1,4 +1,4 @@
-import { rqPageHref } from "./rq-link.js";
+import { rqPageHref } from "./site-links.js";
 import { hasPage } from "./rq-pages.js";
 import { indexGroups, type IndexRq } from "./rq-index.js";
 import { coveredCells, hasAnyRun, okRunCount, okRunsAndSpan } from "./rq-runs-summary.js";

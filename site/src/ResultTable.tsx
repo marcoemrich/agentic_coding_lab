@@ -7,7 +7,7 @@ import { boundaryExplanation, crossesTestListBoundary, hasMixedWorkflowStyles, w
 import { correctnessGateReason } from "./external-correctness-eligibility.js";
 import { orderedRunLinks } from "./run-links.js";
 import { trophyWinners } from "./trophy.js";
-import { workflowEntryHref } from "./workflow-link.js";
+import { workflowEntryHref } from "./site-links.js";
 
 const directionDisplay: Record<MetricDirection, { mark: string; meaning: string }> = {
   higher: { mark: "↑", meaning: "higher is better" },

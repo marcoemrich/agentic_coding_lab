@@ -1,4 +1,5 @@
 ---
+import { execFileSync } from "node:child_process";
 import "../styles/site.css";
 import { TopBar, type TopBarProps } from "../TopBar.tsx";
 
@@ -6,6 +7,7 @@ interface Props { title: string; current?: TopBarProps["current"] }
 const { title, current } = Astro.props;
 const rqs = Object.values(import.meta.glob<TopBarProps["rqs"][number]>("../data/rq/*.json", { eager: true, import: "default" }));
 const builtAt = new Date();
+const commit = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
 ---
 <!doctype html>
 <html lang="en">
@@ -19,7 +21,7 @@ const builtAt = new Date();
   </head>
   <body>
     <main class="wrap">
-      <TopBar current={current} builtAt={builtAt} rqs={rqs} />
+      <TopBar current={current} builtAt={builtAt} commit={commit} rqs={rqs} />
       <slot />
     </main>
   </body>

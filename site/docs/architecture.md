@@ -58,7 +58,7 @@ sequenceDiagram
   participant A as aggregate-by-query.py
   participant E as export-site-data.py
   participant S as Astro build
-  participant D as deploy (planned)
+  participant D as deploy (deploy-site.py)
   U->>B: build
   B->>A: re-aggregate every RQ
   A->>A: refuse if a batch container runs or Docker is unreachable
@@ -68,10 +68,12 @@ sequenceDiagram
   B->>S: build
   S-->>B: site/dist/
   B-->>U: duration per step, git diff --stat
-  U->>U: commit research/ changes
+  U->>U: commit and push research/ changes
   U->>D: deploy
-  D->>D: refuse if research/ is dirty
-  D->>D: push site/dist/ to gh-pages via git worktree
+  D->>D: refuse off main, if research/ or site/ is dirty, or HEAD not on origin/main
+  D->>B: build
+  D->>D: publish nothing if the build changed research/
+  D->>D: commit site/dist/ + .nojekyll onto gh-pages via git worktree, push
 ```
 
 The published site therefore always matches a commit: the numbers on a page are the

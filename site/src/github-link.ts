@@ -1,5 +1,9 @@
-const REPO_TREE = "https://github.com/marcoemrich/agentic_coding_lab/tree/main";
+const REPO = "https://github.com/marcoemrich/agentic_coding_lab";
 
 export function repoTreeHref(path: string): string {
-  return `${REPO_TREE}/${path}`;
+  return `${REPO}/tree/main/${path}`;
+}
+
+export function commitHref(sha: string): string {
+  return `${REPO}/commit/${sha}`;
 }

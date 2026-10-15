@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { repoTreeHref } from "./github-link.js";
 import { rqPageTitle } from "./rq-page-title.js";
 import { runsSummary, type RunCell } from "./rq-runs-summary.js";
-import { workflowEntryHref } from "./workflow-link.js";
+import { workflowEntryHref } from "./site-links.js";
 
 type Choice = string | { any: string[] };
 type Pair = Record<string, Choice>;

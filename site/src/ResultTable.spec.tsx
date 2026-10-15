@@ -43,7 +43,7 @@ describe("Rendered result table", () => {
       { kata, workflow: "external-pocock-2026-09-04-cc" },
     ] }} />);
     expect(screen.getByRole("link", { name: "exact-ptdd-v1-cc" }).getAttribute("href"))
-      .toBe("/workflows/#exact-ptdd-v1-cc");
+      .toBe("/agentic_coding_lab/workflows/#exact-ptdd-v1-cc");
   });
 
   // Rule 23: runs section; label from story 06 R8

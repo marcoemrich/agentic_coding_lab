@@ -68,11 +68,15 @@
   filters) in a sub-project `site/` with its own `package.json` and pnpm pinned via
   `packageManager`. Output `site/dist/` is gitignored.
 - **Separate `build` and `deploy`.** The build prints the duration per step and a final
-  `git diff --stat`. `deploy` refuses while `research/` has uncommitted changes — the published
-  site always corresponds to a commit — then pushes `dist/` to `gh-pages` via `git worktree`.
-  It runs only when the user calls it.
+  `git diff --stat`. `deploy` refuses off `main`, while `research/` or `site/` has uncommitted
+  changes, or while HEAD is not yet on `origin/main`; it then runs the build itself and
+  publishes nothing if that build leaves a diff under `research/` — the published site always
+  corresponds to a pushed commit. It appends one commit per deploy to `gh-pages` via
+  `git worktree` and pushes it. Every page's stamp names the commit it was built from.
+  It runs only when the user calls it ([Deploy](stories/done/2026-10-15_01_deploy.md)).
 - **Hosting:** GitHub Pages from this public repo, at `marcoemrich.github.io/agentic_coding_lab/`
-  (Astro `base: '/agentic_coding_lab'`). A custom domain can be added later via CNAME.
+  (Astro `base: '/agentic_coding_lab'`, for local previews too). A custom domain can be added
+  later via CNAME.
 
 ### Metric registry
 
