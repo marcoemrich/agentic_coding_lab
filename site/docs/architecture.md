@@ -111,7 +111,7 @@ site/
 
 ## UI
 
-The tests in `site/src/*.spec.ts(x)` are the specification (148 tests; one done story each
+The tests in `site/src/*.spec.ts(x)` are the specification (172 tests; one done story each
 under `docs/stories/done/`).
 
 ```mermaid
@@ -149,11 +149,11 @@ the component holds only the sort state.
 
 ### Pages
 
-The index and the RQ pages are built; findings and the workflow page are planned.
+The index, the RQ pages and their findings section are built; the workflow page is planned.
 
 ```mermaid
 flowchart LR
-  idx["/ — RQ index<br/>grouped by harness subtree"] --> rqp["/rq/&lt;rq-id&gt;<br/>header, ResultTable per kata, findings (planned)"]
+  idx["/ — RQ index<br/>grouped by harness subtree"] --> rqp["/rq/&lt;rq-id&gt;<br/>header, ResultTable per kata, findings"]
   rqp --> wf["/workflows#&lt;name&gt;<br/>workflow profiles (planned)"]
   rqp --> gh["GitHub: RQ dir, run dirs"]
 ```
@@ -161,7 +161,10 @@ flowchart LR
 `pages/index.astro` renders `RqIndex` (markup) over `rq-index.ts` (groups by subtree, order
 by chapter label); `pages/rq/[id].astro` builds a page only for an RQ that `hasPage()` in
 `rq-pages.ts` admits — one with runs. `layouts/Page.astro` puts `TopBar` (site name, nav,
-data stamp) on every page. The run facts — ok runs, coverage, span — are one implementation
+data stamp) on every page. Beneath the tables, `FindingsSection` shows the RQ's `findings.md`,
+exported into its JSON, rendered by `render-findings.ts` (`marked`, GitHub heading ids) with
+links pointed at the site by `findings-links.ts`; `open-findings.ts` opens the section for an
+address that points into it. The run facts — ok runs, coverage, span — are one implementation
 in `rq-runs-summary.ts`, shared by `RqHeader`, the index and the stamp; page URLs live in
 `rq-link.ts`.
 

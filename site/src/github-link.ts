@@ -7,3 +7,7 @@ export function repoTreeHref(path: string): string {
 export function commitHref(sha: string): string {
   return `${REPO}/commit/${sha}`;
 }
+
+export function repoBlobHref(path: string): string {
+  return `${REPO}/blob/main/${path}`;
+}

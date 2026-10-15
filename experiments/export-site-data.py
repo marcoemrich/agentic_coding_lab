@@ -93,6 +93,12 @@ def rq_document(fm: dict, summary: dict, path: str) -> dict:
     return document
 
 
+def findings_text(rq_dir: Path) -> str | None:
+    """The RQ's findings.md as written, shown on its page behind a warning; None without one."""
+    findings = rq_dir / "findings.md"
+    return findings.read_text() if findings.is_file() else None
+
+
 def repo_path(rq_dir: Path) -> str:
     """A main RQ's directory relative to the repo root; main RQs always sit at
     research/<subtree>/<dir>, so the path is its last three parts."""
@@ -152,8 +158,12 @@ def export(rq_dirs: list[Path], lineage_path: Path, registry_path: Path,
         fm = agg.parse_frontmatter(rq_dir / "README.md")
         check_registry(fm, registry, registry_path.name)
         check_factors(fm)
-        documents.append(rq_document(fm, json.loads((rq_dir / "summary.json").read_text()),
-                                     repo_path(rq_dir)))
+        document = rq_document(fm, json.loads((rq_dir / "summary.json").read_text()),
+                               repo_path(rq_dir))
+        findings = findings_text(rq_dir)
+        if findings is not None:
+            document["findings"] = findings
+        documents.append(document)
     referenced = list(dict.fromkeys(cell["workflow"] for document in documents
                                     for cell in document["cells"]))
     workflows = site_workflows(referenced, workflow_descriptions(lineage_path),

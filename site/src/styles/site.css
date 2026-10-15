@@ -96,3 +96,19 @@ ul.rqs .facts { text-align: right; font-size: 13px; color: var(--ink-3); white-s
   ul.rqs .facts { text-align: left; }
 }
 ul.rqs .sub { display: block; color: var(--ink-3); font-size: 12px; }
+
+/* Findings section, from the prototype (details.find, .md); findings.md is shown as written. */
+section.findings { margin-top: 40px; border-top: 1px solid var(--rule); padding-top: 16px; }
+details.find summary { cursor: pointer; font-weight: 600; font-size: 15px; }
+.md { max-width: 72em; font-size: 14px; }
+.md table { border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; display: block; overflow-x: auto; max-width: 100%; }
+.md th, .md td { border: 1px solid var(--rule); padding: 4px 8px; }
+.md h3, .md h4 { font-family: var(--serif); font-weight: 500; }
+.md h3 { font-size: 20px; margin: 24px 0 8px; }
+.md h4 { font-size: 17px; margin: 28px 0 8px; scroll-margin-top: 16px; }
+.md p, .md li { max-width: 80ch; }
+.md code { font-size: 12.5px; }
+.md pre { overflow-x: auto; }
+.md hr { border: 0; border-top: 1px solid var(--rule-2); margin: 24px 0; }
+/* The run lists' two columns (details ul) are not meant for findings' prose lists. */
+.md ul, .md ol { columns: auto; padding-left: 22px; }

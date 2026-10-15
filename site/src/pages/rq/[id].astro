@@ -1,23 +1,34 @@
 ---
 import Page from "../../layouts/Page.astro";
+import { FindingsSection } from "../../FindingsSection.tsx";
 import { ResultTable } from "../../ResultTable.tsx";
 import { RqHeader, type RqHeaderInput } from "../../RqHeader.tsx";
 import type { ResultTableInput } from "../../result-table.ts";
 import { rqPageTitle } from "../../rq-page-title.ts";
 import { rqsWithPages } from "../../rq-pages.ts";
 
-type RqData = RqHeaderInput & ResultTableInput;
+type RqData = RqHeaderInput & ResultTableInput & { findings?: string };
 
 export function getStaticPaths() {
   const files = import.meta.glob<RqData>("../../data/rq/*.json", { eager: true, import: "default" });
-  return rqsWithPages(Object.values(files)).map(rq => ({ params: { id: rq.id }, props: { rq } }));
+  const withPages = rqsWithPages(Object.values(files));
+  const pages = Object.fromEntries(withPages.map(rq => [rq.path, rq.id]));
+  return withPages.map(rq => ({ params: { id: rq.id }, props: { rq, pages } }));
 }
 
-const { rq } = Astro.props as { rq: RqData };
+const { rq, pages } = Astro.props as { rq: RqData; pages: Record<string, string> };
 ---
 <Page title={rqPageTitle(rq.id)}>
   <article>
     <RqHeader rq={rq} />
     <ResultTable client:load input={rq} />
+    <FindingsSection findings={rq.findings} context={{ path: rq.path, pages }} />
   </article>
 </Page>
+<script>
+  import { openFindingsFor } from "../../open-findings.ts";
+
+  const openForAddress = () => openFindingsFor(location.hash, document);
+  openForAddress();
+  addEventListener("hashchange", openForAddress);
+</script>

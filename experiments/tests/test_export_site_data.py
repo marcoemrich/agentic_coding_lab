@@ -267,3 +267,18 @@ def test_the_command_line_exits_1_on_a_stop(lab, monkeypatch, capsys):
     monkeypatch.setattr(module, "OUT_DIR", lab["out"])
     assert module.main() == 1
     assert "RQ-x: outcome foo_score" in capsys.readouterr().err
+
+
+# Findings section (site/docs/stories/open/2026-10-11_08_findings-section.md),
+# build reading: the export carries findings.md into the RQ's JSON.
+def test_carries_the_findings_text(lab):
+    """findings.md '# RQ-x Findings\\n...' -> "findings" holds the file's text verbatim."""
+    rq = make_rq(lab["research"], "RQ-x", [summary_cell()])
+    text = "# RQ-x Findings\n\n## F-x.1 — It helps\n\n| a | b |\n|---|---|\n| 1 | **2** |\n"
+    (rq / "findings.md").write_text(text)
+    assert json.loads((run_export(lab, [rq]) / "rq" / "RQ-x.json").read_text())["findings"] == text
+
+
+def test_leaves_findings_out_without_a_findings_file(lab):
+    """no findings.md -> no "findings" key."""
+    assert "findings" not in exported(lab, DEFAULT_DESIGN)
