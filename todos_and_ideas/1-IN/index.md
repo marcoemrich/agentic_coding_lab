@@ -76,3 +76,14 @@
   Open: how to implement in the lab — staged existing kata (claim-office?) vs.
   porting SCBench problems; run-batch.sh has no follow-up turns on the same workspace yet.
 
+
+* `predictions_correct` / `predictions_total` are unmeasurable on the Claude Code
+  arm of the PTDD line — the agent emits `Red Phase Complete` in almost no
+  assistant text block (0 of 4–13 blocks per run, 9 of 10 runs across
+  `exact-ptdd-v1-cc` and `exact-ptdd-v1.2-verification-split-cc`), so
+  `extract_predictions_from_text` never opens its gate. Affects
+  RQ-opus55-current-workflow (2026-10-01 runs) as well as
+  RQ-ptdd-verification-split F-1.26.6; pi is unaffected. Re-check target: make
+  the red-phase command emit the marker in assistant text on CC, then re-run one
+  `exact-ptdd-v1.2-verification-split-cc` run and confirm
+  `predictions_total ~ 2 * cycles_closed`.

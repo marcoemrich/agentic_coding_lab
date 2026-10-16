@@ -110,7 +110,7 @@ a single-kata claim rather than pretending to a crossed design.
 and `port_of`). The TypeScript runs of this arm predate the rename and are
 recorded under the v1.6 name, so both spellings are pooled through explicit
 workflow alternatives, exactly as
-[RQ-ptdd-refactor-subagent-cross-model](../1.7-ptdd-refactor-subagent-cross-model/README.md)
+[RQ-ptdd-refactor-subagent-cross-model](../../workflow-dev/1.25-ptdd-refactor-subagent-cross-model/README.md)
 does. The first entry is the canonical cell label.
 
 ## The inline control is v1.1, not v1 — and why v1 runs are not pooled
