@@ -154,6 +154,11 @@ MODEL_CONFIGS=(
     "glm-5-1|oc-only|false"
     "deepseek-v4-flash|oc-only|false"
     "deepseek-v4-pro|oc-only|false"
+    # DeepSeek on OC via Requesty (tensorx), replacing the dead Portkey route
+    # from 2026-10-19. Own IDs so the route stays visible per run; RQs fold
+    # them into the old cells with {any: [...]}.
+    "deepseek-v4-flash-requesty|oc-only|false"
+    "deepseek-v4-pro-requesty|oc-only|false"
     "mistral-medium-3-5|oc-only|false"
     "devstral-medium-2507|oc-only|false"
     "devstral-2512|oc-only|false"
@@ -1127,8 +1132,12 @@ EOF
                 kimi-k2-6)         oc_model="portkey/@openrouter-eval/moonshotai/kimi-k2.6" ;;
                 minimax-m2-7)      oc_model="portkey/@openrouter-eval/minimax/minimax-m2.7" ;;
                 glm-5-1)           oc_model="portkey/@openrouter-eval/z-ai/glm-5.1" ;;
-                deepseek-v4-flash) oc_model="portkey/@openrouter-eval/deepseek/deepseek-v4-flash" ;;
-                deepseek-v4-pro)   oc_model="portkey/@openrouter-eval/deepseek/deepseek-v4-pro" ;;
+                # deepseek-v4-{flash,pro} (Portkey @openrouter-eval) removed
+                # 2026-10-19: Portkey is gone, the route answers "Invalid API
+                # Key". Without a case entry batch-plan-from-rq picks the
+                # -requesty alternative of an {any: [...]} cell.
+                deepseek-v4-flash-requesty) oc_model="requesty/tensorx/deepseek-v4-flash" ;;
+                deepseek-v4-pro-requesty)   oc_model="requesty/tensorx/deepseek-v4-pro" ;;
                 mistral-medium-3-5)   oc_model="portkey-mistral/@mistral/mistral-medium-3-5" ;;
                 devstral-medium-2507) oc_model="portkey-cc/@mistral/devstral-medium-2507" ;;
                 devstral-2512)        oc_model="portkey-cc/@mistral/devstral-2512" ;;
@@ -1248,6 +1257,18 @@ EOF
                     pi_retries_exhausted="true"
                     echo -e "  ${RED}pi exhausted its internal retries — marking run failed.${NC}"
                     grep -oE '"finalError":"[^"]{0,120}' "$run_log" 2>/dev/null | tail -1 | sed 's/^/    /'
+                fi
+            elif [ "$harness" = "opencode" ]; then
+                # OpenCode prints a provider auth failure and exits 0, so
+                # the run would be scored ok with zero tokens. Observed
+                # 2026-10-19 on a dead Portkey route:
+                #   "Error: Portkey Error: Invalid API Key. Error Code: 03"
+                # A key/route that is wrong now is wrong for every later
+                # run too: setup error, the shard stops.
+                if grep -qE "Error: .*(Invalid API Key|Portkey Error)" "$run_log" 2>/dev/null; then
+                    setup_error="true"
+                    echo -e "  ${RED}Setup error (provider auth) — not retryable; this shard stops after this run.${NC}"
+                    grep -oE "Error: .*(Invalid API Key|Portkey Error)[^\n]{0,80}" "$run_log" 2>/dev/null | head -1 | sed 's/^/    /'
                 fi
             elif [ "$harness" = "claude" ]; then
                 # Trimmed log content (whitespace stripped). On a healthy

@@ -21,6 +21,8 @@ For the current pi/Requesty models (RQ-model-novel-pi, RQ-model-quality-pi, RQ-h
 | kimi-k3-nebius | `nebius/kimi-k3` | $3.00 | $15.00 | $3.00 | **no** |
 | minimax-m3 | `tensorx/minimax-m3` | $0.40 | $2.00 | $0.10 | yes |
 | deepseek-v4-pro | `tensorx/deepseek-v4-pro` | $1.75 | $3.50 | $0.44 | yes |
+| deepseek-v4-pro-requesty (OC) | `tensorx/deepseek-v4-pro` | $1.75 | $3.50 | $0.44 | yes |
+| deepseek-v4-flash-requesty (OC) | `tensorx/deepseek-v4-flash` | $0.25 | $0.30 | $0.06 | yes |
 | qwen3-235b | `nebius/qwen/qwen3-235b-a22b-instruct-2507` | $0.20 | $0.60 | $0.20 | **no** |
 
 Notes:

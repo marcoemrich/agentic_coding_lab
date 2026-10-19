@@ -140,6 +140,9 @@ PRICES = {
     "minimax-m3-no-thinking": (0.40, 2.00, 0.10, 0.0),
     "deepseek-v4-pro":  (1.75,  3.50,  0.44, 0.0),   # tensorx/deepseek-v4-pro
     "deepseek-v4-pro-no-thinking": (1.75, 3.50, 0.44, 0.0),
+    # OC arms on the same Requesty/tensorx route (replacing dead Portkey, 2026-10-19)
+    "deepseek-v4-pro-requesty": (1.75, 3.50, 0.44, 0.0),    # tensorx/deepseek-v4-pro
+    "deepseek-v4-flash-requesty": (0.25, 0.30, 0.06, 0.0),  # tensorx/deepseek-v4-flash
     "qwen3-235b":       (0.20,  0.60,  0.20, 0.0),   # nebius/… (no cache discount: cr=in)
     "qwen3-235b-no-thinking": (0.20, 0.60, 0.20, 0.0),
     "glm-5-1":          (1.40,  4.40,  1.40, 0.0),   # nebius/zai-org/glm-5.1 (no cache discount: cr=in)

@@ -78,6 +78,22 @@
           "name": "Qwen3 Coder 480B (Portkey CC Workspace, Bedrock EU North)"
         }
       }
+    },
+    "requesty": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Requesty Router (EU)",
+      "options": {
+        "baseURL": "https://router.eu.requesty.ai/v1",
+        "apiKey": "{env:REQUESTY_API_KEY}"
+      },
+      "models": {
+        "tensorx/deepseek-v4-flash": {
+          "name": "DeepSeek V4 Flash (Requesty tensorx)"
+        },
+        "tensorx/deepseek-v4-pro": {
+          "name": "DeepSeek V4 Pro (Requesty tensorx)"
+        }
+      }
     }
   },
   "permission": {
