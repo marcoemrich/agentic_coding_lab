@@ -246,22 +246,17 @@ sharpest separation in the RQ.
 | `baseline-inline-tdd-v1-pi` | 4.0 | 3.8 | 0.34 | 5 |
 | `exact-ptdd-v1-cc` | **1.0** | 1.0 | **1.00** | 5 |
 | `exact-ptdd-v1-pi` | **1.0** | 1.0 | **1.00** | 5 |
-| `exact-ptdd-v1.1-refactor-subagent-cc` | (2.6)¹ | 1.0 | **1.00** | 5 |
+| `exact-ptdd-v1.1-refactor-subagent-cc` | **1.0** | 1.0 | **1.00** | 5 |
 | `exact-ptdd-v1.1-refactor-subagent-pi` | **1.0** | 1.0 | **1.00** | 3 |
 
-¹ Measurement artefact, not a batch. Four of the five runs are at 1.0; one run
-(2026-10-19_02-32-59) reports 9. In that run a single suite invocation shows 9
-failing tests, 8 of which had passed in the invocation directly before: an
-implementation step briefly broke existing tests, and six seconds later the suite
-was green again. The phase chain counts that regression as a Red with 9 failing
-tests. No test was authored in a batch, so the cell's mean is not read as
-batching and the column gets no trophy for this cell.
+`red_batch_max` counts only tests that have never passed. A red invocation that
+also breaks older, previously green tests (one Opus subagent run, 2026-10-19_02-32-59,
+has such a step: one new test, eight regressed ones, green again six seconds
+later) therefore registers as a batch of one.
 
-All four EXACT arms sit at `red_batch_size` 1.0 with σ 0 and at
-`tdd_discipline_step` 1.00 with σ 0 — not an average near one, but every red
-phase in every run introducing exactly one new failing test, the regression in
-footnote ¹ aside. `red_batch_max` is
-1.0 with σ 0 in three of them; the fourth is the artefact above. The SOL control
+All four EXACT arms sit at `red_batch_max` 1.0, `red_batch_size` 1.0 and
+`tdd_discipline_step` 1.00, each with σ 0 — not an average near one, but every
+red phase in every run introducing exactly one new failing test. The SOL control
 batches up to 6 tests at once (mean max 4.0), the Opus control up to 2.
 
 `tdd_discipline_step` is boundary-safe where the overall `tdd_discipline` score is

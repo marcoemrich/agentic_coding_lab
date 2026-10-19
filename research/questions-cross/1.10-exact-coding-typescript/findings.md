@@ -34,7 +34,7 @@ one batch:
 |---|---:|---|
 | Opus Inline | 10 | 5 from this RQ (Claude Code 2.1.267) + 5 from the RQ-opus55-current-workflow refill (2.1.280) |
 | Opus EXACT v1 | 15 | 10 from the earlier Opus RQs (2.1.267) + 5 from the RQ-opus55-current-workflow refill (2.1.280) |
-| Opus EXACT v1.1 | 10 | 5 from this RQ (2.1.267) + 5 from the RQ-opus55-current-workflow refill (2.1.280) |
+| Opus EXACT v1.1 | 9 | 4 from this RQ (2.1.267) + 3 from the RQ-opus55-current-workflow refill (2.1.280) + 2 from the 2026-10-19 fill (2.1.280) |
 | SOL EXACT v1 | 15 | 10 from the earlier SOL RQs + 5 from the GPT-5.6 reference arm of RQ-gpt6-sol-vs-gpt56-sol (all pi 0.81.1) |
 
 The other two SOL cells hold one batch of five each. The Opus cells therefore mix
@@ -47,42 +47,44 @@ reporter landed, which covers the refilled Opus halves and none of the
 gpt-5-6-sol-codex cells. Neither family of columns spans this RQ's central
 comparison, so no discipline claim is made here.
 
-**Correctness guard — one cell fails it.** Five of six cells reach
-`verification_pct` ≥ 0.99 and are eligible for every quality and cost trophy.
-**Opus EXACT v1.1 is at 0.87 ± 0.31 and is excluded**: three of its ten runs hit
-the two-hour budget ceiling, and one of those delivered nothing. Its values are
-shown in parentheses without trophies throughout — they describe seven finished
-runs plus three that stopped early, not a result comparable with the other cells.
-Correctness (internal) is 100 % in all six cells.
+**Correctness guard — all six cells pass.** Every cell reaches
+`verification_pct` ≥ 0.99 and is eligible for every quality and cost trophy.
+Correctness (internal) is 100 % in all six cells. Only `ok` runs count as
+replicates, so the Opus EXACT v1.1 cell describes its nine finished runs; the
+three attempts that hit the two-hour budget ceiling are not in it and appear only
+in the "Completed within budget" row (9 of 12 attempts, F-1.10.4).
 
 ### Opus 5 — native Claude Code
 
-| Metric | Inline (n=10) | EXACT v1 (n=15) | EXACT v1.1 (n=10) |
+| Metric | Inline (n=10) | EXACT v1 (n=15) | EXACT v1.1 (n=9) |
 |---|---:|---:|---:|
-| Correctness (external) | **1.00 ± 0.00** 🏆 | **1.00 ± 0.02** 🏆 | 0.87 ± 0.31 |
-| Completed within budget | **100 %** 🏆 | **100 %** 🏆 | 70 % |
-| `cognitive_max` | 6.10 ± 1.91 | **3.07 ± 0.96** 🏆 | (2.50 ± 0.71) |
-| `cognitive_avg` | 2.46 ± 0.37 | **1.48 ± 0.24** 🏆 | (1.25 ± 0.14) |
-| `mccabe_max` | 5.30 ± 1.16 | **3.33 ± 0.49** 🏆 | (3.00 ± 0.00) |
-| `mccabe_avg` | 2.02 ± 0.18 | **1.57 ± 0.11** 🏆 | (1.39 ± 0.14) |
-| Smell Total | 0.10 ± 0.32 | **0.00 ± 0.00** 🏆 | (0.00 ± 0.00) |
-| `unit_size_max` | 24.30 ± 4.14 | **17.93 ± 4.93** 🏆 | (13.90 ± 2.92) |
-| `unit_size_avg` | 7.80 ± 0.78 | **5.82 ± 0.78** 🏆 | (4.67 ± 0.38) |
-| `unit_size_median` | **5.45 ± 0.96** 🏆 | **4.63 ± 1.16** 🏆 | (3.30 ± 0.42) |
-| Mutation Score | **0.93 ± 0.05** 🏆 | **0.94 ± 0.05** 🏆 | (0.91 ± 0.08) |
-| `duration_seconds` | **298.40 ± 68.09** 🏆 | 1234.40 ± 267.31 | (5483.70 ± 1589.67) |
-| `cost_usd` | **3.47 ± 0.85** 🏆 | 16.38 ± 3.65 | (66.35 ± 21.55) |
-| *Production LoC* | 293.90 ± 41.20 | 308.27 ± 36.23 | 558.70 ± 184.85 |
-| *Code Mass (APP)* | 721.10 ± 43.97 | 712.67 ± 70.77 | 873.90 ± 189.30 |
-| *Test LoC* | 424.90 ± 62.45 | 630.60 ± 232.13 | 411.10 ± 86.12 |
-| *`unit_count`* | 16.20 ± 1.62 | 25.87 ± 4.03 | 35.40 ± 9.08 |
-| *`mutants_total` / survived* | 133.30 / 9.80 | 135.20 / 8.40 | 147.00 / 14.50 |
-| *of those uncovered* | 1.00 ± 1.33 | 4.27 ± 5.79 | 10.00 ± 11.99 |
-| *`total_tokens`* | 3.05 M | 21.77 M | 71.42 M |
+| Correctness (external) | **1.00 ± 0.00** 🏆 | **1.00 ± 0.02** 🏆 | **0.99 ± 0.02** 🏆 |
+| Completed within budget (`ok` / attempts) | **100 %** 🏆 | **100 %** 🏆 | 75 % (9/12) |
+| `cognitive_max` | 6.10 ± 1.91 | **3.07 ± 0.96** 🏆 | **3.00 ± 1.12** 🏆 |
+| `cognitive_avg` | 2.46 ± 0.37 | **1.48 ± 0.24** 🏆 | **1.30 ± 0.19** 🏆 |
+| `mccabe_max` | 5.30 ± 1.16 | **3.33 ± 0.49** 🏆 | **3.22 ± 0.44** 🏆 |
+| `mccabe_avg` | 2.02 ± 0.18 | 1.57 ± 0.11 | **1.36 ± 0.09** 🏆 |
+| Smell Total | 0.10 ± 0.32 | **0.00 ± 0.00** 🏆 | **0.00 ± 0.00** 🏆 |
+| `unit_size_max` | 24.30 ± 4.14 | 17.93 ± 4.93 | **14.11 ± 3.06** 🏆 |
+| `unit_size_avg` | 7.80 ± 0.78 | 5.82 ± 0.78 | **4.69 ± 0.36** 🏆 |
+| `unit_size_median` | 5.45 ± 0.96 | 4.63 ± 1.16 | **3.22 ± 0.36** 🏆 |
+| Mutation Score | **0.93 ± 0.05** 🏆 | **0.94 ± 0.05** 🏆 | 0.88 ± 0.08 |
+| `duration_seconds` | **298.40 ± 68.09** 🏆 | 1234.40 ± 267.31 | 4901.56 ± 1191.11 |
+| `cost_usd` | **3.47 ± 0.85** 🏆 | 16.38 ± 3.65 | 64.39 ± 16.32 |
+| *Production LoC* | 293.90 ± 41.20 | 308.27 ± 36.23 | 575.33 ± 93.19 |
+| *Code Mass (APP)* | 721.10 ± 43.97 | 712.67 ± 70.77 | 920.89 ± 103.10 |
+| *Test LoC* | 424.90 ± 62.45 | 630.60 ± 232.13 | 451.33 ± 61.09 |
+| *`unit_count`* | 16.20 ± 1.62 | 25.87 ± 4.03 | 39.00 ± 5.70 |
+| *`mutants_total` / survived* | 133.30 / 9.80 | 135.20 / 8.40 | 160.44 / 19.11 |
+| *of those uncovered* | 1.00 ± 1.33 | 4.27 ± 5.79 | 11.56 ± 11.77 |
+| *`total_tokens`* | 3.05 M | 21.77 M | 68.44 M |
 
-`unit_size_median` carries two trophies: 5.45 ± 0.96 and 4.63 ± 1.16 overlap, so
-that row reads as no effect between the two eligible cells. Mutation Score
-likewise — 0.93 and 0.94 are indistinguishable.
+`cognitive_max`, `cognitive_avg` and `mccabe_max` carry two trophies: the gap
+between EXACT v1 and EXACT v1.1 (0.07, 0.18, 0.11) is smaller than EXACT v1.1's
+own standard deviation, so those rows read as no effect between the two EXACT
+arms. On `mccabe_avg` and the three unit-size rows the gap exceeds it, and EXACT
+v1.1 wins alone. Mutation Score is shared by Inline and EXACT v1 (0.93 and 0.94);
+EXACT v1.1 at 0.88 trails EXACT v1 by more than EXACT v1's standard deviation.
 
 ### GPT-5.6 SOL — pi
 
@@ -125,10 +127,10 @@ measure, for both models, and it is monotone across the three methods.
 
 | Measure | Opus: Inline → v1 → v1.1 | SOL: Inline → v1 → v1.1 |
 |---|---|---|
-| `cognitive_max` | 6.10 → 3.07 → 2.50 | 6.60 → 4.07 → 2.60 |
-| `cognitive_avg` | 2.46 → 1.48 → 1.25 | 2.77 → 1.86 → 1.24 |
-| `mccabe_max` | 5.30 → 3.33 → 3.00 | 8.40 → 4.73 → 3.60 |
-| `unit_size_avg` | 7.80 → 5.82 → 4.67 | 7.29 → 6.14 → 4.21 |
+| `cognitive_max` | 6.10 → 3.07 → 3.00 | 6.60 → 4.07 → 2.60 |
+| `cognitive_avg` | 2.46 → 1.48 → 1.30 | 2.77 → 1.86 → 1.24 |
+| `mccabe_max` | 5.30 → 3.33 → 3.22 | 8.40 → 4.73 → 3.60 |
+| `unit_size_avg` | 7.80 → 5.82 → 4.69 | 7.29 → 6.14 → 4.21 |
 
 The first step carries most of it. `cognitive_max` halves between Inline and
 EXACT v1 on Opus (6.10 → 3.07) and falls by 38 % on SOL (6.60 → 4.07);
@@ -150,12 +152,12 @@ product grows sharply:
 
 | | EXACT v1 | EXACT v1.1 | change |
 |---|---:|---:|---|
-| `unit_size_avg` | 5.82 | 4.67 | −20 % |
-| `unit_count` | 25.87 | 35.40 | +37 % |
-| Production LoC | 308.27 | 558.70 | +81 % |
-| Code Mass (APP) | 712.67 | 873.90 | +23 % |
+| `unit_size_avg` | 5.82 | 4.69 | −19 % |
+| `unit_count` | 25.87 | 39.00 | +51 % |
+| Production LoC | 308.27 | 575.33 | +87 % |
+| Code Mass (APP) | 712.67 | 920.89 | +29 % |
 
-Production LoC rises by four fifths while the average unit shrinks by a fifth.
+Production LoC nearly doubles while the average unit shrinks by a fifth.
 The isolated Refactor phase is therefore not simplifying the solution; it is
 splitting it into more and smaller pieces and adding code in the process. Every
 per-function metric rewards that, and no per-function metric can distinguish it
@@ -164,14 +166,14 @@ from genuine simplification — which is why Production LoC, Code Mass (APP) and
 
 The same shape appears on SOL but weaker in code volume: `unit_count` 14.60 →
 32.20 with Production LoC 169.00 → 265.20 (+57 %), and Code Mass (APP) rises by
-11 % against 23 % on Opus. On neither model does the extra structure buy
-correctness: Opus loses it badly (1.00 → 0.87) and SOL stays at 1.00.
+11 % against 29 % on Opus. On neither model does the extra structure buy
+correctness: Opus finishes at 0.99 against 1.00 and SOL stays at 1.00.
 
 The mutation decomposition shows what happens to the added code on Opus. While
-Production LoC rises by 81 %, the number of mutants the suite never reaches rises
-from 4.27 to 10.00 per run, and the number it reaches but fails to kill stays
-flat (4.13 against 4.50). The suite keeps its sharpness where it looks and stops
-looking at more of the product — see
+Production LoC rises by 87 %, the number of mutants the suite never reaches rises
+from 4.27 to 11.56 per run, and the number it reaches but fails to kill rises
+from 4.13 to 7.56. The suite neither covers the added code nor keeps its
+sharpness on what it does cover — see
 [F-1.10.8](#f-1108--on-opus-the-arms-miss-mutants-for-opposite-reasons).
 
 ---
@@ -184,13 +186,14 @@ step adds.
 | Step | Opus `cognitive_max` | SOL `cognitive_max` |
 |---|---|---|
 | Inline → v1 | 6.10 → 3.07 (−50 %) | 6.60 → 4.07 (−38 %) |
-| v1 → v1.1 | 3.07 → 2.50 (−19 %) | 4.07 → 2.60 (−36 %) |
+| v1 → v1.1 | 3.07 → 3.00 (−2 %) | 4.07 → 2.60 (−36 %) |
 
 On Opus, EXACT v1 already lands at a `cognitive_max` of 3.07 and an `mccabe_max`
 of 3.33 — close to the floor these measures can reach on this kata. The isolated
-Refactor subagent then has little left to remove: the 0.57 it takes off
-`cognitive_max` sits inside both cells' standard deviations and costs an 81 %
-increase in Production LoC, three budget failures in ten runs and 4.1× the money.
+Refactor subagent then has little left to remove: the 0.07 it takes off
+`cognitive_max` sits inside both cells' standard deviations and costs an 87 %
+increase in Production LoC, three budget failures in twelve attempts and 3.9×
+the money.
 
 On SOL, EXACT v1 stops at 4.07 and `mccabe_max` 4.73, leaving real headroom, and
 v1.1 closes most of it — `mccabe_max` 4.73 → 3.60, `unit_size_avg` 6.14 → 4.21 —
@@ -208,21 +211,21 @@ The treatment is the same on both platforms; its cost is not.
 
 | | Opus v1 | Opus v1.1 | SOL v1 | SOL v1.1 |
 |---|---:|---:|---:|---:|
-| Completed within budget | 100 % | **70 %** | 100 % | 100 % |
-| Correctness (external) | 1.00 ± 0.02 | **0.87 ± 0.31** | 1.00 ± 0.00 | 1.00 ± 0.00 |
-| `duration_seconds` | 1234 | 5484 | 1574 | 4927 |
-| `cost_usd` | 16.38 | 66.35 | 4.67 | 18.27 |
+| Completed within budget (`ok` / attempts) | 100 % | **75 % (9/12)** | 100 % | 100 % |
+| Correctness (external) | 1.00 ± 0.02 | 0.99 ± 0.02 | 1.00 ± 0.00 | 1.00 ± 0.00 |
+| `duration_seconds` | 1234 | 4902 | 1574 | 4927 |
+| `cost_usd` | 16.38 | 64.39 | 4.67 | 18.27 |
 
-Both platforms pay a similar multiple for the isolation — 4.4× wallclock and
-4.1× price on Opus, 3.1× and 3.9× on SOL. In absolute terms the gap is wide:
-$66.35 against $18.27.
+Both platforms pay a similar multiple for the isolation — 4.0× wallclock and
+3.9× price on Opus, 3.1× and 3.9× on SOL. In absolute terms the gap is wide:
+$64.39 against $18.27.
 
-Only Opus converts that into lost runs. **Three of its ten v1.1 runs hit the
-two-hour ceiling**, one of them ending at `verification_pct` 0 with no suite
-invocation at all, which is what drags the cell to 0.87 ± 0.31 and disqualifies
-it from every quality trophy in the Opus table. Two further runs miss one
-scenario each. The SOL arm finishes 5/5 within budget at a comparable wallclock
-multiple.
+Only Opus converts that into lost runs. **Three of its twelve v1.1 attempts hit
+the two-hour ceiling.** They are not replicates and were refilled, so the cell's
+Correctness (external) of 0.99 describes the nine runs that finished; one of
+those misses a single scenario. The finished runs themselves sit close to the
+ceiling: 2678 to 6398 s, four of nine above 5500 s. The SOL arm finishes 5/5
+within budget at a comparable wallclock multiple.
 
 Isolating the Refactor phase is therefore a platform-conditional recommendation,
 not a general one, and on Opus it is at the edge of what the budget allows.
@@ -237,13 +240,13 @@ of magnitude.
 
 | | Inline | EXACT v1 | EXACT v1.1 |
 |---|---:|---:|---:|
-| Opus `cost_usd` | **3.47** 🏆 | 16.38 (4.7×) | 66.35 (19.1×) |
+| Opus `cost_usd` | **3.47** 🏆 | 16.38 (4.7×) | 64.39 (18.6×) |
 | SOL `cost_usd` | **0.60** 🏆 | 4.67 (7.8×) | 18.27 (30.5×) |
-| Opus `total_tokens` | 3.05 M | 21.77 M | 71.42 M |
+| Opus `total_tokens` | 3.05 M | 21.77 M | 68.44 M |
 | SOL `total_tokens` | 0.34 M | 6.72 M | 17.52 M |
 
 Inline TDD reaches the correctness ceiling on this kata in both models, at
-roughly a fifth to an eighth of the price of EXACT v1 and a twentieth to a
+roughly a fifth to an eighth of the price of EXACT v1 and a nineteenth to a
 thirtieth of EXACT v1.1. What the money buys is structure, not working software:
 halved complexity, smaller units and — on SOL — a markedly stronger test suite
 (F-1.10.7).
@@ -294,8 +297,8 @@ fivefold, burying the SOL ordering in F-1.10.7 in instrument noise.
 
 | | Inline | EXACT v1 | EXACT v1.1 |
 |---|---:|---:|---:|
-| Opus score | 0.93 | 0.94 | 0.91 |
-| Opus survived / total | 9.80 / 133.30 | 8.40 / 135.20 | 14.50 / 147.00 |
+| Opus score | 0.93 | 0.94 | 0.88 |
+| Opus survived / total | 9.80 / 133.30 | 8.40 / 135.20 | 19.11 / 160.44 |
 | SOL score | 0.77 | 0.863 *(n=14)* | 0.88 *(n=4)* |
 | SOL survived / total | 47.60 / 204.00 | 17.6 / 128.00 *(n=14)* | 16.8 / 143.00 *(n=4)* |
 
@@ -305,35 +308,40 @@ many, and the score understates it, because that arm's mutant population is also
 59 % larger (204.00 against 128.00). This is the case the paired reporting exists
 for: a score gap of 0.09 corresponds to an absolute gap of 30 missed mutants.
 
-On Opus the three cells are indistinguishable — the spread (0.91 to 0.94) is
-below every cell's own standard deviation, and EXACT v1.1 produces the most
-mutants without a markedly lower score.
+On Opus, Inline and EXACT v1 are indistinguishable (0.93 and 0.94, inside each
+other's standard deviation). EXACT v1.1 is lower at 0.88 ± 0.08, and the paired
+counts make the gap larger than the score suggests: 19.11 mutants survive per run
+against 8.40 under EXACT v1 — 2.3 times as many — from a population only 19 %
+larger (160.44 against 135.20). The gap exceeds EXACT v1's standard deviation but
+not EXACT v1.1's own, so it is a direction, not a settled ranking.
 
 **H3 is not confirmed.** Mutation Score does not rank the three methods
-consistently across models. The finding is asymmetric rather than negative: on
-SOL, structure buys a substantially stronger suite; on Opus, all three methods
-already produce suites of the same strength and the structural investment shows
-up in shape (F-1.10.1) rather than in test power.
+consistently across models. On SOL, structure buys a substantially stronger
+suite; on Opus, Inline and EXACT v1 produce suites of the same strength and the
+isolated Refactor arm, if anything, a weaker one. There the structural
+investment shows up in shape (F-1.10.1) rather than in test power.
 
 ---
 
 ## F-1.10.8 — On Opus the arms miss mutants for opposite reasons
 
-Mutation Score is indistinguishable across the three Opus cells (0.93 / 0.94 /
-0.91, every gap inside every cell's own standard deviation). Splitting the missed
-mutants shows that the three suites are not alike at all.
+Mutation Score does not separate Inline and EXACT v1 on Opus (0.93 / 0.94, inside
+each other's standard deviation). Splitting the missed mutants shows that the
+suites are not alike at all.
 
 | Opus, per run | Inline | EXACT v1 | EXACT v1.1 |
 |---|---:|---:|---:|
-| Survived — reached, not killed | 8.80 | 4.13 | 4.50 |
-| Uncovered — never reached | 1.00 ± 1.33 | 4.27 ± 5.79 | 10.00 ± 11.99 |
-| Uncovered share of misses | 10 % | 51 % | 69 % |
+| Survived — reached, not killed | 8.80 | 4.13 | 7.56 |
+| Uncovered — never reached | 1.00 ± 1.33 | 4.27 ± 5.79 | 11.56 ± 11.77 |
+| Uncovered share of misses | 10 % | 51 % | 60 % |
 
 The Inline suite reaches essentially all of the product and asserts weakly
-against it: 8.80 mutants per run survive execution, 1.00 goes untouched. Both
-EXACT arms are the mirror image: around 4 survive execution — assertions roughly
-twice as sharp — while 4.27 and 10.00 mutants per run are never reached at all.
-The score averages these two failure modes into the same number.
+against it: 8.80 mutants per run survive execution, 1.00 goes untouched. EXACT v1
+is the mirror image: 4.13 survive execution — assertions roughly twice as sharp —
+while 4.27 per run are never reached at all. The score averages these two failure
+modes into the same number. EXACT v1.1 has both: 7.56 mutants survive execution
+and 11.56 are never reached, which is why it is the one Opus arm whose score
+drops (F-1.10.7).
 
 **The uncovered counts are bimodal, not uniform.** Per-run values expose it:
 
@@ -341,11 +349,11 @@ The score averages these two failure modes into the same number.
 |---|---|
 | Inline | 0, 0, 0, 0, 0, 1, 1, 2, 2, 4 |
 | EXACT v1 | 0, 0, 0, 0, 2, 2, 2, 2, 2, 3, 4, 4, 8, 16, 19 |
-| EXACT v1.1 | 0, 0, 0, 0, 2, 6, 18, 20, 21, 33 |
+| EXACT v1.1 | 0, 0, 2, 4, 6, 18, 20, 21, 33 |
 
-Six of ten EXACT v1.1 runs leave at most 6 mutants uncovered; four leave 18 to 33
-untouched. The cell mean of 10.00 therefore describes a split population rather
-than a typical run, which is what the standard deviation of 11.99 says. EXACT v1
+Five of nine EXACT v1.1 runs leave at most 6 mutants uncovered; four leave 18 to 33
+untouched. The cell mean of 11.56 therefore describes a split population rather
+than a typical run, which is what the standard deviation of 11.77 says. EXACT v1
 spreads more evenly, with two of 15 runs at 16 or more. The reliable part of the
 finding is the Inline arm's floor — 9 of 10 runs at or below 2, the tenth at 4 —
 and the fact that large uncovered regions appear only once the structured
