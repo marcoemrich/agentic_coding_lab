@@ -19,7 +19,7 @@ Deviations present: `Skip` ×5 (test arrived and passed immediately — never re
 | `cycles_closed` | 4 |
 | `test_first_rate` | 0.545 |
 | `red_batch_size` | 1.0 |
-| `red_batch_max` | 4 |
+| `red_batch_max` | 1 |
 | `red_batch_unmeasurable` | 1 |
 | `green_batch_size` | 1.0 |
 | `refactor_events` | 5 |
@@ -29,6 +29,9 @@ Deviations present: `Skip` ×5 (test arrived and passed immediately — never re
 | `deviations` | 5 |
 | `opens_red` | True |
 | `ends_green` | True |
+| `verification_tests` | 0 |
+| `verification_red` | 0 |
+| `tdd_after_cutoff` | 0 |
 | `tdd_discipline` | 0.624 |
 | `tdd_discipline_test_first` | 0.545 |
 | `tdd_discipline_step` | 1.0 |

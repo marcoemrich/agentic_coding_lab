@@ -19,7 +19,7 @@ Deviations present: `Both` ×7 (test and implementation changed together — no 
 | `cycles_closed` | 31 |
 | `test_first_rate` | 0.506 |
 | `red_batch_size` | 1.0 |
-| `red_batch_max` | 9 |
+| `red_batch_max` | 1 |
 | `red_batch_unmeasurable` | 16 |
 | `green_batch_size` | 1.0 |
 | `refactor_events` | 83 |

@@ -1,6 +1,6 @@
 # Analysis Report: 2026-10-01_00-00-05_game-of-life-example-mapping_exact-subagents-v1-cc_opus-5-5-no-thinking
 
-Generated: 2026-10-01T02:24:03+02:00
+Generated: 2026-10-19T06:32:21+00:00
 
 ## Configuration
 
@@ -30,18 +30,18 @@ Generated: 2026-10-01T02:24:03+02:00
 
 ```
 
-> tdd-experiment-run@ test /home/memrich/agentic_coding_lab/experiments/runs/2026-10-01_00-00-05_game-of-life-example-mapping_exact-subagents-v1-cc_opus-5-5-no-thinking
+> tdd-experiment-run@ test /home/experimenter/experiments/runs/2026-10-01_00-00-05_game-of-life-example-mapping_exact-subagents-v1-cc_opus-5-5-no-thinking
 > vitest run
 
 
- RUN  v1.6.1 /home/memrich/agentic_coding_lab/experiments/runs/2026-10-01_00-00-05_game-of-life-example-mapping_exact-subagents-v1-cc_opus-5-5-no-thinking
+ RUN  v1.6.1 /home/experimenter/experiments/runs/2026-10-01_00-00-05_game-of-life-example-mapping_exact-subagents-v1-cc_opus-5-5-no-thinking
 
- ✓ src/game-of-life.spec.ts  (8 tests) 8ms
+ ✓ src/game-of-life.spec.ts  (8 tests) 6ms
 
  Test Files  1 passed (1)
       Tests  8 passed (8)
-   Start at  02:24:05
-   Duration  395ms (transform 79ms, setup 0ms, collect 47ms, tests 8ms, environment 0ms, prepare 88ms)
+   Start at  06:32:23
+   Duration  377ms (transform 63ms, setup 0ms, collect 34ms, tests 6ms, environment 0ms, prepare 65ms)
 ```
 
 ## Coverage

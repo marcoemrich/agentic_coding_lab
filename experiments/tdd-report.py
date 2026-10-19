@@ -322,8 +322,8 @@ def _names(ev, key):
     return set(ev.get(key) or [])
 
 
-def _batch(prev, cur, key):
-    """How many tests newly entered `key` state at `cur`.
+def _batch(prev, cur, key, exclude=frozenset()):
+    """How many tests newly entered `key` state at `cur`, minus `exclude`.
 
     None when the event cannot say. A file that fails to compile contributes no
     task names at all, so its tests are absent rather than failing — counting
@@ -332,7 +332,31 @@ def _batch(prev, cur, key):
     """
     if cur.get("collection_errors"):
         return None
-    return len(_names(cur, key) - _names(prev or {}, key))
+    return len(_names(cur, key) - _names(prev or {}, key) - exclude)
+
+
+def _step_batches(rows):
+    """Red and green batch sizes per event; None where an event cannot say.
+
+    A red batch counts only tests that have never passed. A red event can also
+    carry tests that were green before — the same step wrote a test and broke
+    code older tests cover. That is a regression, not a batch of new tests;
+    counting it read red_batch_max 9 on a Rust run that wrote one test
+    (2026-10-19, eight regressed alongside it).
+
+    A red event whose failing set did not grow is not a batch of anything — an
+    already-failing test stayed failing while a test file moved. It is left out
+    instead of letting a 0 divide the discipline score.
+    """
+    reds, greens, ever_passed = [], [], set()
+    for i, r in enumerate(rows):
+        prev = rows[i - 1]["ev"] if i else None
+        if r["label"] in ("Red", "Red(c)"):
+            reds.append(_batch(prev, r["ev"], "failed_tests", exclude=ever_passed))
+        elif r["label"] == "Green":
+            greens.append(_batch(prev, r["ev"], "passed_tests"))
+        ever_passed |= _names(r["ev"], "passed_tests")
+    return [b for b in reds if b is None or b > 0], greens
 
 
 def _median(xs):
@@ -375,21 +399,8 @@ def metrics(rows):
     verified = g("Red", 0) + g("Red(c)", 0)
     openers = verified + g("Both", 0) + g("Skip", 0)
 
-    red_batches, green_batches, unmeasurable = [], [], 0
-    for i, r in enumerate(rows):
-        prev = rows[i - 1]["ev"] if i else None
-        if r["label"] in ("Red", "Red(c)"):
-            b = _batch(prev, r["ev"], "failed_tests")
-            red_batches.append(b)
-            if b is None:
-                unmeasurable += 1
-        elif r["label"] == "Green":
-            green_batches.append(_batch(prev, r["ev"], "passed_tests"))
-
-    # A red event whose failing set did not grow is not a batch of anything —
-    # an already-failing test stayed failing while a test file moved. Keep it
-    # out of the median instead of letting a 0 divide the score below.
-    red_batches = [b for b in red_batches if b is None or b > 0]
+    red_batches, green_batches = _step_batches(rows)
+    unmeasurable = red_batches.count(None)
 
     attempts = g("Green?", 0) + g("Green?(c)", 0)
     deviations = (g("Both", 0) + g("Skip", 0) + g("Drop", 0)
