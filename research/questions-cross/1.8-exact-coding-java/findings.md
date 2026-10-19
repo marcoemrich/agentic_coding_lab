@@ -13,7 +13,7 @@ Correctness and budget completion are higher = better; complexity, method size, 
 | GPT-5.6 SOL | Game of Life | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
 | GPT-5.6 SOL | Claim Office | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
 | Opus 5 | Game of Life | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
-| Opus 5 | Claim Office | **1.00** 🏆 | 0.97 | 0.97 | **100 %** 🏆 | **100 %** 🏆 | 83 % |
+| Opus 5 | Claim Office | **1.00** 🏆 | 0.97 | 0.97 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
 
 ### `cognitive_max`
 
@@ -64,7 +64,7 @@ Unnoticed behaviour changes per run — mutants the suite let through. Lower = b
 
 The Opus Game of Life row spans 0.4 mutants and is a tie, not a contest.
 
-Code Mass (APP), Production LoC, Test LoC, test count, method count, and process-marker counts have ambiguous direction and therefore receive no trophy. Smell Total is zero in every cell and has no winner. Every cell clears the correctness gate, so all quality and efficiency rows are eligible. "Within budget" is `ok` runs over attempts: Opus Claim Office EXACT v1.1 has five `ok` runs out of six attempts, the sixth hit the 7200 s budget and is not a replicate.
+Code Mass (APP), Production LoC, Test LoC, test count, method count, and process-marker counts have ambiguous direction and therefore receive no trophy. Smell Total is zero in every cell and has no winner. Every cell clears the correctness gate, so all quality and efficiency rows are eligible. "Within budget" is `ok` runs over runs in the pool: every cell holds five `ok` runs and nothing else. Timed-out attempts are not replicates and are removed from the pool; Opus Claim Office EXACT v1.1 needed one such attempt that hit the 7200 s budget (removed in commit `117868cdc`), so its 100 % is five of six attempts.
 
 ---
 
@@ -126,7 +126,7 @@ EXACT Coding is slower and more token-intensive than inline TDD in every contras
 | Opus 5 | Game of Life | 251 s → 756 s → 2,652 s | 1.29 M → 6.19 M → 29.94 M | $1.41 → $5.88 → $27.49 |
 | Opus 5 | Claim Office | 347 s → 1,313 s → 5,445 s | 2.64 M → 19.07 M → 96.90 M | $2.88 → $15.33 → $78.12 |
 
-The v1 → v1.1 step alone costs roughly three to five times as much and runs two and a half to four times as long. Against inline TDD, v1.1 costs fourteen to thirty times as much and runs ten to twenty times as long. The Opus Claim Office cell reaches 97 M tokens and $78.12 per run and is the only cell in the RQ that loses an attempt to the time budget: one of six attempts hit the 7200 s limit and does not count as a replicate, and the slowest `ok` run took 6,877 s. The timed-out run's tests were green and its external verification perfect when it was cut off, so the budget miss is a cost symptom, not a failure.
+The v1 → v1.1 step alone costs roughly three to five times as much and runs two and a half to four times as long. Against inline TDD, v1.1 costs fourteen to thirty times as much and runs ten to twenty times as long. The Opus Claim Office cell reaches 97 M tokens and $78.12 per run and is the only cell in the RQ that lost an attempt to the time budget: one attempt hit the 7200 s limit and was removed from the pool as a non-replicate (commit `117868cdc`), and the slowest of its five `ok` runs took 6,877 s. The timed-out run's tests were green and its external verification perfect when it was cut off, so the budget miss is a cost symptom, not a failure.
 
 **The Claude Code v1.1 figures rose sharply on 2026-09-30 and the pi ones did not**, which is a measurement correction rather than a change in behaviour. `analyze_transcript.py` omitted subagent tokens entirely until then, while `parse_pi_transcript.py` had always added them
 (`_subagent_usage_totals`, with a docstring noting that ignoring them undercounts token efficiency by an order of magnitude). The CC-against-pi cost comparison in this RQ was therefore **biased in favour of Claude Code** on exactly the arm that delegates — the CC/pi token premium on Claim Office v1.1 was recorded as 3.3× and is in fact 6.2×. See

@@ -2,7 +2,7 @@
 
 **Setup**: claim-office-example-mapping × exact-hybrid-v4.2-phase-continuation-pi, 18 cells, `min_replicates` = 5, all 18 complete. Primary outcome: `verification_pct` (**Correctness (external)**, 15 external scenarios, 0.0–1.0). All models via pi harness / Requesty. Only runs with `exit_reason = ok` count; timeouts are not replicates.
 
-**Timeout caveat (minimax-m3)**: both MiniMax arms run longest in the RQ. `minimax-m3` takes 4937–13297 s per ok run (`duration_seconds` mean 8832), `minimax-m3-no-thinking` 3316–13707 s (mean 7313), and the `-no-thinking` arm needed 6 attempts for 5 ok runs, one ending in the 2 h timeout. Durations above 7200 s include the batch's retry backoff.
+**Timeout caveat (minimax-m3)**: both MiniMax arms run longest in the RQ. `minimax-m3` takes 4937–13297 s per ok run (`duration_seconds` mean 8832), `minimax-m3-no-thinking` 3316–13707 s (mean 7313). Both arms have lost fill attempts to the 2 h timeout; those runs are not replicates and are not in the data. Durations above 7200 s include the batch's retry backoff.
 
 **Route change caveat (kimi-k3)**: the K3 cell was re-measured on 2026-08-04 on `requesty/sference/kimi-k3` and now completes 5/5 without timeout. The earlier `kimi-k3-nebius` runs — an unstable cell at 1/5 completed — were discarded rather than reused, since with both Requesty routes failing it could not be established which values reflect the model and which the provider. K3 also has **no `-no-thinking` arm**: `--thinking off` provably does not take effect on this route. Details in `README.md` → "Model selection" and "Reasoning state".
 
@@ -115,25 +115,28 @@ The Opus 5 arms were the empirical test the README set up: the model entered wit
 
 ---
 
-## F-1.5 — Perfect correctness at widely differing cost
+## F-1.5 — High correctness at widely differing cost
 
-Among the six reproducibly perfect cells (`verification_pct ≥ 0.99`) the estimated run cost spans almost an order of magnitude: `gpt-5-6-sol` solves the kata perfectly for ~$2.54/run, opus-4-8 costs ~$14.43 — roughly 5.7×. The estimate applies the current Requesty token tariffs (`research/model-pricing.md`) to the per-run measured token breakdown (input/output/cache).
+Among the nine cells that pass the correctness gate (`verification_pct ≥ 0.90`) the estimated run cost spans more than an order of magnitude: `minimax-m3-no-thinking` solves the kata for ~$1.76/run, `opus-5-requesty-no-thinking` costs ~$21.43 — roughly 12×. Within the reproducibly perfect cluster (≥ 0.99) the span is `gpt-5-6-sol` at ~$2.54 against `opus-4-8` at ~$14.43, roughly 5.7×. The estimate applies the current Requesty token tariffs (`research/model-pricing.md`) to the per-run measured token breakdown (input/output/cache).
 
-| Model (verified ≥ 0.99) | `cost_usd` (estimate/run) | σ | `duration_seconds` | `code_mass` | `longest_function` | `smell_total` |
-|---|---|---|---|---|---|---|
-| gpt-5-6-sol | **$2.54** 🏆 | 0.65 | **503** 🏆 | **462** 🏆 | 24.0 | 15.4 |
-| kimi-k3-sference | $3.56 | 0.54 | 1929 | 666 | 21.4 | 0.4 |
-| kimi-k2-7 | $6.79 | 1.46 | 2214 | 851 | 19.4 | **0.0** 🏆 |
-| glm-5-2 | $7.76 | 4.51 | 2818 | 761 | 24.0 | 0.2 |
-| opus-4-8-no-thinking | $13.68 | 3.17 | 1656 | 895 | **18.2** 🏆 | **0.0** 🏆 |
-| opus-4-8 | $14.43 | 2.98 | 1884 | 782 | 22.0 | 0.4 |
+| Model (verified ≥ 0.90) | `verification_pct` | `cost_usd` (estimate/run) | σ | `duration_seconds` | `code_mass` | `longest_function` | `smell_total` |
+|---|---|---|---|---|---|---|---|
+| minimax-m3-no-thinking | 0.97 | **$1.76** 🏆 | 0.48 | 7313 | 807 | 28.8 | 1.2 |
+| gpt-5-6-sol | 1.00 | $2.54 | 0.65 | **503** 🏆 | **462** 🏆 | 24.0 | 15.4 |
+| kimi-k3-sference | 0.99 | $3.56 | 0.54 | 1929 | 666 | 21.4 | 0.4 |
+| kimi-k2-7 | 1.00 | $6.79 | 1.46 | 2214 | 851 | 19.4 | **0.0** 🏆 |
+| glm-5-2 | 1.00 | $7.76 | 4.51 | 2818 | 761 | 24.0 | 0.2 |
+| opus-4-8-no-thinking | 1.00 | $13.68 | 3.17 | 1656 | 895 | 18.2 | **0.0** 🏆 |
+| opus-4-8 | 0.99 | $14.43 | 2.98 | 1884 | 782 | 22.0 | 0.4 |
+| opus-5-requesty | 0.96 | $18.53 | 1.64 | 2802 | 766 | 12.8 | 2.4 |
+| opus-5-requesty-no-thinking | 0.96 | $21.43 | 3.21 | 3142 | 762 | **9.2** 🏆 | **0.0** 🏆 |
 
-Direction: `cost_usd`, `duration_seconds`, `code_mass` (**Code Mass (APP)**), `longest_function`, `smell_total` (**Smell Total**) — lower = better. Trophies only among the correctness-perfect cells (correctness gating: models with low cost but incomplete verification show stubs/aborts, not frugality). At `smell_total` kimi-k2-7 and opus-4-8-no-thinking share the trophy (both 0.0). `gpt-5-6-terra` ($0.60/run) is cheaper, but with `verification_pct = 0.69` not in the perfect cluster and therefore without a trophy.
+Direction: `cost_usd`, `duration_seconds`, `code_mass` (**Code Mass (APP)**), `longest_function`, `smell_total` (**Smell Total**) — lower = better. Trophies only among cells with `verification_pct ≥ 0.90` (correctness gating: models with low cost but incomplete verification show stubs/aborts, not frugality). A trophy is shared when the gap to the best value is smaller than the smaller σ of the two cells. At `smell_total` kimi-k2-7, opus-4-8-no-thinking and opus-5-requesty-no-thinking share the trophy (all 0.0). At `cost_usd` the gap from `minimax-m3-no-thinking` to `gpt-5-6-sol` ($0.78) exceeds both σ, so the trophy is not shared. At `longest_function` `opus-5-requesty-no-thinking` (9.2, σ 1.1) leads its own default arm (12.8) by more than σ. `gpt-5-6-terra` ($0.60/run) is cheaper still, but with `verification_pct = 0.69` below the gate and therefore without a trophy.
 
-The two **Opus 5** cells stand outside this table for the same gating reason (`verification_pct` 0.96) and are the most expensive of the RQ: `opus-5-requesty` $18.53/run (σ 1.64), `opus-5-requesty-no-thinking` $21.43 (σ 3.21) — above `opus-4-8` at $14.43 and roughly 7–8× `gpt-5-6-sol`. They do lead the field on `longest_function` (12.8 and 9.2 against 18.2 for the best perfect cell) at a **Smell Total** of 2.4 and 0.0, so the price does not buy sloppier structure. Whether that structural edge is worth the premium is not decidable from this RQ — the cells would need to reach the perfect cluster first.
+The two **Opus 5** cells are the most expensive of the RQ — above `opus-4-8` at $14.43 and roughly 7–8× `gpt-5-6-sol` — and lead the field on `longest_function` (9.2 and 12.8 against 18.2 for the best Opus 4.8 cell), at a **Smell Total** of 0.0 and 2.4. The price does not buy sloppier structure; it buys the shortest functions of the RQ, at 0.96 rather than perfect correctness.
 
-`minimax-m3-no-thinking` (0.97) stands outside the table for the same reason and sits at the opposite end: at $1.76/run (σ 0.48) it is cheaper than `gpt-5-6-sol`, the cheapest perfect cell, but takes 7313 s per run — the second-slowest cell of the RQ after its own default arm — at a `longest_function` of 28.8, a **Code Mass (APP)** of 807.4 and a **Smell Total** of 1.2. Low price here is bought with wall clock and timeout risk (see timeout caveat), not with correctness.
+`minimax-m3-no-thinking` sits at the opposite end: the cheapest cell above the gate, but at 7313 s per run the second-slowest of the RQ after its own default arm, with the longest `longest_function` (28.8) of the gated field and a **Code Mass (APP)** of 807. Low price here is bought with wall clock and timeout risk (see timeout caveat), not with correctness.
 
 **Cost caveat.** `cost_usd` is a **list-price estimate** (Requesty tariffs per 1M tokens × measured tokens), not a billed amount — without workspace-specific discounts or smart-routing savings (30–80 % possible through caching according to the provider). Requesty provides no inline cost (`usage = null`), so pi writes a scaffold of `0` and every value here is backfilled by `compute-cost.py`. Token counts are after the parser fix (correct `cache_read` summation over the main thread).
 
-**Interpretation.** `gpt-5-6-sol` is the cheapest among the perfect models (~$2.54/run, ~1/5.7 of the Opus cost) and at the same time the fastest — the price is the highest **Smell Total** of the group (15.4 vs. ≤ 0.4 for the others). `kimi-k3-sference` is the strongest all-round cell: second-cheapest at $3.56, second-lowest **Code Mass (APP)** at 666 and near-zero smell (0.4), at a mid-field `longest_function` (21.4) — it buys this with wall clock (1929 s, roughly four times gpt-5-6-sol). `kimi-k2-7` holds **Smell Total 0.0** level with opus-4-8-no-thinking at about half the Opus cost. Anyone needing perfect correctness at minimal smell for moderate cost picks kimi-k2-7 or kimi-k3-sference; anyone putting cost and latency above all else and tolerating smell picks `gpt-5-6-sol`; the Opus arms ($13.68–14.43) deliver the same correctness at minimal smell, but at the highest price and without leading on any structural metric.
+**Interpretation.** `gpt-5-6-sol` is the cheapest of the perfect models (~$2.54/run, ~1/5.7 of the Opus 4.8 cost) and the fastest cell of the RQ — the price is the highest **Smell Total** of the gated field (15.4 vs. ≤ 2.4 for the others). `minimax-m3-no-thinking` undercuts it on cost but needs fourteen times the wall clock. `kimi-k3-sference` is the strongest all-round cell: third-cheapest at $3.56, second-lowest **Code Mass (APP)** at 666 and near-zero smell (0.4), at a mid-field `longest_function` (21.4) — it buys this with wall clock (1929 s, roughly four times gpt-5-6-sol). `kimi-k2-7` holds **Smell Total 0.0** level with opus-4-8-no-thinking and opus-5-requesty-no-thinking at about half the Opus 4.8 cost. Anyone needing perfect correctness at minimal smell for moderate cost picks kimi-k2-7 or kimi-k3-sference; anyone putting cost and latency above all else and tolerating smell picks `gpt-5-6-sol`; the Opus 4.8 arms ($13.68–14.43) deliver the same correctness at minimal smell but lead on no metric; the Opus 5 arms ($18.53–21.43) are the only ones that buy a structural lead (`longest_function`) with their premium.
