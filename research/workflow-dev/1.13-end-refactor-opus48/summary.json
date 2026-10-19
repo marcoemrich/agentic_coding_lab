@@ -5,7 +5,7 @@
       "workflow": "exact-hybrid-v4-cleaned-cc",
       "model": "opus-4-8-no-thinking",
       "counts": {
-        "runs": 4,
+        "runs": 5,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
@@ -30,97 +30,102 @@
           "id": "2026-05-29_21-10-00_claim-office-example-mapping_v6.2-with-why-cleaned_opus-4-8-no-thinking",
           "started_at": "2026-05-29T21:10:00+00:00",
           "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-19_02-16-21_claim-office-example-mapping_exact-hybrid-v4-cleaned-cc_opus-4-8-no-thinking",
+          "started_at": "2026-10-19T02:16:21+00:00",
+          "exit_reason": "ok"
         }
       ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.75,
-          "sd": 0.5,
+          "n": 5,
+          "mean": 0.8,
+          "sd": 0.4472135954999579,
           "null_count": 0
         },
         "tests_passing": {
           "kind": "bool",
-          "n": 4,
-          "k": 4,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 4,
-          "mean": 3.25,
-          "sd": 0.9574271077563381,
+          "n": 5,
+          "mean": 3.4,
+          "sd": 0.8944271909999159,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 4,
-          "mean": 1.465,
-          "sd": 0.30512292604784724,
+          "n": 5,
+          "mean": 1.49,
+          "sd": 0.27009257672139014,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 4,
-          "mean": 3.75,
-          "sd": 0.5,
+          "n": 5,
+          "mean": 3.8,
+          "sd": 0.4472135954999579,
           "null_count": 0
         },
         "mccabe_avg": {
           "kind": "num",
-          "n": 4,
-          "mean": 1.5,
-          "sd": 0.11747340124470732,
+          "n": 5,
+          "mean": 1.514,
+          "sd": 0.10644247272588139,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 4,
-          "mean": 23.5,
-          "sd": 8.34665601703261,
+          "n": 5,
+          "mean": 21.2,
+          "sd": 8.87130204648675,
           "null_count": 0
         },
         "avg_loc_per_function": {
           "kind": "num",
-          "n": 4,
-          "mean": 4.3774999999999995,
-          "sd": 0.687331797605785,
+          "n": 5,
+          "mean": 4.188,
+          "sd": 0.7306640815039424,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 4,
-          "mean": 1.25,
-          "sd": 0.5,
+          "n": 5,
+          "mean": 1,
+          "sd": 0.7071067811865476,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 4,
-          "mean": 882,
-          "sd": 112.7001922506494,
+          "n": 5,
+          "mean": 882.2,
+          "sd": 97.60225407233176,
           "null_count": 0
         },
         "predictions_correct_rate": {
           "kind": "rate",
-          "n": 4,
-          "k": 298,
-          "t": 299,
+          "n": 5,
+          "k": 375,
+          "t": 376,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 4,
-          "mean": 3399,
-          "sd": 1041.6707733252383,
+          "n": 5,
+          "mean": 3195.8,
+          "sd": 1010.0790563119305,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 4,
-          "mean": 99854799,
-          "sd": 38477892.04934942,
+          "n": 5,
+          "mean": 95555418.6,
+          "sd": 34681904.38168817,
           "null_count": 0
         },
         "cost_usd": {
@@ -128,7 +133,7 @@
           "n": 4,
           "mean": 73.93277499999999,
           "sd": 27.7296957139664,
-          "null_count": 0
+          "null_count": 1
         }
       }
     },

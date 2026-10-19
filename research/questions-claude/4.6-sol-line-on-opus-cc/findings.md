@@ -17,32 +17,33 @@ i.e. per column pair, since the question is which workflow wins on a given model
 |---|---:|---:|---:|---:|---:|---:|---|
 | Correctness (external) `verification_pct` | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 | 80 % | 99 % | higher = better |
 | Correctness (internal) `tests_passing` | 100 % | 100 % | 100 % | 100 % | 100 % | 100 % | higher = better |
-| `avg_loc_per_function` | 8.81 ± 1.71 | 8.90 ± 1.65 | **6.65 ± 0.69** 🏆 | 7.86 ± 1.60 | 4.24 ± 0.67 | **4.40 ± 0.42** 🏆 | lower = better |
+| `avg_loc_per_function` | 8.81 ± 1.71 | 8.90 ± 1.65 | **6.65 ± 0.69** 🏆 | 7.86 ± 1.60 | 4.19 ± 0.73 | **4.40 ± 0.42** 🏆 | lower = better |
 | `median_loc_per_function` | 7.70 | 7.17 | **6.00** 🏆 | 6.70 | 2.00 ± 0.00 | **2.00 ± 0.00** 🏆 | lower = better |
-| `longest_function` | 23.4 | 24.3 | **19.4 ± 3.58** 🏆 | **22.4 ± 4.51** 🏆 | 24.6 | 23.4 | lower = better |
-| `cognitive_max` | 7.0 ± 2.24 | 5.33 ± 1.86 | **4.6 ± 1.82** 🏆 | **3.4 ± 0.89** 🏆 | 3.6 ± 1.14 | 3.6 ± 1.14 | lower = better |
-| `mccabe_max` | 6.0 | 5.33 | **4.4** 🏆 | 4.0 ± 0.71 | 4.0 | **3.8 ± 0.84** 🏆 | lower = better |
+| `longest_function` | 23.4 | 24.3 | **19.4 ± 3.58** 🏆 | **22.4 ± 4.51** 🏆 | 21.2 | 23.4 | lower = better |
+| `cognitive_max` | 7.0 ± 2.24 | 5.33 ± 1.86 | **4.6 ± 1.82** 🏆 | **3.4 ± 0.89** 🏆 | 3.4 ± 0.89 | 3.6 ± 1.14 | lower = better |
+| `cognitive_avg` | 2.49 | 2.55 | **1.70 ± 0.38** 🏆 | 1.91 | 1.49 | **1.43 ± 0.24** 🏆 | lower = better |
+| `mccabe_max` | 6.0 | 5.33 | **4.4** 🏆 | 4.0 ± 0.71 | 3.8 | **3.8 ± 0.84** 🏆 | lower = better |
 | Smell Total | **0.0** 🏆 | **0.0** 🏆 | **0.0** 🏆 | **0.0** 🏆 | 1.0 | 0.2 | lower = better |
-| Code Mass (APP) | 927.0 | 758.2 | 723.8 | 631.4 | 895.0 | 928.8 | no 🏆 — see caveat |
-| `cycle_count` | n/a | n/a | 32.8 | 52.4 | 33.6 | 39.6 | — |
-| `refactorings_applied` | n/a | n/a | 29.6 | **39.8 ± 10.52** 🏆 | 36.0 | 28.0 | higher = better |
-| `duration_seconds` | **365** 🏆 | **330** 🏆 | 958 | 1016 | 4159 | 3637 | lower = better |
-| `cost_usd` | **$4.87** 🏆 | **$3.89** 🏆 | $17.80 | $17.37 | $126.99 | $76.31 | lower = better |
+| Code Mass (APP) | 927.0 | 758.2 | 723.8 | 631.4 | 882.2 | 928.8 | no 🏆 — see caveat |
+| `predictions_correct_rate` | n/a | n/a | 99.2 % | 98.3 % | 99.7 % | 99.5 % | no 🏆 — indistinguishable |
+| `duration_seconds` | **365** 🏆 | **330** 🏆 | 958 | 1016 | 3196 | 3637 | lower = better |
+| `cost_usd` | **$4.87** 🏆 | **$3.89** 🏆 | $17.80 | $17.37 | $71.05 | $76.31 | lower = better |
 
 Caveats for reading the table:
 
-- **Correctness gating at 96 %**: quality and efficiency trophies go only to cells at
-  `verification_pct` ≥ 0.96. That admits `hybrid-v4 · o5` (99 %, one scenario short in one of
-  five runs) and excludes `hybrid-v4 · o4-8` (80 %, one total failure in four). The threshold
-  is deliberately below 100 % — a single missed scenario is within this kata's normal
-  variation, a zeroed run is not.
-- **`cycle_count`, `refactorings_applied` are n/a for inline-tdd-v1**, not zero — inline-tdd-v1 prescribes no
-  phase markers. The parser's inferred values (`cycle_count` 5–6,
-  `refactorings_applied` 1–2) are not comparable to marker-based counts.
+- **Correctness gating at 90 %**: quality and efficiency trophies go only to cells at
+  `verification_pct` ≥ 0.90. That admits `hybrid-v4 · o5` (99 %, one scenario short in one of
+  five runs) and excludes `hybrid-v4 · o4-8` (80 %, one total failure in five) — its leading
+  values on `avg_loc_per_function`, `median_loc_per_function`, `cognitive_max` and
+  `mccabe_max` therefore carry no trophy. A single missed scenario is within this kata's
+  normal variation, a zeroed run is not.
+- **`predictions_correct_rate` is n/a for inline-tdd-v1**, not zero — inline-tdd-v1
+  prescribes no predictions. Across the four predictive cells it spans 98.3–99.7 %, so it
+  separates nothing.
 - **Code Mass gets no trophy**: APP has no notion of nesting and rewards one long
   function (metric blind spot, RQ README). Here it is reported as the mechanism
-  witness — see F-4.6.2.
-- `hybrid-v4 · o4-8` is n=4 (one run timed out); all other cells are n=5, `inline-tdd-v1 · o5` n=6.
+  witness — see F-4.6.3.
+- All cells are n=5, `inline-tdd-v1 · o5` n=6.
 
 ## F-4.6.1 — Workflow optimisation does not transfer across models
 
@@ -53,7 +54,7 @@ on the same decomposition metric:
 
 | Rank | `gpt-5-6-sol-codex` (RQ-1.17) | `opus-4-8` | `opus-5` |
 |---|---|---|---|
-| 1 | `basic-sol-tdd` 6.60 | `hybrid-v4` 4.24 | `hybrid-v4` 4.40 |
+| 1 | `basic-sol-tdd` 6.60 | `hybrid-v4` 4.19 | `hybrid-v4` 4.40 |
 | 2 | `inline-tdd-v1` 8.45 | `exact-sol-v1-cc` 6.65 | `exact-sol-v1-cc` 7.86 |
 | 3 | `hybrid-v4.2` (APP) 9.52 | `inline-tdd-v1` 8.81 | `inline-tdd-v1` 8.90 |
 
@@ -85,16 +86,16 @@ The decomposition metrics rank the three workflows in the opposite order from
 
 | Metric | inline-tdd-v1 | exact-sol-v1-cc | hybrid-v4 (APP) | Direction |
 |---|---:|---:|---:|---|
-| `avg_loc_per_function` · o4-8 | 8.81 | 6.65 | **4.24** | lower = better |
+| `avg_loc_per_function` · o4-8 | 8.81 | 6.65 | **4.19** | lower = better |
 | `avg_loc_per_function` · o5 | 8.90 | 7.86 | **4.40** | lower = better |
 | `median_loc_per_function` · o4-8 | 7.70 | 6.00 | **2.00** | lower = better |
 | `median_loc_per_function` · o5 | 7.17 | 6.70 | **2.00** | lower = better |
 
 The gap is far outside 1 σ on every row (σ 0.42–1.71) and the median is the sharper
 signal: hybrid-v4 lands at exactly 2.00 with σ = 0.00 in all ten runs across both models.
-Inspection of the source trees shows why — hybrid-v4 produces 22–34 functions for 238–403
-production LoC, i.e. half of them are two lines or shorter, while the native line
-builds 14–20 larger functions from a comparable spec.
+Inspection of the source trees shows why — on opus-5, hybrid-v4 produces 22–34 functions
+for 238–403 Production LoC, i.e. half of them are two lines or shorter, while the native
+line builds 14–20 larger functions from a comparable spec (194–228 Production LoC).
 
 On Sol the same comparison ran the other way: `exact-sol-v1-pi` reached
 `avg_loc_per_function` 6.60 against 9.52 for `exact-hybrid-v4.2-phase-continuation-pi`
@@ -119,7 +120,6 @@ style — this is the comparison the recommendation rests on:
 | `mccabe_max` | 4.0 ± 0.71 | **3.8 ± 0.84** 🏆 | lower = better |
 | Smell Total | **0.0 ± 0.00** 🏆 | 0.2 ± 0.45 | lower = better |
 | Code Mass (APP) | **631.4** | 928.8 | no 🏆 (blind spot) |
-| `refactorings_applied` | **39.8 ± 10.52** 🏆 | 28.0 ± 10.12 | higher = better |
 | `duration_seconds` | **1016** 🏆 | 3637 | lower = better |
 | `cost_usd` | **$17.37** 🏆 | $76.31 | lower = better |
 
@@ -131,7 +131,7 @@ Read as three groups:
 - **Complexity — a tie.** `cognitive_max`, `mccabe_max` and `longest_function` all sit
   within 1 σ of each other and split 2:1 in favour of the native line. These metrics do
   not see the difference the length metrics see, exactly as the blind spot predicts.
-- **Cost and correctness — the native line.** 3.4× cheaper, 3.6× faster, and 5/5 perfect
+- **Cost and correctness — the native line.** 4.4× cheaper, 3.6× faster, and 5/5 perfect
   against one scenario missed.
 
 So the choice is not "better vs. worse workflow" but "structure vs. budget", and only the
@@ -145,15 +145,15 @@ Opus it achieves neither:
 
 | Cell | Code Mass (APP) | `avg_loc_per_function` |
 |---|---:|---:|
-| hybrid-v4 · o4-8 | 895.0 | 4.24 |
+| hybrid-v4 · o4-8 | 882.2 | 4.19 |
 | hybrid-v4 · o5 | 928.8 | 4.40 |
 | sol-cc · o4-8 | 723.8 | 6.65 |
 | sol-cc · o5 | **631.4** | 7.86 |
 | inline-tdd-v1 · o4-8 | 927.0 | 8.81 |
 | inline-tdd-v1 · o5 | 758.2 | 8.90 |
 
-The APP-optimising cells carry the **highest** mass in the field, and the line that
-never mentions APP carries the lowest. Opus does not chase the number the brief names;
+The APP-optimising cells sit at the **top** of the mass range (882–929, level with the
+structureless floor on o4-8), and the line that never mentions APP carries the lowest. Opus does not chase the number the brief names;
 it extracts named functions instead, which costs mass (`Invocation`, 2 per call site)
 and buys structure.
 
@@ -192,11 +192,11 @@ external verification:
 
 | Cell | `verification_pct` | Detail |
 |---|---:|---|
-| hybrid-v4 · o4-8 | 0.80 ± 0.45 | one run at 0.0 of four |
+| hybrid-v4 · o4-8 | 0.80 ± 0.45 | one run at 0.0 of five |
 | hybrid-v4 · o5 | 0.99 ± 0.03 | one run at 0.93 of five |
 | all four other cells | 1.00 ± 0.00 | 21/21 runs |
 
-The o4-8 figure rests on n=4 with one total failure, which is thin — but the direction
+The o4-8 figure rests on n=5 with one total failure, which is thin — but the direction
 matches the pattern this kata has produced for Opus-derived workflows before (RQ-1.9,
 RQ-1.10), and no other cell in this RQ shows any regression at all. Per the RQ's H4 this
 withholds a recommendation for hybrid-v4 on `opus-4-8-no-thinking` regardless of its
@@ -214,11 +214,10 @@ cell.
 | sol-cc · o5 | 1016 | $17.37 | 4.5× |
 | sol-cc · o4-8 | 958 | $17.80 | 3.7× |
 | hybrid-v4 · o5 | 3637 | $76.31 | 19.6× |
-| hybrid-v4 · o4-8 | 4159 | $126.99 | 26.1× |
+| hybrid-v4 · o4-8 | 3196 | $71.05 | 14.6× |
 
 The ordering is stable across both models: the floor is cheapest, the native line costs
-~4×, the opus line 20–26×. The `hybrid-v4 · o4-8` cost figure carries σ 121.05 — one run consumed
-far more than the others — so treat the 26.1× as indicative.
+~4×, the opus line 15–20×.
 
 Against Sol these absolute figures do not transfer (different route, different billing);
 only the internal ordering is comparable, and there the native line was also the middle
@@ -233,19 +232,19 @@ exchange rate is unfavourable on both models. Comparing the two structured lines
 
 | Model | hybrid-v4 duration | vs. native line | Decomposition gain | **Seconds per point** |
 |---|---:|---:|---:|---:|
-| opus-4-8 | 4159 s | **4.34×** | 1.57× (6.65 → 4.24) | 1328 s |
+| opus-4-8 | 3196 s | **3.34×** | 1.59× (6.65 → 4.19) | 910 s |
 | opus-5 | 3637 s | **3.58×** | 1.79× (7.86 → 4.40) | 757 s |
 
-Duration grows faster than quality on both models: roughly four times the wallclock buys
-about one and a half times the decomposition. Expressed per unit, each point of
-`avg_loc_per_function` costs 12.6 minutes of additional runtime on opus-5 and 22.1
+Duration grows faster than quality on both models: three and a half times the wallclock
+buys about one and a half to 1.8 times the decomposition. Expressed per unit, each point of
+`avg_loc_per_function` costs 12.6 minutes of additional runtime on opus-5 and 15.2
 minutes on opus-4-8.
 
 Two qualifications keep this from being a blanket verdict for the native line:
 
-- **The advantage is shrinking across generations.** 4.34× on opus-4-8 against 3.58× on
-  opus-5 — and the reason is not that hybrid-v4 improved (4.24 → 4.40, marginally worse) but
-  that the native line degraded (6.65 → 7.86). The trend runs against it.
+- **The advantage per point is shrinking across generations.** 910 s on opus-4-8 against
+  757 s on opus-5 — and the reason is not that hybrid-v4 improved (4.19 → 4.40, marginally
+  worse) but that the native line degraded (6.65 → 7.86). The trend runs against it.
 - **It is a trade-off only on decomposition.** On every other quality metric the native
   line already wins or ties — `cognitive_max` on opus-5, `longest_function` on both, Smell
   Total on both — while also reaching 10/10 perfect external correctness against hybrid-v4's
@@ -265,10 +264,10 @@ decision: hybrid-v4 for structure, the native line for throughput.
 - **On Opus, for claim-office-like work: `exact-hybrid-v4-cleaned-cc` on `opus-5-no-thinking`.**
   Best decomposition in the field (`avg_loc_per_function` 4.40, median 2.00) at 99 %
   correctness. Not on `opus-4-8-no-thinking` — that cell shows a total verification
-  failure in one of four runs (F-4.6.5).
+  failure in one of five runs (F-4.6.5).
 - **`exact-sol-v1-cc` wins on duration/quality on both models** (F-4.6.7): hybrid-v4 needs
-  3.6–4.3× the wallclock for 1.6–1.8× the decomposition, i.e. 12.6–22.1 minutes per point of
-  `avg_loc_per_function`. It is also 3.4× cheaper on opus-5, reaches perfect external
+  3.3–3.6× the wallclock for 1.6–1.8× the decomposition, i.e. 12.6–15.2 minutes per point of
+  `avg_loc_per_function`. It is also 4.4× cheaper on opus-5, reaches perfect external
   correctness in 10/10 runs, and wins or ties every quality metric except decomposition.
   Choose it whenever throughput matters or decomposition is not the binding goal.
 
@@ -278,7 +277,7 @@ decision: hybrid-v4 for structure, the native line for throughput.
   targeted probe would give one model both briefs on the same kata and compare how often
   the guard is followed — this is now an instruction-following question, not a
   brief-design one.
-- Is the `hybrid-v4 · o4-8` correctness regression a rate or an artefact of n=4? → n=10 on
+- Is the `hybrid-v4 · o4-8` correctness regression a rate or an artefact of n=5? → n=10 on
   that cell, the cheapest way to firm up the one recommendation this RQ withholds.
 - Does the ordering hold on game-of-life, where the Sol comparison found the floor
   unbeaten (F-1.16.2)? The three workflows on the small kata would show whether hybrid-v4's

@@ -9,33 +9,40 @@ paired (`model_x_workflow`), so a trophy awarded across the model boundary would
 measure the model, not the method.
 
 **Trophy rules applied here.** Quality and efficiency trophies go only to cells
-with mean Correctness (external) ≥ 0.90; `exact-ptdd-v1.1-refactor-subagent-cc`
-is at 0.79 and is therefore **excluded from every quality and efficiency row** of
-the Opus table — its values are printed in parentheses. `functions` and
-`mutants_total` are ambivalent in direction and carry no trophy. `smell_total` on
-Opus is identically 0 in all three arms: no contest, so no winner.
+with mean Correctness (external) ≥ 0.90; all six cells clear that gate (lowest:
+0.97), so every cell competes. A cell shares the trophy when its gap to the
+row's best value is below the smaller σ of the two cells. `functions` and `mutants_total` are
+ambivalent in direction and carry no trophy. `smell_total` on Opus is
+identically 0 in all three arms: no contest, so no winner.
 
 ### Opus 5 (no extended thinking), via Claude Code
 
 | Outcome | direction | `baseline-inline-tdd-v1-cc` | `exact-ptdd-v1-cc` | `exact-ptdd-v1.1-refactor-subagent-cc` |
 |---|---|---|---|---|
-| Correctness (external) | higher = better | 0.97 | **1.00** 🏆 | 0.79 |
-| Code Mass (APP) | lower = better | 1059.6 | **929.2** 🏆 | (975.6) |
-| `cognitive_max` | lower = better | 4.6 | **3.0** 🏆 | (3.2) |
-| `cognitive_avg` | lower = better | 0.78 | **0.63** 🏆 | (0.48) |
-| `mccabe_max` | lower = better | 8.6 | **8.0** 🏆 | (7.0) |
-| `mccabe_avg` | lower = better | 2.96 | **2.56** 🏆 | (2.04) |
-| `longest_function` | lower = better | 28.2 | **24.6** 🏆 | (23.8) |
-| `avg_loc_per_function` | lower = better | 8.75 | **7.93** 🏆 | (6.35) |
-| `median_loc_per_function` | lower = better | 7.0 | **6.8** 🏆 | (6.0) |
-| `functions` | ambivalent | 33.2 | 36.0 | (46.6) |
-| Smell Total | lower = better | 0 | 0 | (0) |
-| Mutation Score | higher = better | 0.96 | **0.98** 🏆 | (0.98) |
-| `mutants_total` | ambivalent | 101.0 | 117.2 | (113.2) |
-| `mutants_survived` | lower = better | 4.0 | **3.0** 🏆 | (2.6) |
-| `duration_seconds` | lower = better | **489.8** 🏆 | 1500 | (6292) |
-| `total_tokens` | lower = better | **3.59 M** 🏆 | 27.2 M | (83.4 M) |
-| `cost_usd` | lower = better | **$3.84** 🏆 | $20.44 | ($76.59) |
+| Correctness (external) | higher = better | 0.97 | **1.00** 🏆 | 0.99 |
+| Code Mass (APP) | lower = better | 1059.6 | **929.2** 🏆 | 1152.0 |
+| `cognitive_max` | lower = better | 4.6 | **3.0** 🏆 | **3.4** 🏆 |
+| `cognitive_avg` | lower = better | 0.78 | 0.63 | **0.48** 🏆 |
+| `mccabe_max` | lower = better | 8.6 | **8.0** 🏆 | **7.2** 🏆 |
+| `mccabe_avg` | lower = better | 2.96 | 2.56 | **2.20** 🏆 |
+| `longest_function` | lower = better | **28.2** 🏆 | **24.6** 🏆 | **27.8** 🏆 |
+| `avg_loc_per_function` | lower = better | 8.75 | 7.93 | **6.84** 🏆 |
+| `median_loc_per_function` | lower = better | 7.0 | **6.8** 🏆 | **6.3** 🏆 |
+| `functions` | ambivalent | 33.2 | 36.0 | 51.6 |
+| Smell Total | lower = better | 0 | 0 | 0 |
+| Mutation Score | higher = better | **0.96** 🏆 | **0.98** 🏆 | **0.98** 🏆 |
+| `mutants_total` | ambivalent | 101.0 | 117.2 | 128.4 |
+| `mutants_survived` | lower = better | **4.0** 🏆 | **3.0** 🏆 | **2.8** 🏆 |
+| `duration_seconds` | lower = better | **489.8** 🏆 | 1500 | 6234 |
+| `total_tokens` | lower = better | **3.59 M** 🏆 | 27.2 M | 104.7 M |
+| `cost_usd` | lower = better | **$3.84** 🏆 | $20.44 | $93.35 |
+
+Rows with three trophies (`longest_function`, Mutation Score,
+`mutants_survived`) mean "no effect" on Opus: every gap to the best value is below
+the smaller σ (`longest_function` σ 4.44–7.46, Mutation Score σ 0.01–0.03,
+`mutants_survived` σ 1.92–3.94). Correctness (external) has σ 0 in
+`exact-ptdd-v1-cc`, so its 1.00 stands alone even though the other two arms are
+within 0.03.
 
 ### GPT-6 SOL, via pi (openai-codex route)
 
@@ -128,71 +135,49 @@ lands on top of the shared-context arm.
 
 | Outcome | Opus `v1` | Opus `v1.1` | SOL `v1` | SOL `v1.1` |
 |---|---|---|---|---|
-| `functions` | 36.0 | 46.6 | 11.4 | 11.4 |
-| `avg_loc_per_function` | 7.93 | 6.35 | 10.52 | 10.72 |
+| `functions` | 36.0 | 51.6 | 11.4 | 11.4 |
+| `avg_loc_per_function` | 7.93 | 6.84 | 10.52 | 10.72 |
 | `cognitive_avg` | 0.63 | 0.48 | 2.03 | 1.96 |
-| `mccabe_avg` | 2.56 | 2.04 | 5.72 | 5.78 |
-| `refactor_events` | 13.2 | 67.6 | 6.0 | 9.33 |
+| `mccabe_avg` | 2.56 | 2.20 | 5.72 | 5.78 |
+| `refactor_events` | 13.2 | 80.0 | 6.0 | 9.33 |
+| Code Mass (APP) | 929.2 | 1152.0 | 595.2 | 605.6 |
 
 `refactor_events` is the mechanism and is boundary-safe: on Opus the isolated
-subagent performs 67.6 refactorings per run against 13.2 in shared context, a
-factor of 5. On SOL the same architecture produces 9.33 against 6.0.
+subagent performs 80.0 refactorings per run against 13.2 in shared context, a
+factor of 6. On SOL the same architecture produces 9.33 against 6.0.
 
-The Opus `v1.1` numbers carry a caveat beyond the correctness gate: σ is large
-(`functions` σ 19.68, Code Mass (APP) σ 411.13) because the cell contains the
-budget-exhausted run of F-1.11.4, whose truncated code reads as extreme
-flatness. The direction holds without that run, the magnitude does not.
+On Opus the further decomposition is not free in code size: Code Mass (APP)
+rises 929.2 → 1152.0 (σ 41.32 and 82.61), so the subagent arm buys smaller units
+with roughly a quarter more code. The unit-size gains are beyond one σ for
+`avg_loc_per_function` (7.93 → 6.84, σ 0.92 and 0.71) and `mccabe_avg` (2.56 →
+2.20, σ 0.35 and 0.29); `cognitive_avg` (0.63 → 0.48, σ 0.17 and 0.13) sits at
+about one σ. `functions` rises 36.0 → 51.6 against σ 5.79 and 9.61.
 
 ---
 
 ## F-1.11.3 — Isolation's budget cost falls almost entirely on Opus
 
-The same architectural change costs 3.7× on Opus and 1.1× on SOL.
+The same architectural change costs 4.6× on Opus and 1.1× on SOL.
 
 | Outcome | Opus `v1` | Opus `v1.1` | factor | SOL `v1` | SOL `v1.1` | factor |
 |---|---|---|---|---|---|---|
-| `cost_usd` | $20.44 | $76.59 | 3.7× | $0.94 | $1.04 | 1.1× |
-| `total_tokens` | 27.2 M | 83.4 M | 3.1× | 2.84 M | 2.07 M | 0.7× |
-| `duration_seconds` | 1500 | 6292 | 4.2× | 684.4 | 1430.4 | 2.1× |
-| `chain_suite_runs` | 110 | 230.6 | 2.1× | 86.8 | 46.0 | 0.5× |
+| `cost_usd` | $20.44 | $93.35 | 4.6× | $0.94 | $1.04 | 1.1× |
+| `total_tokens` | 27.2 M | 104.7 M | 3.8× | 2.84 M | 2.07 M | 0.7× |
+| `duration_seconds` | 1500 | 6234 | 4.2× | 684.4 | 1430.4 | 2.1× |
+| `chain_suite_runs` | 110 | 271 | 2.5× | 86.8 | 46.0 | 0.5× |
 
 On SOL the isolated arm consumes **fewer** tokens than the shared-context arm
 (2.07 M against 2.84 M) while taking twice the wall-clock time. The cost
 explosion is therefore not a property of the architecture; it is a property of
 the architecture on this harness and model pair. `chain_suite_runs` shows the
-same split: the Opus subagent runs the suite 230.6 times per run, the SOL
+same split: the Opus subagent runs the suite 271 times per run, the SOL
 subagent 46.0.
 
-In absolute terms the Opus subagent arm costs $76.59 per run against $1.04 for
-the SOL one — a factor of 74 for the same method on the same kata.
+In absolute terms the Opus subagent arm costs $93.35 per run against $1.04 for
+the SOL one — a factor of 90 for the same method on the same kata.
 
----
-
-## F-1.11.4 — The only correctness break is a budget exhaustion, not a wrong implementation
-
-Five of six cells are at Correctness (external) ≥ 0.97. The exception is
-`exact-ptdd-v1.1-refactor-subagent-cc` at 0.79 (σ 0.44), and the whole deficit
-is one run.
-
-| Cell | Correctness (external) | min | σ |
-|---|---|---|---|
-| `baseline-inline-tdd-v1-cc` | 0.97 | 0.87 | 0.06 |
-| `baseline-inline-tdd-v1-pi` | 1.00 | 1.00 | 0 |
-| `exact-ptdd-v1-cc` | 1.00 | 1.00 | 0 |
-| `exact-ptdd-v1-pi` | 1.00 | 1.00 | 0 |
-| `exact-ptdd-v1.1-refactor-subagent-cc` | 0.79 | 0.00 | 0.44 |
-| `exact-ptdd-v1.1-refactor-subagent-pi` | 1.00 | 1.00 | 0 |
-
-The 0.00 run hit the 7200 s per-run budget. It was working when it was cut off:
-99 suite invocations, 29 cycles, 168 commits, 526 lines of production Rust, and
-a green internal suite. It has no `experiment-done.txt`, so the test list was
-unfinished and the external suite scored 0. The other four runs of the cell are
-at 0.93, 1.00, 1.00, 1.00.
-
-This is a budget finding, not an error: timeouts count toward `min_replicates`
-and are not refilled. It is also the direct consequence of F-1.11.3 — the arm
-whose mean duration is 6292 s against a 7200 s budget is the arm that loses a
-replicate to the clock. Four of its five runs exceeded 5500 s.
+The Opus subagent arm also runs close to the 7200 s per-run budget: all five of
+its `ok` runs took between 5550 s and 6910 s (mean 6234 s).
 
 ---
 
@@ -232,7 +217,7 @@ pairing, so the column does not order the methods.
 | `baseline-inline-tdd-v1-pi` | 0.99 | 77.0 | 1.0 |
 | `exact-ptdd-v1-cc` | 0.98 | 117.2 | 3.0 |
 | `exact-ptdd-v1-pi` | 0.98 | 101.4 | 2.0 |
-| `exact-ptdd-v1.1-refactor-subagent-cc` | 0.98 | 113.2 | 2.6 |
+| `exact-ptdd-v1.1-refactor-subagent-cc` | 0.98 | 128.4 | 2.8 |
 | `exact-ptdd-v1.1-refactor-subagent-pi` | 0.99 | 86.2 | 1.2 |
 
 Reporting the ratio alone would mislead, because the arms differ in code size and
@@ -240,12 +225,13 @@ the denominator is the mutant population. On SOL the method raises
 `mutants_total` 77.0 → 101.4 while `mutants_survived` rises 1.0 → 2.0: the score
 falls from 0.99 to 0.98 although the suite is covering a one-third larger
 population. On Opus the same comparison runs 101.0 → 117.2 with survivors
-falling 4.0 → 3.0.
+falling 4.0 → 3.0, and the subagent arm extends it to 128.4 mutants with 2.8
+survivors — the largest population in the RQ, with the fewest Opus survivors.
 
-Two cells contain a run with a visibly smaller population — 54 mutants in the
-Opus subagent cell (the budget-exhausted run of F-1.11.4) and 41 in the SOL
-subagent cell. Both scored 1.00, which flatters their cells: a perfect score over
-a small population is the easiest score in the table.
+One cell contains a run with a visibly smaller population: 41 mutants in the SOL
+subagent cell, against 85–110 for its other runs. It scored 1.00, which flatters
+the cell: a perfect score over a small population is the easiest score in the
+table.
 
 ---
 
@@ -260,12 +246,22 @@ sharpest separation in the RQ.
 | `baseline-inline-tdd-v1-pi` | 4.0 | 3.8 | 0.34 | 5 |
 | `exact-ptdd-v1-cc` | **1.0** | 1.0 | **1.00** | 5 |
 | `exact-ptdd-v1-pi` | **1.0** | 1.0 | **1.00** | 5 |
-| `exact-ptdd-v1.1-refactor-subagent-cc` | **1.0** | 1.0 | **1.00** | 5 |
+| `exact-ptdd-v1.1-refactor-subagent-cc` | (2.6)¹ | 1.0 | **1.00** | 5 |
 | `exact-ptdd-v1.1-refactor-subagent-pi` | **1.0** | 1.0 | **1.00** | 3 |
 
-All four EXACT arms sit at exactly 1.0 with σ 0 on both batch columns and at
-`tdd_discipline_step` 1.00 with σ 0 — not an average near one, but every single
-red phase in every run introducing exactly one failing test. The SOL control
+¹ Measurement artefact, not a batch. Four of the five runs are at 1.0; one run
+(2026-10-19_02-32-59) reports 9. In that run a single suite invocation shows 9
+failing tests, 8 of which had passed in the invocation directly before: an
+implementation step briefly broke existing tests, and six seconds later the suite
+was green again. The phase chain counts that regression as a Red with 9 failing
+tests. No test was authored in a batch, so the cell's mean is not read as
+batching and the column gets no trophy for this cell.
+
+All four EXACT arms sit at `red_batch_size` 1.0 with σ 0 and at
+`tdd_discipline_step` 1.00 with σ 0 — not an average near one, but every red
+phase in every run introducing exactly one new failing test, the regression in
+footnote ¹ aside. `red_batch_max` is
+1.0 with σ 0 in three of them; the fourth is the artefact above. The SOL control
 batches up to 6 tests at once (mean max 4.0), the Opus control up to 2.
 
 `tdd_discipline_step` is boundary-safe where the overall `tdd_discipline` score is
