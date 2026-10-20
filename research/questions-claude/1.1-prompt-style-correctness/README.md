@@ -6,8 +6,8 @@ factors:
   model:
     - opus-4-7
     - opus-4-7-no-thinking
-    - opus-4-6-portkey
-    - opus-4-6-portkey-no-thinking
+    - {any: [opus-4-6-portkey, opus-4-6-requesty]}
+    - {any: [opus-4-6-portkey-no-thinking, opus-4-6-requesty-no-thinking]}
     - sonnet-4-6-portkey
     - sonnet-4-6-portkey-no-thinking
     - haiku-4-5-portkey
@@ -227,3 +227,13 @@ model ∈ {opus-4-7, opus-4-7-no-thinking, opus-4-6-portkey,
 opus-4-6-portkey-no-thinking, sonnet-4-6-portkey,
 sonnet-4-6-portkey-no-thinking, haiku-4-5-portkey,
 haiku-4-5-portkey-no-thinking}.
+
+## Routing caveat — Opus 4.6
+
+Portkey shut down in 2026-07. Replacement runs from 2026-10-20 on use
+`opus-4-6-requesty` / `opus-4-6-requesty-no-thinking`
+(`vertex/claude-opus-4-6@europe-west1` via the Requesty EU router) and count
+toward the old `opus-4-6-portkey*` cells through `{any: [...]}`. Both routes end
+at Anthropic on Google Vertex; only router and region differ, and thinking is
+switched by Claude Code itself, so the outcome is assumed unaffected. Each cell
+holds at most one replacement run.

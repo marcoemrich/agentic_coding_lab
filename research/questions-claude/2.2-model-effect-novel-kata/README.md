@@ -7,7 +7,7 @@ factors:
     - opus-5-no-thinking
     - opus-4-8-no-thinking
     - opus-4-7-no-thinking
-    - opus-4-6-portkey-no-thinking
+    - {any: [opus-4-6-portkey-no-thinking, opus-4-6-requesty-no-thinking]}
 controls:
   workflow: exact-subagents-v1-cc
   kata_base: claim-office
@@ -58,3 +58,13 @@ RQ-model-novel focuses on the strongest Opus models plus Fable 5 (no-thinking, b
 - **H1 (model capability gap on spec completeness)**: opus-4-6 has significantly lower `verification_pct` than opus-4-7 — confirming the RQ-regression observation "implements only half the spec" as a model-specific deficit.
 - **H2 (code-quality gap persists)**: opus-4-6 has higher complexity metrics (cognitive_max, mccabe_max), consistent with RQ-model-quality F-model-quality.3 (~2× on GOL).
 - **H3 (correctness is the harder axis)**: On claim-office, `verification_pct` differentiates the models more strongly than any code-quality metric — the "harder challenge" exposes differences that were invisible on GOL.
+
+## Routing caveat — Opus 4.6
+
+Portkey shut down in 2026-07. Replacement runs from 2026-10-20 on use
+`opus-4-6-requesty` / `opus-4-6-requesty-no-thinking`
+(`vertex/claude-opus-4-6@europe-west1` via the Requesty EU router) and count
+toward the old `opus-4-6-portkey*` cells through `{any: [...]}`. Both routes end
+at Anthropic on Google Vertex; only router and region differ, and thinking is
+switched by Claude Code itself, so the outcome is assumed unaffected. Each cell
+holds at most one replacement run.
