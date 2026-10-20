@@ -11,6 +11,7 @@ For the current pi/Requesty models (RQ-model-novel-pi, RQ-model-quality-pi, RQ-h
 |---|---|---:|---:|---:|:--:|
 | opus-4-8 | `vertex/claude-opus-4-8@eu` | $5.50 | $27.50 | $0.55 | yes |
 | opus-5-requesty | `vertex/claude-opus-5@eu` | $5.50 | $27.50 | $0.55 | yes |
+| opus-4-6-requesty | `vertex/claude-opus-4-6@europe-west1` | $5.50 | $27.50 | $0.55 | yes |
 | sonnet-5 | `vertex/claude-sonnet-5@eu` | $2.20 | $11.00 | $0.22 | yes |
 | gpt-5-6-sol | `azure/gpt-5.6-sol@swedencentral` | $5.00 | $30.00 | $0.50 | yes |
 | gpt-5-6-terra | `azure/gpt-5.6-terra@swedencentral` | $2.50 | $15.00 | $0.25 | yes |

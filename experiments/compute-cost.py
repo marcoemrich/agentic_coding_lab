@@ -98,6 +98,9 @@ PRICES = {
     "opus-4-6-no-thinking": (15.00, 75.00, 1.50, 18.75),
     "opus-4-6-portkey": (15.00, 75.00, 1.50, 18.75),
     "opus-4-6-portkey-no-thinking": (15.00, 75.00, 1.50, 18.75),
+    # Replacement route for the dead Portkey arm (2026-10-20), Requesty list price
+    "opus-4-6-requesty": (5.50, 27.50, 0.55, 6.875),         # vertex/claude-opus-4-6@europe-west1
+    "opus-4-6-requesty-no-thinking": (5.50, 27.50, 0.55, 6.875),
     # sonnet-5-native: native (claude-sonnet-5 via OAuth bypass), real
     # Anthropic list price 2.00/10.00/0.20/2.50 (cache_read 0.1x, cache_write
     # 1.25x). The `sonnet-5` entry further down is the pi/Requesty route

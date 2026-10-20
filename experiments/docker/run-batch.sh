@@ -139,6 +139,11 @@ MODEL_CONFIGS=(
     "opus-4-7-portkey-no-thinking|@vertex-eu-global/anthropic.claude-opus-4-7|false"
     "opus-4-6-portkey|@vertex-ai/anthropic.claude-opus-4-6|true"
     "opus-4-6-portkey-no-thinking|@vertex-ai/anthropic.claude-opus-4-6|false"
+    # Replacement route for the dead Portkey arm (2026-10-20): same model on
+    # Vertex, via the Requesty EU router. RQs fold these into the old
+    # opus-4-6-portkey* cells with {any: [...]}; the id keeps the route visible.
+    "opus-4-6-requesty|vertex/claude-opus-4-6@europe-west1|true"
+    "opus-4-6-requesty-no-thinking|vertex/claude-opus-4-6@europe-west1|false"
     "sonnet-4-6-portkey|@vertex-ai/anthropic.claude-sonnet-4-6|true"
     "sonnet-4-6-portkey-no-thinking|@vertex-ai/anthropic.claude-sonnet-4-6|false"
     "haiku-4-5-portkey|@vertex-ai/anthropic.claude-haiku-4-5@20251001|true"
