@@ -164,34 +164,6 @@ front of it without a view of the whole.
 
 ---
 
-## F-1.7.3 — Only Opus pays for the treatment in correctness and budget
-
-The treatment is identical on both platforms. Its damage is not.
-
-| | Opus v1 | Opus v1.1 | SOL v1 | SOL v1.1 |
-|---|---:|---:|---:|---:|
-| Completed within budget | 100 % | **70 %** | 100 % | 100 % |
-| Correctness (external) | 1.00 ± 0.02 | **0.87 ± 0.31** | 1.00 ± 0.00 | 1.00 ± 0.00 |
-| Worst run | 0.93 | **0.00** | 1.00 | 1.00 |
-
-**Three of ten Opus treatment runs hit the two-hour ceiling.** One of the three
-delivered nothing at all — `verification_pct` 0, no suite invocation — and is the
-cell's worst run; the other two had solved the kata and simply ran out of budget.
-Two further treatment runs miss one scenario each at 0.93, the same single miss
-that two of fifteen control runs show. SOL runs the treatment 5 of 5 within
-budget at a perfect score.
-
-Both platforms pay a comparable multiple in wallclock — 4.4× on Opus (1234 →
-5484 s), 3.1× on SOL (1574 → 4927 s) — so the difference is not that Opus is
-slower under the treatment, but that it is close enough to its budget ceiling for
-the extra context round-trips to push a third of the runs over.
-
-Timeouts are findings here, not errors: they count toward `min_replicates` and
-are not refilled. The consequence for this RQ is that the Opus treatment cell
-cannot be read as a quality result at all — see the note under the Opus table.
-
----
-
 ## F-1.7.4 — The treatment is worth more where the shared-context workflow leaves headroom
 
 The platforms differ in where PTDD v1 already lands.
