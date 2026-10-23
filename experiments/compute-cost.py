@@ -164,6 +164,8 @@ PRICES = {
     "deepseek-v4-1-flash-no-thinking": (0.50, 1.50, 0.05, 0.0),
     "qwen3-8":          (2.50,  6.00,  0.63, 0.0),   # tensorx/qwen3.8
     "qwen3-8-no-thinking": (2.50, 6.00, 0.63, 0.0),
+    "qwen3-8-flash-next": (0.20, 0.50, 0.05, 0.0),   # tensorx/qwen3.8-flash-next
+    "qwen3-8-flash-next-no-thinking": (0.20, 0.50, 0.05, 0.0),
     # OC arms on the same Requesty/tensorx route (replacing dead Portkey, 2026-10-19).
     # The bare `deepseek-v4-flash` above is the pi route to the same tensorx
     # alias and carries the identical tariff — two ids because the harness

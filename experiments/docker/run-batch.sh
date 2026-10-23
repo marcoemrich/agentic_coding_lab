@@ -287,6 +287,13 @@ MODEL_CONFIGS=(
     # count. Unrelated to qwen3-235b below, which is a different generation on
     # nebius and stalls at the test-list->red transition (RQ-model-novel-pi).
     "qwen3-8|pi-only|false"
+    # Same family and the same provider as qwen3-8, one tier down:
+    # tensorx/qwen3.8-flash-next at 0.20/0.50 against the flagship's
+    # 2.50/6.00 -- 12.5x on input, 12x on output, no backprovider change.
+    # That makes it the cleanest intra-family price/quality pair in the
+    # lab; every other one (glm-5-1/5-2, kimi-k2-7/k3) swaps provider too.
+    # Its context window is 262144, a quarter of the flagship's 1M.
+    "qwen3-8-flash-next|pi-only|false"
     "qwen3-235b|pi-only|false"
     # Reasoning-off arm (RQ-model-novel-pi fair baseline). Same routing as
     # the bare ids above; the pi branch strips the -no-thinking suffix and
@@ -332,6 +339,7 @@ MODEL_CONFIGS=(
     "gemini-4-argon-no-thinking|pi-only|false"
     "mistral-large-4-no-thinking|pi-only|false"
     "qwen3-8-no-thinking|pi-only|false"
+    "qwen3-8-flash-next-no-thinking|pi-only|false"
     "qwen3-235b-no-thinking|pi-only|false"
     # cursor-agent-harness-only models — cli_model is a placeholder; the actual
     # --model string is resolved in the cursor invocation branch via the
@@ -1124,8 +1132,11 @@ EOF
                 # qwen/qwen3.8-2.4t-a95b (verified in all five runs of
                 # RQ-current-models-ptdd). Both spellings carry the same
                 # tariff. NOT tensorx/qwen3.8-flash-next, which is a different
-                # and far cheaper model and is deliberately unwired.
+                # and far cheaper model -- wired separately as
+                # qwen3-8-flash-next below, and resolving to
+                # qwen/qwen3.8-flash-next rather than to the 2.4T variant.
                 qwen3-8)                       pi_model="requesty/tensorx/qwen3.8" ;;
+                qwen3-8-flash-next)            pi_model="requesty/tensorx/qwen3.8-flash-next" ;;
                 qwen3-235b)                    pi_model="requesty/nebius/qwen/qwen3-235b-a22b-instruct-2507" ;;
                 *) echo -e "  ${RED}ERROR: no pi model mapping for $model_name${NC}"
                    claude_exit=2
