@@ -2,7 +2,7 @@
 
 _How much cheaper is the GPT model gpt-5-6-sol on the pi harness compared to opus-4-8 on Claude Code — at the same prompt style and an outcome-equivalent TDD workflow, across both katas?_
 
-Generated: 2026-10-12T10:46:35Z
+Generated: 2026-10-23T00:54:31Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -21,8 +21,8 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
 | kata                         | cell_workflow              | cell_model        |   n |   null |   mean |   sd |
 |:-----------------------------|:---------------------------|:------------------|----:|-------:|-------:|-----:|
-| game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | gpt-5-6-sol       |   5 |      0 |   1.09 | 0.29 |
-| claim-office-example-mapping | exact-hybrid-v4-cleaned-pi | gpt-5-6-sol       |   5 |      0 |   2.54 | 0.65 |
+| game-of-life-example-mapping | exact-hybrid-v4-cleaned-pi | gpt-5-6-sol       |   5 |      0 |   0.91 | 0.24 |
+| claim-office-example-mapping | exact-hybrid-v4-cleaned-pi | gpt-5-6-sol       |   5 |      0 |   2.13 | 0.56 |
 | game-of-life-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |      0 |   5.53 | 0.51 |
 | claim-office-example-mapping | exact-hybrid-v4-cleaned-cc | opus-4-8-requesty |   5 |      0 |  41.09 | 7.1  |
 

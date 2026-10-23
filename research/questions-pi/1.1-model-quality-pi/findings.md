@@ -102,15 +102,15 @@ The Anthropic version jump sharpens this: `opus-5-requesty` produces a third of 
 
 ## F-1.5 — Cost spreads by a factor of 5.2 at comparable quality
 
-The estimated run cost among the correctness-complete models ranges from ~$0.60/run (kimi-k2-7) to ~$3.10 (opus-5-requesty). The two Kimi generations are the cheapest cells in the field, `opus-5-requesty` and `sonnet-5` the most expensive. The failed/partly failed models lie in between (qwen ~$0.96 at 0 % tests_passing, gpt-5-6-terra ~$0.67 at 80 %).
+The estimated run cost among the correctness-complete models ranges from ~$0.60/run (kimi-k2-7) to ~$3.10 (opus-5-requesty). The cheap end of the field is `kimi-k2-7`, `minimax-m3`, `deepseek-v4-pro` and `gpt-5-6-sol`, all under a dollar; `opus-5-requesty` and `sonnet-5` are the most expensive. The failed/partly failed models lie in between (qwen ~$0.96 at 0 % tests_passing, gpt-5-6-terra ~$0.59 at 80 %).
 
 | Model (`tests_passing` 100 %) | `cost_usd` (estimate/run) | `duration_seconds` | `total_tokens` | `smell_total` | `cognitive_max` |
 |---|---|---|---|---|---|
 | kimi-k2-7 | **$0.60** 🏆 | 234 | 1.34 M | 3.0 | 10.8 |
-| kimi-k3-sference | $0.64 | 359 | 1.02 M | 2.4 | 7.0 |
 | minimax-m3 | $0.77 | 4121 | 4.68 M | 8.4 | 6.6 |
 | deepseek-v4-pro | $0.83 | **200** 🏆 | 1.38 M | 4.0 | 14.0 |
-| gpt-5-6-sol | $1.09 | 240 | **661 k** 🏆 | 3.6 | 13.4 |
+| gpt-5-6-sol | $0.91 | 240 | **661 k** 🏆 | 3.6 | 13.4 |
+| kimi-k3-sference | $0.99 | 359 | 1.02 M | 2.4 | 7.0 |
 | opus-4-8 | $2.00 | 339 | 1.23 M | 3.4 | 9.6 |
 | glm-5-1 | $2.10 | 1649 | 1.41 M | 3.2 | 9.6 |
 | glm-5-2 | $2.53 | 883 | 4.36 M | 1.0 | 7.8 |
@@ -121,22 +121,22 @@ Direction: `cost_usd`, `duration_seconds` (wall clock), `total_tokens` — lower
 
 **Cost caveat.** `cost_usd` is a **list-price estimate** (Requesty tariffs per 1M tokens × measured tokens, `research/model-pricing.md`), not a billed amount — without workspace-specific discounts or smart-routing savings. Requesty provides no inline cost (`usage = null`), so values are backfilled by `compute-cost.py`; token counts are after the parser fix (correct `cache_read` summation). All ten correctness-complete cells route over cache-discounted paths, so the column is comparable across models. The `opus-5-requesty` tariff ($5.50 / $27.50 per 1M, cache read $0.55) was read from the live Requesty catalogue on 2026-08-05 and matches `opus-4-8` except on cache write ($6.88 vs. $6.25).
 
-**Interpretation.** The field now has a clear price-quality frontier with two ends. `opus-5-requesty` is the most expensive cell ($3.10) and buys the largest quality margin in the RQ — `cognitive_max` 2.4 against a field minimum of 6.6 elsewhere (F-1.1). At the other end, `kimi-k3-sference` is the "cheap AND clean" cell: at $0.64 it is within four cents of the cheapest model while placing fourth on both **Smell Total** (2.4) and `cognitive_max` (7.0). The choice between them is a factor of ~4.8 in price against roughly a factor of three in peak complexity.
+**Interpretation.** The field now has a clear price-quality frontier with two ends. `opus-5-requesty` is the most expensive cell ($3.10) and buys the largest quality margin in the RQ — `cognitive_max` 2.4 against a field minimum of 6.6 elsewhere (F-1.1). At the other end, `kimi-k3-sference` is the "cheap AND clean" cell: at $0.99 it is the only sub-dollar cell in the low-smell group, where the other three cost $2.53–$3.10, while placing fourth on both **Smell Total** (2.4) and `cognitive_max` (7.0). The choice between them is a factor of ~3.1 in price against roughly a factor of three in peak complexity.
 
-`glm-5-2` still holds the smell crown (1.0) but costs four times as much as kimi-k3. Wall clock and tokens do not run parallel to cost: `deepseek-v4-pro` and `gpt-5-6-sol` are fastest at ~200–240 s and gpt-5-6-sol is the most token-frugal at 661 k, while `minimax-m3` falls far out of the range at 4121 s and 4.68 M tokens despite low cost (~$0.77) — the cheap run buys its price with extreme runtime and token volume. `opus-5-requesty` is the exception to the "expensive = slow" pattern in the upper price band: at 436 s it runs roughly a third of sonnet-5's wall clock (1216 s) on 2.22 M against 3.66 M tokens, so its price comes from the tariff rather than from token volume.
+`glm-5-2` still holds the smell crown (1.0) but costs 2.6× as much as kimi-k3. Wall clock and tokens do not run parallel to cost: `deepseek-v4-pro` and `gpt-5-6-sol` are fastest at ~200–240 s and gpt-5-6-sol is the most token-frugal at 661 k, while `minimax-m3` falls far out of the range at 4121 s and 4.68 M tokens despite low cost (~$0.77) — the cheap run buys its price with extreme runtime and token volume. `opus-5-requesty` is the exception to the "expensive = slow" pattern in the upper price band: at 436 s it runs roughly a third of sonnet-5's wall clock (1216 s) on 2.22 M against 3.66 M tokens, so its price comes from the tariff rather than from token volume.
 
 ---
 
-## F-1.6 — The kimi version jump improves every quality axis at the same price
+## F-1.6 — The kimi version jump improves every quality axis, at 65 % higher cost
 
-`kimi-k3-sference` improves over `kimi-k2-7` on every quality axis — `cognitive_max` 7.0 vs. 10.8, `mccabe_max` 5.8 vs. 7.2, `smell_total` 2.4 vs. 3.0, `longest_function` 15.0 vs. 21.6 — while both reach `verification_pct = 1.00` and 100 % `tests_passing`. Run cost is effectively unchanged ($0.64 vs. $0.60) at 24 % fewer tokens.
+`kimi-k3-sference` improves over `kimi-k2-7` on every quality axis — `cognitive_max` 7.0 vs. 10.8, `mccabe_max` 5.8 vs. 7.2, `smell_total` 2.4 vs. 3.0, `longest_function` 15.0 vs. 21.6 — while both reach `verification_pct = 1.00` and 100 % `tests_passing`. Run cost rises 65 % ($0.99 vs. $0.60) even though K3 consumes 24 % fewer tokens.
 
 | Model | `smell_total` | `cognitive_max` | `mccabe_max` | `longest_function` | `cost_usd` | `duration_seconds` | `total_tokens` |
 |---|---|---|---|---|---|---|---|
 | kimi-k2-7 | 3.0 | 10.8 | 7.2 | 21.6 | $0.60 | 234 | 1.34 M |
-| kimi-k3-sference | 2.4 | 7.0 | 5.8 | 15.0 | $0.64 | 359 | 1.02 M |
+| kimi-k3-sference | 2.4 | 7.0 | 5.8 | 15.0 | $0.99 | 359 | 1.02 M |
 
-**Interpretation.** H1c holds: the newer Kimi generation writes measurably less complex code, and the `cognitive_max` gap (10.8 → 7.0) is larger than the GLM 5.1 → 5.2 step, though smaller than the Anthropic 4.8 → 5 jump (9.6 → 2.4, F-1.7). The `longest_function` improvement moves it from mid-field to 15.0. One confound remains: the two versions route through different backproviders (K2.7 via TensorX, K3 via Sference), so provider-side differences cannot be separated from model behaviour. Cost is no longer a confound — both routes bill with a cache discount, and the 4-cent gap is inside estimate noise. The improvement costs 53 % more wall clock (234 → 359 s) while consuming fewer tokens, i.e. K3 spends longer per token rather than producing more. `cycle_count` rises from 9.6 to 14.6 while `predictions_total` falls from 13.6 to 8.2 — more marked TDD cycles carrying fewer predictions, consistent with F-1.4 (marker compliance ≠ result quality).
+**Interpretation.** H1c holds: the newer Kimi generation writes measurably less complex code, and the `cognitive_max` gap (10.8 → 7.0) is larger than the GLM 5.1 → 5.2 step, though smaller than the Anthropic 4.8 → 5 jump (9.6 → 2.4, F-1.7). The `longest_function` improvement moves it from mid-field to 15.0. One confound remains: the two versions route through different backproviders (K2.7 via TensorX, K3 via Sference), so provider-side differences cannot be separated from model behaviour. The cost gap is a tariff difference, not more work: both routes bill with a cache discount, but sference prices K3 at $3.00/$15.00 per 1M against TensorX's $1.25/$4.50 for K2.7 — 2.4× on input, 3.3× on output — so the 65 % higher run cost arrives despite 24 % fewer tokens. The improvement costs 53 % more wall clock (234 → 359 s) while consuming fewer tokens, i.e. K3 spends longer per token rather than producing more. `cycle_count` rises from 9.6 to 14.6 while `predictions_total` falls from 13.6 to 8.2 — more marked TDD cycles carrying fewer predictions, consistent with F-1.4 (marker compliance ≠ result quality).
 
 ---
 

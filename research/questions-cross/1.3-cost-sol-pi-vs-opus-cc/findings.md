@@ -13,7 +13,7 @@ either alone. Isolated effects: harness in `RQ-harness-requesty`
 
 **Cost caveat:** `cost_usd` is a list-price estimate (tokens × price,
 `compute-cost.py`), not a billed amount. The two bundles carry
-**different tariffs** (sol `azure/gpt-5.6-sol` $5.00/$30.00/$0.50; opus
+**different tariffs** (sol `azure/gpt-5.6-sol` $4.40/$22.00/$0.44; opus
 `vertex/claude-opus-4-8@eu` Requesty $5.50/$27.50/$0.55/$6.25 per 1M) — the
 price difference is tariff **and** effort combined, which is exactly what the
 migration question asks.
@@ -27,7 +27,7 @@ Primary outcome **cost** `cost_usd` (lower = better) + Correctness (external)
 
 | Metric (direction) | sol-pi | opus-cc |
 |---|---:|---:|
-| `cost_usd` $ (lower) | **2.54** 🏆 | 41.09 |
+| `cost_usd` $ (lower) | **2.13** 🏆 | 41.09 |
 | `total_tokens` (lower) | **2.09 M** 🏆 | 54.7 M |
 | `duration_seconds` (lower) | **503** 🏆 | 3149 |
 | `verification_pct` (higher) | **1.00** 🏆 | 0.93 |
@@ -40,7 +40,7 @@ Primary outcome **cost** `cost_usd` (lower = better) + Correctness (external)
 
 | Metric (direction) | sol-pi | opus-cc |
 |---|---:|---:|
-| `cost_usd` $ (lower) | **1.09** 🏆 | 5.53 |
+| `cost_usd` $ (lower) | **0.91** 🏆 | 5.53 |
 | `total_tokens` (lower) | **0.66 M** 🏆 | 5.21 M |
 | `duration_seconds` (lower) | **240** 🏆 | 719 |
 | `verification_pct` (higher) | **1.0** 🏆 | **1.0** 🏆 |
@@ -55,26 +55,20 @@ both bundles satisfy `tests_passing` = 100 % (and on game-of-life both
 
 ---
 
-## F-1.1 — sol-pi is drastically cheaper on both katas — ~16× on the expensive kata
+## F-1.1 — sol-pi is drastically cheaper on both katas — ~19× on the expensive kata
 
-sol-pi's cost advantage scales with the kata's token load: ~5.1× on the
-cheap game-of-life, ~16× on the token-heavy claim-office.
+sol-pi's cost advantage scales with the kata's token load: ~6.1× on the
+cheap game-of-life, ~19× on the token-heavy claim-office.
 
 | Kata | sol-pi `cost_usd` | opus-cc `cost_usd` | Factor | Savings |
 |---|---:|---:|---:|---:|
-| claim-office | 2.54 | 41.09 | **~16.2×** | ~94 % |
-| game-of-life | 1.09 | 5.53 | **~5.1×** | ~80 % |
+| claim-office | 2.13 | 41.09 | **~19.3×** | ~95 % |
+| game-of-life | 0.91 | 5.53 | **~6.1×** | ~84 % |
 
 The advantage comes from two aligned levers: sol-pi consumes **massively
 fewer tokens** (claim-office 2.09 M vs 54.7 M = ~4 %, game-of-life 0.66 M vs
 5.21 M = ~13 %) and runs on the cheaper model tariff. The token gap is
-extreme on claim-office — opus-cc processes ~26× as much there.
-
-The opus-cc column rose on 2026-09-30 and the sol-pi column did not, which is a
-measurement correction: `analyze_transcript.py` omitted subagent tokens until then,
-while `parse_pi_transcript.py` had always added them. This RQ's advantage for sol-pi
-was therefore **understated**
-([RQ-old-vs-new-exact-line-opus55 F-4.12.5](../../questions-claude/4.12-old-vs-new-exact-line-opus55/findings.md)). Since the two
+extreme on claim-office — opus-cc processes ~26× as much there. Since the two
 bundles carry different tariffs, the $ factor is not purely token-driven, but
 the token ranking dominates the order of magnitude. sol-pi is additionally
 much faster (claim-office 503 s vs 3149 s, game-of-life 240 s vs 719 s). H1
@@ -84,7 +78,7 @@ confirmed: spread on claim-office > game-of-life.
 
 ## F-1.2 — The price advantage costs no correctness — on claim-office sol-pi is even more accurate
 
-Despite ~13× lower cost, sol-pi matches or leads on externally measured
+Despite 6–19× lower cost, sol-pi matches or leads on externally measured
 correctness.
 
 | Kata | Outcome | sol-pi | opus-cc |
@@ -131,7 +125,7 @@ refactor-poorer harness pull in the same direction. H3 confirmed.
 
 ## Practical conclusion
 
-Migrating from **opus-cc to sol-pi** saves **~68 % to ~92 %** of running cost
+Migrating from **opus-cc to sol-pi** saves **~84 % to ~95 %** of running cost
 depending on the kata and runs ~3× faster, **without sacrificing correctness** (on
 claim-office even more consistently). The price is **maintainability**: noticeably
 higher `cognitive_max` and considerably more code smells — the largest gap on the

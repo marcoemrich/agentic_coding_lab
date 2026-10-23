@@ -2,7 +2,7 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in code quality and TDD discipline on game-of-life-example-mapping with the exact-hybrid-v4.2-phase-continuation-pi workflow?_
 
-Generated: 2026-10-12T16:44:06Z
+Generated: 2026-10-23T00:54:29Z
 
 Cells declared: 12 · matched runs: 60 · min_replicates: 5
 
@@ -321,12 +321,12 @@ Cells declared: 12 · matched runs: 60 · min_replicates: 5
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-4-8         |   5 |      0 |   2    | 0.25 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | opus-5-requesty  |   5 |      0 |   3.1  | 0.58 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | sonnet-5         |   5 |      0 |   2.83 | 0.78 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol      |   5 |      0 |   1.09 | 0.29 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-terra    |   5 |      0 |   0.67 | 0.18 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol      |   5 |      0 |   0.91 | 0.24 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-terra    |   5 |      0 |   0.59 | 0.16 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | glm-5-1          |   5 |      0 |   2.1  | 0.3  |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | glm-5-2          |   5 |      0 |   2.53 | 0.72 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k2-7        |   5 |      0 |   0.6  | 0.14 |
-| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k3-sference |   5 |      0 |   0.64 | 0.16 |
+| game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k3-sference |   5 |      0 |   0.99 | 0.25 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | minimax-m3       |   5 |      0 |   0.77 | 0.32 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | deepseek-v4-pro  |   5 |      0 |   0.83 | 0.27 |
 | game-of-life-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b       |   5 |      0 |   0.96 | 0.34 |

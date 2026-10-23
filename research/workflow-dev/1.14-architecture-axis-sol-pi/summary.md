@@ -2,7 +2,7 @@
 
 _Does the TDD architecture axis (subagents-v2 isolated subagents / single-context-v2 single context / hybrid-v2 hybrid) rank the same way on gpt-5-6-sol as it does on opus-4-7 — and does any architecture, including the current hybrid-v6 generation, beat structureless TDD (inline-tdd-v1) on Sol?_
 
-Generated: 2026-10-12T10:46:44Z
+Generated: 2026-10-23T00:54:28Z
 
 Cells declared: 10 · matched runs: 50 · min_replicates: 5
 
@@ -222,13 +222,13 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 
 | kata                         | cell_workflow                           | cell_model   |   n |   null |   mean |    sd |
 |:-----------------------------|:----------------------------------------|:-------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | baseline-inline-tdd-v1-pi               | gpt-5-6-sol  |   5 |      0 |   1.18 |  0.61 |
-| game-of-life-example-mapping | baseline-inline-tdd-v1-pi               | gpt-5-6-sol  |   5 |      0 |   0.57 |  0.12 |
-| claim-office-example-mapping | exact-subagents-v2-testlist-fix-pi      | gpt-5-6-sol  |   5 |      0 |  38.22 | 11.75 |
-| game-of-life-example-mapping | exact-subagents-v2-testlist-fix-pi      | gpt-5-6-sol  |   5 |      0 |   4.84 |  0.54 |
-| claim-office-example-mapping | exact-single-context-v2-testlist-fix-pi | gpt-5-6-sol  |   5 |      0 |   1.72 |  1.39 |
-| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-pi | gpt-5-6-sol  |   5 |      0 |   1.58 |  0.25 |
-| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-pi         | gpt-5-6-sol  |   5 |      0 |   9.52 |  2.14 |
-| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-pi         | gpt-5-6-sol  |   5 |      0 |   2.18 |  0.76 |
-| claim-office-example-mapping | exact-hybrid-v6-lab-split-pi            | gpt-5-6-sol  |   5 |      0 |   7.25 |  1.19 |
-| game-of-life-example-mapping | exact-hybrid-v6-lab-split-pi            | gpt-5-6-sol  |   5 |      0 |   2.35 |  0.36 |
+| claim-office-example-mapping | baseline-inline-tdd-v1-pi               | gpt-5-6-sol  |   5 |      0 |   1    |  0.53 |
+| game-of-life-example-mapping | baseline-inline-tdd-v1-pi               | gpt-5-6-sol  |   5 |      0 |   0.49 |  0.1  |
+| claim-office-example-mapping | exact-subagents-v2-testlist-fix-pi      | gpt-5-6-sol  |   5 |      0 |  32.88 | 10.25 |
+| game-of-life-example-mapping | exact-subagents-v2-testlist-fix-pi      | gpt-5-6-sol  |   5 |      0 |   4.08 |  0.45 |
+| claim-office-example-mapping | exact-single-context-v2-testlist-fix-pi | gpt-5-6-sol  |   5 |      0 |   1.46 |  1.2  |
+| game-of-life-example-mapping | exact-single-context-v2-testlist-fix-pi | gpt-5-6-sol  |   5 |      0 |   1.36 |  0.21 |
+| claim-office-example-mapping | exact-hybrid-v2-testlist-fix-pi         | gpt-5-6-sol  |   5 |      0 |   8.2  |  1.86 |
+| game-of-life-example-mapping | exact-hybrid-v2-testlist-fix-pi         | gpt-5-6-sol  |   5 |      0 |   1.87 |  0.66 |
+| claim-office-example-mapping | exact-hybrid-v6-lab-split-pi            | gpt-5-6-sol  |   5 |      0 |   6.14 |  1.01 |
+| game-of-life-example-mapping | exact-hybrid-v6-lab-split-pi            | gpt-5-6-sol  |   5 |      0 |   1.97 |  0.31 |
