@@ -311,10 +311,14 @@ zero as a reporter fault — the file is the evidence, not the metric.
 
 This is a **different** failure from the `qwen3-235b` drop: that model never
 implemented anything (0-1 tests of a 19-54 entry list, most runs under two
-minutes). qwen3-8 solves the kata completely in 51 tests. It therefore stays in
-the RQ, because correctness and code quality are the primary outcomes and both
-are validly measured here. But every TDD-discipline column for this cell is
-structurally empty, and a finding must say "ran no loop", never "no data".
+minutes). qwen3-8 solves the kata completely in 51 tests.
+
+**The fill then showed this run to be the exception, not the rule.** The other
+four runs of the cell wrote 58–128 TDD events and closed 11–20 cycles. So the
+cell is not "a model that runs no loop" — it is a model that skipped the loop
+in 1 of 5 runs while still landing at `verification_pct` 1.00 every time. Read
+its discipline columns as a spread, and keep the rule that a 0 here means "ran
+no loop" rather than "no data": the reporter was working, the loop was not.
 
 #### The text-derived prediction markers fail in both directions
 
@@ -370,7 +374,11 @@ still bind, so re-check it there rather than carrying this result over.
 
 #### Measured result of the pair (2026-10-23, n=5 each)
 
-Medians, with the standard deviation of each cell:
+Medians, with the standard deviation of each cell. **These are medians; the
+pivots in `summary.md` report the mean**, so the two differ where a cell has an
+outlier — `qwen3-8`'s `cycles_closed` is 16.0 here and 13.2 there, from the same
+five runs, because one run closed 0. Both are correct; say which one a finding
+quotes.
 
 | | `qwen3-8` | `qwen3-8-flash-next` | |
 |---|---:|---:|---|
@@ -524,11 +532,14 @@ Mutation testing is opt-in here and runs **between** batch and aggregation
 ## Open questions
 
 - ~~Does `exact-ptdd-v1-pi`'s test-list phase hold for the open-weight
-  models?~~ **Answered for four of five** by the 2026-10-23 smoke: glm-5-3,
-  deepseek-v4-1-flash, kimi-k3-sference and minimax-m3 close cycles under it.
-  What remains open is narrower: whether qwen3-8's bulk-implement pattern is
-  stable across replicates or a one-run artefact. The fill settles it, and
-  either way the cell's correctness is measurable.
+  models?~~ **Answered: yes, for all five.** The 2026-10-23 smoke showed four
+  of five closing cycles, and the fill settled the fifth. **qwen3-8's
+  bulk-implement run was a one-off, not a model property**: of its five runs
+  only the smoke wrote 3 TDD events and closed 0 cycles, while the four fill
+  runs wrote 58–128 events and closed 11, 16, 19 and 20 cycles. So the pattern
+  occurs in roughly 1 run in 5 and must be reported as instability, never as
+  the cell's character. The cell's discipline columns are usable; it is their
+  spread that carries the finding (`cycles_closed` 0–20).
 - Is Sonnet 5.5's reasoning controllable? Unmeasured (see above). A rope-riddle
   probe or a `thinking_delta` count off the first runs settles it; until then
   no reasoning statement for that cell.
