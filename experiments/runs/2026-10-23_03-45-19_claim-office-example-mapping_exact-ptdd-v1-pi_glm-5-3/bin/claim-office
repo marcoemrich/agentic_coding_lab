@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Command-line executable for the MHPCO Claim Office.
+# The CLI entry point itself lives at src/cli.ts (reads JSON from stdin,
+# writes JSON to stdout).
+DIR="$(cd "$(dirname "$0")" && pwd)"
+exec node --import "$DIR/../node_modules/tsx/dist/loader.mjs" "$DIR/../src/cli.ts" "$@"

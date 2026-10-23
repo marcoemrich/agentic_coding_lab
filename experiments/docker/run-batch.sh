@@ -273,6 +273,14 @@ MODEL_CONFIGS=(
     # recomputed, so a cell measured across the cliff is not internally
     # comparable -- fill it on one side of 2026-11-30 and record which.
     "gemini-4-argon|pi-only|false"
+    # CAUTION, mistral-large-4 does NOT work through pi, although it is wired
+    # and the route resolves. Mistral's endpoint rejects pi's request body with
+    # HTTP 422: it wants messages[].content as a plain string where pi sends
+    # content chunks, and it forbids Anthropic-style cache_control on a content
+    # part. pi offers no control over the body, so this is not fixable here --
+    # and pi exits 0 on it, which is why the `empty-run` guard below exists.
+    # The entry stays because OpenCode builds a different body and may reach
+    # the same route. Dropped from RQ-current-models-ptdd for this reason.
     "mistral-large-4|pi-only|false"
     # qwen3-8 = tensorx/qwen3.8. The lab id spells the dot as a dash like every
     # other version number here; read it as "Qwen 3.8", not as an 8B parameter
@@ -658,13 +666,26 @@ classify_failed_run() {
         return
     fi
     # PROVIDER REFUSAL — the provider's safeguard flagged a message mid-run.
-    # Claude Code: "API Error: Opus 5's safeguards flagged this message …
-    # This sometimes happens with safe, normal conversations." The same run
-    # may pass on a fresh start, so the caller retries it at once, without
-    # backoff — waiting does not change a refusal.
-    if grep -qiE "safeguards flagged this message" "$run_log" 2>/dev/null; then
+    # The same run may pass on a fresh start, so the caller retries it at once,
+    # without backoff — waiting does not change a refusal. Two observed shapes:
+    #
+    #   "API Error: Opus 5's safeguards flagged this message … This sometimes
+    #    happens with safe, normal conversations."
+    #   "API Error: claude-sonnet-5-5[1m] can't help with this. Start a new
+    #    session to continue." followed by "Details: `[reasoning_extraction]`"
+    #
+    # The second shape was added 2026-10-23 after it cost a replicate of the
+    # sonnet-5-5 cell in RQ-current-models-ptdd (1 of 5 attempts): it did not
+    # match the first pattern, so it fell through to error-<code> and was never
+    # retried. `reasoning_extraction` is one category of an open set (also
+    # cyber, bio, frontier_llm); the pattern therefore anchors on the CLI's
+    # "API Error: … can't help with this" boilerplate rather than on a category
+    # list, and requires the API-Error prefix so an agent writing "I can't help
+    # with this" in its own prose cannot trip it.
+    if grep -qiE "safeguards flagged this message|API Error: .+ can't help with this" "$run_log" 2>/dev/null; then
         provider_refusal="true"
         transient_reason="Provider refusal"
+        grep -oiE "safeguards flagged this message|can't help with this|Details: .?\[[a-z_]+\]" "$run_log" 2>/dev/null | tail -1 | sed 's/^/    /'
         return
     fi
 
@@ -1524,6 +1545,26 @@ EOF
     # the run is filed as "ok" with zero cycles and no code — indistinguishable
     # in aggregation from a model that simply failed the kata.
     [ "$pi_retries_exhausted" = "true" ] && exit_reason="pi-retries-exhausted"
+    # EMPTY RUN — the harness exited 0 without producing any code. Observed
+    # 2026-10-23 with mistral-large-4 on pi/Requesty: Mistral's endpoint
+    # rejects pi's request body with HTTP 422 (it wants messages[].content as
+    # a plain string and forbids Anthropic-style cache_control on content
+    # parts), pi records stopReason "error" with willRetry false -- and exits
+    # 0. Five runs were filed as `ok` with an empty src/, which in aggregation
+    # reads as a model that scored verification_pct 0.00 rather than as a
+    # configuration that never ran. classify_failed_run cannot catch it: that
+    # function only runs for a non-zero exit.
+    #
+    # src/ is the signal, and the only one that works across harnesses:
+    # run.log is 0 bytes for EVERY pi run (pi writes its transcript
+    # elsewhere), and experiment-done.txt is legitimately absent from some
+    # completed runs. Every kata requires writing code, so an exit-0 run with
+    # nothing under src/ did not happen -- on Java src/main is the single
+    # entry, which still satisfies the test.
+    if [ "$exit_reason" = "ok" ] && [ -z "$(ls -A "$run_dir/src" 2>/dev/null)" ]; then
+        exit_reason="empty-run"
+        echo -e "  ${RED}Empty run — harness exited 0 but wrote no code to src/. Not a replicate.${NC}"
+    fi
     # Distinct from rate-limited: the plan allowance is gone until a billing
     # cycle reset, so no amount of waiting inside this batch helps. Kept as
     # its own reason so aggregation does not read it as a transient blip.

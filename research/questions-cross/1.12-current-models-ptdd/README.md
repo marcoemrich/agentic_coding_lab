@@ -18,11 +18,11 @@ factors:
     - {model: opus-5-5-no-thinking, workflow: {any: [exact-ptdd-v1-cc, exact-sol-v1.6-test-list-dimensions-cc]}}
     - {model: sonnet-5-5-no-thinking, workflow: exact-ptdd-v1-cc}
     - {model: gpt-6-1-sol-codex, workflow: {any: [exact-ptdd-v1-pi, exact-sol-v1.6-test-list-dimensions-pi]}}
-    # Commercial models reached over Requesty rather than a vendor
-    # subscription. These two are what make the route effect separable from
-    # the commercial/open-weight split -- see Confound 2.
+    # Commercial model reached over Requesty rather than a vendor
+    # subscription. This cell is what makes the route effect separable from
+    # the commercial/open-weight split -- see Confound 2. mistral-large-4 was
+    # planned as a second one and dropped; see "Dropped: mistral-large-4".
     - {model: gemini-4-argon, workflow: exact-ptdd-v1-pi}
-    - {model: mistral-large-4, workflow: exact-ptdd-v1-pi}
     # Open-weight models, all on pi/Requesty.
     - {model: kimi-k3-sference, workflow: exact-ptdd-v1-pi}
     - {model: glm-5-3, workflow: exact-ptdd-v1-pi}
@@ -124,7 +124,6 @@ Each model is reached the way a practitioner would actually reach it:
 | `sonnet-5-5-no-thinking` | Claude Code | Anthropic subscription (native OAuth) | `exact-ptdd-v1-cc` |
 | `gpt-6-1-sol-codex` | pi | OpenAI subscription (`openai-codex`) | `exact-ptdd-v1-pi` |
 | `gemini-4-argon` | pi | Requesty `vertex/gemini-4-argon@eu` | `exact-ptdd-v1-pi` |
-| `mistral-large-4` | pi | Requesty `mistral/mistral-large-4` | `exact-ptdd-v1-pi` |
 | `kimi-k3-sference` | pi | Requesty `sference/kimi-k3` | `exact-ptdd-v1-pi` |
 | `glm-5-3` | pi | Requesty `sference/glm-5.3` | `exact-ptdd-v1-pi` |
 | `deepseek-v4-1-flash` | pi | Requesty `sference/deepseek-v4.1-flash` | `exact-ptdd-v1-pi` |
@@ -138,12 +137,14 @@ the open-weight models have no subscription route at all. Forcing Opus and Sol
 onto Requesty would measure a configuration nobody runs, at a tariff nobody
 pays, and would still leave the harness axis varying.
 
-**Gemini 4 Argon and Mistral Large 4 are the exception that makes the design
-work.** Both are commercial, closed-weight models, and both are reached over
-Requesty because neither vendor's subscription is wired into this lab. That
-puts commercial models on *both* sides of the route split, which is what turns
-Confound 2 from a confound that swallows the main comparison into one that can
-be bounded from inside this RQ.
+**Gemini 4 Argon is the exception that makes the design work.** It is a
+commercial, closed-weight model reached over Requesty, because Google's own
+subscription is not wired into this lab. That puts a commercial model on *both*
+sides of the route split, which is what turns Confound 2 from a confound that
+swallows the main comparison into one that can be bounded from inside this RQ.
+It carries that load alone: `mistral-large-4` was wired as a second such cell
+and had to be dropped (below), so the within-route commercial comparison rests
+on one cell at n=5 rather than two.
 
 ## Confounds (binding)
 
@@ -227,7 +228,7 @@ case map in `run-batch.sh`, `PRICES` in `compute-cost.py`, and for pi also
 | `qwen3-8` | `requesty/tensorx/qwen3.8` | $2.50/$6.00/$0.63 |
 | `deepseek-v4-1-flash` | `requesty/sference/deepseek-v4.1-flash` | $0.50/$1.50/$0.05 |
 | `gemini-4-argon` | `requesty/vertex/gemini-4-argon@eu` | $2.20/$11.00/$0.11 — see the cliff below |
-| `mistral-large-4` | `requesty/mistral/mistral-large-4` | $0.68/$2.09/$0.07 |
+| `mistral-large-4` | `requesty/mistral/mistral-large-4` | $0.68/$2.09/$0.07 — **unusable from pi**, see the drop below |
 
 `check-pi-model-wiring.py` reports all pi ids declared and priced. Every route
 above was probed with a real completion against the EU router on 2026-10-23,
@@ -334,6 +335,43 @@ tests before making them pass, which is a workflow-compliance deviation rather
 than a crash — the run completes with 58 tests and `verification_pct = 0.867`.
 It stays in, with the deviation reported alongside its discipline columns.
 
+### Dropped: mistral-large-4 — pi cannot talk to Mistral's endpoint
+
+Wired, reachable, and still unusable. Mistral's API rejects pi's request body
+with **HTTP 422** on two counts:
+
+- `messages[].content` must be a plain string; pi sends an array of content
+  chunks (`[{"type":"text","text":"…"}]`).
+- `cache_control: {"type":"ephemeral"}` on a content part is
+  `extra_forbidden` — Mistral does not accept the Anthropic-style cache hint
+  pi attaches.
+
+Neither is configurable from our side: pi offers no control over the body it
+builds. The model is therefore not measurable through this harness, and the
+cell is dropped rather than left at n=0. The `MODEL_CONFIGS` entry and the
+price stay in place — OpenCode sends a different body shape and may well reach
+the same route — with the limitation recorded at both.
+
+**Two things about how this failed are worth more than the cell.**
+
+First, **the route probe that cleared this model for wiring was insufficient.**
+A `curl` with `"content": "hi"` — a plain string — succeeds against
+`mistral/mistral-large-4`. The 422 only appears once the *harness* builds the
+body. A probe must reproduce the harness's request shape, not a minimal one.
+The other three models wired the same day happen to accept the Anthropic
+format, so the probe passed for the wrong reason.
+
+Second, **pi exits 0 on this failure**, with `stopReason: "error"` and
+`willRetry: false` in its event stream. Five runs were recorded as `ok` with an
+empty `src/`, a 1-second duration, and no `experiment-done.txt`, which the
+aggregation then read as `verification_pct = 0.00` — a model that failed the
+kata rather than a configuration that never ran. `classify_failed_run` could
+not catch it, because that function only runs for a non-zero exit, and
+`clean-broken-runs.py` would not have removed them either, because it deletes
+non-`ok` runs and stubs. `run-batch.sh` now carries an **`empty-run`** guard:
+exit 0 with nothing under `src/` is no longer `ok`. The five runs were deleted
+on 2026-10-23.
+
 ### Inclusion rule per model
 
 As in `questions-opencode/` and the pi RQs: a model stays in the RQ if the
@@ -360,7 +398,7 @@ criterion, not a model result.
 | `gpt-6-1-sol-codex` × `exact-ptdd-v1-pi` | **5** | RQ-workflow-axis-gpt61-sol |
 | all eight others | 0 | — |
 
-So 10 of 50 runs exist before the first batch. Both inherited cells are at
+So 10 of the 45 runs this RQ needs (9 cells x 5) existed before the first batch. Both inherited cells are at
 `min_replicates` and on the pinned harness versions.
 
 ## Batch-plan constraint
@@ -402,10 +440,10 @@ Mutation testing is opt-in here and runs **between** batch and aggregation
   there too, it is a model property. If it shows up only against the
   subscription cells, it was the route (Confound 2).
 - **H4 (price per correct run inverts the ranking).** At $0.50/$1.50
-  `deepseek-v4-1-flash`, at $0.68/$2.09 `mistral-large-4` and at $1.20/$4.20
-  `glm-5-3` are an order of magnitude under the Anthropic tariff — and
-  `mistral-large-4` is a commercial model at that price, so the cheap end of
-  the field is not an open-weight-only story. If H3 holds weakly — the open cells clear the
+  `deepseek-v4-1-flash` and at $1.20/$4.20 `glm-5-3` are an order of magnitude
+  under the Anthropic tariff. With `mistral-large-4` dropped, the cheap end of
+  the field is open-weight only, so this hypothesis can no longer separate
+  "cheap because open-weight" from "cheap because of the tariff". If H3 holds weakly — the open cells clear the
   gate with somewhat worse structure — then "cheapest cell that clears the
   correctness gate" is a different winner from "best structure", and that
   trade is the practical output of this RQ.

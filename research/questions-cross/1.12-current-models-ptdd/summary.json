@@ -315,9 +315,9 @@
       "workflow": "exact-ptdd-v1-cc",
       "model": "sonnet-5-5-no-thinking",
       "counts": {
-        "runs": 1,
+        "runs": 6,
         "timeouts": 0,
-        "infra": 0,
+        "infra": 1,
         "provider_refusals": 0
       },
       "runs": [
@@ -325,237 +325,294 @@
           "id": "2026-10-23_01-19-48_claim-office-example-mapping_exact-ptdd-v1-cc_sonnet-5-5-no-thinking",
           "started_at": "2026-10-23T01:19:48+00:00",
           "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_02-20-31_claim-office-example-mapping_exact-ptdd-v1-cc_sonnet-5-5-no-thinking",
+          "started_at": "2026-10-23T02:20:32+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_02-20-31_claim-office-example-mapping_exact-ptdd-v1-cc_sonnet-5-5-no-thinking-2",
+          "started_at": "2026-10-23T02:20:32+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_02-20-32_claim-office-example-mapping_exact-ptdd-v1-cc_sonnet-5-5-no-thinking",
+          "started_at": "2026-10-23T02:20:32+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_02-20-32_claim-office-example-mapping_exact-ptdd-v1-cc_sonnet-5-5-no-thinking-2",
+          "started_at": "2026-10-23T02:20:32+00:00",
+          "exit_reason": "error-1"
+        },
+        {
+          "id": "2026-10-23_02-45-45_claim-office-example-mapping_exact-ptdd-v1-cc_sonnet-5-5-no-thinking",
+          "started_at": "2026-10-23T02:45:45+00:00",
+          "exit_reason": "ok"
         }
       ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 15,
+          "sd": 0.0,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 15,
+          "sd": 0.0,
           "null_count": 0
         },
         "tests_passing": {
           "kind": "bool",
-          "n": 1,
-          "k": 1,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "production_loc": {
           "kind": "num",
-          "n": 1,
-          "mean": 164,
+          "n": 5,
+          "mean": 219.8,
+          "sd": 52.39465621606845,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 1,
-          "mean": 597,
+          "n": 5,
+          "mean": 645.4,
+          "sd": 74.86855147523558,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 0,
+          "sd": 0.0,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 3,
+          "n": 5,
+          "mean": 2.6,
+          "sd": 0.5477225575051661,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 1,
-          "mean": 1.38,
+          "n": 5,
+          "mean": 1.328,
+          "sd": 0.16664333169977133,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 4,
+          "n": 5,
+          "mean": 3.6,
+          "sd": 0.5477225575051661,
           "null_count": 0
         },
         "unit_count": {
           "kind": "num",
-          "n": 1,
-          "mean": 22,
+          "n": 5,
+          "mean": 25,
+          "sd": 1.8708286933869707,
           "null_count": 0
         },
         "unit_size_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 14,
+          "n": 5,
+          "mean": 12.6,
+          "sd": 1.140175425099138,
           "null_count": 0
         },
         "unit_size_avg": {
           "kind": "num",
-          "n": 1,
-          "mean": 4.55,
+          "n": 5,
+          "mean": 4.776,
+          "sd": 0.5492085214196881,
           "null_count": 0
         },
         "unit_size_median": {
           "kind": "num",
-          "n": 1,
-          "mean": 3,
+          "n": 5,
+          "mean": 3.4,
+          "sd": 1.140175425099138,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 1,
-          "mean": 14,
+          "n": 5,
+          "mean": 12.6,
+          "sd": 1.140175425099138,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 1,
-          "mean": 54,
+          "n": 5,
+          "mean": 57.6,
+          "sd": 6.348228099241552,
           "null_count": 0
         },
         "test_lines": {
           "kind": "num",
-          "n": 1,
-          "mean": 278,
+          "n": 5,
+          "mean": 391.8,
+          "sd": 97.1503988669115,
           "null_count": 0
         },
         "mutation_score": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_total": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_survived": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_no_coverage": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "tdd_discipline": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.652,
+          "n": 5,
+          "mean": 0.6412,
+          "sd": 0.016843396332094085,
           "null_count": 0
         },
         "tdd_discipline_step": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "tdd_discipline_closure": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.518,
+          "n": 5,
+          "mean": 0.5042,
+          "sd": 0.018525657883055074,
           "null_count": 0
         },
         "test_first_rate": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.536,
+          "n": 5,
+          "mean": 0.5236000000000001,
+          "sd": 0.022766203021145202,
           "null_count": 0
         },
         "red_batch_size": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "red_batch_max": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "green_batch_size": {
           "kind": "num",
-          "n": 1,
-          "mean": 1,
+          "n": 5,
+          "mean": 4.9,
+          "sd": 8.72066511224918,
           "null_count": 0
         },
         "cycles_total": {
           "kind": "num",
-          "n": 1,
-          "mean": 56,
+          "n": 5,
+          "mean": 58.8,
+          "sd": 5.630275304103699,
           "null_count": 0
         },
         "cycles_closed": {
           "kind": "num",
-          "n": 1,
-          "mean": 29,
+          "n": 5,
+          "mean": 29.6,
+          "sd": 2.5099800796022267,
           "null_count": 0
         },
         "refactor_events": {
           "kind": "num",
-          "n": 1,
-          "mean": 15,
+          "n": 5,
+          "mean": 15.2,
+          "sd": 3.1144823004794873,
           "null_count": 0
         },
         "skip_events": {
           "kind": "num",
-          "n": 1,
-          "mean": 22,
+          "n": 5,
+          "mean": 26.4,
+          "sd": 4.159326868617084,
           "null_count": 0
         },
         "chain_suite_runs": {
           "kind": "num",
-          "n": 1,
-          "mean": 103,
+          "n": 5,
+          "mean": 107.4,
+          "sd": 10.16366075781753,
           "null_count": 0
         },
         "chain_deviations": {
           "kind": "num",
-          "n": 1,
-          "mean": 26,
+          "n": 5,
+          "mean": 28.4,
+          "sd": 3.507135583350036,
           "null_count": 0
         },
         "chain_opens_red": {
           "kind": "bool",
-          "n": 1,
+          "n": 5,
           "k": 0,
           "null_count": 0
         },
         "chain_ends_green": {
           "kind": "bool",
-          "n": 1,
-          "k": 1,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 1,
-          "mean": 1159,
+          "n": 5,
+          "mean": 1198,
+          "sd": 211.60340261914504,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 1,
-          "mean": 36016561,
+          "n": 5,
+          "mean": 49331909.8,
+          "sd": 14332182.280137513,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 1,
-          "mean": 10.6566,
+          "n": 5,
+          "mean": 14.58762,
+          "sd": 4.263773706119967,
           "null_count": 0
         }
       }
@@ -875,415 +932,299 @@
       "workflow": "exact-ptdd-v1-pi",
       "model": "gemini-4-argon",
       "counts": {
-        "runs": 0,
+        "runs": 5,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
       },
-      "runs": [],
-      "outcomes": {
-        "verification_pct": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
+      "runs": [
+        {
+          "id": "2026-10-23_02-20-27_claim-office-example-mapping_exact-ptdd-v1-pi_gemini-4-argon",
+          "started_at": "2026-10-23T02:20:30+00:00",
+          "exit_reason": "ok"
         },
-        "verification_passed": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
+        {
+          "id": "2026-10-23_02-20-27_claim-office-example-mapping_exact-ptdd-v1-pi_gemini-4-argon-2",
+          "started_at": "2026-10-23T02:20:30+00:00",
+          "exit_reason": "ok"
         },
-        "verification_total": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
+        {
+          "id": "2026-10-23_02-20-27_claim-office-example-mapping_exact-ptdd-v1-pi_gemini-4-argon-3",
+          "started_at": "2026-10-23T02:20:30+00:00",
+          "exit_reason": "ok"
         },
-        "tests_passing": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
+        {
+          "id": "2026-10-23_02-20-28_claim-office-example-mapping_exact-ptdd-v1-pi_gemini-4-argon",
+          "started_at": "2026-10-23T02:20:30+00:00",
+          "exit_reason": "ok"
         },
-        "production_loc": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "code_mass": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "smell_total": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "cognitive_max": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "cognitive_avg": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "mccabe_max": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "unit_count": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "unit_size_max": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "unit_size_avg": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "unit_size_median": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "longest_function": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "tests_total": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "test_lines": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "mutation_score": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "mutants_total": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "mutants_survived": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "mutants_no_coverage": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "tdd_discipline": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "tdd_discipline_step": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "tdd_discipline_closure": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "test_first_rate": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "red_batch_size": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "red_batch_max": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "green_batch_size": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "cycles_total": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "cycles_closed": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "refactor_events": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "skip_events": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "chain_suite_runs": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "chain_deviations": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "chain_opens_red": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "chain_ends_green": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "duration_seconds": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "total_tokens": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
-        },
-        "cost_usd": {
-          "kind": "num",
-          "n": 0,
-          "null_count": 0
+        {
+          "id": "2026-10-23_02-20-28_claim-office-example-mapping_exact-ptdd-v1-pi_gemini-4-argon-2",
+          "started_at": "2026-10-23T02:20:30+00:00",
+          "exit_reason": "ok"
         }
-      }
-    },
-    {
-      "kata": "claim-office-example-mapping",
-      "workflow": "exact-ptdd-v1-pi",
-      "model": "mistral-large-4",
-      "counts": {
-        "runs": 0,
-        "timeouts": 0,
-        "infra": 0,
-        "provider_refusals": 0
-      },
-      "runs": [],
+      ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
           "null_count": 0
         },
         "tests_passing": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "production_loc": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 325.8,
+          "sd": 27.27086357268504,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 713.4,
+          "sd": 77.7097162522165,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 4.8,
+          "sd": 1.7888543819998317,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 1.852,
+          "sd": 0.35195170123185937,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 4.6,
+          "sd": 1.140175425099138,
           "null_count": 0
         },
         "unit_count": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 21.4,
+          "sd": 4.277849927241488,
           "null_count": 0
         },
         "unit_size_max": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 23.2,
+          "sd": 1.3038404810405297,
           "null_count": 0
         },
         "unit_size_avg": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 5.686,
+          "sd": 0.7888472602475082,
           "null_count": 0
         },
         "unit_size_median": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 3,
+          "sd": 0.0,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 23.2,
+          "sd": 1.3038404810405297,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 40.4,
+          "sd": 6.5038450166036395,
           "null_count": 0
         },
         "test_lines": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 791.6,
+          "sd": 75.6326649008218,
           "null_count": 0
         },
         "mutation_score": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 5
         },
         "mutants_total": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 5
         },
         "mutants_survived": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 5
         },
         "mutants_no_coverage": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 5
         },
         "tdd_discipline": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 0.723,
+          "sd": 0.03152776554086892,
           "null_count": 0
         },
         "tdd_discipline_step": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "tdd_discipline_closure": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 0.6088,
+          "sd": 0.04283339818412734,
           "null_count": 0
         },
         "test_first_rate": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 0.622,
+          "sd": 0.038000000000000034,
           "null_count": 0
         },
         "red_batch_size": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "red_batch_max": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "green_batch_size": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "cycles_total": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 41.4,
+          "sd": 6.5038450166036395,
           "null_count": 0
         },
         "cycles_closed": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 25,
+          "sd": 2.5495097567963922,
           "null_count": 0
         },
         "refactor_events": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 20.8,
+          "sd": 4.43846820423443,
           "null_count": 0
         },
         "skip_events": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 13,
+          "sd": 4.301162633521313,
           "null_count": 0
         },
         "chain_suite_runs": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 88.4,
+          "sd": 12.660963628413123,
           "null_count": 0
         },
         "chain_deviations": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 15.6,
+          "sd": 3.7815340802378072,
           "null_count": 0
         },
         "chain_opens_red": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 5,
+          "k": 0,
           "null_count": 0
         },
         "chain_ends_green": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 3679,
+          "sd": 377.02983966789685,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 13548309.2,
+          "sd": 4690110.283081806,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 0,
+          "n": 5,
+          "mean": 3.4816000000000003,
+          "sd": 1.2879587803963293,
           "null_count": 0
         }
       }
@@ -1293,7 +1234,7 @@
       "workflow": "exact-ptdd-v1-pi",
       "model": "kimi-k3-sference",
       "counts": {
-        "runs": 1,
+        "runs": 5,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
@@ -1303,237 +1244,289 @@
           "id": "2026-10-23_01-19-48_claim-office-example-mapping_exact-ptdd-v1-pi_kimi-k3-sference",
           "started_at": "2026-10-23T01:19:50+00:00",
           "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_03-17-45_claim-office-example-mapping_exact-ptdd-v1-pi_kimi-k3-sference",
+          "started_at": "2026-10-23T03:17:46+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_03-19-14_claim-office-example-mapping_exact-ptdd-v1-pi_kimi-k3-sference",
+          "started_at": "2026-10-23T03:19:15+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_03-27-25_claim-office-example-mapping_exact-ptdd-v1-pi_kimi-k3-sference",
+          "started_at": "2026-10-23T03:27:26+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_03-31-36_claim-office-example-mapping_exact-ptdd-v1-pi_kimi-k3-sference",
+          "started_at": "2026-10-23T03:31:37+00:00",
+          "exit_reason": "ok"
         }
       ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.9333,
+          "n": 5,
+          "mean": 0.98666,
+          "sd": 0.029829146819847187,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 1,
-          "mean": 14,
+          "n": 5,
+          "mean": 14.8,
+          "sd": 0.4472135954999579,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 15,
+          "sd": 0.0,
           "null_count": 0
         },
         "tests_passing": {
           "kind": "bool",
-          "n": 1,
-          "k": 1,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "production_loc": {
           "kind": "num",
-          "n": 1,
-          "mean": 181,
+          "n": 5,
+          "mean": 184.8,
+          "sd": 19.562719647329203,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 1,
-          "mean": 599,
+          "n": 5,
+          "mean": 586.8,
+          "sd": 37.399197852360416,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 0,
+          "sd": 0.0,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 9,
+          "n": 5,
+          "mean": 8.6,
+          "sd": 1.140175425099138,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 1,
-          "mean": 2.8,
+          "n": 5,
+          "mean": 3.46,
+          "sd": 0.8230127581028134,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 7,
+          "n": 5,
+          "mean": 6.8,
+          "sd": 0.8366600265340756,
           "null_count": 0
         },
         "unit_count": {
           "kind": "num",
-          "n": 1,
-          "mean": 12,
+          "n": 5,
+          "mean": 10.6,
+          "sd": 0.8944271909999159,
           "null_count": 0
         },
         "unit_size_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 21,
+          "n": 5,
+          "mean": 21.8,
+          "sd": 4.919349550499537,
           "null_count": 0
         },
         "unit_size_avg": {
           "kind": "num",
-          "n": 1,
-          "mean": 9.83,
+          "n": 5,
+          "mean": 9.054,
+          "sd": 2.178527025308614,
           "null_count": 0
         },
         "unit_size_median": {
           "kind": "num",
-          "n": 1,
-          "mean": 7.5,
+          "n": 5,
+          "mean": 7.4,
+          "sd": 2.434132288927617,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 1,
-          "mean": 21,
+          "n": 5,
+          "mean": 21.8,
+          "sd": 4.919349550499537,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 1,
-          "mean": 42,
+          "n": 5,
+          "mean": 40,
+          "sd": 1.8708286933869707,
           "null_count": 0
         },
         "test_lines": {
           "kind": "num",
-          "n": 1,
-          "mean": 515,
+          "n": 5,
+          "mean": 481.6,
+          "sd": 131.59901215434712,
           "null_count": 0
         },
         "mutation_score": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_total": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_survived": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_no_coverage": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "tdd_discipline": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.528,
+          "n": 5,
+          "mean": 0.582,
+          "sd": 0.053981478305063106,
           "null_count": 0
         },
         "tdd_discipline_step": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "tdd_discipline_closure": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.372,
+          "n": 5,
+          "mean": 0.4364,
+          "sd": 0.06292296877929394,
           "null_count": 0
         },
         "test_first_rate": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.395,
+          "n": 5,
+          "mean": 0.4536,
+          "sd": 0.060570619940694015,
           "null_count": 0
         },
         "red_batch_size": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "red_batch_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 1,
+          "n": 5,
+          "mean": 1.2,
+          "sd": 0.4472135954999579,
           "null_count": 0
         },
         "green_batch_size": {
           "kind": "num",
-          "n": 1,
-          "mean": 13.5,
+          "n": 5,
+          "mean": 3.5,
+          "sd": 5.5901699437494745,
           "null_count": 0
         },
         "cycles_total": {
           "kind": "num",
-          "n": 1,
-          "mean": 43,
+          "n": 5,
+          "mean": 41,
+          "sd": 1.8708286933869707,
           "null_count": 0
         },
         "cycles_closed": {
           "kind": "num",
-          "n": 1,
-          "mean": 16,
+          "n": 5,
+          "mean": 17.8,
+          "sd": 1.7888543819998317,
           "null_count": 0
         },
         "refactor_events": {
           "kind": "num",
-          "n": 1,
-          "mean": 7,
+          "n": 5,
+          "mean": 5.4,
+          "sd": 1.51657508881031,
           "null_count": 0
         },
         "skip_events": {
           "kind": "num",
-          "n": 1,
-          "mean": 26,
+          "n": 5,
+          "mean": 22.6,
+          "sd": 3.646916505762094,
           "null_count": 0
         },
         "chain_suite_runs": {
           "kind": "num",
-          "n": 1,
-          "mean": 95,
+          "n": 5,
+          "mean": 86.4,
+          "sd": 17.372391890583174,
           "null_count": 0
         },
         "chain_deviations": {
           "kind": "num",
-          "n": 1,
-          "mean": 26,
+          "n": 5,
+          "mean": 23,
+          "sd": 3.8078865529319543,
           "null_count": 0
         },
         "chain_opens_red": {
           "kind": "bool",
-          "n": 1,
+          "n": 5,
           "k": 0,
           "null_count": 0
         },
         "chain_ends_green": {
           "kind": "bool",
-          "n": 1,
-          "k": 1,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 1,
-          "mean": 1479,
+          "n": 5,
+          "mean": 1238,
+          "sd": 453.1180861541503,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 1,
-          "mean": 6491659,
+          "n": 5,
+          "mean": 6024488.6,
+          "sd": 1230024.9592226981,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 1,
-          "mean": 3.8085,
+          "n": 5,
+          "mean": 3.61158,
+          "sd": 0.6157564510421307,
           "null_count": 0
         }
       }
@@ -1543,7 +1536,7 @@
       "workflow": "exact-ptdd-v1-pi",
       "model": "glm-5-3",
       "counts": {
-        "runs": 1,
+        "runs": 5,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
@@ -1553,237 +1546,289 @@
           "id": "2026-10-23_01-19-48_claim-office-example-mapping_exact-ptdd-v1-pi_glm-5-3",
           "started_at": "2026-10-23T01:19:50+00:00",
           "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_03-17-50_claim-office-example-mapping_exact-ptdd-v1-pi_glm-5-3",
+          "started_at": "2026-10-23T03:17:51+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_03-36-43_claim-office-example-mapping_exact-ptdd-v1-pi_glm-5-3",
+          "started_at": "2026-10-23T03:36:44+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_03-45-19_claim-office-example-mapping_exact-ptdd-v1-pi_glm-5-3",
+          "started_at": "2026-10-23T03:45:20+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_03-50-59_claim-office-example-mapping_exact-ptdd-v1-pi_glm-5-3",
+          "started_at": "2026-10-23T03:51:00+00:00",
+          "exit_reason": "ok"
         }
       ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 15,
+          "sd": 0.0,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 15,
+          "sd": 0.0,
           "null_count": 0
         },
         "tests_passing": {
           "kind": "bool",
-          "n": 1,
-          "k": 1,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "production_loc": {
           "kind": "num",
-          "n": 1,
-          "mean": 236,
+          "n": 5,
+          "mean": 273.4,
+          "sd": 42.84623670755694,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 1,
-          "mean": 821,
+          "n": 5,
+          "mean": 819,
+          "sd": 93.41573743219072,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 0,
+          "sd": 0.0,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 8,
+          "n": 5,
+          "mean": 9,
+          "sd": 0.7071067811865476,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 1,
-          "mean": 3.09,
+          "n": 5,
+          "mean": 3.102,
+          "sd": 0.2597498796919837,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 7,
+          "n": 5,
+          "mean": 8,
+          "sd": 1.4142135623730951,
           "null_count": 0
         },
         "unit_count": {
           "kind": "num",
-          "n": 1,
-          "mean": 12,
+          "n": 5,
+          "mean": 18,
+          "sd": 4.242640687119285,
           "null_count": 0
         },
         "unit_size_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 25,
+          "n": 5,
+          "mean": 24.2,
+          "sd": 1.9235384061671346,
           "null_count": 0
         },
         "unit_size_avg": {
           "kind": "num",
-          "n": 1,
-          "mean": 12.58,
+          "n": 5,
+          "mean": 8.528,
+          "sd": 2.438394963905561,
           "null_count": 0
         },
         "unit_size_median": {
           "kind": "num",
-          "n": 1,
-          "mean": 11.5,
+          "n": 5,
+          "mean": 6.5,
+          "sd": 3.1622776601683795,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 1,
-          "mean": 25,
+          "n": 5,
+          "mean": 24.2,
+          "sd": 1.9235384061671346,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 1,
-          "mean": 45,
+          "n": 5,
+          "mean": 45.4,
+          "sd": 3.2093613071762426,
           "null_count": 0
         },
         "test_lines": {
           "kind": "num",
-          "n": 1,
-          "mean": 461,
+          "n": 5,
+          "mean": 545.8,
+          "sd": 187.34380160549748,
           "null_count": 0
         },
         "mutation_score": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_total": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_survived": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_no_coverage": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "tdd_discipline": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.52,
+          "n": 5,
+          "mean": 0.522,
+          "sd": 0.05034381789256749,
           "null_count": 0
         },
         "tdd_discipline_step": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "tdd_discipline_closure": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.348,
+          "n": 5,
+          "mean": 0.3638,
+          "sd": 0.05468272121977839,
           "null_count": 0
         },
         "test_first_rate": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.404,
+          "n": 5,
+          "mean": 0.3932,
+          "sd": 0.05503362608442225,
           "null_count": 0
         },
         "red_batch_size": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "red_batch_max": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "green_batch_size": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "cycles_total": {
           "kind": "num",
-          "n": 1,
-          "mean": 46,
+          "n": 5,
+          "mean": 47,
+          "sd": 4.06201920231798,
           "null_count": 0
         },
         "cycles_closed": {
           "kind": "num",
-          "n": 1,
-          "mean": 16,
+          "n": 5,
+          "mean": 17,
+          "sd": 2.1213203435596424,
           "null_count": 0
         },
         "refactor_events": {
           "kind": "num",
-          "n": 1,
-          "mean": 4,
+          "n": 5,
+          "mean": 6.2,
+          "sd": 2.588435821108957,
           "null_count": 0
         },
         "skip_events": {
           "kind": "num",
-          "n": 1,
-          "mean": 28,
+          "n": 5,
+          "mean": 28.2,
+          "sd": 3.420526275297414,
           "null_count": 0
         },
         "chain_suite_runs": {
           "kind": "num",
-          "n": 1,
-          "mean": 78,
+          "n": 5,
+          "mean": 90.4,
+          "sd": 22.300224214119464,
           "null_count": 0
         },
         "chain_deviations": {
           "kind": "num",
-          "n": 1,
-          "mean": 31,
+          "n": 5,
+          "mean": 30.4,
+          "sd": 4.33589667773576,
           "null_count": 0
         },
         "chain_opens_red": {
           "kind": "bool",
-          "n": 1,
+          "n": 5,
           "k": 0,
           "null_count": 0
         },
         "chain_ends_green": {
           "kind": "bool",
-          "n": 1,
-          "k": 1,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 1,
-          "mean": 526,
+          "n": 5,
+          "mean": 987.6,
+          "sd": 267.1531396034866,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 1,
-          "mean": 7413985,
+          "n": 5,
+          "mean": 10083260.2,
+          "sd": 3564314.933244774,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 1,
-          "mean": 2.2068,
+          "n": 5,
+          "mean": 3.0799,
+          "sd": 0.9621260884104534,
           "null_count": 0
         }
       }
@@ -1793,7 +1838,7 @@
       "workflow": "exact-ptdd-v1-pi",
       "model": "deepseek-v4-1-flash",
       "counts": {
-        "runs": 1,
+        "runs": 5,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
@@ -1803,237 +1848,289 @@
           "id": "2026-10-23_01-19-48_claim-office-example-mapping_exact-ptdd-v1-pi_deepseek-v4-1-flash",
           "started_at": "2026-10-23T01:19:50+00:00",
           "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_03-36-56_claim-office-example-mapping_exact-ptdd-v1-pi_deepseek-v4-1-flash",
+          "started_at": "2026-10-23T03:36:57+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_03-45-24_claim-office-example-mapping_exact-ptdd-v1-pi_deepseek-v4-1-flash",
+          "started_at": "2026-10-23T03:45:25+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_03-57-25_claim-office-example-mapping_exact-ptdd-v1-pi_deepseek-v4-1-flash",
+          "started_at": "2026-10-23T03:57:26+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_04-02-27_claim-office-example-mapping_exact-ptdd-v1-pi_deepseek-v4-1-flash",
+          "started_at": "2026-10-23T04:02:29+00:00",
+          "exit_reason": "ok"
         }
       ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 1,
-          "mean": 1,
+          "n": 5,
+          "mean": 0.8,
+          "sd": 0.4472135954999579,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 1,
-          "mean": 15,
+          "n": 5,
+          "mean": 12,
+          "sd": 6.708203932499369,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 15,
+          "sd": 0.0,
           "null_count": 0
         },
         "tests_passing": {
           "kind": "bool",
-          "n": 1,
-          "k": 1,
+          "n": 5,
+          "k": 4,
           "null_count": 0
         },
         "production_loc": {
           "kind": "num",
-          "n": 1,
-          "mean": 196,
+          "n": 5,
+          "mean": 244.8,
+          "sd": 39.51835016799158,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 1,
-          "mean": 609,
+          "n": 5,
+          "mean": 680,
+          "sd": 117.75610387576518,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 0,
+          "sd": 0.0,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 3,
+          "n": 5,
+          "mean": 4.8,
+          "sd": 2.04939015319192,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 1,
-          "mean": 1.5,
+          "n": 5,
+          "mean": 1.824,
+          "sd": 0.5900254231810693,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 4,
+          "n": 5,
+          "mean": 4.4,
+          "sd": 1.140175425099138,
           "null_count": 0
         },
         "unit_count": {
           "kind": "num",
-          "n": 1,
-          "mean": 22,
+          "n": 5,
+          "mean": 27.2,
+          "sd": 5.540758070878027,
           "null_count": 0
         },
         "unit_size_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 15,
+          "n": 5,
+          "mean": 20,
+          "sd": 8.888194417315589,
           "null_count": 0
         },
         "unit_size_avg": {
           "kind": "num",
-          "n": 1,
-          "mean": 5.18,
+          "n": 5,
+          "mean": 5.232,
+          "sd": 1.083821941095492,
           "null_count": 0
         },
         "unit_size_median": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 3,
+          "sd": 0.0,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 1,
-          "mean": 15,
+          "n": 5,
+          "mean": 20,
+          "sd": 8.888194417315589,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 1,
-          "mean": 40,
+          "n": 5,
+          "mean": 44.2,
+          "sd": 4.324349662087931,
           "null_count": 0
         },
         "test_lines": {
           "kind": "num",
-          "n": 1,
-          "mean": 362,
+          "n": 5,
+          "mean": 375.2,
+          "sd": 35.81480140947315,
           "null_count": 0
         },
         "mutation_score": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_total": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_survived": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_no_coverage": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "tdd_discipline": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.545,
+          "n": 5,
+          "mean": 0.7034,
+          "sd": 0.16202098629498585,
           "null_count": 0
         },
         "tdd_discipline_step": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "tdd_discipline_closure": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.39,
+          "n": 5,
+          "mean": 0.5772,
+          "sd": 0.20715260075606098,
           "null_count": 0
         },
         "test_first_rate": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.415,
+          "n": 5,
+          "mean": 0.6218,
+          "sd": 0.20968953240445745,
           "null_count": 0
         },
         "red_batch_size": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "red_batch_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 1,
+          "n": 5,
+          "mean": 1.4,
+          "sd": 0.8944271909999159,
           "null_count": 0
         },
         "green_batch_size": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "cycles_total": {
           "kind": "num",
-          "n": 1,
-          "mean": 41,
+          "n": 5,
+          "mean": 37.2,
+          "sd": 8.167006795638168,
           "null_count": 0
         },
         "cycles_closed": {
           "kind": "num",
-          "n": 1,
-          "mean": 16,
+          "n": 5,
+          "mean": 20.4,
+          "sd": 4.33589667773576,
           "null_count": 0
         },
         "refactor_events": {
           "kind": "num",
-          "n": 1,
-          "mean": 14,
+          "n": 5,
+          "mean": 9,
+          "sd": 4.0,
           "null_count": 0
         },
         "skip_events": {
           "kind": "num",
-          "n": 1,
-          "mean": 24,
+          "n": 5,
+          "mean": 15,
+          "sd": 10.606601717798213,
           "null_count": 0
         },
         "chain_suite_runs": {
           "kind": "num",
-          "n": 1,
-          "mean": 78,
+          "n": 5,
+          "mean": 87.6,
+          "sd": 23.71286570619418,
           "null_count": 0
         },
         "chain_deviations": {
           "kind": "num",
-          "n": 1,
-          "mean": 24,
+          "n": 5,
+          "mean": 21.2,
+          "sd": 7.049822692805827,
           "null_count": 0
         },
         "chain_opens_red": {
           "kind": "bool",
-          "n": 1,
+          "n": 5,
           "k": 0,
           "null_count": 0
         },
         "chain_ends_green": {
           "kind": "bool",
-          "n": 1,
-          "k": 1,
+          "n": 5,
+          "k": 4,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 1,
-          "mean": 2072,
+          "n": 5,
+          "mean": 1218.8,
+          "sd": 669.5936827658994,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 1,
-          "mean": 11422757,
+          "n": 5,
+          "mean": 9581334.4,
+          "sd": 3093876.8568969904,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 1,
-          "mean": 1.3356,
+          "n": 5,
+          "mean": 0.85942,
+          "sd": 0.34319630242763394,
           "null_count": 0
         }
       }
@@ -2043,7 +2140,7 @@
       "workflow": "exact-ptdd-v1-pi",
       "model": "minimax-m3",
       "counts": {
-        "runs": 1,
+        "runs": 5,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
@@ -2053,237 +2150,289 @@
           "id": "2026-10-23_01-19-48_claim-office-example-mapping_exact-ptdd-v1-pi_minimax-m3",
           "started_at": "2026-10-23T01:19:50+00:00",
           "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_03-58-36_claim-office-example-mapping_exact-ptdd-v1-pi_minimax-m3",
+          "started_at": "2026-10-23T03:58:37+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_04-07-29_claim-office-example-mapping_exact-ptdd-v1-pi_minimax-m3",
+          "started_at": "2026-10-23T04:07:30+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_04-10-12_claim-office-example-mapping_exact-ptdd-v1-pi_minimax-m3",
+          "started_at": "2026-10-23T04:10:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_04-12-26_claim-office-example-mapping_exact-ptdd-v1-pi_minimax-m3",
+          "started_at": "2026-10-23T04:12:27+00:00",
+          "exit_reason": "ok"
         }
       ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.8667,
+          "n": 5,
+          "mean": 0.77334,
+          "sd": 0.43614650978770886,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 1,
-          "mean": 13,
+          "n": 5,
+          "mean": 11.6,
+          "sd": 6.542170893518451,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 15,
+          "sd": 0.0,
           "null_count": 0
         },
         "tests_passing": {
           "kind": "bool",
-          "n": 1,
-          "k": 1,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "production_loc": {
           "kind": "num",
-          "n": 1,
-          "mean": 277,
+          "n": 5,
+          "mean": 269,
+          "sd": 132.05491282038696,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 1,
-          "mean": 803,
+          "n": 5,
+          "mean": 699,
+          "sd": 342.93075102708417,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 0,
+          "sd": 0.0,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 8,
+          "n": 5,
+          "mean": 6.8,
+          "sd": 3.3466401061363023,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 1,
-          "mean": 3,
+          "n": 5,
+          "mean": 2.596,
+          "sd": 0.9040077433296686,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 7,
+          "n": 5,
+          "mean": 6,
+          "sd": 1.7320508075688772,
           "null_count": 0
         },
         "unit_count": {
           "kind": "num",
-          "n": 1,
-          "mean": 18,
+          "n": 5,
+          "mean": 16.4,
+          "sd": 8.17312669668102,
           "null_count": 0
         },
         "unit_size_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 29,
+          "n": 5,
+          "mean": 22.8,
+          "sd": 10.158740079360236,
           "null_count": 0
         },
         "unit_size_avg": {
           "kind": "num",
-          "n": 1,
-          "mean": 7.94,
+          "n": 5,
+          "mean": 7.448,
+          "sd": 2.3481418185450385,
           "null_count": 0
         },
         "unit_size_median": {
           "kind": "num",
-          "n": 1,
-          "mean": 6.5,
+          "n": 5,
+          "mean": 5.5,
+          "sd": 1.9039432764659772,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 1,
-          "mean": 29,
+          "n": 5,
+          "mean": 22.8,
+          "sd": 10.158740079360236,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 1,
-          "mean": 58,
+          "n": 5,
+          "mean": 54.6,
+          "sd": 31.87946047222255,
           "null_count": 0
         },
         "test_lines": {
           "kind": "num",
-          "n": 1,
-          "mean": 552,
+          "n": 5,
+          "mean": 665.4,
+          "sd": 352.2262057258091,
           "null_count": 0
         },
         "mutation_score": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_total": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_survived": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_no_coverage": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "tdd_discipline": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.472,
+          "n": 5,
+          "mean": 0.426,
+          "sd": 0.19619250750219794,
           "null_count": 0
         },
         "tdd_discipline_step": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "tdd_discipline_closure": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.324,
+          "n": 5,
+          "mean": 0.2728,
+          "sd": 0.15003899493131778,
           "null_count": 0
         },
         "test_first_rate": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.324,
+          "n": 5,
+          "mean": 0.3282,
+          "sd": 0.1834044710469186,
           "null_count": 0
         },
         "red_batch_size": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "red_batch_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 6,
+          "n": 5,
+          "mean": 2,
+          "sd": 2.23606797749979,
           "null_count": 0
         },
         "green_batch_size": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "cycles_total": {
           "kind": "num",
-          "n": 1,
-          "mean": 37,
+          "n": 5,
+          "mean": 34,
+          "sd": 22.259829289552066,
           "null_count": 0
         },
         "cycles_closed": {
           "kind": "num",
-          "n": 1,
-          "mean": 12,
+          "n": 5,
+          "mean": 7.6,
+          "sd": 6.4265076052238514,
           "null_count": 0
         },
         "refactor_events": {
           "kind": "num",
-          "n": 1,
-          "mean": 10,
+          "n": 5,
+          "mean": 6,
+          "sd": 3.872983346207417,
           "null_count": 0
         },
         "skip_events": {
           "kind": "num",
-          "n": 1,
-          "mean": 21,
+          "n": 5,
+          "mean": 24.4,
+          "sd": 20.464603587658374,
           "null_count": 0
         },
         "chain_suite_runs": {
           "kind": "num",
-          "n": 1,
-          "mean": 65,
+          "n": 5,
+          "mean": 56.8,
+          "sd": 34.43399483069021,
           "null_count": 0
         },
         "chain_deviations": {
           "kind": "num",
-          "n": 1,
-          "mean": 27,
+          "n": 5,
+          "mean": 28,
+          "sd": 21.047565179849187,
           "null_count": 0
         },
         "chain_opens_red": {
           "kind": "bool",
-          "n": 1,
+          "n": 5,
           "k": 0,
           "null_count": 0
         },
         "chain_ends_green": {
           "kind": "bool",
-          "n": 1,
-          "k": 1,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 1,
-          "mean": 1905,
+          "n": 5,
+          "mean": 1803.6,
+          "sd": 790.5490497116546,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 1,
-          "mean": 507557,
+          "n": 5,
+          "mean": 8224468,
+          "sd": 11785016.47100667,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 1,
-          "mean": 0.0527,
+          "n": 5,
+          "mean": 0.9187599999999999,
+          "sd": 1.2728905463550273,
           "null_count": 0
         }
       }
@@ -2293,7 +2442,7 @@
       "workflow": "exact-ptdd-v1-pi",
       "model": "qwen3-8",
       "counts": {
-        "runs": 1,
+        "runs": 5,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
@@ -2303,232 +2452,289 @@
           "id": "2026-10-23_01-39-41_claim-office-example-mapping_exact-ptdd-v1-pi_qwen3-8",
           "started_at": "2026-10-23T01:39:42+00:00",
           "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_04-13-04_claim-office-example-mapping_exact-ptdd-v1-pi_qwen3-8",
+          "started_at": "2026-10-23T04:13:05+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_04-21-12_claim-office-example-mapping_exact-ptdd-v1-pi_qwen3-8",
+          "started_at": "2026-10-23T04:21:13+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_04-32-46_claim-office-example-mapping_exact-ptdd-v1-pi_qwen3-8",
+          "started_at": "2026-10-23T04:32:47+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-23_04-35-14_claim-office-example-mapping_exact-ptdd-v1-pi_qwen3-8",
+          "started_at": "2026-10-23T04:35:15+00:00",
+          "exit_reason": "ok"
         }
       ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 15,
+          "sd": 0.0,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 15,
+          "sd": 0.0,
           "null_count": 0
         },
         "tests_passing": {
           "kind": "bool",
-          "n": 1,
-          "k": 1,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "production_loc": {
           "kind": "num",
-          "n": 1,
-          "mean": 253,
+          "n": 5,
+          "mean": 254.6,
+          "sd": 21.593980642762464,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 1,
-          "mean": 826,
+          "n": 5,
+          "mean": 761.4,
+          "sd": 65.87715840866241,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 1,
+          "n": 5,
           "mean": 0,
+          "sd": 0.0,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 9,
+          "n": 5,
+          "mean": 6.8,
+          "sd": 1.3038404810405297,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 1,
-          "mean": 2.86,
+          "n": 5,
+          "mean": 2.602,
+          "sd": 0.4067800388416324,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 9,
+          "n": 5,
+          "mean": 6,
+          "sd": 1.7320508075688772,
           "null_count": 0
         },
         "unit_count": {
           "kind": "num",
-          "n": 1,
-          "mean": 14,
+          "n": 5,
+          "mean": 18.8,
+          "sd": 4.207136793592526,
           "null_count": 0
         },
         "unit_size_max": {
           "kind": "num",
-          "n": 1,
-          "mean": 22,
+          "n": 5,
+          "mean": 19.8,
+          "sd": 3.492849839314596,
           "null_count": 0
         },
         "unit_size_avg": {
           "kind": "num",
-          "n": 1,
-          "mean": 11.71,
+          "n": 5,
+          "mean": 7.934,
+          "sd": 2.3586076401131244,
           "null_count": 0
         },
         "unit_size_median": {
           "kind": "num",
-          "n": 1,
-          "mean": 11.5,
+          "n": 5,
+          "mean": 6.9,
+          "sd": 2.6076809620810595,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 1,
-          "mean": 22,
+          "n": 5,
+          "mean": 19.8,
+          "sd": 3.492849839314596,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 1,
-          "mean": 51,
+          "n": 5,
+          "mean": 45.2,
+          "sd": 5.890670590009257,
           "null_count": 0
         },
         "test_lines": {
           "kind": "num",
-          "n": 1,
-          "mean": 420,
+          "n": 5,
+          "mean": 472,
+          "sd": 93.98138113477584,
           "null_count": 0
         },
         "mutation_score": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_total": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_survived": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "mutants_no_coverage": {
           "kind": "num",
           "n": 0,
-          "null_count": 1
+          "null_count": 5
         },
         "tdd_discipline": {
           "kind": "num",
-          "n": 0,
+          "n": 4,
+          "mean": 0.5415,
+          "sd": 0.04100812927538473,
           "null_count": 1
         },
         "tdd_discipline_step": {
           "kind": "num",
-          "n": 0,
+          "n": 4,
+          "mean": 1,
+          "sd": 0.0,
           "null_count": 1
         },
         "tdd_discipline_closure": {
           "kind": "num",
-          "n": 1,
-          "mean": 0,
+          "n": 5,
+          "mean": 0.313,
+          "sd": 0.17924006248604132,
           "null_count": 0
         },
         "test_first_rate": {
           "kind": "num",
-          "n": 1,
-          "mean": 0,
+          "n": 5,
+          "mean": 0.3252,
+          "sd": 0.1860193538317989,
           "null_count": 0
         },
         "red_batch_size": {
           "kind": "num",
-          "n": 0,
+          "n": 4,
+          "mean": 1,
+          "sd": 0.0,
           "null_count": 1
         },
         "red_batch_max": {
           "kind": "num",
-          "n": 0,
+          "n": 4,
+          "mean": 1,
+          "sd": 0.0,
           "null_count": 1
         },
         "green_batch_size": {
           "kind": "num",
-          "n": 0,
+          "n": 4,
+          "mean": 1,
+          "sd": 0.0,
           "null_count": 1
         },
         "cycles_total": {
           "kind": "num",
-          "n": 1,
-          "mean": 2,
+          "n": 5,
+          "mean": 33.8,
+          "sd": 18.780308836651223,
           "null_count": 0
         },
         "cycles_closed": {
           "kind": "num",
-          "n": 1,
-          "mean": 0,
+          "n": 5,
+          "mean": 13.2,
+          "sd": 8.167006795638168,
           "null_count": 0
         },
         "refactor_events": {
           "kind": "num",
-          "n": 1,
-          "mean": 0,
+          "n": 5,
+          "mean": 4.2,
+          "sd": 3.03315017762062,
           "null_count": 0
         },
         "skip_events": {
           "kind": "num",
-          "n": 1,
-          "mean": 0,
+          "n": 5,
+          "mean": 17.4,
+          "sd": 10.478549517943788,
           "null_count": 0
         },
         "chain_suite_runs": {
           "kind": "num",
-          "n": 1,
-          "mean": 3,
+          "n": 5,
+          "mean": 66,
+          "sd": 44.50280890011326,
           "null_count": 0
         },
         "chain_deviations": {
           "kind": "num",
-          "n": 1,
-          "mean": 1,
+          "n": 5,
+          "mean": 20.4,
+          "sd": 11.480418110852932,
           "null_count": 0
         },
         "chain_opens_red": {
           "kind": "bool",
-          "n": 1,
+          "n": 5,
           "k": 0,
           "null_count": 0
         },
         "chain_ends_green": {
           "kind": "bool",
-          "n": 1,
-          "k": 1,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 1,
-          "mean": 1761,
+          "n": 5,
+          "mean": 1000.6,
+          "sd": 490.22168454689967,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 1,
-          "mean": 8746350,
+          "n": 5,
+          "mean": 11507616.2,
+          "sd": 6181845.43515051,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 1,
-          "mean": 5.8863,
+          "n": 5,
+          "mean": 7.80054,
+          "sd": 4.11644203809552,
           "null_count": 0
         }
       }
