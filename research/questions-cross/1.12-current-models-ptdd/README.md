@@ -225,7 +225,7 @@ case map in `run-batch.sh`, `PRICES` in `compute-cost.py`, and for pi also
 |---|---|---|
 | `sonnet-5-5` | `claude-sonnet-5-5[1m]` | native; see the CLI gate below |
 | `glm-5-3` | `requesty/sference/glm-5.3` | $1.20/$4.20/$0.26 |
-| `qwen3-8` | `requesty/tensorx/qwen3.8` | $2.50/$6.00/$0.63 |
+| `qwen3-8` | `requesty/tensorx/qwen3.8` → `qwen/qwen3.8-2.4t-a95b` | $2.50/$6.00/$0.63 |
 | `deepseek-v4-1-flash` | `requesty/sference/deepseek-v4.1-flash` | $0.50/$1.50/$0.05 |
 | `gemini-4-argon` | `requesty/vertex/gemini-4-argon@eu` | $2.20/$11.00/$0.11 — see the cliff below |
 | `mistral-large-4` | `requesty/mistral/mistral-large-4` | $0.68/$2.09/$0.07 — **unusable from pi**, see the drop below |

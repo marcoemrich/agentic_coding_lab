@@ -1120,6 +1120,11 @@ EOF
                 # follows the same alias the pro route above uses.
                 deepseek-v4-flash)             pi_model="requesty/tensorx/deepseek-v4-flash" ;;
                 deepseek-v4-1-flash)           pi_model="requesty/sference/deepseek-v4.1-flash" ;;
+                # Undated alias; the provider resolves it to
+                # qwen/qwen3.8-2.4t-a95b (verified in all five runs of
+                # RQ-current-models-ptdd). Both spellings carry the same
+                # tariff. NOT tensorx/qwen3.8-flash-next, which is a different
+                # and far cheaper model and is deliberately unwired.
                 qwen3-8)                       pi_model="requesty/tensorx/qwen3.8" ;;
                 qwen3-235b)                    pi_model="requesty/nebius/qwen/qwen3-235b-a22b-instruct-2507" ;;
                 *) echo -e "  ${RED}ERROR: no pi model mapping for $model_name${NC}"
