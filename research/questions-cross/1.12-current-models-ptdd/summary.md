@@ -2,9 +2,9 @@
 
 _How do the current commercial and open-weight coding models differ in correctness and code quality on claim-office under the maintained EXACT Coding Predictive TDD workflow, each reached over its own native route?_
 
-Generated: 2026-10-23T07:00:59Z
+Generated: 2026-10-23T07:56:44Z
 
-Cells declared: 9 · matched runs: 46 · min_replicates: 5
+Cells declared: 10 · matched runs: 51 · min_replicates: 5
 
 ## Cell coverage
 
@@ -19,6 +19,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3 | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8 | 5 | 5 | ✅ |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next | 5 | 5 | ✅ |
 
 ## Outcome pivots (per cell)
 
@@ -35,6 +36,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   0.8  | 0.45 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   0.77 | 0.44 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   1    | 0    |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   1    | 0    |
 
 ### verification_passed
 
@@ -49,6 +51,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   12   | 6.71 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   11.6 | 6.54 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   15   | 0    |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   15   | 0    |
 
 ### verification_total
 
@@ -63,6 +66,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |     15 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |     15 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |     15 |    0 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |     15 |    0 |
 
 ### tests_passing
 
@@ -77,6 +81,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |   4 |      0 |       80 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |   5 |      0 |      100 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |   5 |      0 |      100 |
 
 ### production_loc
 
@@ -91,6 +96,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |  244.8 |  39.52 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |  269   | 132.05 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |  254.6 |  21.59 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |  264.4 |  39.92 |
 
 ### code_mass
 
@@ -105,6 +111,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |  680   | 117.76 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |  699   | 342.93 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |  761.4 |  65.88 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |  706.6 |  74.06 |
 
 ### smell_total
 
@@ -119,6 +126,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |      0 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |      0 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |      0 |    0 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |      0 |    0 |
 
 ### cognitive_max
 
@@ -133,6 +141,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |    4.8 | 2.05 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |    6.8 | 3.35 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |    6.8 | 1.3  |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |    4.6 | 1.52 |
 
 ### cognitive_avg
 
@@ -147,6 +156,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   1.82 | 0.59 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   2.6  | 0.9  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   2.6  | 0.41 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   1.78 | 0.47 |
 
 ### mccabe_max
 
@@ -161,6 +171,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |    4.4 | 1.14 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |    6   | 1.73 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |    6   | 1.73 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |    4.8 | 2.17 |
 
 ### unit_count
 
@@ -175,6 +186,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   27.2 | 5.54 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   16.4 | 8.17 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   18.8 | 4.21 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   22.6 | 3.05 |
 
 ### unit_size_max
 
@@ -189,6 +201,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   20   |  8.89 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   22.8 | 10.16 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   19.8 |  3.49 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   24   |  6.63 |
 
 ### unit_size_avg
 
@@ -203,6 +216,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   5.23 | 1.08 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   7.45 | 2.35 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   7.93 | 2.36 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   6.11 | 1.57 |
 
 ### unit_size_median
 
@@ -217,6 +231,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |    3   | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |    5.5 | 1.9  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |    6.9 | 2.61 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |    4.3 | 1.57 |
 
 ### longest_function
 
@@ -231,6 +246,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   20   |  8.89 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   22.8 | 10.16 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   19.8 |  3.49 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   24   |  6.63 |
 
 ### tests_total
 
@@ -245,6 +261,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   44.2 |  4.32 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   54.6 | 31.88 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   45.2 |  5.89 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   40.2 |  1.64 |
 
 ### test_lines
 
@@ -259,6 +276,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |  375.2 |  35.81 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |  665.4 | 352.23 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |  472   |  93.98 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |  506.6 | 206.43 |
 
 ### mutation_score
 
@@ -273,6 +291,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   0 |      5 | nan    | nan    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   0 |      5 | nan    | nan    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   0 |      5 | nan    | nan    |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   0 |      5 | nan    | nan    |
 
 ### mutants_total
 
@@ -287,6 +306,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   0 |      5 |    nan | nan    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   0 |      5 |    nan | nan    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   0 |      5 |    nan | nan    |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   0 |      5 |    nan | nan    |
 
 ### mutants_survived
 
@@ -301,6 +321,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   0 |      5 |  nan   | nan    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   0 |      5 |  nan   | nan    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   0 |      5 |  nan   | nan    |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   0 |      5 |  nan   | nan    |
 
 ### mutants_no_coverage
 
@@ -315,6 +336,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   0 |      5 |  nan   | nan    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   0 |      5 |  nan   | nan    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   0 |      5 |  nan   | nan    |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   0 |      5 |  nan   | nan    |
 
 ### tdd_discipline
 
@@ -329,6 +351,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   0.7  | 0.16 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   0.43 | 0.2  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   4 |      1 |   0.54 | 0.04 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   0.56 | 0.11 |
 
 ### tdd_discipline_step
 
@@ -343,6 +366,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |      1 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |      1 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   4 |      1 |      1 |    0 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |      1 |    0 |
 
 ### tdd_discipline_closure
 
@@ -357,6 +381,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   0.58 | 0.21 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   0.27 | 0.15 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   0.31 | 0.18 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   0.41 | 0.12 |
 
 ### test_first_rate
 
@@ -371,6 +396,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   0.62 | 0.21 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   0.33 | 0.18 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   0.33 | 0.19 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   0.43 | 0.12 |
 
 ### red_batch_size
 
@@ -385,6 +411,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |      1 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |      1 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   4 |      1 |      1 |    0 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |      1 |    0 |
 
 ### red_batch_max
 
@@ -399,6 +426,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |    1.4 | 0.89 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |    2   | 2.24 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   4 |      1 |    1   | 0    |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |    1   | 0    |
 
 ### green_batch_size
 
@@ -413,6 +441,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |    1   |  0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |    1   |  0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   4 |      1 |    1   |  0    |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |    1   |  0    |
 
 ### cycles_total
 
@@ -427,6 +456,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   37.2 |  8.17 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   34   | 22.26 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   33.8 | 18.78 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   41.2 |  1.64 |
 
 ### cycles_closed
 
@@ -441,6 +471,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   20.4 | 4.34 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |    7.6 | 6.43 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   13.2 | 8.17 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   16.8 | 4.49 |
 
 ### refactor_events
 
@@ -455,6 +486,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |    9   | 4    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |    6   | 3.87 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |    4.2 | 3.03 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |    9.6 | 5.46 |
 
 ### skip_events
 
@@ -469,6 +501,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   15   | 10.61 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   24.4 | 20.46 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   17.4 | 10.48 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   23.2 |  5.63 |
 
 ### chain_suite_runs
 
@@ -483,6 +516,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   87.6 | 23.71 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   56.8 | 34.43 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   66   | 44.5  |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   76.6 | 11.15 |
 
 ### chain_deviations
 
@@ -497,6 +531,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   21.2 |  7.05 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   28   | 21.05 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   20.4 | 11.48 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   24   |  5.48 |
 
 ### chain_opens_red
 
@@ -511,6 +546,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |   0 |      0 |        0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |   0 |      0 |        0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |   0 |      0 |        0 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |   0 |      0 |        0 |
 
 ### chain_ends_green
 
@@ -525,6 +561,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |   4 |      0 |       80 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |   5 |      0 |      100 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |   5 |      0 |      100 |
 
 ### duration_seconds
 
@@ -539,6 +576,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 | 1218.8 | 669.59 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 | 1803.6 | 790.55 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 | 1000.6 | 490.22 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 | 1473.8 | 285.75 |
 
 ### total_tokens
 
@@ -553,6 +591,7 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 | 9.58133e+06 | 3.09388e+06 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 | 8.22447e+06 | 1.1785e+07  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 | 1.15076e+07 | 6.18185e+06 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 | 1.62772e+07 | 3.84499e+06 |
 
 ### cost_usd
 
@@ -567,3 +606,4 @@ Cells declared: 9 · matched runs: 46 · min_replicates: 5
 | claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   0.86 | 0.34 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   0.92 | 1.27 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   7.8  | 4.12 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   0.9  | 0.2  |

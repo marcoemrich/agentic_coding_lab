@@ -29,6 +29,9 @@ factors:
     - {model: deepseek-v4-1-flash, workflow: exact-ptdd-v1-pi}
     - {model: minimax-m3, workflow: exact-ptdd-v1-pi}
     - {model: qwen3-8, workflow: exact-ptdd-v1-pi}
+    # Same family AND the same provider as qwen3-8, one price tier down. Added
+    # 2026-10-23 for the intra-family price axis -- see H5.
+    - {model: qwen3-8-flash-next, workflow: exact-ptdd-v1-pi}
 controls:
   kata_base: claim-office
   prompt: example-mapping
@@ -129,6 +132,7 @@ Each model is reached the way a practitioner would actually reach it:
 | `deepseek-v4-1-flash` | pi | Requesty `sference/deepseek-v4.1-flash` | `exact-ptdd-v1-pi` |
 | `minimax-m3` | pi | Requesty `tensorx/minimax-m3` | `exact-ptdd-v1-pi` |
 | `qwen3-8` | pi | Requesty `tensorx/qwen3.8` | `exact-ptdd-v1-pi` |
+| `qwen3-8-flash-next` | pi | Requesty `tensorx/qwen3.8-flash-next` | `exact-ptdd-v1-pi` |
 
 The deliberate alternative — route every model through Requesty — was rejected
 because it does not exist: the Anthropic subscription and the OpenAI
@@ -226,6 +230,7 @@ case map in `run-batch.sh`, `PRICES` in `compute-cost.py`, and for pi also
 | `sonnet-5-5` | `claude-sonnet-5-5[1m]` | native; see the CLI gate below |
 | `glm-5-3` | `requesty/sference/glm-5.3` | $1.20/$4.20/$0.26 |
 | `qwen3-8` | `requesty/tensorx/qwen3.8` → `qwen/qwen3.8-2.4t-a95b` | $2.50/$6.00/$0.63 |
+| `qwen3-8-flash-next` | `requesty/tensorx/qwen3.8-flash-next` → `qwen/qwen3.8-flash-next` | $0.20/$0.50/$0.05 |
 | `deepseek-v4-1-flash` | `requesty/sference/deepseek-v4.1-flash` | $0.50/$1.50/$0.05 |
 | `gemini-4-argon` | `requesty/vertex/gemini-4-argon@eu` | $2.20/$11.00/$0.11 — see the cliff below |
 | `mistral-large-4` | `requesty/mistral/mistral-large-4` | $0.68/$2.09/$0.07 — **unusable from pi**, see the drop below |
@@ -335,6 +340,66 @@ tests before making them pass, which is a workflow-compliance deviation rather
 than a crash — the run completes with 58 tests and `verification_pct = 0.867`.
 It stays in, with the deviation reported alongside its discipline columns.
 
+### The Qwen pair is the lab's only confound-free price axis
+
+`qwen3-8` and `qwen3-8-flash-next` are the same model family on the same
+provider (tensorx), separated by a factor of **12.5 on input and 12 on output**
+($2.50/$6.00 against $0.20/$0.50). Every other intra-family pair in the lab
+swaps backprovider at the same time — `glm-5-1`/`glm-5-2` (nebius → tensorx),
+`kimi-k2-7`/`kimi-k3` (tensorx → sference) — so a version effect there can
+never be separated cleanly from a provider effect. Here it can.
+
+The two resolve to genuinely different backends, not to one alias:
+`qwen/qwen3.8-2.4t-a95b` against `qwen/qwen3.8-flash-next` (observed
+2026-10-23).
+
+**The window asymmetry — 262144 against the flagship's 1M — did not bind on
+this kata, and that was measured rather than assumed.** The largest single
+request of each run, input plus cache reads, came to 87k–191k tokens in the
+flagship cell and 107k–141k in flash-next: every run of both cells stayed under
+262k. Neither cell compacted. (The `compact` hits in the transcripts are the
+word in the workflow prompt — "close with a compact record of the behavior" —
+not compaction events.)
+
+Note for anyone re-deriving this: `total_tokens` does **not** measure context
+occupancy. The flash-next cell sums to 16 M tokens over 469 messages, which
+says nothing about how full the window ever was. Reading the cumulative figure
+as window pressure is the mistake this section originally made; the per-request
+maximum is the number that answers it. On a larger kata the asymmetry could
+still bind, so re-check it there rather than carrying this result over.
+
+#### Measured result of the pair (2026-10-23, n=5 each)
+
+Medians, with the standard deviation of each cell:
+
+| | `qwen3-8` | `qwen3-8-flash-next` | |
+|---|---:|---:|---|
+| Correctness (external) | 1.00 ± 0.00 | 1.00 ± 0.00 | equal |
+| `tests_total` | 42.0 ± 5.9 | 41.0 ± 1.6 | equal |
+| `cycles_closed` | 16.0 ± 8.2 | 19.0 ± 4.5 | flash-next higher |
+| `refactor_events` | 4.0 ± 3.0 | 11.0 ± 5.5 | flash-next 2.75x |
+| `cognitive_max` | 6.0 ± 1.3 | 5.0 ± 1.5 | flash-next lower |
+| Code Mass (APP) | 738 ± 66 | 738 ± 74 | identical |
+| Smell Total | 0.0 | 0.0 | both clean |
+| `total_tokens` | 8.75 M ± 6.18 | 15.94 M ± 3.84 | flash-next 1.8x |
+| `cost_usd` | $5.89 ± 4.12 | $0.90 ± 0.20 | **flash-next 6.5x cheaper** |
+| `duration_seconds` | 14 min ± 8 | 26 min ± 5 | flash-next 1.8x slower |
+
+**H5 is confirmed, and more strongly than it was posed.** The cheap tier does
+not merely lose less than its price difference suggests — on this kata it loses
+nothing. Correctness is identical at σ = 0 in both cells, Code Mass is
+identical to the digit, Smell Total is 0 in both, and `cognitive_max` and
+`refactor_events` favour **flash-next**. What it pays is wall clock and tokens:
+1.8x each. The 12x price gap therefore converts to only 6.5x in cost per run,
+because flash-next spends 1.8x the tokens getting there.
+
+Two cautions on reading this. First, **the flagship cell is the unstable one**:
+σ = 4.12 on a median cost of $5.89, and a token range of 8.2–22.5 M against
+12.2–22.2 M for flash-next. Medians are the honest comparison here; means would
+be carried by the flagship's outlier run. Second, n=5 on one kata in one
+language. The result says the tier is sufficient for claim-office under this
+workflow, not that the flagship is pointless.
+
 ### Dropped: mistral-large-4 — pi cannot talk to Mistral's endpoint
 
 Wired, reachable, and still unusable. Mistral's API rejects pi's request body
@@ -398,7 +463,7 @@ criterion, not a model result.
 | `gpt-6-1-sol-codex` × `exact-ptdd-v1-pi` | **5** | RQ-workflow-axis-gpt61-sol |
 | all eight others | 0 | — |
 
-So 10 of the 45 runs this RQ needs (9 cells x 5) existed before the first batch. Both inherited cells are at
+So 10 of the 50 runs this RQ needs (10 cells x 5) existed before the first batch. Both inherited cells are at
 `min_replicates` and on the pinned harness versions.
 
 ## Batch-plan constraint
@@ -443,7 +508,15 @@ Mutation testing is opt-in here and runs **between** batch and aggregation
   `deepseek-v4-1-flash` and at $1.20/$4.20 `glm-5-3` are an order of magnitude
   under the Anthropic tariff. With `mistral-large-4` dropped, the cheap end of
   the field is open-weight only, so this hypothesis can no longer separate
-  "cheap because open-weight" from "cheap because of the tariff". If H3 holds weakly — the open cells clear the
+  "cheap because open-weight" from "cheap because of the tariff".
+- **H5 (the price tier buys less than the price difference suggests).**
+  Within one family and one provider, `qwen3-8-flash-next` costs a twelfth of
+  `qwen3-8`. If its correctness and code quality fall by far less than that
+  factor, the practical reading of this whole RQ changes: the question stops
+  being which model is best and becomes which tier is enough. The flagship
+  cell sets the bar it has to clear — `verification_pct` 1.00, `cycles_closed`
+  13.2, `cognitive_max` 6.8, Code Mass 761, at $7.80 per run. Watch the
+  context window (above) before reading any gap as capability. If H3 holds weakly — the open cells clear the
   gate with somewhat worse structure — then "cheapest cell that clears the
   correctness gate" is a different winner from "best structure", and that
   trade is the practical output of this RQ.
