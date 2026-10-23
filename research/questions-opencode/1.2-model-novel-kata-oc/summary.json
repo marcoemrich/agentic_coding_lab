@@ -907,289 +907,301 @@
     {
       "kata": "claim-office-example-mapping",
       "workflow": "exact-single-context-v2-testlist-fix-oc",
-      "model": "deepseek-v4-flash",
+      "model": "deepseek-v4-flash-requesty",
       "counts": {
-        "runs": 4,
+        "runs": 5,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
       },
       "runs": [
         {
-          "id": "2026-05-27_21-45-26_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_deepseek-v4-flash",
-          "started_at": "2026-05-27T21:45:26+00:00",
+          "id": "2026-10-19_04-57-51_claim-office-example-mapping_exact-single-context-v2-testlist-fix-oc_deepseek-v4-flash-requesty",
+          "started_at": "2026-10-19T04:57:52+00:00",
           "exit_reason": "ok"
         },
         {
-          "id": "2026-05-28_06-24-10_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_deepseek-v4-flash",
-          "started_at": "2026-05-28T06:24:10+00:00",
+          "id": "2026-10-19_06-25-06_claim-office-example-mapping_exact-single-context-v2-testlist-fix-oc_deepseek-v4-flash-requesty",
+          "started_at": "2026-10-19T06:25:06+00:00",
           "exit_reason": "ok"
         },
         {
-          "id": "2026-05-28_06-24-10_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_deepseek-v4-flash-2",
-          "started_at": "2026-05-28T06:24:10+00:00",
+          "id": "2026-10-19_06-26-09_claim-office-example-mapping_exact-single-context-v2-testlist-fix-oc_deepseek-v4-flash-requesty",
+          "started_at": "2026-10-19T06:26:09+00:00",
           "exit_reason": "ok"
         },
         {
-          "id": "2026-05-28_06-24-10_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_deepseek-v4-flash-3",
-          "started_at": "2026-05-28T06:24:10+00:00",
+          "id": "2026-10-19_06-27-14_claim-office-example-mapping_exact-single-context-v2-testlist-fix-oc_deepseek-v4-flash-requesty",
+          "started_at": "2026-10-19T06:27:14+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-19_07-14-11_claim-office-example-mapping_exact-single-context-v2-testlist-fix-oc_deepseek-v4-flash-requesty",
+          "started_at": "2026-10-19T07:14:11+00:00",
           "exit_reason": "ok"
         }
       ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.75,
-          "sd": 0.5,
+          "n": 5,
+          "mean": 0.54666,
+          "sd": 0.5107697896312976,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 4,
-          "mean": 11.25,
-          "sd": 7.5,
+          "n": 5,
+          "mean": 8.2,
+          "sd": 7.661592523751182,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 4,
+          "n": 5,
           "mean": 15,
           "sd": 0.0,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 4,
-          "mean": 707.75,
-          "sd": 60.516526668340774,
+          "n": 5,
+          "mean": 407.2,
+          "sd": 351.76654189959567,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 4,
-          "mean": 14.5,
-          "sd": 2.886751345948129,
+          "n": 5,
+          "mean": 5.2,
+          "sd": 4.43846820423443,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 4,
-          "mean": 11.5,
-          "sd": 2.0816659994661326,
+          "n": 5,
+          "mean": 4.4,
+          "sd": 3.286335345030997,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 4,
-          "mean": 39.5,
-          "sd": 15.154757228892407,
+          "n": 5,
+          "mean": 15.6,
+          "sd": 11.717508267545622,
           "null_count": 0
         },
         "lines_of_code": {
           "kind": "num",
-          "n": 4,
-          "mean": 224.75,
-          "sd": 21.608254595562936,
+          "n": 5,
+          "mean": 140.2,
+          "sd": 120.01541567648717,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 4,
-          "mean": 16.75,
-          "sd": 2.362907813126304,
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
           "null_count": 0
         },
         "predictions_correct": {
           "kind": "num",
-          "n": 4,
-          "mean": 2.5,
-          "sd": 2.3804761428476167,
+          "n": 5,
+          "mean": 16,
+          "sd": 25.347583711273153,
           "null_count": 0
         },
         "predictions_total": {
           "kind": "num",
-          "n": 4,
-          "mean": 2.5,
-          "sd": 2.3804761428476167,
+          "n": 5,
+          "mean": 16,
+          "sd": 25.347583711273153,
           "null_count": 0
         },
         "tests_passing": {
           "kind": "bool",
-          "n": 4,
+          "n": 5,
           "k": 4,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 4,
-          "mean": 42.25,
-          "sd": 9.358596760910972,
+          "n": 5,
+          "mean": 26,
+          "sd": 23.16246964380094,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 4,
-          "mean": 1598.5,
-          "sd": 59.89156868875618,
+          "n": 5,
+          "mean": 766.8,
+          "sd": 689.9113711195083,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 4,
-          "mean": 8456283.25,
-          "sd": 2387034.273199329,
+          "n": 5,
+          "mean": 6099563.8,
+          "sd": 9014609.824982788,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 0,
-          "null_count": 4
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
         }
       }
     },
     {
       "kata": "claim-office-example-mapping",
       "workflow": "exact-single-context-v2-testlist-fix-oc",
-      "model": "deepseek-v4-pro",
+      "model": "deepseek-v4-pro-requesty",
       "counts": {
-        "runs": 4,
+        "runs": 5,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
       },
       "runs": [
         {
-          "id": "2026-05-27_22-13-28_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_deepseek-v4-pro",
-          "started_at": "2026-05-27T22:13:28+00:00",
+          "id": "2026-10-19_04-57-51_claim-office-example-mapping_exact-single-context-v2-testlist-fix-oc_deepseek-v4-pro-requesty",
+          "started_at": "2026-10-19T04:57:52+00:00",
           "exit_reason": "ok"
         },
         {
-          "id": "2026-05-28_06-50-01_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_deepseek-v4-pro",
-          "started_at": "2026-05-28T06:50:01+00:00",
+          "id": "2026-10-19_06-21-01_claim-office-example-mapping_exact-single-context-v2-testlist-fix-oc_deepseek-v4-pro-requesty",
+          "started_at": "2026-10-19T06:21:01+00:00",
           "exit_reason": "ok"
         },
         {
-          "id": "2026-05-28_06-50-33_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_deepseek-v4-pro",
-          "started_at": "2026-05-28T06:50:33+00:00",
+          "id": "2026-10-19_06-21-05_claim-office-example-mapping_exact-single-context-v2-testlist-fix-oc_deepseek-v4-pro-requesty",
+          "started_at": "2026-10-19T06:21:06+00:00",
           "exit_reason": "ok"
         },
         {
-          "id": "2026-05-28_06-51-37_claim-office-example-mapping_v5.1-testlist-scope-fix-oc_deepseek-v4-pro",
-          "started_at": "2026-05-28T06:51:37+00:00",
+          "id": "2026-10-19_06-23-54_claim-office-example-mapping_exact-single-context-v2-testlist-fix-oc_deepseek-v4-pro-requesty",
+          "started_at": "2026-10-19T06:23:54+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-19_06-25-55_claim-office-example-mapping_exact-single-context-v2-testlist-fix-oc_deepseek-v4-pro-requesty",
+          "started_at": "2026-10-19T06:25:56+00:00",
           "exit_reason": "ok"
         }
       ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.75,
-          "sd": 0.5,
+          "n": 5,
+          "mean": 1,
+          "sd": 0.0,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 4,
-          "mean": 11.25,
-          "sd": 7.5,
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 4,
+          "n": 5,
           "mean": 15,
           "sd": 0.0,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 4,
-          "mean": 693.25,
-          "sd": 102.59101650079634,
+          "n": 5,
+          "mean": 695.4,
+          "sd": 101.44604477257849,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 4,
-          "mean": 21.75,
-          "sd": 5.377421934967226,
+          "n": 5,
+          "mean": 18,
+          "sd": 21.2602916254693,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 4,
-          "mean": 13.75,
-          "sd": 2.9860788111948193,
+          "n": 5,
+          "mean": 9.4,
+          "sd": 6.5038450166036395,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 4,
-          "mean": 52.75,
-          "sd": 12.553220038433698,
+          "n": 5,
+          "mean": 34.6,
+          "sd": 27.853186532244383,
           "null_count": 0
         },
         "lines_of_code": {
           "kind": "num",
-          "n": 4,
-          "mean": 239.5,
-          "sd": 50.52722038663912,
+          "n": 5,
+          "mean": 216.4,
+          "sd": 50.95880689341147,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 4,
-          "mean": 20.75,
-          "sd": 3.8622100754188224,
+          "n": 5,
+          "mean": 8.2,
+          "sd": 11.497825881443848,
           "null_count": 0
         },
         "predictions_correct": {
           "kind": "num",
-          "n": 4,
-          "mean": 3.25,
-          "sd": 0.9574271077563381,
+          "n": 5,
+          "mean": 1.6,
+          "sd": 0.8944271909999159,
           "null_count": 0
         },
         "predictions_total": {
           "kind": "num",
-          "n": 4,
-          "mean": 3.25,
-          "sd": 0.9574271077563381,
+          "n": 5,
+          "mean": 1.6,
+          "sd": 0.8944271909999159,
           "null_count": 0
         },
         "tests_passing": {
           "kind": "bool",
-          "n": 4,
-          "k": 4,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 4,
-          "mean": 34.75,
-          "sd": 12.579745625409124,
+          "n": 5,
+          "mean": 33,
+          "sd": 7.44983221287567,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 4,
-          "mean": 1194,
-          "sd": 227.65031664082233,
+          "n": 5,
+          "mean": 241.8,
+          "sd": 82.58450217807213,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 4,
-          "mean": 5569244.5,
-          "sd": 2187101.304319868,
+          "n": 5,
+          "mean": 3593194,
+          "sd": 1474593.7184750244,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 4,
-          "mean": 2.8226999999999998,
-          "sd": 0.997235368406075,
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
           "null_count": 0
         }
       }

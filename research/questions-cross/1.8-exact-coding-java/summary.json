@@ -2197,7 +2197,7 @@
       "workflow": "exact-ptdd-v1.1-refactor-subagent-cc",
       "model": "opus-5-no-thinking",
       "counts": {
-        "runs": 4,
+        "runs": 5,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
@@ -2222,167 +2222,172 @@
           "id": "2026-09-20_11-57-09_claim-office-java-example-mapping_exact-ptdd-v1.1-refactor-subagent-cc_opus-5-no-thinking",
           "started_at": "2026-09-20T11:57:09+00:00",
           "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-19_06-18-28_claim-office-java-example-mapping_exact-ptdd-v1.1-refactor-subagent-cc_opus-5-no-thinking",
+          "started_at": "2026-10-19T06:18:28+00:00",
+          "exit_reason": "ok"
         }
       ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.96665,
-          "sd": 0.038509262954948026,
+          "n": 5,
+          "mean": 0.97332,
+          "sd": 0.03653309458559457,
           "null_count": 0
         },
         "tests_passing": {
           "kind": "bool",
-          "n": 4,
-          "k": 4,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 4,
-          "mean": 52,
-          "sd": 2.0,
+          "n": 5,
+          "mean": 51.8,
+          "sd": 1.7888543819998317,
           "null_count": 0
         },
         "test_lines": {
           "kind": "num",
-          "n": 4,
-          "mean": 643.5,
-          "sd": 160.34442096104664,
+          "n": 5,
+          "mean": 650.4,
+          "sd": 139.71685653492207,
           "null_count": 0
         },
         "lines_of_code": {
           "kind": "num",
-          "n": 4,
-          "mean": 768.5,
-          "sd": 217.1335994267124,
+          "n": 5,
+          "mean": 791,
+          "sd": 194.65739133153923,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 4,
-          "mean": 1291.75,
-          "sd": 153.57381504236542,
+          "n": 5,
+          "mean": 1276,
+          "sd": 137.58270240113762,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 4,
+          "n": 5,
           "mean": 0,
           "sd": 0.0,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 4,
-          "mean": 3.25,
-          "sd": 0.5,
+          "n": 5,
+          "mean": 3.2,
+          "sd": 0.4472135954999579,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 4,
-          "mean": 1.3875,
-          "sd": 0.15628499608087787,
+          "n": 5,
+          "mean": 1.37,
+          "sd": 0.14089002803605374,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 4,
-          "mean": 4.5,
-          "sd": 1.0,
+          "n": 5,
+          "mean": 4.4,
+          "sd": 0.8944271909999159,
           "null_count": 0
         },
         "mccabe_avg": {
           "kind": "num",
-          "n": 4,
-          "mean": 1.4275,
-          "sd": 0.15173990905493523,
+          "n": 5,
+          "mean": 1.448,
+          "sd": 0.13917614738165449,
           "null_count": 0
         },
         "unit_count": {
           "kind": "num",
-          "n": 4,
-          "mean": 58.5,
-          "sd": 13.625955623979797,
+          "n": 5,
+          "mean": 57.4,
+          "sd": 12.054044964243332,
           "null_count": 0
         },
         "unit_size_max": {
           "kind": "num",
-          "n": 4,
-          "mean": 9,
-          "sd": 0.816496580927726,
+          "n": 5,
+          "mean": 9.4,
+          "sd": 1.140175425099138,
           "null_count": 0
         },
         "unit_size_avg": {
           "kind": "num",
-          "n": 4,
-          "mean": 3.2625,
-          "sd": 0.5077647092896473,
+          "n": 5,
+          "mean": 3.286,
+          "sd": 0.4428656681207068,
           "null_count": 0
         },
         "unit_size_median": {
           "kind": "num",
-          "n": 4,
-          "mean": 2.25,
-          "sd": 0.5,
+          "n": 5,
+          "mean": 2.2,
+          "sd": 0.4472135954999579,
           "null_count": 0
         },
         "predictions_correct_rate": {
           "kind": "rate",
-          "n": 4,
-          "k": 402,
-          "t": 405,
+          "n": 5,
+          "k": 502,
+          "t": 507,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 4,
-          "mean": 5086.5,
-          "sd": 877.293375483177,
+          "n": 5,
+          "mean": 5444.6,
+          "sd": 1103.8164702521883,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 4,
-          "mean": 93908964,
-          "sd": 53998112.139016345,
+          "n": 5,
+          "mean": 96900499.8,
+          "sd": 47239745.11094177,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 4,
-          "mean": 71.967725,
-          "sd": 26.258036329522053,
+          "n": 5,
+          "mean": 78.119,
+          "sd": 26.57638565606693,
           "null_count": 0
         },
         "mutation_score": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.9604761082988189,
-          "sd": 0.03306361341689589,
+          "n": 5,
+          "mean": 0.9585043434291786,
+          "sd": 0.028971385583747837,
           "null_count": 0
         },
         "mutants_total": {
           "kind": "num",
-          "n": 4,
-          "mean": 91.5,
-          "sd": 11.704699910719626,
+          "n": 5,
+          "mean": 89.4,
+          "sd": 11.171392035015153,
           "null_count": 0
         },
         "mutants_survived": {
           "kind": "num",
-          "n": 4,
-          "mean": 3.5,
-          "sd": 2.6457513110645907,
+          "n": 5,
+          "mean": 3.6,
+          "sd": 2.3021728866442674,
           "null_count": 0
         },
         "mutants_no_coverage": {
           "kind": "num",
-          "n": 4,
-          "mean": 1.5,
-          "sd": 1.0,
+          "n": 5,
+          "mean": 1.4,
+          "sd": 0.8944271909999159,
           "null_count": 0
         }
       }

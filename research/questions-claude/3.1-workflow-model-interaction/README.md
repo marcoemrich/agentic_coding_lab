@@ -8,7 +8,7 @@ factors:
     - exact-hybrid-v1-cc
   model:
     - opus-4-7-no-thinking
-    - opus-4-6-portkey-no-thinking
+    - {any: [opus-4-6-portkey-no-thinking, opus-4-6-requesty-no-thinking]}
 controls:
   kata_base: claim-office
   prompt: example-mapping
@@ -56,3 +56,13 @@ recommendation can be given independently of the model.
   `research/workflow-dev/5.1-correctness-regression/` (F-regression.1–F-regression.5, F-regression.7, F-regression.8).
 - Model effect on a novel kata in general: `research/questions/2.2-model-effect-novel-kata/`.
 - Derived practice recommendation: `research/workflow-dev/model-recommendation-matrix.md`.
+
+## Routing caveat — Opus 4.6
+
+Portkey shut down in 2026-07. Replacement runs from 2026-10-20 on use
+`opus-4-6-requesty` / `opus-4-6-requesty-no-thinking`
+(`vertex/claude-opus-4-6@europe-west1` via the Requesty EU router) and count
+toward the old `opus-4-6-portkey*` cells through `{any: [...]}`. Both routes end
+at Anthropic on Google Vertex; only router and region differ, and thinking is
+switched by Claude Code itself, so the outcome is assumed unaffected. Each cell
+holds at most one replacement run.

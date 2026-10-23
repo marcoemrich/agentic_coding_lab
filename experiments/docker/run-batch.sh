@@ -159,6 +159,11 @@ MODEL_CONFIGS=(
     "opus-4-7-portkey-no-thinking|@vertex-eu-global/anthropic.claude-opus-4-7|false"
     "opus-4-6-portkey|@vertex-ai/anthropic.claude-opus-4-6|true"
     "opus-4-6-portkey-no-thinking|@vertex-ai/anthropic.claude-opus-4-6|false"
+    # Replacement route for the dead Portkey arm (2026-10-20): same model on
+    # Vertex, via the Requesty EU router. RQs fold these into the old
+    # opus-4-6-portkey* cells with {any: [...]}; the id keeps the route visible.
+    "opus-4-6-requesty|vertex/claude-opus-4-6@europe-west1|true"
+    "opus-4-6-requesty-no-thinking|vertex/claude-opus-4-6@europe-west1|false"
     "sonnet-4-6-portkey|@vertex-ai/anthropic.claude-sonnet-4-6|true"
     "sonnet-4-6-portkey-no-thinking|@vertex-ai/anthropic.claude-sonnet-4-6|false"
     "haiku-4-5-portkey|@vertex-ai/anthropic.claude-haiku-4-5@20251001|true"
@@ -174,6 +179,11 @@ MODEL_CONFIGS=(
     "glm-5-1|oc-only|false"
     "deepseek-v4-flash|oc-only|false"
     "deepseek-v4-pro|oc-only|false"
+    # DeepSeek on OC via Requesty (tensorx), replacing the dead Portkey route
+    # from 2026-10-19. Own IDs so the route stays visible per run; RQs fold
+    # them into the old cells with {any: [...]}.
+    "deepseek-v4-flash-requesty|oc-only|false"
+    "deepseek-v4-pro-requesty|oc-only|false"
     "mistral-medium-3-5|oc-only|false"
     "devstral-medium-2507|oc-only|false"
     "devstral-2512|oc-only|false"
@@ -187,8 +197,10 @@ MODEL_CONFIGS=(
     # dir, not from the model, so a pi-only placeholder is sufficient.
     # opus-4-8, glm-5-1, deepseek-v4-pro and deepseek-v4-flash already appear
     # above (native / oc-only entries) and are reused by the pi branch, so they
-    # are not repeated here. Their OC routes went through Portkey and are dead;
-    # the pi case-map below is the live route for the two deepseek ids.
+    # are not repeated here. The two deepseek ids reach their live route only
+    # through the pi case-map below -- their OC route went through Portkey and
+    # is dead; OpenCode now reaches the same tensorx aliases under the separate
+    # `deepseek-v4-*-requesty` ids above.
     "sonnet-5|pi-only|false"
     # opus-5 via Requesty (vertex/claude-opus-5@eu), usable by both Claude Code
     # and pi. Claude Code passes this route through --model; pi resolves the
@@ -1177,8 +1189,12 @@ EOF
                 kimi-k2-6)         oc_model="portkey/@openrouter-eval/moonshotai/kimi-k2.6" ;;
                 minimax-m2-7)      oc_model="portkey/@openrouter-eval/minimax/minimax-m2.7" ;;
                 glm-5-1)           oc_model="portkey/@openrouter-eval/z-ai/glm-5.1" ;;
-                deepseek-v4-flash) oc_model="portkey/@openrouter-eval/deepseek/deepseek-v4-flash" ;;
-                deepseek-v4-pro)   oc_model="portkey/@openrouter-eval/deepseek/deepseek-v4-pro" ;;
+                # deepseek-v4-{flash,pro} (Portkey @openrouter-eval) removed
+                # 2026-10-19: Portkey is gone, the route answers "Invalid API
+                # Key". Without a case entry batch-plan-from-rq picks the
+                # -requesty alternative of an {any: [...]} cell.
+                deepseek-v4-flash-requesty) oc_model="requesty/tensorx/deepseek-v4-flash" ;;
+                deepseek-v4-pro-requesty)   oc_model="requesty/tensorx/deepseek-v4-pro" ;;
                 mistral-medium-3-5)   oc_model="portkey-mistral/@mistral/mistral-medium-3-5" ;;
                 devstral-medium-2507) oc_model="portkey-cc/@mistral/devstral-medium-2507" ;;
                 devstral-2512)        oc_model="portkey-cc/@mistral/devstral-2512" ;;
@@ -1298,6 +1314,18 @@ EOF
                     pi_retries_exhausted="true"
                     echo -e "  ${RED}pi exhausted its internal retries — marking run failed.${NC}"
                     grep -oE '"finalError":"[^"]{0,120}' "$run_log" 2>/dev/null | tail -1 | sed 's/^/    /'
+                fi
+            elif [ "$harness" = "opencode" ]; then
+                # OpenCode prints a provider auth failure and exits 0, so
+                # the run would be scored ok with zero tokens. Observed
+                # 2026-10-19 on a dead Portkey route:
+                #   "Error: Portkey Error: Invalid API Key. Error Code: 03"
+                # A key/route that is wrong now is wrong for every later
+                # run too: setup error, the shard stops.
+                if grep -qE "Error: .*(Invalid API Key|Portkey Error)" "$run_log" 2>/dev/null; then
+                    setup_error="true"
+                    echo -e "  ${RED}Setup error (provider auth) — not retryable; this shard stops after this run.${NC}"
+                    grep -oE "Error: .*(Invalid API Key|Portkey Error)[^\n]{0,80}" "$run_log" 2>/dev/null | head -1 | sed 's/^/    /'
                 fi
             elif [ "$harness" = "claude" ]; then
                 # Trimmed log content (whitespace stripped). On a healthy

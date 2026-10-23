@@ -98,6 +98,9 @@ PRICES = {
     "opus-4-6-no-thinking": (15.00, 75.00, 1.50, 18.75),
     "opus-4-6-portkey": (15.00, 75.00, 1.50, 18.75),
     "opus-4-6-portkey-no-thinking": (15.00, 75.00, 1.50, 18.75),
+    # Replacement route for the dead Portkey arm (2026-10-20), Requesty list price
+    "opus-4-6-requesty": (5.50, 27.50, 0.55, 6.875),         # vertex/claude-opus-4-6@europe-west1
+    "opus-4-6-requesty-no-thinking": (5.50, 27.50, 0.55, 6.875),
     # sonnet-5-native: native (claude-sonnet-5 via OAuth bypass), real
     # Anthropic list price 2.00/10.00/0.20/2.50 (cache_read 0.1x, cache_write
     # 1.25x). The `sonnet-5` entry further down is the pi/Requesty route
@@ -161,6 +164,13 @@ PRICES = {
     "deepseek-v4-1-flash-no-thinking": (0.50, 1.50, 0.05, 0.0),
     "qwen3-8":          (2.50,  6.00,  0.63, 0.0),   # tensorx/qwen3.8
     "qwen3-8-no-thinking": (2.50, 6.00, 0.63, 0.0),
+    # OC arms on the same Requesty/tensorx route (replacing dead Portkey, 2026-10-19).
+    # The bare `deepseek-v4-flash` above is the pi route to the same tensorx
+    # alias and carries the identical tariff — two ids because the harness
+    # differs, not the tariff. Both readings of the catalogue (2026-10-19 and
+    # 2026-10-23) came out the same.
+    "deepseek-v4-pro-requesty": (1.75, 3.50, 0.44, 0.0),    # tensorx/deepseek-v4-pro
+    "deepseek-v4-flash-requesty": (0.25, 0.30, 0.06, 0.0),  # tensorx/deepseek-v4-flash
     "qwen3-235b":       (0.20,  0.60,  0.20, 0.0),   # nebius/… (no cache discount: cr=in)
     "qwen3-235b-no-thinking": (0.20, 0.60, 0.20, 0.0),
     "glm-5-1":          (1.40,  4.40,  1.40, 0.0),   # nebius/zai-org/glm-5.1 (no cache discount: cr=in)

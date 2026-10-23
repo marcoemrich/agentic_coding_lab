@@ -13,7 +13,7 @@ Correctness and budget completion are higher = better; complexity, method size, 
 | GPT-5.6 SOL | Game of Life | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
 | GPT-5.6 SOL | Claim Office | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
 | Opus 5 | Game of Life | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
-| Opus 5 | Claim Office | **1.00** 🏆 | 0.97 | 0.97 | **100 %** 🏆 | **100 %** 🏆 | 80 % |
+| Opus 5 | Claim Office | **1.00** 🏆 | 0.97 | 0.97 | **100 %** 🏆 | **100 %** 🏆 | **100 %** 🏆 |
 
 ### `cognitive_max`
 
@@ -22,7 +22,7 @@ Correctness and budget completion are higher = better; complexity, method size, 
 | GPT-5.6 SOL | Game of Life | 9.8 | **5.8** 🏆 | **6.0** 🏆 | 8.2 | **4.2** 🏆 | **4.4** 🏆 |
 | GPT-5.6 SOL | Claim Office | 9.8 | **5.8** 🏆 | 7.8 | 10.4 | **7.4** 🏆 | **7.8** 🏆 |
 | Opus 5 | Game of Life | **5.0** 🏆 | **4.6** 🏆 | **7.0** 🏆 | **3.8** 🏆 | **3.8** 🏆 | **4.8** 🏆 |
-| Opus 5 | Claim Office | 6.6 | 4.4 | **3.4** 🏆 | 6.2 | **4.4** 🏆 | **4.2** 🏆 |
+| Opus 5 | Claim Office | 6.6 | 4.4 | **3.2** 🏆 | 6.2 | **4.4** 🏆 | **4.4** 🏆 |
 
 ### Method size (NCSS)
 
@@ -31,7 +31,7 @@ Correctness and budget completion are higher = better; complexity, method size, 
 | GPT-5.6 SOL | Game of Life | 14.0 | **7.4** 🏆 | **7.0** 🏆 | 7.26 | **3.84** 🏆 | **3.62** 🏆 |
 | GPT-5.6 SOL | Claim Office | 32.6 | **24.4** 🏆 | **27.8** 🏆 | 7.75 | 5.64 | **3.71** 🏆 |
 | Opus 5 | Game of Life | **7.0** 🏆 | **7.0** 🏆 | **7.6** 🏆 | **3.65** 🏆 | **3.60** 🏆 | **4.08** 🏆 |
-| Opus 5 | Claim Office | 19.4 | 12.6 | **9.8** 🏆 | 4.89 | 4.05 | **3.10** 🏆 |
+| Opus 5 | Claim Office | 19.4 | 12.6 | **9.4** 🏆 | 4.89 | 4.05 | **3.29** 🏆 |
 
 ### Efficiency
 
@@ -40,7 +40,7 @@ Correctness and budget completion are higher = better; complexity, method size, 
 | GPT-5.6 SOL | Game of Life | **195 s** 🏆 | 916 s | 2,256 s | **$0.42** 🏆 | $2.21 | $5.92 |
 | GPT-5.6 SOL | Claim Office | **296 s** 🏆 | 1,996 s | 6,072 s | **$0.58** 🏆 | $5.25 | $17.78 |
 | Opus 5 | Game of Life | **251 s** 🏆 | 756 s | 2,652 s | **$1.41** 🏆 | $5.88 | $27.49 |
-| Opus 5 | Claim Office | **347 s** 🏆 | 1,313 s | 5,509 s | **$2.88** 🏆 | $15.33 | $76.76 |
+| Opus 5 | Claim Office | **347 s** 🏆 | 1,313 s | 5,445 s | **$2.88** 🏆 | $15.33 | $78.12 |
 
 ### Test strength (Mutation Score)
 
@@ -60,11 +60,11 @@ Unnoticed behaviour changes per run — mutants the suite let through. Lower = b
 | GPT-5.6 SOL | Game of Life | 5.0 | 3.0 | **1.8** 🏆 |
 | GPT-5.6 SOL | Claim Office | 17.8 | 6.0 | **4.6** 🏆 |
 | Opus 5 | Game of Life | **2.0** 🏆 | **2.4** 🏆 | **2.2** 🏆 |
-| Opus 5 | Claim Office | 8.0 | **5.4** 🏆 | **3.4** 🏆 |
+| Opus 5 | Claim Office | 8.0 | **5.4** 🏆 | **3.6** 🏆 |
 
 The Opus Game of Life row spans 0.4 mutants and is a tie, not a contest.
 
-Code Mass (APP), Production LoC, Test LoC, test count, method count, and process-marker counts have ambiguous direction and therefore receive no trophy. Smell Total is zero in every cell and has no winner. Every cell clears the correctness gate, so all quality and efficiency rows are eligible.
+Code Mass (APP), Production LoC, Test LoC, test count, method count, and process-marker counts have ambiguous direction and therefore receive no trophy. Smell Total is zero in every cell and has no winner. Every cell clears the correctness gate, so all quality and efficiency rows are eligible. "Within budget" is `ok` runs over runs in the pool: every cell holds five `ok` runs and nothing else. Timed-out attempts are not replicates and are removed from the pool; Opus Claim Office EXACT v1.1 needed one such attempt that hit the 7200 s budget (removed in commit `117868cdc`), so its 100 % is five of six attempts.
 
 ---
 
@@ -92,9 +92,9 @@ The shared-context workflow produces the complexity effect. Delegating the Refac
 | GPT-5.6 SOL | Game of Life | 9.8 → 5.8 → 6.0 | 8.2 → 4.2 → 4.4 | 4.73 → 2.24 → 2.22 | 4.38 → 1.64 → 1.67 |
 | GPT-5.6 SOL | Claim Office | 9.8 → 5.8 → 7.8 | 10.4 → 7.4 → 7.8 | 3.24 → 2.22 → 1.97 | 3.52 → 2.71 → 1.87 |
 | Opus 5 | Game of Life | 5.0 → 4.6 → 7.0 | 3.8 → 3.8 → 4.8 | 2.10 → 1.75 → 2.08 | 1.61 → 1.57 → 1.86 |
-| Opus 5 | Claim Office | 6.6 → 4.4 → 3.4 | 6.2 → 4.4 → 4.2 | 2.18 → 1.49 → 1.38 | 2.13 → 1.75 → 1.37 |
+| Opus 5 | Claim Office | 6.6 → 4.4 → 3.2 | 6.2 → 4.4 → 4.4 | 2.18 → 1.49 → 1.37 | 2.13 → 1.75 → 1.45 |
 
-For SOL the inline → v1 reductions are larger than ordinary within-cell variation and repeat across both tasks and both complexity families; the v1 → v1.1 step stays inside it. For Opus, Claim Office improves monotonically across all four measures, while Game of Life is a tie between inline and v1 and gets worse under v1.1 — that cell's `cognitive_max` is 7.0 in every single v1.1 run (σ = 0.00) against 4.6 ± 3.29 under v1.
+For SOL the inline → v1 reductions are larger than ordinary within-cell variation and repeat across both tasks and both complexity families; the v1 → v1.1 step stays inside it. For Opus, Claim Office improves on three of the four measures under v1.1 and holds on `mccabe_max` (4.4 → 4.4), while Game of Life is a tie between inline and v1 and gets worse under v1.1 — that cell's `cognitive_max` is 7.0 in every single v1.1 run (σ = 0.00) against 4.6 ± 3.29 under v1.
 
 The averages tell a friendlier story about v1.1 than the maxima do: `cognitive_avg` and `mccabe_avg` drop under the subagent on both Claim Office cells. The subagent distributes complexity more evenly without pulling the worst method down.
 
@@ -102,16 +102,16 @@ The averages tell a friendlier story about v1.1 than the maxima do: `cognitive_a
 
 ## F-1.8.3 — The isolated Refactor subagent grows the codebase, most sharply on Opus Claim Office
 
-The shared-context workflow shrinks SOL's Java code. The subagent variant reverses that on every cell: more Production LoC and more Code Mass (APP) than v1 throughout, with Opus Claim Office more than doubling against its own inline baseline.
+The shared-context workflow shrinks SOL's Java code. The subagent variant reverses that on every cell: more Production LoC and more Code Mass (APP) than v1 throughout, with Opus Claim Office roughly doubling its Production LoC against its own inline baseline.
 
 | Model | Kata | Production LoC Inline → v1 → v1.1 | Code Mass (APP) Inline → v1 → v1.1 | Test LoC Inline → v1 → v1.1 |
 |---|---|---:|---:|---:|
 | GPT-5.6 SOL | Game of Life | 109.2 → 94.4 → 113.4 | 324.4 → 265.8 → 277.4 | 119.2 → 143.8 → 132.2 |
 | GPT-5.6 SOL | Claim Office | 292.2 → 206.2 → 314.6 | 1,028.6 → 720.4 → 828.0 | 130.6 → 195.6 → 158.0 |
 | Opus 5 | Game of Life | 102.8 → 116.4 → 143.6 | 266.4 → 290.6 → 328.8 | 134.8 → 227.4 → 256.2 |
-| Opus 5 | Claim Office | 397.6 → 376.4 → 805.8 | 1,101.4 → 966.2 → 1,316.4 | 425.8 → 536.4 → 614.8 |
+| Opus 5 | Claim Office | 397.6 → 376.4 → 791.0 | 1,101.4 → 966.2 → 1,276.0 | 425.8 → 536.4 → 650.4 |
 
-Code size has no universally preferred direction, so these values are mechanism evidence rather than automatic quality losses. The Opus Claim Office jump from 376 to 806 Production LoC at unchanged external correctness and a test count that barely moves (53.4 → 51.8) is nevertheless the single largest structural difference in this RQ, and it is produced by a step whose stated purpose is cleanup.
+Code size has no universally preferred direction, so these values are mechanism evidence rather than automatic quality losses. The Opus Claim Office jump from 376 to 791 Production LoC at unchanged external correctness and a test count that barely moves (53.4 → 51.8) is nevertheless the single largest structural difference in this RQ, and it is produced by a step whose stated purpose is cleanup.
 
 ---
 
@@ -124,12 +124,12 @@ EXACT Coding is slower and more token-intensive than inline TDD in every contras
 | GPT-5.6 SOL | Game of Life | 195 s → 916 s → 2,256 s | 223k → 2.45 M → 4.45 M | $0.42 → $2.21 → $5.92 |
 | GPT-5.6 SOL | Claim Office | 296 s → 1,996 s → 6,072 s | 290k → 7.74 M → 15.68 M | $0.58 → $5.25 → $17.78 |
 | Opus 5 | Game of Life | 251 s → 756 s → 2,652 s | 1.29 M → 6.19 M → 29.94 M | $1.41 → $5.88 → $27.49 |
-| Opus 5 | Claim Office | 347 s → 1,313 s → 5,509 s | 2.64 M → 19.07 M → 98.05 M | $2.88 → $15.33 → $76.76 |
+| Opus 5 | Claim Office | 347 s → 1,313 s → 5,445 s | 2.64 M → 19.07 M → 96.90 M | $2.88 → $15.33 → $78.12 |
 
-The v1 → v1.1 step alone costs roughly three to five times as much and runs two and a half to four times as long. Against inline TDD, v1.1 costs fourteen to thirty times as much and runs ten to twenty times as long. The Opus Claim Office cell reaches 98 M tokens and $76.76 per run and is the only cell in the RQ that misses the time budget (one of five runs, `completed_within_budget` 80 %); that run's tests were green and its external verification perfect, so the budget miss is a cost symptom, not a failure.
+The v1 → v1.1 step alone costs roughly three to five times as much and runs two and a half to four times as long. Against inline TDD, v1.1 costs fourteen to thirty times as much and runs ten to twenty times as long. The Opus Claim Office cell reaches 97 M tokens and $78.12 per run and is the only cell in the RQ that lost an attempt to the time budget: one attempt hit the 7200 s limit and was removed from the pool as a non-replicate (commit `117868cdc`), and the slowest of its five `ok` runs took 6,877 s. The timed-out run's tests were green and its external verification perfect when it was cut off, so the budget miss is a cost symptom, not a failure.
 
 **The Claude Code v1.1 figures rose sharply on 2026-09-30 and the pi ones did not**, which is a measurement correction rather than a change in behaviour. `analyze_transcript.py` omitted subagent tokens entirely until then, while `parse_pi_transcript.py` had always added them
-(`_subagent_usage_totals`, with a docstring noting that ignoring them undercounts token efficiency by an order of magnitude). The CC-against-pi cost comparison in this RQ was therefore **biased in favour of Claude Code** on exactly the arm that delegates — the CC/pi premium on Claim Office v1.1 was recorded as 3.3× and is in fact 6.3×. See
+(`_subagent_usage_totals`, with a docstring noting that ignoring them undercounts token efficiency by an order of magnitude). The CC-against-pi cost comparison in this RQ was therefore **biased in favour of Claude Code** on exactly the arm that delegates — the CC/pi token premium on Claim Office v1.1 was recorded as 3.3× and is in fact 6.2×. See
 [RQ-old-vs-new-exact-line-opus55 F-4.12.5](../../questions-claude/4.12-old-vs-new-exact-line-opus55/findings.md).
 
 Inline TDD therefore remains the stronger Java default when correctness and efficiency dominate. EXACT v1 is justified where the measured complexity reduction is worth roughly five times the cost; v1.1's additional premium — now a further three- to fivefold on Claude Code — buys no correctness and, outside Opus Claim Office, no lower `cognitive_max`.
@@ -146,14 +146,14 @@ The continuous per-method complexity scores remain informative and produce the d
 
 ## F-1.8.6 — The isolated Refactor subagent trades many small methods for a lower typical method size
 
-Per-method NCSS measures functional decomposition without conflating method bodies with imports, declarations, or blank lines. Both EXACT variants lower method size against inline TDD on SOL and on Opus Claim Office. The subagent's distinctive move is quantity: it roughly doubles the method count on both Claim Office cells while cutting typical method size.
+Per-method NCSS measures functional decomposition without conflating method bodies with imports, declarations, or blank lines. Both EXACT variants lower method size against inline TDD on SOL and on Opus Claim Office. The subagent's distinctive move is quantity: it doubles the method count on SOL Claim Office and raises it by almost half on Opus Claim Office, while cutting typical method size.
 
 | Model | Kata | Methods Inline → v1 → v1.1 | NCSS max Inline → v1 → v1.1 | NCSS avg Inline → v1 → v1.1 | NCSS median Inline → v1 → v1.1 |
 |---|---|---:|---:|---:|---:|
 | GPT-5.6 SOL | Game of Life | 6.4 → 9.6 → 12.0 | 14.0 → 7.4 → 7.0 | 7.26 → 3.84 → 3.62 | 6.4 → 3.3 → 3.0 |
 | GPT-5.6 SOL | Claim Office | 22.0 → 19.6 → 39.0 | 32.6 → 24.4 → 27.8 | 7.75 → 5.64 → 3.71 | 4.3 → 4.2 → 2.2 |
 | Opus 5 | Game of Life | 9.8 → 13.4 → 13.4 | 7.0 → 7.0 → 7.6 | 3.65 → 3.60 → 4.08 | 3.3 → 3.1 → 4.1 |
-| Opus 5 | Claim Office | 34.0 → 39.4 → 62.0 | 19.4 → 12.6 → 9.8 | 4.89 → 4.05 → 3.10 | 3.4 → 3.2 → 2.2 |
+| Opus 5 | Claim Office | 34.0 → 39.4 → 57.4 | 19.4 → 12.6 → 9.4 | 4.89 → 4.05 → 3.29 | 3.4 → 3.2 → 2.2 |
 
 Method count has no monotonic quality direction: decomposition can add focused methods while removing duplication, or reduce methods by eliminating unnecessary indirection. The NCSS distribution supplies the interpretable signal. Under v1.1 the median method shrinks to roughly two statements on both Claim Office cells — the decomposition is real, but it arrives together with the code growth of F-1.8.3, so it is redistribution into more, smaller units rather than removal of code.
 
@@ -168,9 +168,9 @@ The Predictive TDD mechanism itself transfers to the isolated-subagent architect
 | GPT-5.6 SOL | Game of Life | 97.5 % (158/162) | 99.3 % (140/141) |
 | GPT-5.6 SOL | Claim Office | 99.7 % (390/391) | 99.7 % (321/322) |
 | Opus 5 | Game of Life | 97.3 % (215/221) | 98.6 % (215/218) |
-| Opus 5 | Claim Office | 100 % (543/543) | 99.2 % (499/503) |
+| Opus 5 | Claim Office | 100 % (543/543) | 99.0 % (502/507) |
 
-All eight cells sit above 97 %, and the differences between the two architectures are within one or two mispredictions per cell. Where the Refactor step runs is therefore independent of how reliably the model predicts its own test outcomes — the prediction discipline lives in the main context in both variants, and moving refactoring out of it neither disturbs nor improves it.
+All eight cells sit above 97 %, and the differences between the two architectures are small — at most five mispredictions in a cell of several hundred predictions. Where the Refactor step runs is therefore independent of how reliably the model predicts its own test outcomes — the prediction discipline lives in the main context in both variants, and moving refactoring out of it neither disturbs nor improves it.
 
 ---
 
@@ -200,7 +200,7 @@ Test strength is the one quality dimension where both layers pay off, and the on
 | GPT-5.6 SOL | Game of Life | 0.858 ± 0.052 | 0.904 ± 0.085 | 0.937 ± 0.037 |
 | GPT-5.6 SOL | Claim Office | 0.811 ± 0.068 | 0.906 ± 0.034 | 0.943 ± 0.006 |
 | Opus 5 | Game of Life | 0.913 ± 0.014 | 0.924 ± 0.012 | 0.933 ± 0.012 |
-| Opus 5 | Claim Office | 0.882 ± 0.028 | 0.933 ± 0.024 | 0.963 ± 0.029 |
+| Opus 5 | Claim Office | 0.882 ± 0.028 | 0.933 ± 0.024 | 0.959 ± 0.029 |
 
 The size of the effect follows the room available. On Claim Office, the larger task, inline TDD leaves 0.08 (Opus) to 0.13 (SOL) of score on the table against v1.1; on Game of Life, where every method is small enough to be covered almost by accident, the whole ladder spans 0.02 on Opus. The SOL Claim Office inline cell is the weakest suite in the RQ at 0.811, and it is also the cell that writes the fewest tests by a wide margin — 6.4 against 38.6 under v1 (F-1.8.6 table). Its external correctness is nevertheless perfect: fifteen acceptance scenarios do not notice that the unit tests behind them barely constrain the implementation.
 
@@ -229,16 +229,16 @@ Mutation Score is a ratio whose denominator is the mutant population, and that p
 | | | EXACT v1.1 | 32.6 | 2.2 | 0.2 |
 | Opus 5 | Claim Office | Inline | 68.4 | 8.0 | 4.0 |
 | | | EXACT v1 | 78.8 | 5.4 | 3.0 |
-| | | EXACT v1.1 | 94.8 | 3.4 | 1.2 |
+| | | EXACT v1.1 | 89.4 | 3.6 | 1.4 |
 
-Against inline TDD, v1.1 removes 74 % of the unnoticed changes on SOL Claim Office, 64 % on SOL Game of Life and 57 % on Opus Claim Office. **Opus Game of Life closes nothing**: 2.0 unnoticed changes under inline TDD against 2.2 under v1.1. Its Mutation Score still rises from 0.913 to 0.933, purely because the mutant population grows from 23.4 to 32.6 — the score improves while the absolute gap does not. On that cell the ratio is misleading and the count is not.
+Against inline TDD, v1.1 removes 74 % of the unnoticed changes on SOL Claim Office, 64 % on SOL Game of Life and 55 % on Opus Claim Office. **Opus Game of Life closes nothing**: 2.0 unnoticed changes under inline TDD against 2.2 under v1.1. Its Mutation Score still rises from 0.913 to 0.933, purely because the mutant population grows from 23.4 to 32.6 — the score improves while the absolute gap does not. On that cell the ratio is misleading and the count is not.
 
 The two cells that matter most read in opposite directions once the denominator is visible:
 
-- **Opus Claim Office v1.1 defends 39 % more mutants than the inline baseline** (94.8 against 68.4) and still lets fewer than half as many through. The score understates this result.
+- **Opus Claim Office v1.1 defends 31 % more mutants than the inline baseline** (89.4 against 68.4) and still lets fewer than half as many through. The score understates this result.
 - **SOL Claim Office v1 faces 28 % fewer mutants than its inline baseline** (65.6 against 91.4), because that workflow shrinks the code. Part of its score jump is a smaller denominator. The finding survives anyway — the absolute gap falls from 17.8 to 6.0 — but the ratio flatters it.
 
-The `never executed` column (`mutants_no_coverage`, a subset of `mutants_survived`) is the sharpest sub-signal: mutants on lines no test runs at all. Inline TDD leaves 4.8 of them per run on SOL Claim Office and 4.0 on Opus Claim Office; v1.1 leaves 2.4 and 1.2. Dead spots in the suite, not merely weak assertions.
+The `never executed` column (`mutants_no_coverage`, a subset of `mutants_survived`) is the sharpest sub-signal: mutants on lines no test runs at all. Inline TDD leaves 4.8 of them per run on SOL Claim Office and 4.0 on Opus Claim Office; v1.1 leaves 2.4 and 1.4. Dead spots in the suite, not merely weak assertions.
 
 Report the pair, not the ratio alone. `mutation_score` stays the comparable figure across cells of equal size; `mutants_survived` is the one to quote when the arms differ in how much code they produce, which in this RQ they always do.
 
@@ -255,13 +255,13 @@ The cell mean hides the shape of the distribution. On SOL Claim Office the five 
 | GPT-5.6 SOL | EXACT v1.1 | 4 · 4 · 5 · 5 · 5 | 38 · 23 · 27 · 33 · 40 |
 | Opus 5 | Inline | 5 · 7 · 9 · 9 · 10 | 76 · 36 · 59 · 35 · 28 |
 | Opus 5 | EXACT v1 | 3 · 3 · 6 · 7 · 8 | 52 · 56 · 53 · 52 · 54 |
-| Opus 5 | EXACT v1.1 | 1 · 2 · 3 · 4 · 7 | 53 · 53 · 51 · 53 · 49 |
+| Opus 5 | EXACT v1.1 | 1 · 2 · 4 · 4 · 7 | 53 · 53 · 53 · 51 · 49 |
 
 The two SOL inline runs that wrote 10 and 7 tests leave 8 and 10 mutants unnoticed. The three that wrote 4, 5 and 6 tests leave 23, 23 and 25 — nearly three times as many. Those three also write *more* production code than the well-tested pair (304, 330, 324 against 235 and 268 Production LoC): the failure mode is not a small implementation that was easy to cover, it is a large implementation nobody constrained. The mean of 17.8 describes no run that actually happened.
 
 Both EXACT arms eliminate the mode rather than shifting the average. Under v1 every SOL run writes 35 to 43 tests; under v1.1 the five results are 4, 4, 5, 5, 5 unnoticed changes — a spread of one mutant across five runs.
 
-Opus never shows the bad mode: its inline runs range from 5 to 10, and its test counts vary widely (28 to 76) without producing a catastrophic run. What the structured workflows do there is shift the whole distribution down and, under v1.1, stretch it: 1 · 2 · 3 · 4 · 7 contains both the strongest suite on this kata and a run that is no better than the Opus v1 average.
+Opus never shows the bad mode: its inline runs range from 5 to 10, and its test counts vary widely (28 to 76) without producing a catastrophic run. What the structured workflows do there is shift the whole distribution down and, under v1.1, stretch it: 1 · 2 · 4 · 4 · 7 contains both the strongest suite on this kata and a run that is worse than the Opus v1 average of 5.4.
 
 The practical reading is about risk, not about averages. On Claim Office with SOL, inline TDD has a roughly even chance per run of producing a suite that misses a quarter of the behaviour, and no signal inside the run says which kind you got — external correctness is 1.00 in all five. That variance, not the mean, is what the workflow buys away.
 
@@ -275,10 +275,10 @@ Four runs in this RQ miss one of the fifteen acceptance scenarios: two under Opu
 |---|---|---:|---:|---:|
 | EXACT v1 | miss | 0.93 | 3 | 5.4 |
 | EXACT v1 | miss | 0.93 | 3 | 5.4 |
-| EXACT v1.1 | miss | 0.93 | 1 | 3.4 |
-| EXACT v1.1 | miss | 0.93 | 4 | 3.4 |
+| EXACT v1.1 | miss | 0.93 | 1 | 3.6 |
+| EXACT v1.1 | miss | 0.93 | 4 | 3.6 |
 
-All four are at or below their cell's mean gap, and the run with the strongest suite on this kata — 1 unnoticed change out of 82 mutants — is one of them. The misses are therefore not a test-strength failure. They are a reading of the specification: the run logs show the agent deciding that a clause has no discriminating example among the scenarios it was given and deliberately writing no unforced code for it. The suite then pins that decision firmly, which is exactly what a strong suite does with a wrong premise.
+Three of the four are below their cell's mean gap and the fourth sits just above it (4 against 3.6); the run with the strongest suite on this kata — 1 unnoticed change out of 82 mutants — is one of them. The misses are therefore not a test-strength failure. They are a reading of the specification: the run logs show the agent deciding that a clause has no discriminating example among the scenarios it was given and deliberately writing no unforced code for it. The suite then pins that decision firmly, which is exactly what a strong suite does with a wrong premise.
 
 This is the limit of what mutation testing can tell us. It measures whether the tests constrain the implementation, not whether the implementation is the one the specification asked for. `verification_pct` and `mutants_survived` are answering different questions on this kata, and on these four runs they point in opposite directions.
 
@@ -291,13 +291,13 @@ Splitting the test-gap reduction into its two steps separates what the workflow 
 | Model | Inline | → EXACT v1 | → EXACT v1.1 | Step 1 | Step 2 |
 |---|---:|---:|---:|---:|---:|
 | GPT-5.6 SOL | 17.8 | 6.0 | 4.6 | −11.8 | −1.4 |
-| Opus 5 | 8.0 | 5.4 | 3.4 | −2.6 | −2.0 |
+| Opus 5 | 8.0 | 5.4 | 3.6 | −2.6 | −1.8 |
 
-For SOL the shared-context workflow does almost everything: the first step removes 11.8 unnoticed changes per run, the subagent a further 1.4. For Opus the two steps are nearly equal, −2.6 and −2.0, so the subagent contributes about as much again as the workflow before it.
+For SOL the shared-context workflow does almost everything: the first step removes 11.8 unnoticed changes per run, the subagent a further 1.4. For Opus the two steps are of similar size, −2.6 and −1.8, so the subagent contributes about two thirds as much again as the workflow before it.
 
-The same split appears in `cognitive_max` (F-1.8.2). On Claim Office the subagent lowers Opus `cognitive_max` from 4.4 to 3.4, while on SOL it raises it from 5.8 to 7.8. Two independent quality dimensions therefore agree: **the isolated Refactor subagent improves Opus and does not improve SOL.** SOL's gains on this kata come from the Predictive TDD structure itself, not from moving the Refactor step out of the main context.
+The same split appears in `cognitive_max` (F-1.8.2). On Claim Office the subagent lowers Opus `cognitive_max` from 4.4 to 3.2, while on SOL it raises it from 5.8 to 7.8. Two independent quality dimensions therefore agree: **the isolated Refactor subagent improves Opus and does not improve SOL.** SOL's gains on this kata come from the Predictive TDD structure itself, not from moving the Refactor step out of the main context.
 
-The starting points explain part of it. SOL's inline baseline is the weakest suite in the RQ and has the most room; once the workflow has removed the bad mode (F-1.8.11), little is left for a further step to find. Opus starts twice as strong and still halves its gap across the two steps, while defending a growing mutant population — 68.4 mutants under inline TDD against 94.8 under v1.1.
+The starting points explain part of it. SOL's inline baseline is the weakest suite in the RQ and has the most room; once the workflow has removed the bad mode (F-1.8.11), little is left for a further step to find. Opus starts twice as strong and still halves its gap across the two steps, while defending a growing mutant population — 68.4 mutants under inline TDD against 89.4 under v1.1.
 
-For a recommendation, read this together with the cost: the subagent triples duration and cost again (F-1.8.4). On Opus it buys 2.0 fewer unnoticed changes per run and a lower `cognitive_max`; on SOL it buys 1.4 fewer unnoticed changes and a worse `cognitive_max`. Only the Opus case is a defensible trade.
+For a recommendation, read this together with the cost: the subagent triples duration and cost again (F-1.8.4). On Opus it buys 1.8 fewer unnoticed changes per run and a lower `cognitive_max`; on SOL it buys 1.4 fewer unnoticed changes and a worse `cognitive_max`. Only the Opus case is a defensible trade.
 

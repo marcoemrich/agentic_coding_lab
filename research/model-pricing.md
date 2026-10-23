@@ -11,6 +11,7 @@ For the current pi/Requesty models (RQ-model-novel-pi, RQ-model-quality-pi, RQ-h
 |---|---|---:|---:|---:|:--:|
 | opus-4-8 | `vertex/claude-opus-4-8@eu` | $5.50 | $27.50 | $0.55 | yes |
 | opus-5-requesty | `vertex/claude-opus-5@eu` | $5.50 | $27.50 | $0.55 | yes |
+| opus-4-6-requesty | `vertex/claude-opus-4-6@europe-west1` | $5.50 | $27.50 | $0.55 | yes |
 | sonnet-5 | `vertex/claude-sonnet-5@eu` | $2.20 | $11.00 | $0.22 | yes |
 | gpt-5-6-sol | `azure/gpt-5.6-sol@swedencentral` | $4.40 | $22.00 | $0.44 | yes |
 | gpt-5-6-terra | `azure/gpt-5.6-terra@swedencentral` | $2.20 | $13.20 | $0.22 | yes |
@@ -25,6 +26,8 @@ For the current pi/Requesty models (RQ-model-novel-pi, RQ-model-quality-pi, RQ-h
 | deepseek-v4-flash | `tensorx/deepseek-v4-flash` | $0.25 | $0.30 | $0.06 | yes |
 | deepseek-v4-1-flash | `sference/deepseek-v4.1-flash` | $0.50 | $1.50 | $0.05 | yes |
 | qwen3-8 | `tensorx/qwen3.8` | $2.50 | $6.00 | $0.63 | yes |
+| deepseek-v4-pro-requesty (OC) | `tensorx/deepseek-v4-pro` | $1.75 | $3.50 | $0.44 | yes |
+| deepseek-v4-flash-requesty (OC) | `tensorx/deepseek-v4-flash` | $0.25 | $0.30 | $0.06 | yes |
 | qwen3-235b | `nebius/qwen/qwen3-235b-a22b-instruct-2507` | $0.20 | $0.60 | $0.20 | **no** |
 
 Notes:
@@ -37,6 +40,7 @@ Notes:
 - Cache write is not reported separately on the OpenAI/GLM/Kimi/MiniMax/DeepSeek routes → carried as 0 in `compute-cost.py`.
 - **The two DeepSeek flash generations are separate cells** (wired for pi 2026-10-23, rates from the live catalogue that day): `deepseek-v4-flash` on tensorx and `deepseek-v4-1-flash` on sference. Different generation *and* different provider, at a 2x input / 5x output spread — never merge them, and do not read the $0.10/$0.20 in "Further DeepSeek variants" below as the Requesty rate: that figure is OpenRouter's and does not apply to either route.
 - **The undated tensorx aliases are not in the catalogue but resolve.** `tensorx/deepseek-v4-pro` serves `deepseek-v4-pro`, `tensorx/deepseek-v4-flash` serves `deepseek-v4-flash-0731` (probed 2026-10-23). The catalogue lists only dated snapshots (`-0731`, `-0813`, `-0424`); the aliases are deliberately not pinned to a date, so a cell follows the provider's current snapshot. The flash rates above are the `-0731` ones.
+- **`deepseek-v4-flash` and `deepseek-v4-flash-requesty` are the same tensorx alias on two harnesses** — the bare id is the pi route, the `-requesty` one the OpenCode route that replaced the dead Portkey route on 2026-10-19. The tariff is identical and was read from the catalogue independently on 2026-10-19 and 2026-10-23 with the same result; the ids differ because the harness does, not the price. `deepseek-v4-pro` / `deepseek-v4-pro-requesty` are the same pair.
 - **`glm-5-3` and `qwen3-8` wired 2026-10-23** for RQ-current-models-ptdd. `glm-5-3` sits on sference where `glm-5-2` sits on tensorx, so the version jump carries a backprovider confound — the same one the glm-5-1/glm-5-2 pair has. `qwen3-8` is `tensorx/qwen3.8` ("Qwen 3.8", not an 8B model) and is a different generation *and* provider from `qwen3-235b` on nebius; at $2.50/$6.00 it is also an order of magnitude dearer than that cell.
 - Requesty rotates models/providers quickly — on deviations, diff the live catalogue against `compute-cost.py` `PRICES` and `experiments/docker/pi-config/agent/models.json`.
 

@@ -1656,7 +1656,7 @@
       "workflow": "exact-ptdd-v1.1-refactor-subagent-cc",
       "model": "opus-5-no-thinking",
       "counts": {
-        "runs": 4,
+        "runs": 5,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
@@ -1681,298 +1681,303 @@
           "id": "2026-10-01_12-33-47_claim-office-rust-example-mapping_exact-ptdd-v1.1-refactor-subagent-cc_opus-5-no-thinking",
           "started_at": "2026-10-01T12:33:47+00:00",
           "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-19_02-32-59_claim-office-rust-example-mapping_exact-ptdd-v1.1-refactor-subagent-cc_opus-5-no-thinking",
+          "started_at": "2026-10-19T02:32:59+00:00",
+          "exit_reason": "ok"
         }
       ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.983325,
-          "sd": 0.03334999999999999,
+          "n": 5,
+          "mean": 0.98666,
+          "sd": 0.029829146819847187,
           "null_count": 0
         },
         "tests_passing": {
           "kind": "bool",
-          "n": 4,
-          "k": 4,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 4,
-          "mean": 1155.75,
-          "sd": 94.89423937556307,
+          "n": 5,
+          "mean": 1152,
+          "sd": 82.60750571225353,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 4,
+          "n": 5,
           "mean": 0,
           "sd": 0.0,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 4,
-          "mean": 3.5,
-          "sd": 1.2909944487358056,
+          "n": 5,
+          "mean": 3.4,
+          "sd": 1.140175425099138,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.45,
-          "sd": 0.12463279397226615,
+          "n": 5,
+          "mean": 0.48200000000000004,
+          "sd": 0.1294990347454374,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 4,
-          "mean": 7.25,
-          "sd": 1.2583057392117916,
+          "n": 5,
+          "mean": 7.2,
+          "sd": 1.0954451150103321,
           "null_count": 0
         },
         "mccabe_avg": {
           "kind": "num",
-          "n": 4,
-          "mean": 2.09,
-          "sd": 0.18165902124584957,
+          "n": 5,
+          "mean": 2.198,
+          "sd": 0.2882186669874108,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 4,
-          "mean": 27.5,
-          "sd": 5.066228051190222,
+          "n": 5,
+          "mean": 27.8,
+          "sd": 4.43846820423443,
           "null_count": 0
         },
         "avg_loc_per_function": {
           "kind": "num",
-          "n": 4,
-          "mean": 6.5925,
-          "sd": 0.5189332005823742,
+          "n": 5,
+          "mean": 6.838,
+          "sd": 0.7094504915778128,
           "null_count": 0
         },
         "median_loc_per_function": {
           "kind": "num",
-          "n": 4,
-          "mean": 6,
-          "sd": 0.0,
+          "n": 5,
+          "mean": 6.3,
+          "sd": 0.6708203932499369,
           "null_count": 0
         },
         "functions": {
           "kind": "num",
-          "n": 4,
-          "mean": 55,
-          "sd": 6.782329983125268,
+          "n": 5,
+          "mean": 51.6,
+          "sd": 9.60728889958036,
           "null_count": 0
         },
         "mutation_score": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.9744007601532754,
-          "sd": 0.012316434033494363,
+          "n": 5,
+          "mean": 0.9779821465841587,
+          "sd": 0.013338011632647593,
           "null_count": 0
         },
         "mutants_total": {
           "kind": "num",
-          "n": 4,
-          "mean": 128,
-          "sd": 29.87752778706208,
+          "n": 5,
+          "mean": 128.4,
+          "sd": 25.89015256810975,
           "null_count": 0
         },
         "mutants_survived": {
           "kind": "num",
-          "n": 4,
-          "mean": 3.25,
-          "sd": 1.8929694486000912,
+          "n": 5,
+          "mean": 2.8,
+          "sd": 1.9235384061671346,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 4,
-          "mean": 50.75,
-          "sd": 5.123475382979799,
+          "n": 5,
+          "mean": 52.2,
+          "sd": 5.495452665613635,
           "null_count": 0
         },
         "test_lines": {
           "kind": "num",
-          "n": 4,
-          "mean": 578.25,
-          "sd": 129.9676241736123,
+          "n": 5,
+          "mean": 615,
+          "sd": 139.36104190196053,
           "null_count": 0
         },
         "lines_of_code": {
           "kind": "num",
-          "n": 4,
-          "mean": 819.5,
-          "sd": 80.62051021090518,
+          "n": 5,
+          "mean": 812.2,
+          "sd": 71.70216175262779,
           "null_count": 0
         },
         "coverage_statements_pct": {
           "kind": "num",
-          "n": 4,
-          "mean": 94.25,
-          "sd": 0.9574271077563381,
+          "n": 5,
+          "mean": 95.4,
+          "sd": 2.701851217221259,
           "null_count": 0
         },
         "tdd_discipline": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.56025,
-          "sd": 0.03130894440890651,
+          "n": 5,
+          "mean": 0.5686,
+          "sd": 0.03292111784250344,
           "null_count": 0
         },
         "tdd_discipline_test_first": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.44575,
-          "sd": 0.04326179993173346,
+          "n": 5,
+          "mean": 0.4578,
+          "sd": 0.046148672786982724,
           "null_count": 0
         },
         "tdd_discipline_step": {
           "kind": "num",
-          "n": 4,
+          "n": 5,
           "mean": 1,
           "sd": 0.0,
           "null_count": 0
         },
         "tdd_discipline_closure": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.39549999999999996,
-          "sd": 0.03268536879604288,
+          "n": 5,
+          "mean": 0.4026,
+          "sd": 0.032454583651619996,
           "null_count": 0
         },
         "test_first_rate": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.44575,
-          "sd": 0.04326179993173346,
+          "n": 5,
+          "mean": 0.4578,
+          "sd": 0.046148672786982724,
           "null_count": 0
         },
         "red_batch_size": {
           "kind": "num",
-          "n": 4,
+          "n": 5,
           "mean": 1,
           "sd": 0.0,
           "null_count": 0
         },
         "red_batch_max": {
           "kind": "num",
-          "n": 4,
+          "n": 5,
           "mean": 1,
           "sd": 0.0,
           "null_count": 0
         },
         "red_batch_unmeasurable": {
           "kind": "num",
-          "n": 4,
-          "mean": 14,
-          "sd": 4.242640687119285,
+          "n": 5,
+          "mean": 14.4,
+          "sd": 3.7815340802378077,
           "null_count": 0
         },
         "green_batch_size": {
           "kind": "num",
-          "n": 4,
-          "mean": 7.125,
-          "sd": 4.40407008724127,
+          "n": 5,
+          "mean": 5.9,
+          "sd": 4.695742752749559,
           "null_count": 0
         },
         "chain_suite_runs": {
           "kind": "num",
-          "n": 4,
-          "mean": 263.5,
-          "sd": 14.479871085982314,
+          "n": 5,
+          "mean": 271,
+          "sd": 20.940391591371924,
           "null_count": 0
         },
         "cycles_total": {
           "kind": "num",
-          "n": 4,
-          "mean": 60.75,
-          "sd": 12.365947867699695,
+          "n": 5,
+          "mean": 63,
+          "sd": 11.832159566199232,
           "null_count": 0
         },
         "cycles_closed": {
           "kind": "num",
-          "n": 4,
-          "mean": 23.75,
-          "sd": 2.9860788111948193,
+          "n": 5,
+          "mean": 25.2,
+          "sd": 4.147288270665544,
           "null_count": 0
         },
         "refactor_events": {
           "kind": "num",
-          "n": 4,
-          "mean": 79.25,
-          "sd": 4.9916597106239795,
+          "n": 5,
+          "mean": 80,
+          "sd": 4.636809247747852,
           "null_count": 0
         },
         "skip_events": {
           "kind": "num",
-          "n": 4,
-          "mean": 32.25,
-          "sd": 7.58836829188814,
+          "n": 5,
+          "mean": 33.2,
+          "sd": 6.906518659932803,
           "null_count": 0
         },
         "refactor_per_cycle": {
           "kind": "num",
-          "n": 4,
-          "mean": 3.38375,
-          "sd": 0.522187306752408,
+          "n": 5,
+          "mean": 3.2424,
+          "sd": 0.5517325439014813,
           "null_count": 0
         },
         "green_attempts": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.089,
-          "sd": 0.08681781691181444,
+          "n": 5,
+          "mean": 0.097,
+          "sd": 0.07728518616138541,
           "null_count": 0
         },
         "chain_deviations": {
           "kind": "num",
-          "n": 4,
-          "mean": 42,
-          "sd": 10.862780491200215,
+          "n": 5,
+          "mean": 42.8,
+          "sd": 9.57601169589929,
           "null_count": 0
         },
         "chain_opens_red": {
           "kind": "bool",
-          "n": 4,
+          "n": 5,
           "k": 0,
           "null_count": 0
         },
         "chain_ends_green": {
           "kind": "bool",
-          "n": 4,
-          "k": 4,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "predictions_correct_rate": {
           "kind": "rate",
-          "n": 4,
-          "k": 399,
-          "t": 403,
+          "n": 5,
+          "k": 543,
+          "t": 550,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 4,
-          "mean": 6065,
-          "sd": 534.8513812265983,
+          "n": 5,
+          "mean": 6234,
+          "sd": 597.7913515600573,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 4,
-          "mean": 98621950.25,
-          "sd": 12655026.731395088,
+          "n": 5,
+          "mean": 104722437.4,
+          "sd": 17498342.59339492,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 4,
-          "mean": 89.299025,
-          "sd": 10.018147585714974,
+          "n": 5,
+          "mean": 93.3548,
+          "sd": 12.55065795247405,
           "null_count": 0
         }
       }

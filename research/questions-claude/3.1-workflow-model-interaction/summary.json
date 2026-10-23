@@ -97,7 +97,7 @@
       "workflow": "exact-subagents-v1-cc",
       "model": "opus-4-6-portkey-no-thinking",
       "counts": {
-        "runs": 4,
+        "runs": 5,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
@@ -122,34 +122,39 @@
           "id": "2026-05-19_00-48-02_claim-office-example-mapping_v4-exact-subagents_opus-4-6-portkey-no-thinking-2",
           "started_at": "2026-05-19T00:48:02+00:00",
           "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-20_04-41-17_claim-office-example-mapping_exact-subagents-v1-cc_opus-4-6-requesty-no-thinking",
+          "started_at": "2026-10-20T04:41:17+00:00",
+          "exit_reason": "ok"
         }
       ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.91665,
-          "sd": 0.08388263626440613,
+          "n": 5,
+          "mean": 0.93332,
+          "sd": 0.08164966013401401,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 4,
-          "mean": 13.75,
-          "sd": 1.2583057392117916,
+          "n": 5,
+          "mean": 14,
+          "sd": 1.224744871391589,
           "null_count": 0
         },
         "tests_passing": {
           "kind": "bool",
-          "n": 4,
-          "k": 4,
+          "n": 5,
+          "k": 5,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 4,
-          "mean": 96.754175,
-          "sd": 15.033572981247675,
+          "n": 5,
+          "mean": 78.61224,
+          "sd": 42.60463900983084,
           "null_count": 0
         }
       }

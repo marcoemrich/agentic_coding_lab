@@ -1,0 +1,5 @@
+# Every dependency is pre-fetched into the image's registry. Offline makes an
+# unpinned or new dependency fail fast instead of hanging on the network the
+# batch container may not have.
+[net]
+offline = true

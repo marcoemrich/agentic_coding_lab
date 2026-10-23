@@ -7,8 +7,9 @@ factors:
     - kimi-k2-6
     - glm-5-1
     - gemini-3-5-flash
-    - deepseek-v4-flash
-    - deepseek-v4-pro
+    # Requesty/tensorx only; the Portkey-era runs are out of the cells (see Methodological notes)
+    - deepseek-v4-flash-requesty
+    - deepseek-v4-pro-requesty
 controls:
   workflow: exact-single-context-v2-testlist-fix-oc
   kata_base: game-of-life
@@ -66,6 +67,7 @@ Gemini 2.5 Pro was removed from the RQ on 2026-05-25: three smoke attempts (91s/
 ## Methodological notes
 
 - All four models run via Portkey, but with different backproviders (Vertex EU for Opus, Vertex for Gemini, OpenRouter for Kimi/GLM). Backprovider routing effects are implicitly pinned in the lab-variant IDs; a changing backprovider would require a new lab variant.
+- **DeepSeek cells are Requesty-only.** The original DeepSeek runs went through Portkey (`@openrouter-eval/deepseek/deepseek-v4-{flash,pro}`). Portkey shut down in 2026-07; from 2026-10-19 the cells are `deepseek-v4-{flash,pro}-requesty` (Requesty EU router, backprovider `tensorx`) and the Portkey runs no longer count. They were not merged because the route changes the model's behaviour, not just its speed: on tensorx `deepseek-v4-pro` emits no reasoning tokens at all (0 against ~20 k per run on Portkey), while `deepseek-v4-flash` reasons on both. The Portkey runs stay in `experiments/runs/` under the bare IDs.
 - `n=5` per cell follows memory [[replicates-n-reliability]] (default for a medium field).
 - The single-context-v2 workflow enforces test-first TDD with `skill` tool calls. Observable drift in `cycle_count` (skeleton: only 2 of ~18 cycles captured via the skill tool) is a workflow-compliance property, not a parser bug. Distinguish in findings: "model A has higher TDD discipline" ≠ "model A uses the skill tool more often".
 - TDD discipline metrics (`cycle_count`, `predictions_*`, `refactorings_applied`) are available for OC runs from 2026-05-25 thanks to `parse_opencode_transcript.py`.

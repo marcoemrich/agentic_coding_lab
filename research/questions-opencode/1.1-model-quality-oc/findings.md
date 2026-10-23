@@ -1,40 +1,45 @@
 # RQ-model-quality-oc — Findings
 
-**Setup**: game-of-life-example-mapping × exact-single-context-v2-testlist-fix-oc × n=5 per cell (30 runs total, 29 without timeout). As of 2026-05-28.
+**Setup**: game-of-life-example-mapping × exact-single-context-v2-testlist-fix-oc × n=5 per cell (30 runs total, all completed). The two DeepSeek cells are Requesty/tensorx only (`deepseek-v4-{flash,pro}-requesty`, all runs from 2026-10-19). As of 2026-10-19.
 
 ## Overview
 
 Code quality as primary outcome (lower = better except where noted); correctness (`verification_pct`, higher = better) as gating precondition.
 
-| Metric | Direction | opus-4-7-portkey | glm-5-1 | gemini-3-5-flash | kimi-k2-6 | deepseek-v4-flash | deepseek-v4-pro |
+| Metric | Direction | opus-4-7-portkey | glm-5-1 | gemini-3-5-flash | kimi-k2-6 | deepseek-v4-flash-requesty | deepseek-v4-pro-requesty |
 |---|---|---|---|---|---|---|---|
-| `verification_pct` (mean) | higher | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | 0.57 | **1.00** 🏆 | 0.85 |
-| `verification_pct` (std) | lower | **0.00** 🏆 | **0.00** 🏆 | **0.00** 🏆 | 0.40 | **0.00** 🏆 | 0.33 |
-| `tests_passing` (rate) | higher | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | 80% |
-| `completed_within_budget` (rate) | higher | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | 80% |
-| `smell_total` (mean) | lower | 3.6 | **2.8** 🏆 | 4.0 | 4.4 | 4.0 | 4.2 |
-| `cognitive_max` (mean) | lower | **11.4** 🏆 | **11.6** 🏆 | 16.0 | 9.4 | 13.2 | 11.4 |
-| `cognitive_avg` (mean) | lower | **8.03** 🏆 | **7.8** 🏆 | 14.07 | 8.4 | 8.78 | 10.6 |
-| `mccabe_max` (mean) | lower | 7.6 | **7.0** 🏆 | 10.4 | 7.6 | 9.4 | 8.6 |
-| `mccabe_avg` (mean) | lower | **2.91** 🏆 | 3.39 | 6.0 | 4.85 | 3.99 | 3.28 |
-| `longest_function` (mean) | lower | **18.6** 🏆 | 19.8 | **18.6** 🏆 | 15.2 | 27.6 | 15.0 |
-| `avg_loc_per_function` (mean) | lower | **7.59** 🏆 | 10.05 | 15.63 | 9.9 | 13.10 | 9.53 |
-| `median_loc_per_function` (mean) | lower | **3.3** 🏆 | 8.5 | 14.9 | 8.3 | 9.8 | 7.0 |
-| `lines_of_code` (mean) | lower (at equal correctness) | **38.2** 🏆 | 46.4 | 52.2 | 22.4 | 44.8 | 24.6 |
-| `tests_total` (mean) | higher | **9.4** 🏆 | **9.8** 🏆 | 8.4 | 7.0 | **9.2** 🏆 | 8.6 |
-| `cycle_count` (mean) | — | 3.0 | 2.2 | 7.0 | 5.0 | 5.4 | 7.6 |
-| `refactorings_applied` (mean) | — | 1.6 | 2.4 | 3.6 | 3.4 | 4.8 | 4.6 |
-| `predictions_total` (mean) | higher (skill compliance) | **4.8** 🏆 | 4.4 | 0.4 | 2.0 | 1.4 | **6.2** 🏆 |
-| `duration_seconds` (mean) | lower | 231 | 835 | **153** 🏆 | 1083 | 612 | 2381 |
-| `total_tokens` (mean) | lower | **1.82 M** 🏆 | 2.96 M | 2.80 M | 2.28 M | 2.71 M | 2.82 M |
-| `cost_usd` (mean, $/run) | lower (at equal correctness) | $1.84 | $0.74 | $1.06 | $1.06 | **$0.10** 🏆 | $0.37 |
-| `cost_usd` (mean, $/perfect-run) | lower | $1.84 | $0.74 | $1.06 | $2.65 | **$0.10** 🏆 | $0.46 |
+| `verification_pct` (mean) | higher | **1.00** 🏆 | **1.00** 🏆 | **1.00** 🏆 | 0.57 | **1.00** 🏆 | **1.00** 🏆 |
+| `verification_pct` (std) | lower | **0.00** 🏆 | **0.00** 🏆 | **0.00** 🏆 | 0.40 | **0.00** 🏆 | **0.00** 🏆 |
+| `tests_passing` (rate) | higher | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 |
+| `completed_within_budget` (rate) | higher | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 | **100%** 🏆 |
+| `smell_total` (mean) | lower | 3.6 | 2.8 | 4.0 | 4.4 | **0.4** 🏆 | **0.8** 🏆 |
+| `cognitive_max` (mean) | lower | 11.4 | 11.6 | 16.0 | 9.4 | **8.2** 🏆 | **9.6** 🏆 |
+| `cognitive_avg` (mean) | lower | 8.03 | 7.8 | 14.07 | 8.4 | **5.23** 🏆 | **6.17** 🏆 |
+| `mccabe_max` (mean) | lower | **7.6** 🏆 | **7.0** 🏆 | 10.4 | 7.6 | **7.6** 🏆 | **8.2** 🏆 |
+| `mccabe_avg` (mean) | lower | **2.91** 🏆 | **3.39** 🏆 | 6.0 | 4.85 | **3.2** 🏆 | **3.35** 🏆 |
+| `longest_function` (mean) | lower | **18.6** 🏆 | **19.8** 🏆 | **18.6** 🏆 | 15.2 | **15.2** 🏆 | 20.8 |
+| `avg_loc_per_function` (mean) | lower | **7.59** 🏆 | 10.05 | 15.63 | 9.9 | 12.52 | 12.0 |
+| `median_loc_per_function` (mean) | lower | **3.3** 🏆 | 8.5 | 14.9 | 8.3 | 11.8 | 11.6 |
+| `code_mass` (mean) | lower (at equal correctness) | **160.4** 🏆 | 193.4 | 200.0 | 111.0 | 177.6 | **171.6** 🏆 |
+| `lines_of_code` (mean) | lower (at equal correctness) | **38.2** 🏆 | 46.4 | 52.2 | 22.4 | **39.0** 🏆 | **40.0** 🏆 |
+| `tests_total` (mean) | higher | **9.4** 🏆 | **9.8** 🏆 | 8.4 | 7.0 | **9.0** 🏆 | **9.8** 🏆 |
+| `cycle_count` (legacy, mean) | — | 3.0 | 2.2 | 7.0 | 5.0 | —¹ | —¹ |
+| `refactorings_applied` (legacy, mean) | — | 1.6 | 2.4 | 3.6 | 3.4 | —¹ | —¹ |
+| `predictions_total` (mean) | higher (skill compliance) | **4.8** 🏆 | **4.4** 🏆 | 0.4 | 2.0 | **5.8** 🏆 | 1.8 |
+| `duration_seconds` (mean) | lower | 231 | 835 | 153 | 1083 | 407 | **126** 🏆 |
+| `total_tokens` (mean) | lower | **1.82 M** 🏆 | 2.96 M | 2.80 M | 2.28 M | 2.45 M | **1.62 M** 🏆 |
+| `cost_usd` (mean, $/run) | lower (at equal correctness) | $1.84 | $0.74 | $1.06 | $1.06 | **$0.24** 🏆 | $0.81 |
+| `cost_usd` (mean, $/perfect-run) | lower | $1.84 | $0.74 | $1.06 | $2.65 | **$0.24** 🏆 | $0.81 |
 
-**Trophy rule on correctness gating**: Trophies for quality/efficiency metrics go only to models with `verification_pct = 1.0`. Kimi-K2 drops out of the pool at 0.57 mean (3 of 5 runs below 0.5) — its low `cognitive_max` (9.4), low `lines_of_code` (22.4) and short functions are partly stub artifacts (too few tests). DeepSeek-V4-Pro narrowly drops out of the pool at 0.85 — 4/5 runs are perfect, but 1 run timed out at 0.27 verification, so its low `code_mass` (124) and `lines_of_code` (24.6) do not count as clean winners. `cycle_count` and `refactorings_applied` are ambivalent (more cycles ≠ better, depending on skill compliance) — no trophy. `predictions_total` is exceptionally noted with a direction here: it measures compliance with the single-context-v2 skill format.
+**Trophy rule on correctness gating**: Trophies for quality/efficiency metrics go only to models with mean `verification_pct ≥ 0.90`. Kimi-K2 drops out of the pool at 0.57 mean (3 of 5 runs below 0.5) — its low `cognitive_max` (9.4), low `lines_of_code` (22.4), low `code_mass` (111.0) and short functions are partly stub artifacts (too few tests).
 
-`cognitive_max`, `cognitive_avg` and `longest_function`: Opus and GLM are separated by less than 1 σ — spread rule → both 🏆. At `longest_function` Flash is exactly level with Opus (18.6) → third 🏆.
+**Tie rule**: a cell shares the trophy when its gap to the row's best value is smaller than the smaller of the two cells' σ. That is why several rows carry three or four 🏆 — on `mccabe_max`, `mccabe_avg` and `longest_function` the eligible field is not separable.
 
-**Cost calculation**: per run from `transcript-metrics.json.total_tokens` × pricing per 1M tokens. Sources 2026-05-28: Anthropic pricing page (Opus), OpenRouter API (GLM/Kimi/DeepSeek), Vertex Standard (Gemini Flash). `reasoning` tokens are billed at the output rate. DeepSeek cache read is not explicitly stated on OpenRouter; conservative estimate 25 % of the input price.
+¹ The DeepSeek runs carry only the phase-chain metrics; the legacy counters `cycle_count` and `refactorings_applied` are not written for them. Both are ambivalent anyway (more cycles ≠ better, depending on skill compliance) — no trophy. `predictions_total` is exceptionally noted with a direction here: it measures compliance with the single-context-v2 skill format.
+
+**DeepSeek route**: both DeepSeek cells run through Requesty with backprovider `tensorx`. On that route `deepseek-v4-pro` emits no reasoning tokens in any of its five runs, while `deepseek-v4-flash` reasons (17.0 k reasoning tokens per run on average). The pro cell is therefore a non-reasoning configuration — see F-1.8.
+
+**Cost calculation**: per run from `transcript-metrics.json.total_tokens` × pricing per 1M tokens; `reasoning` tokens are billed at the output rate. `cost_usd` is not a declared outcome of this RQ, so these values are computed here, not taken from `runs.csv`. The price sources differ by model and date: Anthropic pricing page (Opus), OpenRouter API (GLM/Kimi) and Vertex Standard (Gemini Flash) as of 2026-05-28; the Requesty model list (tensorx) as of 2026-10-19 for both DeepSeek cells (`research/model-pricing.md`).
 
 | Model | input | output | cache_read |
 |---|---|---|---|
@@ -42,10 +47,10 @@ Code quality as primary outcome (lower = better except where noted); correctness
 | glm-5-1 (OpenRouter) | $0.98 | $3.08 | $0.18 |
 | kimi-k2-6 (OpenRouter) | $0.73 | $3.49 | $0.37 |
 | gemini-3-5-flash (Vertex Standard) | $1.50 | $9.00 | $0.15 |
-| deepseek-v4-flash (OpenRouter) | $0.10 | $0.20 | $0.025 (25%) |
-| deepseek-v4-pro (OpenRouter) | $0.44 | $0.87 | $0.11 (25%) |
+| deepseek-v4-flash (Requesty tensorx) | $0.25 | $0.30 | $0.06 |
+| deepseek-v4-pro (Requesty tensorx) | $1.75 | $3.50 | $0.44 |
 
-Portkey gateway markup not included.
+No gateway markup included.
 
 **Cost breakdown per mean run** (tokens as mean over n=5):
 
@@ -55,51 +60,53 @@ Portkey gateway markup not included.
 | glm-5-1 | 144 k × $0.98 = $0.14 | 30.9 k × $3.08 = $0.10 | 2.79 M × $0.18 = $0.50 | **$0.74** |
 | kimi-k2-6 | 371 k × $0.73 = $0.27 | 27.7 k × $3.49 = $0.10 | 1.88 M × $0.37 = $0.70 | **$1.06** |
 | gemini-3-5-flash | 400 k × $1.50 = $0.60 | 11.2 k × $9.00 = $0.10 | 2.39 M × $0.15 = $0.36 | **$1.06** |
-| deepseek-v4-flash | 299 k × $0.10 = $0.03 | 30.5 k × $0.20 = $0.01 | 2.38 M × $0.025 = $0.06 | **$0.10** |
-| deepseek-v4-pro | 110 k × $0.44 = $0.05 | 32.9 k × $0.87 = $0.03 | 2.68 M × $0.11 = $0.29 | **$0.37** |
+| deepseek-v4-flash-requesty | 430 k × $0.25 = $0.11 | 33.9 k × $0.30 = $0.01 | 1.99 M × $0.06 = $0.12 | **$0.24** |
+| deepseek-v4-pro-requesty | 39.4 k × $1.75 = $0.07 | 12.9 k × $3.50 = $0.05 | 1.57 M × $0.44 = $0.69 | **$0.81** |
 
-`$/perfect-run` scales with the share of runs with `verification_pct = 1.0`: Kimi $1.06/run × (5/2 verified) = **$2.65** per correct solution. DeepSeek-V4-Pro $0.37/run × (5/4 verified) = **$0.46**. Other models 5/5 verified → unchanged.
+`$/perfect-run` scales with the share of runs with `verification_pct = 1.0`: Kimi $1.06/run × (5/2 verified) = **$2.65** per correct solution. Other models 5/5 verified → unchanged.
+
+The pro cell's cost is dominated by cache reads (1.57 M tokens at $0.44): it sends little fresh input (39.4 k against 430 k for flash) but pays 7× flash's cache-read rate.
 
 ---
 
-## F-1.1 — Opus 4.7 writes the most compact implementation
+## F-1.1 — Opus 4.7 writes the smallest functions
 
-Opus delivers the shortest solution across all code-volume and function-size metrics (LoC, code_mass, avg/median_loc_per_function) **at full external correctness** and at the same time has the lowest token consumption (1.82 M vs 2.28–2.96 M for the other models with `verification_pct = 1.0`).
+Opus delivers the smallest functions (`avg_loc_per_function`, `median_loc_per_function`) **at full external correctness**. In overall size it is not separable from the DeepSeek cells: `lines_of_code` is level with both (38.2 against 39.0 / 40.0), Code Mass (APP) with deepseek-v4-pro (160.4 against 171.6), all within one σ. Token consumption is level with deepseek-v4-pro (1.82 M against 1.62 M) and below the other four models (2.28–2.96 M).
 
-| Model | lines_of_code | avg_loc_per_function | median_loc_per_function | total_tokens |
-|---|---|---|---|---|
-| **opus-4-7-portkey** | **38.2** 🏆 | **7.59** 🏆 | **3.3** 🏆 | **1.82 M** 🏆 |
-| glm-5-1 | 46.4 | 10.05 | 8.5 | 2.96 M |
-| gemini-3-5-flash | 52.2 | 15.63 | 14.9 | 2.80 M |
-| deepseek-v4-flash | 44.8 | 13.10 | 9.8 | 2.71 M |
-| kimi-k2-6\* | 22.4 | 9.9 | 8.3 | 2.28 M |
-| deepseek-v4-pro\* | 24.6 | 9.53 | 7.0 | 2.82 M |
+| Model | lines_of_code | code_mass | avg_loc_per_function | median_loc_per_function | total_tokens |
+|---|---|---|---|---|---|
+| **opus-4-7-portkey** | **38.2** 🏆 | **160.4** 🏆 | **7.59** 🏆 | **3.3** 🏆 | **1.82 M** 🏆 |
+| deepseek-v4-pro-requesty | **40.0** 🏆 | **171.6** 🏆 | 12.0 | 11.6 | **1.62 M** 🏆 |
+| deepseek-v4-flash-requesty | **39.0** 🏆 | 177.6 | 12.52 | 11.8 | 2.45 M |
+| glm-5-1 | 46.4 | 193.4 | 10.05 | 8.5 | 2.96 M |
+| gemini-3-5-flash | 52.2 | 200.0 | 15.63 | 14.9 | 2.80 M |
+| kimi-k2-6\* | 22.4 | 111.0 | 9.9 | 8.3 | 2.28 M |
 
-\* not trophy-eligible (verification_pct < 1.0).
+\* not trophy-eligible (`verification_pct` < 0.90).
 
-The median LoC/function of 3.3 (vs 7.0–14.9 for the others) means: Opus consistently extracts small helpers. At `avg_loc_per_function` Opus, at 7.59, is about half the size of Gemini Flash (15.63) and 40 % more compact than DeepSeek-V4-Flash (13.10).
+The median LoC/function of 3.3 (vs 8.3–14.9 for the others) means: Opus consistently extracts small helpers. The DeepSeek cells write about as many lines, but in fewer, longer functions (`median_loc_per_function` 11.6–11.8). At `avg_loc_per_function` Opus, at 7.59, is about half the size of Gemini Flash (15.63).
 
 ---
 
 ## F-1.2 — GLM 5.1 holds the Opus level in complexity
 
-GLM 5.1 reaches values equal to or better than Opus 4.7 across `smell_total`, `cognitive_*` and `mccabe_max`. Both clearly beat Gemini Flash and DeepSeek-V4-Flash (cognitive-max spread 1.6–4.4 points).
+GLM 5.1 reaches values equal to or better than Opus 4.7 across `smell_total`, `cognitive_*` and `mccabe_*`. Both clearly beat Gemini Flash (`cognitive_max` gap 4.4–4.6 points). The lowest complexity in the field belongs to the DeepSeek cells (F-1.9).
 
-| Metric | opus-4-7-portkey | glm-5-1 | gemini-3-5-flash | deepseek-v4-flash |
-|---|---|---|---|---|
-| smell_total | 3.6 | **2.8** 🏆 | 4.0 | 4.0 |
-| cognitive_max | **11.4** 🏆 | **11.6** 🏆 | 16.0 | 13.2 |
-| cognitive_avg | **8.03** 🏆 | **7.8** 🏆 | 14.07 | 8.78 |
-| mccabe_max | 7.6 | **7.0** 🏆 | 10.4 | 9.4 |
-| mccabe_avg | **2.91** 🏆 | 3.39 | 6.0 | 3.99 |
+| Metric | opus-4-7-portkey | glm-5-1 | gemini-3-5-flash |
+|---|---|---|---|
+| smell_total | 3.6 | **2.8** | 4.0 |
+| cognitive_max | **11.4** | 11.6 | 16.0 |
+| cognitive_avg | 8.03 | **7.8** | 14.07 |
+| mccabe_max | 7.6 | **7.0** | 10.4 |
+| mccabe_avg | **2.91** | 3.39 | 6.0 |
 
-GLM 5.1 thereby confirms here too (game-of-life) the impression from RQ-model-novel-oc (claim-office): near-Opus quality at OpenRouter prices. In code volume, however, Opus is clearly more compact (F-1.1).
+Bold marks the better of Opus and GLM per row; trophies across the full field are in the Overview. GLM 5.1 thereby confirms here too (game-of-life) the impression from RQ-model-novel-oc (claim-office): near-Opus quality at OpenRouter prices. In function size, however, Opus is clearly more compact (F-1.1).
 
 ---
 
 ## F-1.3 — Kimi-K2 writes too few tests, fails external verification
 
-5/5 Kimi runs report `tests_passing=true`, but only 2/5 reach `verification_pct = 1.0` (the rest: 0.20, 0.27, 0.40). Mean `tests_total` is the lowest at 7.0 (vs Opus 9.4, GLM 9.8, Flash 8.4, deepseek-flash 9.2) with the highest spread (std 2.74, range 4–9).
+5/5 Kimi runs report `tests_passing=true`, but only 2/5 reach `verification_pct = 1.0` (the rest: 0.20, 0.27, 0.40). Mean `tests_total` is the lowest at 7.0 (vs Opus 9.4, GLM 9.8, Gemini Flash 8.4, deepseek-flash 9.0, deepseek-pro 9.8) with the highest spread (std 2.74, range 4–9).
 
 Pattern: Kimi minimizes the test list and then implements only what its own reduced suite demands — the internal vitest runs green, but the external `game-of-life-verification` suite uncovers cases Kimi never tested in the first place. This is exactly the pattern `claim-office-verification` was originally built against: internally green tests are no proof of correctness.
 
@@ -115,7 +122,7 @@ Pattern: Kimi minimizes the test list and then implements only what its own redu
 
 ## F-1.4 — Gemini 3.5 Flash: fast, but the most complex code
 
-At 153 s/run Flash is by far the fastest (Opus 231 s, deepseek-flash 612 s, GLM 835 s, Kimi 1083 s, deepseek-pro 2381 s) and reaches full correctness, but writes the most complex code: highest `cognitive_max` (16), `cognitive_avg` (14.07), `mccabe_max` (10.4), `mccabe_avg` (6.0) and the longest functions on average (avg_loc_per_function 15.63 vs Opus 7.59). Trade-off: speed against maintainability.
+At 153 s/run Gemini Flash is the second-fastest model (deepseek-pro 126 s, Opus 231 s, deepseek-flash 407 s, GLM 835 s, Kimi 1083 s) and reaches full correctness, but writes the most complex code: highest `cognitive_max` (16.0), `cognitive_avg` (14.07), `mccabe_max` (10.4), `mccabe_avg` (6.0) and the longest functions on average (`avg_loc_per_function` 15.63 vs Opus 7.59). Trade-off: speed against maintainability.
 
 ---
 
@@ -125,44 +132,57 @@ v5.1-oc requires prediction markers per red phase. Across the six models four di
 
 | Model | predictions_total (mean) | predictions_correct (mean) | Compliance profile |
 |---|---|---|---|
-| deepseek-v4-pro | **6.2** 🏆 | 5.6 (90%) | Consistent, format-faithful |
+| deepseek-v4-flash-requesty | **5.8** 🏆 | 5.8 (100%) | High mean, erratic (per run 14 / 8 / 3 / 2 / 2) |
 | opus-4-7-portkey | **4.8** 🏆 | 4.8 (100%) | Consistent, format-faithful |
-| glm-5-1 | 4.4 | 4.4 (100%) | Consistent, format-faithful |
+| glm-5-1 | **4.4** 🏆 | 4.4 (100%) | Consistent, format-faithful |
 | kimi-k2-6 | 2.0 | 2.0 (100%) | Partial, drifts into inline mode |
-| deepseek-v4-flash | 1.4 | 1.4 (100%) | Partial, drifts into inline mode |
+| deepseek-v4-pro-requesty | 1.8 | 1.6 (89%) | Partial, drifts into inline mode |
 | gemini-3-5-flash | 0.4 | 0.4 (100%) | Ignores the format almost entirely |
 
-Where predictions are written, they are nearly 100 % correct — i.e. the marker drop is not an accuracy problem, but a question of format compliance. Confirms H3 from the RQ README: a low `cycle_count` (Flash 7.0) with a low `predictions_total` (0.4) is not "weak TDD discipline", but a failure to recognize the skill format. At the same time deepseek-v4-pro shows the highest skill compliance with 6.2 predictions_total — and also the highest `cycle_count` (7.6).
+Where predictions are written, they are nearly 100 % correct — i.e. the marker drop is not an accuracy problem, but a question of format compliance. Confirms H3 from the RQ README: a low `cycle_count` (Gemini Flash 7.0) with a low `predictions_total` (0.4) is not "weak TDD discipline", but a failure to recognize the skill format. deepseek-flash has the highest mean but not the most consistent compliance: two runs carry most of it (14 and 8), the other three write 2–3 predictions, so its σ (5.22) is the largest in the field. The three leading cells are within 1 σ of each other, hence three 🏆.
 
 ---
 
 ## F-1.6 — DeepSeek-V4-Flash: cheapest path to the correct solution
 
-DeepSeek-V4-Flash reaches full external correctness (5/5 perfect, std 0.00) at a per-run cost of ~$0.10 — an order of magnitude below the next-cheapest models (GLM-5.1 $0.74, deepseek-v4-pro $0.37, gemini-flash and kimi $1.06). At `tests_total` (9.2) and `mccabe_avg` (3.99) it sits mid-field, in code size (LoC 44.8, code_mass 189) at the upper end — the trade-off is clear: cheap + correct vs compact.
+DeepSeek-V4-Flash reaches full external correctness (5/5 perfect, std 0.00) at a per-run cost of ~$0.24 — about 3× below the next-cheapest model (GLM-5.1 $0.74) and 7.7× below Opus ($1.84). It does not pay for this in code quality: it has the lowest `smell_total` (0.4) and `cognitive_max` (8.2) in the field and is level with Opus in `lines_of_code` (39.0 against 38.2). Its weakness is function size (`median_loc_per_function` 11.8 against 3.3 for Opus).
 
 | Model | $/perfect-run | duration | LoC | cognitive_max |
 |---|---|---|---|---|
-| **deepseek-v4-flash** | **$0.10** 🏆 | 612 s | 44.8 | 13.2 |
-| glm-5-1 | $0.74 | 835 s | 46.4 | **11.6** 🏆 |
-| gemini-3-5-flash | $1.06 | **153 s** 🏆 | 52.2 | 16.0 |
-| opus-4-7-portkey | $1.84 | 231 s | **38.2** 🏆 | **11.4** 🏆 |
+| **deepseek-v4-flash-requesty** | **$0.24** 🏆 | 407 s | **39.0** 🏆 | **8.2** 🏆 |
+| glm-5-1 | $0.74 | 835 s | 46.4 | 11.6 |
+| deepseek-v4-pro-requesty | $0.81 | **126 s** 🏆 | **40.0** 🏆 | **9.6** 🏆 |
+| gemini-3-5-flash | $1.06 | 153 s | 52.2 | 16.0 |
+| opus-4-7-portkey | $1.84 | 231 s | **38.2** 🏆 | 11.4 |
 
-For pure correctness without a complexity requirement, Flash is 18× cheaper than Opus here. The code-volume premium (44.8 vs 38.2 LoC) is small.
+The cost comparison crosses price sources (tensorx list prices 2026-10 for DeepSeek, OpenRouter/Vertex/Anthropic 2026-05 for the others, see Overview); the gap to GLM (3×) is large enough not to hinge on that.
 
 ---
 
-## F-1.7 — DeepSeek-V4-Pro: skill-compliance champion, but tail risk in duration
+## F-1.8 — DeepSeek-V4-Pro on tensorx runs without reasoning: fastest cell, weakest skill compliance among the DeepSeek cells
 
-With `predictions_total = 6.2` and `cycle_count = 7.6`, DeepSeek-V4-Pro produces the most structured TDD chain of all models — beyond Opus (4.8) and GLM (4.4). Prediction accuracy stays high at 90 % (5.6/6.2).
+On the Requesty/tensorx route `deepseek-v4-pro` emits 0 reasoning tokens in all five runs; `deepseek-v4-flash` on the same route emits 17.0 k per run. The pro cell is the fastest in the field and the leanest in tokens, while staying at full correctness:
 
-BUT: 1 of 5 runs hit the 7202 s container timeout (`verification_pct = 0.27`, `tests_passing = false`); the mean duration is the highest of all models at 2381 s and extremely variable at std=2704 s (range 854–7202 s). The other 4 runs are stable at ~1100 s with perfect verification.
+| Metric | deepseek-v4-pro-requesty | deepseek-v4-flash-requesty |
+|---|---|---|
+| reasoning tokens (mean) | 0 | 17.0 k |
+| `duration_seconds` | **126** (σ 6.04) | 407 (σ 75.39) |
+| `total_tokens` | **1.62 M** | 2.45 M |
+| `verification_pct` | 1.00 | 1.00 |
+| `predictions_total` | 1.8 | **5.8** |
 
-| Run | duration_s | verification_pct | predictions_total | cycle_count |
-|---|---|---|---|---|
-| 1 (timeout) | 7202 | 0.27 | 3 | 6 |
-| 2 | 1326 | 1.00 | 6 | 7 |
-| 3 | 854 | 1.00 | 5 | 8 |
-| 4 | 1417 | 1.00 | 7 | 8 |
-| 5 | 1107 | 1.00 | 11 | 9 |
+The duration gap is far outside both σ (126 ± 6 against 407 ± 75, and 153 ± 28 for the next-fastest model, Gemini Flash). Skill compliance is low — 1.8 predictions per run, one run with none — but that cannot be pinned on the missing reasoning: flash's mean rests on two runs (F-1.5). On game-of-life, the non-reasoning configuration loses no correctness and no code quality against its reasoning sibling.
 
-The finding parallels the skill-loop issue documented for Gemini 2.5 Pro in the RQ README, but in milder form (4/5 instead of 0/3 successes). For production use Pro needs auto-recovery mechanics or a shorter timeout — in the lab setting the `completed_within_budget = 80 %` signal is sufficient.
+---
+
+## F-1.9 — The DeepSeek cells write the least smelly and least complex code
+
+Both DeepSeek cells lead the field in `smell_total`, `cognitive_max` and `cognitive_avg`, at full correctness:
+
+| Metric | deepseek-v4-flash-requesty | deepseek-v4-pro-requesty | best other eligible cell |
+|---|---|---|---|
+| `smell_total` | **0.4** (σ 0.89) | **0.8** (σ 1.79) | 2.8 (GLM, σ 2.68) |
+| `cognitive_max` | **8.2** (σ 1.64) | **9.6** (σ 4.72) | 11.4 (Opus, σ 4.83) |
+| `cognitive_avg` | **5.23** (σ 2.18) | **6.17** (σ 2.87) | 7.8 (GLM, σ 2.93) |
+
+The `smell_total` gap to the rest of the field (0.4–0.8 against 2.8–4.0) exceeds the DeepSeek cells' σ; four of five runs in each DeepSeek cell have zero smells. The complexity gaps are smaller relative to their σ, but point the same way in both cells. The lead does not extend to `mccabe_max`, where every eligible cell but Gemini Flash is inseparable, or to function size, where Opus stays ahead (F-1.1).

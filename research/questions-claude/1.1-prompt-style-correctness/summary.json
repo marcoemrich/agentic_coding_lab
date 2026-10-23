@@ -845,7 +845,7 @@
       "workflow": "exact-single-context-v1-cc",
       "model": "opus-4-6-portkey",
       "counts": {
-        "runs": 4,
+        "runs": 5,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
@@ -870,49 +870,54 @@
           "id": "2026-05-12_08-05-57_claim-office-example-mapping_v5-exact-single-context_opus-4-6-portkey",
           "started_at": "2026-05-12T08:05:57+00:00",
           "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-20_04-41-17_claim-office-example-mapping_exact-single-context-v1-cc_opus-4-6-requesty",
+          "started_at": "2026-10-20T04:41:17+00:00",
+          "exit_reason": "ok"
         }
       ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 4,
-          "mean": 0.716675,
-          "sd": 0.37859242266585313,
+          "n": 5,
+          "mean": 0.77334,
+          "sd": 0.3515021735352429,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 4,
-          "mean": 10.75,
-          "sd": 5.678908345800274,
+          "n": 5,
+          "mean": 11.6,
+          "sd": 5.272570530585627,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 4,
+          "n": 5,
           "mean": 15,
           "sd": 0.0,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 4,
-          "mean": 2315.25,
-          "sd": 354.6983460162546,
+          "n": 5,
+          "mean": 2094,
+          "sd": 582.3366723811922,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 4,
-          "mean": 48374123,
-          "sd": 6741506.42657307,
+          "n": 5,
+          "mean": 45543275.6,
+          "sd": 8611295.877223026,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 4,
-          "mean": 96.156125,
-          "sd": 13.38636554791852,
+          "n": 5,
+          "mean": 81.44648,
+          "sd": 34.87498196511362,
           "null_count": 0
         }
       }
@@ -1414,7 +1419,7 @@
       "workflow": "exact-single-context-v1-cc",
       "model": "opus-4-7-no-thinking",
       "counts": {
-        "runs": 3,
+        "runs": 5,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
@@ -1434,49 +1439,59 @@
           "id": "2026-06-02_02-46-08_claim-office-user-story_v5-exact-single-context_opus-4-7-no-thinking",
           "started_at": "2026-06-02T02:46:08+00:00",
           "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-20_03-17-52_claim-office-user-story_exact-single-context-v1-cc_opus-4-7-no-thinking",
+          "started_at": "2026-10-20T03:17:53+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-10-20_03-17-52_claim-office-user-story_exact-single-context-v1-cc_opus-4-7-no-thinking-2",
+          "started_at": "2026-10-20T03:17:53+00:00",
+          "exit_reason": "ok"
         }
       ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 3,
-          "mean": 0.22223333333333334,
-          "sd": 0.038509262954948026,
+          "n": 5,
+          "mean": 0.28002,
+          "sd": 0.10955668395857918,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 3,
-          "mean": 3.3333333333333335,
-          "sd": 0.5773502691896257,
+          "n": 5,
+          "mean": 4.2,
+          "sd": 1.6431676725154984,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 3,
+          "n": 5,
           "mean": 15,
           "sd": 0.0,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 3,
-          "mean": 962.3333333333334,
-          "sd": 274.00243307922165,
+          "n": 5,
+          "mean": 750.8,
+          "sd": 354.8284092346609,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 3,
-          "mean": 35289149.666666664,
-          "sd": 12283146.967563417,
+          "n": 5,
+          "mean": 27355765.4,
+          "sd": 14743179.61646121,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 3,
-          "mean": 21.791433333333334,
-          "sd": 6.974717564413152,
+          "n": 5,
+          "mean": 17.20136,
+          "sd": 8.508733241382057,
           "null_count": 0
         }
       }

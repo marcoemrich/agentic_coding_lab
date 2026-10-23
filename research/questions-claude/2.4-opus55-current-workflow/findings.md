@@ -9,10 +9,10 @@ better of the two Predictive-TDD arms on the same model.
 
 | | Opus 5: Inline → EXACT | Opus 5.5: Inline → EXACT |
 |---|---|---|
-| `cognitive_max` ↓ | 6.20 → 2.40 (−61 %) | 7.60 → 2.00 (**−74 %**) |
-| `mccabe_max` ↓ | 5.40 → 3.00 (−44 %) | 8.40 → 3.00 (**−64 %**) |
-| `unit_size_avg` ↓ | 7.99 → 4.73 (−41 %) | 7.48 → 4.46 (−40 %) |
-| `unit_count` ↑ | 16.6 → 30.6 (1.8×) | 12.4 → 34.4 (**2.8×**) |
+| `cognitive_max` ↓ | 6.20 → 3.60 (−42 %) | 7.60 → 2.00 (**−74 %**) |
+| `mccabe_max` ↓ | 5.40 → 3.40 (−37 %) | 8.40 → 3.00 (**−64 %**) |
+| `unit_size_avg` ↓ | 7.99 → 4.68 (−41 %) | 7.48 → 4.46 (−40 %) |
+| `unit_count` ↑ | 16.6 → 38.8 (2.3×) | 12.4 → 34.4 (**2.8×**) |
 | Mutation Score ↑ | 0.96 → 0.97 (+0.01) | 0.76 → 0.95 (**+0.19**) |
 
 The scaffolding is worth **more** on the newer model, not less. Four
@@ -28,54 +28,60 @@ consequences, each carried by its own finding:
   tests at once; every Predictive-TDD cell writes exactly one. The phase chain
   measures this on both models (F-2.4.6).
 - **The model upgrade is cheaper in every arm** — 42 % to 64 % less list price
-  for the same workflow — and it is what makes the isolated-subagent arm viable
-  at all (F-2.4.4, F-2.4.7).
+  for the same workflow — and it is what moves the isolated-subagent arm from
+  the edge of the budget into its middle (F-2.4.4, F-2.4.7).
 
 Scope: one kata (Claim Office), one prompt style (Example Mapping), one stack
-(TypeScript), CLI 2.1.280, n=5 per cell. Correctness is saturated in five of six
-cells; the exception is the Opus 5 subagent arm, which hits the two-hour budget
-ceiling in 2 of 5 runs (F-2.4.7).
+(TypeScript), CLI 2.1.280, n=5 `ok` runs per cell. Correctness (external) is
+0.96–1.00 in every cell. The Opus 5 subagent arm needed seven attempts for its
+five `ok` runs: two hit the two-hour budget ceiling and are not replicates
+(F-2.4.7).
 
 A reminder that outranks any single cell here: `exit_reason: ok` together with
 `completed_within_budget: True` does not establish that a run finished — only
 `experiment-done.txt` does. RQ-fable-vs-opus5 F-1.19.10 records the failure
-shape. In this run set the two incomplete runs are
-honest timeouts and the column reports them correctly.
+shape. In this run set the two incomplete attempts were honest timeouts and
+were classified as such.
 
 ## Overview
 
 | Metric | Inline / O5 | PTDD-v1 / O5 | PTDD-v1.1 / O5 | Inline / O5.5 | PTDD-v1 / O5.5 | PTDD-v1.1 / O5.5 |
 |---|---:|---:|---:|---:|---:|---:|
-| **Correctness (external)** — higher = better | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 | 0.79 ± 0.44 | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 | 0.96 ± 0.09 |
+| **Correctness (external)** — higher = better | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 | 0.99 ± 0.03 | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 | 0.96 ± 0.09 |
 | Correctness (internal) | 5/5 | 5/5 | 5/5 | 5/5 | 5/5 | 5/5 |
-| `completed_within_budget` | **5/5** 🏆 | **5/5** 🏆 | 3/5 | **5/5** 🏆 | **5/5** 🏆 | **5/5** 🏆 |
-| `cognitive_max` — lower = better | 6.20 ± 2.17 | 3.60 ± 1.34 | (2.80 ± 0.84) | 7.60 ± 2.07 | 2.40 ± 0.55 | **2.00 ± 0.00** 🏆 |
-| `cognitive_avg` — lower = better | 2.39 ± 0.36 | 1.51 ± 0.24 | (1.37 ± 0.06) | 2.61 ± 0.34 | 1.43 ± 0.21 | **1.23 ± 0.12** 🏆 |
-| `mccabe_max` — lower = better | 5.40 ± 1.52 | 3.40 ± 0.55 | (3.00 ± 0.00) | 8.40 ± 1.52 | 3.40 ± 0.55 | **3.00 ± 0.00** 🏆 |
-| `mccabe_avg` — lower = better | 2.05 ± 0.22 | 1.54 ± 0.09 | (1.44 ± 0.18) | 2.40 ± 0.13 | 1.44 ± 0.05 | **1.39 ± 0.08** 🏆 |
-| `unit_count` — higher = better | 16.6 ± 0.9 | 27.0 ± 3.2 | (30.6 ± 10.2) | 12.4 ± 1.5 | 22.8 ± 2.8 | **34.4 ± 9.9** 🏆 |
-| `unit_size_max` — lower = better | 24.8 ± 4.4 | 16.0 ± 4.0 | (12.6 ± 1.9) | 26.2 ± 2.0 | **13.0 ± 1.6** 🏆 | 14.2 ± 2.2 |
-| `unit_size_avg` — lower = better | 7.99 ± 1.03 | 5.57 ± 0.15 | (4.73 ± 0.46) | 7.48 ± 0.45 | 4.81 ± 0.62 | **4.46 ± 0.40** 🏆 |
-| `unit_size_median` — lower = better | 6.00 ± 1.00 | 4.50 ± 1.00 | (3.40 ± 0.55) | 5.10 ± 0.82 | 3.80 ± 1.10 | **3.30 ± 0.67** 🏆 |
-| **Smell Total** — lower = better | **0.00 ± 0.00** 🏆 | **0.00 ± 0.00** 🏆 | (0.00 ± 0.00) | 0.40 ± 0.89 | **0.00 ± 0.00** 🏆 | **0.00 ± 0.00** 🏆 |
-| **Production LoC** | 278 ± 28 | 316 ± 35 | (447 ± 141) | 224 ± 12 | 222 ± 24 | 310 ± 61 |
-| **Code Mass (APP)** — lower = better | 720 ± 32 | 708 ± 80 | (780 ± 182) | 707 ± 37 | **632 ± 36** 🏆 | 655 ± 57 |
-| **Test LoC** | 446 ± 77 | 694 ± 175 | (407 ± 127) | 254 ± 25 | 277 ± 38 | 259 ± 29 |
-| `tests_total` | 50.6 ± 9.5 | 57.8 ± 7.5 | (49.6 ± 12.3) | 32.0 ± 2.3 | 47.8 ± 1.6 | 46.4 ± 2.3 |
-| **Mutation Score** — higher = better | 0.96 ± 0.02 | **0.97 ± 0.01** 🏆 | (0.93 ± 0.07) | 0.76 ± 0.10 | 0.94 ± 0.05 | 0.95 ± 0.03 |
-| `mutants_survived` — lower = better | 5.8 ± 3.4 | **4.4 ± 0.9** 🏆 | (11.0 ± 10.4) | 38.8 ± 15.0 | 7.8 ± 6.3 | 6.4 ± 3.9 |
-| `mutants_no_coverage` — lower = better | 1.2 ± 1.6 | 1.2 ± 1.1 | (4.8 ± 7.8) | 20.0 ± 18.5 | 2.8 ± 3.8 | 2.0 ± 2.4 |
-| `duration_seconds` — lower = better | 332 ± 63 | 1291 ± 128 | (5468 ± 1917) | **130 ± 14** 🏆 | 922 ± 80 | 2664 ± 433 |
-| `total_tokens` — lower = better | 3.5 M ± 0.9 M | 22.6 M ± 3.3 M | (63.1 M ± 29.8 M) | **1.4 M ± 0.3 M** 🏆 | 24.4 M ± 1.8 M | 55.3 M ± 7.6 M |
-| `cost_usd` — lower = better | 3.60 ± 0.59 | 16.93 ± 2.24 | (60.69 ± 24.34) | **1.31 ± 0.17** 🏆 | 9.79 ± 0.49 | 28.34 ± 3.30 |
+| `ok` runs / attempts — higher = better | **5/5** 🏆 | **5/5** 🏆 | 5/7 | **5/5** 🏆 | **5/5** 🏆 | **5/5** 🏆 |
+| `cognitive_max` — lower = better | 6.20 ± 2.17 | 3.60 ± 1.34 | 3.60 ± 1.14 | 7.60 ± 2.07 | 2.40 ± 0.55 | **2.00 ± 0.00** 🏆 |
+| `cognitive_avg` — lower = better | 2.39 ± 0.36 | 1.51 ± 0.24 | 1.44 ± 0.11 | 2.61 ± 0.34 | 1.43 ± 0.21 | **1.23 ± 0.12** 🏆 |
+| `mccabe_max` — lower = better | 5.40 ± 1.52 | 3.40 ± 0.55 | 3.40 ± 0.55 | 8.40 ± 1.52 | 3.40 ± 0.55 | **3.00 ± 0.00** 🏆 |
+| `mccabe_avg` — lower = better | 2.05 ± 0.22 | 1.54 ± 0.09 | **1.38 ± 0.09** 🏆 | 2.40 ± 0.13 | 1.44 ± 0.05 | **1.39 ± 0.08** 🏆 |
+| `unit_count` — higher = better | 16.6 ± 0.9 | 27.0 ± 3.2 | **38.8 ± 6.8** 🏆 | 12.4 ± 1.5 | 22.8 ± 2.8 | 34.4 ± 9.9 |
+| `unit_size_max` — lower = better | 24.8 ± 4.4 | 16.0 ± 4.0 | 14.0 ± 3.5 | 26.2 ± 2.0 | **13.0 ± 1.6** 🏆 | 14.2 ± 2.2 |
+| `unit_size_avg` — lower = better | 7.99 ± 1.03 | 5.57 ± 0.15 | 4.68 ± 0.44 | 7.48 ± 0.45 | 4.81 ± 0.62 | **4.46 ± 0.40** 🏆 |
+| `unit_size_median` — lower = better | 6.00 ± 1.00 | 4.50 ± 1.00 | **3.20 ± 0.45** 🏆 | 5.10 ± 0.82 | 3.80 ± 1.10 | 3.30 ± 0.67 |
+| **Smell Total** — lower = better | **0.00 ± 0.00** 🏆 | **0.00 ± 0.00** 🏆 | **0.00 ± 0.00** 🏆 | 0.40 ± 0.89 | **0.00 ± 0.00** 🏆 | **0.00 ± 0.00** 🏆 |
+| **Production LoC** | 278 ± 28 | 316 ± 35 | 543 ± 60 | 224 ± 12 | 222 ± 24 | 310 ± 61 |
+| **Code Mass (APP)** — lower = better | 720 ± 32 | 708 ± 80 | 920 ± 80 | 707 ± 37 | **632 ± 36** 🏆 | 655 ± 57 |
+| **Test LoC** | 446 ± 77 | 694 ± 175 | 480 ± 68 | 254 ± 25 | 277 ± 38 | 259 ± 29 |
+| `tests_total` | 50.6 ± 9.5 | 57.8 ± 7.5 | 53.4 ± 3.4 | 32.0 ± 2.3 | 47.8 ± 1.6 | 46.4 ± 2.3 |
+| **Mutation Score** — higher = better | 0.96 ± 0.02 | **0.97 ± 0.01** 🏆 | 0.90 ± 0.06 | 0.76 ± 0.10 | 0.94 ± 0.05 | 0.95 ± 0.03 |
+| `mutants_survived` — lower = better | 5.8 ± 3.4 | **4.4 ± 0.9** 🏆 | 17.2 ± 10.9 | 38.8 ± 15.0 | 7.8 ± 6.3 | 6.4 ± 3.9 |
+| `mutants_no_coverage` — lower = better | 1.2 ± 1.6 | 1.2 ± 1.1 | 6.0 ± 7.1 | 20.0 ± 18.5 | 2.8 ± 3.8 | 2.0 ± 2.4 |
+| `duration_seconds` — lower = better | 332 ± 63 | 1291 ± 128 | 4764 ± 1296 | **130 ± 14** 🏆 | 922 ± 80 | 2664 ± 433 |
+| `total_tokens` — lower = better | 3.5 M ± 0.9 M | 22.6 M ± 3.3 M | 64.5 M ± 19.2 M | **1.4 M ± 0.3 M** 🏆 | 24.4 M ± 1.8 M | 55.3 M ± 7.6 M |
+| `cost_usd` — lower = better | 3.60 ± 0.59 | 16.93 ± 2.24 | 63.24 ± 18.64 | **1.31 ± 0.17** 🏆 | 9.79 ± 0.49 | 28.34 ± 3.30 |
 
-> **The Opus 5 subagent arm is not trophy-eligible.** Its mean
-> `verification_pct` is 0.79 — below the 0.90 gate — because 2 of its 5 runs hit
-> the two-hour budget ceiling and one of those delivered nothing. Its leading
-> values on `cognitive_max`, `mccabe_max`, `unit_size_*` and Smell Total are
-> therefore shown in parentheses without a trophy: they describe three finished
-> runs plus two that stopped early, not a result comparable with the other cells.
-> F-2.4.7.
+> **The Opus 5 subagent arm reached its five `ok` runs in seven attempts.** The
+> other two hit the two-hour budget ceiling — one delivered nothing, one had
+> solved the kata — and are not replicates. The five that count clear the
+> correctness gate at 0.99, so the cell is trophy-eligible, but they average
+> 4764 s, two-thirds of the budget. F-2.4.7.
+>
+> **Its `unit_count` and `unit_size_median` trophies come with the largest code
+> base in the field** — 543 Production LoC, Code Mass (APP) 920, against 222–316
+> in every other Predictive-TDD cell. More units partly means more code;
+> `unit_size_avg` is the size-neutral column, and there Opus 5.5 with the
+> subagent arm leads. The `mccabe_avg` co-trophy is a 0.01 difference, inside
+> either cell's σ.
 >
 > **Correctness (internal) carries no trophy** — 5/5 in every cell, no contest.
 >
@@ -99,15 +105,15 @@ not a difference in rigour. The two groups are tabled apart.
 
 | Metric | PTDD-v1 / O5 | PTDD-v1.1 / O5 | PTDD-v1 / O5.5 | PTDD-v1.1 / O5.5 |
 |---|---:|---:|---:|---:|
-| `tdd_discipline` — higher = better | 0.50 ± 0.04 | (0.59 ± 0.11) | **0.63 ± 0.01** 🏆 | 0.62 ± 0.03 |
-| `tdd_discipline_test_first` | 0.37 ± 0.04 | (0.48 ± 0.13) | **0.51 ± 0.02** 🏆 | 0.50 ± 0.03 |
-| `tdd_discipline_step` | **1.00 ± 0.00** 🏆 | **(1.00 ± 0.00)** | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 |
-| `tdd_discipline_closure` | 0.35 ± 0.05 | (0.44 ± 0.12) | **0.49 ± 0.02** 🏆 | 0.48 ± 0.04 |
-| `skip_events` — lower = better | 38.0 ± 7.1 | (28.8 ± 13.6) | **23.8 ± 1.3** 🏆 | 25.8 ± 2.9 |
-| `red_batch_max` — lower = better | **1.00 ± 0.00** 🏆 | (2.00 ± 2.00) | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 |
-| `refactor_events` | 10.6 ± 1.9 | (59.2 ± 15.8) | 16.6 ± 2.4 | 30.6 ± 9.7 |
-| `cycles_total` / `cycles_closed` | 58.8 / 20.2 | (50.5 / 20.8) | 49.6 / 24.2 | 52.0 / 25.0 |
-| `chain_suite_runs` | 99.6 | (206.3) | 95.4 | 161.8 |
+| `tdd_discipline` — higher = better | 0.50 ± 0.04 | 0.59 ± 0.09 | **0.63 ± 0.01** 🏆 | 0.62 ± 0.03 |
+| `tdd_discipline_test_first` | 0.37 ± 0.04 | 0.48 ± 0.12 | **0.51 ± 0.02** 🏆 | 0.50 ± 0.03 |
+| `tdd_discipline_step` | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 |
+| `tdd_discipline_closure` | 0.35 ± 0.05 | 0.44 ± 0.10 | **0.49 ± 0.02** 🏆 | 0.48 ± 0.04 |
+| `skip_events` — lower = better | 38.0 ± 7.1 | 26.2 ± 10.2 | **23.8 ± 1.3** 🏆 | 25.8 ± 2.9 |
+| `red_batch_max` — lower = better | **1.00 ± 0.00** 🏆 | 1.80 ± 1.79 | **1.00 ± 0.00** 🏆 | **1.00 ± 0.00** 🏆 |
+| `refactor_events` | 10.6 ± 1.9 | 60.6 ± 14.0 | 16.6 ± 2.4 | 30.6 ± 9.7 |
+| `cycles_total` / `cycles_closed` | 58.8 / 20.2 | 47.2 / 20.0 | 49.6 / 24.2 | 52.0 / 25.0 |
+| `chain_suite_runs` | 99.6 | 188.8 | 95.4 | 161.8 |
 
 **Group B — minimal inline instruction** (no test list)
 
@@ -123,9 +129,11 @@ not a difference in rigour. The two groups are tabled apart.
 | `cycles_total` / `cycles_closed` | 11.4 / 9.6 | 3.4 / 3.0 |
 | `chain_suite_runs` | 23.8 | 7.6 |
 
-> Values for `PTDD-v1.1 / O5` are in parentheses throughout: three of the five
-> runs carry a phase chain, the two timeouts contribute none (one of them ran no
-> suite at all), so every discipline row for that cell is n=3 or n=4.
+> The `PTDD-v1.1 / O5` `red_batch_max` of 1.80 comes from one run of five, which
+> in four suite runs had three to five new tests failing at once. None of those
+> tests had been green before, so it is a step-size lapse in that run, not a
+> regression counted as a red batch. `red_batch_size` stays 1.00 in all four
+> Predictive-TDD cells.
 >
 > The group B score is the clearest case in this RQ for why the consolidated
 > number must never be read alone. The inline arm's `test_first` and `closure`
@@ -204,6 +212,7 @@ models only in the unscaffolded arm.
 | Inline / O5 | 0.96 ± 0.02 | 131.6 ± 7.9 | 5.8 ± 3.4 | 1.2 ± 1.6 | 50.6 ± 9.5 |
 | Inline / O5.5 | 0.76 ± 0.10 | 163.0 ± 25.2 | 38.8 ± 15.0 | 20.0 ± 18.5 | 32.0 ± 2.3 |
 | PTDD-v1 / O5 | 0.97 ± 0.01 | 137.4 ± 9.7 | 4.4 ± 0.9 | 1.2 ± 1.1 | 57.8 ± 7.5 |
+| PTDD-v1.1 / O5 | 0.90 ± 0.06 | 165.4 ± 21.9 | 17.2 ± 10.9 | 6.0 ± 7.1 | 53.4 ± 3.4 |
 | PTDD-v1 / O5.5 | 0.94 ± 0.05 | 124.0 ± 4.9 | 7.8 ± 6.3 | 2.8 ± 3.8 | 47.8 ± 1.6 |
 | PTDD-v1.1 / O5.5 | 0.95 ± 0.03 | 135.2 ± 10.9 | 6.4 ± 3.9 | 2.0 ± 2.4 | 46.4 ± 2.3 |
 
@@ -216,6 +225,13 @@ all, against 1.2.
 Under the workflow the newer model lands at 0.94–0.95 with 6.4–7.8 survivors.
 The scaffolding does not make its suite better than Opus 5's (0.97); it makes it
 *as good*, which is the whole gap.
+
+The subagent arm on Opus 5 is the weakest Predictive-TDD suite in the field:
+17.2 survivors of 165.4 mutants against 4.4 of 137.4 for PTDD-v1 on the same
+model. Its population is the second-largest because it writes the most code
+(543 Production LoC), and the suite does not keep pace with it — 53.4 tests for
+1.7× the Production LoC of PTDD-v1. The spread is wide: three of its five runs
+let 20–30 mutants survive, the other two 5 and 7.
 
 The mechanism is in F-2.4.6: the inline arm on Opus 5.5 runs 3.4 cycles and puts
 roughly eight tests into each. A suite assembled that way is not shaped by
@@ -231,7 +247,7 @@ runs.
 |---|---:|---:|---:|---:|---:|---:|
 | Inline | 3.60 ± 0.59 | 1.31 ± 0.17 | **−64 %** | 3.5 M ± 0.9 M | 1.4 M ± 0.3 M | −60 % |
 | PTDD-v1 | 16.93 ± 2.24 | 9.79 ± 0.49 | **−42 %** | 22.6 M ± 3.3 M | 24.4 M ± 1.8 M | **+8 %** |
-| PTDD-v1.1 | 60.69 ± 24.34 | 28.34 ± 3.30 | **−53 %** | 63.1 M ± 29.8 M | 55.3 M ± 7.6 M | −12 % |
+| PTDD-v1.1 | 63.24 ± 18.64 | 28.34 ± 3.30 | **−55 %** | 64.5 M ± 19.2 M | 55.3 M ± 7.6 M | −14 % |
 
 The PTDD-v1 row is the one that matters: Opus 5.5 spends **8 % more tokens** for
 the same workflow and still costs 42 % less. The saving is in the tariff, not in
@@ -293,11 +309,13 @@ difference in this RQ. Its step component exposes it.
 | Inline / O5 | 4.40 ± 0.96 | 8.00 ± 2.45 | 0.23 ± 0.04 | 11.4 ± 1.5 | 50.6 | ≈ 4.4 |
 | Inline / O5.5 | 7.75 ± 0.35 | 10.00 ± 2.83 | 0.13 ± 0.01 | 3.4 ± 0.5 | 32.0 | ≈ 9.4 |
 | PTDD-v1 / O5 | 1.00 ± 0.00 | 1.00 ± 0.00 | 1.00 ± 0.00 | 58.8 ± 7.5 | 57.8 | ≈ 1.0 |
+| PTDD-v1.1 / O5 | 1.00 ± 0.00 | 1.80 ± 1.79 | 1.00 ± 0.00 | 47.2 ± 12.0 | 53.4 | ≈ 1.1 |
 | PTDD-v1 / O5.5 | 1.00 ± 0.00 | 1.00 ± 0.00 | 1.00 ± 0.00 | 49.6 ± 2.2 | 47.8 | ≈ 1.0 |
 | PTDD-v1.1 / O5.5 | 1.00 ± 0.00 | 1.00 ± 0.00 | 1.00 ± 0.00 | 52.0 ± 3.2 | 46.4 | ≈ 0.9 |
 
-Every Predictive-TDD cell writes exactly one failing test at a time, median and
-maximum alike, across 20 runs. The minimal instruction writes 4.4 at a time on
+Every Predictive-TDD cell writes one failing test at a time: `red_batch_size`
+is 1.00 in all 20 runs, and `red_batch_max` is 1 in 19 of them. The exception is
+one PTDD-v1.1 / Opus 5 run that peaks at five. The minimal instruction writes 4.4 at a time on
 Opus 5 and 7.75 on Opus 5.5, with single batches up to 10. On Opus 5.5 it runs
 **3.4 cycles** for 32 tests — a suite assembled in three sittings, not grown from
 feedback.
@@ -323,33 +341,37 @@ a failure."). Full argument in RQ-tdd-workflow-comparison-opus55 F-4.13.4.
 
 ---
 
-## F-2.4.7 — The isolated Refactor subagent is only viable on Opus 5.5
+## F-2.4.7 — The isolated Refactor subagent runs at the edge of the budget on Opus 5 and well inside it on Opus 5.5
 
 | | PTDD-v1.1 / O5 | PTDD-v1.1 / O5.5 |
 |---|---:|---:|
-| Correctness (external) | 0.79 ± 0.44 | 0.96 ± 0.09 |
-| `completed_within_budget` | 3/5 | 5/5 |
-| `duration_seconds` | 5468 ± 1917 | 2664 ± 433 |
-| `cost_usd` | 60.69 ± 24.34 | 28.34 ± 3.30 |
-| `total_tokens` | 63.1 M ± 29.8 M | 55.3 M ± 7.6 M |
-| `chain_suite_runs` | 206.3 | 161.8 |
-| `refactor_events` | 59.2 | 30.6 |
-| `cognitive_max` | 2.80 ± 0.84 | 2.00 ± 0.00 |
+| Correctness (external) | 0.99 ± 0.03 | 0.96 ± 0.09 |
+| `ok` runs / attempts | 5/7 | 5/5 |
+| `duration_seconds` | 4764 ± 1296 | 2664 ± 433 |
+| `cost_usd` | 63.24 ± 18.64 | 28.34 ± 3.30 |
+| `total_tokens` | 64.5 M ± 19.2 M | 55.3 M ± 7.6 M |
+| `chain_suite_runs` | 188.8 | 161.8 |
+| `refactor_events` | 60.6 | 30.6 |
+| `cognitive_max` | 3.60 ± 1.14 | 2.00 ± 0.00 |
+| Mutation Score | 0.90 ± 0.06 | 0.95 ± 0.03 |
 
-On Opus 5 this arm hits the two-hour budget ceiling in **2 of 5 runs**. One of
-those two delivered nothing — `verification_pct` 0, no suite invocation at all —
-which is what drags the cell mean to 0.79 and disqualifies it from every quality
-and cost trophy in the overview. The other timeout had solved the kata
-(`verification_pct` 1.00, 303 suite invocations) and simply ran out of budget.
-Timeouts are findings here, not errors: they count toward `min_replicates` and
-are not refilled.
+On Opus 5 this arm needed **seven attempts for five `ok` runs**. Two attempts hit
+the two-hour budget ceiling: one delivered nothing — `verification_pct` 0, no
+suite invocation at all — and the other had solved the kata and simply ran out
+of time. Neither is a replicate. The five that count are correct (0.99) but
+take 4764 s on average and up to 5940 s, 83 % of the budget; four of the five
+are above 4500 s. The ceiling is not an outlier for this cell, it is close to
+its normal operating range.
 
-On Opus 5.5 the same arm finishes 5/5 within budget at 2664 s, less than half the
-Opus 5 wallclock, and produces the lowest `cognitive_max` in the field at
-2.00 ± 0.00 — deterministic across all five runs. It is still the most expensive
-cell of the field at $28.34, 2.9× the shared-context arm.
+On Opus 5.5 the same arm finishes every attempt within budget at 2664 s, 56 % of
+the Opus 5 wallclock, and produces the lowest `cognitive_max` in the field at
+2.00 ± 0.00 — deterministic across all five runs. On Opus 5 the arm buys no such
+gain: `cognitive_max` 3.60, the same as PTDD-v1 on Opus 5, at 3.7× its cost and
+with a weaker suite (F-2.4.3). The Opus 5 cell is the most expensive of the
+field at $63.24; the Opus 5.5 cell costs $28.34, 2.9× the shared-context arm on
+the same model.
 
 The reading is that the architecture is not model-portable at this cost level.
 What makes it usable on the newer model is the same thing F-2.4.4 measures: the
-newer model is faster and cheaper for the identical workflow, which moves a
-5468 s arm under the ceiling rather than over it.
+newer model is faster and cheaper for the identical workflow, which moves the
+arm from the edge of the ceiling into the middle of the budget.

@@ -18,7 +18,7 @@ trophy; they appear as context.
 
 **The refactoring count is no longer reported.** It came from the marker route
 retired in 2026-10 and now exists for only part of each Opus cell — 10 of 15 and
-5 of 10 runs — while both SOL cells still carry it in full. A mean over two
+4 of 9 runs — while both SOL cells still carry it in full. A mean over two
 thirds of one column against a whole other column would read as a treatment
 difference, so the row is dropped rather than qualified. The phase chain's
 `refactor_events` is its successor and exists only on the refilled Opus halves,
@@ -30,7 +30,7 @@ including runs recorded for sister RQs that share the cell:
 | Cell | n | Batches pooled |
 |---|---:|---|
 | Opus PTDD v1 | 15 | 10 on 2026-09-16 (Claude Code 2.1.267, recorded as `exact-sol-v1.6-test-list-dimensions-cc`) + 5 from the RQ-opus55-current-workflow refill (2.1.280) |
-| Opus v1.1 | 10 | 5 on 2026-09-17 (2.1.267) + 5 from the RQ-opus55-current-workflow refill (2.1.280) |
+| Opus v1.1 | 9 | 4 on 2026-09-17 (2.1.267) + 5 from the RQ-opus55-current-workflow refills (2.1.280; three on 2026-10-01, two on 2026-10-19) |
 | SOL PTDD v1 | 15 | 10 on 2026-09-16 (pi 0.81.1, recorded as `exact-sol-v1.6-test-list-dimensions-pi`) + 5 on 2026-09-23 (pi 0.81.1) |
 | SOL v1.1 | 5 | 5 on 2026-09-17 (pi 0.81.1) |
 
@@ -42,42 +42,41 @@ finding says so.
 means exceeds the smaller of the two standard deviations; otherwise both cells
 share it.
 
-**Correctness guard — the Opus treatment cell fails it.** Three of ten Opus v1.1
-runs hit the two-hour budget ceiling, one of them delivering nothing
-(`verification_pct` 0), which puts the cell at 0.87 ± 0.31 — below the 0.90 gate.
-Its values are shown in parentheses without trophies: they describe seven
-finished runs plus three that stopped early. The other three cells are at 1.00 and
-eligible. Correctness (internal) is 100 % in all four.
+**Correctness guard.** All four cells clear the 0.90 gate (0.99–1.00) and are
+eligible for trophies. Correctness (internal) is 100 % in all four. Only `ok`
+runs are replicates: the Opus v1.1 cell lost three of its twelve attempts to the
+two-hour budget ceiling, and those three are not in the cell (row "`ok` runs /
+attempts").
 
 ### Native Opus 5 / Claude Code
 
-| Metric | PTDD v1 (n=15) | v1.1 isolated Refactor (n=10) |
+| Metric | PTDD v1 (n=15) | v1.1 isolated Refactor (n=9) |
 |---|---:|---:|
-| Correctness (external) | **1.00 ± 0.02** 🏆 | 0.87 ± 0.31 |
-| Completed within budget | **100 %** 🏆 | 70 % |
-| Worst run | 0.93 | **0.00** |
-| `cognitive_max` | **3.07 ± 0.96** 🏆 | (2.50 ± 0.71) |
-| `cognitive_avg` | **1.48 ± 0.24** 🏆 | (1.25 ± 0.14) |
-| `mccabe_max` | **3.33 ± 0.49** 🏆 | (3.00 ± 0.00) |
-| Smell Total | **0.00 ± 0.00** 🏆 | (0.00 ± 0.00) |
-| `avg_loc_per_function` | **5.82 ± 0.78** 🏆 | (4.67 ± 0.38) |
-| `median_loc_per_function` | **4.63 ± 1.16** 🏆 | (3.30 ± 0.42) |
-| `longest_function` | **17.93 ± 4.93** 🏆 | (13.90 ± 2.92) |
-| Mutation Score | **0.94 ± 0.05** 🏆 | (0.91 ± 0.08) |
-| `predictions_correct_rate` | **98.9 %** 🏆 | (98.2 %) |
-| `duration_seconds` | **1234.40 ± 267.31** 🏆 | (5483.70 ± 1589.67) |
-| `cost_usd` | **16.38 ± 3.65** 🏆 | (66.35 ± 21.55) |
-| *Production LoC* | 308.27 ± 36.23 | 558.70 ± 184.85 |
-| *Code Mass (APP)* | 712.67 ± 70.77 | 873.90 ± 189.30 |
-| *`functions`* | 25.87 ± 4.03 | 35.40 ± 9.08 |
-| *`mutants_total` / survived* | 135.20 / 8.40 | 147.00 / 14.50 |
-| *of those uncovered* | 4.27 ± 5.79 | 10.00 ± 11.99 |
-| *`total_tokens`* | 21.77 M | 71.42 M |
+| Correctness (external) | **1.00 ± 0.02** 🏆 | **0.99 ± 0.02** 🏆 |
+| `ok` runs / attempts | **15 / 15** 🏆 | 9 / 12 |
+| Worst run | 0.93 | 0.93 |
+| `cognitive_max` | **3.07 ± 0.96** 🏆 | **3.00 ± 1.12** 🏆 |
+| `cognitive_avg` | **1.48 ± 0.24** 🏆 | **1.30 ± 0.19** 🏆 |
+| `mccabe_max` | **3.33 ± 0.49** 🏆 | **3.22 ± 0.44** 🏆 |
+| Smell Total | **0.00 ± 0.00** 🏆 | **0.00 ± 0.00** 🏆 |
+| `avg_loc_per_function` | 5.82 ± 0.78 | **4.69 ± 0.36** 🏆 |
+| `median_loc_per_function` | 4.63 ± 1.16 | **3.22 ± 0.36** 🏆 |
+| `longest_function` | 17.93 ± 4.93 | **14.11 ± 3.06** 🏆 |
+| Mutation Score | **0.94 ± 0.05** 🏆 | 0.88 ± 0.08 |
+| `predictions_correct_rate` | **98.9 %** 🏆 | **98.0 %** 🏆 |
+| `duration_seconds` | **1234.40 ± 267.31** 🏆 | 4901.56 ± 1191.11 |
+| `cost_usd` | **16.38 ± 3.65** 🏆 | 64.39 ± 16.32 |
+| *Production LoC* | 248.87 ± 31.17 | 423.11 ± 109.19 |
+| *Code Mass (APP)* | 712.67 ± 70.77 | 920.89 ± 103.10 |
+| *`functions`* | 25.87 ± 4.03 | 39.00 ± 5.70 |
+| *`mutants_total` / survived* | 135.20 / 8.40 | 160.44 / 19.11 |
+| *of those uncovered* | 4.27 ± 5.79 | 11.56 ± 11.77 |
+| *`total_tokens`* | 21.77 M | 68.44 M |
 
-Every trophy in this table sits with the control column, and that is a
-consequence of the gate rather than of the measurements: the treatment column
-holds the better value on seven of the quality rows. What disqualifies it is that
-three of its ten runs did not finish. F-1.7.3.
+The treatment takes the three function-size rows; the control takes Mutation
+Score, budget, duration and cost. On `cognitive_max`, `cognitive_avg` and
+`mccabe_max` the gap stays inside the smaller standard deviation, so the trophy
+is shared. Smell Total is 0.00 in both cells.
 
 ### GPT-5.6 SOL / pi
 
@@ -96,15 +95,15 @@ three of its ten runs did not finish. F-1.7.3.
 | `predictions_correct_rate` | **99.6 %** 🏆 | **100 %** 🏆 |
 | `duration_seconds` | **1573.93 ± 495.01** 🏆 | 4927.00 ± 610.52 |
 | `cost_usd` | **4.67 ± 2.62** 🏆 | 18.27 ± 3.05 |
-| *Production LoC* | 169.00 ± 34.15 | 265.20 ± 32.51 |
+| *Production LoC* | 149.33 ± 29.27 | 224.00 ± 27.94 |
 | *Code Mass (APP)* | 616.47 ± 87.10 | 685.40 ± 63.25 |
 | *`functions`* | 14.60 ± 4.50 | 32.20 ± 4.66 |
-| *`mutants_total` / survived* | 128.00 / 17.6 *(n=14)* | 143.00 / 16.8 *(n=4)* |
+| *`mutants_total` / survived* | 129.14 / 17.6 *(n=14)* | 143.00 / 16.8 *(n=4)* |
 | *of those uncovered* | 4.9 ± 2.34 *(n=14)* | 4.00 ± 1.41 *(n=4)* |
 | *`total_tokens`* | 6.72 M | 17.52 M |
 
-Smell Total is 0.00 in every cell of both tables — no contest, so no trophy on
-SOL and a shared pair on Opus.
+Smell Total is 0.00 in every cell of both tables — no contest. The Opus table
+shows it as a shared pair, the SOL table without trophies.
 
 `mutants_survived` is split into its two parts. A **Survived** mutant means a
 test ran the mutated line and still passed — a weak assertion. An **uncovered**
@@ -122,11 +121,11 @@ No structural measure moves the wrong way on either platform.
 
 | Measure | Opus: v1 → v1.1 | SOL: v1 → v1.1 |
 |---|---|---|
-| `cognitive_max` | 3.07 → 2.50 (−19 %) | 4.07 → 2.60 (−36 %) |
-| `cognitive_avg` | 1.48 → 1.25 (−16 %) | 1.86 → 1.24 (−33 %) |
-| `mccabe_max` | 3.33 → 3.00 (−10 %) | 4.73 → 3.60 (−24 %) |
-| `avg_loc_per_function` | 5.82 → 4.67 (−20 %) | 6.14 → 4.21 (−31 %) |
-| `longest_function` | 17.93 → 13.90 (−22 %) | 17.80 → 15.80 (−11 %) |
+| `cognitive_max` | 3.07 → 3.00 (−2 %) | 4.07 → 2.60 (−36 %) |
+| `cognitive_avg` | 1.48 → 1.30 (−12 %) | 1.86 → 1.24 (−33 %) |
+| `mccabe_max` | 3.33 → 3.22 (−3 %) | 4.73 → 3.60 (−24 %) |
+| `avg_loc_per_function` | 5.82 → 4.69 (−19 %) | 6.14 → 4.21 (−31 %) |
+| `longest_function` | 17.93 → 14.11 (−21 %) | 17.80 → 15.80 (−11 %) |
 
 The two platforms differ in what the treatment reaches. On SOL it lowers
 `cognitive_max` and `mccabe_max` as well as the per-function size, and every gap except
@@ -146,15 +145,15 @@ Every per-function measure improves while the product itself grows.
 
 | | Opus v1 | Opus v1.1 | SOL v1 | SOL v1.1 |
 |---|---:|---:|---:|---:|
-| `functions` | 25.87 | 35.40 (+37 %) | 14.60 | 32.20 (+121 %) |
-| Production LoC | 308.27 | 558.70 (+81 %) | 169.00 | 265.20 (+57 %) |
-| Code Mass (APP) | 712.67 | 873.90 (+23 %) | 616.47 | 685.40 (+11 %) |
-| `avg_loc_per_function` | 5.82 | 4.67 | 6.14 | 4.21 |
+| `functions` | 25.87 | 39.00 (+51 %) | 14.60 | 32.20 (+121 %) |
+| Production LoC | 248.87 | 423.11 (+70 %) | 149.33 | 224.00 (+50 %) |
+| Code Mass (APP) | 712.67 | 920.89 (+29 %) | 616.47 | 685.40 (+11 %) |
+| `avg_loc_per_function` | 5.82 | 4.69 | 6.14 | 4.21 |
 
-On Opus the function count rises by 37 % and Production LoC by 81 % — the average
+On Opus the function count rises by 51 % and Production LoC by 70 % — the average
 function shrinks because there are far more of them, and there is substantially
 more code overall. On SOL the function count more than doubles while Production
-LoC rises by 57 % and Code Mass (APP) by 11 %, which is much closer to
+LoC rises by 50 % and Code Mass (APP) by 11 %, which is much closer to
 redistribution than to addition.
 
 This is why `functions`, Production LoC and Code Mass (APP) carry no trophy: a
@@ -162,34 +161,6 @@ per-function metric rewards splitting and cannot distinguish it from
 simplification. The isolated Refactor agent sees one behaviour at a time and no
 Red/Green reasoning, which is a plausible mechanism — it optimises the unit in
 front of it without a view of the whole.
-
----
-
-## F-1.7.3 — Only Opus pays for the treatment in correctness and budget
-
-The treatment is identical on both platforms. Its damage is not.
-
-| | Opus v1 | Opus v1.1 | SOL v1 | SOL v1.1 |
-|---|---:|---:|---:|---:|
-| Completed within budget | 100 % | **70 %** | 100 % | 100 % |
-| Correctness (external) | 1.00 ± 0.02 | **0.87 ± 0.31** | 1.00 ± 0.00 | 1.00 ± 0.00 |
-| Worst run | 0.93 | **0.00** | 1.00 | 1.00 |
-
-**Three of ten Opus treatment runs hit the two-hour ceiling.** One of the three
-delivered nothing at all — `verification_pct` 0, no suite invocation — and is the
-cell's worst run; the other two had solved the kata and simply ran out of budget.
-Two further treatment runs miss one scenario each at 0.93, the same single miss
-that two of fifteen control runs show. SOL runs the treatment 5 of 5 within
-budget at a perfect score.
-
-Both platforms pay a comparable multiple in wallclock — 4.4× on Opus (1234 →
-5484 s), 3.1× on SOL (1574 → 4927 s) — so the difference is not that Opus is
-slower under the treatment, but that it is close enough to its budget ceiling for
-the extra context round-trips to push a third of the runs over.
-
-Timeouts are findings here, not errors: they count toward `min_replicates` and
-are not refilled. The consequence for this RQ is that the Opus treatment cell
-cannot be read as a quality result at all — see the note under the Opus table.
 
 ---
 
@@ -204,9 +175,9 @@ The platforms differ in where PTDD v1 already lands.
 | `median_loc_per_function` | 4.63 | 5.00 |
 
 On Opus, v1 is already close to the floor these measures can reach on this kata,
-so the treatment's gain on the peaks is 0.57 on `cognitive_max` and 0.33 on
-`mccabe_max`, both inside v1's own spread. For that it costs 81 % more Production
-LoC, 4.1× the money and three runs in ten over budget.
+so the treatment's gain on the peaks is 0.07 on `cognitive_max` and 0.11 on
+`mccabe_max`, both inside v1's own spread. For that it costs 70 % more Production
+LoC, 3.9× the money and three of twelve attempts over budget.
 
 On SOL, v1 stops well short of the floor, and the treatment closes most of the
 gap: `mccabe_max` 4.73 → 3.60, `avg_loc_per_function` 6.14 → 4.21, at 5 of 5
@@ -221,28 +192,28 @@ and `mccabe_max` at a quarter of the price and without losing runs.
 
 ## F-1.7.5 — On Opus the treatment leaves more of the product untested, in both batches
 
-Mutation Score does not separate the Opus columns: 0.94 against 0.91, a gap
-inside both standard deviations. Neither does the weak-assertion part of the
-misses.
+Mutation Score separates the Opus columns: 0.94 against 0.88, a gap just above
+the smaller standard deviation (0.05), on a larger mutant population (135.20
+against 160.44). Both parts of the misses are higher under the treatment, and the
+larger part is code no test visits.
 
 | Opus, per run | PTDD v1 | v1.1 isolated Refactor |
 |---|---:|---:|
-| Survived — reached, not killed | 4.1 | 4.5 |
-| Uncovered — never reached | 4.27 ± 5.79 | 10.00 ± 11.99 |
-| Uncovered share of misses | 51 % | 69 % |
+| Survived — reached, not killed | 4.1 | 7.6 |
+| Uncovered — never reached | 4.27 ± 5.79 | 11.56 ± 11.77 |
+| Uncovered share of misses | 51 % | 60 % |
 
-The whole difference is in code no test visits, and both pooled batches point the
-same way:
+Both pooled batches point the same way on the uncovered part:
 
 | Uncovered mutants per run | PTDD v1 | v1.1 |
 |---|---|---|
-| Claude Code 2.1.267 | 0, 0, 2, 2, 3, 4, 4, 8, 16, 19 (mean 5.8) | 0, 2, 20, 21, 33 (mean 15.2) |
-| Claude Code 2.1.280 | 0, 0, 2, 2, 2 (mean 1.2) | 0, 0, 0, 6, 18 (mean 4.8) |
+| Claude Code 2.1.267 | 0, 0, 2, 2, 3, 4, 4, 8, 16, 19 (mean 5.8) | 0, 20, 21, 33 (mean 18.5) |
+| Claude Code 2.1.280 | 0, 0, 2, 2, 2 (mean 1.2) | 0, 2, 4, 6, 18 (mean 6.0) |
 
-The treatment carries more untested code than the control on 2.1.267 (15.2
-against 5.8) and on 2.1.280 (4.8 against 1.2). Both arms are bimodal — most runs
+The treatment carries more untested code than the control on 2.1.267 (18.5
+against 5.8) and on 2.1.280 (6.0 against 1.2). Both arms are bimodal — most runs
 leave a handful of mutants untouched, a minority leaves 16 to 33 — and the
-treatment's tail is the longer one: four of ten v1.1 runs reach 18 or more,
+treatment's tail is the longer one: four of nine v1.1 runs reach 16 or more,
 against two of fifteen v1 runs.
 
 The second batch is also the quieter one in both arms, which is worth stating
@@ -302,12 +273,13 @@ F-1.7.5.
   cells span Claude Code 2.1.267 and 2.1.280 (see the data basis). The pooled
   means are the reported figures; F-1.7.5 shows where the two batches differ in
   magnitude while agreeing in direction.
-- **Unequal replicates.** The control cells carry n=15 against n=10 (Opus) and
+- **Unequal replicates.** The control cells carry n=15 against n=9 (Opus) and
   n=5 (SOL), so the treatment cells' standard deviations rest on fewer runs.
-- **The Opus treatment cell is not a quality measurement.** Three of its ten runs
-  stopped at the budget ceiling. Its complexity and size values are reported for
-  completeness and carry no trophy.
+- **The Opus treatment cell describes the runs that finished.** Three of its
+  twelve attempts stopped at the two-hour budget ceiling and are not replicates.
+  If the slowest runs differ systematically in structure, the nine `ok` runs
+  are a selected sample; the data here cannot test that.
 - **TDD discipline is not an outcome.** The marker-derived refactoring count no
   longer spans the Opus cells and the phase chain does not span the SOL ones; no
   discipline claim is made here. `predictions_correct_rate` is the exception — it
-  is marker-derived but present for all 45 runs.
+  is marker-derived but present for all 44 runs.

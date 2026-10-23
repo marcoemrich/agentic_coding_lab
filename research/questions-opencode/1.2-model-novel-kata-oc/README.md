@@ -9,8 +9,9 @@ factors:
     - gemini-3-5-flash
     - glm-5-1
     - mistral-medium-3-5
-    - deepseek-v4-flash
-    - deepseek-v4-pro
+    # Requesty/tensorx only; the Portkey-era runs are out of the cells (see Methodological notes)
+    - deepseek-v4-flash-requesty
+    - deepseek-v4-pro-requesty
 controls:
   workflow: exact-single-context-v2-testlist-fix-oc
   kata_base: claim-office
@@ -94,5 +95,6 @@ None of the four wrote `src/cli.ts` (the verification suite would have yielded `
 - The skeleton finding `verification_pct=1.0` is ONE data point — replicates will show whether it is stable or luck. Memory [[replicates-n-reliability]]: n=3 detects bimodality, n=5 for medium confidence.
 - The single-context-v2 workflow enforces skill-tool calls, but agent drift after 1-2 cycles has been observed (skeleton: only 2 skill calls despite ~18 real TDD cycles). `cycle_count` is therefore conservative; actual TDD activity is higher.
 - All five models via Portkey, mixed backproviders — see RQ-model-quality-oc for routing details.
+- **DeepSeek cells are Requesty-only.** Portkey shut down in 2026-07; from 2026-10-19 the DeepSeek cells are `deepseek-v4-{flash,pro}-requesty` (Requesty EU router, backprovider `tensorx`) and the Portkey runs (`@openrouter-eval`) no longer count. The routes were not merged because they differ in behaviour, not just speed: on tensorx `deepseek-v4-pro` emits no reasoning tokens (0 against ~20 k per run on Portkey). See RQ-model-quality-oc for details. The DeepSeek notes under "Existing data" describe the Portkey smokes.
 - Existing baseline-oneshot-v1-oc smokes on claim-office (verification 0.20) show the workflow effect: oneshot-v1 without TDD mechanics vs single-context-v2 with skills makes a ~50 percentage point difference for Opus. Cross-workflow comparison is, however, the subject of a separate RQ.
 - The `cli.ts` nudge is NOT wired for OC. Should non-Anthropic models systematically forget `src/cli.ts` → `verification_pct=null`. AGENTS.md demands cli.ts explicitly; the single-context-v2 smoke worked. Observe during the first batch.
