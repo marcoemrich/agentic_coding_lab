@@ -25,6 +25,17 @@ Idempotent: runs that already have a numeric ``mutation_score`` are skipped
 unless ``--force`` is passed. Runs without ``tests_passing == true`` are
 skipped (mutation score on a red suite is methodologically meaningless).
 
+A TypeScript run that kills **no** mutant is never recorded as 0.000. That
+outcome is the signature of a suite which reaches the implementation only by
+spawning ``src/cli.ts``, where Stryker's in-process mutant switch never
+reaches the child and every mutant survives untouched — indistinguishable
+from a worthless suite, and measured in the wild (RQ-current-models-ptdd).
+Such a run is re-measured with the active-mutant env bridge and
+``coverageAnalysis: "off"`` (see STRYKER_ENV_BRIDGE); if it still kills
+nothing, the score stays ``null`` and
+``final_metrics.mutation_unmeasurable_reason`` says why. ``--no-subprocess-retry``
+skips the second attempt.
+
 Mutation testing is expensive (several minutes of Vitest re-runs per run),
 so this script is deliberately separate from ``analyze-run.sh`` and only
 invoked when an RQ explicitly opts in via ``outcomes: [..., mutation_score]``.
@@ -39,9 +50,11 @@ from __future__ import annotations
 
 import argparse
 import collections
+import contextlib
 import importlib.util
 import json
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -77,6 +90,61 @@ STRYKER_CONFIG = {
     "jsonReporter": {"fileName": "reports/mutation/mutation-report.json"},
 }
 
+# A suite that reaches the implementation only by spawning src/cli.ts is
+# invisible to Stryker's default setup, and the way it fails is silent: the
+# mutants are never exercised, Stryker files every one of them as `Survived`
+# rather than `NoCoverage`, and the score comes out an authoritative-looking
+# 0.000 that no field distinguishes from a suite which genuinely kills nothing.
+# Measured on RQ-current-models-ptdd (2026-10-23): three runs at exactly
+# 0.000 with survived == total, against 0.871-0.917 for sibling runs of the
+# same cell whose specs import the domain directly.
+#
+# Two things are needed to measure such a run, and neither alone is enough.
+#
+# 1. The child must see the active mutant. Stryker's instrumented header seeds
+#    `__stryker__.activeMutant` from the environment when the global is unset
+#    — exactly a freshly spawned child's situation — but
+#    @stryker-mutator/vitest-runner only ever assigns the global
+#    (FileCommunicator.setMutantRun), so the variable is never populated.
+#    STRYKER_ENV_BRIDGE installs an accessor that keeps the two in step.
+# 2. coverageAnalysis must be "off". Both "perTest" and "all" decide which
+#    mutants to run from a coverage map collected in the test process, and that
+#    map is empty here, so every mutant is skipped as NoCoverage no matter what
+#    the child can see. "off" runs the whole suite against every mutant.
+#
+# The cost is why this is a fallback and not the default: "off" re-runs the
+# full suite per mutant, which on a subprocess-driven claim-office suite is
+# tens of minutes per run against a couple of minutes for "perTest".
+STRYKER_ENV_BRIDGE_FILE = "stryker-env-bridge.mjs"
+STRYKER_ENV_BRIDGE = """\
+// Written by experiments/compute-mutation-score.py; removed again afterwards.
+// Mirrors Stryker's in-process active mutant into the environment so that a
+// test driving the implementation through a spawned child process exercises
+// the mutated code rather than the original. See the comment on
+// STRYKER_ENV_BRIDGE in that script for why this is needed.
+const NS = '__stryker__';
+const VAR = '__STRYKER_ACTIVE_MUTANT__';
+
+const ns = globalThis[NS] || (globalThis[NS] = {});
+
+const mirror = (value) => {
+  if (value === undefined || value === null) delete process.env[VAR];
+  else process.env[VAR] = String(value);
+};
+
+// An accessor rather than a hook: the runner assigns activeMutant from its own
+// setup file, whose order relative to this one is not ours to control.
+let active = ns.activeMutant;
+mirror(active);
+
+Object.defineProperty(ns, 'activeMutant', {
+  configurable: true,
+  enumerable: true,
+  get: () => active,
+  set: (value) => { active = value; mirror(value); },
+});
+"""
+
 
 # What a mutation run yields: the score plus the two counts it is made of.
 # The counts are reported in their own right — the score alone cannot be
@@ -85,9 +153,111 @@ STRYKER_CONFIG = {
 # workflow can raise the score by writing less code to defend, and it can
 # lower the count of survivors the same way. Only the pair separates "the
 # tests got stronger" from "there is less to test".
+# `reason` is diagnostic only: a short note on why a null is null, written
+# through to metrics.json so that an empty cell in summary.md explains itself.
+# Without it a null is indistinguishable from "this RQ did not ask for the
+# metric", which is how a silent measurement failure survives review.
 MutationResult = collections.namedtuple(
-    "MutationResult", ["score", "total", "survived", "no_coverage"])
-EMPTY_RESULT = MutationResult(None, None, None, None)
+    "MutationResult", ["score", "total", "survived", "no_coverage", "reason"],
+    defaults=[None])
+EMPTY_RESULT = MutationResult(None, None, None, None, None)
+
+# One prefix, shared by the writer and wants_subprocess_retry's reader, so the
+# retry does not hinge on two copies of a sentence staying in step.
+TIMEOUT_REASON_PREFIX = "timed out after"
+TIMEOUT_REASON = (TIMEOUT_REASON_PREFIX
+                  + " {seconds}s (coverageAnalysis={mode})")
+
+SUBPROCESS_ONLY_REASON = (
+    "not measurable: the suite reaches the implementation only through a "
+    "spawned process, so no mutant is exercised in the test process")
+
+
+def mutable_sources(run_dir: Path) -> list[Path]:
+    """The TypeScript files STRYKER_CONFIG's mutate glob would actually match.
+
+    Checked before installing anything, because an empty result is a second
+    silent null: a run that nests the whole domain inside src/cli.ts has
+    nothing left to mutate once the CLI adapter is excluded, and Stryker then
+    spends a dry run to report a score of n/a. The same shape is already
+    recorded for Java in CLAUDE.md; it occurs on TypeScript too.
+    """
+    src = run_dir / "src"
+    if not src.is_dir():
+        return []
+    return sorted(p for p in src.rglob("*.ts")
+                  if not p.name.endswith(".spec.ts")
+                  and not p.name.endswith(".d.ts")
+                  and p.relative_to(src).as_posix() != "cli.ts")
+
+
+_SPEC_IMPORT_RE = re.compile(
+    r"""(?:from|import|require\s*\()\s*['"](\.[^'"]+)['"]""")
+
+
+def specs_import_mutable_source(run_dir: Path) -> bool:
+    """Does any spec import a file the mutate glob covers?
+
+    If none does, the suite reaches the implementation only by spawning the
+    CLI, Stryker's in-process coverage map comes out empty, and "perTest"
+    schedules no mutant at all — so the first attempt can only waste its
+    budget before the subprocess-safe retry. Going straight to the retry skips
+    that.
+
+    The same discriminator — "does the spec import ./office.js" — identifies
+    the affected runs in RQ-gpt6-sol-vs-gpt56-sol F-1.10.2,
+    RQ-workflow-axis-gpt6-sol F-1.11.5 and RQ-workflow-axis-gpt61-sol
+    F-1.12.5, and it predicted all six affected runs of
+    RQ-current-models-ptdd exactly.
+
+    A spec importing a *test helper* out of src/ counts as importing a mutable
+    source, because the helper is in the mutate set: that run's in-process
+    mutants are real, and only the ones behind the CLI go uncovered. That
+    partial case is visible in `mutants_no_coverage` and is left to "perTest".
+    """
+    src = run_dir / "src"
+    mutable = {p.resolve() for p in mutable_sources(run_dir)}
+    if not mutable:
+        return False
+    for spec in sorted(src.rglob("*.spec.ts")):
+        try:
+            text = spec.read_text(errors="ignore")
+        except OSError:
+            continue
+        for raw in _SPEC_IMPORT_RE.findall(text):
+            target = (spec.parent / raw).resolve()
+            stem = target.with_suffix("")
+            for candidate in (target, stem.with_suffix(".ts"),
+                              Path(f"{stem}.ts")):
+                if candidate in mutable:
+                    return True
+    return False
+
+
+def killed_nothing(result: MutationResult) -> bool:
+    """Did the engine score mutants and detect none of them?
+
+    The signature of the subprocess-only case, and not a credible outcome for
+    a suite that passes: every mutant Survived, nothing killed. Distinct from
+    `result.score is None`, which means the engine produced nothing to score.
+    """
+    return result.score == 0.0 and bool(result.total)
+
+
+def wants_subprocess_retry(result: MutationResult) -> bool:
+    """Is this first-attempt result worth re-measuring subprocess-safe?
+
+    Two cases: nothing killed (see killed_nothing), and a timeout — the
+    bridged attempt schedules far less work, so a first attempt that ran out
+    of time is not evidence that the second will.
+    """
+    return killed_nothing(result) or bool(
+        result.reason and result.reason.startswith(TIMEOUT_REASON_PREFIX))
+
+
+def unmeasurable(reason: str) -> MutationResult:
+    """A null result that says why, rather than an unqualified 0.000."""
+    return MutationResult(None, None, None, None, reason)
 
 
 def run_stack(run_dir: Path, metrics: dict | None = None) -> str:
@@ -621,8 +791,13 @@ def ensure_stryker_installed(run_dir: Path, log) -> bool:
     the pnpm store is warmed via package.cache.json. Assumes
     ensure_npmrc_hoist has already prepared .npmrc.
     """
-    stryker_bin = run_dir / "node_modules" / ".bin" / "stryker"
-    if stryker_bin.exists():
+    # Check the package, not the launcher. pnpm writes node_modules/.bin/stryker
+    # as a POSIX shell shim rather than a symlink, so it outlives the package
+    # it dispatches to: after a partial removal of node_modules the shim is
+    # still there, the install is skipped, and Stryker dies with
+    # MODULE_NOT_FOUND into stryker.log — which reaches the RQ as an
+    # unexplained null rather than as a missing dependency.
+    if (run_dir / "node_modules" / "@stryker-mutator" / "core").is_dir():
         return True
 
     log(f"  installing stryker {STRYKER_VERSION} into run dir ...")
@@ -639,10 +814,61 @@ def ensure_stryker_installed(run_dir: Path, log) -> bool:
     return True
 
 
-def run_stryker(run_dir: Path, timeout_seconds: int, log) -> MutationResult:
-    """Run Stryker in run_dir and return its MutationResult."""
+@contextlib.contextmanager
+def stryker_env_bridge(run_dir: Path, log):
+    """Install the active-mutant env bridge for the duration of the block.
+
+    Writes STRYKER_ENV_BRIDGE into the run and registers it as the first
+    Vitest setup file, then restores vitest.config.ts verbatim. The config is
+    the stack's own file rather than the agent's artifact, so the one-line
+    insert is predictable — but a run whose config already declares
+    `setupFiles` is left alone rather than rewritten, and the caller is told,
+    because merging into an existing array textually is the kind of edit that
+    silently drops an entry.
+
+    Yields True when the bridge is active, False when it could not be
+    installed. A spawned child sees the mutant only in the True case.
+    """
+    config_path = run_dir / "vitest.config.ts"
+    bridge_path = run_dir / STRYKER_ENV_BRIDGE_FILE
+    original_config = config_path.read_text() if config_path.is_file() else None
+
+    installed = False
+    if original_config is None:
+        log(f"  no vitest.config.ts — env bridge not installed")
+    elif "setupFiles" in original_config:
+        log(f"  vitest.config.ts already declares setupFiles — "
+            f"env bridge not installed")
+    elif "  test: {\n" not in original_config:
+        log(f"  unexpected vitest.config.ts shape — env bridge not installed")
+    else:
+        bridge_path.write_text(STRYKER_ENV_BRIDGE)
+        config_path.write_text(original_config.replace(
+            "  test: {\n",
+            f"  test: {{\n    setupFiles: ['./{STRYKER_ENV_BRIDGE_FILE}'],\n",
+            1))
+        installed = True
+    try:
+        yield installed
+    finally:
+        # Measuring must not alter the recorded artifact.
+        if installed:
+            config_path.write_text(original_config)
+            bridge_path.unlink(missing_ok=True)
+
+
+def run_stryker(run_dir: Path, timeout_seconds: int, log,
+                coverage_analysis: str = "perTest") -> MutationResult:
+    """Run Stryker in run_dir and return its MutationResult.
+
+    `coverage_analysis` selects Stryker's mutant scheduling. The default
+    "perTest" is the fast path and is correct for a suite that imports the
+    implementation. "off" is the subprocess-safe fallback — see the comment on
+    STRYKER_ENV_BRIDGE — and costs a full suite run per mutant.
+    """
     cfg_path = run_dir / "stryker.config.json"
-    cfg_path.write_text(json.dumps(STRYKER_CONFIG, indent=2))
+    cfg_path.write_text(json.dumps(
+        {**STRYKER_CONFIG, "coverageAnalysis": coverage_analysis}, indent=2))
 
     log_path = run_dir / "stryker.log"
     report_path = run_dir / "reports" / "mutation" / "mutation-report.json"
@@ -687,7 +913,8 @@ def run_stryker(run_dir: Path, timeout_seconds: int, log) -> MutationResult:
                 )
         except subprocess.TimeoutExpired:
             log(f"  TIMEOUT after {timeout_seconds}s — score stays null")
-            return EMPTY_RESULT
+            return unmeasurable(TIMEOUT_REASON.format(
+                seconds=timeout_seconds, mode=coverage_analysis))
     finally:
         if had_pnpm_settings:
             package_path.write_text(original_package)
@@ -699,15 +926,39 @@ def run_stryker(run_dir: Path, timeout_seconds: int, log) -> MutationResult:
 
     if not report_path.is_file():
         log(f"  no mutation-report.json produced; score stays null")
-        return EMPTY_RESULT
+        return unmeasurable("stryker produced no mutation-report.json; "
+                            "see stryker.log")
 
     try:
         report = json.loads(report_path.read_text())
     except json.JSONDecodeError as e:
         log(f"  malformed mutation-report.json ({e}); score stays null")
-        return EMPTY_RESULT
+        return unmeasurable(f"malformed mutation-report.json ({e})")
 
-    return mutation_score_from_report(report)
+    result = mutation_score_from_report(report)
+    if result.score is None:
+        return unmeasurable("stryker scored no mutant; see stryker.log")
+    return result
+
+
+def run_subprocess_safe(run_dir: Path, timeout_seconds: int,
+                        log) -> MutationResult:
+    """Measure a run whose suite drives the implementation through a child.
+
+    The env bridge plus coverageAnalysis="off" — see STRYKER_ENV_BRIDGE for
+    why both are needed. A result that still kills nothing is reported as
+    unmeasurable rather than as 0.000: at that point the two readings cannot
+    be told apart, and a null that says so is the honest one.
+    """
+    with stryker_env_bridge(run_dir, log) as bridged:
+        if not bridged:
+            return unmeasurable(
+                "the suite reaches the implementation only through a spawned "
+                "process and the env bridge could not be installed")
+        result = run_stryker(run_dir, timeout_seconds, log,
+                             coverage_analysis="off")
+    return unmeasurable(SUBPROCESS_ONLY_REASON) if killed_nothing(result) \
+        else result
 
 
 def update_metrics_json(metrics_path: Path, result: MutationResult) -> None:
@@ -717,6 +968,7 @@ def update_metrics_json(metrics_path: Path, result: MutationResult) -> None:
     final["mutants_total"] = result.total
     final["mutants_survived"] = result.survived
     final["mutants_no_coverage"] = result.no_coverage
+    final["mutation_unmeasurable_reason"] = result.reason
     metrics_path.write_text(json.dumps(metrics, indent=2) + "\n")
 
 
@@ -733,6 +985,14 @@ def eligible(metrics: dict, force: bool) -> tuple[bool, str]:
     if fm.get("tests_passing") is not True:
         return False, "tests_passing != true"
     existing = fm.get("mutation_score")
+    # A recorded 0.000 with every mutant survived is the subprocess-only
+    # artifact, which this script no longer writes — see STRYKER_ENV_BRIDGE.
+    # Treating it as unmeasured rather than as a score makes the fix reach the
+    # runs that already carry the bad value, without a one-off clearing pass
+    # per RQ and without --force, which would re-measure the whole pool.
+    if existing == 0.0 and fm.get("mutants_total") \
+            and fm.get("mutants_survived") == fm.get("mutants_total"):
+        return True, ""
     if isinstance(existing, (int, float)) and not force:
         return False, f"mutation_score already set ({existing:.3f})"
     return True, ""
@@ -818,6 +1078,11 @@ def main(argv: list[str]) -> int:
                         help="list eligible runs without running mutation tests")
     parser.add_argument("--force", action="store_true",
                         help="recompute even if mutation_score is already set")
+    parser.add_argument("--no-subprocess-retry", action="store_true",
+                        help="do not re-measure a run that killed no mutant "
+                             "with the subprocess-safe fallback (TypeScript "
+                             "only); such runs then stay null rather than "
+                             "costing a full suite run per mutant")
     parser.add_argument("--from-reports", action="store_true",
                         help="re-derive the counts from each run's existing "
                              "engine report instead of running the engine; "
@@ -946,6 +1211,15 @@ def main(argv: list[str]) -> int:
             update_metrics_json(m_file, EMPTY_RESULT)
             continue
 
+        if not mutable_sources(run_dir):
+            n_failed += 1
+            reason = ("not measurable: nothing matches the mutate glob — the "
+                      "implementation sits in src/cli.ts, which is excluded "
+                      "as the CLI adapter")
+            update_metrics_json(m_file, unmeasurable(reason))
+            log(f"score=null ({reason})")
+            continue
+
         package_path = run_dir / "package.json"
         original_package = package_path.read_text()
         try:
@@ -954,14 +1228,40 @@ def main(argv: list[str]) -> int:
                 update_metrics_json(m_file, EMPTY_RESULT)
                 continue
 
-            result = run_stryker(run_dir, args.timeout_seconds, log)
+            # A suite that imports no mutable source cannot be scheduled by
+            # "perTest" at all — its coverage map is empty — so measure it
+            # subprocess-safe straight away rather than spending the budget on
+            # an attempt that can only come back empty.
+            if args.no_subprocess_retry:
+                result = run_stryker(run_dir, args.timeout_seconds, log)
+            elif not specs_import_mutable_source(run_dir):
+                log("  no spec imports a mutable source — measuring "
+                    "subprocess-safe (env bridge, coverageAnalysis=off)")
+                result = run_subprocess_safe(run_dir, args.timeout_seconds,
+                                             log)
+            else:
+                result = run_stryker(run_dir, args.timeout_seconds, log)
+                if wants_subprocess_retry(result):
+                    # Either nothing was killed — the signature of a suite
+                    # whose mutants are never really exercised,
+                    # indistinguishable from a worthless suite — or the
+                    # attempt ran out of time. Settle it by measuring instead
+                    # of recording a 0.000 or an unexplained null. The bridged
+                    # attempt is also the cheaper one: a killed mutant fails
+                    # the suite early where an untouched one runs all of it
+                    # (measured 2m51s against 13m52s on the same 60 mutants).
+                    log(f"  {result.reason or f'killed 0 of {result.total}'}"
+                        f" — retrying subprocess-safe "
+                        f"(env bridge, coverageAnalysis=off)")
+                    result = run_subprocess_safe(run_dir,
+                                                 args.timeout_seconds, log)
         finally:
             # Installing the analysis tool must not alter the recorded artifact.
             package_path.write_text(original_package)
         update_metrics_json(m_file, result)
         if result.score is None:
             n_failed += 1
-            log("score=null (see stryker.log)")
+            log(f"score=null ({result.reason or 'see stryker.log'})")
         else:
             n_executed += 1
             log(f"score={result.score:.3f} "
