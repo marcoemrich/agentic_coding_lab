@@ -265,6 +265,15 @@ MODEL_CONFIGS=(
     # confound the glm-5-1/glm-5-2 pair already carries (RQ-model-quality-pi
     # H1b). sference/glm-5.3-flash exists as well and is not wired.
     "glm-5-3|pi-only|false"
+    # Commercial models reached over Requesty rather than a vendor subscription.
+    # gemini-4-argon: CAUTION, its tariff has a cliff. Google runs an
+    # introductory $2/$10 per 1M until 2026-11-30 and $4/$20 after, so the
+    # Requesty rate (1.1x, the documented vertex markup) roughly doubles on
+    # that date. cost_usd is frozen per run at measure time and never
+    # recomputed, so a cell measured across the cliff is not internally
+    # comparable -- fill it on one side of 2026-11-30 and record which.
+    "gemini-4-argon|pi-only|false"
+    "mistral-large-4|pi-only|false"
     # qwen3-8 = tensorx/qwen3.8. The lab id spells the dot as a dash like every
     # other version number here; read it as "Qwen 3.8", not as an 8B parameter
     # count. Unrelated to qwen3-235b below, which is a different generation on
@@ -312,6 +321,8 @@ MODEL_CONFIGS=(
     "deepseek-v4-flash-no-thinking|pi-only|false"
     "deepseek-v4-1-flash-no-thinking|pi-only|false"
     "glm-5-3-no-thinking|pi-only|false"
+    "gemini-4-argon-no-thinking|pi-only|false"
+    "mistral-large-4-no-thinking|pi-only|false"
     "qwen3-8-no-thinking|pi-only|false"
     "qwen3-235b-no-thinking|pi-only|false"
     # cursor-agent-harness-only models — cli_model is a placeholder; the actual
@@ -1059,6 +1070,8 @@ EOF
                 glm-5-1)                       pi_model="requesty/nebius/zai-org/glm-5.1" ;;
                 glm-5-2)                       pi_model="requesty/tensorx/glm-5.2" ;;
                 glm-5-3)                       pi_model="requesty/sference/glm-5.3" ;;
+                gemini-4-argon)                pi_model="requesty/vertex/gemini-4-argon@eu" ;;
+                mistral-large-4)               pi_model="requesty/mistral/mistral-large-4" ;;
                 kimi-k2-7)                     pi_model="requesty/tensorx/kimi-k2.7-code" ;;
                 # One underlying model, two routes, one id each -- the route is
                 # always explicit in the id. Keep both so a routing comparison

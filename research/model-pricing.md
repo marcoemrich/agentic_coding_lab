@@ -18,6 +18,8 @@ For the current pi/Requesty models (RQ-model-novel-pi, RQ-model-quality-pi, RQ-h
 | glm-5-1 | `nebius/zai-org/glm-5.1` | $1.40 | $4.40 | $1.40 | **no** |
 | glm-5-2 | `tensorx/glm-5.2` | $1.50 | $4.50 | $0.38 | yes |
 | glm-5-3 | `sference/glm-5.3` | $1.20 | $4.20 | $0.26 | yes |
+| gemini-4-argon | `vertex/gemini-4-argon@eu` | $2.20 | $11.00 | $0.11 | yes |
+| mistral-large-4 | `mistral/mistral-large-4` | $0.68 | $2.09 | $0.07 | yes |
 | kimi-k2-7 | `tensorx/kimi-k2.7-code` | $1.25 | $4.50 | $0.31 | yes |
 | kimi-k3-sference | `sference/kimi-k3` | $3.00 | $15.00 | $0.45 | yes |
 | kimi-k3-nebius | `nebius/kimi-k3` | $3.00 | $15.00 | $3.00 | **no** |
@@ -41,6 +43,8 @@ Notes:
 - **The two DeepSeek flash generations are separate cells** (wired for pi 2026-10-23, rates from the live catalogue that day): `deepseek-v4-flash` on tensorx and `deepseek-v4-1-flash` on sference. Different generation *and* different provider, at a 2x input / 5x output spread — never merge them, and do not read the $0.10/$0.20 in "Further DeepSeek variants" below as the Requesty rate: that figure is OpenRouter's and does not apply to either route.
 - **The undated tensorx aliases are not in the catalogue but resolve.** `tensorx/deepseek-v4-pro` serves `deepseek-v4-pro`, `tensorx/deepseek-v4-flash` serves `deepseek-v4-flash-0731` (probed 2026-10-23). The catalogue lists only dated snapshots (`-0731`, `-0813`, `-0424`); the aliases are deliberately not pinned to a date, so a cell follows the provider's current snapshot. The flash rates above are the `-0731` ones.
 - **`deepseek-v4-flash` and `deepseek-v4-flash-requesty` are the same tensorx alias on two harnesses** — the bare id is the pi route, the `-requesty` one the OpenCode route that replaced the dead Portkey route on 2026-10-19. The tariff is identical and was read from the catalogue independently on 2026-10-19 and 2026-10-23 with the same result; the ids differ because the harness does, not the price. `deepseek-v4-pro` / `deepseek-v4-pro-requesty` are the same pair.
+- **`gemini-4-argon` has a tariff cliff on 2026-11-30.** The rate above is 1.1x Google's *introductory* price ($2/$10 per 1M, cached input at 95 % off); Google's standard price from 2026-12-01 is $4/$20, so the Requesty route is expected at $4.40/$22.00 then. `cost_usd` is written once per run and never recomputed, so an Argon cell filled across that date mixes two tariffs and is not internally comparable. Fill on one side of it and record which in the RQ README.
+- **`gemini-4-argon` and `mistral-large-4` wired 2026-10-23**, both probed with a real completion on the EU router. They are the first commercial models in the lab reached over Requesty rather than a vendor subscription — which is what lets RQ-current-models-ptdd separate the route effect from the commercial/open-weight split. Every previous Gemini and Mistral id in `run-batch.sh` routes through Portkey and is dead.
 - **`glm-5-3` and `qwen3-8` wired 2026-10-23** for RQ-current-models-ptdd. `glm-5-3` sits on sference where `glm-5-2` sits on tensorx, so the version jump carries a backprovider confound — the same one the glm-5-1/glm-5-2 pair has. `qwen3-8` is `tensorx/qwen3.8` ("Qwen 3.8", not an 8B model) and is a different generation *and* provider from `qwen3-235b` on nebius; at $2.50/$6.00 it is also an order of magnitude dearer than that cell.
 - Requesty rotates models/providers quickly — on deviations, diff the live catalogue against `compute-cost.py` `PRICES` and `experiments/docker/pi-config/agent/models.json`.
 

@@ -179,6 +179,15 @@ PRICES = {
     "glm-5-2-no-thinking": (1.50, 4.50, 0.38, 0.0),
     "glm-5-3":          (1.20,  4.20,  0.26, 0.0),   # sference/glm-5.3
     "glm-5-3-no-thinking": (1.20, 4.20, 0.26, 0.0),
+    # gemini-4-argon: catalogue rate 2026-10-23, which is 1.1x Google's
+    # INTRODUCTORY price ($2/$10 per 1M, in force until 2026-11-30). Google's
+    # standard price from 2026-12-01 is $4/$20, so this entry is expected to
+    # become 4.40/22.00. Update it then, and do not compare Argon cells
+    # measured on either side of that date -- cost_usd is written once per run.
+    "gemini-4-argon":   (2.20,  11.00, 0.11, 0.0),   # vertex/gemini-4-argon@eu
+    "gemini-4-argon-no-thinking": (2.20, 11.00, 0.11, 0.0),
+    "mistral-large-4":  (0.68,  2.09,  0.07, 0.0),   # mistral/mistral-large-4
+    "mistral-large-4-no-thinking": (0.68, 2.09, 0.07, 0.0),
     # Retariffed 2026-10-23 (azure/Requesty route only -- the openai-codex
     # entries below stay at the OpenAI list price of 5.00/30.00/0.50).
     "gpt-5-6-sol":      (4.40,  22.00, 0.44, 0.0),   # azure/gpt-5.6-sol

@@ -315,206 +315,247 @@
       "workflow": "exact-ptdd-v1-cc",
       "model": "sonnet-5-5-no-thinking",
       "counts": {
-        "runs": 0,
+        "runs": 1,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
       },
-      "runs": [],
+      "runs": [
+        {
+          "id": "2026-10-23_01-19-48_claim-office-example-mapping_exact-ptdd-v1-cc_sonnet-5-5-no-thinking",
+          "started_at": "2026-10-23T01:19:48+00:00",
+          "exit_reason": "ok"
+        }
+      ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 15,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 15,
           "null_count": 0
         },
         "tests_passing": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 1,
           "null_count": 0
         },
         "production_loc": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 164,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 597,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 3,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1.38,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 4,
           "null_count": 0
         },
         "unit_count": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 22,
           "null_count": 0
         },
         "unit_size_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 14,
           "null_count": 0
         },
         "unit_size_avg": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 4.55,
           "null_count": 0
         },
         "unit_size_median": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 3,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 14,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 54,
           "null_count": 0
         },
         "test_lines": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 278,
           "null_count": 0
         },
         "mutation_score": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_total": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_survived": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_no_coverage": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "tdd_discipline": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0.652,
           "null_count": 0
         },
         "tdd_discipline_step": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "tdd_discipline_closure": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0.518,
           "null_count": 0
         },
         "test_first_rate": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0.536,
           "null_count": 0
         },
         "red_batch_size": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "red_batch_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "green_batch_size": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "cycles_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 56,
           "null_count": 0
         },
         "cycles_closed": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 29,
           "null_count": 0
         },
         "refactor_events": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 15,
           "null_count": 0
         },
         "skip_events": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 22,
           "null_count": 0
         },
         "chain_suite_runs": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 103,
           "null_count": 0
         },
         "chain_deviations": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 26,
           "null_count": 0
         },
         "chain_opens_red": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 0,
           "null_count": 0
         },
         "chain_ends_green": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 1,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1159,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 36016561,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 10.6566,
           "null_count": 0
         }
       }
@@ -832,7 +873,7 @@
     {
       "kata": "claim-office-example-mapping",
       "workflow": "exact-ptdd-v1-pi",
-      "model": "kimi-k3-sference",
+      "model": "gemini-4-argon",
       "counts": {
         "runs": 0,
         "timeouts": 0,
@@ -1034,6 +1075,465 @@
         "cost_usd": {
           "kind": "num",
           "n": 0,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-ptdd-v1-pi",
+      "model": "mistral-large-4",
+      "counts": {
+        "runs": 0,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_count": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_median": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_no_coverage": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tdd_discipline": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tdd_discipline_step": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tdd_discipline_closure": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "test_first_rate": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "red_batch_size": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "red_batch_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "green_batch_size": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cycles_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cycles_closed": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "refactor_events": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "skip_events": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "chain_suite_runs": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "chain_deviations": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "chain_opens_red": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "chain_ends_green": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-example-mapping",
+      "workflow": "exact-ptdd-v1-pi",
+      "model": "kimi-k3-sference",
+      "counts": {
+        "runs": 1,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-10-23_01-19-48_claim-office-example-mapping_exact-ptdd-v1-pi_kimi-k3-sference",
+          "started_at": "2026-10-23T01:19:50+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 1,
+          "mean": 0.9333,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 1,
+          "mean": 14,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 1,
+          "mean": 15,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 1,
+          "k": 1,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 1,
+          "mean": 181,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 1,
+          "mean": 599,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 1,
+          "mean": 0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 1,
+          "mean": 9,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 1,
+          "mean": 2.8,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 1,
+          "mean": 7,
+          "null_count": 0
+        },
+        "unit_count": {
+          "kind": "num",
+          "n": 1,
+          "mean": 12,
+          "null_count": 0
+        },
+        "unit_size_max": {
+          "kind": "num",
+          "n": 1,
+          "mean": 21,
+          "null_count": 0
+        },
+        "unit_size_avg": {
+          "kind": "num",
+          "n": 1,
+          "mean": 9.83,
+          "null_count": 0
+        },
+        "unit_size_median": {
+          "kind": "num",
+          "n": 1,
+          "mean": 7.5,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 1,
+          "mean": 21,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 1,
+          "mean": 42,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 1,
+          "mean": 515,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 1
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 1
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 1
+        },
+        "mutants_no_coverage": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 1
+        },
+        "tdd_discipline": {
+          "kind": "num",
+          "n": 1,
+          "mean": 0.528,
+          "null_count": 0
+        },
+        "tdd_discipline_step": {
+          "kind": "num",
+          "n": 1,
+          "mean": 1,
+          "null_count": 0
+        },
+        "tdd_discipline_closure": {
+          "kind": "num",
+          "n": 1,
+          "mean": 0.372,
+          "null_count": 0
+        },
+        "test_first_rate": {
+          "kind": "num",
+          "n": 1,
+          "mean": 0.395,
+          "null_count": 0
+        },
+        "red_batch_size": {
+          "kind": "num",
+          "n": 1,
+          "mean": 1,
+          "null_count": 0
+        },
+        "red_batch_max": {
+          "kind": "num",
+          "n": 1,
+          "mean": 1,
+          "null_count": 0
+        },
+        "green_batch_size": {
+          "kind": "num",
+          "n": 1,
+          "mean": 13.5,
+          "null_count": 0
+        },
+        "cycles_total": {
+          "kind": "num",
+          "n": 1,
+          "mean": 43,
+          "null_count": 0
+        },
+        "cycles_closed": {
+          "kind": "num",
+          "n": 1,
+          "mean": 16,
+          "null_count": 0
+        },
+        "refactor_events": {
+          "kind": "num",
+          "n": 1,
+          "mean": 7,
+          "null_count": 0
+        },
+        "skip_events": {
+          "kind": "num",
+          "n": 1,
+          "mean": 26,
+          "null_count": 0
+        },
+        "chain_suite_runs": {
+          "kind": "num",
+          "n": 1,
+          "mean": 95,
+          "null_count": 0
+        },
+        "chain_deviations": {
+          "kind": "num",
+          "n": 1,
+          "mean": 26,
+          "null_count": 0
+        },
+        "chain_opens_red": {
+          "kind": "bool",
+          "n": 1,
+          "k": 0,
+          "null_count": 0
+        },
+        "chain_ends_green": {
+          "kind": "bool",
+          "n": 1,
+          "k": 1,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 1,
+          "mean": 1479,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 1,
+          "mean": 6491659,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 1,
+          "mean": 3.8085,
           "null_count": 0
         }
       }
@@ -1043,206 +1543,247 @@
       "workflow": "exact-ptdd-v1-pi",
       "model": "glm-5-3",
       "counts": {
-        "runs": 0,
+        "runs": 1,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
       },
-      "runs": [],
+      "runs": [
+        {
+          "id": "2026-10-23_01-19-48_claim-office-example-mapping_exact-ptdd-v1-pi_glm-5-3",
+          "started_at": "2026-10-23T01:19:50+00:00",
+          "exit_reason": "ok"
+        }
+      ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 15,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 15,
           "null_count": 0
         },
         "tests_passing": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 1,
           "null_count": 0
         },
         "production_loc": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 236,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 821,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 8,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 3.09,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 7,
           "null_count": 0
         },
         "unit_count": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 12,
           "null_count": 0
         },
         "unit_size_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 25,
           "null_count": 0
         },
         "unit_size_avg": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 12.58,
           "null_count": 0
         },
         "unit_size_median": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 11.5,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 25,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 45,
           "null_count": 0
         },
         "test_lines": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 461,
           "null_count": 0
         },
         "mutation_score": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_total": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_survived": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_no_coverage": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "tdd_discipline": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0.52,
           "null_count": 0
         },
         "tdd_discipline_step": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "tdd_discipline_closure": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0.348,
           "null_count": 0
         },
         "test_first_rate": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0.404,
           "null_count": 0
         },
         "red_batch_size": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "red_batch_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "green_batch_size": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "cycles_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 46,
           "null_count": 0
         },
         "cycles_closed": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 16,
           "null_count": 0
         },
         "refactor_events": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 4,
           "null_count": 0
         },
         "skip_events": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 28,
           "null_count": 0
         },
         "chain_suite_runs": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 78,
           "null_count": 0
         },
         "chain_deviations": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 31,
           "null_count": 0
         },
         "chain_opens_red": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 0,
           "null_count": 0
         },
         "chain_ends_green": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 1,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 526,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 7413985,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 2.2068,
           "null_count": 0
         }
       }
@@ -1252,206 +1793,247 @@
       "workflow": "exact-ptdd-v1-pi",
       "model": "deepseek-v4-1-flash",
       "counts": {
-        "runs": 0,
+        "runs": 1,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
       },
-      "runs": [],
+      "runs": [
+        {
+          "id": "2026-10-23_01-19-48_claim-office-example-mapping_exact-ptdd-v1-pi_deepseek-v4-1-flash",
+          "started_at": "2026-10-23T01:19:50+00:00",
+          "exit_reason": "ok"
+        }
+      ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 15,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 15,
           "null_count": 0
         },
         "tests_passing": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 1,
           "null_count": 0
         },
         "production_loc": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 196,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 609,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 3,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1.5,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 4,
           "null_count": 0
         },
         "unit_count": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 22,
           "null_count": 0
         },
         "unit_size_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 15,
           "null_count": 0
         },
         "unit_size_avg": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 5.18,
           "null_count": 0
         },
         "unit_size_median": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 3,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 15,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 40,
           "null_count": 0
         },
         "test_lines": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 362,
           "null_count": 0
         },
         "mutation_score": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_total": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_survived": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_no_coverage": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "tdd_discipline": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0.545,
           "null_count": 0
         },
         "tdd_discipline_step": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "tdd_discipline_closure": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0.39,
           "null_count": 0
         },
         "test_first_rate": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0.415,
           "null_count": 0
         },
         "red_batch_size": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "red_batch_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "green_batch_size": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "cycles_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 41,
           "null_count": 0
         },
         "cycles_closed": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 16,
           "null_count": 0
         },
         "refactor_events": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 14,
           "null_count": 0
         },
         "skip_events": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 24,
           "null_count": 0
         },
         "chain_suite_runs": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 78,
           "null_count": 0
         },
         "chain_deviations": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 24,
           "null_count": 0
         },
         "chain_opens_red": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 0,
           "null_count": 0
         },
         "chain_ends_green": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 1,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 2072,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 11422757,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1.3356,
           "null_count": 0
         }
       }
@@ -1461,206 +2043,247 @@
       "workflow": "exact-ptdd-v1-pi",
       "model": "minimax-m3",
       "counts": {
-        "runs": 0,
+        "runs": 1,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
       },
-      "runs": [],
+      "runs": [
+        {
+          "id": "2026-10-23_01-19-48_claim-office-example-mapping_exact-ptdd-v1-pi_minimax-m3",
+          "started_at": "2026-10-23T01:19:50+00:00",
+          "exit_reason": "ok"
+        }
+      ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0.8667,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 13,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 15,
           "null_count": 0
         },
         "tests_passing": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 1,
           "null_count": 0
         },
         "production_loc": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 277,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 803,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 8,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 3,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 7,
           "null_count": 0
         },
         "unit_count": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 18,
           "null_count": 0
         },
         "unit_size_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 29,
           "null_count": 0
         },
         "unit_size_avg": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 7.94,
           "null_count": 0
         },
         "unit_size_median": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 6.5,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 29,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 58,
           "null_count": 0
         },
         "test_lines": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 552,
           "null_count": 0
         },
         "mutation_score": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_total": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_survived": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_no_coverage": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "tdd_discipline": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0.472,
           "null_count": 0
         },
         "tdd_discipline_step": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "tdd_discipline_closure": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0.324,
           "null_count": 0
         },
         "test_first_rate": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0.324,
           "null_count": 0
         },
         "red_batch_size": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "red_batch_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 6,
           "null_count": 0
         },
         "green_batch_size": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "cycles_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 37,
           "null_count": 0
         },
         "cycles_closed": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 12,
           "null_count": 0
         },
         "refactor_events": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 10,
           "null_count": 0
         },
         "skip_events": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 21,
           "null_count": 0
         },
         "chain_suite_runs": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 65,
           "null_count": 0
         },
         "chain_deviations": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 27,
           "null_count": 0
         },
         "chain_opens_red": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 0,
           "null_count": 0
         },
         "chain_ends_green": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 1,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1905,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 507557,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0.0527,
           "null_count": 0
         }
       }
@@ -1670,206 +2293,242 @@
       "workflow": "exact-ptdd-v1-pi",
       "model": "qwen3-8",
       "counts": {
-        "runs": 0,
+        "runs": 1,
         "timeouts": 0,
         "infra": 0,
         "provider_refusals": 0
       },
-      "runs": [],
+      "runs": [
+        {
+          "id": "2026-10-23_01-39-41_claim-office-example-mapping_exact-ptdd-v1-pi_qwen3-8",
+          "started_at": "2026-10-23T01:39:42+00:00",
+          "exit_reason": "ok"
+        }
+      ],
       "outcomes": {
         "verification_pct": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "verification_passed": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 15,
           "null_count": 0
         },
         "verification_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 15,
           "null_count": 0
         },
         "tests_passing": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 1,
           "null_count": 0
         },
         "production_loc": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 253,
           "null_count": 0
         },
         "code_mass": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 826,
           "null_count": 0
         },
         "smell_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0,
           "null_count": 0
         },
         "cognitive_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 9,
           "null_count": 0
         },
         "cognitive_avg": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 2.86,
           "null_count": 0
         },
         "mccabe_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 9,
           "null_count": 0
         },
         "unit_count": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 14,
           "null_count": 0
         },
         "unit_size_max": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 22,
           "null_count": 0
         },
         "unit_size_avg": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 11.71,
           "null_count": 0
         },
         "unit_size_median": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 11.5,
           "null_count": 0
         },
         "longest_function": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 22,
           "null_count": 0
         },
         "tests_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 51,
           "null_count": 0
         },
         "test_lines": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 420,
           "null_count": 0
         },
         "mutation_score": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_total": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_survived": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "mutants_no_coverage": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "tdd_discipline": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "tdd_discipline_step": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "tdd_discipline_closure": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0,
           "null_count": 0
         },
         "test_first_rate": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0,
           "null_count": 0
         },
         "red_batch_size": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "red_batch_max": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "green_batch_size": {
           "kind": "num",
           "n": 0,
-          "null_count": 0
+          "null_count": 1
         },
         "cycles_total": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 2,
           "null_count": 0
         },
         "cycles_closed": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0,
           "null_count": 0
         },
         "refactor_events": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0,
           "null_count": 0
         },
         "skip_events": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 0,
           "null_count": 0
         },
         "chain_suite_runs": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 3,
           "null_count": 0
         },
         "chain_deviations": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1,
           "null_count": 0
         },
         "chain_opens_red": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 0,
           "null_count": 0
         },
         "chain_ends_green": {
-          "kind": "num",
-          "n": 0,
+          "kind": "bool",
+          "n": 1,
+          "k": 1,
           "null_count": 0
         },
         "duration_seconds": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 1761,
           "null_count": 0
         },
         "total_tokens": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 8746350,
           "null_count": 0
         },
         "cost_usd": {
           "kind": "num",
-          "n": 0,
+          "n": 1,
+          "mean": 5.8863,
           "null_count": 0
         }
       }

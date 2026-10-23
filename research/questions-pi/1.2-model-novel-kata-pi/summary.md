@@ -2,7 +2,7 @@
 
 _How do the models reachable via the pi harness (Requesty routing) differ in correctness and TDD discipline on claim-office-example-mapping with the exact-hybrid-v4-cleaned-pi workflow?_
 
-Generated: 2026-10-19T13:58:24Z
+Generated: 2026-10-23T02:10:27Z
 
 Cells declared: 18 · matched runs: 90 · min_replicates: 5
 
@@ -395,6 +395,6 @@ Cells declared: 18 · matched runs: 90 · min_replicates: 5
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b                  |   5 |      0 |   2.08 | 2.57 |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | qwen3-235b-no-thinking      |   5 |      0 |   0.93 | 0.66 |
 | claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | glm-5-2                     |   5 |      0 |   7.76 | 4.51 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k3-sference            |   5 |      0 |   3.56 | 0.54 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol                 |   5 |      0 |   2.54 | 0.65 |
-| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-terra               |   5 |      0 |   0.6  | 0.4  |
+| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | kimi-k3-sference            |   5 |      0 |   5.94 | 1    |
+| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-sol                 |   5 |      0 |   2.13 | 0.56 |
+| claim-office-example-mapping | exact-hybrid-v4.2-phase-continuation-pi | gpt-5-6-terra               |   5 |      0 |   0.53 | 0.35 |

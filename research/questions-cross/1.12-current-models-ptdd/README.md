@@ -18,6 +18,11 @@ factors:
     - {model: opus-5-5-no-thinking, workflow: {any: [exact-ptdd-v1-cc, exact-sol-v1.6-test-list-dimensions-cc]}}
     - {model: sonnet-5-5-no-thinking, workflow: exact-ptdd-v1-cc}
     - {model: gpt-6-1-sol-codex, workflow: {any: [exact-ptdd-v1-pi, exact-sol-v1.6-test-list-dimensions-pi]}}
+    # Commercial models reached over Requesty rather than a vendor
+    # subscription. These two are what make the route effect separable from
+    # the commercial/open-weight split -- see Confound 2.
+    - {model: gemini-4-argon, workflow: exact-ptdd-v1-pi}
+    - {model: mistral-large-4, workflow: exact-ptdd-v1-pi}
     # Open-weight models, all on pi/Requesty.
     - {model: kimi-k3-sference, workflow: exact-ptdd-v1-pi}
     - {model: glm-5-3, workflow: exact-ptdd-v1-pi}
@@ -104,8 +109,10 @@ This RQ closes that gap for the current generation: what do today's models do
 with the method we actually recommend?
 
 The model set is the user's: current Opus and Sonnet as the Anthropic anchor,
-GPT-6.1 Sol as the OpenAI anchor, and the current flagship of each open-weight
-family that is reachable over Requesty (Kimi, GLM, DeepSeek, MiniMax, Qwen).
+GPT-6.1 Sol as the OpenAI anchor, the current flagship of each open-weight
+family reachable over Requesty (Kimi, GLM, DeepSeek, MiniMax, Qwen), and two
+commercial models that are reachable over Requesty rather than a subscription
+(Gemini 4 Argon, Mistral Large 4).
 
 ## The route decision, and why it is a bundle
 
@@ -116,6 +123,8 @@ Each model is reached the way a practitioner would actually reach it:
 | `opus-5-5-no-thinking` | Claude Code | Anthropic subscription (native OAuth) | `exact-ptdd-v1-cc` |
 | `sonnet-5-5-no-thinking` | Claude Code | Anthropic subscription (native OAuth) | `exact-ptdd-v1-cc` |
 | `gpt-6-1-sol-codex` | pi | OpenAI subscription (`openai-codex`) | `exact-ptdd-v1-pi` |
+| `gemini-4-argon` | pi | Requesty `vertex/gemini-4-argon@eu` | `exact-ptdd-v1-pi` |
+| `mistral-large-4` | pi | Requesty `mistral/mistral-large-4` | `exact-ptdd-v1-pi` |
 | `kimi-k3-sference` | pi | Requesty `sference/kimi-k3` | `exact-ptdd-v1-pi` |
 | `glm-5-3` | pi | Requesty `sference/glm-5.3` | `exact-ptdd-v1-pi` |
 | `deepseek-v4-1-flash` | pi | Requesty `sference/deepseek-v4.1-flash` | `exact-ptdd-v1-pi` |
@@ -128,6 +137,13 @@ subscription are the routes those two vendors' models are actually used on, and
 the open-weight models have no subscription route at all. Forcing Opus and Sol
 onto Requesty would measure a configuration nobody runs, at a tariff nobody
 pays, and would still leave the harness axis varying.
+
+**Gemini 4 Argon and Mistral Large 4 are the exception that makes the design
+work.** Both are commercial, closed-weight models, and both are reached over
+Requesty because neither vendor's subscription is wired into this lab. That
+puts commercial models on *both* sides of the route split, which is what turns
+Confound 2 from a confound that swallows the main comparison into one that can
+be bounded from inside this RQ.
 
 ## Confounds (binding)
 
@@ -147,12 +163,20 @@ finding of this RQ is quoted.
    the OpenAI subscription against Requesty: `cognitive_max` 4.0 against 8.0,
    **Smell Total** 0.0 against 2.0, Production LoC 41 against 28. Turning
    reasoning **on** for the Requesty route did not reproduce the subscription
-   profile on any quality metric. In this RQ that effect lies **on the model
-   axis**: the three commercial cells sit on subscription routes and the five
-   open-weight cells on Requesty, so part of any commercial-vs-open gap is the
-   route. This is the single most important caveat of the RQ. It can be sized,
-   not removed: `gpt-5-6-sol` (Requesty) against `gpt-5-6-sol-codex`
-   (subscription) in `RQ-route-effect-pi` is the available yardstick.
+   profile on any quality metric. The effect is real and it is not small.
+
+   It does **not**, however, coincide with the commercial/open-weight split in
+   this RQ, and that is deliberate. `gemini-4-argon` and `mistral-large-4` are
+   commercial models on Requesty, so a commercial-against-open comparison
+   exists **within one route** — those two against the five open-weight cells.
+   Read that comparison first. The subscription cells (Opus 5.5, Sonnet 5.5,
+   GPT-6.1 Sol) carry the route effect on top of the model effect and may not
+   be set against a Requesty cell without saying so.
+
+   Two independent yardsticks size the route effect rather than assume it:
+   `gpt-5-6-sol` (Requesty) against `gpt-5-6-sol-codex` (subscription) in
+   `RQ-route-effect-pi`, and — once this RQ is filled — the gap between its own
+   two commercial groups.
 
 3. **`cost_usd` is a list-price comparison value in all three route families,
    and never an invoice.** Nothing is billed per token on either subscription;
@@ -202,8 +226,29 @@ case map in `run-batch.sh`, `PRICES` in `compute-cost.py`, and for pi also
 | `glm-5-3` | `requesty/sference/glm-5.3` | $1.20/$4.20/$0.26 |
 | `qwen3-8` | `requesty/tensorx/qwen3.8` | $2.50/$6.00/$0.63 |
 | `deepseek-v4-1-flash` | `requesty/sference/deepseek-v4.1-flash` | $0.50/$1.50/$0.05 |
+| `gemini-4-argon` | `requesty/vertex/gemini-4-argon@eu` | $2.20/$11.00/$0.11 — see the cliff below |
+| `mistral-large-4` | `requesty/mistral/mistral-large-4` | $0.68/$2.09/$0.07 |
 
-`check-pi-model-wiring.py` reports all pi ids declared and priced.
+`check-pi-model-wiring.py` reports all pi ids declared and priced. Every route
+above was probed with a real completion against the EU router on 2026-10-23,
+not merely read out of the catalogue.
+
+### Gemini 4 Argon: a tariff cliff on 2026-11-30, and a gate that does not bite
+
+Google runs an **introductory** price of $2/$10 per 1M until 2026-11-30 and
+$4/$20 from 2026-12-01 — a doubling. The Requesty rate above is 1.1x the
+introductory one, per the documented vertex markup, so it is expected at
+$4.40/$22.00 after the cliff. `cost_usd` is written once per run at measure
+time and is never recomputed, so **an Argon cell filled across 2026-11-30
+mixes two tariffs in one mean.** Fill it on one side of that date and record
+which side here. Everything except `cost_usd` is unaffected.
+
+Google also states that Argon is rolled out only to selected cyber partners
+through its Fairwind program, and that the model is trained specifically for
+defensive security work. The gate does not appear to apply to the Requesty
+route — the probe answered normally — but the training focus is a reason to
+watch this cell rather than expect it to lead: nothing about claim-office
+rewards a security specialisation.
 
 ### The CLI gate: Sonnet 5.5 needs the `[1m]` suffix
 
@@ -217,6 +262,77 @@ exactly this RQ's kata. With `claude-sonnet-5-5[1m]` the cap is gone.
 `MODEL_CONFIGS` therefore pins the suffixed id. Opus 5.5 needs no suffix;
 2.1.280 knows that one. Drop the suffix only after a CLI bump whose catalog
 lists `claude-sonnet-5-5`, and re-verify there.
+
+### Smoke results, 2026-10-23 (n=1 per unfilled cell)
+
+All six smoke runs exited `ok` with `cli_built = true` and `tests_passing =
+true`. No cell drops on the loop-completion criterion, and the open question
+about `exact-ptdd-v1-pi`'s test-list to red transition is **answered for four
+of five open-weight models** — glm-5-3, deepseek-v4-1-flash, kimi-k3-sference
+and minimax-m3 all close cycles under it. n=1 proves the mechanics work, not a
+rate.
+
+| Cell | Correctness (external) | `cycles_closed` | `refactor_events` | `red_batch_max` | predictions | `cognitive_max` | `cost_usd` | min |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `sonnet-5-5-no-thinking` | 1.00 | 29 | 15 | 1 | 1/2 | 3 | $10.66 | 19 |
+| `glm-5-3` | 1.00 | 16 | 4 | 1 | 88/90 | 8 | $2.21 | 9 |
+| `deepseek-v4-1-flash` | 1.00 | 16 | 14 | 1 | 80/80 | 3 | $1.34 | 35 |
+| `qwen3-8` | 1.00 | **0** | **0** | **null** | 37/38 | 9 | $5.89 | 29 |
+| `kimi-k3-sference` | 0.933 | 16 | 7 | 1 | 83/83 | 9 | $3.81 | 25 |
+| `minimax-m3` | 0.867 | 12 | 10 | **6** | 64/64 | 8 | $0.05 | 32 |
+
+**Smoke Total is 0 for all six.** Single runs, so this says the kata is
+tractable under this workflow, not that the models are equally clean.
+
+#### qwen3-8 writes no TDD loop, and the chain measured that correctly
+
+This is the one result that changes how a column must be read. `cycles_closed
+= 0` with `red_batch_max = null` looks exactly like the silent-reporter failure
+CLAUDE.md warns about — a stack whose TDD event reporter wrote nothing. It is
+not. `tdd-events.jsonl` holds **three** events across the 29-minute run:
+
+| seq | time | suite |
+|---|---|---|
+| 1 | 01:43:53 | failed — 0 passed, 0 failed, **51 skipped** of 51 |
+| 2 | 02:07:35 | green — 51 passed, 0 skipped |
+| 3 | 02:08:09 | green — 51 passed, 0 skipped |
+
+So the reporter ran and recorded an **absence** of cycles: qwen3-8 wrote the
+complete test list as skipped entries, implemented everything in one stretch
+without invoking the suite, and ran it green at the end. There was never a red
+batch, hence `null` rather than a number. Verify this per cell before reading a
+zero as a reporter fault — the file is the evidence, not the metric.
+
+This is a **different** failure from the `qwen3-235b` drop: that model never
+implemented anything (0-1 tests of a 19-54 entry list, most runs under two
+minutes). qwen3-8 solves the kata completely in 51 tests. It therefore stays in
+the RQ, because correctness and code quality are the primary outcomes and both
+are validly measured here. But every TDD-discipline column for this cell is
+structurally empty, and a finding must say "ran no loop", never "no data".
+
+#### The text-derived prediction markers fail in both directions
+
+One batch produced both failure modes at once:
+
+- `sonnet-5-5` closes **29** cycles with **15** refactor events and emits
+  **2** prediction markers.
+- `qwen3-8` closes **0** cycles and emits **38**.
+
+The markers claim discipline where the event stream shows none, and omit it
+where the stream shows plenty. This reproduces F-2.4.6 of
+`RQ-opus55-current-workflow` ("the markers do not survive") on a second
+Anthropic model and extends it: the inverse error happens too. Consequence for
+this RQ: **gate on the phase chain, never on `predictions_*`.** The
+`predictions_correct_rate` column is deliberately absent from `outcomes:` for
+that reason, and `predictions_*` may not be compared across the
+Anthropic/non-Anthropic boundary.
+
+#### minimax-m3 batches its red tests
+
+`red_batch_max = 6` against 1 everywhere else: minimax writes up to six failing
+tests before making them pass, which is a workflow-compliance deviation rather
+than a crash — the run completes with 58 tests and `verification_pct = 0.867`.
+It stays in, with the deviation reported alongside its discipline columns.
 
 ### Inclusion rule per model
 
@@ -242,9 +358,9 @@ criterion, not a model result.
 |---|---:|---|
 | `opus-5-5-no-thinking` × `exact-ptdd-v1-cc` | **5** | RQ-opus55-current-workflow |
 | `gpt-6-1-sol-codex` × `exact-ptdd-v1-pi` | **5** | RQ-workflow-axis-gpt61-sol |
-| all six others | 0 | — |
+| all eight others | 0 | — |
 
-So 10 of 40 runs exist before the first batch. Both inherited cells are at
+So 10 of 50 runs exist before the first batch. Both inherited cells are at
 `min_replicates` and on the pinned harness versions.
 
 ## Batch-plan constraint
@@ -280,23 +396,28 @@ Mutation testing is opt-in here and runs **between** batch and aggregation
   carries the structure.
 - **H3 (the open-weight field has closed the correctness gap but not the
   structure gap).** The open cells reach the correctness gate but carry higher
-  `cognitive_max` and **Smell Total** than the commercial ones — and part of
-  that difference is the route, not the model (Confound 2). A finding may
-  state the gap; it may not attribute it wholly to the model.
+  `cognitive_max` and **Smell Total** than the commercial ones. The test that
+  decides this is **within the Requesty route**: `gemini-4-argon` and
+  `mistral-large-4` against the five open-weight cells. If the gap shows up
+  there too, it is a model property. If it shows up only against the
+  subscription cells, it was the route (Confound 2).
 - **H4 (price per correct run inverts the ranking).** At $0.50/$1.50
-  `deepseek-v4-1-flash` and at $1.20/$4.20 `glm-5-3` are an order of magnitude
-  under the Anthropic tariff. If H3 holds weakly — the open cells clear the
+  `deepseek-v4-1-flash`, at $0.68/$2.09 `mistral-large-4` and at $1.20/$4.20
+  `glm-5-3` are an order of magnitude under the Anthropic tariff — and
+  `mistral-large-4` is a commercial model at that price, so the cheap end of
+  the field is not an open-weight-only story. If H3 holds weakly — the open cells clear the
   gate with somewhat worse structure — then "cheapest cell that clears the
   correctness gate" is a different winner from "best structure", and that
   trade is the practical output of this RQ.
 
 ## Open questions
 
-- Does `exact-ptdd-v1-pi`'s test-list phase hold for the open-weight models at
-  all? The workflow was built and validated on Sol and Opus. The hybrid line
-  needed an explicit phase-continuation fix for kimi, minimax and qwen, and
-  PTDD v1 has no such fix because it never needed one on its two home models.
-  A smoke run per open cell answers this before any fill.
+- ~~Does `exact-ptdd-v1-pi`'s test-list phase hold for the open-weight
+  models?~~ **Answered for four of five** by the 2026-10-23 smoke: glm-5-3,
+  deepseek-v4-1-flash, kimi-k3-sference and minimax-m3 close cycles under it.
+  What remains open is narrower: whether qwen3-8's bulk-implement pattern is
+  stable across replicates or a one-run artefact. The fill settles it, and
+  either way the cell's correctness is measurable.
 - Is Sonnet 5.5's reasoning controllable? Unmeasured (see above). A rope-riddle
   probe or a `thinking_delta` count off the first runs settles it; until then
   no reasoning statement for that cell.

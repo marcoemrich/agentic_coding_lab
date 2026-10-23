@@ -1,0 +1,99 @@
+{
+  "wall_clock_seconds": 1158.05,
+  "total_tokens": {
+    "input": 31867,
+    "output": 261946,
+    "cache_read": 35362393,
+    "cache_creation": 360355,
+    "total": 36016561
+  },
+  "context_utilization_pct": 92,
+  "context_window_tokens": 200000,
+  "context_peak_tokens": 183812,
+  "cost_usd": null,
+  "message_count": 280,
+  "tool_calls": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 112,
+    "Write": 5
+  },
+  "skill_invocations": {
+    "exact-coding-ptdd": 1
+  },
+  "task_invocations": {},
+  "cycle_count": 1,
+  "predictions_correct": 1,
+  "predictions_total": 2,
+  "model_versions": [
+    "claude-sonnet-5-5"
+  ],
+  "subagent_token_total": 0,
+  "main_context_tokens": {
+    "input": 31867,
+    "output": 261946,
+    "cache_read": 35362393,
+    "cache_creation": 360355,
+    "total": 36016561
+  },
+  "subagent_tokens": {
+    "input": 0,
+    "output": 0,
+    "cache_read": 0,
+    "cache_creation": 0
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "tokens": 234241,
+      "duration_seconds": 13.13
+    },
+    {
+      "phase": "green",
+      "tokens": 339502,
+      "duration_seconds": 8.4
+    },
+    {
+      "phase": "refactor",
+      "tokens": 87510,
+      "duration_seconds": 0.65
+    }
+  ],
+  "phase_source": "inline-tool",
+  "phase_summary": {
+    "by_phase": {
+      "red": {
+        "count": 1,
+        "tokens": 234241,
+        "duration_seconds": 13.13
+      },
+      "green": {
+        "count": 1,
+        "tokens": 339502,
+        "duration_seconds": 8.4
+      },
+      "refactor": {
+        "count": 1,
+        "tokens": 87510,
+        "duration_seconds": 0.65
+      }
+    },
+    "averages": {
+      "red": {
+        "avg_tokens": 234241.0,
+        "avg_duration_seconds": 13.13
+      },
+      "green": {
+        "avg_tokens": 339502.0,
+        "avg_duration_seconds": 8.4
+      },
+      "refactor": {
+        "avg_tokens": 87510.0,
+        "avg_duration_seconds": 0.65
+      }
+    },
+    "refactorings_applied": 1,
+    "tests_passed_immediately": 0
+  },
+  "refactor_count_source": "text-markers"
+}
