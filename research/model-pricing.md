@@ -12,23 +12,32 @@ For the current pi/Requesty models (RQ-model-novel-pi, RQ-model-quality-pi, RQ-h
 | opus-4-8 | `vertex/claude-opus-4-8@eu` | $5.50 | $27.50 | $0.55 | yes |
 | opus-5-requesty | `vertex/claude-opus-5@eu` | $5.50 | $27.50 | $0.55 | yes |
 | sonnet-5 | `vertex/claude-sonnet-5@eu` | $2.20 | $11.00 | $0.22 | yes |
-| gpt-5-6-sol | `azure/gpt-5.6-sol@swedencentral` | $5.00 | $30.00 | $0.50 | yes |
-| gpt-5-6-terra | `azure/gpt-5.6-terra@swedencentral` | $2.50 | $15.00 | $0.25 | yes |
+| gpt-5-6-sol | `azure/gpt-5.6-sol@swedencentral` | $4.40 | $22.00 | $0.44 | yes |
+| gpt-5-6-terra | `azure/gpt-5.6-terra@swedencentral` | $2.20 | $13.20 | $0.22 | yes |
 | glm-5-1 | `nebius/zai-org/glm-5.1` | $1.40 | $4.40 | $1.40 | **no** |
 | glm-5-2 | `tensorx/glm-5.2` | $1.50 | $4.50 | $0.38 | yes |
+| glm-5-3 | `sference/glm-5.3` | $1.20 | $4.20 | $0.26 | yes |
 | kimi-k2-7 | `tensorx/kimi-k2.7-code` | $1.25 | $4.50 | $0.31 | yes |
-| kimi-k3 | `sference/kimi-k3` | $2.25 | $11.25 | $0.225 | yes |
+| kimi-k3-sference | `sference/kimi-k3` | $3.00 | $15.00 | $0.45 | yes |
 | kimi-k3-nebius | `nebius/kimi-k3` | $3.00 | $15.00 | $3.00 | **no** |
 | minimax-m3 | `tensorx/minimax-m3` | $0.40 | $2.00 | $0.10 | yes |
 | deepseek-v4-pro | `tensorx/deepseek-v4-pro` | $1.75 | $3.50 | $0.44 | yes |
+| deepseek-v4-flash | `tensorx/deepseek-v4-flash` | $0.25 | $0.30 | $0.06 | yes |
+| deepseek-v4-1-flash | `sference/deepseek-v4.1-flash` | $0.50 | $1.50 | $0.05 | yes |
+| qwen3-8 | `tensorx/qwen3.8` | $2.50 | $6.00 | $0.63 | yes |
 | qwen3-235b | `nebius/qwen/qwen3-235b-a22b-instruct-2507` | $0.20 | $0.60 | $0.20 | **no** |
 
 Notes:
+- **Retariffed 2026-10-23** against the live catalogue: `gpt-5-6-sol` $5.00/$30.00/$0.50 → $4.40/$22.00/$0.44, `gpt-5-6-terra` $2.50/$15.00/$0.25 → $2.20/$13.20/$0.22, `kimi-k3-sference` $2.25/$11.25/$0.225 → $3.00/$15.00/$0.45. The other rows were re-checked the same day and are unchanged. The GPT rows cover the **azure/Requesty** route only — the OpenAI-subscription table below keeps $5.00/$30.00/$0.50, because that route is the OpenAI list price and not a Requesty tariff.
+- `opus-4-7-portkey` keeps the **native Anthropic list price** $5.00/$25.00/$0.50 in `compute-cost.py`, although Requesty's `bedrock/claude-opus-4-7@eu-west-1` reads $5.50/$27.50/$0.55. The lab id predates the harness suffix and is carried by 143 Claude-Code runs over Portkey against 12 pi runs over Requesty; retariffing it would reprice the CC majority at a route they never used. Should the pi cells ever need their own tariff, they need their own id.
 - These values deliberately deviate from the **native** Anthropic list prices: on the vertex routes Requesty is ~10 % higher (opus-4-8 $5.50/$27.50 instead of $5.00/$25.00 native). In the current run pool ALL `opus-4-8` runs go over pi/Requesty, which is why the shared lab-variant in `compute-cost.py` carries the Requesty tariff.
 - **`sonnet-5` is the Requesty route, not the model.** The native Direct-API route of the same model is called `sonnet-5-native` ($2.00/$10.00/$0.20, table "Overview") and is a cell of its own. The naming direction here is the reverse of `opus-5` / `opus-5-requesty`: the bare name was already taken by the pi route when the native one was added. Runs of the two routes are not interchangeable in cost comparisons.
 - **`supports_caching=false`** (glm-5-1, qwen3-235b, kimi-k3-nebius): Requesty bills cache_read at the full input price → in `compute-cost.py`, `cache_read = input` is set (no discount).
-- **kimi-k3** has two lab-variants for two routes: `kimi-k3` (sference, primary route) and `kimi-k3-nebius` (fallback, `run-batch.sh:749`). The tariffs differ markedly (sference ~25 % cheaper and with cache discount) — runs of the two routes are not interchangeable in cost comparisons.
+- **kimi-k3** has two lab-variants for two routes: `kimi-k3-sference` (primary route) and `kimi-k3-nebius` (fallback, `run-batch.sh:749`). **The tariff gap closed on 2026-10-23**: sference rose from $2.25/$11.25/$0.225 to nebius's $3.00/$15.00, so the two now differ only in the cache read ($0.45 against nebius's full $3.00, which has no discount). The earlier "sference is ~25 % cheaper" reading describes the pre-retariff state and does not apply to runs costed after that date; runs of the two routes still are not interchangeable in cost comparisons.
 - Cache write is not reported separately on the OpenAI/GLM/Kimi/MiniMax/DeepSeek routes → carried as 0 in `compute-cost.py`.
+- **The two DeepSeek flash generations are separate cells** (wired for pi 2026-10-23, rates from the live catalogue that day): `deepseek-v4-flash` on tensorx and `deepseek-v4-1-flash` on sference. Different generation *and* different provider, at a 2x input / 5x output spread — never merge them, and do not read the $0.10/$0.20 in "Further DeepSeek variants" below as the Requesty rate: that figure is OpenRouter's and does not apply to either route.
+- **The undated tensorx aliases are not in the catalogue but resolve.** `tensorx/deepseek-v4-pro` serves `deepseek-v4-pro`, `tensorx/deepseek-v4-flash` serves `deepseek-v4-flash-0731` (probed 2026-10-23). The catalogue lists only dated snapshots (`-0731`, `-0813`, `-0424`); the aliases are deliberately not pinned to a date, so a cell follows the provider's current snapshot. The flash rates above are the `-0731` ones.
+- **`glm-5-3` and `qwen3-8` wired 2026-10-23** for RQ-current-models-ptdd. `glm-5-3` sits on sference where `glm-5-2` sits on tensorx, so the version jump carries a backprovider confound — the same one the glm-5-1/glm-5-2 pair has. `qwen3-8` is `tensorx/qwen3.8` ("Qwen 3.8", not an 8B model) and is a different generation *and* provider from `qwen3-235b` on nebius; at $2.50/$6.00 it is also an order of magnitude dearer than that cell.
 - Requesty rotates models/providers quickly — on deviations, diff the live catalogue against `compute-cost.py` `PRICES` and `experiments/docker/pi-config/agent/models.json`.
 
 ## OpenAI subscription route (openai-codex, as of 2026-09-05)
@@ -100,6 +109,7 @@ Older sources (for traceability): [Requesty GLM-5.2](https://www.requesty.ai/mod
 | Claude Opus 4.8 | $5.00 | $25.00 | $0.50 |
 | Claude Opus 4.7 | $5.00 | $25.00 | $0.50 |
 | Claude Sonnet 5 | $2.00 | $10.00 | $0.20 |
+| Claude Sonnet 5.5 | $2.00 | $10.00 | $0.20 |
 | Claude Sonnet 4.6 | $3.00 | $15.00 | $0.30 |
 | Moonshot Kimi K2.6 | $0.73 | $3.49 | $0.37 |
 | Z-AI GLM 5.1 | $0.98 | $3.08 | $0.18 |

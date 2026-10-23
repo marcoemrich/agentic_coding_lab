@@ -104,6 +104,15 @@ PRICES = {
     # (2.20/11.00/0.22) and must not be mixed with this cell.
     "sonnet-5-native":  (2.00,  10.00, 0.20, 2.50),
     "sonnet-5-native-no-thinking": (2.00, 10.00, 0.20, 2.50),
+    # sonnet-5-5: native (claude-sonnet-5-5 via OAuth bypass). These figures are
+    # DERIVED, not read off the pricing page: the live Requesty catalogue
+    # (2026-10-23) prices vertex/claude-sonnet-5-5@eu at exactly the same
+    # 2.20/11.00/0.22 as vertex/claude-sonnet-5@eu, and that route sits ~10 %
+    # above Anthropic native (see the opus-4-8 note above), so the native tariff
+    # is taken to equal Sonnet 5's. Confirm against claude.com/pricing before
+    # any finding quotes a Sonnet 5.5 cost figure.
+    "sonnet-5-5":       (2.00,  10.00, 0.20, 2.50),
+    "sonnet-5-5-no-thinking": (2.00, 10.00, 0.20, 2.50),
     "sonnet-4-6":       (3.00,  15.00, 0.30, 3.75),
     "sonnet-4-6-no-thinking": (3.00, 15.00, 0.30, 3.75),
     "sonnet-4-6-portkey": (3.00, 15.00, 0.30, 3.75),
@@ -132,25 +141,41 @@ PRICES = {
     # supports_caching=false → cache_read = input. The route is in the name.
     # The old bare ID "kimi-k3" (= sference) was retired 2026-08-04;
     # its runs live under runs/_archive/kimi-k3-preroute-fix-2026-08-04/.
-    "kimi-k3-sference": (2.25,  11.25, 0.225, 0.0),  # sference/kimi-k3
-    "kimi-k3-sference-no-thinking": (2.25, 11.25, 0.225, 0.0),
+    # Retariffed 2026-10-23: sference rose from 2.25/11.25/0.225 to the
+    # nebius in/out level, keeping only the cache discount. Runs costed before
+    # that date carry the old tariff unless recomputed.
+    "kimi-k3-sference": (3.00,  15.00, 0.45, 0.0),   # sference/kimi-k3
+    "kimi-k3-sference-no-thinking": (3.00, 15.00, 0.45, 0.0),
     "kimi-k3-nebius":   (3.00,  15.00, 3.00, 0.0),   # nebius/kimi-k3 (no cache discount: cr=in)
     "kimi-k3-nebius-no-thinking": (3.00, 15.00, 3.00, 0.0),
     "minimax-m3":       (0.40,  2.00,  0.10, 0.0),   # tensorx/minimax-m3
     "minimax-m3-no-thinking": (0.40, 2.00, 0.10, 0.0),
     "deepseek-v4-pro":  (1.75,  3.50,  0.44, 0.0),   # tensorx/deepseek-v4-pro
     "deepseek-v4-pro-no-thinking": (1.75, 3.50, 0.44, 0.0),
+    # The two flash generations sit on different providers at markedly
+    # different tariffs (catalogue 2026-10-23) — separate cells, see
+    # research/model-pricing.md.
+    "deepseek-v4-flash": (0.25, 0.30,  0.06, 0.0),   # tensorx/deepseek-v4-flash (→ -0731)
+    "deepseek-v4-flash-no-thinking": (0.25, 0.30, 0.06, 0.0),
+    "deepseek-v4-1-flash": (0.50, 1.50, 0.05, 0.0),  # sference/deepseek-v4.1-flash
+    "deepseek-v4-1-flash-no-thinking": (0.50, 1.50, 0.05, 0.0),
+    "qwen3-8":          (2.50,  6.00,  0.63, 0.0),   # tensorx/qwen3.8
+    "qwen3-8-no-thinking": (2.50, 6.00, 0.63, 0.0),
     "qwen3-235b":       (0.20,  0.60,  0.20, 0.0),   # nebius/… (no cache discount: cr=in)
     "qwen3-235b-no-thinking": (0.20, 0.60, 0.20, 0.0),
     "glm-5-1":          (1.40,  4.40,  1.40, 0.0),   # nebius/zai-org/glm-5.1 (no cache discount: cr=in)
     "glm-5-1-no-thinking": (1.40, 4.40, 1.40, 0.0),
     "glm-5-2":          (1.50,  4.50,  0.38, 0.0),   # tensorx/glm-5.2
     "glm-5-2-no-thinking": (1.50, 4.50, 0.38, 0.0),
-    "gpt-5-6-sol":      (5.00,  30.00, 0.50, 0.0),   # azure/gpt-5.6-sol
-    "gpt-5-6-sol-no-thinking": (5.00, 30.00, 0.50, 0.0),
+    "glm-5-3":          (1.20,  4.20,  0.26, 0.0),   # sference/glm-5.3
+    "glm-5-3-no-thinking": (1.20, 4.20, 0.26, 0.0),
+    # Retariffed 2026-10-23 (azure/Requesty route only -- the openai-codex
+    # entries below stay at the OpenAI list price of 5.00/30.00/0.50).
+    "gpt-5-6-sol":      (4.40,  22.00, 0.44, 0.0),   # azure/gpt-5.6-sol
+    "gpt-5-6-sol-no-thinking": (4.40, 22.00, 0.44, 0.0),
     # Same Requesty route as gpt-5-6-sol, only the pi-config profile
     # differs (reasoning: true) -> same tariff.
-    "gpt-5-6-sol-reasoning": (5.00, 30.00, 0.50, 0.0),
+    "gpt-5-6-sol-reasoning": (4.40, 22.00, 0.44, 0.0),  # azure/gpt-5.6-sol
     # OpenAI subscription route (openai-codex). No per-token billing — the
     # values are pure comparison prices ("what would this have cost over the
     # API"), on the same basis as the Requesty cells they are compared
@@ -178,8 +203,9 @@ PRICES = {
     # 2026-10-05. >272k tariff step not modelled, as for Sol/Astra.
     "gpt-6-1-sol-codex": (2.00, 10.00, 0.10, 0.0),   # openai-codex/gpt-6.1-sol
     "gpt-5-3-codex-spark": (1.75, 14.00, 0.175, 0.0),  # openai-codex/gpt-5.3-codex-spark
-    "gpt-5-6-terra":    (2.50,  15.00, 0.25, 0.0),   # azure/gpt-5.6-terra
-    "gpt-5-6-terra-no-thinking": (2.50, 15.00, 0.25, 0.0),
+    # Retariffed 2026-10-23, same catalogue reading as gpt-5-6-sol above.
+    "gpt-5-6-terra":    (2.20,  13.20, 0.22, 0.0),   # azure/gpt-5.6-terra
+    "gpt-5-6-terra-no-thinking": (2.20, 13.20, 0.22, 0.0),
     "sonnet-5":         (2.20,  11.00, 0.22, 0.0),   # vertex/claude-sonnet-5@eu (Requesty tariff)
     "sonnet-5-no-thinking": (2.20, 11.00, 0.22, 0.0),
 }

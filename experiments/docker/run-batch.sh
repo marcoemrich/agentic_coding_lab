@@ -125,6 +125,26 @@ MODEL_CONFIGS=(
     # Different route, different tariff -- never merge the two cells.
     "sonnet-5-native|claude-sonnet-5|true"
     "sonnet-5-native-no-thinking|claude-sonnet-5|false"
+    # sonnet-5-5: native like opus-5-5 (bare claude-* -> OAuth bypass,
+    # subscription). No `-native` suffix needed -- unlike `sonnet-5`, the bare
+    # `sonnet-5-5` id was never claimed by a Requesty route, so it is free.
+    # The Requesty spelling of the same model would be
+    # vertex/claude-sonnet-5-5@eu; if that route is ever wired it needs its own
+    # id, because the tariff differs (see compute-cost.py).
+    # Whether `--thinking off` has any effect is unverified here, as on
+    # opus-5-5: treat the `-no-thinking` label as nominal until measured.
+    #
+    # THE `[1m]` SUFFIX IS LOAD-BEARING, do not drop it. CLI 2.1.280 accepts
+    # claude-sonnet-5-5 at the API but does not carry it in its model catalog,
+    # so without the suffix it silently assumes a 200k context and caps
+    # auto-compact there on a 1M-context model -- the same confound CLAUDE.md
+    # records for Opus 5.5 on 2.1.267, and it bites hardest on the large katas.
+    # Verified 2026-10-23 in the experiment container: bare id -> catalog
+    # warning plus the 200k cap, `[1m]` -> the cap is gone. Opus 5.5 needs no
+    # suffix; 2.1.280 knows that one. Drop the suffix only after a CLI bump
+    # whose catalog lists claude-sonnet-5-5, and re-verify there.
+    "sonnet-5-5|claude-sonnet-5-5[1m]|true"
+    "sonnet-5-5-no-thinking|claude-sonnet-5-5[1m]|false"
     "opus-4-7|claude-opus-4-7|true"
     "opus-4-7-no-thinking|claude-opus-4-7|false"
     "sonnet-4-6|claude-sonnet-4-6|true"
@@ -165,9 +185,10 @@ MODEL_CONFIGS=(
     # These must be registered here so plan validation (lookup_model_config)
     # accepts them; harness (pi/oc/claude) is chosen from the workflow marker
     # dir, not from the model, so a pi-only placeholder is sufficient.
-    # opus-4-8, glm-5-1 and deepseek-v4-pro already appear above (native /
-    # oc-only entries) and are reused by the pi branch, so they are not
-    # repeated here.
+    # opus-4-8, glm-5-1, deepseek-v4-pro and deepseek-v4-flash already appear
+    # above (native / oc-only entries) and are reused by the pi branch, so they
+    # are not repeated here. Their OC routes went through Portkey and are dead;
+    # the pi case-map below is the live route for the two deepseek ids.
     "sonnet-5|pi-only|false"
     # opus-5 via Requesty (vertex/claude-opus-5@eu), usable by both Claude Code
     # and pi. Claude Code passes this route through --model; pi resolves the
@@ -221,6 +242,22 @@ MODEL_CONFIGS=(
     "kimi-k3-nebius|pi-only|false"
     "kimi-k3-sference|pi-only|false"
     "minimax-m3|pi-only|false"
+    # DeepSeek V4.1 Flash, a generation ahead of deepseek-v4-flash (V4) and on
+    # another provider (sference vs. tensorx) -- route and generation both
+    # differ, so it is its own cell, never merged with deepseek-v4-flash. The
+    # lab id spells the dot as a dash like every other version number here
+    # (upstream id: sference/deepseek-v4.1-flash).
+    "deepseek-v4-1-flash|pi-only|false"
+    # glm-5-3 on sference, the generation after the wired glm-5-2 (tensorx).
+    # Version AND backprovider differ, so the two are not one cell -- same
+    # confound the glm-5-1/glm-5-2 pair already carries (RQ-model-quality-pi
+    # H1b). sference/glm-5.3-flash exists as well and is not wired.
+    "glm-5-3|pi-only|false"
+    # qwen3-8 = tensorx/qwen3.8. The lab id spells the dot as a dash like every
+    # other version number here; read it as "Qwen 3.8", not as an 8B parameter
+    # count. Unrelated to qwen3-235b below, which is a different generation on
+    # nebius and stalls at the test-list->red transition (RQ-model-novel-pi).
+    "qwen3-8|pi-only|false"
     "qwen3-235b|pi-only|false"
     # Reasoning-off arm (RQ-model-novel-pi fair baseline). Same routing as
     # the bare ids above; the pi branch strips the -no-thinking suffix and
@@ -260,6 +297,10 @@ MODEL_CONFIGS=(
     "kimi-k3-sference-no-thinking|pi-only|false"
     "minimax-m3-no-thinking|pi-only|false"
     "deepseek-v4-pro-no-thinking|pi-only|false"
+    "deepseek-v4-flash-no-thinking|pi-only|false"
+    "deepseek-v4-1-flash-no-thinking|pi-only|false"
+    "glm-5-3-no-thinking|pi-only|false"
+    "qwen3-8-no-thinking|pi-only|false"
     "qwen3-235b-no-thinking|pi-only|false"
     # cursor-agent-harness-only models — cli_model is a placeholder; the actual
     # --model string is resolved in the cursor invocation branch via the
@@ -1005,6 +1046,7 @@ EOF
                 gpt-5-6-terra)                 pi_model="requesty/azure/gpt-5.6-terra@swedencentral" ;;
                 glm-5-1)                       pi_model="requesty/nebius/zai-org/glm-5.1" ;;
                 glm-5-2)                       pi_model="requesty/tensorx/glm-5.2" ;;
+                glm-5-3)                       pi_model="requesty/sference/glm-5.3" ;;
                 kimi-k2-7)                     pi_model="requesty/tensorx/kimi-k2.7-code" ;;
                 # One underlying model, two routes, one id each -- the route is
                 # always explicit in the id. Keep both so a routing comparison
@@ -1025,6 +1067,14 @@ EOF
                 kimi-k3-nebius)                pi_model="requesty/nebius/kimi-k3" ;;
                 minimax-m3)                    pi_model="requesty/tensorx/minimax-m3" ;;
                 deepseek-v4-pro)               pi_model="requesty/tensorx/deepseek-v4-pro" ;;
+                # Both deepseek flash ids verified against the live Requesty
+                # catalogue 2026-10-23. The undated tensorx alias is not listed
+                # in the catalogue but resolves, and serves deepseek-v4-flash-0731
+                # -- the dated id is deliberately not pinned here, so the cell
+                # follows the same alias the pro route above uses.
+                deepseek-v4-flash)             pi_model="requesty/tensorx/deepseek-v4-flash" ;;
+                deepseek-v4-1-flash)           pi_model="requesty/sference/deepseek-v4.1-flash" ;;
+                qwen3-8)                       pi_model="requesty/tensorx/qwen3.8" ;;
                 qwen3-235b)                    pi_model="requesty/nebius/qwen/qwen3-235b-a22b-instruct-2507" ;;
                 *) echo -e "  ${RED}ERROR: no pi model mapping for $model_name${NC}"
                    claude_exit=2
