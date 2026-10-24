@@ -212,7 +212,7 @@ def test_a_shim_without_its_package_does_not_count_as_installed(tmp_path,
 
     calls = []
     monkeypatch.setattr(cms.subprocess, "run",
-                        lambda *a, **k: calls.append(a) or _ok())
+                        lambda *args, **_kwargs: calls.append(args) or _ok())
     cms.ensure_stryker_installed(tmp_path, lambda _msg: None)
     assert calls, "must reinstall when @stryker-mutator/core is absent"
 
@@ -220,9 +220,10 @@ def test_a_shim_without_its_package_does_not_count_as_installed(tmp_path,
 def test_a_present_package_counts_as_installed(tmp_path, monkeypatch):
     (tmp_path / "node_modules" / "@stryker-mutator" / "core").mkdir(
         parents=True)
-    monkeypatch.setattr(cms.subprocess, "run",
-                        lambda *a, **k: (_ for _ in ()).throw(
-                            AssertionError("must not reinstall")))
+    def _refuse(*_args, **_kwargs):
+        raise AssertionError("must not reinstall")
+
+    monkeypatch.setattr(cms.subprocess, "run", _refuse)
     assert cms.ensure_stryker_installed(tmp_path, lambda _msg: None) is True
 
 

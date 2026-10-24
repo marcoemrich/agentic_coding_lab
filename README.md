@@ -346,11 +346,20 @@ Consequences for analysis and data collection:
 
 The results site publishes every main research question (`research/questions-*/`) as a static page: the question, its factors and controls, when the runs happened, and one result table per kata with `mean ± sd`, gaps, trophies and comparability warnings. A start page lists all RQs, grouped by harness. The tables are computed from the committed runs; nothing in the build path uses an LLM, so the formatting is the same for every RQ.
 
-It is built locally and published to GitHub Pages — there is no CI, because a build needs the run pool and the pandas aggregation path.
+It is built locally and published to GitHub Pages — there is no CI, because a build needs the run pool and the pandas aggregation path. `/publish-site` drives build and deploy end to end, including the precondition checks below; the commands are here for doing it by hand.
+
+**First-time setup on a machine.** Neither dependency tree is in the repo, and both failures are late and misleading:
+
+```bash
+curl -LsSf https://astral.sh/uv/0.12.17/install.sh | sh   # same pin as the Dockerfile
+cd experiments && uv sync                                 # creates the gitignored .venv
+cd ../site && pnpm install --frozen-lockfile              # creates site/node_modules
+```
+
+Both `pnpm build:site` and `pnpm deploy:site` are `uv run --project ../experiments python ...`, so without `uv` neither runs at all; the system Python is PEP 668 managed and has no `ensurepip`, so pip is not a way round it. Without `site/node_modules` the build dies as `astro: not found` — after it has already re-aggregated every RQ. The host's own pnpm version does not matter: corepack honours the `packageManager` pin in `site/package.json`.
 
 ```bash
 cd site
-pnpm install
 pnpm build:site     # aggregate every RQ, export the site data, build site/dist/
 pnpm preview        # serve site/dist/ locally
 ```
@@ -369,7 +378,11 @@ To publish, commit and push `main`, then:
 pnpm deploy:site    # build, then push site/dist/ to the gh-pages branch
 ```
 
-`experiments/deploy-site.py` refuses off `main`, with uncommitted changes under `research/` or `site/`, or while `main` is not pushed; it publishes nothing if its own build changes `research/`. So the published site always matches a pushed commit. Design decisions, architecture and the story log: [`site/docs/`](site/docs/README.md).
+`experiments/deploy-site.py` refuses off `main`, with uncommitted changes under `research/` or `site/`, or while `main` is not pushed; it publishes nothing if its own build changes `research/`. So the published site always matches a pushed commit.
+
+That last guard is the one that bites, because a build **does** leave a diff whenever a committed aggregation was stale — a metric computed by `compute-cost.py` or `compute-mutation-score.py` and never aggregated, or a run re-measured whose cell another RQ shares. Commit that diff and deploy again; do not revert it, since the committed values are the stale ones. A diff that reappears on every build instead means the pandas/numpy pins in `experiments/pyproject.toml` have drifted from the host's system Python, which rewrites the last digits of every mean (see CLAUDE.md, "Host dependencies").
+
+Design decisions, architecture and the story log: [`site/docs/`](site/docs/README.md).
 
 ## Repository Structure
 
@@ -378,7 +391,8 @@ pnpm deploy:site    # build, then push site/dist/ to the gh-pages branch
 ├── .claude/
 │   └── skills/                   # Claude Code skills for repo workflows
 │       ├── run-rq/               #   /run-rq RQ-N — drive an RQ end-to-end
-│       └── build-overview/       #   /build-overview — generate cross-RQ snapshot
+│       ├── build-overview/       #   /build-overview — generate cross-RQ snapshot
+│       └── publish-site/         #   /publish-site — build and deploy to gh-pages
 ├── experiments/
 │   ├── katas/                            # Coding exercises (problem definitions)
 │   ├── workflows/                        # Workflow variants (v1–v5 + pi variants)
@@ -654,6 +668,8 @@ Two Claude Code skills automate the repetitive parts of the loop above. They liv
 | [`run-rq`](.claude/skills/run-rq/SKILL.md) | `/run-rq RQ-N` | Drives a single RQ end-to-end: validates the README, generates a fill batch-plan, starts the Docker batch in the background, monitors progress, runs aggregation, proposes findings updates. Pure orchestration — every step calls existing repo scripts. |
 | [`build-overview`](.claude/skills/build-overview/SKILL.md) | `/build-overview` | Generates a cross-RQ snapshot under `research/reports/experiment-overview-YYYY-MM-DD.md`. Step 1 runs `experiments/generate-snapshot-skeleton.py` (data sections, finding lists, caveats). Step 2 fills synthesis sections (RQ paragraphs, cross-RQ synthesis, limitations) from the current `findings.md`. Reproducible because numbers come from the skeleton, not from model memory. |
 
+| [`publish-site`](.claude/skills/publish-site/SKILL.md) | `/publish-site` | Builds the results site and publishes it to `gh-pages`. Checks the preconditions `deploy-site.py` enforces before a build is spent on them, sorts the `research/` diff a build produces into substantive changes and one-time float churn, and deploys only when asked — the push is public. Distinct from `/build-overview`, which writes a frozen Markdown snapshot instead of the live site. |
+
 The skills replace the manual end-to-end loop in routine usage:
 
 ```
@@ -666,6 +682,11 @@ The skills replace the manual end-to-end loop in routine usage:
 
    read all findings.md
    write overview.md         ⇒    /build-overview
+
+   pnpm install
+   pnpm build:site           ⇒    /publish-site
+   commit the research/ diff
+   pnpm deploy:site
 ```
 
 ### Snapshot lifecycle

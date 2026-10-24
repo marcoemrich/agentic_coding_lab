@@ -7,20 +7,29 @@
 # grep over imports will not find the requirement.
 #
 # Set up and run (uv creates experiments/.venv, gitignored):
-#   cd experiments && uv run pytest
+#   cd experiments && uv sync && uv run pytest
 #   uv run --project experiments python experiments/aggregate-by-query.py <rq-dir>
-# The versions match the host's system Python 3.10, so the plain
+#
+# The versions track the host's system interpreter, so the plain
 # `python3 experiments/aggregate-by-query.py` calls in skills and docs compute
-# the same numbers.
+# the same numbers as `uv run`. That is the only reason these are pinned at all,
+# and it makes them a maintenance obligation: when the host's Python moves, the
+# pins move with it, or the two paths silently disagree in the last digits of
+# every mean and sd in summary.json. Checked against Python 3.14.4 / pandas
+# 2.3.3 / numpy 2.3.5 on 2026-10-24; the previous pins claimed to match a system
+# Python 3.10 that no longer existed, and pandas 2.1.1 has no wheel for 3.14 at
+# all, so `uv sync` tried to compile it and failed.
 [project]
 name = "agentic-coding-lab-experiments"
 version = "0.0.0"
-requires-python = ">=3.10"
+# numpy 2.3.5 needs >=3.11, and the floor exists to keep the uv environment on
+# the same interpreter family as the host rather than to support old ones.
+requires-python = ">=3.11"
 dependencies = [
-    "pandas==2.1.1",
-    "numpy==1.26.4",
-    "PyYAML==6.0.1",
-    "tabulate==0.9.0",
+    "pandas==2.3.3",
+    "numpy==2.3.5",
+    "PyYAML==6.0.3",
+    "tabulate==0.10.0",
 ]
 
 [dependency-groups]
@@ -36,7 +45,7 @@ package = false
 testpaths = ["tests"]
 
 [tool.ruff]
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 # The lab's Python stack rules (experiments/stacks/python-pytest/pyproject.toml).

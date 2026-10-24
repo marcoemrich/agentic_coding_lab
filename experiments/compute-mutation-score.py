@@ -835,12 +835,12 @@ def stryker_env_bridge(run_dir: Path, log):
 
     installed = False
     if original_config is None:
-        log(f"  no vitest.config.ts — env bridge not installed")
+        log("  no vitest.config.ts — env bridge not installed")
     elif "setupFiles" in original_config:
-        log(f"  vitest.config.ts already declares setupFiles — "
-            f"env bridge not installed")
+        log("  vitest.config.ts already declares setupFiles — "
+            "env bridge not installed")
     elif "  test: {\n" not in original_config:
-        log(f"  unexpected vitest.config.ts shape — env bridge not installed")
+        log("  unexpected vitest.config.ts shape — env bridge not installed")
     else:
         bridge_path.write_text(STRYKER_ENV_BRIDGE)
         config_path.write_text(original_config.replace(
@@ -925,7 +925,7 @@ def run_stryker(run_dir: Path, timeout_seconds: int, log,
         # still wrote a report; try to parse anyway.
 
     if not report_path.is_file():
-        log(f"  no mutation-report.json produced; score stays null")
+        log("  no mutation-report.json produced; score stays null")
         return unmeasurable("stryker produced no mutation-report.json; "
                             "see stryker.log")
 
