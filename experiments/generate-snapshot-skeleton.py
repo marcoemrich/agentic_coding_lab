@@ -160,7 +160,9 @@ def collect_rqs() -> list[dict]:
                 continue
             fm = agg.parse_frontmatter(readme)
             cells = agg.expand_cells(fm)
-            counts = bpl.count_runs_per_cell(cells)
+            # count_runs_per_cell returns (counts, n_unfinished, n_aborted);
+            # the two tails are a per-cell concern the snapshot does not report.
+            counts, _n_unfinished, _n_aborted = bpl.count_runs_per_cell(cells)
             n_total = sum(counts.values())
             n_cells = len(cells)
             min_rep = int(fm.get("min_replicates", 1))

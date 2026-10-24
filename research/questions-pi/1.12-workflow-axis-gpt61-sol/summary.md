@@ -2,7 +2,7 @@
 
 _On GPT-6.1 Sol, what does EXACT Coding Predictive TDD buy over a plain inline-TDD baseline, and does isolating the Refactor phase in a subagent add anything on top?_
 
-Generated: 2026-10-12T10:46:39Z
+Generated: 2026-10-24T07:31:38Z
 
 Cells declared: 6 · matched runs: 30 · min_replicates: 5
 
@@ -179,7 +179,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 |:-----------------------------|:-------------------------------------|:------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | baseline-inline-tdd-v1-pi            | gpt-6-1-sol-codex |   5 |      0 |   0.71 | 0.09 |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-pi            | gpt-6-1-sol-codex |   5 |      0 |   0.95 | 0    |
-| claim-office-example-mapping | exact-ptdd-v1-pi                     | gpt-6-1-sol-codex |   5 |      0 |   0.54 | 0.49 |
+| claim-office-example-mapping | exact-ptdd-v1-pi                     | gpt-6-1-sol-codex |   5 |      0 |   0.93 | 0.04 |
 | game-of-life-example-mapping | exact-ptdd-v1-pi                     | gpt-6-1-sol-codex |   5 |      0 |   0.95 | 0.01 |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-1-sol-codex |   5 |      0 |   0.55 | 0.5  |
 | game-of-life-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-1-sol-codex |   5 |      0 |   0.94 | 0.01 |
@@ -201,7 +201,7 @@ Cells declared: 6 · matched runs: 30 · min_replicates: 5
 |:-----------------------------|:-------------------------------------|:------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | baseline-inline-tdd-v1-pi            | gpt-6-1-sol-codex |   5 |      0 |   53.2 | 15.99 |
 | game-of-life-example-mapping | baseline-inline-tdd-v1-pi            | gpt-6-1-sol-codex |   5 |      0 |    2   |  0    |
-| claim-office-example-mapping | exact-ptdd-v1-pi                     | gpt-6-1-sol-codex |   5 |      0 |   51.4 | 54.45 |
+| claim-office-example-mapping | exact-ptdd-v1-pi                     | gpt-6-1-sol-codex |   5 |      0 |    8.2 |  5.26 |
 | game-of-life-example-mapping | exact-ptdd-v1-pi                     | gpt-6-1-sol-codex |   5 |      0 |    2.6 |  0.55 |
 | claim-office-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-1-sol-codex |   5 |      0 |   54.8 | 60.12 |
 | game-of-life-example-mapping | exact-ptdd-v1.1-refactor-subagent-pi | gpt-6-1-sol-codex |   5 |      0 |    3.6 |  1.14 |
