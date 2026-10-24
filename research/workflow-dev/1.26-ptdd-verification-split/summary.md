@@ -2,7 +2,7 @@
 
 _Does splitting the PTDD v1 test list into driving tests and a trailing verification group keep Correctness, safety net and code quality at least at the v1 level on Opus 5.5 and GPT-6.1 Sol, while making the phase-chain discipline readable for a test-list workflow?_
 
-Generated: 2026-10-16T06:21:39Z
+Generated: 2026-10-24T07:32:55Z
 
 Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
@@ -50,7 +50,7 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 |:-----------------------------|:--------------------------------------|:---------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-5-no-thinking |   5 |      0 |   0.94 | 0.05 |
 | claim-office-example-mapping | exact-ptdd-v1.2-verification-split-cc | opus-5-5-no-thinking |   5 |      0 |   0.92 | 0.03 |
-| claim-office-example-mapping | exact-ptdd-v1-pi                      | gpt-6-1-sol-codex    |   5 |      0 |   0.54 | 0.49 |
+| claim-office-example-mapping | exact-ptdd-v1-pi                      | gpt-6-1-sol-codex    |   5 |      0 |   0.93 | 0.04 |
 | claim-office-example-mapping | exact-ptdd-v1.2-verification-split-pi | gpt-6-1-sol-codex    |   5 |      0 |   0.94 | 0.02 |
 
 ### mutants_total
@@ -64,12 +64,12 @@ Cells declared: 4 · matched runs: 20 · min_replicates: 5
 
 ### mutants_survived
 
-| kata                         | cell_workflow                         | cell_model           |   n |   null |   mean |    sd |
-|:-----------------------------|:--------------------------------------|:---------------------|----:|-------:|-------:|------:|
-| claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-5-no-thinking |   5 |      0 |    7.8 |  6.3  |
-| claim-office-example-mapping | exact-ptdd-v1.2-verification-split-cc | opus-5-5-no-thinking |   5 |      0 |   10   |  4.06 |
-| claim-office-example-mapping | exact-ptdd-v1-pi                      | gpt-6-1-sol-codex    |   5 |      0 |   51.4 | 54.45 |
-| claim-office-example-mapping | exact-ptdd-v1.2-verification-split-pi | gpt-6-1-sol-codex    |   5 |      0 |    6.6 |  2.41 |
+| kata                         | cell_workflow                         | cell_model           |   n |   null |   mean |   sd |
+|:-----------------------------|:--------------------------------------|:---------------------|----:|-------:|-------:|-----:|
+| claim-office-example-mapping | exact-ptdd-v1-cc                      | opus-5-5-no-thinking |   5 |      0 |    7.8 | 6.3  |
+| claim-office-example-mapping | exact-ptdd-v1.2-verification-split-cc | opus-5-5-no-thinking |   5 |      0 |   10   | 4.06 |
+| claim-office-example-mapping | exact-ptdd-v1-pi                      | gpt-6-1-sol-codex    |   5 |      0 |    8.2 | 5.26 |
+| claim-office-example-mapping | exact-ptdd-v1.2-verification-split-pi | gpt-6-1-sol-codex    |   5 |      0 |    6.6 | 2.41 |
 
 ### code_mass
 
