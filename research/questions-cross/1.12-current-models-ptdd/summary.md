@@ -2,16 +2,16 @@
 
 _How do the current commercial and open-weight coding models differ in correctness and code quality on claim-office under the maintained EXACT Coding Predictive TDD workflow, each reached over its own native route?_
 
-Generated: 2026-10-23T12:21:23Z
+Generated: 2026-10-24T11:14:18Z
 
-Cells declared: 10 · matched runs: 51 · min_replicates: 5
+Cells declared: 10 · matched runs: 50 · min_replicates: 5
 
 ## Cell coverage
 
 | kata | workflow | model | n | n_ok | status |
 |---|---|---|---:|---:|---|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking | 5 | 5 | ✅ |
-| claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking | 6 | 5 | ✅ |
+| claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference | 5 | 5 | ✅ |
