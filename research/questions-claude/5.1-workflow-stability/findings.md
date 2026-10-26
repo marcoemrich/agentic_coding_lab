@@ -4,14 +4,14 @@ Persistent collection of the insights on the question:
 **How stable is code quality per workflow across replicates, and under
 which conditions is n=3 a sufficient replicate count?**
 
-Data basis: 60 runs (6 cells × n=10), as of 2026-05-15. Model
-`opus-4-7-no-thinking`, kata `game-of-life` (library form) with an explicit
-API contract. Stability analysis via subsampling
-(`research/questions/5.1-workflow-stability/subsample-analysis.py`).
+Data basis: 59 runs — five cells at n=10, `exact-single-context-v1-cc` at n=9.
+Model `opus-4-7-no-thinking`, kata `game-of-life` (library form) with an explicit
+API contract. Stability analysis via subsampling (`subsample-analysis.py` in this
+directory), which is the source for the σ, CV, IQR and ranking figures below.
 
 ---
 
-## Overview: Code Quality by Workflow (n=10)
+## Overview: Code Quality by Workflow
 
 | Workflow | `code_mass` | `smell_total` | `mccabe_max` | `cognitive_max` | `longest_function` | n |
 |---|---:|---:|---:|---:|---:|---:|
@@ -19,7 +19,7 @@ API contract. Stability analysis via subsampling
 | baseline-iterative-v1-cc (prose) | 157.80 | 4.10 | 11.60 | 16.20 | 32.10 | 10 |
 | baseline-inline-tdd-v1-cc (EM) | 165.60 | 6.00 | 13.70 | 21.80 | 32.50 | 10 |
 | exact-subagents-v1-cc (EM) | 166.60 | 2.60 | **4.50** | **4.40** | **8.10** | 10 |
-| exact-single-context-v1-cc (EM) | **152.60** | 4.10 | 8.90 | 14.50 | 17.40 | 10 |
+| exact-single-context-v1-cc (EM) | **154.44** | 4.33 | 9.00 | 15.11 | 17.11 | 9 |
 | exact-hybrid-v1-cc (EM) | 158.60 | **2.20** | **4.50** | 5.20 | 13.10 | 10 |
 
 Best value per column in bold. Lower = better.
@@ -43,17 +43,18 @@ subagents-v1 remains clearly first on all four complexity outcomes, inline-tdd-v
 last. **H4 (the RQ-tdd-quality finding holds at n=10) confirmed** — the central
 statements from F-tdd-quality.1/F-tdd-quality.2 are not an n=3 artifact.
 
-**Data basis**: 50 runs (10 per cell). Drift of the means compared to RQ-tdd-quality
-(n=3) is typically < 15 % on the complexity outcomes.
+**Data basis**: 49 runs across the five workflows RQ-tdd-quality covered
+(single-context-v1 at n=9, the other four at n=10). Drift of the means compared to
+RQ-tdd-quality (n=3) is typically < 15 % on the complexity outcomes.
 
 **An important shift in the middle of the field**: The order between oneshot-v1,
 iterative-v1 and single-context-v1 on `cognitive_max` changes:
 
 - RQ-tdd-quality (n=3): iterative-v1 (16.7) < single-context-v1 (18.3) < oneshot-v1 (20.7)
-- RQ-stability (n=10): single-context-v1 (14.5) < iterative-v1 (16.2) < oneshot-v1 (18.8)
+- RQ-stability (n=9–10): single-context-v1 (15.1) < iterative-v1 (16.2) < oneshot-v1 (18.8)
 
 single-context-v1 slides from the middle of the field into the front section. The n=3 values
-for single-context-v1 were dominated by a few high runs; at n=10 a
+for single-context-v1 were dominated by a few high runs; at n=9 a
 broader distribution with a lower mean emerges. This is the first concrete
 indication that n=3 is ranking-unstable for workflows with a high spread (see F-stability.2).
 
@@ -68,8 +69,8 @@ indication that n=3 is ranking-unstable for workflows with a high spread (see F-
 | baseline-inline-tdd-v1-cc | 21.80 | 3.43 | 0.157 | 5.50 | 0 % |
 | baseline-oneshot-v1-cc | 18.80 | 3.40 | 0.181 | 3.25 | 10 % |
 | baseline-iterative-v1-cc | 16.20 | 3.40 | 0.210 | 5.00 | 0 % |
-| exact-single-context-v1-cc | 14.50 | 4.59 | 0.316 | 7.75 | 10 % |
-| exact-hybrid-v1-cc | 5.20 | **2.30** | 0.442 | ~3 | **0 %** |
+| exact-single-context-v1-cc | 15.11 | 4.43 | 0.293 | 8.00 | 11 % |
+| exact-hybrid-v1-cc | 5.20 | **2.18** | 0.420 | 3.50 | **0 %** |
 | exact-subagents-v1-cc | 4.40 | 4.25 | 0.965 | **1.25** | 10 % |
 
 Three stability profiles:
@@ -78,14 +79,14 @@ Three stability profiles:
   values concentrated around the mean. These workflows consistently produce
   similar code quality — both the mean values and the
   individual runs are comparable.
-- **subagents-v1 is "**concentrated with a tail**": IQR only 1.25 (8/10 runs in [2, 4]),
+- **subagents-v1 is "**concentrated with a tail**": IQR only 1.25 (9 of 10 runs in [2, 4]),
   but one outlier at 17 pulls σ and the mean up. Median = 3, compared to a
   mean of 4.4. The typical subagents-v1 performance is *considerably better* than the
   mean suggests — but 1 in 10 runs derails.
-- **single-context-v1 is "**broad**": σ 4.59, IQR 7.75. single-context-v1 runs are generally
+- **single-context-v1 is "**broad**": σ 4.43, IQR 8.00 — the widest IQR in the field. single-context-v1 runs are generally
   unpredictable in complexity — the shared context lets
   very different implementations arise path-dependently.
-- **hybrid-v1 is "**compact without a tail**": σ 2.30, all 10 runs in [1, 7],
+- **hybrid-v1 is "**compact without a tail**": σ 2.18, all 10 runs in [1, 7],
   0 % outlier rate. hybrid-v1 reaches near-v4 median performance (5.2 vs 4.4)
   without subagents-v1's 1-in-10 refactor dropout. Plausible mechanic: the
   isolated refactor subagent is formally invoked in every TDD cycle
@@ -99,8 +100,8 @@ outlier dominates the σ estimate. IQR and outlier rate tell the
 correct story: subagents-v1 is *in the typical case* the most stable workflow,
 with occasional refactor dropouts.
 
-**Data basis**: 50 runs. The outlier rate column is very coarse at n=10 (a
-single outlier = 10 %).
+**Data basis**: 59 runs. The outlier rate column is very coarse at this cell size (a
+single outlier = 10 %, or 11 % in the nine-run cell).
 
 **Mechanic of the subagents-v1 outlier** (inspected manually): The one subagents-v1 run with
 cognitive_max=17 contains the entire logic in a single 28-line
@@ -111,28 +112,31 @@ refactor subagent phase.
 
 ---
 
-## F-stability.3 — At n=3 the Full Workflow Ranking Is Correct in Only ~25–60 % of Cases; subagents-v1 as the "Best" Is More Robust
+## F-stability.3 — At n=3 the Full Workflow Ranking Is Correct in Only ~3–37 % of Cases; subagents-v1 as the "Best" Is More Robust
 
 **Statement**: From 1000 random trials in which a three-element subsample
 is drawn from each cell and the workflow ranking is computed from it,
 the following hit rate against the n=10 ground-truth
 ranking results:
 
-| Metric | P(n=3 ranking = n=10 ranking) | n=10 ranking |
+| Metric | P(n=3 ranking = full ranking) | full ranking |
 |---|---:|---|
-| `code_mass` | 15.9 % | single-context-v1 < oneshot-v1 < iterative-v1 < inline-tdd-v1 < subagents-v1 |
-| `smell_total` | 25.2 % | subagents-v1 < iterative-v1 ≈ single-context-v1 < oneshot-v1 < inline-tdd-v1 |
-| `longest_function` | 23.6 % | subagents-v1 < single-context-v1 < oneshot-v1 < iterative-v1 < inline-tdd-v1 |
-| `mccabe_max` | 62.5 % | subagents-v1 < single-context-v1 < iterative-v1 < oneshot-v1 < inline-tdd-v1 |
-| `cognitive_max` | 50.5 % | subagents-v1 < single-context-v1 < iterative-v1 < oneshot-v1 < inline-tdd-v1 |
+| `code_mass` | 2.8 % | single-context-v1 < oneshot-v1 < iterative-v1 < hybrid-v1 < inline-tdd-v1 < subagents-v1 |
+| `smell_total` | 18.3 % | hybrid-v1 < subagents-v1 < iterative-v1 < single-context-v1 < oneshot-v1 < inline-tdd-v1 |
+| `longest_function` | 17.2 % | subagents-v1 < hybrid-v1 < single-context-v1 < oneshot-v1 < iterative-v1 < inline-tdd-v1 |
+| `mccabe_max` | 36.5 % | subagents-v1 < hybrid-v1 < single-context-v1 < iterative-v1 < oneshot-v1 < inline-tdd-v1 |
+| `cognitive_max` | 30.1 % | subagents-v1 < hybrid-v1 < single-context-v1 < iterative-v1 < oneshot-v1 < inline-tdd-v1 |
 
-For calibration: with 5! = 120 possible rankings, chance would be 0.83 %.
-All values are therefore far above chance.
+For calibration: with 6! = 720 possible rankings, chance would be 0.14 %.
+All values are therefore far above chance. The ranking now spans six workflows
+rather than five, which is why the hit rates sit lower than a five-workflow
+comparison would give — one more cell is one more place for a swap.
 
-Nevertheless: **the full 5-workflow ordering cannot be reliably
+Nevertheless: **the full 6-workflow ordering cannot be reliably
 reconstructed with n=3**, particularly in the middle of the field (oneshot-v1, iterative-v1, single-context-v1
 on cognitive_max). For `longest_function` and `smell_total`,
-n=3 suffices in only ~25 % of cases.
+n=3 suffices in only ~17–18 % of cases, and on `code_mass`, where the six means
+sit within 12 points of each other, in under 3 %.
 
 That does not mean, however, that all statements from n=3 are worthless:
 
@@ -160,19 +164,19 @@ not discriminable with n=3.
 
 ## F-stability.4 — Correctness Stays at 100 % Independently of Model/Workflow at n=10
 
-**Statement**: Across all 60 runs (including the 10 new exact-hybrid-v1-cc runs),
+**Statement**: Across all 59 runs (including the 10 exact-hybrid-v1-cc runs),
 every workflow reaches `tests_passing = 100 %` and `verification_pct = 1.00`.
 The correctness stability under the API contract documented in RQ-tdd-quality F-tdd-quality.4
 is confirmed by the larger n: no hidden outlier failures that
 would have remained undetected at n=3.
 
-**Data basis**: 60 runs (6 workflows × n=10), 15 verification scenarios each.
+**Data basis**: 59 runs across 6 workflows, 15 verification scenarios each.
 
 ---
 
 ## F-stability.5 — Token Consumption Shows an Extremely High Spread for subagents-v1 and single-context-v1
 
-**Statement**: Token consumption (n=10):
+**Statement**: Token consumption (n=10, single-context-v1 n=9):
 
 | Workflow | μ | σ | CV |
 |---|---:|---:|---:|
@@ -204,9 +208,13 @@ robust tail quantiles (P99, P95) would need n=30+.
 
 ## F-stability.6 — TDD Discipline Forms Workflow-Characteristic Bands
 
-**Statement**: The four TDD discipline indicators (`cycle_count`,
-`refactorings_applied`, `predictions_correct_rate`, `tests_passed_immediately`)
-separate the six workflows into **four discipline classes**:
+**Statement**: The four TDD discipline indicators (`cycle_count` †,
+`refactorings_applied` †, `predictions_correct_rate`, `tests_passed_immediately` †)
+separate the six workflows into **four discipline classes**. The three marked † come
+from the retired marker parser: the current pipeline produces none of them, and the
+phase chain that replaced it wrote nothing for these runs, so those columns are frozen
+at their last measured values and cannot be recomputed. Their comparable successors are
+`cycles_closed`, `refactor_events` and `skip_events`.
 
 | Workflow | `cycle_count` μ±σ | `refactorings_applied` μ±σ | `predictions_correct_rate` | `tests_passed_immediately` μ±σ | Discipline class |
 |---|---:|---:|---:|---:|---|
@@ -253,7 +261,7 @@ real test is made green — in the process several `it.todo` tests are also sati
 minimal green implementation. This is not a discipline breach
 in the narrower sense but a structural consequence of the test-first phase.
 
-**Data basis**: 60 runs (6 workflows × n=10), `opus-4-7-no-thinking`,
+**Data basis**: 59 runs across 6 workflows, `opus-4-7-no-thinking`,
 `game-of-life-example-mapping` and `game-of-life-prose` (for oneshot-v1/iterative-v1). For
 inline-tdd-v1, `predictions_correct_rate` drops out because inline-tdd-v1 does not emit the prediction
 format consistently.
@@ -321,8 +329,8 @@ inline-tdd-v1/subagents-v1/single-context-v1/hybrid-v1 and prose for oneshot-v1/
 - **Tail estimation**: n=10 gives rough σ estimates with wide
   confidence intervals. Outlier rates of 10 % each correspond to a
   single run — the true rate can lie between 0 and 30 %.
-- **Subsampling as a validity measure**: The `P(n=3 ranking = n=10 ranking)`
-  numbers are themselves derived from 50 runs — a hypothetical n=20
+- **Subsampling as a validity measure**: The `P(n=3 ranking = full ranking)`
+  numbers are themselves derived from 59 runs — a hypothetical n=20
   could show finer conditions for n=3 reliability.
 - **subagents-v1 refactor dropout**: The 1-in-10 run with cognitive=17 is a
   concrete occasion for improving the subagents-v1 workflow (the refactor phase must

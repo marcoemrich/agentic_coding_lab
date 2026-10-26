@@ -5,9 +5,9 @@ Persistent collection of the insights on the question:
 Opus 4.7, Opus 4.8, Fable 5 — each with/without thinking) differ in code quality
 on a training-known kata under the strongest workflow?**
 
-Data basis: 38 runs (10 cells × n=3, plus additional
-opus-4-7-no-thinking replicates from the RQ-tdd-quality pool → n=10 there, and
-opus-4-8-no-thinking with n=4). Workflow exact-subagents-v1-cc, kata
+Data basis: 44 runs across 12 cells — ten cells at n=3, plus
+opus-4-7-no-thinking at n=10 (replicates pooled from the RQ-tdd-quality pool)
+and opus-4-8-no-thinking at n=4. Workflow exact-subagents-v1-cc, kata
 game-of-life-example-mapping with an explicit API contract
 (`nextGeneration(cells: Cell[]): Cell[]`). Internal correctness view via the
 vitest tests written by the agent, external view via the module-import adapter
@@ -19,8 +19,8 @@ vitest tests written by the agent, external view via the module-import adapter
 
 | Model | `code_mass` | `smell_total` | `mccabe_max` | `cognitive_max` | `longest_function` | `verification_pct` | n |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| opus-5 | 172.67 | 1.67 | 3.00 | 2.00 | 6.33 | **1.00** 🏆 | 3 |
-| opus-5-no-thinking | 149.33 | **1.67** 🏆 | 2.67 | 1.67 | 5.33 | **1.00** 🏆 | 3 |
+| opus-5 | 172.67 | **1.67** 🏆 | 3.00 | 2.00 | 6.33 | **1.00** 🏆 | 3 |
+| opus-5-no-thinking | 149.33 | 2.67 | 2.67 | 1.67 | 5.33 | **1.00** 🏆 | 3 |
 | fable-5 | 163.00 | 3.00 | **2.00** 🏆 | **1.00** 🏆 | 8.33 | **1.00** 🏆 | 3 |
 | fable-5-no-thinking | 163.33 | 2.33 | 2.67 | 1.67 | 6.67 | **1.00** 🏆 | 3 |
 | opus-4-8 | **145.33** 🏆 | 2.67 | 4.33 | 5.33 | **4.33** 🏆 | **1.00** 🏆 | 3 |
@@ -36,7 +36,7 @@ Best value per column in bold + 🏆. Lower = better (except `verification_pct`:
 Quality trophies are correctness-gated: only cells with `verification_pct = 1.0`
 are trophy-eligible (sonnet-4-6-no-thinking with 0.73 excluded).
 `verification_pct`: eleven cells tied at 1.00 → ties, all 🏆.
-`smell_total`: opus-5-no-thinking sets the new best value at 1.67 (opus-5 with thinking is tied on the mean, but with a higher spread of σ 1.53).
+`smell_total`: opus-5 (with thinking) holds the lowest value at 1.67, though on a wide spread — σ 1.53 over runs of 2, 0 and 3. opus-5-no-thinking is tighter at 2.67 ± 0.58 but higher.
 
 Opus 5 and Fable 5 share the complexity peak: Fable 5 (with thinking)
 holds `cognitive_max` 1.0 and `mccabe_max` 2.0 narrowly ahead of Opus 5, while Opus 5 sets
@@ -119,7 +119,7 @@ with thinking):
 |---|---:|---:|---:|---:|---:|
 | fable-5 | −0.33 | +0.67 | −0.67 | −0.67 | +1.66 |
 | opus-4-8 | **−45.17** | −0.33 | +0.08 | +0.58 | −7.17 |
-| opus-4-7 | −8.67 | −0.17 | −0.67 | +0.17 | −2.33 |
+| opus-4-7 | −7.60 | −0.27 | −1.17 | −1.40 | −1.10 |
 | opus-4-6-portkey | −2.67 | 0.00 | −1.00 | −1.00 | +0.66 |
 | sonnet-4-6 | +11.33 | +2.34 | +0.33 | **+6.00** | +6.67 |
 
@@ -137,9 +137,11 @@ and **+6.00** (strongest degradation, Sonnet on `cognitive_max`).
   slightly negative (`cognitive_max` +0.58, `mccabe_max` +0.08): with thinking
   Opus 4.8 packs the logic more compactly into fewer/shorter functions, which
   raises the density per function marginally.
-- **Opus 4.7**: Thinking effect small, essentially neutral with a slight
-  tendency toward more compact code and shorter functions. The cognitive complexity
-  rises marginally (+0.17).
+- **Opus 4.7**: Thinking improves every one of the five outcomes, though each by
+  a small amount (all |∆| ≤ 1.4, `code_mass` −7.60). It is the only model in the
+  table with a consistent sign, and the no-thinking comparison cell is also the
+  best-populated here at n=10, so the direction rests on more replicates than the
+  other rows. The size of each step stays inside the cells' spread.
 - **Opus 4.6**: Thinking effect small and inconsistent — slightly better on
   complexity, slightly worse on the longest function. Effectively neutral.
 - **Sonnet 4.6**: Thinking **degrades** across all five outcomes,
@@ -230,14 +232,14 @@ disappear. A single outlier remains:
 |---|---|---|---:|
 | `2026-05-14_21-09-13_…_sonnet-4-6-no-thinking` | sonnet-4-6-no-thinking | `Cell = { x: number; y: number }` (object) | 0.20 |
 
-All other 37 runs adhere to the `[number, number]` tuple form (or
+All other 43 runs adhere to the `[number, number]` tuple form (or
 its superset `number[]`) and reach 15/15 — including all six
 Fable 5 runs and all seven Opus 4.8 runs. The Sonnet deviation shows: the
 explicit prompt contract
 drastically reduces representation drift (Sonnet previously 6/6 runs `boolean[][]`
 → now 5/6 runs tuple), but does not eliminate it in all cases.
 
-**Data basis**: 38 runs, manual inspection of the `nextGeneration` signatures
+**Data basis**: 44 runs, manual inspection of the `nextGeneration` signatures
 in `src/game-of-life.ts`.
 
 **Suspected mechanic**: Sonnet (no-thinking) occasionally interprets `type Cell = [number, number]`
