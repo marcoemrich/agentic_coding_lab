@@ -24,8 +24,8 @@ past min_replicates=5.
 | `longest_function` | 24.3 | 18.6 | 16.2 | 13.8 | 51.6 | 32.67 | 18.14 | **12.0** 🏆 | lower = better |
 | Smell Total | **0.0** 🏆 | 0.2 | **0.0** 🏆 | **0.0** 🏆 | 16.8 | 6.83 | 1.29 | **0.0** 🏆 | lower = better |
 | Code Mass (APP) | 758.2 | 569.0 | 859.5 | 997.0 | 992.4 | 692.7 | 861.3 | 796.0 | no 🏆 — see caveat |
-| `cycle_count` † | 4.8 | 27.0 | 42.8 | 45.0 | 3.8 | 5.5 | 28.0 | 25.8 | — |
-| `refactorings_applied` † | n/a | 12.2 | 17.4 | **43.4** 🏆 | n/a | 2.2 | 11.0 | 22.6 | higher = better |
+| `cycle_count` † | 5.2 | 27.0 | 45.9 | 45.8 | 3.8 | 5.5 | 28.0 | 25.8 | — |
+| `refactorings_applied` † | n/a | 12.2 | 21.3 | **44.5** 🏆 | n/a | 2.2 | 11.0 | 22.6 | higher = better |
 | `predictions_correct_rate` | n/a | 99.6 % | 99.6 % | 98.9 % | n/a | **100 %** 🏆 | 96.4 % | 90.0 % | higher = better |
 | `total_tokens` | 4.5 M | 82.6 M | 94.2 M | 161.6 M | **3.3 M** 🏆 | 18.7 M | 37.9 M | 75.6 M | lower = better |
 | `duration_seconds` | 5.5 min | 23.1 min | 44.2 min | 91.9 min | **5.2 min** 🏆 | 10.7 min | 26.1 min | 75.9 min | lower = better |
@@ -42,8 +42,8 @@ past min_replicates=5.
 | `longest_function` | 14.5 | 8.0 | 10.2 | **7.5** 🏆 | 32.5 | 20.8 | 14.2 | 8.4 | lower = better |
 | Smell Total | **0.0** 🏆 | **0.0** 🏆 | 1.0 | **0.0** 🏆 | 6.0 | 4.8 | 2.4 | **0.0** 🏆 | lower = better |
 | Code Mass (APP) | 196.8 | 176.2 | 179.0 | 195.8 | 165.6 | 154.0 | 153.7 | 169.6 | no 🏆 — see caveat |
-| `cycle_count` † | 3.8 | 7.2 | 10.4 | 10.4 | 1.5 | 7.6 | 8.7 | 9.2 | — |
-| `refactorings_applied` † | n/a | 4.4 | 4.4 | 8.6 | n/a | 4.8 | 4.1 | **9.2** 🏆 | higher = better |
+| `cycle_count` † | 3.7 | 7.2 | 10.3 | 10.3 | 1.5 | 7.6 | 8.7 | 9.2 | — |
+| `refactorings_applied` † | n/a | 4.4 | 4.3 | 8.8 | n/a | 4.8 | 4.1 | **9.2** 🏆 | higher = better |
 | `predictions_correct_rate` | n/a | **100 %** 🏆 | **100 %** 🏆 | 98.4 % | n/a | **100 %** 🏆 | 99.4 % | 98.9 % | higher = better |
 | `total_tokens` | 2.1 M | 11.8 M | 9.2 M | 19.7 M | **0.8 M** 🏆 | 8.4 M | 8.1 M | 17.2 M | lower = better |
 | `duration_seconds` | 2.8 min | 7.2 min | 9.7 min | 19.1 min | **1.3 min** 🏆 | 4.9 min | 8.5 min | 22.1 min | lower = better |
@@ -61,11 +61,15 @@ Caveats for reading the tables:
 - **Code Mass (APP) carries no trophy.** It ranks the cells opposite to decomposition
   (F-1.6) and has no notion of nesting — established in RQ-architecture-axis-sol-pi F-1.9.
 - `cycle_count` is ambivalent and carries no trophy.
-- **† `cycle_count` and `refactorings_applied` come from the retired marker parser.**
-  The current pipeline does not produce either field, and the phase chain that replaced
-  it wrote nothing for these runs, so both rows are frozen at their last measured values
-  and cannot be recomputed. Read them as provenance, not as current measurements; the
-  comparable successors are `cycles_closed` and `refactor_events`.
+- **† `cycle_count` and `refactorings_applied` are the retired spellings.** The marker
+  parser that produced them is gone and the phase chain that replaced it wrote nothing
+  for these runs, so neither metric appears in `runs.csv` or `summary.md`. The values
+  themselves survive per run as `summary_metrics.legacy_cycle_count` and
+  `summary_metrics.legacy_refactorings_applied` and are recomputed from there — they are
+  current for this run set, not frozen. Their comparable successors on newer runs are
+  `cycles_closed` and `refactor_events`. For inline-tdd-v1 both columns stay n/a rather
+  than zero: without phase markers the parser falls back to a heuristic that over-counts,
+  which RQ-v3-emergent-tdd quantified at 14 real refactorings out of 60 candidates.
 - `cost_usd` is a list-price comparison, not an invoice: these runs went through the
   native Anthropic API on a subscription plan, where nothing is billed per token. On
   claim-office the four opus-5 cells read $3.89 / $47.56 / $61.94 / $109.59 along the
@@ -195,7 +199,7 @@ mean to 0.79 (σ 0.44) — the cell is bimodal, not uniformly mediocre.
 |---|---|---:|---|
 | single-context-v2 | 0 / 0.93 / 1 ×3 | 0.44 | 2–48 |
 | hybrid-v2 | 0.93 ×11 / 1 ×7 | 0.03 | 38–52 |
-| hybrid-v6 | 0.93 ×5 / 1 | 0.03 | 36–52 |
+| hybrid-v6 | 0.93 ×5 / 1 | 0.03 | 36–57 |
 
 Rationale: single-context-v2's shared single context has a failure mode where the model declares the
 task complete after 2 cycles. hybrid-v2 and hybrid-v6, which isolate the refactor phase, do not show

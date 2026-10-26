@@ -210,18 +210,20 @@ robust tail quantiles (P99, P95) would need n=30+.
 
 **Statement**: The four TDD discipline indicators (`cycle_count` †,
 `refactorings_applied` †, `predictions_correct_rate`, `tests_passed_immediately` †)
-separate the six workflows into **four discipline classes**. The three marked † come
-from the retired marker parser: the current pipeline produces none of them, and the
-phase chain that replaced it wrote nothing for these runs, so those columns are frozen
-at their last measured values and cannot be recomputed. Their comparable successors are
-`cycles_closed`, `refactor_events` and `skip_events`.
+separate the six workflows into **four discipline classes**. The three marked † are the
+retired spellings: the marker parser that produced them is gone and the phase chain that
+replaced it wrote nothing for these runs, so none of them appears in `runs.csv` or
+`summary.md`. The values survive per run under `summary_metrics.legacy_*` and are
+recomputed from there, so they are current for this run set rather than frozen. Their
+comparable successors on newer runs are `cycles_closed`, `refactor_events` and
+`skip_events`.
 
 | Workflow | `cycle_count` μ±σ | `refactorings_applied` μ±σ | `predictions_correct_rate` | `tests_passed_immediately` μ±σ | Discipline class |
 |---|---:|---:|---:|---:|---|
 | baseline-oneshot-v1-cc | 1.0 ± 0 | 0.0 ± 0 | — | 1.0 ± 0 | **structurally empty** |
 | baseline-iterative-v1-cc | 1.0 ± 0 | 0.0 ± 0 | — | 1.0 ± 0 | **structurally empty** |
 | baseline-inline-tdd-v1-cc | 1.5 ± 0.97 | 0.1 ± 0.32 | — | 0.5 ± 0.97 | **phantom TDD** |
-| exact-single-context-v1-cc | 6.7 ± **2.67** | 6.0 ± **3.09** | 100.0 % | 0.9 ± 1.66 | **broadband discipline** |
+| exact-single-context-v1-cc | 7.4 ± **1.33** | 6.7 ± **2.40** | 100.0 % | 1.0 ± 1.73 | **broadband discipline** |
 | exact-subagents-v1-cc | 7.8 ± 0.92 | 5.9 ± 2.02 | 98.1 % | 3.3 ± 2.87 | **narrow bands, strict discipline** |
 | exact-hybrid-v1-cc | **8.3 ± 0.82** | 4.0 ± 1.63 | 99.4 % | 3.3 ± 3.02 | **narrowest bands, strictest discipline** |
 
@@ -248,7 +250,7 @@ indicators:
 
 - **single-context-v1 (broadband discipline)**: means as high as subagents-v1 for
   cycles and refactorings, but a **3–4× broader spread**
-  (refactorings σ=3.09 vs subagents-v1 σ=2.02). The shared single context allows
+  (refactorings σ=2.40 vs subagents-v1 σ=2.02). The shared single context allows
   different path realizations — one run can have 0 refactorings,
   another 8. On the long CLI kata claim-office, this spread collapses
   into a clear loss of discipline (RQ-workflow-tradeoff F-workflow-tradeoff.4):

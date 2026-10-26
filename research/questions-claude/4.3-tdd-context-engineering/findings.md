@@ -50,8 +50,10 @@ single-context-v2 and hybrid-v2 reach 1.00 verification_pct (15/15 in every run,
 |---|---:|---:|---:|---:|
 | `duration_seconds` (mean) | 3 229 (~54 min) | **641 (~11 min)** 🏆 | 1 569 (~26 min) | 1 970 (~33 min) |
 | `total_tokens` (mean)     | 34.87 M | **18.73 M** 🏆 | 37.88 M | 35.74 M |
-| `cycle_count` (mean)      | 44.6 | 5.5 | 24.7 | 18.3 |
-| `refactorings_applied`    | 6.8 | 2.2 | 10.7 | 14.0 |
+| `cycle_count` (mean) †    | 44.6 | 5.5 | 28.0 | 18.3 |
+| `refactorings_applied` †  | 6.8 | 2.2 | 11.0 | 14.0 |
+
+† `cycle_count` and `refactorings_applied` are the retired spellings: the marker parser that produced them is gone, so neither appears in `runs.csv` or `summary.md`. Both are recomputed per run from `summary_metrics.legacy_*`. Because the aggregation does not carry them, they are the two rows that silently stay behind when a cell grows — the hybrid-v2 cell here holds 7 runs.
 
 single-context-v2 is 5× faster than subagents-v2 and 3× faster than green-refactor-v2 — the single context without subagent spawns dominates the wallclock rating. **It is also the cheapest arm on tokens by a wide margin**, at roughly half of every arm that isolates a phase: 18.73 M against 34.87–37.88 M, a gap larger than any of the three standard deviations involved.
 
@@ -59,7 +61,7 @@ The three isolating arms are a token tie among themselves (34.87 / 35.74 / 37.88
 
 This replaces the earlier reading, which had subagents-v2 as the cheapest arm and explained it by isolated contexts growing linearly against an accumulating shared one. That ordering was an artefact of subagent tokens being absent from the figure; the arm that isolates all four phases was the one it understated most. The accumulating shared context is in fact the cheaper mechanism here — it re-reads a growing history, but a cache read is an order of magnitude cheaper than building a fresh context per phase.
 
-The `cycle_count` spread shows four qualitatively different working modes: single-context-v2 with only 5.5 cycles and 1.7 immediately green tests works in coarse steps; subagents-v2 with 44.6 cycles and 22.2 immediately green tests decomposes very finely and often produces pre-implementation in red; hybrid-v2 (24.7 cycles) and green-refactor-v2 (18.3 cycles) lie in between, with the highest refactor rate of all workflows (green-refactor-v2 14.0/run, hybrid-v2 10.7/run vs. subagents-v2 6.8 and single-context-v2 2.2) — the isolated refactor subagents visibly "work" more.
+The `cycle_count` spread shows four qualitatively different working modes: single-context-v2 with only 5.5 cycles and 1.7 immediately green tests works in coarse steps; subagents-v2 with 44.6 cycles and 22.2 immediately green tests decomposes very finely and often produces pre-implementation in red; hybrid-v2 (28.0 cycles) and green-refactor-v2 (18.3 cycles) lie in between, with the highest refactor rate of all workflows (green-refactor-v2 14.0/run, hybrid-v2 11.0/run vs. subagents-v2 6.8 and single-context-v2 2.2) — the isolated refactor subagents visibly "work" more.
 
 **H3 (subagents-v2 < single-context-v2 < hybrid-v2 tokens) is falsified.** The measured ordering is single-context-v2 (18.73 M) < subagents-v2 (34.87 M) ≈ green-refactor-v2 (35.74 M) ≈ hybrid-v2 (37.88 M), with the last three indistinguishable. The hypothesis had the shared-context arm in the middle and the fully isolated one cheapest; both halves are wrong.
 
