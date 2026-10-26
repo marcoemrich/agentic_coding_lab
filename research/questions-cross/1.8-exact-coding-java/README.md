@@ -89,7 +89,7 @@ Java/JUnit/Maven stack profile. No Java-specific workflow fork is used.
 ## Stack provenance
 
 The Maven project and PMD ruleset are taken from the established Java skeleton
-in `EXACT-Coding-Exercises` (`templates/java-junit-maven/files/`, previously the
+in `EXACT-Coding` (`templates/java-junit-maven/files/`, previously the
 `harness/copilot-java` branch). The lab adds only
 the Jackson dependency and Maven execution support needed for language-neutral
 external acceptance. The exact workflow's existing Java/JUnit/Maven profile is

@@ -857,7 +857,7 @@ baseline.
 | | |
 |---|---|
 | Local | `/home/memrich/sync/work/konferenzen_und_talks/exact_coding/exact-coding-exercises` |
-| Remote | `git@github.com:marcoemrich/EXACT-Coding-Exercises.git` |
+| Remote | `git@github.com:marcoemrich/EXACT-Coding.git` |
 | Harnesses in use | `.claude/`, `.cursor/`, `.opencode/` — already multi-harness |
 
 Record the remote for identification, but treat the **local path as the

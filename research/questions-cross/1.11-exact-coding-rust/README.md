@@ -146,7 +146,7 @@ control: that variant names `pnpm test` and is not runnable on this stack.
 ## Stack provenance
 
 Unlike the Java and Python stacks, the Rust stack has no participant-facing
-skeleton in `EXACT-Coding-Exercises` to mirror. It was built for this RQ in
+skeleton in `EXACT-Coding` to mirror. It was built for this RQ in
 `experiments/stacks/rust-cargo/`: a library crate with the kata CLI as its
 binary `kata`, `serde`/`serde_json` pinned exactly in `Cargo.lock`, Cargo
 offline against the registry baked into the image, and a clippy lint

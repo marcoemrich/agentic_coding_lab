@@ -31,7 +31,7 @@ deploys only on explicit request — the push is public.
   `research/reports/`, this publishes the live site. Both get called "published".
 
 ### `/exact-coding-baseline-export [line] [date] [source-workflow]`
-Mint a dated consumer snapshot under `research/workflow-dev/export/` for either promoted EXACT Coding line. `opus` (default for backward compatibility) resolves the correctness-oriented Hybrid source from `workflow-construction.md`; `sol` resolves the Predictive-TDD source from `model-recommendation-matrix.md` and runs `export-sol.py`. Both remove lab content, restore HITL, and gate invocation. The SOL path emits Claude Code, pi, OpenCode, Cursor and Copilot ports and can explicitly synchronize local `sol/*` branches in `EXACT-Coding-Exercises` with `--sync-distribution`; it never pushes.
+Mint a dated consumer snapshot under `research/workflow-dev/export/` for either promoted EXACT Coding line. `opus` (default for backward compatibility) resolves the correctness-oriented Hybrid source from `workflow-construction.md`; `sol` resolves the Predictive-TDD source from `model-recommendation-matrix.md` and runs `export-sol.py`. Both remove lab content, restore HITL, and gate invocation. The SOL path emits Claude Code, pi, OpenCode, Cursor and Copilot ports and can explicitly synchronize local `sol/*` branches in `EXACT-Coding` with `--sync-distribution`; it never pushes.
 - Triggers: "exact-coding baseline export", "neue exact-coding baseline", "exact-coding-baseline-export"
 - Details: `.claude/skills/exact-coding-baseline-export/SKILL.md`
 

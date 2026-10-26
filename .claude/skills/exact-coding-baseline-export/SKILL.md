@@ -31,7 +31,7 @@ alongside this file under `templates/`, and the harness research lives in
 - **Source repo**: writes snapshots only inside `research/workflow-dev/export/`
   and never edits source workflows under `experiments/workflows/`.
 - **Distribution sync is explicit**: the SOL exporter may additionally create
-  or update the canonical `main` and `harness/*` branches in `EXACT-Coding-Exercises` when
+  or update the canonical `main` and `harness/*` branches in `EXACT-Coding` when
   `--sync-distribution <repo>` is passed. It commits locally and never pushes.
 - **One artifact per line and date**: Opus writes
   `<DATE>-exact-coding-baseline/`; SOL writes
@@ -58,9 +58,11 @@ python3 .claude/skills/exact-coding-baseline-export/export-sol.py \
   --sync-distribution /home/memrich/sync/work/konferenzen_und_talks/exact_coding/exact-coding-exercises
 ```
 
-The repo name on GitHub is `EXACT-Coding-Exercises`, but the local checkout is
-lowercase and lives under `sync/work/...` — see "The consumer" below, which is
-the authoritative path. There is no `/home/memrich/EXACT-Coding-Exercises`.
+The repo name on GitHub is `EXACT-Coding` (renamed from `EXACT-Coding-Exercises`
+on 2026-10-26; GitHub redirects the old name), but the local checkout keeps the
+old lowercase name `exact-coding-exercises` and lives under `sync/work/...` — see
+"The consumer" below, which is the authoritative path. There is no
+`/home/memrich/EXACT-Coding`.
 
 The script auto-detects the promoted SOL source from
 `model-recommendation-matrix.md`, reads its native `.pi/` tree, removes the lab
@@ -1237,7 +1239,7 @@ baseline.
 | | |
 |---|---|
 | Local | `/home/memrich/sync/work/konferenzen_und_talks/exact_coding/exact-coding-exercises` |
-| Remote | `git@github.com:marcoemrich/EXACT-Coding-Exercises.git` |
+| Remote | `git@github.com:marcoemrich/EXACT-Coding.git` |
 | Harnesses in use | `.claude/`, `.cursor/`, `.opencode/` — already multi-harness |
 
 Record the remote for identification, but treat the **local path as the
@@ -1295,7 +1297,7 @@ After successful validation:
    claim, and it was false — cursor had a Task tool the whole time. Verify
    against the harness's own docs and, where feasible, a probe run before
    accepting a limitation as real.
-6. Point at the consumer (`EXACT-Coding-Exercises`, path above). State whether
+6. Point at the consumer (`EXACT-Coding`, path above). State whether
    PTDD distribution sync ran; if it did, list the local `main` / `harness/*` commits and say
    explicitly that no push occurred. For Opus or snapshot-only SOL exports,
    state that the snapshot was not copied.

@@ -759,7 +759,7 @@ def main() -> int:
     parser.add_argument(
         "--sync-distribution",
         type=Path,
-        help="Create or update the parallel sol/* branches in EXACT-Coding-Exercises; never pushes",
+        help="Create or update the parallel sol/* branches in EXACT-Coding; never pushes",
     )
     args = parser.parse_args()
     source = args.source or promoted_source()

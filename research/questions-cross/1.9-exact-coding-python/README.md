@@ -100,7 +100,7 @@ this stack.
 
 The project skeleton, ruff selection and pytest configuration come from
 `experiments/stacks/python-pytest/`, which mirrors the participant-facing
-skeleton in `EXACT-Coding-Exercises` (`templates/python-pytest/files/`). The
+skeleton in `EXACT-Coding` (`templates/python-pytest/files/`). The
 lab pins the tool versions in `requirements-dev.txt` and adds `pytest-cov`; the
 workflow's Python/pytest profile is used unchanged.
 
