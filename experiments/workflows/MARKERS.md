@@ -98,7 +98,7 @@ prompt costs something, and the reduction line (RQ-rules, RQ-pep, RQ-emoji,
 RQ-lean) exists because the cost is not always what intuition predicts.
 
 **On the maintained line there is nothing to remove, and that was checked.**
-`exact-ptdd-v1-cc` — the universal default on native Opus 5 / 5.5 per
+`exact-ptdd-v1.2-verification-split-cc` — the universal default on native Opus 5 / 5.5 per
 `research/workflow-dev/model-recommendation-matrix.md` — emits `## Red`,
 `## Green`, `## Refactor`, `## Test List`, `Test List Created:`, the
 `Red Phase Complete:` block with both prediction lines, and the done-marker.

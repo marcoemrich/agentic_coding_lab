@@ -1,15 +1,15 @@
 ## Agent Configuration
 
-This repository distributes **EXACT Coding Predictive TDD v1** as the universal
+This repository distributes **EXACT Coding Predictive TDD v{{VERSION}}** as the universal
 maintained workflow: one shared context, falsifiable predictions before
 deterministic checks, and inline refactoring under the Four Rules of Simple
 Design. The historical Opus/Hybrid branches remain available for reproduction,
 but are superseded as the maintained product line.
 
 Each PTDD branch carries exactly one agent configuration. This branch is part
-of **Predictive TDD v1**, distribution version **{{DATE}}**.
+of **Predictive TDD v{{VERSION}}**, distribution version **{{DATE}}**.
 
-| Agent | Predictive TDD v1 branch | Config | Start EXACT Coding with |
+| Agent | Predictive TDD branch | Config | Start EXACT Coding with |
 |---|---|---|---|
 | Claude Code | `main` | `.claude/` | `/exact-coding`, or ask for EXACT Coding |
 | GitHub Copilot | `harness/copilot` | `.github/` | `/exact-coding`, or ask for EXACT Coding |
@@ -33,7 +33,7 @@ git checkout harness/pi           # pi
 Keeping line and harness combinations on separate branches prevents agents that
 scan several vendors' directories from loading duplicate workflows.
 
-### Predictive TDD v1 workflow
+### Predictive TDD v{{VERSION}} workflow
 
 The workflow first creates a complete ordered test list with all future
 behaviors inactive. It then handles exactly one behavior per cycle:
@@ -44,10 +44,7 @@ behaviors inactive. It then handles exactly one behavior per cycle:
 3. **Refactor** — review and, where useful, refactor inline under the Four Rules
    of Simple Design.
 4. **Close** — predict and run the complete suite and applicable stack gates.
-
-A test already satisfied by an earlier generalization is valid evidence. The
-workflow confirms it instead of manufacturing a failure.
-
+{{VERIFICATION_STEP}}
 The Predictive TDD loop deliberately has **no APP mass objective, no refactor
 subagent, and no metric-driven end pass**. Those are product-method choices,
 not missing port features.
@@ -189,10 +186,10 @@ tool we wrote ourselves, so the model cannot know it from training. Its spec
 contains deliberate ambiguities, and correctness is checked by 15 acceptance
 scenarios the agent never sees.
 
-#### This exact workflow, ten runs per model
+#### The base workflow, ten runs per model
 
-Predictive TDD v1 as shipped, on the two models it is validated on. Ten runs
-per cell — the largest sample in our data.
+Predictive TDD v1 — the base the shipped version builds on — on the two models
+it is validated on. Ten runs per cell, the largest sample in our data.
 
 | What we measured | Opus 5 (Claude Code) | GPT-5.6 SOL (pi) |
 |---|---:|---:|
@@ -211,7 +208,7 @@ A value below 5 means every function stays easy to follow.*
 
 Zero linter findings in all twenty runs, and no function that is hard to read
 on either model.
-
+{{VERSION_MEASUREMENT}}
 #### Structure beats "just use TDD"
 
 The floor is the same agent told only to work test-driven, with no further
@@ -246,7 +243,7 @@ better.
 
 *(These two cells were measured on an earlier version of the same line, before
 the test-list cross-check was added. They are the best floor comparison we
-have; the shipped version is measured in the table above.)*
+have; the base of the shipped version is measured in the table above.)*
 
 #### Concrete examples matter more than any workflow
 
@@ -303,9 +300,7 @@ unless you ask for it. Provider credentials, routing, model selection, and
 permission policy are intentionally not shipped.
 
 This distribution is generated from
-`{{SOURCE_WORKFLOW}}` in the `agentic_coding_lab` repository. It was promoted
-after `RQ-test-list-dimensions-replication` at n=10 per workflow and platform
-cell on Claim Office. The canonical methodology is validated on **GPT-5.6 SOL
+`{{SOURCE_WORKFLOW}}` in the `agentic_coding_lab` repository. {{PROMOTION_EVIDENCE}} The canonical methodology is validated on **GPT-5.6 SOL
 with pi** and **native Opus 5 with Claude Code**. Copilot, Cursor, and OpenCode
 are semantic ports of the same method; they are not presented as independent
 cross-harness experiment cells.

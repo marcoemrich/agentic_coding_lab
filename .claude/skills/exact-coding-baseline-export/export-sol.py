@@ -9,6 +9,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import textwrap
 from datetime import date
 from pathlib import Path
 
@@ -110,13 +111,39 @@ def consumer_predictive(text: str, hitl_path: str) -> str:
     return text
 
 
+def line_version(source: str) -> str:
+    """`exact-ptdd-v1.2-verification-split-pi` -> `1.2`."""
+    match = re.match(r"exact-ptdd-v(\d+(?:\.\d+)*)", source)
+    if not match:
+        raise SystemExit(f"Cannot read a PTDD version from {source}")
+    return match.group(1)
+
+
+def consumer_stack(text: str) -> str:
+    """Reframe the v1.2 group-name rule for a consumer.
+
+    The lab profiles justify the fixed `verification` group name with "the name
+    is how the run is measured" — true in the lab, where tdd-report.py cuts the
+    scored chain at that group, and meaningless to a consumer. The name still
+    matters there: the method files refer to the group by it.
+    """
+    return text.replace(
+        "The name is how the run is measured; do not translate or extend it:",
+        "The workflow refers to the group by this name; do not translate or extend it:",
+    )
+
+
 def consumer_test_list(text: str, hitl_path: str) -> str:
-    # v1.6+ has an independent-dimensions cross-check and its summary is Step 6.
-    # Preserve that validated product content; replace only the lab continuation.
-    if "### Step 7: Continue the Workflow\n" in text:
-        start = text.index("### Step 7: Continue the Workflow\n")
+    # v1.6+ has an independent-dimensions cross-check before the summary, and
+    # v1.2 adds the driving/verification split, so the continuation step's
+    # number varies. Preserve that validated product content; replace only
+    # the lab continuation, keeping its step number.
+    continuation = re.search(r"^### Step (\d+): Continue the Workflow\n", text, re.M)
+    if continuation:
+        step = continuation.group(1)
+        start = continuation.start()
         end = text.index("## Important Guidelines\n", start)
-        replacement = f'''### Step 7: Verify the Inactive List and Apply the HITL Checkpoint
+        replacement = f'''### Step {step}: Verify the Inactive List and Apply the HITL Checkpoint
 
 Predict and run the full suite. Continue only when the inactive list leaves the
 suite green; correct the list without implementing behavior if it does not.
@@ -169,8 +196,13 @@ def refactor_delegation(harness: str) -> str:
     }[harness]
 
 
+def has_verification_split(predictive: str) -> bool:
+    return "## Verification part" in predictive
+
+
 def exact_coding_skill(config: str, hitl_path: str, source: str, domain_boundary: bool,
-                       isolated: bool = False, harness: str = "cc") -> str:
+                       isolated: bool = False, harness: str = "cc",
+                       verification_split: bool = False) -> str:
     boundary_intro = (
         " Refactoring also applies a domain-responsibility review and a mandatory "
         "concrete boundary trial whenever it finds a credible semantic seam."
@@ -195,11 +227,61 @@ def exact_coding_skill(config: str, hitl_path: str, source: str, domain_boundary
         else ""
     )
     name = "exact-coding-isolated-refactor" if isolated else "exact-coding"
+    version = line_version(source)
     title = (
-        "# EXACT Coding — Predictive TDD v1 — Isolated Refactor"
+        f"# EXACT Coding — Predictive TDD v{version} — Isolated Refactor"
         if isolated
-        else "# EXACT Coding — Predictive TDD v1"
+        else f"# EXACT Coding — Predictive TDD v{version}"
     )
+    if verification_split:
+        list_step = (
+            "1. Create the complete ordered test list with every future behavior inactive:\n"
+            "   the driving tests first, the verification tests after them in their\n"
+            "   `verification` group. Then predict and verify that the inactive list\n"
+            "   leaves the full suite green."
+        )
+        cycle_intro = (
+            "3. For exactly one driving behavior at a time, follow the Predictive TDD skill:\n"
+            "   - reconsider whether the next driving test will still fail, and move it\n"
+            "     into the `verification` group before activating it if an earlier\n"
+            "     generalization already covers it,\n"
+            "   - activate one behavior and reach behavioral Red,"
+        )
+        closing = (
+            "4. When every driving test is active and green, activate the verification\n"
+            "   tests one at a time, each predicted to pass, as described under\n"
+            "   \"Verification part\" in the Predictive TDD skill.\n"
+            "5. Continue until every listed behavior is executable and all applicable gates\n"
+            "   from the active stack profile pass.\n"
+            "\n"
+            "A test already satisfied by an earlier generalization is legitimate evidence,\n"
+            "not a gap. If you foresee it before activation, it belongs in the\n"
+            "`verification` group. If it surprises you after activation, record the missed\n"
+            "prediction. In neither case manufacture a failure or production change."
+        )
+    else:
+        list_step = (
+            "1. Create the complete ordered test list with every future behavior inactive,\n"
+            "   then predict and verify that the inactive list leaves the full suite green."
+        )
+        cycle_intro = (
+            "3. For exactly one behavior at a time, follow the Predictive TDD skill:\n"
+            "   - activate one behavior and reach behavioral Red,"
+        )
+        closing = (
+            "4. Continue until every listed behavior is executable and all applicable gates\n"
+            "   from the active stack profile pass.\n"
+            "\n"
+            "A test already satisfied by an earlier generalization is legitimate evidence.\n"
+            "Confirm it and do not manufacture a failure or production change."
+        )
+    provenance_validation = "The methodology was validated\non GPT-5.6 SOL with pi."
+    if verification_split:
+        provenance_validation += (
+            " The driving/verification split of the test list was measured\n"
+            "as non-inferior to that base on GPT-6.1 Sol with pi and on Opus 5.5 with\n"
+            "Claude Code."
+        )
     if isolated:
         intro = (
             f"Refactoring uses the Four Rules of Simple Design in an isolated subagent."
@@ -237,22 +319,16 @@ tools belong only to the selected stack profile.
 
 ## Sequence
 
-1. Create the complete ordered test list with every future behavior inactive,
-   then predict and verify that the inactive list leaves the full suite green.
+{list_step}
 2. Apply the Test-List checkpoint from `{hitl_path}`.
-3. For exactly one behavior at a time, follow the Predictive TDD skill:
-   - activate one behavior and reach behavioral Red,
+{cycle_intro}
    - state falsifiable predictions before deterministic checks and compare them
      explicitly with reality,
    - apply the Red checkpoint,
    - reach Green with the smallest production change,
    - {refactor_step},{boundary_step}
    - apply the Refactor checkpoint.
-4. Continue until every listed behavior is executable and all applicable gates
-   from the active stack profile pass.
-
-A test already satisfied by an earlier generalization is legitimate evidence.
-Confirm it and do not manufacture a failure or production change.
+{closing}
 
 ## Method boundary
 
@@ -269,8 +345,7 @@ prediction is wrong. Green has no default stop.
 
 ## Provenance
 
-Exported from the promoted `{source}` workflow. The methodology was validated
-on GPT-5.6 SOL with pi. Other harness trees are
+Exported from the promoted `{source}` workflow. {provenance_validation} Other harness trees are
 mechanical ports of the same files, not claims of cross-harness validation.
 '''
 
@@ -353,7 +428,28 @@ may investigate and resume without waiting.
 '''
 
 
-def readme(source: str, stamp: str, harnesses: tuple[str, ...], domain_boundary: bool) -> str:
+STACK_LABELS = {
+    "typescript-vitest.md": "TypeScript/Vitest",
+    "java-junit-maven.md": "Java/JUnit 5/Maven",
+    "python-pytest.md": "Python/pytest",
+    "rust-cargo.md": "Rust/Cargo",
+}
+
+# The base the PTDD line was validated on, before any later branch.
+V1_VALIDATION = (
+    "Validated on `gpt-5-6-sol-codex` with pi and native Opus 5 with "
+    "Claude Code on three stacks: TypeScript/Vitest in "
+    "`RQ-test-list-dimensions-replication` (n=10 per workflow and "
+    "platform cell on Claim Office), Java/JUnit 5/Maven in "
+    "`RQ-exact-coding-java` and Python/pytest in `RQ-exact-coding-python` "
+    "(n=5 per cell on Claim Office and Game of Life, each including the "
+    "isolated-refactor variant)."
+)
+
+
+def readme(source: str, stamp: str, harnesses: tuple[str, ...], domain_boundary: bool,
+           verification_split: bool = False, stack_files: tuple[str, ...] = ()) -> str:
+    version = line_version(source)
     boundary_summary = (
         " It treats domain language as the semantic anchor, tests independently "
         "changing policies with a concrete boundary trial, and keeps or narrowly "
@@ -361,18 +457,49 @@ def readme(source: str, stamp: str, harnesses: tuple[str, ...], domain_boundary:
         if domain_boundary
         else ""
     )
-    validation = (
-        "Validated on `gpt-5-6-sol-codex` with pi and native Opus 5 with "
-        "Claude Code on all three stacks: TypeScript/Vitest in "
-        "`RQ-test-list-dimensions-replication` (n=10 per workflow and "
-        "platform cell on Claim Office), Java/JUnit 5/Maven in "
-        "`RQ-exact-coding-java` and Python/pytest in `RQ-exact-coding-python` "
-        "(n=5 per cell on Claim Office and Game of Life, each including the "
-        "isolated-refactor variant)."
-        if source == "exact-ptdd-v1-pi"
-        else "Validated on `gpt-5-6-sol-codex` with pi in "
-        "`RQ-stack-profile-extraction-sol` (20/20 fresh runs internally and "
-        "externally correct)."
+    if source == "exact-ptdd-v1-pi":
+        validation = V1_VALIDATION
+    elif verification_split:
+        validation = (
+            "The base line `exact-ptdd-v1-pi` is " + V1_VALIDATION[0].lower()
+            + V1_VALIDATION[1:] + " The driving/verification split that "
+            f"`{source}` adds was measured against that base in "
+            "`RQ-ptdd-verification-split` (n=5 per cell, Claim Office, "
+            "TypeScript/Vitest) on GPT-6.1 Sol with pi and Opus 5.5 with Claude "
+            "Code: non-inferior on both, with Correctness (external) 1.00 in every "
+            "cell and no verification test ever red. Opus 5.5 pays about 15 % more "
+            "time and tokens for it; on Sol it ran faster."
+        )
+    else:
+        validation = (
+            "Validated on `gpt-5-6-sol-codex` with pi in "
+            "`RQ-stack-profile-extraction-sol` (20/20 fresh runs internally and "
+            "externally correct)."
+        )
+    split_summary = (
+        "\n\nThe test list has two parts. **Driving tests** come first and must fail\n"
+        "before they are implemented; each failure justifies the next production\n"
+        "change. **Verification tests** follow in a group named `verification`:\n"
+        "mostly combinations of rules the driving tests already built, expected to\n"
+        "pass on activation. They run only after every driving test is green, each\n"
+        "predicted to pass, and stay in the suite as a safety net. Before activating\n"
+        "a driving test the workflow asks whether it will still fail and moves it\n"
+        "into the verification group if an earlier generalization already covers it.\n"
+        "This keeps every Red in the driving part meaningful instead of spending\n"
+        "cycles on tests that cannot fail for the right reason."
+        if verification_split
+        else ""
+    )
+    isolated_split_note = (
+        " They were measured on the base line\nwithout the driving/verification "
+        "split; the isolated profile with the split is\nnot measured separately."
+        if verification_split
+        else ""
+    )
+    labels = [STACK_LABELS.get(name, name.removesuffix(".md")) for name in stack_files]
+    stack_list = (
+        ", ".join(labels[:-1]) + " and " + labels[-1] if len(labels) > 1
+        else (labels[0] if labels else "no")
     )
     rows = {
         "cc": "| Claude Code | `.claude/` | `/exact-coding` or ask for EXACT Coding |",
@@ -382,7 +509,7 @@ def readme(source: str, stamp: str, harnesses: tuple[str, ...], domain_boundary:
         "copilot": "| GitHub Copilot | `.github/` | `/exact-coding` or ask for EXACT Coding |",
     }
     table = "\n".join(rows[h] for h in harnesses)
-    return f'''# EXACT Coding — Predictive TDD v1 — {stamp}
+    return f'''# EXACT Coding — Predictive TDD v{version} — {stamp}
 
 Consumer-ready export of `{source}`, the universal maintained EXACT Coding
 Predictive-TDD line.
@@ -396,7 +523,7 @@ Red-Green-Refactor cycles in one shared context. Before every deterministic
 check it states a falsifiable prediction and compares it with reality.
 Refactoring is inline and follows the Four Rules of Simple Design.{boundary_summary}
 The loop itself has no APP mass objective, no metric-driven end pass, and no
-refactor subagent.
+refactor subagent.{split_summary}
 
 ### The other profile: `exact-coding-isolated-refactor`
 
@@ -427,7 +554,7 @@ the refactor judgement made without the memory of how the code got there. It is
 not a correctness upgrade; on the runs behind this export it did not buy one.
 
 The figures come from Claim Office on TypeScript with the Opus models, n=5 per
-cell. They are a direction, not a guarantee for your codebase or your model.
+cell. They are a direction, not a guarantee for your codebase or your model.{isolated_split_note}
 
 ### Manual extra: `end-refactor` (not part of the workflow)
 
@@ -470,8 +597,7 @@ automatically.
 
 Language and tool details live exclusively in the profiles under
 `skills/predictive-tdd/stacks/`; orchestration and method files are stack-neutral.
-The export currently includes TypeScript/Vitest, Java/JUnit 5/Maven and
-Python/pytest profiles.
+The export currently includes {stack_list} profiles.
 It removes experiment-specific autonomy,
 completion, and measurement content, restores configurable human checkpoints, and gates
 the workflow behind explicit invocation.
@@ -504,9 +630,13 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
         "## Mandatory domain-boundary trial" in predictive
         and "#### Domain responsibility review" in predictive
     )
-    body = exact_coding_skill(config, hitl_path, source, domain_boundary, harness=harness)
+    split = has_verification_split(predictive)
+    body = exact_coding_skill(
+        config, hitl_path, source, domain_boundary, harness=harness, verification_split=split
+    )
     isolated_body = exact_coding_skill(
-        config, hitl_path, source, domain_boundary, isolated=True, harness=harness
+        config, hitl_path, source, domain_boundary, isolated=True, harness=harness,
+        verification_split=split,
     )
 
     phase_skills = {
@@ -521,7 +651,7 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
     for filename, content in stacks.items():
         path = root / "skills/predictive-tdd/stacks" / filename
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(content)
+        path.write_text(consumer_stack(content))
 
     # The HITL file is shared by both refactor profiles.
     (root / "skills/exact-coding-shared").mkdir(parents=True, exist_ok=True)
@@ -591,7 +721,8 @@ def validate(target: Path, harnesses: tuple[str, ...]) -> None:
         r"|predictions_correct|predictions_total|cycle_count|refactorings_applied"
         r"|tdd_discipline|test_first_rate|red_batch_|green_batch_|cycles_closed"
         r"|cycles_total|chain_deviations|refactor_events|skip_events|suite_cycles"
-        r"|What the Parser Counts|parsed mechanically|Run autonomously",
+        r"|What the Parser Counts|parsed mechanically|Run autonomously"
+        r"|how the run is measured|read mechanically",
         re.I,
     )
     for path in target.rglob("*"):
@@ -684,7 +815,152 @@ def run_git(repo: Path, *args: str, capture: bool = False) -> str:
     return result.stdout.strip() if capture else ""
 
 
-def sync_distribution(snapshot: Path, repo: Path, source: str, stamp: str) -> None:
+def distribution_fill(source: str, verification_split: bool) -> dict[str, str]:
+    """Version-dependent text for the distribution README section."""
+    base_promotion = (
+        "The Predictive TDD line was promoted after "
+        "`RQ-test-list-dimensions-replication` at n=10 per workflow and platform "
+        "cell on Claim Office."
+    )
+    if not verification_split:
+        return {
+            "{{VERSION}}": line_version(source),
+            "{{VERIFICATION_STEP}}": (
+                "\nA test already satisfied by an earlier generalization is valid evidence. The\n"
+                "workflow confirms it instead of manufacturing a failure.\n"
+            ),
+            "{{VERSION_MEASUREMENT}}": "",
+            "{{PROMOTION_EVIDENCE}}": base_promotion,
+        }
+    return {
+        "{{VERSION}}": line_version(source),
+        "{{VERIFICATION_STEP}}": """
+The test list has two parts. **Driving tests** run through the cycle above, one
+at a time; each must fail first, because that failure is what justifies the
+next production change. **Verification tests** sit after them in a group named
+`verification`: mostly combinations of rules the driving tests already built.
+They are expected to pass on activation, so they cannot drive anything — but
+they protect the result against a later change that breaks a combination or
+drops an entry.
+
+So the workflow keeps them apart. Before activating a driving test it asks
+whether the test will still fail, and moves it into the verification group if
+an earlier generalization already covers it. Once every driving test is green,
+it activates the verification tests one at a time, each predicted to pass. If
+one fails, the split was wrong, and that test gets a full Red-Green-Refactor
+cycle of its own.
+
+A test that passes is never a reason to manufacture a failure — expected in the
+verification group, a recorded missed prediction in the driving part.
+""",
+        "{{VERSION_MEASUREMENT}}": """
+#### What the driving/verification split changes
+
+v{version} adds the split to that base. Measured against it on Claim Office,
+five runs per cell, TypeScript:
+
+| What we measured | v1, Opus 5.5 | **v{version}**, Opus 5.5 | v1, GPT-6.1 Sol | **v{version}**, GPT-6.1 Sol |
+|---|---:|---:|---:|---:|
+| Hidden acceptance scenarios passed | 100 % | 100 % | 100 % | 100 % |
+| Verification tests per run | — | 20 | — | 33 |
+| Verification tests that turned out red | — | 0 | — | 0 |
+| Mutation score (higher is better) | 0.94 | 0.92 | 0.90 | 0.94 |
+| Cognitive complexity, hardest function¹ | 2.4 | 2.2 | 3.0 | 2.2 |
+| Time per task | 15 min | 18 min | 36 min | 27 min |
+| Tokens used | 24.4 M | 28.4 M | 9.0 M | 9.8 M |
+
+*(The v1 mutation score on Sol rests on three of its five runs.)*
+
+The split costs nothing in correctness or code quality, and the agent never
+misjudged which tests would pass. On Opus 5.5 it costs about 15 % more time and
+tokens; on Sol it was faster. What it buys is a cleaner method — every Red in
+the driving part means something — not better numbers.
+
+The refactor-profile comparison further up was measured on v1 as well; the
+isolated profile with the split is not measured separately.
+""".replace("{version}", line_version(source)),
+        "{{PROMOTION_EVIDENCE}}": (
+            base_promotion + " The driving/verification split was promoted after "
+            "`RQ-ptdd-verification-split` showed it non-inferior to that base."
+        ),
+    }
+
+
+HARNESS_LABELS = {
+    "cc": "Claude Code", "pi": "pi", "oc": "OpenCode", "cursor": "Cursor",
+    "copilot": "GitHub Copilot",
+}
+
+
+def previous_release(worktree: Path, config: str) -> str:
+    """What the branch shipped before this sync, read before it is overwritten."""
+    version = None
+    readme = worktree / "README.md"
+    if readme.is_file():
+        match = re.search(r"Predictive TDD v(\d+(?:\.\d+)*)\*\*", readme.read_text())
+        version = match.group(1) if match else None
+    stamp_file = worktree / config / "VERSION"
+    stamp = stamp_file.read_text().strip() if stamp_file.is_file() else None
+    if version and stamp:
+        return f"Predictive TDD v{version}, distribution {stamp}"
+    if version or stamp:
+        return f"Predictive TDD v{version}" if version else f"distribution {stamp}"
+    return "none on this branch"
+
+
+def lab_revision(source: str) -> str:
+    """The lab commit the export came from, or a plain note when the inputs are dirty.
+
+    Only the source workflow and the exporter itself shape the output, so only
+    those decide whether the commit can be named as the origin.
+    """
+    try:
+        sha = subprocess.run(
+            ["git", "-C", str(ROOT), "rev-parse", "--short", "HEAD"],
+            check=True, text=True, stdout=subprocess.PIPE,
+        ).stdout.strip()
+        dirty = subprocess.run(
+            ["git", "-C", str(ROOT), "status", "--porcelain", "--",
+             str(source_dir(source)), str(Path(__file__).parent)],
+            check=True, text=True, stdout=subprocess.PIPE,
+        ).stdout.strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return "agentic_coding_lab (revision unknown)"
+    if dirty:
+        return f"agentic_coding_lab {sha} plus uncommitted changes to the source or exporter"
+    return f"agentic_coding_lab {sha}"
+
+
+def distribution_commit_message(source: str, stamp: str, harness: str, config: str,
+                                previous: str, notes: tuple[str, ...], lab: str) -> str:
+    version = line_version(source)
+    lines = [
+        f"feat(workflow): ship EXACT Coding Predictive TDD v{version} ({stamp})",
+        "",
+        f"Source:   {source}",
+        f"From:     {lab}",
+        f"Previous: {previous}",
+        f"Harness:  {HARNESS_LABELS[harness]} ({config}/)",
+        "",
+        "What's new:",
+    ]
+    for note in notes:
+        # No hyphen breaks: RQ and workflow ids must stay greppable.
+        wrapped = textwrap.wrap(note, width=70, break_on_hyphens=False) or [""]
+        lines.append(f"- {wrapped[0]}")
+        lines.extend(f"  {line}" for line in wrapped[1:])
+    return "\n".join(lines) + "\n"
+
+
+def sync_distribution(snapshot: Path, repo: Path, source: str, stamp: str,
+                      verification_split: bool = False,
+                      notes: tuple[str, ...] = ()) -> None:
+    if not notes:
+        raise SystemExit(
+            "Distribution sync needs at least one --note: the commit must say what "
+            "this release changes, and that cannot be derived from the diff."
+        )
+    lab = lab_revision(source)
     if not (repo / ".git").exists():
         raise SystemExit(f"Distribution repo is not a normal git checkout: {repo}")
     if run_git(repo, "status", "--porcelain", capture=True):
@@ -702,7 +978,12 @@ def sync_distribution(snapshot: Path, repo: Path, source: str, stamp: str) -> No
     section = (
         Path(__file__).parent
         / "templates/SOL-DISTRIBUTION-README-SECTION.template.md"
-    ).read_text().replace("{{DATE}}", stamp).replace("{{SOURCE_WORKFLOW}}", source)
+    ).read_text()
+    for placeholder, value in distribution_fill(source, verification_split).items():
+        section = section.replace(placeholder, value)
+    section = section.replace("{{DATE}}", stamp).replace("{{SOURCE_WORKFLOW}}", source)
+    if "{{" in section:
+        raise SystemExit("Distribution README section has an unfilled placeholder")
     variants = {
         "cc": ("main", "origin/main", ".claude"),
         "pi": ("harness/pi", "origin/harness/pi", ".pi"),
@@ -728,6 +1009,7 @@ def sync_distribution(snapshot: Path, repo: Path, source: str, stamp: str) -> No
                 base = f"origin/{branch}" if remote_exists else initial_base
                 run_git(repo, "worktree", "add", "-b", branch, str(worktree), base)
             try:
+                previous = previous_release(worktree, config)
                 for old in (".claude", ".pi", ".opencode", ".cursor", ".github"):
                     shutil.rmtree(worktree / old, ignore_errors=True)
                 shutil.copytree(snapshot / config, worktree / config)
@@ -742,7 +1024,10 @@ def sync_distribution(snapshot: Path, repo: Path, source: str, stamp: str) -> No
                     ["git", "-C", str(worktree), "diff", "--cached", "--quiet"]
                 )
                 if changed.returncode != 0:
-                    run_git(worktree, "commit", "-m", "feat(workflow): update SOL Predictive TDD distribution")
+                    message = distribution_commit_message(
+                        source, stamp, harness, config, previous, notes, lab
+                    )
+                    run_git(worktree, "commit", "-m", message)
             finally:
                 run_git(repo, "worktree", "remove", "--force", str(worktree))
     print(f"distribution={repo}")
@@ -761,11 +1046,24 @@ def main() -> int:
         type=Path,
         help="Create or update the parallel sol/* branches in EXACT-Coding; never pushes",
     )
+    parser.add_argument(
+        "--note",
+        action="append",
+        default=[],
+        help="One change this release brings, for the distribution commit message; "
+        "repeat per change. Required with --sync-distribution.",
+    )
     args = parser.parse_args()
+    if args.sync_distribution and not args.note:
+        parser.error("--sync-distribution needs at least one --note")
     source = args.source or promoted_source()
     src = source_dir(source) / ".pi"
     harnesses = tuple(args.harness or DEFAULT_HARNESSES)
-    target = args.target or ROOT / f"research/workflow-dev/export/{args.date}-exact-coding-ptdd-v1"
+    # The directory names the exported version, not just the line: a v1.2 source
+    # writes `-ptdd-v1.2`, so the folder never contradicts the README inside it.
+    target = args.target or ROOT / (
+        f"research/workflow-dev/export/{args.date}-exact-coding-ptdd-v{line_version(source)}"
+    )
     if target.exists():
         if not args.force:
             raise SystemExit(f"Target exists: {target}; pass --force to replace")
@@ -787,11 +1085,14 @@ def main() -> int:
     }
     if not stacks:
         raise SystemExit(f"SOL source has no stack profiles: {stacks_dir}")
-    # The isolated-refactor profile's pi extension lives in the v1.1 sibling of the
-    # promoted source (exact-ptdd-v1-pi -> exact-ptdd-v1.1-refactor-subagent-pi).
+    # The isolated-refactor profile's pi extension lives in the .1 refactor-subagent
+    # branch of the promoted source's major version — for every branch of v1, not
+    # just v1 itself (exact-ptdd-v1.2-verification-split-pi ->
+    # exact-ptdd-v1.1-refactor-subagent-pi).
     subagent_extension = None
     if "pi" in harnesses:
-        sibling = source.replace("-v1-pi", "-v1.1-refactor-subagent-pi")
+        major = line_version(source).split(".")[0]
+        sibling = f"exact-ptdd-v{major}.1-refactor-subagent-pi"
         try:
             candidate = source_dir(sibling) / ".pi/extensions/subagent"
         except SystemExit:
@@ -811,12 +1112,16 @@ def main() -> int:
         and "#### Domain responsibility review" in predictive
     )
     (target / "README.md").write_text(
-        readme(source, args.date, harnesses, domain_boundary)
+        readme(source, args.date, harnesses, domain_boundary,
+               verification_split=has_verification_split(predictive),
+               stack_files=tuple(stacks))
     )
     (target / "VERSION").write_text(args.date + "\n")
     validate(target, harnesses)
     if args.sync_distribution:
-        sync_distribution(target, args.sync_distribution.resolve(), source, args.date)
+        sync_distribution(target, args.sync_distribution.resolve(), source, args.date,
+                          verification_split=has_verification_split(predictive),
+                          notes=tuple(args.note))
     print(f"source={source}")
     print(f"target={target}")
     print("harnesses=" + ",".join(harnesses))
