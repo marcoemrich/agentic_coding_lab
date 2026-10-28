@@ -18,7 +18,7 @@ Full finding (table, samples, mechanism):
 
 ## Recommendation native Opus — `opus-5-no-thinking`, `opus-5-5-no-thinking`
 
-**`exact-ptdd-v1-cc` is the universal EXACT Coding default on native Opus 5 and
+**`exact-ptdd-v1.2-verification-split-cc` is the universal EXACT Coding default on native Opus 5 and
 Opus 5.5.** It replaces `exact-hybrid-v2-testlist-fix-cc` as the maintained and exported line. The
 hybrid line remains a reproducible research and decomposition reference, but is no longer
 recommended as a product profile because of its substantially higher context, token and
@@ -26,8 +26,39 @@ runtime demands.
 
 | Goal | recommended workflow | Evidence | Rationale |
 |---|---|---|---|
-| Correctness and price/performance | **`exact-ptdd-v1-cc`** | RQ-test-list-dimensions-opus-native; RQ-test-list-dimensions-replication | n=10 on Claim Office: Correctness (external) 0.993, 9/10 perfect runs, minimum 0.933; median cost practically equal to PTDD v1.5, but a more stable correctness floor |
+| Correctness and price/performance | **`exact-ptdd-v1.2-verification-split-cc`** | RQ-test-list-dimensions-opus-native; RQ-test-list-dimensions-replication (parent v1); RQ-ptdd-verification-split | v1 carries the correctness floor at n=10 on Claim Office (Correctness (external) 0.993, 9/10 perfect runs, minimum 0.933); the verification split is non-inferior to it on Opus 5.5 at n=5 |
 | Historical decomposition reference | `exact-hybrid-v2-testlist-fix-cc` | RQ-current-ptdd-vs-exact-opus-native | smaller typical functions, but substantially more runtime and tokens; superseded, no active product recommendation |
+
+### Why the verification split is the default
+
+v1.2 changes one thing against its parent `exact-ptdd-v1-cc`: the test list
+separates **driving tests**, which must fail first and drive the next
+production change, from a trailing **`verification` group** of tests expected
+to pass once their parts exist — mostly the cross-dimension combinations from
+the independent-dimensions cross-check. Driving tests are re-examined before
+activation and may still move into the group; verification tests are activated
+only after every driving test is green, each predicted to pass.
+
+The reason is method, not a metric gain. In v1 those combination tests pass on
+activation in the middle of the driving sequence, which reads as a skipped Red
+and spends a cycle on a test that cannot fail for the right reason. With the
+split, every Red in the driving part is meaningful and the combinations still
+end up in the suite as a safety net.
+
+RQ-ptdd-verification-split (n=5 per cell, Claim Office, TypeScript) shows the
+split is non-inferior on both platforms: Correctness (external) 1.00 in every
+cell, the split fires in every run, and no verification test ever turns red, so
+the agent's judgement of which tests pass is reliable. The safety net holds on
+Opus 5.5 (Mutation Score 0.938 → 0.920, inside spread) and improves on Sol. The
+price on Opus 5.5 is ~15 % more time, tokens and list price.
+
+The rise of `tdd_discipline` (0.63 → 0.93) is **not** a discipline gain: the
+treatment's scored window ends at the first verification test (F-1.26.3).
+
+**Evidence boundary:** the split is measured on Opus 5.5, not on Opus 5, and on
+TypeScript only. The Opus 5 and Java/Python evidence in this section belongs to
+the parent v1, which the split leaves unchanged everywhere except the test-list
+order and the verification part.
 
 ### Why the recommendation extends to Opus 5.5 — and on what
 
@@ -79,7 +110,10 @@ CLI 2.1.280, n=5 per cell (RQ-opus55-current-workflow):
 | `duration_seconds`, Opus 5.5 | 922 ± 80 | 2664 ± 433 |
 | `cost_usd`, Opus 5.5 | $9.79 ± 0.49 | $28.34 ± 3.30 |
 
-**`exact-ptdd-v1-cc` stays the default**, on both models. Every quality
+**The shared-context profile stays the default**, on both models. The
+comparison above is between the parent v1 and its isolated-refactor branch
+v1.1; the exported isolated profile combines that refactor isolation with the
+v1.2 verification split, a combination that is not measured. Every quality
 difference above sits inside the standard deviations, while wall-clock and
 list-price cost both rise by a factor of 2.9. Isolation is not a correctness
 upgrade on this kata either: on Opus 5.5 one of five runs ends at 0.80, and on
@@ -128,13 +162,18 @@ PTDD line. Compared to the earlier hybrid default, however, PTDD remains substan
 
 ## Recommendation GPT-5.6 SOL on pi (OpenAI subscription route)
 
-**`exact-ptdd-v1-pi` is the universal EXACT Coding default on GPT-5.6 SOL/pi.**
-It is the canonical product name for the content measured as
-`exact-sol-v1.6-test-list-dimensions-pi`.
+**`exact-ptdd-v1.2-verification-split-pi` is the universal EXACT Coding default on GPT-5.6 SOL/pi.**
+It is its parent `exact-ptdd-v1-pi` — the canonical product name for the
+content measured as `exact-sol-v1.6-test-list-dimensions-pi` — plus the
+driving/verification split of the test list described in the native-Opus
+section.
 
 | Use | recommended workflow | Evidence | Rationale |
 |---|---|---|---|
-| Large or novel specifications | **`exact-ptdd-v1-pi`** | RQ-test-list-dimensions-sol-pi; RQ-test-list-dimensions-multikata-sol-pi; RQ-test-list-dimensions-replication | full correctness on Claim Office at n=10; the same maintained contract as the Opus port |
+| Large or novel specifications | **`exact-ptdd-v1.2-verification-split-pi`** | RQ-test-list-dimensions-sol-pi; RQ-test-list-dimensions-multikata-sol-pi; RQ-test-list-dimensions-replication (parent v1); RQ-ptdd-verification-split | v1 carries full correctness on Claim Office at n=10; the split is non-inferior to it at n=5, kills more mutants (6.6 against 11.7 survivors) and runs 25 % faster; the same maintained contract as the Opus port |
+
+**Evidence boundary:** the split is measured on GPT-6.1 Sol/pi, not on GPT-5.6
+SOL. The GPT-5.6 evidence belongs to the parent v1.
 | Small/training-familiar katas with no need for the full method | `baseline-inline-tdd-v1-pi` | RQ-1.16 | cheap comparison floor, but not a second EXACT Coding product workflow |
 
 PTDD v1.5 remains a reproducible research reference: on SOL/pi it reaches the same
@@ -150,7 +189,7 @@ workflow therefore keeps the more robust cross-check on all ports.
 
 ## Consequence for further development
 
-- New productive Predictive TDD variants branch off `exact-ptdd-v1-pi` or the matching harness port and receive versioned names (`exact-ptdd-v2-*`, then further major or branch versions). Historical `exact-sol-*` names remain solely for reproduction and RQ assignment.
+- New productive Predictive TDD variants branch off `exact-ptdd-v1.2-verification-split-pi` or the matching harness port and receive versioned names (`exact-ptdd-v2-*`, then further major or branch versions). Historical `exact-sol-*` names remain solely for reproduction and RQ assignment.
 - Workflow optimisations measured on opus-4-7 (the entire v6.5 reduction chain under
   `research/workflow-dev/2.*`/`3.*`) apply **only to opus-4-7** until they have been replicated
   cross-model.

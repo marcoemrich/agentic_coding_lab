@@ -35,8 +35,9 @@ alongside this file under `templates/`, and the harness research lives in
   `--sync-distribution <repo>` is passed. It commits locally and never pushes.
 - **One artifact per line and date**: Opus writes
   `<DATE>-exact-coding-baseline/`; SOL writes
-  `<DATE>-exact-coding-ptdd-v1/`. Each contains one subtree per exported
-  harness.
+  `<DATE>-exact-coding-ptdd-v<VERSION>/`, where `<VERSION>` is the source's
+  version (`exact-ptdd-v1.2-verification-split-pi` → `v1.2`). Each contains
+  one subtree per exported harness.
 - **Idempotent within a date and line**: refuses to overwrite an existing
   same-date snapshot unless the user explicitly says "overwrite" / "force".
 
@@ -47,7 +48,7 @@ The distribution has two parallel lines. Do not replace one with the other:
 | Line | Default source | Native harness | Snapshot name |
 |---|---|---|---|
 | `opus` | the correctness-critical Opus/Hybrid recommendation in `workflow-construction.md` | Claude Code | `<DATE>-exact-coding-baseline` |
-| `sol` | the universal PTDD default in `model-recommendation-matrix.md` | pi | `<DATE>-exact-coding-ptdd-v1` |
+| `sol` | the universal PTDD default in `model-recommendation-matrix.md` | pi | `<DATE>-exact-coding-ptdd-v<VERSION>` |
 
 When the requested line is `sol`, run the checked-in exporter rather than
 manually applying the Hybrid-specific steps below:
@@ -55,8 +56,21 @@ manually applying the Hybrid-specific steps below:
 ```bash
 python3 .claude/skills/exact-coding-baseline-export/export-sol.py \
   --date "$DATE" \
-  --sync-distribution /home/memrich/sync/work/konferenzen_und_talks/exact_coding/exact-coding-exercises
+  --sync-distribution /home/memrich/sync/work/konferenzen_und_talks/exact_coding/exact-coding-exercises \
+  --note "Driving and verification tests are split in the test list (RQ-ptdd-verification-split)" \
+  --note "Adds the Rust/Cargo stack profile"
 ```
+
+`--note` is required with `--sync-distribution`, once per change. The notes
+become the "What's new" list of the distribution commit, whose subject names
+the shipped version (`ship EXACT Coding Predictive TDD v1.2 (<DATE>)`) and whose
+body names the source workflow, the lab commit, the release it replaces and the
+harness. Write the notes for a consumer — what changes in how the workflow
+behaves, with the RQ that justified it — not as a list of touched files. Draft
+them from the diff between the previous snapshot and this one, and confirm them
+with the user before syncing. Commit the lab first: with uncommitted changes to
+the source workflow or the exporter, the commit can only say "plus uncommitted
+changes" instead of naming a revision.
 
 The repo name on GitHub is `EXACT-Coding` (renamed from `EXACT-Coding-Exercises`
 on 2026-10-26; GitHub redirects the old name), but the local checkout keeps the
@@ -1365,11 +1379,11 @@ After successful validation:
 | `/exact-coding-baseline-export pi cursor` | Named harness subset |
 | `/exact-coding-baseline-export overwrite` | Same as default, but allow clobber |
 | `/exact-coding-baseline-export sol` | Export the promoted SOL line for all five harnesses |
-| `/exact-coding-baseline-export sol sync` | Export PTDD v1 and update local `main` / `harness/*` distribution branches; never push |
+| `/exact-coding-baseline-export sol sync` | Export the promoted PTDD version and update local `main` / `harness/*` distribution branches; never push |
 
 Output is line-specific: Opus writes
 `research/workflow-dev/export/<DATE>-exact-coding-baseline/`; SOL writes
-`research/workflow-dev/export/<DATE>-exact-coding-ptdd-v1/`. Validation
+`research/workflow-dev/export/<DATE>-exact-coding-ptdd-v<VERSION>/`. Validation
 must pass before reporting success.
 
 **Every export applies all three transformations** — lab-content removal,
