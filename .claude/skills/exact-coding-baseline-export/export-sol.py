@@ -928,6 +928,20 @@ def lab_revision(source: str) -> str:
         return "agentic_coding_lab (revision unknown)"
     if dirty:
         return f"agentic_coding_lab {sha} plus uncommitted changes to the source or exporter"
+    # The commit message is public; the revision it names must be too. A commit
+    # that exists only locally can still be rewritten by a rebase before the
+    # push — which happened on 2026-10-29 and left the distribution pointing at
+    # a sha GitHub did not have (rescued by the tag export/2026-10-29-ptdd-v1.2).
+    published = subprocess.run(
+        ["git", "-C", str(ROOT), "branch", "-r", "--contains", "HEAD"],
+        check=True, text=True, stdout=subprocess.PIPE,
+    ).stdout.strip()
+    if not published:
+        raise SystemExit(
+            f"Lab commit {sha} is not on any remote branch. Push the lab before "
+            "syncing the distribution, so the revision its commits name exists "
+            "publicly and cannot be rewritten by a later rebase."
+        )
     return f"agentic_coding_lab {sha}"
 
 

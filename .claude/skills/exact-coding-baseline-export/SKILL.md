@@ -68,9 +68,18 @@ body names the source workflow, the lab commit, the release it replaces and the
 harness. Write the notes for a consumer — what changes in how the workflow
 behaves, with the RQ that justified it — not as a list of touched files. Draft
 them from the diff between the previous snapshot and this one, and confirm them
-with the user before syncing. Commit the lab first: with uncommitted changes to
-the source workflow or the exporter, the commit can only say "plus uncommitted
-changes" instead of naming a revision.
+with the user before syncing.
+
+**Commit and push the lab before syncing.** With uncommitted changes to the
+source workflow or the exporter, the commit can only say "plus uncommitted
+changes" instead of naming a revision. A commit that is only local is refused
+outright: a rebase before the push gives it a new sha, and the public
+distribution commits would then name one GitHub does not have. That happened
+on 2026-10-29 — the tag `export/2026-10-29-ptdd-v1.2` keeps the referenced
+revision reachable. So the order is: commit any change to the source workflow
+or the exporter, `git pull --rebase` and push the lab, then run the export with
+`--sync-distribution`. The snapshot directory that run writes is committed
+afterwards — it is output, not input, and the check ignores it.
 
 The repo name on GitHub is `EXACT-Coding` (renamed from `EXACT-Coding-Exercises`
 on 2026-10-26; GitHub redirects the old name), but the local checkout keeps the
