@@ -345,8 +345,8 @@ prediction is wrong. Green has no default stop.
 
 ## Provenance
 
-Exported from the promoted `{source}` workflow. {provenance_validation} Other harness trees are
-mechanical ports of the same files, not claims of cross-harness validation.
+Exported from the promoted `{source}` workflow. {provenance_validation} Other harness trees ship the
+same method; they have been tested manually and in workshops, not in lab batches.
 '''
 
 
@@ -602,8 +602,8 @@ It removes experiment-specific autonomy,
 completion, and measurement content, restores configurable human checkpoints, and gates
 the workflow behind explicit invocation.
 
-{validation} Other harness directories are semantic distribution ports and
-have not yet been validated as independent cross-harness experiment cells.
+{validation} The other harness directories ship the same method. They have
+been tested manually and in workshops, not in lab batches.
 
 ## Credits
 

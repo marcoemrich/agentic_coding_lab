@@ -97,9 +97,12 @@ set with repeated `--harness`; override source or target with `--source` and
 `--target`. It validates that the stack profile exists in every tree, OpenCode
 uses a consumer-shaped command config, and no lab vocabulary leaked.
 
-The default SOL source is empirically validated on pi. The generated non-pi
-trees are semantic distribution ports, not cross-harness validation claims;
-preserve that caveat in their READMEs. Every tree installs two explicit entry
+The default SOL source is measured in lab batches on pi; Claude Code is the
+lab's other main harness. The Copilot, Cursor and OpenCode trees carry the same
+method and have been tested manually and in workshops, but they are not lab
+experiment cells for this method. Their READMEs must not present batch results
+as measured on them — preserve that distinction, not a claim that they are
+untested. Every tree installs two explicit entry
 points side by side: `exact-coding` keeps inline Four-Rules refactoring, while
 `exact-coding-isolated-refactor` delegates the same review after every Green.
 They share one neutral Predictive-TDD core, stack profiles, test-list method, and

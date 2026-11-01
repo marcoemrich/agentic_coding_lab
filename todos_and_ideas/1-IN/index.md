@@ -19,6 +19,10 @@
   closed banner on the RQ page (2026-10-15, while mapping the RQ index, which
   shows no closed badge).
 
+* EXACT Coding distribution: current state, release tags missing for the book,
+  cross-harness options (APM, rulesync, Vercel skills, pi packages).
+  See [exact-coding-distribution-research.md](exact-coding-distribution-research.md) (2026-11-01).
+
 ## Use Architecture Concepts
 
 * Quality Attributes

@@ -300,10 +300,10 @@ unless you ask for it. Provider credentials, routing, model selection, and
 permission policy are intentionally not shipped.
 
 This distribution is generated from
-`{{SOURCE_WORKFLOW}}` in the `agentic_coding_lab` repository. {{PROMOTION_EVIDENCE}} The canonical methodology is validated on **GPT-5.6 SOL
-with pi** and **native Opus 5 with Claude Code**. Copilot, Cursor, and OpenCode
-are semantic ports of the same method; they are not presented as independent
-cross-harness experiment cells.
+`{{SOURCE_WORKFLOW}}` in the `agentic_coding_lab` repository. {{PROMOTION_EVIDENCE}} Our lab experiments for this method run on **GPT-5.6 SOL
+with pi** and **native Opus 5 with Claude Code**, and the numbers in this README
+come from those two. Copilot, Cursor and OpenCode ship the same method; we have
+tested them by hand and in workshops.
 
 ### Credits
 
