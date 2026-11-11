@@ -147,8 +147,11 @@ subtrees.
 - New language = stack directory **including a TDD event reporter** hooked into the
   test framework, kata variants (`<kata>-<language>-example-mapping`
   plus `-verification`), a stack profile in the four maintained `exact-ptdd-*` workflows,
-  one arm each in `analyze-run.sh` and `compute-mutation-score.py`, and `required_stacks`
-  in `export-sol.py`.
+  one arm each in `analyze-run.sh` and `compute-mutation-score.py`, `required_stacks`
+  in `export-sol.py`, and a consumer project template under
+  `.claude/skills/exact-coding-baseline-export/distribution-root/templates/<stack>/`
+  (the export refuses a profile without a template; the distribution README's
+  stack table is the one hand edit left).
 - **Without the reporter every TDD-discipline column is `null`, silently.** The phase
   chain is the only source of TDD discipline, and it reads nothing but the
   `tdd-events.jsonl` the stack's reporter appends on each suite invocation. The run

@@ -8,6 +8,7 @@ import json
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import textwrap
 from datetime import date
@@ -17,6 +18,15 @@ ROOT = Path(__file__).resolve().parents[3]
 MATRIX = ROOT / "research/workflow-dev/model-recommendation-matrix.md"
 WORKFLOWS = ROOT / "experiments/workflows"
 DEFAULT_HARNESSES = ("cc", "pi", "oc", "cursor", "copilot")
+
+# The harness-neutral part of the distribution the lab owns: the per-stack
+# project skeletons and the script that installs one. Each entry is copied
+# verbatim into the snapshot root and, on --sync-distribution, replaces the same
+# entry on every distribution branch. Everything else at the distribution root
+# (README intro, .devcontainer/, .gitignore) stays hand-maintained there.
+DISTRIBUTION_ROOT = Path(__file__).parent / "distribution-root"
+DISTRIBUTION_ROOT_ENTRIES = ("setup.sh", "templates")
+TEMPLATE_CONTRACT = ("SETUP.md", "install.sh", "verify.sh", "files")
 
 
 def promoted_source() -> str:
@@ -605,6 +615,13 @@ the workflow behind explicit invocation.
 {validation} The other harness directories ship the same method. They have
 been tested manually and in workshops, not in lab batches.
 
+## Project templates
+
+`templates/` holds one project skeleton per stack profile, and `setup.sh` copies
+one of them into an empty project root, installs its tools and runs the example
+test: `./setup.sh <stack>`. Each template documents its prerequisites and
+commands in `templates/<stack>/SETUP.md`.
+
 ## Credits
 
 The Guessing Game and Predictive TDD approach used here is inspired by
@@ -659,7 +676,9 @@ def write_harness(target: Path, harness: str, predictive: str, test_list: str, s
 
     if harness == "oc":
         # OpenCode exposes both profiles as commands rather than skill dirs.
-        strip = lambda s: re.sub(r"\A---\n.*?\n---\n", "", s, count=1, flags=re.S)
+        def strip(s: str) -> str:
+            return re.sub(r"\A---\n.*?\n---\n", "", s, count=1, flags=re.S)
+
         config_json = {
             "$schema": "https://opencode.ai/config.json",
             "command": {
@@ -737,6 +756,31 @@ def validate(target: Path, harnesses: tuple[str, ...]) -> None:
         "typescript-vitest.md", "java-junit-maven.md", "python-pytest.md",
         "rust-cargo.md")
     required_optional = ("skills/end-refactor/SKILL.md", "skills/example-mapping/SKILL.md")
+    # A stack profile without a project template is a stack the agent can work
+    # in but a participant cannot set up — the gap rust-cargo had until
+    # 2026-11. The reverse is as wrong: a template the workflow has no
+    # conventions for.
+    setup = target / "setup.sh"
+    if not setup.is_file() or not setup.stat().st_mode & 0o111:
+        raise SystemExit(f"Missing or non-executable setup script: {setup}")
+    templates = {path.name for path in (target / "templates").iterdir() if path.is_dir()}
+    profiles = {name.removesuffix(".md") for name in required_stacks}
+    if templates != profiles:
+        raise SystemExit(
+            f"Project templates and stack profiles differ: templates without a "
+            f"profile {sorted(templates - profiles)}, profiles without a template "
+            f"{sorted(profiles - templates)}"
+        )
+    for stack in sorted(templates):
+        root = target / "templates" / stack
+        for entry in TEMPLATE_CONTRACT:
+            if not (root / entry).exists():
+                raise SystemExit(f"Template {stack} is missing {entry}")
+        for script in ("install.sh", "verify.sh"):
+            if not (root / script).stat().st_mode & 0o111:
+                raise SystemExit(f"Template script is not executable: {root / script}")
+        if not any((root / "files").iterdir()):
+            raise SystemExit(f"Template {stack} has an empty files/ directory")
     for harness in harnesses:
         config = {"cc": ".claude", "pi": ".pi", "oc": ".opencode", "cursor": ".cursor", "copilot": ".github"}[harness]
         for filename in required_stacks:
@@ -803,6 +847,22 @@ def validate(target: Path, harnesses: tuple[str, ...]) -> None:
         data = json.loads(oc.read_text())
         assert "template" in data["command"]["exact-coding"]
         assert "provider" not in data and "permission" not in data and "instructions" not in data
+
+
+def copy_entry(source: Path, dest: Path) -> None:
+    """Replace dest with source, keeping file modes (git tracks the exec bit).
+
+    Build output from trying a template out in place is never part of it.
+    """
+    if dest.is_dir():
+        shutil.rmtree(dest)
+    elif dest.exists():
+        dest.unlink()
+    if source.is_dir():
+        shutil.copytree(source, dest, ignore=shutil.ignore_patterns(
+            "target", "node_modules", ".venv", "__pycache__"))
+    else:
+        shutil.copy2(source, dest)
 
 
 def run_git(repo: Path, *args: str, capture: bool = False) -> str:
@@ -1027,12 +1087,22 @@ def sync_distribution(snapshot: Path, repo: Path, source: str, stamp: str,
                 for old in (".claude", ".pi", ".opencode", ".cursor", ".github"):
                     shutil.rmtree(worktree / old, ignore_errors=True)
                 shutil.copytree(snapshot / config, worktree / config)
+                for entry in DISTRIBUTION_ROOT_ENTRIES:
+                    copy_entry(snapshot / entry, worktree / entry)
                 readme_path = worktree / "README.md"
                 readme = readme_path.read_text()
                 marker = "## Agent Configuration\n"
                 if marker not in readme:
                     raise SystemExit(f"README marker missing on {branch}")
-                readme_path.write_text(readme.split(marker, 1)[0] + section)
+                intro = readme.split(marker, 1)[0]
+                # The intro's stack table is hand-maintained; a template it does
+                # not name ships, but nobody reading the README learns about it.
+                for stack in sorted(p.name for p in (snapshot / "templates").iterdir()):
+                    if f"./setup.sh {stack}" not in intro:
+                        print(f"WARNING: README on {branch} does not mention "
+                              f"`./setup.sh {stack}`; add it to the stack table",
+                              file=sys.stderr)
+                readme_path.write_text(intro + section)
                 run_git(worktree, "add", "-A")
                 changed = subprocess.run(
                     ["git", "-C", str(worktree), "diff", "--cached", "--quiet"]
@@ -1131,6 +1201,8 @@ def main() -> int:
                stack_files=tuple(stacks))
     )
     (target / "VERSION").write_text(args.date + "\n")
+    for entry in DISTRIBUTION_ROOT_ENTRIES:
+        copy_entry(DISTRIBUTION_ROOT / entry, target / entry)
     validate(target, harnesses)
     if args.sync_distribution:
         sync_distribution(target, args.sync_distribution.resolve(), source, args.date,

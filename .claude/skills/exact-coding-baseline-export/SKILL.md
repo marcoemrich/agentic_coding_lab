@@ -97,6 +97,21 @@ set with repeated `--harness`; override source or target with `--source` and
 `--target`. It validates that the stack profile exists in every tree, OpenCode
 uses a consumer-shaped command config, and no lab vocabulary leaked.
 
+**Project templates ship with the export.** `distribution-root/` next to the
+script mirrors the distribution repo's root and is the source of `setup.sh` and
+`templates/<stack>/` (the per-stack project skeletons participants install with
+`./setup.sh <stack>`). The export copies both into the snapshot root, and
+`--sync-distribution` replaces them on all five branches — edit them here, never
+in the distribution repo, or the next sync overwrites the edit. Validation fails
+when the set of templates and the set of required stack profiles differ, or a
+template breaks the four-entry contract (`SETUP.md`, executable `install.sh` and
+`verify.sh`, non-empty `files/`). `setup.sh`'s already-set-up guard derives its
+markers from the templates' top-level entries, so a new stack needs no edit
+there. Still hand-maintained in the distribution repo, identical on every
+branch: the README intro's stack table (the sync warns on stderr when it lacks
+`./setup.sh <stack>` for a template), `.devcontainer/` and `.gitignore`. Change
+those on `main` and cherry-pick to the four `harness/*` branches before the sync.
+
 The default SOL source is measured in lab batches on pi; Claude Code is the
 lab's other main harness. The Copilot, Cursor and OpenCode trees carry the same
 method and have been tested manually and in workshops, but they are not lab
