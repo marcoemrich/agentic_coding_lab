@@ -66,6 +66,13 @@ PRICES = {
     "fable-5-no-thinking": (10.00, 50.00, 1.00, 12.50),
     "fable-5-1":        (10.00, 50.00, 0.25, 12.50),
     "fable-5-1-no-thinking": (10.00, 50.00, 0.25, 12.50),
+    # fable-5-2: native (claude-fable-5-2 via OAuth bypass), Anthropic list
+    # price 8.00/40.00 with the 0.025x cache_read multiplier (0.20) and the
+    # standard 1.25x cache write (10.00) — platform.claude.com models overview,
+    # retrieved 2026-11-12. Cheaper than Fable 5/5.1 on every axis; in a
+    # Fable-generation comparison read total_tokens before cost_usd.
+    "fable-5-2":        (8.00,  40.00, 0.20, 10.00),
+    "fable-5-2-no-thinking": (8.00, 40.00, 0.20, 10.00),
     # opus-cursor: cursor-agent route, model claude-opus-4-8-medium (native, medium
     # effort). cost_usd=null in cursor stream-json → tokens×price needed. Native
     # list prices (cursor routes directly, no Requesty markup).

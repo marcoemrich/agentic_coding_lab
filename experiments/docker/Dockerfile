@@ -105,8 +105,14 @@ COPY cargo-shim.sh /usr/local/bin/cargo
 #   its catalog, which silently caps auto-compact at 200k on a 1M-context
 #   model. Bumped for RQ-opus55-current-workflow; see that RQ for the gate
 #   evidence and the regression runs.
+# 2.1.311: required for Fable 5.2 — 2.1.280 gets the same hard 400 one
+#   generation on ("does not support this model; version 2.1.290 or newer is
+#   required"), measured 2026-11-12. 2.1.290 is the stated minimum; the pin
+#   takes npm's `stable` tag instead. Neither version carries claude-fable-5-2
+#   in its catalog, so MODEL_CONFIGS pins the `[1m]` id (see run-batch.sh).
+#   Bumped for RQ-current-models-ptdd; see that RQ for the gate evidence.
 # Known bad: 2.1.37 (hangs on .claude/agents/), 2.1.126 (needs ~/.claude.json).
-RUN npm install -g @anthropic-ai/claude-code@2.1.280
+RUN npm install -g @anthropic-ai/claude-code@2.1.311
 
 # Install OpenCode CLI (second harness).
 # 1.15.10: verified end-to-end on 2026-05-25 with v1-oneshot-oc +

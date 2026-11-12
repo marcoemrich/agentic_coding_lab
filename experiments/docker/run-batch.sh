@@ -117,6 +117,24 @@ MODEL_CONFIGS=(
     # Only the undated alias exists; claude-fable-5-1-<date> returns 404.
     "fable-5-1|claude-fable-5-1|true"
     "fable-5-1-no-thinking|claude-fable-5-1|false"
+    # fable-5-2: native like the other Fable cells (bare claude-* -> OAuth
+    # bypass, subscription). Gated behind CLI 2.1.290 as a hard API 400
+    # ("version 2.1.290 or newer is required"); the lab pin is 2.1.311.
+    #
+    # THE `[1m]` SUFFIX IS LOAD-BEARING, as on sonnet-5-5: measured 2026-11-12,
+    # neither 2.1.290 nor 2.1.311 carries claude-fable-5-2 in its catalog, so
+    # without the suffix the CLI assumes a 200k context window and caps
+    # auto-compact there on a 1M-context model. With the suffix the warning and
+    # the cap are gone. Drop it only after a CLI bump whose catalog lists the
+    # model, and re-verify there.
+    #
+    # The `-no-thinking` label is nominal, as on opus-5-5/sonnet-5-5 — Fable
+    # thinks adaptively and does not accept thinking.type "disabled" at all;
+    # Fable 5.1 produced 37 thinking blocks despite thinking=false
+    # (RQ-fable-vs-opus5). Kept for cell-naming consistency, documented as a
+    # caveat in RQ-current-models-ptdd rather than defined away.
+    "fable-5-2|claude-fable-5-2[1m]|true"
+    "fable-5-2-no-thinking|claude-fable-5-2[1m]|false"
     # sonnet-5-native: native like opus-5/fable-5 (bare claude-* -> OAuth bypass,
     # subscription). The bare name `sonnet-5` is NOT free -- it belongs to the
     # pi/Requesty route (vertex/claude-sonnet-5@eu) further down, and 15 runs
