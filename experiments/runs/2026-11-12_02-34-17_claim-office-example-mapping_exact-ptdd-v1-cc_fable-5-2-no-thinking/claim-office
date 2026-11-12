@@ -1,0 +1,5 @@
+#!/bin/sh
+# MHPCO claim office: reads a scenario as JSON from stdin and writes the
+# results as JSON to stdout.
+root=$(dirname "$(readlink -f "$0")")
+exec "$root/node_modules/.bin/tsx" "$root/src/cli.ts"

@@ -2,9 +2,9 @@
 
 _How do the current commercial and open-weight coding models differ in correctness and code quality on claim-office under the maintained EXACT Coding Predictive TDD workflow, each reached over its own native route?_
 
-Generated: 2026-10-24T11:14:18Z
+Generated: 2026-11-12T03:25:54Z
 
-Cells declared: 10 · matched runs: 50 · min_replicates: 5
+Cells declared: 11 · matched runs: 55 · min_replicates: 5
 
 ## Cell coverage
 
@@ -12,6 +12,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |---|---|---|---:|---:|---|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking | 5 | 5 | ✅ |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon | 5 | 5 | ✅ |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference | 5 | 5 | ✅ |
@@ -29,6 +30,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   1    | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   1    | 0    |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   1    | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   1    | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   1    | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   0.99 | 0.03 |
@@ -44,6 +46,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   15   | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   15   | 0    |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   15   | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   15   | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   15   | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   14.8 | 0.45 |
@@ -59,6 +62,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |     15 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |     15 |    0 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |     15 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |     15 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |     15 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |     15 |    0 |
@@ -74,6 +78,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|----:|-------:|---------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |   5 |      0 |      100 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |   5 |      0 |      100 |
@@ -89,6 +94,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |  184.8 |  19.66 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |  219.8 |  52.39 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |  235.2 |  19.6  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |  130.2 |   7.98 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |  325.8 |  27.27 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |  184.8 |  19.56 |
@@ -104,6 +110,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |  632.4 |  35.98 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |  645.4 |  74.87 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |  674.8 |  48.38 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |  561.2 |  18.05 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |  713.4 |  77.71 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |  586.8 |  37.4  |
@@ -119,6 +126,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |      0 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |      0 |    0 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |      0 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |      0 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |      0 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |      0 |    0 |
@@ -134,6 +142,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |    2.4 | 0.55 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |    2.6 | 0.55 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |    2.2 | 0.45 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |    3   | 1.41 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |    4.8 | 1.79 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |    8.6 | 1.14 |
@@ -149,6 +158,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   1.43 | 0.21 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   1.33 | 0.17 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   1.3  | 0.16 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   1.47 | 0.32 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   1.85 | 0.35 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   3.46 | 0.82 |
@@ -164,6 +174,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |    3.4 | 0.55 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |    3.6 | 0.55 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |    3   | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |    3.8 | 1.1  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |    4.6 | 1.14 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |    6.8 | 0.84 |
@@ -179,6 +190,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   22.8 | 2.77 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   25   | 1.87 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   29.6 | 5.03 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   18.6 | 1.95 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   21.4 | 4.28 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   10.6 | 0.89 |
@@ -194,6 +206,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   13   |  1.58 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   12.6 |  1.14 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   10.6 |  1.67 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   12   |  1.87 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   23.2 |  1.3  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   21.8 |  4.92 |
@@ -209,6 +222,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   4.81 | 0.62 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   4.78 | 0.55 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   4.36 | 0.38 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   4.56 | 0.41 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   5.69 | 0.79 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   9.05 | 2.18 |
@@ -224,6 +238,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |    3.8 | 1.1  |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |    3.4 | 1.14 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |    3.2 | 0.45 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |    3.5 | 0.61 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |    3   | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |    7.4 | 2.43 |
@@ -239,6 +254,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   13   |  1.58 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   12.6 |  1.14 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   10.6 |  1.67 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   12   |  1.87 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   23.2 |  1.3  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   21.8 |  4.92 |
@@ -254,6 +270,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   47.8 |  1.64 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   57.6 |  6.35 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   59.4 |  6.23 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   48.8 |  1.1  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   40.4 |  6.5  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   40   |  1.87 |
@@ -269,6 +286,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |  276.8 |  37.63 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |  391.8 |  97.15 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |  424   |  35.9  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |  148.2 |  54.73 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |  791.6 |  75.63 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |  481.6 | 131.6  |
@@ -284,6 +302,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   0.94 | 0.05 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   0.97 | 0.02 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   0.98 | 0.03 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   0.93 | 0.04 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   0.95 | 0.04 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   3 |      2 |   0.9  | 0.04 |
@@ -299,6 +318,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 | 124    |  4.9  |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 | 133.6  | 13.5  |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 | 133.8  |  6.1  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 | 113    |  3.81 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 | 126.4  | 11.41 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   3 |      2 | 110.67 |  3.06 |
@@ -314,6 +334,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   7.8  |  6.3  |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   4.2  |  2.17 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   2.8  |  3.49 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   8.2  |  5.26 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   6.8  |  5.26 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   3 |      2 |  11.33 |  4.62 |
@@ -329,6 +350,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   2.8  |  3.83 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   0    |  0    |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   0    |  0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   1.8  |  1.64 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   0.8  |  1.1  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   3 |      2 |   2    |  3.46 |
@@ -344,6 +366,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   0.63 | 0.01 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   0.64 | 0.02 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   0.63 | 0.04 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   0.63 | 0.01 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   0.72 | 0.03 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   0.58 | 0.05 |
@@ -359,6 +382,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |      1 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |      1 |    0 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |      1 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |      1 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |      1 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |      1 |    0 |
@@ -374,6 +398,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   0.49 | 0.02 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   0.5  | 0.02 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   0.49 | 0.04 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   0.49 | 0.01 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   0.61 | 0.04 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   0.44 | 0.06 |
@@ -389,6 +414,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   0.51 | 0.02 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   0.52 | 0.02 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   0.5  | 0.05 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   0.51 | 0.01 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   0.62 | 0.04 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   0.45 | 0.06 |
@@ -404,6 +430,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |      1 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |      1 |    0 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |      1 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |      1 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |      1 |    0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |      1 |    0 |
@@ -419,6 +446,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |    1   | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |    1   | 0    |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |    1   | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |    1   | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |    1   | 0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |    1.2 | 0.45 |
@@ -434,6 +462,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |    1   |  0    |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |    4.9 |  8.72 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |    1   |  0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   10.2 | 12.6  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |    1   |  0    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |    3.5 |  5.59 |
@@ -449,6 +478,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   49.6 |  2.19 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   58.8 |  5.63 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   64.4 |  6.47 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   50.6 |  1.14 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   41.4 |  6.5  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   41   |  1.87 |
@@ -464,6 +494,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   24.2 | 1.64 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   29.6 | 2.51 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   31.2 | 2.05 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   25   | 1    |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   25   | 2.55 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   17.8 | 1.79 |
@@ -479,6 +510,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   16.6 | 2.41 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   15.2 | 3.11 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   27   | 3.67 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   19.6 | 3.36 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   20.8 | 4.44 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |    5.4 | 1.52 |
@@ -494,6 +526,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   23.8 |  1.3  |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   26.4 |  4.16 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   28.6 |  3.71 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   23   |  1.41 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   13   |  4.3  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   22.6 |  3.65 |
@@ -509,6 +542,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   95.4 |  5.41 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |  107.4 | 10.16 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |  129.4 |  7.7  |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |  123.6 | 11.87 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   88.4 | 12.66 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   86.4 | 17.37 |
@@ -524,6 +558,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   24.6 |  1.34 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |   28.4 |  3.51 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |   32.4 |  5.73 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   24.6 |  0.89 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   15.6 |  3.78 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   23   |  3.81 |
@@ -539,6 +574,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|----:|-------:|---------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |   0 |      0 |        0 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |   0 |      0 |        0 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |   0 |      0 |        0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |   0 |      0 |        0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |   0 |      0 |        0 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |   0 |      0 |        0 |
@@ -554,6 +590,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|----:|-------:|---------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |   5 |      0 |      100 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |   5 |      0 |      100 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |   5 |      0 |      100 |
@@ -569,6 +606,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |  922.2 |  80.42 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 | 1198   | 211.6  |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 | 2403.8 | 235.38 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 | 2171.4 | 190.46 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 | 3679   | 377.03 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 | 1238   | 453.12 |
@@ -584,6 +622,7 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 |:-----------------------------|:-----------------|:-----------------------|----:|-------:|------------:|------------:|
 | claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 | 2.44e+07    | 1.83647e+06 |
 | claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 | 4.93319e+07 | 1.43322e+07 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 | 8.41716e+07 | 2.75269e+07 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 | 8.97392e+06 | 3.43777e+06 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 | 1.35483e+07 | 4.69011e+06 |
 | claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 | 6.02449e+06 | 1.23002e+06 |
@@ -595,15 +634,16 @@ Cells declared: 10 · matched runs: 50 · min_replicates: 5
 
 ### cost_usd
 
-| kata                         | cell_workflow    | cell_model             |   n |   null |   mean |   sd |
-|:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|-----:|
-| claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   9.79 | 0.49 |
-| claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |  14.59 | 4.26 |
-| claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   1.47 | 0.58 |
-| claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   3.48 | 1.29 |
-| claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   3.61 | 0.62 |
-| claim-office-example-mapping | exact-ptdd-v1-pi | glm-5-3                |   5 |      0 |   3.08 | 0.96 |
-| claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   0.86 | 0.34 |
-| claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   0.92 | 1.27 |
-| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   7.8  | 4.12 |
-| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   0.9  | 0.2  |
+| kata                         | cell_workflow    | cell_model             |   n |   null |   mean |    sd |
+|:-----------------------------|:-----------------|:-----------------------|----:|-------:|-------:|------:|
+| claim-office-example-mapping | exact-ptdd-v1-cc | opus-5-5-no-thinking   |   5 |      0 |   9.79 |  0.49 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | sonnet-5-5-no-thinking |   5 |      0 |  14.59 |  4.26 |
+| claim-office-example-mapping | exact-ptdd-v1-cc | fable-5-2-no-thinking  |   5 |      0 |  48.9  | 14.12 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | gpt-6-1-sol-codex      |   5 |      0 |   1.47 |  0.58 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | gemini-4-argon         |   5 |      0 |   3.48 |  1.29 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | kimi-k3-sference       |   5 |      0 |   3.61 |  0.62 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | glm-5-3                |   5 |      0 |   3.08 |  0.96 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | deepseek-v4-1-flash    |   5 |      0 |   0.86 |  0.34 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | minimax-m3             |   5 |      0 |   0.92 |  1.27 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8                |   5 |      0 |   7.8  |  4.12 |
+| claim-office-example-mapping | exact-ptdd-v1-pi | qwen3-8-flash-next     |   5 |      0 |   0.9  |  0.2  |

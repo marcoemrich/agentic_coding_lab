@@ -1,10 +1,15 @@
 # RQ-current-models-ptdd — Findings
 
-Ten model cells on `claim-office` (`example-mapping` prompt) under the maintained
+Eleven model cells on `claim-office` (`example-mapping` prompt) under the maintained
 EXACT Coding Predictive TDD workflow, each model reached over its own native
-route. 50 `ok` runs, n=5 per cell, `typescript-vitest` throughout.
+route. 55 `ok` runs, n=5 per cell, `typescript-vitest` throughout.
 
 ## Overview
+
+**Trophies mark near-ties, not ranks.** A 🏆 goes to every eligible cell whose
+mean lies within 1 σ of the best value (σ of the best cell; where that is 0.00,
+of the runner-up). Several rows of this field are separated by less than their
+own run-to-run spread, and a single trophy there would invent a winner.
 
 ### Correctness (external) — primary outcome
 
@@ -12,6 +17,7 @@ route. 50 `ok` runs, n=5 per cell, `typescript-vitest` throughout.
 |---|---|---:|---:|---|---:|
 | `opus-5-5-no-thinking` | Anthropic subscription | **1.00** 🏆 | 0.00 | 1.00 × 5 | 5/5 |
 | `sonnet-5-5-no-thinking` | Anthropic subscription | **1.00** 🏆 | 0.00 | 1.00 × 5 | 5/5 |
+| `fable-5-2-no-thinking` | Anthropic subscription | **1.00** 🏆 | 0.00 | 1.00 × 5 | 5/5 |
 | `gpt-6-1-sol-codex` | OpenAI subscription | **1.00** 🏆 | 0.00 | 1.00 × 5 | 5/5 |
 | `gemini-4-argon` | Requesty | **1.00** 🏆 | 0.00 | 1.00 × 5 | 5/5 |
 | `glm-5-3` | Requesty | **1.00** 🏆 | 0.00 | 1.00 × 5 | 5/5 |
@@ -21,7 +27,7 @@ route. 50 `ok` runs, n=5 per cell, `typescript-vitest` throughout.
 | `deepseek-v4-1-flash` | Requesty | 0.80 | 0.45 | **0.00**, 1.00 × 4 | 4/5 |
 | `minimax-m3` | Requesty | 0.77 | 0.44 | **0.00**, 0.867, 1.00 × 3 | 5/5 |
 
-Higher = better. Seven trophies are the reading: the field is saturated on this
+Higher = better. Eight trophies are the reading: the field is saturated on this
 kata. The two cell means below 0.90 are each produced by a **single** failed run
 out of five — see F-1.12.1 and F-1.12.2, and never quote those two means without
 the run values beside them.
@@ -34,8 +40,9 @@ the 0.90 gate and take no quality trophy.
 
 | Cell | `cognitive_max` | `cognitive_avg` | `mccabe_max` | `longest_function` | Production LoC | Code Mass (APP) | Smell Total |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| `opus-5-5-no-thinking` | **2.4** 🏆 | 1.43 | **3.4** 🏆 | 13.0 | 184.8 | 632.4 | 0.0 |
-| `sonnet-5-5-no-thinking` | 2.6 | **1.33** 🏆 | 3.6 | 12.6 | 219.8 | 645.4 | 0.0 |
+| `fable-5-2-no-thinking` | **2.2** 🏆 | **1.30** 🏆 | **3.0** 🏆 | **10.6** 🏆 | 235.2 | 674.8 | 0.0 |
+| `opus-5-5-no-thinking` | **2.4** 🏆 | **1.43** 🏆 | **3.4** 🏆 | 13.0 | 184.8 | 632.4 | 0.0 |
+| `sonnet-5-5-no-thinking` | **2.6** 🏆 | **1.33** 🏆 | 3.6 | 12.6 | 219.8 | 645.4 | 0.0 |
 | `gpt-6-1-sol-codex` | 3.0 | 1.47 | 3.8 | **12.0** 🏆 | **130.2** 🏆 | **561.2** 🏆 | 0.0 |
 | `qwen3-8-flash-next` | 4.6 | 1.78 | 4.8 | 24.0 | 264.4 | 706.6 | 0.0 |
 | `gemini-4-argon` | 4.8 | 1.85 | 4.6 | 23.2 | 325.8 | 713.4 | 0.0 |
@@ -45,7 +52,16 @@ the 0.90 gate and take no quality trophy.
 | `deepseek-v4-1-flash` | 4.8 | 1.82 | 4.4 | 20.0 | 244.8 | 680.0 | 0.0 |
 | `minimax-m3` | 6.8 | 2.60 | 6.0 | 22.8 | 269.0 | 699.0 | 0.0 |
 
-**Smell Total gets no trophy**: it is 0.0 at σ = 0.00 in all ten cells, so there is
+The four frontier cells share the complexity trophies because their differences
+are smaller than their own spread: `cognitive_max` 2.2–3.0 at σ 0.45–1.41,
+`mccabe_max` 3.0–3.8 at σ 0.00–1.10. `fable-5-2-no-thinking` holds the best mean
+in all four complexity columns and is the only cell whose `mccabe_max` never
+exceeds 3 (3.0 at σ 0.00, five of five runs) — a lead of 0.4 over
+`opus-5-5-no-thinking`, which is inside that cell's own σ of 0.55.
+`gpt-6-1-sol-codex` sits a hair outside the `cognitive_avg` band (1.47 against a
+limit of 1.46) and keeps both size columns outright.
+
+**Smell Total gets no trophy**: it is 0.0 at σ = 0.00 in all eleven cells, so there is
 no contest in that row. On `typescript-vitest` `unit_size_max` is the same
 measurement as `longest_function` and carries the same numbers in every cell — it
 is not independent evidence.
@@ -68,25 +84,31 @@ Means over 5 runs. Same correctness gate.
 
 | Cell | `cycles_closed` ↑ | `refactor_events` ↑ | `tests_total` | duration ↓ | `total_tokens` ↓ | `cost_usd` ↓ |
 |---|---:|---:|---:|---:|---:|---:|
+| `fable-5-2-no-thinking` | **31.2** 🏆 | **27.0** 🏆 | 59.4 | 40.1 min | 84.2 M | $48.90 |
 | `opus-5-5-no-thinking` | 24.2 | 16.6 | 47.8 | **15.4 min** 🏆 | 24.4 M | $9.79 |
 | `sonnet-5-5-no-thinking` | **29.6** 🏆 | 15.2 | 57.6 | 20.0 min | 49.3 M | $14.59 |
 | `gpt-6-1-sol-codex` | 25.0 | 19.6 | 48.8 | 36.2 min | 9.0 M | $1.47 |
-| `gemini-4-argon` | 25.0 | **20.8** 🏆 | 40.4 | 61.3 min | 13.5 M | $3.48 |
+| `gemini-4-argon` | 25.0 | 20.8 | 40.4 | 61.3 min | 13.5 M | $3.48 |
 | `kimi-k3-sference` | 17.8 | 5.4 | 40.0 | 20.6 min | **6.0 M** 🏆 | $3.61 |
-| `glm-5-3` | 17.0 | 6.2 | 45.4 | 16.5 min | 10.1 M | $3.08 |
-| `qwen3-8` | 13.2 | 4.2 | 45.2 | 16.7 min | 11.5 M | $7.80 |
+| `glm-5-3` | 17.0 | 6.2 | 45.4 | **16.5 min** 🏆 | 10.1 M | $3.08 |
+| `qwen3-8` | 13.2 | 4.2 | 45.2 | **16.7 min** 🏆 | 11.5 M | $7.80 |
 | `qwen3-8-flash-next` | 16.8 | 9.6 | 40.2 | 24.6 min | 16.3 M | **$0.90** 🏆 |
 | `deepseek-v4-1-flash` | 20.4 | 9.0 | 44.2 | 20.3 min | 9.6 M | $0.86 |
 | `minimax-m3` | 7.6 | 6.0 | 54.6 | 30.1 min | 8.2 M | $0.92 |
 
 `tests_total` carries no trophy — neither direction is better, and the column
-spans 5 to 91 at run level.
+spans 5 to 91 at run level. Three cells share the duration trophy at
+15.4–16.7 min: `opus-5-5-no-thinking` leads at σ 1.3 min, and both others fall
+inside that band. `refactor_events` is the one column of this table with a
+clean winner — `fable-5-2-no-thinking`'s 27.0 ± 3.67 is 6.2 above
+`gemini-4-argon` and its five runs (23–32) do not overlap any other cell
+(F-1.12.12).
 
 ### Confounds (binding on every finding below)
 
-Three axes vary jointly with the model; the RQ README holds the full argument.
+Four axes vary jointly with the model; the RQ README holds the full argument.
 
-1. **Harness and workflow port.** Two cells run Claude Code with
+1. **Harness and workflow port.** Three cells run Claude Code with
    `exact-ptdd-v1-cc`, eight run pi with `exact-ptdd-v1-pi`. A difference between
    an Anthropic cell and a pi cell is the sum of model, harness and port effect.
 2. **The route has a demonstrated quality effect of its own.**
@@ -100,7 +122,15 @@ Three axes vary jointly with the model; the RQ README holds the full argument.
    billed per token on either subscription, and the Requesty cells carry the
    catalogue tariff without workspace discounts. Read `total_tokens` first.
 
-All ten cells run Predictive TDD, so they sit on the **same** side of the
+4. **The Claude Code version is not constant across the three CC cells.**
+   Fable 5.2 is gated behind Claude Code 2.1.290 as a hard API 400, so its cell
+   runs on the lab's current pin 2.1.311 while the `opus-5-5-no-thinking` and
+   `sonnet-5-5-no-thinking` runs are on 2.1.280. An Anthropic-internal difference
+   that involves the Fable cell is model + CLI; the clean CC-side comparison in
+   this RQ is Opus 5.5 against Sonnet 5.5. `harness_version` cannot be declared as
+   a control here because the two harnesses have different version axes.
+
+All eleven cells run Predictive TDD, so they sit on the **same** side of the
 test-list boundary and the Skip-fed discipline columns stay comparable within this
 RQ. They remain incomparable to any ad-hoc-TDD RQ.
 
@@ -175,16 +205,17 @@ Neither run is deletable. Both exited `ok` with code under `src/`, so the
 
 ## F-1.12.3 — The workflow flattens the smell axis completely and the complexity axis not at all
 
-Smell Total is 0.0 at σ = 0.00 in all ten cells — 50 of 50 runs clean. On that axis
+Smell Total is 0.0 at σ = 0.00 in all eleven cells — 55 of 55 runs clean. On that axis
 the method, not the model, carries the result, and the field has no spread left to
 measure.
 
-`cognitive_max` does the opposite. It spans 2.4 to 9.0 across cells — a factor of
-3.75 — while the within-cell σ stays at 0.55–1.79 for eight of the ten
+`cognitive_max` does the opposite. It spans 2.2 to 9.0 across cells — a factor of
+4.1 — while the within-cell σ stays at 0.45–1.79 for nine of the eleven
 (`deepseek-v4-1-flash` 2.05 and `minimax-m3` 3.35 are the exceptions):
 
 | Cell | `cognitive_max` | σ | `mccabe_max` | σ |
 |---|---:|---:|---:|---:|
+| `fable-5-2-no-thinking` | 2.2 | 0.45 | 3.0 | 0.00 |
 | `opus-5-5-no-thinking` | 2.4 | 0.55 | 3.4 | 0.55 |
 | `sonnet-5-5-no-thinking` | 2.6 | 0.55 | 3.6 | 0.55 |
 | `gpt-6-1-sol-codex` | 3.0 | 1.41 | 3.8 | 1.10 |
@@ -198,8 +229,12 @@ measure.
 
 The between-cell spread exceeds the within-cell noise several times over, so H2
 ("the maintained workflow narrows the field") holds only for smells. On complexity
-the model still decides: `glm-5-3` at 9.0 ± 0.71 and `opus-5-5-no-thinking` at
-2.4 ± 0.55 are 6.6 apart, an order of magnitude more than either cell's σ.
+the model still decides: `glm-5-3` at 9.0 ± 0.71 and `fable-5-2-no-thinking` at
+2.2 ± 0.45 are 6.8 apart, an order of magnitude more than either cell's σ.
+
+The top of this table is a different matter. The four frontier cells span 2.2–3.0
+at σ 0.45–1.41, so they are one band rather than a ranking — the model decides the
+distance to `glm-5-3`, not the order inside the band.
 
 ---
 
@@ -288,6 +323,7 @@ the score does inverted:
 
 | Cell | Mutation Score | σ | n | `mutants_total` | `mutants_survived` | `mutants_no_coverage` |
 |---|---:|---:|---:|---:|---:|---:|
+| `fable-5-2-no-thinking` | 0.98 | 0.03 | 5 | 133.8 | 2.8 | 0.0 |
 | `sonnet-5-5-no-thinking` | 0.97 | 0.02 | 5 | 133.6 | 4.2 | 0.0 |
 | `gemini-4-argon` | 0.95 | 0.04 | 5 | 126.4 | 6.8 | 0.8 |
 | `opus-5-5-no-thinking` | 0.94 | 0.05 | 5 | 124.0 | 7.8 | 2.8 |
@@ -300,8 +336,10 @@ the score does inverted:
 | `glm-5-3` | 0.70 | 0.29 | 5 | 155.4 | 43.0 | 24.0 |
 
 The two cells at the bottom are the two that leave 20 and 24 mutants per run
-unreached, and `sonnet-5-5-no-thinking` at the top reaches every mutant in all
-five runs (`mutants_no_coverage` 0.0 at σ 0). An unreached mutant is a
+unreached, and the two at the top — `fable-5-2-no-thinking` and
+`sonnet-5-5-no-thinking` — reach every mutant in all five runs
+(`mutants_no_coverage` 0.0 at σ 0), on a near-identical mutant population
+(133.8 against 133.6). An unreached mutant is a
 statement about where a model put its test seam — how much of the domain it
 exercises through an imported module versus through the CLI — not about how
 strong its assertions are. The score cannot separate the two, so read it with
@@ -371,6 +409,7 @@ route test: `gemini-4-argon`, on Requesty, records the field's highest
 
 | Cell | Route | weights | `refactor_events` | σ |
 |---|---|---|---:|---:|
+| `fable-5-2-no-thinking` | Anthropic subscription | closed | 27.0 | 3.67 |
 | `gemini-4-argon` | Requesty | closed | 20.8 | 4.44 |
 | `gpt-6-1-sol-codex` | OpenAI subscription | closed | 19.6 | 3.36 |
 | `opus-5-5-no-thinking` | Anthropic subscription | closed | 16.6 | 2.41 |
@@ -382,16 +421,18 @@ route test: `gemini-4-argon`, on Requesty, records the field's highest
 | `kimi-k3-sference` | Requesty | open | 5.4 | 1.52 |
 | `qwen3-8` | Requesty | open | 4.2 | 3.03 |
 
-All four closed-weight cells sit at 15.2–20.8, all six open-weight cells at
+All five closed-weight cells sit at 15.2–27.0, all six open-weight cells at
 4.2–9.6, with no overlap and a gap of 5.6 between the groups — wider than the
-largest within-group σ (5.46, `qwen3-8-flash-next`). Because the leader of the
-closed group is on Requesty and the laggards of the open group are on the same
-route, the split cannot be explained by Confound 2 here.
+largest within-group σ (5.46, `qwen3-8-flash-next`). Because `gemini-4-argon` leads
+the Requesty half of the closed group and the laggards of the open group are on the
+same route, the split cannot be explained by Confound 2 here.
 
 The same ordering shows in `cognitive_max` (F-1.12.3), which suggests the two are
 linked: the cells that refactor 3–4× as often are the cells that end with the
-lowest complexity. This RQ cannot establish the direction of that link — it has no
-arm that varies refactoring frequency at a fixed model.
+lowest complexity. `fable-5-2-no-thinking` is now the extreme case of that pattern
+on both axes at once — the field's highest `refactor_events` and its lowest
+`cognitive_max` — which fits the link without testing it. This RQ cannot establish
+the direction: it has no arm that varies refactoring frequency at a fixed model.
 
 Caveat: the within-route closed group is **one cell at n=5**. `mistral-large-4` was
 wired as a second one and had to be dropped (pi cannot talk to Mistral's endpoint;
@@ -400,10 +441,10 @@ alone.
 
 ---
 
-## F-1.12.8 — The cheapest cell that reaches 1.00 costs a sixteenth of the most expensive one
+## F-1.12.8 — The cheapest cell that reaches 1.00 costs a fifty-fourth of the most expensive one
 
-Among the eight cells at or above the 0.90 correctness gate, `cost_usd` spans
-$0.90 to $14.59 at identical Correctness (external) and identical Smell Total:
+Among the nine cells at or above the 0.90 correctness gate, `cost_usd` spans
+$0.90 to $48.90 at identical Correctness (external) and identical Smell Total:
 
 | Cell | Correctness (external) | `cost_usd` | `total_tokens` | `cognitive_max` | `refactor_events` |
 |---|---:|---:|---:|---:|---:|
@@ -415,25 +456,28 @@ $0.90 to $14.59 at identical Correctness (external) and identical Smell Total:
 | `qwen3-8` | 1.00 | $7.80 | 11.5 M | 6.8 | 4.2 |
 | `opus-5-5-no-thinking` | 1.00 | $9.79 | 24.4 M | 2.4 | 16.6 |
 | `sonnet-5-5-no-thinking` | 1.00 | $14.59 | 49.3 M | 2.6 | 15.2 |
+| `fable-5-2-no-thinking` | 1.00 | $48.90 | 84.2 M | 2.2 | 27.0 |
 
-**Price does not order the structure column.** The three cells at `cognitive_max`
-2.4–3.0 are the three subscription cells — and one of them, `gpt-6-1-sol-codex`,
-is the second *cheapest* row in the table at $1.47. Every Requesty cell sits at
-4.6–9.0 regardless of tariff, with the $3.08 `glm-5-3` at 9.0 and the $0.90
-`qwen3-8-flash-next` at 4.6. What separates the two groups is the route family
-(Confound 2), not what they cost. For a practitioner whose acceptance criterion is
-the external suite, `qwen3-8-flash-next` clears it at 1/16 of the
-`sonnet-5-5-no-thinking` tariff.
+**Price does not order the structure column.** The four cells at `cognitive_max`
+2.2–3.0 are the four subscription cells — and one of them, `gpt-6-1-sol-codex`,
+is the second *cheapest* row in the table at $1.47, within the same complexity
+band as the $48.90 Fable cell. Every Requesty cell sits at 4.6–9.0 regardless of
+tariff, with the $3.08 `glm-5-3` at 9.0 and the $0.90 `qwen3-8-flash-next` at 4.6.
+What separates the two groups is the route family (Confound 2), not what they cost.
+For a practitioner whose acceptance criterion is the external suite,
+`qwen3-8-flash-next` clears it at 1/54 of the `fable-5-2-no-thinking` tariff and
+1/16 of the `sonnet-5-5-no-thinking` one.
 
 Two cells below the gate are cheaper still — `deepseek-v4-1-flash` $0.86 and
 `minimax-m3` $0.92 — and neither is a bargain at a one-in-five total failure rate
 (F-1.12.2).
 
-`sonnet-5-5-no-thinking` is the field's most expensive cell, above
-`opus-5-5-no-thinking`, on 2.0× its token volume (49.3 M against 24.4 M) for 1.2×
-its closed cycles (29.6 against 24.2). All three subscription figures are
-list-price comparisons under Confound 3; nothing is billed per token on either
-subscription.
+`fable-5-2-no-thinking` is the field's most expensive cell at $48.90 ± 14.12 —
+5.0× `opus-5-5-no-thinking` on 3.4× its token volume, at the same 1.00 (F-1.12.12).
+`sonnet-5-5-no-thinking` is the second, above `opus-5-5-no-thinking`, on 2.0× its
+token volume (49.3 M against 24.4 M) for 1.2× its closed cycles (29.6 against
+24.2). All four subscription figures are list-price comparisons under Confound 3;
+nothing is billed per token on either subscription.
 
 ---
 
@@ -513,10 +557,10 @@ not a cell any mean describes.
 
 ## F-1.12.11 — `tdd_discipline_step` is saturated here; `tdd_discipline` tracks test-list granularity
 
-All ten cells sit on the same side of the test-list boundary, so the Skip-fed
+All eleven cells sit on the same side of the test-list boundary, so the Skip-fed
 columns are comparable **within** this RQ. Two cautions on reading them.
 
-`tdd_discipline_step` is **1.00 in all 50 runs** — including the `minimax-m3` run
+`tdd_discipline_step` is **1.00 in all 55 runs** — including the `minimax-m3` run
 with `red_batch_max` 6, because `red_batch_size` averages to 1.00 there over many
 batches. The column CLAUDE.md names as always-comparable carries no signal on this
 field; `red_batch_max` per run is what separates the cells (F-1.12.10).
@@ -533,6 +577,7 @@ column is `skip_events / cycles_total`, both cell means:
 | `sonnet-5-5-no-thinking` | 0.64 | 0.50 | 0.52 | 26.4 | 58.8 | 0.45 |
 | `opus-5-5-no-thinking` | 0.63 | 0.49 | 0.51 | 23.8 | 49.6 | 0.48 |
 | `gpt-6-1-sol-codex` | 0.63 | 0.49 | 0.51 | 23.0 | 50.6 | 0.45 |
+| `fable-5-2-no-thinking` | 0.63 | 0.49 | 0.50 | 28.6 | 64.4 | 0.44 |
 | `kimi-k3-sference` | 0.58 | 0.44 | 0.45 | 22.6 | 41.0 | 0.55 |
 | `qwen3-8-flash-next` | 0.56 | 0.41 | 0.43 | 23.2 | 41.2 | 0.56 |
 | `qwen3-8` | 0.54 | 0.31 | 0.33 | 17.4 | 33.8 | 0.51 |
@@ -549,7 +594,62 @@ generalisation is legitimate evidence — so the ordering above is a statement a
 test-list granularity as much as about loop rigour. Do not present it as a quality
 ranking.
 
-`chain_opens_red` is `false` in all 50 runs (a test-list workflow opens with the
-list, not with a red test) and `chain_ends_green` is `true` in 49 — the exception is
+`chain_opens_red` is `false` in all 55 runs (a test-list workflow opens with the
+list, not with a red test) and `chain_ends_green` is `true` in 54 — the exception is
 the failed `deepseek-v4-1-flash` run. Both columns are ambivalent and carry no
 trophy.
+
+---
+
+## F-1.12.12 — Fable 5.2 buys refactoring and suite strength, not correctness
+
+On this kata the top Anthropic tier does not move the primary outcome. It moves
+what the loop spends and how often it refactors.
+
+| | `fable-5-2-no-thinking` | `opus-5-5-no-thinking` | `sonnet-5-5-no-thinking` |
+|---|---:|---:|---:|
+| Correctness (external) | 1.00 ± 0.00 | 1.00 ± 0.00 | 1.00 ± 0.00 |
+| scenarios passed, per run | 15/15 × 5 | 15/15 × 5 | 15/15 × 5 |
+| `refactor_events` | **27.0** ± 3.67 | 16.6 ± 2.41 | 15.2 ± 3.11 |
+| the five runs | 23, 24, 27, 29, 32 | 14, 15, 16, 18, 20 | 10, 15, 16, 17, 18 |
+| `cycles_closed` | 31.2 ± 2.05 | 24.2 ± 1.64 | 29.6 ± 2.51 |
+| `cognitive_max` | 2.2 ± 0.45 | 2.4 ± 0.55 | 2.6 ± 0.55 |
+| `mccabe_max` | 3.0 ± 0.00 | 3.4 ± 0.55 | 3.6 ± 0.55 |
+| `longest_function` | 10.6 ± 1.67 | 13.0 ± 1.58 | 12.6 ± 1.14 |
+| Production LoC | 235.2 ± 19.60 | 184.8 ± 19.66 | 219.8 ± 52.39 |
+| Mutation Score | 0.98 ± 0.03 | 0.94 ± 0.05 | 0.97 ± 0.02 |
+| `mutants_survived` | 2.8 | 7.8 | 4.2 |
+| duration | 40.1 min | 15.4 min | 20.0 min |
+| `total_tokens` | 84.2 M | 24.4 M | 49.3 M |
+| `cost_usd` | $48.90 | $9.79 | $14.59 |
+
+**`refactor_events` is the one column that separates cleanly.** The five Fable
+runs (23–32) do not overlap the Opus 5.5 (14–20) or Sonnet 5.5 (10–18) runs, and
+the 10.4 gap to Opus 5.5 is roughly three times either cell's σ. Everything on the
+complexity axis goes the same direction but inside the noise: 0.2 on
+`cognitive_max` at σ 0.45–0.55, 2.4 on `longest_function` at σ 1.1–1.7. The one
+qualitative difference there is that Fable 5.2's `mccabe_max` is 3 in every run
+(σ 0.00), where both other cells produce 4s.
+
+**The suite gets stronger in a way the counts support.** 2.8 surviving mutants
+against 7.8 for Opus 5.5, on an almost identical mutant population (133.8 against
+124.0) and with `mutants_no_coverage` 0.0 in both — so this is assertion strength,
+not a test-seam artifact (F-1.12.6). It is also the one cell that pairs that with
+the field's highest `refactor_events`.
+
+**What it costs.** 3.4× the tokens of Opus 5.5, 2.6× the wall clock, 5.0× the
+list price, for a primary outcome that was already saturated at 1.00. Production
+LoC moves the other way (235.2 against 184.8): more refactoring here did not mean
+less code. A practitioner whose acceptance criterion is the external suite has no
+reason to reach for this tier on a kata of this size; the finding is about where
+the extra budget goes, not about a correctness gain.
+
+**Confound 4 is binding on this block.** The Fable cell runs on Claude Code
+2.1.311 (the model is gated behind 2.1.290), the two comparison cells on 2.1.280.
+A CLI contribution to the refactor-count gap cannot be excluded, and no RQ in this
+lab measures a CLI-version effect on refactoring frequency — the RQs that pin
+`harness_version` exclude the other version rather than compare against it, so
+there is no published bound to lean on. Read every row of this block as
+model + CLI. What would separate them is one cell of `opus-5-5-no-thinking` on
+2.1.311; until that exists, the clean comparison inside this RQ is Opus 5.5 against
+Sonnet 5.5, where `refactor_events` differs by 1.4 at σ 2.4–3.1.

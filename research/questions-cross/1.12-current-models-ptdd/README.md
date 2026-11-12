@@ -17,6 +17,11 @@ factors:
     # resolve to the same cell.
     - {model: opus-5-5-no-thinking, workflow: {any: [exact-ptdd-v1-cc, exact-sol-v1.6-test-list-dimensions-cc]}}
     - {model: sonnet-5-5-no-thinking, workflow: exact-ptdd-v1-cc}
+    # Fable 5.2, added 2026-11-12 as the Anthropic top-tier anchor above Opus
+    # 5.5. The only cell in this RQ on Claude Code 2.1.311 — the model is gated
+    # behind 2.1.290 as a hard API 400, which forced the lab pin up; the other
+    # two CC cells are on 2.1.280. See Confound 4 and "The CLI gate: Fable 5.2".
+    - {model: fable-5-2-no-thinking, workflow: exact-ptdd-v1-cc}
     - {model: gpt-6-1-sol-codex, workflow: {any: [exact-ptdd-v1-pi, exact-sol-v1.6-test-list-dimensions-pi]}}
     # Commercial model reached over Requesty rather than a vendor
     # subscription. This cell is what makes the route effect separable from
@@ -111,7 +116,8 @@ open-weight model has ever been measured on it.
 This RQ closes that gap for the current generation: what do today's models do
 with the method we actually recommend?
 
-The model set is the user's: current Opus and Sonnet as the Anthropic anchor,
+The model set is the user's: current Opus and Sonnet as the Anthropic anchor
+(joined 2026-11-12 by Fable 5.2, the tier above them),
 GPT-6.1 Sol as the OpenAI anchor, the current flagship of each open-weight
 family reachable over Requesty (Kimi, GLM, DeepSeek, MiniMax, Qwen), and two
 commercial models that are reachable over Requesty rather than a subscription
@@ -125,6 +131,7 @@ Each model is reached the way a practitioner would actually reach it:
 |---|---|---|---|
 | `opus-5-5-no-thinking` | Claude Code | Anthropic subscription (native OAuth) | `exact-ptdd-v1-cc` |
 | `sonnet-5-5-no-thinking` | Claude Code | Anthropic subscription (native OAuth) | `exact-ptdd-v1-cc` |
+| `fable-5-2-no-thinking` | Claude Code | Anthropic subscription (native OAuth) | `exact-ptdd-v1-cc` |
 | `gpt-6-1-sol-codex` | pi | OpenAI subscription (`openai-codex`) | `exact-ptdd-v1-pi` |
 | `gemini-4-argon` | pi | Requesty `vertex/gemini-4-argon@eu` | `exact-ptdd-v1-pi` |
 | `kimi-k3-sference` | pi | Requesty `sference/kimi-k3` | `exact-ptdd-v1-pi` |
@@ -155,8 +162,8 @@ on one cell at n=5 rather than two.
 Three axes vary together with the model. All three must be named whenever a
 finding of this RQ is quoted.
 
-1. **Harness and workflow port.** Two cells run Claude Code with
-   `exact-ptdd-v1-cc`, six run pi with `exact-ptdd-v1-pi`. The two are ports
+1. **Harness and workflow port.** Three cells run Claude Code with
+   `exact-ptdd-v1-cc`, eight run pi with `exact-ptdd-v1-pi`. The two are ports
    of the same contract, not the same file. A measured difference between an
    Anthropic cell and a pi cell is the **sum** of model, harness and port
    effect. Isolated harness effect: `RQ-harness-requesty` (`../1.2-harness-requesty/`),
@@ -190,6 +197,17 @@ finding of this RQ is quoted.
    all eight cells are tokens × list price — but it is not what any of this
    costs to run. Read `total_tokens` before `cost_usd`.
 
+4. **The Fable 5.2 cell runs on a different Claude Code than the other two CC
+   cells.** Fable 5.2 is gated behind CLI 2.1.290 as a hard API 400, so filling
+   it required moving the lab pin (to 2.1.311, npm's `stable` tag). The Opus 5.5
+   and Sonnet 5.5 runs were produced on 2.1.280 and are not re-measured. The
+   harness version is therefore **not** constant across the three CC cells, and
+   `harness_version` cannot be declared as a control here for the reason given
+   under "Harness status and wiring". Treat an Anthropic-internal difference
+   involving the Fable cell as model + CLI, and size the CLI part against
+   `RQ-opus55-current-workflow`, which pins the axis deliberately. The CC-side
+   comparison this RQ can make cleanly is Opus 5.5 against Sonnet 5.5.
+
 ## Reasoning state (caveat)
 
 All eight cells run each model's **native reasoning default**. There is no
@@ -216,10 +234,12 @@ is the comparison the RQ is for.
 
 ## Harness status and wiring
 
-Pins (Dockerfile): **Claude Code 2.1.280**, **pi 0.81.1**. Both are constant
-across every cell; `harness_version` is deliberately **not** declared as a
-control, because the two harnesses have different version axes and a single
-control value cannot span them.
+Pins (Dockerfile): **Claude Code 2.1.311** (2.1.280 until 2026-11-12),
+**pi 0.81.1**. `harness_version` is deliberately **not** declared as a control,
+because the two harnesses have different version axes and a single control value
+cannot span them — which is also why the CC bump the Fable 5.2 cell required
+could not be fenced off inside this RQ. Ten cells are on 2.1.280 / pi 0.81.1,
+the Fable 5.2 cell on 2.1.311; see Confound 4.
 
 Wired on 2026-10-23 for this RQ (three entries each: `MODEL_CONFIGS` and the
 case map in `run-batch.sh`, `PRICES` in `compute-cost.py`, and for pi also
@@ -228,6 +248,7 @@ case map in `run-batch.sh`, `PRICES` in `compute-cost.py`, and for pi also
 | Lab id | Target | Note |
 |---|---|---|
 | `sonnet-5-5` | `claude-sonnet-5-5[1m]` | native; see the CLI gate below |
+| `fable-5-2` | `claude-fable-5-2[1m]` | native; wired 2026-11-12, two entries (`MODEL_CONFIGS`, `PRICES` at $8.00/$40.00/$0.20/$10.00). See the CLI gate below |
 | `glm-5-3` | `requesty/sference/glm-5.3` | $1.20/$4.20/$0.26 |
 | `qwen3-8` | `requesty/tensorx/qwen3.8` → `qwen/qwen3.8-2.4t-a95b` | $2.50/$6.00/$0.63 |
 | `qwen3-8-flash-next` | `requesty/tensorx/qwen3.8-flash-next` → `qwen/qwen3.8-flash-next` | $0.20/$0.50/$0.05 |
@@ -268,6 +289,28 @@ exactly this RQ's kata. With `claude-sonnet-5-5[1m]` the cap is gone.
 `MODEL_CONFIGS` therefore pins the suffixed id. Opus 5.5 needs no suffix;
 2.1.280 knows that one. Drop the suffix only after a CLI bump whose catalog
 lists `claude-sonnet-5-5`, and re-verify there.
+
+### The CLI gate: Fable 5.2 needs 2.1.290, and the `[1m]` suffix
+
+Measured on the host on 2026-11-12, before any run was started. CLI 2.1.280 —
+the pin the other ten cells were produced on — rejects the model outright:
+
+```
+API Error: 400 Claude Code 2.1.280 does not support this model;
+version 2.1.290 or newer is required.
+```
+
+2.1.290 and 2.1.311 both answer normally. Neither carries `claude-fable-5-2`
+in its model catalog, so both assume a 200k context window and cap auto-compact
+there on a 1M-context model — the same silent context confound as Sonnet 5.5,
+and claim-office is the kata where it bites. `claude-fable-5-2[1m]` removes the
+warning and the cap on both versions.
+
+The pin therefore moved to **2.1.311** (npm's `stable` tag at that date;
+2.1.322 was `latest`, 2.1.290 the stated minimum), and `MODEL_CONFIGS` pins the
+suffixed id. Drop the suffix only after a CLI bump whose catalog lists the
+model, and re-verify there. What this costs the RQ is Confound 4: the Fable cell
+is on a different CLI than the Opus 5.5 and Sonnet 5.5 cells.
 
 ### Smoke results, 2026-10-23 (n=1 per unfilled cell)
 
@@ -470,9 +513,11 @@ criterion, not a model result.
 | `opus-5-5-no-thinking` × `exact-ptdd-v1-cc` | **5** | RQ-opus55-current-workflow |
 | `gpt-6-1-sol-codex` × `exact-ptdd-v1-pi` | **5** | RQ-workflow-axis-gpt61-sol |
 | all eight others | 0 | — |
+| `fable-5-2-no-thinking` × `exact-ptdd-v1-cc` | 0 | added 2026-11-12, filled by its own batch |
 
-So 10 of the 50 runs this RQ needs (10 cells x 5) existed before the first batch. Both inherited cells are at
-`min_replicates` and on the pinned harness versions.
+So 10 of the 55 runs this RQ needs (11 cells x 5) existed before the first batch. Both inherited cells are at
+`min_replicates` and on the pinned harness versions; the Fable 5.2 cell was filled
+after the CLI bump and is the one cell on 2.1.311 (Confound 4).
 
 ## Batch-plan constraint
 
