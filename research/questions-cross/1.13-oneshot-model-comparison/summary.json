@@ -1,0 +1,1667 @@
+{
+  "cells": [
+    {
+      "kata": "claim-office-prose",
+      "workflow": "baseline-oneshot-v1-cc",
+      "model": "fable-5-2-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-11-12_19-53-40_claim-office-prose_baseline-oneshot-v1-cc_fable-5-2-no-thinking",
+          "started_at": "2026-11-12T19:53:40+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-11-12_19-53-40_claim-office-prose_baseline-oneshot-v1-cc_fable-5-2-no-thinking-2",
+          "started_at": "2026-11-12T19:53:40+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-11-12_19-53-40_claim-office-prose_baseline-oneshot-v1-cc_fable-5-2-no-thinking-3",
+          "started_at": "2026-11-12T19:53:40+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-11-12_19-53-40_claim-office-prose_baseline-oneshot-v1-cc_fable-5-2-no-thinking-4",
+          "started_at": "2026-11-12T19:53:40+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-11-12_19-53-40_claim-office-prose_baseline-oneshot-v1-cc_fable-5-2-no-thinking-5",
+          "started_at": "2026-11-12T19:53:41+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.2667,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 385.8,
+          "sd": 42.06780241467339,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1103.2,
+          "sd": 115.09213700335918,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3,
+          "sd": 1.0,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 1.446,
+          "sd": 0.128763348822559,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12.4,
+          "sd": 2.8809720581775866,
+          "null_count": 0
+        },
+        "unit_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 36.4,
+          "sd": 7.231873892705818,
+          "null_count": 0
+        },
+        "unit_size_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 12.4,
+          "sd": 2.8809720581775866,
+          "null_count": 0
+        },
+        "unit_size_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.908,
+          "sd": 0.7185888949879479,
+          "null_count": 0
+        },
+        "unit_size_median": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.6,
+          "sd": 1.2942179105544784,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 67.4,
+          "sd": 12.521980673998822,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 626.6,
+          "sd": 100.5201472342734,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "mutants_no_coverage": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 367.2,
+          "sd": 43.216894844493396,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2120568.8,
+          "sd": 441480.20213391224,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        }
+      }
+    },
+    {
+      "kata": "claim-office-prose",
+      "workflow": "baseline-oneshot-v1-cc",
+      "model": "opus-5-5-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-11-12_19-59-21_claim-office-prose_baseline-oneshot-v1-cc_opus-5-5-no-thinking",
+          "started_at": "2026-11-12T19:59:22+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-11-12_20-00-04_claim-office-prose_baseline-oneshot-v1-cc_opus-5-5-no-thinking",
+          "started_at": "2026-11-12T20:00:04+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-11-12_20-00-25_claim-office-prose_baseline-oneshot-v1-cc_opus-5-5-no-thinking",
+          "started_at": "2026-11-12T20:00:25+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-11-12_20-00-40_claim-office-prose_baseline-oneshot-v1-cc_opus-5-5-no-thinking",
+          "started_at": "2026-11-12T20:00:40+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-11-12_20-01-16_claim-office-prose_baseline-oneshot-v1-cc_opus-5-5-no-thinking",
+          "started_at": "2026-11-12T20:01:16+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.24002,
+          "sd": 0.03653309458559457,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 161.8,
+          "sd": 19.917329138215294,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 619,
+          "sd": 34.52535300326414,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 5.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 2.952,
+          "sd": 0.17739785793520738,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6,
+          "sd": 0.7071067811865476,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 20.6,
+          "sd": 3.361547262794322,
+          "null_count": 0
+        },
+        "unit_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 11.6,
+          "sd": 1.51657508881031,
+          "null_count": 0
+        },
+        "unit_size_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 20.6,
+          "sd": 3.361547262794322,
+          "null_count": 0
+        },
+        "unit_size_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.82,
+          "sd": 0.8473193022704013,
+          "null_count": 0
+        },
+        "unit_size_median": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 0.9082951062292475,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 14.2,
+          "sd": 3.1144823004794873,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 95.8,
+          "sd": 17.852170736355845,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "mutants_no_coverage": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 88.2,
+          "sd": 11.755849607748477,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 441154.8,
+          "sd": 68034.16179170579,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        }
+      }
+    },
+    {
+      "kata": "claim-office-prose",
+      "workflow": "baseline-oneshot-v1-cc",
+      "model": "sonnet-5-5-no-thinking",
+      "counts": {
+        "runs": 5,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [
+        {
+          "id": "2026-11-12_20-01-02_claim-office-prose_baseline-oneshot-v1-cc_sonnet-5-5-no-thinking",
+          "started_at": "2026-11-12T20:01:02+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-11-12_20-02-02_claim-office-prose_baseline-oneshot-v1-cc_sonnet-5-5-no-thinking",
+          "started_at": "2026-11-12T20:02:02+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-11-12_20-02-26_claim-office-prose_baseline-oneshot-v1-cc_sonnet-5-5-no-thinking",
+          "started_at": "2026-11-12T20:02:26+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-11-12_20-02-26_claim-office-prose_baseline-oneshot-v1-cc_sonnet-5-5-no-thinking-2",
+          "started_at": "2026-11-12T20:02:26+00:00",
+          "exit_reason": "ok"
+        },
+        {
+          "id": "2026-11-12_20-03-26_claim-office-prose_baseline-oneshot-v1-cc_sonnet-5-5-no-thinking",
+          "started_at": "2026-11-12T20:03:26+00:00",
+          "exit_reason": "ok"
+        }
+      ],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 5,
+          "mean": 0.30666,
+          "sd": 0.03647832232984406,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.6,
+          "sd": 0.5477225575051661,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 15,
+          "sd": 0.0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "bool",
+          "n": 5,
+          "k": 5,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 5,
+          "mean": 111.8,
+          "sd": 7.981227975693966,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 5,
+          "mean": 474,
+          "sd": 37.1685350800916,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 18.2,
+          "sd": 3.492849839314596,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8.4,
+          "sd": 2.6076809620810595,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 3.868,
+          "sd": 1.2931047908039008,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 8,
+          "sd": 2.5495097567963922,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 5,
+          "mean": 25.4,
+          "sd": 6.348228099241552,
+          "null_count": 0
+        },
+        "unit_count": {
+          "kind": "num",
+          "n": 5,
+          "mean": 7.4,
+          "sd": 1.816590212458495,
+          "null_count": 0
+        },
+        "unit_size_max": {
+          "kind": "num",
+          "n": 5,
+          "mean": 25.4,
+          "sd": 6.348228099241552,
+          "null_count": 0
+        },
+        "unit_size_avg": {
+          "kind": "num",
+          "n": 5,
+          "mean": 9.994,
+          "sd": 2.59004440116381,
+          "null_count": 0
+        },
+        "unit_size_median": {
+          "kind": "num",
+          "n": 5,
+          "mean": 6.0,
+          "sd": 2.207940216581962,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 5,
+          "mean": 4.2,
+          "sd": 1.0954451150103321,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 5,
+          "mean": 40.6,
+          "sd": 9.91463564635635,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "mutants_no_coverage": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 5,
+          "mean": 39.2,
+          "sd": 5.403702434442518,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 5,
+          "mean": 269930.4,
+          "sd": 64516.796722249004,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 5
+        }
+      }
+    },
+    {
+      "kata": "claim-office-prose",
+      "workflow": "baseline-oneshot-v1-pi",
+      "model": "gpt-6-1-sol-codex",
+      "counts": {
+        "runs": 0,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_count": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_median": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_no_coverage": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-prose",
+      "workflow": "baseline-oneshot-v1-pi",
+      "model": "gemini-4-argon",
+      "counts": {
+        "runs": 0,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_count": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_median": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_no_coverage": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-prose",
+      "workflow": "baseline-oneshot-v1-pi",
+      "model": "kimi-k3-sference",
+      "counts": {
+        "runs": 0,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_count": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_median": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_no_coverage": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-prose",
+      "workflow": "baseline-oneshot-v1-pi",
+      "model": "glm-5-3",
+      "counts": {
+        "runs": 0,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_count": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_median": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_no_coverage": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-prose",
+      "workflow": "baseline-oneshot-v1-pi",
+      "model": "deepseek-v4-1-flash",
+      "counts": {
+        "runs": 0,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_count": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_median": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_no_coverage": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-prose",
+      "workflow": "baseline-oneshot-v1-pi",
+      "model": "minimax-m3",
+      "counts": {
+        "runs": 0,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_count": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_median": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_no_coverage": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-prose",
+      "workflow": "baseline-oneshot-v1-pi",
+      "model": "qwen3-8",
+      "counts": {
+        "runs": 0,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_count": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_median": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_no_coverage": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        }
+      }
+    },
+    {
+      "kata": "claim-office-prose",
+      "workflow": "baseline-oneshot-v1-pi",
+      "model": "qwen3-8-flash-next",
+      "counts": {
+        "runs": 0,
+        "timeouts": 0,
+        "infra": 0,
+        "provider_refusals": 0
+      },
+      "runs": [],
+      "outcomes": {
+        "verification_pct": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_passed": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "verification_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_passing": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "production_loc": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "code_mass": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "smell_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cognitive_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mccabe_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "longest_function": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_count": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_max": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_avg": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "unit_size_median": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "tests_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "test_lines": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutation_score": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_total": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_survived": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "mutants_no_coverage": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "duration_seconds": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "total_tokens": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        },
+        "cost_usd": {
+          "kind": "num",
+          "n": 0,
+          "null_count": 0
+        }
+      }
+    }
+  ]
+}
